@@ -28,6 +28,7 @@ include doc/LeoDiary.leo
 include doc/LeoDocs.leo
 include doc/leoNotes.txt
 include doc/LeoPostings.leo
+include doc/LeoSlideShows.leo
 include doc/leoToDo.txt
 include doc/leoToDoLater.txt
 

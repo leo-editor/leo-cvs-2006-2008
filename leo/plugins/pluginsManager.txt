@@ -27,7 +27,7 @@ plugin_manager.py
 
 #################
 #zodb.py
-#slideshow.py
+slideshow.py
 #mod_shadow.py
 #print_cp.py
 #xcc_nodes.py
@@ -61,6 +61,7 @@ rst3.py
 #s_menu.py
 #datenodes.py
 #detect_urls.py
+#keybindings.py
 
 ########### Icon area: order is important.
 mod_scripting.py

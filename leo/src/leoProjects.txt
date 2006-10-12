@@ -973,6 +973,49 @@ http://sourceforge.net/forum/message.php?msg_id=3956836
 
 p.clone(p) -> p.clone() in the big reorg.
 #@-node:ekr.20061010192251:Fix bug in ops plugin
+#@+node:ekr.20061011163719:Fixed crasher on script button balloons
+http://sourceforge.net/forum/message.php?msg_id=3958333
+By: mstarzyk
+
+I get the following exception while opening a leo file:
+
+Traceback (most recent call last):
+  File "C:\Program Files\Leo\src\leoGlobals.py", line 2441, in doHook
+    return f(tag,keywords)
+  File "C:\Program Files\Leo\src\leoPlugins.py", line 91, in doPlugins
+    return doHandlersForTag(tag,keywords)
+  File "C:\Program Files\Leo\src\leoPlugins.py", line 69, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
+  File "C:\Program Files\Leo\src\leoPlugins.py", line 48, in callTagHandler
+    result = handler(tag,keywords)
+  File "C:\Program Files\Leo\plugins\mod_scripting.py", line 193, in onCreate
+    sc.createAllButtons()
+  File "C:\Program Files\Leo\plugins\mod_scripting.py", line 249,
+in createAllButtons
+    self.createAtButtonButton(p)
+  File "C:\Program Files\Leo\plugins\mod_scripting.py", line 316,
+in createAtButtonButton
+    b = self.createAtButtonIconButton(p,buttonText,statusLine,shortcut)
+  File "C:\Program Files\Leo\plugins\mod_scripting.py", line 588,
+in createAtButtonIconButton
+    b = self.createIconButton(text=buttonText,statusLine=statusLine,bg=bg)
+  File "C:\Program Files\Leo\plugins\mod_scripting.py", line 431,
+in createIconButton
+    self.createBalloon(b,statusLine)
+  File "C:\Program Files\Leo\plugins\mod_scripting.py", line 459,
+in createBalloon
+    balloon.bind(w,label)
+  File "C:\Program Files\Leo\extensions\Pmw\Pmw_1_2\lib\PmwBalloon.py", line
+76, in bind
+    enterId = widget.bind('<Enter>',
+AttributeError: 'NoneType' object has no attribute 'bind'
+
+@nocolor
+
+This is strange: I never have a problem with it.
+The fix: don't call balloon.bind if balloon is None.
+#@nonl
+#@-node:ekr.20061011163719:Fixed crasher on script button balloons
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
@@ -1596,6 +1639,30 @@ def defineHelpMenuTables (self):
 #@-node:ekr.20031218072017.3774:defineHelpMenuTables
 #@-node:ekr.20060527184656:Added minibuffer and Settings menus
 #@-node:ekr.20061010115312:Features
+#@+node:ekr.20061012064024:Plugins
+#@+node:ekr.20061011163905:Fixed keyBindings plugin
+http://sourceforge.net/forum/message.php?msg_id=3958380
+By: paulpaterson
+
+Printing from the KeyBindings plugin is broken. The fix is,
+
+Change (line 306, printKeys()): 
+
+fname = os.path.abspath(g.os_path_join("..", "plugins", "keyreport.html"))
+
+To:
+
+fname = os.path.abspath(g.os_path_join("..", "..", "plugins",
+"keyreport.html"))
+
+
+(Note the additional "..")
+
+It appears that the current directory in use when running Leo has changed to
+/Leo/test/plugins ?!
+#@nonl
+#@-node:ekr.20061011163905:Fixed keyBindings plugin
+#@-node:ekr.20061012064024:Plugins
 #@+node:ekr.20061009154800:Settings
 #@+node:ekr.20061009153504:Made unlimited undo the default
 @nocolor

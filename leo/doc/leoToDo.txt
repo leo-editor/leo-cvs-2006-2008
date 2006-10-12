@@ -3,6 +3,114 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
+#@+node:ekr.20061011214705:Easy 7
+#@+node:ekr.20061011131836:Fix new unicode bug
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3957980
+By: dcbbcd
+
+> theConstant = g.toUnicode(theConstant,encoding='ascii')
+
+This is dangerous. string.letters is locale dependent and may contain non ASCII
+characters. You could use string.ascii_characters or get the current encoding.
+
+#@-node:ekr.20061011131836:Fix new unicode bug
+#@+node:ekr.20061008114340:Finish collapse-on-move-left
+@nocolor
+
+cvs now contains support for this new setting:
+
+@bool sparse_move_outline_left
+
+When True, Leo will collapse the (former) parent of a node when moving that node left.  This makes moving outlines left extremely fast, but it takes getting used to it.  I think I like it :-)
+
+To do:
+
+- The move-outline-up/down commands can have the effect of moving an outline left.  At present, the outline isn't collapsed in those cases, but it should be.
+
+- set/clear/toggle-sparce-move-outline-left commands are needed to turn this option on or off at will.
+
+@color
+#@nonl
+#@-node:ekr.20061008114340:Finish collapse-on-move-left
+#@+node:ekr.20061011151640:Warning if minibuffer command does not exist when making menus
+#@-node:ekr.20061011151640:Warning if minibuffer command does not exist when making menus
+#@+node:ekr.20040213090121:Insert at end
+@nocolor
+
+By: tibi ( Thiébaut Champenier ) 
+ inserting a new node   
+2004-02-13 13:23  
+
+ Hi,
+
+When doing ctrl+i I on the node that has children I would prefer Leo to insert the new node as the last children instead of the first. It just makes more sense to me, for exemple when you take a big file and cut it in subnodes you typically start at the top and create new nodes while paging down the file.
+What do you think ?
+To try it just make this little change:
+RCS file: /cvsroot/leo/leo/src/leoCommands.py,v
+retrieving revision 1.76
+diff -r1.76 leoCommands.py
+2516c2516
+< v = current.insertAsNthChild(0)
+---
+> v = current.insertAsLastChild()  
+#@nonl
+#@-node:ekr.20040213090121:Insert at end
+#@+node:ekr.20061011070742.4:do-nothing command and test binding to that command for unicode character
+#@-node:ekr.20061011070742.4:do-nothing command and test binding to that command for unicode character
+#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
+The must work with unicode characters.  (They do now.)
+#@nonl
+#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
+#@+node:ekr.20061011184009:The end-of-script message yanks focus from tabs
+@nocolor
+
+Do *not* bother with trying to preserve the focus.
+Instead, the 'end of script' message should just go to whatever log pane is on top.
+#@nonl
+#@-node:ekr.20061011184009:The end-of-script message yanks focus from tabs
+#@-node:ekr.20061011214705:Easy 7
+#@+node:ekr.20061012075711:Plugins 2
+#@+node:ekr.20061011110132:Remove properties dialog for datenodes plugin
+@nocolor
+
+the properties dialog in the plugin menu for datenodes is no longer needed because the settings are stored in LeoSettings.leo. Could you please remove the dialog? 
+#@-node:ekr.20061011110132:Remove properties dialog for datenodes plugin
+#@+node:ekr.20061012061050:Fix nodenavigator plugin
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3959003
+By: nobody
+
+The node navigator plugin does not show up in the plugins menu (also happens
+in Leo4.4.1.1).
+
+The use of this plugin decreases when moving through the outline without the
+mouse. Maybe some setting could be introduced to only include a node to the
+'Recent' list when it has had focus for more than, say, 5 seconds? Or being
+edited, of course.
+
+Another suggestion might be to set _named_ marks for a (line in a?) node a la
+vim (where its shortcut is m<markname>). I can remember about 3 or 4 marks when
+analyzing code, and switching by only using the keyboard (shortcuts '<markname>
+or `<markname>) works very good (for me) in vim. Switching between the two most
+recent marks is done in vim using the shortcut '' or ``.
+#@-node:ekr.20061012061050:Fix nodenavigator plugin
+#@-node:ekr.20061012075711:Plugins 2
+#@+node:ekr.20061011214705.1:Other 4
+#@+node:ekr.20061012082613:Fix body editor problems: 2
+#@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
+#@-node:ekr.20061012082613.1:Find does not work when there are multiple body editors
+#@+node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
+@nocolor
+
+When deleting a node that is open in two editors, only one editor shows the
+content of the newly selected node. The other editor still shows the contents
+of the deleted node; when clicking in it, the log reports something like:
+
+onFocusIn: does not exist <some number>
+#@-node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
+#@-node:ekr.20061012082613:Fix body editor problems: 2
 #@+node:ekr.20060116083043:Use special Help menu on the Mac
 @nocolor
 
@@ -109,53 +217,6 @@ def getMacHelpMenu (self):
         return None
 #@-node:ekr.20060211144330.1:getMacHelpMenu
 #@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@+node:ekr.20061011151640:Warning if minibuffer command does not exist when making menus
-#@-node:ekr.20061011151640:Warning if minibuffer command does not exist when making menus
-#@+node:ekr.20061011131836:Fix new unicode bug
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3957980
-By: dcbbcd
-
-> theConstant = g.toUnicode(theConstant,encoding='ascii')
-
-This is dangerous. string.letters is locale dependent and may contain non ASCII
-characters. You could use string.ascii_characters or get the current encoding.
-
-#@-node:ekr.20061011131836:Fix new unicode bug
-#@+node:ekr.20061008114340:Finish collapse-on-move-left
-@nocolor
-
-cvs now contains support for this new setting:
-
-@bool sparse_move_outline_left
-
-When True, Leo will collapse the (former) parent of a node when moving that node left.  This makes moving outlines left extremely fast, but it takes getting used to it.  I think I like it :-)
-
-To do:
-
-- The move-outline-up/down commands can have the effect of moving an outline left.  At present, the outline isn't collapsed in those cases, but it should be.
-
-- set/clear/toggle-sparce-move-outline-left commands are needed to turn this option on or off at will.
-
-@color
-#@nonl
-#@-node:ekr.20061008114340:Finish collapse-on-move-left
-#@+node:ekr.20061011070742.4:do-nothing command and test binding to that command for unicode character
-#@-node:ekr.20061011070742.4:do-nothing command and test binding to that command for unicode character
-#@+node:ekr.20051112080017:delete-x-script-button
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3423121
-By: nobody
-
-Hi! I need help removing script buttons. It says I should right click the ofending
-button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
-I do?
-
-EKR: This is on the list of unfixable bugs, but I have a hard time believing there is no workaround.
-#@nonl
-#@-node:ekr.20051112080017:delete-x-script-button
 #@+node:ekr.20060927100500.1:Fix bugs in new colorizer
 @nocolor
 
@@ -165,36 +226,7 @@ EKR: This is on the list of unfixable bugs, but I have a hard time believing the
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 http://sourceforge.net/forum/message.php?msg_id=3924236
 #@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-#@+node:ekr.20040213090121:Insert at end
-@nocolor
-
-By: tibi ( Thiébaut Champenier ) 
- inserting a new node   
-2004-02-13 13:23  
-
- Hi,
-
-When doing ctrl+i I on the node that has children I would prefer Leo to insert the new node as the last children instead of the first. It just makes more sense to me, for exemple when you take a big file and cut it in subnodes you typically start at the top and create new nodes while paging down the file.
-What do you think ?
-To try it just make this little change:
-RCS file: /cvsroot/leo/leo/src/leoCommands.py,v
-retrieving revision 1.76
-diff -r1.76 leoCommands.py
-2516c2516
-< v = current.insertAsNthChild(0)
----
-> v = current.insertAsLastChild()  
-#@nonl
-#@-node:ekr.20040213090121:Insert at end
-#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-The must work with unicode characters.  (They do now.)
-#@nonl
-#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-#@+node:ekr.20061011110132:Removed properties dialog for datenodes plugin
-@nocolor
-
-the properties dialog in the plugin menu for datenodes is no longer needed because the settings are stored in LeoSettings.leo. Could you please remove the dialog? 
-#@-node:ekr.20061011110132:Removed properties dialog for datenodes plugin
+#@-node:ekr.20061011214705.1:Other 4
 #@-node:ekr.20061010115312.1:Urgent
 #@+node:ekr.20061008160553:Asap
 #@+node:ekr.20061011145700:Remove title of body editor when penultimate editor removed

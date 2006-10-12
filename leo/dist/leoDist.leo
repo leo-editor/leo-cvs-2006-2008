@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="23" left="396" height="767" width="863"/>
+	<global_window_position top="23" left="396" height="729" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -107,8 +107,8 @@
 <v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
-<v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
-<v t="ekr.20040629175400" a="TV"><vh>Pychecker stuff</vh>
+<v t="EKR.20040519080201.1" a="TV"><vh>Distribution checklist</vh></v>
+<v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="ekr.20050910192724"><vh>Pychecker warnings</vh></v>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent c:\prog\leoCVS\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
@@ -261,6 +261,7 @@ Uploads
 	- Upload leo-x-y.zip
 	- Upload sbook.chm if it has been changed.
 Announcements
+    - Update version number on Leo's wikipedia site: http://en.wikipedia.org/wiki/Leo_(editor)
     - Update version number on web site.
 	- Announce to Leo's Open Forum.
     - Announce to SourceForge itself. USE ANNOUNCEMENT FORMAT, not readme format.
@@ -752,6 +753,7 @@ include doc/LeoDiary.leo
 include doc/LeoDocs.leo
 include doc/leoNotes.txt
 include doc/LeoPostings.leo
+include doc/LeoSlideShows.leo
 include doc/leoToDo.txt
 include doc/leoToDoLater.txt
 
@@ -3142,6 +3144,7 @@ Delete "$INSTDIR\dist\.pycheckrc"</t>
 <t tx="ekr.20050118104901.1">File "..\doc\leoDiary.leo"
 File "..\doc\LeoDocs.leo"
 File "..\doc\LeoPostings.leo"
+File "..\doc\LeoSlideShows.leo"
 
 File "..\doc\leoNotes.txt"
 File "..\doc\leoToDo.txt"
@@ -3172,6 +3175,7 @@ File "..\doc\html\*.*"
 <t tx="ekr.20050118104901.2">Delete "$INSTDIR\doc\LeoDocs.leo"
 Delete "$INSTDIR\doc\leoDiary.leo"
 Delete "$INSTDIR\doc\LeoPostings.leo"
+Delete "$INSTDIR\doc\LeoSlideShows.leo"
 
 Delete "$INSTDIR\doc\leoNotes.txt"
 Delete "$INSTDIR\doc\leoToDo.txt"

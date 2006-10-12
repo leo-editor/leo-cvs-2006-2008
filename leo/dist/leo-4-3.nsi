@@ -256,6 +256,7 @@ Section "Leo" SEC01
   File "..\doc\leoDiary.leo"
   File "..\doc\LeoDocs.leo"
   File "..\doc\LeoPostings.leo"
+  File "..\doc\LeoSlideShows.leo"
   
   File "..\doc\leoNotes.txt"
   File "..\doc\leoToDo.txt"
@@ -566,6 +567,7 @@ Section Uninstall
   Delete "$INSTDIR\doc\LeoDocs.leo"
   Delete "$INSTDIR\doc\leoDiary.leo"
   Delete "$INSTDIR\doc\LeoPostings.leo"
+  Delete "$INSTDIR\doc\LeoSlideShows.leo"
   
   Delete "$INSTDIR\doc\leoNotes.txt"
   Delete "$INSTDIR\doc\leoToDo.txt"
