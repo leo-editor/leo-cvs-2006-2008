@@ -589,7 +589,7 @@ class leoMenu:
     def defineEditMenuFindMenuTable (self):
         
         self.editMenuFindMenuTable = [
-            # &: a,b,c,d,e,f,h,i,l,n,o,p,q,r,s,t,u,w,x
+            # &: a,b,c,d,e,f,h,i,l,n,o,p,q,r,s,u,w,x
             '&open-find-tab',
             '&hide-find-tab',
             'search-&with-present-options',
@@ -597,7 +597,6 @@ class leoMenu:
             'find-tab-find-&next',
             'find-tab-find-&prev',
             'find-tab-&change',
-            'find-with-present-op&tions',
             'find-tab-find-&all',
             'clone-fi&nd-all',
             'find-tab-change-a&ll',
@@ -935,16 +934,6 @@ class leoMenu:
         self.defineCmdsMenuTextTable()
         self.defineCmdsMenuToggleTable()
     #@nonl
-    #@+node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
-    def defineCmdsMenuTopTable (self):
-        
-        self.cmdsMenuTopTable = [
-            'repeat-comple&x-command',
-            'f&ull-command',
-            'keyboard-&quit',
-            '-',
-        ]
-    #@-node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
     #@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
     def defineCmdsMenuAbbrevTable (self):
         
@@ -1085,7 +1074,7 @@ class leoMenu:
             '&full-command',
             'keyboard-&quit',
             '&repeat-complex-command',
-            '&view-lossage'
+            '&view-lossage',
             '-',
             '&show-mini-buffer',
             'h&ide-mini-buffer',
@@ -1377,7 +1366,7 @@ class leoMenu:
                             accel = bunch and bunch.val
                             if bunch.pane  == 'text': break # New in Leo 4.4.2: prefer text bindings.
                 else:
-                    if not g.app.unitTesting and not not dynamicMenu:
+                    if not g.app.unitTesting and not dynamicMenu:
                         # Don't warn during unit testing.
                         # This may come from a plugin that normally isn't enabled.
                         g.trace('No inverse for %s' % commandName)
