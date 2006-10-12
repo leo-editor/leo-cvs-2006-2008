@@ -20,11 +20,37 @@ It would be unwise to create a list of all unicode characters that could appear
 in a word: this list might run to tens of thousands of characters. But it is
 easy enough to test a single character. So I'll soon be removing all, or almost
 all, references to string.letters, etc.
-#@nonl
+
+But ch.isalnum() handles unicode properly, so we can define g.isWordChar as follows:
+
+@color
+
+def isWordChar(ch):
+    return ch.isalnum() or (ch == u'_') 
 #@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
 The must work with unicode characters.  (They do now.)
 #@nonl
 #@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
+#@+node:ekr.20061006152327:g.isWordChar
+def isWordChar (ch):
+    
+    '''Return True if ch should be considered a letter.'''
+
+    return ch.isalnum() or ch == u'_'
+    
+    # Equivalent, but slower.
+    if 0:
+        # First, handle the easy cases.
+        if ch in (string.letters + string.digits + '_'):
+            return True
+        if ch in (string.punctuation + string.whitespace):
+            return False
+        # Now get the unicode
+        cat = unicodedata.category(ch)
+        # g.trace(cat)
+        return cat.startswith('L') or cat.startswith('N')
+#@nonl
+#@-node:ekr.20061006152327:g.isWordChar
 #@-node:ekr.20061011131836:Fix new unicode bug
 #@+node:ekr.20061012075711:Plugins 3
 #@+node:ekr.20061012095927:Fix multifile plugin
@@ -66,7 +92,7 @@ or `<markname>) works very good (for me) in vim. Switching between the two most
 recent marks is done in vim using the shortcut '' or ``.
 #@-node:ekr.20061012061050:Fix nodenavigator plugin
 #@-node:ekr.20061012075711:Plugins 3
-#@+node:ekr.20061011214705.1:Other 5
+#@+node:ekr.20061011214705.1:Other 3
 #@+node:ekr.20061012082613:Fix body editor problems: 2
 #@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
 #@-node:ekr.20061012082613.1:Find does not work when there are multiple body editors
@@ -80,6 +106,17 @@ of the deleted node; when clicking in it, the log reports something like:
 onFocusIn: does not exist <some number>
 #@-node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
 #@-node:ekr.20061012082613:Fix body editor problems: 2
+#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
+@nocolor
+
+- Does not restore selection after indent/undent commands.
+#@nonl
+#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
+#@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
+http://sourceforge.net/forum/message.php?msg_id=3924236
+#@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
+#@-node:ekr.20061011214705.1:Other 3
+#@+node:ekr.20061012154836:Mac 2
 #@+node:ekr.20060116083043:Use special Help menu on the Mac
 @nocolor
 
@@ -186,18 +223,9 @@ def getMacHelpMenu (self):
         return None
 #@-node:ekr.20060211144330.1:getMacHelpMenu
 #@-node:ekr.20060116083043:Use special Help menu on the Mac
-#@+node:ekr.20060927100500.1:Fix bugs in new colorizer
-@nocolor
-
-- Does not restore selection after indent/undent commands.
-#@nonl
-#@-node:ekr.20060927100500.1:Fix bugs in new colorizer
-#@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-http://sourceforge.net/forum/message.php?msg_id=3924236
-#@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 #@+node:ekr.20061010082258:Minibuffer does not show on Mac
 #@-node:ekr.20061010082258:Minibuffer does not show on Mac
-#@-node:ekr.20061011214705.1:Other 5
+#@-node:ekr.20061012154836:Mac 2
 #@-node:ekr.20061010115312.1:Urgent
 #@+node:ekr.20061008160553:Asap
 #@+node:ekr.20061011145700:Remove title of body editor when penultimate editor removed

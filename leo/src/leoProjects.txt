@@ -1858,6 +1858,315 @@ def showCalltipsStatus (self):
 #@nonl
 #@-node:ekr.20060609171919:showAutocompleter/CalltipsStatus
 #@-node:ekr.20061012113708:Toggling autocompleter and calltips now write to log (in red) instead of the statusLine
+#@+node:ekr.20061008114340:Finished collapse-on-move-left
+@nocolor
+
+Added support for @bool sparse_move_outline_left
+
+When True, Leo collapses the (former) parent of a node when moving that node left.
+Takes getting used to, but I like it.
+
+Note that the move-outline-up/down commands can have the effect of moving an outline left.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.1766:Move... (Commands)
+#@+node:ekr.20031218072017.1767:demote
+def demote (self,event=None):
+    
+    '''Make all following siblings children of the selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    command = 'Demote'
+    if not current or not current.hasNext():
+        c.treeWantsFocusNow()
+        return
+
+    # Make sure all the moves will be valid.
+    for child in current.children_iter():
+        if not c.checkMoveWithParentWithWarning(child,current,True):
+            c.treeWantsFocusNow()
+            return
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        u.beforeChangeGroup(current,command)
+        p = current.copy()
+        while p.hasNext(): # Do not use iterator here.
+            child = p.next()
+            undoData = u.beforeMoveNode(child)
+            child.moveToNthChildOf(p,p.numberOfChildren())
+            u.afterMoveNode(child,command,undoData)
+        p.expand()
+        # Even if p is an @ignore node there is no need to mark the demoted children dirty.
+        dirtyVnodeList = current.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterChangeGroup(current,command,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(current)  # Also sets rootPosition.
+        c.endUpdate()
+        c.treeWantsFocusNow()
+    c.updateSyntaxColorer(current) # Moving can change syntax coloring.
+#@-node:ekr.20031218072017.1767:demote
+#@+node:ekr.20031218072017.1768:moveOutlineDown
+@ Moving down is more tricky than moving up; we can't move p to be a child of itself.  An important optimization:  we don't have to call checkMoveWithParentWithWarning() if the parent of the moved node remains the same.
+@c
+
+def moveOutlineDown (self,event=None):
+    
+    '''Move the selected node down.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+
+    if not c.canMoveOutlineDown():
+        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
+        c.treeWantsFocusNow()
+        return
+        
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    # Set next to the node after which p will be moved.
+    next = p.visNext()
+    while next and p.isAncestorOf(next):
+        next = next.visNext()
+    if not next:
+        c.treeWantsFocusNow()
+        return
+
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        << Move p down & set moved if successful >>
+        if moved:
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                p.setDirty() # Mark descendent @thin nodes dirty.
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterMoveNode(p,'Move Down',undoData,dirtyVnodeList)
+    finally:
+        c.selectPosition(p) # Also sets rootPosition.
+        c.endUpdate()
+        c.treeWantsFocusNow()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@+node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
+parent = p.parent()
+
+if next.hasChildren() and next.isExpanded():
+    # Attempt to move p to the first child of next.
+    moved = c.checkMoveWithParentWithWarning(p,next,True)
+    if moved:
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveToNthChildOf(next,0)
+        
+else:
+    # Attempt to move p after next.
+    moved = c.checkMoveWithParentWithWarning(p,next.parent(),True)
+    if moved:
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveAfter(next)
+        
+if moved and sparseMove and parent and not parent.isAncestorOf(p):
+    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+    parent.contract()
+#@-node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
+#@-node:ekr.20031218072017.1768:moveOutlineDown
+#@+node:ekr.20031218072017.1770:moveOutlineLeft
+def moveOutlineLeft (self,event=None):
+    
+    '''Move the selected node left if possible.'''
+    
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineLeft(): # 11/4/03: Support for hoist.
+        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
+        c.treeWantsFocusNow()
+        return
+    if not p.hasParent():
+        c.treeWantsFocusNow()
+        return
+
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    parent = p.parent()
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveAfter(parent)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            p.setDirty() # Mark descendent @thin nodes dirty.
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,'Move Left',undoData,dirtyVnodeList)
+        if sparseMove: # New in Leo 4.4.2
+            parent.contract()
+    finally:
+        c.selectPosition(p) # Also sets rootPosition.
+        c.endUpdate()
+        c.treeWantsFocusNow()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@nonl
+#@-node:ekr.20031218072017.1770:moveOutlineLeft
+#@+node:ekr.20031218072017.1771:moveOutlineRight
+def moveOutlineRight (self,event=None):
+    
+    '''Move the selected node right if possible.'''
+    
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineRight(): # 11/4/03: Support for hoist.
+        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
+        c.treeWantsFocusNow()
+        return
+    if not p.hasBack:
+        c.treeWantsFocusNow()
+        return
+    back = p.back()
+    if not c.checkMoveWithParentWithWarning(p,back,True):
+        c.treeWantsFocusNow()
+        return
+
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        n = back.numberOfChildren()
+        p.moveToNthChildOf(back,n)
+        # g.trace(p,p.parent())
+        # Moving an outline right can never bring it outside the range of @ignore.
+        dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+        dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+        c.treeWantsFocusNow()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@-node:ekr.20031218072017.1771:moveOutlineRight
+#@+node:ekr.20031218072017.1772:moveOutlineUp
+def moveOutlineUp (self,event=None):
+    
+    '''Move the selected node up if possible.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineUp(): # Support for hoist.
+        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
+        c.treeWantsFocusNow()
+        return
+    back = p.visBack()
+    if not back: return
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    back2 = back.visBack()
+    if back2 and p.v in back2.v.t.vnodeList:
+        # A weird special case: just select back2.
+        c.selectPosition(back2)
+        c.treeWantsFocusNow()
+        return
+
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        << Move p up >>
+        if moved:
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
+            
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+        c.treeWantsFocusNow()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@+node:ekr.20031218072017.1773:<< Move p up >>
+if 0:
+    g.trace("visBack",back)
+    g.trace("visBack2",back2)
+    g.trace("oldParent",oldParent)
+    g.trace("back2.hasChildren",back2.hasChildren())
+    g.trace("back2.isExpanded",back2.isExpanded())
+    
+parent = p.parent()
+
+if not back2:
+    # p will be the new root node
+    moved = True
+    p.moveToRoot(oldRoot=c.rootPosition())
+
+elif back2.hasChildren() and back2.isExpanded():
+    if c.checkMoveWithParentWithWarning(p,back2,True):
+        moved = True
+        p.moveToNthChildOf(back2,0)
+
+else:
+    if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
+        moved = True
+        p.moveAfter(back2)
+
+if moved and sparseMove and parent and not parent.isAncestorOf(p):
+    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+    parent.contract()
+#@-node:ekr.20031218072017.1773:<< Move p up >>
+#@-node:ekr.20031218072017.1772:moveOutlineUp
+#@+node:ekr.20031218072017.1774:promote
+def promote (self,event=None):
+    
+    '''Make all children of the selected nodes siblings of the selected node.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    command = 'Promote'
+    if not p or not p.hasChildren():
+        c.treeWantsFocusNow()
+        return
+
+    isAtIgnoreNode = p.isAtIgnoreNode()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        u.beforeChangeGroup(p,command)
+        after = p
+        while p.hasChildren(): # Don't use an iterator.
+            child = p.firstChild()
+            undoData = u.beforeMoveNode(child)
+            child.moveAfter(after)
+            after = child
+            u.afterMoveNode(child,command,undoData)
+        c.setChanged(True)
+        if not inAtIgnoreRange and isAtIgnoreNode:
+            # The promoted nodes have just become newly unignored.
+            dirtyVnodeList = p.setDirty() # Mark descendent @thin nodes dirty.
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        u.afterChangeGroup(p,command,dirtyVnodeList=dirtyVnodeList)
+        c.selectPosition(p)
+    finally:
+        c.endUpdate()
+        c.treeWantsFocusNow()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@-node:ekr.20031218072017.1774:promote
+#@-node:ekr.20031218072017.1766:Move... (Commands)
+#@-node:ekr.20061008114340:Finished collapse-on-move-left
 #@-node:ekr.20061010115312:Features
 #@+node:ekr.20061012064024:Plugins
 #@+node:ekr.20061011163905:Fixed keyBindings plugin
