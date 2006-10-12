@@ -4942,12 +4942,16 @@ class baseCommands:
         if not next:
             c.treeWantsFocusNow()
             return
+    
+        sparseMove = c.config.getBool('sparse_move_outline_left')
         c.beginUpdate()
         try: # update...
             c.endEditing()
             undoData = u.beforeMoveNode(p)
             #@        << Move p down & set moved if successful >>
             #@+node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
+            parent = p.parent()
+            
             if next.hasChildren() and next.isExpanded():
                 # Attempt to move p to the first child of next.
                 moved = c.checkMoveWithParentWithWarning(p,next,True)
@@ -4961,6 +4965,10 @@ class baseCommands:
                 if moved:
                     dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
                     p.moveAfter(next)
+                    
+            if moved and sparseMove and parent and not parent.isAncestorOf(p):
+                # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+                parent.contract()
             #@-node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
             #@nl
             if moved:
@@ -5011,15 +5019,7 @@ class baseCommands:
             c.setChanged(True)
             u.afterMoveNode(p,'Move Left',undoData,dirtyVnodeList)
             if sparseMove: # New in Leo 4.4.2
-                if 1: # Just collapsing the orignal parent is more reasonable.
-                    parent.contract()
-                else:
-                    for p2 in c.allNodes_iter():
-                        if not p.isAncestorOf(p):
-                            p2.contract()
-                    for p2 in p.parents_iter():
-                        if not p2.isExpanded():
-                            p2.expand()
+                parent.contract()
         finally:
             c.selectPosition(p) # Also sets rootPosition.
             c.endUpdate()
@@ -5086,6 +5086,7 @@ class baseCommands:
             c.treeWantsFocusNow()
             return
     
+        sparseMove = c.config.getBool('sparse_move_outline_left')
         c.beginUpdate()
         try: # update...
             c.endEditing()
@@ -5099,6 +5100,8 @@ class baseCommands:
                 g.trace("oldParent",oldParent)
                 g.trace("back2.hasChildren",back2.hasChildren())
                 g.trace("back2.isExpanded",back2.isExpanded())
+                
+            parent = p.parent()
             
             if not back2:
                 # p will be the new root node
@@ -5114,6 +5117,10 @@ class baseCommands:
                 if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
                     moved = True
                     p.moveAfter(back2)
+            
+            if moved and sparseMove and parent and not parent.isAncestorOf(p):
+                # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+                parent.contract()
             #@-node:ekr.20031218072017.1773:<< Move p up >>
             #@nl
             if moved:
