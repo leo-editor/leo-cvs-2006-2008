@@ -100,7 +100,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.2'
+__version__ = '1.3'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -158,6 +158,9 @@ __version__ = '1.2'
 # 1.2 EKR: Make sure balloon exists before binding to it.
 # - cleanButtonText cleans less.  In particular, it retains interior --> and 
 # <--.
+# 1.3 EKR: Give up the attempt to use <-- and -->.
+# LeoSlideShows.leo now minibuffer names for buttons, and defines those same 
+# command.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -414,7 +417,7 @@ class scriptingController:
             s = s[1:]
         if s.startswith('button'):
             s = s[6:]
-        if 0: # This cleans too much.  The slidshow plugin uses --> and <--
+        if 1: # Not great, but spaces, etc. interfere with tab completion.
             chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
             aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(s,g.app.tkEncoding)]
             s = ''.join(aList)
@@ -601,11 +604,8 @@ class scriptingController:
             c = self.c; k = c.keyHandler ; func = atButtonCallback
             
             shortcut = k.canonicalizeShortcut(shortcut)
-            ok = k.bindKey ('button', shortcut,func,buttonText)
-            
-            if ok:
-                g.es_print('Bound @button %s to %s' % (buttonText,shortcut),color='blue')
-            #@nonl
+            commandName = buttonText.lower()
+            k.registerCommand(commandName,shortcut,func,pane='all',verbose=True)
             #@-node:ekr.20060328125248.25:<< bind the shortcut to atButtonCallback >>
             #@nl
         else:
