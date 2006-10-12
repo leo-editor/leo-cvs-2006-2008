@@ -19,7 +19,7 @@ At a future time it might even allow editing!
 #@-node:pap.20060703102546.1:<< docstring >>
 #@nl
 
-__version__ = '0.1'
+__version__ = '0.2'
 __plugin_name__ = "KeyBindings"
 __plugin_priority__ = 1
 __plugin_requires__ = ["plugin_menu"]
@@ -32,6 +32,8 @@ __plugin_group__ = "Helpers"
 #@+at
 # 
 # Version 0.1 - (Paul Paterson) First created
+# v 0.2 EKR: Use g.app.loadDir as a stable starting point for computing 
+# plugins directory.
 #@-at
 #@nonl
 #@-node:pap.20060703102546.2:<< version history >>
@@ -303,7 +305,7 @@ class KeyHandlerDialog:
     #@+node:pap.20060703123659:printKeys
     def printKeys(self):
         """Print the keys"""
-        fname = os.path.abspath(g.os_path_join("..", "plugins", "keyreport.html"))
+        fname = os.path.abspath(g.os_path_join(g.app.loadDir,"..", "plugins", "keyreport.html"))
         f = file(fname, "w")
         report = ["<html><title>Leo Key Bindings</title><body>"
                   '<link type="text/css" rel="stylesheet" href="keys.css" />',
