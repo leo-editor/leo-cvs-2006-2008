@@ -1800,7 +1800,7 @@ class baseCommands:
             while i < len(s) and colons < 3:
                 if s[i] == ':':
                     colons += 1
-                    if colons == 1 and i+1 < len(s) and s[i+1] in string.digits:
+                    if colons == 1 and i+1 < len(s) and s[i+1].isdigit(): ### s[i+1] in string.digits:
                         junk,childIndex = g.skip_long(s,i+1)
                 i += 1
             vnodeName = s[i:].strip()
@@ -3987,7 +3987,7 @@ class baseCommands:
                 if outer:
                     if self.array:
                         prev = self.array[-1].rstrip()
-                        if prev and prev[-1] not in string.digits + string.letters:
+                        if prev and not g.isWordChar(ch): ### prev[-1] not in string.digits + string.letters:
                             self.put(' %s' % val)
                         else: self.put(val)
                     else: self.put(val) # Try to leave whitespace unchanged.

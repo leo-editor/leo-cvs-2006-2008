@@ -136,9 +136,6 @@ class leoFind:
         
         self.newStringKeys = ["radio-find-type", "radio-search-scope"]
         
-        # To do: this should depend on language.
-        self.word_chars = g.toUnicode(string.letters + string.digits + '_',encoding='ascii')
-        
         # Ivars containing internal state...
         self.c = None # The commander for this search.
         self.clone_find_all = False
@@ -867,10 +864,7 @@ class leoFind:
     def matchWord(self,s,i,pattern):
         
         ok = g.match_word(s,i,pattern) and (
-            i == 0 or 
-            s[i-1] not in self.word_chars or
-            s[i]   not in self.word_chars
-        )
+            i == 0 or not g.isWordChar(s[i-1]) or not g.isWordChar(s[i]))
     
         # g.trace(ok,repr(s),i)
         return ok

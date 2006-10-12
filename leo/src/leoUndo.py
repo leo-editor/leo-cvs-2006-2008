@@ -228,20 +228,8 @@ class baseUndoer:
         The present code uses only old_ch and new_ch. The other arguments are given
         for use by more sophisticated algorithms.'''
         
-        ws = string.whitespace
-    
-        if 1: # This seems like the best way.
-            # Start a word if new_ch begins whitespace + word
-            return old_ch not in ws and new_ch in ws
-    
-        if 0: # Problems with punctuation within words.
-            return old_ch in ws and new_ch not in ws
-    
-        if 0: # Problems with punctuation within words.
-            word_chars = string.letters + string.digits + '_'
-            return new_ch in word_chars and not old_ch in word_chars
-            
-        else: return False # Keeps Pychecker happy.
+        # Start a word if new_ch begins whitespace + word
+        return not old_ch.isspace() and new_ch.isspace() ### old_ch not in ws and new_ch in ws
     #@-node:ekr.20050126081529:recognizeStartOfTypingWord
     #@+node:ekr.20031218072017.3613:redoMenuName, undoMenuName
     def redoMenuName (self,name):

@@ -1262,6 +1262,7 @@ class editCommandsClass (baseEditCommandsClass):
         
         self.ccolumn = '0'   # For comment column functions.
         self.dynaregex = re.compile(r'[%s%s\-_]+'%(string.ascii_letters,string.digits))
+            # Not a unicode problem.
             # For dynamic abbreviations
         self.extendMode = False # True: all cursor move commands extend the selection.
         self.fillPrefix = '' # For fill prefix functions.
@@ -2425,10 +2426,9 @@ class editCommandsClass (baseEditCommandsClass):
                 i = g.app.gui.toPythonIndex(s,w,i)
                 j = s.find('\n',i) # Limit to this line.
                 s = s[:j]
-                word_chars = g.toUnicode(string.letters + string.digits + '_',encoding='ascii')
                 while i < len(s):
                     if i == -1: break
-                    ok = g.match_word(s,i,word) and (i == 0 or s[i-1] not in word_chars)
+                    ok = g.match_word(s,i,word) and (i == 0 or not g.isWordChar(s[i-1]))
                     # g.trace(ok,repr(word),i,repr(s))
                     if ok:
                         i1 = g.app.gui.toGuiIndex(s,w,i)
@@ -5614,12 +5614,10 @@ class killBufferCommandsClass (baseEditCommandsClass):
             ch = event and event.char
             k.resetLabel()
             k.clearState()
-            if (
-                len(event.char) != 0 and
-                ch in (string.ascii_letters + string.digits + string.punctuation)
-            ):
+            if len(event.char) != 0 and not ch.isspace():
+                ### ch in (string.ascii_letters + string.digits + string.punctuation)
                 i = w.search(ch,'insert',stopindex='end')
-                if i:
+                if i != -1:
                     s = w.get('insert','%s' % i)
                     self.addToKillBuffer(s)
                     w.delete('insert','%s' % i)
@@ -6549,7 +6547,7 @@ class registerCommandsClass (baseEditCommandsClass):
         else:
             k.clearState()
             if self.checkBodySelection():
-                if event.keysym in string.letters:
+                if event.keysym.isalpha(): ### in string.letters: 
                     w = c.frame.body.bodyCtrl
                     c.bodyWantsFocus()
                     key = event.keysym.lower()
@@ -6577,7 +6575,7 @@ class registerCommandsClass (baseEditCommandsClass):
         else:
             k.clearState()
             if self.checkBodySelection():
-                if event.keysym in string.letters:
+                if event.keysym.isalpha(): ### in string.letters:
                     w = c.frame.body.bodyCtrl
                     c.bodyWantsFocus()
                     key = event.keysym.lower()
@@ -6608,7 +6606,7 @@ class registerCommandsClass (baseEditCommandsClass):
             k.setState('copy-rect-to-reg',1,self.copyRectangleToRegister)
         elif self.checkBodySelection('No rectangle selected'):
             k.clearState()
-            if event.keysym in string.letters:
+            if event.keysym.isalpha(): ### in string.letters:
                 key = event.keysym.lower()
                 w = self.w
                 c.widgetWantsFocusNow(w)
@@ -6638,7 +6636,7 @@ class registerCommandsClass (baseEditCommandsClass):
         else:
             k.clearState()
             if self.checkBodySelection():
-                if event.keysym in string.letters:
+                if event.keysym.isalpha(): ### in string.letters:
                     key = event.keysym.lower()
                     w = c.frame.body.bodyCtrl
                     c.bodyWantsFocus()
@@ -6667,7 +6665,7 @@ class registerCommandsClass (baseEditCommandsClass):
             k.clearState()
             if self._checkIfRectangle(event):
                 pass # Error message is in the label.
-            elif event.keysym in string.letters:
+            elif event.keysym.isalpha(): ### in string.letters:
                 key = event.keysym.lower()
                 val = self.registers.get(key,0)
                 try:
@@ -6693,7 +6691,7 @@ class registerCommandsClass (baseEditCommandsClass):
             k.setState('insert-reg',1,self.insertRegister)
         else:
             k.clearState()
-            if event.keysym in string.letters:
+            if event.keysym.isalpha(): ### in string.letters:
                 w = c.frame.body.bodyCtrl
                 c.bodyWantsFocus()
                 key = event.keysym.lower()
@@ -6722,7 +6720,7 @@ class registerCommandsClass (baseEditCommandsClass):
             k.setState('jump-to-reg',1,self.jumpToRegister)
         else:
             k.clearState()
-            if event.keysym in string.letters:
+            if event.keysym.isalpha(): ### in string.letters:
                 if self._checkIfRectangle(event): return
                 key = event.keysym.lower()
                 val = self.registers.get(key)
@@ -6759,7 +6757,7 @@ class registerCommandsClass (baseEditCommandsClass):
             k.setState('number-to-reg',1,self.numberToRegister)
         else:
             k.clearState()
-            if event.keysym in string.letters:
+            if event.keysym.isalpha(): ### in string.letters:
                 # self.registers[event.keysym.lower()] = str(0)
                 k.setLabelGrey('number-to-register not ready yet.')
             else:
@@ -6778,7 +6776,7 @@ class registerCommandsClass (baseEditCommandsClass):
             k.setState('point-to-reg',1,self.pointToRegister)
         else:
             k.clearState()
-            if event.keysym in string.letters:
+            if event.keysym.isalpha(): ### in string.letters:
                 w = c.frame.body.bodyCtrl
                 c.bodyWantsFocus()
                 key = event.keysym.lower()
@@ -6802,7 +6800,7 @@ class registerCommandsClass (baseEditCommandsClass):
             k.setState('view-reg',1,self.viewRegister)
         else:
             k.clearState()
-            if event.keysym in string.letters:
+            if event.keysym.isalpha(): ### in string.letters:
                 key = event.keysym.lower()
                 val = self.registers.get(key)
                 k.setLabelGrey('Register %s = %s' % (key,repr(val)))
@@ -8916,26 +8914,26 @@ class spellTab(leoFind.leoFind):
     
         # Allow quotes and underscores in the middle of words, but not at the beginning or end.
         # This breaks words at non-ascii 'letters' such as é.  I don't know what the solution is.
-        word_start = toUnicode(string.letters,encoding='ascii')
-        word_end   = toUnicode(string.letters + string.digits,encoding='ascii')
-        word_chars = toUnicode(string.letters + string.digits + "`" + "'" + "_",encoding='ascii')
+        if 0: ###
+            word_start = toUnicode(string.letters,encoding='ascii')
+            word_end   = toUnicode(string.letters + string.digits,encoding='ascii')
+            word_chars = toUnicode(string.letters + string.digits + "`" + "'" + "_",encoding='ascii')
         while 1:
             line = t.get('insert wordstart','insert lineend')
             # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
-            # g.trace(repr(line))
             # Start the word at the first letter.
             i = 0
-            while i < len(line) and line[i] not in word_start:
+            while i < len(line) and not g.isWordChar1(line[i]): # line[i] not in word_start:
                 i += 1
             if i < len(line):
                 # A non-empty word has been found.
                 line = t.get('insert wordstart','insert lineend')
                 j = i
-                while j < len(line) and line[j] in word_chars:
+                while j < len(line) and g.isWordChar(line[j]): # line[j] in word_chars:
                     j += 1
                 word = line[i:j]
-                while word and word[-1] not in word_end:
-                    word = word[:-1]
+                ###while word and not g.isWordChar(word[-1]): # word[-1] not in word_end:
+                ###    word = word[:-1]
                 # This trace is important: it verifies that all words have actually been checked.
                 # g.trace(repr(word))
                 x1 = t.index('insert + %dc' % (i))
@@ -8953,6 +8951,7 @@ class spellTab(leoFind.leoFind):
                     t.mark_set("insert", "1.0")
                     
         __pychecker__ = '--no-implicitreturns' # This is not really an implicit return.
+    #@nonl
     #@-node:ekr.20051025071455.47:findNextWord
     #@+node:ekr.20051025071455.48:getSuggestion
     def getSuggestion(self):

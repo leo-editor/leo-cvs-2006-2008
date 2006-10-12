@@ -1000,7 +1000,7 @@ class atFile:
                 #@<< Set childIndex >>
                 #@+node:ekr.20041005105605.52:<< Set childIndex >>
                 i = g.skip_ws(s,i) ; j = i
-                while i < len(s) and s[i] in string.digits:
+                while i < len(s) and s[i].isdigit(): ### s[i] in string.digits:
                     i += 1
                 
                 if j == i:
@@ -1021,7 +1021,7 @@ class atFile:
                     if g.match(s,i,"C="):
                         # set cloneIndex from the C=nnn, field
                         i += 2 ; j = i
-                        while i < len(s) and s[i] in string.digits:
+                        while i < len(s) and s[i].isdigit():  ### s[i] in string.digits:
                             i += 1
                         if j < i:
                             cloneIndex = int(s[j:i])
@@ -2430,13 +2430,12 @@ class atFile:
             # This is required to handle trailing comment delims properly.
             i += len(version_tag)
             j = i
-            chars = string.digits + '.'
-            while i < len(s) and s[i] in chars:
-            # while i < len(s) and not g.is_nl(s,i) and s[i] != '-':
+            ### chars = string.digits + '.'
+            while i < len(s) and (s[i] == '.' or s[i].isdigit()): ### s[i] in chars:
                 i += 1
         
             if j < i:
-                pass # version = s[j:i]
+                pass
             else:
                 valid = False
         #@-node:ekr.20041005105605.123:<< read optional version param >>

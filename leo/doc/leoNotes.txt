@@ -4478,6 +4478,22 @@ def defineCmdsMenuTopTable (self):
         '-',
     ]
 #@-node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
+#@+node:ekr.20061012170947:old version of g.isWordChar
+#@+node:ekr.20061012162812:<< old code >>
+# Equivalent, but slower.
+if 0:
+    # First, handle the easy cases.
+    if ch in (string.letters + string.digits + '_'):
+        return True
+    if ch in (string.punctuation + string.whitespace):
+        return False
+    # Now get the unicode
+    cat = unicodedata.category(ch)
+    # g.trace(cat)
+    return cat.startswith('L') or cat.startswith('N')
+#@nonl
+#@-node:ekr.20061012162812:<< old code >>
+#@-node:ekr.20061012170947:old version of g.isWordChar
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

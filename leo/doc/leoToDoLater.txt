@@ -2005,26 +2005,26 @@ def findNextWord(self,p):
 
     # Allow quotes and underscores in the middle of words, but not at the beginning or end.
     # This breaks words at non-ascii 'letters' such as é.  I don't know what the solution is.
-    word_start = toUnicode(string.letters,encoding='ascii')
-    word_end   = toUnicode(string.letters + string.digits,encoding='ascii')
-    word_chars = toUnicode(string.letters + string.digits + "`" + "'" + "_",encoding='ascii')
+    if 0: ###
+        word_start = toUnicode(string.letters,encoding='ascii')
+        word_end   = toUnicode(string.letters + string.digits,encoding='ascii')
+        word_chars = toUnicode(string.letters + string.digits + "`" + "'" + "_",encoding='ascii')
     while 1:
         line = t.get('insert wordstart','insert lineend')
         # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
-        # g.trace(repr(line))
         # Start the word at the first letter.
         i = 0
-        while i < len(line) and line[i] not in word_start:
+        while i < len(line) and not g.isWordChar1(line[i]): # line[i] not in word_start:
             i += 1
         if i < len(line):
             # A non-empty word has been found.
             line = t.get('insert wordstart','insert lineend')
             j = i
-            while j < len(line) and line[j] in word_chars:
+            while j < len(line) and g.isWordChar(line[j]): # line[j] in word_chars:
                 j += 1
             word = line[i:j]
-            while word and word[-1] not in word_end:
-                word = word[:-1]
+            ###while word and not g.isWordChar(word[-1]): # word[-1] not in word_end:
+            ###    word = word[:-1]
             # This trace is important: it verifies that all words have actually been checked.
             # g.trace(repr(word))
             x1 = t.index('insert + %dc' % (i))
@@ -2042,6 +2042,7 @@ def findNextWord(self,p):
                 t.mark_set("insert", "1.0")
                 
     __pychecker__ = '--no-implicitreturns' # This is not really an implicit return.
+#@nonl
 #@-node:ekr.20051025071455.47:findNextWord
 #@+node:ekr.20051025071455.48:getSuggestion
 def getSuggestion(self):

@@ -847,7 +847,7 @@ class autoCompleterClass:
         
         k = self.k ; w = self.widget
     
-        if ch in (string.letters + string.digits + '_' ):
+        if g.isWordChar(ch): ### ch in (string.letters + string.digits + '_' ):
             # Look ahead to see if the character completes any item.
             s = g.app.gui.getSelectedText(w) + ch
             tabList,common_prefix = g.itemsMatchingPrefixInList(
@@ -1105,12 +1105,7 @@ class autoCompleterClass:
             okchars [z] = z
         okchars ['_'] = '_'
         self.okchars = okchars 
-        
-        if 0: # not used
-            self.r  = string.punctuation.replace('(','').replace('.','') # punctuation except ( and .
-            self.pt = string.digits + string.letters + self.r
-            ripout = string.punctuation + string.whitespace + '\n'
-            self.ripout = ripout.replace('_','') # punctuation except underscore.
+    #@nonl
     #@-node:ekr.20060216163305:definePatterns
     #@+node:ekr.20060216161220:scanOutline
     def scanOutline (self,verbose=True):
@@ -3993,7 +3988,7 @@ class keyHandlerClass:
                     last = last.lower()
                     
                 # New in Leo 4.4.2: Alt-2 is not a key event!
-                if last in (string.digits):
+                if last.isdigit():  ### last in (string.digits):
                     last = 'Key-' + last
         else:
             # Translate from a made-up (or lowercase) name to 'official' Tk binding name.
@@ -4238,7 +4233,7 @@ class keyHandlerClass:
             # g.trace(state,stroke)
             if stroke == k.universalArgKey:
                 k.repeatCount = k.repeatCount * 4
-            elif stroke == '<Key>' and keysym in string.digits + '-':
+            elif stroke == '<Key>' and (keysym.isdigit() or keysym == u'-'): ### keysym in string.digits + '-':
                 k.updateLabel(event)
             elif stroke == '<Key>' and keysym in (
                 'Alt_L','Alt_R','Shift_L','Shift_R','Control_L','Control_R'):

@@ -3,55 +3,6 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061011131836:Fix new unicode bug
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3957980
-By: dcbbcd
-
-> theConstant = g.toUnicode(theConstant,encoding='ascii')
-
-This is dangerous. string.letters is locale dependent and may contain non ASCII
-characters. You could use string.ascii_characters or get the current encoding.
-
-Use g.isWordChar().  It properly tests a character to see in which unicode category it belongs.
-
-It would be unwise to create a list of all unicode characters that could appear
-in a word: this list might run to tens of thousands of characters. But it is
-easy enough to test a single character. So I'll soon be removing all, or almost
-all, references to string.letters, etc.
-
-But ch.isalnum() handles unicode properly, so we can define g.isWordChar as follows:
-
-@color
-
-def isWordChar(ch):
-    return ch.isalnum() or (ch == u'_') 
-#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-The must work with unicode characters.  (They do now.)
-#@nonl
-#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-#@+node:ekr.20061006152327:g.isWordChar
-def isWordChar (ch):
-    
-    '''Return True if ch should be considered a letter.'''
-
-    return ch.isalnum() or ch == u'_'
-    
-    # Equivalent, but slower.
-    if 0:
-        # First, handle the easy cases.
-        if ch in (string.letters + string.digits + '_'):
-            return True
-        if ch in (string.punctuation + string.whitespace):
-            return False
-        # Now get the unicode
-        cat = unicodedata.category(ch)
-        # g.trace(cat)
-        return cat.startswith('L') or cat.startswith('N')
-#@nonl
-#@-node:ekr.20061006152327:g.isWordChar
-#@-node:ekr.20061011131836:Fix new unicode bug
 #@+node:ekr.20061012075711:Plugins 3
 #@+node:ekr.20061012095927:Fix multifile plugin
 (via email)
@@ -1631,12 +1582,10 @@ def zapToCharacter (self,event):
         ch = event and event.char
         k.resetLabel()
         k.clearState()
-        if (
-            len(event.char) != 0 and
-            ch in (string.ascii_letters + string.digits + string.punctuation)
-        ):
+        if len(event.char) != 0 and not ch.isspace():
+            ### ch in (string.ascii_letters + string.digits + string.punctuation)
             i = w.search(ch,'insert',stopindex='end')
-            if i:
+            if i != -1:
                 s = w.get('insert','%s' % i)
                 self.addToKillBuffer(s)
                 w.delete('insert','%s' % i)
@@ -2950,7 +2899,7 @@ def insertNormalChar (self,ch,keysym):
     
     k = self.k ; w = self.widget
 
-    if ch in (string.letters + string.digits + '_' ):
+    if g.isWordChar(ch): ### ch in (string.letters + string.digits + '_' ):
         # Look ahead to see if the character completes any item.
         s = g.app.gui.getSelectedText(w) + ch
         tabList,common_prefix = g.itemsMatchingPrefixInList(
@@ -3208,12 +3157,7 @@ def definePatterns (self):
         okchars [z] = z
     okchars ['_'] = '_'
     self.okchars = okchars 
-    
-    if 0: # not used
-        self.r  = string.punctuation.replace('(','').replace('.','') # punctuation except ( and .
-        self.pt = string.digits + string.letters + self.r
-        ripout = string.punctuation + string.whitespace + '\n'
-        self.ripout = ripout.replace('_','') # punctuation except underscore.
+#@nonl
 #@-node:ekr.20060216163305:definePatterns
 #@+node:ekr.20060216161220:scanOutline
 def scanOutline (self,verbose=True):

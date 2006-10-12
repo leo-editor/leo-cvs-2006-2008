@@ -1026,9 +1026,10 @@ class baseFileCommands:
     
         self.skipWs()
         i = self.fileIndex ; buf = self.fileBuffer
-        floatChars = string.digits + 'e' + 'E' + '.' + '+' + '-'
+        floatChars = 'eE.+-' ### floatChars = string.digits + 'e' + 'E' + '.' + '+' + '-'
+    
         n = len(buf)
-        while i < n and buf[i] in floatChars:
+        while i < n and (buf[i].isdigit() or buf[i] in floatChars):
             i += 1
         if i == self.fileIndex:
             raise BadLeoFile("expecting float constant")
@@ -1085,10 +1086,10 @@ class baseFileCommands:
     
         self.skipWs() # guarantees at least one more character.
         i = self.fileIndex
-        if self.fileBuffer[i] == '-':
+        if self.fileBuffer[i] == u'-':
             i += 1
         n = len(self.fileBuffer)
-        while i < n and self.fileBuffer[i] in string.digits:
+        while i < n and self.fileBuffer[i].isdigit():  ### self.fileBuffer[i] in string.digits:
             i += 1
         if i == self.fileIndex:
             raise BadLeoFile("expecting int constant")

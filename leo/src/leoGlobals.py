@@ -3321,7 +3321,9 @@ def find_on_line(s,i,pattern):
 #@+node:ekr.20031218072017.3177:is_c_id
 def is_c_id(ch):
 
-    return ch and (ch in string.ascii_letters or ch in string.digits or ch == '_')
+    return g.isWordChar(ch)
+    
+    ### return ch and (ch in string.ascii_letters or ch in string.digits or ch == '_')
 #@-node:ekr.20031218072017.3177:is_c_id
 #@+node:ekr.20031218072017.3178:is_nl
 def is_nl(s,i):
@@ -3389,8 +3391,10 @@ def match_word(s,i,pattern):
         return False
     if i+j >= len(s):
         return True
-    c = s[i+j]
-    return not (c in string.ascii_letters or c in string.digits or c == '_')
+    ch = s[i+j]
+    return not g.isWordChar(ch)
+    
+    ### return not (ch in string.ascii_letters or ch in string.digits or ch == '_')
 #@-node:ekr.20031218072017.3184:match_word
 #@+node:ekr.20031218072017.3185:skip_blank_lines
 def skip_blank_lines(s,i):
@@ -3410,25 +3414,29 @@ def skip_blank_lines(s,i):
 def skip_c_id(s,i):
 
     n = len(s)
-    while i < n:
-        c = s[i]
-        if c in string.ascii_letters or c in string.digits or c == '_':
-            i += 1
-        else: break
+    while i < n and g.isWordChar(s[i]):
+        i += 1
+        ### ch = s[i]
+        ### if ch in string.ascii_letters or ch in string.digits or ch == '_':
+        ###    i += 1
+        ### else: break
     return i
 #@-node:ekr.20031218072017.3186:skip_c_id
 #@+node:ekr.20040705195048:skip_id
 def skip_id(s,i,chars=None):
 
+    chars = chars and g.toUnicode(chars,encoding='ascii') or ''
     n = len(s)
-    while i < n:
-        ch = s[i]
-        if ch in string.ascii_letters or ch in string.digits or ch == '_':
-            i += 1
-        elif chars and ch in chars:
-            i += 1
-        else: break
+    while i < n and (g.isWordChar(s[i]) or s[i] in chars):
+        i += 1
+        ### ch = s[i]
+        #### if ch in string.ascii_letters or ch in string.digits or ch == '_':
+            ### i += 1
+        ### elif chars and ch in chars:
+            ### i += 1
+        ### else: break
     return i
+#@nonl
 #@-node:ekr.20040705195048:skip_id
 #@+node:ekr.20031218072017.3187:skip_line, skip_to_end_of_line
 #@+at 
@@ -3458,19 +3466,18 @@ def skip_long(s,i):
     Return (i, val) or (i, None) if s[i] does not point at a number.
     """
 
-    digits = string.digits
+    ### digits = string.digits
     val = 0
     i = g.skip_ws(s,i)
     n = len(s)
-    if i >= n or s[i] not in "+-" + digits:
+    if i >= n or (not s[i].isdigit() and s[i] not in u'+-'): ### s[i] not in "+-" + digits:
         return i, None
-    # Rewritten: 7/18/02.
     j = i
-    if s[i] in '+-':    # whr allow sign if first digit
+    if s[i] in u'+-': # Allow sign before the first digit
         i +=1
-    while i < n and s[i] in digits:
+    while i < n and s[i].isdigit(): ### s[i] in digits:
         i += 1
-    try: # 4/24/03: There may be no digits, which would raise an exception.
+    try: # There may be no digits.
         val = int(s[j:i])
         return i, val
     except:
@@ -3801,8 +3808,10 @@ def makeScriptButton (c,
         #@nl
     #@    << create press-buttonText-button command >>
     #@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
-    chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
-    aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(buttonText,g.app.tkEncoding)]
+    ### chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
+    ### aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(buttonText,g.app.tkEncoding)]
+    
+    aList = [g.choose(ch.isalnum(),ch,'-') for ch in buttonText]
     
     buttonCommandName = ''.join(aList)
     buttonCommandName = buttonCommandName.replace('--','-')
@@ -3815,26 +3824,18 @@ def makeScriptButton (c,
 #@-node:ekr.20060621164312:g.makeScriptButton
 #@-node:ekr.20040327103735.2:Script Tools (leoGlobals.py)
 #@+node:ekr.20031218072017.1498:Unicode utils...
-#@+node:ekr.20061006152327:g.isWordChar
+#@+node:ekr.20061006152327:g.isWordChar & g.isWordChar1
 def isWordChar (ch):
     
     '''Return True if ch should be considered a letter.'''
 
-    return ch.isalnum() or ch == u'_'
+    return ch and (ch.isalnum() or ch == u'_')
     
-    # Equivalent, but slower.
-    if 0:
-        # First, handle the easy cases.
-        if ch in (string.letters + string.digits + '_'):
-            return True
-        if ch in (string.punctuation + string.whitespace):
-            return False
-        # Now get the unicode
-        cat = unicodedata.category(ch)
-        # g.trace(cat)
-        return cat.startswith('L') or cat.startswith('N')
+def isWordChar1 (ch):
+    
+    return ch and (ch.isalpha() or ch == u'_')
 #@nonl
-#@-node:ekr.20061006152327:g.isWordChar
+#@-node:ekr.20061006152327:g.isWordChar & g.isWordChar1
 #@+node:ekr.20060216115304.2:g.safeStringCompare & test (Do not use)
 #@+at 
 #@nonl

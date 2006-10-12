@@ -378,7 +378,8 @@ class tkinterAskLeoID (leoTkinterDialog):
         i = 0 ; ok = True
         while i < len(s):
             ch = s[i]
-            if ch not in string.ascii_letters and ch not in string.digits:
+            ###if ch not in string.ascii_letters and ch not in string.digits:
+            if not ch.isalnum():
                 e.delete(str(i))
                 s = e.get()
                 ok = False
@@ -524,7 +525,8 @@ class  tkinterAskOkCancelNumber (leoTkinterDialog):
         i = 0
         while i < len(s):
             ch = s[i]
-            if ch not in string.digits:
+            ### if ch not in string.digits:
+            if not ch.isdigit():
                 e.delete(str(i))
                 s = e.get()
             else:

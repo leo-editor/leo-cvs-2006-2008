@@ -1282,33 +1282,33 @@ class leoMenu:
     #@+node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
     def canonicalizeMenuName (self,name):
         
-        name = name.lower() ; newname = ""
-        chars = string.ascii_letters + string.digits
-        for ch in name:
-            # if ch not in (' ','\t','\n','\r','&'):
-            if ch in chars:
-                newname = newname+ch
-        return newname
+        ### name = name.lower()
+        ### newname = ""
+        ### chars = string.ascii_letters + string.digits
+        ### for ch in name:
+        ###     if ch.isalnum():  # ch in chars:
+        ###         newname = newname+ch
+        ### return newname
+        return ''.join([ch for ch in name.lower() if ch.isalnum()])
         
     def canonicalizeTranslatedMenuName (self,name):
         
-        name = name.lower() ; newname = ""
-        for ch in name:
-            if ch not in (' ','\t','\n','\r','&'):
-            # if ch in string.ascii_letters:
-                newname = newname+ch
-        return newname
+        ### name = name.lower() ; newname = ""
+        ### for ch in name:
+        ###     if ch not in (' ','\t','\n','\r','&'):
+        ###        newname = newname+ch
+        ### return newname
+        return ''.join([ch for ch in name.lower() if ch not in u'& \t\n\r'])
+    
     #@-node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
     #@+node:ekr.20051022044950:computeOldStyleShortcutKey
     def computeOldStyleShortcutKey (self,s):
         
         '''Compute the old-style shortcut key for @shortcuts entries.'''
         
-        chars = string.ascii_letters + string.digits
+        ### chars = string.ascii_letters + string.digits
         
-        result = [ch for ch in s.strip().lower() if ch in chars]
-                
-        return ''.join(result)
+        return ''.join([ch for ch in s.strip().lower() if ch.isalnum()]) ### ch in chars]
     #@-node:ekr.20051022044950:computeOldStyleShortcutKey
     #@+node:ekr.20031218072017.1723:createMenuEntries
     def createMenuEntries (self,menu,table,dynamicMenu=False):
@@ -1589,7 +1589,7 @@ class leoMenu:
             def recentFilesCallback (event=None,c=c,name=name):
                 __pychecker__ = '--no-argsused' # event not used, but must be present.
                 c.openRecentFile(name)
-            accel_ch = (string.digits + string.letters.upper())
+            accel_ch = (string.digits + string.letters.upper()) # Not a unicode problem.
             label = "%s %s" % (accel_ch[i-2],g.computeWindowTitle(name))
             self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
             i += 1

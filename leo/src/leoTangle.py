@@ -3226,17 +3226,17 @@ class baseTangleCommands:
     # returns (i,val), where val == -1 if there is an error.
     
     def scan_short_val (self,s,i):
-    
-        if i >= len(s) or s[i] not in string.digits:
+        
+        
+        if i >= len(s) or not s[i].isdigit(): ### s[i] not in string.digits:
             return i, -1
-    
         j = i
-        while i < len(s) and s[i] in string.digits:
+        while i < len(s) and s[i].isdigit(): ### s[i] in string.digits:
             i += 1
-    
         val = int(s[j:i])
         # g.trace(s[j:i],val)
         return i, val
+    #@nonl
     #@-node:ekr.20031218072017.3593:scan_short_val
     #@+node:ekr.20031218072017.3594:setRootFromHeadline
     def setRootFromHeadline (self,p):
