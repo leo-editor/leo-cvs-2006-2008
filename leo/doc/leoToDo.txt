@@ -26,45 +26,6 @@ The must work with unicode characters.  (They do now.)
 #@nonl
 #@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
 #@-node:ekr.20061011131836:Fix new unicode bug
-#@+node:ekr.20061008114340:Finish collapse-on-move-left
-@nocolor
-
-cvs now contains support for this new setting:
-
-@bool sparse_move_outline_left
-
-When True, Leo will collapse the (former) parent of a node when moving that node left.  This makes moving outlines left extremely fast, but it takes getting used to it.  I think I like it :-)
-
-To do:
-
-- The move-outline-up/down commands can have the effect of moving an outline left.  At present, the outline isn't collapsed in those cases, but it should be.
-
-- set/clear/toggle-sparce-move-outline-left commands are needed to turn this option on or off at will.
-
-@color
-#@nonl
-#@-node:ekr.20061008114340:Finish collapse-on-move-left
-#@+node:ekr.20040213090121:Insert at end
-@nocolor
-
-By: tibi ( Thiébaut Champenier ) 
- inserting a new node   
-2004-02-13 13:23  
-
- Hi,
-
-When doing ctrl+i I on the node that has children I would prefer Leo to insert the new node as the last children instead of the first. It just makes more sense to me, for exemple when you take a big file and cut it in subnodes you typically start at the top and create new nodes while paging down the file.
-What do you think ?
-To try it just make this little change:
-RCS file: /cvsroot/leo/leo/src/leoCommands.py,v
-retrieving revision 1.76
-diff -r1.76 leoCommands.py
-2516c2516
-< v = current.insertAsNthChild(0)
----
-> v = current.insertAsLastChild()  
-#@nonl
-#@-node:ekr.20040213090121:Insert at end
 #@+node:ekr.20061012075711:Plugins 3
 #@+node:ekr.20061012095927:Fix multifile plugin
 (via email)

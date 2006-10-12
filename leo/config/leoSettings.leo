@@ -3,13 +3,13 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="638" width="937"/>
+	<global_window_position top="71" left="252" height="619" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20041119035137" a="TV" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
 <v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
@@ -70,7 +70,7 @@
 </v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -160,17 +160,18 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
-<v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
+<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
-<v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
-<v t="ekr.20041119041019.1"><vh>@string remove_sentinels_extension = .txt</vh></v>
-<v t="ekr.20041119041019.2"><vh>@bool save_clears_undo_buffer = False</vh></v>
-<v t="ekr.20041119050749.10"><vh>@string headline_time_format_string = %m/%d</vh></v>
-<v t="ekr.20041119050749.11"><vh>@string headline_gmt_time = None</vh></v>
-<v t="ekr.20050126083026"><vh>@string undo_granularity = None</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
+<v t="ekr.20061012122620" a="V"><vh>@bool insert_new_nodes_at_end = True</vh></v>
+<v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
+<v t="ekr.20041119041019.2"><vh>@bool save_clears_undo_buffer = False</vh></v>
+<v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 0</vh></v>
+<v t="ekr.20041119050749.11"><vh>@string headline_gmt_time = None</vh></v>
+<v t="ekr.20041119050749.10"><vh>@string headline_time_format_string = %m/%d</vh></v>
+<v t="ekr.20041119041019.1"><vh>@string remove_sentinels_extension = .txt</vh></v>
+<v t="ekr.20050126083026"><vh>@string undo_granularity = None</vh></v>
 </v>
 <v t="ekr.20041119034357.16" annotate="7d71002e"><vh>Compare panel</vh>
 <v t="ekr.20041119034357.17"><vh>files &amp; directories</vh>
@@ -6155,5 +6156,7 @@ You can use the Go To Next Clone (Alt-N) to find clones elsewhere in the file.
 
 - I have not included any keyboard shortcuts here because they are highly personal.
   However, the ignore_unbound_non_ascii_keys option affects how Leo handles 'plain' keys.</t>
+<t tx="ekr.20061012122620">True:  When a node is expanded, insert new nodes as the last child.
+False: (legacy) When a node is expanded, insert new nodes as the first child.</t>
 </tnodes>
 </leo_file>

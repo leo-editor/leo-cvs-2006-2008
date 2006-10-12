@@ -1959,9 +1959,14 @@ def insertHeadline (self,event=None,op_name="Insert Node"):
     try:
         undoData = c.undoer.beforeInsertNode(current)
         # Make sure the new node is visible when hoisting.
-        if ((current.hasChildren() and current.isExpanded()) or
-            (c.hoistStack and current == c.hoistStack[-1].p)):
-            p = current.insertAsNthChild(0)
+        if (
+            (current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)
+        ):
+            if c.config.getBool('insert_new_nodes_at_end'):
+                p = current.insertAsLastChild()
+            else:
+                p = current.insertAsNthChild(0)
         else:
             p = current.insertAfter()
         dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
@@ -2031,6 +2036,70 @@ focus-to-tree = Alt-T
 toggle-extend-mode = Alt-3
 #@nonl
 #@-node:ekr.20061011154712:Recent changes to settings
+#@+node:ekr.20040213090121:Added @boo insert_new_nodes_at_end
+@nocolor
+
+By: tibi ( Thiébaut Champenier ) 
+ inserting a new node   
+2004-02-13 13:23  
+
+ Hi,
+
+When doing ctrl+i I on the node that has children I would prefer Leo to insert the new node as the last children instead of the first. It just makes more sense to me, for exemple when you take a big file and cut it in subnodes you typically start at the top and create new nodes while paging down the file.
+What do you think ?
+To try it just make this little change:
+RCS file: /cvsroot/leo/leo/src/leoCommands.py,v
+retrieving revision 1.76
+diff -r1.76 leoCommands.py
+2516c2516
+< v = current.insertAsNthChild(0)
+---
+> v = current.insertAsLastChild()
+
+What I did:
+    
+Added @bool insert_new_nodes_at_end
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.1761:c.insertHeadline
+def insertHeadline (self,event=None,op_name="Insert Node"):
+    
+    '''Insert a node after the presently selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    
+    if not current: return
+
+    c.beginUpdate()
+    try:
+        undoData = c.undoer.beforeInsertNode(current)
+        # Make sure the new node is visible when hoisting.
+        if (
+            (current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)
+        ):
+            if c.config.getBool('insert_new_nodes_at_end'):
+                p = current.insertAsLastChild()
+            else:
+                p = current.insertAsNthChild(0)
+        else:
+            p = current.insertAfter()
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+    c.beginUpdate()
+    try:
+        c.editPosition(p,selectAll=True)
+    finally:
+        c.endUpdate(False)
+
+    return p # for mod_labels plugin.
+#@-node:ekr.20031218072017.1761:c.insertHeadline
+#@-node:ekr.20040213090121:Added @boo insert_new_nodes_at_end
 #@-node:ekr.20061009154800:Settings
 #@-node:ekr.20060904165452:4.4.2 projects
 #@-all
