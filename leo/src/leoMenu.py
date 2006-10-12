@@ -1081,10 +1081,11 @@ class leoMenu:
     def defineCmdsMenuMinibufferTable (self):
         
         self.cmdsMenuMinibufferTable = [
-            # &: f,h,i,q,r,s 
+            # &: f,h,i,q,r,s,v
             '&full-command',
             'keyboard-&quit',
             '&repeat-complex-command',
+            '&view-lossage'
             '-',
             '&show-mini-buffer',
             'h&ide-mini-buffer',
