@@ -100,7 +100,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.3'
+__version__ = '1.4'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -161,6 +161,9 @@ __version__ = '1.3'
 # 1.3 EKR: Give up the attempt to use <-- and -->.
 # LeoSlideShows.leo now minibuffer names for buttons, and defines those same 
 # command.
+# 1.4 EKR: Fixed (maybe) the bug involving a crash on Leo close after deleting 
+# a script button.
+# All button now have a corresponding delete-x-button command.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -387,14 +390,17 @@ class scriptingController:
     #@-node:ekr.20060522105937:createDebugIconButton
     #@+node:ekr.20060328125248.17:createIconButton
     def createIconButton (self,text,statusLine,bg):
+        
+        c = self.c ; k = c.k    
+        buttonText = self.cleanButtonText(text).lower()
     
-        b = self.iconBar.add(text=text)
-        
-        aList = self.buttonsDict.get(text,[])
+        b = self.iconBar.add(text=buttonText)
+    
+        aList = self.buttonsDict.get(buttonText,[])
         aList.append(b)
-        self.buttonsDict[text] = aList
+        self.buttonsDict[buttonText] = aList
         
-        if statusLine and statusLine != text:
+        if statusLine:
             self.createBalloon(b,statusLine)
     
         if sys.platform == "win32":
@@ -414,6 +420,13 @@ class scriptingController:
             #@nl
             b.bind('<Enter>', mouseEnterCallback)
             b.bind('<Leave>', mouseLeaveCallback)
+            
+        # Register the delete-x-button command
+        commandName= 'delete-%s-button' % buttonText
+        def atButtonDeleteCallback(event=None,self=self,b=b):
+            self.deleteButton(b)
+        k.registerCommand(commandName,shortcut=None,func=atButtonDeleteCallback,pane='button',verbose=True)
+    
         return b
     #@nonl
     #@-node:ekr.20060328125248.17:createIconButton
@@ -466,9 +479,6 @@ class scriptingController:
     def definePressButtonCommand (self,buttonText,atButtonCallback,shortcut=None):
     
         # This will use any shortcut defined in an @shortcuts node if no shortcut is defined.
-        # buttonText = 'press-%s-button' % buttonText.lower()
-        
-        # g.trace(buttonText,atButtonCallback)
         
         # New in Leo 4.4.2: Just use the (cleaned) name of the button text
         c = self.c ; k = c.k
@@ -484,9 +494,11 @@ class scriptingController:
     
         if button:
             button.pack_forget()
-            # button.destroy()
+            button.destroy() # So that Pmw doesn't crash later.
+            if self.buttonsDict.get(button):
+                del self.buttonsDict[button]
             
-        self.c.frame.bodyWantsFocusNow()
+        self.c.bodyWantsFocusNow()
     #@nonl
     #@-node:ekr.20060328125248.26:deleteButton
     #@+node:ekr.20060328125248.28:executeScriptFromCallback
