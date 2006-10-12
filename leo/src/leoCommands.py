@@ -3122,9 +3122,14 @@ class baseCommands:
         try:
             undoData = c.undoer.beforeInsertNode(current)
             # Make sure the new node is visible when hoisting.
-            if ((current.hasChildren() and current.isExpanded()) or
-                (c.hoistStack and current == c.hoistStack[-1].p)):
-                p = current.insertAsNthChild(0)
+            if (
+                (current.hasChildren() and current.isExpanded()) or
+                (c.hoistStack and current == c.hoistStack[-1].p)
+            ):
+                if c.config.getBool('insert_new_nodes_at_end'):
+                    p = current.insertAsLastChild()
+                else:
+                    p = current.insertAsNthChild(0)
             else:
                 p = current.insertAfter()
             dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
