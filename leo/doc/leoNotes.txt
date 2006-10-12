@@ -4468,6 +4468,16 @@ def putEscapedString (self,s):
         self.put(xml.sax.saxutils.escape(s))
 #@-node:ekr.20031218072017.3034:putEscapedString
 #@-node:ekr.20060919105703:from leoFileCommands.py
+#@+node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
+def defineCmdsMenuTopTable (self):
+    
+    self.cmdsMenuTopTable = [
+        'repeat-comple&x-command',
+        'f&ull-command',
+        'keyboard-&quit',
+        '-',
+    ]
+#@-node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

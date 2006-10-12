@@ -1075,6 +1075,133 @@ if c.exists and c.config.redirect_execute_script_output_to_log_pane:
 #@-node:EKR.20040627100424:<< unredirect output >>
 #@-node:ekr.20031218072017.2140:c.executeScript
 #@-node:ekr.20061011184009:The end-of-script message no longer yanks focus from tabs
+#@+node:ekr.20061011151640:Fixed  warning if minibuffer command does not exist when making menus
+@ The warning was disabled due to a programming error (not not)
+Enabling this found two errors: view-lossage (missing comma) and
+find-with-present-options --> search-with-present-options.
+#@nonl
+#@+node:ekr.20031218072017.1723:createMenuEntries
+def createMenuEntries (self,menu,table,dynamicMenu=False):
+        
+    '''Create a menu entry from the table.
+    New in 4.4: this method shows the shortcut in the menu,
+    but this method **never** binds any shortcuts.'''
+    
+    c = self.c ; f = c.frame ; k = c.k
+    if g.app.unitTesting: return
+    for data in table:
+        << get label & command or continue >>
+        << compute commandName & accel from label & command >>
+        accelerator = stroke = k.shortcutFromSetting(accel) or ''
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+        def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
+            return k.masterMenuHandler(stroke,command,commandName)
+        realLabel = self.getRealMenuName(label)
+        amp_index = realLabel.find("&")
+        realLabel = realLabel.replace("&","")
+        if sys.platform == 'darwin':
+            << clear accelerator if it is a plain key >>
+        self.add_command(menu,label=realLabel,
+            accelerator=accelerator,
+            command=masterMenuCallback,
+            underline=amp_index)
+#@+node:ekr.20051021091958:<< get label & command or continue >>
+if type(data) == type(''):
+    # New in Leo 4.4.2: Can use the same string for both the label and the command string.
+    ok = True
+    label = self.capitalizeMinibufferMenuName(data)
+    command = data.replace('&','')
+    if label == '-':
+        self.add_separator(menu)
+        continue # That's all.
+else:
+    ok = type(data) in (type(()), type([])) and len(data) in (2,3)
+    if ok:
+        if len(data) == 2:
+            # New in 4.4b2: command can be a minibuffer-command name (a string)
+            label,command = data
+        else:
+            # New in 4.4: we ignore shortcuts bound in menu tables.
+            label,junk,command = data
+            
+        if label in (None,'-'):
+            self.add_separator(menu)
+            continue # That's all.
+    else:
+        g.trace('bad data in menu table: %s' % repr(data))
+        continue # Ignore bad data
+#@nonl
+#@-node:ekr.20051021091958:<< get label & command or continue >>
+#@+node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+# New in 4.4b2: command can be a minibuffer-command name (a string)
+minibufferCommand = type(command) == type('')
+accel = None
+if minibufferCommand:
+    commandName = command 
+    command = c.commandsDict.get(commandName)
+    if command:
+        rawKey,bunchList = c.config.getShortcut(commandName)
+        # Pick the first entry that is not a mode.
+        for bunch in bunchList:
+            if not bunch.pane.endswith('-mode'):
+                # g.trace('1',bunch)
+                accel = bunch and bunch.val
+                if bunch.pane  == 'text': break # New in Leo 4.4.2: prefer text bindings.
+    else:
+        if not g.app.unitTesting and not dynamicMenu:
+            # Don't warn during unit testing.
+            # This may come from a plugin that normally isn't enabled.
+            g.trace('No inverse for %s' % commandName)
+        continue # There is no way to make this menu entry.
+else:
+    # First, get the old-style name.
+    commandName = self.computeOldStyleShortcutKey(label)
+    rawKey,bunchList = c.config.getShortcut(commandName)
+    for bunch in bunchList:
+        if not bunch.pane.endswith('-mode'):
+            # g.trace('2',bunch)
+            accel = bunch and bunch.val ; break
+    # Second, get new-style name.
+    if not accel:
+        << compute emacs_name >>
+            # Contains the not-so-horrible kludge.
+        if emacs_name:
+            commandName = emacs_name
+            rawKey,bunchList = c.config.getShortcut(emacs_name)
+            # Pick the first entry that is not a mode.
+            for bunch in bunchList:
+                if not bunch.pane.endswith('-mode'):
+                    accel = bunch.val ; break
+                    # g.trace('2',bunch)
+        elif not dynamicMenu:
+            g.trace('No inverse for %s' % commandName)
+#@+node:ekr.20051021100806.1:<< compute emacs_name >>
+@ One not-so-horrible kludge remains.
+
+The cut/copy/paste commands in the menu tables are not the same as the methods
+actually bound to cut/copy/paste-text minibuffer commands, so we must do a bit
+of extra translation to discover whether the user has overridden their
+bindings.
+@c
+
+if command in (f.OnCutFromMenu,f.OnCopyFromMenu,f.OnPasteFromMenu):
+    emacs_name = '%s-text' % commandName
+else:
+    try: # User errors in the table can cause this.
+        emacs_name = k.inverseCommandsDict.get(command.__name__)
+    except Exception:
+        emacs_name = None
+#@-node:ekr.20051021100806.1:<< compute emacs_name >>
+#@-node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+#@+node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+for z in ('Alt','Ctrl','Command'):
+    if accelerator.find(z) != -1:
+        break # Found.
+else:
+    accelerator = ''
+#@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+#@-node:ekr.20031218072017.1723:createMenuEntries
+#@-node:ekr.20061011151640:Fixed  warning if minibuffer command does not exist when making menus
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
@@ -1322,16 +1449,6 @@ def defineCmdsMenuTables (self):
     self.defineCmdsMenuTextTable()
     self.defineCmdsMenuToggleTable()
 #@nonl
-#@+node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
-def defineCmdsMenuTopTable (self):
-    
-    self.cmdsMenuTopTable = [
-        'repeat-comple&x-command',
-        'f&ull-command',
-        'keyboard-&quit',
-        '-',
-    ]
-#@-node:ekr.20060117094955: defineCmdsMenuTopTable: no longer used
 #@+node:ekr.20060117094955.1:defineCmdsMenuAbbrevTable
 def defineCmdsMenuAbbrevTable (self):
     
@@ -1472,7 +1589,7 @@ def defineCmdsMenuMinibufferTable (self):
         '&full-command',
         'keyboard-&quit',
         '&repeat-complex-command',
-        '&view-lossage'
+        '&view-lossage',
         '-',
         '&show-mini-buffer',
         'h&ide-mini-buffer',
@@ -1698,6 +1815,49 @@ def defineHelpMenuTables (self):
     ]
 #@-node:ekr.20031218072017.3774:defineHelpMenuTables
 #@-node:ekr.20060527184656:Added minibuffer and Settings menus
+#@+node:ekr.20061011070742.4:Created do-nothing command and tested binding to unicode character
+# It's not clear how to specify a setting for unicode characters.
+# Leo crashes on do-nothing = ц
+#@nonl
+#@+node:ekr.20061012113455:doNothing
+def doNothing (self,event):
+    
+    '''A placeholder command, useful for testing bindings.'''
+
+    g.trace()
+#@nonl
+#@-node:ekr.20061012113455:doNothing
+#@-node:ekr.20061011070742.4:Created do-nothing command and tested binding to unicode character
+#@+node:ekr.20061012113708:Toggling autocompleter and calltips now write to log (in red) instead of the statusLine
+# This is much more visible.
+#@nonl
+#@+node:ekr.20060609171919:showAutocompleter/CalltipsStatus
+def showAutocompleterStatus (self):
+    '''Show the autocompleter status on the status line.'''
+    
+    k = self.k
+    
+    if 1:
+        g.es('Autocompleter %s' % (g.choose(k.enable_autocompleter,'On','Off')),color='red')
+    else:
+        frame = k.c.frame
+        frame.clearStatusLine()
+        frame.putStatusLine('Autocompleter ',color='blue')
+        frame.putStatusLine(g.choose(k.enable_autocompleter,'On','Off'))
+    
+def showCalltipsStatus (self):
+    '''Show the autocompleter status on the status line.'''
+    k = self.k
+    if 1:
+        g.es('Calltips %s' % (g.choose(k.enable_calltips,'On','Off')),color='red')
+    else:
+        frame = k.c.frame
+        frame.clearStatusLine()
+        frame.putStatusLine('Calltips ',color='blue')
+        frame.putStatusLine(g.choose(k.enable_calltips,'On','Off'))
+#@nonl
+#@-node:ekr.20060609171919:showAutocompleter/CalltipsStatus
+#@-node:ekr.20061012113708:Toggling autocompleter and calltips now write to log (in red) instead of the statusLine
 #@-node:ekr.20061010115312:Features
 #@+node:ekr.20061012064024:Plugins
 #@+node:ekr.20061011163905:Fixed keyBindings plugin

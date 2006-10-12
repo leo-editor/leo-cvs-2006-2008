@@ -3,13 +3,13 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="657" width="937"/>
+	<global_window_position top="71" left="252" height="638" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" a="TV" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
 <v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
@@ -35,10 +35,10 @@
 <v t="ekr.20041119035704.3"><vh>\@type type-name: base-type = [list of valid values]</vh></v>
 <v t="ekr.20041120155431.2"><vh>\@type type-name: script: script-name</vh></v>
 </v>
-<v t="ekr.20060112110750" a="E"><vh>Buttons</vh>
+<v t="ekr.20060112110750"><vh>Buttons</vh>
 <v t="ekr.20051010093913" annotate="7d71002e"><vh>@@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
-<v t="ekr.20060112103537.17" a="TV"><vh>@button Check Bindings</vh>
+<v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
 <v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
 <v t="ekr.20060112104333"><vh>doSet</vh></v>
 <v t="ekr.20060112105523"><vh>doShortcuts</vh></v>

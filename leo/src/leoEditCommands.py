@@ -1342,6 +1342,7 @@ class editCommandsClass (baseEditCommandsClass):
             'delete-editor':                        c.frame.body.deleteEditor,
             'delete-indentation':                   self.deleteIndentation,
             'delete-spaces':                        self.deleteSpaces,
+            'do-nothing':                           self.doNothing,
             'downcase-region':                      self.downCaseRegion,
             'downcase-word':                        self.downCaseWord,
             'double-click-headline':                self.doubleClickHeadline,
@@ -1451,6 +1452,14 @@ class editCommandsClass (baseEditCommandsClass):
             'what-line':                            self.whatLine,
         }
     #@-node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
+    #@+node:ekr.20061012113455:doNothing
+    def doNothing (self,event):
+        
+        '''A placeholder command, useful for testing bindings.'''
+    
+        g.trace()
+    #@nonl
+    #@-node:ekr.20061012113455:doNothing
     #@-node:ekr.20050929155208: birth
     #@+node:ekr.20050920084036.57:capitalization & case
     #@+node:ekr.20051015114221:capitalizeWord & up/downCaseWord
@@ -8093,7 +8102,7 @@ class searchCommandsClass (baseEditCommandsClass):
         h = self.getHandler()
         
         # h.findAgain returns False if there is no search pattern.
-        # In that case, we revert to find-with-present-options.
+        # In that case, we revert to search-with-present-options.
         if not h.findAgain(event):
             h.searchWithPresentOptions(event)
     #@-node:ekr.20060204120158.2:findAgain

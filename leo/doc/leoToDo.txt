@@ -3,7 +3,6 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061011214705:Easy 5
 #@+node:ekr.20061011131836:Fix new unicode bug
 @nocolor
 
@@ -45,8 +44,6 @@ To do:
 @color
 #@nonl
 #@-node:ekr.20061008114340:Finish collapse-on-move-left
-#@+node:ekr.20061011151640:Warning if minibuffer command does not exist when making menus
-#@-node:ekr.20061011151640:Warning if minibuffer command does not exist when making menus
 #@+node:ekr.20040213090121:Insert at end
 @nocolor
 
@@ -68,9 +65,6 @@ diff -r1.76 leoCommands.py
 > v = current.insertAsLastChild()  
 #@nonl
 #@-node:ekr.20040213090121:Insert at end
-#@+node:ekr.20061011070742.4:do-nothing command and test binding to that command for unicode character
-#@-node:ekr.20061011070742.4:do-nothing command and test binding to that command for unicode character
-#@-node:ekr.20061011214705:Easy 5
 #@+node:ekr.20061012075711:Plugins 3
 #@+node:ekr.20061012095927:Fix multifile plugin
 (via email)
@@ -2490,17 +2484,27 @@ def showCalltipsForce (self,event=None):
 def showAutocompleterStatus (self):
     '''Show the autocompleter status on the status line.'''
     
-    k = self.k ; frame = k.c.frame
-    frame.clearStatusLine()
-    frame.putStatusLine('Autocompleter ',color='blue')
-    frame.putStatusLine(g.choose(k.enable_autocompleter,'On','Off'))
+    k = self.k
+    
+    if 1:
+        g.es('Autocompleter %s' % (g.choose(k.enable_autocompleter,'On','Off')),color='red')
+    else:
+        frame = k.c.frame
+        frame.clearStatusLine()
+        frame.putStatusLine('Autocompleter ',color='blue')
+        frame.putStatusLine(g.choose(k.enable_autocompleter,'On','Off'))
     
 def showCalltipsStatus (self):
     '''Show the autocompleter status on the status line.'''
-    k = self.k ; frame = k.c.frame
-    frame.clearStatusLine()
-    frame.putStatusLine('Calltips ',color='blue')
-    frame.putStatusLine(g.choose(k.enable_calltips,'On','Off'))
+    k = self.k
+    if 1:
+        g.es('Calltips %s' % (g.choose(k.enable_calltips,'On','Off')),color='red')
+    else:
+        frame = k.c.frame
+        frame.clearStatusLine()
+        frame.putStatusLine('Calltips ',color='blue')
+        frame.putStatusLine(g.choose(k.enable_calltips,'On','Off'))
+#@nonl
 #@-node:ekr.20060609171919:showAutocompleter/CalltipsStatus
 #@-node:ekr.20060219103046:Top level
 #@+node:ekr.20060216160332.2:Helpers
