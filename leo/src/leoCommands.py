@@ -1392,6 +1392,7 @@ class baseCommands:
         #@-node:ekr.20031218072017.2143:<< redirect output >>
         #@nl
         try:
+            log = c.frame.log
             if script.strip():
                 sys.path.insert(0,c.frame.openDirectory)
                 script += '\n' # Make sure we end the script properly.
@@ -1402,12 +1403,15 @@ class baseCommands:
                     # g.trace(script)
                     exec script in d
                     if not script1 and not silent:
-                        g.es("end of script",color="purple")
+                        # Careful: the script may have changed the log tab.
+                        tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+                        g.es("end of script",color="purple",tabName=tabName)
                 except Exception:
                     g.handleScriptException(c,p,script,script1)
                 del sys.path[0]
             else:
-                g.es("no script selected",color="blue")
+                tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+                g.es("no script selected",color="blue",tabName=tabName)
         finally: # New in 4.3 beta 2: unredirect output last.
             #@        << unredirect output >>
             #@+node:EKR.20040627100424:<< unredirect output >>
