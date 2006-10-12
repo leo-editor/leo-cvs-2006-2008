@@ -9,8 +9,8 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20060901142356" a="E"><vh>Read me first</vh>
-<v t="ekr.20060901144246" a="TV"><vh>buttons</vh>
+<v t="ekr.20060901142356" a="TV"><vh>Read me first</vh>
+<v t="ekr.20060901144246"><vh>buttons</vh>
 <v t="ekr.20060901144331"><vh>@button prev-show  @key=Alt-4</vh></v>
 <v t="ekr.20060901144149.3"><vh>@button next-show @key=Alt-5</vh></v>
 <v t="ekr.20060901144149.2"><vh>@button prev-slide @key=Alt-6</vh></v>

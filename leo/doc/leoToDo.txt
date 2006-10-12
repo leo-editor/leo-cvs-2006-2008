@@ -3,7 +3,7 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061011214705:Easy 6
+#@+node:ekr.20061011214705:Easy 5
 #@+node:ekr.20061011131836:Fix new unicode bug
 @nocolor
 
@@ -22,6 +22,10 @@ in a word: this list might run to tens of thousands of characters. But it is
 easy enough to test a single character. So I'll soon be removing all, or almost
 all, references to string.letters, etc.
 #@nonl
+#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
+The must work with unicode characters.  (They do now.)
+#@nonl
+#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
 #@-node:ekr.20061011131836:Fix new unicode bug
 #@+node:ekr.20061008114340:Finish collapse-on-move-left
 @nocolor
@@ -66,11 +70,7 @@ diff -r1.76 leoCommands.py
 #@-node:ekr.20040213090121:Insert at end
 #@+node:ekr.20061011070742.4:do-nothing command and test binding to that command for unicode character
 #@-node:ekr.20061011070742.4:do-nothing command and test binding to that command for unicode character
-#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-The must work with unicode characters.  (They do now.)
-#@nonl
-#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-#@-node:ekr.20061011214705:Easy 6
+#@-node:ekr.20061011214705:Easy 5
 #@+node:ekr.20061012075711:Plugins 3
 #@+node:ekr.20061012095927:Fix multifile plugin
 (via email)
