@@ -364,17 +364,27 @@ class autoCompleterClass:
     def showAutocompleterStatus (self):
         '''Show the autocompleter status on the status line.'''
         
-        k = self.k ; frame = k.c.frame
-        frame.clearStatusLine()
-        frame.putStatusLine('Autocompleter ',color='blue')
-        frame.putStatusLine(g.choose(k.enable_autocompleter,'On','Off'))
+        k = self.k
+        
+        if 1:
+            g.es('Autocompleter %s' % (g.choose(k.enable_autocompleter,'On','Off')),color='red')
+        else:
+            frame = k.c.frame
+            frame.clearStatusLine()
+            frame.putStatusLine('Autocompleter ',color='blue')
+            frame.putStatusLine(g.choose(k.enable_autocompleter,'On','Off'))
         
     def showCalltipsStatus (self):
         '''Show the autocompleter status on the status line.'''
-        k = self.k ; frame = k.c.frame
-        frame.clearStatusLine()
-        frame.putStatusLine('Calltips ',color='blue')
-        frame.putStatusLine(g.choose(k.enable_calltips,'On','Off'))
+        k = self.k
+        if 1:
+            g.es('Calltips %s' % (g.choose(k.enable_calltips,'On','Off')),color='red')
+        else:
+            frame = k.c.frame
+            frame.clearStatusLine()
+            frame.putStatusLine('Calltips ',color='blue')
+            frame.putStatusLine(g.choose(k.enable_calltips,'On','Off'))
+    #@nonl
     #@-node:ekr.20060609171919:showAutocompleter/CalltipsStatus
     #@-node:ekr.20060219103046:Top level
     #@+node:ekr.20060216160332.2:Helpers
