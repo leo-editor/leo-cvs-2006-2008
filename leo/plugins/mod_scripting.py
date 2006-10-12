@@ -210,6 +210,8 @@ class scriptingController:
         getBool = c.config.getBool
         self.scanned = False
         kind = c.config.getString('debugger_kind') or 'idle'
+        self.buttonsDict = {} # Keys are button names (strings), values are buttons.
+            # Buttons are never destroyed, but may be unpacked.
         self.debuggerKind = kind.lower()
         
         self.atButtonNodes = getBool('scripting-at-button-nodes')
@@ -235,6 +237,26 @@ class scriptingController:
             self.iconBar = iconBar
     #@nonl
     #@-node:ekr.20060328125248.7: ctor
+    #@+node:ekr.20060929135558:cleanButtonText
+    def cleanButtonText (self,s):
+        
+        # Strip @...@button.
+        while s.startswith('@'):
+            s = s[1:]
+        if s.startswith('button'):
+            s = s[6:]
+        if 1: # Not great, but spaces, etc. interfere with tab completion.
+            chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
+            aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(s,g.app.tkEncoding)]
+            s = ''.join(aList)
+            s = s.replace('--','-')
+        while s.startswith('-'):
+            s = s[1:]
+        while s.endswith('-'):
+            s = s[:-1]
+        return s
+    #@nonl
+    #@-node:ekr.20060929135558:cleanButtonText
     #@+node:ekr.20060328125248.8:createAllButtons
     def createAllButtons (self):
         
@@ -261,6 +283,273 @@ class scriptingController:
                     self.executeScriptNode(p)
     #@nonl
     #@-node:ekr.20060328125248.8:createAllButtons
+    #@+node:ekr.20060328125248.24:createAtButtonIconButton
+    def createAtButtonIconButton (self,p,buttonText,statusLine,shortcut,bg='LightSteelBlue1'):
+        c = self.c ; k = c.k
+        buttonText = self.cleanButtonText(buttonText)
+        b = self.createIconButton(text=buttonText,statusLine=statusLine,bg=bg)
+        def deleteButtonCallback(event=None,self=self,b=b):
+            self.deleteButton(b)
+        def atButtonCallback (event=None,self=self,p=p.copy(),b=b,buttonText=buttonText):
+            self.executeScriptFromCallback (p,b,buttonText)
+        b.configure(command=atButtonCallback)
+        b.bind('<3>',deleteButtonCallback)
+        self.definePressButtonCommand(buttonText,atButtonCallback=atButtonCallback,shortcut=shortcut)
+        return b
+    #@nonl
+    #@-node:ekr.20060328125248.24:createAtButtonIconButton
+    #@+node:ekr.20060522104419.1:createBalloon
+    def createBalloon (self,w,label):
+    
+        'Create a balloon for a widget.'
+    
+        balloon = Pmw.Balloon(w,initwait=100)
+        if balloon:
+            balloon.bind(w,label)
+    #@nonl
+    #@-node:ekr.20060522104419.1:createBalloon
+    #@+node:ekr.20060522105937:createDebugIconButton
+    def createDebugIconButton (self):
+        
+        b = self.createIconButton('Debug Script', 'Debug script in selected node', bg='MistyRose1')
+        #@    << define runDebugScriptCommand >>
+        #@+node:ekr.20060522105937.1:<< define runDebugScriptCommand >>
+        def runDebugScriptCommand (event=None):
+            
+            '''Called when user presses the 'Debug Script' button.'''
+        
+            c = self.c ; p = c.currentPosition()
+            
+            script = g.getScript(c,p,useSelectedText=True,useSentinels=False)
+            if script:
+                #@        << set debugging if debugger is active >>
+                #@+node:ekr.20060523084441:<< set debugging if debugger is active >>
+                g.trace(self.debuggerKind)
+                
+                if self.debuggerKind == 'winpdb':
+                    try:
+                        import rpdb2
+                        debugging = rpdb2.g_debugger is not None
+                    except ImportError:
+                        debugging = False
+                elif self.debuggerKind == 'idle':
+                    # import idlelib.Debugger.py as Debugger
+                    # debugging = Debugger.interacting
+                    debugging = True #######
+                else:
+                    debugging = False
+                #@nonl
+                #@-node:ekr.20060523084441:<< set debugging if debugger is active >>
+                #@nl
+                if debugging:
+                    #@            << create leoScriptModule >>
+                    #@+node:ekr.20060524073716:<< create leoScriptModule >>
+                    target = g.os_path_join(g.app.loadDir,'leoScriptModule.py')
+                    f = None
+                    try:
+                        f = file(target,'w')
+                        f.write('# A module holding the script to be debugged.\n')
+                        if self.debuggerKind == 'idle':
+                            # This works, but uses the lame pdb debugger.
+                            f.write('import pdb\n')
+                            f.write('pdb.set_trace() # Hard breakpoint.\n')
+                        elif self.debuggerKind == 'winpdb':
+                            f.write('import rpdb2\n')
+                            f.write('if rpdb2.g_debugger is not None: # don\'t hang if the debugger isn\'t running.\n')
+                            f.write('  rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.\n')
+                        # f.write('# Remove all previous variables.\n')
+                        f.write('# Predefine c, g and p.\n')
+                        f.write('import leoGlobals as g\n')
+                        f.write('c = g.app.scriptDict.get("c")\n')
+                        f.write('p = c.currentPosition()\n')
+                        f.write('# Actual script starts here.\n')
+                        f.write(script + '\n')
+                    finally:
+                        if f: f.close()
+                    #@nonl
+                    #@-node:ekr.20060524073716:<< create leoScriptModule >>
+                    #@nl
+                    g.app.scriptDict ['c'] = c
+                    if 'leoScriptModule' in sys.modules.keys():
+                        del sys.modules ['leoScriptModule'] # Essential.
+                    import leoScriptModule      
+                else:
+                    g.es('No debugger active',color='blue')
+            
+            c.frame.bodyWantsFocus()
+        #@nonl
+        #@-node:ekr.20060522105937.1:<< define runDebugScriptCommand >>
+        #@nl
+        b.configure(command=runDebugScriptCommand)
+        self.definePressButtonCommand('debug-script',atButtonCallback=runDebugScriptCommand)
+        return b
+    #@nonl
+    #@-node:ekr.20060522105937:createDebugIconButton
+    #@+node:ekr.20060328125248.17:createIconButton
+    def createIconButton (self,text,statusLine,bg):
+    
+        b = self.iconBar.add(text=text)
+        
+        aList = self.buttonsDict.get(text,[])
+        aList.append(b)
+        self.buttonsDict[text] = aList
+        
+        if statusLine and statusLine != text:
+            self.createBalloon(b,statusLine)
+    
+        if sys.platform == "win32":
+            width = int(len(text) * 0.9)
+            b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
+    
+        if 0:
+            #@        << define enter/leave callbacks >>
+            #@+node:ekr.20060328125248.18:<< define enter/leave callbacks >>
+            def mouseEnterCallback(event=None,self=self,statusLine=statusLine):
+                self.mouseEnter(statusLine)
+            
+            def mouseLeaveCallback(event=None,self=self):
+                self.mouseLeave()
+            #@nonl
+            #@-node:ekr.20060328125248.18:<< define enter/leave callbacks >>
+            #@nl
+            b.bind('<Enter>', mouseEnterCallback)
+            b.bind('<Leave>', mouseLeaveCallback)
+        return b
+    #@nonl
+    #@-node:ekr.20060328125248.17:createIconButton
+    #@+node:ekr.20060328125248.20:createRunScriptIconButton
+    def createRunScriptIconButton (self):
+        b = self.createIconButton('Run Script', 'Run script in selected node', bg='MistyRose1')
+        #@    << define runScriptCommand >>
+        #@+node:ekr.20060328125248.21:<< define runScriptCommand >>
+        def runScriptCommand (event=None):
+            
+            '''Called when user presses the 'Run Script' button.'''
+        
+            c = self.c
+            c.executeScript(c.currentPosition(),useSelectedText=True,silent=True)
+            
+            if 0:
+                # Do not assume the script will want to remain in this commander.
+                c.frame.bodyWantsFocus()
+        #@nonl
+        #@-node:ekr.20060328125248.21:<< define runScriptCommand >>
+        #@nl
+        b.configure(command=runScriptCommand)
+        self.definePressButtonCommand('press-run-script-button',atButtonCallback=runScriptCommand)
+        return b
+    #@nonl
+    #@-node:ekr.20060328125248.20:createRunScriptIconButton
+    #@+node:ekr.20060328125248.22:createScriptButtonIconButton
+    def createScriptButtonIconButton (self):
+        b = self.createIconButton('Script Button', 'Make script button from selected node', bg="#ffffcc")
+        #@    << define addScriptButtonCommand >>
+        #@+node:ekr.20060328125248.23:<< define addScriptButtonCommand >>
+        def addScriptButtonCommand (event=None,self=self):
+            c = self.c ; p = c.currentPosition(); h = p.headString()
+            buttonText = self.getButtonText(h)
+            shortcut = self.getShortcut(h)
+            statusLine = "Run Script: %s" % buttonText
+            if shortcut:
+                statusLine = statusLine + " @key=" + shortcut
+            b = self.createAtButtonIconButton(p,buttonText,statusLine,shortcut,'MistyRose1')
+            c.frame.bodyWantsFocus()
+        #@nonl
+        #@-node:ekr.20060328125248.23:<< define addScriptButtonCommand >>
+        #@nl
+        b.configure(command=addScriptButtonCommand)
+        self.definePressButtonCommand('press-script-button-button',atButtonCallback=addScriptButtonCommand)
+        return b
+    #@nonl
+    #@-node:ekr.20060328125248.22:createScriptButtonIconButton
+    #@+node:ekr.20060929131245:definePressButtonCommand
+    def definePressButtonCommand (self,buttonText,atButtonCallback,shortcut=None):
+    
+        # This will use any shortcut defined in an @shortcuts node if no shortcut is defined.
+        # buttonText = 'press-%s-button' % buttonText.lower()
+        
+        # g.trace(buttonText,atButtonCallback)
+        
+        # New in Leo 4.4.2: Just use the (cleaned) name of the button text
+        c = self.c ; k = c.k
+        buttonText = self.cleanButtonText(buttonText).lower()
+        if shortcut:
+            shortcut = k.canonicalizeShortcut(shortcut)
+        k.registerCommand(buttonText,shortcut=shortcut,func=atButtonCallback,pane='button',verbose=shortcut)
+    #@-node:ekr.20060929131245:definePressButtonCommand
+    #@+node:ekr.20060328125248.26:deleteButton
+    def deleteButton(self,button):
+        
+        """Delete the given button."""
+    
+        if button:
+            button.pack_forget()
+            # button.destroy()
+            
+        self.c.frame.bodyWantsFocusNow()
+    #@nonl
+    #@-node:ekr.20060328125248.26:deleteButton
+    #@+node:ekr.20060328125248.28:executeScriptFromCallback
+    def executeScriptFromCallback (self,p,b,buttonText):
+        
+        '''Called from callbacks to execute the script in node p.'''
+        
+        c = self.c
+    
+        if c.disableCommandsMessage:
+            g.es(c.disableCommandsMessage,color='blue')
+        else:
+            #c.frame.clearStatusLine()
+            #c.frame.putStatusLine("Executing button: %s..." % buttonText)
+            g.app.scriptDict = {}
+            c.executeScript(p=p,silent=True)
+            # Remove the button if the script asks to be removed.
+            if g.app.scriptDict.get('removeMe'):
+                g.es("Removing '%s' button at its request" % buttonText)
+                b.pack_forget()
+              
+        if 0: # Do not assume the script will want to remain in this commander.
+            c.frame.bodyWantsFocus()
+    #@nonl
+    #@-node:ekr.20060328125248.28:executeScriptFromCallback
+    #@+node:ekr.20060328125248.15:getButtonText
+    def getButtonText(self,h):
+        
+        '''Returns the button text found in the given headline string'''
+        
+        tag = "@button"
+        if h.startswith(tag):
+            h = h[len(tag):].strip()
+        
+        i = h.find('@key')
+    
+        if i > -1:
+            buttonText = h[:i].strip()
+        
+        else:
+            buttonText = h
+        
+        fullButtonText = buttonText
+        buttonText = buttonText[:self.maxButtonSize]
+        return buttonText
+    #@nonl
+    #@-node:ekr.20060328125248.15:getButtonText
+    #@+node:ekr.20060328125248.16:getShortcut
+    def getShortcut(self,h):
+        
+        '''Returns the keyboard shortcut from the given headline string'''
+        
+        shortcut = None
+        i = h.find('@key')
+    
+        if i > -1:
+            j = g.skip_ws(h,i+len('@key'))
+            if g.match(h,j,'='):
+                shortcut = h[j+1:].strip()
+    
+        return shortcut
+    #@nonl
+    #@-node:ekr.20060328125248.16:getShortcut
     #@+node:ekr.20060328125248.9:Handlers for the "At scanner"
     #@+node:ekr.20060328125248.10:createMinibufferCommand (New in 4.4)
     def createMinibufferCommand (self,p):
@@ -371,266 +660,6 @@ class scriptingController:
     #@nonl
     #@-node:ekr.20060328125248.14:executeScriptNode
     #@-node:ekr.20060328125248.9:Handlers for the "At scanner"
-    #@+node:ekr.20060328125248.15:getButtonText
-    def getButtonText(self,h):
-        
-        '''Returns the button text found in the given headline string'''
-        
-        tag = "@button"
-        if h.startswith(tag):
-            h = h[len(tag):].strip()
-        
-        i = h.find('@key')
-    
-        if i > -1:
-            buttonText = h[:i].strip()
-        
-        else:
-            buttonText = h
-        
-        fullButtonText = buttonText
-        buttonText = buttonText[:self.maxButtonSize]
-        return buttonText
-    #@nonl
-    #@-node:ekr.20060328125248.15:getButtonText
-    #@+node:ekr.20060328125248.16:getShortcut
-    def getShortcut(self,h):
-        
-        '''Returns the keyboard shortcut from the given headline string'''
-        
-        shortcut = None
-        i = h.find('@key')
-    
-        if i > -1:
-            j = g.skip_ws(h,i+len('@key'))
-            if g.match(h,j,'='):
-                shortcut = h[j+1:].strip()
-    
-        return shortcut
-    #@nonl
-    #@-node:ekr.20060328125248.16:getShortcut
-    #@+node:ekr.20060929135558:cleanButtonText
-    def cleanButtonText (self,s):
-        
-        # Strip @...@button.
-        while s.startswith('@'):
-            s = s[1:]
-        if s.startswith('button'):
-            s = s[6:]
-        if 1: # Not great, but spaces, etc. interfere with tab completion.
-            chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
-            aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(s,g.app.tkEncoding)]
-            s = ''.join(aList)
-            s = s.replace('--','-')
-        while s.startswith('-'):
-            s = s[1:]
-        while s.endswith('-'):
-            s = s[:-1]
-        return s
-    #@nonl
-    #@-node:ekr.20060929135558:cleanButtonText
-    #@+node:ekr.20060328125248.17:createIconButton
-    def createIconButton (self,text,statusLine,bg):
-        b = self.iconBar.add(text=text)
-        if statusLine and statusLine != text:
-            self.createBalloon(b,statusLine)
-    
-        if sys.platform == "win32":
-            width = int(len(text) * 0.9)
-            b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
-    
-        if 0:
-            #@        << define enter/leave callbacks >>
-            #@+node:ekr.20060328125248.18:<< define enter/leave callbacks >>
-            def mouseEnterCallback(event=None,self=self,statusLine=statusLine):
-                self.mouseEnter(statusLine)
-            
-            def mouseLeaveCallback(event=None,self=self):
-                self.mouseLeave()
-            #@nonl
-            #@-node:ekr.20060328125248.18:<< define enter/leave callbacks >>
-            #@nl
-            b.bind('<Enter>', mouseEnterCallback)
-            b.bind('<Leave>', mouseLeaveCallback)
-        return b
-    #@nonl
-    #@-node:ekr.20060328125248.17:createIconButton
-    #@+node:ekr.20060522104419.1:createBalloon
-    def createBalloon (self,w,label):
-    
-        'Create a balloon for a widget.'
-    
-        balloon = Pmw.Balloon(w,initwait=100)
-        if balloon:
-            balloon.bind(w,label)
-    #@nonl
-    #@-node:ekr.20060522104419.1:createBalloon
-    #@+node:ekr.20060522105937:createDebugIconButton
-    def createDebugIconButton (self):
-        
-        b = self.createIconButton('Debug Script', 'Debug script in selected node', bg='MistyRose1')
-        #@    << define runDebugScriptCommand >>
-        #@+node:ekr.20060522105937.1:<< define runDebugScriptCommand >>
-        def runDebugScriptCommand (event=None):
-            
-            '''Called when user presses the 'Debug Script' button.'''
-        
-            c = self.c ; p = c.currentPosition()
-            
-            script = g.getScript(c,p,useSelectedText=True,useSentinels=False)
-            if script:
-                #@        << set debugging if debugger is active >>
-                #@+node:ekr.20060523084441:<< set debugging if debugger is active >>
-                g.trace(self.debuggerKind)
-                
-                if self.debuggerKind == 'winpdb':
-                    try:
-                        import rpdb2
-                        debugging = rpdb2.g_debugger is not None
-                    except ImportError:
-                        debugging = False
-                elif self.debuggerKind == 'idle':
-                    # import idlelib.Debugger.py as Debugger
-                    # debugging = Debugger.interacting
-                    debugging = True #######
-                else:
-                    debugging = False
-                #@nonl
-                #@-node:ekr.20060523084441:<< set debugging if debugger is active >>
-                #@nl
-                if debugging:
-                    #@            << create leoScriptModule >>
-                    #@+node:ekr.20060524073716:<< create leoScriptModule >>
-                    target = g.os_path_join(g.app.loadDir,'leoScriptModule.py')
-                    f = None
-                    try:
-                        f = file(target,'w')
-                        f.write('# A module holding the script to be debugged.\n')
-                        if self.debuggerKind == 'idle':
-                            # This works, but uses the lame pdb debugger.
-                            f.write('import pdb\n')
-                            f.write('pdb.set_trace() # Hard breakpoint.\n')
-                        elif self.debuggerKind == 'winpdb':
-                            f.write('import rpdb2\n')
-                            f.write('if rpdb2.g_debugger is not None: # don\'t hang if the debugger isn\'t running.\n')
-                            f.write('  rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.\n')
-                        # f.write('# Remove all previous variables.\n')
-                        f.write('# Predefine c, g and p.\n')
-                        f.write('import leoGlobals as g\n')
-                        f.write('c = g.app.scriptDict.get("c")\n')
-                        f.write('p = c.currentPosition()\n')
-                        f.write('# Actual script starts here.\n')
-                        f.write(script + '\n')
-                    finally:
-                        if f: f.close()
-                    #@nonl
-                    #@-node:ekr.20060524073716:<< create leoScriptModule >>
-                    #@nl
-                    g.app.scriptDict ['c'] = c
-                    if 'leoScriptModule' in sys.modules.keys():
-                        del sys.modules ['leoScriptModule'] # Essential.
-                    import leoScriptModule      
-                else:
-                    g.es('No debugger active',color='blue')
-            
-            c.frame.bodyWantsFocus()
-        #@nonl
-        #@-node:ekr.20060522105937.1:<< define runDebugScriptCommand >>
-        #@nl
-        b.configure(command=runDebugScriptCommand)
-        self.definePressButtonCommand('debug-script',atButtonCallback=runDebugScriptCommand)
-        return b
-    #@nonl
-    #@-node:ekr.20060522105937:createDebugIconButton
-    #@+node:ekr.20060328125248.20:createRunScriptIconButton
-    def createRunScriptIconButton (self):
-        b = self.createIconButton('Run Script', 'Run script in selected node', bg='MistyRose1')
-        #@    << define runScriptCommand >>
-        #@+node:ekr.20060328125248.21:<< define runScriptCommand >>
-        def runScriptCommand (event=None):
-            
-            '''Called when user presses the 'Run Script' button.'''
-        
-            c = self.c
-            c.executeScript(c.currentPosition(),useSelectedText=True,silent=True)
-            
-            if 0:
-                # Do not assume the script will want to remain in this commander.
-                c.frame.bodyWantsFocus()
-        #@nonl
-        #@-node:ekr.20060328125248.21:<< define runScriptCommand >>
-        #@nl
-        b.configure(command=runScriptCommand)
-        self.definePressButtonCommand('run-script',atButtonCallback=runScriptCommand)
-        return b
-    #@nonl
-    #@-node:ekr.20060328125248.20:createRunScriptIconButton
-    #@+node:ekr.20060328125248.22:createScriptButtonIconButton
-    def createScriptButtonIconButton (self):
-        b = self.createIconButton('Script Button', 'Make script button from selected node', bg="#ffffcc")
-        #@    << define addScriptButtonCommand >>
-        #@+node:ekr.20060328125248.23:<< define addScriptButtonCommand >>
-        def addScriptButtonCommand (event=None,self=self):
-            c = self.c ; p = c.currentPosition(); h = p.headString()
-            buttonText = self.getButtonText(h)
-            shortcut = self.getShortcut(h)
-            statusLine = "Run Script: %s" % buttonText
-            if shortcut:
-                statusLine = statusLine + " @key=" + shortcut
-            b = self.createAtButtonIconButton(p,buttonText,statusLine,shortcut,'MistyRose1')
-            c.frame.bodyWantsFocus()
-        #@nonl
-        #@-node:ekr.20060328125248.23:<< define addScriptButtonCommand >>
-        #@nl
-        b.configure(command=addScriptButtonCommand)
-        self.definePressButtonCommand('script-button',atButtonCallback=addScriptButtonCommand)
-        return b
-    #@nonl
-    #@-node:ekr.20060328125248.22:createScriptButtonIconButton
-    #@+node:ekr.20060328125248.24:createAtButtonIconButton
-    def createAtButtonIconButton (self,p,buttonText,statusLine,shortcut,bg='LightSteelBlue1'):
-        c = self.c ; k = c.k
-        buttonText = self.cleanButtonText(buttonText)
-        b = self.createIconButton(text=buttonText,statusLine=statusLine,bg=bg)
-        def deleteButtonCallback(event=None,self=self,b=b):
-            self.deleteButton(b)
-        def atButtonCallback (event=None,self=self,p=p.copy(),b=b,buttonText=buttonText):
-            self.executeScriptFromCallback (p,b,buttonText)
-        b.configure(command=atButtonCallback)
-        b.bind('<3>',deleteButtonCallback)
-        if shortcut:
-            #@        << bind the shortcut to atButtonCallback >>
-            #@+node:ekr.20060328125248.25:<< bind the shortcut to atButtonCallback >>
-            c = self.c; k = c.keyHandler ; func = atButtonCallback
-            
-            shortcut = k.canonicalizeShortcut(shortcut)
-            commandName = buttonText.lower()
-            k.registerCommand(commandName,shortcut,func,pane='all',verbose=True)
-            #@-node:ekr.20060328125248.25:<< bind the shortcut to atButtonCallback >>
-            #@nl
-        else:
-            self.definePressButtonCommand(buttonText,atButtonCallback=atButtonCallback)
-        return b
-    #@-node:ekr.20060328125248.24:createAtButtonIconButton
-    #@+node:ekr.20060929131245:definePressButtonCommand
-    def definePressButtonCommand (self,buttonText,atButtonCallback):
-    
-        # This will use any shortcut defined in an @shortcuts node.
-        buttonText = 'press-%s-button' % buttonText.lower()
-        self.c.k.registerCommand(buttonText,None,atButtonCallback,pane='button',verbose=False)
-    #@-node:ekr.20060929131245:definePressButtonCommand
-    #@+node:ekr.20060328125248.26:deleteButton
-    def deleteButton(self,button):
-        
-        """Delete the given button."""
-    
-        if button:
-            button.pack_forget()
-            # button.destroy()
-            
-        self.c.frame.bodyWantsFocus()
-    #@nonl
-    #@-node:ekr.20060328125248.26:deleteButton
     #@+node:ekr.20060328125248.27:mouseEnter/Leave
     def mouseEnter(self,status):
     
@@ -642,29 +671,6 @@ class scriptingController:
         self.c.frame.clearStatusLine()
     #@nonl
     #@-node:ekr.20060328125248.27:mouseEnter/Leave
-    #@+node:ekr.20060328125248.28:executeScriptFromCallback
-    def executeScriptFromCallback (self,p,b,buttonText):
-        
-        '''Called from callbacks to execute the script in node p.'''
-        
-        c = self.c
-    
-        if c.disableCommandsMessage:
-            g.es(c.disableCommandsMessage,color='blue')
-        else:
-            #c.frame.clearStatusLine()
-            #c.frame.putStatusLine("Executing button: %s..." % buttonText)
-            g.app.scriptDict = {}
-            c.executeScript(p=p,silent=True)
-            # Remove the button if the script asks to be removed.
-            if g.app.scriptDict.get('removeMe'):
-                g.es("Removing '%s' button at its request" % buttonText)
-                b.pack_forget()
-              
-        if 0: # Do not assume the script will want to remain in this commander.
-            c.frame.bodyWantsFocus()
-    #@nonl
-    #@-node:ekr.20060328125248.28:executeScriptFromCallback
     #@-others
 #@nonl
 #@-node:ekr.20060328125248.6:class scriptingController

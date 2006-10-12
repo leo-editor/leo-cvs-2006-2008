@@ -100,10 +100,10 @@ class slideshowController:
         c = self.c ; k = c.k
             
         for name,func in (
-            ('next-slide',      self.nextSlide),
-            ('next-slide-show', self.nextSlideShow),
-            ('prev-slide',      self.prevSlide),
-            ('prev-slide-show', self.prevSlideShow),
+            ('next-slide-command',      self.nextSlide),
+            ('next-slide-show-command', self.nextSlideShow),
+            ('prev-slide-command',      self.prevSlide),
+            ('prev-slide-show-command', self.prevSlideShow),
         ):
             k.registerCommand (name,shortcut=None,func=func,pane='all',verbose=False)
     #@nonl
