@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="695" width="937"/>
+	<global_window_position top="71" left="252" height="657" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -35,10 +35,10 @@
 <v t="ekr.20041119035704.3"><vh>\@type type-name: base-type = [list of valid values]</vh></v>
 <v t="ekr.20041120155431.2"><vh>\@type type-name: script: script-name</vh></v>
 </v>
-<v t="ekr.20060112110750"><vh>Buttons</vh>
+<v t="ekr.20060112110750" a="E"><vh>Buttons</vh>
 <v t="ekr.20051010093913" annotate="7d71002e"><vh>@@button Save</vh></v>
 <v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
-<v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
+<v t="ekr.20060112103537.17" a="TV"><vh>@button Check Bindings</vh>
 <v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
 <v t="ekr.20060112104333"><vh>doSet</vh></v>
 <v t="ekr.20060112105523"><vh>doShortcuts</vh></v>
@@ -581,7 +581,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="TV"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
@@ -598,7 +598,7 @@
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 <v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
@@ -2451,7 +2451,7 @@ goto-prev-sibling                   = None
 goto-prev-visible                   ! text = Alt-UpArrow
 goto-prev-visible                   ! tree = Alt-UpArrow
 goto-prev-visible                   ! tree = UpArrow
-help                                = F1
+help-for-minibuffer                 = F1
 hide-find-tab                       = None
 hide-mini-buffer                    = None
 hide-spell-tab                      = None
@@ -2564,7 +2564,7 @@ goto-parent                             ! tree = Alt-LtArrow
 goto-prev-node                          ! tree = Alt-UpArrow
 goto-prev-sibling                       = None              # Removed Alt-Shift-R: not useful enough.
 goto-prev-visible                       ! tree = UpArrow
-help                                    = None              # Ctrl-h conflicts with edit headline.
+help-for-minibuffer                     = None              # Ctrl-h conflicts with edit headline.
 hide-find-tab                           = None
 hide-mini-buffer                        = None
 hide-spell-tab                          = None
@@ -2836,7 +2836,7 @@ goto-parent                         = Alt-Shift-P
 goto-prev-node                      = Alt-Shift-UpArrow
 goto-prev-sibling                   = Alt-Shift-R
 goto-prev-visible                   = None         # Alt-UpArrow conflicts with beginning-of-line.
-help                                = None
+help-for-minibuffer                 = None
 hide-find-tab                       = None
 hide-mini-buffer                    = None
 hide-spell-tab                      = None
@@ -3105,7 +3105,7 @@ goto-parent                             = Alt-Shift-P
 goto-prev-node                          = Alt-Shift-UpArrow
 goto-prev-sibling                       = Alt-Shift-R
 goto-prev-visible                       = Alt-UpArrow
-help                                    = None
+help-for-minibuffer                     = None
 hide-find-tab                           = None
 hide-mini-buffer                        = None
 hide-spell-tab                          = None
@@ -3390,7 +3390,7 @@ group-operations-mark-target        = None
 group-operations-operate-on-marked  = None
 group-operations-transfer           = None
 toggle-input-state                  = None
-help                                = None
+help-for-minibuffer                 = None
 help-for-command                    = None
 hide-body-pane                      = None
 hide-find-tab                       = None
@@ -3466,8 +3466,6 @@ new                                 = None
 newline-and-indent                  = None
 next-line                           = None
 next-line-extend-selection          = None
-next-slide                          = None
-next-slide-show                     = None
 number-command                      = None
 number-command-0                    = None
 number-command-1                    = None
@@ -3504,8 +3502,6 @@ prepend-to-buffer                   = None
 prepend-to-register                 = None
 pretty-print-all-python-code        = None
 pretty-print-python-code            = None
-prev-slide                          = None
-prev-slide-show                     = None
 previous-line                       = None
 previous-line-extend-selection      = None
 print-bindings                      = None
@@ -3658,7 +3654,11 @@ parser = leoConfig.settingsTreeParser(c)
 
 # Add these as required to handle commands defined by plugins.
 optionalCommandPrefixes = ['group-operations']
-optionalCommandNames = ['next-slide','next-slide-show','prev-slide','prev-slide-show']
+optionalCommandNames = [
+    # These are the command names as defined by the slideshow plugin.
+    # LeoSlideShows.leo defines buttons whose commands do not end in '-command'.
+    'next-slide-command','next-slide-show-command',
+    'prev-slide-command','prev-slide-show-command']
 
 setNames = []
 setsDict = {} # keys are set names, values are dicts of command names.
@@ -3666,7 +3666,8 @@ shortcutsDict = {}
 
 @others
 
-main()</t>
+main()
+</t>
 <t tx="ekr.20060112104119">def defineSetNames():
     
     global setNames
@@ -4362,7 +4363,7 @@ goto-next-visible                   ! tree = DnArrow
 goto-prev-visible                   ! text = Alt-UpArrow
 goto-prev-visible                   ! tree = Alt-UpArrow
 goto-prev-visible                   ! tree = UpArrow
-help                                = F1
+help-for-minibuffer                 = F1
 hide-pane                           = None
 indent-region                       = Ctrl-]
 insert-newline                      = None # = Return # for MacOs X.
@@ -5840,7 +5841,7 @@ goto-next-visible                   ! tree = DnArrow
 goto-prev-visible                   ! text = Alt-UpArrow
 goto-prev-visible                   ! tree = Alt-UpArrow
 goto-prev-visible                   ! tree = UpArrow
-help                                = F1
+help-for-minibuffer                 = F1
 hide-pane                           = None
 indent-region                       = Ctrl-]
 insert-newline                      = None # = Return # for MacOs X.

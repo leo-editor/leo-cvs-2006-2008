@@ -9,8 +9,8 @@
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20060901142356" a="TV"><vh>Read me first</vh>
-<v t="ekr.20060901144246"><vh>buttons</vh>
+<v t="ekr.20060901142356" a="E"><vh>Read me first</vh>
+<v t="ekr.20060901144246" a="TV"><vh>buttons</vh>
 <v t="ekr.20060901144331"><vh>@button prev-show  @key=Alt-4</vh></v>
 <v t="ekr.20060901144149.3"><vh>@button next-show @key=Alt-5</vh></v>
 <v t="ekr.20060901144149.2"><vh>@button prev-slide @key=Alt-6</vh></v>
@@ -24,7 +24,7 @@
 </v>
 </v>
 <v t="ekr.20060902100840"><vh>To do: rst + python colorizing</vh></v>
-<v t="ekr.20060902101656"><vh>Slide shows</vh>
+<v t="ekr.20060902101656" a="E"><vh>Slide shows</vh>
 <v t="ekr.20060901153101"><vh>@slideshow Introduction to Leo</vh>
 <v t="ekr.20060901153101.1"><vh>@slide topic 1</vh>
 <v t="ekr.20060901153101.2"><vh>@slide 2-1</vh></v>
@@ -100,8 +100,8 @@ You control these slides shows using four buttons in the icon bar:
 
 Now press the 'next-show' button (or type Alt-5, or type Alt-x next-show)
 to take you to the first slideshow: 'Introduction to Leo'.</t>
-<t tx="ekr.20060901144149.2">c.k.simulateCommand('prev-slide')</t>
-<t tx="ekr.20060901144149.3">c.k.simulateCommand('next-slide-show')</t>
+<t tx="ekr.20060901144149.2">c.k.simulateCommand('prev-slide-command')</t>
+<t tx="ekr.20060901144149.3">c.k.simulateCommand('next-slide-show-command')</t>
 <t tx="ekr.20060901144149.4">from PMIDI import * 
 from time import sleep </t>
 <t tx="ekr.20060901144149.5"></t>
@@ -115,9 +115,18 @@ from time import sleep </t>
 <t tx="ekr.20060901144149.13">Slide 3</t>
 <t tx="ekr.20060901144149.14">Slide 4
 </t>
-<t tx="ekr.20060901144246">@color</t>
-<t tx="ekr.20060901144331">c.k.simulateCommand('prev-slide-show')</t>
-<t tx="ekr.20060901144359">c.k.simulateCommand('next-slide')</t>
+<t tx="ekr.20060901144246">@color
+
+@ A point that can cause confusion:
+    
+The slideshow.py plugin defines four commands whose names end in -command. It
+would be possible to bind shortcuts for *these* commands in leoSettings.leo or
+myLeoSettings.leo
+
+The buttons below define commands whose names do *not* end in -command. These
+button define shortcuts for these buttons using the @key syntax.</t>
+<t tx="ekr.20060901144331">c.k.simulateCommand('prev-slide-show-command')</t>
+<t tx="ekr.20060901144359">c.k.simulateCommand('next-slide-command')</t>
 <t tx="ekr.20060901153101">@nocolor 
 
 This is the start of the slideshow that introduces you to Leo.</t>

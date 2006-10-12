@@ -15,6 +15,13 @@ By: dcbbcd
 This is dangerous. string.letters is locale dependent and may contain non ASCII
 characters. You could use string.ascii_characters or get the current encoding.
 
+Use g.isWordChar().  It properly tests a character to see in which unicode category it belongs.
+
+It would be unwise to create a list of all unicode characters that could appear
+in a word: this list might run to tens of thousands of characters. But it is
+easy enough to test a single character. So I'll soon be removing all, or almost
+all, references to string.letters, etc.
+#@nonl
 #@-node:ekr.20061011131836:Fix new unicode bug
 #@+node:ekr.20061008114340:Finish collapse-on-move-left
 @nocolor
@@ -71,7 +78,21 @@ Instead, the 'end of script' message should just go to whatever log pane is on t
 #@nonl
 #@-node:ekr.20061011184009:The end-of-script message yanks focus from tabs
 #@-node:ekr.20061011214705:Easy 7
-#@+node:ekr.20061012075711:Plugins 2
+#@+node:ekr.20061012075711:Plugins 3
+#@+node:ekr.20061012095927:Fix multifile plugin
+(via email)
+
+I think th multifile plugin might be broken, maybe because it does 
+this:
+
+ndf = c.atFileCommands.new_df
+
+which raises an attribute error, and I see some other plugin for 
+which the version history comments 'removed reference to new_df', 
+suggesting new_df went away.
+
+Cheers -Terry
+#@-node:ekr.20061012095927:Fix multifile plugin
 #@+node:ekr.20061011110132:Remove properties dialog for datenodes plugin
 @nocolor
 
@@ -96,7 +117,7 @@ analyzing code, and switching by only using the keyboard (shortcuts '<markname>
 or `<markname>) works very good (for me) in vim. Switching between the two most
 recent marks is done in vim using the shortcut '' or ``.
 #@-node:ekr.20061012061050:Fix nodenavigator plugin
-#@-node:ekr.20061012075711:Plugins 2
+#@-node:ekr.20061012075711:Plugins 3
 #@+node:ekr.20061011214705.1:Other 4
 #@+node:ekr.20061012082613:Fix body editor problems: 2
 #@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
