@@ -3819,16 +3819,20 @@ def makeScriptButton (c,
 def isWordChar (ch):
     
     '''Return True if ch should be considered a letter.'''
+
+    return ch.isalnum() or ch == u'_'
     
-    # First, handle the easy cases.
-    if ch in (string.letters + string.digits + '_'):
-        return True
-    if ch in (string.punctuation + string.whitespace):
-        return False
-    # Now get the unicode
-    cat = unicodedata.category(ch)
-    # g.trace(cat)
-    return cat.startswith('L') or cat.startswith('N')
+    # Equivalent, but slower.
+    if 0:
+        # First, handle the easy cases.
+        if ch in (string.letters + string.digits + '_'):
+            return True
+        if ch in (string.punctuation + string.whitespace):
+            return False
+        # Now get the unicode
+        cat = unicodedata.category(ch)
+        # g.trace(cat)
+        return cat.startswith('L') or cat.startswith('N')
 #@nonl
 #@-node:ekr.20061006152327:g.isWordChar
 #@+node:ekr.20060216115304.2:g.safeStringCompare & test (Do not use)
@@ -4205,7 +4209,7 @@ def angleBrackets(s):
 
 virtual_event_name = angleBrackets
 #@-node:ekr.20031218072017.3106:angleBrackets & virtual_event_name
-#@+node:ekr.20031218072017.3097:CheckVersion 
+#@+node:ekr.20031218072017.3097:CheckVersion
 #@+node:ekr.20060921100435:checkVersion (EKR)
 # Simplified version by EKR: stringCompare not used.
 
@@ -4347,7 +4351,7 @@ def oldCheckVersion( version, againstVersion, condition=">=", stringCompare="0.0
     raise EnvironmentError,"condition must be one of '>=', '>', '==', '!=', '<', or '<='."
 #@nonl
 #@-node:ekr.20060921100435.1:oldCheckVersion (Dave Hein)
-#@-node:ekr.20031218072017.3097:CheckVersion 
+#@-node:ekr.20031218072017.3097:CheckVersion
 #@+node:ekr.20031218072017.3098:class Bunch (object)
 #@+at 
 #@nonl
