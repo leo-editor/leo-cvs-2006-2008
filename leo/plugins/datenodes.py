@@ -9,24 +9,10 @@ There are options to omit saturdays and sundays. The format of the labels (headl
 #@@language python
 #@@tabwidth -4
 
-#@<< about this plugin >>
-#@+node:gfunch.20041207100416.1:<< about this plugin >>
-#@+at
-# 
-# This plugin adds 'date nodes' (nodes with dates as their headlines) to the 
-# current outline.
-# Date nodes may be added one at a time, a month's-worth at a time, or a 
-# year's-worth at a time.
-# There are options to omit saturdays and sundays. The format of the labels 
-# (headlines) is configurable.
-#@-at
-#@nonl
-#@-node:gfunch.20041207100416.1:<< about this plugin >>
-#@nl
-
-__version__ = "0.5"
+__version__ = "0.6"
 #@<< version history >>
 #@+node:gfunch.20041207100416.2:<< version history >>
+#@@nocolor
 #@+at
 # 
 # 0.1: Initial version.
@@ -35,14 +21,15 @@ __version__ = "0.5"
 # 0.4: Added event=None to insert_xxx_node.
 # 0.5: Added options to omit saturdays and sundays. Use leoSettings.leo 
 # instead of datenodes.ini for storing options.
+# 0.6: Removed @c from most nodes: this is not needed.  Also removed .ini file 
+# from cvs.
 #@-at
+#@nonl
 #@-node:gfunch.20041207100416.2:<< version history >>
 #@nl
 
 #@<< imports >>
 #@+node:gfunch.20041207100416.3:<< imports >>
-#@@c
-
 import leoGlobals as g
 import leoPlugins
 
@@ -54,8 +41,6 @@ import datetime
 
 #@+others
 #@+node:gfunch.20041207100416.5:class DateNodes
-#@@c
-
 class DateNodes:
     """Main DateNodes class"""
     
@@ -79,19 +64,14 @@ class DateNodes:
                         "datenodes_year_node_omit_saturdays", "datenodes_year_node_omit_sundays"]
     
     ascii_encoder = codecs.getencoder("ASCII")
-    
-    
+
     #@    @+others
     #@+node:gfunch.20041207100416.6:__init__
-    #@@c
-    
     def __init__(self, c):
         self.c = c
         self._get_settings()
     #@-node:gfunch.20041207100416.6:__init__
     #@+node:gfunch.20041209073652:_get_settings
-    #@@c
-    
     def _get_settings(self):
         """Get any configuration options."""
     
@@ -115,8 +95,6 @@ class DateNodes:
     #@nonl
     #@-node:gfunch.20041209073652:_get_settings
     #@+node:gfunch.20041208095742:_format_node_label
-    #@@c
-    
     def _format_node_label(self, date, fmt):
         """Format a node label (heading)."""
     
@@ -131,8 +109,6 @@ class DateNodes:
         
     #@-node:gfunch.20041208095742:_format_node_label
     #@+node:dcb.20060806185031:_insert_date_node
-    #@@c
-    
     def _insert_date_node(self, parent, date, format):
         
         c = self.c
@@ -158,13 +134,10 @@ class DateNodes:
     #@nonl
     #@-node:dcb.20060806183810:_insert_day_node
     #@+node:gfunch.20041207100416.11:_insert_month_node
-    #@@c
-    
     def _insert_month_node(self, parent, date, day_fmt, month_fmt, omit_saturdays, omit_sundays):
         """Insert a months-worth of date nodes into the outline ."""
     
         month_node = self._insert_date_node(parent, date, month_fmt)
-    
     
         year, month = date.timetuple()[:2]
         
@@ -179,18 +152,13 @@ class DateNodes:
              
             self._insert_day_node(parent = month_node, date = day_date, day_fmt = day_fmt)
             
-            
         return month_node
-        
     #@-node:gfunch.20041207100416.11:_insert_month_node
     #@+node:gfunch.20041207100416.12:_insert_year_node
-    #@@c
-    
     def _insert_year_node(self, parent, date, day_fmt, month_fmt, year_fmt, omit_saturdays, omit_sundays):
         """Insert a years-worth of date nodes into the outline."""
     
         year_node = self._insert_date_node(parent, date, year_fmt)
-        
         
         year, month, day = date.timetuple()[:3]
     
@@ -205,15 +173,12 @@ class DateNodes:
     #@nonl
     #@-node:gfunch.20041207100416.12:_insert_year_node
     #@+node:gfunch.20041208074734:insert_day_node
-    #@@c
-    
     def insert_day_node(self, event = None):
-        self.c.beginUpdate()
     
+        self.c.beginUpdate()
     
         today = datetime.date.today()
         day_fmt = self.settings["day_node_headline"]
-    
     
         day_node = self._insert_day_node(self.c.currentPosition(), today, day_fmt)
     
@@ -224,11 +189,9 @@ class DateNodes:
     
     #@-node:gfunch.20041208074734:insert_day_node
     #@+node:dcb.20060806183928:insert_month_node
-    #@@c
-    
     def insert_month_node(self, event = None):
+        
         self.c.beginUpdate()
-    
     
         today = datetime.date.today()
         day_fmt = self.settings["month_node_day_headline"]
@@ -245,11 +208,8 @@ class DateNodes:
     
     #@-node:dcb.20060806183928:insert_month_node
     #@+node:dcb.20060806184117:insert_year_node
-    #@@c
-    
     def insert_year_node(self, event = None):
         self.c.beginUpdate()
-    
     
         today = datetime.date.today()
         day_fmt = self.settings["year_node_day_headline"]
@@ -258,14 +218,10 @@ class DateNodes:
         omit_saturdays = self.settings["year_node_omit_saturdays"]
         omit_sundays = self.settings["year_node_omit_sundays"]
     
-    
         year_node = self._insert_year_node(self.c.currentPosition(), today, day_fmt, month_fmt, year_fmt, omit_saturdays, omit_sundays)
     
         self.c.selectPosition(year_node)
         self.c.endUpdate()
-    
-    
-    
     #@-node:dcb.20060806184117:insert_year_node
     #@-others
 #@-node:gfunch.20041207100416.5:class DateNodes
