@@ -5,29 +5,24 @@
 #@@language python
 #@@tabwidth -4
 
-__name__ = "Node Navigator"
-__version__ = "0.10"
+# __name__ = "Node Navigator"
+__version__ = "0.11"
 
 #@<< version history >>
 #@+node:ekr.20040908093511.2:<< version history >>
 #@+at
-# 
 # 0.4 EKR:
 # - Rewrote to handle multiple commanders correctly.
 # - Created ctor, set hooks on "new" and "open2".
 # - Saved marks so we don't have to rescan:  a major performance boost.
 #   This was slowing down write logic considerably.
 # - Added basic unit testing.
-# 
-# 0.5 EKR:
-# - Use constant spacing for buttons on MacOs/darwin.
-# 
+# 0.5 EKR: Use constant spacing for buttons on MacOs/darwin.
 # 0.6 EKR:
 # - Create a separate Navigator instance for each open window.
 #     This eliminates problems when multiple windows are open.
 # - Limit size of recent menu to 25 entries.
 # - Limit width of entries to 40 characters.
-# 
 # 0.7 EKR, following suggestions of Bernhard Mulder.
 # - Fix problems with initialization:
 #     - Bind onCreate to the "open2" hook.
@@ -35,10 +30,10 @@ __version__ = "0.10"
 # 0.8 EKR:
 #     - Changed 'new_c' logic to 'c' logic.
 #     - Added init function.
-# 0.9 EKR:
-#     - Make sure buttons appear in a new window.
-# 0.10 EKR:
-#     - Make sure self.c == keywords.get('c') in all hook handlers.
+# 0.9 EKR: Make sure buttons appear in a new window.
+# 0.10 EKR: Make sure self.c == keywords.get('c') in all hook handlers.
+# 0.11 EKR: Disabled setting __name__ so that an entry is created for 
+# nodenavigator in the Plugins menu.
 #@-at
 #@nonl
 #@-node:ekr.20040908093511.2:<< version history >>
@@ -70,7 +65,7 @@ def init ():
     
         if g.app.gui.guiName() == "tkinter":
             leoPlugins.registerHandler(('new','open2'), onCreate)
-            g.plugin_signon("nodenavigator")
+            g.plugin_signon(__name__) #"nodenavigator")
     
     return ok
 #@nonl
