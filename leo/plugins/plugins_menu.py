@@ -565,9 +565,29 @@ class PluginAbout:
         frame.pack(side="top")
         #@    << Create the contents of the about box >>
         #@+node:EKR.20040517080555.21:<< Create the contents of the about box >>
-        Tk.Label(frame, text="Version " + version).pack()
+        Tk.Label(frame,text="Version " + version).pack()
         
-        Tk.Label(frame, text=about, borderwidth=10,justify="left").pack()
+        body = Tk.Text(frame,name='body-pane',
+            bd=2,bg="white",relief="flat",setgrid=0,wrap='word')
+        body.insert('1.0',about)
+        if 0: # prevents arrow keys from being visible.
+            body.configure(state='disabled')
+        g.app.gui.setInsertPoint(body,'1.0')
+        body.see('1.0')
+        
+        bodyBar = Tk.Scrollbar(frame,name='bodyBar')
+        body['yscrollcommand'] = bodyBar.set
+        bodyBar['command'] = body.yview
+        
+        bodyBar.pack(side="right", fill="y")
+        body.pack(expand=1,fill="both")
+        
+        def destroyCallback(event=None,top=top):
+            top.destroy()
+        
+        body.bind('<Return>',destroyCallback)
+        
+        g.app.gui.set_focus(None,body)
         #@nonl
         #@-node:EKR.20040517080555.21:<< Create the contents of the about box >>
         #@nl
@@ -576,9 +596,8 @@ class PluginAbout:
         buttonbox = Tk.Frame(top, borderwidth=5)
         buttonbox.pack(side="bottom")
         
-        self.button = Tk.Button(buttonbox, text="Close", command=top.destroy)
-        self.button.pack(side="bottom")
-        #@nonl
+        self.button = b = Tk.Button(buttonbox, text="Close", command=top.destroy)
+        b.pack(side="bottom")
         #@-node:EKR.20040517080555.22:<< Create the close button >>
         #@nl
         
