@@ -214,13 +214,13 @@ def findNextWord(self,p):
         # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
         # Start the word at the first letter.
         i = 0
-        while i < len(line) and not g.isWordChar1(line[i]): # line[i] not in word_start:
+        while i < len(line) and not g.isWordChar1(line[i]):
             i += 1
         if i < len(line):
             # A non-empty word has been found.
             line = t.get('insert wordstart','insert lineend')
             j = i
-            while j < len(line) and g.isWordChar(line[j]): # line[j] in word_chars:
+            while j < len(line) and g.isWordChar(line[j]):
                 j += 1
             word = line[i:j]
             # This trace is important: it verifies that all words have actually been checked.
@@ -368,11 +368,10 @@ def cycleAllFocus (self,event):
             pane = c.frame.tree.canvas
     else:
         pane = c.frame.body.bodyCtrl
-        editWidgetCount = logWidgetCount = 0
+        self.editWidgetCount = self.logWidgetCount = 0
         
-    if trace:
-        print 'old: %10s new: %10s' % (
-            w_name(w),id(w),w_name(pane),pane and id(pane))
+    if trace: print 'old: %10s new: %10s' % (w_name(w),w_name(pane))
+
     if pane:
         k.newMinibufferWidget = pane
         c.widgetWantsFocusNow(pane)
@@ -1271,13 +1270,13 @@ def findNextWord(self,p):
         # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
         # Start the word at the first letter.
         i = 0
-        while i < len(line) and not g.isWordChar1(line[i]): # line[i] not in word_start:
+        while i < len(line) and not g.isWordChar1(line[i]):
             i += 1
         if i < len(line):
             # A non-empty word has been found.
             line = t.get('insert wordstart','insert lineend')
             j = i
-            while j < len(line) and g.isWordChar(line[j]): # line[j] in word_chars:
+            while j < len(line) and g.isWordChar(line[j]):
                 j += 1
             word = line[i:j]
             # This trace is important: it verifies that all words have actually been checked.
@@ -2864,6 +2863,52 @@ def test_isPlainKey (self):
 #@-node:ekr.20060606095344:test_isPlainKey
 #@-node:ekr.20061012185332:Found: string.
 #@-node:ekr.20061011131836:Fixed new unicode bug
+#@+node:ekr.20061012213447:Made 'About Plugin' dialog scrollable
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3960993
+
+I happen to select Plugins->Scripting and the "About Scripting" window opened...a
+huge, long, "about" window with no scroll-bars that was taller than my screen.
+
+Can the "About" info be put into a resizable window (with scroll-bars) instead,
+with a reasonable initial size?
+
+Kam-Yung
+
+#@-node:ekr.20061012213447:Made 'About Plugin' dialog scrollable
+#@+node:ekr.20061013092901:Removed unwanted key-state message
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3961623
+By: vpe
+
+Leo periodically prints 'Key state: Insert' message in the status area even
+though I never change insert mode. It does not seem to be necessary and it destroys
+UNL info. I get this message when I open new file, insert new node, type (,
+type . in Python nodes, and probably on other events.
+
+To get rid of it, I added one line to showStateAndMode(self) in
+Code-->@thin leoKeys.py-->class keyHandlerClass-->Input
+State-->showStateAndMode
+
+....if hasattr(frame,'clearStatusLine'):
+........if not state.capitalize()=='Insert': # <---- added
+............frame.clearStatusLine()
+............put = frame.putStatusLine
+............put('Key state: ',color='blue')
+............put('%s' % state.capitalize())
+
+There should be a more intelligent solution. 
+
+
+Also, command set-overwrite-state works but generates a Tk error.
+
+specs:
+Leo 4.4.2 beta 2, build  1.69 , October 9, 2006
+Python 2.5.0, Tk 8.4.12, Pmw 1.2
+Windows 5, 0, 2195, 2, Service Pack 4
+#@-node:ekr.20061013092901:Removed unwanted key-state message
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs

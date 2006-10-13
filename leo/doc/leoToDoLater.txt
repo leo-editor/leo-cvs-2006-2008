@@ -2009,13 +2009,13 @@ def findNextWord(self,p):
         # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
         # Start the word at the first letter.
         i = 0
-        while i < len(line) and not g.isWordChar1(line[i]): # line[i] not in word_start:
+        while i < len(line) and not g.isWordChar1(line[i]):
             i += 1
         if i < len(line):
             # A non-empty word has been found.
             line = t.get('insert wordstart','insert lineend')
             j = i
-            while j < len(line) and g.isWordChar(line[j]): # line[j] in word_chars:
+            while j < len(line) and g.isWordChar(line[j]):
                 j += 1
             word = line[i:j]
             # This trace is important: it verifies that all words have actually been checked.

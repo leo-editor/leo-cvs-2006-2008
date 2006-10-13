@@ -3,7 +3,6 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061012213659:Minor 4
 #@+node:ekr.20061012095927:Fix multifile plugin
 (via email)
 
@@ -42,21 +41,6 @@ analyzing code, and switching by only using the keyboard (shortcuts '<markname>
 or `<markname>) works very good (for me) in vim. Switching between the two most
 recent marks is done in vim using the shortcut '' or ``.
 #@-node:ekr.20061012061050:Fix nodenavigator plugin
-#@+node:ekr.20061012213447:About plugin window must be scrollable
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3960993
-
-I happen to select Plugins->Scripting and the "About Scripting" window opened...a
-huge, long, "about" window with no scroll-bars that was taller than my screen.
-
-Can the "About" info be put into a resizable window (with scroll-bars) instead,
-with a reasonable initial size?
-
-Kam-Yung
-
-#@-node:ekr.20061012213447:About plugin window must be scrollable
-#@-node:ekr.20061012213659:Minor 4
 #@+node:ekr.20061012213519:Major 6
 #@+node:ekr.20061012082613:Fix body editor problems: 2
 #@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
