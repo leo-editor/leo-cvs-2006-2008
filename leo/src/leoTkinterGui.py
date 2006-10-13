@@ -438,7 +438,7 @@ class tkinterGui(leoGui.leoGui):
                     g.trace('*'*40,'Previous widget',wname)
                     g.trace(repr(w2),g.callers())
                     
-        if not g.app.unitTesting and c.config.getBool('trace_g.app.gui.set_focus'):
+        if not g.app.unitTesting and c and c.config.getBool('trace_g.app.gui.set_focus'):
             self.set_focus_count += 1
             g.trace('%4d %10s' % (self.set_focus_count,c.widget_name(w)),g.callers())
         
