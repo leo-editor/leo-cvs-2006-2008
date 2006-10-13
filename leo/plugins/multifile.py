@@ -50,10 +50,12 @@ beginning of the line and by themselves.
 
 #@<< imports >>
 #@+node:ekr.20050226114732.1:<< imports >>
-from leoPlugins import *   
 import leoGlobals as g 
-from leoNodes import *     
-from leoAtFile import *   
+
+import leoAtFile # Important to make all uses explicit.
+import leoNodes # Important to make all uses explicit.
+import leoPlugins
+
 import shutil
 import new
 import os.path
@@ -72,18 +74,14 @@ __version__ = ".5"
 #@<< version history >>
 #@+node:ekr.20050226115130:<< version history >>
 #@@killcolor
-
 #@+at
-# 
 # 0.3 EKR:
-#     - Added init method.
-#     - Minor code reorg.  The actual code is unchanged.
-# 
-# 0.4 EKR:
-#     - Changed 'new_c' logic to 'c' logic.
-# 
-# 0.5 EKR:
-#     - Use 'new' and 'open2' hooks to call addMenu.
+# - Added init method.
+# - Minor code reorg.  The actual code is unchanged.
+# 0.4 EKR: Changed 'new_c' logic to 'c' logic.
+# 0.5 EKR: Use 'new' and 'open2' hooks to call addMenu.
+# 0.6 EKR: Made it work with Leo 4.4.2.  Made all uses of leoNodes and 
+# leoAtFile explicit.
 #@-at
 #@nonl
 #@-node:ekr.20050226115130:<< version history >>
@@ -97,24 +95,25 @@ files = {}
 #@+others
 #@+node:ekr.20050226115130.1:init
 def init ():
-    
+
     if ok:
-        g.globalDirectiveList.append( 'multipath' ) 
-        g.globalDirectiveList.append( 'multiprefix' ) 
-        registerHandler( 'save1' , start )
-        registerHandler( 'save2', stop )
-        registerHandler(('new', 'start2'),addMenu )
-        g.plugin_signon(__name__)  
+        g.globalDirectiveList.append('multipath')
+        g.globalDirectiveList.append('multiprefix')
+        leoPlugins.registerHandler('save1',start)
+        leoPlugins.registerHandler('save2',stop)
+        leoPlugins.registerHandler(('new','start2'),addMenu)
+        g.plugin_signon(__name__)
 
     return ok
 #@nonl
 #@-node:ekr.20050226115130.1:init
 #@+node:mork.20041018204908.3:decoratedOpenWriteFile
-def decoratedOpenWriteFile( self,root,toString):
+def decoratedOpenWriteFile( self,root,fileName,toString):
     
     oWF = haveseen[ root.c ]  
     rt = oWF( root, toString ) 
-    if root.isDirty(): files[ self.targetFileName ] = root.copy()
+    # if root.isDirty(): files[ self.targetFileName ] = root.copy()
+    if root.isDirty(): files[ fileName ] = root.copy()
     return rt
 #@nonl
 #@-node:mork.20041018204908.3:decoratedOpenWriteFile
@@ -123,9 +122,11 @@ def start( tag , keywords ):
  
     c = keywords.get('c')
     if not haveseen.has_key( c ): 
-        ndf = c.atFileCommands.new_df
-        haveseen[ c ] = ndf.openWriteFile
-        ndf.openWriteFile = new.instancemethod( decoratedOpenWriteFile, ndf, ndf.__class__ )
+        # ndf = c.atFileCommands.new_df
+        # haveseen[ c ] = ndf.openWriteFile
+        at = c.atFileCommands.atFile
+        # def openFileForWriting (self,root,fileName,toString):
+        at.openFileForWriting = new.instancemethod( decoratedOpenWriteFile, at, at.__class__ )
 #@nonl
 #@-node:mork.20041018204908.4:start
 #@+node:mork.20041018204908.5:scanForMultiPath
@@ -189,7 +190,6 @@ def insertDirectoryString( c ):
     
     dir = tkFileDialog.askdirectory()
     if dir:
-        
         bodyCtrl = c.frame.body.bodyCtrl
         bodyCtrl.insert( 'insert', dir )
         bodyCtrl.event_generate( '<Key>' )
