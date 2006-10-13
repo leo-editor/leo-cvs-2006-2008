@@ -124,7 +124,9 @@ def start( tag , keywords ):
     if not haveseen.has_key( c ): 
         # ndf = c.atFileCommands.new_df
         # haveseen[ c ] = ndf.openWriteFile
+        
         at = c.atFileCommands.atFile
+        haveseen [c] = at.openFileForWriting
         # def openFileForWriting (self,root,fileName,toString):
         at.openFileForWriting = new.instancemethod( decoratedOpenWriteFile, at, at.__class__ )
 #@nonl
