@@ -436,7 +436,7 @@ class leoFind:
             #@nl
     #@-node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
     #@+node:ekr.20031218072017.3068:change
-    def change(self):
+    def change(self,event=None):
     
         if self.checkArgs():
             self.initInHeadline()

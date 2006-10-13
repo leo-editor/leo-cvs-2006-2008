@@ -1639,11 +1639,10 @@ class editCommandsClass (baseEditCommandsClass):
                 pane = c.frame.tree.canvas
         else:
             pane = c.frame.body.bodyCtrl
-            editWidgetCount = logWidgetCount = 0
+            self.editWidgetCount = self.logWidgetCount = 0
             
-        if trace:
-            print 'old: %10s new: %10s' % (
-                w_name(w),id(w),w_name(pane),pane and id(pane))
+        if trace: print 'old: %10s new: %10s' % (w_name(w),w_name(pane))
+    
         if pane:
             k.newMinibufferWidget = pane
             c.widgetWantsFocusNow(pane)

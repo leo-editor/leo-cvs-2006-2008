@@ -762,13 +762,19 @@ class leoTree:
         self.oops()
     #@-node:ekr.20031218072017.3707:Drawing
     #@+node:ekr.20031218072017.3708:Edit label
-    def editLabel(self,v):
+    def editLabel(self,v,selectAll=False):
+        
+        __pychecker__ = '--no-argsused' # base classes have many unused args.
+    
         self.oops()
     
     def endEditLabel(self):
         self.oops()
     
-    def setEditLabelState(self,v):
+    def setEditLabelState(self,v,selectAll=False):
+        
+        __pychecker__ = '--no-argsused' # base classes have many unused args.
+    
         self.oops()
     #@-node:ekr.20031218072017.3708:Edit label
     #@+node:ekr.20031218072017.3711:Scrolling
@@ -1485,13 +1491,19 @@ class nullTree (leoTree):
         pass
     #@-node:ekr.20031218072017.2237:Drawing
     #@+node:ekr.20031218072017.2238:Edit label
-    def editLabel(self,v):
+    def editLabel(self,v,selectAll=False):
+    
+        __pychecker__ = '--no-argsused' # base classes have many unused args.
+    
         pass
     
     def endEditLabel(self):
         pass
     
-    def setEditLabelState(self,v):
+    def setEditLabelState(self,v,selectAll=False):
+        
+        __pychecker__ = '--no-argsused' # base classes have many unused args.
+    
         pass
     #@-node:ekr.20031218072017.2238:Edit label
     #@+node:ekr.20031218072017.2239:Scrolling
