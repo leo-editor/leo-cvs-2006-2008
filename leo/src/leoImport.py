@@ -1702,10 +1702,6 @@ class baseLeoImportCommands:
         n = len(s)
         while i < n and g.isWordChar(s[i]):
             i += 1
-            ### c = s[i]
-            ### if c in string.ascii_letters or c in string.digits or c == '-':
-            ###     i += 1
-            ### else: break
         return i
     #@-node:ekr.20031218072017.3267:skipElispId
     #@+node:ekr.20031218072017.3268:createElispFunction

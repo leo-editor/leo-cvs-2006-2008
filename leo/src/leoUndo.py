@@ -229,7 +229,7 @@ class baseUndoer:
         for use by more sophisticated algorithms.'''
         
         # Start a word if new_ch begins whitespace + word
-        return not old_ch.isspace() and new_ch.isspace() ### old_ch not in ws and new_ch in ws
+        return not old_ch.isspace() and new_ch.isspace()
     #@-node:ekr.20050126081529:recognizeStartOfTypingWord
     #@+node:ekr.20031218072017.3613:redoMenuName, undoMenuName
     def redoMenuName (self,name):

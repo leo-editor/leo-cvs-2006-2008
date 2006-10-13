@@ -1282,22 +1282,10 @@ class leoMenu:
     #@+node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
     def canonicalizeMenuName (self,name):
         
-        ### name = name.lower()
-        ### newname = ""
-        ### chars = string.ascii_letters + string.digits
-        ### for ch in name:
-        ###     if ch.isalnum():  # ch in chars:
-        ###         newname = newname+ch
-        ### return newname
         return ''.join([ch for ch in name.lower() if ch.isalnum()])
         
     def canonicalizeTranslatedMenuName (self,name):
         
-        ### name = name.lower() ; newname = ""
-        ### for ch in name:
-        ###     if ch not in (' ','\t','\n','\r','&'):
-        ###        newname = newname+ch
-        ### return newname
         return ''.join([ch for ch in name.lower() if ch not in u'& \t\n\r'])
     
     #@-node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
@@ -1306,9 +1294,7 @@ class leoMenu:
         
         '''Compute the old-style shortcut key for @shortcuts entries.'''
         
-        ### chars = string.ascii_letters + string.digits
-        
-        return ''.join([ch for ch in s.strip().lower() if ch.isalnum()]) ### ch in chars]
+        return ''.join([ch for ch in s.strip().lower() if ch.isalnum()])
     #@-node:ekr.20051022044950:computeOldStyleShortcutKey
     #@+node:ekr.20031218072017.1723:createMenuEntries
     def createMenuEntries (self,menu,table,dynamicMenu=False):

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="619" width="937"/>
+	<global_window_position top="71" left="252" height="600" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 <v t="ekr.20061011082224" a="TV"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
-<v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = True</vh></v>
+<v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
 <v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060122105527.7"><vh>@bool stayInTreeAfterSelect = True</vh></v>
@@ -164,7 +164,7 @@
 <v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
-<v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = True</vh></v>
+<v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
 <v t="ekr.20041119041019.2"><vh>@bool save_clears_undo_buffer = False</vh></v>
 <v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
@@ -6158,6 +6158,6 @@ You can use the Go To Next Clone (Alt-N) to find clones elsewhere in the file.
 - I have not included any keyboard shortcuts here because they are highly personal.
   However, the ignore_unbound_non_ascii_keys option affects how Leo handles 'plain' keys.</t>
 <t tx="ekr.20061012122620">True:  When a node is expanded, insert new nodes as the last child.
-False: (legacy) When a node is expanded, insert new nodes as the first child.</t>
+False: (legacy &amp; recommended) When a node is expanded, insert new nodes as the first child.</t>
 </tnodes>
 </leo_file>

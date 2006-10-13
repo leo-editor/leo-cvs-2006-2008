@@ -3322,8 +3322,7 @@ def find_on_line(s,i,pattern):
 def is_c_id(ch):
 
     return g.isWordChar(ch)
-    
-    ### return ch and (ch in string.ascii_letters or ch in string.digits or ch == '_')
+
 #@-node:ekr.20031218072017.3177:is_c_id
 #@+node:ekr.20031218072017.3178:is_nl
 def is_nl(s,i):
@@ -3387,14 +3386,12 @@ def match_word(s,i,pattern):
     if pattern == None: return False
     j = len(pattern)
     if j == 0: return False
-    if string.find(s,pattern,i,i+j) != i:
+    if s.find(pattern,i,i+j) != i:
         return False
     if i+j >= len(s):
         return True
     ch = s[i+j]
     return not g.isWordChar(ch)
-    
-    ### return not (ch in string.ascii_letters or ch in string.digits or ch == '_')
 #@-node:ekr.20031218072017.3184:match_word
 #@+node:ekr.20031218072017.3185:skip_blank_lines
 def skip_blank_lines(s,i):
@@ -3416,10 +3413,6 @@ def skip_c_id(s,i):
     n = len(s)
     while i < n and g.isWordChar(s[i]):
         i += 1
-        ### ch = s[i]
-        ### if ch in string.ascii_letters or ch in string.digits or ch == '_':
-        ###    i += 1
-        ### else: break
     return i
 #@-node:ekr.20031218072017.3186:skip_c_id
 #@+node:ekr.20040705195048:skip_id
@@ -3429,12 +3422,6 @@ def skip_id(s,i,chars=None):
     n = len(s)
     while i < n and (g.isWordChar(s[i]) or s[i] in chars):
         i += 1
-        ### ch = s[i]
-        #### if ch in string.ascii_letters or ch in string.digits or ch == '_':
-            ### i += 1
-        ### elif chars and ch in chars:
-            ### i += 1
-        ### else: break
     return i
 #@nonl
 #@-node:ekr.20040705195048:skip_id
@@ -3466,16 +3453,15 @@ def skip_long(s,i):
     Return (i, val) or (i, None) if s[i] does not point at a number.
     """
 
-    ### digits = string.digits
     val = 0
     i = g.skip_ws(s,i)
     n = len(s)
-    if i >= n or (not s[i].isdigit() and s[i] not in u'+-'): ### s[i] not in "+-" + digits:
+    if i >= n or (not s[i].isdigit() and s[i] not in u'+-'):
         return i, None
     j = i
     if s[i] in u'+-': # Allow sign before the first digit
         i +=1
-    while i < n and s[i].isdigit(): ### s[i] in digits:
+    while i < n and s[i].isdigit():
         i += 1
     try: # There may be no digits.
         val = int(s[j:i])
@@ -3808,9 +3794,6 @@ def makeScriptButton (c,
         #@nl
     #@    << create press-buttonText-button command >>
     #@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
-    ### chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
-    ### aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(buttonText,g.app.tkEncoding)]
-    
     aList = [g.choose(ch.isalnum(),ch,'-') for ch in buttonText]
     
     buttonCommandName = ''.join(aList)

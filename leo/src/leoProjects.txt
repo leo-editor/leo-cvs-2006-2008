@@ -209,11 +209,6 @@ def findNextWord(self,p):
     t = self.workCtrl
 
     # Allow quotes and underscores in the middle of words, but not at the beginning or end.
-    # This breaks words at non-ascii 'letters' such as é.  I don't know what the solution is.
-    if 0: ###
-        word_start = toUnicode(string.letters,encoding='ascii')
-        word_end   = toUnicode(string.letters + string.digits,encoding='ascii')
-        word_chars = toUnicode(string.letters + string.digits + "`" + "'" + "_",encoding='ascii')
     while 1:
         line = t.get('insert wordstart','insert lineend')
         # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
@@ -228,8 +223,6 @@ def findNextWord(self,p):
             while j < len(line) and g.isWordChar(line[j]): # line[j] in word_chars:
                 j += 1
             word = line[i:j]
-            ###while word and not g.isWordChar(word[-1]): # word[-1] not in word_end:
-            ###    word = word[:-1]
             # This trace is important: it verifies that all words have actually been checked.
             # g.trace(repr(word))
             x1 = t.index('insert + %dc' % (i))
@@ -1199,6 +1192,1678 @@ else:
 #@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
 #@-node:ekr.20031218072017.1723:createMenuEntries
 #@-node:ekr.20061011151640:Fixed  warning if minibuffer command does not exist when making menus
+#@+node:ekr.20061011131836:Fixed new unicode bug
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3957980
+By: dcbbcd
+
+This was a major effort.
+
+What I did:
+    
+- Defined g.isWordChar in terms of ch.isalnum()
+
+- Replace almost all instances of string.letters and string.digits by calls to
+  ch.isalnum(), ch.isalpha(), ch.isdigit(), etc.
+  
+- Similarly, replaced word_chars.
+
+- The new code uses string literals only for
+
+a) small constants like '+-' and
+b) constants in a very limited context, as in the input to regexp.
+
+To do: look for string.printable
+
+@color
+#@nonl
+#@+node:ekr.20061012161012:Found: string.letters
+# most uses of these should be converted to g.isWordChar.
+#@nonl
+#@+node:ekr.20060417194232.2:findWord
+def findWord (self,event):
+    
+    '''Put the cursor at the next word (on a line) that starts with a character.'''
+
+    k = self.k ; tag = 'find-word-on-line' ; state = k.getState(tag)
+    
+    if state == 0:
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
+        k.setLabelBlue('Find word: ')
+        k.getArg(event,tag,1,self.findWord)
+    else:        
+        word = k.arg ; w = self.w ; c = k.c
+        if word:
+            i = w.index('insert')
+            s = g.app.gui.getAllText(w)
+            i = g.app.gui.toPythonIndex(s,w,i)
+            j = s.find('\n',i) # Limit to this line.
+            s = s[:j]
+            while i < len(s):
+                if i == -1: break
+                ok = g.match_word(s,i,word) and (i == 0 or not g.isWordChar(s[i-1]))
+                # g.trace(ok,repr(word),i,repr(s))
+                if ok:
+                    i1 = g.app.gui.toGuiIndex(s,w,i)
+                    i2 = g.app.gui.toGuiIndex(s,w,i+len(word))
+                    g.app.gui.setSelectionRange(w,i1,i2)
+                    break
+                else:
+                    i += 1
+        k.resetLabel()
+        k.clearState()
+
+#@-node:ekr.20060417194232.2:findWord
+#@+node:ekr.20051025071455.47:findNextWord
+# Unicode characters may cause index problems.
+
+def findNextWord(self,p):
+
+    """Scan for the next word, leaving the result in the work widget"""
+
+    t = self.workCtrl
+
+    # Allow quotes and underscores in the middle of words, but not at the beginning or end.
+    while 1:
+        line = t.get('insert wordstart','insert lineend')
+        # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
+        # Start the word at the first letter.
+        i = 0
+        while i < len(line) and not g.isWordChar1(line[i]): # line[i] not in word_start:
+            i += 1
+        if i < len(line):
+            # A non-empty word has been found.
+            line = t.get('insert wordstart','insert lineend')
+            j = i
+            while j < len(line) and g.isWordChar(line[j]): # line[j] in word_chars:
+                j += 1
+            word = line[i:j]
+            # This trace is important: it verifies that all words have actually been checked.
+            # g.trace(repr(word))
+            x1 = t.index('insert + %dc' % (i))
+            x2 = t.index('insert + %dc' % (i+len(word)))
+            g.app.gui.setTextSelection(t,x1,x2)
+            return p, word
+        else:
+            # End of the line. Bug fix: 9/8/05.
+            t.mark_set('insert','insert lineend + 1c')
+            if t.compare("insert",">=", "end - 1c"):
+                p.moveToThreadNext()
+                if not p: return None,None
+                t.delete("1.0", "end")
+                t.insert("end", p.bodyString())
+                t.mark_set("insert", "1.0")
+                
+    __pychecker__ = '--no-implicitreturns' # This is not really an implicit return.
+#@nonl
+#@-node:ekr.20051025071455.47:findNextWord
+#@+node:ekr.20060220104902:insertNormalChar
+def insertNormalChar (self,ch,keysym):
+    
+    k = self.k ; w = self.widget
+
+    if g.isWordChar(ch):
+        # Look ahead to see if the character completes any item.
+        s = g.app.gui.getSelectedText(w) + ch
+        tabList,common_prefix = g.itemsMatchingPrefixInList(
+            s,self.membersList,matchEmptyPrefix=True)
+        if tabList:
+            # Add the character.
+            self.tabList = tabList
+            self.extendSelection(ch)
+            s = g.app.gui.getSelectedText(w)
+            if s.startswith(self.prefix):
+                self.prefix = self.prefix + ch
+            self.computeCompletionList()
+    else:
+        word = g.app.gui.getSelectedText(w)
+        if keysym == 'parenleft':
+            # Similar to chain logic.
+            obj = self.object
+            # g.trace(obj,word,self.hasAttr(obj,word))
+            if self.hasAttr(obj,word):
+                obj = self.getAttr(obj,word)
+                self.push(self.object)
+                self.object = obj
+                self.leadinWord = word
+                self.membersList = self.getMembersList(obj)
+                if k.enable_calltips:
+                    # This calls self.finish if the '(' is valid.
+                    self.calltip(obj)
+                    return
+        self.extendSelection(ch)
+        self.finish()
+#@-node:ekr.20060220104902:insertNormalChar
+#@+node:ekr.20040711135244.11:doOp
+def doOp (self):
+    
+    val = self.val
+    outer = self.lineParenLevel <= 0 or (self.parenLevel == 0 and self.squareBracketLevel == 0)
+    # New in Python 2.4: '@' is an operator, not an error token.
+    if self.val == '@':
+        self.array.append(self.val)
+        # Preserve whitespace after @.
+        i = g.skip_ws(self.s,self.scol+1)
+        ws = self.s[self.scol+1:i]
+        if ws: self.array.append(ws)
+    elif val == '(':
+        # Nothing added; strip leading blank before function calls but not before Python keywords.
+        strip = self.lastName=='name' and not keyword.iskeyword(self.prevName)
+        self.put('(',strip=strip)
+        self.parenLevel += 1 ; self.lineParenLevel += 1
+    elif val in ('=','==','+=','-=','!=','<=','>=','<','>','<>','*','**','+','&','|','/','//'):
+        # Add leading and trailing blank in outer mode.
+        s = g.choose(outer,' %s ','%s')
+        self.put(s % val)
+    elif val in ('^','~','{','['):
+        # Add leading blank in outer mode.
+        s = g.choose(outer,' %s','%s')
+        self.put(s % val)
+        if val == '[': self.squareBracketLevel += 1
+    elif val in (',',':','}',']',')'):
+        # Add trailing blank in outer mode.
+        s = g.choose(outer,'%s ','%s')
+        self.put(s % val)
+        if val == ']': self.squareBracketLevel -= 1
+        if val == ')':
+            self.parenLevel -= 1 ; self.lineParenLevel -= 1
+    # ----- no difference between outer and inner modes ---
+    elif val in (';','%'):
+        # Add leading and trailing blank.
+        self.put(' %s ' % val)
+    elif val == '>>':
+        # Add leading blank.
+        self.put(' %s' % val)
+    elif val == '<<':
+        # Add trailing blank.
+        self.put('%s ' % val)
+    elif val in ('-'):
+        # Could be binary or unary.  Or could be a hyphen in a section name.
+        # Add preceding blank only for non-id's.
+        if outer:
+            if self.array:
+                prev = self.array[-1].rstrip()
+                if prev and not g.isWordChar(prev[-1]):
+                    self.put(' %s' % val)
+                else: self.put(val)
+            else: self.put(val) # Try to leave whitespace unchanged.
+        else:
+            self.put(val)
+    else:
+        self.put(val)
+#@-node:ekr.20040711135244.11:doOp
+#@+node:ekr.20050920084036.238:appendToRegister
+def appendToRegister (self,event):
+    
+    '''Prompt for a register name and append the selected text to the register's contents.'''
+
+    c = self.c ; k = self.k ; state = k.getState('append-to-reg')
+    
+    if state == 0:
+        k.setLabelBlue('Append to register: ',protect=True)
+        k.setState('append-to-reg',1,self.appendToRegister)
+    else:
+        k.clearState()
+        if self.checkBodySelection():
+            if event.keysym.isalpha():
+                w = c.frame.body.bodyCtrl
+                c.bodyWantsFocus()
+                key = event.keysym.lower()
+                val = self.registers.get(key,'')
+                try:
+                    val = val + w.get('sel.first','sel.last')
+                except Exception:
+                    pass
+                self.registers[key] = val
+                k.setLabelGrey('Register %s = %s' % (key,repr(val)))
+            else:
+                k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.238:appendToRegister
+#@+node:ekr.20050920084036.237:prependToRegister
+def prependToRegister (self,event):
+    
+    '''Prompt for a register name and prepend the selected text to the register's contents.'''
+    
+    c = self.c ; k = self.k ; state = k.getState('prepend-to-reg')
+    
+    if state == 0:
+        k.setLabelBlue('Prepend to register: ',protect=True)
+        k.setState('prepend-to-reg',1,self.prependToRegister)
+    else:
+        k.clearState()
+        if self.checkBodySelection():
+            if event.keysym.isalpha():
+                w = c.frame.body.bodyCtrl
+                c.bodyWantsFocus()
+                key = event.keysym.lower()
+                val = self.registers.get(key,'')
+                try:
+                    val = w.get('sel.first','sel.last') + val
+                except Exception:
+                    pass
+                self.registers[key] = val
+                k.setLabelGrey('Register %s = %s' % (key,repr(val)))
+            else:
+                k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.237:prependToRegister
+#@+node:ekr.20050920084036.239:copyRectangleToRegister
+def copyRectangleToRegister (self,event):
+    
+    '''Prompt for a register name and append the rectangle defined by selected
+    text to the register's contents.'''
+
+    c = self.c ; k = self.k ; state = k.getState('copy-rect-to-reg')
+
+    if state == 0:
+        w = self.editWidget(event) # sets self.w
+        if not w: return
+        k.commandName = 'copy-rectangle-to-register'
+        k.setLabelBlue('Copy Rectangle To Register: ',protect=True)
+        k.setState('copy-rect-to-reg',1,self.copyRectangleToRegister)
+    elif self.checkBodySelection('No rectangle selected'):
+        k.clearState()
+        if event.keysym.isalpha():
+            key = event.keysym.lower()
+            w = self.w
+            c.widgetWantsFocusNow(w)
+            r1, r2, r3, r4 = self.getRectanglePoints(w)
+            rect = []
+            while r1 <= r3:
+                txt = w.get('%s.%s' % (r1,r2),'%s.%s' % (r1,r4))
+                rect.append(txt)
+                r1 = r1 + 1
+            self.registers [key] = rect
+            k.setLabelGrey('Register %s = %s' % (key,repr(rect)))
+        else:
+            k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.239:copyRectangleToRegister
+#@+node:ekr.20050920084036.240:copyToRegister
+def copyToRegister (self,event):
+    
+    '''Prompt for a register name and append the selected text to the register's contents.'''
+    
+    c = self.c ; k = self.k ; state = k.getState('copy-to-reg')
+    
+    if state == 0:
+        k.commandName = 'copy-to-register'
+        k.setLabelBlue('Copy to register: ',protect=True)
+        k.setState('copy-to-reg',1,self.copyToRegister)
+    else:
+        k.clearState()
+        if self.checkBodySelection():
+            if event.keysym.isalpha():
+                key = event.keysym.lower()
+                w = c.frame.body.bodyCtrl
+                c.bodyWantsFocus()
+                try:
+                    val = w.get('sel.first','sel.last')
+                except Exception:
+                    g.es_exception()
+                    val = ''
+                self.registers[key] = val
+                k.setLabelGrey('Register %s = %s' % (key,repr(val)))
+            else:
+                k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.240:copyToRegister
+#@+node:ekr.20050920084036.241:incrementRegister
+def incrementRegister (self,event):
+    
+    '''Prompt for a register name and increment its value if it has a numeric value.'''
+    
+    c = self.c ; k = self.k ; state = k.getState('increment-reg')
+    
+    if state == 0:
+        k.setLabelBlue('Increment register: ',protect=True)
+        k.setState('increment-reg',1,self.incrementRegister)
+    else:
+        k.clearState()
+        if self._checkIfRectangle(event):
+            pass # Error message is in the label.
+        elif event.keysym.isalpha():
+            key = event.keysym.lower()
+            val = self.registers.get(key,0)
+            try:
+                val = str(int(val)+1)
+                self.registers[key] = val
+                k.setLabelGrey('Register %s = %s' % (key,repr(val)))
+            except ValueError:
+                k.setLabelGrey("Can't increment register %s = %s" % (key,val))
+        else:
+            k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.241:incrementRegister
+#@+node:ekr.20050920084036.242:insertRegister
+def insertRegister (self,event):
+    
+    '''Prompt for a register name and and insert the value of another register into its contents.'''
+    
+    c = self.c ; k = self.k ; state = k.getState('insert-reg')
+    
+    if state == 0:
+        k.commandName = 'insert-register'
+        k.setLabelBlue('Insert register: ',protect=True)
+        k.setState('insert-reg',1,self.insertRegister)
+    else:
+        k.clearState()
+        if event.keysym.isalpha():
+            w = c.frame.body.bodyCtrl
+            c.bodyWantsFocus()
+            key = event.keysym.lower()
+            val = self.registers.get(key)
+            if val:
+                if type(val)==type([]):
+                    c.rectangleCommands.yankRectangle(val)
+                else:
+                    w.insert('insert',val)
+                k.setLabelGrey('Inserted register %s' % key)
+            else:
+                k.setLabelGrey('Register %s is empty' % key)
+        else:
+            k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.242:insertRegister
+#@+node:ekr.20050920084036.243:jumpToRegister
+def jumpToRegister (self,event):
+    
+    '''Prompt for a register name and set the insert point to the value in its register.'''
+
+    c = self.c ; k = self.k ; state = k.getState('jump-to-reg')
+
+    if state == 0:
+        k.setLabelBlue('Jump to register: ',protect=True)
+        k.setState('jump-to-reg',1,self.jumpToRegister)
+    else:
+        k.clearState()
+        if event.keysym.isalpha():
+            if self._checkIfRectangle(event): return
+            key = event.keysym.lower()
+            val = self.registers.get(key)
+            w = c.frame.body.bodyCtrl
+            c.bodyWantsFocus()
+            if val:
+                try:
+                    w.mark_set('insert',val)
+                    k.setLabelGrey('At %s' % repr(val))
+                except Exception:
+                    k.setLabelGrey('Register %s is not a valid location' % key)
+            else:
+                k.setLabelGrey('Register %s is empty' % key)
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.243:jumpToRegister
+#@+node:ekr.20050920084036.244:numberToRegister (not used)
+@
+C-u number C-x r n reg
+    Store number into register reg (number-to-register).
+C-u number C-x r + reg
+    Increment the number in register reg by number (increment-register).
+C-x r g reg
+    Insert the number from register reg into the buffer.
+@c
+
+def numberToRegister (self,event):
+    
+    k = self.k ; state = k.getState('number-to-reg')
+    
+    if state == 0:
+        k.commandName = 'number-to-register'
+        k.setLabelBlue('Number to register: ',protect=True)
+        k.setState('number-to-reg',1,self.numberToRegister)
+    else:
+        k.clearState()
+        if event.keysym.isalpha():
+            # self.registers[event.keysym.lower()] = str(0)
+            k.setLabelGrey('number-to-register not ready yet.')
+        else:
+            k.setLabelGrey('Register must be a letter')
+#@-node:ekr.20050920084036.244:numberToRegister (not used)
+#@+node:ekr.20050920084036.245:pointToRegister
+def pointToRegister (self,event):
+    
+    '''Prompt for a register name and put a value indicating the insert point in the register.'''
+    
+    c = self.c ; k = self.k ; state = k.getState('point-to-reg')
+    
+    if state == 0:
+        k.commandName = 'point-to-register'
+        k.setLabelBlue('Point to register: ',protect=True)
+        k.setState('point-to-reg',1,self.pointToRegister)
+    else:
+        k.clearState()
+        if event.keysym.isalpha():
+            w = c.frame.body.bodyCtrl
+            c.bodyWantsFocus()
+            key = event.keysym.lower()
+            val = w.index('insert')
+            self.registers[key] = val
+            k.setLabelGrey('Register %s = %s' % (key,repr(val)))
+        else:
+            k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.245:pointToRegister
+#@+node:ekr.20050920084036.246:viewRegister
+def viewRegister (self,event):
+    
+    '''Prompt for a register name and print its contents.'''
+
+    c = self.c ; k = self.k ; state = k.getState('view-reg')
+    
+    if state == 0:
+        k.commandName = 'view-register'
+        k.setLabelBlue('View register: ',protect=True)
+        k.setState('view-reg',1,self.viewRegister)
+    else:
+        k.clearState()
+        if event.keysym.isalpha():
+            key = event.keysym.lower()
+            val = self.registers.get(key)
+            k.setLabelGrey('Register %s = %s' % (key,repr(val)))
+        else:
+            k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.246:viewRegister
+#@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+aList = [g.choose(ch.isalnum(),ch,'-') for ch in buttonText]
+
+buttonCommandName = ''.join(aList)
+buttonCommandName = buttonCommandName.replace('--','-')
+buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
+
+# This will use any shortcut defined in an @shortcuts node.
+k.registerCommand(buttonCommandName,None,executeScriptCallback,pane='button',verbose=False)
+#@-node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+#@+node:ekr.20050126081529:recognizeStartOfTypingWord
+def recognizeStartOfTypingWord (self,
+    old_lines,old_row,old_col,old_ch, 
+    new_lines,new_row,new_col,new_ch):
+
+    __pychecker__ = '--no-argsused' # Ignore all unused arguments here.
+        
+    ''' A potentially user-modifiable method that should return True if the
+    typing indicated by the params starts a new 'word' for the purposes of
+    undo with 'word' granularity.
+    
+    u.setUndoTypingParams calls this method only when the typing could possibly
+    continue a previous word. In other words, undo will work safely regardless
+    of the value returned here.
+    
+    old_ch is the char at the given (Tk) row, col of old_lines.
+    new_ch is the char at the given (Tk) row, col of new_lines.
+    
+    The present code uses only old_ch and new_ch. The other arguments are given
+    for use by more sophisticated algorithms.'''
+    
+    # Start a word if new_ch begins whitespace + word
+    return not old_ch.isspace() and new_ch.isspace()
+#@-node:ekr.20050126081529:recognizeStartOfTypingWord
+#@+node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
+def createRecentFilesMenuItems (self):
+    
+    c = self.c
+    recentFilesMenu = self.getMenu("Recent Files...")
+    
+    # Delete all previous entries.
+    self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
+    
+    # Create the first two entries.
+    table = (
+        ("Clear Recent Files",None,c.clearRecentFiles),
+        ("-",None,None))
+    self.createMenuEntries(recentFilesMenu,table)
+    
+    # Create all the other entries.
+    i = 3
+    for name in c.recentFiles:
+        def recentFilesCallback (event=None,c=c,name=name):
+            __pychecker__ = '--no-argsused' # event not used, but must be present.
+            c.openRecentFile(name)
+        accel_ch = (string.digits + string.letters.upper()) # Not a unicode problem.
+        label = "%s %s" % (accel_ch[i-2],g.computeWindowTitle(name))
+        self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
+        i += 1
+#@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
+#@-node:ekr.20061012161012:Found: string.letters
+#@+node:ekr.20061012172219:Found: string.digits
+#@+node:ekr.20050920084036.128:zapToCharacter
+def zapToCharacter (self,event):
+    
+    '''Kill characters from the insertion point to a given character.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    
+    state = k.getState('zap-to-char')
+    if state == 0:
+        k.setLabelBlue('Zap To Character: ',protect=True)
+        k.setState('zap-to-char',1,handler=self.zapToCharacter)
+    else:
+        c = k.c
+        ch = event and event.char
+        k.resetLabel()
+        k.clearState()
+        if len(event.char) != 0 and not ch.isspace():
+            i = w.search(ch,'insert',stopindex='end')
+            if i != -1:
+                s = w.get('insert','%s' % i)
+                self.addToKillBuffer(s)
+                w.delete('insert','%s' % i)
+#@-node:ekr.20050920084036.128:zapToCharacter
+#@+node:ekr.20041005105605.52:<< Set childIndex >>
+i = g.skip_ws(s,i) ; j = i
+while i < len(s) and s[i].isdigit():
+    i += 1
+
+if j == i:
+    at.readError("Implicit child index in @+node")
+    childIndex = 0
+else:
+    childIndex = int(s[j:i])
+
+if g.match(s,i,':'):
+    i += 1 # Skip the ":".
+else:
+    at.readError("Bad child index in @+node")
+#@-node:ekr.20041005105605.52:<< Set childIndex >>
+#@+node:ekr.20041005105605.53:<< Set cloneIndex >>
+while i < len(s) and s[i] != ':' and not g.is_nl(s,i):
+    if g.match(s,i,"C="):
+        # set cloneIndex from the C=nnn, field
+        i += 2 ; j = i
+        while i < len(s) and s[i].isdigit():
+            i += 1
+        if j < i:
+            cloneIndex = int(s[j:i])
+    else: i += 1 # Ignore unknown status bits.
+
+if g.match(s,i,":"):
+    i += 1
+else:
+    at.readError("Bad attribute field in @+node")
+#@-node:ekr.20041005105605.53:<< Set cloneIndex >>
+#@+node:ekr.20041005105605.123:<< read optional version param >>
+new_df = g.match(s,i,version_tag)
+
+if new_df:
+    # Pre Leo 4.4.1: Skip to the next minus sign or end-of-line.
+    # Leo 4.4.1 +:   Skip to next minus sign, end-of-line, or non numeric character.
+    # This is required to handle trailing comment delims properly.
+    i += len(version_tag)
+    j = i
+    while i < len(s) and (s[i] == '.' or s[i].isdigit()):
+        i += 1
+
+    if j < i:
+        pass
+    else:
+        valid = False
+#@-node:ekr.20041005105605.123:<< read optional version param >>
+#@+node:ekr.20031218072017.2808:skip_id
+def skip_id(self,s,i,chars=None):
+
+    n = len(s)
+    chars = chars and g.toUnicode(chars,encoding='ascii') or u''
+    while i < n and (g.isWordChar(s[i]) or s[i] in chars):
+            i += 1
+    return i
+#@-node:ekr.20031218072017.2808:skip_id
+#@+node:ekr.20031218072017.2881:<< set vnodeName and (childIndex or gnx) from s >>
+if scriptFind:
+    # The vnode name follows the first ':'
+    i = s.find(':',i)
+    if i > -1:
+        vnodeName = s[i+1:].strip()
+    childIndex = -1
+elif newDerivedFile:
+    i = 0
+    if thinFile:
+        # gnx is lies between the first and second ':':
+        i = s.find(':',i)
+        if i > 0:
+            i += 1
+            j = s.find(':',i)
+            if j > 0:
+                gnx = s[i:j]
+            else: i = len(s)
+        else: i = len(s)
+    # vnode name is everything following the first or second':'
+    # childIndex is -1 as a flag for later code.
+    i = s.find(':',i)
+    if i > -1: vnodeName = s[i+1:].strip()
+    else: vnodeName = None
+    childIndex = -1
+else:
+    # vnode name is everything following the third ':'
+    i = 0 ; colons = 0
+    while i < len(s) and colons < 3:
+        if s[i] == ':':
+            colons += 1
+            if colons == 1 and i+1 < len(s) and s[i+1].isdigit():
+                junk,childIndex = g.skip_long(s,i+1)
+        i += 1
+    vnodeName = s[i:].strip()
+    
+# g.trace("gnx",gnx,"vnodeName:",vnodeName)
+if not vnodeName:
+    vnodeName = None
+    g.es("bad @+node sentinel")
+#@-node:ekr.20031218072017.2881:<< set vnodeName and (childIndex or gnx) from s >>
+#@+node:ekr.20050920084036.54: ctor (editCommandsClass)
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+    
+    self.ccolumn = '0'   # For comment column functions.
+    self.dynaregex = re.compile(r'[%s%s\-_]+'%(string.ascii_letters,string.digits))
+        # Not a unicode problem.
+        # For dynamic abbreviations
+    self.extendMode = False # True: all cursor move commands extend the selection.
+    self.fillPrefix = '' # For fill prefix functions.
+    self.fillColumn = 70 # For line centering.
+    self.moveSpotNode = None # A tnode.
+    self.moveSpot = None # For retaining preferred column when moving up or down.
+    self.moveCol = None # For retaining preferred column when moving up or down.
+    self.store ={'rlist':[], 'stext':''} # For dynamic expansion.
+    self.sampleWidget = None # Created later.
+    self.swapSpots = []
+    self._useRegex = False # For replace-string
+    self.w = None # For use by state handlers.
+    
+    # Settings...
+    self.autocompleteBrackets   = c.config.getBool('autocomplete-brackets')
+    self.bracketsFlashBg        = c.config.getColor('flash-brackets-background-color')
+    self.bracketsFlashCount     = c.config.getInt('flash-brackets-count')
+    self.bracketsFlashDelay     = c.config.getInt('flash-brackets-delay')
+    self.bracketsFlashFg        = c.config.getColor('flash-brackets-foreground-color')
+    self.flashMatchingBrackets  = c.config.getBool('flash-matching-brackets')
+    self.smartAutoIndent        = c.config.getBool('smart_auto_indent')
+    
+    self.initBracketMatcher(c)
+#@-node:ekr.20050920084036.54: ctor (editCommandsClass)
+#@+node:EKR.20040526204706.1:getDouble
+def getDouble (self):
+
+    self.skipWs()
+    i = self.fileIndex ; buf = self.fileBuffer
+    floatChars = 'eE.+-'
+    n = len(buf)
+    while i < n and (buf[i].isdigit() or buf[i] in floatChars):
+        i += 1
+    if i == self.fileIndex:
+        raise BadLeoFile("expecting float constant")
+    val = float(buf[self.fileIndex:i])
+    self.fileIndex = i
+    return val
+#@-node:EKR.20040526204706.1:getDouble
+#@+node:EKR.20040526204706.6:getLong
+def getLong (self):
+
+    self.skipWs() # guarantees at least one more character.
+    i = self.fileIndex
+    if self.fileBuffer[i] == u'-':
+        i += 1
+    n = len(self.fileBuffer)
+    while i < n and self.fileBuffer[i].isdigit():
+        i += 1
+    if i == self.fileIndex:
+        raise BadLeoFile("expecting int constant")
+    val = int(self.fileBuffer[self.fileIndex:i])
+    self.fileIndex = i
+    return val
+#@-node:EKR.20040526204706.6:getLong
+#@+node:ekr.20031218072017.3177:is_c_id
+def is_c_id(ch):
+
+    return g.isWordChar(ch)
+
+#@-node:ekr.20031218072017.3177:is_c_id
+#@+node:ekr.20031218072017.3184:match_word
+def match_word(s,i,pattern):
+
+    if pattern == None: return False
+    j = len(pattern)
+    if j == 0: return False
+    if s.find(pattern,i,i+j) != i:
+        return False
+    if i+j >= len(s):
+        return True
+    ch = s[i+j]
+    return not g.isWordChar(ch)
+#@-node:ekr.20031218072017.3184:match_word
+#@+node:ekr.20031218072017.3186:skip_c_id
+def skip_c_id(s,i):
+
+    n = len(s)
+    while i < n and g.isWordChar(s[i]):
+        i += 1
+    return i
+#@-node:ekr.20031218072017.3186:skip_c_id
+#@+node:ekr.20040705195048:skip_id
+def skip_id(s,i,chars=None):
+
+    chars = chars and g.toUnicode(chars,encoding='ascii') or ''
+    n = len(s)
+    while i < n and (g.isWordChar(s[i]) or s[i] in chars):
+        i += 1
+    return i
+#@nonl
+#@-node:ekr.20040705195048:skip_id
+#@+node:ekr.20031218072017.3188:skip_long
+def skip_long(s,i):
+    
+    """Scan s[i:] for a valid int.
+    Return (i, val) or (i, None) if s[i] does not point at a number.
+    """
+
+    val = 0
+    i = g.skip_ws(s,i)
+    n = len(s)
+    if i >= n or (not s[i].isdigit() and s[i] not in u'+-'):
+        return i, None
+    j = i
+    if s[i] in u'+-': # Allow sign before the first digit
+        i +=1
+    while i < n and s[i].isdigit():
+        i += 1
+    try: # There may be no digits.
+        val = int(s[j:i])
+        return i, val
+    except:
+        return i,None
+#@-node:ekr.20031218072017.3188:skip_long
+#@+node:ekr.20031218072017.3267:skipElispId
+def skipElispId (self,s,i):
+
+    n = len(s)
+    while i < n and g.isWordChar(s[i]):
+        i += 1
+    return i
+#@-node:ekr.20031218072017.3267:skipElispId
+#@+node:ekr.20060128103640.2:<< compute the last field >>
+if s.endswith('+'):
+    last = '+'
+else:
+    fields = s.split('+') # Don't lower this field.
+    last = fields and fields[-1]
+    if not last:
+        if not g.app.menuWarningsGiven:
+            print "bad shortcut specifier:", s
+        return None
+
+if len(last) == 1:
+    last2 = k.tkBindNamesDict.get(last) # Fix new bug introduced in 4.4b2.
+    # g.trace(last,last2)
+    if last2:
+        last = last2 ; shift = False # Ignore the shift state for these special chars.
+    else:
+        if shift:
+            last = last.upper()
+            shift = False
+        else:
+            last = last.lower()
+            
+        # New in Leo 4.4.2: Alt-2 is not a key event!
+        if last.isdigit():
+            last = 'Key-' + last
+else:
+    # Translate from a made-up (or lowercase) name to 'official' Tk binding name.
+    # This is a *one-way* translation, done only here.
+    d = self.settingsNameDict
+    last = d.get(last.lower(),last)
+#@-node:ekr.20060128103640.2:<< compute the last field >>
+#@+node:ekr.20050920085536.73:universalDispatcher & helpers
+def universalDispatcher (self,event):
+    
+    '''Handle accumulation of universal argument.'''
+    
+    << about repeat counts >>
+
+    k = self ; state = k.getState('u-arg')
+
+    if state == 0:
+        # The call should set the label.
+        k.setState('u-arg',1,k.universalDispatcher)
+        k.repeatCount = 1
+    elif state == 1:
+        stroke = k.stroke ; keysym = event.keysym
+            # Stroke is <Key> for plain keys, <Control-u> (k.universalArgKey)
+        # g.trace(state,stroke)
+        if stroke == k.universalArgKey:
+            k.repeatCount = k.repeatCount * 4
+        elif stroke == '<Key>' and (keysym.isdigit() or keysym == u'-'):
+            k.updateLabel(event)
+        elif stroke == '<Key>' and keysym in (
+            'Alt_L','Alt_R','Shift_L','Shift_R','Control_L','Control_R'):
+             # g.trace('stroke',k.stroke,'keysym',keysym)
+             k.updateLabel(event)
+        else:
+            # *Anything* other than C-u, '-' or a numeral is taken to be a command.
+            # g.trace('stroke',k.stroke,'keysym',keysym)
+            val = k.getLabel(ignorePrompt=True)
+            try:                n = int(val) * k.repeatCount
+            except ValueError:  n = 1
+            # g.trace('val',repr(val),'n',n,'k.repeatCount',k.repeatCount)
+            k.clearState()
+            k.executeNTimes(event,n)
+            k.clearState()
+            k.setLabelGrey()
+            if 0: # Not ready yet.
+                # This takes us to macro state.
+                # For example Control-u Control-x ( will execute the last macro and begin editing of it.
+                if stroke == '<Control-x>':
+                    k.setState('uC',2,k.universalDispatcher)
+                    return k.doControlU(event,stroke)
+    elif state == 2:
+        k.doControlU(event,stroke)
+
+    return 'break'
+#@+node:ekr.20051006083627.1:<< about repeat counts >>
+@nocolor
+
+@  Any Emacs command can be given a numeric argument. Some commands interpret the
+argument as a repetition count. For example, giving an argument of ten to the
+key C-f (the command forward-char, move forward one character) moves forward ten
+characters. With these commands, no argument is equivalent to an argument of
+one. Negative arguments are allowed. Often they tell a command to move or act
+backwards.
+
+If your keyboard has a META key, the easiest way to specify a numeric argument
+is to type digits and/or a minus sign while holding down the the META key. For
+example,
+
+M-5 C-n
+
+moves down five lines. The characters Meta-1, Meta-2, and so on, as well as
+Meta--, do this because they are keys bound to commands (digit-argument and
+negative-argument) that are defined to contribute to an argument for the next
+command.
+
+Another way of specifying an argument is to use the C-u (universal-argument)
+command followed by the digits of the argument. With C-u, you can type the
+argument digits without holding down shift keys. To type a negative argument,
+start with a minus sign. Just a minus sign normally means -1. C-u works on all
+terminals.
+
+C-u followed by a character which is neither a digit nor a minus sign has the
+special meaning of "multiply by four". It multiplies the argument for the next
+command by four. C-u twice multiplies it by sixteen. Thus, C-u C-u C-f moves
+forward sixteen characters. This is a good way to move forward "fast", since it
+moves about 1/5 of a line in the usual size screen. Other useful combinations
+are C-u C-n, C-u C-u C-n (move down a good fraction of a screen), C-u C-u C-o
+(make "a lot" of blank lines), and C-u C-k (kill four lines).
+
+Some commands care only about whether there is an argument and not about its
+value. For example, the command M-q (fill-paragraph) with no argument fills
+text; with an argument, it justifies the text as well. (See section Filling
+Text, for more information on M-q.) Just C-u is a handy way of providing an
+argument for such commands.
+
+Some commands use the value of the argument as a repeat count, but do something
+peculiar when there is no argument. For example, the command C-k (kill-line)
+with argument n kills n lines, including their terminating newlines. But C-k
+with no argument is special: it kills the text up to the next newline, or, if
+point is right at the end of the line, it kills the newline itself. Thus, two
+C-k commands with no arguments can kill a non-blank line, just like C-k with an
+argument of one. (See section Deletion and Killing, for more information on
+C-k.)
+
+A few commands treat a plain C-u differently from an ordinary argument. A few
+others may treat an argument of just a minus sign differently from an argument
+of -1. These unusual cases will be described when they come up; they are always
+to make the individual command more convenient to use.
+#@-node:ekr.20051006083627.1:<< about repeat counts >>
+#@+node:ekr.20050920085536.75:executeNTimes
+def executeNTimes (self,event,n):
+    
+    __pychecker__ = '--no-local' # z is used just for a repeat count.
+    
+    k = self ; stroke = k.stroke ; w = event.widget
+    g.trace('stroke',stroke,'keycode',event.keycode,'n',n)
+
+    if stroke == k.fullCommandKey:
+        for z in xrange(n):
+            k.fullCommand()
+    else:
+        stroke = g.stripBrackets(stroke)
+        bunchList = k.bindingsDict.get(stroke,[])
+        if bunchList:
+            b = bunchList[0]
+            g.trace('method',b.f)
+            for z in xrange(n):
+                if 1: # No need to do this: commands never alter events.
+                    ev = Tk.Event()
+                    ev.widget = event.widget
+                    ev.keysym = event.keysym
+                    ev.keycode = event.keycode
+                    ev.char = event.char
+                k.masterCommand(event,b.f,'<%s>' % stroke)
+        else:
+            for z in xrange(n):
+                w.event_generate('<Key>',keycode=event.keycode,keysym=event.keysym)
+#@-node:ekr.20050920085536.75:executeNTimes
+#@+node:ekr.20050920085536.76:doControlU
+def doControlU (self,event,stroke):
+    
+    k = self ; c = k.c
+
+    k.setLabelBlue('Control-u %s' % g.stripBrackets(stroke))
+
+    if event.keysym == 'parenleft': # Execute the macro.
+
+        k.clearState()
+        k.resetLabel()
+        c.macroCommands.startKbdMacro(event)
+        c.macroCommands.callLastKeyboardMacro(event)
+#@-node:ekr.20050920085536.76:doControlU
+#@-node:ekr.20050920085536.73:universalDispatcher & helpers
+#@+node:ekr.20031218072017.3593:scan_short_val
+# This function scans a positive integer.
+# returns (i,val), where val == -1 if there is an error.
+
+def scan_short_val (self,s,i):
+    
+    
+    if i >= len(s) or not s[i].isdigit():
+        return i, -1
+    j = i
+    while i < len(s) and s[i].isdigit():
+        i += 1
+    val = int(s[j:i])
+    # g.trace(s[j:i],val)
+    return i, val
+#@nonl
+#@-node:ekr.20031218072017.3593:scan_short_val
+#@+node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
+def canonicalizeMenuName (self,name):
+    
+    return ''.join([ch for ch in name.lower() if ch.isalnum()])
+    
+def canonicalizeTranslatedMenuName (self,name):
+    
+    return ''.join([ch for ch in name.lower() if ch not in u'& \t\n\r'])
+
+#@-node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
+#@+node:ekr.20051022044950:computeOldStyleShortcutKey
+def computeOldStyleShortcutKey (self,s):
+    
+    '''Compute the old-style shortcut key for @shortcuts entries.'''
+    
+    return ''.join([ch for ch in s.strip().lower() if ch.isalnum()])
+#@-node:ekr.20051022044950:computeOldStyleShortcutKey
+#@+node:ekr.20031218072017.1989:<< eliminate invalid characters >>
+e = self.id_entry
+s = e.get().strip()
+i = 0 ; ok = True
+while i < len(s):
+    ch = s[i]
+    if not ch.isalnum():
+        e.delete(str(i))
+        s = e.get()
+        ok = False
+    else:
+        i += 1
+if not ok: return
+#@-node:ekr.20031218072017.1989:<< eliminate invalid characters >>
+#@+node:ekr.20031218072017.3881:<< eliminate non-numbers >>
+e = self.number_entry
+s = e.get().strip()
+
+i = 0
+while i < len(s):
+    ch = s[i]
+    if not ch.isdigit():
+        e.delete(str(i))
+        s = e.get()
+    else:
+        i += 1
+#@-node:ekr.20031218072017.3881:<< eliminate non-numbers >>
+#@-node:ekr.20061012172219:Found: string.digits
+#@+node:ekr.20061012185332:Found: string.
+#@+node:ekr.20031218072017.1896:doNormalState
+def doNormalState (self,s,i):
+    
+    __pychecker__ = 'maxlines=500'
+
+    ch = s[i] ; state = "normal"
+    assert(type(ch)==type(u""))
+
+    if ch in string.ascii_letters or ch == '_' or (
+        (ch == '\\' and self.language=="latex") or
+        (ch in '/&<>' and self.language=="html") or
+        (ch == '$' and self.language=="rapidq") or
+        (self.language == 'forth' and ch in "`~!@#$%^&*()_+-={}|[];':\",./<>?")
+    ):
+        << handle possible keyword >>
+    elif g.match(s,i,self.lb):
+        i = self.doNowebSecRef(s,i)
+    elif ch == '@':
+        << handle at keyword >>
+    elif g.match(s,i,self.single_comment_start):
+        << handle single-line comment >>
+    elif g.match(s,i,self.block_comment_start):
+        << start block comment >>
+    elif ch == '%' and self.language=="cweb":
+        << handle latex line >>
+    elif self.language=="latex":
+        << handle latex normal character >>
+    # ---- From here on self.language != "latex" -----
+    elif ch in self.string_delims:
+        << handle string >>
+    elif ch == '#' and self.has_pp_directives:
+        << handle C preprocessor line >>
+    elif self.language == "php" and (g.match(s,i,"<") or g.match(s,i,"?")):
+        # g.trace("%3d" % i,php_re.match(s,i),s)
+        << handle special php keywords >>
+    elif ch == ' ':
+        << handle blank >>
+    elif ch == '\t':
+        << handle tab >>
+    else:
+        << handle normal character >>
+
+    if 0: # This can fail harmlessly when using wxPython plugin.  Don't know exactly why.
+        g.trace(self.progress,i,state)
+        assert(self.progress < i)
+    return i,state
+#@+node:ekr.20031218072017.1897:Valid regardless of latex mode
+#@+node:ekr.20031218072017.1898:<< handle possible  keyword >>
+if self.language == "latex":
+    << handle possible latex keyword >>
+elif self.language == "html":
+    << handle possible html keyword >>
+elif self.language == "forth":
+    << handle possible forth keyword >>
+else:
+    << handle general keyword >>
+i = j
+#@+node:ekr.20031218072017.1899:<< handle possible latex keyword >>
+if g.match(s,i,"\\"):
+    if i + 1 < len(s) and s[i+1] in self.latex_special_keyword_characters:
+        j = i + 2 # A special 2-character LaTex keyword.
+    else:
+        j = self.skip_id(s,i+1)
+    word = s[i:j]
+    if word in self.latex_keywords:
+        self.tag("latexKeyword",i,j)
+    else:
+        self.tag("latexBackground",i,j)
+else:
+    self.tag("latexBackground",i,i+1)
+    j = i + 1 # skip the character.
+#@-node:ekr.20031218072017.1899:<< handle possible latex keyword >>
+#@+node:ekr.20031218072017.1900:<< handle possible html keyword >>
+if g.match(s,i,"<!---") or g.match(s,i,"<!--"):
+    if g.match(s,i,"<!---"): k = 5
+    else: k = 4
+    self.tag("comment",i,i+k)
+    j = i + k ; state = "blockComment"
+elif g.match(s,i,"<"):
+    if g.match(s,i,"</"): k = 2
+    else: k = 1
+    j = self.skip_id(s,i+k)
+    self.tag("keyword",i,j)
+elif g.match(s,i,"&"):
+    j = self.skip_id(s,i+1,';')
+    self.tag("keyword",i,j)
+elif g.match(s,i,"/>"):
+    j = i + 2
+    self.tag("keyword",i,j)
+elif g.match(s,i,">"):
+    j = i + 1
+    self.tag("keyword",i,j)
+else:
+    j = i + 1
+#@-node:ekr.20031218072017.1900:<< handle possible html keyword >>
+#@+node:ekr.20041107093219.3:<< handle possible forth keyword >>
+j = self.skip_id(s,i+1,chars="`~!@#$%^&*()-_=+[]{};:'\\\",./<>?")
+word = s[i:j]
+
+#print "word=%s" % repr(word)
+
+if not self.case_sensitiveLanguage:
+    word = word.lower()
+
+if self.nextForthWordIsNew:
+    #print "trying to bold the defined word '%s'" % word
+    self.tag("bold", i, j)
+    self.nextForthWordIsNew = False
+else:
+    if word in self.forth_definingwords:
+        self.nextForthWordIsNew = True
+    
+    if word in self.forth_boldwords:
+        self.tag("bold", i, j)
+    elif word in self.forth_bolditalicwords:
+        self.tag("bolditalic", i, j)
+    elif word in self.forth_italicwords:
+        self.tag("italic", i, j)
+    elif word in self.forth_stringwords:
+        self.tag("keyword", i, j-1)
+        i = j - 1
+        j, state = self.skip_string(s,j-1)
+        self.tag("string",i,j)
+        word = ''
+    elif word in self.keywords:
+        self.tag("keyword",i,j)
+#@-node:ekr.20041107093219.3:<< handle possible forth keyword >>
+#@+node:ekr.20031218072017.1901:<< handle general keyword >>
+if self.language == "rapidq":
+    j = self.skip_id(s,i+1,chars="$")
+elif self.language == "rebol":
+    j = self.skip_id(s,i+1,chars="-~!?")
+elif self.language in ("elisp","css"):
+    j = self.skip_id(s,i+1,chars="-")
+else:
+    j = self.skip_id(s,i)
+
+word = s[i:j]
+if not self.case_sensitiveLanguage:
+    word = word.lower()
+
+if word in self.keywords:
+    self.tag("keyword",i,j)
+elif self.language == "php":
+    if word in self.php_paren_keywords and g.match(s,j,"()"):
+        self.tag("keyword",i,j+2)
+        j += 2
+#@-node:ekr.20031218072017.1901:<< handle general keyword >>
+#@-node:ekr.20031218072017.1898:<< handle possible  keyword >>
+#@+node:ekr.20031218072017.1902:<< handle at keyword >>
+if self.language == "cweb":
+    if g.match(s,i,"@(") or g.match(s,i,"@<"):
+        << handle cweb ref or def >>
+    else:
+        word = self.getCwebWord(s,i)
+        if word:
+            << Handle cweb control word >>
+        else:
+            i,state = self.doAtKeyword(s,i)
+else:
+    i,state = self.doAtKeyword(s,i)
+#@+node:ekr.20031218072017.1904:<< handle cweb ref or def >>
+self.tag("nameBrackets",i,i+2)
+
+# See if the line contains the right name bracket.
+j = s.find("@>=",i+2)
+k = g.choose(j==-1,2,3)
+if j == -1:
+    j = s.find("@>",i+2)
+
+if j == -1:
+    i += 2
+else:
+    self.tag("cwebName",i+2,j)
+    self.tag("nameBrackets",j,j+k)
+    i = j + k
+#@-node:ekr.20031218072017.1904:<< handle cweb ref or def >>
+#@+node:ekr.20031218072017.1903:<< Handle cweb control word >>
+# Color and skip the word.
+assert(self.language=="cweb")
+
+j = i + len(word)
+self.tag("keyword",i,j)
+i = j
+
+if word in ("@ ","@\t","@\n","@*","@**"):
+    state = "doc"
+elif word in ("@<","@(","@c","@d","@f","@p"):
+    state = "normal"
+elif word in ("@^","@.","@:","@="): # Ended by "@>"
+    j = s.find("@>",i)
+    if j > -1:
+        self.tag("cwebName",i,j)
+        self.tag("nameBrackets",j,j+2)
+        i = j + 2
+#@-node:ekr.20031218072017.1903:<< Handle cweb control word >>
+#@-node:ekr.20031218072017.1902:<< handle at keyword >>
+#@+node:ekr.20031218072017.1617:<< handle single-line comment >>
+# print "single-line comment i,s:",i,s
+
+if self.language == "cweb" and self.latex_cweb_comments:
+    j = i + len(self.single_comment_start)
+    self.tag("comment",i,j)
+    self.doLatexLine(s,j,len(s))
+    i = len(s)
+elif self.language == "shell" and (i>0 and s[i-1]=='$'):
+    i += 1 # '$#' in shell should not start a comment (DS 040113)
+else:
+    j = len(s)
+    if not g.doHook("color-optional-markup",
+        colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag="comment"):
+        self.tag("comment",i,j)
+    i = j
+#@-node:ekr.20031218072017.1617:<< handle single-line comment >>
+#@+node:ekr.20031218072017.1619:<< start block comment >>
+k = len(self.block_comment_start)
+
+if not g.doHook("color-optional-markup",
+    colorer=self,p=self.p,v=self.p,s=s,i=i,j=i+k,colortag="comment"):
+    self.tag("comment",i,i+k)
+
+i += k ; state = "blockComment"
+#@-node:ekr.20031218072017.1619:<< start block comment >>
+#@+node:ekr.20031218072017.1905:<< handle latex line >>
+self.tag("keyword",i,i+1)
+i += 1 # Skip the %
+self.doLatexLine(s,i,len(s))
+i = len(s)
+#@-node:ekr.20031218072017.1905:<< handle latex line >>
+#@-node:ekr.20031218072017.1897:Valid regardless of latex mode
+#@+node:ekr.20031218072017.1906:Vaid only in latex mode
+#@+node:ekr.20031218072017.1907:<< handle latex normal character >>
+if self.language=="cweb":
+    self.tag("latexModeBackground",i,i+1)
+else:
+    self.tag("latexBackground",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1907:<< handle latex normal character >>
+#@-node:ekr.20031218072017.1906:Vaid only in latex mode
+#@+node:ekr.20031218072017.1908:Valid when not in latex_mode
+#@+node:ekr.20031218072017.1612:<< handle string >>
+# g.trace(self.language)
+
+if self.language == "python":
+
+    delim = s[i:i+3]
+    j, state = self.skip_python_string(s,i)
+    if delim == '"""':
+        # Only handle wiki items in """ strings.
+        if not g.doHook("color-optional-markup",
+            colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag="string"):
+            self.tag("string",i,j)
+    else:
+        self.tag("string",i,j)
+    i = j
+
+else:
+    j, state = self.skip_string(s,i)
+    self.tag("string",i,j)
+    i = j
+#@-node:ekr.20031218072017.1612:<< handle string >>
+#@+node:ekr.20031218072017.1909:<< handle C preprocessor line >>
+# 10/17/02: recognize comments in preprocessor lines.
+j = i
+while i < len(s):
+    if g.match(s,i,self.single_comment_start) or g.match(s,i,self.block_comment_start):
+        break
+    else: i += 1
+
+self.tag("pp",j,i)
+#@-node:ekr.20031218072017.1909:<< handle C preprocessor line >>
+#@+node:ekr.20031218072017.1910:<< handle special php keywords >>
+if g.match(s.lower(),i,"<?php"):
+    self.tag("keyword",i,i+5)
+    i += 5
+elif g.match(s,i,"?>"):
+    self.tag("keyword",i,i+2)
+    i += 2
+else:
+    i += 1
+#@-node:ekr.20031218072017.1910:<< handle special php keywords >>
+#@+node:ekr.20031218072017.1911:<< handle blank >>
+if self.showInvisibles:
+    self.tag("blank",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1911:<< handle blank >>
+#@+node:ekr.20031218072017.1912:<< handle tab >>
+if self.showInvisibles:
+    self.tag("tab",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1912:<< handle tab >>
+#@+node:ekr.20031218072017.1913:<< handle normal character >>
+# self.tag("normal",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1913:<< handle normal character >>
+#@-node:ekr.20031218072017.1908:Valid when not in latex_mode
+#@-node:ekr.20031218072017.1896:doNormalState
+#@+node:ekr.20031218072017.2803:getCwebWord
+def getCwebWord (self,s,i):
+    
+    # g.trace(g.get_line(s,i))
+    if not g.match(s,i,"@"):
+        return None
+    
+    ch1 = ch2 = word = None
+    if i + 1 < len(s): ch1 = s[i+1]
+    if i + 2 < len(s): ch2 = s[i+2]
+
+    if g.match(s,i,"@**"):
+        word = "@**"
+    elif not ch1:
+        word = "@"
+    elif not ch2:
+        word = s[i:i+2]
+    elif (
+        (ch1 in string.ascii_letters and not ch2 in string.ascii_letters) or # single-letter control code
+        ch1 not in string.ascii_letters # non-letter control code
+    ):
+        word = s[i:i+2]
+
+    # if word: g.trace(word)
+        
+    return word
+#@-node:ekr.20031218072017.2803:getCwebWord
+#@+node:ekr.20031218072017.3132:init_trace
+def init_trace(args,echo=1):
+
+    t = app.trace_list
+    args = g.get_Sherlock_args(args)
+
+    for arg in args:
+        if arg[0] in string.ascii_letters: prefix = '+'
+        else: prefix = arg[0] ; arg = arg[1:]
+        
+        if prefix == '?':
+            print "trace list:", t
+        elif prefix == '+' and not arg in t:
+            t.append(string.lower(arg))
+            if echo:
+                print "enabling:", arg
+        elif prefix == '-' and arg in t:
+            t.remove(string.lower(arg))
+            if echo:
+                print "disabling:", arg
+        else:
+            print "ignoring:", prefix + arg
+#@-node:ekr.20031218072017.3132:init_trace
+#@+node:ekr.20031218072017.3124:sanitize_filename
+def sanitize_filename(s):
+
+    """Prepares string s to be a valid file name:
+    
+    - substitute '_' whitespace and characters used special path characters.
+    - eliminate all other non-alphabetic characters.
+    - strip leading and trailing whitespace.
+    - return at most 128 characters."""
+
+    result = ""
+    for ch in s.strip():
+        if ch in string.ascii_letters:
+            result += ch
+        elif ch in string.whitespace: # Translate whitespace.
+            result += '_'
+        elif ch in ('.','\\','/',':'): # Translate special path characters.
+            result += '_'
+    while 1:
+        n = len(result)
+        result = result.replace('__','_')
+        if len(result) == n:
+            break
+    result = result.strip()
+    return result [:128]
+#@-node:ekr.20031218072017.3124:sanitize_filename
+#@+node:ekr.20031218072017.3601:<< set token_type for CWEB mode >>
+i = g.skip_ws(s,i)
+if g.match(s,i,"@*") or g.match(s,i,"@ "): kind = at_doc
+elif g.match(s,i,"@<"): i, kind, end = self.skip_section_name(s,i)
+elif g.match(s,i,"@@"): kind = at_at
+elif g.match_word(s,i,"@c") or g.match_word(s,i,"@p"): kind = at_code
+elif i < len(s) and s[i] == '@':
+    if   i + 1 >= len(s): kind = at_doc
+    elif i + 1 < len(s) and s[i+1] not in string.ascii_letters:
+        kind = at_web
+    else: kind = at_other # Set kind later
+else: kind = plain_line
+#@-node:ekr.20031218072017.3601:<< set token_type for CWEB mode >>
+#@+node:ekr.20031218072017.1607:<< define dispatch dicts >>
+self.state_dict = {
+    "blockComment" : self.continueBlockComment,
+    "doubleString" : self.continueDoubleString, # 1/25/03
+    "nocolor"      : self.continueNocolor,
+    "normal"       : self.doNormalState,
+    "singleString" : self.continueSingleString,  # 1/25/03
+    "string3s"     : self.continueSinglePythonString,
+    "string3d"     : self.continueDoublePythonString,
+    "doc"          : self.continueDocPart,
+    "unknown"      : self.doNormalState, # 8/25/05
+}
+    
+# Eventually all entries in these dicts will be entered dynamically
+# under the control of the XML description of the present language.
+
+if 0: # not ready yet.
+
+    self.dict1 = { # 1-character patterns.
+        '"' : self.doString,
+        "'" : self.doString,
+        '@' : self.doPossibleLeoKeyword,
+        ' ' : self.doBlank,
+        '\t': self.doTab }
+
+    self.dict2 = {} # 2-character patterns
+    
+    # Searching this list might be very slow!
+    mutli_list = [] # Multiple character patterns.
+    
+    # Enter single-character patterns...
+    if self.has_pp_directives:
+        dict1 ["#"] = self.doPPDirective
+                
+    for ch in string.ascii_letters:
+        dict1 [ch] = self.doPossibleKeyword
+    dict1 ['_'] = self.doPossibleKeyword
+    
+    if self.language == "latex":
+        dict1 ['\\'] = self.doPossibleKeyword
+        
+    if self.language == "php":
+        dict1 ['<'] = self.doSpecialPHPKeyword
+        dict1 ['?'] = self.doSpecialPHPKeyword
+    
+    # Enter potentially multi-character patterns.  (or should this be just 2-character patterns)
+    if self.language == "cweb":
+        dict2 ["@("] = self.doPossibleSectionRefOrDef
+    else:
+        dict2 ["<<"] = self.doPossibleSectionRefOrDef
+        
+    if self.single_comment_start:
+        n = len(self.single_comment_start)
+        if n == 1:
+            dict1 [self.single_comment_start] = self.doSingleCommentLine
+        elif n == 2:
+            dict2 [self.single_comment_start] = self.doSingleCommentLine
+        else:
+            mutli_list.append((self.single_comment_start,self.doSingleCommentLine),)
+    
+    if self.block_comment_start:
+        n = len(self.block_comment_start)
+        if n == 1:
+            dict1 [self.block_comment_start] = self.doBlockComment
+        elif n == 2:
+            ddict2 [self.block_comment_start] = self.doBlockComment
+        else:
+            mutli_list.append((self.block_comment_start,self.doBlockComment),)
+#@-node:ekr.20031218072017.1607:<< define dispatch dicts >>
+#@+node:ekr.20041005105605.52:<< Set childIndex >>
+i = g.skip_ws(s,i) ; j = i
+while i < len(s) and s[i].isdigit():
+    i += 1
+
+if j == i:
+    at.readError("Implicit child index in @+node")
+    childIndex = 0
+else:
+    childIndex = int(s[j:i])
+
+if g.match(s,i,':'):
+    i += 1 # Skip the ":".
+else:
+    at.readError("Bad child index in @+node")
+#@-node:ekr.20041005105605.52:<< Set childIndex >>
+#@+node:ekr.20060216163305:definePatterns
+def definePatterns (self):
+    
+    self.space = r'[ \t\r\f\v ]+' # one or more whitespace characters.
+    self.end = r'\w+\s*\([^)]*\)' # word (\w) ws ( any ) (can cross lines)
+
+    # Define re patterns for various languages.
+    # These patterns match method/function definitions.
+    self.pats = {}
+    self.pats ['python'] = re.compile(r'def\s+%s' % self.end)  # def ws word ( any ) # Can cross line boundaries.
+    self.pats ['java'] = re.compile(
+        r'((public\s+|private\s+|protected\s+)?(static%s|\w+%s){1,2}%s)' % (
+            self.space,self.space,self.end))
+    self.pats ['perl'] = re.compile(r'sub\s+%s' % self.end)
+    self.pats ['c++'] = re.compile(r'((virtual\s+)?\w+%s%s)' % (self.space,self.end))
+    self.pats ['c'] = re.compile(r'\w+%s%s' % (self.space,self.end))
+    
+    # Define self.okchars for getCleaString.
+    okchars = {}
+    for z in string.ascii_letters:
+        okchars [z] = z
+    okchars ['_'] = '_'
+    self.okchars = okchars 
+#@nonl
+#@-node:ekr.20060216163305:definePatterns
+#@+node:ekr.20051126124705:autoCompleterStateHandler
+def autoCompleterStateHandler (self,event):
+    
+    c = self.c ; k = self.k
+    tag = 'auto-complete' ; state = k.getState(tag)
+    keysym = event and event.keysym
+    ch = event and event.char or ''
+    trace = self.trace and not g.app.unitTesting
+    if trace: g.trace(repr(ch),repr(keysym),state)
+
+    if state == 0:
+        c.frame.log.clearTab(self.tabName)
+        self.computeCompletionList()
+        k.setState(tag,1,handler=self.autoCompleterStateHandler) 
+    elif keysym in ('space','Return'):
+        self.finish()
+    elif keysym == 'Escape':
+        self.abort()
+    elif keysym == 'Tab':
+        self.doTabCompletion()
+    elif keysym == 'BackSpace':
+        self.doBackSpace()
+    elif keysym == 'period':
+        self.chain()
+    elif keysym == 'question':
+        self.info()
+    elif keysym == 'exclam':
+        # Toggle between verbose and brief listing.
+        self.verbose = not self.verbose
+        if type(self.object) == types.DictType:
+            self.membersList = self.object.keys()
+        elif type(self.object) in (types.ListType,types.TupleType):
+            self.membersList = self.object
+        self.computeCompletionList(verbose=self.verbose)
+    elif ch and ch in string.printable:
+        self.insertNormalChar(ch,keysym)
+    else:
+        if trace: g.trace('ignore',repr(ch))
+        return 'do-standard-keys'
+#@-node:ekr.20051126124705:autoCompleterStateHandler
+#@+node:ekr.20041005105605.198:directiveKind4 & test
+def directiveKind4(self,s,i):
+    
+    """Return the kind of at-directive or noDirective."""
+
+    at = self
+    n = len(s)
+    if i >= n or s[i] != '@':
+        j = g.skip_ws(s,i)
+        if g.match_word(s,j,"@others"):
+            return at.othersDirective
+        elif g.match_word(s,j,"@all"):
+            return at.allDirective
+        else:
+            return at.noDirective
+
+    table = (
+        ("@all",at.allDirective),
+        ("@c",at.cDirective),
+        ("@code",at.codeDirective),
+        ("@doc",at.docDirective),
+        ("@end_raw",at.endRawDirective),
+        ("@others",at.othersDirective),
+        ("@raw",at.rawDirective))
+        
+    # Rewritten 6/8/2005.
+    if i+1 >= n or s[i+1] in (' ','\t','\n'):
+        # Bare '@' not recognized in cweb mode.
+        return g.choose(at.language=="cweb",at.noDirective,at.atDirective)
+    if s[i+1] not in string.ascii_letters:
+        return at.noDirective # Bug fix: do NOT return miscDirective here!
+    if at.language=="cweb" and g.match_word(s,i,'@c'):
+        return at.noDirective
+    
+    for name,directive in table:
+        if g.match_word(s,i,name):
+            return directive
+
+    # Return miscDirective only for real directives.
+    for name in leoColor.leoKeywords:
+        if g.match_word(s,i,name):
+            return at.miscDirective
+
+    return at.noDirective
+#@+node:ekr.20050608103755:test_directiveKind4
+def test_directiveKind4 (self):
+    
+    at=c.atFileCommands # Self is a dummy argument.
+    import leoColor
+    table = [
+        ('@=',0,at.noDirective),
+        ('@',0,at.atDirective),
+        ('@ ',0,at.atDirective),
+        ('@\t',0,at.atDirective),
+        ('@\n',0,at.atDirective),
+        ('@all',0,at.allDirective),
+        ('    @all',4,at.allDirective),
+        ("@c",0,at.cDirective),
+        ("@code",0,at.codeDirective),
+        ("@doc",0,at.docDirective),
+        ("@end_raw",0,at.endRawDirective),
+        ('@others',0,at.othersDirective),
+        ('    @others',4,at.othersDirective),
+        ("@raw",0,at.rawDirective),
+    ]
+    for name in leoColor.leoKeywords:
+        if name not in ('@','@all','@c','@code','@doc','@end_raw','@others','@raw',):
+            table.append((name,0,at.miscDirective),)
+
+    for s,i,expected in table:
+        result = at.directiveKind4(s,i)
+        assert result == expected, '%d %s result: %s expected: %s' % (
+            i,repr(s),at.sentinelName(result),at.sentinelName(expected))
+#@-node:ekr.20050608103755:test_directiveKind4
+#@-node:ekr.20041005105605.198:directiveKind4 & test
+#@+node:ekr.20060606095344:test_isPlainKey
+def test_isPlainKey (self):
+    
+    import string
+    
+    k = c.k # self is a dummy argument
+    
+    for ch in (string.printable):
+        if ch == '\n': continue # A special case.
+        assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
+        
+    special = (
+        'Return', # A special case.
+        'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
+        'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+        'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
+        'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
+        'KP_F1','KP_F2','KP_F3','KP_F4',
+        'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
+        'Home','Left','Linefeed','Next','Num_Lock',
+        'PageDn','PageUp','Pause','Prior','Right','Up',
+        'Sys_Req',
+    )
+
+    for ch in special:
+        assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
+#@-node:ekr.20060606095344:test_isPlainKey
+#@-node:ekr.20061012185332:Found: string.
+#@-node:ekr.20061011131836:Fixed new unicode bug
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs

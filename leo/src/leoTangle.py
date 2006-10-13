@@ -3228,10 +3228,10 @@ class baseTangleCommands:
     def scan_short_val (self,s,i):
         
         
-        if i >= len(s) or not s[i].isdigit(): ### s[i] not in string.digits:
+        if i >= len(s) or not s[i].isdigit():
             return i, -1
         j = i
-        while i < len(s) and s[i].isdigit(): ### s[i] in string.digits:
+        while i < len(s) and s[i].isdigit():
             i += 1
         val = int(s[j:i])
         # g.trace(s[j:i],val)

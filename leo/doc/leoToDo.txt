@@ -3,7 +3,7 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061012075711:Plugins 3
+#@+node:ekr.20061012213659:Minor 4
 #@+node:ekr.20061012095927:Fix multifile plugin
 (via email)
 
@@ -42,8 +42,22 @@ analyzing code, and switching by only using the keyboard (shortcuts '<markname>
 or `<markname>) works very good (for me) in vim. Switching between the two most
 recent marks is done in vim using the shortcut '' or ``.
 #@-node:ekr.20061012061050:Fix nodenavigator plugin
-#@-node:ekr.20061012075711:Plugins 3
-#@+node:ekr.20061011214705.1:Other 3
+#@+node:ekr.20061012213447:About plugin window must be scrollable
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3960993
+
+I happen to select Plugins->Scripting and the "About Scripting" window opened...a
+huge, long, "about" window with no scroll-bars that was taller than my screen.
+
+Can the "About" info be put into a resizable window (with scroll-bars) instead,
+with a reasonable initial size?
+
+Kam-Yung
+
+#@-node:ekr.20061012213447:About plugin window must be scrollable
+#@-node:ekr.20061012213659:Minor 4
+#@+node:ekr.20061012213519:Major 6
 #@+node:ekr.20061012082613:Fix body editor problems: 2
 #@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
 #@-node:ekr.20061012082613.1:Find does not work when there are multiple body editors
@@ -66,7 +80,6 @@ onFocusIn: does not exist <some number>
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 http://sourceforge.net/forum/message.php?msg_id=3924236
 #@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-#@-node:ekr.20061011214705.1:Other 3
 #@+node:ekr.20061012154836:Mac 2
 #@+node:ekr.20060116083043:Use special Help menu on the Mac
 @nocolor
@@ -177,8 +190,16 @@ def getMacHelpMenu (self):
 #@+node:ekr.20061010082258:Minibuffer does not show on Mac
 #@-node:ekr.20061010082258:Minibuffer does not show on Mac
 #@-node:ekr.20061012154836:Mac 2
+#@-node:ekr.20061012213519:Major 6
 #@-node:ekr.20061010115312.1:Urgent
 #@+node:ekr.20061008160553:Asap
+#@+node:ekr.20061012204814:Should 'plain' cursor moves force focus to body (unless editing headline?)
+@nocolor
+
+It's tantalizing to have Home, etc, force focus to body pane,
+But this would mean that Alt-Home is required to move to the first node:
+at present that is not required.  Still, it may be a great idea.
+#@-node:ekr.20061012204814:Should 'plain' cursor moves force focus to body (unless editing headline?)
 #@+node:ekr.20061011145700:Remove title of body editor when penultimate editor removed
 @nocolor
 
@@ -689,6 +710,12 @@ I'll try using .leo_xresources file and see if that works as well.
 #@nonl
 #@-node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
 #@-node:ekr.20050713105353:Add configuration setting to set menu fonts
+#@+node:ekr.20061013082443:Unit tests for all edit commands
+#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
+The must work with unicode characters.  (They do now.)
+#@nonl
+#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
+#@-node:ekr.20061013082443:Unit tests for all edit commands
 #@-node:ekr.20061008160553:Asap
 #@+node:ekr.20061009152210:Docs
 @nocolor
@@ -1583,7 +1610,6 @@ def zapToCharacter (self,event):
         k.resetLabel()
         k.clearState()
         if len(event.char) != 0 and not ch.isspace():
-            ### ch in (string.ascii_letters + string.digits + string.punctuation)
             i = w.search(ch,'insert',stopindex='end')
             if i != -1:
                 s = w.get('insert','%s' % i)
@@ -2899,7 +2925,7 @@ def insertNormalChar (self,ch,keysym):
     
     k = self.k ; w = self.widget
 
-    if g.isWordChar(ch): ### ch in (string.letters + string.digits + '_' ):
+    if g.isWordChar(ch):
         # Look ahead to see if the character completes any item.
         s = g.app.gui.getSelectedText(w) + ch
         tabList,common_prefix = g.itemsMatchingPrefixInList(

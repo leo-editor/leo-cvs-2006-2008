@@ -2662,15 +2662,9 @@ class baseColorizer:
     def skip_id(self,s,i,chars=None):
     
         n = len(s)
-        chars = chars and g.toUnicode(chars,encoding='ascii') or u'' ###
-        
-        while i < n:
-            ch = s[i]
-            if g.isWordChar(ch) or ch in chars: ### ch in string.ascii_letters or ch in string.digits or ch == '_':
+        chars = chars and g.toUnicode(chars,encoding='ascii') or u''
+        while i < n and (g.isWordChar(s[i]) or s[i] in chars):
                 i += 1
-            ### elif chars and ch in chars:
-            ###     i += 1
-            else: break
         return i
     #@-node:ekr.20031218072017.2808:skip_id
     #@+node:ekr.20031218072017.1610:skip_python_string
