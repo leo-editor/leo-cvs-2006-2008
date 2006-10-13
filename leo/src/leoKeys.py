@@ -2877,30 +2877,6 @@ class keyHandlerClass:
             body.setEditorColors(bg=bg,fg=fg)
     #@nonl
     #@-node:ekr.20060120200818:setInputState
-    #@+node:ekr.20060120193743:showStateAndMode
-    def showStateAndMode(self):
-        
-        k = self ; c = k.c ; frame = c.frame
-        state = k.unboundKeyAction
-        mode = k.getStateKind()
-        
-        # g.trace(state,mode)
-       
-        if hasattr(frame,'clearStatusLine'):
-            frame.clearStatusLine()
-            put = frame.putStatusLine
-            put('Key state: ',color='blue')
-            put('%s' % state.capitalize())
-            if mode:
-                # put(' mode: ',color='blue')
-                if mode.endswith('-mode'): mode = mode[:-5]
-                mode = mode.replace('-',' ').capitalize()
-                put(' Mode: ',color='blue')
-                put(mode)
-                
-            # Restore the focus.
-            c.restoreFocus()
-    #@-node:ekr.20060120193743:showStateAndMode
     #@-node:ekr.20060606085637:Input State
     #@+node:ekr.20050924064254:Label...
     #@+at 
@@ -3075,6 +3051,28 @@ class keyHandlerClass:
         return i,j
     #@-node:ekr.20060210141604.1:getEditableTextRange
     #@-node:ekr.20050924064254:Label...
+    #@+node:ekr.20060120193743:showStateAndMode
+    def showStateAndMode(self):
+        
+        k = self ; c = k.c ; frame = c.frame
+        state = k.unboundKeyAction
+        mode = k.getStateKind()
+        
+        if hasattr(frame,'clearStatusLine') and not state.capitalize()=='Insert':
+            frame.clearStatusLine()
+            put = frame.putStatusLine
+            put('Key state: ',color='blue')
+            put('%s' % state.capitalize())
+            if mode:
+                # put(' mode: ',color='blue')
+                if mode.endswith('-mode'): mode = mode[:-5]
+                mode = mode.replace('-',' ').capitalize()
+                put(' Mode: ',color='blue')
+                put(mode)
+                
+            # Restore the focus.
+            c.restoreFocus()
+    #@-node:ekr.20060120193743:showStateAndMode
     #@+node:ekr.20060129052538.1:Master event handlers (keyHandler)
     #@+node:ekr.20060127183752:masterKeyHandler
     master_key_count = 0
