@@ -5,8 +5,8 @@
 #@@language python
 #@@tabwidth -4
 
-__name__ = "Row/Column indicators"
-__version__ = "0.3"
+__plugin_name__ = "Row/Column indicators"
+__version__ = "0.4"
 
 #@<< imports >>
 #@+node:ekr.20040908094021.2:<< imports >>
@@ -24,12 +24,10 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 # 
 # 0.1 Initial version.
 # 
-# 0.2 EKR:
-# Make sure this works properly with multiple windows.
-# 
-# 0.3 EKR:
-# Removed call to g.top.  We now test whether c is valid using 
+# 0.2 EKR: Make sure this works properly with multiple windows.
+# 0.3 EKR: Removed call to g.top.  We now test whether c is valid using 
 # hasattr(c,'frame')
+# 0.4 EKR: set __plugin_name__ rather than __name__
 #@-at
 #@nonl
 #@-node:ekr.20041120114651:<< version history >>

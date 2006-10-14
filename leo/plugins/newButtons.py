@@ -57,8 +57,8 @@ AddRawTemplate
 #@-node:pap.20051010170720.1:<< docstring >>
 #@nl
 
-__name__ = "New Buttons"
-__version__ = "0.8"
+__plugin_name__ = "New Buttons"
+__version__ = "0.9"
 
 USE_FIXED_SIZES = 1
 
@@ -85,6 +85,7 @@ USE_FIXED_SIZES = 1
 # 0.8 EKR:
 # - cmd_ functions now get c arg.
 # - Added message when deleting template file.
+# 0.9 EKR: set __plugin_name__ rather than __name__
 #@-at
 #@nonl
 #@-node:pap.20051010170720.2:<< version history >>

@@ -5,8 +5,8 @@
 #@@language python
 #@@tabwidth -4
 
-# __name__ = "Node Navigator"
-__version__ = "0.11"
+__plugin_name__ = "Node Navigator"
+__version__ = "0.13"
 
 #@<< version history >>
 #@+node:ekr.20040908093511.2:<< version history >>
@@ -34,6 +34,7 @@ __version__ = "0.11"
 # 0.10 EKR: Make sure self.c == keywords.get('c') in all hook handlers.
 # 0.11 EKR: Disabled setting __name__ so that an entry is created for 
 # nodenavigator in the Plugins menu.
+# 0.13 EKR: set __plugin_name__ rather than __name__.
 #@-at
 #@nonl
 #@-node:ekr.20040908093511.2:<< version history >>

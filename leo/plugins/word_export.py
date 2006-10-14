@@ -7,8 +7,8 @@ the selected outline to a Word document, starting Word if necessary.
 #@@language python
 #@@tabwidth -4
 
-__name__ = "Word Export"
-__version__ = "0.7"
+__plugin_name__ = "Word Export"
+__version__ = "0.8"
 
 #@<< version history >>
 #@+node:ekr.20040909110753:<< version history >>
@@ -30,6 +30,7 @@ __version__ = "0.7"
 #     - Set encoding to sys.getdefaultencoding() if there is no @encoding 
 # directive in effect.
 # 0.7 EKR: cmd_ functions now get c arg.
+# 0.8 EKR: set __plugin_name__ rather than __name__
 #@-at
 #@nonl
 #@-node:ekr.20040909110753:<< version history >>
