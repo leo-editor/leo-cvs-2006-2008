@@ -82,6 +82,8 @@ __version__ = ".5"
 # 0.6 EKR: Made it work with Leo 4.4.2.
 # - Made all uses of leoAtFile explicit.
 # - Simplified code by using g.funcToMethod in init code.
+# - Renamed decoratedOpenFileForWriting to match openFileForWriting.
+# - Rewrote stop method.
 #@-at
 #@nonl
 #@-node:ekr.20050226115130:<< version history >>

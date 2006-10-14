@@ -495,9 +495,9 @@ class scriptingController:
     
         if button:
             button.pack_forget()
-            button.destroy() # So that Pmw doesn't crash later.
             if self.buttonsDict.get(button):
                 del self.buttonsDict[button]
+            button.destroy() # So that Pmw doesn't crash later.
             
         self.c.bodyWantsFocusNow()
     #@nonl
