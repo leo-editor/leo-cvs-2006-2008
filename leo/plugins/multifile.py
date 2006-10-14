@@ -52,12 +52,11 @@ beginning of the line and by themselves.
 #@+node:ekr.20050226114732.1:<< imports >>
 import leoGlobals as g 
 
-import leoAtFile # Important to make all uses explicit.
-import leoNodes # Important to make all uses explicit.
+import leoAtFile
 import leoPlugins
 
 import shutil
-import new
+# import new
 import os.path
 
 try:
@@ -80,8 +79,9 @@ __version__ = ".5"
 # - Minor code reorg.  The actual code is unchanged.
 # 0.4 EKR: Changed 'new_c' logic to 'c' logic.
 # 0.5 EKR: Use 'new' and 'open2' hooks to call addMenu.
-# 0.6 EKR: Made it work with Leo 4.4.2.  Made all uses of leoNodes and 
-# leoAtFile explicit.
+# 0.6 EKR: Made it work with Leo 4.4.2.
+# - Made all uses of leoAtFile explicit.
+# - Simplified code by using g.funcToMethod in init code.
 #@-at
 #@nonl
 #@-node:ekr.20050226115130:<< version history >>
@@ -96,10 +96,17 @@ files = {}
 #@+node:ekr.20050226115130.1:init
 def init ():
 
+    global ok
     if ok:
         g.globalDirectiveList.append('multipath')
         g.globalDirectiveList.append('multiprefix')
-        leoPlugins.registerHandler('save1',start)
+        
+        # Override all instances of leoAtFile.atFile.
+        at = leoAtFile.atFile
+        global originalOpenFileForWriting ; originalOpenFileForWriting = at.openFileForWriting
+        g.funcToMethod(decoratedOpenFileForWriting,at,name='openFileForWriting')
+        
+        # leoPlugins.registerHandler('save1',start)
         leoPlugins.registerHandler('save2',stop)
         leoPlugins.registerHandler(('new','start2'),addMenu)
         g.plugin_signon(__name__)
@@ -107,30 +114,41 @@ def init ():
     return ok
 #@nonl
 #@-node:ekr.20050226115130.1:init
-#@+node:mork.20041018204908.3:decoratedOpenWriteFile
-def decoratedOpenWriteFile( self,root,fileName,toString):
+#@+node:mork.20041018204908.3:decoratedOpenFileForWriting
+def decoratedOpenFileForWriting (self,root,fileName,toString):
+
+    c = self.c
+    g.trace(self,fileName)
+
+    # Call the original method.
+    global originalOpenFileForWriting
+    val = originalOpenFileForWriting(self,root,fileName,toString)
+
+    # Save a pointer to the root for later.
+    if root.isDirty(): files [fileName] = root.copy()
     
-    oWF = haveseen[ root.c ]  
-    rt = oWF( root, toString ) 
-    # if root.isDirty(): files[ self.targetFileName ] = root.copy()
-    if root.isDirty(): files[ fileName ] = root.copy()
-    return rt
+    # Return whatever the original method returned.
+    return val 
+#@-node:mork.20041018204908.3:decoratedOpenFileForWriting
+#@+node:mork.20041018204908.6:stop & helper
+def stop (tag,keywords):
+
+    multi = scanForMultiPath()
+    g.trace(g.dictToString(multi))
+
+    for z in multi.keys():
+        paths = multi [z]
+        for x in paths:
+            try:
+                if os.path.isdir(x):
+                    shutil.copy2(z,x)
+                    g.es("multifile:\nWrote %s to %s" % (z,x),color="blue")
+                else:
+                    g.es("multifile:\n%s is not a directory, not writing %s" % (x,z),color="red")
+            except:
+                g.es("multifile:\nCant write %s to %s" % (z,x),color="red")
+    files.clear()
 #@nonl
-#@-node:mork.20041018204908.3:decoratedOpenWriteFile
-#@+node:mork.20041018204908.4:start
-def start( tag , keywords ):
- 
-    c = keywords.get('c')
-    if not haveseen.has_key( c ): 
-        # ndf = c.atFileCommands.new_df
-        # haveseen[ c ] = ndf.openWriteFile
-        
-        at = c.atFileCommands.atFile
-        haveseen [c] = at.openFileForWriting
-        # def openFileForWriting (self,root,fileName,toString):
-        at.openFileForWriting = new.instancemethod( decoratedOpenWriteFile, at, at.__class__ )
-#@nonl
-#@-node:mork.20041018204908.4:start
 #@+node:mork.20041018204908.5:scanForMultiPath
 def scanForMultiPath():
     multi = {}
@@ -153,51 +171,34 @@ def scanForMultiPath():
                     [ multi[ z ].append( x ) for x in paths ]                     
     return multi    
 #@-node:mork.20041018204908.5:scanForMultiPath
-#@+node:mork.20041018204908.6:stop
-def stop( tag, keywords ):
-
-    multi = scanForMultiPath()  
-    for z in multi.keys():
-        paths = multi[ z ]
-        for x in paths:
-            try:
-                if os.path.isdir( x ):
-                    shutil.copy2( z , x )
-                    g.es( "multifile:\nWrote %s to %s" % ( z, x ), color = "blue" )
-                else:
-                    g.es( "multifile:\n%s is not a directory, not writing %s" %( x, z ), color = "red" )
-            except:
-                g.es( "multifile:\nCant write %s to %s" % ( z,x ), color = "red" )  
-    files.clear()
-#@nonl
-#@-node:mork.20041018204908.6:stop
-#@+node:mork.20041019091317:addMenu
+#@-node:mork.20041018204908.6:stop & helper
+#@+node:mork.20041019091317:addMenu & helper
 haveseen = weakref.WeakKeyDictionary()
 
-def addMenu( tag, keywords ):
-    
+def addMenu (tag,keywords):
+
     c = keywords.get('c')
-    if not c or haveseen.has_key( c ):
+    if not c or haveseen.has_key(c):
         return
-    haveseen[ c ] = None
+    haveseen [c] = None
     men = c.frame.menu
-    men = men.getMenu( 'Edit' )
+    men = men.getMenu('Edit')
     men.add_command(
-        label = "Insert Directory String", 
-        command = lambda c = c: insertDirectoryString( c ) )
+        label = "Insert Directory String",
+        command = lambda c = c: insertDirectoryString(c))
 #@nonl
-#@-node:mork.20041019091317:addMenu
 #@+node:mork.20041019091524:insertDirectoryString
-def insertDirectoryString( c ):
-    
+def insertDirectoryString (c):
+
     dir = tkFileDialog.askdirectory()
     if dir:
-        bodyCtrl = c.frame.body.bodyCtrl
-        bodyCtrl.insert( 'insert', dir )
-        bodyCtrl.event_generate( '<Key>' )
-        bodyCtrl.update_idletasks()
+        w = c.frame.body.bodyCtrl
+        w.insert('insert',dir)
+        w.event_generate('<Key>')
+        w.update_idletasks()
 #@nonl
 #@-node:mork.20041019091524:insertDirectoryString
+#@-node:mork.20041019091317:addMenu & helper
 #@-others
 #@nonl
 #@-node:mork.20041018204908.1:@thin multifile.py
