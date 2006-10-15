@@ -183,7 +183,6 @@ __version__ = '1.6'
 # 1.6 EKR: Created truncateButtonText utility to strip trailing '-' 
 # characters.
 #@-at
-#@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
 #@nl
 
