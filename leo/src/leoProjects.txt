@@ -2909,6 +2909,413 @@ Leo 4.4.2 beta 2, build  1.69 , October 9, 2006
 Python 2.5.0, Tk 8.4.12, Pmw 1.2
 Windows 5, 0, 2195, 2, Service Pack 4
 #@-node:ekr.20061013092901:Removed unwanted key-state message
+#@+node:ekr.20061011110132:Removed datenodes.ini from cvs
+@nocolor
+
+No longer needed now that the datenodes plugins gets settings from cvs.
+#@nonl
+#@-node:ekr.20061011110132:Removed datenodes.ini from cvs
+#@+node:ekr.20061014075239:Made sure all kill commands do a full recolor
+@ To force a recolor there must be a non-None undoType passed to kill.
+or an explicit call to self.c.frame.body.forceFullRecolor() before calling endCommand.
+#@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+class killBufferCommandsClass (baseEditCommandsClass):
+    
+    '''A class to manage the kill buffer.'''
+
+    @others
+#@+node:ekr.20050920084036.175: ctor & finishCreate
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.killBuffer = [] # May be changed in finishCreate.
+    self.kbiterator = self.iterateKillBuffer()
+    self.last_clipboard = None # For interacting with system clipboard.
+    self.reset = False
+
+def finishCreate (self):
+    
+    baseEditCommandsClass.finishCreate(self)
+        # Call the base finishCreate.
+        # This sets self.k
+    
+    if self.k.useGlobalKillbuffer:
+        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
+#@-node:ekr.20050920084036.175: ctor & finishCreate
+#@+node:ekr.20050920084036.176: getPublicCommands
+def getPublicCommands (self):
+    
+    return {
+        'backward-kill-sentence':   self.backwardKillSentence,
+        'backward-kill-word':       self.backwardKillWord,
+        'clear-kill-ring':          self.clearKillRing,
+        'kill-line':                self.killLine,
+        'kill-word':                self.killWord,
+        'kill-sentence':            self.killSentence,
+        'kill-region':              self.killRegion,
+        'kill-region-save':         self.killRegionSave,
+        'yank':                     self.yank,
+        'yank-pop':                 self.yankPop,
+        'zap-to-character':         self.zapToCharacter,
+    }
+#@-node:ekr.20050920084036.176: getPublicCommands
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text):
+    
+    killKeys =(
+        '<Control-k>', '<Control-w>',
+        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+        '<Control-Alt-w>')
+
+    k = self.k
+    self.reset = True
+
+    # g.trace(repr(text))
+
+    if self.killBuffer and k.stroke in killKeys:
+        self.killBuffer [0] = self.killBuffer [0] + text
+    else:
+        self.killBuffer.insert(0,text)
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.181:backwardKillSentence
+def backwardKillSentence (self,event):
+    
+    '''Kill the previous sentence.'''
+    
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.search('.','insert',backwards=True,stopindex='1.0')
+
+    if i:
+        i2 = w.search('.',i,backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
+#@-node:ekr.20050920084036.181:backwardKillSentence
+#@+node:ekr.20050920084036.180:backwardKillWord & killWord
+def backwardKillWord (self,event):
+    '''Kill the previous word.'''
+    c = self.c
+    self.beginCommand(undoType='backward-kill-word')
+    c.editCommands.backwardWord(event)
+    self.killWs(event)
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    c = self.c
+    self.beginCommand(undoType='kill-word')
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    self.killWs(event)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+#@-node:ekr.20050920084036.180:backwardKillWord & killWord
+#@+node:ekr.20051216151811:clearKillRing
+def clearKillRing (self,event=None):
+    
+    '''Clear the kill ring.'''
+    
+    self.killBuffer = []
+#@-node:ekr.20051216151811:clearKillRing
+#@+node:ekr.20050920084036.185:getClipboard
+def getClipboard (self,w):
+
+    try:
+        ctxt = w.selection_get(selection='CLIPBOARD')
+        if not self.killBuffer or ctxt != self.last_clipboard:
+            self.last_clipboard = ctxt
+            if not self.killBuffer or self.killBuffer [0] != ctxt:
+                return ctxt
+    except: pass
+
+    return None
+#@-node:ekr.20050920084036.185:getClipboard
+#@+node:ekr.20050920084036.184:iterateKillBuffer
+def iterateKillBuffer (self):
+
+    while 1:
+        if self.killBuffer:
+            self.last_clipboard = None
+            for z in self.killBuffer:
+                if self.reset:
+                    self.reset = False
+                    break
+                yield z
+#@-node:ekr.20050920084036.184:iterateKillBuffer
+#@+node:ekr.20050920084036.178:kill, killLine
+def kill (self,event,frm,to,undoType=None):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.get(frm,to)
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    w.delete(frm,to)
+    if undoType:
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    self.kill(event,'insert linestart','insert lineend+1c',undoType='kill-line')
+#@nonl
+#@-node:ekr.20050920084036.178:kill, killLine
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+    
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = self.editWidget(event)
+    if not w: return
+    theRange = w.tag_ranges('sel')
+    if not theRange: return
+    
+    s = w.get(theRange[0],theRange[-1])
+    if deleteFlag:
+        self.beginCommand(undoType='kill-region')
+        w.delete(theRange[0],theRange[-1])
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    self.removeRKeys(w)
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@+node:ekr.20050930095323.1:killSentence
+def killSentence (self,event):
+    
+    '''Kill the sentence containing the cursor.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    i  = w.search('.','insert',stopindex='end')
+    if i:
+        self.beginCommand(undoType='kill-sentence')
+        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='','1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930095323.1:killSentence
+#@+node:ekr.20050930100733:killWs
+def killWs (self,event,undoType=None):
+    
+    ws = ''
+    w = self.editWidget(event)
+    if not w: return
+
+    while 1:
+        s = w.get('insert')
+        if s in (' ','\t'):
+            w.delete('insert')
+            ws = ws + s
+        else:
+            break
+   
+    if ws:
+        if undoType: self.beginCommand(undoType=undoType)
+        self.addToKillBuffer(ws)
+        if undoType: self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930100733:killWs
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event):
+    
+    '''Insert the next entry in the kill ring at the insert point.'''
+
+    c = self.c ; k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.index('insert')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        self.beginCommand(undoType='yank')
+        self.reset = True
+        s = clip_text or self.kbiterator.next()
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+        c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930091642.1:yank
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+    
+    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.index('insert') ; t, t1 = i.split('.')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        if clip_text: s = clip_text
+        else:         s = self.kbiterator.next()
+        t1 = str(int(t1)+len(s))
+        r = w.tag_ranges('kb')
+        if r and r [0] == i:
+            w.delete(r[0],r[-1])
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+#@-node:ekr.20050930091642.2:yankPop
+#@+node:ekr.20050920084036.128:zapToCharacter
+def zapToCharacter (self,event):
+    
+    '''Kill characters from the insertion point to a given character.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    
+    state = k.getState('zap-to-char')
+    if state == 0:
+        k.setLabelBlue('Zap To Character: ',protect=True)
+        k.setState('zap-to-char',1,handler=self.zapToCharacter)
+    else:
+        c = k.c
+        ch = event and event.char
+        k.resetLabel()
+        k.clearState()
+        if len(event.char) != 0 and not ch.isspace():
+            i = w.search(ch,'insert',stopindex='end')
+            if i != -1:
+                s = w.get('insert','%s' % i)
+                self.addToKillBuffer(s)
+                w.delete('insert','%s' % i)
+#@-node:ekr.20050920084036.128:zapToCharacter
+#@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+#@+node:ekr.20051214132256:begin/endCommand
+#@+node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
+def beginCommand (self,undoType='Typing'):
+    
+    '''Do the common processing at the start of each command.'''
+
+    return self.beginCommandHelper(ch='',undoType=undoType,w=self.w)
+
+def beginCommandWithEvent (self,event,undoType='Typing'):
+    
+    '''Do the common processing at the start of each command.'''
+    
+    return self.beginCommandHelper(ch=event.char,undoType=undoType,w=event.widget)
+#@+node:ekr.20051215102349:beingCommandHelper
+# New in Leo 4.4b4: calling beginCommand is valid for all widgets,
+# but does nothing unless we are in the body pane.
+
+def beginCommandHelper (self,ch,undoType,w):
+
+    c = self.c ; p = c.currentPosition()
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        oldSel =  g.app.gui.getTextSelection(w)
+        oldText = p.bodyString()
+        self.undoData = g.Bunch(
+            ch=ch,name=name,oldSel=oldSel,oldText=oldText,w=w,undoType=undoType)
+    else:
+        self.undoData = None
+
+    return w
+#@-node:ekr.20051215102349:beingCommandHelper
+#@-node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
+#@+node:ekr.20051214133130.1:endCommand
+# New in Leo 4.4b4: calling endCommand is valid for all widgets,
+# but handles undo only if we are in body pane.
+
+def endCommand(self,label=None,changed=True,setLabel=True):
+    
+    '''Do the common processing at the end of each command.'''
+    
+    c = self.c ; b = self.undoData ; k = self.k
+
+    if b and b.name.startswith('body') and changed:
+        c.frame.body.onBodyChanged(undoType=b.undoType,
+            oldSel=b.oldSel,oldText=b.oldText,oldYview=None)
+        
+    self.undoData = None # Bug fix: 1/6/06 (after a5 released).
+
+    k.clearState()
+    
+    # Warning: basic editing commands **must not** set the label.
+    if setLabel:
+        if label:
+            k.setLabelGrey(label)
+        else:
+            k.resetLabel()
+#@-node:ekr.20051214133130.1:endCommand
+#@-node:ekr.20051214132256:begin/endCommand
+#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+# This is the only key handler for the body pane.
+def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
+    
+    '''Update Leo after the body has been changed.'''
+    
+    body = self ; c = self.c ; bodyCtrl = body.bodyCtrl
+    trace = self.trace_onBodyChanged
+    p = c.currentPosition()
+    insert = bodyCtrl.index('insert')
+    ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
+    ch = g.toUnicode(ch,g.app.tkEncoding)
+    newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
+    # g.trace('newText',repr(newText))
+    newSel = g.app.gui.getTextSelection(bodyCtrl)
+    if oldText is None: oldText = p.bodyString()
+    changed = oldText != newText
+    if trace:
+        g.trace(repr(ch),'changed:',changed)
+        g.trace('newText:',repr(newText))
+    if changed:
+        c.undoer.setUndoTypingParams(p,undoType,
+            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
+        p.v.setTnodeText(newText)
+        p.v.t.insertSpot = body.getInsertionPoint()
+        << recolor the body >>
+        if not c.changed: c.setChanged(True)
+        self.updateEditors()
+        << redraw the screen if necessary >>
+#@+node:ekr.20051026083733.6:<< recolor the body >>
+body.colorizer.interrupt()
+c.frame.scanForTabWidth(p)
+body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
+self.forceFullRecolorFlag = False
+#@-node:ekr.20051026083733.6:<< recolor the body >>
+#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+c.beginUpdate()
+try:
+    redraw_flag = False
+    # Update dirty bits.
+    # p.setDirty() sets all cloned and @file dirty bits.
+    if not p.isDirty() and p.setDirty():
+        redraw_flag = True
+        
+    # Update icons. p.v.iconVal may not exist during unit tests.
+    val = p.computeIcon()
+    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+        p.v.iconVal = val
+        redraw_flag = True
+finally:
+    c.endUpdate(redraw_flag)
+#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+#@-node:ekr.20061014075239:Made sure all kill commands do a full recolor
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
@@ -3909,6 +4316,102 @@ button. I have a mac and Ctl-click, Command-click, etc doesn't work. What should
 I do?
 #@nonl
 #@-node:ekr.20051112080017:The scripting plugin now creates a delete-x-script-button command for each script button
+#@+node:ekr.20061012061050:Fixed (sorta) the nodenavigator plugin
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3959003
+By: nobody
+
+The node navigator plugin does not show up in the plugins menu (also happens
+in Leo4.4.1.1)
+
+The quick fix was to revert to the default module-level __name__ attribute.
+Presumably a better fix involves the plugins manager plugin.
+
+The use of this plugin decreases when moving through the outline without the
+mouse. Maybe some setting could be introduced to only include a node to the
+'Recent' list when it has had focus for more than, say, 5 seconds? Or being
+edited, of course.
+
+Another suggestion might be to set _named_ marks for a (line in a?) node a la
+vim (where its shortcut is m<markname>). I can remember about 3 or 4 marks when
+analyzing code, and switching by only using the keyboard (shortcuts '<markname>
+or `<markname>) works very good (for me) in vim. Switching between the two most
+recent marks is done in vim using the shortcut '' or ``.
+#@-node:ekr.20061012061050:Fixed (sorta) the nodenavigator plugin
+#@+node:ekr.20061012095927:Rewrote the multifile plugin for the 4.x code base.
+@nocolor
+
+(via email) Terry Brown
+#@nonl
+#@-node:ekr.20061012095927:Rewrote the multifile plugin for the 4.x code base.
+#@+node:ekr.20061014050154:Replaced __name__ with __plugin_name__ in four plugins
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3962632
+By: paulpaterson
+
+This isn't a problem in the manager or plugins menu as such - the plugins_menu
+uses the __name__ attribute of a module to identify what to display. This shouldn't
+be changed or the plugin wont display in the menu.
+
+If you want to display a nice name in the plugins menu then you set the
+__plugin_name__ attribute of a plugin.
+
+There are four current plugins that break this rule,
+
+nodenavigator
+wordexport
+newbuttons
+rowcol
+
+(ironically I had a hand in a few of those!)
+
+All these plugins should have the line,
+
+__name__ = "ldaldjalks"
+
+replaced with
+
+__plugin_name__ = "kjldldasd"
+
+
+Regards,
+
+Paul
+
+#@-node:ekr.20061014050154:Replaced __name__ with __plugin_name__ in four plugins
+#@+node:ekr.20061014161100:Improved the scripting plugin
+- Every button created by the plugin creates a corresponding command.  The command name is the 'cleaned' version of the button name.
+
+- Every button created by the plugin also creates a delete-x-button command, where x is the command name as just discussed.  So now you can delete script buttons without right-clicking.
+
+- I took the time to revise, refactor, clean up, reorganize and better document the code.  This was overdue: the previous code had grown difficult to understand through multiple small accretions.  I can actually understand the new code.
+
+- This *might* have fixed the following crasher:
+
+http://sourceforge.net/forum/message.php?msg_id=3962483
+By: ktenney
+
+right click on icon bar @button results in TK exception
+
+TclError Exception in Tk callback
+  Function: <bound method Balloon._destroy of <_Pmw.Pmw_1_2.lib.PmwBalloon.Balloon
+instance at 0x020B2EB8>> (type: <type 'instancemethod'>)
+  Args: (<Tkinter.Event instance at 0x01FB93C8>,)
+  Event type: DestroyNotify (type num: 17)
+Traceback (innermost last):
+  File "c:\python24\lib\site-packages\Pmw\Pmw_1_2\lib\PmwBase.py", line 1747,
+in __call__
+    return apply(self.func, args)
+  File "c:\python24\lib\site-packages\Pmw\Pmw_1_2\lib\PmwBalloon.py", line 283,
+in _destroy
+    self.withdraw()
+  File "<string>", line 1, in withdraw
+    None
+  File "c:\python24\lib\lib-tk\Tkinter.py", line 1541, in wm_withdraw
+    return self.tk.call('wm', 'withdraw', self._w)
+TclError: bad window path name ".20325440.23282432.23282712.34285688.33264144"
+#@-node:ekr.20061014161100:Improved the scripting plugin
 #@-node:ekr.20061012064024:Plugins
 #@+node:ekr.20061009154800:Settings
 #@+node:ekr.20061009153504:Made unlimited undo the default

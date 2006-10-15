@@ -3,58 +3,8 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061012095927:Fix multifile plugin
-(via email)
-
-I think th multifile plugin might be broken, maybe because it does 
-this:
-
-ndf = c.atFileCommands.new_df
-
-which raises an attribute error, and I see some other plugin for 
-which the version history comments 'removed reference to new_df', 
-suggesting new_df went away.
-
-Cheers -Terry
-#@-node:ekr.20061012095927:Fix multifile plugin
-#@+node:ekr.20061011110132:Remove properties dialog for datenodes plugin
-@nocolor
-
-the properties dialog in the plugin menu for datenodes is no longer needed because the settings are stored in LeoSettings.leo. Could you please remove the dialog? 
-#@-node:ekr.20061011110132:Remove properties dialog for datenodes plugin
-#@+node:ekr.20061012061050:Fix nodenavigator plugin
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3959003
-By: nobody
-
-The node navigator plugin does not show up in the plugins menu (also happens
-in Leo4.4.1.1).
-
-The use of this plugin decreases when moving through the outline without the
-mouse. Maybe some setting could be introduced to only include a node to the
-'Recent' list when it has had focus for more than, say, 5 seconds? Or being
-edited, of course.
-
-Another suggestion might be to set _named_ marks for a (line in a?) node a la
-vim (where its shortcut is m<markname>). I can remember about 3 or 4 marks when
-analyzing code, and switching by only using the keyboard (shortcuts '<markname>
-or `<markname>) works very good (for me) in vim. Switching between the two most
-recent marks is done in vim using the shortcut '' or ``.
-#@-node:ekr.20061012061050:Fix nodenavigator plugin
-#@+node:ekr.20061012213519:Major 6
-#@+node:ekr.20061012082613:Fix body editor problems: 2
-#@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
-#@-node:ekr.20061012082613.1:Find does not work when there are multiple body editors
-#@+node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
-@nocolor
-
-When deleting a node that is open in two editors, only one editor shows the
-content of the newly selected node. The other editor still shows the contents
-of the deleted node; when clicking in it, the log reports something like:
-
-onFocusIn: does not exist <some number>
-#@-node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
-#@-node:ekr.20061012082613:Fix body editor problems: 2
+#@+node:ekr.20061014073539:Fix bugs in multi-file plugin
+#@-node:ekr.20061014073539:Fix bugs in multi-file plugin
 #@+node:ekr.20060927100500.1:Fix bugs in new colorizer
 @nocolor
 
@@ -174,9 +124,69 @@ def getMacHelpMenu (self):
 #@+node:ekr.20061010082258:Minibuffer does not show on Mac
 #@-node:ekr.20061010082258:Minibuffer does not show on Mac
 #@-node:ekr.20061012154836:Mac 2
-#@-node:ekr.20061012213519:Major 6
+#@+node:ekr.20061012082613:Fix body editor problems: 2
+#@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
+#@-node:ekr.20061012082613.1:Find does not work when there are multiple body editors
+#@+node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
+@nocolor
+
+When deleting a node that is open in two editors, only one editor shows the
+content of the newly selected node. The other editor still shows the contents
+of the deleted node; when clicking in it, the log reports something like:
+
+onFocusIn: does not exist <some number>
+#@-node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
+#@-node:ekr.20061012082613:Fix body editor problems: 2
+#@+node:ekr.20061014050154.2:Binding to None clears all bindings
+#@-node:ekr.20061014050154.2:Binding to None clears all bindings
+#@+node:ekr.20061014194858:Fix x-windows middle button problem
+@nocolor
+
+Terry Brown
+
+There's a gotcha in the way X-windows changes the content of the 
+body pane that's constantly tripping me up.  Apparently I don't 
+learn, :-) but here're the problems...
+
+I'm hoping this isn't too hard to fix.  Maybe as little as tying Tk 
+ButtonRelease events in the text pane to the same handler that 
+handles keystrokes?
+
+In X-windows the middle mouse button is commonly used to paste, and 
+in leo Tk seems to be interpreting this as pasting the current 
+_selection_, not the current clipboard, which is good, that's the 
+X-windows way.  The trouble is leo doesn't see the change to the 
+line(s) in the text pane unless some key based edit occurs there. 
+So if I paste the selection where I want it and then save the file 
+or move to another node, the change isn't recorded.
+
+A related issue is that when you paste the selection this way the 
+cursor ends up after the pasted text, but the original selection 
+remains selected, so the first key stroke replace selection 
+rather than inserting at the cursor.  You want keystrokes to replace 
+the selection of course, but it's confusing when the cursor's not at 
+the end of the selection.  I think the best solution here would be 
+to make the copy of the selection pasted in by the middle button the 
+selected text, so the cursor remains adjacent to the selection and 
+the keystroke-replaces-selection behavior isn't unexpected.
+
+I can poke around and try and find some solutions if you don't have 
+access to an X-windows (eg. linux) system, although I've never used 
+Tkinter, only wxWidgets, so I'd have to search a bit.
+#@nonl
+#@-node:ekr.20061014194858:Fix x-windows middle button problem
 #@-node:ekr.20061010115312.1:Urgent
 #@+node:ekr.20061008160553:Asap
+#@+node:ekr.20061014050154.1:Posting: I really like the standard bindings
+@nocolor
+
+It **might** be possible to implement dwim (do what I mean).
+
+If, say, Home is bound in all panes to end-of-line,
+then it might be possible to switch to the body pane if focus is in the tree.
+I'll have to experiment with this.
+#@nonl
+#@-node:ekr.20061014050154.1:Posting: I really like the standard bindings
 #@+node:ekr.20061012204814:Should 'plain' cursor moves force focus to body (unless editing headline?)
 @nocolor
 
@@ -1396,17 +1406,27 @@ def backwardKillSentence (self,event):
         i2 = g.choose(i2=='','1.0',i2+'+1c ')
         self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
 #@-node:ekr.20050920084036.181:backwardKillSentence
-#@+node:ekr.20050920084036.180:backwardKillWord
+#@+node:ekr.20050920084036.180:backwardKillWord & killWord
 def backwardKillWord (self,event):
-    
     '''Kill the previous word.'''
-
     c = self.c
+    self.beginCommand(undoType='backward-kill-word')
     c.editCommands.backwardWord(event)
     self.killWs(event)
-    self.killWord(event)
-    # c.editCommands.backwardWord(event)
-#@-node:ekr.20050920084036.180:backwardKillWord
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    c = self.c
+    self.beginCommand(undoType='kill-word')
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    self.killWs(event)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+#@-node:ekr.20050920084036.180:backwardKillWord & killWord
 #@+node:ekr.20051216151811:clearKillRing
 def clearKillRing (self,event=None):
     
@@ -1439,7 +1459,7 @@ def iterateKillBuffer (self):
                     break
                 yield z
 #@-node:ekr.20050920084036.184:iterateKillBuffer
-#@+node:ekr.20050920084036.178:kill, killLine, killWord
+#@+node:ekr.20050920084036.178:kill, killLine
 def kill (self,event,frm,to,undoType=None):
 
     k = self.k
@@ -1452,20 +1472,15 @@ def kill (self,event,frm,to,undoType=None):
     w.clipboard_clear()
     w.clipboard_append(s)
     w.delete(frm,to)
-    if undoType: self.endCommand(changed=True,setLabel=True)
+    if undoType:
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
 
 def killLine (self,event):
     '''Kill the line containing the cursor.'''
-    self.kill(event,'insert linestart','insert lineend+1c','kill-line')
-
-def killWord (self,event):
-    '''Kill the word containing the cursor.'''
-    self.beginCommand(undoType='kill-word')
-    self.kill(event,'insert wordstart','insert wordend',undoType=None)
-    self.killWs(event)
-    self.c.frame.body.forceFullRecolor()
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.178:kill, killLine, killWord
+    self.kill(event,'insert linestart','insert lineend+1c',undoType='kill-line')
+#@nonl
+#@-node:ekr.20050920084036.178:kill, killLine
 #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 def killRegion (self,event):
     '''Kill the text selection.'''
@@ -1621,10 +1636,6 @@ def zapToCharacter (self,event):
 #@-node:ekr.20060927173836.4:New move outlihe commands
 #@+node:ekr.20060927173836.5:Repeat counts for cursor moves
 #@-node:ekr.20060927173836.5:Repeat counts for cursor moves
-#@+node:ekr.20060927173836:Better print-binding command
-# Separate sections for single-character Ctrl and Alt keys.
-#@nonl
-#@-node:ekr.20060927173836:Better print-binding command
 #@+node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
 #@-node:ekr.20060927173836.2:Find next doesn't find any more if regexp matches an empty string.
 #@-node:ekr.20060927173836.3:New & improved commands
