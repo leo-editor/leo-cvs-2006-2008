@@ -1090,6 +1090,14 @@ def test_g_es_exception():
         sys.stdout = sys.__stdout__
 #@-node:ekr.20050220030850:test_g_es_exception
 #@-node:ekr.20031218072017.3112:es_exception & test
+#@+node:ekr.20061015090538:es_exception_type
+def es_exception_type (c=None,color="red"):
+    
+    # exctype is a Exception class object; value is the error message.
+    exctype, value = sys.exc_info()[:2]
+    
+    g.es_print('%s, %s' % (exctype.__name__, value),color=color)
+#@-node:ekr.20061015090538:es_exception_type
 #@+node:ekr.20040731204831:getLastTracebackFileAndLineNumber
 def getLastTracebackFileAndLineNumber():
     
