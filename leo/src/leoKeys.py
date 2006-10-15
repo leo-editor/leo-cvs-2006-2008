@@ -2821,6 +2821,8 @@ class keyHandlerClass:
         
         if shortcut:
             stroke = k.shortcutFromSetting(shortcut)
+        elif commandName.lower() == 'shortcut': # Causes problems.
+            stroke = None
         else:
             # Try to get a shortcut from leoSettings.leo.
             junk,bunchList = c.config.getShortcut(commandName)
@@ -2829,7 +2831,7 @@ class keyHandlerClass:
                 if accel2 and not pane2.endswith('-mode'):
                     shortcut2 = accel2
                     stroke = k.shortcutFromSetting(shortcut2)
-                    break
+                    if stroke: break
             else: stroke = None
       
         if stroke:
