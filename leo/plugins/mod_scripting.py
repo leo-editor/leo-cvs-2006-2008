@@ -116,7 +116,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.5'
+__version__ = '1.6'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -180,6 +180,8 @@ __version__ = '1.5'
 # 1.4 EKR: Create a delete-x-button command for each button.
 # 1.5 EKR: Reorganized and simplified much of the code, added many docstrings 
 # and revised the plugin's docstring.
+# 1.6 EKR: Created truncateButtonText utility to strip trailing '-' 
+# characters.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -594,7 +596,17 @@ class scriptingController:
     #@nonl
     #@-node:ekr.20060328125248.28:executeScriptFromButton
     #@-node:ekr.20060328125248.24:createAtButtonHelper & callback
-    #@+node:ekr.20060328125248.17:createIconButton & helpers
+    #@+node:ekr.20060522104419.1:createBalloon
+    def createBalloon (self,w,label):
+    
+        'Create a balloon for a widget.'
+    
+        balloon = Pmw.Balloon(w,initwait=100)
+        if w and balloon:
+            balloon.bind(w,label)
+    #@nonl
+    #@-node:ekr.20060522104419.1:createBalloon
+    #@+node:ekr.20060328125248.17:createIconButton
     def createIconButton (self,text,command,shortcut,statusLine,bg):
         
         '''Create an icon button.  All icon buttons get created using this utility.
@@ -608,23 +620,24 @@ class scriptingController:
         c = self.c ; k = c.k
         
         # Create the button and add it to the buttons dict.
-        buttonText = self.cleanButtonText(text).lower()
+        commandName = self.cleanButtonText(text).lower()
         
         # Truncate only the text of the button, not the command name.
-        b = self.iconBar.add(text=buttonText[:self.maxButtonSize])
-        self.buttonsDict[b] = buttonText
+        truncatedText = self.truncateButtonText(commandName)
+        b = self.iconBar.add(text=truncatedText) # The keyword arg is required.
+        self.buttonsDict[b] = truncatedText
         
         if statusLine:
             self.createBalloon(b,statusLine)
     
         if sys.platform == "win32":
-            width = int(min(self.maxButtonSize,len(text)) * 0.9)
+            width = int(len(truncatedText) * 0.9)
             b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
             
         # Register the command name if it exists.
         if command:
             b.configure(command=command)
-            k.registerCommand(buttonText,shortcut=shortcut,func=command,pane='button',verbose=shortcut)
+            k.registerCommand(commandName,shortcut=shortcut,func=command,pane='button',verbose=shortcut)
         
         # Bind right-clicks to deleteButton.
         def deleteButtonCallback(event=None,self=self,b=b):
@@ -632,23 +645,13 @@ class scriptingController:
         b.bind('<3>',deleteButtonCallback)
         
         # Register the delete-x-button command
-        deleteCommandName= 'delete-%s-button' % buttonText
+        deleteCommandName= 'delete-%s-button' % commandName
         k.registerCommand(deleteCommandName,shortcut=None,func=deleteButtonCallback,pane='button',verbose=False)
             # Reporting this command is way too annoying.
     
         return b
     #@nonl
-    #@+node:ekr.20060522104419.1:createBalloon
-    def createBalloon (self,w,label):
-    
-        'Create a balloon for a widget.'
-    
-        balloon = Pmw.Balloon(w,initwait=100)
-        if balloon:
-            balloon.bind(w,label)
-    #@nonl
-    #@-node:ekr.20060522104419.1:createBalloon
-    #@-node:ekr.20060328125248.17:createIconButton & helpers
+    #@-node:ekr.20060328125248.17:createIconButton
     #@+node:ekr.20060929131245:definePressButtonCommand (no longer used)
     def definePressButtonCommand (self,buttonText,atButtonCallback,shortcut=None):
         
@@ -716,6 +719,16 @@ class scriptingController:
         return shortcut
     #@nonl
     #@-node:ekr.20060328125248.16:getShortcut
+    #@+node:ekr.20061015125212:truncateButtonText
+    def truncateButtonText (self,s):
+        
+        if self.maxButtonSize > 10:
+            s = s[:self.maxButtonSize]
+            if s.endswith('-'):
+                s = s[:-1]
+        return s.strip()
+    #@nonl
+    #@-node:ekr.20061015125212:truncateButtonText
     #@-node:ekr.20061014075212:Utils
     #@-others
 #@nonl
