@@ -65,32 +65,6 @@ class leoMenu:
                 self.updateOutlineMenu()
     #@nonl
     #@-node:ekr.20031218072017.3777:updateAllMenus
-    #@+node:ekr.20061010070625:populateHelpMenu(not used)
-    def populateHelpMenu (self):
-        
-        menus  = [self.getMenu(s) for s in ('File','Edit','Outline','Plugins','Cmds','Window')]
-        
-        try:
-            topMenu = self.getMenu('top')
-            g.trace(topMenu,g.dictToString(topMenu.__dict__))
-            s  = topMenu._w + '.help'
-            if 1:
-                # Find the menu without any children.
-                for key in topMenu.children.keys():
-                    menu = topMenu.children.get(key)
-                    print key,menu,'#children',len(menu.children)
-                    if menu not in menus:
-                        g.trace('found',menu)
-                        self.setMenu('Help',menu)
-                        self.createMenuEntries(menu,self.helpMenuTable)
-                        return menu
-            return None
-            
-        except Exception:
-            g.trace('Can not get MacOS Help menu')
-            g.es_exception()
-            return None
-    #@-node:ekr.20061010070625:populateHelpMenu(not used)
     #@+node:ekr.20031218072017.3778:updateFileMenu
     def updateFileMenu (self):
         
@@ -485,8 +459,6 @@ class leoMenu:
     #@-node:ekr.20031218072017.3802:createWindowMenuFromTable
     #@+node:ekr.20031218072017.3803:createHelpMenuFromTable
     def createHelpMenuFromTable (self):
-        
-        g.trace(sys.platform)
     
         if sys.platform == 'darwin':
             self.getMacHelpMenu()
