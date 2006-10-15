@@ -73,16 +73,23 @@ class leoTkinterMenu (leoMenu.leoMenu):
     #@+node:ekr.20060211144330.1:getMacHelpMenu
     def getMacHelpMenu (self):
         
-        return None ###
+        menus  = [self.getMenu(s) for s in ('File','Edit','Outline','Plugins','Cmds','Window')]
+        # g.trace(menus)
         
         try:
-            helpMenu = Tk.Menu('top.help')
+            topMenu = self.getMenu('top')
+            #g.trace(topMenu,g.dictToString(topMenu.__dict__))
+            helpMenu = Tk.Menu(topMenu,name='help',tearoff=0)
+            self.add_cascade(topMenu,label='Help',menu=helpMenu,underline=0)
+            #g.trace(helpMenu)
+            self.createMenuEntries(helpMenu,self.helpMenuTable)
             return helpMenu
             
         except Exception:
             g.trace('Can not get MacOS Help menu')
             g.es_exception()
             return None
+    #@nonl
     #@-node:ekr.20060211144330.1:getMacHelpMenu
     #@+node:ekr.20031218072017.4103:Tkinter menu bindings
     # See the Tk docs for what these routines are to do
@@ -184,6 +191,7 @@ class leoTkinterMenu (leoMenu.leoMenu):
         self.createMenusFromTables()
         
         top.config(menu=topMenu) # Display the menu.
+    #@nonl
     #@-node:ekr.20031218072017.4115:createMenuBar
     #@+node:ekr.20051022042645:createOpenWithMenu
     def createOpenWithMenu(self,parent,label,index,amp_index):
