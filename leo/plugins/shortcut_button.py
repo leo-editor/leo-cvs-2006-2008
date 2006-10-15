@@ -19,7 +19,7 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@-node:ekr.20060601151845.2:<< imports >>
 #@nl
 
-__version__ = "0.3"
+__version__ = "0.4"
 #@<< version history >>
 #@+node:ekr.20060601151845.3:<< version history >>
 #@@nocolor
@@ -30,7 +30,10 @@ __version__ = "0.3"
 # 0.3 EKR: Rewritten to used latest mod_scripting plugin.
 # As a result, it creates the shortcut-button command, and commands for every 
 # button created.
+# 0.4 EKR: The created commands now have the form: go-x-node to reduce chance 
+# of conflicts with other commands.
 #@-at
+#@nonl
 #@-node:ekr.20060601151845.3:<< version history >>
 #@nl
 
@@ -83,8 +86,7 @@ class shortcutButton:
             self.createShortcutButton(sc,c)
     
         b = sc.createIconButton(
-            text='shortcut', #'shortcut-button',
-            # Do *not* call this just shortcut: it cause problems in k.registerCommand.
+            text='shortcut',
             command=shortcutButtonButtonCallback,
             shortcut=None,
             statusLine='Create a shortcut button',
@@ -95,6 +97,7 @@ class shortcutButton:
         
         '''Create a button which selects the present position (when the button was created).'''
         p = c.currentPosition() ; h = p.headString()
+        commandName = 'go-%s-node' % h
         
         def shortcutButtonCallback (event=None,c=c,p=p):
             c.beginUpdate()
@@ -104,10 +107,10 @@ class shortcutButton:
                 c.endUpdate()
         
         b = sc.createIconButton(
-            text=h,
+            text=commandName,
             command=shortcutButtonCallback,
             shortcut=None,
-            statusLine="Shortcut %s" % h,
+            statusLine=commandName,
             bg='LightSteelBlue1')
     #@-node:ekr.20060601151845.10:createShortcutButton
     #@-others
