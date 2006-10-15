@@ -618,7 +618,7 @@ class scriptingController:
             self.createBalloon(b,statusLine)
     
         if sys.platform == "win32":
-            width = int(len(text) * 0.9)
+            width = int(min(self.maxButtonSize,len(text)) * 0.9)
             b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
             
         # Register the command name if it exists.
