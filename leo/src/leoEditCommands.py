@@ -100,7 +100,7 @@ class baseEditCommandsClass:
     #@-node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
     #@+node:ekr.20051214133130.1:endCommand
     # New in Leo 4.4b4: calling endCommand is valid for all widgets,
-    # but does handles undo only if we are in body pane.
+    # but handles undo only if we are in body pane.
     
     def endCommand(self,label=None,changed=True,setLabel=True):
         
@@ -3781,15 +3781,15 @@ class editCommandsClass (baseEditCommandsClass):
         i = w.index('insert')
         i2 = i
         txt = w.get('insert linestart','insert lineend')
-        
-        self.beginCommand(undoType='backward-kill-paragraph')
+        undoType='backward-kill-paragraph'
+        self.beginCommand(undoType=undoType)
     
         if not txt.rstrip().lstrip():
             self.backwardParagraph(event)
             i2 = w.index('insert')
         self.extendToParagraph(event)
         i3 = w.index('sel.first')
-        c.killBufferCommands.kill(event,i3,i2)
+        c.killBufferCommands.kill(event,i3,i2,undoType=undoType)
         w.mark_set('insert',i)
         w.selection_clear()
     
@@ -5416,17 +5416,27 @@ class killBufferCommandsClass (baseEditCommandsClass):
             i2 = g.choose(i2=='','1.0',i2+'+1c ')
             self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
     #@-node:ekr.20050920084036.181:backwardKillSentence
-    #@+node:ekr.20050920084036.180:backwardKillWord
+    #@+node:ekr.20050920084036.180:backwardKillWord & killWord
     def backwardKillWord (self,event):
-        
         '''Kill the previous word.'''
-    
         c = self.c
+        self.beginCommand(undoType='backward-kill-word')
         c.editCommands.backwardWord(event)
         self.killWs(event)
-        self.killWord(event)
-        # c.editCommands.backwardWord(event)
-    #@-node:ekr.20050920084036.180:backwardKillWord
+        self.kill(event,'insert wordstart','insert wordend',undoType=None)
+        c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+    
+    def killWord (self,event):
+        '''Kill the word containing the cursor.'''
+        c = self.c
+        self.beginCommand(undoType='kill-word')
+        self.kill(event,'insert wordstart','insert wordend',undoType=None)
+        self.killWs(event)
+        c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+    
+    #@-node:ekr.20050920084036.180:backwardKillWord & killWord
     #@+node:ekr.20051216151811:clearKillRing
     def clearKillRing (self,event=None):
         
@@ -5459,7 +5469,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
                         break
                     yield z
     #@-node:ekr.20050920084036.184:iterateKillBuffer
-    #@+node:ekr.20050920084036.178:kill, killLine, killWord
+    #@+node:ekr.20050920084036.178:kill, killLine
     def kill (self,event,frm,to,undoType=None):
     
         k = self.k
@@ -5472,20 +5482,15 @@ class killBufferCommandsClass (baseEditCommandsClass):
         w.clipboard_clear()
         w.clipboard_append(s)
         w.delete(frm,to)
-        if undoType: self.endCommand(changed=True,setLabel=True)
+        if undoType:
+            self.c.frame.body.forceFullRecolor()
+            self.endCommand(changed=True,setLabel=True)
     
     def killLine (self,event):
         '''Kill the line containing the cursor.'''
-        self.kill(event,'insert linestart','insert lineend+1c','kill-line')
-    
-    def killWord (self,event):
-        '''Kill the word containing the cursor.'''
-        self.beginCommand(undoType='kill-word')
-        self.kill(event,'insert wordstart','insert wordend',undoType=None)
-        self.killWs(event)
-        self.c.frame.body.forceFullRecolor()
-        self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.178:kill, killLine, killWord
+        self.kill(event,'insert linestart','insert lineend+1c',undoType='kill-line')
+    #@nonl
+    #@-node:ekr.20050920084036.178:kill, killLine
     #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     def killRegion (self,event):
         '''Kill the text selection.'''
