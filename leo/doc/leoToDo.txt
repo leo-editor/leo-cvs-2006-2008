@@ -9,9 +9,6 @@
 - Does not restore selection after indent/undent commands.
 #@nonl
 #@-node:ekr.20060927100500.1:Fix bugs in new colorizer
-#@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-http://sourceforge.net/forum/message.php?msg_id=3924236
-#@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 #@+node:ekr.20061012154836:Mac 2
 #@+node:ekr.20060116083043:Use special Help menu on the Mac
 @nocolor

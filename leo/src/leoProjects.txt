@@ -4416,6 +4416,16 @@ TclError: bad window path name ".20325440.23282432.23282712.34285688.33264144"
 #@-node:ekr.20061014161100:Improved the scripting plugin
 #@+node:ekr.20061014073539:Fixed bugs in multi-file plugin
 #@-node:ekr.20061014073539:Fixed bugs in multi-file plugin
+#@+node:ekr.20061015093511:Fix bug in shortcut_button plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3963657
+
+This crash was due to the recent changes in the mod_scripting plugin, which the
+shortcut_button plugin uses. The new code is much simpler than the old, and does
+more.
+#@nonl
+#@-node:ekr.20061015093511:Fix bug in shortcut_button plugin
 #@-node:ekr.20061012064024:Plugins
 #@+node:ekr.20061009154800:Settings
 #@+node:ekr.20061009153504:Made unlimited undo the default
