@@ -13,6 +13,11 @@ of the node. The format is (On Unixy systems)::
     
     @multipath /machine/unit/:/machine/robot/:/machine/
     
+New in version 0.6 of this plugin: the separator used above is ';' for Windows
+so that the ':' used in drive specifications does not cause problems.
+    
+    @multipath c:\prog\test;c:\prog\unittest
+    
 It will places copy of the written file in each of these directories.
 
 There is an additional directive that simplifies common paths, it is called
@@ -55,9 +60,9 @@ import leoGlobals as g
 import leoAtFile
 import leoPlugins
 
-import shutil
-# import new
 import os.path
+import shutil
+import sys
 
 try:
     import tkFileDialog
@@ -69,7 +74,7 @@ except ImportError:
 #@-node:ekr.20050226114732.1:<< imports >>
 #@nl
 
-__version__ = ".5"
+__version__ = ".6"
 #@<< version history >>
 #@+node:ekr.20050226115130:<< version history >>
 #@@killcolor
@@ -80,10 +85,12 @@ __version__ = ".5"
 # 0.4 EKR: Changed 'new_c' logic to 'c' logic.
 # 0.5 EKR: Use 'new' and 'open2' hooks to call addMenu.
 # 0.6 EKR: Made it work with Leo 4.4.2.
+# ** The path separator in @multipath directives is ';' for Windows, ':' for 
+# all others.
 # - Made all uses of leoAtFile explicit.
 # - Simplified code by using g.funcToMethod in init code.
 # - Renamed decoratedOpenFileForWriting to match openFileForWriting.
-# - Rewrote stop method.
+# - Rewrote stop and scanForMultiPath methods.
 #@-at
 #@nonl
 #@-node:ekr.20050226115130:<< version history >>
@@ -95,7 +102,7 @@ haveseen = {}
 files = {}
 
 #@+others
-#@+node:ekr.20050226115130.1:init
+#@+node:ekr.20050226115130.1:init & helpers
 def init ():
 
     global ok
@@ -115,7 +122,34 @@ def init ():
 
     return ok
 #@nonl
-#@-node:ekr.20050226115130.1:init
+#@+node:mork.20041019091317:addMenu
+haveseen = weakref.WeakKeyDictionary()
+
+def addMenu (tag,keywords):
+
+    c = keywords.get('c')
+    if not c or haveseen.has_key(c):
+        return
+    haveseen [c] = None
+    men = c.frame.menu
+    men = men.getMenu('Edit')
+    men.add_command(
+        label = "Insert Directory String",
+        command = lambda c = c: insertDirectoryString(c))
+#@nonl
+#@-node:mork.20041019091317:addMenu
+#@+node:mork.20041019091524:insertDirectoryString
+def insertDirectoryString (c):
+
+    dir = tkFileDialog.askdirectory()
+    if dir:
+        w = c.frame.body.bodyCtrl
+        w.insert('insert',dir)
+        w.event_generate('<Key>')
+        w.update_idletasks()
+#@nonl
+#@-node:mork.20041019091524:insertDirectoryString
+#@-node:ekr.20050226115130.1:init & helpers
 #@+node:mork.20041018204908.3:decoratedOpenFileForWriting
 def decoratedOpenFileForWriting (self,root,fileName,toString):
 
@@ -132,75 +166,55 @@ def decoratedOpenFileForWriting (self,root,fileName,toString):
     # Return whatever the original method returned.
     return val 
 #@-node:mork.20041018204908.3:decoratedOpenFileForWriting
-#@+node:mork.20041018204908.6:stop & helper
+#@+node:mork.20041018204908.6:stop
 def stop (tag,keywords):
 
     multi = scanForMultiPath()
-    g.trace(g.dictToString(multi))
+    # g.trace(g.dictToString(multi))
 
-    for z in multi.keys():
-        paths = multi [z]
-        for x in paths:
+    for fileName in multi.keys():
+        paths = multi [fileName]
+        for path in paths:
             try:
-                if os.path.isdir(x):
-                    shutil.copy2(z,x)
-                    g.es("multifile:\nWrote %s to %s" % (z,x),color="blue")
+                if os.path.isdir(path):
+                    shutil.copy2(fileName,path)
+                    g.es("multifile:\nWrote %s to %s" % (fileName,path),color="blue")
                 else:
-                    g.es("multifile:\n%s is not a directory, not writing %s" % (x,z),color="red")
+                    g.es("multifile:\n%s is not a directory, not writing %s" % (path,fileName),color="red")
             except:
-                g.es("multifile:\nCant write %s to %s" % (z,x),color="red")
+                g.es("multifile:\nCant write %s to %s" % (fileName,path),color="red")
+                g.es_exception_type()
     files.clear()
 #@nonl
+#@-node:mork.20041018204908.6:stop
 #@+node:mork.20041018204908.5:scanForMultiPath
-def scanForMultiPath():
+def scanForMultiPath ():
+    
+    '''Return a dictionary whose keys are fileNames and whose values are
+    lists of paths to which the fileName is to be written.
+    New in version 0.6 of this plugin: use ';' to separate paths on Windows.'''
+
+    sep = g.choose(sys.platform.startswith('win'),';',':')
     multi = {}
-    for z in files.keys():
-        pos = files[ z ]
-        order = []
-        map( order.append, pos.self_and_parents_iter( True ) )
-        order.reverse()
+    for fileName in files.keys(): # Keys are fileNames, values are root positions.
+        root = files[fileName]
+        positions = [p.copy() for p in root.self_and_parents_iter()]
+        positions.reverse()
         prefix = ''
-        for pos in order:
-            txt = pos.bodyString().split('\n')
-            for t in txt:
-                if t.startswith( multiprefix ):
-                    prefix = t.lstrip( multiprefix ).strip()
-                elif t.startswith( multipath ):
-                    if not multi.has_key( z ):
-                        multi[ z ] = []
-                    paths = t.lstrip( multipath ).strip().split(':')
-                    paths =[ prefix + x.strip() for x in paths ]
-                    [ multi[ z ].append( x ) for x in paths ]                     
-    return multi    
+        for p in positions:
+            lines = p.bodyString().split('\n')
+            for s in lines:
+                if s.startswith(multiprefix):
+                    prefix = s.lstrip(multiprefix).strip()
+                elif s.startswith(multipath):
+                    paths = s.lstrip(multipath).strip().split(sep)
+                    paths = [z.strip() for z in paths]
+                    aList = multi.get(fileName,[])
+                    aList.extend(paths)
+                    multi[fileName] = aList
+    return multi
+#@nonl
 #@-node:mork.20041018204908.5:scanForMultiPath
-#@-node:mork.20041018204908.6:stop & helper
-#@+node:mork.20041019091317:addMenu & helper
-haveseen = weakref.WeakKeyDictionary()
-
-def addMenu (tag,keywords):
-
-    c = keywords.get('c')
-    if not c or haveseen.has_key(c):
-        return
-    haveseen [c] = None
-    men = c.frame.menu
-    men = men.getMenu('Edit')
-    men.add_command(
-        label = "Insert Directory String",
-        command = lambda c = c: insertDirectoryString(c))
-#@nonl
-#@+node:mork.20041019091524:insertDirectoryString
-def insertDirectoryString (c):
-
-    dir = tkFileDialog.askdirectory()
-    if dir:
-        w = c.frame.body.bodyCtrl
-        w.insert('insert',dir)
-        w.event_generate('<Key>')
-        w.update_idletasks()
-#@nonl
-#@-node:mork.20041019091524:insertDirectoryString
-#@-node:mork.20041019091317:addMenu & helper
 #@-others
 #@nonl
 #@-node:mork.20041018204908.1:@thin multifile.py
