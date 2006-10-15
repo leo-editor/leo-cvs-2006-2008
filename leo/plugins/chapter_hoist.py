@@ -27,7 +27,7 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@-node:ekr.20060328125925.2:<< imports >>
 #@nl
 
-__version__ = "0.3"
+__version__ = "0.4"
 #@<< version history >>
 #@+node:ekr.20060328125925.3:<< version history >>
 #@+at
@@ -35,6 +35,8 @@ __version__ = "0.3"
 # 0.1 btheado: initial creation.
 # 0.2 EKR: changed to @thin.
 # 0.3 EKR: init now succeeds for unit tests.
+# 0.4 EKR: use new calling sequences for sc.createIconButton.
+#          Among other things, this creates the save-hoist commnand.
 #@-at
 #@nonl
 #@-node:ekr.20060328125925.3:<< version history >>
@@ -82,20 +84,36 @@ class chapterHoist:
     #@-node:ekr.20060328125925.7: ctor
     #@+node:ekr.20060328125925.8:createSaveHoistButton
     def createSaveHoistButton(self,sc,c):
-        b = sc.createIconButton('Save Hoist', 'Create hoist button current node', bg='LightSteelBlue1')
-        def saveHoistCallback(self=self,sc=sc,c=c):
+        
+        def saveHoistCallback(event=None,self=self,sc=sc,c=c):
             self.createChapterHoistButton(sc,c,c.currentPosition())
             c.hoist()
-        b.configure(command=saveHoistCallback)
+            return 'break'
+    
+        b = sc.createIconButton(
+            text='save-hoist',
+            command = saveHoistCallback,
+            shortcut = None,
+            statusLine='Create hoist button current node',
+            bg='LightSteelBlue1')
+    
         return b
     #@nonl
     #@-node:ekr.20060328125925.8:createSaveHoistButton
     #@+node:ekr.20060328125925.9:createDehoistButton
     def createDehoistButton(self,sc,c):
-        b = sc.createIconButton('Dehoist', 'Dehoist', bg='LightSteelBlue1')
-        def dehoistCallback(c=c):
+        
+        def dehoistCallback(event=None,c=c):
             c.dehoist()
-        b.configure(command=dehoistCallback)
+            return 'break'
+        
+        b = sc.createIconButton(
+            text='dehoist',
+            command=dehoistCallback,
+            shortcut=None,
+            statusLine='Dehoist',
+            bg='LightSteelBlue1')
+    
         return b
     #@nonl
     #@-node:ekr.20060328125925.9:createDehoistButton
@@ -105,18 +123,20 @@ class chapterHoist:
         h = p.headString()
         buttonText = sc.getButtonText(h)
         statusLine = "Hoist %s" % h
-        b = sc.createIconButton(text=buttonText,statusLine=statusLine,bg='LightSteelBlue1')
-        def deleteButtonCallback(event=None,sc=sc,b=b):
-            sc.deleteButton(b)
-                
-        def hoistButtonCallback (event=None,c=c,p=p.copy()):
+        
+        def hoistButtonCallback (event=None,self=self,c=c,p=p.copy()):
             while (c.canDehoist()):
                 c.dehoist()
             c.selectPosition(p)
             c.hoist()
-    
-        b.configure(command=hoistButtonCallback)
-        b.bind('<3>',deleteButtonCallback)
+            return 'break'
+            
+        b = sc.createIconButton(
+            text=buttonText,
+            command=hoistButtonCallback,
+            statusLine=statusLine,
+            shortcut=None,
+            bg='LightSteelBlue1')
     #@-node:ekr.20060328125925.10:createChapterHoistButton
     #@-others
 #@nonl
