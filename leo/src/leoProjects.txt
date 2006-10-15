@@ -772,6 +772,8 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
     
     if shortcut:
         stroke = k.shortcutFromSetting(shortcut)
+    elif commandName.lower() == 'shortcut': # Causes problems.
+        stroke = None
     else:
         # Try to get a shortcut from leoSettings.leo.
         junk,bunchList = c.config.getShortcut(commandName)
@@ -780,7 +782,7 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
             if accel2 and not pane2.endswith('-mode'):
                 shortcut2 = accel2
                 stroke = k.shortcutFromSetting(shortcut2)
-                break
+                if stroke: break
         else: stroke = None
   
     if stroke:
@@ -4412,6 +4414,8 @@ in _destroy
     return self.tk.call('wm', 'withdraw', self._w)
 TclError: bad window path name ".20325440.23282432.23282712.34285688.33264144"
 #@-node:ekr.20061014161100:Improved the scripting plugin
+#@+node:ekr.20061014073539:Fixed bugs in multi-file plugin
+#@-node:ekr.20061014073539:Fixed bugs in multi-file plugin
 #@-node:ekr.20061012064024:Plugins
 #@+node:ekr.20061009154800:Settings
 #@+node:ekr.20061009153504:Made unlimited undo the default

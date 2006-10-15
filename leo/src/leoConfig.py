@@ -985,6 +985,7 @@ class configClass:
                     'Warning: ignoring %s:%s not %s\n' +
                     'There may be conflicting settings!')
                 g.es_print(s % (bunch.kind,setting,requestedType),color='red')
+                # g.trace(g.callers())
             return None, False
         elif val in (u'None',u'none','None','none','',None):
             return None, True # Exists, but is None
@@ -1005,7 +1006,7 @@ class configClass:
         - Shortcut matches shortcuts.
         '''
     
-        shortcuts = ('shortcut','shortcuts')
+        shortcuts = ('shortcut','shortcuts',)
         
         return (
             type1 == None or type2 == None or

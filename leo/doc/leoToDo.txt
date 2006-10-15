@@ -3,8 +3,6 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061014073539:Fix bugs in multi-file plugin
-#@-node:ekr.20061014073539:Fix bugs in multi-file plugin
 #@+node:ekr.20060927100500.1:Fix bugs in new colorizer
 @nocolor
 
