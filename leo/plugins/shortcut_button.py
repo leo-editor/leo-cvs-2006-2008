@@ -84,6 +84,7 @@ class shortcutButton:
         
         def shortcutButtonButtonCallback(event=None,self=self,sc=sc,c=c):
             self.createShortcutButton(sc,c)
+            return 'break'
     
         b = sc.createIconButton(
             text='shortcut',
@@ -105,6 +106,7 @@ class shortcutButton:
                 c.selectPosition(p)
             finally:
                 c.endUpdate()
+            return 'break'
         
         b = sc.createIconButton(
             text=commandName,
