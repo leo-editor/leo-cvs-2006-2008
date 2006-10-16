@@ -33,7 +33,7 @@ UNL.py
 ##### Recent work by EKR
 
 #leoOPML.py
-#__jEdit_colorizer__.py
+__jEdit_colorizer__.py
 
 ##### All other plugins.
 ##### Order is important for enabled plugins that add items to the icon area.
@@ -74,7 +74,7 @@ UNL.py
 #mod_labels.py
 #mod_read_dir_outline.py
 #mod_shadow.py
-multifile.py
+#multifile.py
 #nav_buttons.py
 #newButtons.py
 #niceNosent.py

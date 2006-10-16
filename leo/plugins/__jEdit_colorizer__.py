@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.38'
+__version__ = '0.39'
 
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
@@ -66,8 +66,9 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.37 EKR: Support for module 'escape' attribute and no_escape attribute of 
 # span matchers.
 # 0.38 EKR: Fixed several crashers discovered by unit tests.
+# 0.39 EKR: The colorizer now saves and restores the insert point and the 
+# selection range.
 #@-at
-#@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
 #@nl
 #@<< define leoKeywords >>
@@ -997,6 +998,8 @@ class baseColorizer:
         
         '''Colorize all of s.'''
     
+        c = self.c ; w = c.frame.body.bodyCtrl
+    
         # Init ivars used by colorOneChunk.
         self.chunk_s = s
         self.chunk_i = 0
@@ -1005,6 +1008,8 @@ class baseColorizer:
         self.recolor_count = 0 # Number of times through the loop before a recolor.
         self.chunks_done = False
         self.quickColor()
+        self.insertPoint = g.app.gui.getInsertPoint(w)
+        self.selection = g.app.gui.getSelectionRange(w)
         self.colorOneChunk()
         return 'break'
     #@nonl
@@ -1072,6 +1077,11 @@ class baseColorizer:
         self.tagAll()
         self.tagList = []
         self.chunks_done = True # Prohibit any more queued calls.
+        w = self.c.frame.body.bodyCtrl
+        if self.selection:
+            start,end = self.selection
+            g.app.gui.setSelectionRange(w,start, end)
+        g.app.gui.setInsertPoint(w,self.insertPoint)
         if self.queue:
             p,bodyCtrl = self.queue.pop()
             self.colorizeAnyLanguage(p)
