@@ -2,9 +2,59 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
-#@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061016071231:Remove all references to commands from menu tables
-#@-node:ekr.20061016071231:Remove all references to commands from menu tables
+#@+node:ekr.20061010115312.1:Urgent 5
+#@+node:ekr.20061016104544:Make sure paste does a full recolor
+#@+node:ekr.20051011072903.5:pasteText
+def pasteText (self,event=None):
+
+    '''Paste the clipboard into a widget.'''
+
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    wname = c.widget_name(w)
+    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
+    oldText = w.get('1.0','end')
+    # g.trace(i,j,wname,g.callers())
+
+    s = s1 = g.app.gui.getTextFromClipboard()
+    # g.trace(wname,s,repr(s))
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.get('1.0','end')
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@-node:ekr.20051011072903.5:pasteText
+#@-node:ekr.20061016104544:Make sure paste does a full recolor
+#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 @nocolor
 
@@ -315,9 +365,7 @@ onFocusIn: does not exist <some number>
 #@-node:ekr.20061012082613:Fix body editor problems: 2
 #@+node:ekr.20061014050154.2:Binding to None clears all bindings
 #@-node:ekr.20061014050154.2:Binding to None clears all bindings
-#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061010115312.1:Urgent
+#@-node:ekr.20061010115312.1:Urgent 5
 #@+node:ekr.20061008160553:Asap
 #@+node:ekr.20061014050154.1:Posting: I really like the standard bindings
 @nocolor
