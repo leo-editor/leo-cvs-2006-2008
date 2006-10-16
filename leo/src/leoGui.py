@@ -461,21 +461,33 @@ class unitTestGui(leoGui):
         return self.simulateDialog("yesNoCancelDialog","cancel")
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines
-    def getindex(self,body,index):
-        return 0,0
-        
-    def get_focus(self,frame):
+    def getindex (self,body,index):
+        return 0, 0
+    
+    def get_focus (self,frame):
         pass
     
-    def set_focus(self,c,widget):
+    def set_focus (self,c,widget):
         pass
-        
+    
+    def getInsertPoint (self,t):
+        return 0
+    
+    def getSelectionRange (self,t):
+        return None
+    
     def getTextSelection (self,t,sort=True):
-        return 0,0
-        
+        return 0, 0
+    
+    def setInsertPoint (self,t,pos):
+        pass
+    
+    def setSelectionRange (self,t,start,end,insert='sel.end'):
+        pass
+    
     def toGuiIndex (self,s,w,index):
         return 0
-        
+    
     def toPythonIndex (self,s,w,index):
         return 0
     #@-node:ekr.20031218072017.3745:dummy routines
