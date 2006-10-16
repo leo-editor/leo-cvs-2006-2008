@@ -229,36 +229,25 @@ class leoMenu:
     #@-node:ekr.20031218072017.3776:Gui-independent menu enablers
     #@+node:ekr.20031218072017.3781:Gui-independent menu routines
     #@+node:ekr.20060926213642:capitalizeMinibufferMenuName
-    def capitalizeMinibufferMenuName (self,s):
+    def capitalizeMinibufferMenuName (self,s,removeHyphens):
         
         result = []
         for i in xrange(len(s)):
             ch = s[i]
             prev = i > 0 and s[i-1] or ''
             prevprev = i > 1 and s[i-2] or ''
-            if 1: # Just capitalize the start of each word.
-                if (
-                    i == 0 or
-                    i == 1 and prev == '&' or
-                    prev == '-' or
-                    prev == '&' and prevprev == '-'
-                ):
-                    result.append(ch.capitalize())
-                else:
-                    result.append(ch)
-            else: # Capitalizing accelerators in the middle of a word is dubious.
-                next = i+1 < len(s) and s[i+1] or ''
-                if (
-                    i == 0 and next != '&' or
-                    prev == '&' or
-                    prev == '-' and next != '&'
-                ):
-                    result.append(ch.capitalize())
-                else:
-                    result.append(ch)
+            if (
+                i == 0 or
+                i == 1 and prev == '&' or
+                prev == '-' or
+                prev == '&' and prevprev == '-'
+            ):
+                result.append(ch.capitalize())
+            elif removeHyphens and ch == '-':
+                result.append(' ')
+            else:
+                result.append(ch)
         return ''.join(result)
-            
-        
     #@nonl
     #@-node:ekr.20060926213642:capitalizeMinibufferMenuName
     #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
@@ -306,7 +295,7 @@ class leoMenu:
         #@nl
         #@    << create the tangle submenu >>
         #@+node:ekr.20031218072017.3793:<< create the tangle submenu >>
-        tangleMenu = self.createNewMenu("&Tangle...","File")
+        tangleMenu = self.createNewMenu("Tan&gle...","File")
         
         self.createMenuEntries(tangleMenu,self.fileMenuTangleMenuTable)
         #@-node:ekr.20031218072017.3793:<< create the tangle submenu >>
@@ -471,8 +460,6 @@ class leoMenu:
     #@+node:ekr.20031218072017.3752:defineMenuTables & helpers
     def defineMenuTables (self):
         
-        c = self.c
-        
         self.defineEditMenuTables()
         self.defineFileMenuTables()
         self.defineOutlineMenuTables()
@@ -487,7 +474,6 @@ class leoMenu:
     def defineEditMenuTables (self):
     
         self.defineEditMenuTopTable()
-        self.defineEditMenuEditCursorTable()
         self.defineEditMenuEditBodyTable()
         self.defineEditMenuEditHeadlineTable()
         self.defineEditMenuFindMenuTable()
@@ -495,93 +481,52 @@ class leoMenu:
     #@+node:ekr.20031218072017.839:defineEditMenuTopTable
     def defineEditMenuTopTable (self):
         
-        __pychecker__ = 'no-unusednames=[f]' # We define 'f' just in case.
-    
-        c = self.c ; f = self.frame
-        
         self.editMenuTopTable = [
-            ("Can't Undo",c.undoer.undo), # &U reserved for Undo
-            ("Can't Redo",c.undoer.redo), # &R reserved for Redo
-            ("-",None),
-            ("Cu&t",f.OnCutFromMenu), 
-            ("Cop&y",f.OnCopyFromMenu),
-            ("&Paste",f.OnPasteFromMenu),
-            ("&Delete",c.editCommands.backwardDeleteCharacter),
-            ("Select &All",f.body.selectAllText),
-            ("-",None),
+            # &: u,r reserved for undo/redo: a,d,p,t,y.
+            # & (later): e,g,n,v.
+            ("Can't Undo",'undo'),
+            ("Can't Redo",'redo'), 
+            '-',
+            ('Cu&t','cut-text'),
+            ('Cop&y','copy-text'),
+            ('&Paste','paste-text'),
+            ('&Delete','backward-delete-char'),
+            ('Select &All','select-all'),
+            '-',
         ]
-    
-        # Top-level shortcuts here:  a,d,p,t,u,y,z
-        # Top-level shortcuts later: e,g,n,v
     #@-node:ekr.20031218072017.839:defineEditMenuTopTable
-    #@+node:ekr.20050711091931:defineEditMenuEditCursorTable (not ready yet)
-    def defineEditMenuEditCursorTable (self):
-        
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
-        if 0: ### Not ready yet.
-            # These should have Emacs names...
-            self.editMenuEditCursorTable = [
-                ('Delete Right',c.deleteRightChar), 
-                ('Delete Left',c.deleteLeftChar), 
-                # Moving the cursor.
-                ('Start of Line',c.moveToStartOfLine), 
-                ('End of Line',c.moveToEndOfLine), 
-                ('Start of Node',c.moveToStartOfNode),
-                ('End of Node',c.moveToEndOfNode), 
-                ('-',None,None),
-                # Extending the selection...
-                ('Select Line',c.selectEntireLine),
-                ('Extend To Start of Word',c.extendToStartOfWord),
-                ('Extend To End of Word',c.extendToEndOfWord),
-                ('Extend To Start Of Line',c.extendToStartOfLine), 
-                ('Extend To End Of Line',c.extendToEndOfLine), 
-                ('Extend To End of Node',c.extendToEndOfNode),
-                # The mark...
-            ]
-    #@-node:ekr.20050711091931:defineEditMenuEditCursorTable (not ready yet)
     #@+node:ekr.20031218072017.3754:defineEditMenuEditBodyTable
     def defineEditMenuEditBodyTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.editMenuEditBodyTable = [
-            ("Extract &Section",c.extractSection),
-            ("Extract &Names",c.extractSectionNames),
-            ("&Extract",c.extract),
-            ("-",None,None),
-            ("Convert All B&lanks",c.convertAllBlanks),
-            ("Convert All T&abs",c.convertAllTabs),
-            ("Convert &Blanks",c.convertBlanks),
-            ("Convert &Tabs",c.convertTabs),
-            ("Insert Body Time/&Date",c.insertBodyTime),
-            ("&Reformat Paragraph",c.reformatParagraph),
-            ("-",None,None),
-            ("&Indent",c.indentBody),
-            ("&Unindent",c.dedentBody),
-            ("&Match Brackets",c.findMatchingBracket),
-            ("Add Comments",c.addComments),
-            ("Delete Comments",c.deleteComments),
+            # Shortcuts a,b,d,e,i,l,m,n,r,s,t,u
+            '*extract-&section',
+            '*extract-&names',
+            '*&extract',
+            '-',
+            '*convert-all-b&lanks',
+            '*convert-all-t&abs',
+            '*convert-&blanks',
+            '*convert-&tabs',
+            '*insert-body-&time',
+            '*&reformat-paragraph',
+            '-',
+            '*&indent-region',
+            '*&unindent-region',
+            '*&match-brackets',
+            '*add-comments',
+            '*delete-comments',
         ]
-        # Shortcuts a,b,d,e,i,l,m,n,r,s,t,u
     #@-node:ekr.20031218072017.3754:defineEditMenuEditBodyTable
     #@+node:ekr.20031218072017.3755:defineEditMenuEditHeadlineTable
     def defineEditMenuEditHeadlineTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-        
         self.editMenuEditHeadlineTable = [
-            ("Edit &Headline",c.editHeadline),
-            ("&End Edit Headline",f.endEditLabelCommand),
-            ("&Abort Edit Headline",f.abortEditLabelCommand),
-            ("Insert Headline Time/&Date",f.insertHeadlineTime),
-            ("Toggle Angle Brackets",c.toggleAngleBrackets),
+            '*edit-&headline',
+            '*&end-edit-headline',
+            '*&abort-edit-headline',
+            '*insert-headline-&time',
+            '*toggle-&angle-brackets',
         ]
     #@-node:ekr.20031218072017.3755:defineEditMenuEditHeadlineTable
     #@+node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
@@ -589,51 +534,45 @@ class leoMenu:
         
         self.editMenuFindMenuTable = [
             # &: a,b,c,d,e,f,h,i,l,n,o,p,q,r,s,u,w,x
-            '&open-find-tab',
-            '&hide-find-tab',
-            'search-&with-present-options',
+            '*&open-find-tab',
+            '*&hide-find-tab',
+            '*search-&with-present-options',
             '-',
-            'find-tab-find-&next',
-            'find-tab-find-&prev',
-            'find-tab-&change',
-            'find-tab-find-&all',
-            'clone-fi&nd-all',
-            'find-tab-change-a&ll',
+            '*find-tab-find-&next',
+            '*find-tab-find-&prev',
+            '*find-tab-&change',
+            '*find-tab-find-&all',
+            '*clone-fi&nd-all',
+            '*find-tab-change-a&ll',
             '-',
-            '&find-character',
-            'find-character-extend-&selection',
-            '&backward-find-character',
-            'backward-find-character-&extend-selection',
+            '*&find-character',
+            '*find-character-extend-&selection',
+            '*&backward-find-character',
+            '*backward-find-character-&extend-selection',
             '-',
-            '&isearch-forward',
-            'isea&rch-backward',
-            'isearch-forward-rege&xp',
-            'isearch-backward-regex&p',
+            '*&isearch-forward',
+            '*isea&rch-backward',
+            '*isearch-forward-rege&xp',
+            '*isearch-backward-regex&p',
             '-',
-            '&query-replace',
-            'q&uery-replace-regex',
+            '*&query-replace',
+            '*q&uery-replace-regex',
         ]
-    
-    # find-character-reverse            = Alt-P
-    # isearch-with-present-options      = None
-    #@nonl
     #@-node:ekr.20031218072017.3756:defineEditMenuFindMenuTable
     #@+node:ekr.20031218072017.3757:defineEditMenuTop2Table
     def defineEditMenuTop2Table (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-    
-        c = self.c ; f = self.frame
+        c = self.c
     
         try:        show = c.frame.body.getColorizer().showInvisibles
         except:     show = False
         label = g.choose(show,"Hide In&visibles","Show In&visibles")
             
         self.editMenuTop2Table = [
-            ("&Go To Line Number",c.goToLineNumber),
-            ("&Execute Script",c.executeScript),
-            (label,c.toggleShowInvisibles),
-            ("Setti&ngs",c.preferences),
+            '*&goto-global-line',
+            '*&execute-script',
+            (label,'toggle-invisibles'),
+            ("Setti&ngs",'open-leoSettings-leo'),
         ]
     
         # Top-level shortcuts earlier: a,d,p,t,u,y,z
@@ -654,114 +593,83 @@ class leoMenu:
     #@+node:ekr.20031218072017.3759:defineFileMenuTopTable
     def defineFileMenuTopTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.fileMenuTopTable = [
-            ("&New",c.new),
-            ("&Open...",c.open),
+            '*&new',
+            ('&Open...','open-outline'),
         ]
     #@-node:ekr.20031218072017.3759:defineFileMenuTopTable
     #@+node:ekr.20031218072017.3760:defineFileMenuTop2Table
     def defineFileMenuTop2Table (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.fileMenuTop2Table = [
-            ("-",None),
-            ("&Close",c.close),
-            ("&Save",c.save),
-            ("Save &As",c.saveAs),
-            ("Save &To",c.saveTo), # &Tangle
-            ("Re&vert To Saved",c.revert), # &Read/Write
+            '-',
+            ('&Close','close-window'),
+            ('&Save','save-file'),
+            ('Save &As','save-file-as'),
+            ('Save &To','save-file-to'),
+            ('Re&vert To Saved','revert'),
         ]
     #@-node:ekr.20031218072017.3760:defineFileMenuTop2Table
     #@+node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
     def defineFileMenuReadWriteMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame ; fc = c.fileCommands
-    
         self.fileMenuReadWriteMenuTable = [
-            ("&Read Outline Only",c.readOutlineOnly),
-            ("Read @file &Nodes",c.readAtFileNodes),
-            ("Write &Dirty @file Nodes",fc.writeDirtyAtFileNodes),
-            ("Write &Missing @file Nodes",fc.writeMissingAtFileNodes),
-            ("Write &Outline Only",fc.writeOutlineOnly),
-            ("&Write @file Nodes",fc.writeAtFileNodes),
+            '*&read-outline-only',
+            ('Read @file &Nodes','read-at-file-nodes'),
+            ('Write &Dirty @file Nodes','write-dirty-at-file-nodes'),
+            ('Write &Missing @file Nodes','write-missing-at-file-nodes'),
+            '*write-&outline-only',
+            ('&Write @file Nodes','write-at-file-nodes'),
         ]
     #@-node:ekr.20031218072017.3761:defineFileMenuReadWriteMenuTable
     #@+node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
     def defineFileMenuTangleMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.fileMenuTangleMenuTable = [
-            ("Tangle &All",c.tangleAll),
-            ("Tangle &Marked",c.tangleMarked),
-            ("&Tangle",c.tangle),
+            '*tangle-&all',
+            '*tangle-&marked',
+            '*&tangle',
         ]
     #@-node:ekr.20031218072017.3762:defineFileMenuTangleMenuTable
     #@+node:ekr.20031218072017.3763:defineFileMenuUntangleMenuTable
     def defineFileMenuUntangleMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.fileMenuUntangleMenuTable = [
-            ("Untangle &All",c.untangleAll),
-            ("Untangle &Marked",c.untangleMarked),
-            ("&Untangle",c.untangle),
+            '*untangle-&all',
+            '*untangle-&marked',
+            '*&untangle',
         ]
     #@-node:ekr.20031218072017.3763:defineFileMenuUntangleMenuTable
     #@+node:ekr.20031218072017.3764:defineFileMenuImportMenuTable
     def defineFileMenuImportMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.fileMenuImportMenuTable = [
-            ("Import Derived File",c.importDerivedFile),
-            ("Import To @&file",c.importAtFile),
-            ("Import To @&root",c.importAtRoot),
-            ("Import &CWEB Files",c.importCWEBFiles),
-            ("Import &noweb Files",c.importNowebFiles),
-            ("Import Flattened &Outline",c.importFlattenedOutline),
+            #&: c,d,f,n,o,r,
+            '*import-&derived-file',
+            ('Import To @&file','import-at-file'),
+            ('Import To @&root','import-at-root'),
+            '*import-&cweb-files',
+            '*import-&noweb-files',
+            '*import-flattened-&outline',
         ]
     #@-node:ekr.20031218072017.3764:defineFileMenuImportMenuTable
     #@+node:ekr.20031218072017.3765:defineFileMenuExportMenuTable
     def defineFileMenuExportMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.fileMenuExportMenuTable = [
-            ("Export &Headlines",c.exportHeadlines),
-            ("Outline To &CWEB",c.outlineToCWEB),
-            ("Outline To &Noweb",c.outlineToNoweb),
-            ("&Flatten Outline",c.flattenOutline),
-            ("&Remove Sentinels",c.removeSentinels),
-            ("&Weave",c.weave),
+            '*export-&headlines',
+            '*outline-to-&cweb',
+            '*outline-to-&noweb',
+            '*&flatten-outline',
+            '*&remove-sentinels',
+            '*&weave',
         ]
     #@-node:ekr.20031218072017.3765:defineFileMenuExportMenuTable
     #@+node:ekr.20031218072017.3766:defineFileMenuTop3MenuTable
     def defineFileMenuTop3MenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.fileMenuTop3MenuTable = [
-            ("E&xit",g.app.onQuit),
+            ('E&xit','exit-leo'),
         ]
     #@-node:ekr.20031218072017.3766:defineFileMenuTop3MenuTable
     #@-node:ekr.20031218072017.3758:defineFileMenuTables & helpers
@@ -776,26 +684,22 @@ class leoMenu:
         self.defineOutlineMenuGoToMenuTable()
     #@+node:ekr.20031218072017.3768:defineOutlineMenuTopMenuTable
     def defineOutlineMenuTopMenuTable (self):
-        
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
     
         self.outlineMenuTopMenuTable = [
-            ("C&ut Node",c.cutOutline),
-            ("C&opy Node",c.copyOutline),
-            ("&Paste Node",c.pasteOutline),
-            ("Pas&te Node As Clone",c.pasteOutlineRetainingClones),
-            ("&Delete Node",c.deleteOutline),
-            ("-",None,None),
-            ("&Insert Node",c.insertHeadline),
-            ("&Clone Node",c.clone),
-            ("Sort Childre&n",c.sortChildren), # Conflicted with Hoist.
-            ("&Sort Siblings",c.sortSiblings),
-            ("-",None),
-            ("&Hoist",c.hoist),
-            ("D&e-Hoist",f.c.dehoist),
-            ("-",None),
+            '*c&ut-node',
+            '*c&opy-node',
+            '*&paste-node',
+            ('Pas&te Node As Clone','paste-retaining-clones'),
+            '*&delete-node',
+            '-',
+            '*&insert-node',
+            '*&clone-node',
+            '*sort-childre&n',
+            '*&sort-siblings',
+            '-',
+            '*&hoist',
+            ('D&e-Hoist','de-hoist'), # To preserve the '-' in De-Hoist.
+            '-',
         ]
         # Ampersand bindings:  a,b,c,d,e,h,i,n,o,p,t,s,y
         # Bindings for entries that go to submenus: a,g,k,m,x
@@ -803,111 +707,92 @@ class leoMenu:
     #@+node:ekr.20040711140738:defineOutlineMenuCheckOutlineMenuTable
     def defineOutlineMenuCheckOutlineMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.outlineMenuCheckOutlineMenuTable = [
-            ("Check &Outline",c.checkOutline),
-            ("&Dump Outline",c.dumpOutline),
-            ("-",None),
-            ("Check &All Python Code",c.checkAllPythonCode),
-            ("&Check Python &Code",c.checkPythonCode),
+            # &: a,c,d,o
+            '*check-&outline',
+            '*&dump-outline',
+            '-',
+            '*check-&all-python-code',
+            '*&check-python-code',
         ]
-        # shortcuts used: a,c,d,o,p,r
     #@-node:ekr.20040711140738:defineOutlineMenuCheckOutlineMenuTable
     #@+node:ekr.20031218072017.3769:defineOutlineMenuExpandContractMenuTable
     def defineOutlineMenuExpandContractMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.outlineMenuExpandContractMenuTable = [
-            ("&Contract All",c.contractAllHeadlines),
-            ("Contract &Node",c.contractNode),
-            ("Contract &Parent",c.contractParent),
-            ("Contract Or Go Left",c.contractNodeOrGoToParent),
-            ("-",None),
-            ("Expand P&rev Level",c.expandPrevLevel),
-            ("Expand N&ext Level",c.expandNextLevel),
-            ("Expand And Go Right",c.expandNodeAndGoToFirstChild),
-            ("Expand Or Go Right",c.expandNodeOrGoToFirstChild),
-            ("-",None),
-            ("Expand To Level &1",c.expandLevel1),
-            ("Expand To Level &2",c.expandLevel2),
-            ("Expand To Level &3",c.expandLevel3),
-            ("Expand To Level &4",c.expandLevel4),
-            ("Expand To Level &5",c.expandLevel5),
-            ("Expand To Level &6",c.expandLevel6),
-            ("Expand To Level &7",c.expandLevel7),
-            ("Expand To Level &8",c.expandLevel8),
-            ("-",None),
-            ("Expand &All",c.expandAllHeadlines),
-            ("Expand N&ode",c.expandNode),
+            '*&contract-all',
+            '*contract-&node',
+            '*contract-&parent',
+            '*contract-or-go-&left',
+            '-',
+            '*expand-p&rev-level',
+            '*expand-n&ext-level',
+            '*expand-and-go-right',
+            '*expand-or-go-right',
+            '-',
+            '*expand-to-level-&1',
+            '*expand-to-level-&2',
+            '*expand-to-level-&3',
+            '*expand-to-level-&4',
+            '*expand-to-level-&5',
+            '*expand-to-level-&6',
+            '*expand-to-level-&7',
+            '*expand-to-level-&8',
+            '-',
+            '*expand-&all',
+            '*expand-n&ode',
         ]
     #@-node:ekr.20031218072017.3769:defineOutlineMenuExpandContractMenuTable
     #@+node:ekr.20031218072017.3770:defineOutlineMenuMoveMenuTable
     def defineOutlineMenuMoveMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.outlineMenuMoveMenuTable = [
-            ("Move &Down",c.moveOutlineDown),
-            ("Move &Left",c.moveOutlineLeft),
-            ("Move &Right",c.moveOutlineRight),
-            ("Move &Up",c.moveOutlineUp),
-            ("-",None),
-            ("&Promote",c.promote),
-            ("&Demote",c.demote),
+            ('Move &Down','move-outline-down'),
+            ('Move &Left','move-outline-left'),
+            ('Move &Right','move-outline-right'),
+            ('Move &Up','move-outline-up'),
+            '-',
+            '*&promote',
+            '*&demote',
         ]
     #@-node:ekr.20031218072017.3770:defineOutlineMenuMoveMenuTable
     #@+node:ekr.20031218072017.3771:defineOutlineMenuMarkMenuTable
     def defineOutlineMenuMarkMenuTable (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.outlineMenuMarkMenuTable = [
-            ("&Mark",c.markHeadline),
-            ("Mark &Subheads",c.markSubheads),
-            ("Mark Changed &Items",c.markChangedHeadlines),
-            ("Mark Changed &Roots",c.markChangedRoots),
-            ("Mark &Clones",c.markClones),
-            ("&Unmark All",c.unmarkAll),
+            '*&mark',
+            '*mark-&subheads',
+            '*mark-changed-&items',
+            '*mark-changed-&roots',
+            '*mark-&clones',
+            '*&unmark-all',
         ]
     #@-node:ekr.20031218072017.3771:defineOutlineMenuMarkMenuTable
     #@+node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
     def defineOutlineMenuGoToMenuTable (self):
-        
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
     
         self.outlineMenuGoToMenuTable = [
-            ("Go Prev Visited",c.goPrevVisitedNode), # Usually use buttons for this.
-            ("Go Next Visited",c.goNextVisitedNode),
-            ("Go To Prev Node",c.selectThreadBack),
-            ("Go To Next Node",c.selectThreadNext),
-            ("-",None),
-            ("Go To Next Marked",c.goToNextMarkedHeadline),
-            ("Go To Next Changed",c.goToNextDirtyHeadline),
-            ("Go To Next Clone",c.goToNextClone),
-            ("-",None),
-            ("Go To First Node",c.goToFirstNode),
-            ("Go To Prev Visible",c.selectVisBack),
-            ("Go To Next Visible",c.selectVisNext),
-            ("Go To Last Node",c.goToLastNode),
-            ('Go To Last Visible',c.goToLastVisibleNode),
-            ("-",None),
-            ("Go To Parent",c.goToParent),
-            ('Go To First Sibling',c.goToFirstSibling),
-            ('Go To Last Sibling',c.goToLastSibling),
-            ("Go To Prev Sibling",c.goToPrevSibling),
-            ("Go To Next Sibling",c.goToNextSibling),
+            # &: a,c,d,e,g,i,l,m,n,o,p,r,s,t,v,x
+            ('Go Prev Visite&d','go-back'),
+            ('Go Next Visited','go-forward'),
+            ('Go To P&rev Node','goto-prev-node'),
+            ('Go To N&ext Node','goto-next-node'),
+            '-',
+            ('Go To Next &Marked','goto-next-marked'),
+            ('Go To Next &Changed','goto-next-changed'),
+            ('Go To Next &Clone','goto-next-clone'),
+            '-',
+            ('&Go To First Node','goto-first-node'),
+            ('G&o To Prev Visible','goto-prev-visible'),
+            ('Go To Ne&xt Visible','goto-next-visible'),
+            ('Go To L&ast Node','goto-last-node'),
+            ('Go To Last &Visible','goto-last-visible'),
+            '-',
+            ('Go To &Parent','goto-parent'),
+            ('Go To First &Sibling','goto-first-sibling'),
+            ('Go To Last S&ibling','goto-last-sibling'),
+            ('Go To Prev Sibli&ng','goto-prev-sibling'),
+            ('Go To Next Siblin&g','goto-next-sibling'),
         ]
     #@-node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
     #@-node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
@@ -1179,9 +1064,9 @@ class leoMenu:
     def defineCmdsMenuTextTable (self):
     
         self.cmdsMenuTextTable = [
-            # &: b,c,d,e,f,g,i,l,m,n,o,p,r,s,u,y
-            '&beautify-python-code',
-            'beautify-all-p&ython-code',
+            # &: a,b,c,d,e,f,g,i,l,m,n,o,p,r,s,u
+            '&beautify',
+            'beautify-&all',
             '-',
             'center-&line',
             'center-&region',
@@ -1233,21 +1118,18 @@ class leoMenu:
     #@+node:ekr.20031218072017.3773:defineWindowMenuTables
     def defineWindowMenuTables (self):
         
-        __pychecker__ = 'no-unusednames=c,f'
-        
-        c = self.c ; f = self.frame
-    
         self.windowMenuTopTable = [
-            ("&Equal Sized Panes",f.equalSizedPanes),
-            ("Toggle &Active Pane",f.toggleActivePane),
-            ("Toggle &Split Direction",f.toggleSplitDirection),
-            ("-",None),
-            ("Resize To Screen",f.resizeToScreen),
-            ("Casca&de",f.cascade),
-            ("&Minimize All",f.minimizeAll),
-            ("-",None),
-            ("Open &Compare Window",c.openCompareWindow),
-            ("Open &Python Window",c.openPythonWindow),
+            # &: a,c,e,m,o,p,r,s
+            '*&equal-sized-panes',
+            '*toggle-&active-pane',
+            '*toggle-&split-direction',
+            '-',
+            '*&resize-to-screen',
+            '*&cascade-windows',
+            '*&minimize-all',
+            '-',
+            '*&open-compare-window',
+            '*open-&python-window',
         ]
     #@-node:ekr.20031218072017.3773:defineWindowMenuTables
     #@+node:ekr.20031218072017.3774:defineHelpMenuTables
@@ -1255,25 +1137,25 @@ class leoMenu:
         
         self.helpMenuTable = [
             # &: a,b,c,d,f,h,l,m,n,o,p,r,s,t,u
-            ("&About Leo...",           'about-leo'),
-            ("Online &Home Page",       'open-online-home'),
-            ("Open Online &Tutorial",   'open-online-tutorial'),
-            ("Open &Users Guide",       'open-users-guide'),
+            ('&About Leo...',           'about-leo'),
+            ('Online &Home Page',       'open-online-home'),
+            '*open-online-&tutorial',
+            '*open-&users-guide',
             '-',
-            ("Open Leo&Docs.leo",       'open-leoDocs-leo'),
-            ("Open Leo&Plugins.leo",    'open-leoPlugins-leo'),
-            ("Open Leo&Settings.leo",   'open-leoSettings-leo'),
-            ("Open &myLeoSettings.leo", 'open-myLeoSettings-leo'),
+            ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
+            ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
+            ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
+            ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
             '-',
-            'he&lp-for-minibuffer',
-            'help-for-&command',
+            '*he&lp-for-minibuffer',
+            '*help-for-&command',
             '-',
-            '&apropos-autocompletion',
-            'apropos-&bindings',
-            'apropos-&find-commands',
+            '*&apropos-autocompletion',
+            '*apropos-&bindings',
+            '*apropos-&find-commands',
             '-',
-            'pri&nt-bindings',
-            'print-c&ommands',
+            '*pri&nt-bindings',
+            '*print-c&ommands',
         ]
     #@-node:ekr.20031218072017.3774:defineHelpMenuTables
     #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
@@ -1310,8 +1192,11 @@ class leoMenu:
             if type(data) == type(''):
                 # New in Leo 4.4.2: Can use the same string for both the label and the command string.
                 ok = True
-                label = self.capitalizeMinibufferMenuName(data)
-                command = data.replace('&','')
+                s = data
+                removeHyphens = s and s[0]=='*'
+                if removeHyphens: s = s[1:]
+                label = self.capitalizeMinibufferMenuName(s,removeHyphens)
+                command = s.replace('&','').lower()
                 if label == '-':
                     self.add_separator(menu)
                     continue # That's all.
