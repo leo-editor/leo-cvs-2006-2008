@@ -3,6 +3,8 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
+#@+node:ekr.20061016071231:Remove all references to commands from menu tables
+#@-node:ekr.20061016071231:Remove all references to commands from menu tables
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 @nocolor
 
@@ -313,42 +315,6 @@ onFocusIn: does not exist <some number>
 #@-node:ekr.20061012082613:Fix body editor problems: 2
 #@+node:ekr.20061014050154.2:Binding to None clears all bindings
 #@-node:ekr.20061014050154.2:Binding to None clears all bindings
-#@+node:ekr.20061014194858:Fix x-windows middle button problem
-@nocolor
-
-Terry Brown
-
-There's a gotcha in the way X-windows changes the content of the 
-body pane that's constantly tripping me up.  Apparently I don't 
-learn, :-) but here're the problems...
-
-I'm hoping this isn't too hard to fix.  Maybe as little as tying Tk 
-ButtonRelease events in the text pane to the same handler that 
-handles keystrokes?
-
-In X-windows the middle mouse button is commonly used to paste, and 
-in leo Tk seems to be interpreting this as pasting the current 
-_selection_, not the current clipboard, which is good, that's the 
-X-windows way.  The trouble is leo doesn't see the change to the 
-line(s) in the text pane unless some key based edit occurs there. 
-So if I paste the selection where I want it and then save the file 
-or move to another node, the change isn't recorded.
-
-A related issue is that when you paste the selection this way the 
-cursor ends up after the pasted text, but the original selection 
-remains selected, so the first key stroke replace selection 
-rather than inserting at the cursor.  You want keystrokes to replace 
-the selection of course, but it's confusing when the cursor's not at 
-the end of the selection.  I think the best solution here would be 
-to make the copy of the selection pasted in by the middle button the 
-selected text, so the cursor remains adjacent to the selection and 
-the keystroke-replaces-selection behavior isn't unexpected.
-
-I can poke around and try and find some solutions if you don't have 
-access to an X-windows (eg. linux) system, although I've never used 
-Tkinter, only wxWidgets, so I'd have to search a bit.
-#@nonl
-#@-node:ekr.20061014194858:Fix x-windows middle button problem
 #@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
 #@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
 #@-node:ekr.20061010115312.1:Urgent
