@@ -74,7 +74,7 @@ except ImportError:
 #@-node:ekr.20050226114732.1:<< imports >>
 #@nl
 
-__version__ = ".6"
+__version__ = ".7"
 #@<< version history >>
 #@+node:ekr.20050226115130:<< version history >>
 #@@killcolor
@@ -91,6 +91,8 @@ __version__ = ".6"
 # - Simplified code by using g.funcToMethod in init code.
 # - Renamed decoratedOpenFileForWriting to match openFileForWriting.
 # - Rewrote stop and scanForMultiPath methods.
+# 0.7 EKR: Use absolute filename for original file to avoid problems with 
+# current directory.
 #@-at
 #@nonl
 #@-node:ekr.20050226115130:<< version history >>
@@ -154,7 +156,6 @@ def insertDirectoryString (c):
 def decoratedOpenFileForWriting (self,root,fileName,toString):
 
     c = self.c
-    g.trace(self,fileName)
 
     # Call the original method.
     global originalOpenFileForWriting
@@ -168,8 +169,13 @@ def decoratedOpenFileForWriting (self,root,fileName,toString):
 #@-node:mork.20041018204908.3:decoratedOpenFileForWriting
 #@+node:mork.20041018204908.6:stop
 def stop (tag,keywords):
+    
+    c = keywords.get('c')
+    if not c:
+        g.trace('can not happen')
+        return
 
-    multi = scanForMultiPath()
+    multi = scanForMultiPath(c)
     # g.trace(g.dictToString(multi))
 
     for fileName in multi.keys():
@@ -188,16 +194,20 @@ def stop (tag,keywords):
 #@nonl
 #@-node:mork.20041018204908.6:stop
 #@+node:mork.20041018204908.5:scanForMultiPath
-def scanForMultiPath ():
+def scanForMultiPath (c):
     
     '''Return a dictionary whose keys are fileNames and whose values are
     lists of paths to which the fileName is to be written.
     New in version 0.6 of this plugin: use ';' to separate paths on Windows.'''
 
+    at = c.atFileCommands
     sep = g.choose(sys.platform.startswith('win'),';',':')
     multi = {}
     for fileName in files.keys(): # Keys are fileNames, values are root positions.
         root = files[fileName]
+        at.scanDefaultDirectory(root) # Using root here may be dubious.
+        fileName = g.os_path_join(at.default_directory,fileName)
+        # g.trace(fileName,at.default_directory)
         positions = [p.copy() for p in root.self_and_parents_iter()]
         positions.reverse()
         prefix = ''
@@ -209,8 +219,10 @@ def scanForMultiPath ():
                 elif s.startswith(multipath):
                     paths = s.lstrip(multipath).strip().split(sep)
                     paths = [z.strip() for z in paths]
+                    paths = [g.os_path_join(at.default_directory,z) for z in paths]
                     aList = multi.get(fileName,[])
                     aList.extend(paths)
+                    # g.trace(fileName,aList)
                     multi[fileName] = aList
     return multi
 #@nonl

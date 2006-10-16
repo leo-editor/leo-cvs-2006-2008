@@ -33,7 +33,6 @@ UNL.py
 ##### Recent work by EKR
 
 #leoOPML.py
-#multifile.py
 #__jEdit_colorizer__.py
 
 ##### All other plugins.
@@ -75,6 +74,7 @@ UNL.py
 #mod_labels.py
 #mod_read_dir_outline.py
 #mod_shadow.py
+multifile.py
 #nav_buttons.py
 #newButtons.py
 #niceNosent.py
