@@ -4283,6 +4283,37 @@ def promote (self,event=None):
 #@-node:ekr.20031218072017.1774:promote
 #@-node:ekr.20031218072017.1766:Move... (Commands)
 #@-node:ekr.20061008114340:Finished collapse-on-move-left
+#@+node:ekr.20060116083043:Properly create Help menu on the Mac
+# At long last Leo creates a proper help menu on the Mac.
+#@nonl
+#@+node:ekr.20031218072017.3803:createHelpMenuFromTable
+def createHelpMenuFromTable (self):
+
+    if sys.platform == 'darwin':
+        self.getMacHelpMenu()
+    else:
+        helpMenu = self.createNewMenu("&Help")
+        self.createMenuEntries(helpMenu,self.helpMenuTable)
+#@nonl
+#@-node:ekr.20031218072017.3803:createHelpMenuFromTable
+#@+node:ekr.20060211144330.1:getMacHelpMenu
+def getMacHelpMenu (self):
+    
+    try:
+        topMenu = self.getMenu('top')
+        # Use the name argument to create the special Macintosh Help menu.
+        helpMenu = Tk.Menu(topMenu,name='help',tearoff=0)
+        self.add_cascade(topMenu,label='Help',menu=helpMenu,underline=0)
+        self.createMenuEntries(helpMenu,self.helpMenuTable)
+        return helpMenu
+
+    except Exception:
+        g.trace('Can not get MacOS Help menu')
+        g.es_exception()
+        return None
+#@nonl
+#@-node:ekr.20060211144330.1:getMacHelpMenu
+#@-node:ekr.20060116083043:Properly create Help menu on the Mac
 #@-node:ekr.20061010115312:Features
 #@+node:ekr.20061012064024:Plugins
 #@+node:ekr.20061011163905:Fixed keyBindings plugin
@@ -4416,6 +4447,39 @@ TclError: bad window path name ".20325440.23282432.23282712.34285688.33264144"
 #@-node:ekr.20061014161100:Improved the scripting plugin
 #@+node:ekr.20061014073539:Fixed bugs in multi-file plugin
 #@-node:ekr.20061014073539:Fixed bugs in multi-file plugin
+#@+node:ekr.20061015160747:More work on multifile plugin
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3963935
+By: terry_n_brown
+
+Not working for me, with
+
+@multipath /mnt/120/usr1/home/tbrown
+
+or
+
+@multipath /home/tbrown
+
+the former being the symbolic link free form of the latter, but both fail the
+same way, so I don't think  it's a symbolic link problem.
+
+If /home/tbrown/itaseval.py doesn't exist I get:
+
+multifile:  
+Cant write itaseval.py to /mnt/120/usr1/home/tbrown
+IOError, [Errno 2] No such file or directory: u'itaseval.py'
+
+If I make it a zero length file I get
+
+multifile:
+Cant write itaseval.py to /mnt/120/usr1/home/tbrown
+Error, `itaseval.py` and `/mnt/120/usr1/home/tbrown/itaseval.py` are the same
+file
+
+As I said /mnt/120/usr1/home/tbrown and /home/tbrown are equivalent, I was just
+trying both to see if it's a symbolic link problem, but it doesn't seem to be.
+#@-node:ekr.20061015160747:More work on multifile plugin
 #@+node:ekr.20061015093511:Fix bug in shortcut_button plugin
 @nocolor
 

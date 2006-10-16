@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="600" width="937"/>
+	<global_window_position top="71" left="252" height="581" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -53,6 +53,7 @@
 <v t="ekr.20061007211759"><vh>@bool sparse_move_outline_left = True</vh></v>
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060122105527.7"><vh>@bool stayInTreeAfterSelect = True</vh></v>
+<v t="ekr.20060215104345"><vh>@bool swap_mac_keys = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 <v t="ekr.20060127050605"><vh>@int max_undo_stack_size = 0</vh></v>
 <v t="ekr.20041119034357.31"><vh>@int tab_width = -4</vh></v>
