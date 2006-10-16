@@ -1081,6 +1081,7 @@ class baseColorizer:
         if self.selection:
             start,end = self.selection
             g.app.gui.setSelectionRange(w,start, end)
+            # g.trace(start,end)
         g.app.gui.setInsertPoint(w,self.insertPoint)
         if self.queue:
             p,bodyCtrl = self.queue.pop()
