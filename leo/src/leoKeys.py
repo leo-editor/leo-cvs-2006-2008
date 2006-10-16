@@ -3273,6 +3273,7 @@ class keyHandlerClass:
     
         # Update the selection point immediately for updateStatusLine.
         if wname.startswith('body'):
+            # g.trace(event.x,event.y)
             i = w.index('@%s,%s' % (event.x,event.y))
             g.app.gui.setTextSelection(w,i,i,insert=i)
             c.editCommands.setMoveCol(i)

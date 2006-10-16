@@ -1302,6 +1302,12 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         return "break"
     #@-node:ekr.20031218072017.1803:OnMouseWheel (Tomaz Ficko)
+    #@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
+    def OnPaste (self,event=None):
+        
+        return self.pasteText(event=event)
+    #@nonl
+    #@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
     #@-node:ekr.20031218072017.3971:Event handlers (tkFrame)
     #@+node:ekr.20031218072017.3979:Gui-dependent commands
     #@+node:ekr.20060209110128:Minibuffer commands... (tkFrame)
@@ -1479,6 +1485,48 @@ class leoTkinterFrame (leoFrame.leoFrame):
             finally:
                 c.endUpdate()
     #@-node:ekr.20031218072017.3981:abortEditLabelCommand
+    #@+node:ekr.20031218072017.3982:endEditLabelCommand
+    def endEditLabelCommand (self,event=None):
+        
+        '''End editing of a headline and move focus to the body pane.'''
+    
+        frame = self ; c = frame.c
+        if g.app.batchMode:
+            c.notValidInBatchMode("End Edit Headline")
+        else:
+            c.endEditing()
+            if c.config.getBool('stayInTreeAfterEditHeadline'):
+                c.treeWantsFocusNow()
+            else:
+                c.bodyWantsFocusNow() 
+    #@nonl
+    #@-node:ekr.20031218072017.3982:endEditLabelCommand
+    #@+node:ekr.20031218072017.3983:insertHeadlineTime
+    def insertHeadlineTime (self,event=None):
+        
+        '''Insert a date/time stamp in the headline of the selected node.'''
+    
+        frame = self ; c = frame.c ; p = c.currentPosition()
+        
+        if g.app.batchMode:
+            c.notValidInBatchMode("Insert Headline Time")
+            return
+            
+        c.editPosition(p)
+        c.frame.tree.setEditLabelState(p)
+        w = c.edit_widget(p)
+        if w:
+            time = c.getTime(body=False)
+            if 1: # We can't know if we were already editing, so insert at end.
+                g.app.gui.setSelectionRange(w,'end','end')
+                w.insert('end',time)
+            else:
+                i, j = g.app.gui.getTextSelection(w)
+                if i != j:
+                    w.delete(i,j)
+                w.insert("insert",time)
+            c.frame.tree.onHeadChanged(p,'Insert Headline Time')
+    #@-node:ekr.20031218072017.3983:insertHeadlineTime
     #@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
     #@+node:ekr.20051011072903.2:copyText
     def copyText (self,event=None):
@@ -1536,9 +1584,10 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if not w or not g.app.gui.isTextWidget(w): return
     
         wname = c.widget_name(w)
-        oldSel = g.app.gui.getTextSelection(w)
+        i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
         oldText = w.get('1.0','end')
-        i,j = g.app.gui.getTextSelection(w)
+        # g.trace(i,j,wname,g.callers())
+    
         s = s1 = g.app.gui.getTextFromClipboard()
         # g.trace(wname,s,repr(s))
         
@@ -1575,48 +1624,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
     OnPasteFromMenu = pasteText
     #@-node:ekr.20051011072903.5:pasteText
     #@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
-    #@+node:ekr.20031218072017.3982:endEditLabelCommand
-    def endEditLabelCommand (self,event=None):
-        
-        '''End editing of a headline and move focus to the body pane.'''
-    
-        frame = self ; c = frame.c
-        if g.app.batchMode:
-            c.notValidInBatchMode("End Edit Headline")
-        else:
-            c.endEditing()
-            if c.config.getBool('stayInTreeAfterEditHeadline'):
-                c.treeWantsFocusNow()
-            else:
-                c.bodyWantsFocusNow() 
-    #@nonl
-    #@-node:ekr.20031218072017.3982:endEditLabelCommand
-    #@+node:ekr.20031218072017.3983:insertHeadlineTime
-    def insertHeadlineTime (self,event=None):
-        
-        '''Insert a date/time stamp in the headline of the selected node.'''
-    
-        frame = self ; c = frame.c ; p = c.currentPosition()
-        
-        if g.app.batchMode:
-            c.notValidInBatchMode("Insert Headline Time")
-            return
-            
-        c.editPosition(p)
-        c.frame.tree.setEditLabelState(p)
-        w = c.edit_widget(p)
-        if w:
-            time = c.getTime(body=False)
-            if 1: # We can't know if we were already editing, so insert at end.
-                g.app.gui.setSelectionRange(w,'end','end')
-                w.insert('end',time)
-            else:
-                i, j = g.app.gui.getTextSelection(w)
-                if i != j:
-                    w.delete(i,j)
-                w.insert("insert",time)
-            c.frame.tree.onHeadChanged(p,'Insert Headline Time')
-    #@-node:ekr.20031218072017.3983:insertHeadlineTime
     #@-node:ekr.20031218072017.3980:Edit Menu...
     #@+node:ekr.20031218072017.3984:Window Menu...
     #@+node:ekr.20031218072017.3985:toggleActivePane
@@ -1892,15 +1899,18 @@ class leoTkinterBody (leoFrame.leoBody):
             ('<Button-3>',  frame.OnBodyRClick,         k.masterClick3Handler),
             ('<Double-1>',  frame.OnBodyDoubleClick,    k.masterDoubleClickHandler),
             ('<Double-3>',  None,                       k.masterDoubleClick3Handler),
+            ('<Button-2>',  frame.OnPaste,              k.masterClickHandler),
         ):
             def bodyClickCallback(event,handler=handler,func=func):
                 return handler(event,func)
     
             w.bind(kind,bodyClickCallback)
                 
-        if sys.platform.startswith('win'):
-            # Support Linux middle-button paste easter egg.
-            w.bind("<Button-2>",frame.OnPaste)
+        if 0: # Now done above.
+            if sys.platform.startswith('win'):
+                # Support Linux middle-button paste easter egg.
+                w.bind("<Button-2>",frame.OnPaste)
+    #@nonl
     #@-node:ekr.20031218072017.838:tkBody.createBindings
     #@+node:ekr.20031218072017.3998:tkBody.createControl
     def createControl (self,frame,parentFrame,p):

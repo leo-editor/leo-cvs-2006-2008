@@ -1106,7 +1106,7 @@ class nullBody (leoBody):
         return self.s[i:j]
         
     def getTextSelection (self,sort=True):
-        g.trace(self.selection)
+        # g.trace(self.selection)
         return self.selection
         
     def hasTextSelection (self):

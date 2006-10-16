@@ -708,7 +708,7 @@ class tkinterGui(leoGui.leoGui):
         else:
             # Return the insertion point if there is no selected text.
             insert = t.index("insert")
-            return insert,insert
+        return insert,insert
     #@-node:ekr.20031218072017.4086:getTextSelection
     #@+node:ekr.20051126171929:hasSelection
     def hasSelection (self,widget):
