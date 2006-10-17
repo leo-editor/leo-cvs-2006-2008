@@ -170,16 +170,6 @@ class baseEditCommandsClass:
             g.callers(),
             "must be overridden in subclass")
     #@-node:ekr.20050920084036.7:oops
-    #@+node:ekr.20050920084036.12:removeRKeys (baseCommandsClass)
-    def removeRKeys (self,w):
-    
-        mrk = 'sel'
-        w.tag_delete(mrk)
-        w.unbind('<Left>')
-        w.unbind('<Right>')
-        w.unbind('<Up>')
-        w.unbind('<Down>')
-    #@-node:ekr.20050920084036.12:removeRKeys (baseCommandsClass)
     #@+node:ekr.20050929161635:Helpers
     #@+node:ekr.20050920084036.249:_chckSel
     def _chckSel (self,event,warning='no selection'):
@@ -257,7 +247,7 @@ class baseEditCommandsClass:
     def testinrange (self,w):
     
         if not self.inRange(w,'sel') or not self.contRanges(w,'sel'):
-            self.removeRKeys(w)
+            # self.removeRKeys(w)
             return False
         else:
             return True
@@ -1432,7 +1422,7 @@ class editCommandsClass (baseEditCommandsClass):
             'set-extend-mode':                      self.setExtendMode,
             'set-fill-column':                      self.setFillColumn,
             'set-fill-prefix':                      self.setFillPrefix,
-            'set-mark-command':                     self.setRegion,
+            #'set-mark-command':                    self.setRegion,
             'show-colors':                          self.showColors,
             'show-fonts':                           self.showFonts,
             'simulate-begin-drag':                  self.simulateBeginDrag,
@@ -3954,96 +3944,6 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.95:paragraph...
     #@+node:ekr.20050920084036.105:region...
     #@+others
-    #@+node:ekr.20050920084036.106:setRegion
-    def setRegion (self,event):
-    
-        mrk = 'sel'
-        w = self.editWidget(event) # sets self.w
-        if not w: return
-    
-        # define callbacks.
-        #@    @+others
-        #@+node:ekr.20051002102410:down
-        def down (event):
-        
-            w = self.editWidget(event)
-            if not w: return
-        
-            if self.testinrange(w):
-                w.tag_add(mrk,'insert','insert lineend')
-                i = w.index('insert')
-                i1, i2 = i.split('.')
-                i1 = str(int(i1)+1)
-                w.mark_set('insert',i1+'.'+i2)
-                w.tag_add(mrk,'insert linestart -1c','insert')
-                if self.inRange(w,mrk,l='-1c',r='+1c'):
-                    w.tag_remove(mrk,'1.0','insert')
-        
-            return 'break'
-        #@-node:ekr.20051002102410:down
-        #@+node:ekr.20051002102410.1:extend
-        def extend (event):
-        
-            w = self.editWidget(event)
-            if not w: return
-        
-            w.mark_set('insert','insert + 1c')
-        
-            if self.inRange(w,mrk):
-                w.tag_remove(mrk,'insert -1c')
-            else:
-                w.tag_add(mrk,'insert -1c')
-                w.tag_configure(mrk,background='lightgrey')
-                self.testinrange(w)
-        
-            return 'break'
-        #@-node:ekr.20051002102410.1:extend
-        #@+node:ekr.20051002102410.2:truncate
-        def truncate (event):
-        
-            w = self.editWidget(event)
-            if not w: return
-        
-            w.mark_set('insert','insert -1c')
-        
-            if self.inRange(w,mrk):
-                self.testinrange(w)
-                w.tag_remove(mrk,'insert')
-            else:
-                w.tag_add(mrk,'insert')
-                w.tag_configure(mrk,background='lightgrey')
-                self.testinrange(w)
-        
-            return 'break'
-        #@-node:ekr.20051002102410.2:truncate
-        #@+node:ekr.20051002102410.3:up
-        def up (event):
-        
-            w = self.editWidget(event)
-            if not w: return
-        
-            if self.testinrange(w):
-                w.tag_add(mrk,'insert linestart','insert')
-                i = w.index('insert')
-                i1, i2 = i.split('.')
-                i1 = str(int(i1)-1)
-                w.mark_set('insert',i1+'.'+i2)
-                w.tag_add(mrk,'insert','insert lineend + 1c')
-                if self.inRange(w,mrk,l='-1c',r='+1c') and w.index('insert') != '1.0':
-                    w.tag_remove(mrk,'insert','end')
-        
-            return 'break'
-        #@-node:ekr.20051002102410.3:up
-        #@-others
-    
-        extend(event)
-        w.bind('<Right>',extend,'+')
-        w.bind('<Left>',truncate,'+')
-        w.bind('<Up>',up,'+')
-        w.bind('<Down>',down,'+')
-    
-        return 'break'
-    #@-node:ekr.20050920084036.106:setRegion
     #@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
     def indentRegion (self,event):
         w = self.editWidget(event)
@@ -4073,9 +3973,7 @@ class editCommandsClass (baseEditCommandsClass):
                 t2 = ws + t2
                 w.delete('%s.0' % z,'%s.0 lineend' % z)
                 w.insert('%s.0' % z,t2)
-            ### w.event_generate('<Key>')
-            ### w.update_idletasks()
-        self.removeRKeys(w)
+        # self.removeRKeys(w)
     #@-node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
     #@+node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
     def tabIndentRegion (self,event):
@@ -4271,7 +4169,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.mark_set('insert',i)
             self.endCommand(changed=True,setLabel=True)
     
-        self.removeRKeys(w)
+        # self.removeRKeys(w)
     #@-node:ekr.20050920084036.111:up/downCaseRegion & helper
     #@-others
     #@-node:ekr.20050920084036.105:region...
@@ -5516,7 +5414,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         self.addToKillBuffer(s)
         w.clipboard_clear()
         w.clipboard_append(s)
-        self.removeRKeys(w)
+        # self.removeRKeys(w)
     #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     #@+node:ekr.20050930095323.1:killSentence
     def killSentence (self,event):

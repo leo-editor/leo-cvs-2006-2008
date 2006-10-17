@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="252" height="581" width="937"/>
+	<global_window_position top="71" left="207" height="831" width="982"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20061011082224" a="TV"><vh>Candidates for settings in myLeoSettings.leo</vh>
+<v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
 <v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
@@ -345,7 +345,6 @@
 </v>
 <v t="ekr.20051010112558"><vh>@keys EKR bindings: a mix of legacy Leo shortcuts with important Emacs bindings</vh>
 <v t="ekr.20060122105438"><vh>To do</vh></v>
-<v t="ekr.20060122105438.1"><vh>Summary of Ctrl bindings</vh></v>
 <v t="ekr.20060115162748"><vh>Modes</vh>
 <v t="ekr.20060121131041.2"><vh>@mode Command</vh></v>
 <v t="ekr.20060102113259" annotate="7d71002e"><vh>@mode File</vh></v>
@@ -601,7 +600,7 @@
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 <v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="TV"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
@@ -2077,7 +2076,7 @@ open-python-window                  = None
 open-rectangle                      = None
 open-spell-tab                      = F7
 open-with                           = None
-outline-to-CWEB                     = None
+outline-to-cweb                     = None
 outline-to-noweb                    = None
 paste-node                          = Shift-Ctrl-V
 paste-retaining-clones              = None
@@ -2134,7 +2133,7 @@ set-find-everywhere                 = None
 set-find-node-only                  = None
 set-find-suboutline-only            = None
 set-font                            = None
-set-mark-command                    = Ctrl-space    # Also Ctrl-Shift-at
+# set-mark-command                  = Ctrl-space    # Also Ctrl-Shift-at
 set-overwrite-state                 = None
 settings                            = None          
 shell-command                       = None
@@ -2508,7 +2507,7 @@ mark-changed-items                  = None
 mark-changed-roots                  = None 
 mark-clones                         = None
 mark-subheads                       = None  
-match-bracket                       = Ctrl-K    # Conflicts with kill-line
+match-brackets                      = Ctrl-K    # Conflicts with kill-line
 minimize-all                        = None
 mode-help                           = None
 move-outline-down                   = Ctrl-D
@@ -2621,7 +2620,7 @@ mark-changed-items                      = None      # Alt-C: now quick-command.
 mark-changed-roots                      = None      # Alt-R: not useful enough.
 mark-clones                             = None      # Alt-K: not useful enough.
 mark-subheads                           = None      # Alt-S: not useful enough.
-match-bracket                           = Ctrl-K    # Conflicts with kill-line
+match-brackets                          = Ctrl-K    # Conflicts with kill-line
 minimize-all                            = None
 mode-help                               = None
 move-outline-down                       = Ctrl-D
@@ -2661,7 +2660,7 @@ open-python-window                      = None      # Alt-P: not useful enough.
 open-rectangle                          = None
 open-spell-tab                          = None
 open-with                               = None
-outline-to-CWEB                         = None
+outline-to-cweb                         = None
 outline-to-noweb                        = None
 paste-node                              = Shift-Ctrl-V
 paste-retaining-clones                  = None
@@ -2718,7 +2717,7 @@ set-find-suboutline-only                = None
 set-font                                = None
 set-command-state                       = None
 set-insert-state                        = None
-set-mark-command                        = Ctrl-space    # Also Ctrl-Shift-at
+# set-mark-command                      = Ctrl-space    # Also Ctrl-Shift-at
 set-overwrite-state                     = None
 settings                                = None          # Ctrl-Y conflicts with yank.
 shell-command                           = None
@@ -2899,7 +2898,7 @@ mark-changed-items              = None         # Alt-C: now quick-command.
 mark-changed-roots              = None         # Removed Alt-R: not useful enough.
 mark-clones                     = None         # Alt-K conflicts with kill-sentence.
 mark-subheads                   = None         # Alt-S conflicts with center-line.
-match-bracket                   = None         # Ctrl-K conflicts with kill-line.
+match-brackets                  = None         # Ctrl-K conflicts with kill-line.
 minimize-all                    = None
 move-outline-down               = None         # Removed Ctrl-D: no point if other moves are not defined.
 move-outline-left               = None         # Removed Ctrl-L: no point if other moves are not defined.
@@ -2935,7 +2934,7 @@ open-python-window              = None         # Removed Alt-P: not useful enoug
 open-rectangle                  = None
 open-spell-tab                  = None
 open-with                       = None
-outline-to-CWEB                 = None
+outline-to-cweb                 = None
 outline-to-noweb                = None
 paste-node                      = Shift-Ctrl-V
 paste-retaining-clones          = None
@@ -2992,7 +2991,7 @@ set-find-suboutline-only            = None
 set-font                        = None
 set-command-state               = None
 set-insert-state                = None
-set-mark-command                = Control-Shift-at
+# set-mark-command              = Control-Shift-at
 set-overwrite-state             = None
 settings                        = None  # Ctrl-Y conflicts with yank.
 shell-command                   = Alt-exclam
@@ -3162,7 +3161,7 @@ mark-changed-items                      = Alt-C
 mark-changed-roots                      = Alt-R
 mark-clones                             = Alt-K
 mark-subheads                           = Alt-S
-match-bracket                           = Ctrl-K
+match-brackets                          = Ctrl-K
 minimize-all                            = None
 mode-help                               = None
 move-outline-down                       = Ctrl-D
@@ -3204,7 +3203,7 @@ open-python-window                  = Alt-P
 open-rectangle                      = None
 open-spell-tab                      = Alt+Shift+A
 open-with                           = None
-outline-to-CWEB                     = None
+outline-to-cweb                     = None
 outline-to-noweb                    = None
 paste-node                          = Shift-Ctrl-V
 paste-retaining-clones              = None
@@ -3260,7 +3259,7 @@ set-find-suboutline-only            = None
 set-font                            = None
 set-command-state                   = None
 set-insert-state                    = None
-set-mark-command                    = None
+# set-mark-command                  = None
 set-overwrite-state                 = None
 settings                            = Ctrl-Y
 shell-command                       = None
@@ -3453,7 +3452,7 @@ mark-changed-items                  = None
 mark-changed-roots                  = None
 mark-clones                         = None
 mark-subheads                       = None
-match-bracket                       = None
+match-brackets                      = None
 minimize-all                        = None
 mode-help                           = None
 move-outline-down                   = None
@@ -3495,7 +3494,7 @@ open-python-window                  = None
 open-rectangle                      = None
 open-spell-tab                      = None
 open-with                           = None
-outline-to-CWEB                     = None
+outline-to-cweb                     = None
 outline-to-noweb                    = None
 paste-node                          = None
 paste-retaining-clones              = None
@@ -3566,7 +3565,7 @@ set-find-suboutline-only            = None
 set-font                            = None
 set-command-state                   = None
 set-insert-state                    = None
-set-mark-command                    = None
+# set-mark-command                  = None
 set-overwrite-state                 = None
 settings                            = None
 shell-command                       = None
@@ -4027,40 +4026,11 @@ re-search-backward      = Shift-R</t>
 Support the exectution of a command when entering a mode.
 
 - Finish options mode</t>
-<t tx="ekr.20060122105438.1">#enter-command-mode     = Ctrl-space
-add-comments            = Ctrl-(
-auto-complete           = Ctrl-Tab
-clone-node              = Ctrl-`
-set-mark-command        = Ctrl-space    # Also Ctrl-Shift-at
-
-beginning-of-line       ! text = Ctrl-a         # Ctrl-a Conflicts with select-all
-# back-char             ! text = Ctrl-b
-copy-text               = Ctrl-c        # Conflicts with Emacs ctrl-c
-move-outline-down       = Ctrl-d
-end-of-line             ! text = Ctrl-e
-enter-find-mode         = Ctrl-f
-keyboard-quit           = Ctrl-g
-edit-headline           = Ctrl-H
-insert-node             = Ctrl-I
-match-bracket           = Ctrl-K    # Conflicts with kill-line
-move-outline-left       = Ctrl-L
-mark                    = Ctrl-M
-new                     = Ctrl-n    # Ctrl-n conflicts with next-line.
-open-outline            = Ctrl-O    # Ctrl-O conflicts with insert-newline
-exit-leo                = Ctrl-Q
-move-outline-right      = Ctrl-R
-save-file               = Ctrl-s
-toggle-active-pane      = Ctrl-T
-move-outline-up         = Ctrl-U
-paste-text              = Ctrl-v
-kill-region             = Ctrl-w
-cut-text                = Ctrl-x
-undo                    = Ctrl-Z</t>
 <t tx="ekr.20060122105527">@color</t>
 <t tx="ekr.20060122105527.2">#enter-command-mode     = Ctrl-space
 add-comments            = Ctrl-(
 clone-node              = Ctrl-`
-set-mark-command        = Ctrl-space    # Also Ctrl-Shift-at
+# set-mark-command      = Ctrl-space    # Also Ctrl-Shift-at
 
 beginning-of-line       = Ctrl-a         # Ctrl-a Conflicts with select-all
 # back-char             = Ctrl-b
@@ -4072,7 +4042,7 @@ keyboard-quit           = Ctrl-g
 edit-headline           = Ctrl-H
 insert-node             = Ctrl-I
 newline-and-indent      = Ctrl-J
-match-bracket           = Ctrl-K    # Conflicts with kill-line
+match-brackets          = Ctrl-K    # Conflicts with kill-line
 move-outline-left       = Ctrl-L
 mark                    = Ctrl-M
 new                     = Ctrl-N    # next-line.
@@ -4377,7 +4347,7 @@ kill-region-save                    = Alt-w 	   # Ctrl-w
 kill-sentence                       = Alt-k
 kill-word                           = Alt-d
 mark                                = Ctrl-M
-match-bracket                       = Ctrl-K    # kill-line
+match-brackets                      = Ctrl-K    # kill-line
 move-outline-down                   = Ctrl-D
 move-outline-down                   = Alt-Shift-DnArrow
 move-outline-left                   = Ctrl-L
@@ -5855,7 +5825,7 @@ kill-region-save                    = Alt-w 	   # Ctrl-w
 kill-sentence                       = Alt-k
 kill-word                           = Alt-d
 mark                                = Ctrl-M
-# match-bracket                     = Ctrl-K    # kill-line
+# match-brackets                    = Ctrl-K    # kill-line
 move-outline-down                   = Ctrl-D
 move-outline-down                   = Alt-Shift-DnArrow
 move-outline-left                   = Ctrl-L
@@ -5928,7 +5898,7 @@ forward-paragraph                   ! text = Alt-braceright
 forward-sentence                    ! text = Alt-e
 forward-word                        ! text = Alt-f
 goto-global-line                    = Alt-g
-# match-bracket                     = Ctrl-K    # kill-line
+# match-brackets                    = Ctrl-K    # kill-line
 move-past-close                     = Alt-parenright # Same as Alt-shift-parenright
 next-line                           ! text = DnArrow
 previous-line                       ! text = UpArrow
