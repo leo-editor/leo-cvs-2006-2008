@@ -3282,6 +3282,7 @@ class keyHandlerClass:
             g.app.gui.setTextSelection(w,i,i,insert=i)
             c.editCommands.setMoveCol(i)
             c.frame.updateStatusLine()
+            c.frame.body.onClick(w) # New in Leo 4.4.2.
         elif wname.startswith('mini'):
             x = w.index('@%s,%s' % (event.x,event.y))
             i, j = k.getEditableTextRange()
