@@ -34,7 +34,7 @@ To enable this plugin:
 # Adapted and extended from the Python Cookbook:
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/259148
 
-__version__ = "0.93"
+__version__ = "0.94"
 
 #@<< imports >>
 #@+node:EKR.20040517080250.3:<< imports >>
@@ -74,6 +74,7 @@ import urlparse
 # 0.93 EKR: Added init function.
 # But http was in the Plugins menu because the rst3 plugin imports it.
 # The fix was to the plugins manager, not this plugin or rst3.
+# 0.94 BWM
 #@-at
 #@nonl
 #@-node:ekr.20050328104558:<< version history >>
@@ -208,8 +209,15 @@ class delayedSocketStream(asyncore.dispatcher_with_send):
 #@+node:EKR.20040517080250.10:class nodeNotFound
 class nodeNotFound(Exception):
     pass
-#@nonl
 #@-node:EKR.20040517080250.10:class nodeNotFound
+#@+node:bwmulder.20061014153544:class noLeoNodePath
+class noLeoNodePath(Exception):
+    """
+    Raised if the path can not be converted a filename and a series of numbers.
+    Most likely a reference to a picture.
+    """
+    pass
+#@-node:bwmulder.20061014153544:class noLeoNodePath
 #@+node:EKR.20040517080250.11:class escaped_StringIO
 class escaped_StringIO(StringIO):
     #@    @+others
@@ -425,6 +433,11 @@ class leo_interface(object):
                     raise nodeNotFound
             # go to the i'th child for each path element.
             for i in path[2:]:
+                try:
+                    int(i)
+                except ValueError:
+                    # No Leo path
+                    raise noLeoNodePath
                 node = node.nthChild(int(i))
                 if node is None:
                     raise nodeNotFound
@@ -501,6 +514,11 @@ class leo_interface(object):
                         return None
                     f = self.format_leo_node(window, node)
                 except nodeNotFound:
+                    self.send_error(404, "Node not found")
+                    return None
+                except noLeoNodePath:
+                    g.es("No Leo node path:", path)
+                    # Is there something better we can do here?
                     self.send_error(404, "Node not found")
                     return None
             length = f.tell()
