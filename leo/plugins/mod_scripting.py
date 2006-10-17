@@ -183,6 +183,8 @@ __version__ = '1.7'
 # 1.6 EKR: Created truncateButtonText utility to strip trailing '-' 
 # characters.
 # 1.7 EKR: Fix recent bug: lowercase all command names.
+# 1.8 EKR: An attempt to workaround problems deleting Pmw buttons/with 
+# balloons.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -608,7 +610,7 @@ class scriptingController:
         if w and balloon:
             balloon.bind(w,label)
             # Inject an ivar into the w.
-            w.leo_balloon = balloon
+            # w.leo_balloon = balloon
     #@nonl
     #@-node:ekr.20060522104419.1:createBalloon
     #@+node:ekr.20060328125248.17:createIconButton
@@ -684,12 +686,13 @@ class scriptingController:
     
         if button and self.buttonsDict.get(w):
             del self.buttonsDict[w]
-            if hasattr(w,'leo_balloon'):
-                balloon = w.leo_balloon
-                # g.trace('destoying ballon',balloon)
-                balloon.destroy()
+            if 0: # This workaround doesn't work.
+                if hasattr(w,'leo_balloon'):
+                    balloon = w.leo_balloon
+                    # g.trace('destoying ballon',balloon)
+                    balloon.destroy()
             w.pack_forget()
-            w.destroy() # So that Pmw doesn't crash later.
+            # w.destroy() # So that Pmw doesn't crash later.
             self.c.bodyWantsFocusNow()
     #@nonl
     #@-node:ekr.20060328125248.26:deleteButton
