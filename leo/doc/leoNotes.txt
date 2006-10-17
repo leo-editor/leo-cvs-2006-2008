@@ -4520,6 +4520,183 @@ def populateHelpMenu (self):
         g.es_exception()
         return None
 #@-node:ekr.20061010070625:populateHelpMenu(not used)
+#@+node:ekr.20050920084036.12:removeRKeys (baseCommandsClass)
+def removeRKeys (self,w):
+
+    mrk = 'sel'
+    w.tag_delete(mrk)
+    w.unbind('<Left>')
+    w.unbind('<Right>')
+    w.unbind('<Up>')
+    w.unbind('<Down>')
+#@-node:ekr.20050920084036.12:removeRKeys (baseCommandsClass)
+#@+node:ekr.20050920084036.106:setRegion
+def setRegion (self,event):
+
+    mrk = 'sel'
+    w = self.editWidget(event) # sets self.w
+    if not w: return
+
+    # define callbacks.
+    @others
+
+    extend(event)
+    
+    w.bind('<Right>',extend,'+')
+    w.bind('<Left>',truncate,'+')
+    w.bind('<Up>',up,'+')
+    w.bind('<Down>',down,'+')
+
+    return 'break'
+#@+node:ekr.20051002102410:down
+def down (event):
+
+    w = self.editWidget(event)
+    if not w: return
+
+    if self.testinrange(w):
+        w.tag_add(mrk,'insert','insert lineend')
+        i = w.index('insert')
+        i1, i2 = i.split('.')
+        i1 = str(int(i1)+1)
+        w.mark_set('insert',i1+'.'+i2)
+        w.tag_add(mrk,'insert linestart -1c','insert')
+        if self.inRange(w,mrk,l='-1c',r='+1c'):
+            w.tag_remove(mrk,'1.0','insert')
+
+    return 'break'
+#@-node:ekr.20051002102410:down
+#@+node:ekr.20051002102410.1:extend
+def extend (event):
+
+    w = self.editWidget(event)
+    if not w: return
+
+    w.mark_set('insert','insert + 1c')
+
+    if self.inRange(w,mrk):
+        w.tag_remove(mrk,'insert -1c')
+    else:
+        w.tag_add(mrk,'insert -1c')
+        w.tag_configure(mrk,background='lightgrey')
+        self.testinrange(w)
+
+    return 'break'
+#@-node:ekr.20051002102410.1:extend
+#@+node:ekr.20051002102410.2:truncate
+def truncate (event):
+
+    w = self.editWidget(event)
+    if not w: return
+
+    w.mark_set('insert','insert -1c')
+
+    if self.inRange(w,mrk):
+        self.testinrange(w)
+        w.tag_remove(mrk,'insert')
+    else:
+        w.tag_add(mrk,'insert')
+        w.tag_configure(mrk,background='lightgrey')
+        self.testinrange(w)
+
+    return 'break'
+#@-node:ekr.20051002102410.2:truncate
+#@+node:ekr.20051002102410.3:up
+def up (event):
+
+    w = self.editWidget(event)
+    if not w: return
+
+    if self.testinrange(w):
+        w.tag_add(mrk,'insert linestart','insert')
+        i = w.index('insert')
+        i1, i2 = i.split('.')
+        i1 = str(int(i1)-1)
+        w.mark_set('insert',i1+'.'+i2)
+        w.tag_add(mrk,'insert','insert lineend + 1c')
+        if self.inRange(w,mrk,l='-1c',r='+1c') and w.index('insert') != '1.0':
+            w.tag_remove(mrk,'insert','end')
+
+    return 'break'
+#@-node:ekr.20051002102410.3:up
+#@-node:ekr.20050920084036.106:setRegion
+#@+node:ekr.20060528104554:onFocusIn (no longer used)
+lockout_onFocusIn = False
+
+def onFocusIn(self,w,setFocus=False):
+
+    c = self.c ; d = self.editorWidgets
+    trace = False
+    if trace: g.trace(g.callers())
+    if self.lockout_onFocusIn:
+        if trace: g.trace('lockout')
+        return 'break'
+    if w.leo_p is None:
+        if trace: g.trace('no w.leo_p') 
+        return 'break'
+    
+    # Disable recursive calls: some of the calls below generate OnFocusInEvents.
+    self.lockout_onFocusIn = True
+    try:
+        if trace: g.trace(w)
+    
+        # Inactivate the previously active editor.
+        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+        for key in d.keys():
+            w2 = d.get(key)
+            if w2 != w and w2.leo_active:
+                w2.leo_active = False
+                self.unselectLabel(w2)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                w2.leo_selection = g.app.gui.getSelectionRange(w2)
+                break
+        else:
+            if trace: g.trace('no active editor!')
+    
+        # Careful, leo_p may not exist.
+        if not c.positionExists(w.leo_p):
+            g.trace('does not exist',w.leo_name)
+            for p2 in c.allNodes_iter():
+                if p2.v == w.leo_v:
+                    w.leo_p = p2.copy()
+                    break
+            else:
+                if trace: g.trace("Can't happen")
+                return 'break'
+
+        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+        w.leo_active = True
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+        c.recolor_now()
+        << restore the selection, insertion point and the scrollbar >>
+        w3 = g.app.gui.get_focus(c)
+        if setFocus or w3 and not g.app.gui.widget_name(w3).startswith('body'):
+            if trace: g.trace(g.app.gui.widget_name(w),id(w))
+            c.bodyWantsFocusNow()
+    finally:
+        self.lockout_onFocusIn = False
+
+    return 'break'
+#@+node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+if w.leo_insertSpot:
+    g.app.gui.setInsertPoint(w,w.leo_insertSpot)
+    w.see(w.leo_insertSpot)
+else:
+    g.app.gui.setInsertPoint(w,'1.0')
+    
+if w.leo_scrollBarSpot:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        g.app.gui.setSelectionRange(w,start,end)
+    except Exception:
+        pass
+#@-node:ekr.20060605190146:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20060528104554:onFocusIn (no longer used)
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

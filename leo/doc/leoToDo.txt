@@ -2,59 +2,7 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
-#@+node:ekr.20061010115312.1:Urgent 5
-#@+node:ekr.20061016104544:Make sure paste does a full recolor
-#@+node:ekr.20051011072903.5:pasteText
-def pasteText (self,event=None):
-
-    '''Paste the clipboard into a widget.'''
-
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    wname = c.widget_name(w)
-    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
-    oldText = w.get('1.0','end')
-    # g.trace(i,j,wname,g.callers())
-
-    s = s1 = g.app.gui.getTextFromClipboard()
-    # g.trace(wname,s,repr(s))
-    
-    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-    
-    if singleLine:
-        # Strip trailing newlines so the truncation doesn't cause confusion.
-        while s and s [ -1] in ('\n','\r'):
-            s = s [: -1]
-
-    try:
-        # Update the widget.
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,s)
-    
-        if wname.startswith('body'):
-            c.frame.body.forceFullRecolor()
-            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
-        elif singleLine:
-            s = w.get('1.0','end')
-            while s and s [ -1] in ('\n','\r'):
-                s = s [: -1]
-            if wname.startswith('head'):
-                # The headline is not officially changed yet.
-                # p.initHeadString(s)
-                w.configure(width=f.tree.headWidth(s=s))
-        else: pass
-    except Exception:
-        pass # Tk sometimes throws weird exceptions here.
-        
-    return 'break' # Essential
-
-OnPasteFromMenu = pasteText
-#@-node:ekr.20051011072903.5:pasteText
-#@-node:ekr.20061016104544:Make sure paste does a full recolor
-#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@+node:ekr.20061010115312.1:Urgent
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 @nocolor
 
@@ -239,7 +187,7 @@ def killRegionHelper (self,event,deleteFlag):
     self.addToKillBuffer(s)
     w.clipboard_clear()
     w.clipboard_append(s)
-    self.removeRKeys(w)
+    # self.removeRKeys(w)
 #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 #@+node:ekr.20050930095323.1:killSentence
 def killSentence (self,event):
@@ -350,62 +298,28 @@ def zapToCharacter (self,event):
 #@-node:ekr.20050920084036.128:zapToCharacter
 #@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
 #@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-#@+node:ekr.20061012082613:Fix body editor problems: 2
-#@+node:ekr.20061012082613.1:Find does not work when there are multiple body editors
-#@-node:ekr.20061012082613.1:Find does not work when there are multiple body editors
-#@+node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
-@nocolor
-
-When deleting a node that is open in two editors, only one editor shows the
-content of the newly selected node. The other editor still shows the contents
-of the deleted node; when clicking in it, the log reports something like:
-
-onFocusIn: does not exist <some number>
-#@-node:ekr.20061012082613.2:Fix problem with deleting nodes when multiple editors are present
-#@-node:ekr.20061012082613:Fix body editor problems: 2
+#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061010115312.1:Urgent
+#@-node:ekr.20060927172440:To do before 4.4.2 b3
+#@+node:ekr.20061008160553:Asap
+#@+node:ekr.20061016205920:Most important
 #@+node:ekr.20061014050154.2:Binding to None clears all bindings
 #@-node:ekr.20061014050154.2:Binding to None clears all bindings
-#@-node:ekr.20061010115312.1:Urgent 5
-#@+node:ekr.20061008160553:Asap
-#@+node:ekr.20061014050154.1:Posting: I really like the standard bindings
+#@+node:ekr.20060915175024:Maintain vertical node position if possible
 @nocolor
 
-It **might** be possible to implement dwim (do what I mean).
+http://sourceforge.net/forum/message.php?msg_id=3916155
 
-If, say, Home is bound in all panes to end-of-line,
-then it might be possible to switch to the body pane if focus is in the tree.
-I'll have to experiment with this.
+When a node is among several other nodes at the same level of hierarchy, which
+are all children of a node, and the "MOVE LFET" command is executed, the node
+does move left in the outline hierarchy, but it also move down to just before
+the next node at the higher hierarchy level - the level to which it is moving
+left.
 #@nonl
-#@-node:ekr.20061014050154.1:Posting: I really like the standard bindings
-#@+node:ekr.20061012204814:Should 'plain' cursor moves force focus to body (unless editing headline?)
-@nocolor
-
-It's tantalizing to have Home, etc, force focus to body pane,
-But this would mean that Alt-Home is required to move to the first node:
-at present that is not required.  Still, it may be a great idea.
-#@-node:ekr.20061012204814:Should 'plain' cursor moves force focus to body (unless editing headline?)
-#@+node:ekr.20061011145700:Remove title of body editor when penultimate editor removed
-@nocolor
-
-This may a rewrite of the way-too-complex event handling code for body editors.
-
-@color
-#@nonl
-#@-node:ekr.20061011145700:Remove title of body editor when penultimate editor removed
-#@+node:ekr.20061011111007:@bool autoload_most_recent_leo_file
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3957908
-
-> Is there a setting for autmoatically loading most recent file or files.
-
-@color
-#@nonl
-#@-node:ekr.20061011111007:@bool autoload_most_recent_leo_file
+#@-node:ekr.20060915175024:Maintain vertical node position if possible
 #@+node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
 #@-node:ekr.20060927173836.6:Don't abort mode if there are problems with bindings
-#@+node:ekr.20061008064111:Add Open scripts.leo to help menu
-#@-node:ekr.20061008064111:Add Open scripts.leo to help menu
 #@+node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
@@ -861,18 +775,43 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@+node:ekr.20060915175024:Maintain vertical node position if possible
+#@+node:ekr.20061013082443:Unit tests for all edit commands
+#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
+The must work with unicode characters.  (They do now.)
+#@nonl
+#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
+#@-node:ekr.20061013082443:Unit tests for all edit commands
+#@-node:ekr.20061016205920:Most important
+#@+node:ekr.20061016205920.1:Less important
+#@+node:ekr.20061014050154.1:Posting: dwim
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=3916155
+It **might** be possible to implement dwim (do what I mean).
 
-When a node is among several other nodes at the same level of hierarchy, which
-are all children of a node, and the "MOVE LFET" command is executed, the node
-does move left in the outline hierarchy, but it also move down to just before
-the next node at the higher hierarchy level - the level to which it is moving
-left.
+If, say, Home is bound in all panes to end-of-line,
+then it might be possible to switch to the body pane if focus is in the tree.
+I'll have to experiment with this.
 #@nonl
-#@-node:ekr.20060915175024:Maintain vertical node position if possible
+#@-node:ekr.20061014050154.1:Posting: dwim
+#@+node:ekr.20061012204814:Should 'plain' cursor moves force focus to body (unless editing headline?)
+@nocolor
+
+It's tantalizing to have Home, etc, force focus to body pane,
+But this would mean that Alt-Home is required to move to the first node:
+at present that is not required.  Still, it may be a great idea.
+#@-node:ekr.20061012204814:Should 'plain' cursor moves force focus to body (unless editing headline?)
+#@+node:ekr.20061011111007:@bool autoload_most_recent_leo_file
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3957908
+
+> Is there a setting for autmoatically loading most recent file or files.
+
+@color
+#@nonl
+#@-node:ekr.20061011111007:@bool autoload_most_recent_leo_file
+#@+node:ekr.20061008064111:Add Open scripts.leo to help menu
+#@-node:ekr.20061008064111:Add Open scripts.leo to help menu
 #@+node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@-node:ekr.20060929084830.1:Suppress redraw on all applicable outline:goto commands
 #@+node:ekr.20050713105353:Add configuration setting to set menu fonts
@@ -894,32 +833,63 @@ I'll try using .leo_xresources file and see if that works as well.
 #@nonl
 #@-node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
 #@-node:ekr.20050713105353:Add configuration setting to set menu fonts
-#@+node:ekr.20061013082443:Unit tests for all edit commands
-#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-The must work with unicode characters.  (They do now.)
+#@+node:ekr.20061016104544:Make sure paste does a full recolor
+@
+
+This is probably an issue with the new colorizer being interrupted. When
+restarted, it is probably only restarted as an incremental color. Maybe we could
+'propagate' non-incremental coloring, but really the new colorizer isn't fast
+enough and needs a rewrite of its control logic.
 #@nonl
-#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-#@-node:ekr.20061013082443:Unit tests for all edit commands
-#@-node:ekr.20061008160553:Asap
-#@+node:ekr.20061009152210:Docs
-@nocolor
+#@+node:ekr.20051011072903.5:pasteText
+def pasteText (self,event=None):
 
-- FAQ Entries:
-    - Caps-lock key problem.
-    - @bool setting for unicode problems.
-        @bool ignore_unbound_non_ascii_keys = False
-    (Set this to False in leoSettings.leo, and True in myLeoSettings.leo)
+    '''Paste the clipboard into a widget.'''
 
-- Put link to what's new in readme file.
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
 
-- Highlights: discovered how to make Leo's data structures compatible with arbitrary directed graphs.
+    wname = c.widget_name(w)
+    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
+    oldText = w.get('1.0','end')
+    # g.trace(i,j,wname,g.callers())
 
-- Document tnodeList, vnodeList.
-#@nonl
-#@-node:ekr.20061009152210:Docs
-#@+node:ekr.20061009153504.1:Tests
-#@+node:ekr.20061009094114.1:Check Leo with pylint
-#@-node:ekr.20061009094114.1:Check Leo with pylint
+    s = s1 = g.app.gui.getTextFromClipboard()
+    # g.trace(wname,s,repr(s))
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.get('1.0','end')
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@-node:ekr.20051011072903.5:pasteText
+#@-node:ekr.20061016104544:Make sure paste does a full recolor
 #@+node:ekr.20060912091922:Test all plugins
 ** Create separate @test node for each plugin.
 #@nonl
@@ -1013,8 +983,24 @@ xsltWithNodes.py
 #@nonl
 #@-node:ekr.20060914085747.1:To test
 #@-node:ekr.20060912091922:Test all plugins
-#@-node:ekr.20061009153504.1:Tests
-#@-node:ekr.20060927172440:To do before 4.4.2 b3
+#@-node:ekr.20061016205920.1:Less important
+#@+node:ekr.20061009152210:Docs
+@nocolor
+
+- FAQ Entries:
+    - Caps-lock key problem.
+    - @bool setting for unicode problems.
+        @bool ignore_unbound_non_ascii_keys = False
+    (Set this to False in leoSettings.leo, and True in myLeoSettings.leo)
+
+- Put link to what's new in readme file.
+
+- Highlights: discovered how to make Leo's data structures compatible with arbitrary directed graphs.
+
+- Document tnodeList, vnodeList.
+#@nonl
+#@-node:ekr.20061009152210:Docs
+#@-node:ekr.20061008160553:Asap
 #@+node:ekr.20061010115434:On hold
 #@+node:ekr.20061009153206:Installs
 @nocolor
@@ -1696,7 +1682,7 @@ def killRegionHelper (self,event,deleteFlag):
     self.addToKillBuffer(s)
     w.clipboard_clear()
     w.clipboard_append(s)
-    self.removeRKeys(w)
+    # self.removeRKeys(w)
 #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 #@+node:ekr.20050930095323.1:killSentence
 def killSentence (self,event):

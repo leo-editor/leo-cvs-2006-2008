@@ -1597,6 +1597,7 @@ class editCommandsClass (baseEditCommandsClass):
         # w may not be the present body widget, so test its name, not its id.
         if w_name(w).startswith('body'):
             n = c.frame.body.numberOfEditors
+            # g.trace(self.editWidgetCount,n)
             if n > 1:
                 self.editWidgetCount += 1
                 if self.editWidgetCount == 1:
@@ -1629,7 +1630,7 @@ class editCommandsClass (baseEditCommandsClass):
                 pane = c.frame.tree.canvas
         else:
             pane = c.frame.body.bodyCtrl
-            self.editWidgetCount = self.logWidgetCount = 0
+            self.editWidgetCount = 1 ; self.logWidgetCount = 0
             
         if trace: print 'old: %10s new: %10s' % (w_name(w),w_name(pane))
     

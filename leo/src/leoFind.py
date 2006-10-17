@@ -735,6 +735,7 @@ class leoFind:
     
         c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
         index = gui.getInsertPoint(w)
+        # g.trace(g.app.gui.widget_name(w),index,p.headString())
         s = gui.getAllText(w)
         index = gui.toPythonIndex(s,w,index)
         stopindex = g.choose(self.reverse,0,len(s))
@@ -1137,6 +1138,7 @@ class leoFind:
             c.editPosition(p)
         # Set the focus and selection after the redraw.
         t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
+        # g.trace(g.app.gui.widget_name(t),id(t),p.headString())
         insert = g.choose(self.reverse,pos,newpos)
         # New in 4.4a3: a much better way to ensure progress in backward searches.
         # g.trace(id(t),pos,newpos)

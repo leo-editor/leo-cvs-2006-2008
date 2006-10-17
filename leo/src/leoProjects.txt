@@ -336,6 +336,7 @@ def cycleAllFocus (self,event):
     # w may not be the present body widget, so test its name, not its id.
     if w_name(w).startswith('body'):
         n = c.frame.body.numberOfEditors
+        # g.trace(self.editWidgetCount,n)
         if n > 1:
             self.editWidgetCount += 1
             if self.editWidgetCount == 1:
@@ -368,7 +369,7 @@ def cycleAllFocus (self,event):
             pane = c.frame.tree.canvas
     else:
         pane = c.frame.body.bodyCtrl
-        self.editWidgetCount = self.logWidgetCount = 0
+        self.editWidgetCount = 1 ; self.logWidgetCount = 0
         
     if trace: print 'old: %10s new: %10s' % (w_name(w),w_name(pane))
 
@@ -414,7 +415,7 @@ def cycleEditorFocus (self,event=None):
         if i == len(values): i = 0
         w2 = d.values()[i]
         assert(w!=w2)
-        self.onFocusIn(w2,setFocus=True)
+        self.selectEditor(w2)
         self.bodyCtrl = self.frame.bodyCtrl = w2
         # print '***',g.app.gui.widget_name(w2),id(w2)
 
@@ -3098,7 +3099,7 @@ def killRegionHelper (self,event,deleteFlag):
     self.addToKillBuffer(s)
     w.clipboard_clear()
     w.clipboard_append(s)
-    self.removeRKeys(w)
+    # self.removeRKeys(w)
 #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 #@+node:ekr.20050930095323.1:killSentence
 def killSentence (self,event):
@@ -3640,6 +3641,7 @@ def masterClickHandler (self,event,func=None):
         g.app.gui.setTextSelection(w,i,i,insert=i)
         c.editCommands.setMoveCol(i)
         c.frame.updateStatusLine()
+        c.frame.body.onClick(w) # New in Leo 4.4.2.
     elif wname.startswith('mini'):
         x = w.index('@%s,%s' % (event.x,event.y))
         i, j = k.getEditableTextRange()
@@ -4613,6 +4615,1291 @@ def setSelection (self,s):
     c.frame.body.onBodyChanged('Typing')
 #@-node:ekr.20051127070018:setSelection
 #@-node:ekr.20060927100500.1:Fixed bug in new colorizer
+#@+node:ekr.20061016205507:Removed set-mark-command and all calls to removeRKeys
+@
+The 'hang' was due to removeRKeys, which removes the bindings create by
+setRegion (set-mark-command) by *also* cleared all the other bindings!
+For now I have simply disabled the set-mark-command and commented out all
+calls to removeRKeys.
+
+Note that toggle-extend-mode (Alt-3) is a good way to define regions.
+#@nonl
+#@+node:ekr.20061016211110:Found: removeRKeys
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+    
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = self.editWidget(event)
+    if not w: return
+    theRange = w.tag_ranges('sel')
+    if not theRange: return
+    
+    s = w.get(theRange[0],theRange[-1])
+    if deleteFlag:
+        self.beginCommand(undoType='kill-region')
+        w.delete(theRange[0],theRange[-1])
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    # self.removeRKeys(w)
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@+node:ekr.20050920084036.11:testinrange
+def testinrange (self,w):
+
+    if not self.inRange(w,'sel') or not self.contRanges(w,'sel'):
+        # self.removeRKeys(w)
+        return False
+    else:
+        return True
+#@-node:ekr.20050920084036.11:testinrange
+#@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
+def indentRegion (self,event):
+    w = self.editWidget(event)
+    if not w: return
+
+    mrk = 'sel'
+    trange = w.tag_ranges(mrk)
+    if len(trange) != 0:
+        ind = w.search('\w','%s linestart' % trange[0],stopindex='end',regexp=True)
+        if not ind: return
+        text = w.get('%s linestart' % ind,'%s lineend' % ind)
+        sstring = text.lstrip()
+        sstring = sstring [0]
+        ws = text.split(sstring)
+        if len(ws) > 1:
+            ws = ws [0]
+        else:
+            ws = ''
+        s, s1 = trange [0].split('.')
+        e, e1 = trange [ -1].split('.')
+        s = int(s)
+        s = s + 1
+        e = int(e) + 1
+        for z in xrange(s,e):
+            t2 = w.get('%s.0' % z,'%s.0 lineend' % z)
+            t2 = t2.lstrip()
+            t2 = ws + t2
+            w.delete('%s.0' % z,'%s.0 lineend' % z)
+            w.insert('%s.0' % z,t2)
+    # self.removeRKeys(w)
+#@-node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
+#@+node:ekr.20050920084036.111:up/downCaseRegion & helper
+def downCaseRegion (self,event):
+    '''Convert all characters in the selected text to lower case.'''
+    self.caseHelper(event,'low','downcase-region')
+    
+def upCaseRegion (self,event):
+    '''Convert all characters in the selected text to UPPER CASE.'''
+    self.caseHelper(event,'up','upcase-region')
+    
+def caseHelper (self,event,way,undoType):
+
+    w = self.editWidget(event)
+    if not w: return
+
+    trange = w.tag_ranges('sel')
+    if len(trange) != 0:
+        self.beginCommand(undoType=undoType)
+        text = w.get(trange[0],trange[-1])
+        i = w.index('insert')
+        if text == ' ': return
+        w.delete(trange[0],trange[-1])
+        if way == 'low': text = text.lower()
+        if way == 'up':  text = text.upper()
+        w.insert('insert',text)
+        w.mark_set('insert',i)
+        self.endCommand(changed=True,setLabel=True)
+
+    # self.removeRKeys(w)
+#@-node:ekr.20050920084036.111:up/downCaseRegion & helper
+#@-node:ekr.20061016211110:Found: removeRKeys
+#@-node:ekr.20061016205507:Removed set-mark-command and all calls to removeRKeys
+#@+node:ekr.20061012082613:Fixed body editor problems
+@nocolor
+@
+
+onFocusIn and its associated binding were a very bad idea.  It is not needed:
+k.masterClickHandler simply calls the new onClick method.
+
+What I did:
+    
+- Eliminating onFocusIn and its associated binding.
+  Hurray: this also fixed the Find problem.
+- Fixed problem with deleting nodes when multiple editors are present.
+- Fixed minor problem with cycle-all-focus.
+- Removed title bar when penultimate editor is deleted.
+
+@color
+#@nonl
+#@+node:ekr.20060129052538.2:masterClickHandler
+def masterClickHandler (self,event,func=None):
+
+    k = self ; c = k.c
+    if not event: return
+    w = event.widget ; wname = c.widget_name(w)
+    trace = c.config.getBool('trace_masterClickHandler') and not g.app.unitTesting
+
+    if trace: g.trace(wname,func and func.__name__)
+    # c.frame.body.colorizer.interrupt() # New in 4.4.1
+        
+    # A click outside the minibuffer terminates any state.
+    if k.inState() and c.useTextMinibuffer and w != c.frame.miniBufferWidget:
+        if not c.widget_name(w).startswith('log'):
+            k.keyboardQuit(event,hideTabs=False)
+            # k.endMode(event) # Less drastic than keyboard-quit.
+            w and c.widgetWantsFocusNow(w)
+            if trace: g.trace('inState: break')
+            return 'break'
+
+    # Update the selection point immediately for updateStatusLine.
+    if wname.startswith('body'):
+        # g.trace(event.x,event.y)
+        i = w.index('@%s,%s' % (event.x,event.y))
+        g.app.gui.setTextSelection(w,i,i,insert=i)
+        c.editCommands.setMoveCol(i)
+        c.frame.updateStatusLine()
+        c.frame.body.onClick(w) # New in Leo 4.4.2.
+    elif wname.startswith('mini'):
+        x = w.index('@%s,%s' % (event.x,event.y))
+        i, j = k.getEditableTextRange()
+        xcol = int(x.split('.')[1])
+        icol = int(i.split('.')[1])
+        jcol = int(j.split('.')[1])
+        # g.trace(xcol,icol,jcol,icol <= xcol <= jcol)
+        if icol <= xcol <= jcol:
+            g.app.gui.setTextSelection(w,x,x,insert=x)
+        else:
+            if trace: g.trace('2: break')
+            return 'break'
+
+    if event and func:
+        # Don't even *think* of overriding this.
+        val = func(event)
+        c.masterFocusHandler()
+        if trace: g.trace('val:',val)
+        return val
+    else:
+        # All tree callbacks have a func, so we can't be in the tree.
+        # g.trace('*'*20,'auto-deactivate tree: %s' % wname)
+        c.frame.tree.OnDeactivate()
+        c.widgetWantsFocusNow(w)
+        if trace: g.trace('end: None')
+        return None
+
+masterClick3Handler = masterClickHandler
+masterDoubleClick3Handler = masterClickHandler
+#@-node:ekr.20060129052538.2:masterClickHandler
+#@+node:ekr.20060613090701:cycleAllFocus
+editWidgetCount = 0
+logWidgetCount = 0
+
+def cycleAllFocus (self,event):
+    
+    '''Cycle the keyboard focus between Leo's outline,
+    all body editors and all tabs in the log pane.'''
+
+    c = self.c ; k = c.k
+    w = event and event.widget # Does **not** require a text widget.
+
+    pane = None ; w_name = g.app.gui.widget_name
+    trace = False
+    if trace: print (
+        '---- w',w_name(w),id(w),
+        '#tabs',c.frame.log.numberOfVisibleTabs(),
+        'bodyCtrl',w_name(c.frame.body.bodyCtrl),id(c.frame.body.bodyCtrl))
+
+    # w may not be the present body widget, so test its name, not its id.
+    if w_name(w).startswith('body'):
+        n = c.frame.body.numberOfEditors
+        # g.trace(self.editWidgetCount,n)
+        if n > 1:
+            self.editWidgetCount += 1
+            if self.editWidgetCount == 1:
+                pane = c.frame.body.bodyCtrl
+            elif self.editWidgetCount > n:
+                self.editWidgetCount = 0 ; self.logWidgetCount = 1
+                c.frame.log.selectTab('Log')
+                pane = c.frame.log.logCtrl
+            else:
+                c.frame.body.cycleEditorFocus(event) ; pane = None
+        else:
+            self.editWidgetCount = 0 ; self.logWidgetCount = 1
+            c.frame.log.selectTab('Log')
+            pane = c.frame.log.logCtrl
+    elif w_name(w).startswith('log'):
+        n = c.frame.log.numberOfVisibleTabs()
+        if n > 1:
+            self.logWidgetCount += 1
+            if self.logWidgetCount == 1:
+                c.frame.log.selectTab('Log')
+                pane = c.frame.log.logCtrl
+            elif self.logWidgetCount > n:
+                self.logWidgetCount = 0
+                pane = c.frame.tree.canvas
+            else:
+                c.frame.log.cycleTabFocus()
+                pane = c.frame.log.logCtrl
+        else:
+            self.logWidgetCount = 0
+            pane = c.frame.tree.canvas
+    else:
+        pane = c.frame.body.bodyCtrl
+        self.editWidgetCount = 1 ; self.logWidgetCount = 0
+        
+    if trace: print 'old: %10s new: %10s' % (w_name(w),w_name(pane))
+
+    if pane:
+        k.newMinibufferWidget = pane
+        c.widgetWantsFocusNow(pane)
+#@nonl
+#@-node:ekr.20060613090701:cycleAllFocus
+#@+node:ekr.20031218072017.3996:class leoTkinterBody
+class leoTkinterBody (leoFrame.leoBody):
+    
+    """A class that represents the body pane of a Tkinter window."""
+
+    @others
+#@+node:ekr.20031218072017.3997: Birth & death
+#@+node:ekr.20031218072017.2182:tkBody. __init__
+def __init__ (self,frame,parentFrame):
+    
+    # g.trace("leoTkinterBody")
+    
+    # Call the base class constructor.
+    leoFrame.leoBody.__init__(self,frame,parentFrame)
+    
+    c = self.c ; p = c.currentPosition()
+    self.editor_name = None
+    self.editor_v = None
+    self.editorWidgets = {} # keys are pane names, values are Tk.Text widgets
+
+    self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
+    self.bodyCtrl = self.createControl(frame,parentFrame,p)
+    self.colorizer = leoColor.colorizer(c)
+#@-node:ekr.20031218072017.2182:tkBody. __init__
+#@+node:ekr.20031218072017.838:tkBody.createBindings
+def createBindings (self,w=None):
+
+    '''(tkBody) Create gui-dependent bindings.
+    These are *not* made in nullBody instances.'''
+    
+    frame = self.frame ; c = self.c ; k = c.k
+    if not w: w = self.bodyCtrl
+    
+    w.bind('<Key>', k.masterKeyHandler)
+
+    for kind,func,handler in (
+        ('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
+        ('<Button-3>',  frame.OnBodyRClick,         k.masterClick3Handler),
+        ('<Double-1>',  frame.OnBodyDoubleClick,    k.masterDoubleClickHandler),
+        ('<Double-3>',  None,                       k.masterDoubleClick3Handler),
+        ('<Button-2>',  frame.OnPaste,              k.masterClickHandler),
+    ):
+        def bodyClickCallback(event,handler=handler,func=func):
+            return handler(event,func)
+
+        w.bind(kind,bodyClickCallback)
+            
+    if 0: # Now done above.
+        if sys.platform.startswith('win'):
+            # Support Linux middle-button paste easter egg.
+            w.bind("<Button-2>",frame.OnPaste)
+#@nonl
+#@-node:ekr.20031218072017.838:tkBody.createBindings
+#@+node:ekr.20031218072017.3998:tkBody.createControl
+def createControl (self,frame,parentFrame,p):
+    
+    c = self.c
+    
+    # New in 4.4.1: make the parent frame a Pmw.PanedWidget.
+    self.numberOfEditors = 1 ; name = '1'
+    self.totalNumberOfEditors = 1
+    
+    orient = c.config.getString('editor_orientation') or 'horizontal'
+    if orient not in ('horizontal','vertical'): orient = 'horizontal'
+   
+    self.pb = pb = Pmw.PanedWidget(parentFrame,orient=orient)
+    parentFrame = pb.add(name)
+    pb.pack(expand=1,fill='both') # Must be done after the first page created.
+   
+    w = self.createTextWidget(frame,parentFrame,p,name)
+    self.editorWidgets[name] = w
+
+    return w
+#@-node:ekr.20031218072017.3998:tkBody.createControl
+#@+node:ekr.20060528100747.3:tkBody.createTextWidget
+def createTextWidget (self,frame,parentFrame,p,name):
+    
+    c = self.c
+    
+    parentFrame.configure(bg='LightSteelBlue1')
+
+    wrap = c.config.getBool('body_pane_wraps')
+    wrap = g.choose(wrap,"word","none")
+    
+    # Setgrid=1 cause severe problems with the font panel.
+    body = w = Tk.Text(parentFrame,name='body-pane',
+        bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
+        
+    # g.trace(id(w))
+    
+    bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
+    frame.bodyBar = self.bodyBar = bodyBar
+    body['yscrollcommand'] = bodyBar.set
+    bodyBar['command'] = body.yview
+    bodyBar.pack(side="right", fill="y")
+    
+    # Always create the horizontal bar.
+    frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
+        parentFrame,name='bodyXBar',orient="horizontal")
+    body['xscrollcommand'] = bodyXBar.set
+    bodyXBar['command'] = body.xview
+    self.bodyXbar = frame.bodyXBar = bodyXBar
+    
+    if wrap == "none":
+        # g.trace(parentFrame)
+        bodyXBar.pack(side="bottom", fill="x")
+        
+    body.pack(expand=1,fill="both")
+
+    self.wrapState = wrap
+
+    if 0: # Causes the cursor not to blink.
+        body.configure(insertofftime=0)
+        
+    # Inject ivars
+    if name == '1':
+        w.leo_p = w.leo_v = None # Will be set when the second editor is created.
+    else:
+        w.leo_p = p.copy()
+        w.leo_v = body.leo_p.v
+    w.leo_active = True
+    w.leo_frame = parentFrame
+    w.leo_name = name
+    w.leo_label = None
+    w.leo_label_s = None
+    w.leo_scrollBarSpot = None
+    w.leo_insertSpot = None
+    w.leo_selection = None
+
+    return w
+#@nonl
+#@-node:ekr.20060528100747.3:tkBody.createTextWidget
+#@-node:ekr.20031218072017.3997: Birth & death
+#@+node:ekr.20060528100747:Editors
+@ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
+#@+node:ekr.20060530204135:recolorWidget
+def recolorWidget (self,w):
+
+    c = self.c ; old_w = self.bodyCtrl
+    
+    # g.trace(id(w),c.currentPosition().headString())
+    
+    # Save.
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    
+    c.recolor_now(interruptable=False) # Force a complete recoloring.
+    
+    # Restore.
+    self.bodyCtrl = self.frame.bodyCtrl = old_w
+#@nonl
+#@-node:ekr.20060530204135:recolorWidget
+#@+node:ekr.20060530210057:create/select/unselect/Label
+def unselectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
+        
+def selectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    # g.trace(self.numberOfEditors)
+    if self.numberOfEditors > 1:
+        if not w.leo_label: self.createLabel(w)
+        w.leo_label.configure(text=w.leo_label_s,bg='white')
+    elif w.leo_label:
+        w.leo_label.pack_forget()
+        w.leo_label = None
+
+def createLabel (self,w):
+
+    w.leo_label = Tk.Label(w.leo_frame)
+    w.pack_forget()
+    w.leo_label.pack(side='top')
+    w.pack(expand=1,fill='both')
+#@-node:ekr.20060530210057:create/select/unselect/Label
+#@+node:ekr.20060528100747.1:addEditor
+def addEditor (self,event=None):
+    
+    '''Add another editor to the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+     
+    self.totalNumberOfEditors += 1
+    self.numberOfEditors += 1
+    if self.numberOfEditors == 2:
+        # Inject the ivars into the first editor.
+        w = self.editorWidgets.get('1')
+        w.leo_p = p.copy()
+        w.leo_v = w.leo_p.v
+        w.leo_label_s = p.headString()
+        self.selectLabel(w) # Immediately create the label in the old editor.
+   
+    name = '%d' % self.totalNumberOfEditors
+    pane = self.pb.add(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    << create label and text widgets >>
+    self.editorWidgets[name] = w
+
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+    
+    self.pb.updatelayout()
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    self.selectEditor(w)
+    self.updateEditors()
+    c.bodyWantsFocusNow()
+#@+node:ekr.20060528110922:<< create label and text widgets >>
+f = Tk.Frame(pane)
+f.pack(side='top',expand=1,fill='both')
+
+w = self.createTextWidget(self.frame,f,name=name,p=p)
+
+w.delete('1.0','end')
+w.insert('end',p.bodyString())
+w.see('1.0')
+self.setFontFromConfig(w=w)
+self.setColorFromConfig(w=w)
+self.createBindings(w=w)
+c.k.completeAllBindingsForWidget(w)
+
+self.recolorWidget(w)
+#@-node:ekr.20060528110922:<< create label and text widgets >>
+#@-node:ekr.20060528100747.1:addEditor
+#@+node:ekr.20060606090542:setEditorColors
+def setEditorColors (self,bg,fg):
+    
+    c = self.c ; d = self.editorWidgets
+
+    for key in d.keys():
+        w2 = d.get(key)
+        # g.trace(id(w2),bg,fg)
+        try:
+            w2.configure(bg=bg,fg=fg)
+        except Exception:
+            g.es_exception()
+            pass
+#@-node:ekr.20060606090542:setEditorColors
+#@+node:ekr.20060528170438:cycleEditorFocus
+def cycleEditorFocus (self,event=None):
+    
+    '''Cycle keyboard focus between the body text editors.'''
+    
+    c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+    values = d.values()
+    if len(values) > 1:
+        i = values.index(w) + 1
+        if i == len(values): i = 0
+        w2 = d.values()[i]
+        assert(w!=w2)
+        self.selectEditor(w2)
+        self.bodyCtrl = self.frame.bodyCtrl = w2
+        # print '***',g.app.gui.widget_name(w2),id(w2)
+
+    return 'break'
+#@-node:ekr.20060528170438:cycleEditorFocus
+#@+node:ekr.20060528113806:deleteEditor
+def deleteEditor (self,event=None):
+    
+    '''Delete the presently selected body text editor.'''
+    
+    w = self.bodyCtrl ; d = self.editorWidgets
+    
+    if len(d.keys()) == 1: return
+    
+    name = w.leo_name
+    
+    del d [name] 
+    self.pb.delete(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+        
+    # Select another editor.
+    w = d.values()[0]
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    self.numberOfEditors -= 1
+    self.selectEditor(w)
+#@-node:ekr.20060528113806:deleteEditor
+#@+node:ekr.20061017082211:onClick
+def onClick (self,w):
+    
+    wname = g.app.gui.widget_name(w)
+    
+    if not wname.startswith('body'):
+        g.trace('can not happen')
+        return
+
+    self.selectEditor(w)
+#@nonl
+#@-node:ekr.20061017082211:onClick
+#@+node:ekr.20061017083312:selectEditor
+def selectEditor(self,w):
+    
+    c = self.c ; d = self.editorWidgets
+    trace = False
+    if trace: g.trace(g.app.gui.widget_name(w),id(w),g.callers())
+    if w.leo_p is None:
+        if trace: g.trace('no w.leo_p') 
+        return 'break'
+        # Inactivate the previously active editor.
+        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+        for key in d.keys():
+            w2 = d.get(key)
+            if w2 != w and w2.leo_active:
+                w2.leo_active = False
+                self.unselectLabel(w2)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                w2.leo_selection = g.app.gui.getSelectionRange(w2)
+                break
+        else:
+            if trace: g.trace('no active editor!')
+    
+    # Careful, leo_p may not exist.
+    if not c.positionExists(w.leo_p):
+        if trace: g.trace('does not exist',w.leo_name)
+        for p2 in c.allNodes_iter():
+            if p2.v == w.leo_v:
+                w.leo_p = p2.copy()
+                break
+        else:
+             # This *can* happen when selecting a deleted node.
+            w.leo_p = c.currentPosition()
+            if trace: g.trace('previously deleted node')
+            return 'break'
+
+    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    w.leo_active = True
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+    c.recolor_now()
+    << restore the selection, insertion point and the scrollbar >>
+    w3 = g.app.gui.get_focus(c)
+    c.bodyWantsFocusNow()
+    return 'break'
+#@nonl
+#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+if w.leo_insertSpot:
+    g.app.gui.setInsertPoint(w,w.leo_insertSpot)
+    w.see(w.leo_insertSpot)
+else:
+    g.app.gui.setInsertPoint(w,'1.0')
+    
+if w.leo_scrollBarSpot:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        g.app.gui.setSelectionRange(w,start,end)
+    except Exception:
+        pass
+#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20061017083312:selectEditor
+#@+node:ekr.20060528132829:selectMainEditor
+def selectMainEditor (self,p):
+    
+    
+    '''Called from tree.select to select the present body editor.'''
+
+    c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
+
+    # Don't inject ivars if there is only one editor.
+    if w.leo_p is not None:
+        # Keep w's ivars up-to-date.
+        w.leo_p = p.copy()
+        w.leo_v = p.v
+        w.leo_label_s = p.headString()
+        self.selectLabel(w)
+        # g.trace(w.leo_name,p.headString())
+#@-node:ekr.20060528132829:selectMainEditor
+#@+node:ekr.20060528131618:updateEditors
+def updateEditors (self):
+    
+    c = self.c ; p = c.currentPosition()
+    d = self.editorWidgets
+    if len(d.keys()) < 2: return # There is only the main widget.
+
+    for key in d.keys():
+        w = d.get(key)
+        v = w.leo_v
+        if v and v == p.v and w != self.bodyCtrl:
+            w.delete('1.0','end')
+            w.insert('end',p.bodyString())
+            # g.trace('update',w,v)
+            self.recolorWidget(w)
+    c.frame.bodyWantsFocus()
+#@-node:ekr.20060528131618:updateEditors
+#@-node:ekr.20060528100747:Editors
+#@+node:ekr.20041217135735.1:tkBody.setColorFromConfig
+def setColorFromConfig (self,w=None):
+    
+    c = self.c
+    if not w: w = self.bodyCtrl
+    
+    bg = c.config.getColor("body_text_background_color") or 'white'
+    # g.trace(id(w),bg)
+    
+    try: w.configure(bg=bg)
+    except:
+        g.es("exception setting body text background color")
+        g.es_exception()
+    
+    fg = c.config.getColor("body_text_foreground_color") or 'black'
+    try: w.configure(fg=fg)
+    except:
+        g.es("exception setting body textforeground color")
+        g.es_exception()
+
+    bg = c.config.getColor("body_insertion_cursor_color")
+    if bg:
+        try: w.configure(insertbackground=bg)
+        except:
+            g.es("exception setting body pane cursor color")
+            g.es_exception()
+        
+    sel_bg = c.config.getColor('body_text_selection_background_color') or 'Gray80'
+    try: w.configure(selectbackground=sel_bg)
+    except Exception:
+        g.es("exception setting body pane text selection background color")
+        g.es_exception()
+
+    sel_fg = c.config.getColor('body_text_selection_foreground_color') or 'white'
+    try: w.configure(selectforeground=sel_fg)
+    except Exception:
+        g.es("exception setting body pane text selection foreground color")
+        g.es_exception()
+  
+    if sys.platform != "win32": # Maybe a Windows bug.
+        fg = c.config.getColor("body_cursor_foreground_color")
+        bg = c.config.getColor("body_cursor_background_color")
+        if fg and bg:
+            cursor="xterm" + " " + fg + " " + bg
+            try: w.configure(cursor=cursor)
+            except:
+                import traceback ; traceback.print_exc()
+#@-node:ekr.20041217135735.1:tkBody.setColorFromConfig
+#@+node:ekr.20031218072017.2183:tkBody.setFontFromConfig
+def setFontFromConfig (self,w=None):
+
+    c = self.c
+    
+    if not w: w = self.bodyCtrl
+    
+    font = c.config.getFontFromParams(
+        "body_text_font_family", "body_text_font_size",
+        "body_text_font_slant",  "body_text_font_weight",
+        c.config.defaultBodyFontSize)
+    
+    self.fontRef = font # ESSENTIAL: retain a link to font.
+    w.configure(font=font)
+
+    # g.trace("BODY",body.cget("font"),font.cget("family"),font.cget("weight"))
+#@-node:ekr.20031218072017.2183:tkBody.setFontFromConfig
+#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+# This is the only key handler for the body pane.
+def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
+    
+    '''Update Leo after the body has been changed.'''
+    
+    body = self ; c = self.c ; bodyCtrl = body.bodyCtrl
+    trace = self.trace_onBodyChanged
+    p = c.currentPosition()
+    insert = bodyCtrl.index('insert')
+    ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
+    ch = g.toUnicode(ch,g.app.tkEncoding)
+    newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
+    # g.trace('newText',repr(newText))
+    newSel = g.app.gui.getTextSelection(bodyCtrl)
+    if oldText is None: oldText = p.bodyString()
+    changed = oldText != newText
+    if trace:
+        g.trace(repr(ch),'changed:',changed)
+        g.trace('newText:',repr(newText))
+    if changed:
+        c.undoer.setUndoTypingParams(p,undoType,
+            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
+        p.v.setTnodeText(newText)
+        p.v.t.insertSpot = body.getInsertionPoint()
+        << recolor the body >>
+        if not c.changed: c.setChanged(True)
+        self.updateEditors()
+        << redraw the screen if necessary >>
+#@+node:ekr.20051026083733.6:<< recolor the body >>
+body.colorizer.interrupt()
+c.frame.scanForTabWidth(p)
+body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
+self.forceFullRecolorFlag = False
+#@-node:ekr.20051026083733.6:<< recolor the body >>
+#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+c.beginUpdate()
+try:
+    redraw_flag = False
+    # Update dirty bits.
+    # p.setDirty() sets all cloned and @file dirty bits.
+    if not p.isDirty() and p.setDirty():
+        redraw_flag = True
+        
+    # Update icons. p.v.iconVal may not exist during unit tests.
+    val = p.computeIcon()
+    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+        p.v.iconVal = val
+        redraw_flag = True
+finally:
+    c.endUpdate(redraw_flag)
+#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+#@+node:ekr.20031218072017.4003:Focus (tkBody)
+def hasFocus (self):
+    
+    return self.bodyCtrl == self.frame.top.focus_displayof()
+    
+def setFocus (self):
+    
+    self.c.widgetWantsFocus(self.bodyCtrl)
+#@-node:ekr.20031218072017.4003:Focus (tkBody)
+#@+node:ekr.20031218072017.3999:forceRecolor
+def forceFullRecolor (self):
+    
+    self.forceFullRecolorFlag = True
+#@-node:ekr.20031218072017.3999:forceRecolor
+#@+node:ekr.20031218072017.4000:Tk bindings (tkBbody)
+@
+I could have used this to redirect all calls from the body class and the bodyCtrl to Tk. OTOH:
+
+1. Most of the wrappers do more than the old Tk routines now and
+2. The wrapper names are more discriptive than the Tk names.
+
+Still, using the Tk names would have had its own appeal.  If I had prefixed the tk routine with tk_ the __getatt__ routine could have stripped it off!
+@c
+
+if 0: # This works.
+    def __getattr__(self,attr):
+        return getattr(self.bodyCtrl,attr)
+        
+if 0: # This would work if all tk wrapper routines were prefixed with tk_
+    def __getattr__(self,attr):
+        if attr[0:2] == "tk_":
+            return getattr(self.bodyCtrl,attr[3:])
+#@+node:ekr.20031218072017.4001:Bounding box (Tk spelling)
+def bbox(self,index):
+
+    return self.bodyCtrl.bbox(index)
+#@-node:ekr.20031218072017.4001:Bounding box (Tk spelling)
+#@+node:ekr.20031218072017.4002:Color tags (Tk spelling)
+# Could have been replaced by the __getattr__ routine above...
+# 12/19/03: no: that would cause more problems.
+
+def tag_add (self,tagName,index1,index2):
+    self.bodyCtrl.tag_add(tagName,index1,index2)
+
+def tag_bind (self,tagName,event,callback):
+    self.bodyCtrl.tag_bind(tagName,event,callback)
+
+def tag_configure (self,colorName,**keys):
+    self.bodyCtrl.tag_configure(colorName,keys)
+
+def tag_delete(self,tagName):
+    self.bodyCtrl.tag_delete(tagName)
+    
+def tag_names(self,*args): # New in Leo 4.4.1.
+    return self.bodyCtrl.tag_names(*args)
+
+def tag_remove (self,tagName,index1,index2):
+    return self.bodyCtrl.tag_remove(tagName,index1,index2)
+#@-node:ekr.20031218072017.4002:Color tags (Tk spelling)
+#@+node:ekr.20031218072017.2184:Configuration (Tk spelling)
+def cget(self,*args,**keys):
+    
+    val = self.bodyCtrl.cget(*args,**keys)
+    
+    if g.app.trace:
+        g.trace(val,args,keys)
+
+    return val
+    
+def configure (self,*args,**keys):
+    
+    # g.trace(args,keys)
+    
+    return self.bodyCtrl.configure(*args,**keys)
+#@-node:ekr.20031218072017.2184:Configuration (Tk spelling)
+#@+node:ekr.20031218072017.4004:Height & width
+def getBodyPaneHeight (self):
+    
+    return self.bodyCtrl.winfo_height()
+
+def getBodyPaneWidth (self):
+    
+    return self.bodyCtrl.winfo_width()
+#@-node:ekr.20031218072017.4004:Height & width
+#@+node:ekr.20031218072017.4005:Idle time...
+def scheduleIdleTimeRoutine (self,function,*args,**keys):
+
+    self.bodyCtrl.after_idle(function,*args,**keys)
+#@-node:ekr.20031218072017.4005:Idle time...
+#@+node:ekr.20031218072017.4006:Indices (leoTkinterBody)
+#@+node:ekr.20031218072017.4007:adjustIndex
+def adjustIndex (self,index,offset):
+    
+    t = self.bodyCtrl
+    return t.index("%s + %dc" % (t.index(index),offset))
+#@-node:ekr.20031218072017.4007:adjustIndex
+#@+node:ekr.20031218072017.4008:compareIndices
+def compareIndices(self,i,rel,j):
+
+    return self.bodyCtrl.compare(i,rel,j)
+#@-node:ekr.20031218072017.4008:compareIndices
+#@+node:ekr.20031218072017.4009:convertRowColumnToIndex
+def convertRowColumnToIndex (self,row,column):
+    
+    return self.bodyCtrl.index("%s.%s" % (row,column))
+#@-node:ekr.20031218072017.4009:convertRowColumnToIndex
+#@+node:ekr.20031218072017.4010:convertIndexToRowColumn
+def convertIndexToRowColumn (self,index):
+    
+    index = self.bodyCtrl.index(index)
+    start, end = string.split(index,'.')
+    return int(start),int(end)
+#@-node:ekr.20031218072017.4010:convertIndexToRowColumn
+#@+node:ekr.20031218072017.4011:getImageIndex
+def getImageIndex (self,image):
+    
+    return self.bodyCtrl.index(image)
+#@-node:ekr.20031218072017.4011:getImageIndex
+#@+node:ekr.20031218072017.4012:tkIndex (internal use only)
+def tkIndex(self,index):
+    
+    """Returns the canonicalized Tk index."""
+    
+    if index == "start": index = "1.0"
+    
+    return self.bodyCtrl.index(index)
+#@-node:ekr.20031218072017.4012:tkIndex (internal use only)
+#@-node:ekr.20031218072017.4006:Indices (leoTkinterBody)
+#@+node:ekr.20031218072017.4013:Insert point
+#@+node:ekr.20050710102922:get/setPythonInsertionPoint
+def getPythonInsertionPoint (self,t=None,s=None):
+    
+    b = self
+    if t is None: t = self.bodyCtrl
+    if s is None: s = t.get('1.0','end')
+    i = t.index("insert")
+    row,col = b.convertIndexToRowColumn(i)
+    
+    return g.convertRowColToPythonIndex(s,row-1,col)
+    
+def setPythonInsertionPoint (self,i,t=None,s=None):
+    
+    if t is None: t = self.bodyCtrl
+    if s is None: s = t.get('1.0','end')
+    row,col = g.convertPythonIndexToRowCol(s,i)
+    t.mark_set( 'insert','%d.%d' % (row+1,col))
+#@-node:ekr.20050710102922:get/setPythonInsertionPoint
+#@+node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint
+def getBeforeInsertionPoint (self):
+    
+    return self.bodyCtrl.index("insert-1c")
+
+def getInsertionPoint (self):
+    
+    return self.bodyCtrl.index("insert")
+#@-node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint
+#@+node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint
+def getCharAtInsertPoint (self):
+    
+    s = self.bodyCtrl.get("insert")
+    return g.toUnicode(s,g.app.tkEncoding)
+
+def getCharBeforeInsertPoint (self):
+
+    s = self.bodyCtrl.get("insert -1c")
+    return g.toUnicode(s,g.app.tkEncoding)
+#@-node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint
+#@+node:ekr.20031218072017.4015:makeInsertPointVisible
+def makeInsertPointVisible (self):
+    
+    self.bodyCtrl.see("insert") # -5l")
+#@-node:ekr.20031218072017.4015:makeInsertPointVisible
+#@+node:ekr.20031218072017.4016:setInsertionPointTo...
+def setInsertionPoint (self,index):
+    self.bodyCtrl.mark_set("insert",index)
+
+def setInsertionPointToEnd (self):
+    self.bodyCtrl.mark_set("insert","end")
+    
+def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
+    self.bodyCtrl.mark_set("insert",str(1+lineNumber)+".0 linestart")
+#@-node:ekr.20031218072017.4016:setInsertionPointTo...
+#@-node:ekr.20031218072017.4013:Insert point
+#@+node:ekr.20031218072017.4017:Menus
+def bind (self,*args,**keys):
+    
+    return self.bodyCtrl.bind(*args,**keys)
+#@-node:ekr.20031218072017.4017:Menus
+#@+node:ekr.20031218072017.4018:Selection
+#@+node:ekr.20031218072017.4019:deleteTextSelection
+def deleteTextSelection (self):
+    
+    t = self.bodyCtrl
+    sel = t.tag_ranges("sel")
+    if len(sel) == 2:
+        start,end = sel
+        if t.compare(start,"!=",end):
+            t.delete(start,end)
+#@-node:ekr.20031218072017.4019:deleteTextSelection
+#@+node:ekr.20031218072017.4020:getSelectedText
+def getSelectedText (self):
+    
+    """Return the selected text of the body frame, converted to unicode."""
+
+    start, end = self.getTextSelection()
+    if start and end and start != end:
+        s = self.bodyCtrl.get(start,end)
+        if s is None:
+            return u""
+        else:
+            return g.toUnicode(s,g.app.tkEncoding)
+    else:
+        return u'' # Bug fix: 1/8/06
+#@-node:ekr.20031218072017.4020:getSelectedText
+#@+node:ekr.20031218072017.4021:getTextSelection
+def getTextSelection (self,sort=True):
+    
+    """Return a tuple representing the selected range of body text.
+    
+    Return a tuple giving the insertion point if no range of text is selected."""
+
+    w = self.bodyCtrl
+    
+    sel = w.tag_ranges("sel")
+
+    if len(sel) == 2:
+        # New in 4.4a5: match behavior of g.app.gui.getTextSelection.
+        if sort:
+            i,j = sel
+            if w.compare(i, ">", j):
+                i,j = j,i
+        return sel
+    else:
+        # Return the insertion point if there is no selected text.
+        insert = w.index("insert")
+        return insert,insert
+#@-node:ekr.20031218072017.4021:getTextSelection
+#@+node:ekr.20050710104804:getPythonTextSelection
+def getPythonTextSelection (self):
+    
+    """Return a tuple representing the selected range of body text.
+    
+    Return a tuple giving the insertion point if no range of text is selected."""
+
+    b = self ; t = self.bodyCtrl
+    sel = t.tag_ranges("sel")
+
+    if len(sel) == 2:
+        s = t.get('1.0','end')
+        i,j = sel
+        row,col = b.convertIndexToRowColumn(i)
+        i1 = g.convertRowColToPythonIndex(s,row-1,col)
+        row,col = b.convertIndexToRowColumn(j)
+        i2 = g.convertRowColToPythonIndex(s,row-1,col)
+        return i1,i2
+    else:
+        # Return the insertion point if there is no selected text.
+        i = self.getPythonTextSelection()
+        return i,i
+#@-node:ekr.20050710104804:getPythonTextSelection
+#@+node:ekr.20050710104804.1:setPythonTextSelection
+def setPythonTextSelection(self,i,j):
+
+    t = self.bodyCtrl
+    s = t.get('1.0','end')
+    row,col = g.convertPythonIndexToRowCol(s,i)
+    i1 = '%d.%d' % (row+1,col)
+    row,col = g.convertPythonIndexToRowCol(s,j)
+    i2 = '%d.%d' % (row+1,col)
+    g.app.gui.setTextSelection(self.bodyCtrl,i1,i2)
+#@-node:ekr.20050710104804.1:setPythonTextSelection
+#@+node:ekr.20031218072017.4022:hasTextSelection
+def hasTextSelection (self):
+
+    sel = self.bodyCtrl.tag_ranges("sel")
+    return sel and len(sel) == 2
+#@-node:ekr.20031218072017.4022:hasTextSelection
+#@+node:ekr.20031218072017.4023:selectAllText
+def selectAllText (self,event=None):
+    
+    '''Select all text in the presently selected pane.'''
+    
+    c = self.c ; k = c.k
+
+    try:
+        w = c.get_focus() ; wname = c.widget_name(w)
+        n = 0
+        if wname.startswith('head'):
+            s = w.get('1.0','end')
+            while s.endswith('\n') or s.endswith('\r'):
+                s = s[:-1] ; n += 1
+            g.app.gui.setTextSelection(w,'1.0','end - %dc' % (n))
+        elif wname.startswith('mini'):
+            i,j = k.getEditableTextRange()
+            g.app.gui.setTextSelection(w,i,j)
+        else:
+            g.app.gui.setTextSelection(w,'1.0','end - %dc' % (n))
+    except:
+        # g.es_exception()
+        pass
+#@-node:ekr.20031218072017.4023:selectAllText
+#@+node:ekr.20031218072017.4024:setTextSelection (tkinterBody)
+def setTextSelection (self,i,j=None,insert='sel.end'):
+    
+    # Allow the user to pass either a 2-tuple or two separate args.
+    if i is None:
+        i,j = "1.0","1.0"
+    elif len(i) == 2:
+        i,j = i
+
+    g.app.gui.setTextSelection(self.bodyCtrl,i,j,insert)
+#@-node:ekr.20031218072017.4024:setTextSelection (tkinterBody)
+#@-node:ekr.20031218072017.4018:Selection
+#@+node:ekr.20031218072017.4025:Text
+#@+node:ekr.20031218072017.4026:delete...
+def deleteAllText(self):
+    self.bodyCtrl.delete("1.0","end")
+
+def deleteCharacter (self,index):
+    t = self.bodyCtrl
+    t.delete(t.index(index))
+    
+def deleteLastChar (self):
+    self.bodyCtrl.delete("end-1c")
+    
+def deleteLine (self,lineNumber): # zero based line number.
+    self.bodyCtrl.delete(str(1+lineNumber)+".0","end")
+    
+def deleteLines (self,line1,numberOfLines): # zero based line numbers.
+    self.bodyCtrl.delete(str(1+line1)+".0",str(1+line1+numberOfLines-1)+".0 lineend")
+    
+def deleteRange (self,index1,index2):
+    t = self.bodyCtrl
+    t.delete(t.index(index1),t.index(index2))
+#@-node:ekr.20031218072017.4026:delete...
+#@+node:ekr.20031218072017.4027:get...
+#@+node:ekr.20031218072017.4028:tkBody.getAllText
+def getAllText (self):
+    
+    """Return all the body text, converted to unicode."""
+    
+    s = self.bodyCtrl.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+
+    if s is None:
+        return u""
+    else:
+        return g.toUnicode(s,g.app.tkEncoding)
+#@-node:ekr.20031218072017.4028:tkBody.getAllText
+#@+node:ekr.20031218072017.4029:getCharAtIndex
+def getCharAtIndex (self,index):
+    
+    """Return all the body text, converted to unicode."""
+    
+    s = self.bodyCtrl.get(index)
+    if s is None:
+        return u""
+    else:
+        return g.toUnicode(s,g.app.tkEncoding)
+#@-node:ekr.20031218072017.4029:getCharAtIndex
+#@+node:ekr.20031218072017.4030:getInsertLines
+def getInsertLines (self):
+    
+    """Return before,after where:
+        
+    before is all the lines before the line containing the insert point.
+    sel is the line containing the insert point.
+    after is all the lines after the line containing the insert point.
+    
+    All lines end in a newline, except possibly the last line."""
+    
+    t = self.bodyCtrl
+
+    before = t.get("1.0","insert linestart")
+    ins    = t.get("insert linestart","insert lineend + 1c")
+    after  = t.get("insert lineend + 1c","end")
+
+    before = g.toUnicode(before,g.app.tkEncoding)
+    ins    = g.toUnicode(ins,   g.app.tkEncoding)
+    after  = g.toUnicode(after ,g.app.tkEncoding)
+
+    return before,ins,after
+#@-node:ekr.20031218072017.4030:getInsertLines
+#@+node:ekr.20031218072017.4031:getSelectionAreas
+def getSelectionAreas (self):
+    
+    """Return before,sel,after where:
+        
+    before is the text before the selected text
+    (or the text before the insert point if no selection)
+    sel is the selected text (or "" if no selection)
+    after is the text after the selected text
+    (or the text after the insert point if no selection)"""
+
+    t = self.bodyCtrl
+    
+    sel_index = t.getTextSelection()
+    if len(sel_index) == 2:
+        i,j = sel_index
+        sel = t.get(i,j)
+    else:
+        i = j = t.index("insert")
+        sel = ""
+
+    before = t.get("1.0",i)
+    after  = t.get(j,"end")
+    
+    before = g.toUnicode(before,g.app.tkEncoding)
+    sel    = g.toUnicode(sel,   g.app.tkEncoding)
+    after  = g.toUnicode(after ,g.app.tkEncoding)
+    return before,sel,after
+#@-node:ekr.20031218072017.4031:getSelectionAreas
+#@+node:ekr.20031218072017.2377:getSelectionLines (tkBody)
+def getSelectionLines (self):
+    
+    """Return before,sel,after where:
+        
+    before is the all lines before the selected text
+    (or the text before the insert point if no selection)
+    sel is the selected text (or "" if no selection)
+    after is all lines after the selected text
+    (or the text after the insert point if no selection)"""
+    
+    # At present, called only by c.getBodyLines.
+
+    t = self.bodyCtrl
+    sel_index = t.tag_ranges("sel") 
+    if len(sel_index) != 2:
+        if 1: # Choose the insert line.
+            index = t.index("insert")
+            sel_index = index,index
+        else:
+            return "","","" # Choose everything.
+
+    i,j = sel_index
+    i = t.index(i + "linestart")
+    j = t.index(j + "lineend") # 10/24/03: -1c  # 11/4/03: no -1c.
+    before = g.toUnicode(t.get("1.0",i),g.app.tkEncoding)
+    sel    = g.toUnicode(t.get(i,j),    g.app.tkEncoding)
+    after  = g.toUnicode(t.get(j,"end-1c"),g.app.tkEncoding)
+    
+    # g.trace(i,j)
+    return before,sel,after
+#@-node:ekr.20031218072017.2377:getSelectionLines (tkBody)
+#@+node:ekr.20031218072017.4032:getTextRange
+def getTextRange (self,index1,index2):
+    
+    t = self.bodyCtrl
+    return t.get(t.index(index1),t.index(index2))
+#@-node:ekr.20031218072017.4032:getTextRange
+#@-node:ekr.20031218072017.4027:get...
+#@+node:ekr.20031218072017.4033:Insert...
+#@+node:ekr.20031218072017.4034:insertAtInsertPoint
+def insertAtInsertPoint (self,s):
+    
+    self.bodyCtrl.insert("insert",s)
+#@-node:ekr.20031218072017.4034:insertAtInsertPoint
+#@+node:ekr.20031218072017.4035:insertAtEnd
+def insertAtEnd (self,s):
+    
+    self.bodyCtrl.insert("end",s)
+#@-node:ekr.20031218072017.4035:insertAtEnd
+#@+node:ekr.20031218072017.4036:insertAtStartOfLine
+def insertAtStartOfLine (self,lineNumber,s):
+    
+    self.bodyCtrl.insert(str(1+lineNumber)+".0",s)
+#@-node:ekr.20031218072017.4036:insertAtStartOfLine
+#@-node:ekr.20031218072017.4033:Insert...
+#@+node:ekr.20031218072017.4037:setSelectionAreas (tkinterBody)
+def setSelectionAreas (self,before,sel,after):
+    
+    """Replace the body text by before + sel + after and
+    set the selection so that the sel text is selected."""
+
+    t = self.bodyCtrl ; gui = g.app.gui
+    t.delete("1.0","end")
+
+    if before: t.insert("1.0",before)
+    sel_start = t.index("end-1c") # 10/24/03: -1c
+
+    if sel: t.insert("end",sel)
+    sel_end = t.index("end")
+
+    if after:
+        # A horrible Tk kludge.  Remove a trailing newline so we don't keep extending the text.
+        if after[-1] == '\n':
+            after = after[:-1]
+        t.insert("end",after)
+
+    gui.setTextSelection(t,sel_start,sel_end)
+    # g.trace(sel_start,sel_end)
+    
+    return t.index(sel_start), t.index(sel_end)
+#@-node:ekr.20031218072017.4037:setSelectionAreas (tkinterBody)
+#@-node:ekr.20031218072017.4025:Text
+#@+node:ekr.20031218072017.4038:Visibility & scrolling
+def makeIndexVisible (self,index):
+    
+    self.bodyCtrl.see(index)
+    
+def setFirstVisibleIndex (self,index):
+    
+    self.bodyCtrl.yview("moveto",index)
+    
+def getYScrollPosition (self):
+    
+    return self.bodyCtrl.yview()
+    
+def setYScrollPosition (self,scrollPosition):
+
+    if len(scrollPosition) == 2:
+        first,last = scrollPosition
+    else:
+        first = scrollPosition
+    self.bodyCtrl.yview("moveto",first)
+    
+def scrollUp (self):
+    
+    self.bodyCtrl.yview("scroll",-1,"units")
+    
+def scrollDown (self):
+
+    self.bodyCtrl.yview("scroll",1,"units")
+#@-node:ekr.20031218072017.4038:Visibility & scrolling
+#@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
+#@-node:ekr.20031218072017.3996:class leoTkinterBody
+#@-node:ekr.20061012082613:Fixed body editor problems
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
