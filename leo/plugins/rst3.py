@@ -308,8 +308,9 @@ class linkAnchorParserClass (HTMLParser.HTMLParser):
         if tag == 'a':
             return True
             
-        result = self.is_node_marker(attrs)
-        return result
+        if self.is_node_marker(attrs):
+            return True
+        return tag == "span"
     #@-node:ekr.20050805162550.42:is_anchor
     #@+node:ekr.20050805162550.43:is_link
     def is_link(self, tag, attrs):
@@ -512,7 +513,7 @@ class anchor_htmlParserClass (linkAnchorParserClass):
             # the pathname?
     
         for name, value in attrs:
-            if name == 'name':
+            if name == 'name' or tag == 'span' and name == 'id':
                 if not value.startswith(self.node_begin_marker):
                     if bwm_file: print >> bwm_file, "anchor(2):", value, self.p
                     self.anchor_map[value] = (self.current_file, self.p.copy())
@@ -644,11 +645,6 @@ class rstClass:
         
         self.rst3_all = False
         # Set to True by the button which processes all @rst trees.
-        
-        self.http_filenames = {}
-        if 0:
-            print "Check if http_filenames is really needed. Maybe the positions are already in http_map"
-        # Maps (simple) filenames to positions.
         
         # For writing.
         self.defaultEncoding = 'utf-8'
@@ -1157,7 +1153,6 @@ class rstClass:
                         self.ext = ext
                     else:
                         self.ext = g.os_path_splitext(self.outputFileName)[1].lower()
-                        self.http_filenames[g.os_path_split(self.outputFileName)[1]] = p
                     # g.trace('ext',self.ext,self.outputFileName)
                     if self.ext in ('.htm','.html','.tex','.pdf'):
                         ok = self.writeSpecialTree(p,toString=toString,justOneFile=justOneFile)
@@ -1802,7 +1797,7 @@ class rstClass:
             self.set_initial_http_attributes(filename)
             self.find_anchors(p)
             if justOneFile:
-                self.relocate_references()
+                self.relocate_references(p.self_and_subtree_iter)
         
             g.es_print('html updated for http plugin',color="blue")
         
