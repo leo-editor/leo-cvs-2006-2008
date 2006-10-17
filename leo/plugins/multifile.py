@@ -13,8 +13,8 @@ of the node. The format is (On Unixy systems)::
     
     @multipath /machine/unit/:/machine/robot/:/machine/
     
-New in version 0.6 of this plugin: the separator used above is ';' for Windows
-so that the ':' used in drive specifications does not cause problems.
+New in version 0.6 of this plugin: the separator used above is ';' not ':',
+for example:
     
     @multipath c:\prog\test;c:\prog\unittest
     
@@ -74,7 +74,7 @@ except ImportError:
 #@-node:ekr.20050226114732.1:<< imports >>
 #@nl
 
-__version__ = ".7"
+__version__ = ".8"
 #@<< version history >>
 #@+node:ekr.20050226115130:<< version history >>
 #@@killcolor
@@ -85,14 +85,15 @@ __version__ = ".7"
 # 0.4 EKR: Changed 'new_c' logic to 'c' logic.
 # 0.5 EKR: Use 'new' and 'open2' hooks to call addMenu.
 # 0.6 EKR: Made it work with Leo 4.4.2.
-# ** The path separator in @multipath directives is ';' for Windows, ':' for 
-# all others.
 # - Made all uses of leoAtFile explicit.
 # - Simplified code by using g.funcToMethod in init code.
 # - Renamed decoratedOpenFileForWriting to match openFileForWriting.
 # - Rewrote stop and scanForMultiPath methods.
 # 0.7 EKR: Use absolute filename for original file to avoid problems with 
 # current directory.
+# 0.8 EKR:
+# * The path separator in @multipath directives is ';', not ':' as previously.
+# - Fixed several bugs in scanForMultiPath.
 #@-at
 #@nonl
 #@-node:ekr.20050226115130:<< version history >>
@@ -198,11 +199,10 @@ def scanForMultiPath (c):
     
     '''Return a dictionary whose keys are fileNames and whose values are
     lists of paths to which the fileName is to be written.
-    New in version 0.6 of this plugin: use ';' to separate paths on Windows.'''
+    New in version 0.6 of this plugin: use ';' to separate paths in @multipath statements.'''
 
-    at = c.atFileCommands
-    sep = g.choose(sys.platform.startswith('win'),';',':')
-    multi = {}
+    global multiprefix, multipath
+    at = c.atFileCommands ; sep = ';' ; d = {}
     for fileName in files.keys(): # Keys are fileNames, values are root positions.
         root = files[fileName]
         at.scanDefaultDirectory(root) # Using root here may be dubious.
@@ -213,18 +213,25 @@ def scanForMultiPath (c):
         prefix = ''
         for p in positions:
             lines = p.bodyString().split('\n')
+            # Calculate the prefix fisrt.
             for s in lines:
                 if s.startswith(multiprefix):
-                    prefix = s.lstrip(multiprefix).strip()
-                elif s.startswith(multipath):
-                    paths = s.lstrip(multipath).strip().split(sep)
+                    prefix = s[len(multiprefix):].strip()
+            # Handle the paths after the prefix is in place.
+            for s in lines:
+                if s.startswith(multipath):
+                    s = s[len(multipath):].strip()
+                    paths = s.split(sep)
                     paths = [z.strip() for z in paths]
-                    paths = [g.os_path_join(at.default_directory,z) for z in paths]
-                    aList = multi.get(fileName,[])
+                    if prefix:
+                        paths = [g.os_path_join(at.default_directory,prefix,z) for z in paths]
+                    else:
+                        paths = [g.os_path_join(at.default_directory,z) for z in paths]
+                    aList = d.get(fileName,[])
                     aList.extend(paths)
                     # g.trace(fileName,aList)
-                    multi[fileName] = aList
-    return multi
+                    d[fileName] = aList
+    return d
 #@nonl
 #@-node:mork.20041018204908.5:scanForMultiPath
 #@-others
