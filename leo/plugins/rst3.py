@@ -645,7 +645,8 @@ class rstClass:
         # Set to True by the button which processes all @rst trees.
         
         self.http_filenames = {}
-        print "Check if http_filenames is really needed. Maybe the positions are already in http_map"
+        if 0:
+            print "Check if http_filenames is really needed. Maybe the positions are already in http_map"
         # Maps (simple) filenames to positions.
         
         # For writing.
