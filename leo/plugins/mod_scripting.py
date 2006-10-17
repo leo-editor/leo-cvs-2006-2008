@@ -607,6 +607,8 @@ class scriptingController:
         balloon = Pmw.Balloon(w,initwait=100)
         if w and balloon:
             balloon.bind(w,label)
+            # Inject an ivar into the w.
+            w.leo_balloon = balloon
     #@nonl
     #@-node:ekr.20060522104419.1:createBalloon
     #@+node:ekr.20060328125248.17:createIconButton
@@ -677,11 +679,17 @@ class scriptingController:
         
         """Delete the given button.
         This is called from callbacks, it is not a callback."""
+        
+        w = button
     
-        if button and self.buttonsDict.get(button):
-            del self.buttonsDict[button]
-            button.pack_forget()
-            button.destroy() # So that Pmw doesn't crash later.
+        if button and self.buttonsDict.get(w):
+            del self.buttonsDict[w]
+            if hasattr(w,'leo_balloon'):
+                balloon = w.leo_balloon
+                # g.trace('destoying ballon',balloon)
+                balloon.destroy()
+            w.pack_forget()
+            w.destroy() # So that Pmw doesn't crash later.
             self.c.bodyWantsFocusNow()
     #@nonl
     #@-node:ekr.20060328125248.26:deleteButton
