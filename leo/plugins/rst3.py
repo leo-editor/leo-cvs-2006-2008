@@ -47,7 +47,7 @@ bwm_file = None
 if 0:
     bwm_file = open("bwm_file", "w")
 
-__version__ = '1.18'
+__version__ = '1.19'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -102,6 +102,7 @@ except ImportError:
 # - .txt files are now written to default_path directory, just like special 
 # files.
 # 1.18 BWM: Added support for mod_scripting plugin.
+# 1.19 EKR: Fixed crash that happens when invoked from menu.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -1119,7 +1120,7 @@ class rstClass:
     #@nonl
     #@-node:ekr.20050809080925:writeNormalTree
     #@+node:ekr.20051121102358:processTopTree
-    def processTopTree (self,p,justOneFile):
+    def processTopTree (self,p,justOneFile=False):
         
         c = self.c ; current = p.copy()
         
