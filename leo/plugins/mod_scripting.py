@@ -116,7 +116,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.6'
+__version__ = '1.7'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -182,7 +182,9 @@ __version__ = '1.6'
 # and revised the plugin's docstring.
 # 1.6 EKR: Created truncateButtonText utility to strip trailing '-' 
 # characters.
+# 1.7 EKR: Fix recent bug: lowercase all command names.
 #@-at
+#@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
 #@nl
 
@@ -569,7 +571,9 @@ class scriptingController:
         b.configure(command=atButtonCallback)
         
         # At last we can define the command and use the shortcut.
-        k.registerCommand(buttonText,shortcut=shortcut,func=atButtonCallback,pane='button',verbose=shortcut)
+        k.registerCommand(buttonText.lower(),
+            shortcut=shortcut,func=atButtonCallback,
+            pane='button',verbose=shortcut)
        
         return b
     #@nonl
