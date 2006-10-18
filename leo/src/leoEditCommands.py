@@ -8225,9 +8225,9 @@ class Aspell:
         self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
         self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
         
-        self.local_language_code = local_language_code # or 'en'
-        self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
-        self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
+        # self.local_language_code = local_language_code # or 'en'
+        # self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
+        # self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
         
         g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
         g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
