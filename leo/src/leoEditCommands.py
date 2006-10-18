@@ -8996,13 +8996,11 @@ class AspellClass:
         """
         
         if self.use_ctypes:
-            ok = self.check(self.spell_checker,word,len(word))
-            if ok:
+            if self.check(self.spell_checker,word,len(word)):
                 return None
             else:
                 return self.suggestions(word)
         else:
-        
             if self.sc.check(word):
                 return None
             else:
