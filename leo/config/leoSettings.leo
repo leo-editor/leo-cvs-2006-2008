@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="220" height="812" width="969"/>
+	<global_window_position top="71" left="220" height="793" width="969"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -607,9 +607,9 @@
 </v>
 <v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20061018061727" a="V"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
+<v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
-<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
+<v t="ekr.20060925060533.1" a="TV"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
@@ -2070,6 +2070,7 @@ open-find-tab                       = Ctrl-Shift-F
 open-leoDocs-leo                    = None
 open-leoPlugins-leo                 = None
 open-leoSettings-leo                = None
+open-scripts-leo                    = None
 open-offline-tutorial               = None
 open-online-home                    = None
 open-online-tutorial                = None
@@ -2654,6 +2655,7 @@ open-find-tab                           = Ctrl-f
 open-leoDocs-leo                        = None
 open-leoPlugins-leo                     = None
 open-leoSettings-leo                    = None
+open-scripts-leo                        = None
 open-offline-tutorial                   = None
 open-online-home                        = None
 open-online-tutorial                    = None
@@ -2928,6 +2930,7 @@ open-find-tab                   = None
 open-leoDocs-leo                = None
 open-leoPlugins-leo             = None
 open-leoSettings-leo            = None
+open-scripts-leo                = None
 open-offline-tutorial           = None
 open-online-home                = None
 open-online-tutorial            = None
@@ -3197,6 +3200,7 @@ open-find-tab                       = Ctrl-F
 open-leoDocs-leo                    = None
 open-leoPlugins-leo                 = None
 open-leoSettings-leo                = None
+open-scripts-leo                    = None
 open-offline-tutorial               = None
 open-online-home                    = None
 open-online-tutorial                = None
@@ -3488,6 +3492,7 @@ open-find-tab                       = None
 open-leoDocs-leo                    = None
 open-leoPlugins-leo                 = None
 open-leoSettings-leo                = None
+open-scripts-leo                    = None
 open-offline-tutorial               = None
 open-online-home                    = None
 open-online-tutorial                = None
@@ -4602,7 +4607,7 @@ enter-file-mode     = BackSpace
 open-leoDocs-leo        = d
 open-leoPlugins-leo     = p
 open-leoSettings-leo    = s
-
+open-scripts-leo        = c
 open-outline-by-name    = o
 open-outline            = Shift-o</t>
 <t tx="ekr.20060124070546"># Frequently used...
@@ -5468,6 +5473,7 @@ save-file-to            = t
 open-leoDocs-leo        = d
 open-leoPlugins-leo     = p
 open-leoSettings-leo    = s
+open-scripts-leo        = c
 
 insert-file             = i
 write-at-file-nodes     = w
@@ -5891,8 +5897,6 @@ beginning-of-line                   ! text = Ctrl-a
 beginning-of-line-extend-selection  ! text = Ctrl-Shift-a
 end-of-line                         ! text = Ctrl-e
 exchange-point-mark                 = Alt-M     # Should be Ctrl-X Ctrl-X.
-back-word-extend-selection          ! text = Alt-Shift-b
-beginning-of-line-extend-selection  ! text = Ctrl-Shift-a
 end-of-line-extend-selection        ! text = Ctrl-Shift-e
 extend-to-line                      = Alt-L
 extend-to-word                      = Alt-W

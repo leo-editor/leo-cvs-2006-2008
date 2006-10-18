@@ -6171,6 +6171,7 @@ def defineHelpMenuTables (self):
         ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
         ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
         ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
+        ('Open scr&ipts.leo',       'open-scripts-leo'),
         '-',
         '*he&lp-for-minibuffer',
         '*help-for-&command',
@@ -7413,6 +7414,7 @@ def defineHelpMenuTables (self):
         ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
         ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
         ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
+        ('Open scr&ipts.leo',       'open-scripts-leo'),
         '-',
         '*he&lp-for-minibuffer',
         '*help-for-&command',
@@ -7762,6 +7764,47 @@ masterClick3Handler = masterClickHandler
 masterDoubleClick3Handler = masterClickHandler
 #@-node:ekr.20060129052538.2:masterClickHandler
 #@-node:ekr.20061014194858:Simulated x-windows middle-button paste
+#@+node:ekr.20061008064111:Add Open scripts.leo to help menu
+# The open-scripts-leo command.
+#@nonl
+#@+node:ekr.20061018094539:openLeoScripts
+def openLeoScripts (self,event=None):
+    
+    c = self
+    fileName = g.os_path_join(g.app.loadDir,'..','scripts','scripts.leo')
+
+    ok, frame = g.openWithFileName(fileName,c)
+    if not ok:
+        g.es('not found: %s' % fileName)
+#@-node:ekr.20061018094539:openLeoScripts
+#@+node:ekr.20031218072017.3774:defineHelpMenuTables
+def defineHelpMenuTables (self):
+    
+    self.helpMenuTable = [
+        # &: a,b,c,d,f,h,l,m,n,o,p,r,s,t,u
+        ('&About Leo...',           'about-leo'),
+        ('Online &Home Page',       'open-online-home'),
+        '*open-online-&tutorial',
+        '*open-&users-guide',
+        '-',
+        ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
+        ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
+        ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
+        ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
+        ('Open scr&ipts.leo',       'open-scripts-leo'),
+        '-',
+        '*he&lp-for-minibuffer',
+        '*help-for-&command',
+        '-',
+        '*&apropos-autocompletion',
+        '*apropos-&bindings',
+        '*apropos-&find-commands',
+        '-',
+        '*pri&nt-bindings',
+        '*print-c&ommands',
+    ]
+#@-node:ekr.20031218072017.3774:defineHelpMenuTables
+#@-node:ekr.20061008064111:Add Open scripts.leo to help menu
 #@-node:ekr.20061010115312:Features
 #@+node:ekr.20061012064024:Plugins
 #@+node:ekr.20061011163905:Fixed keyBindings plugin

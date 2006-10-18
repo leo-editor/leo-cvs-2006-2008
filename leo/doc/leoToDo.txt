@@ -3,8 +3,6 @@
 #@+all
 #@+node:ekr.20060927172440:To do before 4.4.2 b3
 #@+node:ekr.20061010115312.1:Urgent
-#@+node:ekr.20061008064111:Add Open scripts.leo to help menu
-#@-node:ekr.20061008064111:Add Open scripts.leo to help menu
 #@+node:ekr.20061017112623:Upgrade spell tab to use ctypes
 #@+node:ekr.20061018055342:New code from e
 @color
