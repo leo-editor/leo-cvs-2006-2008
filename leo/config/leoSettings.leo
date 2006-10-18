@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="207" height="831" width="982"/>
+	<global_window_position top="71" left="220" height="812" width="969"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -432,10 +432,11 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
-<v t="ekr.20060926115909"><vh>@shortcuts Cursor Moves with extension</vh></v>
+<v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
+<v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
+<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
@@ -600,14 +601,15 @@
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 <v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 </v>
-<v t="ekr.20060603215208" a="TV"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves</vh></v>
-<v t="ekr.20060926115909"><vh>@shortcuts Cursor Moves with extension</vh></v>
+<v t="ekr.20061018061727" a="V"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
+<v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
+<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
@@ -5881,51 +5883,44 @@ write-at-file-nodes                 = Shift-Ctrl-W
 write-dirty-at-file-nodes           = Shift+Ctrl+Q
 yank                                = Ctrl-Y
 zap-to-character                    = Alt-z</t>
-<t tx="ekr.20060925060533.1">back-char                           ! text = LtArrow
+<t tx="ekr.20060925060533.1"># Important: arrow keys also move the cursor: all arrow keys are handled elsewhere.
+
 back-word                           ! text = Alt-b  
-beginning-of-buffer                 ! text = Ctrl-Home
-beginning-of-line                   ! text = Home
+back-word-extend-selection          ! text = Alt-Shift-b
 beginning-of-line                   ! text = Ctrl-a
-end-of-buffer                       ! text = Ctrl-End
-end-of-line                         ! text = End
+beginning-of-line-extend-selection  ! text = Ctrl-Shift-a
 end-of-line                         ! text = Ctrl-e
 exchange-point-mark                 = Alt-M     # Should be Ctrl-X Ctrl-X.
+back-word-extend-selection          ! text = Alt-Shift-b
+beginning-of-line-extend-selection  ! text = Ctrl-Shift-a
+end-of-line-extend-selection        ! text = Ctrl-Shift-e
 extend-to-line                      = Alt-L
-extend-to-word                      = Ctrl-W
 extend-to-word                      = Alt-W
-forward-char                        ! text = RtArrow
+extend-to-word                      = Ctrl-W
 forward-paragraph                   ! text = Alt-braceright
+forward-paragraph-extend-selection  ! text = Alt-Shift-braceright
 forward-sentence                    ! text = Alt-e
+forward-sentence-extend-selection   ! text = Alt-Shift-e
 forward-word                        ! text = Alt-f
+forward-word-extend-selection       ! text = Alt-Shift-f
 goto-global-line                    = Alt-g
 # match-brackets                    = Ctrl-K    # kill-line
 move-past-close                     = Alt-parenright # Same as Alt-shift-parenright
-next-line                           ! text = DnArrow
-previous-line                       ! text = UpArrow
-scroll-down                         ! text = PageDn 
-scroll-up                           ! text = PageUp
-select-all                          ! text =  Alt-Shift-A 
-    # Shift-Ctrl-A conflicts with beginning-of-line-extend-selection.</t>
+move-past-close-extend-selection    = None
+# next-line                         ! text = Ctrl-N
+# next-line-extend-selection        ! text = Ctrl-Shift-N
+# previous-line                     ! text = Ctrl-P
+# previous-line-extend-selection    ! text = Ctrl-Shift-P
+select-all                          ! text =  Alt-Shift-A  # Shift-Ctrl-A: beginning-of-line-extend-selection.
+</t>
 <t tx="ekr.20060925060533.2">cycle-all-focus             = Alt-Y
 contract-pane               = Alt+Ctrl+-
 expand-pane                 = Alt+Ctrl-=
-
 focus-to-body               = Alt-D  # boDy
 focus-to-tree               = Alt-T
-
-scroll-outline-down-page    = Alt-PageDn
-scroll-outline-down-page    ! tree = PageDn
-scroll-outline-up-page      = Alt-PageUp
-scroll-outline-up-page      ! tree = PageUp
-
-scroll-outline-left         = Alt+Ctrl+LtArrow
-scroll-outline-right        = Alt+Ctrl+RtArrow
-
 toggle-active-pane          = Ctrl-T</t>
 <t tx="ekr.20060925060533.3">clone-node                  = Ctrl-`
 contract-node               = None
-contract-or-go-left         = Alt-LtArrow
-contract-or-go-left         ! tree = LtArrow
 copy-node                   = Shift-Ctrl-c
 cut-node                    = Shift-Ctrl-x
 contract-all                = Alt--
@@ -5933,41 +5928,18 @@ edit-headline               = Ctrl-h
 end-edit-headline           ! tree = Return     # Esc is also possible.
 delete-node                 = None
 demote                      = Ctrl-}
-expand-and-go-right         = Alt-RtArrow
-expand-and-go-right         ! tree = RtArrow
 expand-next-level           = None
 expand-node                 = Alt-bracketright
 extract                     = Shift-Ctrl-D
 extract-names               = Shift-Ctrl-N
 extract-section             = Shift-Ctrl-S  # Shift-Ctrl-E: end-of-line-extend-selection
-goto-first-node             = Alt-Home
-goto-first-node             ! tree = Home
-goto-last-visible           = Alt-End
-goto-last-visible           ! tree = End
 goto-next-clone             = Alt-N
-goto-next-visible           = Alt-DnArrow
-goto-next-visible           ! tree = DnArrow
-goto-prev-visible           = Alt-UpArrow
-goto-prev-visible           ! tree = UpArrow
 insert-node                 = Ctrl-I
 mark                        = Ctrl-M
-
-move-outline-down           = Alt-Shift-DnArrow
-move-outline-down           ! tree = Shift-DnArrow
 move-outline-down           = Ctrl-D
-
-move-outline-left           = Alt-Shift-LtArrow
-move-outline-left           ! tree = Shift-LtArrow
 move-outline-left           = Ctrl-L
-
-move-outline-right          = Alt-Shift-RtArrow
-move-outline-right          ! tree = Shift-RtArrow
 move-outline-right          = Ctrl-R
-
-move-outline-up             = Alt-Shift-UpArrow
-move-outline-up             ! tree = Shift-UpArrow
 move-outline-up             = Ctrl-U
-
 paste-node                  = Shift-Ctrl-V
 promote                     = Ctrl-{      </t>
 <t tx="ekr.20060925060533.4">add-comments                        = Ctrl-parenleft
@@ -6011,41 +5983,6 @@ toggle-autocompleter        = Alt-1
 toggle-calltips             = Alt-2
 toggle-extend-mode          = Alt-3
 undo                        = Ctrl-Z</t>
-<t tx="ekr.20060926115909"># A minimal set.
-# I prefer using extension mode, but these are so standard...
-back-char-extend-selection          ! text = Shift-LtArrow
-back-word                           ! text = Ctrl-LtArrow
-back-word-extend-selection          ! text = Alt-Shift-b
-back-word-extend-selection          ! text = Ctrl-Shift-LtArrow
-
-beginning-of-buffer-extend-selection! text = Ctrl-Shift-Home
-beginning-of-line-extend-selection  ! text = Shift-Home
-beginning-of-line-extend-selection  ! text = Ctrl-Shift-a
-
-end-of-buffer-extend-selection      ! text = Ctrl-Shift-End
-end-of-line-extend-selection        ! text = Shift-End
-end-of-line-extend-selection        ! text = Ctrl-Shift-e
-
-forward-char-extend-selection       ! text = Shift-RtArrow
-forward-paragraph-extend-selection  ! text = Alt-Shift-braceright
-forward-sentence-extend-selection   ! text = Alt-Shift-e
-forward-word                        ! text = Ctrl-RtArrow
-forward-word-extend-selection       ! text = Alt-Shift-f
-forward-word-extend-selection       ! text = Ctrl-Shift-RtArrow
-
-move-past-close-extend-selection    = None
-
-# next-line                           ! text = Ctrl-N
-# next-line-extend-selection          ! text = Ctrl-Shift-N
-next-line-extend-selection          ! text = Shift-DnArrow
-
-# previous-line                       ! text = Ctrl-P
-# previous-line-extend-selection      ! text = Ctrl-Shift-P
-previous-line-extend-selection      ! text = Shift-UpArrow
-
-scroll-down-extend-selection        ! text = Shift-PageDn
-scroll-up-extend-selection          ! text = Shift-PageUp
-</t>
 <t tx="ekr.20060926160657">True: Focus moves to outline pane after editing a headline.
 
 False: (legacy operation) Focus moves to body pane after editing a headline.
@@ -6130,5 +6067,141 @@ You can use the Go To Next Clone (Alt-N) to find clones elsewhere in the file.
   However, the ignore_unbound_non_ascii_keys option affects how Leo handles 'plain' keys.</t>
 <t tx="ekr.20061012122620">True:  When a node is expanded, insert new nodes as the last child.
 False: (legacy &amp; recommended) When a node is expanded, insert new nodes as the first child.</t>
+<t tx="ekr.20061018061727"># The 'special' keys are the arrow keys and the Home, End keys, PageUp and PageDn keys.
+
+# These try to implement DWIM (Do What I mean) by shifting focus to the body pane for normal arrow keys.
+# The main price: having to hold the Alt key down when moving or selecting outline nodes.
+
+# Plain special keys **always** refer to the body text.
+back-char                   = LtArrow
+forward-char                = RtArrow
+next-line                   = DnArrow
+previous-line               = UpArrow
+
+beginning-of-buffer         = Ctrl-Home
+beginning-of-line           = Home
+end-of-buffer               = Ctrl-End
+end-of-line                 = End
+
+# contract-or-go-left       ! tree = LtArrow
+# expand-and-go-right       ! tree = RtArrow
+# goto-next-visible         ! tree = DnArrow
+# goto-prev-visible         ! tree = UpArrow
+# goto-first-node           ! tree = Home
+# goto-last-visible         ! tree = End
+
+# Shift-special keys **always** refer to the body text.
+back-char-extend-selection      = Shift-LtArrow
+forward-char-extend-selection   = Shift-RtArrow
+next-line-extend-selection      = Shift-DnArrow
+previous-line-extend-selection  = Shift-UpArrow
+
+# move-outline-down             ! tree = Shift-DnArrow
+# move-outline-left             ! tree = Shift-LtArrow
+# move-outline-right            ! tree = Shift-RtArrow
+# move-outline-up               ! tree = Shift-UpArrow
+
+# Ctrl-arrow and Ctrl-shift keys work only in text.
+back-word                           = Ctrl-LtArrow
+back-word-extend-selection          = Ctrl-Shift-LtArrow
+forward-word                        = Ctrl-RtArrow
+forward-word-extend-selection       = Ctrl-Shift-RtArrow
+
+beginning-of-buffer-extend-selection= Ctrl-Shift-Home
+beginning-of-line-extend-selection  = Shift-Home
+end-of-buffer-extend-selection      = Ctrl-Shift-End
+end-of-line-extend-selection        = Shift-End
+
+scroll-outline-down-page            ! tree = PageDn
+scroll-outline-up-page              ! tree = PageUp
+
+scroll-down                         ! text = PageDn 
+scroll-up                           ! text = PageUp
+scroll-down-extend-selection        ! text = Shift-PageDn
+scroll-up-extend-selection          ! text = Shift-PageUp
+
+# Alt arrow/home/end/page keys always refer to the tree.
+contract-or-go-left         = Alt-LtArrow
+expand-and-go-right         = Alt-RtArrow
+goto-next-visible           = Alt-DnArrow
+goto-prev-visible           = Alt-UpArrow
+
+goto-first-node             = Alt-Home
+goto-last-visible           = Alt-End
+
+move-outline-down           = Alt-Shift-DnArrow
+move-outline-left           = Alt-Shift-LtArrow
+move-outline-right          = Alt-Shift-RtArrow
+move-outline-up             = Alt-Shift-UpArrow
+
+scroll-outline-down-page    = Alt-PageDn
+scroll-outline-up-page      = Alt-PageUp
+
+scroll-outline-left         = Alt+Ctrl+LtArrow
+scroll-outline-right        = Alt+Ctrl+RtArrow</t>
+<t tx="ekr.20061018061727.1"># The 'special' keys are the arrow keys and the Home, End keys, PageUp and PageDn keys.
+
+# Plain arrow keys depend on focus.
+back-char                   ! text = LtArrow
+forward-char                ! text = RtArrow
+next-line                   ! text = DnArrow
+previous-line               ! text = UpArrow
+
+contract-or-go-left         ! tree = LtArrow
+expand-and-go-right         ! tree = RtArrow
+goto-next-visible           ! tree = DnArrow
+goto-prev-visible           ! tree = UpArrow
+
+# Shift arrow keys depend on focus.
+back-char-extend-selection      ! text = Shift-LtArrow
+forward-char-extend-selection   ! text = Shift-RtArrow
+next-line-extend-selection      ! text = Shift-DnArrow
+previous-line-extend-selection  ! text = Shift-UpArrow
+
+move-outline-down               ! tree = Shift-DnArrow
+move-outline-left               ! tree = Shift-LtArrow
+move-outline-right              ! tree = Shift-RtArrow
+move-outline-up                 ! tree = Shift-UpArrow
+
+# Ctrl-arrow and Ctrl-shift keys work only in text.
+back-word                           ! text = Ctrl-LtArrow
+back-word-extend-selection          ! text = Ctrl-Shift-LtArrow
+beginning-of-buffer                 ! text = Ctrl-Home
+beginning-of-buffer-extend-selection! text = Ctrl-Shift-Home
+end-of-buffer                       ! text = Ctrl-End
+end-of-buffer-extend-selection      ! text = Ctrl-Shift-End
+forward-word                        ! text = Ctrl-RtArrow
+forward-word-extend-selection       ! text = Ctrl-Shift-RtArrow
+
+# Home, End, and Page Keys (and shift varients) depend on focus.
+beginning-of-line                   ! text = Home
+beginning-of-line-extend-selection  ! text = Shift-Home
+end-of-line                         ! text = End
+end-of-line-extend-selection        ! text = Shift-End
+goto-first-node                     ! tree = Home
+goto-last-visible                   ! tree = End
+scroll-down                         ! text = PageDn 
+scroll-down-extend-selection        ! text = Shift-PageDn
+scroll-outline-down-page            ! tree = PageDn
+scroll-outline-up-page              ! tree = PageUp
+scroll-up                           ! text = PageUp
+scroll-up-extend-selection          ! text = Shift-PageUp
+
+# Alt arrow/home/end/page keys always refer to the tree.
+contract-or-go-left         = Alt-LtArrow
+expand-and-go-right         = Alt-RtArrow
+goto-first-node             = Alt-Home
+goto-last-visible           = Alt-End
+goto-next-visible           = Alt-DnArrow
+goto-prev-visible           = Alt-UpArrow
+move-outline-down           = Alt-Shift-DnArrow
+move-outline-left           = Alt-Shift-LtArrow
+move-outline-right          = Alt-Shift-RtArrow
+move-outline-up             = Alt-Shift-UpArrow
+scroll-outline-down-page    = Alt-PageDn
+scroll-outline-left         = Alt+Ctrl+LtArrow
+scroll-outline-right        = Alt+Ctrl+RtArrow
+scroll-outline-up-page      = Alt-PageUp
+</t>
 </tnodes>
 </leo_file>
