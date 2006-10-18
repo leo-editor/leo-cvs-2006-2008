@@ -1305,7 +1305,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
     def OnPaste (self,event=None):
         
-        return self.pasteText(event=event)
+        return self.pasteText(event=event,middleButton=True)
     #@nonl
     #@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
     #@-node:ekr.20031218072017.3971:Event handlers (tkFrame)
@@ -1576,9 +1576,10 @@ class leoTkinterFrame (leoFrame.leoFrame):
     OnCutFromMenu = cutText
     #@-node:ekr.20051011072049.2:cutText
     #@+node:ekr.20051011072903.5:pasteText
-    def pasteText (self,event=None):
+    def pasteText (self,event=None,middleButton=False):
     
-        '''Paste the clipboard into a widget.'''
+        '''Paste the clipboard into a widget.
+        If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
     
         f = self ; c = f.c ; w = event and event.widget
         if not w or not g.app.gui.isTextWidget(w): return
@@ -1587,8 +1588,12 @@ class leoTkinterFrame (leoFrame.leoFrame):
         i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
         oldText = w.get('1.0','end')
         # g.trace(i,j,wname,g.callers())
-    
-        s = s1 = g.app.gui.getTextFromClipboard()
+        
+        if middleButton and c.k.previousSelection:
+            start,end = c.k.previousSelection
+            s = w.get(start,end)
+        else:
+            s = s1 = g.app.gui.getTextFromClipboard()
         # g.trace(wname,s,repr(s))
         
         singleLine = wname.startswith('head') or wname.startswith('minibuffer')

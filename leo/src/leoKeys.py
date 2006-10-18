@@ -1706,6 +1706,7 @@ class keyHandlerClass:
         self.newMinibufferWidget = None # Usually the minibuffer restores focus.  This overrides this default.
         self.regx = g.bunch(iter=None,key=None)
         self.repeatCount = None
+        self.previousSelection = None # A hack for middle-button paste: set by masterClickHandler, used by pasteText.
         self.state = g.bunch(kind=None,n=None,handler=None)
         #@-node:ekr.20051006092617.1:<< define externally visible ivars >>
         #@nl
@@ -3278,6 +3279,8 @@ class keyHandlerClass:
         # Update the selection point immediately for updateStatusLine.
         if wname.startswith('body'):
             # g.trace(event.x,event.y)
+            # A hack to support middle-button pastes: remember the previous selection.
+            k.previousSelection = g.app.gui.getSelectionRange(w)
             i = w.index('@%s,%s' % (event.x,event.y))
             g.app.gui.setTextSelection(w,i,i,insert=i)
             c.editCommands.setMoveCol(i)
