@@ -1587,14 +1587,15 @@ class leoTkinterFrame (leoFrame.leoFrame):
         wname = c.widget_name(w)
         i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
         oldText = w.get('1.0','end')
-        # g.trace(i,j,wname,g.callers())
+        
+        # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
         
         if middleButton and c.k.previousSelection:
             start,end = c.k.previousSelection
             s = w.get(start,end)
+            c.k.previousSelection = None
         else:
             s = s1 = g.app.gui.getTextFromClipboard()
-        # g.trace(wname,s,repr(s))
         
         singleLine = wname.startswith('head') or wname.startswith('minibuffer')
         
@@ -1910,11 +1911,6 @@ class leoTkinterBody (leoFrame.leoBody):
                 return handler(event,func)
     
             w.bind(kind,bodyClickCallback)
-                
-        if 0: # Now done above.
-            if sys.platform.startswith('win'):
-                # Support Linux middle-button paste easter egg.
-                w.bind("<Button-2>",frame.OnPaste)
     #@nonl
     #@-node:ekr.20031218072017.838:tkBody.createBindings
     #@+node:ekr.20031218072017.3998:tkBody.createControl

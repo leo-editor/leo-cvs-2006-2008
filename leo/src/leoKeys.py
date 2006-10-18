@@ -3277,6 +3277,7 @@ class keyHandlerClass:
                 return 'break'
     
         # Update the selection point immediately for updateStatusLine.
+        k.previousSelection = None
         if wname.startswith('body'):
             # g.trace(event.x,event.y)
             # A hack to support middle-button pastes: remember the previous selection.
