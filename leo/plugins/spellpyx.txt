@@ -24,6 +24,7 @@ Borland's
 Boshernitzan
 Breuer
 CDATA
+CDLL
 CFA
 CODEC
 COMMENT1
@@ -416,6 +417,7 @@ aren`t
 arg
 args
 args2
+argtypes
 arizona
 arrow_lt
 arrow_rt
@@ -463,6 +465,7 @@ batchChange
 batchMode
 batchTest
 batchfile
+bbox
 bdist
 beforeHeadline
 beforeIcon
@@ -523,6 +526,8 @@ c's
 c2
 c2Root
 c2py
+c_char_p
+c_int
 c_language
 c``'s
 callTagHandler
@@ -665,6 +670,7 @@ csharp
 css
 csv
 ctors
+ctypes
 currentPosition
 currentVnode
 currentWord
@@ -820,6 +826,7 @@ es_print
 eval
 event1
 event2
+event_generate
 evisa
 exe
 executeScript
@@ -1745,6 +1752,7 @@ resizeable
 restoreStderr
 restoreStdout
 restructuredtext
+restype
 ret
 rexec
 rfc0791
