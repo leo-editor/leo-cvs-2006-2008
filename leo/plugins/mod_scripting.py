@@ -116,7 +116,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.7'
+__version__ = '1.9'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -185,6 +185,7 @@ __version__ = '1.7'
 # 1.7 EKR: Fix recent bug: lowercase all command names.
 # 1.8 EKR: An attempt to workaround problems deleting Pmw buttons/with 
 # balloons.
+# 1.9 EKR: Warn about nodes with no cleaned text.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -292,15 +293,12 @@ class scriptingController:
         
         '''Create the 'run-script' button and the run-script command.'''
     
-        b = self.createIconButton(
+        self.createIconButton(
             text='run-script',
             command = self.runScriptCommand,
             shortcut=None,
             statusLine='Run script in selected node',
             bg='MistyRose1')
-        
-        return b
-    #@nonl
     #@+node:ekr.20060328125248.21:runScriptCommand
     def runScriptCommand (self,event=None):
         
@@ -320,15 +318,12 @@ class scriptingController:
         
         '''Create the 'debug-script' button and the debug-script command.'''
     
-        b = self.createIconButton(
+        self.createIconButton(
             text='debug-script',
             command=self.runDebugScriptCommand,
             shortcut=None,
             statusLine='Debug script in selected node',
             bg='MistyRose1')
-       
-        return b
-    #@nonl
     #@+node:ekr.20060522105937.1:runDebugScriptCommand
     def runDebugScriptCommand (self,event=None):
         
@@ -401,15 +396,12 @@ class scriptingController:
         
         '''Create the 'script-button' button and the script-button command.'''
         
-        b = self.createIconButton(
-            'script-button',
+        self.createIconButton(
+            text='script-button',
             command = self.addScriptButtonCommand,
             shortcut=None,
             statusLine='Make script button from selected node',
             bg="#ffffcc")
-    
-        return b
-    #@nonl
     #@+node:ekr.20060328125248.23:addScriptButtonCommand
     def addScriptButtonCommand (self,event=None):
         
@@ -421,7 +413,7 @@ class scriptingController:
         statusLine = "Run Script: %s" % buttonText
         if shortcut:
             statusLine = statusLine + " @key=" + shortcut
-        b = self.createAtButtonHelper(p,buttonText,statusLine,shortcut,'MistyRose1')
+        b = self.createAtButtonHelper(p,h,statusLine,shortcut,'MistyRose1')
         c.frame.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20060328125248.23:addScriptButtonCommand
@@ -436,12 +428,11 @@ class scriptingController:
         it *does* appear in the statutus line shown when the mouse moves over the button.'''
     
         c = self.c ; h = p.headString()
-        buttonText = self.getButtonText(h)
         shortcut = self.getShortcut(h)
         statusLine = shortcut and " @key=" + shortcut or 'Script button'
-        
+    
         # This helper is also called by the script-button callback.
-        b = self.createAtButtonHelper(p,buttonText,statusLine,shortcut)
+        b = self.createAtButtonHelper(p,h,statusLine,shortcut)
     #@-node:ekr.20060328125248.12:handleAtButtonNode @button
     #@+node:ekr.20060328125248.10:handleAtCommandNode @command
     def handleAtCommandNode (self,p):
@@ -553,7 +544,7 @@ class scriptingController:
     #@nonl
     #@-node:ekr.20060929135558:cleanButtonText
     #@+node:ekr.20060328125248.24:createAtButtonHelper & callback
-    def createAtButtonHelper (self,p,buttonText,statusLine,shortcut,bg='LightSteelBlue1'):
+    def createAtButtonHelper (self,p,h,statusLine,shortcut,bg='LightSteelBlue1'):
         
         '''Create a button from an @button node.
         
@@ -561,10 +552,11 @@ class scriptingController:
         - Binds button presses to a callback that executes the script in node p.
         '''
         c = self.c ; k = c.k
-        buttonText = self.cleanButtonText(buttonText)
+        buttonText = self.cleanButtonText(h)
         
         # We must define the callback *after* defining b, so set both command and shortcut to None here.
-        b = self.createIconButton(text=buttonText,command=None,shortcut=None,statusLine=statusLine,bg=bg)
+        b = self.createIconButton(text=h,command=None,shortcut=None,statusLine=statusLine,bg=bg)
+        if not b: return None
         
         # Now that b is defined we can define the callback.
         # Yes, executeScriptFromButton *does* use b (to delete b if requested by the script).
@@ -631,7 +623,12 @@ class scriptingController:
         
         # Truncate only the text of the button, not the command name.
         truncatedText = self.truncateButtonText(commandName)
+        if not truncatedText.strip():
+            g.es_print('%s ignored: no cleaned text' % (text.strip() or ''),color='red')
+            return None
         b = self.iconBar.add(text=truncatedText) # The keyword arg is required.
+        if not b: return None
+    
         self.buttonsDict[b] = truncatedText
         
         if statusLine:
