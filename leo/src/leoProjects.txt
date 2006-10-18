@@ -3322,357 +3322,6 @@ finally:
 #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
 #@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
 #@-node:ekr.20061014075239:Made sure all kill commands do a full recolor
-#@+node:ekr.20061014194858:Fixed (maybe) x-windows middle button problem
-#@+node:ekr.20061016070510:Report
-@nocolor
-
-Terry Brown
-
-There's a gotcha in the way X-windows changes the content of the 
-body pane that's constantly tripping me up.  Apparently I don't 
-learn, :-) but here're the problems...
-
-I'm hoping this isn't too hard to fix.  Maybe as little as tying Tk 
-ButtonRelease events in the text pane to the same handler that 
-handles keystrokes?
-
-In X-windows the middle mouse button is commonly used to paste, and 
-in leo Tk seems to be interpreting this as pasting the current 
-_selection_, not the current clipboard, which is good, that's the 
-X-windows way.  The trouble is leo doesn't see the change to the 
-line(s) in the text pane unless some key based edit occurs there. 
-So if I paste the selection where I want it and then save the file 
-or move to another node, the change isn't recorded.
-
-A related issue is that when you paste the selection this way the 
-cursor ends up after the pasted text, but the original selection 
-remains selected, so the first key stroke replace selection 
-rather than inserting at the cursor.  You want keystrokes to replace 
-the selection of course, but it's confusing when the cursor's not at 
-the end of the selection.  I think the best solution here would be 
-to make the copy of the selection pasted in by the middle button the 
-selected text, so the cursor remains adjacent to the selection and 
-the keystroke-replaces-selection behavior isn't unexpected.
-
-I can poke around and try and find some solutions if you don't have 
-access to an X-windows (eg. linux) system, although I've never used 
-Tkinter, only wxWidgets, so I'd have to search a bit.
-#@-node:ekr.20061016070510:Report
-#@+node:ekr.20031218072017.1723:createMenuEntries
-def createMenuEntries (self,menu,table,dynamicMenu=False):
-        
-    '''Create a menu entry from the table.
-    New in 4.4: this method shows the shortcut in the menu,
-    but this method **never** binds any shortcuts.'''
-    
-    c = self.c ; f = c.frame ; k = c.k
-    if g.app.unitTesting: return
-    for data in table:
-        << get label & command or continue >>
-        << compute commandName & accel from label & command >>
-        accelerator = stroke = k.shortcutFromSetting(accel) or ''
-        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
-        def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
-            return k.masterMenuHandler(stroke,command,commandName)
-        realLabel = self.getRealMenuName(label)
-        amp_index = realLabel.find("&")
-        realLabel = realLabel.replace("&","")
-        if sys.platform == 'darwin':
-            << clear accelerator if it is a plain key >>
-        self.add_command(menu,label=realLabel,
-            accelerator=accelerator,
-            command=masterMenuCallback,
-            underline=amp_index)
-#@+node:ekr.20051021091958:<< get label & command or continue >>
-if type(data) == type(''):
-    # New in Leo 4.4.2: Can use the same string for both the label and the command string.
-    ok = True
-    s = data
-    removeHyphens = s and s[0]=='*'
-    if removeHyphens: s = s[1:]
-    label = self.capitalizeMinibufferMenuName(s,removeHyphens)
-    command = s.replace('&','').lower()
-    if label == '-':
-        self.add_separator(menu)
-        continue # That's all.
-else:
-    ok = type(data) in (type(()), type([])) and len(data) in (2,3)
-    if ok:
-        if len(data) == 2:
-            # New in 4.4b2: command can be a minibuffer-command name (a string)
-            label,command = data
-        else:
-            # New in 4.4: we ignore shortcuts bound in menu tables.
-            label,junk,command = data
-            
-        if label in (None,'-'):
-            self.add_separator(menu)
-            continue # That's all.
-    else:
-        g.trace('bad data in menu table: %s' % repr(data))
-        continue # Ignore bad data
-#@nonl
-#@-node:ekr.20051021091958:<< get label & command or continue >>
-#@+node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
-# New in 4.4b2: command can be a minibuffer-command name (a string)
-minibufferCommand = type(command) == type('')
-accel = None
-if minibufferCommand:
-    commandName = command 
-    command = c.commandsDict.get(commandName)
-    if command:
-        rawKey,bunchList = c.config.getShortcut(commandName)
-        # Pick the first entry that is not a mode.
-        for bunch in bunchList:
-            if not bunch.pane.endswith('-mode'):
-                # g.trace('1',bunch)
-                accel = bunch and bunch.val
-                if bunch.pane  == 'text': break # New in Leo 4.4.2: prefer text bindings.
-    else:
-        if not g.app.unitTesting and not dynamicMenu:
-            # Don't warn during unit testing.
-            # This may come from a plugin that normally isn't enabled.
-            g.trace('No inverse for %s' % commandName)
-        continue # There is no way to make this menu entry.
-else:
-    # First, get the old-style name.
-    commandName = self.computeOldStyleShortcutKey(label)
-    rawKey,bunchList = c.config.getShortcut(commandName)
-    for bunch in bunchList:
-        if not bunch.pane.endswith('-mode'):
-            # g.trace('2',bunch)
-            accel = bunch and bunch.val ; break
-    # Second, get new-style name.
-    if not accel:
-        << compute emacs_name >>
-            # Contains the not-so-horrible kludge.
-        if emacs_name:
-            commandName = emacs_name
-            rawKey,bunchList = c.config.getShortcut(emacs_name)
-            # Pick the first entry that is not a mode.
-            for bunch in bunchList:
-                if not bunch.pane.endswith('-mode'):
-                    accel = bunch.val ; break
-                    # g.trace('2',bunch)
-        elif not dynamicMenu:
-            g.trace('No inverse for %s' % commandName)
-#@+node:ekr.20051021100806.1:<< compute emacs_name >>
-@ One not-so-horrible kludge remains.
-
-The cut/copy/paste commands in the menu tables are not the same as the methods
-actually bound to cut/copy/paste-text minibuffer commands, so we must do a bit
-of extra translation to discover whether the user has overridden their
-bindings.
-@c
-
-if command in (f.OnCutFromMenu,f.OnCopyFromMenu,f.OnPasteFromMenu):
-    emacs_name = '%s-text' % commandName
-else:
-    try: # User errors in the table can cause this.
-        emacs_name = k.inverseCommandsDict.get(command.__name__)
-    except Exception:
-        emacs_name = None
-#@-node:ekr.20051021100806.1:<< compute emacs_name >>
-#@-node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
-#@+node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
-for z in ('Alt','Ctrl','Command'):
-    if accelerator.find(z) != -1:
-        break # Found.
-else:
-    accelerator = ''
-#@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
-#@-node:ekr.20031218072017.1723:createMenuEntries
-#@+node:ekr.20031218072017.838:tkBody.createBindings
-def createBindings (self,w=None):
-
-    '''(tkBody) Create gui-dependent bindings.
-    These are *not* made in nullBody instances.'''
-    
-    frame = self.frame ; c = self.c ; k = c.k
-    if not w: w = self.bodyCtrl
-    
-    w.bind('<Key>', k.masterKeyHandler)
-
-    for kind,func,handler in (
-        ('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
-        ('<Button-3>',  frame.OnBodyRClick,         k.masterClick3Handler),
-        ('<Double-1>',  frame.OnBodyDoubleClick,    k.masterDoubleClickHandler),
-        ('<Double-3>',  None,                       k.masterDoubleClick3Handler),
-        ('<Button-2>',  frame.OnPaste,              k.masterClickHandler),
-    ):
-        def bodyClickCallback(event,handler=handler,func=func):
-            return handler(event,func)
-
-        w.bind(kind,bodyClickCallback)
-            
-    if 0: # Now done above.
-        if sys.platform.startswith('win'):
-            # Support Linux middle-button paste easter egg.
-            w.bind("<Button-2>",frame.OnPaste)
-#@nonl
-#@-node:ekr.20031218072017.838:tkBody.createBindings
-#@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
-def OnPaste (self,event=None):
-    
-    return self.pasteText(event=event)
-#@nonl
-#@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
-#@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
-#@+node:ekr.20051011072903.2:copyText
-def copyText (self,event=None):
-    
-    '''Copy the selected text from the widget to the clipboard.'''
-    
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    # Set the clipboard text.
-    i,j = g.app.gui.getTextSelection(w)
-    if i != j:
-        s = w.get(i,j)
-        g.app.gui.replaceClipboardWith(s)
-        
-OnCopyFromMenu = copyText
-#@-node:ekr.20051011072903.2:copyText
-#@+node:ekr.20051011072049.2:cutText
-def cutText (self,event=None):
-    
-    '''Invoked from the mini-buffer and from shortcuts.'''
-    
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    name = c.widget_name(w)
-    oldSel = g.app.gui.getTextSelection(w)
-    oldText = g.app.gui.getAllText(w)
-    i,j = g.app.gui.getTextSelection(w)
-    
-    # Update the widget and set the clipboard text.
-    s = w.get(i,j)
-    if i != j:
-        w.delete(i,j)
-        g.app.gui.replaceClipboardWith(s)
-
-    if name.startswith('body'):
-        c.frame.body.forceFullRecolor()
-        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
-    elif name.startswith('head'):
-        # The headline is not officially changed yet.
-        # p.initHeadString(s)
-        s=g.app.gui.getAllText(w)
-        w.configure(width=f.tree.headWidth(s=s))
-    else: pass
-
-OnCutFromMenu = cutText
-#@-node:ekr.20051011072049.2:cutText
-#@+node:ekr.20051011072903.5:pasteText
-def pasteText (self,event=None):
-
-    '''Paste the clipboard into a widget.'''
-
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    wname = c.widget_name(w)
-    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
-    oldText = w.get('1.0','end')
-    # g.trace(i,j,wname,g.callers())
-
-    s = s1 = g.app.gui.getTextFromClipboard()
-    # g.trace(wname,s,repr(s))
-    
-    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-    
-    if singleLine:
-        # Strip trailing newlines so the truncation doesn't cause confusion.
-        while s and s [ -1] in ('\n','\r'):
-            s = s [: -1]
-
-    try:
-        # Update the widget.
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,s)
-    
-        if wname.startswith('body'):
-            c.frame.body.forceFullRecolor()
-            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
-        elif singleLine:
-            s = w.get('1.0','end')
-            while s and s [ -1] in ('\n','\r'):
-                s = s [: -1]
-            if wname.startswith('head'):
-                # The headline is not officially changed yet.
-                # p.initHeadString(s)
-                w.configure(width=f.tree.headWidth(s=s))
-        else: pass
-    except Exception:
-        pass # Tk sometimes throws weird exceptions here.
-        
-    return 'break' # Essential
-
-OnPasteFromMenu = pasteText
-#@-node:ekr.20051011072903.5:pasteText
-#@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
-#@+node:ekr.20060129052538.2:masterClickHandler
-def masterClickHandler (self,event,func=None):
-
-    k = self ; c = k.c
-    if not event: return
-    w = event.widget ; wname = c.widget_name(w)
-    trace = c.config.getBool('trace_masterClickHandler') and not g.app.unitTesting
-
-    if trace: g.trace(wname,func and func.__name__)
-    # c.frame.body.colorizer.interrupt() # New in 4.4.1
-        
-    # A click outside the minibuffer terminates any state.
-    if k.inState() and c.useTextMinibuffer and w != c.frame.miniBufferWidget:
-        if not c.widget_name(w).startswith('log'):
-            k.keyboardQuit(event,hideTabs=False)
-            # k.endMode(event) # Less drastic than keyboard-quit.
-            w and c.widgetWantsFocusNow(w)
-            if trace: g.trace('inState: break')
-            return 'break'
-
-    # Update the selection point immediately for updateStatusLine.
-    if wname.startswith('body'):
-        # g.trace(event.x,event.y)
-        i = w.index('@%s,%s' % (event.x,event.y))
-        g.app.gui.setTextSelection(w,i,i,insert=i)
-        c.editCommands.setMoveCol(i)
-        c.frame.updateStatusLine()
-        c.frame.body.onClick(w) # New in Leo 4.4.2.
-    elif wname.startswith('mini'):
-        x = w.index('@%s,%s' % (event.x,event.y))
-        i, j = k.getEditableTextRange()
-        xcol = int(x.split('.')[1])
-        icol = int(i.split('.')[1])
-        jcol = int(j.split('.')[1])
-        # g.trace(xcol,icol,jcol,icol <= xcol <= jcol)
-        if icol <= xcol <= jcol:
-            g.app.gui.setTextSelection(w,x,x,insert=x)
-        else:
-            if trace: g.trace('2: break')
-            return 'break'
-
-    if event and func:
-        # Don't even *think* of overriding this.
-        val = func(event)
-        c.masterFocusHandler()
-        if trace: g.trace('val:',val)
-        return val
-    else:
-        # All tree callbacks have a func, so we can't be in the tree.
-        # g.trace('*'*20,'auto-deactivate tree: %s' % wname)
-        c.frame.tree.OnDeactivate()
-        c.widgetWantsFocusNow(w)
-        if trace: g.trace('end: None')
-        return None
-
-masterClick3Handler = masterClickHandler
-masterDoubleClick3Handler = masterClickHandler
-#@-node:ekr.20060129052538.2:masterClickHandler
-#@-node:ekr.20061014194858:Fixed (maybe) x-windows middle button problem
 #@+node:ekr.20060927100500.1:Fixed bug in new colorizer
 # Did not restore selection after indent/undent commands.
 #@+node:ekr.20031218072017.2884:Edit Body submenu
@@ -4763,6 +4412,8 @@ def masterClickHandler (self,event,func=None):
     # Update the selection point immediately for updateStatusLine.
     if wname.startswith('body'):
         # g.trace(event.x,event.y)
+        # A hack to support middle-button pastes: remember the previous selection.
+        k.previousSelection = g.app.gui.getSelectionRange(w)
         i = w.index('@%s,%s' % (event.x,event.y))
         g.app.gui.setTextSelection(w,i,i,insert=i)
         c.editCommands.setMoveCol(i)
@@ -5900,6 +5551,26 @@ def scrollDown (self):
 #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
 #@-node:ekr.20031218072017.3996:class leoTkinterBody
 #@-node:ekr.20061012082613:Fixed body editor problems
+#@+node:ekr.20061017102748:Fixed rst3 crash
+@nocolor
+
+I hate to constantly be the bearer of bad news, but:
+
+exception executing command
+Traceback (most recent call last):
+   File 
+"/mnt/usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/src/leoCommands.py", 
+line 263, in doCommand
+     val = command(event)
+   File 
+"/mnt/usr1/home/tbrown/.gnome-desktop/Package/leo/cvs/leo/plugins/rst3.py", 
+line 677, in rst3PluginCallback
+     self.processTopTree(c.currentPosition())
+TypeError: processTopTree() takes exactly 3 arguments (2 given)
+
+Cheers -Terry
+
+#@-node:ekr.20061017102748:Fixed rst3 crash
 #@-node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010115312:Features
 #@+node:ekr.20061009152554:Removed .leoRecentFiles.txt from distribution and cvs
@@ -7756,6 +7427,341 @@ def defineHelpMenuTables (self):
 #@-node:ekr.20031218072017.3774:defineHelpMenuTables
 #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
 #@-node:ekr.20061016071231:Removed all references to commands from menu tables
+#@+node:ekr.20061014194858:Simulated x-windows middle-button paste
+#@+node:ekr.20061017065752.1:Request
+@nocolor
+
+I think to make it as X-windowish as possible it should paste the 
+selection, rather than the contents of the clipboard, when there is 
+a selection.
+
+Perhaps paste is the wrong word. In X-windows, when you middle-button-click in a
+text frame, and there is a selection somewhere in the text frame, the contents
+of that selection is inserted at the point you clicked - even if the insertion
+cursor is elsewhere (e.g. at the end of the selection).
+#@-node:ekr.20061017065752.1:Request
+#@+node:ekr.20031218072017.1723:createMenuEntries
+def createMenuEntries (self,menu,table,dynamicMenu=False):
+        
+    '''Create a menu entry from the table.
+    New in 4.4: this method shows the shortcut in the menu,
+    but this method **never** binds any shortcuts.'''
+    
+    c = self.c ; f = c.frame ; k = c.k
+    if g.app.unitTesting: return
+    for data in table:
+        << get label & command or continue >>
+        << compute commandName & accel from label & command >>
+        accelerator = stroke = k.shortcutFromSetting(accel) or ''
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+        def masterMenuCallback (k=k,stroke=stroke,command=command,commandName=commandName):
+            return k.masterMenuHandler(stroke,command,commandName)
+        realLabel = self.getRealMenuName(label)
+        amp_index = realLabel.find("&")
+        realLabel = realLabel.replace("&","")
+        if sys.platform == 'darwin':
+            << clear accelerator if it is a plain key >>
+        self.add_command(menu,label=realLabel,
+            accelerator=accelerator,
+            command=masterMenuCallback,
+            underline=amp_index)
+#@+node:ekr.20051021091958:<< get label & command or continue >>
+if type(data) == type(''):
+    # New in Leo 4.4.2: Can use the same string for both the label and the command string.
+    ok = True
+    s = data
+    removeHyphens = s and s[0]=='*'
+    if removeHyphens: s = s[1:]
+    label = self.capitalizeMinibufferMenuName(s,removeHyphens)
+    command = s.replace('&','').lower()
+    if label == '-':
+        self.add_separator(menu)
+        continue # That's all.
+else:
+    ok = type(data) in (type(()), type([])) and len(data) in (2,3)
+    if ok:
+        if len(data) == 2:
+            # New in 4.4b2: command can be a minibuffer-command name (a string)
+            label,command = data
+        else:
+            # New in 4.4: we ignore shortcuts bound in menu tables.
+            label,junk,command = data
+            
+        if label in (None,'-'):
+            self.add_separator(menu)
+            continue # That's all.
+    else:
+        g.trace('bad data in menu table: %s' % repr(data))
+        continue # Ignore bad data
+#@nonl
+#@-node:ekr.20051021091958:<< get label & command or continue >>
+#@+node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+# New in 4.4b2: command can be a minibuffer-command name (a string)
+minibufferCommand = type(command) == type('')
+accel = None
+if minibufferCommand:
+    commandName = command 
+    command = c.commandsDict.get(commandName)
+    if command:
+        rawKey,bunchList = c.config.getShortcut(commandName)
+        # Pick the first entry that is not a mode.
+        for bunch in bunchList:
+            if not bunch.pane.endswith('-mode'):
+                # g.trace('1',bunch)
+                accel = bunch and bunch.val
+                if bunch.pane  == 'text': break # New in Leo 4.4.2: prefer text bindings.
+    else:
+        if not g.app.unitTesting and not dynamicMenu:
+            # Don't warn during unit testing.
+            # This may come from a plugin that normally isn't enabled.
+            g.trace('No inverse for %s' % commandName)
+        continue # There is no way to make this menu entry.
+else:
+    # First, get the old-style name.
+    commandName = self.computeOldStyleShortcutKey(label)
+    rawKey,bunchList = c.config.getShortcut(commandName)
+    for bunch in bunchList:
+        if not bunch.pane.endswith('-mode'):
+            # g.trace('2',bunch)
+            accel = bunch and bunch.val ; break
+    # Second, get new-style name.
+    if not accel:
+        << compute emacs_name >>
+            # Contains the not-so-horrible kludge.
+        if emacs_name:
+            commandName = emacs_name
+            rawKey,bunchList = c.config.getShortcut(emacs_name)
+            # Pick the first entry that is not a mode.
+            for bunch in bunchList:
+                if not bunch.pane.endswith('-mode'):
+                    accel = bunch.val ; break
+                    # g.trace('2',bunch)
+        elif not dynamicMenu:
+            g.trace('No inverse for %s' % commandName)
+#@+node:ekr.20051021100806.1:<< compute emacs_name >>
+@ One not-so-horrible kludge remains.
+
+The cut/copy/paste commands in the menu tables are not the same as the methods
+actually bound to cut/copy/paste-text minibuffer commands, so we must do a bit
+of extra translation to discover whether the user has overridden their
+bindings.
+@c
+
+if command in (f.OnCutFromMenu,f.OnCopyFromMenu,f.OnPasteFromMenu):
+    emacs_name = '%s-text' % commandName
+else:
+    try: # User errors in the table can cause this.
+        emacs_name = k.inverseCommandsDict.get(command.__name__)
+    except Exception:
+        emacs_name = None
+#@-node:ekr.20051021100806.1:<< compute emacs_name >>
+#@-node:ekr.20031218072017.1725:<< compute commandName & accel from label & command >>
+#@+node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+for z in ('Alt','Ctrl','Command'):
+    if accelerator.find(z) != -1:
+        break # Found.
+else:
+    accelerator = ''
+#@-node:ekr.20060216110502:<< clear accelerator if it is a plain key >>
+#@-node:ekr.20031218072017.1723:createMenuEntries
+#@+node:ekr.20031218072017.838:tkBody.createBindings
+def createBindings (self,w=None):
+
+    '''(tkBody) Create gui-dependent bindings.
+    These are *not* made in nullBody instances.'''
+    
+    frame = self.frame ; c = self.c ; k = c.k
+    if not w: w = self.bodyCtrl
+    
+    w.bind('<Key>', k.masterKeyHandler)
+
+    for kind,func,handler in (
+        ('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
+        ('<Button-3>',  frame.OnBodyRClick,         k.masterClick3Handler),
+        ('<Double-1>',  frame.OnBodyDoubleClick,    k.masterDoubleClickHandler),
+        ('<Double-3>',  None,                       k.masterDoubleClick3Handler),
+        ('<Button-2>',  frame.OnPaste,              k.masterClickHandler),
+    ):
+        def bodyClickCallback(event,handler=handler,func=func):
+            return handler(event,func)
+
+        w.bind(kind,bodyClickCallback)
+            
+    if 0: # Now done above.
+        if sys.platform.startswith('win'):
+            # Support Linux middle-button paste easter egg.
+            w.bind("<Button-2>",frame.OnPaste)
+#@nonl
+#@-node:ekr.20031218072017.838:tkBody.createBindings
+#@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
+def OnPaste (self,event=None):
+    
+    return self.pasteText(event=event,middleButton=True)
+#@nonl
+#@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
+#@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
+#@+node:ekr.20051011072903.2:copyText
+def copyText (self,event=None):
+    
+    '''Copy the selected text from the widget to the clipboard.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    # Set the clipboard text.
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        s = w.get(i,j)
+        g.app.gui.replaceClipboardWith(s)
+        
+OnCopyFromMenu = copyText
+#@-node:ekr.20051011072903.2:copyText
+#@+node:ekr.20051011072049.2:cutText
+def cutText (self,event=None):
+    
+    '''Invoked from the mini-buffer and from shortcuts.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    name = c.widget_name(w)
+    oldSel = g.app.gui.getTextSelection(w)
+    oldText = g.app.gui.getAllText(w)
+    i,j = g.app.gui.getTextSelection(w)
+    
+    # Update the widget and set the clipboard text.
+    s = w.get(i,j)
+    if i != j:
+        w.delete(i,j)
+        g.app.gui.replaceClipboardWith(s)
+
+    if name.startswith('body'):
+        c.frame.body.forceFullRecolor()
+        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
+    elif name.startswith('head'):
+        # The headline is not officially changed yet.
+        # p.initHeadString(s)
+        s=g.app.gui.getAllText(w)
+        w.configure(width=f.tree.headWidth(s=s))
+    else: pass
+
+OnCutFromMenu = cutText
+#@-node:ekr.20051011072049.2:cutText
+#@+node:ekr.20051011072903.5:pasteText
+def pasteText (self,event=None,middleButton=False):
+
+    '''Paste the clipboard into a widget.
+    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
+
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    wname = c.widget_name(w)
+    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
+    oldText = w.get('1.0','end')
+    # g.trace(i,j,wname,g.callers())
+    
+    if middleButton and c.k.previousSelection:
+        start,end = c.k.previousSelection
+        s = w.get(start,end)
+    else:
+        s = s1 = g.app.gui.getTextFromClipboard()
+    # g.trace(wname,s,repr(s))
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.get('1.0','end')
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@-node:ekr.20051011072903.5:pasteText
+#@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
+#@+node:ekr.20060129052538.2:masterClickHandler
+def masterClickHandler (self,event,func=None):
+
+    k = self ; c = k.c
+    if not event: return
+    w = event.widget ; wname = c.widget_name(w)
+    trace = c.config.getBool('trace_masterClickHandler') and not g.app.unitTesting
+
+    if trace: g.trace(wname,func and func.__name__)
+    # c.frame.body.colorizer.interrupt() # New in 4.4.1
+        
+    # A click outside the minibuffer terminates any state.
+    if k.inState() and c.useTextMinibuffer and w != c.frame.miniBufferWidget:
+        if not c.widget_name(w).startswith('log'):
+            k.keyboardQuit(event,hideTabs=False)
+            # k.endMode(event) # Less drastic than keyboard-quit.
+            w and c.widgetWantsFocusNow(w)
+            if trace: g.trace('inState: break')
+            return 'break'
+
+    # Update the selection point immediately for updateStatusLine.
+    if wname.startswith('body'):
+        # g.trace(event.x,event.y)
+        # A hack to support middle-button pastes: remember the previous selection.
+        k.previousSelection = g.app.gui.getSelectionRange(w)
+        i = w.index('@%s,%s' % (event.x,event.y))
+        g.app.gui.setTextSelection(w,i,i,insert=i)
+        c.editCommands.setMoveCol(i)
+        c.frame.updateStatusLine()
+        c.frame.body.onClick(w) # New in Leo 4.4.2.
+    elif wname.startswith('mini'):
+        x = w.index('@%s,%s' % (event.x,event.y))
+        i, j = k.getEditableTextRange()
+        xcol = int(x.split('.')[1])
+        icol = int(i.split('.')[1])
+        jcol = int(j.split('.')[1])
+        # g.trace(xcol,icol,jcol,icol <= xcol <= jcol)
+        if icol <= xcol <= jcol:
+            g.app.gui.setTextSelection(w,x,x,insert=x)
+        else:
+            if trace: g.trace('2: break')
+            return 'break'
+
+    if event and func:
+        # Don't even *think* of overriding this.
+        val = func(event)
+        c.masterFocusHandler()
+        if trace: g.trace('val:',val)
+        return val
+    else:
+        # All tree callbacks have a func, so we can't be in the tree.
+        # g.trace('*'*20,'auto-deactivate tree: %s' % wname)
+        c.frame.tree.OnDeactivate()
+        c.widgetWantsFocusNow(w)
+        if trace: g.trace('end: None')
+        return None
+
+masterClick3Handler = masterClickHandler
+masterDoubleClick3Handler = masterClickHandler
+#@-node:ekr.20060129052538.2:masterClickHandler
+#@-node:ekr.20061014194858:Simulated x-windows middle-button paste
 #@-node:ekr.20061010115312:Features
 #@+node:ekr.20061012064024:Plugins
 #@+node:ekr.20061011163905:Fixed keyBindings plugin
