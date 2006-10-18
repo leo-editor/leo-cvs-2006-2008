@@ -5255,6 +5255,16 @@ class baseCommands:
                 if not ok:
                     g.es("%s not found in %s or %s" % (name,configDir,homeDir))
     #@-node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
+    #@+node:ekr.20061018094539:openLeoScripts
+    def openLeoScripts (self,event=None):
+        
+        c = self
+        fileName = g.os_path_join(g.app.loadDir,'..','scripts','scripts.leo')
+    
+        ok, frame = g.openWithFileName(fileName,c)
+        if not ok:
+            g.es('not found: %s' % fileName)
+    #@-node:ekr.20061018094539:openLeoScripts
     #@+node:ekr.20031218072017.2940:leoDocumentation
     def leoDocumentation (self,event=None):
         
