@@ -8221,23 +8221,58 @@ class Aspell:
     
         self.c = c
     
-        self.aspell_dir = c.config.getString('aspell_dir')
-        self.aspell_bin_dir = c.config.getString('aspell_bin_dir')
+        self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
+        self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
+        
+        self.local_language_code = local_language_code # or 'en'
+        self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
+        self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
+        
+        g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
+        g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
     
-        try:
-            import aspell
-        except ImportError:
-            # Specify the path to the top-level Aspell directory.
-            theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
-            aspell = g.importFromPath('aspell',theDir,pluginName=__name__,verbose=True)
-            
-        self.aspell = aspell
-        if aspell:
-            self.sc = aspell.spell_checker(prefix=self.aspell_dir,lang=local_language_code)
-            self.local_language_code = local_language_code
-            self.local_dictionary_file = local_dictionary_file
-            self.local_dictionary = "%s.wl" % os.path.splitext(local_dictionary_file) [0]
+        self.getAspell()
+    #@nonl
     #@-node:ekr.20051025071455.8:__init__
+    #@+node:ekr.20061017125710:getAspell
+    def getAspell (self):
+        
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+        self.use_ctypes = g.CheckVersion(version,'2.5')
+        self.aspell = self.sc = None
+        if self.use_ctypes:
+            import ctypes
+            path = r'c:\aspell\bin\aspell-15.dll'
+            aspell = ctypes.cdll.LoadLibrary(path)
+            if not aspell:
+                g.es_print('can not load aspell from %s' % (path))
+                return
+            self.config = aspell.new_aspell_config()
+            g.trace('config',self.config)
+            aspell.aspell_config_replace(self.config,'prefix',self.aspell_dir)
+            aspell.aspell_config_replace(self.config,'lang',self.local_language_code)
+            val = aspell.new_aspell_speller(self.config)
+            n = aspell.aspell_error_number(val)
+            g.trace('err',repr(val),'error_number',n)
+            if n != 0:
+                msg = aspell.aspell_error_message(val)
+                g.es_print('Error initing aspell: %s' % (msg),color='red')
+                return
+            else:
+                self.aspell = aspell
+                self.checker = aspell.to_aspell_speller(val)
+        else:
+            try:
+                import aspell
+            except ImportError:
+                # Specify the path to the top-level Aspell directory.
+                theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
+                aspell = g.importFromPath('aspell',theDir,pluginName=__name__,verbose=True)
+        
+            self.aspell = aspell
+            self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=local_language_code)
+    #@nonl
+    #@-node:ekr.20061017125710:getAspell
     #@-node:ekr.20051025071455.7:Birth & death
     #@+node:ekr.20051025071455.10:processWord
     def processWord(self, word):
@@ -8250,12 +8285,48 @@ class Aspell:
         # «original» «offset» 
         simplifyed to not create the string then make a list from it    
         """
-    
-        if self.sc.check(word):
-            return None
+        
+        if self.use_ctypes:
+            ok = self.aspell.aspell_speller_check(self.checker,word,len(word))
+            if ok:
+                return None
+            else:
+                return self.ctypesSuggest(word)
         else:
-            return self.sc.suggest(word)
+        
+            if self.sc.check(word):
+                return None
+            else:
+                return self.sc.suggest(word)
+    #@nonl
     #@-node:ekr.20051025071455.10:processWord
+    #@+node:ekr.20061017142753:ctypesSuggest
+    def ctypesSuggest(self,word):
+    
+        ###cdef AspellWordList* suggestions
+        # I need a cast here to stop the C compiler from complaining about const mismatch
+        ### suggestions = <AspellWordList*>aspell_speller_suggest(self.checker, word, len(word))
+        g.trace(repr(word))
+        suggestions = self.aspell.aspell_speller_suggest(self.checker,word,len(word))
+        g.trace(suggestions)
+        return suggestions
+        
+    #@+at
+    #     cdef AspellStringEnumeration* elements
+    #     elements = aspell_word_list_elements(suggestions)
+    #     result = []
+    #     cdef char* suggestion
+    #     while 1:
+    #       # this cast is the hush the C compiler which knows this function 
+    # is const char*
+    #       suggestion = <char*>aspell_string_enumeration_next(elements)
+    #       if suggestion == NULL:
+    #         break
+    #       result.append(suggestion)
+    #     return result
+    #@-at
+    #@nonl
+    #@-node:ekr.20061017142753:ctypesSuggest
     #@+node:ekr.20051025071455.11:updateDictionary
     def updateDictionary(self):
     
