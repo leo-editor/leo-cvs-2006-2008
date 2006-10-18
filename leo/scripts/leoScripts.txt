@@ -17067,6 +17067,45 @@ for p in current.self_and_parents_iter():
         break
 #@nonl
 #@-node:Finding @file nodes
+#@+node:munge-db
+'''A script to munge database records so they conform to an existing db's format.'''
+# Almost infinitely easier to do this in Python rather than FileMaker Pro's laughable scripting language.
+path = r'c:\rebecca\REBECCA9_97.txt'
+path2 = r'c:\rebecca\REBECCA9_97-converted.txt'
+f = file(path)
+s = f.read() ; f.close()
+f = file(path2,'w')
+print '-' * 40, len(s)
+lines = s.split('\n')
+n = 0
+for line in lines:
+    n += 1
+    if not line.strip(): continue
+    # bug: fails for fields containing commas.  Should use a regex instead.
+    fields = line.split(',')
+    result = []
+    info1,last,full,addr1,addr2,zip,info2,info3 = fields
+    assert full.startswith('"')
+    data = full[1:-1].strip().split(' ')
+    first = '"%s"' % data[0].strip()
+    data = addr2[1:-1].strip().split(' ')
+    city = '"%s"' % ''.join(data[:-2])
+    state = '"%s"' % data[-2].upper()
+    for field in (first,last,addr1,city,state,zip,info1,info2,info3):
+        if field.startswith('"'):
+            # Capitalize each word.
+            s = field[1:-1].strip()
+            aList = s.split(' ')
+            s = ' '.join([z.capitalize() for z in aList])
+            result.append('"%s"' % s)
+        else:
+            result.append(field)
+    s = ','.join(result)
+    print s
+    f.write(s+'\n')
+f.close()
+print '%d records' % n
+#@-node:munge-db
 #@-node:Others
 #@+node:Prototypes
 #@+node:Debugger canvas
