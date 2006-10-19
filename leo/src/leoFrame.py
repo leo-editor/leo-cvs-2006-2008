@@ -848,7 +848,6 @@ class leoTree:
                         url = url[:i]
                 #@-node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
                 #@nl
-            # g.trace(url)
             if not g.doHook("@url1",c=c,p=p,v=p,url=url):
                 # Note: the UNL plugin has its own notion of what a good url is.
                 #@            << check the url; return if bad >>
@@ -895,11 +894,8 @@ class leoTree:
                 try:
                     import os
                     os.chdir(g.app.loadDir)
-                
                     if g.match(url,0,"file:") and url[-4:]==".leo":
                         ok,frame = g.openWithFileName(url[5:],c)
-                        if ok:
-                            frame.bringToFront()
                     else:
                         import webbrowser
                         
@@ -909,9 +905,13 @@ class leoTree:
                 except:
                     g.es("exception opening " + url)
                     g.es_exception()
+                #@nonl
                 #@-node:ekr.20031218072017.2315:<< pass the url to the web browser >>
                 #@nl
             g.doHook("@url2",c=c,p=p,v=p)
+    
+        return 'break' # 11/19/06
+    #@nonl
     #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url)
     #@+node:ekr.20040106095546.1:tree.enableDrawingAfterException
     def enableDrawingAfterException (self):

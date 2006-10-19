@@ -427,20 +427,14 @@ class tkinterGui(leoGui.leoGui):
         __pychecker__ = '--no-argsused' # c not used at present.
         
         """Put the focus on the widget."""
-        
-        if 0: # Big trace if we have unexpected focus.
-            w2 = c.frame.outerFrame.focus_get()
-            wname = c.widget_name(w2)
-            for s in ('canvas','log','mini','body','head'):
-                if wname.startswith(s): break
-            else:
-                if w2:
-                    g.trace('*'*40,'Previous widget',wname)
-                    g.trace(repr(w2),g.callers())
+    
                     
         if not g.app.unitTesting and c and c.config.getBool('trace_g.app.gui.set_focus'):
             self.set_focus_count += 1
-            g.trace('%4d %10s' % (self.set_focus_count,c.widget_name(w)),g.callers())
+            # Do not call trace here: that might affect focus!
+            print 'gui.set_focus: %4d %10s %s' % (
+                self.set_focus_count,c and c.shortFileName(),
+                c and c.widget_name(w)), g.callers(5)
         
         if w:
             try:

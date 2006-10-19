@@ -29,8 +29,9 @@ loadingModuleNameStack = [] # The stack of module names.  Top is the module bein
 #@+node:ekr.20050102094729:callTagHandler
 def callTagHandler (bunch,tag,keywords):
 
-    
     handler = bunch.fn ; moduleName = bunch.moduleName
+    
+    # if tag != 'idle': print 'callTagHandler',tag,keywords.get('c')
 
     # Make sure the new commander exists.
     if tag == 'idle':

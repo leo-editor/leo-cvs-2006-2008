@@ -2446,6 +2446,7 @@ def doHook(tag,*args,**keywords):
         
     try:
         # Pass the hook to the hook handler.
+        # print 'doHook',f.__name__,keywords.get('c')
         return f(tag,keywords)
     except Exception:
         g.es_exception()
