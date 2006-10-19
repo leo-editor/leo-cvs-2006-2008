@@ -58,7 +58,7 @@ navigate to the nodes 'by hand' by following the arrows in the UNL.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.6"
+__version__ = "0.7"
 #@<< version history >>
 #@+node:rogererens.20041014104353:<< version history >>
 #@+at
@@ -70,9 +70,8 @@ __version__ = "0.6"
 # - 0.4 ekr: Fixed crasher by adding c argument to g.findTopLevelNode and 
 # g.findNodeInTree.
 # - 0.5 EKR: Convert %20 to ' ' in url's.
-# - 0.6 EKR:
-#     - Solved focus problem in external .leo files.
-#     - Made local UNL's work.
+# - 0.6 EKR: Made local UNL's work.
+# - 0.7 EKR: Set c.doubleClickFlag to keep focus in newly-opened window.
 #@-at
 #@nonl
 #@-node:rogererens.20041014104353:<< version history >>
@@ -186,6 +185,7 @@ def onUrl1 (tag,keywords):
         
         if urlProtocol == "file":
             if urlTuple[2].endswith(".leo"):
+                c.frame.top.update_idletasks() # Clear remaining events, so they don't interfere.
                 ok,frame = g.openWithFileName(urlTuple[2], c)
                 if ok:
                     #@                    << go to the node>>
@@ -198,9 +198,15 @@ def onUrl1 (tag,keywords):
                         for headline in nodeList [1:]:
                             p = g.findNodeInTree(c2,p,headline)
                         if p:
-                            c2.frame.tree.expandAllAncestors(p)
-                            c2.selectPosition(p)
-                            c2.redraw() # Solves focus problem.
+                            c2.beginUpdate()
+                            try:
+                                c2.frame.tree.expandAllAncestors(p)
+                                c2.selectPosition(p)
+                            finally:
+                                c2.endUpdate()
+                                
+                    # Disable later call to c.onClick so the focus stays in c2.
+                    c.doubleClickFlag = True
                     #@nonl
                     #@-node:rogererens.20041125015212.1:<<go to the node>>
                     #@nl
