@@ -8,6 +8,11 @@
 Default cascading style sheet for the HTML output of Docutils.
 */
 
+/* EKR 10/19/06 */
+/* some browsers require imported rules to precede all rulesets */
+@import url(leo_rst.css);
+@import url(silver_city.css);
+
 .first {
   margin-top: 0 }
 
@@ -228,7 +233,5 @@ hr { /* EKR */
   height: 1pt;
   color: gray;
 }
-  
-@import url(leo_rst.css);
-@import url(silver_city.css);
+
 
