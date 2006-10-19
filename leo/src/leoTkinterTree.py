@@ -1897,6 +1897,8 @@ class leoTkinterTree (leoFrame.leoTree):
             g.doHook("icondclick2",c=c,p=p,v=p,event=event)
         except:
             g.es_event_exception("icondclick")
+            
+        return 'break' # 11/19/06
     #@-node:ekr.20040803072955.82:onIconBoxDoubleClick
     #@-node:ekr.20040803072955.80:Icon Box...
     #@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
@@ -2216,8 +2218,13 @@ class leoTkinterTree (leoFrame.leoTree):
         '''Handle an event in the tree canvas, outside of any tree widget.'''
         
         c = self.c
-    
-        c.treeWantsFocusNow()
+        
+        # New in Leo 4.4.2: a kludge: disable later event handling after a double-click.
+        # This allows focus to stick in newly-opened files opened by double-clicking an @url node.
+        if c.doubleClickFlag:
+            c.doubleClickFlag = False
+        else:
+            c.treeWantsFocusNow()
         
         return 'break'
     #@-node:ekr.20051022141020:onTreeClick

@@ -104,6 +104,7 @@ class baseCommands:
         self._topPosition     = self.nullPosition()
         
         # Delayed focus.
+        self.doubleClickFlag = False
         self.hasFocusWidget = None
         self.requestedFocusWidget = None
         
