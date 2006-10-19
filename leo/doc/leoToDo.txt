@@ -1,8 +1,7 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20060927172440:To do before 4.4.2 b3
-#@+node:ekr.20061010115312.1:Urgent
+#@+node:ekr.20061016205920:Most important
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 @nocolor
 
@@ -297,17 +296,160 @@ def zapToCharacter (self,event):
                 w.delete('insert','%s' % i)
 #@-node:ekr.20050920084036.128:zapToCharacter
 #@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+#@+node:EKR.20040526090701.4:undoTyping
+def undoTyping (self):
+    
+    u = self ; c = u.c ; current = c.currentPosition()
+    
+    # g.trace('oldSel',u.oldSel)
+
+    # selectPosition causes recoloring, so don't do this unless needed.
+    if current != u.p:
+        c.selectPosition(u.p)
+    elif u.undoType in ("Cut","Paste",'Clear Recent Files'):
+        c.frame.body.forceFullRecolor()
+
+    self.undoRedoText(
+        u.p,u.leading,u.trailing,
+        u.oldMiddleLines,u.newMiddleLines,
+        u.oldNewlines,u.newNewlines,
+        tag="undo",undoType=u.undoType)
+
+    for v in u.dirtyVnodeList: # New in 4.4b3.
+        v.t.clearDirty()
+
+    if u.oldSel:
+        c.bodyWantsFocus()
+        c.frame.body.setTextSelection(u.oldSel)
+    if u.yview:
+        c.bodyWantsFocus()
+        c.frame.body.setYScrollPosition(u.yview)
+#@-node:EKR.20040526090701.4:undoTyping
+#@+node:EKR.20040526075238.5:redoTyping
+def redoTyping (self):
+
+    u = self ; c = u.c ; current = c.currentPosition()
+
+    # selectPosition causes recoloring, so avoid if possible.
+    if current != u.p:
+        c.selectPosition(u.p)
+    elif u.undoType in ('Cut','Paste','Clear Recent Files'):
+        c.frame.body.forceFullRecolor()
+
+    self.undoRedoText(
+        u.p,u.leading,u.trailing,
+        u.newMiddleLines,u.oldMiddleLines,
+        u.newNewlines,u.oldNewlines,
+        tag="redo",undoType=u.undoType)
+        
+    for v in u.dirtyVnodeList: # New in 4.4b3.
+        v.t.setDirty()
+    
+    if u.newSel:
+        c.bodyWantsFocus()
+        c.frame.body.setTextSelection(u.newSel)
+    if u.yview:
+        c.bodyWantsFocus()
+        c.frame.body.setYScrollPosition(u.yview)
+#@-node:EKR.20040526075238.5:redoTyping
+#@+node:ekr.20031218072017.1493:undoRedoText
+# Handle text undo and redo.
+# The terminology is for undo: converts _new_ text into _old_ text.
+
+def undoRedoText (self,p,
+    leading,trailing, # Number of matching leading & trailing lines.
+    oldMidLines,newMidLines, # Lists of unmatched lines.
+    oldNewlines,newNewlines, # Number of trailing newlines.
+    tag="undo", # "undo" or "redo"
+    undoType=None):
+        
+    __pychecker__ = '--no-argsused' # newNewlines is unused, but it has symmetry.
+
+    u = self ; c = u.c ; body = c.frame.body
+    << Incrementally update the Tk.Text widget >>
+    << Compute the result using p's body text >>
+    p.setTnodeText(result)
+    << Get textResult from the Tk.Text widget >>
+    if textResult == result:
+        c.frame.body.recolor(p,incremental=False)
+    else: # Rewrite the pane and do a full recolor.
+        if 0:
+            << print mismatch trace >>
+        c.setBodyString(p,result)
+#@+node:ekr.20031218072017.1494:<< Incrementally update the Tk.Text widget >>
+# Only update the changed lines.
+mid_text = string.join(oldMidLines,'\n')
+new_mid_len = len(newMidLines)
+# Maybe this could be simplified, and it is good to treat the "end" with care.
+if trailing == 0:
+    c.frame.body.deleteLine(leading)
+    if leading > 0:
+        c.frame.body.insertAtEnd('\n')
+    c.frame.body.insertAtEnd(mid_text)
+else:
+    if new_mid_len > 0:
+        c.frame.body.deleteLines(leading,new_mid_len)
+    elif leading > 0:
+        c.frame.body.insertAtStartOfLine(leading,'\n')
+    c.frame.body.insertAtStartOfLine(leading,mid_text)
+# Try to end the Tk.Text widget with oldNewlines newlines.
+# This may be off by one, and we don't care because
+# we never use body text to compute undo results!
+s = c.frame.body.getAllText()
+newlines = 0 ; i = len(s) - 1
+while i >= 0 and s[i] == '\n':
+    newlines += 1 ; i -= 1
+# g.trace(newlines,oldNewlines)
+while newlines > oldNewlines:
+    c.frame.body.deleteLastChar()
+    newlines -= 1
+if oldNewlines > newlines:
+    c.frame.body.insertAtEnd('\n'*(oldNewlines-newlines))
+#@-node:ekr.20031218072017.1494:<< Incrementally update the Tk.Text widget >>
+#@+node:ekr.20031218072017.1495:<< Compute the result using p's body text >>
+# Recreate the text using the present body text.
+body = p.bodyString()
+body = g.toUnicode(body,"utf-8")
+body_lines = body.split('\n')
+s = []
+if leading > 0:
+    s.extend(body_lines[:leading])
+if len(oldMidLines) > 0:
+    s.extend(oldMidLines)
+if trailing > 0:
+    s.extend(body_lines[-trailing:])
+s = string.join(s,'\n')
+# Remove trailing newlines in s.
+while len(s) > 0 and s[-1] == '\n':
+    s = s[:-1]
+# Add oldNewlines newlines.
+if oldNewlines > 0:
+    s = s + '\n' * oldNewlines
+result = s
+
+if u.debug_print:
+    print "body:  ",body
+    print "result:",result
+#@-node:ekr.20031218072017.1495:<< Compute the result using p's body text >>
+#@+node:ekr.20031218072017.1496:<< Get textResult from the Tk.Text widget >>
+textResult = c.frame.body.getAllText()
+
+if textResult != result:
+    # Remove the newline from textResult if that is the only difference.
+    if len(textResult) > 0 and textResult[:-1] == result:
+        textResult = result
+#@-node:ekr.20031218072017.1496:<< Get textResult from the Tk.Text widget >>
+#@+node:ekr.20031218072017.1497:<< print mismatch trace >>
+print "undo mismatch"
+print "expected:",result
+print "actual  :",textResult
+#@-node:ekr.20031218072017.1497:<< print mismatch trace >>
+#@-node:ekr.20031218072017.1493:undoRedoText
 #@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
-#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
-#@-node:ekr.20061010115312.1:Urgent
-#@-node:ekr.20060927172440:To do before 4.4.2 b3
-#@+node:ekr.20061008160553:Asap
-#@+node:ekr.20061016205920:Most important
-#@+node:ekr.20061018084816:Restore unit test of inverseCommandsDict
-#@-node:ekr.20061018084816:Restore unit test of inverseCommandsDict
 #@+node:ekr.20061014050154.2:Binding to None clears all bindings
 #@-node:ekr.20061014050154.2:Binding to None clears all bindings
+#@+node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
+#@-node:ekr.20061015160449:log font size setting in myLeoSettings.leo are not overriding previous settings
 #@+node:ekr.20060915175024:Maintain vertical node position if possible
 @nocolor
 
@@ -783,6 +925,13 @@ The must work with unicode characters.  (They do now.)
 #@nonl
 #@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
 #@-node:ekr.20061013082443:Unit tests for all edit commands
+#@+node:ekr.20061009153206:Install pylint
+@nocolor
+
+
+- (Problem installing the common libraries) Install pylint.
+#@nonl
+#@-node:ekr.20061009153206:Install pylint
 #@-node:ekr.20061016205920:Most important
 #@+node:ekr.20061016205920.1:Less important
 #@+node:ekr.20061012204814:Should 'plain' cursor moves force focus to body (unless editing headline?)
@@ -843,14 +992,15 @@ def pasteText (self,event=None,middleButton=False):
     wname = c.widget_name(w)
     i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
     oldText = w.get('1.0','end')
-    # g.trace(i,j,wname,g.callers())
+    
+    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
     
     if middleButton and c.k.previousSelection:
         start,end = c.k.previousSelection
         s = w.get(start,end)
+        c.k.previousSelection = None
     else:
         s = s1 = g.app.gui.getTextFromClipboard()
-    # g.trace(wname,s,repr(s))
     
     singleLine = wname.startswith('head') or wname.startswith('minibuffer')
     
@@ -995,16 +1145,6 @@ xsltWithNodes.py
 - Document tnodeList, vnodeList.
 #@nonl
 #@-node:ekr.20061009152210:Docs
-#@-node:ekr.20061008160553:Asap
-#@+node:ekr.20061010115434:On hold
-#@+node:ekr.20061009153206:Installs
-@nocolor
-
-- Install aspell for Python 2.5.
-- (Problem installing the common libraries) Install pylint.
-#@nonl
-#@-node:ekr.20061009153206:Installs
-#@-node:ekr.20061010115434:On hold
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20060822162521:Make headlines scroll
 Limit the with of the headline to the width of the outline pane.

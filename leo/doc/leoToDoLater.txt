@@ -1411,145 +1411,6 @@ point-to-register should write an 'expanded point' so inter-node jumps are possi
 #@nonl
 #@+node:ekr.20051025071455:Spell classes
 @others
-#@+node:ekr.20051025071455.6:class Aspell
-class Aspell:
-    
-    """A wrapper class for Aspell spell checker"""
-    
-    @others
-#@+node:ekr.20051025071455.7:Birth & death
-#@+node:ekr.20051025071455.8:__init__
-def __init__ (self,c,local_dictionary_file,local_language_code):
-
-    """Ctor for the Aspell class."""
-
-    self.c = c
-
-    self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
-    self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
-    
-    # self.local_language_code = local_language_code # or 'en'
-    # self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
-    # self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
-    
-    g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
-    g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
-
-    self.getAspell()
-#@nonl
-#@-node:ekr.20051025071455.8:__init__
-#@+node:ekr.20061017125710:getAspell
-def getAspell (self):
-    
-    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
-    self.use_ctypes = g.CheckVersion(version,'2.5')
-    self.aspell = self.sc = None
-    if self.use_ctypes:
-        import ctypes
-        path = r'c:\aspell\bin\aspell-15.dll'
-        aspell = ctypes.cdll.LoadLibrary(path)
-        if not aspell:
-            g.es_print('can not load aspell from %s' % (path))
-            return
-        self.config = aspell.new_aspell_config()
-        g.trace('config',self.config)
-        aspell.aspell_config_replace(self.config,'prefix',self.aspell_dir)
-        aspell.aspell_config_replace(self.config,'lang',self.local_language_code)
-        val = aspell.new_aspell_speller(self.config)
-        n = aspell.aspell_error_number(val)
-        g.trace('err',repr(val),'error_number',n)
-        if n != 0:
-            msg = aspell.aspell_error_message(val)
-            g.es_print('Error initing aspell: %s' % (msg),color='red')
-            return
-        else:
-            self.aspell = aspell
-            self.checker = aspell.to_aspell_speller(val)
-    else:
-        try:
-            import aspell
-        except ImportError:
-            # Specify the path to the top-level Aspell directory.
-            theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
-            aspell = g.importFromPath('aspell',theDir,pluginName=__name__,verbose=True)
-    
-        self.aspell = aspell
-        self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=local_language_code)
-#@nonl
-#@-node:ekr.20061017125710:getAspell
-#@-node:ekr.20051025071455.7:Birth & death
-#@+node:ekr.20051025071455.10:processWord
-def processWord(self, word):
-    """Pass a word to aspell and return the list of alternatives.
-    OK: 
-    * 
-    Suggestions: 
-    & «original» «count» «offset»: «miss», «miss», ... 
-    None: 
-    # «original» «offset» 
-    simplifyed to not create the string then make a list from it    
-    """
-    
-    if self.use_ctypes:
-        ok = self.aspell.aspell_speller_check(self.checker,word,len(word))
-        if ok:
-            return None
-        else:
-            return self.ctypesSuggest(word)
-    else:
-    
-        if self.sc.check(word):
-            return None
-        else:
-            return self.sc.suggest(word)
-#@nonl
-#@-node:ekr.20051025071455.10:processWord
-#@+node:ekr.20061017142753:ctypesSuggest
-def ctypesSuggest(self,word):
-
-    ###cdef AspellWordList* suggestions
-    # I need a cast here to stop the C compiler from complaining about const mismatch
-    ### suggestions = <AspellWordList*>aspell_speller_suggest(self.checker, word, len(word))
-    g.trace(repr(word))
-    suggestions = self.aspell.aspell_speller_suggest(self.checker,word,len(word))
-    g.trace(suggestions)
-    return suggestions
-    
-@
-    cdef AspellStringEnumeration* elements
-    elements = aspell_word_list_elements(suggestions)
-    result = []
-    cdef char* suggestion
-    while 1:
-      # this cast is the hush the C compiler which knows this function is const char*
-      suggestion = <char*>aspell_string_enumeration_next(elements)
-      if suggestion == NULL:
-        break
-      result.append(suggestion)
-    return result
-#@nonl
-#@-node:ekr.20061017142753:ctypesSuggest
-#@+node:ekr.20051025071455.11:updateDictionary
-def updateDictionary(self):
-
-    """Update the aspell dictionary from a list of words.
-    
-    Return True if the dictionary was updated correctly."""
-
-    try:
-        # Create master list
-        basename = os.path.splitext(self.local_dictionary)[0]
-        cmd = (
-            "%s --lang=%s create master %s.wl < %s.txt" %
-            (self.aspell_bin_dir, self.local_language_code, basename,basename))
-        os.popen(cmd)
-        return True
-
-    except Exception, err:
-        g.es_print("Unable to update local aspell dictionary: %s" % err)
-        return False
-#@-node:ekr.20051025071455.11:updateDictionary
-#@-node:ekr.20051025071455.6:class Aspell
 #@+node:ekr.20051025071455.1:class spellCommandsClass
 class spellCommandsClass (baseEditCommandsClass):
     
@@ -1692,9 +1553,10 @@ def init_aspell (self,c):
             dictionaryFileName), color='red')
         return False
 
-    self.aspell = Aspell(c,dictionaryFileName,self.local_language_code)
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
     
-    if not self.aspell.aspell:
+    # if not self.aspell.aspell:
+    if not self.aspell:
         g.es_print('Can not open Aspell',color='red')
         return False
         
@@ -2176,6 +2038,199 @@ def updateButtons (self):
 #@-node:ekr.20051025071455.52:updateButtons
 #@-node:ekr.20051025071455.42:Helpers
 #@-node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)
+#@+node:ekr.20051025071455.6:class AspellClass
+class AspellClass:
+    
+    """A wrapper class for Aspell spell checker"""
+    
+    @others
+#@+node:ekr.20051025071455.7:Birth & death
+#@+node:ekr.20051025071455.8:__init__
+def __init__ (self,c,local_dictionary_file,local_language_code):
+
+    """Ctor for the Aspell class."""
+
+    self.c = c
+
+    self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
+    self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
+    
+    self.local_language_code = local_language_code or 'en'
+    self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
+    self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
+    
+    # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
+    # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
+    
+    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+    self.use_ctypes = g.CheckVersion(version,'2.5')
+    self.aspell = self.sc = None
+    
+    if self.use_ctypes:
+        self.getAspellWithCtypes()
+    else:
+        self.getAspell()
+#@-node:ekr.20051025071455.8:__init__
+#@+node:ekr.20061017125710:getAspell
+def getAspell (self):
+
+    try:
+        import aspell
+    except ImportError:
+        # Specify the path to the top-level Aspell directory.
+        theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
+        aspell = g.importFromPath('aspell',theDir,pluginName=__name__,verbose=True)
+
+    self.aspell = aspell
+    self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=local_language_code)
+#@nonl
+#@-node:ekr.20061017125710:getAspell
+#@+node:ekr.20061018111331:getAspellWithCtypes
+def getAspellWithCtypes (self):
+    
+    import ctypes
+    c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
+    aspell = ctypes.CDLL(g.os_path_join(self.aspell_bin_dir, "aspell-15.dll"))
+
+    << define and configure aspell entry points >>
+
+    # Remember these functions (bound methods).
+    # No other ctypes data is known outside this method.
+    self.check = check
+    self.spell_checker = spell_checker
+    self.string_enumeration_next = string_enumeration_next
+    self.suggest = suggest
+    self.word_list_elements = word_list_elements
+    self.word_list_size = word_list_size
+#@+node:ekr.20061018111933:<< define and configure aspell entry points >>
+# new_aspell_config
+new_aspell_config = aspell.new_aspell_config 
+new_aspell_config.restype = c_int
+
+# aspell_config_replace
+aspell_config_replace = aspell.aspell_config_replace 
+aspell_config_replace.argtypes = [c_int, c_char_p, c_char_p] 
+
+# aspell_config_retrieve
+aspell_config_retrieve = aspell.aspell_config_retrieve 
+aspell_config_retrieve.restype = c_char_p  
+aspell_config_retrieve.argtypes = [c_int, c_char_p] 
+
+# aspell_error_message
+aspell_error_message = aspell.aspell_error_message 
+aspell_error_message.restype = c_char_p  
+
+sc = new_aspell_config()
+if 0:
+    print sc 
+    print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
+    print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+    print aspell_config_retrieve(sc, "lang")
+    print aspell_config_replace(sc, "lang", local_language_code)
+    print aspell_config_retrieve(sc, "lang")
+
+possible_err = aspell.new_aspell_speller(sc)
+aspell.delete_aspell_config(c_int(sc))
+
+# Rudimentary error checking, needs more.  
+if aspell.aspell_error_number(possible_err) != 0:
+    print 'err', aspell_error_message(possible_err)
+    spell_checker = None
+else: 
+    spell_checker = aspell.to_aspell_speller(possible_err)
+
+if not spell_checker:
+    raise Exception('aspell checker not enabled')
+
+word_list_size = aspell.aspell_word_list_size
+word_list_size.restype = c_int
+word_list_size.argtypes = [c_int,]
+
+# word_list_elements
+word_list_elements = aspell.aspell_word_list_elements
+word_list_elements.restype = c_int
+word_list_elements.argtypes = [c_int,]
+
+# string_enumeration_next
+string_enumeration_next = aspell.aspell_string_enumeration_next
+string_enumeration_next.restype = c_char_p
+string_enumeration_next.argtypes = [c_int,]
+
+# check
+check = aspell.aspell_speller_check
+check.restype = c_int 
+check.argtypes = [c_int, c_char_p, c_int]
+
+# suggest
+suggest = aspell.aspell_speller_suggest
+suggest.restype = c_int 
+suggest.argtypes = [c_int, c_char_p, c_int]
+#@nonl
+#@-node:ekr.20061018111933:<< define and configure aspell entry points >>
+#@-node:ekr.20061018111331:getAspellWithCtypes
+#@-node:ekr.20051025071455.7:Birth & death
+#@+node:ekr.20051025071455.10:processWord
+def processWord(self, word):
+    """Pass a word to aspell and return the list of alternatives.
+    OK: 
+    * 
+    Suggestions: 
+    & «original» «count» «offset»: «miss», «miss», ... 
+    None: 
+    # «original» «offset» 
+    simplifyed to not create the string then make a list from it 
+    """
+    
+    if self.use_ctypes:
+        if self.check(self.spell_checker,word,len(word)):
+            return None
+        else:
+            return self.suggestions(word)
+    else:
+        if self.sc.check(word):
+            return None
+        else:
+            return self.sc.suggest(word)
+#@-node:ekr.20051025071455.10:processWord
+#@+node:ekr.20061018101455.4:suggestions
+def suggestions(self,word):
+
+    "return list of words found"
+    
+    aList = []
+    sw = self.suggest(self.spell_checker, word, len(word))
+
+    if self.word_list_size(sw):
+        ewords = self.word_list_elements(sw)
+        while 1: 
+            x = self.string_enumeration_next(ewords)
+            if x is None: break
+            aList.append(x)
+    return aList
+#@nonl
+#@-node:ekr.20061018101455.4:suggestions
+#@+node:ekr.20051025071455.11:updateDictionary
+def updateDictionary(self):
+
+    """Update the aspell dictionary from a list of words.
+    
+    Return True if the dictionary was updated correctly."""
+
+    try:
+        # Create master list
+        basename = os.path.splitext(self.local_dictionary)[0]
+        cmd = (
+            "%s --lang=%s create master %s.wl < %s.txt" %
+            (self.aspell_bin_dir, self.local_language_code, basename,basename))
+        os.popen(cmd)
+        return True
+
+    except Exception, err:
+        g.es_print("Unable to update local aspell dictionary: %s" % err)
+        return False
+#@-node:ekr.20051025071455.11:updateDictionary
+#@-node:ekr.20051025071455.6:class AspellClass
 #@-node:ekr.20051025071455:Spell classes
 #@-node:ekr.20051110155735.1:Improve Spell tab
 #@+node:ekr.20041022083833.1:Easy
