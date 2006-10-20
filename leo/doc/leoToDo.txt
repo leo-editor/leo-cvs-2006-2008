@@ -1,7 +1,246 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20061020155121:To do: 4.4.2
+#@+node:ekr.20061019170752:More on stylesheet path question
+@nocolor
+
+>>  leo [rst3] seems to be looking one directory too high.
+>
+> This isn't documented well.  Here is the relevant code:
+>
+> stylesheet_path = (self.getOption('stylesheet_path') or 
+> g.os_path_dirname(self.c.frame.openDirectory))
+>
+> # New in 4.4a4: allow relative paths.
+> path = g.os_path_join(stylesheet_path,self.getOption('stylesheet_name'))
+>
+> This code is the way it is because of previous requests, so I am not likely 
+> to change it.  Don't shouldn't use '.' in paths: you'll probably get a 
+> surprise.
+>
+> In short, if no path is specified you get the path to the .leo file, 
+> otherwise be careful to use an absolute path.
+
+That's fine, that's what I'd expect.  But that's not what's 
+happening.  I have no stylesheet path or name specified and the 
+inputs are as follows:
+
+.leo file:
+   /mnt/proj/ItascaLegacy/app/itasca_app.leo
+
+headString:
+   @rst itastooldoc.html
+
+.html file written to:
+   /mnt/proj/ItascaLegacy/app/itastooldoc.html
+
+but it says:
+stylesheet does not exist: /mnt/proj/ItascaLegacy/default.css
+wrote: /mnt/proj/ItascaLegacy/app/itastooldoc.html
+
+I stick in
+
+@ @rst-option
+stylesheet_path = /mnt/proj/ItascaLegacy/app
+@c
+
+and all is well.
+
+So it's working for me, but I still think it's looking one dir up 
+for the css, at least in linux.
+
+#@-node:ekr.20061019170752:More on stylesheet path question
+#@+node:ekr.20061019170752.1:Suggested changes to default.css
+@nocolor
+
+Here's some changes I'd suggest for leo_rst.css.
+
+According to http://jigsaw.w3.org/css-validator/ there were three 
+errors, a misplaced ';', '"#fffbdc"' rather than '#fffbdc' as a 
+color spec., and thin as a border style.  The rest is just using 1px 
+rather than 1pt (or 0.25 or 1.5pt) for border widths.  Within a page 
+1pt can sometimes render as 1 pixel and sometimes as 2 pixels, 
+giving an uneven appearance.
+
+Maybe 1.5pt should have been replaced with 2px, you might want to 
+check that.
+
+Note that these changes make no difference to how the page appears 
+in IE, but now the page looks the same in Firefox, which it didn't 
+before.
+
+Cheers -Terry
+
+app> diff ~/Desktop/Package/leo/cvs/leo/www/leo_rst.css leo_rst.css
+24c24
+<   background-color: "#fffbdc";
+---
+>   background-color: #fffbdc;
+116c116
+<       border-bottom: .25pt solid #ccc;
+---
+>       border-bottom: 1px solid #ccc;
+170c170
+<   border-width: 1pt ;
+---
+>   border-width: 1px ;
+177c177
+<   border-width: 1pt ;
+---
+>   border-width: 1px ;
+214c214
+<   border-width: 1.5pt ;
+---
+>   border-width: 1px ;
+231c231
+<   border-width: 1.5pt }
+---
+>   border-width: 1px }
+234c234
+<   border-width: 1pt }
+---
+>   border-width: 1px }
+238c238
+<   border-style: thin ;
+---
+>   border-width: 1px ;
+272c272
+<     text-align: left} ;
+---
+>     text-align: left; }
+#@-node:ekr.20061019170752.1:Suggested changes to default.css
+#@+node:ekr.20061019171123:Use w.see only on body editor with focus?
+@nocolor
+
+Two body editors open looking at the same node, so you can write 
+code at the bottom of the body based on something close to the top. 
+Let's say the top pane's showing a data structure defined a page or 
+so down from the start of the body, and the bottom pane's showing a
+method you're writing at the bottom on the body.
+
+As soon as you enter a character in the bottom pane the point of 
+view of the top pane snaps back to the first line of the body, no 
+damage caused but now you can't see the datastructure definition you 
+were using for reference.
+
+This probably indicates that the body should be split into more than 
+one node... but thought I'd let you know it was doing that anyway.
+#@-node:ekr.20061019171123:Use w.see only on body editor with focus?
+#@+node:ekr.20061019171123.1:New syntax colorer is interfering with multipath
+@nocolor
+
+>> Seems to be writing the file to the correct place but has just now started 
+>> writing the '@multipath' to the thin file
+>> without commenting it out.
+
+> So you probably wrote the file with the multipath plugin disabled.
+
+Executive Summary:
+
+When multifile.py and __jEdit_colorizer__.py are both enabled 
+@multipath gets written to the output without being commented. 
+Disabling __jEdit_colorizer__.py fixes this.
+
+Longer version written as I determined the above:
+
+When I save I get:
+
+wrote:     itaseval.py
+saved: itasca_app.leo
+multifile:
+Wrote /mnt/proj/ItascaLegacy/app/itaseval.py to /home/tbrown/t/app
+
+which means the plugin must be running
+
+then grep multipath -B2 -A2 itaseval.py gives
+
+---cut here---
+#@verbatim
+#@+node:tbrown.20061004123041:@thin itaseval.py
+#@verbatim
+#@@language python
+@multipath /home/tbrown/t/app
+
+#@verbatim
+#@<< chdir for ArcGIS / wxPython >>
+---cut here---
+
+I'm synced with CVS.
+
+I'll try it on my vanilla copy of leo...
+
+pah... it worked ok there... so some interaction of plugins... 
+messing up the list of directives handling?  The colorizer knows 
+it's a directive, anyway, I'll start turning off plugins one by 
+one...
+
+ha - got it on the second guess, I was running 
+__jEdit_colorizer__.py - I knew I should trust all those underscores 
+:)
+
+Cheers -Terry
+
+> HTH.
+>
+> Edward
+> --------------------------------------------------------------------
+> Edward K. Ream   email:  edreamleo@charter.net
+> Leo: http://webpages.charter.net/edreamleo/front.html
+> --------------------------------------------------------------------
+>
+>
+
+#@-node:ekr.20061019171123.1:New syntax colorer is interfering with multipath
+#@+node:ekr.20061019171123.2:Fix problem with c++ extensions
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3971242
+By: nobody
+
+I just tried to use mod_shadow plugin the first time and it took me sometime
+to figure out that I immediately triggered a bug.
+
+The problem is, that I use c++ as programming language, but leo only provides an
+@language c directive. This is OK for colorizing, but it prevents the mod_shadow
+plugin to derive the correct file name extension from the language directive (at
+least that´s what I guessed from the error messages). To fix it I simply copied
+all c language entries in leoApp.py to create cpp new similar cpp language
+entries. I have not tried to understand the code that triggers this error in
+detail, so I don´t know if this fixes all issues, but at least it seems to work
+at the moment.
+#@nonl
+#@-node:ekr.20061019171123.2:Fix problem with c++ extensions
+#@-node:ekr.20061020155121:To do: 4.4.2
 #@+node:ekr.20061016205920:Most important
+#@+node:ekr.20061020155051:Simplify and fix undo
+#@+node:ekr.20061020155051.1:Notes
+@nocolor
+
+Several things became clearer after a short walk in the woods:
+
+- It's a little late in the release cycle to mess with undo, so I'm going to put
+off work until Leo 4.4.3. The present code is complex, and should be simplified
+if possible. However, the potential for harm is too great to make substantial
+change now. Given the complexity of the code, *any* change is a substantial
+change :-)
+
+- Some problems with undo may actually be just unexpected results. In
+particular, undo typing should 'coalesce', only for actual typing: all other
+commands that affect body text (cut, copy, yank and kill in particular) should
+be independently undoable regardless of undo granularity. Thus, if you cut,
+copy, yank or kill text an immediate undo command should restore the text to
+what it was before those commands. This probably doesn't happen now, and that
+could be the source of some (all??) undo problems.
+
+Edward
+
+P.S. I recently uncovered some more hard bindings in the yank command. Such
+bindings must somehow be removed, and certainly are a symptom that yank does not
+yet work as in Emacs. This is a separate issue from undo, so discovering this
+problem actually simplifies the undo task to come.
+#@-node:ekr.20061020155051.1:Notes
+#@-node:ekr.20061020155051:Simplify and fix undo
 #@+node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 @nocolor
 
@@ -11,6 +250,31 @@ Added unit tests for yank and all kill commands.
 
 @color
 #@nonl
+#@+node:ekr.20061020080610:How to reproduce undo bug
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3972170
+By: oculog
+
+Step 1 - add some lines...
+line 1
+line 2
+line 3
+
+Step 2 - cut and paste first line to the end
+line 2
+line 3
+line 1
+
+Step 3 - *Copy* and paste first line to the end x2
+line 2
+line 3
+line 1
+line 2
+line 2
+
+That's it!  The fourth undo doesn't work right.
+#@-node:ekr.20061020080610:How to reproduce undo bug
 #@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
 class killBufferCommandsClass (baseEditCommandsClass):
     
@@ -353,9 +617,6 @@ def redoTyping (self):
         c.frame.body.setYScrollPosition(u.yview)
 #@-node:EKR.20040526075238.5:redoTyping
 #@+node:ekr.20031218072017.1493:undoRedoText
-# Handle text undo and redo.
-# The terminology is for undo: converts _new_ text into _old_ text.
-
 def undoRedoText (self,p,
     leading,trailing, # Number of matching leading & trailing lines.
     oldMidLines,newMidLines, # Lists of unmatched lines.
@@ -364,6 +625,8 @@ def undoRedoText (self,p,
     undoType=None):
         
     __pychecker__ = '--no-argsused' # newNewlines is unused, but it has symmetry.
+    
+    '''Handle text undo and redo: converts _new_ text into _old_ text.'''
 
     u = self ; c = u.c ; body = c.frame.body
     << Incrementally update the Tk.Text widget >>
@@ -373,7 +636,7 @@ def undoRedoText (self,p,
     if textResult == result:
         c.frame.body.recolor(p,incremental=False)
     else: # Rewrite the pane and do a full recolor.
-        if 0:
+        if 0: # Warning: can cause unit tests to fail if text contains unicode.
             << print mismatch trace >>
         c.setBodyString(p,result)
 #@+node:ekr.20031218072017.1494:<< Incrementally update the Tk.Text widget >>
@@ -445,6 +708,109 @@ print "expected:",result
 print "actual  :",textResult
 #@-node:ekr.20031218072017.1497:<< print mismatch trace >>
 #@-node:ekr.20031218072017.1493:undoRedoText
+#@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
+#@+node:ekr.20051011072903.2:copyText
+def copyText (self,event=None):
+    
+    '''Copy the selected text from the widget to the clipboard.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    # Set the clipboard text.
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        s = w.get(i,j)
+        g.app.gui.replaceClipboardWith(s)
+        
+OnCopyFromMenu = copyText
+#@-node:ekr.20051011072903.2:copyText
+#@+node:ekr.20051011072049.2:cutText
+def cutText (self,event=None):
+    
+    '''Invoked from the mini-buffer and from shortcuts.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    name = c.widget_name(w)
+    oldSel = g.app.gui.getTextSelection(w)
+    oldText = g.app.gui.getAllText(w)
+    i,j = g.app.gui.getTextSelection(w)
+    
+    # Update the widget and set the clipboard text.
+    s = w.get(i,j)
+    if i != j:
+        w.delete(i,j)
+        g.app.gui.replaceClipboardWith(s)
+
+    if name.startswith('body'):
+        c.frame.body.forceFullRecolor()
+        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
+    elif name.startswith('head'):
+        # The headline is not officially changed yet.
+        # p.initHeadString(s)
+        s=g.app.gui.getAllText(w)
+        w.configure(width=f.tree.headWidth(s=s))
+    else: pass
+
+OnCutFromMenu = cutText
+#@-node:ekr.20051011072049.2:cutText
+#@+node:ekr.20051011072903.5:pasteText
+def pasteText (self,event=None,middleButton=False):
+
+    '''Paste the clipboard into a widget.
+    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
+
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    wname = c.widget_name(w)
+    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
+    oldText = w.get('1.0','end')
+    
+    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
+    
+    if middleButton and c.k.previousSelection:
+        start,end = c.k.previousSelection
+        s = w.get(start,end)
+        c.k.previousSelection = None
+    else:
+        s = s1 = g.app.gui.getTextFromClipboard()
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.get('1.0','end')
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@-node:ekr.20051011072903.5:pasteText
+#@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
 #@-node:ekr.20061009152210.1:yank/kill/undo do not work as expected
 #@+node:ekr.20061014050154.2:Binding to None clears all bindings
 #@-node:ekr.20061014050154.2:Binding to None clears all bindings

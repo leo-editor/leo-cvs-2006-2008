@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="93" left="245" height="768" width="966"/>
+	<global_window_position top="93" left="245" height="749" width="966"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -1001,7 +1001,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2856,9 +2856,6 @@
 </v>
 <v t="ekr.20060928195040.1"><vh>New plugins</vh></v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20061008190655"><vh>4.4.2 beta 2</vh>
 <v t="ekr.20061008190633.248"><vh>Bugs</vh>
 <v t="ekr.20061008190633.249"><vh>Fixed rst3 problem</vh></v>
@@ -2896,6 +2893,61 @@
 <v t="ekr.20061008190633.382"><vh>(Integrated sax with read logic)</vh></v>
 </v>
 <v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20061020155306" a="ETV"><vh>4.4.2 beta 3</vh>
+<v t="ekr.20061020155235.1"><vh>Bugs</vh>
+<v t="ekr.20061020155235.2"><vh>Fixed crash when searching for headllines containing unicode chars</vh></v>
+<v t="ekr.20061020155235.9"><vh>Fixed bugs in cycle-all-focus command</vh></v>
+<v t="ekr.20061020155235.27"><vh>Fixed bug with Alt-n keys</vh></v>
+<v t="ekr.20061020155235.36"><vh>Fix bug: closing a window after removing a script button can crash</vh></v>
+<v t="ekr.20061020155235.37"><vh>The end-of-script message no longer yanks focus from tabs</vh></v>
+<v t="ekr.20061020155235.41"><vh>Fixed  warning if minibuffer command does not exist when making menus</vh></v>
+<v t="ekr.20061020155235.47"><vh>Fixed new unicode bug</vh></v>
+<v t="ekr.20061020155235.123"><vh>Made 'About Plugin' dialog scrollable</vh></v>
+<v t="ekr.20061020155235.124"><vh>Removed unwanted key-state message</vh></v>
+<v t="ekr.20061020155235.126"><vh>Made sure all kill commands do a full recolor</vh></v>
+<v t="ekr.20061020155235.149"><vh>Fixed bug in new colorizer</vh></v>
+<v t="ekr.20061020155235.180"><vh>Removed set-mark-command and all calls to removeRKeys</vh></v>
+<v t="ekr.20061020155235.185"><vh>Fixed body editor problems</vh></v>
+<v t="ekr.20061020155235.254"><vh>Moved @import to top of doc/default.css</vh></v>
+<v t="ekr.20061020155235.255"><vh>Fixed focus problem when double-clicking @url nodes</vh></v>
+</v>
+<v t="ekr.20061020155235.263"><vh>Features</vh>
+<v t="ekr.20061020155235.271"><vh>Added minibuffer and Settings menus</vh></v>
+<v t="ekr.20061020155235.292"><vh>Toggling autocompleter and calltips now write to log (in red) instead of the statusLine</vh></v>
+<v t="ekr.20061020155235.294"><vh>Finished collapse-on-move-left</vh></v>
+<v t="ekr.20061020155235.304"><vh>Properly create Help menu on the Mac</vh></v>
+<v t="ekr.20061020155235.307"><vh>'*command-name' in headline means convert '-' to blanks</vh></v>
+<v t="ekr.20061020155235.308"><vh>Removed all references to commands from menu tables</vh></v>
+<v t="ekr.20061020155235.335"><vh>Add Open scripts.leo to help menu</vh></v>
+<v t="ekr.20061020155235.337"><vh>The spell tab now uses ctypes for Python 2.5</vh></v>
+<v t="ekr.20061020155235.385"><vh>Simulated x-windows middle-button paste</vh></v>
+</v>
+<v t="ekr.20061020155235.393"><vh>Plugins</vh>
+<v t="ekr.20061020155235.394"><vh>Fixed keyBindings plugin</vh></v>
+<v t="ekr.20061020155235.395"><vh>The scripting plugin now creates a delete-x-script-button command for each script button</vh></v>
+<v t="ekr.20061020155235.396"><vh>Fixed the nodenavigator plugin</vh></v>
+<v t="ekr.20061020155235.397"><vh>Rewrote the multifile plugin for the 4.x code base.</vh></v>
+<v t="ekr.20061020155235.398"><vh>Replaced __name__ with __plugin_name__ in four plugins</vh></v>
+<v t="ekr.20061020155235.399"><vh>Improved the scripting plugin</vh></v>
+<v t="ekr.20061020155235.400"><vh>Fixed bugs in multi-file plugin</vh></v>
+<v t="ekr.20061020155235.402"><vh>Fix bug in shortcut_button plugin</vh></v>
+<v t="ekr.20061020155235.125"><vh>Removed datenodes.ini from cvs</vh></v>
+<v t="ekr.20061020155235.34"><vh>Fix bug in ops plugin</vh></v>
+<v t="ekr.20061020155235.35"><vh>Fixed crasher on script button balloons</vh></v>
+</v>
+<v t="ekr.20061020155235.403"><vh>Settings</vh>
+<v t="ekr.20061020155235.404"><vh>Made unlimited undo the default</vh></v>
+<v t="ekr.20061020155235.405" a="E"><vh>Added @bool select_all_text_when_editing_headlines</vh></v>
+<v t="ekr.20061020155235.410"><vh>Added bindings to toggle-autocompleter and toggle-calltips</vh></v>
+<v t="ekr.20061020155235.411"><vh>Added 'Candidates for myLeoSettings.leo' to leoSettings.leo</vh></v>
+<v t="ekr.20061020155235.412"><vh>Recent changes to settings</vh></v>
+<v t="ekr.20061020155235.413" a="E"><vh>Added @bool insert_new_nodes_at_end</vh></v>
+<v t="ekr.20061020155235.264"><vh>Removed .leoRecentFiles.txt from distribution and cvs</vh></v>
+</v>
 </v>
 </v>
 </v>
@@ -29297,5 +29349,184 @@ position and vnode classes brings that potential into reality.
        This is slower than using Leo's legacy xml parser, but may solve some unicode problems.
 
 False: Use Leo's legacy xml parser code.</t>
+<t tx="ekr.20061020155235.1"></t>
+<t tx="ekr.20061020155235.2"></t>
+<t tx="ekr.20061020155235.9"></t>
+<t tx="ekr.20061020155235.27">@command whaterver @key Alt-1 didn't work
+Actually, no Alt-n keys worked for n in (1,2,3,4,5) in any context.</t>
+<t tx="ekr.20061020155235.34">http://sourceforge.net/forum/message.php?msg_id=3956836
+</t>
+<t tx="ekr.20061020155235.35">http://sourceforge.net/forum/message.php?msg_id=3958333
+</t>
+<t tx="ekr.20061020155235.36"></t>
+<t tx="ekr.20061020155235.37"></t>
+<t tx="ekr.20061020155235.41">The warning was disabled due to a programming error (not not)
+Enabling this found two errors: view-lossage (missing comma) and
+find-with-present-options --&gt; search-with-present-options.</t>
+<t tx="ekr.20061020155235.47">https://sourceforge.net/forum/message.php?msg_id=3957980
+
+This was a major effort.  What I did:
+    
+- Defined g.isWordChar in terms of ch.isalnum()
+
+- Replace almost all instances of string.letters and string.digits by calls to
+  ch.isalnum(), ch.isalpha(), ch.isdigit(), etc.
+  
+- Similarly, replaced word_chars.
+
+- The new code uses string literals only for
+
+a) small constants like '+-' and
+b) constants in a very limited context, as in the input to regexp.</t>
+<t tx="ekr.20061020155235.123">http://sourceforge.net/forum/message.php?msg_id=3960993
+</t>
+<t tx="ekr.20061020155235.124">https://sourceforge.net/forum/message.php?msg_id=3961623
+</t>
+<t tx="ekr.20061020155235.125">No longer needed now that the datenodes plugins gets settings from cvs.</t>
+<t tx="ekr.20061020155235.126"></t>
+<t tx="ekr.20061020155235.149">Did not restore selection after indent/undent commands.
+</t>
+<t tx="ekr.20061020155235.180">The 'hang' was due to removeRKeys, which removes the bindings create by
+setRegion (set-mark-command) by *also* cleared all the other bindings!
+For now I have simply disabled the set-mark-command and commented out all
+calls to removeRKeys.
+
+Note that toggle-extend-mode (Alt-3) is a good way to define regions.</t>
+<t tx="ekr.20061020155235.185">onFocusIn and its associated binding were a very bad idea.  It is not needed:
+k.masterClickHandler simply calls the new onClick method.
+
+What I did:
+    
+- Eliminating onFocusIn and its associated binding.
+  Hurray: this also fixed the Find problem.
+- Fixed problem with deleting nodes when multiple editors are present.
+- Fixed minor problem with cycle-all-focus.
+- Removed title bar when penultimate editor is deleted.</t>
+<t tx="ekr.20061020155235.254"></t>
+<t tx="ekr.20061020155235.255">Double-clicking  @url &lt;leo-fille&gt; did not bring Leo file to top.
+</t>
+<t tx="ekr.20061020155235.263"></t>
+<t tx="ekr.20061020155235.264">What I did
+
+- @bool write_recent_files_as_needed = True
+
+People who don't want Leo to update .leoRecentFiles.txt can set this to False.
+
+- Remove .leoRecentFiles from cvs
+- Remove .leoRecentFiles from distribution list.</t>
+<t tx="ekr.20061020155235.271">http://sourceforge.net/forum/message.php?msg_id=3588148
+
+One way to make Leo more newbie friendly is to add menu items for key features
+that are likely to cause confusion in the beginning.
+</t>
+<t tx="ekr.20061020155235.292">This is much more visible.</t>
+<t tx="ekr.20061020155235.294">Added support for @bool sparse_move_outline_left
+
+When True, Leo collapses the (former) parent of a node when moving that node left.
+Takes getting used to, but I like it.
+
+Note that the move-outline-up/down commands can have the effect of moving an outline left.</t>
+<t tx="ekr.20061020155235.304">At long last Leo creates a proper help menu on the Mac.</t>
+<t tx="ekr.20061020155235.307">This would greatly simplify menu entries.</t>
+<t tx="ekr.20061020155235.308">This is an important step towards making all menus configurable.</t>
+<t tx="ekr.20061020155235.335">The open-scripts-leo command.</t>
+<t tx="ekr.20061020155235.337"></t>
+<t tx="ekr.20061020155235.385"></t>
+<t tx="ekr.20061020155235.393"></t>
+<t tx="ekr.20061020155235.394">http://sourceforge.net/forum/message.php?msg_id=3958380
+</t>
+<t tx="ekr.20061020155235.395">http://sourceforge.net/forum/message.php?msg_id=3423121
+</t>
+<t tx="ekr.20061020155235.396">http://sourceforge.net/forum/message.php?msg_id=3959003
+</t>
+<t tx="ekr.20061020155235.397"></t>
+<t tx="ekr.20061020155235.398">http://sourceforge.net/forum/message.php?msg_id=3962632
+</t>
+<t tx="ekr.20061020155235.399">- Every button created by the plugin creates a corresponding command. The
+command name is the 'cleaned' version of the button name.
+
+- Every button created by the plugin also creates a delete-x-button command,
+where x is the command name as just discussed. So now you can delete script
+buttons without right-clicking.
+
+- I took the time to revise, refactor, clean up, reorganize and better document
+the code. This was overdue: the previous code had grown difficult to understand
+through multiple small accretions. I can actually understand the new code.</t>
+<t tx="ekr.20061020155235.400"></t>
+<t tx="ekr.20061020155235.402">http://sourceforge.net/forum/message.php?msg_id=3963657
+</t>
+<t tx="ekr.20061020155235.403"></t>
+<t tx="ekr.20061020155235.404">As always, you can set max_undo_stack_size in myLeoSettings.leo.</t>
+<t tx="ekr.20061020155235.405">A highly useful option.
+However, creating a new node always selects the entire text, regardless of this options.
+</t>
+<t tx="ekr.20061020155235.410">- Added bindings for toggle-autocompleter (Alt-1) and toggle-calltips (Alt-2)
+
+- Ctrl-. and ctrl-( do not seem to do anything.
+
+** Mystery solved: there was a trace in the calltip logic!
+
+Disabled these binding:
+
+auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
+show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
+
+The problem is that autocompletion depends on state: self.leadinWord,
+prevObjects, etc. Thus, it's not presently possible to start the proces
+anywhere. Similar remarks apply to calltips, which relies on autocompleter
+state.
+
+This is a complex problem, and not very serious now that there is an easy way of
+toggling autocompleter and calltips on and off. It's been added to a 'later'
+section of the to-do list.</t>
+<t tx="ekr.20061020155235.411">Added the node: Candidates for settings in myLeoSettings.leo. This lists the
+most 'controversial' settings in leoSetting.leo, and is a quick-start to
+creating myLeoSettings.leo."
+</t>
+<t tx="ekr.20061020155235.412">- Added shift-ctrl keys to extend the selection.
+focus-to-body = Alt-D
+focus-to-tree = Alt-T
+toggle-extend-mode = Alt-3</t>
+<t tx="ekr.20061020155235.413"></t>
+<t tx="ekr.20061020155306">Leo 4.4.2 beta 3                                  October 20, 2006
+
+Leo 4.4.2 beta 3 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+The beta release fixed dozens of bugs and smoothed many rough edges.  There
+are no known major bugs in Leo.  This will be the last beta release before
+LEo 4.4.2 final.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.2:
+----------------------------
+- You can now store settings in myLeoSettings.leo without fear of those settings
+  being changed by cvs updates or in future versions of Leo.
+- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+  Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
+- Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
+  i.e., they can optionally derive from ZODB.Persistence.Persistent.
+  See Chapter 17: Using ZODB with Leo for details.
+- The leoOPML plugin defines commands to read and write OPML files.
+- The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
+- The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
+- Much faster navigation through the outline.
+- When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
+- The find command now optionally closes nodes not needed to show the node containing the present match.
+- Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
+- Many new minibuffer commands now appear in the Cmds menu.
+- A sax parser can now optionally read .leo files.
+- Fixed numerous bugs.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
+</t>
 </tnodes>
 </leo_file>

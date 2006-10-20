@@ -38,7 +38,7 @@ if 0: # Set to 1 for lint-like testing.
     except:
         print ; print 'Can not import pychecker' ; print
 #@-node:ekr.20031218072017.2606:<< Import pychecker >>
-#@+node:ekr.20060904165452:4.4.2 projects
+#@+node:ekr.20060904165452:4.4.2 b3 projects
 #@+node:ekr.20061010104745:Bugs
 #@+node:ekr.20061010105844:Fixed crash when searching for headllines containing unicode chars
 leoID = ekr (in c:\Documents and Settings\Ed)
@@ -9228,7 +9228,7 @@ def insertHeadline (self,event=None,op_name="Insert Node"):
 #@-node:ekr.20031218072017.1761:c.insertHeadline
 #@-node:ekr.20040213090121:Added @boo insert_new_nodes_at_end
 #@-node:ekr.20061009154800:Settings
-#@-node:ekr.20060904165452:4.4.2 projects
+#@-node:ekr.20060904165452:4.4.2 b3 projects
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt
