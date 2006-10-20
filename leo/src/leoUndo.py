@@ -954,21 +954,16 @@ class baseUndoer:
         rollBackToMark = rollbackToMark
     #@-node:ekr.20050525151217:getMark & rollbackToMark (no longer used)
     #@+node:ekr.20031218072017.1490:setUndoTypingParams
-    #@+at 
-    #@nonl
-    # This routine saves enough information so a typing operation can be 
-    # undone and redone.
-    # 
-    # We do nothing when called from the undo/redo logic because the Undo and 
-    # Redo commands merely reset the bead pointer.
-    #@-at
-    #@@c
-    
     def setUndoTypingParams (self,p,undo_type,oldText,newText,oldSel,newSel,oldYview=None):
         
         __pychecker__ = 'maxlines=2000' # Ignore the size of this method.
         
+        '''Save enough information so a typing operation can be undone and redone.
+    
+        Do nothing when called from the undo/redo logic because the Undo and Redo commands merely reset the bead pointer.'''
+    
         u = self ; c = u.c
+        trace = False # Can cause unit tests to fail.
         #@    << return if there is nothing to do >>
         #@+node:ekr.20040324061854:<< return if there is nothing to do >>
         if u.redoing or u.undoing:
@@ -1002,13 +997,13 @@ class baseUndoer:
         #@nl
         #@    << compute leading, middle & trailing  lines >>
         #@+node:ekr.20031218072017.1491:<< compute leading, middle & trailing  lines >>
-        #@+at 
-        #@nonl
-        # Incremental undo typing is similar to incremental syntax coloring.  
-        # We compute the number of leading and trailing lines that match, and 
-        # save both the old and new middle lines.
-        # 
-        # NB: the number of old and new middle lines may be different.
+        #@+at
+        # Incremental undo typing is similar to incremental syntax coloring. 
+        # We compute
+        # the number of leading and trailing lines that match, and save both 
+        # the old and
+        # new middle lines. NB: the number of old and new middle lines may be 
+        # different.
         #@-at
         #@@c
         
@@ -1056,7 +1051,7 @@ class baseUndoer:
             new_newlines += 1
             i -= 1
         
-        if u.debug_print:
+        if trace:
             print "lead,trail",leading,trailing
             print "old mid,nls:",len(old_middle_lines),old_newlines,oldText
             print "new mid,nls:",len(new_middle_lines),new_newlines,newText
@@ -1791,9 +1786,6 @@ class baseUndoer:
             c.frame.body.setYScrollPosition(u.yview)
     #@-node:EKR.20040526090701.4:undoTyping
     #@+node:ekr.20031218072017.1493:undoRedoText
-    # Handle text undo and redo.
-    # The terminology is for undo: converts _new_ text into _old_ text.
-    
     def undoRedoText (self,p,
         leading,trailing, # Number of matching leading & trailing lines.
         oldMidLines,newMidLines, # Lists of unmatched lines.
@@ -1802,6 +1794,8 @@ class baseUndoer:
         undoType=None):
             
         __pychecker__ = '--no-argsused' # newNewlines is unused, but it has symmetry.
+        
+        '''Handle text undo and redo: converts _new_ text into _old_ text.'''
     
         u = self ; c = u.c ; body = c.frame.body
         #@    << Incrementally update the Tk.Text widget >>
@@ -1877,7 +1871,7 @@ class baseUndoer:
         if textResult == result:
             c.frame.body.recolor(p,incremental=False)
         else: # Rewrite the pane and do a full recolor.
-            if 0:
+            if 0: # Warning: can cause unit tests to fail if text contains unicode.
                 #@            << print mismatch trace >>
                 #@+node:ekr.20031218072017.1497:<< print mismatch trace >>
                 print "undo mismatch"
