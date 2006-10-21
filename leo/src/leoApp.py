@@ -104,6 +104,7 @@ class LeoApp:
             "actionscript" : "// /* */", #jason 2003-07-03
             "c" : "// /* */", # C, C++ or objective C.
             "csharp" : "// /* */", # C#
+            "cpp" : "// /* */",# C++.
             "css" : "/* */", # 4/1/04
             "cweb" : "@q@ @>", # Use the "cweb hack"
             "elisp" : ";",
@@ -131,6 +132,7 @@ class LeoApp:
             "ada" : "ads",
             "actionscript" : "as", #jason 2003-07-03
             "c" : "c",
+            "cpp" : "cpp",
             "css" : "css", # 4/1/04
             "cweb" : "w",
             "elisp" : "el",
@@ -164,6 +166,7 @@ class LeoApp:
             "as"    : "actionscript",
             "bas"   : "rapidq",
             "c"     : "c",
+            "cpp"   : "cpp",
             "css"   : "css",
             "el"    : "elisp",
             "forth" : "forth",
