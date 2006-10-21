@@ -810,7 +810,10 @@ class leoFind:
                 g.trace('i: %d, j: %d k: %d, k2: %d, s[k:k2]: %s, len(s): %d, s[-1]: %s,' % (
                     i,j,k,k2,repr(s[k:k2]),len(s),repr(s[-1])))
             # g.trace('groups',mo.groups())
-            return k, k2
+            if k == k2:
+                return -1, -1 # A non-empty pattern can match an empty string.  Move on!
+            else:
+                return k, k2
     #@-node:ekr.20060526092203:regexHelper
     #@+node:ekr.20060526140744:backwardsHelper
     def backwardsHelper (self,s,i,j,pattern,nocase,word):
