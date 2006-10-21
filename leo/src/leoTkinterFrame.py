@@ -2220,7 +2220,6 @@ class leoTkinterBody (leoFrame.leoBody):
                 pass
         #@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
         #@nl
-        w3 = g.app.gui.get_focus(c)
         c.bodyWantsFocusNow()
         return 'break'
     #@nonl

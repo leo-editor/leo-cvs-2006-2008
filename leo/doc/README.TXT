@@ -1,7 +1,11 @@
-Leo 4.4.2 beta 2                                  October 9, 2006
+Leo 4.4.2 beta 3                                  October 20, 2006
 
-Leo 4.4.2 beta 2 is available at:
+Leo 4.4.2 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
+
+The beta release fixed dozens of bugs and smoothed many rough edges.  There
+are no known major bugs in Leo.  This will be the last beta release before
+LEo 4.4.2 final.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -10,7 +14,7 @@ The highlights of Leo 4.4.2:
 ----------------------------
 - You can now store settings in myLeoSettings.leo without fear of those settings
   being changed by cvs updates or in future versions of Leo.
-- Leo's vnode tnode and position classes are now completely independent of the rest of Leo.
+- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
   Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
 - Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
   i.e., they can optionally derive from ZODB.Persistence.Persistent.
@@ -22,14 +26,9 @@ The highlights of Leo 4.4.2:
 - When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
 - The find command now optionally closes nodes not needed to show the node containing the present match.
 - Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
-- Many more minibuffer commands appear in the Cmds menu.
+- Many new minibuffer commands now appear in the Cmds menu.
 - A sax parser can now optionally read .leo files.
-- Dozens of bug fixes.
-
-Quote of the month:
-------------------
-For the non-leo python project I'm (supposed to be) working on, I'm switching from emacs to leo :-)
--- Terry Brown
+- Fixed numerous bugs.
 
 Links:
 ------

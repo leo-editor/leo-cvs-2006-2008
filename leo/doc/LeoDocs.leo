@@ -710,9 +710,9 @@
 <v t="ekr.20060928172457.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060929043325"><vh>A major code reorg</vh></v>
 <v t="ekr.20061009111417.18"><vh>New commands</vh></v>
-<v t="ekr.20060928172457.4"><vh>New features</vh></v>
-<v t="ekr.20060928172457.5"><vh>New and improved plugins</vh></v>
-<v t="ekr.20061009111417.11"><vh>Settings</vh></v>
+<v t="ekr.20060928172457.4" a="E"><vh>New features</vh></v>
+<v t="ekr.20060928172457.5" a="E"><vh>New and improved plugins</vh></v>
+<v t="ekr.20061009111417.11" a="E"><vh>Settings</vh></v>
 <v t="ekr.20060929043325.1"><vh>ZODB scripting</vh></v>
 <v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
 <v t="ekr.20060928172457.8"><vh>@rst-no-head end stuff</vh></v>
@@ -739,7 +739,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.1653"><vh>Leaps (Leo Enhancement and Advancement Proposals)</vh>
+<v t="edream.110203163054.1653" a="E"><vh>Leaps (Leo Enhancement and Advancement Proposals)</vh>
 <v t="edream.110203163054.1654"><vh>100's administering Leaps (and LeoCon)</vh>
 <v t="edream.110203163054.1655"><vh>Leap 102: LeoCon 1</vh></v>
 </v>
@@ -749,7 +749,7 @@
 <v t="edream.110203163054.1659"><vh>Leap 203. (Finished) Use Python Mega Widgets</vh></v>
 <v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
 </v>
-<v t="edream.110203163054.1661"><vh>300's LeoN and beyond</vh>
+<v t="edream.110203163054.1661" a="E"><vh>300's LeoN and beyond</vh>
 <v t="edream.110203163054.1662"><vh>Leap 301: Use central server</vh></v>
 <v t="edream.110203163054.1663"><vh>Leap 302: Resolve CVS Conflicts command</vh>
 <v t="edream.110203163054.1664"><vh>Comments by Josef</vh></v>
@@ -28683,7 +28683,29 @@ For full details see the release notes section in LeoDocs.leo.
 .. |next| image:: arrow_rt.gif
     :target: new-4-4-1.html
 </t>
-<t tx="ekr.20060928172457.4">New in Leo 4.4.2 beta 2:
+<t tx="ekr.20060928172457.4">New in Leo 4.4.2 beta 3:
+    
+- Added Minibuffer and Settings submenus of the Cmds menu.
+
+- At long last Leo creates a proper help menu on the Mac.
+
+- Added a new convention for menu tables. If the first item (a string
+  representing the menu label) starts with '*' Leo will convert hyphens to
+  spaces and upcase the label. This convention allows a single string to
+  represent both the menu label and its associated minibuffer command. As part
+  of this reorganization, all menu tables in Leo's core now use only strings.
+  This is an essential precondition to supporting @menu nodes in
+  leoSettings.leo.
+  
+- Leo's Help menu now contains the Open scripts.leo command.
+
+- Leo uses ctypes to import Aspell when run from Python 2.5 or later.
+  Leo no longer needs Python-specific versions of aspell.dll.
+  
+- Added support for x-windows middle-button paste.
+  This only works when the paste is made in the pane containing the selected text.
+
+New in Leo 4.4.2 beta 2:
     
 - Leo looks for myLeoSettings.leo files in the same place Leo looks for leoSettings.leo files.
 
@@ -28705,12 +28727,12 @@ For full details see the release notes section in LeoDocs.leo.
       When keystrokes in the outline pane are typed 'close' together Leo first tries to look
       for prefix + ch, where ch is the character just typed and prefix is the previous match.
       The term 'close together' is specified by the setting @float outline_nav_extend_delay.
-      The outline nav search revers to a single-character if the extended search
+      The outline search revers to a single-character if the extended search
       fails, so in fact the delay is not too significant. In practice everything works
       well without me thinking at all about what is happening.
   
 - Added p.archivedPosition.
-  This is a key first step towards Leop 204.
+  This is a key first step towards Leap 204.
   
 - Integrated sax with read logic.
 
@@ -28730,7 +28752,19 @@ New in Leo 4.4.2 b1:
 - Numerous changes that make Leo easier to use without using a mouse.
 
 - Many new minibuffer commands now appear in the Cmds menu.</t>
-<t tx="ekr.20060928172457.5">New in Leo 4.4.2 b2:
+<t tx="ekr.20060928172457.5">New in Leo 4.4.2 b3:
+    
+- Improved the mod_scripting plugin. Every button created by the plugin creates
+  a corresponding command. The command name is the 'cleaned' version of the
+  button name. Likewise, the plugin also creates a delete-x-button command,
+  where x is the command name as just discussed. So now you can delete script
+  buttons without right-clicking.
+
+- Made 'About Plugin' dialog scrollable.
+
+- Fixed bugs in groupoperations, multifile, nodenavigator and shortcut_button plugins.
+ 
+New in Leo 4.4.2 b2:
     
 - Improved the mod_scripting plugin.
 
@@ -29320,7 +29354,24 @@ needed to separate data from traversals of the data. The re-visioning of the
 position and vnode classes brings that potential into reality. 
 </t>
 <t tx="ekr.20061009074501"></t>
-<t tx="ekr.20061009111417.11">New in Leo 4.4.2 beta 2:
+<t tx="ekr.20061009111417.11">New in Leo 4.4.2 b3:
+    
+- Removed .leoRecentFiles.txt from the distribution and cvs and added @bool
+  write_recent_files_as_needed. The presence or absence of .leoRecentFiles.txt
+  no longer controls whether Leo creates and updates .leoRecentFiles.txt.
+
+- Added @bool insert_new_nodes_at_end.
+
+- Changed default settings as follows::
+    
+    focus-to-body = Alt-D
+    focus-to-tree = Alt-T
+    toggle-extend-mode = Alt-3
+
+- Added @bool select_all_text_when_editing_headlines.
+  Creating a new node always selects the entire text, regardless of this option.
+
+New in Leo 4.4.2 beta 2:
     
 - Leo looks for myLeoSettings.leo files in the same place Leo looks for leoSettings.leo files.
 
