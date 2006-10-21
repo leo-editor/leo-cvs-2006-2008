@@ -2,23 +2,6 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20061020155121:To do: 4.4.2
-#@+node:ekr.20061019171123:Use w.see only on body editor with focus?
-@nocolor
-
-Two body editors open looking at the same node, so you can write 
-code at the bottom of the body based on something close to the top. 
-Let's say the top pane's showing a data structure defined a page or 
-so down from the start of the body, and the bottom pane's showing a
-method you're writing at the bottom on the body.
-
-As soon as you enter a character in the bottom pane the point of 
-view of the top pane snaps back to the first line of the body, no 
-damage caused but now you can't see the datastructure definition you 
-were using for reference.
-
-This probably indicates that the body should be split into more than 
-one node... but thought I'd let you know it was doing that anyway.
-#@-node:ekr.20061019171123:Use w.see only on body editor with focus?
 #@+node:ekr.20061019171123.1:New syntax colorer is interfering with multipath
 @nocolor
 
