@@ -2169,19 +2169,20 @@ class leoTkinterBody (leoFrame.leoBody):
         if w.leo_p is None:
             if trace: g.trace('no w.leo_p') 
             return 'break'
-            # Inactivate the previously active editor.
-            # Don't capture ivars here! selectMainEditor keeps them up-to-date.
-            for key in d.keys():
-                w2 = d.get(key)
-                if w2 != w and w2.leo_active:
-                    w2.leo_active = False
-                    self.unselectLabel(w2)
-                    w2.leo_scrollBarSpot = w2.yview()
-                    w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
-                    w2.leo_selection = g.app.gui.getSelectionRange(w2)
-                    break
-            else:
-                if trace: g.trace('no active editor!')
+        # Inactivate the previously active editor.
+        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+        for key in d.keys():
+            w2 = d.get(key)
+            if w2 != w and w2.leo_active:
+                w2.leo_active = False
+                self.unselectLabel(w2)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+                w2.leo_selection = g.app.gui.getSelectionRange(w2)
+                # g.trace('inactive:',id(w2),w2.leo_scrollBarSpot,w2.leo_insertSpot)
+                break
+        else:
+            if trace: g.trace('no active editor!')
         
         # Careful, leo_p may not exist.
         if not c.positionExists(w.leo_p):
@@ -2202,6 +2203,8 @@ class leoTkinterBody (leoFrame.leoBody):
         c.recolor_now()
         #@    << restore the selection, insertion point and the scrollbar >>
         #@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+        # g.trace('active:',id(w),w.leo_scrollBarSpot,w.leo_insertSpot)
+        
         if w.leo_insertSpot:
             g.app.gui.setInsertPoint(w,w.leo_insertSpot)
             w.see(w.leo_insertSpot)
