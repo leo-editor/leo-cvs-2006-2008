@@ -411,7 +411,7 @@ class leoFrame:
     
     def copyText  (self,event=None): self.oops()
     def cutText   (self,event=None): self.oops()
-    def pasteText (self,event=None): self.oops()
+    def pasteText (self,event=None,middleButton=False): self.oops()
     
     def abortEditLabelCommand (self,event=None): self.oops()
     def endEditLabelCommand   (self,event=None): self.oops()

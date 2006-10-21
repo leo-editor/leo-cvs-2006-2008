@@ -411,8 +411,10 @@ altre
 anotherValue
 anydbm
 apell
+api
 api's
 applyConfiguration
+archivedPosition
 aren`t
 arg
 args
@@ -1396,9 +1398,11 @@ mouseless
 moveAfter
 moveToParent
 moveToRoot
+moveToX
 msec
 msg
 msg_id
+multifile
 multilline
 multiprefix
 mungeAllFunctions
@@ -1977,6 +1981,7 @@ subdictionary
 subfolder
 subheadlines
 submenu
+submenus
 submit_form
 subnode
 subnodes
@@ -2154,6 +2159,7 @@ unlocklog
 unmarkAll
 unmarking
 unmarks
+unrooted
 unselect
 unselect1
 unselect2
@@ -2203,6 +2209,7 @@ vList2
 vals
 varargs
 varkw
+ve
 vefsyn
 ver
 versioning

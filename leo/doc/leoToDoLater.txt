@@ -2082,7 +2082,7 @@ def getAspell (self):
         aspell = g.importFromPath('aspell',theDir,pluginName=__name__,verbose=True)
 
     self.aspell = aspell
-    self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=local_language_code)
+    self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
 #@nonl
 #@-node:ekr.20061017125710:getAspell
 #@+node:ekr.20061018111331:getAspellWithCtypes
@@ -2127,7 +2127,7 @@ if 0:
     print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
     print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
     print aspell_config_retrieve(sc, "lang")
-    print aspell_config_replace(sc, "lang", local_language_code)
+    print aspell_config_replace(sc, "lang",self.local_language_code)
     print aspell_config_retrieve(sc, "lang")
 
 possible_err = aspell.new_aspell_speller(sc)
