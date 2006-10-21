@@ -2,6 +2,71 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20061020155121:To do: 4.4.2
+#@+node:ekr.20061021163844:Find backward (F2) doesn't seem to be working properly
+#@-node:ekr.20061021163844:Find backward (F2) doesn't seem to be working properly
+#@+node:ekr.20061016104544:Make sure paste does a full recolor
+@
+
+This is probably an issue with the new colorizer being interrupted. When
+restarted, it is probably only restarted as an incremental color. Maybe we could
+'propagate' non-incremental coloring, but really the new colorizer isn't fast
+enough and needs a rewrite of its control logic.
+#@nonl
+#@+node:ekr.20051011072903.5:pasteText
+def pasteText (self,event=None,middleButton=False):
+
+    '''Paste the clipboard into a widget.
+    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
+
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    wname = c.widget_name(w)
+    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
+    oldText = w.get('1.0','end')
+    
+    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
+    
+    if middleButton and c.k.previousSelection:
+        start,end = c.k.previousSelection
+        s = w.get(start,end)
+        c.k.previousSelection = None
+    else:
+        s = s1 = g.app.gui.getTextFromClipboard()
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.get('1.0','end')
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@-node:ekr.20051011072903.5:pasteText
+#@-node:ekr.20061016104544:Make sure paste does a full recolor
 #@+node:ekr.20061019171123.1:New syntax colorer is interfering with multipath
 @nocolor
 
@@ -67,85 +132,6 @@ Cheers -Terry
 >
 
 #@-node:ekr.20061019171123.1:New syntax colorer is interfering with multipath
-#@+node:ekr.20061009152210:Docs
-@nocolor
-
-- FAQ Entries:
-    - Caps-lock key problem.
-    - @bool setting for unicode problems.
-        @bool ignore_unbound_non_ascii_keys = False
-    (Set this to False in leoSettings.leo, and True in myLeoSettings.leo)
-
-- Put link to what's new in readme file.
-
-- Highlights: discovered how to make Leo's data structures compatible with arbitrary directed graphs.
-
-- Document tnodeList, vnodeList.
-#@nonl
-#@-node:ekr.20061009152210:Docs
-#@+node:ekr.20061016104544:Make sure paste does a full recolor
-@
-
-This is probably an issue with the new colorizer being interrupted. When
-restarted, it is probably only restarted as an incremental color. Maybe we could
-'propagate' non-incremental coloring, but really the new colorizer isn't fast
-enough and needs a rewrite of its control logic.
-#@nonl
-#@+node:ekr.20051011072903.5:pasteText
-def pasteText (self,event=None,middleButton=False):
-
-    '''Paste the clipboard into a widget.
-    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
-
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    wname = c.widget_name(w)
-    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
-    oldText = w.get('1.0','end')
-    
-    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
-    
-    if middleButton and c.k.previousSelection:
-        start,end = c.k.previousSelection
-        s = w.get(start,end)
-        c.k.previousSelection = None
-    else:
-        s = s1 = g.app.gui.getTextFromClipboard()
-    
-    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-    
-    if singleLine:
-        # Strip trailing newlines so the truncation doesn't cause confusion.
-        while s and s [ -1] in ('\n','\r'):
-            s = s [: -1]
-
-    try:
-        # Update the widget.
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,s)
-    
-        if wname.startswith('body'):
-            c.frame.body.forceFullRecolor()
-            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
-        elif singleLine:
-            s = w.get('1.0','end')
-            while s and s [ -1] in ('\n','\r'):
-                s = s [: -1]
-            if wname.startswith('head'):
-                # The headline is not officially changed yet.
-                # p.initHeadString(s)
-                w.configure(width=f.tree.headWidth(s=s))
-        else: pass
-    except Exception:
-        pass # Tk sometimes throws weird exceptions here.
-        
-    return 'break' # Essential
-
-OnPasteFromMenu = pasteText
-#@-node:ekr.20051011072903.5:pasteText
-#@-node:ekr.20061016104544:Make sure paste does a full recolor
 #@-node:ekr.20061020155121:To do: 4.4.2
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061020155051:Simplify and fix undo

@@ -458,6 +458,92 @@ def regexHelper (self,s,i,j,pattern,backwards,nocase):
             return k, k2
 #@-node:ekr.20060526092203:regexHelper
 #@-node:ekr.20060927173836.2:Move on if regexp matches an empty string
+#@+node:ekr.20061019171123:Properly deactivate body pane
+@nocolor
+
+Two body editors open looking at the same node, so you can write 
+code at the bottom of the body based on something close to the top. 
+Let's say the top pane's showing a data structure defined a page or 
+so down from the start of the body, and the bottom pane's showing a
+method you're writing at the bottom on the body.
+
+As soon as you enter a character in the bottom pane the point of 
+view of the top pane snaps back to the first line of the body, no 
+damage caused but now you can't see the datastructure definition you 
+were using for reference.
+
+This probably indicates that the body should be split into more than 
+one node... but thought I'd let you know it was doing that anyway.
+
+@color
+#@nonl
+#@+node:ekr.20061017083312:selectEditor
+def selectEditor(self,w):
+    
+    c = self.c ; d = self.editorWidgets
+    trace = False
+    if trace: g.trace(g.app.gui.widget_name(w),id(w),g.callers())
+    if w.leo_p is None:
+        if trace: g.trace('no w.leo_p') 
+        return 'break'
+    # Inactivate the previously active editor.
+    # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+    for key in d.keys():
+        w2 = d.get(key)
+        if w2 != w and w2.leo_active:
+            w2.leo_active = False
+            self.unselectLabel(w2)
+            w2.leo_scrollBarSpot = w2.yview()
+            w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
+            w2.leo_selection = g.app.gui.getSelectionRange(w2)
+            # g.trace('inactive:',id(w2),w2.leo_scrollBarSpot,w2.leo_insertSpot)
+            break
+    else:
+        if trace: g.trace('no active editor!')
+    
+    # Careful, leo_p may not exist.
+    if not c.positionExists(w.leo_p):
+        if trace: g.trace('does not exist',w.leo_name)
+        for p2 in c.allNodes_iter():
+            if p2.v == w.leo_v:
+                w.leo_p = p2.copy()
+                break
+        else:
+             # This *can* happen when selecting a deleted node.
+            w.leo_p = c.currentPosition()
+            if trace: g.trace('previously deleted node')
+            return 'break'
+
+    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    w.leo_active = True
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+    c.recolor_now()
+    << restore the selection, insertion point and the scrollbar >>
+    c.bodyWantsFocusNow()
+    return 'break'
+#@nonl
+#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+# g.trace('active:',id(w),w.leo_scrollBarSpot,w.leo_insertSpot)
+
+if w.leo_insertSpot:
+    g.app.gui.setInsertPoint(w,w.leo_insertSpot)
+    w.see(w.leo_insertSpot)
+else:
+    g.app.gui.setInsertPoint(w,'1.0')
+    
+if w.leo_scrollBarSpot:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        g.app.gui.setSelectionRange(w,start,end)
+    except Exception:
+        pass
+#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20061017083312:selectEditor
+#@-node:ekr.20061019171123:Properly deactivate body pane
 #@-node:ekr.20061021150733:Bugs
 #@-node:ekr.20061021144254:Leo 4.4.2 final projects
 #@-all
