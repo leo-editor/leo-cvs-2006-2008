@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="93" left="245" height="730" width="966"/>
+	<global_window_position top="93" left="245" height="711" width="966"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -67,8 +67,8 @@
 <v t="ekr.20050812125502"><vh>@rst-no-head End stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.1"><vh>FAQ</vh>
-<v t="ekr.20050830115714"><vh>@rst html\FAQ.html</vh>
+<v t="ekr.20050831195331.1" a="E"><vh>FAQ</vh>
+<v t="ekr.20050830115714" a="TV"><vh>@rst html\FAQ.html</vh>
 <v t="ekr.20050830120007"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050830115714.1"><vh>Learning to use Leo</vh>
 <v t="ekr.20050830115714.2"><vh>What's the best way to learn to use Leo?</vh></v>
@@ -121,6 +121,8 @@
 <v t="ekr.20050830115714.115"><vh>Error messages from the rst3 plugin aren't helpful. What can I do?</vh></v>
 <v t="ekr.20050830115714.117"><vh>The new Python decorator syntax causes problems.  What can I do?</vh></v>
 <v t="ekr.20060917130130"><vh>I get weird results when defining unicode strings in scripts.  What is going on?</vh></v>
+<v t="ekr.20061021164213"><vh>I can not enter non-ascii characters.  What can I do?</vh></v>
+<v t="ekr.20061021164213.1"><vh>Leo doesn't recognize commands with the caps-lock key down</vh></v>
 </v>
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -1001,7 +1003,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2896,8 +2898,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20061020155306" a="TV"><vh>4.4.2 beta 3</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20061020155306"><vh>4.4.2 beta 3</vh>
 <v t="ekr.20061020155235.1"><vh>Bugs</vh>
 <v t="ekr.20061020155235.2"><vh>Fixed crash when searching for headllines containing unicode chars</vh></v>
 <v t="ekr.20061020155235.9"><vh>Fixed bugs in cycle-all-focus command</vh></v>
@@ -29580,5 +29582,8 @@ Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:        http://leo.tigris.org/source/browse/leo/
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 </t>
+<t tx="ekr.20061021164213">Set @bool ignore_unbound_non_ascii_keys = False in LeoSettings.leo or myLeoSettings.leo.</t>
+<t tx="ekr.20061021164213.1">This is a known bug in Tk/Tkinter and there is no good workaround. Some
+keyboards allow you to disable the caps-lock key.</t>
 </tnodes>
 </leo_file>
