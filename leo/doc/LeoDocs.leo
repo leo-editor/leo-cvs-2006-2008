@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="93" left="245" height="749" width="966"/>
+	<global_window_position top="93" left="245" height="730" width="966"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -710,9 +710,9 @@
 <v t="ekr.20060928172457.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20060929043325"><vh>A major code reorg</vh></v>
 <v t="ekr.20061009111417.18"><vh>New commands</vh></v>
-<v t="ekr.20060928172457.4" a="E"><vh>New features</vh></v>
-<v t="ekr.20060928172457.5" a="E"><vh>New and improved plugins</vh></v>
-<v t="ekr.20061009111417.11" a="E"><vh>Settings</vh></v>
+<v t="ekr.20060928172457.4"><vh>New features</vh></v>
+<v t="ekr.20060928172457.5"><vh>New and improved plugins</vh></v>
+<v t="ekr.20061009111417.11"><vh>Settings</vh></v>
 <v t="ekr.20060929043325.1"><vh>ZODB scripting</vh></v>
 <v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
 <v t="ekr.20060928172457.8"><vh>@rst-no-head end stuff</vh></v>
@@ -739,7 +739,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.1653" a="E"><vh>Leaps (Leo Enhancement and Advancement Proposals)</vh>
+<v t="edream.110203163054.1653"><vh>Leaps (Leo Enhancement and Advancement Proposals)</vh>
 <v t="edream.110203163054.1654"><vh>100's administering Leaps (and LeoCon)</vh>
 <v t="edream.110203163054.1655"><vh>Leap 102: LeoCon 1</vh></v>
 </v>
@@ -749,7 +749,7 @@
 <v t="edream.110203163054.1659"><vh>Leap 203. (Finished) Use Python Mega Widgets</vh></v>
 <v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
 </v>
-<v t="edream.110203163054.1661" a="E"><vh>300's LeoN and beyond</vh>
+<v t="edream.110203163054.1661"><vh>300's LeoN and beyond</vh>
 <v t="edream.110203163054.1662"><vh>Leap 301: Use central server</vh></v>
 <v t="edream.110203163054.1663"><vh>Leap 302: Resolve CVS Conflicts command</vh>
 <v t="edream.110203163054.1664"><vh>Comments by Josef</vh></v>
@@ -2897,7 +2897,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20061020155306" a="ETV"><vh>4.4.2 beta 3</vh>
+<v t="ekr.20061020155306" a="TV"><vh>4.4.2 beta 3</vh>
 <v t="ekr.20061020155235.1"><vh>Bugs</vh>
 <v t="ekr.20061020155235.2"><vh>Fixed crash when searching for headllines containing unicode chars</vh></v>
 <v t="ekr.20061020155235.9"><vh>Fixed bugs in cycle-all-focus command</vh></v>
@@ -2941,11 +2941,11 @@
 </v>
 <v t="ekr.20061020155235.403"><vh>Settings</vh>
 <v t="ekr.20061020155235.404"><vh>Made unlimited undo the default</vh></v>
-<v t="ekr.20061020155235.405" a="E"><vh>Added @bool select_all_text_when_editing_headlines</vh></v>
+<v t="ekr.20061020155235.405"><vh>Added @bool select_all_text_when_editing_headlines</vh></v>
 <v t="ekr.20061020155235.410"><vh>Added bindings to toggle-autocompleter and toggle-calltips</vh></v>
 <v t="ekr.20061020155235.411"><vh>Added 'Candidates for myLeoSettings.leo' to leoSettings.leo</vh></v>
 <v t="ekr.20061020155235.412"><vh>Recent changes to settings</vh></v>
-<v t="ekr.20061020155235.413" a="E"><vh>Added @bool insert_new_nodes_at_end</vh></v>
+<v t="ekr.20061020155235.413"><vh>Added @bool insert_new_nodes_at_end</vh></v>
 <v t="ekr.20061020155235.264"><vh>Removed .leoRecentFiles.txt from distribution and cvs</vh></v>
 </v>
 </v>
@@ -13009,7 +13009,7 @@ options nodes** should contain nothing but lines of the form::
 3. You can set any rst3 options in the *body text* of any node
 using doc parts of the form::
 
-    @ @rst-option
+    @ @rst-options
     list of rst3 options, one per line
     @c
 
@@ -13613,7 +13613,7 @@ options nodes** should contain nothing but lines of the form::
 3. You can set any rst3 options in the *body text* of any node
 using doc parts of the form::
 
-    @ @rst-option
+    @ @rst-options
     list of rst3 options, one per line
     @c
 
@@ -29573,11 +29573,12 @@ The highlights of Leo 4.4.2:
 
 Links:
 ------
-Leo:      http://webpages.charter.net/edreamleo/front.html
-Home:     http://sourceforge.net/projects/leo/
-Download: http://sourceforge.net/project/showfiles.php?group_id=3458
-CVS:      http://leo.tigris.org/source/browse/leo/
-Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
+Leo:        http://webpages.charter.net/edreamleo/front.html
+What's new: http://webpages.charter.net/edreamleo/new-4-4-2.html
+Home:       http://sourceforge.net/projects/leo/
+Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:        http://leo.tigris.org/source/browse/leo/
+Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 </t>
 </tnodes>
 </leo_file>
