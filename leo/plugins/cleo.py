@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:tbrown.20060903121429:@thin /home/tbrown/Desktop/Package/leo/TNB_mods/plugins/cleo.py
+#@+node:tbrown.20060828111141:@thin cleo.py
 #@<< docstring >>
 #@+node:tbrown.20060903211930:<< docstring >>
 '''cleo.py  -- Coloured LEo Outlines
@@ -1296,5 +1296,5 @@ class cleoController:
 #@-node:tbrown.20060903121429.14:class cleoController
 #@-others
 #@nonl
-#@-node:tbrown.20060903121429:@thin /home/tbrown/Desktop/Package/leo/TNB_mods/plugins/cleo.py
+#@-node:tbrown.20060828111141:@thin cleo.py
 #@-leo
