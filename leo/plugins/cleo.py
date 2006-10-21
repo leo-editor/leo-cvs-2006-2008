@@ -922,10 +922,28 @@ class cleoController:
         parent.add_cascade(label='Node types',underline=0,menu=menu)
     #@nonl
     #@-node:tbrown.20060903121429.51:node menu
+    #@+node:tbrown.20061020145804:left_priority_menu
+    def left_priority_menu(self, menu, p):
+        self.prep_pickle(p.v, 'priority', default=9999)
+        for value,label in (
+            (1,'1'),
+            (2,'2'),
+            (3,'3'),
+            (4,'4',),
+            (5,'5',),
+            (self.donePriority,'D'),
+        ):
+            s = '%s' % (label)
+            menu.add_radiobutton(
+                label=s,variable=self.pickles['priority'],value=value,
+                command=self.redraw,underline=0)
+    #@nonl
+    #@-node:tbrown.20061020145804:left_priority_menu
     #@+node:tbrown.20060903121429.52:priority_menu
     def priority_menu(self,parent,p):
     
-        self.prep_pickle(p.v, 'priority', default=9999)
+        # done already in left_priority menu
+        # self.prep_pickle(p.v, 'priority', default=9999)
     
         menu = Tk.Menu(parent,tearoff=0,takefocus=1)
     
@@ -1047,7 +1065,13 @@ class cleoController:
         
         # Create the menu.
         self.menu = menu = Tk.Menu(None,tearoff=0,takefocus=0)
-        menu.add_command(label='Find next todo',
+        
+        self.left_priority_menu(menu, p)
+    
+        menu.add_command(label='T',
+            underline=0,command=lambda:self.set_time_req(p))
+        
+        menu.add_command(label='Find next todo', columnbreak=1,
             underline=0,command=lambda:self.find_todo(p))
         self.priority_menu(menu,p)
         self.progress_menu(menu,p)
@@ -1064,7 +1088,7 @@ class cleoController:
             underline=0,command=lambda:self.clear_all(v))
         menu.add_command(label='Flush empty cleo attribs.',
             underline=0,command=self.dropEmptyAll)
-        
+            
         # Show the menu.
         event = k['event']
         menu.post(event.x_root,event.y_root)
