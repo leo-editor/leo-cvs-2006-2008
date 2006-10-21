@@ -16,7 +16,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="E"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20060823090437"><vh>August 2006</vh></v>
@@ -26,7 +26,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20061021071838"><vh>ANN: Leo 4.4.2 beta 3</vh></v>
+<v t="ekr.20061021071838" a="TV"><vh>ANN: Leo 4.4.2 beta 3</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20061008193307"><vh>ANN: Leo 4.4.2 beta 2</vh></v>
 <v t="ekr.20060903103403"><vh>ANN: Leo 4.4.1.1 final</vh></v>
@@ -108,7 +108,7 @@
 <v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
-<v t="EKR.20040519080201.1" a="TV"><vh>Distribution checklist</vh></v>
+<v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="ekr.20050910192724"><vh>Pychecker warnings</vh></v>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent c:\prog\leoCVS\.pycheckrc</vh></v>
@@ -4938,11 +4938,12 @@ For the non-leo python project I'm (supposed to be) working on, I'm switching fr
 
 Links:
 ------
-Leo:      http://webpages.charter.net/edreamleo/front.html
-Home:     http://sourceforge.net/projects/leo/
-Download: http://sourceforge.net/project/showfiles.php?group_id=3458
-CVS:      http://leo.tigris.org/source/browse/leo/
-Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
+Leo:        http://webpages.charter.net/edreamleo/front.html
+What's new: http://webpages.charter.net/edreamleo/new-4-4-2.html
+Home:       http://sourceforge.net/projects/leo/
+Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:        http://leo.tigris.org/source/browse/leo/
+Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 </t>
 </tnodes>
 </leo_file>

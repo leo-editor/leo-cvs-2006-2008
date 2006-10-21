@@ -1303,11 +1303,443 @@ e
 #@nonl
 #@-node:ekr.20060102092148.1:--safe option
 #@-node:ekr.20060527184335.1:Command-line options
+#@+node:ekr.20060227142119:Drawing, printing and rendering
+#@+node:ekr.20060822162521:Make headlines scroll
+Limit the with of the headline to the width of the outline pane.
+#@nonl
+#@-node:ekr.20060822162521:Make headlines scroll
+#@+node:ekr.20050512031131:Use global_log_window_position to specify outline/log ratio?
+#@-node:ekr.20050512031131:Use global_log_window_position to specify outline/log ratio?
+#@+node:ekr.20060227123536:Tiddlywiki and related comments about rendering body text
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3578252
+By: bwmulder
+
+I have been thinking for a while that it ought to be possible to somehow  to
+unite Leo with wiki features (my thinking is still vague at this point).
+
+If you look at systems like Tiddlywiki (http://www.tiddlywiki.com/) you will
+find that they already pretty much provide all the formatting features mentioned
+in the article.
+
+MoinMoin, another wiki (http://moinmoin.wikiwikiweb.de), has started to use
+a graphical interface for editing in the latest version.
+
+Maybe Leo can be split up into three components:
+
+1. A storage component is responsible for storing nodes. Currently, this is
+just memory, but databases like shelve, Zope or sqllite should also be possible.
+
+2. The control component is responsible for converting from the internal format
+to external files which can be processed by existing compilers, searching within
+a document, and the like.
+
+3. A display component is responsible for interfacing with the user. If can
+be TK, but it can also be something like the Tiddlywiki interface, which immediately
+shows the formatting applied to text.
+
+I don't know much about javascript, so I would have to learn more about this
+language before doing anything in this direction.
+
+As an intermediate step, maybe we could allow mixing RST processing with regular
+program text.  Leo would produce two documents out of a source file: a version
+for the compiler in plain ascii, and an HTML file for reading the source.
+#@-node:ekr.20060227123536:Tiddlywiki and related comments about rendering body text
+#@+node:ekr.20050127110221:Printing & flash
+@killcolor
+https://sourceforge.net/forum/message.php?msg_id=2962825
+By: jasonic
+
+-- pdf -- 
+yes I know what you mean, PDF has it uses.  If nicely embedded into Leo via
+'reportwriter'  and some export scripts {and clear useinterfance} would stillbe
+a good thing.
+
+
+As I start to think about how to print Leo, I become more aware of the differneces
+between Leo structures and linear [print] layouts.
+
+Different kinds of outlines obviously will need different kinds of printing.
+I don't yet have enough experience or overview.
+
+--xslt--
+Seems a natural way to go for printing Leo, but yet another langauge and syntax
+to wrassle with. Last time I looked I went from being horrified to very impressed
+to be being exhausted.
+
+--htmlize--
+thanks I'll check into that
+
+"print to web"  should definitely be on Leo's missing PRINT MENU.
+
+--swf [flash]--
+This printing topic pushes me harder to get FLC  [my FlashLeoClient project]
+into the Leosphere.
+
+Flash has*limited*  CSS handling, but enough to do some nice and useful typographic
+formatting in a pretty clean object-oriented manner.
+
+FLC parses .leo files into a Flash object. Flash Textformat instances are created
+using CSS and can be applied then to rendering any parts of  the deserialized
+Leo object.. The beauty is it can be very fast and ynamic so I can imagine a
+real-time WYSIWYG laytou tool for printing Leo to web and at the same making
+it suitable at the same time for print-to-paper.
+
+Since FLC is in the very first instance a READ-ONLY client tool for Leo, it
+makes it a natural Leo printing service.
+
+To complete full service, it woudl be good if Leo could create SWF files directly
+itself, just like using PDF reportwriter.
+There are a couple of libraries to help this 
+- Ming [with PHP, Perl, Python and Ruby wrappers]
+http://ming.sourceforge.net/
+
+- makeswf.r [interesting REBOL/Flash dialect by David Oldes]
+http://sweb.cz/oliva.david/swf/
+
+These could also be both configured as web-services.
+So Leo print-to-web would include by default rendering a flash swf file versoin
+of itself either using locally installed libraries or by passing a view of itself
+to a chosen client or server-based tool.
+
+But even without those extra 'services' and libraries a single flash file in
+the form of FLC could become an effective Leo printing kit. Using a standalone
+desktop  version [not embedded in the browser, out of the sandbox] much more
+is possible - remote control, peer-peer editing, file writing etc.
+
+-- flashpaper2--
+btw, Lately I've been using Flashpaper2 a lot to print all kinds of stuff, Often
+from web pages to my local adhoc home filebase. It's a very fast lighweight
+alternative to PDF, saves paper, has excellent zooming and nice search features
+built-in.
+Flashpaper renders a very litteral snapshot, but as I am discovering that turns
+out to be extremely useful.
+For example you visit a page and click on some links. Flashpaper saves teh pages
+exactly as it looks, viisted links disntinguished.  In the era of info-overload,
+even that crude mnemonic is valuable.
+
+Alas, Flashpaper2 is not free nor open in the way Leo is. But worth to play
+with it if only for for the experience.
+30 day trial downlaod from
+http://www.macromedia.com/software/flashpaper/
+
+And of course the flash _players_ is free, so can send people flashpaper documents
+just like PDF.
+Brilliant when you have a big Excel spreadsheet or CAD document which would
+normally get all messy printing across pages, confusing people.
+Instead adjust and print to a generous 'piece' of flashpaper - letting your
+coleagues pan and zoom to their comfort.
+
+I've not quite figured out the place where  Leo meets Flashpaper, because Leo
+needs to preserve its full pane contents. Flashpaper works fine with long web
+pages, automatically reading the full window contents and cutting into a paginated
+sequence, ready for paper printing.
+Leo's does not have aprint menu, so it's off the sytem's print-devices map,
+which Flash paper appearing just  like any phtycial printer.
+
+I imagine is possible to fix that in Leo, but I do not where to begin and woudl
+not be surprised to learn its a major heachche to write adn debug for multiple
+operating systems.
+
+An immediate alternative are screencapture tools like vnc2swf or MDM Capture.
+
+[vnc2swf uses Ming-0.2a]
+http://www.unixuser.org/~euske/vnc2swf/
+
+http://www.multidmedia.com/software/capture/index.php
+
+But much is hidden or lost from view. 
+Still very vauable for creating dynamic narrative tutorials [aka screencasting]
+
+AS you know I am very excited about what flash can do for Leo, and vice versa.
+But I am concerned that there is not yet a 100% Leo means which supports people's
+standard print needs and habits.
+   
+-- PRINT MENU-- 
+Leo deserves good friendly printing features which anyone can use. At the moment
+we have a confusing patchwork of choices. Printing Leo seems to be both harder
+and easier than  first meets the eye.
+
+Having a little library of export scripts - well named, documented and intended
+to aid printing woudl go a long way. Thesse scripts anyone coiuld be called
+by onayone given a Leo Outline, accessing a navabr button. PRINT MENU or list.
+Or they can just insert the appropriate script  into an outline giving finer
+grained print control on the fly.
+#@nonl
+#@-node:ekr.20050127110221:Printing & flash
+#@+node:EKR.20040512082621:HTML widgets
+#@+node:EKR.20040512082621.1:htmllib.tcl
+http://sourceforge.net/forum/message.php?msg_id=2565345
+By: nobody
+
+I just met a nice TCL-based html help viewer bundled with the evaluation version
+of Fujitsu-Siemens OpenFT for Unix (see
+fujitsu-siemens.com/products/software/openseas/openft.html)
+
+It is based on a TCL library htmllib.tcl, written by Stephen Uhler in 1995 while
+working in Sun's TCL group.Iit seemts that this lib is owned by Sun and i'm
+not certain about license. It is freely downloadable, anyway.
+
+The usage is really simple -- you have to create a text widget, a string variable
+containing html text and a link callback, then feed all three to the library
+routine. It should be not hard pythonize this process.
+
+see http://www.usenix.org/publications/login/1999-8/features/tclsh.html,
+ftp://ftp.scriptics.com/pub/tcl/misc/html_library-0.3.tar.gz
+or just google for htmllib.tcl
+#@-node:EKR.20040512082621.1:htmllib.tcl
+#@+node:ekr.20031218072017.729:HTML rendering in Leo's body pane
+#@+node:ekr.20031218072017.731:HTML plugin: opml
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=2283466
+By: billp9619
+
+FYI
+I played around with opml a while back and it seemed very versatile.
+
+It basically consists of an xml file of nested outline tags similiar to v-nodes
+in leo xml. This then works with an xsl stylesheet that displays the outline
+in a browser with scripted outline manipulation. (Uses div tags for this
+display.)
+
+What I discovered is that any html can make up the outline nodes , even forms,
+etc. which collapse with the outline interaction. Just that the angle brackets
+in the html must be escaped as is done within leo t nodes in .leo xml.
+
+Actually, it would be interesting to see an addin that just passes leo nodes
+to opml and then pops into the default browser. Also keep in mind that javascript
+has an eval() statement that can be passed any script as a string. The leo text
+box could be a form textarea box except that then there is no way to emulate
+syntax coloring. Alternatively, this could be a floating window wrappiing node
+text in html/body. (if nothing else, just destroy/close the window and reinitialize).
+Maybe the images used in the opml could have javascript events like onclick()
+to trigger refreshing leo text box from the t-nodes stored in an array or in
+hidden form boxes.
+
+Of course the effect of the stylesheet could be done via python script if no
+xslt in the receiving browser. The minimal html and script might be just boilerplate
+output.
+
+regards,
+bill p
+#@nonl
+#@-node:ekr.20031218072017.731:HTML plugin: opml
+#@-node:ekr.20031218072017.729:HTML rendering in Leo's body pane
+#@-node:EKR.20040512082621:HTML widgets
+#@+node:ekr.20041228074125:(Make drawing more flexible)
+#@+node:ekr.20041228092223:Play with wiki markup
+http://sourceforge.net/forum/message.php?msg_id=2205285
+From: Rich
+
+Color ''and'' italic/bold characters with @markup. One thing I'd like to
+''not'' see are the markup characters in @file-nosent files.  "~~red:NOTE:~~"
+does nothing for readability in plain text.
+#@nonl
+#@-node:ekr.20041228092223:Play with wiki markup
+#@+node:EKR.20040602153716:(Finish drawUserIcons)
+# Create a better way of writing user icons.
+#@nonl
+#@+node:ekr.20040317050439:Right-click to add user-specified attributes and icons
+Also add corresponding commands.
+#@nonl
+#@-node:ekr.20040317050439:Right-click to add user-specified attributes and icons
+#@+node:ekr.20040317184631:Design for drawUserIcons (use dict instead of tuples) (finished)
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=2477913
+By: edream
+
+A better design for user icons
+
+Using tuples in t.unknownAttributes["icons"] is too constricted.  Much better
+to have t.unknownAttributes["icons"] be a list of g.Bunches rather
+than a list of tuples.  Each of these bunches could have the
+following keys:
+
+"type"
+
+"file", "icon" or "url".  At present my prototype code uses "file" to specify
+the location of an icon.
+
+"where":
+
+"beforeBox", "beforeIcon", "beforeHeadLine", "afterHeadline".  This specifies
+where to put the icon.  The default would be "beforeHeadline".  "beforeBox"
+means before the plus/minus box.  "beforeIcon" means before the standard icon.
+
+"height":
+
+the height of the icon to use when calculating the line height.  Default: get
+from the icon itself, if possible.
+
+"width":
+
+the width of the icon to use when calculating where to put the following element.
+Default: get from the icon, if possible.
+
+"xoffset"
+
+Leo draws the icon at x + xoffset, where x is determined by the where param
+above.  Default 0.
+
+"xpad"
+
+The amount of extra space following the icon.  Default 0.
+
+"yoffset"
+
+Leo draws the icon at y + yoffset.  Default 0.
+
+"ypad"
+
+The amount of extra vertical space to add to the line height.  Default 0.
+
+These offset and pad values are integer pixel values and may be positive or
+negative.
+
+"lineHeight"  NOT USED.
+
+Overrides any calculated line height.  Default:  lineHeight = yoffset + height + ypad.
+
+"onClick", "onRightClick", "onDoubleClick"
+
+commands to call when the specified event happens.  By default, the "onRightClick"
+icon will be bound to a popup menu that offers the user a chance to delete the
+icon,  and maybe other options such as "nudging" the icon up or down, left or
+right.
+
+"popUpMenu"
+
+a list of items to put in a popup menu.  This would be a convenience to avoid
+having to use "onRightClick".
+
+I think you get the idea.  We want the drawing code to support lots of common
+things that plugins would like to do.  I'll probably think of other goodies,
+but this already is a big step forward.  Note that each of these keys will have
+a default, so plugins only need to specify keys that have non-default values.
+
+Edward
+
+P.S.  Other gui's might not be able to support all these options.  That's ok.
+The drawing code in gui plugins should degrade gracefully.
+
+EKR
+#@nonl
+#@-node:ekr.20040317184631:Design for drawUserIcons (use dict instead of tuples) (finished)
+#@+node:ekr.20040317184631.2:Changes
+@nocolor
+
+"lineHeight"
+
+This key won't be used.
+
+t.unknownAttributes["lineYOffset"] 
+
+An integer y offset for the entire line (except user icons, which are flexible enough).  You can use this to center the following vertically: the plus/minus box, the horizontal line to the plus/minus box, the standard headline box, and the Tk.Text widget for the headline.
+#@nonl
+#@-node:ekr.20040317184631.2:Changes
+#@+node:ekr.20040317184631.1:To do
+@nocolor
+
+"onClick", "onRightClick", "onDoubleClick"
+
+commands to call when the specified event happens.  By default, the "onRightClick"
+icon will be bound to a popup menu that offers the user a chance to delete the
+icon,  and maybe other options such as "nudging" the icon up or down, left or
+right.
+
+"popUpMenu"
+
+a list of items to put in a popup menu.  This would be a convenience to avoid
+having to use "onRightClick".
+
+I think you get the idea.  We want the drawing code to support lots of common
+things that plugins would like to do.  I'll probably think of other goodies,
+but this already is a big step forward.  Note that each of these keys will have
+a default, so plugins only need to specify keys that have non-default values.
+#@nonl
+#@-node:ekr.20040317184631.1:To do
+#@+node:EKR.20040526202501:putUnknownAttributes & helper
+def putUnknownAttributes (self,torv):
+    
+    """Put pickleable values for all keys in torv.unknownAttributes dictionary."""
+    
+    attrDict = torv.unknownAttributes
+    if type(attrDict) != type({}):
+        g.es("ignoring non-dictionary unknownAttributes for",torv,color="blue")
+        return ''
+    else:
+        return ''.join([self.putUaHelper(torv,key,val) for key,val in attrDict.items()])
+#@nonl
+#@+node:ekr.20050418161620.2:putUaHelper
+def putUaHelper (self,torv,key,val):
+    
+    '''Put attribute whose name is key and value is val to the output stream.'''
+    
+    # g.trace(key,repr(val),g.callers())
+    
+    # New in 4.3: leave string attributes starting with 'str_' alone.
+    if key.startswith('str_'):
+        if type(val) == type(''):
+            attr = ' %s="%s"' % (key,xml.sax.saxutils.escape(val))
+            return attr
+        else:
+            g.es("ignoring non-string attribute %s in %s" % (
+                key,torv),color="blue")
+            return ''
+    try:
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+        python23 = g.CheckVersion(version,'2.3')
+        try:
+            if python23:
+                # Protocol argument is new in Python 2.3
+                # Use protocol 1 for compatibility with bin.
+                s = pickle.dumps(val,protocol=1)
+            else:
+                s = pickle.dumps(val,bin=True)
+            attr = ' %s="%s"' % (key,binascii.hexlify(s))
+            return attr
+        except Exception:
+            g.es('putUaHelper: unexpected pickling exception',color='red')
+            g.es_exception()
+            return ''
+    except pickle.PicklingError:
+        # New in 4.2 beta 1: keep going after error.
+        g.es("ignoring non-pickleable attribute %s in %s" % (
+            key,torv),color="blue")
+        return ''
+#@-node:ekr.20050418161620.2:putUaHelper
+#@-node:EKR.20040526202501:putUnknownAttributes & helper
+#@-node:EKR.20040602153716:(Finish drawUserIcons)
+#@+node:ekr.20041201084142:Add convenience methods to change individual headlines color directly
+@killcolor
+
+http://sourceforge.net/forum/message.php?msg_id=2877106
+
+By: Paul Paterson - paulpaterson
+RE: Can I color the headline text ?  
+2004-12-01 08:01
+
+The cleo plugin makes a permanent change to the headline appearance (using node attributes) while the footprints plugin makes a temporary change in the current session. Footprints was derived from cleo, although you might not be able to tell from looking at it! 
+ 
+Cleo: http://sourceforge.net/forum/message.php?msg_id=2617221 
+ 
+Footprints: http://sourceforge.net/forum/message.php?msg_id=2813450 
+ 
+Between the two of them there should be enough information to help you achieve what you want. 
+ 
+It is possible to do pretty much anything you want but you will have to provide the infrastructure yourself because Leo doesn't natively support it.  
+#@nonl
+#@-node:ekr.20041201084142:Add convenience methods to change individual headlines color directly
+#@-node:ekr.20041228074125:(Make drawing more flexible)
+#@-node:ekr.20060227142119:Drawing, printing and rendering
 #@+node:ekr.20041228091154:Commands
-#@+node:ekr.20060122194643:isearch-headline (forward & backward)
-#@-node:ekr.20060122194643:isearch-headline (forward & backward)
-#@+node:ekr.20060123091352:Incremental search in switch-to-buffer
-#@-node:ekr.20060123091352:Incremental search in switch-to-buffer
+#@+node:ekr.20061021131443:Emacs support
+#@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
+#@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
+#@+node:ekr.20060628094329.2:Test/Fix macros
+#@-node:ekr.20060628094329.2:Test/Fix macros
+#@+node:ekr.20060628103226.2:Alt-x handlers should add to lossage
+#@-node:ekr.20060628103226.2:Alt-x handlers should add to lossage
 #@+node:ekr.20051202102337:Finish minibuffer commands
 @nocolor
 #@nonl
@@ -1400,6 +1832,481 @@ point-to-register should write an 'expanded point' so inter-node jumps are possi
 #@nonl
 #@-node:ekr.20051202102752.6:registerCommandsClass (ok, but could be expanded)
 #@-node:ekr.20051202102337:Finish minibuffer commands
+#@+node:ekr.20060122194643:isearch-headline (forward & backward)
+#@-node:ekr.20060122194643:isearch-headline (forward & backward)
+#@+node:ekr.20060123091352:Incremental search in switch-to-buffer
+#@-node:ekr.20060123091352:Incremental search in switch-to-buffer
+#@+node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
+#@-node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
+#@+node:ekr.20051021074728:Space completion
+#@-node:ekr.20051021074728:Space completion
+#@-node:ekr.20061021131443:Emacs support
+#@+node:ekr.20060724071225:Look at Paste Node As Clone
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3835397
+By: nobody
+
+In my large outline with probably thousands of nodes, "paste node as clone"
+takes almost a minute to complete, always. Is this normal behavior? It slows
+down my thought processes significantly to have to wait 1 minute to clone a
+node...
+
+@color
+#@nonl
+#@+node:EKR.20040610130943:pasteOutlineRetainingClones
+def pasteOutlineRetainingClones (self,event=None):
+    
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes *retain* their original identify.'''
+    
+    c = self
+
+    return c.pasteOutline(reassignIndices=False)
+#@-node:EKR.20040610130943:pasteOutlineRetainingClones
+#@+node:ekr.20031218072017.1551:pasteOutline
+# To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
+
+def pasteOutline(self,event=None,reassignIndices=True):
+    
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes do *not* retain their original identify.'''
+
+    c = self ; u = c.undoer ; current = c.currentPosition()
+    s = g.app.gui.getTextFromClipboard()
+    pasteAsClone = not reassignIndices
+    undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
+    
+    c.endEditing()
+
+    if not s or not c.canPasteOutline(s):
+        return # This should never happen.
+
+    isLeo = g.match(s,0,g.app.prolog_prefix_string)
+    tnodeInfoDict = {}
+    if pasteAsClone:
+        << remember all data for undo/redo Paste As Clone >>
+
+    if isLeo:
+        pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+    else:
+        pasted = c.importCommands.convertMoreStringToOutlineAfter(s,current)
+    if not pasted: return
+
+    c.beginUpdate()
+    try:
+        copiedBunchList = []
+        if pasteAsClone:
+            << put only needed info in copiedBunchList >>
+        undoData = u.beforeInsertNode(current,
+            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
+        c.endEditing()
+        c.validateOutline()
+        c.selectPosition(pasted)
+        pasted.setDirty()
+        c.setChanged(True)
+        # paste as first child if back is expanded.
+        back = pasted.back()
+        if back and back.isExpanded():
+            pasted.moveToNthChildOf(back,0)
+        c.setRootPosition(c.findRootPosition(pasted)) # New in 4.4.2.
+        u.afterInsertNode(pasted,undoType,undoData)
+    finally:
+        c.endUpdate()
+        c.recolor()
+#@+node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+@
+
+We don't know yet which nodes will be affected by the paste, so we remember
+everything. This is expensive, but foolproof.
+
+The alternative is to try to remember the 'before' values of tnodes in the
+fileCommands read logic. Several experiments failed, and the code is very ugly.
+In short, it seems wise to do things the foolproof way.
+
+@c
+
+for p in c.allNodes_iter():
+    t = p.v.t
+    if t not in tnodeInfoDict.keys():
+        tnodeInfoDict[t] = g.Bunch(
+            t=t,head=p.headString(),body=p.bodyString())
+#@-node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+#@+node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+# Create a dict containing only copied tnodes.
+copiedTnodeDict = {}
+for p in pasted.self_and_subtree_iter():
+    if p.v.t not in copiedTnodeDict:
+        copiedTnodeDict[p.v.t] = p.v.t
+        
+# g.trace(copiedTnodeDict.keys())
+
+for t in tnodeInfoDict.keys():
+    bunch = tnodeInfoDict.get(t)
+    if copiedTnodeDict.get(t):
+        copiedBunchList.append(bunch)
+
+# g.trace('copiedBunchList',copiedBunchList)
+#@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+#@-node:ekr.20031218072017.1551:pasteOutline
+#@+node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
+def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
+    
+    '''Read a Leo outline from string s in clipboard format.'''
+
+    try:
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
+    except invalidPaste:
+        v = None
+        g.es("Invalid Paste As Clone",color="blue")
+    except BadLeoFile:
+        v = None
+        g.es("The clipboard is not valid ",color="blue")
+
+    return v
+    
+getLeoOutline = getLeoOutlineFromClipboard # for compatibility
+#@nonl
+#@+node:ekr.20031218072017.1557:finishPaste
+def finishPaste(self,reassignIndices=True):
+    
+    """Finish pasting an outline from the clipboard.
+    
+    Retain clone links if reassignIndices is False."""
+
+    c = self.c
+    current = c.currentPosition()
+    if reassignIndices:
+        << reassign tnode indices >>
+    c.selectPosition(current)
+    return current
+#@+node:ekr.20031218072017.1558:<< reassign tnode indices >>
+@ putLeoOutline calls assignFileIndices (when copying nodes) so that vnode can be associated with tnodes.
+However, we must _reassign_ the indices here so that no "False clones" are created.
+@c
+
+nodeIndices = g.app.nodeIndices
+
+current.clearVisitedInTree()
+
+for p in current.self_and_subtree_iter():
+    t = p.v.t
+    if not t.isVisited():
+        t.setVisited()
+        # New in Leo 4.4.2 b2: use gnx's.  maxTnodeIndex is no longer used.
+        t.fileIndex = nodeIndices.getNewIndex()
+        # g.trace(t.fileIndex)
+#@nonl
+#@-node:ekr.20031218072017.1558:<< reassign tnode indices >>
+#@-node:ekr.20031218072017.1557:finishPaste
+#@+node:ekr.20060826052453.1:getLeoOutlineHelper
+def getLeoOutlineHelper (self,s,reassignIndices,checking):
+    
+    self.checking = checking
+    self.usingClipboard = True
+    self.fileBuffer = s ; self.fileIndex = 0
+    self.descendentUnknownAttributesDictList = []
+    v = None
+
+    self.tnodesDict = {}
+    if not reassignIndices:
+        << recreate tnodesDict >>
+    try:
+        self.getXmlVersionTag()
+        self.getXmlStylesheetTag()
+        self.getTag("<leo_file>")
+        self.getClipboardHeader()
+        self.getVnodes(reassignIndices)
+        self.getTnodes()
+        self.getTag("</leo_file>")
+        if not checking:
+            v = self.finishPaste(reassignIndices)
+    finally:
+        self.fileBuffer = None ; self.fileIndex = 0
+        self.usingClipboard = False
+        self.tnodesDict = {}
+    return v
+#@nonl
+#@+node:EKR.20040610134756:<< recreate tnodesDict >>
+nodeIndices = g.app.nodeIndices
+
+self.tnodesDict = {}
+
+for t in self.c.all_unique_tnodes_iter():
+    tref = t.fileIndex
+    if nodeIndices.isGnx(tref):
+        tref = nodeIndices.toString(tref)
+    self.tnodesDict[tref] = t
+    
+if 0:
+    print '-'*40
+    for key in self.tnodesDict.keys():
+        print key,self.tnodesDict[key]
+#@-node:EKR.20040610134756:<< recreate tnodesDict >>
+#@-node:ekr.20060826052453.1:getLeoOutlineHelper
+#@+node:ekr.20031218072017.3022:getClipboardHeader
+def getClipboardHeader (self):
+
+    if self.getOpenTag("<leo_header"):
+        return # <leo_header> or <leo_header/> has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/>")
+            break
+#@-node:ekr.20031218072017.3022:getClipboardHeader
+#@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
+#@+node:ekr.20031218072017.1565:getVnodes
+def getVnodes (self,reassignIndices=True):
+
+    c = self.c
+
+    if self.getOpenTag("<vnodes>"):
+        return # <vnodes/> seen.
+        
+    self.forbiddenTnodes = []
+    back = parent = None # This routine _must_ work on vnodes!
+    self.currentVnodeStack = []
+    self.topVnodeStack = []
+        
+    if self.usingClipboard:
+        oldRoot = c.rootPosition()
+        oldCurrent = c.currentPosition()
+        if not reassignIndices:
+            << set self.forbiddenTnodes to tnodes than must not be pasted >>
+
+    while self.matchTag("<v"):
+        append1 = not self.usingClipboard and len(self.currentVnodeStack) == 0
+        append2 = not self.usingClipboard and len(self.topVnodeStack) == 0
+        back = self.getVnode(parent,back,skip=False,
+            appendToCurrentStack=append1,appendToTopStack=append2)
+
+    if self.usingClipboard and not self.checking:
+        # Link in the pasted nodes after the current position.
+        newRoot = c.rootPosition()
+        c.setRootPosition(oldRoot)
+        newRoot.v.linkAfter(oldCurrent.v)
+        newCurrent = oldCurrent.copy()
+        newCurrent.v = newRoot.v
+        c.setCurrentPosition(newCurrent)
+
+    self.getTag("</vnodes>")
+#@+node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
+self.forbiddenTnodes = []
+
+for p in oldCurrent.self_and_parents_iter():
+    if p.v.t not in self.forbiddenTnodes:
+        self.forbiddenTnodes.append(p.v.t)
+        
+# g.trace("forbiddenTnodes",self.forbiddenTnodes)
+#@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
+#@-node:ekr.20031218072017.1565:getVnodes
+#@+node:ekr.20031218072017.1566:getVnode & helpers
+# changed for 4.2 & 4.4
+def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
+
+    v = None
+    setCurrent = setExpanded = setMarked = setOrphan = setTop = False
+    tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
+
+    # we have already matched <v.
+    
+    # New in Leo 4.4: support collapsed tnodes.
+    if self.matchTag('/>'): # A collapsed vnode.
+        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+        if self.checking: return None
+        else: return v
+    
+    while 1:
+        if self.matchTag("a=\""):
+            << Handle vnode attribute bits >>
+        elif self.matchTag("t="):
+            # New for 4.1.  Read either "Tnnn" or "gnx".
+            tref = index = self.getDqString()
+            if self.usingClipboard:
+                << raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+        elif self.matchTag("vtag=\"V"):
+            self.getIndex() ; self.getDquote() # ignored
+        elif self.matchTag("tnodeList="):
+            s = self.getDqString()
+            tnodeList = self.getTnodeList(s) # New for 4.0
+        elif self.matchTag("descendentTnodeUnknownAttributes="):
+            # New for 4.2, deprecated for 4.3?
+            s = self.getDqString()
+            theDict = self.getDescendentUnknownAttributes(s)
+            if theDict:
+                self.descendentUnknownAttributesDictList.append(theDict)
+        elif self.matchTag("expanded="): # New in 4.2
+            s = self.getDqString()
+            self.descendentExpandedList.extend(self.getDescendentAttributes(s,tag="expanded"))
+        elif self.matchTag("marks="): # New in 4.2.
+            s = self.getDqString()
+            self.descendentMarksList.extend(self.getDescendentAttributes(s,tag="marks"))
+        elif self.matchTag(">"):
+            break
+        else: # New for 4.0: allow unknown attributes.
+            # New in 4.2: allow pickle'd and hexlify'ed values.
+            attr,val = self.getUa("vnode")
+            if attr: attrDict[attr] = val
+    # Headlines are optional.
+    if self.matchTag("<vh>"):
+        headline = self.getEscapedString() ; self.getTag("</vh>")
+    # g.trace("skip:",skip,"parent:",parent,"back:",back,"headline:",headline)
+    if skip:
+        v = self.getExistingVnode(tref,headline)
+        if v: # Bug fix: 4/18/05: The headline may change during paste as clone.
+            v.initHeadString(headline,encoding=self.leo_file_encoding)
+    if v is None:
+        v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
+        if not self.checking:
+            skip = skip or skip2
+            if tnodeList:
+                v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
+            
+    if not self.checking:
+        << Set the remembered status bits >>
+
+    # Recursively create all nested nodes.
+    parent = v ; back = None
+    while self.matchTag("<v"):
+        append1 = appendToCurrentStack and len(self.currentVnodeStack) == 0
+        append2 = appendToTopStack and len(self.topVnodeStack) == 0
+        back = self.getVnode(parent,back,skip,
+            appendToCurrentStack=append1,appendToTopStack=append2)
+    
+    if not self.checking:
+        << Append to current or top stack >>
+
+    # End this vnode.
+    self.getTag("</v>")
+    return v
+#@nonl
+#@+node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
+# The a=" has already been seen.
+while 1:
+    if   self.matchChar('C'): pass # Not used: clone bits are recomputed later.
+    elif self.matchChar('D'): pass # Not used.
+    elif self.matchChar('E'): setExpanded = True
+    elif self.matchChar('M'): setMarked = True
+    elif self.matchChar('O'): setOrphan = True
+    elif self.matchChar('T'): setTop = True
+    elif self.matchChar('V'): setCurrent = True
+    else: break
+
+self.getDquote()
+#@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
+#@+node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+# Bug fix in 4.3 a1: make sure we have valid paste.
+theId,time,n = g.app.nodeIndices.scanGnx(index,0)
+if not time and index[0] == "T":
+    index = index[1:]
+    
+index = self.canonicalTnodeIndex(index)
+t = self.tnodesDict.get(index)
+
+if t in self.forbiddenTnodes:
+    # g.trace(t)
+    raise invalidPaste
+#@-node:ekr.20041023110111:<< raise invalidPaste if the tnode is in self.forbiddenTnodes >>
+#@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+if setCurrent:
+    self.currentVnodeStack = [v]
+
+if setTop:
+    self.topVnodeStack = [v]
+    
+if setExpanded:
+    v.initExpandedBit()
+    
+if setMarked:
+    v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
+
+if setOrphan:
+    v.setOrphan()
+#@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
+#@+node:ekr.20040326055828:<< Append to current or top stack >>
+if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
+    #g.trace("append current",v)
+    self.currentVnodeStack.append(v)
+    
+if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
+    #g.trace("append top",v)
+    self.topVnodeStack.append(v)
+#@-node:ekr.20040326055828:<< Append to current or top stack >>
+#@+node:ekr.20031218072017.1860:createVnode
+# (changed for 4.2) sets skip
+
+def createVnode (self,parent,back,tref,headline,attrDict):
+    
+    # g.trace(parent,headline)
+    v = None ; c = self.c
+    # Shared tnodes are placed in the file even if empty.
+    if tref == -1:
+        t = leoNodes.tnode()
+    else:
+        tref = self.canonicalTnodeIndex(tref)
+        t = self.tnodesDict.get(tref)
+        if not t:
+            t = self.newTnode(tref)
+            
+    if self.checking: return None,False
+    
+    if back: # create v after back.
+        v = back.insertAfter(t)
+    elif parent: # create v as the parent's first child.
+        v = parent.insertAsNthChild(0,t)
+    else: # create a root vnode
+        v = leoNodes.vnode(t)
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v) # New in 4.2.
+
+    skip = len(v.t.vnodeList) > 1
+    v.initHeadString(headline,encoding=self.leo_file_encoding)
+    << handle unknown vnode attributes >>
+    # g.trace(skip,tref,v,v.t,len(v.t.vnodeList))
+    return v,skip
+#@nonl
+#@+node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+keys = attrDict.keys()
+if keys:
+    v.unknownAttributes = attrDict
+    v._p_changed = 1
+
+    if 0: # For debugging.
+        s = "unknown attributes for " + v.headString()
+        g.es_print(s,color="blue")
+        for key in keys:
+            s = "%s = %s" % (key,attrDict.get(key))
+            g.es_print(s)
+#@-node:ekr.20031218072017.1861:<< handle unknown vnode attributes >>
+#@-node:ekr.20031218072017.1860:createVnode
+#@+node:ekr.20040326063413:getExistingVnode
+def getExistingVnode (self,tref,headline):
+
+    assert(tref > -1)
+    tref = self.canonicalTnodeIndex(tref)
+    t = self.tnodesDict.get(tref)
+    try:
+        return t.vnodeList[0]
+    except (IndexError,AttributeError):
+        g.es("Missing vnode:",headline,color="red")
+        g.es("Probably an outline topology error.")
+        return None
+#@-node:ekr.20040326063413:getExistingVnode
+#@-node:ekr.20031218072017.1566:getVnode & helpers
+#@-node:ekr.20060724071225:Look at Paste Node As Clone
 #@+node:ekr.20051110155735.1:Improve Spell tab
 @nocolor
 
@@ -2234,12 +3141,6 @@ def updateDictionary(self):
 #@-node:ekr.20051025071455:Spell classes
 #@-node:ekr.20051110155735.1:Improve Spell tab
 #@+node:ekr.20041022083833.1:Easy
-#@+node:ekr.20060109183500.1:execute-named-script
-execute-named-script executes script in leo/scripts.
-#@nonl
-#@-node:ekr.20060109183500.1:execute-named-script
-#@+node:ekr.20051021074728:Space completion
-#@-node:ekr.20051021074728:Space completion
 #@+node:ekr.20040315060557:Declone command
 By: nobody ( Nobody/Anonymous ) 
  having a declone() method for vnodes?   
@@ -2435,36 +3336,8 @@ Davide
 #@nonl
 #@-node:ekr.20040217153407:User customizeable tangling and untangling
 #@-node:ekr.20041022083833.1:Easy
-#@+node:ekr.20060206131908.1:set-first-search-node command (indicate it in the find tab)
-@nocolor
-
-This will indicate the start of searches.
-It would be shown in the Find tab.
-#@nonl
-#@-node:ekr.20060206131908.1:set-first-search-node command (indicate it in the find tab)
-#@+node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
-#@-node:ekr.20060116090428:Expand 'point' so it indicates node as well as text location
 #@+node:ekr.20040329094003:Apply patch command
 #@-node:ekr.20040329094003:Apply patch command
-#@+node:ekr.20040217090833:Change how Open with works?
-By: rogererens ( Roger Erens ) 
- RE: Documentation for 4.1rc3   
-2004-02-04 10:04  
-
-@nocolor
-
-It is stated that you can edit the temporary file with the editor as named in the "Open with..." submenu.
-However, the temporary files are edited with the application that is associated with their extension. In my case I always fire up vim with .txt-files.
-
-Hence the menu item would be better called something like "Open as..." with submenu items like ".doc file" or ".txt file"
-
-Or, use something else instead of "os.startfile" to really use the intended editor.
-#@nonl
-#@+node:ekr.20060125113540:Specify open-with bindings from settings
-Maybe the entire table should be specified this way.
-#@nonl
-#@-node:ekr.20060125113540:Specify open-with bindings from settings
-#@-node:ekr.20040217090833:Change how Open with works?
 #@+node:ekr.20031218072017.748:Import/Export to yaml
 Need a good yaml parser first: I don't want to write another parser by hand.
 #@nonl
@@ -2593,6 +3466,16 @@ Thanks,
 Kent
 #@nonl
 #@-node:ekr.20060227131611:Two ideas from Kent
+#@+node:ekr.20061011111007:@bool autoload_most_recent_leo_file
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3957908
+
+> Is there a setting for autmoatically loading most recent file or files.
+
+@color
+#@nonl
+#@-node:ekr.20061011111007:@bool autoload_most_recent_leo_file
 #@-node:ekr.20041228091154:Commands
 #@+node:ekr.20041022083226:Directives
 #@+node:ekr.20050225070857:@path stuff
@@ -2930,431 +3813,6 @@ Günther
 #@nonl
 #@-node:ekr.20041130104552:(Support bird-track programs/comments?)
 #@-node:ekr.20041022083226:Directives
-#@+node:ekr.20060227142119:Drawing, printing and rendering
-#@+node:ekr.20050512031131:Use global_log_window_position to specify outline/log ratio?
-#@-node:ekr.20050512031131:Use global_log_window_position to specify outline/log ratio?
-#@+node:ekr.20060227123536:Tiddlywiki and related comments about rendering body text
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3578252
-By: bwmulder
-
-I have been thinking for a while that it ought to be possible to somehow  to
-unite Leo with wiki features (my thinking is still vague at this point).
-
-If you look at systems like Tiddlywiki (http://www.tiddlywiki.com/) you will
-find that they already pretty much provide all the formatting features mentioned
-in the article.
-
-MoinMoin, another wiki (http://moinmoin.wikiwikiweb.de), has started to use
-a graphical interface for editing in the latest version.
-
-Maybe Leo can be split up into three components:
-
-1. A storage component is responsible for storing nodes. Currently, this is
-just memory, but databases like shelve, Zope or sqllite should also be possible.
-
-2. The control component is responsible for converting from the internal format
-to external files which can be processed by existing compilers, searching within
-a document, and the like.
-
-3. A display component is responsible for interfacing with the user. If can
-be TK, but it can also be something like the Tiddlywiki interface, which immediately
-shows the formatting applied to text.
-
-I don't know much about javascript, so I would have to learn more about this
-language before doing anything in this direction.
-
-As an intermediate step, maybe we could allow mixing RST processing with regular
-program text.  Leo would produce two documents out of a source file: a version
-for the compiler in plain ascii, and an HTML file for reading the source.
-#@-node:ekr.20060227123536:Tiddlywiki and related comments about rendering body text
-#@+node:ekr.20050127110221:Printing & flash
-@killcolor
-https://sourceforge.net/forum/message.php?msg_id=2962825
-By: jasonic
-
--- pdf -- 
-yes I know what you mean, PDF has it uses.  If nicely embedded into Leo via
-'reportwriter'  and some export scripts {and clear useinterfance} would stillbe
-a good thing.
-
-
-As I start to think about how to print Leo, I become more aware of the differneces
-between Leo structures and linear [print] layouts.
-
-Different kinds of outlines obviously will need different kinds of printing.
-I don't yet have enough experience or overview.
-
---xslt--
-Seems a natural way to go for printing Leo, but yet another langauge and syntax
-to wrassle with. Last time I looked I went from being horrified to very impressed
-to be being exhausted.
-
---htmlize--
-thanks I'll check into that
-
-"print to web"  should definitely be on Leo's missing PRINT MENU.
-
---swf [flash]--
-This printing topic pushes me harder to get FLC  [my FlashLeoClient project]
-into the Leosphere.
-
-Flash has*limited*  CSS handling, but enough to do some nice and useful typographic
-formatting in a pretty clean object-oriented manner.
-
-FLC parses .leo files into a Flash object. Flash Textformat instances are created
-using CSS and can be applied then to rendering any parts of  the deserialized
-Leo object.. The beauty is it can be very fast and ynamic so I can imagine a
-real-time WYSIWYG laytou tool for printing Leo to web and at the same making
-it suitable at the same time for print-to-paper.
-
-Since FLC is in the very first instance a READ-ONLY client tool for Leo, it
-makes it a natural Leo printing service.
-
-To complete full service, it woudl be good if Leo could create SWF files directly
-itself, just like using PDF reportwriter.
-There are a couple of libraries to help this 
-- Ming [with PHP, Perl, Python and Ruby wrappers]
-http://ming.sourceforge.net/
-
-- makeswf.r [interesting REBOL/Flash dialect by David Oldes]
-http://sweb.cz/oliva.david/swf/
-
-These could also be both configured as web-services.
-So Leo print-to-web would include by default rendering a flash swf file versoin
-of itself either using locally installed libraries or by passing a view of itself
-to a chosen client or server-based tool.
-
-But even without those extra 'services' and libraries a single flash file in
-the form of FLC could become an effective Leo printing kit. Using a standalone
-desktop  version [not embedded in the browser, out of the sandbox] much more
-is possible - remote control, peer-peer editing, file writing etc.
-
--- flashpaper2--
-btw, Lately I've been using Flashpaper2 a lot to print all kinds of stuff, Often
-from web pages to my local adhoc home filebase. It's a very fast lighweight
-alternative to PDF, saves paper, has excellent zooming and nice search features
-built-in.
-Flashpaper renders a very litteral snapshot, but as I am discovering that turns
-out to be extremely useful.
-For example you visit a page and click on some links. Flashpaper saves teh pages
-exactly as it looks, viisted links disntinguished.  In the era of info-overload,
-even that crude mnemonic is valuable.
-
-Alas, Flashpaper2 is not free nor open in the way Leo is. But worth to play
-with it if only for for the experience.
-30 day trial downlaod from
-http://www.macromedia.com/software/flashpaper/
-
-And of course the flash _players_ is free, so can send people flashpaper documents
-just like PDF.
-Brilliant when you have a big Excel spreadsheet or CAD document which would
-normally get all messy printing across pages, confusing people.
-Instead adjust and print to a generous 'piece' of flashpaper - letting your
-coleagues pan and zoom to their comfort.
-
-I've not quite figured out the place where  Leo meets Flashpaper, because Leo
-needs to preserve its full pane contents. Flashpaper works fine with long web
-pages, automatically reading the full window contents and cutting into a paginated
-sequence, ready for paper printing.
-Leo's does not have aprint menu, so it's off the sytem's print-devices map,
-which Flash paper appearing just  like any phtycial printer.
-
-I imagine is possible to fix that in Leo, but I do not where to begin and woudl
-not be surprised to learn its a major heachche to write adn debug for multiple
-operating systems.
-
-An immediate alternative are screencapture tools like vnc2swf or MDM Capture.
-
-[vnc2swf uses Ming-0.2a]
-http://www.unixuser.org/~euske/vnc2swf/
-
-http://www.multidmedia.com/software/capture/index.php
-
-But much is hidden or lost from view. 
-Still very vauable for creating dynamic narrative tutorials [aka screencasting]
-
-AS you know I am very excited about what flash can do for Leo, and vice versa.
-But I am concerned that there is not yet a 100% Leo means which supports people's
-standard print needs and habits.
-   
--- PRINT MENU-- 
-Leo deserves good friendly printing features which anyone can use. At the moment
-we have a confusing patchwork of choices. Printing Leo seems to be both harder
-and easier than  first meets the eye.
-
-Having a little library of export scripts - well named, documented and intended
-to aid printing woudl go a long way. Thesse scripts anyone coiuld be called
-by onayone given a Leo Outline, accessing a navabr button. PRINT MENU or list.
-Or they can just insert the appropriate script  into an outline giving finer
-grained print control on the fly.
-#@nonl
-#@-node:ekr.20050127110221:Printing & flash
-#@+node:EKR.20040512082621:HTML widgets
-#@+node:EKR.20040512082621.1:htmllib.tcl
-http://sourceforge.net/forum/message.php?msg_id=2565345
-By: nobody
-
-I just met a nice TCL-based html help viewer bundled with the evaluation version
-of Fujitsu-Siemens OpenFT for Unix (see
-fujitsu-siemens.com/products/software/openseas/openft.html)
-
-It is based on a TCL library htmllib.tcl, written by Stephen Uhler in 1995 while
-working in Sun's TCL group.Iit seemts that this lib is owned by Sun and i'm
-not certain about license. It is freely downloadable, anyway.
-
-The usage is really simple -- you have to create a text widget, a string variable
-containing html text and a link callback, then feed all three to the library
-routine. It should be not hard pythonize this process.
-
-see http://www.usenix.org/publications/login/1999-8/features/tclsh.html,
-ftp://ftp.scriptics.com/pub/tcl/misc/html_library-0.3.tar.gz
-or just google for htmllib.tcl
-#@-node:EKR.20040512082621.1:htmllib.tcl
-#@+node:ekr.20031218072017.729:HTML rendering in Leo's body pane
-#@+node:ekr.20031218072017.731:HTML plugin: opml
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2283466
-By: billp9619
-
-FYI
-I played around with opml a while back and it seemed very versatile.
-
-It basically consists of an xml file of nested outline tags similiar to v-nodes
-in leo xml. This then works with an xsl stylesheet that displays the outline
-in a browser with scripted outline manipulation. (Uses div tags for this
-display.)
-
-What I discovered is that any html can make up the outline nodes , even forms,
-etc. which collapse with the outline interaction. Just that the angle brackets
-in the html must be escaped as is done within leo t nodes in .leo xml.
-
-Actually, it would be interesting to see an addin that just passes leo nodes
-to opml and then pops into the default browser. Also keep in mind that javascript
-has an eval() statement that can be passed any script as a string. The leo text
-box could be a form textarea box except that then there is no way to emulate
-syntax coloring. Alternatively, this could be a floating window wrappiing node
-text in html/body. (if nothing else, just destroy/close the window and reinitialize).
-Maybe the images used in the opml could have javascript events like onclick()
-to trigger refreshing leo text box from the t-nodes stored in an array or in
-hidden form boxes.
-
-Of course the effect of the stylesheet could be done via python script if no
-xslt in the receiving browser. The minimal html and script might be just boilerplate
-output.
-
-regards,
-bill p
-#@nonl
-#@-node:ekr.20031218072017.731:HTML plugin: opml
-#@-node:ekr.20031218072017.729:HTML rendering in Leo's body pane
-#@-node:EKR.20040512082621:HTML widgets
-#@+node:ekr.20041228074125:(Make drawing more flexible)
-#@+node:ekr.20041228092223:Play with wiki markup
-http://sourceforge.net/forum/message.php?msg_id=2205285
-From: Rich
-
-Color ''and'' italic/bold characters with @markup. One thing I'd like to
-''not'' see are the markup characters in @file-nosent files.  "~~red:NOTE:~~"
-does nothing for readability in plain text.
-#@nonl
-#@-node:ekr.20041228092223:Play with wiki markup
-#@+node:EKR.20040602153716:(Finish drawUserIcons)
-# Create a better way of writing user icons.
-#@nonl
-#@+node:ekr.20040317050439:Right-click to add user-specified attributes and icons
-Also add corresponding commands.
-#@nonl
-#@-node:ekr.20040317050439:Right-click to add user-specified attributes and icons
-#@+node:ekr.20040317184631:Design for drawUserIcons (use dict instead of tuples) (finished)
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2477913
-By: edream
-
-A better design for user icons
-
-Using tuples in t.unknownAttributes["icons"] is too constricted.  Much better
-to have t.unknownAttributes["icons"] be a list of g.Bunches rather
-than a list of tuples.  Each of these bunches could have the
-following keys:
-
-"type"
-
-"file", "icon" or "url".  At present my prototype code uses "file" to specify
-the location of an icon.
-
-"where":
-
-"beforeBox", "beforeIcon", "beforeHeadLine", "afterHeadline".  This specifies
-where to put the icon.  The default would be "beforeHeadline".  "beforeBox"
-means before the plus/minus box.  "beforeIcon" means before the standard icon.
-
-"height":
-
-the height of the icon to use when calculating the line height.  Default: get
-from the icon itself, if possible.
-
-"width":
-
-the width of the icon to use when calculating where to put the following element.
-Default: get from the icon, if possible.
-
-"xoffset"
-
-Leo draws the icon at x + xoffset, where x is determined by the where param
-above.  Default 0.
-
-"xpad"
-
-The amount of extra space following the icon.  Default 0.
-
-"yoffset"
-
-Leo draws the icon at y + yoffset.  Default 0.
-
-"ypad"
-
-The amount of extra vertical space to add to the line height.  Default 0.
-
-These offset and pad values are integer pixel values and may be positive or
-negative.
-
-"lineHeight"  NOT USED.
-
-Overrides any calculated line height.  Default:  lineHeight = yoffset + height + ypad.
-
-"onClick", "onRightClick", "onDoubleClick"
-
-commands to call when the specified event happens.  By default, the "onRightClick"
-icon will be bound to a popup menu that offers the user a chance to delete the
-icon,  and maybe other options such as "nudging" the icon up or down, left or
-right.
-
-"popUpMenu"
-
-a list of items to put in a popup menu.  This would be a convenience to avoid
-having to use "onRightClick".
-
-I think you get the idea.  We want the drawing code to support lots of common
-things that plugins would like to do.  I'll probably think of other goodies,
-but this already is a big step forward.  Note that each of these keys will have
-a default, so plugins only need to specify keys that have non-default values.
-
-Edward
-
-P.S.  Other gui's might not be able to support all these options.  That's ok.
-The drawing code in gui plugins should degrade gracefully.
-
-EKR
-#@nonl
-#@-node:ekr.20040317184631:Design for drawUserIcons (use dict instead of tuples) (finished)
-#@+node:ekr.20040317184631.2:Changes
-@nocolor
-
-"lineHeight"
-
-This key won't be used.
-
-t.unknownAttributes["lineYOffset"] 
-
-An integer y offset for the entire line (except user icons, which are flexible enough).  You can use this to center the following vertically: the plus/minus box, the horizontal line to the plus/minus box, the standard headline box, and the Tk.Text widget for the headline.
-#@nonl
-#@-node:ekr.20040317184631.2:Changes
-#@+node:ekr.20040317184631.1:To do
-@nocolor
-
-"onClick", "onRightClick", "onDoubleClick"
-
-commands to call when the specified event happens.  By default, the "onRightClick"
-icon will be bound to a popup menu that offers the user a chance to delete the
-icon,  and maybe other options such as "nudging" the icon up or down, left or
-right.
-
-"popUpMenu"
-
-a list of items to put in a popup menu.  This would be a convenience to avoid
-having to use "onRightClick".
-
-I think you get the idea.  We want the drawing code to support lots of common
-things that plugins would like to do.  I'll probably think of other goodies,
-but this already is a big step forward.  Note that each of these keys will have
-a default, so plugins only need to specify keys that have non-default values.
-#@nonl
-#@-node:ekr.20040317184631.1:To do
-#@+node:EKR.20040526202501:putUnknownAttributes & helper
-def putUnknownAttributes (self,torv):
-    
-    """Put pickleable values for all keys in torv.unknownAttributes dictionary."""
-    
-    attrDict = torv.unknownAttributes
-    if type(attrDict) != type({}):
-        g.es("ignoring non-dictionary unknownAttributes for",torv,color="blue")
-        return ''
-    else:
-        return ''.join([self.putUaHelper(torv,key,val) for key,val in attrDict.items()])
-#@nonl
-#@+node:ekr.20050418161620.2:putUaHelper
-def putUaHelper (self,torv,key,val):
-    
-    '''Put attribute whose name is key and value is val to the output stream.'''
-    
-    # g.trace(key,repr(val),g.callers())
-    
-    # New in 4.3: leave string attributes starting with 'str_' alone.
-    if key.startswith('str_'):
-        if type(val) == type(''):
-            attr = ' %s="%s"' % (key,xml.sax.saxutils.escape(val))
-            return attr
-        else:
-            g.es("ignoring non-string attribute %s in %s" % (
-                key,torv),color="blue")
-            return ''
-    try:
-        version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
-        python23 = g.CheckVersion(version,'2.3')
-        try:
-            if python23:
-                # Protocol argument is new in Python 2.3
-                # Use protocol 1 for compatibility with bin.
-                s = pickle.dumps(val,protocol=1)
-            else:
-                s = pickle.dumps(val,bin=True)
-            attr = ' %s="%s"' % (key,binascii.hexlify(s))
-            return attr
-        except Exception:
-            g.es('putUaHelper: unexpected pickling exception',color='red')
-            g.es_exception()
-            return ''
-    except pickle.PicklingError:
-        # New in 4.2 beta 1: keep going after error.
-        g.es("ignoring non-pickleable attribute %s in %s" % (
-            key,torv),color="blue")
-        return ''
-#@-node:ekr.20050418161620.2:putUaHelper
-#@-node:EKR.20040526202501:putUnknownAttributes & helper
-#@-node:EKR.20040602153716:(Finish drawUserIcons)
-#@+node:ekr.20041201084142:Add convenience methods to change individual headlines color directly
-@killcolor
-
-http://sourceforge.net/forum/message.php?msg_id=2877106
-
-By: Paul Paterson - paulpaterson
-RE: Can I color the headline text ?  
-2004-12-01 08:01
-
-The cleo plugin makes a permanent change to the headline appearance (using node attributes) while the footprints plugin makes a temporary change in the current session. Footprints was derived from cleo, although you might not be able to tell from looking at it! 
- 
-Cleo: http://sourceforge.net/forum/message.php?msg_id=2617221 
- 
-Footprints: http://sourceforge.net/forum/message.php?msg_id=2813450 
- 
-Between the two of them there should be enough information to help you achieve what you want. 
- 
-It is possible to do pretty much anything you want but you will have to provide the infrastructure yourself because Leo doesn't natively support it.  
-#@nonl
-#@-node:ekr.20041201084142:Add convenience methods to change individual headlines color directly
-#@-node:ekr.20041228074125:(Make drawing more flexible)
-#@-node:ekr.20060227142119:Drawing, printing and rendering
 #@+node:ekr.20041228084018.6:Foreign languages
 Including, e.g., Undo messages.
 #@nonl
@@ -3512,6 +3970,25 @@ This prevents "hijacking" an already existing file.
 #@-node:ekr.20031218072017.740:Disallow writes outside a "top-level" folder
 #@+node:ekr.20040311022923:Make sentinel name in @-node optional
 #@-node:ekr.20040311022923:Make sentinel name in @-node optional
+#@+node:ekr.20050713105353:Add configuration setting to set menu fonts
+#@+node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
+@nocolor
+
+I have looked into leo's code and managed to figure out how to change 
+some fonts. Here's what I did to change the menu fonts for example.
+
+Fonts for the menu can be set in Code->Gui Tkinter classes->@thin 
+leoTkinterMenu.py->Tkinter menu bindings->Routines with Tk 
+spellings->new_menu
+
+so to use the system font (linux) I changed the return statement to:
+
+return Tk.Menu(parent,tearoff=tearoff, font=("System",11))
+
+I'll try using .leo_xresources file and see if that works as well.
+#@nonl
+#@-node:ekr.20050713105353.1:Email from Martin Moncrieffe <mcm35@cam.ac.uk>
+#@-node:ekr.20050713105353:Add configuration setting to set menu fonts
 #@-node:ekr.20041228085245:Options & settings
 #@+node:ekr.20041228090855.2:Plugins
 #@+node:ekr.20041022083005.3:@path and other directives accept python expressions

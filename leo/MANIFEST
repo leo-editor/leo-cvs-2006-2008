@@ -55,7 +55,6 @@ Icons\uninst.ico
 Icons\CVS\Entries.Extra
 Icons\CVS\Entries.Extra.Old
 Icons\CVS\Entries.Old
-config\.leoRecentFiles.txt
 config\leoSettings.leo
 dist\.pycheckrc
 dist\createLeoDist.py
@@ -66,6 +65,7 @@ doc\LICENSE.TXT
 doc\LeoDiary.leo
 doc\LeoDocs.leo
 doc\LeoPostings.leo
+doc\LeoSlideShows.leo
 doc\PKG-INFO.TXT
 doc\README.TXT
 doc\default.css
@@ -544,9 +544,7 @@ plugins\bibtex.py
 plugins\chapter_hoist.py
 plugins\chinese_menu.py
 plugins\cleo.py
-plugins\cleoOLD.py
 plugins\color_markup.py
-plugins\datenodes.ini
 plugins\datenodes.py
 plugins\detect_urls.py
 plugins\dtest.py
