@@ -21,7 +21,7 @@ a:hover {
   color: white }
 
 body {
-  background-color: "#fffbdc";
+  background-color: #fffbdc ;
   font-family: arial,helvetica,univers ;
   font-size: 10pt ;
   padding-top: 0.6cm ;
@@ -113,7 +113,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
 	font-size: 1.4em;
-	border-bottom: .25pt solid #ccc;
+	border-bottom: 1px solid #ccc;
 }
 
 h1.title {
@@ -167,14 +167,14 @@ pre.address {
 pre.line-block {
   background-color: #eeeeee ;
   border-color: #999999 ;
-  border-width: 1pt ;
+  border-width: 1px ;
   font-size: 9pt;
   font-family: "Courier New", Courier }
   
   /*border: 1px dotted #999;*/
 
 pre.literal-block, pre.doctest-block {
-  border-width: 1pt ;
+  border-width: 1px ;
   border-style: solid ;
   border-color: #999999 ;
   background-color: #ffffee ;
@@ -211,7 +211,7 @@ span.problematic {
 table {
   font-size: 10pt ;
   border-collapse: collapse ;
-  border-width: 1.5pt ;
+  border-width: 1px ;
   border-color: #003366 }
 
 table.citation {
@@ -228,14 +228,14 @@ table.footnote {
   width: 100% } */
 
 th {
-  border-width: 1.5pt }
+  border-width: 1px }
 
 td {
-  border-width: 1pt }
+  border-width: 1px }
 
 td, th {
   font-size: 9pt ;
-  border-style: thin ;
+  /* border-style: thin ; */
   border-color: #003366 }
 
 td.docinfo-name, th.field-name {
@@ -269,7 +269,7 @@ h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
   font-weight: bold }
   
   p.rubric {
-    text-align: left} ;
+    text-align: left}
     
 /* Following added for code-blocks if SilverCity is present*/
     
