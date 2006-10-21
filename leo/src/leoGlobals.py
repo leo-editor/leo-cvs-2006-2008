@@ -3250,8 +3250,11 @@ def skip_python_string(s,i):
     else:
         return g.skip_string(s,i)
 #@-node:ekr.20031218072017.3170:skip_python_string
-#@+node:ekr.20031218072017.2369:skip_string : called by tangle
-def skip_string(s,i):
+#@+node:ekr.20031218072017.2369:skip_string
+def skip_string(s,i,verbose=True):
+    
+    '''Scan forward to the end of a string.
+    New in Leo 4.4.2 final: give error only if verbose is True'''
     
     j = i ; delim = s[i] ; i += 1
     assert(delim == '"' or delim == '\'')
@@ -3262,13 +3265,14 @@ def skip_string(s,i):
         else: i += 1
 
     if i >= n:
-        g.scanError("Run on string: " + s[j:i])
+        if verbose:
+            g.scanError("Run on string: " + s[j:i])
     elif s[i] == delim:
         i += 1
 
     # g.trace(s[j:i])
     return i
-#@-node:ekr.20031218072017.2369:skip_string : called by tangle
+#@-node:ekr.20031218072017.2369:skip_string
 #@+node:ekr.20031218072017.3171:skip_to_semicolon
 # Skips to the next semicolon that is not in a comment or a string.
 
@@ -3508,7 +3512,7 @@ def skip_matching_python_delims(s,i,delim1,delim2,reverse=False):
                 level -= 1
                 if level <= 0:  return i
                 i += 1
-            elif ch == '\'' or ch == '"': i = g.skip_string(s,i)
+            elif ch == '\'' or ch == '"': i = g.skip_string(s,i,verbose=False)
             elif g.match(s,i,'#'):  i = g.skip_to_end_of_line(s,i)
             else: i += 1
             if i == progress: return -1
