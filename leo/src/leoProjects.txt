@@ -20,8 +20,406 @@
 
 #@+all
 #@+node:ekr.20061021144254:Leo 4.4.2 final projects
+#@+node:ekr.20061021150733:Bugs
 #@+node:ekr.20061019170752.1:Changed leo_rst.css to pass the w3 validator
 #@-node:ekr.20061019170752.1:Changed leo_rst.css to pass the w3 validator
+#@+node:ekr.20061021100018:Fixed 'Run on string' message when typing ( with no @color in effect
+Typing in leoDocs.leo will show the problem.
+#@nonl
+#@+node:ekr.20031218072017.2369:skip_string
+def skip_string(s,i,verbose=True):
+    
+    '''Scan forward to the end of a string.
+    New in Leo 4.4.2 final: give error only if verbose is True'''
+    
+    j = i ; delim = s[i] ; i += 1
+    assert(delim == '"' or delim == '\'')
+    
+    n = len(s)
+    while i < n and s[i] != delim:
+        if s[i] == '\\' : i += 2
+        else: i += 1
+
+    if i >= n:
+        if verbose:
+            g.scanError("Run on string: " + s[j:i])
+    elif s[i] == delim:
+        i += 1
+
+    # g.trace(s[j:i])
+    return i
+#@-node:ekr.20031218072017.2369:skip_string
+#@+node:ekr.20051125080855:selfInsertCommand & helpers
+def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+    ch = event and event.char or ''
+    if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
+    w = self.editWidget(event)
+    if not w: return 'break'
+
+    name = c.widget_name(w)
+    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w) or (None,None)
+    oldText = name.startswith('body') and p.bodyString() or ''
+    undoType = 'Typing'
+    trace = c.config.getBool('trace_masterCommand')
+    brackets = self.openBracketsList + self.closeBracketsList
+    inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
+    
+    if trace: g.trace(name,repr(ch),ch in brackets)
+    
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+        
+    if ch == '\t':
+        self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        << handle newline >>
+    elif inBrackets and self.autocompleteBrackets:
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+        w.insert(i,ch)
+        if inBrackets and self.flashMatchingBrackets: # New in 4.4.1.
+           self.flashMatchingBracketsHelper(w,i,ch)               
+    else:
+        return 'break' # New in 4.4a5: this method *always* returns 'break'
+        
+    # New in 4.4.1: Set the column for up and down keys.
+    spot = w.index('insert')
+    c.editCommands.setMoveCol(spot)
+
+    # Update the text and handle undo.
+    newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
+    # g.trace(repr(newText))
+    w.see(w.index('insert'))
+    if newText != oldText:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+#@nonl
+#@+node:ekr.20051026171121:<< handle newline >>
+i,j = oldSel
+
+if i != j:
+    # No auto-indent if there is selected text.
+    w.delete(i,j)
+    w.insert(i,ch)
+else:
+    w.insert(i,ch)
+    allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
+    if (
+        (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
+        undoType != "Change"
+    ):
+        # No auto-indent if in @nocolor mode or after a Change command.
+        self.updateAutoIndent(p,w)
+#@-node:ekr.20051026171121:<< handle newline >>
+#@+node:ekr.20060831163241:test_selfInsertCommand
+def test_selfInsertCommand(self):
+    
+    self = c.editCommands
+    event = g.Bunch(char='É',keysym=None,widget=c.frame.body.bodyCtrl)
+    self.selfInsertCommand(event)
+#@nonl
+#@-node:ekr.20060831163241:test_selfInsertCommand
+#@+node:ekr.20060804095512:initBracketMatcher
+def initBracketMatcher (self,c):
+
+    self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
+    self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
+    
+    if len(self.openBracketsList) != len(self.closeBracketsList):
+        g.es_print('bad open/close_flash_brackets setting: using defaults')
+        self.openBracketsList  = '([{'
+        self.closeBracketsList = ')]}'
+
+    # g.trace('self.openBrackets',openBrackets)
+    # g.trace('self.closeBrackets',closeBrackets)
+#@-node:ekr.20060804095512:initBracketMatcher
+#@+node:ekr.20060627083506:flashMatchingBracketsHelper
+def flashMatchingBracketsHelper (self,w,index,ch):
+
+    s = g.app.gui.getAllText(w)
+    i = g.app.gui.toPythonIndex(s,w,index)
+    
+    d = {}
+    if ch in self.openBracketsList:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.openBracketsList[z]] = self.closeBracketsList[z]
+        reverse = False # Search forward
+    else:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.closeBracketsList[z]] = self.openBracketsList[z]
+        reverse = True # Search backward
+
+    delim2 = d.get(ch)
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+    if j != -1:
+        j = g.app.gui.toGuiIndex(s,w,j)
+        self.flashCharacter(w,j)
+#@-node:ekr.20060627083506:flashMatchingBracketsHelper
+#@+node:ekr.20060627091557:flashCharacter
+def flashCharacter(self,w,i):
+    
+    bg      = self.bracketsFlashBg or 'DodgerBlue1'
+    fg      = self.bracketsFlashFg or 'white'
+    flashes = self.bracketsFlashCount or 2
+    delay   = self.bracketsFlashDelay or 75
+
+    def addFlashCallback(w,count,index):
+        w.tag_add('flash',index,'%s+1c' % (index))
+        w.after(delay,removeFlashCallback,w,count-1,index)
+    
+    def removeFlashCallback(w,count,index):
+        w.tag_remove('flash','1.0','end')
+        if count > 0:
+            w.after(delay,addFlashCallback,w,count,index)
+
+    try:
+        w.tag_configure('flash',foreground=fg,background=bg)
+        addFlashCallback(w,flashes,i)
+    except Exception:
+        pass
+#@-node:ekr.20060627091557:flashCharacter
+#@+node:ekr.20051027172949:updateAutomatchBracket
+def updateAutomatchBracket (self,p,w,ch,oldSel):
+
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+    language = d.get('language')
+    
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            w.mark_set('insert','insert-1c')
+    else:
+        ch2 = w.get('insert')
+        if ch2 in (')',']','}'):
+            w.mark_set('insert','insert+1c')
+        else:
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,ch)
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
+# By David McNab:
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
+    s = w.get("insert linestart - 1 lines","insert linestart -1c")
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) > 0 and s [ -1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if self.smartAutoIndent:
+        # Determine if prev line has unclosed parens/brackets/braces
+        bracketWidths = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                bracketWidths.append(i+tabex+1)
+            elif s [i] in '}])' and len(bracketWidths) > 1:
+                bracketWidths.pop()
+        width = bracketWidths.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        w.insert("insert",ws)
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
+def updateTab (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    
+    i,j = g.app.gui.getTextSelection(w)
+    if i != j:
+        w.delete(i,j)
+    if tab_width > 0:
+        w.insert("insert",'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.get("insert linestart","insert")
+    
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert("insert",' ' * n)
+#@-node:ekr.20051026092433:updateTab
+#@-node:ekr.20051125080855:selfInsertCommand & helpers
+#@+node:ekr.20031218072017.3189:skip_matching_python_delims
+def skip_matching_python_delims(s,i,delim1,delim2,reverse=False):
+    
+    '''Skip from the opening delim to the matching delim2.
+    
+    Return the index of the matching ')', or -1'''
+    
+    level = 0 ; n = len(s)
+    assert(g.match(s,i,delim1))
+    if reverse:
+         while i >= 0:
+            ch = s[i]
+            if ch == delim1:
+                level += 1 ; i -= 1
+            elif ch == delim2:
+                level -= 1
+                if level <= 0:  return i
+                i -= 1
+            # Doesn't handle strings and comments properly...
+            else: i -= 1
+    else:
+        while i < n:
+            progress = i
+            ch = s[i]
+            if ch == delim1:
+                level += 1 ; i += 1
+            elif ch == delim2:
+                level -= 1
+                if level <= 0:  return i
+                i += 1
+            elif ch == '\'' or ch == '"': i = g.skip_string(s,i,verbose=False)
+            elif g.match(s,i,'#'):  i = g.skip_to_end_of_line(s,i)
+            else: i += 1
+            if i == progress: return -1
+    return -1
+#@-node:ekr.20031218072017.3189:skip_matching_python_delims
+#@-node:ekr.20061021100018:Fixed 'Run on string' message when typing ( with no @color in effect
+#@+node:ekr.20061019171123.2:Fixed problem with c++ extensions
+@nocolor
+@language python
+
+http://sourceforge.net/forum/message.php?msg_id=3971242
+By: nobody
+
+I just tried to use mod_shadow plugin the first time and it took me sometime
+to figure out that I immediately triggered a bug.
+
+The problem is, that I use c++ as programming language, but leo only provides an
+\@language c directive. This is OK for colorizing, but it prevents the mod_shadow
+plugin to derive the correct file name extension from the language directive (at
+least that´s what I guessed from the error messages). To fix it I simply copied
+all c language entries in leoApp.py to create cpp new similar cpp language
+entries. I have not tried to understand the code that triggers this error in
+detail, so I don´t know if this fixes all issues, but at least it seems to work
+at the moment.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.368:<< define global data structures >> app
+# Internally, lower case is used for all language names.
+self.language_delims_dict = {
+    "ada" : "--",
+    "actionscript" : "// /* */", #jason 2003-07-03
+    "c" : "// /* */", # C, C++ or objective C.
+    "csharp" : "// /* */", # C#
+    "cpp" : "// /* */",# C++.
+    "css" : "/* */", # 4/1/04
+    "cweb" : "@q@ @>", # Use the "cweb hack"
+    "elisp" : ";",
+    "forth" : "\\_ _(_ _)", # Use the "REM hack"
+    "fortran" : "C",
+    "fortran90" : "!",
+    "html" : "<!-- -->",
+    "java" : "// /* */",
+    "latex" : "%",
+    "lua" : "--",  # ddm 13/02/06
+    "pascal" : "// { }",
+    "perl" : "#",
+    "perlpod" : "# __=pod__ __=cut__", # 9/25/02: The perlpod hack.
+    "php" : "//",
+    "plain" : "#", # We must pick something.
+    "plsql" : "-- /* */", # SQL scripts qt02537 2005-05-27
+    "python" : "#",
+    "rapidq" : "'", # fil 2004-march-11
+    "rebol" : ";",  # jason 2003-07-03
+    "shell" : "#",  # shell scripts
+    "tcltk" : "#",
+    "unknown" : "#" } # Set when @comment is seen.
+
+self.language_extension_dict = {
+    "ada" : "ads",
+    "actionscript" : "as", #jason 2003-07-03
+    "c" : "c",
+    "cpp" : "cpp",
+    "css" : "css", # 4/1/04
+    "cweb" : "w",
+    "elisp" : "el",
+    "forth" : "forth",
+    "fortran" : "f",
+    "fortran90" : "f",
+    "html" : "html",
+    "java" : "java",
+    "latex" : "tex", # 1/8/04
+    "lua" : "lua",  # ddm 13/02/06
+    "noweb" : "nw",
+    "pascal" : "p",
+    # "perl" : "perl",
+    # "perlpod" : "perl",
+    "perl" : "pl",      # 11/7/05
+    "perlpod" : "pod",  # 11/7/05
+    "php" : "php",
+    "plain" : "txt",
+    "python" : "py",
+    "plsql" : "sql", # qt02537 2005-05-27
+    "rapidq" : "bas", # fil 2004-march-11
+    "rebol" : "r",    # jason 2003-07-03
+    "shell" : "sh",   # DS 4/1/04
+    "tex" : "tex",
+    "tcltk" : "tcl",
+    "unknown" : "txt" } # Set when @comment is seen.
+    
+self.extension_dict = {
+    "ads"   : "ada",
+    "adb"   : "ada",
+    "as"    : "actionscript",
+    "bas"   : "rapidq",
+    "c"     : "c",
+    "cpp"   : "cpp",
+    "css"   : "css",
+    "el"    : "elisp",
+    "forth" : "forth",
+    "f"     : "fortran90", # or fortran ?
+    "html"  : "html",
+    "java"  : "java",
+    "lua" : "lua",  # ddm 13/02/06
+    "noweb" : "nw",
+    "p"     : "pascal",
+    # "perl"  : "perl",
+    "pl"    : "perl",   # 11/7/05
+    "pod"   : "perlpod", # 11/7/05
+    "php"   : "php",
+    "py"    : "python",
+    "sql"   : "plsql", # qt02537 2005-05-27
+    "r"     : "rebol",
+    "sh"    : "shell",
+    "tex"   : "tex",
+    "txt"   : "plain",
+    "tcl"   : "tcltk",
+    "w"     : "cweb" }
+#@-node:ekr.20031218072017.368:<< define global data structures >> app
+#@-node:ekr.20061019171123.2:Fixed problem with c++ extensions
+#@-node:ekr.20061021150733:Bugs
 #@-node:ekr.20061021144254:Leo 4.4.2 final projects
 #@-all
 #@nonl

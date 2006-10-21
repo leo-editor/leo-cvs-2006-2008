@@ -3592,6 +3592,7 @@ self.language_delims_dict = {
     "actionscript" : "// /* */", #jason 2003-07-03
     "c" : "// /* */", # C, C++ or objective C.
     "csharp" : "// /* */", # C#
+    "cpp" : "// /* */",# C++.
     "css" : "/* */", # 4/1/04
     "cweb" : "@q@ @>", # Use the "cweb hack"
     "elisp" : ";",
@@ -3619,6 +3620,7 @@ self.language_extension_dict = {
     "ada" : "ads",
     "actionscript" : "as", #jason 2003-07-03
     "c" : "c",
+    "cpp" : "cpp",
     "css" : "css", # 4/1/04
     "cweb" : "w",
     "elisp" : "el",
@@ -3652,6 +3654,7 @@ self.extension_dict = {
     "as"    : "actionscript",
     "bas"   : "rapidq",
     "c"     : "c",
+    "cpp"   : "cpp",
     "css"   : "css",
     "el"    : "elisp",
     "forth" : "forth",

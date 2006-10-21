@@ -84,25 +84,6 @@ Cheers -Terry
 >
 
 #@-node:ekr.20061019171123.1:New syntax colorer is interfering with multipath
-#@+node:ekr.20061019171123.2:Fix problem with c++ extensions
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3971242
-By: nobody
-
-I just tried to use mod_shadow plugin the first time and it took me sometime
-to figure out that I immediately triggered a bug.
-
-The problem is, that I use c++ as programming language, but leo only provides an
-@language c directive. This is OK for colorizing, but it prevents the mod_shadow
-plugin to derive the correct file name extension from the language directive (at
-least that´s what I guessed from the error messages). To fix it I simply copied
-all c language entries in leoApp.py to create cpp new similar cpp language
-entries. I have not tried to understand the code that triggers this error in
-detail, so I don´t know if this fixes all issues, but at least it seems to work
-at the moment.
-#@nonl
-#@-node:ekr.20061019171123.2:Fix problem with c++ extensions
 #@+node:ekr.20061009152210:Docs
 @nocolor
 
