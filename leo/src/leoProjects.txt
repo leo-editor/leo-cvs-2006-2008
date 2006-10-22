@@ -458,7 +458,7 @@ def regexHelper (self,s,i,j,pattern,backwards,nocase):
             return k, k2
 #@-node:ekr.20060526092203:regexHelper
 #@-node:ekr.20060927173836.2:Move on if regexp matches an empty string
-#@+node:ekr.20061019171123:Properly deactivate body pane
+#@+node:ekr.20061019171123:Fixed several bugs related to multiple body panes
 @nocolor
 
 Two body editors open looking at the same node, so you can write 
@@ -474,6 +474,17 @@ were using for reference.
 
 This probably indicates that the body should be split into more than 
 one node... but thought I'd let you know it was doing that anyway.
+
+--------------
+
+Still something funky I'm afraid.  Two body panes one above the 
+other looking at the same body text.
+
+Say each one is displaying 10 lines.
+
+In one I scroll down to view lines 80-90 by dragging the scroll bar 
+on the right, but when I click line 85 to position the cursor it 
+jumps to line 5.
 
 @color
 #@nonl
@@ -496,7 +507,7 @@ def selectEditor(self,w):
             w2.leo_scrollBarSpot = w2.yview()
             w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
             w2.leo_selection = g.app.gui.getSelectionRange(w2)
-            # g.trace('inactive:',id(w2),w2.leo_scrollBarSpot,w2.leo_insertSpot)
+            # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
             break
     else:
         if trace: g.trace('no active editor!')
@@ -523,7 +534,7 @@ def selectEditor(self,w):
     return 'break'
 #@nonl
 #@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
-# g.trace('active:',id(w),w.leo_scrollBarSpot,w.leo_insertSpot)
+# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
 
 if w.leo_insertSpot:
     g.app.gui.setInsertPoint(w,w.leo_insertSpot)
@@ -543,7 +554,146 @@ if w.leo_selection:
         pass
 #@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
 #@-node:ekr.20061017083312:selectEditor
-#@-node:ekr.20061019171123:Properly deactivate body pane
+#@+node:ekr.20060129052538.2:masterClickHandler
+def masterClickHandler (self,event,func=None):
+
+    k = self ; c = k.c
+    if not event: return
+    w = event.widget ; wname = c.widget_name(w)
+    trace = c.config.getBool('trace_masterClickHandler') and not g.app.unitTesting
+
+    if trace: g.trace(wname,func and func.__name__)
+    # c.frame.body.colorizer.interrupt() # New in 4.4.1
+        
+    # A click outside the minibuffer terminates any state.
+    if k.inState() and c.useTextMinibuffer and w != c.frame.miniBufferWidget:
+        if not c.widget_name(w).startswith('log'):
+            k.keyboardQuit(event,hideTabs=False)
+            # k.endMode(event) # Less drastic than keyboard-quit.
+            w and c.widgetWantsFocusNow(w)
+            if trace: g.trace('inState: break')
+            return 'break'
+
+    # Update the selection point immediately for updateStatusLine.
+    k.previousSelection = None
+    if wname.startswith('body'):
+        c.frame.body.onClick(event) # New in Leo 4.4.2.
+    elif wname.startswith('mini'):
+        x = w.index('@%s,%s' % (event.x,event.y))
+        i, j = k.getEditableTextRange()
+        xcol = int(x.split('.')[1])
+        icol = int(i.split('.')[1])
+        jcol = int(j.split('.')[1])
+        # g.trace(xcol,icol,jcol,icol <= xcol <= jcol)
+        if icol <= xcol <= jcol:
+            g.app.gui.setTextSelection(w,x,x,insert=x)
+        else:
+            if trace: g.trace('2: break')
+            return 'break'
+
+    if event and func:
+        # Don't even *think* of overriding this.
+        val = func(event)
+        c.masterFocusHandler()
+        if trace: g.trace('val:',val)
+        return val
+    else:
+        # All tree callbacks have a func, so we can't be in the tree.
+        # g.trace('*'*20,'auto-deactivate tree: %s' % wname)
+        c.frame.tree.OnDeactivate()
+        c.widgetWantsFocusNow(w)
+        if trace: g.trace('end: None')
+        return None
+
+masterClick3Handler = masterClickHandler
+masterDoubleClick3Handler = masterClickHandler
+#@-node:ekr.20060129052538.2:masterClickHandler
+#@+node:ekr.20061017082211:onClick
+def onClick (self,event):
+    
+    c = self.c ; k = c.k
+    w = event and event.widget
+    wname = c.widget_name(w)
+    
+    if wname.startswith('body'):
+        if 0:
+            # A hack to support middle-button pastes: remember the previous selection.
+            x, y = event.x, event.y
+            k.previousSelection = g.app.gui.getSelectionRange(w)
+            i = w.index('@%s,%s' % (x,y))
+            g.trace(x,y,i)
+            g.app.gui.setTextSelection(w,i,i,insert=i)
+            c.editCommands.setMoveCol(i)
+            c.frame.updateStatusLine()
+        self.selectEditor(w)
+    else:
+        g.trace('can not happen')
+#@-node:ekr.20061017082211:onClick
+#@+node:ekr.20060528100747.3:tkBody.createTextWidget
+def createTextWidget (self,frame,parentFrame,p,name):
+    
+    c = self.c
+    
+    parentFrame.configure(bg='LightSteelBlue1')
+
+    wrap = c.config.getBool('body_pane_wraps')
+    wrap = g.choose(wrap,"word","none")
+    
+    # Setgrid=1 cause severe problems with the font panel.
+    body = w = Tk.Text(parentFrame,name='body-pane',
+        bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
+    
+    bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
+    frame.bodyBar = self.bodyBar = bodyBar
+    
+    def yscrollCallback(x,y,bodyBay=bodyBar,w=w):
+        # g.trace(x,y)
+        if hasattr(w,'leo_scrollBarSpot'):
+            w.leo_scrollBarSpot = (x,y)
+        return bodyBar.set(x,y)
+   
+    body['yscrollcommand'] = yscrollCallback # bodyBar.set
+
+    bodyBar['command'] =  body.yview
+    bodyBar.pack(side="right", fill="y")
+    
+    # Always create the horizontal bar.
+    frame.bodyXBar = self.bodyXBar = bodyXBar = Tk.Scrollbar(
+        parentFrame,name='bodyXBar',orient="horizontal")
+    body['xscrollcommand'] = bodyXBar.set
+    bodyXBar['command'] = body.xview
+    self.bodyXbar = frame.bodyXBar = bodyXBar
+    
+    if wrap == "none":
+        # g.trace(parentFrame)
+        bodyXBar.pack(side="bottom", fill="x")
+        
+    body.pack(expand=1,fill="both")
+
+    self.wrapState = wrap
+
+    if 0: # Causes the cursor not to blink.
+        body.configure(insertofftime=0)
+        
+    # Inject ivars
+    if name == '1':
+        w.leo_p = w.leo_v = None # Will be set when the second editor is created.
+    else:
+        w.leo_p = p.copy()
+        w.leo_v = body.leo_p.v
+    w.leo_active = True
+    w.leo_frame = parentFrame
+    w.leo_name = name
+    w.leo_label = None
+    w.leo_label_s = None
+    w.leo_scrollBarSpot = None
+    w.leo_insertSpot = None
+    w.leo_selection = None
+
+    return w
+#@nonl
+#@-node:ekr.20060528100747.3:tkBody.createTextWidget
+#@-node:ekr.20061019171123:Fixed several bugs related to multiple body panes
 #@-node:ekr.20061021150733:Bugs
 #@-node:ekr.20061021144254:Leo 4.4.2 final projects
 #@-all
