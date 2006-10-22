@@ -1947,13 +1947,19 @@ class leoTkinterBody (leoFrame.leoBody):
         # Setgrid=1 cause severe problems with the font panel.
         body = w = Tk.Text(parentFrame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap=wrap)
-            
-        # g.trace(id(w))
         
         bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
         frame.bodyBar = self.bodyBar = bodyBar
-        body['yscrollcommand'] = bodyBar.set
-        bodyBar['command'] = body.yview
+        
+        def yscrollCallback(x,y,bodyBay=bodyBar,w=w):
+            # g.trace(x,y)
+            if hasattr(w,'leo_scrollBarSpot'):
+                w.leo_scrollBarSpot = (x,y)
+            return bodyBar.set(x,y)
+       
+        body['yscrollcommand'] = yscrollCallback # bodyBar.set
+    
+        bodyBar['command'] =  body.yview
         bodyBar.pack(side="right", fill="y")
         
         # Always create the horizontal bar.
@@ -2149,16 +2155,25 @@ class leoTkinterBody (leoFrame.leoBody):
         self.selectEditor(w)
     #@-node:ekr.20060528113806:deleteEditor
     #@+node:ekr.20061017082211:onClick
-    def onClick (self,w):
+    def onClick (self,event):
         
-        wname = g.app.gui.widget_name(w)
+        c = self.c ; k = c.k
+        w = event and event.widget
+        wname = c.widget_name(w)
         
-        if not wname.startswith('body'):
+        if wname.startswith('body'):
+            if 0:
+                # A hack to support middle-button pastes: remember the previous selection.
+                x, y = event.x, event.y
+                k.previousSelection = g.app.gui.getSelectionRange(w)
+                i = w.index('@%s,%s' % (x,y))
+                g.trace(x,y,i)
+                g.app.gui.setTextSelection(w,i,i,insert=i)
+                c.editCommands.setMoveCol(i)
+                c.frame.updateStatusLine()
+            self.selectEditor(w)
+        else:
             g.trace('can not happen')
-            return
-    
-        self.selectEditor(w)
-    #@nonl
     #@-node:ekr.20061017082211:onClick
     #@+node:ekr.20061017083312:selectEditor
     def selectEditor(self,w):
@@ -2179,7 +2194,7 @@ class leoTkinterBody (leoFrame.leoBody):
                 w2.leo_scrollBarSpot = w2.yview()
                 w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
                 w2.leo_selection = g.app.gui.getSelectionRange(w2)
-                # g.trace('inactive:',id(w2),w2.leo_scrollBarSpot,w2.leo_insertSpot)
+                # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
                 break
         else:
             if trace: g.trace('no active editor!')
@@ -2203,7 +2218,7 @@ class leoTkinterBody (leoFrame.leoBody):
         c.recolor_now()
         #@    << restore the selection, insertion point and the scrollbar >>
         #@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
-        # g.trace('active:',id(w),w.leo_scrollBarSpot,w.leo_insertSpot)
+        # g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
         
         if w.leo_insertSpot:
             g.app.gui.setInsertPoint(w,w.leo_insertSpot)

@@ -3279,14 +3279,7 @@ class keyHandlerClass:
         # Update the selection point immediately for updateStatusLine.
         k.previousSelection = None
         if wname.startswith('body'):
-            # g.trace(event.x,event.y)
-            # A hack to support middle-button pastes: remember the previous selection.
-            k.previousSelection = g.app.gui.getSelectionRange(w)
-            i = w.index('@%s,%s' % (event.x,event.y))
-            g.app.gui.setTextSelection(w,i,i,insert=i)
-            c.editCommands.setMoveCol(i)
-            c.frame.updateStatusLine()
-            c.frame.body.onClick(w) # New in Leo 4.4.2.
+            c.frame.body.onClick(event) # New in Leo 4.4.2.
         elif wname.startswith('mini'):
             x = w.index('@%s,%s' % (event.x,event.y))
             i, j = k.getEditableTextRange()
