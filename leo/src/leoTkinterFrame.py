@@ -2162,18 +2162,18 @@ class leoTkinterBody (leoFrame.leoBody):
         wname = c.widget_name(w)
         
         if wname.startswith('body'):
-            if 0:
-                # A hack to support middle-button pastes: remember the previous selection.
-                x, y = event.x, event.y
-                k.previousSelection = g.app.gui.getSelectionRange(w)
-                i = w.index('@%s,%s' % (x,y))
-                g.trace(x,y,i)
-                g.app.gui.setTextSelection(w,i,i,insert=i)
-                c.editCommands.setMoveCol(i)
-                c.frame.updateStatusLine()
+            # A hack to support middle-button pastes: remember the previous selection.
+            x, y = event.x, event.y
+            k.previousSelection = g.app.gui.getSelectionRange(w)
+            i = w.index('@%s,%s' % (x,y))
+            # g.trace(x,y,i)
+            g.app.gui.setTextSelection(w,i,i,insert=i)
+            c.editCommands.setMoveCol(i)
+            c.frame.updateStatusLine()
             self.selectEditor(w)
         else:
             g.trace('can not happen')
+    #@nonl
     #@-node:ekr.20061017082211:onClick
     #@+node:ekr.20061017083312:selectEditor
     def selectEditor(self,w):
