@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.39'
+__version__ = '0.40'
 
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
@@ -68,7 +68,10 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # 0.38 EKR: Fixed several crashers discovered by unit tests.
 # 0.39 EKR: The colorizer now saves and restores the insert point and the 
 # selection range.
+# 0.40 EKR: Fixed bug: colorizer now recognizes @\n as the start of a doc 
+# part.
 #@-at
+#@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
 #@nl
 #@<< define leoKeywords >>
@@ -258,7 +261,7 @@ def match_doc_part (self,s,i):
     if g.match_word(s,i,'@doc'):
         j = i+4
         self.colorRangeWithTag(s,i,j,'leoKeyword')
-    elif g.match(s,i,'@') and (i+1 >= len(s) or s[i+1] in (' ','\t')):
+    elif g.match(s,i,'@') and (i+1 >= len(s) or s[i+1] in (' ','\t','\n')):
         j = i + 1
         self.colorRangeWithTag(s,i,j,'leoKeyword')
     else: return 0
