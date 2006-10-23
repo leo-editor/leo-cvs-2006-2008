@@ -21,8 +21,8 @@ for example:
 It will places copy of the written file in each of these directories.
 
 There is an additional directive that simplifies common paths, it is called
-@multiprefix. By typing @multiprefix with a path following it, before a
-@multipath directive you set the beginning of the paths in the @multipath
+#@@multiprefix. By typing @multiprefix with a path following it, before a
+#@@multipath directive you set the beginning of the paths in the @multipath
 directive.
 
 For example: (note I put # in front of the directives here because I
@@ -42,7 +42,7 @@ or
 copies a file to /leo/plugins /leo/fungus /leo/drain.
 
 The @multiprefix stays in effect for the entire tree until reset with another
-@multiprefix directive. @multipath is cumulitive, in that for each @multipath in
+#@@multiprefix directive. @multipath is cumulitive, in that for each @multipath in
 an ancestor a copy of the file is created. These directives must at the
 beginning of the line and by themselves.
 '''
@@ -75,7 +75,7 @@ except ImportError:
 #@-node:ekr.20050226114732.1:<< imports >>
 #@nl
 
-__version__ = ".8"
+__version__ = ".9"
 #@<< version history >>
 #@+node:ekr.20050226115130:<< version history >>
 #@@killcolor
