@@ -2620,11 +2620,13 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in g.splitLines(s)]
         result = ''.join(result)
+        
+        # g.trace(g.app.gui.getSelectionRange(w),'len(result)',len(result))
         if g.app.gui.hasSelection(w):
             i,j = g.app.gui.getSelectionRange(w)
             w.delete(i,j)
             w.insert(i,result)
-            g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
+            g.app.gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
         else:
             w.delete('1.0','end')
             w.insert('1.0',result)
