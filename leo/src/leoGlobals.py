@@ -395,7 +395,7 @@ def findReference(c,name,root):
 
 def get_directives_dict(s,root=None):
     
-    """Scans root for @directives found in globalDirectivesList.
+    """Scans root for @directives found in globalDirectiveList.
 
     Returns a dict containing pointers to the start of each directive"""
 
@@ -408,7 +408,10 @@ def get_directives_dict(s,root=None):
             #@+node:ekr.20031218072017.1261:<< set theDict for @ directives >>
             j = g.skip_c_id(s,i+1)
             word = s[i+1:j]
-            if word in g.globalDirectiveList:
+            
+            global globalDirectiveList
+            
+            if word in globalDirectiveList:
                 if theDict.has_key(word):
                     # Ignore second value.
                     pass
