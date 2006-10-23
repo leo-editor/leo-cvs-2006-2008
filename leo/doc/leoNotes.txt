@@ -1602,6 +1602,9 @@ returns, to be different :-)
 2.3 will be a bit more flexible about such mattrers.
 #@-node:ekr.20031218072017.389:cursed newline answer 2
 #@-node:ekr.20031218072017.386:How to remove cursed newlines: use binary mode
+#@+node:ekr.20061023153133:How to run patch
+patch -p1 < patchfile
+#@-node:ekr.20061023153133:How to run patch
 #@+node:ekr.20031218072017.390:How to run Pychecker
 Do the following in Idle:
 

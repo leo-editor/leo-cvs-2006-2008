@@ -180,35 +180,35 @@ def onUrl1 (tag,keywords):
                     #@-node:rogererens.20041125015212.1:<<go to the node>>
                     #@nl
             elif urlTuple[0] == "":
-                 #@                 << go to node in present outline >>
-                 #@+node:ekr.20060908105814:<< go to node in present outline >>
-                 if urlTuple [2]:
-                     nodeList = urlTuple [2].split("-->")
-                     p = g.findTopLevelNode(c,nodeList[0])
-                     if p:
-                         for headline in nodeList [1:]:
-                             p = g.findNodeInTree(c,p,headline)
-                             if not p: break
-                     if p:
-                         c.frame.tree.expandAllAncestors(p)
-                         c.selectPosition(p)
-                         c.redraw()
-                 #@nonl
-                 #@-node:ekr.20060908105814:<< go to node in present outline >>
-                 #@nl
+                #@                << go to node in present outline >>
+                #@+node:ekr.20060908105814:<< go to node in present outline >>
+                if urlTuple [2]:
+                    nodeList = urlTuple [2].split("-->")
+                    p = g.findTopLevelNode(c,nodeList[0])
+                    if p:
+                        for headline in nodeList [1:]:
+                            p = g.findNodeInTree(c,p,headline)
+                            if not p: break
+                    if p:
+                        c.frame.tree.expandAllAncestors(p)
+                        c.selectPosition(p)
+                        c.redraw()
+                #@nonl
+                #@-node:ekr.20060908105814:<< go to node in present outline >>
+                #@nl
             else:
-                 #@                 <<invoke external browser>>
-                 #@+node:ekr.20061023141204:<<invoke external browser>>
-                 import webbrowser
-                              
-                 # Mozilla throws a weird exception, then opens the file!
-                 try:
-                     webbrowser.open(url)
-                 except:
-                     pass
-                 #@nonl
-                 #@-node:ekr.20061023141204:<<invoke external browser>>
-                 #@nl
+                #@                <<invoke external browser>>
+                #@+node:ekr.20061023141204:<<invoke external browser>>
+                import webbrowser
+                             
+                # Mozilla throws a weird exception, then opens the file!
+                try:
+                    webbrowser.open(url)
+                except:
+                    pass
+                #@nonl
+                #@-node:ekr.20061023141204:<<invoke external browser>>
+                #@nl
         else:
             #@            <<invoke external browser>>
             #@+node:ekr.20061023141204:<<invoke external browser>>
