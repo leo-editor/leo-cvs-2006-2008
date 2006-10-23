@@ -58,7 +58,7 @@ navigate to the nodes 'by hand' by following the arrows in the UNL.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.7"
+__version__ = "0.8"
 #@<< version history >>
 #@+node:rogererens.20041014104353:<< version history >>
 #@+at
@@ -72,6 +72,7 @@ __version__ = "0.7"
 # - 0.5 EKR: Convert %20 to ' ' in url's.
 # - 0.6 EKR: Made local UNL's work.
 # - 0.7 EKR: Set c.doubleClickFlag to keep focus in newly-opened window.
+# - 0.8 johnmwhite: Patch to onURl1 to handle @url file: headlines properly.
 #@-at
 #@nonl
 #@-node:rogererens.20041014104353:<< version history >>
@@ -97,38 +98,6 @@ import urlparse
 #@nl
 
 #@+others
-#@+node:rogererens.20041130095659:@url 'file: ./../../plugins/leoPlugins.leo#Plugins-->Icon and status areas-->@thin UNL.py-->To do'
-#@+at 
-#@nonl
-# It is possible to link to nodes within the same file.  However clones might 
-# be better.
-#@-at
-#@-node:rogererens.20041130095659:@url 'file: ./../../plugins/leoPlugins.leo#Plugins-->Icon and status areas-->@thin UNL.py-->To do'
-#@+node:ekr.20041202032543:@url 'file:./../doc/leoDocs.leo#Users Guide-->Chapter 8: Settings, Modes and Key Bindings'
-#@-node:ekr.20041202032543:@url 'file:./../doc/leoDocs.leo#Users Guide-->Chapter 8: Settings, Modes and Key Bindings'
-#@+node:rogererens.20041013084119:onSelect2
-def onSelect2 (tag,keywords):
-
-    """Shows the UNL in the status line whenever a node gets selected."""
-
-    c = keywords.get("c")
-
-    # c.currentPosition() is not valid while using the settings panel.
-    new_p = keywords.get('new_p')
-    
-    # g.trace(new_p)
-    
-    if new_p:
-        c.frame.clearStatusLine()
-        myList = [p.headString() for p in new_p.self_and_parents_iter()]
-        myList.reverse()
-
-        # Rich has reported using ::
-        # Any suggestions for standardization?
-        s = "-->".join(myList)
-        c.frame.putStatusLine(s)
-#@nonl
-#@-node:rogererens.20041013084119:onSelect2
 #@+node:rogererens.20041013082304.1:createStatusLine
 def createStatusLine(tag,keywords):
 
@@ -210,28 +179,49 @@ def onUrl1 (tag,keywords):
                     #@nonl
                     #@-node:rogererens.20041125015212.1:<<go to the node>>
                     #@nl
+            elif urlTuple[0] == "":
+                 #@                 << go to node in present outline >>
+                 #@+node:ekr.20060908105814:<< go to node in present outline >>
+                 if urlTuple [2]:
+                     nodeList = urlTuple [2].split("-->")
+                     p = g.findTopLevelNode(c,nodeList[0])
+                     if p:
+                         for headline in nodeList [1:]:
+                             p = g.findNodeInTree(c,p,headline)
+                             if not p: break
+                     if p:
+                         c.frame.tree.expandAllAncestors(p)
+                         c.selectPosition(p)
+                         c.redraw()
+                 #@nonl
+                 #@-node:ekr.20060908105814:<< go to node in present outline >>
+                 #@nl
             else:
-                #@                << go to node in present outline >>
-                #@+node:ekr.20060908105814:<< go to node in present outline >>
-                if urlTuple [2]:
-                    nodeList = urlTuple [2].split("-->")
-                    p = g.findTopLevelNode(c,nodeList[0])
-                    if p:
-                        for headline in nodeList [1:]:
-                            p = g.findNodeInTree(c,p,headline)
-                            if not p: break
-                    if p:
-                        c.frame.tree.expandAllAncestors(p)
-                        c.selectPosition(p)
-                        c.redraw()
-                #@nonl
-                #@-node:ekr.20060908105814:<< go to node in present outline >>
-                #@nl
+                 #@                 <<invoke external browser>>
+                 #@+node:ekr.20061023141204:<<invoke external browser>>
+                 import webbrowser
+                              
+                 # Mozilla throws a weird exception, then opens the file!
+                 try:
+                     webbrowser.open(url)
+                 except:
+                     pass
+                 #@nonl
+                 #@-node:ekr.20061023141204:<<invoke external browser>>
+                 #@nl
         else:
+            #@            <<invoke external browser>>
+            #@+node:ekr.20061023141204:<<invoke external browser>>
             import webbrowser
+                         
             # Mozilla throws a weird exception, then opens the file!
-            try: webbrowser.open(url)
-            except: pass
+            try:
+                webbrowser.open(url)
+            except:
+                pass
+            #@nonl
+            #@-node:ekr.20061023141204:<<invoke external browser>>
+            #@nl
         return True
             # PREVENTS THE EXECUTION OF LEO'S CORE CODE IN
             # Code-->Gui Base classes-->@thin leoFrame.py-->class leoTree-->tree.OnIconDoubleClick (@url)
@@ -240,39 +230,29 @@ def onUrl1 (tag,keywords):
         g.es_exception()
 #@nonl
 #@-node:rogererens.20041021091837:onUrl1
-#@+node:rogererens.20041014110709:To do
-#@+at
-# 
-# How about other plugins that create a status line? Should I test whether the 
-# status line is already created?
-# 
-# Don't know exactly yet about the interaction with other plugins. The info in 
-# the status line may be overwritten by them. That's fine with me: I can 
-# always click on the icon of the node again to show the info again.
-# 
-# Keep the pane of the UNL referred to on top (now the pane with the referring 
-# node stays on top).
-# Maybe this should be a settings-dependent behaviour. Could this be solved by 
-# using the 'onCreate' idiom and a UNLclass?
-# 
-# Find out about the difference between the event 'select2' and 'select3'.
-# 
-# A UNL checker script would be handy to check whether all references are 
-# still valid.
-# 
-# Deal with path-separators for various platforms?
-# 
-# Handle relative paths?
-# 
-# Introduce a menu item to improve documentation? By firing up a browser, 
-# directing it to leo on sourceforge (sourceforge userid needed?). EKR could 
-# start up a new thread beforehand, "documentation improvements", where a new 
-# message might be posted with the relevant UNL placed automatically in the 
-# text box. Then the user just needs to type in his/her comments and post the 
-# message.
-#@-at
+#@+node:rogererens.20041013084119:onSelect2
+def onSelect2 (tag,keywords):
+
+    """Shows the UNL in the status line whenever a node gets selected."""
+
+    c = keywords.get("c")
+
+    # c.currentPosition() is not valid while using the settings panel.
+    new_p = keywords.get('new_p')
+    
+    # g.trace(new_p)
+    
+    if new_p:
+        c.frame.clearStatusLine()
+        myList = [p.headString() for p in new_p.self_and_parents_iter()]
+        myList.reverse()
+
+        # Rich has reported using ::
+        # Any suggestions for standardization?
+        s = "-->".join(myList)
+        c.frame.putStatusLine(s)
 #@nonl
-#@-node:rogererens.20041014110709:To do
+#@-node:rogererens.20041013084119:onSelect2
 #@-others
 
 if Tk: # Ok for unit testing.
