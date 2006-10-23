@@ -3,13 +3,13 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="71" left="220" height="736" width="969"/>
+	<global_window_position top="141" left="238" height="717" width="969"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" a="TV" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
 <v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
@@ -564,7 +564,7 @@
 <v t="ekr.20041119034357.60"><vh>@ratio initial_vertical_ratio = 0.5</vh></v>
 <v t="ekr.20041119034357.61"><vh>@ratio initial_vertical_secondary_ratio = 0.65</vh></v>
 <v t="ekr.20041119034357.62"><vh>@int initial_window_height = 600</vh></v>
-<v t="ekr.20041119034357.63"><vh>@int initial_window_left = 20</vh></v>
+<v t="ekr.20041119034357.63"><vh>@int initial_window_left =  20</vh></v>
 <v t="ekr.20041119034357.64"><vh>@int initial_window_top = 20</vh></v>
 <v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
 </v>
@@ -584,7 +584,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
@@ -594,7 +594,7 @@
 <v t="ekr.20060309022759"><vh>@bool trace_colorizer = False</vh></v>
 <v t="ekr.20060204102644"><vh>@bool trace_f.set_focus = False</vh></v>
 <v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
-<v t="ekr.20051126062830" a="MV"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
+<v t="ekr.20051126062830" a="M"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20060209045356"><vh>@bool trace_masterFocusHandler = False</vh></v>
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
@@ -819,7 +819,6 @@ always uses this ratio when opening a file that is being split vertically.</t>
     
 </t>
 <t tx="ekr.20041119034357.63">Distance from left of screen of window, in pixels.
-
 </t>
 <t tx="ekr.20041119034357.64">Distance from top of screen of window, in pixels.</t>
 <t tx="ekr.20041119034357.65">Width window in pixels.
@@ -6063,9 +6062,9 @@ that differ from mine.
 
 Notes:
 
-- The actual settings here have no effect because they are in an
-@ignore node. However, their *clones* have effect elsewhere in this file.
-You can use the Go To Next Clone (Alt-N) to find clones elsewhere in the file.
+- The actual settings here have no effect because they are not in an @settings
+tree. However, their *clones* have effect elsewhere in this file. You can use
+the Go To Next Clone (Alt-N) to find clones elsewhere in the file.
 
 - I have not included any keyboard shortcuts here because they are highly personal.
   However, the ignore_unbound_non_ascii_keys option affects how Leo handles 'plain' keys.</t>

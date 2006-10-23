@@ -845,6 +845,39 @@ if i < n and s[i] == '*' :
 #@-node:ekr.20031218072017.1262:<< set theDict["root"] for noweb * chunks >>
 #@-node:ekr.20031218072017.1260:get_directives_dict & globalDirectiveList
 #@-node:ekr.20061019171123.1:Fixed multipath plugin so it works with new colorizier
+#@+node:ekr.20061016104544:Fixed bug in new colorizer
+@ 
+
+New colorizer did not handle @<newline> properly.
+(It required a space after the '@').
+#@nonl
+#@-node:ekr.20061016104544:Fixed bug in new colorizer
+#@+node:ekr.20061023071509:Fixed config bug
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3975898
+
+If the setting "@int initial_window_left" has a value of 0 (zero), leo starts
+up without showing a single pane.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.1625:setInitialWindowGeometry
+def setInitialWindowGeometry(self):
+    
+    """Set the position and size of the frame to config params."""
+    
+    c = self.c
+
+    h = c.config.getInt("initial_window_height") or 500
+    w = c.config.getInt("initial_window_width") or 600
+    x = c.config.getInt("initial_window_left") or 10
+    y = c.config.getInt("initial_window_top") or 10
+    
+    if h and w and x and y:
+        self.setTopGeometry(w,h,x,y)
+#@-node:ekr.20031218072017.1625:setInitialWindowGeometry
+#@-node:ekr.20061023071509:Fixed config bug
 #@-node:ekr.20061021150733:Bugs
 #@-node:ekr.20061021144254:Leo 4.4.2 final projects
 #@-all
