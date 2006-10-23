@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="93" left="245" height="711" width="966"/>
+	<global_window_position top="93" left="245" height="692" width="966"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -67,8 +67,8 @@
 <v t="ekr.20050812125502"><vh>@rst-no-head End stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.1" a="E"><vh>FAQ</vh>
-<v t="ekr.20050830115714" a="TV"><vh>@rst html\FAQ.html</vh>
+<v t="ekr.20050831195331.1"><vh>FAQ</vh>
+<v t="ekr.20050830115714"><vh>@rst html\FAQ.html</vh>
 <v t="ekr.20050830120007"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050830115714.1"><vh>Learning to use Leo</vh>
 <v t="ekr.20050830115714.2"><vh>What's the best way to learn to use Leo?</vh></v>
@@ -10675,7 +10675,7 @@ Leo's Users Guide
 
 `Chapter 7: Scripting Leo with Python`_
 
-`Chapter 8: Settings, Modes and Key Bindings`_
+`Chapter 8: Customizing Leo`_
 
 `Chapter 9: History of Leo`_
 
@@ -13463,7 +13463,7 @@ You should see Leo's main window, something like this:
 .. _`Chapter 4: Writing Programs in Leo`:           directives.html
 .. _`Chapter 6: Leo and Literate Programming`:      design.html
 .. _`Chapter 7: Scripting Leo with Python`:         scripting.html
-.. _`Chapter 8: Settings, Modes and Key Bindings`:  customizing.html
+.. _`Chapter 8: Customizing Leo`:                   customizing.html
 
 .. ----- References to the glossary
 
@@ -14195,7 +14195,7 @@ outlines whose headline is ``@settings``. When opening a .leo file, Leo looks
 for ``@settings`` trees in the outline being opened and also in various
 ``leoSettings.leo`` files. ``@settings`` trees allow plugins to get options without
 any further support from Leo's core code. For a full discussion of
-``@settings`` trees, see `Chapter 8: Settings, Modes and Key Bindings`_.</t>
+``@settings`` trees, see `Chapter 8: Customizing Leo`_.</t>
 <t tx="ekr.20050823082517">You can use Leo as fairly typical outliner. Play around with some of the
 commands from the Outline menu:
 
@@ -15089,7 +15089,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 5\: Using Leo's Commands`:             commands.html
 .. _`Chapter 6\: Leo and Literate Programming`:     design.html
 .. _`Chapter 7\: Scripting Leo with Python`:        scripting.html
-.. _`Chapter 8\: Settings, Modes and Key Bindings`: customizing.html
+.. _`Chapter 8\: Customizing Leo`:                  customizing.html
 .. _`Chapter 9\: History of Leo`:                   history.html
 .. _`Chapter 10\: Theory of Operation`:             theory.html
 .. _`Chapter 11\: White Papers`:                    whitepapers.html
@@ -17505,8 +17505,8 @@ Glossary
 
 .. ----- Relative links.
 
-.. _`Chapter 8: Settings, modes and key bindings`:  customizing.html
-.. _`Writing plugins and hooks`:                    writingPlugins.html
+.. _`Chapter 8: Customizing Leo`:   customizing.html
+.. _`Writing plugins and hooks`:    writingPlugins.html
 
 .. _`programming reference`:    directives.html
 .. _`@asis`:                    directives.html#asis-and-noref
@@ -17960,7 +17960,7 @@ For example, an `@root node`_ is a node containing an @root directive_, etc.
     for ``@settings`` trees in the outline being opened and also in various
     ``leoSettings.leo files``. ``@settings`` trees allow plugins_ to get options without
     any further support from Leo's core code. For a full discussion of
-    @settings trees, see `Chapter 8: Settings, modes and key bindings`_.
+    @settings trees, see `Chapter 8: Customizing Leo`_.
 
 .. _`sibling`:
 .. _`siblings`:
@@ -18250,7 +18250,7 @@ verbose=True
 |back| |leo| |next|
 
 #############################################
-Chapter 8: Settings, Modes and Key Bindings
+Chapter 8: Customizing Leo
 #############################################
 
 This chapter discusses how to customize Leo using the plugins and other means.
@@ -18311,7 +18311,7 @@ This chapter will be of use primarily to those wanting to change Leo's code.
 
 .. _`Chapter 4\: Writing Programs in Leo`:              directives.html
 .. _`Chapter 6\: Leo and Literate Programming`:         design.html
-.. _`Chapter 8: Settings, Modes and Key Bindings`:      customizing.html
+.. _`Chapter 8: Customizing Leo`:                       customizing.html
 
 .. _`Clones and views`:                                 intro.html#clones-views
 .. _`Creating script buttons`:                          scripting.html#creating-script-buttons
@@ -18388,9 +18388,9 @@ This chapter will be of use primarily to those wanting to change Leo's code.
 </t>
 <t tx="ekr.20050901102147">.. Relative links...
 
-.. _`Chapter 7\: Scripting Leo with Python`:        scripting.html
-.. _`Chapter 8\: Settings, Modes and Key Bindings`: customizing.html
-.. _`Chapter 10\: Theory of Operation`:             theory.html
+.. _`Chapter 7\: Scripting Leo with Python`:    scripting.html
+.. _`Chapter 8\: Customizing Leo`:              customizing.html
+.. _`Chapter 10\: Theory of Operation`:         theory.html
 
 .. Absolute links..
 
@@ -19551,9 +19551,9 @@ instantly hooked.
 
 .. Relative links...
 
-.. _`Chapter 8\: Settings, Modes and Key Bindings`:     customizing.html
-.. _`Chapter 13\: Writing Plugins`:                     writingPlugins.html
-.. _`Creating script buttons`:                          scripting.html#creating-script-buttons
+.. _`Chapter 8\: Customizing Leo`:     customizing.html
+.. _`Chapter 13\: Writing Plugins`:     writingPlugins.html
+.. _`Creating script buttons`:          scripting.html#creating-script-buttons
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -20085,7 +20085,7 @@ the headline of a child node.  UNL's of the form::
 refer to a node specified in &lt;path&gt; For example, double clicking the following
 headline will take you to Chapter 8 of Leo's Users Guide::
 
-    @url file:c:/prog/leoCvs/leo/doc/leoDocs.leo#Users Guide--&gt;Chapter 8: Settings, Modes and Key Bindings
+    @url file:c:/prog/leoCvs/leo/doc/leoDocs.leo#Users Guide--&gt;Chapter 8: Customizing Leo
     
 For example, suppose you want to email someone with comments about a Leo file.
 Create a comments.leo file containing ``@url UNL`` nodes. That is, headlines are
@@ -23839,7 +23839,7 @@ For example, to print a list of all commands type Alt-X print-commands &lt;Retur
 
 The following sections list the various commands that you can invoke from the minibuffer.
 **Important**: you may bind keystrokes to any of these commands.
-See `Chapter 8: Settings, Modes and Key Bindings`_ for full details.</t>
+See `Chapter 8: Customizing Leo`_ for full details.</t>
 <t tx="ekr.20060421070409.1"></t>
 <t tx="ekr.20060421070409.2">@nocolor
 http://sourceforge.net/forum/message.php?msg_id=3688804
@@ -24993,10 +24993,6 @@ I would *still* want to run the modified winpdb in a separate process.</t>
 .. _winpdb:             http://www.digitalpeers.com/pythondebugger/
 .. _Idle:               http://www.python.org/idle/
 .. _`Leo's forums`:     http://sourceforge.net/forum/?group_id=3458
-
-.. Relative links...
-
-.. _`Chapter 8\: Settings, Modes and Key Bindings`:  customizing.html
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -26320,7 +26316,7 @@ Chapter 13: Writing Plugins
 
 .. Relative links...
 
-.. _`Chapter 8\: Settings, Modes and Key Bindings`:  customizing.html
+.. _`Chapter 8\: Customizing Leo`:  customizing.html
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -28196,10 +28192,6 @@ This chapter discusses how to write Leo scripts that store and retrieve data usi
 
 .. _ZODB:               http://www.zope.org/Wikis/ZODB/guide/zodb.html
 .. _`Installing ZODB`:  http://www.zope.org/Wikis/ZODB/guide/node3.html#SECTION000310000000000000000
-
-.. Relative links...
-
-.. _`Chapter 8\: Settings, Modes and Key Bindings`:  customizing.html
 
 .. WARNING: image targets may not have upper case letters!
 
