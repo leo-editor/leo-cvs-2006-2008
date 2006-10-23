@@ -1,8 +1,8 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20061020155121:To do: 4.4.2
-#@-node:ekr.20061020155121:To do: 4.4.2
+#@+node:ekr.20061023075901:Play with pymacs and emacs org mode
+#@-node:ekr.20061023075901:Play with pymacs and emacs org mode
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
 @nocolor
@@ -1083,12 +1083,6 @@ def revert (self,event=None):
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
-#@+node:ekr.20061013082443:Unit tests for all edit commands
-#@+node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-The must work with unicode characters.  (They do now.)
-#@nonl
-#@-node:ekr.20061011105922.1:Unit tests for forward/backward move commands
-#@-node:ekr.20061013082443:Unit tests for all edit commands
 #@+node:ekr.20061009153206:Install pylint
 @nocolor
 
