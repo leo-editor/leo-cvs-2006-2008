@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="93" left="245" height="654" width="966"/>
+	<global_window_position top="93" left="245" height="635" width="966"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="V"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -163,7 +163,6 @@
 <v t="edream.110203163054.61"><vh>Putting the Leo icon in Leo windows</vh></v>
 <v t="ekr.20050901174937"><vh>Running Leo</vh></v>
 <v t="ekr.20060105145125"><vh>How to install the Aspell spell checker</vh></v>
-<v t="ekr.20060621134106"><vh>Updating settings from previous versions of Leo</vh></v>
 <v t="ekr.20050906105335"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -369,7 +368,7 @@
 <v t="ekr.20050901102400.3"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.211" a="E"><vh>Chapter 8: Customizing Leo</vh>
+<v t="EKR.20040524104904.211"><vh>Chapter 8: Customizing Leo</vh>
 <v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.140"><vh>Specifying settings</vh></v>
@@ -27721,34 +27720,6 @@ or leoPluginsRef.leo if you are using cvs.</t>
 <t tx="ekr.20060621132923.1">-----------------------
 
 |prev| |leo| |next|</t>
-<t tx="ekr.20060621134106">Your copy of the leoSettings.leo file may contain many settings that are different
-from the standard version of leoSettings.leo file distributed with Leo,
-so updating leoSettings.leo in new versions of Leo could be tedious.
-Fortunately there is help.
-scripts.leo contains the node::
-    
-    @file leoScripts.txt--&gt;Important--&gt;updateSettings
-
-This is a **preliminary** script that updates a new leoSettings.leo file
-(path2) from the settings in a previous leoSettings.leo file (path1).
-Presumably, the path2 file is the leoSettings.leo file from a new distribution,
-and the path1 file a leoSettings.leo file containing settings that you have
-modified.  You must specify the full path of both files in the top-level @button node.
-
-**Warning**: This script modifies the path2 file. Make sure that you don't mind
-modifying this file.
-
-**Warning**: This script is unsophisticated in its update algorithm. If if finds
-corresponding nodes (node with the same settings name) in both outlines it simply
-replaces the node in the path2 file with the node in the path1 file. In
-particular, it does not keep track of individual shortcuts: it repaces the body
-of one @shortcuts node with the body of the corresponding @shortcuts node.
-
-**Note**: If the path1 file contains a settings node not in the path2 file it
-attempts to create a new node in the corresponding place in the path2 file. If
-this is not possible, say because the structures of the files are different, the
-script places the new node as the last child of the @settings node in the path2
-file.</t>
 <t tx="ekr.20060622130553">
 http://sourceforge.net/forum/message.php?msg_id=3784292
 
