@@ -3884,7 +3884,7 @@ class atFile:
         if i+1 >= n or s[i+1] in (' ','\t','\n'):
             # Bare '@' not recognized in cweb mode.
             return g.choose(at.language=="cweb",at.noDirective,at.atDirective)
-        if s[i+1] not in string.ascii_letters:
+        if not s[i+1].isalpha():
             return at.noDirective # Bug fix: do NOT return miscDirective here!
         if at.language=="cweb" and g.match_word(s,i,'@c'):
             return at.noDirective
