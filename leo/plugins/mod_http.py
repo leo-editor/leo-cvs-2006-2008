@@ -34,7 +34,7 @@ To enable this plugin:
 # Adapted and extended from the Python Cookbook:
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/259148
 
-__version__ = "0.94"
+__version__ = "0.95"
 
 #@<< imports >>
 #@+node:EKR.20040517080250.3:<< imports >>
@@ -75,6 +75,8 @@ import urlparse
 # But http was in the Plugins menu because the rst3 plugin imports it.
 # The fix was to the plugins manager, not this plugin or rst3.
 # 0.94 BWM
+# 0.95 Changed headline from applyConfiguration to getConfiguration to match 
+# name of method.
 #@-at
 #@nonl
 #@-node:ekr.20050328104558:<< version history >>
@@ -862,7 +864,7 @@ def a_read(obj):
 
 #@-node:EKR.20040517080250.47:a_read
 #@-node:EKR.20040517080250.46:asynchore_overrides
-#@+node:EKR.20040517080250.48:applyConfiguration
+#@+node:EKR.20040517080250.48:getConfiguration
 def getConfiguration(c):
 
     """Called when the user opens a new file."""
@@ -881,7 +883,7 @@ def getConfiguration(c):
     if new_rst2_http_attributename:
         config.rst2_http_attributename = new_rst2_http_attributename
 #@nonl
-#@-node:EKR.20040517080250.48:applyConfiguration
+#@-node:EKR.20040517080250.48:getConfiguration
 #@-others
 #@nonl
 #@-node:EKR.20040517080250.1:@thin mod_http.py
