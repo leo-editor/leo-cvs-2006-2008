@@ -1085,10 +1085,10 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         c = self.c
     
-        h = c.config.getInt("initial_window_height")
-        w = c.config.getInt("initial_window_width")
-        x = c.config.getInt("initial_window_left")
-        y = c.config.getInt("initial_window_top")
+        h = c.config.getInt("initial_window_height") or 500
+        w = c.config.getInt("initial_window_width") or 600
+        x = c.config.getInt("initial_window_left") or 10
+        y = c.config.getInt("initial_window_top") or 10
         
         if h and w and x and y:
             self.setTopGeometry(w,h,x,y)
