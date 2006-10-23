@@ -2,138 +2,15 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20061020155121:To do: 4.4.2
-#@+node:ekr.20061021163844:Find backward (F2) doesn't seem to be working properly
-#@-node:ekr.20061021163844:Find backward (F2) doesn't seem to be working properly
-#@+node:ekr.20061016104544:Make sure paste does a full recolor
-@
-
-This is probably an issue with the new colorizer being interrupted. When
-restarted, it is probably only restarted as an incremental color. Maybe we could
-'propagate' non-incremental coloring, but really the new colorizer isn't fast
-enough and needs a rewrite of its control logic.
-#@nonl
-#@+node:ekr.20051011072903.5:pasteText
-def pasteText (self,event=None,middleButton=False):
-
-    '''Paste the clipboard into a widget.
-    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
-
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    wname = c.widget_name(w)
-    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
-    oldText = w.get('1.0','end')
-    
-    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
-    
-    if middleButton and c.k.previousSelection:
-        start,end = c.k.previousSelection
-        s = w.get(start,end)
-        c.k.previousSelection = None
-    else:
-        s = s1 = g.app.gui.getTextFromClipboard()
-    
-    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-    
-    if singleLine:
-        # Strip trailing newlines so the truncation doesn't cause confusion.
-        while s and s [ -1] in ('\n','\r'):
-            s = s [: -1]
-
-    try:
-        # Update the widget.
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,s)
-    
-        if wname.startswith('body'):
-            c.frame.body.forceFullRecolor()
-            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
-        elif singleLine:
-            s = w.get('1.0','end')
-            while s and s [ -1] in ('\n','\r'):
-                s = s [: -1]
-            if wname.startswith('head'):
-                # The headline is not officially changed yet.
-                # p.initHeadString(s)
-                w.configure(width=f.tree.headWidth(s=s))
-        else: pass
-    except Exception:
-        pass # Tk sometimes throws weird exceptions here.
-        
-    return 'break' # Essential
-
-OnPasteFromMenu = pasteText
-#@-node:ekr.20051011072903.5:pasteText
-#@-node:ekr.20061016104544:Make sure paste does a full recolor
-#@+node:ekr.20061019171123.1:New syntax colorer is interfering with multipath
-@nocolor
-
->> Seems to be writing the file to the correct place but has just now started 
->> writing the '@multipath' to the thin file
->> without commenting it out.
-
-> So you probably wrote the file with the multipath plugin disabled.
-
-Executive Summary:
-
-When multifile.py and __jEdit_colorizer__.py are both enabled 
-@multipath gets written to the output without being commented. 
-Disabling __jEdit_colorizer__.py fixes this.
-
-Longer version written as I determined the above:
-
-When I save I get:
-
-wrote:     itaseval.py
-saved: itasca_app.leo
-multifile:
-Wrote /mnt/proj/ItascaLegacy/app/itaseval.py to /home/tbrown/t/app
-
-which means the plugin must be running
-
-then grep multipath -B2 -A2 itaseval.py gives
-
----cut here---
-#@verbatim
-#@+node:tbrown.20061004123041:@thin itaseval.py
-#@verbatim
-#@@language python
-@multipath /home/tbrown/t/app
-
-#@verbatim
-#@<< chdir for ArcGIS / wxPython >>
----cut here---
-
-I'm synced with CVS.
-
-I'll try it on my vanilla copy of leo...
-
-pah... it worked ok there... so some interaction of plugins... 
-messing up the list of directives handling?  The colorizer knows 
-it's a directive, anyway, I'll start turning off plugins one by 
-one...
-
-ha - got it on the second guess, I was running 
-__jEdit_colorizer__.py - I knew I should trust all those underscores 
-:)
-
-Cheers -Terry
-
-> HTH.
->
-> Edward
-> --------------------------------------------------------------------
-> Edward K. Ream   email:  edreamleo@charter.net
-> Leo: http://webpages.charter.net/edreamleo/front.html
-> --------------------------------------------------------------------
->
->
-
-#@-node:ekr.20061019171123.1:New syntax colorer is interfering with multipath
 #@-node:ekr.20061020155121:To do: 4.4.2
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
+@nocolor
+
+Having two lists for the same thing is very bad.
+When this is fixed we will be able to simplify the multifile plugin.
+#@nonl
+#@-node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
 #@+node:ekr.20061020155051:Simplify and fix undo
 #@+node:ekr.20061020155051.1:Notes
 @nocolor

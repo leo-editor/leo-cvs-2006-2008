@@ -885,8 +885,6 @@ class baseColorizer:
     #@-node:ekr.20060530091119.10:interrupt
     #@+node:ekr.20060530091119.41:recolor_all (rewrite)
     def recolor_all (self):
-        
-        g.trace()
     
         # This code is executed only if graphics characters will be inserted by user markup code.
         
