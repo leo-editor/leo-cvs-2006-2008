@@ -235,12 +235,6 @@ class leoGui:
         """Return the window information."""
         self.oops()
     #@-node:ekr.20031218072017.3735:Dialog utils
-    #@+node:ekr.20031218072017.3736:Font
-    def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
-        
-        pass
-        # self.oops()
-    #@-node:ekr.20031218072017.3736:Font
     #@+node:ekr.20031218072017.3737:Focus
     def get_focus(self,frame):
     
@@ -264,23 +258,12 @@ class leoGui:
     
         self.oops()
     #@-node:ekr.20031218072017.3737:Focus
-    #@+node:ekr.20031218072017.3738:Index
-    def firstIndex (self):
-    
-        self.oops()
+    #@+node:ekr.20031218072017.3736:Font
+    def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
         
-    def lastIndex (self):
-    
-        self.oops()
-        
-    def moveIndexForward(self,t,index,n):
-    
-        self.oops()
-        
-    def moveIndexToNextLine(self,t,index):
-    
-        self.oops()
-    #@-node:ekr.20031218072017.3738:Index
+        pass
+        # self.oops()
+    #@-node:ekr.20031218072017.3736:Font
     #@+node:ekr.20031218072017.3739:Idle time
     def setIdleTimeHook (self,idleTimeHookHandler):
         
@@ -292,6 +275,36 @@ class leoGui:
         # print 'leoGui:setIdleTimeHookAfterDelay'
         pass # Not an error.
     #@-node:ekr.20031218072017.3739:Idle time
+    #@+node:ekr.20031218072017.3738:Index
+    def compareIndices (self,t,n1,rel,n2):
+        self.oops()
+    
+    def firstIndex (self):
+        self.oops()
+        
+    def getindex (self,body,index):
+        self.oops()
+        return 0,0
+        
+    def lastIndex (self):
+        self.oops()
+        
+    def moveIndexBackward(self,index,n):
+        self.oops()
+        
+    def moveIndexForward(self,t,index,n):
+        self.oops()
+        
+    def moveIndexToNextLine(self,t,index):
+        self.oops()
+    
+    def toGuiIndex (self,s,w,index):
+        self.oops()
+        
+    def toPythonIndex (self,s,w,index):
+       self.oops()
+    #@nonl
+    #@-node:ekr.20031218072017.3738:Index
     #@+node:ekr.20051220144306:isTextWidget
     def isTextWidget (self,w):
         
@@ -299,6 +312,30 @@ class leoGui:
         
         self.oops()
     #@-node:ekr.20051220144306:isTextWidget
+    #@+node:ekr.20061024133425:Selection
+    def getSelectionRange (self,t):
+        return 0,0
+        
+    def getSelectedText (self,t):
+        return u""
+        
+    def getTextSelection (self,t,sort=True):
+        return 0,0
+        
+    def hasSelection (self,widget):
+        return False
+    
+    def selectAllText (self,w,insert='end-1c'):
+        pass
+        
+    def setSelectionRangeWithLength(self,t,start,length,insert='sel.end'):
+        pass
+        
+    def setTextSelection (self,t,start,end,insert='sel.end'):
+        pass
+        
+    setSelectionRange = setTextSelection
+    #@-node:ekr.20061024133425:Selection
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@+node:ekr.20031218072017.3740:guiName
     def guiName(self):
