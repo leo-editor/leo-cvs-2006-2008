@@ -1465,6 +1465,7 @@ class nullTree (leoTree):
         assert(self.frame)
         self.font = None
         self.fontName = None
+        self.canvas = None
     #@-node:ekr.20031218072017.2234: nullTree.__init__
     #@+node:ekr.20031218072017.2235:oops
     def oops(self):

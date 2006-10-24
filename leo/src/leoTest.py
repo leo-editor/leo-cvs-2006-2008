@@ -1451,6 +1451,8 @@ def runEditCommandTest (c,p):
         assert s1 == s2, 'expected body: %s, got: %s' % (repr(s1),repr(s2))
         sel3 = g.app.gui.getTextSelection(w)
         assert sel2 == sel3, 'expected sel: %s, got: %s' % (sel2,sel3)
+        c.selectPosition(atTest)
+        atTest.contract()
     finally:
         c.endUpdate()
 #@nonl

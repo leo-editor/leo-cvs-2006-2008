@@ -41,7 +41,7 @@ import sys
 
 #@+others
 #@+node:ekr.20031218072017.1934:run & allies
-def run(fileName=None,*args,**keywords):
+def run(fileName=None,pymacs=None,*args,**keywords):
     
     """Initialize and run Leo"""
     
@@ -69,7 +69,10 @@ def run(fileName=None,*args,**keywords):
     #@-node:ekr.20041219072112:<< import leoGlobals and leoApp >>
     #@nl
     g.computeStandardDirectories()
-    script, windowFlag = getBatchScript() # Do early so we can compute verbose next.
+    if pymacs:
+        script = windowFlag = False
+    else:
+        script, windowFlag = getBatchScript() # Do early so we can compute verbose next.
     verbose = script is None
     g.app.setLeoID(verbose=verbose) # Force the user to set g.app.leoID.
     #@    << import leoNodes and leoConfig >>
@@ -94,7 +97,9 @@ def run(fileName=None,*args,**keywords):
     # Read settings *before* opening plugins.  This means if-gui has effect only in per-file settings.
     g.app.config.readSettingsFiles(fileName,verbose)
     g.app.setEncoding()
-    if script:
+    if pymacs:
+        createNullGuiWithScript(None)
+    elif script:
         if windowFlag:
             g.app.createTkGui() # Creates global windows.
             g.app.gui.setScript(script)
