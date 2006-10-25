@@ -24,27 +24,35 @@ Emacs code initiallizes this module with::
 
 # As in leo.py we must be very careful about imports.
 g = None # set by init: do *not* import it here!
-
 inited = False
 
 #@+others
 #@+node:ekr.20061024131236:dump
 def dump (anObject):
     
+    init()
+    
     return str(g.toEncodedString(repr(anObject),encoding='ascii'))
 #@-node:ekr.20061024131236:dump
 #@+node:ekr.20061024130957:getters
-def app ():
+def get_app ():
     '''Scripts can use g.app.scriptDict for communication with pymacs.'''
+    init()
     return g.app
     
-def g():
+def get_g():
+    init()
     return g
+    
+def script_result():
+    init()
+    return g.app.scriptResult
 #@nonl
 #@-node:ekr.20061024130957:getters
 #@+node:ekr.20061024060248.3:hello
 def hello():
 
+    init()
     return 'Hello from Leo.  g.app: %s' % g.app
 #@nonl
 #@-node:ekr.20061024060248.3:hello
@@ -54,7 +62,6 @@ def init ():
     global inited
 
     if inited:
-        g.trace('already inited')
         return
     else:
         inited = True
@@ -73,8 +80,14 @@ def init ():
 #@+node:ekr.20061024075542.1:open
 def open (fileName=None):
     
+    init()
+    
+    if g.app.unitTesting:
+        return
+    
     if not fileName:
-        fileName = r'c:\prog\tigris-cvs\leo\test\test.leo'
+        g.es_print('leoPymacs.open: no file name')
+        return None
 
     # openWithFileName checks to see if the file is already open.
     ok, frame = g.openWithFileName(
@@ -85,16 +98,24 @@ def open (fileName=None):
 
     c = ok and frame.c or None
     if c:
-        return c
+        g.es_print('leoPymacs.open: %s' % c)
     else:
-        g.trace('Can not open %s' % fileName)
-        return None
+        g.es_print('leoPymacs.open: Can not open %s' % fileName)
+
+    return c
 #@nonl
 #@-node:ekr.20061024075542.1:open
 #@+node:ekr.20061024084200:run-script
 def run_script(c,script,p=None):
     
     # It is possible to use script=None, in which case p must be defined.
+    
+    init()
+    
+    if c is None:
+        c,frame = g.app.newLeoCommanderAndFrame(fileName='dummy script file')
+            
+    g.app.scriptResult = None
 
     c.executeScript(
         event=None,
@@ -106,12 +127,11 @@ def run_script(c,script,p=None):
         silent=True,  # Don't write to the log.
     )
     
-    g.trace('script done')
+    # g.trace('script returns: ',repr(g.app.scriptResult))
+    return g.app.scriptResult
 #@nonl
 #@-node:ekr.20061024084200:run-script
 #@-others
-
-init()
 #@nonl
 #@-node:ekr.20061024060248.1:@thin leoPymacs.py
 #@-leo
