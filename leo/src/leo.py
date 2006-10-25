@@ -154,6 +154,7 @@ def run(fileName=None,pymacs=None,*args,**keywords):
         c.redraw_now()
     c.bodyWantsFocus()
     g.app.gui.runMainLoop()
+
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
 
@@ -228,6 +229,7 @@ def createFrame (fileName):
         g.es("File not found: " + fileName)
 
     return c,frame
+#@nonl
 #@-node:ekr.20031218072017.1624:createFrame (leo.py)
 #@+node:ekr.20031218072017.1938:createNullGuiWithScript (leo.py)
 def createNullGuiWithScript (script):

@@ -1,8 +1,6 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20061023075901:Play with pymacs and emacs org mode
-#@-node:ekr.20061023075901:Play with pymacs and emacs org mode
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
 @nocolor
@@ -1097,6 +1095,18 @@ def revert (self,event=None):
 #@-node:ekr.20060927173836.4:New move outline commands
 #@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
 #@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
+#@+node:ekr.20061024093525:Create settings menu
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3977681
+
+How about having a menu Edit -> Settings with the submenu-items 'LeoSettings.leo',
+'myLeoSettings.leo', 'this file's settings'?
+
+The menu-items 'Open myLeoSettings.leo' and 'Open LeoSettings.leo' under the
+Help-menu seem out-of-place.
+
+#@-node:ekr.20061024093525:Create settings menu
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20060822174843:Most important
 #@+node:ekr.20041228084830.3:Finish wxWindows plugin

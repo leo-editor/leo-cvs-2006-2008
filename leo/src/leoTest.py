@@ -1576,6 +1576,7 @@ def importAllModulesInPath (path):
 
     path2 = g.os_path_join(path,"leo*.py")
     files = glob.glob(path2)
+    
     modules = []
 
     for theFile in files:
@@ -1584,6 +1585,7 @@ def importAllModulesInPath (path):
             modules.append(module)
 
     return modules
+#@nonl
 #@-node:ekr.20051104075904.102:importAllModulesInPath
 #@+node:ekr.20051104075904.103:safeImportModule
 #@+at 
