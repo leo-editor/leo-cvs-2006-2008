@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="93" left="245" height="635" width="966"/>
+	<global_window_position top="127" left="151" height="722" width="880"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -678,6 +678,15 @@
 <v t="ekr.20060913165542.3"><vh>v.detach()</vh></v>
 </v>
 <v t="ekr.20060913164729"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
+<v t="ekr.20061025065357"><vh>Chapter 18: Leo and Emacs</vh>
+<v t="ekr.20061025065357.1"><vh>@rst html\emacs.html</vh>
+<v t="ekr.20061025065357.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20061025081359"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
+<v t="ekr.20061025070825.1"><vh>Functions in leoPymacs.py</vh></v>
+<v t="ekr.20061025142434"><vh>The minibuffer</vh></v>
+<v t="ekr.20061025065357.12"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
@@ -10694,6 +10703,8 @@ Leo's Users Guide
 
 `Chapter 17: Using ZODB with Leo`_
 
+`Chapter 18: Leo and Emacs`_
+
 Appendices_
 
 Glossary_
@@ -15098,6 +15109,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 15\: Controlling Syntax Coloring`:     coloring.html
 .. _`Chapter 16\: Using External Debuggers`:        debuggers.html
 .. _`Chapter 17\: Using ZODB with Leo`:             zodb.html
+.. _`Chapter 18\: Leo and Emacs`:                   emacs.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
 .. _`What's new in Leo 4.4.2`:                      new-4-4-2.html
@@ -17433,7 +17445,7 @@ Appendices
 .. WARNING: image targets may not have upper case letters!
 
 .. |back| image:: arrow_lt.gif
-	:target: zodb.html
+	:target: emacs.html
 
 .. |next| image:: arrow_rt.gif
 	:target: glossary.html
@@ -28173,7 +28185,7 @@ This chapter discusses how to write Leo scripts that store and retrieve data usi
     :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: appendices.html
+    :target: emacs.html
 </t>
 <t tx="ekr.20060913164729">-----------------------
 
@@ -29548,5 +29560,228 @@ Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 <t tx="ekr.20061021164213">Set @bool ignore_unbound_non_ascii_keys = False in LeoSettings.leo or myLeoSettings.leo.</t>
 <t tx="ekr.20061021164213.1">This is a known bug in Tk/Tkinter and there is no good workaround. Some
 keyboards allow you to disable the caps-lock key.</t>
+<t tx="ekr.20061025065357"></t>
+<t tx="ekr.20061025065357.1">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+.. September 13, 2006
+
+|back| |leo| |next|
+
+#######################################
+Chapter 18: Leo and Emacs
+#######################################
+
+This chapter several topics relating to the Emacs editor.
+
+.. contents::
+</t>
+<t tx="ekr.20061025065357.2">.. External links...
+
+.. _ZODB:               http://www.zope.org/Wikis/ZODB/guide/zodb.html
+.. _`Installing ZODB`:  http://www.zope.org/Wikis/ZODB/guide/node3.html#SECTION000310000000000000000
+
+.. _pymacs:             http://pymacs.progiciels-bpi.ca/index.html
+
+.. Internal links...
+
+.. _`Chapter 8: Customizing Leo`:   customizing.html
+
+.. WARNING: image targets may not have upper case letters!
+
+.. |back| image:: arrow_lt.gif
+    :target: zodb.html
+
+.. |leo|  image:: leo.gif
+    :target: front.html
+
+.. |next| image:: arrow_rt.gif
+    :target: appendices.html
+</t>
+<t tx="ekr.20061025065357.12">-----------------------
+
+|back| |leo| |next|</t>
+<t tx="ekr.20061025070825.1">The leoPymacs module is intended to be called from Emacs using pymacs.  It contains the following top-level functions:
+    
+- get_app()
+
+  Returns the hidden app created by the leoPymacs.init function.
+    
+- dump(anyPythonObject)
+
+  Returns str(repr(anyPythonObject)).
+  
+- get_g()
+
+  Returns the leoGlobals module of the hidden app created by the leoPymacs.init function.
+  
+- get_script_result()
+
+  Returns g.app.scriptResult, where g.app is the hidden app.
+  
+- init()
+  Calls leo.run(pymacs=True) to create a hidden Leo application.
+  Later calls to open can open hidden Leo outlines that can be accessed via runScript.
+  
+- open(fileName)
+
+  Opens the .leo file given by fileName.
+  fileName must be the full path to a .leo file.
+  Returns the commander of the open Leo outline, or None if the outline could not be opened.
+  
+- run_script(c,script,p=None)
+
+  Executes a script in the context of a commander ``c`` returned by the leoPymacs.open.
+  c may be None, in which case a dummy commander is created in which to run the script.
+  In the executed script, p is set to c.currentPosition() if no p argument is specified.
+  Returns g.app.scriptResult, where g.app is the hidden app.
+</t>
+<t tx="ekr.20061025081359">Leo's leoPymacs module is a simple 'server' for the pymacs_ package.
+Using pymacs and leoPymacs, elisp scripts can open .leo files and execute *Python* scripts
+as if they were executed inside Leo.
+In particular, such scripts can use Leo's predefined c, g and p variables.
+Thus, *Python* scripts running in Emacs can:
+    
+- Open any .leo file. 
+- Access any part of the outline. 
+- Change any part of the outline, including derived files, 
+- Save .leo files.
+- Execute *any* Leo script.
+
+In short, you can now do from Emacs anything that you can do with Leo scripting inside Leo.
+
+Here are step-by-step instructions for executing Python scripts in Emacs:
+    
+**Step 1. Install pymacs** 
+
+   The pymacs introduction is highly misleading about two-way communication between Python and lisp scripts.
+   In truth, Python scripts can call the Pymacs.lisp function **only** if the Python script
+   was invoked from emacs.
+   Otherwise, callilng Pymacs.lisp will hang the process making the call!
+   For example, executing the following script as an ordinary Leo script will hang Leo::
+   
+        from Pymacs import lisp
+        print lisp("""2+2""") # Hangs
+        
+**Step 2. Load the leoPymacs module from Emacs, creating a hidden Leo application**
+
+  From inside Emacs, you load Leo's leoPymacs module as follows::
+
+    (pymacs-load "leoPymacs" "leo-")
+   
+  The call to pymacs-load is similar to ``'import leoPymacs as leo-'`` in Python.
+  The side effect of pymacs-load is to define the elisp function leo-x for every top-level function x in leoPymacs.py,
+  namely leo-dump, leo-get-app, leo-get-g, leo-get-script-result, leo-init, leo-open and leo-run-script.
+  The first call to any of these functions creates a **hidden Leo application**
+  in which .leo files may be loaded, modified and saved,
+  and in which Leo scripts may be executed.
+  This hidden Leo application uses Leo's nullGui class as its gui,
+  so Leo commands and Leo scripts that require a fully functional gui will not work as
+  expected in the hidden Leo application.
+  Steps 3 and 4 tells how to use this hidden Leo application.
+  
+  pymacs-load works like a Python reload, so you can redefine leoPymacs.py while Emacs is running.
+  However, calling pymacs-load destroys the old hidden Leo application and creates a new one,
+  so typically you would want to call pymacs-load only once per Emacs session.
+  Like this::
+
+        (setq reload nil) ; change nil to t to force a reload.
+
+        (if (or reload (not (boundp 'leoPymacs)))
+            (setq leoPymacs (pymacs-load "leoPymacs" "leo-"))
+            (message "leoPymacs already loaded")
+        )
+   
+**Step 3. From Emacs, open .leo files**
+
+   Once we have loaded the leoPymacs module
+   we can open a .leo file as follows::
+
+    (setq c (leo-open fileName))
+    
+   This binds the elisp ``c`` variable to the Leo commander created by opening fileName.
+   fileName should be the full path to a .leo file.
+   In the next step we will use this ``c`` variable to execute *Leo* scripts in the
+   context of an open Leo outline.
+   
+   Sometimes we want to execute a Leo script before opening any Leo commanders.
+   For example, we might want to compute the fileName passed to leo-open.
+   leo-run-script allows the ``c`` argument to be nil,
+   in which case leo-run-script creates a dummy commander in which to run the script.
+   For example, the following script calls ``g.os_path_join`` and ``g.os_path_abspath``::
+
+        (setq script "g.app.scriptResult =
+            g.os_path_abspath(g.os_path_join(
+                g.app.loadDir,'..','test','ut.leo'))"
+        )
+
+        (setq fileName (leo-run-script nil script))
+        
+   leo-run-script returns the value of ``g.app.scriptResult``
+   As shown above, Python scripts may set ``g.app.scriptResult`` to indicate their result.
+   elisp scripts can also get ``g.app.scriptResult`` using leo-script-result.
+
+**Step 4. From Emacs, execute Leo (Python) scripts**
+
+   From emacs we can execute a Python script **as if** it were executed in an
+   open Leo outline.
+   Suppose aLeoScript is an **elisp** string containing a Leo (Python) script.
+   We can execute that script in the hidden Leo application as follows::
+
+        (leo-run-script c aLeoScript)
+    
+   For example::
+
+        (setq c (leo-open fileName)
+        (csetq script "print 'c',c,'h',c.currentPosition().headString()")
+        (leo-run-script c script)
+    
+Putting this all together, we get::
+    
+        ; Step 1: load leoPymacs if it has not already been loaded.
+        (setq reload nil)
+        (if (or reload (not (boundp 'leoPymacs)))
+            (setq leoPymacs (pymacs-load "leoPymacs" "leo-"))
+            (message "leoPymacs already loaded")
+        )
+        
+        ; Step 2: compute the path to leo/test/ut.leo using a Leo script.
+        (setq script
+            "g.app.scriptResult = g.os_path_abspath(
+                g.os_path_join(g.app.loadDir,'..','test','ut.leo'))"
+        )
+        (setq fileName (leo-run-script nil script))
+        
+        ; Step 3: execute a script in ut.leo.
+        (setq c (leo-open fileName))
+        (setq script "print 'c',c.shortFileName() ,'current:',c.currentPosition().headString()")
+        (leo-run-script c script)</t>
+<t tx="ekr.20061025142434">The mini-buffer is a text area at the bottom of the body pane.
+You use it like the Emacs mini-buffer to invoke commands by their so-called *long name*.
+The following commands affect the minibuffer:
+
+- **full-command**: (default shortcut: Alt-x) Puts the focus in the minibuffer. Type a
+  full command name, then hit &lt;Return&gt; to execute the command. Tab completion
+  works, but not yet for file names.
+
+- **quick-command-mode**: (default shortcut: Alt-x) Like Emacs Control-C. This mode is
+  defined in leoSettings.leo. It is useful for commonly-used commands.
+
+- **universal-argument**: (default shortcut: Alt-u) Like Emacs Ctrl-u. Adds a repeat
+  count for later command. Ctrl-u 999 a adds 999 a's.
+
+- **keyboard-quit**: (default shortcut: Ctrl-g) Exits any minibuffer mode and puts
+  the focus in the body pane.
+
+For example, to print a list of all commands type Alt-X print-commands &lt;Return&gt;.</t>
 </tnodes>
 </leo_file>
