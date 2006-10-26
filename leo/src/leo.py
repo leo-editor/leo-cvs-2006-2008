@@ -154,7 +154,6 @@ def run(fileName=None,pymacs=None,*args,**keywords):
         c.redraw_now()
     c.bodyWantsFocus()
     g.app.gui.runMainLoop()
-
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
 

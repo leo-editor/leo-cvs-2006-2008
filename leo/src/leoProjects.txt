@@ -646,7 +646,7 @@ def createTextWidget (self,frame,parentFrame,p,name):
     bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
     frame.bodyBar = self.bodyBar = bodyBar
     
-    def yscrollCallback(x,y,bodyBay=bodyBar,w=w):
+    def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
         # g.trace(x,y)
         if hasattr(w,'leo_scrollBarSpot'):
             w.leo_scrollBarSpot = (x,y)
@@ -1097,7 +1097,6 @@ def run(fileName=None,pymacs=None,*args,**keywords):
         c.redraw_now()
     c.bodyWantsFocus()
     g.app.gui.runMainLoop()
-
 #@+node:ekr.20041219072112:<< import leoGlobals and leoApp >>
 # Import leoGlobals, but do NOT set g.
 try:
