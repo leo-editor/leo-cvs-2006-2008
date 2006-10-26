@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="127" left="151" height="722" width="880"/>
+	<global_window_position top="127" left="151" height="703" width="880"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -1011,7 +1011,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2904,9 +2904,6 @@
 </v>
 <v t="ekr.20061009074305"><vh>Leap 204. "New" positions allow Leo outlines to represent arbitrary directed graphs</vh></v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
 <v t="ekr.20061020155306"><vh>4.4.2 beta 3</vh>
 <v t="ekr.20061020155235.1"><vh>Bugs</vh>
 <v t="ekr.20061020155235.2"><vh>Fixed crash when searching for headllines containing unicode chars</vh></v>
@@ -2957,6 +2954,25 @@
 <v t="ekr.20061020155235.412"><vh>Recent changes to settings</vh></v>
 <v t="ekr.20061020155235.413"><vh>Added @bool insert_new_nodes_at_end</vh></v>
 <v t="ekr.20061020155235.264"><vh>Removed .leoRecentFiles.txt from distribution and cvs</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20061026095728" a="TV"><vh>4.4.2 final</vh>
+<v t="ekr.20061026095922.1"><vh>Bugs</vh>
+<v t="ekr.20061026095922.2"><vh>Changed leo_rst.css to pass the w3 validator</vh></v>
+<v t="ekr.20061026095922.3" a="E"><vh>Fixed 'Run on string' message when typing</vh></v>
+<v t="ekr.20061026095922.15" a="E"><vh>Fixed problem with c++ extensions</vh></v>
+<v t="ekr.20061026095922.17" a="E"><vh>Move on if regexp matches an empty string</vh></v>
+<v t="ekr.20061026095922.19" a="E"><vh>Fixed several bugs related to multiple body panes</vh></v>
+<v t="ekr.20061026095922.25" a="E"><vh>Fixed multipath plugin so it works with new colorizier</vh></v>
+<v t="ekr.20061026095922.32"><vh>Fixed bug in new colorizer</vh></v>
+<v t="ekr.20061026095922.33" a="E"><vh>Fixed config bug</vh></v>
+</v>
+<v t="ekr.20061026095922.35"><vh>New features</vh>
+<v t="ekr.20061026095922.51" a="E"><vh>Added forward-end-word/-extend-selection commands</vh></v>
+<v t="ekr.20061026095922.36"><vh>Created leoPymacs.py for interaction with pymacs</vh></v>
 </v>
 </v>
 </v>
@@ -28649,6 +28665,11 @@ For full details see the release notes section in LeoDocs.leo.
 .. contents::</t>
 <t tx="ekr.20060928172457.2">.. Links used in this document.
 
+.. _Emacs:      http://www.xemacs.org/
+.. _pymacs:     http://pymacs.progiciels-bpi.ca/index.html
+
+.. _`Chapter 18: Leo and Emacs`:    emacs.html
+
 .. WARNING: image targets may not have upper case letters!
 
 .. |prev| image:: arrow_lt.gif
@@ -28660,7 +28681,12 @@ For full details see the release notes section in LeoDocs.leo.
 .. |next| image:: arrow_rt.gif
     :target: new-4-4-1.html
 </t>
-<t tx="ekr.20060928172457.4">New in Leo 4.4.2 beta 3:
+<t tx="ekr.20060928172457.4">New in Leo 4.4.2 final:
+    
+- Added support for controlling Leo from Emacs_ with pymacs_.
+  See `Chapter 18: Leo and Emacs`_ for full details.
+
+New in Leo 4.4.2 beta 3:
     
 - Added Minibuffer and Settings submenus of the Cmds menu.
 
@@ -29368,7 +29394,12 @@ New in Leo 4.4.2 beta 2:
   True:  Use a sax-based parser to read .leo files.
   This is slower than using Leo's legacy xml parser, but may solve some unicode problems.
 </t>
-<t tx="ekr.20061009111417.18">New in Leo 4.4.2 beta 2::
+<t tx="ekr.20061009111417.18">New in Leo 4.4.2 final::
+    
+    forward-end-word
+    forward-end-word-extend-selection
+
+New in Leo 4.4.2 beta 2::
     
     extend-to-line
     extend-to-sentence
@@ -29585,14 +29616,13 @@ This chapter several topics relating to the Emacs editor.
 
 .. contents::
 </t>
-<t tx="ekr.20061025065357.2">.. External links...
+<t tx="ekr.20061025065357.2">.. Links
 
+.. _elisp:              http://en.wikipedia.org/wiki/Emacs_Lisp
+.. _Emacs:              http://www.xemacs.org/
 .. _ZODB:               http://www.zope.org/Wikis/ZODB/guide/zodb.html
 .. _`Installing ZODB`:  http://www.zope.org/Wikis/ZODB/guide/node3.html#SECTION000310000000000000000
-
 .. _pymacs:             http://pymacs.progiciels-bpi.ca/index.html
-
-.. Internal links...
 
 .. _`Chapter 8: Customizing Leo`:   customizing.html
 
@@ -29646,7 +29676,7 @@ This chapter several topics relating to the Emacs editor.
   Returns g.app.scriptResult, where g.app is the hidden app.
 </t>
 <t tx="ekr.20061025081359">Leo's leoPymacs module is a simple 'server' for the pymacs_ package.
-Using pymacs and leoPymacs, elisp scripts can open .leo files and execute *Python* scripts
+Using pymacs and leoPymacs, elisp_ scripts in Emacs_ can open .leo files and execute *Python* scripts
 as if they were executed inside Leo.
 In particular, such scripts can use Leo's predefined c, g and p variables.
 Thus, *Python* scripts running in Emacs can:
@@ -29783,5 +29813,63 @@ The following commands affect the minibuffer:
   the focus in the body pane.
 
 For example, to print a list of all commands type Alt-X print-commands &lt;Return&gt;.</t>
+<t tx="ekr.20061026095728">Leo 4.4.2 final                                October 30, 2006
+
+Leo 4.4.2 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+This release fixes a few bugs and adds support for pymacs.
+There are no known significant bugs in this version of Leo.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.2:
+----------------------------
+- You can now store settings in myLeoSettings.leo without fear of those settings
+  being changed by cvs updates or in future versions of Leo.
+- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+  Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
+- Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
+  i.e., they can optionally derive from ZODB.Persistence.Persistent.
+  See Chapter 17: Using ZODB with Leo for details.
+- The leoOPML plugin defines commands to read and write OPML files.
+- The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
+- The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
+- Much faster navigation through the outline.
+- When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
+- The find command now optionally closes nodes not needed to show the node containing the present match.
+- Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
+- Many new minibuffer commands now appear in the Cmds menu.
+- A sax parser can now optionally read .leo files.
+- Fixed numerous bugs.
+
+Links:
+------
+Leo:        http://webpages.charter.net/edreamleo/front.html
+What's new: http://webpages.charter.net/edreamleo/new-4-4-2.html
+Home:       http://sourceforge.net/projects/leo/
+Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:        http://leo.tigris.org/source/browse/leo/
+Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
+</t>
+<t tx="ekr.20061026095922.1"></t>
+<t tx="ekr.20061026095922.2"></t>
+<t tx="ekr.20061026095922.3"></t>
+<t tx="ekr.20061026095922.15">http://sourceforge.net/forum/message.php?msg_id=3971242
+</t>
+<t tx="ekr.20061026095922.17"></t>
+<t tx="ekr.20061026095922.19"></t>
+<t tx="ekr.20061026095922.25">The new colorizer was innocent: the problem is that at.directiveKind4 uses leoColor.leoKeywords,
+so multipath must add entroes to leoColor.leoColors.</t>
+<t tx="ekr.20061026095922.32">It required a space after the '@'
+</t>
+<t tx="ekr.20061026095922.33">http://sourceforge.net/forum/message.php?msg_id=3975898
+</t>
+<t tx="ekr.20061026095922.35"></t>
+<t tx="ekr.20061026095922.36">For full details, see Chapter 18 of Leo's Users Guide: Emacs and Leo.</t>
+<t tx="ekr.20061026095922.51">http://sourceforge.net/forum/message.php?msg_id=3980193
+
+</t>
 </tnodes>
 </leo_file>

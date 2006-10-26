@@ -1,11 +1,10 @@
-Leo 4.4.2 beta 3                                  October 20, 2006
+Leo 4.4.2 final                                October 30, 2006
 
-Leo 4.4.2 beta 3 is available at:
+Leo 4.4.2 final is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
-The beta release fixed dozens of bugs and smoothed many rough edges.  There
-are no known major bugs in Leo.  This will be the last beta release before
-LEo 4.4.2 final.
+This release fixes a few bugs and adds support for pymacs.
+There are no known significant bugs in this version of Leo.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html

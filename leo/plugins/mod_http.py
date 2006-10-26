@@ -34,7 +34,9 @@ To enable this plugin:
 # Adapted and extended from the Python Cookbook:
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/259148
 
-__version__ = "0.95"
+__version__ = "0.96"
+
+__pychecker__ = '--no-errors' # Suppress all pychecker errors.
 
 #@<< imports >>
 #@+node:EKR.20040517080250.3:<< imports >>
@@ -75,8 +77,9 @@ import urlparse
 # But http was in the Plugins menu because the rst3 plugin imports it.
 # The fix was to the plugins manager, not this plugin or rst3.
 # 0.94 BWM
-# 0.95 Changed headline from applyConfiguration to getConfiguration to match 
-# name of method.
+# 0.95 EKR: Changed headline from applyConfiguration to getConfiguration to 
+# match name of method.
+# 0.96 EKR: suppress all pychecker warnings.
 #@-at
 #@nonl
 #@-node:ekr.20050328104558:<< version history >>
