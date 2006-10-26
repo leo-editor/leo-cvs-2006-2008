@@ -1423,6 +1423,9 @@ def runEditCommandTest (c,p):
     h = atTest.headString()
     assert h.startswith('@test '),'expected head: %s, got: %s' % ('@test',h)
     commandName = h[6:].strip()
+    # Ignore everything after the actual command name.
+    i = g.skip_id(commandName, 0, chars='-')
+    commandName = commandName[:i]
     assert commandName, 'empty command name'
     command = c.commandsDict.get(commandName)
     assert command, 'no command: %s' % (commandName)
