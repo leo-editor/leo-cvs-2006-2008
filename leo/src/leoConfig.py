@@ -1486,13 +1486,13 @@ class configClass:
             
         for path in (localPath,g.app.globalConfigDir,g.app.homeDir):
             if path:
-                fileName = g.os_path_join(path,'.leoRecentFiles.txt')
+                fileName = g.os_path_join(path,tag)
                 if g.os_path_exists(fileName):
                     # g.es_print('wrote %s' % fileName)
                     self.writeRecentFilesFileHelper(fileName)
                     return
         else:
-            g.trace('----- not found:',localFileName)
+            # g.trace('----- not found: %s' % g.os_path_join(localPath,tag))
             return
     #@+node:ekr.20050424131051:writeRecentFilesFileHelper
     def writeRecentFilesFileHelper (self,fileName):
