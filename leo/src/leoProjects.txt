@@ -879,6 +879,7 @@ def setInitialWindowGeometry(self):
 #@-node:ekr.20031218072017.1625:setInitialWindowGeometry
 #@-node:ekr.20061023071509:Fixed config bug
 #@-node:ekr.20061021150733:Bugs
+#@+node:ekr.20061026081935:New features
 #@+node:ekr.20061023214728:Created leoPymacs.py for interaction with pymacs
 @nocolor
 
@@ -1279,6 +1280,373 @@ def reportDirectories(verbose):
 #@-node:ekr.20041130093254:reportDirectories
 #@-node:ekr.20031218072017.1934:run & allies
 #@-node:ekr.20061025094855:Further improvements to leoPymacs
+#@+node:ekr.20061026054758:Added forward-end-word/-extend-selection commands
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3980193
+
+What I'm needing is 2 commands:
+
+1) move cursor to the end of the current word (if cursor is in a word) or end
+of next word (if cursor is not in a word), WITHOUT SELECTING - the functionality
+of Ctrl-RtArrow in normal editors
+
+2) extend selection from current cursor position to the end of the current or
+next word - the functionality of Shift-Ctrl-RtArrow in normal editors.
+
+EKR: The term 'normal' editor is misleading.  There are two different ways of moving forward:
+forward-word and forward-end-word.
+
+@color
+#@nonl
+#@+node:ekr.20060924124119:defineCmdsMenuCursorTable
+def defineCmdsMenuCursorTable (self):
+
+    self.cursorMenuBackTable = [
+        # &: b,c,l,p,s,v,w
+        'back-&char',
+        'back-&paragraph',
+        'back-&sentence',
+        'back-&word',
+        '-',
+        'beginning-of-&buffer',
+        'beginning-of-&line',
+        '-',
+        'pre&vious-line',
+    ]
+    
+    self.cursorMeuuBackExtendTable = [
+        # &: b,c,l,p,s,v,w
+        'back-&char-extend-selection',
+        'back-&paragraph-extend-selection',
+        'back-&sentence-extend-selection',
+        'back-&word-extend-selection',
+        '-',
+        'beginning-of-&buffer-extend-selection',
+        'beginning-of-&line-extend-selection',
+        '-',
+        'pre&vious-line-extend-selection',
+    ]
+    
+    self.cursorMenuExtendTable = [
+        # &: l,p,s,w
+        'extend-to-&line',
+        'extend-to-&paragraph',
+        'extend-to-&sentence',
+        'extend-to-&word',
+    ]
+    
+    self.cursorMenuForwardTable = [
+        # &: b,c,e,l,n,p,s,w
+        'end-of-&buffer',
+        'end-of-&line',
+        '-',
+        'forward-&char',
+        'forward-&paragraph',
+        'forward-&sentence',
+        'forward-&end-word',
+        'forward-&word',
+        '-',
+        '&next-line',
+    ]
+    
+    self.cursorMenuForwardExtendTable = [
+        # &: b,c,e,l,n,p,s,w
+        'end-of-&buffer-extend-selection',
+        'end-of-&line-extend-selection',
+        '-',
+        'forward-&char-extend-selection',
+        'forward-&paragraph-extend-selection',
+        'forward-&sentence-extend-selection',
+        'forward-&end-word-extend-selection',
+        'forward-&word-extend-selection',#
+        '-',
+        '&next-line-extend-selection',    
+    ]
+#@nonl
+#@-node:ekr.20060924124119:defineCmdsMenuCursorTable
+#@+node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
+def getPublicCommands (self):        
+
+    c = self.c ; k = self.k 
+
+    return {
+        'activate-cmds-menu':                   self.activateCmdsMenu,
+        'activate-edit-menu':                   self.activateEditMenu,
+        'activate-file-menu':                   self.activateFileMenu,
+        'activate-help-menu':                   self.activateHelpMenu,
+        'activate-outline-menu':                self.activateOutlineMenu,
+        'activate-plugins-menu':                self.activatePluginsMenu,
+        'activate-window-menu':                 self.activateWindowMenu,
+        'add-editor':                           c.frame.body.addEditor,
+        'add-space-to-lines':                   self.addSpaceToLines,
+        'add-tab-to-lines':                     self.addTabToLines, 
+        'back-to-indentation':                  self.backToIndentation,
+        'back-char':                            self.backCharacter,
+        'back-char-extend-selection':           self.backCharacterExtendSelection,
+        'back-paragraph':                       self.backwardParagraph,
+        'back-paragraph-extend-selection':      self.backwardParagraphExtendSelection,
+        'back-sentence':                        self.backSentence,
+        'back-sentence-extend-selection':       self.backSentenceExtendSelection,
+        'back-word':                            self.backwardWord,
+        'back-word-extend-selection':           self.backwardWordExtendSelection,
+        'backward-delete-char':                 self.backwardDeleteCharacter,
+        'backward-kill-paragraph':              self.backwardKillParagraph,
+        'backward-find-character':              self.backwardFindCharacter,
+        'backward-find-character-extend-selection': self.backwardFindCharacterExtendSelection,
+        'beginning-of-buffer':                  self.beginningOfBuffer,
+        'beginning-of-buffer-extend-selection': self.beginningOfBufferExtendSelection,
+        'beginning-of-line':                    self.beginningOfLine,
+        'beginning-of-line-extend-selection':   self.beginningOfLineExtendSelection,
+        'capitalize-word':                      self.capitalizeWord,
+        'center-line':                          self.centerLine,
+        'center-region':                        self.centerRegion,
+        'clean-lines':                          self.cleanLines,
+        'clear-extend-mode':                    self.clearExtendMode,
+        'clear-selected-text':                  self.clearSelectedText,
+        'click-click-box':                      self.clickClickBox,
+        'click-headline':                       self.clickHeadline,
+        'click-icon-box':                       self.clickIconBox,
+        'contract-body-pane':                   c.frame.contractBodyPane,
+        'contract-log-pane':                    c.frame.contractLogPane,
+        'contract-outline-pane':                c.frame.contractOutlinePane,
+        'contract-pane':                        c.frame.contractPane,
+        'count-region':                         self.countRegion,
+        'cycle-focus':                          self.cycleFocus,
+        'cycle-all-focus':                      self.cycleAllFocus,
+        'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
+        'dabbrev-completion':                   self.dynamicExpansion2,
+        'dabbrev-expands':                      self.dynamicExpansion,
+        'delete-char':                          self.deleteNextChar,
+        'delete-editor':                        c.frame.body.deleteEditor,
+        'delete-indentation':                   self.deleteIndentation,
+        'delete-spaces':                        self.deleteSpaces,
+        'do-nothing':                           self.doNothing,
+        'downcase-region':                      self.downCaseRegion,
+        'downcase-word':                        self.downCaseWord,
+        'double-click-headline':                self.doubleClickHeadline,
+        'double-click-icon-box':                self.doubleClickIconBox,
+        'end-of-buffer':                        self.endOfBuffer,
+        'end-of-buffer-extend-selection':       self.endOfBufferExtendSelection,
+        'end-of-line':                          self.endOfLine,
+        'end-of-line-extend-selection':         self.endOfLineExtendSelection,
+        'escape':                               self.watchEscape,
+        'eval-expression':                      self.evalExpression,
+        'exchange-point-mark':                  self.exchangePointMark,
+        'expand-body-pane':                     c.frame.expandBodyPane,
+        'expand-log-pane':                      c.frame.expandLogPane,
+        'expand-outline-pane':                  c.frame.expandOutlinePane,
+        'expand-pane':                          c.frame.expandPane,
+        'extend-to-line':                       self.extendToLine,
+        'extend-to-paragraph':                  self.extendToParagraph,
+        'extend-to-sentence':                   self.extendToSentence,
+        'extend-to-word':                       self.extendToWord,
+        'fill-paragraph':                       self.fillParagraph,
+        'fill-region':                          self.fillRegion,
+        'fill-region-as-paragraph':             self.fillRegionAsParagraph,
+        'find-character':                       self.findCharacter,
+        'find-character-extend-selection':      self.findCharacterExtendSelection,
+        'find-word':                            self.findWord,
+        'flush-lines':                          self.flushLines,
+        'focus-to-body':                        self.focusToBody,
+        'focus-to-log':                         self.focusToLog,
+        'focus-to-minibuffer':                  self.focusToMinibuffer,
+        'focus-to-tree':                        self.focusToTree,
+        'forward-char':                         self.forwardCharacter,
+        'forward-char-extend-selection':        self.forwardCharacterExtendSelection,
+        'forward-paragraph':                    self.forwardParagraph,
+        'forward-paragraph-extend-selection':   self.forwardParagraphExtendSelection,
+        'forward-sentence':                     self.forwardSentence,
+        'forward-sentence-extend-selection':    self.forwardSentenceExtendSelection,
+        'forward-end-word':                     self.forwardEndWord, # New in Leo 4.4.2.
+        'forward-end-word-extend-selection':    self.forwardEndWordExtendSelection, # New in Leo 4.4.2.
+        'forward-word':                         self.forwardWord,
+        'forward-word-extend-selection':        self.forwardWordExtendSelection,
+        'fully-expand-body-pane':               c.frame.fullyExpandBodyPane,
+        'fully-expand-log-pane':                c.frame.fullyExpandLogPane,
+        'fully-expand-pane':                    c.frame.fullyExpandPane,
+        'fully-expand-outline-pane':            c.frame.fullyExpandOutlinePane,
+        'goto-char':                            self.gotoCharacter,
+        'goto-global-line':                     self.gotoGlobalLine,
+        'goto-line':                            self.gotoLine,
+        'hide-body-pane':                       c.frame.hideBodyPane,
+        'hide-log-pane':                        c.frame.hideLogPane,
+        'hide-pane':                            c.frame.hidePane,
+        'hide-outline-pane':                    c.frame.hideOutlinePane,
+        'how-many':                             self.howMany,
+        # Use indentBody in leoCommands.py
+        'indent-relative':                      self.indentRelative,
+        'indent-rigidly':                       self.tabIndentRegion,
+        'indent-to-comment-column':             self.indentToCommentColumn,
+        'insert-newline':                       self.insertNewline,
+        'insert-parentheses':                   self.insertParentheses,
+        'keep-lines':                           self.keepLines,
+        'kill-paragraph':                       self.killParagraph,
+        'line-number':                          self.lineNumber,
+        'move-lines-down':                      self.moveLinesDown,
+        'move-lines-up':                        self.moveLinesUp,
+        'move-past-close':                      self.movePastClose,
+        'move-past-close-extend-selection':     self.movePastCloseExtendSelection,
+        'newline-and-indent':                   self.insertNewLineAndTab,
+        'next-line':                            self.nextLine,
+        'next-line-extend-selection':           self.nextLineExtendSelection,
+        'previous-line':                        self.prevLine,
+        'previous-line-extend-selection':       self.prevLineExtendSelection,
+        'remove-blank-lines':                   self.removeBlankLines,
+        'remove-space-from-lines':              self.removeSpaceFromLines,
+        'remove-tab-from-lines':                self.removeTabFromLines,
+        'reverse-region':                       self.reverseRegion,
+        'scroll-down':                          self.scrollDown,
+        'scroll-down-extend-selection':         self.scrollDownExtendSelection,
+        'scroll-outline-down-line':             self.scrollOutlineDownLine,
+        'scroll-outline-down-page':             self.scrollOutlineDownPage,
+        'scroll-outline-left':                  self.scrollOutlineLeft,
+        'scroll-outline-right':                 self.scrollOutlineRight,
+        'scroll-outline-up-line':               self.scrollOutlineUpLine,
+        'scroll-outline-up-page':               self.scrollOutlineUpPage,
+        'scroll-up':                            self.scrollUp,
+        'scroll-up-extend-selection':           self.scrollUpExtendSelection,
+        # Exists, but can not be executed via the minibuffer.
+        # 'self-insert-command':                self.selfInsertCommand,
+        'set-comment-column':                   self.setCommentColumn,
+        'set-extend-mode':                      self.setExtendMode,
+        'set-fill-column':                      self.setFillColumn,
+        'set-fill-prefix':                      self.setFillPrefix,
+        #'set-mark-command':                    self.setRegion,
+        'show-colors':                          self.showColors,
+        'show-fonts':                           self.showFonts,
+        'simulate-begin-drag':                  self.simulateBeginDrag,
+        'simulate-end-drag':                    self.simulateEndDrag,
+        'sort-columns':                         self.sortColumns,
+        'sort-fields':                          self.sortFields,
+        'sort-lines':                           self.sortLines,
+        'split-line':                           self.splitLine,
+        'tabify':                               self.tabify,
+        'toggle-extend-mode':                   self.toggleExtendMode,
+        'transpose-chars':                      self.transposeCharacters,
+        'transpose-lines':                      self.transposeLines,
+        'transpose-words':                      self.transposeWords,
+        'untabify':                             self.untabify,
+        'upcase-region':                        self.upCaseRegion,
+        'upcase-word':                          self.upCaseWord,
+        'view-lossage':                         self.viewLossage,
+        'what-line':                            self.whatLine,
+    }
+#@-node:ekr.20050920084036.55: getPublicCommands (editCommandsClass)
+#@+node:ekr.20050920084036.149:words
+def backwardWord (self,event):
+    '''Move the cursor to the previous word.'''
+    self.moveWordHelper(event,extend=False,forward=False)
+    
+def backwardWordExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the next word.'''
+    self.moveWordHelper(event,extend=True,forward=False)
+    
+def forwardEndWord (self,event): # New in Leo 4.4.2
+    '''Move the cursor to the next word.'''
+    self.moveWordHelper(event,extend=False,forward=True,end=True)
+        
+def forwardEndWordExtendSelection (self,event): # New in Leo 4.4.2
+    '''Extend the selection by moving the cursor to the previous word.'''
+    self.moveWordHelper(event,extend=True,forward=True,end=True)
+
+def forwardWord (self,event):
+    '''Move the cursor to the next word.'''
+    self.moveWordHelper(event,extend=False,forward=True)
+    
+def forwardWordExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the previous word.'''
+    self.moveWordHelper(event,extend=True,forward=True)
+#@-node:ekr.20050920084036.149:words
+#@+node:ekr.20051218121447:moveWordHelper
+def moveWordHelper (self,event,extend,forward,end=False):
+
+    '''Move the cursor to the next word.
+    The cursor is placed at the start of the word unless end=True'''
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+    
+    c.widgetWantsFocusNow(w)
+    s = w.get('1.0','end') ; n = len(s)
+
+    def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
+    def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+
+    i = toPython(w.index('insert'))
+    
+    if forward:
+        # Unlike backward-word moves, there are two options...
+        if end:
+            while 0 <= i < n and not g.isWordChar(s[i]):
+                i += 1
+            while 0 <= i < n and g.isWordChar(s[i]):
+                i += 1
+        else:
+            while 0 <= i < n and g.isWordChar(s[i]):
+                i += 1
+            while 0 <= i < n and not g.isWordChar(s[i]):
+                i += 1
+    else:
+        i -= 1
+        while 0 <= i < n and not g.isWordChar(s[i]):
+            i -= 1
+        while 0 <= i < n and g.isWordChar(s[i]):
+            i -= 1
+        i += 1
+    
+    self.moveToHelper(event,toGui(i),extend)
+#@nonl
+#@-node:ekr.20051218121447:moveWordHelper
+#@+node:ekr.20061008140603:runEditCommandTest
+def runEditCommandTest (c,p):
+    
+    u = testUtils(c) ; atTest = p.copy()
+    w = c.frame.body.bodyCtrl
+
+    h = atTest.headString()
+    assert h.startswith('@test '),'expected head: %s, got: %s' % ('@test',h)
+    commandName = h[6:].strip()
+    # Ignore everything after the actual command name.
+    i = g.skip_id(commandName, 0, chars='-')
+    commandName = commandName[:i]
+    assert commandName, 'empty command name'
+    command = c.commandsDict.get(commandName)
+    assert command, 'no command: %s' % (commandName)
+    
+    work,before,after = u.findChildrenOf(atTest)
+    before_h = 'before sel='
+    after_h = 'after sel='
+    for node,h in ((work,'work'),(before,before_h),(after,after_h)):
+        h2 = node.headString()
+        assert h2.startswith(h),'expected head: %s, got: %s' % (h,h2)
+
+    sels = []
+    for node,h in ((before,before_h),(after,after_h)):
+        sel = node.headString()[len(h):].strip()
+        aList = [str(z) for z in sel.split(',')]
+        sels.append(tuple(aList))
+    sel1,sel2 = sels
+    
+    c.beginUpdate()
+    try:
+        c.selectPosition(work)
+        c.setBodyString(work,before.bodyString())
+        g.app.gui.setTextSelection(w,sel1[0],sel1[1])
+        c.k.simulateCommand(commandName)
+        s1 = work.bodyString() ; s2 = after.bodyString()
+        assert s1 == s2, 'expected body: %s, got: %s' % (repr(s1),repr(s2))
+        sel3 = g.app.gui.getTextSelection(w)
+        assert sel2 == sel3, 'expected sel: %s, got: %s' % (sel2,sel3)
+        c.selectPosition(atTest)
+        atTest.contract()
+    finally:
+        c.endUpdate()
+#@nonl
+#@-node:ekr.20061008140603:runEditCommandTest
+#@-node:ekr.20061026054758:Added forward-end-word/-extend-selection commands
+#@-node:ekr.20061026081935:New features
 #@-node:ekr.20061021144254:Leo 4.4.2 final projects
 #@-all
 #@nonl
