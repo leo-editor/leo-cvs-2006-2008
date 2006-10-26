@@ -6,6 +6,8 @@
 
 #@<< imports >>
 #@+node:ekr.20050405141130:<< imports >>
+__pychecker__ = '--no-import'
+
 import leoGlobals as g
 
 if g.app and g.app.use_psyco:

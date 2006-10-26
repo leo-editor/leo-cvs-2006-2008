@@ -1443,7 +1443,7 @@ def print_list(aList,tag=None,sort=False,indent=''):
         else:   print '[]'
         return
     if sort:
-        bList = aList[:] # Sort a copy! Pychecker incorrectly complains.
+        bList = aList[:] # Sort a copy!
         bList.sort()
     else:
         bList = aList
@@ -1461,9 +1461,11 @@ def listToString(aList,tag=None,sort=False,indent=''):
         if tag: return '%s...{}' % tag
         else:   return '[]'
     if sort:
-        aList = aList[:] # Sort a copy! Pychecker incorrectly complains.
-        aList.sort()
-    lines = ["%s%s" % (indent,repr(e).strip()) for e in aList]
+        bList = aList[:] # Sort a copy!
+        bList.sort()
+    else:
+        bList = aList
+    lines = ["%s%s" % (indent,repr(e).strip()) for e in bList]
     s = '\n'.join(lines)
     if tag:
         return '[%s...\n%s\n]' % (tag,s)
@@ -2186,7 +2188,6 @@ def printGcAll (message=''):
         d[t] = d.get(t,0) + 1
         
     if 1: # Sort by n
-        
         items = d.items()
         try:
             # Support for keword args to sort function exists in Python 2.4.

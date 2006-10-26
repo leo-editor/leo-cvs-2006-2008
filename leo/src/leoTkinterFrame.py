@@ -9,6 +9,8 @@
 
 #@<< imports >>
 #@+node:ekr.20041221070525:<< imports >>
+__pychecker__ = '--no-import'
+
 import leoGlobals as g
 
 import leoColor,leoFrame,leoNodes
@@ -1951,7 +1953,7 @@ class leoTkinterBody (leoFrame.leoBody):
         bodyBar = Tk.Scrollbar(parentFrame,name='bodyBar')
         frame.bodyBar = self.bodyBar = bodyBar
         
-        def yscrollCallback(x,y,bodyBay=bodyBar,w=w):
+        def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
             # g.trace(x,y)
             if hasattr(w,'leo_scrollBarSpot'):
                 w.leo_scrollBarSpot = (x,y)

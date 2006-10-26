@@ -8,6 +8,8 @@
 
 #@<< imports >>
 #@+node:ekr.20050920094258:<< imports >>
+__pychecker__ = '--no-import'
+
 import leoGlobals as g
 import leoEditCommands
 import Tkinter as Tk

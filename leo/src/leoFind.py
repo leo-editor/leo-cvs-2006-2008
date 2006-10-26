@@ -6,7 +6,6 @@
 
 import leoGlobals as g
 import re
-import string
 
 #@<< Theory of operation of find/change >>
 #@+node:ekr.20031218072017.2414:<< Theory of operation of find/change >>
