@@ -4263,6 +4263,17 @@ xwem-worklog-tasks-description
 @language python
 @color
 #@nonl
+#@+node:ekr.20061026071140:Abandoned new commands
+if 0: # New commands are not needed.  The old commands just need to be smarter.
+
+    def backwardStartWordExtendSelection (self,event): # New in Leo 4.4.2
+        '''Extend the selection by moving the cursor to the next word.'''
+        self.moveWordHelper(event,extend=True,forward=False,past=False)
+        
+    def backwardStartWord (self,event): # New in Leo 4.4.2.
+        '''Move the cursor to the previous word.'''
+        self.moveWordHelper(event,extend=False,forward=False,past=False)
+#@-node:ekr.20061026071140:Abandoned new commands
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
