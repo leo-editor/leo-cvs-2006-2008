@@ -1370,6 +1370,8 @@ class editCommandsClass (baseEditCommandsClass):
             'forward-paragraph-extend-selection':   self.forwardParagraphExtendSelection,
             'forward-sentence':                     self.forwardSentence,
             'forward-sentence-extend-selection':    self.forwardSentenceExtendSelection,
+            'forward-end-word':                     self.forwardEndWord, # New in Leo 4.4.2.
+            'forward-end-word-extend-selection':    self.forwardEndWordExtendSelection, # New in Leo 4.4.2.
             'forward-word':                         self.forwardWord,
             'forward-word-extend-selection':        self.forwardWordExtendSelection,
             'fully-expand-body-pane':               c.frame.fullyExpandBodyPane,
@@ -3398,9 +3400,10 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveToHelper(event,ins,extend)
     #@-node:ekr.20051218171457:movePastCloseHelper
     #@+node:ekr.20051218121447:moveWordHelper
-    def moveWordHelper (self,event,extend,forward):
+    def moveWordHelper (self,event,extend,forward,end=False):
     
-        '''This function moves the cursor to the next word, direction dependent on the way parameter'''
+        '''Move the cursor to the next word.
+        The cursor is placed at the start of the word unless end=True'''
     
         c = self.c
         w = self.editWidget(event)
@@ -3415,10 +3418,17 @@ class editCommandsClass (baseEditCommandsClass):
         i = toPython(w.index('insert'))
         
         if forward:
-            while 0 <= i < n and g.isWordChar(s[i]):
-                i += 1
-            while 0 <= i < n and not g.isWordChar(s[i]):
-                i += 1
+            # Unlike backward-word moves, there are two options...
+            if end:
+                while 0 <= i < n and not g.isWordChar(s[i]):
+                    i += 1
+                while 0 <= i < n and g.isWordChar(s[i]):
+                    i += 1
+            else:
+                while 0 <= i < n and g.isWordChar(s[i]):
+                    i += 1
+                while 0 <= i < n and not g.isWordChar(s[i]):
+                    i += 1
         else:
             i -= 1
             while 0 <= i < n and not g.isWordChar(s[i]):
@@ -3426,7 +3436,7 @@ class editCommandsClass (baseEditCommandsClass):
             while 0 <= i < n and g.isWordChar(s[i]):
                 i -= 1
             i += 1
-    
+        
         self.moveToHelper(event,toGui(i),extend)
     #@nonl
     #@-node:ekr.20051218121447:moveWordHelper
@@ -3750,6 +3760,14 @@ class editCommandsClass (baseEditCommandsClass):
     def backwardWordExtendSelection (self,event):
         '''Extend the selection by moving the cursor to the next word.'''
         self.moveWordHelper(event,extend=True,forward=False)
+        
+    def forwardEndWord (self,event): # New in Leo 4.4.2
+        '''Move the cursor to the next word.'''
+        self.moveWordHelper(event,extend=False,forward=True,end=True)
+            
+    def forwardEndWordExtendSelection (self,event): # New in Leo 4.4.2
+        '''Extend the selection by moving the cursor to the previous word.'''
+        self.moveWordHelper(event,extend=True,forward=True,end=True)
     
     def forwardWord (self,event):
         '''Move the cursor to the next word.'''
