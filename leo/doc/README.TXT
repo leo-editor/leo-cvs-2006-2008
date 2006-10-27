@@ -1,4 +1,4 @@
-Leo 4.4.2 final                                October 30, 2006
+Leo 4.4.2 final                                October 27, 2006
 
 Leo 4.4.2 final is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106

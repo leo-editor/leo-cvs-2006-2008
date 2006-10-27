@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="127" left="151" height="703" width="880"/>
+	<global_window_position top="127" left="151" height="684" width="880"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -29813,7 +29813,7 @@ The following commands affect the minibuffer:
   the focus in the body pane.
 
 For example, to print a list of all commands type Alt-X print-commands &lt;Return&gt;.</t>
-<t tx="ekr.20061026095728">Leo 4.4.2 final                                October 30, 2006
+<t tx="ekr.20061026095728">Leo 4.4.2 final                                October 27, 2006
 
 Leo 4.4.2 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106

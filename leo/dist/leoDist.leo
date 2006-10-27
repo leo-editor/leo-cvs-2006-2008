@@ -112,7 +112,7 @@
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
 <v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
-<v t="ekr.20040629175400" a="TV"><vh>Pychecker stuff</vh>
+<v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent c:\prog\leoCVS\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
 <v t="ekr.20050212143754"><vh>*** Mods to pychecker in python23/site-packages ***</vh>
@@ -190,7 +190,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846" a="V"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -684,7 +684,7 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.2 final                                October 30, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.2 final                                October 27, 2006
 
 Leo 4.4.2 final is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -4947,7 +4947,7 @@ Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:        http://leo.tigris.org/source/browse/leo/
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 </t>
-<t tx="ekr.20061026100827">Leo 4.4.2 final                                October 30, 2006
+<t tx="ekr.20061026100827">Leo 4.4.2 final                                October 27, 2006
 
 Leo 4.4.2 final is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
