@@ -1453,7 +1453,7 @@ class configClass:
         ok = g.os_path_exists(fileName)
         if ok:
         
-            g.trace('reading %s' % fileName)
+            print ('reading %s' % fileName)
             lines = file(fileName).readlines()
             if lines and self.munge(lines[0])=='readonly':
                 lines = lines[1:]
@@ -1484,7 +1484,7 @@ class configClass:
             if path:
                 fileName = g.os_path_join(path,tag)
                 if g.os_path_exists(fileName):
-                    g.trace('wrote %s' % fileName)
+                    print ('wrote %s' % fileName)
                     self.writeRecentFilesFileHelper(fileName)
                     return
         else:
