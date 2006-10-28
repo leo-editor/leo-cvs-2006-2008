@@ -893,10 +893,10 @@ class configClass:
             else:
                 setattr(self,ivar,None)
         if 0:
-            g.trace('global:',self.globalConfigFile)
-            g.trace('home:',self.homeFile)
-            g.trace('myGlobal:',self.myGlobalConfigFile)
-            g.trace('myHome:',self.myHomeConfigFile)
+            g.trace('global file:',self.globalConfigFile)
+            g.trace('home file:',self.homeFile)
+            g.trace('myGlobal file:',self.myGlobalConfigFile)
+            g.trace('myHome file:',self.myHomeConfigFile)
     #@nonl
     #@-node:ekr.20041117083857:initSettingsFiles
     #@-node:ekr.20041117083202:Birth... (g.app.config)
@@ -1329,23 +1329,28 @@ class configClass:
     #@-node:ekr.20041117085625:g.app.config.openSettingsFile
     #@+node:ekr.20041120064303:g.app.config.readSettingsFiles
     def readSettingsFiles (self,fileName,verbose=True):
-        
+            
         seen = []
-    
+        self.write_recent_files_as_needed = False # Will be set later.
+        #@    << define localDirectory, localConfigFile & myLocalConfigFile >>
+        #@+node:ekr.20061028082834:<< define localDirectory, localConfigFile & myLocalConfigFile >>
         # This can't be done in initSettingsFiles because the local directory does not exits.
         localDirectory = g.os_path_dirname(fileName)
         
         #  Set the local leoSettings.leo file.
         localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
-        if not g.os_path_exists(localConfigFile): localConfigFile = None
+        if not g.os_path_exists(localConfigFile):
+            localConfigFile = None
         
         # Set the local myLeoSetting.leo file.
         myLocalConfigFile = g.os_path_join(localDirectory,'myLeoSettings.leo')
-        if not g.os_path_exists(myLocalConfigFile): myLocalConfigFile = None
-        
-        self.write_recent_files_as_needed = False # Will be set later.
-        
-        # Init settings from leoSettings.leo files, including myLeoSettings.leo.
+        if not g.os_path_exists(myLocalConfigFile):
+            myLocalConfigFile = None
+        #@nonl
+        #@-node:ekr.20061028082834:<< define localDirectory, localConfigFile & myLocalConfigFile >>
+        #@nl
+    
+        # Init settings from leoSettings.leo and myLeoSettings.leo files.
         for path,localFlag in (
             (self.globalConfigFile,False),
             (self.homeFile,False),
@@ -1363,14 +1368,25 @@ class configClass:
                 if c:
                     self.updateSettings(c,localFlag)
                     g.app.destroyWindow(c.frame)
-                if c and localFlag:
                     self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
-                self.readRecentFilesFile(c,path)
-        if self.write_recent_files_as_needed:
-            self.createRecentFiles(fileName)
+        # Read all .leoRecentFiles.txt files.
+        # The order of files in this list affects the order of the recent files list.
+        seen = []
+        localConfigPath = g.os_path_dirname(localConfigFile)
+        for path in (
+            g.app.homeDir,
+            g.app.globalConfigDir,
+            localConfigPath,
+        ):
+            if path and path not in seen:
+                ok = self.readRecentFilesFile(path)
+                if ok: seen.append(path)
+        if not seen and self.write_recent_files_as_needed:
+            self.createRecentFiles()
     
         self.inited = True
         self.setIvarsFromSettings(None)
+    #@nonl
     #@-node:ekr.20041120064303:g.app.config.readSettingsFiles
     #@+node:ekr.20041117083857.1:g.app.config.readSettings
     # Called to read all leoSettings.leo files.
@@ -1411,61 +1427,41 @@ class configClass:
     #@-node:ekr.20041117093246:Scanning @settings (g.app.config)
     #@+node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
     #@+node:ekr.20061010121944:createRecentFiles
-    def createRecentFiles (self,fileName):
+    def createRecentFiles (self):
         
-        localPath,junk = g.os_path_split(fileName)
+        '''Trye to reate .leoRecentFiles.txt in
+        - the users home directory first,
+        - Leo's config directory second.'''
     
-        for path in (g.app.homeDir,g.app.globalConfigDir,localPath):
-            fileName = g.os_path_join(path,'.leoRecentFiles.txt')
-            if g.os_path_exists(fileName):
-                # g.es_print('found %s' % fileName)
-                return
-    
-        # Create the file in the home directory.
-        try:
-            fileName = g.os_path_join(g.app.homeDir,'.leoRecentFiles.txt')
-            f = file(fileName,'w')
-            f.close()
-            g.es_print('Created %s' % (fileName),color='red')
-            return
-        except Exception:
-            g.es_print('Exception creating %s' % (fileName),color='red')
-            g.es_exception()
+        for theDir in (g.app.homeDir,g.app.globalConfigDir):
+            if theDir:
+                try:
+                    fileName = g.os_path_join(theDir,'.leoRecentFiles.txt')
+                    f = file(fileName,'w')
+                    f.close()
+                    g.es_print('created %s' % (fileName),color='red')
+                    return
+                except Exception:
+                    g.es_print('can not create %s' % (fileName),color='red')
+                    g.es_exception()
     #@nonl
     #@-node:ekr.20061010121944:createRecentFiles
     #@+node:ekr.20050424115658:readRecentFilesFile
-    def readRecentFilesFile (self,c,path):
-        
-        # Set the kind of file for later.
-        for path2,kind in (
-            (self.globalConfigFile,'global'),
-            (self.homeFile,'home'),
-        ):
-            if path2 and path2 == path: break
-        else:
-            kind = 'local'
-        
-        path,junk = g.os_path_split(path)
+    def readRecentFilesFile (self,path):
+    
         fileName = g.os_path_join(path,'.leoRecentFiles.txt')
-        if not g.os_path_exists(fileName):
-            # g.trace('does not exist',fileName)
-            return
-            
-        for bunch in self.recentFilesFiles:
-            if bunch.fileName == fileName:
-                # g.trace('-----already read',kind,fileName)
-                return
-    
-        # g.trace('-----',kind,fileName)
-        self.recentFilesFiles.append(
-            g.Bunch(fileName=fileName,kind=kind))
-    
-        lines = file(fileName).readlines()
-        if lines and self.munge(lines[0])=='readonly':
-            lines = lines[1:]
-        if lines:
-            lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
-            self.appendToRecentFiles(lines)
+        ok = g.os_path_exists(fileName)
+        if ok:
+        
+            g.trace('reading %s' % fileName)
+            lines = file(fileName).readlines()
+            if lines and self.munge(lines[0])=='readonly':
+                lines = lines[1:]
+            if lines:
+                lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
+                self.appendToRecentFiles(lines)
+                
+        return ok
     #@nonl
     #@-node:ekr.20050424115658:readRecentFilesFile
     #@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
@@ -1488,7 +1484,7 @@ class configClass:
             if path:
                 fileName = g.os_path_join(path,tag)
                 if g.os_path_exists(fileName):
-                    # g.es_print('wrote %s' % fileName)
+                    g.trace('wrote %s' % fileName)
                     self.writeRecentFilesFileHelper(fileName)
                     return
         else:
