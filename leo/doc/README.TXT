@@ -36,4 +36,6 @@ What's new: http://webpages.charter.net/edreamleo/new-4-4-2.html
 Home:       http://sourceforge.net/projects/leo/
 Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:        http://leo.tigris.org/source/browse/leo/
+Leo's Wiki: http://leo.zwiki.org/FrontPage
+Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html

@@ -1672,6 +1672,7 @@ pyc
 pycheckrc
 pyd
 pydoc
+pymacs
 pypi
 python2
 python22

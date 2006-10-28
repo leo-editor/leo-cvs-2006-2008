@@ -1048,61 +1048,41 @@ def startupEncoding ():
 #@-node:ekr.20050304072744:Compute directories... (leoGlobals)
 #@+node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
 #@+node:ekr.20061010121944:createRecentFiles
-def createRecentFiles (self,fileName):
+def createRecentFiles (self):
     
-    localPath,junk = g.os_path_split(fileName)
+    '''Trye to reate .leoRecentFiles.txt in
+    - the users home directory first,
+    - Leo's config directory second.'''
 
-    for path in (g.app.homeDir,g.app.globalConfigDir,localPath):
-        fileName = g.os_path_join(path,'.leoRecentFiles.txt')
-        if g.os_path_exists(fileName):
-            # g.es_print('found %s' % fileName)
-            return
-
-    # Create the file in the home directory.
-    try:
-        fileName = g.os_path_join(g.app.homeDir,'.leoRecentFiles.txt')
-        f = file(fileName,'w')
-        f.close()
-        g.es_print('Created %s' % (fileName),color='red')
-        return
-    except Exception:
-        g.es_print('Exception creating %s' % (fileName),color='red')
-        g.es_exception()
+    for theDir in (g.app.homeDir,g.app.globalConfigDir):
+        if theDir:
+            try:
+                fileName = g.os_path_join(theDir,'.leoRecentFiles.txt')
+                f = file(fileName,'w')
+                f.close()
+                g.es_print('created %s' % (fileName),color='red')
+                return
+            except Exception:
+                g.es_print('can not create %s' % (fileName),color='red')
+                g.es_exception()
 #@nonl
 #@-node:ekr.20061010121944:createRecentFiles
 #@+node:ekr.20050424115658:readRecentFilesFile
-def readRecentFilesFile (self,c,path):
-    
-    # Set the kind of file for later.
-    for path2,kind in (
-        (self.globalConfigFile,'global'),
-        (self.homeFile,'home'),
-    ):
-        if path2 and path2 == path: break
-    else:
-        kind = 'local'
-    
-    path,junk = g.os_path_split(path)
+def readRecentFilesFile (self,path):
+
     fileName = g.os_path_join(path,'.leoRecentFiles.txt')
-    if not g.os_path_exists(fileName):
-        # g.trace('does not exist',fileName)
-        return
-        
-    for bunch in self.recentFilesFiles:
-        if bunch.fileName == fileName:
-            # g.trace('-----already read',kind,fileName)
-            return
-
-    # g.trace('-----',kind,fileName)
-    self.recentFilesFiles.append(
-        g.Bunch(fileName=fileName,kind=kind))
-
-    lines = file(fileName).readlines()
-    if lines and self.munge(lines[0])=='readonly':
-        lines = lines[1:]
-    if lines:
-        lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
-        self.appendToRecentFiles(lines)
+    ok = g.os_path_exists(fileName)
+    if ok:
+    
+        g.trace('reading %s' % fileName)
+        lines = file(fileName).readlines()
+        if lines and self.munge(lines[0])=='readonly':
+            lines = lines[1:]
+        if lines:
+            lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
+            self.appendToRecentFiles(lines)
+            
+    return ok
 #@nonl
 #@-node:ekr.20050424115658:readRecentFilesFile
 #@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
@@ -1125,7 +1105,7 @@ def writeRecentFilesFile (self,c):
         if path:
             fileName = g.os_path_join(path,tag)
             if g.os_path_exists(fileName):
-                # g.es_print('wrote %s' % fileName)
+                g.trace('wrote %s' % fileName)
                 self.writeRecentFilesFileHelper(fileName)
                 return
     else:
@@ -1940,6 +1920,1263 @@ def runEditCommandTest (c,p):
 #@-node:ekr.20061026054758:Added forward-end-word/-extend-selection commands
 #@-node:ekr.20061026081935:New features
 #@-node:ekr.20061021144254:Leo 4.4.2 final projects
+#@+node:ekr.20061028084753:Leo 4.4.2.1 final projects
+#@+node:ekr.20061028072406:Fixed bug reading recent files
+#@+node:ekr.20041201080436:appendToRecentFiles (g.app.config)
+def appendToRecentFiles (self,files):
+    
+    files = [theFile.strip() for theFile in files]
+    
+    # g.trace(files)
+    
+    def munge(name):
+        name = name or ''
+        return g.os_path_normpath(name).lower()
+    
+    for name in files:
+        # Remove all variants of name.
+        for name2 in self.recentFiles:
+            if munge(name) == munge(name2):
+                self.recentFiles.remove(name2)
+
+        self.recentFiles.append(name)
+#@-node:ekr.20041201080436:appendToRecentFiles (g.app.config)
+#@+node:ekr.20041117083857:initSettingsFiles
+def initSettingsFiles (self):
+    
+    """Set self.globalConfigFile, self.homeFile and self.myConfigFile."""
+    
+    settingsFile = 'leoSettings.leo'
+    mySettingsFile = 'myLeoSettings.leo'
+    
+    for ivar,theDir,fileName in (
+        ('globalConfigFile',    g.app.globalConfigDir,  settingsFile),
+        ('homeFile',            g.app.homeDir,          settingsFile),
+        ('myGlobalConfigFile',  g.app.globalConfigDir,  mySettingsFile),
+        ('myHomeConfigFile',    g.app.homeDir,          mySettingsFile),
+    ):
+        # The same file may be assigned to multiple ivars:
+        # readSettingsFiles checks for such duplications.
+        path = g.os_path_join(theDir,fileName)
+        if g.os_path_exists(path):
+            setattr(self,ivar,path)
+        else:
+            setattr(self,ivar,None)
+    if 0:
+        g.trace('global file:',self.globalConfigFile)
+        g.trace('home file:',self.homeFile)
+        g.trace('myGlobal file:',self.myGlobalConfigFile)
+        g.trace('myHome file:',self.myHomeConfigFile)
+#@nonl
+#@-node:ekr.20041117083857:initSettingsFiles
+#@+node:ekr.20041120064303:g.app.config.readSettingsFiles
+def readSettingsFiles (self,fileName,verbose=True):
+        
+    seen = []
+    self.write_recent_files_as_needed = False # Will be set later.
+    << define localDirectory, localConfigFile & myLocalConfigFile >>
+
+    # Init settings from leoSettings.leo and myLeoSettings.leo files.
+    for path,localFlag in (
+        (self.globalConfigFile,False),
+        (self.homeFile,False),
+        (localConfigFile,False),
+        (self.myGlobalConfigFile,False),
+        (self.myHomeConfigFile,False),
+        (myLocalConfigFile,False),
+        (fileName,True),
+    ):
+        if path and path.lower() not in seen:
+            seen.append(path.lower())
+            if verbose:
+                g.es_print('reading settings in %s' % path)
+            c = self.openSettingsFile(path)
+            if c:
+                self.updateSettings(c,localFlag)
+                g.app.destroyWindow(c.frame)
+                self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
+    # Read all .leoRecentFiles.txt files.
+    # The order of files in this list affects the order of the recent files list.
+    seen = []
+    localConfigPath = g.os_path_dirname(localConfigFile)
+    for path in (
+        g.app.homeDir,
+        g.app.globalConfigDir,
+        localConfigPath,
+    ):
+        if path and path not in seen:
+            ok = self.readRecentFilesFile(path)
+            if ok: seen.append(path)
+    if not seen and self.write_recent_files_as_needed:
+        self.createRecentFiles()
+
+    self.inited = True
+    self.setIvarsFromSettings(None)
+#@nonl
+#@+node:ekr.20061028082834:<< define localDirectory, localConfigFile & myLocalConfigFile >>
+# This can't be done in initSettingsFiles because the local directory does not exits.
+localDirectory = g.os_path_dirname(fileName)
+
+#  Set the local leoSettings.leo file.
+localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
+if not g.os_path_exists(localConfigFile):
+    localConfigFile = None
+
+# Set the local myLeoSetting.leo file.
+myLocalConfigFile = g.os_path_join(localDirectory,'myLeoSettings.leo')
+if not g.os_path_exists(myLocalConfigFile):
+    myLocalConfigFile = None
+#@nonl
+#@-node:ekr.20061028082834:<< define localDirectory, localConfigFile & myLocalConfigFile >>
+#@-node:ekr.20041120064303:g.app.config.readSettingsFiles
+#@+node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
+#@+node:ekr.20061010121944:createRecentFiles
+def createRecentFiles (self):
+    
+    '''Trye to reate .leoRecentFiles.txt in
+    - the users home directory first,
+    - Leo's config directory second.'''
+
+    for theDir in (g.app.homeDir,g.app.globalConfigDir):
+        if theDir:
+            try:
+                fileName = g.os_path_join(theDir,'.leoRecentFiles.txt')
+                f = file(fileName,'w')
+                f.close()
+                g.es_print('created %s' % (fileName),color='red')
+                return
+            except Exception:
+                g.es_print('can not create %s' % (fileName),color='red')
+                g.es_exception()
+#@nonl
+#@-node:ekr.20061010121944:createRecentFiles
+#@+node:ekr.20050424115658:readRecentFilesFile
+def readRecentFilesFile (self,path):
+
+    fileName = g.os_path_join(path,'.leoRecentFiles.txt')
+    ok = g.os_path_exists(fileName)
+    if ok:
+    
+        g.trace('reading %s' % fileName)
+        lines = file(fileName).readlines()
+        if lines and self.munge(lines[0])=='readonly':
+            lines = lines[1:]
+        if lines:
+            lines = [g.toUnicode(g.os_path_normpath(line),'utf-8') for line in lines]
+            self.appendToRecentFiles(lines)
+            
+    return ok
+#@nonl
+#@-node:ekr.20050424115658:readRecentFilesFile
+#@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
+def writeRecentFilesFile (self,c):
+    
+    '''Write the appropriate .leoRecentFiles.txt file.'''
+    
+    tag = '.leoRecentFiles.txt'
+    
+    if g.app.unitTesting:
+        return
+    
+    localFileName = c.fileName()
+    if localFileName:
+        localPath,junk = g.os_path_split(localFileName)
+    else:
+        localPath = None
+        
+    for path in (localPath,g.app.globalConfigDir,g.app.homeDir):
+        if path:
+            fileName = g.os_path_join(path,tag)
+            if g.os_path_exists(fileName):
+                g.trace('wrote %s' % fileName)
+                self.writeRecentFilesFileHelper(fileName)
+                return
+    else:
+        # g.trace('----- not found: %s' % g.os_path_join(localPath,tag))
+        return
+#@+node:ekr.20050424131051:writeRecentFilesFileHelper
+def writeRecentFilesFileHelper (self,fileName):
+    # g.trace(fileName)
+    
+    # Don't update the file if it begins with read-only.
+    theFile = None
+    try:
+        theFile = file(fileName)
+        lines = theFile.readlines()
+        if lines and self.munge(lines[0])=='readonly':
+            # g.trace('read-only: %s' %fileName)
+            return
+    except IOError:
+        # The user may have erased a file.  Not an error.
+        if theFile: theFile.close()
+
+    theFile = None
+    try:
+        # g.trace('writing',fileName)
+        theFile = file(fileName,'w')
+        if self.recentFiles:
+            lines = [g.toEncodedString(line,'utf-8') for line in self.recentFiles]
+            theFile.write('\n'.join(lines))
+        else:
+            theFile.write('\n')
+
+    except IOError:
+        # The user may have erased a file.  Not an error.
+        pass
+            
+    except Exception:
+        g.es('unexpected exception writing %s' % fileName,color='red')
+        g.es_exception()
+    
+    if theFile:
+        theFile.close()
+#@-node:ekr.20050424131051:writeRecentFilesFileHelper
+#@-node:ekr.20050424114937.2:writeRecentFilesFile & helper
+#@-node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
+#@-node:ekr.20061028072406:Fixed bug reading recent files
+#@-node:ekr.20061028084753:Leo 4.4.2.1 final projects
+#@+node:ekr.20061028070132:New positions
+# None of this code is part of Leo's core yet: it is all highly experimental.
+#@nonl
+#@+node:ekr.20061028070057.1: ctor & other special methods...
+#@+node:ekr.20061028070057.2:p.__cmp__
+def __cmp__(self,p2):
+
+    """Return 0 if two postions are equivalent."""
+
+    # Use p.equal if speed is crucial.
+    p1 = self
+    
+    # g.trace(p1.headString(),p2 and p2.headString())
+
+    if p2 is None: # Allow tests like "p == None"
+        if p1.v: return 1 # not equal
+        else:    return 0 # equal
+    elif p1.v == p2.v and p2._childIndex == p2._childIndex and p1.stack == p2.stack:
+        return 0 # equal
+    else:
+        return 1 # not equal
+
+    # # Check entire stack quickly.
+    # # The stack contains vnodes, so this is not a recursive call.
+    # if p1.v != p2.v or p1.stack != p2.stack:
+        # return 1 # notEqual
+    # # This is slow: do this last!
+    # if p1.childIndex() != p2.childIndex():
+        # # Disambiguate clones having the same parents.
+        # return 1 # notEqual
+    # return 0 # equal
+#@nonl
+#@-node:ekr.20061028070057.2:p.__cmp__
+#@+node:ekr.20061028070057.3:p.__getattr__  ON:  must be ON if use_plugins
+if 1: # Good for compatibility, bad for finding conversion problems.
+
+    def __getattr__ (self,attr):
+        
+        """Convert references to p.t into references to p.v.t.
+        
+        N.B. This automatically keeps p.t in synch with p.v.t."""
+
+        if attr=="t":
+            return self.v.t
+        else:
+            # New in 4.3: _silently_ raise the attribute error.
+            # This allows plugin code to use hasattr(p,attr) !
+            if 0:
+                print "unknown position attribute:",attr
+                import traceback ; traceback.print_stack()
+            raise AttributeError,attr
+#@nonl
+#@-node:ekr.20061028070057.3:p.__getattr__  ON:  must be ON if use_plugins
+#@+node:ekr.20061028070057.4:p.__init__
+def __init__ (self,v,childIndex=0,stack=None):
+
+    '''Create a new position.'''
+
+    # To support ZODB the code must set vort._p_changed = 1 whenever
+    # t.vnodeList (or any mutable tnode or vnode object) changes.
+
+    self.v = v
+    self._childIndex = childIndex
+    
+    if stack:
+        self.stack = stack[:] # Creating a copy here is safest and best.
+    else:
+        self.stack = []
+    
+    g.app.positions += 1
+    
+    # Note: __getattr__ implements p.t.
+#@nonl
+#@-node:ekr.20061028070057.4:p.__init__
+#@+node:ekr.20061028070057.5:p.__nonzero__
+@
+Tests such as 'if p' or 'if not p' are the _only_ correct ways to test whether a position p is valid.
+In particular, tests like 'if p is None' or 'if p is not None' will not work properly.
+@c
+
+def __nonzero__ ( self):
+    
+    """Return True if a position is valid."""
+    
+    # if g.app.trace: "__nonzero__",self.v
+
+    return self.v is not None
+#@-node:ekr.20061028070057.5:p.__nonzero__
+#@+node:ekr.20061028070057.6:p.__str__ and p.__repr__
+def __str__ (self):
+    
+    p = self
+    
+    if p.v:
+        return "<pos %d lvl: %d [%d] %s>" % (id(p),p.level(),len(p.stack),p.cleanHeadString())
+    else:
+        return "<pos %d        [%d] None>" % (id(p),len(p.stack))
+        
+__repr__ = __str__
+#@-node:ekr.20061028070057.6:p.__str__ and p.__repr__
+#@+node:ekr.20061028070057.7:p.archivedPosition
+def archivedPosition (self):
+    
+    '''Return a representation of a position suitable for use in .leo files.'''
+    
+    p = self
+    aList = [p2.v.childIndex() for p2 in p.self_and_parents_iter()]
+    aList.reverse()
+    return aList
+#@nonl
+#@-node:ekr.20061028070057.7:p.archivedPosition
+#@+node:ekr.20061028070057.8:p.copy
+# Using this routine can generate huge numbers of temporary positions during a tree traversal.
+
+def copy (self):
+    
+    """"Return an independent copy of a position."""
+
+    return position(self.v,self.stack)
+#@-node:ekr.20061028070057.8:p.copy
+#@+node:ekr.20061028070057.9:p.dump & p.vnodeListIds
+def dumpLink (self,link):
+
+    return g.choose(link,link,"<none>")
+
+def dump (self,label=""):
+    
+    p = self
+    print '-'*10,label,p
+    if p.v:
+        p.v.dump() # Don't print a label
+        
+def vnodeListIds (self):
+    
+    p = self
+    return [id(v) for v in p.v.t.vnodeList]
+#@-node:ekr.20061028070057.9:p.dump & p.vnodeListIds
+#@+node:ekr.20061028070057.10:p.equal & isEqual
+def equal(self,p2):
+
+    """Return True if two postions are equivalent.
+    
+    Use this method when the speed comparisons is crucial
+    
+    N.B. Unlike __cmp__, p2 must not be None.
+    """
+
+    p1 = self
+
+    # Check entire stack quickly.
+    # The stack contains vnodes, so this does not call p.__cmp__.
+    return (
+        p1.v == p2.v and
+        p1._childIndex == p2._childIndex and
+        p1.stack == p2.stack
+    )
+        
+isEqual = equal
+#@-node:ekr.20061028070057.10:p.equal & isEqual
+#@+node:ekr.20061028070057.11:p.key
+def key (self):
+    
+    p = self
+
+    return '%s:%d.%s' % (
+        id(p.v),
+        p._childIndex,
+        ','.join([str(id(v)) for v in p.stack])
+    )
+#@-node:ekr.20061028070057.11:p.key
+#@-node:ekr.20061028070057.1: ctor & other special methods...
+#@+node:ekr.20061028070057.12:p.moveToX (many changes)
+@
+These routines change self to a new position "in place".
+That is, these methods must _never_ call p.copy().
+
+When moving to a nonexistent position, these routines simply set p.v = None,
+leaving the p.stack unchanged. This allows the caller to "undo" the effect of
+the invalid move by simply restoring the previous value of p.v.
+
+These routines all return self on exit so the following kind of code will work:
+    after = p.copy().moveToNodeAfterTree()
+#@+node:ekr.20061028070057.13:p.moveToBack (new)
+def moveToBack (self):
+    
+    '''Move position p to its previous sibling.'''
+    
+    p = self
+    if p.stack and p._childIndex > 0:
+        parent_v,junk = p.stack[-1]
+        links = parent_v.t.links
+        if links:
+            p._childIndex -= 1
+            p.v = links[p._childIndex]
+        else:
+            g.trace('Can not happen')
+            p.v = None
+    else:
+        p.v = None
+    return p
+    
+    # p = self
+    # p.v = p.v and p.v._back
+    # return p
+#@nonl
+#@-node:ekr.20061028070057.13:p.moveToBack (new)
+#@+node:ekr.20061028070057.14:p.moveToFirstChild (new)
+def moveToFirstChild (self):
+
+    '''Move a position to it's first child's position.'''
+    
+    p = self
+    if p.stack:
+        parent_v,junk = p.stack[-1]
+        links = parent_v.t.links
+        if links:
+            p._childIndex = 0
+            p.v = links[0]
+        else:
+            p.v = None
+    else:
+        p.v = None
+    return p
+
+    # p = self
+    # if p:
+        # child = p.v.t._firstChild
+        # if child:
+            # if p.isCloned():
+                # p.stack.append(p.v)
+            # p.v = child
+        # else:
+            # p.v = None
+    # return p
+#@-node:ekr.20061028070057.14:p.moveToFirstChild (new)
+#@+node:ekr.20061028070057.15:p.moveToLastChild (new)
+def moveToLastChild (self):
+    
+    '''Move a position to it's last child's position.'''
+    
+    p = self
+    if p.stack:
+        parent_v,junk = p.stack[-1]
+        links = parent_v.t.links
+        if links:
+            p._childIndex = len(links)-1
+            p.v = links[p._childIndex]
+    else:
+        p.v = None
+    return p
+    
+    # p = self
+    # if p:
+        # if p.v.t._firstChild:
+            # child = p.v.lastChild()
+            # if p.isCloned():
+                # p.stack.append(p.v)
+            # p.v = child
+        # else:
+            # p.v = None
+    # return p
+#@-node:ekr.20061028070057.15:p.moveToLastChild (new)
+#@+node:ekr.20061028070057.16:p.moveToLastNode (no change)
+def moveToLastNode (self):
+    
+    """Move a position to last node of its tree.
+    
+    N.B. Returns p if p has no children."""
+    
+    p = self
+    while p.hasChildren():
+        p.moveToLastChild()
+    return p
+#@-node:ekr.20061028070057.16:p.moveToLastNode (no change)
+#@+node:ekr.20061028070057.17:p.moveToNext (new)
+def moveToNext (self):
+
+    '''Move position p to its next sibling.'''
+    
+    p = self
+    if p and p.stack:
+        parent_v,junk = p.stack[-1]
+        links = parent_v.t.links
+        if p._childIndex + 1 < len(links):
+            p._childIndex += 1
+            p.v = links[p._childIndex]
+        else:
+            p.v = None
+    else:
+        p.v = None
+    return p
+    
+    # p = self
+    # p.v = p.v and p.v._next
+    # return p
+#@-node:ekr.20061028070057.17:p.moveToNext (new)
+#@+node:ekr.20061028070057.18:p.moveToNodeAfterTree (no change)
+def moveToNodeAfterTree (self):
+    
+    """Move a position to the node after the position's tree."""
+    
+    p = self
+    
+    while p:
+        if p.hasNext():
+            p.moveToNext()
+            break
+        p.moveToParent()
+
+    return p
+#@-node:ekr.20061028070057.18:p.moveToNodeAfterTree (no change)
+#@+node:ekr.20061028070057.19:p.moveToNthChild (new)
+def moveToNthChild (self,n):
+    
+    p = self
+    if p and p.stack:
+        parent_v,junk = p.stack[-1]
+        links = parent_v.t.links
+        if links and n < len(links)
+            p.v = links[n]
+            p.childIndex = n
+        else:
+            p.v = None
+    else:
+        p.v = None
+    return p
+    
+    # p = self
+    # if p:
+        # child = p.v.nthChild(n) # Must call vnode method here!
+        # if child:
+            # if p.isCloned():
+                # p.stack.append(p.v)
+            # p.v = child
+        # else:
+            # p.v = None
+    # return p
+#@-node:ekr.20061028070057.19:p.moveToNthChild (new)
+#@+node:ekr.20061028070057.20:p.moveToParent (new)
+def moveToParent (self):
+    
+    '''Move a position to its parent position.'''
+    
+    if p.stack:
+        p.v,p._childIndex = p.stack.pop()
+    else:
+        p.v = None
+    return p
+    
+    # p = self
+    # if not p: return p
+    # if p.v._parent and len(p.v._parent.t.vnodeList) == 1:
+        # p.v = p.v._parent
+    # elif p.stack:
+        # p.v = p.stack.pop()
+    # else:
+        # p.v = None
+    # return p
+#@nonl
+#@-node:ekr.20061028070057.20:p.moveToParent (new)
+#@+node:ekr.20061028070057.21:p.moveToThreadBack (no change)
+def moveToThreadBack (self):
+    
+    """Move a position to it's threadBack position."""
+
+    p = self
+
+    if p.hasBack():
+        p.moveToBack()
+        p.moveToLastNode()
+    else:
+        p.moveToParent()
+
+    return p
+#@-node:ekr.20061028070057.21:p.moveToThreadBack (no change)
+#@+node:ekr.20061028070057.22:p.moveToThreadNext (little change)
+def moveToThreadNext (self):
+    '''Move a position to the next a position in threading order.'''
+    p = self
+    if p.hasChildren():
+        p.moveToFirstChild()
+    elif p.hasNext()
+        p.moveToNext()
+    else:
+        p.moveToParent()
+        while p:
+            if p.hasNext():
+                p.moveToNext()
+                break #found
+            p.moveToParent()
+        # not found.
+    return p
+
+# def moveToThreadNext (self):
+    # """Move a position to the next a position in threading order."""
+    # p = self
+    # if p:
+        # if p.v.t._firstChild:
+            # p.moveToFirstChild()
+        # elif p.v._next:
+            # p.moveToNext()
+        # else:
+            # p.moveToParent()
+            # while p:
+                # if p.v._next:
+                    # p.moveToNext()
+                    # break #found
+                # p.moveToParent()
+            # # not found. 
+    # return p
+#@nonl
+#@-node:ekr.20061028070057.22:p.moveToThreadNext (little change)
+#@+node:ekr.20061028070057.23:p.moveToVisBack (no change)
+def moveToVisBack (self):
+    
+    """Move a position to the position of the previous visible node."""
+
+    p = self
+    
+    if p:
+        p.moveToThreadBack()
+        while p and not p.isVisible():
+            p.moveToThreadBack()
+
+    assert(not p or p.isVisible())
+    return p
+#@-node:ekr.20061028070057.23:p.moveToVisBack (no change)
+#@+node:ekr.20061028070057.24:p.moveToVisNext (no change)
+def moveToVisNext (self):
+    
+    """Move a position to the position of the next visible node."""
+
+    p = self
+
+    p.moveToThreadNext()
+    while p and not p.isVisible():
+        p.moveToThreadNext()
+            
+    return p
+#@-node:ekr.20061028070057.24:p.moveToVisNext (no change)
+#@-node:ekr.20061028070057.12:p.moveToX (many changes)
+#@+node:ekr.20061028070057.25:Getters (some changes)
+#@+node:ekr.20061028070057.26: vnode proxies
+#@+node:ekr.20061028070057.27:p.Comparisons (no change)
+def anyAtFileNodeName         (self): return self.v.anyAtFileNodeName()
+def atFileNodeName            (self): return self.v.atFileNodeName()
+def atNoSentinelsFileNodeName (self): return self.v.atNoSentinelsFileNodeName()
+def atRawFileNodeName         (self): return self.v.atRawFileNodeName()
+def atSilentFileNodeName      (self): return self.v.atSilentFileNodeName()
+def atThinFileNodeName        (self): return self.v.atThinFileNodeName()
+
+# New names, less confusing
+atNoSentFileNodeName  = atNoSentinelsFileNodeName
+atNorefFileNodeName   = atRawFileNodeName
+atAsisFileNodeName    = atSilentFileNodeName
+
+def isAnyAtFileNode         (self): return self.v.isAnyAtFileNode()
+def isAtAllNode             (self): return self.v.isAtAllNode()
+def isAtFileNode            (self): return self.v.isAtFileNode()
+def isAtIgnoreNode          (self): return self.v.isAtIgnoreNode()
+def isAtNoSentinelsFileNode (self): return self.v.isAtNoSentinelsFileNode()
+def isAtOthersNode          (self): return self.v.isAtOthersNode()
+def isAtRawFileNode         (self): return self.v.isAtRawFileNode()
+def isAtSilentFileNode      (self): return self.v.isAtSilentFileNode()
+def isAtThinFileNode        (self): return self.v.isAtThinFileNode()
+
+# New names, less confusing:
+isAtNoSentFileNode = isAtNoSentinelsFileNode
+isAtNorefFileNode  = isAtRawFileNode
+isAtAsisFileNode   = isAtSilentFileNode
+
+# Utilities.
+def matchHeadline (self,pattern): return self.v.matchHeadline(pattern)
+## def afterHeadlineMatch (self,s): return self.v.afterHeadlineMatch(s)
+#@-node:ekr.20061028070057.27:p.Comparisons (no change)
+#@+node:ekr.20061028070057.28:p.Headline & body strings (no change)
+def bodyString (self):
+    
+    return self.v.bodyString()
+
+def headString (self):
+    
+    return self.v.headString()
+    
+def cleanHeadString (self):
+    
+    return self.v.cleanHeadString()
+#@-node:ekr.20061028070057.28:p.Headline & body strings (no change)
+#@+node:ekr.20061028070057.29:p.Status bits (no change)
+def isDirty     (self): return self.v.isDirty()
+def isExpanded  (self): return self.v.isExpanded()
+def isMarked    (self): return self.v.isMarked()
+def isOrphan    (self): return self.v.isOrphan()
+def isSelected  (self): return self.v.isSelected()
+def isTopBitSet (self): return self.v.isTopBitSet()
+def isVisited   (self): return self.v.isVisited()
+def status      (self): return self.v.status()
+#@-node:ekr.20061028070057.29:p.Status bits (no change)
+#@+node:ekr.20061028070057.30:p.directParents (new, faster)
+def directParents (self):
+    
+    p = self
+    return p and p.stack or []
+
+    # return self.v.directParents()
+#@-node:ekr.20061028070057.30:p.directParents (new, faster)
+#@+node:ekr.20061028070057.31:p.childIndex (new, much faster)
+# This is time-critical code!
+
+def childIndex(self):
+    
+    return p and p._childIndex or 0
+
+    # p = self ; v = p.v
+    # if not v or not v._back:
+        # return 0
+    # n = 0 ; v = v._back
+    # while v:
+        # n += 1
+        # v = v._back
+    # return n
+#@nonl
+#@-node:ekr.20061028070057.31:p.childIndex (new, much faster)
+#@-node:ekr.20061028070057.26: vnode proxies
+#@+node:ekr.20061028070057.32:children (slightly new)
+#@+node:ekr.20061028070057.33:p.hasChildren (new)
+def hasChildren(self):
+    
+    p = self
+    
+    if p.v and p.v.t:
+        return len(p.v.t.links) > 0
+    else:
+        return False
+
+    # return p.v and p.v.t and p.v.t._firstChild
+#@-node:ekr.20061028070057.33:p.hasChildren (new)
+#@+node:ekr.20061028070057.34:p.numberOfChildren (new)
+def numberOfChildren (self):
+    
+    if p.v:
+        return len(p.v.t.links)
+    else:
+        return 0
+    
+    # return self.v.numberOfChildren()
+#@-node:ekr.20061028070057.34:p.numberOfChildren (new)
+#@-node:ekr.20061028070057.32:children (slightly new)
+#@+node:ekr.20061028070057.35:p.getX & vnode compatibility traversal routines (no change)
+# These methods are useful abbreviations.
+# Warning: they make copies of positions, so they should be used _sparingly_
+
+def getBack          (self): return self.copy().moveToBack()
+def getFirstChild    (self): return self.copy().moveToFirstChild()
+def getLastChild     (self): return self.copy().moveToLastChild()
+def getLastNode      (self): return self.copy().moveToLastNode()
+def getLastVisible   (self): return self.copy().moveToLastVisible()
+def getNext          (self): return self.copy().moveToNext()
+def getNodeAfterTree (self): return self.copy().moveToNodeAfterTree()
+def getNthChild    (self,n): return self.copy().moveToNthChild(n)
+def getParent        (self): return self.copy().moveToParent()
+def getThreadBack    (self): return self.copy().moveToThreadBack()
+def getThreadNext    (self): return self.copy().moveToThreadNext()
+def getVisBack       (self): return self.copy().moveToVisBack()
+def getVisNext       (self): return self.copy().moveToVisNext()
+
+# These are efficient enough now that iterators are the normal way to traverse the tree!
+
+back          = getBack
+firstChild    = getFirstChild
+lastChild     = getLastChild
+lastNode      = getLastNode
+lastVisible   = getLastVisible # New in 4.2 (was in tk tree code).
+next          = getNext
+nodeAfterTree = getNodeAfterTree
+nthChild      = getNthChild
+parent        = getParent
+threadBack    = getThreadBack
+threadNext    = getThreadNext
+visBack       = getVisBack
+visNext       = getVisNext
+#@-node:ekr.20061028070057.35:p.getX & vnode compatibility traversal routines (no change)
+#@+node:ekr.20061028070057.36:p.hasX (new)
+def hasBack(self):
+    return self._childIndex > 0
+    # return self.v and self.v._back
+
+hasFirstChild = hasChildren
+    
+def hasNext(self):
+    parent = self.stack and self.stack[-1]
+    return parent and self._childIndex < len(parent.v.t.links)
+    # return self.v and self.v._next
+    
+def hasParent(self):
+    return len(self.stack) > 1 # The first item of each stack is the dummy parent.
+    # return self.v and self.v._parent is not None
+    
+def hasThreadBack(self):
+    return self.hasParent() or self.hasBack() # Much cheaper than computing the actual value.
+    
+hasVisBack = hasThreadBack
+#@-node:ekr.20061028070057.36:p.hasX (new)
+#@+node:ekr.20061028070057.37:hasThreadNext (big change)
+def hasThreadNext(self):
+    
+    p = self ; v = p.v
+    if not p.v: return False
+
+    if p.hasChildren() or p.hasNext():
+        return True
+    else:
+        # Simulate this code without copying p.
+        # p2 = p.copy()
+        # p2.moveToParent()
+        # while p2:
+            # if p2.hasNext():
+                # return True
+            # p2.moveToParent()
+        # return False
+        if not p.stack: return False
+        n = len(p.stack)-1
+        v,childIndex = p.stack[n]
+        n -= 1
+        while n >= 0:
+            # v2,childIndex2 represent v's parent.
+            v2,childIndex2 = parent.stack[n]
+            links = v2.t.links
+            if childIndex + 1 < len(links):
+                return True
+            # v.moveToParent
+            v,childIndex = v2,childIndex2
+            n -= 1
+        return False
+
+    # p = self ; v = p.v
+    # if not p.v: return False
+    # if v.t._firstChild or v._next:
+        # return True
+    # else:
+        # n = len(p.stack)-1
+        # v,n = p.vParentWithStack(v,p.stack,n)
+        # while v:
+            # if v._next:
+                # return True
+            # v,n = p.vParentWithStack(v,p.stack,n)
+        # return False
+
+hasVisNext = hasThreadNext
+#@nonl
+#@-node:ekr.20061028070057.37:hasThreadNext (big change)
+#@+node:ekr.20061028070057.38:p.findRootPosition (unchanged)
+def findRootPosition (self):
+    
+    p = self.copy()
+    while p.hasParent():
+        p.moveToParent()
+    while p.hasBack():
+        p.moveToBack()
+    return p
+#@nonl
+#@-node:ekr.20061028070057.38:p.findRootPosition (unchanged)
+#@+node:ekr.20061028070057.39:p.isAncestorOf (new)
+def isAncestorOf (self, p2):
+    
+    p = self
+    if not p.stack:
+        return False
+    elif p2 is None or not p2.stack:
+        return False
+    else:
+        for v,junk in p2.stack:
+            if v == p.v:
+                return True
+        else:
+            return False
+    
+    # p = self
+    # # Avoid calling p.copy() or copying the stack.
+    # v2 = p2.v ; n = len(p2.stack)-1
+        # # Major bug fix 7/22/04: changed len(p.stack) to len(p2.stack.)
+    # v2,n = p2.vParentWithStack(v2,p2.stack,n)
+    # while v2:
+        # if v2 == p.v:
+            # return True
+        # v2,n = p2.vParentWithStack(v2,p2.stack,n)
+    # return False
+#@nonl
+#@-node:ekr.20061028070057.39:p.isAncestorOf (new)
+#@+node:ekr.20061028070057.40:p.isCloned (unchanged)
+def isCloned (self):
+    
+    return len(self.v.t.vnodeList) > 1
+#@-node:ekr.20061028070057.40:p.isCloned (unchanged)
+#@+node:ekr.20061028070057.41:p.isRoot (unchanged)
+def isRoot (self):
+    
+    p = self
+
+    return not p.hasParent() and not p.hasBack()
+#@-node:ekr.20061028070057.41:p.isRoot (unchanged)
+#@+node:ekr.20061028070057.42:p.isVisible (new)
+def isVisible (self):
+    
+    """Return True if all of a position's parents are expanded."""
+    
+    p = self
+    if p and p.stack:
+        for v in p.stack:
+            if not v.isExpanded():
+                return False
+        return True
+    else:
+        return False
+
+    # p = self
+    # v = p.v ; n = len(p.stack)-1
+    # v,n = p.vParentWithStack(v,p.stack,n)
+    # while v:
+        # if not v.isExpanded():
+            # return False
+        # v,n = p.vParentWithStack(v,p.stack,n)
+    # return True
+#@nonl
+#@-node:ekr.20061028070057.42:p.isVisible (new)
+#@+node:ekr.20061028070057.43:p.level & simpleLevel (new)
+def level(self):
+    return len(self.stack)
+    
+simpleLevel = level
+
+# def simpleLevel(self):
+    # 
+    # return len([p for p in self.parents_iter()])
+
+# def level(self,verbose=False):
+    # 
+    # p = self ; level = 0
+    # if not p: return level
+        # 
+    # # Avoid calling p.copy() or copying the stack.
+    # v = p.v ; n = len(p.stack)-1
+    # while 1:
+        # assert(p)
+        # v,n = p.vParentWithStack(v,p.stack,n)
+        # if v:
+            # level += 1
+            # if verbose: g.trace(level,"level %2d, n: %2d" % (level,n))
+        # else:
+            # if verbose: g.trace(level,"level %2d, n: %2d" % (level,n))
+            # # if g.app.debug: assert(level==self.simpleLevel())
+            # break
+    # return level
+#@-node:ekr.20061028070057.43:p.level & simpleLevel (new)
+#@-node:ekr.20061028070057.25:Getters (some changes)
+#@+node:ekr.20061028070057.44:p.utils...
+#@+node:ekr.20061028070057.45:p.vParentWithStack (no longer used)
+# A crucial utility method.
+# The p.level(), p.isVisible() and p.hasThreadNext() methods show how to use this method.
+
+<< about the vParentWithStack utility method >>
+
+def vParentWithStack(self,v,stack,n):
+    
+    """A utility that allows the computation of p.v without calling p.copy().
+    
+    v,stack[:n] correspond to p.v,p.stack for some intermediate position p.
+
+    Returns (v,n) such that v,stack[:n] correpond to the parent position of p."""
+
+    if not v:
+        return None,n
+    elif v._parent and len(v._parent.t.vnodeList) == 1:
+        return v._parent,n # don't change stack.
+    elif stack and n >= 0:
+        return self.stack[n],n-1 # simulate popping the stack.
+    else:
+        return None,n
+#@+node:ekr.20061028070057.46:<< about the vParentWithStack utility method >>
+@ 
+This method allows us to simulate calls to p.parent() without generating any intermediate data.
+
+For example, the code below will compute the same values for list1 and list2:
+
+# The first way depends on the call to p.copy:
+list1 = []
+p=p.copy() # odious.
+while p:
+    p = p.moveToParent()
+    if p: list1.append(p.v)
+
+# The second way uses p.vParentWithStack to avoid all odious intermediate data.
+
+list2 = []
+n = len(p.stack)-1
+v,n = p.vParentWithStack(v,p.stack,n)
+while v:
+    list2.append(v)
+    v,n = p.vParentWithStack(v,p.stack,n)
+#@-node:ekr.20061028070057.46:<< about the vParentWithStack utility method >>
+#@-node:ekr.20061028070057.45:p.vParentWithStack (no longer used)
+#@+node:ekr.20061028070057.47:p.restoreLinksInTree
+def restoreLinksInTree (self):
+
+    """Restore links when undoing a delete node operation."""
+    
+    root = p = self
+
+    if p.v not in p.v.t.vnodeList:
+        p.v.t.vnodeList.append(p.v)
+        p.v.t._p_changed = 1 # Support for tnode class.
+
+    for p in root.children_iter():
+        p.restoreLinksInTree()
+#@-node:ekr.20061028070057.47:p.restoreLinksInTree
+#@+node:ekr.20061028070057.48:p.deleteLinksInTree & allies
+def deleteLinksInTree (self):
+    
+    """Delete and otherwise adjust links when deleting node."""
+    
+    root = self
+
+    root.deleteLinksInSubtree()
+
+    # for p in root.children_iter():
+        # p.adjustParentLinksInSubtree(parent=root)
+#@nonl
+#@+node:ekr.20061028070057.49:p.deleteLinksInSubtree
+def deleteLinksInSubtree (self):
+
+    root = p = self
+
+    # Delete p.v from the vnodeList
+    if p.v in p.v.t.vnodeList:
+        # g.trace('**** remove p.v from %s' % p.headString())
+        p.v.t.vnodeList.remove(p.v)
+        p.v.t._p_changed = 1  # Support for tnode class.
+        assert(p.v not in p.v.t.vnodeList)
+    else:
+        # g.trace("not in vnodeList",p.v,p.vnodeListIds())
+        pass
+
+    if len(p.v.t.vnodeList) == 0:
+        # This node is not shared by other nodes.
+        for p in root.children_iter():
+            p.deleteLinksInSubtree()
+#@-node:ekr.20061028070057.49:p.deleteLinksInSubtree
+#@+node:ekr.20061028070057.50:p.adjustParentLinksInSubtree (no longer used)
+def adjustParentLinksInSubtree (self,parent):
+    
+    root = p = self
+    
+    assert(parent)
+    
+    if p.v._parent and parent.v.t.vnodeList and p.v._parent not in parent.v.t.vnodeList:
+        # g.trace('**** adjust parent in %s' % p.headString())
+        p.v._parent = parent.v.t.vnodeList[0]
+        
+    for p in root.children_iter():
+        p.adjustParentLinksInSubtree(parent=root)
+#@-node:ekr.20061028070057.50:p.adjustParentLinksInSubtree (no longer used)
+#@-node:ekr.20061028070057.48:p.deleteLinksInTree & allies
+#@-node:ekr.20061028070057.44:p.utils...
+#@+node:ekr.20061028070057.51:p.Link/Unlink methods (all new)
+# These remain in 4.2:  linking and unlinking does not depend on position.
+
+# These are private routines:  the position class does not define proxies for these.
+#@+node:ekr.20061028070057.52:p.linkAfter
+def linkAfter (self,after):
+
+    """Link self after position 'after'."""
+    
+    p = self
+    if not after.stack:
+        g.trace('Can not happen: no dummy root.',after)
+        return
+    
+    p.stack = after.stack[:]
+    p._childIndex = after._childIndex + 1 #### New
+    parent_v,junk = p.stack[-1] #### New
+    links = parent_v.t.links #### New
+    links.insert(p._childIndex,p.v) #### New
+        
+    #### p.v._parent = after.v._parent
+    
+    # Add v to it's tnode's vnodeList.
+    if p.v not in p.v.t.vnodeList:
+        p.v.t.vnodeList.append(p.v)
+        p.v.t._p_changed = 1 # Support for tnode class.
+    
+    #### p.v._back = after.v
+    #### p.v._next = after.v._next
+    #### after.v._next = p.v
+    #### if p.v._next:
+        #### p.v._next._back = p.v
+
+    if 0:
+        g.trace('-'*20,after)
+        p.dump(label="p")
+        after.dump(label="back")
+        if p.hasNext(): p.next().dump(label="next")
+#@-node:ekr.20061028070057.52:p.linkAfter
+#@+node:ekr.20061028070057.53:p.linkAsNthChild
+def linkAsNthChild (self,parent,n):
+
+    """Links self as the n'th child of parent position 'parent'."""
+    
+    # g.trace(self,parent,n,parent.v)
+
+    p = self
+    links = parent.v.t.links
+    if n <= len(links):
+        links.insert(n,p.v)
+    else:
+        g.trace('Can not happen: n too large.',n,p)
+        return
+        
+    if p.v not in p.v.t.vnodeList:
+        p.v.t.vnodeList.append(p.v)
+        p.v.t._p_changed = 1 # Support for tnode class.
+
+    # # Recreate the stack using the parent.
+    # p.stack = parent.stack[:]
+    # if parent.isCloned():
+        # p.stack.append(parent.v)
+    # p.v._parent = parent.v
+    # # Add v to it's tnode's vnodeList.
+    # if p.v not in p.v.t.vnodeList:
+        # p.v.t.vnodeList.append(p.v)
+        # p.v.t._p_changed = 1 # Support for tnode class.
+    # if n == 0:
+        # child1 = parent.v.t._firstChild
+        # p.v._back = None
+        # p.v._next = child1
+        # if child1:
+            # child1._back = p.v
+        # parent.v.t._firstChild = p.v
+    # else:
+        # prev = parent.nthChild(n-1) # zero based
+        # assert(prev)
+        # p.v._back = prev.v
+        # p.v._next = prev.v._next
+        # prev.v._next = p.v
+        # if p.v._next:
+            # p.v._next._back = p.v
+    if 0:
+        g.trace('-'*20)
+        p.dump(label="p")
+        parent.dump(label="parent")
+#@nonl
+#@-node:ekr.20061028070057.53:p.linkAsNthChild
+#@+node:ekr.20061028070057.54:p.linkAsRoot
+def linkAsRoot (self,oldRoot):
+    
+    """Link self as the root node."""
+
+    p = self ; v = p.v
+    if oldRoot: oldRootVnode = oldRoot.v
+    else:       oldRootVnode = None
+    
+    root_v,junk = p.stack[0]
+    links = root_v.t.links
+    p.stack = [root_v] # Clear the stack, except for the dummy root.
+    links = [p.v]
+    if oldRoot:
+        links.append(oldRoot.v)
+    
+    # p.stack = [] # Clear the stack.
+    # # Clear all links except the child link.
+    # v._parent = None
+    # v._back = None
+    # v._next = oldRootVnode
+    
+    # Add v to it's tnode's vnodeList.
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v)
+        v.t._p_changed = 1 # Support for tnode class.
+
+    # Link in the rest of the tree only when oldRoot != None.
+    # Otherwise, we are calling this routine from init code and
+    # we want to start with a pristine tree.
+    # if oldRoot:
+        # oldRoot.v._back = v
+    # p.dump(label="root")
+#@nonl
+#@-node:ekr.20061028070057.54:p.linkAsRoot
+#@+node:ekr.20061028070057.55:p.unlink
+def unlink (self):
+
+    """Unlinks a position p from the tree before moving or deleting.
+    
+    The p.v.t.links does NOT change."""
+
+    p = self ; v = p.v
+    
+    # Remove v from it's tnode's vnodeList.
+    vnodeList = v.t.vnodeList
+    if v in vnodeList:
+        vnodeList.remove(v)
+        v.t._p_changed = 1 # Support for tnode class.
+    assert(v not in vnodeList)
+    
+    if p.stack:
+        parent,junk = p.stack[-1]
+        links = parent.t.links
+        if v in links:
+            links.remove(v)
+        else:
+            g.trace("Can not happen: not its father's child.",p)
+    else:
+        g.trace('Can not happen: missing root.',p)
+    
+    # Reset the firstChild link in its direct father.
+    # if p.v._parent:
+        # if 0: # This can fail.  I have no idea why it was present.
+            # assert(p.v and p.v._parent in p.v.directParents())
+        # if p.v._parent.t._firstChild == v:
+            # #g.trace('resetting _parent.v.t._firstChild to',v._next)
+            # p.v._parent.t._firstChild = v._next
+    # else:
+        # parent = p.parent()
+        # if parent:
+            # if 0: # This can fail.  I have no idea why it was present.
+                # assert(parent.v in p.v.directParents())
+            # if parent.v.t._firstChild == v:
+                # #g.trace('resetting parent().v.t._firstChild to',v._next)
+                # parent.v.t._firstChild = v._next
+    # # Do NOT delete the links in any child nodes.
+    # # Clear the links in other nodes.
+    # if v._back: v._back._next = v._next
+    # if v._next: v._next._back = v._back
+    # # Unlink _this_ node.
+    # v._parent = v._next = v._back = None
+
+    if 0:
+        g.trace('-'*20)
+        p.dump(label="p")
+        if parent: parent.dump(label="parent")
+#@nonl
+#@-node:ekr.20061028070057.55:p.unlink
+#@-node:ekr.20061028070057.51:p.Link/Unlink methods (all new)
+#@-node:ekr.20061028070132:New positions
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt

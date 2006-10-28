@@ -96,6 +96,7 @@ doc\html\default.css
 doc\html\design.html
 doc\html\directives.html
 doc\html\docModeOnlyTest.html
+doc\html\emacs.html
 doc\html\front.html
 doc\html\frontMatter.html
 doc\html\glossary.html
@@ -686,6 +687,7 @@ src\leoMenu.py
 src\leoNodes.py
 src\leoPlugins.py
 src\leoProjects.txt
+src\leoPymacs.py
 src\leoScriptModule.py
 src\leoTangle.py
 src\leoTest.py

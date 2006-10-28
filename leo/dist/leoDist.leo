@@ -722,6 +722,8 @@ What's new: http://webpages.charter.net/edreamleo/new-4-4-2.html
 Home:       http://sourceforge.net/projects/leo/
 Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:        http://leo.tigris.org/source/browse/leo/
+Leo's Wiki: http://leo.zwiki.org/FrontPage
+Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 </t>
 <t tx="EKR.20040519090846.10"># The manifest template: specifies all files to be included in the distribution.
@@ -4952,7 +4954,7 @@ Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 Leo 4.4.2 final is now available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
-This release fixes a few bugs and adds support for pymacs.
+This release fixes a few bugs and adds support for controlling Leo from Emacs using pymacs.
 There are no known significant bugs in this version of Leo.
 
 Leo is a text editor, data organizer, project manager and much more. See:
@@ -4976,7 +4978,6 @@ The highlights of Leo 4.4.2:
 - Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
 - Many new minibuffer commands now appear in the Cmds menu.
 - A sax parser can now optionally read .leo files.
-- Fixed numerous bugs.
 
 Links:
 ------
@@ -4985,6 +4986,8 @@ What's new: http://webpages.charter.net/edreamleo/new-4-4-2.html
 Home:       http://sourceforge.net/projects/leo/
 Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:        http://leo.tigris.org/source/browse/leo/
+Leo's Wiki: http://leo.zwiki.org/FrontPage
+Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 </t>
 <t tx="ekr.20061026100827.1"></t>
