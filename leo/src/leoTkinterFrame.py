@@ -9,23 +9,24 @@
 
 #@<< imports >>
 #@+node:ekr.20041221070525:<< imports >>
-__pychecker__ = '--no-import'
-
 import leoGlobals as g
 
 import leoColor,leoFrame,leoNodes
 import leoTkinterMenu
 import leoTkinterTree
+
 import Tkinter as Tk
 import tkFont
-
 import os
 import string
 import sys
-import threading
-import time
 
 Pmw = g.importExtension("Pmw",pluginName="leoTkinterFrame.py",verbose=False)
+
+# The following imports _are_ used.
+__pychecker__ = '--no-import'
+import threading
+import time
 #@-node:ekr.20041221070525:<< imports >>
 #@nl
 

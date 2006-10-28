@@ -6,8 +6,6 @@
 
 #@<< imports >>
 #@+node:ekr.20050405141130:<< imports >>
-__pychecker__ = '--no-import'
-
 import leoGlobals as g
 
 if g.app and g.app.use_psyco:
@@ -23,9 +21,13 @@ import os
 import pickle
 import string
 import sys
-import time
+
 import xml.sax
 import xml.sax.saxutils
+
+# The following is sometimes used.
+__pychecker__ = '--no-import'
+import time
 #@nonl
 #@-node:ekr.20050405141130:<< imports >>
 #@nl

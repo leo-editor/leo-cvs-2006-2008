@@ -11,7 +11,7 @@ from __future__ import generators # To make Leo work with Python 2.2
 
 #@<< imports >>
 #@+node:ekr.20050710151017:<< imports >>
-__pychecker__ = '--no-import'
+# __pychecker__ = '--no-import'
 
 import leoGlobals as g
 
@@ -25,7 +25,6 @@ import os
 import re
 import string
 import sys
-import threading
 import Tkinter as Tk
 
 subprocess     = g.importExtension('subprocess',    pluginName=None,verbose=False)
@@ -33,6 +32,10 @@ Pmw            = g.importExtension('Pmw',           pluginName=None,verbose=Fals
 tkColorChooser = g.importExtension('tkColorChooser',pluginName=None,verbose=False)
 tkFileDialog   = g.importExtension('tkFileDialog',  pluginName=None,verbose=False)
 tkFont         = g.importExtension('tkFont',        pluginName=None,verbose=False)
+
+# The following imports is sometimes used.
+__pychecker__ = '--no-import'
+import threading
 #@-node:ekr.20050710151017:<< imports >>
 #@nl
 

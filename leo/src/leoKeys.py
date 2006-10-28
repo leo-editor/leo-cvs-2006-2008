@@ -8,21 +8,22 @@
 
 #@<< imports >>
 #@+node:ekr.20050920094258:<< imports >>
-__pychecker__ = '--no-import'
-
 import leoGlobals as g
 import leoEditCommands
 import Tkinter as Tk
 
-import compiler
 import glob
 import inspect
 import os
-import parser
 import re
 import string
 import sys
 import types
+
+# The following imports _are_ used.
+__pychecker__ = '--no-import'
+import compiler
+import parser
 #@-node:ekr.20050920094258:<< imports >>
 #@nl
 #@<< about 'internal' bindings >>
