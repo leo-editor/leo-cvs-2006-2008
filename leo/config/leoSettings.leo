@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="141" left="238" height="698" width="969"/>
+	<global_window_position top="141" left="238" height="679" width="969"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -162,8 +162,9 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
+<v t="ekr.20061029091403" a="V"><vh>@bool show_full_tracebacks_in_scripts = False</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
 <v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
@@ -315,7 +316,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060926161207.2" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -423,9 +424,9 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" a="E" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
-<v t="ekr.20060112093227.1" a="TV"><vh>@shortcuts No bindings: F-M</vh></v>
+<v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
 </v>
 <v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
@@ -6208,5 +6209,6 @@ scroll-outline-left         = Alt+Ctrl+LtArrow
 scroll-outline-right        = Alt+Ctrl+RtArrow
 scroll-outline-up-page      = Alt-PageUp
 </t>
+<t tx="ekr.20061029091403"></t>
 </tnodes>
 </leo_file>

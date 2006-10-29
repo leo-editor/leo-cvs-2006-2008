@@ -3677,8 +3677,10 @@ def findTopLevelNode(c,headline):
 def handleScriptException (c,p,script,script1):
 
     g.es("exception executing script",color='blue')
+    
+    full = c.config.getBool('show_full_tracebacks_in_scripts')
 
-    fileName, n = g.es_exception(full=False)
+    fileName, n = g.es_exception(full=full)
 
     if p and not script1 and fileName == "<string>":
         c.goToScriptLineNumber(p,script,n)
