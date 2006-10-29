@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="118" left="311" height="691" width="863"/>
+	<global_window_position top="93" left="53" height="691" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -16,7 +16,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="TV"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20060823090437"><vh>August 2006</vh></v>
@@ -211,8 +211,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050118113631" a="E"><vh>Main distribution script</vh>
-<v t="EKR.20040519082027.28" a="TV"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
+<v t="ekr.20050118113631"><vh>Main distribution script</vh>
+<v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="EKR.20040519090846.10"><vh>@asis ../manifest.in</vh></v>
 <v t="ekr.20050117032444"><vh>@button Create Leo-4.x.zip</vh>
 <v t="ekr.20050118080857"><vh>&lt;&lt; about this script &gt;&gt;</vh></v>
@@ -4993,6 +4993,9 @@ Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 </t>
 <t tx="ekr.20061026100827.1"></t>
 <t tx="ekr.20061029080932.1">Leo 4.4.2.1 final                                October 29, 2006
+
+Leo 4.4.2.1 final is now available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo 4.4.2.1 final fixes a recent bug that caused Leo not to create the
 .leoRecentFiles.txt file properly in some situations. There are no known
