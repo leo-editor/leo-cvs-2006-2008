@@ -736,6 +736,7 @@ dir1
 dir2
 directParents
 directiveKind
+directiveKind4
 directive_font
 dired
 dirtyVnodeList
@@ -1211,6 +1212,7 @@ leoAtFile
 leoCVS
 leoCallback
 leoColor
+leoColors
 leoCommands
 leoComment
 leoCompare
@@ -1233,6 +1235,7 @@ leoID
 leoImport
 leoImportCommands
 leoKeys
+leoKeywords
 leoLeaps
 leoMainWinow
 leoMenu

@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="127" left="151" height="684" width="880"/>
+	<global_window_position top="127" left="151" height="665" width="880"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -2959,7 +2959,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20061026095728" a="TV"><vh>4.4.2 final</vh>
+<v t="ekr.20061026095728" a="ETV"><vh>4.4.2 final and 4.4.2.1 final</vh>
 <v t="ekr.20061026095922.1"><vh>Bugs</vh>
 <v t="ekr.20061026095922.2"><vh>Changed leo_rst.css to pass the w3 validator</vh></v>
 <v t="ekr.20061026095922.3" a="E"><vh>Fixed 'Run on string' message when typing</vh></v>
@@ -29813,13 +29813,16 @@ The following commands affect the minibuffer:
   the focus in the body pane.
 
 For example, to print a list of all commands type Alt-X print-commands &lt;Return&gt;.</t>
-<t tx="ekr.20061026095728">Leo 4.4.2 final                                October 27, 2006
+<t tx="ekr.20061026095728">Leo 4.4.2.1 final                                October 29, 2006
 
-Leo 4.4.2 final is available at:
+Leo 4.4.2.1 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
-This release fixes a few bugs and adds support for pymacs.
-There are no known significant bugs in this version of Leo.
+Leo 4.4.2.1 final fixes a recent bug that caused Leo not to create the
+.leoRecentFiles.txt file properly in some situations. There are no known
+significant bugs in this version of Leo.
+
+Leo 4.4.2 final fixes a few bugs and adds support for pymacs. 
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -29861,7 +29864,7 @@ Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 <t tx="ekr.20061026095922.17"></t>
 <t tx="ekr.20061026095922.19"></t>
 <t tx="ekr.20061026095922.25">The new colorizer was innocent: the problem is that at.directiveKind4 uses leoColor.leoKeywords,
-so multipath must add entroes to leoColor.leoColors.</t>
+so multipath must add entries to leoColor.leoColors.</t>
 <t tx="ekr.20061026095922.32">It required a space after the '@'
 </t>
 <t tx="ekr.20061026095922.33">http://sourceforge.net/forum/message.php?msg_id=3975898

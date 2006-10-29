@@ -1,10 +1,10 @@
-Leo 4.4.2 final                                October 27, 2006
+Leo 4.4.2.1 final                                October 29, 2006
 
-Leo 4.4.2 final is now available at:
-http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
+Leo 4.4.2.1 final fixes a recent bug that caused Leo not to create the
+.leoRecentFiles.txt file properly in some situations. There are no known
+significant bugs in this version of Leo.
 
-This release fixes a few bugs and adds support for pymacs.
-There are no known significant bugs in this version of Leo.
+Leo 4.4.2 final fixes a few bugs and adds support for pymacs. 
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -27,7 +27,6 @@ The highlights of Leo 4.4.2:
 - Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
 - Many new minibuffer commands now appear in the Cmds menu.
 - A sax parser can now optionally read .leo files.
-- Fixed numerous bugs.
 
 Links:
 ------
@@ -39,3 +38,4 @@ CVS:        http://leo.tigris.org/source/browse/leo/
 Leo's Wiki: http://leo.zwiki.org/FrontPage
 Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
+

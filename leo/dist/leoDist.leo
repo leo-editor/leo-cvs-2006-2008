@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="23" left="171" height="710" width="863"/>
+	<global_window_position top="118" left="311" height="691" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -26,6 +26,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
+<v t="ekr.20061029080932.1"><vh>ANN: Leo 4.4.2.1 final</vh></v>
 <v t="ekr.20061026100827"><vh>ANN: Leo 4.4.2 final</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20061026100827.1"><vh>4.4.2</vh>
@@ -190,7 +191,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="V"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -210,8 +211,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050118113631"><vh>Main distribution script</vh>
-<v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
+<v t="ekr.20050118113631" a="E"><vh>Main distribution script</vh>
+<v t="EKR.20040519082027.28" a="TV"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="EKR.20040519090846.10"><vh>@asis ../manifest.in</vh></v>
 <v t="ekr.20050117032444"><vh>@button Create Leo-4.x.zip</vh>
 <v t="ekr.20050118080857"><vh>&lt;&lt; about this script &gt;&gt;</vh></v>
@@ -492,7 +493,7 @@ else: # Doesn't work
 # dict: suppress warnings where keys can be regular expressions
 suppressionRegexs = {}</t>
 <t tx="EKR.20040519082027.28">name="leo",
-version="4-4-2-final", # No spaces here!
+version="4-4-2-1-final", # No spaces here!
 author="Edward K. Ream",
 author_email="edreamleo@charter.net",
 url="http://webpages.charter.net/edreamleo/front.html",
@@ -665,7 +666,7 @@ c:\python22\python &lt;leopath&gt;leo.py %1
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.2-final
+Version: 4.4.2.1-final
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -684,13 +685,13 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.2 final                                October 27, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.2.1 final                                October 29, 2006
 
-Leo 4.4.2 final is now available at:
-http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+Leo 4.4.2.1 final fixes a recent bug that caused Leo not to create the
+.leoRecentFiles.txt file properly in some situations. There are no known
+significant bugs in this version of Leo.
 
-This release fixes a few bugs and adds support for pymacs.
-There are no known significant bugs in this version of Leo.
+Leo 4.4.2 final fixes a few bugs and adds support for pymacs. 
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -713,7 +714,6 @@ The highlights of Leo 4.4.2:
 - Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
 - Many new minibuffer commands now appear in the Cmds menu.
 - A sax parser can now optionally read .leo files.
-- Fixed numerous bugs.
 
 Links:
 ------
@@ -725,6 +725,7 @@ CVS:        http://leo.tigris.org/source/browse/leo/
 Leo's Wiki: http://leo.zwiki.org/FrontPage
 Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
+
 </t>
 <t tx="EKR.20040519090846.10"># The manifest template: specifies all files to be included in the distribution.
 
@@ -3093,7 +3094,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-2-final.exe"
+OutFile "LeoSetup-4-4-2-1-final.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -3314,7 +3315,7 @@ Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\tests\*.*"</t>
 Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 </t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.2-final"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.2.1-final"</t>
 <t tx="ekr.20050118125236"></t>
 <t tx="ekr.20050119191034"></t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
@@ -4991,5 +4992,46 @@ Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 </t>
 <t tx="ekr.20061026100827.1"></t>
+<t tx="ekr.20061029080932.1">Leo 4.4.2.1 final                                October 29, 2006
+
+Leo 4.4.2.1 final fixes a recent bug that caused Leo not to create the
+.leoRecentFiles.txt file properly in some situations. There are no known
+significant bugs in this version of Leo.
+
+Leo 4.4.2 final fixes a few bugs and adds support for pymacs. 
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.2:
+----------------------------
+- You can now store settings in myLeoSettings.leo without fear of those settings
+  being changed by cvs updates or in future versions of Leo.
+- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
+  Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
+- Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
+  i.e., they can optionally derive from ZODB.Persistence.Persistent.
+  See Chapter 17: Using ZODB with Leo for details.
+- The leoOPML plugin defines commands to read and write OPML files.
+- The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
+- The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
+- Much faster navigation through the outline.
+- When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
+- The find command now optionally closes nodes not needed to show the node containing the present match.
+- Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
+- Many new minibuffer commands now appear in the Cmds menu.
+- A sax parser can now optionally read .leo files.
+
+Links:
+------
+Leo:        http://webpages.charter.net/edreamleo/front.html
+What's new: http://webpages.charter.net/edreamleo/new-4-4-2.html
+Home:       http://sourceforge.net/projects/leo/
+Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:        http://leo.tigris.org/source/browse/leo/
+Leo's Wiki: http://leo.zwiki.org/FrontPage
+Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
+Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
+</t>
 </tnodes>
 </leo_file>

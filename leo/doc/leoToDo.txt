@@ -3,11 +3,788 @@
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061028065955:To do first
+#@+node:ekr.20061028211323:Create @bool show_full_tracebacks_in_scripts
+http://sourceforge.net/forum/message.php?msg_id=3985382
+
+#@+node:ekr.20060624085200:g.handleScriptException
+def handleScriptException (c,p,script,script1):
+
+    g.es("exception executing script",color='blue')
+
+    fileName, n = g.es_exception(full=False)
+
+    if p and not script1 and fileName == "<string>":
+        c.goToScriptLineNumber(p,script,n)
+
+    << dump the lines near the error >>
+#@+node:EKR.20040612215018:<< dump the lines near the error >>
+if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+# Print surrounding lines.
+i = max(0,n-2)
+j = min(n+2,len(lines))
+while i < j:
+    ch = g.choose(i==n-1,'*',' ')
+    s = "%s line %d: %s" % (ch,i+1,lines[i])
+    g.es(s,newline=False)
+    i += 1
+#@-node:EKR.20040612215018:<< dump the lines near the error >>
+#@-node:ekr.20060624085200:g.handleScriptException
+#@+node:ekr.20031218072017.3112:es_exception & test
+def es_exception (full=True,c=None,color="red"):
+    
+    __pychecker__ = '--no-argsused' # c not used. retained for compatibility.
+
+    typ,val,tb = sys.exc_info()
+
+    # g.trace(full,typ,tb)
+    
+    fileName,n = g.getLastTracebackFileAndLineNumber()
+
+    if full or g.app.debugSwitch > 0:
+        lines = traceback.format_exception(typ,val,tb)
+    else:
+        lines = traceback.format_exception_only(typ,val)
+        if 0: # We might as well print the entire SyntaxError message.
+            lines = lines[-1:] # Usually only one line, but more for Syntax errors!
+
+    for line in lines:
+        g.es_error(line,color=color)
+        if not g.stdErrIsRedirected():
+            print line
+
+    if g.app.debugSwitch > 1:
+        import pdb # Be careful: g.pdb may or may not have been defined.
+        pdb.set_trace()
+
+    return fileName,n
+#@+node:ekr.20050220030850:test_g_es_exception
+def test_g_es_exception():
+    
+    if c.config.redirect_execute_script_output_to_log_pane:
+        return # Test doesn't work when redirection is on.
+
+    try:
+        import sys
+        # Catch the output of g.es_exception.
+        # We catch the AssertionError, so nothing gets written to stderr.
+        sys.stdout = fo = g.fileLikeObject()
+        try: # Create an exception to catch.
+            assert False, 'Assert False in test_g_es_exception'
+        except AssertionError:
+            g.es_exception(color='suppress')
+            result = fo.get()
+            s1 = 'Traceback (most recent call last):'
+            s2 = 'AssertionError: Assert False in test_g_es_exception'
+            assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
+            assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
+    finally:
+        # Not needed unless we execute this script as selected text.
+        sys.stdout = sys.__stdout__
+#@-node:ekr.20050220030850:test_g_es_exception
+#@-node:ekr.20031218072017.3112:es_exception & test
+#@-node:ekr.20061028211323:Create @bool show_full_tracebacks_in_scripts
 #@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.
+
+# Important: the new vnode class implies that the read code must be rewritten to be similar to the opml read code.
 #@nonl
+#@+node:ekr.20061028211424:vnode class
+#@+node:ekr.20061028211424.4:Birth & death
+#@+node:ekr.20061028211424.5:v.__cmp__ (not used)
+if 0: # not used
+    def __cmp__(self,other):
+        
+        g.trace(self,other)
+        return not (self is other) # Must return 0, 1 or -1
+#@-node:ekr.20061028211424.5:v.__cmp__ (not used)
+#@+node:ekr.20061028211424.6:v.__init__
+def __init__ (self,t):
+
+    assert(t)
+    
+    # To support ZODB the code must set v._p_changed = 1 whenever
+    # v.unknownAttributes or any mutable vnode object changes.
+
+    self.t = t # The tnode.
+    self.statusBits = 0 # status bits
+    
+    # Structure links.
+    #### self._parent = self._next = self._back = None
+#@nonl
+#@-node:ekr.20061028211424.6:v.__init__
+#@+node:ekr.20061028211424.7:v.__repr__ & v.__str__
+def __repr__ (self):
+    
+    if self.t:
+        return "<vnode %d:'%s'>" % (id(self),self.cleanHeadString())
+    else:
+        return "<vnode %d:NULL tnode>" % (id(self))
+        
+__str__ = __repr__
+#@-node:ekr.20061028211424.7:v.__repr__ & v.__str__
+#@+node:ekr.20061028211424.8:v.dump (to be deleted)
+def dumpLink (self,link):
+    return g.choose(link,link,"<none>")
+
+def dump (self,label=""):
+    
+    v = self
+
+    if label:
+        print '-'*10,label,v
+    else:
+        print "self    ",v.dumpLink(v)
+        print "len(vnodeList)",len(v.t.vnodeList)
+
+    print "_back   ",v.dumpLink(v._back)
+    print "_next   ",v.dumpLink(v._next)
+    print "_parent ",v.dumpLink(v._parent)
+    print "t._child",v.dumpLink(v.t._firstChild)
+    
+    if 1:
+        print "t",v.dumpLink(v.t)
+        print "vnodeList"
+        for v in v.t.vnodeList:
+            print v
+#@-node:ekr.20061028211424.8:v.dump (to be deleted)
+#@+node:ekr.20061028211424.9:v.__hash__ (only for zodb)
+if use_zodb and ZODB:
+    def __hash__(self):
+        return self.t.__hash__()
+#@nonl
+#@-node:ekr.20061028211424.9:v.__hash__ (only for zodb)
+#@-node:ekr.20061028211424.4:Birth & death
+#@+node:ekr.20061028211424.10:v.Comparisons (no change)
+#@+node:ekr.20061028211424.11:v.findAtFileName (new in 4.2 b3)
+def findAtFileName (self,names):
+    
+    """Return the name following one of the names in nameList.
+    Return an empty string."""
+
+    h = self.headString()
+    
+    if not g.match(h,0,'@'):
+        return ""
+    
+    i = g.skip_id(h,1,'-')
+    word = h[:i]
+    if word in names and g.match_word(h,0,word):
+        name = h[i:].strip()
+        # g.trace(word,name)
+        return name
+    else:
+        return ""
+#@-node:ekr.20061028211424.11:v.findAtFileName (new in 4.2 b3)
+#@+node:ekr.20061028211424.12:anyAtFileNodeName
+def anyAtFileNodeName (self):
+    
+    """Return the file name following an @file node or an empty string."""
+
+    names = (
+        "@file",
+        "@thin",   "@file-thin",   "@thinfile",
+        "@asis",   "@file-asis",   "@silentfile",
+        "@noref",  "@file-noref",  "@rawfile",
+        "@nosent", "@file-nosent", "@nosentinelsfile")
+
+    return self.findAtFileName(names)
+#@-node:ekr.20061028211424.12:anyAtFileNodeName
+#@+node:ekr.20061028211424.13:at...FileNodeName
+# These return the filename following @xxx, in v.headString.
+# Return the the empty string if v is not an @xxx node.
+
+def atFileNodeName (self):
+    names = ("@file"),
+    return self.findAtFileName(names)
+
+def atNoSentinelsFileNodeName (self):
+    names = ("@nosent", "@file-nosent", "@nosentinelsfile")
+    return self.findAtFileName(names)
+
+def atRawFileNodeName (self):
+    names = ("@noref", "@file-noref", "@rawfile")
+    return self.findAtFileName(names)
+    
+def atSilentFileNodeName (self):
+    names = ("@asis", "@file-asis", "@silentfile")
+    return self.findAtFileName(names)
+    
+def atThinFileNodeName (self):
+    names = ("@thin", "@file-thin", "@thinfile")
+    return self.findAtFileName(names)
+    
+# New names, less confusing
+atNoSentFileNodeName  = atNoSentinelsFileNodeName
+atNorefFileNodeName   = atRawFileNodeName
+atAsisFileNodeName     = atSilentFileNodeName
+#@-node:ekr.20061028211424.13:at...FileNodeName
+#@+node:ekr.20061028211424.14:isAtAllNode
+def isAtAllNode (self):
+
+    """Returns True if the receiver contains @others in its body at the start of a line."""
+
+    flag, i = g.is_special(self.t.bodyString,0,"@all")
+    return flag
+#@-node:ekr.20061028211424.14:isAtAllNode
+#@+node:ekr.20061028211424.15:isAnyAtFileNode good
+def isAnyAtFileNode (self):
+    
+    """Return True if v is any kind of @file or related node."""
+    
+    # This routine should be as fast as possible.
+    # It is called once for every vnode when writing a file.
+
+    h = self.headString()
+    return h and h[0] == '@' and self.anyAtFileNodeName()
+#@-node:ekr.20061028211424.15:isAnyAtFileNode good
+#@+node:ekr.20061028211424.16:isAt...FileNode (vnode)
+def isAtFileNode (self):
+    return g.choose(self.atFileNodeName(),True,False)
+    
+def isAtNoSentinelsFileNode (self):
+    return g.choose(self.atNoSentinelsFileNodeName(),True,False)
+
+def isAtRawFileNode (self): # @file-noref
+    return g.choose(self.atRawFileNodeName(),True,False)
+
+def isAtSilentFileNode (self): # @file-asis
+    return g.choose(self.atSilentFileNodeName(),True,False)
+
+def isAtThinFileNode (self):
+    return g.choose(self.atThinFileNodeName(),True,False)
+    
+# New names, less confusing:
+isAtNoSentFileNode = isAtNoSentinelsFileNode
+isAtNorefFileNode  = isAtRawFileNode
+isAtAsisFileNode   = isAtSilentFileNode
+#@-node:ekr.20061028211424.16:isAt...FileNode (vnode)
+#@+node:ekr.20061028211424.17:isAtIgnoreNode
+def isAtIgnoreNode (self):
+
+    """Returns True if the receiver contains @ignore in its body at the start of a line."""
+
+    flag, i = g.is_special(self.t.bodyString, 0, "@ignore")
+    return flag
+#@-node:ekr.20061028211424.17:isAtIgnoreNode
+#@+node:ekr.20061028211424.18:isAtOthersNode
+def isAtOthersNode (self):
+
+    """Returns True if the receiver contains @others in its body at the start of a line."""
+
+    flag, i = g.is_special(self.t.bodyString,0,"@others")
+    return flag
+#@-node:ekr.20061028211424.18:isAtOthersNode
+#@+node:ekr.20061028211424.19:matchHeadline
+def matchHeadline (self,pattern):
+
+    """Returns True if the headline matches the pattern ignoring whitespace and case.
+    
+    The headline may contain characters following the successfully matched pattern."""
+    
+    v = self
+    
+    h = g.toUnicode(v.headString(),'utf-8')
+    h = h.lower().replace(' ','').replace('\t','')
+
+    pattern = g.toUnicode(pattern,'utf-8')
+    pattern = pattern.lower().replace(' ','').replace('\t','')
+    
+    return h.startswith(pattern)
+#@-node:ekr.20061028211424.19:matchHeadline
+#@-node:ekr.20061028211424.10:v.Comparisons (no change)
+#@+node:ekr.20061028211424.20:Getters (vnode)
+#@+node:ekr.20061028211424.21:Tree Traversal getters (to be deleted)
+#@+node:ekr.20061028211424.22:v.back
+# Compatibility routine for scripts
+
+def back (self):
+
+    return self._back
+#@-node:ekr.20061028211424.22:v.back
+#@+node:ekr.20061028211424.23:v.next
+# Compatibility routine for scripts
+# Used by p.findAllPotentiallyDirtyNodes.
+
+def next (self):
+
+    return self._next
+#@-node:ekr.20061028211424.23:v.next
+#@-node:ekr.20061028211424.21:Tree Traversal getters (to be deleted)
+#@+node:ekr.20061028211424.24:Children (to be deleted)
+#@+node:ekr.20061028211424.25:v.childIndex
+def childIndex(self):
+    
+    v = self
+
+    if not v._back:
+        return 0
+
+    n = 0 ; v = v._back
+    while v:
+        n += 1
+        v = v._back
+    return n
+#@-node:ekr.20061028211424.25:v.childIndex
+#@+node:ekr.20061028211424.26:v.firstChild (changed for 4.2)
+def firstChild (self):
+    
+    return self.t._firstChild
+#@-node:ekr.20061028211424.26:v.firstChild (changed for 4.2)
+#@+node:ekr.20061028211424.27:v.hasChildren & hasFirstChild
+def hasChildren (self):
+    
+    v = self
+    return v.firstChild()
+
+hasFirstChild = hasChildren
+#@-node:ekr.20061028211424.27:v.hasChildren & hasFirstChild
+#@+node:ekr.20061028211424.28:v.lastChild
+def lastChild (self):
+
+    child = self.firstChild()
+    while child and child.next():
+        child = child.next()
+    return child
+#@-node:ekr.20061028211424.28:v.lastChild
+#@+node:ekr.20061028211424.29:v.nthChild
+# childIndex and nthChild are zero-based.
+
+def nthChild (self, n):
+
+    child = self.firstChild()
+    if not child: return None
+    while n > 0 and child:
+        n -= 1
+        child = child.next()
+    return child
+#@-node:ekr.20061028211424.29:v.nthChild
+#@+node:ekr.20061028211424.30:v.numberOfChildren (n)
+def numberOfChildren (self):
+
+    n = 0
+    child = self.firstChild()
+    while child:
+        n += 1
+        child = child.next()
+    return n
+#@-node:ekr.20061028211424.30:v.numberOfChildren (n)
+#@-node:ekr.20061028211424.24:Children (to be deleted)
+#@+node:ekr.20061028211424.31:Status Bits (no chnage)
+#@+node:ekr.20061028211424.32:v.isCloned (4.2)
+def isCloned (self):
+    
+    return len(self.t.vnodeList) > 1
+#@-node:ekr.20061028211424.32:v.isCloned (4.2)
+#@+node:ekr.20061028211424.33:isDirty
+def isDirty (self):
+
+    return self.t.isDirty()
+#@-node:ekr.20061028211424.33:isDirty
+#@+node:ekr.20061028211424.34:isExpanded
+def isExpanded (self):
+
+    return ( self.statusBits & self.expandedBit ) != 0
+#@-node:ekr.20061028211424.34:isExpanded
+#@+node:ekr.20061028211424.35:isMarked
+def isMarked (self):
+
+    return ( self.statusBits & vnode.markedBit ) != 0
+#@-node:ekr.20061028211424.35:isMarked
+#@+node:ekr.20061028211424.36:isOrphan
+def isOrphan (self):
+
+    return ( self.statusBits & vnode.orphanBit ) != 0
+#@-node:ekr.20061028211424.36:isOrphan
+#@+node:ekr.20061028211424.37:isSelected
+def isSelected (self):
+
+    return ( self.statusBits & vnode.selectedBit ) != 0
+#@-node:ekr.20061028211424.37:isSelected
+#@+node:ekr.20061028211424.38:isTopBitSet
+def isTopBitSet (self):
+
+    return ( self.statusBits & self.topBit ) != 0
+#@-node:ekr.20061028211424.38:isTopBitSet
+#@+node:ekr.20061028211424.39:isVisited
+def isVisited (self):
+
+    return ( self.statusBits & vnode.visitedBit ) != 0
+#@-node:ekr.20061028211424.39:isVisited
+#@+node:ekr.20061028211424.40:status
+def status (self):
+
+    return self.statusBits
+#@-node:ekr.20061028211424.40:status
+#@-node:ekr.20061028211424.31:Status Bits (no chnage)
+#@+node:ekr.20061028211424.41:v.bodyString
+# Compatibility routine for scripts
+
+def bodyString (self):
+
+    # This message should never be printed and we want to avoid crashing here!
+    if not g.isUnicode(self.t.bodyString):
+        s = "v.bodyString: Leo internal error: not unicode:" + repr(self.t.bodyString)
+        g.es_print(s,color="red")
+
+    # Make _sure_ we return a unicode string.
+    return g.toUnicode(self.t.bodyString,g.app.tkEncoding)
+#@-node:ekr.20061028211424.41:v.bodyString
+#@+node:ekr.20061028211424.42:v.headString & v.cleanHeadString
+def headString (self):
+    
+    """Return the headline string."""
+    
+    # This message should never be printed and we want to avoid crashing here!
+    if not g.isUnicode(self.t.headString):
+        s = "Leo internal error: not unicode:" + repr(self.t.headString)
+        g.es_print(s,color="red")
+        
+    # Make _sure_ we return a unicode string.
+    return g.toUnicode(self.t.headString,g.app.tkEncoding)
+
+def cleanHeadString (self):
+    
+    s = self.headString()
+    return g.toEncodedString(s,"ascii") # Replaces non-ascii characters by '?'
+#@-node:ekr.20061028211424.42:v.headString & v.cleanHeadString
+#@+node:ekr.20061028211424.43:v.directParents (new method in 4.2)
+def directParents (self):
+    
+    """(New in 4.2) Return a list of all direct parent vnodes of a vnode.
+    
+    This is NOT the same as the list of ancestors of the vnode."""
+    
+    v = self
+    
+    if v._parent:
+        return v._parent.t.vnodeList
+    else:
+        return []
+#@-node:ekr.20061028211424.43:v.directParents (new method in 4.2)
+#@-node:ekr.20061028211424.20:Getters (vnode)
+#@+node:ekr.20061028211424.44:v.Link/Unlink/Insert methods (used by file read logic) (the read logic must be rewritten)
+# These remain in 4.2: the file read logic calls these before creating positions.
+#@+node:ekr.20061028211424.45:v.detach
+def detach (self):
+    
+    '''Return a standalone copy of a vnode,
+    detached from all other nodes and with a new tnode.'''
+    
+    v = self
+    
+    # Create a completely separate tnode.
+    t2 = tnode(
+        bodyString=v.bodyString(),
+        headString=v.headString())
+    
+    return vnode(t2)
+#@nonl
+#@-node:ekr.20061028211424.45:v.detach
+#@+node:ekr.20061028211424.46:v.insertAfter
+def insertAfter (self,t=None):
+
+    """Inserts a new vnode after self"""
+
+    if not t:
+        t = tnode(headString="NewHeadline")
+
+    v = vnode(t)
+    v.linkAfter(self)
+
+    return v
+#@-node:ekr.20061028211424.46:v.insertAfter
+#@+node:ekr.20061028211424.47:v.insertAsNthChild
+def insertAsNthChild (self,n,t=None):
+
+    """Inserts a new node as the the nth child of the receiver.
+    The receiver must have at least n-1 children"""
+
+    if not t:
+        t = tnode(headString="NewHeadline")
+
+    v = vnode(t)
+    v.linkAsNthChild(self,n)
+
+    return v
+#@-node:ekr.20061028211424.47:v.insertAsNthChild
+#@+node:ekr.20061028211424.48:v.linkAfter
+def linkAfter (self,v):
+
+    """Link self after v."""
+    
+    self._parent = v._parent
+    self._back = v
+    self._next = v._next
+    v._next = self
+    if self._next:
+        self._next._back = self
+#@-node:ekr.20061028211424.48:v.linkAfter
+#@+node:ekr.20061028211424.49:v.linkAsNthChild
+def linkAsNthChild (self,pv,n):
+
+    """Links self as the n'th child of vnode pv"""
+
+    v = self
+    # g.trace(v,pv,n)
+    v._parent = pv
+    if n == 0:
+        v._back = None
+        v._next = pv.t._firstChild
+        if pv.t._firstChild:
+            pv.t._firstChild._back = v
+        pv.t._firstChild = v
+    else:
+        prev = pv.nthChild(n-1) # zero based
+        assert(prev)
+        v._back = prev
+        v._next = prev._next
+        prev._next = v
+        if v._next:
+            v._next._back = v
+#@-node:ekr.20061028211424.49:v.linkAsNthChild
+#@+node:ekr.20061028211424.50:v.linkAsRoot
+def linkAsRoot (self,oldRoot):
+    
+    """Link a vnode as the root node and set the root _position_."""
+
+    v = self
+
+    # Clear all links except the child link.
+    v._parent = None
+    v._back = None
+    v._next = oldRoot
+    
+    # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v)
+        v.t._p_changed = 1
+
+    # Link in the rest of the tree only when oldRoot != None.
+    # Otherwise, we are calling this routine from init code and
+    # we want to start with a pristine tree.
+    if oldRoot: oldRoot._back = v
+#@nonl
+#@-node:ekr.20061028211424.50:v.linkAsRoot
+#@+node:ekr.20061028211424.51:v.moveToRoot
+def moveToRoot (self,oldRoot=None):
+
+    '''Moves a vnode to the root position.
+    
+    Important: oldRoot must the previous root vnode if it exists.'''
+
+    v = self
+
+    v.unlink()
+    v.linkAsRoot(oldRoot)
+    
+    return v
+#@nonl
+#@-node:ekr.20061028211424.51:v.moveToRoot
+#@+node:ekr.20061028211424.52:v.unlink
+def unlink (self):
+
+    """Unlinks a vnode from the tree."""
+
+    v = self
+
+    # g.trace(v._parent," child: ",v.t._firstChild," back: ", v._back, " next: ", v._next)
+
+    # Clear the links in other nodes.
+    if v._back:
+        v._back._next = v._next
+    if v._next:
+        v._next._back = v._back
+
+    if v._parent and v == v._parent.t._firstChild:
+        v._parent.t._firstChild = v._next
+
+    # Clear the links in this node.
+    v._parent = v._next = v._back = None
+    # v.parentsList = []
+#@nonl
+#@-node:ekr.20061028211424.52:v.unlink
+#@-node:ekr.20061028211424.44:v.Link/Unlink/Insert methods (used by file read logic) (the read logic must be rewritten)
+#@+node:ekr.20061028211424.53:Setters (no change)
+#@+node:ekr.20061028211424.54: v.Status bits
+#@+node:ekr.20061028211424.55:clearClonedBit
+def clearClonedBit (self):
+
+    self.statusBits &= ~ self.clonedBit
+#@-node:ekr.20061028211424.55:clearClonedBit
+#@+node:ekr.20061028211424.56:v.clearDirty (no change needed)
+def clearDirty (self):
+
+    v = self
+    v.t.clearDirty()
+#@nonl
+#@-node:ekr.20061028211424.56:v.clearDirty (no change needed)
+#@+node:ekr.20061028211424.57:v.clearMarked
+def clearMarked (self):
+
+    self.statusBits &= ~ self.markedBit
+#@-node:ekr.20061028211424.57:v.clearMarked
+#@+node:ekr.20061028211424.58:clearOrphan
+def clearOrphan (self):
+
+    self.statusBits &= ~ self.orphanBit
+#@-node:ekr.20061028211424.58:clearOrphan
+#@+node:ekr.20061028211424.59:clearVisited
+def clearVisited (self):
+
+    self.statusBits &= ~ self.visitedBit
+#@-node:ekr.20061028211424.59:clearVisited
+#@+node:ekr.20061028211424.60:contract & expand & initExpandedBit
+def contract(self):
+
+    self.statusBits &= ~ self.expandedBit
+    
+    # g.trace(self.statusBits)
+
+def expand(self):
+
+    self.statusBits |= self.expandedBit
+    
+    # g.trace(self.statusBits)
+
+def initExpandedBit (self):
+
+    self.statusBits |= self.expandedBit
+#@-node:ekr.20061028211424.60:contract & expand & initExpandedBit
+#@+node:ekr.20061028211424.61:initStatus
+def initStatus (self, status):
+
+    self.statusBits = status
+#@-node:ekr.20061028211424.61:initStatus
+#@+node:ekr.20061028211424.62:setClonedBit & initClonedBit
+def setClonedBit (self):
+
+    self.statusBits |= self.clonedBit
+
+def initClonedBit (self, val):
+
+    if val:
+        self.statusBits |= self.clonedBit
+    else:
+        self.statusBits &= ~ self.clonedBit
+#@-node:ekr.20061028211424.62:setClonedBit & initClonedBit
+#@+node:ekr.20061028211424.63:v.setMarked & initMarkedBit
+def setMarked (self):
+
+    self.statusBits |= self.markedBit
+
+def initMarkedBit (self):
+
+    self.statusBits |= self.markedBit
+#@-node:ekr.20061028211424.63:v.setMarked & initMarkedBit
+#@+node:ekr.20061028211424.64:setOrphan
+def setOrphan (self):
+
+    self.statusBits |= self.orphanBit
+#@-node:ekr.20061028211424.64:setOrphan
+#@+node:ekr.20061028211424.65:setSelected (vnode)
+# This only sets the selected bit.
+
+def setSelected (self):
+
+    self.statusBits |= self.selectedBit
+#@-node:ekr.20061028211424.65:setSelected (vnode)
+#@+node:ekr.20061028211424.66:t.setVisited
+# Compatibility routine for scripts
+
+def setVisited (self):
+
+    self.statusBits |= self.visitedBit
+#@-node:ekr.20061028211424.66:t.setVisited
+#@-node:ekr.20061028211424.54: v.Status bits
+#@+node:ekr.20061028211424.67:v.computeIcon & setIcon
+def computeIcon (self):
+
+    val = 0 ; v = self
+    if v.t.hasBody(): val += 1
+    if v.isMarked(): val += 2
+    if v.isCloned(): val += 4
+    if v.isDirty(): val += 8
+    return val
+    
+def setIcon (self):
+
+    pass # Compatibility routine for old scripts
+#@-node:ekr.20061028211424.67:v.computeIcon & setIcon
+#@+node:ekr.20061028211424.68:v.initHeadString
+def initHeadString (self,s,encoding="utf-8"):
+    
+    v = self
+    s = g.toUnicode(s,encoding,reportErrors=True)
+    v.t.headString = s
+    
+    # g.trace(g.callers(5))
+#@-node:ekr.20061028211424.68:v.initHeadString
+#@+node:ekr.20061028211424.69:v.setSelection
+def setSelection (self, start, length):
+
+    self.t.setSelection ( start, length )
+#@-node:ekr.20061028211424.69:v.setSelection
+#@+node:ekr.20061028211424.70:v.setTnodeText
+def setTnodeText (self,s,encoding="utf-8"):
+    
+    return self.t.setTnodeText(s,encoding)
+#@-node:ekr.20061028211424.70:v.setTnodeText
+#@-node:ekr.20061028211424.53:Setters (no change)
+#@+node:ekr.20061028211424.71:v.Iterators (????)
+#@+node:ekr.20061028211424.72:self_subtree_iter
+def subtree_iter(self):
+
+    """Return all nodes of self's tree in outline order."""
+    
+    v = self
+
+    if v:
+        yield v
+        child = v.t._firstChild
+        while child:
+            for v1 in child.subtree_iter():
+                yield v1
+            child = child.next()
+            
+self_and_subtree_iter = subtree_iter
+#@-node:ekr.20061028211424.72:self_subtree_iter
+#@+node:ekr.20061028211424.73:unique_subtree_iter
+def unique_subtree_iter(self,marks=None):
+
+    """Return all vnodes in self's tree, discarding duplicates """
+    
+    v = self
+
+    if marks == None: marks = {}
+
+    if v and v not in marks:
+        marks[v] = v
+        yield v
+        if v.t._firstChild:
+            for v1 in v.t._firstChild.unique_subtree_iter(marks):
+                yield v1
+        v = v._next
+        while v:
+            for v in v.unique_subtree_iter(marks):
+                yield v
+            v = v._next
+            
+self_and_unique_subtree_iter = unique_subtree_iter
+#@-node:ekr.20061028211424.73:unique_subtree_iter
+#@-node:ekr.20061028211424.71:v.Iterators (????)
+#@-node:ekr.20061028211424:vnode class
+#@+node:ekr.20061028211424.1:position class
 #@+node:ekr.20061028070057.1: ctor & other special methods...
-#@+node:ekr.20061028070057.2:p.__cmp__
+#@+node:ekr.20061028070057.2:p.__cmp__ (changed)
 def __cmp__(self,p2):
 
     """Return 0 if two postions are equivalent."""
@@ -35,7 +812,7 @@ def __cmp__(self,p2):
         # return 1 # notEqual
     # return 0 # equal
 #@nonl
-#@-node:ekr.20061028070057.2:p.__cmp__
+#@-node:ekr.20061028070057.2:p.__cmp__ (changed)
 #@+node:ekr.20061028070057.3:p.__getattr__  ON:  must be ON if use_plugins
 if 1: # Good for compatibility, bad for finding conversion problems.
 
@@ -140,7 +917,7 @@ def vnodeListIds (self):
     p = self
     return [id(v) for v in p.v.t.vnodeList]
 #@-node:ekr.20061028070057.9:p.dump & p.vnodeListIds
-#@+node:ekr.20061028070057.10:p.equal & isEqual
+#@+node:ekr.20061028070057.10:p.equal & isEqual (changed)
 def equal(self,p2):
 
     """Return True if two postions are equivalent.
@@ -161,7 +938,7 @@ def equal(self,p2):
     )
         
 isEqual = equal
-#@-node:ekr.20061028070057.10:p.equal & isEqual
+#@-node:ekr.20061028070057.10:p.equal & isEqual (changed)
 #@+node:ekr.20061028070057.11:p.key
 def key (self):
     
@@ -198,7 +975,7 @@ def moveToBack (self):
             p._childIndex -= 1
             p.v = links[p._childIndex]
         else:
-            g.trace('Can not happen')
+            g.trace('Can not happen: no links')
             p.v = None
     else:
         p.v = None
@@ -283,7 +1060,7 @@ def moveToNext (self):
     '''Move position p to its next sibling.'''
     
     p = self
-    if p and p.stack:
+    if p.stack:
         parent_v,junk = p.stack[-1]
         links = parent_v.t.links
         if p._childIndex + 1 < len(links):
@@ -318,7 +1095,7 @@ def moveToNodeAfterTree (self):
 def moveToNthChild (self,n):
     
     p = self
-    if p and p.stack:
+    if p.stack:
         parent_v,junk = p.stack[-1]
         links = parent_v.t.links
         if links and n < len(links)
@@ -593,8 +1370,13 @@ def hasBack(self):
 hasFirstChild = hasChildren
     
 def hasNext(self):
-    parent = self.stack and self.stack[-1]
-    return parent and self._childIndex < len(parent.v.t.links)
+    p = self
+    if p.stack:
+        parent_v,junk = self.stack[-1]
+        links = parent_v.t.links
+        return p._childIndex + 1 < len(parent.v.t.links)
+    else:
+        return False
     # return self.v and self.v._next
     
 def hasParent(self):
@@ -665,7 +1447,7 @@ def findRootPosition (self):
     return p
 #@nonl
 #@-node:ekr.20061028070057.38:p.findRootPosition (unchanged)
-#@+node:ekr.20061028070057.39:p.isAncestorOf (new)
+#@+node:ekr.20061028070057.39:p.isAncestorOf (new)(test thoroughly)
 def isAncestorOf (self, p2):
     
     p = self
@@ -691,7 +1473,7 @@ def isAncestorOf (self, p2):
         # v2,n = p2.vParentWithStack(v2,p2.stack,n)
     # return False
 #@nonl
-#@-node:ekr.20061028070057.39:p.isAncestorOf (new)
+#@-node:ekr.20061028070057.39:p.isAncestorOf (new)(test thoroughly)
 #@+node:ekr.20061028070057.40:p.isCloned (unchanged)
 def isCloned (self):
     
@@ -710,13 +1492,10 @@ def isVisible (self):
     """Return True if all of a position's parents are expanded."""
     
     p = self
-    if p and p.stack:
-        for v in p.stack:
-            if not v.isExpanded():
-                return False
-        return True
-    else:
-        return False
+    for v in p.stack:
+        if not v.isExpanded():
+            return False
+    return True
 
     # p = self
     # v = p.v ; n = len(p.stack)-1
@@ -1044,6 +1823,7 @@ def unlink (self):
 #@nonl
 #@-node:ekr.20061028070057.55:p.unlink
 #@-node:ekr.20061028070057.51:p.Link/Unlink methods (all new)
+#@-node:ekr.20061028211424.1:position class
 #@-node:ekr.20061028070132:New positions
 #@+node:ekr.20060915175024:Maintain vertical node position if possible
 @nocolor
