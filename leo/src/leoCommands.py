@@ -6556,7 +6556,9 @@ class baseCommands:
         if not event or not event.char or not event.keysym.isalnum():
             return
         c  = self ; p = c.currentPosition() ; p1 = p.copy()
-        ch = event.char ; all = ch.isupper()
+        invisible = c.config.getBool('invisible_outline_navigation')
+        ch = event.char ; all = ch.isupper() and invisible
+        if not invisible: ch = ch.lower()
         found = False
         extend = self.navQuickKey()
         attempts = g.choose(extend,(True,False),(False,))

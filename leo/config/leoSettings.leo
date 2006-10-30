@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="141" left="238" height="660" width="969"/>
+	<global_window_position top="141" left="238" height="641" width="969"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -570,12 +570,13 @@
 <v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
 </v>
 <v t="ekr.20041119034357.54" a="E"><vh>Outline pane options</vh>
-<v t="ekr.20061030092620" a="TV"><vh>@bool center_selected_tree_node = True</vh></v>
 <v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = False</vh></v>
+<v t="ekr.20061030092620"><vh>@bool center_selected_tree_node = True</vh></v>
 <v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = False</vh></v>
 <v t="ekr.20041119050749.5"><vh>@bool expanded_click_area = True</vh></v>
 <v t="ekr.20060528175513"><vh>@bool idle_redraw = False</vh></v>
 <v t="ekr.20060120123529"><vh>@bool initialClickExpandsOrContractsNode = True</vh></v>
+<v t="ekr.20061030104734" a="TV"><vh>@bool invisible_outline_navigation = False</vh></v>
 <v t="ekr.20041119050749.17"><vh>@bool look_for_control_drag_on_mouse_down = True</vh></v>
 <v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = True</vh></v>
 <v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
@@ -6213,5 +6214,15 @@ scroll-outline-up-page      = Alt-PageUp
 <t tx="ekr.20061029091403"></t>
 <t tx="ekr.20061030092620">True (Recommended): Leo scrolls the outline to put the selected node near the center of the outline pane.
 False (Legacy): Leo scrolls the outline to put the selected node at the top or bottom of the outline pane.</t>
+<t tx="ekr.20061030104734">This option tells how to treat an uppercase letter typed when the outline pane
+is active but no headline is being edited. In such situations Leo searchs for an
+node whose headline starts with the present prefix, ignoring case The prefix
+starts with the first letter typed and other letters are added if they are typed
+within a 'short' period of time, as specified by the outline_nav_extend_delay
+
+True: Look in invisible nodes.
+False: Look only in visible nodes.
+
+I set this option to False because it is too easy form me to type Shift-whatever when I meant Ctrl-whatever.</t>
 </tnodes>
 </leo_file>
