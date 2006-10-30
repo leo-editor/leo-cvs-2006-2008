@@ -3,11 +3,112 @@
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061028065955:To do first
+#@+node:ekr.20061029100330.1:Better pymacs docs & examples
+- Better install notes.
+
+- Better Python scripting examples (multi-line scripts).
+#@nonl
+#@-node:ekr.20061029100330.1:Better pymacs docs & examples
+#@clone 2
 #@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.
 
 # Important: the new vnode class implies that the read code must be rewritten to be similar to the opml read code.
 #@nonl
+#@+node:ekr.20031218072017.3019:leoFileCommands._init_
+def __init__(self,c):
+
+    # g.trace("__init__", "fileCommands.__init__")
+    self.c = c
+    self.frame = c.frame
+
+    self.use_new_positions = False
+    
+    # New positions require the sax-based read code.
+    self.use_sax = self.use_new_positions or c.config.getBool('use_sax_based_read')
+    
+    self.nativeTnodeAttributes = ('tx',)
+    self.nativeVnodeAttributes = (
+        'a','descendentTnodeUnknownAttributes',
+        'expanded','marks','t','tnodeList',
+        # 'vtag',
+    )
+    self.initIvars()
+
+def initIvars(self):
+
+    # General
+    c = self.c
+    self.mFileName = ""
+    self.fileDate = -1
+    self.leo_file_encoding = c.config.new_leo_file_encoding
+    # For reading
+    self.checking = False # True: checking only: do *not* alter the outline.
+    self.descendentExpandedList = []
+    self.descendentMarksList = []
+    self.forbiddenTnodes = []
+    self.descendentUnknownAttributesDictList = []
+    self.ratio = 0.5
+    if self.use_sax:
+        self.currentVnode = None
+        self.rootVnode = None
+    else:
+        self.fileBuffer = None
+        self.fileIndex = 0
+        self.currentVnodeStack = [] # A stack of vnodes giving the current position.
+        self.topVnodeStack     = [] # A stack of vnodes giving the top position.
+        self.topPosition = None
+    # For writing
+    self.read_only = False
+    self.outputFile = None
+    self.openDirectory = None
+    self.putCount = 0
+    self.topVnode = None
+    self.toString = False
+    self.usingClipboard = False
+    self.currentPosition = None
+    # New in 3.12
+    self.copiedTree = None
+    self.tnodesDict = {}
+        # keys are gnx strings as returned by canonicalTnodeIndex.
+        # Values are gnx's.
+#@nonl
+#@-node:ekr.20031218072017.3019:leoFileCommands._init_
+#@+node:ekr.20061029093342:Reading (sax)
+#@+node:ekr.20061029093342.75:linkParentAndChildren (changed)
+def linkParentAndChildren (self, parent_v, children):
+    
+    # if children: g.trace(parent_v,len(children))
+    
+    if self.use_new_positions:
+        parent_v.t.links = children
+    else:
+        firstChild_v = children and children[0] or None
+        parent_v.t._firstChild = firstChild_v
+        for child in children:
+            child._parent = parent_v
+            
+    v = parent_v
+    if v not in v.t.vnodeList:
+        v.t.vnodeList.append(v)
+#@nonl
+#@-node:ekr.20061029093342.75:linkParentAndChildren (changed)
+#@+node:ekr.20061029093342.76:linkSiblings (changed)
+def linkSiblings (self, sibs):
+    
+    '''Set the v._back and v._next links for all vnodes v in sibs.'''
+    
+    if self.use_new_positions:
+        pass
+    else:
+        n = len(sibs)
+        for i in xrange(n):
+            v = sibs[i]
+            v._back = (i-1 >= 0 and sibs[i-1]) or None
+            v._next = (i+1 <  n and sibs[i+1]) or None
+#@nonl
+#@-node:ekr.20061029093342.76:linkSiblings (changed)
+#@-node:ekr.20061029093342:Reading (sax)
 #@+node:ekr.20061028211424:vnode class
 #@+node:ekr.20061028211424.4:Birth & death
 #@+node:ekr.20061028211424.5:v.__cmp__ (not used)
@@ -382,7 +483,7 @@ def directParents (self):
         return []
 #@-node:ekr.20061028211424.43:v.directParents (new method in 4.2)
 #@-node:ekr.20061028211424.20:Getters (vnode)
-#@+node:ekr.20061028211424.44:v.Link/Unlink/Insert methods (used by file read logic) (the read logic must be rewritten)
+#@+node:ekr.20061028211424.44:v.Link/Unlink/Insert methods (used by file read logic) (not used in sax-based read)
 # These remain in 4.2: the file read logic calls these before creating positions.
 #@+node:ekr.20061028211424.45:v.detach
 def detach (self):
@@ -523,7 +624,7 @@ def unlink (self):
     # v.parentsList = []
 #@nonl
 #@-node:ekr.20061028211424.52:v.unlink
-#@-node:ekr.20061028211424.44:v.Link/Unlink/Insert methods (used by file read logic) (the read logic must be rewritten)
+#@-node:ekr.20061028211424.44:v.Link/Unlink/Insert methods (used by file read logic) (not used in sax-based read)
 #@+node:ekr.20061028211424.53:Setters (no change)
 #@+node:ekr.20061028211424.54: v.Status bits
 #@+node:ekr.20061028211424.55:clearClonedBit
@@ -650,48 +751,6 @@ def setTnodeText (self,s,encoding="utf-8"):
     return self.t.setTnodeText(s,encoding)
 #@-node:ekr.20061028211424.70:v.setTnodeText
 #@-node:ekr.20061028211424.53:Setters (no change)
-#@+node:ekr.20061028211424.71:v.Iterators (????)
-#@+node:ekr.20061028211424.72:self_subtree_iter
-def subtree_iter(self):
-
-    """Return all nodes of self's tree in outline order."""
-    
-    v = self
-
-    if v:
-        yield v
-        child = v.t._firstChild
-        while child:
-            for v1 in child.subtree_iter():
-                yield v1
-            child = child.next()
-            
-self_and_subtree_iter = subtree_iter
-#@-node:ekr.20061028211424.72:self_subtree_iter
-#@+node:ekr.20061028211424.73:unique_subtree_iter
-def unique_subtree_iter(self,marks=None):
-
-    """Return all vnodes in self's tree, discarding duplicates """
-    
-    v = self
-
-    if marks == None: marks = {}
-
-    if v and v not in marks:
-        marks[v] = v
-        yield v
-        if v.t._firstChild:
-            for v1 in v.t._firstChild.unique_subtree_iter(marks):
-                yield v1
-        v = v._next
-        while v:
-            for v in v.unique_subtree_iter(marks):
-                yield v
-            v = v._next
-            
-self_and_unique_subtree_iter = unique_subtree_iter
-#@-node:ekr.20061028211424.73:unique_subtree_iter
-#@-node:ekr.20061028211424.71:v.Iterators (????)
 #@-node:ekr.20061028211424:vnode class
 #@+node:ekr.20061028211424.1:position class
 #@+node:ekr.20061028070057.1: ctor & other special methods...

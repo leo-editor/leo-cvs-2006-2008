@@ -8836,6 +8836,191 @@ fileMenu.insert(3,'command',label='Test',command=callback)
 #@nonl
 #@-node:Add a menu item after Open With
 #@-node:Scripts demonstrating how to do anything with Leo menus
+#@+node:Scripts that make unit tests
+#@+node:@command make-test
+c.beginUpdate()
+try:
+    p1 = p.insertAfter()
+    c.setHeadString(p1,'@test ')
+    body = 'import leoTest\nleoTest.runEditCommandTest(c,p)'
+    c.setBodyString(p1,body)
+    for s in ('work','before','after'):
+        p2 = p1.insertAsLastChild()
+        c.setHeadString(p2,s)
+    p1.expand()
+finally:
+    c.endUpdate()
+    c.editPosition(p1)
+#@nonl
+#@-node:@command make-test
+#@+node:@command do-before
+@
+p should be in tree whose root is a @test node containing 'work', 'before' and
+'after' children. The work node should have body text. If all is as expected,
+copy the body text the work node to the before node, and represent the selection
+range of the work in the headline of the before node.
+@c
+
+@others
+
+sel = getSel(c)
+top,work,before,after = findNodes(p)
+if top and work.bodyString():
+    c.beginUpdate()
+    try:
+        c.setBodyString(before,work.bodyString())
+        c.setBodyString(after,'')
+        putSelectionInHeadline(c,before,'before',sel)
+    finally:
+        c.endUpdate()
+else:
+    g.es_print('do-before: not in a proper @test tree')
+#@nonl
+#@+node:getSel
+def getSel(c):
+    
+    w = c.frame.body.bodyCtrl
+    sel = g.app.gui.getSelectionRange(w)
+    if not sel:
+        i = g.app.gui.getInsertPoint(w)
+        sel = (i,i)
+    return sel
+#@nonl
+#@-node:getSel
+#@+node:findNodes
+def findNodes(p):
+    
+    '''Find the top, work, before and after nodes.
+    p should be in tree whose root is a @test node containing
+    'work', 'before' and 'after' children.'''
+    
+    for p in p.self_and_parents_iter():
+        if p.headString().startswith('@test '):
+            break
+    top    = p and p.copy()
+    work   = top and top.firstChild() 
+    before = work and work.next()     
+    after  = before and before.next()
+    if (
+        work   and work.headString().startswith('work') and
+        before and before.headString().startswith('before') and
+        after  and after.headString().startswith('after')
+    ):
+        return top,work,before,after
+    else:
+        return None,None,None,None
+#@nonl
+#@-node:findNodes
+#@+node:putSelectionInHeadline
+def putSelectionInHeadline (c,p,prefix,sel):
+    
+    # g.trace(p.headString(),repr(sel))
+    
+    if not sel:
+        sel = ('1.0','1.0')
+
+    s = '%s sel=%s,%s' % (prefix,sel[0],sel[1])
+
+    c.setHeadString(p,s)
+    
+    
+#@nonl
+#@-node:putSelectionInHeadline
+#@-node:@command do-before
+#@+node:@command do-after
+@
+p should be in tree whose root is a @test node containing 'work', 'before' and
+'after' children. If all is as expected, copy the work node to the after node,
+and represent the selection range of the work node in the headline of the after node.
+@c
+
+@others
+
+sel = getSel(c)
+top,work,before,after = findNodes(p)
+if top:
+    c.beginUpdate()
+    try:
+        c.setBodyString(after,work.bodyString())
+        putSelectionInHeadline(c,after,'after',sel)
+    finally:
+        c.endUpdate()
+else:
+    g.es_print('do-after: not in @test tree')
+#@nonl
+#@+node:getSel
+def getSel(c):
+    
+    w = c.frame.body.bodyCtrl
+    sel = g.app.gui.getSelectionRange(w)
+    if not sel:
+        i = g.app.gui.getInsertPoint(w)
+        sel = (i,i)
+    return sel
+#@nonl
+#@-node:getSel
+#@+node:findNodes
+def findNodes(p):
+    
+    '''Find the top, work, before and after nodes.
+    p should be in tree whose root is a @test node containing
+    'work', 'before' and 'after' children.'''
+    
+    for p in p.self_and_parents_iter():
+        if p.headString().startswith('@test '):
+            break
+    top    = p and p.copy()
+    work   = top and top.firstChild()
+    before = work and work.next()
+    after  = before and before.next()
+    if (
+        work   and work.headString().startswith('work') and
+        before and before.headString().startswith('before') and
+        after  and after.headString().startswith('after')
+    ):
+        return top,work,before,after
+    else:
+        return None,None,None,None
+#@nonl
+#@-node:findNodes
+#@+node:putSelectionInHeadline
+def putSelectionInHeadline (c,p,prefix,sel):
+    
+    # g.trace(p.headString(),repr(sel))
+    
+    if not sel:
+        sel = ('1.0','1.0')
+
+    s = '%s sel=%s,%s' % (prefix,sel[0],sel[1])
+
+    c.setHeadString(p,s)
+    
+    
+#@nonl
+#@-node:putSelectionInHeadline
+#@-node:@command do-after
+#@+node:@test kill-line
+import leoTest
+leoTest.runEditCommandTest(c,p)
+#@nonl
+#@+node:work
+line 1
+line 3
+#@nonl
+#@-node:work
+#@+node:before sel=2.0,2.6
+line 1
+line 2
+line 3
+#@nonl
+#@-node:before sel=2.0,2.6
+#@+node:after sel=2.0,2.0
+line 1
+line 3
+#@nonl
+#@-node:after sel=2.0,2.0
+#@-node:@test kill-line
+#@-node:Scripts that make unit tests
 #@+node:Set trailing ws script
 '''This script quickly ends all nodes in the selected tree with exactly one
 newline and marks all @thin/@file nodes dirty if any of their descendents have
