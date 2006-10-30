@@ -1117,48 +1117,6 @@ class vnode (baseVnode):
         return self.t.setTnodeText(s,encoding)
     #@-node:ekr.20040315042106:v.setTnodeText
     #@-node:ekr.20031218072017.3384:Setters
-    #@+node:EKR.20040528151551:v.Iterators
-    #@+node:EKR.20040528151551.2:self_subtree_iter
-    def subtree_iter(self):
-    
-        """Return all nodes of self's tree in outline order."""
-        
-        v = self
-    
-        if v:
-            yield v
-            child = v.t._firstChild
-            while child:
-                for v1 in child.subtree_iter():
-                    yield v1
-                child = child.next()
-                
-    self_and_subtree_iter = subtree_iter
-    #@-node:EKR.20040528151551.2:self_subtree_iter
-    #@+node:EKR.20040528151551.3:unique_subtree_iter
-    def unique_subtree_iter(self,marks=None):
-    
-        """Return all vnodes in self's tree, discarding duplicates """
-        
-        v = self
-    
-        if marks == None: marks = {}
-    
-        if v and v not in marks:
-            marks[v] = v
-            yield v
-            if v.t._firstChild:
-                for v1 in v.t._firstChild.unique_subtree_iter(marks):
-                    yield v1
-            v = v._next
-            while v:
-                for v in v.unique_subtree_iter(marks):
-                    yield v
-                v = v._next
-                
-    self_and_unique_subtree_iter = unique_subtree_iter
-    #@-node:EKR.20040528151551.3:unique_subtree_iter
-    #@-node:EKR.20040528151551:v.Iterators
     #@-others
 #@nonl
 #@-node:ekr.20031218072017.3341:class vnode
