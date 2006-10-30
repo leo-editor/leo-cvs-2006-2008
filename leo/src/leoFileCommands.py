@@ -527,7 +527,12 @@ class baseFileCommands:
         # g.trace("__init__", "fileCommands.__init__")
         self.c = c
         self.frame = c.frame
-        self.use_sax = c.config.getBool('use_sax_based_read')
+    
+        self.use_new_positions = False
+        
+        # New positions require the sax-based read code.
+        self.use_sax = self.use_new_positions or c.config.getBool('use_sax_based_read')
+        
         self.nativeTnodeAttributes = ('tx',)
         self.nativeVnodeAttributes = (
             'a','descendentTnodeUnknownAttributes',
