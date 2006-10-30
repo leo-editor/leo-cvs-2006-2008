@@ -1384,19 +1384,6 @@ class leoTkinterTree (leoFrame.leoTree):
     idle_scrollTo = scrollTo # For compatibility.
     #@nonl
     #@-node:ekr.20040803072955.65:scrollTo
-    #@+node:ekr.20061030072228:scrollToVal & getScrollX/YVal (new, not used)
-    def scrollToVal (self,val):
-        
-        self.canvas.yview("moveto",val)
-        
-    def getScrollXVal (self):
-        
-        return self.canvas.yview()[0]
-    
-    def getScrollYVal (self):
-        
-        return self.canvas.yview()[1]
-    #@-node:ekr.20061030072228:scrollToVal & getScrollX/YVal (new, not used)
     #@+node:ekr.20040803072955.70:yoffset
     #@+at 
     #@nonl
