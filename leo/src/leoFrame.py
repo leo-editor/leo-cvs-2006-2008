@@ -810,7 +810,7 @@ class leoTree:
         
         print "leoTree oops:", g.callers(), "should be overridden in subclass"
     #@-node:ekr.20031218072017.3718:oops
-    #@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url)
+    #@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
     def OnIconDoubleClick (self,p):
     
         # Note: "icondclick" hooks handled by vnode callback routine.
@@ -912,7 +912,7 @@ class leoTree:
     
         return 'break' # 11/19/06
     #@nonl
-    #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url)
+    #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
     #@+node:ekr.20040106095546.1:tree.enableDrawingAfterException
     def enableDrawingAfterException (self):
         pass
