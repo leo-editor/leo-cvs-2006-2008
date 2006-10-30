@@ -21,9 +21,241 @@
 #@+all
 #@+node:ekr.20061029091751:Leo 4.4.3 beta 1 projects
 #@+node:ekr.20061029091904:Bugs
+#@+node:ekr.20061030054124:Fixed an escape bug in new colorizer
+Example:
+
+print "\\" + " this is a test"
+
+The escape mechanism must treat an even number of trailing escapes as not an escape.
+#@nonl
+#@-node:ekr.20061030054124:Fixed an escape bug in new colorizer
 #@-node:ekr.20061029091904:Bugs
 #@+node:ekr.20061029091904.1:Features
-#@+node:ekr.20061028211323:Created @bool show_full_tracebacks_in_scripts
+#@-node:ekr.20061029091904.1:Features
+#@+node:ekr.20061030105954:Settings
+#@+node:ekr.20060915175024:Added @bool center_selected_tree_node
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3916155
+
+When a node is among several other nodes at the same level of hierarchy, which
+are all children of a node, and the "MOVE LFET" command is executed, the node
+does move left in the outline hierarchy, but it also move down to just before
+the next node at the higher hierarchy level - the level to which it is moving
+left.
+
+EKR: I love this new option: how did we ever live without it?
+
+@color
+#@nonl
+#@+node:ekr.20040803072955.65:scrollTo
+def scrollTo(self,p=None):
+
+    """Scrolls the canvas so that p is in view."""
+    
+    __pychecker__ = '--no-argsused' # event not used.
+
+    c = self.c ; frame = c.frame
+    if not p or not c.positionExists(p):
+        p = c.currentPosition()
+    if not p or not c.positionExists(p):
+        # g.trace('current p does not exist',p)
+        p = c.rootPosition()
+    if not p or not c.positionExists(p):
+        # g.trace('no position')
+        return
+    try:
+        h1 = self.yoffset(p)
+        if c.config.getBool('center_selected_tree_node'): # New in Leo 4.4.3.
+            << compute frac0 >>
+            if self.prevMoveToFrac != frac0:
+                self.prevMoveToFrac = frac0
+                self.canvas.yview("moveto",frac0)
+                # g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
+        else:
+            last = c.lastVisible()
+            nextToLast = last.visBack()
+            h2 = self.yoffset(last)
+            << compute approximate line height >>
+            << Compute the fractions to scroll down/up >>
+            if frac <= lo: # frac is for scrolling down.
+                if self.prevMoveToFrac != frac:
+                    self.prevMoveToFrac = frac
+                    self.canvas.yview("moveto",frac)
+                    #g.trace("frac  %1.2f %3d %3d %1.2f %1.2f" % (frac, h1,h2,lo,hi))
+            elif frac2 + (hi - lo) >= hi: # frac2 is for scrolling up.
+                if self.prevMoveToFrac != frac2:
+                    self.prevMoveToFrac = frac2
+                    self.canvas.yview("moveto",frac2)
+                    #g.trace("frac2 "1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
+
+        if self.allocateOnlyVisibleNodes:
+            self.canvas.after_idle(self.idle_second_redraw)
+            
+        c.setTopVnode(p) # 1/30/04: remember a pseudo "top" node.
+        
+    except:
+        g.es_exception()
+        
+idle_scrollTo = scrollTo # For compatibility.
+#@nonl
+#@+node:ekr.20040803072955.66:<< compute approximate line height >>
+if nextToLast: # 2/2/03: compute approximate line height.
+    lineHeight = h2 - self.yoffset(nextToLast)
+else:
+    lineHeight = 20 # A reasonable default.
+#@-node:ekr.20040803072955.66:<< compute approximate line height >>
+#@+node:ekr.20061030091926:<< compute frac0 >>
+# frac0 attempt to put the 
+scrollRegion = self.canvas.cget('scrollregion')
+geom = self.canvas.winfo_geometry()
+
+if scrollRegion and geom:
+    scrollRegion = scrollRegion.split(' ')
+    # g.trace('scrollRegion',repr(scrollRegion))
+    htot = int(scrollRegion[3])
+    wh,junk,junk = geom.split('+')
+    junk,h = wh.split('x')
+    if h: wtot = int(h)
+    else: wtot = 500
+    # g.trace('geom',geom,'wtot',wtot)
+    if htot > 0.1:
+        frac0 = float(h1-wtot/2)/float(htot)
+        frac0 = max(min(frac0,1.0),0.0)
+    else:
+        frac0 = 0.0
+else:
+    frac0 = 0.0 ; htot = wtot = 0
+#@-node:ekr.20061030091926:<< compute frac0 >>
+#@+node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
+data = frame.treeBar.get() # Get the previous values of the scrollbar.
+try: lo, hi = data
+except: lo,hi = 0.0,1.0
+
+# h1 and h2 are the y offsets of the present and last nodes.
+if h2 > 0.1:
+    frac = float(h1)/float(h2) # For scrolling down.
+    frac2 = float(h1+lineHeight/2)/float(h2) # For scrolling up.
+    frac2 = frac2 - (hi - lo)
+else:
+    frac = frac2 = 0.0 # probably any value would work here.
+    
+frac =  max(min(frac,1.0),0.0)
+frac2 = max(min(frac2,1.0),0.0)
+#@nonl
+#@-node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
+#@-node:ekr.20040803072955.65:scrollTo
+#@-node:ekr.20060915175024:Added @bool center_selected_tree_node
+#@+node:ekr.20061030101258:Added @bool invisible_outline_navigation = False
+@nocolor
+
+This option tells how to treat an uppercase letter typed when the outline pane
+is active but no headline is being edited. In such situations Leo searchs for an
+node whose headline starts with the present prefix, ignoring case The prefix
+starts with the first letter typed and other letters are added if they are typed
+within a 'short' period of time, as specified by the outline_nav_extend_delay
+
+True: Look in invisible nodes.
+False: Look only in visible nodes.
+
+I set this option to False because it is too easy form me to type Shift-whatever
+when I meant Ctrl-whatever.
+
+@color
+#@nonl
+#@+node:ekr.20060923202156:c.onCanvasKey
+def onCanvasKey (self,event):
+    
+    '''Navigate to the next headline starting with ch = event.char.
+    If ch is uppercase, search all headlines; otherwise search only visible headlines.
+    This is modelled on Windows explorer.'''
+    
+    if not event or not event.char or not event.keysym.isalnum():
+        return
+    c  = self ; p = c.currentPosition() ; p1 = p.copy()
+    invisible = c.config.getBool('invisible_outline_navigation')
+    ch = event.char ; all = ch.isupper() and invisible
+    if not invisible: ch = ch.lower()
+    found = False
+    extend = self.navQuickKey()
+    attempts = g.choose(extend,(True,False),(False,))
+    for extend2 in attempts:
+        p = p1.copy()
+        while 1:
+            if all:
+                p.moveToThreadNext()
+            else:
+                p.moveToVisNext()
+            if not p:
+                p = c.rootPosition()
+            if p == p1: # Never try to match the same position.
+                # g.trace('failed',extend2)
+                found = False ; break
+            newPrefix = c.navHelper(p,ch,extend2)
+            if newPrefix:
+                found = True ; break
+        if found: break
+    if found:
+        if all: c.frame.tree.expandAllAncestors(p)
+        c.selectPosition(p)
+        c.navTime = time.clock()
+        c.navPrefix = newPrefix
+        # g.trace('extend',extend,'extend2',extend2,'navPrefix',c.navPrefix,'p',p.headString())
+    else:
+        c.navTime = None
+        c.navPrefix = ''
+    c.treeWantsFocusNow()
+#@nonl
+#@+node:ekr.20061002095711.1:c.navQuickKey
+def navQuickKey (self):
+    
+    '''return true if there are two quick outline navigation keys
+    in quick succession.
+    
+    Returns False if @float outline_nav_extend_delay setting is 0.0 or unspecified.'''
+    
+    c = self
+   
+    deltaTime = c.config.getFloat('outline_nav_extend_delay')
+
+    if deltaTime in (None,0.0):
+        return False
+    else:
+        nearTime = c.navTime and time.clock() - c.navTime < deltaTime
+        return nearTime
+#@nonl
+#@-node:ekr.20061002095711.1:c.navQuickKey
+#@+node:ekr.20061002095711:c.navHelper
+def navHelper (self,p,ch,extend):
+    
+    c = self ; h = p.headString().lower()
+    
+    if extend:
+        prefix = c.navPrefix + ch
+        return h.startswith(prefix.lower()) and prefix
+
+    if h.startswith(ch):
+        return ch
+    
+    # New feature: search for first non-blank character after @x for common x.
+    if ch != '@' and h.startswith('@'):
+        for s in ('button','command','file','thin','asis','nosent','noref'):
+            prefix = '@'+s
+            if h.startswith('@'+s):
+                while 1:
+                    n = len(prefix)
+                    ch2 = n < len(h) and h[n] or ''
+                    if ch2.isspace():
+                        prefix = prefix + ch2
+                    else: break
+                if len(prefix) < len(h) and h.startswith(prefix + ch.lower()):
+                    return prefix + ch
+    return ''
+#@nonl
+#@-node:ekr.20061002095711:c.navHelper
+#@-node:ekr.20060923202156:c.onCanvasKey
+#@-node:ekr.20061030101258:Added @bool invisible_outline_navigation = False
+#@+node:ekr.20061028211323:Added @bool show_full_tracebacks_in_scripts
 http://sourceforge.net/forum/message.php?msg_id=3985382
 
 #@+node:ekr.20060624085200:g.handleScriptException
@@ -113,8 +345,8 @@ def test_g_es_exception():
         sys.stdout = sys.__stdout__
 #@-node:ekr.20050220030850:test_g_es_exception
 #@-node:ekr.20031218072017.3112:es_exception & test
-#@-node:ekr.20061028211323:Created @bool show_full_tracebacks_in_scripts
-#@-node:ekr.20061029091904.1:Features
+#@-node:ekr.20061028211323:Added @bool show_full_tracebacks_in_scripts
+#@-node:ekr.20061030105954:Settings
 #@-node:ekr.20061029091751:Leo 4.4.3 beta 1 projects
 #@-all
 #@nonl
