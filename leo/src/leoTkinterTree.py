@@ -1236,6 +1236,24 @@ class leoTkinterTree (leoFrame.leoTree):
     #@-node:ekr.20040803072955.53:drawTree
     #@-node:ekr.20051105073850:drawX...
     #@+node:ekr.20040803072955.62:Helpers...
+    #@+node:ekr.20040803072955.64:getIconImage
+    def getIconImage (self, name):
+    
+        # Return the image from the cache if possible.
+        if self.iconimages.has_key(name):
+            return self.iconimages[name]
+            
+        try:
+            fullname = g.os_path_join(g.app.loadDir,"..","Icons",name)
+            fullname = g.os_path_normpath(fullname)
+            image = Tk.PhotoImage(master=self.canvas,file=fullname)
+            self.iconimages[name] = image
+            return image
+        except:
+            g.es("Exception loading: " + fullname)
+            g.es_exception()
+            return None
+    #@-node:ekr.20040803072955.64:getIconImage
     #@+node:ekr.20040803072955.63:inVisibleArea & inExpandedVisibleArea
     def inVisibleArea (self,y1):
         
@@ -1257,24 +1275,15 @@ class leoTkinterTree (leoFrame.leoTree):
         else:
             return False
     #@-node:ekr.20040803072955.63:inVisibleArea & inExpandedVisibleArea
-    #@+node:ekr.20040803072955.64:getIconImage
-    def getIconImage (self, name):
-    
-        # Return the image from the cache if possible.
-        if self.iconimages.has_key(name):
-            return self.iconimages[name]
-            
-        try:
-            fullname = g.os_path_join(g.app.loadDir,"..","Icons",name)
-            fullname = g.os_path_normpath(fullname)
-            image = Tk.PhotoImage(master=self.canvas,file=fullname)
-            self.iconimages[name] = image
-            return image
-        except:
-            g.es("Exception loading: " + fullname)
-            g.es_exception()
-            return None
-    #@-node:ekr.20040803072955.64:getIconImage
+    #@+node:ekr.20040803072955.68:numberOfVisibleNodes
+    def numberOfVisibleNodes(self):
+        
+        n = 0 ; p = self.c.rootPosition()
+        while p:
+            n += 1
+            p.moveToVisNext()
+        return n
+    #@-node:ekr.20040803072955.68:numberOfVisibleNodes
     #@+node:ekr.20040803072955.65:scrollTo
     def scrollTo(self,p=None):
     
@@ -1292,62 +1301,102 @@ class leoTkinterTree (leoFrame.leoTree):
             # g.trace('no position')
             return
         try:
-            last = c.lastVisible()
-            nextToLast = last.visBack()
             h1 = self.yoffset(p)
-            h2 = self.yoffset(last)
-            #@        << compute approximate line height >>
-            #@+node:ekr.20040803072955.66:<< compute approximate line height >>
-            if nextToLast: # 2/2/03: compute approximate line height.
-                lineHeight = h2 - self.yoffset(nextToLast)
-            else:
-                lineHeight = 20 # A reasonable default.
-            #@-node:ekr.20040803072955.66:<< compute approximate line height >>
-            #@nl
-            #@        << Compute the fractions to scroll down/up >>
-            #@+node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
-            data = frame.treeBar.get()
-            try: lo, hi = data
-            except: lo,hi = 0.0,1.0
-            if h2 > 0.1:
-                frac = float(h1)/float(h2) # For scrolling down.
-                frac2 = float(h1+lineHeight/2)/float(h2) # For scrolling up.
-                frac2 = frac2 - (hi - lo)
-            else:
-                frac = frac2 = 0.0 # probably any value would work here.
+            if c.config.getBool('center_selected_tree_node'): # New in Leo 4.4.3.
+                #@            << compute frac0 >>
+                #@+node:ekr.20061030091926:<< compute frac0 >>
+                # frac0 attempt to put the 
+                scrollRegion = self.canvas.cget('scrollregion')
+                geom = self.canvas.winfo_geometry()
                 
-            frac =  max(min(frac,1.0),0.0)
-            frac2 = max(min(frac2,1.0),0.0)
-            #@-node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
-            #@nl
-            if frac <= lo:
-                if self.prevMoveToFrac != frac:
-                    self.prevMoveToFrac = frac
-                    self.canvas.yview("moveto",frac)
-            elif frac2 + (hi - lo) >= hi:
-                if self.prevMoveToFrac != frac2:
-                    self.prevMoveToFrac = frac2
-                    self.canvas.yview("moveto",frac2)
+                if scrollRegion and geom:
+                    scrollRegion = scrollRegion.split(' ')
+                    # g.trace('scrollRegion',repr(scrollRegion))
+                    htot = int(scrollRegion[3])
+                    wh,junk,junk = geom.split('+')
+                    junk,h = wh.split('x')
+                    if h: wtot = int(h)
+                    else: wtot = 500
+                    # g.trace('geom',geom,'wtot',wtot)
+                    if htot > 0.1:
+                        frac0 = float(h1-wtot/2)/float(htot)
+                        frac0 = max(min(frac0,1.0),0.0)
+                    else:
+                        frac0 = 0.0
+                else:
+                    frac0 = 0.0 ; htot = wtot = 0
+                #@-node:ekr.20061030091926:<< compute frac0 >>
+                #@nl
+                if self.prevMoveToFrac != frac0:
+                    self.prevMoveToFrac = frac0
+                    self.canvas.yview("moveto",frac0)
+                    # g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
+            else:
+                last = c.lastVisible()
+                nextToLast = last.visBack()
+                h2 = self.yoffset(last)
+                #@            << compute approximate line height >>
+                #@+node:ekr.20040803072955.66:<< compute approximate line height >>
+                if nextToLast: # 2/2/03: compute approximate line height.
+                    lineHeight = h2 - self.yoffset(nextToLast)
+                else:
+                    lineHeight = 20 # A reasonable default.
+                #@-node:ekr.20040803072955.66:<< compute approximate line height >>
+                #@nl
+                #@            << Compute the fractions to scroll down/up >>
+                #@+node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
+                data = frame.treeBar.get() # Get the previous values of the scrollbar.
+                try: lo, hi = data
+                except: lo,hi = 0.0,1.0
+                
+                # h1 and h2 are the y offsets of the present and last nodes.
+                if h2 > 0.1:
+                    frac = float(h1)/float(h2) # For scrolling down.
+                    frac2 = float(h1+lineHeight/2)/float(h2) # For scrolling up.
+                    frac2 = frac2 - (hi - lo)
+                else:
+                    frac = frac2 = 0.0 # probably any value would work here.
+                    
+                frac =  max(min(frac,1.0),0.0)
+                frac2 = max(min(frac2,1.0),0.0)
+                #@nonl
+                #@-node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
+                #@nl
+                if frac <= lo: # frac is for scrolling down.
+                    if self.prevMoveToFrac != frac:
+                        self.prevMoveToFrac = frac
+                        self.canvas.yview("moveto",frac)
+                        #g.trace("frac  %1.2f %3d %3d %1.2f %1.2f" % (frac, h1,h2,lo,hi))
+                elif frac2 + (hi - lo) >= hi: # frac2 is for scrolling up.
+                    if self.prevMoveToFrac != frac2:
+                        self.prevMoveToFrac = frac2
+                        self.canvas.yview("moveto",frac2)
+                        #g.trace("frac2 "1.2f %3d %3d %1.2f %1.2f" % (frac2,h1,h2,lo,hi))
     
             if self.allocateOnlyVisibleNodes:
                 self.canvas.after_idle(self.idle_second_redraw)
                 
             c.setTopVnode(p) # 1/30/04: remember a pseudo "top" node.
-            # g.trace("%3d %3d %1.3f %1.3f %1.3f %1.3f" % (h1,h2,frac,frac2,lo,hi))
+            
         except:
             g.es_exception()
             
     idle_scrollTo = scrollTo # For compatibility.
+    #@nonl
     #@-node:ekr.20040803072955.65:scrollTo
-    #@+node:ekr.20040803072955.68:numberOfVisibleNodes
-    def numberOfVisibleNodes(self):
+    #@+node:ekr.20061030072228:scrollToVal & getScrollX/YVal (new, not used)
+    def scrollToVal (self,val):
         
-        n = 0 ; p = self.c.rootPosition()
-        while p:
-            n += 1
-            p.moveToVisNext()
-        return n
-    #@-node:ekr.20040803072955.68:numberOfVisibleNodes
+        self.canvas.yview("moveto",val)
+        
+    def getScrollXVal (self):
+        
+        return self.canvas.yview()[0]
+    
+    def getScrollYVal (self):
+        
+        return self.canvas.yview()[1]
+    #@-node:ekr.20061030072228:scrollToVal & getScrollX/YVal (new, not used)
     #@+node:ekr.20040803072955.70:yoffset
     #@+at 
     #@nonl
