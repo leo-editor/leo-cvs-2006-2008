@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="127" left="151" height="665" width="880"/>
+	<global_window_position top="76" left="308" height="743" width="967"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -59,7 +59,6 @@
 <v t="ekr.20050812134441"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20040414172218.2"><vh>Preface</vh></v>
 <v t="ekr.20040414172218.4"><vh>Acknowledgements</vh>
-<v t="ekr.20040416075437"><vh>@rst-no-head contributors of plugins</vh></v>
 <v t="ekr.20040416080538"><vh>@rst-no-head special mentions</vh></v>
 </v>
 <v t="ekr.20040414172218.5"><vh>Copyright</vh></v>
@@ -1011,7 +1010,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2958,20 +2957,20 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20061026095728" a="ETV"><vh>4.4.2 final and 4.4.2.1 final</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20061026095728"><vh>4.4.2 final and 4.4.2.1 final</vh>
 <v t="ekr.20061026095922.1"><vh>Bugs</vh>
 <v t="ekr.20061026095922.2"><vh>Changed leo_rst.css to pass the w3 validator</vh></v>
-<v t="ekr.20061026095922.3" a="E"><vh>Fixed 'Run on string' message when typing</vh></v>
-<v t="ekr.20061026095922.15" a="E"><vh>Fixed problem with c++ extensions</vh></v>
-<v t="ekr.20061026095922.17" a="E"><vh>Move on if regexp matches an empty string</vh></v>
-<v t="ekr.20061026095922.19" a="E"><vh>Fixed several bugs related to multiple body panes</vh></v>
-<v t="ekr.20061026095922.25" a="E"><vh>Fixed multipath plugin so it works with new colorizier</vh></v>
+<v t="ekr.20061026095922.3"><vh>Fixed 'Run on string' message when typing</vh></v>
+<v t="ekr.20061026095922.15"><vh>Fixed problem with c++ extensions</vh></v>
+<v t="ekr.20061026095922.17"><vh>Move on if regexp matches an empty string</vh></v>
+<v t="ekr.20061026095922.19"><vh>Fixed several bugs related to multiple body panes</vh></v>
+<v t="ekr.20061026095922.25"><vh>Fixed multipath plugin so it works with new colorizier</vh></v>
 <v t="ekr.20061026095922.32"><vh>Fixed bug in new colorizer</vh></v>
-<v t="ekr.20061026095922.33" a="E"><vh>Fixed config bug</vh></v>
+<v t="ekr.20061026095922.33"><vh>Fixed config bug</vh></v>
 </v>
 <v t="ekr.20061026095922.35"><vh>New features</vh>
-<v t="ekr.20061026095922.51" a="E"><vh>Added forward-end-word/-extend-selection commands</vh></v>
+<v t="ekr.20061026095922.51"><vh>Added forward-end-word/-extend-selection commands</vh></v>
 <v t="ekr.20061026095922.36"><vh>Created leoPymacs.py for interaction with pymacs</vh></v>
 </v>
 </v>
@@ -10777,13 +10776,55 @@ Leo has a strong and active community of users on `SourceForge`_.
 Working with this community has been a constant source of joy and inspiration.
 Suggestions and plugins from users continue to drive Leo in excellent new directions.
 Who knows what the next plugin will bring? -- Edward K. Ream, September, 2005</t>
-<t tx="ekr.20040414172218.4">Leo owes much of its visual design to ``MORE``, possibly the most elegant computer program ever written.
-Leo's clone nodes are inspired by ``MORE``.
+<t tx="ekr.20040414172218.4">Leo owes much of its visual design to ``MORE``, possibly the most elegant
+computer program ever written. Leo's clone nodes are inspired by ``MORE``.
 
 The following people have made generous donations to the Leo project:
 Robert Low, Nic Cave-Lynch.
 
-The following people reported bugs, answered questions, and made suggestions for improving Leo: Alex Abacus, Shakeeb Alireze, Bruce Arnold, Chris Barker, Eric Brown, Darius Clarke, Bill Drissel, Wenshan Du, Allen Edwards, Chris Elliot, Mark Engleberg, Dethe Elza, Stephen Ferg, Tom Fetherston, Tomaz Ficko, Niklas Frykholm, Fred Gansevles, Jonathan M. Gilligan, Thomas Guettler, Zak Greant, Thomas Guettler, Romain Guy, Dave Hein, Tiago Castro Henriques, Gary Herron, Steve Holden, Klass Holwerda, Matthias Huening, Robert Hustead, John Jacob, Paul Jaros, Christopher P. Jobling, Eric S. Johansson, Garold Johnson, James Kerwin, Nicola Larosa, David LeBlanc, Chris Liechti, Steve Litt, Martin v. Loewis, Robert Low, Fredrik Lundh, Alex Martelli,  Marcus A. Martin, Gidion May, David McNab, Chad Netzer, Naud Olivier, Joe Orr, Marc-Antoine Parent, Paul Paterson, Davide Salomoni, Sean Shaleh Perry, Tim Peters, Scott Powell, Bruce Rafnel, Walter H. Rauser, David Speed Ream, Rich Ries, Aharon Robbins, Guido van Rossum, David Rowe, Steven Schaefer, Wolfram Schwenzer, Gil Shwartz, Paul Snively, Phil Straus, Jurjen Stellingwerff,  Jeffrey Thompson, Gabriel Valiente, Tom van Vleck, Jim Vickroy, Tony Vignaux, Ying-Chao Wang, Cliff Wells, Dan Wharton, Wim Wijnders, Vadim Zeitlin.</t>
+The following people reported bugs, answered questions, and made suggestions for
+improving Leo:
+Alex Abacus, Shakeeb Alireze, Steve Allen, Bruce Arnold,
+Chris Barker, Dennis Benzinger, David Boddie, Jason Breti, Eric Brown, Terry Brown,
+Darius Clarke, Martin Clifford, Jason Cunliffe,
+Josef Dalcolmo, Gil Dev, Bill Drissel, Wenshan Du,
+Allen Edwards, Chris Elliot, Dethe Elza, Mark Engleberg, Roger Erens, 
+Stephen Ferg, Tom Fetherston, Tomaz Ficko, Niklas Frykholm,
+Fred Gansevles, Jonathan M. Gilligan, Zak Greant, Thomas Guettler, Romain Guy,
+Dave Hein, Tiago Castro Henriques, Gary Herron, Steve Holden, Klass Holwerda, Matthias Huening, Robert Hustead,
+John Jacob, Paul Jaros, Christopher P. Jobling, Eric S. Johansson, Garold Johnson, 
+James Kerwin,
+Nicola Larosa, David LeBlanc, Chris Liechti, Steve Litt, Martin v. Loewis, Robert Low, Fredrik Lundh,
+Michael Manti, Alex Martelli, Marcus A. Martin, Gidion May, David McNab, Frank Merenda, Martin Montcrieffe, Will Munslow,
+Chad Netzer, Derick van Niekerk, Jeff Nowland,
+Naud Olivier, Joe Orr,
+Marc-Antoine Parent, Paul Paterson, Sean Shaleh Perry, Tim Peters, David Priest, Gary Poster, Scott Powell,
+Bruce Rafnel, Walter H. Rauser, Olivier Ravard, David Speed Ream, Rich Ries, Aharon Robbins, Guido van Rossum, David Rowe,
+Davide Salomoni, Steven Schaefer,Johannes Schöön, Wolfram Schwenzer, Casey Wong Kam Shun,
+Gil Shwartz, Jim Sizelove, Paul Snively, Jurjen Stellingwerff, Phil Straus, David Szent-Györgyi,
+Kent Tenney, Jeffrey Thompson,
+Gabriel Valiente, Jim Vickroy, Tony Vignaux, Tom van Vleck,
+Kevin Walzer, Ying-Chao Wang, Cliff Wells, Dan Wharton, John Wiegley, Wim Wijnders, Dan Winkler, 
+Vadim Zeitlin.
+
+The following have contributed plugins to Leo:
+    
+Rodrigo Benenson, Pierre Bidon, Felix Breuer, Terry Brown,
+Mike Crowe,
+Josef Dalcolmo, Michael Dawson,
+e, Roger Erens, 
+Andrea Galimberti, Engelbert Gruber,
+Timo Honkasalo,
+Jaakko Kourula, Maxim Krikun,
+Zhang Le, LeoUser,
+Frédéric Momméja, Bernhard Mulder, 
+Mark Ng,
+Alexis Gendron Paquette, Paul Paterson,
+Dan Rahmel,
+Davide Salomoni,
+Ed Taekema, Kent Tenney, Brian Theado,
+Steve Zatz.
+</t>
 <t tx="ekr.20040414172218.5">All parts of Leo are distributed under the following copyright. This is intended
 to be the same as the Python license, namely that Leo is absolutely free, even
 for commercial use, including resale. There is no GNU-like "copyleft"
@@ -10795,12 +10836,8 @@ and without fee is hereby granted, provided that the above copyright notice
 appears in all copies and that both that copyright notice and this permission
 notice appear in supporting documentation, and that the names of Edward K. Ream
 or Leo may not be used in advertising or publicity pertaining to distribution of
-the software without specific, written prior permission from Edward K. Ream.</t>
+the software without specific, prior written permission from Edward K. Ream.</t>
 <t tx="ekr.20040414174439">**EDWARD K. REAM (REAM) SPECIFICALLY DISCLAIMS ALL WARRANTIES, EXPRESSED OR IMPLIED, WITH RESPECT TO THIS COMPUTER SOFTWARE, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL REAM BE LIABLE FOR ANY LOSS OF PROFIT OR ANY COMMERCIAL DAMAGE, INCLUDING BUT NOT LIMITED TO SPECIAL, INCIDENTAL, CONSEQUENTIAL OR OTHER DAMAGES.**
-</t>
-<t tx="ekr.20040416075437">The following have contributed plugins to Leo: Felix Breuer, Josef Dalcolmo,
-Timo Honkasalo, Andrea Galimberti, Frédéric Momméja Bernhard Mulder, Paul
-Paterson, Davide Salomoni, Ed Taekema, Steve Zatz.
 </t>
 <t tx="ekr.20040416080538">The following deserve special mention:
 David Brock wrote TSyntaxMemo.
@@ -10808,11 +10845,14 @@ The late Bob Fitzwater kept me focused on design. Donald Knuth invented literate
 Jonathan M. Gilligan showed how to put the Leo icon in Leo's windows.
 Joe Orr created XSLT stylesheets for Leo; see http://www.jserv.com/jk_orr/xml/leo.htm.
 Joe Orr also created an outstanding set of tutorials for Leo; see http://www.evisa.com/e/sb.htm.
+LeoUser (B.H.) contributed numerous plugins and was the inspiration for Leo's minibuffer.
+LeoUser also wrote jyLeo: Leo for Jython.
 Bernhard Mulder proposed a new way of untangling derived files.
 John K. Ousterhout created tcl/Tk. Neal Norwitz wrote PyChecker.
 Marc-Antoine Parent urged me to use XML for Leo's file format and helped improve it.
 Paul Paterson suggested the plugin architecture,
 suggested an approach to spell checking and has contributed many excellent plugins.
+François Pinard wrote pymacs.
 Norman Ramsey created noweb and gave permission to quote from the noweb web documentation.
 Rich Ries has contributed a huge number of suggestions.
 Steven P. Schaefer pointed out major security problems lurking in hooks.
