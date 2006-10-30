@@ -1436,9 +1436,16 @@ class baseColorizer:
                 return -1
             elif no_line_break and '\n' in s[i:j]:
                 return -1
-            elif esc and not no_escape and g.match(s,j-1,esc):
-                # Continue searching past the escaped pattern string.
-                i = j + len(pattern) + 1
+            elif esc and not no_escape:
+                # Only an odd number of escapes is a 'real' escape.
+                escapes = 0 ; k = 1
+                while j-k >=0 and s[j-k] == esc:
+                    escapes += 1 ; k += 1
+                if (escapes % 2) == 1:
+                    # Continue searching past the escaped pattern string.
+                    i = j + len(pattern) + 1
+                else:
+                    return j
             else:
                 return j
     #@nonl
@@ -1452,7 +1459,7 @@ class baseColorizer:
         no_escape=False,no_line_break=False, no_word_break=False,
     ):
             
-        '''Succeed if s[i:] starts with 'begin' ( a regular expression) and contains a following 'end'.'''
+        '''Succeed if s[i:] starts with 'begin' (a regular expression) and contains a following 'end'.'''
         
         if self.trace_match_flag:
             g.trace('begin',repr(begin),'end',repr(end),self.dump(s[i:]))
@@ -1467,10 +1474,15 @@ class baseColorizer:
             j = i + n
             j2 = s.find(end,j)
             if j2 == -1: return 0
-            if self.escape and not no_escape and g.match(s,j2-1,self.escape):
-                # An escaped end **aborts the entire match**:
-                # there is no way to 'restart' the regex.
-                return 0
+            if self.escape and not no_escape:
+                # Only an odd number of escapes is a 'real' escape.
+                escapes = 0 ; k = 1
+                while j-k >=0 and s[j-k] == esc:
+                    escapes += 1 ; k += 1
+                if (escapes % 2) == 1:
+                    # An escaped end **aborts the entire match**:
+                    # there is no way to 'restart' the regex.
+                    return 0
             i2 = j2 - len(end)
             self.colorRangeWithTag(s,i,j,kind, delegate=None,     exclude_match=exclude_match)
             self.colorRangeWithTag(s,j,i2,kind, delegate=delegate,exclude_match=False)
