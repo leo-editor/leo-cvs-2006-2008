@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="141" left="238" height="679" width="969"/>
+	<global_window_position top="141" left="238" height="660" width="969"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -162,9 +162,9 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
-<v t="ekr.20061029091403" a="V"><vh>@bool show_full_tracebacks_in_scripts = False</vh></v>
+<v t="ekr.20061029091403"><vh>@bool show_full_tracebacks_in_scripts = False</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
 <v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
@@ -536,7 +536,7 @@
 <v t="ekr.20050203090810" annotate="7d71002e"><vh>Unit test</vh>
 <v t="ekr.20050203085250"><vh>@int global_setting_for_unit_tests = 132</vh></v>
 </v>
-<v t="ekr.20041213105954" annotate="7d71002e"><vh>Window</vh>
+<v t="ekr.20041213105954" a="E" annotate="7d71002e"><vh>Window</vh>
 <v t="ekr.20041119034357.38"><vh>Body pane options</vh>
 <v t="ekr.20061010111324"><vh>@bool select_all_text_when_editing_headlines = False</vh></v>
 <v t="ekr.20060531094310"><vh>@bool autoindent_in_nocolor_mode = True</vh></v>
@@ -569,7 +569,8 @@
 <v t="ekr.20041119034357.64"><vh>@int initial_window_top = 20</vh></v>
 <v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
 </v>
-<v t="ekr.20041119034357.54"><vh>Outline pane options</vh>
+<v t="ekr.20041119034357.54" a="E"><vh>Outline pane options</vh>
+<v t="ekr.20061030092620" a="TV"><vh>@bool center_selected_tree_node = True</vh></v>
 <v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = False</vh></v>
 <v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = False</vh></v>
 <v t="ekr.20041119050749.5"><vh>@bool expanded_click_area = True</vh></v>
@@ -6210,5 +6211,7 @@ scroll-outline-right        = Alt+Ctrl+RtArrow
 scroll-outline-up-page      = Alt-PageUp
 </t>
 <t tx="ekr.20061029091403"></t>
+<t tx="ekr.20061030092620">True (Recommended): Leo scrolls the outline to put the selected node near the center of the outline pane.
+False (Legacy): Leo scrolls the outline to put the selected node at the top or bottom of the outline pane.</t>
 </tnodes>
 </leo_file>
