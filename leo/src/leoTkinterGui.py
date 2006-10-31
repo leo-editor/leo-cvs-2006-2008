@@ -575,31 +575,26 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     #@-node:ekr.20031218072017.4071:Idle Time
     #@+node:ekr.20031218072017.4074:Indices (Tk)
-    #@+node:ekr.20060528172956:toGuiIndex & toPythonIndex
-    def toGuiIndex (self,s,w,index):
+    #@+node:ekr.20031218072017.4079:compareIndices
+    def compareIndices (self,t,n1,rel,n2):
         
-        '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
-        
-        # A subtle point: s typically does not have Tk's trailing newline, so add it.
-    
-        row,col = g.convertPythonIndexToRowCol (s+'\n',index)
-        index = w.index('%s.%s' % (row+1,col))
-        return index
-        
-    def toPythonIndex (self,s,w,index):
-        
-        '''Convert a Tk index in Tk.Text widget w into a python index in string s.'''
-        
-        index = w.index(index)
-        row, col = index.split('.') ; row, col = int(row), int(col)
-        index = g.convertRowColToPythonIndex (s,row-1,col)
-        return index
-    #@-node:ekr.20060528172956:toGuiIndex & toPythonIndex
+        try:
+            return t.compare(n1,rel,n2)
+        except Exception:
+            return False
+    #@-node:ekr.20031218072017.4079:compareIndices
     #@+node:ekr.20031218072017.4075:firstIndex
     def firstIndex (self):
     
         return "1.0"
     #@-node:ekr.20031218072017.4075:firstIndex
+    #@+node:ekr.20031218072017.4080:getindex
+    def getindex(self,text,index):
+        
+        """Convert string index of the form line.col into a tuple of two ints."""
+        
+        return tuple(map(int,string.split(text.index(index), ".")))
+    #@-node:ekr.20031218072017.4080:getindex
     #@+node:ekr.20031218072017.4076:lastIndex
     def lastIndex (self):
     
@@ -623,21 +618,40 @@ class tkinterGui(leoGui.leoGui):
         
         return g.choose(t.compare(newpos,"==","end"),None,newpos)
     #@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine
-    #@+node:ekr.20031218072017.4079:compareIndices
-    def compareIndices (self,t,n1,rel,n2):
+    #@+node:ekr.20060528172956:toGuiIndex & toPythonIndex
+    def toGuiIndex (self,s,w,index):
         
-        try:
-            return t.compare(n1,rel,n2)
-        except Exception:
-            return False
-    #@-node:ekr.20031218072017.4079:compareIndices
-    #@+node:ekr.20031218072017.4080:getindex
-    def getindex(self,text,index):
+        '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
         
-        """Convert string index of the form line.col into a tuple of two ints."""
+        # A subtle point: s typically does not have Tk's trailing newline, so add it.
+    
+        row,col = g.convertPythonIndexToRowCol (s+'\n',index)
+        index = w.index('%s.%s' % (row+1,col))
+        return index
         
-        return tuple(map(int,string.split(text.index(index), ".")))
-    #@-node:ekr.20031218072017.4080:getindex
+    def toPythonIndex (self,s,w,index):
+        
+        '''Convert a Tk index in Tk.Text widget w into a python index in string s.'''
+        
+        index = w.index(index)
+        row, col = index.split('.') ; row, col = int(row), int(col)
+        index = g.convertRowColToPythonIndex (s,row-1,col)
+        return index
+    #@-node:ekr.20060528172956:toGuiIndex & toPythonIndex
+    #@+node:ekr.20061031132712.4:xyToGui/PythonIndex
+    def xyToGuiIndex (self,w,x,y):
+        
+        return w.index("@%d,%d" % (x,y))
+        
+    def xyToPythonIndex(self,w,x,y):
+        
+        gui = self
+        s = gui.getAllText(w)
+        i = w.index("@%d,%d" % (x,y))
+        i = gui.toPythonIndex(s,w,i)
+        return i
+    #@nonl
+    #@-node:ekr.20061031132712.4:xyToGui/PythonIndex
     #@-node:ekr.20031218072017.4074:Indices (Tk)
     #@+node:ekr.20031218072017.4081:Insert Point
     #@+node:ekr.20031218072017.4082:getInsertPoint

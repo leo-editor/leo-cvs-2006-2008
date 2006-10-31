@@ -31,6 +31,108 @@ The escape mechanism must treat an even number of trailing escapes as not an esc
 #@-node:ekr.20061030054124:Fixed an escape bug in new colorizer
 #@-node:ekr.20061029091904:Bugs
 #@+node:ekr.20061029091904.1:Features
+#@+node:ekr.20061030161842.1:Added helper for OnIconDoubleClick
+#@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
+def OnIconDoubleClick (self,p):
+
+    # Note: "icondclick" hooks handled by vnode callback routine.
+
+    c = self.c
+    s = p.headString().strip()
+    if g.match_word(s,0,"@url"):
+        url = s[4:].strip()
+        if url.lstrip().startswith('--'):
+            # Get the url from the first body line.
+            lines = p.bodyString().split('\n')
+            url = lines and lines[0] or ''
+        else:
+            << stop the url after any whitespace >>
+        if not g.doHook("@url1",c=c,p=p,v=p,url=url):
+            self.handleUrlInUrlNode(url)
+        g.doHook("@url2",c=c,p=p,v=p)
+
+    return 'break' # 11/19/06
+#@nonl
+#@+node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
+# For safety, the URL string should end at the first whitespace, unless quoted.
+# This logic is also found in the UNL plugin so we don't have to change the 'unl1' hook.
+
+url = url.replace('\t',' ')
+
+# Strip quotes.
+i = -1
+if url and url[0] in ('"',"'"):
+    i = url.find(url[0],1)
+    if i > -1:
+        url = url[1:i]
+
+if i == -1:
+    # Not quoted or no matching quote.
+    i = url.find(' ')
+    if i > -1:
+        if 0: # No need for a warning.  Assume everything else is a comment.
+            g.es("ignoring characters after space in url:"+url[i:])
+            g.es("use %20 instead of spaces")
+        url = url[:i]
+#@-node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
+#@+node:ekr.20061030161842:handleUrlInUrlNode
+def handleUrlInUrlNode(self,url):
+    
+    # Note: the UNL plugin has its own notion of what a good url is.
+    
+    c = self.c
+    # g.trace(url)
+    << check the url; return if bad >>
+    << pass the url to the web browser >>
+#@+node:ekr.20031218072017.2314:<< check the url; return if bad >>
+@ A valid url is (according to D.T.Hein):
+
+3 or more lowercase alphas, followed by,
+one ':', followed by,
+one or more of: (excludes !"#;<>[\]^`|)
+  $%&'()*+,-./0-9:=?@A-Z_a-z{}~
+followed by one of: (same as above, except no minus sign or comma).
+  $%&'()*+/0-9:=?@A-Z_a-z}~
+@c
+
+urlPattern = "[a-z]{3,}:[\$-:=?-Z_a-z{}~]+[\$-+\/-:=?-Z_a-z}~]"
+
+if not url or len(url) == 0:
+    g.es("no url following @url")
+    return
+
+# Add http:// if required.
+if not re.match('^([a-z]{3,}:)',url):
+    url = 'http://' + url
+if not re.match(urlPattern,url):
+    g.es("invalid url: "+url)
+    return
+#@nonl
+#@-node:ekr.20031218072017.2314:<< check the url; return if bad >>
+#@+node:ekr.20031218072017.2315:<< pass the url to the web browser >>
+@ Most browsers should handle the following urls:
+  ftp://ftp.uu.net/public/whatever.
+  http://localhost/MySiteUnderDevelopment/index.html
+  file://home/me/todolist.html
+@c
+
+try:
+    import os
+    os.chdir(g.app.loadDir)
+    if g.match(url,0,"file:") and url[-4:]==".leo":
+        ok,frame = g.openWithFileName(url[5:],c)
+    else:
+        import webbrowser
+        # Mozilla throws a weird exception, then opens the file!
+        try: webbrowser.open(url)
+        except: pass
+except:
+    g.es("exception opening " + url)
+    g.es_exception()
+#@-node:ekr.20031218072017.2315:<< pass the url to the web browser >>
+#@-node:ekr.20061030161842:handleUrlInUrlNode
+#@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
+#@-node:ekr.20061030161842.1:Added helper for OnIconDoubleClick
 #@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061030105954:Settings
 #@+node:ekr.20060915175024:Added @bool center_selected_tree_node

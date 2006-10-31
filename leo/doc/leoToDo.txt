@@ -56,9 +56,7 @@ def OnIconDoubleClick (self,p):
         else:
             << stop the url after any whitespace >>
         if not g.doHook("@url1",c=c,p=p,v=p,url=url):
-            # Note: the UNL plugin has its own notion of what a good url is.
-            << check the url; return if bad >>
-            << pass the url to the web browser >>
+            self.handleUrlInUrlNode(url)
         g.doHook("@url2",c=c,p=p,v=p)
 
     return 'break' # 11/19/06
@@ -85,11 +83,16 @@ if i == -1:
             g.es("use %20 instead of spaces")
         url = url[:i]
 #@-node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
-#@+node:ekr.20031218072017.2314:<< check the url; return if bad >>
-if not url or len(url) == 0:
-    g.es("no url following @url")
-    return
+#@+node:ekr.20061030161842:handleUrlInUrlNode
+def handleUrlInUrlNode(self,url):
     
+    # Note: the UNL plugin has its own notion of what a good url is.
+    
+    c = self.c
+    # g.trace(url)
+    << check the url; return if bad >>
+    << pass the url to the web browser >>
+#@+node:ekr.20031218072017.2314:<< check the url; return if bad >>
 @ A valid url is (according to D.T.Hein):
 
 3 or more lowercase alphas, followed by,
@@ -102,12 +105,17 @@ followed by one of: (same as above, except no minus sign or comma).
 
 urlPattern = "[a-z]{3,}:[\$-:=?-Z_a-z{}~]+[\$-+\/-:=?-Z_a-z}~]"
 
-# 4/21/03: Add http:// if required.
+if not url or len(url) == 0:
+    g.es("no url following @url")
+    return
+
+# Add http:// if required.
 if not re.match('^([a-z]{3,}:)',url):
     url = 'http://' + url
 if not re.match(urlPattern,url):
     g.es("invalid url: "+url)
     return
+#@nonl
 #@-node:ekr.20031218072017.2314:<< check the url; return if bad >>
 #@+node:ekr.20031218072017.2315:<< pass the url to the web browser >>
 @ Most browsers should handle the following urls:
@@ -123,15 +131,14 @@ try:
         ok,frame = g.openWithFileName(url[5:],c)
     else:
         import webbrowser
-        
         # Mozilla throws a weird exception, then opens the file!
         try: webbrowser.open(url)
         except: pass
 except:
     g.es("exception opening " + url)
     g.es_exception()
-#@nonl
 #@-node:ekr.20031218072017.2315:<< pass the url to the web browser >>
+#@-node:ekr.20061030161842:handleUrlInUrlNode
 #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
 #@-node:ekr.20061030054124.1:Create method to encapsulate url code for bookmarks plugin
 #@+node:ekr.20061030074731:Create standard pluginsManager.txt only if it does not exist
@@ -7019,9 +7026,6 @@ other?
 - Make sure perfect import works.
 #@nonl
 #@-node:ekr.20060823105514.1:Really solid perfect import
-#@+node:ekr.20041228084830.3:Finish wxWindows plugin
-# Don't use body wrappers, use g.app.gui methods instead
-#@-node:ekr.20041228084830.3:Finish wxWindows plugin
 #@-node:ekr.20060822174843:Most important
 #@+node:ekr.20060527164612:Important 1-2 day projects
 #@+node:ekr.20060531161030.1:Make body editors persistant
@@ -7527,7 +7531,7 @@ def appendToKnownObjects (self,obj):
                 self.knownObjects[obj.__name__] = obj
                 # g.trace('adding',obj.__name__)
 #@-node:ekr.20060221131304:appendToKnownObjects
-#@+node:ekr.20060220110302:calltip
+#@+node:ekr.20060220110302:calltip (changed)
 def calltip (self,obj=None):
     
     c = self.c ; w = self.widget
@@ -7599,7 +7603,7 @@ elif g.match_word(s,1,'s'):
     s = s[0] + s[2:]
     args = args[0] + args[2:]
 #@-node:ekr.20060224103829.3:<< remove 's' from s *and* args >>
-#@+node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
+#@+node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >> (changed)
 if g.app.gui.hasSelection(w):
     i,j = g.app.gui.getSelectionRange(w)
 else:
@@ -7612,7 +7616,7 @@ if 1:
     j2 = w.index('%s + %sc' % (j,len(s)))
 else:
     j1 = j2 = w.index('%s + 2c' % j)
-#@-node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >>
+#@-node:ekr.20060224103829.4:<< insert the text and set j1 and j2 >> (changed)
 #@+node:ekr.20060224103829.5:<< put the status line >>
 c.frame.clearStatusLine()
 if obj:
@@ -7621,7 +7625,7 @@ else:
     name = self.leadinWord
 c.frame.putStatusLine('%s %s' % (name,args))
 #@-node:ekr.20060224103829.5:<< put the status line >>
-#@-node:ekr.20060220110302:calltip
+#@-node:ekr.20060220110302:calltip (changed)
 #@+node:ekr.20060220085402:chain
 def chain (self):
     
@@ -7689,7 +7693,7 @@ def computeCompletionList (self,verbose=False):
     for name in self.tabList:
         g.es('%s' % (name),tabName=self.tabName)
 #@-node:ekr.20051126123149:computeCompletionList
-#@+node:ekr.20051126131103:doBackSpace (autocompleter)
+#@+node:ekr.20051126131103:doBackSpace (autocompleter) (changed)
 def doBackSpace (self):
 
     '''Cut back to previous prefix.'''
@@ -7729,7 +7733,7 @@ def doBackSpace (self):
             self.abort() # should not happen.
     else:
         self.abort()
-#@-node:ekr.20051126131103:doBackSpace (autocompleter)
+#@-node:ekr.20051126131103:doBackSpace (autocompleter) (changed)
 #@+node:ekr.20051126123249.1:doTabCompletion
 def doTabCompletion (self):
     
@@ -7750,7 +7754,7 @@ def doTabCompletion (self):
 
     c.widgetWantsFocusNow(w)
 #@-node:ekr.20051126123249.1:doTabCompletion
-#@+node:ekr.20051127065601:extendSelection
+#@+node:ekr.20051127065601:extendSelection (changed)
 def extendSelection (self,s):
     
     c = self.c ; w = self.widget
@@ -7765,8 +7769,8 @@ def extendSelection (self,s):
     j = w.index('%s + 1c' % (j))
     g.app.gui.setSelectionRange(w,i,j,insert=j)
     c.frame.body.onBodyChanged('Typing')
-#@-node:ekr.20051127065601:extendSelection
-#@+node:ekr.20060221104137:findAnchor
+#@-node:ekr.20051127065601:extendSelection (changed)
+#@+node:ekr.20060221104137:findAnchor (changed)
 def findAnchor (self,w):
     
     i = g.app.gui.getInsertPoint(w)
@@ -7781,8 +7785,8 @@ def findAnchor (self,w):
     
     # g.trace(i,j,repr(word),w.get(j))
     return j,word
-#@-node:ekr.20060221104137:findAnchor
-#@+node:ekr.20060224094501:findCalltipWord
+#@-node:ekr.20060221104137:findAnchor (changed)
+#@+node:ekr.20060224094501:findCalltipWord (changed)
 def findCalltipWord (self,w):
     
     i = g.app.gui.getInsertPoint(w)
@@ -7791,7 +7795,7 @@ def findCalltipWord (self,w):
         return w.get(i+'-1c wordstart',i+'-1c wordstart wordend')
     else:
         return ''
-#@-node:ekr.20060224094501:findCalltipWord
+#@-node:ekr.20060224094501:findCalltipWord (changed)
 #@+node:ekr.20051127105102:finish
 def finish (self):
     
@@ -7832,7 +7836,7 @@ def hasAttr (self,obj,attr):
         aList = d.get(obj,[])
         return attr in aList
 #@-node:ekr.20060223081914:getAttr and hasAttr
-#@+node:ekr.20060219111416:getLeadinWord
+#@+node:ekr.20060219111416:getLeadinWord (changed)
 def getLeadinWord (self,w):
     
     self.verbose = False # User must explicitly ask for verbose.
@@ -7873,7 +7877,7 @@ def getLeadinWord (self,w):
             i = j
         self.leadinWord = word
         return True
-#@-node:ekr.20060219111416:getLeadinWord
+#@-node:ekr.20060219111416:getLeadinWord (changed)
 #@+node:ekr.20060219174642:getMembersList
 def getMembersList (self,obj):
     
@@ -7915,11 +7919,11 @@ def info (self):
 #@+node:ekr.20060220104902:insertNormalChar
 def insertNormalChar (self,ch,keysym):
     
-    k = self.k ; w = self.widget
+    k = self.k ; w = self.widget ; gui = g.app.gui
 
     if g.isWordChar(ch):
         # Look ahead to see if the character completes any item.
-        s = g.app.gui.getSelectedText(w) + ch
+        s = gui.getSelectedText(w) + ch
         tabList,common_prefix = g.itemsMatchingPrefixInList(
             s,self.membersList,matchEmptyPrefix=True)
         if tabList:
@@ -7931,8 +7935,8 @@ def insertNormalChar (self,ch,keysym):
                 self.prefix = self.prefix + ch
             self.computeCompletionList()
     else:
-        word = g.app.gui.getSelectedText(w)
-        if keysym == 'parenleft':
+        word = gui.getSelectedText(w)
+        if keysym == gui.keysym('parenleft'):
             # Similar to chain logic.
             obj = self.object
             # g.trace(obj,word,self.hasAttr(obj,word))
