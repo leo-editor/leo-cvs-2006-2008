@@ -209,6 +209,28 @@ class leoGui:
     # dialog being created.  The commander may be a Commands instance or one 
     # of its subcommanders.
     #@-at
+    #@+node:ekr.20061031132907:Events
+    #@+node:ekr.20061031132712.2:eventChar, eventKeysym, eventWidget, eventXY
+    def eventChar (self,event):
+        '''Return the char field of an event.'''
+        return event and event.char or ''
+        
+    def eventKeysym (self,event):
+        '''Return the keysym value of an event.'''
+        return event and event.keysym
+    
+    def eventWidget (self,event):
+        '''Return the widget field of an event.'''   
+        return event and event.widget
+    
+    def eventXY (self,event):
+        if event:
+            return event.x,event.y
+        else:
+            return 0,0
+    #@nonl
+    #@-node:ekr.20061031132712.2:eventChar, eventKeysym, eventWidget, eventXY
+    #@-node:ekr.20061031132907:Events
     #@+node:ekr.20031218072017.3734:Clipboard
     def replaceClipboardWith (self,s):
         
@@ -218,6 +240,15 @@ class leoGui:
         
         self.oops()
     #@-node:ekr.20031218072017.3734:Clipboard
+    #@+node:ekr.20061031132712.1:color
+    # g.es calls gui.color to do the translation,
+    # so most code in Leo's core can simply use Tk color names.
+    
+    def color (self,color):
+        '''Return the gui-specific color corresponding to the Tk color name.'''
+        return color
+    #@nonl
+    #@-node:ekr.20061031132712.1:color
     #@+node:ekr.20031218072017.3735:Dialog utils
     def attachLeoIcon (self,window):
         """Attach the Leo icon to a window."""
@@ -312,6 +343,12 @@ class leoGui:
         
         self.oops()
     #@-node:ekr.20051220144306:isTextWidget
+    #@+node:ekr.20061031132712.3:keysym
+    def keysym (self,keysym):
+        '''Return the gui-specific value corresponding to the Tkinter keysym.'''
+        return keysym
+    #@nonl
+    #@-node:ekr.20061031132712.3:keysym
     #@+node:ekr.20061024133425:Selection
     def getSelectionRange (self,t):
         return 0,0
@@ -336,6 +373,16 @@ class leoGui:
         
     setSelectionRange = setTextSelection
     #@-node:ekr.20061024133425:Selection
+    #@+node:ekr.20061031133643:xyToGui/PythonIndex
+    def xyToGuiIndex (self,w,x,y):
+        
+        return 0
+        
+    def xyToPythonIndex(self,w,x,y):
+        
+        return 0
+    #@nonl
+    #@-node:ekr.20061031133643:xyToGui/PythonIndex
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@+node:ekr.20031218072017.3740:guiName
     def guiName(self):
