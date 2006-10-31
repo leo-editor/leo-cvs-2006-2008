@@ -849,16 +849,18 @@ class leoTree:
                 #@-node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
                 #@nl
             if not g.doHook("@url1",c=c,p=p,v=p,url=url):
-                self.handleUrlInUrlNode(c,url)
+                self.handleUrlInUrlNode(url)
             g.doHook("@url2",c=c,p=p,v=p)
     
         return 'break' # 11/19/06
     #@nonl
     #@+node:ekr.20061030161842:handleUrlInUrlNode
-    def handleUrlInUrlNode(self,c,url):
+    def handleUrlInUrlNode(self,url):
         
         # Note: the UNL plugin has its own notion of what a good url is.
         
+        c = self.c
+        # g.trace(url)
         #@    << check the url; return if bad >>
         #@+node:ekr.20031218072017.2314:<< check the url; return if bad >>
         #@+at 
