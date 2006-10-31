@@ -4088,37 +4088,6 @@ def test_failure_with_ascii_encodings():
 #@-node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
 #@-node:ekr.20031218072017.1498:Unicode utils...
 #@+node:EKR.20040612114220:Utility classes, functions & objects...
-#@+node:ekr.20031218072017.3140: List utilities...
-#@+node:ekr.20031218072017.3141:appendToList
-def appendToList(out, s):
-
-    for i in s:
-        out.append(i)
-#@-node:ekr.20031218072017.3141:appendToList
-#@+node:ekr.20031218072017.3142:flattenList
-def flattenList (theList):
-
-    result = []
-    for item in theList:
-        if type(item) == types.ListType:
-            result.extend(g.flattenList(item))
-        else:
-            result.append(item)
-    return result
-#@-node:ekr.20031218072017.3142:flattenList
-#@+node:ekr.20060221081328:maxStringListLength
-def maxStringListLength(aList):
-    
-    '''Return the maximum string length in a list of strings.'''
-    
-    n = 0
-    for z in aList:
-        if type(z) in (type(''),type(u'')):
-            n = max(n,len(z))
-
-    return n
-#@-node:ekr.20060221081328:maxStringListLength
-#@-node:ekr.20031218072017.3140: List utilities...
 #@+node:ekr.20050315073003: Index utilities...
 #@+node:ekr.20050314140957:g.convertPythonIndexToRowCol  & test
 def convertPythonIndexToRowCol (s,i):
@@ -4202,6 +4171,37 @@ def test_g_convertRowColToPythonIndex ():
 #@-node:ekr.20050315072239:test_g_convertPythonIndexToRowCol
 #@-node:ekr.20050315071727:g.convertRowColToPythonIndex & test
 #@-node:ekr.20050315073003: Index utilities...
+#@+node:ekr.20031218072017.3140: List utilities...
+#@+node:ekr.20031218072017.3141:appendToList
+def appendToList(out, s):
+
+    for i in s:
+        out.append(i)
+#@-node:ekr.20031218072017.3141:appendToList
+#@+node:ekr.20031218072017.3142:flattenList
+def flattenList (theList):
+
+    result = []
+    for item in theList:
+        if type(item) == types.ListType:
+            result.extend(g.flattenList(item))
+        else:
+            result.append(item)
+    return result
+#@-node:ekr.20031218072017.3142:flattenList
+#@+node:ekr.20060221081328:maxStringListLength
+def maxStringListLength(aList):
+    
+    '''Return the maximum string length in a list of strings.'''
+    
+    n = 0
+    for z in aList:
+        if type(z) in (type(''),type(u'')):
+            n = max(n,len(z))
+
+    return n
+#@-node:ekr.20060221081328:maxStringListLength
+#@-node:ekr.20031218072017.3140: List utilities...
 #@+node:ekr.20031218072017.3106:angleBrackets & virtual_event_name
 # Returns < < s > >
 
@@ -4933,15 +4933,6 @@ class nullObject:
     def __getattr__(self,attr):     return self
     def __setattr__(self,attr,val): return self
 #@-node:ekr.20031219074948.1:class nullObject
-#@+node:ekr.20031218072017.3144:g.makeDict
-# From the Python cookbook.
-
-def makeDict(**keys):
-    
-    """Returns a Python dictionary from using the optional keyword arguments."""
-
-    return keys
-#@-node:ekr.20031218072017.3144:g.makeDict
 #@+node:ekr.20031218072017.3103:g.computeWindowTitle
 def computeWindowTitle (fileName):
 
@@ -5144,6 +5135,64 @@ def itemsMatchingPrefixInList (s,aList,matchEmptyPrefix=False):
     # g.trace(repr(s),len(pmatches))
     return pmatches,common_prefix
 #@-node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
+#@+node:ekr.20031218072017.3144:g.makeDict
+# From the Python cookbook.
+
+def makeDict(**keys):
+    
+    """Returns a Python dictionary from using the optional keyword arguments."""
+
+    return keys
+#@-node:ekr.20031218072017.3144:g.makeDict
+#@+node:ekr.20060221083356:g.prettyPrintType
+def prettyPrintType (obj):
+
+    if type(obj) in (
+        types.MethodType,types.UnboundMethodType,types.BuiltinMethodType):
+        return 'method'
+    elif type(obj) in (types.BuiltinFunctionType,types.FunctionType):
+        return 'function'
+    elif type(obj) == types.ModuleType:
+        return 'module'
+    elif type(obj) == types.InstanceType:
+        return 'object'
+    elif type(obj) in (types.UnicodeType,types.StringType):
+        return 'string'
+    else:
+        theType = str(type(obj))
+        if theType.startswith("<type '"): theType = theType[7:]
+        if theType.endswith("'>"): theType = theType[:-2]
+        return theType
+#@-node:ekr.20060221083356:g.prettyPrintType
+#@+node:ekr.20060410112600:g.stripBrackets
+def stripBrackets (s):
+    
+    '''Same as s.lstrip('<').rstrip('>') except it works for Python 2.2.1.'''
+    
+    if s.startswith('<'):
+        s = s[1:]
+    if s.endswith('>'):
+        s = s[:-1]
+    return s
+#@-node:ekr.20060410112600:g.stripBrackets
+#@+node:ekr.20061031102333.2:g.getWord
+def getWord (s,i):
+    
+    '''Return i,j such that s[i:j] is the word surrounding s[i].'''
+    
+    # Scan backwards.
+    while 0 <= i < len(s) and g.isWordChar(s[i]):
+        i-= 1
+    i += 1
+    
+    # Scan forwards.
+    j = i
+    while 0 <= j < len(s) and g.isWordChar(s[j]):
+        j += 1
+    
+    return i,j
+#@nonl
+#@-node:ekr.20061031102333.2:g.getWord
 #@+node:ekr.20041219095213:import wrappers
 #@+at 
 #@nonl
@@ -5368,37 +5417,6 @@ def importFromPath (name,path,pluginName=None,verbose=False):
     return module
 #@-node:ekr.20031218072017.2278:g.importFromPath
 #@-node:ekr.20041219095213:import wrappers
-#@+node:ekr.20060221083356:g.prettyPrintType
-def prettyPrintType (obj):
-
-    if type(obj) in (
-        types.MethodType,types.UnboundMethodType,types.BuiltinMethodType):
-        return 'method'
-    elif type(obj) in (types.BuiltinFunctionType,types.FunctionType):
-        return 'function'
-    elif type(obj) == types.ModuleType:
-        return 'module'
-    elif type(obj) == types.InstanceType:
-        return 'object'
-    elif type(obj) in (types.UnicodeType,types.StringType):
-        return 'string'
-    else:
-        theType = str(type(obj))
-        if theType.startswith("<type '"): theType = theType[7:]
-        if theType.endswith("'>"): theType = theType[:-2]
-        return theType
-#@-node:ekr.20060221083356:g.prettyPrintType
-#@+node:ekr.20060410112600:g.stripBrackets
-def stripBrackets (s):
-    
-    '''Same as s.lstrip('<').rstrip('>') except it works for Python 2.2.1.'''
-    
-    if s.startswith('<'):
-        s = s[1:]
-    if s.endswith('>'):
-        s = s[:-1]
-    return s
-#@-node:ekr.20060410112600:g.stripBrackets
 #@+node:ekr.20040629162023:readLines class and generator
 #@+node:EKR.20040612114220.3:g.readLinesGenerator
 def readLinesGenerator(s):
