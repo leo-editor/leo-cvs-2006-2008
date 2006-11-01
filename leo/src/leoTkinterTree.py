@@ -240,7 +240,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         # Incremental redraws:
         self.allocateOnlyVisibleNodes = False # True: enable incremental redraws.
-        self.prevMoveToFrac = None
+        self.prevMoveToFrac = 0.0
         self.visibleArea = None
         self.expandedVisibleArea = None
         
@@ -1327,7 +1327,9 @@ class leoTkinterTree (leoFrame.leoTree):
                     frac0 = 0.0 ; htot = wtot = 0
                 #@-node:ekr.20061030091926:<< compute frac0 >>
                 #@nl
-                if self.prevMoveToFrac != frac0:
+                delta = abs(self.prevMoveToFrac-frac0)
+                # g.trace(delta)
+                if delta > 0.0:
                     self.prevMoveToFrac = frac0
                     self.canvas.yview("moveto",frac0)
                     # g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
@@ -1963,7 +1965,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     returnVal = 'break'
             else:
                 # g.trace("not current")
-                self.select(p)
+                self.select(p,scroll=False)
                 if c.frame.findPanel:
                     c.frame.findPanel.handleUserClick(p)
                 if p.v.t.insertSpot != None:
@@ -2464,7 +2466,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.128:tree.select
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
     
-    def select (self,p,updateBeadList=True):
+    def select (self,p,updateBeadList=True,scroll=True):
         
         '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
         
@@ -2530,7 +2532,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     if 0: # Interferes with new colorizer.
                         self.canvas.update_idletasks()
                         self.scrollTo(p)
-                    else:
+                    if scroll:
                         def scrollCallback(self=self,p=p):
                             self.scrollTo(p)
                         self.canvas.after(100,scrollCallback)
