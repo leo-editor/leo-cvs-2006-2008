@@ -756,7 +756,7 @@ class leoFind:
                 return None, None
         #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         #@nl
-        gui.setTextSelection(w,pos,newpos,insert=newpos)
+        gui.setSelectionRange(w,pos,newpos,insert=newpos)
         return pos, newpos
     #@+node:ekr.20060526081931:Search helpers...
     def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):

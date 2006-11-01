@@ -755,7 +755,7 @@ class reformatParagraphTest:
         # Make the temp child node current, and put the cursor at the beginning.
         c.selectPosition(self.tempChild)
         c.frame.body.setInsertPointToStartOfLine( 0 )
-        c.frame.body.setTextSelection(None,None)
+        c.frame.body.setSelectionRange(None,None)
     #@-node:ekr.20051104075904.52:copyBeforeToTemp
     #@+node:ekr.20051104075904.53:getRowCol
     def getRowCol(self):
@@ -1067,7 +1067,7 @@ class editBodyTestCase(unittest.TestCase):
         if self.sel:
             s = str(self.sel.bodyString()) # Can't be unicode.
             lines = s.split('\n')
-            g.app.gui.setTextSelection(t,lines[0],lines[1])
+            g.app.gui.setSelectionRange(t,lines[0],lines[1])
     
         if self.ins:
             s = str(self.ins.bodyString()) # Can't be unicode.
@@ -1077,7 +1077,7 @@ class editBodyTestCase(unittest.TestCase):
     
         if not self.sel and not self.ins:
             g.app.gui.setInsertPoint(t,"1.0")
-            g.app.gui.setTextSelection(t,"1.0","1.0")
+            g.app.gui.setSelectionRange(t,"1.0","1.0")
     #@-node:ekr.20051104075904.75:setUp
     #@+node:ekr.20051104075904.76:tearDown
     def tearDown (self):
@@ -1448,7 +1448,7 @@ def runEditCommandTest (c,p):
     try:
         c.selectPosition(work)
         c.setBodyString(work,before.bodyString())
-        g.app.gui.setTextSelection(w,sel1[0],sel1[1])
+        g.app.gui.setSelectionRange(w,sel1[0],sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
         assert s1 == s2, 'expected body: %s, got: %s' % (repr(s1),repr(s2))

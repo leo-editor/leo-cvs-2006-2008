@@ -114,7 +114,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
             w.insert('end',s)
             if select:
                 i,j = k.getEditableTextRange()
-                g.app.gui.setTextSelection(w,i,j,insert=j)
+                g.app.gui.setSelectionRange(w,i,j,insert=j)
             if protect:
                 k.protectLabel()
     #@-node:ekr.20061031170011.9:extendLabel

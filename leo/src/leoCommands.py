@@ -43,7 +43,6 @@ import time
 
 import tabnanny # for Check Python command
 import tokenize # for Check Python command
-import Tkinter as Tk
 
 # The following import _is_ used.
 __pychecker__ = '--no-import'
@@ -2293,7 +2292,7 @@ class baseCommands:
             c.endUpdate()
     
         # Restore the selection.
-        body.setTextSelection(oldSel)
+        body.setSelectionRange(oldSel)
         body.setFocus()
     #@-node:ekr.20031218072017.1710:extractSectionNames
     #@+node:ekr.20031218072017.1825:findBoundParagraph
@@ -2385,10 +2384,10 @@ class baseCommands:
         if index2:
             if body.compareIndices(index,"<=",index2):
                 adj_index = body.adjustIndex(index2,1)
-                body.setTextSelection(index,adj_index)
+                body.setSelectionRange(index,adj_index)
             else:
                 adj_index = body.adjustIndex(index,1)
-                body.setTextSelection(index2,adj_index)
+                body.setSelectionRange(index2,adj_index)
             adj_index = body.adjustIndex(index2,1)
             body.setInsertionPoint(adj_index)
             body.makeIndexVisible(adj_index)
@@ -2723,7 +2722,7 @@ class baseCommands:
             
             # Advance the selection to the next paragraph.
             newSel = sel_end, sel_end
-            body.setTextSelection(newSel)
+            body.setSelectionRange(newSel)
             body.makeIndexVisible(sel_end)
             
             c.recolor()
@@ -2741,7 +2740,7 @@ class baseCommands:
         body.setSelectionAreas(head,middle,tail)
     
         if setSel and oldSel:
-            body.setTextSelection(oldSel)
+            body.setSelectionRange(oldSel)
     
         # This handles the undo.
         body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
@@ -6313,7 +6312,7 @@ class baseCommands:
         if current and p.v.t==current.v.t:
             # Revert to previous code, but force an empty selection.
             c.frame.body.setSelectionAreas(s,None,None)
-            c.frame.body.setTextSelection(None)
+            c.frame.body.setSelectionRange(None)
             # This code destoys all tags, so we must recolor.
             c.recolor()
             

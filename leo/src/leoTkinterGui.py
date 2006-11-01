@@ -583,19 +583,19 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     #@-node:ekr.20031218072017.4071:Idle Time
     #@+node:ekr.20031218072017.4074:Indices (Tk)
-    #@+node:ekr.20031218072017.4079:compareIndices
+    #@+node:ekr.20031218072017.4079:compareIndices (to be deleted)
     def compareIndices (self,t,n1,rel,n2):
         
         try:
             return t.compare(n1,rel,n2)
         except Exception:
             return False
-    #@-node:ekr.20031218072017.4079:compareIndices
-    #@+node:ekr.20031218072017.4075:firstIndex
+    #@-node:ekr.20031218072017.4079:compareIndices (to be deleted)
+    #@+node:ekr.20031218072017.4075:firstIndex (to be deleted)
     def firstIndex (self):
     
         return "1.0"
-    #@-node:ekr.20031218072017.4075:firstIndex
+    #@-node:ekr.20031218072017.4075:firstIndex (to be deleted)
     #@+node:ekr.20031218072017.4080:getindex
     def getindex(self,text,index):
         
@@ -603,17 +603,17 @@ class tkinterGui(leoGui.leoGui):
         
         return tuple(map(int,string.split(text.index(index), ".")))
     #@-node:ekr.20031218072017.4080:getindex
-    #@+node:ekr.20031218072017.4076:lastIndex
-    def lastIndex (self):
-    
-        return "end"
-    #@-node:ekr.20031218072017.4076:lastIndex
-    #@+node:ekr.20031218072017.4077:moveIndexBackward
+    #@+node:ekr.20031218072017.4077:moveIndexBackward (to be deleted)
     def moveIndexBackward(self,index,n):
     
         return "%s-%dc" % (index,n)
-    #@-node:ekr.20031218072017.4077:moveIndexBackward
-    #@+node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine
+    #@-node:ekr.20031218072017.4077:moveIndexBackward (to be deleted)
+    #@+node:ekr.20031218072017.4076:lastIndex (to be deleted)
+    def lastIndex (self):
+    
+        return "end"
+    #@-node:ekr.20031218072017.4076:lastIndex (to be deleted)
+    #@+node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (to be deleted)
     def moveIndexForward(self,t,index,n):
     
         newpos = t.index("%s+%dc" % (index,n))
@@ -625,7 +625,7 @@ class tkinterGui(leoGui.leoGui):
         newpos = t.index("%s linestart + 1lines" % (index))
         
         return g.choose(t.compare(newpos,"==","end"),None,newpos)
-    #@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine
+    #@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (to be deleted)
     #@+node:ekr.20060528172956:toGuiIndex & toPythonIndex
     def toGuiIndex (self,s,w,index):
         
@@ -662,14 +662,20 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20061031132712.4:xyToGui/PythonIndex
     #@-node:ekr.20031218072017.4074:Indices (Tk)
     #@+node:ekr.20031218072017.4081:Insert Point
-    #@+node:ekr.20031218072017.4082:getInsertPoint
-    def getInsertPoint(self,t):
+    #@+node:ekr.20031218072017.4082:getInsertPoint (python)
+    def getInsertPoint(self,t,python=False):
         
+        gui = self
         try:
-            return t.index("insert")
+            i = t.index("insert")
+            if python:
+                s = g.app.gui.getAllText(t)
+                return g.app.gui.toPythonIndex(s,t,i)
+            else:
+                return i
         except Exception:
             return '1.0'
-    #@-node:ekr.20031218072017.4082:getInsertPoint
+    #@-node:ekr.20031218072017.4082:getInsertPoint (python)
     #@+node:ekr.20031218072017.4083:setInsertPoint
     def setInsertPoint (self,t,pos):
     
@@ -680,39 +686,34 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4083:setInsertPoint
     #@-node:ekr.20031218072017.4081:Insert Point
     #@+node:ekr.20031218072017.4084:Selection
-    #@+node:ekr.20031218072017.4085:getSelectionRange (tkGui)
-    def getSelectionRange (self,t,sort=True,toPython=False):
+    #@+node:ekr.20031218072017.4085:getSelectionRange (tkGui) (python)
+    def getSelectionRange (self,t,sort=True,python=False):
         
         """Return a tuple representing the selected range of t, a Tk.Text widget.
         
         Return a tuple giving the insertion point if no range of text is selected."""
     
         # To get the current selection.
+        gui = self
         try:
             sel = t.tag_ranges("sel")
         except Exception:
             return 0,0
-    
+        
         if len(sel) == 2:
             i,j = sel
-            if sort:
-                if t.compare(i, ">", j):
-                    i,j = j,i
-            return i,j
+            if sort and t.compare(i,">",j):
+                i,j = j,i
         else:
             # Return the insertion point if there is no selected text.
-            insert = t.index("insert")
-        return insert,insert
-    
-    # getTextSelection = getSelectionRange
-    
-    # def getSelectionRange (self,t):
-        # try:
-            # # Warning: this can return None.
-            # return t.tag_ranges("sel")
-        # except Exception:
-            # return 0,0
-    #@-node:ekr.20031218072017.4085:getSelectionRange (tkGui)
+            i = j = t.index("insert")
+          
+        if python:
+            s = gui.getAllText(t)
+            i,j = gui.toPythonIndex(s,t,i),gui.toPythonIndex(s,t,j)
+        return i,j
+    #@nonl
+    #@-node:ekr.20031218072017.4085:getSelectionRange (tkGui) (python)
     #@+node:ekr.20051126125950:getSelectedText
     def getSelectedText (self,t):
     
@@ -737,20 +738,25 @@ class tkinterGui(leoGui.leoGui):
         
         '''Select all text of the widget, *not* including the extra newline.'''
         
-        self.setTextSelection(w,'1.0','end-1c',insert=insert)
+        self.setSelectionRange(w,'1.0','end-1c',insert=insert)
     #@-node:ekr.20060529092645:selectAllText (new in 4.4.1)
     #@+node:ekr.20031218072017.4088:setSelectionRangeWithLength
     def setSelectionRangeWithLength(self,t,start,length,insert='sel.end'):
         
-        return g.app.gui.setTextSelection(t,start,"%s+%dc" % (start,length),insert=insert)
+        return g.app.gui.setSelectionRange(t,start,"%s+%dc" % (start,length),insert=insert)
     #@-node:ekr.20031218072017.4088:setSelectionRangeWithLength
-    #@+node:ekr.20031218072017.4089:setTextSelection & setSelectionRange
-    def setTextSelection (self,t,start,end,insert='sel.end'):
+    #@+node:ekr.20031218072017.4089:setSelectionRange (python)
+    def setSelectionRange (self,t,start,end,insert='sel.end',python=False):
         
         """tk gui: set the selection range in Tk.Text widget t."""
-    
+        
+        gui = self
         if not start or not end:
             return
+            
+        if python:
+            s = gui.getAllText(t)
+            i,j = gui.toGuiIndex(s,t,i),gui.toGuiIndex(s,t,j)
             
         try:
             if t.compare(start, ">", end):
@@ -768,8 +774,8 @@ class tkinterGui(leoGui.leoGui):
         except Exception:
             pass
         
-    setSelectionRange = setTextSelection
-    #@-node:ekr.20031218072017.4089:setTextSelection & setSelectionRange
+    # setTextSelection = setSelectionRange
+    #@-node:ekr.20031218072017.4089:setSelectionRange (python)
     #@-node:ekr.20031218072017.4084:Selection
     #@+node:ekr.20031218072017.4090:Text
     #@+node:ekr.20031218072017.4091:g.app.gui.getAllText

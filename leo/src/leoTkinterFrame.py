@@ -2170,7 +2170,7 @@ class leoTkinterBody (leoFrame.leoBody):
             k.previousSelection = g.app.gui.getSelectionRange(w)
             i = w.index('@%s,%s' % (x,y))
             # g.trace(x,y,i)
-            g.app.gui.setTextSelection(w,i,i,insert=i)
+            g.app.gui.setSelectionRange(w,i,i,insert=i)
             c.editCommands.setMoveCol(i)
             c.frame.updateStatusLine()
             self.selectEditor(w)
@@ -2673,7 +2673,7 @@ class leoTkinterBody (leoFrame.leoBody):
         i1 = '%d.%d' % (row+1,col)
         row,col = g.convertPythonIndexToRowCol(s,j)
         i2 = '%d.%d' % (row+1,col)
-        g.app.gui.setTextSelection(self.bodyCtrl,i1,i2)
+        g.app.gui.setSelectionRange(self.bodyCtrl,i1,i2)
     #@-node:ekr.20050710104804.1:setPythonTextSelection
     #@+node:ekr.20031218072017.4022:hasTextSelection
     def hasTextSelection (self):
@@ -2695,18 +2695,18 @@ class leoTkinterBody (leoFrame.leoBody):
                 s = w.get('1.0','end')
                 while s.endswith('\n') or s.endswith('\r'):
                     s = s[:-1] ; n += 1
-                g.app.gui.setTextSelection(w,'1.0','end - %dc' % (n))
+                g.app.gui.setSelectionRange(w,'1.0','end - %dc' % (n))
             elif wname.startswith('mini'):
                 i,j = k.getEditableTextRange()
-                g.app.gui.setTextSelection(w,i,j)
+                g.app.gui.setSelectionRange(w,i,j)
             else:
-                g.app.gui.setTextSelection(w,'1.0','end - %dc' % (n))
+                g.app.gui.setSelectionRange(w,'1.0','end - %dc' % (n))
         except:
             # g.es_exception()
             pass
     #@-node:ekr.20031218072017.4023:selectAllText
-    #@+node:ekr.20031218072017.4024:setTextSelection (tkinterBody)
-    def setTextSelection (self,i,j=None,insert='sel.end'):
+    #@+node:ekr.20031218072017.4024:setSelectionRange (tkinterBody)
+    def setSelectionRange (self,i,j=None,insert='sel.end'):
         
         # Allow the user to pass either a 2-tuple or two separate args.
         if i is None:
@@ -2714,8 +2714,8 @@ class leoTkinterBody (leoFrame.leoBody):
         elif len(i) == 2:
             i,j = i
     
-        g.app.gui.setTextSelection(self.bodyCtrl,i,j,insert)
-    #@-node:ekr.20031218072017.4024:setTextSelection (tkinterBody)
+        g.app.gui.setSelectionRange(self.bodyCtrl,i,j,insert)
+    #@-node:ekr.20031218072017.4024:setSelectionRange (tkinterBody)
     #@-node:ekr.20031218072017.4018:Selection
     #@+node:ekr.20031218072017.4025:Text
     #@+node:ekr.20031218072017.4026:delete...
@@ -2892,7 +2892,7 @@ class leoTkinterBody (leoFrame.leoBody):
                 after = after[:-1]
             t.insert("end",after)
     
-        gui.setTextSelection(t,sel_start,sel_end)
+        gui.setSelectionRange(t,sel_start,sel_end)
         # g.trace(sel_start,sel_end)
         
         return t.index(sel_start), t.index(sel_end)

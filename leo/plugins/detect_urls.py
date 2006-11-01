@@ -31,7 +31,7 @@ def openURL(tag,keywords):
         if ( match.start() < int(col) < match.end() ):
             url = match.group()
             start, end = match.start(), match.end()
-            c.frame.body.setTextSelection("%s.%s" %(row,start), "%s.%s" %(row,end))
+            c.frame.body.setSelectionRange("%s.%s" %(row,start), "%s.%s" %(row,end))
             try:
                 import webbrowser
                 webbrowser.open(url)

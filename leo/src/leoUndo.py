@@ -1409,7 +1409,7 @@ class baseUndoer:
         g.es("redo %d instances" % count)
             
         c.selectPosition(p)
-        newSel and c.frame.body.setTextSelection(newSel)
+        newSel and c.frame.body.setSelectionRange(newSel)
     #@nonl
     #@-node:ekr.20050318085432.6:redoGroup
     #@+node:ekr.20050318085432.7:redoNodeContents
@@ -1424,7 +1424,7 @@ class baseUndoer:
         # g.trace('newHead',u.newHead,'revert',c.frame.tree.revertHeadline)
         
         if u.groupCount == 0 and u.newSel:
-            u.c.frame.body.setTextSelection(u.newSel)
+            u.c.frame.body.setSelectionRange(u.newSel)
         
         u.updateMarks('new')
         
@@ -1478,7 +1478,7 @@ class baseUndoer:
         u.p = self.undoRedoTree(u.p,u.oldTree,u.newTree)
         c.selectPosition(u.p) # Does full recolor.
         if u.newSel:
-            c.frame.body.setTextSelection(u.newSel)
+            c.frame.body.setSelectionRange(u.newSel)
     #@-node:ekr.20050318085432.8:redoTree
     #@+node:EKR.20040526075238.5:redoTyping
     def redoTyping (self):
@@ -1502,7 +1502,7 @@ class baseUndoer:
         
         if u.newSel:
             c.bodyWantsFocus()
-            c.frame.body.setTextSelection(u.newSel)
+            c.frame.body.setSelectionRange(u.newSel)
         if u.yview:
             c.bodyWantsFocus()
             c.frame.body.setYScrollPosition(u.yview)
@@ -1629,7 +1629,7 @@ class baseUndoer:
         g.es("undo %d instances" % count)
         
         c.selectPosition(p)
-        oldSel and c.frame.body.setTextSelection(oldSel)
+        oldSel and c.frame.body.setSelectionRange(oldSel)
     #@nonl
     #@-node:ekr.20050318085713:undoGroup
     #@+node:ekr.20050412083244:undoHoistNode & undoDehoistNode
@@ -1715,7 +1715,7 @@ class baseUndoer:
         c.frame.tree.setHeadline(u.p,u.oldHead) # New in 4.4b2.
     
         if u.groupCount == 0 and u.oldSel:
-            u.c.frame.body.setTextSelection(u.oldSel)
+            u.c.frame.body.setSelectionRange(u.oldSel)
         
         u.updateMarks('old')
         
@@ -1732,7 +1732,7 @@ class baseUndoer:
         u.p = self.undoRedoTree(u.p,u.newTree,u.oldTree)
         c.selectPosition(u.p) # Does full recolor.
         if u.oldSel:
-            c.frame.body.setTextSelection(u.oldSel)
+            c.frame.body.setSelectionRange(u.oldSel)
     #@-node:ekr.20050318085713.2:undoTree
     #@+node:ekr.20050408100042:undoRedoTree
     def undoRedoTree (self,p,new_data,old_data):
@@ -1780,7 +1780,7 @@ class baseUndoer:
     
         if u.oldSel:
             c.bodyWantsFocus()
-            c.frame.body.setTextSelection(u.oldSel)
+            c.frame.body.setSelectionRange(u.oldSel)
         if u.yview:
             c.bodyWantsFocus()
             c.frame.body.setYScrollPosition(u.yview)

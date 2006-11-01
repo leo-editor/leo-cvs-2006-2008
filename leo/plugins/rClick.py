@@ -317,7 +317,7 @@ def rc_selectAll(c):
     
     """Select the entire log pane."""
     
-    g.app.gui.setTextSelection(c.frame.log.logCtrl,"1.0","end")
+    g.app.gui.setSelectionRange(c.frame.log.logCtrl,"1.0","end")
 #@nonl
 #@-node:ekr.20040422072343.4:rc_selectAll
 #@+node:ekr.20040422072343.9:Utils for context sensitive commands

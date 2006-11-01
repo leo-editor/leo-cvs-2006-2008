@@ -459,7 +459,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     
         try:
             w = self.frame.focus_get()
-            g.app.gui.setTextSelection(w,"1.0","end")
+            g.app.gui.setSelectionRange(w,"1.0","end")
             return "break"
         except:
             return None # To keep pychecker happy.

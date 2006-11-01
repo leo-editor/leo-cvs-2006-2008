@@ -246,7 +246,7 @@ class leoBody:
     def selectAllText (self,event=None):
         self.oops()
         
-    def setTextSelection (self,i,j=None,insert='sel.end'):
+    def setSelectionRange (self,i,j=None,insert='sel.end'):
         self.oops()
     #@-node:ekr.20031218072017.3670:Selection (leoFrame)
     #@+node:ekr.20031218072017.3671:Text
@@ -1122,7 +1122,7 @@ class nullBody (leoBody):
     def selectAllText (self,event=None):
         self.selection = 0,len(self.s)
         
-    def setTextSelection (self,i,j=None,insert='sel.end'):
+    def setSelectionRange (self,i,j=None,insert='sel.end'):
         if i is None:
             self.selection = 0,0
         elif j is None:

@@ -10,7 +10,6 @@
 #@+node:ekr.20061031131434.1:<< imports >>
 import leoGlobals as g
 import leoEditCommands
-import Tkinter as Tk
 
 import glob
 import inspect
@@ -394,7 +393,7 @@ class autoCompleterClass:
         if restore:
             w.delete(i,j)
             w.insert(i,self.selectedText)
-        g.app.gui.setTextSelection(w,j,j,insert=j)
+        g.app.gui.setSelectionRange(w,j,j,insert=j)
         
         self.clear()
         self.object = None
@@ -567,7 +566,7 @@ class autoCompleterClass:
             self.appendTabName(word)
             self.extendSelection('.')
             i = g.app.gui.getInsertPoint(w)
-            g.app.gui.setTextSelection(w,i,i,insert=i)
+            g.app.gui.setSelectionRange(w,i,i,insert=i)
             # g.trace('chaining to',word,self.object)
             # Similar to start logic.
             self.prefix = ''
@@ -641,8 +640,9 @@ class autoCompleterClass:
                 s = gui.stringDelete(s,i-1)
                 c.setBodyString(p,s)
                 c.frame.body.onBodyChanged(undoType='Typing')
-                i,j = g.getWord(s,i-1)
+                i,j = g.getWord(s,i-2)
                 word = s[i:j]
+                # g.trace(i,j,repr(word))
                 i,j = gui.toGuiIndex(s,w,i),gui.toGuiIndex(s,w,j) ### Will be eliminated.
                 gui.setSelectionRange(w,i,j,insert=j)
                 self.prefix = word
@@ -681,6 +681,8 @@ class autoCompleterClass:
     #@-node:ekr.20061031131434.30:doTabCompletion
     #@+node:ekr.20061031131434.31:extendSelection
     def extendSelection (self,s):
+        
+        '''Append s to the presently selected text.'''
         
         c = self.c ; p = c.currentPosition()
         w = self.widget ; gui = g.app.gui
@@ -1728,20 +1730,6 @@ class keyHandlerClass:
         self.trace_key_event                = c.config.getBool('trace_key_event')
         self.trace_minibuffer               = c.config.getBool('trace_minibuffer')
         self.warn_about_redefined_shortcuts = c.config.getBool('warn_about_redefined_shortcuts')
-        if 0: # Now done in subclass.
-            #@        << define Tk ivars >>
-            #@+node:ekr.20061031131434.77:<< define Tk ivars >>
-            if self.useTextWidget:
-                self.svar = None
-            else:
-                if self.widget:
-                    self.svar = Tk.StringVar()
-                    self.widget.configure(textvariable=self.svar)
-                    
-                else:
-                    self.svar = None
-            #@-node:ekr.20061031131434.77:<< define Tk ivars >>
-            #@nl
         #@    << define externally visible ivars >>
         #@+node:ekr.20061031131434.78:<< define externally visible ivars >>
         self.abbrevOn = False # True: abbreviations are on.
@@ -3230,7 +3218,7 @@ class keyHandlerClass:
             junk,jcol = g.convertPythonIndexToRowCol(s,j)
             # g.trace(xcol,icol,jcol,icol <= xcol <= jcol)
             if icol <= xcol <= jcol:
-                g.app.gui.setTextSelection(w,x,x,insert=x)
+                g.app.gui.setSelectionRange(w,x,x,insert=x)
             else:
                 if trace: g.trace('2: break')
                 return 'break'
@@ -3271,7 +3259,7 @@ class keyHandlerClass:
             s = gui.getAllText(w)
             start,end = g.getWord(s,i)
             start,end = gui.toGuiIndex(s,w,start),gui.toGuiIndex(s,w,end) ### Will be eliminated.
-            g.app.gui.setTextSelection(w,start,end)
+            g.app.gui.setSelectionRange(w,start,end)
             return 'break'
     #@-node:ekr.20061031131434.154:masterDoubleClickHandler
     #@+node:ekr.20061031131434.155:masterMenuHandler

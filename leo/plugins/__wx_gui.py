@@ -720,8 +720,8 @@ class wxGui(leoGui.leoGui):
         t.bodyCtrl.SetSelection(n1,start+length)
     #@nonl
     #@-node:edream.111303093953.15:setSelectionRangeWithLength
-    #@+node:edream.111303093953.16:setTextSelection
-    def setTextSelection (self,t,start,end):
+    #@+node:edream.111303093953.16:setSelectionRange
+    def setSelectionRange (self,t,start,end):
     
         if not start or not end:
             return
@@ -731,7 +731,7 @@ class wxGui(leoGui.leoGui):
             
         t.bodyCtrl.SetSelection(start,end)
     #@nonl
-    #@-node:edream.111303093953.16:setTextSelection
+    #@-node:edream.111303093953.16:setSelectionRange
     #@-node:edream.111303093953.11:Selection
     #@+node:edream.111303093953.17:Text
     #@+node:edream.111303093953.18:getAllText
@@ -1118,12 +1118,12 @@ class wxLeoBody (leoFrame.leoBody):
         self.bodyCtrl.SetSelection(-1,-1)
     #@nonl
     #@-node:ekr.20060629124102.4:selectAllText
-    #@+node:ekr.20060629124102.5:setTextSelection
-    def setTextSelection (self,sel):
+    #@+node:ekr.20060629124102.5:setSelectionRange
+    def setSelectionRange (self,sel):
     
         self.bodyCtrl.SetSelection(sel)
     #@nonl
-    #@-node:ekr.20060629124102.5:setTextSelection
+    #@-node:ekr.20060629124102.5:setSelectionRange
     #@-node:edream.111303171218.1:Selection
     #@+node:edream.111303171238:Text
     # These routines replace most of the former insert/delete and index routines.
@@ -3406,7 +3406,7 @@ class wxSearchWidget:
     def selectAllText (self):
         self.selection = 0,-1
     
-    def setTextSelection (self,sel):
+    def setSelectionRange (self,sel):
         try:
             start,end = sel
             self.selection = start,end

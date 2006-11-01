@@ -431,7 +431,7 @@ def insertWikiMarkup(c,leftTag,rightTag):
         # we need to review where the selection now ends
         start,end = body.bodyCtrl.tag_ranges("sel")
         body.bodyCtrl.insert(end, rightTag)
-        g.app.gui.setTextSelection(body.bodyCtrl, start + "-" + `len(leftTag)`  + "c",
+        g.app.gui.setSelectionRange(body.bodyCtrl, start + "-" + `len(leftTag)`  + "c",
                                  end + "+" + `len(rightTag)` + "c")
         newSel = body.getSelectionRange()
         c.frame.onBodyChanged("Change",oldSel=oldSel)
@@ -453,7 +453,7 @@ def insertWikiMarkup(c,leftTag,rightTag):
             body.bodyCtrl.insert("insert", leftTag)
             body.bodyCtrl.insert("insert", rightTag)
             newPos = "%s+%dc" % (oldSel[0],len(leftTag))
-        body.setTextSelection(newPos, newPos)
+        body.setSelectionRange(newPos, newPos)
         newSel = body.getSelectionRange()
         c.frame.onBodyChanged("Typing",oldSel=oldSel)
         #@-node:edream.110403140857.28:<< handle no selection >>

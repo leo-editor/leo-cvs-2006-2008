@@ -1455,7 +1455,8 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''A placeholder command, useful for testing bindings.'''
     
-        g.trace()
+        # g.trace()
+        pass
     #@nonl
     #@-node:ekr.20061012113455:doNothing
     #@-node:ekr.20050929155208: birth
@@ -3284,13 +3285,13 @@ class editCommandsClass (baseEditCommandsClass):
                 self.setMoveCol(ins1)
             moveSpot = self.moveSpot
             if w.compare(spot,'<',moveSpot):
-                g.app.gui.setTextSelection(w,spot,moveSpot,insert=None)
+                g.app.gui.setSelectionRange(w,spot,moveSpot,insert=None)
             else:
-                g.app.gui.setTextSelection(w,moveSpot,spot,insert=None)
+                g.app.gui.setSelectionRange(w,moveSpot,spot,insert=None)
         else:
             if setSpot or not moveSpot:
                 self.setMoveCol(spot)
-            g.app.gui.setTextSelection(w,spot,spot,insert=None)
+            g.app.gui.setSelectionRange(w,spot,spot,insert=None)
             
         c.frame.updateStatusLine()
     #@nonl
@@ -3610,7 +3611,7 @@ class editCommandsClass (baseEditCommandsClass):
             ins = w.index('insert')
             ins = g.choose(ins==i,j,i)
             g.app.gui.setInsertPoint(w,ins)
-            g.app.gui.setTextSelection(w,i,j,insert=None)
+            g.app.gui.setSelectionRange(w,i,j,insert=None)
     #@-node:ekr.20050920084036.136:exchangePointMark
     #@+node:ekr.20061007082956:extend-to-line
     def extendToLine (self,event):
@@ -7654,7 +7655,7 @@ class findTab (leoFind.leoFind):
     
         w = self.frame.focus_get()
         if g.app.gui.isTextWidget(w):
-            g.app.gui.setTextSelection(w,"1.0","end")
+            g.app.gui.setSelectionRange(w,"1.0","end")
     
         return "break"
     #@-node:ekr.20051020120306.27:selectAllFindText
@@ -8071,7 +8072,7 @@ class searchCommandsClass (baseEditCommandsClass):
         
         if sel:
             i,j = sel
-            gui.setTextSelection(w,i,j,insert=ins)
+            gui.setSelectionRange(w,i,j,insert=ins)
         else:
             gui.setInsertPoint(w,ins)
     
@@ -8213,7 +8214,7 @@ class searchCommandsClass (baseEditCommandsClass):
             newpos = gui.toGuiIndex(s,w,j)
             # g.trace(i1,j1,i,j,pos,newpos)
             gui.set_focus(c,w)
-            gui.setTextSelection(w,pos,newpos,insert=pos)
+            gui.setSelectionRange(w,pos,newpos,insert=pos)
     #@-node:ekr.20050920084036.263:iSearchHelper
     #@+node:ekr.20060203072636:endSearch
     def endSearch (self,i,j):
@@ -8222,7 +8223,7 @@ class searchCommandsClass (baseEditCommandsClass):
         w.tag_delete('color','color1')
         
         insert = g.choose(self.forward,'sel.end','sel.start')
-        g.app.gui.setTextSelection (self.w,i,j,insert=insert)
+        g.app.gui.setSelectionRange (self.w,i,j,insert=insert)
     
         self.k.keyboardQuit(event=None)
     #@nonl
@@ -8624,7 +8625,7 @@ class spellTab(leoFind.leoFind):
                     start,end = end,start
                 t.delete(start,end)
                 t.insert(start,selection)
-                g.app.gui.setTextSelection(t,start,start + "+%dc" % (len(selection)))
+                g.app.gui.setSelectionRange(t,start,start + "+%dc" % (len(selection)))
                 c.frame.body.onBodyChanged("Change",oldSel=oldSel)
                 c.invalidateFocus()
                 c.bodyWantsFocusNow()
@@ -8659,7 +8660,7 @@ class spellTab(leoFind.leoFind):
             c.bodyWantsFocusNow()
             # Copy the working selection range to the body pane
             start, end = g.app.gui.getSelectionRange(self.workCtrl)
-            g.app.gui.setTextSelection(bodyCtrl,start,end)
+            g.app.gui.setSelectionRange(bodyCtrl,start,end)
             bodyCtrl.see(start)
         else:
             g.es("no more misspellings")
@@ -8789,7 +8790,7 @@ class spellTab(leoFind.leoFind):
                 # g.trace(repr(word))
                 x1 = t.index('insert + %dc' % (i))
                 x2 = t.index('insert + %dc' % (i+len(word)))
-                g.app.gui.setTextSelection(t,x1,x2)
+                g.app.gui.setSelectionRange(t,x1,x2)
                 return p, word
             else:
                 # End of the line. Bug fix: 9/8/05.

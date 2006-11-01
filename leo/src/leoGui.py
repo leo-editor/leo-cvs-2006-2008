@@ -373,10 +373,8 @@ class leoGui:
     def setSelectionRangeWithLength(self,t,start,length,insert='sel.end'):
         pass
         
-    def setTextSelection (self,t,start,end,insert='sel.end'):
+    def setSelectionRange (self,t,start,end,insert='sel.end'):
         pass
-        
-    setSelectionRange = setTextSelection
     #@-node:ekr.20061024133425:Selection (leoGui)
     #@+node:ekr.20061101020611:Strings
     def stringInsert (self,s,i,s2):
@@ -385,9 +383,11 @@ class leoGui:
         
     def stringDelete (self,s,i,j=None):
         
-        if j is None: j = i
+        '''Delete characters i through j (not including j) of string s.'''
         
-        return s[:i] + s[j+1:]
+        if j is None: j = i+1
+        
+        return s[:i] + s[j:]
     #@nonl
     #@-node:ekr.20061101020611:Strings
     #@+node:ekr.20061031133643:xyToGui/PythonIndex
