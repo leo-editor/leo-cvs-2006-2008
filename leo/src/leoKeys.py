@@ -234,7 +234,7 @@ class autoCompleterClass:
     #@-node:ekr.20061031131434.7:defineObjectDict
     #@-node:ekr.20061031131434.5: ctor (autocompleter)
     #@+node:ekr.20061031131434.8:Top level
-    #@+node:ekr.20061031131434.9:autoComplete (changed)
+    #@+node:ekr.20061031131434.9:autoComplete
     def autoComplete (self,event=None,force=False):
         
         '''An event handler called from k.masterKeyHanderlerHelper.'''
@@ -252,7 +252,7 @@ class autoCompleterClass:
                 self.start(event=event,w=w)
     
         return 'break'
-    #@-node:ekr.20061031131434.9:autoComplete (changed)
+    #@-node:ekr.20061031131434.9:autoComplete
     #@+node:ekr.20061031131434.10:autoCompleteForce
     def autoCompleteForce (self,event=None):
         
@@ -260,7 +260,7 @@ class autoCompleterClass:
         
         return self.autoComplete(event,force=True)
     #@-node:ekr.20061031131434.10:autoCompleteForce
-    #@+node:ekr.20061031131434.11:autoCompleterStateHandler (changed)
+    #@+node:ekr.20061031131434.11:autoCompleterStateHandler
     def autoCompleterStateHandler (self,event):
     
         c = self.c ; k = self.k ; gui = g.app.gui
@@ -298,7 +298,7 @@ class autoCompleterClass:
         else:
             if trace: g.trace('ignore',repr(ch))
             return 'do-standard-keys'
-    #@-node:ekr.20061031131434.11:autoCompleterStateHandler (changed)
+    #@-node:ekr.20061031131434.11:autoCompleterStateHandler
     #@+node:ekr.20061031131434.12:enable/disable/toggleAutocompleter/Calltips
     def disableAutocompleter (self,event=None):
         '''Disable the autocompleter.'''
@@ -330,7 +330,7 @@ class autoCompleterClass:
         self.k.enable_calltips = not self.k.enable_calltips
         self.showCalltipsStatus()
     #@-node:ekr.20061031131434.12:enable/disable/toggleAutocompleter/Calltips
-    #@+node:ekr.20061031131434.13:showCalltips (changed)
+    #@+node:ekr.20061031131434.13:showCalltips
     def showCalltips (self,event=None,force=False):
         
         '''Show the calltips at the cursor.'''
@@ -354,7 +354,7 @@ class autoCompleterClass:
             k.masterCommand(event,func=None,stroke=None,commandName=None)
             
         return 'break'
-    #@-node:ekr.20061031131434.13:showCalltips (changed)
+    #@-node:ekr.20061031131434.13:showCalltips
     #@+node:ekr.20061031131434.14:showCalltipsForce
     def showCalltipsForce (self,event=None):
         
@@ -440,7 +440,7 @@ class autoCompleterClass:
                     self.knownObjects[obj.__name__] = obj
                     # g.trace('adding',obj.__name__)
     #@-node:ekr.20061031131434.19:appendToKnownObjects
-    #@+node:ekr.20061031131434.20:calltip (changed)
+    #@+node:ekr.20061031131434.20:calltip
     def calltip (self,obj=None):
         
         c = self.c ; p = c.currentPosition()
@@ -511,7 +511,7 @@ class autoCompleterClass:
     
         s = s.rstrip(')') # Convenient.
         #@    << insert the text and set j1 and j2 >>
-        #@+node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >> (changed)
+        #@+node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >>
         if gui.hasSelection(w):
             junk,j = gui.getSelectionRange(w)
         else:
@@ -519,18 +519,13 @@ class autoCompleterClass:
         
         body = gui.getAllText(w)
         j = gui.toPythonIndex(body,w,j) ### Will be eliminated.
-        body = body[:j] + s + body[j:]
+        body = gui.stringInsert(body,j,s)
         c.setBodyString(p,body)
         c.frame.body.onBodyChanged('Typing')
         j1 = j + 1 ; j2 = j + len(s)
         j1,j2 = gui.toGuiIndex(body,w,j1),gui.toGuiIndex(body,w,j2) ### Will be eliminated.
-        
-        # w.insert(j,s)
-        # c.frame.body.onBodyChanged('Typing')
-        # j1 = w.index('%s + 1c' % j)
-        # j2 = w.index('%s + %sc' % (j,len(s)))
         #@nonl
-        #@-node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >> (changed)
+        #@-node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >>
         #@nl
     
         # End autocompletion mode, restoring the selection.
@@ -547,7 +542,7 @@ class autoCompleterClass:
         c.frame.putStatusLine('%s %s' % (name,args))
         #@-node:ekr.20061031131434.26:<< put the status line >>
         #@nl
-    #@-node:ekr.20061031131434.20:calltip (changed)
+    #@-node:ekr.20061031131434.20:calltip
     #@+node:ekr.20061031131434.27:chain
     def chain (self):
         
@@ -615,13 +610,14 @@ class autoCompleterClass:
         for name in self.tabList:
             g.es('%s' % (name),tabName=self.tabName)
     #@-node:ekr.20061031131434.28:computeCompletionList
-    #@+node:ekr.20061031131434.29:doBackSpace (autocompleter) (changed)
+    #@+node:ekr.20061031131434.29:doBackSpace (autocompleter)
     def doBackSpace (self):
     
         '''Cut back to previous prefix.'''
         
         # g.trace(self.prefix,self.object,self.prevObjects)
         
+        c = self.c ; p = c.currentPosition()
         if self.prefix:
             self.prefix = self.prefix[:-1]
             self.setSelection(self.prefix)
@@ -638,17 +634,14 @@ class autoCompleterClass:
             i,junk = gui.getTextSelection(w)
             i = gui.toPythonIndex(s,w,i) ### Will be eliminated.
             ch = 0 <= i-1 < len(s) and s[i-1] or ''
-            ### ch = w.get(i+'-1c')
             # g.trace(ch)
             if ch == '.':
                 gui = g.app.gui
                 self.object = obj
-                ### w.delete(i+'-1c')
-                s = s[:i-1] + s[i:]
-                ### i = w.index(i+'-1c wordstart')
-                ### j = w.index(i+' wordend')
-                ## word = w.get(i,j)
-                i,j = g.getWord(s,i)
+                s = gui.stringDelete(s,i-1)
+                c.setBodyString(p,s)
+                c.frame.body.onBodyChanged(undoType='Typing')
+                i,j = g.getWord(s,i-1)
                 word = s[i:j]
                 i,j = gui.toGuiIndex(s,w,i),gui.toGuiIndex(s,w,j) ### Will be eliminated.
                 gui.setSelectionRange(w,i,j,insert=j)
@@ -665,7 +658,7 @@ class autoCompleterClass:
         else:
             self.abort()
     #@nonl
-    #@-node:ekr.20061031131434.29:doBackSpace (autocompleter) (changed)
+    #@-node:ekr.20061031131434.29:doBackSpace (autocompleter)
     #@+node:ekr.20061031131434.30:doTabCompletion
     def doTabCompletion (self):
         
@@ -686,7 +679,7 @@ class autoCompleterClass:
     
         c.widgetWantsFocusNow(w)
     #@-node:ekr.20061031131434.30:doTabCompletion
-    #@+node:ekr.20061031131434.31:extendSelection (changed)
+    #@+node:ekr.20061031131434.31:extendSelection
     def extendSelection (self,s):
         
         c = self.c ; p = c.currentPosition()
@@ -697,21 +690,18 @@ class autoCompleterClass:
             i,j = gui.getSelectionRange(w)
         else:
             i = j = gui.getInsertPoint(w)
-            
-        ###w.insert(j,s)
+    
         body = gui.getAllText(w)
         j = gui.toPythonIndex(body,w,j) ### Will be eliminated.
-        body = body[:j] + s + body[j:]
+        body = gui.stringInsert(body,j,s)
         c.setBodyString(p,body)
-    
-        ###j = w.index('%s + 1c' % (j))
         j += 1
         j = gui.toGuiIndex(body,w,j) ### Will be eliminated.
     
         g.app.gui.setSelectionRange(w,i,j,insert=j)
         c.frame.body.onBodyChanged('Typing')
-    #@-node:ekr.20061031131434.31:extendSelection (changed)
-    #@+node:ekr.20061031131434.32:findAnchor (changed)
+    #@-node:ekr.20061031131434.31:extendSelection
+    #@+node:ekr.20061031131434.32:findAnchor
     def findAnchor (self,w):
         
         '''Returns (j,word) where j is a Python index.'''
@@ -721,22 +711,16 @@ class autoCompleterClass:
         i = gui.getInsertPoint(w)
         s = gui.getAllText(w)
         i = g.app.gui.toPythonIndex(s,w,i) ### Will be eliminated.
-        
-        ### while w.get(i + '-1c') == '.' and w.compare(i,'>','1.0'):
-            ### i = w.index(i + '-2c wordstart')
         while i > 0 and s[i-1] == '.':
             i,j = g.getWord(s,i-2)
-            
-        ### j = w.index(i+' wordend')
-        ### word = w.get(i,j)
         word = s[i:j]
         if word == '.': word = None
         
         # g.trace(i,j,repr(word))
         return j,word
     #@nonl
-    #@-node:ekr.20061031131434.32:findAnchor (changed)
-    #@+node:ekr.20061031131434.33:findCalltipWord (changed)
+    #@-node:ekr.20061031131434.32:findAnchor
+    #@+node:ekr.20061031131434.33:findCalltipWord
     def findCalltipWord (self,w):
         
         gui = g.app.gui
@@ -745,18 +729,13 @@ class autoCompleterClass:
         s = gui.getAllText(w)
         i = gui.toPythonIndex(s,w,i) ### Will be eliminated.
         if i > 0:
-            i,j = g.getWord(s,i)
+            i,j = g.getWord(s,i-1)
             word = s[i:j]
             return word
         else:
             return ''
-        
-        # if w.compare(i,'>','1.0'):
-            # return w.get(i+'-1c wordstart',i+'-1c wordstart wordend')
-        # else:
-            # return ''
     #@nonl
-    #@-node:ekr.20061031131434.33:findCalltipWord (changed)
+    #@-node:ekr.20061031131434.33:findCalltipWord
     #@+node:ekr.20061031131434.34:finish
     def finish (self):
         
@@ -797,7 +776,7 @@ class autoCompleterClass:
             aList = d.get(obj,[])
             return attr in aList
     #@-node:ekr.20061031131434.35:getAttr and hasAttr
-    #@+node:ekr.20061031131434.36:getLeadinWord (changed)
+    #@+node:ekr.20061031131434.36:getLeadinWord
     def getLeadinWord (self,w):
         
         gui = g.app.gui
@@ -805,7 +784,6 @@ class autoCompleterClass:
         self.leadinWord = None
         start = gui.getInsertPoint(w)
         s = gui.getAllText(w)
-        ###start = w.index(start+'-1c')
         start = gui.toPythonIndex(s,w,start) ### Will be eliminated.
         start -= 1
         i,word = self.findAnchor(w)  ### i is a Python index.
@@ -825,16 +803,11 @@ class autoCompleterClass:
             return False
         else:
             self.beginTabName(word)
-            #### while w.compare(i,'<',start):
             while 0 <= i < start and i <len(s):
-                ### if w.get(i) != '.':
                 if s[i] != '.':
                     g.trace('oops: %s' % (repr(w.get(i))))
                     return False
-                # i = w.index(i+'+1c')
-                # j = w.index(i+' wordend')
                 i,j = g.getWord(s,i+1)
-                # word = w.get(i,j)
                 word = s[i:j]
                 # g.trace(word,i,j,start)
                 self.setObjectAndMembersList(word)
@@ -845,7 +818,7 @@ class autoCompleterClass:
                 i = j
             self.leadinWord = word
             return True
-    #@-node:ekr.20061031131434.36:getLeadinWord (changed)
+    #@-node:ekr.20061031131434.36:getLeadinWord
     #@+node:ekr.20061031131434.37:getMembersList
     def getMembersList (self,obj):
         
@@ -884,7 +857,7 @@ class autoCompleterClass:
             c.frame.log.clearTab('Info',wrap='word')
             g.es(doc,tabName='Info')
     #@-node:ekr.20061031131434.38:info
-    #@+node:ekr.20061031131434.39:insertNormalChar (changed)
+    #@+node:ekr.20061031131434.39:insertNormalChar
     def insertNormalChar (self,ch,keysym):
         
         k = self.k ; w = self.widget ; gui = g.app.gui
@@ -920,7 +893,7 @@ class autoCompleterClass:
                         return
             self.extendSelection(ch)
             self.finish()
-    #@-node:ekr.20061031131434.39:insertNormalChar (changed)
+    #@-node:ekr.20061031131434.39:insertNormalChar
     #@+node:ekr.20061031131434.40:push, pop, clear, stackNames
     def push (self,obj):
         
@@ -1040,7 +1013,7 @@ class autoCompleterClass:
             self.membersList = []
     #@-node:ekr.20061031131434.44:completeFromObject
     #@-node:ekr.20061031131434.41:setObjectAndMembersList & helpers
-    #@+node:ekr.20061031131434.45:setSelection (changed)
+    #@+node:ekr.20061031131434.45:setSelection
     def setSelection (self,s):
         
         c = self.c ; p = c.currentPosition()
@@ -1050,8 +1023,7 @@ class autoCompleterClass:
         if g.app.gui.hasSelection(w):
             i,j = gui.getSelectionRange(w)
             i,j = gui.toPythonIndex(body,w,i),gui.toPythonIndex(body,w,j) ### Will be eliminated.
-            ### w.delete(i,j)
-            body = body[:i] + body[j:]
+            body = gui.stringDelete(body,i,j)
         else:
             i = gui.getInsertPoint(w)
             i = gui.toPythonIndex(body,w,i) ### Will be eliminated.
@@ -1060,10 +1032,8 @@ class autoCompleterClass:
         n = s.find(':')
         if n > -1: s = s[:n]
         
-        ### w.insert(i,s)
-        body = body[:i] + s + body[i:]
+        body = gui.stringInsert(body,i,s)
         c.setBodyString(p,body)
-        ### j = w.index('%s + %dc' % (i,len(s)))
         j = i + len(s)
         i,j = gui.toGuiIndex(body,w,i),gui.toGuiIndex(body,w,j) ### Will be eliminated.
         g.app.gui.setSelectionRange(w,i,j,insert=j)
@@ -1072,8 +1042,8 @@ class autoCompleterClass:
         c.frame.body.recolor_now(c.currentPosition(),incremental=True)
         # Usually this call will have no effect because the body text has not changed.
         c.frame.body.onBodyChanged('Typing')
-    #@-node:ekr.20061031131434.45:setSelection (changed)
-    #@+node:ekr.20061031131434.46:start (changed)
+    #@-node:ekr.20061031131434.45:setSelection
+    #@+node:ekr.20061031131434.46:start
     def start (self,event=None,w=None):
         
         c = self.c ; p = c.currentPosition()
@@ -1096,16 +1066,13 @@ class autoCompleterClass:
                 i = gui.getInsertPoint(w)
                 s = gui.getAllText(w)
                 i = gui.toGuiIndex(s,w,i) ### Will be eliminated.
-                ###if w.get(i+'-1c') == '.':
-                ###    w.delete(i+'-1c')
                 if i > 0 and s[i-1] == '.':
-                    s = s[:i-1] + s[i:]
+                    s = gui.stringDelete(s,i-1)
                     c.setBodyString(p,s)
-                    
             self.autoCompleterStateHandler(event)
         else:
             self.abort()
-    #@-node:ekr.20061031131434.46:start (changed)
+    #@-node:ekr.20061031131434.46:start
     #@-node:ekr.20061031131434.16:Helpers
     #@+node:ekr.20061031131434.47:Scanning
     # Not used at present, but soon.
@@ -1587,7 +1554,7 @@ class keyHandlerClass:
     #@nl
     #@    << define list of special names >>
     #@+middle:ekr.20061031131434.83: constants and dicts
-    #@+node:ekr.20061031131434.85:<< define list of special names >> (changed)
+    #@+node:ekr.20061031131434.85:<< define list of special names >>
     key = g.app.gui.keysym
     
     # \'(.+)\',  --> key('\1'),
@@ -1641,12 +1608,12 @@ class keyHandlerClass:
     # KP_F1,KP_F2,KP_F3,KP_F4,
     # KP_0,KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9
     #@-at
-    #@-node:ekr.20061031131434.85:<< define list of special names >> (changed)
+    #@-node:ekr.20061031131434.85:<< define list of special names >>
     #@-middle:ekr.20061031131434.83: constants and dicts
     #@nl
     #@    << define dict of special names >>
     #@+middle:ekr.20061031131434.83: constants and dicts
-    #@+node:ekr.20061031131434.86:<< define dict of special names >> (changed)
+    #@+node:ekr.20061031131434.86:<< define dict of special names >>
     # These keys settings that may be specied in leoSettings.leo.
     # Keys are lowercase, so that case is not significant *for these items only* in leoSettings.leo.
     
@@ -1666,7 +1633,7 @@ class keyHandlerClass:
     # Add lowercase version of special keys.
     for s in tkNamesList:
         settingsNameDict [s.lower()] = s
-    #@-node:ekr.20061031131434.86:<< define dict of special names >> (changed)
+    #@-node:ekr.20061031131434.86:<< define dict of special names >>
     #@-middle:ekr.20061031131434.83: constants and dicts
     #@nl
     #@    << define dict of Tk bind names >>
@@ -1761,19 +1728,20 @@ class keyHandlerClass:
         self.trace_key_event                = c.config.getBool('trace_key_event')
         self.trace_minibuffer               = c.config.getBool('trace_minibuffer')
         self.warn_about_redefined_shortcuts = c.config.getBool('warn_about_redefined_shortcuts')
-        #@    << define Tk ivars >>
-        #@+node:ekr.20061031131434.77:<< define Tk ivars >>
-        if self.useTextWidget:
-            self.svar = None
-        else:
-            if self.widget:
-                self.svar = Tk.StringVar()
-                self.widget.configure(textvariable=self.svar)
-                
-            else:
+        if 0: # Now done in subclass.
+            #@        << define Tk ivars >>
+            #@+node:ekr.20061031131434.77:<< define Tk ivars >>
+            if self.useTextWidget:
                 self.svar = None
-        #@-node:ekr.20061031131434.77:<< define Tk ivars >>
-        #@nl
+            else:
+                if self.widget:
+                    self.svar = Tk.StringVar()
+                    self.widget.configure(textvariable=self.svar)
+                    
+                else:
+                    self.svar = None
+            #@-node:ekr.20061031131434.77:<< define Tk ivars >>
+            #@nl
         #@    << define externally visible ivars >>
         #@+node:ekr.20061031131434.78:<< define externally visible ivars >>
         self.abbrevOn = False # True: abbreviations are on.
@@ -1931,6 +1899,11 @@ class keyHandlerClass:
             
         k.setInputState(self.unboundKeyAction)
     #@-node:ekr.20061031131434.82:setDefaultUnboundKeyAction
+    #@+node:ekr.20061101071425:oops
+    def oops (self):
+        
+        g.trace('Should be defined in subclass:',g.callers())
+    #@-node:ekr.20061101071425:oops
     #@-node:ekr.20061031131434.75: Birth (keyHandler)
     #@+node:ekr.20061031131434.88:Binding (keyHandler)
     #@+node:ekr.20061031131434.89:bindKey
@@ -2226,7 +2199,7 @@ class keyHandlerClass:
     #@-node:ekr.20061031131434.103:makeMasterGuiBinding
     #@-node:ekr.20061031131434.88:Binding (keyHandler)
     #@+node:ekr.20061031131434.104:Dispatching (keyHandler)
-    #@+node:ekr.20061031131434.105:masterCommand & helpers (changed)
+    #@+node:ekr.20061031131434.105:masterCommand & helpers
     def masterCommand (self,event,func,stroke,commandName=None):
     
         '''This is the central dispatching method.
@@ -2394,8 +2367,8 @@ class keyHandlerClass:
             # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
             return None
     #@-node:ekr.20061031131434.110:handleDefaultChar
-    #@-node:ekr.20061031131434.105:masterCommand & helpers (changed)
-    #@+node:ekr.20061031131434.111:fullCommand (alt-x) & helper (changed)
+    #@-node:ekr.20061031131434.105:masterCommand & helpers
+    #@+node:ekr.20061031131434.111:fullCommand (alt-x) & helper
     def fullCommand (self,event,specialStroke=None,specialFunc=None,help=False,helpHandler=None):
         
         '''Handle 'full-command' (alt-x) mode.'''
@@ -2476,7 +2449,7 @@ class keyHandlerClass:
                 k.setLabel('Command does not exist: %s' % commandName)
                 c.bodyWantsFocus()
     #@-node:ekr.20061031131434.112:callAltXFunction
-    #@-node:ekr.20061031131434.111:fullCommand (alt-x) & helper (changed)
+    #@-node:ekr.20061031131434.111:fullCommand (alt-x) & helper
     #@+node:ekr.20061031131434.113:endCommand
     def endCommand (self,event,commandName):
     
@@ -2707,7 +2680,7 @@ class keyHandlerClass:
         for s1,s2,s3 in data:
             g.es('%*s %*s %s' % (-n1,s1,-(min(12,n2)),s2,s3),tabName=tabName)
     #@-node:ekr.20061031131434.121:printCommands
-    #@+node:ekr.20061031131434.122:repeatComplexCommand & helper (changed)
+    #@+node:ekr.20061031131434.122:repeatComplexCommand & helper
     def repeatComplexCommand (self,event):
         
         '''Repeat the previously executed minibuffer command.'''
@@ -2730,7 +2703,7 @@ class keyHandlerClass:
             return 'break'
         else:
             return k.keyboardQuit(event)
-    #@-node:ekr.20061031131434.122:repeatComplexCommand & helper (changed)
+    #@-node:ekr.20061031131434.122:repeatComplexCommand & helper
     #@+node:ekr.20061031131434.123:set-xxx-State
     def setCommandState (self,event):
         '''Enter the 'command' editing state.'''
@@ -2808,7 +2781,7 @@ class keyHandlerClass:
             else:
                 return None
     #@-node:ekr.20061031131434.127:simulateCommand
-    #@+node:ekr.20061031131434.128:getArg (changed)
+    #@+node:ekr.20061031131434.128:getArg
     def getArg (self,event,
         returnKind=None,returnState=None,handler=None,
         prefix=None,tabList=[],completion=True,oneCharacter=False,
@@ -2873,7 +2846,7 @@ class keyHandlerClass:
             k.updateLabel(event)
             k.mb_tabListPrefix = k.getLabel()
         return 'break'
-    #@-node:ekr.20061031131434.128:getArg (changed)
+    #@-node:ekr.20061031131434.128:getArg
     #@+node:ekr.20061031131434.130:keyboardQuit
     def keyboardQuit (self,event,hideTabs=True,setDefaultUnboundKeyAction=True):
     
@@ -3015,153 +2988,27 @@ class keyHandlerClass:
         else:
             c.bodyWantsFocusNow()
     #@-node:ekr.20061031131434.135:k.minibufferWantsFocus/Now
-    #@+node:ekr.20061031131434.136:getLabel
-    def getLabel (self,ignorePrompt=False):
-        
-        k = self ; w = self.widget
-        if not w: return ''
-        
-        if self.useTextWidget:
-            w.update_idletasks()
-            s = g.app.gui.getAllText(w)
-        else:
-            s = k.svar and k.svar.get()
+    #@+node:ekr.20061101071425.1:Should be defined in subclasses
+    __pychecker__ = '--no-argsused'
     
-        if ignorePrompt:
-            return s[len(k.mb_prefix):]
-        else:
-            return s or ''
-    #@-node:ekr.20061031131434.136:getLabel
-    #@+node:ekr.20061031131434.137:protectLabel
-    def protectLabel (self):
-        
-        k = self ; w = self.widget
-        if not w: return
-    
-        if self.useTextWidget:
-            w.update_idletasks()
-            k.mb_prefix = w.get('1.0','end')
-        else:
-            if k.svar:
-                k.mb_prefix = k.svar.get()
-    #@-node:ekr.20061031131434.137:protectLabel
-    #@+node:ekr.20061031131434.138:resetLabel
-    def resetLabel (self):
-        
-        k = self
-        k.setLabelGrey('')
-        k.mb_prefix = ''
-    #@-node:ekr.20061031131434.138:resetLabel
-    #@+node:ekr.20061031131434.139:setLabel
-    def setLabel (self,s,protect=False):
-    
-        k = self ; c = k.c ; w = self.widget
-        if not w: return
-        trace = self.trace_minibuffer and not g.app.unitTesting
-    
-        trace and g.trace(repr(s),g.callers())
-    
-        if self.useTextWidget:
-            w.delete('1.0','end')
-            w.insert('1.0',s)
-            c.masterFocusHandler() # Restore to the previously requested focus.
-        else:
-            if k.svar: k.svar.set(s)
-    
-        if protect:
-            k.mb_prefix = s
-    #@-node:ekr.20061031131434.139:setLabel
-    #@+node:ekr.20061031131434.140:extendLabel
-    def extendLabel(self,s,select=False,protect=False):
-        
-        k = self ; c = k.c ; w = self.widget
-        if not w: return
-        trace = self.trace_minibuffer and not g.app.unitTesting
-        
-        trace and g.trace(repr(s))
-        if not s: return
-    
-        if self.useTextWidget:
-            c.widgetWantsFocusNow(w)
-            w.insert('end',s)
-            if select:
-                i,j = k.getEditableTextRange()
-                g.app.gui.setTextSelection(w,i,j,insert=j)
-            if protect:
-                k.protectLabel()
-    #@-node:ekr.20061031131434.140:extendLabel
-    #@+node:ekr.20061031131434.141:setLabelBlue
-    def setLabelBlue (self,label=None,protect=False):
-        
-        k = self ; w = k.widget
-        if not w: return
-        
-        w.configure(background='lightblue')
-    
-        if label is not None:
-            k.setLabel(label,protect)
-    #@-node:ekr.20061031131434.141:setLabelBlue
-    #@+node:ekr.20061031131434.142:setLabelGrey
-    def setLabelGrey (self,label=None):
-    
-        k = self ; w = self.widget
-        if not w: return
-        
-        w.configure(background='lightgrey')
-        if label is not None:
-            k.setLabel(label)
-    
-    setLabelGray = setLabelGrey
-    #@-node:ekr.20061031131434.142:setLabelGrey
-    #@+node:ekr.20061031131434.143:updateLabel
-    def updateLabel (self,event):
-    
-        '''Mimic what would happen with the keyboard and a Text editor
-        instead of plain accumalation.'''
-        
-        k = self ; c = k.c ; w = self.widget
-        ch = (event and event.char) or ''
-        keysym = (event and event.keysym) or ''
-        trace = self.trace_minibuffer and not g.app.unitTesting
-    
-        trace and g.trace('ch',ch,'keysym',keysym,'k.stroke',k.stroke)
-        
-        if ch and ch not in ('\n','\r'):
-            if self.useTextWidget:
-                c.widgetWantsFocusNow(w)
-                i,j = g.app.gui.getTextSelection(w)
-                if i != j:
-                    w.delete(i,j)
-                if ch == '\b':
-                    s = g.app.gui.getAllText(w)
-                    if len(s) > len(k.mb_prefix):
-                        w.delete(i+'-1c')
-                else:
-                    w.insert('insert',ch)
-                # g.trace(k.mb_prefix)       
-            else:
-                # Just add the character.
-                k.setLabel(k.getLabel() + ch)
-    #@-node:ekr.20061031131434.143:updateLabel
-    #@+node:ekr.20061031131434.144:getEditableTextRange
+    def getLabel (self,ignorePrompt=False):                 self.oops()
+    def protectLabel (self):                                self.oops()
+    def resetLabel (self):                                  self.oops()
+    def setLabel (self,s,protect=False):                    self.oops()
+    def extendLabel(self,s,select=False,protect=False):     self.oops()
+    def setLabelBlue (self,label=None,protect=False):       self.oops()
+    def setLabelGrey (self,label=None):                     self.oops()
+    def updateLabel (self,event):                           self.oops()
     def getEditableTextRange (self):
-        
-        k = self ; w = self.widget ; n = 0
-        # trace = self.trace_minibuffer and not g.app.unitTesting
-        
-        s = w.get('1.0','end')
-        while s.endswith('\n') or s.endswith('\r'):
-            s = s[:-1] ; n += 1
-            
-        i = w.index('1.%d' % len(k.mb_prefix))
-        j = w.index('end -%dc' % n)
-        
-        # if trace: g.trace(i,j)
-        return i,j
-    #@-node:ekr.20061031131434.144:getEditableTextRange
+        self.oops()
+        return 0,0
+    
+    __pychecker__ = '--argsused'
+    #@nonl
+    #@-node:ekr.20061101071425.1:Should be defined in subclasses
     #@-node:ekr.20061031131434.134:Label...
     #@+node:ekr.20061031131434.145:Master event handlers (keyHandler)
-    #@+node:ekr.20061031131434.146:masterKeyHandler (changed)
+    #@+node:ekr.20061031131434.146:masterKeyHandler
     master_key_count = 0
     
     def masterKeyHandler (self,event,stroke=None):
@@ -3344,7 +3191,7 @@ class keyHandlerClass:
     
         return False
     #@-node:ekr.20061031131434.152:handleMiniBindings
-    #@-node:ekr.20061031131434.146:masterKeyHandler (changed)
+    #@-node:ekr.20061031131434.146:masterKeyHandler
     #@+node:ekr.20061031131434.153:masterClickHandler
     def masterClickHandler (self,event,func=None):
     
@@ -3390,6 +3237,7 @@ class keyHandlerClass:
     
         if event and func:
             # Don't even *think* of overriding this.
+            # g.trace(func.__name__)
             val = func(event)
             c.masterFocusHandler()
             if trace: g.trace('val:',val)
@@ -3405,7 +3253,7 @@ class keyHandlerClass:
     masterClick3Handler = masterClickHandler
     masterDoubleClick3Handler = masterClickHandler
     #@-node:ekr.20061031131434.153:masterClickHandler
-    #@+node:ekr.20061031131434.154:masterDoubleClickHandler (changed)
+    #@+node:ekr.20061031131434.154:masterDoubleClickHandler
     def masterDoubleClickHandler (self,event,func=None):
         
         k = self ; c = k.c ; w = event and event.widget
@@ -3418,17 +3266,14 @@ class keyHandlerClass:
             return func(event)
         else:
             gui = g.app.gui
-            ### i = w.index("@%d,%d" % (event.x,event.y))
             x,y = gui.eventXY(event)
             i = gui.xyToPythonIndex(w,x,y)
-            ###start = w.index(i+' wordstart')
-            ###end = w.index(i+' wordend')
             s = gui.getAllText(w)
             start,end = g.getWord(s,i)
             start,end = gui.toGuiIndex(s,w,start),gui.toGuiIndex(s,w,end) ### Will be eliminated.
             g.app.gui.setTextSelection(w,start,end)
             return 'break'
-    #@-node:ekr.20061031131434.154:masterDoubleClickHandler (changed)
+    #@-node:ekr.20061031131434.154:masterDoubleClickHandler
     #@+node:ekr.20061031131434.155:masterMenuHandler
     def masterMenuHandler (self,stroke,func,commandName):
         
@@ -3705,7 +3550,7 @@ class keyHandlerClass:
     #@-node:ekr.20061031131434.165:modeHelp
     #@-node:ekr.20061031131434.156:Modes
     #@+node:ekr.20061031131434.167:Shared helpers
-    #@+node:ekr.20061031131434.168:getFileName & helpers (changed)
+    #@+node:ekr.20061031131434.168:getFileName & helpers
     def getFileName (self,event=None,handler=None,prefix='',filterExt='.leo'):
         
         '''Similar to k.getArg, but uses completion to indicate files on the file system.'''
@@ -3828,7 +3673,7 @@ class keyHandlerClass:
             s = fileName or g.os_path_basename(theDir) + '\\'
             g.es(s,tabName=tabName)
     #@-node:ekr.20061031131434.174:k.showFileNameTabList
-    #@-node:ekr.20061031131434.168:getFileName & helpers (changed)
+    #@-node:ekr.20061031131434.168:getFileName & helpers
     #@+node:ekr.20061031131434.175:computeCompletionList
     # Important: this code must not change mb_tabListPrefix.  Only doBackSpace should do that.
     
@@ -4248,7 +4093,7 @@ class keyHandlerClass:
         # k.showStateAndMode()
     #@-node:ekr.20061031131434.199:setState
     #@-node:ekr.20061031131434.193:States
-    #@+node:ekr.20061031131434.200:universalDispatcher & helpers (changed)
+    #@+node:ekr.20061031131434.200:universalDispatcher & helpers
     def universalDispatcher (self,event):
         
         '''Handle accumulation of universal argument.'''
@@ -4400,7 +4245,7 @@ class keyHandlerClass:
         __pychecker__ = '--no-local' # z is used just for a repeat count.
         
         k = self ; stroke = k.stroke ; w = event.widget
-        g.trace('stroke',stroke,'keycode',event.keycode,'n',n)
+        # g.trace('stroke',stroke,'keycode',event.keycode,'n',n)
     
         if stroke == k.fullCommandKey:
             for z in xrange(n):
@@ -4413,11 +4258,13 @@ class keyHandlerClass:
                 g.trace('method',b.f)
                 for z in xrange(n):
                     if 1: # No need to do this: commands never alter events.
-                        ev = Tk.Event()
-                        ev.widget = event.widget
-                        ev.keysym = event.keysym
-                        ev.keycode = event.keycode
-                        ev.char = event.char
+                        # ev = Tk.Event()
+                        ev = g.Bunch(
+                            widget = event.widget,
+                            keysym = event.keysym,
+                            keycode = event.keycode,
+                            char = event.char,
+                        )
                     k.masterCommand(event,b.f,'<%s>' % stroke)
             else:
                 for z in xrange(n):
@@ -4438,7 +4285,7 @@ class keyHandlerClass:
             c.macroCommands.startKbdMacro(event)
             c.macroCommands.callLastKeyboardMacro(event)
     #@-node:ekr.20061031131434.203:doControlU
-    #@-node:ekr.20061031131434.200:universalDispatcher & helpers (changed)
+    #@-node:ekr.20061031131434.200:universalDispatcher & helpers
     #@-others
 #@-node:ekr.20061031131434.74:class keyHandlerClass
 #@-others
