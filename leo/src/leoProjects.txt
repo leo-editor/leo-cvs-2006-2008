@@ -170,7 +170,9 @@ def scrollTo(self,p=None):
         h1 = self.yoffset(p)
         if c.config.getBool('center_selected_tree_node'): # New in Leo 4.4.3.
             << compute frac0 >>
-            if self.prevMoveToFrac != frac0:
+            delta = abs(self.prevMoveToFrac-frac0)
+            # g.trace(delta)
+            if delta > 0.0:
                 self.prevMoveToFrac = frac0
                 self.canvas.yview("moveto",frac0)
                 # g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
