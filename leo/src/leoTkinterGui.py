@@ -182,6 +182,14 @@ class tkinterGui(leoGui.leoGui):
             self.root.mainloop()
     #@-node:ekr.20031218072017.4055:runMainLoop (tkGui)
     #@-node:ekr.20031218072017.4048:app.gui.Tkinter birth & death
+    #@+node:ekr.20061031172934:app.gui.createKeyHandlerClass
+    def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
+        
+        import leoTkinterKeys # Do this here to break any circular dependency.
+                
+        return leoTkinterKeys.tkinterKeyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
+    #@nonl
+    #@-node:ekr.20061031172934:app.gui.createKeyHandlerClass
     #@+node:ekr.20031218072017.4056:app.gui.Tkinter dialogs
     def runAboutLeoDialog(self,c,version,theCopyright,url,email):
         """Create and run a Tkinter About Leo dialog."""
