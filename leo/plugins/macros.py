@@ -3,7 +3,7 @@
 """
 Creates new nodes containing parameterized section references.
 """
-__version__ = "1.5"
+__version__ = "1.6"
 #@<< version history >>
 #@+node:ekr.20040916091520:<< version history >>
 #@+at
@@ -17,12 +17,14 @@ __version__ = "1.5"
 # 1.3 EKR: Changed 'new_c' logic to 'c' logic.
 # 1.4 EKR: Replaced tree.begin/endUpdate by c.beginEndUpdate.
 # 1.5 EKR: Added event param to parameterize.
+# 1.6 EKR: imported leoNodes and changed tnode to leoNodes.tnode.
 #@-at
 #@nonl
 #@-node:ekr.20040916091520:<< version history >>
 #@nl
 
 import leoGlobals as g
+import leoNodes
 import leoPlugins
 import re
 
@@ -94,14 +96,14 @@ class paramClass:
             return
     
         bodys = node.bodyString()
-        tn = tnode( bodys , sr )
+        tn = leoNodes.tnode( bodys , sr )
         c.beginUpdate()
         try:
             v = current.insertAsNthChild( 0 , tn )
             for z in xrange( 0 , len( sections ) ):
                 head = g.angleBrackets(str( z + 1) + "$")
                 bod = sections[ z ]
-                t = tnode( bod , head )
+                t = leoNodes.tnode( bod , head )
                 v.insertAsNthChild( 0 , t )
         finally:
             c.endUpdate()
