@@ -15,7 +15,7 @@ Plugins may define their own gui classes by setting g.app.gui."""
 #@@pagewidth 80
 
 import leoGlobals as g
-import leoFrame # for null gui.
+import leoFrame # for nullGui.
 
 #@+others
 #@+node:ekr.20031218072017.3720:class leoGui
@@ -172,6 +172,14 @@ class leoGui:
         """Create and run an askYesNoCancel dialog ."""
         self.oops()
     #@-node:ekr.20031218072017.3730:app.gui dialogs
+    #@+node:ekr.20061031173016:app.gui.createKeyHandlerClass
+    def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
+        
+        import leoKeys # Do this here to break a circular dependency.
+                
+        return leoKeys.keyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
+    #@nonl
+    #@-node:ekr.20061031173016:app.gui.createKeyHandlerClass
     #@+node:ekr.20031218072017.3731:app.gui file dialogs
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
     
@@ -373,6 +381,18 @@ class leoGui:
         
     setSelectionRange = setTextSelection
     #@-node:ekr.20061024133425:Selection
+    #@+node:ekr.20061101020611:Strings
+    def stringInsert (self,s,i,s2):
+        
+        return s[:i] + s2 + s[i:]
+        
+    def stringDelete (self,s,i,j=None):
+        
+        if j is None: j = i
+        
+        return s[:i] + s[j+1:]
+    #@nonl
+    #@-node:ekr.20061101020611:Strings
     #@+node:ekr.20061031133643:xyToGui/PythonIndex
     def xyToGuiIndex (self,w,x,y):
         
