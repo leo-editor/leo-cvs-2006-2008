@@ -34,7 +34,7 @@ import time
 #@nonl
 #@-node:ekr.20050101090207.5:<< imports >>
 #@nl
-__version__ = "0.3"
+__version__ = "0.4"
 #@<< version history >>
 #@+node:ekr.20050526121340:<< version history >>
 #@@nocolor
@@ -48,6 +48,8 @@ __version__ = "0.3"
 # 
 # 0.3 EKR: Added warning in docstring that @bool expanded_click_area must be 
 # False.
+# 
+# 0.4 Rich Ries: Changed bindings in addUThreading.
 #@-at
 #@-node:ekr.20050526121340:<< version history >>
 #@nl
@@ -140,12 +142,13 @@ def addUThreading (tkFrame,parentFrame):
     t.start()
 
     # Replace the canvas bindings.
-    canvas.bind( '<Button-1>', scrollDown) # You might also want to bind to <Button-2>
-    canvas.bind( '<Button-3>', scrollUp)
-    canvas.bind( '<ButtonRelease-1>', stopScrolling) # You might also want to bind to <ButtonRelease-2>
+    canvas.bind( '<Control-Button-1>', scrollDown)
+    canvas.bind( '<Shift Button-1>', scrollDown)
+    canvas.bind( '<Control-Button-3>', scrollUp)
+    canvas.bind( '<Shift Button-3>', scrollUp)
+    canvas.bind( '<ButtonRelease-1>', stopScrolling)
     canvas.bind( '<ButtonRelease-3>', stopScrolling)
     return canvas
-#@nonl
 #@-node:ekr.20040915104230:addUThreading & callbacks
 #@-others
 #@nonl
