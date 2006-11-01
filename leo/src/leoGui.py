@@ -357,15 +357,12 @@ class leoGui:
         return keysym
     #@nonl
     #@-node:ekr.20061031132712.3:keysym
-    #@+node:ekr.20061024133425:Selection
-    def getSelectionRange (self,t):
+    #@+node:ekr.20061024133425:Selection (leoGui)
+    def getSelectionRange (self,t,sort=True,toPython=False):
         return 0,0
         
     def getSelectedText (self,t):
         return u""
-        
-    def getTextSelection (self,t,sort=True):
-        return 0,0
         
     def hasSelection (self,widget):
         return False
@@ -380,7 +377,7 @@ class leoGui:
         pass
         
     setSelectionRange = setTextSelection
-    #@-node:ekr.20061024133425:Selection
+    #@-node:ekr.20061024133425:Selection (leoGui)
     #@+node:ekr.20061101020611:Strings
     def stringInsert (self,s,i,s2):
         
@@ -564,7 +561,7 @@ class unitTestGui(leoGui):
         message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
         return self.simulateDialog("yesNoCancelDialog","cancel")
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
-    #@+node:ekr.20031218072017.3745:dummy routines
+    #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     def getindex (self,body,index):
         return 0, 0
     
@@ -577,10 +574,7 @@ class unitTestGui(leoGui):
     def getInsertPoint (self,t):
         return 0
     
-    def getSelectionRange (self,t):
-        return None
-    
-    def getTextSelection (self,t,sort=True):
+    def getSelectionRange (self,t,sort=True,toPython=False):
         return 0, 0
     
     def setInsertPoint (self,t,pos):
@@ -594,7 +588,7 @@ class unitTestGui(leoGui):
     
     def toPythonIndex (self,s,w,index):
         return 0
-    #@-node:ekr.20031218072017.3745:dummy routines
+    #@-node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     #@+node:ekr.20031218072017.3746:oops
     def oops(self):
         

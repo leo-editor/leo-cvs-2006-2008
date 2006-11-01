@@ -1524,7 +1524,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 g.app.gui.setSelectionRange(w,'end','end')
                 w.insert('end',time)
             else:
-                i, j = g.app.gui.getTextSelection(w)
+                i, j = g.app.gui.getSelectionRange(w)
                 if i != j:
                     w.delete(i,j)
                 w.insert("insert",time)
@@ -1540,7 +1540,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if not w or not g.app.gui.isTextWidget(w): return
     
         # Set the clipboard text.
-        i,j = g.app.gui.getTextSelection(w)
+        i,j = g.app.gui.getSelectionRange(w)
         if i != j:
             s = w.get(i,j)
             g.app.gui.replaceClipboardWith(s)
@@ -1556,9 +1556,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if not w or not g.app.gui.isTextWidget(w): return
     
         name = c.widget_name(w)
-        oldSel = g.app.gui.getTextSelection(w)
+        oldSel = g.app.gui.getSelectionRange(w)
         oldText = g.app.gui.getAllText(w)
-        i,j = g.app.gui.getTextSelection(w)
+        i,j = g.app.gui.getSelectionRange(w)
         
         # Update the widget and set the clipboard text.
         s = w.get(i,j)
@@ -1588,7 +1588,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if not w or not g.app.gui.isTextWidget(w): return
     
         wname = c.widget_name(w)
-        i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
+        i,j = oldSel = g.app.gui.getSelectionRange(w)  # Returns insert point if no selection.
         oldText = w.get('1.0','end')
         
         # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
@@ -2359,7 +2359,7 @@ class leoTkinterBody (leoFrame.leoBody):
         ch = g.toUnicode(ch,g.app.tkEncoding)
         newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
         # g.trace('newText',repr(newText))
-        newSel = g.app.gui.getTextSelection(bodyCtrl)
+        newSel = g.app.gui.getSelectionRange(bodyCtrl)
         if oldText is None: oldText = p.bodyString()
         changed = oldText != newText
         if trace:
@@ -2608,7 +2608,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         """Return the selected text of the body frame, converted to unicode."""
     
-        start, end = self.getTextSelection()
+        start, end = self.getSelectionRange()
         if start and end and start != end:
             s = self.bodyCtrl.get(start,end)
             if s is None:
@@ -2618,29 +2618,29 @@ class leoTkinterBody (leoFrame.leoBody):
         else:
             return u'' # Bug fix: 1/8/06
     #@-node:ekr.20031218072017.4020:getSelectedText
-    #@+node:ekr.20031218072017.4021:getTextSelection
-    def getTextSelection (self,sort=True):
+    #@+node:ekr.20031218072017.4021:getSelectionRange (tkBody)
+    def getSelectionRange (self,sort=True,toPython=False):
         
         """Return a tuple representing the selected range of body text.
         
         Return a tuple giving the insertion point if no range of text is selected."""
     
         w = self.bodyCtrl
+        return g.app.gui.getSelectionRange(w,sort,toPython)
         
-        sel = w.tag_ranges("sel")
-    
-        if len(sel) == 2:
-            # New in 4.4a5: match behavior of g.app.gui.getTextSelection.
-            if sort:
-                i,j = sel
-                if w.compare(i, ">", j):
-                    i,j = j,i
-            return sel
-        else:
-            # Return the insertion point if there is no selected text.
-            insert = w.index("insert")
-            return insert,insert
-    #@-node:ekr.20031218072017.4021:getTextSelection
+        # sel = w.tag_ranges("sel")
+        # if len(sel) == 2:
+            # # New in 4.4a5: match behavior of g.app.gui.getSelectionRange.
+            # if sort:
+                # i,j = sel
+                # if w.compare(i, ">", j):
+                    # i,j = j,i
+            # return sel
+        # else:
+            # # Return the insertion point if there is no selected text.
+            # insert = w.index("insert")
+            # return insert,insert
+    #@-node:ekr.20031218072017.4021:getSelectionRange (tkBody)
     #@+node:ekr.20050710104804:getPythonTextSelection
     def getPythonTextSelection (self):
         
@@ -2799,7 +2799,7 @@ class leoTkinterBody (leoFrame.leoBody):
     
         t = self.bodyCtrl
         
-        sel_index = t.getTextSelection()
+        sel_index = t.getSelectionRange()
         if len(sel_index) == 2:
             i,j = sel_index
             sel = t.get(i,j)

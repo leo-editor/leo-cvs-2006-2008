@@ -342,7 +342,7 @@ class autoCompleterClass:
         if (k.enable_calltips or force) and not c.widget_name(w).startswith('head'):
             self.widget = w
             self.prefix = ''
-            self.selection = g.app.gui.getTextSelection(w)
+            self.selection = g.app.gui.getSelectionRange(w)
             self.selectedText = g.app.gui.getSelectedText(w)
             self.leadinWord = self.findCalltipWord(w)
             # g.trace(self.leadinWord)
@@ -390,7 +390,7 @@ class autoCompleterClass:
         for name in (self.tabName,'Modules','Info'):
             c.frame.log.deleteTab(name)
         c.widgetWantsFocusNow(w)
-        i,j = g.app.gui.getTextSelection(w)
+        i,j = g.app.gui.getSelectionRange(w)
         if restore:
             w.delete(i,j)
             w.insert(i,self.selectedText)
@@ -571,7 +571,7 @@ class autoCompleterClass:
             # g.trace('chaining to',word,self.object)
             # Similar to start logic.
             self.prefix = ''
-            self.selection = g.app.gui.getTextSelection(w)
+            self.selection = g.app.gui.getSelectionRange(w)
             self.selectedText = g.app.gui.getSelectedText(w)
             if self.membersList:
                 # self.autoCompleterStateHandler(event=None)
@@ -631,7 +631,7 @@ class autoCompleterClass:
             gui = g.app.gui
             w = self.widget
             s = gui.getAllText(w)
-            i,junk = gui.getTextSelection(w)
+            i,junk = gui.getSelectionRange(w)
             i = gui.toPythonIndex(s,w,i) ### Will be eliminated.
             ch = 0 <= i-1 < len(s) and s[i-1] or ''
             # g.trace(ch)
@@ -1057,7 +1057,7 @@ class autoCompleterClass:
             self.defineObjectDict()
     
         self.prefix = ''
-        self.selection = gui.getTextSelection(w)
+        self.selection = gui.getSelectionRange(w)
         self.selectedText = gui.getSelectedText(w)
         flag = self.getLeadinWord(w)
         if self.membersList:

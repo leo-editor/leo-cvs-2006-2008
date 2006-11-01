@@ -221,7 +221,7 @@ class leoMenu:
         body = self.frame.body
     
         if body:
-            first, last = body.getTextSelection()
+            first, last = body.getSelectionRange()
             return first != last
         else:
             return False

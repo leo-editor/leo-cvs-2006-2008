@@ -2445,7 +2445,7 @@ class baseCommands:
     
         c = self ; body = c.frame.body
         oldVview = body.getYScrollPosition()
-        oldSel   = body.getTextSelection()
+        oldSel   = body.getSelectionRange()
     
         if expandSelection: # 12/3/03
             lines = body.getAllText()
@@ -2498,7 +2498,7 @@ class baseCommands:
             c.notValidInBatchMode(undoType)
             return
         
-        oldSel = c.frame.body.getTextSelection()
+        oldSel = c.frame.body.getSelectionRange()
         c.frame.body.deleteTextSelection() # Works if nothing is selected.
         s = self.getTime(body=True)
     
@@ -2660,7 +2660,7 @@ class baseCommands:
         tabWidth  = theDict.get("tabwidth")
         
         original = body.getAllText()
-        oldSel   = body.getTextSelection()
+        oldSel   = body.getSelectionRange()
         oldYview = body.getYScrollPosition()
         head,lines,tail,trailingNL = c.findBoundParagraph() # DTHEIN 18-JAN-2004: add trailingNL
         #@-node:ekr.20031218072017.1834:<< compute vars for reformatParagraph >>

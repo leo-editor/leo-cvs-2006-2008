@@ -680,30 +680,8 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4083:setInsertPoint
     #@-node:ekr.20031218072017.4081:Insert Point
     #@+node:ekr.20031218072017.4084:Selection
-    #@+node:ekr.20031218072017.4085:getSelectionRange
-    def getSelectionRange (self,t):
-        
-        try:
-            # Warning: this can return None.
-            return t.tag_ranges("sel")
-        except Exception:
-            return 0,0
-    #@-node:ekr.20031218072017.4085:getSelectionRange
-    #@+node:ekr.20051126125950:getSelectedText
-    def getSelectedText (self,t):
-    
-        start, end = self.getTextSelection(t)
-        if start and end and start != end:
-            s = t.get(start,end)
-            if s is None:
-                return u""
-            else:
-                return g.toUnicode(s,g.app.tkEncoding)
-        else:
-            return u""
-    #@-node:ekr.20051126125950:getSelectedText
-    #@+node:ekr.20031218072017.4086:getTextSelection
-    def getTextSelection (self,t,sort=True):
+    #@+node:ekr.20031218072017.4085:getSelectionRange (tkGui)
+    def getSelectionRange (self,t,sort=True,toPython=False):
         
         """Return a tuple representing the selected range of t, a Tk.Text widget.
         
@@ -725,11 +703,33 @@ class tkinterGui(leoGui.leoGui):
             # Return the insertion point if there is no selected text.
             insert = t.index("insert")
         return insert,insert
-    #@-node:ekr.20031218072017.4086:getTextSelection
+    
+    # getTextSelection = getSelectionRange
+    
+    # def getSelectionRange (self,t):
+        # try:
+            # # Warning: this can return None.
+            # return t.tag_ranges("sel")
+        # except Exception:
+            # return 0,0
+    #@-node:ekr.20031218072017.4085:getSelectionRange (tkGui)
+    #@+node:ekr.20051126125950:getSelectedText
+    def getSelectedText (self,t):
+    
+        start, end = self.getSelectionRange(t)
+        if start and end and start != end:
+            s = t.get(start,end)
+            if s is None:
+                return u""
+            else:
+                return g.toUnicode(s,g.app.tkEncoding)
+        else:
+            return u""
+    #@-node:ekr.20051126125950:getSelectedText
     #@+node:ekr.20051126171929:hasSelection
     def hasSelection (self,widget):
         
-        i,j = self.getTextSelection(widget)
+        i,j = self.getSelectionRange(widget)
         return i and j and i != j
     #@-node:ekr.20051126171929:hasSelection
     #@+node:ekr.20060529092645:selectAllText (new in 4.4.1)

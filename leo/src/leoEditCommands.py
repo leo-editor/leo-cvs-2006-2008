@@ -93,7 +93,7 @@ class baseEditCommandsClass:
         name = c.widget_name(w)
     
         if name.startswith('body'):
-            oldSel =  g.app.gui.getTextSelection(w)
+            oldSel =  g.app.gui.getSelectionRange(w)
             oldText = p.bodyString()
             self.undoData = g.Bunch(
                 ch=ch,name=name,oldSel=oldSel,oldText=oldText,w=w,undoType=undoType)
@@ -2650,7 +2650,7 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return
         
         wname = c.widget_name(w)
-        i,j = g.app.gui.getTextSelection(w)
+        i,j = g.app.gui.getSelectionRange(w)
         # g.trace(wname,i,j)
     
         if wname.startswith('body'):
@@ -2740,7 +2740,7 @@ class editCommandsClass (baseEditCommandsClass):
         w = self.editWidget(event)
         if not w: return
     
-        i,j = g.app.gui.getTextSelection(w)
+        i,j = g.app.gui.getSelectionRange(w)
         if i == j: return
     
         self.beginCommand(undoType='clear-selected-text')
@@ -2756,7 +2756,7 @@ class editCommandsClass (baseEditCommandsClass):
         w = self.editWidget(event)
         if not w: return
     
-        i,j = g.app.gui.getTextSelection(w)
+        i,j = g.app.gui.getSelectionRange(w)
         end = w.index('end-1c')
         
         self.beginCommand(undoType='delete-char')
@@ -2884,7 +2884,7 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return 'break'
     
         name = c.widget_name(w)
-        oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w) or (None,None)
+        oldSel =  name.startswith('body') and g.app.gui.getSelectionRange(w) or (None,None)
         oldText = name.startswith('body') and p.bodyString() or ''
         undoType = 'Typing'
         trace = c.config.getBool('trace_masterCommand')
@@ -3076,7 +3076,7 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c ; d = g.scanDirectives(c,p)
         tab_width = d.get("tabwidth",c.tab_width)
         
-        i,j = g.app.gui.getTextSelection(w)
+        i,j = g.app.gui.getSelectionRange(w)
         if i != j:
             w.delete(i,j)
         if tab_width > 0:
@@ -3269,7 +3269,7 @@ class editCommandsClass (baseEditCommandsClass):
         moveSpot = self.moveSpot
         extend = extend or self.extendMode
         if extend:
-            i, j = g.app.gui.getTextSelection(w)
+            i, j = g.app.gui.getSelectionRange(w)
             # Reset the move spot if needed.
             if (
                 not moveSpot or p.v.t != self.moveSpotNode or
@@ -3474,7 +3474,7 @@ class editCommandsClass (baseEditCommandsClass):
     
         c.widgetWantsFocusNow(w)
         ins = w.index('insert')
-        # sel_i,sel_j = g.app.gui.getTextSelection(w)
+        # sel_i,sel_j = g.app.gui.getSelectionRange(w)
         i = w.search('.','insert',stopindex='end')
         ins = i and '%s +1c' % i or 'end'
         self.moveToHelper(event,ins,extend)
@@ -3605,7 +3605,7 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return
     
         c.widgetWantsFocusNow(w)
-        i,j = g.app.gui.getTextSelection(w,sort=False)
+        i,j = g.app.gui.getSelectionRange(w,sort=False)
         if i != j:
             ins = w.index('insert')
             ins = g.choose(ins==i,j,i)
@@ -8618,7 +8618,7 @@ class spellTab(leoFind.leoFind):
         
         selection = self.getSuggestion()
         if selection:
-            start,end = oldSel = g.app.gui.getTextSelection(t)
+            start,end = oldSel = g.app.gui.getSelectionRange(t)
             if start:
                 if t.compare(start, ">", end):
                     start,end = end,start
@@ -8658,7 +8658,7 @@ class spellTab(leoFind.leoFind):
             c.invalidateFocus()
             c.bodyWantsFocusNow()
             # Copy the working selection range to the body pane
-            start, end = g.app.gui.getTextSelection(self.workCtrl)
+            start, end = g.app.gui.getSelectionRange(self.workCtrl)
             g.app.gui.setTextSelection(bodyCtrl,start,end)
             bodyCtrl.see(start)
         else:
@@ -8858,7 +8858,7 @@ class spellTab(leoFind.leoFind):
     
         c = self.c
     
-        start, end = g.app.gui.getTextSelection(c.frame.body.bodyCtrl)
+        start, end = g.app.gui.getSelectionRange(c.frame.body.bodyCtrl)
         state = g.choose(self.suggestions and start,"normal","disabled")
     
         self.changeButton.configure(state=state)

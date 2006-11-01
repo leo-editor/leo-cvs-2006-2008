@@ -478,7 +478,7 @@ class leoFind:
         c = self.c ; p = self.p ; gui = g.app.gui
         # g.trace(self.in_headline)
         t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-        oldSel = sel = gui.getTextSelection(t)
+        oldSel = sel = gui.getSelectionRange(t)
         if sel and len(sel) == 2:
             start,end = sel
             if start == end:
@@ -973,7 +973,7 @@ class leoFind:
         # Select the first node.
         if self.suboutline_only or self.node_only or self.selection_only:
             self.p = c.currentPosition()
-            if self.selection_only: self.selStart,self.selEnd = c.frame.body.getTextSelection()
+            if self.selection_only: self.selStart,self.selEnd = c.frame.body.getSelectionRange()
             else:                   self.selStart,self.selEnd = None,None
         else:
             p = c.rootPosition()
@@ -1036,7 +1036,7 @@ class leoFind:
             sel = None
         else:
             t = c.frame.bodyCtrl
-            sel = gui.getTextSelection(t)
+            sel = gui.getSelectionRange(t)
         pos = gui.getInsertPoint(t)
         st = self.initNextText()
         c.widgetWantsFocus(t)

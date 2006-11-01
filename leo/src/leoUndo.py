@@ -514,7 +514,7 @@ class baseUndoer:
         bunch.dirtyVnodeList = dirtyVnodeList
         
         bunch.newP = p.copy()
-        bunch.newSel = body.getTextSelection()
+        bunch.newSel = body.getSelectionRange()
         
         # Tells whether to report the number of separate changes undone/redone.
         bunch.reportFlag = reportFlag
@@ -550,7 +550,7 @@ class baseUndoer:
         bunch.newDirty = p.isDirty()
         bunch.newHead = p.headString()
         bunch.newMarked = p.isMarked()
-        bunch.newSel = body.getTextSelection()
+        bunch.newSel = body.getSelectionRange()
         
         u.pushBead(bunch)
     #@-node:ekr.20050315134017.2:afterChangeNodeContents
@@ -569,7 +569,7 @@ class baseUndoer:
         bunch.redoHelper = u.redoTree
     
         # Set by beforeChangeTree: changed, oldSel, oldText, oldTree, p
-        bunch.newSel = body.getTextSelection()
+        bunch.newSel = body.getSelectionRange()
         bunch.newText = body.getAllText()
         bunch.newTree = u.saveTree(p)
         
@@ -806,7 +806,7 @@ class baseUndoer:
     
         bunch = u.createCommonBunch(p)
     
-        bunch.oldSel = body.getTextSelection()
+        bunch.oldSel = body.getSelectionRange()
         bunch.oldText = body.getAllText()
         bunch.oldTree = u.saveTree(p)
         
@@ -894,7 +894,7 @@ class baseUndoer:
             oldChanged = c.isChanged(),
             oldDirty = p.isDirty(),
             oldMarked = p.isMarked(),
-            oldSel = body.getTextSelection(),
+            oldSel = body.getSelectionRange(),
             p = p.copy(),
         )
     #@-node:ekr.20050318085432.2:createCommonBunch

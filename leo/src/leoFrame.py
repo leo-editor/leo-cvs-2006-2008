@@ -230,14 +230,14 @@ class leoBody:
         
         self.oops()
     #@-node:ekr.20031218072017.3669:Menus
-    #@+node:ekr.20031218072017.3670:Selection
+    #@+node:ekr.20031218072017.3670:Selection (leoFrame)
     def deleteTextSelection (self):
         self.oops()
         
     def getSelectedText (self):
         self.oops()
         
-    def getTextSelection (self,sort=True):
+    def getSelectionRange (self,sort=True,toPython=False):
         self.oops()
         
     def hasTextSelection (self):
@@ -248,7 +248,7 @@ class leoBody:
         
     def setTextSelection (self,i,j=None,insert='sel.end'):
         self.oops()
-    #@-node:ekr.20031218072017.3670:Selection
+    #@-node:ekr.20031218072017.3670:Selection (leoFrame)
     #@+node:ekr.20031218072017.3671:Text
     #@+node:ekr.20031218072017.3672:delete...
     def deleteAllText(self):
@@ -1101,7 +1101,7 @@ class nullBody (leoBody):
     def bind (self,*args,**keys):
         pass
     #@-node:ekr.20031218072017.2206:Menus
-    #@+node:ekr.20031218072017.2207:Selection
+    #@+node:ekr.20031218072017.2207:Selection (nullBody)
     def deleteTextSelection (self):
         i,j = self.selection
         self.s = self.s[:i] + self.s[j:]
@@ -1111,7 +1111,7 @@ class nullBody (leoBody):
         g.trace(self.s[i:j])
         return self.s[i:j]
         
-    def getTextSelection (self,sort=True):
+    def getSelectionRange (self,sort=True,toPython=False):
         # g.trace(self.selection)
         return self.selection
         
@@ -1129,7 +1129,7 @@ class nullBody (leoBody):
             self.selection = i # a tuple
         else:
             self.selection = i,j
-    #@-node:ekr.20031218072017.2207:Selection
+    #@-node:ekr.20031218072017.2207:Selection (nullBody)
     #@+node:ekr.20031218072017.2208:Text
     #@+node:ekr.20031218072017.2209:delete...
     def deleteAllText(self):

@@ -134,6 +134,20 @@ except:
 #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
 #@-node:ekr.20061030161842.1:Added helper for OnIconDoubleClick
 #@-node:ekr.20061029091904.1:Features
+#@+node:ekr.20061101091734:Plugins
+#@+node:ekr.20061101091443:Changed bindings in UniversalScrolling pluing
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3991223
+
+I assigned both Control and Shift modifiers to do scrolling: this is so my
+finger can hit a key in the lower left corner of the keyboard, and I don't have
+to worry too much about my aim (I have LARGE fingers). Also, I stop the
+scrolling on the JUST button release -- less worry about my finger slipping off
+the key.
+#@nonl
+#@-node:ekr.20061101091443:Changed bindings in UniversalScrolling pluing
+#@-node:ekr.20061101091734:Plugins
 #@+node:ekr.20061030105954:Settings
 #@+node:ekr.20060915175024:Added @bool center_selected_tree_node
 @nocolor

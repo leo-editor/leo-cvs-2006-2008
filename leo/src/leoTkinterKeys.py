@@ -157,7 +157,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         if ch and ch not in ('\n','\r'):
             if self.useTextWidget:
                 c.widgetWantsFocusNow(w)
-                i,j = g.app.gui.getTextSelection(w)
+                i,j = g.app.gui.getSelectionRange(w)
                 if i != j:
                     w.delete(i,j)
                 if ch == '\b':
