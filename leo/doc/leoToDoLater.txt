@@ -2705,7 +2705,7 @@ def change(self,event=None):
                 start,end = end,start
             t.delete(start,end)
             t.insert(start,selection)
-            g.app.gui.setTextSelection(t,start,start + "+%dc" % (len(selection)))
+            g.app.gui.setSelectionRange(t,start,start + "+%dc" % (len(selection)))
             c.frame.body.onBodyChanged("Change",oldSel=oldSel)
             c.invalidateFocus()
             c.bodyWantsFocusNow()
@@ -2740,7 +2740,7 @@ def find (self,event=None):
         c.bodyWantsFocusNow()
         # Copy the working selection range to the body pane
         start, end = g.app.gui.getSelectionRange(self.workCtrl)
-        g.app.gui.setTextSelection(bodyCtrl,start,end)
+        g.app.gui.setSelectionRange(bodyCtrl,start,end)
         bodyCtrl.see(start)
     else:
         g.es("no more misspellings")
@@ -2860,7 +2860,7 @@ def findNextWord(self,p):
             # g.trace(repr(word))
             x1 = t.index('insert + %dc' % (i))
             x2 = t.index('insert + %dc' % (i+len(word)))
-            g.app.gui.setTextSelection(t,x1,x2)
+            g.app.gui.setSelectionRange(t,x1,x2)
             return p, word
         else:
             # End of the line. Bug fix: 9/8/05.

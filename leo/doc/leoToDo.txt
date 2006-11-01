@@ -544,7 +544,7 @@ def undoTyping (self):
 
     if u.oldSel:
         c.bodyWantsFocus()
-        c.frame.body.setTextSelection(u.oldSel)
+        c.frame.body.setSelectionRange(u.oldSel)
     if u.yview:
         c.bodyWantsFocus()
         c.frame.body.setYScrollPosition(u.yview)
@@ -571,7 +571,7 @@ def redoTyping (self):
     
     if u.newSel:
         c.bodyWantsFocus()
-        c.frame.body.setTextSelection(u.newSel)
+        c.frame.body.setSelectionRange(u.newSel)
     if u.yview:
         c.bodyWantsFocus()
         c.frame.body.setYScrollPosition(u.yview)
@@ -2609,7 +2609,7 @@ def runEditCommandTest (c,p):
     try:
         c.selectPosition(work)
         c.setBodyString(work,before.bodyString())
-        g.app.gui.setTextSelection(w,sel1[0],sel1[1])
+        g.app.gui.setSelectionRange(w,sel1[0],sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
         assert s1 == s2, 'expected body: %s, got: %s' % (repr(s1),repr(s2))
@@ -2892,7 +2892,8 @@ def doNothing (self,event):
     
     '''A placeholder command, useful for testing bindings.'''
 
-    g.trace()
+    # g.trace()
+    pass
 #@nonl
 #@-node:ekr.20061012113455:doNothing
 #@-node:ekr.20050929155208: birth
@@ -4706,13 +4707,13 @@ def extendHelper (self,w,extend,ins1,spot,setSpot=True):
             self.setMoveCol(ins1)
         moveSpot = self.moveSpot
         if w.compare(spot,'<',moveSpot):
-            g.app.gui.setTextSelection(w,spot,moveSpot,insert=None)
+            g.app.gui.setSelectionRange(w,spot,moveSpot,insert=None)
         else:
-            g.app.gui.setTextSelection(w,moveSpot,spot,insert=None)
+            g.app.gui.setSelectionRange(w,moveSpot,spot,insert=None)
     else:
         if setSpot or not moveSpot:
             self.setMoveCol(spot)
-        g.app.gui.setTextSelection(w,spot,spot,insert=None)
+        g.app.gui.setSelectionRange(w,spot,spot,insert=None)
         
     c.frame.updateStatusLine()
 #@nonl
@@ -5032,7 +5033,7 @@ def exchangePointMark (self,event):
         ins = w.index('insert')
         ins = g.choose(ins==i,j,i)
         g.app.gui.setInsertPoint(w,ins)
-        g.app.gui.setTextSelection(w,i,j,insert=None)
+        g.app.gui.setSelectionRange(w,i,j,insert=None)
 #@-node:ekr.20050920084036.136:exchangePointMark
 #@+node:ekr.20061007082956:extend-to-line
 def extendToLine (self,event):
@@ -7485,7 +7486,7 @@ def exit (self,restore=False): # Called from keyboard-quit.
     if restore:
         w.delete(i,j)
         w.insert(i,self.selectedText)
-    g.app.gui.setTextSelection(w,j,j,insert=j)
+    g.app.gui.setSelectionRange(w,j,j,insert=j)
     
     self.clear()
     self.object = None
@@ -7650,7 +7651,7 @@ def chain (self):
         self.appendTabName(word)
         self.extendSelection('.')
         i = g.app.gui.getInsertPoint(w)
-        g.app.gui.setTextSelection(w,i,i,insert=i)
+        g.app.gui.setSelectionRange(w,i,i,insert=i)
         # g.trace('chaining to',word,self.object)
         # Similar to start logic.
         self.prefix = ''
