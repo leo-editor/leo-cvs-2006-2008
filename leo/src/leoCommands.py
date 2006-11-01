@@ -197,9 +197,13 @@ class baseCommands:
         # g.trace('Commands',c.fileName()) # g.callers())
         
         # Create a keyHandler even if there is no miniBuffer.
-        c.keyHandler = c.k = k = leoKeys.keyHandlerClass(c,
+        c.keyHandler = c.k = k = g.app.gui.createKeyHandlerClass(c,
             useGlobalKillbuffer=True,
             useGlobalRegisters=True)
+            
+        # c.keyHandler = c.k = k = leoKeys.keyHandlerClass(c,
+            # useGlobalKillbuffer=True,
+            # useGlobalRegisters=True)
     
         if g.app.config and g.app.config.inited:
             # A 'real' .leo file.
@@ -214,6 +218,7 @@ class baseCommands:
             c.frame.menu.createMenuBar(c.frame)
             
         c.bodyWantsFocusNow()
+    #@nonl
     #@+node:ekr.20051007143620:printCommandsDict
     def printCommandsDict (self):
         
