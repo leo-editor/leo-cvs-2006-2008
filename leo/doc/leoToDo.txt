@@ -678,7 +678,7 @@ def copyText (self,event=None):
     if not w or not g.app.gui.isTextWidget(w): return
 
     # Set the clipboard text.
-    i,j = g.app.gui.getTextSelection(w)
+    i,j = g.app.gui.getSelectionRange(w)
     if i != j:
         s = w.get(i,j)
         g.app.gui.replaceClipboardWith(s)
@@ -694,9 +694,9 @@ def cutText (self,event=None):
     if not w or not g.app.gui.isTextWidget(w): return
 
     name = c.widget_name(w)
-    oldSel = g.app.gui.getTextSelection(w)
+    oldSel = g.app.gui.getSelectionRange(w)
     oldText = g.app.gui.getAllText(w)
-    i,j = g.app.gui.getTextSelection(w)
+    i,j = g.app.gui.getSelectionRange(w)
     
     # Update the widget and set the clipboard text.
     s = w.get(i,j)
@@ -726,7 +726,7 @@ def pasteText (self,event=None,middleButton=False):
     if not w or not g.app.gui.isTextWidget(w): return
 
     wname = c.widget_name(w)
-    i,j = oldSel = g.app.gui.getTextSelection(w)  # Returns insert point if no selection.
+    i,j = oldSel = g.app.gui.getSelectionRange(w)  # Returns insert point if no selection.
     oldText = w.get('1.0','end')
     
     # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
@@ -2613,7 +2613,7 @@ def runEditCommandTest (c,p):
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
         assert s1 == s2, 'expected body: %s, got: %s' % (repr(s1),repr(s2))
-        sel3 = g.app.gui.getTextSelection(w)
+        sel3 = g.app.gui.getSelectionRange(w)
         assert sel2 == sel3, 'expected sel: %s, got: %s' % (sel2,sel3)
         c.selectPosition(atTest)
         atTest.contract()
@@ -2644,7 +2644,7 @@ def beginCommandHelper (self,ch,undoType,w):
     name = c.widget_name(w)
 
     if name.startswith('body'):
-        oldSel =  g.app.gui.getTextSelection(w)
+        oldSel =  g.app.gui.getSelectionRange(w)
         oldText = p.bodyString()
         self.undoData = g.Bunch(
             ch=ch,name=name,oldSel=oldSel,oldText=oldText,w=w,undoType=undoType)
@@ -4074,7 +4074,7 @@ def backwardDeleteCharacter (self,event=None):
     if not w: return
     
     wname = c.widget_name(w)
-    i,j = g.app.gui.getTextSelection(w)
+    i,j = g.app.gui.getSelectionRange(w)
     # g.trace(wname,i,j)
 
     if wname.startswith('body'):
@@ -4163,7 +4163,7 @@ def clearSelectedText (self,event):
     w = self.editWidget(event)
     if not w: return
 
-    i,j = g.app.gui.getTextSelection(w)
+    i,j = g.app.gui.getSelectionRange(w)
     if i == j: return
 
     self.beginCommand(undoType='clear-selected-text')
@@ -4179,7 +4179,7 @@ def deleteNextChar (self,event):
     w = self.editWidget(event)
     if not w: return
 
-    i,j = g.app.gui.getTextSelection(w)
+    i,j = g.app.gui.getSelectionRange(w)
     end = w.index('end-1c')
     
     self.beginCommand(undoType='delete-char')
@@ -4307,7 +4307,7 @@ def selfInsertCommand(self,event,action='insert'):
     if not w: return 'break'
 
     name = c.widget_name(w)
-    oldSel =  name.startswith('body') and g.app.gui.getTextSelection(w) or (None,None)
+    oldSel =  name.startswith('body') and g.app.gui.getSelectionRange(w) or (None,None)
     oldText = name.startswith('body') and p.bodyString() or ''
     undoType = 'Typing'
     trace = c.config.getBool('trace_masterCommand')
@@ -4498,7 +4498,7 @@ def updateTab (self,p,w):
     c = self.c ; d = g.scanDirectives(c,p)
     tab_width = d.get("tabwidth",c.tab_width)
     
-    i,j = g.app.gui.getTextSelection(w)
+    i,j = g.app.gui.getSelectionRange(w)
     if i != j:
         w.delete(i,j)
     if tab_width > 0:
@@ -4691,7 +4691,7 @@ def extendHelper (self,w,extend,ins1,spot,setSpot=True):
     moveSpot = self.moveSpot
     extend = extend or self.extendMode
     if extend:
-        i, j = g.app.gui.getTextSelection(w)
+        i, j = g.app.gui.getSelectionRange(w)
         # Reset the move spot if needed.
         if (
             not moveSpot or p.v.t != self.moveSpotNode or
@@ -4896,7 +4896,7 @@ def forwardSentenceHelper (self,event,extend):
 
     c.widgetWantsFocusNow(w)
     ins = w.index('insert')
-    # sel_i,sel_j = g.app.gui.getTextSelection(w)
+    # sel_i,sel_j = g.app.gui.getSelectionRange(w)
     i = w.search('.','insert',stopindex='end')
     ins = i and '%s +1c' % i or 'end'
     self.moveToHelper(event,ins,extend)
@@ -5027,7 +5027,7 @@ def exchangePointMark (self,event):
     if not w: return
 
     c.widgetWantsFocusNow(w)
-    i,j = g.app.gui.getTextSelection(w,sort=False)
+    i,j = g.app.gui.getSelectionRange(w,sort=False)
     if i != j:
         ins = w.index('insert')
         ins = g.choose(ins==i,j,i)
@@ -7421,7 +7421,7 @@ def showCalltips (self,event=None,force=False):
     if (k.enable_calltips or force) and not c.widget_name(w).startswith('head'):
         self.widget = w
         self.prefix = ''
-        self.selection = g.app.gui.getTextSelection(w)
+        self.selection = g.app.gui.getSelectionRange(w)
         self.selectedText = g.app.gui.getSelectedText(w)
         self.leadinWord = self.findCalltipWord(w)
         self.object = None
@@ -7481,7 +7481,7 @@ def exit (self,restore=False): # Called from keyboard-quit.
     for name in (self.tabName,'Modules','Info'):
         c.frame.log.deleteTab(name)
     c.widgetWantsFocusNow(w)
-    i,j = g.app.gui.getTextSelection(w)
+    i,j = g.app.gui.getSelectionRange(w)
     if restore:
         w.delete(i,j)
         w.insert(i,self.selectedText)
@@ -7654,7 +7654,7 @@ def chain (self):
         # g.trace('chaining to',word,self.object)
         # Similar to start logic.
         self.prefix = ''
-        self.selection = g.app.gui.getTextSelection(w)
+        self.selection = g.app.gui.getSelectionRange(w)
         self.selectedText = g.app.gui.getSelectedText(w)
         if self.membersList:
             # self.autoCompleterStateHandler(event=None)
@@ -7711,7 +7711,7 @@ def doBackSpace (self):
             obj = self.object
         # g.trace(self.object,obj)
         w = self.widget
-        i,j = g.app.gui.getTextSelection(w)
+        i,j = g.app.gui.getSelectionRange(w)
         ch = w.get(i+'-1c')
         # g.trace(ch)
         if ch == '.':
@@ -8109,7 +8109,7 @@ def start (self,event=None,w=None):
         self.defineObjectDict()
 
     self.prefix = ''
-    self.selection = g.app.gui.getTextSelection(w)
+    self.selection = g.app.gui.getSelectionRange(w)
     self.selectedText = g.app.gui.getSelectedText(w)
     flag = self.getLeadinWord(w)
     if self.membersList:

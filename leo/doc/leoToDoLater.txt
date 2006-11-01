@@ -2699,7 +2699,7 @@ def change(self,event=None):
     
     selection = self.getSuggestion()
     if selection:
-        start,end = oldSel = g.app.gui.getTextSelection(t)
+        start,end = oldSel = g.app.gui.getSelectionRange(t)
         if start:
             if t.compare(start, ">", end):
                 start,end = end,start
@@ -2739,7 +2739,7 @@ def find (self,event=None):
         c.invalidateFocus()
         c.bodyWantsFocusNow()
         # Copy the working selection range to the body pane
-        start, end = g.app.gui.getTextSelection(self.workCtrl)
+        start, end = g.app.gui.getSelectionRange(self.workCtrl)
         g.app.gui.setTextSelection(bodyCtrl,start,end)
         bodyCtrl.see(start)
     else:
@@ -2929,7 +2929,7 @@ def updateButtons (self):
 
     c = self.c
 
-    start, end = g.app.gui.getTextSelection(c.frame.body.bodyCtrl)
+    start, end = g.app.gui.getSelectionRange(c.frame.body.bodyCtrl)
     state = g.choose(self.suggestions and start,"normal","disabled")
 
     self.changeButton.configure(state=state)
