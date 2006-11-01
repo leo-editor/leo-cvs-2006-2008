@@ -689,14 +689,8 @@ class wxGui(leoGui.leoGui):
     #@-node:edream.111303093953.10:setInsertPoint
     #@-node:edream.111303093953.8:Insert Point
     #@+node:edream.111303093953.11:Selection
-    #@+node:edream.111303093953.12:getSelectionRange
+    #@+node:edream.111303093953.13:getSelectionRange
     def getSelectionRange (self,t):
-    
-        return t.bodyCtrl.GetSelection()
-    #@nonl
-    #@-node:edream.111303093953.12:getSelectionRange
-    #@+node:edream.111303093953.13:getTextSelection
-    def getTextSelection (self,t):
         
         """Return a tuple representing the selected range of t, a Tk.Text widget.
         
@@ -711,7 +705,7 @@ class wxGui(leoGui.leoGui):
             insert = t.bodyCtrl.GetInsertionPoint()
             return insert,insert
     #@nonl
-    #@-node:edream.111303093953.13:getTextSelection
+    #@-node:edream.111303093953.13:getSelectionRange
     #@+node:edream.111303093953.14:setSelectionRange
     def setSelectionRange(self,t,n1,n2):
     
@@ -1102,8 +1096,8 @@ class wxLeoBody (leoFrame.leoBody):
             return u''
     #@nonl
     #@-node:ekr.20060629125105:getSelectedText
-    #@+node:ekr.20060629124102.2:getTextSelection
-    def getTextSelection (self):
+    #@+node:ekr.20060629124102.2:getSelectionRange
+    def getSelectionRange (self):
         
         """Return a tuple representing the selected range of body text.
         
@@ -1111,7 +1105,7 @@ class wxLeoBody (leoFrame.leoBody):
     
         return self.bodyCtrl.GetSelection()
     #@nonl
-    #@-node:ekr.20060629124102.2:getTextSelection
+    #@-node:ekr.20060629124102.2:getSelectionRange
     #@+node:ekr.20060629124102.3:hasTextSelection
     def hasTextSelection (self):
         start,end = self.bodyCtrl.GetSelection()
@@ -1626,7 +1620,7 @@ if wx:
             h = v.headString() # Remember the old value.
         
             if c.edit_widget(v):
-                sel1,sel2 = g.app.gui.getTextSelection(c.edit_widget(v))
+                sel1,sel2 = g.app.gui.getSelectionRange(c.edit_widget(v))
                 if sel1 and sel2 and sel1 != sel2: # 7/7/03
                     c.edit_widget(v).delete(sel1,sel2)
                 c.edit_widget(v).insert("insert",c.getTime(body=False))
@@ -3402,7 +3396,7 @@ class wxSearchWidget:
     def deleteSelection (self):
         self.selection = 0,0
     
-    def getTextSelection (self):
+    def getSelectionRange (self):
         return self.selection
         
     def hasTextSelection (self):

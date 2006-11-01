@@ -155,7 +155,7 @@ def rClicker(tag,keywords):
         if text:
             word = text.strip()
         else:
-            ind0,ind1=c.frame.body.getTextSelection()
+            ind0,ind1=c.frame.body.getSelectionRange()
             n0,p0=ind0.split('.',2)
             n1,p1=ind1.split('.',2)
             assert n0==n1

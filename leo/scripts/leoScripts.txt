@@ -20862,7 +20862,7 @@ s2 = '''\
 
 b = u.beforeChangeNodeContents(p)
 
-i, j = g.app.gui.getTextSelection(w)
+i, j = g.app.gui.getSelectionRange(w)
 if i != j:
     s = w.get(i,j)
     s = ''.join(['\t'+line for line in g.splitLines(s)])

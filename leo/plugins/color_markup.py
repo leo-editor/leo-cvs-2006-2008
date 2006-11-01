@@ -163,7 +163,7 @@ def getUrl(c, *tags):
     """See if the current text belongs to a hyperlink tag and, if so, return the url."""
     
     body = c.frame.body
-    selStart,selEnd = body.getTextSelection() # EKR: 11/4/03
+    selStart,selEnd = body.getSelectionRange() # EKR: 11/4/03
     for tag in tags:
         hyperlink = body.bodyCtrl.tag_prevrange(tag,selEnd) # EKR: 11/4/03
         if hyperlink:
@@ -433,7 +433,7 @@ def insertWikiMarkup(c,leftTag,rightTag):
         body.bodyCtrl.insert(end, rightTag)
         g.app.gui.setTextSelection(body.bodyCtrl, start + "-" + `len(leftTag)`  + "c",
                                  end + "+" + `len(rightTag)` + "c")
-        newSel = body.getTextSelection()
+        newSel = body.getSelectionRange()
         c.frame.onBodyChanged("Change",oldSel=oldSel)
         #@-node:edream.110403140857.27:<< apply markup to selection >>
         #@nl
@@ -443,7 +443,7 @@ def insertWikiMarkup(c,leftTag,rightTag):
         # Note: this does not currently handle mixed nested tags,
         # e.g. <b><i>text</b></i>. One should always close the
         # tags in the order they were opened, as in <b><i>text</i></b>.
-        oldSel = body.getTextSelection() # EKR: 11/04/03
+        oldSel = body.getSelectionRange() # EKR: 11/04/03
         nextChars = body.bodyCtrl.get(oldSel[0], "%s+%dc" % (oldSel[0],len(rightTag)))
         if nextChars == rightTag:
             # if the next chars are the right tag, just move beyond it
@@ -454,7 +454,7 @@ def insertWikiMarkup(c,leftTag,rightTag):
             body.bodyCtrl.insert("insert", rightTag)
             newPos = "%s+%dc" % (oldSel[0],len(leftTag))
         body.setTextSelection(newPos, newPos)
-        newSel = body.getTextSelection()
+        newSel = body.getSelectionRange()
         c.frame.onBodyChanged("Typing",oldSel=oldSel)
         #@-node:edream.110403140857.28:<< handle no selection >>
         #@nl

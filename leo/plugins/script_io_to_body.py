@@ -33,7 +33,7 @@ def newExecuteScript(self,event=None,v=None):
         v = c.currentVnode() 
 
     # Assume any selected body text is a script.
-    start,end = body.getTextSelection() # EKR: 11/04/03
+    start,end = body.getSelectionRange() # EKR: 11/04/03
     if start and end and start != end: # 7/7/03
         s = body.bodyCtrl.get(start,end)
     else:
