@@ -2157,7 +2157,7 @@ class leoTkinterBody (leoFrame.leoBody):
         self.numberOfEditors -= 1
         self.selectEditor(w)
     #@-node:ekr.20060528113806:deleteEditor
-    #@+node:ekr.20061017082211:onClick
+    #@+node:ekr.20061017082211:onClick (Revise)
     def onClick (self,event):
         
         c = self.c ; k = c.k
@@ -2167,17 +2167,18 @@ class leoTkinterBody (leoFrame.leoBody):
         if wname.startswith('body'):
             # A hack to support middle-button pastes: remember the previous selection.
             x, y = event.x, event.y
+            ### k.previousSelection shuld be a Python index.
             k.previousSelection = g.app.gui.getSelectionRange(w)
             i = w.index('@%s,%s' % (x,y))
             # g.trace(x,y,i)
             g.app.gui.setSelectionRange(w,i,i,insert=i)
-            c.editCommands.setMoveCol(i)
+            c.editCommands.setMoveCol(w,i)
             c.frame.updateStatusLine()
             self.selectEditor(w)
         else:
             g.trace('can not happen')
     #@nonl
-    #@-node:ekr.20061017082211:onClick
+    #@-node:ekr.20061017082211:onClick (Revise)
     #@+node:ekr.20061017083312:selectEditor
     def selectEditor(self,w):
         

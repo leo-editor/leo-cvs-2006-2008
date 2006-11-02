@@ -179,16 +179,18 @@ class autoCompleterClass:
         table = [
             # Python globals...
             (['aList','bList'],     'python','list'),
-            (['aString'],           'object','aString'),    # An actual string object.
-            (['c','old_c','new_c'], 'object',c),            # 'leoCommands','Commands'),
+            (['aString'],           'object','aString'), # An actual string object.
+            (['c','old_c','new_c'], 'object',c),            
             (['d','d1','d2'],       'python','dict'),
-            (['f'],                 'object',c.frame), # 'leoTkinterFrame','leoTkinterFrame'),
-            (['g'],                 'object',g),       # 'leoGlobals',None),
-            (['p','p1','p2'],       'object',p),       # 'leoNodes','position'),         
+            (['f'],                 'object',c.frame), 
+            (['g'],                 'object',g),       
+            (['gui'],               'object',g.app.gui),
+            (['k'],                 'object',k),
+            (['p','p1','p2'],       'object',p),             
             (['s','s1','s2','ch'],  'object','aString'),
-            (['string'],            'object',string),     # Python's string module.
-            (['t','t1','t2'],       'object',p.v.t),   # 'leoNodes','tnode'),  
-            (['v','v1','v2'],       'object',p.v),     # 'leoNodes','vnode'),
+            (['string'],            'object',string), # Python's string module.
+            (['t','t1','t2'],       'object',p.v.t),  
+            (['v','v1','v2'],       'object',p.v),
             (['w','widget'],        'Tkinter','Text'),
         ]
         

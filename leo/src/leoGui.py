@@ -582,7 +582,7 @@ class unitTestGui(leoGui):
     def getSelectionRange (self,t,sort=True,toPython=False):
         return 0, 0
     
-    def setInsertPoint (self,t,pos):
+    def setInsertPoint (self,t,pos,python=False):
         pass
     
     def setSelectionRange (self,t,start,end,insert='sel.end'):
