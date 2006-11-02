@@ -756,7 +756,9 @@ class tkinterGui(leoGui.leoGui):
             
         if python:
             s = gui.getAllText(t)
-            i,j = gui.toGuiIndex(s,t,i),gui.toGuiIndex(s,t,j)
+            start,end = gui.toGuiIndex(s,t,start),gui.toGuiIndex(s,t,end)
+            if insert not in ('sel.end',None):
+                insert = gui.toGuiIndex(s,t,insert)
             
         try:
             if t.compare(start, ">", end):

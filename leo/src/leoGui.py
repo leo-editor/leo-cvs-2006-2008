@@ -376,7 +376,7 @@ class leoGui:
     def setSelectionRange (self,t,start,end,insert='sel.end'):
         pass
     #@-node:ekr.20061024133425:Selection (leoGui)
-    #@+node:ekr.20061101020611:Strings
+    #@+node:ekr.20061101020611:Strings & tests
     def stringInsert (self,s,i,s2):
         
         return s[:i] + s2 + s[i:]
@@ -388,8 +388,13 @@ class leoGui:
         if j is None: j = i+1
         
         return s[:i] + s[j:]
-    #@nonl
-    #@-node:ekr.20061101020611:Strings
+        
+    def test_stringInsert (self):
+        assert g.app.gui.stringInsert('abc',2,'XX') == 'abXXc'
+        
+    def test_stringDelete (self):
+        assert g.app.gui.stringDelete('abXXc',2,4) == 'abc'
+    #@-node:ekr.20061101020611:Strings & tests
     #@+node:ekr.20061031133643:xyToGui/PythonIndex
     def xyToGuiIndex (self,w,x,y):
         

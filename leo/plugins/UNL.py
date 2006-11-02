@@ -128,6 +128,7 @@ def onUrl1 (tag,keywords):
 #   file://home/me/todolist.html
 #@-at
 #@@c
+    g.trace(url)
 
     try:
         try:
@@ -171,6 +172,7 @@ def onUrl1 (tag,keywords):
                             try:
                                 c2.frame.tree.expandAllAncestors(p)
                                 c2.selectPosition(p)
+                                # c2.frame.tree.select(scroll=False)
                             finally:
                                 c2.endUpdate()
                                 

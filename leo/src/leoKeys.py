@@ -511,26 +511,19 @@ class autoCompleterClass:
         s = s.rstrip(')') # Convenient.
         #@    << insert the text and set j1 and j2 >>
         #@+node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >>
-        if gui.hasSelection(w):
-            junk,j = gui.getSelectionRange(w)
-        else:
-            j = gui.getInsertPoint(w)
-        
+        junk,j = gui.getSelectionRange(w,python=True) # Returns insert point if no selection.
         body = gui.getAllText(w)
-        j = gui.toPythonIndex(body,w,j) ### Will be eliminated.
         body = gui.stringInsert(body,j,s)
         c.setBodyString(p,body)
         c.frame.body.onBodyChanged('Typing')
         j1 = j + 1 ; j2 = j + len(s)
-        j1,j2 = gui.toGuiIndex(body,w,j1),gui.toGuiIndex(body,w,j2) ### Will be eliminated.
-        #@nonl
         #@-node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >>
         #@nl
     
         # End autocompletion mode, restoring the selection.
         self.finish()
         c.widgetWantsFocusNow(w)
-        g.app.gui.setSelectionRange(w,j1,j2,insert=j2)
+        gui.setSelectionRange(w,j1,j2,insert=j2,python=True)
         #@    << put the status line >>
         #@+node:ekr.20061031131434.26:<< put the status line >>
         c.frame.clearStatusLine()
@@ -630,8 +623,7 @@ class autoCompleterClass:
             gui = g.app.gui
             w = self.widget
             s = gui.getAllText(w)
-            i,junk = gui.getSelectionRange(w)
-            i = gui.toPythonIndex(s,w,i) ### Will be eliminated.
+            i,junk = gui.getSelectionRange(w,python=True)
             ch = 0 <= i-1 < len(s) and s[i-1] or ''
             # g.trace(ch)
             if ch == '.':
@@ -643,8 +635,7 @@ class autoCompleterClass:
                 i,j = g.getWord(s,i-2)
                 word = s[i:j]
                 # g.trace(i,j,repr(word))
-                i,j = gui.toGuiIndex(s,w,i),gui.toGuiIndex(s,w,j) ### Will be eliminated.
-                gui.setSelectionRange(w,i,j,insert=j)
+                gui.setSelectionRange(w,i,j,insert=j,python=True)
                 self.prefix = word
                 self.popTabName()
                 self.membersList = self.getMembersList(obj)
@@ -688,20 +679,14 @@ class autoCompleterClass:
         w = self.widget ; gui = g.app.gui
         c.widgetWantsFocusNow(w)
         
-        if gui.hasSelection(w):
-            i,j = gui.getSelectionRange(w)
-        else:
-            i = j = gui.getInsertPoint(w)
-    
+        i,j = gui.getSelectionRange(w,python=True)
         body = gui.getAllText(w)
-        j = gui.toPythonIndex(body,w,j) ### Will be eliminated.
         body = gui.stringInsert(body,j,s)
         c.setBodyString(p,body)
         j += 1
-        j = gui.toGuiIndex(body,w,j) ### Will be eliminated.
-    
-        g.app.gui.setSelectionRange(w,i,j,insert=j)
+        g.app.gui.setSelectionRange(w,i,j,insert=j,python=True)
         c.frame.body.onBodyChanged('Typing')
+    #@nonl
     #@-node:ekr.20061031131434.31:extendSelection
     #@+node:ekr.20061031131434.32:findAnchor
     def findAnchor (self,w):
@@ -709,12 +694,12 @@ class autoCompleterClass:
         '''Returns (j,word) where j is a Python index.'''
         
         gui = g.app.gui
-        
-        i = gui.getInsertPoint(w)
+        i = gui.getInsertPoint(w,python=True)
         s = gui.getAllText(w)
-        i = g.app.gui.toPythonIndex(s,w,i) ### Will be eliminated.
+    
         while i > 0 and s[i-1] == '.':
             i,j = g.getWord(s,i-2)
+    
         word = s[i:j]
         if word == '.': word = None
         
@@ -727,9 +712,8 @@ class autoCompleterClass:
         
         gui = g.app.gui
         
-        i = gui.getInsertPoint(w)
+        i = gui.getInsertPoint(w,python=True)
         s = gui.getAllText(w)
-        i = gui.toPythonIndex(s,w,i) ### Will be eliminated.
         if i > 0:
             i,j = g.getWord(s,i-1)
             word = s[i:j]
@@ -784,12 +768,11 @@ class autoCompleterClass:
         gui = g.app.gui
         self.verbose = False # User must explicitly ask for verbose.
         self.leadinWord = None
-        start = gui.getInsertPoint(w)
+        start = gui.getInsertPoint(w,python=True)
         s = gui.getAllText(w)
-        start = gui.toPythonIndex(s,w,start) ### Will be eliminated.
         start -= 1
-        i,word = self.findAnchor(w)  ### i is a Python index.
-    
+        i,word = self.findAnchor(w)
+        
         if word and word.isdigit():
             self.membersList = []
             return False
@@ -1022,13 +1005,11 @@ class autoCompleterClass:
         w = self.widget ; gui = g.app.gui
         c.widgetWantsFocusNow(w)
         body = gui.getAllText(w)
-        if g.app.gui.hasSelection(w):
-            i,j = gui.getSelectionRange(w)
-            i,j = gui.toPythonIndex(body,w,i),gui.toPythonIndex(body,w,j) ### Will be eliminated.
+        if gui.hasSelection(w):
+            i,j = gui.getSelectionRange(w,python=True)
             body = gui.stringDelete(body,i,j)
         else:
-            i = gui.getInsertPoint(w)
-            i = gui.toPythonIndex(body,w,i) ### Will be eliminated.
+            i = gui.getInsertPoint(w,python=True)
             
         # Don't go past the ':' that separates the completion from the type.
         n = s.find(':')
@@ -1037,8 +1018,7 @@ class autoCompleterClass:
         body = gui.stringInsert(body,i,s)
         c.setBodyString(p,body)
         j = i + len(s)
-        i,j = gui.toGuiIndex(body,w,i),gui.toGuiIndex(body,w,j) ### Will be eliminated.
-        g.app.gui.setSelectionRange(w,i,j,insert=j)
+        gui.setSelectionRange(w,i,j,insert=j,python=True)
     
         # New in Leo 4.4.2: recolor immediately to preserve the new selection in the new colorizer.
         c.frame.body.recolor_now(c.currentPosition(),incremental=True)
@@ -1065,9 +1045,8 @@ class autoCompleterClass:
         if self.membersList:
             if not flag:
                 # Remove the (leading) invocation character.
-                i = gui.getInsertPoint(w)
+                i = gui.getInsertPoint(w,python=True)
                 s = gui.getAllText(w)
-                i = gui.toGuiIndex(s,w,i) ### Will be eliminated.
                 if i > 0 and s[i-1] == '.':
                     s = gui.stringDelete(s,i-1)
                     c.setBodyString(p,s)
@@ -1098,7 +1077,7 @@ class autoCompleterClass:
         
         # g.trace('autocompleter')
         
-        if 0: ## thread:
+        if 0: # thread:
             # Use a thread to do the initial scan so as not to interfere with the user.            
             def scan ():
                 #g.es( "This is for testing if g.es blocks in a thread", color = 'pink' )
@@ -2987,7 +2966,7 @@ class keyHandlerClass:
     def setLabelBlue (self,label=None,protect=False):       self.oops()
     def setLabelGrey (self,label=None):                     self.oops()
     def updateLabel (self,event):                           self.oops()
-    def getEditableTextRange (self):
+    def getEditableTextRange (self,python=False):
         self.oops()
         return 0,0
     
@@ -3205,24 +3184,14 @@ class keyHandlerClass:
         if wname.startswith('body'):
             c.frame.body.onClick(event) # New in Leo 4.4.2.
         elif wname.startswith('mini'):
-            ### x = w.index('@%s,%s' % (event.x,event.y))
-            s = gui.getAllText(w)
-            x,junk = gui.eventXY(event)
+            x,y = gui.eventXY(event)
             x = gui.xyToPythonIndex(w,x,y)
-            i, j = k.getEditableTextRange() ### Should return Python indices.
-            ### xcol = int(x.split('.')[1])
-            junk,xcol = g.convertPythonIndexToRowCol(s,x)
-            ### icol = int(i.split('.')[1])
-            junk,icol = g.convertPythonIndexToRowCol(s,i)
-            ### jcol = int(j.split('.')[1])
-            junk,jcol = g.convertPythonIndexToRowCol(s,j)
-            # g.trace(xcol,icol,jcol,icol <= xcol <= jcol)
-            if icol <= xcol <= jcol:
-                g.app.gui.setSelectionRange(w,x,x,insert=x)
+            i,j = k.getEditableTextRange()
+            if i <= x <= j:
+                gui.setSelectionRange(w,x,x,insert=x,python=True)
             else:
                 if trace: g.trace('2: break')
                 return 'break'
-    
         if event and func:
             # Don't even *think* of overriding this.
             # g.trace(func.__name__)
@@ -3258,8 +3227,7 @@ class keyHandlerClass:
             i = gui.xyToPythonIndex(w,x,y)
             s = gui.getAllText(w)
             start,end = g.getWord(s,i)
-            start,end = gui.toGuiIndex(s,w,start),gui.toGuiIndex(s,w,end) ### Will be eliminated.
-            g.app.gui.setSelectionRange(w,start,end)
+            gui.setSelectionRange(w,start,end,python=True)
             return 'break'
     #@-node:ekr.20061031131434.154:masterDoubleClickHandler
     #@+node:ekr.20061031131434.155:masterMenuHandler

@@ -114,7 +114,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
             w.insert('end',s)
             if select:
                 i,j = k.getEditableTextRange()
-                g.app.gui.setSelectionRange(w,i,j,insert=j)
+                g.app.gui.setSelectionRange(w,i,j,insert=j,python=True)
             if protect:
                 k.protectLabel()
     #@-node:ekr.20061031170011.9:extendLabel
@@ -174,18 +174,16 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
     #@+node:ekr.20061031170011.13:getEditableTextRange (should return Python indices)
     def getEditableTextRange (self):
         
-        k = self ; w = self.widget ; n = 0
-        # trace = self.trace_minibuffer and not g.app.unitTesting
-        
-        s = w.get('1.0','end')
+        k = self ; w = self.widget
+        s = g.app.gui.getAllText(w)
+    
+        i = len(k.mb_prefix)
         while s.endswith('\n') or s.endswith('\r'):
-            s = s[:-1] ; n += 1
-            
-        i = w.index('1.%d' % len(k.mb_prefix))
-        j = w.index('end -%dc' % n)
-        
-        # if trace: g.trace(i,j)
+            s = s[:-1]
+        j = len(s)
+    
         return i,j
+    #@nonl
     #@-node:ekr.20061031170011.13:getEditableTextRange (should return Python indices)
     #@-node:ekr.20061031170011.3:Label (Tk keys)
     #@-others

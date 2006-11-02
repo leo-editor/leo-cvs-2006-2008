@@ -425,10 +425,13 @@ class abbrevCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Add Abbreviation: ',protect=True)
             k.getArg(event,'add-abbr',1,self.addAbbreviation)
         else:
-            w = self.w
+            w = self.w ; gui = g.app.gui
             k.clearState()
             k.resetLabel()
-            word = w.get('insert -1c wordstart','insert -1c wordend')
+            ### word = w.get('insert -1c wordstart','insert -1c wordend')
+            s = gui.getAllText(w)
+            i = gui.getInsertPoint(w,python=True)
+            word = g.getWord(s,i-1)
             if k.arg.strip():
                 self.abbrevs [k.arg] = word
                 k.abbrevOn = True
