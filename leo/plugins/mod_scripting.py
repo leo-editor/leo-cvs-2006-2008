@@ -116,7 +116,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.9'
+__version__ = '1.10'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -186,6 +186,7 @@ __version__ = '1.9'
 # 1.8 EKR: An attempt to workaround problems deleting Pmw buttons/with 
 # balloons.
 # 1.9 EKR: Warn about nodes with no cleaned text.
+# 1.10 EKR: Strip @key from button text and command name.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -531,6 +532,9 @@ class scriptingController:
             s = s[1:]
         if s.startswith('button'):
             s = s[6:]
+        i = s.find('@key')
+        if i != -1:
+            s = s[:i].strip()
         if 1: # Not great, but spaces, etc. interfere with tab completion.
             chars = g.toUnicode(string.letters + string.digits,g.app.tkEncoding)
             aList = [g.choose(ch in chars,ch,'-') for ch in g.toUnicode(s,g.app.tkEncoding)]
