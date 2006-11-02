@@ -1,9 +1,68 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040916084945:@thin macros.py
-"""
+#@<< docstring >>
+#@+node:ekr.20061102090532:<< docstring >>
+'''
 Creates new nodes containing parameterized section references.
-"""
-__version__ = "1.6"
+
+For a discussion of this plugin, see:
+http://sourceforge.net/forum/message.php?msg_id=2444117
+
+This plugin adds nodes under the currently selected tree that are to act as
+section references. To do so, go the Outline menu and select the
+'Parameterize Section Reference' command. This plugin looks for a top level node called
+'Parameterized Nodes'. If it finds a headline that matches the section reference
+it adds a node/nodes to the current tree.
+
+To see this in action, do the following:
+    
+0. **Important**: in the examples below, type << instead of < < and
+   type >> instead of > >.  Docstrings can not contain section references!
+
+1. Create a node called 'Parameterized Nodes', with a sub-node called < < Meow > >.
+The body of < < Meow > > should have the text::
+
+I mmmm sooo happy I could < < 1$ > >.  But I dont know if I have all the < < 2$ > >
+money in the world.
+
+2. In a node called A, type::
+    
+< < meow( purrrrrr, zzooot ) > > (leave the cursor at the end of the line)
+
+3. In a node called B, type::
+    
+< < meow ( spit or puke, blinkin  ) > > (leave the cursor at the end of the line)
+
+4. Leave the cursor in Node A at the designated point.
+
+5. Go to Outline and select Parameterize Section Reference.
+
+The plugin searches the outline, goes to level one and finds a Node with the Headline,
+"Parameterized Nodes". It looks for nodes under that headline with the the headline
+< < meow > >. It then creates this node structure under Node A:
+    < < meow ( purrrrrr, zzooot ) > >
+        < <2$> >
+        < <1$> >
+
+6. Examine the new subnodes of Node A.
+
+< < meow ( purrrrrr, zzooot ) > > contains the body text of the < < meow > > node.
+< < 1$ > > contains the word purrrrrr.
+< < 2$ > > contains the word zzooot.
+
+7. Go to Node B, and leave the cursor at the designated point.
+
+Go to Outline Menu and select Parameterize Section Reference command.
+
+8. Examine the new subnodes of Node B.
+
+It's a lot easier to use than to explain!
+'''
+#@nonl
+#@-node:ekr.20061102090532:<< docstring >>
+#@nl
+
+__version__ = "1.7"
 #@<< version history >>
 #@+node:ekr.20040916091520:<< version history >>
 #@+at
@@ -18,6 +77,7 @@ __version__ = "1.6"
 # 1.4 EKR: Replaced tree.begin/endUpdate by c.beginEndUpdate.
 # 1.5 EKR: Added event param to parameterize.
 # 1.6 EKR: imported leoNodes and changed tnode to leoNodes.tnode.
+# 1.7 Rich Ries: improved the docstring.
 #@-at
 #@nonl
 #@-node:ekr.20040916091520:<< version history >>
