@@ -405,6 +405,14 @@ class leoGui:
         return 0
     #@nonl
     #@-node:ekr.20061031133643:xyToGui/PythonIndex
+    #@+node:ekr.20061103094543:Visibility & scrolling (leoGui)
+    def see (self,w,index,python=False):
+        pass
+        
+    def seeInsertPoint (self):
+        pass
+    #@nonl
+    #@-node:ekr.20061103094543:Visibility & scrolling (leoGui)
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@+node:ekr.20031218072017.3740:guiName
     def guiName(self):
@@ -572,15 +580,21 @@ class unitTestGui(leoGui):
     
     def get_focus (self,frame):
         pass
-    
-    def set_focus (self,c,widget):
-        pass
-    
+        
     def getInsertPoint (self,t):
         return 0
     
     def getSelectionRange (self,t,sort=True,toPython=False):
         return 0, 0
+        
+    def see (self,w,index,python=False):
+        pass
+        
+    def seeInsertPoint (self):
+        pass
+    
+    def set_focus (self,c,widget):
+        pass
     
     def setInsertPoint (self,t,pos,python=False):
         pass

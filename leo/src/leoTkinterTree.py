@@ -1970,7 +1970,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     c.frame.findPanel.handleUserClick(p)
                 if p.v.t.insertSpot != None:
                     c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-                    c.frame.bodyCtrl.see(p.v.t.insertSpot)
+                    c.frame.body.see(p.v.t.insertSpot)
                 else:
                     c.frame.bodyCtrl.mark_set("insert","1.0")
                     
@@ -2519,7 +2519,7 @@ class leoTkinterTree (leoFrame.leoTree):
             
             if p.v and p.v.t.insertSpot != None:
                 c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-                c.frame.bodyCtrl.see(p.v.t.insertSpot)
+                c.frame.body.see(p.v.t.insertSpot)
             else:
                 c.frame.bodyCtrl.mark_set("insert","1.0")
                 

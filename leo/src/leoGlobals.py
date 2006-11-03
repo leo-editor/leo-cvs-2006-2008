@@ -4088,13 +4088,13 @@ def test_failure_with_ascii_encodings():
 #@-node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
 #@-node:ekr.20031218072017.1498:Unicode utils...
 #@+node:EKR.20040612114220:Utility classes, functions & objects...
-#@+node:ekr.20050315073003: Index utilities...
-#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol  & test
+#@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
+#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol
 def convertPythonIndexToRowCol (s,i):
     
     '''Convert index i into string s into zero-based row/col indices.'''
-    
-    if not s or i == 0:
+
+    if not s or i <= 0:
         return 0,0
     else:
         i = min(i,len(s)-1)
@@ -4106,39 +4106,13 @@ def convertPythonIndexToRowCol (s,i):
             prevNl = s.rfind('\n',0,i) # Don't include i
             # assert prevNl > -1
             return row,i-prevNl-1
-#@+node:ekr.20050314140957.1:bruteForceConvertPythonIndexToRowCol
-def bruteForceConvertPythonIndexToRowCol (s,i):
-        
-    lines = g.splitLines(s)
-    row,total = 0,0
-    for line in lines:
-        n = len(line)
-        if i < total + n:
-            break
-        else:
-            total += n
-            row += 1
-    return row, i-total
-#@-node:ekr.20050314140957.1:bruteForceConvertPythonIndexToRowCol
-#@+node:ekr.20050314140957.2:test_g_convertPythonIndexToRowCol
-def test_g_convertPythonIndexToRowCol ():
-    
-    s = '\nabc\n\npdq\nxy'
-
-    for i in xrange(len(s)+1): # Test one-too-large case.
-        try: ch = s[i]
-        except IndexError: ch = '**'
-        rowCol_1 = g.convertPythonIndexToRowCol(s,i)
-        rowCol_2 = g.bruteForceConvertPythonIndexToRowCol(s,i)
-        if g.app.unitTesting:
-            assert i == len(s) or rowCol_1 == rowCol_2
-        else:
-            print '%2d %4s %5s' % (i,repr(ch),rowCol_1==rowCol_2),
-            print rowCol_1,rowCol_2
-#@-node:ekr.20050314140957.2:test_g_convertPythonIndexToRowCol
-#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol  & test
-#@+node:ekr.20050315071727:g.convertRowColToPythonIndex & test
+#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol
+#@+node:ekr.20050315071727:g.convertRowColToPythonIndex
 def convertRowColToPythonIndex (s,row,col):
+    
+    '''Convert zero-based row/col indices into a python index into string s.'''
+    
+    if row < 0: return 0
     
     lines = g.splitLines(s)
 
@@ -4152,25 +4126,8 @@ def convertRowColToPythonIndex (s,row,col):
         prev += len(line)
         
     return prev + col
-#@+node:ekr.20050315072239:test_g_convertPythonIndexToRowCol
-def test_g_convertRowColToPythonIndex ():
-
-    s = '\nabc\n\npdq\nxy'
-    lines = g.splitLines(s)
-    row = 0 ; prev = -1
-    for line in lines:
-        col = 0
-        for ch in line:
-            i = g.convertRowColToPythonIndex(s,row,col)
-            assert i == prev + 1,'i %d prev %d' % (i,prev)
-            if not g.app.unitTesting:
-                print '%4s %2d %2d %2d' % (repr(ch),row,col,i)
-            prev = i
-            col += 1
-        row += 1
-#@-node:ekr.20050315072239:test_g_convertPythonIndexToRowCol
-#@-node:ekr.20050315071727:g.convertRowColToPythonIndex & test
-#@-node:ekr.20050315073003: Index utilities...
+#@-node:ekr.20050315071727:g.convertRowColToPythonIndex
+#@-node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20031218072017.3140: List utilities...
 #@+node:ekr.20031218072017.3141:appendToList
 def appendToList(out, s):

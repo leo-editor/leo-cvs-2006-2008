@@ -117,16 +117,18 @@ def defineObjectDict (self):
     table = [
         # Python globals...
         (['aList','bList'],     'python','list'),
-        (['aString'],           'object','aString'),    # An actual string object.
-        (['c','old_c','new_c'], 'object',c),            # 'leoCommands','Commands'),
+        (['aString'],           'object','aString'), # An actual string object.
+        (['c','old_c','new_c'], 'object',c),            
         (['d','d1','d2'],       'python','dict'),
-        (['f'],                 'object',c.frame), # 'leoTkinterFrame','leoTkinterFrame'),
-        (['g'],                 'object',g),       # 'leoGlobals',None),
-        (['p','p1','p2'],       'object',p),       # 'leoNodes','position'),         
+        (['f'],                 'object',c.frame), 
+        (['g'],                 'object',g),       
+        (['gui'],               'object',g.app.gui),
+        (['k'],                 'object',k),
+        (['p','p1','p2'],       'object',p),             
         (['s','s1','s2','ch'],  'object','aString'),
-        (['string'],            'object',string),     # Python's string module.
-        (['t','t1','t2'],       'object',p.v.t),   # 'leoNodes','tnode'),  
-        (['v','v1','v2'],       'object',p.v),     # 'leoNodes','vnode'),
+        (['string'],            'object',string), # Python's string module.
+        (['t','t1','t2'],       'object',p.v.t),  
+        (['v','v1','v2'],       'object',p.v),
         (['w','widget'],        'Tkinter','Text'),
     ]
     
@@ -323,15 +325,15 @@ def abort (self):
 
 def exit (self,restore=False): # Called from keyboard-quit.
     
-    c = self.c ; w = self.widget
+    c = self.c ; w = self.widget ; gui = g.app.gui
     for name in (self.tabName,'Modules','Info'):
         c.frame.log.deleteTab(name)
     c.widgetWantsFocusNow(w)
-    i,j = g.app.gui.getSelectionRange(w)
+    i,j = gui.getSelectionRange(w)
     if restore:
         w.delete(i,j)
         w.insert(i,self.selectedText)
-    g.app.gui.setSelectionRange(w,j,j,insert=j)
+    gui.setSelectionRange(w,j,j,insert=j)
     
     self.clear()
     self.object = None
@@ -470,8 +472,8 @@ c.frame.putStatusLine('%s %s' % (name,args))
 #@+node:ekr.20061031131434.27:chain
 def chain (self):
     
-    c = self.c ; w = self.widget
-    word = g.app.gui.getSelectedText(w)
+    c = self.c ; w = self.widget ; gui = g.app.gui
+    word = gui.getSelectedText(w)
     old_obj = self.object
 
     if word and old_obj and type(old_obj) == type([]) and old_obj == sys.modules:
@@ -490,13 +492,13 @@ def chain (self):
         self.membersList = self.getMembersList(obj)
         self.appendTabName(word)
         self.extendSelection('.')
-        i = g.app.gui.getInsertPoint(w)
-        g.app.gui.setSelectionRange(w,i,i,insert=i)
+        i = gui.getInsertPoint(w)
+        gui.setSelectionRange(w,i,i,insert=i)
         # g.trace('chaining to',word,self.object)
         # Similar to start logic.
         self.prefix = ''
-        self.selection = g.app.gui.getSelectionRange(w)
-        self.selectedText = g.app.gui.getSelectedText(w)
+        self.selection = gui.getSelectionRange(w)
+        self.selectedText = gui.getSelectedText(w)
         if self.membersList:
             # self.autoCompleterStateHandler(event=None)
             self.computeCompletionList()
@@ -614,7 +616,7 @@ def extendSelection (self,s):
     i,j = gui.getSelectionRange(w,python=True)
     body = gui.getAllText(w)
     body = gui.stringInsert(body,j,s)
-    c.setBodyString(p,body)
+    gui.setAllText(w,body)
     j += 1
     g.app.gui.setSelectionRange(w,i,j,insert=j,python=True)
     c.frame.body.onBodyChanged('Typing')
@@ -960,8 +962,7 @@ def setSelection (self,s):
 #@+node:ekr.20061031131434.46:start
 def start (self,event=None,w=None):
     
-    c = self.c ; p = c.currentPosition()
-    gui = g.app.gui
+    c = self.c ; gui = g.app.gui
     if w: self.widget = w
     else: w = self.widget
     
@@ -981,7 +982,8 @@ def start (self,event=None,w=None):
             s = gui.getAllText(w)
             if i > 0 and s[i-1] == '.':
                 s = gui.stringDelete(s,i-1)
-                c.setBodyString(p,s)
+                gui.setAllText(w,s)
+                c.frame.body.onBodyChanged('Typing')
         self.autoCompleterStateHandler(event)
     else:
         self.abort()
@@ -1480,7 +1482,7 @@ def extendSelection (self,s):
     i,j = gui.getSelectionRange(w,python=True)
     body = gui.getAllText(w)
     body = gui.stringInsert(body,j,s)
-    c.setBodyString(p,body)
+    gui.setAllText(w,body)
     j += 1
     g.app.gui.setSelectionRange(w,i,j,insert=j,python=True)
     c.frame.body.onBodyChanged('Typing')

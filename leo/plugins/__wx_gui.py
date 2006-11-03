@@ -782,12 +782,12 @@ class wxGui(leoGui.leoGui):
     #@-node:edream.111303093953.23:replaceSelectionRangeWithText
     #@-node:edream.111303093953.17:Text
     #@+node:edream.111303093953.24:Visibility
-    #@+node:edream.111303093953.25:makeIndexVisible
-    def makeIndexVisible(self,t,index):
+    #@+node:edream.111303093953.25:see
+    def see(self,t,index):
     
         if t and index:
             t.bodyCtrl.ShowPosition(index)
-    #@-node:edream.111303093953.25:makeIndexVisible
+    #@-node:edream.111303093953.25:see
     #@-node:edream.111303093953.24:Visibility
     #@-node:edream.111303090930:app.gui.wx utils
     #@-others
@@ -1190,7 +1190,7 @@ class wxLeoBody (leoFrame.leoBody):
     #@-node:edream.111303171238.4:setSelectionAreas
     #@-node:edream.111303171238:Text
     #@+node:edream.110203113231.552:Visibility & scrolling...
-    def makeIndexVisible (self,index):
+    def see (self,index):
         self.bodyCtrl.ShowPosition()
         
     def setFirstVisibleIndex (self,index):

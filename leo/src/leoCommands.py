@@ -1689,7 +1689,7 @@ class baseCommands:
             g.es("%d lines" % len(lines), color="blue")
         
         c.bodyWantsFocusNow()
-        c.frame.body.makeInsertPointVisible()
+        c.frame.body.seeInsertPoint()
         #@-node:ekr.20031218072017.2876:<< put the cursor on line n2 of the body text >>
         #@nl
     #@+node:ekr.20031218072017.2877:convertLineToVnodeNameIndexLine
@@ -2390,7 +2390,7 @@ class baseCommands:
                 body.setSelectionRange(index2,adj_index)
             adj_index = body.adjustIndex(index2,1)
             body.setInsertionPoint(adj_index)
-            body.makeIndexVisible(adj_index)
+            body.see(adj_index)
         else:
             g.es("unmatched '%s'",ch)
     #@+node:ekr.20031218072017.1828:findMatchingBracket
@@ -2723,7 +2723,7 @@ class baseCommands:
             # Advance the selection to the next paragraph.
             newSel = sel_end, sel_end
             body.setSelectionRange(newSel)
-            body.makeIndexVisible(sel_end)
+            body.see(sel_end)
             
             c.recolor()
             #@-node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
@@ -2760,7 +2760,7 @@ class baseCommands:
         if oldYview:
             body.setYScrollPosition(oldYview)
         else:
-            body.makeInsertPointVisible()
+            body.seeInsertPoint()
     
         body.setFocus()
         c.recolor()

@@ -2688,7 +2688,7 @@ def add(self,event=None):
     self.dictionary[self.currentWord.lower()] = 0
     self.onFindButton()
 #@-node:ekr.20051025071455.37:add
-#@+node:ekr.20051025071455.38:change
+#@+node:ekr.20051025071455.38:change (spellTab)
 def change(self,event=None):
     """Make the selected change to the text"""
 
@@ -2715,7 +2715,7 @@ def change(self,event=None):
     c.invalidateFocus()
     c.bodyWantsFocusNow()
     return False
-#@-node:ekr.20051025071455.38:change
+#@-node:ekr.20051025071455.38:change (spellTab)
 #@+node:ekr.20051025071455.40:find
 def find (self,event=None):
     """Find the next unknown word."""
@@ -2741,7 +2741,7 @@ def find (self,event=None):
         # Copy the working selection range to the body pane
         start, end = g.app.gui.getSelectionRange(self.workCtrl)
         g.app.gui.setSelectionRange(bodyCtrl,start,end)
-        bodyCtrl.see(start)
+        body.see(start)
     else:
         g.es("no more misspellings")
         self.fillbox([])
@@ -2781,7 +2781,7 @@ def bringToFront (self):
     
     self.c.frame.log.selectTab('Spell')
 #@-node:ekr.20051025071455.43:bringToFront
-#@+node:ekr.20051025071455.44:fillbox
+#@+node:ekr.20051025071455.44:fillbox (spellTab)
 def fillbox(self, alts, word=None):
     """Update the suggestions listbox in the Check Spelling dialog."""
     
@@ -2799,7 +2799,7 @@ def fillbox(self, alts, word=None):
     # This doesn't show up because we don't have focus.
     if len(self.suggestions):
         self.listBox.select_set(1)
-#@-node:ekr.20051025071455.44:fillbox
+#@-node:ekr.20051025071455.44:fillbox (spellTab)
 #@+node:ekr.20051025071455.45:findNextMisspelledWord
 def findNextMisspelledWord(self):
     """Find the next unknown word."""

@@ -1085,7 +1085,7 @@ class leoFind:
             # Looks good and provides clear indication of failure or termination.
             gui.setSelectionRange(t,insert,insert)
             gui.setInsertPoint(t,insert)
-            gui.makeIndexVisible(t,insert)
+            gui.see(t,insert)
         
         #g.trace(c.widget_name(t))
         
@@ -1147,7 +1147,7 @@ class leoFind:
         c.widgetWantsFocusNow(t)
         gui.setSelectionRange(t,pos,newpos,insert=insert)
         # c.widgetWantsFocusNow(t)
-        gui.makeIndexVisible(t,insert)
+        gui.see(t,insert)
         if self.wrap and not self.wrapPosition:
             self.wrapPosition = self.p
     #@nonl

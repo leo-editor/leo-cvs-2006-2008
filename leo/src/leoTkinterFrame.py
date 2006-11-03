@@ -1578,27 +1578,28 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
     OnCutFromMenu = cutText
     #@-node:ekr.20051011072049.2:cutText
-    #@+node:ekr.20051011072903.5:pasteText
+    #@+node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
     def pasteText (self,event=None,middleButton=False):
     
         '''Paste the clipboard into a widget.
         If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
     
-        f = self ; c = f.c ; w = event and event.widget
-        if not w or not g.app.gui.isTextWidget(w): return
+        f = self ; c = f.c ; w = event and event.widget ; gui = g.app.gui
+        if not w or not gui.isTextWidget(w): return
     
         wname = c.widget_name(w)
-        i,j = oldSel = g.app.gui.getSelectionRange(w)  # Returns insert point if no selection.
+        i,j = oldSel = gui.getSelectionRange(w)  # Returns insert point if no selection.
         oldText = w.get('1.0','end')
         
         # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
         
-        if middleButton and c.k.previousSelection:
+        if middleButton and c.k.previousSelection is not None:
             start,end = c.k.previousSelection
-            s = w.get(start,end)
+            s = gui.getAllText(w)
+            s = s[start:end]
             c.k.previousSelection = None
         else:
-            s = s1 = g.app.gui.getTextFromClipboard()
+            s = s1 = gui.getTextFromClipboard()
         
         singleLine = wname.startswith('head') or wname.startswith('minibuffer')
         
@@ -1631,7 +1632,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         return 'break' # Essential
     
     OnPasteFromMenu = pasteText
-    #@-node:ekr.20051011072903.5:pasteText
+    #@-node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
     #@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
     #@-node:ekr.20031218072017.3980:Edit Menu...
     #@+node:ekr.20031218072017.3984:Window Menu...
@@ -2080,7 +2081,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         w.delete('1.0','end')
         w.insert('end',p.bodyString())
-        w.see('1.0')
+        g.app.gui.see(w,'1.0')
         self.setFontFromConfig(w=w)
         self.setColorFromConfig(w=w)
         self.createBindings(w=w)
@@ -2157,28 +2158,26 @@ class leoTkinterBody (leoFrame.leoBody):
         self.numberOfEditors -= 1
         self.selectEditor(w)
     #@-node:ekr.20060528113806:deleteEditor
-    #@+node:ekr.20061017082211:onClick (Revise)
+    #@+node:ekr.20061017082211:onClick (passed)
     def onClick (self,event):
         
-        c = self.c ; k = c.k
+        c = self.c ; k = c.k ; gui = g.app.gui
         w = event and event.widget
         wname = c.widget_name(w)
         
         if wname.startswith('body'):
             # A hack to support middle-button pastes: remember the previous selection.
-            x, y = event.x, event.y
-            ### k.previousSelection shuld be a Python index.
-            k.previousSelection = g.app.gui.getSelectionRange(w)
-            i = w.index('@%s,%s' % (x,y))
+            k.previousSelection = gui.getSelectionRange(w,python=True)
+            x,y = gui.eventXY(event)
+            i = gui.xyToPythonIndex(w,x,y)
             # g.trace(x,y,i)
-            g.app.gui.setSelectionRange(w,i,i,insert=i)
-            c.editCommands.setMoveCol(w,i)
+            g.app.gui.setSelectionRange(w,i,i,insert=i,python=True)
+            c.editCommands.setMoveCol(w,i,python=True)
             c.frame.updateStatusLine()
             self.selectEditor(w)
         else:
             g.trace('can not happen')
-    #@nonl
-    #@-node:ekr.20061017082211:onClick (Revise)
+    #@-node:ekr.20061017082211:onClick (passed)
     #@+node:ekr.20061017083312:selectEditor
     def selectEditor(self,w):
         
@@ -2224,15 +2223,18 @@ class leoTkinterBody (leoFrame.leoBody):
         #@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
         # g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
         
+        gui = g.app.gui
+        
         if w.leo_insertSpot:
-            g.app.gui.setInsertPoint(w,w.leo_insertSpot)
-            w.see(w.leo_insertSpot)
+            gui.setInsertPoint(w,w.leo_insertSpot)
         else:
-            g.app.gui.setInsertPoint(w,'1.0')
+            gui.setInsertPoint(w,'1.0')
             
-        if w.leo_scrollBarSpot:
+        if w.leo_scrollBarSpot is not None:
             first,last = w.leo_scrollBarSpot
             w.yview('moveto',first)
+        else:
+            gui.seeInsertPoint(w)
         
         if w.leo_selection:
             try:
@@ -2348,7 +2350,7 @@ class leoTkinterBody (leoFrame.leoBody):
     #@-node:ekr.20031218072017.2183:tkBody.setFontFromConfig
     #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     # This is the only key handler for the body pane.
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,python=False):
         
         '''Update Leo after the body has been changed.'''
         
@@ -2572,11 +2574,6 @@ class leoTkinterBody (leoFrame.leoBody):
         s = self.bodyCtrl.get("insert -1c")
         return g.toUnicode(s,g.app.tkEncoding)
     #@-node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint
-    #@+node:ekr.20031218072017.4015:makeInsertPointVisible
-    def makeInsertPointVisible (self):
-        
-        self.bodyCtrl.see("insert") # -5l")
-    #@-node:ekr.20031218072017.4015:makeInsertPointVisible
     #@+node:ekr.20031218072017.4016:setInsertionPointTo...
     def setInsertionPoint (self,index):
         self.bodyCtrl.mark_set("insert",index)
@@ -2899,17 +2896,18 @@ class leoTkinterBody (leoFrame.leoBody):
         return t.index(sel_start), t.index(sel_end)
     #@-node:ekr.20031218072017.4037:setSelectionAreas (tkinterBody)
     #@-node:ekr.20031218072017.4025:Text
-    #@+node:ekr.20031218072017.4038:Visibility & scrolling
-    def makeIndexVisible (self,index):
+    #@+node:ekr.20031218072017.4038:Visibility & scrolling (tkBody)
+    def see (self,index,python=False):
+        g.app.gui.see(self.bodyCtrl,index,python=python)
         
-        self.bodyCtrl.see(index)
-        
+    def seeInsertPoint (self):
+        g.app.gui.seeInsertPoint(self.bodyCtrl)
+    # makeInsertPointVisible = seeInsertPoint
+    
     def setFirstVisibleIndex (self,index):
-        
         self.bodyCtrl.yview("moveto",index)
-        
+    
     def getYScrollPosition (self):
-        
         return self.bodyCtrl.yview()
         
     def setYScrollPosition (self,scrollPosition):
@@ -2927,7 +2925,7 @@ class leoTkinterBody (leoFrame.leoBody):
     def scrollDown (self):
     
         self.bodyCtrl.yview("scroll",1,"units")
-    #@-node:ekr.20031218072017.4038:Visibility & scrolling
+    #@-node:ekr.20031218072017.4038:Visibility & scrolling (tkBody)
     #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
     #@-others
 #@-node:ekr.20031218072017.3996:class leoTkinterBody
@@ -3216,7 +3214,7 @@ class leoTkinterLog (leoFrame.leoLog):
             else:
                 self.logCtrl.insert("end",s)
             
-            self.logCtrl.see("end")
+            g.app.gui.see(self.logCtrl,'end')
             self.forceLogUpdate(s)
             #@-node:EKR.20040423082910:<< put s to log control >>
             #@nl
@@ -3245,7 +3243,7 @@ class leoTkinterLog (leoFrame.leoLog):
         
         if self.logCtrl:
             self.logCtrl.insert("end",'\n')
-            self.logCtrl.see("end")
+            g.app.gui.see(self.logCtrl,'end')
             self.forceLogUpdate('\n')
         else:
             # Put a newline to logWaiting and print newline

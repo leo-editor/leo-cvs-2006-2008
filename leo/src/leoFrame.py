@@ -213,7 +213,7 @@ class leoBody:
     def getCharBeforeInsertPoint (self):
         self.oops()
         
-    def makeInsertPointVisible (self):
+    def seeInsertPoint (self):
         self.oops()
         
     def setInsertionPoint (self,index):
@@ -310,7 +310,7 @@ class leoBody:
     #@-node:ekr.20031218072017.3675:setSelectionAreas
     #@-node:ekr.20031218072017.3671:Text
     #@+node:ekr.20031218072017.3676:Visibility & scrolling
-    def makeIndexVisible (self,index):
+    def see (self,index):
         self.oops()
         
     def setFirstVisibleIndex (self,index):
@@ -1085,9 +1085,6 @@ class nullBody (leoBody):
         try: return self.s[self.insertPoint - 1]
         except: return None
         
-    def makeInsertPointVisible (self):
-        pass
-        
     def setInsertionPoint (self,index):
         self.insertPoint = index
     
@@ -1284,7 +1281,10 @@ class nullBody (leoBody):
     #@-node:ekr.20031218072017.2215:setSelectionAreas (nullFrame)
     #@-node:ekr.20031218072017.2208:Text
     #@+node:ekr.20031218072017.2216:Visibility & scrolling
-    def makeIndexVisible (self,index):
+    def see (self,index,python=False):
+        pass
+        
+    def seeInsertPoint (self):
         pass
         
     def setFirstVisibleIndex (self,index):

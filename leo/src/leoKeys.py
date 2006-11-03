@@ -387,15 +387,15 @@ class autoCompleterClass:
     
     def exit (self,restore=False): # Called from keyboard-quit.
         
-        c = self.c ; w = self.widget
+        c = self.c ; w = self.widget ; gui = g.app.gui
         for name in (self.tabName,'Modules','Info'):
             c.frame.log.deleteTab(name)
         c.widgetWantsFocusNow(w)
-        i,j = g.app.gui.getSelectionRange(w)
+        i,j = gui.getSelectionRange(w)
         if restore:
             w.delete(i,j)
             w.insert(i,self.selectedText)
-        g.app.gui.setSelectionRange(w,j,j,insert=j)
+        gui.setSelectionRange(w,j,j,insert=j)
         
         self.clear()
         self.object = None
@@ -540,8 +540,8 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.27:chain
     def chain (self):
         
-        c = self.c ; w = self.widget
-        word = g.app.gui.getSelectedText(w)
+        c = self.c ; w = self.widget ; gui = g.app.gui
+        word = gui.getSelectedText(w)
         old_obj = self.object
     
         if word and old_obj and type(old_obj) == type([]) and old_obj == sys.modules:
@@ -560,13 +560,13 @@ class autoCompleterClass:
             self.membersList = self.getMembersList(obj)
             self.appendTabName(word)
             self.extendSelection('.')
-            i = g.app.gui.getInsertPoint(w)
-            g.app.gui.setSelectionRange(w,i,i,insert=i)
+            i = gui.getInsertPoint(w)
+            gui.setSelectionRange(w,i,i,insert=i)
             # g.trace('chaining to',word,self.object)
             # Similar to start logic.
             self.prefix = ''
-            self.selection = g.app.gui.getSelectionRange(w)
-            self.selectedText = g.app.gui.getSelectedText(w)
+            self.selection = gui.getSelectionRange(w)
+            self.selectedText = gui.getSelectedText(w)
             if self.membersList:
                 # self.autoCompleterStateHandler(event=None)
                 self.computeCompletionList()
@@ -684,7 +684,7 @@ class autoCompleterClass:
         i,j = gui.getSelectionRange(w,python=True)
         body = gui.getAllText(w)
         body = gui.stringInsert(body,j,s)
-        c.setBodyString(p,body)
+        gui.setAllText(w,body)
         j += 1
         g.app.gui.setSelectionRange(w,i,j,insert=j,python=True)
         c.frame.body.onBodyChanged('Typing')
@@ -1030,8 +1030,7 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.46:start
     def start (self,event=None,w=None):
         
-        c = self.c ; p = c.currentPosition()
-        gui = g.app.gui
+        c = self.c ; gui = g.app.gui
         if w: self.widget = w
         else: w = self.widget
         
@@ -1051,7 +1050,8 @@ class autoCompleterClass:
                 s = gui.getAllText(w)
                 if i > 0 and s[i-1] == '.':
                     s = gui.stringDelete(s,i-1)
-                    c.setBodyString(p,s)
+                    gui.setAllText(w,s)
+                    c.frame.body.onBodyChanged('Typing')
             self.autoCompleterStateHandler(event)
         else:
             self.abort()

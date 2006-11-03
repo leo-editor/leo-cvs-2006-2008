@@ -626,7 +626,7 @@ class tkinterGui(leoGui.leoGui):
         
         return g.choose(w.compare(newpos,"==","end"),None,newpos)
     #@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (to be deleted)
-    #@+node:ekr.20060528172956:toGuiIndex & toPythonIndex (test)
+    #@+node:ekr.20060528172956:toGuiIndex & toPythonIndex (passed)
     def toGuiIndex (self,s,w,index):
         
         '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
@@ -645,7 +645,7 @@ class tkinterGui(leoGui.leoGui):
         row, col = index.split('.') ; row, col = int(row), int(col)
         index = g.convertRowColToPythonIndex (s,row-1,col)
         return index
-    #@-node:ekr.20060528172956:toGuiIndex & toPythonIndex (test)
+    #@-node:ekr.20060528172956:toGuiIndex & toPythonIndex (passed)
     #@+node:ekr.20061031132712.4:xyToGui/PythonIndex
     def xyToGuiIndex (self,w,x,y):
         
@@ -771,9 +771,9 @@ class tkinterGui(leoGui.leoGui):
             w.tag_remove("sel",end,"end")
             # This logic ensures compatibility with previous code.
             if insert == 'sel.end':
-                g.app.gui.setInsertPoint(w,end)
+                gui.setInsertPoint(w,end)
             elif insert is not None:
-                g.app.gui.setInsertPoint(w,insert)
+                gui.setInsertPoint(w,insert)
         except Exception:
             pass # g.es_exception()
     #@nonl
@@ -836,21 +836,27 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20061102085056:setAllText
     #@-node:ekr.20031218072017.4090:Text
     #@+node:ekr.20031218072017.4097:Visibility
-    #@+node:ekr.20031218072017.4098:see (who is calling this in the autocompleter logic?)
+    #@+node:ekr.20031218072017.4098:gui.see & gui.seeInsertPoint
     def see(self,w,index,python=False):
         
-        # g.trace('index',g.callers())
-        
+        # g.trace(index,g.app.gui.widget_name(w),g.callers(5))
+        gui = self
         if python:
-            gui = g.app.gui
             s = gui.getAllText(w)
             index = gui.toGuiIndex(s,w,index)
-    
+            
+        # This should be the only call to Tk.see in Leo.
         return w.see(index)
     
-    makeIndexVisible = see
+    def seeInsertPoint (self,w):
+        
+        gui = self
+        i = gui.getInsertPoint(w,python=True)
+        gui.see(w,i,python=True)
+        
+    seeInsert = seeInsertPoint
     #@nonl
-    #@-node:ekr.20031218072017.4098:see (who is calling this in the autocompleter logic?)
+    #@-node:ekr.20031218072017.4098:gui.see & gui.seeInsertPoint
     #@-node:ekr.20031218072017.4097:Visibility
     #@+node:ekr.20051220144507:isTextWidget
     def isTextWidget (self,w):

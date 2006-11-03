@@ -685,7 +685,7 @@ class bufferCommandsClass (baseEditCommandsClass):
                 self.beginCommand('append-to-buffer: %s' % p.headString())
                 w.insert('end',s)
                 w.mark_set('insert','end')
-                w.see('end')
+                gui.seeInsertPoint(w)
                 self.endCommand()
             finally:
                 c.endUpdate()
@@ -716,7 +716,7 @@ class bufferCommandsClass (baseEditCommandsClass):
                 self.beginCommand('copy-to-buffer: %s' % p.headString())
                 w.insert('end',s)
                 w.mark_set('insert','end')
-                w.see('end')
+                gui.seeInsertPoint(w)
                 self.endCommand()
             finally:
                 c.endUpdate()
@@ -735,8 +735,8 @@ class bufferCommandsClass (baseEditCommandsClass):
     
     def insertToBufferFinisher (self,event,name):
         
-        c = self.c ; k = self.k ; w = self.w
-        s = g.app.gui.getSelectedText(w)
+        c = self.c ; k = self.k ; w = self.w ; gui = g.app.gui
+        s = gui.getSelectedText(w)
         p = self.findBuffer(name)
         if s and p:
             c.beginUpdate()
@@ -745,7 +745,7 @@ class bufferCommandsClass (baseEditCommandsClass):
                 c.selectPosition(p)
                 self.beginCommand('insert-to-buffer: %s' % p.headString())
                 w.insert('insert',s)
-                w.see('insert')
+                gui.seeInsertPoint(w)
                 self.endCommand()
             finally:
                 c.endUpdate()
@@ -809,8 +809,8 @@ class bufferCommandsClass (baseEditCommandsClass):
         
     def prependToBufferFinisher (self,event,name):
         
-        c = self.c ; k = self.k ; w = self.w
-        s = g.app.gui.getSelectedText(w)
+        c = self.c ; k = self.k ; w = self.w ; gui = g.app.gui
+        s = gui.getSelectedText(w)
         p = self.findBuffer(name)
         if s and p:
             c.beginUpdate()
@@ -820,7 +820,7 @@ class bufferCommandsClass (baseEditCommandsClass):
                 self.beginCommand('prepend-to-buffer: %s' % p.headString())
                 w.insert('1.0',s)
                 w.mark_set('insert','1.0')
-                w.see('1.0')
+                gui.seeInsertPoint(w)
                 self.endCommand()
             finally:
                 c.endUpdate()
@@ -1517,7 +1517,7 @@ class editCommandsClass (baseEditCommandsClass):
         
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.145:changePreviousWord (not used)
-    #@+node:ekr.20051015114221.1:capitalizeHelper
+    #@+node:ekr.20051015114221.1:capitalizeHelper (passed)
     def capitalizeHelper (self,event,which,undoType):
     
         w = self.editWidget(event) ; gui = g.app.gui
@@ -1541,7 +1541,7 @@ class editCommandsClass (baseEditCommandsClass):
         gui.setInsertPoint(w,i1,python=True)
         
         self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20051015114221.1:capitalizeHelper
+    #@-node:ekr.20051015114221.1:capitalizeHelper (passed)
     #@-node:ekr.20050920084036.57:capitalization & case
     #@+node:ekr.20051022142249:clicks and focus (editCommandsClass)
     #@+node:ekr.20060211100905:activate-x-menu & activateMenu (editCommandsClass)
@@ -2426,7 +2426,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20060417194232.1:findCharacterHelper
     #@-node:ekr.20060925151926:backward/findCharacter & helper
-    #@+node:ekr.20060417194232.2:findWord
+    #@+node:ekr.20060417194232.2:findWord (passed)
     def findWord (self,event):
         
         '''Put the cursor at the next word (on a line) that starts with a character.'''
@@ -2453,7 +2453,7 @@ class editCommandsClass (baseEditCommandsClass):
                         i += 1
             k.resetLabel()
             k.clearState()
-    #@-node:ekr.20060417194232.2:findWord
+    #@-node:ekr.20060417194232.2:findWord (passed)
     #@-node:ekr.20060417194232:find (quick)
     #@+node:ekr.20050920084036.72:goto...
     #@+node:ekr.20050929115226:gotoCharacter
@@ -2469,10 +2469,10 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Goto character: ')
             k.getArg(event,'goto-char',1,self.gotoCharacter)
         else:
-            n = k.arg ; w = self.w
+            n = k.arg ; w = self.w ; gui = g.app.gui
             if n.isdigit():
                 w.mark_set('insert','1.0 +%sc' % n)
-                w.see('insert')
+                gui.seeInsertPoint(w)
             k.resetLabel()
             k.clearState()
     #@-node:ekr.20050929115226:gotoCharacter
@@ -2509,10 +2509,10 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Goto line: ')
             k.getArg(event,'goto-line',1,self.gotoLine)
         else:
-            n = k.arg ;  w = self.w
+            n = k.arg ;  w = self.w ; gui = g.app.gui
             if n.isdigit():
                 w.mark_set('insert','%s.0' % n)
-                w.see('insert')
+                gui.seeInsertPoint(w)
             k.resetLabel()
             k.clearState()
     #@-node:ekr.20050929124234:gotoLine
@@ -2887,20 +2887,21 @@ class editCommandsClass (baseEditCommandsClass):
         if result != body:
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20050920084036.141:removeBlankLines
-    #@+node:ekr.20051125080855:selfInsertCommand & helpers
+    #@+node:ekr.20051125080855:selfInsertCommand & helpers (revise)
     def selfInsertCommand(self,event,action='insert'):
         
         '''Insert a character in the body pane.
         This is the default binding for all keys in the body pane.'''
         
         c = self.c ; p = c.currentPosition()
-        ch = event and event.char or ''
-        if event and event.keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
+        gui = g.app.gui
+        ch = gui.eventChar(event) ; keysym = gui.eventKeysym(event)
+        if keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
         w = self.editWidget(event)
         if not w: return 'break'
     
         name = c.widget_name(w)
-        oldSel =  name.startswith('body') and g.app.gui.getSelectionRange(w) or (None,None)
+        oldSel =  name.startswith('body') and gui.getSelectionRange(w) or (None,None)
         oldText = name.startswith('body') and p.bodyString() or ''
         undoType = 'Typing'
         trace = c.config.getBool('trace_masterCommand')
@@ -2936,28 +2937,37 @@ class editCommandsClass (baseEditCommandsClass):
                 ):
                     # No auto-indent if in @nocolor mode or after a Change command.
                     self.updateAutoIndent(p,w)
+            
+            gui.seeInsertPoint(w)
+            #@nonl
             #@-node:ekr.20051026171121:<< handle newline >>
             #@nl
         elif inBrackets and self.autocompleteBrackets:
             self.updateAutomatchBracket(p,w,ch,oldSel)
         elif ch: # Null chars must not delete the selection.
             i,j = oldSel
-            if i != j:                  w.delete(i,j)
-            elif action == 'overwrite': w.delete(i,'%s+1c' % i)
-            w.insert(i,ch)
-            if inBrackets and self.flashMatchingBrackets: # New in 4.4.1.
-               self.flashMatchingBracketsHelper(w,i,ch)               
+            s = gui.getAllText(w)
+            i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
+            if i != j:                  s = gui.stringDelete(s,i,j)
+            elif action == 'overwrite': s = gui.stringDelete(s,i)
+            s = gui.stringInsert(s,i,ch)
+            gui.setAllText(w,s)
+            gui.setInsertPoint(w,i,python=True)
+            ### if i != j:                  w.delete(i,j)
+            ### elif action == 'overwrite': w.delete(i,'%s+1c' % i)
+            ### w.insert(i,ch)
+            if inBrackets and self.flashMatchingBrackets:
+               self.flashMatchingBracketsHelper(w,s,i,ch,python=True)               
         else:
             return 'break' # New in 4.4a5: this method *always* returns 'break'
             
         # New in 4.4.1: Set the column for up and down keys.
-        spot = w.index('insert')
-        c.editCommands.setMoveCol(w,spot)
+        ###spot = w.index('insert')
+        spot = gui.getInsertPoint(w,python=True)
+        c.editCommands.setMoveCol(w,spot,python=True)
     
         # Update the text and handle undo.
-        newText = g.app.gui.getAllText(w) # New in 4.4b3: converts to unicode.
-        # g.trace(repr(newText))
-        w.see(w.index('insert'))
+        newText = gui.getAllText(w)
         if newText != oldText:
             c.frame.body.onBodyChanged(undoType=undoType,
                 oldSel=oldSel,oldText=oldText,oldYview=None)
@@ -2965,14 +2975,6 @@ class editCommandsClass (baseEditCommandsClass):
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
     #@nonl
-    #@+node:ekr.20060831163241:test_selfInsertCommand
-    def test_selfInsertCommand(self):
-        
-        self = c.editCommands
-        event = g.Bunch(char='É',keysym=None,widget=c.frame.body.bodyCtrl)
-        self.selfInsertCommand(event)
-    #@nonl
-    #@-node:ekr.20060831163241:test_selfInsertCommand
     #@+node:ekr.20060804095512:initBracketMatcher
     def initBracketMatcher (self,c):
     
@@ -2988,11 +2990,11 @@ class editCommandsClass (baseEditCommandsClass):
         # g.trace('self.closeBrackets',closeBrackets)
     #@-node:ekr.20060804095512:initBracketMatcher
     #@+node:ekr.20060627083506:flashMatchingBracketsHelper
-    def flashMatchingBracketsHelper (self,w,index,ch):
+    def flashMatchingBracketsHelper (self,w,s,i,ch,python=False):
     
-        s = g.app.gui.getAllText(w)
-        i = g.app.gui.toPythonIndex(s,w,index)
-        
+        if not python:
+            i = g.app.gui.toPythonIndex(s,w,i)
+    
         d = {}
         if ch in self.openBracketsList:
             for z in xrange(len(self.openBracketsList)):
@@ -3004,12 +3006,13 @@ class editCommandsClass (baseEditCommandsClass):
             reverse = True # Search backward
     
         delim2 = d.get(ch)
+    
         j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
         if j != -1:
             j = g.app.gui.toGuiIndex(s,w,j)
             self.flashCharacter(w,j)
     #@-node:ekr.20060627083506:flashMatchingBracketsHelper
-    #@+node:ekr.20060627091557:flashCharacter
+    #@+node:ekr.20060627091557:flashCharacter (unusual Tk code)
     def flashCharacter(self,w,i):
         
         bg      = self.bracketsFlashBg or 'DodgerBlue1'
@@ -3031,7 +3034,7 @@ class editCommandsClass (baseEditCommandsClass):
             addFlashCallback(w,flashes,i)
         except Exception:
             pass
-    #@-node:ekr.20060627091557:flashCharacter
+    #@-node:ekr.20060627091557:flashCharacter (unusual Tk code)
     #@+node:ekr.20051027172949:updateAutomatchBracket
     def updateAutomatchBracket (self,p,w,ch,oldSel):
     
@@ -3106,7 +3109,7 @@ class editCommandsClass (baseEditCommandsClass):
             n = abs(tab_width) - (width % abs(tab_width))
             w.insert("insert",' ' * n)
     #@-node:ekr.20051026092433:updateTab
-    #@-node:ekr.20051125080855:selfInsertCommand & helpers
+    #@-node:ekr.20051125080855:selfInsertCommand & helpers (revise)
     #@-node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20050920084036.79:info...
     #@+node:ekr.20050920084036.80:howMany
@@ -3319,9 +3322,8 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return
     
         # Make the insertion cursor visible so bbox won't return an empty list.
-        w.see('insert')
+        gui.seeInsertPoint(w)
         ###ins1 = gui.getInsertPoint(w,python=True)
-        ###gui.see(w,ins1,python=True)
         # Remember the original insert point.  This may become the moveSpot.
         ins1 = w.index('insert')
         # Compute the new spot.
@@ -3357,7 +3359,7 @@ class editCommandsClass (baseEditCommandsClass):
                 if col >= 0:
                     w.mark_set('insert','%d.%d' % (row,col))
                     spot = w.index('insert')
-                    w.see('insert')
+                    gui.seeInsertPoint(w)
         # Handle the extension.
         self.extendHelper(w,extend,ins1,spot,setSpot=False)
     #@-node:ekr.20060113105246.1:moveUpOrDownHelper (lots of tk code)
@@ -3388,7 +3390,7 @@ class editCommandsClass (baseEditCommandsClass):
         gui.see(w,spot,python=True)
     #@nonl
     #@-node:ekr.20051218122116:moveToHelper (passed)
-    #@+node:ekr.20051218171457:movePastCloseHelper
+    #@+node:ekr.20051218171457:movePastCloseHelper (revise)
     def movePastCloseHelper (self,event,extend):
     
         c = self.c
@@ -3414,7 +3416,7 @@ class editCommandsClass (baseEditCommandsClass):
         
         ins = '%s+1c' % i2
         self.moveToHelper(event,ins,extend)
-    #@-node:ekr.20051218171457:movePastCloseHelper
+    #@-node:ekr.20051218171457:movePastCloseHelper (revise)
     #@+node:ekr.20051218121447:moveWordHelper
     def moveWordHelper (self,event,extend,forward,end=False):
     
@@ -3456,7 +3458,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveToHelper(event,toGui(i),extend)
     #@nonl
     #@-node:ekr.20051218121447:moveWordHelper
-    #@+node:ekr.20051213094517:backSentenceHelper
+    #@+node:ekr.20051213094517:backSentenceHelper (revise)
     def backSentenceHelper (self,event,extend):
     
         c = self.c
@@ -3475,8 +3477,8 @@ class editCommandsClass (baseEditCommandsClass):
             ins = '1.0'
         if ins:
             self.moveToHelper(event,ins,extend)
-    #@-node:ekr.20051213094517:backSentenceHelper
-    #@+node:ekr.20050920084036.137:forwardSentenceHelper
+    #@-node:ekr.20051213094517:backSentenceHelper (revise)
+    #@+node:ekr.20050920084036.137:forwardSentenceHelper (revise)
     def forwardSentenceHelper (self,event,extend):
     
         c = self.c
@@ -3489,8 +3491,8 @@ class editCommandsClass (baseEditCommandsClass):
         i = w.search('.','insert',stopindex='end')
         ins = i and '%s +1c' % i or 'end'
         self.moveToHelper(event,ins,extend)
-    #@-node:ekr.20050920084036.137:forwardSentenceHelper
-    #@+node:ekr.20051218133207.1:forwardParagraphHelper
+    #@-node:ekr.20050920084036.137:forwardSentenceHelper (revise)
+    #@+node:ekr.20051218133207.1:forwardParagraphHelper (revise)
     def forwardParagraphHelper (self,event,extend):
         
         c = self.c
@@ -3513,8 +3515,8 @@ class editCommandsClass (baseEditCommandsClass):
                 break
         if i:
             self.moveToHelper(event,i,extend)
-    #@-node:ekr.20051218133207.1:forwardParagraphHelper
-    #@+node:ekr.20051218133207:backwardParagraphHelper
+    #@-node:ekr.20051218133207.1:forwardParagraphHelper (revise)
+    #@+node:ekr.20051218133207:backwardParagraphHelper (revise)
     def backwardParagraphHelper (self,event,extend):
         
         c = self.c
@@ -3536,8 +3538,8 @@ class editCommandsClass (baseEditCommandsClass):
                 break
         if i:
             self.moveToHelper(event,i,extend)
-    #@-node:ekr.20051218133207:backwardParagraphHelper
-    #@+node:ekr.20060209095101:setMoveCol
+    #@-node:ekr.20051218133207:backwardParagraphHelper (revise)
+    #@+node:ekr.20060209095101:setMoveCol (passed)
     def setMoveCol (self,w,spot,python=False):
         
         '''Set the column to which an up or down arrow will attempt to move.'''
@@ -3552,7 +3554,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveSpot = i
         self.moveCol = col
     #@nonl
-    #@-node:ekr.20060209095101:setMoveCol
+    #@-node:ekr.20060209095101:setMoveCol (passed)
     #@-node:ekr.20051218170358: helpers
     #@+node:ekr.20050920084036.148:buffers
     def beginningOfBuffer (self,event):
@@ -3611,7 +3613,7 @@ class editCommandsClass (baseEditCommandsClass):
         g.es('Extend mode %s' % (g.choose(val,'on','off')), color='red')
         c.widgetWantsFocusNow(w)
     #@-node:ekr.20051218174113:clear/set/ToggleExtendMode
-    #@+node:ekr.20050920084036.136:exchangePointMark
+    #@+node:ekr.20050920084036.136:exchangePointMark (revise)
     def exchangePointMark (self,event):
         
         '''Exchange the point (insert point) with the mark (the other end of the selected text).'''
@@ -3627,8 +3629,8 @@ class editCommandsClass (baseEditCommandsClass):
             ins = g.choose(ins==i,j,i)
             g.app.gui.setInsertPoint(w,ins)
             g.app.gui.setSelectionRange(w,i,j,insert=None)
-    #@-node:ekr.20050920084036.136:exchangePointMark
-    #@+node:ekr.20061007082956:extend-to-line
+    #@-node:ekr.20050920084036.136:exchangePointMark (revise)
+    #@+node:ekr.20061007082956:extend-to-line (revise)
     def extendToLine (self,event):
         
         '''Select the line at the cursor.'''
@@ -3649,8 +3651,8 @@ class editCommandsClass (baseEditCommandsClass):
             i += 1
     
         g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
-    #@-node:ekr.20061007082956:extend-to-line
-    #@+node:ekr.20061007214835.4:extend-to-sentence
+    #@-node:ekr.20061007082956:extend-to-line (revise)
+    #@+node:ekr.20061007214835.4:extend-to-sentence (revise)
     def extendToSentence (self,event):
         
         '''Select the line at the cursor.'''
@@ -3670,8 +3672,8 @@ class editCommandsClass (baseEditCommandsClass):
     
         g.app.gui.setSelectionRange(w,toGui(i1),toGui(i2))
     #@nonl
-    #@-node:ekr.20061007214835.4:extend-to-sentence
-    #@+node:ekr.20060116074839.2:extend-to-word
+    #@-node:ekr.20061007214835.4:extend-to-sentence (revise)
+    #@+node:ekr.20060116074839.2:extend-to-word (revise)
     def extendToWord (self,event):
         
         '''Select the word at the cursor.'''
@@ -3696,7 +3698,7 @@ class editCommandsClass (baseEditCommandsClass):
             i += 1
         g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
     #@nonl
-    #@-node:ekr.20060116074839.2:extend-to-word
+    #@-node:ekr.20060116074839.2:extend-to-word (revise)
     #@+node:ekr.20051218141237:lines
     def beginningOfLine (self,event):
         '''Move the cursor to the start of the line, extending the selection if in extend mode.'''
@@ -4232,36 +4234,34 @@ class editCommandsClass (baseEditCommandsClass):
     def scrollUpExtendSelection (self,event):
         '''Extend the text selection by scrolling the body text up one page.'''
         self.scrollHelper(event,'up',extend=True)
-    #@+node:ekr.20060113082917:scrollHelper
+    #@+node:ekr.20060113082917:scrollHelper (passed)
     def scrollHelper (self,event,direction,extend):
     
-        k = self.k ; c = k.c
-        w = event and event.widget
+        k = self.k ; c = k.c ; gui = g.app.gui
+        w = gui.eventWidget(event)
         if not w: return #  This does **not** require a text widget.
     
-        if g.app.gui.isTextWidget(w):
-    
+        if gui.isTextWidget(w):
             c.widgetWantsFocusNow(w)
-        
             # Remember the original insert point.  This may become the moveSpot.
-            ins1 = w.index('insert')
-            row, col = ins1.split('.') ; row = int(row) ; col = int(col)
-        
+            ins1 = gui.getInsertPoint(w,python=True)
+            s = gui.getAllText(w)
+            row,col = g.convertPythonIndexToRowCol(s,ins1)
             # Compute the spot.
             chng = self.measure(w) ; delta = chng [0]
             row1 = g.choose(direction=='down',row+delta,row-delta)
-            spot = w.index('%d.%d' % (row1,col))
-            w.mark_set('insert',spot)
-        
-            # Handle the extension.
-            self.extendHelper(w,extend,ins1,spot,setSpot=False)
-            w.see('insert')
-        elif g.app.gui.widget_name(w).startswith('canvas'):
+            row1 = max(0,row1)
+            spot = g.convertRowColToPythonIndex(s,row1,col)
+            # g.trace('spot',spot,'row1',row1)
+            gui.setInsertPoint(w,spot,python=True)
+            self.extendHelper(w,extend,ins1,spot,setSpot=False,python=True)
+            gui.seeInsertPoint(w)
+        elif gui.widget_name(w).startswith('canvas'):
             if direction=='down':
                 self.scrollOutlineDownPage()
             else:
                 self.scrollOutlineUpPage()
-    #@-node:ekr.20060113082917:scrollHelper
+    #@-node:ekr.20060113082917:scrollHelper (passed)
     #@+node:ekr.20050920084036.147:measure
     def measure (self,w):
         i = w.index('insert')
@@ -4755,7 +4755,7 @@ class editFileCommandsClass (baseEditCommandsClass):
         
         '''Prompt for the name of a file and put the selected text into it.'''
     
-        k = self.k ; c = k.c
+        k = self.k ; c = k.c ; gui = g.app.gui
         w = self.editWidget(event)
         if not w: return
     
@@ -4764,7 +4764,7 @@ class editFileCommandsClass (baseEditCommandsClass):
             txt = f.read()
             f.close()
             w.insert('insert',txt)
-            w.see('1.0')
+            gui.seeInsertPoint(w)
     #@-node:ekr.20050920084036.167:insertFile
     #@+node:ekr.20050920084036.168:makeDirectory
     def makeDirectory (self,event):
@@ -6105,6 +6105,7 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
         w = self.editWidget(event)
         if not w or not hasattr(event,'keysym'): return
         
+        gui = g.app.gui
         # g.trace(event.keysym)
         if event.keysym == 'y':
             self.doOneReplace(event)
@@ -6121,7 +6122,7 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             if not self.findNextMatch(event):
                 self.quitSearch(event)
     
-        w.see('insert')
+        gui.seeInsertPoint(w)
     #@-node:ekr.20050920084036.211:getUserResponse
     #@+node:ekr.20050920084036.220:quitSearch
     def quitSearch (self,event,message=None):
@@ -8092,7 +8093,7 @@ class searchCommandsClass (baseEditCommandsClass):
         else:
             gui.setInsertPoint(w,ins)
     
-        w.see('insert')
+        gui.seeInsertPoint(w)
         
         if not self.isearch_stack:
             self.endSearch(ins,ins)
@@ -8675,7 +8676,7 @@ class spellTab(leoFind.leoFind):
             # Copy the working selection range to the body pane
             start, end = g.app.gui.getSelectionRange(self.workCtrl)
             g.app.gui.setSelectionRange(bodyCtrl,start,end)
-            bodyCtrl.see(start)
+            body.see(start)
         else:
             g.es("no more misspellings")
             self.fillbox([])
