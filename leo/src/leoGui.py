@@ -217,28 +217,6 @@ class leoGui:
     # dialog being created.  The commander may be a Commands instance or one 
     # of its subcommanders.
     #@-at
-    #@+node:ekr.20061031132907:Events
-    #@+node:ekr.20061031132712.2:eventChar, eventKeysym, eventWidget, eventXY
-    def eventChar (self,event):
-        '''Return the char field of an event.'''
-        return event and event.char or ''
-        
-    def eventKeysym (self,event):
-        '''Return the keysym value of an event.'''
-        return event and event.keysym
-    
-    def eventWidget (self,event):
-        '''Return the widget field of an event.'''   
-        return event and event.widget
-    
-    def eventXY (self,event):
-        if event:
-            return event.x,event.y
-        else:
-            return 0,0
-    #@nonl
-    #@-node:ekr.20061031132712.2:eventChar, eventKeysym, eventWidget, eventXY
-    #@-node:ekr.20061031132907:Events
     #@+node:ekr.20031218072017.3734:Clipboard
     def replaceClipboardWith (self,s):
         
@@ -274,6 +252,28 @@ class leoGui:
         """Return the window information."""
         self.oops()
     #@-node:ekr.20031218072017.3735:Dialog utils
+    #@+node:ekr.20061031132907:Events
+    #@+node:ekr.20061031132712.2:eventChar, eventKeysym, eventWidget, eventXY
+    def eventChar (self,event):
+        '''Return the char field of an event.'''
+        return event and event.char or ''
+        
+    def eventKeysym (self,event):
+        '''Return the keysym value of an event.'''
+        return event and event.keysym
+    
+    def eventWidget (self,event):
+        '''Return the widget field of an event.'''   
+        return event and event.widget
+    
+    def eventXY (self,event):
+        if event:
+            return event.x,event.y
+        else:
+            return 0,0
+    #@nonl
+    #@-node:ekr.20061031132712.2:eventChar, eventKeysym, eventWidget, eventXY
+    #@-node:ekr.20061031132907:Events
     #@+node:ekr.20031218072017.3737:Focus
     def get_focus(self,frame):
     
@@ -376,7 +376,7 @@ class leoGui:
     def setSelectionRange (self,t,start,end,insert='sel.end'):
         pass
     #@-node:ekr.20061024133425:Selection (leoGui)
-    #@+node:ekr.20061101020611:Strings & tests
+    #@+node:ekr.20061101020611:Strings
     def stringInsert (self,s,i,s2):
         
         return s[:i] + s2 + s[i:]
@@ -389,12 +389,23 @@ class leoGui:
         
         return s[:i] + s[j:]
         
-    def test_stringInsert (self):
-        assert g.app.gui.stringInsert('abc',2,'XX') == 'abXXc'
+    #@nonl
+    #@-node:ekr.20061101020611:Strings
+    #@+node:ekr.20061103094543:Visibility & scrolling (leoGui)
+    def see (self,w,index,python=False):
+        pass
         
-    def test_stringDelete (self):
-        assert g.app.gui.stringDelete('abXXc',2,4) == 'abc'
-    #@-node:ekr.20061101020611:Strings & tests
+    def seeInsertPoint (self):
+        pass
+        
+    def yview (self,w,index):
+        pass
+        
+    def yscroll (w,n,units):
+        pass
+                
+    #@nonl
+    #@-node:ekr.20061103094543:Visibility & scrolling (leoGui)
     #@+node:ekr.20061031133643:xyToGui/PythonIndex
     def xyToGuiIndex (self,w,x,y):
         
@@ -405,14 +416,6 @@ class leoGui:
         return 0
     #@nonl
     #@-node:ekr.20061031133643:xyToGui/PythonIndex
-    #@+node:ekr.20061103094543:Visibility & scrolling (leoGui)
-    def see (self,w,index,python=False):
-        pass
-        
-    def seeInsertPoint (self):
-        pass
-    #@nonl
-    #@-node:ekr.20061103094543:Visibility & scrolling (leoGui)
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@+node:ekr.20031218072017.3740:guiName
     def guiName(self):

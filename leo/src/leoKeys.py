@@ -444,7 +444,7 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.20:calltip
     def calltip (self,obj=None):
         
-        c = self.c ; p = c.currentPosition()
+        c = self.c
         w = self.widget ; gui = g.app.gui
         isStringMethod = False ; s = None
         # g.trace(self.leadinWord,obj)
@@ -515,17 +515,17 @@ class autoCompleterClass:
         #@+node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >>
         junk,j = gui.getSelectionRange(w,python=True) # Returns insert point if no selection.
         body = gui.getAllText(w)
-        body = gui.stringInsert(body,j,s)
-        c.setBodyString(p,body)
+        gui.rawInsert(w,body,j,s,python=True)
         c.frame.body.onBodyChanged('Typing')
         j1 = j + 1 ; j2 = j + len(s)
         #@-node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >>
         #@nl
     
-        # End autocompletion mode, restoring the selection.
+        # End autocompletion mode, putting the insertion point after the suggested calltip.
         self.finish()
         c.widgetWantsFocusNow(w)
-        gui.setSelectionRange(w,j1,j2,insert=j2,python=True)
+        ###gui.setSelectionRange(w,j1,j2,insert=j2,python=True)
+        gui.setInsertPoint(w,j2,python=True)
         #@    << put the status line >>
         #@+node:ekr.20061031131434.26:<< put the status line >>
         c.frame.clearStatusLine()
@@ -573,6 +573,8 @@ class autoCompleterClass:
                 return
         self.extendSelection('.')
         self.finish()
+                        
+    #@nonl
     #@-node:ekr.20061031131434.27:chain
     #@+node:ekr.20061031131434.28:computeCompletionList
     def computeCompletionList (self,verbose=False):
@@ -596,13 +598,15 @@ class autoCompleterClass:
                         d[ch] = n + 1
                 aList = [ch+'...%d' % (d.get(ch)) for ch in d.keys()] ; aList.sort()
                 self.tabList = aList
-           
+    
         c.frame.log.clearTab(self.tabName) # Creates the tab if necessary.
         if self.tabList:
             self.tabListIndex = -1 # The next item will be item 0.
             self.setSelection(common_prefix)
         for name in self.tabList:
             g.es('%s' % (name),tabName=self.tabName)
+                  
+    #@nonl
     #@-node:ekr.20061031131434.28:computeCompletionList
     #@+node:ekr.20061031131434.29:doBackSpace (autocompleter)
     def doBackSpace (self):
@@ -611,7 +615,7 @@ class autoCompleterClass:
         
         # g.trace(self.prefix,self.object,self.prevObjects)
         
-        c = self.c ; p = c.currentPosition()
+        c = self.c
         if self.prefix:
             self.prefix = self.prefix[:-1]
             self.setSelection(self.prefix)
@@ -631,8 +635,7 @@ class autoCompleterClass:
             if ch == '.':
                 gui = g.app.gui
                 self.object = obj
-                s = gui.stringDelete(s,i-1)
-                c.setBodyString(p,s)
+                gui.rawDelete(w,s,i-1,python=True)
                 c.frame.body.onBodyChanged(undoType='Typing')
                 i,j = g.getWord(s,i-2)
                 word = s[i:j]
@@ -649,7 +652,7 @@ class autoCompleterClass:
             else:
                 self.abort() # should not happen.
         else:
-            self.abort()
+            self.abort()            
     #@nonl
     #@-node:ekr.20061031131434.29:doBackSpace (autocompleter)
     #@+node:ekr.20061031131434.30:doTabCompletion
@@ -677,17 +680,16 @@ class autoCompleterClass:
         
         '''Append s to the presently selected text.'''
         
-        c = self.c ; p = c.currentPosition()
+        c = self.c
         w = self.widget ; gui = g.app.gui
         c.widgetWantsFocusNow(w)
         
         i,j = gui.getSelectionRange(w,python=True)
         body = gui.getAllText(w)
-        body = gui.stringInsert(body,j,s)
-        gui.setAllText(w,body)
+        gui.rawInsert(w,body,j,s,python=True)
         j += 1
         g.app.gui.setSelectionRange(w,i,j,insert=j,python=True)
-        c.frame.body.onBodyChanged('Typing')
+        c.frame.body.onBodyChanged('Typing')    
     #@nonl
     #@-node:ekr.20061031131434.31:extendSelection
     #@+node:ekr.20061031131434.32:findAnchor
@@ -696,7 +698,7 @@ class autoCompleterClass:
         '''Returns (j,word) where j is a Python index.'''
         
         gui = g.app.gui
-        i = gui.getInsertPoint(w,python=True)
+        i = j = gui.getInsertPoint(w,python=True)
         s = gui.getAllText(w)
     
         while i > 0 and s[i-1] == '.':
@@ -735,8 +737,11 @@ class autoCompleterClass:
             c.frame.log.deleteTab(name)
             
         c.frame.body.onBodyChanged('Typing')
+        c.recolor()
         self.clear()
         self.object = None
+        
+    #@nonl
     #@-node:ekr.20061031131434.34:finish
     #@+node:ekr.20061031131434.35:getAttr and hasAttr
     # The values of self.attrDictDic are anonymous attrDict's.
@@ -1003,13 +1008,14 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.45:setSelection
     def setSelection (self,s):
         
-        c = self.c ; p = c.currentPosition()
+        c = self.c
         w = self.widget ; gui = g.app.gui
         c.widgetWantsFocusNow(w)
         body = gui.getAllText(w)
+        # g.pdb()
         if gui.hasSelection(w):
             i,j = gui.getSelectionRange(w,python=True)
-            body = gui.stringDelete(body,i,j)
+            gui.rawDelete(w,body,i,j,python=True)
         else:
             i = gui.getInsertPoint(w,python=True)
             
@@ -1017,8 +1023,7 @@ class autoCompleterClass:
         n = s.find(':')
         if n > -1: s = s[:n]
         
-        body = gui.stringInsert(body,i,s)
-        c.setBodyString(p,body)
+        gui.rawInsert(w,body,i,s,python=True)
         j = i + len(s)
         gui.setSelectionRange(w,i,j,insert=j,python=True)
     
@@ -1026,6 +1031,8 @@ class autoCompleterClass:
         c.frame.body.recolor_now(c.currentPosition(),incremental=True)
         # Usually this call will have no effect because the body text has not changed.
         c.frame.body.onBodyChanged('Typing')
+                    
+    #@nonl
     #@-node:ekr.20061031131434.45:setSelection
     #@+node:ekr.20061031131434.46:start
     def start (self,event=None,w=None):

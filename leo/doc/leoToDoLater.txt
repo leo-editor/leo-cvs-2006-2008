@@ -4465,7 +4465,7 @@ def setCallback (self,*args,**keys):
     
     Args is a tuple of two floats describing the fraction of the visible area."""
 
-    # g.trace(self.tree.redrawCount,args)
+    #g.trace(self.tree.redrawCount,args,g.callers())
 
     apply(self.treeBar.set,args,keys)
 
@@ -4476,7 +4476,7 @@ def yviewCallback (self,*args,**keys):
     
     """Tell the canvas to scroll"""
     
-    # g.trace(vyiewCallback",args,keys)
+    #g.trace(vyiewCallback,args,keys,g.callers())
 
     if self.tree.allocateOnlyVisibleNodes:
         self.tree.allocateNodesBeforeScrolling(args)

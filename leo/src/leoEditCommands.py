@@ -2893,13 +2893,17 @@ class editCommandsClass (baseEditCommandsClass):
         '''Insert a character in the body pane.
         This is the default binding for all keys in the body pane.'''
         
-        c = self.c ; p = c.currentPosition()
-        gui = g.app.gui
-        ch = gui.eventChar(event) ; keysym = gui.eventKeysym(event)
-        if keysym == 'Return': ch = '\n' # This fixes the MacOS return bug.
         w = self.editWidget(event)
         if not w: return 'break'
-    
+        #@    << set local vars >>
+        #@+node:ekr.20061103114242:<< set local vars >>
+        c = self.c
+        p = c.currentPosition()
+        gui = g.app.gui
+        ch = gui.eventChar(event)
+        keysym = gui.eventKeysym(event)
+        if keysym == gui.keysym('Return'):
+            ch = '\n' # This fixes the MacOS return bug.
         name = c.widget_name(w)
         oldSel =  name.startswith('body') and gui.getSelectionRange(w) or (None,None)
         oldText = name.startswith('body') and p.bodyString() or ''
@@ -2907,12 +2911,14 @@ class editCommandsClass (baseEditCommandsClass):
         trace = c.config.getBool('trace_masterCommand')
         brackets = self.openBracketsList + self.closeBracketsList
         inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
-        
         if trace: g.trace(name,repr(ch),ch in brackets)
-        
+        #@nonl
+        #@-node:ekr.20061103114242:<< set local vars >>
+        #@nl
         if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
             return "break" # The hook claims to have handled the event.
             
+        s = gui.getAllText(w) # Needed in several places below.
         if ch == '\t':
             self.updateTab(p,w)
         elif ch == '\b':
@@ -2920,49 +2926,24 @@ class editCommandsClass (baseEditCommandsClass):
             self.backwardDeleteCharacter(event)
         elif ch in ('\r','\n'):
             ch = '\n'
-            #@        << handle newline >>
-            #@+node:ekr.20051026171121:<< handle newline >>
-            i,j = oldSel
-            
-            if i != j:
-                # No auto-indent if there is selected text.
-                w.delete(i,j)
-                w.insert(i,ch)
-            else:
-                w.insert(i,ch)
-                allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
-                if (
-                    (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
-                    undoType != "Change"
-                ):
-                    # No auto-indent if in @nocolor mode or after a Change command.
-                    self.updateAutoIndent(p,w)
-            
-            gui.seeInsertPoint(w)
-            #@nonl
-            #@-node:ekr.20051026171121:<< handle newline >>
-            #@nl
+            self.insertNewlineHelper(w,s,oldSel,undoType)
         elif inBrackets and self.autocompleteBrackets:
             self.updateAutomatchBracket(p,w,ch,oldSel)
         elif ch: # Null chars must not delete the selection.
             i,j = oldSel
-            s = gui.getAllText(w)
             i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
-            if i != j:                  s = gui.stringDelete(s,i,j)
-            elif action == 'overwrite': s = gui.stringDelete(s,i)
-            s = gui.stringInsert(s,i,ch)
-            gui.setAllText(w,s)
-            gui.setInsertPoint(w,i,python=True)
-            ### if i != j:                  w.delete(i,j)
-            ### elif action == 'overwrite': w.delete(i,'%s+1c' % i)
-            ### w.insert(i,ch)
+            # Use raw insert/delete to retain the coloring.
+            if i != j:                  gui.rawDelete(w,s,i,j,python=True)
+            elif action == 'overwrite': gui.rawDelete(w,s,i,python=True)
+            gui.rawInsert(w,s,i,ch,python=True)
+            gui.setInsertPoint(w,i+1,python=True)
             if inBrackets and self.flashMatchingBrackets:
-               self.flashMatchingBracketsHelper(w,s,i,ch,python=True)               
+                s = gui.getAllText(w) # The text has changed.
+                self.flashMatchingBracketsHelper(w,s,i,ch,python=True)               
         else:
-            return 'break' # New in 4.4a5: this method *always* returns 'break'
-            
-        # New in 4.4.1: Set the column for up and down keys.
-        ###spot = w.index('insert')
+            return 'break' # This method *always* returns 'break'
+    
+        # Set the column for up and down keys.
         spot = gui.getInsertPoint(w,python=True)
         c.editCommands.setMoveCol(w,spot,python=True)
     
@@ -2975,6 +2956,32 @@ class editCommandsClass (baseEditCommandsClass):
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
     #@nonl
+    #@+node:ekr.20051026171121:insertNewlineHelper (pass)
+    def insertNewlineHelper (self,w,s,oldSel,undoType):
+    
+        c = self.c ; p = c.currentPosition() ; gui = g.app.gui
+        i,j = oldSel ; ch = '\n'
+        
+        if i != j:
+            # No auto-indent if there is selected text.
+            i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
+            gui.rawDelete(w,s,i,j,python=True)
+            gui.rawInsert(w,s,i,ch,python=True)
+        else:
+            i = gui.toPythonIndex(s,w,i)
+            gui.rawInsert(w,s,i,ch,python=True)
+        
+            allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
+            if (
+                (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
+                undoType != "Change"
+            ):
+                # No auto-indent if in @nocolor mode or after a Change command.
+                self.updateAutoIndent(p,w)
+        
+        gui.seeInsertPoint(w)
+    #@nonl
+    #@-node:ekr.20051026171121:insertNewlineHelper (pass)
     #@+node:ekr.20060804095512:initBracketMatcher
     def initBracketMatcher (self,c):
     
@@ -3012,60 +3019,54 @@ class editCommandsClass (baseEditCommandsClass):
             j = g.app.gui.toGuiIndex(s,w,j)
             self.flashCharacter(w,j)
     #@-node:ekr.20060627083506:flashMatchingBracketsHelper
-    #@+node:ekr.20060627091557:flashCharacter (unusual Tk code)
+    #@+node:ekr.20060627091557:flashCharacter (complex tk code)
     def flashCharacter(self,w,i):
         
         bg      = self.bracketsFlashBg or 'DodgerBlue1'
         fg      = self.bracketsFlashFg or 'white'
         flashes = self.bracketsFlashCount or 2
         delay   = self.bracketsFlashDelay or 75
-    
-        def addFlashCallback(w,count,index):
-            w.tag_add('flash',index,'%s+1c' % (index))
-            w.after(delay,removeFlashCallback,w,count-1,index)
         
-        def removeFlashCallback(w,count,index):
-            w.tag_remove('flash','1.0','end')
-            if count > 0:
-                w.after(delay,addFlashCallback,w,count,index)
-    
-        try:
-            w.tag_configure('flash',foreground=fg,background=bg)
-            addFlashCallback(w,flashes,i)
-        except Exception:
-            pass
-    #@-node:ekr.20060627091557:flashCharacter (unusual Tk code)
-    #@+node:ekr.20051027172949:updateAutomatchBracket
+        g.app.gui.flashCharacter(w,i,bg,fg,flashes,delay)
+    #@-node:ekr.20060627091557:flashCharacter (complex tk code)
+    #@+node:ekr.20051027172949:updateAutomatchBracket (test)
     def updateAutomatchBracket (self,p,w,ch,oldSel):
     
         # assert ch in ('(',')','[',']','{','}')
         
         c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
         language = d.get('language')
+        gui = g.app.gui
         
         if ch in ('(','[','{',):
             automatch = language not in ('plain',)
             if automatch:
                 ch = ch + {'(':')','[':']','{':'}'}.get(ch)
             if i != j:
-                w.delete(i,j)
-            w.insert(i,ch)
+                ###w.delete(i,j)
+                gui.rawDelete(w,s,i,j,python=True)
+            ### w.insert(i,ch)
+            gui.rawInsert(w,s,i,ch,python=True)
             if automatch:
-                w.mark_set('insert','insert-1c')
+                ###w.mark_set('insert','insert-1c')
+                ins = gui.getInsertPoint(w,python=True)
+                gui.setInsertPoint(w,ins-1,python=True)
         else:
             ch2 = w.get('insert')
             if ch2 in (')',']','}'):
-                w.mark_set('insert','insert+1c')
+                ### w.mark_set('insert','insert+1c')
+                ins = gui.getInsertPoint(w,python=True)
+                gui.setInsertPoint(w,ins+1,python=True)
             else:
                 if i != j:
                     w.delete(i,j)
                 w.insert(i,ch)
-    #@-node:ekr.20051027172949:updateAutomatchBracket
-    #@+node:ekr.20051026171121.1:udpateAutoIndent
+    #@-node:ekr.20051027172949:updateAutomatchBracket (test)
+    #@+node:ekr.20051026171121.1:udpateAutoIndent (test) (calls complex w.get)
     # By David McNab:
     def updateAutoIndent (self,p,w):
     
-        c = self.c ; d = g.scanDirectives(c,p)
+        c = self.c ; d = g.scanDirectives(c,p) ; gui = g.app.gui
         tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
         s = w.get("insert linestart - 1 lines","insert linestart -1c")
         # Add the leading whitespace to the present line.
@@ -3087,8 +3088,11 @@ class editCommandsClass (baseEditCommandsClass):
             width = bracketWidths.pop()
         ws = g.computeLeadingWhitespace(width,tab_width)
         if ws:
-            w.insert("insert",ws)
-    #@-node:ekr.20051026171121.1:udpateAutoIndent
+            ### w.insert("insert",ws)
+            s = gui.getAllText(w)
+            i = gui.getInsertPoint(w)
+            gui.rawInsert(w,s,i,ws,python=True)
+    #@-node:ekr.20051026171121.1:udpateAutoIndent (test) (calls complex w.get)
     #@+node:ekr.20051026092433:updateTab
     def updateTab (self,p,w):
     

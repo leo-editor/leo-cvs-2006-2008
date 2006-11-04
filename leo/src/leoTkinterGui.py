@@ -779,8 +779,29 @@ class tkinterGui(leoGui.leoGui):
     #@nonl
     #@-node:ekr.20031218072017.4089:setSelectionRange (python)
     #@-node:ekr.20031218072017.4084:Selection
-    #@+node:ekr.20031218072017.4090:Text
-    #@+node:ekr.20031218072017.4091:g.app.gui.getAllText
+    #@+node:ekr.20031218072017.4090:Text (g.app.gui)
+    #@+node:ekr.20061103114242.1:gui.flashCharacter
+    def flashCharacter(self,w,i,bg,fg,flashes,delay):
+        
+        gui = self
+    
+        def addFlashCallback(w,count,index):
+            w.tag_add('flash',index,'%s+1c' % (index))
+            w.after(delay,removeFlashCallback,w,count-1,index)
+        
+        def removeFlashCallback(w,count,index):
+            w.tag_remove('flash','1.0','end')
+            if count > 0:
+                w.after(delay,addFlashCallback,w,count,index)
+    
+        try:
+            w.tag_configure('flash',foreground=fg,background=bg)
+            addFlashCallback(w,flashes,i)
+        except Exception:
+            pass
+    #@nonl
+    #@-node:ekr.20061103114242.1:gui.flashCharacter
+    #@+node:ekr.20031218072017.4091:getAllText
     def getAllText (self,w):
         
         """Return all the text of Tk.Text widget w converted to unicode."""
@@ -791,8 +812,8 @@ class tkinterGui(leoGui.leoGui):
             return u""
         else:
             return g.toUnicode(s,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4091:g.app.gui.getAllText
-    #@+node:ekr.20031218072017.4092:getCharAfterIndex
+    #@-node:ekr.20031218072017.4091:getAllText
+    #@+node:ekr.20031218072017.4092:getCharAfterIndex  (to be deleted)
     def getCharAfterIndex (self,w,index):
         
         if w.compare(index + "+1c",">=","end"):
@@ -800,13 +821,13 @@ class tkinterGui(leoGui.leoGui):
         else:
             ch = w.get(index + "+1c")
             return g.toUnicode(ch,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4092:getCharAfterIndex
-    #@+node:ekr.20031218072017.4093:getCharAtIndex
+    #@-node:ekr.20031218072017.4092:getCharAfterIndex  (to be deleted)
+    #@+node:ekr.20031218072017.4093:getCharAtIndex  (to be deleted)
     def getCharAtIndex (self,w,index):
         ch = w.get(index)
         return g.toUnicode(ch,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4093:getCharAtIndex
-    #@+node:ekr.20031218072017.4094:getCharBeforeIndex
+    #@-node:ekr.20031218072017.4093:getCharAtIndex  (to be deleted)
+    #@+node:ekr.20031218072017.4094:getCharBeforeIndex  (to be deleted)
     def getCharBeforeIndex (self,w,index):
         
         index = w.index(index)
@@ -815,32 +836,68 @@ class tkinterGui(leoGui.leoGui):
         else:
             ch = w.get(index + "-1c")
             return g.toUnicode(ch,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4094:getCharBeforeIndex
-    #@+node:ekr.20031218072017.4095:getLineContainingIndex
+    #@-node:ekr.20031218072017.4094:getCharBeforeIndex  (to be deleted)
+    #@+node:ekr.20031218072017.4095:getLineContainingIndex (to be deleted)
     def getLineContainingIndex (self,w,index):
     
         line = w.get(index + " linestart", index + " lineend")
         return g.toUnicode(line,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4095:getLineContainingIndex
-    #@+node:ekr.20031218072017.4096:replaceSelectionRangeWithText (leoTkinterGui)
+    #@-node:ekr.20031218072017.4095:getLineContainingIndex (to be deleted)
+    #@+node:ekr.20031218072017.4096:replaceSelectionRangeWithText (leoTkinterGui) (to be deleted?)
     def replaceSelectionRangeWithText (self,w,start,end,text):
     
         w.delete(start,end)
         w.insert(start,text)
-    #@-node:ekr.20031218072017.4096:replaceSelectionRangeWithText (leoTkinterGui)
+    #@-node:ekr.20031218072017.4096:replaceSelectionRangeWithText (leoTkinterGui) (to be deleted?)
+    #@+node:ekr.20061103105804:rawInsert & rawDelete
+    def rawDelete(self,w,s,i,j=None,python=True):
+        
+        assert(python) # A new method, created after the transition to Python indices.
+        gui = self
+        if j is None: j = i + 1
+        i,j = gui.toGuiIndex(s,w,i), gui.toGuiIndex(s,w,j)
+        w.delete(i,j)
+    
+    def rawInsert(self,w,s,i,ch,python=True):
+    
+        assert(python) # A new method, created after the transition to Python indices.
+        gui = self
+        i = gui.toGuiIndex(s,w,i)
+        w.insert(i,ch)
+    #@nonl
+    #@-node:ekr.20061103105804:rawInsert & rawDelete
     #@+node:ekr.20061102085056:setAllText
     def setAllText (self,w,s):
     
         w.delete('1.0','end')
         w.insert('1.0',s)
     #@-node:ekr.20061102085056:setAllText
-    #@-node:ekr.20031218072017.4090:Text
-    #@+node:ekr.20031218072017.4097:Visibility
-    #@+node:ekr.20031218072017.4098:gui.see & gui.seeInsertPoint
+    #@-node:ekr.20031218072017.4090:Text (g.app.gui)
+    #@+node:ekr.20031218072017.4097:Visibility  & scrolling (tkGui)
+    #@+node:ekr.20061104072319:gui.yview & yscroll
+    def yview (self,w,index):
+        
+        '''Set the position of the vertical scrollbar in widget w.'''
+    
+        name = g.app.gui.widget_name(w)
+        # if name.startswith('body'): g.trace(name,index)
+        w.yview('moveto',index)
+        
+    def yscroll (w,n,units):
+    
+        '''Scroll widget w by n units.'''
+    
+        name = g.app.gui.widget_name(w)
+        # if name.startswith('body'): g.trace(name,n,units)
+        w.yview('scroll',n,units)                        
+    #@nonl
+    #@-node:ekr.20061104072319:gui.yview & yscroll
+    #@+node:ekr.20031218072017.4098:gui.see & seeInsertPoint
     def see(self,w,index,python=False):
         
-        # g.trace(index,g.app.gui.widget_name(w),g.callers(5))
         gui = self
+        name = gui.widget_name(w)
+        # if name.startswith('body'): g.trace(index,g.app.gui.widget_name(w),g.callers(5))
         if python:
             s = gui.getAllText(w)
             index = gui.toGuiIndex(s,w,index)
@@ -853,11 +910,11 @@ class tkinterGui(leoGui.leoGui):
         gui = self
         i = gui.getInsertPoint(w,python=True)
         gui.see(w,i,python=True)
-        
-    seeInsert = seeInsertPoint
+    
+    seeInsert = seeInsertPoint        
     #@nonl
-    #@-node:ekr.20031218072017.4098:gui.see & gui.seeInsertPoint
-    #@-node:ekr.20031218072017.4097:Visibility
+    #@-node:ekr.20031218072017.4098:gui.see & seeInsertPoint
+    #@-node:ekr.20031218072017.4097:Visibility  & scrolling (tkGui)
     #@+node:ekr.20051220144507:isTextWidget
     def isTextWidget (self,w):
         

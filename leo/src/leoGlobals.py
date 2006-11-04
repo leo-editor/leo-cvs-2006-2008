@@ -5132,7 +5132,7 @@ def stripBrackets (s):
         s = s[:-1]
     return s
 #@-node:ekr.20060410112600:g.stripBrackets
-#@+node:ekr.20061031102333.2:g.getWord & test
+#@+node:ekr.20061031102333.2:g.getWord (passed)
 def getWord (s,i):
     
     '''Return i,j such that s[i:j] is the word surrounding s[i].'''
@@ -5148,13 +5148,7 @@ def getWord (s,i):
         j += 1
     
     return i,j
-    
-def test_g_getWord():
-    s = 'abc xy_z5 pdq'
-    i,j = g.getWord(s,5)
-    assert s[i:j] == 'xy_z5','got %s' % s[i:j]
-#@nonl
-#@-node:ekr.20061031102333.2:g.getWord & test
+#@-node:ekr.20061031102333.2:g.getWord (passed)
 #@+node:ekr.20041219095213:import wrappers
 #@+at 
 #@nonl

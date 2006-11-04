@@ -491,7 +491,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         Args is a tuple of two floats describing the fraction of the visible area."""
     
-        # g.trace(self.tree.redrawCount,args)
+        #g.trace(self.tree.redrawCount,args,g.callers())
     
         apply(self.treeBar.set,args,keys)
     
@@ -502,7 +502,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         """Tell the canvas to scroll"""
         
-        # g.trace(vyiewCallback",args,keys)
+        #g.trace(vyiewCallback,args,keys,g.callers())
     
         if self.tree.allocateOnlyVisibleNodes:
             self.tree.allocateNodesBeforeScrolling(args)
@@ -1956,7 +1956,7 @@ class leoTkinterBody (leoFrame.leoBody):
         frame.bodyBar = self.bodyBar = bodyBar
         
         def yscrollCallback(x,y,bodyBar=bodyBar,w=w):
-            # g.trace(x,y)
+            # g.trace(x,y,g.callers())
             if hasattr(w,'leo_scrollBarSpot'):
                 w.leo_scrollBarSpot = (x,y)
             return bodyBar.set(x,y)
@@ -2902,29 +2902,25 @@ class leoTkinterBody (leoFrame.leoBody):
         
     def seeInsertPoint (self):
         g.app.gui.seeInsertPoint(self.bodyCtrl)
-    # makeInsertPointVisible = seeInsertPoint
     
     def setFirstVisibleIndex (self,index):
-        self.bodyCtrl.yview("moveto",index)
+        g.app.gui.yview(self.bodyCtrl,index)
     
     def getYScrollPosition (self):
         return self.bodyCtrl.yview()
         
     def setYScrollPosition (self,scrollPosition):
-    
         if len(scrollPosition) == 2:
             first,last = scrollPosition
         else:
             first = scrollPosition
-        self.bodyCtrl.yview("moveto",first)
+        g.app.gui.yview(self.bodyCtrl,first)
         
     def scrollUp (self):
-        
-        self.bodyCtrl.yview("scroll",-1,"units")
+        g.app.gui.yscroll(self.bodyCtrl,-1,'units')
         
     def scrollDown (self):
-    
-        self.bodyCtrl.yview("scroll",1,"units")
+        g.app.gui.yscroll(self.bodyCtrl,1,'units')
     #@-node:ekr.20031218072017.4038:Visibility & scrolling (tkBody)
     #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
     #@-others

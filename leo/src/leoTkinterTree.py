@@ -2515,7 +2515,7 @@ class leoTkinterTree (leoFrame.leoTree):
             
             if p.v and p.v.t.scrollBarSpot != None:
                 first,last = p.v.t.scrollBarSpot
-                body.yview("moveto",first)
+                g.app.gui.yview(body,first)
             
             if p.v and p.v.t.insertSpot != None:
                 c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
@@ -2524,6 +2524,8 @@ class leoTkinterTree (leoFrame.leoTree):
                 c.frame.bodyCtrl.mark_set("insert","1.0")
                 
             # g.trace("select:",p.headString())
+                    
+            #@nonl
             #@-node:ekr.20040803072955.130:<< select the new node >>
             #@nl
             if p and p != old_p: # Suppress duplicate call.
