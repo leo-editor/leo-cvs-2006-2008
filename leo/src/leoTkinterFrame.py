@@ -2178,7 +2178,7 @@ class leoTkinterBody (leoFrame.leoBody):
         else:
             g.trace('can not happen')
     #@-node:ekr.20061017082211:onClick (passed)
-    #@+node:ekr.20061017083312:selectEditor
+    #@+node:ekr.20061017083312:selectEditor (tkBody)
     def selectEditor(self,w):
         
         c = self.c ; d = self.editorWidgets
@@ -2232,7 +2232,8 @@ class leoTkinterBody (leoFrame.leoBody):
             
         if w.leo_scrollBarSpot is not None:
             first,last = w.leo_scrollBarSpot
-            w.yview('moveto',first)
+            ###w.yview('moveto',first)
+            gui.yview(w,first)
         else:
             gui.seeInsertPoint(w)
         
@@ -2247,7 +2248,7 @@ class leoTkinterBody (leoFrame.leoBody):
         c.bodyWantsFocusNow()
         return 'break'
     #@nonl
-    #@-node:ekr.20061017083312:selectEditor
+    #@-node:ekr.20061017083312:selectEditor (tkBody)
     #@+node:ekr.20060528132829:selectMainEditor
     def selectMainEditor (self,p):
         

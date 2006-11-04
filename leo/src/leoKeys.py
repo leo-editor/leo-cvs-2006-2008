@@ -524,8 +524,10 @@ class autoCompleterClass:
         # End autocompletion mode, putting the insertion point after the suggested calltip.
         self.finish()
         c.widgetWantsFocusNow(w)
-        ###gui.setSelectionRange(w,j1,j2,insert=j2,python=True)
-        gui.setInsertPoint(w,j2,python=True)
+        if 1: # Seems to be more useful.
+            gui .setSelectionRange(w,j1,j2,insert=j2,python=True)
+        else:
+            gui.setInsertPoint(w,j2,python=True)
         #@    << put the status line >>
         #@+node:ekr.20061031131434.26:<< put the status line >>
         c.frame.clearStatusLine()

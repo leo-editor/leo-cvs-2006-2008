@@ -376,7 +376,7 @@ class leoGui:
     def setSelectionRange (self,t,start,end,insert='sel.end'):
         pass
     #@-node:ekr.20061024133425:Selection (leoGui)
-    #@+node:ekr.20061101020611:Strings
+    #@+node:ekr.20061101020611:gui.stringInsert & stringDelete (to be removed?)
     def stringInsert (self,s,i,s2):
         
         return s[:i] + s2 + s[i:]
@@ -390,7 +390,7 @@ class leoGui:
         return s[:i] + s[j:]
         
     #@nonl
-    #@-node:ekr.20061101020611:Strings
+    #@-node:ekr.20061101020611:gui.stringInsert & stringDelete (to be removed?)
     #@+node:ekr.20061103094543:Visibility & scrolling (leoGui)
     def see (self,w,index,python=False):
         pass

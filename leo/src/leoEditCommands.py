@@ -1535,9 +1535,11 @@ class editCommandsClass (baseEditCommandsClass):
         if which == 'low':  word = word.lower()
         if which == 'up':   word = word.upper()
         
-        s = gui.stringDelete(s,i,j)
-        s = gui.stringInsert(s,i,word)
-        gui.setAllText(w,s)
+        ###s = gui.stringDelete(s,i,j)
+        ###s = gui.stringInsert(s,i,word)
+        ###gui.setAllText(w,s)
+        gui.rawDelete(w,s,i,j, python=True)
+        gui.rawInsert(w,s,i,word,python=True)
         gui.setInsertPoint(w,i1,python=True)
         
         self.endCommand(changed=True,setLabel=True)
@@ -2887,7 +2889,7 @@ class editCommandsClass (baseEditCommandsClass):
         if result != body:
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20050920084036.141:removeBlankLines
-    #@+node:ekr.20051125080855:selfInsertCommand & helpers (revise)
+    #@+node:ekr.20051125080855:selfInsertCommand & helpers (passed)
     def selfInsertCommand(self,event,action='insert'):
         
         '''Insert a character in the body pane.
@@ -2956,7 +2958,7 @@ class editCommandsClass (baseEditCommandsClass):
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
     #@nonl
-    #@+node:ekr.20051026171121:insertNewlineHelper (pass)
+    #@+node:ekr.20051026171121:insertNewlineHelper (passed)
     def insertNewlineHelper (self,w,s,oldSel,undoType):
     
         c = self.c ; p = c.currentPosition() ; gui = g.app.gui
@@ -2967,10 +2969,12 @@ class editCommandsClass (baseEditCommandsClass):
             i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
             gui.rawDelete(w,s,i,j,python=True)
             gui.rawInsert(w,s,i,ch,python=True)
+            gui.setInsertPoint(w,i+1,python=True)
         else:
             i = gui.toPythonIndex(s,w,i)
             gui.rawInsert(w,s,i,ch,python=True)
-        
+            gui.setInsertPoint(w,i+1,python=True)
+    
             allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
             if (
                 (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
@@ -2981,7 +2985,7 @@ class editCommandsClass (baseEditCommandsClass):
         
         gui.seeInsertPoint(w)
     #@nonl
-    #@-node:ekr.20051026171121:insertNewlineHelper (pass)
+    #@-node:ekr.20051026171121:insertNewlineHelper (passed)
     #@+node:ekr.20060804095512:initBracketMatcher
     def initBracketMatcher (self,c):
     
@@ -3019,7 +3023,7 @@ class editCommandsClass (baseEditCommandsClass):
             j = g.app.gui.toGuiIndex(s,w,j)
             self.flashCharacter(w,j)
     #@-node:ekr.20060627083506:flashMatchingBracketsHelper
-    #@+node:ekr.20060627091557:flashCharacter (complex tk code)
+    #@+node:ekr.20060627091557:flashCharacter
     def flashCharacter(self,w,i):
         
         bg      = self.bracketsFlashBg or 'DodgerBlue1'
@@ -3028,13 +3032,14 @@ class editCommandsClass (baseEditCommandsClass):
         delay   = self.bracketsFlashDelay or 75
         
         g.app.gui.flashCharacter(w,i,bg,fg,flashes,delay)
-    #@-node:ekr.20060627091557:flashCharacter (complex tk code)
-    #@+node:ekr.20051027172949:updateAutomatchBracket (test)
+    #@-node:ekr.20060627091557:flashCharacter
+    #@+node:ekr.20051027172949:updateAutomatchBracket (passed)
     def updateAutomatchBracket (self,p,w,ch,oldSel):
     
         # assert ch in ('(',')','[',']','{','}')
         
-        c = self.c ; d = g.scanDirectives(c,p) ; i,j = oldSel
+        c = self.c ; d = g.scanDirectives(c,p)
+        i,j = oldSel
         language = d.get('language')
         gui = g.app.gui
         
@@ -3043,35 +3048,41 @@ class editCommandsClass (baseEditCommandsClass):
             if automatch:
                 ch = ch + {'(':')','[':']','{':'}'}.get(ch)
             if i != j:
-                ###w.delete(i,j)
                 gui.rawDelete(w,s,i,j,python=True)
-            ### w.insert(i,ch)
             gui.rawInsert(w,s,i,ch,python=True)
             if automatch:
-                ###w.mark_set('insert','insert-1c')
                 ins = gui.getInsertPoint(w,python=True)
                 gui.setInsertPoint(w,ins-1,python=True)
         else:
-            ch2 = w.get('insert')
+            s = gui.getAllText(w)
+            ins = gui.getInsertPoint(w,python=True)
+            ch2 = ins<len(s) and s[ins] or ''
             if ch2 in (')',']','}'):
-                ### w.mark_set('insert','insert+1c')
                 ins = gui.getInsertPoint(w,python=True)
                 gui.setInsertPoint(w,ins+1,python=True)
             else:
                 if i != j:
-                    w.delete(i,j)
-                w.insert(i,ch)
-    #@-node:ekr.20051027172949:updateAutomatchBracket (test)
-    #@+node:ekr.20051026171121.1:udpateAutoIndent (test) (calls complex w.get)
-    # By David McNab:
+                    gui.rawDelete(w,s,i,j,python=True)
+                gui.rawInsert(w,s,i,ch,python=True)
+                                                                
+    #@nonl
+    #@-node:ekr.20051027172949:updateAutomatchBracket (passed)
+    #@+node:ekr.20051026171121.1:udpateAutoIndent (passed)
     def updateAutoIndent (self,p,w):
     
         c = self.c ; d = g.scanDirectives(c,p) ; gui = g.app.gui
-        tab_width = d.get("tabwidth",c.tab_width) # Get the previous line.
-        s = w.get("insert linestart - 1 lines","insert linestart -1c")
+        tab_width = d.get("tabwidth",c.tab_width)
+        # Get the previous line.
+        s = gui.getAllText(w)
+        ins = gui.getInsertPoint(w,python=True)
+        i = g.skip_to_start_of_line(s,ins)
+        i,j = g.getLine(s,i-1)
+        s = s[i:j-1]
+        # g.trace(i,j,repr(s[i:j]))
+    
         # Add the leading whitespace to the present line.
         junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-        if s and len(s) > 0 and s [ -1] == ':':
+        if s and len(s) > 0 and s [-1] == ':':
             # For Python: increase auto-indent after colons.
             if c.frame.body.colorizer.scanColorDirectives(p) == "python":
                 width += abs(tab_width)
@@ -3088,32 +3099,36 @@ class editCommandsClass (baseEditCommandsClass):
             width = bracketWidths.pop()
         ws = g.computeLeadingWhitespace(width,tab_width)
         if ws:
-            ### w.insert("insert",ws)
             s = gui.getAllText(w)
-            i = gui.getInsertPoint(w)
+            i = gui.getInsertPoint(w,python=True)
             gui.rawInsert(w,s,i,ws,python=True)
-    #@-node:ekr.20051026171121.1:udpateAutoIndent (test) (calls complex w.get)
-    #@+node:ekr.20051026092433:updateTab
+    #@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
+    #@+node:ekr.20051026092433:updateTab (passed)
     def updateTab (self,p,w):
     
-        c = self.c ; d = g.scanDirectives(c,p)
+        c = self.c ; gui = g.app.gui
+        d = g.scanDirectives(c,p)
         tab_width = d.get("tabwidth",c.tab_width)
-        
-        i,j = g.app.gui.getSelectionRange(w)
+        i,j = gui.getSelectionRange(w,python=True)
+        ins = gui.getInsertPoint(w,python=True)
+        s = gui.getAllText(w)
+    
         if i != j:
-            w.delete(i,j)
+            gui.rawDelete(w,s,i,j,python=True)
         if tab_width > 0:
-            w.insert("insert",'\t')
+            gui.rawInsert(w,s,ins,'\t',python=True)
         else:
             # Get the preceeding characters.
-            s = w.get("insert linestart","insert")
-        
+            start = g.skip_to_start_of_line(s,ins)
+            g.trace(start,ins)
+            s2 = s[start:ins]
+            
             # Compute n, the number of spaces to insert.
-            width = g.computeWidth(s,tab_width)
+            width = g.computeWidth(s2,tab_width)
             n = abs(tab_width) - (width % abs(tab_width))
-            w.insert("insert",' ' * n)
-    #@-node:ekr.20051026092433:updateTab
-    #@-node:ekr.20051125080855:selfInsertCommand & helpers (revise)
+            gui.rawInsert(w,s,ins,' ' * n,python=True)
+    #@-node:ekr.20051026092433:updateTab (passed)
+    #@-node:ekr.20051125080855:selfInsertCommand & helpers (passed)
     #@-node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20050920084036.79:info...
     #@+node:ekr.20050920084036.80:howMany

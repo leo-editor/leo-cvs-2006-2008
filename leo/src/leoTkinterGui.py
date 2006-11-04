@@ -626,7 +626,7 @@ class tkinterGui(leoGui.leoGui):
         
         return g.choose(w.compare(newpos,"==","end"),None,newpos)
     #@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (to be deleted)
-    #@+node:ekr.20060528172956:toGuiIndex & toPythonIndex (passed)
+    #@+node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
     def toGuiIndex (self,s,w,index):
         
         '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
@@ -645,7 +645,7 @@ class tkinterGui(leoGui.leoGui):
         row, col = index.split('.') ; row, col = int(row), int(col)
         index = g.convertRowColToPythonIndex (s,row-1,col)
         return index
-    #@-node:ekr.20060528172956:toGuiIndex & toPythonIndex (passed)
+    #@-node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
     #@+node:ekr.20061031132712.4:xyToGui/PythonIndex
     def xyToGuiIndex (self,w,x,y):
         

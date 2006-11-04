@@ -403,8 +403,10 @@ def calltip (self,obj=None):
     # End autocompletion mode, putting the insertion point after the suggested calltip.
     self.finish()
     c.widgetWantsFocusNow(w)
-    ###gui.setSelectionRange(w,j1,j2,insert=j2,python=True)
-    gui.setInsertPoint(w,j2,python=True)
+    if 1: # Seems to be more useful.
+        gui .setSelectionRange(w,j1,j2,insert=j2,python=True)
+    else:
+        gui.setInsertPoint(w,j2,python=True)
     << put the status line >>
 #@+node:ekr.20061031131434.21:<< try to set s from a Python global function >>
 # The first line of the docstring is good enough, except for classes.
@@ -1496,7 +1498,7 @@ def extendSelection (self,s):
     c.frame.body.onBodyChanged('Typing')    
 #@nonl
 #@-node:ekr.20061031131434.31:extendSelection
-#@+node:ekr.20061101020611:Strings
+#@+node:ekr.20061101020611:gui.stringInsert & stringDelete (to be removed?)
 def stringInsert (self,s,i,s2):
     
     return s[:i] + s2 + s[i:]
@@ -1510,7 +1512,7 @@ def stringDelete (self,s,i,j=None):
     return s[:i] + s[j:]
     
 #@nonl
-#@-node:ekr.20061101020611:Strings
+#@-node:ekr.20061101020611:gui.stringInsert & stringDelete (to be removed?)
 #@+node:ekr.20061031131434.39:insertNormalChar
 def insertNormalChar (self,ch,keysym):
     

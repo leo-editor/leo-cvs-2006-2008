@@ -1341,7 +1341,7 @@ if 0: # Test code: may be executed in the child node.
     #@-node:ekr.20031218072017.3123:<< test code >>
     #@nl
 #@-node:ekr.20031218072017.3121:redirecting stderr and stdout to Leo's log pane
-#@+node:ekr.20031218072017.3127:get_line & get_line_after
+#@+node:ekr.20031218072017.3127:g.get_line & get_line__after
 # Very useful for tracing.
 
 def get_line (s,i):
@@ -1354,6 +1354,8 @@ def get_line (s,i):
     k = g.skip_to_end_of_line(s,i)
     return nl + s[j:k]
     
+getLine = get_line
+    
 def get_line_after (s,i):
     
     nl = ""
@@ -1362,7 +1364,10 @@ def get_line_after (s,i):
         nl = "[nl]"
     k = g.skip_to_end_of_line(s,i)
     return nl + s[i:k]
-#@-node:ekr.20031218072017.3127:get_line & get_line_after
+    
+getLineAfter = get_line_after
+#@nonl
+#@-node:ekr.20031218072017.3127:g.get_line & get_line__after
 #@+node:ekr.20031218072017.3128:pause
 def pause (s):
     
@@ -3442,7 +3447,7 @@ def skip_id(s,i,chars=None):
     return i
 #@nonl
 #@-node:ekr.20040705195048:skip_id
-#@+node:ekr.20031218072017.3187:skip_line, skip_to_end_of_line
+#@+node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line (passed)
 #@+at 
 #@nonl
 # These methods skip to the next newline, regardless of whether the newline 
@@ -3453,16 +3458,32 @@ def skip_id(s,i,chars=None):
 
 def skip_line (s,i):
 
+    if i >= len(s): i = len(s) - 1
+    if i < 0: i = 0
     i = string.find(s,'\n',i)
     if i == -1: return len(s)
     else: return i + 1
         
 def skip_to_end_of_line (s,i):
 
+    '''like w.index(i + 'lineend')'''
+
+    if i >= len(s): i = len(s) - 1
+    if i < 0: i = 0
     i = string.find(s,'\n',i)
     if i == -1: return len(s)
     else: return i
-#@-node:ekr.20031218072017.3187:skip_line, skip_to_end_of_line
+
+def skip_to_start_of_line (s,i):
+    
+    '''like w.index(i + 'linestart')'''
+
+    if i >= len(s): return len(s)
+    if i <= 0:      return 0
+    i = s.rfind('\n',0,i) # Don't find s[i], so it doesn't matter if s[i] is a newline.
+    if i == -1: return 0
+    else:       return i + 1
+#@-node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line (passed)
 #@+node:ekr.20031218072017.3188:skip_long
 def skip_long(s,i):
     
@@ -5132,23 +5153,41 @@ def stripBrackets (s):
         s = s[:-1]
     return s
 #@-node:ekr.20060410112600:g.stripBrackets
-#@+node:ekr.20061031102333.2:g.getWord (passed)
+#@+node:ekr.20061031102333.2:g.getWord & getLine (both passed)
 def getWord (s,i):
     
     '''Return i,j such that s[i:j] is the word surrounding s[i].'''
     
+    if i >= len(s): i = len(s) - 1
+    if i < 0: i = 0
     # Scan backwards.
     while 0 <= i < len(s) and g.isWordChar(s[i]):
         i-= 1
     i += 1
-    
     # Scan forwards.
     j = i
     while 0 <= j < len(s) and g.isWordChar(s[j]):
         j += 1
-    
     return i,j
-#@-node:ekr.20061031102333.2:g.getWord (passed)
+
+def getLine (s,i):
+    
+    '''Return i,j such that s[i:j] is the line surrounding s[i].
+    s[i] is a newline only if the line is empty.
+    s[j] is a newline unless there is no trailing newline.
+    '''
+    
+    if i >= len(s): i = len(s) - 1
+    if i < 0: i = 0
+    j = s.rfind('\n',0,i)
+    if j == -1: j = 0
+    else:       j += 1
+    k = s.find('\n',i)
+    if k == -1: k = len(s)
+    else:       k = k + 1
+    return j,k
+#@nonl
+#@-node:ekr.20061031102333.2:g.getWord & getLine (both passed)
 #@+node:ekr.20041219095213:import wrappers
 #@+at 
 #@nonl

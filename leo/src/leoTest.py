@@ -1457,7 +1457,7 @@ def runEditCommandTest (c,p):
         c.selectPosition(atTest)
         atTest.contract()
     finally:
-        c.endUpdate()
+        c.endUpdate(False) # New in 4.4.3: Don't redraw.
 #@nonl
 #@-node:ekr.20061008140603:runEditCommandTest
 #@-node:ekr.20051104075904.43:Specific to particular unit tests...
