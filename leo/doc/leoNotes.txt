@@ -2084,6 +2084,28 @@ self_and_unique_subtree_iter = unique_subtree_iter
 #@-node:EKR.20040528151551.3:unique_subtree_iter
 #@-node:EKR.20040528151551:v.Iterators
 #@-node:ekr.20061029095100:From leoNodes
+#@+node:ekr.20061105124126:From leoBody
+def convertRowColumnToIndex (self,row,column):
+    self.oops()
+    
+def convertIndexToRowColumn (self,index):
+    self.oops()
+    
+def adjustIndex (self,index,offset):
+    self.oops()
+    
+def compareIndices(self,i,rel,j):
+    self.oops()
+    
+def getImageIndex (self,image):
+    self.oops()
+    
+def getPythonInsertionPoint (self,t=None,s=None):
+    self.oops()
+    
+def setPythonInsertionPoint (self,i,t=None,s=None):
+    self.oops()
+#@-node:ekr.20061105124126:From leoBody
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

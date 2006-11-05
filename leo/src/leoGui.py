@@ -584,7 +584,7 @@ class unitTestGui(leoGui):
     def get_focus (self,frame):
         pass
         
-    def getInsertPoint (self,t):
+    def getInsertPoint (self,t,python=False):
         return 0
     
     def getSelectionRange (self,t,sort=True,toPython=False):

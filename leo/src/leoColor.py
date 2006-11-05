@@ -1367,11 +1367,18 @@ class baseColorizer:
             self.p = p
             
             # Get the body text, converted to unicode.
-            s = self.body.getAllText() # 10/27/03
-            self.sel = sel = self.body.getInsertionPoint() # 10/27/03
-            start,end = self.body.convertIndexToRowColumn(sel) # 10/27/03
+            self.allBodyText = s = self.body.getAllText() # Only compute this once.
+            if 1: # new code
+                sel = g.app.gui.getInsertPoint(self.body.bodyCtrl,python=True)
+                start,end = g.convertPythonIndexToRowCol (self.allBodyText,sel)
+                start += 1 # Simulate the old 1-based Tk scheme.  self.index undoes this hack.
+                # g.trace('new',start,end)
+            if 0:
+                self.sel = sel = self.body.getInsertionPoint()
+                start,end = self.body.convertIndexToRowColumn(sel)
+                g.trace('correct',start,end)
             
-            if self.language: self.language = self.language.lower() # 6/20/05
+            if self.language: self.language = self.language.lower()
             # g.trace(self.count,self.p)
             # g.trace(body.tag_names())
             
@@ -2636,15 +2643,20 @@ class baseColorizer:
     # These methods are like the corresponding functions in leoGlobals.py 
     # except they issue no error messages.
     #@-at
-    #@+node:ekr.20031218072017.1609:index & tag
+    #@+node:ekr.20031218072017.1609:index & tag (leoColor)
     def index (self,i):
         
-        return self.body.convertRowColumnToIndex(self.line_index,i)
-            
+        ###return self.body.convertRowColumnToIndex(self.line_index,i)
+    
+        i = g.convertRowColToPythonIndex(self.allBodyText,self.line_index-1,i)
+        val = g.app.gui.toGuiIndex(self.allBodyText,self.body.bodyCtrl,i)
+        return val
+    
     def tag (self,name,i,j):
     
         self.body.tag_add(name,self.index(i),self.index(j))
-    #@-node:ekr.20031218072017.1609:index & tag
+    #@nonl
+    #@-node:ekr.20031218072017.1609:index & tag (leoColor)
     #@+node:ekr.20031218072017.2807:setFirstLineState
     def setFirstLineState (self):
         

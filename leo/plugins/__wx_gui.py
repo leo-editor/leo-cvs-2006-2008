@@ -40,7 +40,9 @@ import traceback
 try:
     from wxPython import wx
 except ImportError:
+    g.es_print('wx_gui plugin: can not import wxPython')
     wx = None
+    raise
 #@nonl
 #@-node:edream.110203113231.303:<< imports >>
 #@nl
@@ -108,7 +110,7 @@ class wxGui(leoGui.leoGui):
         self.bitmap = None
     #@nonl
     #@-node:edream.110203113231.307: wxGui.__init__
-    #@+node:edream.110203113231.308:createRootWindow & allies
+    #@+node:edream.110203113231.308:createRootWindow
     def createRootWindow(self):
     
         self.wxApp = wxLeoApp(None) # This redirects stdout & stderr to stupid console.
@@ -122,102 +124,13 @@ class wxGui(leoGui.leoGui):
     
         return self.wxFrame
     #@nonl
-    #@+node:edream.110203113231.309:setDefaultIcon CONTAINS TK CODE
-    def setDefaultIcon(self):
-        
-        """Set the icon to be used in all Leo windows.
-        
-        This code does nothing for Tk versions before 8.4.3."""
-        
-        gui = self
-    
-        try:
-            version = gui.root.getvar("tk_patchLevel")
-            if g.CheckVersion(version,"8.4.3"):
-                # tk 8.4.3 or greater: load a 16 by 16 icon.
-                path = os.path.join(g.app.loadDir,"..","Icons")
-                if os.path.exists(path):
-                    file = os.path.join(path,"LeoApp16.ico")
-                    if os.path.exists(path):
-                        self.bitmap = Tk.BitmapImage(file)
-                    else:
-                        g.es("LeoApp16.ico not in Icons directory", color="red")
-                else:
-                    g.es("Icons directory not found: "+path, color="red")
-        except:
-            g.es_print("exception setting bitmap")
-            traceback.print_exc()
-    #@nonl
-    #@-node:edream.110203113231.309:setDefaultIcon CONTAINS TK CODE
-    #@+node:edream.110203113231.310:setEncoding
-    #@+at 
-    #@nonl
-    # According to Martin v. Löwis, getdefaultlocale() is broken, and cannot 
-    # be fixed. The workaround is to copy the g.getpreferredencoding() 
-    # function from locale.py in Python 2.3a2.  This function is now in 
-    # leoGlobals.py.
-    #@-at
-    #@@c
-    
-    def setEncoding (self):
-    
-        for (encoding,src) in (
-            (g.app.config.tkEncoding,"config"),
-            #(locale.getdefaultlocale()[1],"locale"),
-            (g.getpreferredencoding(),"locale"),
-            (sys.getdefaultencoding(),"sys"),
-            ("utf-8","default")):
-        
-            if g.isValidEncoding (encoding): # 3/22/03
-                g.app.tkEncoding = encoding
-                # g.trace(g.app.tkEncoding,src)
-                break
-            elif encoding and len(encoding) > 0:
-                g.trace("ignoring invalid " + src + " encoding: " + `encoding`)
-                
-        # g.trace(g.app.tkEncoding)
-    #@nonl
-    #@-node:edream.110203113231.310:setEncoding
-    #@+node:edream.110203113231.311:getDefaultConfigFont CONTAINS TK CODE
-    def getDefaultConfigFont(self,config):
-        
-        """Get the default font from a new text widget."""
-    
-        t = Tk.Text()
-        fn = t.cget("font")
-        font = tkFont.Font(font=fn)
-        config.defaultFont = font
-        config.defaultFontFamily = font.cget("family")
-    #@nonl
-    #@-node:edream.110203113231.311:getDefaultConfigFont CONTAINS TK CODE
-    #@+node:edream.110203113231.312:createGlobalWindows
-    def createGlobalWindows (self):
-        
-        """Create the global windows for the application."""
-        
-        g.app.findFrame = wxFindFrame()
-        g.app.findFrame.top.withdraw()
-        g.app.globalWindows.append(g.app.findFrame)
-    #@nonl
-    #@-node:edream.110203113231.312:createGlobalWindows
-    #@-node:edream.110203113231.308:createRootWindow & allies
+    #@-node:edream.110203113231.308:createRootWindow
     #@+node:edream.111303085447.1:destroySelf
     def destroySelf(self):
         
         pass # Nothing more needs to be done once all windows have been destroyed.
     #@nonl
     #@-node:edream.111303085447.1:destroySelf
-    #@+node:edream.110203113231.317:runMainLoop
-    def runMainLoop(self):
-    
-        """Run tkinter's main loop."""
-        
-        # g.trace("wxGui")
-        self.wxApp.MainLoop()
-        # g.trace("done")
-    #@nonl
-    #@-node:edream.110203113231.317:runMainLoop
-    #@+node:edream.110203113231.306:stubs
     #@+node:edream.110203113231.314:finishCreate
     def finishCreate (self):
     
@@ -234,14 +147,23 @@ class wxGui(leoGui.leoGui):
     #@-node:edream.110203113231.315:killGui
     #@+node:edream.110203113231.316:recreateRootWindow
     def recreateRootWindow(self):
+    
         """A do-nothing base class to create the hidden root window of a gui
     
         after a previous gui has terminated with killGui(False)."""
     
         g.trace('wx gui')
-    
     #@-node:edream.110203113231.316:recreateRootWindow
-    #@-node:edream.110203113231.306:stubs
+    #@+node:edream.110203113231.317:runMainLoop
+    def runMainLoop(self):
+    
+        """Run tkinter's main loop."""
+        
+        # g.trace("wxGui")
+        self.wxApp.MainLoop()
+        # g.trace("done")
+    #@nonl
+    #@-node:edream.110203113231.317:runMainLoop
     #@-node:edream.111303091300:app.gui.wx birth & death
     #@+node:edream.110203113231.321:app.gui wx dialogs
     #@+node:edream.110203113231.322:runAboutLeoDialog
@@ -407,14 +329,6 @@ class wxGui(leoGui.leoGui):
         return wxLeoFrame(title)
     #@nonl
     #@-node:edream.111303092328.4:createLeoFrame (wxGui panels)
-    #@+node:edream.111303092328.5:createPrefsPanel
-    def createPrefsPanel(self,c):
-    
-        """Create a Prefs panel."""
-    
-        return wxLeoPrefs(c)
-    #@nonl
-    #@-node:edream.111303092328.5:createPrefsPanel
     #@+node:edream.110203113231.333:destroyLeoFrame (used??)
     def destroyLeoFrame (self,frame):
     
@@ -624,63 +538,22 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.111303093843.1:setIdleTimeHookAfterDelay
     #@-node:edream.110203113231.329:Idle time
-    #@+node:edream.111303093953.1:Indices
-    #@+node:edream.111303093953.2:firstIndex
-    def firstIndex (self):
-    
-        return 0
-    #@nonl
-    #@-node:edream.111303093953.2:firstIndex
-    #@+node:edream.111303093953.3:lastIndex
-    def lastIndex (self):
-    
-        return "end"
-    #@nonl
-    #@-node:edream.111303093953.3:lastIndex
-    #@+node:edream.111303093953.4:moveIndexBackward
-    def moveIndexBackward(self,index,n):
-    
-        return index + n
-    #@-node:edream.111303093953.4:moveIndexBackward
-    #@+node:edream.111303093953.5:moveIndexForward
-    def moveIndexForward(self,index,n):
-    
-        return index -n
-    #@nonl
-    #@-node:edream.111303093953.5:moveIndexForward
-    #@+node:edream.111303093953.6:compareIndices
-    def compareIndices (self,t,n1,rel,n2):
-        
-        val = eval("%d $s %d" % (n1,rel,n2))
-        g.trace(val)
-        return val
-    #@nonl
-    #@-node:edream.111303093953.6:compareIndices
-    #@+node:edream.111303093953.7:getindex
-    def getindex(self,text,index):
-        
-        """Convert string index of the form line.col into a tuple of two ints."""
-        
-        val = tuple(map(int,string.split(text.index(index), ".")))
-        
-        g.trace(val)
-        
-        return val
-    #@nonl
-    #@-node:edream.111303093953.7:getindex
-    #@-node:edream.111303093953.1:Indices
     #@+node:edream.111303093953.8:Insert Point
     #@+node:edream.111303093953.9:getInsertPoint
-    def getInsertPoint(self,t):
+    def getInsertPoint(self,t,python=False):
+        
+        # The python arg is ignored.
     
         if t:
-            t.bodyCtrl.GetInsertionPoint()
+            t.GetInsertionPoint()
         else:
             return 0
     #@nonl
     #@-node:edream.111303093953.9:getInsertPoint
     #@+node:edream.111303093953.10:setInsertPoint
-    def setInsertPoint (self,t,pos):
+    def setInsertPoint (self,t,pos,python=False):
+        
+        # The python arg is ignored.
     
         if t and pos: # s_text control doesn't exist.
             g.trace(pos)
@@ -746,15 +619,19 @@ class wxGui(leoGui.leoGui):
             return g.toUnicode(s,g.app.tkEncoding)
     #@nonl
     #@-node:edream.111303093953.18:getAllText
+    #@+node:ekr.20061105124941:To be removed
     #@+node:edream.111303093953.19:getCharAfterIndex
     def getCharAfterIndex (self,t,index):
     
+        g.trace()
         ch = t.get(index + "+1c")
         return g.toUnicode(ch,g.app.tkEncoding)
     #@nonl
     #@-node:edream.111303093953.19:getCharAfterIndex
     #@+node:edream.111303093953.20:getCharAtIndex
     def getCharAtIndex (self,t,index):
+        
+        g.trace()
         ch = t.get(index)
         return g.toUnicode(ch,g.app.tkEncoding)
     #@nonl
@@ -762,6 +639,7 @@ class wxGui(leoGui.leoGui):
     #@+node:edream.111303093953.21:getCharBeforeIndex
     def getCharBeforeIndex (self,t,index):
     
+        g.trace()
         ch = t.get(index + "-1c")
         return g.toUnicode(ch,g.app.tkEncoding)
     #@nonl
@@ -769,10 +647,12 @@ class wxGui(leoGui.leoGui):
     #@+node:edream.111303093953.22:getLineContainingIndex
     def getLineContainingIndex (self,t,index):
     
+        g.trace()
         line = t.get(index + " linestart", index + " lineend")
         return g.toUnicode(line,g.app.tkEncoding)
     #@nonl
     #@-node:edream.111303093953.22:getLineContainingIndex
+    #@-node:ekr.20061105124941:To be removed
     #@+node:edream.111303093953.23:replaceSelectionRangeWithText
     def replaceSelectionRangeWithText (self,t,start,end,text):
     
@@ -789,31 +669,38 @@ class wxGui(leoGui.leoGui):
             t.bodyCtrl.ShowPosition(index)
     #@-node:edream.111303093953.25:see
     #@-node:edream.111303093953.24:Visibility
+    #@+node:ekr.20061105125717:toGuiIndex & toPythonIndex
+    # This plugin uses Python indices everywhere, so these can be do-nothings.
+    
+    def toGuiIndex (self,s,w,index):
+        
+        return index
+    
+    def toPythonIndex (self,s,w,index):
+    
+        return index
+    #@-node:ekr.20061105125717:toGuiIndex & toPythonIndex
     #@-node:edream.111303090930:app.gui.wx utils
     #@-others
 #@nonl
 #@-node:edream.110203113231.305:wxGui class
 #@+node:edream.110203113231.346:wxLeoApp class
-if wx:
-    class wxLeoApp (wx.wxApp):
-        #@        @+others
-        #@+node:edream.110203113231.347:OnInit  (wxLeoApp)
-        def OnInit(self):
-        
-            self.SetAppName("Leo")
-        
-            return True
-        #@nonl
-        #@-node:edream.110203113231.347:OnInit  (wxLeoApp)
-        #@+node:edream.110203113231.348:OnExit
-        def OnExit(self):
-            
-            # g.trace()
-            return True
-        #@-node:edream.110203113231.348:OnExit
-        #@-others
+class wxLeoApp (wx.wxApp):
+    #@    @+others
+    #@+node:edream.110203113231.347:OnInit  (wxLeoApp)
+    def OnInit(self):
     
-#@nonl
+        self.SetAppName("Leo")
+    
+        return True
+    #@nonl
+    #@-node:edream.110203113231.347:OnInit  (wxLeoApp)
+    #@+node:edream.110203113231.348:OnExit
+    def OnExit(self):
+    
+        return True
+    #@-node:edream.110203113231.348:OnExit
+    #@-others
 #@-node:edream.110203113231.346:wxLeoApp class
 #@+node:edream.110203113231.539:wxLeoBody class
 class wxLeoBody (leoFrame.leoBody):
@@ -857,22 +744,10 @@ class wxLeoBody (leoFrame.leoBody):
     #@nonl
     #@-node:edream.110203113231.543:Bounding box...
     #@+node:edream.111303204517:Color tags (hacks for styles)
-    #@+node:edream.111403082513:tkColorToWxColor (internal use)
-    def tkColorToWxColor (self, color):
-        
-        d = {
-            "red": wx.wxRED,
-            "blue": wx.wxBLUE,
-            "#00aa00": wx.wxGREEN,
-            "firebrick3": wx.wxRED }
-            
-        return d.get(color)
-    #@nonl
-    #@-node:edream.111403082513:tkColorToWxColor (internal use)
     #@+node:edream.111303205611:tag_add
     def tag_add (self,tagName,index1,index2):
         
-        # g.trace(tagName,index1,index2)
+        g.trace(tagName,repr(index1),repr(index2),g.callers())
     
         style = self.styles.get(tagName)
         if style:
@@ -885,24 +760,34 @@ class wxLeoBody (leoFrame.leoBody):
         # g.trace(tagName,event,callback)
         pass
     #@-node:edream.111303205611.1:tag_bind
-    #@+node:edream.111303205611.2:tag_configure (hack for wxStyles)
+    #@+node:edream.111303205611.2:tag_configure & helper
     def tag_configure (self,colorName,**keys):
         
         foreground = keys.get("foreground")
         background = keys.get("background")
     
-        if foreground:
-            fcolor = self.tkColorToWxColor (foreground)
-            bcolor = self.tkColorToWxColor (background)
-            if fcolor and bcolor:
-                # g.trace(colorName,foreground,keys)
-                style = wx.wxTextAttr(fcolor,bcolor)
-                self.styles[colorName] = style
-            elif fcolor:
-                style = wx.wxTextAttr(fcolor)
-                self.styles[colorName] = style
+        fcolor = self.tkColorToWxColor (foreground) or wx.wxBLACK
+        bcolor = self.tkColorToWxColor (background) or wx.wxWHITE
+        # g.trace('%20s %10s %15s %10s %15s' % (colorName,foreground,fcolor,background,bcolor))
+        style = wx.wxTextAttr(fcolor,bcolor)
+        self.styles[colorName] = style
     #@nonl
-    #@-node:edream.111303205611.2:tag_configure (hack for wxStyles)
+    #@+node:edream.111403082513:tkColorToWxColor
+    def tkColorToWxColor (self, color):
+        
+        d = {
+            'black':        wx.wxBLACK,
+            "red":          wx.wxRED,
+            "blue":         wx.wxBLUE,
+            "#00aa00":      wx.wxGREEN,
+            "firebrick3":   wx.wxRED,
+            'white':        wx.wxWHITE,
+        }
+            
+        return d.get(color)
+    #@nonl
+    #@-node:edream.111403082513:tkColorToWxColor
+    #@-node:edream.111303205611.2:tag_configure & helper
     #@+node:edream.111303205611.3:tag_delete
     def tag_delete(self,tagName):
     
@@ -976,39 +861,6 @@ class wxLeoBody (leoFrame.leoBody):
             return index + offset
     #@nonl
     #@-node:edream.111303204025.1:adjustIndex
-    #@+node:edream.111303204025.2:compareIndices
-    def compareIndices(self,i,rel,j):
-        
-        try:
-            y1,x1 = i
-            y2,x2 = j
-            pos1 = self.bodyCtrl.XYToPosition(x1,y1)
-            pos2 = self.bodyCtrl.XYToPosition(x2,y2)
-        except:
-            pos1 = i
-            pos2 = j
-        
-        val = eval("%d %s %d" % (pos1,rel,pos2))
-        g.trace(i,j,rel,val)
-        return val
-    #@nonl
-    #@-node:edream.111303204025.2:compareIndices
-    #@+node:edream.111303204025.3:convertRowColumnToIndex
-    def convertRowColumnToIndex (self,row,column):
-        
-        index = self.bodyCtrl.XYToPosition(column,row-1)
-        # g.trace(column,row,"->",index)
-        return index
-    #@nonl
-    #@-node:edream.111303204025.3:convertRowColumnToIndex
-    #@+node:edream.111303204025.4:convertIndexToRowColumn
-    def convertIndexToRowColumn (self,index):
-        
-        x,y = self.bodyCtrl.PositionToXY(index)
-        # g.trace(index,"->",y+1,x)
-        return y+1,x
-    #@nonl
-    #@-node:edream.111303204025.4:convertIndexToRowColumn
     #@+node:edream.111303204025.5:getImageIndex
     def getImageIndex (self,image):
         
@@ -1268,547 +1120,545 @@ class wxLeoBody (leoFrame.leoBody):
 #@nonl
 #@-node:edream.110203113231.539:wxLeoBody class
 #@+node:edream.110203113231.349:wxLeoFrame class
-if wx:
+class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
+        
+    """A class to create a wxPython from for the main Leo window."""
 
-    class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
+    #@    @+others
+    #@+node:edream.110203113231.350:Birth & death (wxLeoFrame)
+    #@+node:edream.110203113231.266:__init__
+    def __init__ (self,title):
         
-        """A class to create a wxPython from for the main Leo window."""
+        # Init the leoFrame base class.
+        # We will init the wxFrame base class in finishCreate.
+        leoFrame.leoFrame.__init__(self,g.app.gui)
+        
+        self.c = None # set in finishCreate.
+        self.bodyCtrl = None # set in finishCreate
+        self.title = title
+        
+        # g.trace("wxLeoFrame",title)
+        self.activeFrame = None
+        self.lockout = 0 # Suppress further events
+        self.quitting = False
+        self.updateCount = 0
+        self.treeIniting = False
+        self.drawing = False # Lockout recursive draws.
+        self.menuIdDict = {}
+        self.menuBar = None
+        self.ratio = 0.5
+        self.secondary_ratio = 0.5
+        self.startupWindow=False
+        self.use_coloring = False # set True to enable coloring
+        
+        # These vars have corresponding getters/setters.
+        if 0: # now defined in base tree class.
+            self.mDragging = False
+            self.mRootVnode = None
+            self.mTopVnode = None
+            self.mCurrentVnode = None
+    #@nonl
+    #@-node:edream.110203113231.266:__init__
+    #@+node:edream.110203113231.351:__repr__
+    def __repr__ (self):
+        
+        return "wxLeoFrame: " + self.title
+    #@nonl
+    #@-node:edream.110203113231.351:__repr__
+    #@+node:edream.110203113231.260:finishCreate (wxLeoFrame)
+    def finishCreate (self,c):
+        
+        # g.trace('wxLeoFrame')
+        
+        frame = self
+        frame.c = c
+        c.frame = frame
+        
+        # Init the wxFrame base class.  The leoFrame base class has already been inited.
+        wx.wxFrame.__init__(self, None, -1, self.title) # wx.wxNO_3D # hangs.
+        #self.outerPanel = wx.wxPanel(self,-1)
+        #self.iconPanel = wx.wxPanel(self.outerPanel, -1, "iconPanel")
     
-        #@        @+others
-        #@+node:edream.110203113231.350:Birth & death (wxLeoFrame)
-        #@+node:edream.110203113231.266:__init__
-        def __init__ (self,title):
-            
-            # Init the leoFrame base class.
-            # We will init the wxFrame base class in finishCreate.
-            leoFrame.leoFrame.__init__(self,g.app.gui)
-            
-            self.c = None # set in finishCreate.
-            self.bodyCtrl = None # set in finishCreate
-            self.title = title
-            
-            # g.trace("wxLeoFrame",title)
-            self.activeFrame = None
-            self.lockout = 0 # Suppress further events
-            self.quitting = False
-            self.updateCount = 0
-            self.treeIniting = False
-            self.drawing = False # Lockout recursive draws.
-            self.menuIdDict = {}
-            self.menuBar = None
-            self.ratio = 0.5
-            self.secondary_ratio = 0.5
-            self.startupWindow=False
-            self.use_coloring = False # set True to enable coloring
-            
-            # These vars have corresponding getters/setters.
-            if 0: # now defined in base tree class.
-                self.mDragging = False
-                self.mRootVnode = None
-                self.mTopVnode = None
-                self.mCurrentVnode = None
+        self.CreateStatusBar()
+        #@    << create the splitters >>
+        #@+node:edream.110203113231.261:<< create the splitters >>
+        self.splitter1 = wx.wxSplitterWindow(self,
+            const("cSplitterWindow"),
+            wx.wxDefaultPosition, wx.wxDefaultSize,
+            wx.wxSP_NOBORDER)
+        
+        # No effect, except to create a red flash.
+        if 0:
+            self.splitter1.SetForegroundColour(wx.wxRED)
+            self.splitter1.SetBackgroundColour(wx.wxRED)
+        
+        self.splitter2 = wx.wxSplitterWindow(self.splitter1, -1,
+            wx.wxDefaultPosition, wx.wxDefaultSize,
+            wx.wxSP_NOBORDER)
+            # wx.wxSP_BORDER | wx.wxSP_3D, "splitterWindow");
+        
+        self.splitter1.SetMinimumPaneSize(4)
+        self.splitter2.SetMinimumPaneSize(4)
         #@nonl
-        #@-node:edream.110203113231.266:__init__
-        #@+node:edream.110203113231.351:__repr__
-        def __repr__ (self):
-            
-            return "wxLeoFrame: " + self.title
-        #@nonl
-        #@-node:edream.110203113231.351:__repr__
-        #@+node:edream.110203113231.260:finishCreate (wxLeoFrame)
-        def finishCreate (self,c):
-            
-            # g.trace('wxLeoFrame')
-            
-            frame = self
-            frame.c = c
-            c.frame = frame
-            
-            # Init the wxFrame base class.  The leoFrame base class has already been inited.
-            wx.wxFrame.__init__(self, None, -1, self.title) # wx.wxNO_3D # hangs.
-            #self.outerPanel = wx.wxPanel(self,-1)
-            #self.iconPanel = wx.wxPanel(self.outerPanel, -1, "iconPanel")
+        #@-node:edream.110203113231.261:<< create the splitters >>
+        #@nl
+        frame.tree = wxLeoTree(frame,self.splitter2)
+        frame.log = wxLeoLog(frame,self.splitter2)
+        frame.body = wxLeoBody(frame,self.splitter1)
+        frame.bodyCtrl = frame.body
+        g.app.setLog(frame.log) # writeWaitingLog hangs without this(!)
+    
+        # Attach the controls to the splitter.
+        self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
+        self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
         
-            self.CreateStatusBar()
-            #@    << create the splitters >>
-            #@+node:edream.110203113231.261:<< create the splitters >>
-            self.splitter1 = wx.wxSplitterWindow(self,
-                const("cSplitterWindow"),
-                wx.wxDefaultPosition, wx.wxDefaultSize,
-                wx.wxSP_NOBORDER)
-            
-            # No effect, except to create a red flash.
-            if 0:
-                self.splitter1.SetForegroundColour(wx.wxRED)
-                self.splitter1.SetBackgroundColour(wx.wxRED)
-            
-            self.splitter2 = wx.wxSplitterWindow(self.splitter1, -1,
-                wx.wxDefaultPosition, wx.wxDefaultSize,
-                wx.wxSP_NOBORDER)
-                # wx.wxSP_BORDER | wx.wxSP_3D, "splitterWindow");
-            
-            self.splitter1.SetMinimumPaneSize(4)
-            self.splitter2.SetMinimumPaneSize(4)
-            #@nonl
-            #@-node:edream.110203113231.261:<< create the splitters >>
-            #@nl
-            frame.tree = wxLeoTree(frame,self.splitter2)
-            frame.log = wxLeoLog(frame,self.splitter2)
-            frame.body = wxLeoBody(frame,self.splitter1)
-            frame.bodyCtrl = frame.body
-            g.app.setLog(frame.log) # writeWaitingLog hangs without this(!)
+        self.menu = wxLeoMenu(frame)
+        ###self.menu.createMenuBar()
         
-            # Attach the controls to the splitter.
-            self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
-            self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
-            
-            self.menu = wxLeoMenu(frame)
-            ###self.menu.createMenuBar()
-            
-            #@    << set the window icon >>
-            #@+node:edream.110203113231.265:<< set the window icon >>
-            if wx.wxPlatform == "__WXMSW__":
-            
-                path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
-                icon = wx.wxIcon(path,wx.wxBITMAP_TYPE_ICO,16,16)
-                self.SetIcon(icon)
-            #@-node:edream.110203113231.265:<< set the window icon >>
-            #@nl
-            #@    << declare event handlers for frame >>
-            #@+node:edream.110203113231.264:<< declare event handlers for frame >>
-            if wx.wxPlatform == "__WXMSW__": # Activate events exist only on Windows.
-                wx.EVT_ACTIVATE(self,self.onActivate)
-            else:
-                wx.EVT_SET_FOCUS(self,self.OnSetFocus)
-            
-            wx.EVT_CLOSE(self,self.onCloseLeoFrame)
-            
-            wx.EVT_MENU_OPEN(self,self.updateAllMenus) 
-            
-            if 0: # Causes problems at present.  The screen isn't drawn properly.
-                wx.EVT_SIZE(self,self.onResize)
-            #@nonl
-            #@-node:edream.110203113231.264:<< declare event handlers for frame >>
-            #@nl
-            
-            if 0: # Not ready yet...
-                self.wxApp.SetTopWindow(self.wxFrame)
-                self.wxFrame.Show(True)
-                if not g.app.root:
-                    g.app.root = self.wxFrame
-                    
-            self.colorizer = self.body.colorizer
-                    
-            c.initVersion()
-            self.signOnWithVersion()
-            
-            self.injectCallbacks()
+        #@    << set the window icon >>
+        #@+node:edream.110203113231.265:<< set the window icon >>
+        if wx.wxPlatform == "__WXMSW__":
         
-            # Add the frame to the global window list.
-            g.app.windowList.append(self)
-            self.tree.redraw()
-            self.Show(True) # required on some platforms: a cross-platform bug.
-        #@nonl
-        #@-node:edream.110203113231.260:finishCreate (wxLeoFrame)
-        #@+node:edream.111403141810:initialRatios
-        def initialRatios (self):
-        
-            config = g.app.config
-            s = config.getWindowPref("initial_splitter_orientation")
-            verticalFlag = s == None or (s != "h" and s != "horizontal")
-            
-            # Tweaked for tk.  Other tweaks may be best for wx.
-            if verticalFlag:
-                r = config.getFloatWindowPref("initial_vertical_ratio")
-                if r == None or r < 0.0 or r > 1.0: r = 0.5
-                r2 = config.getFloatWindowPref("initial_vertical_secondary_ratio")
-                if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
-            else:
-                r = config.getFloatWindowPref("initial_horizontal_ratio")
-                if r == None or r < 0.0 or r > 1.0: r = 0.3
-                r2 = config.getFloatWindowPref("initial_horizontal_secondary_ratio")
-                if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
-        
-            return verticalFlag,r,r2
-        #@nonl
-        #@-node:edream.111403141810:initialRatios
-        #@+node:edream.111503105816:injectCallbacks
-        def injectCallbacks(self):
-            
-            import leoNodes
-            
-            # Some callback is required.
-            def doNothingCallback(*args,**keys):
-                pass
-        
-            for name in (
-                "OnBoxClick","OnDrag","OnEndDrag",
-                "OnHeadlineClick","OnHeadlineRightClick","OnHeadlineKey",
-                "OnHyperLinkControlClick","OnHyperLinkEnter","OnHyperLinkLeave",
-                "OnIconClick","OnIconDoubleClick","OnIconRightClick"):
-        
-                # g.trace(f)
-                g.funcToMethod(doNothingCallback,leoNodes.vnode,name=name)
-        #@nonl
-        #@-node:edream.111503105816:injectCallbacks
-        #@+node:edream.111303141147:signOnWithVersion
-        def signOnWithVersion (self):
-        
-            c = self.c
-            color = c.config.getColor("log_error_color")
-            signon = c.getSignOnLine()
-            n1,n2,n3,junk,junk=sys.version_info
-            
-            g.es("Leo Log Window...",color=color)
-            g.es(signon)
-            g.es("Python %d.%d.%d wxWindows %s" % (n1,n2,n3,wx.wxVERSION_STRING))
-            g.enl()
-        #@nonl
-        #@-node:edream.111303141147:signOnWithVersion
-        #@+node:edream.111503213533:destroySelf
-        def destroySelf(self):
-            
-            self.Destroy()
-        #@nonl
-        #@-node:edream.111503213533:destroySelf
-        #@-node:edream.110203113231.350:Birth & death (wxLeoFrame)
-        #@+node:edream.110203113231.267:event handlers
-        #@+node:edream.110203113231.268:Frame events
-        #@+node:edream.110203113231.269:onActivate & OnSetFocus
-        if wx.wxPlatform == '__WXMSW__':
-            
-            def onActivate(self,event):
-                if event.GetActive():
-                    self.activeFrame = self
-                    if self.c:
-                        pass ## self.c.checkAllFileDates()
+            path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
+            icon = wx.wxIcon(path,wx.wxBITMAP_TYPE_ICO,16,16)
+            self.SetIcon(icon)
+        #@-node:edream.110203113231.265:<< set the window icon >>
+        #@nl
+        #@    << declare event handlers for frame >>
+        #@+node:edream.110203113231.264:<< declare event handlers for frame >>
+        if wx.wxPlatform == "__WXMSW__": # Activate events exist only on Windows.
+            wx.EVT_ACTIVATE(self,self.onActivate)
         else:
-            
-            def OnSetFocus(self,event):
+            wx.EVT_SET_FOCUS(self,self.OnSetFocus)
+        
+        wx.EVT_CLOSE(self,self.onCloseLeoFrame)
+        
+        wx.EVT_MENU_OPEN(self,self.updateAllMenus) 
+        
+        if 0: # Causes problems at present.  The screen isn't drawn properly.
+            wx.EVT_SIZE(self,self.onResize)
+        #@nonl
+        #@-node:edream.110203113231.264:<< declare event handlers for frame >>
+        #@nl
+        
+        if 0: # Not ready yet...
+            self.wxApp.SetTopWindow(self.wxFrame)
+            self.wxFrame.Show(True)
+            if not g.app.root:
+                g.app.root = self.wxFrame
+                
+        self.colorizer = self.body.colorizer
+                
+        c.initVersion()
+        self.signOnWithVersion()
+        
+        self.injectCallbacks()
+    
+        # Add the frame to the global window list.
+        g.app.windowList.append(self)
+        self.tree.redraw()
+        self.Show(True) # required on some platforms: a cross-platform bug.
+    #@nonl
+    #@-node:edream.110203113231.260:finishCreate (wxLeoFrame)
+    #@+node:edream.111403141810:initialRatios
+    def initialRatios (self):
+    
+        config = g.app.config
+        s = config.getWindowPref("initial_splitter_orientation")
+        verticalFlag = s == None or (s != "h" and s != "horizontal")
+        
+        # Tweaked for tk.  Other tweaks may be best for wx.
+        if verticalFlag:
+            r = config.getFloatWindowPref("initial_vertical_ratio")
+            if r == None or r < 0.0 or r > 1.0: r = 0.5
+            r2 = config.getFloatWindowPref("initial_vertical_secondary_ratio")
+            if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
+        else:
+            r = config.getFloatWindowPref("initial_horizontal_ratio")
+            if r == None or r < 0.0 or r > 1.0: r = 0.3
+            r2 = config.getFloatWindowPref("initial_horizontal_secondary_ratio")
+            if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
+    
+        return verticalFlag,r,r2
+    #@nonl
+    #@-node:edream.111403141810:initialRatios
+    #@+node:edream.111503105816:injectCallbacks
+    def injectCallbacks(self):
+        
+        import leoNodes
+        
+        # Some callback is required.
+        def doNothingCallback(*args,**keys):
+            pass
+    
+        for name in (
+            "OnBoxClick","OnDrag","OnEndDrag",
+            "OnHeadlineClick","OnHeadlineRightClick","OnHeadlineKey",
+            "OnHyperLinkControlClick","OnHyperLinkEnter","OnHyperLinkLeave",
+            "OnIconClick","OnIconDoubleClick","OnIconRightClick"):
+    
+            # g.trace(f)
+            g.funcToMethod(doNothingCallback,leoNodes.vnode,name=name)
+    #@nonl
+    #@-node:edream.111503105816:injectCallbacks
+    #@+node:edream.111303141147:signOnWithVersion
+    def signOnWithVersion (self):
+    
+        c = self.c
+        color = c.config.getColor("log_error_color")
+        signon = c.getSignOnLine()
+        n1,n2,n3,junk,junk=sys.version_info
+        
+        g.es("Leo Log Window...",color=color)
+        g.es(signon)
+        g.es("Python %d.%d.%d wxWindows %s" % (n1,n2,n3,wx.wxVERSION_STRING))
+        g.enl()
+    #@nonl
+    #@-node:edream.111303141147:signOnWithVersion
+    #@+node:edream.111503213533:destroySelf
+    def destroySelf(self):
+        
+        self.Destroy()
+    #@nonl
+    #@-node:edream.111503213533:destroySelf
+    #@-node:edream.110203113231.350:Birth & death (wxLeoFrame)
+    #@+node:edream.110203113231.267:event handlers
+    #@+node:edream.110203113231.268:Frame events
+    #@+node:edream.110203113231.269:onActivate & OnSetFocus
+    if wx.wxPlatform == '__WXMSW__':
+        
+        def onActivate(self,event):
+            if event.GetActive():
                 self.activeFrame = self
                 if self.c:
-                    self.c.checkAllFileDates()
-        #@-node:edream.110203113231.269:onActivate & OnSetFocus
-        #@+node:edream.110203113231.270:onCloseLeoFrame
-        def onCloseLeoFrame(self,event):
+                    pass ## self.c.checkAllFileDates()
+    else:
         
-            frame = self
+        def OnSetFocus(self,event):
+            self.activeFrame = self
+            if self.c:
+                self.c.checkAllFileDates()
+    #@-node:edream.110203113231.269:onActivate & OnSetFocus
+    #@+node:edream.110203113231.270:onCloseLeoFrame
+    def onCloseLeoFrame(self,event):
+    
+        frame = self
+        
+        # The g.app class does all the hard work now.
+        if not g.app.closeLeoWindow(frame):
+            if event.CanVeto():
+                event.Veto()
+    #@nonl
+    #@-node:edream.110203113231.270:onCloseLeoFrame
+    #@+node:edream.110203113231.273:onResize
+    def onResize(self,event):
+    
+        if mIniting:
+            return # Can be called during initialization.
+    
+        # Resize splitter1 with equal sized panes.
+        size = self.splitter1.GetClientSize()
+        self.splitter1.SetClientSize(size)
+        w = size.GetWidth() ; h = size.GetHeight()
+        if self.splitter1.GetSplitMode()== wx.wxSPLIT_VERTICAL:
+            self.splitter1.SetSashPosition(w/2,True)
+        else:
+            self.splitter1.SetSashPosition(h/2,True)
+    
+        # Resize splitter2 with equal sized panes.
+        size = self.splitter2.GetClientSize()
+        w = size.GetWidth() ; h = size.GetHeight()
+        if self.splitter2.GetSplitMode()== wx.wxSPLIT_VERTICAL:
+            self.splitter2.SetSashPosition((3*w)/5,True)
+        else:
+            self.splitter2.SetSashPosition((3*h)/5,True)
+    #@-node:edream.110203113231.273:onResize
+    #@-node:edream.110203113231.268:Frame events
+    #@-node:edream.110203113231.267:event handlers
+    #@+node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
+    def after_idle(*args):
+        pass
+    
+    def get_window_info (self):
+        """Return the window information."""
+        return g.app.gui.get_window_info(self)
+    
+    def resizePanesToRatio(self,ratio1,ratio2):
+        pass
+    
+    def setInitialWindowGeometry (self):
+        pass
+    
+    def setTopGeometry (self,w,h,x,y,adjustSize=True):
+        pass
+    
+    def lift (self):
+        self.Raise()
+    
+    def update (self):
+        pass
+    #@nonl
+    #@-node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
+    #@+node:edream.110203113231.378:Externally visible routines...
+    #@+node:edream.110203113231.380:deiconify
+    def deiconify (self):
+    
+        self.Iconize(False)
+    #@nonl
+    #@-node:edream.110203113231.380:deiconify
+    #@+node:edream.110203113231.381:getTitle
+    def getTitle (self):
+        
+        return self.title
+    #@-node:edream.110203113231.381:getTitle
+    #@+node:edream.111303135410:setTitle
+    def setTitle (self,title):
+    
+        self.title = title
+        self.SetTitle(title) # Call the wx code.
+    #@nonl
+    #@-node:edream.111303135410:setTitle
+    #@-node:edream.110203113231.378:Externally visible routines...
+    #@+node:edream.111303100039:Gui-dependent commands (to do)
+    #@+node:edream.111303100039.1:Edit Menu...
+    #@+node:edream.111303101257:abortEditLabelCommand
+    def abortEditLabelCommand (self):
+    
+        g.es("abortEditLabelCommand not ready yet")
+        return
+        
+        c = self.c ; v = c.currentVnode ; tree = self.tree
+        # g.trace(v)
+        if self.revertHeadline and c.edit_widget(v) and v == self.editVnode:
             
-            # The g.app class does all the hard work now.
-            if not g.app.closeLeoWindow(frame):
-                if event.CanVeto():
-                    event.Veto()
-        #@nonl
-        #@-node:edream.110203113231.270:onCloseLeoFrame
-        #@+node:edream.110203113231.273:onResize
-        def onResize(self,event):
-        
-            if mIniting:
-                return # Can be called during initialization.
-        
-            # Resize splitter1 with equal sized panes.
-            size = self.splitter1.GetClientSize()
-            self.splitter1.SetClientSize(size)
-            w = size.GetWidth() ; h = size.GetHeight()
-            if self.splitter1.GetSplitMode()== wx.wxSPLIT_VERTICAL:
-                self.splitter1.SetSashPosition(w/2,True)
-            else:
-                self.splitter1.SetSashPosition(h/2,True)
-        
-            # Resize splitter2 with equal sized panes.
-            size = self.splitter2.GetClientSize()
-            w = size.GetWidth() ; h = size.GetHeight()
-            if self.splitter2.GetSplitMode()== wx.wxSPLIT_VERTICAL:
-                self.splitter2.SetSashPosition((3*w)/5,True)
-            else:
-                self.splitter2.SetSashPosition((3*h)/5,True)
-        #@-node:edream.110203113231.273:onResize
-        #@-node:edream.110203113231.268:Frame events
-        #@-node:edream.110203113231.267:event handlers
-        #@+node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
-        def after_idle(*args):
-            pass
-        
-        def get_window_info (self):
-            """Return the window information."""
-            return g.app.gui.get_window_info(self)
-        
-        def resizePanesToRatio(self,ratio1,ratio2):
-            pass
-        
-        def setInitialWindowGeometry (self):
-            pass
-        
-        def setTopGeometry (self,w,h,x,y,adjustSize=True):
-            pass
-        
-        def lift (self):
-            self.Raise()
-        
-        def update (self):
-            pass
-        #@nonl
-        #@-node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
-        #@+node:edream.110203113231.378:Externally visible routines...
-        #@+node:edream.110203113231.380:deiconify
-        def deiconify (self):
-        
-            self.Iconize(False)
-        #@nonl
-        #@-node:edream.110203113231.380:deiconify
-        #@+node:edream.110203113231.381:getTitle
-        def getTitle (self):
-            
-            return self.title
-        #@-node:edream.110203113231.381:getTitle
-        #@+node:edream.111303135410:setTitle
-        def setTitle (self,title):
-        
-            self.title = title
-            self.SetTitle(title) # Call the wx code.
-        #@nonl
-        #@-node:edream.111303135410:setTitle
-        #@-node:edream.110203113231.378:Externally visible routines...
-        #@+node:edream.111303100039:Gui-dependent commands (to do)
-        #@+node:edream.111303100039.1:Edit Menu...
-        #@+node:edream.111303101257:abortEditLabelCommand
-        def abortEditLabelCommand (self):
-        
-            g.es("abortEditLabelCommand not ready yet")
-            return
-            
-            c = self.c ; v = c.currentVnode ; tree = self.tree
-            # g.trace(v)
-            if self.revertHeadline and c.edit_widget(v) and v == self.editVnode:
-                
-                # g.trace(`self.revertHeadline`)
-                c.edit_widget(v).delete("1.0","end")
-                c.edit_widget(v).insert("end",self.revertHeadline)
-                tree.idle_head_key(v) # Must be done immediately.
-                tree.revertHeadline = None
-                tree.select(v)
-                if v and len(v.t.joinList) > 0:
-                    # 3/26/03: changed redraw_now to force_redraw.
-                    tree.force_redraw() # force a redraw of joined headlines.
-        #@nonl
-        #@-node:edream.111303101257:abortEditLabelCommand
-        #@+node:edream.111303101257.1:endEditLabelCommand
-        def endEditLabelCommand (self):
-            
-            g.es("endEditLabelCommand not ready yet")
-            return
-        
-            c = self.c ; tree = self.tree ; v = self.editVnode
-        
-            if v and c.edit_widget(v):
-                tree.select(v)
-        
-            if v: # Bug fix 10/9/02: also redraw ancestor headlines.
+            # g.trace(`self.revertHeadline`)
+            c.edit_widget(v).delete("1.0","end")
+            c.edit_widget(v).insert("end",self.revertHeadline)
+            tree.idle_head_key(v) # Must be done immediately.
+            tree.revertHeadline = None
+            tree.select(v)
+            if v and len(v.t.joinList) > 0:
                 # 3/26/03: changed redraw_now to force_redraw.
                 tree.force_redraw() # force a redraw of joined headlines.
+    #@nonl
+    #@-node:edream.111303101257:abortEditLabelCommand
+    #@+node:edream.111303101257.1:endEditLabelCommand
+    def endEditLabelCommand (self):
         
-            gui.set_focus(c,c.frame.bodyCtrl) # 10/14/02
-        #@nonl
-        #@-node:edream.111303101257.1:endEditLabelCommand
-        #@+node:edream.111303100039.6:insertHeadlineTime
-        def insertHeadlineTime (self):
-            
-            g.es("insertHeadlineTime not ready yet")
-            return
+        g.es("endEditLabelCommand not ready yet")
+        return
+    
+        c = self.c ; tree = self.tree ; v = self.editVnode
+    
+        if v and c.edit_widget(v):
+            tree.select(v)
+    
+        if v: # Bug fix 10/9/02: also redraw ancestor headlines.
+            # 3/26/03: changed redraw_now to force_redraw.
+            tree.force_redraw() # force a redraw of joined headlines.
+    
+        gui.set_focus(c,c.frame.bodyCtrl) # 10/14/02
+    #@nonl
+    #@-node:edream.111303101257.1:endEditLabelCommand
+    #@+node:edream.111303100039.6:insertHeadlineTime
+    def insertHeadlineTime (self):
         
-            frame = self ; c = frame.c ; v = c.currentVnode()
-            h = v.headString() # Remember the old value.
+        g.es("insertHeadlineTime not ready yet")
+        return
+    
+        frame = self ; c = frame.c ; v = c.currentVnode()
+        h = v.headString() # Remember the old value.
+    
+        if c.edit_widget(v):
+            sel1,sel2 = g.app.gui.getSelectionRange(c.edit_widget(v))
+            if sel1 and sel2 and sel1 != sel2: # 7/7/03
+                c.edit_widget(v).delete(sel1,sel2)
+            c.edit_widget(v).insert("insert",c.getTime(body=False))
+            frame.idle_head_key(v)
+    
+        # A kludge to get around not knowing whether we are editing or not.
+        if h.strip() == v.headString().strip():
+            g.es("Edit headline to append date/time")
+    #@nonl
+    #@-node:edream.111303100039.6:insertHeadlineTime
+    #@-node:edream.111303100039.1:Edit Menu...
+    #@+node:edream.111303100039.7:Window Menu
+    #@+node:edream.111303100039.8:cascade
+    def cascade(self):
         
-            if c.edit_widget(v):
-                sel1,sel2 = g.app.gui.getSelectionRange(c.edit_widget(v))
-                if sel1 and sel2 and sel1 != sel2: # 7/7/03
-                    c.edit_widget(v).delete(sel1,sel2)
-                c.edit_widget(v).insert("insert",c.getTime(body=False))
-                frame.idle_head_key(v)
+        g.es("cascade not ready yet")
+        return
+    
+        x,y,delta = 10,10,10
+        for frame in g.app.windowList:
+            top = frame.top
+            # Compute w,h
+            top.update_idletasks() # Required to get proper info.
+            geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
+            dim,junkx,junky = string.split(geom,'+')
+            w,h = string.split(dim,'x')
+            w,h = int(w),int(h)
+            # Set new x,y and old w,h
+            frame.setTopGeometry(w,h,x,y)
+            # Compute the new offsets.
+            x += 30 ; y += 30
+            if x > 200:
+                x = 10 + delta ; y = 40 + delta
+                delta += 10
+    #@nonl
+    #@-node:edream.111303100039.8:cascade
+    #@+node:edream.111303100039.9:equalSizedPanes
+    def equalSizedPanes(self):
         
-            # A kludge to get around not knowing whether we are editing or not.
-            if h.strip() == v.headString().strip():
-                g.es("Edit headline to append date/time")
-        #@nonl
-        #@-node:edream.111303100039.6:insertHeadlineTime
-        #@-node:edream.111303100039.1:Edit Menu...
-        #@+node:edream.111303100039.7:Window Menu
-        #@+node:edream.111303100039.8:cascade
-        def cascade(self):
-            
-            g.es("cascade not ready yet")
-            return
+        g.es("equalSizedPanes not ready yet")
+        return
+    
+        frame = self
+        frame.resizePanesToRatio(0.5,frame.secondary_ratio)
+    #@-node:edream.111303100039.9:equalSizedPanes
+    #@+node:edream.111303100039.10:hideLogWindow
+    def hideLogWindow (self):
         
-            x,y,delta = 10,10,10
-            for frame in g.app.windowList:
-                top = frame.top
-                # Compute w,h
-                top.update_idletasks() # Required to get proper info.
-                geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
-                dim,junkx,junky = string.split(geom,'+')
-                w,h = string.split(dim,'x')
-                w,h = int(w),int(h)
-                # Set new x,y and old w,h
-                frame.setTopGeometry(w,h,x,y)
-                # Compute the new offsets.
-                x += 30 ; y += 30
-                if x > 200:
-                    x = 10 + delta ; y = 40 + delta
-                    delta += 10
-        #@nonl
-        #@-node:edream.111303100039.8:cascade
-        #@+node:edream.111303100039.9:equalSizedPanes
-        def equalSizedPanes(self):
-            
-            g.es("equalSizedPanes not ready yet")
-            return
+        g.es("hideLogWindow not ready yet")
+        return
         
-            frame = self
-            frame.resizePanesToRatio(0.5,frame.secondary_ratio)
-        #@-node:edream.111303100039.9:equalSizedPanes
-        #@+node:edream.111303100039.10:hideLogWindow
-        def hideLogWindow (self):
-            
-            g.es("hideLogWindow not ready yet")
-            return
-            
-            frame = self
-            frame.divideLeoSplitter2(0.99, not frame.splitVerticalFlag)
-        #@nonl
-        #@-node:edream.111303100039.10:hideLogWindow
-        #@+node:edream.111303100039.11:minimizeAll
-        def minimizeAll(self):
-            
-            g.es("minimizeAll not ready yet")
-            return
+        frame = self
+        frame.divideLeoSplitter2(0.99, not frame.splitVerticalFlag)
+    #@nonl
+    #@-node:edream.111303100039.10:hideLogWindow
+    #@+node:edream.111303100039.11:minimizeAll
+    def minimizeAll(self):
         
-            self.minimize(g.app.findFrame)
-            self.minimize(g.app.pythonFrame)
-            for frame in g.app.windowList:
-                self.minimize(frame)
-            
-        def minimize(self, frame):
+        g.es("minimizeAll not ready yet")
+        return
+    
+        self.minimize(g.app.findFrame)
+        self.minimize(g.app.pythonFrame)
+        for frame in g.app.windowList:
+            self.minimize(frame)
         
-            if frame:
-                frame.Show(False)
-        #@nonl
-        #@-node:edream.111303100039.11:minimizeAll
-        #@+node:edream.111303101709:toggleActivePane
-        def toggleActivePane(self):
-            
-            # This can't work from the menu...
-            
-            g.es("toggleActivePane not ready yet")
-            return
+    def minimize(self, frame):
+    
+        if frame:
+            frame.Show(False)
+    #@nonl
+    #@-node:edream.111303100039.11:minimizeAll
+    #@+node:edream.111303101709:toggleActivePane
+    def toggleActivePane(self):
         
-            if self.FindFocus() == self.body.bodyCtrl:
-                self.tree.SetFocus()
-            else:
-                self.body.bodyCtrl.SetFocus()
-        #@nonl
-        #@-node:edream.111303101709:toggleActivePane
-        #@+node:edream.111303100039.12:toggleSplitDirection
-        # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
-        def toggleSplitDirection(self):
-            
-            g.es("toggleSplitDirection not ready yet")
-            return
+        # This can't work from the menu...
         
-            # Abbreviations.
-            frame = self
-            bar1 = self.bar1 ; bar2 = self.bar2
-            split1Pane1,split1Pane2 = self.split1Pane1,self.split1Pane2
-            split2Pane1,split2Pane2 = self.split2Pane1,self.split2Pane2
-            # Switch directions.
-            verticalFlag = self.splitVerticalFlag = not self.splitVerticalFlag
-            orientation = g.choose(verticalFlag,"vertical","horizontal")
-            g.app.config.setWindowPref("initial_splitter_orientation",orientation)
-            # Reconfigure the bars.
-            bar1.place_forget()
-            bar2.place_forget()
-            self.configureBar(bar1,verticalFlag)
-            self.configureBar(bar2,not verticalFlag)
-            # Make the initial placements again.
-            self.placeSplitter(bar1,split1Pane1,split1Pane2,verticalFlag)
-            self.placeSplitter(bar2,split2Pane1,split2Pane2,not verticalFlag)
-            # Adjust the log and body panes to give more room around the bars.
-            self.reconfigurePanes()
-            # Redraw with an appropriate ratio.
-            vflag,ratio,secondary_ratio = frame.initialRatios()
-            self.resizePanesToRatio(ratio,secondary_ratio)
-        #@nonl
-        #@-node:edream.111303100039.12:toggleSplitDirection
-        #@-node:edream.111303100039.7:Window Menu
-        #@+node:edream.111703103908:Help Menu...
-        #@+node:edream.111703103908.2:leoHelp
-        def leoHelp (self):
-            
-            g.es("leoHelp not ready yet")
-            
-            return ##
-            
-            file = os.path.join(g.app.loadDir,"..","doc","sbooks.chm")
-            file = g.toUnicode(file,g.app.tkEncoding) # 10/20/03
+        g.es("toggleActivePane not ready yet")
+        return
+    
+        if self.FindFocus() == self.body.bodyCtrl:
+            self.tree.SetFocus()
+        else:
+            self.body.bodyCtrl.SetFocus()
+    #@nonl
+    #@-node:edream.111303101709:toggleActivePane
+    #@+node:edream.111303100039.12:toggleSplitDirection
+    # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
+    def toggleSplitDirection(self):
         
-            if os.path.exists(file):
-                os.startfile(file)
-            else:	
-                answer = g.app.gui.runAskYesNoDialog(c,
-                    "Download Tutorial?",
-                    "Download tutorial (sbooks.chm) from SourceForge?")
+        g.es("toggleSplitDirection not ready yet")
+        return
+    
+        # Abbreviations.
+        frame = self
+        bar1 = self.bar1 ; bar2 = self.bar2
+        split1Pane1,split1Pane2 = self.split1Pane1,self.split1Pane2
+        split2Pane1,split2Pane2 = self.split2Pane1,self.split2Pane2
+        # Switch directions.
+        verticalFlag = self.splitVerticalFlag = not self.splitVerticalFlag
+        orientation = g.choose(verticalFlag,"vertical","horizontal")
+        g.app.config.setWindowPref("initial_splitter_orientation",orientation)
+        # Reconfigure the bars.
+        bar1.place_forget()
+        bar2.place_forget()
+        self.configureBar(bar1,verticalFlag)
+        self.configureBar(bar2,not verticalFlag)
+        # Make the initial placements again.
+        self.placeSplitter(bar1,split1Pane1,split1Pane2,verticalFlag)
+        self.placeSplitter(bar2,split2Pane1,split2Pane2,not verticalFlag)
+        # Adjust the log and body panes to give more room around the bars.
+        self.reconfigurePanes()
+        # Redraw with an appropriate ratio.
+        vflag,ratio,secondary_ratio = frame.initialRatios()
+        self.resizePanesToRatio(ratio,secondary_ratio)
+    #@nonl
+    #@-node:edream.111303100039.12:toggleSplitDirection
+    #@-node:edream.111303100039.7:Window Menu
+    #@+node:edream.111703103908:Help Menu...
+    #@+node:edream.111703103908.2:leoHelp
+    def leoHelp (self):
         
-                if answer == "yes":
-                    try:
-                        if 0: # Download directly.  (showProgressBar needs a lot of work)
-                            url = "http://umn.dl.sourceforge.net/sourceforge/leo/sbooks.chm"
-                            import urllib
+        g.es("leoHelp not ready yet")
+        
+        return ##
+        
+        file = os.path.join(g.app.loadDir,"..","doc","sbooks.chm")
+        file = g.toUnicode(file,g.app.tkEncoding) # 10/20/03
+    
+        if os.path.exists(file):
+            os.startfile(file)
+        else:	
+            answer = g.app.gui.runAskYesNoDialog(c,
+                "Download Tutorial?",
+                "Download tutorial (sbooks.chm) from SourceForge?")
+    
+            if answer == "yes":
+                try:
+                    if 0: # Download directly.  (showProgressBar needs a lot of work)
+                        url = "http://umn.dl.sourceforge.net/sourceforge/leo/sbooks.chm"
+                        import urllib
+                        self.scale = None
+                        urllib.urlretrieve(url,file,self.showProgressBar)
+                        if self.scale:
+                            self.scale.destroy()
                             self.scale = None
-                            urllib.urlretrieve(url,file,self.showProgressBar)
-                            if self.scale:
-                                self.scale.destroy()
-                                self.scale = None
-                        else:
-                            url = "http://prdownloads.sourceforge.net/leo/sbooks.chm?download"
-                            import webbrowser
-                            os.chdir(g.app.loadDir)
-                            webbrowser.open_new(url)
-                    except:
-                        g.es("exception dowloading sbooks.chm")
-                        g.es_exception()
-        #@nonl
-        #@+node:edream.111703103908.3:showProgressBar
-        def showProgressBar (self,count,size,total):
+                    else:
+                        url = "http://prdownloads.sourceforge.net/leo/sbooks.chm?download"
+                        import webbrowser
+                        os.chdir(g.app.loadDir)
+                        webbrowser.open_new(url)
+                except:
+                    g.es("exception dowloading sbooks.chm")
+                    g.es_exception()
+    #@nonl
+    #@+node:edream.111703103908.3:showProgressBar
+    def showProgressBar (self,count,size,total):
+    
+        # g.trace("count,size,total:" + `count` + "," + `size` + "," + `total`)
+        if self.scale == None:
+            #@        << create the scale widget >>
+            #@+node:edream.111703103908.4:<< create the scale widget >>
+            top = Tk.Toplevel()
+            top.title("Download progress")
+            self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
+            scale.pack()
+            top.lift()
+            #@nonl
+            #@-node:edream.111703103908.4:<< create the scale widget >>
+            #@nl
+        self.scale.set(count*size)
+        self.scale.update_idletasks()
+    #@nonl
+    #@-node:edream.111703103908.3:showProgressBar
+    #@-node:edream.111703103908.2:leoHelp
+    #@-node:edream.111703103908:Help Menu...
+    #@-node:edream.111303100039:Gui-dependent commands (to do)
+    #@+node:edream.110203113231.384:updateAllMenus (wxFrame)
+    def updateAllMenus(self,event):
         
-            # g.trace("count,size,total:" + `count` + "," + `size` + "," + `total`)
-            if self.scale == None:
-                #@        << create the scale widget >>
-                #@+node:edream.111703103908.4:<< create the scale widget >>
-                top = Tk.Toplevel()
-                top.title("Download progress")
-                self.scale = scale = Tk.Scale(top,state="normal",orient="horizontal",from_=0,to=total)
-                scale.pack()
-                top.lift()
-                #@nonl
-                #@-node:edream.111703103908.4:<< create the scale widget >>
-                #@nl
-            self.scale.set(count*size)
-            self.scale.update_idletasks()
-        #@nonl
-        #@-node:edream.111703103908.3:showProgressBar
-        #@-node:edream.111703103908.2:leoHelp
-        #@-node:edream.111703103908:Help Menu...
-        #@-node:edream.111303100039:Gui-dependent commands (to do)
-        #@+node:edream.110203113231.384:updateAllMenus (wxFrame)
-        def updateAllMenus(self,event):
-            
-            """Called whenever any menu is pulled down."""
-            
-            # We define this routine to strip off the even param.
-            
-            self.menu.updateAllMenus()
-        #@nonl
-        #@-node:edream.110203113231.384:updateAllMenus (wxFrame)
-        #@-others
+        """Called whenever any menu is pulled down."""
+        
+        # We define this routine to strip off the even param.
+        
+        self.menu.updateAllMenus()
+    #@nonl
+    #@-node:edream.110203113231.384:updateAllMenus (wxFrame)
+    #@-others
 #@nonl
 #@-node:edream.110203113231.349:wxLeoFrame class
 #@+node:edream.110203113231.553:wxLeoLog class
@@ -2081,12 +1931,11 @@ class wxLeoMenu (leoMenu.leoMenu):
     def defineOpenWithMenuCallback (self,command):
             
         # The first parameter must be event, and it must default to None.
-        def callback(event,command=command):
+        def wxOpenWithMenuCallback(event=None,command=command):
             try: self.c.openWith(data=command)
             except: print traceback.print_exc()
     
-        g.trace(`callback`)
-        return callback
+        return wxOpenWithMenuCallback
     #@nonl
     #@-node:edream.111303095242.6:defineOpenWithMenuCallback
     #@+node:edream.111303163727.2:disableMenu
@@ -2157,344 +2006,6 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@-others
 #@nonl
 #@-node:edream.111303095242:wxLeoMenu class
-#@+node:edream.110203113231.598:wxLeoPrefs class
-if wx:
-    class wxLeoPrefs (wx.wxFrame):
-        #@        @+others
-        #@+node:edream.110203113231.599:wxLeoPrefs.__init__
-        def __init__(c):
-            
-            # Init the base frame.
-            wxFrame.__init__(None,-1,"Leo Preferences",
-                wx.wxPoint(50,50),wxDefaultSize,
-                wxMINIMIZE_BOX | wxTHICK_FRAME | wxSYSTEM_MENU | wxCAPTION)
-        
-            self.c = c
-            mPrefsPanel = PrefsPanel(self)
-        
-            # Resize to fit the panel.
-            sizer = wxBoxSizer(wxVERTICAL)
-            sizer.Add(mPrefsPanel)
-            SetAutoLayout(True)# tell dialog to use sizer
-            SetSizer(sizer) # actually set the sizer
-            sizer.Fit(self)# set size to minimum size as calculated by the sizer
-            sizer.SetSizeHints(self)# set size hints to honour mininum size
-        
-            # Set the window icon.
-            if wx.wxPlatform == '__WXMSW__':
-                self.SetIcon(wxIcon("LeoIcon"))
-                
-            #@    << define event handlers for wxLeoPrefsFrame >>
-            #@+node:edream.110203113231.600:<< define event handlers for wxLeoPrefsFrame >>
-            wx.EVT_ACTIVATE(self,self.OnActivatePrefsFrame)
-            wx.EVT_CLOSE(self,self.OnClosePrefsFrame)
-            
-            # Global options panel...
-            wx.EVT_TEXT(self,cPrefsPageWidthText,self.OnPageWidthText)
-            wx.EVT_CHECKBOX(self,cPrefsDoneBatCheckBox,self.OnDoneBatCheckBox)
-            wx.EVT_CHECKBOX(self,cPrefsUnBatCheckBox,self.OnUnBatCheckBox)
-            
-            # Tangle options panel...
-            wx.EVT_TEXT(self,cPrefsTangleDirectoryText,self.OnTangleDirectoryText)
-            wx.EVT_CHECKBOX(self,cPrefsHeaderCheckBox,self.OnHeaderCheckBox)
-            wx.EVT_CHECKBOX(self,cPrefsDocChunksCheckBox,self.OnDocChunksCheckBox)
-            
-            # Target language panel...
-            wx.EVT_RADIOBOX(self,cPrefsTargetLanguageRadioBox,self.OnTargetLanguageRadioBox)
-            #@nonl
-            #@-node:edream.110203113231.600:<< define event handlers for wxLeoPrefsFrame >>
-            #@nl
-        #@nonl
-        #@-node:edream.110203113231.599:wxLeoPrefs.__init__
-        #@+node:edream.110203113231.601:initialize
-        def initialize (self,void):
-            
-            # This may be called during construction.
-            if not gPrefsFrame:  return
-            s = ""
-            if self.activeFrame:
-                s += "%d" % self.activeFrame.mPageWidth
-                mPrefsPanel.mPrefsPageWidthText.SetValue(s)
-                mPrefsPanel.mPrefsDoneBatCheckBox.SetValue(self.activeFrame.mTangleBatchFlag)
-                mPrefsPanel.mPrefsUnBatCheckBox.SetValue(self.activeFrame.mUntangleBatchFlag)
-                mPrefsPanel.mPrefsTangleDirectoryText.SetValue(self.activeFrame.mDefaultDirectory)
-                mPrefsPanel.mPrefsHeaderCheckBox.SetValue(self.activeFrame.mUseHeaderFlag)
-                mPrefsPanel.mPrefsDocChunksCheckBox.SetValue(self.activeFrame.mOutputDocFlag)
-                mPrefsPanel.mTargetLanguageRadioBox.SetSelection(languageToTarget(self.activeFrame.mTargetLanguage))
-            else:
-                s += "%d" % arg_page_width
-                mPrefsPanel.mPrefsPageWidthText.SetValue(s)
-                mPrefsPanel.mPrefsDoneBatCheckBox.SetValue(arg_tangle_batch)
-                mPrefsPanel.mPrefsUnBatCheckBox.SetValue(arg_untangle_batch)
-                # No global setting for director.
-                mPrefsPanel.mPrefsHeaderCheckBox.SetValue(arg_use_header_flag)
-                mPrefsPanel.mPrefsDocChunksCheckBox.SetValue(arg_output_doc_flag)
-                mPrefsPanel.mTargetLanguageRadioBox.SetSelection(languageToTarget(arg_target_language))
-        #@nonl
-        #@-node:edream.110203113231.601:initialize
-        #@+node:edream.110203113231.602:targetToLanguage (should be in Leo's core)
-        if 0:
-            def targetToLanguage(self,target):
-                
-                pass
-        
-                # switch(target)
-                # case c_target: return c_language
-                # case cweb_target: return cweb_language
-                # case html_target: return html_language
-                # case java_target: return java_language
-                # case perl_target: return perl_language
-                # case perlpod_target: return perlpod_language
-                # case pascal_target: return pascal_language
-                # case plain_text_target: return plain_text_language
-                # case python_target: return python_language
-                # default: return plain_text_language
-        #@-node:edream.110203113231.602:targetToLanguage (should be in Leo's core)
-        #@+node:edream.110203113231.603:languageToTarget (should be in Leo's core)
-        def languageToTarget(self,language):
-            
-            pass
-        
-            # switch(language)
-            # case c_language: return c_target
-            # case cweb_language: return cweb_target
-            # case html_language: return html_target
-            # case java_language: return java_target
-            # case pascal_language: return pascal_target
-            # case perl_language: return perl_target
-            # case perlpod_language: return perlpod_target
-            # case plain_text_language: return plain_text_target
-            # case python_language: return python_target
-            # default: return plain_text_target
-        #@nonl
-        #@-node:edream.110203113231.603:languageToTarget (should be in Leo's core)
-        #@+node:edream.110203113231.604:Event handlers
-        #@+node:edream.110203113231.605:OnActivatePrefsFrame
-        def OnActivatePrefsFrame(self,event):
-        
-            if gPrefsFrame and event.GetActive():
-                gPrefsFrame.initialize()
-        #@-node:edream.110203113231.605:OnActivatePrefsFrame
-        #@+node:edream.110203113231.606:OnClosePrefsFrame
-        #@+at 
-        #@nonl
-        # This is an event handler function called when the user has tried to 
-        # close a frame or dialog box.
-        # 
-        # It is called via the  wxWindow::Close function, so that the 
-        # application can also invoke the handler programmatically.  You 
-        # should check whether the application is forcing the deletion of the 
-        # window using CanVeto. If CanVeto returns FALSE, it is  not possible 
-        # to skip window deletion; destroy the window using wxWindow::Destroy. 
-        # If not, it is up to you whether you respond  by destroying the 
-        # window.  If you don't destroy the window, you should call 
-        # wxCloseEvent::Veto to let the calling code know that you did not 
-        # destroy the  window. This allows the wxWindow::Close function to 
-        # return TRUE or FALSE depending on whether the close instruction was  
-        # honoured or not.
-        #@-at
-        #@@c
-        
-        def OnClosePrefsFrame(self,event):
-        
-            if event.CanVeto():
-                event.Veto()# Did not destroy the window.
-                self.Show(False) # Just hide the window.
-            else:
-                self.Destroy()
-                gPrefsFrame = None
-        #@-node:edream.110203113231.606:OnClosePrefsFrame
-        #@+node:edream.110203113231.607:OnPageWidthText
-        def OnPageWidthText(self,event):
-            
-            text = event.GetEventObject()
-            s = text.GetValue()
-        
-            try:
-                n = int(s)
-                arg_page_width = default_page_width = n
-                if self.activeFrame:
-                    self.activeFrame.mPageWidth = arg_page_width
-            except: pass
-        
-        #@-node:edream.110203113231.607:OnPageWidthText
-        #@+node:edream.110203113231.608:OnDoneBatCheckBox
-        def OnDoneBatCheckBox(self,event):
-            
-            box =event.GetEventObject()
-            arg_tangle_batch = default_tangle_batch = box.GetValue()
-            if self.activeFrame:
-                self.activeFrame.mTangleBatchFlag = arg_tangle_batch
-        
-        #@-node:edream.110203113231.608:OnDoneBatCheckBox
-        #@+node:edream.110203113231.609:OnUnBatCheckBox
-        def OnUnBatCheckBox(self,event):
-            
-            box = event.GetEventObject()
-            arg_untangle_batch = default_untangle_batch = box.GetValue()
-            if self.activeFrame:
-                self.activeFrame.mUntangleBatchFlag = arg_untangle_batch
-        
-        #@-node:edream.110203113231.609:OnUnBatCheckBox
-        #@+node:edream.110203113231.610:OnTangleDirectoryText
-        def OnTangleDirectoryText(self,event):
-        
-            text = event.GetEventObject()
-            s = text.GetValue()
-            if self.activeFrame:
-                self.activeFrame.mDefaultDirectory = s
-                if self.activeFrame.mDefaultDirectory.Length()> 0:
-                    wxSetWorkingDirectory(self.activeFrame.mDefaultDirectory)
-                elif self.activeFrame.mOpenDirectory.Length()> 0:
-                    wxSetWorkingDirectory(self.activeFrame.mOpenDirectory)
-        #@nonl
-        #@-node:edream.110203113231.610:OnTangleDirectoryText
-        #@+node:edream.110203113231.611:OnHeaderCheckBox
-        def OnHeaderCheckBox(self,event):
-            
-            box = event.GetEventObject()
-            arg_use_header_flag = default_use_header_flag = box.GetValue()
-            if self.activeFrame:
-                self.activeFrame.mUseHeaderFlag = arg_use_header_flag
-        
-        #@-node:edream.110203113231.611:OnHeaderCheckBox
-        #@+node:edream.110203113231.612:OnDocChunksCheckBox
-        def OnDocChunksCheckBox(self,event):
-            
-            box = event.GetEventObject()
-            arg_output_doc_flag = default_output_doc_flag = box.GetValue()
-            if self.activeFrame:
-                self.activeFrame.mOutputDocFlag = arg_output_doc_flag
-        
-        #@-node:edream.110203113231.612:OnDocChunksCheckBox
-        #@+node:edream.110203113231.613:OnTargetLanguageRadioBox
-        def OnTargetLanguageRadioBox(self,event):
-            
-            box = event.GetEventObject()
-            targetIndex = box.GetSelection()
-            default_target_language = arg_target_language = targetToLanguage(targetIndex)
-        
-            # Careful:  The @language or @nocolor will override this.
-            if self.activeFrame:
-                self.activeFrame.mTargetLanguage = arg_target_language
-                c = self.activeFrame.c
-                v = c.currentVnode()
-                self.activeFrame.c.scanAllDirectives(v,cDontRequirePath,cDontIssueErrors)
-        #@nonl
-        #@-node:edream.110203113231.613:OnTargetLanguageRadioBox
-        #@-node:edream.110203113231.604:Event handlers
-        #@+node:edream.110203113231.614:PrefsPanel.__init__
-        def __init__(frame):
-            
-            # Init the base class.
-            wxPanel.__init__(frame,-1)
-            
-            topSizer = wxBoxSizer(wxVERTICAL)
-            #@    << Create the Global Options static box >>
-            #@+node:edream.110203113231.615:<< Create the Global Options static box >>
-            globalOptionsBox = wxStaticBox(self,-1,
-                "Global Options",(10,10),(250,110),0,"")
-            sizer = wxStaticBoxSizer(globalOptionsBox,wxVERTICAL)
-            lineSizer = wxBoxSizer(wxHORIZONTAL)
-            sizer.Add(0,5)# Extra vertical space.
-            
-            # Text control.
-            mPrefsPageWidthText = wxTextCtrl(self,
-                cPrefsPageWidthText,"132",
-                wxDefaultPosition,wx.wxSize(50,25),0,wxDefaultValidator,"")
-            
-            lineSizer.Add(mPrefsPageWidthText)
-            lineSizer.Add(20,0)# Width.
-            
-            # Label for text control.
-            lineSizer.Add(
-                wxStaticText(self,-1,"Page Width",
-                    (-1,10),(100,25),0,""),
-                0,wxBORDER | wxTOP,5)# Vertical offset 5.
-            sizer.Add(lineSizer)
-            
-            mPrefsDoneBatCheckBox = wxCheckBox(self,
-                cPrefsDoneBatCheckBox,
-                "Execute Leo_done.bat after Tangle",
-                wxDefaultPosition,(235,25),0,wxDefaultValidator,"")
-            sizer.Add(mPrefsDoneBatCheckBox)
-            
-            mPrefsUnBatCheckBox = wxCheckBox(self,
-                cPrefsUnBatCheckBox,
-                "Execute Leo_un.bat after Untangle",
-                wxDefaultPosition,(235,25),0,wxDefaultValidator,"")
-            sizer.Add(mPrefsUnBatCheckBox)
-            #@nonl
-            #@-node:edream.110203113231.615:<< Create the Global Options static box >>
-            #@nl
-            topSizer.Add(sizer)
-            topSizer.Add(0,10)
-            #@    << Create the Default Tangle Options static box >>
-            #@+node:edream.110203113231.616:<< Create the Default Tangle Options static box >>
-            optionsBox = wxStaticBox(self,-1,
-                "Default Tangle Options",
-                wxDefaultPosition,wx.wxSize(250,210),
-                0,"zzzz")
-            
-            sizer2 = wxStaticBoxSizer(optionsBox,wxVERTICAL)
-            sizer2.Add(0,10)# Vertical space.
-            # Label.
-            sizer2.Add(
-                wxStaticText(self,-1,
-                    "Default Tangle directory",
-                    wxDefaultPosition,wx.wxSize(165,25),0,""),
-                0,wxBORDER | wxLEFT,30)# Indent 30.
-            
-            mPrefsTangleDirectoryText = wxTextCtrl(self,
-                cPrefsTangleDirectoryText,"",
-                wxDefaultPosition,wx.wxSize(230,25),0,
-                wxDefaultValidator,"")
-            sizer2.Add(mPrefsTangleDirectoryText)
-            
-            mPrefsHeaderCheckBox = wxCheckBox(self,
-                cPrefsHeaderCheckBox,
-                "Tangle outputs header line",
-                wxDefaultPosition,wx.wxSize(235,25),0,
-                wxDefaultValidator,"")
-            sizer2.Add(mPrefsHeaderCheckBox)
-            
-            mPrefsDocChunksCheckBox = wxCheckBox(self,
-                cPrefsDocChunksCheckBox,
-                "Tangle outputs document chunks",
-                wxDefaultPosition,wx.wxSize(235,25),0,
-                wxDefaultValidator,"")
-            sizer2.Add(mPrefsDocChunksCheckBox)
-            #@nonl
-            #@-node:edream.110203113231.616:<< Create the Default Tangle Options static box >>
-            #@nl
-            topSizer.Add(sizer2)
-            topSizer.Add(0,10)
-            #@    << Create the Default Target Language radio buttons >>
-            #@+node:edream.110203113231.617:<< Create the Default Target Language radio buttons >>
-            targetLanguageChoices= [
-                "C/C++","CWEB","HTML","Java",
-                "Pascal","Perl","Perl + POD","Plain text","Python"]
-                
-            # We specify rows so that items will be sorted down the columns.
-            mTargetLanguageRadioBox = wxRadioBox(self,
-                cPrefsTargetLanguageRadioBox,
-                "Default Target Language",
-                wxDefaultPosition,wx.wxSize(245,145),
-                WXSIZEOF(targetLanguageChoices),
-                targetLanguageChoices,
-                5,wxRA_SPECIFY_ROWS)
-            #@nonl
-            #@-node:edream.110203113231.617:<< Create the Default Target Language radio buttons >>
-            #@nl
-            topSizer.Add(mTargetLanguageRadioBox)
-            SetAutoLayout(True)# tell dialog to use sizer
-            SetSizer(topSizer) # actually set the sizer
-            topSizer.Fit(self)# set size to minimum size as calculated by the sizer
-            topSizer.SetSizeHints(self)# set size hints to honour mininum size
-        #@nonl
-        #@-node:edream.110203113231.614:PrefsPanel.__init__
-        #@-others
-#@-node:edream.110203113231.598:wxLeoPrefs class
 #@+node:edream.111603213219:wxLeoTree class
 class wxLeoTree (leoFrame.leoTree):
 
@@ -2510,6 +2021,8 @@ class wxLeoTree (leoFrame.leoTree):
             wx.wxDefaultPosition, wx.wxDefaultSize,
             wx.wxTR_HAS_BUTTONS | wx.wxTR_EDIT_LABELS, wx.wxDefaultValidator,
             "treeCtrl")
+            
+        self.canvas = True # A dummy ivar used in c.treeWantsFocus, etc.
     
         self.root_id = None
         self.updateCount = 0
@@ -2537,59 +2050,12 @@ class wxLeoTree (leoFrame.leoTree):
         #@nl
     #@nonl
     #@-node:edream.111603213219.1:__init__
-    #@+node:ekr.20050719121356:setText
-    def setText (self,t,s,tag="",isHeadline=True):
-        
-        g.trace(s)
-    #@nonl
-    #@-node:ekr.20050719121356:setText
-    #@+node:edream.111403090242:Drawing  & scrolling TO DO
+    #@+node:edream.111303202917:Drawing
+    #@+node:ekr.20061105114250:drawIcon TO DO
     def drawIcon(self,v,x,y):
         g.trace(v)
-    
-    # Scrolling... 
-    def scrollTo(self,p):
-        g.trace()
-    
-    def idle_scrollTo(self,p):
-        pass
     #@nonl
-    #@-node:edream.111403090242:Drawing  & scrolling TO DO
-    #@+node:edream.111403090242.1:Editing TO DO
-    def editLabel(self,v):
-        pass
-    
-    def editVnode(self):
-        pass
-    
-    def endEditLabel(self):
-        pass
-        
-    def setEditVnode(self,v):
-        pass
-    
-    def setNormalLabelState(self,v):
-        pass
-    
-    def OnActivateHeadline(self,v):
-        g.trace()
-    #@nonl
-    #@-node:edream.111403090242.1:Editing TO DO
-    #@+node:edream.111403093559:Focus
-    def focus_get(self):
-        
-        return self.FindFocus()
-    #@nonl
-    #@-node:edream.111403093559:Focus
-    #@+node:edream.111403093559.1:Fonts TO DO
-    def getFont(self):
-        g.trace()
-    
-    def setFont(self,font):
-        g.trace()
-    #@nonl
-    #@-node:edream.111403093559.1:Fonts TO DO
-    #@+node:edream.111303202917:Tree refresh
+    #@-node:ekr.20061105114250:drawIcon TO DO
     #@+node:edream.110203113231.295:beginUpdate
     def beginUpdate (self):
         
@@ -2618,14 +2084,14 @@ class wxLeoTree (leoFrame.leoTree):
     
         c = self.c ; tree = self.treeCtrl
         if c is None: return
-        v = c.rootVnode()
-        if v is None: return
+        p = c.rootPosition()
+        if not p: return
     
         tree.DeleteAllItems()
         self.root_id = root_id = tree.AddRoot("Leo Outline Pane")
-        while v:
-            self.redraw_subtree(root_id,v)
-            v = v.next()
+        while p: # This may need copies...
+            self.redraw_subtree(root_id,p)
+            p = p.next()
         tree.Expand(root_id)
         
         self.drawing = False
@@ -2650,8 +2116,7 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:edream.110203113231.299:redraw_node
     #@+node:edream.110203113231.300:redraw_subtree
     def redraw_subtree(self,parent_id,v):
-        
-        # g.trace(v)
+    
         tree = self.treeCtrl
         id = self.redraw_node(parent_id,v)
         child = v.firstChild()
@@ -2672,22 +2137,266 @@ class wxLeoTree (leoFrame.leoTree):
             tree.Collapse(id)
     #@nonl
     #@-node:edream.110203113231.300:redraw_subtree
-    #@-node:edream.111303202917:Tree refresh
-    #@+node:ekr.20050719121701.19:tree.expandAllAncestors
-    def expandAllAncestors (self,p):
+    #@-node:edream.111303202917:Drawing
+    #@+node:edream.111403090242.1:Editing TO DO
+    def editLabel(self,v):
+        pass
+    
+    def editVnode(self):
+        pass
+    
+    def endEditLabel(self):
+        pass
         
-        redraw_flag = False
+    def setEditVnode(self,v):
+        pass
+    
+    def setNormalLabelState(self,v):
+        pass
+    
+    def OnActivateHeadline(self,v):
+        g.trace()
+    #@nonl
+    #@-node:edream.111403090242.1:Editing TO DO
+    #@+node:edream.110203113231.278:Event handlers
+    #@+node:edream.110203113231.279:Expand/contract
+    #@+node:edream.110203113231.280:onTreeCollapsed & onTreeExpanded
+    def onTreeCollapsed(self,event):
         
-        # g.trace(p)
+        """Prepare to collapse the tree."""
     
-        for p in p.parents_iter():
-            if not p.isExpanded():
-                p.expand()
-                redraw_flag = True
+        pass # No need to redraw the tree.
     
-        return redraw_flag
+    def onTreeExpanded (self,event):
+        
+        """Redraw the tree when a tree collapses."""
     
-    #@-node:ekr.20050719121701.19:tree.expandAllAncestors
+        if not self.frame.lockout and not self.drawing:
+    
+            self.redraw()
+    #@nonl
+    #@-node:edream.110203113231.280:onTreeCollapsed & onTreeExpanded
+    #@+node:edream.110203113231.281:onTreeCollapsing & onTreeExpanding
+    def onTreeCollapsing(self,event):
+        
+        """Call v.contract for a later redraw."""
+    
+        tree = self.treeCtrl
+        id = event.GetItem()
+        if id.IsOk and not self.frame.lockout:
+            v = tree.GetItemData(id).GetData()
+            if v:
+                #g.trace(v)
+                v.contract()
+        
+    def onTreeExpanding (self,event):
+        
+        """Call v.expand for a later redraw."""
+        
+        tree = self.treeCtrl
+        id = event.GetItem()
+        if id.IsOk and not self.frame.lockout:
+            v = tree.GetItemData(id).GetData()
+            if v:
+                #g.trace(v)
+                v.expand()
+    #@nonl
+    #@-node:edream.110203113231.281:onTreeCollapsing & onTreeExpanding
+    #@-node:edream.110203113231.279:Expand/contract
+    #@+node:edream.110203113231.282:Selecting
+    #@+node:edream.110203113231.283:onTreeChanged
+    def onTreeChanged(self,event):
+    
+        frame = self ; c = self.c ; tree = self.treeCtrl
+        
+        if self.frame.lockout > 0: return 
+        new_id = event.GetItem()
+        if not new_id.IsOk(): return
+        v = tree.GetItemData(new_id).GetData()
+        if not v: return
+    
+        self.frame.lockout += 1 # MUST prevent further events.
+        
+        c.selectVnode(v)
+        s = v.t.bodyString
+        s = g.toUnicode(s,"utf-8")  # No g.app.tkEncoding or similar yet.
+        t = self.frame.body.bodyCtrl
+        g.trace('widget',t)
+        t.Clear()
+        t.WriteText(s)
+        self.frame.body.recolor(v)
+        
+        self.frame.lockout -= 1
+    #@nonl
+    #@-node:edream.110203113231.283:onTreeChanged
+    #@+node:edream.110203113231.284:onTreeChanging
+    def onTreeChanging(self,event):
+        
+        """Event handler gets called whenever a new node gets selected"""
+    
+        g.trace(event)
+        pass
+    #@nonl
+    #@-node:edream.110203113231.284:onTreeChanging
+    #@-node:edream.110203113231.282:Selecting
+    #@+node:edream.110203113231.285:Editing labels
+    #@+node:edream.110203113231.286:onTreeBeginLabelEdit
+    # Editing is allowed only if this routine exists.
+    
+    def onTreeBeginLabelEdit(self,event):
+    
+        # Disallow editing of the dummy root node.
+        id = event.GetItem()
+        if id == self.root_id:
+            event.Veto()
+    #@nonl
+    #@-node:edream.110203113231.286:onTreeBeginLabelEdit
+    #@+node:edream.110203113231.287:onTreeEndLabelEdit
+    # Editing will be allowed only if this routine exists.
+    
+    def onTreeEndLabelEdit(self,event):
+    
+        tree = self.treeCtrl
+        s = event.GetLabel()
+        id = event.GetItem()
+        v = tree.GetItemData(id).GetData()
+    
+        return # Not yet: c.setChanged uses frame.top.
+    
+        # Set the dirty bit and the file-changed mark if the headline has changed.
+        if not v.isDirty()and s != v.headString():
+            v.setDirty()
+            if not self.c.isChanged():
+                self.c.setChanged(True)
+    
+        # Update all joined headlines.
+        j = v.joinList()
+        while j != v:
+            c.setHeadString(j,s)
+            j = j.joinList()
+    #@nonl
+    #@-node:edream.110203113231.287:onTreeEndLabelEdit
+    #@+node:edream.110203113231.288:onTreeKeyDown
+    def onTreeKeyDown(self,event):
+        
+        pass # Don't do anything until the end-edit event.
+    #@nonl
+    #@-node:edream.110203113231.288:onTreeKeyDown
+    #@-node:edream.110203113231.285:Editing labels
+    #@+node:ekr.20061105114250.1:Dragging
+    #@+node:edream.110203113231.289:onTreeBeginDrag
+    def onTreeBeginDrag(self,event):
+    
+        g.trace() ; return
+    
+        if event.GetItem()!= self.treeCtrl.GetRootItem():
+            mDraggedItem = event.GetItem()
+            event.Allow()
+    #@-node:edream.110203113231.289:onTreeBeginDrag
+    #@+node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
+    def onTreeEndDrag(self,event):
+        
+        g.trace() ; return
+    
+        #@    << Define onTreeEndDrag vars >>
+        #@+node:edream.110203113231.291:<< Define onTreeEndDrag vars >>
+        assert(self.tree)
+        assert(self.c)
+        
+        dst = event.GetItem()
+        src = mDraggedItem
+        mDraggedItem = 0
+        
+        if not dst.IsOk() or not src.IsOk():
+            return
+        
+        src_v = self.tree.GetItemData(src)
+        if src_v == None:
+            return
+        
+        dst_v =self.tree.GetItemData(dst)
+        if dst_v == None:
+            return
+        
+        parent = self.tree.GetParent(dst)
+        parent_v = None
+        #@nonl
+        #@-node:edream.110203113231.291:<< Define onTreeEndDrag vars >>
+        #@nl
+        if  src == 0 or dst == 0:  return
+        cookie = None
+        if (
+            # dst is the root
+            not parent.IsOk()or
+            # dst has visible children and dst isn't the first child.
+            self.tree.ItemHasChildren(dst)and self.tree.IsExpanded(dst)and
+            self.tree.GetFirstChild(dst,cookie) != src or
+            # back(src)== dst(would otherwise be a do-nothing)
+            self.tree.GetPrevSibling(src) == dst):
+            #@        << Insert src as the first child of dst >>
+            #@+node:edream.110203113231.292:<< Insert src as the first child of dst >>
+            # Make sure the drag will be valid.
+            parent_v = self.tree.GetItemData(dst)
+            
+            if not self.c.checkMoveWithParentWithWarning(src_v,parent_v,True):
+                return
+            
+            src_v.moveToNthChildOf(dst_v,0)
+            #@nonl
+            #@-node:edream.110203113231.292:<< Insert src as the first child of dst >>
+            #@nl
+        else:
+            # Not the root and no visible children.
+            #@        << Insert src after dst >>
+            #@+node:edream.110203113231.293:<< Insert src after dst >>
+            # Do nothing if dst is a child of src.
+            p = parent
+            while p.IsOk():
+                if p == src:
+                    return
+                p = self.tree.GetParent(p)
+            
+            # Do nothing if dst is joined to src.
+            if dst_v.isJoinedTo(src_v):
+                return
+            
+            # Make sure the drag will be valid.
+            parent_v = self.tree.GetItemData(parent)
+            if not self.c.checkMoveWithParentWithWarning(src_v,parent_v,True):
+                return
+            
+            src_v.moveAfter(dst_v)
+            #@nonl
+            #@-node:edream.110203113231.293:<< Insert src after dst >>
+            #@nl
+        self.c.selectVnode(src_v)
+        self.c.setChanged(True)
+    #@-node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
+    #@-node:ekr.20061105114250.1:Dragging
+    #@-node:edream.110203113231.278:Event handlers
+    #@+node:edream.111403093559:Focus
+    def focus_get(self):
+        
+        return self.FindFocus()
+    #@nonl
+    #@-node:edream.111403093559:Focus
+    #@+node:edream.111403093559.1:Fonts TO DO
+    def getFont(self):
+        g.trace()
+    
+    def setFont(self,font):
+        g.trace()
+    #@nonl
+    #@-node:edream.111403093559.1:Fonts TO DO
+    #@+node:edream.111403090242:Scrolling TO DO
+    # Scrolling... 
+    def scrollTo(self,p):
+        g.trace()
+    
+    def idle_scrollTo(self,p):
+        pass
+    #@nonl
+    #@-node:edream.111403090242:Scrolling TO DO
     #@+node:ekr.20050719121701:Selection stuff...
     #@+node:edream.111603221343.1:OLDselect
     # Warning: do not try to "optimize" this by returning if v==tree.currentVnode.
@@ -3124,219 +2833,27 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:ekr.20050719121701.18:dimEditLabel, undimEditLabel
     #@-node:ekr.20050719121701:Selection stuff...
-    #@+node:edream.110203113231.278:Event handlers
-    #@+node:edream.110203113231.279:Expand/contract
-    #@+node:edream.110203113231.280:onTreeCollapsed & onTreeExpanded
-    def onTreeCollapsed(self,event):
+    #@+node:ekr.20050719121356:setText
+    def setText (self,t,s,tag="",isHeadline=True):
         
-        """Prepare to collapse the tree."""
-    
-        pass # No need to redraw the tree.
-    
-    def onTreeExpanded (self,event):
-        
-        """Redraw the tree when a tree collapses."""
-    
-        if not self.frame.lockout and not self.drawing:
-    
-            self.redraw()
+        g.trace(s)
     #@nonl
-    #@-node:edream.110203113231.280:onTreeCollapsed & onTreeExpanded
-    #@+node:edream.110203113231.281:onTreeCollapsing & onTreeExpanding
-    def onTreeCollapsing(self,event):
+    #@-node:ekr.20050719121356:setText
+    #@+node:ekr.20050719121701.19:tree.expandAllAncestors
+    def expandAllAncestors (self,p):
         
-        """Call v.contract for a later redraw."""
+        redraw_flag = False
+        
+        # g.trace(p)
     
-        tree = self.treeCtrl
-        id = event.GetItem()
-        if id.IsOk and not self.frame.lockout:
-            v = tree.GetItemData(id).GetData()
-            if v:
-                #g.trace(v)
-                v.contract()
-        
-    def onTreeExpanding (self,event):
-        
-        """Call v.expand for a later redraw."""
-        
-        tree = self.treeCtrl
-        id = event.GetItem()
-        if id.IsOk and not self.frame.lockout:
-            v = tree.GetItemData(id).GetData()
-            if v:
-                #g.trace(v)
-                v.expand()
-    #@nonl
-    #@-node:edream.110203113231.281:onTreeCollapsing & onTreeExpanding
-    #@-node:edream.110203113231.279:Expand/contract
-    #@+node:edream.110203113231.282:Selecting
-    #@+node:edream.110203113231.283:onTreeChanged
-    def onTreeChanged(self,event):
+        for p in p.parents_iter():
+            if not p.isExpanded():
+                p.expand()
+                redraw_flag = True
     
-        frame = self ; c = self.c ; tree = self.treeCtrl
-        
-        if self.frame.lockout > 0: return 
-        new_id = event.GetItem()
-        if not new_id.IsOk(): return
-        v = tree.GetItemData(new_id).GetData()
-        if not v: return
+        return redraw_flag
     
-        self.frame.lockout += 1 # MUST prevent further events.
-        
-        c.selectVnode(v)
-        s = v.t.bodyString
-        s = g.toUnicode(s,"utf-8")  # No g.app.tkEncoding or similar yet.
-        t = self.frame.body.bodyCtrl
-        t.Clear()
-        t.WriteText(s)
-        self.frame.body.recolor(v)
-        
-        self.frame.lockout -= 1
-    #@nonl
-    #@-node:edream.110203113231.283:onTreeChanged
-    #@+node:edream.110203113231.284:onTreeChanging
-    def onTreeChanging(self,event):
-        
-        """Event handler gets called whenever a new node gets selected"""
-    
-        # g.trace()
-        pass
-    #@nonl
-    #@-node:edream.110203113231.284:onTreeChanging
-    #@-node:edream.110203113231.282:Selecting
-    #@+node:edream.110203113231.285:Editing labels
-    #@+node:edream.110203113231.286:onTreeBeginLabelEdit
-    # Editing is allowed only if this routine exists.
-    
-    def onTreeBeginLabelEdit(self,event):
-    
-        # Disallow editing of the dummy root node.
-        id = event.GetItem()
-        if id == self.root_id:
-            event.Veto()
-    #@nonl
-    #@-node:edream.110203113231.286:onTreeBeginLabelEdit
-    #@+node:edream.110203113231.287:onTreeEndLabelEdit
-    # Editing will be allowed only if this routine exists.
-    
-    def onTreeEndLabelEdit(self,event):
-    
-        tree = self.treeCtrl
-        s = event.GetLabel()
-        id = event.GetItem()
-        v = tree.GetItemData(id).GetData()
-    
-        return # Not yet: c.setChanged uses frame.top.
-    
-        # Set the dirty bit and the file-changed mark if the headline has changed.
-        if not v.isDirty()and s != v.headString():
-            v.setDirty()
-            if not self.c.isChanged():
-                self.c.setChanged(True)
-    
-        # Update all joined headlines.
-        j = v.joinList()
-        while j != v:
-            c.setHeadString(j,s)
-            j = j.joinList()
-    #@nonl
-    #@-node:edream.110203113231.287:onTreeEndLabelEdit
-    #@+node:edream.110203113231.288:onTreeKeyDown
-    def onTreeKeyDown(self,event):
-        
-        pass # Don't do anything until the end-edit event.
-    #@nonl
-    #@-node:edream.110203113231.288:onTreeKeyDown
-    #@-node:edream.110203113231.285:Editing labels
-    #@+node:edream.110203113231.289:onTreeBeginDrag
-    def onTreeBeginDrag(self,event):
-    
-        g.trace() ; return
-    
-        if event.GetItem()!= self.treeCtrl.GetRootItem():
-            mDraggedItem = event.GetItem()
-            event.Allow()
-    #@-node:edream.110203113231.289:onTreeBeginDrag
-    #@+node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
-    def onTreeEndDrag(self,event):
-        
-        g.trace() ; return
-    
-        #@    << Define onTreeEndDrag vars >>
-        #@+node:edream.110203113231.291:<< Define onTreeEndDrag vars >>
-        assert(self.tree)
-        assert(self.c)
-        
-        dst = event.GetItem()
-        src = mDraggedItem
-        mDraggedItem = 0
-        
-        if not dst.IsOk() or not src.IsOk():
-            return
-        
-        src_v = self.tree.GetItemData(src)
-        if src_v == None:
-            return
-        
-        dst_v =self.tree.GetItemData(dst)
-        if dst_v == None:
-            return
-        
-        parent = self.tree.GetParent(dst)
-        parent_v = None
-        #@nonl
-        #@-node:edream.110203113231.291:<< Define onTreeEndDrag vars >>
-        #@nl
-        if  src == 0 or dst == 0:  return
-        cookie = None
-        if (
-            # dst is the root
-            not parent.IsOk()or
-            # dst has visible children and dst isn't the first child.
-            self.tree.ItemHasChildren(dst)and self.tree.IsExpanded(dst)and
-            self.tree.GetFirstChild(dst,cookie) != src or
-            # back(src)== dst(would otherwise be a do-nothing)
-            self.tree.GetPrevSibling(src) == dst):
-            #@        << Insert src as the first child of dst >>
-            #@+node:edream.110203113231.292:<< Insert src as the first child of dst >>
-            # Make sure the drag will be valid.
-            parent_v = self.tree.GetItemData(dst)
-            
-            if not self.c.checkMoveWithParentWithWarning(src_v,parent_v,True):
-                return
-            
-            src_v.moveToNthChildOf(dst_v,0)
-            #@nonl
-            #@-node:edream.110203113231.292:<< Insert src as the first child of dst >>
-            #@nl
-        else:
-            # Not the root and no visible children.
-            #@        << Insert src after dst >>
-            #@+node:edream.110203113231.293:<< Insert src after dst >>
-            # Do nothing if dst is a child of src.
-            p = parent
-            while p.IsOk():
-                if p == src:
-                    return
-                p = self.tree.GetParent(p)
-            
-            # Do nothing if dst is joined to src.
-            if dst_v.isJoinedTo(src_v):
-                return
-            
-            # Make sure the drag will be valid.
-            parent_v = self.tree.GetItemData(parent)
-            if not self.c.checkMoveWithParentWithWarning(src_v,parent_v,True):
-                return
-            
-            src_v.moveAfter(dst_v)
-            #@nonl
-            #@-node:edream.110203113231.293:<< Insert src after dst >>
-            #@nl
-        self.c.selectVnode(src_v)
-        self.c.setChanged(True)
-    #@-node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
-    #@-node:edream.110203113231.278:Event handlers
+    #@-node:ekr.20050719121701.19:tree.expandAllAncestors
     #@-others
 #@nonl
 #@-node:edream.111603213219:wxLeoTree class

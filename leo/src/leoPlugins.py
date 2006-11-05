@@ -220,7 +220,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
             if init_result:
                 loadedModules[moduleName] = result
             else:
-                g.es_print('%s.%s failed' % (moduleName,init_result),color="red")
+                g.es_print('loadOnePlugin: loading module %s failed' % (moduleName),color="red")
                 result = None
         except AttributeError:
             # No top-level init function.

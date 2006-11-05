@@ -2393,7 +2393,7 @@ class baseCommands:
             body.see(adj_index)
         else:
             g.es("unmatched '%s'",ch)
-    #@+node:ekr.20031218072017.1828:findMatchingBracket
+    #@+node:ekr.20031218072017.1828:findSingleMatchingBracket
     # To do: replace comments with blanks before scanning.
     # Test  unmatched())
     def findSingleMatchingBracket(self,ch,index):
@@ -2429,7 +2429,7 @@ class baseCommands:
     # Test  (
     # ([(x){y}]))
     # Test  ((x)(unmatched
-    #@-node:ekr.20031218072017.1828:findMatchingBracket
+    #@-node:ekr.20031218072017.1828:findSingleMatchingBracket
     #@-node:ekr.20031218072017.1827:findMatchingBracket
     #@+node:ekr.20031218072017.1829:getBodyLines
     def getBodyLines (self,expandSelection=False):

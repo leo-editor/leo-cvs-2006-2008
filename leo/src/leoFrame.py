@@ -178,28 +178,6 @@ class leoBody:
     
         self.oops()
     #@-node:ekr.20031218072017.3666:Idle time...
-    #@+node:ekr.20031218072017.3667:Indices
-    def adjustIndex (self,index,offset):
-        self.oops()
-        
-    def compareIndices(self,i,rel,j):
-        self.oops()
-        
-    def convertRowColumnToIndex (self,row,column):
-        self.oops()
-        
-    def convertIndexToRowColumn (self,index):
-        self.oops()
-        
-    def getImageIndex (self,image):
-        self.oops()
-        
-    def getPythonInsertionPoint (self,t=None,s=None):
-        self.oops()
-        
-    def setPythonInsertionPoint (self,i,t=None,s=None):
-        self.oops()
-    #@-node:ekr.20031218072017.3667:Indices
     #@+node:ekr.20031218072017.3668:Insert point
     def getBeforeInsertionPoint (self):
         self.oops()
@@ -1046,7 +1024,7 @@ class nullBody (leoBody):
     
         g.trace()
     #@-node:ekr.20031218072017.2203:Idle time...
-    #@+node:ekr.20031218072017.2204:Indices
+    #@+node:ekr.20031218072017.2204:Indices (nullBody)
     def adjustIndex (self,index,offset):
         return index + offset
         
@@ -1054,22 +1032,24 @@ class nullBody (leoBody):
     
         return eval("%d %s %d" % (i,rel,j))
         
-    def convertRowColumnToIndex (self,row,column):
-        
-        # Probably not used.
-        n = self.findStartOfLine(row)
-        g.trace(n + column)
-        return n + column
-        
-    def convertIndexToRowColumn (self,index):
-        
-        # Probably not used.
-        g.trace(index)
-        return index
+    if 0:
+        def convertRowColumnToIndex (self,row,column):
+            
+            # Probably not used.
+            n = self.findStartOfLine(row)
+            g.trace(n + column)
+            return n + column
+            
+        def convertIndexToRowColumn (self,index):
+            
+            # Probably not used.
+            g.trace(index)
+            return index
         
     def getImageIndex (self,image):
         self.oops()
-    #@-node:ekr.20031218072017.2204:Indices
+    #@nonl
+    #@-node:ekr.20031218072017.2204:Indices (nullBody)
     #@+node:ekr.20031218072017.2205:Insert point
     def getBeforeInsertionPoint (self):
         return self.insertPoint - 1

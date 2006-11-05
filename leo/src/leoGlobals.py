@@ -5398,7 +5398,9 @@ def importFromPath (name,path,pluginName=None,verbose=False):
                 theFile,pathname,description = data
                 module = imp.load_module(moduleName,theFile,pathname,description)
             except ImportError:
-                pass
+                if 0: # verbose:
+                    g.es_print("Exception in g.importFromPath",color='blue')
+                    g.es_exception()
             except Exception:
                 g.es_print("unexpected exception in g.importFromPath",color='blue')
                 g.es_exception()

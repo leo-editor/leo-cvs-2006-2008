@@ -2498,43 +2498,50 @@ class leoTkinterBody (leoFrame.leoBody):
         self.bodyCtrl.after_idle(function,*args,**keys)
     #@-node:ekr.20031218072017.4005:Idle time...
     #@+node:ekr.20031218072017.4006:Indices (leoTkinterBody)
-    #@+node:ekr.20031218072017.4007:adjustIndex
+    #@+node:ekr.20031218072017.4007:adjustIndex (TO BE REMOVED) (Used in 1 or 2 places)
     def adjustIndex (self,index,offset):
         
         t = self.bodyCtrl
         return t.index("%s + %dc" % (t.index(index),offset))
-    #@-node:ekr.20031218072017.4007:adjustIndex
-    #@+node:ekr.20031218072017.4008:compareIndices
+    #@-node:ekr.20031218072017.4007:adjustIndex (TO BE REMOVED) (Used in 1 or 2 places)
+    #@+node:ekr.20031218072017.4008:compareIndices (TO BE REMOVED) (Used in 1 or 2 places)
     def compareIndices(self,i,rel,j):
     
         return self.bodyCtrl.compare(i,rel,j)
-    #@-node:ekr.20031218072017.4008:compareIndices
-    #@+node:ekr.20031218072017.4009:convertRowColumnToIndex
-    def convertRowColumnToIndex (self,row,column):
+    #@-node:ekr.20031218072017.4008:compareIndices (TO BE REMOVED) (Used in 1 or 2 places)
+    #@+node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
+    if 0:
+        def convertRowColumnToIndex (self,row,column):
         
-        return self.bodyCtrl.index("%s.%s" % (row,column))
-    #@-node:ekr.20031218072017.4009:convertRowColumnToIndex
-    #@+node:ekr.20031218072017.4010:convertIndexToRowColumn
-    def convertIndexToRowColumn (self,index):
+            return self.bodyCtrl.index("%s.%s" % (row,column))
+    #@-node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
+    #@+node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
+    if 0:
+    
+        def convertIndexToRowColumn (self,index):
         
-        index = self.bodyCtrl.index(index)
-        start, end = string.split(index,'.')
-        return int(start),int(end)
-    #@-node:ekr.20031218072017.4010:convertIndexToRowColumn
+            index = self.bodyCtrl.index(index)
+            start, end = string.split(index,'.')
+            return int(start),int(end)
+    #@nonl
+    #@-node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
     #@+node:ekr.20031218072017.4011:getImageIndex
     def getImageIndex (self,image):
         
         return self.bodyCtrl.index(image)
     #@-node:ekr.20031218072017.4011:getImageIndex
-    #@+node:ekr.20031218072017.4012:tkIndex (internal use only)
-    def tkIndex(self,index):
+    #@+node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
+    if 0:
+        def tkIndex(self,index):
+            
+            """Returns the canonicalized Tk index."""
+            
+            if index == "start": index = "1.0"
+            
+            return self.bodyCtrl.index(index)
         
-        """Returns the canonicalized Tk index."""
-        
-        if index == "start": index = "1.0"
-        
-        return self.bodyCtrl.index(index)
-    #@-node:ekr.20031218072017.4012:tkIndex (internal use only)
+    #@nonl
+    #@-node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
     #@-node:ekr.20031218072017.4006:Indices (leoTkinterBody)
     #@+node:ekr.20031218072017.4013:Insert point
     #@+node:ekr.20050710102922:get/setPythonInsertionPoint
