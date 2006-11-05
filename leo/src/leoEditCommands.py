@@ -3575,40 +3575,58 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20060209095101:setMoveCol (passed)
     #@-node:ekr.20051218170358: helpers
-    #@+node:ekr.20050920084036.148:buffers
+    #@+node:ekr.20050920084036.148:buffers (passed)
     def beginningOfBuffer (self,event):
         '''Move the cursor to the start of the body text.'''
-        self.moveToHelper(event,'1.0',extend=False)
+        self.moveToHelper(event,0,extend=False,python=True)
         
     def beginningOfBufferExtendSelection (self,event):
         '''Extend the text selection by moving the cursor to the start of the body text.'''
-        self.moveToHelper(event,'1.0',extend=True)
+        self.moveToHelper(event,0,extend=True,python=True)
     
     def endOfBuffer (self,event):
         '''Move the cursor to the end of the body text.'''
-        self.moveToHelper(event,'end',extend=False)
+        gui = g.app.gui ; w = self.editWidget(event)
+        s = gui.getAllText(w)
+        self.moveToHelper(event,len(s),extend=False,python=True)
         
     def endOfBufferExtendSelection (self,event):
         '''Extend the text selection by moving the cursor to the end of the body text.'''
-        self.moveToHelper(event,'end',extend=True)
-    #@-node:ekr.20050920084036.148:buffers
-    #@+node:ekr.20051213080533:characters
+        gui = g.app.gui ; w = self.editWidget(event)
+        s = gui.getAllText(w)
+        self.moveToHelper(event,len(s),extend=True,python=True)
+    #@-node:ekr.20050920084036.148:buffers (passed)
+    #@+node:ekr.20051213080533:characters (passed)
     def backCharacter (self,event):
         '''Move the cursor back one character, extending the selection if in extend mode.'''
-        self.moveToHelper(event,'insert-1c',extend=False)
-        
+        gui = g.app.gui ; w = self.editWidget(event)
+        i = gui.getInsertPoint(w,python=True)
+        i = max(0,i-1)
+        self.moveToHelper(event,i,extend=False,python=True)
+    
     def backCharacterExtendSelection (self,event):
         '''Extend the selection by moving the cursor back one character.'''
-        self.moveToHelper(event,'insert-1c',extend=True)
-        
+        gui = g.app.gui ; w = self.editWidget(event)
+        i = gui.getInsertPoint(w,python=True)
+        i = max(0,i-1)
+        self.moveToHelper(event,i,extend=True,python=True)
+    
     def forwardCharacter (self,event):
         '''Move the cursor forward one character, extending the selection if in extend mode.'''
-        self.moveToHelper (event,'insert+1c',extend=False)
+        gui = g.app.gui ; w = self.editWidget(event)
+        s = gui.getAllText(w)
+        i = gui.getInsertPoint(w,python=True)
+        i = min(i+1,len(s))
+        self.moveToHelper(event,i,extend=False,python=True)
         
     def forwardCharacterExtendSelection (self,event):
         '''Extend the selection by moving the cursor forward one character.'''
-        self.moveToHelper (event,'insert+1c',extend=True)
-    #@-node:ekr.20051213080533:characters
+        gui = g.app.gui ; w = self.editWidget(event)
+        s = gui.getAllText(w)
+        i = gui.getInsertPoint(w,python=True)
+        i = min(i+1,len(s))
+        self.moveToHelper(event,i,extend=True,python=True)
+    #@-node:ekr.20051213080533:characters (passed)
     #@+node:ekr.20051218174113:clear/set/ToggleExtendMode
     def clearExtendMode (self,event):
         '''Turn off extend mode: cursor movement commands do not extend the selection.'''

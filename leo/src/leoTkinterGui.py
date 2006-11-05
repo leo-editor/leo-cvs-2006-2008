@@ -669,8 +669,8 @@ class tkinterGui(leoGui.leoGui):
         try:
             i = w.index("insert")
             if python:
-                s = g.app.gui.getAllText(w)
-                return g.app.gui.toPythonIndex(s,w,i)
+                s = gui.getAllText(w)
+                return gui.toPythonIndex(s,w,i)
             else:
                 return i
         except Exception:
