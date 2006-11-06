@@ -2497,7 +2497,7 @@ class leoTkinterBody (leoFrame.leoBody):
     
         self.bodyCtrl.after_idle(function,*args,**keys)
     #@-node:ekr.20031218072017.4005:Idle time...
-    #@+node:ekr.20031218072017.4006:Indices (leoTkinterBody)
+    #@+node:ekr.20031218072017.4006:Indices (tkBody) (MOST TO BE REMOVED)
     #@+node:ekr.20031218072017.4007:adjustIndex (TO BE REMOVED) (Used in 1 or 2 places)
     def adjustIndex (self,index,offset):
         
@@ -2509,41 +2509,13 @@ class leoTkinterBody (leoFrame.leoBody):
     
         return self.bodyCtrl.compare(i,rel,j)
     #@-node:ekr.20031218072017.4008:compareIndices (TO BE REMOVED) (Used in 1 or 2 places)
-    #@+node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
-    if 0:
-        def convertRowColumnToIndex (self,row,column):
-        
-            return self.bodyCtrl.index("%s.%s" % (row,column))
-    #@-node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
-    #@+node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
-    if 0:
-    
-        def convertIndexToRowColumn (self,index):
-        
-            index = self.bodyCtrl.index(index)
-            start, end = string.split(index,'.')
-            return int(start),int(end)
-    #@nonl
-    #@-node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
     #@+node:ekr.20031218072017.4011:getImageIndex
     def getImageIndex (self,image):
         
         return self.bodyCtrl.index(image)
     #@-node:ekr.20031218072017.4011:getImageIndex
-    #@+node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
-    if 0:
-        def tkIndex(self,index):
-            
-            """Returns the canonicalized Tk index."""
-            
-            if index == "start": index = "1.0"
-            
-            return self.bodyCtrl.index(index)
-        
-    #@nonl
-    #@-node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
-    #@-node:ekr.20031218072017.4006:Indices (leoTkinterBody)
-    #@+node:ekr.20031218072017.4013:Insert point
+    #@-node:ekr.20031218072017.4006:Indices (tkBody) (MOST TO BE REMOVED)
+    #@+node:ekr.20031218072017.4013:Insert point (tkBody) TO BE REMOVED
     #@+node:ekr.20050710102922:get/setPythonInsertionPoint
     def getPythonInsertionPoint (self,t=None,s=None):
         
@@ -2592,7 +2564,7 @@ class leoTkinterBody (leoFrame.leoBody):
     def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
         self.bodyCtrl.mark_set("insert",str(1+lineNumber)+".0 linestart")
     #@-node:ekr.20031218072017.4016:setInsertionPointTo...
-    #@-node:ekr.20031218072017.4013:Insert point
+    #@-node:ekr.20031218072017.4013:Insert point (tkBody) TO BE REMOVED
     #@+node:ekr.20031218072017.4017:Menus
     def bind (self,*args,**keys):
         
@@ -2723,7 +2695,7 @@ class leoTkinterBody (leoFrame.leoBody):
         g.app.gui.setSelectionRange(self.bodyCtrl,i,j,insert)
     #@-node:ekr.20031218072017.4024:setSelectionRange (tkinterBody)
     #@-node:ekr.20031218072017.4018:Selection
-    #@+node:ekr.20031218072017.4025:Text
+    #@+node:ekr.20031218072017.4025:Text (tkBody) ALL TO BE REMOVED)
     #@+node:ekr.20031218072017.4026:delete...
     def deleteAllText(self):
         self.bodyCtrl.delete("1.0","end")
@@ -2903,7 +2875,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         return t.index(sel_start), t.index(sel_end)
     #@-node:ekr.20031218072017.4037:setSelectionAreas (tkinterBody)
-    #@-node:ekr.20031218072017.4025:Text
+    #@-node:ekr.20031218072017.4025:Text (tkBody) ALL TO BE REMOVED)
     #@+node:ekr.20031218072017.4038:Visibility & scrolling (tkBody)
     def see (self,index,python=False):
         g.app.gui.see(self.bodyCtrl,index,python=python)

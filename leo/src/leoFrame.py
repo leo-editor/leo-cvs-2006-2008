@@ -208,7 +208,7 @@ class leoBody:
         
         self.oops()
     #@-node:ekr.20031218072017.3669:Menus
-    #@+node:ekr.20031218072017.3670:Selection (leoFrame)
+    #@+node:ekr.20031218072017.3670:Selection (leoBody) (TO BE DELETED)
     def deleteTextSelection (self):
         self.oops()
         
@@ -226,9 +226,9 @@ class leoBody:
         
     def setSelectionRange (self,i,j=None,insert='sel.end'):
         self.oops()
-    #@-node:ekr.20031218072017.3670:Selection (leoFrame)
-    #@+node:ekr.20031218072017.3671:Text
-    #@+node:ekr.20031218072017.3672:delete...
+    #@-node:ekr.20031218072017.3670:Selection (leoBody) (TO BE DELETED)
+    #@+node:ekr.20031218072017.3671:Text (leoBody) (TO BE DELETED)
+    #@+node:ekr.20031218072017.3672:delete... 
     def deleteAllText(self):
         self.oops()
     
@@ -246,8 +246,8 @@ class leoBody:
         
     def deleteRange (self,index1,index2):
         self.oops()
-    #@-node:ekr.20031218072017.3672:delete...
-    #@+node:ekr.20031218072017.3673:get...
+    #@-node:ekr.20031218072017.3672:delete... 
+    #@+node:ekr.20031218072017.3673:get... (leoBody) (SOME TO BE DELETED)
     def getAllText (self):
         self.oops()
         
@@ -268,8 +268,8 @@ class leoBody:
         
     def getTextRange (self,index1,index2):
         self.oops()
-    #@-node:ekr.20031218072017.3673:get...
-    #@+node:ekr.20031218072017.3674:Insert...
+    #@-node:ekr.20031218072017.3673:get... (leoBody) (SOME TO BE DELETED)
+    #@+node:ekr.20031218072017.3674:Insert... (leoBody) TO BE DELETED
     def insertAtInsertPoint (self,s):
         
         self.oops()
@@ -281,12 +281,12 @@ class leoBody:
     def insertAtStartOfLine (self,lineNumber,s):
         
         self.oops()
-    #@-node:ekr.20031218072017.3674:Insert...
+    #@-node:ekr.20031218072017.3674:Insert... (leoBody) TO BE DELETED
     #@+node:ekr.20031218072017.3675:setSelectionAreas
     def setSelectionAreas (self,before,sel,after):
         self.oops()
     #@-node:ekr.20031218072017.3675:setSelectionAreas
-    #@-node:ekr.20031218072017.3671:Text
+    #@-node:ekr.20031218072017.3671:Text (leoBody) (TO BE DELETED)
     #@+node:ekr.20031218072017.3676:Visibility & scrolling
     def see (self,index):
         self.oops()
@@ -479,6 +479,19 @@ class leoFrame:
         
         self.oops()
     #@-node:ekr.20041222055747:leoFrame.unpack/repack...
+    #@+node:ekr.20061106064948:Status line
+    def createStatusLine (self):                    self.oops()
+    def clearStatusLine (self):                     self.oops()
+    def disableStatusLine (self,background=None):   self.oops()
+    def enableStatusLine (self,background="white"): self.oops()
+    def getStatusLine (self):                       self.oops()
+    def putStatusLine (self,s,color=None):          self.oops()
+    def setFocusStatusLine (self):                  self.oops()
+    def statusLineIsEnabled(self):                  self.oops()
+    def updateStatusLine(self):                     self.oops()
+        
+    # getStatusObject = getStatusLine
+    #@-node:ekr.20061106064948:Status line
     #@-node:ekr.20031218072017.3680: Must be defined in subclasses
     #@+node:ekr.20031218072017.3687:setTabWidth
     def setTabWidth (self,w):
@@ -527,7 +540,7 @@ class leoFrame:
     #@+node:ekr.20031218072017.3691:oops
     def oops(self):
         
-        print "leoFrame oops:", g.callers(), "should be overridden in subclass"
+        print "leoFrame oops:", g.callers(3), "should be overridden in subclass"
     #@-node:ekr.20031218072017.3691:oops
     #@+node:ekr.20031218072017.3692:promptForSave
     def promptForSave (self):
@@ -594,9 +607,12 @@ class leoFrame:
     
         c.frame.setTabWidth(w)
     #@-node:ekr.20031218072017.1375:scanForTabWidth
-    #@+node:ekr.20060206093313:xWantsFocus
+    #@+node:ekr.20060206093313:Focus
     # For compatibility with old scripts.
     # Using the commander methods directly is recommended.
+    
+    def getFocus(self):
+        return g.app.gui.get_focus(self.c) # Used by wxGui plugin.
     
     def bodyWantsFocus(self):
         return self.c.bodyWantsFocus()
@@ -609,7 +625,7 @@ class leoFrame:
         
     def minibufferWantsFocus(self):
         return self.c.minibufferWantsFocus()
-    #@-node:ekr.20060206093313:xWantsFocus
+    #@-node:ekr.20060206093313:Focus
     #@-others
 #@-node:ekr.20031218072017.3678:class leoFrame
 #@+node:ekr.20031218072017.3694:class leoLog
@@ -1024,7 +1040,7 @@ class nullBody (leoBody):
     
         g.trace()
     #@-node:ekr.20031218072017.2203:Idle time...
-    #@+node:ekr.20031218072017.2204:Indices (nullBody)
+    #@+node:ekr.20031218072017.2204:Indices (nullBody) (TO BE DELETED)
     def adjustIndex (self,index,offset):
         return index + offset
         
@@ -1032,48 +1048,35 @@ class nullBody (leoBody):
     
         return eval("%d %s %d" % (i,rel,j))
         
-    if 0:
-        def convertRowColumnToIndex (self,row,column):
-            
-            # Probably not used.
-            n = self.findStartOfLine(row)
-            g.trace(n + column)
-            return n + column
-            
-        def convertIndexToRowColumn (self,index):
-            
-            # Probably not used.
-            g.trace(index)
-            return index
-        
     def getImageIndex (self,image):
         self.oops()
     #@nonl
-    #@-node:ekr.20031218072017.2204:Indices (nullBody)
-    #@+node:ekr.20031218072017.2205:Insert point
-    def getBeforeInsertionPoint (self):
-        return self.insertPoint - 1
+    #@-node:ekr.20031218072017.2204:Indices (nullBody) (TO BE DELETED)
+    #@+node:ekr.20031218072017.2205:Insert point (nullBody) (TO BE DELETED)
+    if 1: ### TO BE DELETED
+        def getInsertionPoint (self):
+            return self.insertPoint
+            
+        def setInsertionPoint (self,index):
+            self.insertPoint = index
     
-    def getInsertionPoint (self):
-        return self.insertPoint
+        def getBeforeInsertionPoint (self):
+            return self.insertPoint - 1
         
-    def getCharAtInsertPoint (self):
-        try: return self.s[self.insertPoint]
-        except: return None
-    
-    def getCharBeforeInsertPoint (self):
-        try: return self.s[self.insertPoint - 1]
-        except: return None
+        def getCharAtInsertPoint (self):
+            try: return self.s[self.insertPoint]
+            except: return None
         
-    def setInsertionPoint (self,index):
-        self.insertPoint = index
-    
-    def setInsertionPointToEnd (self):
-        self.insertPoint = len(self.s)
+        def getCharBeforeInsertPoint (self):
+            try: return self.s[self.insertPoint - 1]
+            except: return None
         
-    def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
-        self.insertPoint = self.findStartOfLine(lineNumber)
-    #@-node:ekr.20031218072017.2205:Insert point
+        def setInsertionPointToEnd (self):
+            self.insertPoint = len(self.s)
+            
+        def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
+            self.insertPoint = self.findStartOfLine(lineNumber)
+    #@-node:ekr.20031218072017.2205:Insert point (nullBody) (TO BE DELETED)
     #@+node:ekr.20031218072017.2206:Menus
     def bind (self,*args,**keys):
         pass

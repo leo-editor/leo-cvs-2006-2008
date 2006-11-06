@@ -2106,6 +2106,48 @@ def getPythonInsertionPoint (self,t=None,s=None):
 def setPythonInsertionPoint (self,i,t=None,s=None):
     self.oops()
 #@-node:ekr.20061105124126:From leoBody
+#@+node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
+if 0:
+    def convertRowColumnToIndex (self,row,column):
+    
+        return self.bodyCtrl.index("%s.%s" % (row,column))
+#@-node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
+#@+node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
+if 0:
+
+    def convertIndexToRowColumn (self,index):
+    
+        index = self.bodyCtrl.index(index)
+        start, end = string.split(index,'.')
+        return int(start),int(end)
+#@nonl
+#@-node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
+#@+node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
+if 0:
+    def tkIndex(self,index):
+        
+        """Returns the canonicalized Tk index."""
+        
+        if index == "start": index = "1.0"
+        
+        return self.bodyCtrl.index(index)
+    
+#@nonl
+#@-node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
+#@+node:ekr.20061106075742:From nullBody
+def convertRowColumnToIndex (self,row,column):
+    
+    # Probably not used.
+    n = self.findStartOfLine(row)
+    g.trace(n + column)
+    return n + column
+    
+def convertIndexToRowColumn (self,index):
+    
+    # Probably not used.
+    g.trace(index)
+    return index
+#@-node:ekr.20061106075742:From nullBody
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

@@ -3,6 +3,21 @@
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061028065955:To do first
+#@+node:ekr.20061105134302:Crasher
+Typed '(' in canvas pane.
+
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 268, in doCommand
+    val = command(event)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 348, in showCalltips
+    self.leadinWord = self.findCalltipWord(w)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 722, in findCalltipWord
+    s = gui.getAllText(w)
+  File "c:\prog\tigris-cvs\leo\src\leoTkinterGui.py", line 809, in getAllText
+    s = w.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+AttributeError: Canvas instance has no attribute 'get'
+#@nonl
+#@-node:ekr.20061105134302:Crasher
 #@+node:ekr.20061101174435:Fix clone-drag problem
 @nocolor
 

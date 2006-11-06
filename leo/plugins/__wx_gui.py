@@ -167,7 +167,7 @@ class wxGui(leoGui.leoGui):
     #@-node:edream.111303091300:app.gui.wx birth & death
     #@+node:edream.110203113231.321:app.gui wx dialogs
     #@+node:edream.110203113231.322:runAboutLeoDialog
-    def runAboutLeoDialog(self,version,copyright,url,email):
+    def runAboutLeoDialog(self,c,version,copyright,url,email):
         
         """Create and run a wxPython About Leo dialog."""
     
@@ -178,7 +178,7 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.110203113231.322:runAboutLeoDialog
     #@+node:edream.110203113231.323:runAskOkDialog
-    def runAskOkDialog(self,title,message=None,text="Ok"):
+    def runAskOkDialog(self,c,title,message=None,text="Ok"):
         
         """Create and run a wxPython askOK dialog ."""
         
@@ -187,17 +187,24 @@ class wxGui(leoGui.leoGui):
         return "ok"
     #@nonl
     #@-node:edream.110203113231.323:runAskOkDialog
-    #@+node:edream.110203113231.324:runAskOkCancelNumberDialog TODO
-    def runAskOkCancelNumberDialog(self,title,message):
+    #@+node:ekr.20061106065606:runAskLeoIDDialog
+    def runAskLeoIDDialog(self):
+    
+        """Create and run a dialog to get g.app.LeoID."""
+        pass
+    #@nonl
+    #@-node:ekr.20061106065606:runAskLeoIDDialog
+    #@+node:edream.110203113231.324:runAskOkCancelNumberDialog (to do)
+    def runAskOkCancelNumberDialog(self,c,title,message):
     
         """Create and run a wxPython askOkCancelNumber dialog ."""
     
         g.trace()
         return 666
     #@nonl
-    #@-node:edream.110203113231.324:runAskOkCancelNumberDialog TODO
+    #@-node:edream.110203113231.324:runAskOkCancelNumberDialog (to do)
     #@+node:edream.110203113231.325:runAskYesNoDialog
-    def runAskYesNoDialog(selftitle,message=None):
+    def runAskYesNoDialog(self,c,title,message=None):
     
         """Create and run a wxPython askYesNo dialog."""
         
@@ -208,7 +215,7 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.110203113231.325:runAskYesNoDialog
     #@+node:edream.110203113231.326:runAskYesNoCancelDialog
-    def runAskYesNoCancelDialog(self,title,
+    def runAskYesNoCancelDialog(self,c,title,
         message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
     
         """Create and run a wxPython askYesNoCancel dialog ."""
@@ -288,7 +295,7 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.111403104835:getWildcardList
     #@-node:edream.110203113231.321:app.gui wx dialogs
-    #@+node:edream.111303091857:app.gui wx panels
+    #@+node:edream.111303091857:app.gui wx panels (to do)
     #@+node:edream.111303092328:createColorPanel
     def createColorPanel(self,c):
     
@@ -336,7 +343,7 @@ class wxGui(leoGui.leoGui):
         frame.Close()
     #@nonl
     #@-node:edream.110203113231.333:destroyLeoFrame (used??)
-    #@-node:edream.111303091857:app.gui wx panels
+    #@-node:edream.111303091857:app.gui wx panels (to do)
     #@+node:edream.111303090930:app.gui.wx utils
     #@+node:edream.110203113231.320:Clipboard
     def replaceClipboardWith (self,s):
@@ -390,7 +397,7 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.110203113231.344:center_dialog
     #@-node:edream.110203113231.339:Dialog
-    #@+node:edream.110203113231.335:Focus
+    #@+node:edream.110203113231.335:Focus (wxGui) (to do)
     #@+node:edream.110203113231.336:get_focus
     def get_focus(self,top):
         
@@ -407,8 +414,8 @@ class wxGui(leoGui.leoGui):
         pass # wx code not ready yet.
     #@nonl
     #@-node:edream.110203113231.337:set_focus
-    #@-node:edream.110203113231.335:Focus
-    #@+node:edream.110203113231.318:Font
+    #@-node:edream.110203113231.335:Focus (wxGui) (to do)
+    #@+node:edream.110203113231.318:Font (wxGui) (to do)
     #@+node:edream.110203113231.319:getFontFromParams
     def getFontFromParams(self,family,size,slant,weight):
         
@@ -431,8 +438,8 @@ class wxGui(leoGui.leoGui):
             return g.app.config.defaultFont
     #@nonl
     #@-node:edream.110203113231.319:getFontFromParams
-    #@-node:edream.110203113231.318:Font
-    #@+node:edream.111303092854:Icons
+    #@-node:edream.110203113231.318:Font (wxGui) (to do)
+    #@+node:edream.111303092854:Icons (wxGui) (to do)
     #@+node:edream.110203113231.340:attachLeoIcon
     def attachLeoIcon (self,w):
         
@@ -523,8 +530,8 @@ class wxGui(leoGui.leoGui):
             return None
     #@nonl
     #@-node:edream.110203113231.342:createLeoIcon
-    #@-node:edream.111303092854:Icons
-    #@+node:edream.110203113231.329:Idle time
+    #@-node:edream.111303092854:Icons (wxGui) (to do)
+    #@+node:edream.110203113231.329:Idle time (wxGui) (to do)
     #@+node:edream.111303093843:setIdleTimeHook
     def setIdleTimeHook (self,idleTimeHookHandler,*args,**keys):
         
@@ -537,7 +544,7 @@ class wxGui(leoGui.leoGui):
         g.trace(idleTimeHookHandler)
     #@nonl
     #@-node:edream.111303093843.1:setIdleTimeHookAfterDelay
-    #@-node:edream.110203113231.329:Idle time
+    #@-node:edream.110203113231.329:Idle time (wxGui) (to do)
     #@+node:edream.111303093953.8:Insert Point
     #@+node:edream.111303093953.9:getInsertPoint
     def getInsertPoint(self,t,python=False):
@@ -619,40 +626,6 @@ class wxGui(leoGui.leoGui):
             return g.toUnicode(s,g.app.tkEncoding)
     #@nonl
     #@-node:edream.111303093953.18:getAllText
-    #@+node:ekr.20061105124941:To be removed
-    #@+node:edream.111303093953.19:getCharAfterIndex
-    def getCharAfterIndex (self,t,index):
-    
-        g.trace()
-        ch = t.get(index + "+1c")
-        return g.toUnicode(ch,g.app.tkEncoding)
-    #@nonl
-    #@-node:edream.111303093953.19:getCharAfterIndex
-    #@+node:edream.111303093953.20:getCharAtIndex
-    def getCharAtIndex (self,t,index):
-        
-        g.trace()
-        ch = t.get(index)
-        return g.toUnicode(ch,g.app.tkEncoding)
-    #@nonl
-    #@-node:edream.111303093953.20:getCharAtIndex
-    #@+node:edream.111303093953.21:getCharBeforeIndex
-    def getCharBeforeIndex (self,t,index):
-    
-        g.trace()
-        ch = t.get(index + "-1c")
-        return g.toUnicode(ch,g.app.tkEncoding)
-    #@nonl
-    #@-node:edream.111303093953.21:getCharBeforeIndex
-    #@+node:edream.111303093953.22:getLineContainingIndex
-    def getLineContainingIndex (self,t,index):
-    
-        g.trace()
-        line = t.get(index + " linestart", index + " lineend")
-        return g.toUnicode(line,g.app.tkEncoding)
-    #@nonl
-    #@-node:edream.111303093953.22:getLineContainingIndex
-    #@-node:ekr.20061105124941:To be removed
     #@+node:edream.111303093953.23:replaceSelectionRangeWithText
     def replaceSelectionRangeWithText (self,t,start,end,text):
     
@@ -736,14 +709,14 @@ class wxLeoBody (leoFrame.leoBody):
     #@nonl
     #@-node:edream.110203113231.542:wxLeoBody.createControl
     #@-node:edream.110203113231.540:Birth & death (wxLeoBody)
-    #@+node:edream.111303204836:Tk wrappers wxLeoBody TO DO
+    #@+node:edream.111303204836:Tk wrappers (wxBody) (much work needed) (some will be removed from Leo's core)
     #@+node:edream.110203113231.543:Bounding box...
     def bbox (self,index):
         
         return self.bodyCtrl.GetClientSizeTuple()  
     #@nonl
     #@-node:edream.110203113231.543:Bounding box...
-    #@+node:edream.111303204517:Color tags (hacks for styles)
+    #@+node:edream.111303204517:Color tags (wxBody) (to do)
     #@+node:edream.111303205611:tag_add
     def tag_add (self,tagName,index1,index2):
         
@@ -795,7 +768,7 @@ class wxLeoBody (leoFrame.leoBody):
     
             # g.trace(tagName)
             style = wx.wxTextAttr(wx.wxBLACK)
-            last = self.maxWxIndex()
+            last = self.bodyCtrl.GetLastPosition()
             
             if 1: # This may cause the screen flash.
                 self.bodyCtrl.SetStyle(0,last,style)
@@ -807,8 +780,8 @@ class wxLeoBody (leoFrame.leoBody):
         g.trace(tagName,index1,index2)
         pass
     #@-node:edream.111303205611.4:tag_remove
-    #@-node:edream.111303204517:Color tags (hacks for styles)
-    #@+node:edream.110203113231.544:Configuration TO DO
+    #@-node:edream.111303204517:Color tags (wxBody) (to do)
+    #@+node:edream.110203113231.544:Configuration (wxBody) (To do)
     def cget(self,*args,**keys):
         
         pass
@@ -824,7 +797,7 @@ class wxLeoBody (leoFrame.leoBody):
     
         # return self.bodyCtrl.configure(*args,**keys)
     #@nonl
-    #@-node:edream.110203113231.544:Configuration TO DO
+    #@-node:edream.110203113231.544:Configuration (wxBody) (To do)
     #@+node:edream.110203113231.545:Focus...
     def hasFocus (self):
         
@@ -844,39 +817,13 @@ class wxLeoBody (leoFrame.leoBody):
         return self.bodyCtrl.GetCharWidth()
     #@nonl
     #@-node:edream.110203113231.549:Height & width
-    #@+node:edream.110203113231.548:Idle-time TO DO
+    #@+node:edream.110203113231.548:Idle-time (wxBody) (to do)
     def scheduleIdleTimeRoutine (self,function,*args,**keys):
     
         g.trace()
     #@nonl
-    #@-node:edream.110203113231.548:Idle-time TO DO
-    #@+node:edream.111303204025:Indices (wxLeoBody)
-    #@+node:edream.111303204025.1:adjustIndex
-    def adjustIndex (self,index,offset):
-        
-        try:
-            column, row = index
-            return column, row + offset
-        except:
-            return index + offset
-    #@nonl
-    #@-node:edream.111303204025.1:adjustIndex
-    #@+node:edream.111303204025.5:getImageIndex
-    def getImageIndex (self,image):
-        
-        g.trace(image)
-    #@nonl
-    #@-node:edream.111303204025.5:getImageIndex
-    #@+node:edream.111403080609:maxWxIndex (internal use)
-    def maxWxIndex (self):
-        
-        return self.bodyCtrl.GetLastPosition()
-    #@nonl
-    #@-node:edream.111403080609:maxWxIndex (internal use)
-    #@-node:edream.111303204025:Indices (wxLeoBody)
-    #@+node:edream.111303171218:Insert point
-    #@+node:ekr.20060629123738:get/setPythonInsertionPoint
-    #@-node:ekr.20060629123738:get/setPythonInsertionPoint
+    #@-node:edream.110203113231.548:Idle-time (wxBody) (to do)
+    #@+node:edream.111303171218:Insert point (wxBody) (TO BE REMOVED FROM LEO's CORE)
     #@+node:ekr.20060629123738.1:getInsertionPoint & getBeforeInsertionPoint
     def getBeforeInsertionPoint (self):
         g.trace()
@@ -886,39 +833,28 @@ class wxLeoBody (leoFrame.leoBody):
         return self.bodyCtrl.GetInsertionPoint()
         
     #@-node:ekr.20060629123738.1:getInsertionPoint & getBeforeInsertionPoint
-    #@+node:ekr.20060629123738.2:getCharAtInsertPoint & getCharBeforeInsertPoint
-    def getCharAtInsertPoint (self):
-        t = self.bodyCtrl
-        pos = t.GetInsertionPoint()
-        return t.GetRange(pos,pos+1)
-    
-    def getCharBeforeInsertPoint (self):
-        t = self.bodyCtrl
-        pos = t.GetInsertionPoint()
-        return t.GetRange(pos-1,pos)
-    #@nonl
-    #@-node:ekr.20060629123738.2:getCharAtInsertPoint & getCharBeforeInsertPoint
-    #@+node:ekr.20060629123738.3:setInsertionPointTo...
+    #@+node:ekr.20060629123738.3:setInsertionPointTo 
     def setInsertionPoint (self,index):
     
+        g.trace(g.callers())
         self.bodyCtrl.SetInsertionPoint(index)
     
     def setInsertPointToEnd (self):
-    
+        
+        g.trace(g.callers())
         self.bodyCtrl.SetInsertionPointEnd()
         
     def setInsertPointToStartOfLine (self,lineNumber):
-    
-        g.trace()
+        g.trace(g.callers())
     #@nonl
-    #@-node:ekr.20060629123738.3:setInsertionPointTo...
-    #@-node:edream.111303171218:Insert point
-    #@+node:edream.111603222048:Menus
-    def bind (self,bind_shortcut,callback):
+    #@-node:ekr.20060629123738.3:setInsertionPointTo 
+    #@-node:edream.111303171218:Insert point (wxBody) (TO BE REMOVED FROM LEO's CORE)
+    #@+node:edream.111303204025.5:getImageIndex (wxBody) (to do)
+    def getImageIndex (self,image):
         
-        pass # later.
+        g.trace(image)
     #@nonl
-    #@-node:edream.111603222048:Menus
+    #@-node:edream.111303204025.5:getImageIndex (wxBody) (to do)
     #@+node:edream.111303171218.1:Selection
     
     
@@ -1004,27 +940,28 @@ class wxLeoBody (leoFrame.leoBody):
         self.bodyCtrl.Remove(index1,index2)
     #@nonl
     #@-node:edream.111303171238.1:delete... (untested)
-    #@+node:edream.111303171238.2:get... TO DO
+    #@+node:edream.111303171238.2:get... (wxBody) (some to be deleted from Leo's core)
     def getAllText (self):
         return self.bodyCtrl.GetValue()
         
-    def getCharAtIndex (self,index):
-        return self.bodyCtrl.GetRange(index,index+1)
-    
-    def getInsertLines (self):
-        g.trace()
-    
-    def getSelectionAreas (self):
-        g.trace()
-    
-    def getSelectionLines (self):
-        g.trace()
-        
     def getTextRange(self,n1,n2):
         return self.bodyCtrl.GetRange(n1,n2)
-    #@nonl
-    #@-node:edream.111303171238.2:get... TO DO
-    #@+node:edream.111303171238.3:insert...
+        
+    if 0: # To be deleted from Leo's core
+        
+        def getCharAtIndex (self,index):
+            return self.bodyCtrl.GetRange(index,index+1)
+        
+        def getInsertLines (self):
+            g.trace()
+        
+        def getSelectionAreas (self):
+            g.trace()
+        
+        def getSelectionLines (self):
+            g.trace()
+    #@-node:edream.111303171238.2:get... (wxBody) (some to be deleted from Leo's core)
+    #@+node:edream.111303171238.3:insert... (wxBody) (to be deleted from Leo's core)
     def insertAtEnd (self,s):
     
         return self.bodyCtrl.AppendText(s)
@@ -1033,31 +970,32 @@ class wxLeoBody (leoFrame.leoBody):
         
         self.bodyCtrl.WriteText(s)
     #@nonl
-    #@-node:edream.111303171238.3:insert...
-    #@+node:edream.111303171238.4:setSelectionAreas
+    #@-node:edream.111303171238.3:insert... (wxBody) (to be deleted from Leo's core)
+    #@+node:edream.111303171238.4:setSelectionAreas (wxBody) (to be deleted from Leo's core)
     def setSelectionAreas (self,before,sel,after):
     
         g.trace()
     #@nonl
-    #@-node:edream.111303171238.4:setSelectionAreas
+    #@-node:edream.111303171238.4:setSelectionAreas (wxBody) (to be deleted from Leo's core)
     #@-node:edream.111303171238:Text
-    #@+node:edream.110203113231.552:Visibility & scrolling...
+    #@+node:edream.110203113231.552:Visibility & scrolling... (wxBody) (to do)
     def see (self,index):
         self.bodyCtrl.ShowPosition()
         
-    def setFirstVisibleIndex (self,index):
-        g.trace()
-        
-    def getFirstVisibleIndex (self):
-        g.trace()
+    # def setFirstVisibleIndex (self,index):
+        # g.trace()
+        # 
+    # def getFirstVisibleIndex (self):
+        # g.trace()
         
     def scrollUp (self):
         g.trace()
         
     def scrollDown (self):
         g.trace()
-    #@-node:edream.110203113231.552:Visibility & scrolling...
-    #@-node:edream.111303204836:Tk wrappers wxLeoBody TO DO
+    #@nonl
+    #@-node:edream.110203113231.552:Visibility & scrolling... (wxBody) (to do)
+    #@-node:edream.111303204836:Tk wrappers (wxBody) (much work needed) (some will be removed from Leo's core)
     #@+node:edream.110203113231.275:onBodyTextUpdated MORE WORK NEEDED
     def onBodyTextUpdated(self,event):
     
@@ -1139,6 +1077,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         
         # g.trace("wxLeoFrame",title)
         self.activeFrame = None
+        self.iconBar = None
         self.lockout = 0 # Suppress further events
         self.quitting = False
         self.updateCount = 0
@@ -1399,6 +1338,45 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         pass
     #@nonl
     #@-node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
+    #@+node:ekr.20061106070956:Icon area methods (to do)
+    def addIconButton (self,*args,**keys):
+        return self.iconBar and self.iconBar.add(*args,**keys)
+    
+    def clearIconBar (self):
+        if self.iconBar: self.iconBar.clear()
+    
+    def createIconBar (self):
+        f = self ; c = f.c
+        if 1: ### Not ready yet.
+            return None
+        else:
+            if not f.iconBar:
+                f.iconBar = f.iconBarClass(c,f.outerFrame)
+                f.iconFrame = f.iconBar.iconFrame
+                f.iconBar.pack()
+            return f.iconBar
+        
+    def getIconBar(self):
+        return self.iconBar
+    getIconBarObject = getIconBar
+    
+    def hideIconBar (self):
+        if self.iconBar: self.iconBar.hide()
+    #@nonl
+    #@-node:ekr.20061106070956:Icon area methods (to do)
+    #@+node:ekr.20061106070737:Status line (to do)
+    def createStatusLine (self):                    pass
+    def clearStatusLine (self):                     pass
+    def disableStatusLine (self,background=None):   pass
+    def enableStatusLine (self,background="white"): pass
+    def getStatusLine (self):                       pass
+    def putStatusLine (self,s,color=None):          pass
+    def setFocusStatusLine (self):                  pass
+    def statusLineIsEnabled(self):                  pass
+    def updateStatusLine(self):                     pass
+        
+    # getStatusObject = getStatusLine
+    #@-node:ekr.20061106070737:Status line (to do)
     #@+node:edream.110203113231.378:Externally visible routines...
     #@+node:edream.110203113231.380:deiconify
     def deiconify (self):
@@ -1420,9 +1398,157 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@-node:edream.111303135410:setTitle
     #@-node:edream.110203113231.378:Externally visible routines...
     #@+node:edream.111303100039:Gui-dependent commands (to do)
+    #@+node:ekr.20061106070201:Minibuffer commands... (tkFrame)
+    
+    #@+node:ekr.20061106070201.1:contractPane
+    def contractPane (self,event=None):
+        
+        '''Contract the selected pane.'''
+        
+        f = self ; c = f.c
+        w = c.get_requested_focus()
+        wname = c.widget_name(w)
+    
+        # g.trace(wname)
+        if not w: return
+        
+        if wname.startswith('body'):
+            f.contractBodyPane()
+        elif wname.startswith('log'):
+            f.contractLogPane()
+        elif wname.startswith('head') or wname.startswith('canvas'):
+            f.contractOutlinePane()
+    #@-node:ekr.20061106070201.1:contractPane
+    #@+node:ekr.20061106070201.2:expandPane
+    def expandPane (self,event=None):
+        
+        '''Expand the selected pane.'''
+    
+        f = self ; c = f.c
+            
+        w = c.get_requested_focus()
+        wname = c.widget_name(w)
+    
+        # g.trace(wname)
+        if not w: return
+        
+        if wname.startswith('body'):
+            f.expandBodyPane()
+        elif wname.startswith('log'):
+            f.expandLogPane()
+        elif wname.startswith('head') or wname.startswith('canvas'):
+            f.expandOutlinePane()
+    #@-node:ekr.20061106070201.2:expandPane
+    #@+node:ekr.20061106070201.3:fullyExpandPane
+    def fullyExpandPane (self,event=None):
+        
+        '''Fully expand the selected pane.'''
+    
+        f = self ; c = f.c
+            
+        w = c.get_requested_focus()
+        wname = c.widget_name(w)
+    
+        # g.trace(wname)
+        if not w: return
+        
+        if wname.startswith('body'):
+            f.fullyExpandBodyPane()
+        elif wname.startswith('log'):
+            f.fullyExpandLogPane()
+        elif wname.startswith('head') or wname.startswith('canvas'):
+            f.fullyExpandOutlinePane()
+    #@-node:ekr.20061106070201.3:fullyExpandPane
+    #@+node:ekr.20061106070201.4:hidePane
+    def hidePane (self,event=None):
+        
+        '''Completely contract the selected pane.'''
+    
+        f = self ; c = f.c
+            
+        w = c.get_requested_focus()
+        wname = c.widget_name(w)
+    
+        g.trace(wname)
+        if not w: return
+        
+        if wname.startswith('body'):
+            f.hideBodyPane()
+            c.treeWantsFocusNow()
+        elif wname.startswith('log'):
+            f.hideLogPane()
+            c.bodyWantsFocusNow()
+        elif wname.startswith('head') or wname.startswith('canvas'):
+            f.hideOutlinePane()
+            c.bodyWantsFocusNow()
+    #@-node:ekr.20061106070201.4:hidePane
+    #@+node:ekr.20061106070201.5:expand/contract/hide...Pane
+    #@+at 
+    #@nonl
+    # The first arg to divideLeoSplitter means the following:
+    # 
+    #     f.splitVerticalFlag: use the primary   (tree/body) ratio.
+    # not f.splitVerticalFlag: use the secondary (tree/log) ratio.
+    #@-at
+    #@@c
+    
+    def contractBodyPane (self,event=None):
+        '''Contract the body pane.'''
+        f = self ; r = min(1.0,f.ratio+0.1)
+        f.divideLeoSplitter(f.splitVerticalFlag,r)
+    
+    def contractLogPane (self,event=None):
+        '''Contract the log pane.'''
+        f = self ; r = min(1.0,f.ratio+0.1)
+        f.divideLeoSplitter(not f.splitVerticalFlag,r)
+    
+    def contractOutlinePane (self,event=None):
+        '''Contract the outline pane.'''
+        f = self ; r = max(0.0,f.ratio-0.1)
+        f.divideLeoSplitter(f.splitVerticalFlag,r)
+        
+    def expandBodyPane (self,event=None):
+        '''Expand the body pane.'''
+        self.contractOutlinePane()
+    
+    def expandLogPane(self,event=None):
+        '''Expand the log pane.'''
+        f = self ; r = max(0.0,f.ratio-0.1)
+        f.divideLeoSplitter(not f.splitVerticalFlag,r)
+        
+    def expandOutlinePane (self,event=None):
+        '''Expand the outline pane.'''
+        self.contractBodyPane()
+    #@-node:ekr.20061106070201.5:expand/contract/hide...Pane
+    #@+node:ekr.20061106070201.6:fullyExpand/hide...Pane
+    def fullyExpandBodyPane (self,event=None):
+        '''Fully expand the body pane.'''
+        f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
+    
+    def fullyExpandLogPane (self,event=None):
+        '''Fully expand the log pane.'''
+        f = self ; f.divideLeoSplitter(not f.splitVerticalFlag,0.0)
+    
+    def fullyExpandOutlinePane (self,event=None):
+        '''Fully expand the outline pane.'''
+        f = self ; f.divideLeoSplitter(f.splitVerticalFlag,1.0)
+        
+    def hideBodyPane (self,event=None):
+        '''Completely contract the body pane.'''
+        f = self ; f.divideLeoSplitter(f.splitVerticalFlag,1.0)
+    
+    def hideLogPane (self,event=None):
+        '''Completely contract the log pane.'''
+        f = self ; f.divideLeoSplitter(not f.splitVerticalFlag,1.0)
+    
+    def hideOutlinePane (self,event=None):
+        '''Completely contract the outline pane.'''
+        f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
+    #@-node:ekr.20061106070201.6:fullyExpand/hide...Pane
+    #@-node:ekr.20061106070201:Minibuffer commands... (tkFrame)
     #@+node:edream.111303100039.1:Edit Menu...
     #@+node:edream.111303101257:abortEditLabelCommand
-    def abortEditLabelCommand (self):
+    def abortEditLabelCommand (self,event=None):
     
         g.es("abortEditLabelCommand not ready yet")
         return
@@ -1443,7 +1569,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@nonl
     #@-node:edream.111303101257:abortEditLabelCommand
     #@+node:edream.111303101257.1:endEditLabelCommand
-    def endEditLabelCommand (self):
+    def endEditLabelCommand (self,event=None):
         
         g.es("endEditLabelCommand not ready yet")
         return
@@ -1461,7 +1587,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@nonl
     #@-node:edream.111303101257.1:endEditLabelCommand
     #@+node:edream.111303100039.6:insertHeadlineTime
-    def insertHeadlineTime (self):
+    def insertHeadlineTime (self,event=None):
         
         g.es("insertHeadlineTime not ready yet")
         return
@@ -1484,7 +1610,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@-node:edream.111303100039.1:Edit Menu...
     #@+node:edream.111303100039.7:Window Menu
     #@+node:edream.111303100039.8:cascade
-    def cascade(self):
+    def cascade(self,event=None):
         
         g.es("cascade not ready yet")
         return
@@ -1508,7 +1634,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@nonl
     #@-node:edream.111303100039.8:cascade
     #@+node:edream.111303100039.9:equalSizedPanes
-    def equalSizedPanes(self):
+    def equalSizedPanes(self,event=None):
         
         g.es("equalSizedPanes not ready yet")
         return
@@ -1517,7 +1643,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         frame.resizePanesToRatio(0.5,frame.secondary_ratio)
     #@-node:edream.111303100039.9:equalSizedPanes
     #@+node:edream.111303100039.10:hideLogWindow
-    def hideLogWindow (self):
+    def hideLogWindow (self,event=None):
         
         g.es("hideLogWindow not ready yet")
         return
@@ -1527,7 +1653,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@nonl
     #@-node:edream.111303100039.10:hideLogWindow
     #@+node:edream.111303100039.11:minimizeAll
-    def minimizeAll(self):
+    def minimizeAll(self,event=None):
         
         g.es("minimizeAll not ready yet")
         return
@@ -1544,7 +1670,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@nonl
     #@-node:edream.111303100039.11:minimizeAll
     #@+node:edream.111303101709:toggleActivePane
-    def toggleActivePane(self):
+    def toggleActivePane(self,event=None):
         
         # This can't work from the menu...
         
@@ -1559,7 +1685,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@-node:edream.111303101709:toggleActivePane
     #@+node:edream.111303100039.12:toggleSplitDirection
     # The key invariant: self.splitVerticalFlag tells the alignment of the main splitter.
-    def toggleSplitDirection(self):
+    def toggleSplitDirection(self,event=None):
         
         g.es("toggleSplitDirection not ready yet")
         return
@@ -1743,6 +1869,31 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@nonl
     #@-node:edream.111303095242.3:  wxLeoMenu.__init__
     #@+node:edream.111303103457:wx menu bindings
+    #@+node:ekr.20061106062514:Not called
+    #@+node:edream.111303103141.1:bind (Not called)
+    def bind (self,bind_shortcut,callback):
+        
+        g.trace(bind_shortcut,callback)
+        
+        pass
+    #@nonl
+    #@-node:edream.111303103141.1:bind (Not called)
+    #@+node:edream.111303103141.2:delete (not called?)
+    def delete (self,menu,readItemName):
+        
+        g.trace(menu,readItemName)
+        
+        ## return menu.delete(realItemName)
+    #@-node:edream.111303103141.2:delete (not called?)
+    #@+node:edream.111303103141.4:destroy (not called ?)
+    def destroy (self,menu):
+        
+        g.trace()
+    
+        ## menu.destroy()
+    #@nonl
+    #@-node:edream.111303103141.4:destroy (not called ?)
+    #@-node:ekr.20061106062514:Not called
     #@+node:edream.111603104327:9 Routines with Tk names
     #@+node:edream.111303111942.1:add_cascade
     def add_cascade (self,parent,label,menu,underline):
@@ -1763,6 +1914,11 @@ class wxLeoMenu (leoMenu.leoMenu):
         
         label    = keys.get("label")
         callback = keys.get("command")
+        
+        def wxMenuCallback (event,callback=callback):
+            # The Tk code does not use the event arg, so neither do we.
+            # g.trace('callback',callback.__name__)
+            return callback() # All args were bound when the callback was created.
     
         if menu:
             id = const(label)
@@ -1770,10 +1926,9 @@ class wxLeoMenu (leoMenu.leoMenu):
             key = (menu,label),
             self.menuDict[key] = id # Remember id 
             # g.trace(label,callback)
-            wx.EVT_MENU(self.frame,id,callback)
+            wx.EVT_MENU(self.frame,id,wxMenuCallback)
         else:
             g.trace("no menu",label)
-    
     #@-node:edream.111303103141:add_command
     #@+node:edream.111303121150:add_separator
     def add_separator(self,menu):
@@ -1784,22 +1939,9 @@ class wxLeoMenu (leoMenu.leoMenu):
             g.trace("null menu")
     #@nonl
     #@-node:edream.111303121150:add_separator
-    #@+node:edream.111303103141.1:bind (wx has a different key model than tk)
-    def bind (self,bind_shortcut,callback):
-        
-        # g.trace(bind_shortcut,callback)
-        
-        pass
-    #@nonl
-    #@-node:edream.111303103141.1:bind (wx has a different key model than tk)
-    #@+node:edream.111303103141.2:delete (not called?)
-    def delete (self,menu,readItemName):
-        
-        g.trace(menu,readItemName)
-        
-        ## return menu.delete(realItemName)
-    #@-node:edream.111303103141.2:delete (not called?)
-    #@+node:edream.111303103141.3:delete_range
+    #@+node:edream.111303103141.3:delete_range (wxMenu) (does not work)
+    # The wxWindows menu code has problems:  changes do not take effect immediately.
+    
     def delete_range (self,menu,n1,n2):
         
         if not menu:
@@ -1827,15 +1969,7 @@ class wxLeoMenu (leoMenu.leoMenu):
                 menu.Delete(id)
                 i += 1
     #@nonl
-    #@-node:edream.111303103141.3:delete_range
-    #@+node:edream.111303103141.4:destroy (not called ?)
-    def destroy (self,menu):
-        
-        g.trace()
-    
-        ## menu.destroy()
-    #@nonl
-    #@-node:edream.111303103141.4:destroy (not called ?)
+    #@-node:edream.111303103141.3:delete_range (wxMenu) (does not work)
     #@+node:edream.111303111942:insert_cascade
     def insert_cascade (self,parent,index,label,menu,underline):
     
@@ -2935,481 +3069,479 @@ class wxSearchWidget:
 #@nonl
 #@-node:edream.111503093140:wxSearchWidget
 #@+node:edream.110203113231.561:wxFindFrame class
-if wx:
-    class wxFindFrame (wx.wxFrame,leoFind.leoFind):
-        #@        @+others
-        #@+node:edream.110203113231.563:FindFrame.__init__
-        def __init__ (self,c):
+class wxFindFrame (wx.wxFrame,leoFind.leoFind):
+    #@    @+others
+    #@+node:edream.110203113231.563:FindFrame.__init__
+    def __init__ (self,c):
+    
+        # Init the base classes
+        wx.wxFrame.__init__(self,None,-1,"Leo Find/Change",
+            wx.wxPoint(50,50), wx.wxDefaultSize,
+            wx.wxMINIMIZE_BOX | wx.wxTHICK_FRAME | wx.wxSYSTEM_MENU | wx.wxCAPTION)
+    
+        # At present this is a global window, so the c param doesn't make sense.
+        # This must be changed to match how Leo presently works.
+        leoFind.leoFind.__init__(self,c)
         
-            # Init the base classes
-            wx.wxFrame.__init__(self,None,-1,"Leo Find/Change",
-                wx.wxPoint(50,50), wx.wxDefaultSize,
-                wx.wxMINIMIZE_BOX | wx.wxTHICK_FRAME | wx.wxSYSTEM_MENU | wx.wxCAPTION)
+        self.dict = {} # For communication between panel and frame.
+        self.findPanel = wxFindPanel(self)
         
-            # At present this is a global window, so the c param doesn't make sense.
-            # This must be changed to match how Leo presently works.
-            leoFind.leoFind.__init__(self,c)
-            
-            self.dict = {} # For communication between panel and frame.
-            self.findPanel = wxFindPanel(self)
-            
-            self.s_text = wxSearchWidget() # wx.wxTextCtrl(self,-1) # Working text widget.
-        
-            #@    << resize the frame to fit the panel >>
-            #@+node:edream.111503074302:<< resize the frame to fit the panel >>
-            sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-            sizer.Add(self.findPanel)
-            self.SetAutoLayout(True)# tell dialog to use sizer
-            self.SetSizer(sizer) # actually set the sizer
-            sizer.Fit(self)# set size to minimum size as calculated by the sizer
-            sizer.SetSizeHints(self)# set size hints to honour mininum size
-            #@nonl
-            #@-node:edream.111503074302:<< resize the frame to fit the panel >>
-            #@nl
-        
-            # Set the window icon.
-            if wx.wxPlatform == '__WXMSW__':
-                pass ## self.SetIcon(wx.wxIcon("LeoIcon"))
-        
-            # Set the focus.
-            self.findPanel.findText.SetFocus()
-        
-            #@    << define event handlers >>
-            #@+node:edream.110203113231.564:<< define event handlers >>
-            wx.EVT_CLOSE(self,self.onCloseFindFrame)
-            
-            #@<< create event handlers for buttons >>
-            #@+node:edream.111503085739:<< create event handlers for buttons >>
-            for name,command in (
-                ("changeButton",self.changeButton),
-                ("changeAllButton",self.changeAllButton),
-                ("changeThenFindButton",self.changeThenFindButton),
-                ("findButton",self.findButton),
-                ("findAllButton",self.findAllButton)):
-                    
-                def eventHandler(event,command=command):
-                    # g.trace(command)
-                    command()
-            
-                id = const_dict.get(name)
-                assert(id)
-                wx.EVT_BUTTON(self,id,eventHandler)
-            #@nonl
-            #@-node:edream.111503085739:<< create event handlers for buttons >>
-            #@nl
-            
-            #@<< create event handlers for check boxes and text >>
-            #@+node:edream.111503085739.1:<< create event handlers for check boxes and text >>
-            textKeys = ["find_text","change_text"]
-            keys = textKeys[:]
-            for item in self.intKeys:
-                keys.append(item)
-            
-            for name in keys:
-            
-                if name not in textKeys:
-                    name += "_flag"
-            
-                def eventHandler(event,self=self,name=name):
-                    box = event.GetEventObject()
-                    val = box.GetValue()
-                    # g.trace(name,val)
-                    setattr(self.c,name,val)
-            
-                id = const_dict.get(name)
-                if id:
-                    if name in textKeys:
-                        wx.EVT_TEXT(self,id,eventHandler)
-                    else:
-                        wx.EVT_CHECKBOX(self,id,eventHandler)
-            #@nonl
-            #@-node:edream.111503085739.1:<< create event handlers for check boxes and text >>
-            #@nl
-            #@nonl
-            #@-node:edream.110203113231.564:<< define event handlers >>
-            #@nl
-        #@-node:edream.110203113231.563:FindFrame.__init__
-        #@+node:edream.111403151611.1:bringToFront
-        def bringToFront (self):
-            
-            g.app.gui.bringToFront(self)
-            self.init(self.c)
-            self.findPanel.findText.SetFocus()
-            self.findPanel.findText.SetSelection(-1,-1)
+        self.s_text = wxSearchWidget() # wx.wxTextCtrl(self,-1) # Working text widget.
+    
+        #@    << resize the frame to fit the panel >>
+        #@+node:edream.111503074302:<< resize the frame to fit the panel >>
+        sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        sizer.Add(self.findPanel)
+        self.SetAutoLayout(True)# tell dialog to use sizer
+        self.SetSizer(sizer) # actually set the sizer
+        sizer.Fit(self)# set size to minimum size as calculated by the sizer
+        sizer.SetSizeHints(self)# set size hints to honour mininum size
         #@nonl
-        #@-node:edream.111403151611.1:bringToFront
-        #@+node:edream.111503213733:destroySelf
-        def destroySelf (self):
-            
-            self.Destroy()
-        #@nonl
-        #@-node:edream.111503213733:destroySelf
-        #@+node:edream.111503211508:onCloseFindFrame
-        def onCloseFindFrame (self,event):
+        #@-node:edream.111503074302:<< resize the frame to fit the panel >>
+        #@nl
+    
+        # Set the window icon.
+        if wx.wxPlatform == '__WXMSW__':
+            pass ## self.SetIcon(wx.wxIcon("LeoIcon"))
+    
+        # Set the focus.
+        self.findPanel.findText.SetFocus()
+    
+        #@    << define event handlers >>
+        #@+node:edream.110203113231.564:<< define event handlers >>
+        wx.EVT_CLOSE(self,self.onCloseFindFrame)
         
-            if event.CanVeto():
-                event.Veto()
-                self.Hide()
-        #@nonl
-        #@-node:edream.111503211508:onCloseFindFrame
-        #@+node:edream.111403135745:set_ivars
-        def set_ivars (self,c):
-            
-            """Init the commander ivars from the find panel."""
-            
-            g.trace()
-        
-            # N.B.: separate c.ivars are much more convenient than a dict.
-            for key in self.intKeys:
-                key = key + "_flag"
-                data = self.dict.get(key)
-                if data:
-                    box,id = data
-                    val = box.GetValue()
-                    #g.trace(key,val)
-                    setattr(c,key,val)
-                else:
-                    #g.trace("no data",key)
-                    setattr(c,key,False)
-        
-            fp = self.findPanel
-            c.find_text = fp.findText.GetValue()
-            c.change_text = fp.changeText.GetValue()
-        #@nonl
-        #@-node:edream.111403135745:set_ivars
-        #@+node:edream.111503091617:init_s_ctrl
-        def init_s_ctrl (self,s):
-            
-            c = self.c
-            t = self.s_text # the dummy widget
-        
-            # Set the text for searching.
-            t.text = s
-            
-            # Set the insertion point.
-            if c.reverse_flag:
-                t.SetInsertionPointEnd()
-            else:
-                t.SetInsertionPoint(0)
-            return t
-        #@nonl
-        #@-node:edream.111503091617:init_s_ctrl
-        #@+node:edream.111503093522:gui_search
-        def gui_search (self,t,find_text,index,
-            stopindex,backwards,regexp,nocase):
+        #@<< create event handlers for buttons >>
+        #@+node:edream.111503085739:<< create event handlers for buttons >>
+        for name,command in (
+            ("changeButton",self.changeButton),
+            ("changeAllButton",self.changeAllButton),
+            ("changeThenFindButton",self.changeThenFindButton),
+            ("findButton",self.findButton),
+            ("findAllButton",self.findAllButton)):
                 
-            g.trace(index,stopindex,backwards,regexp,nocase)
-            
-            s = t.text # t is the dummy text widget
-            
-            if index is None:
-                index = 0
+            def eventHandler(event,command=command):
+                # g.trace(command)
+                command()
         
-            pos = s.find(find_text,index)
-        
-            if pos == -1:
-                pos = None
-            
-            return pos
+            id = const_dict.get(name)
+            assert(id)
+            wx.EVT_BUTTON(self,id,eventHandler)
         #@nonl
-        #@-node:edream.111503093522:gui_search
-        #@+node:edream.111503204508:init
-        def init (self,c):
+        #@-node:edream.111503085739:<< create event handlers for buttons >>
+        #@nl
         
-            """Init the find panel from c.
-            
-            (The opposite of set_ivars)."""
+        #@<< create event handlers for check boxes and text >>
+        #@+node:edream.111503085739.1:<< create event handlers for check boxes and text >>
+        textKeys = ["find_text","change_text"]
+        keys = textKeys[:]
+        for item in self.intKeys:
+            keys.append(item)
         
-            # N.B.: separate c.ivars are much more convenient than a dict.
-            for key in self.intKeys:
-                key = key + "_flag"
-                val = getattr(c,key)
-                data = self.dict.get(key)
-                if data:
-                    box,id = data
-                    box.SetValue(val)
-                    # g.trace(key,`val`)
+        for name in keys:
         
-            self.findPanel.findText.SetValue(c.find_text)
-            self.findPanel.changeText.SetValue(c.change_text)
+            if name not in textKeys:
+                name += "_flag"
+        
+            def eventHandler(event,self=self,name=name):
+                box = event.GetEventObject()
+                val = box.GetValue()
+                # g.trace(name,val)
+                setattr(self.c,name,val)
+        
+            id = const_dict.get(name)
+            if id:
+                if name in textKeys:
+                    wx.EVT_TEXT(self,id,eventHandler)
+                else:
+                    wx.EVT_CHECKBOX(self,id,eventHandler)
         #@nonl
-        #@-node:edream.111503204508:init
-        #@-others
+        #@-node:edream.111503085739.1:<< create event handlers for check boxes and text >>
+        #@nl
+        #@nonl
+        #@-node:edream.110203113231.564:<< define event handlers >>
+        #@nl
+    #@-node:edream.110203113231.563:FindFrame.__init__
+    #@+node:edream.111403151611.1:bringToFront
+    def bringToFront (self):
+        
+        g.app.gui.bringToFront(self)
+        self.init(self.c)
+        self.findPanel.findText.SetFocus()
+        self.findPanel.findText.SetSelection(-1,-1)
+    #@nonl
+    #@-node:edream.111403151611.1:bringToFront
+    #@+node:edream.111503213733:destroySelf
+    def destroySelf (self):
+        
+        self.Destroy()
+    #@nonl
+    #@-node:edream.111503213733:destroySelf
+    #@+node:edream.111503211508:onCloseFindFrame
+    def onCloseFindFrame (self,event):
+    
+        if event.CanVeto():
+            event.Veto()
+            self.Hide()
+    #@nonl
+    #@-node:edream.111503211508:onCloseFindFrame
+    #@+node:edream.111403135745:set_ivars
+    def set_ivars (self,c):
+        
+        """Init the commander ivars from the find panel."""
+        
+        g.trace()
+    
+        # N.B.: separate c.ivars are much more convenient than a dict.
+        for key in self.intKeys:
+            key = key + "_flag"
+            data = self.dict.get(key)
+            if data:
+                box,id = data
+                val = box.GetValue()
+                #g.trace(key,val)
+                setattr(c,key,val)
+            else:
+                #g.trace("no data",key)
+                setattr(c,key,False)
+    
+        fp = self.findPanel
+        c.find_text = fp.findText.GetValue()
+        c.change_text = fp.changeText.GetValue()
+    #@nonl
+    #@-node:edream.111403135745:set_ivars
+    #@+node:edream.111503091617:init_s_ctrl
+    def init_s_ctrl (self,s):
+        
+        c = self.c
+        t = self.s_text # the dummy widget
+    
+        # Set the text for searching.
+        t.text = s
+        
+        # Set the insertion point.
+        if c.reverse_flag:
+            t.SetInsertionPointEnd()
+        else:
+            t.SetInsertionPoint(0)
+        return t
+    #@nonl
+    #@-node:edream.111503091617:init_s_ctrl
+    #@+node:edream.111503093522:gui_search
+    def gui_search (self,t,find_text,index,
+        stopindex,backwards,regexp,nocase):
+            
+        g.trace(index,stopindex,backwards,regexp,nocase)
+        
+        s = t.text # t is the dummy text widget
+        
+        if index is None:
+            index = 0
+    
+        pos = s.find(find_text,index)
+    
+        if pos == -1:
+            pos = None
+        
+        return pos
+    #@nonl
+    #@-node:edream.111503093522:gui_search
+    #@+node:edream.111503204508:init
+    def init (self,c):
+    
+        """Init the find panel from c.
+        
+        (The opposite of set_ivars)."""
+    
+        # N.B.: separate c.ivars are much more convenient than a dict.
+        for key in self.intKeys:
+            key = key + "_flag"
+            val = getattr(c,key)
+            data = self.dict.get(key)
+            if data:
+                box,id = data
+                box.SetValue(val)
+                # g.trace(key,`val`)
+    
+        self.findPanel.findText.SetValue(c.find_text)
+        self.findPanel.changeText.SetValue(c.change_text)
+    #@nonl
+    #@-node:edream.111503204508:init
+    #@-others
 #@nonl
 #@-node:edream.110203113231.561:wxFindFrame class
 #@+node:edream.110203113231.588:wxFindPanel class
-if wx:
-    class wxFindPanel (wx.wxPanel):
-        #@        @+others
-        #@+node:edream.110203113231.589:FindPanel.__init__
-        def __init__(self,frame):
-             
-            # Init the base class.
-            wx.wxPanel.__init__(self,frame,-1)
-            self.frame = frame
+class wxFindPanel (wx.wxPanel):
+    #@    @+others
+    #@+node:edream.110203113231.589:FindPanel.__init__
+    def __init__(self,frame):
+         
+        # Init the base class.
+        wx.wxPanel.__init__(self,frame,-1)
+        self.frame = frame
+    
+        topSizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        topSizer.Add(0,10)
+    
+        #@    << Create the find text box >>
+        #@+node:edream.110203113231.590:<< Create the find text box >>
+        findSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        findSizer.Add(5,5)# Extra space.
         
-            topSizer = wx.wxBoxSizer(wx.wxVERTICAL)
-            topSizer.Add(0,10)
+        # Label.
+        findSizer.Add(
+            wx.wxStaticText(self,-1,"Find:",
+                wx.wxPoint(-1,10), wx.wxSize(50,25),0,""),
+            0, wx.wxBORDER | wx.wxTOP,15) # Vertical offset.
         
-            #@    << Create the find text box >>
-            #@+node:edream.110203113231.590:<< Create the find text box >>
-            findSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-            findSizer.Add(5,5)# Extra space.
-            
-            # Label.
-            findSizer.Add(
-                wx.wxStaticText(self,-1,"Find:",
-                    wx.wxPoint(-1,10), wx.wxSize(50,25),0,""),
-                0, wx.wxBORDER | wx.wxTOP,15) # Vertical offset.
-            
-            findSizer.Add(10,0) # Width.
-            
-            # Text.
-            id = const("find_text")
-            self.findText = wx.wxTextCtrl(self,
-                id,"",
-                wx.wxDefaultPosition, wx.wxSize(500,60),
-                wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
-                wx.wxDefaultValidator,"")
-            
-            findSizer.Add(self.findText)
-            findSizer.Add(5,0)# Width.
-            topSizer.Add(findSizer)
-            topSizer.Add(0,10)
-            
-            self.frame.dict["find_text"] = self.findText,id
-            #@nonl
-            #@-node:edream.110203113231.590:<< Create the find text box >>
-            #@nl
-            #@    << Create the change text box >>
-            #@+node:edream.110203113231.591:<< Create the change text box >>
-            changeSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-            changeSizer.Add(5,5)# Extra space.
-            
-            # Label.
-            changeSizer.Add(
-                wx.wxStaticText(self,-1,"Change:",
-                    wx.wxPoint(-1,10),wx.wxSize(50,25),0,""),
-                0, wx.wxBORDER | wx.wxTOP,15)# Vertical offset.
-            
-            changeSizer.Add(10,0) # Width.
-            
-            # Text.
-            id = const("change_text")
-            self.changeText = wx.wxTextCtrl(self,
-                id,"",
-                wx.wxDefaultPosition, wx.wxSize(500,60),
-                wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
-                wx.wxDefaultValidator,"")
-            
-            changeSizer.Add(self.changeText)
-            changeSizer.Add(5,0)# Width.
-            topSizer.Add(changeSizer)
-            topSizer.Add(0,10)
-            
-            self.frame.dict["change_text"] = self.findText,id
-            #@nonl
-            #@-node:edream.110203113231.591:<< Create the change text box >>
-            #@nl
-            #@    << Create all the find check boxes >>
-            #@+node:edream.110203113231.592:<< Create all the find check boxes >>
-            col1Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-            #@<< Create the first column of widgets >>
-            #@+node:edream.110203113231.593:<< Create the first column of widgets >>
-            # The var names must match the names in leoFind class.
-            table = (
-                ("plain-search-flag","Plain Search",wx.wxRB_GROUP),
-                ("pattern_match_flag","Pattern Match",0),
-                ("script_search_flag","Script Search",0))
-            
-            for var,label,style in table:
-                
-                id = const(var)
-                box = wx.wxRadioButton(self,id,label,
-                    wx.wxDefaultPosition,(100,25),
-                    style,wx.wxDefaultValidator,"group1")
-                    
-                if style == wx.wxRB_GROUP:
-                    box.SetValue(True) # The default entry.
-            
-                col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
-                self.frame.dict[var] = box,id
-                
-            table = (("script_change_flag","Script Change"),)
-            
-            for var,label in table:
-                
-                id = const(var)
-                box = wx.wxCheckBox(self,id,label,
-                    wx.wxDefaultPosition,(100,25),
-                    0,wx.wxDefaultValidator,"")
-            
-                col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
-                self.frame.dict[var] = box,id
-            #@nonl
-            #@-node:edream.110203113231.593:<< Create the first column of widgets >>
-            #@nl
-            
-            col2Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-            #@<< Create the second column of widgets >>
-            #@+node:edream.110203113231.594:<< Create the second column of widgets >>
-            # The var names must match the names in leoFind class.
-            table = (
-                ("whole_word_flag","Whole Word"),
-                ("ignore_case_flag","Ignore Case"),
-                ("wrap_flag","Wrap Around"),
-                ("reverse_flag","Reverse"))
-            
-            for var,label in table:
-            
-                id = const(var)
-                box = wx.wxCheckBox(self,id,label,
-                    wx.wxDefaultPosition,(100,25),
-                    0,wx.wxDefaultValidator,"")
-            
-                col2Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
-                self.frame.dict[var] = box,id
-            #@nonl
-            #@-node:edream.110203113231.594:<< Create the second column of widgets >>
-            #@nl
-            
-            col3Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-            #@<< Create the third column of widgets >>
-            #@+node:edream.111503133933.2:<< Create the third column of widgets >>
-            # The var names must match the names in leoFind class.
-            table = (
-                ("Entire Outline","entire-outline",wx.wxRB_GROUP),
-                ("Suboutline Only","suboutline_only_flag",0),  
-                ("Node Only","node_only_flag",0),    
-                ("Selection Only","selection-only",0))
-                
-            for label,var,group in table:
-            
-                if var: id = const(var)
-                else:   id = const("entire-outline")
-                    
-                box = wx.wxRadioButton(self,id,label,
-                    wx.wxDefaultPosition,(100,25),
-                    group,wx.wxDefaultValidator,"group2")
-            
-                col3Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
-                
-                self.frame.dict[var] = box,id
-            #@nonl
-            #@-node:edream.111503133933.2:<< Create the third column of widgets >>
-            #@nl
-            
-            col4Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
-            #@<< Create the fourth column of widgets >>
-            #@+node:edream.111503133933.3:<< Create the fourth column of widgets >>
-            # The var names must match the names in leoFind class.
-            table = (
-                ("search_headline_flag","Search Headline Text"),
-                ("search_body_flag","Search Body Text"),
-                ("mark_finds_flag","Mark Finds"),
-                ("mark_changes_flag","Mark Changes"))
-            
-            for var,label in table:
-                
-                id = const(var)
-                box = wx.wxCheckBox(self,id,label,
-                    wx.wxDefaultPosition,(100,25),
-                    0,wx.wxDefaultValidator,"")
-            
-                col4Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
-                self.frame.dict[var] = box,id
-            #@nonl
-            #@-node:edream.111503133933.3:<< Create the fourth column of widgets >>
-            #@nl
-            
-            # Pack the columns
-            columnSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-            columnSizer.Add(col1Sizer)
-            columnSizer.Add(col2Sizer)
-            columnSizer.Add(col3Sizer)
-            columnSizer.Add(col4Sizer)
-            
-            topSizer.Add(columnSizer)
-            topSizer.Add(0,10)
-            #@nonl
-            #@-node:edream.110203113231.592:<< Create all the find check boxes >>
-            #@nl
-            #@    << Create all the find buttons >>
-            #@+node:edream.110203113231.595:<< Create all the find buttons >>
-            # The row sizers are a bit dim:  they should distribute the buttons automatically.
-            
-            row1Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-            #@<< Create the first row of buttons >>
-            #@+node:edream.110203113231.596:<< Create the first row of buttons >>
-            row1Sizer.Add(90,0)
-            
-            table = (
-                ("findButton","Find",True),
-                ("batch_flag","Show Context",False), # Old batch_flag now means Show Context.
-                ("findAllButton","Find All",True))
-            
-            for var,label,isButton in table:
-                
-                id = const(var)
-                if isButton:
-                    widget = button = wx.wxButton(self,id,label,
-                        wx.wxDefaultPosition,(100,25),
-                        0,wx.wxDefaultValidator,"")
-                else:
-                    widget = box = wx.wxCheckBox(self,id,label,
-                        wx.wxDefaultPosition,(100,25),
-                        0,wx.wxDefaultValidator,"")
-                    
-                    self.frame.dict[var] = box,id
-            
-                row1Sizer.Add(widget)
-                row1Sizer.Add((25,0),)
-            #@nonl
-            #@-node:edream.110203113231.596:<< Create the first row of buttons >>
-            #@nl
-            
-            row2Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
-            #@<< Create the second row of buttons >>
-            #@+node:edream.110203113231.597:<< Create the second row of buttons >>
-            row2Sizer.Add(90,0)
-            
-            table = (
-                ("changeButton","Change"),
-                ("changeThenFindButton","Change,Then Find"),
-                ("changeAllButton","Change All"))
-            
-            for var,label in table:
-            
-                id = const(var)
-                button = wx.wxButton(self,id,label,
-                    wx.wxDefaultPosition,(100,25),
-                    0,wx.wxDefaultValidator,"")
-                
-                row2Sizer.Add(button)
-                row2Sizer.Add((25,0),)
-            #@nonl
-            #@-node:edream.110203113231.597:<< Create the second row of buttons >>
-            #@nl
-            
-            # Pack the two rows
-            buttonSizer = wx.wxBoxSizer(wx.wxVERTICAL)
-            buttonSizer.Add(row1Sizer)
-            buttonSizer.Add(0,10)
-            
-            buttonSizer.Add(row2Sizer)
-            topSizer.Add(buttonSizer)
-            topSizer.Add(0,10)
-            #@nonl
-            #@-node:edream.110203113231.595:<< Create all the find buttons >>
-            #@nl
+        findSizer.Add(10,0) # Width.
         
-            self.SetAutoLayout(True) # tell dialog to use sizer
-            self.SetSizer(topSizer) # actually set the sizer
-            topSizer.Fit(self)# set size to minimum size as calculated by the sizer
-            topSizer.SetSizeHints(self)# set size hints to honour mininum size
+        # Text.
+        id = const("find_text")
+        self.findText = wx.wxTextCtrl(self,
+            id,"",
+            wx.wxDefaultPosition, wx.wxSize(500,60),
+            wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
+            wx.wxDefaultValidator,"")
+        
+        findSizer.Add(self.findText)
+        findSizer.Add(5,0)# Width.
+        topSizer.Add(findSizer)
+        topSizer.Add(0,10)
+        
+        self.frame.dict["find_text"] = self.findText,id
         #@nonl
-        #@-node:edream.110203113231.589:FindPanel.__init__
-        #@-others
+        #@-node:edream.110203113231.590:<< Create the find text box >>
+        #@nl
+        #@    << Create the change text box >>
+        #@+node:edream.110203113231.591:<< Create the change text box >>
+        changeSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        changeSizer.Add(5,5)# Extra space.
+        
+        # Label.
+        changeSizer.Add(
+            wx.wxStaticText(self,-1,"Change:",
+                wx.wxPoint(-1,10),wx.wxSize(50,25),0,""),
+            0, wx.wxBORDER | wx.wxTOP,15)# Vertical offset.
+        
+        changeSizer.Add(10,0) # Width.
+        
+        # Text.
+        id = const("change_text")
+        self.changeText = wx.wxTextCtrl(self,
+            id,"",
+            wx.wxDefaultPosition, wx.wxSize(500,60),
+            wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
+            wx.wxDefaultValidator,"")
+        
+        changeSizer.Add(self.changeText)
+        changeSizer.Add(5,0)# Width.
+        topSizer.Add(changeSizer)
+        topSizer.Add(0,10)
+        
+        self.frame.dict["change_text"] = self.findText,id
+        #@nonl
+        #@-node:edream.110203113231.591:<< Create the change text box >>
+        #@nl
+        #@    << Create all the find check boxes >>
+        #@+node:edream.110203113231.592:<< Create all the find check boxes >>
+        col1Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        #@<< Create the first column of widgets >>
+        #@+node:edream.110203113231.593:<< Create the first column of widgets >>
+        # The var names must match the names in leoFind class.
+        table = (
+            ("plain-search-flag","Plain Search",wx.wxRB_GROUP),
+            ("pattern_match_flag","Pattern Match",0),
+            ("script_search_flag","Script Search",0))
+        
+        for var,label,style in table:
+            
+            id = const(var)
+            box = wx.wxRadioButton(self,id,label,
+                wx.wxDefaultPosition,(100,25),
+                style,wx.wxDefaultValidator,"group1")
+                
+            if style == wx.wxRB_GROUP:
+                box.SetValue(True) # The default entry.
+        
+            col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
+            self.frame.dict[var] = box,id
+            
+        table = (("script_change_flag","Script Change"),)
+        
+        for var,label in table:
+            
+            id = const(var)
+            box = wx.wxCheckBox(self,id,label,
+                wx.wxDefaultPosition,(100,25),
+                0,wx.wxDefaultValidator,"")
+        
+            col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
+            self.frame.dict[var] = box,id
+        #@nonl
+        #@-node:edream.110203113231.593:<< Create the first column of widgets >>
+        #@nl
+        
+        col2Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        #@<< Create the second column of widgets >>
+        #@+node:edream.110203113231.594:<< Create the second column of widgets >>
+        # The var names must match the names in leoFind class.
+        table = (
+            ("whole_word_flag","Whole Word"),
+            ("ignore_case_flag","Ignore Case"),
+            ("wrap_flag","Wrap Around"),
+            ("reverse_flag","Reverse"))
+        
+        for var,label in table:
+        
+            id = const(var)
+            box = wx.wxCheckBox(self,id,label,
+                wx.wxDefaultPosition,(100,25),
+                0,wx.wxDefaultValidator,"")
+        
+            col2Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+            self.frame.dict[var] = box,id
+        #@nonl
+        #@-node:edream.110203113231.594:<< Create the second column of widgets >>
+        #@nl
+        
+        col3Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        #@<< Create the third column of widgets >>
+        #@+node:edream.111503133933.2:<< Create the third column of widgets >>
+        # The var names must match the names in leoFind class.
+        table = (
+            ("Entire Outline","entire-outline",wx.wxRB_GROUP),
+            ("Suboutline Only","suboutline_only_flag",0),  
+            ("Node Only","node_only_flag",0),    
+            ("Selection Only","selection-only",0))
+            
+        for label,var,group in table:
+        
+            if var: id = const(var)
+            else:   id = const("entire-outline")
+                
+            box = wx.wxRadioButton(self,id,label,
+                wx.wxDefaultPosition,(100,25),
+                group,wx.wxDefaultValidator,"group2")
+        
+            col3Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+            
+            self.frame.dict[var] = box,id
+        #@nonl
+        #@-node:edream.111503133933.2:<< Create the third column of widgets >>
+        #@nl
+        
+        col4Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        #@<< Create the fourth column of widgets >>
+        #@+node:edream.111503133933.3:<< Create the fourth column of widgets >>
+        # The var names must match the names in leoFind class.
+        table = (
+            ("search_headline_flag","Search Headline Text"),
+            ("search_body_flag","Search Body Text"),
+            ("mark_finds_flag","Mark Finds"),
+            ("mark_changes_flag","Mark Changes"))
+        
+        for var,label in table:
+            
+            id = const(var)
+            box = wx.wxCheckBox(self,id,label,
+                wx.wxDefaultPosition,(100,25),
+                0,wx.wxDefaultValidator,"")
+        
+            col4Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+            self.frame.dict[var] = box,id
+        #@nonl
+        #@-node:edream.111503133933.3:<< Create the fourth column of widgets >>
+        #@nl
+        
+        # Pack the columns
+        columnSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        columnSizer.Add(col1Sizer)
+        columnSizer.Add(col2Sizer)
+        columnSizer.Add(col3Sizer)
+        columnSizer.Add(col4Sizer)
+        
+        topSizer.Add(columnSizer)
+        topSizer.Add(0,10)
+        #@nonl
+        #@-node:edream.110203113231.592:<< Create all the find check boxes >>
+        #@nl
+        #@    << Create all the find buttons >>
+        #@+node:edream.110203113231.595:<< Create all the find buttons >>
+        # The row sizers are a bit dim:  they should distribute the buttons automatically.
+        
+        row1Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        #@<< Create the first row of buttons >>
+        #@+node:edream.110203113231.596:<< Create the first row of buttons >>
+        row1Sizer.Add(90,0)
+        
+        table = (
+            ("findButton","Find",True),
+            ("batch_flag","Show Context",False), # Old batch_flag now means Show Context.
+            ("findAllButton","Find All",True))
+        
+        for var,label,isButton in table:
+            
+            id = const(var)
+            if isButton:
+                widget = button = wx.wxButton(self,id,label,
+                    wx.wxDefaultPosition,(100,25),
+                    0,wx.wxDefaultValidator,"")
+            else:
+                widget = box = wx.wxCheckBox(self,id,label,
+                    wx.wxDefaultPosition,(100,25),
+                    0,wx.wxDefaultValidator,"")
+                
+                self.frame.dict[var] = box,id
+        
+            row1Sizer.Add(widget)
+            row1Sizer.Add((25,0),)
+        #@nonl
+        #@-node:edream.110203113231.596:<< Create the first row of buttons >>
+        #@nl
+        
+        row2Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        #@<< Create the second row of buttons >>
+        #@+node:edream.110203113231.597:<< Create the second row of buttons >>
+        row2Sizer.Add(90,0)
+        
+        table = (
+            ("changeButton","Change"),
+            ("changeThenFindButton","Change,Then Find"),
+            ("changeAllButton","Change All"))
+        
+        for var,label in table:
+        
+            id = const(var)
+            button = wx.wxButton(self,id,label,
+                wx.wxDefaultPosition,(100,25),
+                0,wx.wxDefaultValidator,"")
+            
+            row2Sizer.Add(button)
+            row2Sizer.Add((25,0),)
+        #@nonl
+        #@-node:edream.110203113231.597:<< Create the second row of buttons >>
+        #@nl
+        
+        # Pack the two rows
+        buttonSizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        buttonSizer.Add(row1Sizer)
+        buttonSizer.Add(0,10)
+        
+        buttonSizer.Add(row2Sizer)
+        topSizer.Add(buttonSizer)
+        topSizer.Add(0,10)
+        #@nonl
+        #@-node:edream.110203113231.595:<< Create all the find buttons >>
+        #@nl
+    
+        self.SetAutoLayout(True) # tell dialog to use sizer
+        self.SetSizer(topSizer) # actually set the sizer
+        topSizer.Fit(self)# set size to minimum size as calculated by the sizer
+        topSizer.SetSizeHints(self)# set size hints to honour mininum size
+    #@nonl
+    #@-node:edream.110203113231.589:FindPanel.__init__
+    #@-others
 #@nonl
 #@-node:edream.110203113231.588:wxFindPanel class
 #@-node:edream.110203113231.560:Find...
