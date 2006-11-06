@@ -5,7 +5,7 @@
 
 """A plugin to use wxPython as Leo's gui."""
 
-__version__ = '0.4'
+__version__ = '0.5' # Start of development with Leo 4.4.2 code base and wxWidgets 2.6.3
 #@<< version history >>
 #@+node:ekr.20050719111045:<< version history >>
 #@@nocolor
@@ -15,6 +15,8 @@ __version__ = '0.4'
 # 0.2 EKR: Works with Leo 4.3.
 # 0.3 EKR: Ran script to put 'g.' in front of all functions in leoGlobals.py.
 # 0.4 EKR: Now starts without crashing with 4.4.1 code base.
+# 0.5 EKR: The beginning of the new wx plugin.
+# - Converted wx.wxWhatever to wx.Whatever.
 #@-at
 #@nonl
 #@-node:ekr.20050719111045:<< version history >>
@@ -38,11 +40,10 @@ import sys
 import traceback
 
 try:
-    from wxPython import wx
+    import wx
 except ImportError:
     g.es_print('wx_gui plugin: can not import wxPython')
-    wx = None
-    raise
+    raise # Tell the plugins manager that we did not load properly.
 #@nonl
 #@-node:edream.110203113231.303:<< imports >>
 #@nl
@@ -174,7 +175,7 @@ class wxGui(leoGui.leoGui):
         message = "%s\n\n%s\n\n%s\n\n%s" % (
             version.strip(),copyright.strip(),url.strip(),email.strip())
         
-        wx.wxMessageBox(message,"About Leo",wx.wxCenter,self.root)
+        wx.MessageBox(message,"About Leo",wx.Center,self.root)
     #@nonl
     #@-node:edream.110203113231.322:runAboutLeoDialog
     #@+node:edream.110203113231.323:runAskOkDialog
@@ -182,7 +183,7 @@ class wxGui(leoGui.leoGui):
         
         """Create and run a wxPython askOK dialog ."""
         
-        d = wx.wxMessageDialog(self.root,message,"Leo",wx.wxOK)
+        d = wx.MessageDialog(self.root,message,"Leo",wx.OK)
         d.ShowModal()
         return "ok"
     #@nonl
@@ -208,10 +209,10 @@ class wxGui(leoGui.leoGui):
     
         """Create and run a wxPython askYesNo dialog."""
         
-        d = wx.wxMessageDialog(self.root,message,"Leo",wx.wxYES_NO)
+        d = wx.MessageDialog(self.root,message,"Leo",wx.YES_NO)
         answer = d.ShowModal()
     
-        return g.choose(answer==wx.wxYES,"yes","no")
+        return g.choose(answer==wx.YES,"yes","no")
     #@nonl
     #@-node:edream.110203113231.325:runAskYesNoDialog
     #@+node:edream.110203113231.326:runAskYesNoCancelDialog
@@ -220,15 +221,15 @@ class wxGui(leoGui.leoGui):
     
         """Create and run a wxPython askYesNoCancel dialog ."""
         
-        d = wx.wxMessageDialog(self.root,message,"Leo",wx.wxYES_NO | wx.wxCANCEL)
+        d = wx.MessageDialog(self.root,message,"Leo",wx.YES_NO | wx.CANCEL)
         answer = d.ShowModal()
         
-        if answer == wx.wxID_YES:
+        if answer == wx.ID_YES:
             return "yes"
-        elif answer == wx.wxID_NO:
+        elif answer == wx.ID_NO:
             return "no"
         else:
-            assert(answer == wx.wxID_CANCEL)
+            assert(answer == wx.ID_CANCEL)
             return "cancel"
     #@nonl
     #@-node:edream.110203113231.326:runAskYesNoCancelDialog
@@ -239,14 +240,14 @@ class wxGui(leoGui.leoGui):
         
         wildcard = self.getWildcardList(filetypes)
     
-        d = wx.wxFileDialog(
+        d = wx.FileDialog(
             parent=None, message=title,
             defaultDir="", defaultFile="",
             wildcard=wildcard,
-            style= wx.wxOPEN | wx.wxCHANGE_DIR | wx.wxHIDE_READONLY)
+            style= wx.OPEN | wx.CHANGE_DIR | wx.HIDE_READONLY)
     
         val = d.ShowModal()
-        if val == wx.wxID_OK:
+        if val == wx.ID_OK:
             file = d.GetFilename()
             return file
         else:
@@ -259,14 +260,14 @@ class wxGui(leoGui.leoGui):
     
         wildcard = self.getWildcardList(filetypes)
     
-        d = wx.wxFileDialog(
+        d = wx.FileDialog(
             parent=None, message=title,
             defaultDir="", defaultFile="",
             wildcard=wildcard,
-            style= wx.wxSAVE | wx.wxCHANGE_DIR | wx.wxOVERWRITE_PROMPT)
+            style= wx.SAVE | wx.CHANGE_DIR | wx.OVERWRITE_PROMPT)
     
         val = d.ShowModal()
-        if val == wx.wxID_OK:
+        if val == wx.ID_OK:
             file = d.GetFilename()
             return file
         else:
@@ -348,7 +349,7 @@ class wxGui(leoGui.leoGui):
     #@+node:edream.110203113231.320:Clipboard
     def replaceClipboardWith (self,s):
     
-        cb = wx.wxTheClipboard
+        cb = wx.TheClipboard
         if cb.Open():
             cb.Clear()
             cb.SetData(s)
@@ -361,9 +362,9 @@ class wxGui(leoGui.leoGui):
         
         # This code doesn't work yet.
         
-        cb = wx.wxTheClipboard ; data = None
+        cb = wx.TheClipboard ; data = None
         if cb.Open():
-            data = wx.wxDataObject()
+            data = wx.DataObject()
             cb.GetData(data)
             data = data.GetDataHere()
             cb.Close()
@@ -658,7 +659,7 @@ class wxGui(leoGui.leoGui):
 #@nonl
 #@-node:edream.110203113231.305:wxGui class
 #@+node:edream.110203113231.346:wxLeoApp class
-class wxLeoApp (wx.wxApp):
+class wxLeoApp (wx.App):
     #@    @+others
     #@+node:edream.110203113231.347:OnInit  (wxLeoApp)
     def OnInit(self):
@@ -700,10 +701,10 @@ class wxLeoBody (leoFrame.leoBody):
     #@+node:edream.110203113231.542:wxLeoBody.createControl
     def createControl (self,frame,parentFrame):
         
-        ctrl = wx.wxTextCtrl(parentFrame,
+        ctrl = wx.TextCtrl(parentFrame,
                 const("cBodyCtrl"), "",
-                wx.wxDefaultPosition, wx.wxDefaultSize,
-                wx.wxTE_RICH | wx.wxTE_RICH2 | wx.wxTE_MULTILINE)
+                wx.DefaultPosition, wx.DefaultSize,
+                wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE)
     
         return ctrl
     #@nonl
@@ -739,22 +740,22 @@ class wxLeoBody (leoFrame.leoBody):
         foreground = keys.get("foreground")
         background = keys.get("background")
     
-        fcolor = self.tkColorToWxColor (foreground) or wx.wxBLACK
-        bcolor = self.tkColorToWxColor (background) or wx.wxWHITE
+        fcolor = self.tkColorToWxColor (foreground) or wx.BLACK
+        bcolor = self.tkColorToWxColor (background) or wx.WHITE
         # g.trace('%20s %10s %15s %10s %15s' % (colorName,foreground,fcolor,background,bcolor))
-        style = wx.wxTextAttr(fcolor,bcolor)
+        style = wx.TextAttr(fcolor,bcolor)
         self.styles[colorName] = style
     #@nonl
     #@+node:edream.111403082513:tkColorToWxColor
     def tkColorToWxColor (self, color):
         
         d = {
-            'black':        wx.wxBLACK,
-            "red":          wx.wxRED,
-            "blue":         wx.wxBLUE,
-            "#00aa00":      wx.wxGREEN,
-            "firebrick3":   wx.wxRED,
-            'white':        wx.wxWHITE,
+            'black':        wx.BLACK,
+            "red":          wx.RED,
+            "blue":         wx.BLUE,
+            "#00aa00":      wx.GREEN,
+            "firebrick3":   wx.RED,
+            'white':        wx.WHITE,
         }
             
         return d.get(color)
@@ -767,7 +768,7 @@ class wxLeoBody (leoFrame.leoBody):
         if tagName == "keyword": # A kludge.
     
             # g.trace(tagName)
-            style = wx.wxTextAttr(wx.wxBLACK)
+            style = wx.TextAttr(wx.BLACK)
             last = self.bodyCtrl.GetLastPosition()
             
             if 1: # This may cause the screen flash.
@@ -1058,7 +1059,7 @@ class wxLeoBody (leoFrame.leoBody):
 #@nonl
 #@-node:edream.110203113231.539:wxLeoBody class
 #@+node:edream.110203113231.349:wxLeoFrame class
-class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
+class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         
     """A class to create a wxPython from for the main Leo window."""
 
@@ -1114,27 +1115,27 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         c.frame = frame
         
         # Init the wxFrame base class.  The leoFrame base class has already been inited.
-        wx.wxFrame.__init__(self, None, -1, self.title) # wx.wxNO_3D # hangs.
-        #self.outerPanel = wx.wxPanel(self,-1)
-        #self.iconPanel = wx.wxPanel(self.outerPanel, -1, "iconPanel")
+        wx.Frame.__init__(self, None, -1, self.title) # wx.NO_3D # hangs.
+        #self.outerPanel = wx.Panel(self,-1)
+        #self.iconPanel = wx.Panel(self.outerPanel, -1, "iconPanel")
     
         self.CreateStatusBar()
         #@    << create the splitters >>
         #@+node:edream.110203113231.261:<< create the splitters >>
-        self.splitter1 = wx.wxSplitterWindow(self,
+        self.splitter1 = wx.SplitterWindow(self,
             const("cSplitterWindow"),
-            wx.wxDefaultPosition, wx.wxDefaultSize,
-            wx.wxSP_NOBORDER)
+            wx.DefaultPosition, wx.DefaultSize,
+            wx.SP_NOBORDER)
         
         # No effect, except to create a red flash.
         if 0:
-            self.splitter1.SetForegroundColour(wx.wxRED)
-            self.splitter1.SetBackgroundColour(wx.wxRED)
+            self.splitter1.SetForegroundColour(wx.RED)
+            self.splitter1.SetBackgroundColour(wx.RED)
         
-        self.splitter2 = wx.wxSplitterWindow(self.splitter1, -1,
-            wx.wxDefaultPosition, wx.wxDefaultSize,
-            wx.wxSP_NOBORDER)
-            # wx.wxSP_BORDER | wx.wxSP_3D, "splitterWindow");
+        self.splitter2 = wx.SplitterWindow(self.splitter1, -1,
+            wx.DefaultPosition, wx.DefaultSize,
+            wx.SP_NOBORDER)
+            # wx.SP_BORDER | wx.SP_3D, "splitterWindow");
         
         self.splitter1.SetMinimumPaneSize(4)
         self.splitter2.SetMinimumPaneSize(4)
@@ -1156,16 +1157,16 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         
         #@    << set the window icon >>
         #@+node:edream.110203113231.265:<< set the window icon >>
-        if wx.wxPlatform == "__WXMSW__":
+        if wx.Platform == "__WXMSW__":
         
             path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
-            icon = wx.wxIcon(path,wx.wxBITMAP_TYPE_ICO,16,16)
+            icon = wx.Icon(path,wx.BITMAP_TYPE_ICO,16,16)
             self.SetIcon(icon)
         #@-node:edream.110203113231.265:<< set the window icon >>
         #@nl
         #@    << declare event handlers for frame >>
         #@+node:edream.110203113231.264:<< declare event handlers for frame >>
-        if wx.wxPlatform == "__WXMSW__": # Activate events exist only on Windows.
+        if wx.Platform == "__WXMSW__": # Activate events exist only on Windows.
             wx.EVT_ACTIVATE(self,self.onActivate)
         else:
             wx.EVT_SET_FOCUS(self,self.OnSetFocus)
@@ -1181,10 +1182,10 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         #@nl
         
         if 0: # Not ready yet...
-            self.wxApp.SetTopWindow(self.wxFrame)
-            self.wxFrame.Show(True)
+            self.App.SetTopWindow(self.Frame)
+            self.Frame.Show(True)
             if not g.app.root:
-                g.app.root = self.wxFrame
+                g.app.root = self.Frame
                 
         self.colorizer = self.body.colorizer
                 
@@ -1250,7 +1251,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         
         g.es("Leo Log Window...",color=color)
         g.es(signon)
-        g.es("Python %d.%d.%d wxWindows %s" % (n1,n2,n3,wx.wxVERSION_STRING))
+        g.es("Python %d.%d.%d wxWindows %s" % (n1,n2,n3,wx.VERSION_STRING))
         g.enl()
     #@nonl
     #@-node:edream.111303141147:signOnWithVersion
@@ -1264,7 +1265,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
     #@+node:edream.110203113231.267:event handlers
     #@+node:edream.110203113231.268:Frame events
     #@+node:edream.110203113231.269:onActivate & OnSetFocus
-    if wx.wxPlatform == '__WXMSW__':
+    if wx.Platform == '__WXMSW__':
         
         def onActivate(self,event):
             if event.GetActive():
@@ -1299,7 +1300,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         size = self.splitter1.GetClientSize()
         self.splitter1.SetClientSize(size)
         w = size.GetWidth() ; h = size.GetHeight()
-        if self.splitter1.GetSplitMode()== wx.wxSPLIT_VERTICAL:
+        if self.splitter1.GetSplitMode()== wx.SPLIT_VERTICAL:
             self.splitter1.SetSashPosition(w/2,True)
         else:
             self.splitter1.SetSashPosition(h/2,True)
@@ -1307,7 +1308,7 @@ class wxLeoFrame(wx.wxFrame,leoFrame.leoFrame):
         # Resize splitter2 with equal sized panes.
         size = self.splitter2.GetClientSize()
         w = size.GetWidth() ; h = size.GetHeight()
-        if self.splitter2.GetSplitMode()== wx.wxSPLIT_VERTICAL:
+        if self.splitter2.GetSplitMode()== wx.SPLIT_VERTICAL:
             self.splitter2.SetSashPosition((3*w)/5,True)
         else:
             self.splitter2.SetSashPosition((3*h)/5,True)
@@ -1818,10 +1819,10 @@ class wxLeoLog (leoFrame.leoLog):
     #@+node:edream.110203113231.557:leoLog.createControl
     def createControl (self,parentFrame):
     
-        ctrl = wx.wxTextCtrl(parentFrame,
+        ctrl = wx.TextCtrl(parentFrame,
             const("cLogCtrl"), "",
-            wx.wxDefaultPosition, wx.wxDefaultSize,
-            wx.wxTE_MULTILINE )
+            wx.DefaultPosition, wx.DefaultSize,
+            wx.TE_MULTILINE )
             
         return ctrl
     #@nonl
@@ -1980,7 +1981,7 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@+node:edream.111303110018:new_menu
     def new_menu(self,parent,tearoff=0):
         
-        return wx.wxMenu()
+        return wx.Menu()
     #@nonl
     #@-node:edream.111303110018:new_menu
     #@-node:edream.111603104327:9 Routines with Tk names
@@ -1988,7 +1989,7 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@+node:edream.111303103457.2:createMenuBar
     def createMenuBar(self,frame):
         
-        self.menuBar = menuBar = wx.wxMenuBar()
+        self.menuBar = menuBar = wx.MenuBar()
     
         self.createMenusFromTables()
     
@@ -2150,10 +2151,10 @@ class wxLeoTree (leoFrame.leoTree):
         # Init the base class.
         leoFrame.leoTree.__init__(self,frame)
     
-        self.treeCtrl = wx.wxTreeCtrl(parentFrame,
+        self.treeCtrl = wx.TreeCtrl(parentFrame,
             const("cTreeCtrl"),
-            wx.wxDefaultPosition, wx.wxDefaultSize,
-            wx.wxTR_HAS_BUTTONS | wx.wxTR_EDIT_LABELS, wx.wxDefaultValidator,
+            wx.DefaultPosition, wx.DefaultSize,
+            wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS, wx.DefaultValidator,
             "treeCtrl")
             
         self.canvas = True # A dummy ivar used in c.treeWantsFocus, etc.
@@ -2240,7 +2241,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         # g.trace(v)
         tree = self.treeCtrl
-        data = wx.wxTreeItemData(v)
+        data = wx.TreeItemData(v)
         id = tree.AppendItem(parent_id,v.headString(),data=data)
         v.wxTreeId = id # Inject the ivar into the vnode.
         assert (v == tree.GetItemData(id).GetData())
@@ -3069,15 +3070,15 @@ class wxSearchWidget:
 #@nonl
 #@-node:edream.111503093140:wxSearchWidget
 #@+node:edream.110203113231.561:wxFindFrame class
-class wxFindFrame (wx.wxFrame,leoFind.leoFind):
+class wxFindFrame (wx.Frame,leoFind.leoFind):
     #@    @+others
     #@+node:edream.110203113231.563:FindFrame.__init__
     def __init__ (self,c):
     
         # Init the base classes
-        wx.wxFrame.__init__(self,None,-1,"Leo Find/Change",
-            wx.wxPoint(50,50), wx.wxDefaultSize,
-            wx.wxMINIMIZE_BOX | wx.wxTHICK_FRAME | wx.wxSYSTEM_MENU | wx.wxCAPTION)
+        wx.Frame.__init__(self,None,-1,"Leo Find/Change",
+            wx.Point(50,50), wx.DefaultSize,
+            wx.MINIMIZE_BOX | wx.THICK_FRAME | wx.SYSTEM_MENU | wx.CAPTION)
     
         # At present this is a global window, so the c param doesn't make sense.
         # This must be changed to match how Leo presently works.
@@ -3086,11 +3087,11 @@ class wxFindFrame (wx.wxFrame,leoFind.leoFind):
         self.dict = {} # For communication between panel and frame.
         self.findPanel = wxFindPanel(self)
         
-        self.s_text = wxSearchWidget() # wx.wxTextCtrl(self,-1) # Working text widget.
+        self.s_text = wxSearchWidget() # wx.TextCtrl(self,-1) # Working text widget.
     
         #@    << resize the frame to fit the panel >>
         #@+node:edream.111503074302:<< resize the frame to fit the panel >>
-        sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.findPanel)
         self.SetAutoLayout(True)# tell dialog to use sizer
         self.SetSizer(sizer) # actually set the sizer
@@ -3101,8 +3102,8 @@ class wxFindFrame (wx.wxFrame,leoFind.leoFind):
         #@nl
     
         # Set the window icon.
-        if wx.wxPlatform == '__WXMSW__':
-            pass ## self.SetIcon(wx.wxIcon("LeoIcon"))
+        if wx.Platform == '__WXMSW__':
+            pass ## self.SetIcon(wx.Icon("LeoIcon"))
     
         # Set the focus.
         self.findPanel.findText.SetFocus()
@@ -3271,38 +3272,38 @@ class wxFindFrame (wx.wxFrame,leoFind.leoFind):
 #@nonl
 #@-node:edream.110203113231.561:wxFindFrame class
 #@+node:edream.110203113231.588:wxFindPanel class
-class wxFindPanel (wx.wxPanel):
+class wxFindPanel (wx.Panel):
     #@    @+others
     #@+node:edream.110203113231.589:FindPanel.__init__
     def __init__(self,frame):
          
         # Init the base class.
-        wx.wxPanel.__init__(self,frame,-1)
+        wx.Panel.__init__(self,frame,-1)
         self.frame = frame
     
-        topSizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        topSizer = wx.BoxSizer(wx.VERTICAL)
         topSizer.Add(0,10)
     
         #@    << Create the find text box >>
         #@+node:edream.110203113231.590:<< Create the find text box >>
-        findSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        findSizer = wx.BoxSizer(wx.HORIZONTAL)
         findSizer.Add(5,5)# Extra space.
         
         # Label.
         findSizer.Add(
-            wx.wxStaticText(self,-1,"Find:",
-                wx.wxPoint(-1,10), wx.wxSize(50,25),0,""),
-            0, wx.wxBORDER | wx.wxTOP,15) # Vertical offset.
+            wx.StaticText(self,-1,"Find:",
+                wx.Point(-1,10), wx.Size(50,25),0,""),
+            0, wx.BORDER | wx.TOP,15) # Vertical offset.
         
         findSizer.Add(10,0) # Width.
         
         # Text.
         id = const("find_text")
-        self.findText = wx.wxTextCtrl(self,
+        self.findText = wx.TextCtrl(self,
             id,"",
-            wx.wxDefaultPosition, wx.wxSize(500,60),
-            wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
-            wx.wxDefaultValidator,"")
+            wx.DefaultPosition, wx.Size(500,60),
+            wx.TE_PROCESS_TAB | wx.TE_MULTILINE,
+            wx.DefaultValidator,"")
         
         findSizer.Add(self.findText)
         findSizer.Add(5,0)# Width.
@@ -3315,24 +3316,24 @@ class wxFindPanel (wx.wxPanel):
         #@nl
         #@    << Create the change text box >>
         #@+node:edream.110203113231.591:<< Create the change text box >>
-        changeSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        changeSizer = wx.BoxSizer(wx.HORIZONTAL)
         changeSizer.Add(5,5)# Extra space.
         
         # Label.
         changeSizer.Add(
-            wx.wxStaticText(self,-1,"Change:",
-                wx.wxPoint(-1,10),wx.wxSize(50,25),0,""),
-            0, wx.wxBORDER | wx.wxTOP,15)# Vertical offset.
+            wx.StaticText(self,-1,"Change:",
+                wx.Point(-1,10),wx.Size(50,25),0,""),
+            0, wx.BORDER | wx.TOP,15)# Vertical offset.
         
         changeSizer.Add(10,0) # Width.
         
         # Text.
         id = const("change_text")
-        self.changeText = wx.wxTextCtrl(self,
+        self.changeText = wx.TextCtrl(self,
             id,"",
-            wx.wxDefaultPosition, wx.wxSize(500,60),
-            wx.wxTE_PROCESS_TAB | wx.wxTE_MULTILINE,
-            wx.wxDefaultValidator,"")
+            wx.DefaultPosition, wx.Size(500,60),
+            wx.TE_PROCESS_TAB | wx.TE_MULTILINE,
+            wx.DefaultValidator,"")
         
         changeSizer.Add(self.changeText)
         changeSizer.Add(5,0)# Width.
@@ -3345,26 +3346,26 @@ class wxFindPanel (wx.wxPanel):
         #@nl
         #@    << Create all the find check boxes >>
         #@+node:edream.110203113231.592:<< Create all the find check boxes >>
-        col1Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        col1Sizer = wx.BoxSizer(wx.VERTICAL)
         #@<< Create the first column of widgets >>
         #@+node:edream.110203113231.593:<< Create the first column of widgets >>
         # The var names must match the names in leoFind class.
         table = (
-            ("plain-search-flag","Plain Search",wx.wxRB_GROUP),
+            ("plain-search-flag","Plain Search",wx.RB_GROUP),
             ("pattern_match_flag","Pattern Match",0),
             ("script_search_flag","Script Search",0))
         
         for var,label,style in table:
             
             id = const(var)
-            box = wx.wxRadioButton(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                style,wx.wxDefaultValidator,"group1")
+            box = wx.RadioButton(self,id,label,
+                wx.DefaultPosition,(100,25),
+                style,wx.DefaultValidator,"group1")
                 
-            if style == wx.wxRB_GROUP:
+            if style == wx.RB_GROUP:
                 box.SetValue(True) # The default entry.
         
-            col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
+            col1Sizer.Add(box,0,wx.BORDER | wx.LEFT,60)
             self.frame.dict[var] = box,id
             
         table = (("script_change_flag","Script Change"),)
@@ -3372,17 +3373,17 @@ class wxFindPanel (wx.wxPanel):
         for var,label in table:
             
             id = const(var)
-            box = wx.wxCheckBox(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                0,wx.wxDefaultValidator,"")
+            box = wx.CheckBox(self,id,label,
+                wx.DefaultPosition,(100,25),
+                0,wx.DefaultValidator,"")
         
-            col1Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,60)
+            col1Sizer.Add(box,0,wx.BORDER | wx.LEFT,60)
             self.frame.dict[var] = box,id
         #@nonl
         #@-node:edream.110203113231.593:<< Create the first column of widgets >>
         #@nl
         
-        col2Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        col2Sizer = wx.BoxSizer(wx.VERTICAL)
         #@<< Create the second column of widgets >>
         #@+node:edream.110203113231.594:<< Create the second column of widgets >>
         # The var names must match the names in leoFind class.
@@ -3395,22 +3396,22 @@ class wxFindPanel (wx.wxPanel):
         for var,label in table:
         
             id = const(var)
-            box = wx.wxCheckBox(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                0,wx.wxDefaultValidator,"")
+            box = wx.CheckBox(self,id,label,
+                wx.DefaultPosition,(100,25),
+                0,wx.DefaultValidator,"")
         
-            col2Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+            col2Sizer.Add(box,0,wx.BORDER | wx.LEFT,20)
             self.frame.dict[var] = box,id
         #@nonl
         #@-node:edream.110203113231.594:<< Create the second column of widgets >>
         #@nl
         
-        col3Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        col3Sizer = wx.BoxSizer(wx.VERTICAL)
         #@<< Create the third column of widgets >>
         #@+node:edream.111503133933.2:<< Create the third column of widgets >>
         # The var names must match the names in leoFind class.
         table = (
-            ("Entire Outline","entire-outline",wx.wxRB_GROUP),
+            ("Entire Outline","entire-outline",wx.RB_GROUP),
             ("Suboutline Only","suboutline_only_flag",0),  
             ("Node Only","node_only_flag",0),    
             ("Selection Only","selection-only",0))
@@ -3420,18 +3421,18 @@ class wxFindPanel (wx.wxPanel):
             if var: id = const(var)
             else:   id = const("entire-outline")
                 
-            box = wx.wxRadioButton(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                group,wx.wxDefaultValidator,"group2")
+            box = wx.RadioButton(self,id,label,
+                wx.DefaultPosition,(100,25),
+                group,wx.DefaultValidator,"group2")
         
-            col3Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+            col3Sizer.Add(box,0,wx.BORDER | wx.LEFT,20)
             
             self.frame.dict[var] = box,id
         #@nonl
         #@-node:edream.111503133933.2:<< Create the third column of widgets >>
         #@nl
         
-        col4Sizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        col4Sizer = wx.BoxSizer(wx.VERTICAL)
         #@<< Create the fourth column of widgets >>
         #@+node:edream.111503133933.3:<< Create the fourth column of widgets >>
         # The var names must match the names in leoFind class.
@@ -3444,18 +3445,18 @@ class wxFindPanel (wx.wxPanel):
         for var,label in table:
             
             id = const(var)
-            box = wx.wxCheckBox(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                0,wx.wxDefaultValidator,"")
+            box = wx.CheckBox(self,id,label,
+                wx.DefaultPosition,(100,25),
+                0,wx.DefaultValidator,"")
         
-            col4Sizer.Add(box,0,wx.wxBORDER | wx.wxLEFT,20)
+            col4Sizer.Add(box,0,wx.BORDER | wx.LEFT,20)
             self.frame.dict[var] = box,id
         #@nonl
         #@-node:edream.111503133933.3:<< Create the fourth column of widgets >>
         #@nl
         
         # Pack the columns
-        columnSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        columnSizer = wx.BoxSizer(wx.HORIZONTAL)
         columnSizer.Add(col1Sizer)
         columnSizer.Add(col2Sizer)
         columnSizer.Add(col3Sizer)
@@ -3470,7 +3471,7 @@ class wxFindPanel (wx.wxPanel):
         #@+node:edream.110203113231.595:<< Create all the find buttons >>
         # The row sizers are a bit dim:  they should distribute the buttons automatically.
         
-        row1Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        row1Sizer = wx.BoxSizer(wx.HORIZONTAL)
         #@<< Create the first row of buttons >>
         #@+node:edream.110203113231.596:<< Create the first row of buttons >>
         row1Sizer.Add(90,0)
@@ -3484,13 +3485,13 @@ class wxFindPanel (wx.wxPanel):
             
             id = const(var)
             if isButton:
-                widget = button = wx.wxButton(self,id,label,
-                    wx.wxDefaultPosition,(100,25),
-                    0,wx.wxDefaultValidator,"")
+                widget = button = wx.Button(self,id,label,
+                    wx.DefaultPosition,(100,25),
+                    0,wx.DefaultValidator,"")
             else:
-                widget = box = wx.wxCheckBox(self,id,label,
-                    wx.wxDefaultPosition,(100,25),
-                    0,wx.wxDefaultValidator,"")
+                widget = box = wx.CheckBox(self,id,label,
+                    wx.DefaultPosition,(100,25),
+                    0,wx.DefaultValidator,"")
                 
                 self.frame.dict[var] = box,id
         
@@ -3500,7 +3501,7 @@ class wxFindPanel (wx.wxPanel):
         #@-node:edream.110203113231.596:<< Create the first row of buttons >>
         #@nl
         
-        row2Sizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
+        row2Sizer = wx.BoxSizer(wx.HORIZONTAL)
         #@<< Create the second row of buttons >>
         #@+node:edream.110203113231.597:<< Create the second row of buttons >>
         row2Sizer.Add(90,0)
@@ -3513,9 +3514,9 @@ class wxFindPanel (wx.wxPanel):
         for var,label in table:
         
             id = const(var)
-            button = wx.wxButton(self,id,label,
-                wx.wxDefaultPosition,(100,25),
-                0,wx.wxDefaultValidator,"")
+            button = wx.Button(self,id,label,
+                wx.DefaultPosition,(100,25),
+                0,wx.DefaultValidator,"")
             
             row2Sizer.Add(button)
             row2Sizer.Add((25,0),)
@@ -3524,7 +3525,7 @@ class wxFindPanel (wx.wxPanel):
         #@nl
         
         # Pack the two rows
-        buttonSizer = wx.wxBoxSizer(wx.wxVERTICAL)
+        buttonSizer = wx.BoxSizer(wx.VERTICAL)
         buttonSizer.Add(row1Sizer)
         buttonSizer.Add(0,10)
         
