@@ -345,11 +345,6 @@ class leoGui:
     #@nonl
     #@-node:ekr.20031218072017.3738:Index
     #@+node:ekr.20051220144306:isTextWidget
-    def isTextWidget (self,w):
-        
-        '''Return True if w is a Text widget suitable for text-oriented commands.'''
-        
-        self.oops()
     #@-node:ekr.20051220144306:isTextWidget
     #@+node:ekr.20061031132712.3:keysym
     def keysym (self,keysym):
@@ -375,7 +370,21 @@ class leoGui:
         
     def setSelectionRange (self,t,start,end,insert='sel.end'):
         pass
+    #@nonl
     #@-node:ekr.20061024133425:Selection (leoGui)
+    #@+node:ekr.20061106181402:Text
+    def getAllText (self,w):
+        
+        '''Return all the text in the text widget w.'''
+        self.oops()
+        return ''
+    
+    def isTextWidget (self,w):
+        
+        '''Return True if w is a text widget.'''
+        self.oops()
+        return False
+    #@-node:ekr.20061106181402:Text
     #@+node:ekr.20061101020611:gui.stringInsert & stringDelete (to be removed?)
     def stringInsert (self,s,i,s2):
         
@@ -530,7 +539,9 @@ class nullGui(leoGui):
 #@+node:ekr.20031218072017.3742:class unitTestGui (leoGui)
 class unitTestGui(leoGui):
     
-    """gui class for use by unit tests."""
+    '''A gui class for use by unit tests that would otherwise be interrupted by dialogs.
+    
+    Except for how dialogs are handled, it is in effect the same as a nullGui.'''
     
     __pychecker__ = '--no-argsused' # This class has many unused args.
     
@@ -578,6 +589,9 @@ class unitTestGui(leoGui):
         return self.simulateDialog("yesNoCancelDialog","cancel")
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
+    def getAllText(self,w):
+        return ''
+    
     def getindex (self,body,index):
         return 0, 0
     

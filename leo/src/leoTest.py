@@ -754,8 +754,10 @@ class reformatParagraphTest:
     
         # Make the temp child node current, and put the cursor at the beginning.
         c.selectPosition(self.tempChild)
-        c.frame.body.setInsertPointToStartOfLine( 0 )
-        c.frame.body.setSelectionRange(None,None)
+        ###c.frame.body.setInsertPointToStartOfLine( 0 )
+        ###c.frame.body.setSelectionRange(None,None)
+        w = c.frame.body.bodyCtrl
+        g.app.gui.setSelectionRange(w,0,0,python=True)
     #@-node:ekr.20051104075904.52:copyBeforeToTemp
     #@+node:ekr.20051104075904.53:getRowCol
     def getRowCol(self):

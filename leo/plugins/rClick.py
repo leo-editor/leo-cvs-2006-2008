@@ -90,6 +90,7 @@ def rClicker(tag,keywords):
     c = keywords.get("c")
     e = keywords.get("event")
     if not c or not c.exists or not e: return
+    gui = g.app.gui ; w = c.frame.body.bodyCtrl
 
     e.widget.focus()
 
@@ -155,12 +156,18 @@ def rClicker(tag,keywords):
         if text:
             word = text.strip()
         else:
-            ind0,ind1=c.frame.body.getSelectionRange()
+            ### ind0,ind1=c.frame.body.getSelectionRange()
+            ind0,ind1 = gui.getSelectionRange(w,python=False)
             n0,p0=ind0.split('.',2)
             n1,p1=ind1.split('.',2)
             assert n0==n1
             assert p0==p1
-            text=c.frame.body.getTextRange(n0+".0",n1+".end")
+            ###text=c.frame.body.getTextRange(n0+".0",n1+".end")
+            s = gui.getAllText(w)
+            index = w.index(n0+".0")
+            index = gui.toPythonIndex(s,w,index)
+            i,j = g.getLine(s,index)
+            text = s[i:j]
             word=getword(text,int(p0))
         #@nonl
         #@-node:ekr.20040422073911:<< get text and word from the body text >>

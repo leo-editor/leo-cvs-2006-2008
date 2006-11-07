@@ -1588,7 +1588,7 @@ class leoTkinterTree (leoFrame.leoTree):
             c.endUpdate()
     #@-node:ekr.20040803072955.79:onClickBoxClick
     #@-node:ekr.20040803072955.78:Click Box...
-    #@+node:ekr.20040803072955.99:Dragging
+    #@+node:ekr.20040803072955.99:Dragging (tkTree)
     #@+node:ekr.20041111115908:endDrag
     def endDrag (self,event):
         
@@ -1755,7 +1755,7 @@ class leoTkinterTree (leoFrame.leoTree):
             self.endDrag(event)
         g.doHook("enddrag2",c=c,p=p,v=p,event=event)
     #@-node:ekr.20040803072955.103:onEndDrag
-    #@-node:ekr.20040803072955.99:Dragging
+    #@-node:ekr.20040803072955.99:Dragging (tkTree)
     #@+node:ekr.20040803072955.90:head key handlers
     #@+node:ekr.20040803072955.88:onHeadlineKey
     def onHeadlineKey (self,event):
@@ -1886,7 +1886,7 @@ class leoTkinterTree (leoFrame.leoTree):
             if event:
                 self.onDrag(event)
             tree.endEditLabel()
-            tree.select(p)
+            tree.select(p,scroll=False)
             if c.frame.findPanel:
                 c.frame.findPanel.handleUserClick(p)
         g.doHook("iconclick2",c=c,p=p,v=p,event=event)

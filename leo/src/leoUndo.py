@@ -560,6 +560,7 @@ class baseUndoer:
         '''Create an undo node for general tree operations using d created by beforeChangeTree'''
         
         u = self ; body = u.c.frame.body
+        gui = g.app.gui ; w = body.bodyCtrl
         if u.redoing or u.undoing: return
         
         # Set the types & helpers.
@@ -570,7 +571,7 @@ class baseUndoer:
     
         # Set by beforeChangeTree: changed, oldSel, oldText, oldTree, p
         bunch.newSel = body.getSelectionRange()
-        bunch.newText = body.getAllText()
+        bunch.newText = g.app.gui.getAllText(w) ###body.getAllText()
         bunch.newTree = u.saveTree(p)
         
         u.pushBead(bunch)
@@ -802,12 +803,12 @@ class baseUndoer:
         
         # g.trace(p.headString())
         
-        u = self ; body = u.c.frame.body
+        u = self ; body = u.c.frame.body ; w = body.bodyCtrl
     
         bunch = u.createCommonBunch(p)
     
         bunch.oldSel = body.getSelectionRange()
-        bunch.oldText = body.getAllText()
+        bunch.oldText = g.app.gui.getAllText(w) ###body.getAllText()
         bunch.oldTree = u.saveTree(p)
         
         return bunch
@@ -1785,7 +1786,7 @@ class baseUndoer:
             c.bodyWantsFocus()
             c.frame.body.setYScrollPosition(u.yview)
     #@-node:EKR.20040526090701.4:undoTyping
-    #@+node:ekr.20031218072017.1493:undoRedoText
+    #@+node:ekr.20031218072017.1493:undoRedoText (passed)
     def undoRedoText (self,p,
         leading,trailing, # Number of matching leading & trailing lines.
         oldMidLines,newMidLines, # Lists of unmatched lines.
@@ -1797,41 +1798,10 @@ class baseUndoer:
         
         '''Handle text undo and redo: converts _new_ text into _old_ text.'''
     
-        u = self ; c = u.c ; body = c.frame.body
-        #@    << Incrementally update the Tk.Text widget >>
-        #@+node:ekr.20031218072017.1494:<< Incrementally update the Tk.Text widget >>
-        # Only update the changed lines.
-        mid_text = string.join(oldMidLines,'\n')
-        new_mid_len = len(newMidLines)
-        # Maybe this could be simplified, and it is good to treat the "end" with care.
-        if trailing == 0:
-            c.frame.body.deleteLine(leading)
-            if leading > 0:
-                c.frame.body.insertAtEnd('\n')
-            c.frame.body.insertAtEnd(mid_text)
-        else:
-            if new_mid_len > 0:
-                c.frame.body.deleteLines(leading,new_mid_len)
-            elif leading > 0:
-                c.frame.body.insertAtStartOfLine(leading,'\n')
-            c.frame.body.insertAtStartOfLine(leading,mid_text)
-        # Try to end the Tk.Text widget with oldNewlines newlines.
-        # This may be off by one, and we don't care because
-        # we never use body text to compute undo results!
-        s = c.frame.body.getAllText()
-        newlines = 0 ; i = len(s) - 1
-        while i >= 0 and s[i] == '\n':
-            newlines += 1 ; i -= 1
-        # g.trace(newlines,oldNewlines)
-        while newlines > oldNewlines:
-            c.frame.body.deleteLastChar()
-            newlines -= 1
-        if oldNewlines > newlines:
-            c.frame.body.insertAtEnd('\n'*(oldNewlines-newlines))
-        #@-node:ekr.20031218072017.1494:<< Incrementally update the Tk.Text widget >>
-        #@nl
+        u = self ; c = u.c ; body = c.frame.body ; w = body.bodyCtrl
+        
         #@    << Compute the result using p's body text >>
-        #@+node:ekr.20031218072017.1495:<< Compute the result using p's body text >>
+        #@+node:ekr.20061106105812.1:<< Compute the result using p's body text >>
         # Recreate the text using the present body text.
         body = p.bodyString()
         body = g.toUnicode(body,"utf-8")
@@ -1855,32 +1825,13 @@ class baseUndoer:
         if u.debug_print:
             print "body:  ",body
             print "result:",result
-        #@-node:ekr.20031218072017.1495:<< Compute the result using p's body text >>
+        #@-node:ekr.20061106105812.1:<< Compute the result using p's body text >>
         #@nl
         p.setTnodeText(result)
-        #@    << Get textResult from the Tk.Text widget >>
-        #@+node:ekr.20031218072017.1496:<< Get textResult from the Tk.Text widget >>
-        textResult = c.frame.body.getAllText()
-        
-        if textResult != result:
-            # Remove the newline from textResult if that is the only difference.
-            if len(textResult) > 0 and textResult[:-1] == result:
-                textResult = result
-        #@-node:ekr.20031218072017.1496:<< Get textResult from the Tk.Text widget >>
-        #@nl
-        if textResult == result:
-            c.frame.body.recolor(p,incremental=False)
-        else: # Rewrite the pane and do a full recolor.
-            if 0: # Warning: can cause unit tests to fail if text contains unicode.
-                #@            << print mismatch trace >>
-                #@+node:ekr.20031218072017.1497:<< print mismatch trace >>
-                print "undo mismatch"
-                print "expected:",result
-                print "actual  :",textResult
-                #@-node:ekr.20031218072017.1497:<< print mismatch trace >>
-                #@nl
-            c.setBodyString(p,result)
-    #@-node:ekr.20031218072017.1493:undoRedoText
+        g.app.gui.setAllText(w,result)
+        c.frame.body.recolor(p,incremental=False)
+    #@nonl
+    #@-node:ekr.20031218072017.1493:undoRedoText (passed)
     #@-node:ekr.20031218072017.2039:undo & helpers...
     #@-others
     

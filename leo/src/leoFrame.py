@@ -208,71 +208,60 @@ class leoBody:
         
         self.oops()
     #@-node:ekr.20031218072017.3669:Menus
-    #@+node:ekr.20031218072017.3670:Selection (leoBody) (TO BE DELETED)
-    def deleteTextSelection (self):
-        self.oops()
+    #@+node:ekr.20031218072017.3670:Selection (leoBody)
+    # def deleteTextSelection (self):
+    #    self.oops()
         
     def getSelectedText (self):
-        self.oops()
+        w = self.bodyCtrl
+        return g.app.gui.getSelectedText(w)
         
-    def getSelectionRange (self,sort=True,toPython=False):
-        self.oops()
+    def getSelectionRange (self,sort=True,python=False):
+        w = self.bodyCtrl
+        return g.app.gui.getSelectionRange(w,sort=sort,python=python)
         
     def hasTextSelection (self):
         self.oops()
         
-    def selectAllText (self,event=None):
-        self.oops()
+    def selectAllText (self):
+        w = self.bodyCtrl
+        g.app.gui.selectAllText(w)
         
-    def setSelectionRange (self,i,j=None,insert='sel.end'):
-        self.oops()
-    #@-node:ekr.20031218072017.3670:Selection (leoBody) (TO BE DELETED)
+    def setSelectionRange (self,i,j=None,insert='sel.end',python=False):
+        w = self.bodyCtrl
+        g.app.gui.setSelectionRange(w,i,j,insert=insert,python=python)
+    #@-node:ekr.20031218072017.3670:Selection (leoBody)
     #@+node:ekr.20031218072017.3671:Text (leoBody) (TO BE DELETED)
-    #@+node:ekr.20031218072017.3672:delete... 
-    def deleteAllText(self):
-        self.oops()
-    
-    def deleteCharacter (self,index):
-        self.oops()
-        
-    def deleteLastChar (self):
-        self.oops()
-        
-    def deleteLine (self,lineNumber): # zero based line number.
-        self.oops()
-        
-    def deleteLines (self,line1,numberOfLines): # zero based line numbers.
-        self.oops()
-        
-    def deleteRange (self,index1,index2):
-        self.oops()
-    #@-node:ekr.20031218072017.3672:delete... 
-    #@+node:ekr.20031218072017.3673:get... (leoBody) (SOME TO BE DELETED)
+    #@+node:ekr.20031218072017.3673:get/set... (leoBody)
     def getAllText (self):
-        self.oops()
+        w = self.bodyCtrl
+        return g.app.gui.getAllText(w)
+    
+    # def getCharAtIndex (self,index):
+        # self.oops()
         
-    def getCharAtIndex (self,index):
-        self.oops()
+    # def getInsertLines (self):
+        # self.oops()
+        # return None,None,None
         
-    def getInsertLines (self):
-        self.oops()
-        return None,None,None
+    # def getSelectionAreas (self):
+        # self.oops()
+        # return None,None,None
         
-    def getSelectionAreas (self):
-        self.oops()
-        return None,None,None
+    # def getSelectionLines (self):
+        # self.oops()
+        # return None,None,None
         
-    def getSelectionLines (self):
-        self.oops()
-        return None,None,None
+    # def getTextRange (self,index1,index2):
+        # self.oops()
         
-    def getTextRange (self,index1,index2):
-        self.oops()
-    #@-node:ekr.20031218072017.3673:get... (leoBody) (SOME TO BE DELETED)
-    #@+node:ekr.20031218072017.3674:Insert... (leoBody) TO BE DELETED
-    def insertAtInsertPoint (self,s):
-        
-        self.oops()
+    # def setSelectionAreas (self,before,sel,after):
+        # self.oops()
+    #@nonl
+    #@-node:ekr.20031218072017.3673:get/set... (leoBody)
+    #@+node:ekr.20031218072017.3674:Insert... (leoBody) (TO BE DELETED)
+    # def insertAtInsertPoint (self,s): 
+        # self.oops()
         
     def insertAtEnd (self,s):
         
@@ -281,11 +270,28 @@ class leoBody:
     def insertAtStartOfLine (self,lineNumber,s):
         
         self.oops()
-    #@-node:ekr.20031218072017.3674:Insert... (leoBody) TO BE DELETED
-    #@+node:ekr.20031218072017.3675:setSelectionAreas
-    def setSelectionAreas (self,before,sel,after):
-        self.oops()
-    #@-node:ekr.20031218072017.3675:setSelectionAreas
+    #@nonl
+    #@-node:ekr.20031218072017.3674:Insert... (leoBody) (TO BE DELETED)
+    #@+node:ekr.20031218072017.3672:delete... (removed) 
+    # def deleteAllText(self):
+        # self.oops()
+    
+    # def deleteCharacter (self,index):
+        # self.oops()
+        
+    # def deleteLastChar (self):
+        # self.oops()
+        
+    # def deleteLine (self,lineNumber): # zero based line number.
+        # self.oops()
+        
+    # def deleteLines (self,line1,numberOfLines): # zero based line numbers.
+        # self.oops()
+        
+    # def deleteRange (self,index1,index2):
+        # self.oops()
+    #@nonl
+    #@-node:ekr.20031218072017.3672:delete... (removed) 
     #@-node:ekr.20031218072017.3671:Text (leoBody) (TO BE DELETED)
     #@+node:ekr.20031218072017.3676:Visibility & scrolling
     def see (self,index):
@@ -307,6 +313,60 @@ class leoBody:
         self.oops()
     #@-node:ekr.20031218072017.3676:Visibility & scrolling
     #@-node:ekr.20031218072017.3660:Must be overriden in subclasses
+    #@+node:ekr.20061106193512:Gui-independent methods
+    #@+node:ekr.20031218072017.4030:getInsertLines (passed)
+    def getInsertLines (self):
+        
+        """Return before,after where:
+            
+        before is all the lines before the line containing the insert point.
+        sel is the line containing the insert point.
+        after is all the lines after the line containing the insert point.
+        
+        All lines end in a newline, except possibly the last line."""
+        
+        gui = g.app.gui ; w = self.bodyCtrl
+        s = gui.getAllText(w)
+        insert = gui.getInsertPoint(w,python=True)
+        i,j = g.getLine(s,insert)
+        before = s[0:i]
+        ins = s[i:j]
+        after = s[j:]
+    
+        before = g.toUnicode(before,g.app.tkEncoding)
+        ins    = g.toUnicode(ins,   g.app.tkEncoding)
+        after  = g.toUnicode(after ,g.app.tkEncoding)
+    
+        return before,ins,after
+    #@-node:ekr.20031218072017.4030:getInsertLines (passed)
+    #@+node:ekr.20031218072017.4031:getSelectionAreas (passed)
+    def getSelectionAreas (self):
+        
+        """Return before,sel,after where:
+            
+        before is the text before the selected text
+        (or the text before the insert point if no selection)
+        sel is the selected text (or "" if no selection)
+        after is the text after the selected text
+        (or the text after the insert point if no selection)"""
+    
+        gui = g.app.gui ; w = self.bodyCtrl
+        
+        s = gui.getAllText(w)
+        i,j = gui.getSelectionRange(w,python=True)
+        if i == j: j = i + 1
+    
+        before = s[0:i]
+        sel    = s[i:j]
+        after  = s[j:]
+        
+        before = g.toUnicode(before,g.app.tkEncoding)
+        sel    = g.toUnicode(sel,   g.app.tkEncoding)
+        after  = g.toUnicode(after ,g.app.tkEncoding)
+        return before,sel,after
+    #@nonl
+    #@-node:ekr.20031218072017.4031:getSelectionAreas (passed)
+    #@-node:ekr.20061106193512:Gui-independent methods
     #@+node:ekr.20031218072017.3677:Coloring
     # It's weird to have the tree class be responsible for coloring the body pane!
     
@@ -1040,48 +1100,46 @@ class nullBody (leoBody):
     
         g.trace()
     #@-node:ekr.20031218072017.2203:Idle time...
-    #@+node:ekr.20031218072017.2204:Indices (nullBody) (TO BE DELETED)
-    def adjustIndex (self,index,offset):
-        return index + offset
-        
-    def compareIndices(self,i,rel,j):
+    #@+node:ekr.20031218072017.2204:Indices (nullBody) (removed)
+    # def adjustIndex (self,index,offset):
+        # return index + offset
     
-        return eval("%d %s %d" % (i,rel,j))
-        
-    def getImageIndex (self,image):
-        self.oops()
+    # def compareIndices(self,i,rel,j):
+        # return eval("%d %s %d" % (i,rel,j))
+    
+    # def getImageIndex (self,image):
+        # self.oops()
     #@nonl
-    #@-node:ekr.20031218072017.2204:Indices (nullBody) (TO BE DELETED)
-    #@+node:ekr.20031218072017.2205:Insert point (nullBody) (TO BE DELETED)
-    if 1: ### TO BE DELETED
-        def getInsertionPoint (self):
-            return self.insertPoint
-            
-        def setInsertionPoint (self,index):
-            self.insertPoint = index
+    #@-node:ekr.20031218072017.2204:Indices (nullBody) (removed)
+    #@+node:ekr.20031218072017.2205:Insert point (nullBody) (removed)
+    # def getInsertionPoint (self):
+        # return self.insertPoint
     
-        def getBeforeInsertionPoint (self):
-            return self.insertPoint - 1
-        
-        def getCharAtInsertPoint (self):
-            try: return self.s[self.insertPoint]
-            except: return None
-        
-        def getCharBeforeInsertPoint (self):
-            try: return self.s[self.insertPoint - 1]
-            except: return None
-        
-        def setInsertionPointToEnd (self):
-            self.insertPoint = len(self.s)
-            
-        def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
-            self.insertPoint = self.findStartOfLine(lineNumber)
-    #@-node:ekr.20031218072017.2205:Insert point (nullBody) (TO BE DELETED)
+    # def setInsertionPoint (self,index):
+        # self.insertPoint = index
+    
+    # def getBeforeInsertionPoint (self):
+        # return self.insertPoint - 1
+    
+    # def getCharAtInsertPoint (self):
+        # try: return self.s[self.insertPoint]
+        # except: return None
+    
+    # def getCharBeforeInsertPoint (self):
+        # try: return self.s[self.insertPoint - 1]
+        # except: return None
+    
+    # def setInsertionPointToEnd (self):
+        # self.insertPoint = len(self.s)
+    
+    # def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
+        # self.insertPoint = self.findStartOfLine(lineNumber)
+    #@-node:ekr.20031218072017.2205:Insert point (nullBody) (removed)
     #@+node:ekr.20031218072017.2206:Menus
     def bind (self,*args,**keys):
         pass
     #@-node:ekr.20031218072017.2206:Menus
-    #@+node:ekr.20031218072017.2207:Selection (nullBody)
+    #@+node:ekr.20031218072017.2207:Selection (nullBody) (TO BE REMOVED)
     def deleteTextSelection (self):
         i,j = self.selection
         self.s = self.s[:i] + self.s[j:]
@@ -1102,168 +1160,173 @@ class nullBody (leoBody):
     def selectAllText (self,event=None):
         self.selection = 0,len(self.s)
         
-    def setSelectionRange (self,i,j=None,insert='sel.end'):
-        if i is None:
-            self.selection = 0,0
-        elif j is None:
-            self.selection = i # a tuple
-        else:
-            self.selection = i,j
-    #@-node:ekr.20031218072017.2207:Selection (nullBody)
-    #@+node:ekr.20031218072017.2208:Text
-    #@+node:ekr.20031218072017.2209:delete...
-    def deleteAllText(self):
-        self.insertPoint = 0
-        self.selection = 0,0
-        self.s = "" # The body text
+    # def setSelectionRange (self,i,j=None,insert='sel.end'):
+        # if i is None:
+            # self.selection = 0,0
+        # elif j is None:
+            # self.selection = i # a tuple
+        # else:
+            # self.selection = i,j
+    #@nonl
+    #@-node:ekr.20031218072017.2207:Selection (nullBody) (TO BE REMOVED)
+    #@+node:ekr.20031218072017.2208:Text (nullBody) (removed)
+    #@+node:ekr.20031218072017.2209:delete... (removed)
+    # def deleteAllText(self):
+        # self.insertPoint = 0
+        # self.selection = 0,0
+        # self.s = "" # The body text
     
-    def deleteCharacter (self,index):
-        self.s = self.s[:index] + self.s[index+1:]
+    # def deleteCharacter (self,index):
+        # self.s = self.s[:index] + self.s[index+1:]
         
-    def deleteLastChar (self):
-        if self.s:
-            del self.s[-1]
+    # def deleteLastChar (self):
+        # if self.s:
+            # del self.s[-1]
         
-    def deleteLine (self,lineNumber): # zero based line number.
-        self.deleteLines(lineNumber,1)
+    # def deleteLine (self,lineNumber): # zero based line number.
+        # self.deleteLines(lineNumber,1)
         
-    def deleteLines (self,lineNumber,numberOfLines): # zero based line numbers.
-        n1 = self.findStartOfLine(lineNumber)
-        n2 = self.findStartOfLine(lineNumber+numberOfLines+1)
-        if n2:
-            self.s = self.s[:n1] + self.s[n2:]
-        else:
-            self.s = self.s[:n1]
+    # def deleteLines (self,lineNumber,numberOfLines): # zero based line numbers.
+        # n1 = self.findStartOfLine(lineNumber)
+        # n2 = self.findStartOfLine(lineNumber+numberOfLines+1)
+        # if n2:
+            # self.s = self.s[:n1] + self.s[n2:]
+        # else:
+            # self.s = self.s[:n1]
         
-    def deleteRange (self,index1,index2):
-        del self.s[index1:index2]
-    #@-node:ekr.20031218072017.2209:delete...
-    #@+node:ekr.20031218072017.2210:get...
-    def getAllText (self):
-        return g.toUnicode(self.s,g.app.tkEncoding)
+    # def deleteRange (self,index1,index2):
+        # del self.s[index1:index2]
+    #@nonl
+    #@-node:ekr.20031218072017.2209:delete... (removed)
+    #@+node:ekr.20031218072017.2210:get... (removed)
+    # def getAllText (self):
+        # return g.toUnicode(self.s,g.app.tkEncoding)
         
-    def getCharAtIndex (self,index):
+    # def getCharAtIndex (self,index):
+        # try:
+            # s = self.s[index]
+            # return g.toUnicode(s,g.app.tkEncoding)
+        # except: return None
         
-        try:
-            s = self.s[index]
-            return g.toUnicode(s,g.app.tkEncoding)
-        except: return None
-        
-    def getTextRange (self,index1,index2):
-    
-        s = self.s[index1:index2]
-        return g.toUnicode(s,g.app.tkEncoding)
+    # def getTextRange (self,index1,index2):
+        # s = self.s[index1:index2]
+        # return g.toUnicode(s,g.app.tkEncoding)
+    #@nonl
     #@+node:ekr.20031218072017.2211:getInsertLines
-    def getInsertLines (self):
-        
-        """Return before,ins,after where:
-            
-        before is all the lines before the line containing the insert point.
-        sel is the line containing the insert point.
-        after is all the lines after the line containing the insert point.
-        
-        All lines end in a newline, except possibly the last line."""
-    
-        # DTHEIN 18-JAN-2004: NOTE: overridden by leoTkinterBody!!!!!!
-        
-        n1 = self.scanToStartOfLine(self.insertPoint)
-        n2 = self.scanToEndOfLine(self.insertPoint)
-        
-        before = self.s[:n1]
-        ins    = self.s[n1:n2+1] # 12/18/03: was sel(!)
-        after  = self.s[n2+1:]
-    
-        before = g.toUnicode(before,g.app.tkEncoding)
-        ins    = g.toUnicode(ins,   g.app.tkEncoding)
-        after  = g.toUnicode(after ,g.app.tkEncoding)
-    
-        return before,ins,after
+    # def getInsertLines (self):
+        # 
+        # """Return before,ins,after where:
+            # 
+        # before is all the lines before the line containing the insert point.
+        # sel is the line containing the insert point.
+        # after is all the lines after the line containing the insert point.
+        # 
+        # All lines end in a newline, except possibly the last line."""
+    # 
+        # # DTHEIN 18-JAN-2004: NOTE: overridden by leoTkinterBody!!!!!!
+        # 
+        # n1 = self.scanToStartOfLine(self.insertPoint)
+        # n2 = self.scanToEndOfLine(self.insertPoint)
+        # 
+        # before = self.s[:n1]
+        # ins    = self.s[n1:n2+1] # 12/18/03: was sel(!)
+        # after  = self.s[n2+1:]
+    # 
+        # before = g.toUnicode(before,g.app.tkEncoding)
+        # ins    = g.toUnicode(ins,   g.app.tkEncoding)
+        # after  = g.toUnicode(after ,g.app.tkEncoding)
+    # 
+        # return before,ins,after
+    # 
+    #@nonl
     #@-node:ekr.20031218072017.2211:getInsertLines
     #@+node:ekr.20031218072017.2212:getSelectionAreas
-    def getSelectionAreas (self):
-        
-        """Return before,sel,after where:
-            
-        before is the text before the selected text
-        (or the text before the insert point if no selection)
-        sel is the selected text (or "" if no selection)
-        after is the text after the selected text
-        (or the text after the insert point if no selection)"""
-        
-        if not self.hasTextSelection():
-            n1,n2 = self.insertPoint,self.insertPoint
-        else:
-            n2,n2 = self.selection
+    # def getSelectionAreas (self):
+        # 
+        # """Return before,sel,after where:
+            # 
+        # before is the text before the selected text
+        # (or the text before the insert point if no selection)
+        # sel is the selected text (or "" if no selection)
+        # after is the text after the selected text
+        # (or the text after the insert point if no selection)"""
+        # 
+        # if not self.hasTextSelection():
+            # n1,n2 = self.insertPoint,self.insertPoint
+        # else:
+            # n2,n2 = self.selection
     
-        before = self.s[:n1]
-        sel    = self.s[n1:n2+1]
-        after  = self.s[n2+1:]
-        
-        before = g.toUnicode(before,g.app.tkEncoding)
-        sel    = g.toUnicode(sel,   g.app.tkEncoding)
-        after  = g.toUnicode(after ,g.app.tkEncoding)
-        return before,sel,after
+        # before = self.s[:n1]
+        # sel    = self.s[n1:n2+1]
+        # after  = self.s[n2+1:]
+        # 
+        # before = g.toUnicode(before,g.app.tkEncoding)
+        # sel    = g.toUnicode(sel,   g.app.tkEncoding)
+        # after  = g.toUnicode(after ,g.app.tkEncoding)
+        # return before,sel,after
     #@-node:ekr.20031218072017.2212:getSelectionAreas
     #@+node:ekr.20031218072017.2213:getSelectionLines (nullBody)
-    def getSelectionLines (self):
-        
-        """Return before,sel,after where:
-            
-        before is all the lines before the selected text
-        (or the text before the insert point if no selection)
-        sel is the selected text (or the line containing the insert point if no selection)
-        after is all lines after the selected text
-        (or the text after the insert point if no selection)"""
-        
-        # At present, called only by c.getBodyLines.
-        if not self.hasTextSelection():
-            start,end = self.insertPoint,self.insertPoint
-        else:
-            start,end = self.selection
-    
-        n1 = self.scanToStartOfLine(start)
-        n2 = self.scanToEndOfLine(end)
-    
-        before = self.s[:n1]
-        sel    = self.s[n1:n2] # 12/8/03 was n2+1
-        after  = self.s[n2+1:]
-    
-        before = g.toUnicode(before,g.app.tkEncoding)
-        sel    = g.toUnicode(sel,   g.app.tkEncoding)
-        after  = g.toUnicode(after ,g.app.tkEncoding)
-        
-        g.trace(n1,n2)
-        return before,sel,after
+    # def getSelectionLines (self):
+        # 
+        # """Return before,sel,after where:
+            # 
+        # before is all the lines before the selected text
+        # (or the text before the insert point if no selection)
+        # sel is the selected text (or the line containing the insert point if no selection)
+        # after is all lines after the selected text
+        # (or the text after the insert point if no selection)"""
+        # 
+        # # At present, called only by c.getBodyLines.
+        # if not self.hasTextSelection():
+            # start,end = self.insertPoint,self.insertPoint
+        # else:
+            # start,end = self.selection
+    # 
+        # n1 = self.scanToStartOfLine(start)
+        # n2 = self.scanToEndOfLine(end)
+    # 
+        # before = self.s[:n1]
+        # sel    = self.s[n1:n2] # 12/8/03 was n2+1
+        # after  = self.s[n2+1:]
+    # 
+        # before = g.toUnicode(before,g.app.tkEncoding)
+        # sel    = g.toUnicode(sel,   g.app.tkEncoding)
+        # after  = g.toUnicode(after ,g.app.tkEncoding)
+        # 
+        # g.trace(n1,n2)
+        # return before,sel,after
+    # 
+    #@nonl
     #@-node:ekr.20031218072017.2213:getSelectionLines (nullBody)
-    #@-node:ekr.20031218072017.2210:get...
-    #@+node:ekr.20031218072017.2214:Insert...
-    def insertAtInsertPoint (self,s):
+    #@-node:ekr.20031218072017.2210:get... (removed)
+    #@+node:ekr.20031218072017.2214:Insert... (nullBody) (removed)
+    # def insertAtInsertPoint (self,s):
+        # i = self.insertPoint
+        # self.s = self.s[:i] + s + self.s[i:]
         
-        i = self.insertPoint
-        self.s = self.s[:i] + s + self.s[i:]
-        
-    def insertAtEnd (self,s):
-        
-        self.s = self.s + s
-        
-    def insertAtStartOfLine (self,lineNumber,s):
-        
-        i = self.findStartOfLine(lineNumber)
-        self.s = self.s[:i] + s + self.s[i:]
-    #@-node:ekr.20031218072017.2214:Insert...
-    #@+node:ekr.20031218072017.2215:setSelectionAreas (nullFrame)
-    def setSelectionAreas (self,before,sel,after):
-        
-        if before is None: before = ""
-        if sel    is None: sel = ""
-        if after  is None: after = ""
-        
-        self.s = before + sel + after
-        
-        self.selection = len(before), len(before) + len(sel)
-    #@-node:ekr.20031218072017.2215:setSelectionAreas (nullFrame)
-    #@-node:ekr.20031218072017.2208:Text
-    #@+node:ekr.20031218072017.2216:Visibility & scrolling
+    # def insertAtEnd (self,s):
+        # 
+        # self.s = self.s + s
+     
+    # def insertAtStartOfLine (self,lineNumber,s):
+        # 
+        # i = self.findStartOfLine(lineNumber)
+        # self.s = self.s[:i] + s + self.s[i:]
+    #@nonl
+    #@-node:ekr.20031218072017.2214:Insert... (nullBody) (removed)
+    #@+node:ekr.20031218072017.2215:setSelectionAreas (nullBody) (removed)
+    # def setSelectionAreas (self,before,sel,after):
+        # 
+        # if before is None: before = ""
+        # if sel    is None: sel = ""
+        # if after  is None: after = ""
+        # 
+        # self.s = before + sel + after
+        # 
+        # self.selection = len(before), len(before) + len(sel)
+    #@-node:ekr.20031218072017.2215:setSelectionAreas (nullBody) (removed)
+    #@-node:ekr.20031218072017.2208:Text (nullBody) (removed)
+    #@+node:ekr.20031218072017.2216:Visibility & scrolling (nullBody) (TO BE REMOVED)
     def see (self,index,python=False):
         pass
         
@@ -1284,7 +1347,7 @@ class nullBody (leoBody):
         
     def scrollDown (self):
         pass
-    #@-node:ekr.20031218072017.2216:Visibility & scrolling
+    #@-node:ekr.20031218072017.2216:Visibility & scrolling (nullBody) (TO BE REMOVED)
     #@-node:ekr.20031218072017.2197:Must be overriden in subclasses
     #@+node:ekr.20041217074557:setColorFromConfig & setFontFromConfig
     def setFontFromConfig (self):

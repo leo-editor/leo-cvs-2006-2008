@@ -850,12 +850,6 @@ class wxLeoBody (leoFrame.leoBody):
     #@nonl
     #@-node:ekr.20060629123738.3:setInsertionPointTo 
     #@-node:edream.111303171218:Insert point (wxBody) (TO BE REMOVED FROM LEO's CORE)
-    #@+node:edream.111303204025.5:getImageIndex (wxBody) (to do)
-    def getImageIndex (self,image):
-        
-        g.trace(image)
-    #@nonl
-    #@-node:edream.111303204025.5:getImageIndex (wxBody) (to do)
     #@+node:edream.111303171218.1:Selection
     
     
@@ -914,71 +908,66 @@ class wxLeoBody (leoFrame.leoBody):
     #@nonl
     #@-node:ekr.20060629124102.5:setSelectionRange
     #@-node:edream.111303171218.1:Selection
-    #@+node:edream.111303171238:Text
+    #@+node:edream.111303171238:Text (wxBody)
     # These routines replace most of the former insert/delete and index routines.
     #@nonl
-    #@+node:edream.111303171238.1:delete... (untested)
-    def deleteAllText(self):
-        self.bodyCtrl.Clear()
-        
-    def deleteCharacter (self,index):
-        self.bodyCtrl.Remove(index,index+1)
-        
-    def deleteLine (self,lineNumber): # zero based line number.
-        t = self.bodyCtrl
-        pos1 = t.XYToPosition(lineNumber)
-        n = t.GetLineLength(lineNumber)
-        t.Remove(pos1,pos1 + n)
+    #@+node:edream.111303171238.1:delete... (wxBody) (to be removed)
+    # def deleteAllText(self):
+        # self.bodyCtrl.Clear()
     
-    def deleteLines (self,lineNumber,numberOfLines): # zero based line number.
-        t = self.bodyCtrl
-        pos1 = t.XYToPosition(lineNumber)
-        pos2 = t.XYToPosition(lineNumber+numberOfLine-1)
-        n = t.GetLineLength(lineNumber+numberOfLine-1)
-        t.Remove(pos1,pos2 + n)
+    # def deleteCharacter (self,index):
+        # self.bodyCtrl.Remove(index,index+1)
     
-    def deleteRange (self,index1,index2):
-        self.bodyCtrl.Remove(index1,index2)
+    # def deleteLine (self,lineNumber): # zero based line number.
+        # t = self.bodyCtrl
+        # pos1 = t.XYToPosition(lineNumber)
+        # n = t.GetLineLength(lineNumber)
+        # t.Remove(pos1,pos1 + n)
+    
+    # def deleteLines (self,lineNumber,numberOfLines): # zero based line number.
+        # t = self.bodyCtrl
+        # pos1 = t.XYToPosition(lineNumber)
+        # pos2 = t.XYToPosition(lineNumber+numberOfLine-1)
+        # n = t.GetLineLength(lineNumber+numberOfLine-1)
+        # t.Remove(pos1,pos2 + n)
+    
+    # def deleteRange (self,index1,index2):
+        # self.bodyCtrl.Remove(index1,index2)
     #@nonl
-    #@-node:edream.111303171238.1:delete... (untested)
-    #@+node:edream.111303171238.2:get... (wxBody) (some to be deleted from Leo's core)
-    def getAllText (self):
-        return self.bodyCtrl.GetValue()
-        
-    def getTextRange(self,n1,n2):
-        return self.bodyCtrl.GetRange(n1,n2)
-        
-    if 0: # To be deleted from Leo's core
-        
-        def getCharAtIndex (self,index):
-            return self.bodyCtrl.GetRange(index,index+1)
-        
-        def getInsertLines (self):
-            g.trace()
-        
-        def getSelectionAreas (self):
-            g.trace()
-        
-        def getSelectionLines (self):
-            g.trace()
-    #@-node:edream.111303171238.2:get... (wxBody) (some to be deleted from Leo's core)
-    #@+node:edream.111303171238.3:insert... (wxBody) (to be deleted from Leo's core)
-    def insertAtEnd (self,s):
+    #@-node:edream.111303171238.1:delete... (wxBody) (to be removed)
+    #@+node:edream.111303171238.2:get... (wxBody) (to be deleted)
+    # def getAllText (self):
+        # return self.bodyCtrl.GetValue()
     
-        return self.bodyCtrl.AppendText(s)
-        
-    def insertAtInsertPoint (self,s):
-        
-        self.bodyCtrl.WriteText(s)
-    #@nonl
-    #@-node:edream.111303171238.3:insert... (wxBody) (to be deleted from Leo's core)
-    #@+node:edream.111303171238.4:setSelectionAreas (wxBody) (to be deleted from Leo's core)
-    def setSelectionAreas (self,before,sel,after):
+    # def getTextRange(self,n1,n2):
+        # return self.bodyCtrl.GetRange(n1,n2)
     
-        g.trace()
+    # def getCharAtIndex (self,index):
+        # return self.bodyCtrl.GetRange(index,index+1)
+    
+    # def getInsertLines (self):
+        # g.trace()
+    
+    # def getSelectionAreas (self):
+        # g.trace()
+    
+    # def getSelectionLines (self):
+        # g.trace()
+    #@-node:edream.111303171238.2:get... (wxBody) (to be deleted)
+    #@+node:edream.111303171238.3:insert... (wxBody) (to be deleted)
+    # def insertAtEnd (self,s):
+        # return self.bodyCtrl.AppendText(s)
+        
+    # def insertAtInsertPoint (self,s): 
+        # self.bodyCtrl.WriteText(s)
     #@nonl
-    #@-node:edream.111303171238.4:setSelectionAreas (wxBody) (to be deleted from Leo's core)
-    #@-node:edream.111303171238:Text
+    #@-node:edream.111303171238.3:insert... (wxBody) (to be deleted)
+    #@+node:edream.111303171238.4:setSelectionAreas (wxBody) (to be defined in base class)
+    # def setSelectionAreas (self,before,sel,after):
+        # g.trace()
+    #@nonl
+    #@-node:edream.111303171238.4:setSelectionAreas (wxBody) (to be defined in base class)
+    #@-node:edream.111303171238:Text (wxBody)
     #@+node:edream.110203113231.552:Visibility & scrolling... (wxBody) (to do)
     def see (self,index):
         self.bodyCtrl.ShowPosition()

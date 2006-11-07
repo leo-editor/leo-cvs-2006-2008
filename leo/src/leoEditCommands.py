@@ -2402,11 +2402,11 @@ class editCommandsClass (baseEditCommandsClass):
             # Get the arg without touching the focus.
             k.getArg(event,tag,1,self.findCharacter,oneCharacter=True,useMinibuffer=False)
         else:
-            event = self.event ; w = self.w
+            event = self.event ; gui = g.app.gui ; w = self.w
             backward = self.backward ; extend = self.extend
-            ch = k.arg ; s = g.app.gui.getAllText(w)
-            def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
-            def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+            ch = k.arg ; s =gui.getAllText(w)
+            def toGui (i): return gui.toGuiIndex(s,w,i)
+            def toPython (i): return gui.toPythonIndex(s,w,i)
             ins = toPython(self.insert)
             i = ins + g.choose(backward,-1,+1) # skip the present character.
             if backward:
@@ -2627,13 +2627,13 @@ class editCommandsClass (baseEditCommandsClass):
     def addRemoveHelper(self,event,ch,add,undoType):
     
         c = self.c ; k = self.k
-        w = self.editWidget(event)
+        gui = g.app.gui ; w = self.editWidget(event)
         if not w: return
     
         if g.app.gui.hasSelection(w):
-            s = g.app.gui.getSelectedText(w)
+            s = gui.getSelectedText(w)
         else:
-            s = g.app.gui.getAllText(w)
+            s = gui.getAllText(w)
         if not s: return
         
         # Insert or delete spaces instead of tabs when negative tab width is in effect.
@@ -2648,10 +2648,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         # g.trace(g.app.gui.getSelectionRange(w),'len(result)',len(result))
         if g.app.gui.hasSelection(w):
-            i,j = g.app.gui.getSelectionRange(w)
+            i,j = gui.getSelectionRange(w)
             w.delete(i,j)
             w.insert(i,result)
-            g.app.gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
+            gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
         else:
             w.delete('1.0','end')
             w.insert('1.0',result)
@@ -2718,14 +2718,14 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Removes leading whitespace from otherwise blanks lines.'''
     
-        k = self.k
+        k = self.k ; gui = g.app.gui
         w = self.editWidget(event)
         if not w: return
         
         if g.app.gui.hasSelection(w):
-            s = g.app.gui.getSelectedText(w)
+            s = gui.getSelectedText(w)
         else:
-            s = g.app.gui.getAllText(w)
+            s = gui.getAllText(w)
     
         lines = [] ; changed = False
         for line in g.splitlines(s):
@@ -2739,11 +2739,11 @@ class editCommandsClass (baseEditCommandsClass):
         if changed:
             self.beginCommand(undoType='clean-lines')
             result = ''.join(lines)
-            if g.app.gui.hasSelection(w):
+            if gui.hasSelection(w):
                 i,j = g.app.gui.getSelectionRange(w)
                 w.delete(i,j)
                 w.insert(i,result)
-                g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
+                gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
             else:
                 w.delete('1.0','end')
                 w.insert('1.0',result)
@@ -2934,6 +2934,7 @@ class editCommandsClass (baseEditCommandsClass):
         elif ch: # Null chars must not delete the selection.
             i,j = oldSel
             i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
+            if i > j: i,j = j,i
             # Use raw insert/delete to retain the coloring.
             if i != j:                  gui.rawDelete(w,s,i,j,python=True)
             elif action == 'overwrite': gui.rawDelete(w,s,i,python=True)
@@ -3110,23 +3111,23 @@ class editCommandsClass (baseEditCommandsClass):
         d = g.scanDirectives(c,p)
         tab_width = d.get("tabwidth",c.tab_width)
         i,j = gui.getSelectionRange(w,python=True)
-        ins = gui.getInsertPoint(w,python=True)
+            # Returns insert point if no selection, with i <= j.
         s = gui.getAllText(w)
     
         if i != j:
             gui.rawDelete(w,s,i,j,python=True)
+    
         if tab_width > 0:
-            gui.rawInsert(w,s,ins,'\t',python=True)
+            gui.rawInsert(w,s,i,'\t',python=True)
         else:
             # Get the preceeding characters.
-            start = g.skip_to_start_of_line(s,ins)
-            g.trace(start,ins)
-            s2 = s[start:ins]
+            start = g.skip_to_start_of_line(s,i)
+            s2 = s[start:i]
             
             # Compute n, the number of spaces to insert.
             width = g.computeWidth(s2,tab_width)
             n = abs(tab_width) - (width % abs(tab_width))
-            gui.rawInsert(w,s,ins,' ' * n,python=True)
+            gui.rawInsert(w,s,i,' ' * n,python=True)
     #@-node:ekr.20051026092433:updateTab (passed)
     #@-node:ekr.20051125080855:selfInsertCommand & helpers (passed)
     #@-node:ekr.20050920084036.85:insert & delete...
@@ -4145,7 +4146,7 @@ class editCommandsClass (baseEditCommandsClass):
         '''Move all lines containing any selected text up one line,
         moving to the previous node as needed.'''
     
-        c = self.c
+        c = self.c ; gui = g.app.gui
         w = self.editWidget(event)
         if not w: return
     
@@ -4153,7 +4154,7 @@ class editCommandsClass (baseEditCommandsClass):
         
         self.beginCommand(undoType='move-lines-up')
         
-        i,j = g.app.gui.getSelectionRange(w)
+        i,j = gui.getSelectionRange(w)
         i = w.index(i+' linestart')
         j = w.index(j+' lineend+1c')
         i2 = w.index(i+'-1c linestart')
@@ -4184,13 +4185,13 @@ class editCommandsClass (baseEditCommandsClass):
             c.selectPosition(p)
             c.endUpdate()
             w.focus_force()
-            s = g.app.gui.getAllText(w)
+            s = gui.getAllText(w)
             if s.endswith('\n'):
                 w.insert('end',selected)
             else:
                 if selected.endswith('\n'): selected = selected[:-1]
                 w.insert('end','\n'+selected)
-            g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
+            gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
     
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20060417183606.1:moveLinesUp (works, except for selection point when last line selected)

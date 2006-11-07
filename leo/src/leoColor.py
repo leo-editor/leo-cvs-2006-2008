@@ -1345,7 +1345,7 @@ class baseColorizer:
         
         # g.trace(p and p.headString())
         
-        c = self.c
+        c = self.c ; gui = g.app.gui ; w = self.body.bodyCtrl
         
         if not c.config.getBool('use_syntax_coloring'):
             g.trace('no coloring')
@@ -1367,16 +1367,11 @@ class baseColorizer:
             self.p = p
             
             # Get the body text, converted to unicode.
-            self.allBodyText = s = self.body.getAllText() # Only compute this once.
-            if 1: # new code
-                sel = g.app.gui.getInsertPoint(self.body.bodyCtrl,python=True)
-                start,end = g.convertPythonIndexToRowCol (self.allBodyText,sel)
-                start += 1 # Simulate the old 1-based Tk scheme.  self.index undoes this hack.
-                # g.trace('new',start,end)
-            if 0:
-                self.sel = sel = self.body.getInsertionPoint()
-                start,end = self.body.convertIndexToRowColumn(sel)
-                g.trace('correct',start,end)
+            self.allBodyText = gui.getAllText(w)
+            sel = gui.getInsertPoint(w,python=True)
+            start,end = g.convertPythonIndexToRowCol(self.allBodyText,sel)
+            start += 1 # Simulate the old 1-based Tk scheme.  self.index undoes this hack.
+            # g.trace('new',start,end)
             
             if self.language: self.language = self.language.lower()
             # g.trace(self.count,self.p)
@@ -1566,7 +1561,8 @@ class baseColorizer:
             
             self.hyperCount = 0 # Number of hypertext tags
             self.count += 1
-            lines = string.split(s,'\n')
+            lines = string.split(self.allBodyText,'\n')
+            #@nonl
             #@-node:ekr.20031218072017.1602:<< initialize ivars & tags >> colorizeAnyLanguage
             #@nl
             g.doHook("init-color-markup",colorer=self,p=self.p,v=self.p)
@@ -1777,8 +1773,7 @@ class baseColorizer:
                 # Pass 1:  Insert all graphics characters.
                 
                 self.removeAllImages()
-                s = self.body.getAllText() # 10/27/03
-                lines = s.split('\n')
+                lines = self.allBodyText.split('\n')
                 
                 self.color_pass = 1
                 self.line_index = 1
@@ -2428,10 +2423,10 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1908:Valid when not in latex_mode
     #@-node:ekr.20031218072017.1908:Valid when not in latex_mode
     #@-node:ekr.20031218072017.1896:doNormalState
-    #@+node:ekr.20031218072017.1914:doNowebSecRef
+    #@+node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
     def doNowebSecRef (self,s,i):
     
-        c = self.c
+        c = self.c ; gui = g.app.gui ; w = c.frame.body.bodyCtrl
         self.tag("nameBrackets",i,i+2)
         
         # See if the line contains the right name bracket.
@@ -2442,7 +2437,10 @@ class baseColorizer:
         if j == -1:
             return i + 2
         else:
-            searchName = self.body.getTextRange(self.index(i),self.index(j+k)) # includes brackets
+            s = gui.getAllText(w)
+            # includes brackets
+            start,end = gui.toPythonIndex(s,w,self.index(i)),gui.toPythonIndex(s,w,self.index(j+k))
+            searchName = s[start:end]
             ref = g.findReference(c,searchName,self.p)
             if ref:
                 self.tag("link",i+2,j)
@@ -2469,7 +2467,8 @@ class baseColorizer:
                 self.tag("name",i+2,j)
             self.tag("nameBrackets",j,j+k)
             return j + k
-    #@-node:ekr.20031218072017.1914:doNowebSecRef
+    #@nonl
+    #@-node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
     #@+node:ekr.20031218072017.1604:removeAllTags & removeTagsFromLines
     def removeAllTags (self):
         
@@ -2589,17 +2588,20 @@ class baseColorizer:
             
         return word
     #@-node:ekr.20031218072017.2803:getCwebWord
-    #@+node:ekr.20031218072017.1944:removeAllImages
+    #@+node:ekr.20031218072017.1944:removeAllImages (leoColor)
     def removeAllImages (self):
         
         for photo,image,line_index,i in self.image_references:
             try:
-                self.body.deleteCharacter(image) # 10/27/03
+                ### self.body.deleteCharacter(image)
+                gui = g.app.gui ; w = self.body.bodyCtrl
+                gui.rawDelete(w,self.allBodyText,index,python=True)
+                self.allBodyText = gui.getAllText(w)
             except:
                 pass # The image may have been deleted earlier.
         
         self.image_references = []
-    #@-node:ekr.20031218072017.1944:removeAllImages
+    #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
     #@+node:ekr.20031218072017.2804:updateSyntaxColorer
     # self.flag is True unless an unambiguous @nocolor is seen.
     

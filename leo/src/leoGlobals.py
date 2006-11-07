@@ -833,7 +833,7 @@ def wrap_lines (lines,pageWidth,firstLineWidth=None):
     if pageWidth < 10:
         pageWidth = 10
         
-    # DTHEIN 3-NOV-2002: First line is special
+    # First line is special
     if not firstLineWidth:
         firstLineWidth = pageWidth
     if firstLineWidth < 10:
@@ -5041,16 +5041,17 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
     is p is not the current node or if there is no text selection.'''
 
     at = c.atFileCommands
+    gui = g.app.gui ; w = c.frame.body.bodyCtrl
     if not p:
         p = c.currentPosition()
     try:
         if g.app.batchMode:
             s = p.bodyString()
         elif p == c.currentPosition():
-            if useSelectedText and c.frame.body.hasTextSelection():
-                s = c.frame.body.getSelectedText()
+            if useSelectedText and g.app.gui.hasSelection(w): ### c.frame.body.hasTextSelection():
+                s = gui.getSelectedText(w) ###s = c.frame.body.getSelectedText()
             else:
-                s = c.frame.body.getAllText()
+                s = gui.getAllText(w) ###c.frame.body.getAllText()
         else:
             s = p.bodyString()
         # Remove extra leading whitespace so the user may execute indented code.

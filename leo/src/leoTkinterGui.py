@@ -596,13 +596,13 @@ class tkinterGui(leoGui.leoGui):
     
         return "1.0"
     #@-node:ekr.20031218072017.4075:firstIndex (to be deleted)
-    #@+node:ekr.20031218072017.4080:getindex
+    #@+node:ekr.20031218072017.4080:getindex (to be deleted?)
     def getindex(self,text,index):
         
         """Convert string index of the form line.col into a tuple of two ints."""
         
         return tuple(map(int,string.split(text.index(index), ".")))
-    #@-node:ekr.20031218072017.4080:getindex
+    #@-node:ekr.20031218072017.4080:getindex (to be deleted?)
     #@+node:ekr.20031218072017.4077:moveIndexBackward (to be deleted)
     def moveIndexBackward(self,index,n):
     
@@ -745,23 +745,28 @@ class tkinterGui(leoGui.leoGui):
         
         self.setSelectionRange(w,'1.0','end-1c',insert=insert)
     #@-node:ekr.20060529092645:selectAllText (new in 4.4.1)
-    #@+node:ekr.20031218072017.4088:setSelectionRangeWithLength
+    #@+node:ekr.20031218072017.4088:setSelectionRangeWithLength (tkGui)
     def setSelectionRangeWithLength(self,w,start,length,insert='sel.end'):
         
         return g.app.gui.setSelectionRange(w,start,"%s+%dc" % (start,length),insert=insert)
-    #@-node:ekr.20031218072017.4088:setSelectionRangeWithLength
-    #@+node:ekr.20031218072017.4089:setSelectionRange (python)
+    #@-node:ekr.20031218072017.4088:setSelectionRangeWithLength (tkGui)
+    #@+node:ekr.20031218072017.4089:setSelectionRange (tkGui) (python)
     def setSelectionRange (self,w,start,end,insert='sel.end',python=False):
         
         """tk gui: set the selection range in Tk.Text widget w."""
         
         gui = self
         # g.trace('start',start,'end',end,'insert',insert,'python',python)
+        if not python and (type(start)==type(9) or type(end)==type(9)):
+            python = True
+            g.trace('**** wrong type args ***',g.callers())
+    
         if python:
             s = gui.getAllText(w)
             start,end = gui.toGuiIndex(s,w,start),gui.toGuiIndex(s,w,end)
             if insert not in ('sel.end',None):
                 insert = gui.toGuiIndex(s,w,insert)
+        
         # g.trace('start',start,'end',end,'insert',insert,'python',python)
         try:
             if w.compare(start, ">", end):
@@ -777,7 +782,7 @@ class tkinterGui(leoGui.leoGui):
         except Exception:
             pass # g.es_exception()
     #@nonl
-    #@-node:ekr.20031218072017.4089:setSelectionRange (python)
+    #@-node:ekr.20031218072017.4089:setSelectionRange (tkGui) (python)
     #@-node:ekr.20031218072017.4084:Selection
     #@+node:ekr.20031218072017.4090:Text (g.app.gui)
     #@+node:ekr.20061103114242.1:gui.flashCharacter
@@ -823,9 +828,10 @@ class tkinterGui(leoGui.leoGui):
             return g.toUnicode(ch,g.app.tkEncoding)
     #@-node:ekr.20031218072017.4092:getCharAfterIndex  (to be deleted)
     #@+node:ekr.20031218072017.4093:getCharAtIndex  (to be deleted)
-    def getCharAtIndex (self,w,index):
-        ch = w.get(index)
-        return g.toUnicode(ch,g.app.tkEncoding)
+    # def getCharAtIndex (self,w,index):
+        # ch = w.get(index)
+        # return g.toUnicode(ch,g.app.tkEncoding)
+    #@nonl
     #@-node:ekr.20031218072017.4093:getCharAtIndex  (to be deleted)
     #@+node:ekr.20031218072017.4094:getCharBeforeIndex  (to be deleted)
     def getCharBeforeIndex (self,w,index):
@@ -854,9 +860,13 @@ class tkinterGui(leoGui.leoGui):
         
         assert(python) # A new method, created after the transition to Python indices.
         gui = self
-        if j is None: j = i + 1
-        i,j = gui.toGuiIndex(s,w,i), gui.toGuiIndex(s,w,j)
-        w.delete(i,j)
+        if j is None:
+            i = gui.toGuiIndex(s,w,i)
+            # Don't assume this is the same as w.delete(i,i+1), although it may be.
+            w.delete(i) 
+        else:
+            i,j = gui.toGuiIndex(s,w,i), gui.toGuiIndex(s,w,j)
+            w.delete(i,j)
     
     def rawInsert(self,w,s,i,ch,python=True):
     

@@ -387,7 +387,8 @@ class autoCompleterClass:
     
     def exit (self,restore=False): # Called from keyboard-quit.
         
-        c = self.c ; w = self.widget ; gui = g.app.gui
+        c = self.c ; gui = g.app.gui
+        w = self.widget or c.frame.body.bodyCtrl
         for name in (self.tabName,'Modules','Info'):
             c.frame.log.deleteTab(name)
         c.widgetWantsFocusNow(w)

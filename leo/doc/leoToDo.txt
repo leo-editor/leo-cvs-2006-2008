@@ -606,7 +606,7 @@ def redoTyping (self):
         c.bodyWantsFocus()
         c.frame.body.setYScrollPosition(u.yview)
 #@-node:EKR.20040526075238.5:redoTyping
-#@+node:ekr.20031218072017.1493:undoRedoText
+#@+node:ekr.20031218072017.1493:undoRedoText (passed)
 def undoRedoText (self,p,
     leading,trailing, # Number of matching leading & trailing lines.
     oldMidLines,newMidLines, # Lists of unmatched lines.
@@ -618,48 +618,14 @@ def undoRedoText (self,p,
     
     '''Handle text undo and redo: converts _new_ text into _old_ text.'''
 
-    u = self ; c = u.c ; body = c.frame.body
-    << Incrementally update the Tk.Text widget >>
+    u = self ; c = u.c ; body = c.frame.body ; w = body.bodyCtrl
+    
     << Compute the result using p's body text >>
     p.setTnodeText(result)
-    << Get textResult from the Tk.Text widget >>
-    if textResult == result:
-        c.frame.body.recolor(p,incremental=False)
-    else: # Rewrite the pane and do a full recolor.
-        if 0: # Warning: can cause unit tests to fail if text contains unicode.
-            << print mismatch trace >>
-        c.setBodyString(p,result)
-#@+node:ekr.20031218072017.1494:<< Incrementally update the Tk.Text widget >>
-# Only update the changed lines.
-mid_text = string.join(oldMidLines,'\n')
-new_mid_len = len(newMidLines)
-# Maybe this could be simplified, and it is good to treat the "end" with care.
-if trailing == 0:
-    c.frame.body.deleteLine(leading)
-    if leading > 0:
-        c.frame.body.insertAtEnd('\n')
-    c.frame.body.insertAtEnd(mid_text)
-else:
-    if new_mid_len > 0:
-        c.frame.body.deleteLines(leading,new_mid_len)
-    elif leading > 0:
-        c.frame.body.insertAtStartOfLine(leading,'\n')
-    c.frame.body.insertAtStartOfLine(leading,mid_text)
-# Try to end the Tk.Text widget with oldNewlines newlines.
-# This may be off by one, and we don't care because
-# we never use body text to compute undo results!
-s = c.frame.body.getAllText()
-newlines = 0 ; i = len(s) - 1
-while i >= 0 and s[i] == '\n':
-    newlines += 1 ; i -= 1
-# g.trace(newlines,oldNewlines)
-while newlines > oldNewlines:
-    c.frame.body.deleteLastChar()
-    newlines -= 1
-if oldNewlines > newlines:
-    c.frame.body.insertAtEnd('\n'*(oldNewlines-newlines))
-#@-node:ekr.20031218072017.1494:<< Incrementally update the Tk.Text widget >>
-#@+node:ekr.20031218072017.1495:<< Compute the result using p's body text >>
+    g.app.gui.setAllText(w,result)
+    c.frame.body.recolor(p,incremental=False)
+#@nonl
+#@+node:ekr.20061106105812.1:<< Compute the result using p's body text >>
 # Recreate the text using the present body text.
 body = p.bodyString()
 body = g.toUnicode(body,"utf-8")
@@ -683,21 +649,8 @@ result = s
 if u.debug_print:
     print "body:  ",body
     print "result:",result
-#@-node:ekr.20031218072017.1495:<< Compute the result using p's body text >>
-#@+node:ekr.20031218072017.1496:<< Get textResult from the Tk.Text widget >>
-textResult = c.frame.body.getAllText()
-
-if textResult != result:
-    # Remove the newline from textResult if that is the only difference.
-    if len(textResult) > 0 and textResult[:-1] == result:
-        textResult = result
-#@-node:ekr.20031218072017.1496:<< Get textResult from the Tk.Text widget >>
-#@+node:ekr.20031218072017.1497:<< print mismatch trace >>
-print "undo mismatch"
-print "expected:",result
-print "actual  :",textResult
-#@-node:ekr.20031218072017.1497:<< print mismatch trace >>
-#@-node:ekr.20031218072017.1493:undoRedoText
+#@-node:ekr.20061106105812.1:<< Compute the result using p's body text >>
+#@-node:ekr.20031218072017.1493:undoRedoText (passed)
 #@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
 #@+node:ekr.20051011072903.2:copyText
 def copyText (self,event=None):
@@ -720,19 +673,19 @@ def cutText (self,event=None):
     
     '''Invoked from the mini-buffer and from shortcuts.'''
     
-    f = self ; c = f.c ; w = event and event.widget
+    f = self ; c = f.c ; gui = g.app.gui ; w = event and event.widget
     if not w or not g.app.gui.isTextWidget(w): return
 
     name = c.widget_name(w)
-    oldSel = g.app.gui.getSelectionRange(w)
-    oldText = g.app.gui.getAllText(w)
-    i,j = g.app.gui.getSelectionRange(w)
+    oldSel = gui.getSelectionRange(w)
+    oldText = gui.getAllText(w)
+    i,j = gui.getSelectionRange(w)
     
     # Update the widget and set the clipboard text.
     s = w.get(i,j)
     if i != j:
         w.delete(i,j)
-        g.app.gui.replaceClipboardWith(s)
+        gui.replaceClipboardWith(s)
 
     if name.startswith('body'):
         c.frame.body.forceFullRecolor()
@@ -740,7 +693,7 @@ def cutText (self,event=None):
     elif name.startswith('head'):
         # The headline is not officially changed yet.
         # p.initHeadString(s)
-        s=g.app.gui.getAllText(w)
+        s = gui.getAllText(w)
         w.configure(width=f.tree.headWidth(s=s))
     else: pass
 
@@ -3838,11 +3791,11 @@ def findCharacterHelper (self,event,backward,extend):
         # Get the arg without touching the focus.
         k.getArg(event,tag,1,self.findCharacter,oneCharacter=True,useMinibuffer=False)
     else:
-        event = self.event ; w = self.w
+        event = self.event ; gui = g.app.gui ; w = self.w
         backward = self.backward ; extend = self.extend
-        ch = k.arg ; s = g.app.gui.getAllText(w)
-        def toGui (i): return g.app.gui.toGuiIndex(s,w,i)
-        def toPython (i): return g.app.gui.toPythonIndex(s,w,i)
+        ch = k.arg ; s =gui.getAllText(w)
+        def toGui (i): return gui.toGuiIndex(s,w,i)
+        def toPython (i): return gui.toPythonIndex(s,w,i)
         ins = toPython(self.insert)
         i = ins + g.choose(backward,-1,+1) # skip the present character.
         if backward:
@@ -4063,13 +4016,13 @@ def removeTabFromLines (self,event):
 def addRemoveHelper(self,event,ch,add,undoType):
 
     c = self.c ; k = self.k
-    w = self.editWidget(event)
+    gui = g.app.gui ; w = self.editWidget(event)
     if not w: return
 
     if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
+        s = gui.getSelectedText(w)
     else:
-        s = g.app.gui.getAllText(w)
+        s = gui.getAllText(w)
     if not s: return
     
     # Insert or delete spaces instead of tabs when negative tab width is in effect.
@@ -4084,10 +4037,10 @@ def addRemoveHelper(self,event,ch,add,undoType):
     
     # g.trace(g.app.gui.getSelectionRange(w),'len(result)',len(result))
     if g.app.gui.hasSelection(w):
-        i,j = g.app.gui.getSelectionRange(w)
+        i,j = gui.getSelectionRange(w)
         w.delete(i,j)
         w.insert(i,result)
-        g.app.gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
+        gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
     else:
         w.delete('1.0','end')
         w.insert('1.0',result)
@@ -4153,14 +4106,14 @@ def cleanLines (self,event):
     
     '''Removes leading whitespace from otherwise blanks lines.'''
 
-    k = self.k
+    k = self.k ; gui = g.app.gui
     w = self.editWidget(event)
     if not w: return
     
     if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
+        s = gui.getSelectedText(w)
     else:
-        s = g.app.gui.getAllText(w)
+        s = gui.getAllText(w)
 
     lines = [] ; changed = False
     for line in g.splitlines(s):
@@ -4174,11 +4127,11 @@ def cleanLines (self,event):
     if changed:
         self.beginCommand(undoType='clean-lines')
         result = ''.join(lines)
-        if g.app.gui.hasSelection(w):
+        if gui.hasSelection(w):
             i,j = g.app.gui.getSelectionRange(w)
             w.delete(i,j)
             w.insert(i,result)
-            g.app.gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
+            gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
         else:
             w.delete('1.0','end')
             w.insert('1.0',result)
@@ -4350,6 +4303,7 @@ def selfInsertCommand(self,event,action='insert'):
     elif ch: # Null chars must not delete the selection.
         i,j = oldSel
         i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
+        if i > j: i,j = j,i
         # Use raw insert/delete to retain the coloring.
         if i != j:                  gui.rawDelete(w,s,i,j,python=True)
         elif action == 'overwrite': gui.rawDelete(w,s,i,python=True)
@@ -4544,23 +4498,23 @@ def updateTab (self,p,w):
     d = g.scanDirectives(c,p)
     tab_width = d.get("tabwidth",c.tab_width)
     i,j = gui.getSelectionRange(w,python=True)
-    ins = gui.getInsertPoint(w,python=True)
+        # Returns insert point if no selection, with i <= j.
     s = gui.getAllText(w)
 
     if i != j:
         gui.rawDelete(w,s,i,j,python=True)
+
     if tab_width > 0:
-        gui.rawInsert(w,s,ins,'\t',python=True)
+        gui.rawInsert(w,s,i,'\t',python=True)
     else:
         # Get the preceeding characters.
-        start = g.skip_to_start_of_line(s,ins)
-        g.trace(start,ins)
-        s2 = s[start:ins]
+        start = g.skip_to_start_of_line(s,i)
+        s2 = s[start:i]
         
         # Compute n, the number of spaces to insert.
         width = g.computeWidth(s2,tab_width)
         n = abs(tab_width) - (width % abs(tab_width))
-        gui.rawInsert(w,s,ins,' ' * n,python=True)
+        gui.rawInsert(w,s,i,' ' * n,python=True)
 #@-node:ekr.20051026092433:updateTab (passed)
 #@-node:ekr.20051125080855:selfInsertCommand & helpers (passed)
 #@-node:ekr.20050920084036.85:insert & delete...
@@ -5578,7 +5532,7 @@ def moveLinesUp (self,event):
     '''Move all lines containing any selected text up one line,
     moving to the previous node as needed.'''
 
-    c = self.c
+    c = self.c ; gui = g.app.gui
     w = self.editWidget(event)
     if not w: return
 
@@ -5586,7 +5540,7 @@ def moveLinesUp (self,event):
     
     self.beginCommand(undoType='move-lines-up')
     
-    i,j = g.app.gui.getSelectionRange(w)
+    i,j = gui.getSelectionRange(w)
     i = w.index(i+' linestart')
     j = w.index(j+' lineend+1c')
     i2 = w.index(i+'-1c linestart')
@@ -5617,13 +5571,13 @@ def moveLinesUp (self,event):
         c.selectPosition(p)
         c.endUpdate()
         w.focus_force()
-        s = g.app.gui.getAllText(w)
+        s = gui.getAllText(w)
         if s.endswith('\n'):
             w.insert('end',selected)
         else:
             if selected.endswith('\n'): selected = selected[:-1]
             w.insert('end','\n'+selected)
-        g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
+        gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
 
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20060417183606.1:moveLinesUp (works, except for selection point when last line selected)
@@ -6159,13 +6113,13 @@ def removeTabFromLines (self,event):
 def addRemoveHelper(self,event,ch,add,undoType):
 
     c = self.c ; k = self.k
-    w = self.editWidget(event)
+    gui = g.app.gui ; w = self.editWidget(event)
     if not w: return
 
     if g.app.gui.hasSelection(w):
-        s = g.app.gui.getSelectedText(w)
+        s = gui.getSelectedText(w)
     else:
-        s = g.app.gui.getAllText(w)
+        s = gui.getAllText(w)
     if not s: return
     
     # Insert or delete spaces instead of tabs when negative tab width is in effect.
@@ -6180,10 +6134,10 @@ def addRemoveHelper(self,event,ch,add,undoType):
     
     # g.trace(g.app.gui.getSelectionRange(w),'len(result)',len(result))
     if g.app.gui.hasSelection(w):
-        i,j = g.app.gui.getSelectionRange(w)
+        i,j = gui.getSelectionRange(w)
         w.delete(i,j)
         w.insert(i,result)
-        g.app.gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
+        gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
     else:
         w.delete('1.0','end')
         w.insert('1.0',result)

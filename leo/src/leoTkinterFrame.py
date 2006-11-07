@@ -1552,19 +1552,19 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         '''Invoked from the mini-buffer and from shortcuts.'''
         
-        f = self ; c = f.c ; w = event and event.widget
+        f = self ; c = f.c ; gui = g.app.gui ; w = event and event.widget
         if not w or not g.app.gui.isTextWidget(w): return
     
         name = c.widget_name(w)
-        oldSel = g.app.gui.getSelectionRange(w)
-        oldText = g.app.gui.getAllText(w)
-        i,j = g.app.gui.getSelectionRange(w)
+        oldSel = gui.getSelectionRange(w)
+        oldText = gui.getAllText(w)
+        i,j = gui.getSelectionRange(w)
         
         # Update the widget and set the clipboard text.
         s = w.get(i,j)
         if i != j:
             w.delete(i,j)
-            g.app.gui.replaceClipboardWith(s)
+            gui.replaceClipboardWith(s)
     
         if name.startswith('body'):
             c.frame.body.forceFullRecolor()
@@ -1572,7 +1572,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         elif name.startswith('head'):
             # The headline is not officially changed yet.
             # p.initHeadString(s)
-            s=g.app.gui.getAllText(w)
+            s = gui.getAllText(w)
             w.configure(width=f.tree.headWidth(s=s))
         else: pass
     
@@ -2170,7 +2170,7 @@ class leoTkinterBody (leoFrame.leoBody):
             k.previousSelection = gui.getSelectionRange(w,python=True)
             x,y = gui.eventXY(event)
             i = gui.xyToPythonIndex(w,x,y)
-            # g.trace(x,y,i)
+            # g.trace(x,y,repr(i))
             g.app.gui.setSelectionRange(w,i,i,insert=i,python=True)
             c.editCommands.setMoveCol(w,i,python=True)
             c.frame.updateStatusLine()
@@ -2355,15 +2355,16 @@ class leoTkinterBody (leoFrame.leoBody):
         
         '''Update Leo after the body has been changed.'''
         
-        body = self ; c = self.c ; bodyCtrl = body.bodyCtrl
+        body = self ; c = self.c
+        gui = g.app.gui ; bodyCtrl = body.bodyCtrl
         trace = self.trace_onBodyChanged
         p = c.currentPosition()
         insert = bodyCtrl.index('insert')
         ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
         ch = g.toUnicode(ch,g.app.tkEncoding)
-        newText = g.app.gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
+        newText = gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
         # g.trace('newText',repr(newText))
-        newSel = g.app.gui.getSelectionRange(bodyCtrl)
+        newSel = gui.getSelectionRange(bodyCtrl)
         if oldText is None: oldText = p.bodyString()
         changed = oldText != newText
         if trace:
@@ -2497,7 +2498,7 @@ class leoTkinterBody (leoFrame.leoBody):
     
         self.bodyCtrl.after_idle(function,*args,**keys)
     #@-node:ekr.20031218072017.4005:Idle time...
-    #@+node:ekr.20031218072017.4006:Indices (tkBody) (MOST TO BE REMOVED)
+    #@+node:ekr.20031218072017.4006:Indices (tkBody) (TO BE REMOVED)
     #@+node:ekr.20031218072017.4007:adjustIndex (TO BE REMOVED) (Used in 1 or 2 places)
     def adjustIndex (self,index,offset):
         
@@ -2509,14 +2510,13 @@ class leoTkinterBody (leoFrame.leoBody):
     
         return self.bodyCtrl.compare(i,rel,j)
     #@-node:ekr.20031218072017.4008:compareIndices (TO BE REMOVED) (Used in 1 or 2 places)
-    #@+node:ekr.20031218072017.4011:getImageIndex
-    def getImageIndex (self,image):
-        
-        return self.bodyCtrl.index(image)
-    #@-node:ekr.20031218072017.4011:getImageIndex
-    #@-node:ekr.20031218072017.4006:Indices (tkBody) (MOST TO BE REMOVED)
+    #@+node:ekr.20031218072017.4011:getImageIndex (removed) (not used in plugins)
+    # def getImageIndex (self,image):
+        # return self.bodyCtrl.index(image)
+    #@-node:ekr.20031218072017.4011:getImageIndex (removed) (not used in plugins)
+    #@-node:ekr.20031218072017.4006:Indices (tkBody) (TO BE REMOVED)
     #@+node:ekr.20031218072017.4013:Insert point (tkBody) TO BE REMOVED
-    #@+node:ekr.20050710102922:get/setPythonInsertionPoint
+    #@+node:ekr.20050710102922:get/setPythonInsertionPoint (to be removed)
     def getPythonInsertionPoint (self,t=None,s=None):
         
         b = self
@@ -2533,8 +2533,8 @@ class leoTkinterBody (leoFrame.leoBody):
         if s is None: s = t.get('1.0','end')
         row,col = g.convertPythonIndexToRowCol(s,i)
         t.mark_set( 'insert','%d.%d' % (row+1,col))
-    #@-node:ekr.20050710102922:get/setPythonInsertionPoint
-    #@+node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint
+    #@-node:ekr.20050710102922:get/setPythonInsertionPoint (to be removed)
+    #@+node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint (to be removed)
     def getBeforeInsertionPoint (self):
         
         return self.bodyCtrl.index("insert-1c")
@@ -2542,8 +2542,8 @@ class leoTkinterBody (leoFrame.leoBody):
     def getInsertionPoint (self):
         
         return self.bodyCtrl.index("insert")
-    #@-node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint
-    #@+node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint
+    #@-node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint (to be removed)
+    #@+node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint (to be removed)
     def getCharAtInsertPoint (self):
         
         s = self.bodyCtrl.get("insert")
@@ -2553,8 +2553,8 @@ class leoTkinterBody (leoFrame.leoBody):
     
         s = self.bodyCtrl.get("insert -1c")
         return g.toUnicode(s,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint
-    #@+node:ekr.20031218072017.4016:setInsertionPointTo...
+    #@-node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint (to be removed)
+    #@+node:ekr.20031218072017.4016:setInsertionPointTo... (to be removed)
     def setInsertionPoint (self,index):
         self.bodyCtrl.mark_set("insert",index)
     
@@ -2563,14 +2563,58 @@ class leoTkinterBody (leoFrame.leoBody):
         
     def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
         self.bodyCtrl.mark_set("insert",str(1+lineNumber)+".0 linestart")
-    #@-node:ekr.20031218072017.4016:setInsertionPointTo...
+    #@-node:ekr.20031218072017.4016:setInsertionPointTo... (to be removed)
     #@-node:ekr.20031218072017.4013:Insert point (tkBody) TO BE REMOVED
     #@+node:ekr.20031218072017.4017:Menus
     def bind (self,*args,**keys):
         
         return self.bodyCtrl.bind(*args,**keys)
     #@-node:ekr.20031218072017.4017:Menus
-    #@+node:ekr.20031218072017.4018:Selection
+    #@+node:ekr.20031218072017.4018:Selection (tkBody) (to be moved into the base class)
+    #@+node:ekr.20031218072017.4037:setSelectionAreas (tkBody) (to be moved into the base class)
+    def setSelectionAreas (self,before,sel,after,python=False):
+        
+        """Replace the body text by before + sel + after and
+        set the selection so that the sel text is selected."""
+        
+        if 1:
+            w = self.bodyCtrl ; gui = g.app.gui
+            s = gui.getAllText(w)
+            before = before or ''
+            sel = sel or ''
+            after = after or ''
+            gui.rawDelete(w,s,0,len(s),python=True)
+            gui.rawInsert(w,s,0,before+sel+after,python=True)
+            sel_i,sel_j = len(before),len(before)+len(sel)
+            gui.setSelectionRange(w,sel_i,sel_j,insert=sel_j,python=True)
+            if python:
+                return sel_i,sel_j
+            else:
+                return gui.toGuiIndex(s,w,sel_i),gui.toGuiIndex(s,w,sel_j)
+    
+        else:
+            t = self.bodyCtrl ; gui = g.app.gui
+            t.delete("1.0","end")
+        
+            if before: t.insert("1.0",before)
+            sel_start = t.index("end-1c") # 10/24/03: -1c
+         
+            if sel: t.insert("end",sel)
+            sel_end = t.index("end")
+         
+            if after:
+                # A horrible Tk kludge.  Remove a trailing newline so we don't keep extending the text.
+                if after[-1] == '\n':
+                    after = after[:-1]
+                t.insert("end",after)
+        
+            gui.setSelectionRange(t,sel_start,sel_end)
+            # g.trace(sel_start,sel_end)
+            
+            return t.index(sel_start), t.index(sel_end)
+        
+    #@nonl
+    #@-node:ekr.20031218072017.4037:setSelectionAreas (tkBody) (to be moved into the base class)
     #@+node:ekr.20031218072017.4019:deleteTextSelection
     def deleteTextSelection (self):
         
@@ -2683,9 +2727,9 @@ class leoTkinterBody (leoFrame.leoBody):
             # g.es_exception()
             pass
     #@-node:ekr.20031218072017.4023:selectAllText
-    #@+node:ekr.20031218072017.4024:setSelectionRange (tkinterBody)
+    #@+node:ekr.20031218072017.4024:setSelectionRange (tkinterBody) (to be moved into the base class)
     def setSelectionRange (self,i,j=None,insert='sel.end'):
-        
+    
         # Allow the user to pass either a 2-tuple or two separate args.
         if i is None:
             i,j = "1.0","1.0"
@@ -2693,107 +2737,83 @@ class leoTkinterBody (leoFrame.leoBody):
             i,j = i
     
         g.app.gui.setSelectionRange(self.bodyCtrl,i,j,insert)
-    #@-node:ekr.20031218072017.4024:setSelectionRange (tkinterBody)
-    #@-node:ekr.20031218072017.4018:Selection
-    #@+node:ekr.20031218072017.4025:Text (tkBody) ALL TO BE REMOVED)
-    #@+node:ekr.20031218072017.4026:delete...
-    def deleteAllText(self):
-        self.bodyCtrl.delete("1.0","end")
+    #@-node:ekr.20031218072017.4024:setSelectionRange (tkinterBody) (to be moved into the base class)
+    #@+node:ekr.20031218072017.4038:Visibility & scrolling (tkBody) (to be moved into the base class)
+    def see (self,index,python=False):
+        g.app.gui.see(self.bodyCtrl,index,python=python)
+        
+    def seeInsertPoint (self):
+        g.app.gui.seeInsertPoint(self.bodyCtrl)
     
-    def deleteCharacter (self,index):
-        t = self.bodyCtrl
-        t.delete(t.index(index))
-        
-    def deleteLastChar (self):
-        self.bodyCtrl.delete("end-1c")
-        
-    def deleteLine (self,lineNumber): # zero based line number.
-        self.bodyCtrl.delete(str(1+lineNumber)+".0","end")
-        
-    def deleteLines (self,line1,numberOfLines): # zero based line numbers.
-        self.bodyCtrl.delete(str(1+line1)+".0",str(1+line1+numberOfLines-1)+".0 lineend")
-        
-    def deleteRange (self,index1,index2):
-        t = self.bodyCtrl
-        t.delete(t.index(index1),t.index(index2))
-    #@-node:ekr.20031218072017.4026:delete...
-    #@+node:ekr.20031218072017.4027:get...
-    #@+node:ekr.20031218072017.4028:tkBody.getAllText
-    def getAllText (self):
-        
-        """Return all the body text, converted to unicode."""
-        
-        s = self.bodyCtrl.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+    def setFirstVisibleIndex (self,index):
+        g.app.gui.yview(self.bodyCtrl,index)
     
-        if s is None:
-            return u""
+    def getYScrollPosition (self):
+        return self.bodyCtrl.yview()
+        
+    def setYScrollPosition (self,scrollPosition):
+        if len(scrollPosition) == 2:
+            first,last = scrollPosition
         else:
-            return g.toUnicode(s,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4028:tkBody.getAllText
-    #@+node:ekr.20031218072017.4029:getCharAtIndex
-    def getCharAtIndex (self,index):
+            first = scrollPosition
+        g.app.gui.yview(self.bodyCtrl,first)
         
-        """Return all the body text, converted to unicode."""
+    def scrollUp (self):
+        g.app.gui.yscroll(self.bodyCtrl,-1,'units')
         
-        s = self.bodyCtrl.get(index)
-        if s is None:
-            return u""
-        else:
-            return g.toUnicode(s,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4029:getCharAtIndex
-    #@+node:ekr.20031218072017.4030:getInsertLines
-    def getInsertLines (self):
-        
-        """Return before,after where:
-            
-        before is all the lines before the line containing the insert point.
-        sel is the line containing the insert point.
-        after is all the lines after the line containing the insert point.
-        
-        All lines end in a newline, except possibly the last line."""
-        
-        t = self.bodyCtrl
+    def scrollDown (self):
+        g.app.gui.yscroll(self.bodyCtrl,1,'units')
+    #@-node:ekr.20031218072017.4038:Visibility & scrolling (tkBody) (to be moved into the base class)
+    #@-node:ekr.20031218072017.4018:Selection (tkBody) (to be moved into the base class)
+    #@+node:ekr.20031218072017.4025:Text (tkBody) (to be moved into the base class)
+    #@+node:ekr.20031218072017.4026:delete... (removed)
+    # def deleteAllText(self):
+        # self.bodyCtrl.delete("1.0","end")
     
-        before = t.get("1.0","insert linestart")
-        ins    = t.get("insert linestart","insert lineend + 1c")
-        after  = t.get("insert lineend + 1c","end")
-    
-        before = g.toUnicode(before,g.app.tkEncoding)
-        ins    = g.toUnicode(ins,   g.app.tkEncoding)
-        after  = g.toUnicode(after ,g.app.tkEncoding)
-    
-        return before,ins,after
-    #@-node:ekr.20031218072017.4030:getInsertLines
-    #@+node:ekr.20031218072017.4031:getSelectionAreas
-    def getSelectionAreas (self):
+    # def deleteCharacter (self,index):
+        # t = self.bodyCtrl
+        # t.delete(t.index(index))
         
-        """Return before,sel,after where:
-            
-        before is the text before the selected text
-        (or the text before the insert point if no selection)
-        sel is the selected text (or "" if no selection)
-        after is the text after the selected text
-        (or the text after the insert point if no selection)"""
-    
-        t = self.bodyCtrl
+    # def deleteLastChar (self):
+        # self.bodyCtrl.delete("end-1c")
         
-        sel_index = t.getSelectionRange()
-        if len(sel_index) == 2:
-            i,j = sel_index
-            sel = t.get(i,j)
-        else:
-            i = j = t.index("insert")
-            sel = ""
-    
-        before = t.get("1.0",i)
-        after  = t.get(j,"end")
+    # def deleteLine (self,lineNumber): # zero based line number.
+        # self.bodyCtrl.delete(str(1+lineNumber)+".0","end")
         
-        before = g.toUnicode(before,g.app.tkEncoding)
-        sel    = g.toUnicode(sel,   g.app.tkEncoding)
-        after  = g.toUnicode(after ,g.app.tkEncoding)
-        return before,sel,after
-    #@-node:ekr.20031218072017.4031:getSelectionAreas
-    #@+node:ekr.20031218072017.2377:getSelectionLines (tkBody)
+    # def deleteLines (self,line1,numberOfLines): # zero based line numbers.
+        # self.bodyCtrl.delete(str(1+line1)+".0",str(1+line1+numberOfLines-1)+".0 lineend")
+        
+    # def deleteRange (self,index1,index2):
+        # t = self.bodyCtrl
+        # t.delete(t.index(index1),t.index(index2))
+    #@nonl
+    #@-node:ekr.20031218072017.4026:delete... (removed)
+    #@+node:ekr.20031218072017.4027:get... (tkBody) (to be removed)
+    #@+node:ekr.20031218072017.4028:tkBody.getAllText (removed)
+    # def getAllText (self):
+        # 
+        # """Return all the body text, converted to unicode."""
+        # 
+        # s = self.bodyCtrl.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+        # if s is None:
+            # return u""
+        # else:
+            # return g.toUnicode(s,g.app.tkEncoding)
+    #@nonl
+    #@-node:ekr.20031218072017.4028:tkBody.getAllText (removed)
+    #@+node:ekr.20031218072017.4029:getCharAtIndex (removed)
+    # def getCharAtIndex (self,index):
+        # 
+        # """Return all the body text, converted to unicode."""
+        # 
+        # s = self.bodyCtrl.get(index)
+        # if s is None:
+            # return u""
+        # else:
+            # return g.toUnicode(s,g.app.tkEncoding)
+    #@nonl
+    #@-node:ekr.20031218072017.4029:getCharAtIndex (removed)
+    #@+node:ekr.20031218072017.2377:getSelectionLines (tkBody) (move to base class)
     def getSelectionLines (self):
         
         """Return before,sel,after where:
@@ -2824,19 +2844,18 @@ class leoTkinterBody (leoFrame.leoBody):
         
         # g.trace(i,j)
         return before,sel,after
-    #@-node:ekr.20031218072017.2377:getSelectionLines (tkBody)
-    #@+node:ekr.20031218072017.4032:getTextRange
-    def getTextRange (self,index1,index2):
-        
-        t = self.bodyCtrl
-        return t.get(t.index(index1),t.index(index2))
-    #@-node:ekr.20031218072017.4032:getTextRange
-    #@-node:ekr.20031218072017.4027:get...
-    #@+node:ekr.20031218072017.4033:Insert...
+    #@-node:ekr.20031218072017.2377:getSelectionLines (tkBody) (move to base class)
+    #@+node:ekr.20031218072017.4032:getTextRange (removed)
+    # def getTextRange (self,index1,index2):
+        # t = self.bodyCtrl
+        # return t.get(t.index(index1),t.index(index2))
+    #@nonl
+    #@-node:ekr.20031218072017.4032:getTextRange (removed)
+    #@-node:ekr.20031218072017.4027:get... (tkBody) (to be removed)
+    #@+node:ekr.20031218072017.4033:Insert... (tkBody) (to be removed)
     #@+node:ekr.20031218072017.4034:insertAtInsertPoint
-    def insertAtInsertPoint (self,s):
-        
-        self.bodyCtrl.insert("insert",s)
+    # def insertAtInsertPoint (self,s):
+        # self.bodyCtrl.insert("insert",s)
     #@-node:ekr.20031218072017.4034:insertAtInsertPoint
     #@+node:ekr.20031218072017.4035:insertAtEnd
     def insertAtEnd (self,s):
@@ -2848,35 +2867,53 @@ class leoTkinterBody (leoFrame.leoBody):
         
         self.bodyCtrl.insert(str(1+lineNumber)+".0",s)
     #@-node:ekr.20031218072017.4036:insertAtStartOfLine
-    #@-node:ekr.20031218072017.4033:Insert...
-    #@+node:ekr.20031218072017.4037:setSelectionAreas (tkinterBody)
-    def setSelectionAreas (self,before,sel,after):
+    #@-node:ekr.20031218072017.4033:Insert... (tkBody) (to be removed)
+    #@+node:ekr.20031218072017.4037:setSelectionAreas (tkBody) (to be moved into the base class)
+    def setSelectionAreas (self,before,sel,after,python=False):
         
         """Replace the body text by before + sel + after and
         set the selection so that the sel text is selected."""
-    
-        t = self.bodyCtrl ; gui = g.app.gui
-        t.delete("1.0","end")
-    
-        if before: t.insert("1.0",before)
-        sel_start = t.index("end-1c") # 10/24/03: -1c
-    
-        if sel: t.insert("end",sel)
-        sel_end = t.index("end")
-    
-        if after:
-            # A horrible Tk kludge.  Remove a trailing newline so we don't keep extending the text.
-            if after[-1] == '\n':
-                after = after[:-1]
-            t.insert("end",after)
-    
-        gui.setSelectionRange(t,sel_start,sel_end)
-        # g.trace(sel_start,sel_end)
         
-        return t.index(sel_start), t.index(sel_end)
-    #@-node:ekr.20031218072017.4037:setSelectionAreas (tkinterBody)
-    #@-node:ekr.20031218072017.4025:Text (tkBody) ALL TO BE REMOVED)
-    #@+node:ekr.20031218072017.4038:Visibility & scrolling (tkBody)
+        if 1:
+            w = self.bodyCtrl ; gui = g.app.gui
+            s = gui.getAllText(w)
+            before = before or ''
+            sel = sel or ''
+            after = after or ''
+            gui.rawDelete(w,s,0,len(s),python=True)
+            gui.rawInsert(w,s,0,before+sel+after,python=True)
+            sel_i,sel_j = len(before),len(before)+len(sel)
+            gui.setSelectionRange(w,sel_i,sel_j,insert=sel_j,python=True)
+            if python:
+                return sel_i,sel_j
+            else:
+                return gui.toGuiIndex(s,w,sel_i),gui.toGuiIndex(s,w,sel_j)
+    
+        else:
+            t = self.bodyCtrl ; gui = g.app.gui
+            t.delete("1.0","end")
+        
+            if before: t.insert("1.0",before)
+            sel_start = t.index("end-1c") # 10/24/03: -1c
+         
+            if sel: t.insert("end",sel)
+            sel_end = t.index("end")
+         
+            if after:
+                # A horrible Tk kludge.  Remove a trailing newline so we don't keep extending the text.
+                if after[-1] == '\n':
+                    after = after[:-1]
+                t.insert("end",after)
+        
+            gui.setSelectionRange(t,sel_start,sel_end)
+            # g.trace(sel_start,sel_end)
+            
+            return t.index(sel_start), t.index(sel_end)
+        
+    #@nonl
+    #@-node:ekr.20031218072017.4037:setSelectionAreas (tkBody) (to be moved into the base class)
+    #@-node:ekr.20031218072017.4025:Text (tkBody) (to be moved into the base class)
+    #@+node:ekr.20031218072017.4038:Visibility & scrolling (tkBody) (to be moved into the base class)
     def see (self,index,python=False):
         g.app.gui.see(self.bodyCtrl,index,python=python)
         
@@ -2901,7 +2938,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
     def scrollDown (self):
         g.app.gui.yscroll(self.bodyCtrl,1,'units')
-    #@-node:ekr.20031218072017.4038:Visibility & scrolling (tkBody)
+    #@-node:ekr.20031218072017.4038:Visibility & scrolling (tkBody) (to be moved into the base class)
     #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
     #@-others
 #@-node:ekr.20031218072017.3996:class leoTkinterBody

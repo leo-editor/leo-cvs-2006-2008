@@ -2295,14 +2295,14 @@ class baseCommands:
         body.setSelectionRange(oldSel)
         body.setFocus()
     #@-node:ekr.20031218072017.1710:extractSectionNames
-    #@+node:ekr.20031218072017.1825:findBoundParagraph
+    #@+node:ekr.20031218072017.1825:c.findBoundParagraph
     def findBoundParagraph (self,event=None):
         
         c = self
         head,ins,tail = c.frame.body.getInsertLines()
     
         if not ins or ins.isspace() or ins[0] == '@':
-            return None,None,None,None # DTHEIN 18-JAN-2004
+            return None,None,None
             
         head_lines = g.splitLines(head)
         tail_lines = g.splitLines(tail)
@@ -2317,9 +2317,9 @@ class baseCommands:
                 print ; print "tail_lines"
                 for line in tail_lines: print line
             else:
-                g.es("head_lines: ",head_lines)
-                g.es("ins: ",ins)
-                g.es("tail_lines: ",tail_lines)
+                g.es_print("head_lines: ",head_lines)
+                g.es_print("ins: ",ins)
+                g.es_print("tail_lines: ",tail_lines)
             #@-node:ekr.20031218072017.1826:<< trace head_lines, ins, tail_lines >>
             #@nl
     
@@ -2336,15 +2336,11 @@ class baseCommands:
     
         # Scan forwards.
         i = 0
-        trailingNL = False # DTHEIN 18-JAN-2004: properly capture terminating NL
-        while i < len(tail_lines):
-            line = tail_lines[i]
-            if len(line) == 0 or line.isspace() or line[0] == '@':
-                trailingNL = line.endswith(u'\n') or line.startswith(u'@') # DTHEIN 21-JAN-2004
+        for line in tail_lines:
+            if not line or line.isspace() or line.startswith('@'):
                 break
             i += 1
-            
-    #   para_tail_lines = tail_lines[:i]
+    
         para_tail_lines = tail_lines[:i]
         post_para_lines = tail_lines[i:]
         
@@ -2354,51 +2350,51 @@ class baseCommands:
         result.extend(para_tail_lines)
         tail = g.joinLines(post_para_lines)
     
-        # DTHEIN 18-JAN-2004: added trailingNL to return value list
-        return head,result,tail,trailingNL # string, list, string, bool
-    #@-node:ekr.20031218072017.1825:findBoundParagraph
-    #@+node:ekr.20031218072017.1827:findMatchingBracket
+        return head,result,tail # string, list, string
+    #@nonl
+    #@-node:ekr.20031218072017.1825:c.findBoundParagraph
+    #@+node:ekr.20031218072017.1827:c.findMatchingBracket & helper
     def findMatchingBracket (self,event=None):
         
         '''Selecte the text between matching brackets.'''
         
         c = self ; body = c.frame.body
+        gui = g.app.gui ; w = body.bodyCtrl
         
         if g.app.batchMode:
             c.notValidInBatchMode("Match Brackets")
             return
     
         brackets = "()[]{}<>"
-        ch1 = body.getCharBeforeInsertPoint()
-        ch2 = body.getCharAtInsertPoint()
+        
+        s = gui.getAllText(w)
+        ins = gui.getInsertPoint(w,python=True)
+        ch1 = 0 <= ins-1 < len(s) and s[ins-1] or ''
+        ch2 = 0 <= ins   < len(s) and s[ins] or ''
+        # g.trace(repr(ch1),repr(ch2))
     
         # Prefer to match the character to the left of the cursor.
         if ch1 in brackets:
-            ch = ch1 ; index = body.getBeforeInsertionPoint()
+            ch = ch1 ; index = max(0,ins-1)
         elif ch2 in brackets:
-            ch = ch2 ; index = body.getInsertionPoint()
+            ch = ch2 ; index = ins
         else:
             return
         
-        index2 = self.findSingleMatchingBracket(ch,index)
+        index2 = self.findSingleMatchingBracket(s,ch,index)
         if index2:
-            if body.compareIndices(index,"<=",index2):
-                adj_index = body.adjustIndex(index2,1)
-                body.setSelectionRange(index,adj_index)
-            else:
-                adj_index = body.adjustIndex(index,1)
-                body.setSelectionRange(index2,adj_index)
-            adj_index = body.adjustIndex(index2,1)
-            body.setInsertionPoint(adj_index)
-            body.see(adj_index)
+            gui.setSelectionRange(w,index,index2+1,insert=index2+1,python=True)
+            gui.see(w,index2,python=True)
         else:
             g.es("unmatched '%s'",ch)
+    #@nonl
     #@+node:ekr.20031218072017.1828:findSingleMatchingBracket
     # To do: replace comments with blanks before scanning.
     # Test  unmatched())
-    def findSingleMatchingBracket(self,ch,index):
+    def findSingleMatchingBracket(self,s,ch,index):
         
         c = self ; body = c.frame.body
+        gui = g.app.gui ; w = body.bodyCtrl
         open_brackets  = "([{<" ; close_brackets = ")]}>"
         brackets = open_brackets + close_brackets
         matching_brackets = close_brackets + open_brackets
@@ -2410,27 +2406,27 @@ class baseCommands:
                 break
         level = 0
         while 1:
-            if forward and body.compareIndices(index,">=","end"):
+            if forward and index >= len(s):
                 # g.trace("not found")
                 return None
-            ch2 = body.getCharAtIndex(index)
+            ch2 = 0 <= index < len(s) and s[index] or ''
+            # g.trace('forward',forward,'ch2',repr(ch2),'index',index)
             if ch2 == ch:
-                level += 1 #; g.trace(level,index)
+                level += 1
             if ch2 == match_ch:
-                level -= 1 #; g.trace(level,index)
+                level -= 1
                 if level <= 0:
                     return index
-            if not forward and body.compareIndices(index,"<=","1.0"):
+            if not forward and index <= 0:
                 # g.trace("not found")
                 return None
-            adj = g.choose(forward,1,-1)
-            index = body.adjustIndex(index,adj)
+            index += g.choose(forward,1,-1)
         return 0 # unreachable: keeps pychecker happy.
     # Test  (
     # ([(x){y}]))
     # Test  ((x)(unmatched
     #@-node:ekr.20031218072017.1828:findSingleMatchingBracket
-    #@-node:ekr.20031218072017.1827:findMatchingBracket
+    #@-node:ekr.20031218072017.1827:c.findMatchingBracket & helper
     #@+node:ekr.20031218072017.1829:getBodyLines
     def getBodyLines (self,expandSelection=False):
         
@@ -2442,12 +2438,13 @@ class baseCommands:
         after is a string all lines after the selected text
         (or the text after the insert point if no selection)"""
     
-        c = self ; body = c.frame.body
+        c = self ; body = c.frame.body ; w = body.bodyCtrl
         oldVview = body.getYScrollPosition()
         oldSel   = body.getSelectionRange()
     
         if expandSelection: # 12/3/03
-            lines = body.getAllText()
+            ### lines = body.getAllText()
+            lines = g.app.gui.getAllText(w)
             head = tail = None
         else:
             # Note: lines is the entire line containing the insert point if no selection.
@@ -2486,12 +2483,13 @@ class baseCommands:
             result = string.join(result,'\n')
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20031218072017.1830:indentBody
-    #@+node:ekr.20031218072017.1831:insertBodyTime & allies
+    #@+node:ekr.20031218072017.1831:insertBodyTime & allies (passed)
     def insertBodyTime (self,event=None):
         
         '''Insert a time/date stamp at the cursor.'''
         
         c = self ; undoType = 'Insert Body Time'
+        gui = g.app.gui ; w = c.frame.body.bodyCtrl
         
         if g.app.batchMode:
             c.notValidInBatchMode(undoType)
@@ -2499,9 +2497,13 @@ class baseCommands:
         
         oldSel = c.frame.body.getSelectionRange()
         c.frame.body.deleteTextSelection() # Works if nothing is selected.
-        s = self.getTime(body=True)
+        s2 = self.getTime(body=True)
     
-        c.frame.body.insertAtInsertPoint(s)
+        ### c.frame.body.insertAtInsertPoint(s2)
+        s = gui.getAllText(w)
+        i = gui.getInsertPoint(w,python=True)
+        g.app.gui.rawInsert(w,s,i,s2,python=True)
+    
         c.frame.body.onBodyChanged(undoType,oldSel=oldSel)
     #@+node:ekr.20031218072017.1832:getTime & test
     def getTime (self,body=True):
@@ -2534,7 +2536,7 @@ class baseCommands:
             s = time.strftime(default_format,time.gmtime())
         return s
     #@-node:ekr.20031218072017.1832:getTime & test
-    #@-node:ekr.20031218072017.1831:insertBodyTime & allies
+    #@-node:ekr.20031218072017.1831:insertBodyTime & allies (passed)
     #@+node:ekr.20050312114529:insert/removeComments
     #@+node:ekr.20050312114529.1:addComments
     def addComments (self,event=None):
@@ -2628,7 +2630,7 @@ class baseCommands:
         c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20050312114529.2:deleteComments
     #@-node:ekr.20050312114529:insert/removeComments
-    #@+node:ekr.20031218072017.1833:reformatParagraph
+    #@+node:ekr.20031218072017.1833:reformatParagraph (fails)
     def reformatParagraph (self,event=None):
     
         """Reformat a text paragraph in a Tk.Text widget
@@ -2643,6 +2645,7 @@ class baseCommands:
     cursor."""
     
         c = self ; body = c.frame.body
+        gui = g.app.gui ; w = body.bodyCtrl
         
         if g.app.batchMode:
             c.notValidInBatchMode("xxx")
@@ -2658,10 +2661,11 @@ class baseCommands:
         pageWidth = theDict.get("pagewidth")
         tabWidth  = theDict.get("tabwidth")
         
-        original = body.getAllText()
-        oldSel   = body.getSelectionRange()
+        original = g.app.gui.getAllText(w)
+        oldSel = body.getSelectionRange()
         oldYview = body.getYScrollPosition()
-        head,lines,tail,trailingNL = c.findBoundParagraph() # DTHEIN 18-JAN-2004: add trailingNL
+        
+        head,lines,tail = c.findBoundParagraph()
         #@-node:ekr.20031218072017.1834:<< compute vars for reformatParagraph >>
         #@nl
         if lines:
@@ -2682,23 +2686,14 @@ class baseCommands:
             #@nl
             #@        << compute the result of wrapping all lines >>
             #@+node:ekr.20031218072017.1836:<< compute the result of wrapping all lines >>
-            # Remember whether the last line ended with a newline.
-            lastLine = lines[-1]
-            if 0: # DTHEIN 18-JAN-2004: removed because findBoundParagraph now gives trailingNL
-                trailingNL = lastLine and lastLine[-1] == '\n'
-            
-            # Remove any trailing newlines for wraplines.
-            lines = [line[:-1] for line in lines[:-1]]
-            if lastLine and not trailingNL:
-                lastLine = lastLine[:-1]
-            lines.extend([lastLine])
+            trailingNL = lines and lines[-1].endswith('\n')
+            lines = [g.choose(z.endswith('\n'),z[:-1],z) for z in lines]
             
             # Wrap the lines, decreasing the page width by indent.
             result = g.wrap_lines(lines,
                 pageWidth-indents[1],
                 pageWidth-indents[0])
             
-            # DTHEIN 18-JAN-2004
             # prefix with the leading whitespace, if any
             paddedResult = []
             paddedResult.append(leading_ws[0] + result[0])
@@ -2706,29 +2701,38 @@ class baseCommands:
                 paddedResult.append(leading_ws[1] + line)
             
             # Convert the result to a string.
-            result = '\n'.join(paddedResult) # DTHEIN 18-JAN-2004: use paddedResult
-            if 0: # DTHEIN 18-JAN-2004:  No need to do this.
-                if trailingNL:
-                    result += '\n'
+            result = '\n'.join(paddedResult)
+            if trailingNL: result = result + '\n'
+            #@nonl
             #@-node:ekr.20031218072017.1836:<< compute the result of wrapping all lines >>
             #@nl
             #@        << update the body, selection & undo state >>
             #@+node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
-            sel_start, sel_end = body.setSelectionAreas(head,result,tail)
+            junk, ins = body.setSelectionAreas(head,result,tail,python=True)
+            
+            # Advance to the next paragraph.
+            s = gui.getAllText(w)
+            while ins < len(s):
+                i,j = g.getLine(s,ins)
+                line = s[i:j]
+                if line.startswith('@') or line.isspace():
+                    ins = j+1
+                else:
+                    ins = i ; break
             
             changed = original != head + result + tail
-            undoType = g.choose(changed,"Reformat Paragraph",None)
-            body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
+            if changed:
+                undoType = g.choose(changed,"Reformat Paragraph",None)
+                body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
             
-            # Advance the selection to the next paragraph.
-            newSel = sel_end, sel_end
-            body.setSelectionRange(newSel)
-            body.see(sel_end)
-            
-            c.recolor()
+            gui.setSelectionRange(w,ins,ins,insert=ins,python=True)
+            gui.see(w,ins,python=True)
+            if changed:
+                c.recolor()
             #@-node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
             #@nl
-    #@-node:ekr.20031218072017.1833:reformatParagraph
+    #@nonl
+    #@-node:ekr.20031218072017.1833:reformatParagraph (fails)
     #@+node:ekr.20031218072017.1838:updateBodyPane (handles changeNodeContents)
     def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview,setSel=True):
         
@@ -6033,7 +6037,9 @@ class baseCommands:
     def canShiftBodyLeft (self):
     
         c = self ; body = c.frame.body
-        return body and body.getAllText()
+        w = body and body.bodyCtrl or None
+        # return body and body.getAllText()
+        return w and g.app.gui.getAllText(w)
     
     canShiftBodyRight = canShiftBodyLeft
     #@-node:ekr.20031218072017.2978:canShiftBodyLeft/Right

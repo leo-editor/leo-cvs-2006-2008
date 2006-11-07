@@ -1532,7 +1532,10 @@ class baseColorizer:
         
         for photo,image,line_index,i in self.image_references:
             try:
-                self.body.deleteCharacter(image)
+                ### self.body.deleteCharacter(image)
+                gui = g.app.gui ; w = self.body.bodyCtrl
+                gui.rawDelete(w,self.allBodyText,index,python=True)
+                self.allBodyText = gui.getAllText(w)
             except:
                 pass # The image may have been deleted earlier.
         

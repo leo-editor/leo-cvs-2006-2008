@@ -24,34 +24,47 @@ url_regex = re.compile(r"""(http|https|ftp)://[^\s'"]+[\w=/]""")
 #@+node:vpe.20060305064323.5:openURL()
 def openURL(tag,keywords):
     c = keywords.get("c")
-    row,col = c.frame.body.getInsertionPoint().split(".") # cursor position
-    line = c.frame.body.getTextRange("%s.0" %row, "%s.end" %row) # current line
+
+    gui = g.app.gui ; w = c.frame.body.bodyCtrl
+    s = gui.getAllText(w)
+    ins = gui.getInsertPoint(w,python=True)
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    line = s[i:j]
     
     for match in url_regex.finditer(line):
-        if ( match.start() < int(col) < match.end() ):
+        if match.start() < col < match.end():
             url = match.group()
-            start, end = match.start(), match.end()
-            c.frame.body.setSelectionRange("%s.%s" %(row,start), "%s.%s" %(row,end))
-            try:
-                import webbrowser
-                webbrowser.open(url)
-            except:
-                g.es("exception opening " + url)
-                g.es_exception()
-            return 1 # force to skip word selection if url found
+            if 0: # I have no idea why this code was present.
+                start,end = match.start(), match.end()
+                c.frame.body.setSelectionRange("%s.%s" %(row,start), "%s.%s" %(row,end))
+                gui.setSelectionRange(w,start,end,python=True)
+            if not g.app.unitTesting:
+                try:
+                    import webbrowser
+                    webbrowser.open(url)
+                except:
+                    g.es("exception opening " + url)
+                    g.es_exception()
+            return url # force to skip word selection if url found
+#@nonl
 #@-node:vpe.20060305064323.5:openURL()
 #@+node:vpe.20060426062042:colorizeURLs()
 def colorizeURLs(tag,keywords):
     c = keywords.get("c")
+    if not c: return
+
     c.frame.body.tag_configure("URL", underline=1, foreground="blue")
-    
-    lines = c.frame.body.getTextRange("1.0","end").split("\n")
-    row=1
+    gui = g.app.gui ; w = c.frame.body.bodyCtrl
+    s = gui.getAllText(w)
+    lines = s.split('\n')
+    n = 0 # The number of characters before the present line.
     for line in lines:
         for match in url_regex.finditer(line):
             start, end = match.start(), match.end()
-            c.frame.body.tag_add("URL", "%s.%s" %(row,start), "%s.%s" %(row,end))
-        row+=1
+            i,j = gui.toGuiIndex(s,w,n+start),gui.toGuiIndex(s,w,n+end)
+            c.frame.body.tag_add('URL',i,j)
+        n += len(line) + 1
 #@-node:vpe.20060426062042:colorizeURLs()
 #@-others
 
