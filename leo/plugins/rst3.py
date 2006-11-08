@@ -47,7 +47,7 @@ bwm_file = None
 if 0:
     bwm_file = open("bwm_file", "w")
 
-__version__ = '1.19'
+__version__ = '1.20'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -103,6 +103,7 @@ except ImportError:
 # files.
 # 1.18 BWM: Added support for mod_scripting plugin.
 # 1.19 EKR: Fixed crash that happens when invoked from menu.
+# 1.20 EKR: Registers the write-restructured-text command.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -672,10 +673,14 @@ class rstClass:
     
         def rst3PluginCallback (event=None):
             self.processTopTree(c.currentPosition())
+            
+        c.k.registerCommand('write-restructured-text',shortcut=None,
+            func=rst3PluginCallback,pane='all',verbose=False)
     
         table = (
             ("-",None,None),
-            ("Write Restructed Text","",rst3PluginCallback),
+            ### ("Write Restructed Text","",rst3PluginCallback),
+            '&write-restructured-text',
         )
     
         c.frame.menu.createMenuEntries(editMenu,table,dynamicMenu=True)
