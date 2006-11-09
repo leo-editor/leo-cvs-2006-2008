@@ -76,244 +76,140 @@ class leoBody:
         
         # Must be overridden in subclasses...
         self.colorizer = None
+        
+    #@nonl
+    #@+node:ekr.20031218072017.3660:leoBody.mustBeDefinedInSubclasses
+    mustBeDefinedInSubclasses = (
+        #'getAllText',
+        '__init__',
+        'addEditor',
+        'bbox',
+        'bind',
+        'bodyWantsFocus',
+        'cget',
+        'configure',
+        'createBindings',
+        'createControl',
+        'cycleEditorFocus',
+        'deleteEditor',
+        'getBodyPaneHeight',
+        'getBodyPaneWidth',
+        'getInsertionPoint',
+        'getSelectedText',
+        'getYScrollPosition',
+        'hasFocus',
+        'hasTextSelection',
+        'initialRatios',
+        'onBodyChanged',
+        'scheduleIdleTimeRoutine',
+        'scrollDown',
+        'scrollUp',
+        'see',
+        'selectAllText',
+        'selectEditor',
+        'selectLabel',
+        'selectMainEditor',
+        'setColorFromConfig', #
+        'setEditorColors',
+        'setFocus',
+        'setFontFromConfig'   
+        'setInsertionPoint',
+        'setSelectionRange',
+        'setYScrollPosition',
+        'tag_add',
+        'tag_bind',
+        'tag_configure',
+        'tag_delete',
+        'tag_remove',
+        'unselectLabel',
+        'updateEditors',
+    )
+    
+    #@-node:ekr.20031218072017.3660:leoBody.mustBeDefinedInSubclasses
+    #@+node:ekr.20061109102912:define leoBody.mustBeDefinedOnlyInBaseClass
+    mustBeDefinedOnlyInBaseClass = (
+        'getColorizer',
+        'getInsertLines',
+        'getSelectionAreas',
+        'oops',
+        'onClick',
+        'recolor',
+        'recolor_now',
+        'recolor_range',
+        'updateSyntaxColorer',
+    )
+    #@nonl
+    #@-node:ekr.20061109102912:define leoBody.mustBeDefinedOnlyInBaseClass
     #@-node:ekr.20031218072017.3657:leoBody.__init__
-    #@+node:ekr.20031218072017.3658:oops
-    def oops (self):
-        
-        g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
-    #@-node:ekr.20031218072017.3658:oops
-    #@+node:ekr.20031218072017.3659:leoBody.setFontFromConfig
-    def setFontFromConfig (self,w=None):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3659:leoBody.setFontFromConfig
-    #@+node:ekr.20031218072017.3660:Must be overriden in subclasses
-    def createBindings (self,w=None):
-        self.oops()
-    
-    def createControl (self,frame,parentFrame,p):
-        self.oops()
-        
-    def initialRatios (self):
-        self.oops()
-        
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-        self.oops()
-        
-    def setBodyFontFromConfig (self):
-        self.oops()
-    #@+node:ekr.20031218072017.3661:Bounding box (Tk spelling)
-    def bbox(self,index):
-    
-        self.oops()
-    #@-node:ekr.20031218072017.3661:Bounding box (Tk spelling)
-    #@+node:ekr.20031218072017.3662:Color tags (Tk spelling)
-    def tag_add (self,tagName,index1,index2):
-    
-        self.oops()
-    
-    def tag_bind (self,tagName,event,callback):
-    
-        self.oops()
-    
-    def tag_configure (self,colorName,**keys):
-    
-        self.oops()
-    
-    def tag_delete(self,tagName):
-    
-        self.oops()
-    
-    def tag_remove (self,tagName,index1,index2):
-        self.oops()
-    #@-node:ekr.20031218072017.3662:Color tags (Tk spelling)
-    #@+node:ekr.20031218072017.3663:Configuration (Tk spelling)
-    def cget(self,*args,**keys):
-        
-        self.oops()
-        
-    def configure (self,*args,**keys):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3663:Configuration (Tk spelling)
-    #@+node:ekr.20060528174558:Editors
-    def addEditor (self,event=None):
-        pass
-        
-    def cycleEditorFocus (self,event=None):
-        pass
-        
-    def deleteEditor (self,event=None):
-        pass
-        
-    def selectMainEditor (self,p):
-        pass
-        
-    def setEditorColors (self,bg,fg):
-        pass
-        
-    def updateEditors (self):
-        pass
-    #@-node:ekr.20060528174558:Editors
-    #@+node:ekr.20031218072017.3664:Focus
-    def hasFocus (self):
-        
-        self.oops()
-        
-    def setFocus (self):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3664:Focus
-    #@+node:ekr.20031218072017.3665:Height & width
-    def getBodyPaneHeight (self):
-        
-        self.oops()
-    
-    def getBodyPaneWidth (self):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3665:Height & width
-    #@+node:ekr.20031218072017.3666:Idle time...
-    def scheduleIdleTimeRoutine (self,function,*args,**keys):
-    
-        self.oops()
-    #@-node:ekr.20031218072017.3666:Idle time...
-    #@+node:ekr.20031218072017.3668:Insert point
-    def getBeforeInsertionPoint (self):
-        self.oops()
-    
-    def getInsertionPoint (self):
-        self.oops()
-        
-    def getCharAtInsertPoint (self):
-        self.oops()
-    
-    def getCharBeforeInsertPoint (self):
-        self.oops()
-        
-    def seeInsertPoint (self):
-        self.oops()
-        
-    def setInsertionPoint (self,index):
-        self.oops()
-    
-    def setInsertionPointToEnd (self):
-        self.oops()
-        
-    def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
-        self.oops()
-    #@-node:ekr.20031218072017.3668:Insert point
-    #@+node:ekr.20031218072017.3669:Menus
-    def bind (self,*args,**keys):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3669:Menus
-    #@+node:ekr.20031218072017.3670:Selection (leoBody)
-    # def deleteTextSelection (self):
-    #    self.oops()
-        
-    def getSelectedText (self):
-        w = self.bodyCtrl
-        return g.app.gui.getSelectedText(w)
-        
-    def getSelectionRange (self,sort=True,python=False):
-        w = self.bodyCtrl
-        return g.app.gui.getSelectionRange(w,sort=sort,python=python)
-        
-    def hasTextSelection (self):
-        self.oops()
-        
-    def selectAllText (self):
-        w = self.bodyCtrl
-        g.app.gui.selectAllText(w)
-        
-    def setSelectionRange (self,i,j=None,insert='sel.end',python=False):
-        w = self.bodyCtrl
-        g.app.gui.setSelectionRange(w,i,j,insert=insert,python=python)
-    #@-node:ekr.20031218072017.3670:Selection (leoBody)
-    #@+node:ekr.20031218072017.3671:Text (leoBody) (TO BE DELETED)
-    #@+node:ekr.20031218072017.3673:get/set... (leoBody)
-    def getAllText (self):
-        w = self.bodyCtrl
-        return g.app.gui.getAllText(w)
-    
-    # def getCharAtIndex (self,index):
-        # self.oops()
-        
-    # def getInsertLines (self):
-        # self.oops()
-        # return None,None,None
-        
-    # def getSelectionAreas (self):
-        # self.oops()
-        # return None,None,None
-        
-    # def getSelectionLines (self):
-        # self.oops()
-        # return None,None,None
-        
-    # def getTextRange (self,index1,index2):
-        # self.oops()
-        
-    # def setSelectionAreas (self,before,sel,after):
-        # self.oops()
+    #@+node:ekr.20061109173122:leoBody: must be defined in subclasses
+    def addEditor (self,event=None):                        self.oops()
+    def bbox(self,index):                                   self.oops()
+    def bind (self,*args,**keys):                           self.oops()
+    def bodyWantsFocus(self):                               self.oops()
+    def cget(self,*args,**keys):                            self.oops()
+    def configure (self,*args,**keys):                      self.oops()
+    def createBindings (self,w=None):                       self.oops()
+    def createControl (self,frame,parentFrame):             self.oops()
+    def createLabel (self,w):                               self.oops()
+    def cycleEditorFocus (self,event=None):                 self.oops()
+    def deleteEditor (self,event=None):                     self.oops()
+    def getBodyPaneHeight (self):                           self.oops() # return 500
+    def getBodyPaneWidth (self):                            self.oops() # return 600
+    def getSelectedText (self):                             self.oops()
+    def getSelectionRange (self,sort=True,toPython=False):  self.oops()
+    def getYScrollPosition (self):                          self.oops() # return 0
+    def hasFocus (self):                                    self.oops()
+    def hasTextSelection (self):                            self.oops() 
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): self.oops()
+    def scheduleIdleTimeRoutine (self,function,*args,**keys): self.oops()
+    def scrollDown (self):                                  self.oops()
+    def scrollUp (self):                                    self.oops()
+    def see (self,index,python=False):                      self.oops()
+    def selectAllText (self,event=None):                    self.oops()
+    def selectEditor(self,w):                               self.oops()
+    def selectLabel (self,w):                               self.oops()
+    def selectMainEditor (self,p):                          self.oops()
+    def setColorFromConfig (self):                          self.oops()
+    def setEditorColors (self,bg,fg):                       self.oops()
+    def setFocus (self):                                    self.oops()
+    def setFontFromConfig (self):                           self.oops()
+    def setInsertPoint (self,t,pos,python=False):           self.oops()
+    def setSelectionRange (self,i,j=None,insert='sel.end'): self.oops()
+    def setYScrollPosition (self,scrollPosition):           self.oops()
+    def tag_add (self,tagName,index1,index2):               self.oops()
+    def tag_bind (self,tagName,event,callback):             self.oops()
+    def tag_configure (self,colorName,**keys):              self.oops()
+    def tag_delete(self,tagName):                           self.oops()
+    def tag_remove (self,tagName,index1,index2):            self.oops()
+    def unselectLabel (self,w):                             self.oops()
+    def updateEditors (self):                               self.oops()
     #@nonl
-    #@-node:ekr.20031218072017.3673:get/set... (leoBody)
-    #@+node:ekr.20031218072017.3674:Insert... (leoBody) (TO BE DELETED)
-    # def insertAtInsertPoint (self,s): 
-        # self.oops()
+    #@-node:ekr.20061109173122:leoBody: must be defined in subclasses
+    #@+node:ekr.20061109173021:leoBody: must be defined in the base class
+    #@+node:ekr.20031218072017.3677:Coloring
+    def getColorizer(self):
         
-    def insertAtEnd (self,s):
-        
-        self.oops()
-        
-    def insertAtStartOfLine (self,lineNumber,s):
-        
-        self.oops()
-    #@nonl
-    #@-node:ekr.20031218072017.3674:Insert... (leoBody) (TO BE DELETED)
-    #@+node:ekr.20031218072017.3672:delete... (removed) 
-    # def deleteAllText(self):
-        # self.oops()
+        return self.colorizer
     
-    # def deleteCharacter (self,index):
-        # self.oops()
+    def recolor_now(self,p,incremental=False):
+    
+        self.colorizer.colorize(p.copy(),incremental)
+    
+    def recolor_range(self,p,leading,trailing):
         
-    # def deleteLastChar (self):
-        # self.oops()
+        self.colorizer.recolor_range(p.copy(),leading,trailing)
+    
+    def recolor(self,p,incremental=False):
         
-    # def deleteLine (self,lineNumber): # zero based line number.
-        # self.oops()
+        if 0: # Do immediately
+            self.colorizer.colorize(p.copy(),incremental)
+        else: # Do at idle time
+            self.colorizer.schedule(p.copy(),incremental)
         
-    # def deleteLines (self,line1,numberOfLines): # zero based line numbers.
-        # self.oops()
+    def updateSyntaxColorer(self,p):
         
-    # def deleteRange (self,index1,index2):
-        # self.oops()
-    #@nonl
-    #@-node:ekr.20031218072017.3672:delete... (removed) 
-    #@-node:ekr.20031218072017.3671:Text (leoBody) (TO BE DELETED)
-    #@+node:ekr.20031218072017.3676:Visibility & scrolling
-    def see (self,index):
-        self.oops()
-        
-    def setFirstVisibleIndex (self,index):
-        self.oops()
-        
-    def getYScrollPosition (self):
-        self.oops()
-        
-    def setYScrollPosition (self,scrollPosition):
-        self.oops()
-        
-    def scrollUp (self):
-        self.oops()
-        
-    def scrollDown (self):
-        self.oops()
-    #@-node:ekr.20031218072017.3676:Visibility & scrolling
-    #@-node:ekr.20031218072017.3660:Must be overriden in subclasses
-    #@+node:ekr.20061106193512:Gui-independent methods
+        return self.colorizer.updateSyntaxColorer(p.copy())
+    #@-node:ekr.20031218072017.3677:Coloring
     #@+node:ekr.20031218072017.4030:getInsertLines (passed)
     def getInsertLines (self):
         
@@ -366,33 +262,32 @@ class leoBody:
         return before,sel,after
     #@nonl
     #@-node:ekr.20031218072017.4031:getSelectionAreas (passed)
-    #@-node:ekr.20061106193512:Gui-independent methods
-    #@+node:ekr.20031218072017.3677:Coloring
-    # It's weird to have the tree class be responsible for coloring the body pane!
-    
-    def getColorizer(self):
+    #@+node:ekr.20061109095450.8:onClick (passed)
+    def onClick (self,event):
         
-        return self.colorizer
-    
-    def recolor_now(self,p,incremental=False):
-    
-        self.colorizer.colorize(p.copy(),incremental)
-    
-    def recolor_range(self,p,leading,trailing):
+        c = self.c ; k = c.k ; gui = g.app.gui
+        w = event and event.widget
+        wname = c.widget_name(w)
         
-        self.colorizer.recolor_range(p.copy(),leading,trailing)
-    
-    def recolor(self,p,incremental=False):
+        if wname.startswith('body'):
+            # A hack to support middle-button pastes: remember the previous selection.
+            k.previousSelection = gui.getSelectionRange(w,python=True)
+            x,y = gui.eventXY(event)
+            i = gui.xyToPythonIndex(w,x,y)
+            # g.trace(x,y,repr(i))
+            g.app.gui.setSelectionRange(w,i,i,insert=i,python=True)
+            c.editCommands.setMoveCol(w,i,python=True)
+            c.frame.updateStatusLine()
+            self.selectEditor(w)
+        else:
+            g.trace('can not happen')
+    #@-node:ekr.20061109095450.8:onClick (passed)
+    #@+node:ekr.20031218072017.3658:oops
+    def oops (self):
         
-        if 0: # Do immediately
-            self.colorizer.colorize(p.copy(),incremental)
-        else: # Do at idle time
-            self.colorizer.schedule(p.copy(),incremental)
-        
-    def updateSyntaxColorer(self,p):
-        
-        return self.colorizer.updateSyntaxColorer(p.copy())
-    #@-node:ekr.20031218072017.3677:Coloring
+        g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
+    #@-node:ekr.20031218072017.3658:oops
+    #@-node:ekr.20061109173021:leoBody: must be defined in the base class
     #@-others
 #@-node:ekr.20031218072017.3656:class leoBody
 #@+node:ekr.20031218072017.3678:class leoFrame
@@ -435,16 +330,98 @@ class leoFrame:
         self.startupWindow=False # True if initially opened window
         self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
         self.tab_width = 0 # The tab width in effect in this pane.
-    #@-node:ekr.20031218072017.3679:  leoFrame.__init__
-    #@+node:ekr.20031218072017.3680: Must be defined in subclasses
-    #@+node:ekr.20031218072017.3681: gui-dependent commands
-    # In the Edit menu...
-    def OnCopy  (self,event=None): self.oops()
-    def OnCut   (self,event=None): self.oops()
-    def OnPaste (self,event=None): self.oops()
+    #@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
+    mustBeDefinedOnlyInBaseClass = (
+       
+        'initialRatios',
+        'longFileName',
+        'oops',
+        'promptForSave',
+        'scanForTabWidth',
+        'shortFileName',
     
-    def OnCutFromMenu  (self,event=None):     self.oops()
-    def OnCopyFromMenu (self,event=None):     self.oops()
+        # 'bodyWantsFocus',
+        # 'headlineWantsFocus',
+        # 'logWantsFocus',
+        # 'minibufferWantsFocus',
+    )
+    #@nonl
+    #@-node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
+    #@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
+    mustBeDefinedInSubclasses = (
+        #Gui-dependent commands.
+        'OnPaste',
+        'OnPasteFromMenu',
+        'abortEditLabelCommand',
+        'cascade',
+        'contractBodyPane',
+        'contractLogPane',
+        'contractOutlinePane',
+        'contractPane',
+        'copyText',
+        'cutText',
+        'endEditLabelCommand',
+        'equalSizedPanes',
+        'expandLogPane',
+        'expandPane',
+        'fullyExpandBodyPane',
+        'fullyExpandLogPane',
+        'fullyExpandOutlinePane',
+        'fullyExpandPane',
+        'hideBodyPane',
+        'hideLogPane',
+        'hideLogWindow',
+        'hideOutlinePane',
+        'hidePane',
+        'insertHeadlineTime',
+        'leoHelp',
+        'minimizeAll',
+        'pasteText',
+        'resizeToScreen',
+        'toggleActivePane',
+        'toggleSplitDirection',
+        # Windowutilities...
+        'bringToFront',
+        'deiconify',
+        'get_window_info',
+        'lift',
+        'update',
+        # Config...
+        'resizePanesToRatio',
+        'setInitialWindowGeometry',
+        'setTopGeometry',
+        # Statusline...
+        'createStatusLine',
+        'clearStatusLine',
+        'disableStatusLine',
+        'enableStatusLine',
+        'getStatusLine',
+        'putStatusLine',
+        'setFocusStatusLine',
+        'statusLineIsEnabled',
+        'updateStatusLine',
+    )
+    #@nonl
+    #@-node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
+    #@-node:ekr.20031218072017.3679:  leoFrame.__init__
+    #@+node:ekr.20031218072017.3680:Must be defined in subclasses
+    #@+node:ekr.20031218072017.3683:Config...
+    def resizePanesToRatio (self,ratio,secondary_ratio):    self.oops()
+    def setInitialWindowGeometry (self):                    self.oops()
+    
+    def setTopGeometry (self,w,h,x,y,adjustSize=True):
+        __pychecker__ = '--no-argsused' # adjustSize used in derived classes.
+        self.oops()
+    #@-node:ekr.20031218072017.3683:Config...
+    #@+node:ekr.20031218072017.3681:Gui-dependent commands
+    # In the Edit menu...
+    
+    # def OnCopy  (self,event=None): self.oops()
+    # def OnCut   (self,event=None): self.oops()
+    # def OnCutFromMenu  (self,event=None):     self.oops()
+    # def OnCopyFromMenu (self,event=None):     self.oops()
+    
+    def OnPaste (self,event=None): self.oops()
     def OnPasteFromMenu (self,event=None):    self.oops()
     
     def copyText  (self,event=None): self.oops()
@@ -485,61 +462,8 @@ class leoFrame:
     
     # In help menu...
     def leoHelp (self,event=None): self.oops()
-    #@-node:ekr.20031218072017.3681: gui-dependent commands
-    #@+node:ekr.20031218072017.3682:bringToFront, deiconify, lift & update
-    def bringToFront (self):
-        
-        self.oops()
-    
-    def deiconify (self):
-        
-        self.oops()
-        
-    def lift (self):
-        
-        self.oops()
-        
-    def update (self):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3682:bringToFront, deiconify, lift & update
-    #@+node:ekr.20031218072017.3683:config stuff...
-    #@+node:ekr.20031218072017.3684:resizePanesToRatio
-    def resizePanesToRatio (self,ratio,secondary_ratio):
-        
-        pass
-    #@-node:ekr.20031218072017.3684:resizePanesToRatio
-    #@+node:ekr.20031218072017.3685:setInitialWindowGeometry
-    def setInitialWindowGeometry (self):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3685:setInitialWindowGeometry
-    #@+node:ekr.20031218072017.3686:setTopGeometry
-    def setTopGeometry (self,w,h,x,y,adjustSize=True):
-        
-        __pychecker__ = '--no-argsused' # adjustSize used in derived classes.
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3686:setTopGeometry
-    #@-node:ekr.20031218072017.3683:config stuff...
-    #@+node:ekr.20041222055747:leoFrame.unpack/repack...
-    def repackBodyPane (self):
-        
-        self.oops()
-    
-    def repackFrameWidgets (self):
-        
-        self.oops()
-        
-    def unpackFrameWidgets (self):
-        
-        self.oops()
-        
-    def unpackBodyPane (self):
-        
-        self.oops()
-    #@-node:ekr.20041222055747:leoFrame.unpack/repack...
-    #@+node:ekr.20061106064948:Status line
+    #@-node:ekr.20031218072017.3681:Gui-dependent commands
+    #@+node:ekr.20061106064948:Status line...
     def createStatusLine (self):                    self.oops()
     def clearStatusLine (self):                     self.oops()
     def disableStatusLine (self,background=None):   self.oops()
@@ -549,10 +473,17 @@ class leoFrame:
     def setFocusStatusLine (self):                  self.oops()
     def statusLineIsEnabled(self):                  self.oops()
     def updateStatusLine(self):                     self.oops()
-        
-    # getStatusObject = getStatusLine
-    #@-node:ekr.20061106064948:Status line
-    #@-node:ekr.20031218072017.3680: Must be defined in subclasses
+    #@nonl
+    #@-node:ekr.20061106064948:Status line...
+    #@+node:ekr.20031218072017.3682:Window...
+    def bringToFront (self):    self.oops()
+    def deiconify (self):       self.oops()
+    def get_window_info(self):  self.oops()
+    def lift (self):            self.oops()
+    def update (self):          self.oops()
+    #@-node:ekr.20031218072017.3682:Window...
+    #@-node:ekr.20031218072017.3680:Must be defined in subclasses
+    #@+node:ekr.20061109125528:May be defined in subclasses
     #@+node:ekr.20031218072017.3687:setTabWidth
     def setTabWidth (self,w):
         
@@ -566,6 +497,8 @@ class leoFrame:
     def setTitle (self,title):
         self.title = title
     #@-node:ekr.20031218072017.3688:getTitle & setTitle
+    #@-node:ekr.20061109125528:May be defined in subclasses
+    #@+node:ekr.20061109125528.1:Must be defined in base class
     #@+node:ekr.20031218072017.3689:initialRatios
     def initialRatios (self):
         
@@ -667,25 +600,27 @@ class leoFrame:
     
         c.frame.setTabWidth(w)
     #@-node:ekr.20031218072017.1375:scanForTabWidth
-    #@+node:ekr.20060206093313:Focus
-    # For compatibility with old scripts.
-    # Using the commander methods directly is recommended.
-    
-    def getFocus(self):
-        return g.app.gui.get_focus(self.c) # Used by wxGui plugin.
-    
-    def bodyWantsFocus(self):
-        return self.c.bodyWantsFocus()
-       
-    def headlineWantsFocus(self,p):
-        return self.c.headlineWantsFocus(p)
+    #@-node:ekr.20061109125528.1:Must be defined in base class
+    #@+node:ekr.20060206093313:Focus (leoFrame) (to be removed)
+    if 1:
+        # For compatibility with old scripts.
+        # Using the commander methods directly is recommended.
         
-    def logWantsFocus(self):
-        return self.c.logWantsFocus()
+        def getFocus(self):
+            return g.app.gui.get_focus(self.c) # Used by wxGui plugin.
         
-    def minibufferWantsFocus(self):
-        return self.c.minibufferWantsFocus()
-    #@-node:ekr.20060206093313:Focus
+        def bodyWantsFocus(self):
+            return self.c.bodyWantsFocus()
+           
+        def headlineWantsFocus(self,p):
+            return self.c.headlineWantsFocus(p)
+            
+        def logWantsFocus(self):
+            return self.c.logWantsFocus()
+            
+        def minibufferWantsFocus(self):
+            return self.c.minibufferWantsFocus()
+    #@-node:ekr.20060206093313:Focus (leoFrame) (to be removed)
     #@-others
 #@-node:ekr.20031218072017.3678:class leoFrame
 #@+node:ekr.20031218072017.3694:class leoLog
@@ -793,61 +728,59 @@ class leoTree:
         # "public" ivars: correspond to setters & getters.
         self._editPosition = None
         self.redrawCount = 0 # For traces
+    #@+node:ekr.20061109164512:leoTree.mustBeDefinedOnlyInBaseClass
+    mustBeDefinedOnlyInBaseClass = (
+        # Getters & setters.
+        'editPosition',
+        'getEditTextDict',
+        'setEditPosition',
+        # Others.
+        'OnIconDoubleClick',
+        'oops',
+    )
+    #@nonl
+    #@-node:ekr.20061109164512:leoTree.mustBeDefinedOnlyInBaseClass
+    #@+node:ekr.20061109164610:leoTree.mustBeDefinedInSubclasses
+    mustBeDefinedInSubclasses = (
+        # Colors & fonts.
+        'getFont',
+        'setColorFromConfig ',
+        'setFont',
+        'setFontFromConfig ',
+        # Drawing & scrolling.
+        'drawIcon',
+        'redraw_now',
+        'scrollTo',
+        # Headlines.
+        'editLabel',
+        'endEditLabel',
+        'setEditLabelState',
+        # Selecting & expanding.
+        'expandAllAncestors',
+        'select',
+    )
+    #@-node:ekr.20061109164610:leoTree.mustBeDefinedInSubclasses
     #@-node:ekr.20031218072017.3705:  tree.__init__ (base class)
     #@+node:ekr.20031218072017.3706: Must be defined in subclasses
-    #@+node:ekr.20031218072017.3709:Colors & Fonts
-    def setColorFromConfig (self):
-        self.oops()
-    
-    def getFont(self):
-        self.oops()
-        
-    def setFont(self,font=None,fontName=None):
-        self.oops()
-        
-    def setFontFromConfig (self):
-        self.oops()
-    #@-node:ekr.20031218072017.3709:Colors & Fonts
-    #@+node:ekr.20031218072017.3707:Drawing
-    def drawIcon(self,v,x=None,y=None):
-        self.oops()
-    
-    def redraw_now(self,scroll=True):
-        self.oops()
-    #@-node:ekr.20031218072017.3707:Drawing
-    #@+node:ekr.20031218072017.3708:Edit label
-    def editLabel(self,v,selectAll=False):
-        
-        __pychecker__ = '--no-argsused' # base classes have many unused args.
-    
-        self.oops()
-    
-    def endEditLabel(self):
-        self.oops()
-    
-    def setEditLabelState(self,v,selectAll=False):
-        
-        __pychecker__ = '--no-argsused' # base classes have many unused args.
-    
-        self.oops()
-    #@-node:ekr.20031218072017.3708:Edit label
-    #@+node:ekr.20031218072017.3711:Scrolling
-    def scrollTo(self,p):
-        self.oops()
-        
+    # Colors & fonts.
+    def getFont(self):                              self.oops()
+    def setColorFromConfig (self):                  self.oops()
+    def setFont(self,font=None,fontName=None):      self.oops()
+    def setFontFromConfig (self):                   self.oops()
+    # Drawing & scrolling.
+    def drawIcon(self,v,x=None,y=None):             self.oops()
+    def redraw_now(self,scroll=True):               self.oops()
+    def scrollTo(self,p):                           self.oops()
     idle_scrollTo = scrollTo # For compatibility.
-    #@-node:ekr.20031218072017.3711:Scrolling
-    #@+node:ekr.20031218072017.3712:Selecting
-    def select(self,p,updateBeadList=True):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3712:Selecting
-    #@+node:ekr.20031218072017.3713:Tree operations
-    def expandAllAncestors(self,v):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3713:Tree operations
+    # Headlines.
+    def editLabel(self,v,selectAll=False):          self.oops()
+    def endEditLabel(self):                         self.oops()
+    def setEditLabelState(self,v,selectAll=False):  self.oops()
+    # Selecting & expanding.
+    def expandAllAncestors(self,v):                 self.oops()
+    def select(self,p,updateBeadList=True):         self.oops()
     #@-node:ekr.20031218072017.3706: Must be defined in subclasses
+    #@+node:ekr.20061109165848:Must be defined in base class
     #@+node:ekr.20031218072017.3716:Getters/Setters (tree)
     def getEditTextDict(self,v):
         # New in 4.2: the default is an empty list.
@@ -859,11 +792,6 @@ class leoTree:
     def setEditPosition(self,p):
         self._editPosition = p
     #@-node:ekr.20031218072017.3716:Getters/Setters (tree)
-    #@+node:ekr.20031218072017.3718:oops
-    def oops(self):
-        
-        print "leoTree oops:", g.callers(), "should be overridden in subclass"
-    #@-node:ekr.20031218072017.3718:oops
     #@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
     def OnIconDoubleClick (self,p):
     
@@ -973,10 +901,12 @@ class leoTree:
         #@nl
     #@-node:ekr.20061030161842:handleUrlInUrlNode
     #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
-    #@+node:ekr.20040106095546.1:tree.enableDrawingAfterException
-    def enableDrawingAfterException (self):
-        pass
-    #@-node:ekr.20040106095546.1:tree.enableDrawingAfterException
+    #@+node:ekr.20031218072017.3718:oops
+    def oops(self):
+        
+        print "leoTree oops:", g.callers(), "should be overridden in subclass"
+    #@-node:ekr.20031218072017.3718:oops
+    #@-node:ekr.20061109165848:Must be defined in base class
     #@-others
 #@-node:ekr.20031218072017.3704:class leoTree
 #@+node:ekr.20031218072017.2191:class nullBody
@@ -1037,331 +967,50 @@ class nullBody (leoBody):
         return i
     #@-node:ekr.20031218072017.2196:scanToEndOfLine
     #@-node:ekr.20031218072017.2193:Utils (internal use)
-    #@+node:ekr.20031218072017.2197:Must be overriden in subclasses
-    def createBindings (self,w=None):
-        self.oops()
-    
-    def createControl (self,frame,parentFrame):
-        self.oops()
-        
-    def initialRatios (self):
-        self.oops()
-        
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-        self.oops()
-        
-    def setBodyFontFromConfig (self):
-        self.oops()
-    #@+node:ekr.20031218072017.2198:Bounding box
-    def bbox(self,index):
-        return (0,0)
-    #@-node:ekr.20031218072017.2198:Bounding box
-    #@+node:ekr.20031218072017.2199:Color tags
-    def tag_add (self,tagName,index1,index2):
-        pass
-    
-    def tag_bind (self,tagName,event,callback):
-        pass
-    
-    def tag_configure (self,colorName,**keys):
-        pass
-    
-    def tag_delete(self,tagName):
-        pass
-    
-    def tag_remove (self,tagName,index1,index2):
-        pass
-    #@-node:ekr.20031218072017.2199:Color tags
-    #@+node:ekr.20031218072017.2200:Configuration
-    def cget(self,*args,**keys):
-        pass
-        
-    def configure (self,*args,**keys):
-        pass
-    #@-node:ekr.20031218072017.2200:Configuration
-    #@+node:ekr.20031218072017.2201:Focus
-    def hasFocus (self):
-        return True
-        
-    def setFocus (self):
-        pass
-    #@-node:ekr.20031218072017.2201:Focus
-    #@+node:ekr.20031218072017.2202:Height & width (use dummy values...)
-    def getBodyPaneHeight (self):
-        
-        return 500
-    
-    def getBodyPaneWidth (self):
-    
-        return 600
-    #@-node:ekr.20031218072017.2202:Height & width (use dummy values...)
-    #@+node:ekr.20031218072017.2203:Idle time...
-    def scheduleIdleTimeRoutine (self,function,*args,**keys):
-    
-        g.trace()
-    #@-node:ekr.20031218072017.2203:Idle time...
-    #@+node:ekr.20031218072017.2204:Indices (nullBody) (removed)
-    # def adjustIndex (self,index,offset):
-        # return index + offset
-    
-    # def compareIndices(self,i,rel,j):
-        # return eval("%d %s %d" % (i,rel,j))
-    
-    # def getImageIndex (self,image):
-        # self.oops()
+    #@+node:ekr.20031218072017.2197:nullBody: leoBody interface
+    def addEditor (self,event=None):                        pass
+    def bbox(self,index):                                   return (0,0)
+    def bind (self,*args,**keys):                           pass
+    def bodyWantsFocus(self):                               pass
+    def cget(self,*args,**keys):                            pass
+    def configure (self,*args,**keys):                      pass
+    def createBindings (self,w=None):                       pass
+    def createControl (self,frame,parentFrame):             pass
+    def createLabel (self,w):                               pass
+    def cycleEditorFocus (self,event=None):                 pass
+    def deleteEditor (self,event=None):                     pass
+    def getBodyPaneHeight (self):                           return 500
+    def getBodyPaneWidth (self):                            return 600
+    def getSelectedText (self):                             pass
+    def getSelectionRange (self,sort=True,toPython=False):  pass
+    def getYScrollPosition (self):                          return 0
+    def hasFocus (self):                                    pass
+    def hasTextSelection (self):                            pass 
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): pass
+    def scheduleIdleTimeRoutine (self,function,*args,**keys): pass
+    def scrollDown (self):                                  pass
+    def scrollUp (self):                                    pass
+    def see (self,index,python=False):                      pass
+    def selectAllText (self,event=None):                    pass
+    def selectEditor(self,w):                               pass
+    def selectLabel (self,w):                               pass
+    def selectMainEditor (self,p):                          pass
+    def setColorFromConfig (self):                          pass
+    def setEditorColors (self,bg,fg):                       pass
+    def setFocus (self):                                    pass
+    def setFontFromConfig (self):                           pass
+    def setInsertPoint (self,t,pos,python=False):           pass
+    def setSelectionRange (self,i,j=None,insert='sel.end'): pass
+    def setYScrollPosition (self,scrollPosition):           pass
+    def tag_add (self,tagName,index1,index2):               pass
+    def tag_bind (self,tagName,event,callback):             pass
+    def tag_configure (self,colorName,**keys):              pass
+    def tag_delete(self,tagName):                           pass
+    def tag_remove (self,tagName,index1,index2):            pass
+    def unselectLabel (self,w):                             pass
+    def updateEditors (self):                               pass
     #@nonl
-    #@-node:ekr.20031218072017.2204:Indices (nullBody) (removed)
-    #@+node:ekr.20031218072017.2205:Insert point (nullBody) (removed)
-    # def getInsertionPoint (self):
-        # return self.insertPoint
-    
-    # def setInsertionPoint (self,index):
-        # self.insertPoint = index
-    
-    # def getBeforeInsertionPoint (self):
-        # return self.insertPoint - 1
-    
-    # def getCharAtInsertPoint (self):
-        # try: return self.s[self.insertPoint]
-        # except: return None
-    
-    # def getCharBeforeInsertPoint (self):
-        # try: return self.s[self.insertPoint - 1]
-        # except: return None
-    
-    # def setInsertionPointToEnd (self):
-        # self.insertPoint = len(self.s)
-    
-    # def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
-        # self.insertPoint = self.findStartOfLine(lineNumber)
-    #@-node:ekr.20031218072017.2205:Insert point (nullBody) (removed)
-    #@+node:ekr.20031218072017.2206:Menus
-    def bind (self,*args,**keys):
-        pass
-    #@-node:ekr.20031218072017.2206:Menus
-    #@+node:ekr.20031218072017.2207:Selection (nullBody) (TO BE REMOVED)
-    def deleteTextSelection (self):
-        i,j = self.selection
-        self.s = self.s[:i] + self.s[j:]
-        
-    def getSelectedText (self):
-        i,j = self.selection
-        g.trace(self.s[i:j])
-        return self.s[i:j]
-        
-    def getSelectionRange (self,sort=True,toPython=False):
-        # g.trace(self.selection)
-        return self.selection
-        
-    def hasTextSelection (self):
-        i,j = self.selection
-        return i != j
-        
-    def selectAllText (self,event=None):
-        self.selection = 0,len(self.s)
-        
-    # def setSelectionRange (self,i,j=None,insert='sel.end'):
-        # if i is None:
-            # self.selection = 0,0
-        # elif j is None:
-            # self.selection = i # a tuple
-        # else:
-            # self.selection = i,j
-    #@nonl
-    #@-node:ekr.20031218072017.2207:Selection (nullBody) (TO BE REMOVED)
-    #@+node:ekr.20031218072017.2208:Text (nullBody) (removed)
-    #@+node:ekr.20031218072017.2209:delete... (removed)
-    # def deleteAllText(self):
-        # self.insertPoint = 0
-        # self.selection = 0,0
-        # self.s = "" # The body text
-    
-    # def deleteCharacter (self,index):
-        # self.s = self.s[:index] + self.s[index+1:]
-        
-    # def deleteLastChar (self):
-        # if self.s:
-            # del self.s[-1]
-        
-    # def deleteLine (self,lineNumber): # zero based line number.
-        # self.deleteLines(lineNumber,1)
-        
-    # def deleteLines (self,lineNumber,numberOfLines): # zero based line numbers.
-        # n1 = self.findStartOfLine(lineNumber)
-        # n2 = self.findStartOfLine(lineNumber+numberOfLines+1)
-        # if n2:
-            # self.s = self.s[:n1] + self.s[n2:]
-        # else:
-            # self.s = self.s[:n1]
-        
-    # def deleteRange (self,index1,index2):
-        # del self.s[index1:index2]
-    #@nonl
-    #@-node:ekr.20031218072017.2209:delete... (removed)
-    #@+node:ekr.20031218072017.2210:get... (removed)
-    # def getAllText (self):
-        # return g.toUnicode(self.s,g.app.tkEncoding)
-        
-    # def getCharAtIndex (self,index):
-        # try:
-            # s = self.s[index]
-            # return g.toUnicode(s,g.app.tkEncoding)
-        # except: return None
-        
-    # def getTextRange (self,index1,index2):
-        # s = self.s[index1:index2]
-        # return g.toUnicode(s,g.app.tkEncoding)
-    #@nonl
-    #@+node:ekr.20031218072017.2211:getInsertLines
-    # def getInsertLines (self):
-        # 
-        # """Return before,ins,after where:
-            # 
-        # before is all the lines before the line containing the insert point.
-        # sel is the line containing the insert point.
-        # after is all the lines after the line containing the insert point.
-        # 
-        # All lines end in a newline, except possibly the last line."""
-    # 
-        # # DTHEIN 18-JAN-2004: NOTE: overridden by leoTkinterBody!!!!!!
-        # 
-        # n1 = self.scanToStartOfLine(self.insertPoint)
-        # n2 = self.scanToEndOfLine(self.insertPoint)
-        # 
-        # before = self.s[:n1]
-        # ins    = self.s[n1:n2+1] # 12/18/03: was sel(!)
-        # after  = self.s[n2+1:]
-    # 
-        # before = g.toUnicode(before,g.app.tkEncoding)
-        # ins    = g.toUnicode(ins,   g.app.tkEncoding)
-        # after  = g.toUnicode(after ,g.app.tkEncoding)
-    # 
-        # return before,ins,after
-    # 
-    #@nonl
-    #@-node:ekr.20031218072017.2211:getInsertLines
-    #@+node:ekr.20031218072017.2212:getSelectionAreas
-    # def getSelectionAreas (self):
-        # 
-        # """Return before,sel,after where:
-            # 
-        # before is the text before the selected text
-        # (or the text before the insert point if no selection)
-        # sel is the selected text (or "" if no selection)
-        # after is the text after the selected text
-        # (or the text after the insert point if no selection)"""
-        # 
-        # if not self.hasTextSelection():
-            # n1,n2 = self.insertPoint,self.insertPoint
-        # else:
-            # n2,n2 = self.selection
-    
-        # before = self.s[:n1]
-        # sel    = self.s[n1:n2+1]
-        # after  = self.s[n2+1:]
-        # 
-        # before = g.toUnicode(before,g.app.tkEncoding)
-        # sel    = g.toUnicode(sel,   g.app.tkEncoding)
-        # after  = g.toUnicode(after ,g.app.tkEncoding)
-        # return before,sel,after
-    #@-node:ekr.20031218072017.2212:getSelectionAreas
-    #@+node:ekr.20031218072017.2213:getSelectionLines (nullBody)
-    # def getSelectionLines (self):
-        # 
-        # """Return before,sel,after where:
-            # 
-        # before is all the lines before the selected text
-        # (or the text before the insert point if no selection)
-        # sel is the selected text (or the line containing the insert point if no selection)
-        # after is all lines after the selected text
-        # (or the text after the insert point if no selection)"""
-        # 
-        # # At present, called only by c.getBodyLines.
-        # if not self.hasTextSelection():
-            # start,end = self.insertPoint,self.insertPoint
-        # else:
-            # start,end = self.selection
-    # 
-        # n1 = self.scanToStartOfLine(start)
-        # n2 = self.scanToEndOfLine(end)
-    # 
-        # before = self.s[:n1]
-        # sel    = self.s[n1:n2] # 12/8/03 was n2+1
-        # after  = self.s[n2+1:]
-    # 
-        # before = g.toUnicode(before,g.app.tkEncoding)
-        # sel    = g.toUnicode(sel,   g.app.tkEncoding)
-        # after  = g.toUnicode(after ,g.app.tkEncoding)
-        # 
-        # g.trace(n1,n2)
-        # return before,sel,after
-    # 
-    #@nonl
-    #@-node:ekr.20031218072017.2213:getSelectionLines (nullBody)
-    #@-node:ekr.20031218072017.2210:get... (removed)
-    #@+node:ekr.20031218072017.2214:Insert... (nullBody) (removed)
-    # def insertAtInsertPoint (self,s):
-        # i = self.insertPoint
-        # self.s = self.s[:i] + s + self.s[i:]
-        
-    # def insertAtEnd (self,s):
-        # 
-        # self.s = self.s + s
-     
-    # def insertAtStartOfLine (self,lineNumber,s):
-        # 
-        # i = self.findStartOfLine(lineNumber)
-        # self.s = self.s[:i] + s + self.s[i:]
-    #@nonl
-    #@-node:ekr.20031218072017.2214:Insert... (nullBody) (removed)
-    #@+node:ekr.20031218072017.2215:setSelectionAreas (nullBody) (removed)
-    # def setSelectionAreas (self,before,sel,after):
-        # 
-        # if before is None: before = ""
-        # if sel    is None: sel = ""
-        # if after  is None: after = ""
-        # 
-        # self.s = before + sel + after
-        # 
-        # self.selection = len(before), len(before) + len(sel)
-    #@-node:ekr.20031218072017.2215:setSelectionAreas (nullBody) (removed)
-    #@-node:ekr.20031218072017.2208:Text (nullBody) (removed)
-    #@+node:ekr.20031218072017.2216:Visibility & scrolling (nullBody) (TO BE REMOVED)
-    def see (self,index,python=False):
-        pass
-        
-    def seeInsertPoint (self):
-        pass
-        
-    def setFirstVisibleIndex (self,index):
-        pass
-        
-    def getYScrollPosition (self):
-        return 0
-        
-    def setYScrollPosition (self,scrollPosition):
-        pass
-        
-    def scrollUp (self):
-        pass
-        
-    def scrollDown (self):
-        pass
-    #@-node:ekr.20031218072017.2216:Visibility & scrolling (nullBody) (TO BE REMOVED)
-    #@-node:ekr.20031218072017.2197:Must be overriden in subclasses
-    #@+node:ekr.20041217074557:setColorFromConfig & setFontFromConfig
-    def setFontFromConfig (self):
-        pass
-        
-    def setColorFromConfig (self):
-        pass
-    #@-node:ekr.20041217074557:setColorFromConfig & setFontFromConfig
-    #@+node:ekr.20031218072017.2217:oops
-    def oops(self):
-    
-        g.trace("nullBody:", g.callers())
-        pass
-    #@-node:ekr.20031218072017.2217:oops
+    #@-node:ekr.20031218072017.2197:nullBody: leoBody interface
     #@-others
 #@-node:ekr.20031218072017.2191:class nullBody
 #@+node:ekr.20031218072017.2222:class nullFrame
@@ -1388,16 +1037,6 @@ class nullFrame (leoFrame):
         self.x = 40
         self.y = 40
     #@-node:ekr.20040327105706: ctor
-    #@+node:ekr.20041130065921:deiconfy, lift, update
-    def deiconify (self):
-        pass
-        
-    def lift (self):
-        pass
-        
-    def update (self):
-        pass
-    #@-node:ekr.20041130065921:deiconfy, lift, update
     #@+node:ekr.20041120073824:destroySelf
     def destroySelf (self):
         
@@ -1418,26 +1057,10 @@ class nullFrame (leoFrame):
         if self.useNullUndoer:
             c.undoer = leoUndo.nullUndoer(c)
     #@-node:ekr.20040327105706.2:finishCreate
-    #@+node:ekr.20041130065718:get_window_info
-    def get_window_info (self):
-    
-        """Return the window information."""
-        
-        # g.trace(self.w,self.h,self.x,self.y)
-    
-        return self.w,self.h,self.x,self.y
-    #@-node:ekr.20041130065718:get_window_info
-    #@+node:ekr.20041130065921.1:lift
-    #@-node:ekr.20041130065921.1:lift
-    #@+node:ekr.20040327105706.3:oops
-    def oops(self):
-        
-        g.trace("nullFrame:", g.callers(5))
-    #@-node:ekr.20040327105706.3:oops
-    #@+node:ekr.20041130090749:setInitialWindowGeometry
-    def setInitialWindowGeometry (self):
-        pass
-    #@-node:ekr.20041130090749:setInitialWindowGeometry
+    #@+node:ekr.20061109124552:Overrides
+    #@+node:ekr.20061109123828:Config...
+    def resizePanesToRatio (self,ratio,secondary_ratio):    pass
+    def setInitialWindowGeometry (self):                    pass
     #@+node:ekr.20041130065718.1:setTopGeometry
     def setTopGeometry (self,w,h,x,y,adjustSize=True):
         
@@ -1448,6 +1071,73 @@ class nullFrame (leoFrame):
         self.x = x
         self.y = y
     #@-node:ekr.20041130065718.1:setTopGeometry
+    #@-node:ekr.20061109123828:Config...
+    #@+node:ekr.20061109124129:Gui-dependent commands
+    # In the Edit menu...
+    
+    def OnPaste (self,event=None):              pass
+    def OnPasteFromMenu (self,event=None):      pass
+    
+    def copyText  (self,event=None): pass
+    def cutText   (self,event=None): pass
+    def pasteText (self,event=None,middleButton=False): pass
+    
+    def abortEditLabelCommand (self,event=None): pass
+    def endEditLabelCommand   (self,event=None): pass
+    def insertHeadlineTime    (self,event=None): pass
+    
+    # Expanding and contracting panes.
+    def contractPane         (self,event=None): pass
+    def expandPane           (self,event=None): pass
+    def contractBodyPane     (self,event=None): pass
+    def contractLogPane      (self,event=None): pass
+    def contractOutlinePane  (self,event=None): pass
+    def expandLogPane        (self,event=None): pass
+    def fullyExpandBodyPane  (self,event=None): pass
+    def fullyExpandLogPane   (self,event=None): pass
+    def fullyExpandPane      (self,event=None): pass
+    def fullyExpandOutlinePane (self,event=None): pass
+    def hideBodyPane         (self,event=None): pass
+    def hideLogPane          (self,event=None): pass
+    def hidePane             (self,event=None): pass
+    def hideOutlinePane      (self,event=None): pass
+        
+    expandBodyPane = contractOutlinePane
+    expandOutlinePane = contractBodyPane
+    
+    # In the Window menu...
+    def cascade              (self,event=None): pass
+    def equalSizedPanes      (self,event=None): pass
+    def hideLogWindow        (self,event=None): pass
+    def minimizeAll          (self,event=None): pass
+    def resizeToScreen       (self,event=None): pass
+    def toggleActivePane     (self,event=None): pass
+    def toggleSplitDirection (self,event=None): pass
+    
+    # In help menu...
+    def leoHelp (self,event=None): pass
+    #@nonl
+    #@-node:ekr.20061109124129:Gui-dependent commands
+    #@+node:ekr.20061109124039:Status line...
+    def createStatusLine (self):                    pass
+    def clearStatusLine (self):                     pass
+    def disableStatusLine (self,background=None):   pass
+    def enableStatusLine (self,background="white"): pass
+    def getStatusLine (self):                       pass
+    def putStatusLine (self,s,color=None):          pass
+    def setFocusStatusLine (self):                  pass
+    def statusLineIsEnabled(self):                  pass
+    def updateStatusLine(self):                     pass
+    #@nonl
+    #@-node:ekr.20061109124039:Status line...
+    #@+node:ekr.20041130065921:Window...
+    def bringToFront (self):    pass
+    def deiconify (self):       pass
+    def get_window_info(self):  pass
+    def lift (self):            pass
+    def update (self):          pass
+    #@-node:ekr.20041130065921:Window...
+    #@-node:ekr.20061109124552:Overrides
     #@-others
 #@-node:ekr.20031218072017.2222:class nullFrame
 #@+node:ekr.20031218072017.2232:class nullLog
@@ -1519,88 +1209,28 @@ class nullTree (leoTree):
         self.fontName = None
         self.canvas = None
     #@-node:ekr.20031218072017.2234: nullTree.__init__
-    #@+node:ekr.20031218072017.2235:oops
-    def oops(self):
-            
-        # It is not an error to call this routine...
-        g.trace("nullTree:", g.callers())
-        pass
-    #@-node:ekr.20031218072017.2235:oops
-    #@+node:ekr.20031218072017.2236:Dummy operations...
-    #@+node:ekr.20031218072017.2237:Drawing
-    def beginUpdate (self):
-        pass
-        
-    def endUpdate (self,flag,scroll=False):
-        pass
-    
-    def enableDrawingAfterException (self):
-        pass
-    
-    def drawIcon(self,v,x=None,y=None):
-        pass
-    
-    def redraw_now(self,scroll=True):
-        pass
-    #@-node:ekr.20031218072017.2237:Drawing
-    #@+node:ekr.20031218072017.2238:Edit label
-    def editLabel(self,v,selectAll=False):
-    
-        __pychecker__ = '--no-argsused' # base classes have many unused args.
-    
-        pass
-    
-    def endEditLabel(self):
-        pass
-    
-    def setEditLabelState(self,v,selectAll=False):
-        
-        __pychecker__ = '--no-argsused' # base classes have many unused args.
-    
-        pass
-    #@-node:ekr.20031218072017.2238:Edit label
-    #@+node:ekr.20031218072017.2239:Scrolling
-    def scrollTo(self,p):
-        pass
-        
-    idle_scrollTo = scrollTo # For compatibility.
-    #@-node:ekr.20031218072017.2239:Scrolling
-    #@+node:ekr.20031218072017.2240:Tree operations
-    def expandAllAncestors(self,v):
-    
-        pass
-    #@-node:ekr.20031218072017.2240:Tree operations
-    #@+node:ekr.20040725044521:edit_widget
-    def edit_widget (self,c,p):
-        
-        self.oops()
-    #@nonl
-    #@-node:ekr.20040725044521:edit_widget
-    #@-node:ekr.20031218072017.2236:Dummy operations...
-    #@+node:ekr.20031218072017.2241:getFont & setFont
-    def getFont(self):
-    
-        return self.font
-        
-    def setFont(self,font=None,fontName=None):
-    
-        self.font = font
-        self.fontName = fontName
-    #@-node:ekr.20031218072017.2241:getFont & setFont
-    #@+node:ekr.20041217135735:setColorFromConfig & setFontFromConfig
-    def setColorFromConfig (self):
-        pass
-        
-    def setFontFromConfig (self):
-        pass
-    #@-node:ekr.20041217135735:setColorFromConfig & setFontFromConfig
-    #@+node:ekr.20031218072017.2242:select
+    #@+node:ekr.20031218072017.2236:Overrides
+    # Colors & fonts.
+    def getFont(self):                              return self.font
+    def setColorFromConfig (self):                  pass
+    def setFont(self,font=None,fontName=None):      self.font,self.fontName = font,fontName
+    def setFontFromConfig (self):                   pass
+    # Drawing & scrolling.
+    def beginUpdate (self):                         pass
+    def endUpdate (self,flag,scroll=False):         pass
+    def drawIcon(self,v,x=None,y=None):             pass
+    def redraw_now(self,scroll=True):               pass
+    def scrollTo(self,p):                           pass
+    # Headlines.
+    def editLabel(self,v,selectAll=False):          pass
+    def endEditLabel(self):                         pass
+    def setEditLabelState(self,v,selectAll=False):  pass
+    # Selecting and expanding.
+    def expandAllAncestors(self,v):                 pass
     def select(self,p,updateBeadList=True):
-        
         self.c.setCurrentPosition(p)
-    
         self.frame.scanForTabWidth(p)
-    #@-node:ekr.20031218072017.2242:select
+    #@-node:ekr.20031218072017.2236:Overrides
     #@-others
 #@-node:ekr.20031218072017.2233:class nullTree
 #@-others

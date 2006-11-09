@@ -2158,26 +2158,6 @@ class leoTkinterBody (leoFrame.leoBody):
         self.numberOfEditors -= 1
         self.selectEditor(w)
     #@-node:ekr.20060528113806:deleteEditor
-    #@+node:ekr.20061017082211:onClick (passed)
-    def onClick (self,event):
-        
-        c = self.c ; k = c.k ; gui = g.app.gui
-        w = event and event.widget
-        wname = c.widget_name(w)
-        
-        if wname.startswith('body'):
-            # A hack to support middle-button pastes: remember the previous selection.
-            k.previousSelection = gui.getSelectionRange(w,python=True)
-            x,y = gui.eventXY(event)
-            i = gui.xyToPythonIndex(w,x,y)
-            # g.trace(x,y,repr(i))
-            g.app.gui.setSelectionRange(w,i,i,insert=i,python=True)
-            c.editCommands.setMoveCol(w,i,python=True)
-            c.frame.updateStatusLine()
-            self.selectEditor(w)
-        else:
-            g.trace('can not happen')
-    #@-node:ekr.20061017082211:onClick (passed)
     #@+node:ekr.20061017083312:selectEditor (tkBody)
     def selectEditor(self,w):
         
@@ -2447,9 +2427,6 @@ class leoTkinterBody (leoFrame.leoBody):
         return self.bodyCtrl.bbox(index)
     #@-node:ekr.20031218072017.4001:Bounding box (Tk spelling)
     #@+node:ekr.20031218072017.4002:Color tags (Tk spelling)
-    # Could have been replaced by the __getattr__ routine above...
-    # 12/19/03: no: that would cause more problems.
-    
     def tag_add (self,tagName,index1,index2):
         self.bodyCtrl.tag_add(tagName,index1,index2)
     

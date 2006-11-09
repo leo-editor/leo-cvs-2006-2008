@@ -1907,6 +1907,8 @@ scrolling on the JUST button release -- less worry about my finger slipping off
 the key.
 #@nonl
 #@-node:ekr.20061101091443:Changed bindings in UniversalScrolling pluing
+#@+node:ekr.20061108095736:Registered write-restructured-text command in rst3 plugin
+#@-node:ekr.20061108095736:Registered write-restructured-text command in rst3 plugin
 #@-node:ekr.20061101091734:Plugins
 #@+node:ekr.20061030105954:Settings
 #@+node:ekr.20060915175024:Added @bool center_selected_tree_node

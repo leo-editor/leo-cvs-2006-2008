@@ -2220,6 +2220,32 @@ print "expected:",result
 print "actual  :",textResult
 #@-node:ekr.20031218072017.1497:<< print mismatch trace >>
 #@-node:ekr.20061106105812:Old code from undoRedo Text
+#@+node:ekr.20041222055747:leoFrame.unpack/repack...
+def repackBodyPane (self):
+    
+    self.oops()
+
+def repackFrameWidgets (self):
+    
+    self.oops()
+    
+def unpackFrameWidgets (self):
+    
+    self.oops()
+    
+def unpackBodyPane (self):
+    
+    self.oops()
+#@-node:ekr.20041222055747:leoFrame.unpack/repack...
+#@+node:ekr.20041130065718:get_window_info (nullFrame)
+def get_window_info (self):
+
+    """Return the window information."""
+    
+    # g.trace(self.w,self.h,self.x,self.y)
+
+    return self.w,self.h,self.x,self.y
+#@-node:ekr.20041130065718:get_window_info (nullFrame)
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

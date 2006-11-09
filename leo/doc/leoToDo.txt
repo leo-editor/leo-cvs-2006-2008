@@ -1,6 +1,8 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
+#@-node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061028065955:To do first
 #@+node:ekr.20061105134302:Crasher
