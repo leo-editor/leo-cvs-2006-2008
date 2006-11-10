@@ -145,7 +145,7 @@ class leoBody:
     def addEditor (self,event=None):                        self.oops()
     def bbox(self,index):                                   self.oops()
     def bind (self,*args,**keys):                           self.oops()
-    def bodyWantsFocus(self):                               self.oops()
+    # def bodyWantsFocus(self):                             self.oops()
     def cget(self,*args,**keys):                            self.oops()
     def configure (self,*args,**keys):                      self.oops()
     def createBindings (self,w=None):                       self.oops()
@@ -601,26 +601,25 @@ class leoFrame:
         c.frame.setTabWidth(w)
     #@-node:ekr.20031218072017.1375:scanForTabWidth
     #@-node:ekr.20061109125528.1:Must be defined in base class
-    #@+node:ekr.20060206093313:Focus (leoFrame) (to be removed)
-    if 1:
-        # For compatibility with old scripts.
-        # Using the commander methods directly is recommended.
-        
-        def getFocus(self):
-            return g.app.gui.get_focus(self.c) # Used by wxGui plugin.
-        
-        def bodyWantsFocus(self):
-            return self.c.bodyWantsFocus()
-           
-        def headlineWantsFocus(self,p):
-            return self.c.headlineWantsFocus(p)
-            
-        def logWantsFocus(self):
-            return self.c.logWantsFocus()
-            
-        def minibufferWantsFocus(self):
-            return self.c.minibufferWantsFocus()
-    #@-node:ekr.20060206093313:Focus (leoFrame) (to be removed)
+    #@+node:ekr.20060206093313:Focus (leoFrame)
+    # For compatibility with old scripts.
+    # Using the commander methods directly is recommended.
+    
+    def getFocus(self):
+        return g.app.gui.get_focus(self.c) # Used by wxGui plugin.
+    
+    def bodyWantsFocus(self):
+        return self.c.bodyWantsFocus()
+    
+    def headlineWantsFocus(self,p):
+        return self.c.headlineWantsFocus(p)
+    
+    def logWantsFocus(self):
+        return self.c.logWantsFocus()
+    
+    def minibufferWantsFocus(self):
+        return self.c.minibufferWantsFocus()
+    #@-node:ekr.20060206093313:Focus (leoFrame)
     #@-others
 #@-node:ekr.20031218072017.3678:class leoFrame
 #@+node:ekr.20031218072017.3694:class leoLog
@@ -971,7 +970,7 @@ class nullBody (leoBody):
     def addEditor (self,event=None):                        pass
     def bbox(self,index):                                   return (0,0)
     def bind (self,*args,**keys):                           pass
-    def bodyWantsFocus(self):                               pass
+    #def bodyWantsFocus(self):                               pass
     def cget(self,*args,**keys):                            pass
     def configure (self,*args,**keys):                      pass
     def createBindings (self,w=None):                       pass

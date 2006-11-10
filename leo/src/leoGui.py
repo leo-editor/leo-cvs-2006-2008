@@ -98,7 +98,87 @@ class leoGui:
         self.utils = None
         self.isNullGui = False
     #@-node:ekr.20031218072017.3722: leoGui.__init__
-    #@+node:ekr.20031218072017.3723:stubs
+    #@+node:ekr.20061109211054:leoGui.mustBeDefinedOnlyInBaseClass
+    mustBeDefinedOnlyInBaseClass = (
+        'guiName',
+        'oops',
+        'setScript',
+        'widget_name',
+    )
+    #@nonl
+    #@-node:ekr.20061109211054:leoGui.mustBeDefinedOnlyInBaseClass
+    #@+node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
+    mustBeDefinedInSubclasses = (
+        # Startup & shutdown
+        'attachLeoIcon',
+        'center_dialog',
+        'color',
+        #'createComparePanel',          # optional
+        #'createFindPanel',             # optional
+        'createKeyHandlerClass',
+        'createLeoFrame',
+        'createRootWindow',
+        'create_labeled_frame',
+        'destroySelf',
+        'eventChar',
+        'eventKeysym',
+        'eventWidget',
+        'eventXY',
+        'finishCreate',
+        'getAllText',
+        # 'getFontFromParams', # optional
+        'getSelectionRange',
+        'getTextFromClipboard',
+        'get_focus',
+        'get_window_info',
+        'isTextWidget',
+        'keysym',
+        'killGui',
+        'recreateRootWindow',
+        'replaceClipboardWith',
+        'runAboutLeoDialog',
+        'runAskLeoIDDialog',
+        'runAskOkCancelNumberDialog',
+        'runAskOkDialog',
+        'runAskYesNoCancelDialog',
+        'runAskYesNoDialog',
+        'runMainLoop',
+        'runOpenFileDialog',
+        'runSaveFileDialog',
+        'see',
+        'seeInsertPoint',
+        #'setIdleTimeHook',             # optional       
+        #'setIdleTimeHookAfterDelay',   #optional
+        'setSelectionRange',
+        'set_focus',
+        'toGuiIndex',
+        'toPythonIndex',
+        'xyToGuiIndex',
+        'xyToPythonIndex',
+        'yscroll',
+        'yview',
+        
+        #...TO BE REMOVED?
+        ##'compareIndices',
+        ##'firstIndex',
+        ##'getSelectedText',
+        ##'getindex',
+        ##'hasSelection',
+        ##'lastIndex',
+        ##'moveIndexBackward',
+        ##'moveIndexForward',
+        ##'moveIndexToNextLine',
+        ##'selectAllText',
+        ##'setSelectionRangeWithLength',
+        ##'stringDelete',
+        ##'stringInsert',
+        ##'seeInsertPoint',
+        ##'widget_wants_focus',
+    )
+    #@-node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
+    #@-node:ekr.20031218072017.3721:app.gui Birth & death
+    #@+node:ekr.20061109212618:Must be defined in subclasses
+    #@+node:ekr.20031218072017.3723:app.gui create & destroy
     #@+node:ekr.20031218072017.3724:createRootWindow
     def createRootWindow(self):
     
@@ -144,8 +224,7 @@ class leoGui:
     
         self.oops()
     #@-node:ekr.20031218072017.3729:runMainLoop
-    #@-node:ekr.20031218072017.3723:stubs
-    #@-node:ekr.20031218072017.3721:app.gui Birth & death
+    #@-node:ekr.20031218072017.3723:app.gui create & destroy
     #@+node:ekr.20031218072017.3730:app.gui dialogs
     def runAboutLeoDialog(self,c,version,theCopyright,url,email):
         """Create and run Leo's About Leo dialog."""
@@ -226,15 +305,19 @@ class leoGui:
         
         self.oops()
     #@-node:ekr.20031218072017.3734:Clipboard
-    #@+node:ekr.20061031132712.1:color
+    #@+node:ekr.20061031132712.1:Tk constants
     # g.es calls gui.color to do the translation,
     # so most code in Leo's core can simply use Tk color names.
     
     def color (self,color):
         '''Return the gui-specific color corresponding to the Tk color name.'''
-        return color
+        return color # Do not call oops: this method is essential for the config classes.
+        
+    def keysym (self,keysym):
+        '''Return the gui-specific value corresponding to the Tkinter keysym.'''
+        return keysym # Do not call oops: this method is essential for the config classes.
     #@nonl
-    #@-node:ekr.20061031132712.1:color
+    #@-node:ekr.20061031132712.1:Tk constants
     #@+node:ekr.20031218072017.3735:Dialog utils
     def attachLeoIcon (self,window):
         """Attach the Leo icon to a window."""
@@ -253,7 +336,6 @@ class leoGui:
         self.oops()
     #@-node:ekr.20031218072017.3735:Dialog utils
     #@+node:ekr.20061031132907:Events
-    #@+node:ekr.20061031132712.2:eventChar, eventKeysym, eventWidget, eventXY
     def eventChar (self,event):
         '''Return the char field of an event.'''
         return event and event.char or ''
@@ -272,30 +354,19 @@ class leoGui:
         else:
             return 0,0
     #@nonl
-    #@-node:ekr.20061031132712.2:eventChar, eventKeysym, eventWidget, eventXY
     #@-node:ekr.20061031132907:Events
     #@+node:ekr.20031218072017.3737:Focus
     def get_focus(self,frame):
-    
         """Return the widget that has focus, or the body widget if None."""
-    
         self.oops()
             
     def set_focus(self,commander,widget):
-    
         """Set the focus of the widget in the given commander if it needs to be changed."""
-        
-        __pychecker__ = '--no-argsused' # widget
-    
         self.oops()
         
-    def widget_wants_focus(self,commander,widget):
-    
-        """Indicate that a widget want to get focus."""
-        
-        __pychecker__ = '--no-argsused' # widget
-    
-        self.oops()
+    # def widget_wants_focus(self,commander,widget):
+        # """Indicate that a widget want to get focus."""
+        # self.oops()
     #@-node:ekr.20031218072017.3737:Focus
     #@+node:ekr.20031218072017.3736:Font
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
@@ -344,14 +415,6 @@ class leoGui:
        self.oops()
     #@nonl
     #@-node:ekr.20031218072017.3738:Index
-    #@+node:ekr.20051220144306:isTextWidget
-    #@-node:ekr.20051220144306:isTextWidget
-    #@+node:ekr.20061031132712.3:keysym
-    def keysym (self,keysym):
-        '''Return the gui-specific value corresponding to the Tkinter keysym.'''
-        return keysym
-    #@nonl
-    #@-node:ekr.20061031132712.3:keysym
     #@+node:ekr.20061024133425:Selection (leoGui)
     def getSelectionRange (self,t,sort=True,toPython=False):
         return 0,0
@@ -426,6 +489,8 @@ class leoGui:
     #@nonl
     #@-node:ekr.20061031133643:xyToGui/PythonIndex
     #@-node:ekr.20031218072017.3733:app.gui utils
+    #@-node:ekr.20061109212618:Must be defined in subclasses
+    #@+node:ekr.20061109212618.1:Must be defined only in base class
     #@+node:ekr.20031218072017.3740:guiName
     def guiName(self):
         
@@ -453,6 +518,7 @@ class leoGui:
         if 0:
             print "leoGui oops", g.callers(), "should be overridden in subclass"
     #@-node:ekr.20031218072017.3741:oops
+    #@-node:ekr.20061109212618.1:Must be defined only in base class
     #@-others
 #@-node:ekr.20031218072017.3720:class leoGui
 #@+node:ekr.20031218072017.2223:class nullGui (leoGui)

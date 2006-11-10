@@ -2261,7 +2261,7 @@ class leoTkinterBody (leoFrame.leoBody):
                 w.insert('end',p.bodyString())
                 # g.trace('update',w,v)
                 self.recolorWidget(w)
-        c.frame.bodyWantsFocus()
+        c.bodyWantsFocus()
     #@-node:ekr.20060528131618:updateEditors
     #@-node:ekr.20060528100747:Editors
     #@+node:ekr.20041217135735.1:tkBody.setColorFromConfig

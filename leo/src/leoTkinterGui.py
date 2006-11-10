@@ -341,6 +341,19 @@ class tkinterGui(leoGui.leoGui):
                 return None
     #@-node:ekr.20031218072017.846:getTextFromClipboard
     #@-node:ekr.20031218072017.844:Clipboard (tkGui)
+    #@+node:ekr.20061109215304:Tk constants
+    # g.es calls gui.color to do the translation,
+    # so most code in Leo's core can simply use Tk color names.
+    
+    def color (self,color):
+        '''Return the gui-specific color corresponding to the Tk color name.'''
+        return color
+        
+    def keysym (self,keysym):
+        '''Return the gui-specific value corresponding to the Tkinter keysym.'''
+        return keysym
+    #@nonl
+    #@-node:ekr.20061109215304:Tk constants
     #@+node:ekr.20031218072017.4060:Dialog
     #@+node:ekr.20031218072017.4061:get_window_info
     # WARNING: Call this routine _after_ creating a dialog.
@@ -419,6 +432,26 @@ class tkinterGui(leoGui.leoGui):
         return w,f
     #@-node:ekr.20031218072017.4063:create_labeled_frame
     #@-node:ekr.20031218072017.4060:Dialog
+    #@+node:ekr.20061109215734:Events
+    def eventChar (self,event):
+        '''Return the char field of an event.'''
+        return event and event.char or ''
+        
+    def eventKeysym (self,event):
+        '''Return the keysym value of an event.'''
+        return event and event.keysym
+    
+    def eventWidget (self,event):
+        '''Return the widget field of an event.'''   
+        return event and event.widget
+    
+    def eventXY (self,event):
+        if event:
+            return event.x,event.y
+        else:
+            return 0,0
+    #@nonl
+    #@-node:ekr.20061109215734:Events
     #@+node:ekr.20031218072017.4064:Focus
     #@+node:ekr.20031218072017.4065:get_focus
     def get_focus(self,c):
@@ -818,37 +851,40 @@ class tkinterGui(leoGui.leoGui):
         else:
             return g.toUnicode(s,g.app.tkEncoding)
     #@-node:ekr.20031218072017.4091:getAllText
-    #@+node:ekr.20031218072017.4092:getCharAfterIndex  (to be deleted)
-    def getCharAfterIndex (self,w,index):
-        
-        if w.compare(index + "+1c",">=","end"):
-            return None
-        else:
-            ch = w.get(index + "+1c")
-            return g.toUnicode(ch,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4092:getCharAfterIndex  (to be deleted)
-    #@+node:ekr.20031218072017.4093:getCharAtIndex  (to be deleted)
+    #@+node:ekr.20031218072017.4092:getCharAfterIndex  (deleted)
+    # def getCharAfterIndex (self,w,index):
+        # 
+        # if w.compare(index + "+1c",">=","end"):
+            # return None
+        # else:
+            # ch = w.get(index + "+1c")
+            # return g.toUnicode(ch,g.app.tkEncoding)
+    #@-node:ekr.20031218072017.4092:getCharAfterIndex  (deleted)
+    #@+node:ekr.20031218072017.4093:getCharAtIndex  (deleted)
     # def getCharAtIndex (self,w,index):
         # ch = w.get(index)
         # return g.toUnicode(ch,g.app.tkEncoding)
     #@nonl
-    #@-node:ekr.20031218072017.4093:getCharAtIndex  (to be deleted)
-    #@+node:ekr.20031218072017.4094:getCharBeforeIndex  (to be deleted)
-    def getCharBeforeIndex (self,w,index):
-        
-        index = w.index(index)
-        if index == "1.0":
-            return None
-        else:
-            ch = w.get(index + "-1c")
-            return g.toUnicode(ch,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4094:getCharBeforeIndex  (to be deleted)
-    #@+node:ekr.20031218072017.4095:getLineContainingIndex (to be deleted)
-    def getLineContainingIndex (self,w,index):
-    
-        line = w.get(index + " linestart", index + " lineend")
-        return g.toUnicode(line,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4095:getLineContainingIndex (to be deleted)
+    #@-node:ekr.20031218072017.4093:getCharAtIndex  (deleted)
+    #@+node:ekr.20031218072017.4094:getCharBeforeIndex  (deleted)
+    # def getCharBeforeIndex (self,w,index):
+        # 
+        # index = w.index(index)
+        # if index == "1.0":
+            # return None
+        # else:
+            # ch = w.get(index + "-1c")
+            # return g.toUnicode(ch,g.app.tkEncoding)
+     
+    #@nonl
+    #@-node:ekr.20031218072017.4094:getCharBeforeIndex  (deleted)
+    #@+node:ekr.20031218072017.4095:getLineContainingIndex (deleted)
+    # def getLineContainingIndex (self,w,index):
+        # line = w.get(index + " linestart", index + " lineend")
+        # return g.toUnicode(line,g.app.tkEncoding)
+     
+    #@nonl
+    #@-node:ekr.20031218072017.4095:getLineContainingIndex (deleted)
     #@+node:ekr.20031218072017.4096:replaceSelectionRangeWithText (leoTkinterGui) (to be deleted?)
     def replaceSelectionRangeWithText (self,w,start,end,text):
     

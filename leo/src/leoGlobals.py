@@ -3802,7 +3802,7 @@ def makeScriptButton (c,
     #@+node:ekr.20060621164312.2:<< define the callbacks for b >>
     def deleteButtonCallback(event=None,b=b,c=c):
         if b: b.pack_forget()
-        c.frame.bodyWantsFocus()
+        c.bodyWantsFocus()
         
     def executeScriptCallback (event=None,
         b=b,c=c,buttonText=buttonText,p=p and p.copy(),script=script):

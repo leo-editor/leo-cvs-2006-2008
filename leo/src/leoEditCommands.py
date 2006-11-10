@@ -2919,7 +2919,6 @@ class editCommandsClass (baseEditCommandsClass):
         #@nl
         if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
             return "break" # The hook claims to have handled the event.
-            
         s = gui.getAllText(w) # Needed in several places below.
         if ch == '\t':
             self.updateTab(p,w)
@@ -3311,7 +3310,7 @@ class editCommandsClass (baseEditCommandsClass):
         if not python:
             spot = gui.toPythonIndex(s,w,spot)
             ins1 = gui.toPythonIndex(s,w,ins1)
-        # g.trace(ins1,spot,moveSpot,extend)
+        # g.trace(ins1,spot,moveSpot,extend,setSpot)
         if extend:
             i,j = gui.getSelectionRange(w,python=True)
             # Reset the move spot if needed.
@@ -3328,7 +3327,7 @@ class editCommandsClass (baseEditCommandsClass):
             else:
                 gui.setSelectionRange(w,moveSpot,spot,insert=None,python=True)
         else:
-            if setSpot or moveSpot is None:
+            if setSpot is not None or moveSpot is None:
                 self.setMoveCol(w,spot,python=True)
             gui.setSelectionRange(w,spot,spot,insert=None,python=True)
             
@@ -3373,6 +3372,7 @@ class editCommandsClass (baseEditCommandsClass):
         w.mark_set('insert',spot)
         # Adjust the column in the *new* row, but only if we have actually gone to a new row.
         if self.moveSpot:
+            # g.trace('row,col,moveCol',row,col,self.moveCol)
             if col != self.moveCol and row != row1:
                 s = w.get('insert linestart','insert lineend')
                 col = min(len(s),self.moveCol)
@@ -3571,6 +3571,8 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             i = gui.toPythonIndex(s,w,spot)
         row,col = g.convertPythonIndexToRowCol(s,i)
+        # g.trace('spot,i',spot,i)
+    
         self.moveSpot = i
         self.moveCol = col
     #@nonl

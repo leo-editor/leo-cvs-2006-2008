@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="76" left="308" height="743" width="967"/>
+	<global_window_position top="76" left="308" height="724" width="967"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -679,10 +679,10 @@
 <v t="ekr.20060913164729"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20061025065357"><vh>Chapter 18: Leo and Emacs</vh>
-<v t="ekr.20061025065357.1"><vh>@rst html\emacs.html</vh>
+<v t="ekr.20061025065357" a="E"><vh>Chapter 18: Leo and Emacs</vh>
+<v t="ekr.20061025065357.1" a="E"><vh>@rst html\emacs.html</vh>
 <v t="ekr.20061025065357.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20061025081359"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
+<v t="ekr.20061025081359" a="TV"><vh>Controlling Leo from Emacs using Pymacs</vh></v>
 <v t="ekr.20061025070825.1"><vh>Functions in leoPymacs.py</vh></v>
 <v t="ekr.20061025142434"><vh>The minibuffer</vh></v>
 <v t="ekr.20061025065357.12"><vh>@rst-no-head end stuff</vh></v>
@@ -29757,7 +29757,7 @@ Here are step-by-step instructions for executing Python scripts in Emacs:
   This hidden Leo application uses Leo's nullGui class as its gui,
   so Leo commands and Leo scripts that require a fully functional gui will not work as
   expected in the hidden Leo application.
-  Steps 3 and 4 tells how to use this hidden Leo application.
+  Steps 3 and 4 tell how to use this hidden Leo application.
   
   pymacs-load works like a Python reload, so you can redefine leoPymacs.py while Emacs is running.
   However, calling pymacs-load destroys the old hidden Leo application and creates a new one,
