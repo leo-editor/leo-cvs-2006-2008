@@ -2036,118 +2036,6 @@ Brian Theado
 @language python
 @color
 #@nonl
-#@+node:ekr.20061029095100:From leoNodes
-@color
-
-# These appear not to be used at all.
-#@nonl
-#@+node:EKR.20040528151551:v.Iterators
-#@+node:EKR.20040528151551.2:self_subtree_iter
-def subtree_iter(self):
-
-    """Return all nodes of self's tree in outline order."""
-    
-    v = self
-
-    if v:
-        yield v
-        child = v.t._firstChild
-        while child:
-            for v1 in child.subtree_iter():
-                yield v1
-            child = child.next()
-            
-self_and_subtree_iter = subtree_iter
-#@-node:EKR.20040528151551.2:self_subtree_iter
-#@+node:EKR.20040528151551.3:unique_subtree_iter
-def unique_subtree_iter(self,marks=None):
-
-    """Return all vnodes in self's tree, discarding duplicates """
-    
-    v = self
-
-    if marks == None: marks = {}
-
-    if v and v not in marks:
-        marks[v] = v
-        yield v
-        if v.t._firstChild:
-            for v1 in v.t._firstChild.unique_subtree_iter(marks):
-                yield v1
-        v = v._next
-        while v:
-            for v in v.unique_subtree_iter(marks):
-                yield v
-            v = v._next
-            
-self_and_unique_subtree_iter = unique_subtree_iter
-#@-node:EKR.20040528151551.3:unique_subtree_iter
-#@-node:EKR.20040528151551:v.Iterators
-#@-node:ekr.20061029095100:From leoNodes
-#@+node:ekr.20061105124126:From leoBody
-def convertRowColumnToIndex (self,row,column):
-    self.oops()
-    
-def convertIndexToRowColumn (self,index):
-    self.oops()
-    
-def adjustIndex (self,index,offset):
-    self.oops()
-    
-def compareIndices(self,i,rel,j):
-    self.oops()
-    
-def getImageIndex (self,image):
-    self.oops()
-    
-def getPythonInsertionPoint (self,t=None,s=None):
-    self.oops()
-    
-def setPythonInsertionPoint (self,i,t=None,s=None):
-    self.oops()
-#@-node:ekr.20061105124126:From leoBody
-#@+node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
-if 0:
-    def convertRowColumnToIndex (self,row,column):
-    
-        return self.bodyCtrl.index("%s.%s" % (row,column))
-#@-node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
-#@+node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
-if 0:
-
-    def convertIndexToRowColumn (self,index):
-    
-        index = self.bodyCtrl.index(index)
-        start, end = string.split(index,'.')
-        return int(start),int(end)
-#@nonl
-#@-node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
-#@+node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
-if 0:
-    def tkIndex(self,index):
-        
-        """Returns the canonicalized Tk index."""
-        
-        if index == "start": index = "1.0"
-        
-        return self.bodyCtrl.index(index)
-    
-#@nonl
-#@-node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
-#@+node:ekr.20061106075742:From nullBody
-def convertRowColumnToIndex (self,row,column):
-    
-    # Probably not used.
-    n = self.findStartOfLine(row)
-    g.trace(n + column)
-    return n + column
-    
-def convertIndexToRowColumn (self,index):
-    
-    # Probably not used.
-    g.trace(index)
-    return index
-#@-node:ekr.20061106075742:From nullBody
 #@+node:ekr.20061106105812:Old code from undoRedo Text
 #@+node:ekr.20031218072017.1494:<< Incrementally update the Tk.Text widget >> (rewrite)
 # Only update the changed lines.
@@ -2237,6 +2125,71 @@ def unpackBodyPane (self):
     
     self.oops()
 #@-node:ekr.20041222055747:leoFrame.unpack/repack...
+#@+node:ekr.20061110165725:Indices
+#@+node:ekr.20061105124126:From leoBody
+def convertRowColumnToIndex (self,row,column):
+    self.oops()
+    
+def convertIndexToRowColumn (self,index):
+    self.oops()
+    
+def adjustIndex (self,index,offset):
+    self.oops()
+    
+def compareIndices(self,i,rel,j):
+    self.oops()
+    
+def getImageIndex (self,image):
+    self.oops()
+    
+def getPythonInsertionPoint (self,t=None,s=None):
+    self.oops()
+    
+def setPythonInsertionPoint (self,i,t=None,s=None):
+    self.oops()
+#@-node:ekr.20061105124126:From leoBody
+#@+node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
+if 0:
+    def convertRowColumnToIndex (self,row,column):
+    
+        return self.bodyCtrl.index("%s.%s" % (row,column))
+#@-node:ekr.20031218072017.4009:convertRowColumnToIndex (tkBody) (NO LONGER USED)
+#@+node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
+if 0:
+
+    def convertIndexToRowColumn (self,index):
+    
+        index = self.bodyCtrl.index(index)
+        start, end = string.split(index,'.')
+        return int(start),int(end)
+#@nonl
+#@-node:ekr.20031218072017.4010:convertIndexToRowColumn (tkBody) (NO LONGER USED)
+#@+node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
+if 0:
+    def tkIndex(self,index):
+        
+        """Returns the canonicalized Tk index."""
+        
+        if index == "start": index = "1.0"
+        
+        return self.bodyCtrl.index(index)
+    
+#@nonl
+#@-node:ekr.20031218072017.4012:tkIndex (internal use only) (NO LONGER USED)
+#@+node:ekr.20061106075742:From nullBody
+def convertRowColumnToIndex (self,row,column):
+    
+    # Probably not used.
+    n = self.findStartOfLine(row)
+    g.trace(n + column)
+    return n + column
+    
+def convertIndexToRowColumn (self,index):
+    
+    # Probably not used.
+    g.trace(index)
+    return index
+#@-node:ekr.20061106075742:From nullBody
 #@+node:ekr.20041130065718:get_window_info (nullFrame)
 def get_window_info (self):
 
@@ -2246,6 +2199,135 @@ def get_window_info (self):
 
     return self.w,self.h,self.x,self.y
 #@-node:ekr.20041130065718:get_window_info (nullFrame)
+#@+node:ekr.20031218072017.4013:Insert point (tkBody) (removed)
+#@+node:ekr.20050710102922:get/setPythonInsertionPoint (removed)
+# def getPythonInsertionPoint (self,t=None,s=None):
+    # 
+    # b = self
+    # if t is None: t = self.bodyCtrl
+    # if s is None: s = t.get('1.0','end')
+    # i = t.index("insert")
+    # row,col = b.convertIndexToRowColumn(i)
+    # 
+    # return g.convertRowColToPythonIndex(s,row-1,col)
+    # 
+# def setPythonInsertionPoint (self,i,t=None,s=None):
+    # 
+    # if t is None: t = self.bodyCtrl
+    # if s is None: s = t.get('1.0','end')
+    # row,col = g.convertPythonIndexToRowCol(s,i)
+    # t.mark_set( 'insert','%d.%d' % (row+1,col))
+ 
+#@nonl
+#@-node:ekr.20050710102922:get/setPythonInsertionPoint (removed)
+#@+node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint (removed)
+# def getBeforeInsertionPoint (self):
+    # 
+    # return self.bodyCtrl.index("insert-1c")
+# 
+# def getInsertionPoint (self):
+    # 
+    # return self.bodyCtrl.index("insert")
+ 
+#@nonl
+#@-node:ekr.20031218072017.495:getInsertionPoint & getBeforeInsertionPoint (removed)
+#@+node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint (removed)
+# def getCharAtInsertPoint (self):
+    # 
+    # s = self.bodyCtrl.get("insert")
+    # return g.toUnicode(s,g.app.tkEncoding)
+# 
+# def getCharBeforeInsertPoint (self):
+# 
+    # s = self.bodyCtrl.get("insert -1c")
+    # return g.toUnicode(s,g.app.tkEncoding) 
+#@nonl
+#@-node:ekr.20031218072017.4014:getCharAtInsertPoint & getCharBeforeInsertPoint (removed)
+#@+node:ekr.20031218072017.4016:setInsertionPointTo... (removed)
+# def setInsertionPoint (self,index):
+    # self.bodyCtrl.mark_set("insert",index)
+# 
+# def setInsertionPointToEnd (self):
+    # self.bodyCtrl.mark_set("insert","end")
+    # 
+# def setInsertPointToStartOfLine (self,lineNumber): # zero-based line number
+    # self.bodyCtrl.mark_set("insert",str(1+lineNumber)+".0 linestart")
+ 
+#@nonl
+#@-node:ekr.20031218072017.4016:setInsertionPointTo... (removed)
+#@-node:ekr.20031218072017.4013:Insert point (tkBody) (removed)
+#@+node:ekr.20031218072017.4025:Text (tkBody) (to be moved into the base class)
+#@+node:ekr.20031218072017.4026:delete... (removed)
+# def deleteAllText(self):
+    # self.bodyCtrl.delete("1.0","end")
+
+# def deleteCharacter (self,index):
+    # t = self.bodyCtrl
+    # t.delete(t.index(index))
+    
+# def deleteLastChar (self):
+    # self.bodyCtrl.delete("end-1c")
+    
+# def deleteLine (self,lineNumber): # zero based line number.
+    # self.bodyCtrl.delete(str(1+lineNumber)+".0","end")
+    
+# def deleteLines (self,line1,numberOfLines): # zero based line numbers.
+    # self.bodyCtrl.delete(str(1+line1)+".0",str(1+line1+numberOfLines-1)+".0 lineend")
+    
+# def deleteRange (self,index1,index2):
+    # t = self.bodyCtrl
+    # t.delete(t.index(index1),t.index(index2))
+#@nonl
+#@-node:ekr.20031218072017.4026:delete... (removed)
+#@+node:ekr.20031218072017.4027:get... (tkBody) (to be removed)
+#@+node:ekr.20031218072017.4028:tkBody.getAllText (removed)
+# def getAllText (self):
+    # 
+    # """Return all the body text, converted to unicode."""
+    # 
+    # s = self.bodyCtrl.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+    # if s is None:
+        # return u""
+    # else:
+        # return g.toUnicode(s,g.app.tkEncoding)
+#@nonl
+#@-node:ekr.20031218072017.4028:tkBody.getAllText (removed)
+#@+node:ekr.20031218072017.4029:getCharAtIndex (removed)
+# def getCharAtIndex (self,index):
+    # 
+    # """Return all the body text, converted to unicode."""
+    # 
+    # s = self.bodyCtrl.get(index)
+    # if s is None:
+        # return u""
+    # else:
+        # return g.toUnicode(s,g.app.tkEncoding)
+#@nonl
+#@-node:ekr.20031218072017.4029:getCharAtIndex (removed)
+#@+node:ekr.20031218072017.4032:getTextRange (removed)
+# def getTextRange (self,index1,index2):
+    # t = self.bodyCtrl
+    # return t.get(t.index(index1),t.index(index2))
+#@nonl
+#@-node:ekr.20031218072017.4032:getTextRange (removed)
+#@-node:ekr.20031218072017.4027:get... (tkBody) (to be removed)
+#@+node:ekr.20031218072017.4033:Insert... (tkBody) (to be removed)
+#@+node:ekr.20031218072017.4034:insertAtInsertPoint
+# def insertAtInsertPoint (self,s):
+    # self.bodyCtrl.insert("insert",s)
+#@-node:ekr.20031218072017.4034:insertAtInsertPoint
+#@+node:ekr.20031218072017.4035:insertAtEnd
+# def insertAtEnd (self,s):
+    # self.bodyCtrl.insert("end",s)
+#@nonl
+#@-node:ekr.20031218072017.4035:insertAtEnd
+#@+node:ekr.20031218072017.4036:insertAtStartOfLine
+# def insertAtStartOfLine (self,lineNumber,s):
+    # self.bodyCtrl.insert(str(1+lineNumber)+".0",s)
+#@-node:ekr.20031218072017.4036:insertAtStartOfLine
+#@-node:ekr.20031218072017.4033:Insert... (tkBody) (to be removed)
+#@-node:ekr.20031218072017.4025:Text (tkBody) (to be moved into the base class)
+#@-node:ekr.20061110165725:Indices
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

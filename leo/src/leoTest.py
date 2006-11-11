@@ -754,26 +754,32 @@ class reformatParagraphTest:
     
         # Make the temp child node current, and put the cursor at the beginning.
         c.selectPosition(self.tempChild)
-        ###c.frame.body.setInsertPointToStartOfLine( 0 )
-        ###c.frame.body.setSelectionRange(None,None)
         w = c.frame.body.bodyCtrl
         g.app.gui.setSelectionRange(w,0,0,python=True)
     #@-node:ekr.20051104075904.52:copyBeforeToTemp
     #@+node:ekr.20051104075904.53:getRowCol
     def getRowCol(self):
     
-        c = self.c ; body = c.frame.body.bodyCtrl ; gui = g.app.gui
+        c = self.c ; w = c.frame.body.bodyCtrl ; gui = g.app.gui
         tab_width = c.frame.tab_width
     
         # Get the Tkinter row col position of the insert cursor.
-        index = body.index("insert")
-        row,col = gui.getindex(body,index)
+        if 0:
+            index = w.index("insert")
+            row,col = gui.getindex(w,index)
+        else:
+            s = gui.getAllText(w)
+            index = gui.getInsertPoint(w,python=True)
+            row,col = g.convertPythonIndexToRowCol(s,index)
+            row += 1
+        # g.trace(index,row,col)
     
         # Adjust col position for tabs.
         if col > 0:
-            s = body.get("%d.0" % (row),index)
-            s = g.toUnicode(s,g.app.tkEncoding)
-            col = g.computeWidth(s,tab_width)
+            ##s2 = w.get("%d.0" % (row),index)
+            s2 = s[index-col:index]
+            s2 = g.toUnicode(s2,g.app.tkEncoding)
+            col = g.computeWidth(s2,tab_width)
     
         return row,col
     #@-node:ekr.20051104075904.53:getRowCol

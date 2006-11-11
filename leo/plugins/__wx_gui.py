@@ -546,7 +546,19 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.111303093843.1:setIdleTimeHookAfterDelay
     #@-node:edream.110203113231.329:Idle time (wxGui) (to do)
-    #@+node:edream.111303093953.8:Insert Point
+    #@+node:edream.111303093953.17:Text
+    #@+node:edream.111303093953.18:getAllText
+    def getAllText (self,t):
+        
+        """Return all the text of Tk.Text t converted to unicode."""
+        
+        s = t.get("1.0","end")
+        if s is None:
+            return u""
+        else:
+            return g.toUnicode(s,g.app.tkEncoding)
+    #@nonl
+    #@-node:edream.111303093953.18:getAllText
     #@+node:edream.111303093953.9:getInsertPoint
     def getInsertPoint(self,t,python=False):
         
@@ -558,18 +570,6 @@ class wxGui(leoGui.leoGui):
             return 0
     #@nonl
     #@-node:edream.111303093953.9:getInsertPoint
-    #@+node:edream.111303093953.10:setInsertPoint
-    def setInsertPoint (self,t,pos,python=False):
-        
-        # The python arg is ignored.
-    
-        if t and pos: # s_text control doesn't exist.
-            g.trace(pos)
-            t.bodyCtrl.SetInsertionPoint(pos)
-    #@nonl
-    #@-node:edream.111303093953.10:setInsertPoint
-    #@-node:edream.111303093953.8:Insert Point
-    #@+node:edream.111303093953.11:Selection
     #@+node:edream.111303093953.13:getSelectionRange
     def getSelectionRange (self,t):
         
@@ -587,25 +587,24 @@ class wxGui(leoGui.leoGui):
             return insert,insert
     #@nonl
     #@-node:edream.111303093953.13:getSelectionRange
-    #@+node:edream.111303093953.14:setSelectionRange
-    def setSelectionRange(self,t,n1,n2):
+    #@+node:edream.111303093953.25:see
+    def see(self,t,index):
     
-        if t and n1 and n2:
-            g.trace(n1,n2)
-            t.bodyCtrl.SetSelection(n1,n2)
-    #@nonl
-    #@-node:edream.111303093953.14:setSelectionRange
-    #@+node:edream.111303093953.15:setSelectionRangeWithLength
-    def setSelectionRangeWithLength(self,t,start,length):
+        if t and index:
+            t.bodyCtrl.ShowPosition(index)
+    #@-node:edream.111303093953.25:see
+    #@+node:edream.111303093953.10:setInsertPoint
+    def setInsertPoint (self,t,pos,python=False):
         
-        t.bodyCtrl.SetSelection(n1,start+length)
+        # The python arg is ignored.
+    
+        if t and pos: # s_text control doesn't exist.
+            g.trace(pos)
+            t.bodyCtrl.SetInsertionPoint(pos)
     #@nonl
-    #@-node:edream.111303093953.15:setSelectionRangeWithLength
+    #@-node:edream.111303093953.10:setInsertPoint
     #@+node:edream.111303093953.16:setSelectionRange
     def setSelectionRange (self,t,start,end):
-    
-        if not start or not end:
-            return
             
         if start > end:
             start,end = end,start
@@ -613,38 +612,8 @@ class wxGui(leoGui.leoGui):
         t.bodyCtrl.SetSelection(start,end)
     #@nonl
     #@-node:edream.111303093953.16:setSelectionRange
-    #@-node:edream.111303093953.11:Selection
-    #@+node:edream.111303093953.17:Text
-    #@+node:edream.111303093953.18:getAllText
-    def getAllText (self,t):
-        
-        """Return all the text of Tk.Text t converted to unicode."""
-        
-        s = t.get("1.0","end")
-        if s is None:
-            return u""
-        else:
-            return g.toUnicode(s,g.app.tkEncoding)
-    #@nonl
-    #@-node:edream.111303093953.18:getAllText
-    #@+node:edream.111303093953.23:replaceSelectionRangeWithText
-    def replaceSelectionRangeWithText (self,t,start,end,text):
-    
-        t.delete(start,end)
-        t.insert(start,text)
-    #@nonl
-    #@-node:edream.111303093953.23:replaceSelectionRangeWithText
-    #@-node:edream.111303093953.17:Text
-    #@+node:edream.111303093953.24:Visibility
-    #@+node:edream.111303093953.25:see
-    def see(self,t,index):
-    
-        if t and index:
-            t.bodyCtrl.ShowPosition(index)
-    #@-node:edream.111303093953.25:see
-    #@-node:edream.111303093953.24:Visibility
     #@+node:ekr.20061105125717:toGuiIndex & toPythonIndex
-    # This plugin uses Python indices everywhere, so these can be do-nothings.
+    # This plugin uses Python indices everywhere, so are do-nothings.
     
     def toGuiIndex (self,s,w,index):
         
@@ -654,6 +623,7 @@ class wxGui(leoGui.leoGui):
     
         return index
     #@-node:ekr.20061105125717:toGuiIndex & toPythonIndex
+    #@-node:edream.111303093953.17:Text
     #@-node:edream.111303090930:app.gui.wx utils
     #@-others
 #@nonl
@@ -824,160 +794,7 @@ class wxLeoBody (leoFrame.leoBody):
         g.trace()
     #@nonl
     #@-node:edream.110203113231.548:Idle-time (wxBody) (to do)
-    #@+node:edream.111303171218:Insert point (wxBody) (TO BE REMOVED FROM LEO's CORE)
-    #@+node:ekr.20060629123738.1:getInsertionPoint & getBeforeInsertionPoint
-    def getBeforeInsertionPoint (self):
-        g.trace()
-        
-    def getInsertionPoint (self):
-    
-        return self.bodyCtrl.GetInsertionPoint()
-        
-    #@-node:ekr.20060629123738.1:getInsertionPoint & getBeforeInsertionPoint
-    #@+node:ekr.20060629123738.3:setInsertionPointTo 
-    def setInsertionPoint (self,index):
-    
-        g.trace(g.callers())
-        self.bodyCtrl.SetInsertionPoint(index)
-    
-    def setInsertPointToEnd (self):
-        
-        g.trace(g.callers())
-        self.bodyCtrl.SetInsertionPointEnd()
-        
-    def setInsertPointToStartOfLine (self,lineNumber):
-        g.trace(g.callers())
-    #@nonl
-    #@-node:ekr.20060629123738.3:setInsertionPointTo 
-    #@-node:edream.111303171218:Insert point (wxBody) (TO BE REMOVED FROM LEO's CORE)
-    #@+node:edream.111303171218.1:Selection
-    
-    
-    
-    
-    #@+node:ekr.20060629124102.1:deleteSelection
-    def deleteSelection (self):
-        t = self.bodyCtrl
-        t.Remove(t.GetSelection())
-    #@nonl
-    #@-node:ekr.20060629124102.1:deleteSelection
-    #@+node:ekr.20060629125105:getSelectedText
-    def getSelectedText (self):
-        
-        """Return the selected text of the body frame, converted to unicode."""
-        
-        start, end = self.bodyCtrl.GetSelection()
-        # g.trace(start,end)
-    
-        if start is not None and end is not None and start != end:
-            s = self.bodyCtrl.GetRange(start,end)
-            if s:
-                return g.toUnicode(s,g.app.tkEncoding)
-            else:
-                return u''
-        else:
-            return u''
-    #@nonl
-    #@-node:ekr.20060629125105:getSelectedText
-    #@+node:ekr.20060629124102.2:getSelectionRange
-    def getSelectionRange (self):
-        
-        """Return a tuple representing the selected range of body text.
-        
-        Return a tuple giving the insertion point if no range of text is selected."""
-    
-        return self.bodyCtrl.GetSelection()
-    #@nonl
-    #@-node:ekr.20060629124102.2:getSelectionRange
-    #@+node:ekr.20060629124102.3:hasTextSelection
-    def hasTextSelection (self):
-        start,end = self.bodyCtrl.GetSelection()
-        return start != end
-    #@nonl
-    #@-node:ekr.20060629124102.3:hasTextSelection
-    #@+node:ekr.20060629124102.4:selectAllText
-    def selectAllText (self):
-    
-        self.bodyCtrl.SetSelection(-1,-1)
-    #@nonl
-    #@-node:ekr.20060629124102.4:selectAllText
-    #@+node:ekr.20060629124102.5:setSelectionRange
-    def setSelectionRange (self,sel):
-    
-        self.bodyCtrl.SetSelection(sel)
-    #@nonl
-    #@-node:ekr.20060629124102.5:setSelectionRange
-    #@-node:edream.111303171218.1:Selection
-    #@+node:edream.111303171238:Text (wxBody)
-    # These routines replace most of the former insert/delete and index routines.
-    #@nonl
-    #@+node:edream.111303171238.1:delete... (wxBody) (to be removed)
-    # def deleteAllText(self):
-        # self.bodyCtrl.Clear()
-    
-    # def deleteCharacter (self,index):
-        # self.bodyCtrl.Remove(index,index+1)
-    
-    # def deleteLine (self,lineNumber): # zero based line number.
-        # t = self.bodyCtrl
-        # pos1 = t.XYToPosition(lineNumber)
-        # n = t.GetLineLength(lineNumber)
-        # t.Remove(pos1,pos1 + n)
-    
-    # def deleteLines (self,lineNumber,numberOfLines): # zero based line number.
-        # t = self.bodyCtrl
-        # pos1 = t.XYToPosition(lineNumber)
-        # pos2 = t.XYToPosition(lineNumber+numberOfLine-1)
-        # n = t.GetLineLength(lineNumber+numberOfLine-1)
-        # t.Remove(pos1,pos2 + n)
-    
-    # def deleteRange (self,index1,index2):
-        # self.bodyCtrl.Remove(index1,index2)
-    #@nonl
-    #@-node:edream.111303171238.1:delete... (wxBody) (to be removed)
-    #@+node:edream.111303171238.2:get... (wxBody) (to be deleted)
-    # def getAllText (self):
-        # return self.bodyCtrl.GetValue()
-    
-    # def getTextRange(self,n1,n2):
-        # return self.bodyCtrl.GetRange(n1,n2)
-    
-    # def getCharAtIndex (self,index):
-        # return self.bodyCtrl.GetRange(index,index+1)
-    
-    # def getInsertLines (self):
-        # g.trace()
-    
-    # def getSelectionAreas (self):
-        # g.trace()
-    
-    # def getSelectionLines (self):
-        # g.trace()
-    #@-node:edream.111303171238.2:get... (wxBody) (to be deleted)
-    #@+node:edream.111303171238.3:insert... (wxBody) (to be deleted)
-    # def insertAtEnd (self,s):
-        # return self.bodyCtrl.AppendText(s)
-        
-    # def insertAtInsertPoint (self,s): 
-        # self.bodyCtrl.WriteText(s)
-    #@nonl
-    #@-node:edream.111303171238.3:insert... (wxBody) (to be deleted)
-    #@+node:edream.111303171238.4:setSelectionAreas (wxBody) (to be defined in base class)
-    # def setSelectionAreas (self,before,sel,after):
-        # g.trace()
-    #@nonl
-    #@-node:edream.111303171238.4:setSelectionAreas (wxBody) (to be defined in base class)
-    #@-node:edream.111303171238:Text (wxBody)
     #@+node:edream.110203113231.552:Visibility & scrolling... (wxBody) (to do)
-    def see (self,index):
-        self.bodyCtrl.ShowPosition()
-        
-    # def setFirstVisibleIndex (self,index):
-        # g.trace()
-        # 
-    # def getFirstVisibleIndex (self):
-        # g.trace()
-        
     def scrollUp (self):
         g.trace()
         
@@ -990,6 +807,7 @@ class wxLeoBody (leoFrame.leoBody):
     def onBodyTextUpdated(self,event):
     
         frame = self.frame ; c = self.c
+        gui = g.app.gui ; w = frame.body.bodyCtrl
         if not c:  return
         p = c.currentPosition()
         if not p: return
@@ -1000,7 +818,7 @@ class wxLeoBody (leoFrame.leoBody):
     
         s = frame.body.bodyCtrl.GetValue()
         p.v.t.setTnodeText(s)
-        p.v.t.insertSpot = c.frame.body.getInsertionPoint()
+        p.v.t.insertSpot = gui.getInsertPoint(w)
         #@    << recolor the body >>
         #@+node:edream.111303201144.6:<< recolor the body >>
         if 0:  ### Not ready yet.
@@ -1565,6 +1383,7 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         return
     
         c = self.c ; tree = self.tree ; v = self.editVnode
+        gui = g.app.gui ; w = c.frame.body.bodyCtrl
     
         if v and c.edit_widget(v):
             tree.select(v)
@@ -1573,7 +1392,7 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
             # 3/26/03: changed redraw_now to force_redraw.
             tree.force_redraw() # force a redraw of joined headlines.
     
-        gui.set_focus(c,c.frame.bodyCtrl) # 10/14/02
+        gui.set_focus(c,w)
     #@nonl
     #@-node:edream.111303101257.1:endEditLabelCommand
     #@+node:edream.111303100039.6:insertHeadlineTime
@@ -2522,120 +2341,13 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:edream.111403090242:Scrolling TO DO
     #@+node:ekr.20050719121701:Selection stuff...
-    #@+node:edream.111603221343.1:OLDselect
-    # Warning: do not try to "optimize" this by returning if v==tree.currentVnode.
-    
-    def OLDselect (self,v,updateBeadList=True):
-    
-        c = self.c ; frame = c.frame ; body = frame.bodyCtrl
-        old_v = c.currentVnode()
-    
-        if not g.doHook("unselect1",c=c,new_v=v,old_v=old_v):
-            if 0: ## Not ready yet.
-                #@            << unselect the old node >>
-                #@+node:edream.111603221343.3:<< unselect the old node >>
-                # Remember the position of the scrollbar before making any changes.
-                yview = body.yview()
-                insertSpot = c.frame.body.getInsertionPoint()
-                
-                # Remember the old body text
-                old_body = body.getAllText()
-                
-                if old and old != v and c.edit_widget(old):
-                    old.t.scrollBarSpot = yview
-                    old.t.insertSpot = insertSpot
-                #@-node:edream.111603221343.3:<< unselect the old node >>
-                #@nl
-        else: old_body = u""
-    
-        g.doHook("unselect2",c=c,new_v=v,old_v=old_v)
-        
-        if not g.doHook("select1",c=c,new_v=v,old_v=old_v):
-            #@        << select the new node >>
-            #@+node:edream.111603221343.4:<< select the new node >>
-            if 0: # Done in event handler??
-            
-                frame.setWrap(v)
-            
-                # Delete only if necessary: this may reduce flicker slightly.
-                s = v.t.bodyString
-                s = g.toUnicode(s,"utf-8")
-                old_body = g.toUnicode(old_body,"utf-8")
-                if old_body != s:
-                    body.delete("1.0","end")
-                    body.insert("1.0",s)
-            
-                # We must do a full recoloring: we may be changing context!
-                self.frame.body.recolor_now(v)
-            
-                if v and v.t.scrollBarSpot != None:
-                    first,last = v.t.scrollBarSpot
-                    body.yview("moveto",first)
-            
-                if v.t.insertSpot != None: # 9/21/02: moved from c.selectVnode
-                    c.frame.bodyCtrl.mark_set("insert",v.t.insertSpot)
-                    c.frame.bodyCtrl.see(v.t.insertSpot)
-                else:
-                    c.frame.bodyCtrl.mark_set("insert","1.0")
-            #@nonl
-            #@-node:edream.111603221343.4:<< select the new node >>
-            #@nl
-            if v and v != old_v: # 3/26/03: Suppress duplicate call.
-                try: # may fail during initialization
-                    self.idle_scrollTo()
-                except: pass
-            #@        << update c.beadList or c.beadPointer >>
-            #@+node:edream.111603221343.5:<< update c.beadList or c.beadPointer >>
-            if updateBeadList:
-                
-                if c.beadPointer > -1:
-                    present_v = c.beadList[c.beadPointer]
-                else:
-                    present_v = None
-                
-                if v != present_v:
-                    # Replace the tail of c.beadList by c and make c the present node.
-                    # print "updating c.beadList"
-                    c.beadPointer += 1
-                    c.beadList[c.beadPointer:] = []
-                    c.beadList.append(v)
-                    
-                # g.trace(c.beadPointer,v,present_v)
-            #@nonl
-            #@-node:edream.111603221343.5:<< update c.beadList or c.beadPointer >>
-            #@nl
-            #@        << update c.visitedList >>
-            #@+node:edream.111603221343.6:<< update c.visitedList >>
-            # Make v the most recently visited node on the list.
-            if v in c.visitedList:
-                c.visitedList.remove(v)
-                
-            c.visitedList.insert(0,v)
-            #@nonl
-            #@-node:edream.111603221343.6:<< update c.visitedList >>
-            #@nl
-    
-        #@    << set the current node and redraw >>
-        #@+node:edream.111603221343.7:<< set the current node and redraw >>
-        self.setCurrentVnode(v)
-        
-        if 0: ## Not ready yet
-            self.setSelectedLabelState(v)
-            self.scanForTabWidth(v) # 9/13/02 #GS I believe this should also get into the select1 hook.
-        
-        g.app.gui.set_focus(c,c.frame.bodyCtrl)
-        #@nonl
-        #@-node:edream.111603221343.7:<< set the current node and redraw >>
-        #@nl
-        g.doHook("select2",c=c,new_v=v,old_v=old_v)
-        g.doHook("select3",c=c,new_v=v,old_v=old_v)
-    #@-node:edream.111603221343.1:OLDselect
     #@+node:ekr.20050719120304:tree.select (MORE WORK NEEDED)
     # Warning: do not try to "optimize" this by returning if p==tree.currentPosition.
     
     def select (self,p,updateBeadList=True):
         
-        c = self.c ; frame = c.frame ; body = frame.bodyCtrl
+        c = self.c ; frame = c.frame
+        gui = g.app.gui ;  body = w = frame.bodyCtrl
         old_p = c.currentPosition()
     
         if not p: return
@@ -2654,7 +2366,7 @@ class wxLeoTree (leoFrame.leoTree):
                 if 0:  ### Not ready yet.
             
                     yview=body.yview()
-                    insertSpot = c.frame.body.getInsertionPoint()
+                    insertSpot = gui.getInsertionPoint(w)
                     
                     if old_p != p:
                         # g.trace("unselect:",old_p.headString())
@@ -2998,63 +2710,63 @@ class wxSearchWidget:
         self.text = None
     #@nonl
     #@-node:edream.111503094014:wxSearchWidget.__init__
-    #@+node:edream.111503094322:Insert point
+    #@+node:edream.111503094322:Insert point (deleted)
     # Simulating wxWindows calls (upper case)
-    def GetInsertionPoint (self):
-        return self.insertPoint
-    
-    def SetInsertionPoint (self,index):
-        self.insertPoint = index
-        
-    def SetInsertionPointEND (self,index):
-        self.insertPoint = len(self.text)+1
-    
-    # Returning indices...
-    def getBeforeInsertionPoint (self):
-        g.trace()
-    
-    # Returning chars...
-    def getCharAtInsertPoint (self):
-        g.trace()
-    
-    def getCharBeforeInsertPoint (self):
-        g.trace()
-    
-    # Setting the insertion point...
-    def setInsertPointToEnd (self):
-        self.insertPoint = -1
-        
-    def setInsertPointToStartOfLine (self,lineNumber):
-        g.trace()
+    # def GetInsertionPoint (self):
+        # return self.insertPoint
+    # 
+    # def SetInsertionPoint (self,index):
+        # self.insertPoint = index
+        # 
+    # def SetInsertionPointEND (self,index):
+        # self.insertPoint = len(self.text)+1
+    # 
+    # # Returning indices...
+    # def getBeforeInsertionPoint (self):
+        # g.trace()
+    # 
+    # # Returning chars...
+    # def getCharAtInsertPoint (self):
+        # g.trace()
+    # 
+    # def getCharBeforeInsertPoint (self):
+        # g.trace()
+    # 
+    # # Setting the insertion point...
+    # def setInsertPointToEnd (self):
+        # self.insertPoint = -1
+        # 
+    # def setInsertPointToStartOfLine (self,lineNumber):
+        # g.trace()
     #@nonl
-    #@-node:edream.111503094322:Insert point
-    #@+node:edream.111503094014.1:Selection
+    #@-node:edream.111503094322:Insert point (deleted)
+    #@+node:edream.111503094014.1:Selection (deleted)
     # Simulating wxWindows calls (upper case)
-    def SetSelection(self,n1,n2):
-        self.selection = n1,n2
-        
-    # Others...
-    def deleteSelection (self):
-        self.selection = 0,0
-    
-    def getSelectionRange (self):
-        return self.selection
-        
-    def hasTextSelection (self):
-        start,end = self.selection
-        return start != end
-    
-    def selectAllText (self):
-        self.selection = 0,-1
-    
-    def setSelectionRange (self,sel):
-        try:
-            start,end = sel
-            self.selection = start,end
-        except:
-            self.selection = sel,sel
+    # def SetSelection(self,n1,n2):
+        # self.selection = n1,n2
+        # 
+    # # Others...
+    # def deleteSelection (self):
+        # self.selection = 0,0
+    # 
+    # def getSelectionRange (self):
+        # return self.selection
+        # 
+    # def hasTextSelection (self):
+        # start,end = self.selection
+        # return start != end
+    # 
+    # def selectAllText (self):
+        # self.selection = 0,-1
+    # 
+    # def setSelectionRange (self,sel):
+        # try:
+            # start,end = sel
+            # self.selection = start,end
+        # except:
+            # self.selection = sel,sel
     #@nonl
-    #@-node:edream.111503094014.1:Selection
+    #@-node:edream.111503094014.1:Selection (deleted)
     #@-others
 #@nonl
 #@-node:edream.111503093140:wxSearchWidget

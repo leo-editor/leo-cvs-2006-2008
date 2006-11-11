@@ -384,17 +384,19 @@ class leoFind:
     def batchChange (self,pos1,pos2):
     
         c = self.c ; u = c.undoer
-        p = self.p ; st = self.s_ctrl ; gui = g.app.gui
+        p = self.p ; w = self.s_ctrl ; gui = g.app.gui
         # Replace the selection with self.change_text
-        if gui.compareIndices(st,pos1, ">", pos2):
-            pos1,pos2=pos2,pos1
-        gui.replaceSelectionRangeWithText(st,pos1,pos2,self.change_text)
-        s = gui.getAllText(st)
+        if pos1 > pos2: pos1,pos2=pos2,pos1
+        s = gui.getAllText(w)
+        if pos1 != pos2:
+            gui.rawDelete(w,s,pos1,pos2,python=True)
+        gui.rawInsert(w,s,pos1,self.change_text,python=True)
         # Update the selection.
-        insert=g.choose(self.reverse,pos1,pos1+'+'+str(len(self.change_text))+'c')
-        gui.setSelectionRange(st,insert,insert)
-        gui.setInsertPoint(st,insert)
+        insert=g.choose(self.reverse,pos1,pos1+len(self.change_text))
+        gui.setSelectionRange(w,insert,insert,python=True)
+        gui.setInsertPoint(w,insert,python=True)
         # Update the node
+        s = gui.getAllText(w) # Used below.
         if self.in_headline:
             #@        << change headline >>
             #@+node:ekr.20031218072017.2294:<< change headline >>
@@ -446,7 +448,7 @@ class leoFind:
     
         c = self.c ; u = c.undoer ; undoType = 'Change All'
         current = c.currentPosition()
-        st = self.s_ctrl ; gui = g.app.gui
+        w = self.s_ctrl ; gui = g.app.gui
         if not self.checkArgs(): return
         self.initInHeadline()
         saveData = self.save()
@@ -460,7 +462,9 @@ class leoFind:
                 if not pos1: break
                 count += 1
                 self.batchChange(pos1,pos2)
-                line = gui.getLineContainingIndex(st,pos1)
+                s = gui.getAllText(w)
+                i,j = g.getLine(s,pos1)
+                line = s[i:j]
                 self.printLine(line,allFlag=True)
             p = c.currentPosition()
             u.afterChangeGroup(p,undoType,reportFlag=True)
@@ -478,7 +482,7 @@ class leoFind:
         c = self.c ; p = self.p ; gui = g.app.gui
         # g.trace(self.in_headline)
         t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-        oldSel = sel = gui.getSelectionRange(t)
+        oldSel = sel = gui.getSelectionRange(t,python=True)
         if sel and len(sel) == 2:
             start,end = sel
             if start == end:
@@ -498,11 +502,17 @@ class leoFind:
                 change_text = self.makeRegexSubs(change_text,groups)
         change_text = change_text.replace('\\n','\n').replace('\\t','\t')
                     
-        gui.replaceSelectionRangeWithText(t,          start,end,change_text)
-        gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,change_text)
+        ###gui.replaceSelectionRangeWithText(t,          start,end,change_text)
+        ###gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,change_text)
+        for w in (t,self.s_ctrl):
+            s = gui.getAllText(w)
+            if start != end:
+                gui.rawDelete(w,s,start,end,python=True)
+            gui.rawInsert(w,s,start,self.change_text,python=True)
     
         # Update the selection for the next match.
-        gui.setSelectionRangeWithLength(t,start,len(self.change_text))
+        ###gui.setSelectionRangeWithLength(t,start,len(self.change_text))
+        gui.setSelectionRange(t,start,start+len(self.change_text),python=True)
         c.widgetWantsFocus(t)
     
         # No redraws here: they would destroy the headline selection.
@@ -626,7 +636,10 @@ class leoFind:
             pos, newpos = self.findNextMatch()
             if not pos: break
             count += 1
-            line = gui.getLineContainingIndex(t,pos)
+            ###line = gui.getLineContainingIndex(t,pos)
+            s = gui.getAllText(t)
+            i,j = g.getLine(s,pos)
+            line = s[i:j]
             self.printLine(line,allFlag=True)
             if self.clone_find_all and self.p.v.t not in clones:
                 if not clones:
@@ -733,30 +746,32 @@ class leoFind:
         Returns (pos, newpos) or (None,None)."""
     
         c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
-        index = gui.getInsertPoint(w)
+        index = gui.getInsertPoint(w,python=True)
         # g.trace(g.app.gui.widget_name(w),index,p.headString())
         s = gui.getAllText(w)
-        index = gui.toPythonIndex(s,w,index)
+        ###index = gui.toPythonIndex(s,w,index)
         stopindex = g.choose(self.reverse,0,len(s))
         pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
             backwards=self.reverse,nocase=self.ignore_case,
             regexp=self.pattern_match,word=self.whole_word)
         if pos == -1: return None,None
-        pos    = gui.toGuiIndex(s,w,pos)
-        newpos = gui.toGuiIndex(s,w,newpos)
+        ###pos    = gui.toGuiIndex(s,w,pos)
+        ###newpos = gui.toGuiIndex(s,w,newpos)
         #@    << fail if we are passed the wrap point >>
         #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
         
-            if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
+            ###if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
+            if self.reverse and pos < self.wrapPos:
                 # g.trace("wrap done")
                 return None, None
         
-            if not self.reverse and gui.compareIndices(w,newpos, ">", self.wrapPos):
+            ###if not self.reverse and gui.compareIndices(w,newpos, ">", self.wrapPos):
+            if not self.reverse and newpos > self.wrapPos:
                 return None, None
         #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         #@nl
-        gui.setSelectionRange(w,pos,newpos,insert=newpos)
+        gui.setSelectionRange(w,pos,newpos,insert=newpos,python=True)
         return pos, newpos
     #@+node:ekr.20060526081931:Search helpers...
     def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
@@ -1036,11 +1051,11 @@ class leoFind:
             sel = None
         else:
             t = c.frame.bodyCtrl
-            sel = gui.getSelectionRange(t)
-        pos = gui.getInsertPoint(t)
+            sel = gui.getSelectionRange(t,python=True)
+        pos = gui.getInsertPoint(t,python=True)
         st = self.initNextText()
         c.widgetWantsFocus(t)
-        gui.setInsertPoint(st,pos)
+        gui.setInsertPoint(st,pos,python=True)
         if sel:
             self.selStart,self.selEnd = sel
         else:
@@ -1083,9 +1098,9 @@ class leoFind:
         
         if not in_headline:
             # Looks good and provides clear indication of failure or termination.
-            gui.setSelectionRange(t,insert,insert)
-            gui.setInsertPoint(t,insert)
-            gui.see(t,insert)
+            gui.setSelectionRange(t,insert,insert,python=True)
+            gui.setInsertPoint(t,insert,python=True)
+            gui.seeInsert(t)
         
         #g.trace(c.widget_name(t))
         
@@ -1100,8 +1115,8 @@ class leoFind:
     
         c = self.c ; p = self.p ; gui = g.app.gui
         t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-        insert = gui.getInsertPoint(t)
-        sel = gui.getSelectionRange(t)
+        insert = gui.getInsertPoint(t,python=True)
+        sel = gui.getSelectionRange(t,python=True)
         if len(sel) == 2:
             start,end = sel
         else:
@@ -1145,9 +1160,9 @@ class leoFind:
         # New in 4.4a3: a much better way to ensure progress in backward searches.
         # g.trace(id(t),pos,newpos)
         c.widgetWantsFocusNow(t)
-        gui.setSelectionRange(t,pos,newpos,insert=insert)
+        gui.setSelectionRange(t,pos,newpos,insert=insert,python=True)
         # c.widgetWantsFocusNow(t)
-        gui.see(t,insert)
+        gui.seeInsert(t)
         if self.wrap and not self.wrapPosition:
             self.wrapPosition = self.p
     #@nonl

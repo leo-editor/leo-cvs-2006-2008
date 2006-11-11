@@ -1435,6 +1435,7 @@ class baseCommands:
         __pychecker__ = 'maxlines=400'
     
         c = self ; p = c.currentPosition()
+        gui = g.app.gui ; w = c.frame.body.bodyCtrl
         root1 = root
         if root is None:
             #@        << set root >>
@@ -1682,14 +1683,19 @@ class baseCommands:
         #@nl
         #@    << put the cursor on line n2 of the body text >>
         #@+node:ekr.20031218072017.2876:<< put the cursor on line n2 of the body text >>
+        s = gui.getAllText(w)
         if found:
-            c.frame.body.setInsertPointToStartOfLine(n2-1)
+            ins = g.convertRowColToPythonIndex(s,n2,0)    
+            # c.frame.body.setInsertPointToStartOfLine(n2-1)
         else:
-            c.frame.body.setInsertionPointToEnd()
+            #c.frame.body.setInsertionPointToEnd()
+            ins = len(s)
             g.es("%d lines" % len(lines), color="blue")
         
+        gui.setInsertPoint(w,ins,python=True)
         c.bodyWantsFocusNow()
-        c.frame.body.seeInsertPoint()
+        # c.frame.body.seeInsertPoint()
+        gui.seeInsertPoint(w)
         #@-node:ekr.20031218072017.2876:<< put the cursor on line n2 of the body text >>
         #@nl
     #@+node:ekr.20031218072017.2877:convertLineToVnodeNameIndexLine
@@ -4043,8 +4049,9 @@ class baseCommands:
         def replaceBody (self,p,lines):
             
             c = self.c ; u = c.undoer ; undoType = 'Pretty Print'
-            
-            sel = c.frame.body.getInsertionPoint()
+            gui = g.app.gui ; w = c.frame.body.bodyCtrl
+            # sel = c.frame.body.getInsertionPoint()
+            sel = gui.getInsertPoint(w)
             oldBody = p.bodyString()
             body = string.join(lines,'')
             
@@ -5906,8 +5913,14 @@ class baseCommands:
     def canFindMatchingBracket (self):
         
         c = self ; brackets = "()[]{}"
-        c1 = c.frame.body.getCharAtInsertPoint()
-        c2 = c.frame.body.getCharBeforeInsertPoint()
+        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        ###c1 = c.frame.body.getCharAtInsertPoint()
+        ###c2 = c.frame.body.getCharBeforeInsertPoint()
+        s = gui.getAllText(w)
+        ins = gui.getInsertPoint(w,python=True)
+        c1 = 0 <= ins   < len(s) and s[ins] or ''
+        c2 = 0 <= ins-1 < len(s) and s[ins-1] or ''
+        
         return (c1 and c1 in brackets) or (c2 and c2 in brackets)
     #@-node:ekr.20031218072017.2965:canFindMatchingBracket
     #@+node:ekr.20040303165342:canHoist & canDehoist

@@ -2470,7 +2470,8 @@ class leoTkinterTree (leoFrame.leoTree):
         
         '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
         
-        c = self.c ; frame = c.frame ; body = frame.bodyCtrl
+        c = self.c ; frame = c.frame
+        gui = g.app.gui ; body = w = frame.bodyCtrl
         old_p = c.currentPosition()
         if not p or not c.positionExists(p):
             # g.trace('does not exist',p.headString())
@@ -2484,7 +2485,8 @@ class leoTkinterTree (leoFrame.leoTree):
                 #@+node:ekr.20040803072955.129:<< unselect the old node >>
                 # Remember the position of the scrollbar before making any changes.
                 yview=body.yview()
-                insertSpot = c.frame.body.getInsertionPoint()
+                # insertSpot = c.frame.body.getInsertionPoint()
+                insertSpot = gui.getInsertPoint(w)
                 
                 if old_p != p:
                     self.endEditLabel() # sets editPosition = None

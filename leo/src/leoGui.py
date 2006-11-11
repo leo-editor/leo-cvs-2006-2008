@@ -386,34 +386,33 @@ class leoGui:
         pass # Not an error.
     #@-node:ekr.20031218072017.3739:Idle time
     #@+node:ekr.20031218072017.3738:Index
-    def compareIndices (self,t,n1,rel,n2):
-        self.oops()
+    # def compareIndices (self,t,n1,rel,n2):
+        # self.oops()
     
-    def firstIndex (self):
-        self.oops()
-        
-    def getindex (self,body,index):
-        self.oops()
-        return 0,0
-        
-    def lastIndex (self):
-        self.oops()
-        
-    def moveIndexBackward(self,index,n):
-        self.oops()
-        
-    def moveIndexForward(self,t,index,n):
-        self.oops()
-        
-    def moveIndexToNextLine(self,t,index):
-        self.oops()
+    # # def firstIndex (self):
+        # # self.oops()
     
-    def toGuiIndex (self,s,w,index):
-        self.oops()
-        
-    def toPythonIndex (self,s,w,index):
-       self.oops()
-    #@nonl
+    # def getindex (self,body,index):
+        # self.oops()
+        # return 0,0
+    
+    # def lastIndex (self):
+        # self.oops()
+    
+    # def moveIndexBackward(self,index,n):
+        # self.oops()
+    
+    # def moveIndexForward(self,t,index,n):
+        # self.oops()
+    
+    # def moveIndexToNextLine(self,t,index):
+        # self.oops()
+    
+    # def toGuiIndex (self,s,w,index):
+        # self.oops()
+    
+    # def toPythonIndex (self,s,w,index):
+       # self.oops()
     #@-node:ekr.20031218072017.3738:Index
     #@+node:ekr.20061024133425:Selection (leoGui)
     def getSelectionRange (self,t,sort=True,toPython=False):
@@ -655,23 +654,12 @@ class unitTestGui(leoGui):
         return self.simulateDialog("yesNoCancelDialog","cancel")
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
-    def getAllText(self,w):
-        return ''
-    
-    def getindex (self,body,index):
-        return 0, 0
-    
-    def get_focus (self,frame):
-        pass
-        
-    def getInsertPoint (self,t,python=False):
-        return 0
-    
-    def getSelectionRange (self,t,sort=True,toPython=False):
-        return 0, 0
-        
-    def see (self,w,index,python=False):
-        pass
+    def getAllText(self,w):                                     return ''
+    # def getindex (self,body,index):                             return 0,0
+    def get_focus (self,frame):                                 pass
+    def getInsertPoint (self,t,python=False):                   return g.choose(python,0,'1.0')
+    def getSelectionRange (self,t,sort=True,toPython=False):    return 0,0
+    def see (self,w,index,python=False):                        pass
         
     def seeInsertPoint (self):
         pass

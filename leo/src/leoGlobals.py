@@ -4117,16 +4117,18 @@ def convertPythonIndexToRowCol (s,i):
 
     if not s or i <= 0:
         return 0,0
-    else:
-        i = min(i,len(s)-1)
-        # works regardless of what s[i] is
-        row = s.count('\n',0,i) # Don't include i
-        if row == 0:
-            return row,i
-        else:
-            prevNl = s.rfind('\n',0,i) # Don't include i
-            # assert prevNl > -1
-            return row,i-prevNl-1
+
+    i = min(i,len(s))
+
+    # works regardless of what s[i] is
+    row = s.count('\n',0,i) # Don't include i
+    if row == 0:
+        return row,min(i,len(s)-1)
+    
+    prevNL = s.rfind('\n',0,i) # Don't include i
+    # assert prevNl > -1
+    # g.trace(prevNL,i-prevNL-1)
+    return row,i-prevNL-1
 #@-node:ekr.20050314140957:g.convertPythonIndexToRowCol
 #@+node:ekr.20050315071727:g.convertRowColToPythonIndex
 def convertRowColToPythonIndex (s,row,col):
@@ -5177,15 +5179,16 @@ def getLine (s,i):
     s[i] is a newline only if the line is empty.
     s[j] is a newline unless there is no trailing newline.
     '''
-    
+
     if i >= len(s): i = len(s) - 1
     if i < 0: i = 0
-    j = s.rfind('\n',0,i)
+    j = s.rfind('\n',0,i) # A newline *ends* the line, so look to the left of a newline.
     if j == -1: j = 0
     else:       j += 1
     k = s.find('\n',i)
     if k == -1: k = len(s)
     else:       k = k + 1
+    # g.trace('i,j,k',i,j,k,repr(s[j:k]))
     return j,k
 #@nonl
 #@-node:ekr.20061031102333.2:g.getWord & getLine (both passed)

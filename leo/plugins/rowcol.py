@@ -86,16 +86,17 @@ class rowColClass:
         if g.app.killed or not c or not hasattr(c,'frame'):
             return
     
-        body = c.frame.body.bodyCtrl ; gui = g.app.gui
+        gui = g.app.gui ; w = c.frame.body.bodyCtrl ; 
         tab_width = c.frame.tab_width
     
-        index = body.index("insert")
-        row,col = gui.getindex(body,index)
+        s = gui.getAllText(w)
+        index = gui.getInsertPoint(w,python=True)
+        row,col = g.convertPythonIndexToRowCol(s,index)
     
         if col > 0:
-            s = body.get("%d.0" % (row),index)
-            s = g.toUnicode(s,g.app.tkEncoding)
-            col = g.computeWidth(s,tab_width)
+            s2 = s[index-col:index]
+            s2 = g.toUnicode(s2,g.app.tkEncoding)
+            col = g.computeWidth (s2,c.tab_width)
     
         if row != self.lastRow or col != self.lastCol:
             s = "line %d, col %d " % (row,col)

@@ -615,58 +615,57 @@ class tkinterGui(leoGui.leoGui):
             g.app.root.after(g.app.idleTimeDelay,idleTimeHookHandler)
     #@-node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     #@-node:ekr.20031218072017.4071:Idle Time
-    #@+node:ekr.20031218072017.4074:Indices (Tk)
-    #@+node:ekr.20031218072017.4079:compareIndices (to be deleted)
-    def compareIndices (self,w,n1,rel,n2):
-        
-        try:
-            return w.compare(n1,rel,n2)
-        except Exception:
-            return False
-    #@-node:ekr.20031218072017.4079:compareIndices (to be deleted)
-    #@+node:ekr.20031218072017.4075:firstIndex (to be deleted)
-    def firstIndex (self):
-    
-        return "1.0"
-    #@-node:ekr.20031218072017.4075:firstIndex (to be deleted)
-    #@+node:ekr.20031218072017.4080:getindex (to be deleted?)
+    #@+node:ekr.20031218072017.4074:Indices (Tk) (most removed)
+    #@+node:ekr.20031218072017.4079:compareIndices (removed)
+    # def compareIndices (self,w,n1,rel,n2):
+        # 
+        # try:
+            # return w.compare(n1,rel,n2)
+        # except Exception:
+            # return False
+    # 
+    #@nonl
+    #@-node:ekr.20031218072017.4079:compareIndices (removed)
+    #@+node:ekr.20031218072017.4075:firstIndex (removed)
+    # def firstIndex (self):
+        # return "1.0"
+    #@-node:ekr.20031218072017.4075:firstIndex (removed)
+    #@+node:ekr.20031218072017.4080:getindex (removed)
     def getindex(self,text,index):
         
         """Convert string index of the form line.col into a tuple of two ints."""
         
         return tuple(map(int,string.split(text.index(index), ".")))
-    #@-node:ekr.20031218072017.4080:getindex (to be deleted?)
-    #@+node:ekr.20031218072017.4077:moveIndexBackward (to be deleted)
-    def moveIndexBackward(self,index,n):
-    
-        return "%s-%dc" % (index,n)
-    #@-node:ekr.20031218072017.4077:moveIndexBackward (to be deleted)
-    #@+node:ekr.20031218072017.4076:lastIndex (to be deleted)
-    def lastIndex (self):
-    
-        return "end"
-    #@-node:ekr.20031218072017.4076:lastIndex (to be deleted)
-    #@+node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (to be deleted)
-    def moveIndexForward(self,w,index,n):
-    
-        newpos = w.index("%s+%dc" % (index,n))
-        
-        return g.choose(w.compare(newpos,"==","end"),None,newpos)
-        
-    def moveIndexToNextLine(self,w,index):
-    
-        newpos = w.index("%s linestart + 1lines" % (index))
-        
-        return g.choose(w.compare(newpos,"==","end"),None,newpos)
-    #@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (to be deleted)
+    #@nonl
+    #@-node:ekr.20031218072017.4080:getindex (removed)
+    #@+node:ekr.20031218072017.4077:moveIndexBackward (removed)
+    # def moveIndexBackward(self,index,n):
+        # return "%s-%dc" % (index,n)
+     
+    #@nonl
+    #@-node:ekr.20031218072017.4077:moveIndexBackward (removed)
+    #@+node:ekr.20031218072017.4076:lastIndex (removed)
+    # def lastIndex (self):
+        # return "end"
+    #@-node:ekr.20031218072017.4076:lastIndex (removed)
+    #@+node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (removed)
+    # def moveIndexForward(self,w,index,n):
+        # newpos = w.index("%s+%dc" % (index,n))
+        # return g.choose(w.compare(newpos,"==","end"),None,newpos)
+     
+    # def moveIndexToNextLine(self,w,index):
+        # newpos = w.index("%s linestart + 1lines" % (index))
+        # return g.choose(w.compare(newpos,"==","end"),None,newpos)
+     
+    #@nonl
+    #@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (removed)
     #@+node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
     def toGuiIndex (self,s,w,index):
         
         '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
         
         # A subtle point: s typically does not have Tk's trailing newline, so add it.
-    
-        row,col = g.convertPythonIndexToRowCol (s+'\n',index)
+        row,col = g.convertPythonIndexToRowCol(s +'\n',index)
         index = w.index('%s.%s' % (row+1,col))
         return index
         
@@ -693,7 +692,7 @@ class tkinterGui(leoGui.leoGui):
         return i
     #@nonl
     #@-node:ekr.20061031132712.4:xyToGui/PythonIndex
-    #@-node:ekr.20031218072017.4074:Indices (Tk)
+    #@-node:ekr.20031218072017.4074:Indices (Tk) (most removed)
     #@+node:ekr.20031218072017.4081:Insert Point
     #@+node:ekr.20031218072017.4082:getInsertPoint (python)
     def getInsertPoint(self,w,python=False):
@@ -716,7 +715,7 @@ class tkinterGui(leoGui.leoGui):
             gui = g.app.gui
             s = gui.getAllText(w)
             pos = gui.toGuiIndex(s,w,pos)
-    
+            # g.trace('pos',pos)
         try:
             w.mark_set("insert",pos)
         except Exception:

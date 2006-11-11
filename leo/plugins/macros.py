@@ -113,69 +113,70 @@ class paramClass:
         self.addMenu()
     #@nonl
     #@-node:ekr.20040916091520.3:__init__
-    #@+node:ekr.20040916084945.1:parameterize
-    def parameterize(self,event=None):
+    #@+node:ekr.20040916084945.1:macros.parameterize
+    def parameterize (self,event=None):
     
         c = self.c
         tree = c.frame.tree
         body = c.frame.body
+        gui = g.app.gui ; w = body.bodyCtrl
         current = c.currentVnode()
     
         if not self.params:
-            self.params = self.findParameters( current )
+            self.params = self.findParameters(current)
             if not self.params: return
     
         sr = body.getAllText()
-        sr = sr.split( '\n' )
+        sr = sr.split('\n')
     
-        t = str( body.getInsertionPoint() ).split( '.' )
-        sr = sr[ int(t[ 0 ]) - 1]
-        sr = sr[ : int( t[ 1 ] ) ]
+        t = str(gui.getInsertPoint(w)).split('.')
+        sr = sr [int(t[0]) -1]
+        sr = sr [: int(t[1])]
         sr = sr.rstrip()
-        match = self.regex.search( sr )
+        match = self.regex.search(sr)
         if not match: return
     
-        sr = sr[ match.start() : match.end() ]
-        for z in xrange( current.numberOfChildren() ):
-            child = current.nthChild( z )
+        sr = sr [match.start(): match.end()]
+        for z in xrange(current.numberOfChildren()):
+            child = current.nthChild(z)
             if child.headString == sr:
                 return
     
-        pieces = sr.split( '(' , 1 )
-        searchline = pieces[ 0 ] + ">>"
-        pieces[ 1 ] = pieces[ 1 ].rstrip('>')
-        pieces[ 1 ] = pieces[ 1 ].rstrip( ')' )
-        sections = pieces[ 1 ].split( ',' );
+        pieces = sr.split('(',1)
+        searchline = pieces [0] + ">>"
+        pieces [1] = pieces [1].rstrip('>')
+        pieces [1] = pieces [1].rstrip(')')
+        sections = pieces [1].split(',') ;
     
         node = None
-        for z in xrange( self.params.numberOfChildren() ):
-            child = self.params.nthChild( z )
-            if child.matchHeadline( searchline ):
+        for z in xrange(self.params.numberOfChildren()):
+            child = self.params.nthChild(z)
+            if child.matchHeadline(searchline):
                 node = child
                 break
             return
     
         bodys = node.bodyString()
-        tn = leoNodes.tnode( bodys , sr )
+        tn = leoNodes.tnode(bodys,sr)
         c.beginUpdate()
         try:
-            v = current.insertAsNthChild( 0 , tn )
-            for z in xrange( 0 , len( sections ) ):
-                head = g.angleBrackets(str( z + 1) + "$")
-                bod = sections[ z ]
-                t = leoNodes.tnode( bod , head )
-                v.insertAsNthChild( 0 , t )
+            v = current.insertAsNthChild(0,tn)
+            for z in xrange(0,len(sections)):
+                head = g.angleBrackets(str(z+1)+"$")
+                bod = sections [z]
+                t = leoNodes.tnode(bod,head)
+                v.insertAsNthChild(0,t)
         finally:
             c.endUpdate()
     #@nonl
-    #@-node:ekr.20040916084945.1:parameterize
+    #@-node:ekr.20040916084945.1:macros.parameterize
     #@+node:ekr.20040916084945.2:findParameters
     def findParameters (self,v):
         
         tag = "Parameterized Nodes"
         
         if v.level() != 0:
-            rnode = findParameters( v.parent())
+            rnode = self.findParameters( v.parent())
     
         bnode = v
         while bnode:
