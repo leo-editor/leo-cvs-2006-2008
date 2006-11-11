@@ -384,7 +384,44 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         #@nl
     #@-node:ekr.20031218072017.2059:find.init
     #@-node:ekr.20031218072017.3898:Birth & death
-    #@+node:ekr.20031218072017.1460:find.update_ivars
+    #@+node:ekr.20031218072017.3906:onCloseWindow
+    def onCloseWindow(self,event=None):
+        
+        __pychecker__ = '--no-argsused' # the event param must be present.
+    
+        self.top.withdraw()
+    #@-node:ekr.20031218072017.3906:onCloseWindow
+    #@+node:ekr.20051013084256:dismiss
+    def dismiss (self):
+        
+        self.top.withdraw()
+    #@-node:ekr.20051013084256:dismiss
+    #@+node:EKR.20040603221140:selectAllFindText
+    def selectAllFindText (self,event=None):
+    
+        try:
+            w = self.frame.focus_get()
+            g.app.gui.setSelectionRange(w,"1.0","end")
+            return "break"
+        except:
+            return None # To keep pychecker happy.
+    #@-node:EKR.20040603221140:selectAllFindText
+    #@+node:ekr.20061111084423:Overrides
+    #@+node:ekr.20031218072017.3907:bringToFront (tkFind)
+    def bringToFront (self):
+        
+        """Bring the tkinter Find Panel to the front."""
+        
+        c = self.c ; t = self.find_ctrl ; gui = g.app.gui
+                
+        self.top.withdraw() # Helps bring the window to the front.
+        self.top.deiconify()
+        self.top.lift()
+    
+        c.widgetWantsFocusNow(t)
+        gui.selectAllText(t)
+    #@-node:ekr.20031218072017.3907:bringToFront (tkFind)
+    #@+node:ekr.20031218072017.1460:update_ivars (tkFind)
     def update_ivars (self):
         
         """Called just before doing a find to update ivars from the find panel."""
@@ -395,11 +432,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             # g.trace(key,val)
     
         # Set ivars from radio buttons. Convert these to 1 or 0.
-        if 0: ###
-            find_type = self.dict["radio-find-type"].get()
-            self.pattern_match = g.choose(find_type == "pattern-search",1,0)
-            self.script_search = g.choose(find_type == "script-search",1,0)
-        
         search_scope = self.dict["radio-search-scope"].get()
         self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
         self.node_only       = g.choose(search_scope == "node-only",1,0)
@@ -419,59 +451,8 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             s = s[:-1]
         s = g.toUnicode(s,g.app.tkEncoding)
         self.change_text = s
-    #@-node:ekr.20031218072017.1460:find.update_ivars
-    #@+node:ekr.20050204090259:tkFind.adjust_find_text
-    def adjust_find_text(self,s):
-        
-        w = self.find_ctrl
-        
-        w.delete("1.0","end")
-        w.insert("end",s)
-    #@-node:ekr.20050204090259:tkFind.adjust_find_text
-    #@+node:ekr.20031218072017.3906:onCloseWindow
-    def onCloseWindow(self,event=None):
-        
-        __pychecker__ = '--no-argsused' # the event param must be present.
-    
-        self.top.withdraw()
-    #@-node:ekr.20031218072017.3906:onCloseWindow
-    #@+node:ekr.20051013084256:dismiss
-    def dismiss (self):
-        
-        self.top.withdraw()
-    #@-node:ekr.20051013084256:dismiss
-    #@+node:ekr.20031218072017.3907:bringToFront
-    def bringToFront (self):
-        
-        """Bring the tkinter Find Panel to the front."""
-        
-        c = self.c ; t = self.find_ctrl ; gui = g.app.gui
-                
-        self.top.withdraw() # Helps bring the window to the front.
-        self.top.deiconify()
-        self.top.lift()
-    
-        c.widgetWantsFocusNow(t)
-        gui.selectAllText(t)
-    #@-node:ekr.20031218072017.3907:bringToFront
-    #@+node:EKR.20040603221140:selectAllFindText
-    def selectAllFindText (self,event=None):
-    
-        try:
-            w = self.frame.focus_get()
-            g.app.gui.setSelectionRange(w,"1.0","end")
-            return "break"
-        except:
-            return None # To keep pychecker happy.
-    #@-node:EKR.20040603221140:selectAllFindText
-    #@+node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
-    def init_s_ctrl (self,s):
-        t = self.s_ctrl
-        t.delete("1.0","end")
-        t.insert("end",s)
-        t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
-        return t
-    #@-node:ekr.20031218072017.3908:Tkinter wrappers (leoTkinterFind)
+    #@-node:ekr.20031218072017.1460:update_ivars (tkFind)
+    #@-node:ekr.20061111084423:Overrides
     #@-others
 #@-node:ekr.20041025152343.1:class leoTkinterFind
 #@-others

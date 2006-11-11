@@ -2598,9 +2598,9 @@ def runEditCommandTest (c,p):
         g.app.gui.setSelectionRange(w,sel1[0],sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
-        assert s1 == s2, 'expected body: %s, got: %s' % (repr(s1),repr(s2))
+        assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
         sel3 = g.app.gui.getSelectionRange(w)
-        assert sel2 == sel3, 'expected sel: %s, got: %s' % (sel2,sel3)
+        assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
         c.selectPosition(atTest)
         atTest.contract()
     finally:

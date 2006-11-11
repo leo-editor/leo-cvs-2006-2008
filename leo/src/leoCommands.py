@@ -2173,7 +2173,7 @@ class baseCommands:
         junk, ws = g.skip_leading_ws_with_indent(lines[0],0,c.tab_width)
         strippedLines = [g.removeLeadingWhitespace(line,ws,c.tab_width)
             for line in lines]
-        newBody = string.join(strippedLines,'\n')
+        newBody = '\n'.join(strippedLines)
         if head: head = head.rstrip()
     
         c.beginUpdate()
@@ -2183,7 +2183,7 @@ class baseCommands:
                 undoData = u.beforeInsertNode(current)
                 p = c.createLastChildNode(current,headline,newBody)
                 u.afterInsertNode(p,undoType,undoData)
-                c.updateBodyPane(head,None,tail,undoType,oldSel,oldYview,setSel=False)
+                c.updateBodyPane(head+'\n',None,tail,undoType,oldSel,oldYview,setSel=False)
             u.afterChangeGroup(current,undoType)
         finally:
             c.endUpdate()
@@ -2204,7 +2204,7 @@ class baseCommands:
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
         if not lines: return
     
-        line1 = '\n' + lines[0]
+        line1 = '\n' + lines[0] + '\n'
         headline = lines[0].strip() ; del lines[0]
         #@    << Set headline for extractSection >>
         #@+node:ekr.20031218072017.1709:<< Set headline for extractSection >>
@@ -2231,7 +2231,7 @@ class baseCommands:
         junk, ws = g.skip_leading_ws_with_indent(lines[0],0,c.tab_width)
         strippedLines = [g.removeLeadingWhitespace(line,ws,c.tab_width)
             for line in lines]
-        newBody = string.join(strippedLines,'\n')
+        newBody = '\n'.join(strippedLines)
         if head: head = head.rstrip()
     
         c.beginUpdate()
@@ -2448,17 +2448,16 @@ class baseCommands:
         oldVview = body.getYScrollPosition()
         oldSel   = body.getSelectionRange()
     
-        if expandSelection: # 12/3/03
-            ### lines = body.getAllText()
-            lines = g.app.gui.getAllText(w)
+        if expandSelection:
+            s = g.app.gui.getAllText(w)
             head = tail = None
         else:
             # Note: lines is the entire line containing the insert point if no selection.
-            head,lines,tail = body.getSelectionLines()
+            head,s,tail = body.getSelectionLines()
     
-        lines = string.split(lines,'\n') # It would be better to use g.splitLines.
+        lines = s.split('\n')
     
-        return head,lines,tail,oldSel,oldVview
+        return head,lines,tail,oldSel,oldVview # string,list,string,tuple.
     #@-node:ekr.20031218072017.1829:getBodyLines
     #@+node:ekr.20031218072017.1830:indentBody
     def indentBody (self,event=None):
@@ -2548,36 +2547,27 @@ class baseCommands:
         '''Convert all selected lines in the body text to comment lines.'''
     
         c = self ; undoType = 'Add Comments' ; p = c.currentPosition()
-        
         d = g.scanDirectives(c,p)
-        # d1 is the line delim.
-        d1,d2,d3 = d.get('delims')
-    
+        d1,d2,d3 = d.get('delims') # d1 is the line delim.
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
         result = []
         if not lines:
             g.es('No text selected',color='blue')
-            return
+            return ''
         
-        if d1:
-            # Append the single-line comment delim in front of each line
-            for line in lines:
-                i = g.skip_ws(line,0)
-                result.append('%s%s %s' % (line[0:i],d1,line[i:]))
-        else:
-            n = len(lines)
-            for i in xrange(n):
-                line = lines[i]
-                if i not in (0,n-1):
-                    result.append(line)
-                if i == 0:
-                    j = g.skip_ws(line,0)
-                    result.append('%s%s %s' % (line[0:j],d2,line[j:]))
-                if i == n-1:
-                    j = len(line.rstrip())
-                    result.append('%s %s' % (line[0:j],d3))
+        d2 = d2 or '' ; d3 = d3 or ''
+        if d1: open,close = d1+' ',''
+        else:  open,close = d2+' ',d3+' '
     
-        result = string.join(result,'\n')
+        # Comment out non-blank lines.
+        for line in lines:
+            if line.strip():
+                i = g.skip_ws(line,0)
+                result.append(line[0:i]+open+line[i:]+close)
+            else:
+                result.append(line)
+    
+        result = '\n'.join(result)
         c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20050312114529.1:addComments
     #@+node:ekr.20050312114529.2:deleteComments
@@ -2798,7 +2788,7 @@ class baseCommands:
         
         '''Add or remove double angle brackets from the headline of the selected node.'''
         
-        c = self ; v = c.currentVnode()
+        c = self ; v = c.currentVnode() ; gui = g.app.gui
         
         if g.app.batchMode:
             c.notValidInBatchMode("Toggle Angle Brackets")
@@ -2818,8 +2808,9 @@ class baseCommands:
         c.frame.tree.editLabel(v)
         w = c.edit_widget(v)
         if w:
-            w.delete("1.0","end")
-            w.insert("1.0",s)
+            ###w.delete("1.0","end")
+            ###w.insert("1.0",s)
+            gui.setAllText(w,s)
             c.frame.tree.onHeadChanged(v,'Toggle Angle Brackets')
     #@-node:ekr.20031218072017.2290:toggleAngleBrackets
     #@-node:ekr.20031218072017.2885:Edit Headline submenu
@@ -3439,7 +3430,8 @@ class baseCommands:
                     if isTkinter:
                         t = c.edit_widget(p)
                         if t:
-                            s = t.get("1.0","end")
+                            ### s = t.get("1.0","end")
+                            s = g.app.gui.getAllText(t)
                             assert p.headString().strip() == s.strip(), "May fail if joined node is being edited"
                     #@-node:ekr.20040731053740:assert that p.headString() matches p.edit_text.get
                     #@-others
@@ -6404,8 +6396,9 @@ class baseCommands:
             state = t.cget("state")
             # g.trace(state,s)
             t.configure(state="normal")
-            t.delete("1.0","end")
-            t.insert("end",s)
+            ###t.delete("1.0","end")
+            ###t.insert("end",s)
+            g.app.gui.setAllText(t,s)
             t.configure(state=state,width=c.frame.tree.headWidth(s=s))
     
         p.setDirty()

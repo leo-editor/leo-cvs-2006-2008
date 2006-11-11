@@ -253,7 +253,6 @@ class leoFind:
             c.endEditing()
     
         self.update_ivars()
-        self.adjust_ivars()
     #@-node:ekr.20031218072017.3065:setup_button
     #@-node:ekr.20060123065756.1:Top Level Buttons
     #@+node:ekr.20031218072017.3055:Top Level Commands
@@ -336,38 +335,9 @@ class leoFind:
             self.c.endEditing()
     
         self.update_ivars()
-        self.adjust_ivars()
     #@-node:ekr.20031218072017.3066:setup_command
     #@-node:ekr.20031218072017.3055:Top Level Commands
     #@+node:ekr.20031218072017.3067:Find/change utils
-    #@+node:ekr.20050204084635:find.adjust_ivars
-    def adjust_ivars (self):
-        
-        '''New in 4.3.
-        
-        Adjust ivars, particularly the find and change text.
-        This is called just before executing a command and
-        just after calling update_ivars.
-        
-        Plugins may replace this code as desired.'''
-        
-        if 0:
-            # The TkFind class now removes tailing newlines.
-        
-            ft = self.find_text
-            if not ft: return
-        
-            # Remove a trailing newline unless that is all there is.
-            if len(ft) > 1 and ft[-1] in ('\n','\r'):
-                ft = ft[:-1]
-                self.adjust_find_text(ft)
-                if 0:
-                    g.es('before:',repr(self.find_text))
-                    g.es(' after:',repr(ft))
-                self.find_text = ft
-        
-            return
-    #@-node:ekr.20050204084635:find.adjust_ivars
     #@+node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
     #@+at 
     #@nonl
@@ -977,6 +947,21 @@ class leoFind:
             val = False
         return val
     #@-node:ekr.20031218072017.3083:checkArgs
+    #@+node:ekr.20051020120306.28:init_s_ctrl
+    def init_s_ctrl (self,s):
+        
+        gui = g.app.gui ; w = self.s_ctrl
+        # g.trace('reverse',self.reverse,id(self.s_ctrl),repr(s))
+        
+        ###t.delete("1.0","end")
+        ###t.insert("end",s)
+        ###t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
+        
+        gui.setAllText(w,s)
+        i = g.choose(self.reverse,len(s),0)
+        gui.setInsertPoint(w,i,python=True)
+        return w
+    #@-node:ekr.20051020120306.28:init_s_ctrl
     #@+node:ekr.20031218072017.3084:initBatchCommands
     # Initializes for the Find All and Change All commands.
     
@@ -1170,25 +1155,18 @@ class leoFind:
     #@-node:ekr.20031218072017.3091:showSuccess
     #@-node:ekr.20031218072017.3082:Initing & finalizing
     #@+node:ekr.20031218072017.3092:Must be overridden in subclasses
-    def init_s_ctrl (self,s):
-        __pychecker__ = '--no-argsused'
-        self.oops()
-    
     def bringToFront (self):
         self.oops()
-       
-    # New in 4.3: allows base class to adjust controls. 
-    def adjust_find_text(self,s):
-        __pychecker__ = '--no-argsused'
-        self.oops()
-    
-    def oops(self):
-        print ("leoFind oops:",
-            g.callers(),"should be overridden in subclass")
             
     def update_ivars(self):
         self.oops()
     #@-node:ekr.20031218072017.3092:Must be overridden in subclasses
+    #@+node:ekr.20061111084423.1:oops
+    def oops(self):
+        print ("leoFind oops:",
+            g.callers(),"should be overridden in subclass")
+    #@nonl
+    #@-node:ekr.20061111084423.1:oops
     #@-others
 #@-node:ekr.20060123151617:@thin leoFind.py
 #@-leo

@@ -7718,15 +7718,6 @@ class findTab (leoFind.leoFind):
     
         return "break"
     #@-node:ekr.20051020120306.27:selectAllFindText
-    #@+node:ekr.20051020120306.28:Tkinter wrappers (findTab)
-    def init_s_ctrl (self,s):
-        # g.trace('reverse',self.reverse,id(self.s_ctrl),repr(s))
-        t = self.s_ctrl
-        t.delete("1.0","end")
-        t.insert("end",s)
-        t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
-        return t
-    #@-node:ekr.20051020120306.28:Tkinter wrappers (findTab)
     #@+node:ekr.20051020120306.1:class underlinedTkButton
     class underlinedTkButton:
         

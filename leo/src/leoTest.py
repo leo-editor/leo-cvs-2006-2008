@@ -557,9 +557,6 @@ class testUtils:
     def compareIgnoringNodeNames (self,s1,s2,delims,verbose=False):
     
         # Compare text containing sentinels, but ignore differences in @+-nodes.
-    
-        ## if marker[-1] == '@': marker = marker[:-1]
-    
         delim1,delim2,delim3 = delims
     
         lines1 = g.splitLines(s1)
@@ -1078,9 +1075,9 @@ class editBodyTestCase(unittest.TestCase):
             g.trace(lines)
             g.app.gui.setInsertPoint(t,lines[0])
     
-        if not self.sel and not self.ins:
-            g.app.gui.setInsertPoint(t,"1.0")
-            g.app.gui.setSelectionRange(t,"1.0","1.0")
+        if not self.sel and not self.ins: # self.sel is a **tk** index.
+            g.app.gui.setInsertPoint(t,0,python=True) ###
+            g.app.gui.setSelectionRange(t,0,0,python=True) ###
     #@-node:ekr.20051104075904.75:setUp
     #@+node:ekr.20051104075904.76:tearDown
     def tearDown (self):
@@ -1454,9 +1451,9 @@ def runEditCommandTest (c,p):
         g.app.gui.setSelectionRange(w,sel1[0],sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
-        assert s1 == s2, 'expected body: %s, got: %s' % (repr(s1),repr(s2))
+        assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
         sel3 = g.app.gui.getSelectionRange(w)
-        assert sel2 == sel3, 'expected sel: %s, got: %s' % (sel2,sel3)
+        assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
         c.selectPosition(atTest)
         atTest.contract()
     finally:

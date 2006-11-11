@@ -303,7 +303,7 @@ class leoBody:
         return before,sel,after
     #@nonl
     #@-node:ekr.20031218072017.4031:getSelectionAreas (passed)
-    #@+node:ekr.20031218072017.2377:getSelectionLines (leoBody) (MUST REVISE)
+    #@+node:ekr.20031218072017.2377:getSelectionLines (leoBody) (needs unit test)
     def getSelectionLines (self):
         
         """Return before,sel,after where:
@@ -316,25 +316,37 @@ class leoBody:
         
         # At present, called only by c.getBodyLines.
     
-        t = self.bodyCtrl
-        sel_index = t.tag_ranges("sel") 
-        if len(sel_index) != 2:
-            if 1: # Choose the insert line.
-                index = t.index("insert")
-                sel_index = index,index
-            else:
-                return "","","" # Choose everything.
+        gui = g.app.gui ; w = self.bodyCtrl
+        s = gui.getAllText(w)
+        ###sel_index = w.tag_ranges("sel") 
+        ###if len(sel_index) != 2:
+        ###    if 1: # Choose the insert line.
+        ###        index = w.index("insert")
+        ###        sel_index = index,index
+        ###    else:
+        ###        return "","","" # Choose everything.
+        ###i,j = sel_index
+        ###i = w.index(i + "linestart")
+        ###j = w.index(j + "lineend") # 10/24/03: -1c  # 11/4/03: no -1c.
+        i,j = gui.getSelectionRange(w,python=True)
+        if i == j:
+            i,j = g.getLine(s,i)
+        else:
+            i,junk = g.getLine(s,i)
+            junk,j = g.getLine(s,j)
+        #g.trace(i,j,repr(s[i:j]))
     
-        i,j = sel_index
-        i = t.index(i + "linestart")
-        j = t.index(j + "lineend") # 10/24/03: -1c  # 11/4/03: no -1c.
-        before = g.toUnicode(t.get("1.0",i),g.app.tkEncoding)
-        sel    = g.toUnicode(t.get(i,j),    g.app.tkEncoding)
-        after  = g.toUnicode(t.get(j,"end-1c"),g.app.tkEncoding)
+        ###before = g.toUnicode(w.get("1.0",i),g.app.tkEncoding)
+        ###sel    = g.toUnicode(w.get(i,j),    g.app.tkEncoding)
+        ###after  = g.toUnicode(w.get(j,"end-1c"),g.app.tkEncoding)
+        
+        before = g.toUnicode(s[0:i],g.app.tkEncoding)
+        sel    = g.toUnicode(s[i:j],g.app.tkEncoding)
+        after  = g.toUnicode(s[j:len(s)],g.app.tkEncoding)
         
         # g.trace(i,j)
-        return before,sel,after
-    #@-node:ekr.20031218072017.2377:getSelectionLines (leoBody) (MUST REVISE)
+        return before,sel,after # 3 strings.
+    #@-node:ekr.20031218072017.2377:getSelectionLines (leoBody) (needs unit test)
     #@+node:ekr.20031218072017.4021:getSelectionRange (leoBody)
     def getSelectionRange (self,sort=True,python=False):
         
@@ -411,6 +423,7 @@ class leoBody:
         
         gui = g.app.gui ; w = self.bodyCtrl
         
+        # Allow the user to pass either a 2-tuple or two separate args.
         if i is None:
             i = j = 0
             python = True
@@ -421,8 +434,7 @@ class leoBody:
             s = gui.getAllText(w)
             i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
     
-        # # Allow the user to pass either a 2-tuple or two separate args.
-        # if i is None:
+        ### if i is None:
             # i,j = "1.0","1.0"
         # elif len(i) == 2:
             # i,j = i
