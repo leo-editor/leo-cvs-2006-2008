@@ -2502,10 +2502,8 @@ class baseCommands:
             return
         
         oldSel = c.frame.body.getSelectionRange()
-        c.frame.body.deleteTextSelection() # Works if nothing is selected.
+        gui.deleteTextSelection(w)
         s2 = self.getTime(body=True)
-    
-        ### c.frame.body.insertAtInsertPoint(s2)
         s = gui.getAllText(w)
         i = gui.getInsertPoint(w,python=True)
         g.app.gui.rawInsert(w,s,i,s2,python=True)
@@ -5901,6 +5899,7 @@ class baseCommands:
         
         s = body.getSelectedText()
         if not s: return False
+        
     
         line = g.get_line(s,0)
         i1 = line.find("<<")

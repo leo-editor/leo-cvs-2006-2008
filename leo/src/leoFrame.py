@@ -80,110 +80,106 @@ class leoBody:
     #@nonl
     #@+node:ekr.20031218072017.3660:leoBody.mustBeDefinedInSubclasses
     mustBeDefinedInSubclasses = (
-        #'getAllText',
+        # Birth, death & config.
         '__init__',
-        'addEditor',
-        'bbox',
         'bind',
-        'bodyWantsFocus',
         'cget',
         'configure',
         'createBindings',
         'createControl',
+        'setColorFromConfig',
+        'setFontFromConfig'   
+        # Editors...
+        'addEditor',
+        'createLabel',
         'cycleEditorFocus',
         'deleteEditor',
-        'getBodyPaneHeight',
-        'getBodyPaneWidth',
-        'getInsertionPoint',
-        'getSelectedText',
-        'getYScrollPosition',
-        'hasFocus',
-        'hasTextSelection',
-        'initialRatios',
-        'onBodyChanged',
-        'scheduleIdleTimeRoutine',
-        'scrollDown',
-        'scrollUp',
-        'see',
-        'selectAllText',
         'selectEditor',
         'selectLabel',
         'selectMainEditor',
-        'setColorFromConfig', #
         'setEditorColors',
+        'unselectLabel',
+        'updateEditors',
+        # Events...
+        'onBodyChanged',
+        'scheduleIdleTimeRoutine',
+        # Low-level gui...(May be deleted)
+        'bbox',
+        'getBodyPaneHeight',
+        'getBodyPaneWidth',
+        'hasFocus',
         'setFocus',
-        'setFontFromConfig'   
-        'setInsertionPoint',
-        'setSelectionRange',
-        'setYScrollPosition',
         'tag_add',
         'tag_bind',
         'tag_configure',
         'tag_delete',
         'tag_remove',
-        'unselectLabel',
-        'updateEditors',
     )
-    
     #@-node:ekr.20031218072017.3660:leoBody.mustBeDefinedInSubclasses
     #@+node:ekr.20061109102912:define leoBody.mustBeDefinedOnlyInBaseClass
     mustBeDefinedOnlyInBaseClass = (
         'getColorizer',
         'getInsertLines',
+        # 'getInsertionPoint',
+        'getSelectedText',
         'getSelectionAreas',
+        'getSelectionLines',
+        'getYScrollPosition',
+        'hasTextSelection',
         'oops',
         'onClick',
         'recolor',
         'recolor_now',
         'recolor_range',
+        'scrollDown',
+        'scrollUp',
+        'see',
+        'seeInsertPoint',
+        'selectAllText',
+        #'setInsertionPoint',
+        'setSelectionRange',
+        'setYScrollPosition',
+        'setSelectionAreas',
+        'setYScrollPosition',
         'updateSyntaxColorer',
     )
-    #@nonl
+    
     #@-node:ekr.20061109102912:define leoBody.mustBeDefinedOnlyInBaseClass
     #@-node:ekr.20031218072017.3657:leoBody.__init__
     #@+node:ekr.20061109173122:leoBody: must be defined in subclasses
-    def addEditor (self,event=None):                        self.oops()
-    def bbox(self,index):                                   self.oops()
-    def bind (self,*args,**keys):                           self.oops()
-    # def bodyWantsFocus(self):                             self.oops()
-    def cget(self,*args,**keys):                            self.oops()
-    def configure (self,*args,**keys):                      self.oops()
-    def createBindings (self,w=None):                       self.oops()
-    def createControl (self,frame,parentFrame):             self.oops()
-    def createLabel (self,w):                               self.oops()
-    def cycleEditorFocus (self,event=None):                 self.oops()
-    def deleteEditor (self,event=None):                     self.oops()
-    def getBodyPaneHeight (self):                           self.oops() # return 500
-    def getBodyPaneWidth (self):                            self.oops() # return 600
-    def getSelectedText (self):                             self.oops()
-    def getSelectionRange (self,sort=True,toPython=False):  self.oops()
-    def getYScrollPosition (self):                          self.oops() # return 0
-    def hasFocus (self):                                    self.oops()
-    def hasTextSelection (self):                            self.oops() 
+    # Birth, death & config
+    def bind (self,*args,**keys):                       self.oops()
+    def cget(self,*args,**keys):                        self.oops()
+    def configure (self,*args,**keys):              self.oops()
+    def createBindings (self,w=None):               self.oops()
+    def createControl (self,frame,parentFrame):     self.oops()
+    def setColorFromConfig (self):                  self.oops()
+    def setFontFromConfig (self):                   self.oops()
+    # Editors...
+    def addEditor (self,event=None):                self.oops()
+    def createLabel (self,w):                       self.oops()
+    def cycleEditorFocus (self,event=None):         self.oops()
+    def deleteEditor (self,event=None):             self.oops()
+    def selectEditor(self,w):                       self.oops()
+    def selectLabel (self,w):                       self.oops()
+    def selectMainEditor (self,p):                  self.oops()
+    def setEditorColors (self,bg,fg):               self.oops()
+    def unselectLabel (self,w):                     self.oops()
+    def updateEditors (self):                       self.oops()
+    # Events...
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): self.oops()
     def scheduleIdleTimeRoutine (self,function,*args,**keys): self.oops()
-    def scrollDown (self):                                  self.oops()
-    def scrollUp (self):                                    self.oops()
-    def see (self,index,python=False):                      self.oops()
-    def selectAllText (self,event=None):                    self.oops()
-    def selectEditor(self,w):                               self.oops()
-    def selectLabel (self,w):                               self.oops()
-    def selectMainEditor (self,p):                          self.oops()
-    def setColorFromConfig (self):                          self.oops()
-    def setEditorColors (self,bg,fg):                       self.oops()
-    def setFocus (self):                                    self.oops()
-    def setFontFromConfig (self):                           self.oops()
-    def setInsertPoint (self,t,pos,python=False):           self.oops()
-    def setSelectionRange (self,i,j=None,insert='sel.end'): self.oops()
-    def setYScrollPosition (self,scrollPosition):           self.oops()
-    def tag_add (self,tagName,index1,index2):               self.oops()
-    def tag_bind (self,tagName,event,callback):             self.oops()
-    def tag_configure (self,colorName,**keys):              self.oops()
-    def tag_delete(self,tagName):                           self.oops()
-    def tag_remove (self,tagName,index1,index2):            self.oops()
-    def unselectLabel (self,w):                             self.oops()
-    def updateEditors (self):                               self.oops()
-    #@nonl
+    # Low-level gui...
+    def bbox(self,index):                           self.oops()
+    def getBodyPaneHeight (self):                   self.oops() # return 500
+    def getBodyPaneWidth (self):                    self.oops() # return 600
+    def hasFocus (self):                            self.oops()
+    def setFocus (self):                            self.oops()
+    def tag_add (self,tagName,index1,index2):       self.oops()
+    def tag_bind (self,tagName,event,callback):     self.oops()
+    def tag_configure (self,colorName,**keys):      self.oops()
+    def tag_delete(self,tagName):                   self.oops()
+    def tag_remove (self,tagName,index1,index2):    self.oops()
     #@-node:ekr.20061109173122:leoBody: must be defined in subclasses
     #@+node:ekr.20061109173021:leoBody: must be defined in the base class
     #@+node:ekr.20031218072017.3677:Coloring
@@ -210,6 +206,32 @@ class leoBody:
         
         return self.colorizer.updateSyntaxColorer(p.copy())
     #@-node:ekr.20031218072017.3677:Coloring
+    #@+node:ekr.20061109095450.8:onClick (passed)
+    def onClick (self,event):
+        
+        c = self.c ; k = c.k ; gui = g.app.gui
+        w = event and event.widget
+        wname = c.widget_name(w)
+        
+        if wname.startswith('body'):
+            # A hack to support middle-button pastes: remember the previous selection.
+            k.previousSelection = gui.getSelectionRange(w,python=True)
+            x,y = gui.eventXY(event)
+            i = gui.xyToPythonIndex(w,x,y)
+            # g.trace(x,y,repr(i))
+            g.app.gui.setSelectionRange(w,i,i,insert=i,python=True)
+            c.editCommands.setMoveCol(w,i,python=True)
+            c.frame.updateStatusLine()
+            self.selectEditor(w)
+        else:
+            g.trace('can not happen')
+    #@-node:ekr.20061109095450.8:onClick (passed)
+    #@+node:ekr.20031218072017.3658:oops
+    def oops (self):
+        
+        g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
+    #@-node:ekr.20031218072017.3658:oops
+    #@+node:ekr.20031218072017.4018:Text (leoBody)
     #@+node:ekr.20031218072017.4030:getInsertLines (passed)
     def getInsertLines (self):
         
@@ -235,6 +257,25 @@ class leoBody:
     
         return before,ins,after
     #@-node:ekr.20031218072017.4030:getInsertLines (passed)
+    #@+node:ekr.20031218072017.4020:getSelectedText (leoBody)
+    def getSelectedText (self):
+        
+        """Return the selected text of the body frame, converted to unicode."""
+        
+        w = self.bodyCtrl
+        return g.app.gui.getSelectedText(w)
+    
+        ###
+        # start, end = self.getSelectionRange()
+        # if start and end and start != end:
+            # s = self.bodyCtrl.get(start,end)
+            # if s is None:
+                # return u""
+            # else:
+                # return g.toUnicode(s,g.app.tkEncoding)
+        # else:
+            # return u'' # Bug fix: 1/8/06
+    #@-node:ekr.20031218072017.4020:getSelectedText (leoBody)
     #@+node:ekr.20031218072017.4031:getSelectionAreas (passed)
     def getSelectionAreas (self):
         
@@ -262,31 +303,158 @@ class leoBody:
         return before,sel,after
     #@nonl
     #@-node:ekr.20031218072017.4031:getSelectionAreas (passed)
-    #@+node:ekr.20061109095450.8:onClick (passed)
-    def onClick (self,event):
+    #@+node:ekr.20031218072017.2377:getSelectionLines (leoBody) (MUST REVISE)
+    def getSelectionLines (self):
         
-        c = self.c ; k = c.k ; gui = g.app.gui
-        w = event and event.widget
-        wname = c.widget_name(w)
+        """Return before,sel,after where:
+            
+        before is the all lines before the selected text
+        (or the text before the insert point if no selection)
+        sel is the selected text (or "" if no selection)
+        after is all lines after the selected text
+        (or the text after the insert point if no selection)"""
         
-        if wname.startswith('body'):
-            # A hack to support middle-button pastes: remember the previous selection.
-            k.previousSelection = gui.getSelectionRange(w,python=True)
-            x,y = gui.eventXY(event)
-            i = gui.xyToPythonIndex(w,x,y)
-            # g.trace(x,y,repr(i))
-            g.app.gui.setSelectionRange(w,i,i,insert=i,python=True)
-            c.editCommands.setMoveCol(w,i,python=True)
-            c.frame.updateStatusLine()
-            self.selectEditor(w)
+        # At present, called only by c.getBodyLines.
+    
+        t = self.bodyCtrl
+        sel_index = t.tag_ranges("sel") 
+        if len(sel_index) != 2:
+            if 1: # Choose the insert line.
+                index = t.index("insert")
+                sel_index = index,index
+            else:
+                return "","","" # Choose everything.
+    
+        i,j = sel_index
+        i = t.index(i + "linestart")
+        j = t.index(j + "lineend") # 10/24/03: -1c  # 11/4/03: no -1c.
+        before = g.toUnicode(t.get("1.0",i),g.app.tkEncoding)
+        sel    = g.toUnicode(t.get(i,j),    g.app.tkEncoding)
+        after  = g.toUnicode(t.get(j,"end-1c"),g.app.tkEncoding)
+        
+        # g.trace(i,j)
+        return before,sel,after
+    #@-node:ekr.20031218072017.2377:getSelectionLines (leoBody) (MUST REVISE)
+    #@+node:ekr.20031218072017.4021:getSelectionRange (leoBody)
+    def getSelectionRange (self,sort=True,python=False):
+        
+        """Return a tuple representing the selected range of body text.
+        
+        Return a tuple giving the insertion point if no range of text is selected."""
+    
+        w = self.bodyCtrl
+        return g.app.gui.getSelectionRange(w,sort,python)
+    #@nonl
+    #@-node:ekr.20031218072017.4021:getSelectionRange (leoBody)
+    #@+node:ekr.20031218072017.4022:hasTextSelection (leoBody)
+    def hasTextSelection (self):
+    
+        ###sel = self.bodyCtrl.tag_ranges("sel")
+        ###return sel and len(sel) == 2
+        gui = g.app.gui ; w = self.bodyCtrl
+        return gui.hasSelection(w)
+    #@-node:ekr.20031218072017.4022:hasTextSelection (leoBody)
+    #@+node:ekr.20031218072017.4023:selectAllText (leoBody) (select-all)
+    # This is the select-all command.
+    
+    def selectAllText (self,event=None):
+        
+        gui = g.app.gui ; w = gui.eventWidget(event) or self.bodyCtrl
+        return g.app.gui.selectAllText(w)
+    
+        # 
+        # '''Select all text in the presently selected pane.'''
+        # 
+        # c = self.c ; k = c.k
+    # 
+        # try:
+            # w = c.get_focus() ; wname = c.widget_name(w)
+            # n = 0
+            # if wname.startswith('head'):
+                # s = w.get('1.0','end')
+                # while s.endswith('\n') or s.endswith('\r'):
+                    # s = s[:-1] ; n += 1
+                # g.app.gui.setSelectionRange(w,'1.0','end - %dc' % (n))
+            # elif wname.startswith('mini'):
+                # i,j = k.getEditableTextRange()
+                # g.app.gui.setSelectionRange(w,i,j)
+            # else:
+                # g.app.gui.setSelectionRange(w,'1.0','end - %dc' % (n))
+        # except:
+            # # g.es_exception()
+            # pass
+    # 
+    #@nonl
+    #@-node:ekr.20031218072017.4023:selectAllText (leoBody) (select-all)
+    #@+node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
+    def setSelectionAreas (self,before,sel,after,python=False):
+        
+        """Replace the body text by before + sel + after and
+        set the selection so that the sel text is selected."""
+    
+        w = self.bodyCtrl ; gui = g.app.gui
+        s = gui.getAllText(w)
+        before = before or ''
+        sel = sel or ''
+        after = after or ''
+        gui.rawDelete(w,s,0,len(s),python=True)
+        gui.rawInsert(w,s,0,before+sel+after,python=True)
+        i,j = len(before),len(before)+len(sel)
+        gui.setSelectionRange(w,i,j,insert=j,python=True)
+        if python:
+            return i,j
         else:
-            g.trace('can not happen')
-    #@-node:ekr.20061109095450.8:onClick (passed)
-    #@+node:ekr.20031218072017.3658:oops
-    def oops (self):
+            return gui.toGuiIndex(s,w,i),gui.toGuiIndex(s,w,j)
+    #@-node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
+    #@+node:ekr.20031218072017.4024:setSelectionRange (leoBody)
+    def setSelectionRange (self,i,j=None,insert='sel.end',python=False):
         
-        g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
-    #@-node:ekr.20031218072017.3658:oops
+        gui = g.app.gui ; w = self.bodyCtrl
+        
+        if i is None:
+            i = j = 0
+            python = True
+        elif len(i) == 2:
+            i,j = i
+        
+        if not python:
+            s = gui.getAllText(w)
+            i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
+    
+        # # Allow the user to pass either a 2-tuple or two separate args.
+        # if i is None:
+            # i,j = "1.0","1.0"
+        # elif len(i) == 2:
+            # i,j = i
+    
+        g.app.gui.setSelectionRange(w,i,j,insert,python=True)
+    #@-node:ekr.20031218072017.4024:setSelectionRange (leoBody)
+    #@+node:ekr.20031218072017.4038:Visibility & scrolling (leoBody)
+    def getYScrollPosition (self):
+        ###return self.bodyCtrl.yview()
+        return g.app.gui.getYview(self.bodyCtrl)
+        
+    def scrollDown (self):
+        g.app.gui.yscroll(self.bodyCtrl,1,'units')
+        
+    def scrollUp (self):
+        g.app.gui.yscroll(self.bodyCtrl,-1,'units')
+        
+    def see (self,index,python=False):
+        g.app.gui.see(self.bodyCtrl,index,python=python)
+        
+    def seeInsertPoint (self):
+        g.app.gui.seeInsertPoint(self.bodyCtrl)
+        
+    def setYScrollPosition (self,scrollPosition):
+        if len(scrollPosition) == 2:
+            first,last = scrollPosition
+        else:
+            first = scrollPosition
+        g.app.gui.yview(self.bodyCtrl,first)
+        
+    #@-node:ekr.20031218072017.4038:Visibility & scrolling (leoBody)
+    #@-node:ekr.20031218072017.4018:Text (leoBody)
     #@-node:ekr.20061109173021:leoBody: must be defined in the base class
     #@-others
 #@-node:ekr.20031218072017.3656:class leoBody
@@ -967,48 +1135,39 @@ class nullBody (leoBody):
     #@-node:ekr.20031218072017.2196:scanToEndOfLine
     #@-node:ekr.20031218072017.2193:Utils (internal use)
     #@+node:ekr.20031218072017.2197:nullBody: leoBody interface
-    def addEditor (self,event=None):                        pass
-    def bbox(self,index):                                   return (0,0)
-    def bind (self,*args,**keys):                           pass
-    #def bodyWantsFocus(self):                               pass
-    def cget(self,*args,**keys):                            pass
-    def configure (self,*args,**keys):                      pass
-    def createBindings (self,w=None):                       pass
-    def createControl (self,frame,parentFrame):             pass
-    def createLabel (self,w):                               pass
-    def cycleEditorFocus (self,event=None):                 pass
-    def deleteEditor (self,event=None):                     pass
-    def getBodyPaneHeight (self):                           return 500
-    def getBodyPaneWidth (self):                            return 600
-    def getSelectedText (self):                             pass
-    def getSelectionRange (self,sort=True,toPython=False):  pass
-    def getYScrollPosition (self):                          return 0
-    def hasFocus (self):                                    pass
-    def hasTextSelection (self):                            pass 
+    # Birth, death & config
+    def bind (self,*args,**keys):               pass
+    def cget(self,*args,**keys):                pass
+    def configure (self,*args,**keys):          pass
+    def createBindings (self,w=None):           pass
+    def createControl (self,frame,parentFrame): pass
+    def setColorFromConfig (self):              pass
+    def setFontFromConfig (self):               pass
+    # Editors...
+    def addEditor (self,event=None):            pass
+    def createLabel (self,w):                   pass
+    def cycleEditorFocus (self,event=None):     pass
+    def deleteEditor (self,event=None):         pass
+    def selectEditor(self,w):                   pass
+    def selectLabel (self,w):                   pass
+    def setEditorColors (self,bg,fg):           pass
+    def selectMainEditor (self,p):              pass
+    def unselectLabel (self,w):                 pass
+    def updateEditors (self):                   pass
+    # Events...
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): pass
     def scheduleIdleTimeRoutine (self,function,*args,**keys): pass
-    def scrollDown (self):                                  pass
-    def scrollUp (self):                                    pass
-    def see (self,index,python=False):                      pass
-    def selectAllText (self,event=None):                    pass
-    def selectEditor(self,w):                               pass
-    def selectLabel (self,w):                               pass
-    def selectMainEditor (self,p):                          pass
-    def setColorFromConfig (self):                          pass
-    def setEditorColors (self,bg,fg):                       pass
-    def setFocus (self):                                    pass
-    def setFontFromConfig (self):                           pass
-    def setInsertPoint (self,t,pos,python=False):           pass
-    def setSelectionRange (self,i,j=None,insert='sel.end'): pass
-    def setYScrollPosition (self,scrollPosition):           pass
-    def tag_add (self,tagName,index1,index2):               pass
-    def tag_bind (self,tagName,event,callback):             pass
-    def tag_configure (self,colorName,**keys):              pass
-    def tag_delete(self,tagName):                           pass
-    def tag_remove (self,tagName,index1,index2):            pass
-    def unselectLabel (self,w):                             pass
-    def updateEditors (self):                               pass
-    #@nonl
+    # Low-level gui...
+    def bbox(self,index):                       return
+    def getBodyPaneHeight (self):               return 500
+    def getBodyPaneWidth (self):                return 600
+    def hasFocus (self):                        pass
+    def setFocus (self):                        pass
+    def tag_add (self,tagName,index1,index2):   pass
+    def tag_bind (self,tagName,event,callback): pass
+    def tag_configure (self,colorName,**keys):  pass
+    def tag_delete(self,tagName):               pass
+    def tag_remove (self,tagName,index1,index2):pass
     #@-node:ekr.20031218072017.2197:nullBody: leoBody interface
     #@-others
 #@-node:ekr.20031218072017.2191:class nullBody

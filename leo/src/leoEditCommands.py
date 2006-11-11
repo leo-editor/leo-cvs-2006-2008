@@ -473,7 +473,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
         abbreviations in event.widget.'''
     
         k = self.k ; ch = event.char.strip()
-        w = self.editWidget(event)
+        gui = g.app.gui ; w = self.editWidget(event)
         if not w: return
     
         word = w.get('insert -1c wordstart','insert -1c wordend')
@@ -487,12 +487,13 @@ class abbrevCommandsClass (baseEditCommandsClass):
         if val is not None:
             ###w.delete('insert -1c wordstart','insert -1c wordend')
             ###w.insert('insert',val)
-            gui = g.app.gui
             s = gui.getAllText(w)
             i = gui.getInsertPoint(w,python=True)
             i,j = g.getWord(s,i-1)
-            s = gui.stringDelete(s,i,j)
-            s = gui.stringInsert(s,i,val)
+            ###s = gui.stringDelete(s,i,j)
+            ###s = gui.stringInsert(s,i,val)
+            if i != j: gui.rawDelete(w,s,i,j,python=True)
+            gui.rawInsert(w,s,i,val,python=True)
             c.frame.body.onBodyChanged(undoType='Typing')
             
         return val is not None
@@ -4104,7 +4105,7 @@ class editCommandsClass (baseEditCommandsClass):
         moving to the next node if the lines are the last lines of the body.'''
     
         c = self.c
-        w = self.editWidget(event)
+        gui = g.app.gui ; w = self.editWidget(event)
         if not w or not self._chckSel(event): return
     
         self.beginCommand(undoType='move-lines-down')
@@ -4138,7 +4139,8 @@ class editCommandsClass (baseEditCommandsClass):
             c.endUpdate()
             w.focus_force()
             w.insert('1.0',selected)
-            g.app.gui.setSelectionRangeWithLength(w,'1.0',len(selected)-1)
+            ### g.app.gui.setSelectionRangeWithLength(w,'1.0',len(selected)-1)
+            gui.setSelectionRange(w,0,len(selected),python=True)
     
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20060417183606:moveLinesDown (works)
@@ -7716,14 +7718,15 @@ class findTab (leoFind.leoFind):
     
         return "break"
     #@-node:ekr.20051020120306.27:selectAllFindText
-    #@+node:ekr.20051020120306.28:Tkinter wrappers
+    #@+node:ekr.20051020120306.28:Tkinter wrappers (findTab)
     def init_s_ctrl (self,s):
+        # g.trace('reverse',self.reverse,id(self.s_ctrl),repr(s))
         t = self.s_ctrl
         t.delete("1.0","end")
         t.insert("end",s)
         t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
         return t
-    #@-node:ekr.20051020120306.28:Tkinter wrappers
+    #@-node:ekr.20051020120306.28:Tkinter wrappers (findTab)
     #@+node:ekr.20051020120306.1:class underlinedTkButton
     class underlinedTkButton:
         

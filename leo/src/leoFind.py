@@ -509,6 +509,7 @@ class leoFind:
             if start != end:
                 gui.rawDelete(w,s,start,end,python=True)
             gui.rawInsert(w,s,start,self.change_text,python=True)
+            gui.setInsertPoint(w,start,python=True)
     
         # Update the selection for the next match.
         ###gui.setSelectionRangeWithLength(t,start,len(self.change_text))
@@ -692,7 +693,7 @@ class leoFind:
     
         pos, newpos = self.findNextMatch()
     
-        if pos:
+        if pos is not None:
             self.showSuccess(pos,newpos)
         else:
             if self.wrapping:
@@ -718,7 +719,7 @@ class leoFind:
         p = self.p
         while p:
             pos, newpos = self.search()
-            if pos:
+            if pos is not None:
                 if self.mark_finds:
                     p.setMarked()
                     c.frame.tree.drawIcon(p) # redraw only the icon.
@@ -747,7 +748,7 @@ class leoFind:
     
         c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
         index = gui.getInsertPoint(w,python=True)
-        # g.trace(g.app.gui.widget_name(w),index,p.headString())
+        #g.trace(g.app.gui.widget_name(w),index,p.headString())
         s = gui.getAllText(w)
         ###index = gui.toPythonIndex(s,w,index)
         stopindex = g.choose(self.reverse,0,len(s))
@@ -773,7 +774,7 @@ class leoFind:
         #@nl
         gui.setSelectionRange(w,pos,newpos,insert=newpos,python=True)
         return pos, newpos
-    #@+node:ekr.20060526081931:Search helpers...
+    #@+node:ekr.20060526081931:searchHelper & allies
     def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
         
         if swapij and backwards: i,j = j,i
@@ -856,8 +857,8 @@ class leoFind:
     #@+node:ekr.20060526093531:plainHelper
     def plainHelper (self,s,i,j,pattern,nocase,word):
         
-        # g.trace(repr(s[i:i+20]))
-        
+        # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+    
         n = len(pattern)
         if nocase:
             s = s.lower() ; pattern = pattern.lower()
@@ -887,7 +888,7 @@ class leoFind:
         # g.trace(ok,repr(s),i)
         return ok
     #@-node:ekr.20060526140744.1:matchWord
-    #@-node:ekr.20060526081931:Search helpers...
+    #@-node:ekr.20060526081931:searchHelper & allies
     #@-node:ekr.20031218072017.3077:search & helpers
     #@+node:ekr.20031218072017.3081:selectNextPosition
     # Selects the next node to be searched.

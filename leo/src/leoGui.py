@@ -126,11 +126,15 @@ class leoGui:
         'eventXY',
         'finishCreate',
         'getAllText',
-        # 'getFontFromParams', # optional
+        'getYview',
+        'getYscroll',
+        'getSelectedText',
         'getSelectionRange',
+        # 'getFontFromParams', # optional
         'getTextFromClipboard',
         'get_focus',
         'get_window_info',
+        'hasTextSelection',
         'isTextWidget',
         'keysym',
         'killGui',
@@ -147,9 +151,9 @@ class leoGui:
         'runSaveFileDialog',
         'see',
         'seeInsertPoint',
+        'selectAllText',
         #'setIdleTimeHook',             # optional       
         #'setIdleTimeHookAfterDelay',   #optional
-        'setSelectionRange',
         'set_focus',
         'toGuiIndex',
         'toPythonIndex',
@@ -158,17 +162,15 @@ class leoGui:
         'yscroll',
         'yview',
         
-        #...TO BE REMOVED?
+        # TO BE REMOVED
         ##'compareIndices',
         ##'firstIndex',
-        ##'getSelectedText',
         ##'getindex',
         ##'hasSelection',
         ##'lastIndex',
         ##'moveIndexBackward',
         ##'moveIndexForward',
         ##'moveIndexToNextLine',
-        ##'selectAllText',
         ##'setSelectionRangeWithLength',
         ##'stringDelete',
         ##'stringInsert',
@@ -363,10 +365,6 @@ class leoGui:
     def set_focus(self,commander,widget):
         """Set the focus of the widget in the given commander if it needs to be changed."""
         self.oops()
-        
-    # def widget_wants_focus(self,commander,widget):
-        # """Indicate that a widget want to get focus."""
-        # self.oops()
     #@-node:ekr.20031218072017.3737:Focus
     #@+node:ekr.20031218072017.3736:Font
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
@@ -385,36 +383,11 @@ class leoGui:
         # print 'leoGui:setIdleTimeHookAfterDelay'
         pass # Not an error.
     #@-node:ekr.20031218072017.3739:Idle time
-    #@+node:ekr.20031218072017.3738:Index
-    # def compareIndices (self,t,n1,rel,n2):
-        # self.oops()
+    #@+node:ekr.20061106181402:Text
+    def getAllText (self,w):
+        '''Return all the text in the text widget w.'''
+        self.oops() ; return ''
     
-    # # def firstIndex (self):
-        # # self.oops()
-    
-    # def getindex (self,body,index):
-        # self.oops()
-        # return 0,0
-    
-    # def lastIndex (self):
-        # self.oops()
-    
-    # def moveIndexBackward(self,index,n):
-        # self.oops()
-    
-    # def moveIndexForward(self,t,index,n):
-        # self.oops()
-    
-    # def moveIndexToNextLine(self,t,index):
-        # self.oops()
-    
-    # def toGuiIndex (self,s,w,index):
-        # self.oops()
-    
-    # def toPythonIndex (self,s,w,index):
-       # self.oops()
-    #@-node:ekr.20031218072017.3738:Index
-    #@+node:ekr.20061024133425:Selection (leoGui)
     def getSelectionRange (self,t,sort=True,toPython=False):
         return 0,0
         
@@ -423,46 +396,24 @@ class leoGui:
         
     def hasSelection (self,widget):
         return False
+        
+    def isTextWidget (self,w):
+        '''Return True if w is a text widget.'''
+        self.oops() ; return False
     
     def selectAllText (self,w,insert='end-1c'):
         pass
-        
-    def setSelectionRangeWithLength(self,t,start,length,insert='sel.end'):
-        pass
-        
+            
     def setSelectionRange (self,t,start,end,insert='sel.end'):
         pass
-    #@nonl
-    #@-node:ekr.20061024133425:Selection (leoGui)
-    #@+node:ekr.20061106181402:Text
-    def getAllText (self,w):
-        
-        '''Return all the text in the text widget w.'''
-        self.oops()
-        return ''
-    
-    def isTextWidget (self,w):
-        
-        '''Return True if w is a text widget.'''
-        self.oops()
-        return False
     #@-node:ekr.20061106181402:Text
-    #@+node:ekr.20061101020611:gui.stringInsert & stringDelete (to be removed?)
-    def stringInsert (self,s,i,s2):
-        
-        return s[:i] + s2 + s[i:]
-        
-    def stringDelete (self,s,i,j=None):
-        
-        '''Delete characters i through j (not including j) of string s.'''
-        
-        if j is None: j = i+1
-        
-        return s[:i] + s[j:]
-        
-    #@nonl
-    #@-node:ekr.20061101020611:gui.stringInsert & stringDelete (to be removed?)
     #@+node:ekr.20061103094543:Visibility & scrolling (leoGui)
+    def getYscroll(self,w):
+        return 0
+        
+    def getYview (self,w):
+        return 0
+    
     def see (self,w,index,python=False):
         pass
         
@@ -479,11 +430,9 @@ class leoGui:
     #@-node:ekr.20061103094543:Visibility & scrolling (leoGui)
     #@+node:ekr.20061031133643:xyToGui/PythonIndex
     def xyToGuiIndex (self,w,x,y):
-        
-        return 0
+        return '1.0'
         
     def xyToPythonIndex(self,w,x,y):
-        
         return 0
     #@nonl
     #@-node:ekr.20061031133643:xyToGui/PythonIndex
@@ -655,29 +604,18 @@ class unitTestGui(leoGui):
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     def getAllText(self,w):                                     return ''
-    # def getindex (self,body,index):                             return 0,0
     def get_focus (self,frame):                                 pass
+    def getYview (self,w):                                      return 0
+    def getYscroll (w,n,units):                                 return 0
     def getInsertPoint (self,t,python=False):                   return g.choose(python,0,'1.0')
     def getSelectionRange (self,t,sort=True,toPython=False):    return 0,0
     def see (self,w,index,python=False):                        pass
-        
-    def seeInsertPoint (self):
-        pass
-    
-    def set_focus (self,c,widget):
-        pass
-    
-    def setInsertPoint (self,t,pos,python=False):
-        pass
-    
-    def setSelectionRange (self,t,start,end,insert='sel.end'):
-        pass
-    
-    def toGuiIndex (self,s,w,index):
-        return 0
-    
-    def toPythonIndex (self,s,w,index):
-        return 0
+    def seeInsertPoint (self):                                  pass
+    def set_focus (self,c,widget):                              pass
+    def setInsertPoint (self,t,pos,python=False):               pass
+    def setSelectionRange (self,t,start,end,insert='sel.end'):  pass
+    def toGuiIndex (self,s,w,index):                            return '1.0'
+    def toPythonIndex (self,s,w,index):                         return 0
     #@-node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     #@+node:ekr.20031218072017.3746:oops
     def oops(self):

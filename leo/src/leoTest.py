@@ -764,19 +764,14 @@ class reformatParagraphTest:
         tab_width = c.frame.tab_width
     
         # Get the Tkinter row col position of the insert cursor.
-        if 0:
-            index = w.index("insert")
-            row,col = gui.getindex(w,index)
-        else:
-            s = gui.getAllText(w)
-            index = gui.getInsertPoint(w,python=True)
-            row,col = g.convertPythonIndexToRowCol(s,index)
-            row += 1
+        s = gui.getAllText(w)
+        index = gui.getInsertPoint(w,python=True)
+        row,col = g.convertPythonIndexToRowCol(s,index)
+        row += 1
         # g.trace(index,row,col)
     
         # Adjust col position for tabs.
         if col > 0:
-            ##s2 = w.get("%d.0" % (row),index)
             s2 = s[index-col:index]
             s2 = g.toUnicode(s2,g.app.tkEncoding)
             col = g.computeWidth(s2,tab_width)
