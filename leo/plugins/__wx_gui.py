@@ -345,7 +345,7 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.110203113231.333:destroyLeoFrame (used??)
     #@-node:edream.111303091857:app.gui wx panels (to do)
-    #@+node:edream.111303090930:app.gui.wx utils
+    #@+node:edream.111303090930:app.gui.wx utils (must add several)
     #@+node:edream.110203113231.320:Clipboard
     def replaceClipboardWith (self,s):
     
@@ -546,72 +546,6 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.111303093843.1:setIdleTimeHookAfterDelay
     #@-node:edream.110203113231.329:Idle time (wxGui) (to do)
-    #@+node:edream.111303093953.17:Text
-    #@+node:edream.111303093953.18:getAllText
-    def getAllText (self,t):
-        
-        """Return all the text of Tk.Text t converted to unicode."""
-        
-        s = t.GetValue()
-        if s is None:
-            return u""
-        else:
-            return g.toUnicode(s,g.app.tkEncoding)
-    #@nonl
-    #@-node:edream.111303093953.18:getAllText
-    #@+node:edream.111303093953.9:getInsertPoint
-    def getInsertPoint(self,t,python=False):
-        
-        # The python arg is ignored.
-    
-        if t:
-            return t.GetInsertionPoint()
-        else:
-            return 0
-    #@nonl
-    #@-node:edream.111303093953.9:getInsertPoint
-    #@+node:edream.111303093953.13:getSelectionRange
-    def getSelectionRange (self,t):
-        
-        """Return a tuple representing the selected range of t, a Tk.Text widget.
-        
-        Return a tuple giving the insertion point if no range of text is selected."""
-    
-        # To get the current selection
-        sel = t.bodyCtrl.GetSelection()
-        if len(sel) == 2:
-            return sel
-        else:
-            # Return the insertion point if there is no selected text.
-            insert = t.bodyCtrl.GetInsertionPoint()
-            return insert,insert
-    #@nonl
-    #@-node:edream.111303093953.13:getSelectionRange
-    #@+node:edream.111303093953.25:see
-    def see(self,t,index):
-    
-        if t and index:
-            t.bodyCtrl.ShowPosition(index)
-    #@-node:edream.111303093953.25:see
-    #@+node:edream.111303093953.10:setInsertPoint
-    def setInsertPoint (self,t,pos,python=False):
-        
-        # The python arg is ignored.
-    
-        if t and pos: # s_text control doesn't exist.
-            g.trace(pos)
-            t.bodyCtrl.SetInsertionPoint(pos)
-    #@nonl
-    #@-node:edream.111303093953.10:setInsertPoint
-    #@+node:edream.111303093953.16:setSelectionRange
-    def setSelectionRange (self,t,start,end):
-            
-        if start > end:
-            start,end = end,start
-            
-        t.bodyCtrl.SetSelection(start,end)
-    #@nonl
-    #@-node:edream.111303093953.16:setSelectionRange
     #@+node:ekr.20061105125717:toGuiIndex & toPythonIndex
     # This plugin uses Python indices everywhere, so are do-nothings.
     
@@ -623,8 +557,7 @@ class wxGui(leoGui.leoGui):
     
         return index
     #@-node:ekr.20061105125717:toGuiIndex & toPythonIndex
-    #@-node:edream.111303093953.17:Text
-    #@-node:edream.111303090930:app.gui.wx utils
+    #@-node:edream.111303090930:app.gui.wx utils (must add several)
     #@-others
 #@nonl
 #@-node:edream.110203113231.305:wxGui class
@@ -799,14 +732,6 @@ class wxLeoBody (leoFrame.leoBody):
         g.trace()
     #@nonl
     #@-node:edream.110203113231.548:Idle-time (wxBody) (to do)
-    #@+node:edream.110203113231.552:Visibility & scrolling... (wxBody) (to do)
-    def scrollUp (self):
-        g.trace()
-        
-    def scrollDown (self):
-        g.trace()
-    #@nonl
-    #@-node:edream.110203113231.552:Visibility & scrolling... (wxBody) (to do)
     #@-node:edream.111303204836:Tk wrappers (wxBody) (much work needed) (some will be removed from Leo's core)
     #@+node:edream.110203113231.275:onBodyTextUpdated MORE WORK NEEDED
     def onBodyTextUpdated(self,event):
@@ -1406,14 +1331,21 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         g.es("insertHeadlineTime not ready yet")
         return
     
-        frame = self ; c = frame.c ; v = c.currentVnode()
+        frame = self ; c = frame.c
+        gui = g.app.gui ; w = c.edit_widget(v)
+        v = c.currentVnode()
         h = v.headString() # Remember the old value.
     
-        if c.edit_widget(v):
-            sel1,sel2 = g.app.gui.getSelectionRange(c.edit_widget(v))
-            if sel1 and sel2 and sel1 != sel2: # 7/7/03
-                c.edit_widget(v).delete(sel1,sel2)
-            c.edit_widget(v).insert("insert",c.getTime(body=False))
+        if w:
+            s = gui.getAllText(w)
+            sel1,sel2 = gui.getSelectionRange(w,python=True)
+            if sel1 and sel2 and sel1 != sel2:
+                ###c.edit_widget(v).delete(sel1,sel2)
+                gui.rawDelete(w,s,sel1,sel2,python=True)
+            ###c.edit_widget(v).insert("insert",c.getTime(body=False))
+            stamp = c.getTime(body=False)
+            i = gui.getInsertPoint(w,python=True)
+            gui.rawInsert(w,s,i,stamp, python=True)
             frame.idle_head_key(v)
     
         # A kludge to get around not knowing whether we are editing or not.
