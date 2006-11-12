@@ -531,10 +531,10 @@ class leoFrame:
     #@+node:ekr.20031218072017.3681:Gui-dependent commands
     # In the Edit menu...
     
-    # def OnCopy  (self,event=None): self.oops()
-    # def OnCut   (self,event=None): self.oops()
-    # def OnCutFromMenu  (self,event=None):     self.oops()
-    # def OnCopyFromMenu (self,event=None):     self.oops()
+    def OnCopy  (self,event=None): self.oops()
+    def OnCut   (self,event=None): self.oops()
+    def OnCutFromMenu  (self,event=None):     self.oops()
+    def OnCopyFromMenu (self,event=None):     self.oops()
     
     def OnPaste (self,event=None): self.oops()
     def OnPasteFromMenu (self,event=None):    self.oops()
