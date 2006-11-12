@@ -228,7 +228,7 @@ def onHeadKey(tag,keywords):
                 #@                << write template >>
                 #@+node:timo.20050215232157:<< write template >>
                 c.setBodyString(v,templates[h[:h.find(' ')]])
-                c.frame.body.setInsertionPoint('1.16')
+                c.frame.body.setInsertPoint('1.16')
                 return
                 #@nonl
                 #@-node:timo.20050215232157:<< write template >>

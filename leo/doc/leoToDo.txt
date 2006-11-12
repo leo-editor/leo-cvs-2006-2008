@@ -2846,6 +2846,7 @@ def getPublicCommands (self):
         'scroll-outline-up-page':               self.scrollOutlineUpPage,
         'scroll-up':                            self.scrollUp,
         'scroll-up-extend-selection':           self.scrollUpExtendSelection,
+        'select-all':                           self.selectAllText,
         # Exists, but can not be executed via the minibuffer.
         # 'self-insert-command':                self.selfInsertCommand,
         'set-comment-column':                   self.setCommentColumn,
@@ -6096,6 +6097,13 @@ def tabifyHelper (self,event,which):
         w.insert(i,ntxt)
         self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.126:tabify & untabify
+#@+node:ekr.20061111223516:selectAllText (leoEditCommands)
+def selectAllText (self,event):
+    
+    gui = g.app.gui
+    w = gui.eventWidget(event) or self.bodyCtrl
+    return g.app.gui.selectAllText(w)
+#@-node:ekr.20061111223516:selectAllText (leoEditCommands)
 #@-node:ekr.20050920084036.53:editCommandsClass
 #@+node:ekr.20061023104714:Failed unit tests
 #@+node:ekr.20060417171125:addSpace/TabToLines & removeSpace/TabFromLines & helper

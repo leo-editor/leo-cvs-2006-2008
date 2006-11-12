@@ -383,7 +383,7 @@ class autoCompleterClass:
         
         k = self.k
         k.keyboardQuit(event=None)
-        k.exit(restore=True)
+        self.exit(restore=True)
     
     def exit (self,restore=False): # Called from keyboard-quit.
         

@@ -1966,14 +1966,16 @@ class leoTkinterTree (leoFrame.leoTree):
             else:
                 # g.trace("not current")
                 self.select(p,scroll=False)
+                w  = c.frame.body.bodyCtrl
                 if c.frame.findPanel:
                     c.frame.findPanel.handleUserClick(p)
                 if p.v.t.insertSpot != None:
-                    c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-                    c.frame.body.see(p.v.t.insertSpot)
+                    spot = p.v.t.insertSpot
+                    w.mark_set("insert",spot)
+                    w.see(spot)
                 else:
-                    c.frame.bodyCtrl.mark_set("insert","1.0")
-                    
+                    w.mark_set("insert","1.0")
+            
                 if self.stayInTree:
                     c.treeWantsFocusNow()
                 else:
@@ -2485,8 +2487,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 #@+node:ekr.20040803072955.129:<< unselect the old node >>
                 # Remember the position of the scrollbar before making any changes.
                 yview=body.yview()
-                # insertSpot = c.frame.body.getInsertionPoint()
-                insertSpot = gui.getInsertPoint(w)
+                insertSpot = c.frame.body.getInsertPoint()
                 
                 if old_p != p:
                     self.endEditLabel() # sets editPosition = None
@@ -2520,10 +2521,11 @@ class leoTkinterTree (leoFrame.leoTree):
                 g.app.gui.yview(body,first)
             
             if p.v and p.v.t.insertSpot != None:
-                c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-                c.frame.body.see(p.v.t.insertSpot)
+                spot = p.v.t.insertSpot
+                w.mark_set("insert",spot)
+                w.see(spot)
             else:
-                c.frame.bodyCtrl.mark_set("insert","1.0")
+                w.mark_set("insert","1.0")
                 
             # g.trace("select:",p.headString())
                     

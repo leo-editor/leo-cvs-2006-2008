@@ -2303,7 +2303,7 @@ class wxLeoTree (leoFrame.leoTree):
                 if 0:  ### Not ready yet.
             
                     yview=body.yview()
-                    insertSpot = gui.getInsertionPoint(w)
+                    insertSpot = gui.getInsertPoint(w)
                     
                     if old_p != p:
                         # g.trace("unselect:",old_p.headString())

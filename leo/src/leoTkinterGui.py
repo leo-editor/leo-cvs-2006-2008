@@ -32,7 +32,8 @@ class tkinterGui(leoGui.leoGui):
     """A class encapulating all calls to tkinter."""
     
     #@    @+others
-    #@+node:ekr.20031218072017.837: tkinterGui.__init__
+    #@+node:ekr.20031218072017.4048:tkGui birth & death
+    #@+node:ekr.20031218072017.837: tkGui.__init__
     def __init__ (self):
     
         # Initialize the base class.
@@ -51,8 +52,12 @@ class tkinterGui(leoGui.leoGui):
                     self.win32clipboard = win32clipboard
                 except:
                     g.es_exception()
-    #@-node:ekr.20031218072017.837: tkinterGui.__init__
-    #@+node:ekr.20031218072017.4048:app.gui.Tkinter birth & death
+    #@-node:ekr.20031218072017.837: tkGui.__init__
+    #@+node:ekr.20061112152012.1:createLeoEvent
+    def createLeoEvent (self,event):
+        return leoEvent(event)
+    #@nonl
+    #@-node:ekr.20061112152012.1:createLeoEvent
     #@+node:ekr.20031218072017.4049:createRootWindow & allies
     def createRootWindow(self):
     
@@ -181,16 +186,16 @@ class tkinterGui(leoGui.leoGui):
              # g.trace("tkinterGui")
             self.root.mainloop()
     #@-node:ekr.20031218072017.4055:runMainLoop (tkGui)
-    #@-node:ekr.20031218072017.4048:app.gui.Tkinter birth & death
-    #@+node:ekr.20061031172934:app.gui.createKeyHandlerClass
+    #@-node:ekr.20031218072017.4048:tkGui birth & death
+    #@+node:ekr.20061031172934:tkGui.createKeyHandlerClass
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
         
         import leoTkinterKeys # Do this here to break any circular dependency.
                 
         return leoTkinterKeys.tkinterKeyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
     #@nonl
-    #@-node:ekr.20061031172934:app.gui.createKeyHandlerClass
-    #@+node:ekr.20031218072017.4056:app.gui.Tkinter dialogs
+    #@-node:ekr.20061031172934:tkGui.createKeyHandlerClass
+    #@+node:ekr.20031218072017.4056:tkGui dialogs & panels
     def runAboutLeoDialog(self,c,version,theCopyright,url,email):
         """Create and run a Tkinter About Leo dialog."""
         d = leoTkinterDialog.tkinterAboutLeo(c,version,theCopyright,url,email)
@@ -222,8 +227,7 @@ class tkinterGui(leoGui.leoGui):
         d = leoTkinterDialog.tkinterAskYesNoCancel(
             c,title,message,yesMessage,noMessage,defaultButton)
         return d.run(modal=True)
-    #@-node:ekr.20031218072017.4056:app.gui.Tkinter dialogs
-    #@+node:ekr.20031218072017.4057:app.gui.Tkinter file dialogs
+    #@+node:ekr.20031218072017.4057:tkGui file dialogs
     # We no longer specify default extensions so that we can open and save files without extensions.
     #@+node:ekr.20060212061804:runOpenFileDialog
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
@@ -268,8 +272,8 @@ class tkinterGui(leoGui.leoGui):
             initialdir=initialdir,initialfile=initialfile,
             title=title,filetypes=filetypes)
     #@-node:ekr.20060212061804.1:runSaveFileDialog
-    #@-node:ekr.20031218072017.4057:app.gui.Tkinter file dialogs
-    #@+node:ekr.20031218072017.4058:app.gui.Tkinter panels
+    #@-node:ekr.20031218072017.4057:tkGui file dialogs
+    #@+node:ekr.20031218072017.4058:tkGui panels
     def createComparePanel(self,c):
         """Create a Tkinter color picker panel."""
         return leoTkinterComparePanel.leoTkinterComparePanel(c)
@@ -287,8 +291,9 @@ class tkinterGui(leoGui.leoGui):
     
         gui = self
         return leoTkinterFrame.leoTkinterFrame(title,gui)
-    #@-node:ekr.20031218072017.4058:app.gui.Tkinter panels
-    #@+node:ekr.20031218072017.4059:app.gui.Tkinter.utils
+    #@-node:ekr.20031218072017.4058:tkGui panels
+    #@-node:ekr.20031218072017.4056:tkGui dialogs & panels
+    #@+node:ekr.20031218072017.4059:tkGui utils
     #@+node:ekr.20031218072017.844:Clipboard (tkGui)
     #@+at
     # 
@@ -666,8 +671,9 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4091:getAllText
     #@+node:ekr.20051126125950:getSelectedText
     def getSelectedText (self,w):
-    
-        start, end = self.getSelectionRange(w)
+        
+        gui = self
+        start, end = gui.getSelectionRange(w)
         if start and end and start != end:
             s = w.get(start,end)
             if s is None:
@@ -746,7 +752,8 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20051126171929:hasSelection
     def hasSelection (self,w):
         
-        i,j = self.getSelectionRange(w)
+        gui = self
+        i,j = gui.getSelectionRange(w)
         return i and j and i != j
     #@-node:ekr.20051126171929:hasSelection
     #@+node:ekr.20061103105804:rawInsert & rawDelete
@@ -904,7 +911,21 @@ class tkinterGui(leoGui.leoGui):
         
         return w and hasattr(w,'_name') and w._name or repr(w)
     #@-node:ekr.20051206103652:widget_name (tkGui)
-    #@-node:ekr.20031218072017.4059:app.gui.Tkinter.utils
+    #@-node:ekr.20031218072017.4059:tkGui utils
+    #@+node:ekr.20061112152012.2:class leoEvent (tkGui)
+    class leoEvent:
+        
+        '''A gui-independent wrapper for gui events.'''
+        
+        def __init__ (self,event):
+            self.actualEvent = event
+            self.char   = hasattr(event,'char') and event.char or ''
+            self.keysym = hasattr(event,'keysym') and event.keysym or ''
+            self.w      = hasattr(event,'widget') and event.widget or None
+            self.x      = hasattr(event,'x') and event.x or 0
+            self.y      = hasattr(event,'y') and event.y or 0
+    #@nonl
+    #@-node:ekr.20061112152012.2:class leoEvent (tkGui)
     #@-others
 #@-node:ekr.20031218072017.4047:@thin leoTkinterGui.py
 #@-leo

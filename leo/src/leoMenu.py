@@ -83,7 +83,8 @@ class leoMenu:
     #@+node:ekr.20031218072017.836:updateEditMenu
     def updateEditMenu (self):
     
-        c = self.c ; frame = c.frame ; gui = g.app.gui
+        c = self.c ; frame = c.frame
+        gui = g.app.gui ; w = c.frame.body.bodyCtrl
         if not c: return
         try:
             # Top level Edit menu...
@@ -93,7 +94,8 @@ class leoMenu:
             #@        << enable cut/paste >>
             #@+node:ekr.20040130164211:<< enable cut/paste >>
             if frame.body.hasFocus():
-                data = frame.body.getSelectedText()
+                ###data = frame.body.getSelectedText()
+                data = gui.getSelectedText(w)
                 canCut = data and len(data) > 0
             else:
                 # This isn't strictly correct, but we can't get the Tk headline selection.
@@ -218,10 +220,11 @@ class leoMenu:
     
     def hasSelection (self):
         
-        body = self.frame.body
+        gui = g.app.gui ; body = c.frame.body ; w = c.frame.body.bodyCtrl
     
         if body:
-            first, last = body.getSelectionRange()
+            ###first, last = body.getSelectionRange()
+            first,last = gui.getSelectionRange(w,python=True)
             return first != last
         else:
             return False

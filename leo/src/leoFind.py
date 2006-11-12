@@ -965,14 +965,15 @@ class leoFind:
     
     def initBatchCommands (self):
     
-        c = self.c
+        c = self.c ; gui = g.app.gui ; w = c.frame.body.bodyCtrl
         self.in_headline = self.search_headline # Search headlines first.
         self.errors = 0
     
         # Select the first node.
         if self.suboutline_only or self.node_only or self.selection_only:
             self.p = c.currentPosition()
-            if self.selection_only: self.selStart,self.selEnd = c.frame.body.getSelectionRange()
+            ###if self.selection_only: self.selStart,self.selEnd = c.frame.body.getSelectionRange()
+            if self.selection_only: self.selStart,self.selEnd = gui.getSelectionRange(w,python=True)
             else:                   self.selStart,self.selEnd = None,None
         else:
             p = c.rootPosition()

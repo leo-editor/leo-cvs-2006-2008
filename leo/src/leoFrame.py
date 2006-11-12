@@ -117,9 +117,10 @@ class leoBody:
     #@-node:ekr.20031218072017.3660:leoBody.mustBeDefinedInSubclasses
     #@+node:ekr.20061109102912:define leoBody.mustBeDefinedOnlyInBaseClass
     mustBeDefinedOnlyInBaseClass = (
+        'getAllText',
         'getColorizer',
         'getInsertLines',
-        # 'getInsertionPoint',
+        'getInsertPoint',
         'getSelectedText',
         'getSelectionAreas',
         'getSelectionLines',
@@ -130,12 +131,12 @@ class leoBody:
         'recolor',
         'recolor_now',
         'recolor_range',
-        'scrollDown',
-        'scrollUp',
+        ###'scrollDown',
+        ###'scrollUp',
         'see',
         'seeInsertPoint',
         'selectAllText',
-        #'setInsertionPoint',
+        'setInsertPoint',
         'setSelectionRange',
         'setYScrollPosition',
         'setSelectionAreas',
@@ -230,6 +231,56 @@ class leoBody:
         g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
     #@-node:ekr.20031218072017.3658:oops
     #@+node:ekr.20031218072017.4018:Text (leoBody)
+    def getAllText (self):
+        return g.app.gui.getAllText(self.bodyCtrl)
+    
+    def getInsertPoint(self,python=False):
+        return g.app.gui.getInsertPoint(self.bodyCtrl,python)
+    
+    def getSelectedText (self):
+        """Return the selected text of the body frame, converted to unicode."""
+        return g.app.gui.getSelectedText(self.bodyCtrl)
+    
+    def getSelectionRange (self,sort=True,python=False):
+        """Return a tuple representing the selected range of body text.
+        Return a tuple giving the insertion point if no range of text is selected."""
+        w = self.bodyCtrl
+        return g.app.gui.getSelectionRange(w,sort,python)
+        
+    def hasTextSelection (self):
+        return g.app.gui.hasSelection(self.bodyCtrl)
+        
+    # def scrollDown (self):
+        # g.app.gui.yscroll(self.bodyCtrl,1,'units')
+        
+    # def scrollUp (self):
+        # g.app.gui.yscroll(self.bodyCtrl,-1,'units')
+        
+    def see (self,index,python=False):
+        g.app.gui.see(self.bodyCtrl,index,python=python)
+        
+    def seeInsertPoint (self):
+        g.app.gui.seeInsertPoint(self.bodyCtrl)
+        
+    def selectAllText (self,event=None):
+        w = gui.eventWidget(event) or self.bodyCtrl
+        return g.app.gui.selectAllText(w)
+        
+    def setInsertPoint (self,pos,python=False):
+        return g.app.gui.getInsertPoint(self.bodyCtrl,pos,python)
+        
+    def setSelectionRange (self,i,j=None,insert='sel.end',python=False):
+        gui = g.app.gui ; w = self.bodyCtrl
+        # Allow the user to pass either a 2-tuple or two separate args.
+        if i is None:  i,j,python = 0,0,True
+        elif len(i) == 2: i,j = i
+        if not python:
+            s = gui.getAllText(w)
+            i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
+        gui.setSelectionRange(w,i,j,insert,python=True)
+    
+    # (?<!gui)\.getSelectionRange
+    #@nonl
     #@+node:ekr.20031218072017.4030:getInsertLines (passed)
     def getInsertLines (self):
         
@@ -255,13 +306,6 @@ class leoBody:
     
         return before,ins,after
     #@-node:ekr.20031218072017.4030:getInsertLines (passed)
-    #@+node:ekr.20031218072017.4020:getSelectedText (leoBody)
-    def getSelectedText (self):
-        
-        """Return the selected text of the body frame, converted to unicode."""
-    
-        return g.app.gui.getSelectedText(self.bodyCtrl)
-    #@-node:ekr.20031218072017.4020:getSelectedText (leoBody)
     #@+node:ekr.20031218072017.4031:getSelectionAreas (passed)
     def getSelectionAreas (self):
         
@@ -316,29 +360,6 @@ class leoBody:
         after  = g.toUnicode(s[j:len(s)],g.app.tkEncoding)
         return before,sel,after # 3 strings.
     #@-node:ekr.20031218072017.2377:getSelectionLines (leoBody)
-    #@+node:ekr.20031218072017.4021:getSelectionRange (leoBody)
-    def getSelectionRange (self,sort=True,python=False):
-        
-        """Return a tuple representing the selected range of body text.
-        
-        Return a tuple giving the insertion point if no range of text is selected."""
-    
-        w = self.bodyCtrl
-        return g.app.gui.getSelectionRange(w,sort,python)
-    #@nonl
-    #@-node:ekr.20031218072017.4021:getSelectionRange (leoBody)
-    #@+node:ekr.20031218072017.4022:hasTextSelection (leoBody)
-    def hasTextSelection (self):
-        return g.app.gui.hasSelection(self.bodyCtrl)
-    #@-node:ekr.20031218072017.4022:hasTextSelection (leoBody)
-    #@+node:ekr.20031218072017.4023:selectAllText (leoBody) (select-all)
-    # This is the select-all command.
-    
-    def selectAllText (self,event=None):
-        
-        gui = g.app.gui ; w = gui.eventWidget(event) or self.bodyCtrl
-        return g.app.gui.selectAllText(w)
-    #@-node:ekr.20031218072017.4023:selectAllText (leoBody) (select-all)
     #@+node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
     def setSelectionAreas (self,before,sel,after,python=False):
         
@@ -359,39 +380,9 @@ class leoBody:
         else:
             return gui.toGuiIndex(s,w,i),gui.toGuiIndex(s,w,j)
     #@-node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
-    #@+node:ekr.20031218072017.4024:setSelectionRange (leoBody)
-    def setSelectionRange (self,i,j=None,insert='sel.end',python=False):
-        
-        gui = g.app.gui ; w = self.bodyCtrl
-        
-        # Allow the user to pass either a 2-tuple or two separate args.
-        if i is None:
-            i = j = 0
-            python = True
-        elif len(i) == 2:
-            i,j = i
-        
-        if not python:
-            s = gui.getAllText(w)
-            i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
-    
-        g.app.gui.setSelectionRange(w,i,j,insert,python=True)
-    #@-node:ekr.20031218072017.4024:setSelectionRange (leoBody)
-    #@+node:ekr.20031218072017.4038:Visibility & scrolling (leoBody)
+    #@+node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
     def getYScrollPosition (self):
         return g.app.gui.getYview(self.bodyCtrl)
-        
-    def scrollDown (self):
-        g.app.gui.yscroll(self.bodyCtrl,1,'units')
-        
-    def scrollUp (self):
-        g.app.gui.yscroll(self.bodyCtrl,-1,'units')
-        
-    def see (self,index,python=False):
-        g.app.gui.see(self.bodyCtrl,index,python=python)
-        
-    def seeInsertPoint (self):
-        g.app.gui.seeInsertPoint(self.bodyCtrl)
         
     def setYScrollPosition (self,scrollPosition):
         if len(scrollPosition) == 2:
@@ -400,7 +391,7 @@ class leoBody:
             first = scrollPosition
         g.app.gui.yview(self.bodyCtrl,first)
         
-    #@-node:ekr.20031218072017.4038:Visibility & scrolling (leoBody)
+    #@-node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
     #@-node:ekr.20031218072017.4018:Text (leoBody)
     #@-node:ekr.20061109173021:leoBody: must be defined in the base class
     #@-others

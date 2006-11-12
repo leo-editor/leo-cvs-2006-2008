@@ -116,6 +116,7 @@ class leoGui:
         #'createComparePanel',          # optional
         #'createFindPanel',             # optional
         'createKeyHandlerClass',
+        'createLeoEvent',
         'createLeoFrame',
         'createRootWindow',
         'create_labeled_frame',
@@ -166,8 +167,38 @@ class leoGui:
     )
     #@-node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
     #@-node:ekr.20031218072017.3721:app.gui Birth & death
+    #@+node:ekr.20061109212618.1:Must be defined only in base class
+    #@+node:ekr.20031218072017.3740:guiName
+    def guiName(self):
+        
+        try:
+            return self.mGuiName
+        except:
+            return "invalid gui name"
+    #@-node:ekr.20031218072017.3740:guiName
+    #@+node:ekr.20031218072017.2231:setScript
+    def setScript (self,script=None,scriptFileName=None):
+    
+        self.script = script
+        self.scriptFileName = scriptFileName
+    #@-node:ekr.20031218072017.2231:setScript
+    #@+node:ekr.20031218072017.3741:oops
+    def oops (self):
+        
+        # It is not usually an error to call methods of this class.
+        # However, this message is useful when writing gui plugins.
+        if 0:
+            print "leoGui oops", g.callers(), "should be overridden in subclass"
+    #@-node:ekr.20031218072017.3741:oops
+    #@-node:ekr.20061109212618.1:Must be defined only in base class
     #@+node:ekr.20061109212618:Must be defined in subclasses
     #@+node:ekr.20031218072017.3723:app.gui create & destroy
+    #@+node:ekr.20061112152215:createLeoEvent
+    def createLeoEvent (self,event):
+        self.oops()
+        return event
+    #@nonl
+    #@-node:ekr.20061112152215:createLeoEvent
     #@+node:ekr.20031218072017.3724:createRootWindow
     def createRootWindow(self):
     
@@ -383,7 +414,7 @@ class leoGui:
         '''Return all the text in w, a text widget.'''
         self.oops() ; return ''
     
-    def getSelectionRange (self,w,sort=True,toPython=False):
+    def getSelectionRange (self,w,sort=True,python=False):
         return 0,0
         
     def getSelectedText (self,w):
@@ -438,30 +469,6 @@ class leoGui:
     #@-node:ekr.20061111165041:widget_name
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@-node:ekr.20061109212618:Must be defined in subclasses
-    #@+node:ekr.20061109212618.1:Must be defined only in base class
-    #@+node:ekr.20031218072017.3740:guiName
-    def guiName(self):
-        
-        try:
-            return self.mGuiName
-        except:
-            return "invalid gui name"
-    #@-node:ekr.20031218072017.3740:guiName
-    #@+node:ekr.20031218072017.2231:setScript
-    def setScript (self,script=None,scriptFileName=None):
-    
-        self.script = script
-        self.scriptFileName = scriptFileName
-    #@-node:ekr.20031218072017.2231:setScript
-    #@+node:ekr.20031218072017.3741:oops
-    def oops (self):
-        
-        # It is not usually an error to call methods of this class.
-        # However, this message is useful when writing gui plugins.
-        if 0:
-            print "leoGui oops", g.callers(), "should be overridden in subclass"
-    #@-node:ekr.20031218072017.3741:oops
-    #@-node:ekr.20061109212618.1:Must be defined only in base class
     #@-others
 #@-node:ekr.20031218072017.3720:class leoGui
 #@+node:ekr.20031218072017.2223:class nullGui (leoGui)
@@ -508,6 +515,11 @@ class nullGui(leoGui):
         
         pass
     #@-node:ekr.20050328144031:attachLeoIcon
+    #@+node:ekr.20061112152035:createLeoEvent
+    def createLeoEvent (self,event):
+        return event
+    #@nonl
+    #@-node:ekr.20061112152035:createLeoEvent
     #@+node:ekr.20031218072017.2227:createRootWindow
     def createRootWindow(self):
         pass
@@ -598,12 +610,13 @@ class unitTestGui(leoGui):
         return self.simulateDialog("yesNoCancelDialog","cancel")
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
+    def createLeoEvent (self,event):                            return event
     def getAllText(self,w):                                     return ''
     def get_focus (self,frame):                                 pass
     def getYview (self,w):                                      return 0
     def getYscroll (w):                                         return 0
     def getInsertPoint (self,t,python=False):                   return g.choose(python,0,'1.0')
-    def getSelectionRange (self,t,sort=True,toPython=False):    return 0,0
+    def getSelectionRange (self,t,sort=True,python=False):      return 0,0
     def see (self,w,index,python=False):                        pass
     def seeInsertPoint (self,w):                                pass
     def set_focus (self,c,widget):                              pass

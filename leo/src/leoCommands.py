@@ -1694,7 +1694,6 @@ class baseCommands:
         
         gui.setInsertPoint(w,ins,python=True)
         c.bodyWantsFocusNow()
-        # c.frame.body.seeInsertPoint()
         gui.seeInsertPoint(w)
         #@-node:ekr.20031218072017.2876:<< put the cursor on line n2 of the body text >>
         #@nl
@@ -2443,9 +2442,11 @@ class baseCommands:
         after is a string all lines after the selected text
         (or the text after the insert point if no selection)"""
     
-        c = self ; body = c.frame.body ; w = body.bodyCtrl
+        c = self ; body = c.frame.body
+        gui = g.app.gui ; w = body.bodyCtrl
         oldVview = body.getYScrollPosition()
-        oldSel   = body.getSelectionRange()
+        ###oldSel   = body.getSelectionRange()
+        oldSel = gui.getSelectionRange(w,python=False) ### python should be True
     
         if expandSelection:
             s = g.app.gui.getAllText(w)
@@ -2499,7 +2500,8 @@ class baseCommands:
             c.notValidInBatchMode(undoType)
             return
         
-        oldSel = c.frame.body.getSelectionRange()
+        ###oldSel = c.frame.body.getSelectionRange()
+        oldSel = gui.getSelectionRange(w,python=False) ### python should be True.
         gui.deleteTextSelection(w)
         s2 = self.getTime(body=True)
         s = gui.getAllText(w)
@@ -2655,7 +2657,8 @@ class baseCommands:
         tabWidth  = theDict.get("tabwidth")
         
         original = g.app.gui.getAllText(w)
-        oldSel = body.getSelectionRange()
+        ###oldSel = body.getSelectionRange()
+        oldSel = gui.getSelectionRange(w,python=False) ### python should be True.
         oldYview = body.getYScrollPosition()
         
         head,lines,tail = c.findBoundParagraph()
@@ -2730,7 +2733,8 @@ class baseCommands:
     def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview,setSel=True):
         
         c = self ; body = c.frame.body ; p = c.currentPosition()
-        
+        gui = g.app.gui ; w = body.bodyCtrl
+    
         # g.trace(undoType)
     
         # Update the text and notify the event handler.
@@ -2757,7 +2761,8 @@ class baseCommands:
         if oldYview:
             body.setYScrollPosition(oldYview)
         else:
-            body.seeInsertPoint()
+            ### body.seeInsertPoint()
+            gui.seeInsertPoint(w)
     
         body.setFocus()
         c.recolor()
@@ -4035,9 +4040,8 @@ class baseCommands:
         def replaceBody (self,p,lines):
             
             c = self.c ; u = c.undoer ; undoType = 'Pretty Print'
-            gui = g.app.gui ; w = c.frame.body.bodyCtrl
-            # sel = c.frame.body.getInsertionPoint()
-            sel = gui.getInsertPoint(w)
+            ###gui = g.app.gui ; w = c.frame.body.bodyCtrl
+            sel = c.frame.body.getInsertPoint()
             oldBody = p.bodyString()
             body = string.join(lines,'')
             
@@ -5888,7 +5892,6 @@ class baseCommands:
         s = body.getSelectedText()
         if not s: return False
         
-    
         line = g.get_line(s,0)
         i1 = line.find("<<")
         j1 = line.find(">>")
@@ -5900,9 +5903,9 @@ class baseCommands:
     def canFindMatchingBracket (self):
         
         c = self ; brackets = "()[]{}"
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
-        s = gui.getAllText(w)
-        ins = gui.getInsertPoint(w,python=True)
+        body = c.frame.body
+        s = body.getAllText()
+        ins = body.getInsertPoint(python=True)
         c1 = 0 <= ins   < len(s) and s[ins] or ''
         c2 = 0 <= ins-1 < len(s) and s[ins-1] or ''
         
@@ -6035,9 +6038,7 @@ class baseCommands:
     def canShiftBodyLeft (self):
     
         c = self ; body = c.frame.body
-        w = body and body.bodyCtrl or None
-        # return body and body.getAllText()
-        return w and g.app.gui.getAllText(w)
+        return body and body.getAllText()
     
     canShiftBodyRight = canShiftBodyLeft
     #@-node:ekr.20031218072017.2978:canShiftBodyLeft/Right

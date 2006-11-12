@@ -2359,8 +2359,7 @@ class leoTkinterBody (leoFrame.leoBody):
             c.undoer.setUndoTypingParams(p,undoType,
                 oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
             p.v.setTnodeText(newText)
-            # p.v.t.insertSpot = body.getInsertionPoint()
-            p.v.t.insertSpot = gui.getInsertPoint(w)
+            p.v.t.insertSpot = body.getInsertPoint()
             #@        << recolor the body >>
             #@+node:ekr.20051026083733.6:<< recolor the body >>
             body.colorizer.interrupt()
@@ -2406,27 +2405,6 @@ class leoTkinterBody (leoFrame.leoBody):
         self.forceFullRecolorFlag = True
     #@-node:ekr.20031218072017.3999:forceRecolor
     #@+node:ekr.20031218072017.4000:Tk bindings (tkBbody)
-    #@+at
-    # I could have used this to redirect all calls from the body class and the 
-    # bodyCtrl to Tk. OTOH:
-    # 
-    # 1. Most of the wrappers do more than the old Tk routines now and
-    # 2. The wrapper names are more discriptive than the Tk names.
-    # 
-    # Still, using the Tk names would have had its own appeal.  If I had 
-    # prefixed the tk routine with tk_ the __getatt__ routine could have 
-    # stripped it off!
-    #@-at
-    #@@c
-    
-    if 0: # This works.
-        def __getattr__(self,attr):
-            return getattr(self.bodyCtrl,attr)
-            
-    if 0: # This would work if all tk wrapper routines were prefixed with tk_
-        def __getattr__(self,attr):
-            if attr[0:2] == "tk_":
-                return getattr(self.bodyCtrl,attr[3:])
     #@+node:ekr.20031218072017.4001:Bounding box (Tk spelling)
     def bbox(self,index):
     

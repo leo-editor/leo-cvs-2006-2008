@@ -1444,6 +1444,7 @@ class editCommandsClass (baseEditCommandsClass):
             'scroll-outline-up-page':               self.scrollOutlineUpPage,
             'scroll-up':                            self.scrollUp,
             'scroll-up-extend-selection':           self.scrollUpExtendSelection,
+            'select-all':                           self.selectAllText,
             # Exists, but can not be executed via the minibuffer.
             # 'self-insert-command':                self.selfInsertCommand,
             'set-comment-column':                   self.setCommentColumn,
@@ -4711,6 +4712,13 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert(i,ntxt)
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.126:tabify & untabify
+    #@+node:ekr.20061111223516:selectAllText (leoEditCommands)
+    def selectAllText (self,event):
+        
+        gui = g.app.gui
+        w = gui.eventWidget(event) or self.bodyCtrl
+        return g.app.gui.selectAllText(w)
+    #@-node:ekr.20061111223516:selectAllText (leoEditCommands)
     #@-others
 #@-node:ekr.20050920084036.53:editCommandsClass
 #@+node:ekr.20050920084036.161:editFileCommandsClass
@@ -5761,7 +5769,6 @@ class leoCommandsClass (baseEditCommandsClass):
             'save-file':                    c.save,
             'save-file-as':                 c.saveAs,
             'save-file-to':                 c.saveTo,
-            'select-all':                   f.body.selectAllText,
             'settings':                     c.preferences,
             'set-colors':                   c.colorPanel,
             'set-font':                     c.fontPanel,
@@ -8690,15 +8697,16 @@ class spellTab(leoFind.leoFind):
     def find (self,event=None):
         """Find the next unknown word."""
     
-        c = self.c ; body = c.frame.body ; bodyCtrl = body.bodyCtrl
+        c = self.c ; body = c.frame.body
+        gui = g.app.gui ; w = body.bodyCtrl
     
         # Reload the work pane from the present node.
-        s = bodyCtrl.get("1.0","end").rstrip()
+        s = w.get("1.0","end").rstrip()
         self.workCtrl.delete("1.0","end")
         self.workCtrl.insert("end",s)
     
         # Reset the insertion point of the work widget.
-        ins = bodyCtrl.index("insert")
+        ins = w.index("insert")
         self.workCtrl.mark_set("insert",ins)
     
         alts, word = self.findNextMisspelledWord()
@@ -8710,8 +8718,9 @@ class spellTab(leoFind.leoFind):
             c.bodyWantsFocusNow()
             # Copy the working selection range to the body pane
             start, end = g.app.gui.getSelectionRange(self.workCtrl)
-            g.app.gui.setSelectionRange(bodyCtrl,start,end)
-            body.see(start)
+            gui.setSelectionRange(w,start,end)
+            ###body.see(start)
+            gui.see(start)
         else:
             g.es("no more misspellings")
             self.fillbox([])
