@@ -552,7 +552,7 @@ class wxGui(leoGui.leoGui):
         
         """Return all the text of Tk.Text t converted to unicode."""
         
-        s = t.get("1.0","end")
+        s = t.GetValue()
         if s is None:
             return u""
         else:
@@ -565,7 +565,7 @@ class wxGui(leoGui.leoGui):
         # The python arg is ignored.
     
         if t:
-            t.GetInsertionPoint()
+            return t.GetInsertionPoint()
         else:
             return 0
     #@nonl
@@ -653,7 +653,7 @@ class wxLeoBody (leoFrame.leoBody):
     
     #@    @+others
     #@+node:edream.110203113231.540:Birth & death (wxLeoBody)
-    #@+node:edream.110203113231.541:wxLeoBody.__init__
+    #@+node:edream.110203113231.541:wxBody.__init__
     def __init__ (self,frame,parentFrame):
     
         # Init the base class: calls createControl.
@@ -667,8 +667,8 @@ class wxLeoBody (leoFrame.leoBody):
     
         wx.EVT_TEXT(self.bodyCtrl,const("cBodyCtrl"),self.onBodyTextUpdated)
     #@nonl
-    #@-node:edream.110203113231.541:wxLeoBody.__init__
-    #@+node:edream.110203113231.542:wxLeoBody.createControl
+    #@-node:edream.110203113231.541:wxBody.__init__
+    #@+node:edream.110203113231.542:wxBody.createControl
     def createControl (self,frame,parentFrame):
         
         ctrl = wx.TextCtrl(parentFrame,
@@ -678,7 +678,12 @@ class wxLeoBody (leoFrame.leoBody):
     
         return ctrl
     #@nonl
-    #@-node:edream.110203113231.542:wxLeoBody.createControl
+    #@-node:edream.110203113231.542:wxBody.createControl
+    #@+node:ekr.20061111183138:wxBody.setEditorColors
+    def setEditorColors (self,bg,fg):
+        pass
+    #@nonl
+    #@-node:ekr.20061111183138:wxBody.setEditorColors
     #@-node:edream.110203113231.540:Birth & death (wxLeoBody)
     #@+node:edream.111303204836:Tk wrappers (wxBody) (much work needed) (some will be removed from Leo's core)
     #@+node:edream.110203113231.543:Bounding box...
