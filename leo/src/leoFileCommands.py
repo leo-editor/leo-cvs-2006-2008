@@ -968,7 +968,7 @@ class baseFileCommands:
                     g.trace('can not find tnode (duA): gnx = %s' % gnx,color='red')
         marks = {} ; expanded = {}
         for gnx in self.descendentExpandedList:
-            tref = self.canonicalTnodeIndex(gnx) ###
+            tref = self.canonicalTnodeIndex(gnx)
             t = self.tnodesDict.get(gnx)
             if t: expanded[t]=t
             elif verbose:

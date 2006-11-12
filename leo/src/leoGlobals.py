@@ -182,7 +182,6 @@ def computeLoadDir():
     import leoGlobals as g
 
     try:
-        ### import leo
         import sys
         
         # Fix a hangnail: on Windows the drive letter returned by
@@ -2391,15 +2390,15 @@ def idleTimeHookHandler(*args,**keys):
     if 0: # Do not use g.trace here!
         global trace_count ; trace_count += 1
         if trace_count % 10 == 0:
-            for w in g.app.windowList:
-                c = w.c
+            for z in g.app.windowList:
+                c = z.c
                 print "idleTimeHookHandler",trace_count,c.shortFileName()
 
     # New for Python 2.3: may be called during shutdown.
     if g.app.killed: return
     
-    for w in g.app.windowList:
-        c = w.c
+    for z in g.app.windowList:
+        c = z.c
         # Do NOT compute c.currentPosition.
         # This would be a MAJOR leak of positions.
         g.doHook("idle",c=c)
@@ -5050,10 +5049,10 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
         if g.app.batchMode:
             s = p.bodyString()
         elif p == c.currentPosition():
-            if useSelectedText and g.app.gui.hasSelection(w): ### c.frame.body.hasTextSelection():
-                s = gui.getSelectedText(w) ###s = c.frame.body.getSelectedText()
+            if useSelectedText and g.app.gui.hasSelection(w):
+                s = gui.getSelectedText(w)
             else:
-                s = gui.getAllText(w) ###c.frame.body.getAllText()
+                s = gui.getAllText(w)
         else:
             s = p.bodyString()
         # Remove extra leading whitespace so the user may execute indented code.

@@ -82,7 +82,6 @@ class leoBody:
     mustBeDefinedInSubclasses = (
         # Birth, death & config.
         '__init__',
-        'bind',
         'cget',
         'configure',
         'createBindings',
@@ -148,13 +147,12 @@ class leoBody:
     #@-node:ekr.20031218072017.3657:leoBody.__init__
     #@+node:ekr.20061109173122:leoBody: must be defined in subclasses
     # Birth, death & config
-    def bind (self,*args,**keys):                       self.oops()
-    def cget(self,*args,**keys):                        self.oops()
+    def cget(self,*args,**keys):                    self.oops()
     def configure (self,*args,**keys):              self.oops()
     def createBindings (self,w=None):               self.oops()
-    def createControl (self,frame,parentFrame):     self.oops()
-    def setColorFromConfig (self):                  self.oops()
-    def setFontFromConfig (self):                   self.oops()
+    def createControl (self,frame,parentFrame,p):   self.oops()
+    def setColorFromConfig (self,w=None):           self.oops()
+    def setFontFromConfig (self,w=None):            self.oops()
     # Editors...
     def addEditor (self,event=None):                self.oops()
     def createLabel (self,w):                       self.oops()
@@ -167,7 +165,7 @@ class leoBody:
     def unselectLabel (self,w):                     self.oops()
     def updateEditors (self):                       self.oops()
     # Events...
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): self.oops()
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,python=False): self.oops()
     def scheduleIdleTimeRoutine (self,function,*args,**keys): self.oops()
     # Low-level gui...
     def bbox(self,index):                           self.oops()
@@ -261,20 +259,8 @@ class leoBody:
     def getSelectedText (self):
         
         """Return the selected text of the body frame, converted to unicode."""
-        
-        w = self.bodyCtrl
-        return g.app.gui.getSelectedText(w)
     
-        ###
-        # start, end = self.getSelectionRange()
-        # if start and end and start != end:
-            # s = self.bodyCtrl.get(start,end)
-            # if s is None:
-                # return u""
-            # else:
-                # return g.toUnicode(s,g.app.tkEncoding)
-        # else:
-            # return u'' # Bug fix: 1/8/06
+        return g.app.gui.getSelectedText(self.bodyCtrl)
     #@-node:ekr.20031218072017.4020:getSelectedText (leoBody)
     #@+node:ekr.20031218072017.4031:getSelectionAreas (passed)
     def getSelectionAreas (self):
@@ -303,7 +289,7 @@ class leoBody:
         return before,sel,after
     #@nonl
     #@-node:ekr.20031218072017.4031:getSelectionAreas (passed)
-    #@+node:ekr.20031218072017.2377:getSelectionLines (leoBody) (needs unit test)
+    #@+node:ekr.20031218072017.2377:getSelectionLines (leoBody)
     def getSelectionLines (self):
         
         """Return before,sel,after where:
@@ -315,19 +301,8 @@ class leoBody:
         (or the text after the insert point if no selection)"""
         
         # At present, called only by c.getBodyLines.
-    
         gui = g.app.gui ; w = self.bodyCtrl
         s = gui.getAllText(w)
-        ###sel_index = w.tag_ranges("sel") 
-        ###if len(sel_index) != 2:
-        ###    if 1: # Choose the insert line.
-        ###        index = w.index("insert")
-        ###        sel_index = index,index
-        ###    else:
-        ###        return "","","" # Choose everything.
-        ###i,j = sel_index
-        ###i = w.index(i + "linestart")
-        ###j = w.index(j + "lineend") # 10/24/03: -1c  # 11/4/03: no -1c.
         i,j = gui.getSelectionRange(w,python=True)
         if i == j:
             i,j = g.getLine(s,i)
@@ -335,18 +310,12 @@ class leoBody:
             i,junk = g.getLine(s,i)
             junk,j = g.getLine(s,j)
         #g.trace(i,j,repr(s[i:j]))
-    
-        ###before = g.toUnicode(w.get("1.0",i),g.app.tkEncoding)
-        ###sel    = g.toUnicode(w.get(i,j),    g.app.tkEncoding)
-        ###after  = g.toUnicode(w.get(j,"end-1c"),g.app.tkEncoding)
         
         before = g.toUnicode(s[0:i],g.app.tkEncoding)
         sel    = g.toUnicode(s[i:j],g.app.tkEncoding)
         after  = g.toUnicode(s[j:len(s)],g.app.tkEncoding)
-        
-        # g.trace(i,j)
         return before,sel,after # 3 strings.
-    #@-node:ekr.20031218072017.2377:getSelectionLines (leoBody) (needs unit test)
+    #@-node:ekr.20031218072017.2377:getSelectionLines (leoBody)
     #@+node:ekr.20031218072017.4021:getSelectionRange (leoBody)
     def getSelectionRange (self,sort=True,python=False):
         
@@ -360,11 +329,7 @@ class leoBody:
     #@-node:ekr.20031218072017.4021:getSelectionRange (leoBody)
     #@+node:ekr.20031218072017.4022:hasTextSelection (leoBody)
     def hasTextSelection (self):
-    
-        ###sel = self.bodyCtrl.tag_ranges("sel")
-        ###return sel and len(sel) == 2
-        gui = g.app.gui ; w = self.bodyCtrl
-        return gui.hasSelection(w)
+        return g.app.gui.hasSelection(self.bodyCtrl)
     #@-node:ekr.20031218072017.4022:hasTextSelection (leoBody)
     #@+node:ekr.20031218072017.4023:selectAllText (leoBody) (select-all)
     # This is the select-all command.
@@ -373,30 +338,6 @@ class leoBody:
         
         gui = g.app.gui ; w = gui.eventWidget(event) or self.bodyCtrl
         return g.app.gui.selectAllText(w)
-    
-        # 
-        # '''Select all text in the presently selected pane.'''
-        # 
-        # c = self.c ; k = c.k
-    # 
-        # try:
-            # w = c.get_focus() ; wname = c.widget_name(w)
-            # n = 0
-            # if wname.startswith('head'):
-                # s = w.get('1.0','end')
-                # while s.endswith('\n') or s.endswith('\r'):
-                    # s = s[:-1] ; n += 1
-                # g.app.gui.setSelectionRange(w,'1.0','end - %dc' % (n))
-            # elif wname.startswith('mini'):
-                # i,j = k.getEditableTextRange()
-                # g.app.gui.setSelectionRange(w,i,j)
-            # else:
-                # g.app.gui.setSelectionRange(w,'1.0','end - %dc' % (n))
-        # except:
-            # # g.es_exception()
-            # pass
-    # 
-    #@nonl
     #@-node:ekr.20031218072017.4023:selectAllText (leoBody) (select-all)
     #@+node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
     def setSelectionAreas (self,before,sel,after,python=False):
@@ -434,16 +375,10 @@ class leoBody:
             s = gui.getAllText(w)
             i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
     
-        ### if i is None:
-            # i,j = "1.0","1.0"
-        # elif len(i) == 2:
-            # i,j = i
-    
         g.app.gui.setSelectionRange(w,i,j,insert,python=True)
     #@-node:ekr.20031218072017.4024:setSelectionRange (leoBody)
     #@+node:ekr.20031218072017.4038:Visibility & scrolling (leoBody)
     def getYScrollPosition (self):
-        ###return self.bodyCtrl.yview()
         return g.app.gui.getYview(self.bodyCtrl)
         
     def scrollDown (self):
@@ -656,6 +591,9 @@ class leoFrame:
     #@nonl
     #@-node:ekr.20061106064948:Status line...
     #@+node:ekr.20031218072017.3682:Window...
+    # Important: nothing would be gained by calling gui versions of these methods:
+    #            they can be defined in a gui-dependent way in a subclass.
+    
     def bringToFront (self):    self.oops()
     def deiconify (self):       self.oops()
     def get_window_info(self):  self.oops()
@@ -957,7 +895,7 @@ class leoTree:
     def setEditLabelState(self,v,selectAll=False):  self.oops()
     # Selecting & expanding.
     def expandAllAncestors(self,v):                 self.oops()
-    def select(self,p,updateBeadList=True):         self.oops()
+    def select(self,p,updateBeadList=True,scroll=True): self.oops()
     #@-node:ekr.20031218072017.3706: Must be defined in subclasses
     #@+node:ekr.20061109165848:Must be defined in base class
     #@+node:ekr.20031218072017.3716:Getters/Setters (tree)
@@ -1148,13 +1086,12 @@ class nullBody (leoBody):
     #@-node:ekr.20031218072017.2193:Utils (internal use)
     #@+node:ekr.20031218072017.2197:nullBody: leoBody interface
     # Birth, death & config
-    def bind (self,*args,**keys):               pass
     def cget(self,*args,**keys):                pass
     def configure (self,*args,**keys):          pass
     def createBindings (self,w=None):           pass
-    def createControl (self,frame,parentFrame): pass
-    def setColorFromConfig (self):              pass
-    def setFontFromConfig (self):               pass
+    def createControl (self,frame,parentFrame,p): pass
+    def setColorFromConfig (self,w=None):       pass
+    def setFontFromConfig (self,w=None):        pass
     # Editors...
     def addEditor (self,event=None):            pass
     def createLabel (self,w):                   pass
@@ -1167,7 +1104,7 @@ class nullBody (leoBody):
     def unselectLabel (self,w):                 pass
     def updateEditors (self):                   pass
     # Events...
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): pass
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,python=False): pass
     def scheduleIdleTimeRoutine (self,function,*args,**keys): pass
     # Low-level gui...
     def bbox(self,index):                       return
@@ -1397,7 +1334,7 @@ class nullTree (leoTree):
     def setEditLabelState(self,v,selectAll=False):  pass
     # Selecting and expanding.
     def expandAllAncestors(self,v):                 pass
-    def select(self,p,updateBeadList=True):
+    def select(self,p,updateBeadList=True,scroll=True):
         self.c.setCurrentPosition(p)
         self.frame.scanForTabWidth(p)
     #@-node:ekr.20031218072017.2236:Overrides

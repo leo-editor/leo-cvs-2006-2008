@@ -2399,8 +2399,7 @@ class baseCommands:
     # Test  unmatched())
     def findSingleMatchingBracket(self,s,ch,index):
         
-        c = self ; body = c.frame.body
-        gui = g.app.gui ; w = body.bodyCtrl
+        c = self
         open_brackets  = "([{<" ; close_brackets = ")]}>"
         brackets = open_brackets + close_brackets
         matching_brackets = close_brackets + open_brackets
@@ -2553,17 +2552,17 @@ class baseCommands:
         result = []
         if not lines:
             g.es('No text selected',color='blue')
-            return ''
+            return
         
         d2 = d2 or '' ; d3 = d3 or ''
-        if d1: open,close = d1+' ',''
-        else:  open,close = d2+' ',d3+' '
+        if d1: openDelim,closeDelim = d1+' ',''
+        else:  openDelim,closeDelim = d2+' ',d3+' '
     
         # Comment out non-blank lines.
         for line in lines:
             if line.strip():
                 i = g.skip_ws(line,0)
-                result.append(line[0:i]+open+line[i:]+close)
+                result.append(line[0:i]+openDelim+line[i:]+closeDelim)
             else:
                 result.append(line)
     
@@ -2808,8 +2807,6 @@ class baseCommands:
         c.frame.tree.editLabel(v)
         w = c.edit_widget(v)
         if w:
-            ###w.delete("1.0","end")
-            ###w.insert("1.0",s)
             gui.setAllText(w,s)
             c.frame.tree.onHeadChanged(v,'Toggle Angle Brackets')
     #@-node:ekr.20031218072017.2290:toggleAngleBrackets
@@ -3430,7 +3427,6 @@ class baseCommands:
                     if isTkinter:
                         t = c.edit_widget(p)
                         if t:
-                            ### s = t.get("1.0","end")
                             s = g.app.gui.getAllText(t)
                             assert p.headString().strip() == s.strip(), "May fail if joined node is being edited"
                     #@-node:ekr.20040731053740:assert that p.headString() matches p.edit_text.get
@@ -5905,8 +5901,6 @@ class baseCommands:
         
         c = self ; brackets = "()[]{}"
         gui = g.app.gui ; w = c.frame.body.bodyCtrl
-        ###c1 = c.frame.body.getCharAtInsertPoint()
-        ###c2 = c.frame.body.getCharBeforeInsertPoint()
         s = gui.getAllText(w)
         ins = gui.getInsertPoint(w,python=True)
         c1 = 0 <= ins   < len(s) and s[ins] or ''
@@ -6394,10 +6388,7 @@ class baseCommands:
     
         if t:
             state = t.cget("state")
-            # g.trace(state,s)
             t.configure(state="normal")
-            ###t.delete("1.0","end")
-            ###t.insert("end",s)
             g.app.gui.setAllText(t,s)
             t.configure(state=state,width=c.frame.tree.headWidth(s=s))
     

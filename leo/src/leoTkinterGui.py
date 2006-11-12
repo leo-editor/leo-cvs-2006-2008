@@ -432,7 +432,11 @@ class tkinterGui(leoGui.leoGui):
         return w,f
     #@-node:ekr.20031218072017.4063:create_labeled_frame
     #@-node:ekr.20031218072017.4060:Dialog
-    #@+node:ekr.20061109215734:Events
+    #@+node:ekr.20061109215734:Events (tkGui)
+    def event_generate(self,w,kind,*args,**keys):
+        '''Generate an event.'''
+        return w.event_generate(kind,*args,**keys)
+    
     def eventChar (self,event):
         '''Return the char field of an event.'''
         return event and event.char or ''
@@ -451,7 +455,7 @@ class tkinterGui(leoGui.leoGui):
         else:
             return 0,0
     #@nonl
-    #@-node:ekr.20061109215734:Events
+    #@-node:ekr.20061109215734:Events (tkGui)
     #@+node:ekr.20031218072017.4064:Focus
     #@+node:ekr.20031218072017.4065:get_focus
     def get_focus(self,c):
@@ -616,6 +620,11 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     #@-node:ekr.20031218072017.4071:Idle Time
     #@+node:ekr.20031218072017.4090:Text (g.app.gui)
+    #@+node:ekr.20061111161816:bind
+    def bind (self,w,kind,*args,**keys):
+        w.bind(kind,*args,**keys)
+    #@nonl
+    #@-node:ekr.20061111161816:bind
     #@+node:ekr.20031218072017.4082:getInsertPoint (python)
     def getInsertPoint(self,w,python=False):
         
@@ -655,40 +664,6 @@ class tkinterGui(leoGui.leoGui):
         else:
             return g.toUnicode(s,g.app.tkEncoding)
     #@-node:ekr.20031218072017.4091:getAllText
-    #@+node:ekr.20031218072017.4092:getCharAfterIndex  (deleted)
-    # def getCharAfterIndex (self,w,index):
-        # 
-        # if w.compare(index + "+1c",">=","end"):
-            # return None
-        # else:
-            # ch = w.get(index + "+1c")
-            # return g.toUnicode(ch,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4092:getCharAfterIndex  (deleted)
-    #@+node:ekr.20031218072017.4093:getCharAtIndex  (deleted)
-    # def getCharAtIndex (self,w,index):
-        # ch = w.get(index)
-        # return g.toUnicode(ch,g.app.tkEncoding)
-    #@nonl
-    #@-node:ekr.20031218072017.4093:getCharAtIndex  (deleted)
-    #@+node:ekr.20031218072017.4094:getCharBeforeIndex  (deleted)
-    # def getCharBeforeIndex (self,w,index):
-        # 
-        # index = w.index(index)
-        # if index == "1.0":
-            # return None
-        # else:
-            # ch = w.get(index + "-1c")
-            # return g.toUnicode(ch,g.app.tkEncoding)
-     
-    #@nonl
-    #@-node:ekr.20031218072017.4094:getCharBeforeIndex  (deleted)
-    #@+node:ekr.20031218072017.4095:getLineContainingIndex (deleted)
-    # def getLineContainingIndex (self,w,index):
-        # line = w.get(index + " linestart", index + " lineend")
-        # return g.toUnicode(line,g.app.tkEncoding)
-     
-    #@nonl
-    #@-node:ekr.20031218072017.4095:getLineContainingIndex (deleted)
     #@+node:ekr.20051126125950:getSelectedText
     def getSelectedText (self,w):
     
@@ -732,8 +707,6 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4085:getSelectionRange (tkGui) (python)
     #@+node:ekr.20061103114242.1:gui.flashCharacter
     def flashCharacter(self,w,i,bg,fg,flashes,delay):
-        
-        gui = self
     
         def addFlashCallback(w,count,index):
             w.tag_add('flash',index,'%s+1c' % (index))
@@ -771,9 +744,9 @@ class tkinterGui(leoGui.leoGui):
         return index
     #@-node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
     #@+node:ekr.20051126171929:hasSelection
-    def hasSelection (self,widget):
+    def hasSelection (self,w):
         
-        i,j = self.getSelectionRange(widget)
+        i,j = self.getSelectionRange(w)
         return i and j and i != j
     #@-node:ekr.20051126171929:hasSelection
     #@+node:ekr.20061103105804:rawInsert & rawDelete
@@ -879,7 +852,7 @@ class tkinterGui(leoGui.leoGui):
         '''Return the position of the vertical scrollbar in widget w.'''
         return w.yview()
         
-    def getYscroll (w):
+    def getYscroll (self,w):
         '''Return the vertical scroll position.'''
         return w.yview()
     #@nonl
@@ -889,25 +862,19 @@ class tkinterGui(leoGui.leoGui):
         
         '''Set the position of the vertical scrollbar in widget w.'''
     
-        name = g.app.gui.widget_name(w)
-        # if name.startswith('body'): g.trace(name,index)
         w.yview('moveto',index)
         
-    def yscroll (w,n,units):
+    def yscroll (self,w,n,units):
     
         '''Scroll widget w by n units.'''
     
-        name = g.app.gui.widget_name(w)
-        # if name.startswith('body'): g.trace(name,n,units)
-        w.yview('scroll',n,units)                        
-    #@nonl
+        w.yview('scroll',n,units)
     #@-node:ekr.20061104072319:gui.yview & yscroll
     #@+node:ekr.20031218072017.4098:gui.see & seeInsertPoint
     def see(self,w,index,python=False):
         
         gui = self
-        name = gui.widget_name(w)
-        # if name.startswith('body'): g.trace(index,g.app.gui.widget_name(w),g.callers(5))
+    
         if python:
             s = gui.getAllText(w)
             index = gui.toGuiIndex(s,w,index)
@@ -932,6 +899,11 @@ class tkinterGui(leoGui.leoGui):
         
         return w and isinstance(w,Tk.Text)
     #@-node:ekr.20051220144507:isTextWidget
+    #@+node:ekr.20051206103652:widget_name (tkGui)
+    def widget_name (self,w):
+        
+        return w and hasattr(w,'_name') and w._name or repr(w)
+    #@-node:ekr.20051206103652:widget_name (tkGui)
     #@-node:ekr.20031218072017.4059:app.gui.Tkinter.utils
     #@-others
 #@-node:ekr.20031218072017.4047:@thin leoTkinterGui.py

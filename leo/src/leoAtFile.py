@@ -4254,7 +4254,7 @@ class atFile:
         for p in root.self_and_subtree_iter():
             if not p.v.t.isVisited(): # Check tnode bit, not vnode bit.
                 at.writeError("Orphan node:  " + p.headString())
-                if p.hasParent(): ## and p.isCloned():
+                if p.hasParent():
                     g.es("parent node: " + p.parent().headString(),color="blue")
                 if not at.thinFile and p.isAtIgnoreNode():
                     at.writeError("@ignore node: " + p.headString())

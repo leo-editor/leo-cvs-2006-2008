@@ -1385,7 +1385,7 @@ class baseColorizer:
             self.redoingColoring = False
             
             #@<< configure fonts >>
-            #@+node:ekr.20060829084924:<< configure fonts >>
+            #@+node:ekr.20060829084924:<< configure fonts >> (revise,maybe)
             # Get the default body font.
             defaultBodyfont = self.fonts.get('default_body_font')
             if not defaultBodyfont:
@@ -1428,7 +1428,7 @@ class baseColorizer:
                         # g.trace('default',key)
                         w.tag_config(key,font=defaultBodyfont)
             #@nonl
-            #@-node:ekr.20060829084924:<< configure fonts >>
+            #@-node:ekr.20060829084924:<< configure fonts >> (revise,maybe)
             #@nl
             #@<< configure tags >>
             #@+node:ekr.20031218072017.1603:<< configure tags >>
@@ -2588,20 +2588,22 @@ class baseColorizer:
             
         return word
     #@-node:ekr.20031218072017.2803:getCwebWord
-    #@+node:ekr.20031218072017.1944:removeAllImages (leoColor)
+    #@+node:ekr.20031218072017.1944:removeAllImages (leoColor) (must be tested)
     def removeAllImages (self):
         
         for photo,image,line_index,i in self.image_references:
             try:
                 ### self.body.deleteCharacter(image)
+                s = self.allBodyText
                 gui = g.app.gui ; w = self.body.bodyCtrl
-                gui.rawDelete(w,self.allBodyText,index,python=True)
+                index = g.convertRowColToPythonIndex(s,line_index,i)
+                gui.rawDelete(w,s,index,python=True)
                 self.allBodyText = gui.getAllText(w)
             except:
                 pass # The image may have been deleted earlier.
         
         self.image_references = []
-    #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
+    #@-node:ekr.20031218072017.1944:removeAllImages (leoColor) (must be tested)
     #@+node:ekr.20031218072017.2804:updateSyntaxColorer
     # self.flag is True unless an unambiguous @nocolor is seen.
     

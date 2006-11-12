@@ -1531,7 +1531,6 @@ class basePosition (object):
     
     # Utilities.
     def matchHeadline (self,pattern): return self.v.matchHeadline(pattern)
-    ## def afterHeadlineMatch (self,s): return self.v.afterHeadlineMatch(s)
     #@-node:ekr.20040306211032:p.Comparisons
     #@+node:ekr.20040306220230:p.Headline & body strings
     def bodyString (self):

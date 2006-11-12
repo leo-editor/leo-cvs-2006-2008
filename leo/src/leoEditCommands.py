@@ -472,7 +472,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
         '''Not a command.  Called from k.masterCommand to expand
         abbreviations in event.widget.'''
     
-        k = self.k ; ch = event.char.strip()
+        k = self.k ; c = self.c ; ch = event.char.strip()
         gui = g.app.gui ; w = self.editWidget(event)
         if not w: return
     
@@ -706,7 +706,8 @@ class bufferCommandsClass (baseEditCommandsClass):
     
     def copyToBufferFinisher (self,event,name):
     
-        c = self.c ; k = self.k ; w = self.w
+        c = self.c ; k = self.k
+        gui = g.app.gui ; w = self.w
         s = g.app.gui.getSelectedText(w)
         p = self.findBuffer(name)
         if s and p:
@@ -3043,7 +3044,8 @@ class editCommandsClass (baseEditCommandsClass):
         i,j = oldSel
         language = d.get('language')
         gui = g.app.gui
-        
+        s = gui.getAllText(w)
+    
         if ch in ('(','[','{',):
             automatch = language not in ('plain',)
             if automatch:
@@ -3055,7 +3057,6 @@ class editCommandsClass (baseEditCommandsClass):
                 ins = gui.getInsertPoint(w,python=True)
                 gui.setInsertPoint(w,ins-1,python=True)
         else:
-            s = gui.getAllText(w)
             ins = gui.getInsertPoint(w,python=True)
             ch2 = ins<len(s) and s[ins] or ''
             if ch2 in (')',']','}'):

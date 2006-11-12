@@ -378,29 +378,30 @@ class autoCompleterClass:
     #@-node:ekr.20061031131434.15:showAutocompleter/CalltipsStatus
     #@-node:ekr.20061031131434.8:Top level
     #@+node:ekr.20061031131434.16:Helpers
-    #@+node:ekr.20061031131434.17:abort & exit
+    #@+node:ekr.20061031131434.17:.abort & exit (autocompleter) (test)
     def abort (self):
         
         k = self.k
         k.keyboardQuit(event=None)
-        self.exit(restore=True)
+        k.exit(restore=True)
     
     def exit (self,restore=False): # Called from keyboard-quit.
         
-        c = self.c ; gui = g.app.gui
+        k = self ; c = self.c ; gui = g.app.gui
         w = self.widget or c.frame.body.bodyCtrl
         for name in (self.tabName,'Modules','Info'):
             c.frame.log.deleteTab(name)
         c.widgetWantsFocusNow(w)
-        i,j = gui.getSelectionRange(w)
+        i,j = gui.getSelectionRange(w,python=True)
         if restore:
-            w.delete(i,j)
-            w.insert(i,self.selectedText)
-        gui.setSelectionRange(w,j,j,insert=j)
+            s = gui.getAllText(w)
+            if i != j: gui.rawDelete(w,i,j,python=True)
+            gui.rawInsert(w,s,i,self.selectedText,python=True)
+        gui.setSelectionRange(w,j,j,insert=j,python=True)
         
         self.clear()
         self.object = None
-    #@-node:ekr.20061031131434.17:abort & exit
+    #@-node:ekr.20061031131434.17:.abort & exit (autocompleter) (test)
     #@+node:ekr.20061031131434.18:append/begin/popTabName
     def appendTabName (self,word):
         
@@ -800,7 +801,6 @@ class autoCompleterClass:
             self.beginTabName(word)
             while 0 <= i < start and i <len(s):
                 if s[i] != '.':
-                    g.trace('oops: %s' % (repr(w.get(i))))
                     return False
                 i,j = g.getWord(s,i+1)
                 word = s[i:j]
@@ -2141,7 +2141,7 @@ class keyHandlerClass:
         
         '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
         
-        k = self ; c = k.c ; f = c.frame
+        k = self ; c = k.c ; f = c.frame ; gui = g.app.gui
        
         bindStroke = k.tkbindingFromStroke(stroke)
         # g.trace('stroke',stroke,'bindStroke',bindStroke)
@@ -2167,7 +2167,7 @@ class keyHandlerClass:
                 aList.append(w)
                 k.masterGuiBindingsDict [bindStroke] = aList
                 try:
-                    w.bind(bindStroke,masterBindKeyCallback)
+                    gui.bind(w,bindStroke,masterBindKeyCallback)
                     # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
                 except Exception:
                     if self.trace_bind_key_exceptions:
@@ -2369,6 +2369,8 @@ class keyHandlerClass:
             k.mb_help = help
             k.mb_helpHandler = helpHandler
             c.minibufferWantsFocus()
+        elif keysym == gui.keysym('Escape'):
+            k.keyboardQuit(event)
         elif keysym == gui.keysym('Return'):
             c.frame.log.deleteTab('Completion')
             if k.mb_help:
@@ -2528,7 +2530,7 @@ class keyHandlerClass:
     
         k = self ; k.stroke = stroke ; w = event.widget
         k.universalDispatcher(event)
-        w.event_generate('<Key>',keysym=number)
+        g.app.gui.event_generate(w,'<Key>',keysym=number)
         return 'break'
     
     def numberCommand0 (self,event):
@@ -2733,7 +2735,7 @@ class keyHandlerClass:
         
         if stroke and w:
             # g.trace(c.widget_name(w))
-            w.event_generate(stroke)
+            g.app.gui.event_generate(w,stroke)
         else:
             g.trace('no shortcut for %s' % (commandName),color='red')
     #@-node:ekr.20061031131434.126:manufactureKeyPressForCommandName
@@ -2803,7 +2805,9 @@ class keyHandlerClass:
             k.setState('getArg',1,k.getArg)
             k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
             if useMinibuffer and k.useTextWidget: c.minibufferWantsFocusNow()
-        elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
+        elif keysym == gui.keysym('Escape'):
+            k.keyboardQuit(event)
+        elif keysym == gui.keysym('Return') or k.oneCharacterArg or stroke in k.getArgEscapes:
             if stroke in k.getArgEscapes: k.getArgEscape = stroke
             if k.oneCharacterArg:
                 k.arg = event.char
@@ -2968,21 +2972,37 @@ class keyHandlerClass:
             c.bodyWantsFocusNow()
     #@-node:ekr.20061031131434.135:k.minibufferWantsFocus/Now
     #@+node:ekr.20061101071425.1:Should be defined in subclasses
-    __pychecker__ = '--no-argsused'
-    
-    def getLabel (self,ignorePrompt=False):                 self.oops()
-    def protectLabel (self):                                self.oops()
-    def resetLabel (self):                                  self.oops()
-    def setLabel (self,s,protect=False):                    self.oops()
-    def extendLabel(self,s,select=False,protect=False):     self.oops()
-    def setLabelBlue (self,label=None,protect=False):       self.oops()
-    def setLabelGrey (self,label=None):                     self.oops()
-    def updateLabel (self,event):                           self.oops()
-    def getEditableTextRange (self,python=False):
+    def getLabel (self,ignorePrompt=False):
+        __pychecker__ = '--no-argsused'
         self.oops()
-        return 0,0
     
-    __pychecker__ = '--argsused'
+    def protectLabel (self):
+        self.oops()
+        
+    def resetLabel (self):
+        self.oops()
+        
+    def setLabel (self,s,protect=False):
+        __pychecker__ = '--no-argsused'
+        self.oops()
+        
+    def extendLabel(self,s,select=False,protect=False):
+        __pychecker__ = '--no-argsused'
+        self.oops()
+        
+    def setLabelBlue (self,label=None,protect=False):
+        __pychecker__ = '--no-argsused'
+        self.oops()
+        
+    def setLabelGrey (self,label=None):
+        __pychecker__ = '--no-argsused'
+        self.oops()
+        
+    def updateLabel (self,event):
+        self.oops()
+        
+    def getEditableTextRange (self):
+        self.oops()
     #@nonl
     #@-node:ekr.20061101071425.1:Should be defined in subclasses
     #@-node:ekr.20061031131434.134:Label...
@@ -3270,7 +3290,7 @@ class keyHandlerClass:
     #@+node:ekr.20061031131434.158:createModeBindings
     def createModeBindings (self,modeName,d,w):
         
-        '''Create mode bindings for the named mode using dictionary d for widget w.'''
+        '''Create mode bindings for the named mode using dictionary d for w, a text widget.'''
         
         __pychecker__ = '--no-argsused' # w not used (except for debugging).
         
@@ -3778,7 +3798,7 @@ class keyHandlerClass:
     #@+node:ekr.20061031131434.180:traceBinding
     def traceBinding (self,bunch,shortcut,w):
     
-        k = self ; c = k.c
+        k = self ; c = k.c ; gui = g.app.gui
     
         if not c.config.getBool('trace_bindings'): return
         
@@ -3788,7 +3808,7 @@ class keyHandlerClass:
         pane_filter = c.config.getString('trace_bindings_pane_filter')
         
         if not pane_filter or pane_filter.lower() == bunch.pane:
-             g.trace(bunch.pane,shortcut,bunch.commandName,w._name)
+             g.trace(bunch.pane,shortcut,bunch.commandName,gui.widget_name(w))
     #@-node:ekr.20061031131434.180:traceBinding
     #@-node:ekr.20061031131434.167:Shared helpers
     #@+node:ekr.20061031131434.181:Shortcuts (keyHandler)
@@ -4236,7 +4256,8 @@ class keyHandlerClass:
                     k.masterCommand(event,b.f,'<%s>' % stroke)
             else:
                 for z in xrange(n):
-                    w.event_generate('<Key>',keycode=event.keycode,keysym=event.keysym)
+                    g.app.gui.event_generate(w,'<Key>',keycode=event.keycode,keysym=event.keysym)
+    
     #@-node:ekr.20061031131434.202:executeNTimes
     #@+node:ekr.20061031131434.203:doControlU
     def doControlU (self,event,stroke):

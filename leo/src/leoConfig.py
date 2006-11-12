@@ -1465,6 +1465,8 @@ class configClass:
     #@nonl
     #@-node:ekr.20050424115658:readRecentFilesFile
     #@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
+    recentFileMessageWritten = False
+    
     def writeRecentFilesFile (self,c):
         
         '''Write the appropriate .leoRecentFiles.txt file.'''
@@ -1484,7 +1486,9 @@ class configClass:
             if path:
                 fileName = g.os_path_join(path,tag)
                 if g.os_path_exists(fileName):
-                    print ('wrote %s' % fileName)
+                    if not self.recentFileMessageWritten:
+                        self.recentFileMessageWritten = True
+                        print ('wrote %s' % fileName)
                     self.writeRecentFilesFileHelper(fileName)
                     return
         else:

@@ -103,7 +103,6 @@ class leoGui:
         'guiName',
         'oops',
         'setScript',
-        'widget_name',
     )
     #@nonl
     #@-node:ekr.20061109211054:leoGui.mustBeDefinedOnlyInBaseClass
@@ -111,6 +110,7 @@ class leoGui:
     mustBeDefinedInSubclasses = (
         # Startup & shutdown
         'attachLeoIcon',
+        'bind',
         'center_dialog',
         'color',
         #'createComparePanel',          # optional
@@ -120,6 +120,7 @@ class leoGui:
         'createRootWindow',
         'create_labeled_frame',
         'destroySelf',
+        'event_generate',
         'eventChar',
         'eventKeysym',
         'eventWidget',
@@ -157,25 +158,11 @@ class leoGui:
         'set_focus',
         'toGuiIndex',
         'toPythonIndex',
+        'widget_name',
         'xyToGuiIndex',
         'xyToPythonIndex',
         'yscroll',
         'yview',
-        
-        # TO BE REMOVED
-        ##'compareIndices',
-        ##'firstIndex',
-        ##'getindex',
-        ##'hasSelection',
-        ##'lastIndex',
-        ##'moveIndexBackward',
-        ##'moveIndexForward',
-        ##'moveIndexToNextLine',
-        ##'setSelectionRangeWithLength',
-        ##'stringDelete',
-        ##'stringInsert',
-        ##'seeInsertPoint',
-        ##'widget_wants_focus',
     )
     #@-node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
     #@-node:ekr.20031218072017.3721:app.gui Birth & death
@@ -338,6 +325,10 @@ class leoGui:
         self.oops()
     #@-node:ekr.20031218072017.3735:Dialog utils
     #@+node:ekr.20061031132907:Events
+    def event_generate(self,w,kind,*args,**keys):
+        '''Generate an event.'''
+        pass
+    
     def eventChar (self,event):
         '''Return the char field of an event.'''
         return event and event.char or ''
@@ -384,14 +375,18 @@ class leoGui:
         pass # Not an error.
     #@-node:ekr.20031218072017.3739:Idle time
     #@+node:ekr.20061106181402:Text
+    def bind (self,w,kind,*args,**keys):
+        '''Make the indicated binding.'''
+        self.oops()
+    
     def getAllText (self,w):
-        '''Return all the text in the text widget w.'''
+        '''Return all the text in w, a text widget.'''
         self.oops() ; return ''
     
-    def getSelectionRange (self,t,sort=True,toPython=False):
+    def getSelectionRange (self,w,sort=True,toPython=False):
         return 0,0
         
-    def getSelectedText (self,t):
+    def getSelectedText (self,w):
         return u""
         
     def hasSelection (self,widget):
@@ -403,8 +398,8 @@ class leoGui:
     
     def selectAllText (self,w,insert='end-1c'):
         pass
-            
-    def setSelectionRange (self,t,start,end,insert='sel.end'):
+    
+    def setSelectionRange (self,w,start,end,insert='sel.end',python=False):
         pass
     #@-node:ekr.20061106181402:Text
     #@+node:ekr.20061103094543:Visibility & scrolling (leoGui)
@@ -417,13 +412,13 @@ class leoGui:
     def see (self,w,index,python=False):
         pass
         
-    def seeInsertPoint (self):
+    def seeInsertPoint (self,w):
         pass
         
     def yview (self,w,index):
         pass
         
-    def yscroll (w,n,units):
+    def yscroll (self,w,n,units):
         pass
                 
     #@nonl
@@ -436,6 +431,11 @@ class leoGui:
         return 0
     #@nonl
     #@-node:ekr.20061031133643:xyToGui/PythonIndex
+    #@+node:ekr.20061111165041:widget_name
+    def widget_name (self,w):
+        
+        return repr(w)
+    #@-node:ekr.20061111165041:widget_name
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@-node:ekr.20061109212618:Must be defined in subclasses
     #@+node:ekr.20061109212618.1:Must be defined only in base class
@@ -453,11 +453,6 @@ class leoGui:
         self.script = script
         self.scriptFileName = scriptFileName
     #@-node:ekr.20031218072017.2231:setScript
-    #@+node:ekr.20051206103652:widget_name
-    def widget_name (self,w):
-        
-        return w and hasattr(w,'_name') and w._name or repr(w)
-    #@-node:ekr.20051206103652:widget_name
     #@+node:ekr.20031218072017.3741:oops
     def oops (self):
         
@@ -606,14 +601,14 @@ class unitTestGui(leoGui):
     def getAllText(self,w):                                     return ''
     def get_focus (self,frame):                                 pass
     def getYview (self,w):                                      return 0
-    def getYscroll (w,n,units):                                 return 0
+    def getYscroll (w):                                         return 0
     def getInsertPoint (self,t,python=False):                   return g.choose(python,0,'1.0')
     def getSelectionRange (self,t,sort=True,toPython=False):    return 0,0
     def see (self,w,index,python=False):                        pass
-    def seeInsertPoint (self):                                  pass
+    def seeInsertPoint (self,w):                                pass
     def set_focus (self,c,widget):                              pass
     def setInsertPoint (self,t,pos,python=False):               pass
-    def setSelectionRange (self,t,start,end,insert='sel.end'):  pass
+    def setSelectionRange (self,w,start,end,insert='sel.end'):  pass
     def toGuiIndex (self,s,w,index):                            return '1.0'
     def toPythonIndex (self,s,w,index):                         return 0
     #@-node:ekr.20031218072017.3745:dummy routines (unitTestGui)

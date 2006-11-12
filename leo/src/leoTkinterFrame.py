@@ -2271,7 +2271,7 @@ class leoTkinterBody (leoFrame.leoBody):
     def setColorFromConfig (self,w=None):
         
         c = self.c
-        if not w: w = self.bodyCtrl
+        if w is None: w = self.bodyCtrl
         
         bg = c.config.getColor("body_text_background_color") or 'white'
         # g.trace(id(w),bg)
@@ -2337,6 +2337,8 @@ class leoTkinterBody (leoFrame.leoBody):
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,python=False):
         
         '''Update Leo after the body has been changed.'''
+        
+        __pychecker__ = '--no-argsused' ### python not used!!  What kind of indices are used in the undoer??
         
         body = self ; c = self.c
         gui = g.app.gui ; bodyCtrl = w = body.bodyCtrl

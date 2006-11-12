@@ -4431,7 +4431,8 @@ def updateAutomatchBracket (self,p,w,ch,oldSel):
     i,j = oldSel
     language = d.get('language')
     gui = g.app.gui
-    
+    s = gui.getAllText(w)
+
     if ch in ('(','[','{',):
         automatch = language not in ('plain',)
         if automatch:
@@ -4443,7 +4444,6 @@ def updateAutomatchBracket (self,p,w,ch,oldSel):
             ins = gui.getInsertPoint(w,python=True)
             gui.setInsertPoint(w,ins-1,python=True)
     else:
-        s = gui.getAllText(w)
         ins = gui.getInsertPoint(w,python=True)
         ch2 = ins<len(s) and s[ins] or ''
         if ch2 in (')',']','}'):

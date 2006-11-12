@@ -471,9 +471,6 @@ class leoFind:
             if groups:
                 change_text = self.makeRegexSubs(change_text,groups)
         change_text = change_text.replace('\\n','\n').replace('\\t','\t')
-                    
-        ###gui.replaceSelectionRangeWithText(t,          start,end,change_text)
-        ###gui.replaceSelectionRangeWithText(self.s_ctrl,start,end,change_text)
         for w in (t,self.s_ctrl):
             s = gui.getAllText(w)
             if start != end:
@@ -482,7 +479,6 @@ class leoFind:
             gui.setInsertPoint(w,start,python=True)
     
         # Update the selection for the next match.
-        ###gui.setSelectionRangeWithLength(t,start,len(self.change_text))
         gui.setSelectionRange(t,start,start+len(self.change_text),python=True)
         c.widgetWantsFocus(t)
     
@@ -607,7 +603,6 @@ class leoFind:
             pos, newpos = self.findNextMatch()
             if not pos: break
             count += 1
-            ###line = gui.getLineContainingIndex(t,pos)
             s = gui.getAllText(t)
             i,j = g.getLine(s,pos)
             line = s[i:j]
@@ -720,24 +715,19 @@ class leoFind:
         index = gui.getInsertPoint(w,python=True)
         #g.trace(g.app.gui.widget_name(w),index,p.headString())
         s = gui.getAllText(w)
-        ###index = gui.toPythonIndex(s,w,index)
         stopindex = g.choose(self.reverse,0,len(s))
         pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
             backwards=self.reverse,nocase=self.ignore_case,
             regexp=self.pattern_match,word=self.whole_word)
         if pos == -1: return None,None
-        ###pos    = gui.toGuiIndex(s,w,pos)
-        ###newpos = gui.toGuiIndex(s,w,newpos)
         #@    << fail if we are passed the wrap point >>
         #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
         
-            ###if self.reverse and gui.compareIndices(w,pos, "<", self.wrapPos):
             if self.reverse and pos < self.wrapPos:
                 # g.trace("wrap done")
                 return None, None
         
-            ###if not self.reverse and gui.compareIndices(w,newpos, ">", self.wrapPos):
             if not self.reverse and newpos > self.wrapPos:
                 return None, None
         #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
@@ -852,11 +842,25 @@ class leoFind:
     #@+node:ekr.20060526140744.1:matchWord
     def matchWord(self,s,i,pattern):
         
-        ok = g.match_word(s,i,pattern) and (
-            i == 0 or not g.isWordChar(s[i-1]) or not g.isWordChar(s[i]))
-    
-        # g.trace(ok,repr(s),i)
-        return ok
+        if not s or not pattern or not g.match(s,i,pattern):
+            return False
+        
+        pat1,pat2 = pattern[0],pattern[-1]
+        n = len(pattern)
+        ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
+        ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
+        
+        isWordPat1 = g.isWordChar(pat1)
+        isWordPat2 = g.isWordChar(pat2)
+        isWordCh1 = g.isWordChar(ch1)
+        isWordCh2 = g.isWordChar(ch2)
+        
+        # g.trace('i',i,'ch1,ch2,pat',repr(ch1),repr(ch2),repr(pattern))
+        
+        if isWordPat1 and isWordCh1 or isWordPat2 and isWordCh2:
+            return False
+        else:
+            return True
     #@-node:ekr.20060526140744.1:matchWord
     #@-node:ekr.20060526081931:searchHelper & allies
     #@-node:ekr.20031218072017.3077:search & helpers
@@ -951,12 +955,6 @@ class leoFind:
     def init_s_ctrl (self,s):
         
         gui = g.app.gui ; w = self.s_ctrl
-        # g.trace('reverse',self.reverse,id(self.s_ctrl),repr(s))
-        
-        ###t.delete("1.0","end")
-        ###t.insert("end",s)
-        ###t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
-        
         gui.setAllText(w,s)
         i = g.choose(self.reverse,len(s),0)
         gui.setInsertPoint(w,i,python=True)

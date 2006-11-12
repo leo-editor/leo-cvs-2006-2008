@@ -228,10 +228,574 @@ def onEndDrag(self,event):
 #@-node:ekr.20040803072955.103:onEndDrag
 #@-node:ekr.20040803072955.99:Dragging (tkTree)
 #@-node:ekr.20061106073414:(Suppressed initial scroll on drag)
+#@+node:ekr.20061111084841:(Made sure word search for w. works)
+#@+node:ekr.20031218072017.3077:search & helpers
+def search (self):
+
+    """Search s_ctrl for self.find_text under the control of the
+    whole_word, ignore_case, and pattern_match ivars.
+    
+    Returns (pos, newpos) or (None,None)."""
+
+    c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
+    index = gui.getInsertPoint(w,python=True)
+    #g.trace(g.app.gui.widget_name(w),index,p.headString())
+    s = gui.getAllText(w)
+    stopindex = g.choose(self.reverse,0,len(s))
+    pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+        backwards=self.reverse,nocase=self.ignore_case,
+        regexp=self.pattern_match,word=self.whole_word)
+    if pos == -1: return None,None
+    << fail if we are passed the wrap point >>
+    gui.setSelectionRange(w,pos,newpos,insert=newpos,python=True)
+    return pos, newpos
+#@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
+
+    if self.reverse and pos < self.wrapPos:
+        # g.trace("wrap done")
+        return None, None
+
+    if not self.reverse and newpos > self.wrapPos:
+        return None, None
+#@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+#@+node:ekr.20060526081931:searchHelper & allies
+def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
+    
+    if swapij and backwards: i,j = j,i
+        
+    # g.trace(backwards,i,j,repr(s[i:i+20]))
+
+    if not s[i:j] or not pattern:
+        # g.trace('empty',i,j)
+        return -1,-1
+        
+    if regexp:
+        pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
+    elif backwards:
+        pos,newpos = self.backwardsHelper(s,i,j,pattern,nocase,word)
+    else:
+        pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
+
+    return pos,newpos
+#@+node:ekr.20060526092203:regexHelper
+def regexHelper (self,s,i,j,pattern,backwards,nocase):
+   
+    try:
+        flags = re.MULTILINE
+        if nocase: flags |= re.IGNORECASE
+        re_obj = re.compile(pattern,flags)
+    except Exception:
+        g.es('Invalid regular expression: %s' % (pattern),color='blue')
+        self.errors += 1 # Abort the search.
+        return -1, -1
+        
+    if backwards: # Scan to the last match.
+        last_mo = None
+        while 1:
+            mo = re_obj.search(s,i,j)
+            if mo is None: break
+            i = mo.end()
+            last_mo = mo
+        self.match_obj = mo = last_mo
+    else:
+        self.match_obj = mo = re_obj.search(s,i,j)
+        
+    if mo is None:
+        return -1, -1
+    else:
+        k  = mo.start()
+        k2 = mo.end()
+        if 0:
+            g.trace('i: %d, j: %d k: %d, k2: %d, s[k:k2]: %s, len(s): %d, s[-1]: %s,' % (
+                i,j,k,k2,repr(s[k:k2]),len(s),repr(s[-1])))
+        # g.trace('groups',mo.groups())
+        if k == k2:
+            return -1, -1 # A non-empty pattern can match an empty string.  Move on!
+        else:
+            return k, k2
+#@-node:ekr.20060526092203:regexHelper
+#@+node:ekr.20060526140744:backwardsHelper
+def backwardsHelper (self,s,i,j,pattern,nocase,word):
+
+    if nocase:
+        s = s.lower() ; pattern.lower()
+
+    n = len(pattern)
+    if word:
+        while 1:
+            k = s.rfind(pattern,i,j)
+            # g.trace(i,j,k)
+            if k == -1: return -1, -1
+            if self.matchWord(s,k,pattern):
+                return k,k+n
+            else:
+                j = max(0,k-1)
+    else:
+        k = s.rfind(pattern,i,j)
+        # g.trace(i,j,k)
+        if k == -1:
+            return -1, -1
+        else:
+            return k,k+n
+#@-node:ekr.20060526140744:backwardsHelper
+#@+node:ekr.20060526093531:plainHelper
+def plainHelper (self,s,i,j,pattern,nocase,word):
+    
+    # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+
+    n = len(pattern)
+    if nocase:
+        s = s.lower() ; pattern = pattern.lower()
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
+    if word:
+        while 1:
+            k = s.find(pattern,i,j)
+            # g.trace(k,n)
+            if k == -1: return -1, -1
+            elif self.matchWord(s,k,pattern):
+                return k, k + n
+            else: i = k + n
+    else:
+        k = s.find(pattern,i,j)
+        if k == -1:
+            return -1, -1
+        else:
+            return k, k + n
+#@-node:ekr.20060526093531:plainHelper
+#@+node:ekr.20060526140744.1:matchWord
+def matchWord(self,s,i,pattern):
+    
+    if not s or not pattern or not g.match(s,i,pattern):
+        return False
+    
+    pat1,pat2 = pattern[0],pattern[-1]
+    n = len(pattern)
+    ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
+    ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
+    
+    isWordPat1 = g.isWordChar(pat1)
+    isWordPat2 = g.isWordChar(pat2)
+    isWordCh1 = g.isWordChar(ch1)
+    isWordCh2 = g.isWordChar(ch2)
+    
+    # g.trace('i',i,'ch1,ch2,pat',repr(ch1),repr(ch2),repr(pattern))
+    
+    if isWordPat1 and isWordCh1 or isWordPat2 and isWordCh2:
+        return False
+    else:
+        return True
+#@-node:ekr.20060526140744.1:matchWord
+#@-node:ekr.20060526081931:searchHelper & allies
+#@-node:ekr.20031218072017.3077:search & helpers
+#@-node:ekr.20061111084841:(Made sure word search for w. works)
 #@-node:ekr.20061029091904:Bugs
 #@+node:ekr.20061029091904.1:Features
 #@+node:ekr.20061030161842.1:Added handleUrlInUrlNode helper for OnIconDoubleClick
 #@-node:ekr.20061030161842.1:Added handleUrlInUrlNode helper for OnIconDoubleClick
+#@+node:ekr.20061111131741:Only do one message re writing recent files
+#@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
+recentFileMessageWritten = False
+
+def writeRecentFilesFile (self,c):
+    
+    '''Write the appropriate .leoRecentFiles.txt file.'''
+    
+    tag = '.leoRecentFiles.txt'
+    
+    if g.app.unitTesting:
+        return
+    
+    localFileName = c.fileName()
+    if localFileName:
+        localPath,junk = g.os_path_split(localFileName)
+    else:
+        localPath = None
+        
+    for path in (localPath,g.app.globalConfigDir,g.app.homeDir):
+        if path:
+            fileName = g.os_path_join(path,tag)
+            if g.os_path_exists(fileName):
+                if not self.recentFileMessageWritten:
+                    self.recentFileMessageWritten = True
+                    print ('wrote %s' % fileName)
+                self.writeRecentFilesFileHelper(fileName)
+                return
+    else:
+        # g.trace('----- not found: %s' % g.os_path_join(localPath,tag))
+        return
+#@+node:ekr.20050424131051:writeRecentFilesFileHelper
+def writeRecentFilesFileHelper (self,fileName):
+    # g.trace(fileName)
+    
+    # Don't update the file if it begins with read-only.
+    theFile = None
+    try:
+        theFile = file(fileName)
+        lines = theFile.readlines()
+        if lines and self.munge(lines[0])=='readonly':
+            # g.trace('read-only: %s' %fileName)
+            return
+    except IOError:
+        # The user may have erased a file.  Not an error.
+        if theFile: theFile.close()
+
+    theFile = None
+    try:
+        # g.trace('writing',fileName)
+        theFile = file(fileName,'w')
+        if self.recentFiles:
+            lines = [g.toEncodedString(line,'utf-8') for line in self.recentFiles]
+            theFile.write('\n'.join(lines))
+        else:
+            theFile.write('\n')
+
+    except IOError:
+        # The user may have erased a file.  Not an error.
+        pass
+            
+    except Exception:
+        g.es('unexpected exception writing %s' % fileName,color='red')
+        g.es_exception()
+    
+    if theFile:
+        theFile.close()
+#@-node:ekr.20050424131051:writeRecentFilesFileHelper
+#@-node:ekr.20050424114937.2:writeRecentFilesFile & helper
+#@-node:ekr.20061111131741:Only do one message re writing recent files
+#@+node:ekr.20061111153909:Made escape in the minibuffer work like ctrl-g
+#@+node:ekr.20061031131434.146:masterKeyHandler
+master_key_count = 0
+
+def masterKeyHandler (self,event,stroke=None):
+    
+    '''This is the handler for almost all key bindings.'''
+
+    << define vars >>
+
+    if keysym in special_keys:
+        return None
+
+    << do key traces >>
+
+    # Handle keyboard-quit first.
+    if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+
+    if k.inState():
+        # This will return unless k.autoCompleterStateHandler
+        # (called from k.callStateFunction) returns 'do-standard-keys'
+        << handle mode bindings >>
+        
+    << handle per-pane bindings >>
+    << handle keys without bindings >>
+#@+node:ekr.20061031131434.147:<< define vars >>
+k = self ; c = k.c ; gui = g.app.gui
+w = gui.eventWidget(event)
+w_name = c.widget_name(w)
+keysym = gui.eventKeysym(event)
+state = k.state.kind
+special_keys = (
+    gui.keysym('Caps_Lock'),
+    gui.keysym('Num_Lock'),
+    gui.keysym('Control_L'),
+    gui.keysym('Alt_L'),
+    gui.keysym('Shift_L'),
+    gui.keysym('Control_R'),
+    gui.keysym('Alt_R'),
+    gui.keysym('Shift_R'),
+    gui.keysym('Win_L'),
+    gui.keysym('Win_R'),
+)
+    
+trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+#@-node:ekr.20061031131434.147:<< define vars >>
+#@+node:ekr.20061031131434.148:<< do key traces >>
+self.master_key_count += 1
+
+if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
+    g.trace(
+        # 'keysym',repr(event.keysym or ''),
+        'stroke',repr(stroke),
+        'state',state,
+        'unboundKeyAction',k.unboundKeyAction)
+#@-node:ekr.20061031131434.148:<< do key traces >>
+#@+node:ekr.20061031131434.149:<< handle mode bindings >>
+# First, honor minibuffer bindings for all except user modes.
+if state in ('getArg','getFileName','full-command','auto-complete'):
+    if k.handleMiniBindings(event,state,stroke):
+        return 'break'
+
+# Second, honor general modes.
+if state == 'getArg':
+    return k.getArg(event,stroke=stroke)
+elif state == 'getFileName':
+    return k.getFileName(event)
+elif state in ('full-command','auto-complete'):
+    # Do the default state action.
+    if trace: g.trace('calling state function')
+    val = k.callStateFunction(event) # Calls end-command.
+    if val != 'do-standard-keys': return 'break'
+        
+# Third, pass keys to user modes.
+else:
+    d =  k.masterBindingsDict.get(state)
+    if d:
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace('calling generalModeHandler')
+            k.generalModeHandler (event,
+                commandName=b.commandName,func=b.func,
+                modeName=state,nextMode=b.nextMode)
+            return 'break'
+        else:
+            ok = k.handleMiniBindings(event,state,stroke)
+            if ok:
+                return 'break'
+            elif stroke and len(stroke) == 1:
+                # if trace: g.trace('calling modeHelp')
+                k.modeHelp(event)
+                return 'break'
+            else:
+                # End the mode and fall through to the pane bindings!
+                k.endMode(event)
+    else:
+        # New in 4.4b4.
+        handler = k.getStateHandler()
+        if handler:
+            handler(event)
+        else:
+            g.trace('No state handler for %s' % state)
+        return 'break'
+#@-node:ekr.20061031131434.149:<< handle mode bindings >>
+#@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
+key_states = ('command','insert','overwrite')
+isPlain =  k.isPlainKey(stroke)
+
+for key,name in (
+    # Order here is similar to bindtags order.
+    ('command',None),
+    ('insert',None),
+    ('overwrite',None),
+    ('button',None),
+    ('body','body'),
+    ('text','head'), # Important: text bindings in head before tree bindings.
+    ('tree','head'),
+    ('tree','canvas'),
+    ('log', 'log'),
+    ('text','log'),
+    ('text',None), ('all',None),
+):
+    if (
+        key in key_states and isPlain and k.unboundKeyAction == key or
+        name and w_name.startswith(name) or
+        key in ('text','all') and g.app.gui.isTextWidget(w) or
+        key in ('button','all')
+    ):
+        d = k.masterBindingsDict.get(key)
+        # g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                return k.masterCommand(event,b.func,b.stroke,b.commandName)
+#@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
+#@+node:ekr.20061031131434.151:<< handle keys without bindings >>
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+    # insert/overwrite normal character.  <Return> is *not* a normal character.
+    if trace: g.trace('plain key in insert mode',stroke)
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+
+elif k.ignore_unbound_non_ascii_keys and len(event.char) > 1:
+    # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+    if trace: g.trace('ignoring unbound non-ascii key')
+    return 'break'
+    
+elif event and event.keysym.find('Escape') != -1:
+    # Never insert escape characters.
+    return 'break'
+
+else:
+    # g.trace(stroke,event.char,event.keysym)
+    if trace: g.trace(repr(stroke),'no func')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+#@-node:ekr.20061031131434.151:<< handle keys without bindings >>
+#@+node:ekr.20061031131434.152:handleMiniBindings
+def handleMiniBindings (self,event,state,stroke):
+    
+    k = self ; c = k.c
+    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    if not state.startswith('auto-'):
+        d = k.masterBindingsDict.get('mini')
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                # Pass this on for macro recording.
+                k.masterCommand(event,b.func,stroke,b.commandName)
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
+                return True
+
+    return False
+#@-node:ekr.20061031131434.152:handleMiniBindings
+#@-node:ekr.20061031131434.146:masterKeyHandler
+#@+node:ekr.20061031131434.128:getArg
+def getArg (self,event,
+    returnKind=None,returnState=None,handler=None,
+    prefix=None,tabList=[],completion=True,oneCharacter=False,
+    stroke=None, # New in 4.4.1.
+    useMinibuffer=True # New in 4.4.1
+):
+    
+    '''Accumulate an argument until the user hits return (or control-g).
+    Enter the given return state when done.
+    The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
+    '''
+
+    k = self ; c = k.c ; gui  = g.app.gui
+    state = k.getState('getArg')
+    keysym = gui.eventKeysym(event)
+    trace = c.config.getBool('trace_modes') and not g.app.unitTesting
+    if trace: g.trace(
+        'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
+        'completion', state==0 and completion or state!=0 and k.arg_completion)
+    if state == 0:
+        k.arg = ''
+        << init altX vars >>
+        # Set the states.
+        bodyCtrl = c.frame.body.bodyCtrl
+        c.widgetWantsFocus(bodyCtrl)
+        k.afterGetArgState=returnKind,returnState,handler
+        k.setState('getArg',1,k.getArg)
+        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+        if useMinibuffer and k.useTextWidget: c.minibufferWantsFocusNow()
+    elif keysym == gui.keysym('Escape'):
+        k.keyboardQuit(event)
+    elif keysym == gui.keysym('Return') or k.oneCharacterArg or stroke in k.getArgEscapes:
+        if stroke in k.getArgEscapes: k.getArgEscape = stroke
+        if k.oneCharacterArg:
+            k.arg = event.char
+        else:
+            k.arg = k.getLabel(ignorePrompt=True)
+        kind,n,handler = k.afterGetArgState
+        if kind: k.setState(kind,n,handler)
+        c.frame.log.deleteTab('Completion')
+        trace and g.trace('kind',kind,'n',n,'handler',handler and handler.__name__)
+        if handler: handler(event)
+    elif keysym == gui.keysym('Tab'):
+        k.doTabCompletion(k.argTabList,k.arg_completion)
+    elif keysym == gui.keysym('BackSpace'):
+        k.doBackSpace(k.argTabList,k.arg_completion)
+        c.minibufferWantsFocus()
+    else:
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+    return 'break'
+#@+node:ekr.20061031131434.129:<< init altX vars >>
+k.argTabList = tabList and tabList[:] or []
+k.arg_completion = completion
+
+k.mb_prefix = prefix or k.getLabel()
+k.mb_prompt = prefix or ''
+k.mb_tabList = []
+
+# Clear the list: any non-tab indicates that a new prefix is in effect.
+k.mb_tabListPrefix = k.getLabel()
+k.oneCharacterArg = oneCharacter
+#@-node:ekr.20061031131434.129:<< init altX vars >>
+#@-node:ekr.20061031131434.128:getArg
+#@+node:ekr.20061031131434.111:fullCommand (alt-x) & helper
+def fullCommand (self,event,specialStroke=None,specialFunc=None,help=False,helpHandler=None):
+    
+    '''Handle 'full-command' (alt-x) mode.'''
+
+    k = self ; c = k.c ; gui = g.app.gui
+    state = k.getState('full-command')
+    helpPrompt = 'Help for command: '
+    keysym = gui.eventKeysym(event) ; ch = gui.eventChar(event)
+    trace = c.config.getBool('trace_modes')
+    if trace: g.trace('state',state,keysym)
+    if state == 0:
+        k.mb_event = event # Save the full event for later.
+        k.setState('full-command',1,handler=k.fullCommand)
+        prompt = g.choose(help,helpPrompt,k.altX_prompt)
+        k.setLabelBlue('%s' % (prompt),protect=True)
+        # Init mb_ ivars. This prevents problems with an initial backspace.
+        k.mb_prompt = k.mb_tabListPrefix = k.mb_prefix = prompt
+        k.mb_tabList = [] ; k.mb_tabListIndex = -1
+        k.mb_help = help
+        k.mb_helpHandler = helpHandler
+        c.minibufferWantsFocus()
+    elif keysym == gui.keysym('Escape'):
+        k.keyboardQuit(event)
+    elif keysym == gui.keysym('Return'):
+        c.frame.log.deleteTab('Completion')
+        if k.mb_help:
+            s = k.getLabel()
+            commandName = s[len(helpPrompt):].strip()
+            k.clearState()
+            k.resetLabel()
+            if k.mb_helpHandler: k.mb_helpHandler(commandName)
+        else:
+            k.callAltXFunction(k.mb_event)
+    elif keysym == gui.keysym('Tab'):
+        k.doTabCompletion(c.commandsDict.keys())
+        c.minibufferWantsFocus()
+    elif keysym == gui.keysym('BackSpace'):
+        k.doBackSpace(c.commandsDict.keys())
+        c.minibufferWantsFocus()
+    elif k.ignore_unbound_non_ascii_keys and len(ch) > 1:
+        # g.trace('non-ascii')
+        if specialStroke:
+            g.trace(specialStroke)
+            specialFunc()
+        c.minibufferWantsFocus()
+    else:
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+        c.minibufferWantsFocus()
+        # g.trace('new prefix',k.mb_tabListPrefix)
+
+    return 'break'
+#@+node:ekr.20061031131434.112:callAltXFunction
+def callAltXFunction (self,event):
+    
+    k = self ; c = k.c ; s = k.getLabel()
+    k.mb_tabList = []
+    commandName = s[len(k.mb_prefix):].strip()
+    func = c.commandsDict.get(commandName)
+    k.newMinibufferWidget = None
+    
+    # print 'callAltXFunc',func
+
+    if func:
+        # These must be done *after* getting the command.
+        k.clearState()
+        k.resetLabel()
+        if commandName != 'repeat-complex-command':
+            k.mb_history.insert(0,commandName)
+        c.widgetWantsFocusNow(event.widget) # Important, so cut-text works, e.g.
+        func(event)
+        k.endCommand(event,commandName)
+    else:
+        if 1: # Useful.
+            k.doTabCompletion(c.commandsDict.keys())
+        else: # Annoying.
+            k.keyboardQuit(event)
+            k.setLabel('Command does not exist: %s' % commandName)
+            c.bodyWantsFocus()
+#@-node:ekr.20061031131434.112:callAltXFunction
+#@-node:ekr.20061031131434.111:fullCommand (alt-x) & helper
+#@-node:ekr.20061111153909:Made escape in the minibuffer work like ctrl-g
 #@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061101091734:Plugins
 #@+node:ekr.20061101091443:Changed bindings in UniversalScrolling pluing

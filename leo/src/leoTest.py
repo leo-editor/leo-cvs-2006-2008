@@ -1076,8 +1076,8 @@ class editBodyTestCase(unittest.TestCase):
             g.app.gui.setInsertPoint(t,lines[0])
     
         if not self.sel and not self.ins: # self.sel is a **tk** index.
-            g.app.gui.setInsertPoint(t,0,python=True) ###
-            g.app.gui.setSelectionRange(t,0,0,python=True) ###
+            g.app.gui.setInsertPoint(t,0,python=True)
+            g.app.gui.setSelectionRange(t,0,0,python=True)
     #@-node:ekr.20051104075904.75:setUp
     #@+node:ekr.20051104075904.76:tearDown
     def tearDown (self):

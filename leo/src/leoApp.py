@@ -191,7 +191,7 @@ class LeoApp:
         #@-node:ekr.20031218072017.368:<< define global data structures >> app
         #@nl
     #@-node:ekr.20031218072017.1416:app.__init__
-    #@+node:ekr.20031218072017.2609:app.closeLeoWindow
+    #@+node:ekr.20031218072017.2609:app.closeLeoWindow (test)
     def closeLeoWindow (self,frame):
         
         """Attempt to close a Leo window.
@@ -221,16 +221,16 @@ class LeoApp:
         
         if g.app.windowList:
             # Pick a window to activate so we can set the log.
-            w = g.app.windowList[0]
-            w.deiconify()
-            w.lift()
-            w.c.setLog()
-            w.c.bodyWantsFocusNow()
+            frame = g.app.windowList[0]
+            frame.deiconify()
+            frame.lift()
+            frame.c.setLog()
+            frame.c.bodyWantsFocusNow()
         else:
             g.app.finishQuit()
     
         return True # The window has been closed.
-    #@-node:ekr.20031218072017.2609:app.closeLeoWindow
+    #@-node:ekr.20031218072017.2609:app.closeLeoWindow (test)
     #@+node:ekr.20031218072017.2610:app.createTkGui
     def createTkGui (self,fileName=None):
         
@@ -526,7 +526,7 @@ class LeoApp:
         # g.trace(g.app.gui,self.log)
     
         if self.log:
-            if 1: ## not self.log.isNull: # The test for isNull would probably interfere with batch mode.
+            if 1: # not self.log.isNull: # The test for isNull would probably interfere with batch mode.
                 for s,color in self.logWaiting:
                     g.es(s,color=color,newline=0) # The caller must write the newlines.
                 self.logWaiting = []

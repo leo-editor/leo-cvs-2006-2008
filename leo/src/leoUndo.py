@@ -571,7 +571,7 @@ class baseUndoer:
     
         # Set by beforeChangeTree: changed, oldSel, oldText, oldTree, p
         bunch.newSel = body.getSelectionRange()
-        bunch.newText = g.app.gui.getAllText(w)
+        bunch.newText = gui.getAllText(w)
         bunch.newTree = u.saveTree(p)
         
         u.pushBead(bunch)
@@ -808,7 +808,7 @@ class baseUndoer:
         bunch = u.createCommonBunch(p)
     
         bunch.oldSel = body.getSelectionRange()
-        bunch.oldText = g.app.gui.getAllText(w) ###body.getAllText()
+        bunch.oldText = g.app.gui.getAllText(w)
         bunch.oldTree = u.saveTree(p)
         
         return bunch
