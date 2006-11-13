@@ -475,11 +475,11 @@ class leoFind:
             s = gui.getAllText(w)
             if start != end:
                 gui.rawDelete(w,s,start,end,python=True)
-            gui.rawInsert(w,s,start,self.change_text,python=True)
+            gui.rawInsert(w,s,start,change_text,python=True)
             gui.setInsertPoint(w,start,python=True)
     
         # Update the selection for the next match.
-        gui.setSelectionRange(t,start,start+len(self.change_text),python=True)
+        gui.setSelectionRange(t,start,start+len(change_text),python=True)
         c.widgetWantsFocus(t)
     
         # No redraws here: they would destroy the headline selection.
