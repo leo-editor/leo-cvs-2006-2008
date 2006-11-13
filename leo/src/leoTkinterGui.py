@@ -695,19 +695,23 @@ class tkinterGui(leoGui.leoGui):
         try:
             sel = w.tag_ranges("sel")
         except Exception:
-            return 0,0
+            return 0,0 
         
         if len(sel) == 2:
             i,j = sel
-            if sort and w.compare(i,">",j):
-                i,j = j,i
         else:
             # Return the insertion point if there is no selected text.
             i = j = w.index("insert")
           
+        # During the changeover we can't be sure what kind of index the widget will return.
+        s = gui.getAllText(w)
         if python:
-            s = gui.getAllText(w)
             i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
+            if sort and i > j: i,j = j,i
+        else:
+            i,j = gui.toGuiIndex(s,w,i),gui.toGuiIndex(s,w,j)
+            if sort and w.compare(i,">",j): i,j = j,i
+            
         return i,j
     #@nonl
     #@-node:ekr.20031218072017.4085:getSelectionRange (tkGui) (python)
@@ -736,17 +740,19 @@ class tkinterGui(leoGui.leoGui):
         '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
         
         # A subtle point: s typically does not have Tk's trailing newline, so add it.
-        row,col = g.convertPythonIndexToRowCol(s +'\n',index)
-        index = w.index('%s.%s' % (row+1,col))
+        if type(index) == type(99):
+            row,col = g.convertPythonIndexToRowCol(s +'\n',index)
+            index = w.index('%s.%s' % (row+1,col))
         return index
         
     def toPythonIndex (self,s,w,index):
         
         '''Convert a Tk index in Tk.Text widget w into a python index in string s.'''
         
-        index = w.index(index)
-        row, col = index.split('.') ; row, col = int(row), int(col)
-        index = g.convertRowColToPythonIndex (s,row-1,col)
+        if type(index) in (type('a'),type(u'a')):
+            index = w.index(index)
+            row, col = index.split('.') ; row, col = int(row), int(col)
+            index = g.convertRowColToPythonIndex (s,row-1,col)
         return index
     #@-node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
     #@+node:ekr.20051126171929:hasSelection
