@@ -58,7 +58,6 @@ class LeoApp:
         self.openWithFiles = [] # List of data used by Open With command.
         self.openWithFileNum = 0 # Used to generate temp file names for Open With command.
         self.openWithTable = None # The table passed to createOpenWithMenuFromTable.
-        self.overrideTextWidget = True ###
         self.positions = 0 # Count of the number of positions generated.
         self.quitting = False # True if quitting.  Locks out some events.
         self.realMenuNameDict = {} # Contains translations of menu names and menu item names.

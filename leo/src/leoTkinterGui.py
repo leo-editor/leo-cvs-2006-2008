@@ -630,21 +630,21 @@ class tkinterGui(leoGui.leoGui):
         w.bind(kind,*args,**keys)
     #@nonl
     #@-node:ekr.20061111161816:bind
-    #@+node:ekr.20031218072017.4082:getInsertPoint (python)
+    #@+node:ekr.20031218072017.4082:getInsertPoint
     def getInsertPoint(self,w,python=False):
         
         gui = self
         try:
             i = w.index("insert")
+            s = gui.getAllText(w)
             if python:
-                s = gui.getAllText(w)
                 return gui.toPythonIndex(s,w,i)
             else:
-                return i
+                return gui.toGuiIndex(s,w,i)
         except Exception:
             return '1.0'
-    #@-node:ekr.20031218072017.4082:getInsertPoint (python)
-    #@+node:ekr.20031218072017.4083:setInsertPoint (python)
+    #@-node:ekr.20031218072017.4082:getInsertPoint
+    #@+node:ekr.20031218072017.4083:setInsertPoint
     def setInsertPoint (self,w,pos,python=False):
     
         if python:
@@ -656,7 +656,7 @@ class tkinterGui(leoGui.leoGui):
             w.mark_set("insert",pos)
         except Exception:
             pass
-    #@-node:ekr.20031218072017.4083:setInsertPoint (python)
+    #@-node:ekr.20031218072017.4083:setInsertPoint
     #@+node:ekr.20031218072017.4091:getAllText
     def getAllText (self,w):
         
@@ -813,7 +813,7 @@ class tkinterGui(leoGui.leoGui):
             python = True
             g.trace('**** wrong type args ***',g.callers())
     
-        if python:
+        if 1: ### python:
             s = gui.getAllText(w)
             start,end = gui.toGuiIndex(s,w,start),gui.toGuiIndex(s,w,end)
             if insert not in ('sel.end',None):
@@ -838,8 +838,13 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20061031132712.4:xyToGui/PythonIndex
     def xyToGuiIndex (self,w,x,y):
         
-        return w.index("@%d,%d" % (x,y))
-        
+        gui = self
+        i = w.index("@%d,%d" % (x,y))
+        # We can't be sure of what w.index will return.
+        s = gui.getAllText(w)
+        i = gui.toGuiIndex(s,w,i)
+        return i
+    
     def xyToPythonIndex(self,w,x,y):
         
         gui = self
@@ -852,9 +857,12 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.4019:gui.deleteTextSelection
     def deleteTextSelection (self,w):
         
+        gui = self
         sel = w.tag_ranges("sel")
         if len(sel) == 2:
             start,end = sel
+            s = gui.getAllText(w)
+            start,end = gui.toGuiIndex(s,w,start),gui.toGuiIndex(s,w,end)
             if w.compare(start,"!=",end):
                 w.delete(start,end)
     #@-node:ekr.20031218072017.4019:gui.deleteTextSelection
