@@ -208,17 +208,16 @@ class leoBody:
     #@+node:ekr.20061109095450.8:onClick (passed)
     def onClick (self,event):
         
-        c = self.c ; k = c.k ; gui = g.app.gui
-        w = event and event.widget
+        c = self.c ; k = c.k ; w = event and event.widget
         wname = c.widget_name(w)
         
         if wname.startswith('body'):
             # A hack to support middle-button pastes: remember the previous selection.
-            k.previousSelection = gui.getSelectionRange(w,python=True)
-            x,y = gui.eventXY(event)
-            i = gui.xyToPythonIndex(w,x,y)
+            k.previousSelection = w.getSelectionRange()
+            x,y = g.app.gui.eventXY(event)
+            i = g.app.gui.xyToPythonIndex(w,x,y)
             # g.trace(x,y,repr(i))
-            g.app.gui.setSelectionRange(w,i,i,insert=i,python=True)
+            w.setSelectionRange(i,i,insert=i)
             c.editCommands.setMoveCol(w,i,python=True)
             c.frame.updateStatusLine()
             self.selectEditor(w)
@@ -232,23 +231,22 @@ class leoBody:
     #@-node:ekr.20031218072017.3658:oops
     #@+node:ekr.20031218072017.4018:Text (leoBody)
     def getAllText (self):
-        return g.app.gui.getAllText(self.bodyCtrl)
+        return self.bodyCtrl.getAllText()
     
     def getInsertPoint(self,python=False):
-        return g.app.gui.getInsertPoint(self.bodyCtrl,python)
+        return self.bodyCtrl.getInsertPoint()
     
     def getSelectedText (self):
         """Return the selected text of the body frame, converted to unicode."""
-        return g.app.gui.getSelectedText(self.bodyCtrl)
+        return self.bodyCtrl.getSelectedText()
     
     def getSelectionRange (self,sort=True,python=False):
         """Return a tuple representing the selected range of body text.
         Return a tuple giving the insertion point if no range of text is selected."""
-        w = self.bodyCtrl
-        return g.app.gui.getSelectionRange(w,sort,python)
+        return self.bodyCtrl.getSelectionRange(sort)
         
     def hasTextSelection (self):
-        return g.app.gui.hasSelection(self.bodyCtrl)
+        return self.bodyCtrl.hasSelection()
         
     # def scrollDown (self):
         # g.app.gui.yscroll(self.bodyCtrl,1,'units')
@@ -257,27 +255,21 @@ class leoBody:
         # g.app.gui.yscroll(self.bodyCtrl,-1,'units')
         
     def see (self,index,python=False):
-        g.app.gui.see(self.bodyCtrl,index,python=python)
+        self.bodyCtrl.see(index)
         
     def seeInsertPoint (self):
-        g.app.gui.seeInsertPoint(self.bodyCtrl)
+        self.bodyCtrl.seeInsertPoint()
         
     def selectAllText (self,event=None):
-        w = gui.eventWidget(event) or self.bodyCtrl
-        return g.app.gui.selectAllText(w)
+        w = g.app.gui.eventWidget(event) or self.bodyCtrl
+        return w.selectAllText()
         
     def setInsertPoint (self,pos,python=False):
-        return g.app.gui.getInsertPoint(self.bodyCtrl,pos,python)
+        return self.bodyCtrl.getInsertPoint(pos)
         
-    def setSelectionRange (self,i,j=None,insert='sel.end',python=False):
-        gui = g.app.gui ; w = self.bodyCtrl
-        # Allow the user to pass either a 2-tuple or two separate args.
-        if i is None:  i,j,python = 0,0,True
-        elif len(i) == 2: i,j = i
-        if not python:
-            s = gui.getAllText(w)
-            i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
-        gui.setSelectionRange(w,i,j,insert,python=True)
+    def setSelectionRange (self,sel):
+        i,j = sel
+        self.bodyCtrl.setSelectionRange(i,j)
     
     # (?<!gui)\.getSelectionRange
     #@nonl
@@ -292,9 +284,9 @@ class leoBody:
         
         All lines end in a newline, except possibly the last line."""
         
-        gui = g.app.gui ; w = self.bodyCtrl
-        s = gui.getAllText(w)
-        insert = gui.getInsertPoint(w,python=True)
+        w = self.bodyCtrl
+        s = w.getAllText()
+        insert = w.getInsertPoint()
         i,j = g.getLine(s,insert)
         before = s[0:i]
         ins = s[i:j]
@@ -317,10 +309,9 @@ class leoBody:
         after is the text after the selected text
         (or the text after the insert point if no selection)"""
     
-        gui = g.app.gui ; w = self.bodyCtrl
-        
-        s = gui.getAllText(w)
-        i,j = gui.getSelectionRange(w,python=True)
+        w = self.bodyCtrl
+        s = w.getAllText()
+        i,j = w.getSelectionRange()
         if i == j: j = i + 1
     
         before = s[0:i]
@@ -345,9 +336,9 @@ class leoBody:
         (or the text after the insert point if no selection)"""
         
         # At present, called only by c.getBodyLines.
-        gui = g.app.gui ; w = self.bodyCtrl
-        s = gui.getAllText(w)
-        i,j = gui.getSelectionRange(w,python=True)
+        w = self.bodyCtrl
+        s = w.getAllText()
+        i,j = w.getSelectionRange()
         if i == j:
             i,j = g.getLine(s,i)
         else:
@@ -366,19 +357,19 @@ class leoBody:
         """Replace the body text by before + sel + after and
         set the selection so that the sel text is selected."""
     
-        w = self.bodyCtrl ; gui = g.app.gui
-        s = gui.getAllText(w)
+        w = self.bodyCtrl
+        s = w.getAllText()
         before = before or ''
         sel = sel or ''
         after = after or ''
-        gui.rawDelete(w,s,0,len(s),python=True)
-        gui.rawInsert(w,s,0,before+sel+after,python=True)
+        w.delete(0,len(s))
+        w.insert(0,before+sel+after)
         i,j = len(before),len(before)+len(sel)
-        gui.setSelectionRange(w,i,j,insert=j,python=True)
+        w.setSelectionRange(i,j,insert=j)
         if python:
             return i,j
         else:
-            return gui.toGuiIndex(s,w,i),gui.toGuiIndex(s,w,j)
+            return g.app.gui.toGuiIndex(s,w,i),g.app.gui.toGuiIndex(s,w,j)
     #@-node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
     #@+node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
     def getYScrollPosition (self):

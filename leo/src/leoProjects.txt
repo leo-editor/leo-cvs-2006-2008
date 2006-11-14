@@ -237,17 +237,17 @@ def search (self):
     
     Returns (pos, newpos) or (None,None)."""
 
-    c = self.c ; p = self.p ; w = self.s_ctrl ; gui = g.app.gui
-    index = gui.getInsertPoint(w,python=True)
+    c = self.c ; p = self.p ; w = self.s_ctrl
+    index = w.getInsertPoint()
     #g.trace(g.app.gui.widget_name(w),index,p.headString())
-    s = gui.getAllText(w)
+    s = w.getAllText()
     stopindex = g.choose(self.reverse,0,len(s))
     pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
         backwards=self.reverse,nocase=self.ignore_case,
         regexp=self.pattern_match,word=self.whole_word)
     if pos == -1: return None,None
     << fail if we are passed the wrap point >>
-    gui.setSelectionRange(w,pos,newpos,insert=newpos,python=True)
+    w.setSelectionRange(pos,newpos,insert=newpos)
     return pos, newpos
 #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
 if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:

@@ -224,7 +224,8 @@ class tkinterAboutLeo (leoTkinterDialog):
     
         frame.pack(padx=6,pady=4)
         
-        self.text = text = Tk.Text(frame,height=height,width=width,bd=0,bg=frame.cget("background"))
+        self.text = text = g.app.gui.leoTextWidget( ### Tk.Text(
+            frame,height=height,width=width,bd=0,bg=frame.cget("background"))
         text.pack(pady=10)
         
         try:

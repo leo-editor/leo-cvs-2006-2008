@@ -1367,8 +1367,8 @@ class baseColorizer:
             self.p = p
             
             # Get the body text, converted to unicode.
-            self.allBodyText = gui.getAllText(w)
-            sel = gui.getInsertPoint(w,python=True)
+            self.allBodyText = w.getAllText()
+            sel = w.getInsertPoint()
             start,end = g.convertPythonIndexToRowCol(self.allBodyText,sel)
             start += 1 # Simulate the old 1-based Tk scheme.  self.index undoes this hack.
             # g.trace('new',start,end)
@@ -2437,7 +2437,7 @@ class baseColorizer:
         if j == -1:
             return i + 2
         else:
-            s = gui.getAllText(w)
+            s = w.getAllText()
             # includes brackets
             start,end = gui.toPythonIndex(s,w,self.index(i)),gui.toPythonIndex(s,w,self.index(j+k))
             searchName = s[start:end]
@@ -2597,8 +2597,8 @@ class baseColorizer:
                 s = self.allBodyText
                 gui = g.app.gui ; w = self.body.bodyCtrl
                 index = g.convertRowColToPythonIndex(s,line_index,i)
-                gui.rawDelete(w,s,index,python=True)
-                self.allBodyText = gui.getAllText(w)
+                w.delete(index)
+                self.allBodyText = w.getAllText()
             except:
                 pass # The image may have been deleted earlier.
         

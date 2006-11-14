@@ -336,15 +336,15 @@ class autoCompleterClass:
         
         '''Show the calltips at the cursor.'''
         
-        c = self.c ; k = c.k ; gui = g.app.gui
-        w = gui.eventWidget(event) or c.get_focus()
+        c = self.c ; k = c.k ; w = g.app.gui.eventWidget(event)
+        if not w: return
         
         # Insert the calltip if possible, but not in headlines.
         if (k.enable_calltips or force) and not c.widget_name(w).startswith('head'):
             self.widget = w
             self.prefix = ''
-            self.selection = g.app.gui.getSelectionRange(w)
-            self.selectedText = g.app.gui.getSelectedText(w)
+            self.selection = w.getSelectionRange()
+            self.selectedText = w.getSelectedText()
             self.leadinWord = self.findCalltipWord(w)
             # g.trace(self.leadinWord)
             self.object = None
@@ -387,17 +387,16 @@ class autoCompleterClass:
     
     def exit (self,restore=False): # Called from keyboard-quit.
         
-        k = self ; c = self.c ; gui = g.app.gui
+        k = self ; c = self.c 
         w = self.widget or c.frame.body.bodyCtrl
         for name in (self.tabName,'Modules','Info'):
             c.frame.log.deleteTab(name)
         c.widgetWantsFocusNow(w)
-        i,j = gui.getSelectionRange(w,python=True)
+        i,j = w.getSelectionRange()
         if restore:
-            s = gui.getAllText(w)
-            if i != j: gui.rawDelete(w,i,j,python=True)
-            gui.rawInsert(w,s,i,self.selectedText,python=True)
-        gui.setSelectionRange(w,j,j,insert=j,python=True)
+            if i != j: w.delete(i,j)
+            w.insert(i,self.selectedText)
+        w.setSelectionRange(j,j,insert=j)
         
         self.clear()
         self.object = None
@@ -447,7 +446,7 @@ class autoCompleterClass:
     def calltip (self,obj=None):
         
         c = self.c
-        w = self.widget ; gui = g.app.gui
+        w = self.widget
         isStringMethod = False ; s = None
         # g.trace(self.leadinWord,obj)
     
@@ -515,9 +514,8 @@ class autoCompleterClass:
         s = s.rstrip(')') # Convenient.
         #@    << insert the text and set j1 and j2 >>
         #@+node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >>
-        junk,j = gui.getSelectionRange(w,python=True) # Returns insert point if no selection.
-        body = gui.getAllText(w)
-        gui.rawInsert(w,body,j,s,python=True)
+        junk,j = w.getSelectionRange() # Returns insert point if no selection.
+        w.insert(j,s)
         c.frame.body.onBodyChanged('Typing')
         j1 = j + 1 ; j2 = j + len(s)
         #@-node:ekr.20061031131434.25:<< insert the text and set j1 and j2 >>
@@ -527,9 +525,9 @@ class autoCompleterClass:
         self.finish()
         c.widgetWantsFocusNow(w)
         if 1: # Seems to be more useful.
-            gui .setSelectionRange(w,j1,j2,insert=j2,python=True)
+            w.setSelectionRange(j1,j2,insert=j2)
         else:
-            gui.setInsertPoint(w,j2,python=True)
+            w.setInsertPoint(j2)
         #@    << put the status line >>
         #@+node:ekr.20061031131434.26:<< put the status line >>
         c.frame.clearStatusLine()
@@ -544,8 +542,8 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.27:chain
     def chain (self):
         
-        c = self.c ; w = self.widget ; gui = g.app.gui
-        word = gui.getSelectedText(w)
+        c = self.c ; w = self.widget
+        word = w.getSelectedText()
         old_obj = self.object
     
         if word and old_obj and type(old_obj) == type([]) and old_obj == sys.modules:
@@ -564,13 +562,13 @@ class autoCompleterClass:
             self.membersList = self.getMembersList(obj)
             self.appendTabName(word)
             self.extendSelection('.')
-            i = gui.getInsertPoint(w)
-            gui.setSelectionRange(w,i,i,insert=i)
+            i = w.getInsertPoint()
+            w.setSelectionRange(i,i,insert=i)
             # g.trace('chaining to',word,self.object)
             # Similar to start logic.
             self.prefix = ''
-            self.selection = gui.getSelectionRange(w)
-            self.selectedText = gui.getSelectedText(w)
+            self.selection = w.getSelectionRange()
+            self.selectedText = w.getSelectedText()
             if self.membersList:
                 # self.autoCompleterStateHandler(event=None)
                 self.computeCompletionList()
@@ -583,9 +581,9 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.28:computeCompletionList
     def computeCompletionList (self,verbose=False):
         
-        c = self.c ; gui = g.app.gui ; w = self.widget
+        c = self.c ; w = self.widget
         c.widgetWantsFocus(w)
-        s = gui.getSelectedText(w)
+        s = w.getSelectedText()
         self.tabList,common_prefix = g.itemsMatchingPrefixInList(
             s,self.membersList,matchEmptyPrefix=True)
     
@@ -630,21 +628,19 @@ class autoCompleterClass:
             else:
                 obj = self.object
             # g.trace(self.object,obj)
-            gui = g.app.gui
             w = self.widget
-            s = gui.getAllText(w)
-            i,junk = gui.getSelectionRange(w,python=True)
+            s = w.getAllText()
+            i,junk = w.getSelectionRange()
             ch = 0 <= i-1 < len(s) and s[i-1] or ''
             # g.trace(ch)
             if ch == '.':
-                gui = g.app.gui
                 self.object = obj
-                gui.rawDelete(w,s,i-1,python=True)
+                w.delete(i-1)
                 c.frame.body.onBodyChanged(undoType='Typing')
                 i,j = g.getWord(s,i-2)
                 word = s[i:j]
                 # g.trace(i,j,repr(word))
-                gui.setSelectionRange(w,i,j,insert=j,python=True)
+                w.setSelectionRange(i,j,insert=j)
                 self.prefix = word
                 self.popTabName()
                 self.membersList = self.getMembersList(obj)
@@ -664,8 +660,8 @@ class autoCompleterClass:
         
         '''Handle tab completion when the user hits a tab.'''
         
-        c = self.c ; gui = g.app.gui ; w = self.widget
-        s = gui.getSelectedText(w)
+        c = self.c ; w = self.widget
+        s = w.getSelectedText()
     
         if s.startswith(self.prefix) and self.tabList:
             # g.trace('cycle','prefix',repr(self.prefix),len(self.tabList),repr(s))
@@ -684,26 +680,23 @@ class autoCompleterClass:
         
         '''Append s to the presently selected text.'''
         
-        c = self.c
-        w = self.widget ; gui = g.app.gui
+        c = self.c ; w = self.widget
         c.widgetWantsFocusNow(w)
         
-        i,j = gui.getSelectionRange(w,python=True)
-        body = gui.getAllText(w)
-        gui.rawInsert(w,body,j,s,python=True)
+        i,j = w.getSelectionRange()
+        w.insert(j,s)
         j += 1
-        g.app.gui.setSelectionRange(w,i,j,insert=j,python=True)
-        c.frame.body.onBodyChanged('Typing')    
+        w.setSelectionRange(i,j,insert=j)
+        c.frame.body.onBodyChanged('Typing')
     #@nonl
     #@-node:ekr.20061031131434.31:extendSelection
     #@+node:ekr.20061031131434.32:findAnchor
     def findAnchor (self,w):
         
         '''Returns (j,word) where j is a Python index.'''
-        
-        gui = g.app.gui
-        i = j = gui.getInsertPoint(w,python=True)
-        s = gui.getAllText(w)
+    
+        i = j = w.getInsertPoint()
+        s = w.getAllText()
     
         while i > 0 and s[i-1] == '.':
             i,j = g.getWord(s,i-2)
@@ -718,10 +711,8 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.33:findCalltipWord
     def findCalltipWord (self,w):
         
-        gui = g.app.gui
-        
-        i = gui.getInsertPoint(w,python=True)
-        s = gui.getAllText(w)
+        i = w.getInsertPoint()
+        s = w.getAllText()
         if i > 0:
             i,j = g.getWord(s,i-1)
             word = s[i:j]
@@ -775,12 +766,11 @@ class autoCompleterClass:
     #@-node:ekr.20061031131434.35:getAttr and hasAttr
     #@+node:ekr.20061031131434.36:getLeadinWord
     def getLeadinWord (self,w):
-        
-        gui = g.app.gui
+    
         self.verbose = False # User must explicitly ask for verbose.
         self.leadinWord = None
-        start = gui.getInsertPoint(w,python=True)
-        s = gui.getAllText(w)
+        start = w.getInsertPoint()
+        s = w.getAllText()
         start -= 1
         i,word = self.findAnchor(w)
         
@@ -833,7 +823,7 @@ class autoCompleterClass:
         
         c = self.c ; doc = None ; obj = self.object ; w = self.widget
     
-        word = g.app.gui.getSelectedText(w)
+        word = w.getSelectedText()
         
         if not word:
             # Never gets called, but __builtin__.f will work.
@@ -855,24 +845,24 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.39:insertNormalChar
     def insertNormalChar (self,ch,keysym):
         
-        k = self.k ; w = self.widget ; gui = g.app.gui
+        k = self.k ; w = self.widget
     
         if g.isWordChar(ch):
             # Look ahead to see if the character completes any item.
-            s = gui.getSelectedText(w) + ch
+            s = w.getSelectedText() + ch
             tabList,common_prefix = g.itemsMatchingPrefixInList(
                 s,self.membersList,matchEmptyPrefix=True)
             if tabList:
                 # Add the character.
                 self.tabList = tabList
                 self.extendSelection(ch)
-                s = gui.getSelectedText(w)
+                s = w.getSelectedText()
                 if s.startswith(self.prefix):
                     self.prefix = self.prefix + ch
                 self.computeCompletionList()
         else:
-            word = gui.getSelectedText(w)
-            if keysym == gui.keysym('parenleft'):
+            word = w.getSelectedText()
+            if keysym == g.app.gui.keysym('parenleft'):
                 # Similar to chain logic.
                 obj = self.object
                 # g.trace(obj,word,self.hasAttr(obj,word))
@@ -1011,24 +1001,23 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.45:setSelection
     def setSelection (self,s):
         
-        c = self.c
-        w = self.widget ; gui = g.app.gui
+        c = self.c ; w = self.widget
         c.widgetWantsFocusNow(w)
-        body = gui.getAllText(w)
-        # g.pdb()
-        if gui.hasSelection(w):
-            i,j = gui.getSelectionRange(w,python=True)
-            gui.rawDelete(w,body,i,j,python=True)
+        ###body = w.getAllText()
+    
+        if w.hasSelection():
+            i,j = w.getSelectionRange()
+            w.delete(i,j)
         else:
-            i = gui.getInsertPoint(w,python=True)
+            i = w.getInsertPoint()
             
         # Don't go past the ':' that separates the completion from the type.
         n = s.find(':')
         if n > -1: s = s[:n]
         
-        gui.rawInsert(w,body,i,s,python=True)
+        w.insert(i,s)
         j = i + len(s)
-        gui.setSelectionRange(w,i,j,insert=j,python=True)
+        w.setSelectionRange(i,j,insert=j)
     
         # New in Leo 4.4.2: recolor immediately to preserve the new selection in the new colorizer.
         c.frame.body.recolor_now(c.currentPosition(),incremental=True)
@@ -1040,7 +1029,7 @@ class autoCompleterClass:
     #@+node:ekr.20061031131434.46:start
     def start (self,event=None,w=None):
         
-        c = self.c ; gui = g.app.gui
+        c = self.c
         if w: self.widget = w
         else: w = self.widget
         
@@ -1050,17 +1039,17 @@ class autoCompleterClass:
             self.defineObjectDict()
     
         self.prefix = ''
-        self.selection = gui.getSelectionRange(w)
-        self.selectedText = gui.getSelectedText(w)
+        self.selection = w.getSelectionRange()
+        self.selectedText = w.getSelectedText()
         flag = self.getLeadinWord(w)
         if self.membersList:
             if not flag:
                 # Remove the (leading) invocation character.
-                i = gui.getInsertPoint(w,python=True)
-                s = gui.getAllText(w)
+                i = w.getInsertPoint()
+                s = w.getAllText()
                 if i > 0 and s[i-1] == '.':
-                    s = gui.stringDelete(s,i-1)
-                    gui.setAllText(w,s)
+                    s = g.app.gui.stringDelete(s,i-1)
+                    w.setAllText(s)
                     c.frame.body.onBodyChanged('Typing')
             self.autoCompleterStateHandler(event)
         else:
@@ -2141,7 +2130,7 @@ class keyHandlerClass:
         
         '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
         
-        k = self ; c = k.c ; f = c.frame ; gui = g.app.gui
+        k = self ; c = k.c ; f = c.frame
        
         bindStroke = k.tkbindingFromStroke(stroke)
         # g.trace('stroke',stroke,'bindStroke',bindStroke)
@@ -2167,7 +2156,7 @@ class keyHandlerClass:
                 aList.append(w)
                 k.masterGuiBindingsDict [bindStroke] = aList
                 try:
-                    gui.bind(w,bindStroke,masterBindKeyCallback)
+                    w.bind(bindStroke,masterBindKeyCallback)
                     # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
                 except Exception:
                     if self.trace_bind_key_exceptions:
@@ -3220,7 +3209,7 @@ class keyHandlerClass:
             x = gui.xyToPythonIndex(w,x,y)
             i,j = k.getEditableTextRange()
             if i <= x <= j:
-                gui.setSelectionRange(w,x,x,insert=x,python=True)
+                w.setSelectionRange(x,x,insert=x)
             else:
                 if trace: g.trace('2: break')
                 return 'break'
@@ -3257,9 +3246,9 @@ class keyHandlerClass:
             gui = g.app.gui
             x,y = gui.eventXY(event)
             i = gui.xyToPythonIndex(w,x,y)
-            s = gui.getAllText(w)
+            s = w.getAllText()
             start,end = g.getWord(s,i)
-            gui.setSelectionRange(w,start,end,python=True)
+            w.setSelectionRange(start,end)
             return 'break'
     #@-node:ekr.20061031131434.154:masterDoubleClickHandler
     #@+node:ekr.20061031131434.155:masterMenuHandler

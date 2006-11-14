@@ -752,17 +752,17 @@ class reformatParagraphTest:
         # Make the temp child node current, and put the cursor at the beginning.
         c.selectPosition(self.tempChild)
         w = c.frame.body.bodyCtrl
-        g.app.gui.setSelectionRange(w,0,0,python=True)
+        w.setSelectionRange(0,0)
     #@-node:ekr.20051104075904.52:copyBeforeToTemp
     #@+node:ekr.20051104075904.53:getRowCol
     def getRowCol(self):
     
-        c = self.c ; w = c.frame.body.bodyCtrl ; gui = g.app.gui
+        c = self.c ; w = c.frame.body.bodyCtrl
         tab_width = c.frame.tab_width
     
         # Get the Tkinter row col position of the insert cursor.
-        s = gui.getAllText(w)
-        index = gui.getInsertPoint(w,python=True)
+        s = w.getAllText()
+        index = w.getInsertPoint()
         row,col = g.convertPythonIndexToRowCol(s,index)
         row += 1
         # g.trace(index,row,col)
@@ -1067,17 +1067,17 @@ class editBodyTestCase(unittest.TestCase):
         if self.sel:
             s = str(self.sel.bodyString()) # Can't be unicode.
             lines = s.split('\n')
-            g.app.gui.setSelectionRange(t,lines[0],lines[1])
+            t.setSelectionRange(lines[0],lines[1])
     
         if self.ins:
             s = str(self.ins.bodyString()) # Can't be unicode.
             lines = s.split('\n')
             g.trace(lines)
-            g.app.gui.setInsertPoint(t,lines[0])
+            t.setInsertPoint(lines[0])
     
         if not self.sel and not self.ins: # self.sel is a **tk** index.
-            g.app.gui.setInsertPoint(t,0,python=True)
-            g.app.gui.setSelectionRange(t,0,0,python=True)
+            t.setInsertPoint(0)
+            t.setSelectionRange(0,0)
     #@-node:ekr.20051104075904.75:setUp
     #@+node:ekr.20051104075904.76:tearDown
     def tearDown (self):
@@ -1448,11 +1448,16 @@ def runEditCommandTest (c,p):
     try:
         c.selectPosition(work)
         c.setBodyString(work,before.bodyString())
-        g.app.gui.setSelectionRange(w,sel1[0],sel1[1])
+        w.setSelectionRange(sel1[0],sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
         assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
-        sel3 = g.app.gui.getSelectionRange(w)
+        sel3 = w.getSelectionRange()
+        s = w.getAllText()
+        # The selection range is specified as Tk indices.
+        i,j = sel3
+        i,j = g.app.gui.toGuiIndex(s,w,i),g.app.gui.toGuiIndex(s,w,j)
+        sel3 = i,j
         assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
         c.selectPosition(atTest)
         atTest.contract()

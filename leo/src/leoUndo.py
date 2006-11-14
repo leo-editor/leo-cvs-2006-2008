@@ -516,7 +516,7 @@ class baseUndoer:
         
         bunch.newP = p.copy()
         ###bunch.newSel = body.getSelectionRange()
-        bunch.newSel = gui.getSelectionRange(w,python=False) ### python should be true.
+        bunch.newSel = w.getSelectionRange()
         
         # Tells whether to report the number of separate changes undone/redone.
         bunch.reportFlag = reportFlag
@@ -536,8 +536,7 @@ class baseUndoer:
     
         '''Create an undo node using d created by beforeChangeNode.'''
         
-        u = self ; c = self.c
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        u = self ; c = self.c ; w = c.frame.body.bodyCtrl
         if u.redoing or u.undoing: return
     
         # Set the type & helpers.
@@ -553,8 +552,7 @@ class baseUndoer:
         bunch.newDirty = p.isDirty()
         bunch.newHead = p.headString()
         bunch.newMarked = p.isMarked()
-        ###bunch.newSel = body.getSelectionRange()
-        bunch.newSel = gui.getSelectionRange(w,python=False) ### python should be True. 
+        bunch.newSel = w.getSelectionRange()
         
         u.pushBead(bunch)
     #@-node:ekr.20050315134017.2:afterChangeNodeContents
@@ -563,8 +561,7 @@ class baseUndoer:
     
         '''Create an undo node for general tree operations using d created by beforeChangeTree'''
         
-        u = self ; c = self.c
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        u = self ; c = self.c ; w = c.frame.body.bodyCtrl
         if u.redoing or u.undoing: return
         
         # Set the types & helpers.
@@ -574,9 +571,8 @@ class baseUndoer:
         bunch.redoHelper = u.redoTree
     
         # Set by beforeChangeTree: changed, oldSel, oldText, oldTree, p
-        ###bunch.newSel = body.getSelectionRange()
-        bunch.newSel = gui.getSelectionRange(w,python=False) ### python should be True.
-        bunch.newText = gui.getAllText(w)
+        bunch.newSel = w.getSelectionRange()
+        bunch.newText = w.getAllText()
         bunch.newTree = u.saveTree(p)
         
         u.pushBead(bunch)
@@ -808,14 +804,11 @@ class baseUndoer:
         
         # g.trace(p.headString())
         
-        u = self ; c = u.c
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        u = self ; c = u.c ; w = c.frame.body.bodyCtrl
     
         bunch = u.createCommonBunch(p)
-    
-        ###bunch.oldSel = body.getSelectionRange()
-        bunch.oldSel = gui.getSelectionRange(w,python=False) ### python should be True.
-        bunch.oldText = gui.getAllText(w)
+        bunch.oldSel = w.getSelectionRange()
+        bunch.oldText = w.getAllText()
         bunch.oldTree = u.saveTree(p)
         
         return bunch
@@ -896,15 +889,13 @@ class baseUndoer:
         '''Return a bunch containing all common undo info.
         This is mostly the info for recreating an empty node at position p.'''
         
-        u = self ; c = u.c
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        u = self ; c = u.c ; w = c.frame.body.bodyCtrl
         
         return g.Bunch(
             oldChanged = c.isChanged(),
             oldDirty = p.isDirty(),
             oldMarked = p.isMarked(),
-            ###oldSel = body.getSelectionRange(),
-            oldSel = gui.getSelectionRange(w,python=False), ### python should be True.
+            oldSel = w.getSelectionRange(),
             p = p.copy(),
         )
     #@-node:ekr.20050318085432.2:createCommonBunch
@@ -1807,7 +1798,7 @@ class baseUndoer:
         
         '''Handle text undo and redo: converts _new_ text into _old_ text.'''
     
-        u = self ; c = u.c ; body = c.frame.body ; w = body.bodyCtrl
+        u = self ; c = u.c ; w = c.frame.body.bodyCtrl
         
         #@    << Compute the result using p's body text >>
         #@+node:ekr.20061106105812.1:<< Compute the result using p's body text >>
@@ -1837,9 +1828,8 @@ class baseUndoer:
         #@-node:ekr.20061106105812.1:<< Compute the result using p's body text >>
         #@nl
         p.setTnodeText(result)
-        g.app.gui.setAllText(w,result)
+        w.setAllText(result)
         c.frame.body.recolor(p,incremental=False)
-    #@nonl
     #@-node:ekr.20031218072017.1493:undoRedoText (passed)
     #@-node:ekr.20031218072017.2039:undo & helpers...
     #@-others

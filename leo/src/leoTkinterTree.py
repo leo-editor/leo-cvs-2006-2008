@@ -305,7 +305,8 @@ class leoTkinterTree (leoFrame.leoTree):
         
         #@    << make bindings for a common binding widget >>
         #@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
-        self.bindingWidget = t = Tk.Text(self.canvas,name='bindingWidget')
+        self.bindingWidget = t = g.app.gui.leoTextWidget( ###Tk.Text(
+            self.canvas,name='bindingWidget')
         
         t.bind('<Key>',k.masterKeyHandler)
         
@@ -537,7 +538,8 @@ class leoTkinterTree (leoFrame.leoTree):
         else:
             # Tags are not valid in Tk.Text widgets.
             self.textNumber += 1
-            t = Tk.Text(canvas,name='head-%d' % self.textNumber,
+            t = g.app.gui.leoTextWidget( ### Tk.Text(
+                canvas,name='head-%d' % self.textNumber,
                 state="normal",font=self.font,bd=0,relief="flat",height=1)
             t.bindtags(self.textBindings) # Set the bindings for this widget.
     
@@ -1784,7 +1786,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         c = self.c ; k = c.k
         ch = event and event.char or ''
-        i,j = g.app.gui.getSelectionRange(w)
+        i,j = w.getSelectionRange()
         
         if ch == '\b':
             if i != j:  w.delete(i,j)
@@ -2473,7 +2475,7 @@ class leoTkinterTree (leoFrame.leoTree):
         '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
         
         c = self.c ; frame = c.frame
-        gui = g.app.gui ; body = w = frame.bodyCtrl
+        body = w = frame.bodyCtrl
         old_p = c.currentPosition()
         if not p or not c.positionExists(p):
             # g.trace('does not exist',p.headString())
@@ -2518,7 +2520,7 @@ class leoTkinterTree (leoFrame.leoTree):
             
             if p.v and p.v.t.scrollBarSpot != None:
                 first,last = p.v.t.scrollBarSpot
-                g.app.gui.yview(body,first)
+                w.yview(first)
             
             if p.v and p.v.t.insertSpot != None:
                 spot = p.v.t.insertSpot

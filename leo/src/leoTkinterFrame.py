@@ -613,7 +613,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.labelWidget.pack(side="left",padx=1)
             
             bg = self.statusFrame.cget("background")
-            self.textWidget = Tk.Text(self.statusFrame,
+            self.textWidget = g.app.gui.leoTextWidget( ### Tk.Text(
+                self.statusFrame,
                 height=1,state="disabled",bg=bg,relief="groove",name='status-line')
             self.textWidget.pack(side="left",expand=1,fill="x")
             self.textWidget.bind("<Button-1>", self.onActivate)
@@ -723,13 +724,13 @@ class leoTkinterFrame (leoFrame.leoFrame):
         def update (self):
             
             c = self.c ; lab = self.labelWidget
-            gui = g.app.gui ; w = c.frame.bodyCtrl
+            w = c.frame.bodyCtrl
         
             if g.app.killed or not self.isVisible:
                 return
         
-            s = gui.getAllText(w)
-            index = gui.getInsertPoint(w,python=True)
+            s = w.getAllText()
+            index = w.getInsertPoint()
             row,col = g.convertPythonIndexToRowCol(s,index)
         
             if col > 0:
@@ -913,7 +914,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         lab.pack(side='left')
         
         if c.useTextMinibuffer:
-            label = Tk.Text(f,height=1,relief='groove',background='lightgrey',name='minibuffer')
+            label = g.app.gui.leoTextWidget( ###Tk.Text(
+                f,height=1,relief='groove',background='lightgrey',name='minibuffer')
             label.pack(side='left',fill='x',expand=1,padx=2,pady=1)
         else:
             label = Tk.Label(f,relief='groove',justify='left',anchor='w',name='minibuffer')
@@ -1524,12 +1526,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if w:
             time = c.getTime(body=False)
             if 1: # We can't know if we were already editing, so insert at end.
-                g.app.gui.setSelectionRange(w,'end','end')
+                w.setSelectionRange('end','end')
                 w.insert('end',time)
             else:
-                i, j = g.app.gui.getSelectionRange(w)
-                if i != j:
-                    w.delete(i,j)
+                i, j = w.getSelectionRange()
+                if i != j: w.delete(i,j)
                 w.insert("insert",time)
             c.frame.tree.onHeadChanged(p,'Insert Headline Time')
     #@-node:ekr.20031218072017.3983:insertHeadlineTime
@@ -1543,7 +1544,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if not w or not g.app.gui.isTextWidget(w): return
     
         # Set the clipboard text.
-        i,j = g.app.gui.getSelectionRange(w)
+        i,j = w.getSelectionRange()
         if i != j:
             s = w.get(i,j)
             g.app.gui.replaceClipboardWith(s)
@@ -1555,19 +1556,19 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         '''Invoked from the mini-buffer and from shortcuts.'''
         
-        f = self ; c = f.c ; gui = g.app.gui ; w = event and event.widget
+        f = self ; c = f.c ; w = event and event.widget
         if not w or not g.app.gui.isTextWidget(w): return
     
         name = c.widget_name(w)
-        oldSel = gui.getSelectionRange(w)
-        oldText = gui.getAllText(w)
-        i,j = gui.getSelectionRange(w)
+        oldSel = w.getSelectionRange()
+        oldText = w.getAllText()
+        i,j = w.getSelectionRange()
         
         # Update the widget and set the clipboard text.
         s = w.get(i,j)
         if i != j:
             w.delete(i,j)
-            gui.replaceClipboardWith(s)
+            g.app.gui.replaceClipboardWith(s)
     
         if name.startswith('body'):
             c.frame.body.forceFullRecolor()
@@ -1575,7 +1576,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         elif name.startswith('head'):
             # The headline is not officially changed yet.
             # p.initHeadString(s)
-            s = gui.getAllText(w)
+            s = w.getAllText()
             w.configure(width=f.tree.headWidth(s=s))
         else: pass
     
@@ -1587,22 +1588,22 @@ class leoTkinterFrame (leoFrame.leoFrame):
         '''Paste the clipboard into a widget.
         If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
     
-        f = self ; c = f.c ; w = event and event.widget ; gui = g.app.gui
-        if not w or not gui.isTextWidget(w): return
+        f = self ; c = f.c ; w = event and event.widget
+        if not w or not g.app.gui.isTextWidget(w): return
     
         wname = c.widget_name(w)
-        i,j = oldSel = gui.getSelectionRange(w)  # Returns insert point if no selection.
-        oldText = w.get('1.0','end')
+        i,j = oldSel = w.getSelectionRange()  # Returns insert point if no selection.
+        oldText = w.getAllText()
         
         # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
         
         if middleButton and c.k.previousSelection is not None:
             start,end = c.k.previousSelection
-            s = gui.getAllText(w)
+            s = w.getAllText()
             s = s[start:end]
             c.k.previousSelection = None
         else:
-            s = s1 = gui.getTextFromClipboard()
+            s = s1 = g.app.gui.getTextFromClipboard()
         
         singleLine = wname.startswith('head') or wname.startswith('minibuffer')
         
@@ -2084,7 +2085,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         w.delete('1.0','end')
         w.insert('end',p.bodyString())
-        g.app.gui.see(w,'1.0')
+        w.see(0)
         self.setFontFromConfig(w=w)
         self.setColorFromConfig(w=w)
         self.createBindings(w=w)
@@ -2178,8 +2179,8 @@ class leoTkinterBody (leoFrame.leoBody):
                 w2.leo_active = False
                 self.unselectLabel(w2)
                 w2.leo_scrollBarSpot = w2.yview()
-                w2.leo_insertSpot = g.app.gui.getInsertPoint(w2)
-                w2.leo_selection = g.app.gui.getSelectionRange(w2)
+                w2.leo_insertSpot = w2.getInsertPoint()
+                w2.leo_selection = w2.getSelectionRange()
                 # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
                 break
         else:
@@ -2206,24 +2207,22 @@ class leoTkinterBody (leoFrame.leoBody):
         #@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
         # g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
         
-        gui = g.app.gui
-        
         if w.leo_insertSpot:
-            gui.setInsertPoint(w,w.leo_insertSpot)
+            w.setInsertPoint(w.leo_insertSpot)
         else:
-            gui.setInsertPoint(w,'1.0')
+            w.setInsertPoint(0) ### 1.0
             
         if w.leo_scrollBarSpot is not None:
             first,last = w.leo_scrollBarSpot
             ###w.yview('moveto',first)
-            gui.yview(w,first)
+            w.yview(first)
         else:
-            gui.seeInsertPoint(w)
+            w.seeInsertPoint()
         
         if w.leo_selection:
             try:
                 start,end = w.leo_selection
-                g.app.gui.setSelectionRange(w,start,end)
+                w.setSelectionRange(start,end)
             except Exception:
                 pass
         #@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
@@ -2341,15 +2340,15 @@ class leoTkinterBody (leoFrame.leoBody):
         __pychecker__ = '--no-argsused' ### python not used!!  What kind of indices are used in the undoer??
         
         body = self ; c = self.c
-        gui = g.app.gui ; bodyCtrl = w = body.bodyCtrl
+        bodyCtrl = w = body.bodyCtrl
         trace = self.trace_onBodyChanged
         p = c.currentPosition()
         insert = bodyCtrl.index('insert')
         ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
         ch = g.toUnicode(ch,g.app.tkEncoding)
-        newText = gui.getAllText(bodyCtrl) # Note: getAllText converts to unicode.
+        newText = w.getAllText() # Note: getAllText converts to unicode.
         # g.trace('newText',repr(newText))
-        newSel = gui.getSelectionRange(bodyCtrl)
+        newSel = w.getSelectionRange()
         if oldText is None: oldText = p.bodyString()
         changed = oldText != newText
         if trace:
@@ -2533,7 +2532,8 @@ class leoTkinterLog (leoFrame.leoLog):
     def createTextWidget (self,parentFrame):
         
         self.logNumber += 1
-        log = Tk.Text(parentFrame,name="log-%d" % self.logNumber,
+        log = g.app.gui.leoTextWidget( ### Tk.Text(
+            parentFrame,name="log-%d" % self.logNumber,
             setgrid=0,wrap=self.wrap,bd=2,bg="white",relief="flat")
         
         logBar = Tk.Scrollbar(parentFrame,name="logBar")
@@ -2752,7 +2752,7 @@ class leoTkinterLog (leoFrame.leoLog):
             else:
                 self.logCtrl.insert("end",s)
             
-            g.app.gui.see(self.logCtrl,'end')
+            self.logCtrl.see('end')
             self.forceLogUpdate(s)
             #@-node:EKR.20040423082910:<< put s to log control >>
             #@nl
@@ -2781,7 +2781,7 @@ class leoTkinterLog (leoFrame.leoLog):
         
         if self.logCtrl:
             self.logCtrl.insert("end",'\n')
-            g.app.gui.see(self.logCtrl,'end')
+            self.logCtrl.see('end')
             self.forceLogUpdate('\n')
         else:
             # Put a newline to logWaiting and print newline
@@ -3060,17 +3060,28 @@ class leoTkTextWidget (Tk.Text):
     def _leo_toTkIndex (self,i,s=None):
         '''Convert a Python index to a Tk index as needed.'''
         w = self
-        if type(i) == type(99):
+        if i is None:
+            g.trace('can not happen: i is None',g.callers())
+            return '1.0'
+        elif type(i) == type(99):
             if s is None: s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
             row,col = g.convertPythonIndexToRowCol(s,i)
             i = '%s.%s' % (row+1,col)
-        #g.trace(repr(i))
+        else:
+            try:
+                i = Tk.Text.index(w,i)
+            except Exception:
+                g.trace(w,repr(i),g.callers())
+                i = '1.0'
         return i
             
     def _leo_toPythonIndex (self,i,s=None):
         '''Convert a Tk index to a Python index as needed.'''
         w =self
-        if type(i) in (type('a'),type(u'a')):
+        if i is None:
+            g.trace('can not happen: i is None')
+            return 0
+        elif type(i) in (type('a'),type(u'a')):
             if s is None: s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
             i = Tk.Text.index(w,i) # Convert to row/column form.
             row,col = i.split('.')
@@ -3084,23 +3095,26 @@ class leoTkTextWidget (Tk.Text):
     #@+node:ekr.20061113151148.4:delete (passed)
     def delete(self,i,j=None):
     
-        w = self ; s = w.getAllText()
-        i = w._leo_toTkIndex(i,s=s)
-        j = w._leo_toTkIndex(j,s=s)
+        w = self
+        i = w._leo_toTkIndex(i)
     
-        if j is None:   Tk.Text.delete(w,i)
-        else:           Tk.Text.delete(w,i,j)
-        
+        if j is None:
+            Tk.Text.delete(w,i)
+        else:
+            j = w._leo_toTkIndex(j)
+            Tk.Text.delete(w,i,j)
     #@-node:ekr.20061113151148.4:delete (passed)
     #@+node:ekr.20061113151148.5:get (passed)
     def get(self,i,j=None):
     
-        w = self ; s = Tk.Text.get(w,'1.0','end') # Can not use getAllText!
-        i = w._leo_toTkIndex(i,s=s)
-        j = w._leo_toTkIndex(j,s=s)
+        w = self
+        i = w._leo_toTkIndex(i)
     
-        if j is None:   return Tk.Text.get(w,i)
-        else:           return Tk.Text.get(w,i,j)
+        if j is None:
+            return Tk.Text.get(w,i)
+        else:
+            j = w._leo_toTkIndex(j)
+            return Tk.Text.get(w,i,j)
     #@-node:ekr.20061113151148.5:get (passed)
     #@+node:ekr.20061113151148.6:insert (passed)
     def insert(self,i,s):
@@ -3122,6 +3136,7 @@ class leoTkTextWidget (Tk.Text):
         
         w = self
         i = w._leo_toTkIndex(i)
+    
         if j is None:
             Tk.Text.tag_add(w,tagName,i,*args)
         else:
@@ -3147,8 +3162,8 @@ class leoTkTextWidget (Tk.Text):
         sel = Tk.Text.tag_ranges(w,"sel")
         if len(sel) == 2:
             start,end = sel
-            if w.compare(start,"!=",end):
-                w.delete(start,end)
+            if Tk.Text.compare(w,start,"!=",end):
+                Tk.Text.delete(w,start,end)
     #@-node:ekr.20061113151148.11:deleteTextSelection (passed)
     #@+node:ekr.20061113151148.12:flashCharacter (passed)
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=0.5): # tkTextWidget.
@@ -3156,16 +3171,16 @@ class leoTkTextWidget (Tk.Text):
         w = self
     
         def addFlashCallback(w,count,index):
-            w.tag_add('flash',index,'%s+1c' % (index))
-            w.after(delay,removeFlashCallback,w,count-1,index)
+            Tk.Text.tag_add(w,'flash',index,'%s+1c' % (index))
+            Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
         
         def removeFlashCallback(w,count,index):
-            w.tag_remove('flash','1.0','end')
+            Tk.Text.tag_remove('flash','1.0','end')
             if count > 0:
-                w.after(delay,addFlashCallback,w,count,index)
+                Tk.Text.after(w,delay,addFlashCallback,w,count,index)
     
         try:
-            w.tag_configure('flash',foreground=fg,background=bg)
+            Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
             addFlashCallback(w,flashes,i)
         except Exception:
             pass
@@ -3177,7 +3192,7 @@ class leoTkTextWidget (Tk.Text):
         """Return all the text of Tk.Text widget w converted to unicode."""
     
         w = self
-        s = w.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+        s = Tk.Text.get(w,"1.0","end-1c") # New in 4.4.1: use end-1c.
     
         if s is None:
             return u""
@@ -3198,7 +3213,8 @@ class leoTkTextWidget (Tk.Text):
         w = self
         i,j = w.getSelectionRange()
         if i != j:
-            s = w.get(i,j)
+            i,j = w._leo_toTkIndex(i),w._leo_toTkIndex(j)
+            s = Tk.Text.get(w,i,j)
             return g.toUnicode(s,g.app.tkEncoding)
         else:
             return u""
@@ -3253,6 +3269,19 @@ class leoTkTextWidget (Tk.Text):
         Tk.Text.delete(w,'1.0','end')
         Tk.Text.insert(w,'1.0',s)
     #@-node:ekr.20061113151148.20:setAllText (could be in base class) (passed)
+    #@+node:ekr.20061113180616:see
+    def see (self,i,python=False): # tkTextWidget.
+    
+        w = self
+        i = w._leo_toTkIndex(i)
+        Tk.Text.see(w,i)
+    #@-node:ekr.20061113180616:see
+    #@+node:ekr.20061113175002:seeInsertPoint
+    def seeInsertPoint (self): # tkTextWidget.
+    
+        w = self
+        Tk.Text.see(w,'insert')
+    #@-node:ekr.20061113175002:seeInsertPoint
     #@+node:ekr.20061113151148.21:setInsertPoint (passed)
     def setInsertPoint (self,i,python=False): # tkTextWidget.
     
@@ -3261,19 +3290,21 @@ class leoTkTextWidget (Tk.Text):
         Tk.Text.mark_set(w,'insert',i)
     #@-node:ekr.20061113151148.21:setInsertPoint (passed)
     #@+node:ekr.20061113151148.22:setSelectionRange (passed)
-    def setSelectionRange (self,i,j,insert=None,python=False): # tkTextWidget
+    def setSelectionRange (self,i,j,insert=None): # tkTextWidget
         
-        w = self ; s = w.getAllText()
-        i,j = w._leo_toTkIndex(i,s=s),w._leo_toTkIndex(j,s=s)
+        w = self
+        # g.trace('i,j,insert',repr(i),repr(j),repr(insert))
+       
+        i,j = w._leo_toTkIndex(i),w._leo_toTkIndex(j)
         
         # g.trace('start',start,'end',end,'insert',insert,'python',python)
         if Tk.Text.compare(w,i, ">", j): i,j = j,i
         Tk.Text.tag_remove(w,"sel","1.0",i)
         Tk.Text.tag_add(w,"sel",i,j)
         Tk.Text.tag_remove(w,"sel",j,"end")
-        if insert is not None:
-            insert = w._leo_toTkIndex(insert,s=s)
-            w.setInsertPoint(insert)
+    
+        if insert is None: insert = j
+        w.setInsertPoint(j)
     #@-node:ekr.20061113151148.22:setSelectionRange (passed)
     #@+node:ekr.20061113151148.23:xyToGui/PythonIndex (passed)
     def xyToGuiIndex (self,x,y): # tkTextWidget

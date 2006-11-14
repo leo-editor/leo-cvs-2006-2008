@@ -97,6 +97,7 @@ class leoGui:
         self.script = None
         self.utils = None
         self.isNullGui = False
+        self.leoTextWidget = None
     #@-node:ekr.20031218072017.3722: leoGui.__init__
     #@+node:ekr.20061109211054:leoGui.mustBeDefinedOnlyInBaseClass
     mustBeDefinedOnlyInBaseClass = (
@@ -430,7 +431,7 @@ class leoGui:
     def selectAllText (self,w,insert='end-1c'):
         pass
     
-    def setSelectionRange (self,w,start,end,insert='sel.end',python=False):
+    def setSelectionRange (self,w,i,j,insert=None):
         pass
     #@-node:ekr.20061106181402:Text
     #@+node:ekr.20061103094543:Visibility & scrolling (leoGui)
@@ -490,6 +491,7 @@ class nullGui(leoGui):
         self.script = None
         self.lastFrame = None
         self.isNullGui = True
+        self.leoTextWidget = None
     #@-node:ekr.20031218072017.2225: nullGui.__init__
     #@+node:ekr.20031219075221: nullGui.__getattr__
     if 0: # This causes no end of problems.
@@ -576,6 +578,7 @@ class unitTestGui(leoGui):
         
         # Init the base class
         leoGui.__init__ (self,"unitTestGui")
+        self.leoTextWidget = self.oldGui.leoTextWidget # Use the same kind of widgets as the old gui.
     
         g.app.gui = self
         
@@ -621,7 +624,7 @@ class unitTestGui(leoGui):
     def seeInsertPoint (self,w):                                pass
     def set_focus (self,c,widget):                              pass
     def setInsertPoint (self,t,pos,python=False):               pass
-    def setSelectionRange (self,w,start,end,insert='sel.end'):  pass
+    def setSelectionRange (self,w,i,j,insert=None):             pass
     def toGuiIndex (self,s,w,index):                            return '1.0'
     def toPythonIndex (self,s,w,index):                         return 0
     #@-node:ekr.20031218072017.3745:dummy routines (unitTestGui)

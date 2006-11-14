@@ -620,13 +620,12 @@ def undoRedoText (self,p,
     
     '''Handle text undo and redo: converts _new_ text into _old_ text.'''
 
-    u = self ; c = u.c ; body = c.frame.body ; w = body.bodyCtrl
+    u = self ; c = u.c ; w = c.frame.body.bodyCtrl
     
     << Compute the result using p's body text >>
     p.setTnodeText(result)
-    g.app.gui.setAllText(w,result)
+    w.setAllText(result)
     c.frame.body.recolor(p,incremental=False)
-#@nonl
 #@+node:ekr.20061106105812.1:<< Compute the result using p's body text >>
 # Recreate the text using the present body text.
 body = p.bodyString()
@@ -663,7 +662,7 @@ def copyText (self,event=None):
     if not w or not g.app.gui.isTextWidget(w): return
 
     # Set the clipboard text.
-    i,j = g.app.gui.getSelectionRange(w)
+    i,j = w.getSelectionRange()
     if i != j:
         s = w.get(i,j)
         g.app.gui.replaceClipboardWith(s)
@@ -675,19 +674,19 @@ def cutText (self,event=None):
     
     '''Invoked from the mini-buffer and from shortcuts.'''
     
-    f = self ; c = f.c ; gui = g.app.gui ; w = event and event.widget
+    f = self ; c = f.c ; w = event and event.widget
     if not w or not g.app.gui.isTextWidget(w): return
 
     name = c.widget_name(w)
-    oldSel = gui.getSelectionRange(w)
-    oldText = gui.getAllText(w)
-    i,j = gui.getSelectionRange(w)
+    oldSel = w.getSelectionRange()
+    oldText = w.getAllText()
+    i,j = w.getSelectionRange()
     
     # Update the widget and set the clipboard text.
     s = w.get(i,j)
     if i != j:
         w.delete(i,j)
-        gui.replaceClipboardWith(s)
+        g.app.gui.replaceClipboardWith(s)
 
     if name.startswith('body'):
         c.frame.body.forceFullRecolor()
@@ -695,7 +694,7 @@ def cutText (self,event=None):
     elif name.startswith('head'):
         # The headline is not officially changed yet.
         # p.initHeadString(s)
-        s = gui.getAllText(w)
+        s = w.getAllText()
         w.configure(width=f.tree.headWidth(s=s))
     else: pass
 
@@ -707,22 +706,22 @@ def pasteText (self,event=None,middleButton=False):
     '''Paste the clipboard into a widget.
     If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
 
-    f = self ; c = f.c ; w = event and event.widget ; gui = g.app.gui
-    if not w or not gui.isTextWidget(w): return
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
 
     wname = c.widget_name(w)
-    i,j = oldSel = gui.getSelectionRange(w)  # Returns insert point if no selection.
-    oldText = w.get('1.0','end')
+    i,j = oldSel = w.getSelectionRange()  # Returns insert point if no selection.
+    oldText = w.getAllText()
     
     # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
     
     if middleButton and c.k.previousSelection is not None:
         start,end = c.k.previousSelection
-        s = gui.getAllText(w)
+        s = w.getAllText()
         s = s[start:end]
         c.k.previousSelection = None
     else:
-        s = s1 = gui.getTextFromClipboard()
+        s = s1 = g.app.gui.getTextFromClipboard()
     
     singleLine = wname.startswith('head') or wname.startswith('minibuffer')
     
@@ -2595,11 +2594,16 @@ def runEditCommandTest (c,p):
     try:
         c.selectPosition(work)
         c.setBodyString(work,before.bodyString())
-        g.app.gui.setSelectionRange(w,sel1[0],sel1[1])
+        w.setSelectionRange(sel1[0],sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
         assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
-        sel3 = g.app.gui.getSelectionRange(w)
+        sel3 = w.getSelectionRange()
+        s = w.getAllText()
+        # The selection range is specified as Tk indices.
+        i,j = sel3
+        i,j = g.app.gui.toGuiIndex(s,w,i),g.app.gui.toGuiIndex(s,w,j)
+        sel3 = i,j
         assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
         c.selectPosition(atTest)
         atTest.contract()
@@ -2630,7 +2634,7 @@ def beginCommandHelper (self,ch,undoType,w):
     name = c.widget_name(w)
 
     if name.startswith('body'):
-        oldSel =  g.app.gui.getSelectionRange(w)
+        oldSel =  w.getSelectionRange()
         oldText = p.bodyString()
         self.undoData = g.Bunch(
             ch=ch,name=name,oldSel=oldSel,oldText=oldText,w=w,undoType=undoType)
@@ -2905,8 +2909,7 @@ def changePreviousWord (self,event):
     w = self.editWidget(event)
     if not w: return
 
-    ### i = w.index('insert')
-    i = gui.getInsertPoint(w)
+    i = w.getInsertPoint()
     self.beginCommand(undoType='change-previous-word')
     self.moveWordHelper(event,extend=False,forward=False)
 
@@ -2917,8 +2920,7 @@ def changePreviousWord (self,event):
     elif stroke == gui.keysym('<Alt-l>'):
         self.downCaseWord(event)
 
-    ### w.mark_set('insert',i)
-    gui.setInsertPoint(w,i)
+    w.setInsertPoint(i)
     
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.145:changePreviousWord (not used)
@@ -2928,8 +2930,8 @@ def capitalizeHelper (self,event,which,undoType):
     w = self.editWidget(event) ; gui = g.app.gui
     if not w: return
 
-    s = gui.getAllText(w)
-    i1 = gui.getInsertPoint(w,python=True)
+    s = w.getAllText()
+    i1 = w.getInsertPoint()
     i,j = g.getWord(s,i1)
     word = s[i:j]
     if not word.strip(): return
@@ -2940,12 +2942,9 @@ def capitalizeHelper (self,event,which,undoType):
     if which == 'low':  word = word.lower()
     if which == 'up':   word = word.upper()
     
-    ###s = gui.stringDelete(s,i,j)
-    ###s = gui.stringInsert(s,i,word)
-    ###gui.setAllText(w,s)
-    gui.rawDelete(w,s,i,j, python=True)
-    gui.rawInsert(w,s,i,word,python=True)
-    gui.setInsertPoint(w,i1,python=True)
+    w.delete(i,j)
+    w.insert(i,word)
+    w.setInsertPoint(i1)
     
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20051015114221.1:capitalizeHelper (passed)
@@ -3255,7 +3254,7 @@ def createColorPicker (self,parent,colors):
     f2 = Tk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
     f3 = Tk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
     
-    label = Tk.Text(f1,height=1,width=20)
+    label = g.app.gui.leoTextWidget(f1,height=1,width=20)
     label.insert('1.0','Color name or value...')
     label.pack(side='left',pady=6)
 
@@ -3796,7 +3795,7 @@ def findCharacterHelper (self,event,backward,extend):
     else:
         event = self.event ; gui = g.app.gui ; w = self.w
         backward = self.backward ; extend = self.extend
-        ch = k.arg ; s =gui.getAllText(w)
+        ch = k.arg ; s = w.getAllText()
         def toGui (i): return gui.toGuiIndex(s,w,i)
         def toPython (i): return gui.toPythonIndex(s,w,i)
         ins = toPython(self.insert)
@@ -3835,13 +3834,13 @@ def findWord (self,event):
     else:        
         word = k.arg ; w = self.w ; c = k.c ; gui = g.app.gui
         if word:
-            i = gui.getInsertPoint(w,python=True)
-            s = gui.getAllText(w)
+            i = w.getInsertPoint()
+            s = w.getAllText()
             j = s.find('\n',i) # Limit to this line.
             if j > -1: s = s[:j]
             while i < len(s):
                 if g.match_word(s,i,word) and (i == 0 or not g.isWordChar(s[i-1])):
-                    gui.setSelectionRange(w,i,i+len(word),python=True)
+                    w.setSelectionRange(i,i+len(word))
                     break
                 else:
                     i += 1
@@ -4018,14 +4017,13 @@ def removeTabFromLines (self,event):
 #@+node:ekr.20060417172056:addRemoveHelper
 def addRemoveHelper(self,event,ch,add,undoType):
 
-    c = self.c ; k = self.k
-    gui = g.app.gui ; w = self.editWidget(event)
+    c = self.c ; k = self.k ; w = self.editWidget(event)
     if not w: return
 
-    if g.app.gui.hasSelection(w):
-        s = gui.getSelectedText(w)
+    if w.hasSelection():
+        s = w.getSelectedText()
     else:
-        s = gui.getAllText(w)
+        s = w.getAllText()
     if not s: return
     
     # Insert or delete spaces instead of tabs when negative tab width is in effect.
@@ -4038,16 +4036,17 @@ def addRemoveHelper(self,event,ch,add,undoType):
         result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in g.splitLines(s)]
     result = ''.join(result)
     
-    # g.trace(g.app.gui.getSelectionRange(w),'len(result)',len(result))
-    if g.app.gui.hasSelection(w):
-        i,j = gui.getSelectionRange(w)
+    # g.trace(w.getSelectionRange(),'len(result)',len(result))
+    if w.hasSelection():
+        i,j = w.getSelectionRange()
         w.delete(i,j)
         w.insert(i,result)
-        gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
+        w.setSelectionRange(i,j+len(result))
     else:
-        w.delete('1.0','end')
-        w.insert('1.0',result)
+        w.delete(0,'end')
+        w.insert(0,result)
     self.endCommand(changed=True,setLabel=True)
+
 #@-node:ekr.20060417172056:addRemoveHelper
 #@-node:ekr.20060417171125:addSpace/TabToLines & removeSpace/TabFromLines & helper
 #@+node:ekr.20051026092433.1:backwardDeleteCharacter
@@ -4060,7 +4059,7 @@ def backwardDeleteCharacter (self,event=None):
     if not w: return
     
     wname = c.widget_name(w)
-    i,j = g.app.gui.getSelectionRange(w)
+    i,j = w.getSelectionRange()
     # g.trace(wname,i,j)
 
     if wname.startswith('body'):
@@ -4109,14 +4108,13 @@ def cleanLines (self,event):
     
     '''Removes leading whitespace from otherwise blanks lines.'''
 
-    k = self.k ; gui = g.app.gui
-    w = self.editWidget(event)
+    k = self.k ; w = self.editWidget(event)
     if not w: return
     
-    if g.app.gui.hasSelection(w):
-        s = gui.getSelectedText(w)
+    if w.hasSelection():
+        s = w.getSelectedText()
     else:
-        s = gui.getAllText(w)
+        s = w.getAllText()
 
     lines = [] ; changed = False
     for line in g.splitlines(s):
@@ -4130,11 +4128,11 @@ def cleanLines (self,event):
     if changed:
         self.beginCommand(undoType='clean-lines')
         result = ''.join(lines)
-        if gui.hasSelection(w):
-            i,j = g.app.gui.getSelectionRange(w)
+        if w.hasSelection():
+            i,j = w.getSelectionRange()
             w.delete(i,j)
             w.insert(i,result)
-            gui.setSelectionRange(w, i, j + '%dc' %(len(result)))
+            w.setSelectionRange(i,j+len(result))
         else:
             w.delete('1.0','end')
             w.insert('1.0',result)
@@ -4145,11 +4143,10 @@ def clearSelectedText (self,event):
     
     '''Delete the selected text.'''
     
-    c = self.c
-    w = self.editWidget(event)
+    c = self.c ; w = self.editWidget(event)
     if not w: return
 
-    i,j = g.app.gui.getSelectionRange(w)
+    i,j = w.getSelectionRange()
     if i == j: return
 
     self.beginCommand(undoType='clear-selected-text')
@@ -4161,11 +4158,10 @@ def deleteNextChar (self,event):
     
     '''Delete the character to the right of the cursor.'''
 
-    c = self.c
-    w = self.editWidget(event)
+    c = self.c ; w = self.editWidget(event)
     if not w: return
 
-    i,j = g.app.gui.getSelectionRange(w)
+    i,j = w.getSelectionRange()
     end = w.index('end-1c')
     
     self.beginCommand(undoType='delete-char')
@@ -4268,7 +4264,7 @@ def removeBlankLines (self,event):
     else:
         head = tail = oldYview = None
         lines = g.splitLines(body)
-        oldSel = ('1.0','1.0')
+        oldSel = (0,0)
         joinChar = ''
 
     for line in lines:
@@ -4291,7 +4287,7 @@ def selfInsertCommand(self,event,action='insert'):
     << set local vars >>
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
-    s = gui.getAllText(w) # Needed in several places below.
+    s = w.getAllText() # Needed in several places below.
     if ch == '\t':
         self.updateTab(p,w)
     elif ch == '\b':
@@ -4307,22 +4303,22 @@ def selfInsertCommand(self,event,action='insert'):
         i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
         if i > j: i,j = j,i
         # Use raw insert/delete to retain the coloring.
-        if i != j:                  gui.rawDelete(w,s,i,j,python=True)
-        elif action == 'overwrite': gui.rawDelete(w,s,i,python=True)
-        gui.rawInsert(w,s,i,ch,python=True)
-        gui.setInsertPoint(w,i+1,python=True)
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
         if inBrackets and self.flashMatchingBrackets:
-            s = gui.getAllText(w) # The text has changed.
+            s = w.getAllText() # The text has changed.
             self.flashMatchingBracketsHelper(w,s,i,ch,python=True)               
     else:
         return 'break' # This method *always* returns 'break'
 
     # Set the column for up and down keys.
-    spot = gui.getInsertPoint(w,python=True)
+    spot = w.getInsertPoint()
     c.editCommands.setMoveCol(w,spot,python=True)
 
     # Update the text and handle undo.
-    newText = gui.getAllText(w)
+    newText = w.getAllText()
     if newText != oldText:
         c.frame.body.onBodyChanged(undoType=undoType,
             oldSel=oldSel,oldText=oldText,oldYview=None)
@@ -4339,7 +4335,7 @@ keysym = gui.eventKeysym(event)
 if keysym == gui.keysym('Return'):
     ch = '\n' # This fixes the MacOS return bug.
 name = c.widget_name(w)
-oldSel =  name.startswith('body') and gui.getSelectionRange(w) or (None,None)
+oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
 oldText = name.startswith('body') and p.bodyString() or ''
 undoType = 'Typing'
 trace = c.config.getBool('trace_masterCommand')
@@ -4357,13 +4353,13 @@ def insertNewlineHelper (self,w,s,oldSel,undoType):
     if i != j:
         # No auto-indent if there is selected text.
         i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
-        gui.rawDelete(w,s,i,j,python=True)
-        gui.rawInsert(w,s,i,ch,python=True)
-        gui.setInsertPoint(w,i+1,python=True)
+        w.delete(i,j)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
     else:
         i = gui.toPythonIndex(s,w,i)
-        gui.rawInsert(w,s,i,ch,python=True)
-        gui.setInsertPoint(w,i+1,python=True)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
 
         allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
         if (
@@ -4432,28 +4428,26 @@ def updateAutomatchBracket (self,p,w,ch,oldSel):
     i,j = oldSel
     language = d.get('language')
     gui = g.app.gui
-    s = gui.getAllText(w)
+    s = w.getAllText()
 
     if ch in ('(','[','{',):
         automatch = language not in ('plain',)
         if automatch:
             ch = ch + {'(':')','[':']','{':'}'}.get(ch)
-        if i != j:
-            gui.rawDelete(w,s,i,j,python=True)
-        gui.rawInsert(w,s,i,ch,python=True)
+        if i != j: w.delete(i,j)
+        w.insert(i,ch)
         if automatch:
-            ins = gui.getInsertPoint(w,python=True)
-            gui.setInsertPoint(w,ins-1,python=True)
+            ins = w.getInsertPoint()
+            w.setInsertPoint(ins-1)
     else:
-        ins = gui.getInsertPoint(w,python=True)
+        ins = w.getInsertPoint()
         ch2 = ins<len(s) and s[ins] or ''
         if ch2 in (')',']','}'):
-            ins = gui.getInsertPoint(w,python=True)
-            gui.setInsertPoint(w,ins+1,python=True)
+            ins = w.getInsertPoint()
+            w.setInsertPoint(ins+1)
         else:
-            if i != j:
-                gui.rawDelete(w,s,i,j,python=True)
-            gui.rawInsert(w,s,i,ch,python=True)
+            if i != j: w.delete(i,j)
+            w.insert(i,ch)
                                                             
 #@nonl
 #@-node:ekr.20051027172949:updateAutomatchBracket (passed)
@@ -4463,8 +4457,8 @@ def updateAutoIndent (self,p,w):
     c = self.c ; d = g.scanDirectives(c,p) ; gui = g.app.gui
     tab_width = d.get("tabwidth",c.tab_width)
     # Get the previous line.
-    s = gui.getAllText(w)
-    ins = gui.getInsertPoint(w,python=True)
+    s = w.getAllText()
+    ins = w.getInsertPoint()
     i = g.skip_to_start_of_line(s,ins)
     i,j = g.getLine(s,i-1)
     s = s[i:j-1]
@@ -4489,9 +4483,8 @@ def updateAutoIndent (self,p,w):
         width = bracketWidths.pop()
     ws = g.computeLeadingWhitespace(width,tab_width)
     if ws:
-        s = gui.getAllText(w)
-        i = gui.getInsertPoint(w,python=True)
-        gui.rawInsert(w,s,i,ws,python=True)
+        i = w.getInsertPoint()
+        w.insert(i,ws)
 #@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
 #@+node:ekr.20051026092433:updateTab (passed)
 def updateTab (self,p,w):
@@ -4499,15 +4492,15 @@ def updateTab (self,p,w):
     c = self.c ; gui = g.app.gui
     d = g.scanDirectives(c,p)
     tab_width = d.get("tabwidth",c.tab_width)
-    i,j = gui.getSelectionRange(w,python=True)
+    i,j = w.getSelectionRange()
         # Returns insert point if no selection, with i <= j.
-    s = gui.getAllText(w)
+    s = w.getAllText()
 
     if i != j:
-        gui.rawDelete(w,s,i,j,python=True)
+        w.delete(i,j)
 
     if tab_width > 0:
-        gui.rawInsert(w,s,i,'\t',python=True)
+        w.insert(i,'\t')
     else:
         # Get the preceeding characters.
         start = g.skip_to_start_of_line(s,i)
@@ -4516,7 +4509,7 @@ def updateTab (self,p,w):
         # Compute n, the number of spaces to insert.
         width = g.computeWidth(s2,tab_width)
         n = abs(tab_width) - (width % abs(tab_width))
-        gui.rawInsert(w,s,i,' ' * n,python=True)
+        w.insert(i,' ' * n)
 #@-node:ekr.20051026092433:updateTab (passed)
 #@-node:ekr.20051125080855:selfInsertCommand & helpers (passed)
 #@-node:ekr.20050920084036.85:insert & delete...
@@ -4696,13 +4689,13 @@ def extendHelper (self,w,extend,ins1,spot,setSpot=True,python=False):
     c = self.c ; p = c.currentPosition() ; gui = g.app.gui
     moveSpot = self.moveSpot
     extend = extend or self.extendMode
-    s = gui.getAllText(w)
+    s = w.getAllText()
     if not python:
         spot = gui.toPythonIndex(s,w,spot)
         ins1 = gui.toPythonIndex(s,w,ins1)
     # g.trace(ins1,spot,moveSpot,extend,setSpot)
     if extend:
-        i,j = gui.getSelectionRange(w,python=True)
+        i,j = w.getSelectionRange()
         # Reset the move spot if needed.
         if (moveSpot is None or p.v.t != self.moveSpotNode or (
             i == j or # A cute trick
@@ -4713,13 +4706,13 @@ def extendHelper (self,w,extend,ins1,spot,setSpot=True,python=False):
             self.setMoveCol(w,ins1,python=True)
         moveSpot = self.moveSpot
         if spot < moveSpot:
-            gui.setSelectionRange(w,spot,moveSpot,insert=None,python=True)
+            w.setSelectionRange(spot,moveSpot,insert=None)
         else:
-            gui.setSelectionRange(w,moveSpot,spot,insert=None,python=True)
+            w.setSelectionRange(moveSpot,spot,insert=None)
     else:
         if setSpot is not None or moveSpot is None:
             self.setMoveCol(w,spot,python=True)
-        gui.setSelectionRange(w,spot,spot,insert=None,python=True)
+        w.setSelectionRange(spot,spot,insert=None)
         
     c.frame.updateStatusLine()
 #@nonl
@@ -4732,12 +4725,9 @@ def moveUpOrDownHelper (self,event,direction,extend):
 
     # Make the insertion cursor visible so bbox won't return an empty list.
     gui.seeInsertPoint(w)
-    ###ins1 = gui.getInsertPoint(w,python=True)
     # Remember the original insert point.  This may become the moveSpot.
     ins1 = w.index('insert')
     # Compute the new spot.
-    ###s = gui.getAllText(w)
-    ###row1,col1 = g.convertPythonIndexToRowCol(s,ins1)
     row1,col1 = ins1.split('.')
     row1 = int(row1) ; col1 = int(col1)
     # Find the coordinates of the cursor and set the new height.
@@ -4785,7 +4775,7 @@ def moveToHelper (self,event,spot,extend,python=False):
 
     c.widgetWantsFocusNow(w)
     if not python:
-        s = gui.getAllText(w)
+        s = w.getAllText()
         spot = gui.toPythonIndex(s,w,spot)
 
     # Put the request in the proper range.
@@ -4794,10 +4784,10 @@ def moveToHelper (self,event,spot,extend,python=False):
         if   spot < i: spot = i
         elif spot > j: spot = j
 
-    ins1 = gui.getInsertPoint(w,python=True) # This may become the moveSpot.
-    gui.setInsertPoint(w,spot,python=True)
+    ins1 = w.getInsertPoint() # This may become the moveSpot.
+    w.setInsertPoint(spot)
     self.extendHelper(w,extend,ins1,spot,setSpot=False,python=True)
-    gui.see(w,spot,python=True)
+    w.see(spot)
 #@nonl
 #@-node:ekr.20051218122116:moveToHelper (passed)
 #@+node:ekr.20051218171457:movePastCloseHelper (revise)
@@ -4896,8 +4886,8 @@ def forwardSentenceHelper (self,event,extend):
     if not w: return
 
     c.widgetWantsFocusNow(w)
-    ins = w.index('insert')
-    # sel_i,sel_j = g.app.gui.getSelectionRange(w)
+    ###ins = w.index('insert')
+    ins = w.getInsertPoint()
     i = w.search('.','insert',stopindex='end')
     ins = i and '%s +1c' % i or 'end'
     self.moveToHelper(event,ins,extend)
@@ -4955,7 +4945,7 @@ def setMoveCol (self,w,spot,python=False):
     '''Set the column to which an up or down arrow will attempt to move.'''
 
     gui = g.app.gui
-    s = gui.getAllText(w)
+    s = w.getAllText()
     if python:
         i = spot
     else:
@@ -4980,43 +4970,43 @@ def beginningOfBufferExtendSelection (self,event):
 def endOfBuffer (self,event):
     '''Move the cursor to the end of the body text.'''
     gui = g.app.gui ; w = self.editWidget(event)
-    s = gui.getAllText(w)
+    s = w.getAllText()
     self.moveToHelper(event,len(s),extend=False,python=True)
     
 def endOfBufferExtendSelection (self,event):
     '''Extend the text selection by moving the cursor to the end of the body text.'''
     gui = g.app.gui ; w = self.editWidget(event)
-    s = gui.getAllText(w)
+    s = w.getAllText()
     self.moveToHelper(event,len(s),extend=True,python=True)
 #@-node:ekr.20050920084036.148:buffers (passed)
 #@+node:ekr.20051213080533:characters (passed)
 def backCharacter (self,event):
     '''Move the cursor back one character, extending the selection if in extend mode.'''
     gui = g.app.gui ; w = self.editWidget(event)
-    i = gui.getInsertPoint(w,python=True)
+    i = w.getInsertPoint()
     i = max(0,i-1)
     self.moveToHelper(event,i,extend=False,python=True)
 
 def backCharacterExtendSelection (self,event):
     '''Extend the selection by moving the cursor back one character.'''
     gui = g.app.gui ; w = self.editWidget(event)
-    i = gui.getInsertPoint(w,python=True)
+    i = w.getInsertPoint()
     i = max(0,i-1)
     self.moveToHelper(event,i,extend=True,python=True)
 
 def forwardCharacter (self,event):
     '''Move the cursor forward one character, extending the selection if in extend mode.'''
     gui = g.app.gui ; w = self.editWidget(event)
-    s = gui.getAllText(w)
-    i = gui.getInsertPoint(w,python=True)
+    s = w.getAllText()
+    i = w.getInsertPoint()
     i = min(i+1,len(s))
     self.moveToHelper(event,i,extend=False,python=True)
     
 def forwardCharacterExtendSelection (self,event):
     '''Extend the selection by moving the cursor forward one character.'''
     gui = g.app.gui ; w = self.editWidget(event)
-    s = gui.getAllText(w)
-    i = gui.getInsertPoint(w,python=True)
+    s = w.getAllText()
+    i = w.getInsertPoint()
     i = min(i+1,len(s))
     self.moveToHelper(event,i,extend=True,python=True)
 #@-node:ekr.20051213080533:characters (passed)
@@ -5057,8 +5047,8 @@ def exchangePointMark (self,event):
     if i != j:
         ins = w.index('insert')
         ins = g.choose(ins==i,j,i)
-        g.app.gui.setInsertPoint(w,ins)
-        g.app.gui.setSelectionRange(w,i,j,insert=None)
+        w.setInsertPoint(ins)
+        w.setSelectionRange(i,j,insert=None)
 #@-node:ekr.20050920084036.136:exchangePointMark (revise)
 #@+node:ekr.20061007082956:extend-to-line (revise)
 def extendToLine (self,event):
@@ -5080,7 +5070,7 @@ def extendToLine (self,event):
     while 0 <= i < n and not s[i] == '\n':
         i += 1
 
-    g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
+    w.setSelectionRange(i1,i)
 #@-node:ekr.20061007082956:extend-to-line (revise)
 #@+node:ekr.20061007214835.4:extend-to-sentence (revise)
 def extendToSentence (self,event):
@@ -5100,7 +5090,7 @@ def extendToSentence (self,event):
     if i2 == -1: i2 = n
     i1 = 1 + s.rfind('.',0,i2-1)
 
-    g.app.gui.setSelectionRange(w,toGui(i1),toGui(i2))
+    w.setSelectionRange(i1,i2)
 #@nonl
 #@-node:ekr.20061007214835.4:extend-to-sentence (revise)
 #@+node:ekr.20060116074839.2:extend-to-word (revise)
@@ -5126,7 +5116,8 @@ def extendToWord (self,event):
     i1 = i
     while 0 <= i < n and g.isWordChar(s[i]):
         i += 1
-    g.app.gui.setSelectionRange(w,toGui(i1),toGui(i))
+
+    w.setSelectionRange(i1,i)
 #@nonl
 #@-node:ekr.20060116074839.2:extend-to-word (revise)
 #@+node:ekr.20051218141237:lines
@@ -5498,7 +5489,7 @@ def moveLinesDown (self,event):
 
     self.beginCommand(undoType='move-lines-down')
 
-    i,j = g.app.gui.getSelectionRange(w)
+    i,j = w.getSelectionRange()
     i = w.index(i+' linestart')
     j = w.index(j+' lineend+1c')
     j2 = w.index(j+ ' lineend+1c')
@@ -5527,8 +5518,7 @@ def moveLinesDown (self,event):
         c.endUpdate()
         w.focus_force()
         w.insert('1.0',selected)
-        ### g.app.gui.setSelectionRangeWithLength(w,'1.0',len(selected)-1)
-        gui.setSelectionRange(w,0,len(selected),python=True)
+        w.setSelectionRange(0,len(selected))
 
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20060417183606:moveLinesDown (works)
@@ -5546,7 +5536,7 @@ def moveLinesUp (self,event):
     
     self.beginCommand(undoType='move-lines-up')
     
-    i,j = gui.getSelectionRange(w)
+    i,j = w.getSelectionRange()
     i = w.index(i+' linestart')
     j = w.index(j+' lineend+1c')
     i2 = w.index(i+'-1c linestart')
@@ -5577,13 +5567,13 @@ def moveLinesUp (self,event):
         c.selectPosition(p)
         c.endUpdate()
         w.focus_force()
-        s = gui.getAllText(w)
+        s = w.getAllText()
         if s.endswith('\n'):
             w.insert('end',selected)
         else:
             if selected.endswith('\n'): selected = selected[:-1]
             w.insert('end','\n'+selected)
-        gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
+        w.setSelectionRange('end-%dc' % (len(selected)+1),'end-1c') # works
 
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20060417183606.1:moveLinesUp (works, except for selection point when last line selected)
@@ -5673,8 +5663,8 @@ def scrollHelper (self,event,direction,extend):
     if gui.isTextWidget(w):
         c.widgetWantsFocusNow(w)
         # Remember the original insert point.  This may become the moveSpot.
-        ins1 = gui.getInsertPoint(w,python=True)
-        s = gui.getAllText(w)
+        ins1 = w.getInsertPoint()
+        s = w.getAllText()
         row,col = g.convertPythonIndexToRowCol(s,ins1)
         # Compute the spot.
         chng = self.measure(w) ; delta = chng [0]
@@ -5682,7 +5672,7 @@ def scrollHelper (self,event,direction,extend):
         row1 = max(0,row1)
         spot = g.convertRowColToPythonIndex(s,row1,col)
         # g.trace('spot',spot,'row1',row1)
-        gui.setInsertPoint(w,spot,python=True)
+        w.setInsertPoint(spot)
         self.extendHelper(w,extend,ins1,spot,setSpot=False,python=True)
         gui.seeInsertPoint(w)
     elif gui.widget_name(w).startswith('canvas'):
@@ -6125,14 +6115,13 @@ def removeTabFromLines (self,event):
 #@+node:ekr.20060417172056:addRemoveHelper
 def addRemoveHelper(self,event,ch,add,undoType):
 
-    c = self.c ; k = self.k
-    gui = g.app.gui ; w = self.editWidget(event)
+    c = self.c ; k = self.k ; w = self.editWidget(event)
     if not w: return
 
-    if g.app.gui.hasSelection(w):
-        s = gui.getSelectedText(w)
+    if w.hasSelection():
+        s = w.getSelectedText()
     else:
-        s = gui.getAllText(w)
+        s = w.getAllText()
     if not s: return
     
     # Insert or delete spaces instead of tabs when negative tab width is in effect.
@@ -6145,16 +6134,17 @@ def addRemoveHelper(self,event,ch,add,undoType):
         result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in g.splitLines(s)]
     result = ''.join(result)
     
-    # g.trace(g.app.gui.getSelectionRange(w),'len(result)',len(result))
-    if g.app.gui.hasSelection(w):
-        i,j = gui.getSelectionRange(w)
+    # g.trace(w.getSelectionRange(),'len(result)',len(result))
+    if w.hasSelection():
+        i,j = w.getSelectionRange()
         w.delete(i,j)
         w.insert(i,result)
-        gui.setSelectionRange(w, i, j + '+%dc' %(len(result)))
+        w.setSelectionRange(i,j+len(result))
     else:
-        w.delete('1.0','end')
-        w.insert('1.0',result)
+        w.delete(0,'end')
+        w.insert(0,result)
     self.endCommand(changed=True,setLabel=True)
+
 #@-node:ekr.20060417172056:addRemoveHelper
 #@-node:ekr.20060417171125:addSpace/TabToLines & removeSpace/TabFromLines & helper
 #@+node:ekr.20061023161510:Crasher

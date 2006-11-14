@@ -44,6 +44,7 @@ class tkinterGui(leoGui.leoGui):
         self.win32clipboard = None
         self.defaultFont = None
         self.defaultFontFamily = None
+        self.leoTextWidget = leoTkinterFrame.leoTkTextWidget
     
         if 0: # This seems both dangerous and non-functional.
             if sys.platform == "win32":
@@ -128,7 +129,7 @@ class tkinterGui(leoGui.leoGui):
     
         if not self.defaultFontFamily:
             # WARNING: retain NO references to widgets or fonts here!
-            w = Tk.Text()
+            w = g.app.gui.leoTextWidget() ### Tk.Text()
             fn = w.cget("font")
             font = tkFont.Font(font=fn) 
             family = font.cget("family")
@@ -624,40 +625,93 @@ class tkinterGui(leoGui.leoGui):
             g.app.root.after(g.app.idleTimeDelay,idleTimeHookHandler)
     #@-node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     #@-node:ekr.20031218072017.4071:Idle Time
+    #@+node:ekr.20031218072017.4097:Visibility  & scrolling (tkGui)
+    #@+node:ekr.20061110204533:gui.getyview & getyscroll
+    def getYview (self,w):
+        '''Return the position of the vertical scrollbar in widget w.'''
+        return w.yview()
+        
+    def getYscroll (self,w):
+        '''Return the vertical scroll position.'''
+        return w.yview()
+    #@nonl
+    #@-node:ekr.20061110204533:gui.getyview & getyscroll
+    #@+node:ekr.20061104072319:gui.yview & yscroll
+    def yview (self,w,index):
+        
+        '''Set the position of the vertical scrollbar in widget w.'''
+    
+        w.yview('moveto',index)
+        
+    def yscroll (self,w,n,units):
+    
+        '''Scroll widget w by n units.'''
+    
+        w.yview('scroll',n,units)
+    #@-node:ekr.20061104072319:gui.yview & yscroll
+    #@+node:ekr.20031218072017.4098:gui.see & seeInsertPoint
+    def see(self,w,index,python=False):
+        
+        gui = self
+    
+        if python:
+            s = w.getAllText()
+            index = gui.toGuiIndex(s,w,index)
+            
+        # This should be the only call to Tk.see in Leo.
+        return w.see(index)
+    
+    def seeInsertPoint (self,w):
+        
+        gui = self
+        i = w.getInsertPoint()
+        w.see(i)
+    
+    seeInsert = seeInsertPoint        
+    #@nonl
+    #@-node:ekr.20031218072017.4098:gui.see & seeInsertPoint
+    #@-node:ekr.20031218072017.4097:Visibility  & scrolling (tkGui)
+    #@+node:ekr.20051220144507:isTextWidget
+    def isTextWidget (self,w):
+        
+        '''Return True if w is a Text widget suitable for text-oriented commands.'''
+        
+        return w and isinstance(w,Tk.Text)
+    #@-node:ekr.20051220144507:isTextWidget
     #@+node:ekr.20031218072017.4090:Text (g.app.gui)
-    #@+node:ekr.20061111161816:bind
+    #@+node:ekr.20061111161816:bind (removed)
     def bind (self,w,kind,*args,**keys):
         w.bind(kind,*args,**keys)
     #@nonl
-    #@-node:ekr.20061111161816:bind
-    #@+node:ekr.20031218072017.4082:getInsertPoint
+    #@-node:ekr.20061111161816:bind (removed)
+    #@+node:ekr.20031218072017.4082:getInsertPoint (removed)
     def getInsertPoint(self,w,python=False):
         
         gui = self
         try:
             i = w.index("insert")
-            s = gui.getAllText(w)
+            s = w.getAllText()
             if python:
                 return gui.toPythonIndex(s,w,i)
             else:
                 return gui.toGuiIndex(s,w,i)
         except Exception:
             return '1.0'
-    #@-node:ekr.20031218072017.4082:getInsertPoint
-    #@+node:ekr.20031218072017.4083:setInsertPoint
+    #@-node:ekr.20031218072017.4082:getInsertPoint (removed)
+    #@+node:ekr.20031218072017.4083:setInsertPoint (removed)
     def setInsertPoint (self,w,pos,python=False):
     
         if python:
             gui = g.app.gui
-            s = gui.getAllText(w)
+            s = w.getAllText()
             pos = gui.toGuiIndex(s,w,pos)
             # g.trace('pos',pos)
         try:
             w.mark_set("insert",pos)
         except Exception:
             pass
-    #@-node:ekr.20031218072017.4083:setInsertPoint
-    #@+node:ekr.20031218072017.4091:getAllText
+    #@-node:ekr.20031218072017.4083:setInsertPoint (removed)
+    #@+node:ekr.20031218072017.4091:getAllText (removed)
     def getAllText (self,w):
         
         """Return all the text of Tk.Text widget w converted to unicode."""
@@ -668,7 +722,7 @@ class tkinterGui(leoGui.leoGui):
             return u""
         else:
             return g.toUnicode(s,g.app.tkEncoding)
-    #@-node:ekr.20031218072017.4091:getAllText
+    #@-node:ekr.20031218072017.4091:getAllText (removed)
     #@+node:ekr.20051126125950:getSelectedText
     def getSelectedText (self,w):
         
@@ -704,7 +758,7 @@ class tkinterGui(leoGui.leoGui):
             i = j = w.index("insert")
           
         # During the changeover we can't be sure what kind of index the widget will return.
-        s = gui.getAllText(w)
+        s = w.getAllText()
         if python:
             i,j = gui.toPythonIndex(s,w,i),gui.toPythonIndex(s,w,j)
             if sort and i > j: i,j = j,i
@@ -734,27 +788,6 @@ class tkinterGui(leoGui.leoGui):
             pass
     #@nonl
     #@-node:ekr.20061103114242.1:gui.flashCharacter
-    #@+node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
-    def toGuiIndex (self,s,w,index):
-        
-        '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
-        
-        # A subtle point: s typically does not have Tk's trailing newline, so add it.
-        if type(index) == type(99):
-            row,col = g.convertPythonIndexToRowCol(s +'\n',index)
-            index = w.index('%s.%s' % (row+1,col))
-        return index
-        
-    def toPythonIndex (self,s,w,index):
-        
-        '''Convert a Tk index in Tk.Text widget w into a python index in string s.'''
-        
-        if type(index) in (type('a'),type(u'a')):
-            index = w.index(index)
-            row, col = index.split('.') ; row, col = int(row), int(col)
-            index = g.convertRowColToPythonIndex (s,row-1,col)
-        return index
-    #@-node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
     #@+node:ekr.20051126171929:hasSelection
     def hasSelection (self,w):
         
@@ -803,7 +836,7 @@ class tkinterGui(leoGui.leoGui):
         w.insert('1.0',s)
     #@-node:ekr.20061102085056:setAllText
     #@+node:ekr.20031218072017.4089:setSelectionRange (tkGui) (python)
-    def setSelectionRange (self,w,start,end,insert='sel.end',python=False):
+    def setSelectionRange (self,w,start,end,insert=None,python=False):
         
         """tk gui: set the selection range in Tk.Text widget w."""
         
@@ -814,9 +847,9 @@ class tkinterGui(leoGui.leoGui):
             g.trace('**** wrong type args ***',g.callers())
     
         if 1: ### python:
-            s = gui.getAllText(w)
+            s = w.getAllText()
             start,end = gui.toGuiIndex(s,w,start),gui.toGuiIndex(s,w,end)
-            if insert not in ('sel.end',None):
+            if insert is not None:
                 insert = gui.toGuiIndex(s,w,insert)
         
         # g.trace('start',start,'end',end,'insert',insert,'python',python)
@@ -828,9 +861,9 @@ class tkinterGui(leoGui.leoGui):
             w.tag_remove("sel",end,"end")
             # This logic ensures compatibility with previous code.
             if insert == 'sel.end':
-                gui.setInsertPoint(w,end)
+                w.setInsertPoint(end)
             elif insert is not None:
-                gui.setInsertPoint(w,insert)
+                w.setInsertPoint(insert)
         except Exception:
             pass # g.es_exception()
     #@nonl
@@ -841,14 +874,14 @@ class tkinterGui(leoGui.leoGui):
         gui = self
         i = w.index("@%d,%d" % (x,y))
         # We can't be sure of what w.index will return.
-        s = gui.getAllText(w)
+        s = w.getAllText()
         i = gui.toGuiIndex(s,w,i)
         return i
     
     def xyToPythonIndex(self,w,x,y):
         
         gui = self
-        s = gui.getAllText(w)
+        s = w.getAllText()
         i = w.index("@%d,%d" % (x,y))
         i = gui.toPythonIndex(s,w,i)
         return i
@@ -861,65 +894,33 @@ class tkinterGui(leoGui.leoGui):
         sel = w.tag_ranges("sel")
         if len(sel) == 2:
             start,end = sel
-            s = gui.getAllText(w)
+            s = w.getAllText()
             start,end = gui.toGuiIndex(s,w,start),gui.toGuiIndex(s,w,end)
             if w.compare(start,"!=",end):
                 w.delete(start,end)
     #@-node:ekr.20031218072017.4019:gui.deleteTextSelection
     #@-node:ekr.20031218072017.4090:Text (g.app.gui)
-    #@+node:ekr.20031218072017.4097:Visibility  & scrolling (tkGui)
-    #@+node:ekr.20061110204533:gui.getyview & getyscroll
-    def getYview (self,w):
-        '''Return the position of the vertical scrollbar in widget w.'''
-        return w.yview()
+    #@+node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
+    def toGuiIndex (self,s,w,index):
         
-    def getYscroll (self,w):
-        '''Return the vertical scroll position.'''
-        return w.yview()
-    #@nonl
-    #@-node:ekr.20061110204533:gui.getyview & getyscroll
-    #@+node:ekr.20061104072319:gui.yview & yscroll
-    def yview (self,w,index):
+        '''Convert a python index in string s into a Tk index in Tk.Text widget w.'''
         
-        '''Set the position of the vertical scrollbar in widget w.'''
-    
-        w.yview('moveto',index)
+        # A subtle point: s typically does not have Tk's trailing newline, so add it.
+        if type(index) == type(99):
+            row,col = g.convertPythonIndexToRowCol(s +'\n',index)
+            index = w.index('%s.%s' % (row+1,col))
+        return index
         
-    def yscroll (self,w,n,units):
-    
-        '''Scroll widget w by n units.'''
-    
-        w.yview('scroll',n,units)
-    #@-node:ekr.20061104072319:gui.yview & yscroll
-    #@+node:ekr.20031218072017.4098:gui.see & seeInsertPoint
-    def see(self,w,index,python=False):
+    def toPythonIndex (self,s,w,index):
         
-        gui = self
-    
-        if python:
-            s = gui.getAllText(w)
-            index = gui.toGuiIndex(s,w,index)
-            
-        # This should be the only call to Tk.see in Leo.
-        return w.see(index)
-    
-    def seeInsertPoint (self,w):
+        '''Convert a Tk index in Tk.Text widget w into a python index in string s.'''
         
-        gui = self
-        i = gui.getInsertPoint(w,python=True)
-        gui.see(w,i,python=True)
-    
-    seeInsert = seeInsertPoint        
-    #@nonl
-    #@-node:ekr.20031218072017.4098:gui.see & seeInsertPoint
-    #@-node:ekr.20031218072017.4097:Visibility  & scrolling (tkGui)
-    #@+node:ekr.20051220144507:isTextWidget
-    def isTextWidget (self,w):
-        
-        '''Return True if w is a Text widget suitable for text-oriented commands.'''
-        
-        return w and isinstance(w,Tk.Text)
-    #@-node:ekr.20051220144507:isTextWidget
+        if type(index) in (type('a'),type(u'a')):
+            index = w.index(index)
+            row, col = index.split('.') ; row, col = int(row), int(col)
+            index = g.convertRowColToPythonIndex (s,row-1,col)
+        return index
+    #@-node:ekr.20060528172956:gui.toGuiIndex & toPythonIndex (passed)
     #@+node:ekr.20051206103652:widget_name (tkGui)
     def widget_name (self,w):
         

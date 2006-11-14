@@ -1683,7 +1683,7 @@ class baseCommands:
         #@nl
         #@    << put the cursor on line n2 of the body text >>
         #@+node:ekr.20031218072017.2876:<< put the cursor on line n2 of the body text >>
-        s = gui.getAllText(w)
+        s = w.getAllText()
         if found:
             ins = g.convertRowColToPythonIndex(s,n2,0)    
             # c.frame.body.setInsertPointToStartOfLine(n2-1)
@@ -1692,7 +1692,7 @@ class baseCommands:
             ins = len(s)
             g.es("%d lines" % len(lines), color="blue")
         
-        gui.setInsertPoint(w,ins,python=True)
+        w.setInsertPoint(ins)
         c.bodyWantsFocusNow()
         gui.seeInsertPoint(w)
         #@-node:ekr.20031218072017.2876:<< put the cursor on line n2 of the body text >>
@@ -2361,19 +2361,17 @@ class baseCommands:
     #@+node:ekr.20031218072017.1827:c.findMatchingBracket & helper
     def findMatchingBracket (self,event=None):
         
-        '''Selecte the text between matching brackets.'''
+        '''Select the text between matching brackets.'''
         
-        c = self ; body = c.frame.body
-        gui = g.app.gui ; w = body.bodyCtrl
+        c = self ; w = c.frame.body.bodyCtrl
         
         if g.app.batchMode:
             c.notValidInBatchMode("Match Brackets")
             return
     
         brackets = "()[]{}<>"
-        
-        s = gui.getAllText(w)
-        ins = gui.getInsertPoint(w,python=True)
+        s = w.getAllText()
+        ins = w.getInsertPoint()
         ch1 = 0 <= ins-1 < len(s) and s[ins-1] or ''
         ch2 = 0 <= ins   < len(s) and s[ins] or ''
         # g.trace(repr(ch1),repr(ch2))
@@ -2386,17 +2384,20 @@ class baseCommands:
         else:
             return
         
-        index2 = self.findSingleMatchingBracket(s,ch,index)
+        index2 = self.findMatchingBracketHelper(s,ch,index)
         if index2:
-            gui.setSelectionRange(w,index,index2+1,insert=index2+1,python=True)
-            gui.see(w,index2,python=True)
+            if index2 < index:
+                w.setSelectionRange(index2,index+1,insert=index+1)
+            else:
+                w.setSelectionRange(index,index2+1,insert=index2+1)
+            w.see(index2)
         else:
             g.es("unmatched '%s'",ch)
     #@nonl
-    #@+node:ekr.20031218072017.1828:findSingleMatchingBracket
+    #@+node:ekr.20061113221414:findMatchingBracketHelper
     # To do: replace comments with blanks before scanning.
     # Test  unmatched())
-    def findSingleMatchingBracket(self,s,ch,index):
+    def findMatchingBracketHelper(self,s,ch,index):
         
         c = self
         open_brackets  = "([{<" ; close_brackets = ")]}>"
@@ -2429,7 +2430,7 @@ class baseCommands:
     # Test  (
     # ([(x){y}]))
     # Test  ((x)(unmatched
-    #@-node:ekr.20031218072017.1828:findSingleMatchingBracket
+    #@-node:ekr.20061113221414:findMatchingBracketHelper
     #@-node:ekr.20031218072017.1827:c.findMatchingBracket & helper
     #@+node:ekr.20031218072017.1829:getBodyLines
     def getBodyLines (self,expandSelection=False):
@@ -2442,14 +2443,12 @@ class baseCommands:
         after is a string all lines after the selected text
         (or the text after the insert point if no selection)"""
     
-        c = self ; body = c.frame.body
-        gui = g.app.gui ; w = body.bodyCtrl
+        c = self ; body = c.frame.body ; w = body.bodyCtrl
         oldVview = body.getYScrollPosition()
-        ###oldSel   = body.getSelectionRange()
-        oldSel = gui.getSelectionRange(w,python=False) ### python should be True
+        oldSel = w.getSelectionRange()
     
         if expandSelection:
-            s = g.app.gui.getAllText(w)
+            s = w.getAllText()
             head = tail = None
         else:
             # Note: lines is the entire line containing the insert point if no selection.
@@ -2500,13 +2499,11 @@ class baseCommands:
             c.notValidInBatchMode(undoType)
             return
         
-        ###oldSel = c.frame.body.getSelectionRange()
-        oldSel = gui.getSelectionRange(w,python=False) ### python should be True.
-        gui.deleteTextSelection(w)
-        s2 = self.getTime(body=True)
-        s = gui.getAllText(w)
-        i = gui.getInsertPoint(w,python=True)
-        g.app.gui.rawInsert(w,s,i,s2,python=True)
+        oldSel = c.frame.body.getSelectionRange()
+        w.deleteTextSelection()
+        s = self.getTime(body=True)
+        i = w.getInsertPoint()
+        w.insert(i,s)
     
         c.frame.body.onBodyChanged(undoType,oldSel=oldSel)
     #@+node:ekr.20031218072017.1832:getTime & test
@@ -2625,7 +2622,7 @@ class baseCommands:
         c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20050312114529.2:deleteComments
     #@-node:ekr.20050312114529:insert/removeComments
-    #@+node:ekr.20031218072017.1833:reformatParagraph (fails)
+    #@+node:ekr.20031218072017.1833:reformatParagraph
     def reformatParagraph (self,event=None):
     
         """Reformat a text paragraph in a Tk.Text widget
@@ -2656,9 +2653,8 @@ class baseCommands:
         pageWidth = theDict.get("pagewidth")
         tabWidth  = theDict.get("tabwidth")
         
-        original = g.app.gui.getAllText(w)
-        ###oldSel = body.getSelectionRange()
-        oldSel = gui.getSelectionRange(w,python=False) ### python should be True.
+        original = w.getAllText()
+        oldSel =  w.getSelectionRange()
         oldYview = body.getYScrollPosition()
         
         head,lines,tail = c.findBoundParagraph()
@@ -2707,7 +2703,7 @@ class baseCommands:
             junk, ins = body.setSelectionAreas(head,result,tail,python=True)
             
             # Advance to the next paragraph.
-            s = gui.getAllText(w)
+            s = w.getAllText()
             while ins < len(s):
                 i,j = g.getLine(s,ins)
                 line = s[i:j]
@@ -2721,14 +2717,14 @@ class baseCommands:
                 undoType = g.choose(changed,"Reformat Paragraph",None)
                 body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
             
-            gui.setSelectionRange(w,ins,ins,insert=ins,python=True)
-            gui.see(w,ins,python=True)
+            w.setSelectionRange(ins,ins,insert=ins)
+            w.see(ins)
             if changed:
                 c.recolor()
             #@-node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
             #@nl
     #@nonl
-    #@-node:ekr.20031218072017.1833:reformatParagraph (fails)
+    #@-node:ekr.20031218072017.1833:reformatParagraph
     #@+node:ekr.20031218072017.1838:updateBodyPane (handles changeNodeContents)
     def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview,setSel=True):
         
@@ -3432,7 +3428,7 @@ class baseCommands:
                     if isTkinter:
                         t = c.edit_widget(p)
                         if t:
-                            s = g.app.gui.getAllText(t)
+                            s = t.getAllText()
                             assert p.headString().strip() == s.strip(), "May fail if joined node is being edited"
                     #@-node:ekr.20040731053740:assert that p.headString() matches p.edit_text.get
                     #@-others
@@ -4040,7 +4036,6 @@ class baseCommands:
         def replaceBody (self,p,lines):
             
             c = self.c ; u = c.undoer ; undoType = 'Pretty Print'
-            ###gui = g.app.gui ; w = c.frame.body.bodyCtrl
             sel = c.frame.body.getInsertPoint()
             oldBody = p.bodyString()
             body = string.join(lines,'')
@@ -6317,7 +6312,9 @@ class baseCommands:
         if current and p.v.t==current.v.t:
             # Revert to previous code, but force an empty selection.
             c.frame.body.setSelectionAreas(s,None,None)
-            c.frame.body.setSelectionRange(None)
+            w = c.frame.body.bodyCtrl
+            i = w.getInsertPoint()
+            w.setSelectionRange(i,i)
             # This code destoys all tags, so we must recolor.
             c.recolor()
             

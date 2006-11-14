@@ -100,7 +100,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         for key in self.newStringKeys:
             self.dict[key] = Tk.StringVar()
             
-        self.s_ctrl = Tk.Text() # Used by find.search()
+        self.s_ctrl = g.app.gui.leoTextWidget() ### Tk.Text() # Used by find.search()
         #@-node:ekr.20031218072017.3900:<< create the tkinter intVars >>
         #@nl
         
@@ -145,25 +145,27 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         clab = Tk.Label(cpane, width=8, text="Change:")
         
         # Use bigger boxes for scripts.
-        self.find_ctrl   = ftxt = Tk.Text(fpane,bd=1,relief="groove",height=4,width=20)
-        self.change_ctrl = ctxt = Tk.Text(cpane,bd=1,relief="groove",height=4,width=20)
+        self.find_ctrl   = ftxt = g.app.gui.leoTextWidget( ### Tk.Text(
+            fpane,bd=1,relief="groove",height=4,width=20)
+        self.change_ctrl = ctxt = g.app.gui.leoTextWidget( ### Tk.Text(
+            cpane,bd=1,relief="groove",height=4,width=20)
         
         #@<< Bind Tab and control-tab >>
         #@+node:ekr.20041026092141:<< Bind Tab and control-tab >>
         def setFocus(w):
             c = self.c
             c.widgetWantsFocus(w)
-            g.app.gui.setSelectionRange(w,"1.0","1.0")
+            w.setSelectionRange(0,0)
             return "break"
             
         def toFind(event,w=ftxt): return setFocus(w)
         def toChange(event,w=ctxt): return setFocus(w)
         
         def insertTab(w):
-            data = g.app.gui.getSelectionRange(w)
+            data = w.getSelectionRange()
             if data: start,end = data
-            else: start = end = g.app.gui.getInsertPoint(w)
-            g.app.gui.replaceSelectionRangeWithText(w,start,end,"\t")
+            else: start = end = w.getInsertPoint()
+            w.replaceSelectionRangeWithText(start,end,"\t")
             return "break"
         
         def insertFindTab(event,w=ftxt): return insertTab(w)
@@ -401,7 +403,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     
         try:
             w = self.frame.focus_get()
-            g.app.gui.setSelectionRange(w,"1.0","end")
+            w.setSelectionRange(0,"end")
             return "break"
         except:
             return None # To keep pychecker happy.
@@ -412,14 +414,14 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         
         """Bring the tkinter Find Panel to the front."""
         
-        c = self.c ; t = self.find_ctrl ; gui = g.app.gui
+        c = self.c ; t = self.find_ctrl
                 
         self.top.withdraw() # Helps bring the window to the front.
         self.top.deiconify()
         self.top.lift()
     
         c.widgetWantsFocusNow(t)
-        gui.selectAllText(t)
+        t.selectAllText()
     #@-node:ekr.20031218072017.3907:bringToFront (tkFind)
     #@+node:ekr.20031218072017.1460:update_ivars (tkFind)
     def update_ivars (self):

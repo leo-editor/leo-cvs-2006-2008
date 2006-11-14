@@ -51,7 +51,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         
         if self.useTextWidget:
             w.update_idletasks()
-            s = g.app.gui.getAllText(w)
+            s = w.getAllText()
         else:
             s = k.svar and k.svar.get()
     
@@ -114,7 +114,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
             w.insert('end',s)
             if select:
                 i,j = k.getEditableTextRange()
-                g.app.gui.setSelectionRange(w,i,j,insert=j,python=True)
+                w.setSelectionRange(i,j,insert=j)
             if protect:
                 k.protectLabel()
     #@-node:ekr.20061031170011.9:extendLabel
@@ -157,11 +157,11 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         if ch and ch not in ('\n','\r'):
             if self.useTextWidget:
                 c.widgetWantsFocusNow(w)
-                i,j = g.app.gui.getSelectionRange(w)
+                i,j = w.getSelectionRange()
                 if i != j:
                     w.delete(i,j)
                 if ch == '\b':
-                    s = g.app.gui.getAllText(w)
+                    s = w.getAllText()
                     if len(s) > len(k.mb_prefix):
                         w.delete(i+'-1c')
                 else:
@@ -175,7 +175,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
     def getEditableTextRange (self):
         
         k = self ; w = self.widget
-        s = g.app.gui.getAllText(w)
+        s = w.getAllText()
     
         i = len(k.mb_prefix)
         while s.endswith('\n') or s.endswith('\r'):

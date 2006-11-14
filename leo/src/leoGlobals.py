@@ -5041,18 +5041,17 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
     Return the expansion of all of node p's body text if there
     is p is not the current node or if there is no text selection.'''
 
-    at = c.atFileCommands
-    gui = g.app.gui ; w = c.frame.body.bodyCtrl
+    at = c.atFileCommands ; w = c.frame.body.bodyCtrl
     if not p:
         p = c.currentPosition()
     try:
         if g.app.batchMode:
             s = p.bodyString()
         elif p == c.currentPosition():
-            if useSelectedText and g.app.gui.hasSelection(w):
-                s = gui.getSelectedText(w)
+            if useSelectedText and w.hasSelection():
+                s = w.getSelectedText()
             else:
-                s = gui.getAllText(w)
+                s = w.getAllText()
         else:
             s = p.bodyString()
         # Remove extra leading whitespace so the user may execute indented code.
