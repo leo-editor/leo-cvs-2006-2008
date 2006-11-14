@@ -1,8 +1,107 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20061101021054:To do First
+@nocolor
+
+- It's not clear what to do about k.shortcutFromSetting.
+- Move Tk tables to Tk gui.
+
+@color
+#@nonl
+#@+node:ekr.20061114074335:Fix bug: change command messes up the selection
+#@-node:ekr.20061114074335:Fix bug: change command messes up the selection
+#@+node:ekr.20061114122858:Suppress redraws as much as possible in the unit tests
+This might save a lot of time.
+#@nonl
+#@-node:ekr.20061114122858:Suppress redraws as much as possible in the unit tests
 #@+node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
 #@-node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
+#@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
+#@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
+#@+node:ekr.20061113171540:create nullTextWidget for nullGui
+#@-node:ekr.20061113171540:create nullTextWidget for nullGui
+#@+node:ekr.20061114092244:(Get bracket matching to work again)
+#@+node:ekr.20031218072017.1827:c.findMatchingBracket & helper
+def findMatchingBracket (self,event=None):
+    
+    '''Select the text between matching brackets.'''
+    
+    c = self ; w = c.frame.body.bodyCtrl
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode("Match Brackets")
+        return
+
+    brackets = "()[]{}<>"
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    ch1 = 0 <= ins-1 < len(s) and s[ins-1] or ''
+    ch2 = 0 <= ins   < len(s) and s[ins] or ''
+    # g.trace(repr(ch1),repr(ch2))
+
+    # Prefer to match the character to the left of the cursor.
+    if ch1 in brackets:
+        ch = ch1 ; index = max(0,ins-1)
+    elif ch2 in brackets:
+        ch = ch2 ; index = ins
+    else:
+        return
+    
+    index2 = self.findMatchingBracketHelper(s,ch,index)
+    if index2:
+        if index2 < index:
+            w.setSelectionRange(index2,index+1,insert=index+1)
+        else:
+            w.setSelectionRange(index,index2+1,insert=index2+1)
+        w.see(index2)
+    else:
+        g.es("unmatched '%s'",ch)
+#@nonl
+#@+node:ekr.20061113221414:findMatchingBracketHelper
+# To do: replace comments with blanks before scanning.
+# Test  unmatched())
+def findMatchingBracketHelper(self,s,ch,index):
+    
+    c = self
+    open_brackets  = "([{<" ; close_brackets = ")]}>"
+    brackets = open_brackets + close_brackets
+    matching_brackets = close_brackets + open_brackets
+    forward = ch in open_brackets
+    # Find the character matching the initial bracket.
+    for n in xrange(len(brackets)):
+        if ch == brackets[n]:
+            match_ch = matching_brackets[n]
+            break
+    level = 0
+    while 1:
+        if forward and index >= len(s):
+            # g.trace("not found")
+            return None
+        ch2 = 0 <= index < len(s) and s[index] or ''
+        # g.trace('forward',forward,'ch2',repr(ch2),'index',index)
+        if ch2 == ch:
+            level += 1
+        if ch2 == match_ch:
+            level -= 1
+            if level <= 0:
+                return index
+        if not forward and index <= 0:
+            # g.trace("not found")
+            return None
+        index += g.choose(forward,1,-1)
+    return 0 # unreachable: keeps pychecker happy.
+# Test  (
+# ([(x){y}]))
+# Test  ((x)(unmatched
+#@-node:ekr.20061113221414:findMatchingBracketHelper
+#@-node:ekr.20031218072017.1827:c.findMatchingBracket & helper
+#@-node:ekr.20061114092244:(Get bracket matching to work again)
+#@+node:ekr.20061114122858.1:Define w.name method
+#@-node:ekr.20061114122858.1:Define w.name method
+#@+node:ekr.20061114122858.2:Test for i != j in w.replace
+#@-node:ekr.20061114122858.2:Test for i != j in w.replace
+#@-node:ekr.20061101021054:To do First
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061028065955:To do first
 #@+node:ekr.20061105134302:Crasher
@@ -3803,14 +3902,12 @@ def findCharacterHelper (self,event,backward,extend):
             if start == -1: start = 0
             j = s.rfind(ch,start,max(start,i)) # Skip the character at the cursor.
             if j > -1:
-                ###spot = toGui(j)
                 self.moveToHelper(event,spot,extend)
         else:
             end = s.find('\n',i)
             if end == -1: end = len(s)
             j = s.find(ch,min(i,end),end) # Skip the character at the cursor.
             if j > -1:
-                ###spot = toGui(j)
                 self.moveToHelper(event,spot,extend)
         c.frame.clearStatusLine()
         k.clearState()
@@ -4285,7 +4382,6 @@ def selfInsertCommand(self,event,action='insert'):
     << set local vars >>
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
-    ###s = w.getAllText() # Needed in several places below.
     if ch == '\t':
         self.updateTab(p,w)
     elif ch == '\b':
@@ -4298,7 +4394,6 @@ def selfInsertCommand(self,event,action='insert'):
         self.updateAutomatchBracket(p,w,ch,oldSel)
     elif ch: # Null chars must not delete the selection.
         i,j = oldSel
-        ###i,j = w.toPythonIndex(i),w.toPythonIndex(j)
         if i > j: i,j = j,i
         # Use raw insert/delete to retain the coloring.
         if i != j:                  w.delete(i,j)
@@ -4306,7 +4401,6 @@ def selfInsertCommand(self,event,action='insert'):
         w.insert(i,ch)
         w.setInsertPoint(i+1)
         if inBrackets and self.flashMatchingBrackets:
-            ### s = w.getAllText() # The text has changed.
             self.flashMatchingBracketsHelper(w,i,ch)               
     else:
         return 'break' # This method *always* returns 'break'
@@ -4350,12 +4444,10 @@ def insertNewlineHelper (self,w,oldSel,undoType):
 
     if i != j:
         # No auto-indent if there is selected text.
-        ### i,j = w.toPythonIndex(i),w.toPythonIndex(j)
         w.delete(i,j)
         w.insert(i,ch)
         w.setInsertPoint(i+1)
     else:
-        ### i = w.toPythonIndex(i)
         w.insert(i,ch)
         w.setInsertPoint(i+1)
 
@@ -4386,8 +4478,6 @@ def initBracketMatcher (self,c):
 #@-node:ekr.20060804095512:initBracketMatcher
 #@+node:ekr.20060627083506:flashMatchingBracketsHelper
 def flashMatchingBracketsHelper (self,w,i,ch):
-
-    #### if not python: i = g.app.gui.toPythonIndex(s,w,i)
 
     d = {}
     if ch in self.openBracketsList:
@@ -4872,7 +4962,6 @@ def forwardSentenceHelper (self,event,extend):
     if not w: return
 
     c.widgetWantsFocusNow(w)
-    ###ins = w.index('insert')
     ins = w.getInsertPoint()
     i = w.search('.','insert',stopindex='end')
     ins = i and '%s +1c' % i or 'end'

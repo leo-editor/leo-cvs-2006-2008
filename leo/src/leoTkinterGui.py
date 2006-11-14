@@ -129,7 +129,7 @@ class tkinterGui(leoGui.leoGui):
     
         if not self.defaultFontFamily:
             # WARNING: retain NO references to widgets or fonts here!
-            w = g.app.gui.leoTextWidget() ### Tk.Text()
+            w = g.app.gui.leoTextWidget()
             fn = w.cget("font")
             font = tkFont.Font(font=fn) 
             family = font.cget("family")

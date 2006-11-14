@@ -970,7 +970,6 @@ class leoFind:
         # Select the first node.
         if self.suboutline_only or self.node_only or self.selection_only:
             self.p = c.currentPosition()
-            ###if self.selection_only: self.selStart,self.selEnd = c.frame.body.getSelectionRange()
             if self.selection_only: self.selStart,self.selEnd = w.getSelectionRange()
             else:                   self.selStart,self.selEnd = None,None
         else:

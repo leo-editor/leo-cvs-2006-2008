@@ -2398,14 +2398,12 @@ class editCommandsClass (baseEditCommandsClass):
                 if start == -1: start = 0
                 j = s.rfind(ch,start,max(start,i)) # Skip the character at the cursor.
                 if j > -1:
-                    ###spot = toGui(j)
                     self.moveToHelper(event,spot,extend)
             else:
                 end = s.find('\n',i)
                 if end == -1: end = len(s)
                 j = s.find(ch,min(i,end),end) # Skip the character at the cursor.
                 if j > -1:
-                    ###spot = toGui(j)
                     self.moveToHelper(event,spot,extend)
             c.frame.clearStatusLine()
             k.clearState()
@@ -2900,7 +2898,6 @@ class editCommandsClass (baseEditCommandsClass):
         #@nl
         if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
             return "break" # The hook claims to have handled the event.
-        ###s = w.getAllText() # Needed in several places below.
         if ch == '\t':
             self.updateTab(p,w)
         elif ch == '\b':
@@ -2913,7 +2910,6 @@ class editCommandsClass (baseEditCommandsClass):
             self.updateAutomatchBracket(p,w,ch,oldSel)
         elif ch: # Null chars must not delete the selection.
             i,j = oldSel
-            ###i,j = w.toPythonIndex(i),w.toPythonIndex(j)
             if i > j: i,j = j,i
             # Use raw insert/delete to retain the coloring.
             if i != j:                  w.delete(i,j)
@@ -2921,7 +2917,6 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert(i,ch)
             w.setInsertPoint(i+1)
             if inBrackets and self.flashMatchingBrackets:
-                ### s = w.getAllText() # The text has changed.
                 self.flashMatchingBracketsHelper(w,i,ch)               
         else:
             return 'break' # This method *always* returns 'break'
@@ -2947,12 +2942,10 @@ class editCommandsClass (baseEditCommandsClass):
     
         if i != j:
             # No auto-indent if there is selected text.
-            ### i,j = w.toPythonIndex(i),w.toPythonIndex(j)
             w.delete(i,j)
             w.insert(i,ch)
             w.setInsertPoint(i+1)
         else:
-            ### i = w.toPythonIndex(i)
             w.insert(i,ch)
             w.setInsertPoint(i+1)
     
@@ -2983,8 +2976,6 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20060804095512:initBracketMatcher
     #@+node:ekr.20060627083506:flashMatchingBracketsHelper
     def flashMatchingBracketsHelper (self,w,i,ch):
-    
-        #### if not python: i = g.app.gui.toPythonIndex(s,w,i)
     
         d = {}
         if ch in self.openBracketsList:
@@ -3469,7 +3460,6 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return
     
         c.widgetWantsFocusNow(w)
-        ###ins = w.index('insert')
         ins = w.getInsertPoint()
         i = w.search('.','insert',stopindex='end')
         ins = i and '%s +1c' % i or 'end'
@@ -6083,7 +6073,6 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
                 end = match.end()
                 length = end - start
                 w.mark_set('insert','insert +%sc' % start)
-                ### w.update_idletasks()
                 w.tag_add('qR','insert','insert +%sc' % length)
                 w.tag_config('qR',background='lightblue')
                 txt = w.get('insert','insert +%sc' % length)
@@ -6099,7 +6088,6 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             i = w.search(self.qQ,'insert',stopindex='end')
             if i:
                 w.mark_set('insert',i)
-                ###w.update_idletasks()
                 w.tag_add('qR','insert','insert +%sc' % len(self.qQ))
                 w.tag_config('qR',background='lightblue')
                 return True
@@ -7256,7 +7244,7 @@ class findTab (leoFind.leoFind):
         for key in self.newStringKeys:
             self.dict[key] = Tk.StringVar()
             
-        self.s_ctrl = g.app.gui.leoTextWidget() ###Tk.Text() # Used by find.search()
+        self.s_ctrl = g.app.gui.leoTextWidget() # Used by find.search()
         #@-node:ekr.20051020120306.12:<< create the tkinter intVars >>
         #@nl
         
@@ -7345,15 +7333,15 @@ class findTab (leoFind.leoFind):
         
         if self.optionsOnly:
             # Use one-line boxes.
-            self.find_ctrl = ftxt = g.app.gui.leoTextWidget( ### Tk.Text(
+            self.find_ctrl = ftxt = g.app.gui.leoTextWidget(
                 fpane,bd=1,relief="groove",height=1,width=25,name='find-text')
             self.change_ctrl = ctxt = Tk.Text(
                 cpane,bd=1,relief="groove",height=1,width=25,name='change-text')
         else:
             # Use bigger boxes for scripts.
-            self.find_ctrl = ftxt = g.app.gui.leoTextWidget( ### Tk.Text(
+            self.find_ctrl = ftxt = g.app.gui.leoTextWidget(
                 fpane,bd=1,relief="groove",height=3,width=15,name='find-text')
-            self.change_ctrl = ctxt = g.app.gui.leoTextWidget( ### Tk.Text(
+            self.change_ctrl = ctxt = g.app.gui.leoTextWidget(
                 cpane,bd=1,relief="groove",height=3,width=15,name='change-text')
         #@<< Bind Tab and control-tab >>
         #@+node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
@@ -7478,9 +7466,6 @@ class findTab (leoFind.leoFind):
             for text,boxKind,frame,callback in (
                 # Column 1...
                 ('Find','button',buttons1,self.findButtonCallback),
-                # ('Incremental','check', buttons1,None),
-                    ## variable=self.dict['incremental'])
-                    ## May affect the file format.
                 ('Find All','button',buttons1,self.findAllButton),
                 # Column 2...
                 ('Change','button',buttons2,self.changeButton),
@@ -8211,11 +8196,11 @@ class searchCommandsClass (baseEditCommandsClass):
         startindex = insert = w.getInsertPoint()
         
         if self.forward:
-            i1 = startindex ### gui.toPythonIndex(s,w,startindex)
+            i1 = startindex
             j1 = len(s)
         else:
             i1 = 0
-            j1 = min(len(s),startindex + len(pattern)) ###
+            j1 = min(len(s),startindex + len(pattern))
         
         i,j = self.ifinder.searchHelper(s,i1,j1,pattern,
             backwards=not self.forward,
@@ -8368,7 +8353,7 @@ class spellTab(leoFind.leoFind):
         self.suggestions = []
         self.messages = [] # List of message to be displayed when hiding the tab.
         self.outerScrolledFrame = None
-        self.workCtrl = g.app.gui.leoTextWidget() ### Tk.Text(None) # A text widget for scanning.
+        self.workCtrl = g.app.gui.leoTextWidget() # A text widget for scanning.
         
         self.loaded = self.init_aspell(c)
         if self.loaded:

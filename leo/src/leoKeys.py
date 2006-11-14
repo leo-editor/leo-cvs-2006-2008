@@ -191,7 +191,7 @@ class autoCompleterClass:
             (['string'],            'object',string), # Python's string module.
             (['t','t1','t2'],       'object',p.v.t),  
             (['v','v1','v2'],       'object',p.v),
-            (['w','widget'],        'object',c.frame.body.bodyCtrl), ###'Tkinter','Text'),
+            (['w','widget'],        'object',c.frame.body.bodyCtrl),
         ]
         
         if 0: # Not useful at this point.
@@ -1003,7 +1003,6 @@ class autoCompleterClass:
         
         c = self.c ; w = self.widget
         c.widgetWantsFocusNow(w)
-        ###body = w.getAllText()
     
         if w.hasSelection():
             i,j = w.getSelectionRange()

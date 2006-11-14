@@ -613,7 +613,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.labelWidget.pack(side="left",padx=1)
             
             bg = self.statusFrame.cget("background")
-            self.textWidget = g.app.gui.leoTextWidget( ### Tk.Text(
+            self.textWidget = g.app.gui.leoTextWidget(
                 self.statusFrame,
                 height=1,state="disabled",bg=bg,relief="groove",name='status-line')
             self.textWidget.pack(side="left",expand=1,fill="x")
@@ -914,7 +914,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         lab.pack(side='left')
         
         if c.useTextMinibuffer:
-            label = g.app.gui.leoTextWidget( ###Tk.Text(
+            label = g.app.gui.leoTextWidget(
                 f,height=1,relief='groove',background='lightgrey',name='minibuffer')
             label.pack(side='left',fill='x',expand=1,padx=2,pady=1)
         else:
@@ -2210,7 +2210,7 @@ class leoTkinterBody (leoFrame.leoBody):
         if w.leo_insertSpot:
             w.setInsertPoint(w.leo_insertSpot)
         else:
-            w.setInsertPoint(0) ### 1.0
+            w.setInsertPoint(0)
             
         if w.leo_scrollBarSpot is not None:
             first,last = w.leo_scrollBarSpot
@@ -2335,8 +2335,6 @@ class leoTkinterBody (leoFrame.leoBody):
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
         
         '''Update Leo after the body has been changed.'''
-        
-        __pychecker__ = '--no-argsused' ### python not used!!  What kind of indices are used in the undoer??
         
         body = self ; c = self.c
         bodyCtrl = w = body.bodyCtrl
@@ -2531,7 +2529,7 @@ class leoTkinterLog (leoFrame.leoLog):
     def createTextWidget (self,parentFrame):
         
         self.logNumber += 1
-        log = g.app.gui.leoTextWidget( ### Tk.Text(
+        log = g.app.gui.leoTextWidget(
             parentFrame,name="log-%d" % self.logNumber,
             setgrid=0,wrap=self.wrap,bd=2,bg="white",relief="flat")
         

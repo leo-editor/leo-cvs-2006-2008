@@ -111,7 +111,6 @@ class leoGui:
     mustBeDefinedInSubclasses = (
         # Startup & shutdown
         'attachLeoIcon',
-        ###'bind',
         'center_dialog',
         'color',
         #'createComparePanel',          # optional
@@ -122,22 +121,15 @@ class leoGui:
         'createRootWindow',
         'create_labeled_frame',
         'destroySelf',
-        ###'event_generate',
         'eventChar',
         'eventKeysym',
         'eventWidget',
         'eventXY',
         'finishCreate',
-        ###'getAllText',
-        ###'getYview',
-        ###'getYscroll',
-        ###'getSelectedText',
-        ###'getSelectionRange',
         # 'getFontFromParams', # optional
         'getTextFromClipboard',
         'get_focus',
         'get_window_info',
-        ###'hasTextSelection',
         'isTextWidget',
         'keysym',
         'killGui',
@@ -156,16 +148,6 @@ class leoGui:
         #'setIdleTimeHook',             # optional       
         #'setIdleTimeHookAfterDelay',   #optional
         'widget_name',
-        
-        ###'see',
-        ###'seeInsertPoint',
-        ###'selectAllText',
-        ###'toGuiIndex',
-        ###'toPythonIndex',
-        ###'xyToGuiIndex',
-        ###'xyToPythonIndex',
-        ###'yscroll',
-        ###'yview',
     )
     #@-node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
     #@-node:ekr.20031218072017.3721:app.gui Birth & death
@@ -560,16 +542,6 @@ class unitTestGui(leoGui):
     def createLeoEvent (self,event):                            return event
     def get_focus (self,frame):                                 pass
     def set_focus (self,c,widget):                              pass
-    
-    ###def getAllText(self,w):                              return ''
-    ###def getInsertPoint (self,t):                         return g.choose(python,0,'1.0')
-    ###def getSelectionRange (self,t,sort=True):            return 0,0
-    ###def getYscroll (w):                                  return 0
-    ###def getYview (self,w):                               return 0
-    ###def see (self,w,index):                              pass
-    ###def seeInsertPoint (self,w):                         pass
-    ###def setInsertPoint (self,t,pos):                     pass
-    ###def setSelectionRange (self,w,i,j,insert=None):      pass
     #@-node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     #@+node:ekr.20031218072017.3746:oops
     def oops(self):

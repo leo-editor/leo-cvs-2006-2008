@@ -131,8 +131,6 @@ class leoBody:
         'recolor',
         'recolor_now',
         'recolor_range',
-        ###'scrollDown',
-        ###'scrollUp',
         'see',
         'seeInsertPoint',
         'selectAllText',

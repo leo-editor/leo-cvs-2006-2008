@@ -515,7 +515,6 @@ class baseUndoer:
         bunch.dirtyVnodeList = dirtyVnodeList
         
         bunch.newP = p.copy()
-        ###bunch.newSel = body.getSelectionRange()
         bunch.newSel = w.getSelectionRange()
         
         # Tells whether to report the number of separate changes undone/redone.

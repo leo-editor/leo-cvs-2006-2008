@@ -94,7 +94,6 @@ class leoMenu:
             #@        << enable cut/paste >>
             #@+node:ekr.20040130164211:<< enable cut/paste >>
             if frame.body.hasFocus():
-                ###data = frame.body.getSelectedText()
                 data = w.getSelectedText()
                 canCut = data and len(data) > 0
             else:
