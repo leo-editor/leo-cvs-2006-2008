@@ -166,7 +166,7 @@ class leoBody:
     def unselectLabel (self,w):                     self.oops()
     def updateEditors (self):                       self.oops()
     # Events...
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,python=False): self.oops()
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): self.oops()
     def scheduleIdleTimeRoutine (self,function,*args,**keys): self.oops()
     # Low-level gui...
     def bbox(self,index):                           self.oops()
@@ -215,10 +215,10 @@ class leoBody:
             # A hack to support middle-button pastes: remember the previous selection.
             k.previousSelection = w.getSelectionRange()
             x,y = g.app.gui.eventXY(event)
-            i = g.app.gui.xyToPythonIndex(w,x,y)
+            i = w.xyToPythonIndex(x,y)
             # g.trace(x,y,repr(i))
             w.setSelectionRange(i,i,insert=i)
-            c.editCommands.setMoveCol(w,i,python=True)
+            c.editCommands.setMoveCol(w,i)
             c.frame.updateStatusLine()
             self.selectEditor(w)
         else:
@@ -233,14 +233,14 @@ class leoBody:
     def getAllText (self):
         return self.bodyCtrl.getAllText()
     
-    def getInsertPoint(self,python=False):
+    def getInsertPoint(self):
         return self.bodyCtrl.getInsertPoint()
     
     def getSelectedText (self):
         """Return the selected text of the body frame, converted to unicode."""
         return self.bodyCtrl.getSelectedText()
     
-    def getSelectionRange (self,sort=True,python=False):
+    def getSelectionRange (self,sort=True):
         """Return a tuple representing the selected range of body text.
         Return a tuple giving the insertion point if no range of text is selected."""
         return self.bodyCtrl.getSelectionRange(sort)
@@ -254,7 +254,7 @@ class leoBody:
     # def scrollUp (self):
         # g.app.gui.yscroll(self.bodyCtrl,-1,'units')
         
-    def see (self,index,python=False):
+    def see (self,index):
         self.bodyCtrl.see(index)
         
     def seeInsertPoint (self):
@@ -264,7 +264,7 @@ class leoBody:
         w = g.app.gui.eventWidget(event) or self.bodyCtrl
         return w.selectAllText()
         
-    def setInsertPoint (self,pos,python=False):
+    def setInsertPoint (self,pos):
         return self.bodyCtrl.getInsertPoint(pos)
         
     def setSelectionRange (self,sel):
@@ -352,7 +352,7 @@ class leoBody:
         return before,sel,after # 3 strings.
     #@-node:ekr.20031218072017.2377:getSelectionLines (leoBody)
     #@+node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
-    def setSelectionAreas (self,before,sel,after,python=False):
+    def setSelectionAreas (self,before,sel,after):
         
         """Replace the body text by before + sel + after and
         set the selection so that the sel text is selected."""
@@ -366,21 +366,18 @@ class leoBody:
         w.insert(0,before+sel+after)
         i,j = len(before),len(before)+len(sel)
         w.setSelectionRange(i,j,insert=j)
-        if python:
-            return i,j
-        else:
-            return g.app.gui.toGuiIndex(s,w,i),g.app.gui.toGuiIndex(s,w,j)
+        return i,j
     #@-node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
     #@+node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
     def getYScrollPosition (self):
-        return g.app.gui.getYview(self.bodyCtrl)
+        return self.bodyCtrl.yview()
         
     def setYScrollPosition (self,scrollPosition):
         if len(scrollPosition) == 2:
             first,last = scrollPosition
         else:
             first = scrollPosition
-        g.app.gui.yview(self.bodyCtrl,first)
+        self.bodyCtrl.yview('moveto',first)
         
     #@-node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
     #@-node:ekr.20031218072017.4018:Text (leoBody)
@@ -1086,7 +1083,7 @@ class nullBody (leoBody):
     def unselectLabel (self,w):                 pass
     def updateEditors (self):                   pass
     # Events...
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,python=False): pass
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): pass
     def scheduleIdleTimeRoutine (self,function,*args,**keys): pass
     # Low-level gui...
     def bbox(self,index):                       return

@@ -68,13 +68,12 @@ def setHeadOK(v):
 
 #@-node:ekr.20040205071616.4:setHeadOK
 #@+node:ekr.20040205071616.5:mnplugins.insertBodystamp
-def insertBodystamp(c,v):
+def insertBodystamp (c,v):
 
-    gui = g.app.gui ; w = c.frame.body.bodyCtrl
-    stamp=mnOKstamp()+'\n'
-    ins=gui.getInsertPoint(w,python=True)
-    s = gui.getAllText(w)
-    gui.rawInsert(w,s,ins,stamp,python=True)
+    w = c.frame.body.bodyCtrl
+    stamp = mnOKstamp() + '\n'
+    ins = w.getInsertPoint()
+    w.insert(ins,stamp)
     c.frame.body.onBodyChanged("Typing")
 #@-node:ekr.20040205071616.5:mnplugins.insertBodystamp
 #@+node:ekr.20040205071616.6:is_subnodesOK
@@ -120,16 +119,14 @@ def insertUser (self,event=None):
     """Handle the Insert User command."""
 
     c = self ; v = c.currentVnode()
-    gui = g.app.gui ; w = c.frame.body.bodyCtrl
+    w = c.frame.body.bodyCtrl
     
-    oldSel = gui.getSelectionRange(w,python=False)
-    gui.deleteTextSelection(w) # Works if nothing is selected.
+    oldSel = w.getSelectionRange()
+    w.deleteTextSelection() # Works if nothing is selected.
     
     stamp = mnstamp()
-    ###c.frame.body.insertAtInsertPoint(s)
-    s = gui.getAllText(w)
-    i = gui.getInsertPoint(w,python=True)
-    gui.rawInsert(w,s,i,stamp,python=True)
+    i = w.getInsertPoint()
+    w.insert(i,stamp)
     c.frame.body.onBodyChanged("Typing",oldSel=oldSel)
 #@nonl
 #@-node:ekr.20040205071616.9:insertUser

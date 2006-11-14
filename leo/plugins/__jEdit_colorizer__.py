@@ -1009,8 +1009,8 @@ class baseColorizer:
         self.recolor_count = 0 # Number of times through the loop before a recolor.
         self.chunks_done = False
         self.quickColor()
-        self.insertPoint = g.app.gui.getInsertPoint(w)
-        self.selection = g.app.gui.getSelectionRange(w)
+        self.insertPoint = w.getInsertPoint()
+        self.selection = w.getSelectionRange()
         self.colorOneChunk()
         return 'break'
     #@nonl
@@ -1081,9 +1081,9 @@ class baseColorizer:
         w = self.c.frame.body.bodyCtrl
         if self.selection:
             start,end = self.selection
-            g.app.gui.setSelectionRange(w,start, end)
+            w.setSelectionRange(start, end)
             # g.trace(start,end)
-        g.app.gui.setInsertPoint(w,self.insertPoint)
+        w.setInsertPoint(self.insertPoint)
         if self.queue:
             p,bodyCtrl = self.queue.pop()
             self.colorizeAnyLanguage(p)
@@ -1099,8 +1099,7 @@ class baseColorizer:
         if not self.flag: return
         
         # toGuiIndex could be slow for large s...
-        x1 = g.app.gui.toGuiIndex(s,w,i)
-        x2 = g.app.gui.toGuiIndex(s,w,j)
+        x1,x2 = w.toGuiIndex(i),w.toGuiIndex(j)
     
         if delegate:
             # g.trace(delegate,i,j)
@@ -1533,9 +1532,9 @@ class baseColorizer:
         for photo,image,line_index,i in self.image_references:
             try:
                 ### self.body.deleteCharacter(image)
-                gui = g.app.gui ; w = self.body.bodyCtrl
-                gui.rawDelete(w,self.allBodyText,index,python=True)
-                self.allBodyText = gui.getAllText(w)
+                w = self.body.bodyCtrl
+                w.delete(self.allBodyText,index)
+                self.allBodyText = w.getAllText()
             except:
                 pass # The image may have been deleted earlier.
         

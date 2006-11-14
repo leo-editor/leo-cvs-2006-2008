@@ -2214,8 +2214,7 @@ class leoTkinterBody (leoFrame.leoBody):
             
         if w.leo_scrollBarSpot is not None:
             first,last = w.leo_scrollBarSpot
-            ###w.yview('moveto',first)
-            w.yview(first)
+            w.yview('moveto',first)
         else:
             w.seeInsertPoint()
         
@@ -2333,7 +2332,7 @@ class leoTkinterBody (leoFrame.leoBody):
     #@-node:ekr.20031218072017.2183:tkBody.setFontFromConfig
     #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     # This is the only key handler for the body pane.
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None,python=False):
+    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
         
         '''Update Leo after the body has been changed.'''
         
@@ -3054,35 +3053,34 @@ class leoTkTextWidget (Tk.Text):
         return 'leoTkTextWidget id: %s name: %s' % (id(self),name)
         
     #@    @+others
-    #@+node:ekr.20061113151148.2:Index conversion
-    # We must be sure to avoid conflicts in internal methods,
-    # so we precede these names with _leo.
-    def _leo_toTkIndex (self,i,s=None):
+    #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
+    def toGuiIndex (self,i):
         '''Convert a Python index to a Tk index as needed.'''
         w = self
         if i is None:
             g.trace('can not happen: i is None',g.callers())
             return '1.0'
         elif type(i) == type(99):
-            if s is None: s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
+            s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
             row,col = g.convertPythonIndexToRowCol(s,i)
             i = '%s.%s' % (row+1,col)
         else:
             try:
                 i = Tk.Text.index(w,i)
             except Exception:
-                g.trace(w,repr(i),g.callers())
+                # g.es_exception()
+                g.trace('Tk.Text.index failed:',w,repr(i),g.callers())
                 i = '1.0'
         return i
             
-    def _leo_toPythonIndex (self,i,s=None):
+    def toPythonIndex (self,i):
         '''Convert a Tk index to a Python index as needed.'''
         w =self
         if i is None:
             g.trace('can not happen: i is None')
             return 0
         elif type(i) in (type('a'),type(u'a')):
-            if s is None: s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
+            s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
             i = Tk.Text.index(w,i) # Convert to row/column form.
             row,col = i.split('.')
             row,col = int(row),int(col)
@@ -3090,37 +3088,37 @@ class leoTkTextWidget (Tk.Text):
             i = g.convertRowColToPythonIndex(s,row,col)
             #g.es_print(i)
         return i
-    #@-node:ekr.20061113151148.2:Index conversion
+    #@-node:ekr.20061113151148.2:Index conversion (leoTextWidget)
     #@+node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
     #@+node:ekr.20061113151148.4:delete (passed)
     def delete(self,i,j=None):
     
         w = self
-        i = w._leo_toTkIndex(i)
+        i = w.toGuiIndex(i)
     
         if j is None:
             Tk.Text.delete(w,i)
         else:
-            j = w._leo_toTkIndex(j)
+            j = w.toGuiIndex(j)
             Tk.Text.delete(w,i,j)
     #@-node:ekr.20061113151148.4:delete (passed)
     #@+node:ekr.20061113151148.5:get (passed)
     def get(self,i,j=None):
     
         w = self
-        i = w._leo_toTkIndex(i)
+        i = w.toGuiIndex(i)
     
         if j is None:
             return Tk.Text.get(w,i)
         else:
-            j = w._leo_toTkIndex(j)
+            j = w.toGuiIndex(j)
             return Tk.Text.get(w,i,j)
     #@-node:ekr.20061113151148.5:get (passed)
     #@+node:ekr.20061113151148.6:insert (passed)
     def insert(self,i,s):
     
         w = self
-        i = w._leo_toTkIndex(i)
+        i = w.toGuiIndex(i)
         Tk.Text.insert(w,i,s)
     
     #@-node:ekr.20061113151148.6:insert (passed)
@@ -3128,19 +3126,19 @@ class leoTkTextWidget (Tk.Text):
     def mark_set(self,markName,i):
     
         w = self
-        i = w._leo_toTkIndex(i)
+        i = w.toGuiIndex(i)
         Tk.Text.mark_set(w,markName,i)
     #@-node:ekr.20061113151148.7:mark_set (passed)
     #@+node:ekr.20061113151148.8:tag_add (passed)
     def tag_add(self,tagName,i,j=None,*args):
         
         w = self
-        i = w._leo_toTkIndex(i)
+        i = w.toGuiIndex(i)
     
         if j is None:
             Tk.Text.tag_add(w,tagName,i,*args)
         else:
-            j = w._leo_toTkIndex(j)
+            j = w.toGuiIndex(j)
             Tk.Text.tag_add(w,tagName,i,j,*args)
     #@-node:ekr.20061113151148.8:tag_add (passed)
     #@+node:ekr.20061113151148.9:tag_ranges (passed)
@@ -3148,7 +3146,7 @@ class leoTkTextWidget (Tk.Text):
         
         w = self
         aList = Tk.Text.tag_ranges(w,tagName)
-        aList = [w._leo_toPythonIndex(z) for z in aList]
+        aList = [w.toPythonIndex(z) for z in aList]
         return tuple(aList)
     #@-node:ekr.20061113151148.9:tag_ranges (passed)
     #@-node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
@@ -3204,7 +3202,7 @@ class leoTkTextWidget (Tk.Text):
         
         w = self
         i = Tk.Text.index(w,'insert')
-        i = self._leo_toPythonIndex(i)
+        i = w.toPythonIndex(i)
         return i
     #@-node:ekr.20061113151148.14:getInsertPoint (passed)
     #@+node:ekr.20061113151148.15:getSelectedText (passed)
@@ -3213,14 +3211,14 @@ class leoTkTextWidget (Tk.Text):
         w = self
         i,j = w.getSelectionRange()
         if i != j:
-            i,j = w._leo_toTkIndex(i),w._leo_toTkIndex(j)
+            i,j = w.toGuiIndex(i),w.toGuiIndex(j)
             s = Tk.Text.get(w,i,j)
             return g.toUnicode(s,g.app.tkEncoding)
         else:
             return u""
     #@-node:ekr.20061113151148.15:getSelectedText (passed)
     #@+node:ekr.20061113151148.16:getSelectionRange (passed)
-    def getSelectionRange (self,sort=True,python=False): # tkTextWidget.
+    def getSelectionRange (self,sort=True): # tkTextWidget.
         
         """Return a tuple representing the selected range.
         
@@ -3233,7 +3231,7 @@ class leoTkTextWidget (Tk.Text):
         else:
             i = j = Tk.Text.index(w,"insert")
           
-        i,j = w._leo_toPythonIndex(i),w._leo_toPythonIndex(j)  
+        i,j = w.toPythonIndex(i),w.toPythonIndex(j)  
         if sort and i > j: i,j = j,i
         return i,j
     #@nonl
@@ -3246,11 +3244,11 @@ class leoTkTextWidget (Tk.Text):
         return i != j
     #@-node:ekr.20061113151148.17:hasSelection (could be in base class) (passed)
     #@+node:ekr.20061113151148.18:replace (could be in base class) (passed)
-    def replace (self,i,j,s,python=False): # tkTextWidget
+    def replace (self,i,j,s): # tkTextWidget
         
         w = self
-        i = self._leo_toTkIndex(i)
-        j = self._leo_toTkIndex(j)
+        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
+    
         Tk.Text.delete(w,i,j)
         Tk.Text.insert(w,i,s)
     #@-node:ekr.20061113151148.18:replace (could be in base class) (passed)
@@ -3270,10 +3268,10 @@ class leoTkTextWidget (Tk.Text):
         Tk.Text.insert(w,'1.0',s)
     #@-node:ekr.20061113151148.20:setAllText (could be in base class) (passed)
     #@+node:ekr.20061113180616:see
-    def see (self,i,python=False): # tkTextWidget.
+    def see (self,i): # tkTextWidget.
     
         w = self
-        i = w._leo_toTkIndex(i)
+        i = w.toGuiIndex(i)
         Tk.Text.see(w,i)
     #@-node:ekr.20061113180616:see
     #@+node:ekr.20061113175002:seeInsertPoint
@@ -3283,10 +3281,10 @@ class leoTkTextWidget (Tk.Text):
         Tk.Text.see(w,'insert')
     #@-node:ekr.20061113175002:seeInsertPoint
     #@+node:ekr.20061113151148.21:setInsertPoint (passed)
-    def setInsertPoint (self,i,python=False): # tkTextWidget.
+    def setInsertPoint (self,i): # tkTextWidget.
     
         w = self
-        i = w._leo_toTkIndex(i)
+        i = w.toGuiIndex(i)
         Tk.Text.mark_set(w,'insert',i)
     #@-node:ekr.20061113151148.21:setInsertPoint (passed)
     #@+node:ekr.20061113151148.22:setSelectionRange (passed)
@@ -3295,7 +3293,7 @@ class leoTkTextWidget (Tk.Text):
         w = self
         # g.trace('i,j,insert',repr(i),repr(j),repr(insert))
        
-        i,j = w._leo_toTkIndex(i),w._leo_toTkIndex(j)
+        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
         
         # g.trace('start',start,'end',end,'insert',insert,'python',python)
         if Tk.Text.compare(w,i, ">", j): i,j = j,i
@@ -3316,7 +3314,7 @@ class leoTkTextWidget (Tk.Text):
         
         w = self
         i = Tk.Text.index(w,"@%d,%d" % (x,y))
-        i = w._leo_toPythonIndex(i)
+        i = w.toPythonIndex(i)
         return i
     #@-node:ekr.20061113151148.23:xyToGui/PythonIndex (passed)
     #@-node:ekr.20061113151148.10:Convenience methods (tkTextWidget)

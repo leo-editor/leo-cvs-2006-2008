@@ -1456,7 +1456,7 @@ def runEditCommandTest (c,p):
         s = w.getAllText()
         # The selection range is specified as Tk indices.
         i,j = sel3
-        i,j = g.app.gui.toGuiIndex(s,w,i),g.app.gui.toGuiIndex(s,w,j)
+        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
         sel3 = i,j
         assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
         c.selectPosition(atTest)

@@ -111,7 +111,7 @@ class leoGui:
     mustBeDefinedInSubclasses = (
         # Startup & shutdown
         'attachLeoIcon',
-        'bind',
+        ###'bind',
         'center_dialog',
         'color',
         #'createComparePanel',          # optional
@@ -122,22 +122,22 @@ class leoGui:
         'createRootWindow',
         'create_labeled_frame',
         'destroySelf',
-        'event_generate',
+        ###'event_generate',
         'eventChar',
         'eventKeysym',
         'eventWidget',
         'eventXY',
         'finishCreate',
-        'getAllText',
-        'getYview',
-        'getYscroll',
-        'getSelectedText',
-        'getSelectionRange',
+        ###'getAllText',
+        ###'getYview',
+        ###'getYscroll',
+        ###'getSelectedText',
+        ###'getSelectionRange',
         # 'getFontFromParams', # optional
         'getTextFromClipboard',
         'get_focus',
         'get_window_info',
-        'hasTextSelection',
+        ###'hasTextSelection',
         'isTextWidget',
         'keysym',
         'killGui',
@@ -152,19 +152,20 @@ class leoGui:
         'runMainLoop',
         'runOpenFileDialog',
         'runSaveFileDialog',
-        'see',
-        'seeInsertPoint',
-        'selectAllText',
+        'set_focus',
         #'setIdleTimeHook',             # optional       
         #'setIdleTimeHookAfterDelay',   #optional
-        'set_focus',
-        'toGuiIndex',
-        'toPythonIndex',
         'widget_name',
-        'xyToGuiIndex',
-        'xyToPythonIndex',
-        'yscroll',
-        'yview',
+        
+        ###'see',
+        ###'seeInsertPoint',
+        ###'selectAllText',
+        ###'toGuiIndex',
+        ###'toPythonIndex',
+        ###'xyToGuiIndex',
+        ###'xyToPythonIndex',
+        ###'yscroll',
+        ###'yview',
     )
     #@-node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
     #@-node:ekr.20031218072017.3721:app.gui Birth & death
@@ -406,63 +407,6 @@ class leoGui:
         # print 'leoGui:setIdleTimeHookAfterDelay'
         pass # Not an error.
     #@-node:ekr.20031218072017.3739:Idle time
-    #@+node:ekr.20061106181402:Text
-    def bind (self,w,kind,*args,**keys):
-        '''Make the indicated binding.'''
-        self.oops()
-    
-    def getAllText (self,w):
-        '''Return all the text in w, a text widget.'''
-        self.oops() ; return ''
-    
-    def getSelectionRange (self,w,sort=True,python=False):
-        return 0,0
-        
-    def getSelectedText (self,w):
-        return u""
-        
-    def hasSelection (self,widget):
-        return False
-        
-    def isTextWidget (self,w):
-        '''Return True if w is a text widget.'''
-        self.oops() ; return False
-    
-    def selectAllText (self,w,insert='end-1c'):
-        pass
-    
-    def setSelectionRange (self,w,i,j,insert=None):
-        pass
-    #@-node:ekr.20061106181402:Text
-    #@+node:ekr.20061103094543:Visibility & scrolling (leoGui)
-    def getYscroll(self,w):
-        return 0
-        
-    def getYview (self,w):
-        return 0
-    
-    def see (self,w,index,python=False):
-        pass
-        
-    def seeInsertPoint (self,w):
-        pass
-        
-    def yview (self,w,index):
-        pass
-        
-    def yscroll (self,w,n,units):
-        pass
-                
-    #@nonl
-    #@-node:ekr.20061103094543:Visibility & scrolling (leoGui)
-    #@+node:ekr.20061031133643:xyToGui/PythonIndex
-    def xyToGuiIndex (self,w,x,y):
-        return '1.0'
-        
-    def xyToPythonIndex(self,w,x,y):
-        return 0
-    #@nonl
-    #@-node:ekr.20061031133643:xyToGui/PythonIndex
     #@+node:ekr.20061111165041:widget_name
     def widget_name (self,w):
         
@@ -614,19 +558,18 @@ class unitTestGui(leoGui):
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     def createLeoEvent (self,event):                            return event
-    def getAllText(self,w):                                     return ''
     def get_focus (self,frame):                                 pass
-    def getYview (self,w):                                      return 0
-    def getYscroll (w):                                         return 0
-    def getInsertPoint (self,t,python=False):                   return g.choose(python,0,'1.0')
-    def getSelectionRange (self,t,sort=True,python=False):      return 0,0
-    def see (self,w,index,python=False):                        pass
-    def seeInsertPoint (self,w):                                pass
     def set_focus (self,c,widget):                              pass
-    def setInsertPoint (self,t,pos,python=False):               pass
-    def setSelectionRange (self,w,i,j,insert=None):             pass
-    def toGuiIndex (self,s,w,index):                            return '1.0'
-    def toPythonIndex (self,s,w,index):                         return 0
+    
+    ###def getAllText(self,w):                              return ''
+    ###def getInsertPoint (self,t):                         return g.choose(python,0,'1.0')
+    ###def getSelectionRange (self,t,sort=True):            return 0,0
+    ###def getYscroll (w):                                  return 0
+    ###def getYview (self,w):                               return 0
+    ###def see (self,w,index):                              pass
+    ###def seeInsertPoint (self,w):                         pass
+    ###def setInsertPoint (self,t,pos):                     pass
+    ###def setSelectionRange (self,w,i,j,insert=None):      pass
     #@-node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     #@+node:ekr.20031218072017.3746:oops
     def oops(self):

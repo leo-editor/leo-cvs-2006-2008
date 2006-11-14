@@ -2520,7 +2520,7 @@ class leoTkinterTree (leoFrame.leoTree):
             
             if p.v and p.v.t.scrollBarSpot != None:
                 first,last = p.v.t.scrollBarSpot
-                w.yview(first)
+                w.yview('moveto',first)
             
             if p.v and p.v.t.insertSpot != None:
                 spot = p.v.t.insertSpot

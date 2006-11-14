@@ -191,7 +191,7 @@ class autoCompleterClass:
             (['string'],            'object',string), # Python's string module.
             (['t','t1','t2'],       'object',p.v.t),  
             (['v','v1','v2'],       'object',p.v),
-            (['w','widget'],        'Tkinter','Text'),
+            (['w','widget'],        'object',c.frame.body.bodyCtrl), ###'Tkinter','Text'),
         ]
         
         if 0: # Not useful at this point.
@@ -3206,7 +3206,7 @@ class keyHandlerClass:
             c.frame.body.onClick(event) # New in Leo 4.4.2.
         elif wname.startswith('mini'):
             x,y = gui.eventXY(event)
-            x = gui.xyToPythonIndex(w,x,y)
+            x = w.xyToPythonIndex(x,y)
             i,j = k.getEditableTextRange()
             if i <= x <= j:
                 w.setSelectionRange(x,x,insert=x)
@@ -3245,7 +3245,7 @@ class keyHandlerClass:
         else:
             gui = g.app.gui
             x,y = gui.eventXY(event)
-            i = gui.xyToPythonIndex(w,x,y)
+            i = w.xyToPythonIndex(x,y)
             s = w.getAllText()
             start,end = g.getWord(s,i)
             w.setSelectionRange(start,end)

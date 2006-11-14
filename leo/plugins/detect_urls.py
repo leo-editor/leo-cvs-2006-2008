@@ -25,9 +25,9 @@ url_regex = re.compile(r"""(http|https|ftp)://[^\s'"]+[\w=/]""")
 def openURL(tag,keywords):
     c = keywords.get("c")
 
-    gui = g.app.gui ; w = c.frame.body.bodyCtrl
-    s = gui.getAllText(w)
-    ins = gui.getInsertPoint(w,python=True)
+    w = c.frame.body.bodyCtrl
+    s = w.getAllText()
+    ins = w.getInsertPoint()
     row,col = g.convertPythonIndexToRowCol(s,ins)
     i,j = g.getLine(s,ins)
     line = s[i:j]
@@ -39,7 +39,7 @@ def openURL(tag,keywords):
             if 0: # I have no idea why this code was present.
                 start,end = match.start(), match.end()
                 c.frame.body.setSelectionRange("%s.%s" %(row,start), "%s.%s" %(row,end))
-                gui.setSelectionRange(w,start,end,python=True)
+                w.setSelectionRange(start,end)
             if not g.app.unitTesting:
                 try:
                     import webbrowser
@@ -56,14 +56,14 @@ def colorizeURLs(tag,keywords):
     if not c: return
 
     c.frame.body.tag_configure("URL", underline=1, foreground="blue")
-    gui = g.app.gui ; w = c.frame.body.bodyCtrl
-    s = gui.getAllText(w)
+    w = c.frame.body.bodyCtrl
+    s = w.getAllText()
     lines = s.split('\n')
     n = 0 # The number of characters before the present line.
     for line in lines:
         for match in url_regex.finditer(line):
             start, end = match.start(), match.end()
-            i,j = gui.toGuiIndex(s,w,n+start),gui.toGuiIndex(s,w,n+end)
+            i,j = w.toGuiIndex(n+start),w.toGuiIndex(n+end)
             c.frame.body.tag_add('URL',i,j)
         n += len(line) + 1
 #@-node:vpe.20060426062042:colorizeURLs()

@@ -567,13 +567,14 @@ class PluginAbout:
         #@+node:EKR.20040517080555.21:<< Create the contents of the about box >>
         Tk.Label(frame,text="Version " + version).pack()
         
-        body = Tk.Text(frame,name='body-pane',
+        body = w = g.app.gui.leoTextWidget (  ### Tk.Text(
+            frame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap='word')
-        body.insert('1.0',about)
+        w.insert(0,about)
         if 0: # prevents arrow keys from being visible.
-            body.configure(state='disabled')
-        g.app.gui.setInsertPoint(body,'1.0')
-        body.see('1.0')
+            w.configure(state='disabled')
+        w.setInsertPoint(0)
+        w.see(0)
         
         bodyBar = Tk.Scrollbar(frame,name='bodyBar')
         body['yscrollcommand'] = bodyBar.set

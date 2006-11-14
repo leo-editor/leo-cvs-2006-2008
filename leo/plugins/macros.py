@@ -119,7 +119,7 @@ class paramClass:
         c = self.c
         tree = c.frame.tree
         body = c.frame.body
-        gui = g.app.gui ; w = body.bodyCtrl
+        w = body.bodyCtrl
         current = c.currentVnode()
     
         if not self.params:
@@ -129,7 +129,7 @@ class paramClass:
         sr = body.getAllText()
         sr = sr.split('\n')
     
-        t = str(gui.getInsertPoint(w)).split('.')
+        t = str(g.app.gui.getInsertPoint(w)).split('.')
         sr = sr [int(t[0]) -1]
         sr = sr [: int(t[1])]
         sr = sr.rstrip()

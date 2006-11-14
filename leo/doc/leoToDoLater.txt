@@ -2739,7 +2739,7 @@ def find (self,event=None):
         c.invalidateFocus()
         c.bodyWantsFocusNow()
         # Copy the working selection range to the body pane
-        start, end = g.app.gui.getSelectionRange(self.workCtrl)
+        start, end = self.workCtrl.getSelectionRange()
         w.setSelectionRange(start,end)
         w.see(start)
     else:
@@ -2927,9 +2927,9 @@ def updateButtons (self):
 
     """Enable or disable buttons in the Check Spelling dialog."""
 
-    c = self.c
+    c = self.c ; w = c.frame.body.bodyCtrl
 
-    start, end = g.app.gui.getSelectionRange(c.frame.body.bodyCtrl)
+    start, end = w.getSelectionRange()
     state = g.choose(self.suggestions and start,"normal","disabled")
 
     self.changeButton.configure(state=state)

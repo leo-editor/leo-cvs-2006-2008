@@ -546,17 +546,6 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:edream.111303093843.1:setIdleTimeHookAfterDelay
     #@-node:edream.110203113231.329:Idle time (wxGui) (to do)
-    #@+node:ekr.20061105125717:toGuiIndex & toPythonIndex
-    # This plugin uses Python indices everywhere, so are do-nothings.
-    
-    def toGuiIndex (self,s,w,index):
-        
-        return index
-    
-    def toPythonIndex (self,s,w,index):
-    
-        return index
-    #@-node:ekr.20061105125717:toGuiIndex & toPythonIndex
     #@-node:edream.111303090930:app.gui.wx utils (must add several)
     #@-others
 #@nonl
@@ -737,7 +726,7 @@ class wxLeoBody (leoFrame.leoBody):
     def onBodyTextUpdated(self,event):
     
         frame = self.frame ; c = self.c
-        gui = g.app.gui ; w = frame.body.bodyCtrl
+        w = frame.body.bodyCtrl
         if not c:  return
         p = c.currentPosition()
         if not p: return
@@ -748,7 +737,7 @@ class wxLeoBody (leoFrame.leoBody):
     
         s = frame.body.bodyCtrl.GetValue()
         p.v.t.setTnodeText(s)
-        p.v.t.insertSpot = gui.getInsertPoint(w)
+        p.v.t.insertSpot = w.getInsertPoint()
         #@    << recolor the body >>
         #@+node:edream.111303201144.6:<< recolor the body >>
         if 0:  ### Not ready yet.
@@ -1313,7 +1302,7 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         return
     
         c = self.c ; tree = self.tree ; v = self.editVnode
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        w = c.frame.body.bodyCtrl
     
         if v and c.edit_widget(v):
             tree.select(v)
@@ -1322,7 +1311,7 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
             # 3/26/03: changed redraw_now to force_redraw.
             tree.force_redraw() # force a redraw of joined headlines.
     
-        gui.set_focus(c,w)
+        g.app.gui.set_focus(c,w)
     #@nonl
     #@-node:edream.111303101257.1:endEditLabelCommand
     #@+node:edream.111303100039.6:insertHeadlineTime
@@ -1332,20 +1321,17 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         return
     
         frame = self ; c = frame.c
-        gui = g.app.gui ; w = c.edit_widget(v)
+        w = c.edit_widget(v)
         v = c.currentVnode()
         h = v.headString() # Remember the old value.
     
         if w:
-            s = gui.getAllText(w)
-            sel1,sel2 = gui.getSelectionRange(w,python=True)
-            if sel1 and sel2 and sel1 != sel2:
-                ###c.edit_widget(v).delete(sel1,sel2)
-                gui.rawDelete(w,s,sel1,sel2,python=True)
-            ###c.edit_widget(v).insert("insert",c.getTime(body=False))
             stamp = c.getTime(body=False)
-            i = gui.getInsertPoint(w,python=True)
-            gui.rawInsert(w,s,i,stamp, python=True)
+            sel1,sel2 = w.getSelectionRange()
+            if sel1 and sel2 and sel1 != sel2:
+                w.delete(sel1,sel2)
+            i = w.getInsertPoint()
+            w.insert(i,stamp)
             frame.idle_head_key(v)
     
         # A kludge to get around not knowing whether we are editing or not.
@@ -2284,7 +2270,7 @@ class wxLeoTree (leoFrame.leoTree):
     def select (self,p,updateBeadList=True):
         
         c = self.c ; frame = c.frame
-        gui = g.app.gui ;  body = w = frame.bodyCtrl
+        body = w = frame.bodyCtrl
         old_p = c.currentPosition()
     
         if not p: return
@@ -2303,7 +2289,7 @@ class wxLeoTree (leoFrame.leoTree):
                 if 0:  ### Not ready yet.
             
                     yview=body.yview()
-                    insertSpot = gui.getInsertPoint(w)
+                    insertSpot = w.getInsertPoint()
                     
                     if old_p != p:
                         # g.trace("unselect:",old_p.headString())
@@ -2630,6 +2616,24 @@ class wxLeoTree (leoFrame.leoTree):
     #@-others
 #@nonl
 #@-node:edream.111603213219:wxLeoTree class
+#@+node:ekr.20061114102528:wxLeoBodyCtrl class TO DO
+class wxLeoBodyCtrl:
+    
+    #@    @+others
+    #@+node:ekr.20061105125717:w.toGuiIndex & toPythonIndex
+    # This plugin uses Python indices everywhere, so are do-nothings.
+    
+    def toGuiIndex (self,s,w,index):
+        
+        return index
+    
+    def toPythonIndex (self,s,w,index):
+    
+        return index
+    #@-node:ekr.20061105125717:w.toGuiIndex & toPythonIndex
+    #@-others
+#@nonl
+#@-node:ekr.20061114102528:wxLeoBodyCtrl class TO DO
 #@+node:edream.110203113231.560:Find...
 #@+node:edream.111503093140:wxSearchWidget
 class wxSearchWidget:

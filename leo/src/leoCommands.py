@@ -1694,7 +1694,7 @@ class baseCommands:
         
         w.setInsertPoint(ins)
         c.bodyWantsFocusNow()
-        gui.seeInsertPoint(w)
+        w.seeInsertPoint()
         #@-node:ekr.20031218072017.2876:<< put the cursor on line n2 of the body text >>
         #@nl
     #@+node:ekr.20031218072017.2877:convertLineToVnodeNameIndexLine
@@ -2700,7 +2700,7 @@ class baseCommands:
             #@nl
             #@        << update the body, selection & undo state >>
             #@+node:ekr.20031218072017.1837:<< update the body, selection & undo state >>
-            junk, ins = body.setSelectionAreas(head,result,tail,python=True)
+            junk, ins = body.setSelectionAreas(head,result,tail)
             
             # Advance to the next paragraph.
             s = w.getAllText()
@@ -2757,8 +2757,7 @@ class baseCommands:
         if oldYview:
             body.setYScrollPosition(oldYview)
         else:
-            ### body.seeInsertPoint()
-            gui.seeInsertPoint(w)
+            body.seeInsertPoint()
     
         body.setFocus()
         c.recolor()
@@ -5900,7 +5899,7 @@ class baseCommands:
         c = self ; brackets = "()[]{}"
         body = c.frame.body
         s = body.getAllText()
-        ins = body.getInsertPoint(python=True)
+        ins = body.getInsertPoint()
         c1 = 0 <= ins   < len(s) and s[ins] or ''
         c2 = 0 <= ins-1 < len(s) and s[ins-1] or ''
         
@@ -6387,7 +6386,7 @@ class baseCommands:
         if t:
             state = t.cget("state")
             t.configure(state="normal")
-            g.app.gui.setAllText(t,s)
+            t.setAllText(s)
             t.configure(state=state,width=c.frame.tree.headWidth(s=s))
     
         p.setDirty()

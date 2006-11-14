@@ -421,19 +421,18 @@ def insertWikiMarkup(c,leftTag,rightTag):
     
     if not c or not c.exists: return
     
-    body = c.frame.body
-    oldSel = body.bodyCtrl.tag_ranges("sel")
+    body = c.frame.body ; w = body.bodyCtrl
+    oldSel = w.getSelectionPoint()
     if oldSel:
         #@        << apply markup to selection >>
         #@+node:edream.110403140857.27:<< apply markup to selection >>
         start,end = oldSel
-        body.bodyCtrl.insert(start, leftTag)
+        w.insert(start, leftTag)
         # we need to review where the selection now ends
-        start,end = body.bodyCtrl.tag_ranges("sel")
-        body.bodyCtrl.insert(end, rightTag)
-        g.app.gui.setSelectionRange(body.bodyCtrl, start + "-" + `len(leftTag)`  + "c",
-                                 end + "+" + `len(rightTag)` + "c")
-        newSel = body.getSelectionRange()
+        start,end = w.getSelectionRange() ### body.bodyCtrl.tag_ranges("sel")
+        w.insert(end, rightTag)
+        w.setSelectionRange(start-len(leftTag),end+len(rightTag))
+        newSel = w.getSelectionRange()
         c.frame.onBodyChanged("Change",oldSel=oldSel)
         #@-node:edream.110403140857.27:<< apply markup to selection >>
         #@nl

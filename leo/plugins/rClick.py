@@ -90,7 +90,7 @@ def rClicker(tag,keywords):
     c = keywords.get("c")
     e = keywords.get("event")
     if not c or not c.exists or not e: return
-    gui = g.app.gui ; w = c.frame.body.bodyCtrl
+    w = c.frame.body.bodyCtrl
 
     e.widget.focus()
 
@@ -156,14 +156,14 @@ def rClicker(tag,keywords):
         if text:
             word = text.strip()
         else:
-            ind0,ind1 = gui.getSelectionRange(w,python=False)
+            ind0,ind1 = w.getSelectionRange()
             n0,p0=ind0.split('.',2)
             n1,p1=ind1.split('.',2)
             assert n0==n1
             assert p0==p1
-            s = gui.getAllText(w)
+            s = w.getAllText()
             index = w.index(n0+".0")
-            index = gui.toPythonIndex(s,w,index)
+            index = w.toPythonIndex(index)
             i,j = g.getLine(s,index)
             text = s[i:j]
             word=getword(text,int(p0))
@@ -322,7 +322,7 @@ def rc_selectAll(c):
     
     """Select the entire log pane."""
     
-    g.app.gui.setSelectionRange(c.frame.log.logCtrl,"1.0","end")
+    c.frame.log.logCtrl.selectAllText()
 #@nonl
 #@-node:ekr.20040422072343.4:rc_selectAll
 #@+node:ekr.20040422072343.9:Utils for context sensitive commands

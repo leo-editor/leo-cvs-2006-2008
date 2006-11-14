@@ -86,11 +86,11 @@ class rowColClass:
         if g.app.killed or not c or not hasattr(c,'frame'):
             return
     
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl ; 
+        w = c.frame.body.bodyCtrl 
         tab_width = c.frame.tab_width
     
-        s = gui.getAllText(w)
-        index = gui.getInsertPoint(w,python=True)
+        s = w.getAllText()
+        index = w.getInsertPoint()
         row,col = g.convertPythonIndexToRowCol(s,index)
     
         if col > 0:

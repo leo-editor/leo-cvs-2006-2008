@@ -165,7 +165,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             data = w.getSelectionRange()
             if data: start,end = data
             else: start = end = w.getInsertPoint()
-            w.replaceSelectionRangeWithText(start,end,"\t")
+            w.replace(start,end,"\t")
             return "break"
         
         def insertFindTab(event,w=ftxt): return insertTab(w)

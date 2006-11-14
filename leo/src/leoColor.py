@@ -2437,9 +2437,8 @@ class baseColorizer:
         if j == -1:
             return i + 2
         else:
-            s = w.getAllText()
             # includes brackets
-            start,end = gui.toPythonIndex(s,w,self.index(i)),gui.toPythonIndex(s,w,self.index(j+k))
+            start,end = w.toPythonIndex(self.index(i)),w.toPythonIndex(self.index(j+k))
             searchName = s[start:end]
             ref = g.findReference(c,searchName,self.p)
             if ref:
@@ -2651,7 +2650,7 @@ class baseColorizer:
     def index (self,i):
     
         i = g.convertRowColToPythonIndex(self.allBodyText,self.line_index-1,i)
-        val = g.app.gui.toGuiIndex(self.allBodyText,self.body.bodyCtrl,i)
+        val = self.body.bodyCtrl.toGuiIndex(i)
         return val
     
     def tag (self,name,i,j):
