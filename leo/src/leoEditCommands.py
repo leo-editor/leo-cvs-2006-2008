@@ -5447,8 +5447,10 @@ class killBufferCommandsClass (baseEditCommandsClass):
     
     def killLine (self,event):
         '''Kill the line containing the cursor.'''
-        self.kill(event,'insert linestart','insert lineend+1c',undoType='kill-line')
-    #@nonl
+        w = self.editWidget(event)
+        if not w: return
+        i,j = g.getLine(w.getAllText(),w.getInsertPoint())
+        self.kill(event,i,j,undoType='kill-line')
     #@-node:ekr.20050920084036.178:kill, killLine
     #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     def killRegion (self,event):
@@ -5531,8 +5533,10 @@ class killBufferCommandsClass (baseEditCommandsClass):
             self.reset = True
             s = clip_text or self.kbiterator.next()
             w.tag_delete('kb')
-            w.insert(i,('kb'))
-            w.mark_set('insert',i)
+            ###w.insert(i,s,('kb'))
+            w.insert(i,s) # Insert the text, marked with the 'kb' tag.
+            w.tag_add('kb',w.toGuiIndex(i),w.toGuiIndex(i+len(s)))
+            w.setInsertPoint(i+len(s))
             c.frame.body.forceFullRecolor()
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930091642.1:yank
