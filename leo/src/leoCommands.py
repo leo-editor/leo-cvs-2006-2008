@@ -1684,7 +1684,7 @@ class baseCommands:
         #@+node:ekr.20031218072017.2876:<< put the cursor on line n2 of the body text >>
         s = w.getAllText()
         if found:
-            ins = g.convertRowColToPythonIndex(s,n2,0)    
+            ins = g.convertRowColToPythonIndex(s,n2-1,0)    
             # c.frame.body.setInsertPointToStartOfLine(n2-1)
         else:
             #c.frame.body.setInsertionPointToEnd()
