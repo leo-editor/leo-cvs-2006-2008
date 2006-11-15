@@ -41,6 +41,14 @@ import traceback
 
 try:
     import wx
+    # The RichTextCtrl does not exist on windows, but the plain TextCtrl widget can use native Windows RichText widgets.
+    # for space,name in ((wx,'wx'),(wx.wx,'wx.wx')):
+        # aList = list(dir(space))
+        # aList.sort()
+        # print '---- %s' % name
+        # for s in aList:
+            # if s.lower().find('rich') != -1: print s
+    
 except ImportError:
     g.es_print('wx_gui plugin: can not import wxPython')
     raise # Tell the plugins manager that we did not load properly.
@@ -109,7 +117,7 @@ class wxGui(leoGui.leoGui):
             
         self.bitmap_name = None
         self.bitmap = None
-    #@nonl
+        self.leoTextWidgetClass = leoWxTextWidget
     #@-node:edream.110203113231.307: wxGui.__init__
     #@+node:edream.110203113231.308:createRootWindow
     def createRootWindow(self):
@@ -593,13 +601,28 @@ class wxLeoBody (leoFrame.leoBody):
     #@+node:edream.110203113231.542:wxBody.createControl
     def createControl (self,frame,parentFrame):
         
-        ctrl = wx.TextCtrl(parentFrame,
-                const("cBodyCtrl"), "",
-                wx.DefaultPosition, wx.DefaultSize,
-                wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE)
-    
-        return ctrl
+        return g.app.gui.leoTextWidgetClass(
+                parent = parentFrame,
+                ##const("cBodyCtrl"),
+                ##"",
+                pos = wx.DefaultPosition,
+                size = wx.DefaultSize,
+                style = (wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE),
+                name = 'body',
+            )
+       
+    #@+at 
     #@nonl
+    # wxTextCtrl(
+    #     wxWindow* parent,
+    #     wxWindowID id,
+    #     const wxString& value = "",
+    #     const wxPoint& pos = wxDefaultPosition,
+    #     const wxSize& size = wxDefaultSize,
+    #     long style = 0, const wxValidator& validator = wxDefaultValidator,
+    #     const wxString& name = wxTextCtrlNameStr)
+    # 
+    #@-at
     #@-node:edream.110203113231.542:wxBody.createControl
     #@+node:ekr.20061111183138:wxBody.setEditorColors
     def setEditorColors (self,bg,fg):
@@ -614,52 +637,26 @@ class wxLeoBody (leoFrame.leoBody):
         return self.bodyCtrl.GetClientSizeTuple()  
     #@nonl
     #@-node:edream.110203113231.543:Bounding box...
-    #@+node:edream.111303204517:Color tags (wxBody) (to do)
-    #@+node:edream.111303205611:tag_add
+    #@+node:edream.111303204517:Color tags (wxBody)
+    #@+node:edream.111303205611:wxBody.tag_add
     def tag_add (self,tagName,index1,index2):
         
-        g.trace(tagName,repr(index1),repr(index2),g.callers())
-    
-        style = self.styles.get(tagName)
-        if style:
-            self.bodyCtrl.SetStyle(index1,index2,style)
+        return self.bodyCtrl.tag_add(tagName,index1,index2)
+        
     #@nonl
-    #@-node:edream.111303205611:tag_add
-    #@+node:edream.111303205611.1:tag_bind
+    #@-node:edream.111303205611:wxBody.tag_add
+    #@+node:edream.111303205611.1:wxBody.tag_bind
     def tag_bind (self,tagName,event,callback):
         
-        # g.trace(tagName,event,callback)
+        g.trace(tagName,event,callback)
         pass
-    #@-node:edream.111303205611.1:tag_bind
-    #@+node:edream.111303205611.2:tag_configure & helper
+    #@-node:edream.111303205611.1:wxBody.tag_bind
+    #@+node:edream.111303205611.2:wxBody.tag_configure
     def tag_configure (self,colorName,**keys):
         
-        foreground = keys.get("foreground")
-        background = keys.get("background")
-    
-        fcolor = self.tkColorToWxColor (foreground) or wx.BLACK
-        bcolor = self.tkColorToWxColor (background) or wx.WHITE
-        # g.trace('%20s %10s %15s %10s %15s' % (colorName,foreground,fcolor,background,bcolor))
-        style = wx.TextAttr(fcolor,bcolor)
-        self.styles[colorName] = style
-    #@nonl
-    #@+node:edream.111403082513:tkColorToWxColor
-    def tkColorToWxColor (self, color):
-        
-        d = {
-            'black':        wx.BLACK,
-            "red":          wx.RED,
-            "blue":         wx.BLUE,
-            "#00aa00":      wx.GREEN,
-            "firebrick3":   wx.RED,
-            'white':        wx.WHITE,
-        }
-            
-        return d.get(color)
-    #@nonl
-    #@-node:edream.111403082513:tkColorToWxColor
-    #@-node:edream.111303205611.2:tag_configure & helper
-    #@+node:edream.111303205611.3:tag_delete
+        return self.bodyCtrl.tag_configure(colorName,**keys)
+    #@-node:edream.111303205611.2:wxBody.tag_configure
+    #@+node:edream.111303205611.3:wxBody.tag_delete
     def tag_delete(self,tagName):
     
         if tagName == "keyword": # A kludge.
@@ -671,14 +668,14 @@ class wxLeoBody (leoFrame.leoBody):
             if 1: # This may cause the screen flash.
                 self.bodyCtrl.SetStyle(0,last,style)
     #@nonl
-    #@-node:edream.111303205611.3:tag_delete
-    #@+node:edream.111303205611.4:tag_remove
+    #@-node:edream.111303205611.3:wxBody.tag_delete
+    #@+node:edream.111303205611.4:wxBody.tag_remove
     def tag_remove (self,tagName,index1,index2):
         
         g.trace(tagName,index1,index2)
         pass
-    #@-node:edream.111303205611.4:tag_remove
-    #@-node:edream.111303204517:Color tags (wxBody) (to do)
+    #@-node:edream.111303205611.4:wxBody.tag_remove
+    #@-node:edream.111303204517:Color tags (wxBody)
     #@+node:edream.110203113231.544:Configuration (wxBody) (To do)
     def cget(self,*args,**keys):
         
@@ -1550,10 +1547,11 @@ class wxLeoLog (leoFrame.leoLog):
     #@+node:edream.110203113231.557:leoLog.createControl
     def createControl (self,parentFrame):
     
-        ctrl = wx.TextCtrl(parentFrame,
+        ctrl = g.app.gui.leoTextWidgetClass(
+            parentFrame,
             const("cLogCtrl"), "",
             wx.DefaultPosition, wx.DefaultSize,
-            wx.TE_MULTILINE )
+            wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE)
             
         return ctrl
     #@nonl
@@ -2024,7 +2022,7 @@ class wxLeoTree (leoFrame.leoTree):
         g.trace()
     #@nonl
     #@-node:edream.111403090242.1:Editing TO DO
-    #@+node:edream.110203113231.278:Event handlers
+    #@+node:edream.110203113231.278:Event handlers (wxTree)
     #@+node:edream.110203113231.279:Expand/contract
     #@+node:edream.110203113231.280:onTreeCollapsed & onTreeExpanded
     def onTreeCollapsed(self,event):
@@ -2070,7 +2068,7 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:edream.110203113231.281:onTreeCollapsing & onTreeExpanding
     #@-node:edream.110203113231.279:Expand/contract
     #@+node:edream.110203113231.282:Selecting
-    #@+node:edream.110203113231.283:onTreeChanged
+    #@+node:edream.110203113231.283:onTreeChanged (must handle positions properly)
     def onTreeChanged(self,event):
     
         frame = self ; c = self.c ; tree = self.treeCtrl
@@ -2086,15 +2084,15 @@ class wxLeoTree (leoFrame.leoTree):
         c.selectVnode(v)
         s = v.t.bodyString
         s = g.toUnicode(s,"utf-8")  # No g.app.tkEncoding or similar yet.
-        t = self.frame.body.bodyCtrl
-        g.trace('widget',t)
-        t.Clear()
-        t.WriteText(s)
+        w = self.frame.body.bodyCtrl
+        g.trace()
+        w.Clear()
+        w.WriteText(s)
         self.frame.body.recolor(v)
         
         self.frame.lockout -= 1
     #@nonl
-    #@-node:edream.110203113231.283:onTreeChanged
+    #@-node:edream.110203113231.283:onTreeChanged (must handle positions properly)
     #@+node:edream.110203113231.284:onTreeChanging
     def onTreeChanging(self,event):
         
@@ -2239,7 +2237,7 @@ class wxLeoTree (leoFrame.leoTree):
         self.c.setChanged(True)
     #@-node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
     #@-node:ekr.20061105114250.1:Dragging
-    #@-node:edream.110203113231.278:Event handlers
+    #@-node:edream.110203113231.278:Event handlers (wxTree)
     #@+node:edream.111403093559:Focus
     def focus_get(self):
         
@@ -2616,24 +2614,6 @@ class wxLeoTree (leoFrame.leoTree):
     #@-others
 #@nonl
 #@-node:edream.111603213219:wxLeoTree class
-#@+node:ekr.20061114102528:wxLeoBodyCtrl class TO DO
-class wxLeoBodyCtrl:
-    
-    #@    @+others
-    #@+node:ekr.20061105125717:w.toGuiIndex & toPythonIndex
-    # This plugin uses Python indices everywhere, so are do-nothings.
-    
-    def toGuiIndex (self,s,w,index):
-        
-        return index
-    
-    def toPythonIndex (self,s,w,index):
-    
-        return index
-    #@-node:ekr.20061105125717:w.toGuiIndex & toPythonIndex
-    #@-others
-#@nonl
-#@-node:ekr.20061114102528:wxLeoBodyCtrl class TO DO
 #@+node:edream.110203113231.560:Find...
 #@+node:edream.111503093140:wxSearchWidget
 class wxSearchWidget:
@@ -2729,7 +2709,7 @@ class wxFindFrame (wx.Frame,leoFind.leoFind):
         self.dict = {} # For communication between panel and frame.
         self.findPanel = wxFindPanel(self)
         
-        self.s_text = wxSearchWidget() # wx.TextCtrl(self,-1) # Working text widget.
+        self.s_text = wxSearchWidget() # Working text widget.
     
         #@    << resize the frame to fit the panel >>
         #@+node:edream.111503074302:<< resize the frame to fit the panel >>
@@ -2941,7 +2921,8 @@ class wxFindPanel (wx.Panel):
         
         # Text.
         id = const("find_text")
-        self.findText = wx.TextCtrl(self,
+        self.findText = self.leoTextWidgetClass (
+            self,
             id,"",
             wx.DefaultPosition, wx.Size(500,60),
             wx.TE_PROCESS_TAB | wx.TE_MULTILINE,
@@ -2971,7 +2952,8 @@ class wxFindPanel (wx.Panel):
         
         # Text.
         id = const("change_text")
-        self.changeText = wx.TextCtrl(self,
+        self.changeText = self.leoTextWidgetClass (
+            self,
             id,"",
             wx.DefaultPosition, wx.Size(500,60),
             wx.TE_PROCESS_TAB | wx.TE_MULTILINE,
@@ -3188,6 +3170,324 @@ class wxFindPanel (wx.Panel):
 #@nonl
 #@-node:edream.110203113231.588:wxFindPanel class
 #@-node:edream.110203113231.560:Find...
+#@+node:ekr.20061115122034:class leoWxTextWidget (wx.RichTextCtrl)
+# For the ctors of these widgets, look for g.app.gui.leoTextWidgetClass
+
+class leoWxTextWidget (wx.TextCtrl):
+    
+    '''A class to wrap the Tk.Text widget.
+    Translates Python (integer) indices to and from Tk (string) indices.
+    
+    This class inherits almost all tkText methods: you call use them as usual.'''
+    
+    # The signatures of tag_add and insert are different from the Tk.Text signatures.
+    __pychecker__ = '--no-override' # suppress warning about changed signature.
+        
+    def __repr__(self):
+        ###name = g.app.gui.widget_name(self)
+        return 'leoWxTextWidget: %s' % (id(self))
+        
+    #@    @+others
+    #@+node:ekr.20061105125717:w.toGuiIndex & toPythonIndex
+    # This plugin uses Python indices everywhere, so these are do-nothings.
+    
+    def toGuiIndex (self,index):
+        
+        if index == '1.0':
+            return 0
+        elif index == 'end':
+            return len(s)
+        else:
+            return index
+    
+    def toPythonIndex (self,index):
+        
+        if index == '1.0':
+            return 0
+        elif index == 'end':
+            return len(s)
+        else:
+            return index
+    #@-node:ekr.20061105125717:w.toGuiIndex & toPythonIndex
+    #@+node:ekr.20061115122034.2:Wrapper methods
+    #@+node:ekr.20061115122034.3:delete
+    def delete(self,i,j=None):
+    
+        w = self
+        i = w.toGuiIndex(i)
+        if j is None: j = i+1
+        j = w.toGuiIndex(j)
+    
+        g.trace(i,j,len(s),repr(s[:20]))
+        wx.TextCtrl.Replace(i,j,'')
+    #@-node:ekr.20061115122034.3:delete
+    #@+node:ekr.20061115122034.4:get
+    def get(self,i,j=None):
+    
+        w = self
+        i = w.toGuiIndex(i)
+        if j is None: j = i+ 1
+        j = w.toGuiIndex(j)
+        
+        s = wx.TextCtrl.GetRange(w,i,j)
+        return g.toUnicode(s,g.app.tkEncoding)
+    #@-node:ekr.20061115122034.4:get
+    #@+node:ekr.20061115122034.5:insert
+    # The signature is more restrictive than the Tk.Text.insert method.
+    
+    def insert(self,i,s):
+        
+        w = self
+        i = w.toGuiIndex(i)
+        
+        g.trace(len(s),repr(s[:20]))
+        wx.TextCtrl.SetInsertionPoint(w,i)
+        wx.TextCtrl.WriteText(w,s)
+    #@-node:ekr.20061115122034.5:insert
+    #@+node:ekr.20061115122034.6:mark_set (do-nothing)
+    def mark_set(self,markName,i):
+    
+        w = self
+        i = w.toGuiIndex(i)
+        
+        ### Tk.Text.mark_set(w,markName,i)
+    #@-node:ekr.20061115122034.6:mark_set (do-nothing)
+    #@+node:ekr.20061115122034.7:tag_add
+    # The signature is slightly different than the Tk.Text.insert method.
+    
+    def tag_add(self,tagName,i,j=None,*args):
+        
+        # g.trace(tagName,repr(i),repr(j),g.callers())
+    
+        w = self
+        i = w.toGuiIndex(i)
+        if j is None: j = i + 1
+        j = w.toGuiIndex(j)
+        
+        if not hasattr(w,'leo_styles'):
+            w.leo_styles = {}
+    
+        style = w.leo_styles.get(tagName)
+    
+        if style is not None:
+            # g.trace(i,j,'tagName',tagName,'style',style,'args',args)
+            g.trace(i,j,tagName)
+            wx.TextCtrl.SetStyle(w,i,j,style)
+    #@nonl
+    #@-node:ekr.20061115122034.7:tag_add
+    #@+node:ekr.20061115135849:tag_configure & helper
+    def tag_configure (self,colorName,**keys):
+        
+        # g.trace(colorName,keys)
+        
+        w = self
+        foreground = keys.get("foreground")
+        background = keys.get("background")
+    
+        fcolor = self.tkColorToWxColor (foreground) or wx.BLACK
+        bcolor = self.tkColorToWxColor (background) or wx.WHITE
+        # g.trace('%20s %10s %15s %10s %15s' % (colorName,foreground,fcolor,background,bcolor))
+        style = wx.TextAttr(fcolor,bcolor)
+        
+        if not hasattr(w,'leo_styles'):
+            w.leo_styles={}
+    
+        if style is not None:
+            # g.trace(colorName,style)
+            w.leo_styles[colorName] = style
+    #@nonl
+    #@+node:ekr.20061115135849.1:tkColorToWxColor
+    def tkColorToWxColor (self, color):
+        
+        d = {
+            'black':        wx.BLACK,
+            "red":          wx.RED,
+            "blue":         wx.BLUE,
+            "#00aa00":      wx.GREEN,
+            "firebrick3":   wx.RED,
+            'white':        wx.WHITE,
+        }
+            
+        return d.get(color)
+    #@nonl
+    #@-node:ekr.20061115135849.1:tkColorToWxColor
+    #@-node:ekr.20061115135849:tag_configure & helper
+    #@+node:ekr.20061115122034.8:tag_ranges (do-nothing)
+    def tag_ranges(self,tagName):
+        
+        return tuple() ###
+        
+        w = self
+        aList = Tk.Text.tag_ranges(w,tagName)
+        aList = [w.toPythonIndex(z) for z in aList]
+        return tuple(aList)
+    #@-node:ekr.20061115122034.8:tag_ranges (do-nothing)
+    #@-node:ekr.20061115122034.2:Wrapper methods
+    #@+node:ekr.20061115122034.9:Convenience methods (tkTextWidget)
+    # These have no direct Tk equivalents.  They used to be defined in the gui class.
+    # These methods must take care not to call overridden methods.
+    #@+node:ekr.20061115122034.10:deleteTextSelection (to do)
+    def deleteTextSelection (self): # tkTextWidget
+        
+        w = self
+    
+        i,j = w.getSelectionRange()
+        if i != j:
+            s = w.getAllText()
+            del s[i:j]
+            g.trace(len(s),repr(s[:20]))
+            wx.TextCtrl.SetValue(w,s)
+    #@-node:ekr.20061115122034.10:deleteTextSelection (to do)
+    #@+node:ekr.20061115122034.11:flashCharacter (to do)
+    def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
+    
+        w = self
+        
+        return ###
+    
+        def addFlashCallback(w,count,index):
+            # g.trace(count,index)
+            i,j = w.toGuiIndex(index),w.toGuiIndex(index+1)
+            Tk.Text.tag_add(w,'flash',i,j)
+            Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
+        
+        def removeFlashCallback(w,count,index):
+            # g.trace(count,index)
+            Tk.Text.tag_remove(w,'flash','1.0','end')
+            if count > 0:
+                Tk.Text.after(w,delay,addFlashCallback,w,count,index)
+    
+        try:
+            Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
+            addFlashCallback(w,flashes,i)
+        except Exception:
+            pass ; g.es_exception()
+    #@nonl
+    #@-node:ekr.20061115122034.11:flashCharacter (to do)
+    #@+node:edream.111303093953.18:getAllText (test)
+    def getAllText (self):
+        
+        w = self
+        s =  wx.TextCtrl.GetValue(w)
+        
+        if s is None:
+            return u""
+        else:
+            return g.toUnicode(s,g.app.tkEncoding)
+    #@nonl
+    #@-node:edream.111303093953.18:getAllText (test)
+    #@+node:edream.111303093953.9:getInsertPoint (test)
+    def getInsertPoint(self):
+        
+        w = self
+    
+        return  wx.TextCtrl.GetInsertionPoint(w)
+    #@-node:edream.111303093953.9:getInsertPoint (test)
+    #@+node:ekr.20061115122034.14:getSelectedText (test)
+    def getSelectedText (self): # tkTextWidget.
+    
+        w = self
+        
+        s = wx.TextCtrl.GetStringSelection(w)
+        return g.toUnicode(s,g.app.tkEncoding)
+    #@-node:ekr.20061115122034.14:getSelectedText (test)
+    #@+node:edream.111303093953.13:getSelectionRange (test)
+    def getSelectionRange (self,sort=True):
+        
+        """Return a tuple representing the selected range of the widget.
+        
+        Return a tuple giving the insertion point if no range of text is selected."""
+    
+        # To get the current selection
+        w = self
+        sel =  wx.TextCtrl.GetSelection(w)
+        if len(sel) == 2:
+            i,j = sel
+            if sort and i > j: i,j = j,i
+            return sel
+        else:
+            # Return the insertion point if there is no selected text.
+            i =  wx.TextCtrl.GetInsertionPoint(w)
+            return i,i
+    #@nonl
+    #@-node:edream.111303093953.13:getSelectionRange (test)
+    #@+node:ekr.20061115122034.16:hasSelection (test)
+    def hasSelection (self):
+        
+        w = self
+        i,j = w.getSelectionRange()
+        return i != j
+    #@-node:ekr.20061115122034.16:hasSelection (test)
+    #@+node:ekr.20061115122034.17:replace (test) (could be in the base class)
+    def replace (self,i,j,s):
+        
+        w = self
+        w.delete(i,j)
+        w.insert(i,s)
+    #@-node:ekr.20061115122034.17:replace (test) (could be in the base class)
+    #@+node:ekr.20061115122034.18:selectAllText (test) (could be in the base class)
+    def selectAllText (self,insert=None):
+        
+        '''Select all text of the widget, *not* including the extra newline.'''
+        
+        w = self
+        s = w.getAllText()
+        w.setSelectionRange(0,len(s),insert=insert)
+    #@-node:ekr.20061115122034.18:selectAllText (test) (could be in the base class)
+    #@+node:ekr.20061115122034.19:setAllText  (test) (could be in base class)  TO DO
+    def setAllText (self,s):
+    
+        w = self
+        g.trace(len(s),repr(s[:20]))
+        w.delete(0,'end')
+        w.insert(0,s)
+    #@-node:ekr.20061115122034.19:setAllText  (test) (could be in base class)  TO DO
+    #@+node:edream.111303093953.25:see & seeInsertPoint (test)
+    def see(self,index):
+    
+        w = self
+        wx.TextCtrl.ShowPosition(w,w.toGuiIndex(index))
+    
+    def seeInsertPoint(self):
+        
+        w = self
+        wx.TextCtrl.ShowPosition(w,w.GetInsertionPoint())
+    #@-node:edream.111303093953.25:see & seeInsertPoint (test)
+    #@+node:edream.111303093953.10:setInsertPoint (test)
+    def setInsertPoint (self,pos):
+    
+        w = self
+    
+        wx.TextCtrl.SetInsertionPoint(w,w.toGuiIndex(pos))
+    #@nonl
+    #@-node:edream.111303093953.10:setInsertPoint (test)
+    #@+node:edream.111303093953.16:setSelectionRange (test)
+    def setSelectionRange (self,i,j,insert=None):
+        
+        w = self
+        
+        wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+    
+        if insert is not None:
+            wx.TextCtrl.SetInsertionPoint(w,w.toGuiIndex(insert))
+    #@-node:edream.111303093953.16:setSelectionRange (test)
+    #@+node:ekr.20061115122034.24:xyToGui/PythonIndex (passed)
+    def xyToGuiIndex (self,x,y): # tkTextWidget
+        
+        w = self
+        return Tk.Text.index(w,"@%d,%d" % (x,y))
+        
+    def xyToPythonIndex(self,x,y): # tkTextWidget
+        
+        w = self
+        i = Tk.Text.index(w,"@%d,%d" % (x,y))
+        i = w.toPythonIndex(i)
+        return i
+    #@-node:ekr.20061115122034.24:xyToGui/PythonIndex (passed)
+    #@-node:ekr.20061115122034.9:Convenience methods (tkTextWidget)
+    #@-others
+#@nonl
+#@-node:ekr.20061115122034:class leoWxTextWidget (wx.RichTextCtrl)
 #@-others
 #@nonl
 #@-node:edream.110203113231.302:@thin __wx_gui.py
