@@ -2385,7 +2385,8 @@ class baseCommands:
             return
         
         index2 = self.findMatchingBracketHelper(s,ch,index)
-        if index2:
+        # g.trace('index,index2',index,index2)
+        if index2 is not None:
             if index2 < index:
                 w.setSelectionRange(index2,index+1,insert=index+1)
             else:
