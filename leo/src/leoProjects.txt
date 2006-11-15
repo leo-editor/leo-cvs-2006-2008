@@ -239,16 +239,19 @@ def search (self):
 
     c = self.c ; p = self.p ; w = self.s_ctrl
     index = w.getInsertPoint()
-    #g.trace(g.app.gui.widget_name(w),index,p.headString())
+    
     s = w.getAllText()
-    stopindex = g.choose(self.reverse,0,len(s))
+    # g.trace(index,repr(s[index:index+20]))
+    stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
     pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
         backwards=self.reverse,nocase=self.ignore_case,
         regexp=self.pattern_match,word=self.whole_word)
+    # g.trace('pos,newpos',pos,newpos)
     if pos == -1: return None,None
     << fail if we are passed the wrap point >>
-    w.setSelectionRange(pos,newpos,insert=newpos)
-    return pos, newpos
+    insert = g.choose(self.reverse,min(pos,newpos),max(pos,newpos))
+    w.setSelectionRange(pos,newpos,insert=insert)
+    return pos,newpos
 #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
 if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
 

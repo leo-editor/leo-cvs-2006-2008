@@ -9,98 +9,24 @@
 
 @color
 #@nonl
-#@+node:ekr.20061114074335:Fix bug: change command messes up the selection
-#@-node:ekr.20061114074335:Fix bug: change command messes up the selection
 #@+node:ekr.20061114122858:Suppress redraws as much as possible in the unit tests
 This might save a lot of time.
 #@nonl
 #@-node:ekr.20061114122858:Suppress redraws as much as possible in the unit tests
+#@+node:ekr.20061114145846:change t to w
+#@-node:ekr.20061114145846:change t to w
 #@+node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
 #@-node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
 #@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
 #@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
 #@+node:ekr.20061113171540:create nullTextWidget for nullGui
 #@-node:ekr.20061113171540:create nullTextWidget for nullGui
-#@+node:ekr.20061114092244:(Get bracket matching to work again)
-#@+node:ekr.20031218072017.1827:c.findMatchingBracket & helper
-def findMatchingBracket (self,event=None):
-    
-    '''Select the text between matching brackets.'''
-    
-    c = self ; w = c.frame.body.bodyCtrl
-    
-    if g.app.batchMode:
-        c.notValidInBatchMode("Match Brackets")
-        return
-
-    brackets = "()[]{}<>"
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    ch1 = 0 <= ins-1 < len(s) and s[ins-1] or ''
-    ch2 = 0 <= ins   < len(s) and s[ins] or ''
-    # g.trace(repr(ch1),repr(ch2))
-
-    # Prefer to match the character to the left of the cursor.
-    if ch1 in brackets:
-        ch = ch1 ; index = max(0,ins-1)
-    elif ch2 in brackets:
-        ch = ch2 ; index = ins
-    else:
-        return
-    
-    index2 = self.findMatchingBracketHelper(s,ch,index)
-    if index2:
-        if index2 < index:
-            w.setSelectionRange(index2,index+1,insert=index+1)
-        else:
-            w.setSelectionRange(index,index2+1,insert=index2+1)
-        w.see(index2)
-    else:
-        g.es("unmatched '%s'",ch)
-#@nonl
-#@+node:ekr.20061113221414:findMatchingBracketHelper
-# To do: replace comments with blanks before scanning.
-# Test  unmatched())
-def findMatchingBracketHelper(self,s,ch,index):
-    
-    c = self
-    open_brackets  = "([{<" ; close_brackets = ")]}>"
-    brackets = open_brackets + close_brackets
-    matching_brackets = close_brackets + open_brackets
-    forward = ch in open_brackets
-    # Find the character matching the initial bracket.
-    for n in xrange(len(brackets)):
-        if ch == brackets[n]:
-            match_ch = matching_brackets[n]
-            break
-    level = 0
-    while 1:
-        if forward and index >= len(s):
-            # g.trace("not found")
-            return None
-        ch2 = 0 <= index < len(s) and s[index] or ''
-        # g.trace('forward',forward,'ch2',repr(ch2),'index',index)
-        if ch2 == ch:
-            level += 1
-        if ch2 == match_ch:
-            level -= 1
-            if level <= 0:
-                return index
-        if not forward and index <= 0:
-            # g.trace("not found")
-            return None
-        index += g.choose(forward,1,-1)
-    return 0 # unreachable: keeps pychecker happy.
-# Test  (
-# ([(x){y}]))
-# Test  ((x)(unmatched
-#@-node:ekr.20061113221414:findMatchingBracketHelper
-#@-node:ekr.20031218072017.1827:c.findMatchingBracket & helper
-#@-node:ekr.20061114092244:(Get bracket matching to work again)
 #@+node:ekr.20061114122858.1:Define w.name method
 #@-node:ekr.20061114122858.1:Define w.name method
 #@+node:ekr.20061114122858.2:Test for i != j in w.replace
 #@-node:ekr.20061114122858.2:Test for i != j in w.replace
+#@+node:ekr.20061114145918:Run pychecker
+#@-node:ekr.20061114145918:Run pychecker
 #@-node:ekr.20061101021054:To do First
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20061028065955:To do first
@@ -2688,19 +2614,22 @@ def runEditCommandTest (c,p):
         aList = [str(z) for z in sel.split(',')]
         sels.append(tuple(aList))
     sel1,sel2 = sels
+    #g.trace(repr(sels))
     
     c.beginUpdate()
     try:
         c.selectPosition(work)
         c.setBodyString(work,before.bodyString())
-        w.setSelectionRange(sel1[0],sel1[1])
+        #g.trace(repr(sel1[0]),repr(sel1[1]))
+        w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
         assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
         sel3 = w.getSelectionRange()
-        s = w.getAllText()
+        ins = w.toGuiIndex(w.getInsertPoint())
         # The selection range is specified as Tk indices.
         i,j = sel3
+        #g.trace('ins',ins,'s1[j:...]',repr(s1[j:j+10]))
         i,j = w.toGuiIndex(i),w.toGuiIndex(j)
         sel3 = i,j
         assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
@@ -3353,7 +3282,7 @@ def createColorPicker (self,parent,colors):
     f2 = Tk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
     f3 = Tk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
     
-    label = g.app.gui.leoTextWidget(f1,height=1,width=20)
+    label = g.app.gui.leoTextWidgetClass(f1,height=1,width=20)
     label.insert('1.0','Color name or value...')
     label.pack(side='left',pady=6)
 
@@ -4016,9 +3945,16 @@ def backToIndentation (self,event):
 
     self.beginCommand(undoType='back-to-indentation')
 
-    i = w.index('insert linestart')
-    i2 = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
-    w.mark_set('insert',i2)
+    ###i = w.index('insert linestart')
+    s = w.getAllText()
+    i = w.getInsertPoint()
+    i,j = g.getLine(s,i)
+    i,j = w.toGuiIndex(i),w.toGuiIndex(j)
+
+    ###i2 = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
+    i2 = w.search(r'\w',i,j,regexp=True)
+    ###w.mark_set('insert',i2)
+    w.setInsertPoint(i2)
 
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.75:backToIndentation
@@ -5432,42 +5368,60 @@ def extendToParagraph (self,event):
     w = self.editWidget(event)
     if not w: return
 
-    txt = w.get('insert linestart','insert lineend')
-    txt = txt.strip()
-    i = w.index('insert')
+    s = w.getAllText()
+    i = w.getInsertPoint()
+    ##txt = w.get('insert linestart','insert lineend')
+    i,j = g.getLine(s,i)
+    txt = s[i:j].strip()
+    ###i = w.index('insert')
+    ###i = w.getInsertPoint()
 
     if not txt:
         while 1:
-            i = w.index('%s + 1 lines' % i)
-            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            ### i = w.index('%s + 1 lines' % i)
+            i,j = g.getLine(s,j+1)
+            ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            txt = s[i:j].strip()
             if txt:
                 self.selectParagraphHelper(w,i) ; break
-            if w.index('%s lineend' % i) == w.index('end'):
-                return
-
+            ###if w.index('%s lineend' % i) == w.index('end'):
+            if j >= len(s): return
     if txt:
         while 1:
-            i = w.index('%s - 1 lines' % i)
-            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
-            if not txt or w.index('%s linestart' % i) == w.index('1.0'):
-                if not txt: i = w.index('%s + 1 lines' % i)
+            ###i = w.index('%s - 1 lines' % i)
+            i,j = g.getLine(s,i-1)
+            ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            txt = s[i:j].strip()
+            if not txt or i == 0: ### w.index('%s linestart' % i) == w.index('1.0'):
+                if not txt: i = j ### i = w.index('%s + 1 lines' % i)
                 self.selectParagraphHelper(w,i)
                 break
+   
+#@nonl
 #@+node:ekr.20050920084036.97:selectParagraphHelper
 def selectParagraphHelper (self,w,start):
 
     i2 = start
+    s = w.getAllText()
     while 1:
-        txt = w.get('%s linestart' % i2,'%s lineend' % i2)
-        if w.index('%s lineend' % i2) == w.index('end'):
-            break
+        ### txt = w.get('%s linestart' % i2,'%s lineend' % i2)
+        i,j = g.getLine(s,i2)
+        txt = s[i:j]
+        ### if w.index('%s lineend' % i2) == w.index('end'):
+        if j >= len(s): break
         txt = txt.strip()
         if not txt: break
         else:
-            i2 = w.index('%s + 1 lines' % i2)
+            ###i2 = w.index('%s + 1 lines' % i2)
+            i2 = max(i2+1,j)
 
-    w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
-    w.mark_set('insert','%s lineend' % i2)
+    ###w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
+    ###w.mark_set('insert','%s lineend' % i2)
+    i,junk = g.getLine(s,start)
+    junk,j = g.getLine(s,i2)
+    w.tag_add('sel',i,j)
+    w.setInsertPoint(j)
+#@nonl
 #@-node:ekr.20050920084036.97:selectParagraphHelper
 #@-node:ekr.20050920084036.96:extend-to-paragraph & helper
 #@-node:ekr.20050920084036.95:paragraph...

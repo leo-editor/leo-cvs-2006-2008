@@ -2437,7 +2437,7 @@ def __init__(self,c,parentFrame):
     self.suggestions = []
     self.messages = [] # List of message to be displayed when hiding the tab.
     self.outerScrolledFrame = None
-    self.workCtrl = g.app.gui.leoTextWidget() # A text widget for scanning.
+    self.workCtrl = g.app.gui.leoTextWidgetClass() # A text widget for scanning.
     
     self.loaded = self.init_aspell(c)
     if self.loaded:

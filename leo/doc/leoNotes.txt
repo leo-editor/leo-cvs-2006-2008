@@ -2695,6 +2695,204 @@ def toPythonIndex (self,s,w,index):
 # def toPythonIndex (self,s,w,index):
    # self.oops()
 #@-node:ekr.20031218072017.3738:Index (g.app.gui)
+#@+node:ekr.20061110182241:Removed
+#@+node:ekr.20061111180614:Deleted from tkBody
+#@+node:ekr.20031218072017.4006:Indices (tkBody)
+#@+node:ekr.20031218072017.4007:adjustIndex (removed)
+# def adjustIndex (self,index,offset):
+    # t = self.bodyCtrl
+    # return t.index("%s + %dc" % (t.index(index),offset))
+#@-node:ekr.20031218072017.4007:adjustIndex (removed)
+#@+node:ekr.20031218072017.4008:compareIndices (removed)
+# def compareIndices(self,i,rel,j):
+    # return self.bodyCtrl.compare(i,rel,j)
+#@-node:ekr.20031218072017.4008:compareIndices (removed)
+#@+node:ekr.20031218072017.4011:getImageIndex (removed) (not used in plugins)
+# def getImageIndex (self,image):
+    # return self.bodyCtrl.index(image)
+#@-node:ekr.20031218072017.4011:getImageIndex (removed) (not used in plugins)
+#@-node:ekr.20031218072017.4006:Indices (tkBody)
+#@+node:ekr.20050710104804:getPythonTextSelection (tkBody)
+# def getPythonTextSelection (self):
+    # 
+    # """Return a tuple representing the selected range of body text.
+    # 
+    # Return a tuple giving the insertion point if no range of text is selected."""
+# 
+    # b = self ; t = self.bodyCtrl
+    # sel = t.tag_ranges("sel")
+# 
+    # if len(sel) == 2:
+        # s = t.get('1.0','end')
+        # i,j = sel
+        # row,col = b.convertIndexToRowColumn(i)
+        # i1 = g.convertRowColToPythonIndex(s,row-1,col)
+        # row,col = b.convertIndexToRowColumn(j)
+        # i2 = g.convertRowColToPythonIndex(s,row-1,col)
+        # return i1,i2
+    # else:
+        # # Return the insertion point if there is no selected text.
+        # i = self.getPythonTextSelection()
+        # return i,i
+# 
+#@nonl
+#@-node:ekr.20050710104804:getPythonTextSelection (tkBody)
+#@+node:ekr.20050710104804.1:setPythonTextSelection (tkBody)
+# def setPythonTextSelection(self,i,j):
+    # t = self.bodyCtrl
+    # s = t.get('1.0','end')
+    # row,col = g.convertPythonIndexToRowCol(s,i)
+    # i1 = '%d.%d' % (row+1,col)
+    # row,col = g.convertPythonIndexToRowCol(s,j)
+    # i2 = '%d.%d' % (row+1,col)
+    # g.app.gui.setSelectionRange(self.bodyCtrl,i1,i2)
+#@-node:ekr.20050710104804.1:setPythonTextSelection (tkBody)
+#@+node:ekr.20031218072017.3908:Tkinter wrappers (tkFind)
+def init_s_ctrl (self,s):
+    t = self.s_ctrl
+    t.delete("1.0","end")
+    t.insert("end",s)
+    t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
+    return t
+#@-node:ekr.20031218072017.3908:Tkinter wrappers (tkFind)
+#@-node:ekr.20061111180614:Deleted from tkBody
+#@+node:ekr.20050204090259:tkFind.adjust_find_text
+def adjust_find_text(self,s):
+    
+    w = self.find_ctrl
+    
+    w.delete("1.0","end")
+    w.insert("end",s)
+#@-node:ekr.20050204090259:tkFind.adjust_find_text
+#@+node:ekr.20050204084635:find.adjust_ivars
+def adjust_ivars (self):
+    
+    '''New in 4.3.
+    
+    Adjust ivars, particularly the find and change text.
+    This is called just before executing a command and
+    just after calling update_ivars.
+    
+    Plugins may replace this code as desired.'''
+    
+    if 0:
+        # The TkFind class now removes tailing newlines.
+    
+        ft = self.find_text
+        if not ft: return
+    
+        # Remove a trailing newline unless that is all there is.
+        if len(ft) > 1 and ft[-1] in ('\n','\r'):
+            ft = ft[:-1]
+            self.adjust_find_text(ft)
+            if 0:
+                g.es('before:',repr(self.find_text))
+                g.es(' after:',repr(ft))
+            self.find_text = ft
+    
+        return
+#@-node:ekr.20050204084635:find.adjust_ivars
+#@+node:ekr.20061111180614.1:Deleted from tkGui
+#@+node:ekr.20031218072017.4092:getCharAfterIndex  (deleted)
+# def getCharAfterIndex (self,w,index):
+    # 
+    # if w.compare(index + "+1c",">=","end"):
+        # return None
+    # else:
+        # ch = w.get(index + "+1c")
+        # return g.toUnicode(ch,g.app.tkEncoding)
+#@-node:ekr.20031218072017.4092:getCharAfterIndex  (deleted)
+#@+node:ekr.20031218072017.4093:getCharAtIndex  (deleted)
+# def getCharAtIndex (self,w,index):
+    # ch = w.get(index)
+    # return g.toUnicode(ch,g.app.tkEncoding)
+#@nonl
+#@-node:ekr.20031218072017.4093:getCharAtIndex  (deleted)
+#@+node:ekr.20031218072017.4094:getCharBeforeIndex  (deleted)
+# def getCharBeforeIndex (self,w,index):
+    # 
+    # index = w.index(index)
+    # if index == "1.0":
+        # return None
+    # else:
+        # ch = w.get(index + "-1c")
+        # return g.toUnicode(ch,g.app.tkEncoding)
+ 
+#@nonl
+#@-node:ekr.20031218072017.4094:getCharBeforeIndex  (deleted)
+#@+node:ekr.20031218072017.4095:getLineContainingIndex (deleted)
+# def getLineContainingIndex (self,w,index):
+    # line = w.get(index + " linestart", index + " lineend")
+    # return g.toUnicode(line,g.app.tkEncoding)
+ 
+#@nonl
+#@-node:ekr.20031218072017.4095:getLineContainingIndex (deleted)
+#@+node:ekr.20031218072017.4088:setSelectionRangeWithLength (tkGui)
+# def setSelectionRangeWithLength(self,w,start,length,insert='sel.end'):
+    # return g.app.gui.setSelectionRange(w,start,"%s+%dc" % (start,length),insert=insert)
+#@-node:ekr.20031218072017.4088:setSelectionRangeWithLength (tkGui)
+#@+node:ekr.20061101020611:gui.stringInsert & stringDelete (removed)
+def stringInsert (self,s,i,s2):
+    
+    return s[:i] + s2 + s[i:]
+    
+def stringDelete (self,s,i,j=None):
+    
+    '''Delete characters i through j (not including j) of string s.'''
+    
+    if j is None: j = i+1
+    
+    return s[:i] + s[j:]
+    
+#@nonl
+#@-node:ekr.20061101020611:gui.stringInsert & stringDelete (removed)
+#@-node:ekr.20061111180614.1:Deleted from tkGui
+#@+node:ekr.20031218072017.4074:Indices (Tk) (removed)
+#@+node:ekr.20031218072017.4079:compareIndices (removed)
+# def compareIndices (self,w,n1,rel,n2):
+    # 
+    # try:
+        # return w.compare(n1,rel,n2)
+    # except Exception:
+        # return False
+# 
+#@nonl
+#@-node:ekr.20031218072017.4079:compareIndices (removed)
+#@+node:ekr.20031218072017.4075:firstIndex (removed)
+# def firstIndex (self):
+    # return "1.0"
+#@-node:ekr.20031218072017.4075:firstIndex (removed)
+#@+node:ekr.20031218072017.4080:getindex (removed)
+# def getindex(self,text,index):
+    # 
+    # """Convert string index of the form line.col into a tuple of two ints."""
+    # 
+    # return tuple(map(int,string.split(text.index(index), ".")))
+#@nonl
+#@-node:ekr.20031218072017.4080:getindex (removed)
+#@+node:ekr.20031218072017.4077:moveIndexBackward (removed)
+# def moveIndexBackward(self,index,n):
+    # return "%s-%dc" % (index,n)
+ 
+#@nonl
+#@-node:ekr.20031218072017.4077:moveIndexBackward (removed)
+#@+node:ekr.20031218072017.4076:lastIndex (removed)
+# def lastIndex (self):
+    # return "end"
+#@-node:ekr.20031218072017.4076:lastIndex (removed)
+#@+node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (removed)
+# def moveIndexForward(self,w,index,n):
+    # newpos = w.index("%s+%dc" % (index,n))
+    # return g.choose(w.compare(newpos,"==","end"),None,newpos)
+ 
+# def moveIndexToNextLine(self,w,index):
+    # newpos = w.index("%s linestart + 1lines" % (index))
+    # return g.choose(w.compare(newpos,"==","end"),None,newpos)
+ 
+#@nonl
+#@-node:ekr.20031218072017.4078:moveIndexForward & moveIndexToNextLine (removed)
+#@-node:ekr.20031218072017.4074:Indices (Tk) (removed)
+#@-node:ekr.20061110182241:Removed
 #@-node:ekr.20061114093231:Deleted gui text stuff
 #@-node:ekr.20031218072017.434:Unused code
 #@-all

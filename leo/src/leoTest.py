@@ -1443,19 +1443,22 @@ def runEditCommandTest (c,p):
         aList = [str(z) for z in sel.split(',')]
         sels.append(tuple(aList))
     sel1,sel2 = sels
+    #g.trace(repr(sels))
     
     c.beginUpdate()
     try:
         c.selectPosition(work)
         c.setBodyString(work,before.bodyString())
-        w.setSelectionRange(sel1[0],sel1[1])
+        #g.trace(repr(sel1[0]),repr(sel1[1]))
+        w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
         assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
         sel3 = w.getSelectionRange()
-        s = w.getAllText()
+        ins = w.toGuiIndex(w.getInsertPoint())
         # The selection range is specified as Tk indices.
         i,j = sel3
+        #g.trace('ins',ins,'s1[j:...]',repr(s1[j:j+10]))
         i,j = w.toGuiIndex(i),w.toGuiIndex(j)
         sel3 = i,j
         assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
