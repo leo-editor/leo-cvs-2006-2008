@@ -2719,8 +2719,7 @@ def change(self,event=None):
 def find (self,event=None):
     """Find the next unknown word."""
 
-    c = self.c ; body = c.frame.body
-    gui = g.app.gui ; w = body.bodyCtrl
+    c = self.c ; body = c.frame.body ; w = body.bodyCtrl
 
     # Reload the work pane from the present node.
     s = w.get("1.0","end").rstrip()
