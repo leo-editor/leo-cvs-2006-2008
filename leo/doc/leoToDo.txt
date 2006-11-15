@@ -9,12 +9,6 @@
 
 @color
 #@nonl
-#@+node:ekr.20061114224545:Go-to-line-number goes one line too far
-#@-node:ekr.20061114224545:Go-to-line-number goes one line too far
-#@+node:ekr.20061114122858:Suppress redraws as much as possible in the unit tests
-This might save a lot of time.
-#@nonl
-#@-node:ekr.20061114122858:Suppress redraws as much as possible in the unit tests
 #@+node:ekr.20061114145846:change t to w
 #@-node:ekr.20061114145846:change t to w
 #@+node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
@@ -106,6 +100,7 @@ def tag_add(self,tagName,i,j=None,*args):
     else:
         j = w.toGuiIndex(j)
         Tk.Text.tag_add(w,tagName,i,j,*args)
+        
 #@-node:ekr.20061113151148.8:tag_add (passed)
 #@-node:ekr.20061114163918:Fix paragraph unit tests
 #@-node:ekr.20061101021054:To do First
@@ -520,8 +515,10 @@ def kill (self,event,frm,to,undoType=None):
 
 def killLine (self,event):
     '''Kill the line containing the cursor.'''
-    self.kill(event,'insert linestart','insert lineend+1c',undoType='kill-line')
-#@nonl
+    w = self.editWidget(event)
+    if not w: return
+    i,j = g.getLine(w.getAllText(),w.getInsertPoint())
+    self.kill(event,i,j,undoType='kill-line')
 #@-node:ekr.20050920084036.178:kill, killLine
 #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 def killRegion (self,event):
@@ -604,8 +601,10 @@ def yank (self,event):
         self.reset = True
         s = clip_text or self.kbiterator.next()
         w.tag_delete('kb')
-        w.insert(i,('kb'))
-        w.mark_set('insert',i)
+        ###w.insert(i,s,('kb'))
+        w.insert(i,s) # Insert the text, marked with the 'kb' tag.
+        w.tag_add('kb',w.toGuiIndex(i),w.toGuiIndex(i+len(s)))
+        w.setInsertPoint(i+len(s))
         c.frame.body.forceFullRecolor()
         self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050930091642.1:yank

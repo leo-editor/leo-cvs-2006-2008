@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="93" left="53" height="691" width="863"/>
+	<global_window_position top="93" left="53" height="672" width="863"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -16,7 +16,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259" a="TV"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20060823090437"><vh>August 2006</vh></v>
@@ -211,7 +211,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050118113631"><vh>Main distribution script</vh>
+<v t="ekr.20050118113631" a="TV"><vh>Main distribution script</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="EKR.20040519090846.10"><vh>@asis ../manifest.in</vh></v>
 <v t="ekr.20050117032444"><vh>@button Create Leo-4.x.zip</vh>
@@ -3826,7 +3826,9 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html
 
 # __pychecker__ = '--no-errors' # suppress all pychecker errors.
 
-</t>
+# __pychecker__ = '--errors' # enable all pychecker errors.
+
+# __pychecker__ = '--no-override' # suppress warning about changed signature</t>
 <t tx="ekr.20050516064011">Leo 4.3 beta 2 is now available at http://sourceforge.net/projects/leo/
 
 Leo 4.3 beta 2 completes all major features of Leo 4.3.  There are no known significant bugs.
