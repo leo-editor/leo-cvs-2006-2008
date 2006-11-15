@@ -100,7 +100,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         for key in self.newStringKeys:
             self.dict[key] = Tk.StringVar()
             
-        self.s_ctrl = g.app.gui.leoTextWidget() # Used by find.search()
+        self.s_ctrl = g.app.gui.leoTextWidgetClass() # Used by find.search()
         #@-node:ekr.20031218072017.3900:<< create the tkinter intVars >>
         #@nl
         
@@ -145,9 +145,9 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         clab = Tk.Label(cpane, width=8, text="Change:")
         
         # Use bigger boxes for scripts.
-        self.find_ctrl   = ftxt = g.app.gui.leoTextWidget(
+        self.find_ctrl   = ftxt = g.app.gui.leoTextWidgetClass(
             fpane,bd=1,relief="groove",height=4,width=20)
-        self.change_ctrl = ctxt = g.app.gui.leoTextWidget(
+        self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
             cpane,bd=1,relief="groove",height=4,width=20)
         
         #@<< Bind Tab and control-tab >>

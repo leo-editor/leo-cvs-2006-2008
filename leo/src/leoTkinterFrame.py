@@ -613,7 +613,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.labelWidget.pack(side="left",padx=1)
             
             bg = self.statusFrame.cget("background")
-            self.textWidget = g.app.gui.leoTextWidget(
+            self.textWidget = g.app.gui.leoTextWidgetClass(
                 self.statusFrame,
                 height=1,state="disabled",bg=bg,relief="groove",name='status-line')
             self.textWidget.pack(side="left",expand=1,fill="x")
@@ -914,7 +914,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         lab.pack(side='left')
         
         if c.useTextMinibuffer:
-            label = g.app.gui.leoTextWidget(
+            label = g.app.gui.leoTextWidgetClass(
                 f,height=1,relief='groove',background='lightgrey',name='minibuffer')
             label.pack(side='left',fill='x',expand=1,padx=2,pady=1)
         else:
@@ -2529,7 +2529,7 @@ class leoTkinterLog (leoFrame.leoLog):
     def createTextWidget (self,parentFrame):
         
         self.logNumber += 1
-        log = g.app.gui.leoTextWidget(
+        log = g.app.gui.leoTextWidgetClass(
             parentFrame,name="log-%d" % self.logNumber,
             setgrid=0,wrap=self.wrap,bd=2,bg="white",relief="flat")
         
@@ -3067,7 +3067,7 @@ class leoTkTextWidget (Tk.Text):
                 i = Tk.Text.index(w,i)
             except Exception:
                 # g.es_exception()
-                g.trace('Tk.Text.index failed:',w,repr(i),g.callers())
+                g.trace('Tk.Text.index failed:',repr(i),g.callers())
                 i = '1.0'
         return i
             
@@ -3162,16 +3162,19 @@ class leoTkTextWidget (Tk.Text):
                 Tk.Text.delete(w,start,end)
     #@-node:ekr.20061113151148.11:deleteTextSelection (passed)
     #@+node:ekr.20061113151148.12:flashCharacter (passed)
-    def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=0.5): # tkTextWidget.
+    def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
     
         w = self
     
         def addFlashCallback(w,count,index):
-            Tk.Text.tag_add(w,'flash',index,'%s+1c' % (index))
+            # g.trace(count,index)
+            i,j = w.toGuiIndex(index),w.toGuiIndex(index+1)
+            Tk.Text.tag_add(w,'flash',i,j)
             Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
         
         def removeFlashCallback(w,count,index):
-            Tk.Text.tag_remove('flash','1.0','end')
+            # g.trace(count,index)
+            Tk.Text.tag_remove(w,'flash','1.0','end')
             if count > 0:
                 Tk.Text.after(w,delay,addFlashCallback,w,count,index)
     
@@ -3179,7 +3182,7 @@ class leoTkTextWidget (Tk.Text):
             Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
             addFlashCallback(w,flashes,i)
         except Exception:
-            pass
+            pass ; g.es_exception()
     #@nonl
     #@-node:ekr.20061113151148.12:flashCharacter (passed)
     #@+node:ekr.20061113151148.13:getAllText (passed)
@@ -3283,6 +3286,7 @@ class leoTkTextWidget (Tk.Text):
     
         w = self
         i = w.toGuiIndex(i)
+        # g.trace(i,g.callers())
         Tk.Text.mark_set(w,'insert',i)
     #@-node:ekr.20061113151148.21:setInsertPoint (passed)
     #@+node:ekr.20061113151148.22:setSelectionRange (passed)
@@ -3293,14 +3297,15 @@ class leoTkTextWidget (Tk.Text):
        
         i,j = w.toGuiIndex(i),w.toGuiIndex(j)
         
-        # g.trace('start',start,'end',end,'insert',insert,'python',python)
+        # g.trace('i,j,insert',i,j,repr(insert))
         if Tk.Text.compare(w,i, ">", j): i,j = j,i
         Tk.Text.tag_remove(w,"sel","1.0",i)
         Tk.Text.tag_add(w,"sel",i,j)
         Tk.Text.tag_remove(w,"sel",j,"end")
     
-        if insert is None: insert = j
-        w.setInsertPoint(j)
+        if insert is not None:
+            w.setInsertPoint(insert)
+    
     #@-node:ekr.20061113151148.22:setSelectionRange (passed)
     #@+node:ekr.20061113151148.23:xyToGui/PythonIndex (passed)
     def xyToGuiIndex (self,x,y): # tkTextWidget

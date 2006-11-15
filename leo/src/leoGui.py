@@ -97,7 +97,7 @@ class leoGui:
         self.script = None
         self.utils = None
         self.isNullGui = False
-        self.leoTextWidget = None
+        self.leoTextWidgetClass = None
     #@-node:ekr.20031218072017.3722: leoGui.__init__
     #@+node:ekr.20061109211054:leoGui.mustBeDefinedOnlyInBaseClass
     mustBeDefinedOnlyInBaseClass = (
@@ -417,7 +417,7 @@ class nullGui(leoGui):
         self.script = None
         self.lastFrame = None
         self.isNullGui = True
-        self.leoTextWidget = None
+        self.leoTextWidgetClass = None
     #@-node:ekr.20031218072017.2225: nullGui.__init__
     #@+node:ekr.20031219075221: nullGui.__getattr__
     if 0: # This causes no end of problems.
@@ -504,7 +504,7 @@ class unitTestGui(leoGui):
         
         # Init the base class
         leoGui.__init__ (self,"unitTestGui")
-        self.leoTextWidget = self.oldGui.leoTextWidget # Use the same kind of widgets as the old gui.
+        self.leoTextWidgetClass = self.oldGui.leoTextWidgetClass # Use the same kind of widgets as the old gui.
     
         g.app.gui = self
         
