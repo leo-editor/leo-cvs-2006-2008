@@ -2388,7 +2388,7 @@ class baseCommands:
         # g.trace('index,index2',index,index2)
         if index2 is not None:
             if index2 < index:
-                w.setSelectionRange(index2,index+1,insert=index+1)
+                w.setSelectionRange(index2,index+1,insert=index2+1)
             else:
                 w.setSelectionRange(index,index2+1,insert=index2+1)
             w.see(index2)
@@ -2410,6 +2410,7 @@ class baseCommands:
             if ch == brackets[n]:
                 match_ch = matching_brackets[n]
                 break
+        # g.trace(repr(ch),repr(match_ch))
         level = 0
         while 1:
             if forward and index >= len(s):
