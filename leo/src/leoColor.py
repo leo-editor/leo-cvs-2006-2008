@@ -1345,7 +1345,7 @@ class baseColorizer:
         
         # g.trace(p and p.headString())
         
-        c = self.c ; gui = g.app.gui ; w = self.body.bodyCtrl
+        c = self.c ; w = self.body.bodyCtrl
         
         if not c.config.getBool('use_syntax_coloring'):
             g.trace('no coloring')
@@ -2426,7 +2426,7 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
     def doNowebSecRef (self,s,i):
     
-        c = self.c ; gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        c = self.c ; w = c.frame.body.bodyCtrl
         self.tag("nameBrackets",i,i+2)
         
         # See if the line contains the right name bracket.
@@ -2594,7 +2594,7 @@ class baseColorizer:
             try:
                 ### self.body.deleteCharacter(image)
                 s = self.allBodyText
-                gui = g.app.gui ; w = self.body.bodyCtrl
+                w = self.body.bodyCtrl
                 index = g.convertRowColToPythonIndex(s,line_index,i)
                 w.delete(index)
                 self.allBodyText = w.getAllText()

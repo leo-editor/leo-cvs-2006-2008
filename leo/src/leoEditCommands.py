@@ -425,7 +425,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Add Abbreviation: ',protect=True)
             k.getArg(event,'add-abbr',1,self.addAbbreviation)
         else:
-            w = self.w ; gui = g.app.gui
+            w = self.w
             k.clearState()
             k.resetLabel()
             s = w.getAllText()
@@ -454,7 +454,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Add Inverse Abbreviation: ',protect=True)
             k.getArg(event,'add-inverse-abbr',1,self.addInverseAbbreviation)
         else:
-            w = self.w ; gui = g.app.gui
+            w = self.w
             k.clearState()
             k.resetLabel()
             s = w.getAllText()
@@ -471,7 +471,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
         abbreviations in event.widget.'''
     
         k = self.k ; c = self.c ; ch = event.char.strip()
-        gui = g.app.gui ; w = self.editWidget(event)
+        w = self.editWidget(event)
         if not w: return
     
         word = w.get('insert -1c wordstart','insert -1c wordend')
@@ -529,8 +529,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
         
         '''Exapand abbreviations throughout a region.'''
     
-        k = self.k ; gui = g.app.gui
-        w = self.editWidget(event)
+        k = self.k ; w = self.editWidget(event)
         if not w or not self._chckSel(event): return
     
         i1,i2 = w.getSelectionRange()
@@ -666,7 +665,7 @@ class bufferCommandsClass (baseEditCommandsClass):
     
     def appendToBufferFinisher (self,name):
     
-        c = self.c ; k = self.k ; w = self.w ; gui = g.app.gui
+        c = self.c ; k = self.k ; w = self.w
         s = w.getSelectedText()
         p = self.findBuffer(name)
         if s and p:
@@ -1509,7 +1508,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051015114221.1:capitalizeHelper (passed)
     def capitalizeHelper (self,event,which,undoType):
     
-        w = self.editWidget(event) ; gui = g.app.gui
+        w = self.editWidget(event)
         if not w: return
     
         s = w.getAllText()
@@ -2388,7 +2387,7 @@ class editCommandsClass (baseEditCommandsClass):
             # Get the arg without touching the focus.
             k.getArg(event,tag,1,self.findCharacter,oneCharacter=True,useMinibuffer=False)
         else:
-            event = self.event ; gui = g.app.gui ; w = self.w
+            event = self.event ; w = self.w
             backward = self.backward ; extend = self.extend
             ch = k.arg ; s = w.getAllText()
             ins = w.toPythonIndex(self.insert)
@@ -2397,14 +2396,12 @@ class editCommandsClass (baseEditCommandsClass):
                 start = s.rfind('\n',0,i)
                 if start == -1: start = 0
                 j = s.rfind(ch,start,max(start,i)) # Skip the character at the cursor.
-                if j > -1:
-                    self.moveToHelper(event,spot,extend)
+                if j > -1: self.moveToHelper(event,j,extend)
             else:
                 end = s.find('\n',i)
                 if end == -1: end = len(s)
                 j = s.find(ch,min(i,end),end) # Skip the character at the cursor.
-                if j > -1:
-                    self.moveToHelper(event,spot,extend)
+                if j > -1: self.moveToHelper(event,j,extend)
             c.frame.clearStatusLine()
             k.clearState()
     #@nonl
@@ -2423,7 +2420,7 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Find word: ')
             k.getArg(event,tag,1,self.findWord)
         else:        
-            word = k.arg ; w = self.w ; c = k.c ; gui = g.app.gui
+            word = k.arg ; w = self.w ; c = k.c
             if word:
                 i = w.getInsertPoint()
                 s = w.getAllText()
@@ -2453,7 +2450,7 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Goto character: ')
             k.getArg(event,'goto-char',1,self.gotoCharacter)
         else:
-            n = k.arg ; w = self.w ; gui = g.app.gui
+            n = k.arg ; w = self.w
             if n.isdigit():
                 w.mark_set('insert','1.0 +%sc' % n)
                 w.seeInsertPoint()
@@ -2493,7 +2490,7 @@ class editCommandsClass (baseEditCommandsClass):
             k.setLabelBlue('Goto line: ')
             k.getArg(event,'goto-line',1,self.gotoLine)
         else:
-            n = k.arg ;  w = self.w ; gui = g.app.gui
+            n = k.arg ;  w = self.w
             if n.isdigit():
                 w.mark_set('insert','%s.0' % n)
                 w.seeInsertPoint()
@@ -3278,7 +3275,7 @@ class editCommandsClass (baseEditCommandsClass):
         ins1:   The *previous* insert point.
         spot:   The *new* insert point.
         '''
-        c = self.c ; p = c.currentPosition() ; gui = g.app.gui
+        c = self.c ; p = c.currentPosition()
         moveSpot = self.moveSpot
         extend = extend or self.extendMode
         # g.trace(ins1,spot,moveSpot,extend,setSpot)
@@ -3308,7 +3305,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060113105246.1:moveUpOrDownHelper (lots of tk code)
     def moveUpOrDownHelper (self,event,direction,extend):
     
-        c = self.c ; w = self.editWidget(event) ; gui = g.app.gui
+        c = self.c ; w = self.editWidget(event)
         if not w: return
     
         # Make the insertion cursor visible so bbox won't return an empty list.
@@ -3357,8 +3354,7 @@ class editCommandsClass (baseEditCommandsClass):
         '''Common helper method for commands the move the cursor
         in a way that can be described by a Tk Text expression.'''
     
-        c = self.c ; k = c.k ; gui = g.app.gui
-        w = self.editWidget(event)
+        c = self.c ; k = c.k ; w = self.editWidget(event)
         if not w: return
     
         c.widgetWantsFocusNow(w)
@@ -3545,34 +3541,34 @@ class editCommandsClass (baseEditCommandsClass):
     
     def endOfBuffer (self,event):
         '''Move the cursor to the end of the body text.'''
-        gui = g.app.gui ; w = self.editWidget(event)
+        w = self.editWidget(event)
         s = w.getAllText()
         self.moveToHelper(event,len(s),extend=False)
         
     def endOfBufferExtendSelection (self,event):
         '''Extend the text selection by moving the cursor to the end of the body text.'''
-        gui = g.app.gui ; w = self.editWidget(event)
+        w = self.editWidget(event)
         s = w.getAllText()
         self.moveToHelper(event,len(s),extend=True)
     #@-node:ekr.20050920084036.148:buffers (passed)
     #@+node:ekr.20051213080533:characters (passed)
     def backCharacter (self,event):
         '''Move the cursor back one character, extending the selection if in extend mode.'''
-        gui = g.app.gui ; w = self.editWidget(event)
+        w = self.editWidget(event)
         i = w.getInsertPoint()
         i = max(0,i-1)
         self.moveToHelper(event,i,extend=False)
     
     def backCharacterExtendSelection (self,event):
         '''Extend the selection by moving the cursor back one character.'''
-        gui = g.app.gui ; w = self.editWidget(event)
+        w = self.editWidget(event)
         i = w.getInsertPoint()
         i = max(0,i-1)
         self.moveToHelper(event,i,extend=True)
     
     def forwardCharacter (self,event):
         '''Move the cursor forward one character, extending the selection if in extend mode.'''
-        gui = g.app.gui ; w = self.editWidget(event)
+        w = self.editWidget(event)
         s = w.getAllText()
         i = w.getInsertPoint()
         i = min(i+1,len(s))
@@ -3580,7 +3576,7 @@ class editCommandsClass (baseEditCommandsClass):
         
     def forwardCharacterExtendSelection (self,event):
         '''Extend the selection by moving the cursor forward one character.'''
-        gui = g.app.gui ; w = self.editWidget(event)
+        w = self.editWidget(event)
         s = w.getAllText()
         i = w.getInsertPoint()
         i = min(i+1,len(s))
@@ -4072,8 +4068,7 @@ class editCommandsClass (baseEditCommandsClass):
         '''Move all lines containing any selected text down one line,
         moving to the next node if the lines are the last lines of the body.'''
     
-        c = self.c
-        gui = g.app.gui ; w = self.editWidget(event)
+        c = self.c ; w = self.editWidget(event)
         if not w or not self._chckSel(event): return
     
         self.beginCommand(undoType='move-lines-down')
@@ -4122,8 +4117,7 @@ class editCommandsClass (baseEditCommandsClass):
         '''Move all lines containing any selected text up one line,
         moving to the previous node as needed.'''
     
-        c = self.c ; gui = g.app.gui
-        w = self.editWidget(event)
+        c = self.c ; w = self.editWidget(event)
         if not w or not w.hasSelection(): return
         
         self.beginCommand(undoType='move-lines-up')
@@ -4689,10 +4683,10 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.126:tabify & untabify
     #@+node:ekr.20061111223516:selectAllText (leoEditCommands)
     def selectAllText (self,event):
-        
-        gui = g.app.gui
-        w = gui.eventWidget(event) or self.bodyCtrl
-        return g.app.gui.selectAllText(w)
+       
+        c = self.c 
+        w = g.app.gui.eventWidget(event) or c.frame.body.bodyCtrl
+        return w.selectAllText()
     #@-node:ekr.20061111223516:selectAllText (leoEditCommands)
     #@-others
 #@-node:ekr.20050920084036.53:editCommandsClass
@@ -4781,8 +4775,7 @@ class editFileCommandsClass (baseEditCommandsClass):
         
         '''Prompt for the name of a file and put the selected text into it.'''
     
-        k = self.k ; c = k.c ; gui = g.app.gui
-        w = self.editWidget(event)
+        k = self.k ; c = k.c ; w = self.editWidget(event)
         if not w: return
     
         f, name = self.getReadableTextFile()
@@ -6127,8 +6120,7 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
         
         w = self.editWidget(event)
         if not w or not hasattr(event,'keysym'): return
-        
-        gui = g.app.gui
+    
         # g.trace(event.keysym)
         if event.keysym == 'y':
             self.doOneReplace(event)
@@ -8663,8 +8655,7 @@ class spellTab(leoFind.leoFind):
     def find (self,event=None):
         """Find the next unknown word."""
     
-        c = self.c ; body = c.frame.body
-        gui = g.app.gui ; w = body.bodyCtrl
+        c = self.c ; body = c.frame.body ; w = body.bodyCtrl
     
         # Reload the work pane from the present node.
         s = w.get("1.0","end").rstrip()

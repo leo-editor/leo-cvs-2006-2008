@@ -491,8 +491,7 @@ class baseUndoer:
     
         '''Create an undo node for general tree operations using d created by beforeChangeTree'''
         
-        u = self ; c = self.c
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        u = self ; c = self.c ; w = c.frame.body.bodyCtrl
         if u.redoing or u.undoing: return
         
         # g.trace('u.bead',u.bead,'len u.beads',len(u.beads))

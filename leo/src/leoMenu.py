@@ -219,7 +219,7 @@ class leoMenu:
     
     def hasSelection (self):
         
-        w = c.frame.body.bodyCtrl
+        c = self.c ; w = c.frame.body.bodyCtrl
     
         if c.frame.body:
             first,last = w.getSelectionRange()

@@ -56,7 +56,7 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.837: tkGui.__init__
     #@+node:ekr.20061112152012.1:createLeoEvent
     def createLeoEvent (self,event):
-        return leoEvent(event)
+        return self.leoEvent(event)
     #@nonl
     #@-node:ekr.20061112152012.1:createLeoEvent
     #@+node:ekr.20031218072017.4049:createRootWindow & allies

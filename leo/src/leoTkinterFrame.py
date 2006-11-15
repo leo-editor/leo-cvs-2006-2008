@@ -3113,6 +3113,8 @@ class leoTkTextWidget (Tk.Text):
             return Tk.Text.get(w,i,j)
     #@-node:ekr.20061113151148.5:get (passed)
     #@+node:ekr.20061113151148.6:insert (passed)
+    # The signature is more restrictive than the Tk.Text.insert method.
+    
     def insert(self,i,s):
     
         w = self
@@ -3128,6 +3130,8 @@ class leoTkTextWidget (Tk.Text):
         Tk.Text.mark_set(w,markName,i)
     #@-node:ekr.20061113151148.7:mark_set (passed)
     #@+node:ekr.20061113151148.8:tag_add (passed)
+    # The signature is slightly different than the Tk.Text.insert method.
+    
     def tag_add(self,tagName,i,j=None,*args):
         
         w = self

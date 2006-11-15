@@ -1434,8 +1434,7 @@ class baseCommands:
         
         __pychecker__ = 'maxlines=400'
     
-        c = self ; p = c.currentPosition()
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        c = self ; p = c.currentPosition() ; w = c.frame.body.bodyCtrl
         root1 = root
         if root is None:
             #@        << set root >>
@@ -2495,7 +2494,7 @@ class baseCommands:
         '''Insert a time/date stamp at the cursor.'''
         
         c = self ; undoType = 'Insert Body Time'
-        gui = g.app.gui ; w = c.frame.body.bodyCtrl
+        w = c.frame.body.bodyCtrl
         
         if g.app.batchMode:
             c.notValidInBatchMode(undoType)
@@ -2638,8 +2637,7 @@ class baseCommands:
     starting with "@". Paragraph is selected by position of current insertion
     cursor."""
     
-        c = self ; body = c.frame.body
-        gui = g.app.gui ; w = body.bodyCtrl
+        c = self ; body = c.frame.body ; w = body.bodyCtrl
         
         if g.app.batchMode:
             c.notValidInBatchMode("xxx")
@@ -2731,7 +2729,6 @@ class baseCommands:
     def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview,setSel=True):
         
         c = self ; body = c.frame.body ; p = c.currentPosition()
-        gui = g.app.gui ; w = body.bodyCtrl
     
         # g.trace(undoType)
     
