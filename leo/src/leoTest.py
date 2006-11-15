@@ -65,18 +65,15 @@ def isTestNode (p):
 def doTests(c,all,verbosity=1):
 
     p = c.currentPosition() ; p1 = p.copy()
-    
-    g.app.unitTesting = True
     try:
+        g.app.unitTesting = True
         g.app.unitTestDict["fail"] = False
-    
         if all: theIter = c.all_positions_iter()
         else:   theIter = p.self_and_subtree_iter()
         
         # c.undoer.clearUndoState() # New in 4.3.1.
         changed = c.isChanged()
         suite = unittest.makeSuite(unittest.TestCase)
-    
         for p in theIter:
             if isTestNode(p):
                 test = makeTestCase(c,p)
@@ -87,11 +84,9 @@ def doTests(c,all,verbosity=1):
     
         # Verbosity: 1: print just dots.
         unittest.TextTestRunner(verbosity=verbosity).run(suite)
-        c.setChanged(changed) # Restore changed state.
-        # Restore the selected node unless overridden.
-        if g.app.unitTestDict.get('restoreSelectedNode',True):
-            c.selectPosition(p1)
     finally:
+        c.setChanged(changed) # Restore changed state.
+        c.selectPosition(p1)
         g.app.unitTesting = False
 #@+node:ekr.20051104075904.5:class generalTestCase
 class generalTestCase(unittest.TestCase):
@@ -1465,7 +1460,7 @@ def runEditCommandTest (c,p):
         c.selectPosition(atTest)
         atTest.contract()
     finally:
-        c.endUpdate(False) # New in 4.4.3: Don't redraw.
+        c.endUpdate(False) # Don't redraw.
 #@nonl
 #@-node:ekr.20061008140603:runEditCommandTest
 #@-node:ekr.20051104075904.43:Specific to particular unit tests...
