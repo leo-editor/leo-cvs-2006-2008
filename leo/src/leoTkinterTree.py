@@ -1292,6 +1292,7 @@ class leoTkinterTree (leoFrame.leoTree):
         """Scrolls the canvas so that p is in view."""
         
         __pychecker__ = '--no-argsused' # event not used.
+        __pychecker__ = '--no-intdivide' # suppress warning about integer division.
     
         c = self.c ; frame = c.frame
         if not p or not c.positionExists(p):

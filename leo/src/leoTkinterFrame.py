@@ -1945,6 +1945,9 @@ class leoTkinterBody (leoFrame.leoBody):
     #@+node:ekr.20060528100747.3:tkBody.createTextWidget
     def createTextWidget (self,frame,parentFrame,p,name):
         
+        # pychecker complains that there is no leo_p attribute.
+        __pychecker__ = '--no-errors' # suppress all pychecker errors.
+        
         c = self.c
         
         parentFrame.configure(bg='LightSteelBlue1')
@@ -3045,6 +3048,9 @@ class leoTkTextWidget (Tk.Text):
     Translates Python (integer) indices to and from Tk (string) indices.
     
     This class inherits almost all tkText methods: you call use them as usual.'''
+    
+    # The signatures of tag_add and insert are different from the Tk.Text signatures.
+    __pychecker__ = '--no-override' # suppress warning about changed signature.
         
     def __repr__(self):
         name = g.app.gui.widget_name(self)
@@ -3142,6 +3148,7 @@ class leoTkTextWidget (Tk.Text):
         else:
             j = w.toGuiIndex(j)
             Tk.Text.tag_add(w,tagName,i,j,*args)
+            
     #@-node:ekr.20061113151148.8:tag_add (passed)
     #@+node:ekr.20061113151148.9:tag_ranges (passed)
     def tag_ranges(self,tagName):

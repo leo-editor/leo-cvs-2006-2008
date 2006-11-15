@@ -2176,6 +2176,9 @@ def printGcSummary (message='',trace=False):
 #@-node:ekr.20060205043324.1:printGcSummary
 #@+node:ekr.20060202161935:printGcAll
 def printGcAll (message=''):
+
+    # Suppress warning about keywords arg not supported in sort.
+    __pychecker__ = '--no-errors' # suppress all pychecker errors.
     
     if not message:
         message = g._callerName(n=2)
