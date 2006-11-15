@@ -450,15 +450,12 @@ class leoFind:
     
         c = self.c ; p = self.p
         # g.trace(self.in_headline)
-        t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-        oldSel = sel = t.getSelectionRange()
-        if sel and len(sel) == 2:
-            start,end = sel
-            if start == end:
-                sel = None
-        if not sel or len(sel) != 2:
-            g.es("No text selected")
-            return False
+        w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
+        oldSel = sel = w.getSelectionRange()
+        start,end = sel
+        if start > end: start,end = end,start
+        if start == end:
+            g.es("No text selected") ; return False
     
         # Replace the selection in _both_ controls.
         start,end = oldSel
@@ -470,15 +467,15 @@ class leoFind:
             if groups:
                 change_text = self.makeRegexSubs(change_text,groups)
         change_text = change_text.replace('\\n','\n').replace('\\t','\t')
-        for w in (t,self.s_ctrl):
-            s = w.getAllText()
-            if start != end: w.delete(start,end)
-            w.insert(start,change_text)
-            w.setInsertPoint(start)
+    
+        for w2 in (w,self.s_ctrl):
+            if start != end: w2.delete(start,end)
+            w2.insert(start,change_text)
+            w2.setInsertPoint(g.choose(self.reverse,start,end))
     
         # Update the selection for the next match.
-        t.setSelectionRange(t,start,start+len(change_text))
-        c.widgetWantsFocus(t)
+        w.setSelectionRange(start,start+len(change_text))
+        c.widgetWantsFocus(w)
     
         # No redraws here: they would destroy the headline selection.
         c.beginUpdate()
@@ -711,12 +708,14 @@ class leoFind:
     
         c = self.c ; p = self.p ; w = self.s_ctrl
         index = w.getInsertPoint()
-        #g.trace(g.app.gui.widget_name(w),index,p.headString())
+        
         s = w.getAllText()
-        stopindex = g.choose(self.reverse,0,len(s))
+        # g.trace(index,repr(s[index:index+20]))
+        stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
         pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
             backwards=self.reverse,nocase=self.ignore_case,
             regexp=self.pattern_match,word=self.whole_word)
+        # g.trace('pos,newpos',pos,newpos)
         if pos == -1: return None,None
         #@    << fail if we are passed the wrap point >>
         #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
@@ -730,8 +729,9 @@ class leoFind:
                 return None, None
         #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         #@nl
-        w.setSelectionRange(pos,newpos,insert=newpos)
-        return pos, newpos
+        insert = g.choose(self.reverse,min(pos,newpos),max(pos,newpos))
+        w.setSelectionRange(pos,newpos,insert=insert)
+        return pos,newpos
     #@+node:ekr.20060526081931:searchHelper & allies
     def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
         
@@ -1136,15 +1136,13 @@ class leoFind:
         if self.in_headline:
             c.editPosition(p)
         # Set the focus and selection after the redraw.
-        t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-        # g.trace(g.app.gui.widget_name(t),id(t),p.headString())
-        insert = g.choose(self.reverse,pos,newpos)
+        w = g.choose(self.in_headline,c.edit_widget(p),c.frame.body.bodyCtrl)
+        c.widgetWantsFocusNow(w)
         # New in 4.4a3: a much better way to ensure progress in backward searches.
-        # g.trace(id(t),pos,newpos)
-        c.widgetWantsFocusNow(t)
-        t.setSelectionRange(pos,newpos,insert=insert)
-        # c.widgetWantsFocusNow(t)
-        t.seeInsertPoint()
+        insert = g.choose(self.reverse,min(pos,newpos),max(pos,newpos))
+        #g.trace('reverse,pos,newpos,insert',self.reverse,pos,newpos,insert)
+        w.setSelectionRange(pos,newpos,insert=insert)
+        w.seeInsertPoint()
         if self.wrap and not self.wrapPosition:
             self.wrapPosition = self.p
     #@nonl
