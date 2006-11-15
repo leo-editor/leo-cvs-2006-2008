@@ -586,7 +586,7 @@ class leoFind:
     #@+node:ekr.20031218072017.3073:findAll
     def findAll(self):
     
-        c = self.c ; t = self.s_ctrl ; u = c.undoer
+        c = self.c ; w = self.s_ctrl ; u = c.undoer
         undoType = 'Clone Find All'
         if not self.checkArgs():
             return
@@ -598,7 +598,7 @@ class leoFind:
             pos, newpos = self.findNextMatch()
             if not pos: break
             count += 1
-            s = t.getAllText()
+            s = w.getAllText()
             i,j = g.getLine(s,pos)
             line = s[i:j]
             self.printLine(line,allFlag=True)
@@ -1029,14 +1029,14 @@ class leoFind:
         self.errors = 0
         if self.in_headline:
             c.frame.tree.setEditPosition(p)
-            t = c.edit_widget(p)
+            w = c.edit_widget(p)
             sel = None
         else:
-            t = c.frame.bodyCtrl
-            sel = t.getSelectionRange()
-        pos = t.getInsertPoint()
+            w = c.frame.bodyCtrl
+            sel = w.getSelectionRange()
+        pos = w.getInsertPoint()
         st = self.initNextText()
-        c.widgetWantsFocus(t)
+        c.widgetWantsFocus(w)
         st.setInsertPoint(pos)
         if sel:
             self.selStart,self.selEnd = sel
@@ -1096,14 +1096,14 @@ class leoFind:
     def save (self):
     
         c = self.c ; p = self.p
-        t = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-        insert = t.getInsertPoint()
-        sel = t.getSelectionRange()
+        w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
+        insert = w.getInsertPoint()
+        sel = w.getSelectionRange()
         if len(sel) == 2:
             start,end = sel
         else:
             start,end = None,None
-        return (self.in_headline,p,t,insert,start,end)
+        return (self.in_headline,p,w,insert,start,end)
     #@-node:ekr.20031218072017.3090:save
     #@+node:ekr.20031218072017.3091:showSuccess
     def showSuccess(self,pos,newpos):

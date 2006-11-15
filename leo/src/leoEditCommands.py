@@ -1817,8 +1817,8 @@ class editCommandsClass (baseEditCommandsClass):
             log.selectTab(tabName)
         else:
             log.selectTab(tabName)
-            t = log.textDict.get(tabName)
-            t.pack_forget()
+            w = log.textDict.get(tabName)
+            w.pack_forget()
             f = log.frameDict.get(tabName)
             self.createColorPicker(f,colors)
     #@+node:ekr.20051019183105.3:createColorPicker
@@ -1886,8 +1886,8 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             log.selectTab(tabName)
             f = log.frameDict.get(tabName)
-            t = log.textDict.get(tabName)
-            t.pack_forget()
+            w = log.textDict.get(tabName)
+            w.pack_forget()
             self.createFontPicker(f)
     #@+node:ekr.20051019201809.1:createFontPicker
     def createFontPicker (self,parent):
@@ -6906,24 +6906,24 @@ class minibufferFind (baseEditCommandsClass):
     #@+node:ekr.20060205105950:setupChangePattern
     def setupChangePattern (self,pattern):
         
-        h = self.finder ; t = h.change_ctrl
+        h = self.finder ; w = h.change_ctrl
         
         s = g.toUnicode(pattern,g.app.tkEncoding)
         
-        t.delete('1.0','end')
-        t.insert('1.0',s)
+        w.delete(0,'end')
+        w.insert(0,s)
         
         h.update_ivars()
     #@-node:ekr.20060205105950:setupChangePattern
     #@+node:ekr.20060125091234:setupSearchPattern
     def setupSearchPattern (self,pattern):
         
-        h = self.finder ; t = h.find_ctrl
+        h = self.finder ; w = h.find_ctrl
         
         s = g.toUnicode(pattern,g.app.tkEncoding)
         
-        t.delete('1.0','end')
-        t.insert('1.0',s)
+        w.delete(0,'end')
+        w.insert(0,s)
         
         h.update_ivars()
     #@-node:ekr.20060125091234:setupSearchPattern
@@ -6931,12 +6931,12 @@ class minibufferFind (baseEditCommandsClass):
     #@+node:ekr.20060210180352:addChangeStringToLabel
     def addChangeStringToLabel (self,protect=True):
         
-        c = self.c ; k = c.k ; h = self.finder ; t = h.change_ctrl
+        c = self.c ; k = c.k ; h = self.finder ; w = h.change_ctrl
         
         c.frame.log.selectTab('Find')
         c.minibufferWantsFocusNow()
         
-        s = t.get('1.0','end')
+        s = w.getAllText()
     
         while s.endswith('\n') or s.endswith('\r'):
             s = s[:-1]
@@ -6946,12 +6946,12 @@ class minibufferFind (baseEditCommandsClass):
     #@+node:ekr.20060210164421:addFindStringToLabel
     def addFindStringToLabel (self,protect=True):
         
-        c = self.c ; k = c.k ; h = self.finder ; t = h.find_ctrl
+        c = self.c ; k = c.k ; h = self.finder ; w = h.find_ctrl
         
         c.frame.log.selectTab('Find')
         c.minibufferWantsFocusNow()
     
-        s = t.get('1.0','end')
+        s = w.getAllText()
         while s.endswith('\n') or s.endswith('\r'):
             s = s[:-1]
     
@@ -7860,8 +7860,8 @@ class searchCommandsClass (baseEditCommandsClass):
         else:
             log.selectTab(tabName)
             f = log.frameDict.get(tabName)
-            t = log.textDict.get(tabName)
-            t.pack_forget()
+            w = log.textDict.get(tabName)
+            w.pack_forget()
             self.findTabHandler = findTab(c,f)
     
         if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
@@ -8296,8 +8296,8 @@ class spellCommandsClass (baseEditCommandsClass):
         else:
             log.selectTab(tabName)
             f = log.frameDict.get(tabName)
-            t = log.textDict.get(tabName)
-            t.pack_forget()
+            w = log.textDict.get(tabName)
+            w.pack_forget()
             self.handler = spellTab(c,f)
             
         self.handler.bringToFront()
@@ -8788,38 +8788,38 @@ class spellTab(leoFind.leoFind):
     
         """Scan for the next word, leaving the result in the work widget"""
     
-        t = self.workCtrl
+        w = self.workCtrl
     
         # Allow quotes and underscores in the middle of words, but not at the beginning or end.
         while 1:
-            line = t.get('insert wordstart','insert lineend')
-            # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
+            line = w.get('insert wordstart','insert lineend')
+            # g.trace('insert',w.index('insert'),'insert wordstart',w.index('insert wordstart'))
             # Start the word at the first letter.
             i = 0
             while i < len(line) and not g.isWordChar1(line[i]):
                 i += 1
             if i < len(line):
                 # A non-empty word has been found.
-                line = t.get('insert wordstart','insert lineend')
+                line = w.get('insert wordstart','insert lineend')
                 j = i
                 while j < len(line) and g.isWordChar(line[j]):
                     j += 1
                 word = line[i:j]
                 # This trace is important: it verifies that all words have actually been checked.
                 # g.trace(repr(word))
-                x1 = t.index('insert + %dc' % (i))
-                x2 = t.index('insert + %dc' % (i+len(word)))
-                t.setSelectionRange(x1,x2)
+                x1 = w.index('insert + %dc' % (i))
+                x2 = w.index('insert + %dc' % (i+len(word)))
+                w.setSelectionRange(x1,x2)
                 return p, word
             else:
                 # End of the line. Bug fix: 9/8/05.
-                t.mark_set('insert','insert lineend + 1c')
-                if t.compare("insert",">=", "end - 1c"):
+                w.mark_set('insert','insert lineend + 1c')
+                if w.compare("insert",">=", "end - 1c"):
                     p.moveToThreadNext()
                     if not p: return None,None
-                    t.delete("1.0", "end")
-                    t.insert("end", p.bodyString())
-                    t.mark_set("insert", "1.0")
+                    w.delete(0,'end')
+                    w.insert("end", p.bodyString())
+                    w.mark_set("insert",0)
                     
         __pychecker__ = '--no-implicitreturns' # This is not really an implicit return.
     #@nonl

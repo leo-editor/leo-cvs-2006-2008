@@ -414,14 +414,14 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         
         """Bring the tkinter Find Panel to the front."""
         
-        c = self.c ; t = self.find_ctrl
+        c = self.c ; w = self.find_ctrl
                 
         self.top.withdraw() # Helps bring the window to the front.
         self.top.deiconify()
         self.top.lift()
     
-        c.widgetWantsFocusNow(t)
-        t.selectAllText()
+        c.widgetWantsFocusNow(w)
+        w.selectAllText()
     #@-node:ekr.20031218072017.3907:bringToFront (tkFind)
     #@+node:ekr.20031218072017.1460:update_ivars (tkFind)
     def update_ivars (self):

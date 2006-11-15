@@ -622,34 +622,34 @@ class leoTkinterFrame (leoFrame.leoFrame):
         #@+node:ekr.20031218072017.3962:clear
         def clear (self):
             
-            t = self.textWidget
-            if not t: return
+            w = self.textWidget
+            if not w: return
             
             trace = self.c.frame.trace_status_line and not g.app.unitTesting
             if trace: g.trace(g.callers())
             
-            t.configure(state="normal")
-            t.delete("1.0","end")
-            t.configure(state="disabled")
+            w.configure(state="normal")
+            w.delete(0,"end")
+            w.configure(state="disabled")
         #@-node:ekr.20031218072017.3962:clear
         #@+node:EKR.20040424153344:enable, disable & isEnabled
         def disable (self,background=None):
             
-            c = self.c ; t = self.textWidget
-            if t:
+            c = self.c ; w = self.textWidget
+            if w:
                 if not background:
                     background = self.statusFrame.cget("background")
-                t.configure(state="disabled",background=background)
+                w.configure(state="disabled",background=background)
             self.enabled = False
             c.bodyWantsFocus()
             
         def enable (self,background="white"):
             
             # g.trace()
-            c = self.c ; t = self.textWidget
-            if t:
-                t.configure(state="normal",background=background)
-                c.widgetWantsFocus(t)
+            c = self.c ; w = self.textWidget
+            if w:
+                w.configure(state="normal",background=background)
+                c.widgetWantsFocus(w)
             self.enabled = True
                 
         def isEnabled(self):
@@ -659,9 +659,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
         #@+node:ekr.20041026132435:get
         def get (self):
             
-            t = self.textWidget
-            if t:
-                return t.get("1.0","end")
+            w = self.textWidget
+            if w:
+                return w.getAllText()
             else:
                 return ""
         #@-node:ekr.20041026132435:get
@@ -689,27 +689,27 @@ class leoTkinterFrame (leoFrame.leoFrame):
         #@+node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
         def put(self,s,color=None):
             
-            t = self.textWidget
-            if not t: return
+            w = self.textWidget
+            if not w: return
             
             trace = self.c.frame.trace_status_line and not g.app.unitTesting
             if trace: g.trace(s,g.callers())
             
-            t.configure(state="normal")
+            w.configure(state="normal")
                 
             if color and color not in self.colorTags:
                 self.colorTags.append(color)
-                t.tag_config(color,foreground=color)
+                w.tag_config(color,foreground=color)
         
             if color:
-                t.insert("end",s)
-                t.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
-                t.tag_config("black",foreground="black")
-                t.tag_add("black","end")
+                w.insert("end",s)
+                w.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
+                w.tag_config("black",foreground="black")
+                w.tag_add("black","end")
             else:
-                t.insert("end",s)
+                w.insert("end",s)
             
-            t.configure(state="disabled")
+            w.configure(state="disabled")
         #@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
         #@+node:ekr.20041223111916.1:unpack & hide
         def unpack (self):
@@ -930,7 +930,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         '''Create bindings for the minibuffer..'''
         
-        f = self ; c = f.c ; k = c.k ; t = f.miniBufferWidget
+        f = self ; c = f.c ; k = c.k ; w = f.miniBufferWidget
         
         if not c.useTextMinibuffer: return
         
@@ -941,12 +941,12 @@ class leoTkinterFrame (leoFrame.leoFrame):
             ('<Double-1>',      k.masterDoubleClickHandler),
             ('<Double-3>',      k.masterDoubleClick3Handler),
         ):
-            t.bind(kind,callback)
+            w.bind(kind,callback)
     
         if 0:
             if sys.platform.startswith('win'):
                 # Support Linux middle-button paste easter egg.
-                t.bind("<Button-2>",frame.OnPaste)
+                w.bind("<Button-2>",frame.OnPaste)
     #@-node:ekr.20060203114017:f.setMinibufferBindings
     #@-node:ekr.20051014154752:Minibuffer methods
     #@+node:ekr.20031218072017.3953:Icon area methods (compatibility)
@@ -2795,8 +2795,8 @@ class leoTkinterLog (leoFrame.leoLog):
     def clearTab (self,tabName,wrap='none'):
         
         self.selectTab(tabName,wrap=wrap)
-        t = self.logCtrl
-        t and t.delete('1.0','end')
+        w = self.logCtrl
+        w and w.delete(0,'end')
     #@-node:ekr.20051017212057:clearTab
     #@+node:ekr.20051024173701:createTab
     def createTab (self,tabName,wrap='none'):
@@ -2808,20 +2808,20 @@ class leoTkinterLog (leoFrame.leoLog):
         self.menu = self.makeTabMenu(tabName)
         #@    << Create the tab's text widget >>
         #@+node:ekr.20051018072306:<< Create the tab's text widget >>
-        t = self.createTextWidget(tabFrame)
+        w = self.createTextWidget(tabFrame)
         
         # Set the background color.
         configName = 'log_pane_%s_tab_background_color' % tabName
         bg = c.config.getColor(configName) or 'MistyRose1'
         
         if wrap not in ('none','char','word'): wrap = 'none'
-        try: t.configure(bg=bg,wrap=wrap)
+        try: w.configure(bg=bg,wrap=wrap)
         except Exception: pass # Could be a user error.
         
-        self.SetWidgetFontFromConfig(logCtrl=t)
+        self.SetWidgetFontFromConfig(logCtrl=w)
         
         self.frameDict [tabName] = tabFrame
-        self.textDict [tabName] = t
+        self.textDict [tabName] = w
         
         # Switch to a new colorTags list.
         if self.tabName:

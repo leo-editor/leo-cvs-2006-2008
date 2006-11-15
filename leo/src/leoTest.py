@@ -1058,21 +1058,21 @@ class editBodyTestCase(unittest.TestCase):
         tempNode.setTnodeText(text,g.app.tkEncoding)
         c.selectPosition(self.tempNode)
     
-        t = c.frame.body.bodyCtrl
+        w = c.frame.body.bodyCtrl
         if self.sel:
             s = str(self.sel.bodyString()) # Can't be unicode.
             lines = s.split('\n')
-            t.setSelectionRange(lines[0],lines[1])
+            w.setSelectionRange(lines[0],lines[1])
     
         if self.ins:
             s = str(self.ins.bodyString()) # Can't be unicode.
             lines = s.split('\n')
             g.trace(lines)
-            t.setInsertPoint(lines[0])
+            w.setInsertPoint(lines[0])
     
         if not self.sel and not self.ins: # self.sel is a **tk** index.
-            t.setInsertPoint(0)
-            t.setSelectionRange(0,0)
+            w.setInsertPoint(0)
+            w.setSelectionRange(0,0)
     #@-node:ekr.20051104075904.75:setUp
     #@+node:ekr.20051104075904.76:tearDown
     def tearDown (self):

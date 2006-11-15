@@ -488,10 +488,10 @@ class  tkinterAskOkCancelNumber (leoTkinterDialog):
         lab = Tk.Label(self.frame,text=message)
         lab.pack(pady=10,side="left")
         
-        self.number_entry = t = Tk.Entry(self.frame,width=20)
-        t.pack(side="left")
+        self.number_entry = w = Tk.Entry(self.frame,width=20)
+        w.pack(side="left")
         
-        c.set_focus(t)
+        c.set_focus(w)
     #@-node:ekr.20031218072017.3878:tkinterAskOKCancelNumber.createFrame
     #@+node:ekr.20031218072017.3879:tkinterAskOKCancelNumber.okButton, cancelButton
     def okButton(self):
