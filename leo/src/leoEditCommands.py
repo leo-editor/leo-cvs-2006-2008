@@ -1837,7 +1837,7 @@ class editCommandsClass (baseEditCommandsClass):
         f2 = Tk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
         f3 = Tk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
         
-        label = g.app.gui.leoTextWidget(f1,height=1,width=20)
+        label = g.app.gui.leoTextWidgetClass(f1,height=1,width=20)
         label.insert('1.0','Color name or value...')
         label.pack(side='left',pady=6)
     
@@ -2512,9 +2512,16 @@ class editCommandsClass (baseEditCommandsClass):
     
         self.beginCommand(undoType='back-to-indentation')
     
-        i = w.index('insert linestart')
-        i2 = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
-        w.mark_set('insert',i2)
+        ###i = w.index('insert linestart')
+        s = w.getAllText()
+        i = w.getInsertPoint()
+        i,j = g.getLine(s,i)
+        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
+    
+        ###i2 = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
+        i2 = w.search(r'\w',i,j,regexp=True)
+        ###w.mark_set('insert',i2)
+        w.setInsertPoint(i2)
     
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.75:backToIndentation
@@ -3930,42 +3937,60 @@ class editCommandsClass (baseEditCommandsClass):
         w = self.editWidget(event)
         if not w: return
     
-        txt = w.get('insert linestart','insert lineend')
-        txt = txt.strip()
-        i = w.index('insert')
+        s = w.getAllText()
+        i = w.getInsertPoint()
+        ##txt = w.get('insert linestart','insert lineend')
+        i,j = g.getLine(s,i)
+        txt = s[i:j].strip()
+        ###i = w.index('insert')
+        ###i = w.getInsertPoint()
     
         if not txt:
             while 1:
-                i = w.index('%s + 1 lines' % i)
-                txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+                ### i = w.index('%s + 1 lines' % i)
+                i,j = g.getLine(s,j+1)
+                ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+                txt = s[i:j].strip()
                 if txt:
                     self.selectParagraphHelper(w,i) ; break
-                if w.index('%s lineend' % i) == w.index('end'):
-                    return
-    
+                ###if w.index('%s lineend' % i) == w.index('end'):
+                if j >= len(s): return
         if txt:
             while 1:
-                i = w.index('%s - 1 lines' % i)
-                txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
-                if not txt or w.index('%s linestart' % i) == w.index('1.0'):
-                    if not txt: i = w.index('%s + 1 lines' % i)
+                ###i = w.index('%s - 1 lines' % i)
+                i,j = g.getLine(s,i-1)
+                ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+                txt = s[i:j].strip()
+                if not txt or i == 0: ### w.index('%s linestart' % i) == w.index('1.0'):
+                    if not txt: i = j ### i = w.index('%s + 1 lines' % i)
                     self.selectParagraphHelper(w,i)
                     break
+       
+    #@nonl
     #@+node:ekr.20050920084036.97:selectParagraphHelper
     def selectParagraphHelper (self,w,start):
     
         i2 = start
+        s = w.getAllText()
         while 1:
-            txt = w.get('%s linestart' % i2,'%s lineend' % i2)
-            if w.index('%s lineend' % i2) == w.index('end'):
-                break
+            ### txt = w.get('%s linestart' % i2,'%s lineend' % i2)
+            i,j = g.getLine(s,i2)
+            txt = s[i:j]
+            ### if w.index('%s lineend' % i2) == w.index('end'):
+            if j >= len(s): break
             txt = txt.strip()
             if not txt: break
             else:
-                i2 = w.index('%s + 1 lines' % i2)
+                ###i2 = w.index('%s + 1 lines' % i2)
+                i2 = max(i2+1,j)
     
-        w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
-        w.mark_set('insert','%s lineend' % i2)
+        ###w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
+        ###w.mark_set('insert','%s lineend' % i2)
+        i,junk = g.getLine(s,start)
+        junk,j = g.getLine(s,i2)
+        w.tag_add('sel',i,j)
+        w.setInsertPoint(j)
+    #@nonl
     #@-node:ekr.20050920084036.97:selectParagraphHelper
     #@-node:ekr.20050920084036.96:extend-to-paragraph & helper
     #@-others
@@ -7244,7 +7269,7 @@ class findTab (leoFind.leoFind):
         for key in self.newStringKeys:
             self.dict[key] = Tk.StringVar()
             
-        self.s_ctrl = g.app.gui.leoTextWidget() # Used by find.search()
+        self.s_ctrl = g.app.gui.leoTextWidgetClass() # Used by find.search()
         #@-node:ekr.20051020120306.12:<< create the tkinter intVars >>
         #@nl
         
@@ -7333,15 +7358,15 @@ class findTab (leoFind.leoFind):
         
         if self.optionsOnly:
             # Use one-line boxes.
-            self.find_ctrl = ftxt = g.app.gui.leoTextWidget(
+            self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
                 fpane,bd=1,relief="groove",height=1,width=25,name='find-text')
             self.change_ctrl = ctxt = Tk.Text(
                 cpane,bd=1,relief="groove",height=1,width=25,name='change-text')
         else:
             # Use bigger boxes for scripts.
-            self.find_ctrl = ftxt = g.app.gui.leoTextWidget(
+            self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
                 fpane,bd=1,relief="groove",height=3,width=15,name='find-text')
-            self.change_ctrl = ctxt = g.app.gui.leoTextWidget(
+            self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
                 cpane,bd=1,relief="groove",height=3,width=15,name='change-text')
         #@<< Bind Tab and control-tab >>
         #@+node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
@@ -8353,7 +8378,7 @@ class spellTab(leoFind.leoFind):
         self.suggestions = []
         self.messages = [] # List of message to be displayed when hiding the tab.
         self.outerScrolledFrame = None
-        self.workCtrl = g.app.gui.leoTextWidget() # A text widget for scanning.
+        self.workCtrl = g.app.gui.leoTextWidgetClass() # A text widget for scanning.
         
         self.loaded = self.init_aspell(c)
         if self.loaded:
