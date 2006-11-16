@@ -1466,6 +1466,7 @@ nondirectory
 nonl
 noref
 norefsfile
+normpath
 nosent
 nosentinel
 nosentinels

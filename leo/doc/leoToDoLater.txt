@@ -2360,8 +2360,8 @@ def openSpellTab (self,event=None):
     else:
         log.selectTab(tabName)
         f = log.frameDict.get(tabName)
-        t = log.textDict.get(tabName)
-        t.pack_forget()
+        w = log.textDict.get(tabName)
+        w.pack_forget()
         self.handler = spellTab(c,f)
         
     self.handler.bringToFront()
@@ -2722,8 +2722,8 @@ def find (self,event=None):
     c = self.c ; body = c.frame.body ; w = body.bodyCtrl
 
     # Reload the work pane from the present node.
-    s = w.get("1.0","end").rstrip()
-    self.workCtrl.delete("1.0","end")
+    s = w.getAllText().rstrip()
+    self.workCtrl.delete(0,"end")
     self.workCtrl.insert("end",s)
 
     # Reset the insertion point of the work widget.
@@ -2815,10 +2815,13 @@ def findNextMisspelledWord(self):
             << Skip word if ignored or in local dictionary >>
             alts = aspell.processWord(word)
             if alts:
+                w = c.frame.body.bodyCtrl
+                i,j = w.getSelectionRange()
                 c.beginUpdate()
                 c.frame.tree.expandAllAncestors(p)
                 c.selectPosition(p)
                 c.endUpdate()
+                w.setSelectionRange(i,j,insert=j)
                 break
     except:
         g.es_exception()
@@ -2831,49 +2834,38 @@ if self.dictionary.has_key(word.lower()):
     continue
 #@-node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
 #@-node:ekr.20051025071455.45:findNextMisspelledWord
-#@+node:ekr.20051025071455.47:findNextWord
-# Unicode characters may cause index problems.
-
+#@+node:ekr.20051025071455.47:findNextWord (tkSpell)
 def findNextWord(self,p):
-
     """Scan for the next word, leaving the result in the work widget"""
 
-    t = self.workCtrl
-
-    # Allow quotes and underscores in the middle of words, but not at the beginning or end.
+    c = self.c ; w = self.workCtrl ; s = w.getAllText() ; p = p.copy()
     while 1:
-        line = t.get('insert wordstart','insert lineend')
-        # g.trace('insert',t.index('insert'),'insert wordstart',t.index('insert wordstart'))
-        # Start the word at the first letter.
-        i = 0
-        while i < len(line) and not g.isWordChar1(line[i]):
+        i = w.getInsertPoint()
+        while i < len(s) and not g.isWordChar1(s[i]):
             i += 1
-        if i < len(line):
+        if i < len(s):
             # A non-empty word has been found.
-            line = t.get('insert wordstart','insert lineend')
             j = i
-            while j < len(line) and g.isWordChar(line[j]):
+            while j < len(s) and g.isWordChar(s[j]):
                 j += 1
-            word = line[i:j]
-            # This trace is important: it verifies that all words have actually been checked.
-            # g.trace(repr(word))
-            x1 = t.index('insert + %dc' % (i))
-            x2 = t.index('insert + %dc' % (i+len(word)))
-            t.setSelectionRange(x1,x2)
-            return p, word
+            word = s[i:j]
+            # g.trace(repr(word)) # This trace verifies that all words have been checked.
+            for w2 in (w,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w2)
+                w2.setSelectionRange(i,j,insert=j)
+            return p,word
         else:
-            # End of the line. Bug fix: 9/8/05.
-            t.mark_set('insert','insert lineend + 1c')
-            if t.compare("insert",">=", "end - 1c"):
-                p.moveToThreadNext()
-                if not p: return None,None
-                t.delete("1.0", "end")
-                t.insert("end", p.bodyString())
-                t.mark_set("insert", "1.0")
-                
-    __pychecker__ = '--no-implicitreturns' # This is not really an implicit return.
+            # End of the body text.
+            p.moveToThreadNext()
+            if not p: break
+            w.delete(0,'end')
+            w.insert(0,p.bodyString())
+            for w2 in (w,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w2)
+                w.setSelectionRange(0,0,insert=0)
+    return None,None
 #@nonl
-#@-node:ekr.20051025071455.47:findNextWord
+#@-node:ekr.20051025071455.47:findNextWord (tkSpell)
 #@+node:ekr.20051025071455.48:getSuggestion
 def getSuggestion(self):
     """Return the selected suggestion from the listBox."""

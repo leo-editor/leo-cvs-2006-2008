@@ -3,6 +3,8 @@
 #@@nocolor
 
 #@+all
+#@+node:ekr.20061116060847:@url http://www.jhorman.org/wikidPad/
+#@-node:ekr.20061116060847:@url http://www.jhorman.org/wikidPad/
 #@+node:ekr.20050123161408:ExamDiff files
 0 leo.py
 1 leoApp.py
