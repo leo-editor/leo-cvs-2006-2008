@@ -593,36 +593,25 @@ class wxLeoBody (leoFrame.leoBody):
     
         self.colorizer = leoColor.colorizer(self.c)
     
-        self.styles = {} # For syntax coloring.
-    
-        wx.EVT_TEXT(self.bodyCtrl,const("cBodyCtrl"),self.onBodyTextUpdated)
+        ### self.styles = {} # For syntax coloring.
     #@nonl
     #@-node:edream.110203113231.541:wxBody.__init__
     #@+node:edream.110203113231.542:wxBody.createControl
     def createControl (self,frame,parentFrame):
         
-        return g.app.gui.leoTextWidgetClass(
-                parent = parentFrame,
-                ##const("cBodyCtrl"),
+        w = g.app.gui.leoTextWidgetClass(
+                parentFrame,
+                const("cBodyCtrl"), # The id for the event handler.
                 ##"",
                 pos = wx.DefaultPosition,
                 size = wx.DefaultSize,
                 style = (wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE),
                 name = 'body',
             )
-       
-    #@+at 
-    #@nonl
-    # wxTextCtrl(
-    #     wxWindow* parent,
-    #     wxWindowID id,
-    #     const wxString& value = "",
-    #     const wxPoint& pos = wxDefaultPosition,
-    #     const wxSize& size = wxDefaultSize,
-    #     long style = 0, const wxValidator& validator = wxDefaultValidator,
-    #     const wxString& name = wxTextCtrlNameStr)
-    # 
-    #@-at
+            
+        wx.EVT_TEXT(w,const("cBodyCtrl"),self.onBodyTextUpdated)
+    
+        return w
     #@-node:edream.110203113231.542:wxBody.createControl
     #@+node:ekr.20061111183138:wxBody.setEditorColors
     def setEditorColors (self,bg,fg):
@@ -661,7 +650,7 @@ class wxLeoBody (leoFrame.leoBody):
     
         if tagName == "keyword": # A kludge.
     
-            # g.trace(tagName)
+            g.trace(tagName)
             style = wx.TextAttr(wx.BLACK)
             last = self.bodyCtrl.GetLastPosition()
             
@@ -719,65 +708,68 @@ class wxLeoBody (leoFrame.leoBody):
     #@nonl
     #@-node:edream.110203113231.548:Idle-time (wxBody) (to do)
     #@-node:edream.111303204836:Tk wrappers (wxBody) (much work needed) (some will be removed from Leo's core)
-    #@+node:edream.110203113231.275:onBodyTextUpdated MORE WORK NEEDED
+    #@+node:edream.110203113231.275:body.onBodyTextUpdated
+    #### Warning: c.currentPosition may not be reliable here!!!
+    
     def onBodyTextUpdated(self,event):
-    
-        frame = self.frame ; c = self.c
-        w = frame.body.bodyCtrl
-        if not c:  return
+        
+        c = self.c ; w = c.frame.body.bodyCtrl
+        if not c:  return g.trace('no c!')
         p = c.currentPosition()
-        if not p: return
-        if self.frame.lockout > 0: return
-        
-        # Similar to idle_body_key
-        self.frame.lockout += 1
+        if not p: return g.trace('no p!')
+        if self.frame.lockout > 0: return g.trace('lockout!',g.callers())
     
-        s = frame.body.bodyCtrl.GetValue()
-        p.v.t.setTnodeText(s)
-        p.v.t.insertSpot = w.getInsertPoint()
-        #@    << recolor the body >>
-        #@+node:edream.111303201144.6:<< recolor the body >>
-        if 0:  ### Not ready yet.
-            self.frame.scanForTabWidth(p)
-        
-            incremental = undoType not in ("Cut","Paste") and not self.forceFullRecolorFlag
-            self.frame.body.recolor_now(p,incremental=incremental)
-            
-            self.forceFullRecolorFlag = False
-        #@nonl
-        #@-node:edream.111303201144.6:<< recolor the body >>
-        #@nl
-        if not c.changed:
-            c.setChanged(True)
-        #@    << redraw the screen if necessary >>
-        #@+node:edream.111303201144.7:<< redraw the screen if necessary >>
-        redraw_flag = False
-        
-        c.beginUpdate()
-        
-        # Update dirty bits.
-        if not p.isDirty() and p.setDirty(): # Sets all cloned and @file dirty bits
-            redraw_flag = True
-            
-        # Update icons.
-        val = p.computeIcon()
-        
-        # During unit tests the node may not have been drawn,
-        # so p.v.iconVal may not exist yet.
-        if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-            p.v.iconVal = val
-            redraw_flag = True
-        
-        c.endUpdate(redraw_flag) # redraw only if necessary
-        #@nonl
-        #@-node:edream.111303201144.7:<< redraw the screen if necessary >>
-        #@nl
-        if 0: # ch, etc. are not defined.
-            g.doHook("bodykey2",c=c,p=p,v=p.v,ch=ch,oldSel=oldSel,undoType=undoType)
-            
-        self.frame.lockout -= 1
+        self.frame.lockout += 1
+        try:
+            s = wx.TextCtrl.GetValue(w)
+            changed = s != p.bodyString()
+            g.trace('changed',changed,len(s),p.headString(),g.callers())
+            if changed:
+                p.v.t.setTnodeText(s)
+                p.v.t.insertSpot = w.getInsertPoint()
+                c.recolor() # Important: colorizing will generate update events!
+                if 0:
+                    #@                << recolor the body >>
+                    #@+node:edream.111303201144.6:<< recolor the body >>
+                    if 0:  ### Not ready yet.
+                        self.frame.scanForTabWidth(p)
+                    
+                        incremental = undoType not in ("Cut","Paste") and not self.forceFullRecolorFlag
+                        self.frame.body.recolor_now(p,incremental=incremental)
+                        
+                        self.forceFullRecolorFlag = False
+                    #@nonl
+                    #@-node:edream.111303201144.6:<< recolor the body >>
+                    #@nl
+                if not c.changed: c.setChanged(True)
+                if 0:
+                    #@                << redraw the screen if necessary >>
+                    #@+node:edream.111303201144.7:<< redraw the screen if necessary >>
+                    redraw_flag = False
+                    
+                    c.beginUpdate()
+                    try:
+                        # Update dirty bits.
+                        if not p.isDirty() and p.setDirty(): # Sets all cloned and @file dirty bits
+                            redraw_flag = True
+                            
+                        # Update icons.
+                        val = p.computeIcon()
+                        
+                        # During unit tests the node may not have been drawn,
+                        # so p.v.iconVal may not exist yet.
+                        if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+                            p.v.iconVal = val
+                            redraw_flag = True
+                    finally:
+                        c.endUpdate(redraw_flag) # redraw only if necessary
+                    #@nonl
+                    #@-node:edream.111303201144.7:<< redraw the screen if necessary >>
+                    #@nl
+        finally:
+            self.frame.lockout -= 1
     #@nonl
-    #@-node:edream.110203113231.275:onBodyTextUpdated MORE WORK NEEDED
+    #@-node:edream.110203113231.275:body.onBodyTextUpdated
     #@-others
 #@nonl
 #@-node:edream.110203113231.539:wxLeoBody class
@@ -1879,6 +1871,9 @@ class wxLeoTree (leoFrame.leoTree):
     
         # Init the base class.
         leoFrame.leoTree.__init__(self,frame)
+        
+        c = self.c
+        self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
     
         self.treeCtrl = wx.TreeCtrl(parentFrame,
             const("cTreeCtrl"),
@@ -1943,58 +1938,60 @@ class wxLeoTree (leoFrame.leoTree):
     #@+node:edream.110203113231.298:redraw & redraw_now
     def redraw (self):
     
-        # g.trace(self.drawing)
         self.drawing = True # Tell event handlers not to call us.
     
         c = self.c ; tree = self.treeCtrl
         if c is None: return
         p = c.rootPosition()
         if not p: return
+        
+        g.trace(g.callers())
     
         tree.DeleteAllItems()
         self.root_id = root_id = tree.AddRoot("Leo Outline Pane")
         while p: # This may need copies...
             self.redraw_subtree(root_id,p)
-            p = p.next()
+            p.moveToNext()
         tree.Expand(root_id)
         
         self.drawing = False
             
     def redraw_now(self,scroll=True):
-        # g.trace()
         self.redraw()
     #@nonl
     #@-node:edream.110203113231.298:redraw & redraw_now
     #@+node:edream.110203113231.299:redraw_node
-    def redraw_node(self,parent_id,v):
+    def redraw_node(self,parent_id,p):
         
-        # g.trace(v)
+        # g.trace(p)
         tree = self.treeCtrl
-        data = wx.TreeItemData(v)
-        id = tree.AppendItem(parent_id,v.headString(),data=data)
-        v.wxTreeId = id # Inject the ivar into the vnode.
-        assert (v == tree.GetItemData(id).GetData())
-        return id
+    
+        data = wx.TreeItemData(p.copy())
+    
+        id = tree.AppendItem(parent_id,p.headString(),data=data)
+    
+        ###p.v.wxTreeId = id # Inject the ivar into the position.
         
-    #@nonl
+        assert (p == tree.GetItemData(id).GetData())
+        return id
     #@-node:edream.110203113231.299:redraw_node
     #@+node:edream.110203113231.300:redraw_subtree
-    def redraw_subtree(self,parent_id,v):
+    def redraw_subtree(self,parent_id,p):
     
         tree = self.treeCtrl
-        id = self.redraw_node(parent_id,v)
-        child = v.firstChild()
+        id = self.redraw_node(parent_id,p)
+        child = p.firstChild()
         
-        if v.isExpanded():
+        if p.isExpanded():
             while child:
                 self.redraw_subtree(id,child)
-                child = child.next()
+                child.moveToNext()
             tree.Expand(id)
         else:
             if 1: # tree.SetItemHasChildren changes the event handler logic.  So this is good enough.
                 while child:
                     self.redraw_node(id,child)
-                    child = child.next()
+                    child.moveToNext()
             else:
                 if child:
                     tree.SetItemHasChildren(id)
@@ -2048,10 +2045,8 @@ class wxLeoTree (leoFrame.leoTree):
         tree = self.treeCtrl
         id = event.GetItem()
         if id.IsOk and not self.frame.lockout:
-            v = tree.GetItemData(id).GetData()
-            if v:
-                #g.trace(v)
-                v.contract()
+            p = tree.GetItemData(id).GetData()
+            if p: p.contract()
         
     def onTreeExpanding (self,event):
         
@@ -2060,47 +2055,53 @@ class wxLeoTree (leoFrame.leoTree):
         tree = self.treeCtrl
         id = event.GetItem()
         if id.IsOk and not self.frame.lockout:
-            v = tree.GetItemData(id).GetData()
-            if v:
-                #g.trace(v)
-                v.expand()
+            p = tree.GetItemData(id).GetData()
+            if p: p.expand()
     #@nonl
     #@-node:edream.110203113231.281:onTreeCollapsing & onTreeExpanding
     #@-node:edream.110203113231.279:Expand/contract
     #@+node:edream.110203113231.282:Selecting
-    #@+node:edream.110203113231.283:onTreeChanged (must handle positions properly)
+    #@+node:edream.110203113231.283:onTreeChanged
     def onTreeChanged(self,event):
     
-        frame = self ; c = self.c ; tree = self.treeCtrl
-        
-        if self.frame.lockout > 0: return 
+        c = self.c ; tree = self.treeCtrl
+        if self.frame.lockout > 0: return g.trace('lockout!',self.frame.lockout,g.callers())
         new_id = event.GetItem()
-        if not new_id.IsOk(): return
-        v = tree.GetItemData(new_id).GetData()
-        if not v: return
+        if not new_id.IsOk(): return g.trace('no id')
+        p = tree.GetItemData(new_id).GetData()
+        if not p: return g.trace('no p!')
     
-        self.frame.lockout += 1 # MUST prevent further events.
-        
-        c.selectVnode(v)
-        s = v.t.bodyString
-        s = g.toUnicode(s,"utf-8")  # No g.app.tkEncoding or similar yet.
-        w = self.frame.body.bodyCtrl
-        g.trace()
-        w.Clear()
-        w.WriteText(s)
-        self.frame.body.recolor(v)
-        
-        self.frame.lockout -= 1
+        g.trace(p.headString())
+    
+        ###self.frame.lockout += 1 # MUST prevent further events.
+        c.beginUpdate()
+        try:
+            # This will generate a body update event that we *do* want to honor.
+            c.selectPosition(p)
+        finally:
+            c.endUpdate(False) # Do not draw the tree here!
+            ###self.frame.lockout -= 1
     #@nonl
-    #@-node:edream.110203113231.283:onTreeChanged (must handle positions properly)
+    #@-node:edream.110203113231.283:onTreeChanged
     #@+node:edream.110203113231.284:onTreeChanging
     def onTreeChanging(self,event):
         
         """Event handler gets called whenever a new node gets selected"""
     
-        g.trace(event)
         pass
-    #@nonl
+        
+        # new_id = event.GetItem()
+        # if new_id.IsOk():
+            # g.trace('no id')
+            # return
+    
+        # p = tree.GetItemData(new_id).GetData()
+        # if not p:
+            # g.trace('no p!')
+            # return
+    
+        # g.trace(p.headString())
+        # self.select(p,updateBeadList=True,scroll=True)
     #@-node:edream.110203113231.284:onTreeChanging
     #@-node:edream.110203113231.282:Selecting
     #@+node:edream.110203113231.285:Editing labels
@@ -2262,135 +2263,155 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:edream.111403090242:Scrolling TO DO
     #@+node:ekr.20050719121701:Selection stuff...
-    #@+node:ekr.20050719120304:tree.select (MORE WORK NEEDED)
-    # Warning: do not try to "optimize" this by returning if p==tree.currentPosition.
+    #@+node:ekr.20061115172306:tree.select
+    #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
     
-    def select (self,p,updateBeadList=True):
+    def select (self,p,updateBeadList=True,scroll=True):
+        
+        '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
         
         c = self.c ; frame = c.frame
-        body = w = frame.bodyCtrl
+        w = frame.body.bodyCtrl
         old_p = c.currentPosition()
-    
-        if not p: return
-        if not c.positionExists(p):
-            g.trace('does not exist',p)
-            return
-    
-        # g.trace('len(body)',len(p.bodyString()),p.headString())
+        if not p or not c.positionExists(p):
+            g.trace('does not exist',p.headString())
+            return # Not an error.
+        
+        g.trace(p.headString(),g.callers())
     
         if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
-            #@        << unselect the old node >>
-            #@+node:ekr.20050719120304.1:<< unselect the old node >>
-            # Remember the position of the scrollbar before making any changes.
             if old_p:
+                #@            << unselect the old node >>
+                #@+node:ekr.20061115172306.1:<< unselect the old node >>
+                # Remember the position of the scrollbar before making any changes.
                 
-                if 0:  ### Not ready yet.
-            
-                    yview=body.yview()
+                if 0: ###
+                    yview = 0 ### yview=w.yview()
                     insertSpot = w.getInsertPoint()
                     
                     if old_p != p:
-                        # g.trace("unselect:",old_p.headString())
                         self.endEditLabel() # sets editPosition = None
                         self.setUnselectedLabelState(old_p)
                     
                     if c.edit_widget(old_p):
                         old_p.v.t.scrollBarSpot = yview
                         old_p.v.t.insertSpot = insertSpot
-            #@nonl
-            #@-node:ekr.20050719120304.1:<< unselect the old node >>
-            #@nl
+                    
+                #@nonl
+                #@-node:ekr.20061115172306.1:<< unselect the old node >>
+                #@nl
     
         g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
         
         if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
             #@        << select the new node >>
-            #@+node:ekr.20050719120304.2:<< select the new node >>
-            if 0:  ### Not ready yet.
-                frame.setWrap(p)
+            #@+node:ekr.20061115172306.2:<< select the new node >>
+            # Bug fix: we must always set this, even if we never edit the node.
+            self.revertHeadline = p.headString()
             
+            ###frame.setWrap(p)
+                
             # Always do this.  Otherwise there can be problems with trailing hewlines.
-            s = g.toUnicode(p.v.t.bodyString,"utf-8")
+            ###s = g.toUnicode(p.v.t.bodyString,"utf-8")
+            ###self.setText(0,body,s)
             
-            if 0: ### May not be needed.
-                self.setText(body,s,tag="select:set body",isHeadline=False)
+            w.setAllText(p.bodyString())
             
             # We must do a full recoloring: we may be changing context!
             self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
             
-            if 0:  ### Not ready yet.
+            ###if p.v and p.v.t.scrollBarSpot != None:
+                ###first,last = p.v.t.scrollBarSpot
+                ### w.yview('moveto',first)
             
-                if p.v and p.v.t.scrollBarSpot != None:
-                    first,last = p.v.t.scrollBarSpot
-                    body.yview("moveto",first)
-                
-                if p.v and p.v.t.insertSpot != None:
-                    c.frame.bodyCtrl.mark_set("insert",p.v.t.insertSpot)
-                    c.frame.bodyCtrl.see(p.v.t.insertSpot)
-                else:
-                    c.frame.bodyCtrl.mark_set("insert","1.0")
+            ###if p.v and p.v.t.insertSpot != None:
+                ###spot = p.v.t.insertSpot
+                ###w.mark_set("insert",spot)
+                ###w.setInsertPoint(spot)
+                ###w.see(spot)
+            ###else:
+                ###w.mark_set("insert","1.0")
+                ### w.setInsertPoint(0)
                 
             # g.trace("select:",p.headString())
-            #@nonl
-            #@-node:ekr.20050719120304.2:<< select the new node >>
-            #@nl
-            if p and p != old_p: # Suppress duplicate call.
-                try: # may fail during initialization.
-                    self.idle_scrollTo(p) # p is NOT c.currentPosition() here!
-                except: pass
-            #@        << update c.beadList or c.beadPointer >>
-            #@+node:ekr.20050719120304.3:<< update c.beadList or c.beadPointer >>
-            if updateBeadList:
-                
-                if c.beadPointer > -1:
-                    present_p = c.beadList[c.beadPointer]
-                else:
-                    present_p = c.nullPosition()
-                
-                if p != present_p:
-                    # Replace the tail of c.beadList by c and make c the present node.
-                    # print "updating c.beadList"
-                    c.beadPointer += 1
-                    c.beadList[c.beadPointer:] = []
-                    c.beadList.append(p.copy())
                     
-                # g.trace(c.beadPointer,p,present_p)
             #@nonl
-            #@-node:ekr.20050719120304.3:<< update c.beadList or c.beadPointer >>
+            #@-node:ekr.20061115172306.2:<< select the new node >>
             #@nl
+            if 0: ### Not ready ###
+                if p and p != old_p: # Suppress duplicate call.
+                    try: # may fail during initialization.
+                        # p is NOT c.currentPosition() here!
+                        if 0: # Interferes with new colorizer.
+                            self.canvas.update_idletasks()
+                            self.scrollTo(p)
+                        if scroll:
+                            def scrollCallback(self=self,p=p):
+                                self.scrollTo(p)
+                            self.canvas.after(100,scrollCallback)
+                    except Exception: pass
+                #@            << update c.beadList or c.beadPointer >>
+                #@+node:ekr.20061115172306.3:<< update c.beadList or c.beadPointer >>
+                # c.beadList is the list of nodes for the back and forward commands.
+                
+                if updateBeadList:
+                    
+                    if c.beadPointer > -1:
+                        present_p = c.beadList[c.beadPointer]
+                    else:
+                        present_p = c.nullPosition()
+                    
+                    if p != present_p:
+                        # Replace the tail of c.beadList by p and make p the present node.
+                        c.beadPointer += 1
+                        c.beadList[c.beadPointer:] = []
+                        c.beadList.append(p.copy())
+                        
+                        # New in Leo 4.4: limit this list to 100 items.
+                        if 0: # Doesn't work yet.
+                            c.beadList = c.beadList [-100:]
+                            g.trace('len(c.beadList)',len(c.beadList))
+                        
+                    # g.trace(c.beadPointer,p,present_p)
+                #@-node:ekr.20061115172306.3:<< update c.beadList or c.beadPointer >>
+                #@nl
             #@        << update c.visitedList >>
-            #@+node:ekr.20050719120304.4:<< update c.visitedList >>
+            #@+node:ekr.20061115172306.4:<< update c.visitedList >>
+            # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
+            
             # Make p the most recently visited position on the list.
             if p in c.visitedList:
                 c.visitedList.remove(p)
             
             c.visitedList.insert(0,p.copy())
-            #@nonl
-            #@-node:ekr.20050719120304.4:<< update c.visitedList >>
+            
+            # g.trace('len(c.visitedList)',len(c.visitedList))
+            # g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
+            #@-node:ekr.20061115172306.4:<< update c.visitedList >>
             #@nl
     
-        #@    << set the current node >>
-        #@+node:ekr.20050719120304.5:<< set the current node >>
         c.setCurrentPosition(p)
+        #@    << set the current node >>
+        #@+node:ekr.20061115172306.5:<< set the current node >>
+        ### self.setSelectedLabelState(p)
         
-        if p != old_p:
-            self.setSelectedLabelState(p)
+        frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
         
-        frame.scanForTabWidth(p) # GS I believe this should also get into the select1 hook
-        
-        
-        if 0: ### Not ready yet.
-            frame.bodyWantsFocus()
-        #@nonl
-        #@-node:ekr.20050719120304.5:<< set the current node >>
+        if self.stayInTree:
+            c.treeWantsFocus()
+        else:
+            c.bodyWantsFocus()
+        #@-node:ekr.20061115172306.5:<< set the current node >>
         #@nl
+        if 0: ### Not ready yet ###
+            c.frame.body.selectMainEditor(p) # New in Leo 4.4.1.
+            c.frame.updateStatusLine() # New in Leo 4.4.1.
         
         g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
         g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
         
-        # g.printGc()
-    #@nonl
-    #@-node:ekr.20050719120304:tree.select (MORE WORK NEEDED)
+        return 'break' # Supresses unwanted selection.
+    #@-node:ekr.20061115172306:tree.select
     #@+node:ekr.20050719121812:Disabled for now
     #@+node:ekr.20050719121701.2:endEditLabel
     def endEditLabel (self):
@@ -2590,12 +2611,6 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:ekr.20050719121701.18:dimEditLabel, undimEditLabel
     #@-node:ekr.20050719121701:Selection stuff...
-    #@+node:ekr.20050719121356:setText
-    def setText (self,t,s,tag="",isHeadline=True):
-        
-        g.trace(s)
-    #@nonl
-    #@-node:ekr.20050719121356:setText
     #@+node:ekr.20050719121701.19:tree.expandAllAncestors
     def expandAllAncestors (self,p):
         
@@ -3257,8 +3272,6 @@ class leoWxTextWidget (wx.TextCtrl):
     
     def tag_add(self,tagName,i,j=None,*args):
         
-        # g.trace(tagName,repr(i),repr(j),g.callers())
-    
         w = self
         i = w.toGuiIndex(i)
         if j is None: j = i + 1
@@ -3270,8 +3283,7 @@ class leoWxTextWidget (wx.TextCtrl):
         style = w.leo_styles.get(tagName)
     
         if style is not None:
-            # g.trace(i,j,'tagName',tagName,'style',style,'args',args)
-            g.trace(i,j,tagName)
+            # g.trace(i,j,tagName)
             wx.TextCtrl.SetStyle(w,i,j,style)
     #@nonl
     #@-node:ekr.20061115122034.7:tag_add
@@ -3295,6 +3307,8 @@ class leoWxTextWidget (wx.TextCtrl):
         if style is not None:
             # g.trace(colorName,style)
             w.leo_styles[colorName] = style
+            
+    tag_config = tag_configure
     #@nonl
     #@+node:ekr.20061115135849.1:tkColorToWxColor
     def tkColorToWxColor (self, color):
@@ -3428,20 +3442,25 @@ class leoWxTextWidget (wx.TextCtrl):
     #@+node:ekr.20061115122034.18:selectAllText (test) (could be in the base class)
     def selectAllText (self,insert=None):
         
-        '''Select all text of the widget, *not* including the extra newline.'''
+        '''Select all text of the widget.'''
         
         w = self
-        s = w.getAllText()
-        w.setSelectionRange(0,len(s),insert=insert)
+        w.setSelectionRange(0,'end',insert=insert)
     #@-node:ekr.20061115122034.18:selectAllText (test) (could be in the base class)
-    #@+node:ekr.20061115122034.19:setAllText  (test) (could be in base class)  TO DO
+    #@+node:ekr.20061115122034.19:setAllText (test)
     def setAllText (self,s):
     
         w = self
-        g.trace(len(s),repr(s[:20]))
-        w.delete(0,'end')
-        w.insert(0,s)
-    #@-node:ekr.20061115122034.19:setAllText  (test) (could be in base class)  TO DO
+    
+        g.trace(len(s),repr(s[:20]),g.callers())
+        
+        if 1: # These do generate an update event.
+            ###wx.TextCtrl.Clear(w)
+            ###wx.TextCtrl.WriteText(w,s)
+            wx.TextCtrl.SetValue(w,s) 
+        else:# This does *not* generate an update event.
+            wx.TextCtrl.ChangeValue(w,s) 
+    #@-node:ekr.20061115122034.19:setAllText (test)
     #@+node:edream.111303093953.25:see & seeInsertPoint (test)
     def see(self,index):
     
