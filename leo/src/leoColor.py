@@ -1314,6 +1314,8 @@ class baseColorizer:
     
     def colorize(self,p,incremental=False,interruptable=True):
         # interruptable used only in new colorizer.
+        
+        # g.trace(g.callers())
     
         if self.enabled:
             # if self.trace: g.trace("incremental",incremental)
@@ -1327,6 +1329,8 @@ class baseColorizer:
     # Colorizes the lines between the leading and trailing lines.
             
     def recolor_range(self,p,leading,trailing):
+        
+        # g.trace(g.callers())
         
         if self.enabled:
             # if self.trace: g.trace("leading,trailing",leading,trailing)

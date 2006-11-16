@@ -68,7 +68,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
     
         if self.useTextWidget:
             w.update_idletasks()
-            k.mb_prefix = w.get('1.0','end')
+            k.mb_prefix = w.getAllText()
         else:
             if k.svar:
                 k.mb_prefix = k.svar.get()
@@ -90,8 +90,8 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         trace and g.trace(repr(s),g.callers())
     
         if self.useTextWidget:
-            w.delete('1.0','end')
-            w.insert('1.0',s)
+            w.delete(0,'end')
+            w.insert(0,s)
             c.masterFocusHandler() # Restore to the previously requested focus.
         else:
             if k.svar: k.svar.set(s)

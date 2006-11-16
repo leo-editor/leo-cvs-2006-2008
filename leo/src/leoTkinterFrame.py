@@ -1483,7 +1483,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             
         if w and p == tree.editPosition():
             # Revert the headline text.
-            w.delete("1.0","end")
+            w.delete(0,"end")
             w.insert("end",tree.revertHeadline)
             p.initHeadString(tree.revertHeadline)
             c.beginUpdate()
@@ -1622,7 +1622,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 c.frame.body.forceFullRecolor()
                 c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
             elif singleLine:
-                s = w.get('1.0','end')
+                s = w.getAllText()
                 while s and s [ -1] in ('\n','\r'):
                     s = s [: -1]
                 if wname.startswith('head'):
@@ -2086,7 +2086,7 @@ class leoTkinterBody (leoFrame.leoBody):
         
         w = self.createTextWidget(self.frame,f,name=name,p=p)
         
-        w.delete('1.0','end')
+        w.delete(0,'end')
         w.insert('end',p.bodyString())
         w.see(0)
         self.setFontFromConfig(w=w)
@@ -2261,7 +2261,7 @@ class leoTkinterBody (leoFrame.leoBody):
             w = d.get(key)
             v = w.leo_v
             if v and v == p.v and w != self.bodyCtrl:
-                w.delete('1.0','end')
+                w.delete(0,'end')
                 w.insert('end',p.bodyString())
                 # g.trace('update',w,v)
                 self.recolorWidget(w)
@@ -2343,8 +2343,9 @@ class leoTkinterBody (leoFrame.leoBody):
         bodyCtrl = w = body.bodyCtrl
         trace = self.trace_onBodyChanged
         p = c.currentPosition()
-        insert = bodyCtrl.index('insert')
-        ch = g.choose(insert=='1.0','',bodyCtrl.get('insert-1c'))
+        ###insert = bodyCtrl.index('insert')
+        insert = bodyCtrl.getInsertPoint()
+        ch = g.choose(insert==0,'',bodyCtrl.get('insert-1c'))
         ch = g.toUnicode(ch,g.app.tkEncoding)
         newText = w.getAllText() # Note: getAllText converts to unicode.
         # g.trace('newText',repr(newText))
@@ -2631,7 +2632,7 @@ class leoTkinterLog (leoFrame.leoLog):
         logCtrl = self.logCtrl ; colors = {}
     
         # Save the text
-        text = logCtrl.get('1.0','end')
+        text = logCtrl.getAllText()
     
         # Save color tags.
         tag_names = logCtrl.tag_names()

@@ -375,7 +375,7 @@ class tnode (baseTnode):
     
         self.bodyString = s
         
-        # g.trace(repr(s))
+        # g.trace(len(s),g.callers())
     #@-node:ekr.20031218072017.1485:setTnodeText
     #@+node:ekr.20031218072017.1486:setSelection
     def setSelection (self,start,length):

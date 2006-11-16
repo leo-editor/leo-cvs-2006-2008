@@ -1799,9 +1799,7 @@ class keyHandlerClass:
         c.commandsDict has been created when this is called.'''
         
         k = self ; c = k.c
-        
-        # g.trace('keyHandler')
-       
+        #g.trace('keyHandler')
         k.createInverseCommandsDict()
         
         if not c.miniBufferWidget:
@@ -2020,7 +2018,6 @@ class keyHandlerClass:
         k = self ; c = k.c
         
         #g.trace(c.fileName())
-    
         k.bindingsDict = {}
         k.addModeCommands() 
         k.makeBindingsFromCommandsDict()
@@ -3007,6 +3004,7 @@ class keyHandlerClass:
         k = self ; c = k.c ; gui = g.app.gui
         w = gui.eventWidget(event)
         w_name = c.widget_name(w)
+        char = gui.eventChar(event)
         keysym = gui.eventKeysym(event)
         state = k.state.kind
         special_keys = (
@@ -3043,6 +3041,8 @@ class keyHandlerClass:
                 'unboundKeyAction',k.unboundKeyAction)
         #@-node:ekr.20061031131434.148:<< do key traces >>
         #@nl
+        
+        event = g.app.gui.leoEvent(event) # Convert event to canonical form.
     
         # Handle keyboard-quit first.
         if k.abortAllModesKey and stroke == k.abortAllModesKey:
@@ -3143,17 +3143,17 @@ class keyHandlerClass:
             if trace: g.trace('plain key in insert mode',stroke)
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         
-        elif k.ignore_unbound_non_ascii_keys and len(event.char) > 1:
+        elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
             # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
             if trace: g.trace('ignoring unbound non-ascii key')
             return 'break'
             
-        elif event and event.keysym.find('Escape') != -1:
+        elif keysym.find('Escape') != -1:
             # Never insert escape characters.
             return 'break'
         
         else:
-            # g.trace(stroke,event.char,event.keysym)
+            # g.trace(stroke,char,keysym)
             if trace: g.trace(repr(stroke),'no func')
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         #@-node:ekr.20061031131434.151:<< handle keys without bindings >>

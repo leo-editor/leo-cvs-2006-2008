@@ -471,7 +471,7 @@ class leoFind:
         for w2 in (w,self.s_ctrl):
             if start != end: w2.delete(start,end)
             w2.insert(start,change_text)
-            w2.setInsertPoint(g.choose(self.reverse,start,end))
+            w2.setInsertPoint(g.choose(self.reverse,start,start+len(change_text)))
     
         # Update the selection for the next match.
         w.setSelectionRange(start,start+len(change_text))

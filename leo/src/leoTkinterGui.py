@@ -54,6 +54,14 @@ class tkinterGui(leoGui.leoGui):
                 except:
                     g.es_exception()
     #@-node:ekr.20031218072017.837: tkGui.__init__
+    #@+node:ekr.20061031172934:createKeyHandlerClass (tkGui)
+    def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
+        
+        import leoTkinterKeys # Do this here to break any circular dependency.
+                
+        return leoTkinterKeys.tkinterKeyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
+    #@nonl
+    #@-node:ekr.20061031172934:createKeyHandlerClass (tkGui)
     #@+node:ekr.20061112152012.1:createLeoEvent
     def createLeoEvent (self,event):
         return self.leoEvent(event)
@@ -188,14 +196,6 @@ class tkinterGui(leoGui.leoGui):
             self.root.mainloop()
     #@-node:ekr.20031218072017.4055:runMainLoop (tkGui)
     #@-node:ekr.20031218072017.4048:tkGui birth & death
-    #@+node:ekr.20061031172934:tkGui.createKeyHandlerClass
-    def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
-        
-        import leoTkinterKeys # Do this here to break any circular dependency.
-                
-        return leoTkinterKeys.tkinterKeyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
-    #@nonl
-    #@-node:ekr.20061031172934:tkGui.createKeyHandlerClass
     #@+node:ekr.20031218072017.4056:tkGui dialogs & panels
     def runAboutLeoDialog(self,c,version,theCopyright,url,email):
         """Create and run a Tkinter About Leo dialog."""
@@ -650,6 +650,8 @@ class tkinterGui(leoGui.leoGui):
             self.w      = hasattr(event,'widget') and event.widget or None
             self.x      = hasattr(event,'x') and event.x or 0
             self.y      = hasattr(event,'y') and event.y or 0
+            
+            self.widget = self.w
     #@nonl
     #@-node:ekr.20061112152012.2:class leoEvent (tkGui)
     #@-others

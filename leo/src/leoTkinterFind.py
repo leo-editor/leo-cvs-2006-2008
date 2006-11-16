@@ -344,8 +344,8 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     
         #@    << set find/change widgets >>
         #@+node:ekr.20031218072017.2060:<< set find/change widgets >>
-        self.find_ctrl.delete("1.0","end")
-        self.change_ctrl.delete("1.0","end")
+        self.find_ctrl.delete(0,"end")
+        self.change_ctrl.delete(0,"end")
         
         # New in 4.3: Get setting from @settings.
         for w,setting,defaultText in (
@@ -441,14 +441,14 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     
         # New in 4.3: The caller is responsible for removing most trailing cruft.
         # Among other things, this allows Leo to search for a single trailing space.
-        s = self.find_ctrl.get("1.0","end")
+        s = self.find_ctrl.getAllText()
         s = g.toUnicode(s,g.app.tkEncoding)
         # g.trace(repr(s))
         if s and s[-1] in ('\r','\n'):
             s = s[:-1]
         self.find_text = s
     
-        s = self.change_ctrl.get("1.0","end")
+        s = self.change_ctrl.getAllText()
         if s and s[-1] in ('\r','\n'):
             s = s[:-1]
         s = g.toUnicode(s,g.app.tkEncoding)

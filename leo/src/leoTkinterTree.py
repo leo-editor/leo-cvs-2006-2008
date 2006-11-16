@@ -305,10 +305,10 @@ class leoTkinterTree (leoFrame.leoTree):
         
         #@    << make bindings for a common binding widget >>
         #@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
-        self.bindingWidget = t = g.app.gui.leoTextWidgetClass(
+        self.bindingWidget = w = g.app.gui.leoTextWidgetClass(
             self.canvas,name='bindingWidget')
         
-        t.bind('<Key>',k.masterKeyHandler)
+        w.bind('<Key>',k.masterKeyHandler)
         
         table = (
             ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
@@ -320,9 +320,9 @@ class leoTkinterTree (leoFrame.leoTree):
         for a,handler,func in table:
             def treeBindingCallback(event,handler=handler,func=func):
                 return handler(event,func)
-            t.bind(a,treeBindingCallback)
+            w.bind(a,treeBindingCallback)
             
-        self.textBindings = t.bindtags()
+        self.textBindings = w.bindtags()
         #@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
         #@nl
     
@@ -385,7 +385,7 @@ class leoTkinterTree (leoFrame.leoTree):
                         c.selectPosition(p)
                     finally:
                         c.endUpdate()
-                    c.frame.bodyCtrl.mark_set("insert","1.0")
+                    c.frame.bodyCtrl.setInsertPoint(0) ### mark_set("insert","1.0")
                 g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
             except:
                 g.es_event_exception("hypercclick")
@@ -530,18 +530,18 @@ class leoTkinterTree (leoFrame.leoTree):
     
         found = len(self.freeText) > 0
         if found:
-            t,theId = self.freeText.pop()
-            if self.trace_alloc: g.trace('%4d' % (theId),self.textAddr(t),'recycled')
+            w,theId = self.freeText.pop()
+            if self.trace_alloc: g.trace('%4d' % (theId),self.textAddr(w),'recycled')
             canvas.coords(theId,x,y) # Make the window visible again.
                 # theId is the id of the *window* not the text.
     
         else:
             # Tags are not valid in Tk.Text widgets.
             self.textNumber += 1
-            t = g.app.gui.leoTextWidgetClass(
+            w = g.app.gui.leoTextWidgetClass(
                 canvas,name='head-%d' % self.textNumber,
                 state="normal",font=self.font,bd=0,relief="flat",height=1)
-            t.bindtags(self.textBindings) # Set the bindings for this widget.
+            w.bindtags(self.textBindings) # Set the bindings for this widget.
     
             if 0: # Crashes on XP.
                 #@            << patch by Maciej Kalisiak to handle scroll-wheel events >>
@@ -558,18 +558,18 @@ class leoTkinterTree (leoFrame.leoTree):
                     canvas.event_generate("<MouseWheel>")
                     return "break"
                 
-                instance_tag = t.bindtags()[0]
-                t.bind_class(instance_tag, "<Button-4>", PropagateButton4)
-                t.bind_class(instance_tag, "<Button-5>", PropagateButton5)
-                t.bind_class(instance_tag, "<MouseWheel>",PropagateMouseWheel)
+                instance_tag = w.bindtags()[0]
+                w.bind_class(instance_tag, "<Button-4>", PropagateButton4)
+                w.bind_class(instance_tag, "<Button-5>", PropagateButton5)
+                w.bind_class(instance_tag, "<MouseWheel>",PropagateMouseWheel)
                 #@-node:ekr.20050618045715:<< patch by Maciej Kalisiak  to handle scroll-wheel events >>
                 #@nl
         
-            theId = canvas.create_window(x,y,anchor="nw",window=t,tag=tag)
-            t.leo_window_id = theId # Never changes.
+            theId = canvas.create_window(x,y,anchor="nw",window=w,tag=tag)
+            w.leo_window_id = theId # Never changes.
             
             if self.trace_alloc:
-                g.trace('%4d' % (theId),self.textAddr(t),'** new')
+                g.trace('%4d' % (theId),self.textAddr(w),'** new')
                 
         # Common configuration.
         if 0: # Doesn't seem to work.
@@ -577,15 +577,15 @@ class leoTkinterTree (leoFrame.leoTree):
             balloon.tagbind(canvas,theId,balloonHelp='Headline')
                 
         self.ids[theId] = p # Add the id of the *window*
-        self.setText(theId,t,p.headString())
-        t.configure(width=self.headWidth(p=p))
-        t.leo_position = p # This p never changes.
+        self.setText(theId,w,p.headString())
+        w.configure(width=self.headWidth(p=p))
+        w.leo_position = p # This p never changes.
             # *Required*: onHeadlineClick uses w.leo_position to get p.
     
-        # Keys are p.key().  Entries are (t,theId)
-        self.visibleText [p.key()] = t,theId
+        # Keys are p.key().  Entries are (w,theId)
+        self.visibleText [p.key()] = w,theId
         
-        return t
+        return w
     #@-node:ekr.20040803072955.11:newText (leoTkinterTree)
     #@+node:ekr.20040803072955.12:recycleWidgets
     def recycleWidgets (self):
@@ -618,10 +618,10 @@ class leoTkinterTree (leoFrame.leoTree):
         
        
         aList = self.visibleText.values()
-        for t,theId in aList:
-            # assert theId == t.leo_window_id
+        for w,theId in aList:
+            # assert theId == w.leo_window_id
             canvas.coords(theId,-100,-100)
-            t.leo_position = None # Allow the position to be freed.
+            w.leo_position = None # Allow the position to be freed.
         self.freeText.extend(aList)
         self.visibleText = {}
     
@@ -740,26 +740,26 @@ class leoTkinterTree (leoFrame.leoTree):
     #@-node:ekr.20040803072955.26:Config & Measuring...
     #@+node:ekr.20040803072955.31:Debugging...
     #@+node:ekr.20040803072955.32:setText
-    def setText (self,theId,t,s):
+    def setText (self,theId,w,s):
         
         """All changes to text widgets should come here."""
     
-        if self.trace_alloc: g.trace('%4d' % (theId), self.textAddr(t),s)
+        if self.trace_alloc: g.trace('%4d' % (theId), self.textAddr(w),s)
                 
-        state = t.cget("state")
+        state = w.cget("state")
         if state != "normal":
-            t.configure(state="normal")
-        t.delete("1.0","end")
-        t.insert("end",s)
+            w.configure(state="normal")
+        w.delete(0,"end")
+        w.insert("end",s)
         if state != "normal":
-            t.configure(state=state)
+            w.configure(state=state)
     #@-node:ekr.20040803072955.32:setText
     #@+node:ekr.20040803072955.33:textAddr
-    def textAddr(self,t):
+    def textAddr(self,w):
         
         """Return the address part of repr(Tk.Text)."""
         
-        return repr(t)[-9:-1].lower()
+        return repr(w)[-9:-1].lower()
     #@-node:ekr.20040803072955.33:textAddr
     #@+node:ekr.20040803072955.34:traceIds (Not used)
     # Verbose tracing is much more useful than this because we can see the recent past.
@@ -1432,11 +1432,11 @@ class leoTkinterTree (leoFrame.leoTree):
         
         return True # This will fail when the headline actually changes!
         
-        for t in self.visibleText:
+        for w in self.visibleText:
             
-            p = t.leo_position
+            p = w.leo_position
             if p:
-                s = t.get("1.0","end").strip()
+                s = w.getAllText().strip()
                 h = p.headString().strip()
                 
                 if h != s:
@@ -1454,19 +1454,19 @@ class leoTkinterTree (leoFrame.leoTree):
         print
         print "checkWidgetList: %s" % tag
         
-        for t in self.visibleText:
+        for w in self.visibleText:
             
-            p = t.leo_position
+            p = w.leo_position
             if p:
-                s = t.get("1.0","end").strip()
+                s = w.getAllText().strip()
                 h = p.headString().strip()
         
-                addr = self.textAddr(t)
+                addr = self.textAddr(w)
                 print "p:",addr,h
                 if h != s:
-                    print "t:",'*' * len(addr),s
+                    print "w:",'*' * len(addr),s
             else:
-                print "t.leo_position == None",t
+                print "w.leo_position == None",w
     #@-node:ekr.20040803072955.73:dumpWidgetList
     #@+node:ekr.20040803072955.75:edit_widget
     def edit_widget (self,p):
@@ -1526,9 +1526,9 @@ class leoTkinterTree (leoFrame.leoTree):
         if p and c:
             aTuple = self.visibleText.get(p.key())
             if aTuple:
-                t,theId = aTuple
-                # if self.trace: g.trace('%4d' % (theId),self.textAddr(t),p.headString())
-                return t
+                w,theId = aTuple
+                # if self.trace: g.trace('%4d' % (theId),self.textAddr(w),p.headString())
+                return w
             else:
                 # g.trace('oops: not found',p)
                 return None
@@ -1798,7 +1798,7 @@ class leoTkinterTree (leoFrame.leoTree):
             i = w.index('insert')
             w.insert(i,ch)
     
-        s = w.get('1.0','end')
+        s = w.getAllText()
         if s.endswith('\n'):
             s = s[:-1]
         w.configure(width=self.headWidth(s=s))
@@ -1821,7 +1821,7 @@ class leoTkinterTree (leoFrame.leoTree):
         if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
             return # The hook claims to have handled the event.
     
-        s = w.get('1.0','end')
+        s = w.getAllText()
         #@    << truncate s if it has multiple lines >>
         #@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
         # Remove one or two trailing newlines before warning of truncation.
@@ -1974,10 +1974,12 @@ class leoTkinterTree (leoFrame.leoTree):
                     c.frame.findPanel.handleUserClick(p)
                 if p.v.t.insertSpot != None:
                     spot = p.v.t.insertSpot
-                    w.mark_set("insert",spot)
+                    ###w.mark_set("insert",spot)
+                    w.setInsertPoint(spot)
                     w.see(spot)
                 else:
-                    w.mark_set("insert","1.0")
+                    ###w.mark_set("insert","1.0")
+                    w.setInsertPoint(0)
             
                 if self.stayInTree:
                     c.treeWantsFocusNow()
@@ -2525,10 +2527,12 @@ class leoTkinterTree (leoFrame.leoTree):
             
             if p.v and p.v.t.insertSpot != None:
                 spot = p.v.t.insertSpot
-                w.mark_set("insert",spot)
+                ###w.mark_set("insert",spot)
+                w.setInsertPoint(spot)
                 w.see(spot)
             else:
-                w.mark_set("insert","1.0")
+                ###w.mark_set("insert","1.0")
+                w.setInsertPoint(0)
                 
             # g.trace("select:",p.headString())
                     
@@ -2616,10 +2620,11 @@ class leoTkinterTree (leoFrame.leoTree):
         if p and w:
             c.widgetWantsFocusNow(w)
             self.setEditHeadlineColors(p)
-            w.tag_remove('sel','1.0','end')
+            ###w.tag_remove('sel','1.0','end')
             selectAll = selectAll or c.config.getBool('select_all_text_when_editing_headlines')
-            start = g.choose(selectAll,'1.0','end')
-            w.tag_add('sel',start,'end')
+            start = g.choose(selectAll,0,'end')
+            ###w.tag_add('sel',start,'end')
+            w.setSelectionRange(start,'end',insert='end')
         else:
             g.trace('no edit_widget')
             
@@ -2715,12 +2720,12 @@ class leoTkinterTree (leoFrame.leoTree):
         w = self.edit_widget(p)
         if w:
             w.configure(state='normal')
-            w.delete('1.0','end')
+            w.delete(0,'end')
             if s.endswith('\n') or s.endswith('\r'):
                 s = s[:-1]
-            w.insert('1.0',s)
+            w.insert(0,s)
             self.revertHeadline = s
-            # g.trace(repr(s),w.get('1.0','end'))
+            # g.trace(repr(s),w.getAllText())
         else:
             g.trace('-'*20,'oops')
     #@-node:ekr.20060207101443:tree.setHeadline (new in 4.4b2)

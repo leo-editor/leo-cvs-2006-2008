@@ -199,10 +199,6 @@ class baseCommands:
         c.keyHandler = c.k = k = g.app.gui.createKeyHandlerClass(c,
             useGlobalKillbuffer=True,
             useGlobalRegisters=True)
-            
-        # c.keyHandler = c.k = k = leoKeys.keyHandlerClass(c,
-            # useGlobalKillbuffer=True,
-            # useGlobalRegisters=True)
     
         if g.app.config and g.app.config.inited:
             # A 'real' .leo file.
