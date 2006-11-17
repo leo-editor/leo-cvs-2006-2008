@@ -3107,6 +3107,13 @@ class leoTkTextWidget (Tk.Text):
     #@nonl
     #@-node:ekr.20061117085824.2:w.rowColToGuiIndex
     #@-node:ekr.20061113151148.2:Index conversion (leoTextWidget)
+    #@+node:ekr.20061117160129:getName (Tk.Text)
+    def getName (self):
+        
+        w = self
+        return hasattr(w,'_name') and w._name or repr(w)
+    #@nonl
+    #@-node:ekr.20061117160129:getName (Tk.Text)
     #@+node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
     #@+node:ekr.20061113151148.4:delete (passed)
     def delete(self,i,j=None):

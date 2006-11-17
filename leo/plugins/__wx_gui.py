@@ -280,8 +280,6 @@ class wxFindFrame (wx.Frame,leoFind.leoFind):
     def set_ivars (self,c):
         
         """Init the commander ivars from the find panel."""
-        
-        g.trace()
     
         # N.B.: separate c.ivars are much more convenient than a dict.
         for key in self.intKeys:
@@ -319,22 +317,22 @@ class wxFindFrame (wx.Frame,leoFind.leoFind):
     #@nonl
     #@-node:edream.111503091617:init_s_ctrl
     #@+node:edream.111503093522:gui_search
-    def gui_search (self,t,find_text,index,
-        stopindex,backwards,regexp,nocase):
+    # def gui_search (self,t,find_text,index,
+        # stopindex,backwards,regexp,nocase):
             
-        g.trace(index,stopindex,backwards,regexp,nocase)
+        # g.trace(index,stopindex,backwards,regexp,nocase)
         
-        s = t.text # t is the dummy text widget
+        # s = t.text # t is the dummy text widget
         
-        if index is None:
-            index = 0
+        # if index is None:
+            # index = 0
     
-        pos = s.find(find_text,index)
+        # pos = s.find(find_text,index)
     
-        if pos == -1:
-            pos = None
+        # if pos == -1:
+            # pos = None
         
-        return pos
+        # return pos
     #@nonl
     #@-node:edream.111503093522:gui_search
     #@+node:edream.111503204508:init
@@ -665,7 +663,7 @@ class wxKeyHandlerClass (leoKeys.keyHandlerClass):
     #@+node:ekr.20061116074003.1:ctor (wxKey)
     def __init__(self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
         
-        g.trace('wxKeyHandlerClass',g.callers())
+        # g.trace('wxKeyHandlerClass',g.callers())
         
         # Init the base class.
         leoKeys.keyHandlerClass.__init__(self,c,useGlobalKillbuffer,useGlobalRegisters)
@@ -927,7 +925,7 @@ class wxGui(leoGui.leoGui):
     
         after a previous gui has terminated with killGui(False)."""
     
-        g.trace('wx gui')
+        # g.trace('wx gui')
     #@-node:edream.110203113231.316:recreateRootWindow
     #@+node:edream.110203113231.317:runMainLoop
     def runMainLoop(self):
@@ -1176,33 +1174,46 @@ class wxGui(leoGui.leoGui):
     def event_generate(self,w,kind,*args,**keys):
         '''Generate an event.'''
         return w.event_generate(kind,*args,**keys)
-    
+    #@+node:ekr.20061117155233:eventChar & eventKeysym
     def eventChar (self,event):
-        '''Return the char field of an event.'''
-        i = event and hasattr(event,'GetUnicodeKey') and event.GetUnicodeKey() or None
-        if i is None:
-            return ''
+        
+        '''Return the char field of an event, either a wx event or a converted Leo event.'''
+    
+        if hasattr(event,'char'):
+            return event.char # A leoEvent.
+        elif hasattr(event,'GetUnicodeKey'):
+            i = event.GetUnicodeKey()
+            if i is None:
+                return ''
+            else:
+                char = unichr(i)
+                return char
         else:
-            char = unichr(i)
-            # g.trace(i,repr(char))
-            return char
-            
+            return ''
+                
     eventKeysym = eventChar
-    
-    # def eventKeysym (self,event):
-        # '''Return the keysym value of an event.'''
-        # return event and hasattr(event,'GetKeyCode') and event.GetKeyCode() or None
-    
+    #@-node:ekr.20061117155233:eventChar & eventKeysym
+    #@+node:ekr.20061117155233.1:eventWidget
     def eventWidget (self,event):
-        '''Return the widget field of an event.'''   
-        return event and hasattr(event,'GetEventObject') and event.GetEventObject() or None
     
+        '''Return the widget field of an event, either a wx event or a converted Leo event.'''
+    
+        if hasattr(event,'widget'):
+            return event.widget # a leoEvent.
+        elif hasattr(event,'GetEventObject'):
+            return event.GetEventObject()
+        else:
+            return None
+    #@-node:ekr.20061117155233.1:eventWidget
+    #@+node:ekr.20061117155233.2:eventXY
     def eventXY (self,event):
-        if event and hasattr(event,'GetX') and hasattr(event,'GetY'):
+        if hasattr(event,'x') and hasattr(event,'y'):
+            return event.x,event.y
+        if hasattr(event,'GetX') and hasattr(event,'GetY'):
             return event.GetX(),event.GetY()
         else:
             return 0,0
-    #@nonl
+    #@-node:ekr.20061117155233.2:eventXY
     #@-node:ekr.20061116085729:Events (wxGui)
     #@+node:edream.110203113231.335:Focus (wxGui) (to do)
     #@+node:edream.110203113231.336:get_focus
@@ -1358,6 +1369,15 @@ class wxGui(leoGui.leoGui):
         return isinstance(w,wx.TextCtrl)
     #@nonl
     #@-node:ekr.20061116091006:isTextWidget (wxGui)
+    #@+node:ekr.20061117162357:widget_name (tkGui)
+    def widget_name (self,w):
+        
+        # First try the wxWindow.GetName.
+        if hasattr(w,'GetName'):
+            return w.GetName()
+        else:
+            return repr(w)
+    #@-node:ekr.20061117162357:widget_name (tkGui)
     #@-node:edream.111303090930:app.gui.wx utils (must add several)
     #@+node:ekr.20061116093228:class leoEvent (wxGui)
     class leoEvent:
@@ -1444,10 +1464,9 @@ class wxLeoBody (leoFrame.leoBody):
         frame = self.frame ; c = self.c ; k = c.k
         if not w: w = self.bodyCtrl
         
-        g.trace('wxBody')
+        # g.trace('wxBody')
         
         w.bind('<Key>', k.masterKeyHandler)
-    
         
         for kind,func,handler in (
             #('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
@@ -1499,7 +1518,7 @@ class wxLeoBody (leoFrame.leoBody):
     
         if tagName == "keyword": # A kludge.
     
-            g.trace(tagName)
+            # g.trace(tagName)
             style = wx.TextAttr(wx.BLACK)
             last = self.bodyCtrl.GetLastPosition()
             
@@ -1562,18 +1581,34 @@ class wxLeoBody (leoFrame.leoBody):
     
         body = self ; c = self.c
     
-        if 1:
-            c.k.masterKeyHandler(event)
-        else:
-            event.Skip() # Handle the key
-        
-            s = w.getAllText()
-            g.trace(len(s),repr(s))
+    
+        stroke=g.app.gui.eventChar(event)
+        g.trace(stroke)
+        c.k.masterKeyHandler(event,stroke=stroke)
     #@-node:ekr.20061116083454:onKey wxBody
     #@+node:ekr.20061116064914:onBodyChanged
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
         
-        g.trace('undoType',undoType,'oldSel',oldSel,'len(oldText)',oldText and len(oldText) or 0)
+        # g.trace('undoType',undoType,'oldSel',oldSel,'len(oldText)',oldText and len(oldText) or 0)
+        
+        c = self.c ; w = c.frame.body.bodyCtrl
+        if not c:  return g.trace('no c!')
+        p = c.currentPosition()
+        if not p: return g.trace('no p!')
+        if self.frame.lockout > 0: return g.trace('lockout!',g.callers())
+    
+        self.frame.lockout += 1
+        try:
+            s = wx.TextCtrl.GetValue(w)
+            changed = s != p.bodyString()
+            # g.trace('changed',changed,len(s),p.headString(),g.callers())
+            if changed:
+                p.v.t.setTnodeText(s)
+                p.v.t.insertSpot = w.getInsertPoint()
+                self.frame.body.recolor_now(p)
+                if not c.changed: c.setChanged(True)
+        finally:
+            self.frame.lockout -= 1
     #@nonl
     #@-node:ekr.20061116064914:onBodyChanged
     #@-others
@@ -1991,7 +2026,6 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         w = c.get_requested_focus()
         wname = c.widget_name(w)
     
-        g.trace(wname)
         if not w: return
         
         if wname.startswith('body'):
@@ -2877,7 +2911,7 @@ class wxLeoTree (leoFrame.leoTree):
         p = tree.GetItemData(new_id).GetData()
         if not p: return g.trace('no p!')
     
-        g.trace(p.headString())
+        # g.trace(p.headString())
     
         ###self.frame.lockout += 1 # MUST prevent further events.
         c.beginUpdate()
@@ -3452,8 +3486,11 @@ class wxLeoTextWidget (wx.TextCtrl):
         ###name = g.app.gui.widget_name(self)
         return 'wxLeoTextWidget: %s' % (id(self))
         
+    # Note: this widget inherits the GetName method from the wxWindow class.
+        
     #@    @+others
-    #@+node:ekr.20061105125717:w.toGuiIndex & toPythonIndex
+    #@+node:ekr.20061105125717:Index conversion
+    #@+node:ekr.20061117150656:w.toGuiIndex & toPythonIndex
     # This plugin uses Python indices everywhere, so these are do-nothings.
     
     def toGuiIndex (self,index):
@@ -3473,12 +3510,21 @@ class wxLeoTextWidget (wx.TextCtrl):
             return len(s)
         else:
             return index
-    #@-node:ekr.20061105125717:w.toGuiIndex & toPythonIndex
+    #@-node:ekr.20061117150656:w.toGuiIndex & toPythonIndex
+    #@+node:ekr.20061117150523:w.rowColToGuiIndex
+    # This method is called only from the colorizer.
+    # It provides a huge speedup over naive code.
+    
+    def rowColToGuiIndex (self,s,row,col):
+    
+        return g.convertRowColToPythonIndex(s,row,col)    
+    #@-node:ekr.20061117150523:w.rowColToGuiIndex
+    #@-node:ekr.20061105125717:Index conversion
     #@+node:ekr.20061115122034.2:Wrapper methods
     #@+node:ekr.20061116070156:bind
     def bind (self,kind,*args,**keys):
         
-        g.trace('wxLeoText',kind,args[0].__name__)
+        pass # g.trace('wxLeoText',kind,args[0].__name__)
     #@nonl
     #@-node:ekr.20061116070156:bind
     #@+node:ekr.20061115122034.3:delete
@@ -3489,8 +3535,8 @@ class wxLeoTextWidget (wx.TextCtrl):
         if j is None: j = i+1
         j = w.toGuiIndex(j)
     
-        g.trace(i,j,len(s),repr(s[:20]))
-        wx.TextCtrl.Replace(i,j,'')
+        # g.trace(i,j,len(s),repr(s[:20]))
+        wx.TextCtrl.Replace(w,i,j,'')
     #@-node:ekr.20061115122034.3:delete
     #@+node:ekr.20061115122034.4:get
     def get(self,i,j=None):
@@ -3511,7 +3557,7 @@ class wxLeoTextWidget (wx.TextCtrl):
         w = self
         i = w.toGuiIndex(i)
         
-        g.trace(len(s),repr(s[:20]))
+        # g.trace(len(s),repr(s[:20]))
         wx.TextCtrl.SetInsertionPoint(w,i)
         wx.TextCtrl.WriteText(w,s)
     #@-node:ekr.20061115122034.5:insert
@@ -3533,7 +3579,7 @@ class wxLeoTextWidget (wx.TextCtrl):
         if j is None: j = i + 1
         j = w.toGuiIndex(j)
         
-        g.trace(tagName,i,j,g.callers())
+        # g.trace(tagName,i,j,g.callers())
         
         if not hasattr(w,'leo_styles'):
             w.leo_styles = {}
@@ -3548,7 +3594,7 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@+node:ekr.20061116055348:tag_delete (NEW)
     def tag_delete (self,tagName,*args,**keys):
         
-        g.trace(tagName,args,keys)
+        pass # g.trace(tagName,args,keys)
     #@nonl
     #@-node:ekr.20061116055348:tag_delete (NEW)
     #@+node:ekr.20061115135849:tag_configure & helper
@@ -3613,8 +3659,8 @@ class wxLeoTextWidget (wx.TextCtrl):
         if i != j:
             s = w.getAllText()
             del s[i:j]
-            g.trace(len(s),repr(s[:20]))
-            wx.TextCtrl.SetValue(w,s)
+            # g.trace(len(s),repr(s[:20]))
+            wx.TextCtrl.ChangeValue(w,s)
     #@-node:ekr.20061115122034.10:deleteTextSelection (to do)
     #@+node:ekr.20061115122034.11:flashCharacter (to do)
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
@@ -3716,14 +3762,10 @@ class wxLeoTextWidget (wx.TextCtrl):
     
         w = self
     
-        g.trace(len(s),repr(s[:20]),g.callers())
+        # g.trace(len(s),repr(s[:20]),g.callers())
         
-        if 1: # These do generate an update event.
-            ###wx.TextCtrl.Clear(w)
-            ###wx.TextCtrl.WriteText(w,s)
-            wx.TextCtrl.SetValue(w,s) 
-        else:# This does *not* generate an update event.
-            wx.TextCtrl.ChangeValue(w,s) 
+        # This does *not* generate an update event.
+        wx.TextCtrl.ChangeValue(w,s) 
     #@-node:ekr.20061115122034.19:setAllText (test)
     #@+node:edream.111303093953.25:see & seeInsertPoint (test)
     def see(self,index):

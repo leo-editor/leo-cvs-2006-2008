@@ -1126,11 +1126,10 @@ class baseColorizer:
         '''Give the inserted character the previous color tag by default.'''
         
         w = self.c.frame.body.bodyCtrl
-        i = w.index('insert-1c')
-        if i == '1.0': return # No previous character.
+        i = w.getInsertPoint()
+        if i == 0: return # No previous character.
         if w.tag_names(i): return # The character already has a color.
-        j = w.index('insert-2c')
-        theList = w.tag_names(j)
+        theList = w.tag_names(i-2)
         if theList:
             w.tag_add(theList[0],i)
     #@nonl
