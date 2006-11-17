@@ -1161,6 +1161,19 @@ class leoFind:
             g.callers(),"should be overridden in subclass")
     #@nonl
     #@-node:ekr.20061111084423.1:oops
+    #@+node:ekr.20051020120306.27:selectAllFindText (leoFind)
+    def selectAllFindText (self,event=None):
+        
+        __pychecker__ = '--no-argsused' # event
+        
+        # This is called only when the user presses ctrl-a in the find panel.
+    
+        w = self.frame.focus_get()
+        if g.app.gui.isTextWidget(w):
+            w.selectAllText()
+    
+        return "break"
+    #@-node:ekr.20051020120306.27:selectAllFindText (leoFind)
     #@-others
 #@-node:ekr.20060123151617:@thin leoFind.py
 #@-leo

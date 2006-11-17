@@ -167,12 +167,12 @@ class leoTkinterTree (leoFrame.leoTree):
     # 
     # - Simplified drawTree to use indentation returned from forceDrawNode.
     # 
-    # - setText now ensures that state is "normal" before attempting to set 
-    # the text.
+    # - setHeadlineText now ensures that state is "normal" before attempting 
+    # to set the text.
     #     - This is the robust way.
     # 
-    # 7/31/04: newText must call setText for all nodes allocated, even if p 
-    # matches.
+    # 7/31/04: newText must call setHeadlineText for all nodes allocated, even 
+    # if p matches.
     #@-at
     #@-node:ekr.20040803072955.5:Most recent changes
     #@-node:ekr.20040803072955.2:  Notes
@@ -522,7 +522,7 @@ class leoTkinterTree (leoFrame.leoTree):
     
         return theId
     #@-node:ekr.20040803072955.10:newLine
-    #@+node:ekr.20040803072955.11:newText (leoTkinterTree)
+    #@+node:ekr.20040803072955.11:newText (tkTree) and helper
     def newText (self,p,x,y):
         
         canvas = self.canvas ; tag = "textBox"
@@ -577,7 +577,7 @@ class leoTkinterTree (leoFrame.leoTree):
             balloon.tagbind(canvas,theId,balloonHelp='Headline')
                 
         self.ids[theId] = p # Add the id of the *window*
-        self.setText(theId,w,p.headString())
+        self.setHeadlineText(theId,w,p.headString())
         w.configure(width=self.headWidth(p=p))
         w.leo_position = p # This p never changes.
             # *Required*: onHeadlineClick uses w.leo_position to get p.
@@ -586,7 +586,26 @@ class leoTkinterTree (leoFrame.leoTree):
         self.visibleText [p.key()] = w,theId
         
         return w
-    #@-node:ekr.20040803072955.11:newText (leoTkinterTree)
+    #@+node:ekr.20040803072955.32:tree.setHeadlineText
+    def setHeadlineText (self,theId,w,s):
+        
+        """All changes to text widgets should come here."""
+    
+        if self.trace_alloc: g.trace('%4d' % (theId), self.textAddr(w),s)
+                
+        state = w.cget("state")
+        if state != "normal":
+            w.configure(state="normal")
+        w.delete(0,"end")
+        # Important: do not allow newlines in headlines.
+        while s.endswith('\n') or s.endswith('\r'):
+            s = s[:-1]
+        w.insert("end",s)
+        # g.trace(repr(s))
+        if state != "normal":
+            w.configure(state=state)
+    #@-node:ekr.20040803072955.32:tree.setHeadlineText
+    #@-node:ekr.20040803072955.11:newText (tkTree) and helper
     #@+node:ekr.20040803072955.12:recycleWidgets
     def recycleWidgets (self):
         
@@ -739,21 +758,6 @@ class leoTkinterTree (leoFrame.leoTree):
     #@-node:ekr.20040803072955.30:tkTree.setColorFromConfig
     #@-node:ekr.20040803072955.26:Config & Measuring...
     #@+node:ekr.20040803072955.31:Debugging...
-    #@+node:ekr.20040803072955.32:setText
-    def setText (self,theId,w,s):
-        
-        """All changes to text widgets should come here."""
-    
-        if self.trace_alloc: g.trace('%4d' % (theId), self.textAddr(w),s)
-                
-        state = w.cget("state")
-        if state != "normal":
-            w.configure(state="normal")
-        w.delete(0,"end")
-        w.insert("end",s)
-        if state != "normal":
-            w.configure(state=state)
-    #@-node:ekr.20040803072955.32:setText
     #@+node:ekr.20040803072955.33:textAddr
     def textAddr(self,w):
         
@@ -1788,6 +1792,8 @@ class leoTkinterTree (leoFrame.leoTree):
         c = self.c ; k = c.k
         ch = event and event.char or ''
         i,j = w.getSelectionRange()
+        ins = w.getInsertPoint()
+        # g.trace(i,j,ins,repr(w.getAllText()))
         
         if ch == '\b':
             if i != j:  w.delete(i,j)
@@ -1795,11 +1801,12 @@ class leoTkinterTree (leoFrame.leoTree):
         elif ch and ch not in ('\n','\r'):
             if i != j:                              w.delete(i,j)
             elif k.unboundKeyAction == 'overwrite': w.delete(i,'%s+1c' % i)
-            i = w.index('insert')
-            w.insert(i,ch)
+            w.insert(ins,ch)
+            w.setSelectionRange(ins+1,ins+1,insert=ins+1)
     
         s = w.getAllText()
         if s.endswith('\n'):
+            g.trace('can not happen: trailing newline')
             s = s[:-1]
         w.configure(width=self.headWidth(s=s))
     
@@ -2516,7 +2523,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 
             # Always do this.  Otherwise there can be problems with trailing hewlines.
             s = g.toUnicode(p.v.t.bodyString,"utf-8")
-            self.setText(0,body,s)
+            w.setAllText(s)
             
             # We must do a full recoloring: we may be changing context!
             self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
@@ -2527,11 +2534,9 @@ class leoTkinterTree (leoFrame.leoTree):
             
             if p.v and p.v.t.insertSpot != None:
                 spot = p.v.t.insertSpot
-                ###w.mark_set("insert",spot)
                 w.setInsertPoint(spot)
                 w.see(spot)
             else:
-                ###w.mark_set("insert","1.0")
                 w.setInsertPoint(0)
                 
             # g.trace("select:",p.headString())
@@ -2620,11 +2625,11 @@ class leoTkinterTree (leoFrame.leoTree):
         if p and w:
             c.widgetWantsFocusNow(w)
             self.setEditHeadlineColors(p)
-            ###w.tag_remove('sel','1.0','end')
             selectAll = selectAll or c.config.getBool('select_all_text_when_editing_headlines')
-            start = g.choose(selectAll,0,'end')
-            ###w.tag_add('sel',start,'end')
-            w.setSelectionRange(start,'end',insert='end')
+            if selectAll:
+                w.setSelectionRange(0,'end',insert='end')
+            else:
+                w.setInsertPoint('end') # Clears insert point.
         else:
             g.trace('no edit_widget')
             

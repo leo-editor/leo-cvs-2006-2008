@@ -2653,9 +2653,9 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1609:index & tag (leoColor)
     def index (self,i):
     
-        i = g.convertRowColToPythonIndex(self.allBodyText,self.line_index-1,i)
-        val = self.body.bodyCtrl.toGuiIndex(i)
-        return val
+        # Short-circuit the redundant computations.
+        w = self.body.bodyCtrl ; s = self.allBodyText
+        return w.rowColToGuiIndex(s,self.line_index-1,i)
     
     def tag (self,name,i,j):
     

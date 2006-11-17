@@ -398,16 +398,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         
         self.top.withdraw()
     #@-node:ekr.20051013084256:dismiss
-    #@+node:EKR.20040603221140:selectAllFindText
-    def selectAllFindText (self,event=None):
-    
-        try:
-            w = self.frame.focus_get()
-            w.setSelectionRange(0,"end")
-            return "break"
-        except:
-            return None # To keep pychecker happy.
-    #@-node:EKR.20040603221140:selectAllFindText
     #@+node:ekr.20061111084423:Overrides
     #@+node:ekr.20031218072017.3907:bringToFront (tkFind)
     def bringToFront (self):

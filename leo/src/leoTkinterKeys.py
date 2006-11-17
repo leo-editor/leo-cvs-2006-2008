@@ -32,7 +32,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         else:
             self.svar = None
     #@-node:ekr.20061031170011.1:createTkIvars
-    #@+node:ekr.20061031170011.3:Label (Tk keys)
+    #@+node:ekr.20061031170011.3:Minibuffer(Tk keys)
     #@+at 
     #@nonl
     # There is something dubious about tracking states separately for separate 
@@ -176,16 +176,16 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         
         k = self ; w = self.widget
         s = w.getAllText()
+        # g.trace(len(s),repr(s))
     
         i = len(k.mb_prefix)
-        while s.endswith('\n') or s.endswith('\r'):
-            s = s[:-1]
+        ###while s.endswith('\n') or s.endswith('\r'):
+        ###    s = s[:-1]
         j = len(s)
-    
         return i,j
     #@nonl
     #@-node:ekr.20061031170011.13:getEditableTextRange (should return Python indices)
-    #@-node:ekr.20061031170011.3:Label (Tk keys)
+    #@-node:ekr.20061031170011.3:Minibuffer(Tk keys)
     #@-others
 #@nonl
 #@-node:ekr.20031218072017.4099:@thin leoTkinterKeys.py

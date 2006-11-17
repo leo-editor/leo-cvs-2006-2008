@@ -2341,54 +2341,52 @@ class leoTkinterBody (leoFrame.leoBody):
         
         body = self ; c = self.c
         bodyCtrl = w = body.bodyCtrl
-        trace = self.trace_onBodyChanged
         p = c.currentPosition()
-        ###insert = bodyCtrl.index('insert')
         insert = bodyCtrl.getInsertPoint()
         ch = g.choose(insert==0,'',bodyCtrl.get('insert-1c'))
         ch = g.toUnicode(ch,g.app.tkEncoding)
         newText = w.getAllText() # Note: getAllText converts to unicode.
         # g.trace('newText',repr(newText))
         newSel = w.getSelectionRange()
-        if oldText is None: oldText = p.bodyString()
-        changed = oldText != newText
-        if trace:
-            g.trace(repr(ch),'changed:',changed)
-            g.trace('newText:',repr(newText))
-        if changed:
-            c.undoer.setUndoTypingParams(p,undoType,
-                oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
-            p.v.setTnodeText(newText)
-            p.v.t.insertSpot = body.getInsertPoint()
-            #@        << recolor the body >>
-            #@+node:ekr.20051026083733.6:<< recolor the body >>
-            body.colorizer.interrupt()
-            c.frame.scanForTabWidth(p)
-            body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
-            self.forceFullRecolorFlag = False
-            #@-node:ekr.20051026083733.6:<< recolor the body >>
-            #@nl
-            if not c.changed: c.setChanged(True)
-            self.updateEditors()
-            #@        << redraw the screen if necessary >>
-            #@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-            c.beginUpdate()
-            try:
-                redraw_flag = False
-                # Update dirty bits.
-                # p.setDirty() sets all cloned and @file dirty bits.
-                if not p.isDirty() and p.setDirty():
-                    redraw_flag = True
-                    
-                # Update icons. p.v.iconVal may not exist during unit tests.
-                val = p.computeIcon()
-                if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-                    p.v.iconVal = val
-                    redraw_flag = True
-            finally:
-                c.endUpdate(redraw_flag)
-            #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-            #@nl
+        if oldText is None: 
+            oldText = p.bodyString() ; changed = True
+        else:
+            changed = oldText != newText
+        # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
+        if not changed: return
+        c.undoer.setUndoTypingParams(p,undoType,
+            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
+        p.v.setTnodeText(newText)
+        p.v.t.insertSpot = body.getInsertPoint()
+        #@    << recolor the body >>
+        #@+node:ekr.20051026083733.6:<< recolor the body >>
+        body.colorizer.interrupt()
+        c.frame.scanForTabWidth(p)
+        body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
+        self.forceFullRecolorFlag = False
+        #@-node:ekr.20051026083733.6:<< recolor the body >>
+        #@nl
+        if not c.changed: c.setChanged(True)
+        self.updateEditors()
+        #@    << redraw the screen if necessary >>
+        #@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+        c.beginUpdate()
+        try:
+            redraw_flag = False
+            # Update dirty bits.
+            # p.setDirty() sets all cloned and @file dirty bits.
+            if not p.isDirty() and p.setDirty():
+                redraw_flag = True
+                
+            # Update icons. p.v.iconVal may not exist during unit tests.
+            val = p.computeIcon()
+            if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+                p.v.iconVal = val
+                redraw_flag = True
+        finally:
+            c.endUpdate(redraw_flag)
+        #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+        #@nl
     #@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     #@+node:ekr.20031218072017.4003:Focus (tkBody)
     def hasFocus (self):
@@ -3059,6 +3057,7 @@ class leoTkTextWidget (Tk.Text):
         
     #@    @+others
     #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
+    #@+node:ekr.20061117085824:w.toGuiIndex
     def toGuiIndex (self,i):
         '''Convert a Python index to a Tk index as needed.'''
         w = self
@@ -3066,9 +3065,11 @@ class leoTkTextWidget (Tk.Text):
             g.trace('can not happen: i is None',g.callers())
             return '1.0'
         elif type(i) == type(99):
-            s = Tk.Text.get(w,'1.0','end') # end-1c does not work.
+            # This *must* be 'end-1c', even if other code must change.
+            s = Tk.Text.get(w,'1.0','end-1c')
             row,col = g.convertPythonIndexToRowCol(s,i)
             i = '%s.%s' % (row+1,col)
+            # g.trace(len(s),i,repr(s),g.callers())
         else:
             try:
                 i = Tk.Text.index(w,i)
@@ -3077,7 +3078,9 @@ class leoTkTextWidget (Tk.Text):
                 g.trace('Tk.Text.index failed:',repr(i),g.callers())
                 i = '1.0'
         return i
-            
+    #@nonl
+    #@-node:ekr.20061117085824:w.toGuiIndex
+    #@+node:ekr.20061117085824.1:w.toPYthonIndex
     def toPythonIndex (self,i):
         '''Convert a Tk index to a Python index as needed.'''
         w =self
@@ -3093,6 +3096,16 @@ class leoTkTextWidget (Tk.Text):
             i = g.convertRowColToPythonIndex(s,row,col)
             #g.es_print(i)
         return i
+    #@-node:ekr.20061117085824.1:w.toPYthonIndex
+    #@+node:ekr.20061117085824.2:w.rowColToGuiIndex
+    # This method is called only from the colorizer.
+    # It provides a huge speedup over naive code.
+    
+    def rowColToGuiIndex (self,s,row,col):
+        
+        return '%s.%s' % (row+1,col)
+    #@nonl
+    #@-node:ekr.20061117085824.2:w.rowColToGuiIndex
     #@-node:ekr.20061113151148.2:Index conversion (leoTextWidget)
     #@+node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
     #@+node:ekr.20061113151148.4:delete (passed)
@@ -3163,7 +3176,7 @@ class leoTkTextWidget (Tk.Text):
     #@+node:ekr.20061113151148.10:Convenience methods (tkTextWidget)
     # These have no direct Tk equivalents.  They used to be defined in the gui class.
     # These methods must take care not to call overridden methods.
-    #@+node:ekr.20061113151148.11:deleteTextSelection (passed)
+    #@+node:ekr.20061113151148.11:w.deleteTextSelection (passed)
     def deleteTextSelection (self): # tkTextWidget
         
         w = self
@@ -3172,8 +3185,8 @@ class leoTkTextWidget (Tk.Text):
             start,end = sel
             if Tk.Text.compare(w,start,"!=",end):
                 Tk.Text.delete(w,start,end)
-    #@-node:ekr.20061113151148.11:deleteTextSelection (passed)
-    #@+node:ekr.20061113151148.12:flashCharacter (passed)
+    #@-node:ekr.20061113151148.11:w.deleteTextSelection (passed)
+    #@+node:ekr.20061113151148.12:w.flashCharacter (passed)
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
     
         w = self
@@ -3196,8 +3209,8 @@ class leoTkTextWidget (Tk.Text):
         except Exception:
             pass ; g.es_exception()
     #@nonl
-    #@-node:ekr.20061113151148.12:flashCharacter (passed)
-    #@+node:ekr.20061113151148.13:getAllText (passed)
+    #@-node:ekr.20061113151148.12:w.flashCharacter (passed)
+    #@+node:ekr.20061113151148.13:w.getAllText (passed)
     def getAllText (self): # tkTextWidget.
         
         """Return all the text of Tk.Text widget w converted to unicode."""
@@ -3209,16 +3222,16 @@ class leoTkTextWidget (Tk.Text):
             return u""
         else:
             return g.toUnicode(s,g.app.tkEncoding)
-    #@-node:ekr.20061113151148.13:getAllText (passed)
-    #@+node:ekr.20061113151148.14:getInsertPoint (passed)
+    #@-node:ekr.20061113151148.13:w.getAllText (passed)
+    #@+node:ekr.20061113151148.14:w.getInsertPoint (passed)
     def getInsertPoint(self): # tkTextWidget.
         
         w = self
         i = Tk.Text.index(w,'insert')
         i = w.toPythonIndex(i)
         return i
-    #@-node:ekr.20061113151148.14:getInsertPoint (passed)
-    #@+node:ekr.20061113151148.15:getSelectedText (passed)
+    #@-node:ekr.20061113151148.14:w.getInsertPoint (passed)
+    #@+node:ekr.20061113151148.15:w.getSelectedText (passed)
     def getSelectedText (self): # tkTextWidget.
     
         w = self
@@ -3229,8 +3242,8 @@ class leoTkTextWidget (Tk.Text):
             return g.toUnicode(s,g.app.tkEncoding)
         else:
             return u""
-    #@-node:ekr.20061113151148.15:getSelectedText (passed)
-    #@+node:ekr.20061113151148.16:getSelectionRange (passed)
+    #@-node:ekr.20061113151148.15:w.getSelectedText (passed)
+    #@+node:ekr.20061113151148.16:w.getSelectionRange (passed)
     def getSelectionRange (self,sort=True): # tkTextWidget.
         
         """Return a tuple representing the selected range.
@@ -3248,15 +3261,15 @@ class leoTkTextWidget (Tk.Text):
         if sort and i > j: i,j = j,i
         return i,j
     #@nonl
-    #@-node:ekr.20061113151148.16:getSelectionRange (passed)
-    #@+node:ekr.20061113151148.17:hasSelection (could be in base class) (passed)
+    #@-node:ekr.20061113151148.16:w.getSelectionRange (passed)
+    #@+node:ekr.20061113151148.17:w.hasSelection (could be in base class) (passed)
     def hasSelection (self):
         
         w = self
         i,j = w.getSelectionRange()
         return i != j
-    #@-node:ekr.20061113151148.17:hasSelection (could be in base class) (passed)
-    #@+node:ekr.20061113151148.18:replace (could be in base class) (passed)
+    #@-node:ekr.20061113151148.17:w.hasSelection (could be in base class) (passed)
+    #@+node:ekr.20061113151148.18:w.replace (could be in base class) (passed)
     def replace (self,i,j,s): # tkTextWidget
         
         w = self
@@ -3264,50 +3277,51 @@ class leoTkTextWidget (Tk.Text):
     
         Tk.Text.delete(w,i,j)
         Tk.Text.insert(w,i,s)
-    #@-node:ekr.20061113151148.18:replace (could be in base class) (passed)
-    #@+node:ekr.20061113151148.19:selectAllText (passed)
+    #@-node:ekr.20061113151148.18:w.replace (could be in base class) (passed)
+    #@+node:ekr.20061113151148.19:w.selectAllText (passed)
     def selectAllText (self,insert=None): # tkTextWidget
         
         '''Select all text of the widget, *not* including the extra newline.'''
         
         w = self
-        w.setSelectionRange('1.0','end-1c',insert=insert)
-    #@-node:ekr.20061113151148.19:selectAllText (passed)
-    #@+node:ekr.20061113151148.20:setAllText (could be in base class) (passed)
+        w.setSelectionRange(0,'end',insert=insert)
+    #@-node:ekr.20061113151148.19:w.selectAllText (passed)
+    #@+node:ekr.20061113151148.20:w.setAllText (could be in base class) (passed)
     def setAllText (self,s): # tkTextWidget
     
         w = self
         Tk.Text.delete(w,'1.0','end')
         Tk.Text.insert(w,'1.0',s)
-    #@-node:ekr.20061113151148.20:setAllText (could be in base class) (passed)
-    #@+node:ekr.20061113180616:see
+    #@-node:ekr.20061113151148.20:w.setAllText (could be in base class) (passed)
+    #@+node:ekr.20061113180616:w.see
     def see (self,i): # tkTextWidget.
     
         w = self
         i = w.toGuiIndex(i)
         Tk.Text.see(w,i)
-    #@-node:ekr.20061113180616:see
-    #@+node:ekr.20061113175002:seeInsertPoint
+    #@-node:ekr.20061113180616:w.see
+    #@+node:ekr.20061113175002:w.seeInsertPoint
     def seeInsertPoint (self): # tkTextWidget.
     
         w = self
         Tk.Text.see(w,'insert')
-    #@-node:ekr.20061113175002:seeInsertPoint
-    #@+node:ekr.20061113151148.21:setInsertPoint (passed)
+    #@-node:ekr.20061113175002:w.seeInsertPoint
+    #@+node:ekr.20061113151148.21:w.setInsertPoint (passed)
     def setInsertPoint (self,i): # tkTextWidget.
     
         w = self
         i = w.toGuiIndex(i)
         # g.trace(i,g.callers())
         Tk.Text.mark_set(w,'insert',i)
-    #@-node:ekr.20061113151148.21:setInsertPoint (passed)
-    #@+node:ekr.20061113151148.22:setSelectionRange (passed)
+    #@-node:ekr.20061113151148.21:w.setInsertPoint (passed)
+    #@+node:ekr.20061113151148.22:w.setSelectionRange (passed)
     def setSelectionRange (self,i,j,insert=None): # tkTextWidget
         
         w = self
-        # g.trace('i,j,insert',repr(i),repr(j),repr(insert))
-       
+    
         i,j = w.toGuiIndex(i),w.toGuiIndex(j)
+        
+        # g.trace('i,j,insert',repr(i),repr(j),repr(insert))
         
         # g.trace('i,j,insert',i,j,repr(insert))
         if Tk.Text.compare(w,i, ">", j): i,j = j,i
@@ -3317,9 +3331,8 @@ class leoTkTextWidget (Tk.Text):
     
         if insert is not None:
             w.setInsertPoint(insert)
-    
-    #@-node:ekr.20061113151148.22:setSelectionRange (passed)
-    #@+node:ekr.20061113151148.23:xyToGui/PythonIndex (passed)
+    #@-node:ekr.20061113151148.22:w.setSelectionRange (passed)
+    #@+node:ekr.20061113151148.23:w.xyToGui/PythonIndex (passed)
     def xyToGuiIndex (self,x,y): # tkTextWidget
         
         w = self
@@ -3331,7 +3344,7 @@ class leoTkTextWidget (Tk.Text):
         i = Tk.Text.index(w,"@%d,%d" % (x,y))
         i = w.toPythonIndex(i)
         return i
-    #@-node:ekr.20061113151148.23:xyToGui/PythonIndex (passed)
+    #@-node:ekr.20061113151148.23:w.xyToGui/PythonIndex (passed)
     #@-node:ekr.20061113151148.10:Convenience methods (tkTextWidget)
     #@-others
 #@nonl

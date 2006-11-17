@@ -806,8 +806,6 @@ class vnode (baseVnode):
     #@-node:ekr.20031218072017.3377:status
     #@-node:ekr.20031218072017.3367:Status Bits
     #@+node:ekr.20031218072017.3378:v.bodyString
-    # Compatibility routine for scripts
-    
     def bodyString (self):
     
         # This message should never be printed and we want to avoid crashing here!

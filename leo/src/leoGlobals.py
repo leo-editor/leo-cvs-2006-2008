@@ -4112,7 +4112,7 @@ def test_failure_with_ascii_encodings():
 #@-node:ekr.20031218072017.1498:Unicode utils...
 #@+node:EKR.20040612114220:Utility classes, functions & objects...
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
-#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol
+#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol (pass)
 def convertPythonIndexToRowCol (s,i):
     
     '''Convert index i into string s into zero-based row/col indices.'''
@@ -4125,13 +4125,11 @@ def convertPythonIndexToRowCol (s,i):
     # works regardless of what s[i] is
     row = s.count('\n',0,i) # Don't include i
     if row == 0:
-        return row,min(i,len(s)-1)
-    
-    prevNL = s.rfind('\n',0,i) # Don't include i
-    # assert prevNl > -1
-    # g.trace(prevNL,i-prevNL-1)
-    return row,i-prevNL-1
-#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol
+        return row,i
+    else:
+        prevNL = s.rfind('\n',0,i) # Don't include i
+        return row,i-prevNL-1
+#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol (pass)
 #@+node:ekr.20050315071727:g.convertRowColToPythonIndex
 def convertRowColToPythonIndex (s,row,col):
     
