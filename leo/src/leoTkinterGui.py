@@ -62,11 +62,6 @@ class tkinterGui(leoGui.leoGui):
         return leoTkinterKeys.tkinterKeyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
     #@nonl
     #@-node:ekr.20061031172934:createKeyHandlerClass (tkGui)
-    #@+node:ekr.20061112152012.1:createLeoEvent
-    def createLeoEvent (self,event):
-        return self.leoEvent(event)
-    #@nonl
-    #@-node:ekr.20061112152012.1:createLeoEvent
     #@+node:ekr.20031218072017.4049:createRootWindow & allies
     def createRootWindow(self):
     
@@ -649,8 +644,9 @@ class tkinterGui(leoGui.leoGui):
         
         '''A gui-independent wrapper for gui events.'''
         
-        def __init__ (self,event):
+        def __init__ (self,event,c):
             self.actualEvent = event
+            self.c      = c # Required to access c.k tables.
             self.char   = hasattr(event,'char') and event.char or ''
             self.keysym = hasattr(event,'keysym') and event.keysym or ''
             self.w      = hasattr(event,'widget') and event.widget or None

@@ -116,7 +116,6 @@ class leoGui:
         #'createComparePanel',          # optional
         #'createFindPanel',             # optional
         'createKeyHandlerClass',
-        'createLeoEvent',
         'createLeoFrame',
         'createRootWindow',
         'create_labeled_frame',
@@ -177,12 +176,6 @@ class leoGui:
     #@-node:ekr.20061109212618.1:Must be defined only in base class
     #@+node:ekr.20061109212618:Must be defined in subclasses
     #@+node:ekr.20031218072017.3723:app.gui create & destroy
-    #@+node:ekr.20061112152215:createLeoEvent
-    def createLeoEvent (self,event):
-        self.oops()
-        return event
-    #@nonl
-    #@-node:ekr.20061112152215:createLeoEvent
     #@+node:ekr.20031218072017.3724:createRootWindow
     def createRootWindow(self):
     
@@ -339,30 +332,30 @@ class leoGui:
         """Return the window information."""
         self.oops()
     #@-node:ekr.20031218072017.3735:Dialog utils
-    #@+node:ekr.20061031132907:Events
+    #@+node:ekr.20061031132907:Events (tkGui)
     def event_generate(self,w,kind,*args,**keys):
         '''Generate an event.'''
         pass
     
-    def eventChar (self,event):
+    def eventChar (self,event,c=None):
         '''Return the char field of an event.'''
         return event and event.char or ''
         
-    def eventKeysym (self,event):
+    def eventKeysym (self,event,c=None):
         '''Return the keysym value of an event.'''
         return event and event.keysym
     
-    def eventWidget (self,event):
+    def eventWidget (self,event,c=None):
         '''Return the widget field of an event.'''   
         return event and event.widget
     
-    def eventXY (self,event):
+    def eventXY (self,event,c=None):
         if event:
             return event.x,event.y
         else:
             return 0,0
     #@nonl
-    #@-node:ekr.20061031132907:Events
+    #@-node:ekr.20061031132907:Events (tkGui)
     #@+node:ekr.20031218072017.3737:Focus
     def get_focus(self,frame):
         """Return the widget that has focus, or the body widget if None."""
@@ -443,11 +436,6 @@ class nullGui(leoGui):
         
         pass
     #@-node:ekr.20050328144031:attachLeoIcon
-    #@+node:ekr.20061112152035:createLeoEvent
-    def createLeoEvent (self,event):
-        return event
-    #@nonl
-    #@-node:ekr.20061112152035:createLeoEvent
     #@+node:ekr.20031218072017.2227:createRootWindow
     def createRootWindow(self):
         pass
@@ -539,9 +527,8 @@ class unitTestGui(leoGui):
         return self.simulateDialog("yesNoCancelDialog","cancel")
     #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
-    def createLeoEvent (self,event):                            return event
-    def get_focus (self,frame):                                 pass
-    def set_focus (self,c,widget):                              pass
+    def get_focus (self,frame):     pass
+    def set_focus (self,c,widget):  pass
     #@-node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     #@+node:ekr.20031218072017.3746:oops
     def oops(self):

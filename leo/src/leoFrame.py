@@ -1063,6 +1063,7 @@ class nullBody (leoBody):
     #@-node:ekr.20031218072017.2193:Utils (internal use)
     #@+node:ekr.20031218072017.2197:nullBody: leoBody interface
     # Birth, death & config
+    def bind(self,*args,**keys):                pass
     def cget(self,*args,**keys):                pass
     def configure (self,*args,**keys):          pass
     def createBindings (self,w=None):           pass
@@ -1145,6 +1146,7 @@ class nullFrame (leoFrame):
     #@+node:ekr.20061109123828:Config...
     def resizePanesToRatio (self,ratio,secondary_ratio):    pass
     def setInitialWindowGeometry (self):                    pass
+    def setMinibufferBindings(self):                        pass
     #@+node:ekr.20041130065718.1:setTopGeometry
     def setTopGeometry (self,w,h,x,y,adjustSize=True):
         
@@ -1297,6 +1299,7 @@ class nullTree (leoTree):
     # Colors & fonts.
     def getFont(self):                              return self.font
     def setColorFromConfig (self):                  pass
+    def setBindings (self):                         pass
     def setFont(self,font=None,fontName=None):      self.font,self.fontName = font,fontName
     def setFontFromConfig (self):                   pass
     # Drawing & scrolling.

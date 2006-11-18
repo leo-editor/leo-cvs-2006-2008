@@ -1518,7 +1518,7 @@ class keyHandlerClass:
     '''A class to support emacs-style commands.'''
 
     #@    << define class vars >>
-    #@+middle:ekr.20061031131434.83: constants and dicts
+    #@+middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@+node:ekr.20061031131434.84:<< define class vars >>
     global_killbuffer = []
         # Used only if useGlobalKillbuffer arg to Emacs ctor is True.
@@ -1531,10 +1531,10 @@ class keyHandlerClass:
     lossage = []
         # A case could be made for per-instance lossage, but this is not supported.
     #@-node:ekr.20061031131434.84:<< define class vars >>
-    #@-middle:ekr.20061031131434.83: constants and dicts
+    #@-middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@nl
     #@    << define list of special names >>
-    #@+middle:ekr.20061031131434.83: constants and dicts
+    #@+middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@+node:ekr.20061031131434.85:<< define list of special names >>
     key = g.app.gui.keysym
     
@@ -1590,10 +1590,10 @@ class keyHandlerClass:
     # KP_0,KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9
     #@-at
     #@-node:ekr.20061031131434.85:<< define list of special names >>
-    #@-middle:ekr.20061031131434.83: constants and dicts
+    #@-middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@nl
     #@    << define dict of special names >>
-    #@+middle:ekr.20061031131434.83: constants and dicts
+    #@+middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@+node:ekr.20061031131434.86:<< define dict of special names >>
     # These keys settings that may be specied in leoSettings.leo.
     # Keys are lowercase, so that case is not significant *for these items only* in leoSettings.leo.
@@ -1615,10 +1615,10 @@ class keyHandlerClass:
     for s in tkNamesList:
         settingsNameDict [s.lower()] = s
     #@-node:ekr.20061031131434.86:<< define dict of special names >>
-    #@-middle:ekr.20061031131434.83: constants and dicts
+    #@-middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@nl
     #@    << define dict of Tk bind names >>
-    #@+middle:ekr.20061031131434.83: constants and dicts
+    #@+middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@+node:ekr.20061031131434.87:<< define dict of Tk bind names >>
     # These are defined at http://tcl.activestate.com/man/tcl8.4/TkCmd/keysyms.htm.
     
@@ -1671,12 +1671,12 @@ class keyHandlerClass:
     for key in tkBindNamesDict.keys():
         tkBindNamesInverseDict [tkBindNamesDict.get(key)] = key
     #@-node:ekr.20061031131434.87:<< define dict of Tk bind names >>
-    #@-middle:ekr.20061031131434.83: constants and dicts
+    #@-middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@nl
 
     #@    @+others
-    #@+node:ekr.20061031131434.83: constants and dicts
-    #@-node:ekr.20061031131434.83: constants and dicts
+    #@+node:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
+    #@-node:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@+node:ekr.20061031131434.75: Birth (keyHandler)
     #@+node:ekr.20061031131434.76: ctor (keyHandler)
     def __init__ (self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
@@ -1799,12 +1799,12 @@ class keyHandlerClass:
         c.commandsDict has been created when this is called.'''
         
         k = self ; c = k.c
-        #g.trace('keyHandler')
+        # g.trace('keyHandler')
         k.createInverseCommandsDict()
         
-        if not c.miniBufferWidget:
-            # Does not exist for leoSettings.leo files.
-            return
+        if 0:
+            if not c.miniBufferWidget:
+                return # Does not exist for leoSettings.leo files.
     
         # Important: bindings exist even if c.showMiniBuffer is False.
         k.makeAllBindings()
@@ -2017,7 +2017,8 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         
-        #g.trace(c.fileName())
+        # g.trace(c.fileName())
+    
         k.bindingsDict = {}
         k.addModeCommands() 
         k.makeBindingsFromCommandsDict()
@@ -2998,15 +2999,17 @@ class keyHandlerClass:
     def masterKeyHandler (self,event,stroke=None):
         
         '''This is the handler for almost all key bindings.'''
-    
+        
+        k = self ; c = k.c ; gui = g.app.gui
+        trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
         #@    << define vars >>
         #@+node:ekr.20061031131434.147:<< define vars >>
-        k = self ; c = k.c ; gui = g.app.gui
-        w = gui.eventWidget(event)
+        w = event.widget
+        char = event.char
+        keysym = event.keysym
         w_name = c.widget_name(w)
-        char = gui.eventChar(event)
-        keysym = gui.eventKeysym(event)
         state = k.state.kind
+        
         special_keys = (
             gui.keysym('Caps_Lock'),
             gui.keysym('Num_Lock'),
@@ -3020,7 +3023,6 @@ class keyHandlerClass:
             gui.keysym('Win_R'),
         )
             
-        trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
         #@-node:ekr.20061031131434.147:<< define vars >>
         #@nl
     
@@ -3041,8 +3043,6 @@ class keyHandlerClass:
                 'unboundKeyAction',k.unboundKeyAction)
         #@-node:ekr.20061031131434.148:<< do key traces >>
         #@nl
-        
-        event = g.app.gui.leoEvent(event) # Convert event to canonical form.
     
         # Handle keyboard-quit first.
         if k.abortAllModesKey and stroke == k.abortAllModesKey:
@@ -3128,7 +3128,7 @@ class keyHandlerClass:
                 key in ('button','all')
             ):
                 d = k.masterBindingsDict.get(key)
-                # g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+                if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
                 if d:
                     b = d.get(stroke)
                     if b:
