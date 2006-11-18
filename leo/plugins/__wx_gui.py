@@ -3009,60 +3009,64 @@ class wxLeoMenu (leoMenu.leoMenu):
 class wxLeoTree (leoFrame.leoTree):
 
     #@    @+others
-    #@+node:edream.111603213219.1:__init__
+    #@+node:edream.111603213219.1:wxTree.__init__
     def __init__ (self,frame,parentFrame):
     
         # Init the base class.
         leoFrame.leoTree.__init__(self,frame)
         
         c = self.c
+        self.canvas = self # A dummy ivar used in c.treeWantsFocus, etc.
         self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
+        self.root_id = None
+        self.updateCount = 0
     
-        self.treeCtrl = w = wx.TreeCtrl(parentFrame,
-            const("cTreeCtrl"),
-            wx.DefaultPosition, wx.DefaultSize,
-            wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS, wx.DefaultValidator,
-            "treeCtrl")
-            
+        self.treeCtrl = self.createControl(parentFrame)
+        self.createBindings()
+    #@+node:edream.111603213329:wxTree.createBindings
+    def createBindings (self): # wxLeoTree
+    
+        w = self.treeCtrl ; id = const("cTree")
+    
+        wx.EVT_KEY_DOWN(w,self.onKeyDown)   # Provides raw key codes.
+        wx.EVT_KEY_UP(w,self.onKeyUp)       # Provides raw key codes.
+        # wx.EVT_TREE_KEY_DOWN        (w,id,self.onTreeKeyDown)
+            # Control keys do not fire this event.
+        
+        wx.EVT_TREE_SEL_CHANGED     (w,id,self.onTreeChanged)
+        # wx.EVT_TREE_SEL_CHANGING  (w,id,self.onTreeChanging)
+        wx.EVT_TREE_BEGIN_DRAG      (w,id,self.onTreeBeginDrag)
+        wx.EVT_TREE_END_DRAG        (w,id,self.onTreeEndDrag)
+        wx.EVT_TREE_BEGIN_LABEL_EDIT(w,id,self.onTreeBeginLabelEdit)
+        wx.EVT_TREE_END_LABEL_EDIT  (w,id,self.onTreeEndLabelEdit)
+         
+        wx.EVT_TREE_ITEM_COLLAPSED  (w,id,self.onTreeCollapsed)
+        wx.EVT_TREE_ITEM_EXPANDED   (w,id,self.onTreeExpanded)
+        
+        wx.EVT_TREE_ITEM_COLLAPSING (w,id,self.onTreeCollapsing)
+        wx.EVT_TREE_ITEM_EXPANDING  (w,id,self.onTreeExpanding)
+    #@nonl
+    #@-node:edream.111603213329:wxTree.createBindings
+    #@+node:ekr.20061118142055:wxTree.createControl
+    def createControl (self,parentFrame):
+        
+        w = wx.TreeCtrl(parentFrame,
+            id = const("cTree"),
+            pos = wx.DefaultPosition,
+            size = wx.DefaultSize,
+            style = wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS,
+            validator = wx.DefaultValidator,
+            name = "tree")
+    
         self.defaultFont = font = wx.Font(pointSize=10,
             family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
             style  = wx.FONTSTYLE_NORMAL,
             weight = wx.FONTWEIGHT_NORMAL,
         )
     
-        self.canvas = self # A dummy ivar used in c.treeWantsFocus, etc.
-    
-        self.root_id = None
-        self.updateCount = 0
-        
-        #@    << declare event handlers >>
-        #@+node:edream.111603213329:<< declare event handlers >>
-        id = const("cTreeCtrl")
-        
-        if 0: # It remains to be seen whether these are possible.
-            wx.EVT_KEY_DOWN(w,self.onKeyDown) # Provides raw key codes.
-            wx.EVT_KEY_UP(w,self.onKeyUp) # Provides raw key codes.
-        
-        wx.EVT_TREE_KEY_DOWN        (self.treeCtrl,id,self.onTreeKeyDown) # Control keys do not fire this event.
-        
-        wx.EVT_TREE_SEL_CHANGED     (self.treeCtrl,id,self.onTreeChanged)
-        wx.EVT_TREE_SEL_CHANGING    (self.treeCtrl,id,self.onTreeChanging)
-        wx.EVT_TREE_BEGIN_DRAG      (self.treeCtrl,id,self.onTreeBeginDrag)
-        wx.EVT_TREE_END_DRAG        (self.treeCtrl,id,self.onTreeEndDrag)
-        wx.EVT_TREE_BEGIN_LABEL_EDIT(self.treeCtrl,id,self.onTreeBeginLabelEdit)
-        wx.EVT_TREE_END_LABEL_EDIT  (self.treeCtrl,id,self.onTreeEndLabelEdit)
-         
-        wx.EVT_TREE_ITEM_COLLAPSED  (self.treeCtrl,id,self.onTreeCollapsed)
-        wx.EVT_TREE_ITEM_EXPANDED   (self.treeCtrl,id,self.onTreeExpanded)
-        
-        wx.EVT_TREE_ITEM_COLLAPSING (self.treeCtrl,id,self.onTreeCollapsing)
-        wx.EVT_TREE_ITEM_EXPANDING  (self.treeCtrl,id,self.onTreeExpanding)
-        #@nonl
-        #@-node:edream.111603213329:<< declare event handlers >>
-        #@nl
-    #@nonl
-    #@-node:edream.111603213219.1:__init__
-    #@+node:ekr.20061118122218.1:setBindings
+        return w
+    #@-node:ekr.20061118142055:wxTree.createControl
+    #@+node:ekr.20061118122218.1:setBindings (does nothing)
     def setBindings(self):
         
         pass # g.trace('wxLeoTree: to do')
@@ -3071,18 +3075,16 @@ class wxLeoTree (leoFrame.leoTree):
         
         pass # g.trace('wxLeoTree',args,keys)
     #@nonl
-    #@-node:ekr.20061118122218.1:setBindings
+    #@-node:ekr.20061118122218.1:setBindings (does nothing)
+    #@-node:edream.111603213219.1:wxTree.__init__
     #@+node:edream.111303202917:Drawing
     #@+node:ekr.20061105114250:drawIcon TO DO
-    def drawIcon(self,v,x,y):
-        g.trace(v)
+    def drawIcon(self,p,x,y):
+        g.trace(p)
     #@nonl
     #@-node:ekr.20061105114250:drawIcon TO DO
     #@+node:edream.110203113231.295:beginUpdate
     def beginUpdate (self):
-        
-        if self.updateCount == 0:
-            pass # self.Freeze() # Seems not to work...
     
         self.updateCount += 1
     #@nonl
@@ -3094,7 +3096,6 @@ class wxLeoTree (leoFrame.leoTree):
     
         self.updateCount -= 1
         if flag and self.updateCount == 0:
-            ## self.Thaw()
             self.redraw()
     #@nonl
     #@-node:edream.110203113231.296:endUpdate
@@ -3111,7 +3112,7 @@ class wxLeoTree (leoFrame.leoTree):
         tree.DeleteAllItems()
         self.root_id = root_id = tree.AddRoot("Leo Outline Pane")
         tree.SetItemFont(root_id,self.defaultFont)
-        while p: # This may need copies...
+        while p:
             self.redraw_subtree(root_id,p)
             p.moveToNext()
         tree.Expand(root_id)
@@ -3125,13 +3126,13 @@ class wxLeoTree (leoFrame.leoTree):
     #@+node:edream.110203113231.299:redraw_node
     def redraw_node(self,parent_id,p):
         
-        # g.trace(p)
         tree = self.treeCtrl
-    
         data = wx.TreeItemData(p.copy())
     
         id = tree.AppendItem(parent_id,p.headString(),data=data)
         tree.SetItemFont(id,self.defaultFont)
+        if p == self.c.currentPosition():
+            tree.SelectItem(id)
         
         assert (p == tree.GetItemData(id).GetData())
         return id
@@ -3149,13 +3150,9 @@ class wxLeoTree (leoFrame.leoTree):
                 child.moveToNext()
             tree.Expand(id)
         else:
-            if 1: # tree.SetItemHasChildren changes the event handler logic.  So this is good enough.
-                while child:
-                    self.redraw_node(id,child)
-                    child.moveToNext()
-            else:
-                if child:
-                    tree.SetItemHasChildren(id)
+            while child:
+                self.redraw_node(id,child)
+                child.moveToNext()
             tree.Collapse(id)
     #@nonl
     #@-node:edream.110203113231.300:redraw_subtree
@@ -3181,6 +3178,32 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:edream.111403090242.1:Editing TO DO
     #@+node:edream.110203113231.278:Event handlers (wxTree)
+    #@+node:ekr.20061118144918:Keys
+    #@+node:ekr.20061118123730.1:wxTree.onKeyUp/Down
+    useWX = False # True, use native key handling.  False, call masterKeyHandler.
+    
+    def onKeyDown (self,event,*args,**keys):
+        keycode = event.GetKeyCode()
+        self.keyDownModifiers = event.GetModifiers()
+        event.Skip() # Prepare to handle the event later.
+    
+    def onKeyUp (self,event):
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ALT:
+            event.Skip() # Do default processing.
+        elif self.useWX:
+            event.Skip()
+        else:
+            event.keyDownModifiers = self.keyDownModifiers
+            event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            if event.keysym: # The key may have been a raw key.
+                if event.keysym.isalnum() and len(event.keysym) == 1:
+                    event.actualEvent.Skip() # Let the widget handle it.
+                else:
+                    g.trace(event.keysym)
+                    self.c.k.masterKeyHandler(event,stroke=event.keysym)
+    #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
+    #@-node:ekr.20061118144918:Keys
     #@+node:edream.110203113231.279:Expand/contract
     #@+node:edream.110203113231.280:onTreeCollapsed & onTreeExpanded
     def onTreeCollapsed(self,event):
@@ -3226,44 +3249,28 @@ class wxLeoTree (leoFrame.leoTree):
     def onTreeChanged(self,event):
     
         c = self.c ; tree = self.treeCtrl
-        if self.frame.lockout > 0: return g.trace('lockout!',self.frame.lockout,g.callers())
         new_id = event.GetItem()
         if not new_id.IsOk(): return g.trace('no id')
         p = tree.GetItemData(new_id).GetData()
         if not p: return g.trace('no p!')
     
         # g.trace(p.headString())
-    
-        ###self.frame.lockout += 1 # MUST prevent further events.
         c.beginUpdate()
         try:
-            # This will generate a body update event that we *do* want to honor.
             c.selectPosition(p)
         finally:
-            c.endUpdate(False) # Do not draw the tree here!
-            ###self.frame.lockout -= 1
+            # Do not draw the tree here! It is drawn only by c.redraw().
+            c.endUpdate(False)
     #@nonl
     #@-node:edream.110203113231.283:onTreeChanged
-    #@+node:edream.110203113231.284:onTreeChanging
+    #@+node:edream.110203113231.284:onTreeChanging (not used)
     def onTreeChanging(self,event):
         
         """Event handler gets called whenever a new node gets selected"""
     
         pass
-        
-        # new_id = event.GetItem()
-        # if new_id.IsOk():
-            # g.trace('no id')
-            # return
-    
-        # p = tree.GetItemData(new_id).GetData()
-        # if not p:
-            # g.trace('no p!')
-            # return
-    
-        # g.trace(p.headString())
-        # self.select(p,updateBeadList=True,scroll=True)
-    #@-node:edream.110203113231.284:onTreeChanging
+    #@nonl
+    #@-node:edream.110203113231.284:onTreeChanging (not used)
     #@-node:edream.110203113231.282:Selecting
     #@+node:edream.110203113231.285:Editing labels
     #@+node:edream.110203113231.286:onTreeBeginLabelEdit
@@ -3302,12 +3309,6 @@ class wxLeoTree (leoFrame.leoTree):
             j = j.joinList()
     #@nonl
     #@-node:edream.110203113231.287:onTreeEndLabelEdit
-    #@+node:edream.110203113231.288:onTreeKeyDown
-    def onTreeKeyDown(self,event):
-        
-        pass # Don't do anything until the end-edit event.
-    #@nonl
-    #@-node:edream.110203113231.288:onTreeKeyDown
     #@-node:edream.110203113231.285:Editing labels
     #@+node:ekr.20061105114250.1:Dragging
     #@+node:edream.110203113231.289:onTreeBeginDrag
@@ -3787,32 +3788,6 @@ class wxLeoTree (leoFrame.leoTree):
         return redraw_flag
     
     #@-node:ekr.20050719121701.19:tree.expandAllAncestors
-    #@+node:ekr.20061118123730.1:wxLeoTree.onKeyUp/Down
-    useWX = False # True, use native key handling.  False, call masterKeyHandler.
-    
-    def onKeyDown (self,event,*args,**keys):
-        keycode = event.GetKeyCode()
-        self.keyDownModifiers = event.GetModifiers()
-        if keycode == wx.WXK_ALT:
-            event.Skip() # Do default processing.
-        elif self.useWX:
-            event.Skip()
-        else:
-            pass # This is required to suppress wx event handling.
-        
-    def onKeyUp (self,event):
-        keycode = event.GetKeyCode()
-        if keycode == wx.WXK_ALT:
-            event.Skip() # Do default processing.
-        elif self.useWX:
-            event.Skip()
-        else:
-            event.keyDownModifiers = self.keyDownModifiers
-            event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
-            if event.keysym: # The key may have been a raw key.
-                # g.trace(event.char)
-                self.c.k.masterKeyHandler(event,stroke=event.keysym)
-    #@-node:ekr.20061118123730.1:wxLeoTree.onKeyUp/Down
     #@-others
 #@nonl
 #@-node:edream.111603213219:wxLeoTree class
