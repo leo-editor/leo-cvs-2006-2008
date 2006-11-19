@@ -49,6 +49,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         leoTkinterFrame.instances += 1
     
         self.c = None # Set in finishCreate.
+        self.iconBarClass = self.tkIconBarClass
+        self.statusLineClass = self.tkStatusLineClass
         self.iconBar = None
     
         self.trace_status_line = None # Set in finishCreate.
@@ -588,8 +590,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20031218072017.1974:destroySelf (tkFrame)
     #@-node:ekr.20031218072017.3964:Destroying the frame
     #@-node:ekr.20031218072017.3941: Birth & Death (tkFrame)
-    #@+node:ekr.20041223104933:class statusLineClass
-    class statusLineClass:
+    #@+node:ekr.20041223104933:class tkStatusLineClass
+    class tkStatusLineClass:
         
         '''A class representing the status line.'''
         
@@ -613,11 +615,17 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.labelWidget.pack(side="left",padx=1)
             
             bg = self.statusFrame.cget("background")
-            self.textWidget = g.app.gui.leoTextWidgetClass(
+            self.textWidget = w = g.app.gui.leoTextWidgetClass(
                 self.statusFrame,
                 height=1,state="disabled",bg=bg,relief="groove",name='status-line')
-            self.textWidget.pack(side="left",expand=1,fill="x")
-            self.textWidget.bind("<Button-1>", self.onActivate)
+            # self.textWidget.pack(side="left",expand=1,fill="x")
+            w.bind("<Button-1>", self.onActivate)
+            self.show()
+            
+            c.frame.statusFrame = self.statusFrame
+            c.frame.statusLabel = self.labelWidget
+            c.frame.statusText  = self.textWidget
+        #@nonl
         #@-node:ekr.20031218072017.3961: ctor
         #@+node:ekr.20031218072017.3962:clear
         def clear (self):
@@ -746,9 +754,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.lastCol = col
         #@-node:ekr.20031218072017.1733:update (statusLine)
         #@-others
-    #@-node:ekr.20041223104933:class statusLineClass
-    #@+node:ekr.20041223102225:class iconBarClass
-    class iconBarClass:
+    #@-node:ekr.20041223104933:class tkStatusLineClass
+    #@+node:ekr.20041223102225:class tkIconBarClass
+    class tkIconBarClass:
         
         '''A class representing the singleton Icon bar'''
         
@@ -758,11 +766,12 @@ class leoTkinterFrame (leoFrame.leoFrame):
             
             self.c = c
             
-            self.buttons = {} # Keys
-            self.iconFrame = Tk.Frame(
-                parentFrame,height="5m",bd=2,relief="groove") # ,background='blue')
+            self.buttons = {}
+            self.iconFrame = w = Tk.Frame(parentFrame,height="5m",bd=2,relief="groove")
+            self.c.frame.iconFrame = self.iconFrame
             self.parentFrame = parentFrame
             self.visible = False
+            self.show()
         #@-node:ekr.20041223102225.1: ctor
         #@+node:ekr.20031218072017.3958:add
         def add(self,*args,**keys):
@@ -876,7 +885,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         hide = unpack
         #@-node:ekr.20031218072017.3955:unpack (hide)
         #@-others
-    #@-node:ekr.20041223102225:class iconBarClass
+    #@-node:ekr.20041223102225:class tkIconBarClass
     #@+node:ekr.20051014154752:Minibuffer methods
     #@+node:ekr.20060203115311:showMinibuffer
     def showMinibuffer (self):
@@ -949,67 +958,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 w.bind("<Button-2>",frame.OnPaste)
     #@-node:ekr.20060203114017:f.setMinibufferBindings
     #@-node:ekr.20051014154752:Minibuffer methods
-    #@+node:ekr.20031218072017.3953:Icon area methods (compatibility)
-    def addIconButton (self,*args,**keys):
-        return self.iconBar and self.iconBar.add(*args,**keys)
-    
-    def clearIconBar (self):
-        if self.iconBar: self.iconBar.clear()
-    
-    def createIconBar (self):
-        f = self ; c = f.c
-        if not f.iconBar:
-            f.iconBar = f.iconBarClass(c,f.outerFrame)
-            f.iconFrame = f.iconBar.iconFrame
-            f.iconBar.pack()
-        return f.iconBar
-        
-    def getIconBar(self):
-        return self.iconBar
-    getIconBarObject = getIconBar
-    
-    def hideIconBar (self):
-        if self.iconBar: self.iconBar.hide()
-    #@nonl
-    #@-node:ekr.20031218072017.3953:Icon area methods (compatibility)
-    #@+node:ekr.20041223105114.1:Status line methods (compatibility)
-    def createStatusLine (self):
-        f = self ; c = f.c
-        if not self.statusLine:
-            f.statusLine  = statusLine = f.statusLineClass(c,f.outerFrame)
-            f.statusFrame = statusLine.statusFrame
-            f.statusLabel = statusLine.labelWidget
-            f.statusText  = statusLine.textWidget
-            statusLine.pack()
-        return self.statusLine
-    
-    def clearStatusLine (self):
-        if self.statusLine: self.statusLine.clear()
-        
-    def disableStatusLine (self,background=None):
-        if self.statusLine: self.statusLine.disable(background)
-    
-    def enableStatusLine (self,background="white"):
-        if self.statusLine: self.statusLine.enable(background)
-    
-    def getStatusLine (self):
-        return self.statusLine
-        
-    getStatusObject = getStatusLine
-        
-    def putStatusLine (self,s,color=None):
-        if self.statusLine: self.statusLine.put(s,color)
-        
-    def setFocusStatusLine (self):
-        if self.statusLine: self.statusLine.setFocus()
-    
-    def statusLineIsEnabled(self):
-        return self.statusLine and self.statusLine.isEnabled()
-        
-    def updateStatusLine(self):
-        if self.statusLine: self.statusLine.update()
-    #@nonl
-    #@-node:ekr.20041223105114.1:Status line methods (compatibility)
     #@+node:ekr.20031218072017.3967:Configuration (tkFrame)
     #@+node:ekr.20031218072017.3968:configureBar
     def configureBar (self,bar,verticalFlag):

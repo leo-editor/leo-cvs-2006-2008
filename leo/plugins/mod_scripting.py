@@ -196,20 +196,18 @@ __version__ = '1.10'
 #@+node:ekr.20060328125248.4:init
 def init ():
     
-    ok = Tk is not None # OK for unit tests.
-    
-    if ok:
-        if g.app.gui is None:
-            g.app.createTkGui(__file__)
-            
-        ok = g.app.gui.guiName() == "tkinter"
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
 
-        if ok:
-            # Note: call onCreate _after_ reading the .leo file.
-            # That is, the 'after-create-leo-frame' hook is too early!
-            leoPlugins.registerHandler(('new','open2'),onCreate)
-            g.plugin_signon(__name__)
-        
+    # This plugin is now gui-independent.            
+    ok = g.app.gui.guiName() in ("tkinter",'wxPython',)
+
+    if ok:
+        # Note: call onCreate _after_ reading the .leo file.
+        # That is, the 'after-create-leo-frame' hook is too early!
+        leoPlugins.registerHandler(('new','open2'),onCreate)
+        g.plugin_signon(__name__)
+    
     return ok
 #@nonl
 #@-node:ekr.20060328125248.4:init
@@ -597,18 +595,6 @@ class scriptingController:
     #@nonl
     #@-node:ekr.20060328125248.28:executeScriptFromButton
     #@-node:ekr.20060328125248.24:createAtButtonHelper & callback
-    #@+node:ekr.20060522104419.1:createBalloon
-    def createBalloon (self,w,label):
-    
-        'Create a balloon for a widget.'
-    
-        balloon = Pmw.Balloon(w,initwait=100)
-        if w and balloon:
-            balloon.bind(w,label)
-            # Inject an ivar into the w.
-            # w.leo_balloon = balloon
-    #@nonl
-    #@-node:ekr.20060522104419.1:createBalloon
     #@+node:ekr.20060328125248.17:createIconButton
     def createIconButton (self,text,command,shortcut,statusLine,bg):
         
@@ -660,6 +646,16 @@ class scriptingController:
         return b
     #@nonl
     #@-node:ekr.20060328125248.17:createIconButton
+    #@+node:ekr.20060522104419.1:createBalloon (gui-dependent)
+    def createBalloon (self,w,label):
+    
+        'Create a balloon for a widget.'
+    
+        if g.app.gui.guiName() == 'tkinter':
+            balloon = Pmw.Balloon(w,initwait=100)
+            if w and balloon:
+                balloon.bind(w,label)
+    #@-node:ekr.20060522104419.1:createBalloon (gui-dependent)
     #@+node:ekr.20060929131245:definePressButtonCommand (no longer used)
     def definePressButtonCommand (self,buttonText,atButtonCallback,shortcut=None):
         
@@ -677,7 +673,7 @@ class scriptingController:
     
         k.registerCommand(buttonText,shortcut=shortcut,func=atButtonCallback,pane='button',verbose=shortcut)
     #@-node:ekr.20060929131245:definePressButtonCommand (no longer used)
-    #@+node:ekr.20060328125248.26:deleteButton
+    #@+node:ekr.20060328125248.26:deleteButton (calls w.pack_forget)
     def deleteButton(self,button):
         
         """Delete the given button.
@@ -696,7 +692,7 @@ class scriptingController:
             # w.destroy() # So that Pmw doesn't crash later.
             self.c.bodyWantsFocusNow()
     #@nonl
-    #@-node:ekr.20060328125248.26:deleteButton
+    #@-node:ekr.20060328125248.26:deleteButton (calls w.pack_forget)
     #@+node:ekr.20060328125248.15:getButtonText
     def getButtonText(self,h):
         

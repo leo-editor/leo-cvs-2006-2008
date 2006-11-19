@@ -404,6 +404,7 @@ class leoFrame:
         self.comparePanel = None
         self.findPanel = None
         self.fontPanel = None
+        self.iconBar = None
         self.isNullFrame = False
         self.keys = None
         self.menu = None
@@ -432,10 +433,25 @@ class leoFrame:
         'scanForTabWidth',
         'shortFileName',
     
-        # 'bodyWantsFocus',
-        # 'headlineWantsFocus',
-        # 'logWantsFocus',
-        # 'minibufferWantsFocus',
+        # Icon bar convenience methods.    
+        'addIconButton',
+        'clearIconBar',
+        'createIconBar',
+        'getIconBar',
+        'getIconBarObject',
+        'hideIconBar',
+        
+        # Status line convenience methods.
+        'createStatusLine',
+        'clearStatusLine',
+        'disableStatusLine',
+        'enableStatusLine',
+        'getStatusLine',
+        'getStatusObject',
+        'putStatusLine',
+        'setFocusStatusLine',
+        'statusLineIsEnabled',
+        'updateStatusLine',
     )
     #@nonl
     #@-node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
@@ -482,16 +498,6 @@ class leoFrame:
         'resizePanesToRatio',
         'setInitialWindowGeometry',
         'setTopGeometry',
-        # Statusline...
-        'createStatusLine',
-        'clearStatusLine',
-        'disableStatusLine',
-        'enableStatusLine',
-        'getStatusLine',
-        'putStatusLine',
-        'setFocusStatusLine',
-        'statusLineIsEnabled',
-        'updateStatusLine',
     )
     #@nonl
     #@-node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
@@ -555,18 +561,6 @@ class leoFrame:
     # In help menu...
     def leoHelp (self,event=None): self.oops()
     #@-node:ekr.20031218072017.3681:Gui-dependent commands
-    #@+node:ekr.20061106064948:Status line...
-    def createStatusLine (self):                    self.oops()
-    def clearStatusLine (self):                     self.oops()
-    def disableStatusLine (self,background=None):   self.oops()
-    def enableStatusLine (self,background="white"): self.oops()
-    def getStatusLine (self):                       self.oops()
-    def putStatusLine (self,s,color=None):          self.oops()
-    def setFocusStatusLine (self):                  self.oops()
-    def statusLineIsEnabled(self):                  self.oops()
-    def updateStatusLine(self):                     self.oops()
-    #@nonl
-    #@-node:ekr.20061106064948:Status line...
     #@+node:ekr.20031218072017.3682:Window...
     # Important: nothing would be gained by calling gui versions of these methods:
     #            they can be defined in a gui-dependent way in a subclass.
@@ -695,6 +689,62 @@ class leoFrame:
     
         c.frame.setTabWidth(w)
     #@-node:ekr.20031218072017.1375:scanForTabWidth
+    #@+node:ekr.20061119120006:Icon area convenience methods
+    def addIconButton (self,*args,**keys):
+        self.iconBar and self.iconBar.add(*args,**keys)
+    
+    def clearIconBar (self):
+        self.iconBar and self.iconBar.clear()
+    
+    def createIconBar (self):
+        if not self.iconBar:
+            self.iconBar = self.iconBarClass(self.c,self.outerFrame)
+        return self.iconBar
+        
+    def getIconBar(self):
+        if not self.iconBar:
+            self.iconBar = self.iconBarClass(self.c,self.outerFrame)
+        return self.iconBar
+    
+    getIconBarObject = getIconBar
+    
+    def hideIconBar (self):
+        self.iconBar and self.iconBar.hide()
+    #@nonl
+    #@-node:ekr.20061119120006:Icon area convenience methods
+    #@+node:ekr.20041223105114.1:Status line convenience methods
+    def createStatusLine (self):
+        if not self.statusLine:
+            self.statusLine  = self.statusLineClass(self.c,self.outerFrame)
+        return self.statusLine
+    
+    def clearStatusLine (self):
+        self.statusLine and self.statusLine.clear()
+        
+    def disableStatusLine (self,background=None):
+        self.statusLine and self.statusLine.disable(background)
+    
+    def enableStatusLine (self,background="white"):
+        self.statusLine and self.statusLine.enable(background)
+    
+    def getStatusLine (self):
+        return self.statusLine
+        
+    getStatusObject = getStatusLine
+        
+    def putStatusLine (self,s,color=None):
+        self.statusLine and self.statusLine.put(s,color)
+        
+    def setFocusStatusLine (self):
+        self.statusLine and self.statusLine.setFocus()
+    
+    def statusLineIsEnabled(self):
+        return self.statusLine and self.statusLine.isEnabled()
+        
+    def updateStatusLine(self):
+        self.statusLine and self.statusLine.update()
+    #@nonl
+    #@-node:ekr.20041223105114.1:Status line convenience methods
     #@-node:ekr.20061109125528.1:Must be defined in base class
     #@+node:ekr.20060206093313:Focus (leoFrame)
     # For compatibility with old scripts.
@@ -1204,18 +1254,6 @@ class nullFrame (leoFrame):
     def leoHelp (self,event=None): pass
     #@nonl
     #@-node:ekr.20061109124129:Gui-dependent commands
-    #@+node:ekr.20061109124039:Status line...
-    def createStatusLine (self):                    pass
-    def clearStatusLine (self):                     pass
-    def disableStatusLine (self,background=None):   pass
-    def enableStatusLine (self,background="white"): pass
-    def getStatusLine (self):                       pass
-    def putStatusLine (self,s,color=None):          pass
-    def setFocusStatusLine (self):                  pass
-    def statusLineIsEnabled(self):                  pass
-    def updateStatusLine(self):                     pass
-    #@nonl
-    #@-node:ekr.20061109124039:Status line...
     #@+node:ekr.20041130065921:Window...
     def bringToFront (self):    pass
     def deiconify (self):       pass

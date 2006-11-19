@@ -1874,6 +1874,8 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         # We will init the wxFrame base class in finishCreate.
         leoFrame.leoFrame.__init__(self,g.app.gui)
         
+        self.outerFrame = self ### Another frame may be needed.
+        
         self.c = None # set in finishCreate.
         self.bodyCtrl = None # set in finishCreate
         self.title = title
@@ -1892,14 +1894,6 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         self.secondary_ratio = 0.5
         self.startupWindow=False
         self.use_coloring = False # set True to enable coloring
-        
-        # These vars have corresponding getters/setters.
-        if 0: # now defined in base tree class.
-            self.mDragging = False
-            self.mRootVnode = None
-            self.mTopVnode = None
-            self.mCurrentVnode = None
-    #@nonl
     #@-node:edream.110203113231.266:__init__
     #@+node:edream.110203113231.351:__repr__
     def __repr__ (self):
@@ -1918,24 +1912,34 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         # Init the wxFrame base class.  The leoFrame base class has already been inited.
         wx.Frame.__init__(self, None, -1,
             self.title, pos = (200,50), size = (900,700))
+        if 0: # Useless: both the foreground and background are completely hidden.
+            # And this has no effect on children.
+            self.SetForegroundColour(wx.RED)
+            self.SetBackgroundColour(wx.RED)
         # frame.iconBar = wxLeoIconBar(frame)
         self.CreateStatusBar() # This is a wxWidgets method.
         #@    << create the splitters >>
         #@+node:edream.110203113231.261:<< create the splitters >>
         self.splitter1 = wx.SplitterWindow(self,
             const("cSplitterWindow"),
-            wx.DefaultPosition, wx.DefaultSize,
-            wx.SP_NOBORDER)
+            wx.DefaultPosition,wx.DefaultSize,
+            style = wx.SP_BORDER, # Simple style seems best.  No styles get colored.
+            # style = wx.SP_NOBORDER,
+            # style = wx.SP_BORDER | wx.SP_3D,
+        )
         
-        # No effect, except to create a red flash.
+        # No effect, and it might not be good in the presence of themes.
+        # Possibly setting the parent window's colors might work...
         if 0:
             self.splitter1.SetForegroundColour(wx.RED)
             self.splitter1.SetBackgroundColour(wx.RED)
         
         self.splitter2 = wx.SplitterWindow(self.splitter1, -1,
             wx.DefaultPosition, wx.DefaultSize,
-            wx.SP_NOBORDER)
-            # wx.SP_BORDER | wx.SP_3D, "splitterWindow");
+            style = wx.SP_BORDER,
+            # style = wx.SP_NOBORDER)
+            # style = wx.SP_BORDER | wx.SP_3D,
+        )
         
         self.splitter1.SetMinimumPaneSize(4)
         self.splitter2.SetMinimumPaneSize(4)
@@ -2136,28 +2140,25 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
     #@-node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
     #@+node:ekr.20061106070956:Icon area methods (to do)
     def addIconButton (self,*args,**keys):
-        return self.iconBar and self.iconBar.add(*args,**keys)
+        self.iconBar and self.iconBar.add(*args,**keys)
     
     def clearIconBar (self):
-        if self.iconBar: self.iconBar.clear()
+        self.iconBar and self.iconBar.clear()
     
     def createIconBar (self):
-        f = self ; c = f.c
-        if 1: ### Not ready yet.
-            return None
-        else:
-            if not f.iconBar:
-                f.iconBar = f.iconBarClass(c,f.outerFrame)
-                f.iconFrame = f.iconBar.iconFrame
-                f.iconBar.pack()
-            return f.iconBar
+        if not self.iconBar:
+            self.iconBar = wxLeoIconBar(self.c,self.outerFrame)
+        return self.iconBar
         
     def getIconBar(self):
+        if not self.iconBar:
+            self.iconBar = wxLeoIconBar(self.c,self.outerFrame)
         return self.iconBar
+    
     getIconBarObject = getIconBar
     
     def hideIconBar (self):
-        if self.iconBar: self.iconBar.hide()
+        self.iconBar and self.iconBar.hide()
     #@nonl
     #@-node:ekr.20061106070956:Icon area methods (to do)
     #@+node:ekr.20061106070737:Status line (to do)
@@ -2590,13 +2591,144 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
 #@+node:ekr.20061118090713:wxLeoIconBar class
 class wxLeoIconBar():
     
-    def __init__(self,frame):
-        #self.outerPanel = wx.Panel(self,-1)
-        self.iconPanel = wx.Panel(frame,name='icon-bar')
+    #@    @+others
+    #@+node:ekr.20061119105509.1: ctor
+    def __init__(self,c,frame):
+    
+            #self.outerPanel = wx.Panel(self,-1)
+            self.c = c
+            self.iconFrame = wx.Panel(frame,name='icon-bar')
+            self.visible = True
+            ### f.iconBar.pack()
+            #wxPanel(wxWindow* parent, wxWindowID id = wxID_ANY,
+            #    const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+            # long style = wxTAB_TRAVERSAL, const wxString& name = "panel")
+    
+    # def __init__ (self,c,parentFrame):
         
-        #wxPanel(wxWindow* parent, wxWindowID id = wxID_ANY,
-        #    const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
-        # long style = wxTAB_TRAVERSAL, const wxString& name = "panel")
+        # self.c = c
+        
+        # self.buttons = {} # Keys
+        # self.iconFrame = Tk.Frame(
+            # parentFrame,height="5m",bd=2,relief="groove") # ,background='blue')
+        # self.parentFrame = parentFrame
+        # self.visible = False
+    #@-node:ekr.20061119105509.1: ctor
+    #@+node:ekr.20061119105509.2:add
+    def add(self,*args,**keys):
+        
+        """Add a button containing text or a picture to the icon bar.
+        
+        Pictures take precedence over text"""
+        
+        pass
+        
+        # f = self.iconFrame
+        # text = keys.get('text')
+        # imagefile = keys.get('imagefile')
+        # image = keys.get('image')
+        # command = keys.get('command')
+        # bg = keys.get('bg')
+    
+        # if not imagefile and not image and not text: return
+    
+        # # First define n.
+        # try:
+            # g.app.iconWidgetCount += 1
+            # n = g.app.iconWidgetCount
+        # except:
+            # n = g.app.iconWidgetCount = 1
+    
+        # if not command:
+            # def command():
+                # print "command for widget %s" % (n)
+    
+        # if imagefile or image:
+            # < < create a picture > >
+        # elif text:
+            # b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
+            # if sys.platform != 'darwin':
+                # width = max(6,len(text))
+                # b.configure(width=width)
+            # b.pack(side="left", fill="y")
+            # return b
+            
+        # return None
+    #@+node:ekr.20061119105509.3:create a picture
+    # try:
+        # if imagefile:
+            # # Create the image.  Throws an exception if file not found
+            # imagefile = g.os_path_join(g.app.loadDir,imagefile)
+            # imagefile = g.os_path_normpath(imagefile)
+            # image = Tk.PhotoImage(master=g.app.root,file=imagefile)
+            
+            # # Must keep a reference to the image!
+            # try:
+                # refs = g.app.iconImageRefs
+            # except:
+                # refs = g.app.iconImageRefs = []
+        
+            # refs.append((imagefile,image),)
+        
+        # if not bg:
+            # bg = f.cget("bg")
+    
+        # b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
+        # b.pack(side="left",fill="y")
+        # return b
+        
+    # except:
+        # g.es_exception()
+        # return None
+    #@-node:ekr.20061119105509.3:create a picture
+    #@-node:ekr.20061119105509.2:add
+    #@+node:ekr.20061119105509.4:clear
+    def clear(self):
+        
+        """Destroy all the widgets in the icon bar"""
+        
+        pass
+        
+        # f = self.iconFrame
+        
+        # for slave in f.pack_slaves():
+            # slave.destroy()
+        # self.visible = False
+    
+        # f.configure(height="5m") # The default height.
+        # g.app.iconWidgetCount = 0
+        # g.app.iconImageRefs = []
+    #@-node:ekr.20061119105509.4:clear
+    #@+node:ekr.20061119105509.5:getFrame
+    def getFrame (self):
+    
+        return self.iconFrame
+    #@-node:ekr.20061119105509.5:getFrame
+    #@+node:ekr.20061119105509.6:pack (show)
+    def pack (self):
+        
+        """Show the icon bar by repacking it"""
+        
+        if not self.visible:
+            self.visible = True
+            ####self.iconFrame.pack(fill="x",pady=2)
+            
+    show = pack
+    #@-node:ekr.20061119105509.6:pack (show)
+    #@+node:ekr.20061119105509.7:unpack (hide)
+    def unpack (self):
+        
+        """Hide the icon bar by unpacking it.
+        
+        A later call to show will repack it in a new location."""
+        
+        if self.visible:
+            self.visible = False
+            ### self.iconFrame.pack_forget()
+            
+    hide = unpack
+    #@-node:ekr.20061119105509.7:unpack (hide)
+    #@-others
 #@-node:ekr.20061118090713:wxLeoIconBar class
 #@+node:edream.110203113231.553:wxLeoLog class
 class wxLeoLog (leoFrame.leoLog):

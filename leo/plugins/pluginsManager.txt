@@ -18,7 +18,7 @@
 #@@c
 
 ##### Experimental.  Use with caution.
-#__wx_gui.py
+__wx_gui.py
 
 ##### Standard plugins enabled in official distributions.
 

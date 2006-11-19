@@ -2896,6 +2896,53 @@ def stringDelete (self,s,i,j=None):
 #@-node:ekr.20031218072017.4074:Indices (Tk) (removed)
 #@-node:ekr.20061110182241:Removed
 #@-node:ekr.20061114093231:Deleted gui text stuff
+#@+node:ekr.20031218072017.3953:Icon area methods (compatibility) (tkFrame: now defined in base class)
+def addIconButton (self,*args,**keys):
+    return self.iconBar and self.iconBar.add(*args,**keys)
+
+def clearIconBar (self):
+    if self.iconBar: self.iconBar.clear()
+
+def createIconBar (self):
+    f = self ; c = f.c
+    if not f.iconBar:
+        f.iconBar = f.iconBarClass(c,f.outerFrame)
+        f.iconFrame = f.iconBar.iconFrame
+        f.iconBar.pack()
+    return f.iconBar
+    
+def getIconBar(self):
+    return self.iconBar
+getIconBarObject = getIconBar
+
+def hideIconBar (self):
+    if self.iconBar: self.iconBar.hide()
+#@nonl
+#@-node:ekr.20031218072017.3953:Icon area methods (compatibility) (tkFrame: now defined in base class)
+#@+node:ekr.20061106064948:Status line... (dummy leoFrame)
+def createStatusLine (self):                    self.oops()
+def clearStatusLine (self):                     self.oops()
+def disableStatusLine (self,background=None):   self.oops()
+def enableStatusLine (self,background="white"): self.oops()
+def getStatusLine (self):                       self.oops()
+def putStatusLine (self,s,color=None):          self.oops()
+def setFocusStatusLine (self):                  self.oops()
+def statusLineIsEnabled(self):                  self.oops()
+def updateStatusLine(self):                     self.oops()
+#@nonl
+#@-node:ekr.20061106064948:Status line... (dummy leoFrame)
+#@+node:ekr.20061109124039:Status line... (nullFrame)
+def createStatusLine (self):                    pass
+def clearStatusLine (self):                     pass
+def disableStatusLine (self,background=None):   pass
+def enableStatusLine (self,background="white"): pass
+def getStatusLine (self):                       pass
+def putStatusLine (self,s,color=None):          pass
+def setFocusStatusLine (self):                  pass
+def statusLineIsEnabled(self):                  pass
+def updateStatusLine(self):                     pass
+#@nonl
+#@-node:ekr.20061109124039:Status line... (nullFrame)
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
