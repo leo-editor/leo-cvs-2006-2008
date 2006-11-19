@@ -416,14 +416,15 @@ class leoMenu:
             ('&Focus...',           self.cmdsMenuFocusTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
             ('M&inibuffer',         self.cmdsMenuMinibufferTable),
-            ('&Panes...',           self.cmdsMenuPanesTable),
-            ('Pic&kers...',         self.cmdsMenuPickersTable),
+            #('&Panes...',           self.cmdsMenuPanesTable),
+            ('&Pickers...',         self.cmdsMenuPickersTable),
             ('&Rectangles...',      self.cmdsMenuRectanglesTable),
             ('Re&gisters...',       self.cmdsMenuRegistersTable),
+            ('R&un Script/Tests',   self.cmdsMenuRunTable),
             ('Scr&olling...',       self.cmdsMenuScrollTable),
             ('Spell C&heck...',     self.cmdsMenuSpellCheckTable),
             ('&Text Commands',      self.cmdsMenuTextTable),
-            ('Toggle Setti&ngs',     self.cmdsMenuToggleTable),
+            ('Toggle Setti&ngs',    self.cmdsMenuToggleTable),
         ):
             menu = self.createNewMenu(name,'&Cmds')
             self.createMenuEntries(menu,table)
@@ -810,10 +811,11 @@ class leoMenu:
         self.defineCmdsMenuFocusTable()
         self.defineCmdsMenuMacroTable()
         self.defineCmdsMenuMinibufferTable()
-        self.defineCmdsMenuPanesTable()
+        # self.defineCmdsMenuPanesTable()
         self.defineCmdsMenuPickersTable()
         self.defineCmdsMenuRectanglesTable()
         self.defineCmdsMenuRegistersTable()
+        self.defineCmdsMenuRunTable()
         self.defineCmdsMenuScrollTable()
         self.defineCmdsMenuSpellCheckTable()
         self.defineCmdsMenuTextTable()
@@ -1032,6 +1034,18 @@ class leoMenu:
             '&view-register',
         ]
     #@-node:ekr.20060117095212.1:defineCmdsMenuRegistersTable
+    #@+node:ekr.20061119061958:defineCmdsMenuRunTable
+    def defineCmdsMenuRunTable (self):
+        
+        self.cmdsMenuRunTable = [
+        # &: e,o,p,r
+        '&execute-script',
+        '&run-unit-tests',
+        '-',
+        '&open-compare-window',
+        'open-&python-window',
+        ]
+    #@-node:ekr.20061119061958:defineCmdsMenuRunTable
     #@+node:ekr.20060923060822.1:defineCmdsMenuScrollTable
     def defineCmdsMenuScrollTable (self):
     
@@ -1122,17 +1136,29 @@ class leoMenu:
     def defineWindowMenuTables (self):
         
         self.windowMenuTopTable = [
-            # &: a,c,e,m,o,p,r,s
+            # &: a,b,c,d,e,f,l,m,n,o,p,r,s,t,u,x,y
             '*&equal-sized-panes',
-            '*toggle-&active-pane',
+            '*&toggle-active-pane',
             '*toggle-&split-direction',
+            '-',
+            'contract-&body-pane',
+            'contract-&log-pane',
+            'contract-&outline-pane',
+            'contract-&pane',
+            '-',
+            'expand-bo&dy-pane',
+            'expand-lo&g-pane',
+            'expand-o&utline-pane',
+            'expand-pa&ne',
+            '-',
+            '&fully-expand-body-pane',
+            'full&y-expand-log-pane',
+            'fully-e&xpand-outline-pane',
+            'fully-exp&and-pane',
             '-',
             '*&resize-to-screen',
             '*&cascade-windows',
             '*&minimize-all',
-            '-',
-            '*&open-compare-window',
-            '*open-&python-window',
         ]
     #@-node:ekr.20031218072017.3773:defineWindowMenuTables
     #@+node:ekr.20031218072017.3774:defineHelpMenuTables
