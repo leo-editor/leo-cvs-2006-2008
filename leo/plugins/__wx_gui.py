@@ -1501,8 +1501,6 @@ class wxGui(leoGui.leoGui):
         
         Use tk's wm_iconbitmap function if available (tk 8.3.4 or greater).
         Otherwise, try to use the Python Imaging Library and the tkIcon package."""
-        
-        g.trace(w)
     
         if self.bitmap != None:
             # We don't need PIL or tkicon: this is tk 8.3.4 or greater.
@@ -1738,8 +1736,7 @@ class wxLeoBody (leoFrame.leoBody):
     #@+node:edream.111303205611.1:wxBody.tag_bind
     def tag_bind (self,tagName,event,callback):
         
-        g.trace(tagName,event,callback)
-        pass
+        pass ; g.trace(tagName,event,callback)
     #@-node:edream.111303205611.1:wxBody.tag_bind
     #@+node:edream.111303205611.2:wxBody.tag_configure
     def tag_configure (self,colorName,**keys):
@@ -1881,7 +1878,7 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         self.bodyCtrl = None # set in finishCreate
         self.title = title
         
-        g.trace("wxLeoFrame",title)
+        # g.trace("wxLeoFrame",title)
         self.activeFrame = None
         self.iconBar = None
         self.lockout = 0 # Suppress further events
@@ -2730,9 +2727,46 @@ class wxLeoMenu (leoMenu.leoMenu):
         self.c = frame.c
         self.frame = frame
         
+        self.acceleratorDict = {}
+            # Keys are menus, values are list of tuples used to create wx accelerator tables.
         self.menuDict = {}
     #@nonl
     #@-node:edream.111303095242.3:  wxLeoMenu.__init__
+    #@+node:ekr.20061118203148:createAccelLabel
+    def createAccelLabel (self,keys):
+        
+        '''Create the menu label by inserting '&' at the underline spot.'''
+        
+        label    = keys.get('label')
+        underline = keys.get('underline')
+        ch = 0 <= underline < len(label) and label[underline] or ''
+        if ch: label = label[:underline] + '&' + label[underline:]
+        return ch,label
+    #@-node:ekr.20061118203148:createAccelLabel
+    #@+node:ekr.20061118203148.1:createAccelData
+    def createAccelData (self,menu,ch,id):
+    
+        d = self.acceleratorDict
+        aList = d.get(menu,[])
+        data = ch,id
+        aList.append(data)
+        d [menu] = aList
+    #@-node:ekr.20061118203148.1:createAccelData
+    #@+node:ekr.20061118194416:createAcceleratorTables
+    def createAcceleratorTables (self):
+        
+        d = self.acceleratorDict
+        flags = wx.ACCEL_NORMAL
+        entries = []
+        for menu in d.keys():
+            aList = d.get(menu)
+            for data in aList:
+                ch,id = data
+                entry = wx.AcceleratorEntry(flags,ord(ch),id)
+                entries.append(entry)
+        table = wx.AcceleratorTable(entries)
+        self.menuBar.SetAcceleratorTable(table)
+    #@-node:ekr.20061118194416:createAcceleratorTables
     #@+node:edream.111303103457:wx menu bindings
     #@+node:ekr.20061106062514:Not called
     #@+node:edream.111303103141.1:bind (Not called)
@@ -2767,34 +2801,37 @@ class wxLeoMenu (leoMenu.leoMenu):
     
         if parent:
             # Create a submenu of the parent menu.
+            keys = {'label':label,'underline':underline}
+            ch,label = self.createAccelLabel(keys)
             id = const(label)
             parent.AppendMenu(id,label,menu,label)
+            if ch: self.createAccelData(menu,ch,id)
         else:
             # Create a top-level menu.
             self.menuBar.Append(menu,label)
-    #@nonl
+            
     #@-node:edream.111303111942.1:add_cascade
-    #@+node:edream.111303103141:add_command
+    #@+node:edream.111303103141:menu.add_command
     def add_command (self,menu,**keys):
         
-        label    = keys.get("label")
-        callback = keys.get("command")
+        if not menu:
+            return g.trace('Can not happen.  No menu')
+        
+        callback = keys.get('command')
+        ch,label = self.createAccelLabel(keys)
         
         def wxMenuCallback (event,callback=callback):
-            # The Tk code does not use the event arg, so neither do we.
-            # g.trace('callback',callback.__name__)
             return callback() # All args were bound when the callback was created.
     
-        if menu:
-            id = const(label)
-            menu.Append(id,label,label)
-            key = (menu,label),
-            self.menuDict[key] = id # Remember id 
-            # g.trace(label,callback)
-            wx.EVT_MENU(self.frame,id,wxMenuCallback)
-        else:
-            g.trace("no menu",label)
-    #@-node:edream.111303103141:add_command
+        id = const(label)
+        menu.Append(id,label,label)
+        key = (menu,label),
+        self.menuDict[key] = id # Remember id 
+        wx.EVT_MENU(self.frame,id,wxMenuCallback)
+        if ch: self.createAccelData(menu,ch,id)
+        
+    #@nonl
+    #@-node:edream.111303103141:menu.add_command
     #@+node:edream.111303121150:add_separator
     def add_separator(self,menu):
         
@@ -2839,8 +2876,10 @@ class wxLeoMenu (leoMenu.leoMenu):
     def insert_cascade (self,parent,index,label,menu,underline):
     
         if not parent:
+            keys = {'label':label,'underline':underline}
+            ch,label = self.createAccelLabel(keys)
             self.menuBar.append(menu,label)
-    #@nonl
+            if ch: self.createAccelData(menu,ch,id)
     #@-node:edream.111303111942:insert_cascade
     #@+node:edream.111303110018:new_menu
     def new_menu(self,parent,tearoff=0):
@@ -2856,6 +2895,8 @@ class wxLeoMenu (leoMenu.leoMenu):
         self.menuBar = menuBar = wx.MenuBar()
     
         self.createMenusFromTables()
+        
+        self.createAcceleratorTables()
     
         frame.SetMenuBar(menuBar)
     #@nonl
@@ -3099,7 +3140,7 @@ class wxLeoTree (leoFrame.leoTree):
             self.redraw()
     #@nonl
     #@-node:edream.110203113231.296:endUpdate
-    #@+node:edream.110203113231.298:redraw & redraw_now
+    #@+node:edream.110203113231.298:redraw & redraw_now & helpers
     def redraw (self):
     
         self.drawing = True # Tell event handlers not to call us.
@@ -3122,7 +3163,40 @@ class wxLeoTree (leoFrame.leoTree):
     def redraw_now(self,scroll=True):
         self.redraw()
     #@nonl
-    #@-node:edream.110203113231.298:redraw & redraw_now
+    #@+node:edream.110203113231.299:redraw_node
+    def redraw_node(self,parent_id,p):
+        
+        tree = self.treeCtrl
+        data = wx.TreeItemData(p.copy())
+    
+        id = tree.AppendItem(parent_id,p.headString(),data=data)
+        tree.SetItemFont(id,self.defaultFont)
+        if p == self.c.currentPosition():
+            tree.SelectItem(id)
+        
+        assert (p == tree.GetItemData(id).GetData())
+        return id
+    #@-node:edream.110203113231.299:redraw_node
+    #@+node:edream.110203113231.300:redraw_subtree
+    def redraw_subtree(self,parent_id,p):
+    
+        tree = self.treeCtrl
+        id = self.redraw_node(parent_id,p)
+        child = p.firstChild()
+        
+        if p.isExpanded():
+            while child:
+                self.redraw_subtree(id,child)
+                child.moveToNext()
+            tree.Expand(id)
+        else:
+            while child:
+                self.redraw_node(id,child)
+                child.moveToNext()
+            tree.Collapse(id)
+    #@nonl
+    #@-node:edream.110203113231.300:redraw_subtree
+    #@-node:edream.110203113231.298:redraw & redraw_now & helpers
     #@+node:edream.110203113231.299:redraw_node
     def redraw_node(self,parent_id,p):
         
@@ -3158,7 +3232,7 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:edream.110203113231.300:redraw_subtree
     #@-node:edream.111303202917:Drawing
     #@+node:edream.111403090242.1:Editing TO DO
-    def editLabel(self,v):
+    def editLabel(self,p,selectAll=False):
         pass
     
     def editVnode(self):
@@ -3200,7 +3274,7 @@ class wxLeoTree (leoFrame.leoTree):
                 if event.keysym.isalnum() and len(event.keysym) == 1:
                     event.actualEvent.Skip() # Let the widget handle it.
                 else:
-                    g.trace(event.keysym)
+                    # g.trace(event.keysym)
                     self.c.k.masterKeyHandler(event,stroke=event.keysym)
     #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
     #@-node:ekr.20061118144918:Keys
@@ -3600,12 +3674,11 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:ekr.20050719121701.2:endEditLabel
     #@+node:ekr.20050719121701.3:editLabel
-    def editLabel (self,p):
+    def editLabel (self,p,selectAll=False):
         
         """Start editing p's headline."""
         
         # g.trace(p)
-        
         return ###
     
         if self.editPosition() and p != self.editPosition():
