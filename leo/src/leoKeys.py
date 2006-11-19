@@ -3255,11 +3255,12 @@ class keyHandlerClass:
         
         k = self ; c = k.c ; w = c.frame.getFocus()
         
+        # g.trace('stroke',stroke,'func',func and func.__name__,commandName)
+        
         # Create a minimal event for commands that require them.
         event = g.Bunch(char='',keysym='',widget=w)
-        # g.trace(c.widget_name(w))
         
-        if stroke: # New in 4.4a6:
+        if stroke:
             return k.masterKeyHandler(event,stroke=stroke)
         else:
             return k.masterCommand(event,func,stroke,commandName)
