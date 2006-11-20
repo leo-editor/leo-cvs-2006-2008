@@ -1861,28 +1861,29 @@ class wxLeoBody (leoFrame.leoBody):
 #@nonl
 #@-node:edream.110203113231.539:wxLeoBody class
 #@+node:edream.110203113231.349:wxLeoFrame class
-class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
+class wxLeoFrame(leoFrame.leoFrame):
         
     """A class to create a wxPython from for the main Leo window."""
 
     #@    @+others
     #@+node:edream.110203113231.350:Birth & death (wxLeoFrame)
-    #@+node:edream.110203113231.266:__init__
+    #@+node:edream.110203113231.266:__init__ (wxLeoFrame)
     def __init__ (self,title):
         
-        # Init the leoFrame base class.
-        # We will init the wxFrame base class in finishCreate.
-        leoFrame.leoFrame.__init__(self,g.app.gui)
+        # Init the base classes.
         
-        self.outerFrame = self ### Another frame may be needed.
+        leoFrame.leoFrame.__init__(self,g.app.gui) # Clears self.title.
         
+        self.title = title
+    
         self.c = None # set in finishCreate.
         self.bodyCtrl = None # set in finishCreate
-        self.title = title
+        
         
         # g.trace("wxLeoFrame",title)
         self.activeFrame = None
         self.iconBar = None
+        self.iconBarClass = wxLeoIconBar
         self.lockout = 0 # Suppress further events
         self.quitting = False
         self.updateCount = 0
@@ -1893,8 +1894,9 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         self.ratio = 0.5
         self.secondary_ratio = 0.5
         self.startupWindow=False
+        self.statusLineClass = None
         self.use_coloring = False # set True to enable coloring
-    #@-node:edream.110203113231.266:__init__
+    #@-node:edream.110203113231.266:__init__ (wxLeoFrame)
     #@+node:edream.110203113231.351:__repr__
     def __repr__ (self):
         
@@ -1909,20 +1911,66 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         frame.c = c
         c.frame = frame
         
-        # Init the wxFrame base class.  The leoFrame base class has already been inited.
-        wx.Frame.__init__(self, None, -1,
-            self.title, pos = (200,50), size = (900,700))
+        self.topFrame = self.top = wx.Frame(
+            parent = None, id = -1,
+            #### const('top-frame'), # None means this is a top-level window.
+            title = self.title,
+            pos = (200,50), size = (900,700))
+       
         if 0: # Useless: both the foreground and background are completely hidden.
             # And this has no effect on children.
-            self.SetForegroundColour(wx.RED)
-            self.SetBackgroundColour(wx.RED)
-        # frame.iconBar = wxLeoIconBar(frame)
-        self.CreateStatusBar() # This is a wxWidgets method.
-        #@    << create the splitters >>
-        #@+node:edream.110203113231.261:<< create the splitters >>
-        self.splitter1 = wx.SplitterWindow(self,
-            const("cSplitterWindow"),
-            wx.DefaultPosition,wx.DefaultSize,
+            self.SetForegroundColour(wx.BLUE)
+            self.SetBackgroundColour(wx.BLUE)
+    
+        parentFrame = self.topFrame
+        #g.trace('wxLeoFrame',parentFrame)
+        
+        self.iconBar = wxLeoIconBar(c,parentFrame=parentFrame)
+        self.splitterContainer = wx.PyWindow(parentFrame,-1) # Size doesn't matter.
+        self.splitterContainer.SetBackgroundColour(wx.BLUE)
+        self.minibufferContainer = wx.PyWindow(parentFrame,-1,size=(20,20),)
+        self.minibufferContainer.SetBackgroundColour(wx.GREEN)
+    
+        self.topFrame.CreateStatusBar() # This is a wxWidgets method.
+        self.createSplitters(parentFrame=self.splitterContainer)
+        self.tree = wxLeoTree(frame,parentFrame=self.splitter2)
+        self.log = wxLeoLog(frame,parentFrame=self.splitter2)
+        self.body = wxLeoBody(frame,parentFrame=self.splitter1)
+        self.bodyCtrl = frame.body.bodyCtrl
+        
+        g.app.setLog(frame.log) # writeWaitingLog hangs without this(!)
+        
+        # Attach the controls to the splitter.
+        self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
+        self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
+        
+        box = wx.BoxSizer(wx.VERTICAL)
+        box.Add(self.iconBar.top,0,wx.EXPAND)
+        box.Add(self.splitterContainer,1,wx.EXPAND)
+        box.Add(self.minibufferContainer,0,wx.EXPAND)
+        self.top.SetSizer(box)
+        box.Fit(self.top)
+        self.top.SetSize((900,700),)
+        #box.SetSizeHints(self.top)
+        # self.iconBar.top.Show()
+        
+        self.menu = wxLeoMenu(frame)
+        self.setWindowIcon()
+        self.setEventHandlers()
+        self.colorizer = self.body.colorizer
+        c.initVersion()
+        self.signOnWithVersion()
+        self.injectCallbacks()
+        # Add the frame to the global window list.
+        g.app.windowList.append(self)
+        self.tree.redraw()
+        self.topFrame.Show(True) # required on some platforms: a cross-platform bug.
+    #@nonl
+    #@+node:edream.110203113231.261:createSplitters
+    def createSplitters(self,parentFrame):
+    
+        self.splitter1 = wx.SplitterWindow(parentFrame,-1,
+            pos = wx.DefaultPosition, size = (900,900),
             style = wx.SP_BORDER, # Simple style seems best.  No styles get colored.
             # style = wx.SP_NOBORDER,
             # style = wx.SP_BORDER | wx.SP_3D,
@@ -1933,65 +1981,45 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         if 0:
             self.splitter1.SetForegroundColour(wx.RED)
             self.splitter1.SetBackgroundColour(wx.RED)
+       
         
         self.splitter2 = wx.SplitterWindow(self.splitter1, -1,
-            wx.DefaultPosition, wx.DefaultSize,
-            style = wx.SP_BORDER,
-            # style = wx.SP_NOBORDER)
-            # style = wx.SP_BORDER | wx.SP_3D,
+                pos = wx.DefaultPosition,
+                size = wx.DefaultSize,
+                style = wx.SP_BORDER,
+                # style = wx.SP_NOBORDER)
+                # style = wx.SP_BORDER | wx.SP_3D,
         )
-        
-        self.splitter1.SetMinimumPaneSize(4)
-        self.splitter2.SetMinimumPaneSize(4)
-        #@nonl
-        #@-node:edream.110203113231.261:<< create the splitters >>
-        #@nl
-        frame.tree = wxLeoTree(frame,self.splitter2)
-        frame.log = wxLeoLog(frame,self.splitter2)
-        frame.body = wxLeoBody(frame,self.splitter1)
-        frame.bodyCtrl = frame.body.bodyCtrl
-        g.app.setLog(frame.log) # writeWaitingLog hangs without this(!)
+            
+        if 0: # This has no effect in a SizeBox.
+            self.splitter1.SetMinimumPaneSize(4)
+            self.splitter2.SetMinimumPaneSize(4)
+    #@-node:edream.110203113231.261:createSplitters
+    #@+node:edream.110203113231.265:setWindowIcon
+    def setWindowIcon(self):
     
-        # Attach the controls to the splitter.
-        self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
-        self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
-        
-        self.menu = wxLeoMenu(frame)
-        #@    << set the window icon >>
-        #@+node:edream.110203113231.265:<< set the window icon >>
         if wx.Platform == "__WXMSW__":
         
             path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
             icon = wx.Icon(path,wx.BITMAP_TYPE_ICO,16,16)
-            self.SetIcon(icon)
-        #@-node:edream.110203113231.265:<< set the window icon >>
-        #@nl
-        #@    << declare event handlers for frame >>
-        #@+node:edream.110203113231.264:<< declare event handlers for frame >>
+            self.top.SetIcon(icon)
+    #@-node:edream.110203113231.265:setWindowIcon
+    #@+node:edream.110203113231.264:setEventHandlers
+    def setEventHandlers (self):
+    
         if wx.Platform == "__WXMSW__": # Activate events exist only on Windows.
-            wx.EVT_ACTIVATE(self,self.onActivate)
+            wx.EVT_ACTIVATE(self.top,self.onActivate)
         else:
-            wx.EVT_SET_FOCUS(self,self.OnSetFocus)
+            wx.EVT_SET_FOCUS(self.top,self.OnSetFocus)
         
-        wx.EVT_CLOSE(self,self.onCloseLeoFrame)
+        wx.EVT_CLOSE(self.top,self.onCloseLeoFrame)
         
-        wx.EVT_MENU_OPEN(self,self.updateAllMenus) 
+        wx.EVT_MENU_OPEN(self.top,self.updateAllMenus) 
         
         if 0: # Causes problems at present.  The screen isn't drawn properly.
-            wx.EVT_SIZE(self,self.onResize)
-        #@nonl
-        #@-node:edream.110203113231.264:<< declare event handlers for frame >>
-        #@nl
-        
-        self.colorizer = self.body.colorizer
-        c.initVersion()
-        self.signOnWithVersion()
-        self.injectCallbacks()
-        # Add the frame to the global window list.
-        g.app.windowList.append(self)
-        self.tree.redraw()
-        self.Show(True) # required on some platforms: a cross-platform bug.
+            wx.EVT_SIZE(self.top,self.onResize)
     #@nonl
+    #@-node:edream.110203113231.264:setEventHandlers
     #@-node:edream.110203113231.260:finishCreate (wxLeoFrame)
     #@+node:edream.111403141810:initialRatios
     def initialRatios (self):
@@ -2057,7 +2085,7 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
     #@+node:edream.111503213533:destroySelf
     def destroySelf(self):
         
-        self.Destroy()
+        self.top.Destroy()
     #@nonl
     #@-node:edream.111503213533:destroySelf
     #@-node:edream.110203113231.350:Birth & death (wxLeoFrame)
@@ -2132,53 +2160,17 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
         pass
     
     def lift (self):
-        self.Raise()
+        self.top.Raise()
     
     def update (self):
         pass
     #@nonl
     #@-node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
-    #@+node:ekr.20061106070956:Icon area methods (to do)
-    def addIconButton (self,*args,**keys):
-        self.iconBar and self.iconBar.add(*args,**keys)
-    
-    def clearIconBar (self):
-        self.iconBar and self.iconBar.clear()
-    
-    def createIconBar (self):
-        if not self.iconBar:
-            self.iconBar = wxLeoIconBar(self.c,self.outerFrame)
-        return self.iconBar
-        
-    def getIconBar(self):
-        if not self.iconBar:
-            self.iconBar = wxLeoIconBar(self.c,self.outerFrame)
-        return self.iconBar
-    
-    getIconBarObject = getIconBar
-    
-    def hideIconBar (self):
-        self.iconBar and self.iconBar.hide()
-    #@nonl
-    #@-node:ekr.20061106070956:Icon area methods (to do)
-    #@+node:ekr.20061106070737:Status line (to do)
-    def createStatusLine (self):                    pass
-    def clearStatusLine (self):                     pass
-    def disableStatusLine (self,background=None):   pass
-    def enableStatusLine (self,background="white"): pass
-    def getStatusLine (self):                       pass
-    def putStatusLine (self,s,color=None):          pass
-    def setFocusStatusLine (self):                  pass
-    def statusLineIsEnabled(self):                  pass
-    def updateStatusLine(self):                     pass
-        
-    # getStatusObject = getStatusLine
-    #@-node:ekr.20061106070737:Status line (to do)
     #@+node:edream.110203113231.378:Externally visible routines...
     #@+node:edream.110203113231.380:deiconify
     def deiconify (self):
     
-        self.Iconize(False)
+        self.top.Iconize(False)
     #@nonl
     #@-node:edream.110203113231.380:deiconify
     #@+node:edream.110203113231.381:getTitle
@@ -2190,7 +2182,7 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
     def setTitle (self,title):
     
         self.title = title
-        self.SetTitle(title) # Call the wx code.
+        self.top.SetTitle(title) # Call the wx code.
     #@nonl
     #@-node:edream.111303135410:setTitle
     #@-node:edream.110203113231.378:Externally visible routines...
@@ -2589,31 +2581,32 @@ class wxLeoFrame(wx.Frame,leoFrame.leoFrame):
 #@nonl
 #@-node:edream.110203113231.349:wxLeoFrame class
 #@+node:ekr.20061118090713:wxLeoIconBar class
-class wxLeoIconBar():
+class wxLeoIconBar:
     
     #@    @+others
-    #@+node:ekr.20061119105509.1: ctor
-    def __init__(self,c,frame):
+    #@+node:ekr.20061119105509.1:__init__ wxLeoIconBar
+    def __init__(self,c,parentFrame): # wxLeoIconBarClass.
     
-            #self.outerPanel = wx.Panel(self,-1)
-            self.c = c
-            self.iconFrame = wx.Panel(frame,name='icon-bar')
-            self.visible = True
-            ### f.iconBar.pack()
-            #wxPanel(wxWindow* parent, wxWindowID id = wxID_ANY,
-            #    const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
-            # long style = wxTAB_TRAVERSAL, const wxString& name = "panel")
+        self.c = c
+        self.visible = False
+        
+        g.trace('wxLeoIconBar',parentFrame)
+        
+        # wx.Frame does *not* work, for some reason!
+        self.top = wx.PyWindow(parentFrame,-1,
+            #pos = (-1,-1),
+            #size = (-1,40), # Width, height.
+        )
+        
+        self.top.SetSize((0,40),)
     
-    # def __init__ (self,c,parentFrame):
+        self.top.SetForegroundColour(wx.RED)
+        self.top.SetBackgroundColour(wx.RED)
         
-        # self.c = c
+        c.frame.iconFrame = self.top
         
-        # self.buttons = {} # Keys
-        # self.iconFrame = Tk.Frame(
-            # parentFrame,height="5m",bd=2,relief="groove") # ,background='blue')
-        # self.parentFrame = parentFrame
-        # self.visible = False
-    #@-node:ekr.20061119105509.1: ctor
+    #@nonl
+    #@-node:ekr.20061119105509.1:__init__ wxLeoIconBar
     #@+node:ekr.20061119105509.2:add
     def add(self,*args,**keys):
         
@@ -2959,7 +2952,7 @@ class wxLeoMenu (leoMenu.leoMenu):
         menu.Append(id,label,label)
         key = (menu,label),
         self.menuDict[key] = id # Remember id 
-        wx.EVT_MENU(self.frame,id,wxMenuCallback)
+        wx.EVT_MENU(self.frame.top,id,wxMenuCallback)
         if ch: self.createAccelData(menu,ch,id)
         
     #@nonl
@@ -3030,7 +3023,7 @@ class wxLeoMenu (leoMenu.leoMenu):
         
         self.createAcceleratorTables()
     
-        frame.SetMenuBar(menuBar)
+        frame.top.SetMenuBar(menuBar)
     #@nonl
     #@-node:edream.111303103457.2:createMenuBar
     #@+node:edream.111603112846.1:createOpenWithMenuFromTable (not ready yet)
