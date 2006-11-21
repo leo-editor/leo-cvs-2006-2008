@@ -1913,9 +1913,7 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         self.topFrame = self.top = wx.Frame(
             parent = None, id = -1,
-            #### const('top-frame'), # None means this is a top-level window.
-            title = self.title,
-            pos = (200,50), size = (900,700))
+            title = self.title, pos = (200,50), size = (900,700))
        
         if 0: # Useless: both the foreground and background are completely hidden.
             # And this has no effect on children.
@@ -1926,9 +1924,11 @@ class wxLeoFrame(leoFrame.leoFrame):
         #g.trace('wxLeoFrame',parentFrame)
         
         self.iconBar = wxLeoIconBar(c,parentFrame=parentFrame)
-        self.splitterContainer = wx.PyWindow(parentFrame,-1) # Size doesn't matter.
-        self.splitterContainer.SetBackgroundColour(wx.BLUE)
-        self.minibufferContainer = wx.PyWindow(parentFrame,-1,size=(20,20),)
+        
+        self.splitterContainer = wx.PyWindow(parentFrame,-1) # Size doesn't matter??
+        # self.splitterContainer.SetBackgroundColour(wx.BLUE) # Good for debugging.
+        
+        self.minibufferContainer = wx.PyWindow(parentFrame,-1,size=(-1,20),)
         self.minibufferContainer.SetBackgroundColour(wx.GREEN)
     
         self.topFrame.CreateStatusBar() # This is a wxWidgets method.
@@ -1944,16 +1944,22 @@ class wxLeoFrame(leoFrame.leoFrame):
         self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
         self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
         
+        # This code resizes both splitters when the window changes.
         box = wx.BoxSizer(wx.VERTICAL)
         box.Add(self.iconBar.top,0,wx.EXPAND)
         box.Add(self.splitterContainer,1,wx.EXPAND)
+        def onSizeSplitterContainer(event,self=self,*args,**keys):
+            w,h = event.GetSize()
+            self.splitter1.SetSize((w,h),)
+            # To do: retain splitter ratio.
+            self.splitter1.SetSashPosition(h/2) # This resizes both splitters!
+        self.splitterContainer.Bind(wx.EVT_SIZE,onSizeSplitterContainer)
+            
         box.Add(self.minibufferContainer,0,wx.EXPAND)
         self.top.SetSizer(box)
         box.Fit(self.top)
         self.top.SetSize((900,700),)
-        #box.SetSizeHints(self.top)
-        # self.iconBar.top.Show()
-        
+    
         self.menu = wxLeoMenu(frame)
         self.setWindowIcon()
         self.setEventHandlers()
@@ -1971,7 +1977,7 @@ class wxLeoFrame(leoFrame.leoFrame):
     
         self.splitter1 = wx.SplitterWindow(parentFrame,-1,
             pos = wx.DefaultPosition, size = (900,900),
-            style = wx.SP_BORDER, # Simple style seems best.  No styles get colored.
+            style = wx.SP_BORDER | wx.SP_LIVE_UPDATE, # Simple style seems best.  No styles get colored.
             # style = wx.SP_NOBORDER,
             # style = wx.SP_BORDER | wx.SP_3D,
         )
@@ -1981,8 +1987,7 @@ class wxLeoFrame(leoFrame.leoFrame):
         if 0:
             self.splitter1.SetForegroundColour(wx.RED)
             self.splitter1.SetBackgroundColour(wx.RED)
-       
-        
+            
         self.splitter2 = wx.SplitterWindow(self.splitter1, -1,
                 pos = wx.DefaultPosition,
                 size = wx.DefaultSize,
@@ -2590,7 +2595,7 @@ class wxLeoIconBar:
         self.c = c
         self.visible = False
         
-        g.trace('wxLeoIconBar',parentFrame)
+        # g.trace('wxLeoIconBar',parentFrame)
         
         # wx.Frame does *not* work, for some reason!
         self.top = wx.PyWindow(parentFrame,-1,
