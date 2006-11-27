@@ -2867,27 +2867,19 @@ class editCommandsClass (baseEditCommandsClass):
         text are affected; otherwise all blank lines in the selected node are
         affected.'''
         
-        c = self.c ; undoType = 'remove-blank-lines' ; p = c.currentPosition()
-        result = []
-        body = p.bodyString()
-        hasSelection = c.frame.body.hasTextSelection()
-        
-        if hasSelection:
-            head,lines,tail,oldSel,oldYview = c.getBodyLines()
-            joinChar = '\n'
-        else:
-            head = tail = oldYview = None
-            lines = g.splitLines(body)
-            oldSel = (0,0)
-            joinChar = ''
+        c = self.c
+        head,lines,tail,oldSel,oldYview = c.getBodyLines()
     
+        changed = False ; result = []
         for line in lines:
             if line.strip():
                 result.append(line)
+            else:
+                changed = True
+        result = ''.join(result)
     
-        result = joinChar.join(result)
-        
-        if result != body:
+        if changed:
+            oldSel = None ; undoType = 'remove-blank-lines'
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20050920084036.141:removeBlankLines (pass)
     #@+node:ekr.20051125080855:selfInsertCommand & helpers (passed)
@@ -3497,6 +3489,7 @@ class editCommandsClass (baseEditCommandsClass):
     
         c.widgetWantsFocusNow(w)
         i = w.getInsertPoint()
+        i = w.toGuiIndex(i)
         while 1:
             txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
             if txt:

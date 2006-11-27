@@ -2031,71 +2031,57 @@ class baseCommands:
         finally:
             c.endUpdate(count > 0)
     #@-node:ekr.20031218072017.1705:convertAllTabs
-    #@+node:ekr.20031218072017.1821:convertBlanks
+    #@+node:ekr.20031218072017.1821:convertBlanks (test)
     def convertBlanks (self,event=None):
         
         '''Convert all blanks to tabs in the selected node.'''
     
-        c = self ; undoType = 'Convert Blanks'
-        
-        if g.app.batchMode:
-            c.notValidInBatchMode(undoType)
-            return False
-    
+        c = self ; changed = False ; dirtyVnodeList = []
         head,lines,tail,oldSel,oldYview = c.getBodyLines(expandSelection=True)
-        result = [] ; changed = False
-    
+        
         # Use the relative @tabwidth, not the global one.
         theDict = g.scanDirectives(c)
         tabWidth  = theDict.get("tabwidth")
-        if not tabWidth: return False
-    
-        for line in lines:
-            s = g.optimizeLeadingWhitespace(line,abs(tabWidth)) # Use positive width.
-            if s != line: changed = True
-            result.append(s)
-    
-        if changed:
-            result = string.join(result,'\n')
-            dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
-        else:
-            dirtyVnodeList = []
-    
+        if tabWidth:
+            result = []
+            for line in lines:
+                s = g.optimizeLeadingWhitespace(line,abs(tabWidth)) # Use positive width.
+                if s != line: changed = True
+                result.append(s)
+            if changed:
+                undoType = 'Convert Blanks'
+                result = ''.join(result)
+                oldSel = None
+                dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
+        
         return changed,dirtyVnodeList
-    #@-node:ekr.20031218072017.1821:convertBlanks
-    #@+node:ekr.20031218072017.1822:convertTabs
+    #@-node:ekr.20031218072017.1821:convertBlanks (test)
+    #@+node:ekr.20031218072017.1822:convertTabs (test)
     def convertTabs (self,event=None):
         
         '''Convert all tabs to blanks in the selected node.'''
     
-        c = self ; undoType = 'Convert Tabs'
-        
-        if g.app.batchMode:
-            c.notValidInBatchMode(undoType)
-            return False
-    
+        c = self ; changed = False ; dirtyVnodeList = []
         head,lines,tail,oldSel,oldYview = self.getBodyLines(expandSelection=True)
-        result = [] ; changed = False
-        
+    
         # Use the relative @tabwidth, not the global one.
         theDict = g.scanDirectives(c)
         tabWidth  = theDict.get("tabwidth")
-        if not tabWidth: return False,None
+        if tabWidth:
+            result = []
+            for line in lines:
+                i,w = g.skip_leading_ws_with_indent(line,0,tabWidth)
+                s = g.computeLeadingWhitespace(w,-abs(tabWidth)) + line[i:] # use negative width.
+                if s != line: changed = True
+                result.append(s)
+            if changed:
+                undoType = 'Convert Tabs'
+                result = ''.join(result)
+                oldSel = None
+                dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
     
-        for line in lines:
-            i,w = g.skip_leading_ws_with_indent(line,0,tabWidth)
-            s = g.computeLeadingWhitespace(w,-abs(tabWidth)) + line[i:] # use negative width.
-            if s != line: changed = True
-            result.append(s)
-    
-        if changed:
-            result = string.join(result,'\n')
-            dirtyVnodeList = c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview) # Handles undo
-        else:
-            dirtyVnodeList = []
-            
         return changed,dirtyVnodeList
-    #@-node:ekr.20031218072017.1822:convertTabs
+    #@-node:ekr.20031218072017.1822:convertTabs (test)
     #@+node:ekr.20031218072017.1823:createLastChildNode
     def createLastChildNode (self,parent,headline,body):
         
@@ -2115,17 +2101,13 @@ class baseCommands:
         c.validateOutline()
         return p
     #@-node:ekr.20031218072017.1823:createLastChildNode
-    #@+node:ekr.20031218072017.1824:dedentBody
+    #@+node:ekr.20031218072017.1824:dedentBody (test)
     def dedentBody (self,event=None):
         
         '''Remove one tab's worth of indentation from all presently selected lines.'''
         
-        c = self ; undoType = 'Unindent' ; current = c.currentPosition()
+        c = self ; current = c.currentPosition() ; undoType='Unindent'
         
-        if g.app.batchMode:
-            c.notValidInBatchMode(undoType)
-            return
-    
         d = g.scanDirectives(c,current) # Support @tab_width directive properly.
         tab_width = d.get("tabwidth",c.tab_width)
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
@@ -2138,10 +2120,10 @@ class baseCommands:
             result.append(s)
     
         if changed:
-            result = string.join(result,'\n')
+            result = ''.join(result)
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    #@-node:ekr.20031218072017.1824:dedentBody
-    #@+node:ekr.20031218072017.1706:extract
+    #@-node:ekr.20031218072017.1824:dedentBody (test)
+    #@+node:ekr.20031218072017.1706:extract (test)
     def extract (self,event=None):
         
         '''Create child node from the elected body text, deleting all selected text.
@@ -2150,15 +2132,10 @@ class baseCommands:
     
         c = self ; u = c.undoer ; undoType = 'Extract'
         current = c.currentPosition()
-        
-        if g.app.batchMode:
-            c.notValidInBatchMode(undoType)
-            return
-        
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
-        if not lines: return
-        headline = lines[0].strip() ; del lines[0]
-        
+        if lines:
+            headline = lines[0].strip()
+            del lines[0]
         if not lines:
             g.es("Nothing follows section name",color="blue")
             return
@@ -2167,7 +2144,7 @@ class baseCommands:
         junk, ws = g.skip_leading_ws_with_indent(lines[0],0,c.tab_width)
         strippedLines = [g.removeLeadingWhitespace(line,ws,c.tab_width)
             for line in lines]
-        newBody = '\n'.join(strippedLines)
+        newBody = ''.join(strippedLines)
         if head: head = head.rstrip()
     
         c.beginUpdate()
@@ -2177,28 +2154,24 @@ class baseCommands:
                 undoData = u.beforeInsertNode(current)
                 p = c.createLastChildNode(current,headline,newBody)
                 u.afterInsertNode(p,undoType,undoData)
-                c.updateBodyPane(head+'\n',None,tail,undoType,oldSel,oldYview,setSel=False)
-            u.afterChangeGroup(current,undoType)
+                c.updateBodyPane(head+'\n',None,tail,undoType=undoType,oldSel=None,oldYview=oldYview)
+            u.afterChangeGroup(current,undoType=undoType)
         finally:
             c.endUpdate()
-    #@-node:ekr.20031218072017.1706:extract
-    #@+node:ekr.20031218072017.1708:extractSection
+    #@-node:ekr.20031218072017.1706:extract (test)
+    #@+node:ekr.20031218072017.1708:extractSection (test)
     def extractSection (self,event=None):
         
         '''Create a section definition node from the selected body text.
         The text must start with a section reference.  This becomes the new child's headline.
         The body text of the new child node contains all selected lines that follow the section reference line.'''
     
-        c = self ; u = c.undoer ; undoType = 'Extract Section'
+        c = self ; u = c.undoer ; undoType='Extract Section'
         current = c.currentPosition()
-    
-        if g.app.batchMode:
-            c.notValidInBatchMode(undoType)
-            return
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
         if not lines: return
     
-        line1 = '\n' + lines[0] + '\n'
+        line1 = '\n' + lines[0]
         headline = lines[0].strip() ; del lines[0]
         #@    << Set headline for extractSection >>
         #@+node:ekr.20031218072017.1709:<< Set headline for extractSection >>
@@ -2216,7 +2189,6 @@ class baseCommands:
             return
         #@-node:ekr.20031218072017.1709:<< Set headline for extractSection >>
         #@nl
-        
         if not lines:
             g.es("Nothing follows section name",color="blue")
             return
@@ -2225,7 +2197,7 @@ class baseCommands:
         junk, ws = g.skip_leading_ws_with_indent(lines[0],0,c.tab_width)
         strippedLines = [g.removeLeadingWhitespace(line,ws,c.tab_width)
             for line in lines]
-        newBody = '\n'.join(strippedLines)
+        newBody = ''.join(strippedLines)
         if head: head = head.rstrip()
     
         c.beginUpdate()
@@ -2235,12 +2207,12 @@ class baseCommands:
                 undoData = u.beforeInsertNode(current)
                 p = c.createLastChildNode(current,headline,newBody)
                 u.afterInsertNode(p,undoType,undoData)
-                c.updateBodyPane(head+line1,None,tail,undoType,oldSel,oldYview,setSel=False)
-            u.afterChangeGroup(current,undoType)
+                c.updateBodyPane(head+line1,None,tail,undoType=undoType,oldSel=None,oldYview=oldYview)
+            u.afterChangeGroup(current,undoType=undoType)
         finally:
             c.endUpdate()
-    #@-node:ekr.20031218072017.1708:extractSection
-    #@+node:ekr.20031218072017.1710:extractSectionNames
+    #@-node:ekr.20031218072017.1708:extractSection (test)
+    #@+node:ekr.20031218072017.1710:extractSectionNames (test)
     def extractSectionNames(self,event=None):
         
         '''Create child nodes for every section reference in the selected text.
@@ -2249,10 +2221,6 @@ class baseCommands:
     
         c = self ; u = c.undoer ; undoType = 'Extract Section Names'
         body = c.frame.body ; current = c.currentPosition()
-        
-        if g.app.batchMode:
-            c.notValidInBatchMode(undoType)
-            return
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
         if not lines: return
     
@@ -2294,7 +2262,7 @@ class baseCommands:
         # Restore the selection.
         body.setSelectionRange(oldSel)
         body.setFocus()
-    #@-node:ekr.20031218072017.1710:extractSectionNames
+    #@-node:ekr.20031218072017.1710:extractSectionNames (test)
     #@+node:ekr.20031218072017.1825:c.findBoundParagraph
     def findBoundParagraph (self,event=None):
         
@@ -2442,20 +2410,25 @@ class baseCommands:
     
         c = self ; body = c.frame.body ; w = body.bodyCtrl
         oldVview = body.getYScrollPosition()
-        oldSel = w.getSelectionRange()
     
         if expandSelection:
             s = w.getAllText()
-            head = tail = None
+            head = tail = ''
+            oldSel = 0,len(s)
+            lines = g.splitLines(s) # Retain the newlines of each line.
         else:
             # Note: lines is the entire line containing the insert point if no selection.
             head,s,tail = body.getSelectionLines()
-    
-        lines = s.split('\n')
-    
+            lines = g.splitLines(s) # Retain the newlines of each line.
+        
+            # Expand the selection.
+            i = len(head)
+            j = max(i,len(head)+len(s)-1)
+            oldSel = i,j
+        
         return head,lines,tail,oldSel,oldVview # string,list,string,tuple.
     #@-node:ekr.20031218072017.1829:getBodyLines
-    #@+node:ekr.20031218072017.1830:indentBody
+    #@+node:ekr.20031218072017.1830:indentBody (test)
     def indentBody (self,event=None):
         
         '''The indent-region command indents each line of the selected body text,
@@ -2463,12 +2436,7 @@ class baseCommands:
         in effect determines amount of indentation. (not yet) A numeric argument
         specifies the column to indent to.'''
     
-        c = self ; undoType = 'Indent Region' ; current = c.currentPosition()
-        
-        if g.app.batchMode:
-            c.notValidInBatchMode(undoType)
-            return
-    
+        c = self ; current = c.currentPosition() ; undoType='Indent Region'
         d = g.scanDirectives(c,current) # Support @tab_width directive properly.
         tab_width = d.get("tabwidth",c.tab_width)
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
@@ -2481,9 +2449,9 @@ class baseCommands:
             result.append(s)
     
         if changed:
-            result = string.join(result,'\n')
+            result = ''.join(result)
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    #@-node:ekr.20031218072017.1830:indentBody
+    #@-node:ekr.20031218072017.1830:indentBody (test)
     #@+node:ekr.20031218072017.1831:insertBodyTime & allies (passed)
     def insertBodyTime (self,event=None):
         
@@ -2536,16 +2504,15 @@ class baseCommands:
     #@-node:ekr.20031218072017.1832:getTime & test
     #@-node:ekr.20031218072017.1831:insertBodyTime & allies (passed)
     #@+node:ekr.20050312114529:insert/removeComments
-    #@+node:ekr.20050312114529.1:addComments
+    #@+node:ekr.20050312114529.1:addComments (test)
     def addComments (self,event=None):
         
         '''Convert all selected lines in the body text to comment lines.'''
     
-        c = self ; undoType = 'Add Comments' ; p = c.currentPosition()
+        c = self ; p = c.currentPosition()
         d = g.scanDirectives(c,p)
         d1,d2,d3 = d.get('delims') # d1 is the line delim.
         head,lines,tail,oldSel,oldYview = self.getBodyLines()
-        result = []
         if not lines:
             g.es('No text selected',color='blue')
             return
@@ -2555,6 +2522,7 @@ class baseCommands:
         else:  openDelim,closeDelim = d2+' ',d3+' '
     
         # Comment out non-blank lines.
+        result = []
         for line in lines:
             if line.strip():
                 i = g.skip_ws(line,0)
@@ -2562,16 +2530,15 @@ class baseCommands:
             else:
                 result.append(line)
     
-        result = '\n'.join(result)
-        c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    #@-node:ekr.20050312114529.1:addComments
-    #@+node:ekr.20050312114529.2:deleteComments
+        result = ''.join(result)
+        c.updateBodyPane(head,result,tail,undoType='Add Comments',oldSel=None,oldYview=oldYview)
+    #@-node:ekr.20050312114529.1:addComments (test)
+    #@+node:ekr.20050312114529.2:deleteComments (test)
     def deleteComments (self,event=None):
         
         '''Remove one level of comment delimiters from all selected lines in the body text.'''
     
-        c = self ; undoType = 'Delete Comments' ; p = c.currentPosition()
-        
+        c = self ; p = c.currentPosition()
         d = g.scanDirectives(c,p)
         # d1 is the line delim.
         d1,d2,d3 = d.get('delims')
@@ -2615,9 +2582,9 @@ class baseCommands:
                         g.es("'%s' not found" % (d3),color='blue')
                         return
     
-        result = string.join(result,'\n')
-        c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    #@-node:ekr.20050312114529.2:deleteComments
+        result = ''.join(result)
+        c.updateBodyPane(head,result,tail,undoType='Delete Comments',oldSel=None,oldYview=oldYview)
+    #@-node:ekr.20050312114529.2:deleteComments (test)
     #@-node:ekr.20050312114529:insert/removeComments
     #@+node:ekr.20031218072017.1833:reformatParagraph
     def reformatParagraph (self,event=None):
@@ -2700,6 +2667,7 @@ class baseCommands:
             
             # Advance to the next paragraph.
             s = w.getAllText()
+            ins += 1 # Move past the selection.
             while ins < len(s):
                 i,j = g.getLine(s,ins)
                 line = s[i:j]
@@ -2722,20 +2690,24 @@ class baseCommands:
     #@nonl
     #@-node:ekr.20031218072017.1833:reformatParagraph
     #@+node:ekr.20031218072017.1838:updateBodyPane (handles changeNodeContents)
-    def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview,setSel=True):
+    def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview):
         
         c = self ; body = c.frame.body ; p = c.currentPosition()
     
-        # g.trace(undoType)
-    
         # Update the text and notify the event handler.
         body.setSelectionAreas(head,middle,tail)
-    
-        if setSel and oldSel:
-            body.setSelectionRange(oldSel)
+        
+        # Expand the selection.
+        head = head or ''
+        middle = middle or ''
+        tail = tail or ''
+        i = len(head)
+        j = max(i,len(head)+len(middle)-1)
+        newSel = i,j
+        body.setSelectionRange(newSel)
     
         # This handles the undo.
-        body.onBodyChanged(undoType,oldSel=oldSel,oldYview=oldYview)
+        body.onBodyChanged(undoType,oldSel=oldSel or newSel,oldYview=oldYview)
     
         # Update the changed mark and icon.
         c.beginUpdate()
