@@ -333,6 +333,10 @@ class leoBody:
         after is all lines after the selected text
         (or the text after the insert point if no selection)"""
         
+        if g.app.batchMode:
+            c.notValidInBatchMode(undoType)
+            return '','',''
+        
         # At present, called only by c.getBodyLines.
         w = self.bodyCtrl
         s = w.getAllText()
@@ -342,11 +346,13 @@ class leoBody:
         else:
             i,junk = g.getLine(s,i)
             junk,j = g.getLine(s,j)
-        #g.trace(i,j,repr(s[i:j]))
+       
         
         before = g.toUnicode(s[0:i],g.app.tkEncoding)
         sel    = g.toUnicode(s[i:j],g.app.tkEncoding)
         after  = g.toUnicode(s[j:len(s)],g.app.tkEncoding)
+        
+        # g.trace(i,j,'sel',repr(s[i:j]),'after',repr(after))
         return before,sel,after # 3 strings.
     #@-node:ekr.20031218072017.2377:getSelectionLines (leoBody)
     #@+node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
@@ -362,7 +368,9 @@ class leoBody:
         after = after or ''
         w.delete(0,len(s))
         w.insert(0,before+sel+after)
-        i,j = len(before),len(before)+len(sel)
+        i = len(before)
+        j = max(i,len(before)+len(sel)-1)
+        # g.trace(i,j,repr(sel))
         w.setSelectionRange(i,j,insert=j)
         return i,j
     #@-node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
