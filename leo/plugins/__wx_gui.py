@@ -3274,23 +3274,23 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:edream.110203113231.296:endUpdate
     #@+node:edream.110203113231.298:redraw & redraw_now & helpers
     def redraw (self):
-    
-        self.drawing = True # Tell event handlers not to call us.
-    
+        
         c = self.c ; tree = self.treeCtrl
         if c is None: return
         p = c.rootPosition()
         if not p: return
     
-        tree.DeleteAllItems()
-        self.root_id = root_id = tree.AddRoot("Leo Outline Pane")
-        tree.SetItemFont(root_id,self.defaultFont)
-        while p:
-            self.redraw_subtree(root_id,p)
-            p.moveToNext()
-        tree.Expand(root_id)
-        
-        self.drawing = False
+        self.drawing = True # Tell event handlers not to call us.
+        try:
+            tree.DeleteAllItems()
+            self.root_id = root_id = tree.AddRoot('Root Node')
+            tree.SetItemFont(root_id,self.defaultFont)
+            while p:
+                self.redraw_subtree(root_id,p)
+                p.moveToNext()
+            tree.Expand(root_id)
+        finally:
+            self.drawing = False
             
     def redraw_now(self,scroll=True):
         self.redraw()

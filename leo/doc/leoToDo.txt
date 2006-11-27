@@ -9,507 +9,18 @@
 
 @color
 #@nonl
-#@+node:ekr.20061116151503:Fix failed unit tests
-#@+node:ekr.20061117092359:Paragraph tests
-@nocolor
+#@+node:ekr.20061127161813:Fix urgent bugs
+#@+node:ekr.20061118044529:Fix backspace in headline bug
+Backspace does not work when there is an end selection
 
-toGuiIndex: Tk.Text.index failed: '418 linestart' simulateCommand,masterCommand,doCommand,forwardParagraph,forwardParagraphHelper,get
-
-toGuiIndex: Tk.Text.index failed: '418 lineend'
-simulateCommand,masterCommand,doCommand,forwardParagraph,forwardParagraphHelper,get
-
-toGuiIndex: Tk.Text.index failed: '410 linestart' simulateCommand,masterCommand,doCommand,forwardParagraphExtendSelecti
-on,forwardParagraphHelper,get
-
-
-======================================================================
-ERROR: @test forward-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1449, in runEditCommandTest
-    c.k.simulateCommand(commandName)
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2741, in simulateCommand
-    k.masterCommand(event,func,stroke)
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2263, in masterCommand
-    c.doCommand(func,commandName,event=event)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 3778, in forwardParagraph
-    self.forwardParagraphHelper(event,extend=False)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 3507, in forwardParagraphHelper
-    i = w.search(r'\w',i,regexp=True,stopindex='end')
-  File "c:\python25\lib\lib-tk\Tkinter.py", line 3034, in search
-    return self.tk.call(tuple(args))
-TclError: bad text index "418"
-
-======================================================================
-ERROR: @test forward-paragraph-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1449, in runEditCommandTest
-    c.k.simulateCommand(commandName)
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2741, in simulateCommand
-    k.masterCommand(event,func,stroke)
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2263, in masterCommand
-    c.doCommand(func,commandName,event=event)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 3782, in forwardParagraphExtendSelection
-    self.forwardParagraphHelper(event,extend=True)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 3507, in forwardParagraphHelper
-    i = w.search(r'\w',i,regexp=True,stopindex='end')
-  File "c:\python25\lib\lib-tk\Tkinter.py", line 3034, in search
-    return self.tk.call(tuple(args))
-TclError: bad text index "410"
-
-======================================================================
-FAIL: @test back-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('1.394', '1.394')
-     got: ('3.149', '3.149')
-
-======================================================================
-FAIL: @test back-paragraph-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('1.394', '3.175')
-     got: ('3.175', '3.175')
-
-======================================================================
-FAIL: @test backward-kill-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('3.0', '4.0')
-     got: ('3.0', '5.0')
-
-======================================================================
-FAIL: @test extend-to-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('3.0', '4.0')
-     got: ('3.0', '5.0')
-
-======================================================================
-FAIL: @test kill-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
-    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
-AssertionError: mismatch in body
-expected: u'Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average
-of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly
- weather impacts every American. Communities can now rely on the National Weather Service\u2019s StormReady program to h
-elp them guard against the ravages of Mother Nature.\n\nSome StormReady communities are better prepared to save lives fr
-om the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but S
-tormReady can help communities save lives. Does StormReady make a difference?\n'
-     got: u'Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average
-of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly
- weather impacts every American. Communities can now rely on the National Weather Service\u2019s StormReady program to h
-elp them guard against the ravages of Mother Nature.\n\nSome \nStormReady communities are better prepared to save lives
-from the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but
- StormReady can help communities save lives. Does StormReady make a difference?\n'
-    
-@color
+- Edit headline: cursor at end of last character.
+- Drag right: apparent whitespace is selected.
+- Now can not use backspace key.
 #@nonl
-#@-node:ekr.20061117092359:Paragraph tests
-#@+node:ekr.20050920084036.69:centerRegion (passed)
-def centerRegion (self,event):
-
-    '''Centers the selected text within the fill column'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    sel_1, sel_2 = w.getSelectionRange()
-    ind, junk = g.getLine(s,sel_1)
-    junk, end = g.getLine(s,sel_2)
-
-    self.beginCommand(undoType='center-region')
-
-    while ind < end:
-        s = w.getAllText()
-        i, j = g.getLine(s,ind)
-        line = s [i:j].strip()
-        # g.trace(len(line),repr(line))
-        if len(line) >= self.fillColumn:
-            ind = j
-        else:
-            n = (self.fillColumn-len(line)) / 2
-            k = g.skip_ws(s,i)
-            if k > i: w.delete(i,k-i)
-            w.insert(i,' '*n)
-            ind = j + n-(k-i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.69:centerRegion (passed)
-#@+node:ekr.20061008140603:runEditCommandTest
-def runEditCommandTest (c,p):
-    
-    u = testUtils(c) ; atTest = p.copy()
-    w = c.frame.body.bodyCtrl
-
-    h = atTest.headString()
-    assert h.startswith('@test '),'expected head: %s, got: %s' % ('@test',h)
-    commandName = h[6:].strip()
-    # Ignore everything after the actual command name.
-    i = g.skip_id(commandName, 0, chars='-')
-    commandName = commandName[:i]
-    assert commandName, 'empty command name'
-    command = c.commandsDict.get(commandName)
-    assert command, 'no command: %s' % (commandName)
-    
-    work,before,after = u.findChildrenOf(atTest)
-    before_h = 'before sel='
-    after_h = 'after sel='
-    for node,h in ((work,'work'),(before,before_h),(after,after_h)):
-        h2 = node.headString()
-        assert h2.startswith(h),'expected head: %s, got: %s' % (h,h2)
-
-    sels = []
-    for node,h in ((before,before_h),(after,after_h)):
-        sel = node.headString()[len(h):].strip()
-        aList = [str(z) for z in sel.split(',')]
-        sels.append(tuple(aList))
-    sel1,sel2 = sels
-    #g.trace(repr(sels))
-    
-    c.beginUpdate()
-    try:
-        c.selectPosition(work)
-        c.setBodyString(work,before.bodyString())
-        #g.trace(repr(sel1[0]),repr(sel1[1]))
-        w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-        c.k.simulateCommand(commandName)
-        s1 = work.bodyString() ; s2 = after.bodyString()
-        assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
-        sel3 = w.getSelectionRange()
-        ins = w.toGuiIndex(w.getInsertPoint())
-        # The selection range is specified as Tk indices.
-        i,j = sel3
-        #g.trace('ins',ins,'s1[j:...]',repr(s1[j:j+10]))
-        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
-        sel3 = i,j
-        assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-        c.selectPosition(atTest)
-        atTest.contract()
-    finally:
-        c.endUpdate(False) # Don't redraw.
-#@nonl
-#@-node:ekr.20061008140603:runEditCommandTest
-#@+node:ekr.20061117092359.1:Lines tests
-
-======================================================================
-FAIL: @test indent-relative
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
-    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
-AssertionError: mismatch in body
-expected: u'first line\nline 1\n    line a\n        line b\n\tline c\nlast line\n'
-     got: u'first line\nline 1\n    line a\n        line b\n        line c\nlast line\n\n'
-
-======================================================================
-FAIL: @test move-lines-down
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
-    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
-AssertionError: mismatch in body
-expected: u'first line\nline 1\n        line b\n    line a\nline c\nlast line\n'
-     got: u'first line\nline 1\nline c\n    line a\n        line b\nlast line\n'
-#@+node:ekr.20060417183606.1:moveLinesUp (pass hand test)
-def moveLinesUp (self,event):
-    
-    '''Move all lines containing any selected text up one line,
-    moving to the previous node as needed.'''
-
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-    
-    s = w.getAllText()
-    sel_1,sel_2 = w.getSelectionRange()
-    i,junk = g.getLine(s,sel_1)
-    i2,j   = g.getLine(s,sel_2)
-    lines  = s[i:j]
-    # Select from start of the first line to the *start* of the last line.
-    # This prevents selection creep.
-    n = i2-i 
-    # g.trace('lines',repr(lines))
-    
-    self.beginCommand(undoType='move-lines-up')
-    changed = False
-    try:
-        if i > 0:
-            prev_i,prev_j = g.getLine(s,i-1)
-            prev_line = s[prev_i:prev_j]
-            w.delete(prev_i,j)
-            w.insert(prev_i,lines+prev_line)
-            w.setSelectionRange(prev_i,prev_i+n,insert=prev_i+n)
-            changed = True
-        elif g.app.gui.widget_name(w).startswith('body'):
-            p = c.currentPosition()
-            if not p.hasThreadBack(): return
-            w.delete(i,j)
-            c.setBodyString(p,w.getAllText())
-            p = p.threadBack()
-            c.beginUpdate()
-            try:
-                c.selectPosition(p)
-            finally:
-                c.endUpdate()
-            w.focus_force()
-            s = w.getAllText()
-            if not s.endswith('\n'): w.insert('end','\n')
-            w.insert('end',lines)
-            s = w.getAllText()
-            ins = len(s)-len(lines)+n
-            w.setSelectionRange(len(s)-len(lines),ins,insert=ins)
-            changed = True
-    finally:
-        self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060417183606.1:moveLinesUp (pass hand test)
-#@+node:ekr.20060417183606:moveLinesDown (pass hand test)
-def moveLinesDown (self,event):
-    
-    '''Move all lines containing any selected text down one line,
-    moving to the next node if the lines are the last lines of the body.'''
-
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-    
-    s = w.getAllText()
-    sel_1,sel_2 = w.getSelectionRange()
-    i,junk = g.getLine(s,sel_1)
-    i2,j   = g.getLine(s,sel_2)
-    lines  = s[i:j]
-    # Select from start of the first line to the *start* of the last line.
-    # This prevents selection creep.
-    n = i2-i 
-    # g.trace('lines',repr(lines))
-    
-    self.beginCommand(undoType='move-lines-down')
-    changed = False
-    try:
-        if j < len(s):
-            next_i,next_j = g.getLine(s,j+1)
-            next_line = s[next_i:next_j]
-            n2 = next_j-next_i
-            w.delete(i,next_j)
-            w.insert(i,next_line+lines)
-            w.setSelectionRange(i+n2,i+n2+n,insert=i+n2+n)
-            changed = True
-        elif g.app.gui.widget_name(w).startswith('body'):
-            p = c.currentPosition()
-            if not p.hasThreadNext(): return
-            w.delete(i,j)
-            c.setBodyString(p,w.getAllText())
-            p = p.threadNext()
-            c.beginUpdate()
-            try:
-                c.selectPosition(p)
-            finally:
-                c.endUpdate()
-            w.focus_force()
-            s = w.getAllText()
-            w.insert(0,lines)
-            if not lines.endswith('\n'): w.insert(len(lines),'\n')
-            s = w.getAllText()
-            w.setSelectionRange(0,n,insert=n)
-            changed = True
-    finally:
-        self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060417183606:moveLinesDown (pass hand test)
-#@+node:ekr.20050920084036.78:indentRelative
-def indentRelative (self,event):
-    
-    '''The indent-relative command indents at the point based on the previous
-    line (actually, the last non-empty line.) It inserts whitespace at the
-    point, moving point, until it is underneath an indentation point in the
-    previous line.
-    
-    An indentation point is the end of a sequence of whitespace or the end of
-    the line. If the point is farther right than any indentation point in the
-    previous line, the whitespace before point is deleted and the first
-    indentation point then applicable is used. If no indentation point is
-    applicable even then whitespace equivalent to a single tab is inserted.'''
-    
-    c = self.c ; undoType = 'indent-relative'
-    
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType=undoType)
-    
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    oldSel = (ins,ins)
-    i,j = g.getLine(s,ins)
-    line = s[ins:j]
-    ###if len(line) <= len(w.get('insert','insert lineend')):
-    if len(line) < s[ins:j]:
-        ###w.insert('insert','\t')
-        w.insert(ins,'\t')
-    else:
-        reg = re.compile('(\s+)')
-        ntxt = reg.split(txt)
-        replace_word = re.compile('\w')
-        for z in ntxt:
-            if z.isspace():
-                ###w.insert('insert',z)
-                w.insert(ins,z)
-                break
-            else:
-                z = replace_word.subn(' ',z)
-                ###w.insert('insert',z[0])
-                w.insert(ins,z[0])
-
-    i = w.getInsertPoint()
-    result = w.getAllText()
-    head = tail = oldYview = None
-    c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    w.mark_set('insert',i)
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.78:indentRelative
-#@+node:ekr.20050920084036.67:centerLine (pass)
-def centerLine (self,event):
-
-    '''Centers line within current fill column'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    i,j = g.getLine(s,w.getInsertPoint())
-    line = s [i:j].strip()
-    if not line or len(line) >= self.fillColumn: return
-    
-    self.beginCommand(undoType='center-line')
-    n = (self.fillColumn-len(line)) / 2
-    ws = ' ' * n
-    k = g.skip_ws(s,i)
-    if k > i: w.delete(i,k-i)
-    w.insert(i,ws)
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.67:centerLine (pass)
-#@+node:ekr.20050920084036.141:removeBlankLines (pass)
-def removeBlankLines (self,event):
-    
-    '''The remove-blank-lines command removes lines containing nothing but
-    whitespace. If there is a text selection, only lines within the selected
-    text are affected; otherwise all blank lines in the selected node are
-    affected.'''
-    
-    c = self.c ; undoType = 'remove-blank-lines' ; p = c.currentPosition()
-    result = []
-    body = p.bodyString()
-    hasSelection = c.frame.body.hasTextSelection()
-    
-    if hasSelection:
-        head,lines,tail,oldSel,oldYview = c.getBodyLines()
-        joinChar = '\n'
-    else:
-        head = tail = oldYview = None
-        lines = g.splitLines(body)
-        oldSel = (0,0)
-        joinChar = ''
-
-    for line in lines:
-        if line.strip():
-            result.append(line)
-
-    result = joinChar.join(result)
-    
-    if result != body:
-        c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-#@-node:ekr.20050920084036.141:removeBlankLines (pass)
-#@+node:ekr.20050920084036.122:transposeLines (pass)
-def transposeLines (self,event):
-    
-    '''Transpose the line containing the cursor with the preceding line.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    ins = w.getInsertPoint()
-    s = w.getAllText()
-    if not s.strip(): return
-
-    i,j = g.getLine(s,ins)
-    line1 = s[i:j]
-    
-    self.beginCommand(undoType='transpose-lines')
-    
-    if i == 0: # Transpose the next line.
-        i2,j2 = g.getLine(s,j+1)
-        line2 = s[i2:j2]
-        w.delete(0,j2)
-        w.insert(0,line2+line1)
-        w.setInsertPoint(j2-1)
-    else: # Transpose the previous line.
-        i2,j2 = g.getLine(s,i-1)
-        line2 = s[i2:j2]
-        w.delete(i2,j)
-        w.insert(i2,line1+line2)
-        w.setInsertPoint(j-1)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.122:transposeLines (pass)
-#@-node:ekr.20061117092359.1:Lines tests
-#@+node:ekr.20061117093914:Add tests for undent/indent
-#@-node:ekr.20061117093914:Add tests for undent/indent
-#@-node:ekr.20061116151503:Fix failed unit tests
+#@-node:ekr.20061118044529:Fix backspace in headline bug
+#@+node:ekr.20061119060008:Ctrl-e does not work if the line does not end in a newline
+#@-node:ekr.20061119060008:Ctrl-e does not work if the line does not end in a newline
+#@-node:ekr.20061127161813:Fix urgent bugs
 #@+node:ekr.20061115111353:(Remove special tk indices)
 @nocolor
 
@@ -993,6 +504,7 @@ def forwardParagraphHelper (self,event,extend):
 
     c.widgetWantsFocusNow(w)
     i = w.getInsertPoint()
+    i = w.toGuiIndex(i)
     while 1:
         txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
         if txt:
@@ -1725,10 +1237,123 @@ def yankRectangle (self,event,killRect=None):
     self.endCommand()
 #@-node:ekr.20050920084036.229:yankRectangle
 #@-node:ekr.20061115111353:(Remove special tk indices)
-#@+node:ekr.20061116054917:New bugs
-#@+node:ekr.20061116054917.1:** Undo must restore selection
-#@-node:ekr.20061116054917.1:** Undo must restore selection
-#@+node:ekr.20061114163918:Fix paragraph unit tests
+#@+node:ekr.20061127150919:Fix failed unit tests
+======================================================================
+FAIL: @test back-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('1.394', '1.394')
+     got: ('3.149', '3.149')
+
+======================================================================
+FAIL: @test back-paragraph-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('1.394', '3.175')
+     got: ('3.175', '3.175')
+
+======================================================================
+FAIL: @test backward-kill-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('3.0', '4.0')
+     got: ('3.0', '5.0')
+
+======================================================================
+FAIL: @test extend-to-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('3.0', '4.0')
+     got: ('3.0', '5.0')
+
+======================================================================
+FAIL: @test indent-relative
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
+    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
+AssertionError: mismatch in body
+expected: u'first line\nline 1\n    line a\n        line b\n\tline c\nlast line\n'
+     got: u'first line\nline 1\n    line a\n        line b\n        line c\nlast line\n\n'
+
+======================================================================
+FAIL: @test kill-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
+    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
+AssertionError: mismatch in body
+expected: u'Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average
+of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly
+ weather impacts every American. Communities can now rely on the National Weather Service\u2019s StormReady program to h
+elp them guard against the ravages of Mother Nature.\n\nSome StormReady communities are better prepared to save lives fr
+om the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but S
+tormReady can help communities save lives. Does StormReady make a difference?\n'
+     got: u'Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average
+of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly
+ weather impacts every American. Communities can now rely on the National Weather Service\u2019s StormReady program to h
+elp them guard against the ravages of Mother Nature.\n\nSome \nStormReady communities are better prepared to save lives
+from the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but
+ StormReady can help communities save lives. Does StormReady make a difference?\n'
+
+----------------------------------------------------------------------
+Ran 338 tests in 95.478s
+
+FAILED (failures=6)
+#@nonl
+#@+node:ekr.20061117093914:Add tests for undent/indent
+#@-node:ekr.20061117093914:Add tests for undent/indent
+#@+node:ekr.20061113151148.8:tag_add (passed)
+# The signature is slightly different than the Tk.Text.insert method.
+
+def tag_add(self,tagName,i,j=None,*args):
+    
+    w = self
+    i = w.toGuiIndex(i)
+
+    if j is None:
+        Tk.Text.tag_add(w,tagName,i,*args)
+    else:
+        j = w.toGuiIndex(j)
+        Tk.Text.tag_add(w,tagName,i,j,*args)
+        
+#@-node:ekr.20061113151148.8:tag_add (passed)
 #@+node:ekr.20050920084036.96:extend-to-paragraph & helper
 def extendToParagraph (self,event):
     
@@ -1794,28 +1419,33 @@ def selectParagraphHelper (self,w,start):
 #@nonl
 #@-node:ekr.20050920084036.97:selectParagraphHelper
 #@-node:ekr.20050920084036.96:extend-to-paragraph & helper
-#@+node:ekr.20061113151148.8:tag_add (passed)
-# The signature is slightly different than the Tk.Text.insert method.
-
-def tag_add(self,tagName,i,j=None,*args):
+#@+node:ekr.20051218133207.1:forwardParagraphHelper (revise)
+def forwardParagraphHelper (self,event,extend):
     
-    w = self
-    i = w.toGuiIndex(i)
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
 
-    if j is None:
-        Tk.Text.tag_add(w,tagName,i,*args)
-    else:
-        j = w.toGuiIndex(j)
-        Tk.Text.tag_add(w,tagName,i,j,*args)
-        
-#@-node:ekr.20061113151148.8:tag_add (passed)
-#@-node:ekr.20061114163918:Fix paragraph unit tests
-#@+node:ekr.20061116054917.2:Undent & indent do not set selection properly on exit
-#@-node:ekr.20061116054917.2:Undent & indent do not set selection properly on exit
-#@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
-#@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
-#@+node:ekr.20061116054917.3:Add 'escape \t and \n option to all find commands 
-#@-node:ekr.20061116054917.3:Add 'escape \t and \n option to all find commands 
+    c.widgetWantsFocusNow(w)
+    i = w.getInsertPoint()
+    i = w.toGuiIndex(i)
+    while 1:
+        txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+        if txt:
+            i = w.index('%s + 1 lines' % i)
+            if w.index('%s linestart' % i) == w.index('end'):
+                i = w.search(r'\w','end',backwards=True,regexp=True,stopindex='1.0')
+                i = '%s + 1c' % i
+                break
+        else:
+            i = w.search(r'\w',i,regexp=True,stopindex='end')
+            i = '%s' % i
+            break
+    if i:
+        self.moveToHelper(event,i,extend)
+#@-node:ekr.20051218133207.1:forwardParagraphHelper (revise)
+#@-node:ekr.20061127150919:Fix failed unit tests
+#@+node:ekr.20061116054917:New bugs
 #@-node:ekr.20061116054917:New bugs
 #@+node:ekr.20061116054917.4:Improve body widget
 #@+node:ekr.20061114122858.2:Test for i != j in w.replace
@@ -1828,6 +1458,10 @@ def tag_add(self,tagName,i,j=None,*args):
 #@-node:ekr.20061116054917.5:Move gui.get/set_focus to body widget
 #@-node:ekr.20061116054917.4:Improve body widget
 #@+node:ekr.20061117140836:New features
+#@+node:ekr.20061116054917.3:Add 'escape \t and \n option to all find commands 
+#@-node:ekr.20061116054917.3:Add 'escape \t and \n option to all find commands 
+#@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
+#@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
 #@+node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
 #@-node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
 #@+node:ekr.20061116054917.6:Remove blanks in calltips
@@ -2408,8 +2042,7 @@ def zapToCharacter (self,event):
 def undoTyping (self):
     
     u = self ; c = u.c ; current = c.currentPosition()
-    
-    # g.trace('oldSel',u.oldSel)
+    w = c.frame.body.bodyCtrl
 
     # selectPosition causes recoloring, so don't do this unless needed.
     if current != u.p:
@@ -2427,16 +2060,18 @@ def undoTyping (self):
         v.t.clearDirty()
 
     if u.oldSel:
-        c.bodyWantsFocus()
-        c.frame.body.setSelectionRange(u.oldSel)
+        c.bodyWantsFocusNow()
+        i,j = u.oldSel
+        w.setSelectionRange(i,j,insert=j)
     if u.yview:
-        c.bodyWantsFocus()
+        c.bodyWantsFocusNow()
         c.frame.body.setYScrollPosition(u.yview)
 #@-node:EKR.20040526090701.4:undoTyping
 #@+node:EKR.20040526075238.5:redoTyping
 def redoTyping (self):
 
     u = self ; c = u.c ; current = c.currentPosition()
+    w = c.frame.body.bodyCtrl
 
     # selectPosition causes recoloring, so avoid if possible.
     if current != u.p:
@@ -2450,14 +2085,15 @@ def redoTyping (self):
         u.newNewlines,u.oldNewlines,
         tag="redo",undoType=u.undoType)
         
-    for v in u.dirtyVnodeList: # New in 4.4b3.
+    for v in u.dirtyVnodeList:
         v.t.setDirty()
     
     if u.newSel:
-        c.bodyWantsFocus()
-        c.frame.body.setSelectionRange(u.newSel)
+        c.bodyWantsFocusNow()
+        i,j = u.newSel
+        w.setSelectionRange(i,j,insert=j)
     if u.yview:
-        c.bodyWantsFocus()
+        c.bodyWantsFocusNow()
         c.frame.body.setYScrollPosition(u.yview)
 #@-node:EKR.20040526075238.5:redoTyping
 #@+node:ekr.20031218072017.1493:undoRedoText (passed)
@@ -6127,27 +5763,19 @@ def removeBlankLines (self,event):
     text are affected; otherwise all blank lines in the selected node are
     affected.'''
     
-    c = self.c ; undoType = 'remove-blank-lines' ; p = c.currentPosition()
-    result = []
-    body = p.bodyString()
-    hasSelection = c.frame.body.hasTextSelection()
-    
-    if hasSelection:
-        head,lines,tail,oldSel,oldYview = c.getBodyLines()
-        joinChar = '\n'
-    else:
-        head = tail = oldYview = None
-        lines = g.splitLines(body)
-        oldSel = (0,0)
-        joinChar = ''
+    c = self.c
+    head,lines,tail,oldSel,oldYview = c.getBodyLines()
 
+    changed = False ; result = []
     for line in lines:
         if line.strip():
             result.append(line)
+        else:
+            changed = True
+    result = ''.join(result)
 
-    result = joinChar.join(result)
-    
-    if result != body:
+    if changed:
+        oldSel = None ; undoType = 'remove-blank-lines'
         c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
 #@-node:ekr.20050920084036.141:removeBlankLines (pass)
 #@+node:ekr.20051125080855:selfInsertCommand & helpers (passed)
@@ -6756,6 +6384,7 @@ def forwardParagraphHelper (self,event,extend):
 
     c.widgetWantsFocusNow(w)
     i = w.getInsertPoint()
+    i = w.toGuiIndex(i)
     while 1:
         txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
         if txt:

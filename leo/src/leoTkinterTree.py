@@ -2520,8 +2520,9 @@ class leoTkinterTree (leoFrame.leoTree):
             self.revertHeadline = p.headString()
             
             frame.setWrap(p)
+            
                 
-            # Always do this.  Otherwise there can be problems with trailing hewlines.
+            # Always do this.  Otherwise there can be problems with trailing newlines.
             s = g.toUnicode(p.v.t.bodyString,"utf-8")
             w.setAllText(s)
             
@@ -2538,10 +2539,8 @@ class leoTkinterTree (leoFrame.leoTree):
                 w.see(spot)
             else:
                 w.setInsertPoint(0)
-                
-            # g.trace("select:",p.headString())
                     
-            #@nonl
+            # g.trace("select:",p.headString())
             #@-node:ekr.20040803072955.130:<< select the new node >>
             #@nl
             if p and p != old_p: # Suppress duplicate call.

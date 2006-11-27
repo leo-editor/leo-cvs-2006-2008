@@ -4128,6 +4128,7 @@ def convertPythonIndexToRowCol (s,i):
         return row,i
     else:
         prevNL = s.rfind('\n',0,i) # Don't include i
+        # g.trace('prevNL',prevNL,'i',i,g.callers())
         return row,i-prevNL-1
 #@-node:ekr.20050314140957:g.convertPythonIndexToRowCol (pass)
 #@+node:ekr.20050315071727:g.convertRowColToPythonIndex

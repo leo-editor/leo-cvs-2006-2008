@@ -3017,7 +3017,7 @@ class leoTkTextWidget (Tk.Text):
             s = Tk.Text.get(w,'1.0','end-1c')
             row,col = g.convertPythonIndexToRowCol(s,i)
             i = '%s.%s' % (row+1,col)
-            # g.trace(len(s),i,repr(s),g.callers())
+            # g.trace(len(s),i,repr(s))
         else:
             try:
                 i = Tk.Text.index(w,i)
@@ -3276,7 +3276,7 @@ class leoTkTextWidget (Tk.Text):
     
         i,j = w.toGuiIndex(i),w.toGuiIndex(j)
         
-        # g.trace('i,j,insert',repr(i),repr(j),repr(insert))
+        # g.trace('i,j,insert',repr(i),repr(j),repr(insert),g.callers())
         
         # g.trace('i,j,insert',i,j,repr(insert))
         if Tk.Text.compare(w,i, ">", j): i,j = j,i
