@@ -811,7 +811,6 @@ class leoMenu:
         self.defineCmdsMenuFocusTable()
         self.defineCmdsMenuMacroTable()
         self.defineCmdsMenuMinibufferTable()
-        # self.defineCmdsMenuPanesTable()
         self.defineCmdsMenuPickersTable()
         self.defineCmdsMenuRectanglesTable()
         self.defineCmdsMenuRegistersTable()
@@ -971,29 +970,6 @@ class leoMenu:
             '&help-for-minibuffer',
         ]
     #@-node:ekr.20061011084101.1:defineCmdsMenuMinibufferTable
-    #@+node:ekr.20060924120752:defineCmdsMenuPanesTable
-    def defineCmdsMenuPanesTable (self):
-    
-        self.cmdsMenuPanesTable = [
-            # &: a,b,d,f,l,n,o,p,u,x,y
-            'contract-&body-pane',
-            'contract-&log-pane',
-            'contract-&outline-pane',
-            'contract-&pane',
-            '-',
-            'expand-bo&dy-pane',
-            'expand-lo&g-pane',
-            'expand-o&utline-pane',
-            'expand-pa&ne',
-            '-',
-            '&fully-expand-body-pane',
-            'full&y-expand-log-pane',
-            'fully-e&xpand-outline-pane',
-            'fully-exp&and-pane',
-        ]
-        
-    #@nonl
-    #@-node:ekr.20060924120752:defineCmdsMenuPanesTable
     #@+node:ekr.20061011085641:defineCmdsMenuPickersTable
     def defineCmdsMenuPickersTable (self):
         
@@ -1038,12 +1014,9 @@ class leoMenu:
     def defineCmdsMenuRunTable (self):
         
         self.cmdsMenuRunTable = [
-        # &: e,o,p,r
+        # &: e,r
         '&execute-script',
         '&run-unit-tests',
-        '-',
-        '&open-compare-window',
-        'open-&python-window',
         ]
     #@-node:ekr.20061119061958:defineCmdsMenuRunTable
     #@+node:ekr.20060923060822.1:defineCmdsMenuScrollTable
@@ -1136,29 +1109,32 @@ class leoMenu:
     def defineWindowMenuTables (self):
         
         self.windowMenuTopTable = [
-            # &: a,b,c,d,e,f,l,m,n,o,p,r,s,t,u,x,y
+            # &: a,b,c,d,e,f,l,m,n,o,p,r,s,t,u,w,x,y
             '*&equal-sized-panes',
             '*&toggle-active-pane',
             '*toggle-&split-direction',
             '-',
-            'contract-&body-pane',
-            'contract-&log-pane',
-            'contract-&outline-pane',
-            'contract-&pane',
+            '*contract-&body-pane',
+            '*contract-&log-pane',
+            '*contract-&outline-pane',
+            '*contract-&pane',
             '-',
-            'expand-bo&dy-pane',
-            'expand-lo&g-pane',
-            'expand-o&utline-pane',
-            'expand-pa&ne',
+            '*expand-bo&dy-pane',
+            '*expand-lo&g-pane',
+            '*expand-o&utline-pane',
+            '*expand-pa&ne',
             '-',
-            '&fully-expand-body-pane',
-            'full&y-expand-log-pane',
-            'fully-e&xpand-outline-pane',
-            'fully-exp&and-pane',
+            '*&fully-expand-body-pane',
+            '*full&y-expand-log-pane',
+            '*fully-e&xpand-outline-pane',
+            '*fully-exp&and-pane',
             '-',
             '*&resize-to-screen',
             '*&cascade-windows',
             '*&minimize-all',
+            '-',
+            '*open-compare-window',
+            '*open-python-&window',
         ]
     #@-node:ekr.20031218072017.3773:defineWindowMenuTables
     #@+node:ekr.20031218072017.3774:defineHelpMenuTables
