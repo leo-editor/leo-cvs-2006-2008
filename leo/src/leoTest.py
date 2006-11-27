@@ -1026,13 +1026,13 @@ class editBodyTestCase(unittest.TestCase):
         
         # Don't call the undoer if we expect no change.
         if not u.compareOutlines(self.before,self.after,compareHeadlines=False,report=False):
-            assert(u.compareOutlines(self.tempNode,self.after,compareHeadlines=False,tag='before undo1'))
+            assert u.compareOutlines(self.tempNode,self.after,compareHeadlines=False),'%s: before undo1' % commandName
             c.undoer.undo()
-            assert(u.compareOutlines(self.tempNode,self.before,compareHeadlines=False,tag='after undo1'))
+            assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
             c.undoer.redo()
-            assert(u.compareOutlines(self.tempNode,self.after,compareHeadlines=False,tag='after redo'))
+            assert u.compareOutlines(self.tempNode,self.after,compareHeadlines=False),'%s: after redo' % commandName
             c.undoer.undo()
-            assert(u.compareOutlines(self.tempNode,self.before,compareHeadlines=False,tag='after undo2'))
+            assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo2' % commandName
     #@-node:ekr.20051104075904.73:editBody
     #@+node:ekr.20051104075904.74:runTest
     def runTest(self):
