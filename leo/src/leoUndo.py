@@ -487,7 +487,7 @@ class baseUndoer:
     #@+node:ekr.20031218072017.3608:Externally visible entries
     #@+node:ekr.20050318085432.4:afterX...
     #@+node:ekr.20050315134017.4:afterChangeGroup
-    def afterChangeGroup (self,p,command,reportFlag=False,dirtyVnodeList=[]):
+    def afterChangeGroup (self,p,undoType,reportFlag=False,dirtyVnodeList=[]):
     
         '''Create an undo node for general tree operations using d created by beforeChangeTree'''
         
@@ -504,7 +504,7 @@ class baseUndoer:
     
         # Set the types & helpers.
         bunch.kind = 'afterGroup'
-        bunch.undoType = command
+        bunch.undoType = undoType
         
         # Set helper only for undo:
         # The bead pointer will point to an 'beforeGroup' bead for redo.
@@ -1275,8 +1275,11 @@ class baseUndoer:
             if u.redoHelper: u.redoHelper()
             else: g.trace('no redo helper for %s %s' % (u.kind,u.undoType))
         finally:
-            # This strange code forces a recomputation of the root position.
-            c.selectPosition(c.currentPosition())
+            if 0: # Don't do this: it interferes with selection ranges.
+                # This strange code forces a recomputation of the root position.
+                c.selectPosition(c.currentPosition())
+            else:
+                c.setCurrentPosition(c.currentPosition())
             c.setChanged(True)
             c.endUpdate()
             c.recolor_now()
@@ -1483,6 +1486,7 @@ class baseUndoer:
     def redoTyping (self):
     
         u = self ; c = u.c ; current = c.currentPosition()
+        w = c.frame.body.bodyCtrl
     
         # selectPosition causes recoloring, so avoid if possible.
         if current != u.p:
@@ -1496,14 +1500,15 @@ class baseUndoer:
             u.newNewlines,u.oldNewlines,
             tag="redo",undoType=u.undoType)
             
-        for v in u.dirtyVnodeList: # New in 4.4b3.
+        for v in u.dirtyVnodeList:
             v.t.setDirty()
         
         if u.newSel:
-            c.bodyWantsFocus()
-            c.frame.body.setSelectionRange(u.newSel)
+            c.bodyWantsFocusNow()
+            i,j = u.newSel
+            w.setSelectionRange(i,j,insert=j)
         if u.yview:
-            c.bodyWantsFocus()
+            c.bodyWantsFocusNow()
             c.frame.body.setYScrollPosition(u.yview)
     #@-node:EKR.20040526075238.5:redoTyping
     #@-node:ekr.20031218072017.2030:redo & helpers...
@@ -1534,8 +1539,11 @@ class baseUndoer:
             if u.undoHelper: u.undoHelper()
             else: g.trace('no undo helper for %s %s' % (u.kind,u.undoType))
         finally:
-            # This strange code forces a recomputation of the root position.
-            c.selectPosition(c.currentPosition())
+            if 0: # Don't do this: it interferes with selection ranges.
+                # This strange code forces a recomputation of the root position.
+                c.selectPosition(c.currentPosition())
+            else:
+                c.setCurrentPosition(c.currentPosition())
             c.setChanged(True)
             c.endUpdate()
             c.recolor_now()
@@ -1759,8 +1767,7 @@ class baseUndoer:
     def undoTyping (self):
         
         u = self ; c = u.c ; current = c.currentPosition()
-        
-        # g.trace('oldSel',u.oldSel)
+        w = c.frame.body.bodyCtrl
     
         # selectPosition causes recoloring, so don't do this unless needed.
         if current != u.p:
@@ -1778,10 +1785,11 @@ class baseUndoer:
             v.t.clearDirty()
     
         if u.oldSel:
-            c.bodyWantsFocus()
-            c.frame.body.setSelectionRange(u.oldSel)
+            c.bodyWantsFocusNow()
+            i,j = u.oldSel
+            w.setSelectionRange(i,j,insert=j)
         if u.yview:
-            c.bodyWantsFocus()
+            c.bodyWantsFocusNow()
             c.frame.body.setYScrollPosition(u.yview)
     #@-node:EKR.20040526090701.4:undoTyping
     #@+node:ekr.20031218072017.1493:undoRedoText (passed)
