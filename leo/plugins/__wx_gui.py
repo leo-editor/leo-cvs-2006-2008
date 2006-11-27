@@ -3203,11 +3203,14 @@ class wxLeoTree (leoFrame.leoTree):
         wx.EVT_KEY_UP(w,self.onKeyUp)       # Provides raw key codes.
         # wx.EVT_TREE_KEY_DOWN        (w,id,self.onTreeKeyDown)
             # Control keys do not fire this event.
-        
-        wx.EVT_TREE_SEL_CHANGED     (w,id,self.onTreeChanged)
-        # wx.EVT_TREE_SEL_CHANGING  (w,id,self.onTreeChanging)
+            
+        # wx.EVT_TREE_ITEM_ACTIVATED(w,id,self.onTreeItemActivated) 
+        # wx.EVT_TREE_SEL_CHANGED   (w,id,self.onTreeSelChanged)
+        wx.EVT_TREE_SEL_CHANGING    (w,id,self.onTreeSelChanging)
+    
         wx.EVT_TREE_BEGIN_DRAG      (w,id,self.onTreeBeginDrag)
         wx.EVT_TREE_END_DRAG        (w,id,self.onTreeEndDrag)
+     
         wx.EVT_TREE_BEGIN_LABEL_EDIT(w,id,self.onTreeBeginLabelEdit)
         wx.EVT_TREE_END_LABEL_EDIT  (w,id,self.onTreeEndLabelEdit)
          
@@ -3216,7 +3219,6 @@ class wxLeoTree (leoFrame.leoTree):
         
         wx.EVT_TREE_ITEM_COLLAPSING (w,id,self.onTreeCollapsing)
         wx.EVT_TREE_ITEM_EXPANDING  (w,id,self.onTreeExpanding)
-    #@nonl
     #@-node:edream.111603213329:wxTree.createBindings
     #@+node:ekr.20061118142055:wxTree.createControl
     def createControl (self,parentFrame):
@@ -3301,8 +3303,9 @@ class wxLeoTree (leoFrame.leoTree):
     
         id = tree.AppendItem(parent_id,p.headString(),data=data)
         tree.SetItemFont(id,self.defaultFont)
+        
         if p == self.c.currentPosition():
-            tree.SelectItem(id)
+            tree.SelectItem(id) # Generates call to onTreeChanged.
         
         assert (p == tree.GetItemData(id).GetData())
         return id
@@ -3313,6 +3316,10 @@ class wxLeoTree (leoFrame.leoTree):
         tree = self.treeCtrl
         id = self.redraw_node(parent_id,p)
         child = p.firstChild()
+        
+        # **Important**
+        # The calls to tree.Expand and tree.Collapse *will* generate events,
+        # This is the reason the event handlers must be disabled while drawing.
         
         if p.isExpanded():
             while child:
@@ -3335,8 +3342,9 @@ class wxLeoTree (leoFrame.leoTree):
     
         id = tree.AppendItem(parent_id,p.headString(),data=data)
         tree.SetItemFont(id,self.defaultFont)
+        
         if p == self.c.currentPosition():
-            tree.SelectItem(id)
+            tree.SelectItem(id) # Generates call to onTreeChanged.
         
         assert (p == tree.GetItemData(id).GetData())
         return id
@@ -3347,6 +3355,10 @@ class wxLeoTree (leoFrame.leoTree):
         tree = self.treeCtrl
         id = self.redraw_node(parent_id,p)
         child = p.firstChild()
+        
+        # **Important**
+        # The calls to tree.Expand and tree.Collapse *will* generate events,
+        # This is the reason the event handlers must be disabled while drawing.
         
         if p.isExpanded():
             while child:
@@ -3382,6 +3394,47 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:edream.111403090242.1:Editing TO DO
     #@+node:edream.110203113231.278:Event handlers (wxTree)
+    #@+node:ekr.20061127075102:get_p
+    def get_p (self,event):
+        
+        tree = self.treeCtrl
+        id = event.GetItem()
+        p = id.IsOk() and tree.GetItemData(id).GetData()
+        
+        if 0:
+            g.trace(
+                'lockout',self.frame.lockout,
+                'drawing',self.drawing,
+                'id.IsOk',id.IsOk(),
+                'p',p and p.headString(),
+                g.callers(9))
+            
+        if self.frame.lockout or self.drawing or not p:
+            return None
+        else:
+            # g.trace(p.headString(),g.callers())
+            return p
+    
+    #@-node:ekr.20061127075102:get_p
+    #@+node:ekr.20061127081233:selectHelper
+    def selectHelper (self,event):
+        
+        '''Scroll so the presently selected node is in view.'''
+        
+        p = self.get_p(event)
+        if not p: return
+    
+        # We can make this assertion because get_p has done the check.
+        id = event.GetItem()
+        assert (id.IsOk() and not self.frame.lockout)
+    
+        # g.trace(p.headString(),g.callers())
+        tree = self.treeCtrl
+        self.frame.lockout = True
+        tree.SelectItem(id)
+        tree.ScrollTo(id)
+        self.frame.lockout = False
+    #@-node:ekr.20061127081233:selectHelper
     #@+node:ekr.20061118144918:Keys
     #@+node:ekr.20061118123730.1:wxTree.onKeyUp/Down
     useWX = False # True, use native key handling.  False, call masterKeyHandler.
@@ -3408,74 +3461,77 @@ class wxLeoTree (leoFrame.leoTree):
                     self.c.k.masterKeyHandler(event,stroke=event.keysym)
     #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
     #@-node:ekr.20061118144918:Keys
-    #@+node:edream.110203113231.279:Expand/contract
-    #@+node:edream.110203113231.280:onTreeCollapsed & onTreeExpanded
-    def onTreeCollapsed(self,event):
-        
-        """Prepare to collapse the tree."""
-    
-        pass # No need to redraw the tree.
-    
-    def onTreeExpanded (self,event):
-        
-        """Redraw the tree when a tree collapses."""
-    
-        if not self.frame.lockout and not self.drawing:
-    
-            self.redraw()
-    #@nonl
-    #@-node:edream.110203113231.280:onTreeCollapsed & onTreeExpanded
-    #@+node:edream.110203113231.281:onTreeCollapsing & onTreeExpanding
+    #@+node:edream.110203113231.282:Clicks
+    #@+node:edream.110203113231.280:Collapse...
     def onTreeCollapsing(self,event):
         
-        """Call v.contract for a later redraw."""
+        '''Handle a pre-collapse event due to a click in the +- box.'''
     
-        tree = self.treeCtrl
-        id = event.GetItem()
-        if id.IsOk and not self.frame.lockout:
-            p = tree.GetItemData(id).GetData()
-            if p: p.contract()
+        p = self.get_p(event)
+        if not p: return
         
+        # p will be None while redrawing, so this is the outermost click event.
+        # Set the selection before redrawing so the tree is drawn properly.
+        c = self.c ; tree = self.treeCtrl
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+            p.contract()
+        finally:
+            c.endUpdate(False)
+    
+    def onTreeCollapsed(self,event):
+        
+        '''Handle a post-collapse event due to a click in the +- box.'''
+    
+        self.selectHelper(event)
+    #@-node:edream.110203113231.280:Collapse...
+    #@+node:edream.110203113231.281:Expand...
     def onTreeExpanding (self,event):
         
-        """Call v.expand for a later redraw."""
+        '''Handle a pre-expand event due to a click in the +- box.'''
+    
+        p = self.get_p(event)
+        if not p: return
         
-        tree = self.treeCtrl
-        id = event.GetItem()
-        if id.IsOk and not self.frame.lockout:
-            p = tree.GetItemData(id).GetData()
-            if p: p.expand()
-    #@nonl
-    #@-node:edream.110203113231.281:onTreeCollapsing & onTreeExpanding
-    #@-node:edream.110203113231.279:Expand/contract
-    #@+node:edream.110203113231.282:Selecting
-    #@+node:edream.110203113231.283:onTreeChanged
-    def onTreeChanged(self,event):
-    
+        # p will be None while redrawing, so this is the outermost click event.
+        # Set the selection before redrawing so the tree is drawn properly.
         c = self.c ; tree = self.treeCtrl
-        new_id = event.GetItem()
-        if not new_id.IsOk(): return g.trace('no id')
-        p = tree.GetItemData(new_id).GetData()
-        if not p: return g.trace('no p!')
-    
-        # g.trace(p.headString())
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+            p.expand()
+        finally:
+            c.endUpdate(False)
+            
+    def onTreeExpanded (self,event):
+        
+        '''Handle a post-collapse event due to a click in the +- box.'''
+        
+        self.selectHelper(event)
+    #@-node:edream.110203113231.281:Expand...
+    #@+node:edream.110203113231.283:Clicks
+    def onTreeSelChanging(self,event):
+        
+        p = self.get_p(event)
+        if not p: return
+        
+        # p will be None while redrawing, so this is the outermost click event.
+        # Set the selection before redrawing so the tree is drawn properly.
+        c = self.c
         c.beginUpdate()
         try:
             c.selectPosition(p)
         finally:
-            # Do not draw the tree here! It is drawn only by c.redraw().
             c.endUpdate(False)
-    #@nonl
-    #@-node:edream.110203113231.283:onTreeChanged
-    #@+node:edream.110203113231.284:onTreeChanging (not used)
-    def onTreeChanging(self,event):
-        
-        """Event handler gets called whenever a new node gets selected"""
     
-        pass
-    #@nonl
-    #@-node:edream.110203113231.284:onTreeChanging (not used)
-    #@-node:edream.110203113231.282:Selecting
+    # def onTreeSelChanged(self,event):
+        # """Event handler gets called whenever a new node gets selected"""
+        # p = self.get_p(event)
+    
+    # onTreeItemActivated = onTreeChanged # Double-clicks the same as clicks.
+    #@-node:edream.110203113231.283:Clicks
+    #@-node:edream.110203113231.282:Clicks
     #@+node:edream.110203113231.285:Editing labels
     #@+node:edream.110203113231.286:onTreeBeginLabelEdit
     # Editing is allowed only if this routine exists.
