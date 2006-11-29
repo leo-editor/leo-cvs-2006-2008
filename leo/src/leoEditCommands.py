@@ -3470,62 +3470,57 @@ class editCommandsClass (baseEditCommandsClass):
         ins = i and '%s +1c' % i or 'end'
         self.moveToHelper(event,ins,extend)
     #@-node:ekr.20050920084036.137:forwardSentenceHelper (revise)
-    #@+node:ekr.20051218133207.1:forwardParagraphHelper (revise)
+    #@+node:ekr.20051218133207.1:forwardParagraphHelper (passed)
     def forwardParagraphHelper (self,event,extend):
-        
-        c = self.c
+    
         w = self.editWidget(event)
         if not w: return
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        i,j = g.getLine(s,ins)
+        line = s[i:j]
     
-        c.widgetWantsFocusNow(w)
-        i = w.getInsertPoint()
-        i = w.toGuiIndex(i)
-        while 1:
-            txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
-            if txt:
-                i = w.index('%s + 1 lines' % i)
-                if w.index('%s linestart' % i) == w.index('end'):
-                    i = w.search(r'\w','end',backwards=True,regexp=True,stopindex='1.0')
-                    i = '%s + 1c' % i
-                    break
-            else:
-                i = w.search(r'\w',i,regexp=True,stopindex='end')
-                i = '%s' % i
-                break
-        if i:
-            self.moveToHelper(event,i,extend)
-    #@-node:ekr.20051218133207.1:forwardParagraphHelper (revise)
-    #@+node:ekr.20051218133207:backwardParagraphHelper (revise)
+        if line.strip(): # Skip past the present paragraph.
+            self.selectParagraphHelper(w,i)
+            i,j = w.getSelectionRange()
+            j += 1
+            
+        # Skip to the next non-blank line.
+        i = j
+        while j < len(s):
+            i,j = g.getLine(s,j)
+            line = s[i:j]
+            if line.strip(): break
+    
+        w.setInsertPoint(ins) # Restore the original insert point.
+        self.moveToHelper(event,i,extend)
+    #@-node:ekr.20051218133207.1:forwardParagraphHelper (passed)
+    #@+node:ekr.20051218133207:backwardParagraphHelper (passed)
     def backwardParagraphHelper (self,event,extend):
         
-        c = self.c
         w = self.editWidget(event)
         if not w: return
+        s = w.getAllText() ; ins = w.getInsertPoint()
+        i,j = g.getLine(s,ins)
+        line = s[i:j]
     
-        c.widgetWantsFocusNow(w)
-        ins = w.getInsertPoint()
-        s = w.getAllText()
-        # Find the start of the paragraph:
-        start = i = ins
-        while 1:
-            break  ### # Way too complicated.
-            ###s = w.get('%s linestart' % ins,'%s lineend' % ins).strip()
-            i,j = g.getLine(s,ins)
-            line = s[i:j]
-            if line:
-                ###i = w.index('%s - 1 lines' % ins)
+        if line.strip():
+            # Find the start of the present paragraph.
+            while i > 0:
                 i,j = g.getLine(s,i-1)
-                ###if w.index('%s linestart' % i) == '1.0':
-                if i == 0:
-                    i = w.search(r'\w','1.0',regexp=True,stopindex='end')
-                    break
-            else:
-                i = w.search(r'\w',ins,backwards=True,regexp=True,stopindex='1.0')
-                i = '%s +1c' % i
-                break
-        if i:
-            self.moveToHelper(event,i,extend)
-    #@-node:ekr.20051218133207:backwardParagraphHelper (revise)
+                line = s[i:j]
+                if not line.strip(): break
+    
+        # Find the end of the previous paragraph.
+        while i > 0:
+            i,j = g.getLine(s,i-1)
+            line = s[i:j]
+            if line.strip():
+                i = j-1 ; break
+    
+        self.moveToHelper(event,i,extend)
+    #@nonl
+    #@-node:ekr.20051218133207:backwardParagraphHelper (passed)
     #@+node:ekr.20060209095101:setMoveCol (passed)
     def setMoveCol (self,w,spot):
         
@@ -3815,32 +3810,24 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050929114218:move cursor... (leoEditCommands)
     #@+node:ekr.20050920084036.95:paragraph...
     #@+others
-    #@+node:ekr.20050920084036.99:backwardKillParagraph
+    #@+node:ekr.20050920084036.99:backwardKillParagraph (passed)
     def backwardKillParagraph (self,event):
         
         '''Kill the previous paragraph.'''
     
-        k = self.k ; c = k.c
-        w = self.editWidget(event)
+        k = self.k ; c = k.c ; w = self.editWidget(event)
         if not w: return
     
-        i = w.getInsertPoint()
-        i2 = i
-        txt = w.get('insert linestart','insert lineend')
-        undoType='backward-kill-paragraph'
-        self.beginCommand(undoType=undoType)
-    
-        if not txt.rstrip().lstrip():
-            self.backwardParagraph(event)
-            i2 = w.index('insert')
-        self.extendToParagraph(event)
-        i3 = w.index('sel.first')
-        c.killBufferCommands.kill(event,i3,i2,undoType=undoType)
-        w.mark_set('insert',i)
-        w.selection_clear()
-    
-        self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.99:backwardKillParagraph
+        self.beginCommand(undoType='backward-kill-paragraph')
+        try:
+            self.backwardParagraphHelper(event,extend=True)
+            i,j = w.getSelectionRange()
+            if i > 0: i = min(i+1,j)
+            c.killBufferCommands.kill(event,i,j,undoType=None)
+            w.setSelectionRange(i,i,insert=i)
+        finally:
+            self.endCommand(changed=True,setLabel=True)
+    #@-node:ekr.20050920084036.99:backwardKillParagraph (passed)
     #@+node:ekr.20050920084036.103:fillParagraph
     def fillParagraph( self, event ):
         
@@ -3926,93 +3913,67 @@ class editCommandsClass (baseEditCommandsClass):
     
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.104:fillRegionAsParagraph
-    #@+node:ekr.20050920084036.98:killParagraph (Test)
+    #@+node:ekr.20050920084036.98:killParagraph (passed)
     def killParagraph (self,event):
         
         '''Kill the present paragraph.'''
     
-        k = self.k ; c = k.c
-        w = self.editWidget(event)
+        k = self.k ; c = k.c ; w = self.editWidget(event)
         if not w: return
     
-        i = w.getInsertPoint()
-        txt = w.get('insert linestart','insert lineend')
-        
         self.beginCommand(undoType='kill-paragraph')
-    
-        if not txt.strip():
-            i = w.search(r'\w',i,regexp=True,stopindex='end')
-        self.selectParagraphHelper(w,i)
-        i2 = w.index('insert')
-        c.killBufferCommands.kill(event,i,i2)
-        w.mark_set('insert',i)
-        w.selection_clear()
-    
-        self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.98:killParagraph (Test)
-    #@+node:ekr.20050920084036.96:extend-to-paragraph & helper
+        try:
+            self.extendToParagraph(event)
+            i,j = w.getSelectionRange()
+            c.killBufferCommands.kill(event,i,j,undoType=None)
+            w.setSelectionRange(i,i,insert=i)
+        finally:
+            self.endCommand(changed=True,setLabel=True)
+    #@-node:ekr.20050920084036.98:killParagraph (passed)
+    #@+node:ekr.20050920084036.96:extend-to-paragraph & helper (passed)
     def extendToParagraph (self,event):
         
         '''Select the paragraph surrounding the cursor.'''
     
-        k = self.k
         w = self.editWidget(event)
         if not w: return
+        s = w.getAllText() ; ins = w.getInsertPoint()
+        i,j = g.getLine(s,ins)
+        line = s[i:j]
     
-        s = w.getAllText()
-        i = w.getInsertPoint()
-        ##txt = w.get('insert linestart','insert lineend')
-        i,j = g.getLine(s,i)
-        txt = s[i:j].strip()
-        ###i = w.getInsertPoint()
-        ###i = w.getInsertPoint()
+        # Find the start of the paragraph.
+        if line.strip(): # Search backward.
+            while i > 0:
+                i2,j2 = g.getLine(s,i-1)
+                line = s[i2:j2]
+                if line.strip(): i = i2
+                else: break # Use the previous line.
+        else: # Search forward.
+            while j < len(s):
+                i,j = g.getLine(s,j)
+                line = s[i:j]
+                if line.strip(): break
+            else: return
     
-        if not txt:
-            while 1:
-                ### i = w.index('%s + 1 lines' % i)
-                i,j = g.getLine(s,j+1)
-                ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
-                txt = s[i:j].strip()
-                if txt:
-                    self.selectParagraphHelper(w,i) ; break
-                ###if w.index('%s lineend' % i) == w.index('end'):
-                if j >= len(s): return
-        if txt:
-            while 1:
-                ###i = w.index('%s - 1 lines' % i)
-                i,j = g.getLine(s,i-1)
-                ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
-                txt = s[i:j].strip()
-                if not txt or i == 0: ### w.index('%s linestart' % i) == w.index('1.0'):
-                    if not txt: i = j ### i = w.index('%s + 1 lines' % i)
-                    self.selectParagraphHelper(w,i)
-                    break
-       
-    #@nonl
+        # Select from i to the end of the paragraph.
+        self.selectParagraphHelper(w,i)
     #@+node:ekr.20050920084036.97:selectParagraphHelper
     def selectParagraphHelper (self,w,start):
+        
+        '''Select from start to the end of the paragraph.'''
     
-        i2 = start
         s = w.getAllText()
-        while 1:
-            ### txt = w.get('%s linestart' % i2,'%s lineend' % i2)
-            i,j = g.getLine(s,i2)
-            txt = s[i:j]
-            ### if w.index('%s lineend' % i2) == w.index('end'):
-            if j >= len(s): break
-            txt = txt.strip()
-            if not txt: break
-            else:
-                ###i2 = w.index('%s + 1 lines' % i2)
-                i2 = max(i2+1,j)
-    
-        ###w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
-        ###w.mark_set('insert','%s lineend' % i2)
-        i,junk = g.getLine(s,start)
-        junk,j = g.getLine(s,i2)
-        w.setSelectionRange(i,j,insert=j)
+        i1,j = g.getLine(s,start)
+        while j < len(s):
+            i,j2 = g.getLine(s,j)
+            line = s[i:j2]
+            if line.strip(): j = j2
+            else: break
+            
+        j = max(start,j-1)
+        w.setSelectionRange(i1,j,insert=j)
     #@-node:ekr.20050920084036.97:selectParagraphHelper
-    #@-node:ekr.20050920084036.96:extend-to-paragraph & helper
+    #@-node:ekr.20050920084036.96:extend-to-paragraph & helper (passed)
     #@-others
     #@-node:ekr.20050920084036.95:paragraph...
     #@+node:ekr.20050920084036.105:region...
