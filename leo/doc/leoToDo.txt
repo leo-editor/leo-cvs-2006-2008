@@ -9,18 +9,356 @@
 
 @color
 #@nonl
-#@+node:ekr.20061127161813:Fix urgent bugs
-#@+node:ekr.20061118044529:Fix backspace in headline bug
-Backspace does not work when there is an end selection
+#@+node:ekr.20061127150919:Fix failed unit tests
+======================================================================
+FAIL: @test back-paragraph
 
-- Edit headline: cursor at end of last character.
-- Drag right: apparent whitespace is selected.
-- Now can not use backspace key.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('1.394', '1.394')
+     got: ('3.149', '3.149')
+
+======================================================================
+FAIL: @test back-paragraph-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('1.394', '3.175')
+     got: ('3.175', '3.175')
+
+======================================================================
+FAIL: @test backward-kill-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('3.0', '4.0')
+     got: ('3.0', '5.0')
+
+======================================================================
+FAIL: @test extend-to-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('3.0', '4.0')
+     got: ('3.0', '5.0')
+
+======================================================================
+FAIL: @test indent-relative
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
+    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
+AssertionError: mismatch in body
+expected: u'first line\nline 1\n    line a\n        line b\n\tline c\nlast line\n'
+     got: u'first line\nline 1\n    line a\n        line b\n        line c\nlast line\n\n'
+
+======================================================================
+FAIL: @test kill-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "<string>", line 4, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
+    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
+AssertionError: mismatch in body
+expected: u'Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average
+of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly
+ weather impacts every American. Communities can now rely on the National Weather Service\u2019s StormReady program to h
+elp them guard against the ravages of Mother Nature.\n\nSome StormReady communities are better prepared to save lives fr
+om the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but S
+tormReady can help communities save lives. Does StormReady make a difference?\n'
+     got: u'Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average
+of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly
+ weather impacts every American. Communities can now rely on the National Weather Service\u2019s StormReady program to h
+elp them guard against the ravages of Mother Nature.\n\nSome \nStormReady communities are better prepared to save lives
+from the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but
+ StormReady can help communities save lives. Does StormReady make a difference?\n'
+
+----------------------------------------------------------------------
+Ran 338 tests in 95.478s
+
+FAILED (failures=6)
 #@nonl
-#@-node:ekr.20061118044529:Fix backspace in headline bug
-#@+node:ekr.20061119060008:Ctrl-e does not work if the line does not end in a newline
-#@-node:ekr.20061119060008:Ctrl-e does not work if the line does not end in a newline
-#@-node:ekr.20061127161813:Fix urgent bugs
+#@+node:ekr.20061113151148.8:tag_add (passed)
+# The signature is slightly different than the Tk.Text.insert method.
+
+def tag_add(self,tagName,i,j=None,*args):
+    
+    w = self
+    i = w.toGuiIndex(i)
+
+    if j is None:
+        Tk.Text.tag_add(w,tagName,i,*args)
+    else:
+        j = w.toGuiIndex(j)
+        Tk.Text.tag_add(w,tagName,i,j,*args)
+        
+#@-node:ekr.20061113151148.8:tag_add (passed)
+#@+node:ekr.20050920084036.96:extend-to-paragraph & helper
+def extendToParagraph (self,event):
+    
+    '''Select the paragraph surrounding the cursor.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    i = w.getInsertPoint()
+    ##txt = w.get('insert linestart','insert lineend')
+    i,j = g.getLine(s,i)
+    txt = s[i:j].strip()
+    ###i = w.getInsertPoint()
+    ###i = w.getInsertPoint()
+
+    if not txt:
+        while 1:
+            ### i = w.index('%s + 1 lines' % i)
+            i,j = g.getLine(s,j+1)
+            ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            txt = s[i:j].strip()
+            if txt:
+                self.selectParagraphHelper(w,i) ; break
+            ###if w.index('%s lineend' % i) == w.index('end'):
+            if j >= len(s): return
+    if txt:
+        while 1:
+            ###i = w.index('%s - 1 lines' % i)
+            i,j = g.getLine(s,i-1)
+            ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+            txt = s[i:j].strip()
+            if not txt or i == 0: ### w.index('%s linestart' % i) == w.index('1.0'):
+                if not txt: i = j ### i = w.index('%s + 1 lines' % i)
+                self.selectParagraphHelper(w,i)
+                break
+   
+#@nonl
+#@+node:ekr.20050920084036.97:selectParagraphHelper
+def selectParagraphHelper (self,w,start):
+
+    i2 = start
+    s = w.getAllText()
+    while 1:
+        ### txt = w.get('%s linestart' % i2,'%s lineend' % i2)
+        i,j = g.getLine(s,i2)
+        txt = s[i:j]
+        ### if w.index('%s lineend' % i2) == w.index('end'):
+        if j >= len(s): break
+        txt = txt.strip()
+        if not txt: break
+        else:
+            ###i2 = w.index('%s + 1 lines' % i2)
+            i2 = max(i2+1,j)
+
+    ###w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
+    ###w.mark_set('insert','%s lineend' % i2)
+    i,junk = g.getLine(s,start)
+    junk,j = g.getLine(s,i2)
+    w.setSelectionRange(i,j,insert=j)
+#@-node:ekr.20050920084036.97:selectParagraphHelper
+#@-node:ekr.20050920084036.96:extend-to-paragraph & helper
+#@+node:ekr.20051218133207.1:forwardParagraphHelper (revise)
+def forwardParagraphHelper (self,event,extend):
+    
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    c.widgetWantsFocusNow(w)
+    i = w.getInsertPoint()
+    i = w.toGuiIndex(i)
+    while 1:
+        txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
+        if txt:
+            i = w.index('%s + 1 lines' % i)
+            if w.index('%s linestart' % i) == w.index('end'):
+                i = w.search(r'\w','end',backwards=True,regexp=True,stopindex='1.0')
+                i = '%s + 1c' % i
+                break
+        else:
+            i = w.search(r'\w',i,regexp=True,stopindex='end')
+            i = '%s' % i
+            break
+    if i:
+        self.moveToHelper(event,i,extend)
+#@-node:ekr.20051218133207.1:forwardParagraphHelper (revise)
+#@-node:ekr.20061127150919:Fix failed unit tests
+#@+node:ekr.20061127171128:Fix wiki markup bug
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3994218
+By: rich_ries
+
+Leo 4.4.2.1 (also seen in 4.4 final)
+
+I was commenting some code, using the markup marks for various emphases. When
+I went back and moved the cursor over the first two characters (the hidden markup
+characters) of the line, I got the following error message:
+
+===========================================================
+exception executing command
+Traceback (most recent call last):
+
+  File "...leoCommands.py",line 264, in doCommand
+    val = command(event)
+
+  File "...leoEditCommands.py", line 3703, in nextLine
+    g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
+
+  File "...leoEditCommands.py", line 3314, in moveUpOrDownHelper
+    txt = w.get( 'insert linestart', 'insert lineend' )
+
+TypeError: unpack non-sequence
+===========================================================
+
+I did not get this when moving the cursor over the visible characters.
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper (revise)
+def moveUpOrDownHelper (self,event,direction,extend):
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+
+    # Make the insertion cursor visible so bbox won't return an empty list.
+    w.seeInsertPoint()
+    # Remember the original insert point.  This may become the moveSpot.
+    ins1 = w.index('insert')
+    # Compute the new spot.
+    row1,col1 = ins1.split('.')
+    row1 = int(row1) ; col1 = int(col1)
+    # Find the coordinates of the cursor and set the new height.
+    # There may be roundoff errors because character postions may not match exactly.
+    x, y, junk, textH = w.bbox('insert')
+    bodyW, bodyH = w.winfo_width(), w.winfo_height()
+    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
+    # Make sure y is within text boundaries.
+    if direction == "up":
+        if y <= textH:  w.yview("scroll",-1,"units")
+        else:           y = max(y-textH,0)
+    else:
+        if y >= maxy:   w.yview("scroll",1,"units")
+        else:           y = min(y+textH,maxy)
+    # Position the cursor on the proper side of the characters.
+    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
+    if x > newx + width / 2: x = newx + width + 1
+    # Move to the new row.
+    spot = w.index("@%d,%d" % (x,y))
+    row,col = spot.split('.')
+    row = int(row) ; col = int(col)
+    w.mark_set('insert',spot)
+    # Adjust the column in the *new* row, but only if we have actually gone to a new row.
+    if self.moveSpot:
+        # g.trace('row,col,moveCol',row,col,self.moveCol)
+        if col != self.moveCol and row != row1:
+            s = w.get('insert linestart','insert lineend')
+            col = min(len(s),self.moveCol)
+            if col >= 0:
+                w.mark_set('insert','%d.%d' % (row,col))
+                spot = w.index('insert')
+                w.seeInsertPoint()
+    # Handle the extension.
+    self.extendHelper(w,extend,ins1,spot,setSpot=False)
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper (revise)
+#@-node:ekr.20061127171128:Fix wiki markup bug
+#@+node:ekr.20061127170002:Requests
+#@+node:ekr.20061127171616:Experiment with Kent's idea for relative paths
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4005750
+By: ktenney
+
+I like the option @string relative_path_base_directory = .
+
+which puts @file nodes in the same directory as the current Leo file.
+
+I would like it if 
+open('file.txt','w').close()
+
+put file.txt in the same directory as the current Leo file.
+
+in g.getBaseDirectory I changed::
+    if base and len(base) > 0 and g.os_path_isabs(base):
+        return base # base need not exist yet.
+
+to::
+    if base and len(base) > 0 and g.os_path_isabs(base):
+        os.chdir(base)
+        return base # base need not exist yet.
+
+it should probably be configurable::
+
+    if base and len(base) > 0 and g.os_path_isabs(base):
+        if app.config.python_cwd_is_leo_base:
+            os.chdir(base)
+        return base # base need not exist yet.
+#@-node:ekr.20061127171616:Experiment with Kent's idea for relative paths
+#@+node:ekr.20061127170002.1:Allow multiple lines on the button bar
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3993176
+By: rich_ries
+
+How can the button bar be enlarged to take a second (or third!) row of icons? Or maybe the Scripting buttons can have
+their own section, like the NodeBar plugin did/does?
+
+add-new-icon-row command?
+#@nonl
+#@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
+#@+node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3992390
+
+The 'username' in the path is just edited by me: in the original error message
+it is my login name, of course.
+
+What was happening is the following. 
+Yesterday I was playing with Leo 4.4.2.1 and I often could not create *new*
+Leo files in certain directories.
+Leo would just give me the above error message. After some experimentation,
+I found out that when there was a space somewhere in the path from where I started
+Leo (and planned to save the file), Leo would give me the above error message.
+When the path would not contain a space, Leo would happily save the file.
+
+Note that I only have this problem with *new* files. Leo files that have already
+been created can be opened and saved everywhere.
+
+Perhaps this is only a problem for Mac OS X, but earlier versions of Leo (and
+Mac OS X) did not have this behaviour.
+
+Theo
+#@nonl
+#@-node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
+#@+node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
+#@-node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
+#@-node:ekr.20061127170002:Requests
 #@+node:ekr.20061115111353:(Remove special tk indices)
 @nocolor
 
@@ -346,46 +684,34 @@ def indentRelative (self,event):
     indentation point then applicable is used. If no indentation point is
     applicable even then whitespace equivalent to a single tab is inserted.'''
     
-    c = self.c ; undoType = 'indent-relative'
-    
-    k = self.k
-    w = self.editWidget(event)
+    c = self.c ; undoType = 'indent-relative' ; w = self.editWidget(event)
     if not w: return
-
-    self.beginCommand(undoType=undoType)
-    
     s = w.getAllText()
     ins = w.getInsertPoint()
-    oldSel = (ins,ins)
+    oldSel = w.getSelectionRange()
+    oldYview = w.yview()
+    # Find the previous non-blank line
     i,j = g.getLine(s,ins)
-    line = s[ins:j]
-    ###if len(line) <= len(w.get('insert','insert lineend')):
-    if len(line) < s[ins:j]:
-        ###w.insert('insert','\t')
-        w.insert(ins,'\t')
-    else:
-        reg = re.compile('(\s+)')
-        ntxt = reg.split(txt)
-        replace_word = re.compile('\w')
-        for z in ntxt:
-            if z.isspace():
-                ###w.insert('insert',z)
-                w.insert(ins,z)
-                break
-            else:
-                z = replace_word.subn(' ',z)
-                ###w.insert('insert',z[0])
-                w.insert(ins,z[0])
-
-    i = w.getInsertPoint()
-    result = w.getAllText()
-    head = tail = oldYview = None
-    c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    w.mark_set('insert',i)
-    self.endCommand(changed=True,setLabel=True)
+    while 1:
+        if i <= 0: return
+        i,j = g.getLine(s,i-1)
+        line = s[i:j]
+        if line.strip(): break
+    self.beginCommand(undoType=undoType)
+    try:
+        k = g.skip_ws(s,i)
+        ws = s[i:k]
+        i2,j2 = g.getLine(s,ins)
+        k = g.skip_ws(s,i2)
+        line = ws + s[k:j2]
+        w.delete(i2,j2)
+        w.insert(i2,line)
+        w.setInsertPoint(i2+len(ws))
+        c.frame.body.onBodyChanged(undoType,oldSel=oldSel,oldText=s,oldYview=oldYview)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.78:indentRelative
 #@+node:ekr.20051026092746:<< backspace with negative tab_width >>
-###s = prev = w.get("insert linestart","insert")
 s = prev = w.getAllText()
 ins = w.getInsertPoint()
 i,j = g.getLine(s,ins)
@@ -404,7 +730,6 @@ while n2 > 0:
     else: count += 1
 
 # Make sure we actually delete something.
-###w.delete("insert -%dc" % (max(1,count)),"insert")
 w.delete(ins-(max(1,count)),ins)
 #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
 #@+node:ekr.20050920084036.135:deleteSpaces (to do)
@@ -566,17 +891,21 @@ def beginningOfLineExtendSelection (self,event):
     i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
     self.moveToHelper(event,i,extend=True)
     
-def endOfLine (self,event):
+def endOfLine (self,event): # passed
     '''Move the cursor to the end of the line, extending the selection if in extend mode.'''
     w = self.editWidget(event)
-    junk,i = g.getLine(w.getAllText(),w.getInsertPoint())
-    self.moveToHelper(event,i-1,extend=False)
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint())
+    if g.match(s,i-1,'\n'): i -= 1
+    self.moveToHelper(event,i,extend=False)
     
-def endOfLineExtendSelection (self,event):
+def endOfLineExtendSelection (self,event): # passed
     '''Extend the selection by moving the cursor to the end of the line.'''
     w = self.editWidget(event)
-    junk,i = g.getLine(w.getAllText(),w.getInsertPoint())
-    self.moveToHelper(event,i-1,extend=True)
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint())
+    if g.match(s,i-1,'\n'): i -= 1
+    self.moveToHelper(event,i,extend=True)
 
 def nextLine (self,event):
     '''Move the cursor down, extending the selection if in extend mode.'''
@@ -789,9 +1118,7 @@ def selectParagraphHelper (self,w,start):
     ###w.mark_set('insert','%s lineend' % i2)
     i,junk = g.getLine(s,start)
     junk,j = g.getLine(s,i2)
-    w.tag_add('sel',i,j)
-    w.setInsertPoint(j)
-#@nonl
+    w.setSelectionRange(i,j,insert=j)
 #@-node:ekr.20050920084036.97:selectParagraphHelper
 #@-node:ekr.20050920084036.96:extend-to-paragraph & helper
 #@+node:ekr.20050920084036.97:selectParagraphHelper
@@ -815,9 +1142,7 @@ def selectParagraphHelper (self,w,start):
     ###w.mark_set('insert','%s lineend' % i2)
     i,junk = g.getLine(s,start)
     junk,j = g.getLine(s,i2)
-    w.tag_add('sel',i,j)
-    w.setInsertPoint(j)
-#@nonl
+    w.setSelectionRange(i,j,insert=j)
 #@-node:ekr.20050920084036.97:selectParagraphHelper
 #@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
 def indentRegion (self,event):
@@ -1237,216 +1562,6 @@ def yankRectangle (self,event,killRect=None):
     self.endCommand()
 #@-node:ekr.20050920084036.229:yankRectangle
 #@-node:ekr.20061115111353:(Remove special tk indices)
-#@+node:ekr.20061127150919:Fix failed unit tests
-======================================================================
-FAIL: @test back-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('1.394', '1.394')
-     got: ('3.149', '3.149')
-
-======================================================================
-FAIL: @test back-paragraph-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('1.394', '3.175')
-     got: ('3.175', '3.175')
-
-======================================================================
-FAIL: @test backward-kill-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('3.0', '4.0')
-     got: ('3.0', '5.0')
-
-======================================================================
-FAIL: @test extend-to-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('3.0', '4.0')
-     got: ('3.0', '5.0')
-
-======================================================================
-FAIL: @test indent-relative
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
-    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
-AssertionError: mismatch in body
-expected: u'first line\nline 1\n    line a\n        line b\n\tline c\nlast line\n'
-     got: u'first line\nline 1\n    line a\n        line b\n        line c\nlast line\n\n'
-
-======================================================================
-FAIL: @test kill-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 4, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1451, in runEditCommandTest
-    assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
-AssertionError: mismatch in body
-expected: u'Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average
-of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly
- weather impacts every American. Communities can now rely on the National Weather Service\u2019s StormReady program to h
-elp them guard against the ravages of Mother Nature.\n\nSome StormReady communities are better prepared to save lives fr
-om the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but S
-tormReady can help communities save lives. Does StormReady make a difference?\n'
-     got: u'Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average
-of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly
- weather impacts every American. Communities can now rely on the National Weather Service\u2019s StormReady program to h
-elp them guard against the ravages of Mother Nature.\n\nSome \nStormReady communities are better prepared to save lives
-from the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but
- StormReady can help communities save lives. Does StormReady make a difference?\n'
-
-----------------------------------------------------------------------
-Ran 338 tests in 95.478s
-
-FAILED (failures=6)
-#@nonl
-#@+node:ekr.20061117093914:Add tests for undent/indent
-#@-node:ekr.20061117093914:Add tests for undent/indent
-#@+node:ekr.20061113151148.8:tag_add (passed)
-# The signature is slightly different than the Tk.Text.insert method.
-
-def tag_add(self,tagName,i,j=None,*args):
-    
-    w = self
-    i = w.toGuiIndex(i)
-
-    if j is None:
-        Tk.Text.tag_add(w,tagName,i,*args)
-    else:
-        j = w.toGuiIndex(j)
-        Tk.Text.tag_add(w,tagName,i,j,*args)
-        
-#@-node:ekr.20061113151148.8:tag_add (passed)
-#@+node:ekr.20050920084036.96:extend-to-paragraph & helper
-def extendToParagraph (self,event):
-    
-    '''Select the paragraph surrounding the cursor.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    i = w.getInsertPoint()
-    ##txt = w.get('insert linestart','insert lineend')
-    i,j = g.getLine(s,i)
-    txt = s[i:j].strip()
-    ###i = w.getInsertPoint()
-    ###i = w.getInsertPoint()
-
-    if not txt:
-        while 1:
-            ### i = w.index('%s + 1 lines' % i)
-            i,j = g.getLine(s,j+1)
-            ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
-            txt = s[i:j].strip()
-            if txt:
-                self.selectParagraphHelper(w,i) ; break
-            ###if w.index('%s lineend' % i) == w.index('end'):
-            if j >= len(s): return
-    if txt:
-        while 1:
-            ###i = w.index('%s - 1 lines' % i)
-            i,j = g.getLine(s,i-1)
-            ###txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
-            txt = s[i:j].strip()
-            if not txt or i == 0: ### w.index('%s linestart' % i) == w.index('1.0'):
-                if not txt: i = j ### i = w.index('%s + 1 lines' % i)
-                self.selectParagraphHelper(w,i)
-                break
-   
-#@nonl
-#@+node:ekr.20050920084036.97:selectParagraphHelper
-def selectParagraphHelper (self,w,start):
-
-    i2 = start
-    s = w.getAllText()
-    while 1:
-        ### txt = w.get('%s linestart' % i2,'%s lineend' % i2)
-        i,j = g.getLine(s,i2)
-        txt = s[i:j]
-        ### if w.index('%s lineend' % i2) == w.index('end'):
-        if j >= len(s): break
-        txt = txt.strip()
-        if not txt: break
-        else:
-            ###i2 = w.index('%s + 1 lines' % i2)
-            i2 = max(i2+1,j)
-
-    ###w.tag_add('sel','%s linestart' % start,'%s lineend' % i2)
-    ###w.mark_set('insert','%s lineend' % i2)
-    i,junk = g.getLine(s,start)
-    junk,j = g.getLine(s,i2)
-    w.tag_add('sel',i,j)
-    w.setInsertPoint(j)
-#@nonl
-#@-node:ekr.20050920084036.97:selectParagraphHelper
-#@-node:ekr.20050920084036.96:extend-to-paragraph & helper
-#@+node:ekr.20051218133207.1:forwardParagraphHelper (revise)
-def forwardParagraphHelper (self,event,extend):
-    
-    c = self.c
-    w = self.editWidget(event)
-    if not w: return
-
-    c.widgetWantsFocusNow(w)
-    i = w.getInsertPoint()
-    i = w.toGuiIndex(i)
-    while 1:
-        txt = w.get('%s linestart' % i,'%s lineend' % i).strip()
-        if txt:
-            i = w.index('%s + 1 lines' % i)
-            if w.index('%s linestart' % i) == w.index('end'):
-                i = w.search(r'\w','end',backwards=True,regexp=True,stopindex='1.0')
-                i = '%s + 1c' % i
-                break
-        else:
-            i = w.search(r'\w',i,regexp=True,stopindex='end')
-            i = '%s' % i
-            break
-    if i:
-        self.moveToHelper(event,i,extend)
-#@-node:ekr.20051218133207.1:forwardParagraphHelper (revise)
-#@-node:ekr.20061127150919:Fix failed unit tests
-#@+node:ekr.20061116054917:New bugs
-#@-node:ekr.20061116054917:New bugs
 #@+node:ekr.20061116054917.4:Improve body widget
 #@+node:ekr.20061114122858.2:Test for i != j in w.replace
 #@-node:ekr.20061114122858.2:Test for i != j in w.replace
@@ -1898,7 +2013,17 @@ def killLine (self,event):
     '''Kill the line containing the cursor.'''
     w = self.editWidget(event)
     if not w: return
-    i,j = g.getLine(w.getAllText(),w.getInsertPoint())
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    # g.trace(i,j,ins,len(s),repr(s[i:j]))
+    if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
+        i = max(0,len(s)-1)
+        j = len(s)
+    elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
+        j -= 1
+    else: # Kill the newline.
+        pass
     self.kill(event,i,j,undoType='kill-line')
 #@-node:ekr.20050920084036.178:kill, killLine
 #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
@@ -5460,43 +5585,32 @@ def indentRelative (self,event):
     indentation point then applicable is used. If no indentation point is
     applicable even then whitespace equivalent to a single tab is inserted.'''
     
-    c = self.c ; undoType = 'indent-relative'
-    
-    k = self.k
-    w = self.editWidget(event)
+    c = self.c ; undoType = 'indent-relative' ; w = self.editWidget(event)
     if not w: return
-
-    self.beginCommand(undoType=undoType)
-    
     s = w.getAllText()
     ins = w.getInsertPoint()
-    oldSel = (ins,ins)
+    oldSel = w.getSelectionRange()
+    oldYview = w.yview()
+    # Find the previous non-blank line
     i,j = g.getLine(s,ins)
-    line = s[ins:j]
-    ###if len(line) <= len(w.get('insert','insert lineend')):
-    if len(line) < s[ins:j]:
-        ###w.insert('insert','\t')
-        w.insert(ins,'\t')
-    else:
-        reg = re.compile('(\s+)')
-        ntxt = reg.split(txt)
-        replace_word = re.compile('\w')
-        for z in ntxt:
-            if z.isspace():
-                ###w.insert('insert',z)
-                w.insert(ins,z)
-                break
-            else:
-                z = replace_word.subn(' ',z)
-                ###w.insert('insert',z[0])
-                w.insert(ins,z[0])
-
-    i = w.getInsertPoint()
-    result = w.getAllText()
-    head = tail = oldYview = None
-    c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-    w.mark_set('insert',i)
-    self.endCommand(changed=True,setLabel=True)
+    while 1:
+        if i <= 0: return
+        i,j = g.getLine(s,i-1)
+        line = s[i:j]
+        if line.strip(): break
+    self.beginCommand(undoType=undoType)
+    try:
+        k = g.skip_ws(s,i)
+        ws = s[i:k]
+        i2,j2 = g.getLine(s,ins)
+        k = g.skip_ws(s,i2)
+        line = ws + s[k:j2]
+        w.delete(i2,j2)
+        w.insert(i2,line)
+        w.setInsertPoint(i2+len(ws))
+        c.frame.body.onBodyChanged(undoType,oldSel=oldSel,oldText=s,oldYview=oldYview)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.78:indentRelative
 #@-node:ekr.20050920084036.74:indent...
 #@+node:ekr.20050920084036.85:insert & delete...
@@ -5563,7 +5677,7 @@ def backwardDeleteCharacter (self,event=None):
     wname = c.widget_name(w)
     ins = w.getInsertPoint()
     i,j = w.getSelectionRange()
-    # g.trace(wname,i,j)
+    #g.trace(wname,i,j,ins)
 
     if wname.startswith('body'):
         self.beginCommand()
@@ -5573,24 +5687,26 @@ def backwardDeleteCharacter (self,event=None):
         if i != j:
             w.delete(i,j)
         elif i == 0:
-            changed = False # Bug fix: 1/6/06 (after a5 released).
+            changed = False
         elif tab_width > 0:
-            ###w.delete('insert-1c')
             w.delete(ins-1)
         else:
             << backspace with negative tab_width >>
         self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
     else:
         # No undo in this widget.
+        # Make sure we actually delete something if we can.
+        s = w.getAllText()
+        j = max(i,min(j,len(s)-1))
         if i != j:
             w.delete(i,j)
-        elif i != 0:
-            # Bug fix: 1/6/06 (after a5 released).
+            w.setSelectionRange(i,i,insert=i)
+        elif ins != 0:
             # Do nothing at the start of the headline.
-            ###w.delete('insert-1c')
             w.delete(ins-1)
+            ins = ins-1
+            w.setSelectionRange(ins,ins,insert=ins)
 #@+node:ekr.20051026092746:<< backspace with negative tab_width >>
-###s = prev = w.get("insert linestart","insert")
 s = prev = w.getAllText()
 ins = w.getInsertPoint()
 i,j = g.getLine(s,ins)
@@ -5609,7 +5725,6 @@ while n2 > 0:
     else: count += 1
 
 # Make sure we actually delete something.
-###w.delete("insert -%dc" % (max(1,count)),"insert")
 w.delete(ins-(max(1,count)),ins)
 #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
 #@-node:ekr.20051026092433.1:backwardDeleteCharacter
@@ -6617,17 +6732,21 @@ def beginningOfLineExtendSelection (self,event):
     i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
     self.moveToHelper(event,i,extend=True)
     
-def endOfLine (self,event):
+def endOfLine (self,event): # passed
     '''Move the cursor to the end of the line, extending the selection if in extend mode.'''
     w = self.editWidget(event)
-    junk,i = g.getLine(w.getAllText(),w.getInsertPoint())
-    self.moveToHelper(event,i-1,extend=False)
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint())
+    if g.match(s,i-1,'\n'): i -= 1
+    self.moveToHelper(event,i,extend=False)
     
-def endOfLineExtendSelection (self,event):
+def endOfLineExtendSelection (self,event): # passed
     '''Extend the selection by moving the cursor to the end of the line.'''
     w = self.editWidget(event)
-    junk,i = g.getLine(w.getAllText(),w.getInsertPoint())
-    self.moveToHelper(event,i-1,extend=True)
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint())
+    if g.match(s,i-1,'\n'): i -= 1
+    self.moveToHelper(event,i,extend=True)
 
 def nextLine (self,event):
     '''Move the cursor down, extending the selection if in extend mode.'''
@@ -6911,9 +7030,7 @@ def selectParagraphHelper (self,w,start):
     ###w.mark_set('insert','%s lineend' % i2)
     i,junk = g.getLine(s,start)
     junk,j = g.getLine(s,i2)
-    w.tag_add('sel',i,j)
-    w.setInsertPoint(j)
-#@nonl
+    w.setSelectionRange(i,j,insert=j)
 #@-node:ekr.20050920084036.97:selectParagraphHelper
 #@-node:ekr.20050920084036.96:extend-to-paragraph & helper
 #@-node:ekr.20050920084036.95:paragraph...
