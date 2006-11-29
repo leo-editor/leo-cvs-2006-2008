@@ -2563,43 +2563,32 @@ class editCommandsClass (baseEditCommandsClass):
         indentation point then applicable is used. If no indentation point is
         applicable even then whitespace equivalent to a single tab is inserted.'''
         
-        c = self.c ; undoType = 'indent-relative'
-        
-        k = self.k
-        w = self.editWidget(event)
+        c = self.c ; undoType = 'indent-relative' ; w = self.editWidget(event)
         if not w: return
-    
-        self.beginCommand(undoType=undoType)
-        
         s = w.getAllText()
         ins = w.getInsertPoint()
-        oldSel = (ins,ins)
+        oldSel = w.getSelectionRange()
+        oldYview = w.yview()
+        # Find the previous non-blank line
         i,j = g.getLine(s,ins)
-        line = s[ins:j]
-        ###if len(line) <= len(w.get('insert','insert lineend')):
-        if len(line) < s[ins:j]:
-            ###w.insert('insert','\t')
-            w.insert(ins,'\t')
-        else:
-            reg = re.compile('(\s+)')
-            ntxt = reg.split(txt)
-            replace_word = re.compile('\w')
-            for z in ntxt:
-                if z.isspace():
-                    ###w.insert('insert',z)
-                    w.insert(ins,z)
-                    break
-                else:
-                    z = replace_word.subn(' ',z)
-                    ###w.insert('insert',z[0])
-                    w.insert(ins,z[0])
-    
-        i = w.getInsertPoint()
-        result = w.getAllText()
-        head = tail = oldYview = None
-        c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-        w.mark_set('insert',i)
-        self.endCommand(changed=True,setLabel=True)
+        while 1:
+            if i <= 0: return
+            i,j = g.getLine(s,i-1)
+            line = s[i:j]
+            if line.strip(): break
+        self.beginCommand(undoType=undoType)
+        try:
+            k = g.skip_ws(s,i)
+            ws = s[i:k]
+            i2,j2 = g.getLine(s,ins)
+            k = g.skip_ws(s,i2)
+            line = ws + s[k:j2]
+            w.delete(i2,j2)
+            w.insert(i2,line)
+            w.setInsertPoint(i2+len(ws))
+            c.frame.body.onBodyChanged(undoType,oldSel=oldSel,oldText=s,oldYview=oldYview)
+        finally:
+            self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.78:indentRelative
     #@-node:ekr.20050920084036.74:indent...
     #@+node:ekr.20050920084036.85:insert & delete...
@@ -2666,7 +2655,7 @@ class editCommandsClass (baseEditCommandsClass):
         wname = c.widget_name(w)
         ins = w.getInsertPoint()
         i,j = w.getSelectionRange()
-        # g.trace(wname,i,j)
+        #g.trace(wname,i,j,ins)
     
         if wname.startswith('body'):
             self.beginCommand()
@@ -2676,14 +2665,12 @@ class editCommandsClass (baseEditCommandsClass):
             if i != j:
                 w.delete(i,j)
             elif i == 0:
-                changed = False # Bug fix: 1/6/06 (after a5 released).
+                changed = False
             elif tab_width > 0:
-                ###w.delete('insert-1c')
                 w.delete(ins-1)
             else:
                 #@            << backspace with negative tab_width >>
                 #@+node:ekr.20051026092746:<< backspace with negative tab_width >>
-                ###s = prev = w.get("insert linestart","insert")
                 s = prev = w.getAllText()
                 ins = w.getInsertPoint()
                 i,j = g.getLine(s,ins)
@@ -2702,20 +2689,23 @@ class editCommandsClass (baseEditCommandsClass):
                     else: count += 1
                 
                 # Make sure we actually delete something.
-                ###w.delete("insert -%dc" % (max(1,count)),"insert")
                 w.delete(ins-(max(1,count)),ins)
                 #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
                 #@nl
             self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
         else:
             # No undo in this widget.
+            # Make sure we actually delete something if we can.
+            s = w.getAllText()
+            j = max(i,min(j,len(s)-1))
             if i != j:
                 w.delete(i,j)
-            elif i != 0:
-                # Bug fix: 1/6/06 (after a5 released).
+                w.setSelectionRange(i,i,insert=i)
+            elif ins != 0:
                 # Do nothing at the start of the headline.
-                ###w.delete('insert-1c')
                 w.delete(ins-1)
+                ins = ins-1
+                w.setSelectionRange(ins,ins,insert=ins)
     #@-node:ekr.20051026092433.1:backwardDeleteCharacter
     #@+node:ekr.20060415112257:clean-lines
     def cleanLines (self,event):
@@ -3722,17 +3712,21 @@ class editCommandsClass (baseEditCommandsClass):
         i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
         self.moveToHelper(event,i,extend=True)
         
-    def endOfLine (self,event):
+    def endOfLine (self,event): # passed
         '''Move the cursor to the end of the line, extending the selection if in extend mode.'''
         w = self.editWidget(event)
-        junk,i = g.getLine(w.getAllText(),w.getInsertPoint())
-        self.moveToHelper(event,i-1,extend=False)
+        s = w.getAllText()
+        junk,i = g.getLine(s,w.getInsertPoint())
+        if g.match(s,i-1,'\n'): i -= 1
+        self.moveToHelper(event,i,extend=False)
         
-    def endOfLineExtendSelection (self,event):
+    def endOfLineExtendSelection (self,event): # passed
         '''Extend the selection by moving the cursor to the end of the line.'''
         w = self.editWidget(event)
-        junk,i = g.getLine(w.getAllText(),w.getInsertPoint())
-        self.moveToHelper(event,i-1,extend=True)
+        s = w.getAllText()
+        junk,i = g.getLine(s,w.getInsertPoint())
+        if g.match(s,i-1,'\n'): i -= 1
+        self.moveToHelper(event,i,extend=True)
     
     def nextLine (self,event):
         '''Move the cursor down, extending the selection if in extend mode.'''
@@ -4016,9 +4010,7 @@ class editCommandsClass (baseEditCommandsClass):
         ###w.mark_set('insert','%s lineend' % i2)
         i,junk = g.getLine(s,start)
         junk,j = g.getLine(s,i2)
-        w.tag_add('sel',i,j)
-        w.setInsertPoint(j)
-    #@nonl
+        w.setSelectionRange(i,j,insert=j)
     #@-node:ekr.20050920084036.97:selectParagraphHelper
     #@-node:ekr.20050920084036.96:extend-to-paragraph & helper
     #@-others
@@ -5483,7 +5475,17 @@ class killBufferCommandsClass (baseEditCommandsClass):
         '''Kill the line containing the cursor.'''
         w = self.editWidget(event)
         if not w: return
-        i,j = g.getLine(w.getAllText(),w.getInsertPoint())
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        i,j = g.getLine(s,ins)
+        # g.trace(i,j,ins,len(s),repr(s[i:j]))
+        if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
+            i = max(0,len(s)-1)
+            j = len(s)
+        elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
+            j -= 1
+        else: # Kill the newline.
+            pass
         self.kill(event,i,j,undoType='kill-line')
     #@-node:ekr.20050920084036.178:kill, killLine
     #@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
