@@ -1772,7 +1772,7 @@ class leoTkinterTree (leoFrame.leoTree):
         w = event and event.widget or None
         ch = event and event.char or ''
         
-        # g.trace(g.callers())
+        # g.trace(repr(ch),g.callers())
     
         # Testing for ch here prevents flashing in the headline
         # when the control key is held down.
@@ -1793,14 +1793,14 @@ class leoTkinterTree (leoFrame.leoTree):
         ch = event and event.char or ''
         i,j = w.getSelectionRange()
         ins = w.getInsertPoint()
-        # g.trace(i,j,ins,repr(w.getAllText()))
+        if i != j: ins = i
         
         if ch == '\b':
             if i != j:  w.delete(i,j)
-            else:       w.delete('insert-1c')
+            else:       w.delete(ins-1)
         elif ch and ch not in ('\n','\r'):
             if i != j:                              w.delete(i,j)
-            elif k.unboundKeyAction == 'overwrite': w.delete(i,'%s+1c' % i)
+            elif k.unboundKeyAction == 'overwrite': w.delete(i,i+1)
             w.insert(ins,ch)
             w.setSelectionRange(ins+1,ins+1,insert=ins+1)
     
