@@ -618,7 +618,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.textWidget = w = g.app.gui.leoTextWidgetClass(
                 self.statusFrame,
                 height=1,state="disabled",bg=bg,relief="groove",name='status-line')
-            # self.textWidget.pack(side="left",expand=1,fill="x")
+            self.textWidget.pack(side="left",expand=1,fill="x")
             w.bind("<Button-1>", self.onActivate)
             self.show()
             
@@ -632,9 +632,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             
             w = self.textWidget
             if not w: return
-            
-            trace = self.c.frame.trace_status_line and not g.app.unitTesting
-            if trace: g.trace(g.callers())
             
             w.configure(state="normal")
             w.delete(0,"end")
@@ -700,22 +697,16 @@ class leoTkinterFrame (leoFrame.leoFrame):
             w = self.textWidget
             if not w: return
             
-            trace = self.c.frame.trace_status_line and not g.app.unitTesting
-            if trace: g.trace(s,g.callers())
-            
             w.configure(state="normal")
-                
-            if color and color not in self.colorTags:
-                self.colorTags.append(color)
-                w.tag_config(color,foreground=color)
+            w.insert("end",s)
         
             if color:
-                w.insert("end",s)
+                if color not in self.colorTags:
+                    self.colorTags.append(color)
+                    w.tag_config(color,foreground=color)
                 w.tag_add(color,"end-%dc" % (len(s)+1),"end-1c")
                 w.tag_config("black",foreground="black")
                 w.tag_add("black","end")
-            else:
-                w.insert("end",s)
             
             w.configure(state="disabled")
         #@-node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
@@ -731,25 +722,21 @@ class leoTkinterFrame (leoFrame.leoFrame):
         #@+node:ekr.20031218072017.1733:update (statusLine)
         def update (self):
             
-            c = self.c ; lab = self.labelWidget
-            w = c.frame.bodyCtrl
+            c = self.c ; bodyCtrl = c.frame.body.bodyCtrl
         
             if g.app.killed or not self.isVisible:
                 return
         
-            s = w.getAllText()
-            index = w.getInsertPoint()
+            s = bodyCtrl.getAllText()    
+            index = bodyCtrl.getInsertPoint()
             row,col = g.convertPythonIndexToRowCol(s,index)
-        
             if col > 0:
                 s2 = s[index-col:index]
-                #g.trace('s2',repr(s2))
                 s2 = g.toUnicode(s2,g.app.tkEncoding)
                 col = g.computeWidth (s2,c.tab_width)
-            
-            s = "line %d, col %d " % (row,col)
+        
             # Important: this does not change the focus because labels never get focus.
-            lab.configure(text=s)
+            self.labelWidget.configure(text="line %d, col %d" % (row,col))
             self.lastRow = row
             self.lastCol = col
         #@-node:ekr.20031218072017.1733:update (statusLine)
