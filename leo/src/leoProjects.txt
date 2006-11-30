@@ -446,6 +446,10 @@ def callAltXFunction (self,event):
 #@-node:ekr.20061031131434.112:callAltXFunction
 #@-node:ekr.20061031131434.111:fullCommand (alt-x) & helper
 #@-node:ekr.20061111153909:Made escape in the minibuffer work like ctrl-g
+#@+node:ekr.20061129193001:Clear status line in repeat-complex-command
+# This is much less confusing.
+#@nonl
+#@-node:ekr.20061129193001:Clear status line in repeat-complex-command
 #@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061127100022.1:Menu reorgs
 #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers

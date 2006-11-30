@@ -241,18 +241,16 @@ def onSelect2 (tag,keywords):
 
     # c.currentPosition() is not valid while using the settings panel.
     new_p = keywords.get('new_p')
+    if not new_p: return    
     
-    # g.trace(new_p)
-    
-    if new_p:
-        c.frame.clearStatusLine()
-        myList = [p.headString() for p in new_p.self_and_parents_iter()]
-        myList.reverse()
+    c.frame.clearStatusLine()
+    myList = [p.headString() for p in new_p.self_and_parents_iter()]
+    myList.reverse()
 
-        # Rich has reported using ::
-        # Any suggestions for standardization?
-        s = "-->".join(myList)
-        c.frame.putStatusLine(s)
+    # Rich has reported using ::
+    # Any suggestions for standardization?
+    s = "-->".join(myList)
+    c.frame.putStatusLine(s)
 #@nonl
 #@-node:rogererens.20041013084119:onSelect2
 #@-others

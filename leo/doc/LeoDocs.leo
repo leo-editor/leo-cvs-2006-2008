@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="76" left="308" height="724" width="967"/>
+	<global_window_position top="76" left="308" height="705" width="967"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -429,7 +429,7 @@
 </v>
 </v>
 <v t="ekr.20050901084134"><vh>Chapter 11: White papers</vh>
-<v t="ekr.20050901092232"><vh>@rst html\whitepapers.html</vh>
+<v t="ekr.20050901092232" a="E"><vh>@rst html\whitepapers.html</vh>
 <v t="ekr.20050901092232.1"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.259"><vh>Tk is the future of Leo</vh></v>
 <v t="EKR.20040524104904.260"><vh>Why I like Python</vh>
@@ -450,6 +450,11 @@
 <v t="ekr.20060218095651"><vh>8: Script buttons</vh></v>
 <v t="ekr.20060218092725"><vh>9: The rst3 plugin</vh></v>
 <v t="ekr.20060218085144.8"><vh>Conclusion</vh></v>
+</v>
+<v t="ekr.20061129170454" a="E"><vh>Allocating storage using lifetimes</vh>
+<v t="ekr.20061129170155.2"><vh>Lifetime allocation</vh></v>
+<v t="ekr.20061129175952"><vh>Typical lifetimes</vh></v>
+<v t="ekr.20061129202238"><vh>Implications for pypy</vh></v>
 </v>
 <v t="ekr.20050901092232.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -2976,13 +2981,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20061128130530" a="E"><vh>Tuple notes</vh>
-<v t="ekr.20061128135346" a="E"><vh>@rst html\tuple-alloc.html</vh>
-<v t="ekr.20061128135346.1"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20061128130530"><vh>Tuple notes (revised originals)</vh>
 <v t="ekr.20061128130530.2"><vh>Overview</vh></v>
 <v t="ekr.20061128130530.3"><vh>Ahas</vh></v>
 <v t="ekr.20061128132355"><vh>Block allocation</vh></v>
-<v t="ekr.20061128130530.4" a="TV"><vh>Stream allocation</vh></v>
+<v t="ekr.20061128130530.4"><vh>Stream allocation</vh></v>
 <v t="ekr.20061128130530.5"><vh>Details</vh></v>
 <v t="ekr.20061128130530.6"><vh>Deallocating objects</vh></v>
 <v t="ekr.20061128131445"><vh>Debugging and production objects</vh></v>
@@ -2992,7 +2995,36 @@
 <v t="ekr.20061128131445.6"><vh>Lists Are Streams</vh></v>
 <v t="ekr.20061128131445.7"><vh>Are any calls to calloc needed?</vh></v>
 <v t="ekr.20061128131445.8"><vh>Abbreviation Macros</vh></v>
-<v t="ekr.20061128135346.12"><vh>@rst-no-head end stuff</vh></v>
+</v>
+<v t="ekr.20050901084134" a="E"><vh>Chapter 11: White papers</vh>
+<v t="ekr.20050901092232" a="E"><vh>@rst html\whitepapers.html</vh>
+<v t="ekr.20050901092232.1"><vh>@rst-no-head links</vh></v>
+<v t="EKR.20040524104904.259"><vh>Tk is the future of Leo</vh></v>
+<v t="EKR.20040524104904.260"><vh>Why I like Python</vh>
+<v t="ekr.20050901092232.2"><vh>Clarity</vh></v>
+<v t="ekr.20050901092232.3"><vh>Power</vh></v>
+<v t="ekr.20050901092232.4"><vh>Safety</vh></v>
+<v t="ekr.20050901092232.5"><vh>Speed</vh></v>
+<v t="ekr.20050901092232.6"><vh>Conclusions</vh></v>
+</v>
+<v t="ekr.20060218085144"><vh>Why Leo is special</vh>
+<v t="ekr.20060218085144.1"><vh>1. You can execute Python scripts directly from anywhere in a Leo outline</vh></v>
+<v t="ekr.20060218085144.2"><vh>2. Leo's outlines are the perfect tool for organizing scripts</vh></v>
+<v t="ekr.20060218085144.3"><vh>3. Scripts can access the structure of Leo's outlines</vh></v>
+<v t="ekr.20060218085144.4"><vh>4. Leo's nodes naturally separate data from meta-data</vh></v>
+<v t="ekr.20060218085144.5"><vh>5. Leo is the ultimate platform for unit testing</vh></v>
+<v t="ekr.20060218085144.6"><vh>6. Leo is the ultimate platform for finding and changing text.</vh></v>
+<v t="ekr.20060218085144.7"><vh>7. Leo outlines are the ultimate filing cabinet</vh></v>
+<v t="ekr.20060218095651"><vh>8: Script buttons</vh></v>
+<v t="ekr.20060218092725"><vh>9: The rst3 plugin</vh></v>
+<v t="ekr.20060218085144.8"><vh>Conclusion</vh></v>
+</v>
+<v t="ekr.20061129170454" a="E"><vh>Allocating storage using lifetimes</vh>
+<v t="ekr.20061129170155.2"><vh>Lifetime allocation</vh></v>
+<v t="ekr.20061129175952"><vh>Typical lifetimes</vh></v>
+<v t="ekr.20061129202238" a="TV"><vh>Implications for pypy</vh></v>
+</v>
+<v t="ekr.20050901092232.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 </vnodes>
@@ -18111,7 +18143,7 @@ For example, an `@root node`_ is a node containing an @root directive_, etc.
 <t tx="ekr.20050901083017">-----------------------
 
 |prev| |leo| |next|</t>
-<t tx="ekr.20050901084134"></t>
+<t tx="ekr.20050901084134">@nocolor</t>
 <t tx="ekr.20050901092232">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -18140,7 +18172,8 @@ I wrote the third in November 2004, and rewrote it in February 2006.
 </t>
 <t tx="ekr.20050901092232.1">.. External links...
 
-.. _pychecker:      http://pychecker.sourceforge.net/
+.. _pychecker:              http://pychecker.sourceforge.net/
+.. _`region inference`:     http://en.wikipedia.org/wiki/Region_inference
 
 .. Relative links...
 
@@ -30269,52 +30302,117 @@ some kinds of tokens are allocated using block allocation. Block allocation will
 be used extensively in the parser and code generator to allocate nodes for
 parsing, semantic analysis and code generation.
 </t>
-<t tx="ekr.20061128135346">@ @rst-options
-code_mode=False
-generate_rst=True
-http_server_support = False
-show_organizer_nodes=True
-show_headlines=True
-show_leo_directives=True
-stylesheet_path=..\doc
-write_intermediate_file = False
-verbose=True
-@c
+<t tx="ekr.20061129170155.2">CC2 allocated objects one-at-a-time (simple allocation), in blocks of
+fixed-sized objects (block allocation) or in blocks of variable-sized objects
+(lifetime-based allocation). Simple-allocation was used for short-lived objects
+and will not be discussed further. Block allocation was used in several ways, the
+most interesting of which was to allocate "cons cells" used to represent lists.
+These cons cells could be reused by placing them on a global avail list. Thus,
+the blocks holding cons cells could (and did) have permanent lifetime: they were
+never deallocated.
 
-|back| |leo| |next|
+The most interesting aspect of CC2's storage allocation scheme was what I
+eventually came to call **lifetime-based** storage allocation. This was, for me,
+an new discovery, though clearly I was not the first to discover it. The Aha is
+that a lifetime is defined by the time (or equivalently by the place in program
+code) at which objects are **deallocated**. A lifetime may hold many different
+kinds of objects that were allocated at many different times. The essence of
+lifetime-based allocation is that **the proper time to specify when an object
+will be deallocated is when the object is created**.
 
-##########################################
-Storage allocation in CC2
-##########################################
+Lifetime-based allocation is a superb invention:
+    
+- It becomes an effective design tool. Thinking of objects in terms of their
+  lifetimes often shows the essence of a design problem.
+  
+- It can be used for any kind of object, regardless of its size or type.
+    
+- It reduces the number of calls to calloc and free by one or two orders of
+  magnitude over naive schemes. Furthermore, it typically requests
+  standard-sized blocks (say 8K or more) from calloc, further easing the burden
+  on calloc and free.
+  
+- CC2 could allocate objects with a particular lifetime using small, extremely fast, macros.
+  The macros expanded to C code something like this::
 
-This chapter discusses how the CC2 compiler allocated storage in a fast,
-efficient manner. The original notes were written around 1993, so there are
-numerous anachronisms and things I would do differently today. However, the
-actual design decisions discussed below are still relevant today; they would
-simply be recast in object-oriented terms. Indeed, the discussion is shows that
-attention to low-level details can make a big difference. In fact, the CC2
-compiler was a few percent faster than the fastest C compiler available at the
-time: the CodeWarrior C compiler. Morever, CC2 generated excellent code.
+    if lifetime -&gt; avail &gt;= sizeof(theObjectKind) {
+        // Allocate the storage.
+        theObject = lifetime -&gt; ptr 
+        lifetime -&gt; ptr += sizeof(theObjectKind)
+    }
+    else {
+        &lt;&lt; allocate theObject in another block &gt;&gt;
+    }
 
-**Note**: the term **object** as used below refers to an item allocated via
-calloc using special **object allocation macros**. These macros allowed some
-limited error checking and statastics gathering, but the "objects" so allocated
-were C-level objects, not true objects as we are know them today. In particular,
-such object had no real type or class associated with them.
+Importantly, the speed of the else clause makes absolutely no difference because
+it is so seldom executed. Thus, it uses a function call. Clearly then, this code
+is optimal: it could not be improved even if coded in assembly language.
 
-.. contents::</t>
-<t tx="ekr.20061128135346.1">.. Links used in this document...
+</t>
+<t tx="ekr.20061129170454">This white paper describes the storage allocation used in a commercial
+optimizing C compiler written for Tuple, Inc. ca. 1993. The last section
+discusses tantalizing possibilities for the pypy project. These possibilities
+are why I wrote this paper.
 
-.. |back| image:: arrow_lt.gif
-    :target: FAQ.html
+Storage allocation is crucial to any compiler because of the number, size and
+complexity of data which must be allocated. You might event say that a compiler
+consists of storage allocation and everything else. I paid a lot of attention to
+storage allocation in CC2, and that work paid off. The resulting compiler was a
+few percent faster than the CodeWarrior C compiler, perhaps the fastest C
+compiler in existence at that time. The original notes were written around 1993,
+so I would do some things differently today. However, the design discussed below
+still seems relevant today. Indeed, attention to low-level details can make a
+huge difference.
+</t>
+<t tx="ekr.20061129175952">What makes lifetime-based allocation so powerful is that so few lifetimes are
+typically required. Indeed, CC2 had only the following lifetimes:
+    
+- Permanent: These objects were never deallocated. Examples were list pointers
+  held in cons cells and other kinds of application-wide objects.
+  
+- Tokenizer: Tokenizing in C is complex due to C's various preprocessing
+  directives and macro expansion. Objects with tokenizer lifetime are
+  deallocated before the parser starts.
 
-.. |leo|   image:: leo.gif
-    :target: front.html
+- Function: Objects with function lifetime are deallocated after the compiler
+  generates code for the function.
 
-.. |next| image:: arrow_rt.gif
-    :target: intro.html</t>
-<t tx="ekr.20061128135346.12">.. .. -------------
+- File: Objects with file lifetime are deallocated after the compiler completes
+  a source file.
 
-.. .. |back| |leo| |next|</t>
+That's all. Similarly, if Leo were recast as a C program only the following
+lifetimes would be needed:
+    
+- Permanent: application-wide objects.
+
+- Window/outline: All data associated with a single Leo outline. This is a
+  'semi-permanent' lifetime. Leo has unlimited undo, so it is essentially
+  impossible to delete any data object (an object that could be written to an
+  output file) until the entire outline closes.
+
+- Dialog: data associated with a temporary dialog.
+
+- Function/method: data not used outside a single function or method.
+
+The remarkable thing about dynamic languages like Python is how often objects
+can, in fact, be assigned static lifetimes.</t>
+<t tx="ekr.20061129202238">Lifetime allocation isn't used in Java, Python, etc. because these languages
+have no way of knowing (in general) what the lifetime of any object will be.
+Furthermore, translating Python to C would be straightforward were it not for
+storage allocation issues. For example, most of Leo's code could easily be
+translated into C, **provided** that the lifetime of all objects were known.
+Again, just for example, the prospect of translating the Python version of Leo
+to a fully optimized C version is tantalizing.
+
+This is where pypy comes in: its extensive flow analysis may be sufficient to
+discover lifetimes for a significant percentage of objects. Perhaps user hints
+may be effective. For example, pypy offers the chance to make something like
+`region inference`_ truly useful. Note that the pypy project might benefit from
+deducing lifetimes even if not all objects could be assigned a static
+lifetime. Another reason why lifetimes are not a standard technique is that they
+are a potentially dangerous optimization. Errors in specifying lifetimes will
+result in dangling pointer references. But this danger might disappear if pypy
+could deduce lifetimes automatically.
+</t>
 </tnodes>
 </leo_file>

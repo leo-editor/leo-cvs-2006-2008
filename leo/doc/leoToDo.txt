@@ -9,7 +9,19 @@
 
 @color
 #@nonl
-#@+node:ekr.20061127150919:Fix paragraph commands
+#@+node:ekr.20061130084909:Priorities
+@nocolor
+
+- Get external hard disk for Linux install.
+- Create pypy study outlines.
+- Improve What's special whitepaper.
+- Get notebook computer with Linux.
+- Finish wx plugin.
+- Create minimal IronPython plugin.
+- Contributions & bills: Jimmy Carter, Don Beck, ACLU, etc.
+- Get desktop now??
+#@-node:ekr.20061130084909:Priorities
+#@+node:ekr.20061127150919:Fixed paragraph commands
 ======================================================================
 FAIL: @test back-paragraph
 
@@ -277,7 +289,7 @@ def killParagraph (self,event):
     finally:
         self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.98:killParagraph (passed)
-#@-node:ekr.20061127150919:Fix paragraph commands
+#@-node:ekr.20061127150919:Fixed paragraph commands
 #@+node:ekr.20061127171128:Fix wiki markup bug
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3994218
@@ -795,7 +807,9 @@ while n2 > 0:
     else: count += 1
 
 # Make sure we actually delete something.
-w.delete(ins-(max(1,count)),ins)
+i = ins-(max(1,count))
+w.delete(i,ins)
+w.setSelectionRange(i,i,insert=i)
 #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
 #@+node:ekr.20050920084036.135:deleteSpaces (to do)
 def deleteSpaces (self,event,insertspace=False):
@@ -5700,18 +5714,22 @@ def backwardDeleteCharacter (self,event=None):
 
     if wname.startswith('body'):
         self.beginCommand()
-        d = g.scanDirectives(c,p)
-        tab_width = d.get("tabwidth",c.tab_width)
-        changed = True
-        if i != j:
-            w.delete(i,j)
-        elif i == 0:
-            changed = False
-        elif tab_width > 0:
-            w.delete(ins-1)
-        else:
-            << backspace with negative tab_width >>
-        self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
+        try:
+            d = g.scanDirectives(c,p)
+            tab_width = d.get("tabwidth",c.tab_width)
+            changed = True
+            if i != j:
+                w.delete(i,j)
+                w.setSelectionRange(i,i,insert=i)
+            elif i == 0:
+                changed = False
+            elif tab_width > 0:
+                w.delete(ins-1)
+                w.setSelectionRange(ins-1,ins-1,insert=ins-1)
+            else:
+                << backspace with negative tab_width >>
+        finally:
+            self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
     else:
         # No undo in this widget.
         # Make sure we actually delete something if we can.
@@ -5744,7 +5762,9 @@ while n2 > 0:
     else: count += 1
 
 # Make sure we actually delete something.
-w.delete(ins-(max(1,count)),ins)
+i = ins-(max(1,count))
+w.delete(i,ins)
+w.setSelectionRange(i,i,insert=i)
 #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
 #@-node:ekr.20051026092433.1:backwardDeleteCharacter
 #@+node:ekr.20060415112257:clean-lines

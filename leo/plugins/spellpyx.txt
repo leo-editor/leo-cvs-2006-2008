@@ -23,6 +23,7 @@ Borland
 Borland's
 Boshernitzan
 Breuer
+CC2
 CDATA
 CDLL
 CFA
@@ -313,6 +314,8 @@ Tkinter's
 Tnnn
 Tobler
 TokenError
+Tokenizer
+Tokenizing
 Tomaz
 Toplevel
 Traduit
@@ -535,6 +538,7 @@ c``'s
 callTagHandler
 callerList
 callerName
+calloc
 calltip
 calltips
 can`t
@@ -1659,6 +1663,7 @@ prolog_string
 proven
 ps
 pstats
+ptr
 pulldown
 putArray
 putDirective
@@ -1678,6 +1683,7 @@ pyd
 pydoc
 pymacs
 pypi
+pypy
 python2
 python22
 python24
@@ -2058,6 +2064,7 @@ theId
 theIter
 theKeyword
 theList
+theObject
 theType
 the_news_at_10
 thinFile
