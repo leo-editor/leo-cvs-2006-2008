@@ -2666,6 +2666,7 @@ class keyHandlerClass:
         keysym = gui.eventKeysym(event)
         if keysym == gui.keysym('Return') and k.mb_history:
             last = k.mb_history [0]
+            k.resetLabel()
             c.commandsDict [last](event)
             return 'break'
         else:
