@@ -3225,8 +3225,9 @@ class leoTkTextWidget (Tk.Text):
         
         '''Select all text of the widget, *not* including the extra newline.'''
         
-        w = self
-        w.setSelectionRange(0,'end',insert=insert)
+        w = self ; s = w.getAllText()
+        if insert is None: insert = len(s)
+        w.setSelectionRange(0,len(s)-1,insert=insert)
     #@-node:ekr.20061113151148.19:w.selectAllText (passed)
     #@+node:ekr.20061113151148.20:w.setAllText (could be in base class) (passed)
     def setAllText (self,s): # tkTextWidget
