@@ -2659,40 +2659,46 @@ class editCommandsClass (baseEditCommandsClass):
     
         if wname.startswith('body'):
             self.beginCommand()
-            d = g.scanDirectives(c,p)
-            tab_width = d.get("tabwidth",c.tab_width)
-            changed = True
-            if i != j:
-                w.delete(i,j)
-            elif i == 0:
-                changed = False
-            elif tab_width > 0:
-                w.delete(ins-1)
-            else:
-                #@            << backspace with negative tab_width >>
-                #@+node:ekr.20051026092746:<< backspace with negative tab_width >>
-                s = prev = w.getAllText()
-                ins = w.getInsertPoint()
-                i,j = g.getLine(s,ins)
-                s = prev = s[i:ins]
-                n = len(prev)
-                abs_width = abs(tab_width)
-                
-                # Delete up to this many spaces.
-                n2 = (n % abs_width) or abs_width
-                n2 = min(n,n2) ; count = 0
-                
-                while n2 > 0:
-                    n2 -= 1
-                    ch = prev[n-count-1]
-                    if ch != ' ': break
-                    else: count += 1
-                
-                # Make sure we actually delete something.
-                w.delete(ins-(max(1,count)),ins)
-                #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
-                #@nl
-            self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
+            try:
+                d = g.scanDirectives(c,p)
+                tab_width = d.get("tabwidth",c.tab_width)
+                changed = True
+                if i != j:
+                    w.delete(i,j)
+                    w.setSelectionRange(i,i,insert=i)
+                elif i == 0:
+                    changed = False
+                elif tab_width > 0:
+                    w.delete(ins-1)
+                    w.setSelectionRange(ins-1,ins-1,insert=ins-1)
+                else:
+                    #@                << backspace with negative tab_width >>
+                    #@+node:ekr.20051026092746:<< backspace with negative tab_width >>
+                    s = prev = w.getAllText()
+                    ins = w.getInsertPoint()
+                    i,j = g.getLine(s,ins)
+                    s = prev = s[i:ins]
+                    n = len(prev)
+                    abs_width = abs(tab_width)
+                    
+                    # Delete up to this many spaces.
+                    n2 = (n % abs_width) or abs_width
+                    n2 = min(n,n2) ; count = 0
+                    
+                    while n2 > 0:
+                        n2 -= 1
+                        ch = prev[n-count-1]
+                        if ch != ' ': break
+                        else: count += 1
+                    
+                    # Make sure we actually delete something.
+                    i = ins-(max(1,count))
+                    w.delete(i,ins)
+                    w.setSelectionRange(i,i,insert=i)
+                    #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
+                    #@nl
+            finally:
+                self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
         else:
             # No undo in this widget.
             # Make sure we actually delete something if we can.
@@ -7584,14 +7590,8 @@ class findTab (leoFind.leoFind):
         # Among other things, this allows Leo to search for a single trailing space.
         s = self.find_ctrl.getAllText()
         s = g.toUnicode(s,g.app.tkEncoding)
-        # g.trace(repr(s))
-        ###if s and s[-1] in ('\r','\n'):
-        ###    s = s[:-1]
         self.find_text = s
-    
         s = self.change_ctrl.getAllText()
-        ###if s and s[-1] in ('\r','\n'):
-        ###    s = s[:-1]
         s = g.toUnicode(s,g.app.tkEncoding)
         self.change_text = s
     #@-node:ekr.20051020120306.22:find.update_ivars
