@@ -2,7 +2,7 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
+<globals body_outline_ratio="0.450916936354">
 	<global_window_position top="12" left="473" height="927" width="783"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
@@ -132,91 +132,98 @@
 <v t="ekr.20061205064845"><vh>&lt;&lt; define s &gt;&gt;</vh></v>
 <v t="ekr.20061205064845.1"><vh>mungeBody</vh></v>
 </v>
-<v t="ekr.20061204195153"><vh>@button ast</vh>
+<v t="ekr.20061204195153" a="E"><vh>@button ast</vh>
 <v t="ekr.20061204195419" a="E"><vh>class ASTVisitor</vh>
 <v t="ekr.20061204195419.2"><vh>__init__</vh></v>
-<v t="ekr.20061205073149"><vh>push &amp; pop</vh></v>
-<v t="ekr.20061204211633"><vh>trace</vh></v>
-<v t="ekr.20061204205000"><vh>visitAdd</vh></v>
-<v t="ekr.20061204205000.1"><vh>visitAnd</vh></v>
-<v t="ekr.20061204205000.2"><vh>visitAssAttr</vh></v>
-<v t="ekr.20061204205628.1"><vh>visitAssert</vh></v>
+<v t="ekr.20061205140652.1"><vh>Assignments</vh>
+<v t="ekr.20061204205000.2" a="M"><vh>visitAssAttr</vh></v>
 <v t="ekr.20061204205628.2"><vh>visitAssign</vh></v>
 <v t="ekr.20061204205000.3"><vh>visitAssList</vh></v>
 <v t="ekr.20061204205000.4"><vh>visitAssName</vh></v>
 <v t="ekr.20061204205628"><vh>visitAssTuple</vh></v>
-<v t="ekr.20061204205628.3"><vh>visitAugAssign</vh></v>
-<v t="ekr.20061204205628.4"><vh>visitBackquote</vh></v>
-<v t="ekr.20061204205628.5"><vh>visitBitand/or/xor</vh></v>
-<v t="ekr.20061204205628.6"><vh>visitBreak</vh></v>
+<v t="ekr.20061204205628.3" a="M"><vh>visitAugAssign</vh></v>
+</v>
+<v t="ekr.20061205140652.6"><vh>Classes, methods &amp; functions</vh>
 <v t="ekr.20061204205628.8"><vh>visitClass</vh></v>
-<v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
-<v t="ekr.20061204205628.9"><vh>visitCompare</vh></v>
-<v t="ekr.20061204205628.10"><vh>visitConst</vh></v>
-<v t="ekr.20061204205628.11"><vh>visitContinue</vh></v>
-<v t="ekr.20061204214019.1"><vh>visitDecorators</vh></v>
-<v t="ekr.20061205062426"><vh>visitDict</vh></v>
-<v t="ekr.20061205062426.1"><vh>visitDiscard</vh></v>
-<v t="ekr.20061205065240"><vh>visitDiv</vh></v>
-<v t="ekr.20061205065240.1"><vh>visitEllipsis</vh></v>
-<v t="ekr.20061205065240.2"><vh>visitExec</vh></v>
-<v t="ekr.20061204211034"><vh>visitExpression</vh></v>
-<v t="ekr.20061205065240.3"><vh>visitFloorDiv</vh></v>
-<v t="ekr.20061204211034.1"><vh>visitFor</vh></v>
-<v t="ekr.20061205065240.4"><vh>visitFrom</vh></v>
 <v t="ekr.20061204203241.1"><vh>visitFunction</vh></v>
+<v t="ekr.20061205065240.9"><vh>visitLambda</vh></v>
+<v t="ekr.20061204214019.1"><vh>visitDecorators</vh></v>
+</v>
+<v t="ekr.20061205140652.4"><vh>Generators</vh>
 <v t="ekr.20061204213730.3"><vh>visitGenExpr</vh></v>
 <v t="ekr.20061204213730.4"><vh>visitGenExprFor</vh></v>
 <v t="ekr.20061204213730"><vh>visitGenExprIf</vh></v>
 <v t="ekr.20061204213730.1"><vh>visitGenExprInner</vh></v>
-<v t="ekr.20061204213730.2"><vh>visitGetattr</vh></v>
+</v>
+<v t="ekr.20061205141200"><vh>Imports &amp; scope</vh>
+<v t="ekr.20061205065240.4"><vh>visitFrom</vh></v>
 <v t="ekr.20061205065240.5"><vh>visitGlobal</vh></v>
-<v t="ekr.20061204214019"><vh>visitIf</vh></v>
 <v t="ekr.20061205065240.6"><vh>visitImport</vh></v>
-<v t="ekr.20061205065240.7"><vh>visitInvert</vh></v>
-<v t="ekr.20061205065240.8"><vh>visitKeyword</vh></v>
-<v t="ekr.20061205065240.9"><vh>visitLambda</vh></v>
-<v t="ekr.20061205065240.10"><vh>visitLeftShift</vh></v>
-<v t="ekr.20061205065240.11"><vh>visitList</vh></v>
+<v t="ekr.20061205065240.16"><vh>visitModule</vh></v>
+</v>
+<v t="ekr.20061205140652.7"><vh>List comprehensions</vh>
 <v t="ekr.20061205065240.12"><vh>visitListComp</vh></v>
 <v t="ekr.20061205065240.13"><vh>visitListCompFor</vh></v>
 <v t="ekr.20061205065240.14"><vh>visitListCompIf</vh></v>
+</v>
+<v t="ekr.20061205140652.2"><vh>Operators</vh>
+<v t="ekr.20061204205628.9"><vh>visitCompare</vh></v>
+<v t="ekr.20061205143033"><vh>Binary ops</vh>
+<v t="ekr.20061204205000"><vh>visitAdd</vh></v>
+<v t="ekr.20061205065240"><vh>visitDiv</vh></v>
+<v t="ekr.20061205065240.3"><vh>visitFloorDiv</vh></v>
+<v t="ekr.20061205065240.10"><vh>visitLeftShift</vh></v>
 <v t="ekr.20061205065240.15"><vh>visitMod</vh></v>
-<v t="ekr.20061205065240.16"><vh>visitModule</vh></v>
 <v t="ekr.20061205065240.17"><vh>visitMul</vh></v>
-<v t="ekr.20061205065240.18"><vh>visitName</vh></v>
-<v t="ekr.20061205065240.19"><vh>visitNot</vh></v>
-<v t="ekr.20061205065240.20"><vh>visitOr</vh></v>
-<v t="ekr.20061205065240.21"><vh>visitPass</vh></v>
 <v t="ekr.20061205065240.22"><vh>visitPower</vh></v>
-<v t="ekr.20061205065240.23"><vh>visitPrint</vh></v>
-<v t="ekr.20061205065240.24"><vh>visitPrintnl</vh></v>
-<v t="ekr.20061205065240.25"><vh>visitRaise</vh></v>
-<v t="ekr.20061204205000.5"><vh>visitReturn</vh></v>
 <v t="ekr.20061205065240.26"><vh>visitRightShift</vh></v>
-<v t="ekr.20061205065240.27"><vh>visitSlice</vh></v>
-<v t="ekr.20061205065240.28"><vh>visitSliceobj</vh></v>
-<v t="ekr.20061204202104"><vh>visitStmt</vh></v>
 <v t="ekr.20061205065240.30"><vh>visitSub</vh></v>
-<v t="ekr.20061205065240.31"><vh>visitSubscript</vh></v>
-<v t="ekr.20061205065240.32"><vh>visitTryExcept</vh></v>
-<v t="ekr.20061205065240.33"><vh>visitTryFinally</vh></v>
-<v t="ekr.20061205065240.34"><vh>visitTuple</vh></v>
+</v>
+<v t="ekr.20061205142616"><vh>N-ary ops</vh></v>
+<v t="ekr.20061205143033.1"><vh>Unary ops</vh>
+<v t="ekr.20061205065240.7"><vh>visitInvert</vh></v>
+<v t="ekr.20061205065240.19"><vh>visitNot</vh></v>
 <v t="ekr.20061205065240.35"><vh>visitUnaryAdd</vh></v>
 <v t="ekr.20061205065240.36"><vh>visitUnarySub</vh></v>
-<v t="ekr.20061205065240.37"><vh>visitWhile</vh></v>
+</v>
+</v>
+<v t="ekr.20061205140652" a="TV"><vh>Primaries &amp; expressions</vh>
+<v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
+<v t="ekr.20061204205628.10"><vh>visitConst</vh></v>
+<v t="ekr.20061205062426" a="M"><vh>visitDict</vh></v>
+<v t="ekr.20061205065240.1"><vh>visitEllipsis</vh></v>
+<v t="ekr.20061204211034"><vh>visitExpression (??)</vh></v>
+<v t="ekr.20061204213730.2"><vh>visitGetattr</vh></v>
+<v t="ekr.20061205065240.8"><vh>visitKeyword</vh></v>
+<v t="ekr.20061205065240.11" a="M"><vh>visitList</vh></v>
+<v t="ekr.20061205065240.18"><vh>visitName</vh></v>
+<v t="ekr.20061205065240.27"><vh>visitSlice</vh></v>
+<v t="ekr.20061205065240.28"><vh>visitSliceobj</vh></v>
+<v t="ekr.20061205065240.31"><vh>visitSubscript</vh></v>
+<v t="ekr.20061205065240.34"><vh>visitTuple</vh></v>
+</v>
+<v t="ekr.20061205073149"><vh>push &amp; pop</vh></v>
+<v t="ekr.20061205140652.5"><vh>Statements</vh>
+<v t="ekr.20061204205628.1" a="M"><vh>visitAssert</vh></v>
+<v t="ekr.20061204205628.4" a="M"><vh>visitBackquote</vh></v>
+<v t="ekr.20061204205628.6"><vh>visitBreak/Continue</vh></v>
+<v t="ekr.20061205062426.1"><vh>visitDiscard (del?)</vh></v>
+<v t="ekr.20061205065240.2"><vh>visitExec</vh></v>
+<v t="ekr.20061204211034.1"><vh>visitFor</vh></v>
+<v t="ekr.20061204214019"><vh>visitIf</vh></v>
+<v t="ekr.20061205065240.21"><vh>visitPass</vh></v>
+<v t="ekr.20061205065240.23" a="M"><vh>visitPrint</vh></v>
+<v t="ekr.20061205065240.24" a="M"><vh>visitPrintnl</vh></v>
+<v t="ekr.20061205065240.25" a="M"><vh>visitRaise</vh></v>
+<v t="ekr.20061204205000.5"><vh>visitReturn</vh></v>
+<v t="ekr.20061204202104"><vh>visitStmt</vh></v>
+<v t="ekr.20061205065240.32"><vh>visitTryExcept</vh></v>
+<v t="ekr.20061205065240.33"><vh>visitTryFinally</vh></v>
+<v t="ekr.20061205065240.37" a="M"><vh>visitWhile</vh></v>
 <v t="ekr.20061205065240.38"><vh>visitWith</vh></v>
 </v>
+<v t="ekr.20061204211633"><vh>trace</vh></v>
 </v>
-<v t="ekr.20061205124252" a="TV"><vh>Recent</vh>
-<v t="ekr.20061204214019"><vh>visitIf</vh></v>
-<v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
-<v t="ekr.20061204211034.1"><vh>visitFor</vh></v>
-<v t="ekr.20061204205628.9"><vh>visitCompare</vh></v>
-<v t="ekr.20061204202104"><vh>visitStmt</vh></v>
-<v t="ekr.20061204205628.2"><vh>visitAssign</vh></v>
-<v t="ekr.20061204205628.8"><vh>visitClass</vh></v>
-<v t="ekr.20061204203241.1"><vh>visitFunction</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -1923,6 +1930,8 @@ else:
 '''
 
 print '-' * 20
+print s
+print
 ast = compiler.parse(s)
 
 # print 'ast',ast
@@ -1995,18 +2004,9 @@ compiler.walk(ast,visitor,verbose=3)
 <t tx="ekr.20061204205000">def visitAdd (self,node):
 
     # self.trace() # left/right operands
-    self.push()
-    rt = self.visit(node.right) or '&lt;None&gt;'
-    lt = self.visit(node.right) or '&lt;None&gt;'
-    self.pop()
-    return '%s + %s' % (lt,rt)
-</t>
-<t tx="ekr.20061204205000.1">def visitAnd (node):
-
-    self.trace()
-    for z in node.nodes:
-        self.visit(z)
-
+    rt = self.visit(node.right) or '&lt;add:None&gt;'
+    lt = self.visit(node.left) or '&lt;add:None&gt;'
+    return '(%s + %s)' % (lt,rt)
 </t>
 <t tx="ekr.20061204205000.2">def visitAssAttr(self,node):  #attribute as target of assignment
 
@@ -2014,8 +2014,7 @@ compiler.walk(ast,visitor,verbose=3)
     e = self.visit(node.expr) or '&lt;None&gt;'
     #expr expression on the left-hand side of the dot
     
-    return '%s%s = %s' % (self.indent,node.attrname,e)
-
+    return 's = %s' % (node.attrname,e)
 </t>
 <t tx="ekr.20061204205000.3">def visitAssList(self,node):
     
@@ -2060,12 +2059,11 @@ compiler.walk(ast,visitor,verbose=3)
         assignments.append(a)  
     result = []
     for z in assignments:
-        s = '%s%s = %s ;' % (self.indent,a,e)
+        s = '%s%s = %s ;\n' % (self.indent,a,e)
         result.append(s)
         
     return ''.join(result)
         
-    
     # nodes a list of assignment targets, one per equal sign 
     # expr the value being assigned 
 </t>
@@ -2078,24 +2076,14 @@ compiler.walk(ast,visitor,verbose=3)
     
     self.trace(node.expr)
 </t>
-<t tx="ekr.20061204205628.5">def visitBitand (self,node):
-    self.trace()
-    for z in node.nodes:
-        self.visit(z)
-
-def visitBitor (self,node):
-    self.trace()
-    for z in node.nodes:
-        self.visit(z)
-        
-def visitBitxor (self,node):
-    self.trace()
-    for z in node.nodes:
-        self.visit(z)
-</t>
 <t tx="ekr.20061204205628.6">def visitBreak (self,node):
     
-    self.trace()
+    return '%sbreak ;\n' % (self.indent)
+    
+def visitContinue (self,node):
+    
+    return '%scontinue ;\n' % (self.indent)
+
 </t>
 <t tx="ekr.20061204205628.7">def visitCallFunc (self,node):
 
@@ -2159,31 +2147,30 @@ def visitBitxor (self,node):
 </t>
 <t tx="ekr.20061204205628.9">def visitCompare (self,node):
 
-    #self.trace('ops',node.ops)
-    #self.trace('expr',node.expr)
-    
     e = self.visit(node.expr) or '&lt;comp:expr:None&gt;'
-    
     result = ''
     for data in node.ops:
         op,val = data
         # g.trace(op,val)
         val = self.visit(val)
         if result:
-            result = '%s &amp;&amp; %s %s %s' % (result,e,op,val)
+            result = '%s &amp;&amp; (%s %s %s)' % (result,e,op,val)
             e = val
         else:
-            result = '%s %s %s' % (e,op,val)
+            result = '(%s %s %s)' % (e,op,val)
             e = val
             
     return result</t>
 <t tx="ekr.20061204205628.10">def visitConst (self,node):
     
-    return str(node.value)
+    #g.trace(repr(node.value))
+
+    val = node.value
+    if type(val) == type('abc'):
+        return '"%s"' % val
+    else:
+        return str(val)
 </t>
-<t tx="ekr.20061204205628.11">def visitContinue (self,node):
-    
-    self.trace()</t>
 <t tx="ekr.20061204211034">def visitExpression (self,node):
     
     self.trace(node)</t>
@@ -2215,12 +2202,8 @@ def visitBitxor (self,node):
     if theElse: theFor += '%selse {\n%s%s}' % (self.indent,theElse,self.indent)
     return theFor</t>
 <t tx="ekr.20061204211633">def trace (self,*args,**keys):
-    
-    if 1:
-        s = g.callers(3) + ':'
-    else:
-        s = '.' * len(self.stack) + g.callers(3) + ':'
 
+    s = g.callers(3) + ':'
     print '%-15s' % s,
     for arg in args:
         print arg,
@@ -2237,10 +2220,9 @@ def visitBitxor (self,node):
     self.visit(node.expr)
 </t>
 <t tx="ekr.20061204213730.2">def visitGetattr (self,node):
-    
-    if 0:
-        self.trace(node.attrname)
-    return self.visit(node.expr)
+
+    e = self.visit(node.expr)
+    return '%s.%s' % (e,node.attrname)
 </t>
 <t tx="ekr.20061204213730.3">def visitGenExpr (self,node):
 
@@ -2269,8 +2251,6 @@ def visitBitxor (self,node):
 </t>
 <t tx="ekr.20061204214019">def visitIf (self,node):
     
-    # self.trace()
-
     code = []
     for test,block in node.tests:
         test = self.visit(test) or '&lt;if:test:None&gt;'
@@ -2472,10 +2452,9 @@ Yield value
 </t>
 <t tx="ekr.20061205065240">def visitDiv (self,node):
 
-	g.trace()
-    self.visit(node.right)
-    self.visit(node.left)
-</t>
+    rt = self.visit(node.right)
+    lt = self.visit(node.left)
+    return '(%s / %s)' % (lt,rt)</t>
 <t tx="ekr.20061205065240.1">def visitEllipsis (self,node):
 
 	g.trace()
@@ -2487,9 +2466,9 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.3">def visitFloorDiv (self,node):
     
-	g.trace()
-    self.visit(node.right)
-    self.visit(node.left)
+    rt = self.visit(node.right)
+    lt = self.visit(node.left)
+    return '(%s // %s)' % (lt,rt)
 </t>
 <t tx="ekr.20061205065240.4">def visitFrom (self,node):
 
@@ -2505,13 +2484,14 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.7">def visitInvert (self,node):
 
-	g.trace()
-    self.visit(node.expr)
+    e = self.visit(node.expr)
+    return '(! %s)' % (e)
 </t>
 <t tx="ekr.20061205065240.8">def visitKeyword (self,node):
 
 	g.trace(node.name)
-    self.visit(node.expr)
+    e = self.visit(node.expr)
+    return e
 </t>
 <t tx="ekr.20061205065240.9">def visitLambda (self,node):
 
@@ -2523,9 +2503,9 @@ Yield value
  </t>
 <t tx="ekr.20061205065240.10">def visitLeftShift (self,node):
 
-	g.trace()
-    self.visit(node.right)
-    self.visit(node.left)
+    rt = self.visit(node.right)
+    lt = self.visit(node.left)
+    return '(%s &lt;&lt; %s)' % (lt,rt)
 </t>
 <t tx="ekr.20061205065240.11">def visitList (self,node):
 
@@ -2556,9 +2536,9 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.15">def visitMod (self,node):
 
-	g.trace()
-    self.visit(node.right)
-    self.visit(node.left)
+    rt = self.visit(node.right)
+    lt = self.visit(node.left)
+    return '(%s % %s)' % (lt,rt)
 </t>
 <t tx="ekr.20061205065240.16">if 0:
     def visitModule (self,node):
@@ -2569,13 +2549,11 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.17">def visitMul (self,node):
 
-	g.trace()
-    self.visit(node.right)
-    self.visit(node.left)</t>
+    rt = self.visit(node.right)
+    lt = self.visit(node.left)
+    return '(%s * %s)' % (lt,rt)</t>
 <t tx="ekr.20061205065240.18">def visitName (self,node):
-    
-    # g.trace(node)
-    
+
     if node.name:
         return str(node.name) or '&lt;Name:None&gt;'
     else:
@@ -2583,14 +2561,8 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.19">def visitNot (self,node):
 
-	g.trace()
-    self.visit(node.expr)
-</t>
-<t tx="ekr.20061205065240.20">def visitOr (self,node):
-
-	g.trace()
-	for z in node.nodes:
-		self.visit(z)
+    e = self.visit(node.expr)
+    return '(not %s)' % (e)
 </t>
 <t tx="ekr.20061205065240.21">def visitPass (self,node):
     
@@ -2598,9 +2570,9 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.22">def visitPower (self,node):
 
-	g.trace()
-    self.visit(node.right)
-    self.visit(node.left)
+    rt = self.visit(node.right)
+    lt = self.visit(node.left)
+    return '(%s ** %s)' % (lt,rt)
 </t>
 <t tx="ekr.20061205065240.23">def visitPrint (self,node):
 
@@ -2627,9 +2599,9 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.26">def visitRightShift (self,node):
     
-	g.trace()
-    self.visit(node.right)
-    self.visit(node.left)
+    rt = self.visit(node.right)
+    lt = self.visit(node.left)
+    return '(%s &gt;&gt; %s)' % (lt,rt)
  </t>
 <t tx="ekr.20061205065240.27">def visitSlice (self,node):
     
@@ -2648,9 +2620,9 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.30">def visitSub (self,node):
  
-	g.trace()
-    self.visit(node.right)
-    self.visit(node.left)
+    rt = self.visit(node.right)
+    lt = self.visit(node.left)
+    return '(%s - %s)' % (lt,rt)
 </t>
 <t tx="ekr.20061205065240.31">def visitSubscript (self,node):
     
@@ -2679,18 +2651,18 @@ Yield value
 <t tx="ekr.20061205065240.34">def visitTuple (self,node):
 
 	g.trace()
+
 	for z in node.nodes:
 		self.visit(z)
 </t>
 <t tx="ekr.20061205065240.35">def visitUnaryAdd (self,node):
 
-	g.trace()
-    self.visit(node.expr)
-</t>
+	e = self.visit(node.expr)
+    return e</t>
 <t tx="ekr.20061205065240.36">def visitUnarySub (self,node):
     
-	g.trace()
-    self.visit(node.expr)
+    e = self.visit(node.expr)
+    return '(-%s)' % (e)
 </t>
 <t tx="ekr.20061205065240.37">def visitWhile (self,node):
 
@@ -2730,6 +2702,33 @@ def pop (self):
         g.trace('can not happen')
     
     self.indent = ' ' * (4 *len(self.stack))</t>
-<t tx="ekr.20061205124252"></t>
+<t tx="ekr.20061205140652"></t>
+<t tx="ekr.20061205140652.1"></t>
+<t tx="ekr.20061205140652.2"></t>
+<t tx="ekr.20061205140652.4"></t>
+<t tx="ekr.20061205140652.5"></t>
+<t tx="ekr.20061205140652.6"></t>
+<t tx="ekr.20061205140652.7"></t>
+<t tx="ekr.20061205141200"></t>
+<t tx="ekr.20061205142616">def visitAnd (node):            return self.nary(node,'&amp;&amp;')
+def visitBitand (self,node):    return self.nary(node,'&amp;')
+def visitBitor (self,node):     return self.nary(node,'|')
+def visitBitxor (self,node):    return self.nary(node,'^')
+def visitOr (self,node):        return self.nary(node,'||')
+
+def nary(self,node,op):
+    result = ''
+    for z in node.nodes:
+        e = self.visit(z)
+        if result:
+            result = '(%s %s %s)' % (result,e,op)
+        else:
+            result = e
+    return result
+
+
+</t>
+<t tx="ekr.20061205143033"></t>
+<t tx="ekr.20061205143033.1"></t>
 </tnodes>
 </leo_file>
