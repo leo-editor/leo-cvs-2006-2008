@@ -2,14 +2,14 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.275510204082">
-	<global_window_position top="92" left="269" height="686" width="870"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="12" left="269" height="927" width="987"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20061203113554" a="TV"><vh>Docs</vh>
+<v t="ekr.20061203113554"><vh>Docs</vh>
 <v t="ekr.20061204080441"><vh>Posting1: py2cpp</vh>
 <v t="ekr.20061203114036"><vh>Intro</vh></v>
 <v t="ekr.20061203114036.1"><vh>Separating translated code</vh></v>
@@ -21,6 +21,11 @@
 </v>
 <v t="ekr.20061204080441.1"><vh>ShedSkin speedup</vh></v>
 <v t="ekr.20061204080441.2"><vh>Posting 2: Inside the bubble</vh></v>
+<v t="ekr.20061204150444"><vh>Minimal overhead to cross the bubble</vh></v>
+<v t="ekr.20061204151040"><vh>@url http://docs.python.org/ext/intro.html  (start of discussion about extending)</vh></v>
+<v t="ekr.20061204163347"><vh>@url http://docs.python.org/ext/refcounts.html</vh></v>
+<v t="ekr.20061204163347.1"><vh>Allocating objects dynamically</vh></v>
+<v t="ekr.20061204163347.2"><vh>Minimal type</vh></v>
 </v>
 <v t="ekr.20061203123201"><vh>c2py  (reference)</vh>
 <v t="ekr.20061203123201.1"><vh>&lt;&lt; what c2py does &gt;&gt;</vh></v>
@@ -108,7 +113,13 @@
 </v>
 </v>
 </v>
-<v t="ekr.20061203123249" a="E"><vh>@button py2cpp</vh>
+<v t="ekr.20061204183830"><vh>pypy compiler (reference)</vh></v>
+<v t="ekr.20061204183908" a="V"><vh>Recursive import script</vh>
+<v t="ekr.20061204183908.1"><vh>importFiles</vh></v>
+<v t="ekr.20061204183908.2"><vh>importDir</vh></v>
+<v t="ekr.20061204183908.3"><vh>createLastChildOf</vh></v>
+</v>
+<v t="ekr.20061203123249"><vh>@button py2cpp</vh>
 <v t="ekr.20061203131351"><vh>class controllerClass</vh>
 <v t="ekr.20061203131351.1"><vh>ctor</vh></v>
 <v t="ekr.20061203131351.2"><vh>findCode</vh></v>
@@ -116,6 +127,42 @@
 <v t="ekr.20061203131351.3"><vh>parse</vh></v>
 <v t="ekr.20061203131351.4"><vh>gen</vh></v>
 <v t="ekr.20061203131351.5"><vh>put</vh></v>
+</v>
+</v>
+<v t="ekr.20061204195153" a="E"><vh>@button ast</vh>
+<v t="ekr.20061204195419"><vh>class ASTVisitor</vh>
+<v t="ekr.20061204195419.2"><vh>__init__</vh></v>
+<v t="ekr.20061204211633"><vh>trace</vh></v>
+<v t="ekr.20061204203241.2"><vh>visit...</vh></v>
+<v t="ekr.20061204205000"><vh>visitAdd</vh></v>
+<v t="ekr.20061204205000.1"><vh>visitAnd</vh></v>
+<v t="ekr.20061204205000.2"><vh>visitAssAttr</vh></v>
+<v t="ekr.20061204205628.1"><vh>visitAssert</vh></v>
+<v t="ekr.20061204205628.2"><vh>visitAssign</vh></v>
+<v t="ekr.20061204205000.3"><vh>visitAssList</vh></v>
+<v t="ekr.20061204205000.4"><vh>visitAssName</vh></v>
+<v t="ekr.20061204205628"><vh>visitAssTuple</vh></v>
+<v t="ekr.20061204205628.3"><vh>visitAugAssign</vh></v>
+<v t="ekr.20061204205628.4"><vh>visitBackquote</vh></v>
+<v t="ekr.20061204205628.5"><vh>visitBitand/or/xor</vh></v>
+<v t="ekr.20061204205628.6"><vh>visitBreak</vh></v>
+<v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
+<v t="ekr.20061204205628.8"><vh>visitClass</vh></v>
+<v t="ekr.20061204205628.9"><vh>visitCompare</vh></v>
+<v t="ekr.20061204205628.10"><vh>visitConst</vh></v>
+<v t="ekr.20061204205628.11"><vh>visitContinue</vh></v>
+<v t="ekr.20061204211034"><vh>visitExpression</vh></v>
+<v t="ekr.20061204211034.1"><vh>visitFor</vh></v>
+<v t="ekr.20061204203241.1"><vh>visitFunction</vh></v>
+<v t="ekr.20061204213730.3"><vh>visitGenExpr</vh></v>
+<v t="ekr.20061204213730.4"><vh>visitGenExprFor</vh></v>
+<v t="ekr.20061204213730"><vh>visitGenExprIf</vh></v>
+<v t="ekr.20061204213730.1"><vh>visitGenExprInner</vh></v>
+<v t="ekr.20061204213730.2"><vh>visitGetattr</vh></v>
+<v t="ekr.20061204205000.5"><vh>visitReturn</vh></v>
+<v t="ekr.20061204202104"><vh>visitStmt</vh></v>
+<v t="ekr.20061204214019"><vh>visitIf</vh></v>
+<v t="ekr.20061204214019.1"><vh>NewHeadline</vh></v>
 </v>
 </v>
 </vnodes>
@@ -1534,5 +1581,642 @@ allocation is to move the vnode and tnode classes inside the bubble.
 
 EKR
 </t>
+<t tx="ekr.20061204150444">@color
+@language c
+
+static PyObject *
+spam_system(PyObject *self, PyObject *args)
+{
+    const char *command; int sts;
+    if (!PyArg_ParseTuple(args, "s", &amp;command)) return NULL;
+    sts = system(command);
+    return Py_BuildValue("i", sts);
+}
+
+static PyMethodDef SpamMethods[] = {
+
+    {"system",  spam_system, METH_VARARGS,"Execute a shell command."},
+    {NULL, NULL, 0, NULL} // Sentinel
+};
+
+// Python calls initspam when importing module spam for the first time.
+// The init function should be the only non-static item defined in the module file.
+PyMODINIT_FUNC
+initspam(void)
+{
+    (void) Py_InitModule("spam", SpamMethods);
+}
+
+@
+The self argument is only used when the C function implements a built-in method,
+not a function. In the example, self will always be a NULL pointer, since we are
+defining a function, not a method. (This is done so that the interpreter doesn't
+have to understand two different types of C functions.)
+
+The args argument will be a pointer to a Python tuple object containing the
+arguments. Each item of the tuple corresponds to an argument in the call's
+argument list. The arguments are Python objects -- in order to do anything with
+them in our C function we have to convert them to C values. The function
+PyArg_ParseTuple() in the Python API checks the argument types and converts them
+to C values. It uses a template string to determine the required types of the
+arguments as well as the types of the C variables into which to store the
+converted values. More about this later.
+
+PyArg_ParseTuple() returns true (nonzero) if all arguments have the right type
+and its components have been stored in the variables whose addresses are passed.
+It returns false (zero) if an invalid argument list was passed. In the latter
+case it also raises an appropriate exception so the calling function can return
+NULL immediately (as we saw in the example).</t>
+<t tx="ekr.20061204151040"></t>
+<t tx="ekr.20061204163347"></t>
+<t tx="ekr.20061204163347.1">@
+Nobody ``owns'' an object; however, you can own a reference to an object. 
+
+For lifetimes, we simple need to create a permanent reference to the object to ensure it is never deallocated.</t>
+<t tx="ekr.20061204163347.2">@color
+@language c
+
+#include &lt;Python.h&gt;
+#include "structmember.h"
+
+typedef struct {
+    PyObject_HEAD
+    PyObject *first; /* first name */
+    PyObject *last;  /* last name */
+    int number;
+} Noddy;
+
+static void
+Noddy_dealloc(Noddy* self)
+{
+    Py_XDECREF(self-&gt;first);
+    Py_XDECREF(self-&gt;last);
+    self-&gt;ob_type-&gt;tp_free((PyObject*)self);
+}
+
+static PyObject *
+Noddy_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    Noddy *self;
+    self = (Noddy *)type-&gt;tp_alloc(type, 0);
+    if (self != NULL) {
+        self-&gt;first = PyString_FromString("");
+        if (self-&gt;first == NULL){ Py_DECREF(self); return NULL; }
+        self-&gt;last = PyString_FromString("");
+        if (self-&gt;last == NULL) { Py_DECREF(self); return NULL; }
+        self-&gt;number = 0;
+    }
+    return (PyObject *)self;
+}
+
+static int
+Noddy_init(Noddy *self, PyObject *args, PyObject *kwds)
+{
+    PyObject *first=NULL, *last=NULL, *tmp;
+    static char *kwlist[] = {"first", "last", "number", NULL};
+    if (! PyArg_ParseTupleAndKeywords(args, kwds, "|OOi", kwlist, &amp;first, &amp;last, &amp;self-&gt;number))
+        return -1;
+    if (first) {
+        tmp = self-&gt;first;   Py_INCREF(first);
+        self-&gt;first = first; Py_XDECREF(tmp);
+    }
+    if (last) {
+        tmp = self-&gt;last;  Py_INCREF(last);
+        self-&gt;last = last; Py_XDECREF(tmp);
+    }
+    return 0;
+}
+
+//// Make ivars visible.
+// Could we use thunks here?  
+static PyMemberDef Noddy_members[] = {
+    {"first",  T_OBJECT_EX, offsetof(Noddy, first), 0,"first name"},
+    {"last",   T_OBJECT_EX, offsetof(Noddy, last),  0,"last name"},
+    {"number", T_INT, offsetof(Noddy, number),      0,"noddy number"},
+    {NULL}  /* Sentinel */
+};
+
+static PyObject *
+Noddy_name(Noddy* self)
+{
+    static PyObject *format = NULL;
+    PyObject *args, *result;
+    if (format == NULL) {
+        format = PyString_FromString("%s %s");
+        if (format == NULL) return NULL;}
+    if (self-&gt;first == NULL) { PyErr_SetString(PyExc_AttributeError, "first"); return NULL;}
+    if (self-&gt;last  == NULL) { PyErr_SetString(PyExc_AttributeError, "last");  return NULL;}
+    args = Py_BuildValue("OO", self-&gt;first, self-&gt;last);
+    if (args == NULL) return NULL;
+    result = PyString_Format(format, args);
+    Py_DECREF(args);
+    return result;
+}
+
+static PyMethodDef Noddy_methods[] = {
+    {"name", (PyCFunction)Noddy_name, METH_NOARGS,"Return the name"},
+    {NULL}  /* Sentinel */
+};
+
+static PyTypeObject NoddyType = {
+    PyObject_HEAD_INIT(NULL)
+    0,                         /*ob_size: vestigial: should always be 0.*/
+    "noddy.Noddy",             /*tp_name*/
+    sizeof(Noddy),             /*tp_basicsize*/
+    0,                         /*tp_itemsize*/
+    (destructor)Noddy_dealloc, /*tp_dealloc*/
+    0,                         /*tp_print*/
+    0,                         /*tp_getattr*/
+    0,                         /*tp_setattr*/
+    0,                         /*tp_compare*/
+    0,                         /*tp_repr*/
+    0,                         /*tp_as_number*/
+    0,                         /*tp_as_sequence*/
+    0,                         /*tp_as_mapping*/
+    0,                         /*tp_hash */
+    0,                         /*tp_call*/
+    0,                         /*tp_str*/
+    0,                         /*tp_getattro*/
+    0,                         /*tp_setattro*/
+    0,                         /*tp_as_buffer*/
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /*tp_flags*/
+    "Noddy objects",           /* tp_doc */
+    0,		               /* tp_traverse */
+    0,		               /* tp_clear */
+    0,		               /* tp_richcompare */
+    0,		               /* tp_weaklistoffset */
+    0,		               /* tp_iter */
+    0,		               /* tp_iternext */
+    Noddy_methods,             /* tp_methods */
+    Noddy_members,             /* tp_members */
+    0,                         /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc)Noddy_init,      /* tp_init */
+    0,                         /* tp_alloc */
+    Noddy_new,                 /* tp_new */
+};
+
+static PyMethodDef module_methods[] = {
+    {NULL}  /* Sentinel */
+};
+
+#ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
+#define PyMODINIT_FUNC void
+#endif
+PyMODINIT_FUNC
+initnoddy2(void) 
+{
+    PyObject* m;
+    if (PyType_Ready(&amp;NoddyType) &lt; 0) return;
+    m = Py_InitModule3("noddy2", module_methods,"Example module that creates an extension type.");
+    if (m == NULL) return;
+    Py_INCREF(&amp;NoddyType);
+    PyModule_AddObject(m, "Noddy", (PyObject *)&amp;NoddyType);
+}
+</t>
+<t tx="ekr.20061204183830"></t>
+<t tx="ekr.20061204183908"># An example of running this script:
+
+@others
+
+types = (".py",) #,".c",".html",".txt")
+
+dir = "c:/Zope-2.6.2-src/lib/python"
+dir = "c:/Zope-2.6.2-src/lib/Components"
+
+importFiles(dir,types,recursive=True)
+
+g.es("done",color="blue")
+</t>
+<t tx="ekr.20061204183908.1">def importFiles (dir,type=None,kind="@file",recursive=False):
+    
+    v = c.currentVnode()
+
+    # Check the params.
+    if kind != "@file" and kind != "@root":
+        g.es("kind must be @file or @root: " + kind)
+        return
+
+    if not g.os_path_exists(dir):
+        g.es("directory does not exist: " + dir)
+        return
+    
+    c.beginUpdate()
+    try:
+        root = createLastChildOf(v,"imported files")
+        try:
+            importDir (dir,type,kind,recursive,root)
+            root.contract()
+        except:
+            g.es_exception()
+    finally:
+        c.endUpdate()</t>
+<t tx="ekr.20061204183908.2">def importDir (dir,types,kind,recursive,root):
+
+    g.es("dir: " + dir,color="blue")
+    
+    try:
+        files = os.listdir(dir)
+        files2 = [] ; dirs =[]
+        for f in files:
+            path = g.os_path_join(dir,f)
+            if g.os_path_isfile(path):
+                name, ext = g.os_path_splitext(f)
+                if not types or ext in types:
+                    files2.append(path)
+            elif recursive:
+                dirs.append(path)
+        if len(files2) &gt; 0 or len(dirs) &gt; 0:
+            child = createLastChildOf(root,dir)
+            c.selectVnode(child)
+        if len(files2) &gt; 0:
+            c.importCommands.importFilesCommand(files2,kind)
+        if len(dirs) &gt; 0:
+            dirs.sort()
+            for dir in dirs:
+                importDir(dir,types,kind,recursive,child)
+    except:
+        g.es("exception in importFiles script")
+        g.es_exception()
+</t>
+<t tx="ekr.20061204183908.3">def createLastChildOf (v,headline):
+    
+    child = v.insertAsLastChild()
+    child.initHeadString(headline)
+    return child
+</t>
+<t tx="ekr.20061204195153">import compiler
+import pprint
+
+@others
+
+s = '''
+class aClass:
+    def spam(a):
+        for i in xrange(0,2):
+            a = 2+3
+        return 'eggs' #comment
+a = aClass()
+b = a.spam(2)
+if b == 3:
+    c = 1
+'''
+
+print '-' * 20
+pp = pprint.PrettyPrinter(indent=4)
+ast = compiler.parse(s)
+
+# print 'ast',ast
+visitor = ASTVisitor(verbose=3)
+compiler.walk(ast,visitor,verbose=3) 
+</t>
+<t tx="ekr.20061204195419">class ASTVisitor:
+
+	@others
+</t>
+<t tx="ekr.20061204195419.2">def __init__(self,verbose):
+
+    self.node = None
+    self.level = 0
+    self.verbose = verbose
+</t>
+<t tx="ekr.20061204202104">def visitStmt (self,node):
+    
+    self.trace()
+    for z in node.nodes:
+        self.visit(z)
+</t>
+<t tx="ekr.20061204203241.1">def visitFunction(self,node):
+    
+    self.trace(node.name)
+        # 'decorators',node.decorators,
+        # 'name',node.name,
+        # 'argnames',node.argnames,
+        # 'defaults',node.defaults,
+        # 'flags',node.flags,
+        # 'doc',node.doc,
+        # 'code',node.code,
+
+    for z in node.code:
+        self.visit(z)</t>
+<t tx="ekr.20061204203241.2">@nocolor
+@
+
+Decorators nodes List of function decorator expressions 
+
+Dict items  
+
+Discard expr  
+
+Div left  
+ right  
+
+Ellipsis   
+
+Exec expr  
+ locals  
+ globals  
+
+FloorDiv left  
+ right  
+
+From modname  
+ names  
+
+Global names  
+
+Import names  
+
+Invert expr  
+
+Keyword name  
+ expr  
+
+Lambda argnames  
+ defaults  
+ flags  
+ code  
+
+LeftShift left  
+ right  
+
+List nodes  
+
+ListComp expr  
+ quals  
+
+ListCompFor assign  
+ list  
+ ifs  
+
+ListCompIf test  
+
+Mod left  
+ right  
+
+Module doc doc string, a string or None 
+ node body of the module, a Stmt 
+
+Mul left  
+ right  
+
+Name name  
+
+Not expr  
+
+Or nodes  
+
+Pass   
+
+Power left  
+ right  
+
+Print nodes  
+ dest  
+
+Printnl nodes  
+ dest  
+
+Raise expr1  
+ expr2  
+ expr3   
+
+RightShift left  
+ right  
+
+Slice expr  
+ flags  
+ lower  
+ upper  
+
+Sliceobj nodes list of statements 
+
+Stmt nodes  
+
+Sub left  
+ right  
+
+Subscript expr  
+ flags  
+ subs  
+
+TryExcept body  
+ handlers  
+ else_  
+
+TryFinally body  
+ final  
+
+Tuple nodes  
+
+UnaryAdd expr  
+
+UnarySub expr  
+
+While test  
+ body  
+ else_  
+
+With expr  
+ vars  
+ body  
+
+Yield value</t>
+<t tx="ekr.20061204205000">def visitAdd (self,node):
+
+    self.trace() # left/right operands
+    self.visit(node.right)
+    self.visit(node.right)
+</t>
+<t tx="ekr.20061204205000.1">def visitAnd (node):
+
+    self.trace()
+    for z in node.nodes:
+        self.visit(z)
+
+</t>
+<t tx="ekr.20061204205000.2">def visitAssAttr(self,node):  #attribute as target of assignment
+
+    self.trace(node.attrname,node.flags)
+    self.visit(node.expr)
+    #expr expression on the left-hand side of the dot 
+
+</t>
+<t tx="ekr.20061204205000.3">def visitAssList(self,node):
+    
+    self.trace()
+    for z in node.nodes:
+        self.visit(z)
+</t>
+<t tx="ekr.20061204205000.4">def visitAssName(self,node): # name name being assigned to
+
+    self.trace(node.name,node.flags)
+    
+</t>
+<t tx="ekr.20061204205000.5">def visitReturn (self,node):
+
+    self.trace(node.value)</t>
+<t tx="ekr.20061204205628">def visitAssTuple (self,node):
+    
+    self.trace()
+    for z in node.nodes:
+        self.visit(z)</t>
+<t tx="ekr.20061204205628.1">def visitAssert (self,node):
+    
+    self.trace(node.test,node.fail)
+        # test the expression to be tested 
+        # fail the value of the AssertionError 
+</t>
+<t tx="ekr.20061204205628.2">def visitAssign (self,node):
+    
+    self.trace(node.expr)
+    for z in node.nodes:
+        self.visit(z)
+    
+    # nodes a list of assignment targets, one per equal sign 
+    # expr the value being assigned 
+</t>
+<t tx="ekr.20061204205628.3">def visitAugAssign (self,node):
+    
+    self.trace(node.op,node.expr)
+    self.visit(node.node)
+</t>
+<t tx="ekr.20061204205628.4">def visitBackquote (self,node):
+    
+    self.trace(node.expr)
+</t>
+<t tx="ekr.20061204205628.5">def visitBitand (self,node):
+    self.trace()
+    for z in node.nodes:
+        self.visit(z)
+
+def visitBitor (self,node):
+    self.trace()
+    for z in node.nodes:
+        self.visit(z)
+        
+def visitBitxor (self,node):
+    self.trace()
+    for z in node.nodes:
+        self.visit(z)
+</t>
+<t tx="ekr.20061204205628.6">def visitBreak (self,node):
+    
+    self.trace()
+</t>
+<t tx="ekr.20061204205628.7">def visitCallFunc (self,node):
+
+    self.trace(node.args,node.star_args,node.dstar_args)
+        #node expression for the callee 
+        #args a list of arguments 
+        #star_args the extended *-arg value 
+        #dstar_args the extended **-arg value
+    self.visit(node.node)
+</t>
+<t tx="ekr.20061204205628.8">def visitClass (self,node):
+
+    self.trace(node.name,'bases',node.bases)
+
+    self.level += 1
+    if node.doc:
+        self.visit(node.doc)
+    for node in node.code:
+        self.visit(node)
+    self.level -= 1
+    
+    #name the name of the class, a string 
+    #bases a list of base classes 
+    #doc doc string, a string or None 
+    #code the body of the class statement 
+</t>
+<t tx="ekr.20061204205628.9">def visitCompare (self,node):
+
+    self.trace(node.ops)
+    self.visit(node.expr)
+</t>
+<t tx="ekr.20061204205628.10">def visitConst (self,node):
+    
+    self.trace(node.value)
+</t>
+<t tx="ekr.20061204205628.11">def visitContinue (self,node):
+    
+    self.trace()</t>
+<t tx="ekr.20061204211034">def visitExpression (self,node):
+    
+    self.trace(node)</t>
+<t tx="ekr.20061204211034.1">def visitFor (self,node):
+    
+    self.trace()
+    self.level += 1
+    
+    #self.trace('assign')
+    self.visit(node.assign)
+    
+    #self.trace('list')
+    self.visit(node.list)
+
+    #self.trace('body')
+    for z in node.body:
+        self.visit(z)
+
+    if node.else_:
+        #self.trace('else_')
+        self.visit(node.else_)
+        
+    self.level -= 1
+    #self.trace('end for')
+</t>
+<t tx="ekr.20061204211633">def trace (self,*args,**keys):
+    
+    s = '.' * self.level + g.callers(3) + ':'
+    print '%-15s' % s,
+    for arg in args:
+        print arg,
+    print
+</t>
+<t tx="ekr.20061204213730">def visitGenExprIf (self,node):
+    
+    self.trace()
+    self.visit(node.test)
+</t>
+<t tx="ekr.20061204213730.1">def visitGenExprInner (self,node):
+    
+    g.trace(node.quals)
+    self.visit(node.expr)
+</t>
+<t tx="ekr.20061204213730.2">def visitGetattr (self,node):
+    
+    self.trace(attrname)
+    self.visit(node.expr)
+</t>
+<t tx="ekr.20061204213730.3">def visitGenExpr (self,node):
+
+    g.trace()
+    for z in node.code:
+        self.visit(z)
+</t>
+<t tx="ekr.20061204213730.4">def visitGenExprFor (self,node):
+    
+    g.trace()
+    self.visit(node.assign)
+    if node.iter:
+        self.visit(node.iter)
+    if node.ifs:
+        self.visit(node.ifs)
+</t>
+<t tx="ekr.20061204214019">def visitIf (self,node):
+    
+    self.trace()
+    for a,b in node.tests:
+        self.visit(a)
+        self.visit(b)
+    if node.else_:
+        self.visit(node.else_)
+</t>
+<t tx="ekr.20061204214019.1"></t>
 </tnodes>
 </leo_file>
