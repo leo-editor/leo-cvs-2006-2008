@@ -113,7 +113,6 @@
 </v>
 </v>
 </v>
-<v t="ekr.20061204183830"><vh>pypy compiler (reference)</vh></v>
 <v t="ekr.20061204183908"><vh>Recursive import script</vh>
 <v t="ekr.20061204183908.1"><vh>importFiles</vh></v>
 <v t="ekr.20061204183908.2"><vh>importDir</vh></v>
@@ -133,7 +132,7 @@
 <v t="ekr.20061205064845"><vh>&lt;&lt; define s &gt;&gt;</vh></v>
 <v t="ekr.20061205064845.1"><vh>mungeBody</vh></v>
 </v>
-<v t="ekr.20061204195153" a="V"><vh>@button ast</vh>
+<v t="ekr.20061204195153"><vh>@button ast</vh>
 <v t="ekr.20061204195419" a="E"><vh>class ASTVisitor</vh>
 <v t="ekr.20061204195419.2"><vh>__init__</vh></v>
 <v t="ekr.20061205073149"><vh>push &amp; pop</vh></v>
@@ -209,6 +208,7 @@
 <v t="ekr.20061205065240.38"><vh>visitWith</vh></v>
 </v>
 </v>
+<v t="ekr.20061205124252" a="TV"><vh>Recent</vh>
 <v t="ekr.20061204214019"><vh>visitIf</vh></v>
 <v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
 <v t="ekr.20061204211034.1"><vh>visitFor</vh></v>
@@ -217,6 +217,7 @@
 <v t="ekr.20061204205628.2"><vh>visitAssign</vh></v>
 <v t="ekr.20061204205628.8"><vh>visitClass</vh></v>
 <v t="ekr.20061204203241.1"><vh>visitFunction</vh></v>
+</v>
 </vnodes>
 <tnodes>
 <t tx="ekr.20061203113554">@nocolor
@@ -1830,7 +1831,6 @@ initnoddy2(void)
     PyModule_AddObject(m, "Noddy", (PyObject *)&amp;NoddyType);
 }
 </t>
-<t tx="ekr.20061204183830"></t>
 <t tx="ekr.20061204183908"># An example of running this script:
 
 @others
@@ -2730,5 +2730,6 @@ def pop (self):
         g.trace('can not happen')
     
     self.indent = ' ' * (4 *len(self.stack))</t>
+<t tx="ekr.20061205124252"></t>
 </tnodes>
 </leo_file>
