@@ -138,7 +138,7 @@
 <v t="ekr.20061205071853"><vh>&lt;&lt; define s &gt;&gt;</vh></v>
 <v t="ekr.20061204195419" a="E"><vh>class ASTVisitor</vh>
 <v t="ekr.20061204195419.2"><vh>__init__</vh></v>
-<v t="ekr.20061205073149" a="TV"><vh>push &amp; pop</vh></v>
+<v t="ekr.20061205073149"><vh>push &amp; pop</vh></v>
 <v t="ekr.20061204211633"><vh>trace</vh></v>
 <v t="ekr.20061204205000"><vh>visitAdd</vh></v>
 <v t="ekr.20061204205000.1"><vh>visitAnd</vh></v>
@@ -152,8 +152,8 @@
 <v t="ekr.20061204205628.4"><vh>visitBackquote</vh></v>
 <v t="ekr.20061204205628.5"><vh>visitBitand/or/xor</vh></v>
 <v t="ekr.20061204205628.6"><vh>visitBreak</vh></v>
-<v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
 <v t="ekr.20061204205628.8"><vh>visitClass</vh></v>
+<v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
 <v t="ekr.20061204205628.9"><vh>visitCompare</vh></v>
 <v t="ekr.20061204205628.10"><vh>visitConst</vh></v>
 <v t="ekr.20061204205628.11"><vh>visitContinue</vh></v>
@@ -174,7 +174,7 @@
 <v t="ekr.20061204213730.1"><vh>visitGenExprInner</vh></v>
 <v t="ekr.20061204213730.2"><vh>visitGetattr</vh></v>
 <v t="ekr.20061205065240.5"><vh>visitGlobal</vh></v>
-<v t="ekr.20061204214019"><vh>visitIf</vh></v>
+<v t="ekr.20061204214019" a="TV"><vh>visitIf</vh></v>
 <v t="ekr.20061205065240.6"><vh>visitImport</vh></v>
 <v t="ekr.20061205065240.7"><vh>visitInvert</vh></v>
 <v t="ekr.20061205065240.8"><vh>visitKeyword</vh></v>
@@ -1919,7 +1919,10 @@ compiler.walk(ast,visitor,verbose=3)
 
     self.node = None
     self.verbose = verbose
+    self.classStack = []
+    self.defStack = []
     self.stack = []
+    self.indent = ''
 </t>
 <t tx="ekr.20061204202104">def visitStmt (self,node):
     
@@ -1927,13 +1930,23 @@ compiler.walk(ast,visitor,verbose=3)
 
     self.push()
 
+    result = []
     for z in node.nodes:
-        self.visit(z)
+        s = self.visit(z) or '&lt;Stmt:Node:None&gt;'
+        result.append(s)
 
-    self.pop()</t>
+    self.pop()
+    
+    result = ''.join(result) or '&lt;Stmt: None&gt;'
+    theStmt = '%s%s\n' % (self.indent,result)
+    
+    if not self.classStack and not self.defStack:
+        print theStmt
+    
+    return theStmt</t>
 <t tx="ekr.20061204203241.1">def visitFunction(self,node):
     
-    self.trace(node.name)
+    # self.trace(node.name)
         # 'decorators',node.decorators,
         # 'name',node.name,
         # 'argnames',node.argnames,
@@ -1943,18 +1956,32 @@ compiler.walk(ast,visitor,verbose=3)
         # 'code',node.code,
         
     self.push()
+    self.defStack.append(node.name)
 
+    result = []
     for z in node.code:
-        self.visit(z)
-        
-    self.pop()</t>
+        s = self.visit(z)
+        result.append(s)
+
+    name = self.defStack.pop()
+    assert name == node.name,'visitFunction: expected %s, got %s' % (node.name,name)
+    self.pop()
+    
+    result = [z for z in result if z is not None]
+    # g.trace('result',result)
+    result = ''.join(result) or '&lt;Func:None&gt;'
+    theFunc = '%sdef %s:\n%s\n' % (self.indent,node.name,result)
+    if not self.classStack:
+        print theFunc
+    return theFunc</t>
 <t tx="ekr.20061204205000">def visitAdd (self,node):
 
-    self.trace() # left/right operands
+    # self.trace() # left/right operands
     self.push()
-    self.visit(node.right)
-    self.visit(node.right)
+    rt = self.visit(node.right) or '&lt;None&gt;'
+    lt = self.visit(node.right) or '&lt;None&gt;'
     self.pop()
+    return '%s + %s\n' % (lt,rt)
 </t>
 <t tx="ekr.20061204205000.1">def visitAnd (node):
 
@@ -1966,24 +1993,35 @@ compiler.walk(ast,visitor,verbose=3)
 <t tx="ekr.20061204205000.2">def visitAssAttr(self,node):  #attribute as target of assignment
 
     self.trace(node.attrname,node.flags)
-    self.visit(node.expr)
-    #expr expression on the left-hand side of the dot 
+    e = self.visit(node.expr) or '&lt;None&gt;'
+    #expr expression on the left-hand side of the dot
+    
+    return '%s%s = %s' % (self.indent,node.attrname,e)
 
 </t>
 <t tx="ekr.20061204205000.3">def visitAssList(self,node):
     
-    self.trace()
+    # self.trace()
+    
+    result = []
     for z in node.nodes:
-        self.visit(z)
+        a = self.visit(z) or '&lt;None&gt;'
+        result.append(a)
+        
+    return ''.join(result) or '&lt;assnList: None&gt;'
 </t>
-<t tx="ekr.20061204205000.4">def visitAssName(self,node): # name name being assigned to
-
-    self.trace(node.name,node.flags)
+<t tx="ekr.20061204205000.4">def visitAssName(self,node):
+    
+    # name name being assigned to
+    # self.trace(node.name,node.flags)
+    
+    return node.name
     
 </t>
 <t tx="ekr.20061204205000.5">def visitReturn (self,node):
 
-    self.trace(node.value)</t>
+    val = self.visit(node.value) or '&lt;ret:None&gt;'
+    return '%sreturn %s' % (self.indent,val)</t>
 <t tx="ekr.20061204205628">def visitAssTuple (self,node):
     
     self.trace()
@@ -1997,9 +2035,19 @@ compiler.walk(ast,visitor,verbose=3)
 </t>
 <t tx="ekr.20061204205628.2">def visitAssign (self,node):
     
-    self.trace(node.expr)
+    # self.trace()
+    assignments = []
+    e = self.visit(node.expr)
     for z in node.nodes:
-        self.visit(z)
+        a = self.visit(z)
+        assignments.append(a)  
+    result = []
+    for z in assignments:
+        s = '%s%s = %s\n' % (self.indent,a,e)
+        result.append(s)
+        
+    return ''.join(result)
+        
     
     # nodes a list of assignment targets, one per equal sign 
     # expr the value being assigned 
@@ -2034,35 +2082,75 @@ def visitBitxor (self,node):
 </t>
 <t tx="ekr.20061204205628.7">def visitCallFunc (self,node):
 
-    self.trace(node.args,node.star_args,node.dstar_args)
+    self.trace(node.args,'*args',node.star_args,'**args',node.dstar_args)
         #node expression for the callee 
         #args a list of arguments 
         #star_args the extended *-arg value 
         #dstar_args the extended **-arg value
-    self.visit(node.node)
+    
+    g.trace(node.node)
+    
+    args = []
+    if node.args:
+        for z in node.args:
+            s = self.visit(z) or '&lt;arg:None&gt;'
+            args.append(s)
+        args = ','.join(args)
+    star_args = []
+    if node.star_args:
+        for z in node.star_args:
+            s = self.visit(z) or '&lt;*arg:None&gt;'
+            star_args.append(s)
+        star_args = ','.join(star_args)
+    dstar_args = []
+    if node.dstar_args:
+        for z in node.dstar_args:
+            s = self.visit(z) or '&lt;**arg:None&gt;'
+            dstar_args.append(s)
+    dstar_args = ','.join(dstar_args)
+
+    name = self.visit(node.node) or '&lt;call:None&gt;'
+    
+    theCall = '%s%s(args)\n' % (self.indent,name) ### To do: *args, **args
+    return theCall
 </t>
 <t tx="ekr.20061204205628.8">def visitClass (self,node):
 
     self.trace(node.name,'bases',node.bases)
 
     self.push()
+    self.classStack.append(node.name)
+    
     if node.doc:
         self.visit(node.doc)
-    for node in node.code:
-        self.visit(node)
+        
+    result = []
+    for z in node.code:
+        s = self.visit(z)
+        result.append(s)
+
+    name = self.classStack.pop()
+    assert name == node.name,'visitClass: expected %s, got %s' % (node.name,name)
     self.pop()
 
     #doc doc string, a string or None 
-    #code the body of the class statement 
+    #code the body of the class statement
+    
+    result = ''.join(result) or '&lt;Class:None&gt;'
+    theClass = '%sclass %s:\n%s\n' % (self.indent,node.name,result)
+    print theClass
+    return theClass
 </t>
 <t tx="ekr.20061204205628.9">def visitCompare (self,node):
 
     self.trace(node.ops)
+    
+    
     self.visit(node.expr)
 </t>
 <t tx="ekr.20061204205628.10">def visitConst (self,node):
     
-    self.trace(node.value)
+    return str(node.value)
 </t>
 <t tx="ekr.20061204205628.11">def visitContinue (self,node):
     
@@ -2074,19 +2162,38 @@ def visitBitxor (self,node):
     
     self.trace()
     
+    
+    theAssn = self.visit(node.assign) or '&lt;for:assn:None&gt;'
+    theList = self.visit(node.list) or '&lt;for:list:None&gt;'
+    
     self.push()
-    self.visit(node.assign)
-    self.visit(node.list)
+    
+    body = []
     for z in node.body:
-        self.visit(z)
-    if node.else_:
-        self.visit(node.else_)
-        
+        s = self.visit(z) or '&lt;for:None&gt;'
+        body.append(s)
+    body = ''.join(body)
+    
     self.pop()
-</t>
+    
+    theElse = node.else_ and self.visit(node.else_) or None
+    theElseTrace = theElse or '&lt;for:else:None&gt;'
+        
+    g.trace('assn',theAssn)
+    g.trace('list',theList)
+    #g.trace(body)
+    #g.trace(theElse)
+
+    theFor = '%sfor:\n%s' % (self.indent,body)
+    if theElse: theFor += '%selse:\n%s' % (self.indent,theElse)
+    return theFor</t>
 <t tx="ekr.20061204211633">def trace (self,*args,**keys):
     
-    s = '.' * len(self.stack) + g.callers(3) + ':'
+    if 1:
+        s = g.callers(3) + ':'
+    else:
+        s = '.' * len(self.stack) + g.callers(3) + ':'
+
     print '%-15s' % s,
     for arg in args:
         print arg,
@@ -2113,14 +2220,19 @@ def visitBitxor (self,node):
     
     self.push()
 
+    result = []
     for z in node.code:
-        self.visit(z)
+        s = self.visit(z)
+        result.append(s)
         
     self.pop()
-</t>
+
+    result = ''.join(result) or '&lt;Expr:None&gt;'
+    return result</t>
 <t tx="ekr.20061204213730.4">def visitGenExprFor (self,node):
     
     g.trace()
+
     self.visit(node.assign)
     if node.iter:
         self.visit(node.iter)
@@ -2129,13 +2241,26 @@ def visitBitxor (self,node):
 </t>
 <t tx="ekr.20061204214019">def visitIf (self,node):
     
-    self.trace()
+    self.trace(self.node)
+    
     for a,b in node.tests:
-        self.visit(a)
-        self.visit(b)
-    if node.else_:
-        self.visit(node.else_)
-</t>
+        g.trace('if:a',a)
+        theA = self.visit(a) or '&lt;if:a:None&gt;'
+        #g.trace('if:b',a)
+        #theB = self.visit(b) or '&lt;if:b:None&gt;'
+        
+    self.push()
+        
+    self.pop()
+        
+    theElse = node.else_ and self.visit(node.else_) or None
+    theElseTrace = theElse or '&lt;if:else:None&gt;'
+
+    theIf = '%sif (%s) {\n%s%s}' % (self.indent,theA,theB,self.indent)
+    if theElse:
+        theIf = theIf + '%selse{\n%s\n%s}' % (self,indent,theIf,self.indent)
+    return theIf
+    </t>
 <t tx="ekr.20061204214019.1">def visitDecorators (self,node):
     
     for z in node.nodes:
@@ -2421,8 +2546,13 @@ Yield value
     self.visit(node.right)
     self.visit(node.left)</t>
 <t tx="ekr.20061205065240.18">def visitName (self,node):
-
-	g.trace(node.name)
+    
+    g.trace(node)
+    
+    if node.name:
+        return str(node.name) or '&lt;Name:None&gt;'
+    else:
+        return '&lt;Name:None&gt;'
 </t>
 <t tx="ekr.20061205065240.19">def visitNot (self,node):
 
@@ -2557,12 +2687,16 @@ Yield value
 	for z in node.body:
 		self.visit(z)
 </t>
-<t tx="ekr.20061205071853">test_p = g.findNodeAnywhere(c,'test code')
-test_p = g.findNodeAnywhere(c,'class ASTVisitor')
+<t tx="ekr.20061205071853">if 1:
+    test_p = g.findNodeAnywhere(c,'test code')
+else:
+    test_p = g.findNodeAnywhere(c,'class ASTVisitor')
+
 s = g.getScript (c,test_p,useSelectedText=False,forcePythonSentinels=True,useSentinels=True)
 </t>
 <t tx="ekr.20061205072355">class aClass:
     def spam(a):
+        b = 2
         for i in xrange(0,2):
             a = 2+3
         return 'eggs' #comment
@@ -2575,15 +2709,18 @@ if b == 3:
 <t tx="ekr.20061205073149">def push (self):
     
     name = g.callers(3)
-    g.trace('begin',name)
+    # g.trace('begin',name)
     self.stack.append(name)
+    self.indent = ' ' * (4 *len(self.stack))
     
 def pop (self):
     
     if self.stack:
         name = self.stack.pop()
-        g.trace('end',name)
+        # g.trace('end',name)
     else:
-        g.trace('can not happen')</t>
+        g.trace('can not happen')
+    
+    self.indent = ' ' * (4 *len(self.stack))</t>
 </tnodes>
 </leo_file>
