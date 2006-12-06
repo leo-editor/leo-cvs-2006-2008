@@ -12,18 +12,14 @@
 #@+node:ekr.20061130084909:Priorities
 @nocolor
 
-- Burn Linux CD.
-- Get notebook computer with Linux.
-- Get external hard disk for Linux install.
-- Create pypy study outlines.
+py2cpp: execute hello world c script, create mockup of desired code.
+
 - Improve What's special whitepaper.
     - Answer the question: how can Leo help me with programming.
     
-Later:
-    
 - Finish wx plugin.
-- Create minimal IronPython plugin.
 #@-node:ekr.20061130084909:Priorities
+#@+node:ekr.20061204120501:Fix bugs
 #@+node:ekr.20061127171128:Fix wiki markup bug
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3994218
@@ -99,6 +95,13 @@ def moveUpOrDownHelper (self,event,direction,extend):
     self.extendHelper(w,extend,ins1,spot,setSpot=False)
 #@-node:ekr.20060113105246.1:moveUpOrDownHelper (revise)
 #@-node:ekr.20061127171128:Fix wiki markup bug
+#@+node:ekr.20061202145309:New bug: section references aren't colored properly (if no previous blank line??)
+#@-node:ekr.20061202145309:New bug: section references aren't colored properly (if no previous blank line??)
+#@+node:ekr.20061202145309.1:New bug: select all text in headline *still* does not work
+#@-node:ekr.20061202145309.1:New bug: select all text in headline *still* does not work
+#@+node:ekr.20061204120501.1:Search scripts with \n select too much
+#@-node:ekr.20061204120501.1:Search scripts with \n select too much
+#@-node:ekr.20061204120501:Fix bugs
 #@+node:ekr.20061127170002:Requests
 #@+node:ekr.20061127171616:Experiment with Kent's idea for relative paths
 @nocolor

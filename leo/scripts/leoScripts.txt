@@ -6220,13 +6220,16 @@ if __name__ == "__main__":
     speedTest(2)
 #@nonl
 #@+node:<< what c2py does >>
-@ c2py converts C or C++ text into python text.  The conversion is not complete.  Nevertheless, c2py eliminates much of the tedious text manipulation that would otherwise be required.
+@
+c2py converts C or C++ text into python text. The conversion is not complete.
+Nevertheless, c2py eliminates much of the tedious text manipulation that would
+otherwise be required.
 
-The following is a list of the translations performed by c2py.  These transformations are controlled by convertCodeList().
+The following is a list of the translations performed by convertCodeList:
 
 I.  Prepass
 
-These translations before removing all curly braces.
+These translations happen before removing all curly braces.
 
 Suppose we are translating:
 
@@ -6287,8 +6290,6 @@ Converts if ( x ) to if x:
 Converts elif ( x ) to elif x:
 Converts while ( x ) to while x:
 Converts for ( x ; y ; z ) to for x SEMI y SEMI z:
-
-remove all semicolons.
 
 IV.  Final Pass
 
@@ -6417,8 +6418,6 @@ void vnode::OnPasteNode(wxCommandEvent& WXUNUSED(event))\n\
 }\n" ]
 #@nonl
 #@-node:<< define testData >>
-#@+node:Documentation
-#@-node:Documentation
 #@+node:speedTest
 def speedTest(passes):
 
@@ -6524,7 +6523,10 @@ def convertCodeList1to2(list):
 #@-node:convertCodeList1to2
 #@-node:leo1to2
 #@+node:c2py entry points
-@ We separate the processing into two parts, 1) a leo-aware driver that iterates over @file trees and 2) a text-based part that processes one or more files or strings.
+@ We separate the processing into two parts,
+
+1) a leo-aware driver that iterates over @file trees and
+2) a text-based part that processes one or more files or strings.
 #@+node:convertCurrentTree
 def convertCurrentTree():
 
@@ -6565,8 +6567,7 @@ def convertCFileToPython(file):
 #@nonl
 #@-node:convertCFileToPython
 #@-node:c2py entry points
-#@+node:c2py Top Level
-#@+node:convertCStringToPython
+#@+node:convertCStringToPython & helpers (top level)
 def convertCStringToPython(s, leoFlag):
 
     # print "convertCStringToPython:start\n", s
@@ -6603,8 +6604,7 @@ def convertCStringToPython(s, leoFlag):
     if printFlag: print "-----:\n", result
     return result
 #@nonl
-#@-node:convertCStringToPython
-#@+node:convertCodeList
+#@+node:convertCodeList (main pattern function)
 def convertCodeList(list, firstPart, leoFlag):
     #first
     replace(list, "\r", None)
@@ -6654,7 +6654,7 @@ def convertCodeList(list, firstPart, leoFlag):
     removeTrailingWs(list)
     safeReplace(list, "\t ", "\t") # happens when deleting declarations.
 #@nonl
-#@-node:convertCodeList
+#@-node:convertCodeList (main pattern function)
 #@+node:convertDocList
 def convertDocList(docList):
 
@@ -6700,10 +6700,8 @@ def skipCodePart(codeList, i):
     return i
 #@nonl
 #@-node:skipCodePart
-#@-node:c2py Top Level
-#@+node:removeSentinels
-#@-node:removeSentinels
-#@+node:Scanning & Replacing
+#@-node:convertCStringToPython & helpers (top level)
+#@+node:Scanning & Replacing...
 #@+node:convertLeadingBlanks
 def convertLeadingBlanks(list):
 
@@ -6721,31 +6719,6 @@ def convertLeadingBlanks(list):
         i = skipPastLine(list, i)
 #@nonl
 #@-node:convertLeadingBlanks
-#@+node:findInList
-def findInList(list, i, findStringOrList):
-
-    findList = stringToList(findStringOrList)
-    
-    while i < len(list):
-        if match(list, i, findList): return i
-        else: i += 1
-    return -1
-#@nonl
-#@-node:findInList
-#@+node:findInCode
-def findInCode(codeList, i, findStringOrList):
-
-    findList = stringToList(findStringOrList)
-    
-    while i < len(codeList):
-        if isStringOrComment(codeList,i):
-            i = skipStringOrComment(codeList,i)
-        elif match(codeList, i, findList):
-            return i
-        else: i += 1
-    return -1
-#@nonl
-#@-node:findInCode
 #@+node:mungeAllFunctions
 # We scan for a '{' at the top level that is preceeded by ')'
 # @code and < < x > > = have been replaced by @c
@@ -7062,6 +7035,7 @@ def handleKeyword(codeList,i):
 #@nonl
 #@-node:handleKeyword
 #@-node:handleAllKeywords
+#@+node:isX...
 #@+node:isWs and isWOrNl
 def isWs(c):
     return c == ' ' or c == '\t'
@@ -7088,6 +7062,33 @@ def isStringOrComment(list, i):
     return match(list,i,"'") or match(list,i,'"') or match(list,i,"//") or match(list,i,"/*")
 #@nonl
 #@-node:isStringOrComment
+#@-node:isX...
+#@+node:find... & match...
+#@+node:findInCode
+def findInCode(codeList, i, findStringOrList):
+
+    findList = stringToList(findStringOrList)
+    
+    while i < len(codeList):
+        if isStringOrComment(codeList,i):
+            i = skipStringOrComment(codeList,i)
+        elif match(codeList, i, findList):
+            return i
+        else: i += 1
+    return -1
+#@nonl
+#@-node:findInCode
+#@+node:findInList
+def findInList(list, i, findStringOrList):
+
+    findList = stringToList(findStringOrList)
+    
+    while i < len(list):
+        if match(list, i, findList): return i
+        else: i += 1
+    return -1
+#@nonl
+#@-node:findInList
 #@+node:match
 # returns True if findList matches starting at codeList[i]
 
@@ -7119,22 +7120,8 @@ def matchWord (codeList, i, findStringOrList):
         return not (c in string.letters or c in string.digits or c == '_')
 #@nonl
 #@-node:matchWord
-#@+node:prevNonWsChar and prevNonWsOrNlChar
-def prevNonWsChar(list, i):
-
-    i -= 1
-    while i >= 0 and isWs(list[i]):
-        i -= 1
-    return i
-
-def prevNonWsOrNlChar(list, i):
-
-    i -= 1
-    while i >= 0 and isWsOrNl(list[i]):
-        i -= 1
-    return i
-#@nonl
-#@-node:prevNonWsChar and prevNonWsOrNlChar
+#@-node:find... & match...
+#@+node:remove...
 #@+node:removeAllCComments
 def removeAllCComments(list, delim):
 
@@ -7331,6 +7318,8 @@ def removeTrailingWs(list):
         else: i += 1
 #@nonl
 #@-node:removeTrailingWs
+#@-node:remove...
+#@+node:replace... & safeReplace
 #@+node:replace
 # Replaces all occurances of findString by changeString.
 # Deletes all occurances if change is None
@@ -7419,6 +7408,24 @@ def safeReplace(codeList, findString, changeString):
             else: i += 1
 #@nonl
 #@-node:safeReplace
+#@-node:replace... & safeReplace
+#@+node:skip... & prev...
+#@+node:prevNonWsChar and prevNonWsOrNlChar
+def prevNonWsChar(list, i):
+
+    i -= 1
+    while i >= 0 and isWs(list[i]):
+        i -= 1
+    return i
+
+def prevNonWsOrNlChar(list, i):
+
+    i -= 1
+    while i >= 0 and isWsOrNl(list[i]):
+        i -= 1
+    return i
+#@nonl
+#@-node:prevNonWsChar and prevNonWsOrNlChar
 #@+node:skipCBlockComment
 def skipCBlockComment(codeList, i):
 
@@ -7527,6 +7534,8 @@ def skipWsAndNl(list, i):
     return i
 #@nonl
 #@-node:skipWs and skipWsAndNl
+#@-node:skip... & prev...
+#@+node:stringToList & listToString
 #@+node:stringToList
 # converts a string to a list containing one item per character of the list.
 # converts None to the empty string and leaves other types alone.
@@ -7546,7 +7555,8 @@ def listToString(list):
     return string.join(list,"")
 #@nonl
 #@-node:listToString
-#@-node:Scanning & Replacing
+#@-node:stringToList & listToString
+#@-node:Scanning & Replacing...
 #@-node:c2py  Convert C code to Python syntax
 #@+node:Catch mixed tab & space in derived files
 import glob
@@ -8225,6 +8235,8 @@ for data in missing:
 #@-node:Print missing docstrings
 #@+node:Recursive import script
 # An example of running this script:
+    
+import os
 
 @others
 
@@ -8233,7 +8245,11 @@ types = (".py",) #,".c",".html",".txt")
 dir = "c:/Zope-2.6.2-src/lib/python"
 dir = "c:/Zope-2.6.2-src/lib/Components"
 
-importFiles(dir,types,recursive=True)
+c.beginUpdate()
+try:
+    importFiles(dir,types,recursive=True)
+finally:
+    c.endUpdate()
 
 g.es("done",color="blue")
 #@+node:importFiles

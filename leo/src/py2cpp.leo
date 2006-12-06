@@ -39,6 +39,7 @@
 </v>
 </v>
 <v t="ekr.20061204195153" a="E"><vh>@button py2cpp</vh>
+<v t="ekr.20061205163522"><vh>To do</vh></v>
 <v t="ekr.20061204195419" a="E"><vh>class ASTVisitor</vh>
 <v t="ekr.20061204195419.2"><vh>__init__</vh></v>
 <v t="ekr.20061205140652.6"><vh>Classes, methods &amp; functions</vh>
@@ -47,53 +48,57 @@
 <v t="ekr.20061205065240.9"><vh>visitLambda</vh></v>
 <v t="ekr.20061204214019.1"><vh>visitDecorators</vh></v>
 </v>
+<v t="ekr.20061205163522.1"><vh>Complex (later, or never)</vh>
 <v t="ekr.20061205140652.4"><vh>Generators</vh>
 <v t="ekr.20061204213730.3"><vh>visitGenExpr</vh></v>
 <v t="ekr.20061204213730.4"><vh>visitGenExprFor</vh></v>
 <v t="ekr.20061204213730"><vh>visitGenExprIf</vh></v>
 <v t="ekr.20061204213730.1"><vh>visitGenExprInner</vh></v>
 </v>
-<v t="ekr.20061205141200"><vh>Imports &amp; scope</vh>
-<v t="ekr.20061205065240.4"><vh>visitFrom</vh></v>
-<v t="ekr.20061205065240.5"><vh>visitGlobal</vh></v>
-<v t="ekr.20061205065240.6"><vh>visitImport</vh></v>
-<v t="ekr.20061205065240.16"><vh>visitModule</vh></v>
-</v>
 <v t="ekr.20061205140652.7"><vh>List comprehensions</vh>
 <v t="ekr.20061205065240.12"><vh>visitListComp</vh></v>
 <v t="ekr.20061205065240.13"><vh>visitListCompFor</vh></v>
 <v t="ekr.20061205065240.14"><vh>visitListCompIf</vh></v>
 </v>
-<v t="ekr.20061205140652.2" a="E"><vh>Operators</vh>
-<v t="ekr.20061205143033" a="E"><vh>Binary ops</vh></v>
-<v t="ekr.20061205142616"><vh>N-ary ops &amp; compare</vh></v>
-<v t="ekr.20061205143033.1" a="ETV"><vh>Unary ops</vh></v>
-<v t="ekr.20061204205628.9"><vh>visitCompare</vh></v>
-</v>
-<v t="ekr.20061205140652"><vh>Primaries &amp; expressions</vh>
-<v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
-<v t="ekr.20061204205628.10"><vh>visitConst</vh></v>
-<v t="ekr.20061205062426" a="M"><vh>visitDict</vh></v>
+<v t="ekr.20061204205000.3"><vh>visitAssList</vh></v>
+<v t="ekr.20061204205628"><vh>visitAssTuple</vh></v>
+<v t="ekr.20061205062426"><vh>visitDict</vh></v>
 <v t="ekr.20061205065240.1"><vh>visitEllipsis</vh></v>
-<v t="ekr.20061204211034"><vh>visitExpression (??)</vh></v>
-<v t="ekr.20061204213730.2"><vh>visitGetattr</vh></v>
-<v t="ekr.20061205065240.8"><vh>visitKeyword</vh></v>
-<v t="ekr.20061205065240.11" a="M"><vh>visitList</vh></v>
-<v t="ekr.20061205065240.18"><vh>visitName</vh></v>
+<v t="ekr.20061205065240.4"><vh>visitFrom</vh></v>
+<v t="ekr.20061205065240.6"><vh>visitImport</vh></v>
+<v t="ekr.20061205065240.11"><vh>visitList</vh></v>
+<v t="ekr.20061205065240.25"><vh>visitRaise (todo)</vh></v>
 <v t="ekr.20061205065240.27"><vh>visitSlice</vh></v>
 <v t="ekr.20061205065240.28"><vh>visitSliceobj</vh></v>
 <v t="ekr.20061205065240.31"><vh>visitSubscript</vh></v>
+<v t="ekr.20061205065240.32"><vh>visitTryExcept</vh></v>
+<v t="ekr.20061205065240.33"><vh>visitTryFinally</vh></v>
 <v t="ekr.20061205065240.34"><vh>visitTuple</vh></v>
 </v>
-<v t="ekr.20061205073149"><vh>push &amp; pop</vh></v>
-<v t="ekr.20061205140652.5"><vh>Statements</vh>
+<v t="ekr.20061205141200" a="TV"><vh>Imports &amp; scope (1 to do)</vh>
+<v t="ekr.20061205065240.5"><vh>visitGlobal (to do)</vh></v>
+<v t="ekr.20061205065240.16"><vh>visitModule</vh></v>
+</v>
+<v t="ekr.20061205140652.2"><vh>Operators (done)</vh>
+<v t="ekr.20061205143033" a="E"><vh>Binary ops</vh></v>
+<v t="ekr.20061205142616"><vh>N-ary ops &amp; compare</vh></v>
+<v t="ekr.20061205143033.1" a="E"><vh>Unary ops</vh></v>
+<v t="ekr.20061204205628.9"><vh>visitCompare</vh></v>
+</v>
+<v t="ekr.20061205140652"><vh>Primaries &amp; expressions (done)</vh>
+<v t="ekr.20061204205628.7"><vh>visitCallFunc</vh></v>
+<v t="ekr.20061204205628.10"><vh>visitConst</vh></v>
+<v t="ekr.20061204211034"><vh>visitExpression</vh></v>
+<v t="ekr.20061204213730.2"><vh>visitGetattr</vh></v>
+<v t="ekr.20061205065240.8"><vh>visitKeyword</vh></v>
+<v t="ekr.20061205065240.18"><vh>visitName</vh></v>
+</v>
+<v t="ekr.20061205140652.5"><vh>Statements (6 todo)</vh>
 <v t="ekr.20061205140652.1"><vh>Assignments</vh>
-<v t="ekr.20061204205000.2" a="M"><vh>visitAssAttr</vh></v>
+<v t="ekr.20061204205000.2"><vh>visitAssAttr</vh></v>
 <v t="ekr.20061204205628.2"><vh>visitAssign</vh></v>
-<v t="ekr.20061204205000.3"><vh>visitAssList</vh></v>
 <v t="ekr.20061204205000.4"><vh>visitAssName</vh></v>
-<v t="ekr.20061204205628"><vh>visitAssTuple</vh></v>
-<v t="ekr.20061204205628.3" a="M"><vh>visitAugAssign</vh></v>
+<v t="ekr.20061204205628.3"><vh>visitAugAssign</vh></v>
 </v>
 <v t="ekr.20061204205628.1"><vh>visitAssert (todo)</vh></v>
 <v t="ekr.20061204205628.4"><vh>visitBackquote (todo)</vh></v>
@@ -105,15 +110,15 @@
 <v t="ekr.20061205065240.21"><vh>visitPass</vh></v>
 <v t="ekr.20061205065240.23"><vh>visitPrint (todo)</vh></v>
 <v t="ekr.20061205065240.24"><vh>visitPrintnl (todo)</vh></v>
-<v t="ekr.20061205065240.25"><vh>visitRaise (todo)</vh></v>
 <v t="ekr.20061204205000.5"><vh>visitReturn</vh></v>
 <v t="ekr.20061204202104"><vh>visitStmt</vh></v>
-<v t="ekr.20061205065240.32"><vh>visitTryExcept</vh></v>
-<v t="ekr.20061205065240.33"><vh>visitTryFinally</vh></v>
 <v t="ekr.20061205065240.37"><vh>visitWhile</vh></v>
-<v t="ekr.20061205065240.38"><vh>visitWith</vh></v>
+<v t="ekr.20061205065240.38"><vh>visitWith (todo)</vh></v>
 </v>
+<v t="ekr.20061205162824"><vh>Utils..</vh>
+<v t="ekr.20061205073149"><vh>push &amp; pop</vh></v>
 <v t="ekr.20061204211633"><vh>trace</vh></v>
+</v>
 </v>
 </v>
 <v t="ekr.20061204214019"><vh>visitIf</vh></v>
@@ -592,19 +597,19 @@ b = a.spam(2)
 while True:
     break
 if b == 4:
-    c = 1
+    a.x = 1
 elif 6 &lt; b2 &gt; 4:
-    c = 2
+    c += 5
 else:
     pass
 '''
 
-print '-' * 20
+print 'input','=' * 20
 print s
+print 'output','-' * 20
 print
-ast = compiler.parse(s)
 
-# print 'ast',ast
+ast = compiler.parse(s)
 visitor = ASTVisitor(verbose=3)
 compiler.walk(ast,visitor,verbose=3) 
 </t>
@@ -666,11 +671,10 @@ compiler.walk(ast,visitor,verbose=3)
     return theFunc</t>
 <t tx="ekr.20061204205000.2">def visitAssAttr(self,node):  #attribute as target of assignment
 
-    self.trace(node.attrname,node.flags)
-    e = self.visit(node.expr) or '&lt;None&gt;'
-    #expr expression on the left-hand side of the dot
+    self.trace(node.flags) # OP_ASSIGN, 
+    e = self.visit(node.expr) #expr: expression on the left-hand side of the dot
     
-    return 's = %s' % (node.attrname,e)
+    return '%s-&gt;%s' % (node.attrname,e)
 </t>
 <t tx="ekr.20061204205000.3">def visitAssList(self,node):
     
@@ -724,9 +728,10 @@ compiler.walk(ast,visitor,verbose=3)
     # expr the value being assigned 
 </t>
 <t tx="ekr.20061204205628.3">def visitAugAssign (self,node):
-    
-    self.trace(node.op,node.expr)
-    self.visit(node.node)
+
+    rt = self.visit(node.expr)
+    lt = self.visit(node.node)
+    return '%s %s %s' % (lt,node.op,rt)
 </t>
 <t tx="ekr.20061204205628.4">def visitBackquote (self,node):
     
@@ -776,6 +781,7 @@ def visitContinue (self,node):
 </t>
 <t tx="ekr.20061204205628.8">def visitClass (self,node):
 
+    #doc doc string, a string or None 
     # self.trace(node.name,'bases',node.bases)
 
     self.push()
@@ -792,13 +798,9 @@ def visitContinue (self,node):
     name = self.classStack.pop()
     assert name == node.name,'visitClass: expected %s, got %s' % (node.name,name)
     self.pop()
-
-    #doc doc string, a string or None 
-    #code the body of the class statement
     
     result = ''.join(result) or '&lt;Class:None&gt;'
     theClass = '%sclass %s:\n%s' % (self.indent,node.name,result)
-    # print theClass
     return theClass
 </t>
 <t tx="ekr.20061204205628.9">def visitCompare (self,node):
@@ -826,7 +828,8 @@ def visitContinue (self,node):
 </t>
 <t tx="ekr.20061204211034">def visitExpression (self,node):
     
-    self.trace(node)</t>
+    return self.visit(node.node)
+</t>
 <t tx="ekr.20061204211034.1">def visitFor (self,node):
     
     # self.trace()
@@ -876,7 +879,7 @@ def visitContinue (self,node):
 <t tx="ekr.20061204213730.2">def visitGetattr (self,node):
 
     e = self.visit(node.expr)
-    return '%s.%s' % (e,node.attrname)
+    return '%s-&gt;%s' % (e,node.attrname)
 </t>
 <t tx="ekr.20061204213730.3">def visitGenExpr (self,node):
 
@@ -944,8 +947,7 @@ def visitContinue (self,node):
 <t tx="ekr.20061205062426.1">def visitDiscard (self,node):
     
     g.trace()
-    self.visit(node.expr)
-
+    e = self.visit(node.expr)
 </t>
 <t tx="ekr.20061205062741">&lt;&lt; define s &gt;&gt;
 
@@ -1173,9 +1175,9 @@ Yield value
 </t>
 <t tx="ekr.20061205065240.16">def visitModule (self,node):
         
-        # node.doc: docstring
-	    # node.node: The body of the module, a statement.
-	    self.visit(node.node)
+    # node.doc: docstring
+	# node.node: The body of the module, a statement.
+	self.visit(node.node)
 </t>
 <t tx="ekr.20061205065240.18">def visitName (self,node):
 
@@ -1358,5 +1360,11 @@ def unary (self,node,op):
     return '(%s %s)' % (op,e)
 </t>
 <t tx="ekr.20061205153740"></t>
+<t tx="ekr.20061205162824"></t>
+<t tx="ekr.20061205163522">@
+
+Augmented assignments.
+Symbol table ???</t>
+<t tx="ekr.20061205163522.1"># These may be banned from RPython.</t>
 </tnodes>
 </leo_file>
