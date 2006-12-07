@@ -19,6 +19,7 @@
 
 ##### Experimental.  Use with caution.
 #__wx_gui.py
+#cursesGui.py
 
 ##### Standard plugins enabled in official distributions.
 
