@@ -1798,6 +1798,7 @@ class leoTkinterTree (leoFrame.leoTree):
         if ch == '\b':
             if i != j:  w.delete(i,j)
             else:       w.delete(ins-1)
+            w.setSelectionRange(i,i,insert=i)
         elif ch and ch not in ('\n','\r'):
             if i != j:                              w.delete(i,j)
             elif k.unboundKeyAction == 'overwrite': w.delete(i,i+1)
@@ -1859,9 +1860,9 @@ class leoTkinterTree (leoFrame.leoTree):
             changed = s != oldRevert
             self.revertHeadline = s
             p.initHeadString(s)
-            if self.trace_edit and not g.app.unitTesting:
-                if changed:
-                    g.trace('changed: old',repr(oldRevert),'new',repr(s))
+            # if self.trace_edit and not g.app.unitTesting:
+                # if changed:
+                    # g.trace('changed: old',repr(oldRevert),'new',repr(s))
             if changed:
                 undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
                 if not c.changed: c.setChanged(True)
