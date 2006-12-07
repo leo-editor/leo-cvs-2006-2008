@@ -1,5 +1,5 @@
 #@+leo-ver=4
-#@+node:@file cursesPlugin.py
+#@+node:@file cursesGui.py
 #@+at 
 #@nonl
 # Things not found in the GUI 'interface' classes (in leoFrame.py, leoGui.py, 
@@ -45,6 +45,17 @@ import leoNodes
 #@-at
 #@nonl
 #@-node:<< TODO >>
+#@nl
+__version__ = '0.1'
+#@<< version history >>
+#@+node:<< version history >>
+#@@nocolor
+#@+at
+# 
+# 0.1: Initial checkin, converted to Leo outline(!) by EKR.
+#@-at
+#@nonl
+#@-node:<< version history >>
 #@nl
 #@@language python
 #@@tabwidth -2
@@ -584,5 +595,5 @@ class textTree(leoFrame.leoTree):
   #@-others
 #@-node:class textTree
 #@-others
-#@-node:@file cursesPlugin.py
+#@-node:@file cursesGui.py
 #@-leo
