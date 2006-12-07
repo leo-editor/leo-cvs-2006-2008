@@ -2442,8 +2442,7 @@ class baseColorizer:
             return i + 2
         else:
             # includes brackets
-            start,end = w.toPythonIndex(self.index(i)),w.toPythonIndex(self.index(j+k))
-            searchName = s[start:end]
+            searchName = s[i:j]
             ref = g.findReference(c,searchName,self.p)
             if ref:
                 self.tag("link",i+2,j)
