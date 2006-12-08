@@ -751,6 +751,21 @@ class leoFind:
             pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
     
         return pos,newpos
+    #@+node:ekr.20061207172210:patternLen
+    def patternLen (self,s):
+        
+        '''Return the length of pattern 's', counting escapes as one character.'''
+        
+        n = len(s) ; i = 0
+        while 1:
+            i = s.find('\\',i)
+            if i == -1 or i >= len(s)-1:
+                break
+            n -= 1 ; i += 2
+        # g.trace(n,repr(s))
+        return n
+    #@nonl
+    #@-node:ekr.20061207172210:patternLen
     #@+node:ekr.20060526092203:regexHelper
     def regexHelper (self,s,i,j,pattern,backwards,nocase):
        
@@ -794,7 +809,7 @@ class leoFind:
         if nocase:
             s = s.lower() ; pattern.lower()
     
-        n = len(pattern)
+        n = self.patternLen(pattern)
         if word:
             while 1:
                 k = s.rfind(pattern,i,j)
@@ -817,7 +832,7 @@ class leoFind:
         
         # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
     
-        n = len(pattern)
+        n = self.patternLen(pattern)
         if nocase:
             s = s.lower() ; pattern = pattern.lower()
             pattern = pattern.replace('\\n','\n').replace('\\t','\t')
@@ -844,7 +859,7 @@ class leoFind:
             return False
         
         pat1,pat2 = pattern[0],pattern[-1]
-        n = len(pattern)
+        n = self.patternLen(pattern)
         ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
         ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
         

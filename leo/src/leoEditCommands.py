@@ -3274,8 +3274,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050929114218:move cursor... (leoEditCommands)
     #@+node:ekr.20051218170358: helpers
     #@+node:ekr.20060113130510:extendHelper (passed)
-    def extendHelper (self,w,extend,ins1,spot,setSpot=True):
-    
+    def extendHelper (self,w,extend,spot,upOrDown=False):
         '''Handle the details of extending the selection.
         This method is called for all cursor moves.
         
@@ -3284,33 +3283,44 @@ class editCommandsClass (baseEditCommandsClass):
         spot:   The *new* insert point.
         '''
         c = self.c ; p = c.currentPosition()
-        moveSpot = self.moveSpot
         extend = extend or self.extendMode
-        # g.trace(ins1,spot,moveSpot,extend,setSpot)
-        if extend:
-            i,j = w.getSelectionRange()
-            # Reset the move spot if needed.
-            if (moveSpot is None or p.v.t != self.moveSpotNode or (
-                i == j or # A cute trick
-                (moveSpot != i and moveSpot != j)
-            )):
-                self.moveSpotNode = p.v.t
-                self.moveSpot = ins1
-                self.setMoveCol(w,ins1)
-            moveSpot = self.moveSpot
-            if spot < moveSpot:
-                w.setSelectionRange(spot,moveSpot,insert=None)
-            else:
-                w.setSelectionRange(moveSpot,spot,insert=None)
+        ins = w.getInsertPoint()
+        i,j = w.getSelectionRange()
+    
+        # Reset the move spot if needed.
+        if self.moveSpot is None or p.v.t != self.moveSpotNode:
+            # g.trace('no spot')
+            self.setMoveCol(w,g.choose(extend,ins,spot)) # sets self.moveSpot.
+        elif extend:
+            if i == j or self.moveSpot not in (i,j):
+                # g.trace('spot not in sel')
+                self.setMoveCol(w,ins) # sets self.moveSpot.
         else:
-            if setSpot is not None or moveSpot is None:
-                self.setMoveCol(w,spot)
-            w.setSelectionRange(spot,spot,insert=None)
+            if upOrDown:
+                s = w.getAllText()
+                i2,j2 = g.getLine(s,spot)
+                line = s[i2:j2]
+                row,col = g.convertPythonIndexToRowCol(s,spot)
+                n = min(self.moveCol,max(0,len(line)-1))
+                # g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
+                spot = g.convertRowColToPythonIndex(s,row,n)
+            else:  # Plain move forward or back.
+                # g.trace('plain forward/back move')
+                self.setMoveCol(w,spot) # sets self.moveSpot.
+    
+        if extend:
+            if spot < self.moveSpot:
+                w.setSelectionRange(spot,self.moveSpot,insert=spot)
+            else:
+                w.setSelectionRange(self.moveSpot,spot,insert=spot)
+        else:
+            w.setSelectionRange(spot,spot,insert=spot)
             
+        w.seeInsertPoint()
         c.frame.updateStatusLine()
     #@nonl
     #@-node:ekr.20060113130510:extendHelper (passed)
-    #@+node:ekr.20060113105246.1:moveUpOrDownHelper (revise)
+    #@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
     def moveUpOrDownHelper (self,event,direction,extend):
     
         c = self.c ; w = self.editWidget(event)
@@ -3318,16 +3328,18 @@ class editCommandsClass (baseEditCommandsClass):
     
         # Make the insertion cursor visible so bbox won't return an empty list.
         w.seeInsertPoint()
-        # Remember the original insert point.  This may become the moveSpot.
-        ins1 = w.index('insert')
+        
         # Compute the new spot.
-        row1,col1 = ins1.split('.')
-        row1 = int(row1) ; col1 = int(col1)
+        ins = w.getInsertPoint()
+        s = w.getAllText()
+        row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+        
         # Find the coordinates of the cursor and set the new height.
         # There may be roundoff errors because character postions may not match exactly.
         x, y, junk, textH = w.bbox('insert')
         bodyW, bodyH = w.winfo_width(), w.winfo_height()
         junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
+    
         # Make sure y is within text boundaries.
         if direction == "up":
             if y <= textH:  w.yview("scroll",-1,"units")
@@ -3335,27 +3347,15 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             if y >= maxy:   w.yview("scroll",1,"units")
             else:           y = min(y+textH,maxy)
+    
         # Position the cursor on the proper side of the characters.
         newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
         if x > newx + width / 2: x = newx + width + 1
-        # Move to the new row.
-        spot = w.index("@%d,%d" % (x,y))
-        row,col = spot.split('.')
-        row = int(row) ; col = int(col)
-        w.mark_set('insert',spot)
-        # Adjust the column in the *new* row, but only if we have actually gone to a new row.
-        if self.moveSpot:
-            # g.trace('row,col,moveCol',row,col,self.moveCol)
-            if col != self.moveCol and row != row1:
-                s = w.get('insert linestart','insert lineend')
-                col = min(len(s),self.moveCol)
-                if col >= 0:
-                    w.mark_set('insert','%d.%d' % (row,col))
-                    spot = w.index('insert')
-                    w.seeInsertPoint()
-        # Handle the extension.
-        self.extendHelper(w,extend,ins1,spot,setSpot=False)
-    #@-node:ekr.20060113105246.1:moveUpOrDownHelper (revise)
+        
+        # Make the move
+        spot = w.xyToPythonIndex(x,y)
+        self.extendHelper(w,extend,spot,upOrDown=True)
+    #@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
     #@+node:ekr.20051218122116:moveToHelper (passed)
     def moveToHelper (self,event,spot,extend):
     
@@ -3373,10 +3373,7 @@ class editCommandsClass (baseEditCommandsClass):
             if   spot < i: spot = i
             elif spot > j: spot = j
     
-        ins1 = w.getInsertPoint() # This may become the moveSpot.
-        w.setInsertPoint(spot)
-        self.extendHelper(w,extend,ins1,spot,setSpot=False)
-        w.see(spot)
+        self.extendHelper(w,extend,spot,upOrDown=False)
     #@nonl
     #@-node:ekr.20051218122116:moveToHelper (passed)
     #@+node:ekr.20051218171457:movePastCloseHelper (revise)
@@ -3532,13 +3529,15 @@ class editCommandsClass (baseEditCommandsClass):
         
         '''Set the column to which an up or down arrow will attempt to move.'''
     
+        c = self.c ; p = c.currentPosition()
         s = w.getAllText()
         i = w.toPythonIndex(spot)
         row,col = g.convertPythonIndexToRowCol(s,i)
-        # g.trace('spot,i',spot,i)
+        # g.trace('spot,i,col',spot,i,col)
     
         self.moveSpot = i
         self.moveCol = col
+        self.moveSpotNode = p.v.t
     #@nonl
     #@-node:ekr.20060209095101:setMoveCol (passed)
     #@-node:ekr.20051218170358: helpers
@@ -4252,8 +4251,7 @@ class editCommandsClass (baseEditCommandsClass):
             row1 = max(0,row1)
             spot = g.convertRowColToPythonIndex(s,row1,col)
             # g.trace('spot',spot,'row1',row1)
-            w.setInsertPoint(spot)
-            self.extendHelper(w,extend,ins1,spot,setSpot=False)
+            self.extendHelper(w,extend,spot)
             w.seeInsertPoint()
         elif gui.widget_name(w).startswith('canvas'):
             if direction=='down':
