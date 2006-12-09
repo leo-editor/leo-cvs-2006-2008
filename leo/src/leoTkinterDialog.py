@@ -224,38 +224,42 @@ class tkinterAboutLeo (leoTkinterDialog):
     
         frame.pack(padx=6,pady=4)
         
-        self.text = text = g.app.gui.leoTextWidgetClass(
+        self.text = w = g.app.gui.leoTextWidgetClass(
             frame,height=height,width=width,bd=0,bg=frame.cget("background"))
-        text.pack(pady=10)
+        w.pack(pady=10)
         
         try:
             bitmap_name = g.os_path_join(g.app.loadDir,"..","Icons","Leoapp.GIF") # 5/12/03
             image = Tk.PhotoImage(file=bitmap_name)
-            text.image_create("1.0",image=image,padx=10)
+            w.image_create("1.0",image=image,padx=10)
         except Exception:
             pass # This can sometimes happen for mysterious reasons.
     
-        text.insert("end",version,"version")
-        text.insert("end",theCopyright,"copyright")
-        text.insert("end",'\n')
-        text.insert("end",url,"url") # Add "url" tag.
-        text.insert("end",'\n')
-        text.insert("end",email,"email") # Add "email" tag.
+        w.insert("end",version) #,tag="version")
+        w.tag_add('version','end-%dc' %(len(version)+1),'end-1c')
+        w.insert("end",theCopyright) #,tag="copyright")
+        w.tag_add('copyright','end-%dc' %(len(theCopyright)+1),'end-1c')
+        w.insert("end",'\n')
+        w.insert("end",url)
+        w.tag_add('url','end-%dc' %(len(url)+1),'end-1c')
+        w.insert("end",'\n')
+        w.insert("end",email)
+        w.tag_add('url','end-%dc' %(len(email)+1),'end-1c')
         
-        text.tag_config("version",justify="center")
-        text.tag_config("copyright",justify="center",spacing1="3")
+        w.tag_config("version",justify="center")
+        w.tag_config("copyright",justify="center",spacing1="3")
+        w.tag_config("url",underline=1,justify="center",spacing1="10")
         
-        text.tag_config("url",underline=1,justify="center",spacing1="10")
-        text.tag_bind("url","<Button-1>",self.onAboutLeoUrl)
-        text.tag_bind("url","<Enter>",self.setArrowCursor)
-        text.tag_bind("url","<Leave>",self.setDefaultCursor)
+        w.tag_bind("url","<Button-1>",self.onAboutLeoUrl)
+        w.tag_bind("url","<Enter>",self.setArrowCursor)
+        w.tag_bind("url","<Leave>",self.setDefaultCursor)
     
-        text.tag_config("email",underline=1,justify="center",spacing1="10")
-        text.tag_bind("email","<Button-1>",self.onAboutLeoEmail)
-        text.tag_bind("email","<Enter>",self.setArrowCursor)
-        text.tag_bind("email","<Leave>",self.setDefaultCursor)
+        w.tag_config("email",underline=1,justify="center",spacing1="10")
+        w.tag_bind("email","<Button-1>",self.onAboutLeoEmail)
+        w.tag_bind("email","<Enter>",self.setArrowCursor)
+        w.tag_bind("email","<Leave>",self.setDefaultCursor)
     
-        text.configure(state="disabled")
+        w.configure(state="disabled")
     #@-node:ekr.20031218072017.3869:tkinterAboutLeo.createFrame
     #@+node:ekr.20031218072017.3870:tkinterAboutLeo.onAboutLeoEmail
     def onAboutLeoEmail(self,event=None):
