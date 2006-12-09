@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="141" left="238" height="622" width="969"/>
+<globals body_outline_ratio="0.618490967056">
+	<global_window_position top="-1" left="238" height="941" width="973"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -72,7 +72,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -604,7 +604,7 @@
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="TV"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
@@ -5927,7 +5927,14 @@ expand-pane                 = Alt+Ctrl-=
 focus-to-body               = Alt-D  # boDy
 focus-to-tree               = Alt-T
 toggle-active-pane          = Ctrl-T</t>
-<t tx="ekr.20060925060533.3">clone-node                  = Ctrl-`
+<t tx="ekr.20060925060533.3">contract-or-go-left         ! tree = LtArrow
+expand-and-go-right         ! tree = RtArrow
+goto-first-sibling          ! tree = Alt-Ctrl-UpArrow
+goto-last-sibling           ! tree = Alt-Ctrl-DnArrow
+goto-next-visible           ! tree = DnArrow
+goto-prev-visible           ! tree = UpArrow
+
+clone-node                  = Ctrl-`
 contract-node               = None
 copy-node                   = Shift-Ctrl-c
 cut-node                    = Shift-Ctrl-x
@@ -6154,11 +6161,6 @@ back-char                   ! text = LtArrow
 forward-char                ! text = RtArrow
 next-line                   ! text = DnArrow
 previous-line               ! text = UpArrow
-
-contract-or-go-left         ! tree = LtArrow
-expand-and-go-right         ! tree = RtArrow
-goto-next-visible           ! tree = DnArrow
-goto-prev-visible           ! tree = UpArrow
 
 # Shift arrow keys depend on focus.
 back-char-extend-selection      ! text = Shift-LtArrow
