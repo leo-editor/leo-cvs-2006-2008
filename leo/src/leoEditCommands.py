@@ -5722,6 +5722,7 @@ class leoCommandsClass (baseEditCommandsClass):
             'open-offline-tutorial':        f.leoHelp,
             'open-outline':                 c.open,
             'open-python-window':           c.openPythonWindow,
+            # 'open-test-leo':              c.openTest, # Doesn't work.
             'open-users-guide':             c.leoUsersGuide,
             'open-with':                    c.openWith,
             'outline-to-cweb':              c.outlineToCWEB,

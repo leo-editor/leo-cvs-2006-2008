@@ -1141,7 +1141,7 @@ class leoMenu:
     def defineHelpMenuTables (self):
         
         self.helpMenuTable = [
-            # &: a,b,c,d,f,h,l,m,n,o,p,r,s,t,u
+            # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
             ('&About Leo...',           'about-leo'),
             ('Online &Home Page',       'open-online-home'),
             '*open-online-&tutorial',
@@ -1152,6 +1152,7 @@ class leoMenu:
             ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
             ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
             ('Open scr&ipts.leo',       'open-scripts-leo'),
+            # ('Open t&est.leo',          'open-test-leo'),
             '-',
             '*he&lp-for-minibuffer',
             '*help-for-&command',
