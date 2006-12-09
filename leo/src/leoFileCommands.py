@@ -673,6 +673,7 @@ class baseFileCommands:
             self.getXmlStylesheetTag()
             self.getTag("<leo_file>")
             self.getClipboardHeader()
+            self.getDummyElements()
             self.getVnodes(reassignIndices)
             self.getTnodes()
             self.getTag("</leo_file>")
@@ -703,6 +704,7 @@ class baseFileCommands:
             else:
                 self.getTag("/>")
                 break
+    #@nonl
     #@-node:ekr.20031218072017.3022:getClipboardHeader
     #@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
     #@+node:ekr.20031218072017.1553:getLeoFile
@@ -1292,6 +1294,18 @@ class baseFileCommands:
             self.getTag("</clone_window>")
         self.getTag("</clone_windows>")
     #@-node:ekr.20031218072017.3023:getCloneWindows
+    #@+node:ekr.20061209141653:getDummyElements
+    def getDummyElements (self):
+        
+        # New in Leo 4.4.3: Ignore the dummy elements that allow
+        # Pasted Leo outlines to be valid .leo files.
+        
+        while 1:
+            if self.matchTag('<globals/>'): pass
+            elif self.matchTag('<preferences/>'): pass
+            elif self.matchTag('<find_panel_settings/>'): pass
+            else: break
+    #@-node:ekr.20061209141653:getDummyElements
     #@+node:ekr.20031218072017.2064:getFindPanelSettings
     def getFindPanelSettings (self):
         
@@ -2898,6 +2912,12 @@ class baseFileCommands:
         self.put(" max_tnode_index=")
         self.put_in_dquotes(str(tnodes))
         self.put("/>") ; self.put_nl()
+        
+        # New in Leo 4.4.3: Add dummy elements so copied nodes form a valid .leo file.
+        self.put('<globals/>\n')
+        self.put('<preferences/>\n')
+        self.put('<find_panel_settings/>\n')
+    
     #@-node:ekr.20031218072017.1971:putClipboardHeader
     #@-node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
     #@+node:ekr.20060919064401:putToOPML
