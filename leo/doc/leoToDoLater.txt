@@ -2017,6 +2017,7 @@ def getLeoOutlineHelper (self,s,reassignIndices,checking):
         self.getXmlStylesheetTag()
         self.getTag("<leo_file>")
         self.getClipboardHeader()
+        self.getDummyElements()
         self.getVnodes(reassignIndices)
         self.getTnodes()
         self.getTag("</leo_file>")
@@ -2063,6 +2064,7 @@ def getClipboardHeader (self):
         else:
             self.getTag("/>")
             break
+#@nonl
 #@-node:ekr.20031218072017.3022:getClipboardHeader
 #@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
 #@+node:ekr.20031218072017.1565:getVnodes

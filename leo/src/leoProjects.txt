@@ -226,8 +226,576 @@ def showSuccess(self,pos,newpos):
 #@nonl
 #@-node:ekr.20031218072017.3091:showSuccess
 #@-node:ekr.20061204120501.1:Treat escaped characters in find patterns as a single character
+#@+node:ekr.20061009152210.1:Fixed undo problems with yank/kill
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3924236
+
+Added unit tests for yank and all kill commands.
+
+@color
+#@nonl
+#@+node:ekr.20061020155051.1:Notes
+@nocolor
+
+Several things became clearer after a short walk in the woods:
+
+- It's a little late in the release cycle to mess with undo, so I'm going to put
+off work until Leo 4.4.3. The present code is complex, and should be simplified
+if possible. However, the potential for harm is too great to make substantial
+change now. Given the complexity of the code, *any* change is a substantial
+change :-)
+
+- Some problems with undo may actually be just unexpected results. In
+particular, undo typing should 'coalesce', only for actual typing: all other
+commands that affect body text (cut, copy, yank and kill in particular) should
+be independently undoable regardless of undo granularity. Thus, if you cut,
+copy, yank or kill text an immediate undo command should restore the text to
+what it was before those commands. This probably doesn't happen now, and that
+could be the source of some (all??) undo problems.
+
+Edward
+
+P.S. I recently uncovered some more hard bindings in the yank command. Such
+bindings must somehow be removed, and certainly are a symptom that yank does not
+yet work as in Emacs. This is a separate issue from undo, so discovering this
+problem actually simplifies the undo task to come.
+#@-node:ekr.20061020155051.1:Notes
+#@+node:ekr.20061020080610:How to reproduce undo bug
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3972170
+By: oculog
+
+Step 1 - add some lines...
+line 1
+line 2
+line 3
+
+Step 2 - cut and paste first line to the end
+line 2
+line 3
+line 1
+
+Step 3 - *Copy* and paste first line to the end x2
+line 2
+line 3
+line 1
+line 2
+line 2
+
+That's it!  The fourth undo doesn't work right.
+#@-node:ekr.20061020080610:How to reproduce undo bug
+#@+node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+class killBufferCommandsClass (baseEditCommandsClass):
+    
+    '''A class to manage the kill buffer.'''
+
+    @others
+#@+node:ekr.20050920084036.175: ctor & finishCreate
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.killBuffer = [] # May be changed in finishCreate.
+    self.kbiterator = self.iterateKillBuffer()
+    self.last_clipboard = None # For interacting with system clipboard.
+    self.reset = False
+
+def finishCreate (self):
+    
+    baseEditCommandsClass.finishCreate(self)
+        # Call the base finishCreate.
+        # This sets self.k
+    
+    if self.k.useGlobalKillbuffer:
+        self.killBuffer = leoKeys.keyHandlerClass.global_killbuffer
+#@-node:ekr.20050920084036.175: ctor & finishCreate
+#@+node:ekr.20050920084036.176: getPublicCommands
+def getPublicCommands (self):
+    
+    return {
+        'backward-kill-sentence':   self.backwardKillSentence,
+        'backward-kill-word':       self.backwardKillWord,
+        'clear-kill-ring':          self.clearKillRing,
+        'kill-line':                self.killLine,
+        'kill-word':                self.killWord,
+        'kill-sentence':            self.killSentence,
+        'kill-region':              self.killRegion,
+        'kill-region-save':         self.killRegionSave,
+        'yank':                     self.yank,
+        'yank-pop':                 self.yankPop,
+        'zap-to-character':         self.zapToCharacter,
+    }
+#@-node:ekr.20050920084036.176: getPublicCommands
+#@+node:ekr.20050920084036.183:addToKillBuffer
+def addToKillBuffer (self,text):
+    
+    killKeys =(
+        '<Control-k>', '<Control-w>',
+        '<Alt-d>', '<Alt-Delete', '<Alt-z>', '<Delete>',
+        '<Control-Alt-w>')
+
+    k = self.k
+    self.reset = True
+
+    # g.trace(repr(text))
+
+    if self.killBuffer and k.stroke in killKeys:
+        self.killBuffer [0] = self.killBuffer [0] + text
+    else:
+        self.killBuffer.insert(0,text)
+#@-node:ekr.20050920084036.183:addToKillBuffer
+#@+node:ekr.20050920084036.181:backwardKillSentence
+def backwardKillSentence (self,event):
+    
+    '''Kill the previous sentence.'''
+    
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.search('.','insert',backwards=True,stopindex='1.0')
+
+    if i:
+        i2 = w.search('.',i,backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='',0,i2+1) ### '1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='backward-kill-sentence')
+#@-node:ekr.20050920084036.181:backwardKillSentence
+#@+node:ekr.20050920084036.180:backwardKillWord & killWord
+def backwardKillWord (self,event):
+    '''Kill the previous word.'''
+    c = self.c
+    self.beginCommand(undoType='backward-kill-word')
+    c.editCommands.backwardWord(event)
+    self.killWs(event)
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    c = self.c
+    self.beginCommand(undoType='kill-word')
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    self.killWs(event)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+#@-node:ekr.20050920084036.180:backwardKillWord & killWord
+#@+node:ekr.20051216151811:clearKillRing
+def clearKillRing (self,event=None):
+    
+    '''Clear the kill ring.'''
+    
+    self.killBuffer = []
+#@-node:ekr.20051216151811:clearKillRing
+#@+node:ekr.20050920084036.185:getClipboard
+def getClipboard (self,w):
+
+    try:
+        ctxt = w.selection_get(selection='CLIPBOARD')
+        if not self.killBuffer or ctxt != self.last_clipboard:
+            self.last_clipboard = ctxt
+            if not self.killBuffer or self.killBuffer [0] != ctxt:
+                return ctxt
+    except: pass
+
+    return None
+#@-node:ekr.20050920084036.185:getClipboard
+#@+node:ekr.20050920084036.184:iterateKillBuffer
+def iterateKillBuffer (self):
+
+    while 1:
+        if self.killBuffer:
+            self.last_clipboard = None
+            for z in self.killBuffer:
+                if self.reset:
+                    self.reset = False
+                    break
+                yield z
+#@-node:ekr.20050920084036.184:iterateKillBuffer
+#@+node:ekr.20050920084036.178:kill, killLine
+def kill (self,event,frm,to,undoType=None):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.get(frm,to)
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    w.delete(frm,to)
+    if undoType:
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    # g.trace(i,j,ins,len(s),repr(s[i:j]))
+    if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
+        i = max(0,len(s)-1)
+        j = len(s)
+    elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
+        j -= 1
+    else: # Kill the newline.
+        pass
+    self.kill(event,i,j,undoType='kill-line')
+#@-node:ekr.20050920084036.178:kill, killLine
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+    
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = self.editWidget(event)
+    if not w: return
+    theRange = w.tag_ranges('sel')
+    if not theRange: return
+    
+    s = w.get(theRange[0],theRange[-1])
+    if deleteFlag:
+        self.beginCommand(undoType='kill-region')
+        w.delete(theRange[0],theRange[-1])
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+    self.addToKillBuffer(s)
+    w.clipboard_clear()
+    w.clipboard_append(s)
+    # self.removeRKeys(w)
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@+node:ekr.20050930095323.1:killSentence
+def killSentence (self,event):
+    
+    '''Kill the sentence containing the cursor.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    i  = w.search('.','insert',stopindex='end')
+    if i:
+        self.beginCommand(undoType='kill-sentence')
+        i2 = w.search('.','insert',backwards=True,stopindex='1.0')
+        i2 = g.choose(i2=='',0,i2+1) ### '1.0',i2+'+1c ')
+        self.kill(event,i2,'%s + 1c' % i,undoType='kill-sentence')
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930095323.1:killSentence
+#@+node:ekr.20050930100733:killWs
+def killWs (self,event,undoType=None):
+    
+    ws = ''
+    w = self.editWidget(event)
+    if not w: return
+
+    while 1:
+        s = w.get('insert')
+        if s in (' ','\t'):
+            w.delete('insert')
+            ws = ws + s
+        else:
+            break
+   
+    if ws:
+        if undoType: self.beginCommand(undoType=undoType)
+        self.addToKillBuffer(ws)
+        if undoType: self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930100733:killWs
+#@+node:ekr.20050930091642.1:yank
+def yank (self,event):
+    
+    '''Insert the next entry in the kill ring at the insert point.'''
+
+    c = self.c ; k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.getInsertPoint()
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        self.beginCommand(undoType='yank')
+        self.reset = True
+        s = clip_text or self.kbiterator.next()
+        w.tag_delete('kb')
+        ###w.insert(i,s,('kb'))
+        w.insert(i,s) # Insert the text, marked with the 'kb' tag.
+        w.tag_add('kb',w.toGuiIndex(i),w.toGuiIndex(i+len(s)))
+        w.setInsertPoint(i+len(s))
+        c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050930091642.1:yank
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+    
+    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.index('insert') ; t, t1 = i.split('.')
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        if clip_text: s = clip_text
+        else:         s = self.kbiterator.next()
+        t1 = str(int(t1)+len(s))
+        r = w.tag_ranges('kb')
+        if r and r [0] == i:
+            w.delete(r[0],r[-1])
+        w.tag_delete('kb')
+        w.insert('insert',s,('kb'))
+        w.mark_set('insert',i)
+#@-node:ekr.20050930091642.2:yankPop
+#@+node:ekr.20050920084036.128:zapToCharacter
+def zapToCharacter (self,event):
+    
+    '''Kill characters from the insertion point to a given character.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    
+    state = k.getState('zap-to-char')
+    if state == 0:
+        k.setLabelBlue('Zap To Character: ',protect=True)
+        k.setState('zap-to-char',1,handler=self.zapToCharacter)
+    else:
+        c = k.c
+        ch = event and event.char
+        k.resetLabel()
+        k.clearState()
+        if len(event.char) != 0 and not ch.isspace():
+            i = w.search(ch,'insert',stopindex='end')
+            if i != -1:
+                s = w.get('insert','%s' % i)
+                self.addToKillBuffer(s)
+                w.delete('insert','%s' % i)
+#@-node:ekr.20050920084036.128:zapToCharacter
+#@-node:ekr.20050920084036.174:killBufferCommandsClass (add docstrings)
+#@+node:EKR.20040526090701.4:undoTyping
+def undoTyping (self):
+    
+    u = self ; c = u.c ; current = c.currentPosition()
+    w = c.frame.body.bodyCtrl
+
+    # selectPosition causes recoloring, so don't do this unless needed.
+    if current != u.p:
+        c.selectPosition(u.p)
+    elif u.undoType in ("Cut","Paste",'Clear Recent Files'):
+        c.frame.body.forceFullRecolor()
+
+    self.undoRedoText(
+        u.p,u.leading,u.trailing,
+        u.oldMiddleLines,u.newMiddleLines,
+        u.oldNewlines,u.newNewlines,
+        tag="undo",undoType=u.undoType)
+
+    for v in u.dirtyVnodeList: # New in 4.4b3.
+        v.t.clearDirty()
+
+    if u.oldSel:
+        c.bodyWantsFocusNow()
+        i,j = u.oldSel
+        w.setSelectionRange(i,j,insert=j)
+    if u.yview:
+        c.bodyWantsFocusNow()
+        c.frame.body.setYScrollPosition(u.yview)
+#@-node:EKR.20040526090701.4:undoTyping
+#@+node:EKR.20040526075238.5:redoTyping
+def redoTyping (self):
+
+    u = self ; c = u.c ; current = c.currentPosition()
+    w = c.frame.body.bodyCtrl
+
+    # selectPosition causes recoloring, so avoid if possible.
+    if current != u.p:
+        c.selectPosition(u.p)
+    elif u.undoType in ('Cut','Paste','Clear Recent Files'):
+        c.frame.body.forceFullRecolor()
+
+    self.undoRedoText(
+        u.p,u.leading,u.trailing,
+        u.newMiddleLines,u.oldMiddleLines,
+        u.newNewlines,u.oldNewlines,
+        tag="redo",undoType=u.undoType)
+        
+    for v in u.dirtyVnodeList:
+        v.t.setDirty()
+    
+    if u.newSel:
+        c.bodyWantsFocusNow()
+        i,j = u.newSel
+        w.setSelectionRange(i,j,insert=j)
+    if u.yview:
+        c.bodyWantsFocusNow()
+        c.frame.body.setYScrollPosition(u.yview)
+#@-node:EKR.20040526075238.5:redoTyping
+#@+node:ekr.20031218072017.1493:undoRedoText (passed)
+def undoRedoText (self,p,
+    leading,trailing, # Number of matching leading & trailing lines.
+    oldMidLines,newMidLines, # Lists of unmatched lines.
+    oldNewlines,newNewlines, # Number of trailing newlines.
+    tag="undo", # "undo" or "redo"
+    undoType=None):
+        
+    __pychecker__ = '--no-argsused' # newNewlines is unused, but it has symmetry.
+    
+    '''Handle text undo and redo: converts _new_ text into _old_ text.'''
+
+    u = self ; c = u.c ; w = c.frame.body.bodyCtrl
+    
+    << Compute the result using p's body text >>
+    p.setTnodeText(result)
+    w.setAllText(result)
+    c.frame.body.recolor(p,incremental=False)
+#@+node:ekr.20061106105812.1:<< Compute the result using p's body text >>
+# Recreate the text using the present body text.
+body = p.bodyString()
+body = g.toUnicode(body,"utf-8")
+body_lines = body.split('\n')
+s = []
+if leading > 0:
+    s.extend(body_lines[:leading])
+if len(oldMidLines) > 0:
+    s.extend(oldMidLines)
+if trailing > 0:
+    s.extend(body_lines[-trailing:])
+s = string.join(s,'\n')
+# Remove trailing newlines in s.
+while len(s) > 0 and s[-1] == '\n':
+    s = s[:-1]
+# Add oldNewlines newlines.
+if oldNewlines > 0:
+    s = s + '\n' * oldNewlines
+result = s
+
+if u.debug_print:
+    print "body:  ",body
+    print "result:",result
+#@-node:ekr.20061106105812.1:<< Compute the result using p's body text >>
+#@-node:ekr.20031218072017.1493:undoRedoText (passed)
+#@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
+#@+node:ekr.20051011072903.2:copyText
+def copyText (self,event=None):
+    
+    '''Copy the selected text from the widget to the clipboard.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    # Set the clipboard text.
+    i,j = w.getSelectionRange()
+    if i != j:
+        s = w.get(i,j)
+        g.app.gui.replaceClipboardWith(s)
+        
+OnCopyFromMenu = copyText
+#@-node:ekr.20051011072903.2:copyText
+#@+node:ekr.20051011072049.2:cutText
+def cutText (self,event=None):
+    
+    '''Invoked from the mini-buffer and from shortcuts.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    name = c.widget_name(w)
+    oldSel = w.getSelectionRange()
+    oldText = w.getAllText()
+    i,j = w.getSelectionRange()
+    
+    # Update the widget and set the clipboard text.
+    s = w.get(i,j)
+    if i != j:
+        w.delete(i,j)
+        g.app.gui.replaceClipboardWith(s)
+
+    if name.startswith('body'):
+        c.frame.body.forceFullRecolor()
+        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
+    elif name.startswith('head'):
+        # The headline is not officially changed yet.
+        # p.initHeadString(s)
+        s = w.getAllText()
+        w.configure(width=f.tree.headWidth(s=s))
+    else: pass
+
+OnCutFromMenu = cutText
+#@-node:ekr.20051011072049.2:cutText
+#@+node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
+def pasteText (self,event=None,middleButton=False):
+
+    '''Paste the clipboard into a widget.
+    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
+
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    wname = c.widget_name(w)
+    i,j = oldSel = w.getSelectionRange()  # Returns insert point if no selection.
+    oldText = w.getAllText()
+    
+    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
+    
+    if middleButton and c.k.previousSelection is not None:
+        start,end = c.k.previousSelection
+        s = w.getAllText()
+        s = s[start:end]
+        c.k.previousSelection = None
+    else:
+        s = s1 = g.app.gui.getTextFromClipboard()
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.getAllText()
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@-node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
+#@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
+#@-node:ekr.20061009152210.1:Fixed undo problems with yank/kill
 #@-node:ekr.20061029091904:Bugs
 #@+node:ekr.20061029091904.1:Features
+#@+node:ekr.20061209131102:Added shortcuts for goto-first/last-sibling
+#@-node:ekr.20061209131102:Added shortcuts for goto-first/last-sibling
 #@+node:ekr.20061030161842.1:Added handleUrlInUrlNode helper for OnIconDoubleClick
 #@-node:ekr.20061030161842.1:Added handleUrlInUrlNode helper for OnIconDoubleClick
 #@+node:ekr.20061111131741:Only do one message re writing recent files
@@ -638,6 +1206,102 @@ def callAltXFunction (self,event):
 # This is much less confusing.
 #@nonl
 #@-node:ekr.20061129193001:Clear status line in repeat-complex-command
+#@+node:ekr.20061116064523:Made copied nodes valid Leo files
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4014079
+By: ktenney
+
+I've been looking at the Leo file format and discovered that a copied node is
+nearly a valid Leo file, just add;
+
+<globals/>
+<preferences/>
+<find_panel_settings/>
+
+Would it be possible to drop the requirement for these tags or
+add them when copying a node?
+
+I think it would be nice if copied nodes were valid Leo files.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.3022:getClipboardHeader
+def getClipboardHeader (self):
+
+    if self.getOpenTag("<leo_header"):
+        return # <leo_header> or <leo_header/> has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/>")
+            break
+#@nonl
+#@-node:ekr.20031218072017.3022:getClipboardHeader
+#@+node:ekr.20061209141653:getDummyElements
+def getDummyElements (self):
+    
+    # New in Leo 4.4.3: Ignore the dummy elements that allow
+    # Pasted Leo outlines to be valid .leo files.
+    
+    while 1:
+        if self.matchTag('<globals/>'): pass
+        elif self.matchTag('<preferences/>'): pass
+        elif self.matchTag('<find_panel_settings/>'): pass
+        else: break
+#@-node:ekr.20061209141653:getDummyElements
+#@+node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
+# Writes a Leo outline to s in a format suitable for pasting to the clipboard.
+
+def putLeoOutline (self):
+
+    self.outputFile = g.fileLikeObject()
+    self.usingClipboard = True
+    self.assignFileIndices() # 6/11/03: Must do this for 3.x code.
+    self.putProlog()
+    self.putClipboardHeader()
+    self.putVnodes()
+    self.putTnodes()
+    self.putPostlog()
+    s = self.outputFile.getvalue()
+    self.outputFile = None
+    self.usingClipboard = False
+    return s
+#@+node:ekr.20031218072017.1971:putClipboardHeader
+def putClipboardHeader (self):
+
+    c = self.c ; tnodes = 0
+    << count the number of tnodes >>
+    self.put('<leo_header file_format="1" tnodes=')
+    self.put_in_dquotes(str(tnodes))
+    self.put(" max_tnode_index=")
+    self.put_in_dquotes(str(tnodes))
+    self.put("/>") ; self.put_nl()
+    
+    if 1: # New in Leo
+        self.put('<globals/>\n')
+        self.put('<preferences/>\n')
+        self.put('<find_panel_settings/>\n')
+
+#@+node:ekr.20031218072017.1972:<< count the number of tnodes >>
+c.clearAllVisited()
+
+for p in c.currentPosition().self_and_subtree_iter():
+    t = p.v.t
+    if t and not t.isWriteBit():
+        t.setWriteBit()
+        tnodes += 1
+#@-node:ekr.20031218072017.1972:<< count the number of tnodes >>
+#@-node:ekr.20031218072017.1971:putClipboardHeader
+#@-node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
+#@-node:ekr.20061116064523:Made copied nodes valid Leo files
 #@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061127100022.1:Menu reorgs
 #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
@@ -1516,7 +2180,7 @@ def defineWindowMenuTables (self):
 def defineHelpMenuTables (self):
     
     self.helpMenuTable = [
-        # &: a,b,c,d,f,h,l,m,n,o,p,r,s,t,u
+        # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
         ('&About Leo...',           'about-leo'),
         ('Online &Home Page',       'open-online-home'),
         '*open-online-&tutorial',
@@ -1527,6 +2191,7 @@ def defineHelpMenuTables (self):
         ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
         ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
         ('Open scr&ipts.leo',       'open-scripts-leo'),
+        # ('Open t&est.leo',          'open-test-leo'),
         '-',
         '*he&lp-for-minibuffer',
         '*help-for-&command',
@@ -10322,7 +10987,7 @@ w.setSelectionRange(i,i,insert=i)
 # The problem was in a special case (for only one line) in g.convertPythonIndexToRowCol
 # This special case is now covered in the unit test.
 #@nonl
-#@+node:ekr.20061117084407.1:Removed no-longer needed tests for newlines 
+#@+node:ekr.20061117084407.1:Removed no-longer needed tests for newlines
 #@+node:ekr.20061031170011.13:getEditableTextRange (should return Python indices)
 def getEditableTextRange (self):
     
@@ -10363,7 +11028,7 @@ def update_ivars (self):
     s = g.toUnicode(s,g.app.tkEncoding)
     self.change_text = s
 #@-node:ekr.20051020120306.22:find.update_ivars
-#@-node:ekr.20061117084407.1:Removed no-longer needed tests for newlines 
+#@-node:ekr.20061117084407.1:Removed no-longer needed tests for newlines
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20050314140957:g.convertPythonIndexToRowCol (pass)
 def convertPythonIndexToRowCol (s,i):
@@ -15108,7 +15773,6 @@ def selectAllText (self,insert=None): # tkTextWidget
     w.setSelectionRange(0,len(s),insert=insert)
 #@-node:ekr.20061113151148.19:w.selectAllText (passed)
 #@-node:ekr.20061118044529:Fixed bugs in headline
-#@-node:ekr.20061128083024:Fixed bugs arising from new reorg
 #@+node:ekr.20061208073322:Fixed cursor up/down bug
 #@+node:ekr.20061208073208:Found: moveSpot
 #@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
@@ -15819,6 +16483,81 @@ def scrollHelper (self,event,direction,extend):
             self.scrollOutlineUpPage()
 #@-node:ekr.20060113082917:scrollHelper (passed)
 #@-node:ekr.20061208073322:Fixed cursor up/down bug
+#@+node:ekr.20061209135859:Fix recent crasher in about-leo command
+Traceback (most recent call last):
+  File "C:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
+    val = command(event)
+  File "C:\prog\tigris-cvs\leo\src\leoCommands.py", line 5194, in about
+    g.app.gui.runAboutLeoDialog(c,version,theCopyright,url,email)
+  File "c:\prog\tigris-cvs\leo\src\leoTkinterGui.py", line 197, in runAboutLeoDialog
+    d = leoTkinterDialog.tkinterAboutLeo(c,version,theCopyright,url,email)
+  File "c:\prog\tigris-cvs\leo\src\leoTkinterDialog.py", line 203, in __init__
+    self.createFrame()
+  File "c:\prog\tigris-cvs\leo\src\leoTkinterDialog.py", line 238, in createFrame
+    text.insert("end",version,"version")
+TypeError: insert() takes exactly 3 arguments (4 given)
+#@nonl
+#@+node:ekr.20031218072017.3869:tkinterAboutLeo.createFrame
+def createFrame (self):
+    
+    """Create the frame for an About Leo dialog."""
+    
+    if g.app.unitTesting: return
+    
+    frame = self.frame
+    theCopyright = self.copyright ; email = self.email
+    url = self.url ; version = self.version
+    
+    # Calculate the approximate height & width. (There are bugs in Tk here.)
+    lines = string.split(theCopyright,'\n')
+    height = len(lines) + 8 # Add lines for version,url,email,spacing.
+    width = 0
+    for line in lines:
+        width = max(width,len(line))
+    width = max(width,len(url))
+    width += 10 # 9/9/02
+
+    frame.pack(padx=6,pady=4)
+    
+    self.text = w = g.app.gui.leoTextWidgetClass(
+        frame,height=height,width=width,bd=0,bg=frame.cget("background"))
+    w.pack(pady=10)
+    
+    try:
+        bitmap_name = g.os_path_join(g.app.loadDir,"..","Icons","Leoapp.GIF") # 5/12/03
+        image = Tk.PhotoImage(file=bitmap_name)
+        w.image_create("1.0",image=image,padx=10)
+    except Exception:
+        pass # This can sometimes happen for mysterious reasons.
+
+    w.insert("end",version) #,tag="version")
+    w.tag_add('version','end-%dc' %(len(version)+1),'end-1c')
+    w.insert("end",theCopyright) #,tag="copyright")
+    w.tag_add('copyright','end-%dc' %(len(theCopyright)+1),'end-1c')
+    w.insert("end",'\n')
+    w.insert("end",url)
+    w.tag_add('url','end-%dc' %(len(url)+1),'end-1c')
+    w.insert("end",'\n')
+    w.insert("end",email)
+    w.tag_add('url','end-%dc' %(len(email)+1),'end-1c')
+    
+    w.tag_config("version",justify="center")
+    w.tag_config("copyright",justify="center",spacing1="3")
+    w.tag_config("url",underline=1,justify="center",spacing1="10")
+    
+    w.tag_bind("url","<Button-1>",self.onAboutLeoUrl)
+    w.tag_bind("url","<Enter>",self.setArrowCursor)
+    w.tag_bind("url","<Leave>",self.setDefaultCursor)
+
+    w.tag_config("email",underline=1,justify="center",spacing1="10")
+    w.tag_bind("email","<Button-1>",self.onAboutLeoEmail)
+    w.tag_bind("email","<Enter>",self.setArrowCursor)
+    w.tag_bind("email","<Leave>",self.setDefaultCursor)
+
+    w.configure(state="disabled")
+#@-node:ekr.20031218072017.3869:tkinterAboutLeo.createFrame
+#@-node:ekr.20061209135859:Fix recent crasher in about-leo command
+#@-node:ekr.20061128083024:Fixed bugs arising from new reorg
 #@-node:ekr.20041228084830.3:(Reorg for wxGui plugin)
 #@-node:ekr.20061029091751:Leo 4.4.3 beta 1 projects
 #@-all
