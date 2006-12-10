@@ -704,7 +704,7 @@ def scanDirectives(c,p=None):
             #@-node:ekr.20031218072017.1398:<< compute relative path from s[k:] >>
             #@nl
             if path and len(path) > 0:
-                base = g.getBaseDirectory(c=c) # returns "" on error.
+                base = g.getBaseDirectory(c) # returns "" on error.
                 path = g.os_path_join(base,path)
         #@-node:ekr.20031218072017.1397:<< Test for @path >>
         #@nl
@@ -731,7 +731,7 @@ def scanDirectives(c,p=None):
             old_dict=old,dict=theDict,pluginsList=pluginsList)
         old.update(theDict)
 
-    if path == None: path = g.getBaseDirectory(c=c)
+    if path == None: path = g.getBaseDirectory(c)
 
     return {
         "delims"    : (delim1,delim2,delim3),
@@ -1987,7 +1987,7 @@ def utils_stat (fileName):
 #@+node:ekr.20031218072017.1264:getBaseDirectory
 # Handles the conventions applying to the "relative_path_base_directory" configuration option.
 
-def getBaseDirectory(c=None):
+def getBaseDirectory(c):
 
     base = app.config.relative_path_base_directory
 
@@ -1998,6 +1998,12 @@ def getBaseDirectory(c=None):
 
     # g.trace(base)
     if base and len(base) > 0 and g.os_path_isabs(base):
+        # Set c.chdir_to_relative_path as needed.
+        if not hasattr(c,'chdir_to_relative_path'):
+            c.chdir_to_relative_path = c.config.getBool('chdir_to_relative_path')
+        # Call os.chdir if requested.
+        if c.chdir_to_relative_path:
+            os.chdir(base)
         return base # base need not exist yet.
     else:
         return "" # No relative base given.
