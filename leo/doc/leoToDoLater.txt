@@ -3674,7 +3674,7 @@ self.extension_dict = {
 #@+node:ekr.20031218072017.1264:getBaseDirectory
 # Handles the conventions applying to the "relative_path_base_directory" configuration option.
 
-def getBaseDirectory(c=None):
+def getBaseDirectory(c):
 
     base = app.config.relative_path_base_directory
 
@@ -3685,6 +3685,12 @@ def getBaseDirectory(c=None):
 
     # g.trace(base)
     if base and len(base) > 0 and g.os_path_isabs(base):
+        # Set c.chdir_to_relative_path as needed.
+        if not hasattr(c,'chdir_to_relative_path'):
+            c.chdir_to_relative_path = c.config.getBool('chdir_to_relative_path')
+        # Call os.chdir if requested.
+        if c.chdir_to_relative_path:
+            os.chdir(base)
         return base # base need not exist yet.
     else:
         return "" # No relative base given.

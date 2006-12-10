@@ -2,44 +2,11 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20061209082432:First
-# Before Christmas break.
-#@nonl
-#@+node:ekr.20061127171616:Experiment with Kent's idea for relative paths
+#@+node:ekr.20061209083136:Complete the wxGui plugin
 @nocolor
-http://sourceforge.net/forum/message.php?msg_id=4005750
-By: ktenney
 
-I like the option @string relative_path_base_directory = .
-
-which puts @file nodes in the same directory as the current Leo file.
-
-I would like it if 
-open('file.txt','w').close()
-
-put file.txt in the same directory as the current Leo file.
-
-in g.getBaseDirectory I changed::
-    if base and len(base) > 0 and g.os_path_isabs(base):
-        return base # base need not exist yet.
-
-to::
-    if base and len(base) > 0 and g.os_path_isabs(base):
-        os.chdir(base)
-        return base # base need not exist yet.
-
-it should probably be configurable::
-
-    if base and len(base) > 0 and g.os_path_isabs(base):
-        if app.config.python_cwd_is_leo_base:
-            os.chdir(base)
-        return base # base need not exist yet.
-#@-node:ekr.20061127171616:Experiment with Kent's idea for relative paths
-#@+node:ekr.20061209083136:Start using wxGui plugin
-#@-node:ekr.20061209083136:Start using wxGui plugin
-#@-node:ekr.20061209082432:First
-#@+node:ekr.20061209080017:wxGui project
-@nocolor
+- Make icon area and minibuffer functional.
+- Fix all unit tests.
 
 - It's not clear what to do about k.shortcutFromSetting.
 - Move Tk tables to Tk gui.
@@ -1288,7 +1255,7 @@ AttributeError: Canvas instance has no attribute 'get'
 #@+node:ekr.20061116054917.5:Move gui.get/set_focus to body widget
 #@-node:ekr.20061116054917.5:Move gui.get/set_focus to body widget
 #@-node:ekr.20061116054917.4:Improve body widget
-#@-node:ekr.20061209080017:wxGui project
+#@-node:ekr.20061209083136:Complete the wxGui plugin
 #@+node:ekr.20061209082338:Docs
 #@+node:ekr.20061130084909:Improve What's special whitepaper
 @nocolor
@@ -3162,8 +3129,8 @@ The menu-items 'Open myLeoSettings.leo' and 'Open LeoSettings.leo' under the
 Help-menu seem out-of-place.
 
 #@-node:ekr.20061024093525:Create settings menu
-#@+node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands 
-#@-node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands 
+#@+node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
+#@-node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
 #@+node:ekr.20061116054917.6:Remove blanks in calltips
 #@-node:ekr.20061116054917.6:Remove blanks in calltips
 #@+node:ekr.20061127170002.1:Allow multiple lines on the button bar

@@ -794,8 +794,6 @@ OnPasteFromMenu = pasteText
 #@-node:ekr.20061009152210.1:Fixed undo problems with yank/kill
 #@-node:ekr.20061029091904:Bugs
 #@+node:ekr.20061029091904.1:Features
-#@+node:ekr.20061209131102:Added shortcuts for goto-first/last-sibling
-#@-node:ekr.20061209131102:Added shortcuts for goto-first/last-sibling
 #@+node:ekr.20061030161842.1:Added handleUrlInUrlNode helper for OnIconDoubleClick
 #@-node:ekr.20061030161842.1:Added handleUrlInUrlNode helper for OnIconDoubleClick
 #@+node:ekr.20061111131741:Only do one message re writing recent files
@@ -1206,6 +1204,8 @@ def callAltXFunction (self,event):
 # This is much less confusing.
 #@nonl
 #@-node:ekr.20061129193001:Clear status line in repeat-complex-command
+#@+node:ekr.20061209131102:Added shortcuts for goto-first/last-sibling
+#@-node:ekr.20061209131102:Added shortcuts for goto-first/last-sibling
 #@+node:ekr.20061116064523:Made copied nodes valid Leo files
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4014079
@@ -1285,10 +1285,10 @@ def putClipboardHeader (self):
     self.put_in_dquotes(str(tnodes))
     self.put("/>") ; self.put_nl()
     
-    if 1: # New in Leo
-        self.put('<globals/>\n')
-        self.put('<preferences/>\n')
-        self.put('<find_panel_settings/>\n')
+    # New in Leo 4.4.3: Add dummy elements so copied nodes form a valid .leo file.
+    self.put('<globals/>\n')
+    self.put('<preferences/>\n')
+    self.put('<find_panel_settings/>\n')
 
 #@+node:ekr.20031218072017.1972:<< count the number of tnodes >>
 c.clearAllVisited()
@@ -1302,6 +1302,62 @@ for p in c.currentPosition().self_and_subtree_iter():
 #@-node:ekr.20031218072017.1971:putClipboardHeader
 #@-node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
 #@-node:ekr.20061116064523:Made copied nodes valid Leo files
+#@+node:ekr.20061127171616:Added support for chdir_to_relative_path setting
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4005750
+By: ktenney
+
+I like the option @string relative_path_base_directory = .
+
+which puts @file nodes in the same directory as the current Leo file.
+
+I would like it if 
+open('file.txt','w').close()
+
+put file.txt in the same directory as the current Leo file.
+
+in g.getBaseDirectory I changed::
+    if base and len(base) > 0 and g.os_path_isabs(base):
+        return base # base need not exist yet.
+
+to::
+    if base and len(base) > 0 and g.os_path_isabs(base):
+        os.chdir(base)
+        return base # base need not exist yet.
+
+it should probably be configurable::
+
+    if base and len(base) > 0 and g.os_path_isabs(base):
+        if app.config.python_cwd_is_leo_base:
+            os.chdir(base)
+        return base # base need not exist yet.
+        
+@color
+#@+node:ekr.20031218072017.1264:getBaseDirectory
+# Handles the conventions applying to the "relative_path_base_directory" configuration option.
+
+def getBaseDirectory(c):
+
+    base = app.config.relative_path_base_directory
+
+    if base and base == "!":
+        base = app.loadDir
+    elif base and base == ".":
+        base = c.openDirectory
+
+    # g.trace(base)
+    if base and len(base) > 0 and g.os_path_isabs(base):
+        # Set c.chdir_to_relative_path as needed.
+        if not hasattr(c,'chdir_to_relative_path'):
+            c.chdir_to_relative_path = c.config.getBool('chdir_to_relative_path')
+        # Call os.chdir if requested.
+        if c.chdir_to_relative_path:
+            os.chdir(base)
+        return base # base need not exist yet.
+    else:
+        return "" # No relative base given.
+#@-node:ekr.20031218072017.1264:getBaseDirectory
+#@-node:ekr.20061127171616:Added support for chdir_to_relative_path setting
 #@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061127100022.1:Menu reorgs
 #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
