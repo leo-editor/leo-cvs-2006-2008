@@ -699,7 +699,7 @@ class leoFrame:
     #@-node:ekr.20031218072017.1375:scanForTabWidth
     #@+node:ekr.20061119120006:Icon area convenience methods
     def addIconButton (self,*args,**keys):
-        self.iconBar and self.iconBar.add(*args,**keys)
+        return self.iconBar and self.iconBar.add(*args,**keys)
     
     def clearIconBar (self):
         self.iconBar and self.iconBar.clear()
