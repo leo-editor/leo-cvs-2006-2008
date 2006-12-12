@@ -1,5 +1,7 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060123151617:@thin leoFind.py
+'''Leo's gui-independent find classes.'''
+
 #@@language python
 #@@tabwidth -4
 #@@pagewidth 80
@@ -58,6 +60,8 @@ import re
 #@-node:ekr.20031218072017.2414:<< Theory of operation of find/change >>
 #@nl
 
+#@+others
+#@+node:ekr.20061212084717:class leoFind
 class leoFind:
 
     """The base class for Leo's Find commands."""
@@ -950,7 +954,45 @@ class leoFind:
             self.initNextText()
         return p
     #@-node:ekr.20031218072017.3081:selectNextPosition
+    #@+node:ekr.20031218072017.3092:update_ivars (leoFind)
+    def update_ivars(self):
+        
+        # Must be defined in subclasses.
+        self.oops()
+    #@-node:ekr.20031218072017.3092:update_ivars (leoFind)
     #@-node:ekr.20031218072017.3067:Find/change utils
+    #@+node:ekr.20061212095134.1:General utils
+    #@+node:ekr.20051020120306.26:bringToFront (leoFind)
+    def bringToFront (self):
+    
+        """Bring the Find Tab to the front and select the entire find text."""
+    
+        c = self.c ; w = self.find_ctrl
+            
+        c.widgetWantsFocusNow(w)
+        g.app.gui.selectAllText(w)
+        c.widgetWantsFocus(w)
+    #@-node:ekr.20051020120306.26:bringToFront (leoFind)
+    #@+node:ekr.20061111084423.1:oops (leoFind)
+    def oops(self):
+        print ("leoFind oops:",
+            g.callers(),"should be overridden in subclass")
+    #@nonl
+    #@-node:ekr.20061111084423.1:oops (leoFind)
+    #@+node:ekr.20051020120306.27:selectAllFindText (leoFind)
+    def selectAllFindText (self,event=None):
+        
+        __pychecker__ = '--no-argsused' # event
+        
+        # This is called only when the user presses ctrl-a in the find panel.
+    
+        w = self.frame.focus_get()
+        if g.app.gui.isTextWidget(w):
+            w.selectAllText()
+    
+        return "break"
+    #@-node:ekr.20051020120306.27:selectAllFindText (leoFind)
+    #@-node:ekr.20061212095134.1:General utils
     #@+node:ekr.20031218072017.3082:Initing & finalizing
     #@+node:ekr.20031218072017.3083:checkArgs
     def checkArgs (self):
@@ -1163,32 +1205,131 @@ class leoFind:
     #@nonl
     #@-node:ekr.20031218072017.3091:showSuccess
     #@-node:ekr.20031218072017.3082:Initing & finalizing
-    #@+node:ekr.20031218072017.3092:Must be overridden in subclasses
-    def bringToFront (self):
-        self.oops()
-            
-    def update_ivars(self):
-        self.oops()
-    #@-node:ekr.20031218072017.3092:Must be overridden in subclasses
-    #@+node:ekr.20061111084423.1:oops
-    def oops(self):
-        print ("leoFind oops:",
-            g.callers(),"should be overridden in subclass")
-    #@nonl
-    #@-node:ekr.20061111084423.1:oops
-    #@+node:ekr.20051020120306.27:selectAllFindText (leoFind)
-    def selectAllFindText (self,event=None):
-        
-        __pychecker__ = '--no-argsused' # event
-        
-        # This is called only when the user presses ctrl-a in the find panel.
-    
-        w = self.frame.focus_get()
-        if g.app.gui.isTextWidget(w):
-            w.selectAllText()
-    
-        return "break"
-    #@-node:ekr.20051020120306.27:selectAllFindText (leoFind)
     #@-others
+#@-node:ekr.20061212084717:class leoFind
+#@+node:ekr.20051020120306.6:class findTab (leoFind)
+class findTab (leoFind):
+    
+    '''An adapter class that implements Leo's Find tab.'''
+
+    #@    @+others
+    #@+node:ekr.20051020120306.10:Birth & death
+    #@+node:ekr.20051020120306.11:__init__ & initGui
+    def __init__(self,c,parentFrame):
+        
+        # g.trace('findTab')
+    
+        # Init the base class...
+        leoFind.__init__(self,c,title='Find Tab')
+        self.c = c
+        self.frame = self.outerFrame = self.top = None
+        
+        self.optionsOnly = c.config.getBool('show_only_find_tab_options')
+        
+        # These are created later.
+        self.find_ctrl = None
+        self.change_ctrl = None 
+        self.outerScrolledFrame = None
+        self.s_ctrl = g.app.gui.leoTextWidgetClass() # Used by find.search()
+    
+        self.initGui()
+        self.createFrame(parentFrame)
+        self.createBindings()
+        self.init(c) # New in 4.3: init only once.
+        
+    #@nonl
+    #@-node:ekr.20051020120306.11:__init__ & initGui
+    #@+node:ekr.20061212092124:Defined in subclasses
+    def createBindings (self):
+        self.oops()
+        
+    def createFrame (self):
+        self.oops()
+        
+    def init (self):
+        self.oops()
+        
+    def initGui (self):
+        pass # Optional method.
+        
+    # self.oops is defined in the leoFind class.
+    #@nonl
+    #@-node:ekr.20061212092124:Defined in subclasses
+    #@-node:ekr.20051020120306.10:Birth & death
+    #@+node:ekr.20060221074900:Callbacks
+    #@+node:ekr.20060221074900.1:findButtonCallback
+    def findButtonCallback(self,event=None):
+        
+        self.findButton()
+        return 'break'
+    #@-node:ekr.20060221074900.1:findButtonCallback
+    #@+node:ekr.20051020120306.25:hideTab
+    def hideTab (self,event=None):
+        
+        c = self.c
+        c.frame.log.selectTab('Log')
+        c.bodyWantsFocus()
+    #@-node:ekr.20051020120306.25:hideTab
+    #@-node:ekr.20060221074900:Callbacks
+    #@+node:ekr.20051024192602: Top level
+    #@+node:ekr.20060209064832:findAllCommand
+    def findAllCommand (self,event=None):
+    
+        self.setup_command()
+        self.findAll()
+    #@-node:ekr.20060209064832:findAllCommand
+    #@+node:ekr.20060204120158.1:findAgainCommand
+    def findAgainCommand (self):
+        
+        s = self.find_ctrl.getAllText()
+        
+        if s and s != '<find pattern here>':
+            self.findNextCommand()
+            return True
+        else:
+            # Tell the caller that to get the find args.
+            return False
+    #@-node:ekr.20060204120158.1:findAgainCommand
+    #@+node:ekr.20060128075225:cloneFindAllCommand
+    def cloneFindAllCommand (self,event=None):
+        
+        self.setup_command()
+        self.clone_find_all = True
+        self.findAll()
+        self.clone_find_all = False
+    #@-node:ekr.20060128075225:cloneFindAllCommand
+    #@+node:ekr.20051024192642.2:findNext/PrefCommand
+    def findNextCommand (self,event=None):
+    
+        self.setup_command()
+        self.findNext()
+        
+    def findPrevCommand (self,event=None):
+        
+        self.setup_command()
+        self.reverse = not self.reverse
+        self.findNext()
+        self.reverse = not self.reverse
+    #@-node:ekr.20051024192642.2:findNext/PrefCommand
+    #@+node:ekr.20051024192642.3:change/ThenFindCommand
+    def changeCommand (self,event=None):
+    
+        self.setup_command()
+        self.change()
+        
+    def changeAllCommand (self,event=None):
+    
+        self.setup_command()
+        self.changeAll()
+        
+    def changeThenFindCommand(self,event=None):
+        
+        self.setup_command()
+        self.changeThenFind()
+    #@-node:ekr.20051024192642.3:change/ThenFindCommand
+    #@-node:ekr.20051024192602: Top level
+    #@-others
+#@-node:ekr.20051020120306.6:class findTab (leoFind)
+#@-others
 #@-node:ekr.20060123151617:@thin leoFind.py
 #@-leo

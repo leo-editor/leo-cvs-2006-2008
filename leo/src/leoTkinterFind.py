@@ -10,6 +10,8 @@ import leoFind
 import leoTkinterDialog
 import Tkinter as Tk
 
+Pmw = g.importExtension('Pmw',pluginName=None,verbose=False)
+
 #@+others
 #@+node:ekr.20041025152343:class underlinedTkButton
 class underlinedTkButton:
@@ -447,6 +449,346 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     #@-node:ekr.20061111084423:Overrides
     #@-others
 #@-node:ekr.20041025152343.1:class leoTkinterFind
+#@+node:ekr.20061212085958:class tkFindTab (findTab)
+class tkFindTab (leoFind.findTab):
+    
+    '''A subclass of the findTab class containing all Tk code.'''
+
+    #@    @+others
+    #@+node:ekr.20061212085958.1: Birth
+    if 0: # We can use the base-class ctor.
+    
+        def __init__ (self,c,parentFrame):
+        
+            leoFind.findTab.__init__(self,c,parentFrame)
+                # Init the base class.
+                # Calls initGui, createFrame, createBindings & init(c), in that order.
+    #@+node:ekr.20051020120306.12:initGui
+    def initGui (self):
+    
+        self.dict = {}
+        
+        for key in self.intKeys:
+            self.dict[key] = Tk.IntVar()
+        
+        for key in self.newStringKeys:
+            self.dict[key] = Tk.StringVar()
+    
+    #@-node:ekr.20051020120306.12:initGui
+    #@+node:ekr.20051020120306.13:createFrame (tkFindTab)
+    def createFrame (self,parentFrame):
+        
+        c = self.c
+        
+        # g.trace('findTab')
+        
+        #@    << Create the outer frames >>
+        #@+node:ekr.20051020120306.14:<< Create the outer frames >>
+        configName = 'log_pane_Find_tab_background_color'
+        bg = c.config.getColor(configName) or 'MistyRose1'
+        
+        parentFrame.configure(background=bg)
+        
+        self.top = Tk.Frame(parentFrame,background=bg)
+        self.top.pack(side='top',expand=0,fill='both',pady=5)
+            # Don't expand, so the frame goes to the top.
+        
+        self.outerScrolledFrame = Pmw.ScrolledFrame(
+            parentFrame,usehullsize = 1)
+        
+        self.outerFrame = outer = self.outerScrolledFrame.component('frame')
+        self.outerFrame.configure(background=bg)
+        
+        for z in ('borderframe','clipper','frame','hull'):
+            self.outerScrolledFrame.component(z).configure(relief='flat',background=bg)
+        #@-node:ekr.20051020120306.14:<< Create the outer frames >>
+        #@nl
+        #@    << Create the Find and Change panes >>
+        #@+node:ekr.20051020120306.15:<< Create the Find and Change panes >>
+        fc = Tk.Frame(outer, bd="1m",background=bg)
+        fc.pack(anchor="n", fill="x", expand=1)
+        
+        # Removed unused height/width params: using fractions causes problems in some locales!
+        fpane = Tk.Frame(fc, bd=1,background=bg)
+        cpane = Tk.Frame(fc, bd=1,background=bg)
+        
+        fpane.pack(anchor="n", expand=1, fill="x")
+        cpane.pack(anchor="s", expand=1, fill="x")
+        
+        # Create the labels and text fields...
+        flab = Tk.Label(fpane, width=8, text="Find:",background=bg)
+        clab = Tk.Label(cpane, width=8, text="Change:",background=bg)
+        
+        if self.optionsOnly:
+            # Use one-line boxes.
+            self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
+                fpane,bd=1,relief="groove",height=1,width=25,name='find-text')
+            self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+                cpane,bd=1,relief="groove",height=1,width=25,name='change-text')
+        else:
+            # Use bigger boxes for scripts.
+            self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
+                fpane,bd=1,relief="groove",height=3,width=15,name='find-text')
+            self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+                cpane,bd=1,relief="groove",height=3,width=15,name='change-text')
+        #@<< Bind Tab and control-tab >>
+        #@+node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
+        def setFocus(w):
+            c = self.c
+            c.widgetWantsFocusNow(w)
+            w.setSelectionRange(0,0)
+            return "break"
+            
+        def toFind(event,w=ftxt): return setFocus(w)
+        def toChange(event,w=ctxt): return setFocus(w)
+            
+        def insertTab(w):
+            data = w.getSelectionRange()
+            if data: start,end = data
+            else: start = end = w.getInsertPoint()
+            w.replace(start,end,"\t")
+            return "break"
+        
+        def insertFindTab(event,w=ftxt): return insertTab(w)
+        def insertChangeTab(event,w=ctxt): return insertTab(w)
+        
+        ftxt.bind("<Tab>",toChange)
+        ctxt.bind("<Tab>",toFind)
+        ftxt.bind("<Control-Tab>",insertFindTab)
+        ctxt.bind("<Control-Tab>",insertChangeTab)
+        #@-node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
+        #@nl
+        
+        if 0: # Add scrollbars.
+            fBar = Tk.Scrollbar(fpane,name='findBar')
+            cBar = Tk.Scrollbar(cpane,name='changeBar')
+            
+            for bar,txt in ((fBar,ftxt),(cBar,ctxt)):
+                txt['yscrollcommand'] = bar.set
+                bar['command'] = txt.yview
+                bar.pack(side="right", fill="y")
+                
+        if self.optionsOnly:
+            flab.pack(side="left") ; ftxt.pack(side="left")
+            clab.pack(side="left") ; ctxt.pack(side="left")
+        else:
+            flab.pack(side="left") ; ftxt.pack(side="right", expand=1, fill="x")
+            clab.pack(side="left") ; ctxt.pack(side="right", expand=1, fill="x")
+        #@-node:ekr.20051020120306.15:<< Create the Find and Change panes >>
+        #@nl
+        #@    << Create two columns of radio and checkboxes >>
+        #@+node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
+        columnsFrame = Tk.Frame(outer,relief="groove",bd=2,background=bg)
+        
+        columnsFrame.pack(expand=0,padx="7p",pady="2p")
+        
+        numberOfColumns = 2 # Number of columns
+        columns = [] ; radioLists = [] ; checkLists = []
+        for i in xrange(numberOfColumns):
+            columns.append(Tk.Frame(columnsFrame,bd=1))
+            radioLists.append([])
+            checkLists.append([])
+        
+        for i in xrange(numberOfColumns):
+            columns[i].pack(side="left",padx="1p") # fill="y" Aligns to top. padx expands columns.
+        
+        radioLists[0] = []
+        
+        checkLists[0] = [
+            # ("Scrip&t Change",self.dict["script_change"]),
+            ("Whole &Word", self.dict["whole_word"]),
+            ("&Ignore Case",self.dict["ignore_case"]),
+            ("Wrap &Around",self.dict["wrap"]),
+            ("&Reverse",    self.dict["reverse"]),
+            ('Rege&xp',     self.dict['pattern_match']),
+            ("Mark &Finds", self.dict["mark_finds"]),
+        ]
+        
+        radioLists[1] = [
+            (self.dict["radio-search-scope"],"&Entire Outline","entire-outline"),
+            (self.dict["radio-search-scope"],"&Suboutline Only","suboutline-only"),  
+            (self.dict["radio-search-scope"],"&Node Only","node-only"),
+        ]
+        
+        checkLists[1] = [
+            ("Search &Headline", self.dict["search_headline"]),
+            ("Search &Body",     self.dict["search_body"]),
+            ("Mark &Changes",    self.dict["mark_changes"]),
+        ]
+        
+        for i in xrange(numberOfColumns):
+            for var,name,val in radioLists[i]:
+                box = underlinedTkButton(
+                    "radio",columns[i],anchor="w",text=name,variable=var,value=val,background=bg)
+                box.button.pack(fill="x")
+                box.button.bind("<Button-1>", self.resetWrap)
+                if val == None: box.button.configure(state="disabled")
+                box.bindHotKey(ftxt)
+                box.bindHotKey(ctxt)
+            for name,var in checkLists[i]:
+                box = underlinedTkButton(
+                    "check",columns[i],anchor="w",text=name,variable=var,background=bg)
+                box.button.pack(fill="x")
+                box.button.bind("<Button-1>", self.resetWrap)
+                box.bindHotKey(ftxt)
+                box.bindHotKey(ctxt)
+                if var is None: box.button.configure(state="disabled")
+        #@-node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
+        #@nl
+        
+        if  self.optionsOnly:
+            buttons = []
+        else:
+            #@        << Create two columns of buttons >>
+            #@+node:ekr.20051020120306.18:<< Create two columns of buttons >>
+            # Create the alignment panes.
+            buttons  = Tk.Frame(outer,background=bg)
+            buttons1 = Tk.Frame(buttons,bd=1,background=bg)
+            buttons2 = Tk.Frame(buttons,bd=1,background=bg)
+            buttons.pack(side='top',expand=1)
+            buttons1.pack(side='left')
+            buttons2.pack(side='right')
+            
+            width = 15 ; defaultText = 'Find' ; buttons = []
+            
+            for text,boxKind,frame,callback in (
+                # Column 1...
+                ('Find','button',buttons1,self.findButtonCallback),
+                ('Find All','button',buttons1,self.findAllButton),
+                # Column 2...
+                ('Change','button',buttons2,self.changeButton),
+                ('Change, Then Find','button',buttons2,self.changeThenFindButton),
+                ('Change All','button',buttons2,self.changeAllButton),
+            ):
+                w = underlinedTkButton(boxKind,frame,
+                    text=text,command=callback)
+                buttons.append(w)
+                if text == defaultText:
+                    w.button.configure(width=width-1,bd=4)
+                elif boxKind != 'check':
+                    w.button.configure(width=width)
+                w.button.pack(side='top',anchor='w',pady=2,padx=2)
+            #@-node:ekr.20051020120306.18:<< Create two columns of buttons >>
+            #@nl
+        
+        # Pack this last so buttons don't get squashed when frame is resized.
+        self.outerScrolledFrame.pack(side='top',expand=1,fill='both',padx=2,pady=2)
+    #@-node:ekr.20051020120306.13:createFrame (tkFindTab)
+    #@+node:ekr.20051023181449:createBindings (tkFindTab)
+    def createBindings (self):
+        
+        c = self.c ; k = c.k
+        
+        def resetWrapCallback(event,self=self,k=k):
+            self.resetWrap(event)
+            return k.masterKeyHandler(event)
+            
+        def findButtonBindingCallback(event=None,self=self):
+            self.findButton()
+            return 'break'
+    
+        table = (
+            ('<Button-1>',  k.masterClickHandler),
+            ('<Double-1>',  k.masterClickHandler),
+            ('<Button-3>',  k.masterClickHandler),
+            ('<Double-3>',  k.masterClickHandler),
+            ('<Key>',       resetWrapCallback),
+            ('<Return>',    findButtonBindingCallback),
+            ("<Escape>",    self.hideTab),
+        )
+    
+        for w in (self.find_ctrl,self.change_ctrl):
+            for event, callback in table:
+                w.bind(event,callback)
+    #@-node:ekr.20051023181449:createBindings (tkFindTab)
+    #@+node:ekr.20051020120306.19:init (tkFindTab)
+    def init (self,c):
+        
+        # g.trace('Find Tab')
+    
+        # N.B.: separate c.ivars are much more convenient than a dict.
+        for key in self.intKeys:
+            # New in 4.3: get ivars from @settings.
+            val = c.config.getBool(key)
+            setattr(self,key,val)
+            val = g.choose(val,1,0) # Work around major Tk problem.
+            self.dict[key].set(val)
+            # g.trace(key,val)
+    
+        #@    << set find/change widgets >>
+        #@+node:ekr.20051020120306.20:<< set find/change widgets >>
+        self.find_ctrl.delete(0,"end")
+        self.change_ctrl.delete(0,"end")
+        
+        # New in 4.3: Get setting from @settings.
+        for w,setting,defaultText in (
+            (self.find_ctrl,"find_text",'<find pattern here>'),
+            (self.change_ctrl,"change_text",''),
+        ):
+            s = c.config.getString(setting)
+            if not s: s = defaultText
+            w.insert("end",s)
+        #@-node:ekr.20051020120306.20:<< set find/change widgets >>
+        #@nl
+        #@    << set radio buttons from ivars >>
+        #@+node:ekr.20051020120306.21:<< set radio buttons from ivars >>
+        found = False
+        for var,setting in (
+            ("pattern_match","pattern-search"),
+            #("script_search","script-search")
+        ):
+            val = self.dict[var].get()
+            if val:
+                self.dict["radio-find-type"].set(setting)
+                found = True ; break
+        if not found:
+            self.dict["radio-find-type"].set("plain-search")
+            
+        found = False
+        for var,setting in (
+            ("suboutline_only","suboutline-only"),
+            ("node_only","node-only"),
+            # ("selection_only","selection-only")
+        ):
+            val = self.dict[var].get()
+            if val:
+                self.dict["radio-search-scope"].set(setting)
+                found = True ; break
+        if not found:
+            self.dict["radio-search-scope"].set("entire-outline")
+        #@-node:ekr.20051020120306.21:<< set radio buttons from ivars >>
+        #@nl
+    #@-node:ekr.20051020120306.19:init (tkFindTab)
+    #@-node:ekr.20061212085958.1: Birth
+    #@+node:ekr.20051020120306.22:update_ivars (tkFindTab)
+    def update_ivars (self):
+        
+        """Called just before doing a find to update ivars from the find panel."""
+    
+        self.p = self.c.currentPosition()
+        self.v = self.p.v
+    
+        for key in self.intKeys:
+            val = self.dict[key].get()
+            setattr(self, key, val)
+            # g.trace(key,val)
+    
+        search_scope = self.dict["radio-search-scope"].get()
+        self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
+        self.node_only       = g.choose(search_scope == "node-only",1,0)
+    
+        # The caller is responsible for removing most trailing cruft.
+        # Among other things, this allows Leo to search for a single trailing space.
+        s = self.find_ctrl.getAllText()
+        s = g.toUnicode(s,g.app.tkEncoding)
+        self.find_text = s
+        s = self.change_ctrl.getAllText()
+        s = g.toUnicode(s,g.app.tkEncoding)
+        self.change_text = s
+    #@-node:ekr.20051020120306.22:update_ivars (tkFindTab)
+    #@-others
+#@nonl
+#@-node:ekr.20061212085958:class tkFindTab (findTab)
 #@-others
 #@-node:ekr.20031218072017.3897:@thin leoTkinterFind.py
 #@-leo

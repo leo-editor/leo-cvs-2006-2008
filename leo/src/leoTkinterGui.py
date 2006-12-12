@@ -280,11 +280,13 @@ class tkinterGui(leoGui.leoGui):
         panel.top.withdraw()
         return panel
         
+    def createFindTab (self,c,parentFrame):
+        """Create a Tkinter find tab in the indicated frame."""
+        return leoTkinterFind.tkFindTab(c,parentFrame)
+        
     def createLeoFrame(self,title):
         """Create a new Leo frame."""
-        
         # print 'tkGui.createLeoFrame'
-    
         gui = self
         return leoTkinterFrame.leoTkinterFrame(title,gui)
     #@-node:ekr.20031218072017.4058:tkGui panels

@@ -115,6 +115,7 @@ class leoGui:
         'color',
         #'createComparePanel',          # optional
         #'createFindPanel',             # optional
+        'createFindTab',
         'createKeyHandlerClass',
         'createLeoFrame',
         'createRootWindow',
