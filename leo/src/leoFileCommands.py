@@ -3102,7 +3102,7 @@ class baseFileCommands:
             return True
         except Exception:
             g.es("exception writing: " + fileName)
-            g.es_exception(full=False)
+            g.es_exception(full=True)
             if theActualFile: theActualFile.close()
             self.outputFile = None
             if backupName:
