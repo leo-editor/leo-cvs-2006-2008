@@ -2745,7 +2745,7 @@ def sortFields (self,event,which=None):
 #@-node:ekr.20050920084036.120:sortFields
 #@-node:ekr.20050920084036.117:sort...
 #@+node:ekr.20061102064720.4:search classes
-#@+node:ekr.20051020120306.22:find.update_ivars
+#@+node:ekr.20051020120306.22:update_ivars (tkFindTab)
 def update_ivars (self):
     
     """Called just before doing a find to update ivars from the find panel."""
@@ -2770,7 +2770,7 @@ def update_ivars (self):
     s = self.change_ctrl.getAllText()
     s = g.toUnicode(s,g.app.tkEncoding)
     self.change_text = s
-#@-node:ekr.20051020120306.22:find.update_ivars
+#@-node:ekr.20051020120306.22:update_ivars (tkFindTab)
 #@+node:ekr.20050920084036.261:incremental search...
 def isearchForward (self,event):
     '''Begin a forward incremental search.'''
@@ -11058,7 +11058,7 @@ def getEditableTextRange (self):
     return i,j
 #@nonl
 #@-node:ekr.20061031170011.13:getEditableTextRange (should return Python indices)
-#@+node:ekr.20051020120306.22:find.update_ivars
+#@+node:ekr.20051020120306.22:update_ivars (tkFindTab)
 def update_ivars (self):
     
     """Called just before doing a find to update ivars from the find panel."""
@@ -11083,7 +11083,7 @@ def update_ivars (self):
     s = self.change_ctrl.getAllText()
     s = g.toUnicode(s,g.app.tkEncoding)
     self.change_text = s
-#@-node:ekr.20051020120306.22:find.update_ivars
+#@-node:ekr.20051020120306.22:update_ivars (tkFindTab)
 #@-node:ekr.20061117084407.1:Removed no-longer needed tests for newlines
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20050314140957:g.convertPythonIndexToRowCol (pass)
