@@ -1457,7 +1457,8 @@ class wxGui(leoGui.leoGui):
         
         """Returns the widget that has focus, or body if None."""
     
-        pass # wx code not ready yet.
+        g.trace(top)
+        return top
     #@nonl
     #@-node:edream.110203113231.336:get_focus
     #@+node:edream.110203113231.337:set_focus
@@ -1853,6 +1854,7 @@ class wxLeoBody (leoFrame.leoBody):
                 if 0: # This causes flash even when nothing is actually colored!
                     self.frame.body.recolor_now(p)
                 if not c.changed: c.setChanged(True)
+                c.frame.tree.updateVisibleIcons(p)
         finally:
             self.frame.lockout -= 1
     #@nonl
@@ -1882,6 +1884,7 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         # g.trace("wxLeoFrame",title)
         self.activeFrame = None
+        self.focusWidget = None
         self.iconBar = None
         self.iconBarClass = wxLeoIconBar
         self.lockout = 0 # Suppress further events
@@ -1930,6 +1933,7 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         self.minibufferContainer = wx.PyWindow(parentFrame,-1,size=(-1,20),)
         self.minibufferContainer.SetBackgroundColour(wx.GREEN)
+        self.minibuffer = wxLeoMinibuffer(c,self.minibufferContainer)
     
         self.topFrame.CreateStatusBar() # This is a wxWidgets method.
         self.createSplitters(parentFrame=self.splitterContainer)
@@ -1942,7 +1946,7 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         # Attach the controls to the splitter.
         self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
-        self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.logCtrl,cSplitterWidth/2)
+        self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.nb,cSplitterWidth/2)
         
         # This code resizes both splitters when the window changes.
         box = wx.BoxSizer(wx.VERTICAL)
@@ -1971,6 +1975,10 @@ class wxLeoFrame(leoFrame.leoFrame):
         g.app.windowList.append(self)
         self.tree.redraw()
         self.topFrame.Show(True) # required on some platforms: a cross-platform bug.
+        
+        self.setFocus(g.choose(
+            c.config.getBool('outline_pane_has_initial_focus'),
+            self.tree.treeCtrl,self.bodyCtrl))
     #@nonl
     #@+node:edream.110203113231.261:createSplitters
     def createSplitters(self,parentFrame):
@@ -2153,7 +2161,7 @@ class wxLeoFrame(leoFrame.leoFrame):
     
     def get_window_info (self):
         """Return the window information."""
-        return g.app.gui.get_window_info(self)
+        return g.app.gui.get_window_info(self.topFrame)
     
     def resizePanesToRatio(self,ratio1,ratio2):
         pass
@@ -2192,7 +2200,14 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@-node:edream.111303135410:setTitle
     #@-node:edream.110203113231.378:Externally visible routines...
     #@+node:edream.111303100039:Gui-dependent commands (to do)
-    #@+node:ekr.20061106070201:Minibuffer commands... (tkFrame)
+    #@+node:ekr.20061211083200:setFocus
+    def setFocus (self,w):
+            
+        w.SetFocus()
+        self.focusWidget = w
+    #@nonl
+    #@-node:ekr.20061211083200:setFocus
+    #@+node:ekr.20061106070201:Minibuffer commands... (wxFrame)
     
     #@+node:ekr.20061106070201.1:contractPane
     def contractPane (self,event=None):
@@ -2338,8 +2353,8 @@ class wxLeoFrame(leoFrame.leoFrame):
         '''Completely contract the outline pane.'''
         f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
     #@-node:ekr.20061106070201.6:fullyExpand/hide...Pane
-    #@-node:ekr.20061106070201:Minibuffer commands... (tkFrame)
-    #@+node:edream.111303100039.1:Edit Menu...
+    #@-node:ekr.20061106070201:Minibuffer commands... (wxFrame)
+    #@+node:edream.111303100039.1:Edit Menu... (wxLeoFrame)
     #@+node:edream.111303101257:abortEditLabelCommand
     def abortEditLabelCommand (self,event=None):
     
@@ -2405,7 +2420,7 @@ class wxLeoFrame(leoFrame.leoFrame):
             g.es("Edit headline to append date/time")
     #@nonl
     #@-node:edream.111303100039.6:insertHeadlineTime
-    #@-node:edream.111303100039.1:Edit Menu...
+    #@-node:edream.111303100039.1:Edit Menu... (wxLeoFrame)
     #@+node:edream.111303100039.7:Window Menu
     #@+node:edream.111303100039.8:cascade
     def cascade(self,event=None):
@@ -2468,17 +2483,14 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@nonl
     #@-node:edream.111303100039.11:minimizeAll
     #@+node:edream.111303101709:toggleActivePane
-    def toggleActivePane(self,event=None):
-        
-        # This can't work from the menu...
-        
-        g.es("toggleActivePane not ready yet")
-        return
+    def toggleActivePane(self,event=None): # wxFrame.
     
-        if self.FindFocus() == self.body.bodyCtrl:
-            self.tree.SetFocus()
-        else:
-            self.body.bodyCtrl.SetFocus()
+        w = self.focusWidget or self.body.bodyCtrl
+        
+        w = g.choose(w == self.bodyCtrl,self.tree.treeCtrl,self.bodyCtrl)
+            
+        w.SetFocus()
+        self.focusWidget = w
     #@nonl
     #@-node:edream.111303101709:toggleActivePane
     #@+node:edream.111303100039.12:toggleSplitDirection
@@ -2597,16 +2609,16 @@ class wxLeoIconBar:
         
         # g.trace('wxLeoIconBar',parentFrame)
         
-        # wx.Frame does *not* work, for some reason!
-        self.top = wx.PyWindow(parentFrame,-1,
-            #pos = (-1,-1),
-            #size = (-1,40), # Width, height.
-        )
+        # wx.Frame does *not* work, for some reason! (Frames are top-levels)
         
-        self.top.SetSize((0,40),)
+        self.top = wx.Panel(parentFrame,-1)
+        
+        self.top.SetSize((0,25),)
+        
+        color =  wx.Colour(224,224,224,255)
     
-        self.top.SetForegroundColour(wx.RED)
-        self.top.SetBackgroundColour(wx.RED)
+        self.top.SetForegroundColour(color)
+        self.top.SetBackgroundColour(color)
         
         c.frame.iconFrame = self.top
         
@@ -2741,8 +2753,10 @@ class wxLeoLog (leoFrame.leoLog):
         self.c = frame.c
         self.isNull = False
         self.newlines = 0
+        self.frameDict = {} # Keys are log names, values are None or wx.Frames.
+        self.textDict = {} # Keys are log names, values are Text controls.
     
-        self.logCtrl = self.createControl(parentFrame)
+        self.createControl(parentFrame) # Sets self.nb and self.logCtrl
         self.setFontFromConfig()
     #@-node:edream.110203113231.554:leoLog.__init__
     #@+node:ekr.20061118122007:leoLog.setTabBindings
@@ -2769,28 +2783,9 @@ class wxLeoLog (leoFrame.leoLog):
     #@-node:edream.110203113231.556:leoLog.configureBorder
     #@+node:edream.110203113231.557:leoLog.createControl
     def createControl (self,parentFrame):
-    
-        w = g.app.gui.leoTextWidgetClass(
-            parentFrame,
-            const("cLogCtrl"), "",
-            wx.DefaultPosition, wx.DefaultSize,
-            wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE)
-            
-        w.defaultFont = font = wx.Font(pointSize=10,
-            family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
-            style  = wx.FONTSTYLE_NORMAL,
-            weight = wx.FONTWEIGHT_NORMAL,
-        )
-    
-        w.defaultAttrib = wx.TextAttr(font=font)
-        w.defaultStyle = w.SetDefaultStyle(w.defaultAttrib)
-        w.allowSyntaxColoring = False
-            
-        wx.EVT_KEY_DOWN(w,self.onKeyDown) # Provides raw key codes.
-        wx.EVT_KEY_UP(w,self.onKeyUp) # Provides raw key codes.
-            
-        return w
-    #@nonl
+        
+        self.nb = wx.Notebook(parentFrame,style=wx.BK_DEFAULT)
+        self.logCtrl = self.selectTab('Log')
     #@-node:edream.110203113231.557:leoLog.createControl
     #@+node:edream.110203113231.558:leoLog.setLogFontFromConfig
     def setFontFromConfig (self):
@@ -2802,14 +2797,19 @@ class wxLeoLog (leoFrame.leoLog):
     # All output to the log stream eventually comes here.
     
     def put (self,s,color=None,tabName=None):
+        
+        if tabName: self.selectTab(tabName)
     
         if self.logCtrl:
             self.logCtrl.AppendText(s)
     
     def putnl (self,tabName=None):
+        
+        if tabName: self.selectTab(tabName)
     
         if self.logCtrl:
             self.logCtrl.AppendText('\n')
+            self.logCtrl.ScrollLines(1)
     #@nonl
     #@-node:edream.110203113231.559:wxLog.put & putnl
     #@+node:ekr.20061118123730:wx.Log.keyUp/Down
@@ -2838,6 +2838,263 @@ class wxLeoLog (leoFrame.leoLog):
                 # g.trace(event.char)
                 self.c.k.masterKeyHandler(event,stroke=event.keysym)
     #@-node:ekr.20061118123730:wx.Log.keyUp/Down
+    #@+node:ekr.20061211122107:Tab (wxLog)
+    #@+node:ekr.20061211122107.2:createTab
+    def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
+    
+        if createText:
+            w = g.app.gui.leoTextWidgetClass(
+                self.nb,
+                const("cLogCtrl"), "",
+                wx.DefaultPosition, wx.DefaultSize,
+                wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE)
+                
+            w.defaultFont = font = wx.Font(pointSize=10,
+                family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
+                style  = wx.FONTSTYLE_NORMAL,
+                weight = wx.FONTWEIGHT_NORMAL,
+            )
+        
+            w.defaultAttrib = wx.TextAttr(font=font)
+            w.defaultStyle = w.SetDefaultStyle(w.defaultAttrib)
+            w.allowSyntaxColoring = False
+                
+            wx.EVT_KEY_DOWN(w,self.onKeyDown) # Provides raw key codes.
+            wx.EVT_KEY_UP(w,self.onKeyUp) # Provides raw key codes.
+            
+            self.textDict [tabName] = w
+            self.frameDict [tabName] = None
+        else:
+            w = wx.Panel(self.nb)
+            self.textDict [tabName] = None
+            self.frameDict [tabName] = w
+            
+        self.nb.AddPage(w,tabName)
+    
+        # if tabName != 'Log':
+            # # c.k doesn't exist when the log pane is created.
+            # # k.makeAllBindings will call setTabBindings('Log')
+            # self.setTabBindings(tabName)
+            
+        return w
+    #@-node:ekr.20061211122107.2:createTab
+    #@+node:ekr.20061211122107.11:selectTab
+    def selectTab (self,tabName,createText=True,wrap='none'):
+    
+        '''Create the tab if necessary and make it active.'''
+        
+        nb = self.nb
+        w = self.textDict.get(tabName) or self.createTab(tabName,createText=createText)
+    
+        for i in xrange(nb.GetPageCount()):
+            s = nb.GetPageText(i)
+            if s == tabName:
+                nb.SetSelection(i)
+                # Update the status vars.
+                self.tabName = tabName
+                self.logCtrl = w
+                return w
+        else:
+            g.trace('Can not happen: no page: %s' % tabName)
+            return None
+    #@-node:ekr.20061211122107.11:selectTab
+    #@+node:ekr.20061211122107.1:clearTab
+    def clearTab (self,tabName,wrap='none'):
+        
+        self.selectTab(tabName,wrap=wrap)
+        w = self.logCtrl
+        w and w.Clear()
+    #@-node:ekr.20061211122107.1:clearTab
+    #@+node:ekr.20061211122107.5:deleteTab
+    def deleteTab (self,tabName):
+        
+        c = self.c
+        
+        if tabName == 'Log':
+            pass
+        elif tabName in ('Find','Spell'):
+            self.selectTab('Log')
+        elif tabName in self.nb.pagenames():
+            for i in xrange(nb.GetPageCount()):
+                s = nb.GetPageText(i)
+                if s == tabName:
+                    nb.DeletePage(i)
+                    break
+            else: g.trace('Can not happen: no page: %s' % tabName)
+            self.textDict [tabName] = None
+            self.frameDict [tabName] = False # A bit of a kludge.
+            self.tabName = None
+            self.selectTab('Log')
+    
+        c.invalidateFocus()
+        c.bodyWantsFocus()
+    #@-node:ekr.20061211122107.5:deleteTab
+    #@+node:ekr.20061211122107.7:getSelectedTab
+    def getSelectedTab (self):
+        
+        return self.tabName
+    #@-node:ekr.20061211122107.7:getSelectedTab
+    #@+node:ekr.20061211122107.6:hideTab
+    def hideTab (self,tabName):
+        
+        __pychecker__ = '--no-argsused' # tabName
+        
+        self.selectTab('Log')
+    #@-node:ekr.20061211122107.6:hideTab
+    #@+node:ekr.20061211122107.9:numberOfVisibleTabs
+    def numberOfVisibleTabs (self):
+        
+        return self.nb.GetPageCount()
+    #@-node:ekr.20061211122107.9:numberOfVisibleTabs
+    #@+node:ekr.20061211132355:Not used yet
+    if 0:
+        #@    @+others
+        #@+node:ekr.20061211122107.4:cycleTabFocus
+        def cycleTabFocus (self,event=None,stop_w = None):
+        
+            '''Cycle keyboard focus between the tabs in the log pane.'''
+        
+            c = self.c ; d = self.frameDict # Keys are page names. Values are Tk.Frames.
+            w = d.get(self.tabName)
+            # g.trace(self.tabName,w)
+            values = d.values()
+            if self.numberOfVisibleTabs() > 1:
+                i = i2 = values.index(w) + 1
+                if i == len(values): i = 0
+                tabName = d.keys()[i]
+                self.selectTab(tabName)
+                return 
+        #@nonl
+        #@-node:ekr.20061211122107.4:cycleTabFocus
+        #@+node:ekr.20061211122107.8:lower/raiseTab
+        def lowerTab (self,tabName):
+            
+            if tabName:
+                b = self.nb.tab(tabName) # b is a Tk.Button.
+                b.config(bg='grey80')
+            self.c.invalidateFocus()
+            self.c.bodyWantsFocus()
+        
+        def raiseTab (self,tabName):
+        
+            if tabName:
+                b = self.nb.tab(tabName) # b is a Tk.Button.
+                b.config(bg='LightSteelBlue1')
+            self.c.invalidateFocus()
+            self.c.bodyWantsFocus()
+        #@-node:ekr.20061211122107.8:lower/raiseTab
+        #@+node:ekr.20061211122107.10:renameTab
+        def renameTab (self,oldName,newName):
+            
+            label = self.nb.tab(oldName)
+            label.configure(text=newName)
+        #@-node:ekr.20061211122107.10:renameTab
+        #@+node:ekr.20061211122107.12:setTabBindings
+        def setTabBindings (self,tabName):
+            
+            c = self.c ; k = c.k
+            tab = self.nb.tab(tabName)
+            w = self.textDict.get(tabName)
+            
+            # Send all event in the text area to the master handlers.
+            for kind,handler in (
+                ('<Key>',       k.masterKeyHandler),
+                ('<Button-1>',  k.masterClickHandler),
+                ('<Button-3>',  k.masterClick3Handler),
+            ):
+                w.bind(kind,handler)
+            
+            # Clicks in the tab area are harmless: use the old code.
+            def tabMenuRightClickCallback(event,menu=self.menu):
+                return self.onRightClick(event,menu)
+                
+            def tabMenuClickCallback(event,tabName=tabName):
+                return self.onClick(event,tabName)
+            
+            tab.bind('<Button-1>',tabMenuClickCallback)
+            tab.bind('<Button-3>',tabMenuRightClickCallback)
+            
+            k.completeAllBindingsForWidget(w)
+        #@-node:ekr.20061211122107.12:setTabBindings
+        #@+node:ekr.20061211122107.13:Tab menu callbacks & helpers (not ready yet)
+        if 0:
+            #@    @+others
+            #@+node:ekr.20061211122107.14:onRightClick & onClick
+            def onRightClick (self,event,menu):
+                
+                c = self.c
+                menu.post(event.x_root,event.y_root)
+                
+                
+            def onClick (self,event,tabName):
+            
+                self.selectTab(tabName)
+            #@-node:ekr.20061211122107.14:onRightClick & onClick
+            #@+node:ekr.20061211122107.15:newTabFromMenu
+            def newTabFromMenu (self,tabName='Log'):
+            
+                self.selectTab(tabName)
+                
+                # This is called by getTabName.
+                def selectTabCallback (newName):
+                    return self.selectTab(newName)
+            
+                self.getTabName(selectTabCallback)
+            #@-node:ekr.20061211122107.15:newTabFromMenu
+            #@+node:ekr.20061211122107.16:renameTabFromMenu
+            def renameTabFromMenu (self,tabName):
+            
+                if tabName in ('Log','Completions'):
+                    g.es('can not rename %s tab' % (tabName),color='blue')
+                else:
+                    def renameTabCallback (newName):
+                        return self.renameTab(tabName,newName)
+            
+                    self.getTabName(renameTabCallback)
+            #@-node:ekr.20061211122107.16:renameTabFromMenu
+            #@+node:ekr.20061211122107.17:getTabName
+            def getTabName (self,exitCallback):
+                
+                canvas = self.nb.component('hull')
+            
+                # Overlay what is there!
+                f = Tk.Frame(canvas)
+                f.pack(side='top',fill='both',expand=1)
+                
+                row1 = Tk.Frame(f)
+                row1.pack(side='top',expand=0,fill='x',pady=10)
+                row2 = Tk.Frame(f)
+                row2.pack(side='top',expand=0,fill='x')
+            
+                Tk.Label(row1,text='Tab name').pack(side='left')
+            
+                e = Tk.Entry(row1,background='white')
+                e.pack(side='left')
+            
+                def getNameCallback (event=None):
+                    s = e.get().strip()
+                    f.pack_forget()
+                    if s: exitCallback(s)
+                    
+                def closeTabNameCallback (event=None):
+                    f.pack_forget()
+                    
+                b = Tk.Button(row2,text='Ok',width=6,command=getNameCallback)
+                b.pack(side='left',padx=10)
+                
+                b = Tk.Button(row2,text='Cancel',width=6,command=closeTabNameCallback)
+                b.pack(side='left')
+            
+                e.focus_force()
+                e.bind('<Return>',getNameCallback)
+            #@-node:ekr.20061211122107.17:getTabName
+            #@-others
+        #@nonl
+        #@-node:ekr.20061211122107.13:Tab menu callbacks & helpers (not ready yet)
+        #@-others
+    #@nonl
+    #@-node:ekr.20061211132355:Not used yet
+    #@-node:ekr.20061211122107:Tab (wxLog)
     #@-others
 #@nonl
 #@-node:edream.110203113231.553:wxLeoLog class
@@ -3176,6 +3433,69 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@-others
 #@nonl
 #@-node:edream.111303095242:wxLeoMenu class
+#@+node:ekr.20061211091215:wxLeoMinibuffer class
+class wxLeoMinibuffer:
+    
+    #@    @+others
+    #@+node:ekr.20061211091548:minibuffer.__init__
+    def __init__ (self,c,parentFrame):
+        
+        self.c = c
+        self.parentFrame = parentFrame
+        self.createControl(parentFrame)
+    #@nonl
+    #@-node:ekr.20061211091548:minibuffer.__init__
+    #@+node:ekr.20061211091216:minibuffer.createControl
+    def createControl (self,parentFrame):
+    
+        w = g.app.gui.leoTextWidgetClass(
+            parentFrame,
+            const("cMinibufferCtrl"), "",
+            wx.DefaultPosition,
+            size = (1000,-1), # wx.DefaultSize,
+            # wx.TE_RICH | wx.TE_RICH2,
+            name = 'minibuffer'
+        )
+            
+        w.defaultFont = font = wx.Font(pointSize=10,
+            family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
+            style  = wx.FONTSTYLE_NORMAL,
+            weight = wx.FONTWEIGHT_NORMAL,
+        )
+    
+        w.defaultAttrib = wx.TextAttr(font=font)
+        # w.defaultStyle = w.SetDefaultStyle(w.defaultAttrib)
+        w.allowSyntaxColoring = False
+            
+        wx.EVT_KEY_DOWN (w,self.onKeyDown) # Provides raw key codes.
+        wx.EVT_KEY_UP   (w,self.onKeyUp) # Provides raw key codes.
+            
+        return w
+    #@nonl
+    #@-node:ekr.20061211091216:minibuffer.createControl
+    #@+node:ekr.20061211091548.1:minibuffer.onKeyUp/Down
+    def onKeyDown (self,event,*args,**keys):
+    
+        keycode = event.GetKeyCode()
+        self.keyDownModifiers = event.GetModifiers()
+        event.Skip() # Always do default processing.
+        
+    def onKeyUp (self,event):
+        
+        keycode = event.GetKeyCode()
+        if keycode == wx.WXK_ALT:
+            event.Skip() # Do default processing.
+        else:
+            event.keyDownModifiers = self.keyDownModifiers
+            event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            if event.keysym: # The key may have been a raw key.
+                # g.trace(event.char)
+                self.c.k.masterKeyHandler(event,stroke=event.keysym)
+            event.actualEvent.Skip() # Do default processing.
+    #@-node:ekr.20061211091548.1:minibuffer.onKeyUp/Down
+    #@-others
+#@nonl
+#@-node:ekr.20061211091215:wxLeoMinibuffer class
 #@+node:edream.111603213219:wxLeoTree class
 class wxLeoTree (leoFrame.leoTree):
 
@@ -3188,6 +3508,8 @@ class wxLeoTree (leoFrame.leoTree):
         
         c = self.c
         self.canvas = self # A dummy ivar used in c.treeWantsFocus, etc.
+        self.imageList = None
+        self.keyDownModifiers = None
         self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
         self.root_id = None
         self.updateCount = 0
@@ -3199,13 +3521,10 @@ class wxLeoTree (leoFrame.leoTree):
     
         w = self.treeCtrl ; id = const("cTree")
     
-        wx.EVT_KEY_DOWN(w,self.onKeyDown)   # Provides raw key codes.
-        wx.EVT_KEY_UP(w,self.onKeyUp)       # Provides raw key codes.
-        # wx.EVT_TREE_KEY_DOWN        (w,id,self.onTreeKeyDown)
-            # Control keys do not fire this event.
-            
-        # wx.EVT_TREE_ITEM_ACTIVATED(w,id,self.onTreeItemActivated) 
-        # wx.EVT_TREE_SEL_CHANGED   (w,id,self.onTreeSelChanged)
+        wx.EVT_KEY_DOWN         (w,self.onKeyDown)  # Provides raw key codes.
+        wx.EVT_KEY_UP           (w,self.onKeyUp)    # Provides raw key codes.
+        # wx.EVT_TREE_KEY_DOWN  (w,id,self.onTreeKeyDown) # Control keys do not fire this event.
+    
         wx.EVT_TREE_SEL_CHANGING    (w,id,self.onTreeSelChanging)
     
         wx.EVT_TREE_BEGIN_DRAG      (w,id,self.onTreeBeginDrag)
@@ -3219,26 +3538,63 @@ class wxLeoTree (leoFrame.leoTree):
         
         wx.EVT_TREE_ITEM_COLLAPSING (w,id,self.onTreeCollapsing)
         wx.EVT_TREE_ITEM_EXPANDING  (w,id,self.onTreeExpanding)
+        
+        wx.EVT_RIGHT_DOWN           (w,self.onRightDown)
+        wx.EVT_RIGHT_UP             (w,self.onRightUp)
     #@-node:edream.111603213329:wxTree.createBindings
     #@+node:ekr.20061118142055:wxTree.createControl
     def createControl (self,parentFrame):
+        
+        style = (
+            wx.TR_SINGLE | # Only a single row may be selected.
+            wx.TR_HAS_BUTTONS | # Draw +- buttons.
+            wx.TR_EDIT_LABELS |
+            wx.TR_HIDE_ROOT |
+            wx.TR_LINES_AT_ROOT |
+            wx.TR_HAS_VARIABLE_ROW_HEIGHT )
         
         w = wx.TreeCtrl(parentFrame,
             id = const("cTree"),
             pos = wx.DefaultPosition,
             size = wx.DefaultSize,
-            style = wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS,
+            style = style,
             validator = wx.DefaultValidator,
             name = "tree")
     
-        self.defaultFont = font = wx.Font(pointSize=10,
+        self.defaultFont = font = wx.Font(pointSize=12,
             family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
             style  = wx.FONTSTYLE_NORMAL,
             weight = wx.FONTWEIGHT_NORMAL,
         )
+        
+        self.imageList = self.createImageList()
+        w.AssignImageList(self.imageList)
     
         return w
     #@-node:ekr.20061118142055:wxTree.createControl
+    #@+node:ekr.20061211050723:wxTree.createImageList
+    def createImageList (self): # wxTree.
+    
+        self.imageList = imageList = wx.ImageList(21,12)
+        theDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','Icons'))
+        
+        for i in xrange(16):
+            
+            # Get the original bitmap.
+            fileName = g.os_path_join(theDir,'box%02d.bmp' % i)
+            bitmap = wx.Bitmap(fileName,type=wx.BITMAP_TYPE_BMP)
+            
+            # Create a larger bitmap.
+            image = wx.ImageFromBitmap(bitmap)
+            # image.SetMask(False)
+            image.Resize(size=(21,12),pos=(0,0),)
+            bitmap = wx.BitmapFromImage(image)
+            
+            # And add the new bitmap to the list.
+            imageList.Add(bitmap)
+            
+        return imageList
+    #@-node:ekr.20061211050723:wxTree.createImageList
     #@+node:ekr.20061118122218.1:setBindings (does nothing)
     def setBindings(self):
         
@@ -3251,17 +3607,28 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:ekr.20061118122218.1:setBindings (does nothing)
     #@-node:edream.111603213219.1:wxTree.__init__
     #@+node:edream.111303202917:Drawing
-    #@+node:ekr.20061105114250:drawIcon TO DO
-    def drawIcon(self,p,x,y):
-        g.trace(p)
-    #@nonl
-    #@-node:ekr.20061105114250:drawIcon TO DO
+    #@+node:ekr.20061211052926:assignIcon
+    def assignIcon (self,p):
+        
+        val = p.v.computeIcon()
+        assert(0 <= val <= 15)
+        return val
+    #@-node:ekr.20061211052926:assignIcon
     #@+node:edream.110203113231.295:beginUpdate
     def beginUpdate (self):
     
         self.updateCount += 1
     #@nonl
     #@-node:edream.110203113231.295:beginUpdate
+    #@+node:ekr.20061211072604:edit_widget
+    def edit_widget (self,p):
+        
+        
+        '''A do-nothing method required for compatibility with Tkinter gui code.'''
+        
+        return None
+    #@nonl
+    #@-node:ekr.20061211072604:edit_widget
     #@+node:edream.110203113231.296:endUpdate
     def endUpdate (self,flag=True,scroll=False):
     
@@ -3284,11 +3651,12 @@ class wxLeoTree (leoFrame.leoTree):
         try:
             tree.DeleteAllItems()
             self.root_id = root_id = tree.AddRoot('Root Node')
-            tree.SetItemFont(root_id,self.defaultFont)
+            ### tree.SetItemFont(root_id,self.defaultFont)
             while p:
                 self.redraw_subtree(root_id,p)
                 p.moveToNext()
-            tree.Expand(root_id)
+            if 0: # Don't do this when wx.TR_HIDE_ROOT is true.
+                tree.Expand(root_id)
         finally:
             self.drawing = False
             
@@ -3300,9 +3668,16 @@ class wxLeoTree (leoFrame.leoTree):
         
         tree = self.treeCtrl
         data = wx.TreeItemData(p.copy())
+        image = self.assignIcon(p)
     
-        id = tree.AppendItem(parent_id,p.headString(),data=data)
-        tree.SetItemFont(id,self.defaultFont)
+        id = tree.AppendItem(
+            parent_id,
+            text=p.headString(),
+            image=image,
+            #selImage=image,
+            data=data)
+    
+        ### tree.SetItemFont(id,self.defaultFont)
         
         if p == self.c.currentPosition():
             tree.SelectItem(id) # Generates call to onTreeChanged.
@@ -3339,9 +3714,16 @@ class wxLeoTree (leoFrame.leoTree):
         
         tree = self.treeCtrl
         data = wx.TreeItemData(p.copy())
+        image = self.assignIcon(p)
     
-        id = tree.AppendItem(parent_id,p.headString(),data=data)
-        tree.SetItemFont(id,self.defaultFont)
+        id = tree.AppendItem(
+            parent_id,
+            text=p.headString(),
+            image=image,
+            #selImage=image,
+            data=data)
+    
+        ### tree.SetItemFont(id,self.defaultFont)
         
         if p == self.c.currentPosition():
             tree.SelectItem(id) # Generates call to onTreeChanged.
@@ -3372,27 +3754,21 @@ class wxLeoTree (leoFrame.leoTree):
             tree.Collapse(id)
     #@nonl
     #@-node:edream.110203113231.300:redraw_subtree
+    #@+node:ekr.20061211115055:updateVisibleIcons
+    def updateVisibleIcons (self,p):
+    
+        '''Update all visible icons joined to p.'''
+    
+        tree = self.treeCtrl
+        val = p.v.computeIcon()
+        id = tree.GetFirstVisibleItem()
+        while id.IsOk():
+            p2 = tree.GetItemData(id).GetData()
+            if p2.v.t == p.v.t:
+                tree.SetItemImage(id,val)
+            id = tree.GetNextVisible(id)
+    #@-node:ekr.20061211115055:updateVisibleIcons
     #@-node:edream.111303202917:Drawing
-    #@+node:edream.111403090242.1:Editing TO DO
-    def editLabel(self,p,selectAll=False):
-        pass
-    
-    def editVnode(self):
-        pass
-    
-    def endEditLabel(self):
-        pass
-        
-    def setEditVnode(self,v):
-        pass
-    
-    def setNormalLabelState(self,v):
-        pass
-    
-    def OnActivateHeadline(self,v):
-        g.trace()
-    #@nonl
-    #@-node:edream.111403090242.1:Editing TO DO
     #@+node:edream.110203113231.278:Event handlers (wxTree)
     #@+node:ekr.20061127075102:get_p
     def get_p (self,event):
@@ -3435,8 +3811,7 @@ class wxLeoTree (leoFrame.leoTree):
         tree.ScrollTo(id)
         self.frame.lockout = False
     #@-node:ekr.20061127081233:selectHelper
-    #@+node:ekr.20061118144918:Keys
-    #@+node:ekr.20061118123730.1:wxTree.onKeyUp/Down
+    #@+node:ekr.20061118123730.1:onKeyUp/Down
     useWX = False # True, use native key handling.  False, call masterKeyHandler.
     
     def onKeyDown (self,event,*args,**keys):
@@ -3453,14 +3828,15 @@ class wxLeoTree (leoFrame.leoTree):
         else:
             event.keyDownModifiers = self.keyDownModifiers
             event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            # g.trace(event.keysym,self.keyDownModifiers)
             if event.keysym: # The key may have been a raw key.
                 if event.keysym.isalnum() and len(event.keysym) == 1:
-                    event.actualEvent.Skip() # Let the widget handle it.
+                    event.actualEvent.Skip(True) # Let the widget handle it.
                 else:
-                    # g.trace(event.keysym)
+                    g.trace(event.keysym)
                     self.c.k.masterKeyHandler(event,stroke=event.keysym)
-    #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
-    #@-node:ekr.20061118144918:Keys
+                    event.actualEvent.Skip(False) # Does not work.
+    #@-node:ekr.20061118123730.1:onKeyUp/Down
     #@+node:edream.110203113231.282:Clicks
     #@+node:edream.110203113231.280:Collapse...
     def onTreeCollapsing(self,event):
@@ -3524,13 +3900,24 @@ class wxLeoTree (leoFrame.leoTree):
             c.selectPosition(p)
         finally:
             c.endUpdate(False)
-    
-    # def onTreeSelChanged(self,event):
-        # """Event handler gets called whenever a new node gets selected"""
-        # p = self.get_p(event)
-    
-    # onTreeItemActivated = onTreeChanged # Double-clicks the same as clicks.
     #@-node:edream.110203113231.283:Clicks
+    #@+node:ekr.20061211064516:onRightDown/Up
+    def onRightDown (self,event):
+        
+        tree = self.treeCtrl
+        pt = event.GetPosition()
+        item, flags = tree.HitTest(pt)
+        if item:
+            tree.SelectItem(item)
+    
+    def onRightUp (self,event):
+        
+        tree = self.treeCtrl
+        pt = event.GetPosition()
+        item, flags = tree.HitTest(pt)
+        if item:
+            tree.EditLabel(item)
+    #@-node:ekr.20061211064516:onRightDown/Up
     #@-node:edream.110203113231.282:Clicks
     #@+node:edream.110203113231.285:Editing labels
     #@+node:edream.110203113231.286:onTreeBeginLabelEdit
@@ -3549,25 +3936,24 @@ class wxLeoTree (leoFrame.leoTree):
     
     def onTreeEndLabelEdit(self,event):
     
-        tree = self.treeCtrl
+        c = self.c ; tree = self.treeCtrl
         s = event.GetLabel()
         id = event.GetItem()
-        v = tree.GetItemData(id).GetData()
+        p = tree.GetItemData(id).GetData()
+        changed = s != p.headString()
+        
+        if not changed: return
+        
+        # Remember the string.
+        c.setHeadString(p,s)
     
-        return # Not yet: c.setChanged uses frame.top.
-    
-        # Set the dirty bit and the file-changed mark if the headline has changed.
-        if not v.isDirty()and s != v.headString():
-            v.setDirty()
-            if not self.c.isChanged():
-                self.c.setChanged(True)
-    
-        # Update all joined headlines.
-        j = v.joinList()
-        while j != v:
-            c.setHeadString(j,s)
-            j = j.joinList()
-    #@nonl
+        # Update the labels as needed.
+        id = tree.GetFirstVisibleItem()
+        while id.IsOk():
+            p2 = tree.GetItemData(id).GetData()
+            if p2.v.t == p.v.t and p2 != p:
+                tree.SetItemText(id,s)
+            id = tree.GetNextVisible(id)
     #@-node:edream.110203113231.287:onTreeEndLabelEdit
     #@-node:edream.110203113231.285:Editing labels
     #@+node:ekr.20061105114250.1:Dragging
@@ -3576,7 +3962,7 @@ class wxLeoTree (leoFrame.leoTree):
     
         g.trace() ; return
     
-        if event.GetItem()!= self.treeCtrl.GetRootItem():
+        if event.GetItem() != self.treeCtrl.GetRootItem():
             mDraggedItem = event.GetItem()
             event.Allow()
     #@-node:edream.110203113231.289:onTreeBeginDrag
@@ -3667,24 +4053,7 @@ class wxLeoTree (leoFrame.leoTree):
         return self.FindFocus()
     #@nonl
     #@-node:edream.111403093559:Focus
-    #@+node:edream.111403093559.1:Fonts TO DO
-    def getFont(self):
-        g.trace()
-    
-    def setFont(self,font):
-        g.trace()
-    #@nonl
-    #@-node:edream.111403093559.1:Fonts TO DO
-    #@+node:edream.111403090242:Scrolling TO DO
-    # Scrolling... 
-    def scrollTo(self,p):
-        g.trace()
-    
-    def idle_scrollTo(self,p):
-        pass
-    #@nonl
-    #@-node:edream.111403090242:Scrolling TO DO
-    #@+node:ekr.20050719121701:Selection stuff...
+    #@+node:ekr.20050719121701:Selection
     #@+node:ekr.20061115172306:tree.select
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
     
@@ -3834,10 +4203,10 @@ class wxLeoTree (leoFrame.leoTree):
         
         return 'break' # Supresses unwanted selection.
     #@-node:ekr.20061115172306:tree.select
-    #@+node:ekr.20050719121812:Disabled for now
     #@+node:ekr.20050719121701.2:endEditLabel
     def endEditLabel (self):
-        
+    
+        g.trace()
         return ###
         
         """End editing for self.editText."""
@@ -3860,178 +4229,20 @@ class wxLeoTree (leoFrame.leoTree):
     #@nonl
     #@-node:ekr.20050719121701.2:endEditLabel
     #@+node:ekr.20050719121701.3:editLabel
-    def editLabel (self,p,selectAll=False):
+    def editLabel (self,p,selectAll=False): # wxTree
         
         """Start editing p's headline."""
-        
-        # g.trace(p)
-        return ###
     
-        if self.editPosition() and p != self.editPosition():
-            self.endEditLabel()
-            self.frame.revertHeadline = None
-            
-        self.setEditPosition(p)
-    
-        # Start editing
-        if p and c.edit_widget(p):
-            self.setNormalLabelState(p)
-            self.frame.revertHeadline = p.headString()
-            self.setEditPosition(p)
-    #@nonl
+        tree = self.treeCtrl
+        id = tree.GetFirstVisibleItem()
+        while id.IsOk():
+            p2 = tree.GetItemData(id).GetData()
+            if p2 and p.equal(p2):
+                tree.EditLabel(id)
+                break
+            id = tree.GetNextVisible(id)
     #@-node:ekr.20050719121701.3:editLabel
-    #@+node:ekr.20050719121701.10:tree.set...LabelState
-    #@+node:ekr.20050719121701.11:setNormalLabelState
-    def setNormalLabelState (self,p): # selected, editing
-    
-        return ###
-    
-        # Do nothing if a redraw is already sheduled.
-        # This prevents race conditions.
-        if self.redrawScheduled: return 
-        
-        if p and c.edit_widget(p):
-            self.setEditHeadlineColors(p)
-            c.edit_widget(p).tag_remove("sel","1.0","end")
-            c.edit_widget(p).tag_add("sel","1.0","end")
-            # Set the focus immediately
-            self.frame.widgetWantsFocus(c.edit_widget(p))
-    #@nonl
-    #@-node:ekr.20050719121701.11:setNormalLabelState
-    #@+node:ekr.20050719121701.12:setDisabledLabelState
-    def setDisabledLabelState (self,p): # selected, disabled
-    
-        return ###
-    
-        # Do nothing if a redraw is already sheduled.
-        # This prevents race conditions.
-        if self.redrawScheduled: return
-    
-        if p and c.edit_widget(p):
-            self.setDisabledHeadlineColors(p)
-    #@nonl
-    #@-node:ekr.20050719121701.12:setDisabledLabelState
-    #@+node:ekr.20050719121701.13:setSelectedLabelState
-    def setSelectedLabelState (self,p): # selected, not editing
-    
-        return ###
-    
-        # Do nothing if a redraw is already sheduled.
-        # This prevents race conditions.
-        if self.redrawScheduled: return 
-    
-        # g.trace(p)
-        self.setDisabledLabelState(p)
-    
-    #@-node:ekr.20050719121701.13:setSelectedLabelState
-    #@+node:ekr.20050719121701.14:setUnselectedLabelState
-    def setUnselectedLabelState (self,p): # not selected.
-        
-        return ###
-    
-        # Do nothing if a redraw is already sheduled.
-        # This prevents race conditions.
-        if self.redrawScheduled: return 
-    
-        if p and c.edit_widget(p):
-            self.setUnselectedHeadlineColors(p)
-    #@nonl
-    #@-node:ekr.20050719121701.14:setUnselectedLabelState
-    #@+node:ekr.20050719121701.15:setDisabledHeadlineColors
-    def setDisabledHeadlineColors (self,p):
-        
-        return ###
-    
-        c = self.c ; w = c.edit_widget(p)
-    
-        if self.trace and self.verbose:
-            if not self.redrawing:
-                print "%10s %d %s" % ("disabled",id(w),p.headString())
-                # import traceback ; traceback.print_stack(limit=6)
-    
-        fg = c.config.getColor("headline_text_selected_foreground_color") or 'black'
-        bg = c.config.getColor("headline_text_selected_background_color") or 'grey80'
-        
-        try:
-            w.configure(state="disabled",highlightthickness=0,fg=fg,bg=bg)
-        except:
-            g.es_exception()
-    #@nonl
-    #@-node:ekr.20050719121701.15:setDisabledHeadlineColors
-    #@+node:ekr.20050719121701.16:setEditHeadlineColors
-    def setEditHeadlineColors (self,p):
-        
-        return ###
-    
-        c = self.c ; w = c.edit_widget(p)
-        
-        if self.trace and self.verbose:
-            if not self.redrawing:
-                print "%10s %d %s" % ("edit",id(2),p.headString())
-        
-        fg    = c.config.getColor("headline_text_editing_foreground_color") or 'black'
-        bg    = c.config.getColor("headline_text_editing_background_color") or 'white'
-        selfg = c.config.getColor("headline_text_editing_selection_foreground_color")
-        selbg = c.config.getColor("headline_text_editing_selection_background_color")
-        
-        try: # Use system defaults for selection foreground/background
-            if selfg and selbg:
-                w.configure(
-                    selectforeground=selfg,selectbackground=selbg,
-                    state="normal",highlightthickness=1,fg=fg,bg=bg)
-            elif selfg and not selbg:
-                w.configure(
-                    selectforeground=selfg,
-                    state="normal",highlightthickness=1,fg=fg,bg=bg)
-            elif selbg and not selfg:
-                w.configure(
-                    selectbackground=selbg,
-                    state="normal",highlightthickness=1,fg=fg,bg=bg)
-            else:
-                w.configure(
-                    state="normal",highlightthickness=1,fg=fg,bg=bg)
-        except:
-            g.es_exception()
-    #@nonl
-    #@-node:ekr.20050719121701.16:setEditHeadlineColors
-    #@+node:ekr.20050719121701.17:setUnselectedHeadlineColors
-    def setUnselectedHeadlineColors (self,p):
-        
-        return ###
-        
-        c = self.c ; w = c.edit_widget(p)
-        
-        if self.trace and self.verbose:
-            if not self.redrawing:
-                print "%10s %d %s" % ("unselect",id(w),p.headString())
-                # import traceback ; traceback.print_stack(limit=6)
-        
-        fg = c.config.getColor("headline_text_unselected_foreground_color") or 'black'
-        bg = c.config.getColor("headline_text_unselected_background_color") or 'white'
-        
-        try:
-            w.configure(state="disabled",highlightthickness=0,fg=fg,bg=bg)
-        except:
-            g.es_exception()
-    #@nonl
-    #@-node:ekr.20050719121701.17:setUnselectedHeadlineColors
-    #@-node:ekr.20050719121701.10:tree.set...LabelState
-    #@-node:ekr.20050719121812:Disabled for now
-    #@+node:ekr.20050719121701.18:dimEditLabel, undimEditLabel
-    # Convenience methods so the caller doesn't have to know the present edit node.
-    
-    def dimEditLabel (self):
-        
-        p = self.c.currentPosition()
-        self.setDisabledLabelState(p)
-    
-    def undimEditLabel (self):
-    
-        p = self.c.currentPosition()
-        self.setSelectedLabelState(p)
-    #@nonl
-    #@-node:ekr.20050719121701.18:dimEditLabel, undimEditLabel
-    #@-node:ekr.20050719121701:Selection stuff...
+    #@-node:ekr.20050719121701:Selection
     #@+node:ekr.20050719121701.19:tree.expandAllAncestors
     def expandAllAncestors (self,p):
         
@@ -4229,7 +4440,7 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@nonl
     #@-node:ekr.20061115135849.1:tkColorToWxColor
     #@-node:ekr.20061115135849:tag_configure & helper
-    #@+node:ekr.20061115122034.8:tag_ranges 
+    #@+node:ekr.20061115122034.8:tag_ranges
     def tag_ranges(self,tagName):
         
         return tuple() ###
@@ -4238,7 +4449,7 @@ class wxLeoTextWidget (wx.TextCtrl):
         aList = Tk.Text.tag_ranges(w,tagName)
         aList = [w.toPythonIndex(z) for z in aList]
         return tuple(aList)
-    #@-node:ekr.20061115122034.8:tag_ranges 
+    #@-node:ekr.20061115122034.8:tag_ranges
     #@-node:ekr.20061115122034.2:Wrapper methods
     #@+node:ekr.20061115122034.9:Convenience methods (tkTextWidget)
     # These have no direct Tk equivalents.  They used to be defined in the gui class.
