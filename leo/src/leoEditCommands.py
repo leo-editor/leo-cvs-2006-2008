@@ -7844,10 +7844,10 @@ class searchCommandsClass (baseEditCommandsClass):
         if wasOpen:
             log.selectTab(tabName)
         else:
-            log.selectTab(tabName)
+            log.selectTab(tabName,createText=False)
             f = log.frameDict.get(tabName)
-            w = log.textDict.get(tabName)
-            w.pack_forget()
+            #w = log.textDict.get(tabName)
+            #w.pack_forget()
             self.findTabHandler = findTab(c,f)
     
         if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):

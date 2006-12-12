@@ -2733,43 +2733,46 @@ class leoTkinterLog (leoFrame.leoLog):
         w and w.delete(0,'end')
     #@-node:ekr.20051017212057:clearTab
     #@+node:ekr.20051024173701:createTab
-    def createTab (self,tabName,wrap='none'):
+    def createTab (self,tabName,createText=True,wrap='none'):
         
         # g.trace(tabName,wrap)
         
         c = self.c ; k = c.k
         tabFrame = self.nb.add(tabName)
         self.menu = self.makeTabMenu(tabName)
-        #@    << Create the tab's text widget >>
-        #@+node:ekr.20051018072306:<< Create the tab's text widget >>
-        w = self.createTextWidget(tabFrame)
-        
-        # Set the background color.
-        configName = 'log_pane_%s_tab_background_color' % tabName
-        bg = c.config.getColor(configName) or 'MistyRose1'
-        
-        if wrap not in ('none','char','word'): wrap = 'none'
-        try: w.configure(bg=bg,wrap=wrap)
-        except Exception: pass # Could be a user error.
-        
-        self.SetWidgetFontFromConfig(logCtrl=w)
-        
-        self.frameDict [tabName] = tabFrame
-        self.textDict [tabName] = w
-        
-        # Switch to a new colorTags list.
-        if self.tabName:
-            self.colorTagsDict [self.tabName] = self.colorTags [:]
-        
-        self.colorTags = ['black']
-        self.colorTagsDict [tabName] = self.colorTags
-        #@-node:ekr.20051018072306:<< Create the tab's text widget >>
-        #@nl
-    
-        if tabName != 'Log':
-            # c.k doesn't exist when the log pane is created.
-            # k.makeAllBindings will call setTabBindings('Log')
-            self.setTabBindings(tabName)
+        if createText:
+            #@        << Create the tab's text widget >>
+            #@+node:ekr.20051018072306:<< Create the tab's text widget >>
+            w = self.createTextWidget(tabFrame)
+            
+            # Set the background color.
+            configName = 'log_pane_%s_tab_background_color' % tabName
+            bg = c.config.getColor(configName) or 'MistyRose1'
+            
+            if wrap not in ('none','char','word'): wrap = 'none'
+            try: w.configure(bg=bg,wrap=wrap)
+            except Exception: pass # Could be a user error.
+            
+            self.SetWidgetFontFromConfig(logCtrl=w)
+            
+            self.frameDict [tabName] = tabFrame
+            self.textDict [tabName] = w
+            
+            # Switch to a new colorTags list.
+            if self.tabName:
+                self.colorTagsDict [self.tabName] = self.colorTags [:]
+            
+            self.colorTags = ['black']
+            self.colorTagsDict [tabName] = self.colorTags
+            #@-node:ekr.20051018072306:<< Create the tab's text widget >>
+            #@nl
+            if tabName != 'Log':
+                # c.k doesn't exist when the log pane is created.
+                # k.makeAllBindings will call setTabBindings('Log')
+                self.setTabBindings(tabName)
+        else:
+            self.textDict [tabName] = None
+            self.frameDict [tabName] = tabFrame
     #@-node:ekr.20051024173701:createTab
     #@+node:ekr.20060613131217:cycleTabFocus
     def cycleTabFocus (self,event=None,stop_w = None):
@@ -2850,19 +2853,22 @@ class leoTkinterLog (leoFrame.leoLog):
         label.configure(text=newName)
     #@-node:ekr.20051019170806:renameTab
     #@+node:ekr.20051016101724.1:selectTab
-    def selectTab (self,tabName,wrap='none'):
+    def selectTab (self,tabName,createText=True,wrap='none'):
     
         '''Create the tab if necessary and make it active.'''
     
-        c = self.c ; tabFrame = self.frameDict.get(tabName)
+        c = self.c
+        
+        tabFrame = self.frameDict.get(tabName)
+        logCtrl = self.textDict.get(tabName)
     
-        if tabFrame:
+        if tabFrame and logCtrl:
             # Switch to a new colorTags list.
             newColorTags = self.colorTagsDict.get(tabName)
             self.colorTagsDict [self.tabName] = self.colorTags [:]
             self.colorTags = newColorTags
-        else:
-            self.createTab(tabName,wrap=wrap)
+        elif not tabFrame:
+            self.createTab(tabName,createText=createText,wrap=wrap)
             
         self.nb.selectpage(tabName)
         # Update the status vars.

@@ -6370,15 +6370,16 @@ class baseCommands:
     #@+node:ekr.20040305223225:c.setHeadString
     def setHeadString (self,p,s,encoding="utf-8"):
     
-        c = self ; t = c.edit_widget(p)
+        c = self
+        w = c.edit_widget(p) # w only exists for the Tk gui.
         
         p.initHeadString(s,encoding)
     
-        if t:
-            state = t.cget("state")
-            t.configure(state="normal")
-            t.setAllText(s)
-            t.configure(state=state,width=c.frame.tree.headWidth(s=s))
+        if w:
+            state = w.cget("state")
+            w.configure(state="normal")
+            w.setAllText(s)
+            w.configure(state=state,width=c.frame.tree.headWidth(s=s))
     
         p.setDirty()
     #@nonl

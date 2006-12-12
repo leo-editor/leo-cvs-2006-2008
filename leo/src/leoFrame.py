@@ -1306,15 +1306,15 @@ class nullLog (leoLog):
             g.rawPrint("")
     #@-node:ekr.20041012083237.3:put and putnl (nullLog)
     #@+node:ekr.20060124085830:tabs
-    def clearTab        (self,tabName): pass
-    def createTab       (self,tabName): pass
-    def deleteTab       (self,tabName): pass
-    def getSelectedTab          (self): pass
-    def lowerTab        (self,tabName): pass
-    def raiseTab        (self,tabName): pass
-    def renameTab (self,oldName,newName): pass
-    def selectTab       (self,tabName): pass
-    def setTabBindings  (self,tabName): pass
+    def clearTab        (self,tabName):     pass
+    def createTab (self,tabName,createText=True,wrap='none'): pass
+    def deleteTab       (self,tabName):     pass
+    def getSelectedTab          (self):     pass
+    def lowerTab        (self,tabName):     pass
+    def raiseTab        (self,tabName):     pass
+    def renameTab (self,oldName,newName):   pass
+    def selectTab (self,tabName,createText=True,wrap='none'): pass
+    def setTabBindings  (self,tabName):     pass
     #@-node:ekr.20060124085830:tabs
     #@+node:ekr.20041012083237.4:setColorFromConfig & setFontFromConfig
     def setFontFromConfig (self):
