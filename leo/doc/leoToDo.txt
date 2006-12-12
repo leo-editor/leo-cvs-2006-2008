@@ -1255,6 +1255,98 @@ AttributeError: Canvas instance has no attribute 'get'
 #@+node:ekr.20061116054917.5:Move gui.get/set_focus to body widget
 #@-node:ekr.20061116054917.5:Move gui.get/set_focus to body widget
 #@-node:ekr.20061116054917.4:Improve body widget
+#@+node:ekr.20051016101724.1:selectTab
+def selectTab (self,tabName,createText=True,wrap='none'):
+
+    '''Create the tab if necessary and make it active.'''
+
+    c = self.c
+    
+    tabFrame = self.frameDict.get(tabName)
+    logCtrl = self.textDict.get(tabName)
+
+    if tabFrame and logCtrl:
+        # Switch to a new colorTags list.
+        newColorTags = self.colorTagsDict.get(tabName)
+        self.colorTagsDict [self.tabName] = self.colorTags [:]
+        self.colorTags = newColorTags
+    elif not tabFrame:
+        self.createTab(tabName,createText=createText,wrap=wrap)
+        
+    self.nb.selectpage(tabName)
+    # Update the status vars.
+    self.tabName = tabName
+    self.logCtrl = self.textDict.get(tabName)
+    self.tabFrame = self.frameDict.get(tabName)
+
+    if 0: # Absolutely do not do this here!  It is a cause of the 'sticky focus' problem.
+        c.widgetWantsFocusNow(self.logCtrl)
+    return tabFrame
+#@-node:ekr.20051016101724.1:selectTab
+#@+node:ekr.20051020120306:openFindTab
+def openFindTab (self,event=None,show=True):
+    
+    '''Open the Find tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Find'
+    
+    wasOpen = log.frameDict.get(tabName)
+
+    if wasOpen:
+        log.selectTab(tabName)
+    else:
+        log.selectTab(tabName,createText=False)
+        f = log.frameDict.get(tabName)
+        #w = log.textDict.get(tabName)
+        #w.pack_forget()
+        self.findTabHandler = findTab(c,f)
+
+    if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
+        pass # self.findTabHandler.bringToFront()
+    else:
+        log.hideTab(tabName)
+#@-node:ekr.20051020120306:openFindTab
+#@+node:ekr.20051024173701:createTab
+def createTab (self,tabName,createText=True,wrap='none'):
+    
+    # g.trace(tabName,wrap)
+    
+    c = self.c ; k = c.k
+    tabFrame = self.nb.add(tabName)
+    self.menu = self.makeTabMenu(tabName)
+    if createText:
+        << Create the tab's text widget >>
+        if tabName != 'Log':
+            # c.k doesn't exist when the log pane is created.
+            # k.makeAllBindings will call setTabBindings('Log')
+            self.setTabBindings(tabName)
+    else:
+        self.textDict [tabName] = None
+        self.frameDict [tabName] = tabFrame
+#@+node:ekr.20051018072306:<< Create the tab's text widget >>
+w = self.createTextWidget(tabFrame)
+
+# Set the background color.
+configName = 'log_pane_%s_tab_background_color' % tabName
+bg = c.config.getColor(configName) or 'MistyRose1'
+
+if wrap not in ('none','char','word'): wrap = 'none'
+try: w.configure(bg=bg,wrap=wrap)
+except Exception: pass # Could be a user error.
+
+self.SetWidgetFontFromConfig(logCtrl=w)
+
+self.frameDict [tabName] = tabFrame
+self.textDict [tabName] = w
+
+# Switch to a new colorTags list.
+if self.tabName:
+    self.colorTagsDict [self.tabName] = self.colorTags [:]
+
+self.colorTags = ['black']
+self.colorTagsDict [tabName] = self.colorTags
+#@-node:ekr.20051018072306:<< Create the tab's text widget >>
+#@-node:ekr.20051024173701:createTab
 #@-node:ekr.20061209083136:Complete the wxGui plugin
 #@+node:ekr.20061209082338:Docs
 #@+node:ekr.20061130084909:Improve What's special whitepaper
