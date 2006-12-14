@@ -82,7 +82,25 @@ def const(name):
 #@nl
 
 #@+others
-#@+node:edream.110203113231.560: Find...
+#@+node:ekr.20050719111045.1: init
+def init ():
+    
+    ok = wx and not g.app.gui and not g.app.unitTesting # Not Ok for unit testing!
+
+    if ok:
+        g.app.gui = wxGui()
+        g.app.root = g.app.gui.createRootWindow()
+        g.app.gui.finishCreate()
+        g.plugin_signon(__name__)
+
+    elif g.app.gui and not g.app.unitTesting:
+        s = "Can't install wxPython gui: previous gui installed"
+        g.es_print(s,color="red")
+    
+    return ok
+#@nonl
+#@-node:ekr.20050719111045.1: init
+#@+node:edream.110203113231.560: Find classes
 #@+node:edream.111503093140:wxSearchWidget
 class wxSearchWidget:
 
@@ -635,26 +653,402 @@ class wxFindPanel (wx.Panel):
     #@-others
 #@nonl
 #@-node:edream.110203113231.588:wxFindPanel class
-#@-node:edream.110203113231.560: Find...
-#@+node:ekr.20050719111045.1: init
-def init ():
+#@+node:ekr.20061212100034:wxFindTab class
+class wxFindTab (leoFind.findTab):
     
-    ok = wx and not g.app.gui and not g.app.unitTesting # Not Ok for unit testing!
+    '''A subclass of the findTab class containing all wxGui code.'''
 
-    if ok:
-        g.app.gui = wxGui()
-        g.app.root = g.app.gui.createRootWindow()
-        g.app.gui.finishCreate()
-        g.plugin_signon(__name__)
-
-    elif g.app.gui and not g.app.unitTesting:
-        s = "Can't install wxPython gui: previous gui installed"
-        g.es_print(s,color="red")
+    #@    @+others
+    #@+node:ekr.20061212100034.1:ctor
+    if 0: # We can use the base-class ctor.
     
-    return ok
+        def __init__ (self,c,parentFrame):
+        
+            leoFind.findTab.__init__(self,c,parentFrame)
+                # Init the base class.
+                # Calls initGui, createFrame, createBindings & init(c), in that order.
+    #@-node:ekr.20061212100034.1:ctor
+    #@+node:ekr.20061212100034.2:initGui
+    def initGui (self):
+    
+        self.dict = {}
+        
+        class var:
+            def __init__(self):
+                self.val = None
+            def get (self):
+                return self.val
+            def set (self,val):
+                self.val = val
+        
+        for key in self.intKeys:
+            self.dict[key] = var() # Was Tk.IntVar.
+        
+        for key in self.newStringKeys:
+            self.dict[key] = var() # Was Tk.StringVar.
+    #@-node:ekr.20061212100034.2:initGui
+    #@+node:ekr.20061212100034.3:createFrame (wxFindTab)
+    def createFrame (self,parentFrame):
+        
+        # g.trace('findTab',parentFrame)
+        
+        c = self.c
+        self.parentFrame = parentFrame
+        self.outerFrame = parentFrame
+        self.createFindChangeAreas()
+        self.createBoxes()
+        self.createButtons()
+        self.layout()
+        self.createBindings()
+    #@+node:ekr.20061212100034.5:createFindChangeAreas
+    def createFindChangeAreas (self):
+        
+        f = self.outerFrame
+        
+        # Important: the grid sizer determines the position of these objects.
+    
+        # Create the find area.
+        self.find_ctrl = g.app.gui.leoTextWidgetClass(f,
+            size=(200,-1),name='find-text')
+    
+        self.fLabel = wx.StaticText(f,label='Find',style=wx.ALIGN_LEFT)
+        
+        # Create the change area.
+        self.change_ctrl = g.app.gui.leoTextWidgetClass(f,
+            size=(200,-1),name='change-text')
+            
+        self.cLabel = wx.StaticText(f,label='Change',style=wx.ALIGN_LEFT)
+    #@-node:ekr.20061212100034.5:createFindChangeAreas
+    #@+node:ekr.20061212100034.7:createBoxes
+    def createBoxes (self):
+        
+        '''Create two columns of radio buttons & check boxes.'''
+        
+        g.trace()
+        
+        c = self.c ; f = self.outerFrame
+        self.boxes = []
+        self.widgetsDict = {} # Keys are ivars, values are checkboxes or radio buttons.
+        
+        data = ( # Leading star denotes a radio button.
+            ('Whole &Word', 'whole_word',),
+            ('&Ignore Case','ignore_case'),
+            ('Wrap &Around','wrap'),
+            ('&Reverse',    'reverse'),
+            ('Rege&xp',     'pattern_match'),
+            ('Mark &Finds', 'mark_finds'),
+            ("*&Entire Outline","entire-outline"),
+            ("*&Suboutline Only","suboutline-only"),  
+            ("*&Node Only","node-only"),
+            ('Search &Headline','search_headline'),
+            ('Search &Body','search_body'),
+            ('Mark &Changes','mark_changes'),
+        )
+    
+        # Important: changing these controls merely changes entries in self.dict.
+        # First, leoFind.update_ivars sets the find ivars from self.dict.
+        # Second, self.init sets the values of widgets from the ivars.
+        inGroup = False
+        for label,ivar in data:
+            if label.startswith('*'):
+                label = label[1:]
+                style = g.choose(inGroup,0,wx.RB_GROUP)
+                inGroup = True
+                w = wx.RadioButton(f,label=label,style=style)
+                self.widgetsDict[ivar] = w
+                def radioButtonCallback(event=None,ivar=ivar):
+                    self.dict["radio-search-scope"].set(ivar)
+                    g.trace(ivar)
+                w.Bind(wx.EVT_RADIOBUTTON,radioButtonCallback)
+            else:
+                w = wx.CheckBox(f,label=label)
+                self.widgetsDict[ivar] = w
+                def checkBoxCallback(event=None,ivar=ivar):
+                    val = self.dict.get(ivar)
+                    self.dict[ivar] = g.choose(val,False,True)
+                    g.trace(ivar,val)
+                w.Bind(wx.EVT_CHECKBOX,checkBoxCallback)
+            self.boxes.append(w)
+        
+        # for i in xrange(numberOfColumns):
+            # for var,name,val in radioLists[i]:
+                # box = underlinedTkButton(
+                    # "radio",columns[i],anchor="w",text=name,variable=var,value=val,background=bg)
+                # box.button.pack(fill="x")
+                # box.button.bind("<Button-1>", self.resetWrap)
+                # if val == None: box.button.configure(state="disabled")
+                # box.bindHotKey(ftxt)
+                # box.bindHotKey(ctxt)
+            # for name,var in checkLists[i]:
+                # box = underlinedTkButton(
+                    # "check",columns[i],anchor="w",text=name,variable=var,background=bg)
+                # box.button.pack(fill="x")
+                # box.button.bind("<Button-1>", self.resetWrap)
+                # box.bindHotKey(ftxt)
+                # box.bindHotKey(ctxt)
+                # if var is None: box.button.configure(state="disabled")
+    #@-node:ekr.20061212100034.7:createBoxes
+    #@+node:ekr.20061212120506:layout
+    def layout (self):
+        
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        
+        # Sizer 1 lays out the find/change areas.
+        sizer1 = wx.FlexGridSizer(2, 2, vgap=10,hgap=5)
+        sizer1.Add(self.find_ctrl,1,wx.EXPAND)
+        sizer1.Add(self.fLabel,0,wx.EXPAND)
+        sizer1.Add(self.change_ctrl,1,wx.EXPAND)
+        sizer1.Add(self.cLabel,0,wx.EXPAND)
+        
+        # The box sizer puts a border around the checkboxes.
+        staticBox = wx.StaticBox(self.outerFrame)
+        boxSizer = wx.StaticBoxSizer(staticBox,wx.HORIZONTAL)
+        
+        # ltCol lays out the left column.
+        ltCol = wx.BoxSizer(wx.VERTICAL)
+        for w in self.boxes[:6]:
+            ltCol.AddSpacer(8)
+            ltCol.Add(w,0,wx.EXPAND)
+        ltCol.AddSpacer(8)
+            
+        # rtCol lays out the right column.
+        rtCol = wx.BoxSizer(wx.VERTICAL)
+        for w in self.boxes[6:]:
+            rtCol.AddSpacer(8)
+            rtCol.Add(w,0,wx.EXPAND)
+        rtCol.AddSpacer(8)
+        
+        # sizer.AddSpacer(5) # Messes things up.  Pathetic.
+        # sizer.AddStretchSpacer() # Does nothing
+        sizer.Add(sizer1)
+        sizer.AddSpacer(8)
+        boxSizer.Add(ltCol)
+        boxSizer.AddSpacer(20)
+        boxSizer.Add(rtCol)
+        sizer.Add(boxSizer)
+    
+        self.outerFrame.SetSizer(sizer)
+        sizer.Fit(self.outerFrame)
+    #@-node:ekr.20061212120506:layout
+    #@+node:ekr.20061212121401:createBindings TO DO
+    def createBindings (self):
+        
+        return ### not ready yet
+        
+        def setFocus(w):
+            c = self.c
+            c.widgetWantsFocusNow(w)
+            w.setSelectionRange(0,0)
+            return "break"
+            
+        def toFind(event,w=ftxt): return setFocus(w)
+        def toChange(event,w=ctxt): return setFocus(w)
+            
+        def insertTab(w):
+            data = w.getSelectionRange()
+            if data: start,end = data
+            else: start = end = w.getInsertPoint()
+            w.replace(start,end,"\t")
+            return "break"
+        
+        def insertFindTab(event,w=ftxt): return insertTab(w)
+        def insertChangeTab(event,w=ctxt): return insertTab(w)
+        
+        ftxt.bind("<Tab>",toChange)
+        ctxt.bind("<Tab>",toFind)
+        ftxt.bind("<Control-Tab>",insertFindTab)
+        ctxt.bind("<Control-Tab>",insertChangeTab)
+    #@-node:ekr.20061212121401:createBindings TO DO
+    #@+node:ekr.20061212100034.8:createButtons (does nothing)
+    def createButtons (self):
+        
+        '''Create two columns of buttons.'''
+    
+        # # Create the alignment panes.
+        # buttons  = Tk.Frame(outer,background=bg)
+        # buttons1 = Tk.Frame(buttons,bd=1,background=bg)
+        # buttons2 = Tk.Frame(buttons,bd=1,background=bg)
+        # buttons.pack(side='top',expand=1)
+        # buttons1.pack(side='left')
+        # buttons2.pack(side='right')
+        
+        # width = 15 ; defaultText = 'Find' ; buttons = []
+        
+        # for text,boxKind,frame,callback in (
+            # # Column 1...
+            # ('Find','button',buttons1,self.findButtonCallback),
+            # ('Find All','button',buttons1,self.findAllButton),
+            # # Column 2...
+            # ('Change','button',buttons2,self.changeButton),
+            # ('Change, Then Find','button',buttons2,self.changeThenFindButton),
+            # ('Change All','button',buttons2,self.changeAllButton),
+        # ):
+            # w = underlinedTkButton(boxKind,frame,
+                # text=text,command=callback)
+            # buttons.append(w)
+            # if text == defaultText:
+                # w.button.configure(width=width-1,bd=4)
+            # elif boxKind != 'check':
+                # w.button.configure(width=width)
+            # w.button.pack(side='top',anchor='w',pady=2,padx=2)
+    #@-node:ekr.20061212100034.8:createButtons (does nothing)
+    #@-node:ekr.20061212100034.3:createFrame (wxFindTab)
+    #@+node:ekr.20061212100034.9:createBindings (wsFindTab) TO DO
+    def createBindings (self):
+        
+        return ### not ready yet.
+    
+        c = self.c ; k = c.k
+        
+        def resetWrapCallback(event,self=self,k=k):
+            self.resetWrap(event)
+            return k.masterKeyHandler(event)
+            
+        def findButtonBindingCallback(event=None,self=self):
+            self.findButton()
+            return 'break'
+    
+        table = (
+            ('<Button-1>',  k.masterClickHandler),
+            ('<Double-1>',  k.masterClickHandler),
+            ('<Button-3>',  k.masterClickHandler),
+            ('<Double-3>',  k.masterClickHandler),
+            ('<Key>',       resetWrapCallback),
+            ('<Return>',    findButtonBindingCallback),
+            ("<Escape>",    self.hideTab),
+        )
+    
+        for w in (self.find_ctrl,self.change_ctrl):
+            for event, callback in table:
+                w.bind(event,callback)
+    #@-node:ekr.20061212100034.9:createBindings (wsFindTab) TO DO
+    #@+node:ekr.20061212100034.10:init (wxFindTab) 
+    # Important: we can not use leoFind.init because we must init the checkboxes 'by hand' here. 
+    
+    def init (self,c):
+        
+        # g.trace('wxFindTab')
+    
+        # Separate c.ivars are much more convenient than a dict.
+        for key in self.intKeys:
+            # Get ivars from @settings.
+            val = c.config.getBool(key)
+            setattr(self,key,val)
+            val = g.choose(val,1,0)
+            self.dict[key].set(val)
+            #g.trace(key,val)
+    
+        #@    << set find/change widgets >>
+        #@+node:ekr.20061212100034.11:<< set find/change widgets >>
+        
+        
+        self.find_ctrl.delete(0,"end")
+        self.change_ctrl.delete(0,"end")
+        
+        # Get setting from @settings.
+        for w,setting,defaultText in (
+            (self.find_ctrl,"find_text",'<find pattern here>'),
+            (self.change_ctrl,"change_text",''),
+        ):
+            s = c.config.getString(setting)
+            if not s: s = defaultText
+            w.insert("end",s)
+        #@-node:ekr.20061212100034.11:<< set find/change widgets >>
+        #@nl
+        #@    << set radio buttons from ivars >>
+        #@+node:ekr.20061212100034.12:<< set radio buttons from ivars >>
+        # In Tk, setting the var also sets the widget.
+        # Here, we do so explicitly.
+        d = self.widgetsDict
+        for ivar,key in (
+            ("pattern_match","pattern-search"),
+            #("script_search","script-search")
+        ):
+            val = self.dict[ivar].get()
+            if val:
+                self.dict["radio-find-type"].set(key)
+                w = d.get(key)
+                w.SetValue(True)
+                break
+        else:
+            self.dict["radio-find-type"].set("plain-search")
+            
+        for ivar,key in (
+            ("suboutline_only","suboutline-only"),
+            ("node_only","node-only"),
+            # ("selection_only","selection-only")
+        ):
+            val = self.dict[ivar].get()
+            if val:
+                self.dict["radio-search-scope"].set(key)
+                break
+        else:
+            key = 'entire-outline'
+            self.dict["radio-search-scope"].set(key)
+            w = self.widgetsDict.get(key)
+            w.SetValue(True)
+        #@-node:ekr.20061212100034.12:<< set radio buttons from ivars >>
+        #@nl
+        #@    << set checkboxes from ivars >>
+        #@+node:ekr.20061213063636:<< set checkboxes from ivars >>
+        for ivar in (
+            'ignore_case',
+            'mark_changes',
+            'mark_finds',
+            'pattern_match',
+            'reverse',
+            'search_body',
+            'search_headline',
+            'whole_word',
+            'wrap',
+        ):
+            val = self.dict[ivar].get()
+            if val:
+                w = self.widgetsDict.get(ivar)
+                w.SetValue(True)
+        #@-node:ekr.20061213063636:<< set checkboxes from ivars >>
+        #@nl
+    #@-node:ekr.20061212100034.10:init (wxFindTab) 
+    #@+node:ekr.20061213053602:Defined in the base class
+    if 0: # Use the code in the base class unchanged.
+    
+        #@    @+others
+        #@+node:ekr.20061212100034.13:update_ivars (wxFindTab)
+        
+        def update_ivars (self):
+            
+            """Called just before doing a find to update ivars from the find panel."""
+        
+            self.p = self.c.currentPosition()
+            self.v = self.p.v
+        
+            for key in self.intKeys:
+                val = self.dict[key].get()
+                setattr(self, key, val)
+                # g.trace(key,val)
+        
+            search_scope = self.dict["radio-search-scope"].get()
+            self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
+            self.node_only       = g.choose(search_scope == "node-only",1,0)
+        
+            # The caller is responsible for removing most trailing cruft.
+            # Among other things, this allows Leo to search for a single trailing space.
+            s = self.find_ctrl.getAllText()
+            s = g.toUnicode(s,g.app.tkEncoding)
+            self.find_text = s
+            s = self.change_ctrl.getAllText()
+            s = g.toUnicode(s,g.app.tkEncoding)
+            self.change_text = s
+        #@nonl
+        #@-node:ekr.20061212100034.13:update_ivars (wxFindTab)
+        #@-others
+    #@nonl
+    #@-node:ekr.20061213053602:Defined in the base class
+    #@-others
 #@nonl
-#@-node:ekr.20050719111045.1: init
-#@+node:ekr.20061116074003:class wxKeyHandlerClass
+#@-node:ekr.20061212100034:wxFindTab class
+#@-node:edream.110203113231.560: Find classes
+#@+node:ekr.20061116074003:wxKeyHandlerClass
 class wxKeyHandlerClass (leoKeys.keyHandlerClass):
     
     '''wxWidgets overrides of base keyHandlerClass.'''
@@ -857,7 +1251,7 @@ class wxKeyHandlerClass (leoKeys.keyHandlerClass):
     #@-node:ekr.20061116074003.3:Label (wx keys) TO DO
     #@-others
 #@nonl
-#@-node:ekr.20061116074003:class wxKeyHandlerClass
+#@-node:ekr.20061116074003:wxKeyHandlerClass
 #@+node:edream.110203113231.305:wxGui class
 class wxGui(leoGui.leoGui):
     
@@ -1093,6 +1487,12 @@ class wxGui(leoGui.leoGui):
         return wxFindFrame()
     #@nonl
     #@-node:edream.111303092328.2:createFindPanel
+    #@+node:ekr.20061212100014:createFindTab
+    def createFindTab (self,c,parentFrame):
+        
+        '''Create a wxWidgets find tab in the indicated frame.'''
+        return wxFindTab(c,parentFrame)
+    #@-node:ekr.20061212100014:createFindTab
     #@+node:edream.111303092328.3:createFontPanel
     def createFontPanel(self,c):
     
@@ -1935,7 +2335,7 @@ class wxLeoFrame(leoFrame.leoFrame):
         self.minibufferContainer.SetBackgroundColour(wx.GREEN)
         self.minibuffer = wxLeoMinibuffer(c,self.minibufferContainer)
     
-        self.topFrame.CreateStatusBar() # This is a wxWidgets method.
+        self.topFrame.CreateStatusBar() # A wxFrame method.
         self.createSplitters(parentFrame=self.splitterContainer)
         self.tree = wxLeoTree(frame,parentFrame=self.splitter2)
         self.log = wxLeoLog(frame,parentFrame=self.splitter2)
@@ -1950,7 +2350,7 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         # This code resizes both splitters when the window changes.
         box = wx.BoxSizer(wx.VERTICAL)
-        box.Add(self.iconBar.top,0,wx.EXPAND)
+        # box.Add(self.iconBar.top,0,wx.EXPAND)
         box.Add(self.splitterContainer,1,wx.EXPAND)
         def onSizeSplitterContainer(event,self=self,*args,**keys):
             w,h = event.GetSize()
@@ -2157,6 +2557,9 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@-node:edream.110203113231.267:event handlers
     #@+node:edream.110203113231.379:wxFrame dummy routines: (to do: minor)
     def after_idle(*args):
+        pass
+        
+    def bringToFront(self):
         pass
     
     def get_window_info (self):
@@ -2600,29 +3003,17 @@ class wxLeoFrame(leoFrame.leoFrame):
 #@+node:ekr.20061118090713:wxLeoIconBar class
 class wxLeoIconBar:
     
+    '''An adaptor class that uses a wx.ToolBar for Leo's icon area.'''
+    
     #@    @+others
     #@+node:ekr.20061119105509.1:__init__ wxLeoIconBar
     def __init__(self,c,parentFrame): # wxLeoIconBarClass.
     
         self.c = c
-        self.visible = False
-        
-        # g.trace('wxLeoIconBar',parentFrame)
-        
-        # wx.Frame does *not* work, for some reason! (Frames are top-levels)
-        
-        self.top = wx.Panel(parentFrame,-1)
-        
-        self.top.SetSize((0,25),)
-        
-        color =  wx.Colour(224,224,224,255)
-    
-        self.top.SetForegroundColour(color)
-        self.top.SetBackgroundColour(color)
-        
-        c.frame.iconFrame = self.top
-        
-    #@nonl
+        self.toolbar = self.iconFrame = parentFrame.CreateToolBar() # A wxFrame method
+        self.numberOfTools = 0
+        # Set the official ivar.
+        c.frame.iconFrame = self.iconFrame
     #@-node:ekr.20061119105509.1:__init__ wxLeoIconBar
     #@+node:ekr.20061119105509.2:add
     def add(self,*args,**keys):
@@ -2631,39 +3022,45 @@ class wxLeoIconBar:
         
         Pictures take precedence over text"""
         
-        pass
+        toolbar = self.toolbar
+        text = keys.get('text') or ''
+        #imagefile = keys.get('imagefile')
+        #image = keys.get('image')
+        bg = keys.get('bg')
+        command = keys.get('command')
         
-        # f = self.iconFrame
-        # text = keys.get('text')
-        # imagefile = keys.get('imagefile')
-        # image = keys.get('image')
-        # command = keys.get('command')
-        # bg = keys.get('bg')
-    
-        # if not imagefile and not image and not text: return
-    
-        # # First define n.
-        # try:
-            # g.app.iconWidgetCount += 1
-            # n = g.app.iconWidgetCount
-        # except:
-            # n = g.app.iconWidgetCount = 1
-    
-        # if not command:
-            # def command():
-                # print "command for widget %s" % (n)
-    
+        if 1:
+            # Create the button.
+            self.numberOfTools += 1
+            id = self.numberOfTools
+            b = wx.Button(toolbar,id,label=text)
+            if command:
+                def onClickCallback(event=None,command=command):
+                    command(event=event)
+                toolbar.Bind(wx.EVT_BUTTON,onClickCallback,b)
+        
+            tool = toolbar.AddControl(b)
+        else:
+            self.numberOfTools += 1
+            id = self.numberOfTools
+            bitmap = wx.EmptyBitmap(width=100,height=20,depth=-1)
+            # bitmap.Create() # width=100,height=25,depth=-1)
+            #tsize = (24,24)
+            #bitmap =  wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR, tsize)
+            #toolbar.SetToolBitmapSize(tsize)
+            g.trace(bitmap)
+            b = toolbar.AddLabelTool(id,text,bitmap)
+            if command:
+                def onClickCallback(event=None,command=command):
+                    command(event=event)
+                toolbar.Bind(wx.EVT_BUTTON,onClickCallback,b)
+        toolbar.Realize()
+        return b
+        
         # if imagefile or image:
             # < < create a picture > >
         # elif text:
             # b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
-            # if sys.platform != 'darwin':
-                # width = max(6,len(text))
-                # b.configure(width=width)
-            # b.pack(side="left", fill="y")
-            # return b
-            
-        # return None
     #@+node:ekr.20061119105509.3:create a picture
     # try:
         # if imagefile:
@@ -2709,35 +3106,40 @@ class wxLeoIconBar:
         # g.app.iconWidgetCount = 0
         # g.app.iconImageRefs = []
     #@-node:ekr.20061119105509.4:clear
+    #@+node:ekr.20061213092323:deleteButton
+    def deleteButton (self,w):
+        
+        # At present, the standard buttons can not be deleted
+        # because they were created as controls.
+    
+        if 0: # Crashes.
+            w.Destroy()
+            self.toolbar.Realize()
+    #@nonl
+    #@-node:ekr.20061213092323:deleteButton
     #@+node:ekr.20061119105509.5:getFrame
     def getFrame (self):
     
         return self.iconFrame
     #@-node:ekr.20061119105509.5:getFrame
-    #@+node:ekr.20061119105509.6:pack (show)
+    #@+node:ekr.20061213092105:setCommandForButton
+    def setCommandForButton(self,b,command):
+        
+        def onClickCallback(event=None,command=command):
+            command(event=event)
+    
+        self.toolbar.Bind(wx.EVT_BUTTON,onClickCallback,b)
+    #@-node:ekr.20061213092105:setCommandForButton
+    #@+node:ekr.20061213094526:show/hide (do nothings)
     def pack (self):
-        
-        """Show the icon bar by repacking it"""
-        
-        if not self.visible:
-            self.visible = True
-            ####self.iconFrame.pack(fill="x",pady=2)
+        pass
             
-    show = pack
-    #@-node:ekr.20061119105509.6:pack (show)
-    #@+node:ekr.20061119105509.7:unpack (hide)
     def unpack (self):
-        
-        """Hide the icon bar by unpacking it.
-        
-        A later call to show will repack it in a new location."""
-        
-        if self.visible:
-            self.visible = False
-            ### self.iconFrame.pack_forget()
-            
+        pass
+         
+    show = pack   
     hide = unpack
-    #@-node:ekr.20061119105509.7:unpack (hide)
+    #@-node:ekr.20061213094526:show/hide (do nothings)
     #@-others
 #@-node:ekr.20061118090713:wxLeoIconBar class
 #@+node:edream.110203113231.553:wxLeoLog class
@@ -2784,7 +3186,8 @@ class wxLeoLog (leoFrame.leoLog):
     #@+node:edream.110203113231.557:leoLog.createControl
     def createControl (self,parentFrame):
         
-        self.nb = wx.Notebook(parentFrame,style=wx.BK_DEFAULT)
+        self.nb = nb = wx.Notebook(parentFrame,style=wx.BK_DEFAULT) 
+        nb.SetBackgroundColour(nb.GetThemeBackgroundColour())
         self.logCtrl = self.selectTab('Log')
     #@-node:edream.110203113231.557:leoLog.createControl
     #@+node:edream.110203113231.558:leoLog.setLogFontFromConfig
@@ -2842,6 +3245,8 @@ class wxLeoLog (leoFrame.leoLog):
     #@+node:ekr.20061211122107.2:createTab
     def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
     
+        # g.trace('tabName',tabName,'createText',createText,g.callers())
+    
         if createText:
             w = g.app.gui.leoTextWidgetClass(
                 self.nb,
@@ -2863,40 +3268,43 @@ class wxLeoLog (leoFrame.leoLog):
             wx.EVT_KEY_UP(w,self.onKeyUp) # Provides raw key codes.
             
             self.textDict [tabName] = w
-            self.frameDict [tabName] = None
+            self.frameDict [tabName] = w
+            
+            # if tabName != 'Log':
+                # # c.k doesn't exist when the log pane is created.
+                # # k.makeAllBindings will call setTabBindings('Log')
+                # self.setTabBindings(tabName)
         else:
             w = wx.Panel(self.nb)
             self.textDict [tabName] = None
             self.frameDict [tabName] = w
             
         self.nb.AddPage(w,tabName)
-    
-        # if tabName != 'Log':
-            # # c.k doesn't exist when the log pane is created.
-            # # k.makeAllBindings will call setTabBindings('Log')
-            # self.setTabBindings(tabName)
-            
         return w
     #@-node:ekr.20061211122107.2:createTab
     #@+node:ekr.20061211122107.11:selectTab
     def selectTab (self,tabName,createText=True,wrap='none'):
     
         '''Create the tab if necessary and make it active.'''
-        
-        nb = self.nb
-        w = self.textDict.get(tabName) or self.createTab(tabName,createText=createText)
     
+        tabFrame = self.frameDict.get(tabName)
+        
+        if not tabFrame:
+            self.createTab(tabName,createText=createText)
+        
+        # Update the status vars.
+        self.tabName = tabName
+        self.logCtrl = self.textDict.get(tabName)
+        self.tabFrame = self.frameDict.get(tabName)
+    
+        nb = self.nb
         for i in xrange(nb.GetPageCount()):
             s = nb.GetPageText(i)
             if s == tabName:
                 nb.SetSelection(i)
-                # Update the status vars.
-                self.tabName = tabName
-                self.logCtrl = w
-                return w
-        else:
-            g.trace('Can not happen: no page: %s' % tabName)
-            return None
+                assert nb.GetPage(i) == self.tabFrame
+        
+        return self.tabFrame
     #@-node:ekr.20061211122107.11:selectTab
     #@+node:ekr.20061211122107.1:clearTab
     def clearTab (self,tabName,wrap='none'):
@@ -3126,16 +3534,18 @@ class wxLeoMenu (leoMenu.leoMenu):
         
         label    = keys.get('label')
         underline = keys.get('underline')
+        accel = keys.get('accelerator')
         ch = 0 <= underline < len(label) and label[underline] or ''
         if ch: label = label[:underline] + '&' + label[underline:]
+        if accel: label = label + '\t' + accel 
         return ch,label
     #@-node:ekr.20061118203148:createAccelLabel
     #@+node:ekr.20061118203148.1:createAccelData
-    def createAccelData (self,menu,ch,id):
+    def createAccelData (self,menu,ch,accel,id,label):
     
         d = self.acceleratorDict
         aList = d.get(menu,[])
-        data = ch,id
+        data = ch,accel,id,label
         aList.append(data)
         d [menu] = aList
     #@-node:ekr.20061118203148.1:createAccelData
@@ -3143,14 +3553,14 @@ class wxLeoMenu (leoMenu.leoMenu):
     def createAcceleratorTables (self):
         
         d = self.acceleratorDict
-        flags = wx.ACCEL_NORMAL
         entries = []
         for menu in d.keys():
             aList = d.get(menu)
             for data in aList:
-                ch,id = data
-                entry = wx.AcceleratorEntry(flags,ord(ch),id)
-                entries.append(entry)
+                ch,accel,id,label = data
+                if ch:
+                    entry = wx.AcceleratorEntry(wx.ACCEL_NORMAL,ord(ch),id)
+                    entries.append(entry)
         table = wx.AcceleratorTable(entries)
         self.menuBar.SetAcceleratorTable(table)
     #@-node:ekr.20061118194416:createAcceleratorTables
@@ -3192,7 +3602,8 @@ class wxLeoMenu (leoMenu.leoMenu):
             ch,label = self.createAccelLabel(keys)
             id = const(label)
             parent.AppendMenu(id,label,menu,label)
-            if ch: self.createAccelData(menu,ch,id)
+            accel = None
+            if ch: self.createAccelData(menu,ch,accel,id,label)
         else:
             # Create a top-level menu.
             self.menuBar.Append(menu,label)
@@ -3205,6 +3616,7 @@ class wxLeoMenu (leoMenu.leoMenu):
             return g.trace('Can not happen.  No menu')
         
         callback = keys.get('command')
+        accel = keys.get('accelerator')
         ch,label = self.createAccelLabel(keys)
         
         def wxMenuCallback (event,callback=callback):
@@ -3215,7 +3627,8 @@ class wxLeoMenu (leoMenu.leoMenu):
         key = (menu,label),
         self.menuDict[key] = id # Remember id 
         wx.EVT_MENU(self.frame.top,id,wxMenuCallback)
-        if ch: self.createAccelData(menu,ch,id)
+        if ch or accel:
+            self.createAccelData(menu,ch,accel,id,label)
         
     #@nonl
     #@-node:edream.111303103141:menu.add_command
@@ -3266,7 +3679,9 @@ class wxLeoMenu (leoMenu.leoMenu):
             keys = {'label':label,'underline':underline}
             ch,label = self.createAccelLabel(keys)
             self.menuBar.append(menu,label)
-            if ch: self.createAccelData(menu,ch,id)
+            id = const(label)
+            accel = None
+            if ch: self.createAccelData(menu,ch,accel,id,label)
     #@-node:edream.111303111942:insert_cascade
     #@+node:edream.111303110018:new_menu
     def new_menu(self,parent,tearoff=0):
@@ -4205,28 +4620,8 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:ekr.20061115172306:tree.select
     #@+node:ekr.20050719121701.2:endEditLabel
     def endEditLabel (self):
-    
-        g.trace()
-        return ###
         
-        """End editing for self.editText."""
-    
-        c = self.c ; frame = c.frame
-        
-        p = self.editPosition()
-    
-        if p and c.edit_widget(p):
-            if 0: # New in recycled widgets scheme: this could cause a race condition.
-                # This will be done in the redraw code becaused editPosition will be None.
-                self.setUnselectedLabelState(p)
-    
-            self.setEditPosition(None)
-    
-            # force a redraw of joined and ancestor headlines.
-            self.force_redraw() 
-    
-        frame.bodyWantsFocus()
-    #@nonl
+        self.c.frame.bodyWantsFocus()
     #@-node:ekr.20050719121701.2:endEditLabel
     #@+node:ekr.20050719121701.3:editLabel
     def editLabel (self,p,selectAll=False): # wxTree
@@ -4281,7 +4676,9 @@ class wxLeoTextWidget (wx.TextCtrl):
     def __init__ (self,*args,**keys):
         
         w = self
+    
         wx.TextCtrl.__init__(self,*args,**keys) # Init the base class.
+        
         w.defaultFont = font = wx.Font(pointSize=10,
             family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
             style  = wx.FONTSTYLE_NORMAL,
@@ -4301,19 +4698,22 @@ class wxLeoTextWidget (wx.TextCtrl):
     
     def toGuiIndex (self,index):
         
+        w = self
         if index == '1.0':
             return 0
         elif index == 'end':
-            return len(s)
+            return w.GetLastPosition()
         else:
             return index
     
     def toPythonIndex (self,index):
         
+        w = self
+    
         if index == '1.0':
             return 0
         elif index == 'end':
-            return len(s)
+            return w.GetLastPosition()
         else:
             return index
     #@-node:ekr.20061117150656:w.toGuiIndex & toPythonIndex
