@@ -1382,7 +1382,7 @@ class findTab (leoFind):
 #@+node:ekr.20051020120306.11:__init__ & initGui
 def __init__(self,c,parentFrame):
     
-    # g.trace('findTab')
+    # g.trace('findTab',g.callers())
 
     # Init the base class...
     leoFind.__init__(self,c,title='Find Tab')
@@ -1395,7 +1395,9 @@ def __init__(self,c,parentFrame):
     self.find_ctrl = None
     self.change_ctrl = None 
     self.outerScrolledFrame = None
-    self.s_ctrl = g.app.gui.leoTextWidgetClass() # Used by find.search()
+    self.s_ctrl = g.app.gui.leoTextWidgetClass(parentFrame)
+        # Used by find.search()
+        # Must have a parent Frame even though it is not packed.
 
     self.initGui()
     self.createFrame(parentFrame)
@@ -1409,9 +1411,6 @@ def createBindings (self):
     self.oops()
     
 def createFrame (self):
-    self.oops()
-    
-def init (self):
     self.oops()
     
 def initGui (self):
@@ -1742,91 +1741,191 @@ def createBindings (self):
         for event, callback in table:
             w.bind(event,callback)
 #@-node:ekr.20051023181449:createBindings (tkFindTab)
-#@+node:ekr.20051020120306.19:init (tkFindTab)
-def init (self,c):
-    
-    # g.trace('Find Tab')
-
-    # N.B.: separate c.ivars are much more convenient than a dict.
-    for key in self.intKeys:
-        # New in 4.3: get ivars from @settings.
-        val = c.config.getBool(key)
-        setattr(self,key,val)
-        val = g.choose(val,1,0) # Work around major Tk problem.
-        self.dict[key].set(val)
-        # g.trace(key,val)
-
-    << set find/change widgets >>
-    << set radio buttons from ivars >>
-#@+node:ekr.20051020120306.20:<< set find/change widgets >>
-self.find_ctrl.delete(0,"end")
-self.change_ctrl.delete(0,"end")
-
-# New in 4.3: Get setting from @settings.
-for w,setting,defaultText in (
-    (self.find_ctrl,"find_text",'<find pattern here>'),
-    (self.change_ctrl,"change_text",''),
-):
-    s = c.config.getString(setting)
-    if not s: s = defaultText
-    w.insert("end",s)
-#@-node:ekr.20051020120306.20:<< set find/change widgets >>
-#@+node:ekr.20051020120306.21:<< set radio buttons from ivars >>
-found = False
-for var,setting in (
-    ("pattern_match","pattern-search"),
-    #("script_search","script-search")
-):
-    val = self.dict[var].get()
-    if val:
-        self.dict["radio-find-type"].set(setting)
-        found = True ; break
-if not found:
-    self.dict["radio-find-type"].set("plain-search")
-    
-found = False
-for var,setting in (
-    ("suboutline_only","suboutline-only"),
-    ("node_only","node-only"),
-    # ("selection_only","selection-only")
-):
-    val = self.dict[var].get()
-    if val:
-        self.dict["radio-search-scope"].set(setting)
-        found = True ; break
-if not found:
-    self.dict["radio-search-scope"].set("entire-outline")
-#@-node:ekr.20051020120306.21:<< set radio buttons from ivars >>
-#@-node:ekr.20051020120306.19:init (tkFindTab)
 #@-node:ekr.20061212085958.1: Birth
-#@+node:ekr.20051020120306.22:update_ivars (tkFindTab)
-def update_ivars (self):
-    
-    """Called just before doing a find to update ivars from the find panel."""
-
-    self.p = self.c.currentPosition()
-    self.v = self.p.v
-
-    for key in self.intKeys:
-        val = self.dict[key].get()
-        setattr(self, key, val)
-        # g.trace(key,val)
-
-    search_scope = self.dict["radio-search-scope"].get()
-    self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
-    self.node_only       = g.choose(search_scope == "node-only",1,0)
-
-    # The caller is responsible for removing most trailing cruft.
-    # Among other things, this allows Leo to search for a single trailing space.
-    s = self.find_ctrl.getAllText()
-    s = g.toUnicode(s,g.app.tkEncoding)
-    self.find_text = s
-    s = self.change_ctrl.getAllText()
-    s = g.toUnicode(s,g.app.tkEncoding)
-    self.change_text = s
-#@-node:ekr.20051020120306.22:update_ivars (tkFindTab)
 #@-node:ekr.20061212085958:class tkFindTab (findTab)
 #@-node:ekr.20061212085958.2:Refactored the findTab class
+#@+node:ekr.20061212110702:Remove Tk code from minibufferFind class
+#@+node:ekr.20060124122844:setOption (minibufferFind: Tk code)
+def setOption (self, ivar, val):
+    
+    h = self.finder
+
+    if ivar in h.intKeys:
+        if val is not None:
+            var = h.dict.get(ivar)
+            var.set(val)
+            # g.trace('%s = %s' % (ivar,val))
+
+    elif not g.app.unitTesting:
+        g.trace('oops: bad find ivar %s' % ivar)
+#@-node:ekr.20060124122844:setOption (minibufferFind: Tk code)
+#@+node:ekr.20060125082510:getOption (minibufferFind: Tk code)
+def getOption (self,ivar,verbose=False):
+    
+    h = self.finder
+    
+    var = h.dict.get(ivar)
+    if var:
+        val = var.get()
+        verbose and g.trace('%s = %s' % (ivar,val))
+        return val
+    else:
+        g.trace('bad ivar name: %s' % ivar)
+        return None
+#@-node:ekr.20060125082510:getOption (minibufferFind: Tk code)
+#@+node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
+def toggleOption (self, ivar):
+    
+    h = self.finder
+
+    if ivar in h.intKeys:
+        var = h.dict.get(ivar)
+        val = not var.get()
+        var.set(val)
+        # g.trace('%s = %s' % (ivar,val),var)
+    else:
+        g.trace('oops: bad find ivar %s' % ivar)
+#@-node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
+#@-node:ekr.20061212110702:Remove Tk code from minibufferFind class
+#@+node:ekr.20041223102225:class tkIconBarClass
+class tkIconBarClass:
+    
+    '''A class representing the singleton Icon bar'''
+    
+    @others
+#@+node:ekr.20041223102225.1: ctor
+def __init__ (self,c,parentFrame):
+    
+    self.c = c
+    
+    self.buttons = {}
+    self.iconFrame = w = Tk.Frame(parentFrame,height="5m",bd=2,relief="groove")
+    self.c.frame.iconFrame = self.iconFrame
+    self.parentFrame = parentFrame
+    self.visible = False
+    self.show()
+#@-node:ekr.20041223102225.1: ctor
+#@+node:ekr.20031218072017.3958:add
+def add(self,*args,**keys):
+    
+    """Add a button containing text or a picture to the icon bar.
+    
+    Pictures take precedence over text"""
+    
+    f = self.iconFrame
+    text = keys.get('text')
+    imagefile = keys.get('imagefile')
+    image = keys.get('image')
+    command = keys.get('command')
+    bg = keys.get('bg')
+
+    if not imagefile and not image and not text: return
+
+    # First define n.
+    try:
+        g.app.iconWidgetCount += 1
+        n = g.app.iconWidgetCount
+    except:
+        n = g.app.iconWidgetCount = 1
+
+    if not command:
+        def command():
+            print "command for widget %s" % (n)
+
+    if imagefile or image:
+        << create a picture >>
+    elif text:
+        b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
+        if sys.platform != 'darwin':
+            width = max(6,len(text))
+            b.configure(width=width)
+        b.pack(side="left", fill="y")
+        return b
+        
+    return None
+#@+node:ekr.20031218072017.3959:<< create a picture >>
+try:
+    if imagefile:
+        # Create the image.  Throws an exception if file not found
+        imagefile = g.os_path_join(g.app.loadDir,imagefile)
+        imagefile = g.os_path_normpath(imagefile)
+        image = Tk.PhotoImage(master=g.app.root,file=imagefile)
+        
+        # Must keep a reference to the image!
+        try:
+            refs = g.app.iconImageRefs
+        except:
+            refs = g.app.iconImageRefs = []
+    
+        refs.append((imagefile,image),)
+    
+    if not bg:
+        bg = f.cget("bg")
+
+    b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
+    b.pack(side="left",fill="y")
+    return b
+    
+except:
+    g.es_exception()
+    return None
+#@-node:ekr.20031218072017.3959:<< create a picture >>
+#@-node:ekr.20031218072017.3958:add
+#@+node:ekr.20031218072017.3956:clear
+def clear(self):
+    
+    """Destroy all the widgets in the icon bar"""
+    
+    f = self.iconFrame
+    
+    for slave in f.pack_slaves():
+        slave.destroy()
+    self.visible = False
+
+    f.configure(height="5m") # The default height.
+    g.app.iconWidgetCount = 0
+    g.app.iconImageRefs = []
+#@-node:ekr.20031218072017.3956:clear
+#@+node:ekr.20061213091114.1:deleteButton (new in Leo 4.4.3)
+def deleteButton (self,w):
+    
+    w.pack_forget()
+#@-node:ekr.20061213091114.1:deleteButton (new in Leo 4.4.3)
+#@+node:ekr.20041223114821:getFrame
+def getFrame (self):
+
+    return self.iconFrame
+#@-node:ekr.20041223114821:getFrame
+#@+node:ekr.20041223102225.2:pack (show)
+def pack (self):
+    
+    """Show the icon bar by repacking it"""
+    
+    if not self.visible:
+        self.visible = True
+        self.iconFrame.pack(fill="x",pady=2)
+        
+show = pack
+#@-node:ekr.20041223102225.2:pack (show)
+#@+node:ekr.20061213092103:setCommandForButton (new in Leo 4.4.3)
+def setCommandForButton(self,b,command):
+    
+    b.configure(command=command)
+#@-node:ekr.20061213092103:setCommandForButton (new in Leo 4.4.3)
+#@+node:ekr.20031218072017.3955:unpack (hide)
+def unpack (self):
+    
+    """Hide the icon bar by unpacking it.
+    
+    A later call to show will repack it in a new location."""
+    
+    if self.visible:
+        self.visible = False
+        self.iconFrame.pack_forget()
+        
+hide = unpack
+#@-node:ekr.20031218072017.3955:unpack (hide)
+#@-node:ekr.20041223102225:class tkIconBarClass
 #@-node:ekr.20061209083136:Complete the wxGui plugin
 #@+node:ekr.20061209082338:Docs
 #@+node:ekr.20061130084909:Improve What's special whitepaper

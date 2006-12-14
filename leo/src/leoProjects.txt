@@ -2744,33 +2744,6 @@ def sortFields (self,event,which=None):
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.120:sortFields
 #@-node:ekr.20050920084036.117:sort...
-#@+node:ekr.20061102064720.4:search classes
-#@+node:ekr.20051020120306.22:update_ivars (tkFindTab)
-def update_ivars (self):
-    
-    """Called just before doing a find to update ivars from the find panel."""
-
-    self.p = self.c.currentPosition()
-    self.v = self.p.v
-
-    for key in self.intKeys:
-        val = self.dict[key].get()
-        setattr(self, key, val)
-        # g.trace(key,val)
-
-    search_scope = self.dict["radio-search-scope"].get()
-    self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
-    self.node_only       = g.choose(search_scope == "node-only",1,0)
-
-    # The caller is responsible for removing most trailing cruft.
-    # Among other things, this allows Leo to search for a single trailing space.
-    s = self.find_ctrl.getAllText()
-    s = g.toUnicode(s,g.app.tkEncoding)
-    self.find_text = s
-    s = self.change_ctrl.getAllText()
-    s = g.toUnicode(s,g.app.tkEncoding)
-    self.change_text = s
-#@-node:ekr.20051020120306.22:update_ivars (tkFindTab)
 #@+node:ekr.20050920084036.261:incremental search...
 def isearchForward (self,event):
     '''Begin a forward incremental search.'''
@@ -2962,7 +2935,6 @@ def endSearch (self,i,j):
 #@nonl
 #@-node:ekr.20060203072636:endSearch
 #@-node:ekr.20050920084036.261:incremental search...
-#@-node:ekr.20061102064720.4:search classes
 #@+node:ekr.20061102064720.5:spell classes
 #@+node:ekr.20051025071455.22:createSpellTab
 def createSpellTab(self,parentFrame):
@@ -11058,32 +11030,6 @@ def getEditableTextRange (self):
     return i,j
 #@nonl
 #@-node:ekr.20061031170011.13:getEditableTextRange (should return Python indices)
-#@+node:ekr.20051020120306.22:update_ivars (tkFindTab)
-def update_ivars (self):
-    
-    """Called just before doing a find to update ivars from the find panel."""
-
-    self.p = self.c.currentPosition()
-    self.v = self.p.v
-
-    for key in self.intKeys:
-        val = self.dict[key].get()
-        setattr(self, key, val)
-        # g.trace(key,val)
-
-    search_scope = self.dict["radio-search-scope"].get()
-    self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
-    self.node_only       = g.choose(search_scope == "node-only",1,0)
-
-    # The caller is responsible for removing most trailing cruft.
-    # Among other things, this allows Leo to search for a single trailing space.
-    s = self.find_ctrl.getAllText()
-    s = g.toUnicode(s,g.app.tkEncoding)
-    self.find_text = s
-    s = self.change_ctrl.getAllText()
-    s = g.toUnicode(s,g.app.tkEncoding)
-    self.change_text = s
-#@-node:ekr.20051020120306.22:update_ivars (tkFindTab)
 #@-node:ekr.20061117084407.1:Removed no-longer needed tests for newlines
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20050314140957:g.convertPythonIndexToRowCol (pass)
