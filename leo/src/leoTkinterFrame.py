@@ -842,6 +842,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
             g.app.iconWidgetCount = 0
             g.app.iconImageRefs = []
         #@-node:ekr.20031218072017.3956:clear
+        #@+node:ekr.20061213091114.1:deleteButton (new in Leo 4.4.3)
+        def deleteButton (self,w):
+            
+            w.pack_forget()
+        #@-node:ekr.20061213091114.1:deleteButton (new in Leo 4.4.3)
         #@+node:ekr.20041223114821:getFrame
         def getFrame (self):
         
@@ -858,6 +863,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 
         show = pack
         #@-node:ekr.20041223102225.2:pack (show)
+        #@+node:ekr.20061213092103:setCommandForButton (new in Leo 4.4.3)
+        def setCommandForButton(self,b,command):
+            
+            b.configure(command=command)
+        #@-node:ekr.20061213092103:setCommandForButton (new in Leo 4.4.3)
         #@+node:ekr.20031218072017.3955:unpack (hide)
         def unpack (self):
             

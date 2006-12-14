@@ -1166,6 +1166,7 @@ class leoMenu:
         ]
     #@-node:ekr.20031218072017.3774:defineHelpMenuTables
     #@-node:ekr.20031218072017.3752:defineMenuTables & helpers
+    #@-node:ekr.20031218072017.3781:Gui-independent menu routines
     #@+node:ekr.20051022053758.1:Helpers
     #@+node:ekr.20031218072017.3783:canonicalizeMenuName & cononicalizeTranslatedMenuName
     def canonicalizeMenuName (self,name):
@@ -1577,7 +1578,6 @@ class leoMenu:
         del self.menus[cmn]
     #@-node:ekr.20031218072017.3807:getMenu, setMenu, destroyMenu
     #@-node:ekr.20051022053758.1:Helpers
-    #@-node:ekr.20031218072017.3781:Gui-independent menu routines
     #@+node:ekr.20031218072017.3808:Must be overridden in menu subclasses
     #@+node:ekr.20031218072017.3809:9 Routines with Tk spellings
     def add_cascade (self,parent,label,menu,underline):

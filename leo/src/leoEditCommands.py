@@ -6819,7 +6819,7 @@ class minibufferFind (baseEditCommandsClass):
         else:
             g.trace('oops: bad `where` value: %s' % where)
     #@-node:ekr.20060124123133:setFindScope
-    #@+node:ekr.20060124122844:setOption
+    #@+node:ekr.20060124122844:setOption (minibufferFind: Tk code)
     def setOption (self, ivar, val):
         
         h = self.finder
@@ -6832,8 +6832,8 @@ class minibufferFind (baseEditCommandsClass):
     
         elif not g.app.unitTesting:
             g.trace('oops: bad find ivar %s' % ivar)
-    #@-node:ekr.20060124122844:setOption
-    #@+node:ekr.20060125082510:getOption
+    #@-node:ekr.20060124122844:setOption (minibufferFind: Tk code)
+    #@+node:ekr.20060125082510:getOption (minibufferFind: Tk code)
     def getOption (self,ivar,verbose=False):
         
         h = self.finder
@@ -6846,7 +6846,7 @@ class minibufferFind (baseEditCommandsClass):
         else:
             g.trace('bad ivar name: %s' % ivar)
             return None
-    #@-node:ekr.20060125082510:getOption
+    #@-node:ekr.20060125082510:getOption (minibufferFind: Tk code)
     #@+node:ekr.20060125074939:showFindOptions
     def showFindOptions (self):
         
@@ -6892,7 +6892,7 @@ class minibufferFind (baseEditCommandsClass):
     
         frame.putStatusLine(' '.join(z))
     #@-node:ekr.20060125074939:showFindOptions
-    #@+node:ekr.20060124135401:toggleOption
+    #@+node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
     def toggleOption (self, ivar):
         
         h = self.finder
@@ -6904,7 +6904,7 @@ class minibufferFind (baseEditCommandsClass):
             # g.trace('%s = %s' % (ivar,val),var)
         else:
             g.trace('oops: bad find ivar %s' % ivar)
-    #@-node:ekr.20060124135401:toggleOption
+    #@-node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
     #@+node:ekr.20060205105950:setupChangePattern
     def setupChangePattern (self,pattern):
         
@@ -7854,7 +7854,9 @@ class spellTab(leoFind.leoFind):
         self.suggestions = []
         self.messages = [] # List of message to be displayed when hiding the tab.
         self.outerScrolledFrame = None
-        self.workCtrl = g.app.gui.leoTextWidgetClass() # A text widget for scanning.
+        self.workCtrl = g.app.gui.leoTextWidgetClass(parentFrame)
+            # A text widget for scanning.
+            # Must have a parent frame even though it is not packed.
         
         self.loaded = self.init_aspell(c)
         if self.loaded:

@@ -332,61 +332,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             widget.bind("<Key-Return>", findButtonCallback2)
             widget.bind("<Key-Escape>", self.onCloseWindow)
     #@-node:ekr.20060207080537:find.createBindings
-    #@+node:ekr.20031218072017.2059:find.init
-    def init (self,c):
-    
-        # N.B.: separate c.ivars are much more convenient than a dict.
-        for key in self.intKeys:
-            # New in 4.3: get ivars from @settings.
-            val = c.config.getBool(key)
-            setattr(self,key,val)
-            val = g.choose(val,1,0) # Work around major Tk problem.
-            self.dict[key].set(val)
-            # g.trace(key,val)
-    
-        #@    << set find/change widgets >>
-        #@+node:ekr.20031218072017.2060:<< set find/change widgets >>
-        self.find_ctrl.delete(0,"end")
-        self.change_ctrl.delete(0,"end")
-        
-        # New in 4.3: Get setting from @settings.
-        for w,setting,defaultText in (
-            (self.find_ctrl,"find_text",'<find pattern here>'),
-            (self.change_ctrl,"change_text",''),
-        ):
-            s = c.config.getString(setting)
-            if not s: s = defaultText
-            w.insert("end",s)
-        #@-node:ekr.20031218072017.2060:<< set find/change widgets >>
-        #@nl
-        #@    << set radio buttons from ivars >>
-        #@+node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
-        found = False
-        for var,setting in (
-            ("pattern_match","pattern-search"),
-            ("script_search","script-search")):
-            val = self.dict[var].get()
-            if val:
-                self.dict["radio-find-type"].set(setting)
-                found = True ; break
-        if not found:
-            self.dict["radio-find-type"].set("plain-search")
-            
-        found = False
-        for var,setting in (
-            ("suboutline_only","suboutline-only"),
-            ("node_only","node-only"),
-            # ("selection_only","selection-only"),
-        ):
-            val = self.dict[var].get()
-            if val:
-                self.dict["radio-search-scope"].set(setting)
-                found = True ; break
-        if not found:
-            self.dict["radio-search-scope"].set("entire-outline")
-        #@-node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
-        #@nl
-    #@-node:ekr.20031218072017.2059:find.init
     #@-node:ekr.20031218072017.3898:Birth & death
     #@+node:ekr.20031218072017.3906:onCloseWindow
     def onCloseWindow(self,event=None):
@@ -400,7 +345,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         
         self.top.withdraw()
     #@-node:ekr.20051013084256:dismiss
-    #@+node:ekr.20061111084423:Overrides
     #@+node:ekr.20031218072017.3907:bringToFront (tkFind)
     def bringToFront (self):
         
@@ -415,38 +359,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         c.widgetWantsFocusNow(w)
         w.selectAllText()
     #@-node:ekr.20031218072017.3907:bringToFront (tkFind)
-    #@+node:ekr.20031218072017.1460:update_ivars (tkFind)
-    def update_ivars (self):
-        
-        """Called just before doing a find to update ivars from the find panel."""
-    
-        for key in self.intKeys:
-            val = self.dict[key].get()
-            setattr(self, key, val) # No more _flag hack.
-            # g.trace(key,val)
-    
-        # Set ivars from radio buttons. Convert these to 1 or 0.
-        search_scope = self.dict["radio-search-scope"].get()
-        self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
-        self.node_only       = g.choose(search_scope == "node-only",1,0)
-        self.selection       = g.choose(search_scope == "selection-only",1,0) # 11/9/03
-    
-        # New in 4.3: The caller is responsible for removing most trailing cruft.
-        # Among other things, this allows Leo to search for a single trailing space.
-        s = self.find_ctrl.getAllText()
-        s = g.toUnicode(s,g.app.tkEncoding)
-        # g.trace(repr(s))
-        if s and s[-1] in ('\r','\n'):
-            s = s[:-1]
-        self.find_text = s
-    
-        s = self.change_ctrl.getAllText()
-        if s and s[-1] in ('\r','\n'):
-            s = s[:-1]
-        s = g.toUnicode(s,g.app.tkEncoding)
-        self.change_text = s
-    #@-node:ekr.20031218072017.1460:update_ivars (tkFind)
-    #@-node:ekr.20061111084423:Overrides
     #@-others
 #@-node:ekr.20041025152343.1:class leoTkinterFind
 #@+node:ekr.20061212085958:class tkFindTab (findTab)
@@ -701,91 +613,7 @@ class tkFindTab (leoFind.findTab):
             for event, callback in table:
                 w.bind(event,callback)
     #@-node:ekr.20051023181449:createBindings (tkFindTab)
-    #@+node:ekr.20051020120306.19:init (tkFindTab)
-    def init (self,c):
-        
-        # g.trace('Find Tab')
-    
-        # N.B.: separate c.ivars are much more convenient than a dict.
-        for key in self.intKeys:
-            # New in 4.3: get ivars from @settings.
-            val = c.config.getBool(key)
-            setattr(self,key,val)
-            val = g.choose(val,1,0) # Work around major Tk problem.
-            self.dict[key].set(val)
-            # g.trace(key,val)
-    
-        #@    << set find/change widgets >>
-        #@+node:ekr.20051020120306.20:<< set find/change widgets >>
-        self.find_ctrl.delete(0,"end")
-        self.change_ctrl.delete(0,"end")
-        
-        # New in 4.3: Get setting from @settings.
-        for w,setting,defaultText in (
-            (self.find_ctrl,"find_text",'<find pattern here>'),
-            (self.change_ctrl,"change_text",''),
-        ):
-            s = c.config.getString(setting)
-            if not s: s = defaultText
-            w.insert("end",s)
-        #@-node:ekr.20051020120306.20:<< set find/change widgets >>
-        #@nl
-        #@    << set radio buttons from ivars >>
-        #@+node:ekr.20051020120306.21:<< set radio buttons from ivars >>
-        found = False
-        for var,setting in (
-            ("pattern_match","pattern-search"),
-            #("script_search","script-search")
-        ):
-            val = self.dict[var].get()
-            if val:
-                self.dict["radio-find-type"].set(setting)
-                found = True ; break
-        if not found:
-            self.dict["radio-find-type"].set("plain-search")
-            
-        found = False
-        for var,setting in (
-            ("suboutline_only","suboutline-only"),
-            ("node_only","node-only"),
-            # ("selection_only","selection-only")
-        ):
-            val = self.dict[var].get()
-            if val:
-                self.dict["radio-search-scope"].set(setting)
-                found = True ; break
-        if not found:
-            self.dict["radio-search-scope"].set("entire-outline")
-        #@-node:ekr.20051020120306.21:<< set radio buttons from ivars >>
-        #@nl
-    #@-node:ekr.20051020120306.19:init (tkFindTab)
     #@-node:ekr.20061212085958.1: Birth
-    #@+node:ekr.20051020120306.22:update_ivars (tkFindTab)
-    def update_ivars (self):
-        
-        """Called just before doing a find to update ivars from the find panel."""
-    
-        self.p = self.c.currentPosition()
-        self.v = self.p.v
-    
-        for key in self.intKeys:
-            val = self.dict[key].get()
-            setattr(self, key, val)
-            # g.trace(key,val)
-    
-        search_scope = self.dict["radio-search-scope"].get()
-        self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
-        self.node_only       = g.choose(search_scope == "node-only",1,0)
-    
-        # The caller is responsible for removing most trailing cruft.
-        # Among other things, this allows Leo to search for a single trailing space.
-        s = self.find_ctrl.getAllText()
-        s = g.toUnicode(s,g.app.tkEncoding)
-        self.find_text = s
-        s = self.change_ctrl.getAllText()
-        s = g.toUnicode(s,g.app.tkEncoding)
-        self.change_text = s
-    #@-node:ekr.20051020120306.22:update_ivars (tkFindTab)
     #@-others
 #@nonl
 #@-node:ekr.20061212085958:class tkFindTab (findTab)

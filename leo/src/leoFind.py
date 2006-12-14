@@ -102,8 +102,8 @@ class leoFind:
         # (hurray!)
         # - These ivars are inited (in the subclass by init) when this class 
         # is created.
-        # - These ivars are updated (in the subclass by update_ivars) just 
-        # before doing any find.
+        # - These ivars are updated by update_ivars just before doing any 
+        # find.
         #@-at
         #@@c
         
@@ -166,6 +166,61 @@ class leoFind:
         self.selStart = self.selEnd = None # For selection-only searches.
         #@-node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
         #@nl
+    #@+node:ekr.20031218072017.2059:find.init
+    def init (self,c):
+    
+        # N.B.: separate c.ivars are much more convenient than a dict.
+        for key in self.intKeys:
+            # New in 4.3: get ivars from @settings.
+            val = c.config.getBool(key)
+            setattr(self,key,val)
+            val = g.choose(val,1,0) # Work around major Tk problem.
+            self.dict[key].set(val)
+            # g.trace(key,val)
+    
+        #@    << set find/change widgets >>
+        #@+node:ekr.20031218072017.2060:<< set find/change widgets >>
+        self.find_ctrl.delete(0,"end")
+        self.change_ctrl.delete(0,"end")
+        
+        # New in 4.3: Get setting from @settings.
+        for w,setting,defaultText in (
+            (self.find_ctrl,"find_text",'<find pattern here>'),
+            (self.change_ctrl,"change_text",''),
+        ):
+            s = c.config.getString(setting)
+            if not s: s = defaultText
+            w.insert("end",s)
+        #@-node:ekr.20031218072017.2060:<< set find/change widgets >>
+        #@nl
+        #@    << set radio buttons from ivars >>
+        #@+node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
+        found = False
+        for var,setting in (
+            ("pattern_match","pattern-search"),
+            ("script_search","script-search")):
+            val = self.dict[var].get()
+            if val:
+                self.dict["radio-find-type"].set(setting)
+                found = True ; break
+        if not found:
+            self.dict["radio-find-type"].set("plain-search")
+            
+        found = False
+        for var,setting in (
+            ("suboutline_only","suboutline-only"),
+            ("node_only","node-only"),
+            # ("selection_only","selection-only"),
+        ):
+            val = self.dict[var].get()
+            if val:
+                self.dict["radio-search-scope"].set(setting)
+                found = True ; break
+        if not found:
+            self.dict["radio-search-scope"].set("entire-outline")
+        #@-node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
+        #@nl
+    #@-node:ekr.20031218072017.2059:find.init
     #@-node:ekr.20031218072017.3053:leoFind.__init__
     #@+node:ekr.20060123065756.1:Top Level Buttons
     #@+node:ekr.20031218072017.3057:changeAllButton
@@ -954,12 +1009,6 @@ class leoFind:
             self.initNextText()
         return p
     #@-node:ekr.20031218072017.3081:selectNextPosition
-    #@+node:ekr.20031218072017.3092:update_ivars (leoFind)
-    def update_ivars(self):
-        
-        # Must be defined in subclasses.
-        self.oops()
-    #@-node:ekr.20031218072017.3092:update_ivars (leoFind)
     #@-node:ekr.20031218072017.3067:Find/change utils
     #@+node:ekr.20061212095134.1:General utils
     #@+node:ekr.20051020120306.26:bringToFront (leoFind)
@@ -1204,6 +1253,42 @@ class leoFind:
             self.wrapPosition = self.p
     #@nonl
     #@-node:ekr.20031218072017.3091:showSuccess
+    #@+node:ekr.20031218072017.1460:update_ivars (leoFind)
+    # New in Leo 4.4.3: This is now gui-independent code.
+    
+    def update_ivars (self):
+        
+        """Called just before doing a find to update ivars from the find panel."""
+        
+        self.p = self.c.currentPosition()
+        self.v = self.p.v
+    
+        for key in self.intKeys:
+            val = self.dict[key].get()
+            setattr(self, key, val) # No more _flag hack.
+            # g.trace(key,val)
+    
+        # Set ivars from radio buttons. Convert these to 1 or 0.
+        search_scope = self.dict["radio-search-scope"].get()
+        self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
+        self.node_only       = g.choose(search_scope == "node-only",1,0)
+        self.selection       = g.choose(search_scope == "selection-only",1,0)
+    
+        # New in 4.3: The caller is responsible for removing most trailing cruft.
+        # Among other things, this allows Leo to search for a single trailing space.
+        s = self.find_ctrl.getAllText()
+        s = g.toUnicode(s,g.app.tkEncoding)
+        # g.trace(repr(s))
+        if s and s[-1] in ('\r','\n'):
+            s = s[:-1]
+        self.find_text = s
+    
+        s = self.change_ctrl.getAllText()
+        if s and s[-1] in ('\r','\n'):
+            s = s[:-1]
+        s = g.toUnicode(s,g.app.tkEncoding)
+        self.change_text = s
+    #@-node:ekr.20031218072017.1460:update_ivars (leoFind)
     #@-node:ekr.20031218072017.3082:Initing & finalizing
     #@-others
 #@-node:ekr.20061212084717:class leoFind
@@ -1217,7 +1302,7 @@ class findTab (leoFind):
     #@+node:ekr.20051020120306.11:__init__ & initGui
     def __init__(self,c,parentFrame):
         
-        # g.trace('findTab')
+        # g.trace('findTab',g.callers())
     
         # Init the base class...
         leoFind.__init__(self,c,title='Find Tab')
@@ -1230,7 +1315,9 @@ class findTab (leoFind):
         self.find_ctrl = None
         self.change_ctrl = None 
         self.outerScrolledFrame = None
-        self.s_ctrl = g.app.gui.leoTextWidgetClass() # Used by find.search()
+        self.s_ctrl = g.app.gui.leoTextWidgetClass(parentFrame)
+            # Used by find.search()
+            # Must have a parent Frame even though it is not packed.
     
         self.initGui()
         self.createFrame(parentFrame)
@@ -1244,9 +1331,6 @@ class findTab (leoFind):
         self.oops()
         
     def createFrame (self):
-        self.oops()
-        
-    def init (self):
         self.oops()
         
     def initGui (self):

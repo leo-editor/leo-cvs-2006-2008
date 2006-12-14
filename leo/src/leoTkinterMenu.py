@@ -111,15 +111,15 @@ class leoTkinterMenu (leoMenu.leoMenu):
     
         menu.add_separator()
     #@-node:ekr.20031218072017.4107:add_separator
-    #@+node:ekr.20031218072017.4108:bind
+    #@+node:ekr.20031218072017.4108:bind (not called)
     def bind (self,bind_shortcut,callback):
         
         """Wrapper for the Tkinter bind menu method."""
         
-        # g.trace(bind_shortcut)
+        g.trace(bind_shortcut,g.callers())
     
         return self.top.bind(bind_shortcut,callback)
-    #@-node:ekr.20031218072017.4108:bind
+    #@-node:ekr.20031218072017.4108:bind (not called)
     #@+node:ekr.20031218072017.4109:delete
     def delete (self,menu,realItemName):
         

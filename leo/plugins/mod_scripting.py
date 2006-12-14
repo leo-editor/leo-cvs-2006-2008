@@ -564,7 +564,9 @@ class scriptingController:
         # Yes, executeScriptFromButton *does* use b (to delete b if requested by the script).
         def atButtonCallback (event=None,self=self,p=p.copy(),b=b,buttonText=buttonText):
             self.executeScriptFromButton (p,b,buttonText)
-        b.configure(command=atButtonCallback)
+            
+        self.iconBar.setCommandForButton(b,atButtonCallback)
+        ### b.configure(command=atButtonCallback)
         
         # At last we can define the command and use the shortcut.
         k.registerCommand(buttonText.lower(),
@@ -616,7 +618,9 @@ class scriptingController:
         if not truncatedText.strip():
             g.es_print('%s ignored: no cleaned text' % (text.strip() or ''),color='red')
             return None
-        b = self.iconBar.add(text=truncatedText) # The keyword arg is required.
+    
+        # Command may be None.
+        b = self.iconBar.add(text=truncatedText,command=command,bg=bg)
         if not b: return None
     
         self.buttonsDict[b] = truncatedText
@@ -624,23 +628,27 @@ class scriptingController:
         if statusLine:
             self.createBalloon(b,statusLine)
     
-        if sys.platform == "win32":
-            width = int(len(truncatedText) * 0.9)
-            b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
+        if g.app.gui.guiName() == 'tkinter':
+            if sys.platform == "win32":
+                width = int(len(truncatedText) * 0.9)
+                b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
             
         # Register the command name if it exists.
         if command:
-            b.configure(command=command)
             k.registerCommand(commandName,shortcut=shortcut,func=command,pane='button',verbose=shortcut)
         
-        # Bind right-clicks to deleteButton.
+        # Define the callback used to delete the button.
         def deleteButtonCallback(event=None,self=self,b=b):
             self.deleteButton(b)
-        b.bind('<3>',deleteButtonCallback)
         
-        # Register the delete-x-button command
+        if g.app.gui.guiName() == 'tkinter':
+            # Bind right-clicks to deleteButton.
+            b.bind('<3>',deleteButtonCallback)
+        
+        # Register the delete-x-button command.
         deleteCommandName= 'delete-%s-button' % commandName
-        k.registerCommand(deleteCommandName,shortcut=None,func=deleteButtonCallback,pane='button',verbose=False)
+        k.registerCommand(deleteCommandName,shortcut=None,
+            func=deleteButtonCallback,pane='button',verbose=False)
             # Reporting this command is way too annoying.
     
         return b
@@ -673,7 +681,7 @@ class scriptingController:
     
         k.registerCommand(buttonText,shortcut=shortcut,func=atButtonCallback,pane='button',verbose=shortcut)
     #@-node:ekr.20060929131245:definePressButtonCommand (no longer used)
-    #@+node:ekr.20060328125248.26:deleteButton (calls w.pack_forget)
+    #@+node:ekr.20060328125248.26:deleteButton
     def deleteButton(self,button):
         
         """Delete the given button.
@@ -683,16 +691,9 @@ class scriptingController:
     
         if button and self.buttonsDict.get(w):
             del self.buttonsDict[w]
-            if 0: # This workaround doesn't work.
-                if hasattr(w,'leo_balloon'):
-                    balloon = w.leo_balloon
-                    # g.trace('destoying ballon',balloon)
-                    balloon.destroy()
-            w.pack_forget()
-            # w.destroy() # So that Pmw doesn't crash later.
+            self.iconBar.deleteButton(w)
             self.c.bodyWantsFocusNow()
-    #@nonl
-    #@-node:ekr.20060328125248.26:deleteButton (calls w.pack_forget)
+    #@-node:ekr.20060328125248.26:deleteButton
     #@+node:ekr.20060328125248.15:getButtonText
     def getButtonText(self,h):
         
