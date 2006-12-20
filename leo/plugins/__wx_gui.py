@@ -690,11 +690,10 @@ class wxFindTab (leoFind.findTab):
     #@+node:ekr.20061212100034.3:createFrame (wxFindTab)
     def createFrame (self,parentFrame):
         
-        # g.trace('findTab',parentFrame)
+        g.trace('findTab: parentFrame',parentFrame,'name',parentFrame.GetName())
         
         c = self.c
         self.parentFrame = parentFrame
-        self.outerFrame = parentFrame
         self.createFindChangeAreas()
         self.createBoxes()
         self.createButtons()
@@ -703,21 +702,27 @@ class wxFindTab (leoFind.findTab):
     #@+node:ekr.20061212100034.5:createFindChangeAreas
     def createFindChangeAreas (self):
         
-        f = self.outerFrame
+        f = self.parentFrame
         
         # Important: the grid sizer determines the position of these objects.
     
         # Create the find area.
-        self.find_ctrl = g.app.gui.leoTextWidgetClass(f,
-            size=(200,-1),name='find-text')
+        # self.find_ctrl = g.app.gui.leoTextWidgetClass(f,
+            # # size=(200,-1),
+            # name='find-text')
+            
+        self.find_ctrl = wxNullLeoTextWidget(f,name='find-text') ###
     
-        self.fLabel = wx.StaticText(f,label='Find',style=wx.ALIGN_LEFT)
+        ###self.fLabel = wx.StaticText(f,label='Find',style=wx.ALIGN_LEFT)
         
         # Create the change area.
-        self.change_ctrl = g.app.gui.leoTextWidgetClass(f,
-            size=(200,-1),name='change-text')
+        # self.change_ctrl = g.app.gui.leoTextWidgetClass(f,
+            # # size=(200,-1),
+            # name='change-text')
             
-        self.cLabel = wx.StaticText(f,label='Change',style=wx.ALIGN_LEFT)
+        self.change_ctrl = wxNullLeoTextWidget(f,name='change-text') ###
+    
+        ###self.cLabel = wx.StaticText(f,label='Change',style=wx.ALIGN_LEFT)
     #@-node:ekr.20061212100034.5:createFindChangeAreas
     #@+node:ekr.20061212100034.7:createBoxes
     def createBoxes (self):
@@ -726,7 +731,7 @@ class wxFindTab (leoFind.findTab):
         
         g.trace()
         
-        c = self.c ; f = self.outerFrame
+        c = self.c ; f = self.parentFrame
         self.boxes = []
         self.widgetsDict = {} # Keys are ivars, values are checkboxes or radio buttons.
         
@@ -791,44 +796,56 @@ class wxFindTab (leoFind.findTab):
     #@+node:ekr.20061212120506:layout
     def layout (self):
         
+        f = self.parentFrame
         sizer = wx.BoxSizer(wx.VERTICAL)
         
         # Sizer 1 lays out the find/change areas.
-        sizer1 = wx.FlexGridSizer(2, 2, vgap=10,hgap=5)
-        sizer1.Add(self.find_ctrl,1,wx.EXPAND)
-        sizer1.Add(self.fLabel,0,wx.EXPAND)
-        sizer1.Add(self.change_ctrl,1,wx.EXPAND)
-        sizer1.Add(self.cLabel,0,wx.EXPAND)
-        
-        # The box sizer puts a border around the checkboxes.
-        staticBox = wx.StaticBox(self.outerFrame)
-        boxSizer = wx.StaticBoxSizer(staticBox,wx.HORIZONTAL)
-        
-        # ltCol lays out the left column.
-        ltCol = wx.BoxSizer(wx.VERTICAL)
-        for w in self.boxes[:6]:
-            ltCol.AddSpacer(8)
-            ltCol.Add(w,0,wx.EXPAND)
-        ltCol.AddSpacer(8)
+        if 1:
+            sizer1 = wx.GridBagSizer(vgap=10,hgap=5)
+            sizer1.Add(wx.StaticText(f,label='Find',style=wx.ALIGN_LEFT),pos=(0,0))
+            sizer1.Add(wx.StaticText(f,label='Change',style=wx.ALIGN_LEFT),pos=(1,0))
+            sizer1.Add(wx.TextCtrl(f),pos=(0,1))
+            sizer1.Add(wx.TextCtrl(f),pos=(1,1))
+        else: # works only if labels are to the right.
+            sizer1 = wx.FlexGridSizer(2, 2, vgap=10,hgap=5)
+            sizer1.Add(self.find_ctrl,1,wx.EXPAND)
+            sizer1.Add(self.fLabel,0,wx.EXPAND)
+            sizer1.Add(self.change_ctrl,1,wx.EXPAND)
+            sizer1.Add(self.cLabel,0,wx.EXPAND)
             
-        # rtCol lays out the right column.
-        rtCol = wx.BoxSizer(wx.VERTICAL)
-        for w in self.boxes[6:]:
+        if 0:
+            # The box sizer puts a border around the checkboxes.
+            staticBox = wx.StaticBox(self.outerFrame)
+            boxSizer = wx.StaticBoxSizer(staticBox,wx.HORIZONTAL)
+            
+            # ltCol lays out the left column.
+            ltCol = wx.BoxSizer(wx.VERTICAL)
+            for w in self.boxes[:6]:
+                ltCol.AddSpacer(8)
+                ltCol.Add(w,0,wx.EXPAND)
+            ltCol.AddSpacer(8)
+                
+            # rtCol lays out the right column.
+            rtCol = wx.BoxSizer(wx.VERTICAL)
+            for w in self.boxes[6:]:
+                rtCol.AddSpacer(8)
+                rtCol.Add(w,0,wx.EXPAND)
             rtCol.AddSpacer(8)
-            rtCol.Add(w,0,wx.EXPAND)
-        rtCol.AddSpacer(8)
         
         # sizer.AddSpacer(5) # Messes things up.  Pathetic.
         # sizer.AddStretchSpacer() # Does nothing
         sizer.Add(sizer1)
-        sizer.AddSpacer(8)
-        boxSizer.Add(ltCol)
-        boxSizer.AddSpacer(20)
-        boxSizer.Add(rtCol)
-        sizer.Add(boxSizer)
+        
+        if 0:
+            sizer.AddSpacer(8)
+            boxSizer.Add(ltCol)
+            boxSizer.AddSpacer(20)
+            boxSizer.Add(rtCol)
+            sizer.Add(boxSizer)
     
-        self.outerFrame.SetSizer(sizer)
-        sizer.Fit(self.outerFrame)
+        f.SetSizerAndFit(sizer)
+        # self.c.frame.log.nb.SetClientSize(f.GetSize())
+    #@nonl
     #@-node:ekr.20061212120506:layout
     #@+node:ekr.20061212121401:createBindings TO DO
     def createBindings (self):
@@ -940,8 +957,6 @@ class wxFindTab (leoFind.findTab):
     
         #@    << set find/change widgets >>
         #@+node:ekr.20061212100034.11:<< set find/change widgets >>
-        
-        
         self.find_ctrl.delete(0,"end")
         self.change_ctrl.delete(0,"end")
         
@@ -1009,41 +1024,6 @@ class wxFindTab (leoFind.findTab):
         #@-node:ekr.20061213063636:<< set checkboxes from ivars >>
         #@nl
     #@-node:ekr.20061212100034.10:init (wxFindTab) 
-    #@+node:ekr.20061213053602:Defined in the base class
-    if 0: # Use the code in the base class unchanged.
-    
-        #@    @+others
-        #@+node:ekr.20061212100034.13:update_ivars (wxFindTab)
-        
-        def update_ivars (self):
-            
-            """Called just before doing a find to update ivars from the find panel."""
-        
-            self.p = self.c.currentPosition()
-            self.v = self.p.v
-        
-            for key in self.intKeys:
-                val = self.dict[key].get()
-                setattr(self, key, val)
-                # g.trace(key,val)
-        
-            search_scope = self.dict["radio-search-scope"].get()
-            self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
-            self.node_only       = g.choose(search_scope == "node-only",1,0)
-        
-            # The caller is responsible for removing most trailing cruft.
-            # Among other things, this allows Leo to search for a single trailing space.
-            s = self.find_ctrl.getAllText()
-            s = g.toUnicode(s,g.app.tkEncoding)
-            self.find_text = s
-            s = self.change_ctrl.getAllText()
-            s = g.toUnicode(s,g.app.tkEncoding)
-            self.change_text = s
-        #@nonl
-        #@-node:ekr.20061212100034.13:update_ivars (wxFindTab)
-        #@-others
-    #@nonl
-    #@-node:ekr.20061213053602:Defined in the base class
     #@-others
 #@nonl
 #@-node:ekr.20061212100034:wxFindTab class
@@ -3007,11 +2987,12 @@ class wxLeoIconBar:
     
     #@    @+others
     #@+node:ekr.20061119105509.1:__init__ wxLeoIconBar
-    def __init__(self,c,parentFrame): # wxLeoIconBarClass.
+    def __init__(self,c,parentFrame): # wxLeoIconBar
     
         self.c = c
+        self.widgets = []
         self.toolbar = self.iconFrame = parentFrame.CreateToolBar() # A wxFrame method
-        self.numberOfTools = 0
+    
         # Set the official ivar.
         c.frame.iconFrame = self.iconFrame
     #@-node:ekr.20061119105509.1:__init__ wxLeoIconBar
@@ -3029,31 +3010,18 @@ class wxLeoIconBar:
         bg = keys.get('bg')
         command = keys.get('command')
         
-        if 1:
-            # Create the button.
-            self.numberOfTools += 1
-            id = self.numberOfTools
-            b = wx.Button(toolbar,id,label=text)
-            if command:
-                def onClickCallback(event=None,command=command):
-                    command(event=event)
-                toolbar.Bind(wx.EVT_BUTTON,onClickCallback,b)
+        # Create the button with a unique id.
+        id = wx.NewId()
+        b = wx.Button(toolbar,id,label=text)
+        self.widgets.append(b)
         
-            tool = toolbar.AddControl(b)
-        else:
-            self.numberOfTools += 1
-            id = self.numberOfTools
-            bitmap = wx.EmptyBitmap(width=100,height=20,depth=-1)
-            # bitmap.Create() # width=100,height=25,depth=-1)
-            #tsize = (24,24)
-            #bitmap =  wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR, tsize)
-            #toolbar.SetToolBitmapSize(tsize)
-            g.trace(bitmap)
-            b = toolbar.AddLabelTool(id,text,bitmap)
-            if command:
-                def onClickCallback(event=None,command=command):
-                    command(event=event)
-                toolbar.Bind(wx.EVT_BUTTON,onClickCallback,b)
+        # Right-clicks delete the button.
+        def onRClickCallback(event,self=self,b=b):
+            self.deleteButton(b)
+        b.Bind(wx.EVT_RIGHT_UP,onRClickCallback)
+    
+        self.setCommandForButton(b,command)
+        tool = toolbar.AddControl(b)
         toolbar.Realize()
         return b
         
@@ -3094,28 +3062,14 @@ class wxLeoIconBar:
         
         """Destroy all the widgets in the icon bar"""
         
-        pass
-        
-        # f = self.iconFrame
-        
-        # for slave in f.pack_slaves():
-            # slave.destroy()
-        # self.visible = False
-    
-        # f.configure(height="5m") # The default height.
-        # g.app.iconWidgetCount = 0
-        # g.app.iconImageRefs = []
+        for w in self.widgets:
+            self.toolbar.RemoveTool(w.GetId())
+        self.widgets = []
     #@-node:ekr.20061119105509.4:clear
     #@+node:ekr.20061213092323:deleteButton
     def deleteButton (self,w):
         
-        # At present, the standard buttons can not be deleted
-        # because they were created as controls.
-    
-        if 0: # Crashes.
-            w.Destroy()
-            self.toolbar.Realize()
-    #@nonl
+        self.toolbar.RemoveTool(w.GetId())
     #@-node:ekr.20061213092323:deleteButton
     #@+node:ekr.20061119105509.5:getFrame
     def getFrame (self):
@@ -3125,18 +3079,15 @@ class wxLeoIconBar:
     #@+node:ekr.20061213092105:setCommandForButton
     def setCommandForButton(self,b,command):
         
-        def onClickCallback(event=None,command=command):
-            command(event=event)
-    
-        self.toolbar.Bind(wx.EVT_BUTTON,onClickCallback,b)
+        if command:
+            def onClickCallback(event=None,command=command):
+                command(event=event)
+        
+            self.toolbar.Bind(wx.EVT_BUTTON,onClickCallback,b)
     #@-node:ekr.20061213092105:setCommandForButton
     #@+node:ekr.20061213094526:show/hide (do nothings)
-    def pack (self):
-        pass
-            
-    def unpack (self):
-        pass
-         
+    def pack (self):    pass  
+    def unpack (self):  pass 
     show = pack   
     hide = unpack
     #@-node:ekr.20061213094526:show/hide (do nothings)
@@ -3245,42 +3196,41 @@ class wxLeoLog (leoFrame.leoLog):
     #@+node:ekr.20061211122107.2:createTab
     def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
     
-        # g.trace('tabName',tabName,'createText',createText,g.callers())
-    
+        nb = self.nb
+        g.trace(tabName)
         if createText:
             w = g.app.gui.leoTextWidgetClass(
                 self.nb,
                 const("cLogCtrl"), "",
                 wx.DefaultPosition, wx.DefaultSize,
-                wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE)
-                
+                wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE,
+                name='text tab:%s' % tabName
+            )
             w.defaultFont = font = wx.Font(pointSize=10,
                 family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
                 style  = wx.FONTSTYLE_NORMAL,
                 weight = wx.FONTWEIGHT_NORMAL,
             )
-        
             w.defaultAttrib = wx.TextAttr(font=font)
             w.defaultStyle = w.SetDefaultStyle(w.defaultAttrib)
             w.allowSyntaxColoring = False
-                
             wx.EVT_KEY_DOWN(w,self.onKeyDown) # Provides raw key codes.
             wx.EVT_KEY_UP(w,self.onKeyUp) # Provides raw key codes.
-            
-            self.textDict [tabName] = w
-            self.frameDict [tabName] = w
             
             # if tabName != 'Log':
                 # # c.k doesn't exist when the log pane is created.
                 # # k.makeAllBindings will call setTabBindings('Log')
                 # self.setTabBindings(tabName)
-        else:
-            w = wx.Panel(self.nb)
-            self.textDict [tabName] = None
+            self.textDict [tabName] = w
             self.frameDict [tabName] = w
-            
-        self.nb.AddPage(w,tabName)
-        return w
+            nb.AddPage(w,tabName)
+            return w
+        else:
+            parent = wx.Panel(self.nb,name='tab:%s' % tabName)
+            self.textDict [tabName] = None
+            self.frameDict [tabName] = parent
+            nb.AddPage(parent,tabName)
+            return parent
     #@-node:ekr.20061211122107.2:createTab
     #@+node:ekr.20061211122107.11:selectTab
     def selectTab (self,tabName,createText=True,wrap='none'):
@@ -3990,7 +3940,7 @@ class wxLeoTree (leoFrame.leoTree):
     #@+node:ekr.20061211050723:wxTree.createImageList
     def createImageList (self): # wxTree.
     
-        self.imageList = imageList = wx.ImageList(21,12)
+        self.imageList = imageList = wx.ImageList(21,11)
         theDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','Icons'))
         
         for i in xrange(16):
@@ -4002,12 +3952,12 @@ class wxLeoTree (leoFrame.leoTree):
             # Create a larger bitmap.
             image = wx.ImageFromBitmap(bitmap)
             # image.SetMask(False)
-            image.Resize(size=(21,12),pos=(0,0),)
+            image.Resize(size=(21,11),pos=(0,0),)
             bitmap = wx.BitmapFromImage(image)
             
             # And add the new bitmap to the list.
             imageList.Add(bitmap)
-            
+    
         return imageList
     #@-node:ekr.20061211050723:wxTree.createImageList
     #@+node:ekr.20061118122218.1:setBindings (does nothing)
@@ -5016,6 +4966,64 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@-others
 #@nonl
 #@-node:ekr.20061115122034:wxLeoTextWidget class
+#@+node:ekr.20061217142702:wxNullLeoTextWidget class
+# For the ctors of these widgets, look for g.app.gui.leoTextWidgetClass
+
+class wxNullLeoTextWidget:
+    
+    '''A class to wrap the Tk.Text widget.
+    Translates Python (integer) indices to and from Tk (string) indices.
+    
+    This class inherits almost all tkText methods: you call use them as usual.'''
+    
+    # The signatures of tag_add and insert are different from the Tk.Text signatures.
+    __pychecker__ = '--no-override' # suppress warning about changed signature.
+        
+    # Note: this widget inherits the GetName method from the wxWindow class.
+        
+    #@    @+others
+    #@+node:ekr.20061217142702.1:Birth & special methods (wxLeoTextCtrl)
+    def __init__ (self,*args,**keys):
+        pass
+    
+    def __repr__(self):
+        return 'wxNullLeoTextWidget: %s' % (id(self))
+    #@-node:ekr.20061217142702.1:Birth & special methods (wxLeoTextCtrl)
+    #@+node:ekr.20061217142702.2:Dummy methods
+    def toGuiIndex (self,index):            return 0
+    def toPythonIndex (self,index):         return 0
+    def rowColToGuiIndex (self,s,row,col):  return '1.0'
+    
+    def bind (self,kind,*args,**keys):          pass
+    def delete(self,i,j=None):                  pass
+    def get(self,i,j=None):                     return ''
+    def insert(self,i,s):                       pass
+    def mark_set(self,markName,i):              pass
+    def tag_add(self,tagName,i,j=None,*args):   pass
+    def tag_configure (self,colorName,**keys):  pass
+    def tkColorToWxColor (self, color):         return wx.BLACK
+    def tag_ranges(self,tagName):               return (0,0)
+    
+    def deleteTextSelection (self):         pass
+    def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75):pass
+    def getAllText (self):                  return ''
+    def getInsertPoint(self):               return 0
+    def getSelectedText (self):             return ''
+    def getSelectionRange (self,sort=True): return (0,0)
+    def hasSelection (self):                return False
+    def replace (self,i,j,s):               pass
+    def selectAllText (self,insert=None):   pass
+    def setAllText (self,s):                pass
+    def see(self,index):                    pass
+    def seeInsertPoint(self):               pass
+    def setInsertPoint (self,pos):          pass
+    def setSelectionRange (self,i,j,insert=None): pass
+    def xyToGuiIndex (self,x,y):            return 0 
+    def xyToPythonIndex(self,x,y):          return '1.0'
+    #@-node:ekr.20061217142702.2:Dummy methods
+    #@-others
+#@nonl
+#@-node:ekr.20061217142702:wxNullLeoTextWidget class
 #@-others
 #@nonl
 #@-node:edream.110203113231.302:@thin __wx_gui.py
