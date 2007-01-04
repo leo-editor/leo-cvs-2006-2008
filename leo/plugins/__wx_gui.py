@@ -689,11 +689,9 @@ class wxFindTab (leoFind.findTab):
     #@-node:ekr.20061212100034.2:initGui
     #@+node:ekr.20061212100034.3:createFrame (wxFindTab)
     def createFrame (self,parentFrame):
-        
-        g.trace('findTab: parentFrame',parentFrame,'name',parentFrame.GetName())
-        
-        c = self.c
-        self.parentFrame = parentFrame
+           
+        self.parentFrame = self.top = parentFrame
+    
         self.createFindChangeAreas()
         self.createBoxes()
         self.createButtons()
@@ -702,34 +700,21 @@ class wxFindTab (leoFind.findTab):
     #@+node:ekr.20061212100034.5:createFindChangeAreas
     def createFindChangeAreas (self):
         
-        f = self.parentFrame
-        
-        # Important: the grid sizer determines the position of these objects.
+        f = self.top
     
         # Create the find area.
-        # self.find_ctrl = g.app.gui.leoTextWidgetClass(f,
-            # # size=(200,-1),
-            # name='find-text')
-            
-        self.find_ctrl = wxNullLeoTextWidget(f,name='find-text') ###
-    
-        ###self.fLabel = wx.StaticText(f,label='Find',style=wx.ALIGN_LEFT)
+        self.find_ctrl = g.app.gui.leoTextWidgetClass(f,name='find-text')
+        self.fLabel = wx.StaticText(f, label='Find Text')
         
         # Create the change area.
-        # self.change_ctrl = g.app.gui.leoTextWidgetClass(f,
-            # # size=(200,-1),
-            # name='change-text')
-            
-        self.change_ctrl = wxNullLeoTextWidget(f,name='change-text') ###
-    
-        ###self.cLabel = wx.StaticText(f,label='Change',style=wx.ALIGN_LEFT)
+        self.change_ctrl = g.app.gui.leoTextWidgetClass(f,name='change-text')
+        self.cLabel = wx.StaticText(f,label='Change Text')
+    #@nonl
     #@-node:ekr.20061212100034.5:createFindChangeAreas
     #@+node:ekr.20061212100034.7:createBoxes
     def createBoxes (self):
         
         '''Create two columns of radio buttons & check boxes.'''
-        
-        g.trace()
         
         c = self.c ; f = self.parentFrame
         self.boxes = []
@@ -749,6 +734,8 @@ class wxFindTab (leoFind.findTab):
             ('Search &Body','search_body'),
             ('Mark &Changes','mark_changes'),
         )
+        
+        return ###
     
         # Important: changing these controls merely changes entries in self.dict.
         # First, leoFind.update_ivars sets the find ivars from self.dict.
@@ -774,77 +761,45 @@ class wxFindTab (leoFind.findTab):
                     g.trace(ivar,val)
                 w.Bind(wx.EVT_CHECKBOX,checkBoxCallback)
             self.boxes.append(w)
-        
-        # for i in xrange(numberOfColumns):
-            # for var,name,val in radioLists[i]:
-                # box = underlinedTkButton(
-                    # "radio",columns[i],anchor="w",text=name,variable=var,value=val,background=bg)
-                # box.button.pack(fill="x")
-                # box.button.bind("<Button-1>", self.resetWrap)
-                # if val == None: box.button.configure(state="disabled")
-                # box.bindHotKey(ftxt)
-                # box.bindHotKey(ctxt)
-            # for name,var in checkLists[i]:
-                # box = underlinedTkButton(
-                    # "check",columns[i],anchor="w",text=name,variable=var,background=bg)
-                # box.button.pack(fill="x")
-                # box.button.bind("<Button-1>", self.resetWrap)
-                # box.bindHotKey(ftxt)
-                # box.bindHotKey(ctxt)
-                # if var is None: box.button.configure(state="disabled")
+    #@nonl
     #@-node:ekr.20061212100034.7:createBoxes
     #@+node:ekr.20061212120506:layout
     def layout (self):
         
-        f = self.parentFrame
-        sizer = wx.BoxSizer(wx.VERTICAL)
+        win = self.top
         
-        # Sizer 1 lays out the find/change areas.
-        if 1:
-            sizer1 = wx.GridBagSizer(vgap=10,hgap=5)
-            sizer1.Add(wx.StaticText(f,label='Find',style=wx.ALIGN_LEFT),pos=(0,0))
-            sizer1.Add(wx.StaticText(f,label='Change',style=wx.ALIGN_LEFT),pos=(1,0))
-            sizer1.Add(wx.TextCtrl(f),pos=(0,1))
-            sizer1.Add(wx.TextCtrl(f),pos=(1,1))
-        else: # works only if labels are to the right.
-            sizer1 = wx.FlexGridSizer(2, 2, vgap=10,hgap=5)
-            sizer1.Add(self.find_ctrl,1,wx.EXPAND)
-            sizer1.Add(self.fLabel,0,wx.EXPAND)
-            sizer1.Add(self.change_ctrl,1,wx.EXPAND)
-            sizer1.Add(self.cLabel,0,wx.EXPAND)
-            
-        if 0:
-            # The box sizer puts a border around the checkboxes.
-            staticBox = wx.StaticBox(self.outerFrame)
-            boxSizer = wx.StaticBoxSizer(staticBox,wx.HORIZONTAL)
-            
-            # ltCol lays out the left column.
-            ltCol = wx.BoxSizer(wx.VERTICAL)
-            for w in self.boxes[:6]:
-                ltCol.AddSpacer(8)
-                ltCol.Add(w,0,wx.EXPAND)
-            ltCol.AddSpacer(8)
-                
-            # rtCol lays out the right column.
-            rtCol = wx.BoxSizer(wx.VERTICAL)
-            for w in self.boxes[6:]:
-                rtCol.AddSpacer(8)
-                rtCol.Add(w,0,wx.EXPAND)
-            rtCol.AddSpacer(8)
-        
-        # sizer.AddSpacer(5) # Messes things up.  Pathetic.
-        # sizer.AddStretchSpacer() # Does nothing
-        sizer.Add(sizer1)
-        
-        if 0:
-            sizer.AddSpacer(8)
-            boxSizer.Add(ltCol)
-            boxSizer.AddSpacer(20)
-            boxSizer.Add(rtCol)
-            sizer.Add(boxSizer)
+        g.trace('top',win)
     
-        f.SetSizerAndFit(sizer)
-        # self.c.frame.log.nb.SetClientSize(f.GetSize())
+        # Lay out the find/change area.
+        sizer = wx.FlexGridSizer(2,2,vgap=10,hgap=5)
+        sizer.Add(self.fLabel,0,0)
+        sizer.Add(self.find_ctrl,1,wx.EXPAND)
+        sizer.Add(self.cLabel,0,0)
+        sizer.Add(self.change_ctrl,1,wx.EXPAND)
+        win.SetSizer(sizer)
+        sizer.Fit(win)
+        win.SetAutoLayout(True)
+            
+        # if 0:
+            # # The box sizer puts a border around the checkboxes.
+            # staticBox = wx.StaticBox(self.outerFrame)
+            # boxSizer = wx.StaticBoxSizer(staticBox,wx.HORIZONTAL)
+            
+            # # ltCol lays out the left column.
+            # ltCol = wx.BoxSizer(wx.VERTICAL)
+            # for w in self.boxes[:6]:
+                # ltCol.AddSpacer(8)
+                # ltCol.Add(w,0,wx.EXPAND)
+            # ltCol.AddSpacer(8)
+                
+            # # rtCol lays out the right column.
+            # rtCol = wx.BoxSizer(wx.VERTICAL)
+            # for w in self.boxes[6:]:
+                # rtCol.AddSpacer(8)
+                # rtCol.Add(w,0,wx.EXPAND)
+            # rtCol.AddSpacer(8)
+    
+        # f.SetSizer(sizer1)
     #@nonl
     #@-node:ekr.20061212120506:layout
     #@+node:ekr.20061212121401:createBindings TO DO
@@ -944,7 +899,7 @@ class wxFindTab (leoFind.findTab):
     
     def init (self,c):
         
-        # g.trace('wxFindTab')
+        g.trace('wxFindTab',g.callers())
     
         # Separate c.ivars are much more convenient than a dict.
         for key in self.intKeys:
@@ -952,7 +907,8 @@ class wxFindTab (leoFind.findTab):
             val = c.config.getBool(key)
             setattr(self,key,val)
             val = g.choose(val,1,0)
-            self.dict[key].set(val)
+            w = self.dict.get(key)
+            if w: w.set(val)
             #g.trace(key,val)
     
         #@    << set find/change widgets >>
@@ -983,7 +939,7 @@ class wxFindTab (leoFind.findTab):
             if val:
                 self.dict["radio-find-type"].set(key)
                 w = d.get(key)
-                w.SetValue(True)
+                if w: w.SetValue(True)
                 break
         else:
             self.dict["radio-find-type"].set("plain-search")
@@ -1001,7 +957,7 @@ class wxFindTab (leoFind.findTab):
             key = 'entire-outline'
             self.dict["radio-search-scope"].set(key)
             w = self.widgetsDict.get(key)
-            w.SetValue(True)
+            if w: w.SetValue(True)
         #@-node:ekr.20061212100034.12:<< set radio buttons from ivars >>
         #@nl
         #@    << set checkboxes from ivars >>
@@ -1020,7 +976,7 @@ class wxFindTab (leoFind.findTab):
             val = self.dict[ivar].get()
             if val:
                 w = self.widgetsDict.get(ivar)
-                w.SetValue(True)
+                if w: w.SetValue(True)
         #@-node:ekr.20061213063636:<< set checkboxes from ivars >>
         #@nl
     #@-node:ekr.20061212100034.10:init (wxFindTab) 
@@ -2242,7 +2198,7 @@ class wxLeoBody (leoFrame.leoBody):
     #@-others
 #@nonl
 #@-node:edream.110203113231.539:wxLeoBody class
-#@+node:edream.110203113231.349:wxLeoFrame class
+#@+node:edream.110203113231.349:wxLeoFrame class (leoFrame)
 class wxLeoFrame(leoFrame.leoFrame):
         
     """A class to create a wxPython from for the main Leo window."""
@@ -2257,10 +2213,8 @@ class wxLeoFrame(leoFrame.leoFrame):
         leoFrame.leoFrame.__init__(self,g.app.gui) # Clears self.title.
         
         self.title = title
-    
         self.c = None # set in finishCreate.
         self.bodyCtrl = None # set in finishCreate
-        
         
         # g.trace("wxLeoFrame",title)
         self.activeFrame = None
@@ -2294,55 +2248,50 @@ class wxLeoFrame(leoFrame.leoFrame):
         frame.c = c
         c.frame = frame
         
-        self.topFrame = self.top = wx.Frame(
-            parent = None, id = -1,
-            title = self.title, pos = (200,50), size = (900,700))
-       
-        if 0: # Useless: both the foreground and background are completely hidden.
-            # And this has no effect on children.
-            self.SetForegroundColour(wx.BLUE)
-            self.SetBackgroundColour(wx.BLUE)
-    
-        parentFrame = self.topFrame
-        #g.trace('wxLeoFrame',parentFrame)
+        self.topFrame = self.top = top = wx.Frame(
+            parent=None, id=-1, title=self.title,
+            pos = (200,50),size = (950, 720),
+            style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
+            
+        # Set the official ivars.
+        self.topFrame = self.top = self.outerFrame = top
+            
+        # Create the status bar.
+        top.CreateStatusBar(1,wx.ST_SIZEGRIP) # A wxFrame method.
         
-        self.iconBar = wxLeoIconBar(c,parentFrame=parentFrame)
+        # Create the icon area.
+        self.iconBar = wxLeoIconBar(c,parentFrame=top)
         
-        self.splitterContainer = wx.PyWindow(parentFrame,-1) # Size doesn't matter??
-        # self.splitterContainer.SetBackgroundColour(wx.BLUE) # Good for debugging.
+        # Create the splitters.
+        style = wx.CLIP_CHILDREN|wx.SP_LIVE_UPDATE|wx.SP_3D
+        self.splitter1 = splitter1 = wx.SplitterWindow(top,-1,style=style) # Contains body & splitter2
+        self.splitter2 = splitter2 = wx.SplitterWindow(splitter1,-1,style=style) # Contains tree and log.
         
-        self.minibufferContainer = wx.PyWindow(parentFrame,-1,size=(-1,20),)
-        self.minibufferContainer.SetBackgroundColour(wx.GREEN)
-        self.minibuffer = wxLeoMinibuffer(c,self.minibufferContainer)
-    
-        self.topFrame.CreateStatusBar() # A wxFrame method.
-        self.createSplitters(parentFrame=self.splitterContainer)
-        self.tree = wxLeoTree(frame,parentFrame=self.splitter2)
-        self.log = wxLeoLog(frame,parentFrame=self.splitter2)
-        self.body = wxLeoBody(frame,parentFrame=self.splitter1)
+        # Create the tree.
+        self.tree = wxLeoTree(frame,parentFrame=splitter2)
+        
+        # Create the log pane and its wx.Noteboook.
+        self.nb = nb = wx.Notebook(splitter2,-1,style=wx.CLIP_CHILDREN)
+        self.log = wxLeoLog(c,nb)
+        g.app.setLog(self.log) # writeWaitingLog hangs without this(!)
+        
+        # Create the body pane.
+        self.body = wxLeoBody(frame,parentFrame=splitter1)
         self.bodyCtrl = frame.body.bodyCtrl
         
-        g.app.setLog(frame.log) # writeWaitingLog hangs without this(!)
+        # Add the panes to the splitters.
+        splitter1.SplitHorizontally(splitter2,self.bodyCtrl,0)
+        splitter2.SplitVertically(self.tree.treeCtrl,nb,cSplitterWidth/2)
+    
+        # select initial items
+        nb.SetSelection(0)
         
-        # Attach the controls to the splitter.
-        self.splitter1.SplitHorizontally(self.splitter2,self.body.bodyCtrl,0)
-        self.splitter2.SplitVertically(self.tree.treeCtrl,self.log.nb,cSplitterWidth/2)
-        
-        # This code resizes both splitters when the window changes.
+        self.minibuffer = wxLeoMinibuffer(c,top)
+        ctrl = self.minibuffer.ctrl
         box = wx.BoxSizer(wx.VERTICAL)
-        # box.Add(self.iconBar.top,0,wx.EXPAND)
-        box.Add(self.splitterContainer,1,wx.EXPAND)
-        def onSizeSplitterContainer(event,self=self,*args,**keys):
-            w,h = event.GetSize()
-            self.splitter1.SetSize((w,h),)
-            # To do: retain splitter ratio.
-            self.splitter1.SetSashPosition(h/2) # This resizes both splitters!
-        self.splitterContainer.Bind(wx.EVT_SIZE,onSizeSplitterContainer)
-            
-        box.Add(self.minibufferContainer,0,wx.EXPAND)
+        box.Add(splitter1,1,wx.EXPAND)
+        box.Add(ctrl,0,wx.EXPAND)
         self.top.SetSizer(box)
-        box.Fit(self.top)
-        self.top.SetSize((900,700),)
     
         self.menu = wxLeoMenu(frame)
         self.setWindowIcon()
@@ -2351,43 +2300,14 @@ class wxLeoFrame(leoFrame.leoFrame):
         c.initVersion()
         self.signOnWithVersion()
         self.injectCallbacks()
-        # Add the frame to the global window list.
         g.app.windowList.append(self)
         self.tree.redraw()
-        self.topFrame.Show(True) # required on some platforms: a cross-platform bug.
-        
+        top.Show(True)
+    
         self.setFocus(g.choose(
             c.config.getBool('outline_pane_has_initial_focus'),
             self.tree.treeCtrl,self.bodyCtrl))
     #@nonl
-    #@+node:edream.110203113231.261:createSplitters
-    def createSplitters(self,parentFrame):
-    
-        self.splitter1 = wx.SplitterWindow(parentFrame,-1,
-            pos = wx.DefaultPosition, size = (900,900),
-            style = wx.SP_BORDER | wx.SP_LIVE_UPDATE, # Simple style seems best.  No styles get colored.
-            # style = wx.SP_NOBORDER,
-            # style = wx.SP_BORDER | wx.SP_3D,
-        )
-        
-        # No effect, and it might not be good in the presence of themes.
-        # Possibly setting the parent window's colors might work...
-        if 0:
-            self.splitter1.SetForegroundColour(wx.RED)
-            self.splitter1.SetBackgroundColour(wx.RED)
-            
-        self.splitter2 = wx.SplitterWindow(self.splitter1, -1,
-                pos = wx.DefaultPosition,
-                size = wx.DefaultSize,
-                style = wx.SP_BORDER,
-                # style = wx.SP_NOBORDER)
-                # style = wx.SP_BORDER | wx.SP_3D,
-        )
-            
-        if 0: # This has no effect in a SizeBox.
-            self.splitter1.SetMinimumPaneSize(4)
-            self.splitter2.SetMinimumPaneSize(4)
-    #@-node:edream.110203113231.261:createSplitters
     #@+node:edream.110203113231.265:setWindowIcon
     def setWindowIcon(self):
     
@@ -2411,7 +2331,6 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         if 0: # Causes problems at present.  The screen isn't drawn properly.
             wx.EVT_SIZE(self.top,self.onResize)
-    #@nonl
     #@-node:edream.110203113231.264:setEventHandlers
     #@-node:edream.110203113231.260:finishCreate (wxLeoFrame)
     #@+node:edream.111403141810:initialRatios
@@ -2979,7 +2898,7 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@-node:edream.110203113231.384:updateAllMenus (wxFrame)
     #@-others
 #@nonl
-#@-node:edream.110203113231.349:wxLeoFrame class
+#@-node:edream.110203113231.349:wxLeoFrame class (leoFrame)
 #@+node:ekr.20061118090713:wxLeoIconBar class
 class wxLeoIconBar:
     
@@ -3100,18 +3019,42 @@ class wxLeoLog (leoFrame.leoLog):
     
     #@    @+others
     #@+node:edream.110203113231.554:leoLog.__init__
-    def __init__ (self,frame,parentFrame):
+    def __init__ (self,c,nb):
+    
+        self.c = c
+        self.nb = nb
         
-        self.frame = frame
-        self.c = frame.c
         self.isNull = False
+        self.logCtrl = None
         self.newlines = 0
         self.frameDict = {} # Keys are log names, values are None or wx.Frames.
-        self.textDict = {} # Keys are log names, values are Text controls.
+        self.textDict = {}  # Keys are log names, values are None or Text controls.
     
-        self.createControl(parentFrame) # Sets self.nb and self.logCtrl
+        self.createInitialTabs()
         self.setFontFromConfig()
-    #@-node:edream.110203113231.554:leoLog.__init__
+    #@+node:edream.110203113231.557:leoLog.createInitialTabs
+    def createInitialTabs (self):
+        
+        nb = self.nb
+    
+        # Log tab.
+        self.logCtrl = self.selectTab('Log')
+            
+        # Find tab.
+        win = self.createTab('Find',createText=False)
+        win.SetBackgroundColour("sky blue")
+    
+        label1 = wx.StaticText(win,label='Find',style=wx.ALIGN_LEFT)
+        label2 = wx.StaticText(win,label='Change',style=wx.ALIGN_LEFT)
+        text1  = wx.TextCtrl(win)
+        text2  = wx.TextCtrl(win)
+        sizer = wx.FlexGridSizer(2, 2, vgap=10,hgap=5)
+        sizer.Add(label1,0,wx.EXPAND)
+        sizer.Add(text1,1,wx.EXPAND)
+        sizer.Add(label2,0,wx.EXPAND)
+        sizer.Add(text2,1,wx.EXPAND)
+        win.SetSizer(sizer)
+    #@-node:edream.110203113231.557:leoLog.createInitialTabs
     #@+node:ekr.20061118122007:leoLog.setTabBindings
     def setTabBindings (self,tag=None):
         
@@ -3123,6 +3066,8 @@ class wxLeoLog (leoFrame.leoLog):
         pass # g.trace('wxLeoLog',args,keys)
     #@nonl
     #@-node:ekr.20061118122007:leoLog.setTabBindings
+    #@-node:edream.110203113231.554:leoLog.__init__
+    #@+node:ekr.20070104065742:Config
     #@+node:edream.110203113231.555:leoLog.configure
     def configure (self,*args,**keys):
         
@@ -3134,19 +3079,13 @@ class wxLeoLog (leoFrame.leoLog):
         
         g.trace(border)
     #@-node:edream.110203113231.556:leoLog.configureBorder
-    #@+node:edream.110203113231.557:leoLog.createControl
-    def createControl (self,parentFrame):
-        
-        self.nb = nb = wx.Notebook(parentFrame,style=wx.BK_DEFAULT) 
-        nb.SetBackgroundColour(nb.GetThemeBackgroundColour())
-        self.logCtrl = self.selectTab('Log')
-    #@-node:edream.110203113231.557:leoLog.createControl
     #@+node:edream.110203113231.558:leoLog.setLogFontFromConfig
     def setFontFromConfig (self):
         
         pass # g.trace()
     #@nonl
     #@-node:edream.110203113231.558:leoLog.setLogFontFromConfig
+    #@-node:ekr.20070104065742:Config
     #@+node:edream.110203113231.559:wxLog.put & putnl
     # All output to the log stream eventually comes here.
     
@@ -3197,17 +3136,29 @@ class wxLeoLog (leoFrame.leoLog):
     def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
     
         nb = self.nb
-        g.trace(tabName)
+        g.trace('wxLog',tabName,'createText',createText)
+        
         if createText:
+            win = logFrame = wx.Panel(nb)
+            nb.AddPage(win,tabName)
+        
+            style = wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE
             w = g.app.gui.leoTextWidgetClass(
-                self.nb,
-                const("cLogCtrl"), "",
-                wx.DefaultPosition, wx.DefaultSize,
-                wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE,
+                win, # const("cLogCtrl"), "",
+                # wx.DefaultPosition, wx.DefaultSize,
+                style=style,
                 name='text tab:%s' % tabName
             )
+            
+            sizer = wx.BoxSizer(wx.HORIZONTAL)
+            sizer.Add(w,1,wx.EXPAND)
+            win.SetSizer(sizer)
+    
+            self.textDict [tabName] = w
+            self.frameDict [tabName] = win
+            
             w.defaultFont = font = wx.Font(pointSize=10,
-                family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
+                family = wx.FONTFAMILY_TELETYPE,
                 style  = wx.FONTSTYLE_NORMAL,
                 weight = wx.FONTWEIGHT_NORMAL,
             )
@@ -3217,20 +3168,17 @@ class wxLeoLog (leoFrame.leoLog):
             wx.EVT_KEY_DOWN(w,self.onKeyDown) # Provides raw key codes.
             wx.EVT_KEY_UP(w,self.onKeyUp) # Provides raw key codes.
             
+            # c.k doesn't exist when the log pane is created.
             # if tabName != 'Log':
-                # # c.k doesn't exist when the log pane is created.
                 # # k.makeAllBindings will call setTabBindings('Log')
                 # self.setTabBindings(tabName)
-            self.textDict [tabName] = w
-            self.frameDict [tabName] = w
-            nb.AddPage(w,tabName)
             return w
         else:
-            parent = wx.Panel(self.nb,name='tab:%s' % tabName)
+            win = wx.Panel(nb,name='tab:%s' % tabName)
             self.textDict [tabName] = None
-            self.frameDict [tabName] = parent
-            nb.AddPage(parent,tabName)
-            return parent
+            self.frameDict [tabName] = win
+            nb.AddPage(win,tabName)
+            return win
     #@-node:ekr.20061211122107.2:createTab
     #@+node:ekr.20061211122107.11:selectTab
     def selectTab (self,tabName,createText=True,wrap='none'):
@@ -3807,8 +3755,7 @@ class wxLeoMinibuffer:
         
         self.c = c
         self.parentFrame = parentFrame
-        self.createControl(parentFrame)
-    #@nonl
+        self.ctrl = self.createControl(parentFrame)
     #@-node:ekr.20061211091548:minibuffer.__init__
     #@+node:ekr.20061211091216:minibuffer.createControl
     def createControl (self,parentFrame):
