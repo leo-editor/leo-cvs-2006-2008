@@ -1158,7 +1158,8 @@ class baseColorizer:
     # breaks.
     # - no_word_break:        True: the match will not cross word breaks.
     # 
-    # The following arguments affect coloring when a match succeeds.
+    # The following arguments affect coloring when a match succeeds:
+    # 
     # - delegate              A ruleset name. The matched text will be colored 
     # recursively by the indicated ruleset.
     # - exclude_match         If True, the actual text that matched will not 
@@ -1167,59 +1168,6 @@ class baseColorizer:
     #@-at
     #@@c
     #@@color
-    #@+node:ekr.20060530091119.17:match_keywords
-    # This is a time-critical method.
-    def match_keywords (self,s,i):
-        
-        '''Succeed if s[i:] is a keyword.'''
-        
-        # We must be at the start of a word.
-        if i > 0 and s[i-1] in self.word_chars:
-            return 0
-    
-        # Get the word as quickly as possible.
-        j = i ; n = len(s) ; w = self.word_chars
-        while j < n and s[j] in w:
-            j += 1
-            
-        word = s[i:j]
-        if self.ignore_case: word = word.lower()
-        kind = self.keywordsDict.get(word)
-        if kind:
-            self.colorRangeWithTag(s,i,j,kind)
-            self.prev = (i,j,kind)
-            result = j - i
-            self.trace_match(kind,s,i,j)
-            return result
-        else:
-            return 0
-    #@nonl
-    #@-node:ekr.20060530091119.17:match_keywords
-    #@+node:ekr.20060530091119.50:match_regexp_helper
-    def match_regexp_helper (self,s,i,pattern):
-    
-        '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
-        
-        if self.trace_match_flag: g.trace(pattern)
-    
-        try:
-            flags = re.MULTILINE
-            if self.ignore_case: flags|= re.IGNORECASE
-            re_obj = re.compile(pattern,flags)
-        except Exception:
-            g.es('Invalid regular expression: %s' % (pattern),color='blue')
-            return 0
-    
-        self.match_obj = mo = re_obj.search(s,i)
-    
-        if mo is None:
-            return 0
-        else:
-            start, end = mo.start(), mo.end()
-            # g.trace('match: %s' % repr(s[start: end]))
-            # g.trace('groups',mo.groups())
-            return end - start
-    #@-node:ekr.20060530091119.50:match_regexp_helper
     #@+node:ekr.20060530091119.51:match_eol_span
     def match_eol_span (self,s,i,
         kind=None,seq='',
@@ -1268,6 +1216,34 @@ class baseColorizer:
             return 0
     #@nonl
     #@-node:ekr.20060530091119.52:match_eol_span_regexp
+    #@+node:ekr.20060530091119.17:match_keywords
+    # This is a time-critical method.
+    def match_keywords (self,s,i):
+        
+        '''Succeed if s[i:] is a keyword.'''
+        
+        # We must be at the start of a word.
+        if i > 0 and s[i-1] in self.word_chars:
+            return 0
+    
+        # Get the word as quickly as possible.
+        j = i ; n = len(s) ; w = self.word_chars
+        while j < n and s[j] in w:
+            j += 1
+            
+        word = s[i:j]
+        if self.ignore_case: word = word.lower()
+        kind = self.keywordsDict.get(word)
+        if kind:
+            self.colorRangeWithTag(s,i,j,kind)
+            self.prev = (i,j,kind)
+            result = j - i
+            self.trace_match(kind,s,i,j)
+            return result
+        else:
+            return 0
+    #@nonl
+    #@-node:ekr.20060530091119.17:match_keywords
     #@+node:ekr.20060530091119.53:match_mark_following & getNextToken
     def match_mark_following (self,s,i,
         kind='',pattern='',
@@ -1343,6 +1319,31 @@ class baseColorizer:
             return 0
     #@nonl
     #@-node:ekr.20060530091119.54:match_mark_previous
+    #@+node:ekr.20060530091119.50:match_regexp_helper
+    def match_regexp_helper (self,s,i,pattern):
+    
+        '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
+        
+        if self.trace_match_flag: g.trace(pattern)
+    
+        try:
+            flags = re.MULTILINE
+            if self.ignore_case: flags|= re.IGNORECASE
+            re_obj = re.compile(pattern,flags)
+        except Exception:
+            g.es('Invalid regular expression: %s' % (pattern),color='blue')
+            return 0
+    
+        self.match_obj = mo = re_obj.search(s,i)
+    
+        if mo is None:
+            return 0
+        else:
+            start, end = mo.start(), mo.end()
+            # g.trace('match: %s' % repr(s[start: end]))
+            # g.trace('groups',mo.groups())
+            return end - start
+    #@-node:ekr.20060530091119.50:match_regexp_helper
     #@+node:ekr.20060530091119.55:match_seq
     def match_seq (self,s,i,
         kind='',seq='',

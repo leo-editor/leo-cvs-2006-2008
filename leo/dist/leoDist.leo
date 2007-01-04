@@ -16,9 +16,10 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="E"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
-<v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
+<v t="EKR.20040519091259.2" a="E"><vh>Quotes of the month</vh>
+<v t="ekr.20070101093904" a="TV"><vh>January 2007</vh></v>
 <v t="ekr.20060823090437"><vh>August 2006</vh></v>
 <v t="ekr.20060213160806"><vh>February 2005</vh></v>
 <v t="ekr.20040828084148"><vh>August 2004</vh></v>
@@ -211,7 +212,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050118113631" a="TV"><vh>Main distribution script</vh>
+<v t="ekr.20050118113631"><vh>Main distribution script</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="EKR.20040519090846.10"><vh>@asis ../manifest.in</vh></v>
 <v t="ekr.20050117032444"><vh>@button Create Leo-4.x.zip</vh>
@@ -5037,6 +5038,12 @@ CVS:        http://leo.tigris.org/source/browse/leo/
 Leo's Wiki: http://leo.zwiki.org/FrontPage
 Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
 Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
+</t>
+<t tx="ekr.20070101093904">Leo is THE BEST THING to ever had happened to me. I've done in two
+weeks what would have taken me years (not exaggerating!). Thanks Ed
+for a terrific tool!!!!
+ 
+Julian S. Fecteau 
 </t>
 </tnodes>
 </leo_file>

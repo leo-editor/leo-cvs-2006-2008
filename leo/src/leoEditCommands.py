@@ -7341,7 +7341,6 @@ class searchCommandsClass (baseEditCommandsClass):
         else:
             log.selectTab(tabName,createText=False)
             f = log.frameDict.get(tabName)
-            ### self.findTabHandler = leoFind.findTab(c,f)
             self.findTabHandler = g.app.gui.createFindTab(c,f)
     
         if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
