@@ -7255,6 +7255,7 @@ class searchCommandsClass (baseEditCommandsClass):
         
         self.findTabHandler = None
         self.minibufferFindHandler = None
+        self.inited = False
         
         try:
             self.w = c.frame.body.bodyCtrl
@@ -7334,15 +7335,16 @@ class searchCommandsClass (baseEditCommandsClass):
     
         c = self.c ; log = c.frame.log ; tabName = 'Find'
         
-        wasOpen = log.frameDict.get(tabName)
-    
-        if wasOpen:
+        wasOpen = self.inited
+            
+        if self.inited:
             log.selectTab(tabName)
         else:
+            self.inited = True
             log.selectTab(tabName,createText=False)
             f = log.frameDict.get(tabName)
             self.findTabHandler = g.app.gui.createFindTab(c,f)
-    
+            
         if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
             pass # self.findTabHandler.bringToFront()
         else:

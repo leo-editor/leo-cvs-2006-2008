@@ -1306,7 +1306,9 @@ class findTab (leoFind):
     
         # Init the base class...
         leoFind.__init__(self,c,title='Find Tab')
+    
         self.c = c
+        self.parentFrame = parentFrame
         self.frame = self.outerFrame = self.top = None
         
         self.optionsOnly = c.config.getBool('show_only_find_tab_options')
@@ -1315,9 +1317,7 @@ class findTab (leoFind):
         self.find_ctrl = None
         self.change_ctrl = None 
         self.outerScrolledFrame = None
-        self.s_ctrl = g.app.gui.leoTextWidgetClass(parentFrame)
-            # Used by find.search()
-            # Must have a parent Frame even though it is not packed.
+        self.s_ctrl = None
     
         self.initGui()
         self.createFrame(parentFrame)

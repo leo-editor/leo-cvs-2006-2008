@@ -394,6 +394,10 @@ class tkFindTab (leoFind.findTab):
         
         # g.trace('findTab')
         
+        self.s_ctrl = g.app.gui.leoTextWidgetClass(parentFrame)
+            # Used by find.search()
+            # Must have a parent Frame even though it is not packed.
+    
         #@    << Create the outer frames >>
         #@+node:ekr.20051020120306.14:<< Create the outer frames >>
         configName = 'log_pane_Find_tab_background_color'
