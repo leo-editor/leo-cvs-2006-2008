@@ -2,6 +2,151 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070105135851:To do first
+#@+node:ekr.20061030054124.1:Create method to encapsulate url code for bookmarks plugin
+#@+node:ekr.20061030054934:Request
+@nocolor
+
+Email from Terry Brown.
+
+I've written a simple plugin such that double clicking any 
+headline in a tree with '@bookmarks' as its root will grab the 
+url from the first line of the body text.
+
+My problem is that I had to duplicate a lot of code from here:
+
+Code-->Gui Base classes-->@thin leoFrame.py-->class 
+leoTree-->tree.OnIconDoubleClick (@url)
+
+specifically this whole piece:
+
+@color
+     if not g.doHook("@url1",c=c,p=p,v=p,url=url):
+         # Note: the UNL plugin has its own notion of what a good url is.
+         << check the url; return if bad >>
+         << pass the url to the web browser >>
+     g.doHook("@url2",c=c,p=p,v=p)
+@nocolor
+
+So I'm wondering if that could be split of to a different function, 
+i.e. the first part of leoTree.OnIconDoubleClick gets the url, and 
+the second part handles the url, and I want to be able to call just 
+the second part.
+
+It's important that this solution will trigger UNL if it's loaded, 
+and similar animals.
+
+So, if it's not too tricky, could the handle url part of 
+leoTree.OnIconDoubleClick be split out for calling?
+#@nonl
+#@-node:ekr.20061030054934:Request
+#@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
+def OnIconDoubleClick (self,p):
+
+    # Note: "icondclick" hooks handled by vnode callback routine.
+
+    c = self.c
+    s = p.headString().strip()
+    if g.match_word(s,0,"@url"):
+        url = s[4:].strip()
+        if url.lstrip().startswith('--'):
+            # Get the url from the first body line.
+            lines = p.bodyString().split('\n')
+            url = lines and lines[0] or ''
+        else:
+            << stop the url after any whitespace >>
+        if not g.doHook("@url1",c=c,p=p,v=p,url=url):
+            self.handleUrlInUrlNode(url)
+        g.doHook("@url2",c=c,p=p,v=p)
+
+    return 'break' # 11/19/06
+#@nonl
+#@+node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
+# For safety, the URL string should end at the first whitespace, unless quoted.
+# This logic is also found in the UNL plugin so we don't have to change the 'unl1' hook.
+
+url = url.replace('\t',' ')
+
+# Strip quotes.
+i = -1
+if url and url[0] in ('"',"'"):
+    i = url.find(url[0],1)
+    if i > -1:
+        url = url[1:i]
+
+if i == -1:
+    # Not quoted or no matching quote.
+    i = url.find(' ')
+    if i > -1:
+        if 0: # No need for a warning.  Assume everything else is a comment.
+            g.es("ignoring characters after space in url:"+url[i:])
+            g.es("use %20 instead of spaces")
+        url = url[:i]
+#@-node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
+#@+node:ekr.20061030161842:handleUrlInUrlNode
+def handleUrlInUrlNode(self,url):
+    
+    # Note: the UNL plugin has its own notion of what a good url is.
+    
+    c = self.c
+    # g.trace(url)
+    << check the url; return if bad >>
+    << pass the url to the web browser >>
+#@+node:ekr.20031218072017.2314:<< check the url; return if bad >>
+@ A valid url is (according to D.T.Hein):
+
+3 or more lowercase alphas, followed by,
+one ':', followed by,
+one or more of: (excludes !"#;<>[\]^`|)
+  $%&'()*+,-./0-9:=?@A-Z_a-z{}~
+followed by one of: (same as above, except no minus sign or comma).
+  $%&'()*+/0-9:=?@A-Z_a-z}~
+@c
+
+urlPattern = "[a-z]{3,}:[\$-:=?-Z_a-z{}~]+[\$-+\/-:=?-Z_a-z}~]"
+
+if not url or len(url) == 0:
+    g.es("no url following @url")
+    return
+
+# Add http:// if required.
+if not re.match('^([a-z]{3,}:)',url):
+    url = 'http://' + url
+if not re.match(urlPattern,url):
+    g.es("invalid url: "+url)
+    return
+#@nonl
+#@-node:ekr.20031218072017.2314:<< check the url; return if bad >>
+#@+node:ekr.20031218072017.2315:<< pass the url to the web browser >>
+@ Most browsers should handle the following urls:
+  ftp://ftp.uu.net/public/whatever.
+  http://localhost/MySiteUnderDevelopment/index.html
+  file://home/me/todolist.html
+@c
+
+try:
+    import os
+    os.chdir(g.app.loadDir)
+    if g.match(url,0,"file:") and url[-4:]==".leo":
+        ok,frame = g.openWithFileName(url[5:],c)
+    else:
+        import webbrowser
+        # Mozilla throws a weird exception, then opens the file!
+        try: webbrowser.open(url)
+        except: pass
+except:
+    g.es("exception opening " + url)
+    g.es_exception()
+#@-node:ekr.20031218072017.2315:<< pass the url to the web browser >>
+#@-node:ekr.20061030161842:handleUrlInUrlNode
+#@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
+#@-node:ekr.20061030054124.1:Create method to encapsulate url code for bookmarks plugin
+#@+node:ekr.20070105121752:Add Find & Spell tabs to log pane on startup
+# Perhaps there should be an option for the spell tab.
+#@nonl
+#@-node:ekr.20070105121752:Add Find & Spell tabs to log pane on startup
+#@+node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
+#@-node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
 #@+node:ekr.20061209083136:Complete the wxGui plugin
 @nocolor
 
@@ -1430,45 +1575,6 @@ def hideTab (self,event=None):
 #@-node:ekr.20051020120306.25:hideTab
 #@-node:ekr.20060221074900:Callbacks
 #@+node:ekr.20051024192602: Top level
-#@+node:ekr.20060209064832:findAllCommand
-def findAllCommand (self,event=None):
-
-    self.setup_command()
-    self.findAll()
-#@-node:ekr.20060209064832:findAllCommand
-#@+node:ekr.20060204120158.1:findAgainCommand
-def findAgainCommand (self):
-    
-    s = self.find_ctrl.getAllText()
-    
-    if s and s != '<find pattern here>':
-        self.findNextCommand()
-        return True
-    else:
-        # Tell the caller that to get the find args.
-        return False
-#@-node:ekr.20060204120158.1:findAgainCommand
-#@+node:ekr.20060128075225:cloneFindAllCommand
-def cloneFindAllCommand (self,event=None):
-    
-    self.setup_command()
-    self.clone_find_all = True
-    self.findAll()
-    self.clone_find_all = False
-#@-node:ekr.20060128075225:cloneFindAllCommand
-#@+node:ekr.20051024192642.2:findNext/PrefCommand
-def findNextCommand (self,event=None):
-
-    self.setup_command()
-    self.findNext()
-    
-def findPrevCommand (self,event=None):
-    
-    self.setup_command()
-    self.reverse = not self.reverse
-    self.findNext()
-    self.reverse = not self.reverse
-#@-node:ekr.20051024192642.2:findNext/PrefCommand
 #@+node:ekr.20051024192642.3:change/ThenFindCommand
 def changeCommand (self,event=None):
 
@@ -1485,6 +1591,1985 @@ def changeThenFindCommand(self,event=None):
     self.setup_command()
     self.changeThenFind()
 #@-node:ekr.20051024192642.3:change/ThenFindCommand
+#@+node:ekr.20070105123638:changeAllCommand
+def changeAllCommand (self,event=None):
+
+    self.setup_command()
+    self.changeAll()
+#@-node:ekr.20070105123638:changeAllCommand
+#@+node:ekr.20060128075225:cloneFindAllCommand
+def cloneFindAllCommand (self,event=None):
+    
+    self.setup_command()
+    self.clone_find_all = True
+    self.findAll()
+    self.clone_find_all = False
+#@-node:ekr.20060128075225:cloneFindAllCommand
+#@+node:ekr.20060204120158.1:findAgainCommand
+def findAgainCommand (self):
+    
+    s = self.find_ctrl.getAllText()
+    
+    if s and s != '<find pattern here>':
+        self.findNextCommand()
+        return True
+    else:
+        # Tell the caller that to get the find args.
+        return False
+#@-node:ekr.20060204120158.1:findAgainCommand
+#@+node:ekr.20060209064832:findAllCommand
+def findAllCommand (self,event=None):
+
+    self.setup_command()
+    self.findAll()
+#@-node:ekr.20060209064832:findAllCommand
+#@+node:ekr.20051024192642.2:findNext/PrefCommand
+def findNextCommand (self,event=None):
+
+    self.setup_command()
+    self.findNext()
+    
+def findPrevCommand (self,event=None):
+    
+    self.setup_command()
+    self.reverse = not self.reverse
+    self.findNext()
+    self.reverse = not self.reverse
+#@-node:ekr.20051024192642.2:findNext/PrefCommand
+#@-node:ekr.20051024192602: Top level
+#@-node:ekr.20051020120306.6:class findTab (leoFind)
+#@+node:ekr.20061212085958:class tkFindTab (findTab)
+class tkFindTab (leoFind.findTab):
+    
+    '''A subclass of the findTab class containing all Tk code.'''
+
+    @others
+#@nonl
+#@+node:ekr.20061212085958.1: Birth
+if 0: # We can use the base-class ctor.
+
+    def __init__ (self,c,parentFrame):
+    
+        leoFind.findTab.__init__(self,c,parentFrame)
+            # Init the base class.
+            # Calls initGui, createFrame, createBindings & init(c), in that order.
+#@+node:ekr.20051020120306.12:initGui
+def initGui (self):
+
+    self.svarDict = {}
+    
+    for key in self.intKeys:
+        self.svarDict[key] = Tk.IntVar()
+    
+    for key in self.newStringKeys:
+        self.svarDict[key] = Tk.StringVar()
+
+#@-node:ekr.20051020120306.12:initGui
+#@+node:ekr.20051020120306.13:createFrame (tkFindTab)
+def createFrame (self,parentFrame):
+    
+    c = self.c
+    
+    # g.trace('findTab')
+
+    << Create the outer frames >>
+    << Create the Find and Change panes >>
+    << Create two columns of radio and checkboxes >>
+    
+    if  self.optionsOnly:
+        buttons = []
+    else:
+        << Create two columns of buttons >>
+    
+    # Pack this last so buttons don't get squashed when frame is resized.
+    self.outerScrolledFrame.pack(side='top',expand=1,fill='both',padx=2,pady=2)
+#@+node:ekr.20051020120306.14:<< Create the outer frames >>
+configName = 'log_pane_Find_tab_background_color'
+bg = c.config.getColor(configName) or 'MistyRose1'
+
+parentFrame.configure(background=bg)
+
+self.top = Tk.Frame(parentFrame,background=bg)
+self.top.pack(side='top',expand=0,fill='both',pady=5)
+    # Don't expand, so the frame goes to the top.
+
+self.outerScrolledFrame = Pmw.ScrolledFrame(
+    parentFrame,usehullsize = 1)
+
+self.outerFrame = outer = self.outerScrolledFrame.component('frame')
+self.outerFrame.configure(background=bg)
+
+for z in ('borderframe','clipper','frame','hull'):
+    self.outerScrolledFrame.component(z).configure(relief='flat',background=bg)
+#@-node:ekr.20051020120306.14:<< Create the outer frames >>
+#@+node:ekr.20051020120306.15:<< Create the Find and Change panes >>
+fc = Tk.Frame(outer, bd="1m",background=bg)
+fc.pack(anchor="n", fill="x", expand=1)
+
+# Removed unused height/width params: using fractions causes problems in some locales!
+fpane = Tk.Frame(fc, bd=1,background=bg)
+cpane = Tk.Frame(fc, bd=1,background=bg)
+
+fpane.pack(anchor="n", expand=1, fill="x")
+cpane.pack(anchor="s", expand=1, fill="x")
+
+# Create the labels and text fields...
+flab = Tk.Label(fpane, width=8, text="Find:",background=bg)
+clab = Tk.Label(cpane, width=8, text="Change:",background=bg)
+
+if self.optionsOnly:
+    # Use one-line boxes.
+    self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
+        fpane,bd=1,relief="groove",height=1,width=25,name='find-text')
+    self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+        cpane,bd=1,relief="groove",height=1,width=25,name='change-text')
+else:
+    # Use bigger boxes for scripts.
+    self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
+        fpane,bd=1,relief="groove",height=3,width=15,name='find-text')
+    self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+        cpane,bd=1,relief="groove",height=3,width=15,name='change-text')
+<< Bind Tab and control-tab >>
+
+if 0: # Add scrollbars.
+    fBar = Tk.Scrollbar(fpane,name='findBar')
+    cBar = Tk.Scrollbar(cpane,name='changeBar')
+    
+    for bar,txt in ((fBar,ftxt),(cBar,ctxt)):
+        txt['yscrollcommand'] = bar.set
+        bar['command'] = txt.yview
+        bar.pack(side="right", fill="y")
+        
+if self.optionsOnly:
+    flab.pack(side="left") ; ftxt.pack(side="left")
+    clab.pack(side="left") ; ctxt.pack(side="left")
+else:
+    flab.pack(side="left") ; ftxt.pack(side="right", expand=1, fill="x")
+    clab.pack(side="left") ; ctxt.pack(side="right", expand=1, fill="x")
+#@+node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
+def setFocus(w):
+    c = self.c
+    c.widgetWantsFocusNow(w)
+    w.setSelectionRange(0,0)
+    return "break"
+    
+def toFind(event,w=ftxt): return setFocus(w)
+def toChange(event,w=ctxt): return setFocus(w)
+    
+def insertTab(w):
+    data = w.getSelectionRange()
+    if data: start,end = data
+    else: start = end = w.getInsertPoint()
+    w.replace(start,end,"\t")
+    return "break"
+
+def insertFindTab(event,w=ftxt): return insertTab(w)
+def insertChangeTab(event,w=ctxt): return insertTab(w)
+
+ftxt.bind("<Tab>",toChange)
+ctxt.bind("<Tab>",toFind)
+ftxt.bind("<Control-Tab>",insertFindTab)
+ctxt.bind("<Control-Tab>",insertChangeTab)
+#@-node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
+#@-node:ekr.20051020120306.15:<< Create the Find and Change panes >>
+#@+node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
+columnsFrame = Tk.Frame(outer,relief="groove",bd=2,background=bg)
+
+columnsFrame.pack(expand=0,padx="7p",pady="2p")
+
+numberOfColumns = 2 # Number of columns
+columns = [] ; radioLists = [] ; checkLists = []
+for i in xrange(numberOfColumns):
+    columns.append(Tk.Frame(columnsFrame,bd=1))
+    radioLists.append([])
+    checkLists.append([])
+
+for i in xrange(numberOfColumns):
+    columns[i].pack(side="left",padx="1p") # fill="y" Aligns to top. padx expands columns.
+
+radioLists[0] = []
+
+checkLists[0] = [
+    # ("Scrip&t Change",self.svarDict["script_change"]),
+    ("Whole &Word", self.svarDict["whole_word"]),
+    ("&Ignore Case",self.svarDict["ignore_case"]),
+    ("Wrap &Around",self.svarDict["wrap"]),
+    ("&Reverse",    self.svarDict["reverse"]),
+    ('Rege&xp',     self.svarDict['pattern_match']),
+    ("Mark &Finds", self.svarDict["mark_finds"]),
+]
+
+radioLists[1] = [
+    (self.svarDict["radio-search-scope"],"&Entire Outline","entire-outline"),
+    (self.svarDict["radio-search-scope"],"&Suboutline Only","suboutline-only"),  
+    (self.svarDict["radio-search-scope"],"&Node Only","node-only"),
+]
+
+checkLists[1] = [
+    ("Search &Headline", self.svarDict["search_headline"]),
+    ("Search &Body",     self.svarDict["search_body"]),
+    ("Mark &Changes",    self.svarDict["mark_changes"]),
+]
+
+for i in xrange(numberOfColumns):
+    for var,name,val in radioLists[i]:
+        box = underlinedTkButton(
+            "radio",columns[i],anchor="w",text=name,variable=var,value=val,background=bg)
+        box.button.pack(fill="x")
+        box.button.bind("<Button-1>", self.resetWrap)
+        if val == None: box.button.configure(state="disabled")
+        box.bindHotKey(ftxt)
+        box.bindHotKey(ctxt)
+    for name,var in checkLists[i]:
+        box = underlinedTkButton(
+            "check",columns[i],anchor="w",text=name,variable=var,background=bg)
+        box.button.pack(fill="x")
+        box.button.bind("<Button-1>", self.resetWrap)
+        box.bindHotKey(ftxt)
+        box.bindHotKey(ctxt)
+        if var is None: box.button.configure(state="disabled")
+#@-node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
+#@+node:ekr.20051020120306.18:<< Create two columns of buttons >>
+# Create the alignment panes.
+buttons  = Tk.Frame(outer,background=bg)
+buttons1 = Tk.Frame(buttons,bd=1,background=bg)
+buttons2 = Tk.Frame(buttons,bd=1,background=bg)
+buttons.pack(side='top',expand=1)
+buttons1.pack(side='left')
+buttons2.pack(side='right')
+
+width = 15 ; defaultText = 'Find' ; buttons = []
+
+for text,boxKind,frame,callback in (
+    # Column 1...
+    ('Find','button',buttons1,self.findButtonCallback),
+    ('Find All','button',buttons1,self.findAllButton),
+    # Column 2...
+    ('Change','button',buttons2,self.changeButton),
+    ('Change, Then Find','button',buttons2,self.changeThenFindButton),
+    ('Change All','button',buttons2,self.changeAllButton),
+):
+    w = underlinedTkButton(boxKind,frame,
+        text=text,command=callback)
+    buttons.append(w)
+    if text == defaultText:
+        w.button.configure(width=width-1,bd=4)
+    elif boxKind != 'check':
+        w.button.configure(width=width)
+    w.button.pack(side='top',anchor='w',pady=2,padx=2)
+#@-node:ekr.20051020120306.18:<< Create two columns of buttons >>
+#@-node:ekr.20051020120306.13:createFrame (tkFindTab)
+#@+node:ekr.20051023181449:createBindings (tkFindTab)
+def createBindings (self):
+    
+    c = self.c ; k = c.k
+    
+    def resetWrapCallback(event,self=self,k=k):
+        self.resetWrap(event)
+        return k.masterKeyHandler(event)
+        
+    def findButtonBindingCallback(event=None,self=self):
+        self.findButton()
+        return 'break'
+
+    table = (
+        ('<Button-1>',  k.masterClickHandler),
+        ('<Double-1>',  k.masterClickHandler),
+        ('<Button-3>',  k.masterClickHandler),
+        ('<Double-3>',  k.masterClickHandler),
+        ('<Key>',       resetWrapCallback),
+        ('<Return>',    findButtonBindingCallback),
+        ("<Escape>",    self.hideTab),
+    )
+
+    for w in (self.find_ctrl,self.change_ctrl):
+        for event, callback in table:
+            w.bind(event,callback)
+#@-node:ekr.20051023181449:createBindings (tkFindTab)
+#@-node:ekr.20061212085958.1: Birth
+#@-node:ekr.20061212085958:class tkFindTab (findTab)
+#@-node:ekr.20061212085958.2:Refactored the findTab class
+#@+node:ekr.20061212110702:Remove Tk code from minibufferFind class
+#@+node:ekr.20060124122844:setOption (minibufferFind: Tk code)
+def setOption (self, ivar, val):
+    
+    h = self.finder
+
+    if ivar in h.intKeys:
+        if val is not None:
+            var = h.svarDict.get(ivar)
+            var.set(val)
+            # g.trace('%s = %s' % (ivar,val))
+
+    elif not g.app.unitTesting:
+        g.trace('oops: bad find ivar %s' % ivar)
+#@-node:ekr.20060124122844:setOption (minibufferFind: Tk code)
+#@+node:ekr.20060125082510:getOption (minibufferFind: Tk code)
+def getOption (self,ivar,verbose=False):
+    
+    h = self.finder
+    
+    var = h.svarDict.get(ivar)
+    if var:
+        val = var.get()
+        verbose and g.trace('%s = %s' % (ivar,val))
+        return val
+    else:
+        g.trace('bad ivar name: %s' % ivar)
+        return None
+#@-node:ekr.20060125082510:getOption (minibufferFind: Tk code)
+#@+node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
+def toggleOption (self, ivar):
+    
+    h = self.finder
+
+    if ivar in h.intKeys:
+        var = h.svarDict.get(ivar)
+        val = not var.get()
+        var.set(val)
+        # g.trace('%s = %s' % (ivar,val),var)
+    else:
+        g.trace('oops: bad find ivar %s' % ivar)
+#@-node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
+#@-node:ekr.20061212110702:Remove Tk code from minibufferFind class
+#@+node:ekr.20041223102225:class tkIconBarClass
+class tkIconBarClass:
+    
+    '''A class representing the singleton Icon bar'''
+    
+    @others
+#@+node:ekr.20041223102225.1: ctor
+def __init__ (self,c,parentFrame):
+    
+    self.c = c
+    
+    self.buttons = {}
+    self.iconFrame = w = Tk.Frame(parentFrame,height="5m",bd=2,relief="groove")
+    self.c.frame.iconFrame = self.iconFrame
+    self.parentFrame = parentFrame
+    self.visible = False
+    self.show()
+#@-node:ekr.20041223102225.1: ctor
+#@+node:ekr.20031218072017.3958:add
+def add(self,*args,**keys):
+    
+    """Add a button containing text or a picture to the icon bar.
+    
+    Pictures take precedence over text"""
+    
+    f = self.iconFrame
+    text = keys.get('text')
+    imagefile = keys.get('imagefile')
+    image = keys.get('image')
+    command = keys.get('command')
+    bg = keys.get('bg')
+
+    if not imagefile and not image and not text: return
+
+    # First define n.
+    try:
+        g.app.iconWidgetCount += 1
+        n = g.app.iconWidgetCount
+    except:
+        n = g.app.iconWidgetCount = 1
+
+    if not command:
+        def command():
+            print "command for widget %s" % (n)
+
+    if imagefile or image:
+        << create a picture >>
+    elif text:
+        b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
+        if sys.platform != 'darwin':
+            width = max(6,len(text))
+            b.configure(width=width)
+        b.pack(side="left", fill="y")
+        return b
+        
+    return None
+#@+node:ekr.20031218072017.3959:<< create a picture >>
+try:
+    if imagefile:
+        # Create the image.  Throws an exception if file not found
+        imagefile = g.os_path_join(g.app.loadDir,imagefile)
+        imagefile = g.os_path_normpath(imagefile)
+        image = Tk.PhotoImage(master=g.app.root,file=imagefile)
+        
+        # Must keep a reference to the image!
+        try:
+            refs = g.app.iconImageRefs
+        except:
+            refs = g.app.iconImageRefs = []
+    
+        refs.append((imagefile,image),)
+    
+    if not bg:
+        bg = f.cget("bg")
+
+    b = Tk.Button(f,image=image,relief="flat",bd=0,command=command,bg=bg)
+    b.pack(side="left",fill="y")
+    return b
+    
+except:
+    g.es_exception()
+    return None
+#@-node:ekr.20031218072017.3959:<< create a picture >>
+#@-node:ekr.20031218072017.3958:add
+#@+node:ekr.20031218072017.3956:clear
+def clear(self):
+    
+    """Destroy all the widgets in the icon bar"""
+    
+    f = self.iconFrame
+    
+    for slave in f.pack_slaves():
+        slave.destroy()
+    self.visible = False
+
+    f.configure(height="5m") # The default height.
+    g.app.iconWidgetCount = 0
+    g.app.iconImageRefs = []
+#@-node:ekr.20031218072017.3956:clear
+#@+node:ekr.20061213091114.1:deleteButton (new in Leo 4.4.3)
+def deleteButton (self,w):
+    
+    w.pack_forget()
+#@-node:ekr.20061213091114.1:deleteButton (new in Leo 4.4.3)
+#@+node:ekr.20041223114821:getFrame
+def getFrame (self):
+
+    return self.iconFrame
+#@-node:ekr.20041223114821:getFrame
+#@+node:ekr.20041223102225.2:pack (show)
+def pack (self):
+    
+    """Show the icon bar by repacking it"""
+    
+    if not self.visible:
+        self.visible = True
+        self.iconFrame.pack(fill="x",pady=2)
+        
+show = pack
+#@-node:ekr.20041223102225.2:pack (show)
+#@+node:ekr.20061213092103:setCommandForButton (new in Leo 4.4.3)
+def setCommandForButton(self,b,command):
+    
+    b.configure(command=command)
+#@-node:ekr.20061213092103:setCommandForButton (new in Leo 4.4.3)
+#@+node:ekr.20031218072017.3955:unpack (hide)
+def unpack (self):
+    
+    """Hide the icon bar by unpacking it.
+    
+    A later call to show will repack it in a new location."""
+    
+    if self.visible:
+        self.visible = False
+        self.iconFrame.pack_forget()
+        
+hide = unpack
+#@-node:ekr.20031218072017.3955:unpack (hide)
+#@-node:ekr.20041223102225:class tkIconBarClass
+#@-node:ekr.20061209083136:Complete the wxGui plugin
+#@+node:ekr.20070105120506:Bugs in wx plugin
+#@+node:ekr.20061213064617:Shortcuts not shown in wx menus
+#@-node:ekr.20061213064617:Shortcuts not shown in wx menus
+#@+node:ekr.20061213073718:Focus commands do not work
+#@-node:ekr.20061213073718:Focus commands do not work
+#@+node:ekr.20061213073718.1:Alt-D does not work when outline selected
+#@-node:ekr.20061213073718.1:Alt-D does not work when outline selected
+#@-node:ekr.20070105120506:Bugs in wx plugin
+#@-node:ekr.20070105135851:To do first
+#@+node:ekr.20061209083136:Complete the wxGui plugin
+@nocolor
+
+- Make icon area and minibuffer functional.
+    - Refactor minibuffer and Find tab.
+- Fix all unit tests.
+
+- It's not clear what to do about k.shortcutFromSetting.
+- Move Tk tables to Tk gui.
+
+@color
+#@nonl
+#@+node:ekr.20061115111353:(Remove special tk indices)
+@nocolor
+
+To do:
+    
+- remove calls to w.search
+
+- need wrapper for tag_remove
+
+@color
+#@nonl
+#@+node:ekr.20051025071455.47:findNextWord (tkSpell)
+def findNextWord(self,p):
+    """Scan for the next word, leaving the result in the work widget"""
+
+    c = self.c ; w = self.workCtrl ; s = w.getAllText() ; p = p.copy()
+    while 1:
+        i = w.getInsertPoint()
+        while i < len(s) and not g.isWordChar1(s[i]):
+            i += 1
+        if i < len(s):
+            # A non-empty word has been found.
+            j = i
+            while j < len(s) and g.isWordChar(s[j]):
+                j += 1
+            word = s[i:j]
+            # g.trace(repr(word)) # This trace verifies that all words have been checked.
+            for w2 in (w,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w2)
+                w2.setSelectionRange(i,j,insert=j)
+            return p,word
+        else:
+            # End of the body text.
+            p.moveToThreadNext()
+            if not p: break
+            w.delete(0,'end')
+            w.insert(0,p.bodyString())
+            for w2 in (w,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w2)
+                w.setSelectionRange(0,0,insert=0)
+    return None,None
+#@nonl
+#@-node:ekr.20051025071455.47:findNextWord (tkSpell)
+#@+node:ekr.20050920084036.27:expandAbbrev
+def expandAbbrev (self,event):
+    
+    '''Not a command.  Called from k.masterCommand to expand
+    abbreviations in event.widget.'''
+
+    k = self.k ; c = self.c ; ch = event.char.strip()
+    w = self.editWidget(event)
+    if not w: return
+
+    word = w.get('insert -1c wordstart','insert -1c wordend')
+    g.trace('ch',repr(ch),'word',repr(word))
+    if ch:
+        # We must do this: expandAbbrev is called from Alt-x and Control-x,
+        # we get two differnt types of data and w states.
+        word = '%s%s'% (word,ch)
+        
+    val = self.abbrevs.get(word)
+    if val is not None:
+        s = w.getAllText()
+        i = w.getInsertPoint()
+        i,j = g.getWord(s,i-1)
+        if i != j: w.delete(i,j)
+        w.insert(i,val)
+        c.frame.body.onBodyChanged(undoType='Typing')
+        
+    return val is not None
+#@-node:ekr.20050920084036.27:expandAbbrev
+#@+node:ekr.20050920084036.22:<< define a new generator searchXR >>
+@ This is a generator (it contains a yield).
+To make this work we must define a new generator for each call to regionalExpandAbbrev.
+@c
+def searchXR (i1,i2,ins,event):
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    w.tag_add('sXR',i1,i2)
+    while i1:
+        tr = w.tag_ranges('sXR')
+        if not tr: break
+        i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
+        if i1:
+            word = w.get('%s wordstart' % i1,'%s wordend' % i1)
+            w.tag_delete('found')
+            w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
+            w.tag_config('found',background='yellow')
+            if self.abbrevs.has_key(word):
+                k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
+                yield None
+                if k.regXKey == 'y':
+                    ind = w.index('%s wordstart' % i1)
+                    w.delete('%s wordstart' % i1,'%s wordend' % i1)
+                    w.insert(ind,self.abbrevs[word])
+            i1 = '%s wordend' % i1
+    w.mark_set('insert',ins)
+    w.selection_clear()
+    w.tag_delete('sXR')
+    w.tag_delete('found')
+    k.setLabelGrey('')
+    self.k.regx = g.bunch(iter=None,key=None)
+#@-node:ekr.20050920084036.22:<< define a new generator searchXR >>
+#@+node:ekr.20050920084036.134:indentToCommentColumn (test)
+def indentToCommentColumn (self,event):
+
+    '''Insert whitespace to indent to the comment column.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    
+    self.beginCommand(undoType='indent-to-comment-column')
+
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint()) 
+    i1,i2 = g.convertPythonIndexToRowCol(s,i)
+    c1 = int(self.ccolumn)
+
+    if i2 < c1:
+        wsn = c1- i2
+        ###w.insert('insert lineend',' '*wsn)
+        w.insert(i,' '*wsn)
+    if i2 >= c1:
+        ###w.insert('insert lineend',' ')
+        w.insert(i,' ')
+    ###w.mark_set('insert','insert lineend')
+    w.setInsertPoint(i)
+    
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.134:indentToCommentColumn (test)
+#@+node:ekr.20050920084036.59:dynamicExpansion (to do)
+def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    rlist = self.store ['rlist']
+    stext = self.store ['stext']
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    dA = w.tag_ranges('dA')
+    w.tag_delete('dA')
+    def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
+        w.delete(from_,to_)
+        w.insert('insert',txt,'dA')
+
+    if dA:
+        dA1, dA2 = dA
+        dtext = w.get(dA1,dA2)
+        if dtext.startswith(stext) and i2 == dA2:
+            #This seems reasonable, since we cant get a whole word that has the '-' char in it, we do a good guess
+            if rlist:
+                txt = rlist.pop()
+            else:
+                txt = stext
+                w.delete(dA1,dA2)
+                dA2 = dA1 # since the text is going to be reread, we dont want to include the last dynamic abbreviation
+                self.getDynamicList(w,txt,rlist)
+            doDa(txt,dA1,dA2) ; return
+        else: dA = None
+
+    if not dA:
+        self.store ['stext'] = txt
+        self.store ['rlist'] = rlist = []
+        self.getDynamicList(w,txt,rlist)
+        if not rlist: return
+        txt = rlist.pop()
+        doDa(txt)
+#@-node:ekr.20050920084036.59:dynamicExpansion (to do)
+#@+node:ekr.20050920084036.60:dynamicExpansion2 (to do)
+def dynamicExpansion2 (self,event):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    rlist = []
+    self.getDynamicList(w,txt,rlist)
+    dEstring = reduce(g.longestCommonPrefix,rlist)
+    if dEstring:
+        w.delete(i,i2)
+        w.insert(i,dEstring)
+#@-node:ekr.20050920084036.60:dynamicExpansion2 (to do)
+#@+node:ekr.20050920084036.67:centerLine (pass)
+def centerLine (self,event):
+
+    '''Centers line within current fill column'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    i,j = g.getLine(s,w.getInsertPoint())
+    line = s [i:j].strip()
+    if not line or len(line) >= self.fillColumn: return
+    
+    self.beginCommand(undoType='center-line')
+    n = (self.fillColumn-len(line)) / 2
+    ws = ' ' * n
+    k = g.skip_ws(s,i)
+    if k > i: w.delete(i,k-i)
+    w.insert(i,ws)
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.67:centerLine (pass)
+#@+node:ekr.20050920084036.69:centerRegion (passed)
+def centerRegion (self,event):
+
+    '''Centers the selected text within the fill column'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    sel_1, sel_2 = w.getSelectionRange()
+    ind, junk = g.getLine(s,sel_1)
+    junk, end = g.getLine(s,sel_2)
+
+    self.beginCommand(undoType='center-region')
+
+    while ind < end:
+        s = w.getAllText()
+        i, j = g.getLine(s,ind)
+        line = s [i:j].strip()
+        # g.trace(len(line),repr(line))
+        if len(line) >= self.fillColumn:
+            ind = j
+        else:
+            n = (self.fillColumn-len(line)) / 2
+            k = g.skip_ws(s,i)
+            if k > i: w.delete(i,k-i)
+            w.insert(i,' '*n)
+            ind = j + n-(k-i)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.69:centerRegion (passed)
+#@+node:ekr.20050920084036.70:setFillPrefix (test)
+def setFillPrefix( self, event ):
+    
+    '''Make the selected text the fill prefix.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    ###txt = w.get( 'insert linestart', 'insert' )
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,junk = g.getLine(s,ins)
+    txt = s[i:ins]
+    self.fillPrefix = txt
+#@-node:ekr.20050920084036.70:setFillPrefix (test)
+#@+node:ekr.20050920084036.75:backToIndentation (test)
+def backToIndentation (self,event):
+    
+    '''Position the point at the first non-blank character on the line.'''
+    
+    w = self.editWidget(event)
+    if not w: return
+
+    self.beginCommand(undoType='back-to-indentation')
+
+    ###i = w.index('insert linestart')
+    s = w.getAllText()
+    i = w.getInsertPoint()
+    i,j = g.getLine(s,i)
+    i,j = w.toGuiIndex(i),w.toGuiIndex(j)
+
+    ###i2 = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
+    i2 = w.search(r'\w',i,j,regexp=True)
+    ###w.mark_set('insert',i2)
+    w.setInsertPoint(i2)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.75:backToIndentation (test)
+#@+node:ekr.20050920084036.76:deleteIndentation (test)
+def deleteIndentation (self,event):
+    
+    '''Delete indentation in the presently line.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    
+    self.beginCommand(undoType='delete-indentation')
+
+    ###txt = w.get('insert linestart','insert lineend')
+    ###txt = ' %s' % txt.lstrip()
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    txt = s[i:j].strip()
+    ###w.delete('insert linestart','insert lineend +1c')
+    w.delete(i,j)
+    ###i = w.index('insert - 1c')
+    ###w.insert('insert -1c',txt)
+    w.insert(ins-1,txt)
+    ###w.mark_set('insert',i)
+    w.setInsertPoint(i)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.76:deleteIndentation (test)
+#@+node:ekr.20050920084036.78:indentRelative
+def indentRelative (self,event):
+    
+    '''The indent-relative command indents at the point based on the previous
+    line (actually, the last non-empty line.) It inserts whitespace at the
+    point, moving point, until it is underneath an indentation point in the
+    previous line.
+    
+    An indentation point is the end of a sequence of whitespace or the end of
+    the line. If the point is farther right than any indentation point in the
+    previous line, the whitespace before point is deleted and the first
+    indentation point then applicable is used. If no indentation point is
+    applicable even then whitespace equivalent to a single tab is inserted.'''
+    
+    c = self.c ; undoType = 'indent-relative' ; w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    oldSel = w.getSelectionRange()
+    oldYview = w.yview()
+    # Find the previous non-blank line
+    i,j = g.getLine(s,ins)
+    while 1:
+        if i <= 0: return
+        i,j = g.getLine(s,i-1)
+        line = s[i:j]
+        if line.strip(): break
+    self.beginCommand(undoType=undoType)
+    try:
+        k = g.skip_ws(s,i)
+        ws = s[i:k]
+        i2,j2 = g.getLine(s,ins)
+        k = g.skip_ws(s,i2)
+        line = ws + s[k:j2]
+        w.delete(i2,j2)
+        w.insert(i2,line)
+        w.setInsertPoint(i2+len(ws))
+        c.frame.body.onBodyChanged(undoType,oldSel=oldSel,oldText=s,oldYview=oldYview)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.78:indentRelative
+#@+node:ekr.20051026092746:<< backspace with negative tab_width >>
+s = prev = w.getAllText()
+ins = w.getInsertPoint()
+i,j = g.getLine(s,ins)
+s = prev = s[i:ins]
+n = len(prev)
+abs_width = abs(tab_width)
+
+# Delete up to this many spaces.
+n2 = (n % abs_width) or abs_width
+n2 = min(n,n2) ; count = 0
+
+while n2 > 0:
+    n2 -= 1
+    ch = prev[n-count-1]
+    if ch != ' ': break
+    else: count += 1
+
+# Make sure we actually delete something.
+i = ins-(max(1,count))
+w.delete(i,ins)
+w.setSelectionRange(i,i,insert=i)
+#@-node:ekr.20051026092746:<< backspace with negative tab_width >>
+#@+node:ekr.20050920084036.135:deleteSpaces (to do)
+def deleteSpaces (self,event,insertspace=False):
+    
+    '''Delete all whitespace surrounding the cursor.'''
+
+    c = self.c
+    w = self.editWidget(event)
+    if not w: return
+
+    char = w.get('insert','insert + 1c ')
+    if not char.isspace(): return
+    
+    undoType = g.choose(insertspace,'insert-space','delete-spaces')
+    self.beginCommand(undoType=undoType)
+
+    i = w.getInsertPoint()
+    wf = w.search(r'\w',i,stopindex='%s lineend' % i,regexp=True)
+    wb = w.search(r'\w',i,stopindex='%s linestart' % i,regexp=True,backwards=True)
+    if '' not in (wf,wb):
+        w.delete('%s +1c' % wb,wf)
+        if insertspace: w.insert('insert',' ')
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.135:deleteSpaces (to do)
+#@+node:ekr.20050920084036.77:splitLine (test)
+def splitLine (self,event):
+    
+    '''Split a line at the cursor position.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.get('insert linestart','insert lineend')
+    
+    self.beginCommand(undoType='split-line')
+    s = self.getWSString(s)
+    i = w.getInsertPoint()
+    w.insert(i,s + '\n')
+    # w.mark_set('insert',i)
+    # w.insert('insert','\n')
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.77:splitLine (test)
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+def moveUpOrDownHelper (self,event,direction,extend):
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+
+    # Make the insertion cursor visible so bbox won't return an empty list.
+    w.seeInsertPoint()
+    
+    # Compute the new spot.
+    ins = w.getInsertPoint()
+    s = w.getAllText()
+    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    
+    # Find the coordinates of the cursor and set the new height.
+    # There may be roundoff errors because character postions may not match exactly.
+    x, y, junk, textH = w.bbox('insert')
+    bodyW, bodyH = w.winfo_width(), w.winfo_height()
+    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
+
+    # Make sure y is within text boundaries.
+    if direction == "up":
+        if y <= textH:  w.yview("scroll",-1,"units")
+        else:           y = max(y-textH,0)
+    else:
+        if y >= maxy:   w.yview("scroll",1,"units")
+        else:           y = min(y+textH,maxy)
+
+    # Position the cursor on the proper side of the characters.
+    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
+    if x > newx + width / 2: x = newx + width + 1
+    
+    # Make the move
+    spot = w.xyToPythonIndex(x,y)
+    self.extendHelper(w,extend,spot,upOrDown=True)
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@+node:ekr.20051218133207.1:forwardParagraphHelper (passed)
+def forwardParagraphHelper (self,event,extend):
+
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    line = s[i:j]
+
+    if line.strip(): # Skip past the present paragraph.
+        self.selectParagraphHelper(w,i)
+        i,j = w.getSelectionRange()
+        j += 1
+        
+    # Skip to the next non-blank line.
+    i = j
+    while j < len(s):
+        i,j = g.getLine(s,j)
+        line = s[i:j]
+        if line.strip(): break
+
+    w.setInsertPoint(ins) # Restore the original insert point.
+    self.moveToHelper(event,i,extend)
+#@-node:ekr.20051218133207.1:forwardParagraphHelper (passed)
+#@+node:ekr.20051218133207:backwardParagraphHelper (passed)
+def backwardParagraphHelper (self,event,extend):
+    
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText() ; ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    line = s[i:j]
+
+    if line.strip():
+        # Find the start of the present paragraph.
+        while i > 0:
+            i,j = g.getLine(s,i-1)
+            line = s[i:j]
+            if not line.strip(): break
+
+    # Find the end of the previous paragraph.
+    while i > 0:
+        i,j = g.getLine(s,i-1)
+        line = s[i:j]
+        if line.strip():
+            i = j-1 ; break
+
+    self.moveToHelper(event,i,extend)
+#@nonl
+#@-node:ekr.20051218133207:backwardParagraphHelper (passed)
+#@+node:ekr.20051218141237:lines (test)
+def beginningOfLine (self,event):
+    '''Move the cursor to the start of the line, extending the selection if in extend mode.'''
+    w = self.editWidget(event)
+    i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
+    self.moveToHelper(event,i,extend=False)
+    
+def beginningOfLineExtendSelection (self,event):
+    '''Extend the selection by moving the cursor to the start of the line.'''
+    w = self.editWidget(event)
+    i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
+    self.moveToHelper(event,i,extend=True)
+    
+def endOfLine (self,event): # passed
+    '''Move the cursor to the end of the line, extending the selection if in extend mode.'''
+    w = self.editWidget(event)
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint())
+    if g.match(s,i-1,'\n'): i -= 1
+    self.moveToHelper(event,i,extend=False)
+    
+def endOfLineExtendSelection (self,event): # passed
+    '''Extend the selection by moving the cursor to the end of the line.'''
+    w = self.editWidget(event)
+    s = w.getAllText()
+    junk,i = g.getLine(s,w.getInsertPoint())
+    if g.match(s,i-1,'\n'): i -= 1
+    self.moveToHelper(event,i,extend=True)
+
+def nextLine (self,event):
+    '''Move the cursor down, extending the selection if in extend mode.'''
+    self.moveUpOrDownHelper(event,'down',extend=False)
+    
+def nextLineExtendSelection (self,event):
+    '''Extend the selection by moving the cursor down.'''
+    self.moveUpOrDownHelper(event,'down',extend=True)
+    
+def prevLine (self,event):
+    '''Move the cursor up, extending the selection if in extend mode.'''
+    self.moveUpOrDownHelper(event,'up',extend=False)
+    
+def prevLineExtendSelection (self,event):
+    '''Extend the selection by moving the cursor up.'''
+    self.moveUpOrDownHelper(event,'up',extend=True)
+#@-node:ekr.20051218141237:lines (test)
+#@+node:ekr.20050920084036.99:backwardKillParagraph (passed)
+def backwardKillParagraph (self,event):
+    
+    '''Kill the previous paragraph.'''
+
+    k = self.k ; c = k.c ; w = self.editWidget(event)
+    if not w: return
+
+    self.beginCommand(undoType='backward-kill-paragraph')
+    try:
+        self.backwardParagraphHelper(event,extend=True)
+        i,j = w.getSelectionRange()
+        if i > 0: i = min(i+1,j)
+        c.killBufferCommands.kill(event,i,j,undoType=None)
+        w.setSelectionRange(i,i,insert=i)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.99:backwardKillParagraph (passed)
+#@+node:ekr.20050920084036.103:fillParagraph
+def fillParagraph( self, event ):
+    
+    '''Fill the selected paragraph'''
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    txt = w.get( 'insert linestart', 'insert lineend' )
+    txt = txt.strip()
+    if txt:
+        self.beginCommand(undoType='fill-paragraph')
+        i = w.index( 'insert' )
+        i2 = i
+        txt2 = txt
+        while txt2:
+            pi2 = w.index( '%s - 1 lines' % i2)
+            txt2 = w.get( '%s linestart' % pi2, '%s lineend' % pi2 )
+            if w.index( '%s linestart' % pi2 ) == 0:
+                i2 = w.search( '\w', '1.0', regexp = True, stopindex = 'end' )
+                break
+            if txt2.strip() == '': break
+            i2 = pi2
+        i3 = i
+        txt3 = txt
+        while txt3:
+            pi3 = w.index( '%s + 1 lines' %i3 )
+            txt3 = w.get( '%s linestart' % pi3, '%s lineend' % pi3 )
+            if w.index( '%s lineend' % pi3 ) == w.index( 'end' ):
+                i3 = w.search( '\w', 'end', backwards = True, regexp = True, stopindex = '1.0' )
+                break
+            if txt3.strip() == '': break
+            i3 = pi3
+        ntxt = w.get( '%s linestart' %i2, '%s lineend' %i3 )
+        ntxt = self._addPrefix( ntxt )
+        w.delete( '%s linestart' %i2, '%s lineend' % i3 )
+        w.insert( i2, ntxt )
+        w.mark_set( 'insert', i )
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.103:fillParagraph
+#@+node:ekr.20050920084036.100:fillRegion
+def fillRegion (self,event):
+
+    '''Fill all paragraphs in the selected text.'''
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+    
+    self.beginCommand(undoType='fill-region')
+
+    s1 = w.index('sel.first')
+    s2 = w.index('sel.last')
+    w.mark_set('insert',s1)
+    self.backwardParagraph(event)
+    if w.index('insert linestart') == 0:
+        self.fillParagraph(event)
+    while 1:
+        self.forwardParagraph(event)
+        ###if w.compare('insert','>',s2):
+        if w.getInsertPoint() > s2:
+            break
+        self.fillParagraph(event)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.100:fillRegion
+#@+node:ekr.20050920084036.104:fillRegionAsParagraph
+def fillRegionAsParagraph (self,event):
+    
+    '''Fill the selected text.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+    
+    self.beginCommand(undoType='fill-region-as-paragraph')
+
+    i1 = w.index('sel.first linestart')
+    i2 = w.index('sel.last lineend')
+    txt = w.get(i1,i2)
+    txt = self._addPrefix(txt)
+    w.delete(i1,i2)
+    w.insert(i1,txt)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.104:fillRegionAsParagraph
+#@+node:ekr.20050920084036.98:killParagraph (passed)
+def killParagraph (self,event):
+    
+    '''Kill the present paragraph.'''
+
+    k = self.k ; c = k.c ; w = self.editWidget(event)
+    if not w: return
+
+    self.beginCommand(undoType='kill-paragraph')
+    try:
+        self.extendToParagraph(event)
+        i,j = w.getSelectionRange()
+        c.killBufferCommands.kill(event,i,j,undoType=None)
+        w.setSelectionRange(i,i,insert=i)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.98:killParagraph (passed)
+#@+node:ekr.20050920084036.96:extend-to-paragraph & helper (passed)
+def extendToParagraph (self,event):
+    
+    '''Select the paragraph surrounding the cursor.'''
+
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText() ; ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    line = s[i:j]
+
+    # Find the start of the paragraph.
+    if line.strip(): # Search backward.
+        while i > 0:
+            i2,j2 = g.getLine(s,i-1)
+            line = s[i2:j2]
+            if line.strip(): i = i2
+            else: break # Use the previous line.
+    else: # Search forward.
+        while j < len(s):
+            i,j = g.getLine(s,j)
+            line = s[i:j]
+            if line.strip(): break
+        else: return
+
+    # Select from i to the end of the paragraph.
+    self.selectParagraphHelper(w,i)
+#@+node:ekr.20050920084036.97:selectParagraphHelper
+def selectParagraphHelper (self,w,start):
+    
+    '''Select from start to the end of the paragraph.'''
+
+    s = w.getAllText()
+    i1,j = g.getLine(s,start)
+    while j < len(s):
+        i,j2 = g.getLine(s,j)
+        line = s[i:j2]
+        if line.strip(): j = j2
+        else: break
+        
+    j = max(start,j-1)
+    w.setSelectionRange(i1,j,insert=j)
+#@-node:ekr.20050920084036.97:selectParagraphHelper
+#@-node:ekr.20050920084036.96:extend-to-paragraph & helper (passed)
+#@+node:ekr.20050920084036.97:selectParagraphHelper
+def selectParagraphHelper (self,w,start):
+    
+    '''Select from start to the end of the paragraph.'''
+
+    s = w.getAllText()
+    i1,j = g.getLine(s,start)
+    while j < len(s):
+        i,j2 = g.getLine(s,j)
+        line = s[i:j2]
+        if line.strip(): j = j2
+        else: break
+        
+    j = max(start,j-1)
+    w.setSelectionRange(i1,j,insert=j)
+#@-node:ekr.20050920084036.97:selectParagraphHelper
+#@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
+def indentRegion (self,event):
+    w = self.editWidget(event)
+    if not w: return
+
+    mrk = 'sel'
+    trange = w.tag_ranges(mrk)
+    if len(trange) != 0:
+        ind = w.search('\w','%s linestart' % trange[0],stopindex='end',regexp=True)
+        if not ind: return
+        text = w.get('%s linestart' % ind,'%s lineend' % ind)
+        sstring = text.lstrip()
+        sstring = sstring [0]
+        ws = text.split(sstring)
+        if len(ws) > 1:
+            ws = ws [0]
+        else:
+            ws = ''
+        s, s1 = trange [0].split('.')
+        e, e1 = trange [ -1].split('.')
+        s = int(s)
+        s = s + 1
+        e = int(e) + 1
+        for z in xrange(s,e):
+            t2 = w.get('%s.0' % z,'%s.0 lineend' % z)
+            t2 = t2.lstrip()
+            t2 = ws + t2
+            w.delete('%s.0' % z,'%s.0 lineend' % z)
+            w.insert('%s.0' % z,t2)
+    # self.removeRKeys(w)
+#@nonl
+#@-node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
+#@+node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
+def tabIndentRegion (self,event):
+    
+    '''Insert a hard tab at the start of each line of the selected text.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+    
+    self.beginCommand(undoType='indent-rigidly')
+
+    i = w.index('sel.first')
+    i2 = w.index('sel.last')
+    i = w.index('%s linestart' % i)
+    i2 = w.index('%s linestart' % i2)
+    while 1:
+        w.insert(i,'\t')
+        if i == i2: break
+        i = w.index('%s + 1 lines' % i)
+#@-node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
+#@+node:ekr.20060417183606:moveLinesDown (pass hand test)
+def moveLinesDown (self,event):
+    
+    '''Move all lines containing any selected text down one line,
+    moving to the next node if the lines are the last lines of the body.'''
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+    
+    s = w.getAllText()
+    sel_1,sel_2 = w.getSelectionRange()
+    i,junk = g.getLine(s,sel_1)
+    i2,j   = g.getLine(s,sel_2)
+    lines  = s[i:j]
+    # Select from start of the first line to the *start* of the last line.
+    # This prevents selection creep.
+    n = i2-i 
+    # g.trace('lines',repr(lines))
+    
+    self.beginCommand(undoType='move-lines-down')
+    changed = False
+    try:
+        if j < len(s):
+            next_i,next_j = g.getLine(s,j+1)
+            next_line = s[next_i:next_j]
+            n2 = next_j-next_i
+            w.delete(i,next_j)
+            w.insert(i,next_line+lines)
+            w.setSelectionRange(i+n2,i+n2+n,insert=i+n2+n)
+            changed = True
+        elif g.app.gui.widget_name(w).startswith('body'):
+            p = c.currentPosition()
+            if not p.hasThreadNext(): return
+            w.delete(i,j)
+            c.setBodyString(p,w.getAllText())
+            p = p.threadNext()
+            c.beginUpdate()
+            try:
+                c.selectPosition(p)
+            finally:
+                c.endUpdate()
+            w.focus_force()
+            s = w.getAllText()
+            w.insert(0,lines)
+            if not lines.endswith('\n'): w.insert(len(lines),'\n')
+            s = w.getAllText()
+            w.setSelectionRange(0,n,insert=n)
+            changed = True
+    finally:
+        self.endCommand(changed=changed,setLabel=True)
+#@-node:ekr.20060417183606:moveLinesDown (pass hand test)
+#@+node:ekr.20060417183606.1:moveLinesUp (pass hand test)
+def moveLinesUp (self,event):
+    
+    '''Move all lines containing any selected text up one line,
+    moving to the previous node as needed.'''
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+    
+    s = w.getAllText()
+    sel_1,sel_2 = w.getSelectionRange()
+    i,junk = g.getLine(s,sel_1)
+    i2,j   = g.getLine(s,sel_2)
+    lines  = s[i:j]
+    # Select from start of the first line to the *start* of the last line.
+    # This prevents selection creep.
+    n = i2-i 
+    # g.trace('lines',repr(lines))
+    
+    self.beginCommand(undoType='move-lines-up')
+    changed = False
+    try:
+        if i > 0:
+            prev_i,prev_j = g.getLine(s,i-1)
+            prev_line = s[prev_i:prev_j]
+            w.delete(prev_i,j)
+            w.insert(prev_i,lines+prev_line)
+            w.setSelectionRange(prev_i,prev_i+n,insert=prev_i+n)
+            changed = True
+        elif g.app.gui.widget_name(w).startswith('body'):
+            p = c.currentPosition()
+            if not p.hasThreadBack(): return
+            w.delete(i,j)
+            c.setBodyString(p,w.getAllText())
+            p = p.threadBack()
+            c.beginUpdate()
+            try:
+                c.selectPosition(p)
+            finally:
+                c.endUpdate()
+            w.focus_force()
+            s = w.getAllText()
+            if not s.endswith('\n'): w.insert('end','\n')
+            w.insert('end',lines)
+            s = w.getAllText()
+            ins = len(s)-len(lines)+n
+            w.setSelectionRange(len(s)-len(lines),ins,insert=ins)
+            changed = True
+    finally:
+        self.endCommand(changed=changed,setLabel=True)
+#@-node:ekr.20060417183606.1:moveLinesUp (pass hand test)
+#@+node:ekr.20050920084036.110:reverseRegion
+def reverseRegion (self,event):
+    
+    '''Reverse the order of lines in the selected text.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    self.beginCommand(undoType='reverse-region')
+
+    ins = w.index('insert')
+    is1 = w.index('sel.first')
+    is2 = w.index('sel.last')
+    txt = w.get('%s linestart' % is1,'%s lineend' % is2)
+    w.delete('%s linestart' % is1,'%s lineend' % is2)
+    txt = txt.split('\n')
+    txt.reverse()
+    istart = is1.split('.')
+    istart = int(istart[0])
+    for z in txt:
+        w.insert('%s.0' % istart,'%s\n' % z)
+        istart = istart + 1
+    w.mark_set('insert',ins)
+    k.clearState()
+    k.resetLabel()
+    
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.110:reverseRegion
+#@+node:ekr.20050920084036.118:sortLines
+def sortLines (self,event,which=None):
+    
+    '''Sort lines of the selected text by comparing the entire text of a line.
+    A prefix argument means sort in descending order.'''
+
+    c = self.c ; k = c.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    self.beginCommand(undoType='sort-lines')
+    i = w.index('sel.first')
+    i2 = w.index('sel.last')
+    is1 = i.split('.')
+    is2 = i2.split('.')
+    txt = w.get('%s.0' % is1[0],'%s.0 lineend' % is2[0])
+    ins = w.index('insert')
+    txt = txt.split('\n')
+    w.delete('%s.0' % is1[0],'%s.0 lineend' % is2[0])
+    txt.sort()
+    if which:
+        txt.reverse()
+    inum = int(is1[0])
+    for z in txt:
+        w.insert('%s.0' % inum,'%s\n' % z)
+        inum = inum + 1
+    w.mark_set('insert',ins)
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.118:sortLines
+#@+node:ekr.20050920084036.119:sortColumns
+def sortColumns (self,event):
+    
+    '''Sort lines of selected text using only lines in the given columns to do the comparison.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    self.beginCommand(undoType='sort-columns')
+    ins = w.index('insert')
+    is1 = w.index('sel.first')
+    is2 = w.index('sel.last')
+    sint1, sint2 = is1.split('.')
+    sint2 = int(sint2)
+    sint3, sint4 = is2.split('.')
+    sint4 = int(sint4)
+    txt = w.get('%s.0' % sint1,'%s.0 lineend' % sint3)
+    w.delete('%s.0' % sint1,'%s.0 lineend' % sint3)
+    columns = []
+    i = int(sint1)
+    i2 = int(sint3)
+    while i <= i2:
+        t = w.get('%s.%s' % (i,sint2),'%s.%s' % (i,sint4))
+        columns.append(t)
+        i = i + 1
+    txt = txt.split('\n')
+    zlist = zip(columns,txt)
+    zlist.sort()
+    i = int(sint1)
+    for z in xrange(len(zlist)):
+         w.insert('%s.0' % i,'%s\n' % zlist[z][1])
+         i = i + 1
+    w.mark_set('insert',ins)
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.119:sortColumns
+#@+node:ekr.20050920084036.120:sortFields
+def sortFields (self,event,which=None):
+    
+    '''Divide the selected text into lines and sort by comparing the contents of
+     one field in each line. Fields are defined as separated by whitespace, so
+     the first run of consecutive non-whitespace characters in a line
+     constitutes field 1, the second such run constitutes field 2, etc.
+
+     You specify which field to sort by with a numeric argument: 1 to sort by
+     field 1, etc. A negative argument means sort in descending order. Thus,
+     minus 2 means sort by field 2 in reverse-alphabetical order.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    self.beginCommand(undoType='sort-fields')
+    ins = w.index('insert')
+    is1 = w.index('sel.first')
+    is2 = w.index('sel.last')
+    txt = w.get('%s linestart' % is1,'%s lineend' % is2)
+    txt = txt.split('\n')
+    fields = []
+    fn = r'\w+'
+    frx = re.compile(fn)
+    for z in txt:
+        f = frx.findall(z)
+        if not which:
+            fields.append(f[0])
+        else:
+            i = int(which)
+            if len(f) < i: return
+            i = i-1
+            fields.append(f[i])
+    nz = zip(fields,txt)
+    nz.sort()
+    w.delete('%s linestart' % is1,'%s lineend' % is2)
+    i = is1.split('.')
+    int1 = int(i[0])
+    for z in nz:
+        w.insert('%s.0' % int1,'%s\n' % z[1])
+        int1 = int1 + 1
+    w.mark_set('insert',ins)
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.120:sortFields
+#@+node:ekr.20060529184652:swapHelper
+def swapHelper (self,w,find,ftext,lind,ltext):
+
+    w.delete(find,'%s wordend' % find)
+    w.insert(find,ltext)
+    w.delete(lind,'%s wordend' % lind)
+    w.insert(lind,ftext)
+    self.swapSpots.pop()
+    self.swapSpots.pop()
+#@-node:ekr.20060529184652:swapHelper
+#@+node:ekr.20050920084036.122:transposeLines (pass)
+def transposeLines (self,event):
+    
+    '''Transpose the line containing the cursor with the preceding line.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    ins = w.getInsertPoint()
+    s = w.getAllText()
+    if not s.strip(): return
+
+    i,j = g.getLine(s,ins)
+    line1 = s[i:j]
+    
+    self.beginCommand(undoType='transpose-lines')
+    
+    if i == 0: # Transpose the next line.
+        i2,j2 = g.getLine(s,j+1)
+        line2 = s[i2:j2]
+        w.delete(0,j2)
+        w.insert(0,line2+line1)
+        w.setInsertPoint(j2-1)
+    else: # Transpose the previous line.
+        i2,j2 = g.getLine(s,i-1)
+        line2 = s[i2:j2]
+        w.delete(i2,j)
+        w.insert(i2,line1+line2)
+        w.setInsertPoint(j-1)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.122:transposeLines (pass)
+#@+node:ekr.20050920084036.123:swapWords
+def swapWords (self,event,swapspots):
+    
+    '''Transpose the word at the cursor with the preceding word.'''
+
+    w = self.editWidget(event)
+    if not w: return
+
+    txt = w.get('insert wordstart','insert wordend')
+    if not txt: return
+    
+    i = w.index('insert wordstart')
+    
+    self.beginCommand(undoType='swap-words')
+
+    if len(swapspots) != 0:
+        if w.compare(i,'>',swapspots[1]):
+            self.swapHelper(w,i,txt,swapspots[1],swapspots[0])
+        elif w.compare(i,'<',swapspots[1]):
+            self.swapHelper(w,swapspots[1],swapspots[0],i,txt)
+    else:
+        swapspots.append(txt)
+        swapspots.append(i)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.123:swapWords
+#@+node:ekr.20050920084036.180:backwardKillWord & killWord
+def backwardKillWord (self,event):
+    '''Kill the previous word.'''
+    c = self.c
+    self.beginCommand(undoType='backward-kill-word')
+    c.editCommands.backwardWord(event)
+    self.killWs(event)
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+def killWord (self,event):
+    '''Kill the word containing the cursor.'''
+    c = self.c
+    self.beginCommand(undoType='kill-word')
+    self.kill(event,'insert wordstart','insert wordend',undoType=None)
+    self.killWs(event)
+    c.frame.body.forceFullRecolor()
+    self.endCommand(changed=True,setLabel=True)
+
+#@-node:ekr.20050920084036.180:backwardKillWord & killWord
+#@+node:ekr.20050920084036.229:yankRectangle
+def yankRectangle (self,event,killRect=None):
+    
+    '''Yank into the rectangle defined by the start and end of selected text.'''
+    
+    c = self.c ; k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    killRect = killRect or self.theKillRectangle
+    if not killRect:
+        k.setLabelGrey('No kill rect')
+        return
+        
+    w,r1,r2,r3,r4 = self.beginCommand('yank-rectangle')
+    
+    # Change the text.
+    txt = w.get('insert linestart','insert')
+    txt = self.getWSString(txt)
+    i = w.getInsertPoint()
+    i1, i2 = i.split('.')
+    i1 = int(i1)
+    for z in killRect:
+        txt2 = w.get('%s.0 linestart' % i1,'%s.%s' % (i1,i2))
+        if len(txt2) != len(txt):
+            amount = len(txt) - len(txt2)
+            z = txt [-amount:] + z
+        w.insert('%s.%s' % (i1,i2),z)
+        if w.index('%s.0 lineend +1c' % i1) == w.index('end'):
+            w.insert('%s.0 lineend' % i1,'\n')
+        i1 += 1
+
+    self.endCommand()
+#@-node:ekr.20050920084036.229:yankRectangle
+#@-node:ekr.20061115111353:(Remove special tk indices)
+#@+node:ekr.20061127171128:Fix wiki markup bug (test)
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3994218
+By: rich_ries
+
+Leo 4.4.2.1 (also seen in 4.4 final)
+
+I was commenting some code, using the markup marks for various emphases. When
+I went back and moved the cursor over the first two characters (the hidden markup
+characters) of the line, I got the following error message:
+
+===========================================================
+exception executing command
+Traceback (most recent call last):
+
+  File "...leoCommands.py",line 264, in doCommand
+    val = command(event)
+
+  File "...leoEditCommands.py", line 3703, in nextLine
+    g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
+
+  File "...leoEditCommands.py", line 3314, in moveUpOrDownHelper
+    txt = w.get( 'insert linestart', 'insert lineend' )
+
+TypeError: unpack non-sequence
+===========================================================
+
+I did not get this when moving the cursor over the visible characters.
+
+@color
+#@nonl
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+def moveUpOrDownHelper (self,event,direction,extend):
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+
+    # Make the insertion cursor visible so bbox won't return an empty list.
+    w.seeInsertPoint()
+    
+    # Compute the new spot.
+    ins = w.getInsertPoint()
+    s = w.getAllText()
+    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    
+    # Find the coordinates of the cursor and set the new height.
+    # There may be roundoff errors because character postions may not match exactly.
+    x, y, junk, textH = w.bbox('insert')
+    bodyW, bodyH = w.winfo_width(), w.winfo_height()
+    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
+
+    # Make sure y is within text boundaries.
+    if direction == "up":
+        if y <= textH:  w.yview("scroll",-1,"units")
+        else:           y = max(y-textH,0)
+    else:
+        if y >= maxy:   w.yview("scroll",1,"units")
+        else:           y = min(y+textH,maxy)
+
+    # Position the cursor on the proper side of the characters.
+    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
+    if x > newx + width / 2: x = newx + width + 1
+    
+    # Make the move
+    spot = w.xyToPythonIndex(x,y)
+    self.extendHelper(w,extend,spot,upOrDown=True)
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@-node:ekr.20061127171128:Fix wiki markup bug (test)
+#@+node:ekr.20061105134302:Crasher
+Typed '(' in canvas pane.
+
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 268, in doCommand
+    val = command(event)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 348, in showCalltips
+    self.leadinWord = self.findCalltipWord(w)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 722, in findCalltipWord
+    s = gui.getAllText(w)
+  File "c:\prog\tigris-cvs\leo\src\leoTkinterGui.py", line 809, in getAllText
+    s = w.get("1.0","end-1c") # New in 4.4.1: use end-1c.
+AttributeError: Canvas instance has no attribute 'get'
+#@nonl
+#@-node:ekr.20061105134302:Crasher
+#@+node:ekr.20061116054917.4:Improve body widget
+#@+node:ekr.20061114122858.2:Test for i != j in w.replace
+#@-node:ekr.20061114122858.2:Test for i != j in w.replace
+#@+node:ekr.20061114122858.1:Define w.name method
+#@-node:ekr.20061114122858.1:Define w.name method
+#@+node:ekr.20061113171540:create nullTextWidget for nullGui
+#@-node:ekr.20061113171540:create nullTextWidget for nullGui
+#@+node:ekr.20061116054917.5:Move gui.get/set_focus to body widget
+#@-node:ekr.20061116054917.5:Move gui.get/set_focus to body widget
+#@-node:ekr.20061116054917.4:Improve body widget
+#@+node:ekr.20061212095134:Added tabs to wxLog
+#@+node:ekr.20051016101724.1:selectTab
+def selectTab (self,tabName,createText=True,wrap='none'):
+
+    '''Create the tab if necessary and make it active.'''
+
+    c = self.c
+    
+    tabFrame = self.frameDict.get(tabName)
+    logCtrl = self.textDict.get(tabName)
+
+    if tabFrame and logCtrl:
+        # Switch to a new colorTags list.
+        newColorTags = self.colorTagsDict.get(tabName)
+        self.colorTagsDict [self.tabName] = self.colorTags [:]
+        self.colorTags = newColorTags
+    elif not tabFrame:
+        self.createTab(tabName,createText=createText,wrap=wrap)
+        
+    self.nb.selectpage(tabName)
+    # Update the status vars.
+    self.tabName = tabName
+    self.logCtrl = self.textDict.get(tabName)
+    self.tabFrame = self.frameDict.get(tabName)
+
+    if 0: # Absolutely do not do this here!  It is a cause of the 'sticky focus' problem.
+        c.widgetWantsFocusNow(self.logCtrl)
+    return tabFrame
+#@-node:ekr.20051016101724.1:selectTab
+#@+node:ekr.20051020120306:openFindTab
+def openFindTab (self,event=None,show=True):
+    
+    '''Open the Find tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Find'
+    
+    wasOpen = self.inited
+        
+    if self.inited:
+        log.selectTab(tabName)
+    else:
+        self.inited = True
+        log.selectTab(tabName,createText=False)
+        f = log.frameDict.get(tabName)
+        self.findTabHandler = g.app.gui.createFindTab(c,f)
+        
+    if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
+        pass # self.findTabHandler.bringToFront()
+    else:
+        log.hideTab(tabName)
+#@-node:ekr.20051020120306:openFindTab
+#@+node:ekr.20051024173701:createTab
+def createTab (self,tabName,createText=True,wrap='none'):
+    
+    # g.trace(tabName,wrap)
+    
+    c = self.c ; k = c.k
+    tabFrame = self.nb.add(tabName)
+    self.menu = self.makeTabMenu(tabName)
+    if createText:
+        << Create the tab's text widget >>
+        if tabName != 'Log':
+            # c.k doesn't exist when the log pane is created.
+            # k.makeAllBindings will call setTabBindings('Log')
+            self.setTabBindings(tabName)
+    else:
+        self.textDict [tabName] = None
+        self.frameDict [tabName] = tabFrame
+#@+node:ekr.20051018072306:<< Create the tab's text widget >>
+w = self.createTextWidget(tabFrame)
+
+# Set the background color.
+configName = 'log_pane_%s_tab_background_color' % tabName
+bg = c.config.getColor(configName) or 'MistyRose1'
+
+if wrap not in ('none','char','word'): wrap = 'none'
+try: w.configure(bg=bg,wrap=wrap)
+except Exception: pass # Could be a user error.
+
+self.SetWidgetFontFromConfig(logCtrl=w)
+
+self.frameDict [tabName] = tabFrame
+self.textDict [tabName] = w
+
+# Switch to a new colorTags list.
+if self.tabName:
+    self.colorTagsDict [self.tabName] = self.colorTags [:]
+
+self.colorTags = ['black']
+self.colorTagsDict [tabName] = self.colorTags
+#@-node:ekr.20051018072306:<< Create the tab's text widget >>
+#@-node:ekr.20051024173701:createTab
+#@-node:ekr.20061212095134:Added tabs to wxLog
+#@+node:ekr.20061212085958.2:Refactored the findTab class
+#@+node:ekr.20051020120306:openFindTab
+def openFindTab (self,event=None,show=True):
+    
+    '''Open the Find tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Find'
+    
+    wasOpen = self.inited
+        
+    if self.inited:
+        log.selectTab(tabName)
+    else:
+        self.inited = True
+        log.selectTab(tabName,createText=False)
+        f = log.frameDict.get(tabName)
+        self.findTabHandler = g.app.gui.createFindTab(c,f)
+        
+    if show or wasOpen or c.config.getBool('minibufferSearchesShowFindTab'):
+        pass # self.findTabHandler.bringToFront()
+    else:
+        log.hideTab(tabName)
+#@-node:ekr.20051020120306:openFindTab
+#@+node:ekr.20051020120306.6:class findTab (leoFind)
+class findTab (leoFind):
+    
+    '''An adapter class that implements Leo's Find tab.'''
+
+    @others
+#@+node:ekr.20051020120306.10:Birth & death
+#@+node:ekr.20051020120306.11:__init__ & initGui
+def __init__(self,c,parentFrame):
+    
+    # g.trace('findTab',g.callers())
+
+    # Init the base class...
+    leoFind.__init__(self,c,title='Find Tab')
+
+    self.c = c
+    self.parentFrame = parentFrame
+    self.frame = self.outerFrame = self.top = None
+    
+    self.optionsOnly = c.config.getBool('show_only_find_tab_options')
+    
+    # These are created later.
+    self.find_ctrl = None
+    self.change_ctrl = None 
+    self.outerScrolledFrame = None
+
+    self.initGui()
+    self.createFrame(parentFrame)
+    self.createBindings()
+    self.init(c) # New in 4.3: init only once.
+    
+#@nonl
+#@-node:ekr.20051020120306.11:__init__ & initGui
+#@+node:ekr.20061212092124:Defined in subclasses
+def createBindings (self):
+    self.oops()
+    
+def createFrame (self):
+    self.oops()
+    
+def initGui (self):
+    pass # Optional method.
+    
+# self.oops is defined in the leoFind class.
+#@nonl
+#@-node:ekr.20061212092124:Defined in subclasses
+#@-node:ekr.20051020120306.10:Birth & death
+#@+node:ekr.20060221074900:Callbacks
+#@+node:ekr.20060221074900.1:findButtonCallback
+def findButtonCallback(self,event=None):
+    
+    self.findButton()
+    return 'break'
+#@-node:ekr.20060221074900.1:findButtonCallback
+#@+node:ekr.20051020120306.25:hideTab
+def hideTab (self,event=None):
+    
+    c = self.c
+    c.frame.log.selectTab('Log')
+    c.bodyWantsFocus()
+#@-node:ekr.20051020120306.25:hideTab
+#@-node:ekr.20060221074900:Callbacks
+#@+node:ekr.20051024192602: Top level
+#@+node:ekr.20051024192642.3:change/ThenFindCommand
+def changeCommand (self,event=None):
+
+    self.setup_command()
+    self.change()
+    
+def changeAllCommand (self,event=None):
+
+    self.setup_command()
+    self.changeAll()
+    
+def changeThenFindCommand(self,event=None):
+    
+    self.setup_command()
+    self.changeThenFind()
+#@-node:ekr.20051024192642.3:change/ThenFindCommand
+#@+node:ekr.20070105123638:changeAllCommand
+def changeAllCommand (self,event=None):
+
+    self.setup_command()
+    self.changeAll()
+#@-node:ekr.20070105123638:changeAllCommand
+#@+node:ekr.20060128075225:cloneFindAllCommand
+def cloneFindAllCommand (self,event=None):
+    
+    self.setup_command()
+    self.clone_find_all = True
+    self.findAll()
+    self.clone_find_all = False
+#@-node:ekr.20060128075225:cloneFindAllCommand
+#@+node:ekr.20060204120158.1:findAgainCommand
+def findAgainCommand (self):
+    
+    s = self.find_ctrl.getAllText()
+    
+    if s and s != '<find pattern here>':
+        self.findNextCommand()
+        return True
+    else:
+        # Tell the caller that to get the find args.
+        return False
+#@-node:ekr.20060204120158.1:findAgainCommand
+#@+node:ekr.20060209064832:findAllCommand
+def findAllCommand (self,event=None):
+
+    self.setup_command()
+    self.findAll()
+#@-node:ekr.20060209064832:findAllCommand
+#@+node:ekr.20051024192642.2:findNext/PrefCommand
+def findNextCommand (self,event=None):
+
+    self.setup_command()
+    self.findNext()
+    
+def findPrevCommand (self,event=None):
+    
+    self.setup_command()
+    self.reverse = not self.reverse
+    self.findNext()
+    self.reverse = not self.reverse
+#@-node:ekr.20051024192642.2:findNext/PrefCommand
 #@-node:ekr.20051024192602: Top level
 #@-node:ekr.20051020120306.6:class findTab (leoFind)
 #@+node:ekr.20061212085958:class tkFindTab (findTab)
@@ -1922,6 +4007,8 @@ hide = unpack
 #@-node:ekr.20041223102225:class tkIconBarClass
 #@-node:ekr.20061209083136:Complete the wxGui plugin
 #@+node:ekr.20061209082338:Docs
+#@+node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
+#@-node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
 #@+node:ekr.20061130084909:Improve What's special whitepaper
 @nocolor
 
@@ -1935,7 +4022,73 @@ hide = unpack
 #@nonl
 #@-node:ekr.20061029100330.1:Better pymacs docs & examples
 #@-node:ekr.20061209082338:Docs
-#@+node:ekr.20061028070132:New positions (May move to 4.4.4)
+#@+node:ekr.20061209081047:Fix bugs
+#@+node:ekr.20061030074731:Create standard pluginsManager.txt only if it does not exist
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3987635
+By: rogererens
+
+At present I have to go through the list in the Plugin Manager again, trying to
+remember which plugins I had enabled in the previous version.
+
+Possibly the .leoRecentFiles.txt construct analogue may be used?
+#@nonl
+#@-node:ekr.20061030074731:Create standard pluginsManager.txt only if it does not exist
+#@+node:ekr.20061101174435:Fix clone-drag problem
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3991369
+By: rich_ries
+
+The mousal Ctrl+Left Button does NOT result in a cloning of the chosen node.
+When I do a Ctrl+Left Click, the drag message is "dragged node will be moved",
+and move -- not clone -- it does.
+
+@bool allow_clone_drags = True
+@bool enable_drag_messages = True
+@bool look_for_control_drag_on_mouse_down = True
+#@nonl
+#@-node:ekr.20061101174435:Fix clone-drag problem
+#@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
+@nocolor
+
+Having two lists for the same thing is very bad.
+When this is fixed we will be able to simplify the multifile plugin.
+#@nonl
+#@-node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
+#@+node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3992390
+
+The 'username' in the path is just edited by me: in the original error message
+it is my login name, of course.
+
+What was happening is the following. 
+Yesterday I was playing with Leo 4.4.2.1 and I often could not create *new*
+Leo files in certain directories.
+Leo would just give me the above error message. After some experimentation,
+I found out that when there was a space somewhere in the path from where I started
+Leo (and planned to save the file), Leo would give me the above error message.
+When the path would not contain a space, Leo would happily save the file.
+
+Note that I only have this problem with *new* files. Leo files that have already
+been created can be opened and saved everywhere.
+
+Perhaps this is only a problem for Mac OS X, but earlier versions of Leo (and
+Mac OS X) did not have this behaviour.
+
+Theo
+#@nonl
+#@-node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
+#@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
+#@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
+#@-node:ekr.20061209081047:Fix bugs
+#@-node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070105135713:To do: 4.4.4 (new positions)
+#@+node:ekr.20070105135851.1:Most important
+#@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.
 
 # Important: the new vnode class implies that the read code must be rewritten to be similar to the opml read code.
@@ -3719,8 +5872,7 @@ def unlink (self):
 #@-node:ekr.20061028070057.55:p.unlink
 #@-node:ekr.20061028070057.51:p.Link/Unlink methods (all new)
 #@-node:ekr.20061028211424.1:position class
-#@-node:ekr.20061028070132:New positions (May move to 4.4.4)
-#@+node:ekr.20061209081047:Fix bugs
+#@-node:ekr.20061028070132:New positions
 #@+node:ekr.20061206060454:Improve import code
 @nocolor
 
@@ -3731,73 +5883,6 @@ def unlink (self):
 - Put the docstring at the top.
 - Make sure only imports go in the << imports >> section.
 #@-node:ekr.20061206060454:Improve import code
-#@+node:ekr.20061101174435:Fix clone-drag problem
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3991369
-By: rich_ries
-
-The mousal Ctrl+Left Button does NOT result in a cloning of the chosen node.
-When I do a Ctrl+Left Click, the drag message is "dragged node will be moved",
-and move -- not clone -- it does.
-
-@bool allow_clone_drags = True
-@bool enable_drag_messages = True
-@bool look_for_control_drag_on_mouse_down = True
-#@nonl
-#@-node:ekr.20061101174435:Fix clone-drag problem
-#@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
-@nocolor
-
-Having two lists for the same thing is very bad.
-When this is fixed we will be able to simplify the multifile plugin.
-#@nonl
-#@-node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
-#@+node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3992390
-
-The 'username' in the path is just edited by me: in the original error message
-it is my login name, of course.
-
-What was happening is the following. 
-Yesterday I was playing with Leo 4.4.2.1 and I often could not create *new*
-Leo files in certain directories.
-Leo would just give me the above error message. After some experimentation,
-I found out that when there was a space somewhere in the path from where I started
-Leo (and planned to save the file), Leo would give me the above error message.
-When the path would not contain a space, Leo would happily save the file.
-
-Note that I only have this problem with *new* files. Leo files that have already
-been created can be opened and saved everywhere.
-
-Perhaps this is only a problem for Mac OS X, but earlier versions of Leo (and
-Mac OS X) did not have this behaviour.
-
-Theo
-#@nonl
-#@-node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
-#@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
-#@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
-#@-node:ekr.20061209081047:Fix bugs
-#@+node:ekr.20061117140836:New features
-#@+node:ekr.20061024093525:Create settings menu
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3977681
-
-How about having a menu Edit -> Settings with the submenu-items 'LeoSettings.leo',
-'myLeoSettings.leo', 'this file's settings'?
-
-The menu-items 'Open myLeoSettings.leo' and 'Open LeoSettings.leo' under the
-Help-menu seem out-of-place.
-
-#@-node:ekr.20061024093525:Create settings menu
-#@+node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
-#@-node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
-#@+node:ekr.20061116054917.6:Remove blanks in calltips
-#@-node:ekr.20061116054917.6:Remove blanks in calltips
 #@+node:ekr.20061127170002.1:Allow multiple lines on the button bar
 @nocolor
 
@@ -3810,216 +5895,8 @@ their own section, like the NodeBar plugin did/does?
 add-new-icon-row command?
 #@nonl
 #@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
-#@+node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
-#@-node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
-#@+node:ekr.20061030054124.1:Create method to encapsulate url code for bookmarks plugin
-#@+node:ekr.20061030054934:Request
-@nocolor
-
-Email from Terry Brown.
-
-I've written a simple plugin such that double clicking any 
-headline in a tree with '@bookmarks' as its root will grab the 
-url from the first line of the body text.
-
-My problem is that I had to duplicate a lot of code from here:
-
-Code-->Gui Base classes-->@thin leoFrame.py-->class 
-leoTree-->tree.OnIconDoubleClick (@url)
-
-specifically this whole piece:
-
-@color
-     if not g.doHook("@url1",c=c,p=p,v=p,url=url):
-         # Note: the UNL plugin has its own notion of what a good url is.
-         << check the url; return if bad >>
-         << pass the url to the web browser >>
-     g.doHook("@url2",c=c,p=p,v=p)
-@nocolor
-
-So I'm wondering if that could be split of to a different function, 
-i.e. the first part of leoTree.OnIconDoubleClick gets the url, and 
-the second part handles the url, and I want to be able to call just 
-the second part.
-
-It's important that this solution will trigger UNL if it's loaded, 
-and similar animals.
-
-So, if it's not too tricky, could the handle url part of 
-leoTree.OnIconDoubleClick be split out for calling?
-#@nonl
-#@-node:ekr.20061030054934:Request
-#@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
-def OnIconDoubleClick (self,p):
-
-    # Note: "icondclick" hooks handled by vnode callback routine.
-
-    c = self.c
-    s = p.headString().strip()
-    if g.match_word(s,0,"@url"):
-        url = s[4:].strip()
-        if url.lstrip().startswith('--'):
-            # Get the url from the first body line.
-            lines = p.bodyString().split('\n')
-            url = lines and lines[0] or ''
-        else:
-            << stop the url after any whitespace >>
-        if not g.doHook("@url1",c=c,p=p,v=p,url=url):
-            self.handleUrlInUrlNode(url)
-        g.doHook("@url2",c=c,p=p,v=p)
-
-    return 'break' # 11/19/06
-#@nonl
-#@+node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
-# For safety, the URL string should end at the first whitespace, unless quoted.
-# This logic is also found in the UNL plugin so we don't have to change the 'unl1' hook.
-
-url = url.replace('\t',' ')
-
-# Strip quotes.
-i = -1
-if url and url[0] in ('"',"'"):
-    i = url.find(url[0],1)
-    if i > -1:
-        url = url[1:i]
-
-if i == -1:
-    # Not quoted or no matching quote.
-    i = url.find(' ')
-    if i > -1:
-        if 0: # No need for a warning.  Assume everything else is a comment.
-            g.es("ignoring characters after space in url:"+url[i:])
-            g.es("use %20 instead of spaces")
-        url = url[:i]
-#@-node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
-#@+node:ekr.20061030161842:handleUrlInUrlNode
-def handleUrlInUrlNode(self,url):
-    
-    # Note: the UNL plugin has its own notion of what a good url is.
-    
-    c = self.c
-    # g.trace(url)
-    << check the url; return if bad >>
-    << pass the url to the web browser >>
-#@+node:ekr.20031218072017.2314:<< check the url; return if bad >>
-@ A valid url is (according to D.T.Hein):
-
-3 or more lowercase alphas, followed by,
-one ':', followed by,
-one or more of: (excludes !"#;<>[\]^`|)
-  $%&'()*+,-./0-9:=?@A-Z_a-z{}~
-followed by one of: (same as above, except no minus sign or comma).
-  $%&'()*+/0-9:=?@A-Z_a-z}~
-@c
-
-urlPattern = "[a-z]{3,}:[\$-:=?-Z_a-z{}~]+[\$-+\/-:=?-Z_a-z}~]"
-
-if not url or len(url) == 0:
-    g.es("no url following @url")
-    return
-
-# Add http:// if required.
-if not re.match('^([a-z]{3,}:)',url):
-    url = 'http://' + url
-if not re.match(urlPattern,url):
-    g.es("invalid url: "+url)
-    return
-#@nonl
-#@-node:ekr.20031218072017.2314:<< check the url; return if bad >>
-#@+node:ekr.20031218072017.2315:<< pass the url to the web browser >>
-@ Most browsers should handle the following urls:
-  ftp://ftp.uu.net/public/whatever.
-  http://localhost/MySiteUnderDevelopment/index.html
-  file://home/me/todolist.html
-@c
-
-try:
-    import os
-    os.chdir(g.app.loadDir)
-    if g.match(url,0,"file:") and url[-4:]==".leo":
-        ok,frame = g.openWithFileName(url[5:],c)
-    else:
-        import webbrowser
-        # Mozilla throws a weird exception, then opens the file!
-        try: webbrowser.open(url)
-        except: pass
-except:
-    g.es("exception opening " + url)
-    g.es_exception()
-#@-node:ekr.20031218072017.2315:<< pass the url to the web browser >>
-#@-node:ekr.20061030161842:handleUrlInUrlNode
-#@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
-#@-node:ekr.20061030054124.1:Create method to encapsulate url code for bookmarks plugin
-#@+node:ekr.20061030074731:Create standard pluginsManager.txt only if it does not exist
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3987635
-By: rogererens
-
-At present I have to go through the list in the Plugin Manager again, trying to
-remember which plugins I had enabled in the previous version.
-
-Possibly the .leoRecentFiles.txt construct analogue may be used?
-#@nonl
-#@-node:ekr.20061030074731:Create standard pluginsManager.txt only if it does not exist
-#@+node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
-# This doesn't seem to work well on XP.
-#@nonl
-#@+node:ekr.20061209131102.1:openTest
-def openTest (self, event=None):
-    
-    if 1: # Open in a new process.
-        cmd = 'c:\Windows\System32\cmd.exe' # Hangs if used.
-        python = sys.executable
-        leo = g.os_path_abspath(g.os_path_join(g.app.loadDir,'leo.py'))
-        test = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test'))
-        
-        os.system('%s %s %s %s' % (cmd, python,leo,test))
-        # args = [python, leo, test]
-        
-        # if 1: # Use present environment.
-            # os.spawnv(os.P_NOWAIT, sys.executable, args)
-        # else: # Use a pristine environment.
-            # os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
-    else:
-        c = self
-        fileName = g.os_path_join(g.app.loadDir,'..','test','test.leo')
-    
-        ok, frame = g.openWithFileName(fileName,c)
-        if not ok:
-            g.es('not found: %s' % fileName)
-#@-node:ekr.20061209131102.1:openTest
-#@+node:ekr.20031218072017.3774:defineHelpMenuTables
-def defineHelpMenuTables (self):
-    
-    self.helpMenuTable = [
-        # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
-        ('&About Leo...',           'about-leo'),
-        ('Online &Home Page',       'open-online-home'),
-        '*open-online-&tutorial',
-        '*open-&users-guide',
-        '-',
-        ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
-        ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
-        ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
-        ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
-        ('Open scr&ipts.leo',       'open-scripts-leo'),
-        # ('Open t&est.leo',          'open-test-leo'),
-        '-',
-        '*he&lp-for-minibuffer',
-        '*help-for-&command',
-        '-',
-        '*&apropos-autocompletion',
-        '*apropos-&bindings',
-        '*apropos-&find-commands',
-        '-',
-        '*pri&nt-bindings',
-        '*print-c&ommands',
-    ]
-#@-node:ekr.20031218072017.3774:defineHelpMenuTables
-#@-node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
-#@-node:ekr.20061117140836:New features
-#@+node:ekr.20061028065955.4:Minor
+#@-node:ekr.20070105135851.1:Most important
+#@+node:ekr.20061028065955.4:New features
 #@+node:ekr.20061028065955.2:Fix binding nits
 #@+node:ekr.20061014050154.2:Binding to None clears all bindings
 #@-node:ekr.20061014050154.2:Binding to None clears all bindings
@@ -4485,8 +6362,78 @@ def revert (self,event=None):
 #@-node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
 #@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
-#@-node:ekr.20061028065955.4:Minor
-#@-node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20061024093525:Create settings menu
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3977681
+
+How about having a menu Edit -> Settings with the submenu-items 'LeoSettings.leo',
+'myLeoSettings.leo', 'this file's settings'?
+
+The menu-items 'Open myLeoSettings.leo' and 'Open LeoSettings.leo' under the
+Help-menu seem out-of-place.
+
+#@-node:ekr.20061024093525:Create settings menu
+#@+node:ekr.20061116054917.6:Remove blanks in calltips
+#@-node:ekr.20061116054917.6:Remove blanks in calltips
+#@+node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
+# This doesn't seem to work well on XP.
+#@nonl
+#@+node:ekr.20061209131102.1:openTest
+def openTest (self, event=None):
+    
+    if 1: # Open in a new process.
+        cmd = 'c:\Windows\System32\cmd.exe' # Hangs if used.
+        python = sys.executable
+        leo = g.os_path_abspath(g.os_path_join(g.app.loadDir,'leo.py'))
+        test = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test'))
+        
+        os.system('%s %s %s %s' % (cmd, python,leo,test))
+        # args = [python, leo, test]
+        
+        # if 1: # Use present environment.
+            # os.spawnv(os.P_NOWAIT, sys.executable, args)
+        # else: # Use a pristine environment.
+            # os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+    else:
+        c = self
+        fileName = g.os_path_join(g.app.loadDir,'..','test','test.leo')
+    
+        ok, frame = g.openWithFileName(fileName,c)
+        if not ok:
+            g.es('not found: %s' % fileName)
+#@-node:ekr.20061209131102.1:openTest
+#@+node:ekr.20031218072017.3774:defineHelpMenuTables
+def defineHelpMenuTables (self):
+    
+    self.helpMenuTable = [
+        # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
+        ('&About Leo...',           'about-leo'),
+        ('Online &Home Page',       'open-online-home'),
+        '*open-online-&tutorial',
+        '*open-&users-guide',
+        '-',
+        ('Open Leo&Docs.leo',       'open-leoDocs-leo'),
+        ('Open Leo&Plugins.leo',    'open-leoPlugins-leo'),
+        ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
+        ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
+        ('Open scr&ipts.leo',       'open-scripts-leo'),
+        # ('Open t&est.leo',          'open-test-leo'),
+        '-',
+        '*he&lp-for-minibuffer',
+        '*help-for-&command',
+        '-',
+        '*&apropos-autocompletion',
+        '*apropos-&bindings',
+        '*apropos-&find-commands',
+        '-',
+        '*pri&nt-bindings',
+        '*print-c&ommands',
+    ]
+#@-node:ekr.20031218072017.3774:defineHelpMenuTables
+#@-node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
+#@-node:ekr.20061028065955.4:New features
+#@-node:ekr.20070105135713:To do: 4.4.4 (new positions)
 #@+node:ekr.20060822174843:Most important
 #@+node:ekr.20061206084401:Look at launchpad and bazaar
 http://launchpad.net 
