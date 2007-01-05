@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="903" width="973"/>
+	<global_window_position top="10" left="238" height="884" width="973"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -72,7 +72,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -434,7 +434,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -605,11 +605,11 @@
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -617,7 +617,7 @@
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
-<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
+<v t="ekr.20060603215208.20" a="TV"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
 <v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
 <v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
@@ -2408,11 +2408,11 @@ Double-Button-3 # Useful if you also have the rClick plugin enabled.</t>
 <t tx="ekr.20060112085325">fill-paragraph                      = None
 fill-region                         = None
 fill-region-as-paragraph            = None
-find-tab-change                     = Ctrl-=
-find-tab-change-all                 = None  # Not recommended to bind this to a shortcut.
-find-tab-change-then-find           = Ctrl--
-find-tab-find-next                  = F3
-find-tab-find-prev                  = F2
+change                     = Ctrl-=
+change-all                 = None  # Not recommended to bind this to a shortcut.
+change-then-find           = Ctrl--
+find-next                  = F3
+find-prev                  = F2
 flatten-outline                     = None
 flush-lines                         = None
 focus-to-body                       = None
@@ -2529,11 +2529,11 @@ move-past-close-extend-selection    = None</t>
 <t tx="ekr.20060112085643">fill-paragraph                          = None
 fill-region                             = None
 fill-region-as-paragraph                = None
-find-tab-change                         = Ctrl-=
-find-tab-change-all                     = None  # Not recommended to bind this to a shortcut.
-find-tab-change-then-find               = Ctrl--
-find-tab-find-next                      = F3
-find-tab-find-prev                      = F2
+change                                  = Ctrl-=
+change-all                              = None  # Not recommended to bind this to a shortcut.
+change-then-find                        = Ctrl--
+find-next                               = F3
+find-prev                               = F2
 flatten-outline                         = None
 flush-lines                             = None
 focus-to-body                           = None
@@ -2803,11 +2803,11 @@ zap-to-character                        = Alt-z</t>
 fill-paragraph                      = Alt-q
 fill-region                         = None
 fill-region-as-paragraph            = None
-find-tab-change                     = Ctrl-=
-find-tab-change-all                 = None  # Not recommended to bind this to a shortcut.
-find-tab-change-then-find           = Ctrl--
-find-tab-find-next                  = F3
-find-tab-find-prev                  = F2
+change                              = Ctrl-=
+change-all                          = None  # Not recommended to bind this to a shortcut.
+change-then-find                    = Ctrl--
+find-next                           = F3
+find-prev                           = F2
 flatten-outline                     = None
 flush-lines                         = None
 focus-to-body                       = None
@@ -3075,11 +3075,11 @@ zap-to-character                = Alt-z
 <t tx="ekr.20060112090844.4">fill-paragraph                          = None
 fill-region                             = None
 fill-region-as-paragraph                = None
-find-tab-change                         = Ctrl-=
-find-tab-change-all                     = None  # Not recommended to bind this to a shortcut.
-find-tab-change-then-find               = Ctrl--
-find-tab-find-next                      = F3
-find-tab-find-prev                      = F2
+change                                  = Ctrl-=
+change-all                              = None  # Not recommended to bind this to a shortcut.
+change-then-find                        = Ctrl--
+find-next                               = F3
+find-prev                               = F2
 flatten-outline                         = None
 flush-lines                             = None
 focus-to-body                           = None
@@ -3344,12 +3344,12 @@ fill-region                         = None
 fill-region-as-paragraph            = None
 find-character                      = None
 find-character-extend-selection     = None
-find-tab-change                     = None
-find-tab-change-all                 = None
-find-tab-change-then-find           = None
-find-tab-find-next                  = None
-find-tab-find-all                   = None
-find-tab-find-prev                  = None
+change                              = None
+change-all                          = None
+change-then-find                    = None
+find-next                           = None
+find-all                            = None
+find-prev                           = None
 find-word                           = None
 flatten-outline                     = None
 flush-lines                         = None
@@ -3908,8 +3908,8 @@ Standard keys (Windows defaults in parens)
 
 F1 help
 Windows key + F1 Windows Help
-F2 find-tab-find-prev (Rename)
-F3 find-tab-find-next (Find Files)
+F2 find-prev (Rename)
+F3 find-next (Find Files)
 F4 None (Address bar in Windows Explorer)
 F5 None (Refresh, Reload in Windows Explorer)
 F6 None (Should cycle from window to window)
@@ -4169,10 +4169,10 @@ mode-help           = Tab
 # enter-find-mode     = Ctrl-F
 search-with-present-options         = Ctrl-f
 replace-string                      = Ctrl-Shift-r
-find-tab-find-next                  = F3
-find-tab-find-prev                  = F2
-find-tab-change                     = Ctrl-=
-find-tab-change-then-find           = Ctrl--
+find-next                           = F3
+find-prev                           = F2
+change                              = Ctrl-=
+change-then-find                    = Ctrl--
 
 set-find-everywhere                 -&gt; same = e
 set-find-node-only                  -&gt; same = n
@@ -4636,12 +4636,12 @@ word-search-backward                = None
 word-search-forward                 = None
 
 # To coninue finds and changes...
-find-tab-find-next                  = F3
-find-tab-find-all                   = None
-find-tab-find-prev                  = F2
-find-tab-change                     = Ctrl-=
-find-tab-change-all                 = None  # Not recommended to bind this to a shortcut.
-find-tab-change-then-find           = Ctrl--
+find-next                           = F3
+find-all                            = None
+find-prev                           = F2
+change                              = Ctrl-=
+change-all                          = None  # Not recommended to bind this to a shortcut.
+change-then-find                    = Ctrl--
 
 hide-find-tab                       = None
 open-find-tab                       = None # Shift-Ctrl-f
@@ -4710,10 +4710,10 @@ forward-word-extend-selection       ! mini = Ctrl-Shift-RtArrow
 select-all                          ! mini = Alt-Shift-A
 
 # Find options.  Important: conflicts with non-minibuffer bindings do not matter here!
-find-tab-find-next                  ! mini = F3
-find-tab-find-prev                  ! mini = F2
-find-tab-change                     ! mini  =Ctrl-=
-find-tab-change-then-find           ! mini = Ctrl--
+find-next                           ! mini = F3
+find-prev                           ! mini = F2
+change                              ! mini  =Ctrl-=
+change-then-find                    ! mini = Ctrl--
 
 set-find-everywhere                 ! mini = Alt-Ctrl-e
 set-find-node-only                  ! mini = Alt-Ctrl-n
@@ -4908,12 +4908,12 @@ hide-spell-tab
 Furthermore, the find commands are a good tool for using Leo without a mouse
 (More commands are coming)
 
-find-tab-change
-find-tab-change-all
-find-tab-change-then-find
-find-tab-find-next
-find-tab-find-all
-find-tab-find-prev
+change
+change-all
+change-then-find
+find-next
+find-all
+find-prev
 hide-find-tab
 isearch-backward
 isearch-backward-regexp
@@ -5082,12 +5082,12 @@ word-search-backward                = None
 word-search-forward                 = None
 
 # To coninue finds and changes...
-find-tab-find-next                  = F3
-find-tab-find-all                   = None
-find-tab-find-prev                  = F2
-find-tab-change                     = Ctrl-=
-find-tab-change-all                 = None  # Not recommended to bind this to a shortcut.
-find-tab-change-then-find           = Ctrl--</t>
+find-next                           = F3
+find-all                            = None
+find-prev                           = F2
+change                              = Ctrl-=
+change-all                          = None  # Not recommended to bind this to a shortcut.
+change-then-find                    = Ctrl--</t>
 <t tx="ekr.20060603215208.20">full-command            = Alt-x
 keyboard-quit           = Ctrl-g
 negative-argument       = None      # Alt-minus conflicts with contract-all.
@@ -5129,10 +5129,10 @@ select-all                          ! mini = Alt-Shift-A
 yank                                ! mini = Ctrl-Y
 
 # Find options.  Important: conflicts with non-minibuffer bindings do not matter here!
-find-tab-find-next                  ! mini = F3
-find-tab-find-prev                  ! mini = F2
-find-tab-change                     ! mini  =Ctrl-=
-find-tab-change-then-find           ! mini = Ctrl--
+find-next                           ! mini = F3
+find-prev                           ! mini = F2
+change                              ! mini  =Ctrl-=
+change-then-find                    ! mini = Ctrl--
 
 set-find-everywhere                 ! mini = Alt-Ctrl-e
 set-find-node-only                  ! mini = Alt-Ctrl-n
@@ -5600,10 +5600,10 @@ keyboard-quit = Return
 isearch-with-present-options        = Alt-i
 search-with-present-options         = Ctrl-f
 replace-string                      = Ctrl-Shift-r
-find-tab-find-next                  = F3
-find-tab-find-prev                  = F2
-find-tab-change                     = Ctrl-=
-find-tab-change-then-find           = Ctrl--
+find-next                           = F3
+find-prev                           = F2
+change                              = Ctrl-=
+change-then-find                    = Ctrl--
 
 toggle-find-ignore-case-option      -&gt; same = i
 toggle-find-in-body-option          -&gt; same = b
@@ -5683,12 +5683,12 @@ word-search-backward                = None
 word-search-forward                 = None
 
 # To coninue finds and changes...
-find-tab-find-next                  = F3
-find-tab-find-all                   = None
-find-tab-find-prev                  = F2
-find-tab-change                     = Ctrl-=
-find-tab-change-all                 = None  # Not recommended to bind this to a shortcut.
-find-tab-change-then-find           = Ctrl--</t>
+find-next                           = F3
+find-all                            = None
+find-prev                           = F2
+change                              = Ctrl-=
+change-all                          = None  # Not recommended to bind this to a shortcut.
+change-then-find                    = Ctrl--</t>
 <t tx="ekr.20060923114638.25"># Top-level bindings are *not* inherited in the minibuffer!
 copy-text           ! mini = Ctrl-c
 cut-text            ! mini = Ctrl-x
@@ -5722,10 +5722,10 @@ forward-word-extend-selection       ! mini = Ctrl-Shift-RtArrow
 select-all                          ! mini = Alt-Shift-A
 
 # Find options.  Important: conflicts with non-minibuffer bindings do not matter here!
-find-tab-find-next                  ! mini = F3
-find-tab-find-prev                  ! mini = F2
-find-tab-change                     ! mini  =Ctrl-=
-find-tab-change-then-find           ! mini = Ctrl--
+find-next                           ! mini = F3
+find-prev                           ! mini = F2
+change                              ! mini  =Ctrl-=
+change-then-find                    ! mini = Ctrl--
 
 set-find-everywhere                 ! mini = Alt-Ctrl-e
 set-find-node-only                  ! mini = Alt-Ctrl-n
