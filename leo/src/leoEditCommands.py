@@ -2700,8 +2700,8 @@ class editCommandsClass (baseEditCommandsClass):
             # No undo in this widget.
             # Make sure we actually delete something if we can.
             s = w.getAllText()
-            j = max(i,min(j,len(s)-1))
             if i != j:
+                j = max(i,min(j,len(s)))
                 w.delete(i,j)
                 w.setSelectionRange(i,i,insert=i)
             elif ins != 0:
