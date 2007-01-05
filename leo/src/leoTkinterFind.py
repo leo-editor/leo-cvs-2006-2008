@@ -101,8 +101,6 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         
         for key in self.newStringKeys:
             self.dict[key] = Tk.StringVar()
-            
-        self.s_ctrl = g.app.gui.leoTextWidgetClass() # Used by find.search()
         #@-node:ekr.20031218072017.3900:<< create the tkinter intVars >>
         #@nl
         
@@ -393,10 +391,6 @@ class tkFindTab (leoFind.findTab):
         c = self.c
         
         # g.trace('findTab')
-        
-        self.s_ctrl = g.app.gui.leoTextWidgetClass(parentFrame)
-            # Used by find.search()
-            # Must have a parent Frame even though it is not packed.
     
         #@    << Create the outer frames >>
         #@+node:ekr.20051020120306.14:<< Create the outer frames >>

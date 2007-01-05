@@ -41,26 +41,96 @@ import re
 # restore the Leo window as it was on entry whenever an incremental search 
 # fails and after any Find All and Change All command.
 # 
-# Initialization involves setting the self.c, self.p, self.in_headline, 
-# self.wrapping and self.s_ctrl ivars. Setting self.in_headline is tricky; we 
-# must be sure to retain the state of the outline pane until initialization is 
-# complete. Initializing the Find All and Change All commands is much easier 
-# because such initialization does not depend on the state of the Leo window.
+# Initialization involves setting the c, p, in_headline, wrapping and s_ctrl 
+# ivars. Setting in_headline is tricky; we must be sure to retain the state of 
+# the outline pane until initialization is complete. Initializing the Find All 
+# and Change All commands is much easier because such initialization does not 
+# depend on the state of the Leo window.
 # 
 # Using Tk.Text widgets for both headlines and body text results in a huge 
 # simplification of the code. Indeed, the searching code does not know whether 
 # it is searching headline or body text. The search code knows only that 
-# self.s_ctrl is a Tk.Text widget that contains the text to be searched or 
-# changed and the insert and sel Tk attributes of self.search_text indicate 
-# the range of text to be searched. Searching headline and body text 
-# simultaneously is complicated. The selectNextPosition() method handles the 
-# many details involved by setting self.s_ctrl and its insert and sel 
-# attributes.
+# s_ctrl is a Tk.Text widget that contains the text to be searched or changed 
+# and the insert and sel Tk attributes of self.search_text indicate the range 
+# of text to be searched. Searching headline and body text simultaneously is 
+# complicated. The selectNextPosition() method handles the many details 
+# involved by setting s_ctrl and its insert and sel attributes.
 #@-at
 #@-node:ekr.20031218072017.2414:<< Theory of operation of find/change >>
 #@nl
 
 #@+others
+#@+node:ekr.20070105092022.1:class searchWidget
+class searchWidget:
+    
+    '''A class to simulating a hidden Tk Text widget.'''
+
+    def __repr__(self):
+        name = g.app.gui.widget_name(self)
+        return 'searchWidget id: %s name: %s' % (id(self),name)
+        
+    #@    @+others
+    #@+node:ekr.20070105092438:ctor
+    def __init__ (self,*args,**keys):
+        
+        # g.trace ('searchWidget',g.callers())
+        
+        self.s = ''    # The widget text
+        self.i = 0     # The insert point
+        self.sel = 0,0 # The selection range
+    #@-node:ekr.20070105092438:ctor
+    #@+node:ekr.20070105093138:getters
+    def getAllText (self):          return self.s
+    def getInsertPoint (self):      return self.i       # Returns Python index.
+    def getSelectionRange(self):    return self.sel     # Returns Python indices.
+    
+    #@-node:ekr.20070105093138:getters
+    #@+node:ekr.20070105102419:setters
+    def delete(self,i,j=None):
+        i = self.toPythonIndex(i)
+        if j is None: j = i + 1
+        else: j = self.toPythonIndex(j)
+        self.s = self.s[:i] + self.s[j:]
+    
+    def insert(self,i,s):
+        if not s: return
+        i = self.toPythonIndex(i)
+        self.s = self.s[:i] + s + self.s[i:]
+        self.i = i
+        self.sel = i,i
+        
+    def setAllText (self,s):
+        self.s = s
+        self.i = 0
+        self.sel = 0,0
+    
+    def setInsertPoint (self,i):
+        self.i = i
+    
+    def setSelectionRange (self,i,j,insert=None):
+        self.sel = self.toPythonIndex(i),self.toPythonIndex(j)
+        if insert is not None:
+            self.i = self.toPythonIndex(insert)
+    #@-node:ekr.20070105102419:setters
+    #@+node:ekr.20070105092022.4:toPythonIndex
+    def toPythonIndex (self,i):
+        
+        '''Make sure i is a Python index.'''
+    
+        if i is None:
+            return 0
+    
+        elif type(i) in (type('a'),type(u'a')):
+            row,col = i.split('.')
+            row,col = int(row),int(col)
+            row -= 1
+            i = g.convertRowColToPythonIndex(self.s,row,col)
+    
+        return i
+    #@-node:ekr.20070105092022.4:toPythonIndex
+    #@-others
+#@nonl
+#@-node:ekr.20070105092022.1:class searchWidget
 #@+node:ekr.20061212084717:class leoFind
 class leoFind:
 
@@ -144,7 +214,7 @@ class leoFind:
         self.clone_find_all = False
         self.p = None # The position being searched.  Never saved between searches!
         self.in_headline = False # True: searching headline text.
-        self.s_ctrl = None # The search text for this search.
+        self.s_ctrl = searchWidget() # The search text for this search.
         self.wrapping = False # True: wrapping is enabled.
             # This is _not_ the same as self.wrap for batch searches.
         
@@ -487,7 +557,7 @@ class leoFind:
             u.beforeChangeGroup(current,undoType)
             while 1:
                 pos1, pos2 = self.findNextMatch()
-                if not pos1: break
+                if pos1 is None: break
                 count += 1
                 self.batchChange(pos1,pos2)
                 s = w.getAllText()
@@ -655,7 +725,7 @@ class leoFind:
         count = 0 ; clones = []
         while 1:
             pos, newpos = self.findNextMatch()
-            if not pos: break
+            if pos is None: break
             count += 1
             s = w.getAllText()
             i,j = g.getLine(s,pos)
@@ -1317,7 +1387,6 @@ class findTab (leoFind):
         self.find_ctrl = None
         self.change_ctrl = None 
         self.outerScrolledFrame = None
-        self.s_ctrl = None
     
         self.initGui()
         self.createFrame(parentFrame)
