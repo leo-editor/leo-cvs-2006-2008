@@ -131,11 +131,8 @@ def indentToCommentColumn (self,event):
     self.beginCommand(undoType='indent-to-comment-column')
 
     s = w.getAllText()
-    ###i = w.index('insert lineend')
     junk,i = g.getLine(s,w.getInsertPoint()) 
-    ###i1, i2 = i.split('.')
     i1,i2 = g.convertPythonIndexToRowCol(s,i)
-    ###i2 = int(i2)
     c1 = int(self.ccolumn)
 
     if i2 < c1:
@@ -521,14 +518,12 @@ def backwardParagraphHelper (self,event,extend):
 #@+node:ekr.20051218141237:lines (test)
 def beginningOfLine (self,event):
     '''Move the cursor to the start of the line, extending the selection if in extend mode.'''
-    ###self.moveToHelper(event,'insert linestart',extend=False)
     w = self.editWidget(event)
     i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
     self.moveToHelper(event,i,extend=False)
     
 def beginningOfLineExtendSelection (self,event):
     '''Extend the selection by moving the cursor to the start of the line.'''
-    ###self.moveToHelper(event,'insert linestart',extend=True)
     w = self.editWidget(event)
     i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
     self.moveToHelper(event,i,extend=True)
@@ -1510,13 +1505,13 @@ if 0: # We can use the base-class ctor.
 #@+node:ekr.20051020120306.12:initGui
 def initGui (self):
 
-    self.dict = {}
+    self.svarDict = {}
     
     for key in self.intKeys:
-        self.dict[key] = Tk.IntVar()
+        self.svarDict[key] = Tk.IntVar()
     
     for key in self.newStringKeys:
-        self.dict[key] = Tk.StringVar()
+        self.svarDict[key] = Tk.StringVar()
 
 #@-node:ekr.20051020120306.12:initGui
 #@+node:ekr.20051020120306.13:createFrame (tkFindTab)
@@ -1644,25 +1639,25 @@ for i in xrange(numberOfColumns):
 radioLists[0] = []
 
 checkLists[0] = [
-    # ("Scrip&t Change",self.dict["script_change"]),
-    ("Whole &Word", self.dict["whole_word"]),
-    ("&Ignore Case",self.dict["ignore_case"]),
-    ("Wrap &Around",self.dict["wrap"]),
-    ("&Reverse",    self.dict["reverse"]),
-    ('Rege&xp',     self.dict['pattern_match']),
-    ("Mark &Finds", self.dict["mark_finds"]),
+    # ("Scrip&t Change",self.svarDict["script_change"]),
+    ("Whole &Word", self.svarDict["whole_word"]),
+    ("&Ignore Case",self.svarDict["ignore_case"]),
+    ("Wrap &Around",self.svarDict["wrap"]),
+    ("&Reverse",    self.svarDict["reverse"]),
+    ('Rege&xp',     self.svarDict['pattern_match']),
+    ("Mark &Finds", self.svarDict["mark_finds"]),
 ]
 
 radioLists[1] = [
-    (self.dict["radio-search-scope"],"&Entire Outline","entire-outline"),
-    (self.dict["radio-search-scope"],"&Suboutline Only","suboutline-only"),  
-    (self.dict["radio-search-scope"],"&Node Only","node-only"),
+    (self.svarDict["radio-search-scope"],"&Entire Outline","entire-outline"),
+    (self.svarDict["radio-search-scope"],"&Suboutline Only","suboutline-only"),  
+    (self.svarDict["radio-search-scope"],"&Node Only","node-only"),
 ]
 
 checkLists[1] = [
-    ("Search &Headline", self.dict["search_headline"]),
-    ("Search &Body",     self.dict["search_body"]),
-    ("Mark &Changes",    self.dict["mark_changes"]),
+    ("Search &Headline", self.svarDict["search_headline"]),
+    ("Search &Body",     self.svarDict["search_body"]),
+    ("Mark &Changes",    self.svarDict["mark_changes"]),
 ]
 
 for i in xrange(numberOfColumns):
@@ -1751,7 +1746,7 @@ def setOption (self, ivar, val):
 
     if ivar in h.intKeys:
         if val is not None:
-            var = h.dict.get(ivar)
+            var = h.svarDict.get(ivar)
             var.set(val)
             # g.trace('%s = %s' % (ivar,val))
 
@@ -1763,7 +1758,7 @@ def getOption (self,ivar,verbose=False):
     
     h = self.finder
     
-    var = h.dict.get(ivar)
+    var = h.svarDict.get(ivar)
     if var:
         val = var.get()
         verbose and g.trace('%s = %s' % (ivar,val))
@@ -1778,7 +1773,7 @@ def toggleOption (self, ivar):
     h = self.finder
 
     if ivar in h.intKeys:
-        var = h.dict.get(ivar)
+        var = h.svarDict.get(ivar)
         val = not var.get()
         var.set(val)
         # g.trace('%s = %s' % (ivar,val),var)

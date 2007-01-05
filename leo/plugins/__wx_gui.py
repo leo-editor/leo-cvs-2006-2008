@@ -10,6 +10,7 @@ __version__ = '0.5' # Start of development with Leo 4.4.2 code base and wxWidget
 #@<< known bugs & incompletions >>
 #@+node:ekr.20070104114159:<< known bugs & incompletions >>
 #@@nocolor
+#@@color
 #@+at
 # 
 # - Many unit tests presently fail.
@@ -32,7 +33,6 @@ __version__ = '0.5' # Start of development with Leo 4.4.2 code base and wxWidget
 # (they are buggy).
 # - Syntax coloring causes flash even when nothing is colored.
 # 
-#@@color
 # 
 #@-at
 #@-node:ekr.20070104114159:<< known bugs & incompletions >>
@@ -702,24 +702,28 @@ class wxFindTab (leoFind.findTab):
                 # Init the base class.
                 # Calls initGui, createFrame, createBindings & init(c), in that order.
     #@-node:ekr.20061212100034.1:ctor
+    #@+node:ekr.20070105114426:class svar
+    class svar:
+        '''A class like Tk's IntVar and StringVar classes.'''
+        def __init__(self):
+            self.val = None
+        def get (self):
+            return self.val
+        def set (self,val):
+            self.val = val
+    #@-node:ekr.20070105114426:class svar
     #@+node:ekr.20061212100034.2:initGui
     def initGui (self):
-    
-        self.dict = {}
         
-        class var:
-            def __init__(self):
-                self.val = None
-            def get (self):
-                return self.val
-            def set (self,val):
-                self.val = val
+        g.trace('wxFindTab')
+    
+        self.svarDict = {} # Keys are ivar names, values are svar objects.
         
         for key in self.intKeys:
-            self.dict[key] = var() # Was Tk.IntVar.
+            self.svarDict[key] = self.svar() # Was Tk.IntVar.
         
         for key in self.newStringKeys:
-            self.dict[key] = var() # Was Tk.StringVar.
+            self.svarDict[key] = self.svar() # Was Tk.StringVar.
     #@-node:ekr.20061212100034.2:initGui
     #@+node:ekr.20061212100034.3:createFrame (wxFindTab)
     def createFrame (self,parentFrame):
@@ -743,56 +747,6 @@ class wxFindTab (leoFind.findTab):
         self.change_ctrl = g.app.gui.leoTextWidgetClass(f,name='change-text',size=(300,-1))
         
     #@-node:ekr.20061212100034.5:createFindChangeAreas
-    #@+node:ekr.20061212100034.7:createBoxes
-    def createBoxes (self):
-        
-        '''Create two columns of radio buttons & check boxes.'''
-        
-        c = self.c ; f = self.parentFrame
-        self.boxes = []
-        self.widgetsDict = {} # Keys are ivars, values are checkboxes or radio buttons.
-        
-        data = ( # Leading star denotes a radio button.
-            ('Whole &Word', 'whole_word',),
-            ('&Ignore Case','ignore_case'),
-            ('Wrap &Around','wrap'),
-            ('&Reverse',    'reverse'),
-            ('Rege&xp',     'pattern_match'),
-            ('Mark &Finds', 'mark_finds'),
-            ("*&Entire Outline","entire-outline"),
-            ("*&Suboutline Only","suboutline-only"),  
-            ("*&Node Only","node-only"),
-            ('Search &Headline','search_headline'),
-            ('Search &Body','search_body'),
-            ('Mark &Changes','mark_changes'),
-        )
-    
-        # Important: changing these controls merely changes entries in self.dict.
-        # First, leoFind.update_ivars sets the find ivars from self.dict.
-        # Second, self.init sets the values of widgets from the ivars.
-        inGroup = False
-        for label,ivar in data:
-            if label.startswith('*'):
-                label = label[1:]
-                style = g.choose(inGroup,0,wx.RB_GROUP)
-                inGroup = True
-                w = wx.RadioButton(f,label=label,style=style)
-                self.widgetsDict[ivar] = w
-                def radioButtonCallback(event=None,ivar=ivar):
-                    self.dict["radio-search-scope"].set(ivar)
-                    g.trace(ivar)
-                w.Bind(wx.EVT_RADIOBUTTON,radioButtonCallback)
-            else:
-                w = wx.CheckBox(f,label=label)
-                self.widgetsDict[ivar] = w
-                def checkBoxCallback(event=None,ivar=ivar):
-                    val = self.dict.get(ivar)
-                    self.dict[ivar] = g.choose(val,False,True)
-                    g.trace(ivar,val)
-                w.Bind(wx.EVT_CHECKBOX,checkBoxCallback)
-            self.boxes.append(w)
-    #@nonl
-    #@-node:ekr.20061212100034.7:createBoxes
     #@+node:ekr.20061212120506:layout
     def layout (self):
         
@@ -833,6 +787,57 @@ class wxFindTab (leoFind.findTab):
         f.SetSizer(sizer)
     #@nonl
     #@-node:ekr.20061212120506:layout
+    #@+node:ekr.20061212100034.7:createBoxes
+    def createBoxes (self):
+        
+        '''Create two columns of radio buttons & check boxes.'''
+        
+        c = self.c ; f = self.parentFrame
+        self.boxes = []
+        self.widgetsDict = {} # Keys are ivars, values are checkboxes or radio buttons.
+        
+        data = ( # Leading star denotes a radio button.
+            ('Whole &Word', 'whole_word',),
+            ('&Ignore Case','ignore_case'),
+            ('Wrap &Around','wrap'),
+            ('&Reverse',    'reverse'),
+            ('Rege&xp',     'pattern_match'),
+            ('Mark &Finds', 'mark_finds'),
+            ("*&Entire Outline","entire-outline"),
+            ("*&Suboutline Only","suboutline-only"),  
+            ("*&Node Only","node-only"),
+            ('Search &Headline','search_headline'),
+            ('Search &Body','search_body'),
+            ('Mark &Changes','mark_changes'),
+        )
+    
+        # Important: changing these controls merely changes entries in self.svarDict.
+        # First, leoFind.update_ivars sets the find ivars from self.svarDict.
+        # Second, self.init sets the values of widgets from the ivars.
+        inGroup = False
+        for label,ivar in data:
+            if label.startswith('*'):
+                label = label[1:]
+                style = g.choose(inGroup,0,wx.RB_GROUP)
+                inGroup = True
+                w = wx.RadioButton(f,label=label,style=style)
+                self.widgetsDict[ivar] = w
+                def radioButtonCallback(event=None,ivar=ivar):
+                    svar = self.svarDict["radio-search-scope"]
+                    svar.set(ivar)
+                w.Bind(wx.EVT_RADIOBUTTON,radioButtonCallback)
+            else:
+                w = wx.CheckBox(f,label=label)
+                self.widgetsDict[ivar] = w
+                def checkBoxCallback(event=None,ivar=ivar):
+                    svar = self.svarDict.get(ivar)
+                    val = svar.get()
+                    svar.set(g.choose(val,False,True))
+                    # g.trace(ivar,val)
+                w.Bind(wx.EVT_CHECKBOX,checkBoxCallback)
+            self.boxes.append(w)
+    #@nonl
+    #@-node:ekr.20061212100034.7:createBoxes
     #@+node:ekr.20061212121401:createBindings TO DO
     def createBindings (self):
         
@@ -930,20 +935,15 @@ class wxFindTab (leoFind.findTab):
     
     def init (self,c):
     
-        # Separate c.ivars are much more convenient than a dict.
+        # Separate c.ivars are much more convenient than a svarDict.
         for key in self.intKeys:
             # Get ivars from @settings.
             val = c.config.getBool(key)
             setattr(self,key,val)
             val = g.choose(val,1,0)
-            w = self.dict.get(key)
-            if w: w.set(val)
+            svar = self.svarDict.get(key)
+            if svar: svar.set(val)
             #g.trace(key,val)
-            
-        if 0: # This was the cause of all the packing problems.
-            self.s_ctrl = g.app.gui.leoTextWidgetClass(None)
-            # Used by find.search()
-            # Must have a parent Frame even though it is not packed.
     
         #@    << set find/change widgets >>
         #@+node:ekr.20061212100034.11:<< set find/change widgets >>
@@ -969,27 +969,27 @@ class wxFindTab (leoFind.findTab):
             ("pattern_match","pattern-search"),
             #("script_search","script-search")
         ):
-            val = self.dict[ivar].get()
-            if val:
-                self.dict["radio-find-type"].set(key)
+            svar = self.svarDict[ivar].get()
+            if svar:
+                self.svarDict["radio-find-type"].set(key)
                 w = d.get(key)
                 if w: w.SetValue(True)
                 break
         else:
-            self.dict["radio-find-type"].set("plain-search")
+            self.svarDict["radio-find-type"].set("plain-search")
             
         for ivar,key in (
             ("suboutline_only","suboutline-only"),
             ("node_only","node-only"),
             # ("selection_only","selection-only")
         ):
-            val = self.dict[ivar].get()
-            if val:
-                self.dict["radio-search-scope"].set(key)
+            svar = self.svarDict[ivar].get()
+            if svar:
+                self.svarDict["radio-search-scope"].set(key)
                 break
         else:
             key = 'entire-outline'
-            self.dict["radio-search-scope"].set(key)
+            self.svarDict["radio-search-scope"].set(key)
             w = self.widgetsDict.get(key)
             if w: w.SetValue(True)
         #@-node:ekr.20061212100034.12:<< set radio buttons from ivars >>
@@ -1007,8 +1007,8 @@ class wxFindTab (leoFind.findTab):
             'whole_word',
             'wrap',
         ):
-            val = self.dict[ivar].get()
-            if val:
+            svar = self.svarDict[ivar].get()
+            if svar:
                 w = self.widgetsDict.get(ivar)
                 if w: w.SetValue(True)
         #@-node:ekr.20061213063636:<< set checkboxes from ivars >>
@@ -2045,6 +2045,8 @@ class wxLeoBody (leoFrame.leoBody):
         self.colorizer = leoColor.colorizer(self.c)
     
         ### self.styles = {} # For syntax coloring.
+        
+        self.keyDownModifiers = None
     #@nonl
     #@-node:edream.110203113231.541:wxBody.__init__
     #@+node:edream.110203113231.542:wxBody.createControl

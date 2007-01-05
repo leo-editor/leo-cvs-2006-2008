@@ -245,7 +245,7 @@ class leoFind:
             val = c.config.getBool(key)
             setattr(self,key,val)
             val = g.choose(val,1,0) # Work around major Tk problem.
-            self.dict[key].set(val)
+            self.svarDict[key].set(val)
             # g.trace(key,val)
     
         #@    << set find/change widgets >>
@@ -269,12 +269,12 @@ class leoFind:
         for var,setting in (
             ("pattern_match","pattern-search"),
             ("script_search","script-search")):
-            val = self.dict[var].get()
+            val = self.svarDict[var].get()
             if val:
-                self.dict["radio-find-type"].set(setting)
+                self.svarDict["radio-find-type"].set(setting)
                 found = True ; break
         if not found:
-            self.dict["radio-find-type"].set("plain-search")
+            self.svarDict["radio-find-type"].set("plain-search")
             
         found = False
         for var,setting in (
@@ -282,12 +282,12 @@ class leoFind:
             ("node_only","node-only"),
             # ("selection_only","selection-only"),
         ):
-            val = self.dict[var].get()
+            val = self.svarDict[var].get()
             if val:
-                self.dict["radio-search-scope"].set(setting)
+                self.svarDict["radio-search-scope"].set(setting)
                 found = True ; break
         if not found:
-            self.dict["radio-search-scope"].set("entire-outline")
+            self.svarDict["radio-search-scope"].set("entire-outline")
         #@-node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
         #@nl
     #@-node:ekr.20031218072017.2059:find.init
@@ -1334,12 +1334,12 @@ class leoFind:
         self.v = self.p.v
     
         for key in self.intKeys:
-            val = self.dict[key].get()
+            # g.trace(self.svarDict.get(key))
+            val = self.svarDict[key].get()
             setattr(self, key, val) # No more _flag hack.
-            # g.trace(key,val)
     
         # Set ivars from radio buttons. Convert these to 1 or 0.
-        search_scope = self.dict["radio-search-scope"].get()
+        search_scope = self.svarDict["radio-search-scope"].get()
         self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
         self.node_only       = g.choose(search_scope == "node-only",1,0)
         self.selection       = g.choose(search_scope == "selection-only",1,0)

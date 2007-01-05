@@ -94,13 +94,13 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     
         #@    << create the tkinter intVars >>
         #@+node:ekr.20031218072017.3900:<< create the tkinter intVars >>
-        self.dict = {}
+        self.svarDict = {}
         
         for key in self.intKeys:
-            self.dict[key] = Tk.IntVar()
+            self.svarDict[key] = Tk.IntVar()
         
         for key in self.newStringKeys:
-            self.dict[key] = Tk.StringVar()
+            self.svarDict[key] = Tk.StringVar()
         #@-node:ekr.20031218072017.3900:<< create the tkinter intVars >>
         #@nl
         
@@ -211,28 +211,28 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         # HotKeys used for check/radio buttons:  a,b,c,e,h,i,l,m,n,o,p,r,s,t,w
         
         radioLists[0] = [
-            (self.dict["radio-find-type"],"P&Lain Search","plain-search"),  
-            (self.dict["radio-find-type"],"&Pattern Match Search","pattern-search"),
-            (self.dict["radio-find-type"],"&Script Search","script-search")]
+            (self.svarDict["radio-find-type"],"P&Lain Search","plain-search"),  
+            (self.svarDict["radio-find-type"],"&Pattern Match Search","pattern-search"),
+            (self.svarDict["radio-find-type"],"&Script Search","script-search")]
         checkLists[0] = [
-            ("Scrip&t Change",self.dict["script_change"])]
+            ("Scrip&t Change",self.svarDict["script_change"])]
         checkLists[1] = [
-            ("&Whole Word",  self.dict["whole_word"]),
-            ("&Ignore Case", self.dict["ignore_case"]),
-            ("Wrap &Around", self.dict["wrap"]),
-            ("&Reverse",     self.dict["reverse"])]
+            ("&Whole Word",  self.svarDict["whole_word"]),
+            ("&Ignore Case", self.svarDict["ignore_case"]),
+            ("Wrap &Around", self.svarDict["wrap"]),
+            ("&Reverse",     self.svarDict["reverse"])]
         radioLists[2] = [
-            (self.dict["radio-search-scope"],"&Entire Outline","entire-outline"),
-            (self.dict["radio-search-scope"],"Suboutline &Only","suboutline-only"),  
-            (self.dict["radio-search-scope"],"&Node Only","node-only"),
+            (self.svarDict["radio-search-scope"],"&Entire Outline","entire-outline"),
+            (self.svarDict["radio-search-scope"],"Suboutline &Only","suboutline-only"),  
+            (self.svarDict["radio-search-scope"],"&Node Only","node-only"),
             # I don't know what selection-only is supposed to do.
-            (self.dict["radio-search-scope"],"Selection Only",None)] #,"selection-only")]
+            (self.svarDict["radio-search-scope"],"Selection Only",None)] #,"selection-only")]
         checkLists[2] = []
         checkLists[3] = [
-            ("Search &Headline Text", self.dict["search_headline"]),
-            ("Search &Body Text",     self.dict["search_body"]),
-            ("&Mark Finds",           self.dict["mark_finds"]),
-            ("Mark &Changes",         self.dict["mark_changes"])]
+            ("Search &Headline Text", self.svarDict["search_headline"]),
+            ("Search &Body Text",     self.svarDict["search_body"]),
+            ("&Mark Finds",           self.svarDict["mark_finds"]),
+            ("Mark &Changes",         self.svarDict["mark_changes"])]
         
         for i in xrange(numberOfColumns):
             for var,name,val in radioLists[i]:
@@ -275,7 +275,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         findButton.pack(pady="1p",padx="25p",side="left")
         
         contextBox = underlinedTkButton("check",buttons,
-            anchor="w",text="Show Conte&xt",variable=self.dict["batch"])
+            anchor="w",text="Show Conte&xt",variable=self.svarDict["batch"])
         contextBox.button.pack(pady="1p",side="left",expand=1)
         contextBox.bindHotKey(ftxt)
         contextBox.bindHotKey(ctxt)
@@ -376,13 +376,13 @@ class tkFindTab (leoFind.findTab):
     #@+node:ekr.20051020120306.12:initGui
     def initGui (self):
     
-        self.dict = {}
+        self.svarDict = {}
         
         for key in self.intKeys:
-            self.dict[key] = Tk.IntVar()
+            self.svarDict[key] = Tk.IntVar()
         
         for key in self.newStringKeys:
-            self.dict[key] = Tk.StringVar()
+            self.svarDict[key] = Tk.StringVar()
     
     #@-node:ekr.20051020120306.12:initGui
     #@+node:ekr.20051020120306.13:createFrame (tkFindTab)
@@ -505,25 +505,25 @@ class tkFindTab (leoFind.findTab):
         radioLists[0] = []
         
         checkLists[0] = [
-            # ("Scrip&t Change",self.dict["script_change"]),
-            ("Whole &Word", self.dict["whole_word"]),
-            ("&Ignore Case",self.dict["ignore_case"]),
-            ("Wrap &Around",self.dict["wrap"]),
-            ("&Reverse",    self.dict["reverse"]),
-            ('Rege&xp',     self.dict['pattern_match']),
-            ("Mark &Finds", self.dict["mark_finds"]),
+            # ("Scrip&t Change",self.svarDict["script_change"]),
+            ("Whole &Word", self.svarDict["whole_word"]),
+            ("&Ignore Case",self.svarDict["ignore_case"]),
+            ("Wrap &Around",self.svarDict["wrap"]),
+            ("&Reverse",    self.svarDict["reverse"]),
+            ('Rege&xp',     self.svarDict['pattern_match']),
+            ("Mark &Finds", self.svarDict["mark_finds"]),
         ]
         
         radioLists[1] = [
-            (self.dict["radio-search-scope"],"&Entire Outline","entire-outline"),
-            (self.dict["radio-search-scope"],"&Suboutline Only","suboutline-only"),  
-            (self.dict["radio-search-scope"],"&Node Only","node-only"),
+            (self.svarDict["radio-search-scope"],"&Entire Outline","entire-outline"),
+            (self.svarDict["radio-search-scope"],"&Suboutline Only","suboutline-only"),  
+            (self.svarDict["radio-search-scope"],"&Node Only","node-only"),
         ]
         
         checkLists[1] = [
-            ("Search &Headline", self.dict["search_headline"]),
-            ("Search &Body",     self.dict["search_body"]),
-            ("Mark &Changes",    self.dict["mark_changes"]),
+            ("Search &Headline", self.svarDict["search_headline"]),
+            ("Search &Body",     self.svarDict["search_body"]),
+            ("Mark &Changes",    self.svarDict["mark_changes"]),
         ]
         
         for i in xrange(numberOfColumns):

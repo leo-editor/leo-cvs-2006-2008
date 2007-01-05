@@ -385,7 +385,7 @@ class leoTkinterTree (leoFrame.leoTree):
                         c.selectPosition(p)
                     finally:
                         c.endUpdate()
-                    c.frame.bodyCtrl.setInsertPoint(0) ### mark_set("insert","1.0")
+                    c.frame.bodyCtrl.setInsertPoint(0)
                 g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
             except:
                 g.es_event_exception("hypercclick")
@@ -1982,11 +1982,9 @@ class leoTkinterTree (leoFrame.leoTree):
                     c.frame.findPanel.handleUserClick(p)
                 if p.v.t.insertSpot != None:
                     spot = p.v.t.insertSpot
-                    ###w.mark_set("insert",spot)
                     w.setInsertPoint(spot)
                     w.see(spot)
                 else:
-                    ###w.mark_set("insert","1.0")
                     w.setInsertPoint(0)
             
                 if self.stayInTree:
