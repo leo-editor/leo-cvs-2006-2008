@@ -543,6 +543,8 @@ class leoFind:
     #@-node:ekr.20031218072017.3068:change
     #@+node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
     def changeAll(self):
+        
+        g.trace(g.callers())
     
         c = self.c ; u = c.undoer ; undoType = 'Change All'
         current = c.currentPosition()
@@ -1425,45 +1427,6 @@ class findTab (leoFind):
     #@-node:ekr.20051020120306.25:hideTab
     #@-node:ekr.20060221074900:Callbacks
     #@+node:ekr.20051024192602: Top level
-    #@+node:ekr.20060209064832:findAllCommand
-    def findAllCommand (self,event=None):
-    
-        self.setup_command()
-        self.findAll()
-    #@-node:ekr.20060209064832:findAllCommand
-    #@+node:ekr.20060204120158.1:findAgainCommand
-    def findAgainCommand (self):
-        
-        s = self.find_ctrl.getAllText()
-        
-        if s and s != '<find pattern here>':
-            self.findNextCommand()
-            return True
-        else:
-            # Tell the caller that to get the find args.
-            return False
-    #@-node:ekr.20060204120158.1:findAgainCommand
-    #@+node:ekr.20060128075225:cloneFindAllCommand
-    def cloneFindAllCommand (self,event=None):
-        
-        self.setup_command()
-        self.clone_find_all = True
-        self.findAll()
-        self.clone_find_all = False
-    #@-node:ekr.20060128075225:cloneFindAllCommand
-    #@+node:ekr.20051024192642.2:findNext/PrefCommand
-    def findNextCommand (self,event=None):
-    
-        self.setup_command()
-        self.findNext()
-        
-    def findPrevCommand (self,event=None):
-        
-        self.setup_command()
-        self.reverse = not self.reverse
-        self.findNext()
-        self.reverse = not self.reverse
-    #@-node:ekr.20051024192642.2:findNext/PrefCommand
     #@+node:ekr.20051024192642.3:change/ThenFindCommand
     def changeCommand (self,event=None):
     
@@ -1480,6 +1443,51 @@ class findTab (leoFind):
         self.setup_command()
         self.changeThenFind()
     #@-node:ekr.20051024192642.3:change/ThenFindCommand
+    #@+node:ekr.20070105123638:changeAllCommand
+    def changeAllCommand (self,event=None):
+    
+        self.setup_command()
+        self.changeAll()
+    #@-node:ekr.20070105123638:changeAllCommand
+    #@+node:ekr.20060128075225:cloneFindAllCommand
+    def cloneFindAllCommand (self,event=None):
+        
+        self.setup_command()
+        self.clone_find_all = True
+        self.findAll()
+        self.clone_find_all = False
+    #@-node:ekr.20060128075225:cloneFindAllCommand
+    #@+node:ekr.20060204120158.1:findAgainCommand
+    def findAgainCommand (self):
+        
+        s = self.find_ctrl.getAllText()
+        
+        if s and s != '<find pattern here>':
+            self.findNextCommand()
+            return True
+        else:
+            # Tell the caller that to get the find args.
+            return False
+    #@-node:ekr.20060204120158.1:findAgainCommand
+    #@+node:ekr.20060209064832:findAllCommand
+    def findAllCommand (self,event=None):
+    
+        self.setup_command()
+        self.findAll()
+    #@-node:ekr.20060209064832:findAllCommand
+    #@+node:ekr.20051024192642.2:findNext/PrefCommand
+    def findNextCommand (self,event=None):
+    
+        self.setup_command()
+        self.findNext()
+        
+    def findPrevCommand (self,event=None):
+        
+        self.setup_command()
+        self.reverse = not self.reverse
+        self.findNext()
+        self.reverse = not self.reverse
+    #@-node:ekr.20051024192642.2:findNext/PrefCommand
     #@-node:ekr.20051024192602: Top level
     #@-others
 #@-node:ekr.20051020120306.6:class findTab (leoFind)

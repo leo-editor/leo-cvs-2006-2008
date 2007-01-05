@@ -6953,6 +6953,30 @@ class minibufferFind (baseEditCommandsClass):
     
         k.extendLabel(s,select=True,protect=protect)
     #@-node:ekr.20060210164421:addFindStringToLabel
+    #@+node:ekr.20070105123800:changeAll
+    def changeAll (self,event):
+    
+        k = self.k ; tag = 'change-all' ; state = k.getState(tag)
+    
+        if state == 0:
+            w = self.editWidget(event) # sets self.w
+            if not w: return
+            self.setupArgs(forward=True,regexp=False,word=True)
+            k.setLabelBlue('Change All From: ',protect=True)
+            k.getArg(event,tag,1,self.changeAll)
+        elif state == 1:
+            self._sString = k.arg
+            self.updateFindList(k.arg)
+            s = 'Change All: %s With: ' % (self._sString)
+            k.setLabelBlue(s,protect=True)
+            self.addChangeStringToLabel()
+            k.getArg(event,tag,2,self.changeAll,completion=False,prefix=s)
+        elif state == 2:
+            self.updateChangeList(k.arg)
+            self.lastStateHelper()
+            self.generalChangeHelper(self._sString,k.arg,changeAll=True)
+    
+    #@-node:ekr.20070105123800:changeAll
     #@+node:ekr.20060128080201:cloneFindAll
     def cloneFindAll (self,event):
     
@@ -6999,7 +7023,7 @@ class minibufferFind (baseEditCommandsClass):
             self.generalSearchHelper(k.arg,findAll=True)
     #@-node:ekr.20060209064140:findAll
     #@+node:ekr.20060205105950.1:generalChangeHelper
-    def generalChangeHelper (self,find_pattern,change_pattern):
+    def generalChangeHelper (self,find_pattern,change_pattern,changeAll=False):
         
         # g.trace(repr(change_pattern))
         
@@ -7014,6 +7038,12 @@ class minibufferFind (baseEditCommandsClass):
     
         # This handles the reverse option.
         self.finder.findNextCommand()
+    
+        if changeAll:
+             self.finder.changeAllCommand()
+        else:
+            # This handles the reverse option.
+            self.finder.findNextCommand()
     #@-node:ekr.20060205105950.1:generalChangeHelper
     #@+node:ekr.20060124181213.4:generalSearchHelper
     def generalSearchHelper (self,pattern,cloneFindAll=False,findAll=False):
@@ -7269,11 +7299,12 @@ class searchCommandsClass (baseEditCommandsClass):
         
         return {
             'clone-find-all':                       self.cloneFindAll,
+            
             'find-all':                             self.findAll,
+            'change-all':                           self.changeAll,
             
             # Thin wrappers on Find tab
             'change':                               self.findTabChange,
-            'change-all':                           self.findTabChangeAll,
             'change-then-find':                     self.findTabChangeThenFind,
             'find-next':                            self.findTabFindNext,
             'find-prev':                            self.findTabFindPrev,
@@ -7353,13 +7384,6 @@ class searchCommandsClass (baseEditCommandsClass):
         '''Execute the 'Change' command with the settings shown in the Find tab.'''
         if self.findTabHandler:
             self.findTabHandler.changeCommand()
-        else:
-            self.openFindTab()
-            
-    def findTabChangeAll(self,event=None):
-        '''Execute the 'Change All' command with the settings shown in the Find tab.'''
-        if self.findTabHandler:
-            self.findTabHandler.changeAllCommand()
         else:
             self.openFindTab()
     
@@ -7466,6 +7490,10 @@ class searchCommandsClass (baseEditCommandsClass):
     def toggleOption (self, ivar):   self.getHandler().toggleOption(ivar)
     #@-node:ekr.20060123115459:Find options wrappers
     #@+node:ekr.20060124093828:Find wrappers
+    def changeAll(self,event=None):
+        '''Execute the 'Change All' command with the settings shown in the Find tab.'''
+        self.getHandler().changeAll(event)
+    
     def cloneFindAll (self,event):
         '''Do search-with-present-options and print all matches in the log pane. It
         also creates a node at the beginning of the outline containing clones of all
