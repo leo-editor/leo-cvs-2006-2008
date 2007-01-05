@@ -2065,11 +2065,8 @@ class editCommandsClass (baseEditCommandsClass):
         self.beginCommand(undoType='indent-to-comment-column')
     
         s = w.getAllText()
-        ###i = w.index('insert lineend')
         junk,i = g.getLine(s,w.getInsertPoint()) 
-        ###i1, i2 = i.split('.')
         i1,i2 = g.convertPythonIndexToRowCol(s,i)
-        ###i2 = int(i2)
         c1 = int(self.ccolumn)
     
         if i2 < c1:
@@ -3700,14 +3697,12 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20051218141237:lines (test)
     def beginningOfLine (self,event):
         '''Move the cursor to the start of the line, extending the selection if in extend mode.'''
-        ###self.moveToHelper(event,'insert linestart',extend=False)
         w = self.editWidget(event)
         i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
         self.moveToHelper(event,i,extend=False)
         
     def beginningOfLineExtendSelection (self,event):
         '''Extend the selection by moving the cursor to the start of the line.'''
-        ###self.moveToHelper(event,'insert linestart',extend=True)
         w = self.editWidget(event)
         i,junk = g.getLine(w.getAllText(),w.getInsertPoint())
         self.moveToHelper(event,i,extend=True)
@@ -5130,12 +5125,12 @@ class helpCommandsClass (baseEditCommandsClass):
         
         Search again commands
         
-        - The find-tab-find-next command (F3) is the same as the search-with-present-options command, except that it uses the search string in the find-tab.  Recommended as the default 'search again' command.
+        - The find-next command (F3) is the same as the search-with-present-options command, except that it uses the search string in the find-tab.  Recommended as the default 'search again' command.
         
-        - Similarly, the find-tab-find-previous command (F2) repeats the command specified by the Find tab,
+        - Similarly, the find-previous command (F2) repeats the command specified by the Find tab,
           but in reverse.
         
-        - The find-again is the same as the find-tab-find-next command if a search pattern is not '<find pattern here>'.
+        - The find-again is the same as the find-next command if a search pattern is not '<find pattern here>'.
           Otherwise, the find-again is the same as the search-with-present-options command.
         
         Setting find options
@@ -5172,13 +5167,13 @@ class helpCommandsClass (baseEditCommandsClass):
         
         So the only difference between the replace-string and search-with-present-options commands is that the replace-string command has the side effect of setting 'change' string in the Find tab.  However, this is an extremely useful side effect, because of the following commands...
         
-        - The find-tab-change command (Ctrl-=) replaces the selected text with the 'change' text in the Find tab.
+        - The change command (Ctrl-=) replaces the selected text with the 'change' text in the Find tab.
         
-        - The find-tab-change-then-find (Ctrl--) replaces the selected text with the 'change' text in the Find tab, then executes the find command again.
+        - The change-then-find (Ctrl--) replaces the selected text with the 'change' text in the Find tab, then executes the find command again.
         
-        The find-tab-find-next, find-tab-change and find-tab-change-then-find commands can simulate any kind of query-replace command.  **Important**: Leo presently has separate query-replace and query-replace-regex commands, but they are buggy and 'under-powered'.  Fixing these commands has low priority.
+        The find-next, change and change-then-find commands can simulate any kind of query-replace command.  **Important**: Leo presently has separate query-replace and query-replace-regex commands, but they are buggy and 'under-powered'.  Fixing these commands has low priority.
         
-        - The find-tab-change-all command changes all occurrences of the 'find' text with the 'change' text.  Important: the radio buttons in the Find tab (Entire Outline, Suboutline Only and Node only) control how much of the outline is affected by this command.
+        - The change-all command changes all occurrences of the 'find' text with the 'change' text.  Important: the radio buttons in the Find tab (Entire Outline, Suboutline Only and Node only) control how much of the outline is affected by this command.
         
         Incremental search commands
         
@@ -5534,7 +5529,6 @@ class killBufferCommandsClass (baseEditCommandsClass):
             self.reset = True
             s = clip_text or self.kbiterator.next()
             w.tag_delete('kb')
-            ###w.insert(i,s,('kb'))
             w.insert(i,s) # Insert the text, marked with the 'kb' tag.
             w.tag_add('kb',w.toGuiIndex(i),w.toGuiIndex(i+len(s)))
             w.setInsertPoint(i+len(s))
@@ -6813,9 +6807,9 @@ class minibufferFind (baseEditCommandsClass):
         h = self.finder
         
         if where in ('node-only','entire-outline','suboutline-only'):
-            var = h.dict['radio-search-scope'].get()
+            var = h.svarDict['radio-search-scope'].get()
             if var:
-                h.dict["radio-search-scope"].set(where)
+                h.svarDict["radio-search-scope"].set(where)
         else:
             g.trace('oops: bad `where` value: %s' % where)
     #@-node:ekr.20060124123133:setFindScope
@@ -6826,7 +6820,7 @@ class minibufferFind (baseEditCommandsClass):
     
         if ivar in h.intKeys:
             if val is not None:
-                var = h.dict.get(ivar)
+                var = h.svarDict.get(ivar)
                 var.set(val)
                 # g.trace('%s = %s' % (ivar,val))
     
@@ -6838,7 +6832,7 @@ class minibufferFind (baseEditCommandsClass):
         
         h = self.finder
         
-        var = h.dict.get(ivar)
+        var = h.svarDict.get(ivar)
         if var:
             val = var.get()
             verbose and g.trace('%s = %s' % (ivar,val))
@@ -6898,7 +6892,7 @@ class minibufferFind (baseEditCommandsClass):
         h = self.finder
     
         if ivar in h.intKeys:
-            var = h.dict.get(ivar)
+            var = h.svarDict.get(ivar)
             val = not var.get()
             var.set(val)
             # g.trace('%s = %s' % (ivar,val),var)
@@ -7275,14 +7269,14 @@ class searchCommandsClass (baseEditCommandsClass):
         
         return {
             'clone-find-all':                       self.cloneFindAll,
-            'find-tab-find-all':                    self.findAll,
+            'find-all':                             self.findAll,
             
             # Thin wrappers on Find tab
-            'find-tab-find-next':                   self.findTabFindNext,
-            'find-tab-find-prev':                   self.findTabFindPrev,
-            'find-tab-change':                      self.findTabChange,
-            'find-tab-change-all':                  self.findTabChangeAll,
-            'find-tab-change-then-find':            self.findTabChangeThenFind,
+            'change':                               self.findTabChange,
+            'change-all':                           self.findTabChangeAll,
+            'change-then-find':                     self.findTabChangeThenFind,
+            'find-next':                            self.findTabFindNext,
+            'find-prev':                            self.findTabFindPrev,
                         
             'hide-find-tab':                        self.hideFindTab,
                 
@@ -7527,7 +7521,7 @@ class searchCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060204120158.2:findAgain
     def findAgain (self,event):
     
-        '''The find-again command is the same as the find-tab-find-next command
+        '''The find-again command is the same as the find-next command
         if the search pattern in the Find tab is not '<find pattern here>'
         Otherwise, the find-again is the same as the search-with-present-options command.'''
         
