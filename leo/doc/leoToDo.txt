@@ -1397,7 +1397,6 @@ def __init__(self,c,parentFrame):
     self.find_ctrl = None
     self.change_ctrl = None 
     self.outerScrolledFrame = None
-    self.s_ctrl = None
 
     self.initGui()
     self.createFrame(parentFrame)
@@ -1526,10 +1525,6 @@ def createFrame (self,parentFrame):
     c = self.c
     
     # g.trace('findTab')
-    
-    self.s_ctrl = g.app.gui.leoTextWidgetClass(parentFrame)
-        # Used by find.search()
-        # Must have a parent Frame even though it is not packed.
 
     << Create the outer frames >>
     << Create the Find and Change panes >>

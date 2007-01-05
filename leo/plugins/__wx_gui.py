@@ -6,6 +6,37 @@
 """A plugin to use wxPython as Leo's gui."""
 
 __version__ = '0.5' # Start of development with Leo 4.4.2 code base and wxWidgets 2.6.3
+
+#@<< known bugs & incompletions >>
+#@+node:ekr.20070104114159:<< known bugs & incompletions >>
+#@@nocolor
+#@+at
+# 
+# - Many unit tests presently fail.
+# * The gui methods should return dummy values when unit testing is in effect.
+# 
+# First:
+# * Eliminate s_ctrl from Leo's core find logic.
+# * Make minibuffer functional.
+# * Use stc for body text.
+# - Fix focus-to-outline and other focus commands.
+# 
+# Later:
+# 
+# - Outline pane beeps on control-characters.
+#     - I don't know how to fix this.
+# - k.masterCommand is slow.
+#     - Make default bindings when creating the widget.
+#     - Only override those bindings when in a state.
+#     - With some luck we should be able to avoid key-up/key-down bindings 
+# (they are buggy).
+# - Syntax coloring causes flash even when nothing is colored.
+# 
+#@@color
+# 
+#@-at
+#@-node:ekr.20070104114159:<< known bugs & incompletions >>
+#@nl
 #@<< version history >>
 #@+node:ekr.20050719111045:<< version history >>
 #@@nocolor
@@ -382,6 +413,9 @@ class wxFindPanel (wx.Panel):
     #@    @+others
     #@+node:edream.110203113231.589:FindPanel.__init__
     def __init__(self,frame):
+        
+        g.trace('wxFindPanel not ready yet')
+        return
          
         # Init the base class.
         wx.Panel.__init__(self,frame,-1)
@@ -689,7 +723,7 @@ class wxFindTab (leoFind.findTab):
     #@-node:ekr.20061212100034.2:initGui
     #@+node:ekr.20061212100034.3:createFrame (wxFindTab)
     def createFrame (self,parentFrame):
-           
+    
         self.parentFrame = self.top = parentFrame
     
         self.createFindChangeAreas()
@@ -701,15 +735,13 @@ class wxFindTab (leoFind.findTab):
     def createFindChangeAreas (self):
         
         f = self.top
-    
-        # Create the find area.
-        self.find_ctrl = g.app.gui.leoTextWidgetClass(f,name='find-text')
-        self.fLabel = wx.StaticText(f, label='Find Text')
         
-        # Create the change area.
-        self.change_ctrl = g.app.gui.leoTextWidgetClass(f,name='change-text')
-        self.cLabel = wx.StaticText(f,label='Change Text')
-    #@nonl
+        self.fLabel = wx.StaticText(f,label='Find',  style=wx.ALIGN_RIGHT)
+        self.cLabel = wx.StaticText(f,label='Change',style=wx.ALIGN_RIGHT)
+        
+        self.find_ctrl   = g.app.gui.leoTextWidgetClass(f,name='find-text',  size=(300,-1))
+        self.change_ctrl = g.app.gui.leoTextWidgetClass(f,name='change-text',size=(300,-1))
+        
     #@-node:ekr.20061212100034.5:createFindChangeAreas
     #@+node:ekr.20061212100034.7:createBoxes
     def createBoxes (self):
@@ -734,8 +766,6 @@ class wxFindTab (leoFind.findTab):
             ('Search &Body','search_body'),
             ('Mark &Changes','mark_changes'),
         )
-        
-        return ###
     
         # Important: changing these controls merely changes entries in self.dict.
         # First, leoFind.update_ivars sets the find ivars from self.dict.
@@ -766,40 +796,41 @@ class wxFindTab (leoFind.findTab):
     #@+node:ekr.20061212120506:layout
     def layout (self):
         
-        win = self.top
+        f = self.top
         
-        g.trace('top',win)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.AddSpacer(10)
+        
+        sizer2 = wx.FlexGridSizer(2, 2, vgap=10,hgap=5)
     
-        # Lay out the find/change area.
-        sizer = wx.FlexGridSizer(2,2,vgap=10,hgap=5)
-        sizer.Add(self.fLabel,0,0)
-        sizer.Add(self.find_ctrl,1,wx.EXPAND)
-        sizer.Add(self.cLabel,0,0)
-        sizer.Add(self.change_ctrl,1,wx.EXPAND)
-        win.SetSizer(sizer)
-        sizer.Fit(win)
-        win.SetAutoLayout(True)
-            
-        # if 0:
-            # # The box sizer puts a border around the checkboxes.
-            # staticBox = wx.StaticBox(self.outerFrame)
-            # boxSizer = wx.StaticBoxSizer(staticBox,wx.HORIZONTAL)
-            
-            # # ltCol lays out the left column.
-            # ltCol = wx.BoxSizer(wx.VERTICAL)
-            # for w in self.boxes[:6]:
-                # ltCol.AddSpacer(8)
-                # ltCol.Add(w,0,wx.EXPAND)
-            # ltCol.AddSpacer(8)
-                
-            # # rtCol lays out the right column.
-            # rtCol = wx.BoxSizer(wx.VERTICAL)
-            # for w in self.boxes[6:]:
-                # rtCol.AddSpacer(8)
-                # rtCol.Add(w,0,wx.EXPAND)
-            # rtCol.AddSpacer(8)
+        sizer2.Add(self.fLabel,0,wx.EXPAND)
+        sizer2.Add(self.find_ctrl,1,wx.EXPAND,border=5)
+        sizer2.Add(self.cLabel,0,wx.EXPAND)
+        sizer2.Add(self.change_ctrl,1,wx.EXPAND,border=5)
+        
+        sizer.Add(sizer2,0,wx.EXPAND)
+        sizer.AddSpacer(10)
+        
+        #label = wx.StaticBox(f,label='Find Options')
+        #boxes = wx.StaticBoxSizer(label,wx.HORIZONTAL)
+        
+        boxes = wx.BoxSizer(wx.HORIZONTAL)
+        lt_col = wx.BoxSizer(wx.VERTICAL)
+        rt_col = wx.BoxSizer(wx.VERTICAL)
     
-        # f.SetSizer(sizer1)
+        for w in self.boxes [:6]:
+            lt_col.Add(w,0,wx.EXPAND,border=5)
+            lt_col.AddSpacer(5)
+        for w in self.boxes [6:]:
+            rt_col.Add(w,0,wx.EXPAND,border=5)
+            rt_col.AddSpacer(5)
+            
+        boxes.Add(lt_col,0,wx.EXPAND)
+        boxes.AddSpacer(20)
+        boxes.Add(rt_col,0,wx.EXPAND)
+        sizer.Add(boxes,0) #,wx.EXPAND)
+    
+        f.SetSizer(sizer)
     #@nonl
     #@-node:ekr.20061212120506:layout
     #@+node:ekr.20061212121401:createBindings TO DO
@@ -898,8 +929,6 @@ class wxFindTab (leoFind.findTab):
     # Important: we can not use leoFind.init because we must init the checkboxes 'by hand' here. 
     
     def init (self,c):
-        
-        g.trace('wxFindTab',g.callers())
     
         # Separate c.ivars are much more convenient than a dict.
         for key in self.intKeys:
@@ -910,6 +939,11 @@ class wxFindTab (leoFind.findTab):
             w = self.dict.get(key)
             if w: w.set(val)
             #g.trace(key,val)
+            
+        if 0: # This was the cause of all the packing problems.
+            self.s_ctrl = g.app.gui.leoTextWidgetClass(None)
+            # Used by find.search()
+            # Must have a parent Frame even though it is not packed.
     
         #@    << set find/change widgets >>
         #@+node:ekr.20061212100034.11:<< set find/change widgets >>
@@ -1207,6 +1241,7 @@ class wxGui(leoGui.leoGui):
         self.bitmap_name = None
         self.bitmap = None
         self.leoTextWidgetClass = wxLeoTextWidget
+        self.findTabHandler = None
     #@-node:edream.110203113231.307: wxGui.__init__
     #@+node:ekr.20061116074207:tkGui.createKeyHandlerClass
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
@@ -1427,7 +1462,13 @@ class wxGui(leoGui.leoGui):
     def createFindTab (self,c,parentFrame):
         
         '''Create a wxWidgets find tab in the indicated frame.'''
-        return wxFindTab(c,parentFrame)
+        
+        g.trace(self.findTabHandler)
+        
+        if not self.findTabHandler:
+            self.findTabHandler = wxFindTab(c,parentFrame)
+    
+        return self.findTabHandler
     #@-node:ekr.20061212100014:createFindTab
     #@+node:edream.111303092328.3:createFontPanel
     def createFontPanel(self,c):
@@ -2281,11 +2322,9 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         # Add the panes to the splitters.
         splitter1.SplitHorizontally(splitter2,self.bodyCtrl,0)
-        splitter2.SplitVertically(self.tree.treeCtrl,nb,cSplitterWidth/2)
-    
-        # select initial items
-        nb.SetSelection(0)
+        splitter2.SplitVertically(self.tree.treeCtrl,nb,0)
         
+        # Create the minibuffer
         self.minibuffer = wxLeoMinibuffer(c,top)
         ctrl = self.minibuffer.ctrl
         box = wx.BoxSizer(wx.VERTICAL)
@@ -2293,8 +2332,12 @@ class wxLeoFrame(leoFrame.leoFrame):
         box.Add(ctrl,0,wx.EXPAND)
         self.top.SetSizer(box)
     
+        # Create the menus & icon.
         self.menu = wxLeoMenu(frame)
         self.setWindowIcon()
+        
+        top.Show(True)
+        
         self.setEventHandlers()
         self.colorizer = self.body.colorizer
         c.initVersion()
@@ -2302,12 +2345,10 @@ class wxLeoFrame(leoFrame.leoFrame):
         self.injectCallbacks()
         g.app.windowList.append(self)
         self.tree.redraw()
-        top.Show(True)
     
         self.setFocus(g.choose(
             c.config.getBool('outline_pane_has_initial_focus'),
             self.tree.treeCtrl,self.bodyCtrl))
-    #@nonl
     #@+node:edream.110203113231.265:setWindowIcon
     def setWindowIcon(self):
     
@@ -2319,18 +2360,26 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@-node:edream.110203113231.265:setWindowIcon
     #@+node:edream.110203113231.264:setEventHandlers
     def setEventHandlers (self):
+        
+        w = self.top
     
+        # if wx.Platform == "__WXMSW__": # Activate events exist only on Windows.
+            # wx.EVT_ACTIVATE(self.top,self.onActivate)
+        # else:
+            # wx.EVT_SET_FOCUS(self.top,self.OnSetFocus)
+        
+        # wx.EVT_CLOSE(self.top,self.onCloseLeoFrame)
+        
+        # wx.EVT_MENU_OPEN(self.top,self.updateAllMenus)
+        
         if wx.Platform == "__WXMSW__": # Activate events exist only on Windows.
-            wx.EVT_ACTIVATE(self.top,self.onActivate)
+            w.Bind(wx.EVT_ACTIVATE,self.onActivate)
         else:
-            wx.EVT_SET_FOCUS(self.top,self.OnSetFocus)
+            w.Bind(wx.EVT_SET_FOCUS,self.OnSetFocus)
         
-        wx.EVT_CLOSE(self.top,self.onCloseLeoFrame)
+        w.Bind(wx.EVT_CLOSE,self.onCloseLeoFrame)
         
-        wx.EVT_MENU_OPEN(self.top,self.updateAllMenus) 
-        
-        if 0: # Causes problems at present.  The screen isn't drawn properly.
-            wx.EVT_SIZE(self.top,self.onResize)
+        w.Bind(wx.EVT_MENU_OPEN,self.updateAllMenus) 
     #@-node:edream.110203113231.264:setEventHandlers
     #@-node:edream.110203113231.260:finishCreate (wxLeoFrame)
     #@+node:edream.111403141810:initialRatios
@@ -3035,25 +3084,20 @@ class wxLeoLog (leoFrame.leoLog):
     #@+node:edream.110203113231.557:leoLog.createInitialTabs
     def createInitialTabs (self):
         
-        nb = self.nb
+        c = self.c ;  nb = self.nb
     
-        # Log tab.
+        # Create the Log tab.
         self.logCtrl = self.selectTab('Log')
-            
-        # Find tab.
+        
+        # wx.TheColourDatabase.AddColour('leo blue',wx.Color(214,250,254))
+        
+        # Create the Find tab (Use gui.createFindTab so we won't create it twice.)
         win = self.createTab('Find',createText=False)
-        win.SetBackgroundColour("sky blue")
-    
-        label1 = wx.StaticText(win,label='Find',style=wx.ALIGN_LEFT)
-        label2 = wx.StaticText(win,label='Change',style=wx.ALIGN_LEFT)
-        text1  = wx.TextCtrl(win)
-        text2  = wx.TextCtrl(win)
-        sizer = wx.FlexGridSizer(2, 2, vgap=10,hgap=5)
-        sizer.Add(label1,0,wx.EXPAND)
-        sizer.Add(text1,1,wx.EXPAND)
-        sizer.Add(label2,0,wx.EXPAND)
-        sizer.Add(text2,1,wx.EXPAND)
-        win.SetSizer(sizer)
+        win.SetBackgroundColour('light blue') # 'leo blue','wheat','orchid','sky blue'
+        self.findTabHandler = g.app.gui.createFindTab(c,parentFrame=win)
+        
+        # Make sure the Log is selected.
+        self.selectTab('Log')
     #@-node:edream.110203113231.557:leoLog.createInitialTabs
     #@+node:ekr.20061118122007:leoLog.setTabBindings
     def setTabBindings (self,tag=None):
@@ -3136,7 +3180,7 @@ class wxLeoLog (leoFrame.leoLog):
     def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
     
         nb = self.nb
-        g.trace('wxLog',tabName,'createText',createText)
+        # g.trace('wxLog',tabName,'createText',createText)
         
         if createText:
             win = logFrame = wx.Panel(nb)
@@ -3144,8 +3188,7 @@ class wxLeoLog (leoFrame.leoLog):
         
             style = wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE
             w = g.app.gui.leoTextWidgetClass(
-                win, # const("cLogCtrl"), "",
-                # wx.DefaultPosition, wx.DefaultSize,
+                win,
                 style=style,
                 name='text tab:%s' % tabName
             )
@@ -3153,6 +3196,7 @@ class wxLeoLog (leoFrame.leoLog):
             sizer = wx.BoxSizer(wx.HORIZONTAL)
             sizer.Add(w,1,wx.EXPAND)
             win.SetSizer(sizer)
+            sizer.Fit(win)
     
             self.textDict [tabName] = w
             self.frameDict [tabName] = win
@@ -3762,10 +3806,8 @@ class wxLeoMinibuffer:
     
         w = g.app.gui.leoTextWidgetClass(
             parentFrame,
-            const("cMinibufferCtrl"), "",
-            wx.DefaultPosition,
-            size = (1000,-1), # wx.DefaultSize,
-            # wx.TE_RICH | wx.TE_RICH2,
+            pos = wx.DefaultPosition,
+            size = (1000,-1),
             name = 'minibuffer'
         )
             
@@ -4570,11 +4612,11 @@ class wxLeoTextWidget (wx.TextCtrl):
         
     #@    @+others
     #@+node:ekr.20061118101058:Birth & special methods (wxLeoTextCtrl)
-    def __init__ (self,*args,**keys):
+    def __init__ (self,parent,*args,**keys):
         
         w = self
     
-        wx.TextCtrl.__init__(self,*args,**keys) # Init the base class.
+        wx.TextCtrl.__init__(self,parent,id=-1,*args,**keys) # Init the base class.
         
         w.defaultFont = font = wx.Font(pointSize=10,
             family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
@@ -4913,64 +4955,6 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@-others
 #@nonl
 #@-node:ekr.20061115122034:wxLeoTextWidget class
-#@+node:ekr.20061217142702:wxNullLeoTextWidget class
-# For the ctors of these widgets, look for g.app.gui.leoTextWidgetClass
-
-class wxNullLeoTextWidget:
-    
-    '''A class to wrap the Tk.Text widget.
-    Translates Python (integer) indices to and from Tk (string) indices.
-    
-    This class inherits almost all tkText methods: you call use them as usual.'''
-    
-    # The signatures of tag_add and insert are different from the Tk.Text signatures.
-    __pychecker__ = '--no-override' # suppress warning about changed signature.
-        
-    # Note: this widget inherits the GetName method from the wxWindow class.
-        
-    #@    @+others
-    #@+node:ekr.20061217142702.1:Birth & special methods (wxLeoTextCtrl)
-    def __init__ (self,*args,**keys):
-        pass
-    
-    def __repr__(self):
-        return 'wxNullLeoTextWidget: %s' % (id(self))
-    #@-node:ekr.20061217142702.1:Birth & special methods (wxLeoTextCtrl)
-    #@+node:ekr.20061217142702.2:Dummy methods
-    def toGuiIndex (self,index):            return 0
-    def toPythonIndex (self,index):         return 0
-    def rowColToGuiIndex (self,s,row,col):  return '1.0'
-    
-    def bind (self,kind,*args,**keys):          pass
-    def delete(self,i,j=None):                  pass
-    def get(self,i,j=None):                     return ''
-    def insert(self,i,s):                       pass
-    def mark_set(self,markName,i):              pass
-    def tag_add(self,tagName,i,j=None,*args):   pass
-    def tag_configure (self,colorName,**keys):  pass
-    def tkColorToWxColor (self, color):         return wx.BLACK
-    def tag_ranges(self,tagName):               return (0,0)
-    
-    def deleteTextSelection (self):         pass
-    def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75):pass
-    def getAllText (self):                  return ''
-    def getInsertPoint(self):               return 0
-    def getSelectedText (self):             return ''
-    def getSelectionRange (self,sort=True): return (0,0)
-    def hasSelection (self):                return False
-    def replace (self,i,j,s):               pass
-    def selectAllText (self,insert=None):   pass
-    def setAllText (self,s):                pass
-    def see(self,index):                    pass
-    def seeInsertPoint(self):               pass
-    def setInsertPoint (self,pos):          pass
-    def setSelectionRange (self,i,j,insert=None): pass
-    def xyToGuiIndex (self,x,y):            return 0 
-    def xyToPythonIndex(self,x,y):          return '1.0'
-    #@-node:ekr.20061217142702.2:Dummy methods
-    #@-others
-#@nonl
-#@-node:ekr.20061217142702:wxNullLeoTextWidget class
 #@-others
 #@nonl
 #@-node:edream.110203113231.302:@thin __wx_gui.py

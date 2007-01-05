@@ -2749,14 +2749,6 @@ def toPythonIndex (self,s,w,index):
     # i2 = '%d.%d' % (row+1,col)
     # g.app.gui.setSelectionRange(self.bodyCtrl,i1,i2)
 #@-node:ekr.20050710104804.1:setPythonTextSelection (tkBody)
-#@+node:ekr.20031218072017.3908:Tkinter wrappers (tkFind)
-def init_s_ctrl (self,s):
-    t = self.s_ctrl
-    t.delete("1.0","end")
-    t.insert("end",s)
-    t.mark_set("insert",g.choose(self.reverse,"end","1.0"))
-    return t
-#@-node:ekr.20031218072017.3908:Tkinter wrappers (tkFind)
 #@-node:ekr.20061111180614:Deleted from tkBody
 #@+node:ekr.20050204090259:tkFind.adjust_find_text
 def adjust_find_text(self,s):
