@@ -1807,7 +1807,7 @@ class leoTkinterTree (leoFrame.leoTree):
     
         s = w.getAllText()
         if s.endswith('\n'):
-            g.trace('can not happen: trailing newline')
+            # g.trace('can not happen: trailing newline')
             s = s[:-1]
         w.configure(width=self.headWidth(s=s))
     

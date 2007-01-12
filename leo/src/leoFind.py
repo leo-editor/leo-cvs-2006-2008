@@ -578,15 +578,16 @@ class leoFind:
     # If no selection, insert self.change_text at the cursor.
     
     def changeSelection(self):
-    
+        
         c = self.c ; p = self.p
-        # g.trace(self.in_headline)
         w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
         oldSel = sel = w.getSelectionRange()
         start,end = sel
         if start > end: start,end = end,start
         if start == end:
             g.es("No text selected") ; return False
+            
+        g.trace(start,end)
     
         # Replace the selection in _both_ controls.
         start,end = oldSel
@@ -597,7 +598,8 @@ class leoFind:
             groups = self.match_obj.groups()
             if groups:
                 change_text = self.makeRegexSubs(change_text,groups)
-        change_text = change_text.replace('\\n','\n').replace('\\t','\t')
+        # change_text = change_text.replace('\\n','\n').replace('\\t','\t')
+        change_text = self.replaceBackSlashes(change_text)
     
         for w2 in (w,self.s_ctrl):
             if start != end: w2.delete(start,end)
@@ -810,6 +812,7 @@ class leoFind:
         p = self.p
         while p:
             pos, newpos = self.search()
+            # g.trace('pos',pos,'p',p.headString(),g.callers())
             if pos is not None:
                 if self.mark_finds:
                     p.setMarked()
@@ -882,21 +885,29 @@ class leoFind:
             pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
     
         return pos,newpos
-    #@+node:ekr.20061207172210:patternLen
-    def patternLen (self,s):
+    #@+node:ekr.20070105165924:replaceBackSlashes
+    def replaceBackSlashes (self,s):
         
-        '''Return the length of pattern 's', counting escapes as one character.'''
+        '''Carefully replace backslashes in a search pattern.'''
         
-        n = len(s) ; i = 0
-        while 1:
-            i = s.find('\\',i)
-            if i == -1 or i >= len(s)-1:
-                break
-            n -= 1 ; i += 2
-        # g.trace(n,repr(s))
-        return n
-    #@nonl
-    #@-node:ekr.20061207172210:patternLen
+        # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
+        # because there is no rescanning.
+        
+        i = 0
+        while i + 1 < len(s):
+            if s[i] == '\\':
+                ch = s[i+1]
+                if ch == '\\':
+                    s = s[:i] + s[i+1:] # replace \\ by \
+                elif ch == 'n':
+                    s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
+                elif ch == 't':
+                     s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
+                else:
+                    i += 1 # Skip the escaped character.
+            i += 1
+        return s
+    #@-node:ekr.20070105165924:replaceBackSlashes
     #@+node:ekr.20060526092203:regexHelper
     def regexHelper (self,s,i,j,pattern,backwards,nocase):
        
@@ -939,8 +950,9 @@ class leoFind:
     
         if nocase:
             s = s.lower() ; pattern.lower()
-    
-        n = self.patternLen(pattern)
+        pattern = self.replaceBackSlashes(pattern)
+        n = len(pattern)
+        
         if word:
             while 1:
                 k = s.rfind(pattern,i,j)
@@ -959,15 +971,15 @@ class leoFind:
                 return k,k+n
     #@-node:ekr.20060526140744:backwardsHelper
     #@+node:ekr.20060526093531:plainHelper
+    #@@tabwidth 4
+    
     def plainHelper (self,s,i,j,pattern,nocase,word):
         
         # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
-    
-        n = self.patternLen(pattern)
         if nocase:
             s = s.lower() ; pattern = pattern.lower()
-            pattern = pattern.replace('\\n','\n').replace('\\t','\t')
-    
+    	pattern = self.replaceBackSlashes(pattern)
+        n = len(pattern)
         if word:
             while 1:
                 k = s.find(pattern,i,j)
@@ -986,11 +998,13 @@ class leoFind:
     #@+node:ekr.20060526140744.1:matchWord
     def matchWord(self,s,i,pattern):
         
+        pattern = self.replaceBackSlashes(pattern)
         if not s or not pattern or not g.match(s,i,pattern):
             return False
-        
+    
         pat1,pat2 = pattern[0],pattern[-1]
-        n = self.patternLen(pattern)
+        # n = self.patternLen(pattern)
+        n = len(pattern)
         ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
         ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
         

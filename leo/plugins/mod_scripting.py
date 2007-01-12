@@ -566,7 +566,6 @@ class scriptingController:
             self.executeScriptFromButton (p,b,buttonText)
             
         self.iconBar.setCommandForButton(b,atButtonCallback)
-        ### b.configure(command=atButtonCallback)
         
         # At last we can define the command and use the shortcut.
         k.registerCommand(buttonText.lower(),

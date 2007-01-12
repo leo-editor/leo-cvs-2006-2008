@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="76" left="308" height="705" width="967"/>
+	<global_window_position top="76" left="308" height="686" width="967"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -429,7 +429,7 @@
 </v>
 </v>
 <v t="ekr.20050901084134"><vh>Chapter 11: White papers</vh>
-<v t="ekr.20050901092232" a="E"><vh>@rst html\whitepapers.html</vh>
+<v t="ekr.20050901092232"><vh>@rst html\whitepapers.html</vh>
 <v t="ekr.20050901092232.1"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.259"><vh>Tk is the future of Leo</vh></v>
 <v t="EKR.20040524104904.260"><vh>Why I like Python</vh>
@@ -451,7 +451,7 @@
 <v t="ekr.20060218092725"><vh>9: The rst3 plugin</vh></v>
 <v t="ekr.20060218085144.8"><vh>Conclusion</vh></v>
 </v>
-<v t="ekr.20061129170454" a="E"><vh>Allocating storage using lifetimes</vh>
+<v t="ekr.20061129170454"><vh>Allocating storage using lifetimes</vh>
 <v t="ekr.20061129170155.2"><vh>Lifetime allocation</vh></v>
 <v t="ekr.20061129175952"><vh>Typical lifetimes</vh></v>
 <v t="ekr.20061129202238"><vh>Implications for pypy</vh></v>
@@ -658,13 +658,12 @@
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060527105211"><vh>Chapter 16: External debuggers</vh>
-<v t="ekr.20060527105617"><vh>@rst html\debuggers.html</vh>
+<v t="ekr.20060527105211" a="E"><vh>Chapter 16: External debuggers</vh>
+<v t="ekr.20060527105617" a="E"><vh>@rst html\debuggers.html</vh>
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20060527105617.2"><vh>Leo's debug command and 'the big debugger Aha'</vh></v>
+<v t="ekr.20060527105617.2" a="V"><vh>Leo's debug command and 'the big debugger Aha'</vh></v>
 <v t="ekr.20060527112801"><vh>Settings</vh></v>
-<v t="ekr.20060527105617.1"><vh>Debugging scripts so that c, g and p are predefined</vh></v>
-<v t="ekr.20060527112934"><vh>Remaining problems</vh></v>
+<v t="ekr.20060527105617.1" a="M"><vh>Debugging scripts so that c, g and p are predefined</vh></v>
 <v t="ekr.20060601104756"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -2979,52 +2978,6 @@
 <v t="ekr.20061026095922.36"><vh>Created leoPymacs.py for interaction with pymacs</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="ekr.20061128130530"><vh>Tuple notes (revised originals)</vh>
-<v t="ekr.20061128130530.2"><vh>Overview</vh></v>
-<v t="ekr.20061128130530.3"><vh>Ahas</vh></v>
-<v t="ekr.20061128132355"><vh>Block allocation</vh></v>
-<v t="ekr.20061128130530.4"><vh>Stream allocation</vh></v>
-<v t="ekr.20061128130530.5"><vh>Details</vh></v>
-<v t="ekr.20061128130530.6"><vh>Deallocating objects</vh></v>
-<v t="ekr.20061128131445"><vh>Debugging and production objects</vh></v>
-<v t="ekr.20061128131445.1"><vh>Simplifications</vh></v>
-<v t="ekr.20061128131445.3"><vh>Defining polymorphic streams</vh></v>
-<v t="ekr.20061128131445.5"><vh>Using Streams</vh></v>
-<v t="ekr.20061128131445.6"><vh>Lists Are Streams</vh></v>
-<v t="ekr.20061128131445.7"><vh>Are any calls to calloc needed?</vh></v>
-<v t="ekr.20061128131445.8"><vh>Abbreviation Macros</vh></v>
-</v>
-<v t="ekr.20050901084134" a="E"><vh>Chapter 11: White papers</vh>
-<v t="ekr.20050901092232" a="E"><vh>@rst html\whitepapers.html</vh>
-<v t="ekr.20050901092232.1"><vh>@rst-no-head links</vh></v>
-<v t="EKR.20040524104904.259"><vh>Tk is the future of Leo</vh></v>
-<v t="EKR.20040524104904.260"><vh>Why I like Python</vh>
-<v t="ekr.20050901092232.2"><vh>Clarity</vh></v>
-<v t="ekr.20050901092232.3"><vh>Power</vh></v>
-<v t="ekr.20050901092232.4"><vh>Safety</vh></v>
-<v t="ekr.20050901092232.5"><vh>Speed</vh></v>
-<v t="ekr.20050901092232.6"><vh>Conclusions</vh></v>
-</v>
-<v t="ekr.20060218085144"><vh>Why Leo is special</vh>
-<v t="ekr.20060218085144.1"><vh>1. You can execute Python scripts directly from anywhere in a Leo outline</vh></v>
-<v t="ekr.20060218085144.2"><vh>2. Leo's outlines are the perfect tool for organizing scripts</vh></v>
-<v t="ekr.20060218085144.3"><vh>3. Scripts can access the structure of Leo's outlines</vh></v>
-<v t="ekr.20060218085144.4"><vh>4. Leo's nodes naturally separate data from meta-data</vh></v>
-<v t="ekr.20060218085144.5"><vh>5. Leo is the ultimate platform for unit testing</vh></v>
-<v t="ekr.20060218085144.6"><vh>6. Leo is the ultimate platform for finding and changing text.</vh></v>
-<v t="ekr.20060218085144.7"><vh>7. Leo outlines are the ultimate filing cabinet</vh></v>
-<v t="ekr.20060218095651"><vh>8: Script buttons</vh></v>
-<v t="ekr.20060218092725"><vh>9: The rst3 plugin</vh></v>
-<v t="ekr.20060218085144.8"><vh>Conclusion</vh></v>
-</v>
-<v t="ekr.20061129170454" a="E"><vh>Allocating storage using lifetimes</vh>
-<v t="ekr.20061129170155.2"><vh>Lifetime allocation</vh></v>
-<v t="ekr.20061129175952"><vh>Typical lifetimes</vh></v>
-<v t="ekr.20061129202238" a="TV"><vh>Implications for pypy</vh></v>
-</v>
-<v t="ekr.20050901092232.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 </vnodes>
@@ -25086,23 +25039,36 @@ After you single step past these lines you are ready to debug your script.
 - Hit the 'Debug Script' script button.
 
 That's *all*.</t>
-<t tx="ekr.20060527105617.2">There is a super simple way of embedding winpdb (or any other debugger) into any editor.
-Just run winpdb in another process, something like this::
- 
-    import os,sys
-    pythonDir = g.os_path_dirname(sys.executable)
-    winPdb = g.os_path_join(pythonDir,'scripts','_winpdb.py')
-    args = [sys.executable, winPdb, '-t', 'leo.py'] # here leo.py is the program to be debugged.
-    os.spawnv(os.P_NOWAIT, sys.executable, args)
-
-This is so easy it seems almost like a cheat.  But it solves many problems:
+<t tx="ekr.20060527105617.2">There is a simple way of embedding winpdb (or any other debugger) into Leo.
+Just put the following in an \@button node::
+     
+    import subprocess
+    import sys
+    
+    # tempfilename = '/tmp/winpdb'
+    tempfilename = r'c:/prog/test/winpdb_temp.txt'
+    tempfile = open(tempfilename, 'w')
+    tempfile.write(p.bodyString())
+    tempfile.close()
+    
+    if 1: # Specify python explicitly.
+        python = r'c:\Python24\python.exe'
+    else: # Use the same version of Python used to launch Leo.
+        python = sys.executable
+    pythonDir = g.os_path_dirname(python)
+    winpdb = g.os_path_join(pythonDir,'Scripts','_winpdb.py')
+    cmdline = '%s %s -t %s' % (python,winpdb,tempfilename)
+    subprocess.Popen(cmdline)
+    
+This writes the contents of the current node to a file and invokes winpdb on the temporary file.
+This solves many problems:
  
 - No need to commit to any one debugger: substitute your favorite debugger for '_winpdb.py', and modify args as needed.
  
 - No need to worry about the interactions between the editor and the debugger: there are none after the debugger starts.  In particular, the debugger can use a separate event loop (or even a different gui) from the editor.
  
 - No need (typically) to modify the editor or debugger in *any* way.  And no need to understand the debugger's code at all.
- 
+
 Leo's new debug command generalizes the code above so it passes an arbitrary file (instead of 'leo.py') to an arbitrary debugger.  That's the only debugging code Leo needs, and gives Leo 90% of what I have ever wanted from a debugger.
 Furthermore, it allows editing to proceed independently of debugging.
 Indeed, even if I were to adapt winpdb so it shows files like Leo does (with an outline and body pane),
@@ -25128,15 +25094,6 @@ I would *still* want to run the modified winpdb in a separate process.</t>
 Eventually this setting will control what debugger the debug command uses.
 At present the only valid values are 'winpdb' and 'idle'.
 Support for idle isn't complete yet.</t>
-<t tx="ekr.20060527112934">A few problems remain:
-
-- The code shown above in leoScriptModule.py works only for winpdb.
-  I haven't figured out how to do this for Idle.
-
-- The leoScriptModule hack has exposed a bug in winpdb.
-  winpdb doesn't update the source listing when leoScriptModule.py changes.
-  So if you change the script being debugged, winpdb will show you the *old* version of the script.
-  It's a strange experience: the debugger will execute the *correct* code but will show you the *incorrect* code.</t>
 <t tx="ekr.20060529053407">@ignore can only be used in the root node of @file trees.  It tells Leo to ignore the tree.
 
 The @ignore directive can not be used elsewhere in @thin trees and @file trees
@@ -29965,342 +29922,6 @@ so multipath must add entries to leoColor.leoColors.</t>
 <t tx="ekr.20061026095922.36">For full details, see Chapter 18 of Leo's Users Guide: Emacs and Leo.</t>
 <t tx="ekr.20061026095922.51">http://sourceforge.net/forum/message.php?msg_id=3980193
 
-</t>
-<t tx="ekr.20061128130530">@language c
-@nocolor</t>
-<t tx="ekr.20061128130530.2">Storage allocation is crucial to any compiler because of the number, size and
-complexity of data which must be allocated. You would not be far off to say that
-a compiler consists of storage allocation and everything else. Indeed, the
-design of CC2 was driven by the goal of creating the token list quickly, and
-that goal has far-reaching implications for how memory is allocated.
-
-CC2 allocates objects one-at-a-time (simple allocation), in blocks of
-fixed-sized objects (block allocation) or in blocks of variable-sized objects
-(stream allocation). Simple allocation requires just a single macro call, but
-results in a call to calloc for each object allocated. It is appropriate only
-for infrequently allocated data structures. Block allocation and stream
-allocation are optimizations which reduce calls to calloc by more than an order
-of magnitude.
-</t>
-<t tx="ekr.20061128130530.3">I have recently made some discoveries concerning storage allocation and register
-allocation that promise to significantly improve CC2. These discoveries were
-surprising because they seemed to contradict either common sense or conclusions
-based on performance measurements. Happily, the new code is significantly
-smaller and measurably faster than the old code!
-
-These discoveries can be summarized as follows:
-
-- There is no speed penalty for having the stream reservation macros use a
-  subroutine to allocate a new stream block. This came as a shock, though the
-  reason is clear in retrospect.
-
-- Streams are polymorphic: they may contain items of varying types.
-
-- Streams are defined primarily by their lifetime and only secondarily by their type.
-
-- Lists are special-purpose streams.
-
-- Abbreviation macros highlight relationships among source text, while removing
-  the actual source text from view.
-</t>
-<t tx="ekr.20061128130530.4">Stream allocation allocates a stream block, then adds variable-sized items to
-the block until the stream block is nearly full, at which time another stream
-block is allocated. Steam blocks contain a stream avail count to keep track of
-what is in the stream. The first unused portion of the stream block is
-calculated from the stream avail count.
-
-The definition of "nearly full" depends on the individual stream. Because stream
-allocation is tricky, the details are hidden by two sets of macros. **Stream
-reservation macros** allocate another stream block when the current block is
-nearly full. **Stream put macros** add an element to the stream without checking
-to see if the stream block is big enough to hold it. I shall speak of stream put
-macros being protected by stream reservation macros. Because of differences
-between streams, there are separate reservation and put macros for each distinct
-stream. While tokenize uses stream allocation for both tokens and streams, the
-details of stream allocation for tokens and streams differ substantially.
-
-Tokens form a packed list--tokens usually follow one right after another.
-Packing the list eliminates the need for a next token pointer and saves a lot of
-space. At the end of a token block a HIDDEN_END_BLOCK_TOK is inserted so that
-the next token in the token list can be found. Therefore, a token block is
-"almost full" when there is no longer room for an arbitrary token and a
-HIDDEN_END_BLOCK_TOK. Tokens have a maximum size, BIG_TOKEN_SIZE. Since
-HIDDEN_END_BLOCK_TOK is a big token, a token block is "almost full" when less
-than 2 * BIG_TOKEN_SIZE bytes remain.
-
-Strings are handled differently from tokens because strings may be arbitrarily
-large but are not part of a list. sreserve_macro is the stream reservation macro
-for the string stream. scopy_macro and big_scopy_macro are the put macros for
-the string stream.
-
-Huge strings are strings larger than the size of the string space in a string
-block. big_scopy_macro allocates string space for huge tokens, creating a block
-just big enough to hold the huge string. Such a block does not contain avail or
-used counts. big_scopy_macro need not be protected since it always creates its
-own string block. By the way, huge strings are seldom allocated now that
-multi-line comments are split into one COMMENT_TOK per line.
-
-Normal strings, i.e., strings smaller than the size of a stream block, are
-allocated by the scopy_macro. A string block is "almost full" when the next
-string to be allocated will not fit in the current block. This wastes some space
-if the string to be allocated is large and the current block is almost empty but
-not empty enough. Fortunately, large strings are rare so I have ignored this
-waste.
-
-The extra work involved in using stream reserve and put macros produces a
-spectacular increase in speed of tokenize. Among the benefits:
-
-- Crucial pointers may be allocated in registers throughout the lifetime of
-  tokenize. These registers are never unloaded because there are no function calls
-  inside tokenize!
-
-- The compiler is able to generate perfect code without doing any global
-  optimization. Local code optimization is sufficient to produce code as good as
-  would be produced by an excellent assembly language coder.
-
-- There are no get-next-character or put_next_token routines. Earlier versions
-  of tokenize, using such routines, ran more than 5 times slower than the present
-  version.
-
-- Storage is allocated in uniformly sized blocks, not in small pieces. This
-  keeps calloc happy.
-</t>
-<t tx="ekr.20061128130530.5">tokenize is called in a variety of contexts: to tokenize the main file, header
-files, pasted strings, and command-line #define's and #undef's. Many calls to
-tokenize create short token lists so it would be very wasteful for tokenize to
-create new token and string blocks each time it was called. Also, the hash table
-must be retained between calls so that all variables with the same spelling have
-the same pointer to the spelling table. The global variables tok_block_list,
-str_block_list and sym_hash_list are used to keep track of the current token,
-string and hash blocks, respectively.
-
-The compiler allocates strings for several purposes outside of tokenize. Such
-strings could often be allocated in a string block, but that would be clumsy.
-The str_alloc macros allocate a list object big enough to hold the list pointer
-and the actual string.  We put strings on a list so they can be deallocated easily...
-</t>
-<t tx="ekr.20061128130530.6">**The proper time to specify when an object will be deallocated is when the object
-if created**. This simple rule was a big Aha.
-
-All object allocation macros take a parameter specifying a deallocation list. If
-the parameter is non-NULL, the allocation macro places the newly created object
-on the list. Objects on deallocation lists are freed in the following places:
-
-- At the end of cpp. All preprocessing objects not part of the token list are
-  freed here.
-
-- In comp_free_all. Objects which are logically part of the token list may only
-  be freed when the entire source file has been compiled. comp_free_all is
-  called at the start of compile in the production version of the compiler, and
-  it is called at the end of compile in the debugging version. In the debugging
-  version we want to make sure that all objects are eventually freed. In the
-  production version, the objects used by the last compiled file need never be
-  freed, a small time gain.
-
-Objects are placed on no deallocation list in the following situations:
-		
-- When object are deallocated in the routine in which they are allocated. This
-  is seldom used, since most such objects can be allocated on the stack.
-  Variable-length objects could be freed in this way.
-		
-- The ap_first and ap_last arrays are allocated in mac_get_actuals but freed in
-  mac_expand.
-</t>
-<t tx="ekr.20061128131445">Debugging objects and production objects are allocated, used and freed in
-exactly the same way. However, debugging objects provide increased statistics
-and error-checking capabilities. Debugging objects are created by the object
-macros when the OBJ_DEBUG compile-time constant is defined. Otherwise,
-production objects are created.
-
-Debugging objects contain several fields not found in production objects:
-
-- Lists fields: All debugging objects are placed on lists. These lists ensure
-  that obj_free frees only objects. These lists are also used to check the
-  integrity of all objects.
-
-- Statistics fields.
-
-- Header and trailer protection fields. These fields are filled with a fixed bit
-  pattern when the object is allocated. The fields are checked on request, and
-  certainly when the object is freed. This provides an excellent, though not
-  foolproof, test for over-writing a buffer allocated by calloc. Using these
-  protection fields has found some bugs that otherwise would have been really
-  tough to find.
-</t>
-<t tx="ekr.20061128131445.1">The original treserve_macro was too large to include in each call to put_id_tok,
-put_small_tok, etc. The macro was large because I wanted to avoid a
-function call here. Similar kinds of function calls had grossly slowed down
-previous versions of tokenize. However, I was surprised when measurements showed
-that a function call here does not matter at all. So the new version of
-treserve_macro, called tok_protect_macro, is::
-
-	#define tok_protect_macro(tp, tavail)\
-	if (tavail &lt; MAX_TOKEN_SIZE) {\
-		tp = tok_new_block(tp, tavail);\
-		tavail = tok_avail;\
-	}
-
-The tok_new_block allocates a new token block, sets two global variables,
-tok_ptr and tok_avail and returns tok_ptr.
-
-In retrospect, it is clear why a function call is acceptable here. tok_new_block
-is called when a new block of tokens is required. An average token comprises
-almost exactly 4 characters and there are about 200 tokens per block so
-tok_new_block is called only about once every 800 input characters. The function
-that had previously slowed down tokenize so much was called once every input
-character. Clearly, the overhead of calling tok_new_block is 3 orders of
-magnitude smaller.
-
-Because tok_protect_macro is so much smaller than treserve_macro,
-tok_protect_macro can be made part of the various stream put macros, such as
-put_small_tok.  This ensures that tok_protect_macro is called as needed.
-
-Using function calls in allocation macros creates opportunities for more
-simplifications. The put_comment_string_macro no longer exists--tokenize simply
-calls str_copy2block, which handles all the details::
-
-	/* Output a comment string token */
-	put_ptr(WS_COMMENT_TOK,str_copy2block(string_start, string_length), comments);
- 
-Simplifying the code to allocate strings created more opportunities to simplify
-the code...
-</t>
-<t tx="ekr.20061128131445.3">Global variables [nowadays we would use ivars of stream classes] drastically
-simplify defining a stream. Especially in the back end, streams are used across
-numerous functions so there is no possibility of keeping important stream
-variables in registers anyway. This was an Aha--defining a stream involves
-defining a complex of global variables. [Nowadays we would make each stream a
-class.] For instance, the globals [ivars] needed to define the string stream
-are::
-
-	string_block * str_block_list = NULL; /* List of string blocks. */
-	long	 str_avail = 0;	  /* Available bytes in current block. */
-	char * str_ptr = NULL;	/* Pointer to first free byte. */
-
-These variables are all controlled by str_copy2block, so they are benign. In
-addition to these essential stream variables, it is useful to define global
-stream statistics::
-
-	long	str_blocks; /* Total allocated string blocks. */
-	long	str_bytes;		/* Total bytes in strings. */
-	long	str_number;	/* Number of strings. */
-	long	str_waste;		/* Total wasted bytes. */
-
-Previous schemes required a different kind of block for every kind of allocated
-item. Actually allocating an item from such a block was clumsy. There is a much
-better way. If global variables are used to keep track of streams, it became
-clear that streams themselves have a global nature. [Nowadays we would have
-global instances of stream objects.] In addition, both the token stream and the
-string stream deals with variable size items, so streams may be composed of a
-variety of different **kinds** of items.
-
-If streams may contain different kinds of items, what determines which items go
-in which streams? The answer is so simple: a stream is defined by its lifetime,
-i.e., when the whole stream is deallocated.
-
-Looking back at the documentation on storage allocation, I am struck by the
-section called Deallocating Objects. My subconscious was apparently telling me
-that when objects were deallocated was more important than I consciously
-realized at the time. This section is not just describing how to free objects;
-it tells us how to define streams! In short::
-
-    Streams may contain items of varying sizes and types
-    as long as all items of a stream are deallocated at the same time,
-    i.e., if all items have the same lifetime.
-
-In practice, it may be convenient to have several streams that are deallocated
-at the same time.
-</t>
-<t tx="ekr.20061128131445.5">The CC2 compiler uses a separate stream (the cs stream) for all items to be in
-comp_free_all at the end of compile phase. The cs_ptr and cs_avail global
-variables are just like the str_ptr and str_avail variables. The cs_put,
-cs_protect and cs_new_block macros suffice to allocate any kind of item that
-share this lifetime.
-
-Let's look ahead to the parser and code generator. There will be a parser stream
-that contains all parse nodes and other nodes that will be freed at the same
-time as the parse tree. The code stream will contain all code nodes. Defining
-and using these streams will be trivial and will comprise essentially all the
-storage allocation for the back end.
-
-The new storage allocation scheme also guarantees absolute highest storage
-allocation speed. Indeed, allocating a new parse or code node will require only
-one function call per about 200 nodes, so the call-return overhead in calling
-cs_new_block can be ignored. It is also clear that the other processing done by
-the cs_put macro can not be reduced further, even if written in assembly
-language. These discoveries drastically reduce the design, coding and testing
-required to allocated and free objects.
-</t>
-<t tx="ekr.20061128131445.6">Objects in the front end are on only one list, their deallocation list.
-Sometimes the deallocation list does double duty, but the fact remains that each
-object appears on only one list.
-
-Objects in the back end, however, may be on several lists simultaneously. For
-instance, nodes in a parse tree may be threaded. Many overlapping lists of
-symbols may need to be maintained. To maintain these lists separate list nodes
-will be required. These will be called cons nodes after LISP terminology. The
-definition of a cons node will be something like::
-
-	typedef struct cons_struct cons_node;
-	struct const_struct {
-		void * cons_next;
-		void * cons_item;
-	}
-	
-Thousands of such nodes will be needed throughout the back end. Clearly, cons
-nodes should be allocated in list blocks to speed the storage allocation
-process. When should list blocks be deallocated? The surprising answer is:
-usually never. In other words, cons nodes have permanent lifetime. Cons nodes
-will be allocated in a special purpose stream, the cons stream.
-
-The cons_new_block macro allocates a new block of cons_nodes and puts them on
-an avail list. When an individual cons node is freed, it is simply added to a
-list of free cons nodes. Thus, in general list blocks will contain both free and
-used cons nodes. cons_new_block is called only when no free cons nodes exist.
-List blocks need never be deallocated because free cons nodes will eventually be
-reused--unless the number of cons nodes grows truly enormous, there should never
-be a need for garbage collection.
-
-There may be some instances when it would save time to deallocate all the cons
-nodes of a specialized stream at once. In that case, the cons nodes would be
-allocated using a specialized version of the new_cons_node macro.
-</t>
-<t tx="ekr.20061128131445.7">We could, in fact, allocate *all* items using streams, but this would be going
-too far. The object routines provide detailed statistics about objects which are
-lost when items are allocated from blocks. Also, the object routines provide
-important error checking for the stream blocks themselves. Finally, it would be
-silly to have to allocate an entire stream when allocating an object once or
-twice is all that is needed. Having said that, it seems to me that streams are a
-more fundamental implementation concept than objects. All the fancy object
-macros seem to be overshadowed by the elegantly simple stream allocation macros.
-
-Whatever the theoretical relationship between objects and streams, this storage
-allocation scheme seems perfect:
-
-- Items may be allocated simply and flexibly with minimal time or space overhead.
-- Streams can be created easily for special purposes.
-- Blocks can be of uniform size so that minimal stress is put on calloc.
-- Objects can be used instead of stream items during development for greater error
-  detection and greater resolution of statistics.
-</t>
-<t tx="ekr.20061128131445.8">One final Aha simplifies the tokenize code considerably. Abbreviation macros
-formalize a relationship between source text that could not be efficiently
-expressed as a function call. For instance, consider the macro::
-
-	#define put_small(a,b) put_small_tok(tp, tavail, a, b)
-
-This macro shows clearly that all calls to put_small_tok in tokenize
-will have tp and tavail as parameters. This relationship could be expressed as a
-function call, but not efficiently.
-
-Once I saw how to use put_small to hide the constant details of the calls to
-put_small_tok, I was able to generalize the concept of abbreviation macros to
-similar situations.</t>
-<t tx="ekr.20061128132355">Block allocation allocates an array of items all of the same size and kind from
-a area of memory obtained from calloc. In the front end, hash table nodes and
-some kinds of tokens are allocated using block allocation. Block allocation will
-be used extensively in the parser and code generator to allocate nodes for
-parsing, semantic analysis and code generation.
 </t>
 <t tx="ekr.20061129170155.2">CC2 allocated objects one-at-a-time (simple allocation), in blocks of
 fixed-sized objects (block allocation) or in blocks of variable-sized objects

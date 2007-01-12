@@ -1461,14 +1461,14 @@ class leoMenu:
             ("-",None,None))
         self.createMenuEntries(recentFilesMenu,table)
         
-        # Create all the other entries.
-        i = 3
-        for name in c.recentFiles:
+        # Create all the other entries (a maximum of 36).
+        accel_ch = string.digits + string.ascii_uppercase # Not a unicode problem.
+        i = 0 ; n = len(accel_ch)
+        for name in c.recentFiles[:n]:
             def recentFilesCallback (event=None,c=c,name=name):
                 __pychecker__ = '--no-argsused' # event not used, but must be present.
                 c.openRecentFile(name)
-            accel_ch = (string.digits + string.letters.upper()) # Not a unicode problem.
-            label = "%s %s" % (accel_ch[i-2],g.computeWindowTitle(name))
+            label = "%s %s" % (accel_ch[i],g.computeWindowTitle(name))
             self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
             i += 1
     #@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
