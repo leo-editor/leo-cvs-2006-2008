@@ -1049,17 +1049,7 @@ class wxKeyHandlerClass (leoKeys.keyHandlerClass):
         self.setLabelGrey()
     #@nonl
     #@-node:ekr.20061116080942:finishCreate (wxKey)
-    #@+node:ekr.20061116074003.3:Label (wx keys)
-    #@+at 
-    #@nonl
-    # There is something dubious about tracking states separately for separate 
-    # commands.
-    # In fact, there is only one mini-buffer, and it has only one state.
-    # OTOH, maintaining separate states makes it impossible for one command to 
-    # influence another.
-    # 
-    # trace = self.trace_minibuffer and not g.app.unitTesting
-    #@-at
+    #@+node:ekr.20061116074003.3:Label (wx keys) (test all)
     #@+node:ekr.20061116074003.8:extendLabel
     def extendLabel(self,s,select=False,protect=False):
         
@@ -1177,12 +1167,12 @@ class wxKeyHandlerClass (leoKeys.keyHandlerClass):
             if ch == '\b':
                 s = w.getAllText()
                 if len(s) > len(k.mb_prefix):
-                    w.delete(i+'-1c')
+                    w.delete(i+1)
             else:
                 i = w.getInsertPoint()
                 w.insert(i,ch)
     #@-node:ekr.20061116074003.11:updateLabel
-    #@-node:ekr.20061116074003.3:Label (wx keys)
+    #@-node:ekr.20061116074003.3:Label (wx keys) (test all)
     #@-others
 #@nonl
 #@-node:ekr.20061116074003:wxKeyHandlerClass
@@ -2165,6 +2155,7 @@ class wxLeoBody (leoFrame.leoBody):
     def onKeyUp (self,event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_ALT:
+            g.trace('wxBody: alt')
             event.Skip() # Do default processing.
         elif self.useWX:
             event.Skip()
@@ -3770,8 +3761,6 @@ class wxLeoMinibuffer:
     #@+node:ekr.20061211091216:minibuffer.createControl
     def createControl (self,parentFrame):
     
-        g.trace('wxMinibuffer')
-    
         self.ctrl = w = g.app.gui.leoTextWidgetClass(
             parentFrame,
             pos = wx.DefaultPosition,
@@ -3786,35 +3775,34 @@ class wxLeoMinibuffer:
         )
     
         w.defaultAttrib = wx.TextAttr(font=font)
-        # w.defaultStyle = w.SetDefaultStyle(w.defaultAttrib)
         w.allowSyntaxColoring = False
             
-        wx.EVT_KEY_DOWN (w,self.onKeyDown) # Provides raw key codes.
-        wx.EVT_KEY_UP   (w,self.onKeyUp) # Provides raw key codes.
+        # wx.EVT_KEY_DOWN (w,self.onKeyDown) # Provides raw key codes.
+        # wx.EVT_KEY_UP   (w,self.onKeyUp) # Provides raw key codes.
             
         return w
     #@nonl
     #@-node:ekr.20061211091216:minibuffer.createControl
-    #@+node:ekr.20061211091548.1:minibuffer.onKeyUp/Down
-    def onKeyDown (self,event,*args,**keys):
+    #@+node:ekr.20061211091548.1:minibuffer.onKeyUp/Down (not used)
+    # def onKeyDown (self,event,*args,**keys):
     
-        keycode = event.GetKeyCode()
-        self.keyDownModifiers = event.GetModifiers()
-        event.Skip() # Always do default processing.
+        # keycode = event.GetKeyCode()
+        # self.keyDownModifiers = event.GetModifiers()
+        # event.Skip() # Always do default processing.
         
-    def onKeyUp (self,event):
+    # def onKeyUp (self,event):
         
-        keycode = event.GetKeyCode()
-        if keycode == wx.WXK_ALT:
-            event.Skip() # Do default processing.
-        else:
-            event.keyDownModifiers = self.keyDownModifiers
-            event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
-            g.trace('wxMinibuffer',event.keysym)
-            if event.keysym: # The key may have been a raw key.
-                self.c.k.masterKeyHandler(event,stroke=event.keysym)
-            event.actualEvent.Skip() # Do default processing.
-    #@-node:ekr.20061211091548.1:minibuffer.onKeyUp/Down
+        # keycode = event.GetKeyCode()
+        # if keycode == wx.WXK_ALT:
+            # event.Skip() # Do default processing.
+        # else:
+            # event.keyDownModifiers = self.keyDownModifiers
+            # event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            # g.trace('wxMinibuffer',event.keysym)
+            # if event.keysym: # The key may have been a raw key.
+                # self.c.k.masterKeyHandler(event,stroke=event.keysym)
+            # event.actualEvent.Skip() # Do default processing.
+    #@-node:ekr.20061211091548.1:minibuffer.onKeyUp/Down (not used)
     #@-others
 #@nonl
 #@-node:ekr.20061211091215:wxLeoMinibuffer class

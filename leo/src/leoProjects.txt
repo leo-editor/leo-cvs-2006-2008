@@ -832,6 +832,12 @@ def createRecentFilesMenuItems (self):
         i += 1
 #@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
 #@-node:ekr.20070105142608:Fixed recent files bug
+#@+node:ekr.20070113145534:Fixed new crasher saving new file
+# Only likely to happen in very strange circumstances.
+  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 3106, in write_Leo_file
+    if theActualFile: theActualFile.close()
+UnboundLocalError: local variable 'theActualFile' referenced before assignment
+#@-node:ekr.20070113145534:Fixed new crasher saving new file
 #@-node:ekr.20061029091904:Bugs
 #@+node:ekr.20061029091904.1:Features
 #@+node:ekr.20061030161842.1:Added handleUrlInUrlNode helper for OnIconDoubleClick

@@ -3008,6 +3008,7 @@ class baseFileCommands:
         self.putCount = 0
         self.toString = toString
         self.assignFileIndices()
+        theActualFile = None
         if not outlineOnlyFlag or toOPML:
             # Update .leoRecentFiles.txt if possible.
             g.app.config.writeRecentFilesFile(c)
