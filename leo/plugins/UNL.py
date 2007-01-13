@@ -98,6 +98,22 @@ import urlparse
 #@nl
 
 #@+others
+#@+node:ekr.20070112173134:init
+def init ():
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    g.trace(g.app.gui.guiName())
+    
+    if g.app.gui.guiName() in ('tkinter','wxPython'):
+        leoPlugins.registerHandler("after-create-leo-frame", createStatusLine)
+        leoPlugins.registerHandler("select2", onSelect2)    # show UNL
+        leoPlugins.registerHandler("@url1", onUrl1)         # jump to URL or UNL
+                
+        g.plugin_signon(__name__)
+        return True
+#@-node:ekr.20070112173134:init
 #@+node:rogererens.20041013082304.1:createStatusLine
 def createStatusLine(tag,keywords):
 
@@ -254,17 +270,5 @@ def onSelect2 (tag,keywords):
 #@nonl
 #@-node:rogererens.20041013084119:onSelect2
 #@-others
-
-if Tk: # Ok for unit testing.
-    if g.app.gui is None:
-        g.app.createTkGui(__file__)
-
-    if g.app.gui.guiName() == "tkinter":
-        leoPlugins.registerHandler("after-create-leo-frame", createStatusLine)
-        leoPlugins.registerHandler("select2", onSelect2)    # show UNL
-        leoPlugins.registerHandler("@url1", onUrl1)         # jump to URL or UNL
-                
-        g.plugin_signon(__name__)
-#@nonl
 #@-node:rogererens.20041013082304:@thin UNL.py
 #@-leo
