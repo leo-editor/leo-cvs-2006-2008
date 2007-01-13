@@ -26,11 +26,11 @@ import leoGlobals as g
 import leoPlugins
 import os  # added JD 2004-09-10
 
-__version__ = "1.3"
+__version__ = "1.4"
 
 #@+others
 #@+node:edream.110203113231.875:sync_node_to_folder
-def sync_node_to_folder(parent,d):
+def sync_node_to_folder(c,parent,d):
 
     oldlist = {}
     newlist = []
@@ -61,10 +61,12 @@ def sync_node_to_folder(parent,d):
 #@-others
 
 def onSelect (tag,keywords):
+    c = keywords.get('c') or keywords.get('new_c')
+    if not c: return
     v = keywords.get("new_v")
     h = v.headString()
     if g.match_word(h,0,"@folder"):
-        sync_node_to_folder(v,h[8:])
+        sync_node_to_folder(c,v,h[8:])
         
 if 1: # Ok for unit testing.
     leoPlugins.registerHandler("select1", onSelect)
