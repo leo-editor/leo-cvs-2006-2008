@@ -2,7 +2,6 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20061209081047:Fix bugs: 2
 #@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
 @nocolor
 
@@ -10,32 +9,6 @@ Having two lists for the same thing is very bad.
 When this is fixed we will be able to simplify the multifile plugin.
 #@nonl
 #@-node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
-#@+node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3992390
-
-The 'username' in the path is just edited by me: in the original error message
-it is my login name, of course.
-
-What was happening is the following. 
-Yesterday I was playing with Leo 4.4.2.1 and I often could not create *new*
-Leo files in certain directories.
-Leo would just give me the above error message. After some experimentation,
-I found out that when there was a space somewhere in the path from where I started
-Leo (and planned to save the file), Leo would give me the above error message.
-When the path would not contain a space, Leo would happily save the file.
-
-Note that I only have this problem with *new* files. Leo files that have already
-been created can be opened and saved everywhere.
-
-Perhaps this is only a problem for Mac OS X, but earlier versions of Leo (and
-Mac OS X) did not have this behaviour.
-
-Theo
-#@nonl
-#@-node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
-#@-node:ekr.20061209081047:Fix bugs: 2
 #@+node:ekr.20061209083136:Complete the wxGui plugin
 @nocolor
 

@@ -18746,13 +18746,6 @@ for fileName in fileNames:
         print "%4d %8s %s" % (line,kind,name)
 #@nonl
 #@-node:pyclbr module (parses python)
-#@+node:Pymacs (hangs)
-from Pymacs import lisp
-print lisp
-
-lisp('2')
-#@nonl
-#@-node:Pymacs (hangs)
 #@+node:Python parser (abandoned)
 import token
 import tokenize
