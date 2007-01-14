@@ -193,7 +193,7 @@ class baseCommands:
         
         c = self ; p = c.currentPosition()
         c.miniBufferWidget = c.frame.miniBufferWidget
-        # g.trace('Commands',c.fileName()) # g.callers())
+        # g.trace('Commands',c.fileName())
         
         # Create a keyHandler even if there is no miniBuffer.
         c.keyHandler = c.k = k = g.app.gui.createKeyHandlerClass(c,
@@ -207,6 +207,8 @@ class baseCommands:
         else:
             # A leoSettings.leo file.
             c.commandsDict = {}
+            
+        c.frame.log.finishCreate()
     
         # Create the menu last so that we can use the key handler for shortcuts.
         if not g.doHook("menu1",c=c,p=p,v=p):

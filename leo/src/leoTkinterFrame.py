@@ -2463,15 +2463,26 @@ class leoTkinterLog (leoFrame.leoLog):
         menu = self.makeTabMenu(tabName=None)
     
         def hullMenuCallback(event):
-            g.trace()
             return self.onRightClick(event,menu)
     
         self.nb.bind('<Button-3>',hullMenuCallback)
     
         self.nb.pack(fill='both',expand=1)
-        self.selectTab('Log') # create the tab and make it the active tab.
+        self.selectTab('Log') # Create and activate the default tabs.
+    
         return self.logCtrl
     #@-node:ekr.20031218072017.4042:tkLog.createControl
+    #@+node:ekr.20070114070939:tkLog.finishCreate
+    def finishCreate (self):
+        
+        # g.trace('tkLog')
+        
+        c = self.c ; log = self
+        
+        c.searchCommands.openFindTab(show=False)
+        c.spellCommands.openSpellTab()
+        log.selectTab('Log')
+    #@-node:ekr.20070114070939:tkLog.finishCreate
     #@+node:ekr.20051016103459:tkLog.createTextWidget
     def createTextWidget (self,parentFrame):
         
@@ -2802,15 +2813,16 @@ class leoTkinterLog (leoFrame.leoLog):
     #@nonl
     #@-node:ekr.20060613131217:cycleTabFocus
     #@+node:ekr.20051018102027:deleteTab
-    def deleteTab (self,tabName):
-        
+    def deleteTab (self,tabName,force=False):
+    
         if tabName == 'Log':
             pass
     
-        elif tabName in ('Find','Spell'):
+        elif tabName in ('Find','Spell') and not force:
             self.selectTab('Log')
         
         elif tabName in self.nb.pagenames():
+            # g.trace(tabName,force)
             self.nb.delete(tabName)
             self.colorTagsDict [tabName] = []
             self.textDict [tabName] = None

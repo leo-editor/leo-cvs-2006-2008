@@ -7800,9 +7800,10 @@ class spellCommandsClass (baseEditCommandsClass):
             w = log.textDict.get(tabName)
             w.pack_forget()
             self.handler = spellTab(c,f)
-            
-        self.handler.bringToFront()
-    #@-node:ekr.20051025080633:openSpellTab
+            if self.handler.aspell.aspell:
+                self.handler.bringToFront()
+            else:
+                log.deleteTab(tabName,force=True)
     #@+node:ekr.20051025080420.1:commands...
     # Just open the Spell tab if it has never been opened.
     # For minibuffer commands, we must also force the Spell tab to be visible.
@@ -7853,6 +7854,7 @@ class spellCommandsClass (baseEditCommandsClass):
         else:
             self.openSpellTab()
     #@-node:ekr.20051025080420.1:commands...
+    #@-node:ekr.20051025080633:openSpellTab
     #@-others
 #@-node:ekr.20051025071455.1:class spellCommandsClass
 #@+node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)
@@ -7902,13 +7904,13 @@ class spellTab(leoFind.leoFind):
     
         self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
         
-        # if not self.aspell.aspell:
-        if not self.aspell:
-            g.es_print('Can not open Aspell',color='red')
-            return False
-            
-        self.dictionary = self.readDictionary(dictionaryFileName)
-        return True
+        if self.aspell.aspell:
+            self.dictionary = self.readDictionary(dictionaryFileName)
+        else:
+            self.dictionary = False
+            # g.es_print('Can not open Aspell',color='red')
+        
+        return self.aspell.aspell
     #@-node:ekr.20051025094004:init_aspell
     #@+node:ekr.20051025071455.22:createSpellTab
     def createSpellTab(self,parentFrame):
@@ -8422,6 +8424,7 @@ class AspellClass:
             self.getAspellWithCtypes()
         else:
             self.getAspell()
+    
     #@-node:ekr.20051025071455.8:__init__
     #@+node:ekr.20061017125710:getAspell
     def getAspell (self):
@@ -8435,15 +8438,21 @@ class AspellClass:
     
         self.aspell = aspell
         self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
-    #@nonl
     #@-node:ekr.20061017125710:getAspell
     #@+node:ekr.20061018111331:getAspellWithCtypes
     def getAspellWithCtypes (self):
         
         import ctypes
         c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
-    
-        aspell = ctypes.CDLL(g.os_path_join(self.aspell_bin_dir, "aspell-15.dll"))
+        
+        try:
+            self.aspell = aspell = ctypes.CDLL(g.os_path_join(self.aspell_bin_dir, "aspell-15.dll"))
+        except Exception:
+            g.es_exception()
+            self.aspell = None
+            self.check = None
+            self.sc = None
+            return
     
         #@    << define and configure aspell entry points >>
         #@+node:ekr.20061018111933:<< define and configure aspell entry points >>
@@ -8532,10 +8541,12 @@ class AspellClass:
         & «original» «count» «offset»: «miss», «miss», ... 
         None: 
         # «original» «offset» 
-        simplifyed to not create the string then make a list from it 
+        simplifyed to not create the string then make a list from it
         """
         
-        if self.use_ctypes:
+        if not self.aspell:
+            return None
+        elif self.use_ctypes:
             if self.check(self.spell_checker,word,len(word)):
                 return None
             else:

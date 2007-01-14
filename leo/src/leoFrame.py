@@ -783,6 +783,7 @@ class leoLog:
     __pychecker__ = '--no-argsused' # base classes have many unused args.
     
     #@    @+others
+    #@+node:ekr.20070114071054:Birth
     #@+node:ekr.20031218072017.3695:leoLog.__init__
     def __init__ (self,frame,parentFrame):
         
@@ -800,6 +801,18 @@ class leoLog:
         self.setFontFromConfig()
         self.setColorFromConfig()
     #@-node:ekr.20031218072017.3695:leoLog.__init__
+    #@+node:ekr.20031218072017.3698:leoLog.createControl
+    def createControl (self,parentFrame):
+        
+        self.oops()
+    #@-node:ekr.20031218072017.3698:leoLog.createControl
+    #@+node:ekr.20070114070939.1:leoLog.finishCreate (may be overridden)
+    def finishCreate (self):
+        
+        pass
+    #@nonl
+    #@-node:ekr.20070114070939.1:leoLog.finishCreate (may be overridden)
+    #@-node:ekr.20070114071054:Birth
     #@+node:ekr.20031218072017.3696:leoLog.configure
     def configure (self,*args,**keys):
         
@@ -812,11 +825,6 @@ class leoLog:
         
         self.oops()
     #@-node:ekr.20031218072017.3697:leoLog.configureBorder
-    #@+node:ekr.20031218072017.3698:leoLog.createControl
-    def createControl (self,parentFrame):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3698:leoLog.createControl
     #@+node:ekr.20031218072017.3699:leoLog.enable & disable
     def enable (self,enabled=True):
         
@@ -1308,7 +1316,7 @@ class nullLog (leoLog):
     #@+node:ekr.20060124085830:tabs
     def clearTab        (self,tabName):     pass
     def createTab (self,tabName,createText=True,wrap='none'): pass
-    def deleteTab       (self,tabName):     pass
+    def deleteTab       (self,tabName,force=False):     pass
     def getSelectedTab          (self):     pass
     def lowerTab        (self,tabName):     pass
     def raiseTab        (self,tabName):     pass
