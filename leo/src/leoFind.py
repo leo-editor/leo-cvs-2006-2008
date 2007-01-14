@@ -885,29 +885,8 @@ class leoFind:
             pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
     
         return pos,newpos
-    #@+node:ekr.20070105165924:replaceBackSlashes
-    def replaceBackSlashes (self,s):
-        
-        '''Carefully replace backslashes in a search pattern.'''
-        
-        # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
-        # because there is no rescanning.
-        
-        i = 0
-        while i + 1 < len(s):
-            if s[i] == '\\':
-                ch = s[i+1]
-                if ch == '\\':
-                    s = s[:i] + s[i+1:] # replace \\ by \
-                elif ch == 'n':
-                    s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
-                elif ch == 't':
-                     s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
-                else:
-                    i += 1 # Skip the escaped character.
-            i += 1
-        return s
-    #@-node:ekr.20070105165924:replaceBackSlashes
+    #@+node:ekr.20061207172210:patternLen
+    #@-node:ekr.20061207172210:patternLen
     #@+node:ekr.20060526092203:regexHelper
     def regexHelper (self,s,i,j,pattern,backwards,nocase):
        
@@ -1020,6 +999,29 @@ class leoFind:
         else:
             return True
     #@-node:ekr.20060526140744.1:matchWord
+    #@+node:ekr.20070105165924:replaceBackSlashes
+    def replaceBackSlashes (self,s):
+        
+        '''Carefully replace backslashes in a search pattern.'''
+        
+        # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
+        # because there is no rescanning.
+        
+        i = 0
+        while i + 1 < len(s):
+            if s[i] == '\\':
+                ch = s[i+1]
+                if ch == '\\':
+                    s = s[:i] + s[i+1:] # replace \\ by \
+                elif ch == 'n':
+                    s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
+                elif ch == 't':
+                     s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
+                else:
+                    i += 1 # Skip the escaped character.
+            i += 1
+        return s
+    #@-node:ekr.20070105165924:replaceBackSlashes
     #@-node:ekr.20060526081931:searchHelper & allies
     #@-node:ekr.20031218072017.3077:search & helpers
     #@+node:ekr.20031218072017.3081:selectNextPosition

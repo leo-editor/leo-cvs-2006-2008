@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="884" width="973"/>
+	<global_window_position top="10" left="238" height="864" width="973"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -434,7 +434,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -571,9 +571,9 @@
 <v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
 </v>
 <v t="ekr.20041119034357.54"><vh>Outline pane options</vh>
-<v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = False</vh></v>
+<v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = True</vh></v>
 <v t="ekr.20061030092620"><vh>@bool center_selected_tree_node = True</vh></v>
-<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = False</vh></v>
+<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = True</vh></v>
 <v t="ekr.20041119050749.5"><vh>@bool expanded_click_area = True</vh></v>
 <v t="ekr.20060528175513"><vh>@bool idle_redraw = False</vh></v>
 <v t="ekr.20060120123529"><vh>@bool initialClickExpandsOrContractsNode = True</vh></v>
@@ -588,7 +588,25 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208.4"><vh>Modes</vh>
+<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
+</v>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
+<v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
+<v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
+<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
+<v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
+<v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
+<v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
+<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
+<v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
+<v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
+<v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
+</v>
+</v>
+<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
@@ -604,24 +622,8 @@
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
-</v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
-<v t="ekr.20060603215208.4"><vh>Modes</vh>
-<v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
-</v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
-<v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
-<v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
-<v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
-<v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
-<v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
-<v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
-<v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
-<v t="ekr.20060603215208.20" a="TV"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
-<v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
-<v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
-<v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
-</v>
+<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = True</vh></v>
+<v t="ekr.20041119050749.3" a="V"><vh>@bool allow_clone_drags = True</vh></v>
 </v>
 </vnodes>
 <tnodes>

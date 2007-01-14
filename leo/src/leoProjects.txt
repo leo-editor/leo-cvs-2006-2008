@@ -58,29 +58,21 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
         pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
 
     return pos,newpos
-#@+node:ekr.20070105165924:replaceBackSlashes
-def replaceBackSlashes (self,s):
+#@+node:ekr.20061207172210:patternLen
+def patternLen (self,s):
     
-    '''Carefully replace backslashes in a search pattern.'''
+    '''Return the length of pattern 's', counting escapes as one character.'''
     
-    # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
-    # because there is no rescanning.
-    
-    i = 0
-    while i + 1 < len(s):
-        if s[i] == '\\':
-            ch = s[i+1]
-            if ch == '\\':
-                s = s[:i] + s[i+1:] # replace \\ by \
-            elif ch == 'n':
-                s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
-            elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
-            else:
-                i += 1 # Skip the escaped character.
-        i += 1
-    return s
-#@-node:ekr.20070105165924:replaceBackSlashes
+    n = len(s) ; i = 0
+    while 1:
+        i = s.find('\\',i)
+        if i == -1 or i >= len(s)-1:
+            break
+        n -= 1 ; i += 2
+    # g.trace(n,repr(s))
+    return n
+#@nonl
+#@-node:ekr.20061207172210:patternLen
 #@+node:ekr.20060526092203:regexHelper
 def regexHelper (self,s,i,j,pattern,backwards,nocase):
    
@@ -123,9 +115,8 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
     if nocase:
         s = s.lower() ; pattern.lower()
-    pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    
+
+    n = self.patternLen(pattern)
     if word:
         while 1:
             k = s.rfind(pattern,i,j)
@@ -144,15 +135,15 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
             return k,k+n
 #@-node:ekr.20060526140744:backwardsHelper
 #@+node:ekr.20060526093531:plainHelper
-@tabwidth 4
-
 def plainHelper (self,s,i,j,pattern,nocase,word):
     
     # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+
+    n = self.patternLen(pattern)
     if nocase:
         s = s.lower() ; pattern = pattern.lower()
-	pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
     if word:
         while 1:
             k = s.find(pattern,i,j)
@@ -171,13 +162,11 @@ def plainHelper (self,s,i,j,pattern,nocase,word):
 #@+node:ekr.20060526140744.1:matchWord
 def matchWord(self,s,i,pattern):
     
-    pattern = self.replaceBackSlashes(pattern)
     if not s or not pattern or not g.match(s,i,pattern):
         return False
-
+    
     pat1,pat2 = pattern[0],pattern[-1]
-    # n = self.patternLen(pattern)
-    n = len(pattern)
+    n = self.patternLen(pattern)
     ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
     ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
     
@@ -802,42 +791,6 @@ OnPasteFromMenu = pasteText
 #@-node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
 #@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
 #@-node:ekr.20061009152210.1:Fixed undo problems with yank/kill
-#@+node:ekr.20070105142608:Fixed recent files bug
-# http://sourceforge.net/forum/message.php?msg_id=4087112
-#@nonl
-#@+node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
-def createRecentFilesMenuItems (self):
-    
-    c = self.c
-    recentFilesMenu = self.getMenu("Recent Files...")
-    
-    # Delete all previous entries.
-    self.delete_range(recentFilesMenu,0,len(c.recentFiles)+2)
-    
-    # Create the first two entries.
-    table = (
-        ("Clear Recent Files",None,c.clearRecentFiles),
-        ("-",None,None))
-    self.createMenuEntries(recentFilesMenu,table)
-    
-    # Create all the other entries (a maximum of 36).
-    accel_ch = string.digits + string.ascii_uppercase # Not a unicode problem.
-    i = 0 ; n = len(accel_ch)
-    for name in c.recentFiles[:n]:
-        def recentFilesCallback (event=None,c=c,name=name):
-            __pychecker__ = '--no-argsused' # event not used, but must be present.
-            c.openRecentFile(name)
-        label = "%s %s" % (accel_ch[i],g.computeWindowTitle(name))
-        self.add_command(recentFilesMenu,label=label,command=recentFilesCallback,underline=0)
-        i += 1
-#@-node:ekr.20031218072017.2078:createRecentFilesMenuItems (leoMenu)
-#@-node:ekr.20070105142608:Fixed recent files bug
-#@+node:ekr.20070113145534:Fixed new crasher saving new file
-# Only likely to happen in very strange circumstances.
-  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 3106, in write_Leo_file
-    if theActualFile: theActualFile.close()
-UnboundLocalError: local variable 'theActualFile' referenced before assignment
-#@-node:ekr.20070113145534:Fixed new crasher saving new file
 #@-node:ekr.20061029091904:Bugs
 #@+node:ekr.20061029091904.1:Features
 #@+node:ekr.20061030054124.1:Added handleUrlInUrlNode helper for OnIconDoubleClick
@@ -1806,11 +1759,13 @@ def generalChangeHelper (self,find_pattern,change_pattern,changeAll=False):
     self.finder.p = self.c.currentPosition()
     self.finder.v = self.finder.p.v
 
+    # This handles the reverse option.
+    self.finder.findNextCommand()
+
     if changeAll:
          self.finder.changeAllCommand()
     else:
-        # This is correct: we just want to move to the next match
-        # so the user can choose whether to make the change.
+        # This handles the reverse option.
         self.finder.findNextCommand()
 #@-node:ekr.20060205105950.1:generalChangeHelper
 #@+node:ekr.20060124181213.4:generalSearchHelper
@@ -2942,16 +2897,15 @@ def changeAll(self):
 # If no selection, insert self.change_text at the cursor.
 
 def changeSelection(self):
-    
+
     c = self.c ; p = self.p
+    # g.trace(self.in_headline)
     w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
     oldSel = sel = w.getSelectionRange()
     start,end = sel
     if start > end: start,end = end,start
     if start == end:
         g.es("No text selected") ; return False
-        
-    g.trace(start,end)
 
     # Replace the selection in _both_ controls.
     start,end = oldSel
@@ -2962,8 +2916,7 @@ def changeSelection(self):
         groups = self.match_obj.groups()
         if groups:
             change_text = self.makeRegexSubs(change_text,groups)
-    # change_text = change_text.replace('\\n','\n').replace('\\t','\t')
-    change_text = self.replaceBackSlashes(change_text)
+    change_text = change_text.replace('\\n','\n').replace('\\t','\t')
 
     for w2 in (w,self.s_ctrl):
         if start != end: w2.delete(start,end)
@@ -3174,7 +3127,6 @@ def findNextMatch(self):
     p = self.p
     while p:
         pos, newpos = self.search()
-        # g.trace('pos',pos,'p',p.headString(),g.callers())
         if pos is not None:
             if self.mark_finds:
                 p.setMarked()
@@ -3246,29 +3198,21 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
         pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
 
     return pos,newpos
-#@+node:ekr.20070105165924:replaceBackSlashes
-def replaceBackSlashes (self,s):
+#@+node:ekr.20061207172210:patternLen
+def patternLen (self,s):
     
-    '''Carefully replace backslashes in a search pattern.'''
+    '''Return the length of pattern 's', counting escapes as one character.'''
     
-    # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
-    # because there is no rescanning.
-    
-    i = 0
-    while i + 1 < len(s):
-        if s[i] == '\\':
-            ch = s[i+1]
-            if ch == '\\':
-                s = s[:i] + s[i+1:] # replace \\ by \
-            elif ch == 'n':
-                s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
-            elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
-            else:
-                i += 1 # Skip the escaped character.
-        i += 1
-    return s
-#@-node:ekr.20070105165924:replaceBackSlashes
+    n = len(s) ; i = 0
+    while 1:
+        i = s.find('\\',i)
+        if i == -1 or i >= len(s)-1:
+            break
+        n -= 1 ; i += 2
+    # g.trace(n,repr(s))
+    return n
+#@nonl
+#@-node:ekr.20061207172210:patternLen
 #@+node:ekr.20060526092203:regexHelper
 def regexHelper (self,s,i,j,pattern,backwards,nocase):
    
@@ -3311,9 +3255,8 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
     if nocase:
         s = s.lower() ; pattern.lower()
-    pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    
+
+    n = self.patternLen(pattern)
     if word:
         while 1:
             k = s.rfind(pattern,i,j)
@@ -3332,15 +3275,15 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
             return k,k+n
 #@-node:ekr.20060526140744:backwardsHelper
 #@+node:ekr.20060526093531:plainHelper
-@tabwidth 4
-
 def plainHelper (self,s,i,j,pattern,nocase,word):
     
     # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+
+    n = self.patternLen(pattern)
     if nocase:
         s = s.lower() ; pattern = pattern.lower()
-	pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
     if word:
         while 1:
             k = s.find(pattern,i,j)
@@ -3359,13 +3302,11 @@ def plainHelper (self,s,i,j,pattern,nocase,word):
 #@+node:ekr.20060526140744.1:matchWord
 def matchWord(self,s,i,pattern):
     
-    pattern = self.replaceBackSlashes(pattern)
     if not s or not pattern or not g.match(s,i,pattern):
         return False
-
+    
     pat1,pat2 = pattern[0],pattern[-1]
-    # n = self.patternLen(pattern)
-    n = len(pattern)
+    n = self.patternLen(pattern)
     ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
     ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
     
@@ -3977,7 +3918,7 @@ def finishCreate (self):  # New in 4.4.
     
     c = self ; p = c.currentPosition()
     c.miniBufferWidget = c.frame.miniBufferWidget
-    g.trace('Commands',c.fileName())
+    # g.trace('Commands',c.fileName())
     
     # Create a keyHandler even if there is no miniBuffer.
     c.keyHandler = c.k = k = g.app.gui.createKeyHandlerClass(c,
@@ -4018,7 +3959,7 @@ def printCommandsDict (self):
 def finishCreate (self,c):
     
     f = self ; f.c = c
-    g.trace('tkFrame')
+    # g.trace('tkFrame')
     
     # This must be done after creating the commander.
     f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
@@ -4158,7 +4099,7 @@ def deleteTab (self,tabName,force=False):
         self.selectTab('Log')
     
     elif tabName in self.nb.pagenames():
-        g.trace(tabName,force)
+        # g.trace(tabName,force)
         self.nb.delete(tabName)
         self.colorTagsDict [tabName] = []
         self.textDict [tabName] = None
@@ -4171,281 +4112,89 @@ def deleteTab (self,tabName,force=False):
     self.c.bodyWantsFocus()
 #@-node:ekr.20051018102027:deleteTab
 #@-node:ekr.20070105121752:Added Find & Spell tabs to log pane on startup
-#@-node:ekr.20061029091904.1:Features
-#@+node:ekr.20061116054917.3:Handle \t, \n and \\ properly in find/change commands
-@  The search code changes \n to a newline, \t to a tab, and \\ to a single backslash.
+#@+node:ekr.20061030074731:Created standard pluginsManager.txt only if it does not exist
+@nocolor
 
-To search for   \ followed by n   use \\n
-                \             t   use \\t
-                \                 use \\
-#@+node:ekr.20031218072017.3070:changeSelection
-# Replace selection with self.change_text.
-# If no selection, insert self.change_text at the cursor.
+https://sourceforge.net/forum/message.php?msg_id=3987635
+By: rogererens
 
-def changeSelection(self):
+At present I have to go through the list in the Plugin Manager again, trying to
+remember which plugins I had enabled in the previous version.
+
+Possibly the .leoRecentFiles.txt construct analogue may be used?
+
+@color
+
+#@+node:ekr.20031218072017.3440:loadHandlers
+def loadHandlers():
+
+    """Load all enabled plugins from the plugins directory"""
     
-    c = self.c ; p = self.p
-    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-    oldSel = sel = w.getSelectionRange()
-    start,end = sel
-    if start > end: start,end = end,start
-    if start == end:
-        g.es("No text selected") ; return False
-        
-    g.trace(start,end)
+    tag = "pluginsManager.txt"
 
-    # Replace the selection in _both_ controls.
-    start,end = oldSel
-    change_text = self.change_text
+    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
     
-    # Perform regex substitutions of \1, \2, ...\9 in the change text.
-    if self.pattern_match and self.match_obj:
-        groups = self.match_obj.groups()
-        if groups:
-            change_text = self.makeRegexSubs(change_text,groups)
-    # change_text = change_text.replace('\\n','\n').replace('\\t','\t')
-    change_text = self.replaceBackSlashes(change_text)
-
-    for w2 in (w,self.s_ctrl):
-        if start != end: w2.delete(start,end)
-        w2.insert(start,change_text)
-        w2.setInsertPoint(g.choose(self.reverse,start,start+len(change_text)))
-
-    # Update the selection for the next match.
-    w.setSelectionRange(start,start+len(change_text))
-    c.widgetWantsFocus(w)
-
-    # No redraws here: they would destroy the headline selection.
-    c.beginUpdate()
-    try:
-        if self.mark_changes:
-            p.setMarked()
-        if self.in_headline:
-            c.frame.tree.onHeadChanged(p,'Change')
-        else:
-            c.frame.body.onBodyChanged('Change',oldSel=oldSel)
-    finally:
-        c.endUpdate(False)
-        c.frame.tree.drawIcon(p) # redraw only the icon.
-     
-    return True
-#@+node:ekr.20060526201951:makeRegexSubs
-def makeRegexSubs(self,s,groups):
-    
-    '''Carefully substitute group[i-1] for \i strings in s.
-    The group strings may contain \i strings: they are *not* substituted.'''
-    
-    digits = '123456789'
-    result = [] ; n = len(s)
-    i = j = 0 # s[i:j] is the text between \i markers.
-    while j < n:
-        k = s.find('\\',j)
-        if k == -1 or k + 1 >= n:
+    for theDir,place in (
+        (g.app.homeDir,'HOME'),
+        (plugins_path,'leo/config')
+    ):
+        manager_path = g.os_path_join(theDir,tag)
+        if g.os_path_exists(manager_path):
+            g.es('%s: %s' % (tag,theDir),color='blue')
             break
-        j = k + 1 ; ch = s[j]
-        if ch in digits:
-            j += 1
-            result.append(s[i:k]) # Append up to \i
-            i = j
-            gn = int(ch)-1
-            if gn < len(groups):
-                result.append(groups[gn]) # Append groups[i-1]
+    else:
+        g.es('%s not found. No plugins will be loaded' % tag)
+    
+    files = glob.glob(g.os_path_join(plugins_path,"*.py"))
+    files = [g.os_path_abspath(theFile) for theFile in files]
+
+    << set enabled_files from pluginsManager.txt >>
+    
+    # Load plugins in the order they appear in the enabled_files list.
+    if files and enabled_files:
+        for theFile in enabled_files:
+            if theFile in files:
+                loadOnePlugin(theFile)
+                
+    # Note: g.plugin_signon adds module names to g.app.loadedPlugins 
+    if g.app.loadedPlugins:
+        g.es("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
+#@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+if not g.os_path_exists(manager_path):
+    return
+    
+# New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
+enabled_files = []
+disabled_files = []
+try:
+    theFile = open(manager_path)
+    lines = theFile.readlines()
+    for s in lines:
+        s = s.strip()
+        if s:
+            if g.match(s,0,"#"):
+                s = s[1:].strip()
+                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
+                if s and s.find(' ') == -1 and s[-3:] == '.py':
+                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                    if path not in enabled_files and path not in disabled_files:
+                        # print 'disabled',path
+                        disabled_files.append(path)
             else:
-                result.append('\\%s' % ch) # Append raw '\i'
-    result.append(s[i:])
-    return ''.join(result)
-#@-node:ekr.20060526201951:makeRegexSubs
-#@-node:ekr.20031218072017.3070:changeSelection
-#@+node:ekr.20031218072017.3077:search & helpers
-def search (self):
-
-    """Search s_ctrl for self.find_text under the control of the
-    whole_word, ignore_case, and pattern_match ivars.
-    
-    Returns (pos, newpos) or (None,None)."""
-
-    c = self.c ; p = self.p ; w = self.s_ctrl
-    index = w.getInsertPoint()
-    
-    s = w.getAllText()
-    # g.trace(index,repr(s[index:index+20]))
-    stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
-    pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
-        backwards=self.reverse,nocase=self.ignore_case,
-        regexp=self.pattern_match,word=self.whole_word)
-    # g.trace('pos,newpos',pos,newpos)
-    if pos == -1: return None,None
-    << fail if we are passed the wrap point >>
-    insert = g.choose(self.reverse,min(pos,newpos),max(pos,newpos))
-    w.setSelectionRange(pos,newpos,insert=insert)
-    return pos,newpos
-#@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
-
-    if self.reverse and pos < self.wrapPos:
-        # g.trace("wrap done")
-        return None, None
-
-    if not self.reverse and newpos > self.wrapPos:
-        return None, None
-#@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-#@+node:ekr.20060526081931:searchHelper & allies
-def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
-    
-    if swapij and backwards: i,j = j,i
-        
-    # g.trace(backwards,i,j,repr(s[i:i+20]))
-
-    if not s[i:j] or not pattern:
-        # g.trace('empty',i,j)
-        return -1,-1
-        
-    if regexp:
-        pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
-    elif backwards:
-        pos,newpos = self.backwardsHelper(s,i,j,pattern,nocase,word)
-    else:
-        pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
-
-    return pos,newpos
-#@+node:ekr.20070105165924:replaceBackSlashes
-def replaceBackSlashes (self,s):
-    
-    '''Carefully replace backslashes in a search pattern.'''
-    
-    # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
-    # because there is no rescanning.
-    
-    i = 0
-    while i + 1 < len(s):
-        if s[i] == '\\':
-            ch = s[i+1]
-            if ch == '\\':
-                s = s[:i] + s[i+1:] # replace \\ by \
-            elif ch == 'n':
-                s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
-            elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
-            else:
-                i += 1 # Skip the escaped character.
-        i += 1
-    return s
-#@-node:ekr.20070105165924:replaceBackSlashes
-#@+node:ekr.20060526092203:regexHelper
-def regexHelper (self,s,i,j,pattern,backwards,nocase):
-   
-    try:
-        flags = re.MULTILINE
-        if nocase: flags |= re.IGNORECASE
-        re_obj = re.compile(pattern,flags)
-    except Exception:
-        g.es('Invalid regular expression: %s' % (pattern),color='blue')
-        self.errors += 1 # Abort the search.
-        return -1, -1
-        
-    if backwards: # Scan to the last match.
-        last_mo = None
-        while 1:
-            mo = re_obj.search(s,i,j)
-            if mo is None: break
-            i = mo.end()
-            last_mo = mo
-        self.match_obj = mo = last_mo
-    else:
-        self.match_obj = mo = re_obj.search(s,i,j)
-        
-    if mo is None:
-        return -1, -1
-    else:
-        k  = mo.start()
-        k2 = mo.end()
-        if 0:
-            g.trace('i: %d, j: %d k: %d, k2: %d, s[k:k2]: %s, len(s): %d, s[-1]: %s,' % (
-                i,j,k,k2,repr(s[k:k2]),len(s),repr(s[-1])))
-        # g.trace('groups',mo.groups())
-        if k == k2:
-            return -1, -1 # A non-empty pattern can match an empty string.  Move on!
-        else:
-            return k, k2
-#@-node:ekr.20060526092203:regexHelper
-#@+node:ekr.20060526140744:backwardsHelper
-def backwardsHelper (self,s,i,j,pattern,nocase,word):
-
-    if nocase:
-        s = s.lower() ; pattern.lower()
-    pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    
-    if word:
-        while 1:
-            k = s.rfind(pattern,i,j)
-            # g.trace(i,j,k)
-            if k == -1: return -1, -1
-            if self.matchWord(s,k,pattern):
-                return k,k+n
-            else:
-                j = max(0,k-1)
-    else:
-        k = s.rfind(pattern,i,j)
-        # g.trace(i,j,k)
-        if k == -1:
-            return -1, -1
-        else:
-            return k,k+n
-#@-node:ekr.20060526140744:backwardsHelper
-#@+node:ekr.20060526093531:plainHelper
-@tabwidth 4
-
-def plainHelper (self,s,i,j,pattern,nocase,word):
-    
-    # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
-    if nocase:
-        s = s.lower() ; pattern = pattern.lower()
-	pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    if word:
-        while 1:
-            k = s.find(pattern,i,j)
-            # g.trace(k,n)
-            if k == -1: return -1, -1
-            elif self.matchWord(s,k,pattern):
-                return k, k + n
-            else: i = k + n
-    else:
-        k = s.find(pattern,i,j)
-        if k == -1:
-            return -1, -1
-        else:
-            return k, k + n
-#@-node:ekr.20060526093531:plainHelper
-#@+node:ekr.20060526140744.1:matchWord
-def matchWord(self,s,i,pattern):
-    
-    pattern = self.replaceBackSlashes(pattern)
-    if not s or not pattern or not g.match(s,i,pattern):
-        return False
-
-    pat1,pat2 = pattern[0],pattern[-1]
-    # n = self.patternLen(pattern)
-    n = len(pattern)
-    ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
-    ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
-    
-    isWordPat1 = g.isWordChar(pat1)
-    isWordPat2 = g.isWordChar(pat2)
-    isWordCh1 = g.isWordChar(ch1)
-    isWordCh2 = g.isWordChar(ch2)
-    
-    # g.trace('i',i,'ch1,ch2,pat',repr(ch1),repr(ch2),repr(pattern))
-    
-    if isWordPat1 and isWordCh1 or isWordPat2 and isWordCh2:
-        return False
-    else:
-        return True
-#@-node:ekr.20060526140744.1:matchWord
-#@-node:ekr.20060526081931:searchHelper & allies
-#@-node:ekr.20031218072017.3077:search & helpers
-#@-node:ekr.20061116054917.3:Handle \t, \n and \\ properly in find/change commands
+                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                if path not in enabled_files and path not in disabled_files:
+                    # print 'enbled',path
+                    enabled_files.append(path)
+    theFile.close()
+except IOError:
+    g.es("Can not open: " + manager_path)
+    # Don't import leoTest initially.  It causes problems.
+    import leoTest ; leoTest.fail()
+    return
+#@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+#@-node:ekr.20031218072017.3440:loadHandlers
+#@-node:ekr.20061030074731:Created standard pluginsManager.txt only if it does not exist
+#@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061127100022.1:Menu reorgs
 #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
 def createMenusFromTables (self):
@@ -11875,7 +11624,7 @@ def finishCreate (self):  # New in 4.4.
     
     c = self ; p = c.currentPosition()
     c.miniBufferWidget = c.frame.miniBufferWidget
-    g.trace('Commands',c.fileName())
+    # g.trace('Commands',c.fileName())
     
     # Create a keyHandler even if there is no miniBuffer.
     c.keyHandler = c.k = k = g.app.gui.createKeyHandlerClass(c,
@@ -13405,29 +13154,21 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
         pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
 
     return pos,newpos
-#@+node:ekr.20070105165924:replaceBackSlashes
-def replaceBackSlashes (self,s):
+#@+node:ekr.20061207172210:patternLen
+def patternLen (self,s):
     
-    '''Carefully replace backslashes in a search pattern.'''
+    '''Return the length of pattern 's', counting escapes as one character.'''
     
-    # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
-    # because there is no rescanning.
-    
-    i = 0
-    while i + 1 < len(s):
-        if s[i] == '\\':
-            ch = s[i+1]
-            if ch == '\\':
-                s = s[:i] + s[i+1:] # replace \\ by \
-            elif ch == 'n':
-                s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
-            elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
-            else:
-                i += 1 # Skip the escaped character.
-        i += 1
-    return s
-#@-node:ekr.20070105165924:replaceBackSlashes
+    n = len(s) ; i = 0
+    while 1:
+        i = s.find('\\',i)
+        if i == -1 or i >= len(s)-1:
+            break
+        n -= 1 ; i += 2
+    # g.trace(n,repr(s))
+    return n
+#@nonl
+#@-node:ekr.20061207172210:patternLen
 #@+node:ekr.20060526092203:regexHelper
 def regexHelper (self,s,i,j,pattern,backwards,nocase):
    
@@ -13470,9 +13211,8 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
     if nocase:
         s = s.lower() ; pattern.lower()
-    pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    
+
+    n = self.patternLen(pattern)
     if word:
         while 1:
             k = s.rfind(pattern,i,j)
@@ -13491,15 +13231,15 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
             return k,k+n
 #@-node:ekr.20060526140744:backwardsHelper
 #@+node:ekr.20060526093531:plainHelper
-@tabwidth 4
-
 def plainHelper (self,s,i,j,pattern,nocase,word):
     
     # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+
+    n = self.patternLen(pattern)
     if nocase:
         s = s.lower() ; pattern = pattern.lower()
-	pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
     if word:
         while 1:
             k = s.find(pattern,i,j)
@@ -13518,13 +13258,11 @@ def plainHelper (self,s,i,j,pattern,nocase,word):
 #@+node:ekr.20060526140744.1:matchWord
 def matchWord(self,s,i,pattern):
     
-    pattern = self.replaceBackSlashes(pattern)
     if not s or not pattern or not g.match(s,i,pattern):
         return False
-
+    
     pat1,pat2 = pattern[0],pattern[-1]
-    # n = self.patternLen(pattern)
-    n = len(pattern)
+    n = self.patternLen(pattern)
     ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
     ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
     
@@ -13573,16 +13311,15 @@ def setInsertPoint (self,i): # tkTextWidget.
 # If no selection, insert self.change_text at the cursor.
 
 def changeSelection(self):
-    
+
     c = self.c ; p = self.p
+    # g.trace(self.in_headline)
     w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
     oldSel = sel = w.getSelectionRange()
     start,end = sel
     if start > end: start,end = end,start
     if start == end:
         g.es("No text selected") ; return False
-        
-    g.trace(start,end)
 
     # Replace the selection in _both_ controls.
     start,end = oldSel
@@ -13593,8 +13330,7 @@ def changeSelection(self):
         groups = self.match_obj.groups()
         if groups:
             change_text = self.makeRegexSubs(change_text,groups)
-    # change_text = change_text.replace('\\n','\n').replace('\\t','\t')
-    change_text = self.replaceBackSlashes(change_text)
+    change_text = change_text.replace('\\n','\n').replace('\\t','\t')
 
     for w2 in (w,self.s_ctrl):
         if start != end: w2.delete(start,end)
@@ -14301,7 +14037,7 @@ def updateHead (self,event,w):
 
     s = w.getAllText()
     if s.endswith('\n'):
-        # g.trace('can not happen: trailing newline')
+        g.trace('can not happen: trailing newline')
         s = s[:-1]
     w.configure(width=self.headWidth(s=s))
 
@@ -14552,29 +14288,21 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
         pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
 
     return pos,newpos
-#@+node:ekr.20070105165924:replaceBackSlashes
-def replaceBackSlashes (self,s):
+#@+node:ekr.20061207172210:patternLen
+def patternLen (self,s):
     
-    '''Carefully replace backslashes in a search pattern.'''
+    '''Return the length of pattern 's', counting escapes as one character.'''
     
-    # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
-    # because there is no rescanning.
-    
-    i = 0
-    while i + 1 < len(s):
-        if s[i] == '\\':
-            ch = s[i+1]
-            if ch == '\\':
-                s = s[:i] + s[i+1:] # replace \\ by \
-            elif ch == 'n':
-                s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
-            elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
-            else:
-                i += 1 # Skip the escaped character.
-        i += 1
-    return s
-#@-node:ekr.20070105165924:replaceBackSlashes
+    n = len(s) ; i = 0
+    while 1:
+        i = s.find('\\',i)
+        if i == -1 or i >= len(s)-1:
+            break
+        n -= 1 ; i += 2
+    # g.trace(n,repr(s))
+    return n
+#@nonl
+#@-node:ekr.20061207172210:patternLen
 #@+node:ekr.20060526092203:regexHelper
 def regexHelper (self,s,i,j,pattern,backwards,nocase):
    
@@ -14617,9 +14345,8 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
     if nocase:
         s = s.lower() ; pattern.lower()
-    pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    
+
+    n = self.patternLen(pattern)
     if word:
         while 1:
             k = s.rfind(pattern,i,j)
@@ -14638,15 +14365,15 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
             return k,k+n
 #@-node:ekr.20060526140744:backwardsHelper
 #@+node:ekr.20060526093531:plainHelper
-@tabwidth 4
-
 def plainHelper (self,s,i,j,pattern,nocase,word):
     
     # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+
+    n = self.patternLen(pattern)
     if nocase:
         s = s.lower() ; pattern = pattern.lower()
-	pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
     if word:
         while 1:
             k = s.find(pattern,i,j)
@@ -14665,13 +14392,11 @@ def plainHelper (self,s,i,j,pattern,nocase,word):
 #@+node:ekr.20060526140744.1:matchWord
 def matchWord(self,s,i,pattern):
     
-    pattern = self.replaceBackSlashes(pattern)
     if not s or not pattern or not g.match(s,i,pattern):
         return False
-
+    
     pat1,pat2 = pattern[0],pattern[-1]
-    # n = self.patternLen(pattern)
-    n = len(pattern)
+    n = self.patternLen(pattern)
     ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
     ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
     
@@ -17887,7 +17612,7 @@ def updateHead (self,event,w):
 
     s = w.getAllText()
     if s.endswith('\n'):
-        # g.trace('can not happen: trailing newline')
+        g.trace('can not happen: trailing newline')
         s = s[:-1]
     w.configure(width=self.headWidth(s=s))
 
@@ -19513,7 +19238,7 @@ def updateHead (self,event,w):
 
     s = w.getAllText()
     if s.endswith('\n'):
-        # g.trace('can not happen: trailing newline')
+        g.trace('can not happen: trailing newline')
         s = s[:-1]
     w.configure(width=self.headWidth(s=s))
 
@@ -19873,29 +19598,21 @@ def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
         pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
 
     return pos,newpos
-#@+node:ekr.20070105165924:replaceBackSlashes
-def replaceBackSlashes (self,s):
+#@+node:ekr.20061207172210:patternLen
+def patternLen (self,s):
     
-    '''Carefully replace backslashes in a search pattern.'''
+    '''Return the length of pattern 's', counting escapes as one character.'''
     
-    # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
-    # because there is no rescanning.
-    
-    i = 0
-    while i + 1 < len(s):
-        if s[i] == '\\':
-            ch = s[i+1]
-            if ch == '\\':
-                s = s[:i] + s[i+1:] # replace \\ by \
-            elif ch == 'n':
-                s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
-            elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
-            else:
-                i += 1 # Skip the escaped character.
-        i += 1
-    return s
-#@-node:ekr.20070105165924:replaceBackSlashes
+    n = len(s) ; i = 0
+    while 1:
+        i = s.find('\\',i)
+        if i == -1 or i >= len(s)-1:
+            break
+        n -= 1 ; i += 2
+    # g.trace(n,repr(s))
+    return n
+#@nonl
+#@-node:ekr.20061207172210:patternLen
 #@+node:ekr.20060526092203:regexHelper
 def regexHelper (self,s,i,j,pattern,backwards,nocase):
    
@@ -19938,9 +19655,8 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
 
     if nocase:
         s = s.lower() ; pattern.lower()
-    pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    
+
+    n = self.patternLen(pattern)
     if word:
         while 1:
             k = s.rfind(pattern,i,j)
@@ -19959,15 +19675,15 @@ def backwardsHelper (self,s,i,j,pattern,nocase,word):
             return k,k+n
 #@-node:ekr.20060526140744:backwardsHelper
 #@+node:ekr.20060526093531:plainHelper
-@tabwidth 4
-
 def plainHelper (self,s,i,j,pattern,nocase,word):
     
     # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+
+    n = self.patternLen(pattern)
     if nocase:
         s = s.lower() ; pattern = pattern.lower()
-	pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
+        pattern = pattern.replace('\\n','\n').replace('\\t','\t')
+
     if word:
         while 1:
             k = s.find(pattern,i,j)
@@ -19986,13 +19702,11 @@ def plainHelper (self,s,i,j,pattern,nocase,word):
 #@+node:ekr.20060526140744.1:matchWord
 def matchWord(self,s,i,pattern):
     
-    pattern = self.replaceBackSlashes(pattern)
     if not s or not pattern or not g.match(s,i,pattern):
         return False
-
+    
     pat1,pat2 = pattern[0],pattern[-1]
-    # n = self.patternLen(pattern)
-    n = len(pattern)
+    n = self.patternLen(pattern)
     ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
     ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
     
@@ -20015,16 +19729,15 @@ def matchWord(self,s,i,pattern):
 # If no selection, insert self.change_text at the cursor.
 
 def changeSelection(self):
-    
+
     c = self.c ; p = self.p
+    # g.trace(self.in_headline)
     w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
     oldSel = sel = w.getSelectionRange()
     start,end = sel
     if start > end: start,end = end,start
     if start == end:
         g.es("No text selected") ; return False
-        
-    g.trace(start,end)
 
     # Replace the selection in _both_ controls.
     start,end = oldSel
@@ -20035,8 +19748,7 @@ def changeSelection(self):
         groups = self.match_obj.groups()
         if groups:
             change_text = self.makeRegexSubs(change_text,groups)
-    # change_text = change_text.replace('\\n','\n').replace('\\t','\t')
-    change_text = self.replaceBackSlashes(change_text)
+    change_text = change_text.replace('\\n','\n').replace('\\t','\t')
 
     for w2 in (w,self.s_ctrl):
         if start != end: w2.delete(start,end)
