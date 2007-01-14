@@ -2,7 +2,7 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20061209081047:Fix bugs
+#@+node:ekr.20061209081047:Fix bugs: 2
 #@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
 @nocolor
 
@@ -35,9 +35,7 @@ Mac OS X) did not have this behaviour.
 Theo
 #@nonl
 #@-node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
-#@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
-#@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
-#@-node:ekr.20061209081047:Fix bugs
+#@-node:ekr.20061209081047:Fix bugs: 2
 #@+node:ekr.20061209083136:Complete the wxGui plugin
 @nocolor
 
