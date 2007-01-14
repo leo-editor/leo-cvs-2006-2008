@@ -132,13 +132,13 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
         f.top.bind("<Button-1>", f.OnActivateLeoEvent)
         
+        f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
+        f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
+        
         # These don't work on Windows. Because of bugs in window managers,
         # there is NO WAY to know which window is on top!
-        if 0:
-            f.top.bind("<Activate>",f.OnActivateLeoEvent)
-            f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
-            f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
-            f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
+        # f.top.bind("<Activate>",f.OnActivateLeoEvent)
+        # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
         
         # Create the outer frame, the 'hull' component.
         f.outerFrame = Tk.Frame(top)

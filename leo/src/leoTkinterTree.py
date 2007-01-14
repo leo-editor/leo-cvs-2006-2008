@@ -1681,6 +1681,7 @@ class leoTkinterTree (leoFrame.leoTree):
         # g.trace("*** start drag ***",theId,self.drag_p.headString())
         # Only do this once: greatly speeds drags.
         self.savedNumberOfVisibleNodes = self.numberOfVisibleNodes()
+        # g.trace('self.controlDrag',self.controlDrag)
         if c.config.getBool("allow_clone_drags"):
             self.controlDrag = c.frame.controlKeyIsDown
             if c.config.getBool("look_for_control_drag_on_mouse_down"):
