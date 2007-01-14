@@ -198,6 +198,8 @@ NewHeadline
 Niekerk
 Niklas
 NoNodeEditors
+None
+None
 Norwitz
 Num_Lock
 OLDconvert
@@ -367,6 +369,7 @@ Zeitlin
 Zhang
 Zope
 Zvi
+__init__
 a1
 a2
 a3
@@ -615,6 +618,7 @@ color_markup
 colorizer
 colorizer's
 colorizerTests
+colorizerThread
 colortag
 colour
 coloured
@@ -1197,6 +1201,7 @@ killcolor
 kk
 knuth
 ko
+kwargs
 label_font
 lang
 lang_var

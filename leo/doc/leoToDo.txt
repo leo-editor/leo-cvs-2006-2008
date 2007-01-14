@@ -3,23 +3,15 @@
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070105135851:To do first
-#@+node:ekr.20070105121752:Add Find & Spell tabs to log pane on startup
-# Perhaps there should be an option for the spell tab.
-#@nonl
-#@-node:ekr.20070105121752:Add Find & Spell tabs to log pane on startup
+#@+node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
+#@-node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
 #@+node:ekr.20061209083136:Complete the wxGui plugin
 @nocolor
 
-Bugs
-
-* Arrow keys do not work properly.
-- Shortcuts not shown in wx menus
-- Focus commands do not work
-- Alt-D does not work when outline selected
-
-* Refactor to minimize work done in wx subclasses.
-
+- Make icon area and minibuffer functional.
+    - Refactor minibuffer and Find tab.
 - Fix all unit tests.
+
 - It's not clear what to do about k.shortcutFromSetting.
 - Move Tk tables to Tk gui.
 
@@ -1938,6 +1930,14 @@ hide = unpack
 #@-node:ekr.20031218072017.3955:unpack (hide)
 #@-node:ekr.20041223102225:class tkIconBarClass
 #@-node:ekr.20061209083136:Complete the wxGui plugin
+#@+node:ekr.20070105120506:Bugs in wx plugin
+#@+node:ekr.20061213064617:Shortcuts not shown in wx menus
+#@-node:ekr.20061213064617:Shortcuts not shown in wx menus
+#@+node:ekr.20061213073718:Focus commands do not work
+#@-node:ekr.20061213073718:Focus commands do not work
+#@+node:ekr.20061213073718.1:Alt-D does not work when outline selected
+#@-node:ekr.20061213073718.1:Alt-D does not work when outline selected
+#@-node:ekr.20070105120506:Bugs in wx plugin
 #@-node:ekr.20070105135851:To do first
 #@+node:ekr.20061209082338:Docs
 #@+node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
