@@ -2149,6 +2149,7 @@ class leoTkinterBody (leoFrame.leoBody):
     
         self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
         w.leo_active = True
+        c.frame.tree.expandAllAncestors(w.leo_p)
         c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
         c.recolor_now()
         #@    << restore the selection, insertion point and the scrollbar >>
