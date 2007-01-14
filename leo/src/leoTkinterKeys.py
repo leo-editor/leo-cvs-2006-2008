@@ -163,7 +163,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
                 if ch == '\b':
                     s = w.getAllText()
                     if len(s) > len(k.mb_prefix):
-                        w.delete(i+'-1c')
+                        w.delete(i-1)
                 else:
                     w.insert('insert',ch)
                 # g.trace(k.mb_prefix)       
