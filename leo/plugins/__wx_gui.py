@@ -930,7 +930,7 @@ class wxFindTab (leoFind.findTab):
             for event, callback in table:
                 w.bind(event,callback)
     #@-node:ekr.20061212100034.9:createBindings (wsFindTab) TO DO
-    #@+node:ekr.20061212100034.10:init (wxFindTab) 
+    #@+node:ekr.20061212100034.10:init (wxFindTab)
     # Important: we can not use leoFind.init because we must init the checkboxes 'by hand' here. 
     
     def init (self,c):
@@ -1013,7 +1013,7 @@ class wxFindTab (leoFind.findTab):
                 if w: w.SetValue(True)
         #@-node:ekr.20061213063636:<< set checkboxes from ivars >>
         #@nl
-    #@-node:ekr.20061212100034.10:init (wxFindTab) 
+    #@-node:ekr.20061212100034.10:init (wxFindTab)
     #@-others
 #@nonl
 #@-node:ekr.20061212100034:wxFindTab class
@@ -2309,6 +2309,8 @@ class wxLeoFrame(leoFrame.leoFrame):
         self.setFocus(g.choose(
             c.config.getBool('outline_pane_has_initial_focus'),
             self.tree.treeCtrl,self.bodyCtrl))
+    #@+node:edream.110203113231.261:createSplitters
+    #@-node:edream.110203113231.261:createSplitters
     #@+node:edream.110203113231.265:setWindowIcon
     def setWindowIcon(self):
     
@@ -2341,8 +2343,6 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         w.Bind(wx.EVT_MENU_OPEN,self.updateAllMenus) 
     #@-node:edream.110203113231.264:setEventHandlers
-    #@+node:edream.110203113231.261:createSplitters
-    #@-node:edream.110203113231.261:createSplitters
     #@-node:edream.110203113231.260:finishCreate (wxLeoFrame)
     #@+node:edream.111403141810:initialRatios
     def initialRatios (self):
@@ -4722,7 +4722,7 @@ class wxLeoTextWidget (wx.TextCtrl):
         return 'wxLeoTextWidget: %s' % (id(self))
     #@-node:ekr.20061118101058:Birth & special methods (wxLeoTextCtrl)
     #@+node:ekr.20061105125717:Index conversion
-    #@+node:ekr.20061117150656:toGuiIndex & toPythonIndex
+    #@+node:ekr.20061117150656:w.toGuiIndex & toPythonIndex
     # This plugin uses Python indices everywhere.
     
     def toPythonIndex (self,index):
@@ -4746,15 +4746,15 @@ class wxLeoTextWidget (wx.TextCtrl):
     
     toGuiIndex = toPythonIndex
     #@nonl
-    #@-node:ekr.20061117150656:toGuiIndex & toPythonIndex
-    #@+node:ekr.20061117150523:rowColToGuiIndex
+    #@-node:ekr.20061117150656:w.toGuiIndex & toPythonIndex
+    #@+node:ekr.20061117150523:w.rowColToGuiIndex
     # This method is called only from the colorizer.
     # It provides a huge speedup over naive code.
     
     def rowColToGuiIndex (self,s,row,col):
     
         return g.convertRowColToPythonIndex(s,row,col)    
-    #@-node:ekr.20061117150523:rowColToGuiIndex
+    #@-node:ekr.20061117150523:w.rowColToGuiIndex
     #@-node:ekr.20061105125717:Index conversion
     #@+node:ekr.20061115122034.2:Wrapper methods
     #@+node:ekr.20061116070156:bind
@@ -4870,7 +4870,7 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@nonl
     #@-node:ekr.20061115135849.1:tkColorToWxColor
     #@-node:ekr.20061115135849:tag_configure & helper
-    #@+node:ekr.20061115122034.8:tag_ranges
+    #@+node:ekr.20061115122034.8:tag_ranges 
     def tag_ranges(self,tagName):
         
         return tuple() ###
@@ -4879,12 +4879,12 @@ class wxLeoTextWidget (wx.TextCtrl):
         aList = Tk.Text.tag_ranges(w,tagName)
         aList = [w.toPythonIndex(z) for z in aList]
         return tuple(aList)
-    #@-node:ekr.20061115122034.8:tag_ranges
+    #@-node:ekr.20061115122034.8:tag_ranges 
     #@-node:ekr.20061115122034.2:Wrapper methods
     #@+node:ekr.20061115122034.9:Convenience methods (tkTextWidget)
     # These have no direct Tk equivalents.  They used to be defined in the gui class.
     # These methods must take care not to call overridden methods.
-    #@+node:ekr.20061115122034.10:deleteTextSelection
+    #@+node:ekr.20061115122034.10:deleteTextSelection (to do)
     def deleteTextSelection (self):
         
         w = self
@@ -4895,7 +4895,7 @@ class wxLeoTextWidget (wx.TextCtrl):
             del s[i:j]
             # g.trace(len(s),repr(s[:20]))
             wx.TextCtrl.ChangeValue(w,s)
-    #@-node:ekr.20061115122034.10:deleteTextSelection
+    #@-node:ekr.20061115122034.10:deleteTextSelection (to do)
     #@+node:ekr.20061115122034.11:flashCharacter (to do)
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
     
@@ -4922,7 +4922,7 @@ class wxLeoTextWidget (wx.TextCtrl):
             pass ; g.es_exception()
     #@nonl
     #@-node:ekr.20061115122034.11:flashCharacter (to do)
-    #@+node:edream.111303093953.18:getAllText
+    #@+node:edream.111303093953.18:getAllText (test)
     def getAllText (self):
         
         w = self
@@ -4933,23 +4933,23 @@ class wxLeoTextWidget (wx.TextCtrl):
         else:
             return g.toUnicode(s,g.app.tkEncoding)
     #@nonl
-    #@-node:edream.111303093953.18:getAllText
-    #@+node:edream.111303093953.9:getInsertPoint
+    #@-node:edream.111303093953.18:getAllText (test)
+    #@+node:edream.111303093953.9:getInsertPoint (test)
     def getInsertPoint(self):
         
         w = self
     
         return  wx.TextCtrl.GetInsertionPoint(w)
-    #@-node:edream.111303093953.9:getInsertPoint
-    #@+node:ekr.20061115122034.14:getSelectedText
+    #@-node:edream.111303093953.9:getInsertPoint (test)
+    #@+node:ekr.20061115122034.14:getSelectedText (test)
     def getSelectedText (self): # tkTextWidget.
     
         w = self
         
         s = wx.TextCtrl.GetStringSelection(w)
         return g.toUnicode(s,g.app.tkEncoding)
-    #@-node:ekr.20061115122034.14:getSelectedText
-    #@+node:edream.111303093953.13:getSelectionRange
+    #@-node:ekr.20061115122034.14:getSelectedText (test)
+    #@+node:edream.111303093953.13:getSelectionRange (test)
     def getSelectionRange (self,sort=True):
         
         """Return a tuple representing the selected range of the widget.
@@ -4968,14 +4968,14 @@ class wxLeoTextWidget (wx.TextCtrl):
             i =  wx.TextCtrl.GetInsertionPoint(w)
             return i,i
     #@nonl
-    #@-node:edream.111303093953.13:getSelectionRange
-    #@+node:ekr.20061115122034.16:hasSelection
+    #@-node:edream.111303093953.13:getSelectionRange (test)
+    #@+node:ekr.20061115122034.16:hasSelection (test)
     def hasSelection (self):
         
         w = self
         i,j = w.getSelectionRange()
         return i != j
-    #@-node:ekr.20061115122034.16:hasSelection
+    #@-node:ekr.20061115122034.16:hasSelection (test)
     #@+node:ekr.20061115122034.17:replace (test) (could be in the base class)
     def replace (self,i,j,s):
         
@@ -4983,15 +4983,15 @@ class wxLeoTextWidget (wx.TextCtrl):
         w.delete(i,j)
         w.insert(i,s)
     #@-node:ekr.20061115122034.17:replace (test) (could be in the base class)
-    #@+node:ekr.20061115122034.18:selectAllText (could be in the base class)
+    #@+node:ekr.20061115122034.18:selectAllText (test) (could be in the base class)
     def selectAllText (self,insert=None):
         
         '''Select all text of the widget.'''
         
         w = self
         w.setSelectionRange(0,'end',insert=insert)
-    #@-node:ekr.20061115122034.18:selectAllText (could be in the base class)
-    #@+node:ekr.20061115122034.19:setAllText
+    #@-node:ekr.20061115122034.18:selectAllText (test) (could be in the base class)
+    #@+node:ekr.20061115122034.19:setAllText (test)
     def setAllText (self,s):
     
         w = self
@@ -4999,8 +4999,8 @@ class wxLeoTextWidget (wx.TextCtrl):
         # g.trace(len(s),repr(s[:20]),g.callers())
         wx.TextCtrl.Clear(w)
         wx.TextCtrl.WriteText(w,s) # Uses style.
-    #@-node:ekr.20061115122034.19:setAllText
-    #@+node:edream.111303093953.25:see & seeInsertPoint
+    #@-node:ekr.20061115122034.19:setAllText (test)
+    #@+node:edream.111303093953.25:see & seeInsertPoint (test)
     def see(self,index):
     
         w = self
@@ -5010,16 +5010,16 @@ class wxLeoTextWidget (wx.TextCtrl):
         
         w = self
         wx.TextCtrl.ShowPosition(w,w.GetInsertionPoint())
-    #@-node:edream.111303093953.25:see & seeInsertPoint
-    #@+node:edream.111303093953.10:setInsertPoint
+    #@-node:edream.111303093953.25:see & seeInsertPoint (test)
+    #@+node:edream.111303093953.10:setInsertPoint (test)
     def setInsertPoint (self,pos):
     
         w = self
     
         wx.TextCtrl.SetInsertionPoint(w,w.toGuiIndex(pos))
     #@nonl
-    #@-node:edream.111303093953.10:setInsertPoint
-    #@+node:edream.111303093953.16:setSelectionRange
+    #@-node:edream.111303093953.10:setInsertPoint (test)
+    #@+node:edream.111303093953.16:setSelectionRange (test)
     def setSelectionRange (self,i,j,insert=None):
         
         w = self
@@ -5028,7 +5028,9 @@ class wxLeoTextWidget (wx.TextCtrl):
     
         if insert is not None:
             wx.TextCtrl.SetInsertionPoint(w,w.toGuiIndex(insert))
-    #@-node:edream.111303093953.16:setSelectionRange
+    #@-node:edream.111303093953.16:setSelectionRange (test)
+    #@+node:ekr.20061115122034.24:xyToGui/PythonIndex (passed)
+    #@-node:ekr.20061115122034.24:xyToGui/PythonIndex (passed)
     #@-node:ekr.20061115122034.9:Convenience methods (tkTextWidget)
     #@-others
 #@nonl

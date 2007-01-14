@@ -7036,11 +7036,13 @@ class minibufferFind (baseEditCommandsClass):
         self.finder.p = self.c.currentPosition()
         self.finder.v = self.finder.p.v
     
+        # This handles the reverse option.
+        self.finder.findNextCommand()
+    
         if changeAll:
              self.finder.changeAllCommand()
         else:
-            # This is correct: we just want to move to the next match
-            # so the user can choose whether to make the change.
+            # This handles the reverse option.
             self.finder.findNextCommand()
     #@-node:ekr.20060205105950.1:generalChangeHelper
     #@+node:ekr.20060124181213.4:generalSearchHelper

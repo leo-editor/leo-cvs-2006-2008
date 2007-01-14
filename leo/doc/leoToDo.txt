@@ -2,9 +2,42 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070105135851:To do first
-#@+node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
-#@-node:ekr.20061116054917.3:Add 'escape \t and \n' option to all find commands
+#@+node:ekr.20061209081047:Fix bugs
+#@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
+@nocolor
+
+Having two lists for the same thing is very bad.
+When this is fixed we will be able to simplify the multifile plugin.
+#@nonl
+#@-node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
+#@+node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3992390
+
+The 'username' in the path is just edited by me: in the original error message
+it is my login name, of course.
+
+What was happening is the following. 
+Yesterday I was playing with Leo 4.4.2.1 and I often could not create *new*
+Leo files in certain directories.
+Leo would just give me the above error message. After some experimentation,
+I found out that when there was a space somewhere in the path from where I started
+Leo (and planned to save the file), Leo would give me the above error message.
+When the path would not contain a space, Leo would happily save the file.
+
+Note that I only have this problem with *new* files. Leo files that have already
+been created can be opened and saved everywhere.
+
+Perhaps this is only a problem for Mac OS X, but earlier versions of Leo (and
+Mac OS X) did not have this behaviour.
+
+Theo
+#@nonl
+#@-node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
+#@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
+#@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
+#@-node:ekr.20061209081047:Fix bugs
 #@+node:ekr.20061209083136:Complete the wxGui plugin
 @nocolor
 
@@ -1938,8 +1971,9 @@ hide = unpack
 #@+node:ekr.20061213073718.1:Alt-D does not work when outline selected
 #@-node:ekr.20061213073718.1:Alt-D does not work when outline selected
 #@-node:ekr.20070105120506:Bugs in wx plugin
-#@-node:ekr.20070105135851:To do first
 #@+node:ekr.20061209082338:Docs
+#@+node:ekr.20070114120654:Kent's new debugger script doesn't inherit g,c,p
+#@-node:ekr.20070114120654:Kent's new debugger script doesn't inherit g,c,p
 #@+node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
 #@-node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
 #@+node:ekr.20061130084909:Improve What's special whitepaper
@@ -1954,70 +1988,13 @@ hide = unpack
 - Better Python scripting examples (multi-line scripts).
 #@nonl
 #@-node:ekr.20061029100330.1:Better pymacs docs & examples
+#@+node:ekr.20070114082401:Improve documentation for Aspell install
+- Mention settings.
+- Must install dictionary.
+- Mention that dll is not needed when using Python 2.5 and above.
+#@nonl
+#@-node:ekr.20070114082401:Improve documentation for Aspell install
 #@-node:ekr.20061209082338:Docs
-#@+node:ekr.20061209081047:Fix bugs
-#@+node:ekr.20061030074731:Create standard pluginsManager.txt only if it does not exist
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3987635
-By: rogererens
-
-At present I have to go through the list in the Plugin Manager again, trying to
-remember which plugins I had enabled in the previous version.
-
-Possibly the .leoRecentFiles.txt construct analogue may be used?
-#@nonl
-#@-node:ekr.20061030074731:Create standard pluginsManager.txt only if it does not exist
-#@+node:ekr.20061101174435:Fix clone-drag problem
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3991369
-By: rich_ries
-
-The mousal Ctrl+Left Button does NOT result in a cloning of the chosen node.
-When I do a Ctrl+Left Click, the drag message is "dragged node will be moved",
-and move -- not clone -- it does.
-
-@bool allow_clone_drags = True
-@bool enable_drag_messages = True
-@bool look_for_control_drag_on_mouse_down = True
-#@nonl
-#@-node:ekr.20061101174435:Fix clone-drag problem
-#@+node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
-@nocolor
-
-Having two lists for the same thing is very bad.
-When this is fixed we will be able to simplify the multifile plugin.
-#@nonl
-#@-node:ekr.20061022190904:use g.globalDirectiveDict rather than leoColor.leoKeywords in at.directiveKind4
-#@+node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3992390
-
-The 'username' in the path is just edited by me: in the original error message
-it is my login name, of course.
-
-What was happening is the following. 
-Yesterday I was playing with Leo 4.4.2.1 and I often could not create *new*
-Leo files in certain directories.
-Leo would just give me the above error message. After some experimentation,
-I found out that when there was a space somewhere in the path from where I started
-Leo (and planned to save the file), Leo would give me the above error message.
-When the path would not contain a space, Leo would happily save the file.
-
-Note that I only have this problem with *new* files. Leo files that have already
-been created can be opened and saved everywhere.
-
-Perhaps this is only a problem for Mac OS X, but earlier versions of Leo (and
-Mac OS X) did not have this behaviour.
-
-Theo
-#@nonl
-#@-node:ekr.20061127170820.1:Allow spaces in new filenames (a Mac problem?)
-#@+node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
-#@-node:ekr.20061110214440:Make sure all ancestors expanded when select a body editor with multiple body editors
-#@-node:ekr.20061209081047:Fix bugs
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070105135713:To do: 4.4.4 (new positions)
 #@+node:ekr.20070105135851.1:Most important

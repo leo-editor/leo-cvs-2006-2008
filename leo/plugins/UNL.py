@@ -103,8 +103,6 @@ def init ():
     
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
-    g.trace(g.app.gui.guiName())
     
     if g.app.gui.guiName() in ('tkinter','wxPython'):
         leoPlugins.registerHandler("after-create-leo-frame", createStatusLine)
