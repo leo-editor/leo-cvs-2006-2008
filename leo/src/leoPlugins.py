@@ -130,9 +130,21 @@ def isLoaded (name):
 def loadHandlers():
 
     """Load all enabled plugins from the plugins directory"""
+    
+    tag = "pluginsManager.txt"
 
-    plugins_path = g.os_path_join(g.app.loadDir,"..","plugins")
-    manager_path = g.os_path_join(plugins_path,"pluginsManager.txt")
+    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
+    
+    for theDir,place in (
+        (g.app.homeDir,'HOME'),
+        (plugins_path,'leo/config')
+    ):
+        manager_path = g.os_path_join(theDir,tag)
+        if g.os_path_exists(manager_path):
+            g.es('%s: %s' % (tag,theDir),color='blue')
+            break
+    else:
+        g.es('%s not found. No plugins will be loaded' % tag)
     
     files = glob.glob(g.os_path_join(plugins_path,"*.py"))
     files = [g.os_path_abspath(theFile) for theFile in files]
