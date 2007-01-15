@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="76" left="308" height="686" width="967"/>
+	<global_window_position top="34" left="190" height="772" width="1041"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -661,7 +661,7 @@
 <v t="ekr.20060527105211" a="E"><vh>Chapter 16: External debuggers</vh>
 <v t="ekr.20060527105617" a="E"><vh>@rst html\debuggers.html</vh>
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20060527105617.2" a="V"><vh>Leo's debug command and 'the big debugger Aha'</vh></v>
+<v t="ekr.20060527105617.2" a="TV"><vh>Invoking debuggers in a separate process</vh></v>
 <v t="ekr.20060527112801"><vh>Settings</vh></v>
 <v t="ekr.20060527105617.1" a="M"><vh>Debugging scripts so that c, g and p are predefined</vh></v>
 <v t="ekr.20060601104756"><vh>@rst-no-head end stuff</vh></v>
@@ -24959,11 +24959,6 @@ verbose=True
 Chapter 16: Using External Debuggers
 #######################################
 
-**Important**: Support for external debuggers is a work in progress.
-The following information is preliminary and may not be completely accurate.
-Please feel free to ask questions on `Leo's forums`_.
-
-
 This chapter discusses debug Leo programs with external debuggers such as winpdb_ or Idle_.
 
 .. contents::
@@ -25039,35 +25034,34 @@ After you single step past these lines you are ready to debug your script.
 - Hit the 'Debug Script' script button.
 
 That's *all*.</t>
-<t tx="ekr.20060527105617.2">There is a simple way of embedding winpdb (or any other debugger) into Leo.
-Just put the following in an \@button node::
-     
-    import subprocess
-    import sys
+<t tx="ekr.20060527105617.2">This section tells how to invoke an external debugger to debug Leo scripts.
+
+Be aware of the distinction between **Leo-specific** scripts and **general** scripts.
+Leo-specific scripts access data in the Leo outline in which they are contained;
+general scripts do not.
+
+To debug a *general* script, create the an \@button node containing the following code::
     
-    # tempfilename = '/tmp/winpdb'
-    tempfilename = r'c:/prog/test/winpdb_temp.txt'
-    tempfile = open(tempfilename, 'w')
-    tempfile.write(p.bodyString())
-    tempfile.close()
-    
-    if 1: # Specify python explicitly.
-        python = r'c:\Python24\python.exe'
-    else: # Use the same version of Python used to launch Leo.
-        python = sys.executable
-    pythonDir = g.os_path_dirname(python)
-    winpdb = g.os_path_join(pythonDir,'Scripts','_winpdb.py')
-    cmdline = '%s %s -t %s' % (python,winpdb,tempfilename)
+    import subprocess,sys
+    filename = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','winpdb_temp.txt'))
+    f = open(filename,'w') 
+    f.write(p.bodyString()) 
+    f.close() 
+    python = sys.executable
+    pythonDir = g.os_path_dirname(python) 
+    winpdb = g.os_path_join(pythonDir,'Scripts','_winpdb.py') 
+    cmdline = '%s %s -t %s' % (python,winpdb,filename) 
     subprocess.Popen(cmdline)
     
-This writes the contents of the current node to a file and invokes winpdb on the temporary file.
-This solves many problems:
- 
-- No need to commit to any one debugger: substitute your favorite debugger for '_winpdb.py', and modify args as needed.
- 
-- No need to worry about the interactions between the editor and the debugger: there are none after the debugger starts.  In particular, the debugger can use a separate event loop (or even a different gui) from the editor.
- 
-- No need (typically) to modify the editor or debugger in *any* way.  And no need to understand the debugger's code at all.
+To debug a Leo-specific script, create an @button node containing the following code:
+    
+    import os,sys
+    pythonDir = g.os_path_dirname(sys.executable)
+    winPdb = g.os_path_join(pythonDir,'scripts','_winpdb.py')
+    args = [sys.executable, winPdb, '-t', 'leo.py'] # here leo.py is the program to be debugged.
+    os.spawnv(os.P_NOWAIT, sys.executable, args)
+    
+This runs Leo itself in a debugger.
 
 Leo's new debug command generalizes the code above so it passes an arbitrary file (instead of 'leo.py') to an arbitrary debugger.  That's the only debugging code Leo needs, and gives Leo 90% of what I have ever wanted from a debugger.
 Furthermore, it allows editing to proceed independently of debugging.
