@@ -734,8 +734,10 @@ class leoFind:
             s = w.getAllText()
             i,j = g.getLine(s,pos)
             line = s[i:j]
-            self.printLine(line,allFlag=True)
+            if not self.clone_find_all:
+                self.printLine(line,allFlag=True)
             if self.clone_find_all and self.p.v.t not in clones:
+                # g.trace(self.p.v.t,self.p.headString())
                 if not clones:
                     #@                << create the found node and begin the undo group >>
                     #@+node:ekr.20051113110735:<< create the found node and begin the undo group >>
@@ -751,9 +753,9 @@ class leoFind:
                     u.afterInsertNode(found,undoType,undoData,dirtyVnodeList=[])
                     #@-node:ekr.20051113110735:<< create the found node and begin the undo group >>
                     #@nl
+                clones.append(self.p.v.t)
                 #@            << create a clone of p under the find node >>
                 #@+node:ekr.20051113110851:<< create a clone of p under the find node >>
-                clones.append(self.p.v.t)
                 undoData = u.beforeCloneNode(self.p)
                 q = self.p.clone()
                 q.moveToLastChildOf(found)
