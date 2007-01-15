@@ -1375,7 +1375,7 @@ class baseCommands:
     #@-node:ekr.20031218072017.2819:File Menu
     #@+node:ekr.20031218072017.2861:Edit Menu...
     #@+node:ekr.20031218072017.2862:Edit top level
-    #@+node:ekr.20031218072017.2140:c.executeScript
+    #@+node:ekr.20031218072017.2140:c.executeScript & helpers
     def executeScript(self,event=None,p=None,script=None,
         useSelectedText=True,define_g=True,define_name='__main__',silent=False):
     
@@ -1384,16 +1384,10 @@ class baseCommands:
         We execute the selected text, or the entire body text if no text is selected."""
         
         c = self ; script1 = script
+        writeScriptFile = c.config.getBool('write_script_file')
         if not script:
             script = g.getScript(c,p,useSelectedText=useSelectedText)
-        #@    << redirect output >>
-        #@+node:ekr.20031218072017.2143:<< redirect output >>
-        if c.config.redirect_execute_script_output_to_log_pane:
-        
-            g.redirectStdout() # Redirect stdout
-            g.redirectStderr() # Redirect stderr
-        #@-node:ekr.20031218072017.2143:<< redirect output >>
-        #@nl
+        self.redirectScriptOutput()
         try:
             log = c.frame.log
             if script.strip():
@@ -1403,8 +1397,11 @@ class baseCommands:
                     p = c.currentPosition()
                     d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
                     if define_name: d['__name__'] = define_name
-                    # g.trace(script)
-                    exec script in d
+                    if writeScriptFile:
+                        scriptFile = self.writeScriptFile(script)
+                        execfile(scriptFile,d)
+                    else:
+                        exec script in d
                     if not script1 and not silent:
                         # Careful: the script may have changed the log tab.
                         tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
@@ -1415,16 +1412,54 @@ class baseCommands:
             else:
                 tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
                 g.es("no script selected",color="blue",tabName=tabName)
-        finally: # New in 4.3 beta 2: unredirect output last.
-            #@        << unredirect output >>
-            #@+node:EKR.20040627100424:<< unredirect output >>
-            if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+        finally:
+            self.unredirectScriptOutput()
+    #@+node:ekr.20031218072017.2143:redirectScriptOutput
+    def redirectScriptOutput (self):
+        
+        c = self
+    
+        if c.config.redirect_execute_script_output_to_log_pane:
+    
+            g.redirectStdout() # Redirect stdout
+            g.redirectStderr() # Redirect stderr
+    #@-node:ekr.20031218072017.2143:redirectScriptOutput
+    #@+node:EKR.20040627100424:unredirectScriptOutput
+    def unredirectScriptOutput (self):
+        
+        c = self
+    
+        if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+    
+            g.restoreStderr()
+            g.restoreStdout()
+    #@-node:EKR.20040627100424:unredirectScriptOutput
+    #@+node:ekr.20070115135502:writeScriptFile
+    def writeScriptFile (self,script):
+        
+        # Get the path to the file.
+        c = self
+        path = c.config.getString('script_file_path')
+        if path:
+            parts = path.split('/')
+            path = g.app.loadDir
+            for part in parts:
+                path = g.os_path_abspath(g.os_path_join(path,part))
+        else:
+            path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','scriptFile.py'))
             
-                g.restoreStderr()
-                g.restoreStdout()
-            #@-node:EKR.20040627100424:<< unredirect output >>
-            #@nl
-    #@-node:ekr.20031218072017.2140:c.executeScript
+        # Write the file.
+        try:
+            f = file(path,'w')
+            f.write(script)
+            f.close()
+        except Exception:
+            path = None
+        
+        return path
+    #@nonl
+    #@-node:ekr.20070115135502:writeScriptFile
+    #@-node:ekr.20031218072017.2140:c.executeScript & helpers
     #@+node:ekr.20031218072017.2864:goToLineNumber & allies
     def goToLineNumber (self,event=None,root=None,lines=None,n=None,scriptFind=False):
         

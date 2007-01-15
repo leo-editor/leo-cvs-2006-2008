@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="864" width="973"/>
+	<global_window_position top="10" left="238" height="824" width="973"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -72,7 +72,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -201,7 +201,9 @@
 <v t="ekr.20041119043902.15"><vh>@bool print_trailing_lines = True</vh></v>
 </v>
 </v>
-<v t="ekr.20060524151415"><vh>Debugger</vh>
+<v t="ekr.20060524151415" a="E"><vh>Debugger</vh>
+<v t="ekr.20070115134125"><vh>@bool write_script_file = True</vh></v>
+<v t="ekr.20070115134125.1" a="TV"><vh>@string script_file_path = ../test/scriptFile.py</vh></v>
 <v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
 </v>
@@ -571,9 +573,9 @@
 <v t="ekr.20041119034357.65"><vh>@int initial_window_width = 800</vh></v>
 </v>
 <v t="ekr.20041119034357.54"><vh>Outline pane options</vh>
-<v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = True</vh></v>
+<v t="ekr.20041119050749.3"><vh>@bool allow_clone_drags = False</vh></v>
 <v t="ekr.20061030092620"><vh>@bool center_selected_tree_node = True</vh></v>
-<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = True</vh></v>
+<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = False</vh></v>
 <v t="ekr.20041119050749.5"><vh>@bool expanded_click_area = True</vh></v>
 <v t="ekr.20060528175513"><vh>@bool idle_redraw = False</vh></v>
 <v t="ekr.20060120123529"><vh>@bool initialClickExpandsOrContractsNode = True</vh></v>
@@ -606,7 +608,7 @@
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
-<v t="ekr.20060512084639" a="E"><vh>Recent</vh>
+<v t="ekr.20060512084639"><vh>Recent</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060216135834"><vh>@bool enable_autocompleter_initially = False</vh></v>
 <v t="ekr.20060216170801" a="M"><vh>@bool enable_calltips = False</vh></v>
@@ -622,8 +624,6 @@
 <v t="ekr.20060131071612"><vh>@bool trace_masterKeyHandler = False</vh></v>
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
-<v t="ekr.20041119050749.4"><vh>@bool enable_drag_messages = True</vh></v>
-<v t="ekr.20041119050749.3" a="V"><vh>@bool allow_clone_drags = True</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -6233,5 +6233,19 @@ I set this option to False because it is too easy form me to type Shift-whatever
       as specified by the @string relative_path_base_directory setting.
       
 False: Do not call os.chdir(base) when handing a relative path.</t>
+<t tx="ekr.20070115134125">True: The execute script command writes the script to be executed to a file,
+      then executes the script using Python's execFile function.
+      The script_file_path setting specifies the path to this file.
+      
+False (legacy): The execute script command uses Python's exec command to execute the script. </t>
+<t tx="ekr.20070115134125.1">The path to the file to be written by the execute-script command.
+
+Notes:
+    
+- This setting has effect only if the write_script_file setting is True.
+- Use / to as the path delimiter, regardless of platform.
+- The default path is ../test/scriptFile.py if no path is given.
+- The path starts at g.app.loadDir, so for example ../test/scriptFile.py is equivalent to leo/test/scriptFile.py
+- The filename should end in .py.</t>
 </tnodes>
 </leo_file>

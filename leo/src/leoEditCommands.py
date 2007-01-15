@@ -1100,16 +1100,40 @@ class debugCommandsClass (baseEditCommandsClass):
         
         g.collectGarbage()
     #@-node:ekr.20060205050659:collectGarbage
-    #@+node:ekr.20060519003651:debug
-    def debug (self,event=None,target = None):
+    #@+node:ekr.20060519003651:debug & helper
+    def debug (self,event=None):
         
-        '''Start an external debugger in another process.'''
+        '''Start an external debugger in another process to debug the presently selected text.'''
     
         c = self.c ; p = c.currentPosition()
-        pythonDir = g.os_path_dirname(sys.executable)
+        python = sys.executable
+        pythonDir = g.os_path_dirname(python)
+        script = p.bodyString()
+        winpdb = self.findDebugger()
+        if not winpdb: return
+    
+        # Create a temp file from the presently selected node.
+        filename = c.writeScriptFile(script)
+        if not filename: return
+    
+        # Invoke the debugger, retaining the present environment.
+        args = [sys.executable, winpdb, '-t', filename]
+        os.chdir(g.app.loadDir)
+        try:
+            import subprocess
+            cmdline = '%s %s -t %s' % (python,winpdb,filename)
+            subprocess.Popen(cmdline)
+        except ImportError:
+            os.chdir(g.app.loadDir)
+            os.spawnv(os.P_NOWAIT, python, args)
+    #@+node:ekr.20060521140213:findDebugger
+    def findDebugger (self):
         
-        #@    << find a debugger or return >>
-        #@+node:ekr.20060521140213:<< find a debugger or return >>
+        '''Find the debugger using settings.'''
+        
+        c = self.c
+        pythonDir = g.os_path_dirname(sys.executable)
+    
         debuggers = (
             c.config.getString('debugger_path'),
             g.os_path_join(pythonDir,'scripts','_winpdb.py'),
@@ -1119,43 +1143,14 @@ class debugCommandsClass (baseEditCommandsClass):
             if debugger:
                 debugger = g.os_path_abspath(debugger)
                 if g.os_path_exists(debugger):
-                    break
+                    return debugger
                 else:
                     g.es('Debugger does not exist: %s' % (debugger),color='blue')
         else:
             g.es('No debugger found.')
-            return
-        #@-node:ekr.20060521140213:<< find a debugger or return >>
-        #@nl
-        #@    << find the target file >>
-        #@+node:ekr.20060521140213.1:<< find the target file >>
-        targets = (
-            target,
-            c.config.getString('debugger_force_taget'),
-            p.copy().anyAtFileNodeName(),
-            c.config.getString('debugger_default_target'),
-        )
-        
-        for target in targets:
-            if target:
-                target = g.os_path_abspath(target)
-                if g.os_path_exists(target):
-                    break
-                else:
-                    g.es('Debug target does not exist: %s' % (target),color='blue')
-        #@-node:ekr.20060521140213.1:<< find the target file >>
-        #@nl
-        
-        if target:
-            args = [sys.executable, debugger, '-t', target]
-        else:
-            args = [sys.executable, debugger, '-t']
-        
-        if 1: # Use present environment.
-            os.spawnv(os.P_NOWAIT, sys.executable, args)
-        else: # Use a pristine environment.
-            os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
-    #@-node:ekr.20060519003651:debug
+            return None
+    #@-node:ekr.20060521140213:findDebugger
+    #@-node:ekr.20060519003651:debug & helper
     #@+node:ekr.20060202160523:dumpAll/New/VerboseObjects
     def dumpAllObjects (self,event=None):
         
