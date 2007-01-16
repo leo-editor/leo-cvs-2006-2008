@@ -6,7 +6,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-__version__ = '0.40'
+__version__ = '0.41'
 
 #@<< imports >>
 #@+node:ekr.20060530091119.21:<< imports >>
@@ -70,6 +70,7 @@ php_re = re.compile("<?(\s[pP][hH][pP])")
 # selection range.
 # 0.40 EKR: Fixed bug: colorizer now recognizes @\n as the start of a doc 
 # part.
+# 0.41 EKR: Use Python indices in quickColor.
 #@-at
 #@nonl
 #@-node:ekr.20060530091119.22:<< version history >>
@@ -407,6 +408,7 @@ class baseColorizer:
         self.frame = c.frame
         self.body = c.frame.body
         self.p = None
+        self.w = self.body.bodyCtrl
         # Attributes dict ivars: defaults are as shown.
         self.default = 'null'
         self.digit_re = ''
@@ -533,7 +535,7 @@ class baseColorizer:
     #@+node:ekr.20060530091119.37:configure_tags
     def configure_tags (self):
     
-        c = self.c ; w = c.frame.body.bodyCtrl
+        c = self.c ; w = self.w
         
         # Get the default body font.
         defaultBodyfont = self.fonts.get('default_body_font')
@@ -999,9 +1001,8 @@ class baseColorizer:
         
         '''Colorize all of s.'''
     
-        c = self.c ; w = c.frame.body.bodyCtrl
-    
         # Init ivars used by colorOneChunk.
+        w = self.w
         self.chunk_s = s
         self.chunk_i = 0
         self.tagList = []
@@ -1049,11 +1050,10 @@ class baseColorizer:
         '''Colorize a limited number of tokens.
         If not done, queue this method again to continue coloring later.'''
         if self.chunks_done: return
-        s, i = self.chunk_s, self.chunk_i
+        s, i, w = self.chunk_s, self.chunk_i, self.w
         # g.trace('*'*10,i,len(s),repr(s[i:i+20]))
         limit = self.interrupt_count1 # Number of times through the loop before a pause. 10 is reasonable.
         limit2 = self.interrupt_count2 # Number of times throught the loop before a recolor. 5000 is reasonable.
-        w = self.c.frame.body.bodyCtrl
         count = 0 ; self.chunk_count += 1
         while i < len(s):
             count += 1 ; self.recolor_count += 1
@@ -1078,11 +1078,10 @@ class baseColorizer:
         self.tagAll()
         self.tagList = []
         self.chunks_done = True # Prohibit any more queued calls.
-        w = self.c.frame.body.bodyCtrl
         if self.selection:
             start,end = self.selection
             w.setSelectionRange(start, end)
-            # g.trace(start,end)
+            # g.trace(self.insertPoint,start,end,w.toGuiIndex(self.insertPoint),w.toGuiIndex(start),w.toGuiIndex(end))
         w.setInsertPoint(self.insertPoint)
         if self.queue:
             p,bodyCtrl = self.queue.pop()
@@ -1095,7 +1094,7 @@ class baseColorizer:
     
         '''Add an item to the tagList if colorizing is enabled.'''
     
-        w = self.body.bodyCtrl 
+        w = self.w 
         if not self.flag: return
         
         # toGuiIndex could be slow for large s...
@@ -1125,13 +1124,15 @@ class baseColorizer:
         
         '''Give the inserted character the previous color tag by default.'''
         
-        w = self.c.frame.body.bodyCtrl
+        w = self.w
         i = w.getInsertPoint()
         if i == 0: return # No previous character.
-        if w.tag_names(i): return # The character already has a color.
-        theList = w.tag_names(i-2)
+        x = w.toGuiIndex(i)
+        if w.tag_names(x): return # The character already has a color.
+        x2 = w.toGuiIndex(i-1)
+        theList = w.tag_names(x2)
         if theList:
-            w.tag_add(theList[0],i)
+            w.tag_add(theList[0],x)
     #@nonl
     #@-node:ekr.20060530091119.14:quickColor
     #@-node:ekr.20060530091119.46:Colorizer code
@@ -1227,8 +1228,8 @@ class baseColorizer:
             return 0
     
         # Get the word as quickly as possible.
-        j = i ; n = len(s) ; w = self.word_chars
-        while j < n and s[j] in w:
+        j = i ; n = len(s) ; chars = self.word_chars
+        while j < n and s[j] in chars:
             j += 1
             
         word = s[i:j]
@@ -1512,9 +1513,10 @@ class baseColorizer:
     #@+node:ekr.20060530091119.61:index
     def index (self,i):
         
-        return self.body.convertRowColumnToIndex(self.line_index,i)
+        index = self.body.convertRowColumnToIndex(self.line_index,i)
+        # g.trace(self.line_index,i,index)
+        return index
         
-    #@nonl
     #@-node:ekr.20060530091119.61:index
     #@+node:ekr.20060703120853:munge
     def munge(self,s):
@@ -1532,7 +1534,7 @@ class baseColorizer:
         for photo,image,line_index,i in self.image_references:
             try:
                 ### self.body.deleteCharacter(image)
-                w = self.body.bodyCtrl
+                w = self.w
                 w.delete(self.allBodyText,index)
                 self.allBodyText = w.getAllText()
             except:
@@ -1544,7 +1546,7 @@ class baseColorizer:
     #@+node:ekr.20060530091119.63:removeAllTags
     def removeAllTags (self):
         
-        w = self.c.frame.body.bodyCtrl
+        w = self.w
         # g.trace(len(self.tagList)/3,w)
     
         names = w.tag_names()
@@ -1654,7 +1656,7 @@ class baseColorizer:
     #@+node:ekr.20060530091119.19:tagAll
     def tagAll (self):
     
-        w = self.body.bodyCtrl
+        w = self.w
         # g.trace(len(self.tagList)/3,w)
         
         for tag,x1,x2 in self.tagList:
