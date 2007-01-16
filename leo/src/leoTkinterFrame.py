@@ -3135,6 +3135,22 @@ class leoTkTextWidget (Tk.Text):
             Tk.Text.tag_add(w,tagName,i,j,*args)
             
     #@-node:ekr.20061113151148.8:tag_add (passed)
+    #@+node:ekr.20070116073907:tag_remove (test)
+    def tag_remove (self,tagName,i,j=None,*args):
+        
+        w = self
+        i = w.toGuiIndex(i)
+    
+        if j is None:
+            Tk.Text.tag_remove(w,tagName,i,*args)
+        else:
+            j = w.toGuiIndex(j)
+            Tk.Text.tag_remove(w,tagName,i,j,*args)
+    
+        
+        
+    #@nonl
+    #@-node:ekr.20070116073907:tag_remove (test)
     #@+node:ekr.20061113151148.9:tag_ranges (passed)
     def tag_ranges(self,tagName):
         

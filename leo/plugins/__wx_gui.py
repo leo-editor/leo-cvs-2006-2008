@@ -4825,6 +4825,26 @@ class wxLeoTextWidget (wx.TextCtrl):
             wx.TextCtrl.SetStyle(w,i,j,style)
     #@nonl
     #@-node:ekr.20061115122034.7:tag_add
+    #@+node:ekr.20070116073454:tag_remove
+    def tag_remove(self,tagName,i,j=None,*args):
+        
+        w = self
+        i = w.toGuiIndex(i)
+        if j is None: j = i + 1
+        j = w.toGuiIndex(j)
+        
+        return ### Not ready yet.
+    
+        if not hasattr(w,'leo_styles'):
+            w.leo_styles = {}
+    
+        style = w.leo_styles.get(tagName)
+    
+        if w.allowSyntaxColoring and style is not None:
+            g.trace(i,j,tagName)
+            wx.TextCtrl.SetStyle(w,i,j,style)
+    #@nonl
+    #@-node:ekr.20070116073454:tag_remove
     #@+node:ekr.20061116055348:tag_delete (NEW)
     def tag_delete (self,tagName,*args,**keys):
         
