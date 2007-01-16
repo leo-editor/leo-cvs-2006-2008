@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="34" left="190" height="752" width="1041"/>
+	<global_window_position top="40" left="407" height="732" width="822"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -48,7 +48,7 @@
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
 <v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -96,7 +96,7 @@
 <v t="ekr.20060805094325"><vh>How can I use Leo's legacy key bindings?</vh></v>
 <v t="ekr.20060915112109"><vh>How can I enable and disable support for psyco?</vh></v>
 </v>
-<v t="ekr.20050830115714.118" a="E"><vh>Tips and techniques</vh>
+<v t="ekr.20050830115714.118"><vh>Tips and techniques</vh>
 <v t="ekr.20050830120857"><vh>How can I use Leo to develop Leo itself?</vh></v>
 <v t="ekr.20050830115714.74"><vh>How can I import many files at once?</vh></v>
 <v t="ekr.20050830115714.119"><vh>How can I use two copies of Leo to advantage?</vh></v>
@@ -105,7 +105,7 @@
 <v t="ekr.20050830115714.116"><vh>How can I show Leo files with Excel?</vh></v>
 <v t="ekr.20060822111759"><vh>How can I reuse @button nodes in multiple files?</vh></v>
 </v>
-<v t="ekr.20050830115714.76" a="E"><vh>Trouble shooting</vh>
+<v t="ekr.20050830115714.76"><vh>Trouble shooting</vh>
 <v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
 <v t="ekr.20060210070421"><vh>I can't run Leo from a cvs sandbox.  What's going on?</vh></v>
 <v t="ekr.20060323105214"><vh>Leo's Recent Files menu doesn't work from a cvs shandbox.  What's going on?</vh></v>
@@ -166,9 +166,9 @@
 </v>
 </v>
 <v t="ekr.20050831195331.3"><vh>Chapter 2: A Tutorial Introduction to Leo</vh>
-<v t="ekr.20050816073412" a="E"><vh>@rst html\intro.html</vh>
+<v t="ekr.20050816073412"><vh>@rst html\intro.html</vh>
 <v t="ekr.20050816073814"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20050816073412.1" a="E"><vh>Introduction</vh>
+<v t="ekr.20050816073412.1"><vh>Introduction</vh>
 <v t="ekr.20050822173420"><vh>Leo's main window</vh></v>
 <v t="ekr.20050823082517"><vh>Using Leo as an outliner</vh></v>
 </v>
@@ -178,7 +178,7 @@
 <v t="ekr.20050827055403"><vh>Outline structure is significant everywhere</vh></v>
 <v t="ekr.20050822173420.3"><vh>Leo directives</vh></v>
 </v>
-<v t="ekr.20050827102655" a="E"><vh>Leo for Programmers</vh>
+<v t="ekr.20050827102655"><vh>Leo for Programmers</vh>
 <v t="ekr.20050827090532"><vh>Quick start for programmers</vh></v>
 <v t="ekr.20050829081318"><vh>Beginner`s reference guide</vh>
 <v t="ekr.20050827155902"><vh>Syntax of section names</vh></v>
@@ -658,8 +658,8 @@
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060527105211" a="E"><vh>Chapter 16: Debugging with Leo</vh>
-<v t="ekr.20060527105617" a="E"><vh>@rst html\debuggers.html</vh>
+<v t="ekr.20060527105211"><vh>Chapter 16: Debugging with Leo</vh>
+<v t="ekr.20060527105617"><vh>@rst html\debuggers.html</vh>
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070116062405"><vh>Using g.trace and g.pdb</vh></v>
 <v t="ekr.20060527112801"><vh>Settings for winpdb</vh></v>
@@ -12117,6 +12117,10 @@ discard any attributes that can not be pickled. This should not be a major
 problem to plugins. For example, instead of putting a tnode into these
 dictionaries, a plugin could put the tnode's gnx (a string) in the dictionary.
 
+**Note**: Leo does *not* pickle members of inner dictionaries whose name (key) starts with ``str_``.
+The values of such members should be a Python string.
+This convention allows strings to appear in .leo files in a more readable format.
+
 **Important**: Plugins must *not* use ``v.unknownAttributes`` inside ``@thin``
 trees. Indeed Leo uses **hidden machinery** to write ``t.unknownAttributes``.
 Leo does *not* write ``t.unknownAttributes`` to thin derived files. Instead Leo
@@ -22034,14 +22038,19 @@ any errors or any other suggestions for these settings.</t>
 <t tx="ekr.20060105145125">You must install the Aspell package if you want to use Leo's Spell tab.
 
 1.  Download and install the Aspell package from http://aspell.sourceforge.net/
+    Typically this will create a directory called Aspell/bin
 
-Typically this will create a directory called Aspell/bin
+2.  If you are using Python 2.3 or Python 2.4 you must copy a dll
+    from Leo's extensions folder to the Aspell/bin directory.
+    This step is *not* needed if you are using Python 2.5 or later.
+    Leo's extensions folder comes with two dll's: aspell23.pyd and aspell24.pyd,
+    for Python 2.3 and 2.4 respectively.
+    Make a copy of the appropriate dll, **rename it** to be aspell.pyd,
+    and copy the renamed aspell.pyd file to Aspell/bin.
 
-2.  Leo's extensions folder comes with two dll's: aspell23.pyd and aspell24.pyd, for Python 2.3 and 2.4 respectively.  Make a copy of the appropriate dll, and **rename it** to be aspell.pyd.
-
-3. Copy aspell.pyd to aspell\bin.
-
-4. Specify the aspell_dir and aspell_bin_dir settings in leoSettings.leo.</t>
+3.  Specify the location of the Aspell and Aspell/bin directories using
+    the aspell_dir and aspell_bin_dir settings in LeoSettings.leo.
+</t>
 <t tx="ekr.20060105182648.376">Leo no longer creates a duplicate root node when importing derived files.
 
 The code is due to LeoUser.</t>
@@ -29666,10 +29675,11 @@ Here are step-by-step instructions for executing Python scripts in Emacs:
     
 **Step 1. Install pymacs** 
 
-   The pymacs introduction is highly misleading about two-way communication between Python and lisp scripts.
-   In truth, Python scripts can call the Pymacs.lisp function **only** if the Python script
+   The pymacs installation instructions should be clear enough.
+   A clarification is needed about two-way communication between Python and lisp scripts:
+   in truth, Python scripts can call the Pymacs.lisp function *only* if the Python script
    was invoked from emacs.
-   Otherwise, callilng Pymacs.lisp will hang the process making the call!
+   Otherwise, callilng Pymacs.lisp will hang the process making the call.
    For example, executing the following script as an ordinary Leo script will hang Leo::
    
         from Pymacs import lisp
@@ -29732,6 +29742,7 @@ Here are step-by-step instructions for executing Python scripts in Emacs:
    leo-run-script returns the value of ``g.app.scriptResult``
    As shown above, Python scripts may set ``g.app.scriptResult`` to indicate their result.
    elisp scripts can also get ``g.app.scriptResult`` using leo-script-result.
+   Note that the Python script may span multiple lines.
 
 **Step 4. From Emacs, execute Leo (Python) scripts**
 

@@ -3137,7 +3137,7 @@ class leoTkTextWidget (Tk.Text):
     #@-node:ekr.20061113151148.8:tag_add (passed)
     #@+node:ekr.20070116073907:tag_remove (test)
     def tag_remove (self,tagName,i,j=None,*args):
-        
+    
         w = self
         i = w.toGuiIndex(i)
     

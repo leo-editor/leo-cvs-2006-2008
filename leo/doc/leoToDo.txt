@@ -2,6 +2,12 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20061130084909:Improve What's special whitepaper
+@nocolor
+
+- Answer the question: how can Leo help me with programming.
+#@nonl
+#@-node:ekr.20061130084909:Improve What's special whitepaper
 #@+node:ekr.20061209083136:Complete the wxGui plugin
 @nocolor
 
@@ -1935,28 +1941,6 @@ hide = unpack
 #@+node:ekr.20061213073718.1:Alt-D does not work when outline selected
 #@-node:ekr.20061213073718.1:Alt-D does not work when outline selected
 #@-node:ekr.20070105120506:Bugs in wx plugin
-#@+node:ekr.20061209082338:To do: Docs
-#@+node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
-#@-node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
-#@+node:ekr.20061029100330.1:Better pymacs docs & examples
-- Better install notes.
-
-- Better Python scripting examples (multi-line scripts).
-#@nonl
-#@-node:ekr.20061029100330.1:Better pymacs docs & examples
-#@+node:ekr.20070114082401:Improve documentation for Aspell install
-- Mention settings.
-- Must install dictionary.
-- Mention that dll is not needed when using Python 2.5 and above.
-#@nonl
-#@-node:ekr.20070114082401:Improve documentation for Aspell install
-#@+node:ekr.20061130084909:Improve What's special whitepaper
-@nocolor
-
-- Answer the question: how can Leo help me with programming.
-    
-#@-node:ekr.20061130084909:Improve What's special whitepaper
-#@-node:ekr.20061209082338:To do: Docs
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070105135713:To do: 4.4.4 (new positions)
 #@+node:ekr.20070105135851.1:Most important

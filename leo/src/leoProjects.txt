@@ -11798,7 +11798,7 @@ def tag_add(self,tagName,i,j=None,*args):
 #@-node:ekr.20061113151148.8:tag_add (passed)
 #@+node:ekr.20070116073907:tag_remove (test)
 def tag_remove (self,tagName,i,j=None,*args):
-    
+
     w = self
     i = w.toGuiIndex(i)
 
@@ -20933,6 +20933,24 @@ for key in self.newStringKeys:
 #@-node:ekr.20031218072017.3900:<< create the tkinter intVars >>
 #@-node:ekr.20070105092022:Found: s_ctrl
 #@-node:ekr.20070105091520:Replaced s_ctrl widget
+#@+node:ekr.20070116073907.1:Added w.tag_remove
+#@+node:ekr.20070116073907:tag_remove (test)
+def tag_remove (self,tagName,i,j=None,*args):
+
+    w = self
+    i = w.toGuiIndex(i)
+
+    if j is None:
+        Tk.Text.tag_remove(w,tagName,i,*args)
+    else:
+        j = w.toGuiIndex(j)
+        Tk.Text.tag_remove(w,tagName,i,j,*args)
+
+    
+    
+#@nonl
+#@-node:ekr.20070116073907:tag_remove (test)
+#@-node:ekr.20070116073907.1:Added w.tag_remove
 #@-node:ekr.20041228084830.3:(Reorg for wxGui plugin)
 #@-node:ekr.20061029091751:Leo 4.4.3 beta 1 projects
 #@-all

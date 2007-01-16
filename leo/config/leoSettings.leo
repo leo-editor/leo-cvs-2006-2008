@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="824" width="973"/>
+	<global_window_position top="10" left="238" height="804" width="973"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -1559,14 +1559,15 @@ p.setBodyString(result)</t>
 <t tx="ekr.20051025084017">How to install the Aspell spell checker for the Spell tab
 
 1.  Download and install the Aspell package from http://aspell.sourceforge.net/
+    Typically this will create a directory called Aspell/bin
 
-Typically this will create a directory called Aspell/bin
+2.  If you are using Python 2.3 or Python 2.4 you must copy a dll to the Aspell/bin directory.
+    This step is *not* needed if you are using Python 2.5 or later.
+    Leo's extensions folder comes with two dll's: aspell23.pyd and aspell24.pyd, for Python 2.3 and 2.4 respectively.
+    Make a copy of the appropriate dll, **rename it** to be aspell.pyd, and copy the renamed aspell.pyd file to Aspell/bin.
 
-2.  Leo's extensions folder comes with two dll's: aspell23.pyd and aspell24.pyd, for Python 2.3 and 2.4 respectively.  Make a copy of the appropriate dll, and **rename it** to be aspell.pyd.
-
-3. Copy aspell.pyd to aspell\bin.
-
-4. Specify the aspell_dir and aspell_bin_dir settings.</t>
+3.  Specify the location of the Aspell and Aspell/bin directories using
+    the aspell_dir and aspell_bin_dir settings in LeoSettings.leo.</t>
 <t tx="ekr.20051025084017.1"></t>
 <t tx="ekr.20051025084017.2">The full path to the spelling dictionary.</t>
 <t tx="ekr.20051025085144">@color
