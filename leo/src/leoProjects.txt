@@ -4499,6 +4499,295 @@ except IOError:
 #@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
 #@-node:ekr.20031218072017.3440:loadHandlers
 #@-node:ekr.20061030074731:Created standard pluginsManager.txt only if it does not exist
+#@+node:ekr.20070115105245:Executing Leo-specific scripts from winpdb
+#@+node:ekr.20070115151643:Preliminary docs
+@nocolor
+@
+
+It is now possible to debug both Leo-specific and non-Leo-specific scripts easily with winpdb.
+
+Preliminaries: New settings
+
+The following two new settings now control whether the execute-script and debug commands write the script to an external file.
+
+- @bool write_script_file = True
+
+True: The execute script command writes the script to be executed to a file, then executes the script using Python's execFile function. The script_file_path setting specifies the path to this file.
+      
+False (legacy): The execute script command uses Python's exec command to execute the script. 
+
+- @string script_file_path = ../test/scriptFile.py
+
+The path to the file to be written by the execute-script command.
+
+Notes:
+    
+- This setting has effect only if the write_script_file setting is True.
+- Use / to as the path delimiter, regardless of platform.
+- The default path is ../test/scriptFile.py if no path is given.
+- The path starts at g.app.loadDir, so for example ../test/scriptFile.py is equivalent to leo/test/scriptFile.py
+- The filename should end in .py.
+
+From here on, let us assume the settings are as shown above.  There are at least three ways of debugging scripts, depending on your preferences and whether the script contains leo-specific code (g, c or p) or not.
+
+First way:  The debug command
+
+The debug command now works almost exactly like Kent's original @button node. This way of debugging can only be used for general scripts, not leo-specific scripts.  
+
+The debug command writes the script to scriptFile.py and invokes the debugger as specified by the existing @string debugger_kind option.  winpdb opens and is already 'attached' to the script to be debugged.  You can single-step as you like.  Leo continues to run, but killing the debugger will also kill Leo.  When started this way, winpdb is really 'attached' to *all* of Leo, which means you can single step past the end of the script into Leo's executeScript code and from there into all of Leo(!)
+
+As I write this I realize that the code uses arguments specific to winpdb.  That may have to be generalized, though I am not sure why anyone would want to use another debugger...
+
+Second way: @button winpdb
+
+This is almost exactly equivalent to the debug command, except that the script file must be *different* from the script file specified by the  script_file_path setting (The @button code *itself* uses the execute-script command, so we have to pass the script code, not the @button code to the debugger).
+
+Third way: The execute-script command with explicit debugger breaks
+
+The third way of debugging scripts allows winpdb to debug scripts that use c, g and p.  I'm actually not sure of exactly how and why it works, but it certainly does work.
+
+In contrast to the previous two ways, a little more work is needed because winpdb does not start automatically.  But I am getting ahead of myself.
+
+To use this way, insert the following two lines of code at the start of the script to be debugged::
+
+import rpdb2
+rpdb2.start_embedded_debugger('go',fAllowUnencrypted=True)
+
+Now just execute the execute-script command (*not* the debug command)  Leo will appear to hang.  Indeed, the  start_embedded_debugger command is waiting for *another* copy of winpdb to 'attach' to the script's process.  This process is all of Leo!  The default timeout is 5 minutes: I'm not sure what happens when the timeout happens: probably an exception gets thrown.
+
+So you must start winpdb explicitly.  On XP just do something like
+
+python c:\python25\Scripts\_winpdb.py -t
+
+The -t option tells winpdb that no encoding of password is necessary.  The password is specified in the call to rpdb2.start_embedded_debugger in your script.  In this example, the password is 'go'.  Use the File:Attach command in winpdb to attach winpdb to Leo.  Specify the password as 'go' and you will see the scriptFile.py containing your entire script.  You can execute or single-step through the script. 
+
+To repeat, the big difference is that c, g and p are defined, so you can debug any script this way.  As before, killing winpdb also kills Leo.
+
+P.S.  winpdb and its documentation has been improved recently.  See
+
+http://www.digitalpeers.com/pythondebugger/  and especially
+
+http://www.digitalpeers.com/pythondebugger/embedded.htm
+
+The discussion of embedded debugging may have been written specifically with Leo in mind.  It certainly could have been.
+#@-node:ekr.20070115151643:Preliminary docs
+#@+node:ekr.20031218072017.2140:c.executeScript & helpers
+def executeScript(self,event=None,p=None,script=None,
+    useSelectedText=True,define_g=True,define_name='__main__',silent=False):
+
+    """This executes body text as a Python script.
+    
+    We execute the selected text, or the entire body text if no text is selected."""
+    
+    c = self ; script1 = script
+    writeScriptFile = c.config.getBool('write_script_file')
+    if not script:
+        script = g.getScript(c,p,useSelectedText=useSelectedText)
+    self.redirectScriptOutput()
+    try:
+        log = c.frame.log
+        if script.strip():
+            sys.path.insert(0,c.frame.openDirectory)
+            script += '\n' # Make sure we end the script properly.
+            try:
+                p = c.currentPosition()
+                d = g.choose(define_g,{'c':c,'g':g,'p':p},{})
+                if define_name: d['__name__'] = define_name
+                if writeScriptFile:
+                    scriptFile = self.writeScriptFile(script)
+                    execfile(scriptFile,d)
+                else:
+                    exec script in d
+                if not script1 and not silent:
+                    # Careful: the script may have changed the log tab.
+                    tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+                    g.es("end of script",color="purple",tabName=tabName)
+            except Exception:
+                g.handleScriptException(c,p,script,script1)
+            del sys.path[0]
+        else:
+            tabName = log and hasattr(log,'tabName') and log.tabName or 'Log'
+            g.es("no script selected",color="blue",tabName=tabName)
+    finally:
+        self.unredirectScriptOutput()
+#@+node:ekr.20031218072017.2143:redirectScriptOutput
+def redirectScriptOutput (self):
+    
+    c = self
+
+    if c.config.redirect_execute_script_output_to_log_pane:
+
+        g.redirectStdout() # Redirect stdout
+        g.redirectStderr() # Redirect stderr
+#@-node:ekr.20031218072017.2143:redirectScriptOutput
+#@+node:EKR.20040627100424:unredirectScriptOutput
+def unredirectScriptOutput (self):
+    
+    c = self
+
+    if c.exists and c.config.redirect_execute_script_output_to_log_pane:
+
+        g.restoreStderr()
+        g.restoreStdout()
+#@-node:EKR.20040627100424:unredirectScriptOutput
+#@+node:ekr.20070115135502:writeScriptFile
+def writeScriptFile (self,script):
+    
+    # Get the path to the file.
+    c = self
+    path = c.config.getString('script_file_path')
+    if path:
+        parts = path.split('/')
+        path = g.app.loadDir
+        for part in parts:
+            path = g.os_path_abspath(g.os_path_join(path,part))
+    else:
+        path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','scriptFile.py'))
+        
+    # Write the file.
+    try:
+        f = file(path,'w')
+        f.write(script)
+        f.close()
+    except Exception:
+        path = None
+    
+    return path
+#@nonl
+#@-node:ekr.20070115135502:writeScriptFile
+#@-node:ekr.20031218072017.2140:c.executeScript & helpers
+#@+node:ekr.20060519003651:debug & helper
+def debug (self,event=None):
+    
+    '''Start an external debugger in another process to debug the presently selected text.'''
+
+    c = self.c ; p = c.currentPosition()
+    python = sys.executable
+    pythonDir = g.os_path_dirname(python)
+    script = p.bodyString()
+    winpdb = self.findDebugger()
+    if not winpdb: return
+
+    # Create a temp file from the presently selected node.
+    filename = c.writeScriptFile(script)
+    if not filename: return
+
+    # Invoke the debugger, retaining the present environment.
+    args = [sys.executable, winpdb, '-t', filename]
+    os.chdir(g.app.loadDir)
+    try:
+        import subprocess
+        cmdline = '%s %s -t %s' % (python,winpdb,filename)
+        subprocess.Popen(cmdline)
+    except ImportError:
+        os.chdir(g.app.loadDir)
+        os.spawnv(os.P_NOWAIT, python, args)
+#@+node:ekr.20060521140213:findDebugger
+def findDebugger (self):
+    
+    '''Find the debugger using settings.'''
+    
+    c = self.c
+    pythonDir = g.os_path_dirname(sys.executable)
+
+    debuggers = (
+        c.config.getString('debugger_path'),
+        g.os_path_join(pythonDir,'scripts','_winpdb.py'),
+    )
+    
+    for debugger in debuggers:
+        if debugger:
+            debugger = g.os_path_abspath(debugger)
+            if g.os_path_exists(debugger):
+                return debugger
+            else:
+                g.es('Debugger does not exist: %s' % (debugger),color='blue')
+    else:
+        g.es('No debugger found.')
+        return None
+#@-node:ekr.20060521140213:findDebugger
+#@-node:ekr.20060519003651:debug & helper
+#@+node:EKR.20040614071102.1:g.getScript & tests
+def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=True):
+    
+    '''Return the expansion of the selected text of node p.
+    Return the expansion of all of node p's body text if there
+    is p is not the current node or if there is no text selection.'''
+
+    at = c.atFileCommands ; w = c.frame.body.bodyCtrl
+    if not p:
+        p = c.currentPosition()
+    try:
+        if g.app.batchMode:
+            s = p.bodyString()
+        elif p == c.currentPosition():
+            if useSelectedText and w.hasSelection():
+                s = w.getSelectedText()
+            else:
+                s = w.getAllText()
+        else:
+            s = p.bodyString()
+        # Remove extra leading whitespace so the user may execute indented code.
+        s = g.removeExtraLws(s,c.tab_width)
+        if s.strip():
+            g.app.scriptDict["script1"]=s
+            script = at.writeFromString(p.copy(),s,
+                forcePythonSentinels=forcePythonSentinels,
+                useSentinels=useSentinels)
+            script = script.replace("\r\n","\n") # Use brute force.
+            # Important, the script is an **encoded string**, not a unicode string.
+            g.app.scriptDict["script2"]=script
+        else: script = ''
+    except Exception:
+        s = "unexpected exception in g.getScript"
+        g.es_print(s)
+        g.es_exception()
+        script = ''
+
+    # g.trace(type(script),repr(script))
+    return script
+#@+node:ekr.20050211100535:test_g_getScript_strips_crlf
+def test_g_getScript_strips_crlf():
+
+    script = g.getScript(c,p) # This will get the text of this node.
+    assert script.find('\r\n') == -1, repr(script)
+#@-node:ekr.20050211100535:test_g_getScript_strips_crlf
+#@-node:EKR.20040614071102.1:g.getScript & tests
+#@+node:ekr.20060624085200:g.handleScriptException
+def handleScriptException (c,p,script,script1):
+
+    g.es("exception executing script",color='blue')
+    
+    full = c.config.getBool('show_full_tracebacks_in_scripts')
+
+    fileName, n = g.es_exception(full=full)
+
+    if p and not script1 and fileName == "<string>":
+        c.goToScriptLineNumber(p,script,n)
+
+    << dump the lines near the error >>
+#@+node:EKR.20040612215018:<< dump the lines near the error >>
+if g.os_path_exists(fileName):
+    f = file(fileName)
+    lines = f.readlines()
+    f.close()
+else:
+    lines = g.splitLines(script)
+
+s = '-' * 20
+g.es_print(s)
+
+# Print surrounding lines.
+i = max(0,n-2)
+j = min(n+2,len(lines))
+while i < j:
+    ch = g.choose(i==n-1,'*',' ')
+    s = "%s line %d: %s" % (ch,i+1,lines[i])
+    g.es(s,newline=False)
+    i += 1
+#@-node:EKR.20040612215018:<< dump the lines near the error >>
+#@-node:ekr.20060624085200:g.handleScriptException
+#@-node:ekr.20070115105245:Executing Leo-specific scripts from winpdb
 #@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061127100022.1:Menu reorgs
 #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
@@ -11507,6 +11796,22 @@ def tag_add(self,tagName,i,j=None,*args):
         Tk.Text.tag_add(w,tagName,i,j,*args)
         
 #@-node:ekr.20061113151148.8:tag_add (passed)
+#@+node:ekr.20070116073907:tag_remove (test)
+def tag_remove (self,tagName,i,j=None,*args):
+    
+    w = self
+    i = w.toGuiIndex(i)
+
+    if j is None:
+        Tk.Text.tag_remove(w,tagName,i,*args)
+    else:
+        j = w.toGuiIndex(j)
+        Tk.Text.tag_remove(w,tagName,i,j,*args)
+
+    
+    
+#@nonl
+#@-node:ekr.20070116073907:tag_remove (test)
 #@+node:ekr.20061113151148.9:tag_ranges (passed)
 def tag_ranges(self,tagName):
     

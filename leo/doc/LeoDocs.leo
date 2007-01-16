@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="34" left="190" height="772" width="1041"/>
+	<global_window_position top="34" left="190" height="752" width="1041"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,9 +46,9 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -96,7 +96,7 @@
 <v t="ekr.20060805094325"><vh>How can I use Leo's legacy key bindings?</vh></v>
 <v t="ekr.20060915112109"><vh>How can I enable and disable support for psyco?</vh></v>
 </v>
-<v t="ekr.20050830115714.118"><vh>Tips and techniques</vh>
+<v t="ekr.20050830115714.118" a="E"><vh>Tips and techniques</vh>
 <v t="ekr.20050830120857"><vh>How can I use Leo to develop Leo itself?</vh></v>
 <v t="ekr.20050830115714.74"><vh>How can I import many files at once?</vh></v>
 <v t="ekr.20050830115714.119"><vh>How can I use two copies of Leo to advantage?</vh></v>
@@ -105,7 +105,7 @@
 <v t="ekr.20050830115714.116"><vh>How can I show Leo files with Excel?</vh></v>
 <v t="ekr.20060822111759"><vh>How can I reuse @button nodes in multiple files?</vh></v>
 </v>
-<v t="ekr.20050830115714.76"><vh>Trouble shooting</vh>
+<v t="ekr.20050830115714.76" a="E"><vh>Trouble shooting</vh>
 <v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
 <v t="ekr.20060210070421"><vh>I can't run Leo from a cvs sandbox.  What's going on?</vh></v>
 <v t="ekr.20060323105214"><vh>Leo's Recent Files menu doesn't work from a cvs shandbox.  What's going on?</vh></v>
@@ -166,9 +166,9 @@
 </v>
 </v>
 <v t="ekr.20050831195331.3"><vh>Chapter 2: A Tutorial Introduction to Leo</vh>
-<v t="ekr.20050816073412"><vh>@rst html\intro.html</vh>
+<v t="ekr.20050816073412" a="E"><vh>@rst html\intro.html</vh>
 <v t="ekr.20050816073814"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20050816073412.1"><vh>Introduction</vh>
+<v t="ekr.20050816073412.1" a="E"><vh>Introduction</vh>
 <v t="ekr.20050822173420"><vh>Leo's main window</vh></v>
 <v t="ekr.20050823082517"><vh>Using Leo as an outliner</vh></v>
 </v>
@@ -178,7 +178,7 @@
 <v t="ekr.20050827055403"><vh>Outline structure is significant everywhere</vh></v>
 <v t="ekr.20050822173420.3"><vh>Leo directives</vh></v>
 </v>
-<v t="ekr.20050827102655"><vh>Leo for Programmers</vh>
+<v t="ekr.20050827102655" a="E"><vh>Leo for Programmers</vh>
 <v t="ekr.20050827090532"><vh>Quick start for programmers</vh></v>
 <v t="ekr.20050829081318"><vh>Beginner`s reference guide</vh>
 <v t="ekr.20050827155902"><vh>Syntax of section names</vh></v>
@@ -658,12 +658,16 @@
 <v t="ekr.20060430223116"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060527105211" a="E"><vh>Chapter 16: External debuggers</vh>
+<v t="ekr.20060527105211" a="E"><vh>Chapter 16: Debugging with Leo</vh>
 <v t="ekr.20060527105617" a="E"><vh>@rst html\debuggers.html</vh>
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20060527105617.2" a="TV"><vh>Invoking debuggers in a separate process</vh></v>
-<v t="ekr.20060527112801"><vh>Settings</vh></v>
-<v t="ekr.20060527105617.1" a="M"><vh>Debugging scripts so that c, g and p are predefined</vh></v>
+<v t="ekr.20070116062405"><vh>Using g.trace and g.pdb</vh></v>
+<v t="ekr.20060527112801"><vh>Settings for winpdb</vh></v>
+<v t="ekr.20070115172724"><vh>Debugging scripts with winpdb</vh>
+<v t="ekr.20070115172724.1"><vh>The debug command</vh></v>
+<v t="ekr.20070115172724.2"><vh>@button winpdb</vh></v>
+<v t="ekr.20070115172724.3"><vh>The execute-script command with explicit debugger breaks</vh></v>
+</v>
 <v t="ekr.20060601104756"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -10718,7 +10722,7 @@ Leo's Users Guide
 
 `Chapter 15: Controlling Syntax Coloring`_
 
-`Chapter 16: Using External Debuggers`_
+`Chapter 16: Debugging with Leo`_
 
 `Chapter 17: Using ZODB with Leo`_
 
@@ -15167,7 +15171,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 13\: Writing Plugins`:                 writingPlugins.html
 .. _`Chapter 14\: Using the Rst3 Plugin`:           rstplugin3.html
 .. _`Chapter 15\: Controlling Syntax Coloring`:     coloring.html
-.. _`Chapter 16\: Using External Debuggers`:        debuggers.html
+.. _`Chapter 16\: Debugging with Leo`:              debuggers.html
 .. _`Chapter 17\: Using ZODB with Leo`:             zodb.html
 .. _`Chapter 18\: Leo and Emacs`:                   emacs.html
 .. _`Appendices`:                                   appendices.html
@@ -17143,7 +17147,7 @@ plugin...
     g.trace(x)
 
 prints the name of the function or method containing the trace, and the value of
-x. g.callers is often very useful in combination with g.trace. g.callers(5)
+x. g.callers is often useful in combination with g.trace. g.callers(5)
 returns the last 5 entries of the call stack. For example::
 
     g.trace(x,g.callers(5))
@@ -24956,122 +24960,27 @@ verbose=True
 |back| |leo| |next|
 
 #######################################
-Chapter 16: Using External Debuggers
+Chapter 16: Debugging with Leo
 #######################################
 
-This chapter discusses debug Leo programs with external debuggers such as winpdb_ or Idle_.
-
-.. contents::
-</t>
-<t tx="ekr.20060527105617.1">Leo's Execute Script commands predefines the c, g and p symbols.
-That is, Leo scripts can, and often do, refer to data *within the outline in which the script resides*.
-Thus, it would be *useless* to try to run such scripts in a debugger when Leo is not running.
-
-Thus, to use a debugger to debug a Leo script, **you must run Leo itself** from the debugger.
-The easy way is to use a batch file that starts the debugger *and* starts Leo.
-Here is the batch file (called dt.bat) to run test.leo using winpdb::
-
-    cd c:\prog\tigris-cvs\leo\test
-    c:\python24\python.exe c:\python24\Scripts\_winpdb.py -t ..\src\leo.py test.leo
-
-And here is the version of dt.bat that runs test.leo using Idle::
-
-    cd c:\prog\tigris-cvs\leo\test
-    c:\python24\python.exe c:\python24\Lib\idlelib\idle.py -d -r c:\python24\Scripts\runLeoTest.py
-
-This invokes Idle and tells it to run runLeoTest.py.  runLeoTest.py contains::
-
-    import os, import sys
-    sys.path.append(r'c:\prog\tigris-cvs\leo\src')
-    import leo
-    leo.run( os.path.join(src,'..','test','test.leo'))
-
-After starting the debugger, you simply use the debuggers 'Run' command to run Leo.
-Now that Leo is running in the debugger, you can use 'Debug Script' script button to single-step through your script.
-**Note**: you must enable the Scripting plugin to use the 'Debug Script' button.
-
-In order to provide access to the c, g and p variables the 'Debug Script' button creates
-a helper Python module called leoScriptModule.py.
-It is *this* module that the debugger uses to debug your scripts.
-The module contains setup code, followed by the script you want to debug.
-For example, suppose your script is::
-
-    print 'hi'
-    print c
-
-The 'Debug Script' button puts the following in leoScriptModule.py::
-
-    # A module holding the script to be debugged.
-    import rpdb2
-    if rpdb2.g_debugger is not None: # don't hang if the debugger isn't running.
-      rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.
-    # Predefine c, g and p.
-    import leoGlobals as g
-    c = g.app.scriptDict.get("c")
-    p = c.currentPosition()
-    # Actual script starts here.
-    print 'hi'
-    print c
-
-It is *this* code that you will see in the winpdb source window after you hit the 'Debug Script' button.
-The present line will be just after the line::
-
-    rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.
-
-This line is the line that caused a hard breakpoint in the debugger so that you can single-step through your script.
-The next lines set up the g, c and p variables::
-
-    import leoGlobals as g
-    c = g.app.scriptDict.get("c")
-    p = c.currentPosition()
-
-After you single step past these lines you are ready to debug your script.
-
-**Summary**: All this may sound complicated, but in practice debugging scripts is easy:
-
-- Just run test.leo using dt.bat (instead of t.bat as usual).
-
-- Hit the 'Debug Script' script button.
-
-That's *all*.</t>
-<t tx="ekr.20060527105617.2">This section tells how to invoke an external debugger to debug Leo scripts.
-
+This chapter discusses debugging Python scripts with Leo.
 Be aware of the distinction between **Leo-specific** scripts and **general** scripts.
 Leo-specific scripts access data in the Leo outline in which they are contained;
 general scripts do not.
 
-To debug a *general* script, create the an \@button node containing the following code::
-    
-    import subprocess,sys
-    filename = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','winpdb_temp.txt'))
-    f = open(filename,'w') 
-    f.write(p.bodyString()) 
-    f.close() 
-    python = sys.executable
-    pythonDir = g.os_path_dirname(python) 
-    winpdb = g.os_path_join(pythonDir,'Scripts','_winpdb.py') 
-    cmdline = '%s %s -t %s' % (python,winpdb,filename) 
-    subprocess.Popen(cmdline)
-    
-To debug a Leo-specific script, create an @button node containing the following code:
-    
-    import os,sys
-    pythonDir = g.os_path_dirname(sys.executable)
-    winPdb = g.os_path_join(pythonDir,'scripts','_winpdb.py')
-    args = [sys.executable, winPdb, '-t', 'leo.py'] # here leo.py is the program to be debugged.
-    os.spawnv(os.P_NOWAIT, sys.executable, args)
-    
-This runs Leo itself in a debugger.
-
-Leo's new debug command generalizes the code above so it passes an arbitrary file (instead of 'leo.py') to an arbitrary debugger.  That's the only debugging code Leo needs, and gives Leo 90% of what I have ever wanted from a debugger.
-Furthermore, it allows editing to proceed independently of debugging.
-Indeed, even if I were to adapt winpdb so it shows files like Leo does (with an outline and body pane),
-I would *still* want to run the modified winpdb in a separate process.</t>
+.. contents::
+</t>
 <t tx="ekr.20060527105804">.. External links...
 
-.. _winpdb:             http://www.digitalpeers.com/pythondebugger/
-.. _Idle:               http://www.python.org/idle/
-.. _`Leo's forums`:     http://sourceforge.net/forum/?group_id=3458
+.. _Idle:                       http://www.python.org/idle/
+.. _pdb:                        http://docs.python.org/lib/module-pdb.html
+.. _winpdb:                     http://www.digitalpeers.com/pythondebugger/
+
+.. _`the FAQ`:                  http://webpages.charter.net/edreamleo/FAQ.html#how-can-i-use-python-s-pdb-debugger-with-leo
+.. _`running Leo in a console`: http://webpages.charter.net/edreamleo/FAQ.html#how-can-i-run-leo-from-a-console-window
+.. _`embedded winpdb`:          http://www.digitalpeers.com/pythondebugger/embedded.htm
+.. _`Leo's forums`:             http://sourceforge.net/forum/?group_id=3458
+.. _`work flow`:                http://webpages.charter.net/edreamleo/FAQ.html#how-can-i-use-leo-to-develop-leo-itself
 
 .. WARNING: image targets may not have upper case letters!
 
@@ -25084,10 +24993,31 @@ I would *still* want to run the modified winpdb in a separate process.</t>
 .. |next| image:: arrow_rt.gif
     :target: zodb.html
 </t>
-<t tx="ekr.20060527112801">The @string debugger_kind setting controls what debugger the 'Debug Script' script button uses.
+<t tx="ekr.20060527112801">The following settings in leoSettings.leo control debugger operation.
+The settings shown here will be assumed to be in effect throughout this chapter.
+
+``@string debugger_kind = winpdb``
+
+This setting controls what debugger the 'Debug Script' script button uses.
 Eventually this setting will control what debugger the debug command uses.
-At present the only valid values are 'winpdb' and 'idle'.
-Support for idle isn't complete yet.</t>
+At present the only valid value is 'winpdb'
+
+``@bool write_script_file = True``
+
+True: The execute script command writes the script to be executed to a file,
+then executes the script using Python's execFile function. The script_file_path
+setting specifies the path to this file. False (legacy): The execute script
+command uses Python's exec command to execute the script.
+
+``@string script_file_path = ../test/scriptFile.py``
+
+The path to the file to be written by the execute-script command. Notes:
+    
+- This setting has effect only if the write_script_file setting is True.
+- Use ``/`` as the path delimiter, regardless of platform.
+- The default path is ``../test/scriptFile.py`` if no path is given.
+- The path starts at g.app.loadDir, so for example ``../test/scriptFile.py`` is equivalent to ``leo/test/scriptFile.py``.
+- The filename should end in ``.py``.</t>
 <t tx="ekr.20060529053407">@ignore can only be used in the root node of @file trees.  It tells Leo to ignore the tree.
 
 The @ignore directive can not be used elsewhere in @thin trees and @file trees
@@ -30028,6 +29958,66 @@ lifetime. Another reason why lifetimes are not a standard technique is that they
 are a potentially dangerous optimization. Errors in specifying lifetimes will
 result in dangling pointer references. But this danger might disappear if pypy
 could deduce lifetimes automatically.
+</t>
+<t tx="ekr.20070115172724">The following three section discuss three ways of debugging scripts with winpdb_.
+The first two sections tell how to debug general scripts;
+the last section tells how to debug Leo-specific scripts.
+
+winpdb_ and its documentation have been improved recently.
+For more details, see the `embedded winpdb`_ docs.
+The discussion of embedded debugging may have been written specifically with Leo in mind.
+</t>
+<t tx="ekr.20070115172724.1">This way of debugging can only be used for general scripts, not leo-specific scripts.  
+The debug command writes the script to scriptFile.py and invokes winpdb.
+winpdb opens and is already 'attached' to the script to be debugged.
+You can single-step as you like.
+Leo continues to run, but killing the debugger will also kill Leo.
+</t>
+<t tx="ekr.20070115172724.2">``test.leo`` contains an ``@button windpdb`` node.
+Select the test to be debugged, then press the winpdb button or do ``&lt;Alt&gt;x winpdb&lt;return&gt;``.
+This way is essentially the same as using the debug command, though the code is slightly different.
+</t>
+<t tx="ekr.20070115172724.3">This way of debugging scripts allows winpdb to debug scripts that use c, g and p.
+A bit more work is needed because winpdb does not start automatically.
+Here are step-by step instructions:
+
+1. Insert the following two lines of code at the start of the script to be debugged::
+
+    import rpdb2
+    rpdb2.start_embedded_debugger('go',fAllowUnencrypted=True)
+
+2. Execute Leo's execute-script command (*not* the debug command).
+   Leo will appear to hang: start_embedded_debugger is waiting for *another* copy of winpdb to 'attach' to the script's process.
+   The default timeout is 5 minutes, after which an exception gets thrown.
+
+3. Start winpdb explicitly by executing something like the following in a console::
+
+    python /python25/Scripts/_winpdb.py -t
+
+   The -t option tells winpdb that no encoding of password is necessary.
+   The password is specified in the call to rpdb2.start_embedded_debugger in your script.
+   In our example, the password is 'go'.
+
+4. Use winpdb's ``File:Attach`` command to attach winpdb to Leo.
+   Specify the password as 'go' and you will see the scriptFile.py containing your entire script.
+   You can now execute or single-step through the script. 
+   To repeat, c, g and p are defined, so you can debug any script this way.
+</t>
+<t tx="ekr.20070116062405">Inserting g.trace statements in my Pyhthon code is usually my first debugging choice.
+The g.trace statement prints the name of the function in which the call to g.trace occurs,
+followed by the value of its arguments.
+The output of the g.trace goes to the console,
+so you must be `running Leo in a console`_ to use g.trace.
+
+Inserting and deleting g.trace statements is fast, provided that your `work flow`_ makes it easy to restart the program under test.
+As a result, using g.trace statements is similar to setting tracepoints in a debugger,
+with the advantage that (disabled) tracepoints remain in the source code for future use.
+You will find many examples of using g.trace throughout Leo's source code.
+
+My second choice is using g.pdb to set breakpoints for the pdb_ debugger.
+Pdb uses the console for all interaction,
+so you must be `running Leo in a console`_.
+See `the FAQ`_ for a discussion of both g.trace and g.pdb.
 </t>
 </tnodes>
 </leo_file>

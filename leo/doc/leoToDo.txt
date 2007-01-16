@@ -1936,8 +1936,6 @@ hide = unpack
 #@-node:ekr.20061213073718.1:Alt-D does not work when outline selected
 #@-node:ekr.20070105120506:Bugs in wx plugin
 #@+node:ekr.20061209082338:To do: Docs
-#@+node:ekr.20070115095141:Improve debugger docs
-#@-node:ekr.20070115095141:Improve debugger docs
 #@+node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
 #@-node:ekr.20061127181712:Make sure that the uA docs mention str_ attributes (and other escapes?)
 #@+node:ekr.20061029100330.1:Better pymacs docs & examples

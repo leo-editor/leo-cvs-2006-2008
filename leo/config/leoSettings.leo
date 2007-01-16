@@ -72,7 +72,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -201,9 +201,9 @@
 <v t="ekr.20041119043902.15"><vh>@bool print_trailing_lines = True</vh></v>
 </v>
 </v>
-<v t="ekr.20060524151415" a="E"><vh>Debugger</vh>
+<v t="ekr.20060524151415"><vh>Debugger</vh>
 <v t="ekr.20070115134125"><vh>@bool write_script_file = True</vh></v>
-<v t="ekr.20070115134125.1" a="TV"><vh>@string script_file_path = ../test/scriptFile.py</vh></v>
+<v t="ekr.20070115134125.1"><vh>@string script_file_path = ../test/scriptFile.py</vh></v>
 <v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
 </v>
