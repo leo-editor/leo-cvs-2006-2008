@@ -1,7 +1,7 @@
 #@+leo-ver=4-thin
-#@+node:ekr.20060710092959:@thin dtest.py
+#@+node:ekr.20070119094733.1:@thin dtest.py
 #@<< docstring >>
-#@+node:ktenney.20060713061726:<< docstring >>
+#@+node:ekr.20070119094733.4:<< docstring >>
 """Sends code to the doctest module and reports the result.
 When the Dtest plugin is enabled, the ``dtest`` command is active.
 Typing:: 
@@ -24,61 +24,81 @@ http://tinyurl.com/pxhlq - Jim Fulton's presentation::
     Literate Testing:
     Automated Testing with doctest
 """    
-#@nonl
-#@-node:ktenney.20060713061726:<< docstring >>
+#@-node:ekr.20070119094733.4:<< docstring >>
 #@nl
 #@<< imports >>
-#@+node:ekr.20060710092959.1:<<imports >>
+#@+node:ekr.20070119094733.2:<<imports>>
 import leoPlugins
 from leoPlugins import baseLeoPlugin
 import doctest
 import os
 import leoGlobals as g
-#@-node:ekr.20060710092959.1:<<imports >>
+#@-node:ekr.20070119094733.2:<<imports>>
 #@nl
 #@<< version history >>
-#@+node:ekr.20060710093300.1:<< version history >>
+#@+node:ekr.20070119094733.3:<< version history >>
 #@@nocolor
 
 #@+at
 # v 0.1 EKR: modified slightly from original by ktenney.
+# v 0.2 EKR: modified from mod_dtest by ktenney:
+# - Converted to @thin
+# - Use section references for code that must be in a particular place.
 #@-at
 #@nonl
-#@-node:ekr.20060710093300.1:<< version history >>
+#@-node:ekr.20070119094733.3:<< version history >>
 #@nl
 
 #@+others
-#@+node:ekr.20060710093300.2:init
+#@+node:ekr.20070119094733.5:init
 def init ():
     
     leoPlugins.registerHandler('after-create-leo-frame', DT)
     
     return True
-#@nonl
-#@-node:ekr.20060710093300.2:init
-#@+node:ekr.20060710092959.2:class DT
+#@-node:ekr.20070119094733.5:init
+#@+node:ekr.20070119094733.6:class DT
 class DT(baseLeoPlugin):
 
     """Sends code to the doctest module and reports the result
     If text is selected, tests only the selection
     """
-
+    
+    #@    << docstring >>
+    #@+node:ekr.20070119094733.7:<< docstring >>
+    """
+        >>> print "hello world"
+        hello world
+        >>> g.es('hello world')
+        >>> print c.currentPosition().headString()
+        Docstring
+        >>> import notfound
+        Traceback (most recent call last):
+            ...
+        ImportError: No module named notfound
+        >>>
+    """    
+    #@nonl
+    #@-node:ekr.20070119094733.7:<< docstring >>
+    #@nl
     #@    @+others
-    #@+node:ekr.20060710092959.3:__init__
+    #@+node:ekr.20070119094733.8:__init__
     def __init__(self, tag, keywords):
         
         """Init doctest plugin
         """
         baseLeoPlugin.__init__(self, tag, keywords)
-        self.setCommand('dtest', self.dtest)
-    
-    #    self.setMenuItem('Cmds')
-    #    self.setButton()
-    #@-node:ekr.20060710092959.3:__init__
-    #@+node:ktenney.20060713061726.1:dtest
+        self.setCommand('dt', self.dtest)
+        
+        self.c = keywords['c']
+    #@-node:ekr.20070119094733.8:__init__
+    #@+node:ekr.20070119094733.9:dtest
     def dtest(self, event):
         """The handler for dtest
         """
+        
+        import leoGlobals as g
+    
         
         # get a valid temporary filename
         createfile, tempfilename = g.create_temp_file()
@@ -102,18 +122,23 @@ class DT(baseLeoPlugin):
         text = tempfile.readlines()
         tempfile.close()    
         # strip trailing whitespace, an annoying source of doctest failures
-        text = [line.strip() for line in text]
+        text = [line.rstrip() for line in text]
         text = "\n".join(text)
         tempfile = open(tempfilename, 'w')
         tempfile.write(text)
         tempfile.close()
         
+        import copy
+            
+        # build globals dictionary
+        globals = {'c':copy.copy(self.c), 'g':g}
+        
         # run doctest on temporary file
         failures, tests = doctest.testfile(tempfilename, module_relative = False, 
-                            optionflags = doctest.ELLIPSIS)
+                            optionflags = doctest.ELLIPSIS, globs = globals)
         
         #@    <<report summary of results>>
-        #@+node:ktenney.20060713061726.2:<<report summary of results>>
+        #@+node:ekr.20070119094733.10:<<report summary of results>>
         if selected:
             g.es('Result of running doctest on selected text;')
         else:
@@ -124,18 +149,17 @@ class DT(baseLeoPlugin):
             g.es("There was one failure in %s tests" % tests, color="red")    
         if failures > 1:
             g.es("%s failures in %s tests" % (failures, tests), color="red")
-        #@nonl
-        #@-node:ktenney.20060713061726.2:<<report summary of results>>
+        #@-node:ekr.20070119094733.10:<<report summary of results>>
         #@nl
         
         #clean up temp file
         os.remove(tempfilename)
-    #@nonl
-    #@-node:ktenney.20060713061726.1:dtest
+    #@-node:ekr.20070119094733.9:dtest
     #@-others
-#@nonl
-#@-node:ekr.20060710092959.2:class DT
+    
+#@-node:ekr.20070119094733.6:class DT
 #@-others
-#@nonl
-#@-node:ekr.20060710092959:@thin dtest.py
+
+
+#@-node:ekr.20070119094733.1:@thin dtest.py
 #@-leo
