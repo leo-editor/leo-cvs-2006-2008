@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.742028985507">
-	<global_window_position top="39" left="243" height="767" width="883"/>
+<globals body_outline_ratio="0.45371577575">
+	<global_window_position top="39" left="243" height="859" width="973"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -109,6 +109,7 @@
 <v t="edream.110203113231.720"><vh>@thin outline_export.py</vh></v>
 <v t="danr7.20060912105041.1"><vh>@thin paste_as_headlines.py</vh></v>
 <v t="ekr.20041021120118"><vh>@thin pretty_print.py</vh></v>
+<v t="tbrown.20070117104409"><vh>@thin quickMove.py</vh></v>
 <v t="ekr.20040331153923"><vh>@thin scheduler.py</vh></v>
 <v t="mork.20041022090036.1"><vh>@thin templates.py</vh></v>
 <v t="danr7.20061010105952.1"><vh>@thin word_count.py</vh></v>
@@ -745,7 +746,7 @@ marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.1102
 <v t="ekr.20060715100156.8"><vh>@thin mod_shadow_core.py</vh></v>
 <v t="ekr.20060715100156.52"><vh>@thin mod_shadow.py</vh></v>
 </v>
-<v t="ekr.20050306081349" a="E"><vh>Text formatting</vh>
+<v t="ekr.20050306081349"><vh>Text formatting</vh>
 <v t="mork.20041010095009"><vh>@thin xsltWithNodes.py</vh></v>
 <v t="ekr.20040331071919"><vh>Leo to AsciiDoc</vh>
 <v t="ekr.20050128070307"><vh>@url http://www.marshallresearch.com/michael-dawson/os/leo.html</vh></v>
@@ -983,8 +984,7 @@ marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.1102
 </v>
 <v t="ekr.20050805162550"><vh>@thin rst3.py</vh></v>
 </v>
-<v t="ekr.20070119094733.1" a="E"
-expanded="ekr.20070119094733.9,"><vh>@thin dtest.py</vh></v>
+<v t="ekr.20070119094733.1"><vh>@thin dtest.py</vh></v>
 </v>
 <v t="ekr.20061023142737"><vh>UNL plugin</vh>
 <v t="rogererens.20041014110709"><vh>To do</vh></v>
