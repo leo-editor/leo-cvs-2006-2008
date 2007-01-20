@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="40" left="407" height="732" width="822"/>
+	<global_window_position top="-3" left="322" height="871" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -325,14 +325,15 @@
 </v>
 </v>
 <v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
-<v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Overview</vh></v>
+<v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Commonly used classes</vh></v>
+<v t="ekr.20070120075236"><vh>Predefined objects</vh></v>
 <v t="ekr.20040403173920.3" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3522206e616d653d22687474702d6e6f64652d6d61726b65722d35223e710155043c2f613e71025d71032855403c64697620636c6173733d2273656374696f6e222069643d22672d746f702d7468652d636f6d6d616e6465722d6f662d7468652d746f702d77696e646f77223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55363c64697620636c6173733d2273656374696f6e222069643d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e0a711055703c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643322206e616d653d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e672e657328293a20777269746520746f20746865206c6f672070616e653c2f613e3c2f68313e0a7111652e"><vh>g.es writes to the log pane</vh></v>
 <v t="ekr.20040403175157.1" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3722206e616d653d22687474702d6e6f64652d6d61726b65722d37223e710155043c2f613e71025d71032855353c64697620636c6173733d2273656374696f6e222069643d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55463c64697620636c6173733d2273656374696f6e222069643d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e0a7110558e3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643422206e616d653d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e6170702e77696e646f774c6973743a20746865206c697374206f6620616c6c206f70656e206672616d65733c2f613e3c2f68313e0a7111652e"><vh>app.windowList: the list of all open frames</vh></v>
 <v t="ekr.20040403173920.6" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3922206e616d653d22687474702d6e6f64652d6d61726b65722d39223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55463c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e0a7110558d3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643522206e616d653d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e47657474696e6720616e642073657474696e6720686561646c696e6520616e6420626f647920746578743c2f613e3c2f68313e0a7111652e"><vh>Getting and setting headline and body text</vh></v>
-<v t="ekr.20040403173920.9" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313122206e616d653d22687474702d6e6f64652d6d61726b65722d3131223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f552f3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e0a7110555f3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643622206e616d653d2274726176657273696e672d6f75746c696e6573223e54726176657273696e67206f75746c696e65733c2f613e3c2f68313e0a7111652e"><vh>Traversing outlines</vh>
+<v t="ekr.20040403173920.9" a="E" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313122206e616d653d22687474702d6e6f64652d6d61726b65722d3131223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f552f3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e0a7110555f3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643622206e616d653d2274726176657273696e672d6f75746c696e6573223e54726176657273696e67206f75746c696e65733c2f613e3c2f68313e0a7111652e"><vh>Traversing outlines</vh>
 <v t="ekr.20050902073404"><vh>About copying positions</vh></v>
 <v t="ekr.20040403173920.10" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313322206e616d653d22687474702d6e6f64652d6d61726b65722d3133223e710155043c2f613e71025d710328552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e65656565552b3c64697620636c6173733d2273656374696f6e222069643d22632d616c6c6e6f6465732d69746572223e0a710f55573c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643722206e616d653d22632d616c6c6e6f6465732d69746572223e632e616c6c4e6f6465735f697465723c2f613e3c2f68323e0a7110652e"><vh>c.allNodes_iter</vh></v>
 <v t="ekr.20040403173920.13" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313522206e616d653d22687474702d6e6f64652d6d61726b65722d3135223e710155043c2f613e71025d710328552a3c64697620636c6173733d2273656374696f6e222069643d22632d616c6c6e6f6465732d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a7112552b3c64697620636c6173733d2273656374696f6e222069643d22702d6368696c6472656e2d69746572223e0a711355573c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643822206e616d653d22702d6368696c6472656e2d69746572223e702e6368696c6472656e5f697465723c2f613e3c2f68323e0a7114652e"><vh>p.children_iter</vh></v>
@@ -340,6 +341,7 @@
 <v t="ekr.20040403173920.15" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313922206e616d653d22687474702d6e6f64652d6d61726b65722d3139223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d22702d706172656e74732d697465722d616e642d702d73656c662d616e642d706172656e74732d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255493c64697620636c6173733d2273656374696f6e222069643d22702d7369626c696e67732d697465722d616e642d702d666f6c6c6f77696e672d7369626c696e67732d69746572223e0a711355943c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313022206e616d653d22702d7369626c696e67732d697465722d616e642d702d666f6c6c6f77696e672d7369626c696e67732d69746572223e702e7369626c696e67735f6974657220616e6420702e666f6c6c6f77696e675f7369626c696e67735f697465723c2f613e3c2f68323e0a7114652e"><vh>p.siblings_iter &amp; p.following_siblings_iter</vh></v>
 <v t="ekr.20040403173920.16" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323122206e616d653d22687474702d6e6f64652d6d61726b65722d3231223e710155043c2f613e71025d71032855483c64697620636c6173733d2273656374696f6e222069643d22702d7369626c696e67732d697465722d616e642d702d666f6c6c6f77696e672d7369626c696e67732d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255463c64697620636c6173733d2273656374696f6e222069643d22702d737562747265652d697465722d616e642d702d73656c662d616e642d737562747265652d69746572223e0a7113558e3c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313122206e616d653d22702d737562747265652d697465722d616e642d702d73656c662d616e642d737562747265652d69746572223e702e737562747265655f6974657220616e6420702e73656c665f616e645f737562747265655f697465723c2f613e3c2f68323e0a7114652e"><vh>p.subtree_iter &amp; p.self_and_subtree_iter</vh></v>
 <v t="ekr.20040903100514" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323322206e616d653d22687474702d6e6f64652d6d61726b65722d3233223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d22702d737562747265652d697465722d616e642d702d73656c662d616e642d737562747265652d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a7112553f3c64697620636c6173733d2273656374696f6e222069643d2274657374696e672d776865746865722d612d706f736974696f6e2d69732d76616c6964223e0a711355803c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313222206e616d653d2274657374696e672d776865746865722d612d706f736974696f6e2d69732d76616c6964223e54657374696e672077686574686572206120706f736974696f6e2069732076616c69643c2f613e3c2f68323e0a7114652e"><vh>Testing whether a position is valid</vh></v>
+<v t="ekr.20070119131801"><vh>Visiting each node once</vh></v>
 </v>
 <v t="ekr.20040403173920.17" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323522206e616d653d22687474702d6e6f64652d6d61726b65722d3235223e710155043c2f613e71025d710328553e3c64697620636c6173733d2273656374696f6e222069643d2274657374696e672d776865746865722d612d706f736974696f6e2d69732d76616c6964223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255073c2f6469763e0a7113552f3c64697620636c6173733d2273656374696f6e222069643d227570646174696e672d7468652d73637265656e223e0a711455603c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313322206e616d653d227570646174696e672d7468652d73637265656e223e5570646174696e67207468652073637265656e3c2f613e3c2f68313e0a7115652e"><vh>Updating the screen</vh></v>
 <v t="ekr.20040403173920.18" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d323722206e616d653d22687474702d6e6f64652d6d61726b65722d3237223e710155043c2f613e71025d710328552e3c64697620636c6173733d2273656374696f6e222069643d227570646174696e672d7468652d73637265656e223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f553a3c64697620636c6173733d2273656374696f6e222069643d22696e766f6b696e672d636f6d6d616e64732d66726f6d2d73637269707473223e0a711055763c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964313422206e616d653d22696e766f6b696e672d636f6d6d616e64732d66726f6d2d73637269707473223e496e766f6b696e6720636f6d6d616e64732066726f6d20736372697074733c2f613e3c2f68313e0a7111652e"><vh>Invoking commands from scripts</vh></v>
@@ -412,14 +414,12 @@
 </v>
 </v>
 <v t="EKR.20040524104904.261"><vh>Chapter 10: Theory of Operation</vh>
-<v t="ekr.20050901101608.6"><vh>@rst html\theory.html</vh>
+<v t="ekr.20050901101608.6" a="E"><vh>@rst html\theory.html</vh>
 <v t="ekr.20050901102300"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.262"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.263"><vh>Nodes</vh></v>
 <v t="EKR.20040524104904.264"><vh>Drawing and events</vh></v>
-<v t="EKR.20040524104904.265"><vh>Clones</vh>
-<v t="ekr.20050901134017"><vh>@rst-ignore-tree the old way of implementing clones</vh></v>
-</v>
+<v t="EKR.20040524104904.265" a="E"><vh>Clones</vh></v>
 <v t="EKR.20040524104904.266"><vh>Find and change commands</vh></v>
 <v t="EKR.20040524104904.267"><vh>Tangle and untangle commands</vh></v>
 <v t="EKR.20040524104904.268"><vh>Unicode</vh></v>
@@ -1018,7 +1018,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.118"><vh>3.x...</vh>
@@ -2965,7 +2965,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="edream.110203163054.63" a="ETV"><vh>Latest version</vh>
 <v t="ekr.20061026095728"><vh>4.4.2 final and 4.4.2.1 final</vh>
 <v t="ekr.20061026095922.1"><vh>Bugs</vh>
 <v t="ekr.20061026095922.2"><vh>Changed leo_rst.css to pass the w3 validator</vh></v>
@@ -3085,7 +3085,7 @@ How to recover the data:
 	- Read Outline.
 	- Remove @ignore
 	- Import derived file... </t>
-<t tx="EKR.20040524104904.26"></t>
+<t tx="EKR.20040524104904.26">@nocolor</t>
 <t tx="EKR.20040524104904.27">A cloned node is a copy of a node that changes when the original changes. Not
 only are changes maintained across all the the clones of a node, changes to its
 offspring (children, grandchildren, etc). are simultaneously made to the
@@ -3339,7 +3339,7 @@ Notes:
 2. Within @asis trees only, if a headline starts with @@, Leo writes everything in the headline following the @@ just before the corresponding body text.
 
 3. Files derived from @asis trees contain _nothing_ not contained in body text (or @@ headlines).  In particular, if body text does not end in a newline, the first line from the next node will concatenated to the last line of the preceding node.</t>
-<t tx="EKR.20040524104904.99"></t>
+<t tx="EKR.20040524104904.99">@nocolor</t>
 <t tx="EKR.20040524104904.100"></t>
 <t tx="EKR.20040524104904.101">-   The ``New`` command creates a new Leo main window.
 
@@ -3834,7 +3834,7 @@ The body text contains a list of shortcut specifiers.</t>
 -   The ``Open LeoSettings.leo`` command opens ``LeoSettings.leo``.
 
 </t>
-<t tx="EKR.20040524104904.161"></t>
+<t tx="EKR.20040524104904.161">@nocolor</t>
 <t tx="EKR.20040524104904.162">The following paragraphs discuss the main benefits of traditional `literate programming`_.
 **Note**: none of these benefits depends on printed output.
 
@@ -3999,7 +3999,7 @@ weren't where I expected them to be.
 A dictionary is a better model for programs than a novel. Leo's outlines provide
 a more regular organization, while providing space for the most lengthy
 discussions when those discussions are required.</t>
-<t tx="EKR.20040524104904.211"></t>
+<t tx="EKR.20040524104904.211">@nocolor</t>
 <t tx="EKR.20040524104904.224">Naively using plugins can expose you and your .leo files to malicious attacks.
 The fundamental principles are::
 
@@ -4211,7 +4211,7 @@ unknownAttributes is concerned. This won't work in all cases. For example, a
 plugin that creates an arbitrary directed graph between vnodes must distinguish
 between joined vnodes. In that case, the plugin should confine itself to @file
 trees, or just vnodes in .leo files, for that matter.</t>
-<t tx="EKR.20040524104904.245"></t>
+<t tx="EKR.20040524104904.245">@nocolor</t>
 <t tx="EKR.20040524104904.247">In May of 1999 I began work on the Borland version of Leo for Windows.  The Borland Delphi classes were a pleasure to use and free of bugs.  I redesigned Leo's file format for the Windows version of Leo;  the Yellow Box file format is a binary format that requires the Yellow Box runtime.  Fortunately, I choose to use XML for Leo's file format. I have Marc-Antoine Parent to thank for this decision; he urged me to use XML and patiently explained how to use XML properly.  However, there are two significant problems with the Borland version of Leo.  First, it works only on Windows.  Second, it can never be Open software, because it uses Borland's Delphi classes and a commercial syntax coloring component.
 
 In October of 2001 I began work on the leo.py, an Open Software version of leo.py, a version of Leo written in Python and Tk.  At last I have found the proper platform for Leo.  leo.py naturally supports scripting in Python.  The combination of Python and Tk is incredibly powerful, very easy to use, and truly cross platform.  I rewrote Leo in Python in about two months!  For the first time in my career I no longer am anxious while programming; it simply isn't possible to create bad bugs in Python.</t>
@@ -4336,7 +4336,7 @@ than an incremental improvement over Smalltalk or C++ or objective-C; it is
 "something completely different". The rest of this post tries to explain this
 difference.
 </t>
-<t tx="EKR.20040524104904.261"></t>
+<t tx="EKR.20040524104904.261">@nocolor</t>
 <t tx="EKR.20040524104904.262">All versions of Leo are organized as a collection of classes. The general
 organization of Leo has remained remarkably stable throughout all versions of
 Leo, although the names of classes are different in different versions.
@@ -4480,17 +4480,20 @@ handlers: ``onBodyChanged``, ``onBodyWillChange``, ``onBodyKey``, ``onHeadChange
 indicate that a command has changed, or will change, the headline or body text.
 Calling event handlers rather than ``c.beginUpdate`` and ``c.endUpdate`` ensures that
 the outline pane is redrawn only when needed.</t>
-<t tx="EKR.20040524104904.265">Leo now represents clones by sharing tnodes. Cloned vnodes share the same tnode.
-This shared tnode represents the entire shared subtree of both clones. Thus, the
-``_firstChild`` link must reside in *tnodes*, not *vnodes*.
+<t tx="EKR.20040524104904.265">Since version 4.2, Leo represents clones by sharing tnodes. Cloned vnodes share
+the same tnode. This shared tnode represents the entire shared subtree of both
+clones. Thus, the ``_firstChild`` link must reside in *tnodes*, not *vnodes*.
 
 Because vnodes may be visited many times during a complete traversal of a tree,
-a vnode no longer represents a unique location on the screen. As a result, the
+a vnode does not represent unique location on the screen. As a result, the
 **position** class had to be invented. ``c.rootVnode`` and ``c.currentVnode``
 now return *positions* instead of vnodes. The position class was designed to
 allow compatibility with old scripts. Old code can use positions just like they
 used to use vnodes.
-</t>
+
+Earlier versions of Leo duplicated all the descendents of vnode v when cloning
+v. This created many complications that no longer exist. In particular, in the
+new scheme a vnode v is cloned if and only if ``len(v.t.vnodeList) &gt; 1``.</t>
 <t tx="EKR.20040524104904.266">The find and change commands are tricky; there are many details that must be
 handled properly. The following principles govern the LeoFind class:
 
@@ -4670,7 +4673,7 @@ create a new bead. The list of beads does not branch; all undoable operations
 (except the Undo and Redo commands themselves) delete any beads following the
 newly created bead. I did not invent this model of unlimited undo.
 I first came across it in the documentation for Apple's Yellow Box classes.</t>
-<t tx="EKR.20040524104904.274"></t>
+<t tx="EKR.20040524104904.274">@nocolor</t>
 <t tx="EKR.20040524104904.282">To convert an ``@root`` tree to an ``@file`` tree, choose the root of the tree to be converted,
 then do the following in the Python window::
 
@@ -10253,11 +10256,33 @@ verbose=True
 Chapter 7: Scripting Leo with Python
 ####################################
 
-This chapter describes only the most useful functions, classes and methods in
-``leo.py``. Keep in mind that *your scripts have complete access to all of Leo's
-source code*, that is, all the code in ``LeoPy.leo``. Your scripts can use Leo's
-code in whatever ways are convenient. You are *not* limited by what you see in
-this chapter.
+This chapter is a tutorial describing how to write Python scripts that get and
+modify data contained in Leo outlines. Scripts use Leo's, **vnode**, **tnode**
+and **position** classes to access data in Leo outlines. The combination of a
+vnode v and its tnode v.t represents a node's data. Leo needs both vnodes and
+tnodes to represent clones efficiently. Indeed, a tnode represents all data
+shared by cloned nodes. When Leo clones a vnode v, Leo creates a new,
+independent vnode v2 and sets v2.t == v.t. Thus, cloning a node does not
+duplicate any information in descendant trees, but descendants of a cloned node
+appear more than once on the screen (when all nodes are expanded). Positions
+represent a node at a particular place on the screen. Equivalently, a position
+indicates a particular place in a tree traversal. Iterators of the position
+class define various kinds of tree traversals.
+
+Leo's execute-script command predefines several symbols.  This makes it easy to
+access the data in Leo outlines and the Leo's own source code. g is predefined
+to the leoGlobals module. Scripts commonly use utility functions such as g.es,
+g.trace, etc. The g.app object represents Leo itself. The instance vars (ivars)
+of g.app are Leo's global variables and constants. The execute-script command
+predefines c to be the commander (see below) of the Leo outline in which the
+script is contained. Whenever possible, scripts should use the high-level
+methods of the commander to insert, delete or clone nodes. Finally, the
+execute-script commands predefines p to be the presently selected position.
+
+This chapter describes only some of Leo's functions, classes and methods.
+However, your scripts have complete access to all of Leo's source code, that
+is, all the code in ``LeoPy.leo``. You are not limited by what you see in this
+chapter.
 
 .. contents::</t>
 <t tx="ekr.20040403173920.3">The g.es method prints its arguments to the Log tab of the log pane::
@@ -10580,14 +10605,7 @@ for that frame::
         g.es(c)
         g.es(c.rootPosition())</t>
 <t tx="ekr.20040403183229">Leo's source code is a collection of classes, along with utility functions in
-``leoGlobals.py``. Here are Leo's most important classes and objects:
-
-**The Execute Script command predefines c, g and p**
-    Leo's ``Execute Script`` command predefines ``c`` to be the commander of the
-    outline containing the script. ``g`` and ``p`` are predefined as follows::
-
-        import leoGlobals as g
-        p = c.currentPosition()
+``leoGlobals.py``. Here are the classes and objects that scripts will commonly use:
 
 **g.app**
     The **application object** representing the entire Leo application.
@@ -10609,7 +10627,8 @@ for that frame::
     An instance of the ``position`` class in ``leoNodes.py``.
     A position object represents the location of a particular node *in a tree traversal*.
     By convention, variables named ``p``, ``p1`` or ``p2`` are positions.
-    For any ``position`` ``p``, ``p.v`` is the vnode at that position and ``p.v.t`` is the tnode at that position.
+    For any ``position`` ``p``, ``p.v`` is the vnode at that position and
+    ``p.v.t`` is the tnode at that position.
     **Positions are the primary way to access data.**
     ``c.currentPosition`` and ``c.rootPosition`` return positions.
     From those starting point, it is possible to access the data in any node.
@@ -10629,7 +10648,7 @@ for that frame::
 
 **vnode**
     An instance of the ``vnode`` class in ``leoNodes.py``.
-    vnodes represent an outline node.
+    vnodes represent one or more outline nodes on the screen.
     Normally, scripts access vnodes via the ``position`` class described below. 
     By convention, variables named ``v``, ``v1`` or ``v2`` refer to vnodes.
     **Important**: scripts normally should use positions, not vnodes.
@@ -10637,10 +10656,17 @@ for that frame::
 **tnode**
     An instance of the ``tnode`` class in ``leoNodes.py``.
     tnodes represent the actual data in a vnode, including headline and body text.
-    Cloned *vnodes* share the tnode *of their first child*.
     For any vnode ``v``, ``v.t`` is v's tnode.
+    Cloned vnodes v1 and v2 share the same tnode.  That is ``v1.t == v2``.
     **Important**: If ``p`` is a ``position``, ``p.v.t`` is the tnode associated with that position.
-    Many positions may share the same tnode.</t>
+    Many positions may share the same tnode.
+    
+**Important**: With the exception of the p.v and v.t ivars, scripts should be
+careful to use only the methods of the position, vnode and tnode classes rather
+than the internal ivars of these classes. Doing so will ensure that the script
+is as simple as possible and that the script will continue to work regardless of
+future changes to the internals of these classes.
+</t>
 <t tx="ekr.20040411151245">Iterators exist only in the position class::
 
 	c.allNodes_iter            # returns all positions in c's outline.
@@ -17461,15 +17487,15 @@ The benefits of the new workflow:
 
 - test.leo is the perfect place to develop test.
   I can create and organize those tests and when I am done, ''test.leo'' is a log of my work.</t>
-<t tx="ekr.20050831184021.1"></t>
-<t tx="ekr.20050831184021.2"></t>
-<t tx="ekr.20050831184021.3"></t>
-<t tx="ekr.20050831184021.4"></t>
-<t tx="ekr.20050831184021.5"></t>
-<t tx="ekr.20050831195331.1"></t>
-<t tx="ekr.20050831195331.2"></t>
-<t tx="ekr.20050831195331.3"></t>
-<t tx="ekr.20050831195331.4"></t>
+<t tx="ekr.20050831184021.1">@nocolor</t>
+<t tx="ekr.20050831184021.2">@nocolor</t>
+<t tx="ekr.20050831184021.3">@nocolor</t>
+<t tx="ekr.20050831184021.4">@nocolor</t>
+<t tx="ekr.20050831184021.5">@nocolor</t>
+<t tx="ekr.20050831195331.1">@nocolor</t>
+<t tx="ekr.20050831195331.2">@nocolor</t>
+<t tx="ekr.20050831195331.3">@nocolor</t>
+<t tx="ekr.20050831195331.4">@nocolor</t>
 <t tx="ekr.20050831195449">@nocolor
 
 For instruction about installing Leo see:
@@ -18577,135 +18603,6 @@ splitSentences(c,p)</t>
     result.append(''.join(line)+'\n') # Add the last line.
     result = ''.join(result)
     c.updateBodyPane('',result,'',undoType,oldSel,oldYview)</t>
-<t tx="ekr.20050901134017">**All this is obsolete**.  Leo now shares tnodes, so there are no more 'dependent' nodes.
-
-**Definition 1**. The following is a definition of clones from the user's point of view::
-
-    A clone node is a copy of a node that changes when the original changes.
-
-Changes to the children, grandchildren, etc.
-of a node are simultaneously made to the corresponding nodes contained in all cloned nodes.
-Clones are marked by a small clone arrow by its leader character.
-As we shall see, this definition glosses over a number of complications.
-
-Note that all cloned nodes (including the original node) are equivalent.
-There is no such thing as a "master" node from which all clones are derived.
-When the penultimate cloned node is deleted, the remaining node becomes an ordinary node again.
-Internally, the clone arrow is represented by a clone bit in the status field of the vnode.
-
-The Clone Node command sets the clone bits of the original and cloned vnodes when it creates the clone.
-Setting and clearing clone bits properly when nodes are inserted, deleted or moved, is non-trivial.
-We need the following machinery to do the job properly.
-Two vnodes are joined if:
-
-- they share the same tnode (body text) and
-
-- changes to any subtree of either joined vnodes are made to the corresponding nodes in all joined nodes.
-
-For example, Definition 1 defines clones as joined nodes that are marked with a clone arrow.
-Leo links all vnodes joined to each other in a circular list, called the join list.
-For any vnode n, let J(n) denote the join list of n, that is, the set of all vnodes joined to n.
-Again, maintaining the join lists in an outline is non-trivial.
-The concept of structurally similar nodes provides an effective way of determining when two joined nodes should also have their cloned bit set.
-
-Two joined nodes are structurally similar if:
-
-- their parents are distinct but joined and
-
-- they are both the nth child of their (distinct) parents.
-
-**Definition 2**. We can define cloned nodes using the concept of structurally similar nodes as follows::
-
-    Clones are joined vnodes such that at least two of the vnodes of J(n) are
-    not structurally similar to each other. Non-cloned vnodes are vnodes such
-    that all of the vnodes of J(n) are structurally similar. In particular, n is
-    a non-cloned vnode if J(n) is empty.
-
-**Leo ensures that definitions 1 and 2 are consistent**. Definition 1 says that
-changes to the children, grandchildren, etc. of a node are simultaneously made
-to the corresponding nodes contained in all cloned nodes. Making "corresponding
-changes" to the non-cloned descendants of all cloned nodes insures that the
-non-cloned joined nodes will be structurally similar.
-On the other hand, cloned nodes are never structurally similar. They are created
-as siblings, so they have the same parent with different "child indices. " To
-see how this works in practice, let's look at some examples.
-
-Example 1::
-
-    + root
-        + a' (1)
-        + a' (2)
-
-This example shows the simplest possible clone. A prime (') indicates a cloned
-node. Node a in position (1) has just been cloned to produce a' in position (2).
-Clearly, these two cloned nodes are not structurally similar because their
-parents are not distinct and they occupy different positions relative to their
-common parent.
-
-Example 2. If we add a node b to either a' node we get the following tree::
-
-    + root
-        + a'
-            + b
-        + a'
-            + b
-
-The b nodes are structurally similar because the a' nodes are joined and each b
-node is the first child of its parent.
-
-Example 3.  If we now clone either b, we will get::
-
-    + root
-        + a'
-            + b' (1)
-            + b' (2)
-        + a'
-            + b' (1)
-            + b' (2)
-
-All b' nodes must be clones because the nodes marked (1) are not structurally
-similar to the nodes marked (2).
-
-Dependent nodes are nodes created or destroyed when corresponding linked nodes
-are created or destroyed in another tree. For example, going from example 1 to
-example 2 above, adding node b to either node a' causes another (dependent) node
-to be created as the ancestor of the other node a'. Similarly, going from
-example 2 to example 1, deleting node b from either node a' causes the other
-(dependent) node b to be deleted from the other node a'. Cloned nodes may also
-be dependent nodes. In Example 3, all the b' nodes are dependent on any of the
-other b' nodes. We can now give simple rules for inserting and deleting
-dependent vnodes when other vnodes are created, moved or destroyed.
-
-For the purposes of this discussion, moving a node is handled exactly like
-deleting the node then inserting the node; we need not consider moving nodes
-further. We insert a new node n as the nth child of a parent node p as follows.
-We insert n, then for every node pi linked to p, we insert a dependent node ni
-as the nth child of pi. Each ni is linked to n. Clearly, each ni is structurally
-similar to n. Similarly, it is easy to delete a node n that is the nth child of
-a parent node p. We delete each dependent node ni that is the nth child of any
-node pi linked to p. We then delete n. When inserting or deleting any vnode n we
-must update its join list, J(n). Updating the join list is easy because the join
-list is circular: the entire list is accessible from any of its members.
-Inserting or deleting nodes can cause the clone bits of all joined nodes to
-change in non-trivial ways.
-
-To see the problems that can arise, consider deleting any of the b' nodes from
-Example 3. We would be left with the tree in Example 2. There are two remaining
-b nodes, each with the clone bit set. Unless we know that both b nodes are
-structurally similar, there would be no way to conclude that we should clear the
-clone bits in each node. In order to update clone links properly we could
-examine many special cases, but there is an easier way. Because of definition 2,
-we can define a shouldBeCloned function that checks J(n) to see whether all
-nodes of J(n) are structurally similar. Leo's XML file format does not contain
-join lists.
-
-This makes it easy to change a Leo file "by hand". If join lists were a part of
-the file, as they are in the Mac version of Leo, corrupting a join list would
-corrupt the entire file. It is easy to recreate the join lists when reading a
-file using a dedicated field in the tnode. This field is the head of a list of
-all vnodes that points to the tnode. After reading all nodes, Leo creates this
-list with one pass through the vnodes. Leo then convert each list to a circular
-list with one additional pass through the tnodes.</t>
 <t tx="ekr.20050901174937">You can run Leo from a Python interpreter as follows::
 
 	import leo
@@ -19590,7 +19487,7 @@ For Windows systems you can install Python's subprocess module in Python 2.2 or
         
 This installer installs the subprocess sources and also _subprocess.pyd in Python's site-packages folder.
 </t>
-<t tx="ekr.20050912125144"></t>
+<t tx="ekr.20050912125144">@nocolor</t>
 <t tx="ekr.20050912125144.1">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -20525,7 +20422,7 @@ The highlights of 4.3.2:
 - Improved the Pretty Printing command.
 
 - The usual assortment of bug fixes.</t>
-<t tx="ekr.20050914132220"></t>
+<t tx="ekr.20050914132220">@nocolor</t>
 <t tx="ekr.20050916065715">@killcolor
 https://sourceforge.net/forum/message.php?msg_id=3341105
 By: rogererens
@@ -22917,7 +22814,8 @@ even a minute for this.</t>
 - @bool trace_key_event
 - @bool trace_minibuffer
 - @bool trace_status_line</t>
-<t tx="ekr.20060218085144">This white paper originally appeared in November 2003 as a series of postings to comp.lang.python.
+<t tx="ekr.20060218085144">@nocolor
+This white paper originally appeared in November 2003 as a series of postings to comp.lang.python.
 Many features have been added since then.
 I rewrote this paper in February 2006.
 
@@ -24951,7 +24849,7 @@ Notes:
   None converts the @rst tree to a single reStructuredText string, as shown in @button rst-&gt;rst.
 
 - There is some support for ext='.pdf', but this is experimental code.  Expect crashes.</t>
-<t tx="ekr.20060527105211"></t>
+<t tx="ekr.20060527105211">@nocolor</t>
 <t tx="ekr.20060527105617">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -26291,7 +26189,7 @@ def update_ivars(self):
 <t tx="ekr.20060608111953.60">------------------
 
 |back| |leo| |next|</t>
-<t tx="ekr.20060612102055"></t>
+<t tx="ekr.20060612102055">@nocolor</t>
 <t tx="ekr.20060612103240">.. June 8, 2006
 
 @ @rst-options
@@ -26857,7 +26755,7 @@ Here is the full list of mode-related commands::
     toggle-calltips
     toggle-extend-mode
     toggle-input-state</t>
-<t tx="ekr.20060620094033"></t>
+<t tx="ekr.20060620094033">@nocolor</t>
 <t tx="ekr.20060620094033.1"></t>
 <t tx="ekr.20060620094033.2">@nocolor</t>
 <t tx="ekr.20060620094425">@ @rst-options
@@ -28144,7 +28042,7 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20060913164304"></t>
+<t tx="ekr.20060913164304">@nocolor</t>
 <t tx="ekr.20060913164304.1">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -29573,7 +29471,7 @@ Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
 <t tx="ekr.20061021164213">Set @bool ignore_unbound_non_ascii_keys = False in LeoSettings.leo or myLeoSettings.leo.</t>
 <t tx="ekr.20061021164213.1">This is a known bug in Tk/Tkinter and there is no good workaround. Some
 keyboards allow you to disable the caps-lock key.</t>
-<t tx="ekr.20061025065357"></t>
+<t tx="ekr.20061025065357">@nocolor</t>
 <t tx="ekr.20061025065357.1">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -30030,5 +29928,39 @@ Pdb uses the console for all interaction,
 so you must be `running Leo in a console`_.
 See `the FAQ`_ for a discussion of both g.trace and g.pdb.
 </t>
+<t tx="ekr.20070119131801">**Joined nodes** represent the same data. Joined nodes are vnodes v1 and v2 such
+that v1.t == v2.t. Joined vnodes are distinct (v1 != v2) if the vnodes are
+clones of each other. Joined nodes are in fact the same node (v1 == v2) if they
+are descendants of clone nodes. In particular, we can say that p1.v is joined to
+p2.v if p1.v.t == p2.v.t regardless of whether p1.v == p2.v. Thus a script can
+process nodes exactly once if it ignores nodes joined to previously visited
+nodes. A later section will provide an example of this common scripting pattern.
+
+The following script illustrates a common idiom. It prints each headline of an
+outline, eliminating duplications that would happen as the result of cloned
+trees::
+    
+    d = {}
+    for p in c.allNodes_iter():
+        if p.v.t not in d:
+            print p.headString()
+            d[p.v.t] = p.v.t
+            
+As mentioned in the introduction, joined nodes share the same tnode. Thus, when
+we visit a position p we print p.headString() only if p.v.t is not already in
+the dictionary. We then enter p.v.t in the dictionary to prevent printing the
+headlines of any future node joined to p.v.</t>
+<t tx="ekr.20070120075236">Leo's ``Execute Script`` command predefines ``c`` to be the commander of the
+outline containing the script. ``g`` and ``p`` are predefined as follows::
+
+    import leoGlobals as g
+    p = c.currentPosition()
+    
+These definitions provide an extremely easy way to access or change any
+information in a Leo outline. For example, as discussed below, the following
+script will print every headline in the Leo outline in which the script occurs.
+    
+    for z in c.allNodes_iter():
+        print z.headString()</t>
 </tnodes>
 </leo_file>

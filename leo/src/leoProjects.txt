@@ -1078,6 +1078,75 @@ if w.leo_selection:
 #@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
 #@-node:ekr.20061017083312:selectEditor (tkBody)
 #@-node:ekr.20061110214440:Made sure all ancestors expanded when select a body editor with multiple body editors
+#@+node:ekr.20070120073419:Fixed bug in CheckVersion
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4112347
+By: niccl
+
+I've just found two places where Tk 8.5 breaks Leo:
+Two calls to CheckVersion, with tk_patchlevel as a parameter, in leoTkInterGui.py.
+
+Since Tk 8.5 isn't formally released, the patch level is 8.5a5 (at least in
+the version I'm using). CheckVersion expects everything to be a digit, and so
+barfs on the 5a5. I solved it very crudely by scanning the string returned when
+getting the tk_patchlevel and stopping if there's any non-digit and non '.'.
+That way I end up with '8.5' as the string to go to check version, and it works
+fine.
+
+@color
+#@nonl
+#@+node:ekr.20060921100435:CheckVersion (EKR) & helper
+# Simplified version by EKR: stringCompare not used.
+
+def CheckVersion (s1,s2,condition=">=",stringCompare=None,delimiter='.',trace=False):
+    
+    vals1 = [g.CheckVersionToInt(s) for s in s1.split(delimiter)] ; n1 = len(vals1)
+    vals2 = [g.CheckVersionToInt(s) for s in s2.split(delimiter)] ; n2 = len(vals2)
+    n = max(n1,n2)
+    if n1 < n: vals1.extend([0 for i in xrange(n - n1)])
+    if n2 < n: vals2.extend([0 for i in xrange(n - n2)])
+    for cond,val in (
+        ('==', vals1 == vals2), ('!=', vals1 != vals2),
+        ('<',  vals1 <  vals2), ('<=', vals1 <= vals2),
+        ('>',  vals1 >  vals2), ('>=', vals1 >= vals2),
+    ):
+        if condition == cond:
+            result = val ; break
+    else:
+        raise EnvironmentError,"condition must be one of '>=', '>', '==', '!=', '<', or '<='."
+    
+    if trace:
+        # print '%10s' % (repr(vals1)),'%2s' % (condition),'%10s' % (repr(vals2)),result
+        print '%7s' % (s1),'%2s' % (condition),'%7s' % (s2),result
+    return result
+#@nonl
+#@+node:ekr.20070120123930:CheckVersionToInt
+def CheckVersionToInt (s):
+    
+    try:
+        return int(s)
+    except ValueError:
+        aList = []
+        for ch in s:
+            if ch.isdigit(): aList.append(ch)
+            else: break
+        if aList:
+            s = string.join(aList)
+            return int(s)
+        else:
+            return 0
+#@nonl
+#@-node:ekr.20070120123930:CheckVersionToInt
+#@+node:ekr.20070120125007:test_CheckVersionToInt
+def test_CheckVersionToInt (*args):
+    
+    assert g.CheckVersionToInt('12') == 12,'fail 1'
+    assert g.CheckVersionToInt('2a5') == 2, 'fail 2'
+    assert g.CheckVersionToInt('b2') == 0, 'fail 3'
+#@nonl
+#@-node:ekr.20070120125007:test_CheckVersionToInt
+#@-node:ekr.20060921100435:CheckVersion (EKR) & helper
+#@-node:ekr.20070120073419:Fixed bug in CheckVersion
 #@-node:ekr.20061029091904:Bugs
 #@+node:ekr.20061029091904.1:Features
 #@+node:ekr.20061030054124.1:Added handleUrlInUrlNode helper for OnIconDoubleClick
