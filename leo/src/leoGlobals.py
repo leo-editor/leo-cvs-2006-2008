@@ -4200,13 +4200,13 @@ def angleBrackets(s):
 virtual_event_name = angleBrackets
 #@-node:ekr.20031218072017.3106:angleBrackets & virtual_event_name
 #@+node:ekr.20031218072017.3097:CheckVersion
-#@+node:ekr.20060921100435:checkVersion (EKR)
+#@+node:ekr.20060921100435:CheckVersion (EKR) & helper
 # Simplified version by EKR: stringCompare not used.
 
 def CheckVersion (s1,s2,condition=">=",stringCompare=None,delimiter='.',trace=False):
     
-    vals1 = [int(s) for s in s1.split(delimiter)] ; n1 = len(vals1)
-    vals2 = [int(s) for s in s2.split(delimiter)] ; n2 = len(vals2)
+    vals1 = [g.CheckVersionToInt(s) for s in s1.split(delimiter)] ; n1 = len(vals1)
+    vals2 = [g.CheckVersionToInt(s) for s in s2.split(delimiter)] ; n2 = len(vals2)
     n = max(n1,n2)
     if n1 < n: vals1.extend([0 for i in xrange(n - n1)])
     if n2 < n: vals2.extend([0 for i in xrange(n - n2)])
@@ -4225,7 +4225,32 @@ def CheckVersion (s1,s2,condition=">=",stringCompare=None,delimiter='.',trace=Fa
         print '%7s' % (s1),'%2s' % (condition),'%7s' % (s2),result
     return result
 #@nonl
-#@-node:ekr.20060921100435:checkVersion (EKR)
+#@+node:ekr.20070120123930:CheckVersionToInt
+def CheckVersionToInt (s):
+    
+    try:
+        return int(s)
+    except ValueError:
+        aList = []
+        for ch in s:
+            if ch.isdigit(): aList.append(ch)
+            else: break
+        if aList:
+            s = string.join(aList)
+            return int(s)
+        else:
+            return 0
+#@nonl
+#@-node:ekr.20070120123930:CheckVersionToInt
+#@+node:ekr.20070120125007:test_CheckVersionToInt
+def test_CheckVersionToInt (*args):
+    
+    assert g.CheckVersionToInt('12') == 12,'fail 1'
+    assert g.CheckVersionToInt('2a5') == 2, 'fail 2'
+    assert g.CheckVersionToInt('b2') == 0, 'fail 3'
+#@nonl
+#@-node:ekr.20070120125007:test_CheckVersionToInt
+#@-node:ekr.20060921100435:CheckVersion (EKR) & helper
 #@+node:ekr.20060921100435.1:oldCheckVersion (Dave Hein)
 #@+at
 # g.CheckVersion() is a generic version checker.  Assumes a
