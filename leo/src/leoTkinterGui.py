@@ -211,6 +211,11 @@ class tkinterGui(leoGui.leoGui):
         """Create and run askOkCancelNumber dialog ."""
         d = leoTkinterDialog.tkinterAskOkCancelNumber(c,title,message)
         return d.run(modal=True)
+        
+    def runAskOkCancelStringDialog(self,c,title,message):
+        """Create and run askOkCancelString dialog ."""
+        d = leoTkinterDialog.tkinterAskOkCancelString(c,title,message)
+        return d.run(modal=True)
     
     def runAskYesNoDialog(self,c,title,message=None):
         """Create and run an askYesNo dialog."""

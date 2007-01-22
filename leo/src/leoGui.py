@@ -240,6 +240,10 @@ class leoGui:
         """Create and run askOkCancelNumber dialog ."""
         self.oops()
     
+    def runAskOkCancelStringDialog(self,c,title,message):
+        """Create and run askOkCancelString dialog ."""
+        self.oops()
+    
     def runAskYesNoDialog(self,c,title,message=None):
         """Create and run an askYesNo dialog."""
         self.oops()
@@ -513,6 +517,9 @@ class unitTestGui(leoGui):
     
     def runAskOkCancelNumberDialog(self,c,title,message):
         return self.simulateDialog("numberDialog",-1)
+        
+    def runAskOkCancelStringDialog(self,c,title,message):
+        return self.simulateDialog("stringDialog",'')
         
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
         return self.simulateDialog("openFileDialog")

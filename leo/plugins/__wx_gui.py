@@ -1295,6 +1295,15 @@ class wxGui(leoGui.leoGui):
         return 666
     #@nonl
     #@-node:edream.110203113231.324:runAskOkCancelNumberDialog (to do)
+    #@+node:ekr.20070122103916:runAskOkCancelStringDialog (to do)
+    def runAskOkCancelStringDialog(self,c,title,message):
+    
+        """Create and run a wxPython askOkCancelNumber dialog ."""
+    
+        g.trace()
+        return 'Not ready yet'
+    #@nonl
+    #@-node:ekr.20070122103916:runAskOkCancelStringDialog (to do)
     #@+node:edream.110203113231.325:runAskYesNoDialog
     def runAskYesNoDialog(self,c,title,message=None):
     

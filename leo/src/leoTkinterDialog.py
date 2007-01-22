@@ -548,6 +548,82 @@ class  tkinterAskOkCancelNumber (leoTkinterDialog):
     #@-node:ekr.20031218072017.3880:tkinterAskOKCancelNumber.onKey
     #@-others
 #@-node:ekr.20031218072017.3876:class tkinterAskOkCancelNumber
+#@+node:ekr.20070122103505:class tkinterAskOkCancelString
+class  tkinterAskOkCancelString (leoTkinterDialog):
+    
+    """Create and run a modal Tkinter dialog to get a string."""
+    
+    #@    @+others
+    #@+node:ekr.20070122103505.1:tkinterAskOKCancelString.__init__
+    def __init__ (self,c,title,message):
+        
+        """Create a number dialog"""
+    
+        leoTkinterDialog.__init__(self,c,title,resizeable=False) # Initialize the base class.
+        
+        if g.app.unitTesting: return
+    
+        self.answer = -1
+        self.number_entry = None
+    
+        self.createTopFrame()
+        self.top.bind("<Key>", self.onKey)
+    
+        self.createFrame(message)
+        self.focus_widget = self.number_entry
+    
+        buttons = (
+                {"text":"Ok",    "command":self.okButton,     "default":True},
+                {"text":"Cancel","command":self.cancelButton} )
+        buttonList = self.createButtons(buttons)
+        self.ok_button = buttonList[0] # Override the default kind of Ok button.
+    #@-node:ekr.20070122103505.1:tkinterAskOKCancelString.__init__
+    #@+node:ekr.20070122103505.2:tkinterAskOkCancelString.createFrame
+    def createFrame (self,message):
+        
+        """Create the frame for a number dialog."""
+        
+        if g.app.unitTesting: return
+        
+        c = self.c
+        
+        lab = Tk.Label(self.frame,text=message)
+        lab.pack(pady=10,side="left")
+        
+        self.number_entry = w = Tk.Entry(self.frame,width=20)
+        w.pack(side="left")
+        
+        c.set_focus(w)
+    #@-node:ekr.20070122103505.2:tkinterAskOkCancelString.createFrame
+    #@+node:ekr.20070122103505.3:tkinterAskOkCancelString.okButton, cancelButton
+    def okButton(self):
+        
+        """Handle clicks in the ok button of a string dialog."""
+    
+        self.answer = self.number_entry.get().strip()
+        self.top.destroy()
+        
+    def cancelButton(self):
+        
+        """Handle clicks in the cancel button of a string dialog."""
+    
+        self.answer=''
+        self.top.destroy()
+    #@-node:ekr.20070122103505.3:tkinterAskOkCancelString.okButton, cancelButton
+    #@+node:ekr.20070122103505.4:tkinterAskOkCancelString.onKey
+    def onKey (self,event):
+    
+        ch = event.char.lower()
+    
+        if ch in ('o','\n','\r'):
+            self.okButton()
+        elif ch == 'c':
+            self.cancelButton()
+    
+        return "break"
+    #@-node:ekr.20070122103505.4:tkinterAskOkCancelString.onKey
+    #@-others
+#@-node:ekr.20070122103505:class tkinterAskOkCancelString
 #@+node:ekr.20031218072017.3882:class tkinterAskYesNo
 class tkinterAskYesNo (leoTkinterDialog):
 

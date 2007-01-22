@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.407755581669">
-	<global_window_position top="10" left="322" height="851" width="864"/>
+	<global_window_position top="10" left="322" height="831" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -325,7 +325,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.4"><vh>Chapter 7: Scripting Leo with Python</vh>
-<v t="ekr.20040403171740" a="E"><vh>@rst html\scripting.html</vh>
+<v t="ekr.20040403171740"><vh>@rst html\scripting.html</vh>
 <v t="ekr.20050812134441.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20050901184158"><vh>@rst-ignore Important: you can run these examples!</vh></v>
 <v t="ekr.20040403183229" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3122206e616d653d22687474702d6e6f64652d6d61726b65722d31223e710155043c2f613e71025d710328553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710455063c2f6469763e71055d71062855063c626f64793e710755073c2f626f64793e71085d71092855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710a55073c2f68746d6c3e710b4e65656555243c64697620636c6173733d2273656374696f6e222069643d226f76657276696577223e0a710c55493c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643122206e616d653d226f76657276696577223e4f766572766965773c2f613e3c2f68313e0a710d652e"><vh>Commonly used classes</vh></v>
@@ -415,12 +415,12 @@
 </v>
 </v>
 <v t="EKR.20040524104904.261"><vh>Chapter 10: Theory of Operation</vh>
-<v t="ekr.20050901101608.6" a="E"><vh>@rst html\theory.html</vh>
+<v t="ekr.20050901101608.6"><vh>@rst html\theory.html</vh>
 <v t="ekr.20050901102300"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.262"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.263"><vh>Nodes</vh></v>
 <v t="EKR.20040524104904.264"><vh>Drawing and events</vh></v>
-<v t="EKR.20040524104904.265" a="E"><vh>Clones</vh></v>
+<v t="EKR.20040524104904.265"><vh>Clones</vh></v>
 <v t="EKR.20040524104904.266"><vh>Find and change commands</vh></v>
 <v t="EKR.20040524104904.267"><vh>Tangle and untangle commands</vh></v>
 <v t="EKR.20040524104904.268"><vh>Unicode</vh></v>
@@ -664,7 +664,7 @@
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070116062405"><vh>Using g.trace and g.pdb</vh></v>
 <v t="ekr.20060527112801"><vh>Settings for winpdb</vh></v>
-<v t="ekr.20070115172724" a="E"><vh>Debugging scripts with winpdb</vh>
+<v t="ekr.20070115172724"><vh>Debugging scripts with winpdb</vh>
 <v t="ekr.20070115172724.1"><vh>The debug command</vh></v>
 <v t="ekr.20070115172724.2"><vh>@button winpdb</vh></v>
 <v t="ekr.20070115172724.3"><vh>The execute-script command with explicit debugger breaks</vh></v>
@@ -2983,13 +2983,13 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070122070619" a="V"><vh>4.4.3 alpha 1</vh>
+<v t="ekr.20070122070619" a="TV"><vh>4.4.3 alpha 1</vh>
 <v t="ekr.20070122070634.1"><vh>Bugs</vh>
 <v t="ekr.20070122070634.2"><vh>Fixed an escape bug in new colorizer</vh></v>
-<v t="ekr.20070122070634.4" a="E"><vh>Treat escaped characters in find patterns as a single character</vh></v>
-<v t="ekr.20070122070634.13" a="E"><vh>Fixed undo problems with yank/kill</vh></v>
-<v t="ekr.20070122070634.40" a="E"><vh>Fixed clone-drag problem</vh></v>
-<v t="ekr.20070122070634.51" a="E"><vh>Made sure all ancestors expanded when select a body editor with multiple body editors</vh></v>
+<v t="ekr.20070122070634.4"><vh>Treat escaped characters in find patterns as a single character</vh></v>
+<v t="ekr.20070122070634.13"><vh>Fixed undo problems with yank/kill</vh></v>
+<v t="ekr.20070122070634.40"><vh>Fixed clone-drag problem</vh></v>
+<v t="ekr.20070122070634.51"><vh>Made sure all ancestors expanded when select a body editor with multiple body editors</vh></v>
 <v t="ekr.20070122070634.54"><vh>Fixed bug in CheckVersion</vh>
 <v t="ekr.20070122070634.55"><vh>CheckVersion (EKR) &amp; helper</vh>
 <v t="ekr.20070122070634.56"><vh>CheckVersionToInt</vh></v>
@@ -2997,19 +2997,20 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070122070634.305" a="E"><vh>Code reorg for wxGui plugin</vh></v>
+<v t="ekr.20070122070634.305"><vh>Code reorg for wxGui plugin</vh></v>
 <v t="ekr.20070122070634.58"><vh>Features</vh>
-<v t="ekr.20070122070634.59" a="E"><vh>Added handleUrlInUrlNode helper for OnIconDoubleClick</vh></v>
-<v t="ekr.20070122070634.66" a="E"><vh>Only do one message re writing recent files</vh></v>
-<v t="ekr.20070122070634.69" a="E"><vh>Made escape in the minibuffer work like ctrl-g</vh></v>
+<v t="ekr.20070122070634.59"><vh>Added handleUrlInUrlNode helper for OnIconDoubleClick</vh></v>
+<v t="ekr.20070122070634.66"><vh>Only do one message re writing recent files</vh></v>
+<v t="ekr.20070122070634.69"><vh>Made escape in the minibuffer work like ctrl-g</vh></v>
 <v t="ekr.20070122070634.81"><vh>Clear status line in repeat-complex-command</vh></v>
 <v t="ekr.20070122070634.82"><vh>Added shortcuts for goto-first/last-sibling</vh></v>
-<v t="ekr.20070122070634.83" a="E"><vh>Made copied nodes valid Leo files</vh></v>
-<v t="ekr.20070122070634.89" a="E"><vh>Added support for chdir_to_relative_path setting</vh></v>
-<v t="ekr.20070122070634.91" a="E"><vh>changeAll now works like findAll</vh></v>
-<v t="ekr.20070122070634.209" a="E"><vh>Added Find &amp; Spell tabs to log pane on startup</vh></v>
-<v t="ekr.20070122070634.220" a="E"><vh>Created standard pluginsManager.txt only if it does not exist</vh></v>
-<v t="ekr.20070122070634.223" a="E"><vh>Improved support for the winpdb debugger</vh></v>
+<v t="ekr.20070122070634.83"><vh>Made copied nodes valid Leo files</vh></v>
+<v t="ekr.20070122070634.89"><vh>Added support for chdir_to_relative_path setting</vh></v>
+<v t="ekr.20070122070634.91"><vh>changeAll now works like findAll</vh></v>
+<v t="ekr.20070122070634.209"><vh>Added Find &amp; Spell tabs to log pane on startup</vh></v>
+<v t="ekr.20070122070634.220"><vh>Created standard pluginsManager.txt only if it does not exist</vh></v>
+<v t="ekr.20070122070634.223"><vh>Improved support for the winpdb debugger</vh></v>
+<v t="ekr.20070122104240"><vh>Added \runAskOkCancelStringDialog</vh></v>
 </v>
 <v t="ekr.20070122070634.298"><vh>Plugins</vh>
 <v t="ekr.20070122072110"><vh>The wxGui plugin is now functional</vh></v>
@@ -30232,6 +30233,8 @@ The following code will find a position p2 describing the same node as p::
                 c.selectPosition(p2)
         else:
             print 'position no longer exists'
+</t>
+<t tx="ekr.20070122104240">http://sourceforge.net/forum/message.php?msg_id=4113315
 </t>
 </tnodes>
 </leo_file>
