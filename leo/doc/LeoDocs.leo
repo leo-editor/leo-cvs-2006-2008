@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="-3" left="322" height="871" width="864"/>
+<globals body_outline_ratio="0.407755581669">
+	<global_window_position top="10" left="322" height="851" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -333,8 +333,9 @@
 <v t="ekr.20040403173920.3" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3522206e616d653d22687474702d6e6f64652d6d61726b65722d35223e710155043c2f613e71025d71032855403c64697620636c6173733d2273656374696f6e222069643d22672d746f702d7468652d636f6d6d616e6465722d6f662d7468652d746f702d77696e646f77223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55363c64697620636c6173733d2273656374696f6e222069643d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e0a711055703c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643322206e616d653d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e672e657328293a20777269746520746f20746865206c6f672070616e653c2f613e3c2f68313e0a7111652e"><vh>g.es writes to the log pane</vh></v>
 <v t="ekr.20040403175157.1" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3722206e616d653d22687474702d6e6f64652d6d61726b65722d37223e710155043c2f613e71025d71032855353c64697620636c6173733d2273656374696f6e222069643d22672d65732d77726974652d746f2d7468652d6c6f672d70616e65223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55463c64697620636c6173733d2273656374696f6e222069643d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e0a7110558e3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643422206e616d653d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e6170702e77696e646f774c6973743a20746865206c697374206f6620616c6c206f70656e206672616d65733c2f613e3c2f68313e0a7111652e"><vh>app.windowList: the list of all open frames</vh></v>
 <v t="ekr.20040403173920.6" rst_http_attribute="5d71002855443c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d3922206e616d653d22687474702d6e6f64652d6d61726b65722d39223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d226170702d77696e646f776c6973742d7468652d6c6973742d6f662d616c6c2d6f70656e2d6672616d6573223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f55463c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e0a7110558d3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643522206e616d653d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e47657474696e6720616e642073657474696e6720686561646c696e6520616e6420626f647920746578743c2f613e3c2f68313e0a7111652e"><vh>Getting and setting headline and body text</vh></v>
-<v t="ekr.20040403173920.9" a="E" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313122206e616d653d22687474702d6e6f64652d6d61726b65722d3131223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f552f3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e0a7110555f3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643622206e616d653d2274726176657273696e672d6f75746c696e6573223e54726176657273696e67206f75746c696e65733c2f613e3c2f68313e0a7111652e"><vh>Traversing outlines</vh>
+<v t="ekr.20070122093626"><vh>Ensuring that positions are valid</vh></v>
 <v t="ekr.20050902073404"><vh>About copying positions</vh></v>
+<v t="ekr.20040403173920.9" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313122206e616d653d22687474702d6e6f64652d6d61726b65722d3131223e710155043c2f613e71025d71032855453c64697620636c6173733d2273656374696f6e222069643d2267657474696e672d616e642d73657474696e672d686561646c696e652d616e642d626f64792d74657874223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e6565656555073c2f6469763e0a710f552f3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e0a7110555f3c68313e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643622206e616d653d2274726176657273696e672d6f75746c696e6573223e54726176657273696e67206f75746c696e65733c2f613e3c2f68313e0a7111652e"><vh>Traversing outlines</vh>
 <v t="ekr.20040403173920.10" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313322206e616d653d22687474702d6e6f64652d6d61726b65722d3133223e710155043c2f613e71025d710328552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710455063c2f6469763e71055d710628553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710755063c2f6469763e71085d71092855063c626f64793e710a55073c2f626f64793e710b5d710c2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e710d55073c2f68746d6c3e710e4e65656565552b3c64697620636c6173733d2273656374696f6e222069643d22632d616c6c6e6f6465732d69746572223e0a710f55573c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643722206e616d653d22632d616c6c6e6f6465732d69746572223e632e616c6c4e6f6465735f697465723c2f613e3c2f68323e0a7110652e"><vh>c.allNodes_iter</vh></v>
 <v t="ekr.20040403173920.13" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313522206e616d653d22687474702d6e6f64652d6d61726b65722d3135223e710155043c2f613e71025d710328552a3c64697620636c6173733d2273656374696f6e222069643d22632d616c6c6e6f6465732d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a7112552b3c64697620636c6173733d2273656374696f6e222069643d22702d6368696c6472656e2d69746572223e0a711355573c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643822206e616d653d22702d6368696c6472656e2d69746572223e702e6368696c6472656e5f697465723c2f613e3c2f68323e0a7114652e"><vh>p.children_iter</vh></v>
 <v t="ekr.20040403173920.14" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d313722206e616d653d22687474702d6e6f64652d6d61726b65722d3137223e710155043c2f613e71025d710328552a3c64697620636c6173733d2273656374696f6e222069643d22702d6368696c6472656e2d69746572223e710455063c2f6469763e71055d710628552e3c64697620636c6173733d2273656374696f6e222069643d2274726176657273696e672d6f75746c696e6573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255463c64697620636c6173733d2273656374696f6e222069643d22702d706172656e74732d697465722d616e642d702d73656c662d616e642d706172656e74732d69746572223e0a7113558d3c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d222369643922206e616d653d22702d706172656e74732d697465722d616e642d702d73656c662d616e642d706172656e74732d69746572223e702e706172656e74735f6974657220616e6420702e73656c665f616e645f706172656e74735f697465723c2f613e3c2f68323e0a7114652e"><vh>p.parents_iter &amp; p.self_and_parents_iter</vh></v>
@@ -663,7 +664,7 @@
 <v t="ekr.20060527105804"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070116062405"><vh>Using g.trace and g.pdb</vh></v>
 <v t="ekr.20060527112801"><vh>Settings for winpdb</vh></v>
-<v t="ekr.20070115172724"><vh>Debugging scripts with winpdb</vh>
+<v t="ekr.20070115172724" a="E"><vh>Debugging scripts with winpdb</vh>
 <v t="ekr.20070115172724.1"><vh>The debug command</vh></v>
 <v t="ekr.20070115172724.2"><vh>@button winpdb</vh></v>
 <v t="ekr.20070115172724.3"><vh>The execute-script command with explicit debugger breaks</vh></v>
@@ -2963,9 +2964,6 @@
 <v t="ekr.20061020155235.264"><vh>Removed .leoRecentFiles.txt from distribution and cvs</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63" a="ETV"><vh>Latest version</vh>
 <v t="ekr.20061026095728"><vh>4.4.2 final and 4.4.2.1 final</vh>
 <v t="ekr.20061026095922.1"><vh>Bugs</vh>
 <v t="ekr.20061026095922.2"><vh>Changed leo_rst.css to pass the w3 validator</vh></v>
@@ -2980,6 +2978,48 @@
 <v t="ekr.20061026095922.35"><vh>New features</vh>
 <v t="ekr.20061026095922.51"><vh>Added forward-end-word/-extend-selection commands</vh></v>
 <v t="ekr.20061026095922.36"><vh>Created leoPymacs.py for interaction with pymacs</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20070122070619" a="V"><vh>4.4.3 alpha 1</vh>
+<v t="ekr.20070122070634.1"><vh>Bugs</vh>
+<v t="ekr.20070122070634.2"><vh>Fixed an escape bug in new colorizer</vh></v>
+<v t="ekr.20070122070634.4" a="E"><vh>Treat escaped characters in find patterns as a single character</vh></v>
+<v t="ekr.20070122070634.13" a="E"><vh>Fixed undo problems with yank/kill</vh></v>
+<v t="ekr.20070122070634.40" a="E"><vh>Fixed clone-drag problem</vh></v>
+<v t="ekr.20070122070634.51" a="E"><vh>Made sure all ancestors expanded when select a body editor with multiple body editors</vh></v>
+<v t="ekr.20070122070634.54"><vh>Fixed bug in CheckVersion</vh>
+<v t="ekr.20070122070634.55"><vh>CheckVersion (EKR) &amp; helper</vh>
+<v t="ekr.20070122070634.56"><vh>CheckVersionToInt</vh></v>
+<v t="ekr.20070122070634.57"><vh>test_CheckVersionToInt</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20070122070634.305" a="E"><vh>Code reorg for wxGui plugin</vh></v>
+<v t="ekr.20070122070634.58"><vh>Features</vh>
+<v t="ekr.20070122070634.59" a="E"><vh>Added handleUrlInUrlNode helper for OnIconDoubleClick</vh></v>
+<v t="ekr.20070122070634.66" a="E"><vh>Only do one message re writing recent files</vh></v>
+<v t="ekr.20070122070634.69" a="E"><vh>Made escape in the minibuffer work like ctrl-g</vh></v>
+<v t="ekr.20070122070634.81"><vh>Clear status line in repeat-complex-command</vh></v>
+<v t="ekr.20070122070634.82"><vh>Added shortcuts for goto-first/last-sibling</vh></v>
+<v t="ekr.20070122070634.83" a="E"><vh>Made copied nodes valid Leo files</vh></v>
+<v t="ekr.20070122070634.89" a="E"><vh>Added support for chdir_to_relative_path setting</vh></v>
+<v t="ekr.20070122070634.91" a="E"><vh>changeAll now works like findAll</vh></v>
+<v t="ekr.20070122070634.209" a="E"><vh>Added Find &amp; Spell tabs to log pane on startup</vh></v>
+<v t="ekr.20070122070634.220" a="E"><vh>Created standard pluginsManager.txt only if it does not exist</vh></v>
+<v t="ekr.20070122070634.223" a="E"><vh>Improved support for the winpdb debugger</vh></v>
+</v>
+<v t="ekr.20070122070634.298"><vh>Plugins</vh>
+<v t="ekr.20070122072110"><vh>The wxGui plugin is now functional</vh></v>
+<v t="ekr.20070122070634.299"><vh>Changed bindings in UniversalScrolling pluing</vh></v>
+<v t="ekr.20070122070634.300"><vh>Registered write-restructured-text command in rst3 plugin</vh></v>
+</v>
+<v t="ekr.20070122070634.301"><vh>Settings</vh>
+<v t="ekr.20070122070634.302"><vh>Added @bool center_selected_tree_node</vh></v>
+<v t="ekr.20070122070634.303"><vh>Added @bool invisible_outline_navigation = False</vh></v>
+<v t="ekr.20070122070634.304"><vh>Added @bool show_full_tracebacks_in_scripts</vh></v>
 </v>
 </v>
 </v>
@@ -10635,8 +10675,8 @@ for that frame::
 
     **Important**:
     Positions can become *invalid* when the structure of the outline changes.
-    Therefore, plugins and scripts must *not* store positions for use at a later time if the outline
-    could have changed in the meantime.
+    As discussed below, plugins and scripts that store positions for use at a later time should make sure the
+    position p is still valid by calling c.positionExists(p)
 
     **Important**:
     For compatibility with old (pre-4.2) scripts, ``c.currentVnode`` and
@@ -18641,13 +18681,11 @@ execute and run the Execute Script command.
 
 **Important**: Python is finicky about indentation, so you must be careful to
 select the leading whitespace of the first line.</t>
-<t tx="ekr.20050902073404">Understanding this section is **supremely important** for anyone who wants to
-script Leo properly.
-
-By default, all iterators discussed below use a **single** position to move
+<t tx="ekr.20050902073404">Understanding this section is *essential*.
+By default, all iterators discussed below use a *single* position to move
 through the outline. This is a vital optimization; otherwise Leo would generate
 one or more position object for each node of a tree traversal. However, it means
-that it is **useless** to try to capture a position with::
+that it is *useless* to try to capture a position with::
 
     p2 = p  # Wrong.  p2 will change after this assignment.
 
@@ -29912,21 +29950,21 @@ Here are step-by step instructions:
    You can now execute or single-step through the script. 
    To repeat, c, g and p are defined, so you can debug any script this way.
 </t>
-<t tx="ekr.20070116062405">Inserting g.trace statements in my Pyhthon code is usually my first debugging choice.
-The g.trace statement prints the name of the function in which the call to g.trace occurs,
-followed by the value of its arguments.
-The output of the g.trace goes to the console,
-so you must be `running Leo in a console`_ to use g.trace.
+<t tx="ekr.20070116062405">Inserting g.trace statements in my Pyhthon code is usually my first debugging
+choice. The g.trace statement prints the name of the function in which the call
+to g.trace occurs, followed by the value of its arguments. The output of the
+g.trace goes to the console, so you must be `running Leo in a console`_ to use
+g.trace.
 
-Inserting and deleting g.trace statements is fast, provided that your `work flow`_ makes it easy to restart the program under test.
-As a result, using g.trace statements is similar to setting tracepoints in a debugger,
-with the advantage that (disabled) tracepoints remain in the source code for future use.
+Inserting and deleting g.trace statements is fast, provided that your `work
+flow`_ makes it easy to restart the program under test. As a result, using
+g.trace statements is similar to setting tracepoints in a debugger, with the
+advantage that (disabled) tracepoints remain in the source code for future use.
 You will find many examples of using g.trace throughout Leo's source code.
 
-My second choice is using g.pdb to set breakpoints for the pdb_ debugger.
-Pdb uses the console for all interaction,
-so you must be `running Leo in a console`_.
-See `the FAQ`_ for a discussion of both g.trace and g.pdb.
+My second choice is using g.pdb to set breakpoints for the pdb_ debugger. Pdb
+uses the console for all interaction, so you must be `running Leo in a
+console`_. See `the FAQ`_ for a discussion of both g.trace and g.pdb.
 </t>
 <t tx="ekr.20070119131801">**Joined nodes** represent the same data. Joined nodes are vnodes v1 and v2 such
 that v1.t == v2.t. Joined vnodes are distinct (v1 != v2) if the vnodes are
@@ -29956,11 +29994,244 @@ outline containing the script. ``g`` and ``p`` are predefined as follows::
     import leoGlobals as g
     p = c.currentPosition()
     
-These definitions provide an extremely easy way to access or change any
+These definitions provide an easy way to access or change any
 information in a Leo outline. For example, as discussed below, the following
 script will print every headline in the Leo outline in which the script occurs.
     
     for z in c.allNodes_iter():
-        print z.headString()</t>
+        print z.headString()
+</t>
+<t tx="ekr.20070122070619">Leo 4.4.3 alpha 1                                  January 23, 2006
+
+Leo 4.4.3 alpha 1 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+Important: the wxGui plugin is still alpha-quality code at present.
+
+The highlights of Leo 4.4.3:
+----------------------------
+- A functional wxWidgets plugin.
+- Leo's core contains no gui-dependent code.
+- Better support for the winpdb debugger.
+- Many minor improvements, new settings and bug fixes.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070122070634.1"></t>
+<t tx="ekr.20070122070634.2">Example:
+
+print "\\" + " this is a test"
+
+The escape mechanism must treat an even number of trailing escapes as not an escape.</t>
+<t tx="ekr.20070122070634.4"></t>
+<t tx="ekr.20070122070634.13">http://sourceforge.net/forum/message.php?msg_id=3924236
+
+Added unit tests for yank and all kill commands.
+</t>
+<t tx="ekr.20070122070634.40">http://sourceforge.net/forum/message.php?msg_id=3991369
+
+The bindings to f.f.OnControlKeyDown/Up were mistakenly deleted in createOuterFrames.
+</t>
+<t tx="ekr.20070122070634.51"></t>
+<t tx="ekr.20070122070634.54">http://sourceforge.net/forum/message.php?msg_id=4112347
+</t>
+<t tx="ekr.20070122070634.55"># Simplified version by EKR: stringCompare not used.
+
+def CheckVersion (s1,s2,condition="&gt;=",stringCompare=None,delimiter='.',trace=False):
+    
+    vals1 = [g.CheckVersionToInt(s) for s in s1.split(delimiter)] ; n1 = len(vals1)
+    vals2 = [g.CheckVersionToInt(s) for s in s2.split(delimiter)] ; n2 = len(vals2)
+    n = max(n1,n2)
+    if n1 &lt; n: vals1.extend([0 for i in xrange(n - n1)])
+    if n2 &lt; n: vals2.extend([0 for i in xrange(n - n2)])
+    for cond,val in (
+        ('==', vals1 == vals2), ('!=', vals1 != vals2),
+        ('&lt;',  vals1 &lt;  vals2), ('&lt;=', vals1 &lt;= vals2),
+        ('&gt;',  vals1 &gt;  vals2), ('&gt;=', vals1 &gt;= vals2),
+    ):
+        if condition == cond:
+            result = val ; break
+    else:
+        raise EnvironmentError,"condition must be one of '&gt;=', '&gt;', '==', '!=', '&lt;', or '&lt;='."
+    
+    if trace:
+        # print '%10s' % (repr(vals1)),'%2s' % (condition),'%10s' % (repr(vals2)),result
+        print '%7s' % (s1),'%2s' % (condition),'%7s' % (s2),result
+    return result</t>
+<t tx="ekr.20070122070634.56">def CheckVersionToInt (s):
+    
+    try:
+        return int(s)
+    except ValueError:
+        aList = []
+        for ch in s:
+            if ch.isdigit(): aList.append(ch)
+            else: break
+        if aList:
+            s = string.join(aList)
+            return int(s)
+        else:
+            return 0</t>
+<t tx="ekr.20070122070634.57">def test_CheckVersionToInt (*args):
+    
+    assert g.CheckVersionToInt('12') == 12,'fail 1'
+    assert g.CheckVersionToInt('2a5') == 2, 'fail 2'
+    assert g.CheckVersionToInt('b2') == 0, 'fail 3'</t>
+<t tx="ekr.20070122070634.58"></t>
+<t tx="ekr.20070122070634.59"></t>
+<t tx="ekr.20070122070634.66"></t>
+<t tx="ekr.20070122070634.69"></t>
+<t tx="ekr.20070122070634.81">This is much less confusing.</t>
+<t tx="ekr.20070122070634.82"></t>
+<t tx="ekr.20070122070634.83">http://sourceforge.net/forum/message.php?msg_id=4014079
+</t>
+<t tx="ekr.20070122070634.89">http://sourceforge.net/forum/message.php?msg_id=4005750
+
+I like the option @string relative_path_base_directory = .
+
+which puts @file nodes in the same directory as the current Leo file.
+
+I would like it if 
+open('file.txt','w').close()
+
+put file.txt in the same directory as the current Leo file.</t>
+<t tx="ekr.20070122070634.91"></t>
+<t tx="ekr.20070122070634.209">The spell tab is only shown if Aspell was properly imported.
+</t>
+<t tx="ekr.20070122070634.220">http://sourceforge.net/forum/message.php?msg_id=3987635
+</t>
+<t tx="ekr.20070122070634.223">New settings
+
+The following two new settings now control whether the execute-script and debug commands write the script to an external file.
+
+- @bool write_script_file = True
+
+True: The execute script command writes the script to be executed to a file, then executes the script using Python's execFile function. The script_file_path setting specifies the path to this file.
+    
+False (legacy): The execute script command uses Python's exec command to execute the script. 
+
+- @string script_file_path = ../test/scriptFile.py
+
+The path to the file to be written by the execute-script command.
+
+Notes:
+    
+- This setting has effect only if the write_script_file setting is True.
+- Use / to as the path delimiter, regardless of platform.
+- The default path is ../test/scriptFile.py if no path is given.
+- The path starts at g.app.loadDir, so for example ../test/scriptFile.py is equivalent to leo/test/scriptFile.py
+- The filename should end in .py.
+
+From here on, let us assume the settings are as shown above.  There are at least three ways of debugging scripts, depending on your preferences and whether the script contains leo-specific code (g, c or p) or not.
+
+First way:  The debug command
+
+The debug command now works almost exactly like Kent's original @button node. This way of debugging can only be used for general scripts, not leo-specific scripts.  
+
+The debug command writes the script to scriptFile.py and invokes the debugger as specified by the existing @string debugger_kind option.  winpdb opens and is already 'attached' to the script to be debugged.  You can single-step as you like.  Leo continues to run, but killing the debugger will also kill Leo.  When started this way, winpdb is really 'attached' to *all* of Leo, which means you can single step past the end of the script into Leo's executeScript code and from there into all of Leo(!)
+
+As I write this I realize that the code uses arguments specific to winpdb.  That may have to be generalized, though I am not sure why anyone would want to use another debugger...
+
+Second way: @button winpdb
+
+This is almost exactly equivalent to the debug command, except that the script file must be *different* from the script file specified by the  script_file_path setting (The @button code *itself* uses the execute-script command, so we have to pass the script code, not the @button code to the debugger).
+
+Third way: The execute-script command with explicit debugger breaks
+
+The third way of debugging scripts allows winpdb to debug scripts that use c, g and p.  I'm actually not sure of exactly how and why it works, but it certainly does work.
+
+In contrast to the previous two ways, a little more work is needed because winpdb does not start automatically.  But I am getting ahead of myself.
+
+To use this way, insert the following two lines of code at the start of the script to be debugged::
+
+import rpdb2
+rpdb2.start_embedded_debugger('go',fAllowUnencrypted=True)
+
+Now just execute the execute-script command (*not* the debug command)  Leo will appear to hang.  Indeed, the  start_embedded_debugger command is waiting for *another* copy of winpdb to 'attach' to the script's process.  This process is all of Leo!  The default timeout is 5 minutes: I'm not sure what happens when the timeout happens: probably an exception gets thrown.
+
+So you must start winpdb explicitly.  On XP just do something like
+
+python c:\python25\Scripts\_winpdb.py -t
+
+The -t option tells winpdb that no encoding of password is necessary.  The password is specified in the call to rpdb2.start_embedded_debugger in your script.  In this example, the password is 'go'.  Use the File:Attach command in winpdb to attach winpdb to Leo.  Specify the password as 'go' and you will see the scriptFile.py containing your entire script.  You can execute or single-step through the script. 
+
+To repeat, the big difference is that c, g and p are defined, so you can debug any script this way.  As before, killing winpdb also kills Leo.
+
+P.S.  winpdb and its documentation has been improved recently.  See
+
+http://www.digitalpeers.com/pythondebugger/  and especially
+
+http://www.digitalpeers.com/pythondebugger/embedded.htm
+
+The discussion of embedded debugging may have been written specifically with Leo in mind.  It certainly could have been.
+</t>
+<t tx="ekr.20070122070634.298"></t>
+<t tx="ekr.20070122070634.299">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3991223
+
+I assigned both Control and Shift modifiers to do scrolling: this is so my
+finger can hit a key in the lower left corner of the keyboard, and I don't have
+to worry too much about my aim (I have LARGE fingers). Also, I stop the
+scrolling on the JUST button release -- less worry about my finger slipping off
+the key.</t>
+<t tx="ekr.20070122070634.300"></t>
+<t tx="ekr.20070122070634.301"></t>
+<t tx="ekr.20070122070634.302">@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3916155
+
+When a node is among several other nodes at the same level of hierarchy, which
+are all children of a node, and the "MOVE LFET" command is executed, the node
+does move left in the outline hierarchy, but it also move down to just before
+the next node at the higher hierarchy level - the level to which it is moving
+left.
+
+EKR: I love this new option: how did we ever live without it?
+
+@color</t>
+<t tx="ekr.20070122070634.303">@nocolor
+
+This option tells how to treat an uppercase letter typed when the outline pane
+is active but no headline is being edited. In such situations Leo searchs for an
+node whose headline starts with the present prefix, ignoring case The prefix
+starts with the first letter typed and other letters are added if they are typed
+within a 'short' period of time, as specified by the outline_nav_extend_delay
+
+True: Look in invisible nodes.
+False: Look only in visible nodes.
+
+I set this option to False because it is too easy form me to type Shift-whatever
+when I meant Ctrl-whatever.
+
+@color</t>
+<t tx="ekr.20070122070634.304">http://sourceforge.net/forum/message.php?msg_id=3985382
+
+</t>
+<t tx="ekr.20070122070634.305">Leo's core is now largely free of gui-dependent code, and should be completely
+free of such code by the time Leo 4.4.3 final is realeased.</t>
+<t tx="ekr.20070122072110"></t>
+<t tx="ekr.20070122093626">Positions become invalid when the user deletes or moves the node to which the position refers.
+Plugins and scripts that store positions for use at a later time should make sure the
+position p is still valid by calling c.positionExists(p).
+
+The following code will find a position p2 describing the same node as p::
+
+    if not c.positionExists(p):
+        for p2 in c.allNodes_iter():
+            if p2.v == p.v:
+                # found
+                c.selectPosition(p2)
+        else:
+            print 'position no longer exists'
+</t>
 </tnodes>
 </leo_file>

@@ -19,7 +19,7 @@
 #@@tabwidth -4
 
 #@+all
-#@+node:ekr.20061029091751:Leo 4.4.3 beta 1 projects
+#@+node:ekr.20061029091751:Leo 4.4.3 alpha 1 projects
 #@+node:ekr.20061029091904:Bugs
 #@+node:ekr.20061030054124:Fixed an escape bug in new colorizer
 Example:
@@ -21021,7 +21021,7 @@ def tag_remove (self,tagName,i,j=None,*args):
 #@-node:ekr.20070116073907:tag_remove (test)
 #@-node:ekr.20070116073907.1:Added w.tag_remove
 #@-node:ekr.20041228084830.3:(Reorg for wxGui plugin)
-#@-node:ekr.20061029091751:Leo 4.4.3 beta 1 projects
+#@-node:ekr.20061029091751:Leo 4.4.3 alpha 1 projects
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt
