@@ -21,7 +21,7 @@ first child of the target node.
 #@-node:tbrown.20070117104409.1:<< docstring >>
 #@nl
 
-__version__ = '0.2'
+__version__ = '0.3'
 #@<< version history >>
 #@+node:tbrown.20070117104409.6:<< version history >>
 #@+at
@@ -32,6 +32,7 @@ __version__ = '0.2'
 # - Use checkMoveWithParentWithWarning.
 # - Support undo.
 # - Clearer command names.
+# 0.3 EKR: Varioius small mods suggested by Terry.
 #@-at
 #@nonl
 #@-node:tbrown.20070117104409.6:<< version history >>
@@ -122,6 +123,7 @@ class quickMoveButton:
         self.c = owner.c
         self.owner = owner
         self.target = target
+        self.targetHeadString = target.headString()
         self.first = first
     #@-node:ekr.20070117121326:ctor
     #@+node:ekr.20070117121326.1:moveCurrentNodeToTarget
@@ -133,20 +135,28 @@ class quickMoveButton:
         p = c.currentPosition()
         p2 = self.target
         u = c.undoer
+        
+        if not c.positionExists(p2):
+            for z in c.allNodes_iter():
+                if z.v == p:
+                    p2 = z
+                    break
+            else:
+                g.es('Target no longer exists: %s' % self.targetHeadString,color='red')
+                return
        
         if p.v.t == p2.v.t or not c.checkMoveWithParentWithWarning (p,p2,warningFlag=False):
-            g.es('Invalid move',color='red')
+            g.es('Invalid move: %s' % (self.targetHeadString),color='red')
             return
-            
+    
         c.beginUpdate()
         try:
             bunch = c.undoer.beforeMoveNode(p)
             p2.expand()
-            if self.first:
-                p.moveToFirstChildOf(p2)
-            else:
-                p.moveToLastChildOf(p2)
-            c.selectPosition(p)
+            nxt = p.hasVisNext() and p.visNext() or p.visBack()
+            if self.first:  p.moveToFirstChildOf(p2)
+            else:           p.moveToLastChildOf(p2)
+            c.selectPosition(nxt)
             c.undoer.afterMoveNode(p,'Quick Move', bunch)
         finally:
             c.endUpdate()
