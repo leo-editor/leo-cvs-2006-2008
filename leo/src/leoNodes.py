@@ -2155,20 +2155,27 @@ class basePosition (object):
         return p
     #@nonl
     #@-node:ekr.20040303175026.10:p.moveAfter
-    #@+node:ekr.20040306060312:p.moveToLastChildOf
+    #@+node:ekr.20040306060312:p.moveToFirst/LastChildOf
+    def moveToFirstChildOf (self,parent):
+        
+        """Move a position to the first child of parent."""
+    
+        p = self # Do NOT copy the position!
+        p.unlink()
+        p.linkAsNthChild(parent,0)
+        return p
+    
+    
     def moveToLastChildOf (self,parent):
     
         """Move a position to the last child of parent."""
     
         p = self # Do NOT copy the position!
-    
         p.unlink()
         n = parent.numberOfChildren()
         p.linkAsNthChild(parent,n)
-            
         return p
-    #@nonl
-    #@-node:ekr.20040306060312:p.moveToLastChildOf
+    #@-node:ekr.20040306060312:p.moveToFirst/LastChildOf
     #@+node:ekr.20040303175026.11:p.moveToNthChildOf
     def moveToNthChildOf (self,parent,n):
     
