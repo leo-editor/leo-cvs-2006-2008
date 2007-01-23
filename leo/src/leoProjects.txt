@@ -1393,16 +1393,11 @@ w_name = c.widget_name(w)
 state = k.state.kind
 
 special_keys = (
-    gui.keysym('Caps_Lock'),
-    gui.keysym('Num_Lock'),
-    gui.keysym('Control_L'),
-    gui.keysym('Alt_L'),
-    gui.keysym('Shift_L'),
-    gui.keysym('Control_R'),
-    gui.keysym('Alt_R'),
-    gui.keysym('Shift_R'),
-    gui.keysym('Win_L'),
-    gui.keysym('Win_R'),
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+    'Win_L','Win_R',
 )
     
 #@-node:ekr.20061031131434.147:<< define vars >>
@@ -1491,7 +1486,7 @@ for key,name in (
         key in ('button','all')
     ):
         d = k.masterBindingsDict.get(key)
-        if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        # if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
         if d:
             b = d.get(stroke)
             if b:
@@ -1569,9 +1564,9 @@ def getArg (self,event,
         k.setState('getArg',1,k.getArg)
         k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
         if useMinibuffer and k.useTextWidget: c.minibufferWantsFocusNow()
-    elif keysym == gui.keysym('Escape'):
+    elif keysym == 'Escape':
         k.keyboardQuit(event)
-    elif keysym == gui.keysym('Return') or k.oneCharacterArg or stroke in k.getArgEscapes:
+    elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
         if stroke in k.getArgEscapes: k.getArgEscape = stroke
         if k.oneCharacterArg:
             k.arg = event.char
@@ -1582,9 +1577,9 @@ def getArg (self,event,
         c.frame.log.deleteTab('Completion')
         trace and g.trace('kind',kind,'n',n,'handler',handler and handler.__name__)
         if handler: handler(event)
-    elif keysym == gui.keysym('Tab'):
+    elif keysym == 'Tab':
         k.doTabCompletion(k.argTabList,k.arg_completion)
-    elif keysym == gui.keysym('BackSpace'):
+    elif keysym == 'BackSpace':
         k.doBackSpace(k.argTabList,k.arg_completion)
         c.minibufferWantsFocus()
     else:
@@ -1628,9 +1623,9 @@ def fullCommand (self,event,specialStroke=None,specialFunc=None,help=False,helpH
         k.mb_help = help
         k.mb_helpHandler = helpHandler
         c.minibufferWantsFocus()
-    elif keysym == gui.keysym('Escape'):
+    elif keysym == 'Escape':
         k.keyboardQuit(event)
-    elif keysym == gui.keysym('Return'):
+    elif keysym == 'Return':
         c.frame.log.deleteTab('Completion')
         if k.mb_help:
             s = k.getLabel()
@@ -1640,10 +1635,10 @@ def fullCommand (self,event,specialStroke=None,specialFunc=None,help=False,helpH
             if k.mb_helpHandler: k.mb_helpHandler(commandName)
         else:
             k.callAltXFunction(k.mb_event)
-    elif keysym == gui.keysym('Tab'):
+    elif keysym == 'Tab':
         k.doTabCompletion(c.commandsDict.keys())
         c.minibufferWantsFocus()
-    elif keysym == gui.keysym('BackSpace'):
+    elif keysym == 'BackSpace':
         k.doBackSpace(c.commandsDict.keys())
         c.minibufferWantsFocus()
     elif k.ignore_unbound_non_ascii_keys and len(ch) > 1:
@@ -2735,11 +2730,11 @@ def iSearchStateHandler (self,event):
     if keysym == 'Control_L': return
     
     c.bodyWantsFocusNow()
-    if keysym == gui.keysym('Return'):
+    if keysym == 'Return':
         i,j = w.getSelectionRange()
         if not self.forward: i,j = j,i
         self.endSearch(i,j)
-    elif keysym == gui.keysym('BackSpace'):
+    elif keysym == 'BackSpace':
         k.updateLabel(event)
         self.iSearchBackspace()
     elif ch:
@@ -3262,7 +3257,7 @@ def changeSelection(self):
     if start == end:
         g.es("No text selected") ; return False
         
-    g.trace(start,end)
+    # g.trace(start,end)
 
     # Replace the selection in _both_ controls.
     start,end = oldSel
@@ -4857,6 +4852,266 @@ while i < j:
 #@-node:EKR.20040612215018:<< dump the lines near the error >>
 #@-node:ekr.20060624085200:g.handleScriptException
 #@-node:ekr.20070115105245:Executing Leo-specific scripts from winpdb
+#@+node:ekr.20070122100746:Added \runAskOkCancelStringDialog
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4113315
+
+> def runAskOkCancelNumberDialog(self,c,title,message): 
+> """Create and run askOkCancelNumber dialog .""" 
+
+Can I appeal for a runAskOkCancelStringDialog(self,c,title,message)
+
+and that perhaps both the Number and String forms have an optional 'default'
+parameter?
+
+As it happens I wanted to use it for an 'encryptNode' plug-in.  So some people
+might want a runAskOkCancelPasswordDialog version, displaying asterisks... personally
+I don't mind having the password visible when I type it, and for AES encryption
+with 16 char keys it's probably appropriate.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.3730:app.gui dialogs
+def runAboutLeoDialog(self,c,version,theCopyright,url,email):
+    """Create and run Leo's About Leo dialog."""
+    self.oops()
+    
+def runAskLeoIDDialog(self):
+    """Create and run a dialog to get g.app.LeoID."""
+    self.oops()
+
+def runAskOkDialog(self,c,title,message=None,text="Ok"):
+    """Create and run an askOK dialog ."""
+    self.oops()
+
+def runAskOkCancelNumberDialog(self,c,title,message):
+    """Create and run askOkCancelNumber dialog ."""
+    self.oops()
+
+def runAskOkCancelStringDialog(self,c,title,message):
+    """Create and run askOkCancelString dialog ."""
+    self.oops()
+
+def runAskYesNoDialog(self,c,title,message=None):
+    """Create and run an askYesNo dialog."""
+    self.oops()
+
+def runAskYesNoCancelDialog(self,c,title,
+    message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
+    """Create and run an askYesNoCancel dialog ."""
+    self.oops()
+#@-node:ekr.20031218072017.3730:app.gui dialogs
+#@+node:ekr.20031218072017.3744:dialogs (unitTestGui)
+def runAboutLeoDialog(self,c,version,theCopyright,url,email):
+    return self.simulateDialog("aboutLeoDialog")
+    
+def runAskLeoIDDialog(self):
+    return self.simulateDialog("leoIDDialog")
+
+def runAskOkDialog(self,c,title,message=None,text="Ok"):
+    return self.simulateDialog("okDialog","Ok")
+
+def runAskOkCancelNumberDialog(self,c,title,message):
+    return self.simulateDialog("numberDialog",-1)
+    
+def runAskOkCancelStringDialog(self,c,title,message):
+    return self.simulateDialog("stringDialog",'')
+    
+def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
+    return self.simulateDialog("openFileDialog")
+
+def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
+    return self.simulateDialog("saveFileDialog")
+
+def runAskYesNoDialog(self,c,title,message=None):
+    return self.simulateDialog("yesNoDialog","no")
+
+def runAskYesNoCancelDialog(self,c,title,
+    message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
+    return self.simulateDialog("yesNoCancelDialog","cancel")
+#@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
+#@+node:ekr.20031218072017.4056:tkGui dialogs & panels
+def runAboutLeoDialog(self,c,version,theCopyright,url,email):
+    """Create and run a Tkinter About Leo dialog."""
+    d = leoTkinterDialog.tkinterAboutLeo(c,version,theCopyright,url,email)
+    return d.run(modal=False)
+    
+def runAskLeoIDDialog(self):
+    """Create and run a dialog to get g.app.LeoID."""
+    d = leoTkinterDialog.tkinterAskLeoID()
+    return d.run(modal=True)
+
+def runAskOkDialog(self,c,title,message=None,text="Ok"):
+    """Create and run a Tkinter an askOK dialog ."""
+    d = leoTkinterDialog.tkinterAskOk(c,title,message,text)
+    return d.run(modal=True)
+
+def runAskOkCancelNumberDialog(self,c,title,message):
+    """Create and run askOkCancelNumber dialog ."""
+    d = leoTkinterDialog.tkinterAskOkCancelNumber(c,title,message)
+    return d.run(modal=True)
+    
+def runAskOkCancelStringDialog(self,c,title,message):
+    """Create and run askOkCancelString dialog ."""
+    d = leoTkinterDialog.tkinterAskOkCancelString(c,title,message)
+    return d.run(modal=True)
+
+def runAskYesNoDialog(self,c,title,message=None):
+    """Create and run an askYesNo dialog."""
+    d = leoTkinterDialog.tkinterAskYesNo(c,title,message)
+    return d.run(modal=True)
+
+def runAskYesNoCancelDialog(self,c,title,
+    message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
+    """Create and run an askYesNoCancel dialog ."""
+    d = leoTkinterDialog.tkinterAskYesNoCancel(
+        c,title,message,yesMessage,noMessage,defaultButton)
+    return d.run(modal=True)
+#@+node:ekr.20031218072017.4057:tkGui file dialogs
+# We no longer specify default extensions so that we can open and save files without extensions.
+#@+node:ekr.20060212061804:runOpenFileDialog
+def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
+
+    """Create and run an Tkinter open file dialog ."""
+    
+    __pychecker__ = '--no-argsused' # defaultextension not used.
+    
+    initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
+    
+    if multiple:
+        # askopenfilenames requires Python 2.3 and Tk 8.4.
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
+        if (
+            g.CheckVersion(version,"2.3") and
+            g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
+        ):
+            files = tkFileDialog.askopenfilenames(
+                title=title,filetypes=filetypes,initialdir=initialdir)
+            # g.trace(files)
+            return list(files)
+        else:
+            # Get one file and return it as a list.
+            theFile = tkFileDialog.askopenfilename(
+                title=title,filetypes=filetypes,initialdir=initialdir)
+            return [theFile]
+    else:
+        # Return a single file name as a string.
+        return tkFileDialog.askopenfilename(
+            title=title,filetypes=filetypes,initialdir=initialdir)
+#@-node:ekr.20060212061804:runOpenFileDialog
+#@+node:ekr.20060212061804.1:runSaveFileDialog
+def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
+
+    """Create and run an Tkinter save file dialog ."""
+    
+    __pychecker__ = '--no-argsused' # defaultextension not used.
+    
+    initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
+
+    return tkFileDialog.asksaveasfilename(
+        initialdir=initialdir,initialfile=initialfile,
+        title=title,filetypes=filetypes)
+#@-node:ekr.20060212061804.1:runSaveFileDialog
+#@-node:ekr.20031218072017.4057:tkGui file dialogs
+#@+node:ekr.20031218072017.4058:tkGui panels
+def createComparePanel(self,c):
+    """Create a Tkinter color picker panel."""
+    return leoTkinterComparePanel.leoTkinterComparePanel(c)
+
+def createFindPanel(self,c):
+    """Create a hidden Tkinter find panel."""
+    panel = leoTkinterFind.leoTkinterFind(c)
+    panel.top.withdraw()
+    return panel
+    
+def createFindTab (self,c,parentFrame):
+    """Create a Tkinter find tab in the indicated frame."""
+    return leoTkinterFind.tkFindTab(c,parentFrame)
+    
+def createLeoFrame(self,title):
+    """Create a new Leo frame."""
+    # print 'tkGui.createLeoFrame'
+    gui = self
+    return leoTkinterFrame.leoTkinterFrame(title,gui)
+#@-node:ekr.20031218072017.4058:tkGui panels
+#@-node:ekr.20031218072017.4056:tkGui dialogs & panels
+#@+node:ekr.20070122103505:class tkinterAskOkCancelString
+class  tkinterAskOkCancelString (leoTkinterDialog):
+    
+    """Create and run a modal Tkinter dialog to get a string."""
+    
+    @others
+#@+node:ekr.20070122103505.1:tkinterAskOKCancelString.__init__
+def __init__ (self,c,title,message):
+    
+    """Create a number dialog"""
+
+    leoTkinterDialog.__init__(self,c,title,resizeable=False) # Initialize the base class.
+    
+    if g.app.unitTesting: return
+
+    self.answer = -1
+    self.number_entry = None
+
+    self.createTopFrame()
+    self.top.bind("<Key>", self.onKey)
+
+    self.createFrame(message)
+    self.focus_widget = self.number_entry
+
+    buttons = (
+            {"text":"Ok",    "command":self.okButton,     "default":True},
+            {"text":"Cancel","command":self.cancelButton} )
+    buttonList = self.createButtons(buttons)
+    self.ok_button = buttonList[0] # Override the default kind of Ok button.
+#@-node:ekr.20070122103505.1:tkinterAskOKCancelString.__init__
+#@+node:ekr.20070122103505.2:tkinterAskOkCancelString.createFrame
+def createFrame (self,message):
+    
+    """Create the frame for a number dialog."""
+    
+    if g.app.unitTesting: return
+    
+    c = self.c
+    
+    lab = Tk.Label(self.frame,text=message)
+    lab.pack(pady=10,side="left")
+    
+    self.number_entry = w = Tk.Entry(self.frame,width=20)
+    w.pack(side="left")
+    
+    c.set_focus(w)
+#@-node:ekr.20070122103505.2:tkinterAskOkCancelString.createFrame
+#@+node:ekr.20070122103505.3:tkinterAskOkCancelString.okButton, cancelButton
+def okButton(self):
+    
+    """Handle clicks in the ok button of a string dialog."""
+
+    self.answer = self.number_entry.get().strip()
+    self.top.destroy()
+    
+def cancelButton(self):
+    
+    """Handle clicks in the cancel button of a string dialog."""
+
+    self.answer=''
+    self.top.destroy()
+#@-node:ekr.20070122103505.3:tkinterAskOkCancelString.okButton, cancelButton
+#@+node:ekr.20070122103505.4:tkinterAskOkCancelString.onKey
+def onKey (self,event):
+
+    ch = event.char.lower()
+
+    if ch in ('o','\n','\r'):
+        self.okButton()
+    elif ch == 'c':
+        self.cancelButton()
+
+    return "break"
+#@-node:ekr.20070122103505.4:tkinterAskOkCancelString.onKey
+#@-node:ekr.20070122103505:class tkinterAskOkCancelString
+#@-node:ekr.20070122100746:Added \runAskOkCancelStringDialog
 #@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061127100022.1:Menu reorgs
 #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
@@ -6338,11 +6593,11 @@ def iSearchStateHandler (self,event):
     if keysym == 'Control_L': return
     
     c.bodyWantsFocusNow()
-    if keysym == gui.keysym('Return'):
+    if keysym == 'Return':
         i,j = w.getSelectionRange()
         if not self.forward: i,j = j,i
         self.endSearch(i,j)
-    elif keysym == gui.keysym('BackSpace'):
+    elif keysym == 'BackSpace':
         k.updateLabel(event)
         self.iSearchBackspace()
     elif ch:
@@ -8083,7 +8338,7 @@ p = c.currentPosition()
 gui = g.app.gui
 ch = gui.eventChar(event)
 keysym = gui.eventKeysym(event)
-if keysym == gui.keysym('Return'):
+if keysym == 'Return':
     ch = '\n' # This fixes the MacOS return bug.
 name = c.widget_name(w)
 oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
@@ -9096,19 +9351,19 @@ def autoCompleterStateHandler (self,event):
         c.frame.log.clearTab(self.tabName)
         self.computeCompletionList()
         k.setState(tag,1,handler=self.autoCompleterStateHandler) 
-    elif keysym in (gui.keysym('space'),gui.keysym('Return')):
+    elif keysym in ('space','Return'):
         self.finish()
-    elif keysym == gui.keysym('Escape'):
+    elif keysym == 'Escape':
         self.abort()
-    elif keysym == gui.keysym('Tab'):
+    elif keysym == 'Tab':
         self.doTabCompletion()
-    elif keysym == gui.keysym('BackSpace'):
+    elif keysym == 'BackSpace':
         self.doBackSpace()
-    elif keysym == ('period'):
+    elif keysym == 'period':
         self.chain()
-    elif keysym == gui.keysym('question'):
+    elif keysym == 'question':
         self.info()
-    elif keysym == gui.keysym('exclam'):
+    elif keysym == 'exclam':
         # Toggle between verbose and brief listing.
         self.verbose = not self.verbose
         if type(self.object) == types.DictType:
@@ -9678,7 +9933,7 @@ def insertNormalChar (self,ch,keysym):
             self.computeCompletionList()
     else:
         word = w.getSelectedText()
-        if keysym == g.app.gui.keysym('parenleft'):
+        if keysym == 'parenleft':
             # Similar to chain logic.
             obj = self.object
             # g.trace(obj,word,self.hasAttr(obj,word))
@@ -12449,16 +12704,11 @@ w_name = c.widget_name(w)
 state = k.state.kind
 
 special_keys = (
-    gui.keysym('Caps_Lock'),
-    gui.keysym('Num_Lock'),
-    gui.keysym('Control_L'),
-    gui.keysym('Alt_L'),
-    gui.keysym('Shift_L'),
-    gui.keysym('Control_R'),
-    gui.keysym('Alt_R'),
-    gui.keysym('Shift_R'),
-    gui.keysym('Win_L'),
-    gui.keysym('Win_R'),
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+    'Win_L','Win_R',
 )
     
 #@-node:ekr.20061031131434.147:<< define vars >>
@@ -12547,7 +12797,7 @@ for key,name in (
         key in ('button','all')
     ):
         d = k.masterBindingsDict.get(key)
-        if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        # if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
         if d:
             b = d.get(stroke)
             if b:
@@ -12711,7 +12961,7 @@ p = c.currentPosition()
 gui = g.app.gui
 ch = gui.eventChar(event)
 keysym = gui.eventKeysym(event)
-if keysym == gui.keysym('Return'):
+if keysym == 'Return':
     ch = '\n' # This fixes the MacOS return bug.
 name = c.widget_name(w)
 oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
@@ -12913,18 +13163,6 @@ for key in d.keys():
         print '%20s, %5s, %s' % (key2, b.pane,b.commandName)
 #@-node:ekr.20061118044529.1:Print k.masterBindingsDict
 #@+node:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-#@+node:ekr.20061031131434.84:<< define class vars >>
-global_killbuffer = []
-    # Used only if useGlobalKillbuffer arg to Emacs ctor is True.
-    # Otherwise, each Emacs instance has its own local kill buffer.
-
-global_registers = {}
-    # Used only if useGlobalRegisters arg to Emacs ctor is True.
-    # Otherwise each Emacs instance has its own set of registers.
-
-lossage = []
-    # A case could be made for per-instance lossage, but this is not supported.
-#@-node:ekr.20061031131434.84:<< define class vars >>
 #@+node:ekr.20061031131434.85:<< define list of special names >>
 key = g.app.gui.keysym
 
@@ -12981,7 +13219,7 @@ KP_0,KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9
 
 key = g.app.gui.keysym
 
-settingsNameDict = {
+self.settingsNameDict = {
     'bksp'    : key('BackSpace'),
     'dnarrow' : key('Down'),
     'esc'     : key('Escape'),
@@ -13108,16 +13346,11 @@ w_name = c.widget_name(w)
 state = k.state.kind
 
 special_keys = (
-    gui.keysym('Caps_Lock'),
-    gui.keysym('Num_Lock'),
-    gui.keysym('Control_L'),
-    gui.keysym('Alt_L'),
-    gui.keysym('Shift_L'),
-    gui.keysym('Control_R'),
-    gui.keysym('Alt_R'),
-    gui.keysym('Shift_R'),
-    gui.keysym('Win_L'),
-    gui.keysym('Win_R'),
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+    'Win_L','Win_R',
 )
     
 #@-node:ekr.20061031131434.147:<< define vars >>
@@ -13206,7 +13439,7 @@ for key,name in (
         key in ('button','all')
     ):
         d = k.masterBindingsDict.get(key)
-        if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        # if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
         if d:
             b = d.get(stroke)
             if b:
@@ -13344,15 +13577,10 @@ def masterCommand (self,event,func,stroke,commandName=None):
 #@nonl
 #@+node:ekr.20061031131434.106:<< define specialKeysyms >>
 specialKeysyms = (
-
-    gui.keysym('Caps_Lock'),
-    gui.keysym('Num_Lock'),
-    gui.keysym('Control_L'),
-    gui.keysym('Alt_L'),
-    gui.keysym('Shift_L'),
-    gui.keysym('Control_R'),
-    gui.keysym('Alt_R'),
-    gui.keysym('Shift_R'),
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
 )
 #@nonl
 #@-node:ekr.20061031131434.106:<< define specialKeysyms >>
@@ -14013,7 +14241,7 @@ def changeSelection(self):
     if start == end:
         g.es("No text selected") ; return False
         
-    g.trace(start,end)
+    # g.trace(start,end)
 
     # Replace the selection in _both_ controls.
     start,end = oldSel
@@ -14176,7 +14404,7 @@ p = c.currentPosition()
 gui = g.app.gui
 ch = gui.eventChar(event)
 keysym = gui.eventKeysym(event)
-if keysym == gui.keysym('Return'):
+if keysym == 'Return':
     ch = '\n' # This fixes the MacOS return bug.
 name = c.widget_name(w)
 oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
@@ -18805,7 +19033,7 @@ p = c.currentPosition()
 gui = g.app.gui
 ch = gui.eventChar(event)
 keysym = gui.eventKeysym(event)
-if keysym == gui.keysym('Return'):
+if keysym == 'Return':
     ch = '\n' # This fixes the MacOS return bug.
 name = c.widget_name(w)
 oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
@@ -19472,7 +19700,7 @@ p = c.currentPosition()
 gui = g.app.gui
 ch = gui.eventChar(event)
 keysym = gui.eventKeysym(event)
-if keysym == gui.keysym('Return'):
+if keysym == 'Return':
     ch = '\n' # This fixes the MacOS return bug.
 name = c.widget_name(w)
 oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
@@ -20462,7 +20690,7 @@ def changeSelection(self):
     if start == end:
         g.es("No text selected") ; return False
         
-    g.trace(start,end)
+    # g.trace(start,end)
 
     # Replace the selection in _both_ controls.
     start,end = oldSel

@@ -2,6 +2,8 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070123085428:Down arrow doesn't work with long lines
+#@-node:ekr.20070123085428:Down arrow doesn't work with long lines
 #@+node:ekr.20061130084909:Improve What's special whitepaper
 @nocolor
 
