@@ -587,7 +587,7 @@ class leoFind:
         if start == end:
             g.es("No text selected") ; return False
             
-        g.trace(start,end)
+        # g.trace(start,end)
     
         # Replace the selection in _both_ controls.
         start,end = oldSel
