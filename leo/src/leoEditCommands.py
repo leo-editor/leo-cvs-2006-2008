@@ -1489,11 +1489,11 @@ class editCommandsClass (baseEditCommandsClass):
         self.beginCommand(undoType='change-previous-word')
         self.moveWordHelper(event,extend=False,forward=False)
     
-        if stroke == gui.keysym('<Alt-c>'):
+        if stroke == '<Alt-c>':
             self.capitalizeWord(event)
-        elif stroke == gui.keysym('<Alt-u>'):
+        elif stroke == '<Alt-u>':
              self.upCaseWord(event)
-        elif stroke == gui.keysym('<Alt-l>'):
+        elif stroke == '<Alt-l>':
             self.downCaseWord(event)
     
         w.setInsertPoint(i)
@@ -2885,7 +2885,7 @@ class editCommandsClass (baseEditCommandsClass):
         gui = g.app.gui
         ch = gui.eventChar(event)
         keysym = gui.eventKeysym(event)
-        if keysym == gui.keysym('Return'):
+        if keysym == 'Return':
             ch = '\n' # This fixes the MacOS return bug.
         name = c.widget_name(w)
         oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
@@ -7652,11 +7652,11 @@ class searchCommandsClass (baseEditCommandsClass):
         if keysym == 'Control_L': return
         
         c.bodyWantsFocusNow()
-        if keysym == gui.keysym('Return'):
+        if keysym == 'Return':
             i,j = w.getSelectionRange()
             if not self.forward: i,j = j,i
             self.endSearch(i,j)
-        elif keysym == gui.keysym('BackSpace'):
+        elif keysym == 'BackSpace':
             k.updateLabel(event)
             self.iSearchBackspace()
         elif ch:

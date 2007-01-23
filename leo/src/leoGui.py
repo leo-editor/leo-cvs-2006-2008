@@ -151,6 +151,14 @@ class leoGui:
     )
     #@-node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
     #@-node:ekr.20031218072017.3721:app.gui Birth & death
+    #@+node:ekr.20031218072017.3741:oops
+    def oops (self):
+        
+        # It is not usually an error to call methods of this class.
+        # However, this message is useful when writing gui plugins.
+        if 1:
+            print "leoGui oops", g.callers(), "should be overridden in subclass"
+    #@-node:ekr.20031218072017.3741:oops
     #@+node:ekr.20061109212618.1:Must be defined only in base class
     #@+node:ekr.20031218072017.3740:guiName
     def guiName(self):
@@ -166,14 +174,6 @@ class leoGui:
         self.script = script
         self.scriptFileName = scriptFileName
     #@-node:ekr.20031218072017.2231:setScript
-    #@+node:ekr.20031218072017.3741:oops
-    def oops (self):
-        
-        # It is not usually an error to call methods of this class.
-        # However, this message is useful when writing gui plugins.
-        if 0:
-            print "leoGui oops", g.callers(), "should be overridden in subclass"
-    #@-node:ekr.20031218072017.3741:oops
     #@-node:ekr.20061109212618.1:Must be defined only in base class
     #@+node:ekr.20061109212618:Must be defined in subclasses
     #@+node:ekr.20031218072017.3723:app.gui create & destroy
@@ -256,9 +256,11 @@ class leoGui:
     #@+node:ekr.20061031173016:app.gui.createKeyHandlerClass
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
         
-        import leoKeys # Do this here to break a circular dependency.
+        self.oops()
+        
+        # import leoKeys # Do this here to break a circular dependency.
                 
-        return leoKeys.keyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
+        # return leoKeys.keyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
     #@nonl
     #@-node:ekr.20061031173016:app.gui.createKeyHandlerClass
     #@+node:ekr.20031218072017.3731:app.gui file dialogs
@@ -314,11 +316,6 @@ class leoGui:
     def color (self,color):
         '''Return the gui-specific color corresponding to the Tk color name.'''
         return color # Do not call oops: this method is essential for the config classes.
-        
-    def keysym (self,keysym):
-        '''Return the gui-specific value corresponding to the Tkinter keysym.'''
-        return keysym # Do not call oops: this method is essential for the config classes.
-    #@nonl
     #@-node:ekr.20061031132712.1:Tk constants
     #@+node:ekr.20031218072017.3735:Dialog utils
     def attachLeoIcon (self,window):
@@ -436,6 +433,14 @@ class nullGui(leoGui):
         self.lastFrame = leoFrame.nullFrame(title,gui)
         return self.lastFrame
     #@-node:ekr.20031218072017.2226:nullGui.createLeoFrame
+    #@+node:ekr.20070123092623:nullGui.createKeyHandlerClass
+    def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
+        
+        import leoKeys # Do this here to break a circular dependency.
+                
+        return leoKeys.keyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
+    #@nonl
+    #@-node:ekr.20070123092623:nullGui.createKeyHandlerClass
     #@+node:ekr.20050328144031:attachLeoIcon
     def attachLeoIcon (self,w):
         
@@ -464,6 +469,14 @@ class nullGui(leoGui):
         # Getting here will terminate Leo.
     #@-node:ekr.20031218072017.2229:runMainLoop
     #@-node:ekr.20031218072017.2224:Birth & death
+    #@+node:ekr.20070123093822:set_focus
+    def set_focus(self,c,w):
+        
+        __pychecker__ = '--no-argsused' # c not used at present.
+        
+        pass
+    #@nonl
+    #@-node:ekr.20070123093822:set_focus
     #@+node:ekr.20031218072017.2230:oops
     def oops(self):
             
@@ -473,7 +486,7 @@ class nullGui(leoGui):
         
         # It is not usually an error to call methods of this class.
         # However, this message is useful when writing gui plugins.
-        if 0:
+        if 1:
             g.trace("nullGui",g.callers())
     #@-node:ekr.20031218072017.2230:oops
     #@-others

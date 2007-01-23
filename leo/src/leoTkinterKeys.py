@@ -5,7 +5,6 @@
 #@@language python
 #@@tabwidth -4
 #@@pagewidth 80
-
 import leoGlobals as g
 import Tkinter as Tk
 import leoKeys
@@ -13,7 +12,7 @@ import leoKeys
 class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
     '''Tkinter overrides of base keyHandlerClass.'''
     #@    @+others
-    #@+node:ekr.20061031170011:ctor (tkinterKeyHandlerClass)
+    #@+node:ekr.20061031170011:tkKeys.ctor
     def __init__(self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
         
         # Init the base class.
@@ -21,8 +20,7 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         
         # Create
         self.createTkIvars()
-    
-    #@-node:ekr.20061031170011:ctor (tkinterKeyHandlerClass)
+    #@-node:ekr.20061031170011:tkKeys.ctor
     #@+node:ekr.20061031170011.1:createTkIvars
     def createTkIvars(self):
     
@@ -32,6 +30,60 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         else:
             self.svar = None
     #@-node:ekr.20061031170011.1:createTkIvars
+    #@+node:ekr.20070123085931: tkKeys.defineSpecialKeys
+    def defineSpecialKeys (self):
+        
+        k = self
+        
+        # These are defined at http://tcl.activestate.com/man/tcl8.4/TkCmd/keysyms.htm.
+        # Important: only the inverse dict is actually used in the new key binding scheme.
+        # Tk may return the *values* of this dict in event.keysym fields.
+        # Leo will warn if it gets a event whose keysym not in values of this table.
+        k.guiBindNamesDict = {
+            "!" : "exclam",
+            '"' : "quotedbl",
+            "#" : "numbersign",
+            "$" : "dollar",
+            "%" : "percent",
+            "&" : "ampersand",
+            "'" : "quoteright",
+            "(" : "parenleft",
+            ")" : "parenright",
+            "*" : "asterisk",
+            "+" : "plus",
+            "," : "comma",
+            "-" : "minus",
+            "." : "period",
+            "/" : "slash",
+            ":" : "colon",
+            ";" : "semicolon",
+            "<" : "less",
+            "=" : "equal",
+            ">" : "greater",
+            "?" : "question",
+            "@" : "at",
+            "[" : "bracketleft",
+            "\\": "backslash",
+            "]" : "bracketright",
+            "^" : "asciicircum",
+            "_" : "underscore",
+            "`" : "quoteleft",
+            "{" : "braceleft",
+            "|" : "bar",
+            "}" : "braceright",
+            "~" : "asciitilde",
+        }
+        
+        # No translation.
+        for s in k.tkNamesList:
+            k.guiBindNamesDict[s] = s
+            
+        # Create the inverse dict.
+        k.guiBindNamesInverseDict = {}
+        for key in k.guiBindNamesDict.keys():
+            k.guiBindNamesInverseDict [k.guiBindNamesDict.get(key)] = key
+        
+    #@-node:ekr.20070123085931: tkKeys.defineSpecialKeys
     #@+node:ekr.20061031170011.3:Minibuffer(Tk keys)
     #@+at 
     #@nonl

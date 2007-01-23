@@ -357,10 +357,6 @@ class tkinterGui(leoGui.leoGui):
         '''Return the gui-specific color corresponding to the Tk color name.'''
         return color
         
-    def keysym (self,keysym):
-        '''Return the gui-specific value corresponding to the Tkinter keysym.'''
-        return keysym
-    #@nonl
     #@-node:ekr.20061109215304:Tk constants
     #@+node:ekr.20031218072017.4060:Dialog
     #@+node:ekr.20031218072017.4061:get_window_info

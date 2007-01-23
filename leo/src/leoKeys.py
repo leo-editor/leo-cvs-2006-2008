@@ -35,17 +35,19 @@ import parser
 # 
 # 1.  The case of plain letters is significant:  a is not A.
 # 
-# 2.  The Shift- prefix can be applied *only* to letters.  Leo will ignore 
-# (with a warning) the shift prefix applied to any other binding, e.g., 
-# Ctrl-Shift-(
+# 2. The Shift- prefix can be applied *only* to letters. Leo will ignore (with 
+# a
+# warning) the shift prefix applied to any other binding, e.g., Ctrl-Shift-(
 # 
-# 3.  The case of letters prefixed by Ctrl-, Alt-, Key- or Shift- is *not* 
-# significant.  Thus, the Shift- prefix is required if you want an upper-case 
+# 3. The case of letters prefixed by Ctrl-, Alt-, Key- or Shift- is *not*
+# significant. Thus, the Shift- prefix is required if you want an upper-case
 # letter (with the exception of 'bare' uppercase letters.)
 # 
-# The following table illustrates these rules.  In each row, the first entry 
-# is the key (for k.bindingsDict) and the other entries are equivalents that 
-# the user may specify in leoSettings.leo:
+# The following table illustrates these rules. In each row, the first entry is 
+# the
+# key (for k.bindingsDict) and the other entries are equivalents that the user 
+# may
+# specify in leoSettings.leo:
 # 
 # a, Key-a, Key-A
 # A, Shift-A
@@ -56,9 +58,12 @@ import parser
 # !, Key-!,Key-exclam,exclam
 # 
 # This table is consistent with how Leo already works (because it is 
-# consistent with Tk's key-event specifiers).  It is also, I think, the least 
-# confusing set of rules.
+# consistent
+# with Tk's key-event specifiers). It is also, I think, the least confusing 
+# set of
+# rules.
 #@-at
+#@nonl
 #@-node:ekr.20061031131434.2:<< about 'internal' bindings >>
 #@nl
 #@<< about key dicts >>
@@ -274,19 +279,19 @@ class autoCompleterClass:
             c.frame.log.clearTab(self.tabName)
             self.computeCompletionList()
             k.setState(tag,1,handler=self.autoCompleterStateHandler) 
-        elif keysym in (gui.keysym('space'),gui.keysym('Return')):
+        elif keysym in ('space','Return'):
             self.finish()
-        elif keysym == gui.keysym('Escape'):
+        elif keysym == 'Escape':
             self.abort()
-        elif keysym == gui.keysym('Tab'):
+        elif keysym == 'Tab':
             self.doTabCompletion()
-        elif keysym == gui.keysym('BackSpace'):
+        elif keysym == 'BackSpace':
             self.doBackSpace()
-        elif keysym == ('period'):
+        elif keysym == 'period':
             self.chain()
-        elif keysym == gui.keysym('question'):
+        elif keysym == 'question':
             self.info()
-        elif keysym == gui.keysym('exclam'):
+        elif keysym == 'exclam':
             # Toggle between verbose and brief listing.
             self.verbose = not self.verbose
             if type(self.object) == types.DictType:
@@ -862,7 +867,7 @@ class autoCompleterClass:
                 self.computeCompletionList()
         else:
             word = w.getSelectedText()
-            if keysym == g.app.gui.keysym('parenleft'):
+            if keysym == 'parenleft':
                 # Similar to chain logic.
                 obj = self.object
                 # g.trace(obj,word,self.hasAttr(obj,word))
@@ -1516,10 +1521,9 @@ class autoCompleterClass:
 class keyHandlerClass:
     
     '''A class to support emacs-style commands.'''
-
-    #@    << define class vars >>
-    #@+middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@+node:ekr.20061031131434.84:<< define class vars >>
+    
+    # Gui-independent class vars.
+    
     global_killbuffer = []
         # Used only if useGlobalKillbuffer arg to Emacs ctor is True.
         # Otherwise, each Emacs instance has its own local kill buffer.
@@ -1530,153 +1534,8 @@ class keyHandlerClass:
     
     lossage = []
         # A case could be made for per-instance lossage, but this is not supported.
-    #@-node:ekr.20061031131434.84:<< define class vars >>
-    #@-middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@nl
-    #@    << define list of special names >>
-    #@+middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@+node:ekr.20061031131434.85:<< define list of special names >>
-    key = g.app.gui.keysym
-    
-    # \'(.+)\',  --> key('\1'),
-    tkNamesList = (
-        key('Caps_Lock'),
-        key('Num_Lock'), # New in 4.4b3.
-        key('space'),
-        key('BackSpace'),
-        key('Begin'),
-        key('Break'),
-        key('Clear'),
-        key('Delete'),
-        key('Down'),
-        key('End'),
-        key('Escape'),
-        key('F1'),	
-        key('F2'),
-        key('F3'),
-        key('F4'),
-        key('F5'),
-        key('F6'),
-        key('F7'),
-        key('F8'),
-        key('F9'),
-        key('F10'),
-        key('F11'),
-        key('F12'),
-        key('Home'),
-        key('Left'),
-        key('Linefeed'),
-        key('Next'),
-        #key('PageDn'),key('PageUp'),
-        key('Prior'),
-        key('Return'),
-        key('Right'),
-        key('Tab'),
-        key('Up'),
-    )
-    
-    #@+at  
-    #@nonl
-    # The following are not translated, so what appears in the menu is the 
-    # same as what is passed to Tk.  Case is significant.
-    # 
-    # Note: the Tk documentation states that not all of these may be available 
-    # on all platforms.
-    # 
-    # Num_Lock, Pause, Scroll_Lock, Sys_Req,
-    # KP_Add, KP_Decimal, KP_Divide, KP_Enter, KP_Equal,
-    # KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab,
-    # KP_F1,KP_F2,KP_F3,KP_F4,
-    # KP_0,KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9
-    #@-at
-    #@-node:ekr.20061031131434.85:<< define list of special names >>
-    #@-middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@nl
-    #@    << define dict of special names >>
-    #@+middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@+node:ekr.20061031131434.86:<< define dict of special names >>
-    # These keys settings that may be specied in leoSettings.leo.
-    # Keys are lowercase, so that case is not significant *for these items only* in leoSettings.leo.
-    
-    key = g.app.gui.keysym
-    
-    settingsNameDict = {
-        'bksp'    : key('BackSpace'),
-        'dnarrow' : key('Down'),
-        'esc'     : key('Escape'),
-        'ltarrow' : key('Left'),
-        'pageup'  : key('Prior'),
-        'pagedn'  : key('Next'),
-        'rtarrow' : key('Right'),
-        'uparrow' : key('Up'),
-    }
-    
-    # Add lowercase version of special keys.
-    for s in tkNamesList:
-        settingsNameDict [s.lower()] = s
-    #@-node:ekr.20061031131434.86:<< define dict of special names >>
-    #@-middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@nl
-    #@    << define dict of Tk bind names >>
-    #@+middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@+node:ekr.20061031131434.87:<< define dict of Tk bind names >>
-    # These are defined at http://tcl.activestate.com/man/tcl8.4/TkCmd/keysyms.htm.
-    
-    # Important: only the inverse dict is actually used in the new key binding scheme.
-    
-    # Tk may return the *values* of this dict in event.keysym fields.
-    # Leo will warn if it gets a event whose keysym not in values of this table.
-    
-    tkBindNamesDict = {
-        "!" : "exclam",
-        '"' : "quotedbl",
-        "#" : "numbersign",
-        "$" : "dollar",
-        "%" : "percent",
-        "&" : "ampersand",
-        "'" : "quoteright",
-        "(" : "parenleft",
-        ")" : "parenright",
-        "*" : "asterisk",
-        "+" : "plus",
-        "," : "comma",
-        "-" : "minus",
-        "." : "period",
-        "/" : "slash",
-        ":" : "colon",
-        ";" : "semicolon",
-        "<" : "less",
-        "=" : "equal",
-        ">" : "greater",
-        "?" : "question",
-        "@" : "at",
-        "[" : "bracketleft",
-        "\\": "backslash",
-        "]" : "bracketright",
-        "^" : "asciicircum",
-        "_" : "underscore",
-        "`" : "quoteleft",
-        "{" : "braceleft",
-        "|" : "bar",
-        "}" : "braceright",
-        "~" : "asciitilde",
-    }
-    
-    # No translation.
-    for s in tkNamesList:
-        tkBindNamesDict[s] = s
-        
-    # Create the inverse dict.
-    tkBindNamesInverseDict = {}
-    for key in tkBindNamesDict.keys():
-        tkBindNamesInverseDict [tkBindNamesDict.get(key)] = key
-    #@-node:ekr.20061031131434.87:<< define dict of Tk bind names >>
-    #@-middle:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@nl
 
     #@    @+others
-    #@+node:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
-    #@-node:ekr.20061031131434.83: constants and dicts (leoKey) (should be defined in gui!)
     #@+node:ekr.20061031131434.75: Birth (keyHandler)
     #@+node:ekr.20061031131434.76: ctor (keyHandler)
     def __init__ (self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
@@ -1686,6 +1545,8 @@ class keyHandlerClass:
         
         useGlobalRegisters and useGlobalKillbuffer indicate whether to use
         global (class vars) or per-instance (ivars) for kill buffers and registers.'''
+        
+        # g.trace('base keyHandler',g.callers())
         
         self.c = c
         self.widget = c.frame.miniBufferWidget
@@ -1789,6 +1650,8 @@ class keyHandlerClass:
         #@-node:ekr.20061031131434.79:<< define internal ivars >>
         #@nl
         
+        self.defineTkNames()
+        self.defineSpecialKeys()
         self.autoCompleter = autoCompleterClass(self)
         self.setDefaultUnboundKeyAction()
     #@-node:ekr.20061031131434.76: ctor (keyHandler)
@@ -1864,6 +1727,71 @@ class keyHandlerClass:
             
         k.setInputState(self.unboundKeyAction)
     #@-node:ekr.20061031131434.82:setDefaultUnboundKeyAction
+    #@+node:ekr.20070123143428:k.defineTkNames
+    def defineTkNames (self):
+        
+        k = self
+        
+        # These names are used in Leo's core *regardless* of the gui actually in effect.
+        # The gui is responsible for translating gui-dependent keycodes into these values.
+        k.tkNamesList = (
+            'BackSpace','Begin','Break',
+            'Caps_Lock','Clear',
+            'Delete','Down',
+            'End','Escape',
+            'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+            'Home',
+            'Left','Linefeed',
+            'Next','Num_Lock',
+            'Prior',
+            'Return','Right',
+            'Tab',
+            'Up',
+            'space',
+        )
+        
+        # These keys settings that may be specied in leoSettings.leo.
+        # Keys are lowercase, so that case is not significant *for these items only* in leoSettings.leo.
+        k.settingsNameDict = {
+            'bksp'    : 'BackSpace',
+            'dnarrow' : 'Down',
+            'esc'     : 'Escape',
+            'ltarrow' : 'Left',
+            'pageup'  : 'Prior',
+            'pagedn'  : 'Next',
+            'rtarrow' : 'Right',
+            'uparrow' : 'Up',
+        }
+        
+        # Add lowercase version of special keys.
+        for s in k.tkNamesList:
+            k.settingsNameDict [s.lower()] = s
+        
+        
+    #@+at  
+    #@nonl
+    # The following are not translated, so what appears in the menu is the 
+    # same as what is passed to Tk.  Case is significant.
+    # Note: the Tk documentation states that not all of these may be available 
+    # on all platforms.
+    # 
+    # Num_Lock, Pause, Scroll_Lock, Sys_Req,
+    # KP_Add, KP_Decimal, KP_Divide, KP_Enter, KP_Equal,
+    # KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab,
+    # KP_F1,KP_F2,KP_F3,KP_F4,
+    # KP_0,KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9
+    #@-at
+    #@-node:ekr.20070123143428:k.defineTkNames
+    #@+node:ekr.20070123090310:k.defineSpecialKeys
+    def defineSpecialKeys (self):
+        
+        # Should be defined in subclasses, but this will suffice.
+        k = self
+    
+        k.settingsNameDict = {}
+        k.guiBindNamesDict = {}
+        k.guiBindNamesInverseDict = {}
+    #@-node:ekr.20070123090310:k.defineSpecialKeys
     #@+node:ekr.20061101071425:oops
     def oops (self):
         
@@ -2186,15 +2114,10 @@ class keyHandlerClass:
         #@    << define specialKeysyms >>
         #@+node:ekr.20061031131434.106:<< define specialKeysyms >>
         specialKeysyms = (
-        
-            gui.keysym('Caps_Lock'),
-            gui.keysym('Num_Lock'),
-            gui.keysym('Control_L'),
-            gui.keysym('Alt_L'),
-            gui.keysym('Shift_L'),
-            gui.keysym('Control_R'),
-            gui.keysym('Alt_R'),
-            gui.keysym('Shift_R'),
+            'Alt_L','Alt_R',
+            'Caps_Lock','Control_L','Control_R',
+            'Num_Lock',
+            'Shift_L','Shift_R',
         )
         #@nonl
         #@-node:ekr.20061031131434.106:<< define specialKeysyms >>
@@ -2355,9 +2278,9 @@ class keyHandlerClass:
             k.mb_help = help
             k.mb_helpHandler = helpHandler
             c.minibufferWantsFocus()
-        elif keysym == gui.keysym('Escape'):
+        elif keysym == 'Escape':
             k.keyboardQuit(event)
-        elif keysym == gui.keysym('Return'):
+        elif keysym == 'Return':
             c.frame.log.deleteTab('Completion')
             if k.mb_help:
                 s = k.getLabel()
@@ -2367,10 +2290,10 @@ class keyHandlerClass:
                 if k.mb_helpHandler: k.mb_helpHandler(commandName)
             else:
                 k.callAltXFunction(k.mb_event)
-        elif keysym == gui.keysym('Tab'):
+        elif keysym == 'Tab':
             k.doTabCompletion(c.commandsDict.keys())
             c.minibufferWantsFocus()
-        elif keysym == gui.keysym('BackSpace'):
+        elif keysym == 'BackSpace':
             k.doBackSpace(c.commandsDict.keys())
             c.minibufferWantsFocus()
         elif k.ignore_unbound_non_ascii_keys and len(ch) > 1:
@@ -2664,7 +2587,7 @@ class keyHandlerClass:
         k = self ; c = k.c ; gui = g.app.gui
     
         keysym = gui.eventKeysym(event)
-        if keysym == gui.keysym('Return') and k.mb_history:
+        if keysym == 'Return' and k.mb_history:
             last = k.mb_history [0]
             k.resetLabel()
             c.commandsDict [last](event)
@@ -2792,9 +2715,9 @@ class keyHandlerClass:
             k.setState('getArg',1,k.getArg)
             k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
             if useMinibuffer and k.useTextWidget: c.minibufferWantsFocusNow()
-        elif keysym == gui.keysym('Escape'):
+        elif keysym == 'Escape':
             k.keyboardQuit(event)
-        elif keysym == gui.keysym('Return') or k.oneCharacterArg or stroke in k.getArgEscapes:
+        elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
             if stroke in k.getArgEscapes: k.getArgEscape = stroke
             if k.oneCharacterArg:
                 k.arg = event.char
@@ -2805,9 +2728,9 @@ class keyHandlerClass:
             c.frame.log.deleteTab('Completion')
             trace and g.trace('kind',kind,'n',n,'handler',handler and handler.__name__)
             if handler: handler(event)
-        elif keysym == gui.keysym('Tab'):
+        elif keysym == 'Tab':
             k.doTabCompletion(k.argTabList,k.arg_completion)
-        elif keysym == gui.keysym('BackSpace'):
+        elif keysym == 'BackSpace':
             k.doBackSpace(k.argTabList,k.arg_completion)
             c.minibufferWantsFocus()
         else:
@@ -3012,16 +2935,11 @@ class keyHandlerClass:
         state = k.state.kind
         
         special_keys = (
-            gui.keysym('Caps_Lock'),
-            gui.keysym('Num_Lock'),
-            gui.keysym('Control_L'),
-            gui.keysym('Alt_L'),
-            gui.keysym('Shift_L'),
-            gui.keysym('Control_R'),
-            gui.keysym('Alt_R'),
-            gui.keysym('Shift_R'),
-            gui.keysym('Win_L'),
-            gui.keysym('Win_R'),
+            'Alt_L','Alt_R',
+            'Caps_Lock','Control_L','Control_R',
+            'Num_Lock',
+            'Shift_L','Shift_R',
+            'Win_L','Win_R',
         )
             
         #@-node:ekr.20061031131434.147:<< define vars >>
@@ -3129,7 +3047,7 @@ class keyHandlerClass:
                 key in ('button','all')
             ):
                 d = k.masterBindingsDict.get(key)
-                if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+                # if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
                 if d:
                     b = d.get(stroke)
                     if b:
@@ -3560,15 +3478,15 @@ class keyHandlerClass:
             k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
             c.frame.log.clearTab(tabName)
             c.minibufferWantsFocusNow()
-        elif keysym == gui.keysym('Return'):
+        elif keysym == 'Return':
             k.arg = k.getLabel(ignorePrompt=True)
             handler = k.getFileNameHandler
             c.frame.log.deleteTab(tabName)
             if handler: handler(event)
-        elif keysym == gui.keysym('Tab'):
+        elif keysym == 'Tab':
             k.doFileNameTab()
             c.minibufferWantsFocus()
-        elif keysym == gui.keysym('BackSpace'):
+        elif keysym == 'BackSpace':
             k.doFileNameBackSpace() 
             c.minibufferWantsFocus()
         else:
@@ -3819,7 +3737,7 @@ class keyHandlerClass:
     
             isPlain = (
                 len(shortcut) == 1 or
-                len(k.tkBindNamesInverseDict.get(shortcut,'')) == 1 or
+                len(k.guiBindNamesInverseDict.get(shortcut,'')) == 1 or
                 # A hack: allow Return to be bound to command.
                 shortcut == 'Tab'
             )
@@ -3854,7 +3772,7 @@ class keyHandlerClass:
             assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
     #@-node:ekr.20061031131434.183:test_isPlainKey
     #@-node:ekr.20061031131434.182:isPlainKey & test
-    #@+node:ekr.20061031131434.184:shortcutFromSetting (not clear what to do)
+    #@+node:ekr.20061031131434.184:shortcutFromSetting (uses k.guiBindNamesDict)
     def shortcutFromSetting (self,setting):
         
         k = self
@@ -3904,7 +3822,7 @@ class keyHandlerClass:
                 return None
         
         if len(last) == 1:
-            last2 = k.tkBindNamesDict.get(last) # Fix new bug introduced in 4.4b2.
+            last2 = k.guiBindNamesDict.get(last) # Fix new bug introduced in 4.4b2.
             # g.trace(last,last2)
             if last2:
                 last = last2 ; shift = False # Ignore the shift state for these special chars.
@@ -3921,7 +3839,7 @@ class keyHandlerClass:
         else:
             # Translate from a made-up (or lowercase) name to 'official' Tk binding name.
             # This is a *one-way* translation, done only here.
-            d = self.settingsNameDict
+            d = k.settingsNameDict
             last = d.get(last.lower(),last)
         #@-node:ekr.20061031131434.188:<< compute the last field >>
         #@nl
@@ -3944,7 +3862,7 @@ class keyHandlerClass:
         
     canonicalizeShortcut = shortcutFromSetting # For compatibility.
     strokeFromSetting    = shortcutFromSetting
-    #@-node:ekr.20061031131434.184:shortcutFromSetting (not clear what to do)
+    #@-node:ekr.20061031131434.184:shortcutFromSetting (uses k.guiBindNamesDict)
     #@+node:ekr.20061031131434.190:k.tkbindingFromStroke
     def tkbindingFromStroke (self,stroke):
         
@@ -3989,7 +3907,7 @@ class keyHandlerClass:
                     else:
                         s = prev + last.upper()
         else:
-            last = k.tkBindNamesInverseDict.get(last,last)
+            last = k.guiBindNamesInverseDict.get(last,last)
             if fields and fields[:-1]:
                 s = '%s+%s' % ('+'.join(fields[:-1]),last)
             else:
@@ -4187,12 +4105,9 @@ class keyHandlerClass:
             elif stroke == '<Key>' and (keysym.isdigit() or keysym == u'-'):
                 k.updateLabel(event)
             elif stroke == '<Key>' and keysym in (
-                gui.keysym('Alt_L'),
-                gui.keysym('Alt_R'),
-                gui.keysym('Shift_L'),
-                gui.keysym('Shift_R'),
-                gui.keysym('Control_L'),
-                gui.keysym('Control_R'),
+                'Alt_L','Alt_R',
+                'Control_L','Control_R',
+                'Shift_L','Shift_R',
             ):
                  # g.trace('stroke',k.stroke,'keysym',keysym)
                  k.updateLabel(event)
@@ -4210,7 +4125,7 @@ class keyHandlerClass:
                 if 0: # Not ready yet.
                     # This takes us to macro state.
                     # For example Control-u Control-x ( will execute the last macro and begin editing of it.
-                    if stroke == gui.keysym('<Control-x>'):
+                    if stroke == '<Control-x>':
                         k.setState('uC',2,k.universalDispatcher)
                         return k.doControlU(event,stroke)
         elif state == 2:
@@ -4257,7 +4172,7 @@ class keyHandlerClass:
     
         k.setLabelBlue('Control-u %s' % g.stripBrackets(stroke))
     
-        if keysym == gui.keysym('parenleft'): # Execute the macro.
+        if keysym == 'parenleft': # Execute the macro.
     
             k.clearState()
             k.resetLabel()
