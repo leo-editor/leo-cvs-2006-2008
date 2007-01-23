@@ -21,7 +21,7 @@ first child of the target node.
 #@-node:tbrown.20070117104409.1:<< docstring >>
 #@nl
 
-__version__ = '0.3'
+__version__ = '0.4'
 #@<< version history >>
 #@+node:tbrown.20070117104409.6:<< version history >>
 #@+at
@@ -32,7 +32,8 @@ __version__ = '0.3'
 # - Use checkMoveWithParentWithWarning.
 # - Support undo.
 # - Clearer command names.
-# 0.3 EKR: Varioius small mods suggested by Terry.
+# 0.3 EKR: Various small mods suggested by Terry.
+# 0.4 EKR: Added checkMove method.
 #@-at
 #@nonl
 #@-node:tbrown.20070117104409.6:<< version history >>
@@ -145,7 +146,7 @@ class quickMoveButton:
                 g.es('Target no longer exists: %s' % self.targetHeadString,color='red')
                 return
        
-        if p.v.t == p2.v.t or not c.checkMoveWithParentWithWarning (p,p2,warningFlag=False):
+        if p.v.t == p2.v.t or not self.checkMove(p,p2):
             g.es('Invalid move: %s' % (self.targetHeadString),color='red')
             return
     
@@ -161,6 +162,20 @@ class quickMoveButton:
         finally:
             c.endUpdate()
     #@-node:ekr.20070117121326.1:moveCurrentNodeToTarget
+    #@+node:ekr.20070123061606:checkMove
+    def checkMove (self,p,p2):
+        
+        c = self.c
+                
+        for z in p2.parents_iter():
+            if z == p:
+                return False
+                
+        return (
+            c.checkMoveWithParentWithWarning (p,p2,warningFlag=False) and
+            c.checkMoveWithParentWithWarning (p2,p,warningFlag=False)
+        )
+    #@-node:ekr.20070123061606:checkMove
     #@-others
 #@-node:tbrown.20070117104409.5:class quickMoveButton
 #@-others
