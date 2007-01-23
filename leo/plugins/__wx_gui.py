@@ -715,7 +715,7 @@ class wxFindTab (leoFind.findTab):
     #@+node:ekr.20061212100034.2:initGui
     def initGui (self):
         
-        g.trace('wxFindTab')
+        # g.trace('wxFindTab')
     
         self.svarDict = {} # Keys are ivar names, values are svar objects.
         
@@ -1034,6 +1034,65 @@ class wxKeyHandlerClass (leoKeys.keyHandlerClass):
         # Init the base class.
         leoKeys.keyHandlerClass.__init__(self,c,useGlobalKillbuffer,useGlobalRegisters)
     #@-node:ekr.20061116074003.1:ctor (wxKey)
+    #@+node:ekr.20070123101021:wx.defineSpecialKeys
+    def defineSpecialKeys (self):
+        
+        k = self
+        k.guiBindNamesDict = {}
+        k.guiBindNamesInverseDict = {}
+    
+        # No translation.
+        for s in k.tkNamesList:
+            k.guiBindNamesDict[s] = s
+            
+        # Create the inverse dict.
+        for key in k.guiBindNamesDict.keys():
+            k.guiBindNamesInverseDict [k.guiBindNamesDict.get(key)] = key
+            
+            
+        # Important: only the inverse dict is actually used in the new key binding scheme.
+    
+        # wxWidgets may return the *values* of this dict in event.keysym fields.
+        # Leo will warn if it gets a event whose keysym not in values of this table.
+        
+        # wxWidgets Keypresses are represented by an enumerated type, wxKeyCode.
+        # The possible values are the ASCII character codes, plus the following:
+        
+        # k.guiBindNamesDict = {
+            # "!" : "exclam",
+            # '"' : "quotedbl",
+            # "#" : "numbersign",
+            # "$" : "dollar",
+            # "%" : "percent",
+            # "&" : "ampersand",
+            # "'" : "quoteright",
+            # "(" : "parenleft",
+            # ")" : "parenright",
+            # "*" : "asterisk",
+            # "+" : "plus",
+            # "," : "comma",
+            # "-" : "minus",
+            # "." : "period",
+            # "/" : "slash",
+            # ":" : "colon",
+            # ";" : "semicolon",
+            # "<" : "less",
+            # "=" : "equal",
+            # ">" : "greater",
+            # "?" : "question",
+            # "@" : "at",
+            # "[" : "bracketleft",
+            # "\\": "backslash",
+            # "]" : "bracketright",
+            # "^" : "asciicircum",
+            # "_" : "underscore",
+            # "`" : "quoteleft",
+            # "{" : "braceleft",
+            # "|" : "bar",
+            # "}" : "braceright",
+            # "~" : "asciitilde",
+        # }
+    #@-node:ekr.20070123101021:wx.defineSpecialKeys
     #@+node:ekr.20061116080942:finishCreate (wxKey)
     def finishCreate (self):
         
@@ -1426,7 +1485,7 @@ class wxGui(leoGui.leoGui):
         
         '''Create a wxWidgets find tab in the indicated frame.'''
         
-        g.trace(self.findTabHandler)
+        # g.trace(self.findTabHandler)
         
         if not self.findTabHandler:
             self.findTabHandler = wxFindTab(c,parentFrame)
@@ -1468,9 +1527,9 @@ class wxGui(leoGui.leoGui):
             cb.Flush()
             cb.Close()
         
-    def getTextFromClibboard (self):
+    def getTextFromClipboard (self):
         
-        return None
+        return ''
         
         # This code doesn't work yet.
         
@@ -1483,6 +1542,14 @@ class wxGui(leoGui.leoGui):
         return data
     #@nonl
     #@-node:edream.110203113231.320:Clipboard
+    #@+node:ekr.20070123101505:Constants
+    # g.es calls gui.color to do the translation,
+    # so most code in Leo's core can simply use Tk color names.
+    
+    def color (self,color):
+        '''Return the gui-specific color corresponding to the Tk color name.'''
+        return color # Do not call oops: this method is essential for the config classes.
+    #@-node:ekr.20070123101505:Constants
     #@+node:edream.110203113231.339:Dialog
     #@+node:edream.111403151611:bringToFront
     def bringToFront (self,window):
@@ -1516,6 +1583,7 @@ class wxGui(leoGui.leoGui):
         return w.event_generate(kind,*args,**keys)
     #@+node:ekr.20061117204829:wxKeyDict
     wxKeyDict = {
+        # Keys are wxWidgets key codes.  Values are the standard (Tk) names.
         wx.WXK_DECIMAL  : '.',
         wx.WXK_BACK     : '\b', # 'BackSpace',
         wx.WXK_TAB      : '\t', # 'Tab',
@@ -1677,6 +1745,9 @@ class wxGui(leoGui.leoGui):
         gui = self
         
         keycode = event.GetKeyCode()
+        
+        # g.trace(repr(keycode),kind)
+    
         if keycode in (wx.WXK_SHIFT,wx.WXK_ALT,wx.WXK_CONTROL):
             return ''
     
@@ -1706,16 +1777,17 @@ class wxGui(leoGui.leoGui):
                     g.es('No translation for', repr(i))
                     char = repr(i)
        
-        # Adjust the case.
-        if char.isalpha():
-            if shift: # Case is also important for ctrl keys. # or alt or cmd or ctrl or meta:
-                char = char.upper()
+        # Adjust the case, but only for plain ascii characters characters.
+        if len(char) == 1:
+            if char.isalpha():
+                if shift: # Case is also important for ctrl keys. # or alt or cmd or ctrl or meta:
+                    char = char.upper()
+                else:
+                    char = char.lower()
+            elif shift:
+                char = self.getShiftChar(char)
             else:
-                char = char.lower()
-        elif shift:
-            char = self.getShiftChar(char)
-        else:
-            char = self.getUnshiftChar(char)
+                char = self.getUnshiftChar(char)
     
         # Create a value compatible with Leo's core.
         val = (
@@ -1727,7 +1799,7 @@ class wxGui(leoGui.leoGui):
             (char or '')
         )
     
-        # if kind == 'char': g.trace(repr(keycode),repr(val)) # Tracing just val can crash!
+        # if kind == 'char':  g.trace(repr(keycode),repr(val)) # Tracing just val can crash!
         return val
     #@-node:ekr.20061117203128:keysymHelper
     #@+node:ekr.20061118055443:getShiftChar
@@ -1801,14 +1873,13 @@ class wxGui(leoGui.leoGui):
         return top
     #@nonl
     #@-node:edream.110203113231.336:get_focus
-    #@+node:edream.110203113231.337:set_focus
-    def set_focus(self,c,widget):
+    #@+node:edream.110203113231.337:set_focus (wxGui)
+    def set_focus(self,c,w):
         
         """Set the focus of the widget in the given commander if it needs to be changed."""
         
-        pass # wx code not ready yet.
-    #@nonl
-    #@-node:edream.110203113231.337:set_focus
+        c.frame.setFocus(w)
+    #@-node:edream.110203113231.337:set_focus (wxGui)
     #@-node:edream.110203113231.335:Focus (wxGui) (to do)
     #@+node:edream.110203113231.318:Font (wxGui) (to do)
     #@+node:edream.110203113231.319:getFontFromParams
@@ -2164,14 +2235,14 @@ class wxLeoBody (leoFrame.leoBody):
     def onKeyUp (self,event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_ALT:
-            g.trace('wxBody: alt')
+            # g.trace('wxBody: alt')
             event.Skip() # Do default processing.
         elif self.useWX:
             event.Skip()
         else:
             event.keyDownModifiers = self.keyDownModifiers
             event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
-            g.trace('wxBody',event.keysym)
+            # g.trace('wxBody',event.keysym)
             if event.keysym: # The key may have been a raw key.
                 self.c.k.masterKeyHandler(event,stroke=event.keysym)
     #@-node:ekr.20061116083454:wxBody.onKeyUp/Down
@@ -2522,13 +2593,15 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@-node:edream.111303135410:setTitle
     #@-node:edream.110203113231.378:Externally visible routines...
     #@+node:edream.111303100039:Gui-dependent commands (to do)
-    #@+node:ekr.20061211083200:setFocus
+    #@+node:ekr.20061211083200:setFocus (wxFrame)
     def setFocus (self,w):
-            
+    
+        # g.trace(w,g.app.gui.widget_name(w))
+         
         w.SetFocus()
         self.focusWidget = w
     #@nonl
-    #@-node:ekr.20061211083200:setFocus
+    #@-node:ekr.20061211083200:setFocus (wxFrame)
     #@+node:ekr.20061106070201:Minibuffer commands... (wxFrame)
     
     #@+node:ekr.20061106070201.1:contractPane
@@ -3151,7 +3224,7 @@ class wxLeoLog (leoFrame.leoLog):
     def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
     
         nb = self.nb
-        g.trace(tabName)
+        # g.trace(tabName)
         
         if createText:
             win = logFrame = wx.Panel(nb)
@@ -3498,7 +3571,7 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@nonl
     #@-node:edream.111303103141.4:destroy (not called ?)
     #@-node:ekr.20061106062514:Not called
-    #@+node:edream.111603104327:9 Routines with Tk names
+    #@+node:edream.111603104327:Menu methods (Tk names)
     #@+node:edream.111303111942.1:add_cascade
     def add_cascade (self,parent,label,menu,underline):
     
@@ -3597,8 +3670,8 @@ class wxLeoMenu (leoMenu.leoMenu):
         return wx.Menu()
     #@nonl
     #@-node:edream.111303110018:new_menu
-    #@-node:edream.111603104327:9 Routines with Tk names
-    #@+node:edream.111603112846:7 Routines with other names...
+    #@-node:edream.111603104327:Menu methods (Tk names)
+    #@+node:edream.111603112846:Menu methods (non-Tk names)
     #@+node:edream.111303103457.2:createMenuBar
     def createMenuBar(self,frame):
         
@@ -3751,7 +3824,7 @@ class wxLeoMenu (leoMenu.leoMenu):
             g.trace("no item",name,label)
     #@nonl
     #@-node:edream.111303163727.3:setMenuLabel
-    #@-node:edream.111603112846:7 Routines with other names...
+    #@-node:edream.111603112846:Menu methods (non-Tk names)
     #@-node:edream.111303103457:wx menu bindings
     #@-others
 #@nonl
@@ -4254,12 +4327,12 @@ class wxLeoTree (leoFrame.leoTree):
         else:
             event.keyDownModifiers = self.keyDownModifiers
             event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
-            g.trace('wxTree',event.keysym,self.keyDownModifiers)
+            # g.trace('wxTree',event.keysym,self.keyDownModifiers)
             if event.keysym: # The key may have been a raw key.
                 if event.keysym.isalnum() and len(event.keysym) == 1:
                     event.actualEvent.Skip(True) # Let the widget handle it.
                 else:
-                    g.trace(event.keysym)
+                    # g.trace(event.keysym)
                     self.c.k.masterKeyHandler(event,stroke=event.keysym)
                     event.actualEvent.Skip(False) # Does not work.
     #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
@@ -4490,22 +4563,25 @@ class wxLeoTree (leoFrame.leoTree):
         else:
             event.keyDownModifiers = self.keyDownModifiers
             event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
-            g.trace('wxTree',event.keysym,self.keyDownModifiers)
+            # g.trace('wxTree',event.keysym,self.keyDownModifiers)
             if event.keysym: # The key may have been a raw key.
                 if event.keysym.isalnum() and len(event.keysym) == 1:
                     event.actualEvent.Skip(True) # Let the widget handle it.
                 else:
-                    g.trace(event.keysym)
+                    # g.trace(event.keysym)
                     self.c.k.masterKeyHandler(event,stroke=event.keysym)
                     event.actualEvent.Skip(False) # Does not work.
     #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
     #@-node:edream.110203113231.278:Event handlers (wxTree)
-    #@+node:edream.111403093559:Focus
-    def focus_get(self):
+    #@+node:edream.111403093559:Focus (wxTree)
+    def focus_get (self):
         
         return self.FindFocus()
-    #@nonl
-    #@-node:edream.111403093559:Focus
+        
+    def SetFocus (self):
+        
+        self.treeCtrl.SetFocus()
+    #@-node:edream.111403093559:Focus (wxTree)
     #@+node:ekr.20050719121701:Selection
     #@+node:ekr.20061115172306:tree.select
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
@@ -4676,6 +4752,66 @@ class wxLeoTree (leoFrame.leoTree):
             id = tree.GetNextVisible(id)
     #@-node:ekr.20050719121701.3:editLabel
     #@-node:ekr.20050719121701:Selection
+    #@+node:ekr.20070123145604:tree.set...LabelState
+    def setEditLabelState (self,p,selectAll=False):     pass
+    def setSelectedLabelState (self,p):                 pass
+    def setUnselectedLabelState (self,p):               pass
+    
+    # For compatibility.
+    setNormalLabelState = setEditLabelState 
+    #@+node:ekr.20070123145604.4:setDisabledHeadlineColors
+    def setDisabledHeadlineColors (self,p):
+    
+        c = self.c ; w = c.edit_widget(p)
+    
+        if self.trace and self.verbose:
+            if not self.redrawing:
+                g.trace("%10s %d %s" % ("disabled",id(w),p.headString()))
+                # import traceback ; traceback.print_stack(limit=6)
+    
+        fg = c.config.getColor("headline_text_selected_foreground_color") or 'black'
+        bg = c.config.getColor("headline_text_selected_background_color") or 'grey80'
+        
+        selfg = c.config.getColor("headline_text_editing_selection_foreground_color")
+        selbg = c.config.getColor("headline_text_editing_selection_background_color")
+    
+        try:
+            w.configure(state="disabled",highlightthickness=0,fg=fg,bg=bg,
+                selectbackground=bg,selectforeground=fg,highlightbackground=bg)
+        except:
+            g.es_exception()
+    #@-node:ekr.20070123145604.4:setDisabledHeadlineColors
+    #@+node:ekr.20070123145604.5:setEditHeadlineColors
+    def setEditHeadlineColors (self,p):
+    
+        c = self.c ; w = c.edit_widget(p)
+        
+        fg    = c.config.getColor("headline_text_editing_foreground_color") or 'black'
+        bg    = c.config.getColor("headline_text_editing_background_color") or 'white'
+        selfg = c.config.getColor("headline_text_editing_selection_foreground_color") or 'white'
+        selbg = c.config.getColor("headline_text_editing_selection_background_color") or 'black'
+        
+        # try: # Use system defaults for selection foreground/background
+            # w.configure(state="normal",highlightthickness=1,
+            # fg=fg,bg=bg,selectforeground=selfg,selectbackground=selbg)
+        # except:
+            # g.es_exception()
+    #@-node:ekr.20070123145604.5:setEditHeadlineColors
+    #@+node:ekr.20070123145604.6:setUnselectedHeadlineColors
+    def setUnselectedHeadlineColors (self,p):
+        
+        c = self.c ; w = c.edit_widget(p)
+        
+        fg = c.config.getColor("headline_text_unselected_foreground_color") or 'black'
+        bg = c.config.getColor("headline_text_unselected_background_color") or 'white'
+        
+        # try:
+            # w.configure(state="disabled",highlightthickness=0,fg=fg,bg=bg,
+                # selectbackground=bg,selectforeground=fg,highlightbackground=bg)
+        # except:
+            # g.es_exception()
+    #@-node:ekr.20070123145604.6:setUnselectedHeadlineColors
+    #@-node:ekr.20070123145604:tree.set...LabelState
     #@+node:ekr.20050719121701.19:tree.expandAllAncestors
     def expandAllAncestors (self,p):
         
@@ -4745,7 +4881,7 @@ class wxLeoTextWidget (wx.TextCtrl):
         elif index == 'end':
             return w.GetLastPosition()
         else:
-            g.trace(index)
+            # g.trace(index)
             s = wx.TextCtrl.GetValue(w)
             row,col = index.split('.')
             row,col = int(row),int(col)
