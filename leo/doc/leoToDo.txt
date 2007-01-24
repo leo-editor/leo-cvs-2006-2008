@@ -41,8 +41,6 @@ TclError: bad window path name ".14557752.18889184.18889584.21763816.21764336"
     y_root: ??
 
 #@-node:ekr.20070124091018:Recent crash
-#@+node:ekr.20070123085428:Down arrow doesn't work with long lines
-#@-node:ekr.20070123085428:Down arrow doesn't work with long lines
 #@+node:ekr.20061130084909:Improve What's special whitepaper
 @nocolor
 

@@ -1366,7 +1366,7 @@ def masterKeyHandler (self,event,stroke=None):
     '''This is the handler for almost all key bindings.'''
 
     k = self ; c = k.c ; gui = g.app.gui
-    if event: event = g.app.gui.leoEvent(event,c)
+    if event: event = g.app.gui.leoKeyEvent(event,c)
     
     # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char))
     
@@ -5951,14 +5951,14 @@ def updateTab (self,p,w):
         w.insert(i,' ' * n)
 #@-node:ekr.20051026092433:updateTab (passed)
 #@-node:ekr.20051125080855:selfInsertCommand & helpers (passed)
-#@+node:ekr.20061112152012.2:class leoEvent (tkGui)
-class leoEvent:
+#@+node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
+class leoKeyEvent:
     
     '''A gui-independent wrapper for gui events.'''
     
     def __init__ (self,event,c):
         
-        # g.trace('leoEvent(tkGui)')
+        # g.trace('leoKeyEvent(tkGui)')
         self.actualEvent = event
         self.c      = c # Required to access c.k tables.
         self.char   = hasattr(event,'char') and event.char or ''
@@ -5973,7 +5973,7 @@ class leoEvent:
         
         self.widget = self.w
 #@nonl
-#@-node:ekr.20061112152012.2:class leoEvent (tkGui)
+#@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
 #@+node:ekr.20070123085931: tkKeys.defineSpecialKeys
 def defineSpecialKeys (self):
     
@@ -6037,7 +6037,7 @@ def masterKeyHandler (self,event,stroke=None):
     '''This is the handler for almost all key bindings.'''
 
     k = self ; c = k.c ; gui = g.app.gui
-    if event: event = g.app.gui.leoEvent(event,c)
+    if event: event = g.app.gui.leoKeyEvent(event,c)
     
     # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char))
     
@@ -13841,7 +13841,7 @@ def masterKeyHandler (self,event,stroke=None):
     '''This is the handler for almost all key bindings.'''
 
     k = self ; c = k.c ; gui = g.app.gui
-    if event: event = g.app.gui.leoEvent(event,c)
+    if event: event = g.app.gui.leoKeyEvent(event,c)
     
     # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char))
     
@@ -14013,14 +14013,14 @@ def handleMiniBindings (self,event,state,stroke):
     return False
 #@-node:ekr.20061031131434.152:handleMiniBindings
 #@-node:ekr.20061031131434.146:masterKeyHandler
-#@+node:ekr.20061112152012.2:class leoEvent (tkGui)
-class leoEvent:
+#@+node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
+class leoKeyEvent:
     
     '''A gui-independent wrapper for gui events.'''
     
     def __init__ (self,event,c):
         
-        # g.trace('leoEvent(tkGui)')
+        # g.trace('leoKeyEvent(tkGui)')
         self.actualEvent = event
         self.c      = c # Required to access c.k tables.
         self.char   = hasattr(event,'char') and event.char or ''
@@ -14035,7 +14035,7 @@ class leoEvent:
         
         self.widget = self.w
 #@nonl
-#@-node:ekr.20061112152012.2:class leoEvent (tkGui)
+#@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
 #@-node:ekr.20061116081616:(Key bindings for wx plugin)
 #@+node:ekr.20061117073036:Fixed big performance bug: the colorizer was taking too long to compute indices
 #@+node:ekr.20031218072017.1609:index & tag (leoColor)
@@ -14063,14 +14063,14 @@ def rowColToGuiIndex (self,s,row,col):
 #@+node:ekr.20061117152638:(Key handling for wxGui plugin)
 # Had to make c.widget_name and gui.widget_name work to make key handling work.
 #@nonl
-#@+node:ekr.20061112152012.2:class leoEvent (tkGui)
-class leoEvent:
+#@+node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
+class leoKeyEvent:
     
     '''A gui-independent wrapper for gui events.'''
     
     def __init__ (self,event,c):
         
-        # g.trace('leoEvent(tkGui)')
+        # g.trace('leoKeyEvent(tkGui)')
         self.actualEvent = event
         self.c      = c # Required to access c.k tables.
         self.char   = hasattr(event,'char') and event.char or ''
@@ -14085,7 +14085,7 @@ class leoEvent:
         
         self.widget = self.w
 #@nonl
-#@-node:ekr.20061112152012.2:class leoEvent (tkGui)
+#@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
 #@+node:ekr.20051125080855:selfInsertCommand & helpers (passed)
 def selfInsertCommand(self,event,action='insert'):
     
@@ -14374,7 +14374,7 @@ def masterKeyHandler (self,event,stroke=None):
     '''This is the handler for almost all key bindings.'''
 
     k = self ; c = k.c ; gui = g.app.gui
-    if event: event = g.app.gui.leoEvent(event,c)
+    if event: event = g.app.gui.leoKeyEvent(event,c)
     
     # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char))
     
