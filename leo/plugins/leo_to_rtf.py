@@ -48,16 +48,16 @@ import ConfigParser
 __version__ = "1.0"
 
 #@+others
-#@+node:danr7.20060902083957.2:createExportMenu
+#@+node:danr7.20060902083957.2:createExportMenu (leo_to_rtf)
 def createExportMenu (tag,keywords):
 
     c = keywords.get("c")
 
-    # Get reference to current File > Export... menu
-    exportMenu = c.frame.menu.getMenu('Export...')
-    # Insert leoToRTF in #3 position of the File > Export menu.  
-    exportMenu.insert(3,'command',label='Outline to Microsoft RTF',command= lambda c = c : export_rtf(c))
-#@-node:danr7.20060902083957.2:createExportMenu
+    # Insert leoToRTF in #3 position of the File > Export menu.
+    c.frame.menu.insert('Export...',3,
+        label = 'Outline to Microsoft RTF',
+        command = lambda c = c: export_rtf(c))
+#@-node:danr7.20060902083957.2:createExportMenu (leo_to_rtf)
 #@+node:danr7.20060902083957.3:export_rtf
 def export_rtf( c ):
 

@@ -33,8 +33,8 @@ you may need to modify it depending on your system.
 # 0.91 - Got initial headline export code working. Resolved bug in INI file 
 # checking
 # 0.90 - Created initial plug-in framework
+# 1.1 ekr: Added init method.
 #@-at
-#@nonl
 #@-node:danr7.20060902215215.3:<< version history >>
 #@nl
 #@<< imports >>
@@ -47,19 +47,28 @@ import tkMessageBox
 #@-node:danr7.20060902215215.4:<< imports >>
 #@nl
 
-__version__ = "1.0"
+__version__ = "1.1"
 
 #@+others
-#@+node:danr7.20060902215215.5:createExportMenu
+#@+node:ekr.20070124112251:init
+def init ():
+
+    if 1: # Ok for unit testing: creates menu.
+        leoPlugins.registerHandler("create-optional-menus",createExportMenu)
+        g.plugin_signon(__name__)
+    return True
+#@nonl
+#@-node:ekr.20070124112251:init
+#@+node:danr7.20060902215215.5:createExportMenu (leo_to_html)
 def createExportMenu (tag,keywords):
 
     c = keywords.get("c")
 
-    # Get reference to current File > Export... menu
-    exportMenu = c.frame.menu.getMenu('Export...')
-    # Insert leoToRTF in #3 position of the File > Export menu.  
-    exportMenu.insert(3,'command',label='Outline to HTML',command= lambda c = c : export_html(c))
-#@-node:danr7.20060902215215.5:createExportMenu
+    # Insert leoToRTF in #3 position of the File > Export menu.
+    c.frame.menu.insert('Export...',3,
+        label = 'Outline to HTML',
+        command = lambda c = c: export_html(c))
+#@-node:danr7.20060902215215.5:createExportMenu (leo_to_html)
 #@+node:danr7.20060902215215.6:export_html
 def export_html( c ):
     # Show messagebox to ask if headline output or bullet list
@@ -141,10 +150,6 @@ def export_html( c ):
 #@nonl
 #@-node:danr7.20060902215215.6:export_html
 #@-others
-
-if 1: # Ok for unit testing: creates menu.
-    leoPlugins.registerHandler("create-optional-menus",createExportMenu)
-    g.plugin_signon(__name__)
 #@nonl
 #@-node:danr7.20060902215215.1:@thin leo_to_html.py
 #@-leo

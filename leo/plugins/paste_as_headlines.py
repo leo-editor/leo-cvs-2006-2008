@@ -49,16 +49,24 @@ def createPasteAsHeadlinesMenu (tag,keywords):
 
     c = keywords.get("c")
 
-    # Get reference to current Edit menu
-    exportMenu = c.frame.menu.getMenu('Edit')
     # Use code to find index number of menu shortcut
     index_label = 'Pa&ste as Headlines'
+
     # Find index position of ampersand -- index is how shortcut is defined
     amp_index = index_label.find("&")
+
     # Eliminate ampersand from menu item text
     index_label = index_label.replace("&","")
-    # Add 'Word Count...' to the bottom of the Edit menu.  
-    exportMenu.insert(6,'command',label=index_label,underline=amp_index,command= lambda c = c : paste_as_headlines(c))
+
+    # Add 'Word Count...' to the bottom of the Edit menu.
+    c.frame.menu.insert('Edit',6,
+        label = index_label,
+        underline = amp_index,
+        command = lambda c = c: paste_as_headlines(c))
+
+    if 0: # old code
+        exportMenu = c.frame.menu.getMenu('Edit')
+        exportMenu.insert(6,'command',label=index_label,underline=amp_index,command=lambda c=c: paste_as_headlines(c))
 #@-node:danr7.20060912105041.5:createPasteAsHeadlinesMenu
 #@+node:danr7.20060912105041.6:paste_as_headlines
 def paste_as_headlines(c):
