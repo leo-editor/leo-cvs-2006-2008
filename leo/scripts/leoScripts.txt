@@ -764,6 +764,22 @@ bill p
 #@nonl
 #@-node:<< about this script >>
 #@-node:headfind
+#@+node:Find entries in k.guiBindNamesDict
+# A script to find uses of the names defined in k.guiBindNamesDict in Leo's core.
+
+k = c.k ; d = k.guiBindNamesDict
+keys = [z for z in d.values() if z not in k.tkNamesList]
+keys.sort()
+h = ' tkKeys.defineSpecialKeys'
+for key in keys:
+    for p in c.allNodes_iter():
+        if p.headString() != h and p.headString().find('keywords') == -1:
+            s = p.bodyString()
+            for z in ('"%s"' % (key), "'%s'" % (key)):
+                if s.find(z) != -1:
+                    print '%20s %s' % (z,p.headString())
+#@nonl
+#@-node:Find entries in k.guiBindNamesDict
 #@-node:Find scripts
 #@+node:Fun...
 #@+node:Drawing experiments
