@@ -141,6 +141,16 @@ class leoTkinterMenu (leoMenu.leoMenu):
     
         return menu.destroy()
     #@-node:ekr.20031218072017.4111:destroy
+    #@+node:ekr.20070124150514:insert
+    def insert (self,menuName,position,label,command,underline=None):
+        
+        menu = self.getMenu(menuName)
+    
+        if underline is None:
+            menu.insert(position,'command',label=label,command=command)
+        else:
+            menu.insert(position,'command',label=label,command=command,underline=underline)
+    #@-node:ekr.20070124150514:insert
     #@+node:ekr.20031218072017.4112:insert_cascade
     def insert_cascade (self,parent,index,label,menu,underline):
         
