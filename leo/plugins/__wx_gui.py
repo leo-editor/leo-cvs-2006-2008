@@ -2133,12 +2133,6 @@ class wxLeoBody (leoFrame.leoBody):
     #@-node:ekr.20061111183138:wxBody.setEditorColors
     #@-node:edream.110203113231.540:Birth & death (wxLeoBody)
     #@+node:edream.111303204836:Tk wrappers (wxBody)
-    #@+node:edream.110203113231.543:Bounding box...
-    def bbox (self,index):
-        
-        return self.bodyCtrl.GetClientSizeTuple()  
-    #@nonl
-    #@-node:edream.110203113231.543:Bounding box...
     #@+node:edream.111303204517:Color tags (wxBody)
     #@+node:edream.111303205611:wxBody.tag_add
     def tag_add (self,tagName,index1,index2):
@@ -4902,6 +4896,8 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@-node:ekr.20061117150523:w.rowColToGuiIndex
     #@-node:ekr.20061105125717:Index conversion
     #@+node:ekr.20061115122034.2:Wrapper methods
+    #@+node:ekr.20070124101250:bbox
+    #@-node:ekr.20070124101250:bbox
     #@+node:ekr.20061116070156:bind
     def bind (self,kind,*args,**keys):
         

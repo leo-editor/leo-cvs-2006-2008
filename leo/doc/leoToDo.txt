@@ -2,6 +2,45 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070124091018:Recent crash
+Error: 1
+TclError Exception in Tk callback
+  Function: <bound method Balloon._destroy of <_Pmw.Pmw_1_2.lib.PmwBalloon.Balloon instance at 0x014C1850>> (type: <type 'instancemethod'>)
+  Args: (<Tkinter.Event instance at 0x0542C788>,)
+  Event type: DestroyNotify (type num: 17)
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBalloon.py", line 283, in _destroy
+    self.withdraw()
+  File "<string>", line 1, in withdraw
+    None
+  File "C:\Python24\lib\lib-tk\Tkinter.py", line 1541, in wm_withdraw
+    return self.tk.call('wm', 'withdraw', self._w)
+TclError: bad window path name ".14557752.18889184.18889584.21763816.21764336"
+
+================================================
+  Event contents:
+    char: ??
+    delta: 0
+    height: ??
+    keycode: ??
+    keysym: ??
+    keysym_num: ??
+    num: ??
+    send_event: False
+    serial: 53150
+    state: ??
+    time: ??
+    type: 17
+    widget: .14557752.18889184.18889584.21763816
+    width: ??
+    x: ??
+    x_root: ??
+    y: ??
+    y_root: ??
+
+#@-node:ekr.20070124091018:Recent crash
 #@+node:ekr.20070123085428:Down arrow doesn't work with long lines
 #@-node:ekr.20070123085428:Down arrow doesn't work with long lines
 #@+node:ekr.20061130084909:Improve What's special whitepaper
@@ -436,42 +475,32 @@ def splitLine (self,event):
     # w.insert('insert','\n')
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.77:splitLine (test)
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper
 def moveUpOrDownHelper (self,event,direction,extend):
 
     c = self.c ; w = self.editWidget(event)
     if not w: return
-
-    # Make the insertion cursor visible so bbox won't return an empty list.
-    w.seeInsertPoint()
     
-    # Compute the new spot.
     ins = w.getInsertPoint()
     s = w.getAllText()
-    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    w.seeInsertPoint()
     
-    # Find the coordinates of the cursor and set the new height.
-    # There may be roundoff errors because character postions may not match exactly.
-    x, y, junk, textH = w.bbox('insert')
-    bodyW, bodyH = w.winfo_width(), w.winfo_height()
-    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
-
-    # Make sure y is within text boundaries.
-    if direction == "up":
-        if y <= textH:  w.yview("scroll",-1,"units")
-        else:           y = max(y-textH,0)
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,i+j+1)
     else:
-        if y >= maxy:   w.yview("scroll",1,"units")
-        else:           y = min(y+textH,maxy)
+        i2,j2 = g.getLine(s,i-1)
 
-    # Position the cursor on the proper side of the characters.
-    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
-    if x > newx + width / 2: x = newx + width + 1
-    
-    # Make the move
-    spot = w.xyToPythonIndex(x,y)
+    # The spot is the start of the line plus the column index.
+    col2 = min(col,j2)
+    spot = i2 + col2
+    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+
     self.extendHelper(w,extend,spot,upOrDown=True)
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@nonl
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper
 #@+node:ekr.20051218133207.1:forwardParagraphHelper (passed)
 def forwardParagraphHelper (self,event,extend):
 
@@ -1197,42 +1226,32 @@ I did not get this when moving the cursor over the visible characters.
 
 @color
 #@nonl
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper
 def moveUpOrDownHelper (self,event,direction,extend):
 
     c = self.c ; w = self.editWidget(event)
     if not w: return
-
-    # Make the insertion cursor visible so bbox won't return an empty list.
-    w.seeInsertPoint()
     
-    # Compute the new spot.
     ins = w.getInsertPoint()
     s = w.getAllText()
-    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    w.seeInsertPoint()
     
-    # Find the coordinates of the cursor and set the new height.
-    # There may be roundoff errors because character postions may not match exactly.
-    x, y, junk, textH = w.bbox('insert')
-    bodyW, bodyH = w.winfo_width(), w.winfo_height()
-    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
-
-    # Make sure y is within text boundaries.
-    if direction == "up":
-        if y <= textH:  w.yview("scroll",-1,"units")
-        else:           y = max(y-textH,0)
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,i+j+1)
     else:
-        if y >= maxy:   w.yview("scroll",1,"units")
-        else:           y = min(y+textH,maxy)
+        i2,j2 = g.getLine(s,i-1)
 
-    # Position the cursor on the proper side of the characters.
-    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
-    if x > newx + width / 2: x = newx + width + 1
-    
-    # Make the move
-    spot = w.xyToPythonIndex(x,y)
+    # The spot is the start of the line plus the column index.
+    col2 = min(col,j2)
+    spot = i2 + col2
+    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+
     self.extendHelper(w,extend,spot,upOrDown=True)
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@nonl
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper
 #@-node:ekr.20061127171128:Fix wiki markup bug (test)
 #@+node:ekr.20061105134302:Crasher
 Typed '(' in canvas pane.

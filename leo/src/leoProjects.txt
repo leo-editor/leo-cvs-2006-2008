@@ -5116,6 +5116,1176 @@ def onKey (self,event):
 #@-node:ekr.20070122103505.4:tkinterAskOkCancelString.onKey
 #@-node:ekr.20070122103505:class tkinterAskOkCancelString
 #@-node:ekr.20070122100746:Added \runAskOkCancelStringDialog
+#@+node:ekr.20070123160127:Use plain ascii characters instead of special Tk symbols
+# This is another step toward making Leo's core gui-independent
+#@nonl
+#@+node:ekr.20070124070019:To do: define special_keys in base class
+#@-node:ekr.20070124070019:To do: define special_keys in base class
+#@+node:ekr.20070123201540:Found: .bind
+#@+node:ekr.20051020120306.4:bindHotKey
+def bindHotKey (self,widget):
+    
+    if self.hotKey:
+        for key in (self.hotKey.lower(),self.hotKey.upper()):
+            widget.bind("<Alt-%s>" % key,self.buttonCallback)
+#@-node:ekr.20051020120306.4:bindHotKey
+#@+node:ekr.20061031131434.103:makeMasterGuiBinding
+def makeMasterGuiBinding (self,stroke,w=None):
+    
+    '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
+    
+    k = self ; c = k.c ; f = c.frame
+   
+    bindStroke = k.tkbindingFromStroke(stroke)
+    # g.trace('stroke',stroke,'bindStroke',bindStroke)
+    
+    if w:
+        widgets = [w]
+    else:
+        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
+        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
+        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+        widgets=(c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
+    
+    # This is the only real key callback.
+    def masterBindKeyCallback (event,k=k,stroke=stroke):
+        # g.trace(stroke)
+        return k.masterKeyHandler(event,stroke=stroke)
+
+    for w in widgets:
+        if not w: continue
+        # Make the binding only if no binding for the stroke exists in the widget.
+        aList = k.masterGuiBindingsDict.get(bindStroke,[])
+        if w not in aList:
+            aList.append(w)
+            k.masterGuiBindingsDict [bindStroke] = aList
+            try:
+                w.bind(bindStroke,masterBindKeyCallback)
+                # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
+            except Exception:
+                if self.trace_bind_key_exceptions:
+                    g.es_exception()
+                g.es_print('exception binding %s to %s' % (
+                    bindStroke, c.widget_name(w)), color = 'blue')
+                if g.app.unitTesting: raise
+#@-node:ekr.20061031131434.103:makeMasterGuiBinding
+#@+node:ekr.20031218072017.3113:printBindings
+def print_bindings (name,window):
+
+    bindings = window.bind()
+    print
+    print "Bindings for", name
+    for b in bindings:
+        print b
+#@-node:ekr.20031218072017.3113:printBindings
+#@+node:ekr.20041026080125:bindHotKey
+def bindHotKey (self,widget):
+    
+    if self.hotKey:
+        for key in (self.hotKey.lower(),self.hotKey.upper()):
+            widget.bind("<Alt-%s>" % key,self.buttonCallback)
+#@-node:ekr.20041026080125:bindHotKey
+#@+node:ekr.20060203114017:f.setMinibufferBindings
+def setMinibufferBindings (self):
+    
+    '''Create bindings for the minibuffer..'''
+    
+    f = self ; c = f.c ; k = c.k ; w = f.miniBufferWidget
+    
+    if not c.useTextMinibuffer: return
+    
+    for kind,callback in (
+        ('<Key>',           k.masterKeyHandler),
+        ('<Button-1>',      k.masterClickHandler),
+        ('<Button-3>',      k.masterClick3Handler),
+        ('<Double-1>',      k.masterDoubleClickHandler),
+        ('<Double-3>',      k.masterDoubleClick3Handler),
+    ):
+        w.bind(kind,callback)
+
+    if 0:
+        if sys.platform.startswith('win'):
+            # Support Linux middle-button paste easter egg.
+            w.bind("<Button-2>",frame.OnPaste)
+#@-node:ekr.20060203114017:f.setMinibufferBindings
+#@+node:ekr.20031218072017.838:tkBody.createBindings
+def createBindings (self,w=None):
+
+    '''(tkBody) Create gui-dependent bindings.
+    These are *not* made in nullBody instances.'''
+    
+    frame = self.frame ; c = self.c ; k = c.k
+    if not w: w = self.bodyCtrl
+    
+    w.bind('<Key>', k.masterKeyHandler)
+
+    for kind,func,handler in (
+        ('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
+        ('<Button-3>',  frame.OnBodyRClick,         k.masterClick3Handler),
+        ('<Double-1>',  frame.OnBodyDoubleClick,    k.masterDoubleClickHandler),
+        ('<Double-3>',  None,                       k.masterDoubleClick3Handler),
+        ('<Button-2>',  frame.OnPaste,              k.masterClickHandler),
+    ):
+        def bodyClickCallback(event,handler=handler,func=func):
+            return handler(event,func)
+
+        w.bind(kind,bodyClickCallback)
+#@nonl
+#@-node:ekr.20031218072017.838:tkBody.createBindings
+#@+node:ekr.20031218072017.4017:Menus
+def bind (self,*args,**keys):
+    
+    return self.bodyCtrl.bind(*args,**keys)
+#@-node:ekr.20031218072017.4017:Menus
+#@+node:ekr.20051022162730:setTabBindings
+def setTabBindings (self,tabName):
+    
+    c = self.c ; k = c.k
+    tab = self.nb.tab(tabName)
+    w = self.textDict.get(tabName)
+    
+    # Send all event in the text area to the master handlers.
+    for kind,handler in (
+        ('<Key>',       k.masterKeyHandler),
+        ('<Button-1>',  k.masterClickHandler),
+        ('<Button-3>',  k.masterClick3Handler),
+    ):
+        w.bind(kind,handler)
+    
+    # Clicks in the tab area are harmless: use the old code.
+    def tabMenuRightClickCallback(event,menu=self.menu):
+        return self.onRightClick(event,menu)
+        
+    def tabMenuClickCallback(event,tabName=tabName):
+        return self.onClick(event,tabName)
+    
+    tab.bind('<Button-1>',tabMenuClickCallback)
+    tab.bind('<Button-3>',tabMenuRightClickCallback)
+    
+    k.completeAllBindingsForWidget(w)
+#@-node:ekr.20051022162730:setTabBindings
+#@+node:ekr.20051024102724:tkTtree.setBindings
+def setBindings (self):
+    
+    '''Create master bindings for all headlines.'''
+    
+    tree = self ; k = self.c.k
+    
+    << make bindings for a common binding widget >>
+
+    self.canvas.bind('<Key>',k.masterKeyHandler)
+    self.canvas.bind('<Button-1>',self.onTreeClick)
+
+    << make bindings for tagged items on the canvas >>
+    << create baloon bindings for tagged items on the canvas >>
+#@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
+self.bindingWidget = w = g.app.gui.leoTextWidgetClass(
+    self.canvas,name='bindingWidget')
+
+w.bind('<Key>',k.masterKeyHandler)
+
+table = (
+    ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
+    ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
+    ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
+    ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
+)
+
+for a,handler,func in table:
+    def treeBindingCallback(event,handler=handler,func=func):
+        return handler(event,func)
+    w.bind(a,treeBindingCallback)
+    
+self.textBindings = w.bindtags()
+#@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
+#@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
+where = g.choose(self.expanded_click_area,'clickBox','plusBox')
+
+table = (
+    (where,    '<Button-1>',self.onClickBoxClick),
+    ('iconBox','<Button-1>',self.onIconBoxClick),
+    ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
+    ('iconBox','<Button-3>',self.onIconBoxRightClick),
+    ('iconBox','<Double-3>',self.onIconBoxRightClick),
+    ('iconBox','<B1-Motion>',self.onDrag),
+    ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
+)
+for tag,event,callback in table:
+    self.canvas.tag_bind(tag,event,callback)
+#@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
+#@+node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
+if 0: # I find these very irritating.
+    for tag,text in (
+        # ('plusBox','plusBox'),
+        ('iconBox','Icon Box'),
+        ('selectBox','Click to select'),
+        ('clickBox','Click to expand or contract'),
+        # ('textBox','Headline'),
+    ):
+        # A fairly long wait is best.
+        balloon = Pmw.Balloon(self.canvas,initwait=700)
+        balloon.tagbind(self.canvas,tag,balloonHelp=text)
+#@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
+#@-node:ekr.20051024102724:tkTtree.setBindings
+#@-node:ekr.20070123201540:Found: .bind
+#@+node:ekr.20061031131434.181:Shortcuts (keyHandler)
+#@+node:ekr.20061031131434.182:isPlainKey & test
+def isPlainKey (self,shortcut):
+    
+    '''Return true if the shortcut refers to a plain (non-Alt,non-Ctl) key.'''
+
+    k = self ; shortcut = shortcut or ''
+    
+    for s in ('Alt','Ctrl','Command'):
+        if shortcut.find(s) != -1:
+            return False
+    else:
+        # Careful, allow bare angle brackets for unit tests.
+        if shortcut.startswith('<') and shortcut.endswith('>'):
+            shortcut = shortcut[1:-1]
+
+        isPlain = (
+            len(shortcut) == 1 or
+            len(k.guiBindNamesInverseDict.get(shortcut,'')) == 1 or
+            # A hack: allow Return to be bound to command.
+            shortcut == 'Tab'
+        )
+        
+        # g.trace(isPlain,repr(shortcut))
+        return isPlain
+#@+node:ekr.20061031131434.183:test_isPlainKey
+def test_isPlainKey (self):
+    
+    import string
+    
+    k = c.k # self is a dummy argument
+    
+    for ch in (string.printable):
+        if ch == '\n': continue # A special case.
+        assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
+        
+    special = (
+        'Return', # A special case.
+        'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
+        'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
+        'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
+        'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
+        'KP_F1','KP_F2','KP_F3','KP_F4',
+        'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
+        'Home','Left','Linefeed','Next','Num_Lock',
+        'PageDn','PageUp','Pause','Prior','Right','Up',
+        'Sys_Req',
+    )
+
+    for ch in special:
+        assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
+#@-node:ekr.20061031131434.183:test_isPlainKey
+#@-node:ekr.20061031131434.182:isPlainKey & test
+#@+node:ekr.20061031131434.184:shortcutFromSetting (uses k.guiBindNamesDict)
+def shortcutFromSetting (self,setting):
+    
+    k = self
+
+    if not setting:
+        return None
+
+    s = g.stripBrackets(setting.strip())
+    << define cmd, ctrl, alt, shift >>
+    if k.swap_mac_keys and sys.platform == "darwin":
+        << swap cmd and ctrl keys >>
+    << convert minus signs to plus signs >>
+    << compute the last field >>
+    << compute shortcut >>
+    # g.trace(setting,shortcut)
+    return shortcut
+    
+canonicalizeShortcut = shortcutFromSetting # For compatibility.
+strokeFromSetting    = shortcutFromSetting
+#@+node:ekr.20061031131434.185:<< define cmd, ctrl, alt, shift >>
+s2 = s.lower()
+
+cmd   = s2.find("cmd") >= 0     or s2.find("command") >= 0
+ctrl  = s2.find("control") >= 0 or s2.find("ctrl") >= 0
+alt   = s2.find("alt") >= 0
+shift = s2.find("shift") >= 0   or s2.find("shft") >= 0
+#@-node:ekr.20061031131434.185:<< define cmd, ctrl, alt, shift >>
+#@+node:ekr.20061031131434.186:<< swap cmd and ctrl keys >>
+if ctrl and not cmd:
+    cmd = True ; ctrl = False
+if alt and not ctrl:
+    ctrl = True ; alt = False
+#@-node:ekr.20061031131434.186:<< swap cmd and ctrl keys >>
+#@+node:ekr.20061031131434.187:<< convert minus signs to plus signs >>
+# Replace all minus signs by plus signs, except a trailing minus:
+if s.endswith('-'):
+    s = s[:-1].replace('-','+') + '-'
+else:
+    s = s.replace('-','+')
+#@-node:ekr.20061031131434.187:<< convert minus signs to plus signs >>
+#@+node:ekr.20061031131434.188:<< compute the last field >>
+if s.endswith('+'):
+    last = '+'
+else:
+    fields = s.split('+') # Don't lower this field.
+    last = fields and fields[-1]
+    if not last:
+        if not g.app.menuWarningsGiven:
+            print "bad shortcut specifier:", s
+        return None
+
+if len(last) == 1:
+    last2 = k.guiBindNamesDict.get(last) # Fix new bug introduced in 4.4b2.
+    # g.trace(last,last2)
+    if last2:
+        last = last2 ; shift = False # Ignore the shift state for these special chars.
+    else:
+        if shift:
+            last = last.upper()
+            shift = False
+        else:
+            last = last.lower()
+            
+        # New in Leo 4.4.2: Alt-2 is not a key event!
+        if last.isdigit():
+            last = 'Key-' + last
+else:
+    # Translate from a made-up (or lowercase) name to 'official' Tk binding name.
+    # This is a *one-way* translation, done only here.
+    d = k.settingsNameDict
+    last = d.get(last.lower(),last)
+#@-node:ekr.20061031131434.188:<< compute the last field >>
+#@+node:ekr.20061031131434.189:<< compute shortcut >>
+table = (
+    (alt, 'Alt+'),
+    (ctrl,'Ctrl+'),
+    (cmd, 'Command+'),
+    (shift,'Shift+'),
+    (True, last),
+)
+    
+# new in 4.4b3: convert all characters to unicode first.
+shortcut = ''.join([g.toUnicode(val,g.app.tkEncoding) for flag,val in table if flag])
+#@-node:ekr.20061031131434.189:<< compute shortcut >>
+#@-node:ekr.20061031131434.184:shortcutFromSetting (uses k.guiBindNamesDict)
+#@+node:ekr.20061031131434.190:k.tkbindingFromStroke
+def tkbindingFromStroke (self,stroke):
+    
+    '''Convert a stroke (key to k.bindingsDict) to an actual Tk binding.'''
+    
+    stroke = g.stripBrackets(stroke)
+    
+    for a,b in (
+        ('Alt+','Alt-'),
+        ('Ctrl+','Control-'),
+        ('Shift+','Shift-'),
+        ('Command+','Command-'),
+    ):
+        stroke = stroke.replace(a,b)
+        
+    # g.trace('<%s>' % stroke)
+    return '<%s>' % stroke
+#@-node:ekr.20061031131434.190:k.tkbindingFromStroke
+#@+node:ekr.20061031131434.191:k.prettyPrintKey
+def prettyPrintKey (self,stroke,brief=False):
+    
+    k = self
+    s = stroke and g.stripBrackets(stroke.strip())
+    if not s: return ''
+
+    shift = s.find("shift") >= 0 or s.find("shft") >= 0
+    
+    # Replace all minus signs by plus signs, except a trailing minus:
+    if s.endswith('-'): s = s[:-1].replace('-','+') + '-'
+    else:               s = s.replace('-','+')
+    fields = s.split('+')
+    last = fields and fields[-1]
+    if last and len(last) == 1:
+        prev = s[:-1]
+        if last.isalpha():
+            if last.isupper():
+                if not shift:
+                    s = prev + 'Shift+' + last
+            elif last.islower():
+                if not prev and not brief:
+                    s = 'Key+' + last.upper()
+                else:
+                    s = prev + last.upper()
+    else:
+        last = k.guiBindNamesInverseDict.get(last,last)
+        if fields and fields[:-1]:
+            s = '%s+%s' % ('+'.join(fields[:-1]),last)
+        else:
+            s = last
+    return g.choose(brief,s,'<%s>' % s)
+#@-node:ekr.20061031131434.191:k.prettyPrintKey
+#@-node:ekr.20061031131434.181:Shortcuts (keyHandler)
+#@+node:ekr.20061031131434.103:makeMasterGuiBinding
+def makeMasterGuiBinding (self,stroke,w=None):
+    
+    '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
+    
+    k = self ; c = k.c ; f = c.frame
+   
+    bindStroke = k.tkbindingFromStroke(stroke)
+    # g.trace('stroke',stroke,'bindStroke',bindStroke)
+    
+    if w:
+        widgets = [w]
+    else:
+        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
+        canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
+        bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+        widgets=(c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
+    
+    # This is the only real key callback.
+    def masterBindKeyCallback (event,k=k,stroke=stroke):
+        # g.trace(stroke)
+        return k.masterKeyHandler(event,stroke=stroke)
+
+    for w in widgets:
+        if not w: continue
+        # Make the binding only if no binding for the stroke exists in the widget.
+        aList = k.masterGuiBindingsDict.get(bindStroke,[])
+        if w not in aList:
+            aList.append(w)
+            k.masterGuiBindingsDict [bindStroke] = aList
+            try:
+                w.bind(bindStroke,masterBindKeyCallback)
+                # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
+            except Exception:
+                if self.trace_bind_key_exceptions:
+                    g.es_exception()
+                g.es_print('exception binding %s to %s' % (
+                    bindStroke, c.widget_name(w)), color = 'blue')
+                if g.app.unitTesting: raise
+#@-node:ekr.20061031131434.103:makeMasterGuiBinding
+#@+node:ekr.20061031131434.105:masterCommand & helpers
+def masterCommand (self,event,func,stroke,commandName=None):
+
+    '''This is the central dispatching method.
+    All commands and keystrokes pass through here.'''
+
+    k = self ; c = k.c ; gui = g.app.gui
+    c.setLog()
+    trace = c.config.getBool('trace_masterCommand')
+  
+    c.startRedrawCount = c.frame.tree.redrawCount
+    k.stroke = stroke # Set this global for general use.
+    keysym = gui.eventKeysym(event)
+    ch = gui.eventChar(event)
+    w = gui.eventWidget(event)
+    state = event and hasattr(event,'state') and event.state or 0
+    k.func = func
+    k.funcReturn = None # For unit testing.
+    commandName = commandName or func and func.__name__ or '<no function>'
+    << define specialKeysyms >>
+    special = keysym in specialKeysyms
+    interesting = func is not None
+    inserted = not special
+
+    if trace and interesting:
+        g.trace(
+            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
+            'w:',w and c.widget_name(w),'func:',func and func.__name__
+        )
+
+    if inserted:
+        # g.trace(stroke,keysym)
+        << add character to history >>
+        
+    # We *must not* interfere with the global state in the macro class.
+    if c.macroCommands.recordingMacro:
+        done = c.macroCommands.startKbdMacro(event)
+        if done: return 'break'
+        
+    # g.trace(stroke,k.abortAllModesKey)
+
+    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
+        k.keyboardQuit(event)
+        k.endCommand(event,commandName)
+        return 'break'
+        
+    if special: # Don't pass these on.
+        return 'break' 
+
+    if 0: # *** This is now handled by k.masterKeyHandler.
+        if k.inState():
+            val = k.callStateFunction(event) # Calls end-command.
+            if val != 'do-func': return 'break'
+            g.trace('Executing key outside of mode')
+
+    if k.regx.iter:
+        try:
+            k.regXKey = keysym
+            k.regx.iter.next() # EKR: next() may throw StopIteration.
+        finally:
+            return 'break'
+
+    if k.abbrevOn:
+        expanded = c.abbrevCommands.expandAbbrev(event)
+        if expanded: return 'break'
+
+    if func: # Func is an argument.
+        if trace: g.trace('command',commandName)
+        if commandName.startswith('specialCallback'):
+            # The callback function will call c.doCommand
+            val = func(event)
+            # k.simulateCommand uses k.funcReturn.
+            k.funcReturn = k.funcReturn or val # For unit tests.
+        else:
+            # Call c.doCommand directly
+            c.doCommand(func,commandName,event=event)
+        if c.exists:
+            k.endCommand(event,commandName)
+            c.frame.updateStatusLine()
+        return 'break'
+    elif k.inState():
+        return 'break' #Ignore unbound keys in a state.
+    else:
+        val = k.handleDefaultChar(event,stroke)
+        if c.exists:
+            c.frame.updateStatusLine()
+        return val
+#@nonl
+#@+node:ekr.20061031131434.106:<< define specialKeysyms >>
+specialKeysyms = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+)
+#@nonl
+#@-node:ekr.20061031131434.106:<< define specialKeysyms >>
+#@+node:ekr.20061031131434.107:<< add character to history >>
+if stroke or len(ch) > 0:
+    if len(keyHandlerClass.lossage) > 99:
+        keyHandlerClass.lossage.pop()
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
+#@-node:ekr.20061031131434.107:<< add character to history >>
+#@+node:ekr.20061031131434.108:callStateFunction
+def callStateFunction (self,event):
+    
+    k = self ; val = None
+    
+    # g.trace(k.state.kind)
+    
+    if k.state.kind:
+        if k.state.handler:
+            val = k.state.handler(event)
+            if val != 'continue':
+                k.endCommand(event,k.commandName)
+        else:
+            g.es_print('no state function for %s' % (k.state.kind),color='red')
+            
+    return val
+#@-node:ekr.20061031131434.108:callStateFunction
+#@+node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+def callKeystrokeFunction (self,event):
+    
+    '''Handle a quick keystroke function.
+    Return the function or None.'''
+    
+    k = self
+    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
+
+    if func:
+        func(event)
+        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
+        k.endCommand(event,commandName)
+    
+    return func
+#@-node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+#@+node:ekr.20061031131434.110:handleDefaultChar
+def handleDefaultChar(self,event,stroke):
+    
+    k = self ; c = k.c
+    w = event and event.widget
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        action = k.unboundKeyAction
+        if action in ('insert','overwrite'):
+            c.editCommands.selfInsertCommand(event,action=action)
+        else: pass # Ignore the key.
+        return 'break'
+    elif name.startswith('head'):
+        c.frame.tree.onHeadlineKey(event)
+        return 'break'
+    elif name.startswith('canvas'):
+        if not stroke: # Not exactly right, but it seems to be good enough.
+            c.onCanvasKey(event) # New in Leo 4.4.2
+        return 'break'
+    else:
+        # Let tkinter handle the event.
+        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
+        return None
+#@-node:ekr.20061031131434.110:handleDefaultChar
+#@-node:ekr.20061031131434.105:masterCommand & helpers
+#@+node:ekr.20051125080855:selfInsertCommand & helpers (passed)
+def selfInsertCommand(self,event,action='insert'):
+    
+    '''Insert a character in the body pane.
+    This is the default binding for all keys in the body pane.'''
+    
+    w = self.editWidget(event)
+    if not w: return 'break'
+    << set local vars >>
+    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
+        return "break" # The hook claims to have handled the event.
+    if ch == '\t':
+        self.updateTab(p,w)
+    elif ch == '\b':
+        # This is correct: we only come here if there no bindngs for this key. 
+        self.backwardDeleteCharacter(event)
+    elif ch in ('\r','\n'):
+        ch = '\n'
+        self.insertNewlineHelper(w,oldSel,undoType)
+    elif inBrackets and self.autocompleteBrackets:
+        self.updateAutomatchBracket(p,w,ch,oldSel)
+    elif ch: # Null chars must not delete the selection.
+        i,j = oldSel
+        if i > j: i,j = j,i
+        # Use raw insert/delete to retain the coloring.
+        if i != j:                  w.delete(i,j)
+        elif action == 'overwrite': w.delete(i)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+        if inBrackets and self.flashMatchingBrackets:
+            self.flashMatchingBracketsHelper(w,i,ch)               
+    else:
+        return 'break' # This method *always* returns 'break'
+
+    # Set the column for up and down keys.
+    spot = w.getInsertPoint()
+    c.editCommands.setMoveCol(w,spot)
+
+    # Update the text and handle undo.
+    newText = w.getAllText()
+    changed = newText != oldText
+    # g.trace(changed)
+    if changed:
+        c.frame.body.onBodyChanged(undoType=undoType,
+            oldSel=oldSel,oldText=oldText,oldYview=None)
+            
+    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
+    return 'break'
+#@nonl
+#@+node:ekr.20061103114242:<< set local vars >>
+c = self.c
+p = c.currentPosition()
+gui = g.app.gui
+ch = gui.eventChar(event)
+keysym = gui.eventKeysym(event)
+if keysym == 'Return':
+    ch = '\n' # This fixes the MacOS return bug.
+name = c.widget_name(w)
+oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
+oldText = name.startswith('body') and p.bodyString() or ''
+undoType = 'Typing'
+trace = c.config.getBool('trace_masterCommand')
+brackets = self.openBracketsList + self.closeBracketsList
+inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
+if trace: g.trace(name,repr(ch),ch in brackets)
+#@nonl
+#@-node:ekr.20061103114242:<< set local vars >>
+#@+node:ekr.20051026171121:insertNewlineHelper (passed)
+def insertNewlineHelper (self,w,oldSel,undoType):
+
+    c = self.c ; p = c.currentPosition()
+    i,j = oldSel ; ch = '\n'
+
+    if i != j:
+        # No auto-indent if there is selected text.
+        w.delete(i,j)
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+    else:
+        w.insert(i,ch)
+        w.setInsertPoint(i+1)
+
+        allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
+        if (
+            (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
+            undoType != "Change"
+        ):
+            # No auto-indent if in @nocolor mode or after a Change command.
+            self.updateAutoIndent(p,w)
+    
+    w.seeInsertPoint()
+#@nonl
+#@-node:ekr.20051026171121:insertNewlineHelper (passed)
+#@+node:ekr.20060804095512:initBracketMatcher
+def initBracketMatcher (self,c):
+
+    self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
+    self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
+    
+    if len(self.openBracketsList) != len(self.closeBracketsList):
+        g.es_print('bad open/close_flash_brackets setting: using defaults')
+        self.openBracketsList  = '([{'
+        self.closeBracketsList = ')]}'
+
+    # g.trace('self.openBrackets',openBrackets)
+    # g.trace('self.closeBrackets',closeBrackets)
+#@-node:ekr.20060804095512:initBracketMatcher
+#@+node:ekr.20060627083506:flashMatchingBracketsHelper
+def flashMatchingBracketsHelper (self,w,i,ch):
+
+    d = {}
+    if ch in self.openBracketsList:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.openBracketsList[z]] = self.closeBracketsList[z]
+        reverse = False # Search forward
+    else:
+        for z in xrange(len(self.openBracketsList)):
+            d [self.closeBracketsList[z]] = self.openBracketsList[z]
+        reverse = True # Search backward
+
+    delim2 = d.get(ch)
+
+    s = w.getAllText()
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+    if j != -1:
+        self.flashCharacter(w,j)
+#@-node:ekr.20060627083506:flashMatchingBracketsHelper
+#@+node:ekr.20060627091557:flashCharacter
+def flashCharacter(self,w,i):
+    
+    bg      = self.bracketsFlashBg or 'DodgerBlue1'
+    fg      = self.bracketsFlashFg or 'white'
+    flashes = self.bracketsFlashCount or 2
+    delay   = self.bracketsFlashDelay or 75
+    
+    w.flashCharacter(i,bg,fg,flashes,delay)
+#@-node:ekr.20060627091557:flashCharacter
+#@+node:ekr.20051027172949:updateAutomatchBracket (passed)
+def updateAutomatchBracket (self,p,w,ch,oldSel):
+
+    # assert ch in ('(',')','[',']','{','}')
+    
+    c = self.c ; d = g.scanDirectives(c,p)
+    i,j = oldSel
+    language = d.get('language')
+    s = w.getAllText()
+
+    if ch in ('(','[','{',):
+        automatch = language not in ('plain',)
+        if automatch:
+            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
+        if i != j: w.delete(i,j)
+        w.insert(i,ch)
+        if automatch:
+            ins = w.getInsertPoint()
+            w.setInsertPoint(ins-1)
+    else:
+        ins = w.getInsertPoint()
+        ch2 = ins<len(s) and s[ins] or ''
+        if ch2 in (')',']','}'):
+            ins = w.getInsertPoint()
+            w.setInsertPoint(ins+1)
+        else:
+            if i != j: w.delete(i,j)
+            w.insert(i,ch)
+                                                            
+#@nonl
+#@-node:ekr.20051027172949:updateAutomatchBracket (passed)
+#@+node:ekr.20051026171121.1:udpateAutoIndent (passed)
+def updateAutoIndent (self,p,w):
+
+    c = self.c ; d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    # Get the previous line.
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i = g.skip_to_start_of_line(s,ins)
+    i,j = g.getLine(s,i-1)
+    s = s[i:j-1]
+    # g.trace(i,j,repr(s[i:j]))
+
+    # Add the leading whitespace to the present line.
+    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
+    if s and len(s) > 0 and s [-1] == ':':
+        # For Python: increase auto-indent after colons.
+        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            width += abs(tab_width)
+    if self.smartAutoIndent:
+        # Determine if prev line has unclosed parens/brackets/braces
+        bracketWidths = [width] ; tabex = 0
+        for i in range(0,len(s)):
+            if s [i] == '\t':
+                tabex += tab_width-1
+            if s [i] in '([{':
+                bracketWidths.append(i+tabex+1)
+            elif s [i] in '}])' and len(bracketWidths) > 1:
+                bracketWidths.pop()
+        width = bracketWidths.pop()
+    ws = g.computeLeadingWhitespace(width,tab_width)
+    if ws:
+        i = w.getInsertPoint()
+        w.insert(i,ws)
+#@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
+#@+node:ekr.20051026092433:updateTab (passed)
+def updateTab (self,p,w):
+
+    c = self.c
+    d = g.scanDirectives(c,p)
+    tab_width = d.get("tabwidth",c.tab_width)
+    i,j = w.getSelectionRange()
+        # Returns insert point if no selection, with i <= j.
+    
+
+    if i != j:
+        w.delete(i,j)
+
+    if tab_width > 0:
+        w.insert(i,'\t')
+    else:
+        # Get the preceeding characters.
+        s = w.getAllText()
+        start = g.skip_to_start_of_line(s,i)
+        s2 = s[start:i]
+        
+        # Compute n, the number of spaces to insert.
+        width = g.computeWidth(s2,tab_width)
+        n = abs(tab_width) - (width % abs(tab_width))
+        w.insert(i,' ' * n)
+#@-node:ekr.20051026092433:updateTab (passed)
+#@-node:ekr.20051125080855:selfInsertCommand & helpers (passed)
+#@+node:ekr.20061112152012.2:class leoEvent (tkGui)
+class leoEvent:
+    
+    '''A gui-independent wrapper for gui events.'''
+    
+    def __init__ (self,event,c):
+        
+        # g.trace('leoEvent(tkGui)')
+        self.actualEvent = event
+        self.c      = c # Required to access c.k tables.
+        self.char   = hasattr(event,'char') and event.char or ''
+        self.keysym = hasattr(event,'keysym') and event.keysym or ''
+        self.w      = hasattr(event,'widget') and event.widget or None
+        self.x      = hasattr(event,'x') and event.x or 0
+        self.y      = hasattr(event,'y') and event.y or 0
+        
+        if self.keysym and c.k:
+            # Translate keysyms for ascii characters to the character itself.
+            self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
+        
+        self.widget = self.w
+#@nonl
+#@-node:ekr.20061112152012.2:class leoEvent (tkGui)
+#@+node:ekr.20070123085931: tkKeys.defineSpecialKeys
+def defineSpecialKeys (self):
+    
+    k = self
+    
+    # These are defined at http://tcl.activestate.com/man/tcl8.4/TkCmd/keysyms.htm.
+    # Important: only the inverse dict is actually used in the new key binding scheme.
+    # Tk may return the *values* of this dict in event.keysym fields.
+    # Leo will warn if it gets a event whose keysym not in values of this table.
+    k.guiBindNamesDict = {
+        "&" : "ampersand",
+        "^" : "asciicircum",
+        "~" : "asciitilde",
+        "*" : "asterisk",
+        "@" : "at",
+        "\\": "backslash",
+        "|" : "bar",
+        "{" : "braceleft",
+        "}" : "braceright",
+        "[" : "bracketleft",
+        "]" : "bracketright",
+        ":" : "colon",      # removed from code.
+        "," : "comma",
+        "$" : "dollar",
+        "=" : "equal",
+        "!" : "exclam",     # removed from code.
+        ">" : "greater",
+        "<" : "less",
+        "-" : "minus",
+        "#" : "numbersign",
+        '"' : "quotedbl",
+        "'" : "quoteright",
+        "(" : "parenleft",
+        ")" : "parenright", # removed from code.
+        "%" : "percent",
+        "." : "period",     # removed from code.
+        "+" : "plus",
+        "?" : "question",
+        "`" : "quoteleft",
+        ";" : "semicolon",
+        "/" : "slash",
+        " " : "space",      # removed from code.
+        "_" : "underscore",
+    }
+    
+    # No translation.
+    for s in k.tkNamesList:
+        k.guiBindNamesDict[s] = s
+        
+    # Create the inverse dict.
+    k.guiBindNamesInverseDict = {}
+    for key in k.guiBindNamesDict.keys():
+        k.guiBindNamesInverseDict [k.guiBindNamesDict.get(key)] = key
+    
+#@-node:ekr.20070123085931: tkKeys.defineSpecialKeys
+#@+node:ekr.20061031131434.146:masterKeyHandler
+master_key_count = 0
+
+def masterKeyHandler (self,event,stroke=None):
+    
+    '''This is the handler for almost all key bindings.'''
+
+    k = self ; c = k.c ; gui = g.app.gui
+    if event: event = g.app.gui.leoEvent(event,c)
+    
+    # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char))
+    
+    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    << define vars >>
+
+    if keysym in special_keys:
+        return None
+
+    << do key traces >>
+
+    # Handle keyboard-quit first.
+    if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+
+    if k.inState():
+        # This will return unless k.autoCompleterStateHandler
+        # (called from k.callStateFunction) returns 'do-standard-keys'
+        << handle mode bindings >>
+        
+    << handle per-pane bindings >>
+    << handle keys without bindings >>
+#@+node:ekr.20061031131434.147:<< define vars >>
+w = event.widget
+char = event.char
+keysym = event.keysym
+w_name = c.widget_name(w)
+state = k.state.kind
+
+special_keys = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+    'Win_L','Win_R',
+)
+    
+#@-node:ekr.20061031131434.147:<< define vars >>
+#@+node:ekr.20061031131434.148:<< do key traces >>
+self.master_key_count += 1
+
+if trace:
+    if (self.master_key_count % 100) == 0:
+        g.printGcSummary(trace=True)
+    g.trace(
+        # 'keysym',repr(event.keysym or ''),
+        'stroke',repr(stroke),
+        'state',state,
+        'unboundKeyAction',k.unboundKeyAction)
+#@-node:ekr.20061031131434.148:<< do key traces >>
+#@+node:ekr.20061031131434.149:<< handle mode bindings >>
+# First, honor minibuffer bindings for all except user modes.
+if state in ('getArg','getFileName','full-command','auto-complete'):
+    if k.handleMiniBindings(event,state,stroke):
+        return 'break'
+
+# Second, honor general modes.
+if state == 'getArg':
+    return k.getArg(event,stroke=stroke)
+elif state == 'getFileName':
+    return k.getFileName(event)
+elif state in ('full-command','auto-complete'):
+    # Do the default state action.
+    if trace: g.trace('calling state function')
+    val = k.callStateFunction(event) # Calls end-command.
+    if val != 'do-standard-keys': return 'break'
+        
+# Third, pass keys to user modes.
+else:
+    d =  k.masterBindingsDict.get(state)
+    if d:
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace('calling generalModeHandler')
+            k.generalModeHandler (event,
+                commandName=b.commandName,func=b.func,
+                modeName=state,nextMode=b.nextMode)
+            return 'break'
+        else:
+            ok = k.handleMiniBindings(event,state,stroke)
+            if ok:
+                return 'break'
+            elif stroke and len(stroke) == 1:
+                # if trace: g.trace('calling modeHelp')
+                k.modeHelp(event)
+                return 'break'
+            else:
+                # End the mode and fall through to the pane bindings!
+                k.endMode(event)
+    else:
+        # New in 4.4b4.
+        handler = k.getStateHandler()
+        if handler:
+            handler(event)
+        else:
+            g.trace('No state handler for %s' % state)
+        return 'break'
+#@-node:ekr.20061031131434.149:<< handle mode bindings >>
+#@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
+key_states = ('command','insert','overwrite')
+isPlain =  k.isPlainKey(stroke)
+
+for key,name in (
+    # Order here is similar to bindtags order.
+    ('command',None),
+    ('insert',None),
+    ('overwrite',None),
+    ('button',None),
+    ('body','body'),
+    ('text','head'), # Important: text bindings in head before tree bindings.
+    ('tree','head'),
+    ('tree','canvas'),
+    ('log', 'log'),
+    ('text','log'),
+    ('text',None), ('all',None),
+):
+    if (
+        key in key_states and isPlain and k.unboundKeyAction == key or
+        name and w_name.startswith(name) or
+        key in ('text','all') and g.app.gui.isTextWidget(w) or
+        key in ('button','all')
+    ):
+        d = k.masterBindingsDict.get(key)
+        # if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                return k.masterCommand(event,b.func,b.stroke,b.commandName)
+#@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
+#@+node:ekr.20061031131434.151:<< handle keys without bindings >>
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+    # insert/overwrite normal character.  <Return> is *not* a normal character.
+    if trace: g.trace('plain key in insert mode',stroke)
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+
+elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
+    # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+    if trace: g.trace('ignoring unbound non-ascii key')
+    return 'break'
+    
+elif keysym.find('Escape') != -1:
+    # Never insert escape characters.
+    return 'break'
+
+else:
+    # g.trace(stroke,char,keysym)
+    if trace: g.trace(repr(stroke),'no func')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+#@-node:ekr.20061031131434.151:<< handle keys without bindings >>
+#@+node:ekr.20061031131434.152:handleMiniBindings
+def handleMiniBindings (self,event,state,stroke):
+    
+    k = self ; c = k.c
+    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    if not state.startswith('auto-'):
+        d = k.masterBindingsDict.get('mini')
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                # Pass this on for macro recording.
+                k.masterCommand(event,b.func,stroke,b.commandName)
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
+                return True
+
+    return False
+#@-node:ekr.20061031131434.152:handleMiniBindings
+#@-node:ekr.20061031131434.146:masterKeyHandler
+#@-node:ekr.20070123160127:Use plain ascii characters instead of special Tk symbols
+#@+node:ekr.20070124094705:Removed all calls to Tk.Text.bbox
+# One call to Tk.Canvas.bbox remains, but that is in leoTkinterTree so it has no effect on portability.
+#@nonl
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper
+def moveUpOrDownHelper (self,event,direction,extend):
+
+    c = self.c ; w = self.editWidget(event)
+    if not w: return
+    
+    ins = w.getInsertPoint()
+    s = w.getAllText()
+    w.seeInsertPoint()
+    
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,i+j+1)
+    else:
+        i2,j2 = g.getLine(s,i-1)
+
+    # The spot is the start of the line plus the column index.
+    col2 = min(col,j2)
+    spot = i2 + col2
+    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+
+    self.extendHelper(w,extend,spot,upOrDown=True)
+#@nonl
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper
+#@+node:ekr.20060113130510:extendHelper
+def extendHelper (self,w,extend,spot,upOrDown=False):
+    '''Handle the details of extending the selection.
+    This method is called for all cursor moves.
+    
+    extend: Clear the selection unless this is True.
+    spot:   The *new* insert point.
+    '''
+    c = self.c ; p = c.currentPosition()
+    extend = extend or self.extendMode
+    ins = w.getInsertPoint()
+    i,j = w.getSelectionRange()
+
+    # Reset the move spot if needed.
+    if self.moveSpot is None or p.v.t != self.moveSpotNode:
+        # g.trace('no spot')
+        self.setMoveCol(w,g.choose(extend,ins,spot)) # sets self.moveSpot.
+    elif extend:
+        if i == j or self.moveSpot not in (i,j):
+            # g.trace('spot not in sel')
+            self.setMoveCol(w,ins) # sets self.moveSpot.
+    else:
+        if upOrDown:
+            s = w.getAllText()
+            i2,j2 = g.getLine(s,spot)
+            line = s[i2:j2]
+            row,col = g.convertPythonIndexToRowCol(s,spot)
+            n = min(self.moveCol,max(0,len(line)-1))
+            g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
+            spot = g.convertRowColToPythonIndex(s,row,n)
+        else:  # Plain move forward or back.
+            # g.trace('plain forward/back move')
+            self.setMoveCol(w,spot) # sets self.moveSpot.
+
+    if extend:
+        if spot < self.moveSpot:
+            w.setSelectionRange(spot,self.moveSpot,insert=spot)
+        else:
+            w.setSelectionRange(self.moveSpot,spot,insert=spot)
+    else:
+        w.setSelectionRange(spot,spot,insert=spot)
+        
+    w.seeInsertPoint()
+    c.frame.updateStatusLine()
+#@nonl
+#@-node:ekr.20060113130510:extendHelper
+#@-node:ekr.20070124094705:Removed all calls to Tk.Text.bbox
 #@-node:ekr.20061029091904.1:Features
 #@+node:ekr.20061127100022.1:Menu reorgs
 #@+node:ekr.20031218072017.3785:createMenusFromTables & helpers
@@ -9144,42 +10314,32 @@ def tabifyHelper (self,event,which):
         self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.126:tabify & untabify
 #@-node:ekr.20061102064720.6:edit commands
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper
 def moveUpOrDownHelper (self,event,direction,extend):
 
     c = self.c ; w = self.editWidget(event)
     if not w: return
-
-    # Make the insertion cursor visible so bbox won't return an empty list.
-    w.seeInsertPoint()
     
-    # Compute the new spot.
     ins = w.getInsertPoint()
     s = w.getAllText()
-    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    w.seeInsertPoint()
     
-    # Find the coordinates of the cursor and set the new height.
-    # There may be roundoff errors because character postions may not match exactly.
-    x, y, junk, textH = w.bbox('insert')
-    bodyW, bodyH = w.winfo_width(), w.winfo_height()
-    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
-
-    # Make sure y is within text boundaries.
-    if direction == "up":
-        if y <= textH:  w.yview("scroll",-1,"units")
-        else:           y = max(y-textH,0)
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,i+j+1)
     else:
-        if y >= maxy:   w.yview("scroll",1,"units")
-        else:           y = min(y+textH,maxy)
+        i2,j2 = g.getLine(s,i-1)
 
-    # Position the cursor on the proper side of the characters.
-    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
-    if x > newx + width / 2: x = newx + width + 1
-    
-    # Make the move
-    spot = w.xyToPythonIndex(x,y)
+    # The spot is the start of the line plus the column index.
+    col2 = min(col,j2)
+    spot = i2 + col2
+    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+
     self.extendHelper(w,extend,spot,upOrDown=True)
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@nonl
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper
 #@+node:ekr.20061031131434.4:class autoCompleterClass
 class autoCompleterClass:
     
@@ -17828,13 +18988,12 @@ def deleteComments (self,event=None):
 #@+node:ekr.20061119060008:Fixed bug in end-of-line commands
 #@+node:ekr.20050929114218:move cursor... (leoEditCommands)
 #@+node:ekr.20051218170358: helpers
-#@+node:ekr.20060113130510:extendHelper (passed)
+#@+node:ekr.20060113130510:extendHelper
 def extendHelper (self,w,extend,spot,upOrDown=False):
     '''Handle the details of extending the selection.
     This method is called for all cursor moves.
     
     extend: Clear the selection unless this is True.
-    ins1:   The *previous* insert point.
     spot:   The *new* insert point.
     '''
     c = self.c ; p = c.currentPosition()
@@ -17857,7 +19016,7 @@ def extendHelper (self,w,extend,spot,upOrDown=False):
             line = s[i2:j2]
             row,col = g.convertPythonIndexToRowCol(s,spot)
             n = min(self.moveCol,max(0,len(line)-1))
-            # g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
+            g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
             spot = g.convertRowColToPythonIndex(s,row,n)
         else:  # Plain move forward or back.
             # g.trace('plain forward/back move')
@@ -17874,43 +19033,33 @@ def extendHelper (self,w,extend,spot,upOrDown=False):
     w.seeInsertPoint()
     c.frame.updateStatusLine()
 #@nonl
-#@-node:ekr.20060113130510:extendHelper (passed)
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@-node:ekr.20060113130510:extendHelper
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper
 def moveUpOrDownHelper (self,event,direction,extend):
 
     c = self.c ; w = self.editWidget(event)
     if not w: return
-
-    # Make the insertion cursor visible so bbox won't return an empty list.
-    w.seeInsertPoint()
     
-    # Compute the new spot.
     ins = w.getInsertPoint()
     s = w.getAllText()
-    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    w.seeInsertPoint()
     
-    # Find the coordinates of the cursor and set the new height.
-    # There may be roundoff errors because character postions may not match exactly.
-    x, y, junk, textH = w.bbox('insert')
-    bodyW, bodyH = w.winfo_width(), w.winfo_height()
-    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
-
-    # Make sure y is within text boundaries.
-    if direction == "up":
-        if y <= textH:  w.yview("scroll",-1,"units")
-        else:           y = max(y-textH,0)
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,i+j+1)
     else:
-        if y >= maxy:   w.yview("scroll",1,"units")
-        else:           y = min(y+textH,maxy)
+        i2,j2 = g.getLine(s,i-1)
 
-    # Position the cursor on the proper side of the characters.
-    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
-    if x > newx + width / 2: x = newx + width + 1
-    
-    # Make the move
-    spot = w.xyToPythonIndex(x,y)
+    # The spot is the start of the line plus the column index.
+    col2 = min(col,j2)
+    spot = i2 + col2
+    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+
     self.extendHelper(w,extend,spot,upOrDown=True)
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@nonl
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper
 #@+node:ekr.20051218122116:moveToHelper (passed)
 def moveToHelper (self,event,spot,extend):
 
@@ -19233,49 +20382,38 @@ self.body.tag_bind(tagName,"<Any-Leave>",ref.OnHyperLinkLeave)
 #@-node:ekr.20061206103433:Fixed colorizer bug: section references not colored properly
 #@+node:ekr.20061208073322:Fixed cursor up/down bug
 #@+node:ekr.20061208073208:Found: moveSpot
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper
 def moveUpOrDownHelper (self,event,direction,extend):
 
     c = self.c ; w = self.editWidget(event)
     if not w: return
-
-    # Make the insertion cursor visible so bbox won't return an empty list.
-    w.seeInsertPoint()
     
-    # Compute the new spot.
     ins = w.getInsertPoint()
     s = w.getAllText()
-    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    w.seeInsertPoint()
     
-    # Find the coordinates of the cursor and set the new height.
-    # There may be roundoff errors because character postions may not match exactly.
-    x, y, junk, textH = w.bbox('insert')
-    bodyW, bodyH = w.winfo_width(), w.winfo_height()
-    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
-
-    # Make sure y is within text boundaries.
-    if direction == "up":
-        if y <= textH:  w.yview("scroll",-1,"units")
-        else:           y = max(y-textH,0)
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,i+j+1)
     else:
-        if y >= maxy:   w.yview("scroll",1,"units")
-        else:           y = min(y+textH,maxy)
+        i2,j2 = g.getLine(s,i-1)
 
-    # Position the cursor on the proper side of the characters.
-    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
-    if x > newx + width / 2: x = newx + width + 1
-    
-    # Make the move
-    spot = w.xyToPythonIndex(x,y)
+    # The spot is the start of the line plus the column index.
+    col2 = min(col,j2)
+    spot = i2 + col2
+    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+
     self.extendHelper(w,extend,spot,upOrDown=True)
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
-#@+node:ekr.20060113130510:extendHelper (passed)
+#@nonl
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper
+#@+node:ekr.20060113130510:extendHelper
 def extendHelper (self,w,extend,spot,upOrDown=False):
     '''Handle the details of extending the selection.
     This method is called for all cursor moves.
     
     extend: Clear the selection unless this is True.
-    ins1:   The *previous* insert point.
     spot:   The *new* insert point.
     '''
     c = self.c ; p = c.currentPosition()
@@ -19298,7 +20436,7 @@ def extendHelper (self,w,extend,spot,upOrDown=False):
             line = s[i2:j2]
             row,col = g.convertPythonIndexToRowCol(s,spot)
             n = min(self.moveCol,max(0,len(line)-1))
-            # g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
+            g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
             spot = g.convertRowColToPythonIndex(s,row,n)
         else:  # Plain move forward or back.
             # g.trace('plain forward/back move')
@@ -19315,7 +20453,7 @@ def extendHelper (self,w,extend,spot,upOrDown=False):
     w.seeInsertPoint()
     c.frame.updateStatusLine()
 #@nonl
-#@-node:ekr.20060113130510:extendHelper (passed)
+#@-node:ekr.20060113130510:extendHelper
 #@+node:ekr.20060209095101:setMoveCol (passed)
 def setMoveCol (self,w,spot):
     
@@ -19413,49 +20551,38 @@ def scrollHelper (self,event,direction,extend):
 #@-node:ekr.20060113082917:scrollHelper (passed)
 #@-node:ekr.20061208073208:Found: moveSpot
 #@+node:ekr.20061208073208.1:Found: moveCol
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper
 def moveUpOrDownHelper (self,event,direction,extend):
 
     c = self.c ; w = self.editWidget(event)
     if not w: return
-
-    # Make the insertion cursor visible so bbox won't return an empty list.
-    w.seeInsertPoint()
     
-    # Compute the new spot.
     ins = w.getInsertPoint()
     s = w.getAllText()
-    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    w.seeInsertPoint()
     
-    # Find the coordinates of the cursor and set the new height.
-    # There may be roundoff errors because character postions may not match exactly.
-    x, y, junk, textH = w.bbox('insert')
-    bodyW, bodyH = w.winfo_width(), w.winfo_height()
-    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
-
-    # Make sure y is within text boundaries.
-    if direction == "up":
-        if y <= textH:  w.yview("scroll",-1,"units")
-        else:           y = max(y-textH,0)
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,i+j+1)
     else:
-        if y >= maxy:   w.yview("scroll",1,"units")
-        else:           y = min(y+textH,maxy)
+        i2,j2 = g.getLine(s,i-1)
 
-    # Position the cursor on the proper side of the characters.
-    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
-    if x > newx + width / 2: x = newx + width + 1
-    
-    # Make the move
-    spot = w.xyToPythonIndex(x,y)
+    # The spot is the start of the line plus the column index.
+    col2 = min(col,j2)
+    spot = i2 + col2
+    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+
     self.extendHelper(w,extend,spot,upOrDown=True)
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
-#@+node:ekr.20060113130510:extendHelper (passed)
+#@nonl
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper
+#@+node:ekr.20060113130510:extendHelper
 def extendHelper (self,w,extend,spot,upOrDown=False):
     '''Handle the details of extending the selection.
     This method is called for all cursor moves.
     
     extend: Clear the selection unless this is True.
-    ins1:   The *previous* insert point.
     spot:   The *new* insert point.
     '''
     c = self.c ; p = c.currentPosition()
@@ -19478,7 +20605,7 @@ def extendHelper (self,w,extend,spot,upOrDown=False):
             line = s[i2:j2]
             row,col = g.convertPythonIndexToRowCol(s,spot)
             n = min(self.moveCol,max(0,len(line)-1))
-            # g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
+            g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
             spot = g.convertRowColToPythonIndex(s,row,n)
         else:  # Plain move forward or back.
             # g.trace('plain forward/back move')
@@ -19495,7 +20622,7 @@ def extendHelper (self,w,extend,spot,upOrDown=False):
     w.seeInsertPoint()
     c.frame.updateStatusLine()
 #@nonl
-#@-node:ekr.20060113130510:extendHelper (passed)
+#@-node:ekr.20060113130510:extendHelper
 #@+node:ekr.20060209095101:setMoveCol (passed)
 def setMoveCol (self,w,spot):
     
@@ -19794,42 +20921,32 @@ def onClick (self,event):
         g.trace('can not happen')
 #@-node:ekr.20061109095450.8:onClick (passed)
 #@-node:ekr.20061208073208.1:Found: moveCol
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@+node:ekr.20060113105246.1:moveUpOrDownHelper
 def moveUpOrDownHelper (self,event,direction,extend):
 
     c = self.c ; w = self.editWidget(event)
     if not w: return
-
-    # Make the insertion cursor visible so bbox won't return an empty list.
-    w.seeInsertPoint()
     
-    # Compute the new spot.
     ins = w.getInsertPoint()
     s = w.getAllText()
-    row1,col1 = g.convertPythonIndexToRowCol(s,ins)
+    w.seeInsertPoint()
     
-    # Find the coordinates of the cursor and set the new height.
-    # There may be roundoff errors because character postions may not match exactly.
-    x, y, junk, textH = w.bbox('insert')
-    bodyW, bodyH = w.winfo_width(), w.winfo_height()
-    junk, maxy, junk, junk = w.bbox("@%d,%d" % (bodyW,bodyH))
-
-    # Make sure y is within text boundaries.
-    if direction == "up":
-        if y <= textH:  w.yview("scroll",-1,"units")
-        else:           y = max(y-textH,0)
+    # Find the start of the next/prev line.
+    row,col = g.convertPythonIndexToRowCol(s,ins)
+    i,j = g.getLine(s,ins)
+    if direction == 'down':
+        i2,j2 = g.getLine(s,i+j+1)
     else:
-        if y >= maxy:   w.yview("scroll",1,"units")
-        else:           y = min(y+textH,maxy)
+        i2,j2 = g.getLine(s,i-1)
 
-    # Position the cursor on the proper side of the characters.
-    newx, newy, width, junk = w.bbox("@%d,%d" % (x,y))
-    if x > newx + width / 2: x = newx + width + 1
-    
-    # Make the move
-    spot = w.xyToPythonIndex(x,y)
+    # The spot is the start of the line plus the column index.
+    col2 = min(col,j2)
+    spot = i2 + col2
+    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+
     self.extendHelper(w,extend,spot,upOrDown=True)
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper (passed)
+#@nonl
+#@-node:ekr.20060113105246.1:moveUpOrDownHelper
 #@+node:ekr.20051218122116:moveToHelper (passed)
 def moveToHelper (self,event,spot,extend):
 
@@ -19850,13 +20967,12 @@ def moveToHelper (self,event,spot,extend):
     self.extendHelper(w,extend,spot,upOrDown=False)
 #@nonl
 #@-node:ekr.20051218122116:moveToHelper (passed)
-#@+node:ekr.20060113130510:extendHelper (passed)
+#@+node:ekr.20060113130510:extendHelper
 def extendHelper (self,w,extend,spot,upOrDown=False):
     '''Handle the details of extending the selection.
     This method is called for all cursor moves.
     
     extend: Clear the selection unless this is True.
-    ins1:   The *previous* insert point.
     spot:   The *new* insert point.
     '''
     c = self.c ; p = c.currentPosition()
@@ -19879,7 +20995,7 @@ def extendHelper (self,w,extend,spot,upOrDown=False):
             line = s[i2:j2]
             row,col = g.convertPythonIndexToRowCol(s,spot)
             n = min(self.moveCol,max(0,len(line)-1))
-            # g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
+            g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
             spot = g.convertRowColToPythonIndex(s,row,n)
         else:  # Plain move forward or back.
             # g.trace('plain forward/back move')
@@ -19896,7 +21012,7 @@ def extendHelper (self,w,extend,spot,upOrDown=False):
     w.seeInsertPoint()
     c.frame.updateStatusLine()
 #@nonl
-#@-node:ekr.20060113130510:extendHelper (passed)
+#@-node:ekr.20060113130510:extendHelper
 #@+node:ekr.20060209095101:setMoveCol (passed)
 def setMoveCol (self,w,spot):
     
