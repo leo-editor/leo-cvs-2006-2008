@@ -279,7 +279,7 @@ class autoCompleterClass:
             c.frame.log.clearTab(self.tabName)
             self.computeCompletionList()
             k.setState(tag,1,handler=self.autoCompleterStateHandler) 
-        elif keysym in ('space','Return'):
+        elif keysym in (' ','Return'):
             self.finish()
         elif keysym == 'Escape':
             self.abort()
@@ -287,11 +287,11 @@ class autoCompleterClass:
             self.doTabCompletion()
         elif keysym == 'BackSpace':
             self.doBackSpace()
-        elif keysym == 'period':
+        elif keysym == '.':
             self.chain()
-        elif keysym == 'question':
+        elif keysym == '?':
             self.info()
-        elif keysym == 'exclam':
+        elif keysym == '!':
             # Toggle between verbose and brief listing.
             self.verbose = not self.verbose
             if type(self.object) == types.DictType:
@@ -867,7 +867,7 @@ class autoCompleterClass:
                 self.computeCompletionList()
         else:
             word = w.getSelectedText()
-            if keysym == 'parenleft':
+            if ch == '(':
                 # Similar to chain logic.
                 obj = self.object
                 # g.trace(obj,word,self.hasAttr(obj,word))
@@ -1747,7 +1747,7 @@ class keyHandlerClass:
             'Return','Right',
             'Tab',
             'Up',
-            'space',
+            # 'space',
         )
         
         # These keys settings that may be specied in leoSettings.leo.
@@ -2923,8 +2923,12 @@ class keyHandlerClass:
     def masterKeyHandler (self,event,stroke=None):
         
         '''This is the handler for almost all key bindings.'''
-        
+    
         k = self ; c = k.c ; gui = g.app.gui
+        if event: event = g.app.gui.leoEvent(event,c)
+        
+        # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char))
+        
         trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
         #@    << define vars >>
         #@+node:ekr.20061031131434.147:<< define vars >>
@@ -4167,13 +4171,12 @@ class keyHandlerClass:
     #@+node:ekr.20061031131434.203:doControlU
     def doControlU (self,event,stroke):
         
-        k = self ; c = k.c ; gui = g.app.gui
-        keysym = gui.eventKeysym(event)
+        k = self ; c = k.c
+        ch = g.app.gui.eventChar(event)
     
         k.setLabelBlue('Control-u %s' % g.stripBrackets(stroke))
     
-        if keysym == 'parenleft': # Execute the macro.
-    
+        if ch == '(':
             k.clearState()
             k.resetLabel()
             c.macroCommands.startKbdMacro(event)

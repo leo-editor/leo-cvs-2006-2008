@@ -648,6 +648,8 @@ class tkinterGui(leoGui.leoGui):
         '''A gui-independent wrapper for gui events.'''
         
         def __init__ (self,event,c):
+            
+            # g.trace('leoEvent(tkGui)')
             self.actualEvent = event
             self.c      = c # Required to access c.k tables.
             self.char   = hasattr(event,'char') and event.char or ''
@@ -655,6 +657,10 @@ class tkinterGui(leoGui.leoGui):
             self.w      = hasattr(event,'widget') and event.widget or None
             self.x      = hasattr(event,'x') and event.x or 0
             self.y      = hasattr(event,'y') and event.y or 0
+            
+            if self.keysym and c.k:
+                # Translate keysyms for ascii characters to the character itself.
+                self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
             
             self.widget = self.w
     #@nonl

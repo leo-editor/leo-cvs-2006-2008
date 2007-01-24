@@ -2169,7 +2169,7 @@ class editCommandsClass (baseEditCommandsClass):
             ch1, stroke1 = data1
             ch2, stroke2 = data2
             
-            if state == 'esc esc' and event.keysym == 'colon':
+            if state == 'esc esc' and event.keysym == ':':
                 self.evalExpression(event)
             elif state == 'evaluate':
                 self.escEvaluate(event)
@@ -5922,7 +5922,7 @@ class macroCommandsClass (baseEditCommandsClass):
             if stroke == '<Key>' and keysym in ('Control_L','Alt_L','Shift_L'):
                 return False
             g.trace('stroke',stroke,'keysym',keysym)
-            if stroke == '<Key>' and keysym =='parenright':
+            if stroke == '<Key>' and keysym ==')':
                 self.endKbdMacro(event)
                 return True
             elif stroke == '<Key>':
@@ -6123,7 +6123,7 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
                 self.quitSearch(event)
         elif event.keysym in ('q','Return'):
             self.quitSearch(event)
-        elif event.keysym == 'exclam':
+        elif event.keysym == '!':
             while self.findNextMatch(event):
                 self.doOneReplace(event)
         elif event.keysym in ('n','Delete'):
@@ -6451,12 +6451,12 @@ class registerCommandsClass (baseEditCommandsClass):
             'view-register':                self.viewRegister,
         }
     #@-node:ekr.20050920084036.247: getPublicCommands
-    #@+node:ekr.20050920084036.252:addRegisterItems (Not used!)
+    #@+node:ekr.20050920084036.252:addRegisterItems
     def addRegisterItems( self ):
         
         methodDict = {
-            'plus':     self.incrementRegister,
-            'space':    self.pointToRegister,
+            '+':        self.incrementRegister,
+            ' ':        self.pointToRegister,
             'a':        self.appendToRegister,
             'i':        self.insertRegister,
             'j':        self.jumpToRegister,
@@ -6470,18 +6470,18 @@ class registerCommandsClass (baseEditCommandsClass):
         helpDict = {
             's':    'copy to register',
             'i':    'insert from register',
-            'plus': 'increment register',
+            '+':    'increment register',
             'n':    'number to register',
             'p':    'prepend to register',
             'a':    'append to register',
-            'space':'point to register',
+            ' ':    'point to register',
             'j':    'jump to register',
             'r':    'rectangle to register',
-            'v': 'view register',
+            'v':    'view register',
         }
     
         return methodDict, helpDict
-    #@-node:ekr.20050920084036.252:addRegisterItems (Not used!)
+    #@-node:ekr.20050920084036.252:addRegisterItems
     #@-node:ekr.20051004095209:Birth
     #@+node:ekr.20051004123217:checkBodySelection
     def checkBodySelection (self,warning='No text selected'):
