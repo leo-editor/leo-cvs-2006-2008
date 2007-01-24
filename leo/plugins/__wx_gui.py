@@ -1729,14 +1729,14 @@ class wxGui(leoGui.leoGui):
         '''Return the char field of an event, either a wx event or a converted Leo event.'''
     
         if hasattr(event,'char'):
-            return event.char # A leoEvent.
+            return event.char # A leoKeyEvent.
         else:
             return self.keysymHelper(event,c=c,kind='char')
     
     def eventKeysym (self,event,c=None):
         
         if hasattr(event,'keysym'):
-            return event.keysym # A leoEvent: we have already computed the result.
+            return event.keysym # A leoKeyEvent: we have already computed the result.
         else:
             return self.keysymHelper(event,c=c,kind='keysym')
     #@+node:ekr.20061117203128:keysymHelper
@@ -1846,7 +1846,7 @@ class wxGui(leoGui.leoGui):
         '''Return the widget field of an event, either a wx event or a converted Leo event.'''
     
         if hasattr(event,'widget'):
-            return event.widget # a leoEvent.
+            return event.widget # a leoKeyEvent.
         elif hasattr(event,'GetEventObject'):
             return event.GetEventObject()
         else:
@@ -2026,8 +2026,8 @@ class wxGui(leoGui.leoGui):
         return name
     #@-node:ekr.20061117162357:widget_name (tkGui)
     #@-node:edream.111303090930:app.gui.wx utils (must add several)
-    #@+node:ekr.20061116093228:class leoEvent (wxGui)
-    class leoEvent:
+    #@+node:ekr.20061116093228:class leoKeyEvent (wxGui)
+    class leoKeyEvent:
         
         '''A gui-independent wrapper for gui events.'''
         
@@ -2039,7 +2039,7 @@ class wxGui(leoGui.leoGui):
             self.keysym             = gui.eventKeysym(event,c)
             self.widget = self.w    = gui.eventWidget(event)
             self.x,self.y           = gui.eventXY(event)
-    #@-node:ekr.20061116093228:class leoEvent (wxGui)
+    #@-node:ekr.20061116093228:class leoKeyEvent (wxGui)
     #@-others
 #@nonl
 #@-node:edream.110203113231.305:wxGui class
@@ -2235,7 +2235,7 @@ class wxLeoBody (leoFrame.leoBody):
             event.Skip()
         else:
             event.keyDownModifiers = self.keyDownModifiers
-            event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
             # g.trace('wxBody',event.keysym)
             if event.keysym: # The key may have been a raw key.
                 self.c.k.masterKeyHandler(event,stroke=event.keysym)
@@ -2476,7 +2476,9 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@+node:ekr.20061118122218:setMinibufferBindings
     def setMinibufferBindings(self):
         
-        g.trace('to do')
+        pass
+        
+        # g.trace('to do')
     #@nonl
     #@-node:ekr.20061118122218:setMinibufferBindings
     #@+node:edream.111503213533:destroySelf
@@ -3208,7 +3210,7 @@ class wxLeoLog (leoFrame.leoLog):
             event.Skip()
         else:
             event.keyDownModifiers = self.keyDownModifiers
-            event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
             g.trace('wxLog',event.keysym)
             if event.keysym: # The key may have been a raw key.
                 self.c.k.masterKeyHandler(event,stroke=event.keysym)
@@ -3564,6 +3566,12 @@ class wxLeoMenu (leoMenu.leoMenu):
         ## menu.destroy()
     #@nonl
     #@-node:edream.111303103141.4:destroy (not called ?)
+    #@+node:ekr.20070124111252:insert (not called)
+    def insert (self,*args,**keys):
+    
+        g.trace('wxMenu',args,keys)
+    #@nonl
+    #@-node:ekr.20070124111252:insert (not called)
     #@-node:ekr.20061106062514:Not called
     #@+node:edream.111603104327:Menu methods (Tk names)
     #@+node:edream.111303111942.1:add_cascade
@@ -3873,7 +3881,7 @@ class wxLeoMinibuffer:
             # event.Skip() # Do default processing.
         # else:
             # event.keyDownModifiers = self.keyDownModifiers
-            # event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            # event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
             # g.trace('wxMinibuffer',event.keysym)
             # if event.keysym: # The key may have been a raw key.
                 # self.c.k.masterKeyHandler(event,stroke=event.keysym)
@@ -4167,20 +4175,17 @@ class wxLeoTree (leoFrame.leoTree):
         tree = self.treeCtrl
         id = self.redraw_node(parent_id,p)
         child = p.firstChild()
+    
+        while child:
+            # We must redraw the entire tree, regardless of expansion state.
+            self.redraw_subtree(id,child)
+            child.moveToNext()
         
-        # **Important**
         # The calls to tree.Expand and tree.Collapse *will* generate events,
         # This is the reason the event handlers must be disabled while drawing.
-        
         if p.isExpanded():
-            while child:
-                self.redraw_subtree(id,child)
-                child.moveToNext()
             tree.Expand(id)
         else:
-            while child:
-                self.redraw_node(id,child)
-                child.moveToNext()
             tree.Collapse(id)
     #@nonl
     #@-node:edream.110203113231.300:redraw_subtree
@@ -4213,20 +4218,17 @@ class wxLeoTree (leoFrame.leoTree):
         tree = self.treeCtrl
         id = self.redraw_node(parent_id,p)
         child = p.firstChild()
+    
+        while child:
+            # We must redraw the entire tree, regardless of expansion state.
+            self.redraw_subtree(id,child)
+            child.moveToNext()
         
-        # **Important**
         # The calls to tree.Expand and tree.Collapse *will* generate events,
         # This is the reason the event handlers must be disabled while drawing.
-        
         if p.isExpanded():
-            while child:
-                self.redraw_subtree(id,child)
-                child.moveToNext()
             tree.Expand(id)
         else:
-            while child:
-                self.redraw_node(id,child)
-                child.moveToNext()
             tree.Collapse(id)
     #@nonl
     #@-node:edream.110203113231.300:redraw_subtree
@@ -4320,7 +4322,7 @@ class wxLeoTree (leoFrame.leoTree):
             event.Skip()
         else:
             event.keyDownModifiers = self.keyDownModifiers
-            event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
             # g.trace('wxTree',event.keysym,self.keyDownModifiers)
             if event.keysym: # The key may have been a raw key.
                 if event.keysym.isalnum() and len(event.keysym) == 1:
@@ -4556,7 +4558,7 @@ class wxLeoTree (leoFrame.leoTree):
             event.Skip()
         else:
             event.keyDownModifiers = self.keyDownModifiers
-            event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
+            event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
             # g.trace('wxTree',event.keysym,self.keyDownModifiers)
             if event.keysym: # The key may have been a raw key.
                 if event.keysym.isalnum() and len(event.keysym) == 1:
