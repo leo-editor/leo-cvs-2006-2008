@@ -2925,7 +2925,7 @@ class keyHandlerClass:
         '''This is the handler for almost all key bindings.'''
     
         k = self ; c = k.c ; gui = g.app.gui
-        if event: event = g.app.gui.leoEvent(event,c)
+        if event: event = g.app.gui.leoKeyEvent(event,c)
         
         # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char))
         

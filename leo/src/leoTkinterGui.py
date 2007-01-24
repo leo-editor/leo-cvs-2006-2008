@@ -642,14 +642,14 @@ class tkinterGui(leoGui.leoGui):
             return repr(w)
     #@-node:ekr.20051206103652:widget_name (tkGui)
     #@-node:ekr.20031218072017.4059:tkGui utils
-    #@+node:ekr.20061112152012.2:class leoEvent (tkGui)
-    class leoEvent:
+    #@+node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
+    class leoKeyEvent:
         
         '''A gui-independent wrapper for gui events.'''
         
         def __init__ (self,event,c):
             
-            # g.trace('leoEvent(tkGui)')
+            # g.trace('leoKeyEvent(tkGui)')
             self.actualEvent = event
             self.c      = c # Required to access c.k tables.
             self.char   = hasattr(event,'char') and event.char or ''
@@ -664,7 +664,7 @@ class tkinterGui(leoGui.leoGui):
             
             self.widget = self.w
     #@nonl
-    #@-node:ekr.20061112152012.2:class leoEvent (tkGui)
+    #@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
     #@-others
 #@-node:ekr.20031218072017.4047:@thin leoTkinterGui.py
 #@-leo
