@@ -2349,11 +2349,6 @@ class leoTkinterBody (leoFrame.leoBody):
         self.forceFullRecolorFlag = True
     #@-node:ekr.20031218072017.3999:forceRecolor
     #@+node:ekr.20031218072017.4000:Tk bindings (tkBbody)
-    #@+node:ekr.20031218072017.4001:Bounding box (Tk spelling)
-    def bbox(self,index):
-    
-        return self.bodyCtrl.bbox(index)
-    #@-node:ekr.20031218072017.4001:Bounding box (Tk spelling)
     #@+node:ekr.20031218072017.4002:Color tags (Tk spelling)
     def tag_add (self,tagName,index1,index2):
         self.bodyCtrl.tag_add(tagName,index1,index2)

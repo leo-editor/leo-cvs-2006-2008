@@ -103,7 +103,6 @@ class leoBody:
         'onBodyChanged',
         'scheduleIdleTimeRoutine',
         # Low-level gui...(May be deleted)
-        'bbox',
         'getBodyPaneHeight',
         'getBodyPaneWidth',
         'hasFocus',
@@ -167,7 +166,6 @@ class leoBody:
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): self.oops()
     def scheduleIdleTimeRoutine (self,function,*args,**keys): self.oops()
     # Low-level gui...
-    def bbox(self,index):                           self.oops()
     def getBodyPaneHeight (self):                   self.oops() # return 500
     def getBodyPaneWidth (self):                    self.oops() # return 600
     def hasFocus (self):                            self.oops()
@@ -1151,7 +1149,6 @@ class nullBody (leoBody):
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None): pass
     def scheduleIdleTimeRoutine (self,function,*args,**keys): pass
     # Low-level gui...
-    def bbox(self,index):                       return
     def getBodyPaneHeight (self):               return 500
     def getBodyPaneWidth (self):                return 600
     def hasFocus (self):                        pass
