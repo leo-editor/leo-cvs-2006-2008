@@ -226,15 +226,20 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
 
     if result:
         loadingModuleNameStack.append(moduleName)
-        try:
-            # Indicate success only if init_result is True.
-            init_result = result.init()
-            if init_result:
-                loadedModules[moduleName] = result
-            else:
-                g.es_print('loadOnePlugin: loading module %s failed' % (moduleName),color="red")
+        if hasattr(result,'init'):
+            try:
+                # Indicate success only if init_result is True.
+                init_result = result.init()
+                if init_result:
+                    loadedModules[moduleName] = result
+                else:
+                    g.es_print('loadOnePlugin: loading module %s failed' % (moduleName),color="red")
+                    result = None
+            except Exception:
+                g.es('Exception loading plugin',color='red')
+                g.es_exception()
                 result = None
-        except AttributeError:
+        else:
             # No top-level init function.
             # Guess that the module was loaded correctly.
             loadedModules[moduleName] = result
