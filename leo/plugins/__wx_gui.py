@@ -3,7 +3,7 @@
 #@+node:edream.110203113231.302:@thin __wx_gui.py
 #@@first
 
-"""A plugin to use wxPython as Leo's gui."""
+"""A plugin to use wxWidgets as Leo's gui."""
 
 __version__ = '0.5' # Start of development with Leo 4.4.2 code base and wxWidgets 2.6.3
 
@@ -1253,6 +1253,7 @@ class wxGui(leoGui.leoGui):
             
         self.bitmap_name = None
         self.bitmap = None
+        self.focus_widget = None
         self.leoTextWidgetClass = wxLeoTextWidget
         self.findTabHandler = None
     #@-node:edream.110203113231.307: wxGui.__init__
@@ -1869,7 +1870,7 @@ class wxGui(leoGui.leoGui):
         
         """Returns the widget that has focus, or body if None."""
     
-        return top
+        return self.focus_widget
     #@nonl
     #@-node:edream.110203113231.336:get_focus
     #@+node:edream.110203113231.337:set_focus (wxGui)
@@ -2094,8 +2095,9 @@ class wxLeoBody (leoFrame.leoBody):
         )
     
         # wx.EVT_CHAR(w,self.onKey) # Provides translated keycodes.
-        wx.EVT_KEY_DOWN(w,self.onKeyDown) # Provides raw key codes.
-        wx.EVT_KEY_UP(w,self.onKeyUp) # Provides raw key codes.
+        wx.EVT_KEY_DOWN     (w,self.onKeyDown) # Provides raw key codes.
+        wx.EVT_KEY_UP       (w,self.onKeyUp) # Provides raw key codes.
+        # wx.EVT_SET_FOCUS    (w,self.onFocusIn)
     
         return w
     #@-node:edream.110203113231.542:wxBody.createControl
@@ -2239,6 +2241,12 @@ class wxLeoBody (leoFrame.leoBody):
             if event.keysym: # The key may have been a raw key.
                 self.c.k.masterKeyHandler(event,stroke=event.keysym)
     #@-node:ekr.20061116083454:wxBody.onKeyUp/Down
+    #@+node:ekr.20070125111939:wxBody.onFocuIn
+    # def onFocusIn (self):
+        
+        # g.app.gui.focus_widget = self.bodyCtrl
+    #@nonl
+    #@-node:ekr.20070125111939:wxBody.onFocuIn
     #@+node:ekr.20061116064914:onBodyChanged
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
         
@@ -4039,6 +4047,8 @@ class wxLeoTree (leoFrame.leoTree):
         
         wx.EVT_RIGHT_DOWN           (w,self.onRightDown)
         wx.EVT_RIGHT_UP             (w,self.onRightUp)
+        
+        # wx.EVT_SET_FOCUS            (w,self.onFocusIn)
     #@-node:edream.111603213329:wxTree.createBindings
     #@+node:ekr.20061118142055:wxTree.createControl
     def createControl (self,parentFrame):
@@ -4093,7 +4103,7 @@ class wxLeoTree (leoFrame.leoTree):
     
         return imageList
     #@-node:ekr.20061211050723:wxTree.createImageList
-    #@+node:ekr.20061118122218.1:setBindings (does nothing)
+    #@+node:ekr.20061118122218.1:setBindings
     def setBindings(self):
         
         pass # g.trace('wxLeoTree: to do')
@@ -4102,7 +4112,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         pass # g.trace('wxLeoTree',args,keys)
     #@nonl
-    #@-node:ekr.20061118122218.1:setBindings (does nothing)
+    #@-node:ekr.20061118122218.1:setBindings
     #@-node:edream.111603213219.1:wxTree.__init__
     #@+node:edream.111303202917:Drawing
     #@+node:ekr.20061105114250:drawIcon TO DO
@@ -4572,6 +4582,11 @@ class wxLeoTree (leoFrame.leoTree):
                     self.c.k.masterKeyHandler(event,stroke=event.keysym)
                     event.actualEvent.Skip(False) # Does not work.
     #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
+    #@+node:ekr.20070125111939.1:onFocusIn
+    # def onFocusIn (self):
+        
+        # g.app.gui.focus_widget = self.treeCtrl
+    #@-node:ekr.20070125111939.1:onFocusIn
     #@-node:edream.110203113231.278:Event handlers (wxTree)
     #@+node:edream.111403093559:Focus (wxTree)
     def focus_get (self):
@@ -5456,6 +5471,5 @@ class wxLeoHealineTextWidget:
 #@nonl
 #@-node:ekr.20070125074101:wxLeoHeadlineTextWidget class
 #@-others
-#@nonl
 #@-node:edream.110203113231.302:@thin __wx_gui.py
 #@-leo

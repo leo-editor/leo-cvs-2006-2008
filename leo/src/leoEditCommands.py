@@ -3296,7 +3296,7 @@ class editCommandsClass (baseEditCommandsClass):
                     n = min(self.moveCol,max(0,len(line)-1))
                 else:
                     n = min(self.moveCol,max(0,len(line))) # A tricky boundary.
-                g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
+                # g.trace('using moveCol',self.moveCol,'line',repr(line),'n',n)
                 spot = g.convertRowColToPythonIndex(s,row,n)
             else:  # Plain move forward or back.
                 # g.trace('plain forward/back move')
