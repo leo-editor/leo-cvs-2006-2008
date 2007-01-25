@@ -2097,7 +2097,7 @@ class wxLeoBody (leoFrame.leoBody):
         # wx.EVT_CHAR(w,self.onKey) # Provides translated keycodes.
         wx.EVT_KEY_DOWN     (w,self.onKeyDown) # Provides raw key codes.
         wx.EVT_KEY_UP       (w,self.onKeyUp) # Provides raw key codes.
-        # wx.EVT_SET_FOCUS    (w,self.onFocusIn)
+        wx.EVT_SET_FOCUS    (w,self.onFocusIn)
     
         return w
     #@-node:edream.110203113231.542:wxBody.createControl
@@ -2242,9 +2242,9 @@ class wxLeoBody (leoFrame.leoBody):
                 self.c.k.masterKeyHandler(event,stroke=event.keysym)
     #@-node:ekr.20061116083454:wxBody.onKeyUp/Down
     #@+node:ekr.20070125111939:wxBody.onFocuIn
-    # def onFocusIn (self):
+    def onFocusIn (self,event=None):
         
-        # g.app.gui.focus_widget = self.bodyCtrl
+        g.app.gui.focus_widget = self.bodyCtrl
     #@nonl
     #@-node:ekr.20070125111939:wxBody.onFocuIn
     #@+node:ekr.20061116064914:onBodyChanged
@@ -2300,6 +2300,7 @@ class wxLeoFrame(leoFrame.leoFrame):
         self.focusWidget = None
         self.iconBar = None
         self.iconBarClass = wxLeoIconBar
+        self.killed = False
         self.lockout = 0 # Suppress further events
         self.quitting = False
         self.updateCount = 0
@@ -2491,6 +2492,7 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@+node:edream.111503213533:destroySelf
     def destroySelf(self):
         
+        self.killed = True
         self.top.Destroy()
     #@nonl
     #@-node:edream.111503213533:destroySelf
@@ -3496,6 +3498,7 @@ class wxLeoMenu (leoMenu.leoMenu):
     """A class that represents a wxPython Leo window."""
     
     #@    @+others
+    #@+node:ekr.20070125124900:Birth
     #@+node:edream.111303095242.3:  wxLeoMenu.__init__
     def __init__ (self,frame):
         
@@ -3548,7 +3551,7 @@ class wxLeoMenu (leoMenu.leoMenu):
         table = wx.AcceleratorTable(entries)
         self.menuBar.SetAcceleratorTable(table)
     #@-node:ekr.20061118194416:createAcceleratorTables
-    #@+node:edream.111303103457:wx menu bindings
+    #@-node:ekr.20070125124900:Birth
     #@+node:ekr.20061106062514:Not called
     #@+node:edream.111303103141.1:bind (Not called)
     def bind (self,bind_shortcut,callback):
@@ -3573,12 +3576,6 @@ class wxLeoMenu (leoMenu.leoMenu):
         ## menu.destroy()
     #@nonl
     #@-node:edream.111303103141.4:destroy (not called ?)
-    #@+node:ekr.20070124111252:insert (not called)
-    def insert (self,*args,**keys):
-    
-        g.trace('wxMenu: to do',args,keys)
-    #@nonl
-    #@-node:ekr.20070124111252:insert (not called)
     #@-node:ekr.20061106062514:Not called
     #@+node:edream.111603104327:Menu methods (Tk names)
     #@+node:edream.111303111942.1:add_cascade
@@ -3599,6 +3596,12 @@ class wxLeoMenu (leoMenu.leoMenu):
             self.menuBar.Append(menu,label)
             
     #@-node:edream.111303111942.1:add_cascade
+    #@+node:ekr.20070124111252:insert (TO DO)
+    def insert (self,*args,**keys):
+    
+        pass # g.trace('wxMenu: to do',args,keys)
+    #@nonl
+    #@-node:ekr.20070124111252:insert (TO DO)
     #@+node:edream.111303103141:menu.add_command
     def add_command (self,menu,**keys):
         
@@ -3834,7 +3837,6 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@nonl
     #@-node:edream.111303163727.3:setMenuLabel
     #@-node:edream.111603112846:Menu methods (non-Tk names)
-    #@-node:edream.111303103457:wx menu bindings
     #@-others
 #@nonl
 #@-node:edream.111303095242:wxLeoMenu class
@@ -3919,7 +3921,8 @@ class wxStatusLineClass:
     #@+node:ekr.20070112173627.2:clear
     def clear (self):
         
-        self.w.SetStatusText('')
+        if not self.c.frame.killed:
+            self.w.SetStatusText('')
     #@-node:ekr.20070112173627.2:clear
     #@+node:ekr.20070112173627.3:enable, disable & isEnabled
     def disable (self,background=None):
@@ -3947,12 +3950,18 @@ class wxStatusLineClass:
     #@+node:ekr.20070112173627.4:get
     def get (self):
         
-        return self.w.GetStatusText()
+        if self.c.frame.killed:
+            return ''
+        else:
+            return self.w.GetStatusText()
     #@-node:ekr.20070112173627.4:get
     #@+node:ekr.20070112173627.5:getFrame
     def getFrame (self):
         
-        return self.statusFrame
+        if self.c.frame.killed:
+            return None
+        else:
+            return self.statusFrame
     #@-node:ekr.20070112173627.5:getFrame
     #@+node:ekr.20070112173627.6:onActivate
     def onActivate (self,event=None):
@@ -3969,7 +3978,9 @@ class wxStatusLineClass:
     def put(self,s,color=None):
         
         w = self.w
-        w.SetStatusText(w.GetStatusText() + s)
+        
+        if not self.c.frame.killed:
+            w.SetStatusText(w.GetStatusText() + s)
     #@-node:ekr.20070112173627.8:put (leoTkinterFrame:statusLineClass)
     #@+node:ekr.20070112173627.9:unpack & hide
     def unpack (self):
@@ -3982,7 +3993,7 @@ class wxStatusLineClass:
         
         c = self.c ; bodyCtrl = c.frame.body.bodyCtrl
     
-        if g.app.killed or not self.isVisible:
+        if g.app.killed or not self.isVisible or self.c.frame.killed:
             return
     
         s = bodyCtrl.getAllText()    
@@ -4048,7 +4059,7 @@ class wxLeoTree (leoFrame.leoTree):
         wx.EVT_RIGHT_DOWN           (w,self.onRightDown)
         wx.EVT_RIGHT_UP             (w,self.onRightUp)
         
-        # wx.EVT_SET_FOCUS            (w,self.onFocusIn)
+        wx.EVT_SET_FOCUS            (w,self.onFocusIn)
     #@-node:edream.111603213329:wxTree.createBindings
     #@+node:ekr.20061118142055:wxTree.createControl
     def createControl (self,parentFrame):
@@ -4583,9 +4594,9 @@ class wxLeoTree (leoFrame.leoTree):
                     event.actualEvent.Skip(False) # Does not work.
     #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
     #@+node:ekr.20070125111939.1:onFocusIn
-    # def onFocusIn (self):
+    def onFocusIn (self,event=None):
         
-        # g.app.gui.focus_widget = self.treeCtrl
+        g.app.gui.focus_widget = self.treeCtrl
     #@-node:ekr.20070125111939.1:onFocusIn
     #@-node:edream.110203113231.278:Event handlers (wxTree)
     #@+node:edream.111403093559:Focus (wxTree)
@@ -5088,6 +5099,12 @@ class wxLeoTextWidget (wx.TextCtrl):
         aList = [w.toPythonIndex(z) for z in aList]
         return tuple(aList)
     #@-node:ekr.20061115122034.8:tag_ranges 
+    #@+node:ekr.20070125125400:update
+    def update (self,*args,**keys):
+        
+        pass
+    #@nonl
+    #@-node:ekr.20070125125400:update
     #@-node:ekr.20061115122034.2:Wrapper methods
     #@+node:ekr.20061115122034.9:Convenience methods (tkTextWidget)
     # These have no direct Tk equivalents.  They used to be defined in the gui class.
@@ -5250,13 +5267,13 @@ class wxLeoHealineTextWidget:
     
     #@    @+others
     #@+node:ekr.20070125074101.2:Birth & special methods
-    def __init__ (self,treeCtrl,id):
+    def __init__ (self,treeCtrl,tree_id):
     
         self.tree = treeCtrl
-        self.init(id)
+        self.init(tree_id)
         
-    def init (self,id):
-        self.tree_id = id
+    def init (self,tree_id):
+        self.tree_id = tree_id
         self.ins = 0
         self.sel = 0,0
     
@@ -5279,6 +5296,8 @@ class wxLeoHealineTextWidget:
     def tag_delete (self,tagName,*args,**keys):     pass
     def tag_ranges(self,tagName):                   return (0,0)
     def tag_remove(self,tagName,i,j=None,*args):    pass
+    
+    def update(self,*args,**keys):                  pass
     #@-node:ekr.20070125075903:Do-nothing methods
     #@+node:ekr.20070125074101.3:Index conversion
     #@+node:ekr.20070125074101.4:w.toGuiIndex & toPythonIndex

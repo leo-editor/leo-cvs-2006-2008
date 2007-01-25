@@ -63,10 +63,6 @@ def createPasteAsHeadlinesMenu (tag,keywords):
         label = index_label,
         underline = amp_index,
         command = lambda c = c: paste_as_headlines(c))
-
-    if 0: # old code
-        exportMenu = c.frame.menu.getMenu('Edit')
-        exportMenu.insert(6,'command',label=index_label,underline=amp_index,command=lambda c=c: paste_as_headlines(c))
 #@-node:danr7.20060912105041.5:createPasteAsHeadlinesMenu
 #@+node:danr7.20060912105041.6:paste_as_headlines
 def paste_as_headlines(c):
