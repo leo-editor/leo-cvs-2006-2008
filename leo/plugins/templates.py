@@ -32,7 +32,7 @@ This plugin requires the simplified atFile write code that is new in 4.2.1.
 #@@language python 
 #@@tabwidth -4
 
-__version__ = ".3"
+__version__ = ".4"
 #@<<version history>>
 #@+node:ekr.20041109171952:<< version history >>
 #@@killcolor 
@@ -44,10 +44,10 @@ __version__ = ".3"
 # - Added some possibly redundant "global"statements.
 # - Bind dialog, efs and values using keyword params in action callback.
 #     This is not strictly necessary, and I think it is clearer.
-# 
 # 0.3 EKR:
 #     - Changed 'new_c' logic to 'c' logic.
 #     - Replaced 'start2' hook with 'new' hook.
+# 0.4 EKR: Added init function.
 #@-at
 #@nonl
 #@-node:ekr.20041109171952:<< version history >>
@@ -92,6 +92,22 @@ tempwizPI = Tkinter.PhotoImage(data=tempwiz)
 #@nl
 
 #@+others
+#@+node:ekr.20070125124515:init
+def init ():
+
+    if not import_succeed: # OK for unit testing.
+        return False
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+    if g.app.gui.guiName() != "tkinter":
+        return False
+
+    leoPlugins.registerHandler("after-create-leo-frame",addButtons)
+    leoPlugins.registerHandler("after-redraw-outline",drawImages)
+    leoPlugins.registerHandler(("new","open2"),scanForTemplates)
+    g.plugin_signon(__name__)
+    return True
+#@-node:ekr.20070125124515:init
 #@+node:mork.20041022093042:getSelectDialog
 def getSelectDialog (c):
     
@@ -364,12 +380,5 @@ def scanForTemplates (tag,keywords):
 #@nonl
 #@-node:mork.20041022122959:scanForTemplates
 #@-others
-
-if import_succeed: # OK for unit testing.
-    leoPlugins.registerHandler("after-create-leo-frame",addButtons)
-    leoPlugins.registerHandler("after-redraw-outline",drawImages)
-    leoPlugins.registerHandler(("new","open2"),scanForTemplates)
-    g.plugin_signon(__name__)
-#@nonl
 #@-node:mork.20041022090036.1:@thin templates.py
 #@-leo
