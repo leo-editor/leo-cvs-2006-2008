@@ -1869,7 +1869,6 @@ class wxGui(leoGui.leoGui):
         
         """Returns the widget that has focus, or body if None."""
     
-        g.trace(top)
         return top
     #@nonl
     #@-node:edream.110203113231.336:get_focus
@@ -3569,7 +3568,7 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@+node:ekr.20070124111252:insert (not called)
     def insert (self,*args,**keys):
     
-        g.trace('wxMenu',args,keys)
+        g.trace('wxMenu: to do',args,keys)
     #@nonl
     #@-node:ekr.20070124111252:insert (not called)
     #@-node:ekr.20061106062514:Not called
@@ -4006,6 +4005,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         c = self.c
         self.canvas = self # A dummy ivar used in c.treeWantsFocus, etc.
+        self.editWidgetDict = {} # Keys are tnodes, values are leoHeadlineTextWidgets.
         self.imageList = None
         self.keyDownModifiers = None
         self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
@@ -4166,6 +4166,8 @@ class wxLeoTree (leoFrame.leoTree):
         if p == self.c.currentPosition():
             tree.SelectItem(id) # Generates call to onTreeChanged.
         
+        p.tree_id = id
+        self.setEditWidget(p)
         assert (p == tree.GetItemData(id).GetData())
         return id
     #@-node:edream.110203113231.299:redraw_node
@@ -4209,6 +4211,8 @@ class wxLeoTree (leoFrame.leoTree):
         if p == self.c.currentPosition():
             tree.SelectItem(id) # Generates call to onTreeChanged.
         
+        p.tree_id = id
+        self.setEditWidget(p)
         assert (p == tree.GetItemData(id).GetData())
         return id
     #@-node:edream.110203113231.299:redraw_node
@@ -4242,11 +4246,11 @@ class wxLeoTree (leoFrame.leoTree):
     #@+node:ekr.20061211072604:edit_widget
     def edit_widget (self,p):
         
+        '''Return a widget (compatible with leoTextWidget) used for editing the headline.'''
         
-        '''A do-nothing method required for compatibility with Tkinter gui code.'''
+        w = self.editWidgetDict.get(p.v)
         
-        return None
-    #@nonl
+        return w
     #@-node:ekr.20061211072604:edit_widget
     #@+node:ekr.20061211115055:updateVisibleIcons
     def updateVisibleIcons (self,p):
@@ -4747,7 +4751,35 @@ class wxLeoTree (leoFrame.leoTree):
                 break
             id = tree.GetNextVisible(id)
     #@-node:ekr.20050719121701.3:editLabel
+    #@+node:ekr.20070125091308:setEditWidget
+    def setEditWidget (self,p):
+        
+        w = self.editWidgetDict.get(p.v)
+    
+        if w:
+            w.init(id)
+        else:
+            # g.trace(p.headString())
+            w = wxLeoHealineTextWidget(self.treeCtrl,id)
+            self.editWidgetDict[p.v] = w
+    
+        p.edit_widget = w
+    #@-node:ekr.20070125091308:setEditWidget
     #@-node:ekr.20050719121701:Selection
+    #@+node:ekr.20070125093538:tree.setHeadline (new in 4.4b2)
+    def setHeadline (self,p,s):
+        
+        '''Set the actual text of the headline widget.
+        
+        This is called from the undo/redo logic to change the text before redrawing.'''
+        
+        w = self.c.edit_widget(p)
+        if w:
+            w.setAllText(s)
+            self.revertHeadline = s
+        else:
+            g.trace('-'*20,'oops')
+    #@-node:ekr.20070125093538:tree.setHeadline (new in 4.4b2)
     #@+node:ekr.20070123145604:tree.set...LabelState
     def setEditLabelState (self,p,selectAll=False):     pass
     def setSelectedLabelState (self,p):                 pass
@@ -4898,8 +4930,6 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@-node:ekr.20061117150523:w.rowColToGuiIndex
     #@-node:ekr.20061105125717:Index conversion
     #@+node:ekr.20061115122034.2:Wrapper methods
-    #@+node:ekr.20070124101250:bbox
-    #@-node:ekr.20070124101250:bbox
     #@+node:ekr.20061116070156:bind
     def bind (self,kind,*args,**keys):
         
@@ -5198,6 +5228,233 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@-others
 #@nonl
 #@-node:ekr.20061115122034:wxLeoTextWidget class
+#@+node:ekr.20070125074101:wxLeoHeadlineTextWidget class
+class wxLeoHealineTextWidget:
+    
+    '''A class to make a wxWidgets headline look like a wxLeoTextWidget.'''
+    
+    #@    @+others
+    #@+node:ekr.20070125074101.2:Birth & special methods
+    def __init__ (self,treeCtrl,id):
+    
+        self.tree = treeCtrl
+        self.init(id)
+        
+    def init (self,id):
+        self.tree_id = id
+        self.ins = 0
+        self.sel = 0,0
+    
+    def __repr__(self):
+        return 'wxLeoHeadlineTextWidget: %s' % (id(self))
+    #@-node:ekr.20070125074101.2:Birth & special methods
+    #@+node:ekr.20070125075903:Do-nothing methods
+    def bind (self,kind,*args,**keys):              pass
+    
+    def cget (self,*args,**keys):                   pass
+    def configure(self,*args,**keys):               pass
+    
+    def mark_set(self,markName,i):                  pass
+    
+    def see(self,index):                            pass
+    def seeInsertPoint(self):                       pass
+    
+    def tag_add(self,tagName,i,j=None,*args):       pass
+    def tag_configure (self,colorName,**keys):      pass
+    def tag_delete (self,tagName,*args,**keys):     pass
+    def tag_ranges(self,tagName):                   return (0,0)
+    def tag_remove(self,tagName,i,j=None,*args):    pass
+    #@-node:ekr.20070125075903:Do-nothing methods
+    #@+node:ekr.20070125074101.3:Index conversion
+    #@+node:ekr.20070125074101.4:w.toGuiIndex & toPythonIndex
+    # This plugin uses Python indices everywhere.
+    
+    def toPythonIndex (self,index):
+        
+        w = self ; id = w.tree_id ; tree = w.tree
+    
+        if type(index) == type(99):
+            return index
+        elif index == '1.0':
+            return 0
+        elif index == 'end':
+            s = tree.GetItemText(id)
+            return len(s)
+        else:
+            s = tree.GetItemText(id)
+            row,col = index.split('.')
+            row,col = int(row),int(col)
+            row -= 1
+            i = g.convertRowColToPythonIndex(s,row,col)
+            return index
+    
+    toGuiIndex = toPythonIndex
+    #@nonl
+    #@-node:ekr.20070125074101.4:w.toGuiIndex & toPythonIndex
+    #@+node:ekr.20070125074101.5:w.rowColToGuiIndex
+    # This method is called only from the colorizer.
+    # It provides a huge speedup over naive code.
+    
+    def rowColToGuiIndex (self,s,row,col):
+    
+        return g.convertRowColToPythonIndex(s,row,col)    
+    #@-node:ekr.20070125074101.5:w.rowColToGuiIndex
+    #@-node:ekr.20070125074101.3:Index conversion
+    #@+node:ekr.20070125074101.6:Wrapper methods
+    #@+node:ekr.20070125074101.9:delete
+    def delete (self,i,j=None):
+    
+        w = self
+        s = w.getAllText()
+        i = w.toPythonIndex(i)
+        if j is None: j = i + 1
+        j = w.toPythonIndex(j)
+    
+        w.setAllText(s[:i]+s[j:])
+        w.ins = i
+        w.sel = i,i
+    #@-node:ekr.20070125074101.9:delete
+    #@+node:ekr.20070125074101.20:deleteTextSelection
+    def deleteTextSelection (self):
+        
+        w = self
+        if w.hasSelection():
+            i,j = w.sel
+            s = w.getAllText()
+            s = s[:i] + s[j:]
+            w.setAllText(s)
+            w.ins = i
+            w.sel = i,i
+    #@-node:ekr.20070125074101.20:deleteTextSelection
+    #@+node:ekr.20070125074101.21:flashCharacter (to do)
+    def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75):
+    
+        w = self
+    #@-node:ekr.20070125074101.21:flashCharacter (to do)
+    #@+node:ekr.20070125074101.10:get
+    def get(self,i,j=None):
+        
+        w = self
+        s = w.getAllText()
+        i = w.toPythonIndex(i)
+        if j is None: j = i+1
+        j = w.toPythonIndex(j)
+    
+        return g.toUnicode(s[i:j],g.app.tkEncoding)
+    #@-node:ekr.20070125074101.10:get
+    #@+node:ekr.20070125074101.22:getAllText
+    def getAllText (self):
+        
+        w = self
+    
+        s = w.tree.GetItemText(w.tree_id)
+    
+        if s is None:
+            return u""
+        else:
+            return g.toUnicode(s,g.app.tkEncoding)
+    #@nonl
+    #@-node:ekr.20070125074101.22:getAllText
+    #@+node:ekr.20070125074101.23:getInsertPoint
+    def getInsertPoint(self):
+        
+        w = self
+        return w.ins
+    #@nonl
+    #@-node:ekr.20070125074101.23:getInsertPoint
+    #@+node:ekr.20070125074101.24:getSelectedText
+    def getSelectedText (self):
+        
+        w = self
+    
+        if w.hasSelection():
+            i,j = w.sel
+            s = w.getAllText()
+            return s[i:j]
+        else:
+            return u''
+    #@-node:ekr.20070125074101.24:getSelectedText
+    #@+node:ekr.20070125074101.25:getSelectionRange
+    def getSelectionRange (self,sort=True):
+        
+        """Return a tuple representing the selected range of the widget.
+        
+        Return a tuple giving the insertion point if no range of text is selected."""
+        
+        w = self
+        i,j = w.sel ; ins = w.ins
+    
+        if i == j:
+            return ins,ins
+        else:
+            return i,j
+    #@-node:ekr.20070125074101.25:getSelectionRange
+    #@+node:ekr.20070125074101.26:hasSelection
+    def hasSelection (self):
+        
+        w = self
+        i,j = w.sel
+        return i != j
+    #@-node:ekr.20070125074101.26:hasSelection
+    #@+node:ekr.20070125074101.11:insert
+    # The signature is more restrictive than the Tk.Text.insert method.
+    
+    def insert(self,i,s2):
+        
+        w = self
+        s = w.getAllText()
+        i = w.toPythonIndex(i)
+    
+        w.setAllText(s[:i] + s2 + s[i:])
+        j = i + len(s2)
+        w.ins = j
+        w.sel = j,j
+    #@-node:ekr.20070125074101.11:insert
+    #@+node:ekr.20070125074101.27:replace
+    def replace (self,i,j,s):
+        
+        w = self
+        w.delete(i,j)
+        w.insert(i,s)
+    #@-node:ekr.20070125074101.27:replace
+    #@+node:ekr.20070125074101.28:selectAllText
+    def selectAllText (self,insert=None):
+        
+        '''Select all text of the widget.'''
+    
+        w = self
+        s = w.getAllText()
+        w.sel = 0,len(s)
+    #@nonl
+    #@-node:ekr.20070125074101.28:selectAllText
+    #@+node:ekr.20070125074101.29:setAllText
+    def setAllText (self,s):
+    
+        w = self
+        g.trace(repr(w.tree_id))
+        w.tree.SetItemText(w.tree_id,s)
+    #@-node:ekr.20070125074101.29:setAllText
+    #@+node:ekr.20070125074101.31:setInsertPoint
+    def setInsertPoint (self,pos):
+        
+        w = self
+        w.ins = w.toPythonIndex(pos)
+    #@-node:ekr.20070125074101.31:setInsertPoint
+    #@+node:ekr.20070125074101.32:setSelectionRange
+    def setSelectionRange (self,i,j,insert=None):
+        
+        w = self
+        w.sel = w.toPythonIndex(i),w.toPythonIndex(j)
+        if insert is not None:
+            w.ins = w.toPythonIndex(insert)
+    #@-node:ekr.20070125074101.32:setSelectionRange
+    #@-node:ekr.20070125074101.6:Wrapper methods
+    #@-others
+    
+
+    
+#@nonl
+#@-node:ekr.20070125074101:wxLeoHeadlineTextWidget class
 #@-others
 #@nonl
 #@-node:edream.110203113231.302:@thin __wx_gui.py

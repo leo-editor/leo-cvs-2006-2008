@@ -492,9 +492,9 @@ def moveUpOrDownHelper (self,event,direction,extend):
         i2,j2 = g.getLine(s,i-1)
 
     # The spot is the start of the line plus the column index.
-    col2 = min(col,j2)
+    col2 = max(0,min(col,j2-i2-1))
     spot = i2 + col2
-    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+    # g.trace('spot',spot,'col',col,'line',repr(s[i2:j2]))
 
     self.extendHelper(w,extend,spot,upOrDown=True)
 #@nonl
@@ -1243,9 +1243,9 @@ def moveUpOrDownHelper (self,event,direction,extend):
         i2,j2 = g.getLine(s,i-1)
 
     # The spot is the start of the line plus the column index.
-    col2 = min(col,j2)
+    col2 = max(0,min(col,j2-i2-1))
     spot = i2 + col2
-    # g.trace('spot',spot,'line',repr(s[i2:j2]))
+    # g.trace('spot',spot,'col',col,'line',repr(s[i2:j2]))
 
     self.extendHelper(w,extend,spot,upOrDown=True)
 #@nonl

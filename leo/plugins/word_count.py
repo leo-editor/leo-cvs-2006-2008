@@ -48,15 +48,17 @@ def createWordCountMenu (tag,keywords):
     c = keywords.get("c")
 
     # Get reference to current File > Export... menu
-    exportMenu = c.frame.menu.getMenu('Edit')
+    
     # Use code to find index of menu shortcut
     index_label = '&Word Count...'
     # Find index position of ampersand -- index is how shortcut is defined
     amp_index = index_label.find("&")
     # Eliminate ampersand from menu item text
     index_label = index_label.replace("&","")
-    # Add 'Word Count...' to the bottom of the Edit menu.  
-    exportMenu.add('command',label=index_label,underline=amp_index,command= lambda c = c : word_count(c))
+    # Add 'Word Count...' to the bottom of the Edit menu.
+    menu = c.frame.menu.getMenu('Edit')
+    c.frame.menu.add_command(menu,label=index_label,underline=amp_index,command= lambda c = c : word_count(c))
+    # menu.add('command',label=index_label,underline=amp_index,command= lambda c = c : word_count(c))
 #@-node:danr7.20061010105952.5:createWordCountMenu
 #@+node:danr7.20061010105952.6:word_count
 def word_count( c ):
