@@ -40,7 +40,7 @@ def callTagHandler (bunch,tag,keywords):
             if c:
                 # Make sure c exists and has a frame.
                 if not c.exists or not hasattr(c,'frame'):
-                    print 'skipping tag: c does not exists or does not have a frame.'
+                    print 'skipping tag %s: c does not exists or does not have a frame.' % tag
                     return None
 
     # Calls to registerHandler from inside the handler belong to moduleName.
@@ -241,8 +241,14 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
                 result = None
         else:
             # No top-level init function.
-            # Guess that the module was loaded correctly.
-            loadedModules[moduleName] = result
+            # Guess that the module was loaded correctly,
+            # but do *not* load the plugin if we are unit testing.
+            g.trace('no init()',moduleName)
+            if g.app.unitTesting:
+                result = None
+                loadedModules[moduleName] = None
+            else:
+                loadedModules[moduleName] = result
         loadingModuleNameStack.pop()
         
     if result is None:
