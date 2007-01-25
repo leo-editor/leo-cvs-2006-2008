@@ -780,6 +780,31 @@ for key in keys:
                     print '%20s %s' % (z,p.headString())
 #@nonl
 #@-node:Find entries in k.guiBindNamesDict
+#@+node:find w.xxx
+import string
+words = {}
+word_chars = string.ascii_letters + string.digits + '_'
+p = g.findTopLevelNode(c,'Code')
+for p in p.self_and_subtree_iter():
+    s = p.bodyString()
+    i = 0
+    while 1:
+        j = s.find('w.',i)
+        if j == -1: break
+        ch = s[j-1]
+        if j == 0 or ch not in word_chars:
+            j += 2
+            k = g.skip_c_id(s,j)
+            word = s[j:k]
+            words[word] = word
+            i = k
+        else:
+            i += 2
+keys = words.keys()
+keys.sort()
+print g.listToString(keys)
+#@nonl
+#@-node:find w.xxx
 #@-node:Find scripts
 #@+node:Fun...
 #@+node:Drawing experiments
