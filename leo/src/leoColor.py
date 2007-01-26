@@ -2430,7 +2430,7 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
     def doNowebSecRef (self,s,i):
     
-        c = self.c ; w = c.frame.body.bodyCtrl
+        c = self.c
         self.tag("nameBrackets",i,i+2)
         
         # See if the line contains the right name bracket.

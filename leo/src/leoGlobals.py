@@ -107,8 +107,9 @@ def createTopologyList (c,root=None,useHeadlines=False):
 #@+node:ekr.20041117155521:computeGlobalConfigDir
 def computeGlobalConfigDir():
     
-    # None of these suppresses warning about sys.leo_config_directory
-    # __pychecker__ = '--no-objattrs --no-modulo1 --no-moddefvalue'
+    # Suppresses warning about sys.leo_config_directory
+    #__pychecker__ = '--limit = 0'
+    #__pychecker__ = '--no-classattr --no-objattrs'
     
     import leoGlobals as g
     
@@ -2184,7 +2185,6 @@ def printGcSummary (message='',trace=False):
 def printGcAll (message=''):
 
     # Suppress warning about keywords arg not supported in sort.
-    __pychecker__ = '--no-errors' # suppress all pychecker errors.
     
     if not message:
         message = g._callerName(n=2)
@@ -3927,7 +3927,8 @@ except Exception:
         #@+node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
         # On Unix, if CODESET is available, use that.
         
-        __pychecker__ = '--no-noeffect' # Note: this is at the top level!
+        # __pychecker__ = '--limit=0' # Note: this is at the top level!
+        #__pychecker__ = '--varlist=[CODESET]'
         
         try:
             locale.CODESET # Bug fix, 2/12/05
@@ -3955,6 +3956,8 @@ except Exception:
                         return locale.nl_langinfo(CODESET)
                 except:
                     return None
+                    
+        ###__pychecker__ = '--limit=2000' # Note: this is at the top level!
         #@-node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
         #@nl
         
@@ -4485,6 +4488,8 @@ class mulderUpdateAlgorithm:
         Set the target file's modification time to
         that of the source file.
         """
+        
+        ###__pychecker__ = '--limit=0' # Suppress warning about mtime.
     
         st = os.stat(sourcefilename)
     
@@ -5108,6 +5113,8 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
     return script
 #@+node:ekr.20050211100535:test_g_getScript_strips_crlf
 def test_g_getScript_strips_crlf():
+    
+    # __pychecker__ = '--limit=0' # Suppress warnings about c & p.
 
     script = g.getScript(c,p) # This will get the text of this node.
     assert script.find('\r\n') == -1, repr(script)

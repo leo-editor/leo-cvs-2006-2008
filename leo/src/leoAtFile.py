@@ -3902,6 +3902,8 @@ class atFile:
     #@+node:ekr.20050608103755:test_directiveKind4
     def test_directiveKind4 (self):
         
+        __pychecker__ = '--limit = 0'
+        
         at=c.atFileCommands # Self is a dummy argument.
         import leoColor
         table = [

@@ -1891,7 +1891,6 @@ class leoTkinterBody (leoFrame.leoBody):
     def createTextWidget (self,frame,parentFrame,p,name):
         
         # pychecker complains that there is no leo_p attribute.
-        __pychecker__ = '--no-errors' # suppress all pychecker errors.
         
         c = self.c
         
