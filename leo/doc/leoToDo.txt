@@ -41,6 +41,91 @@ TclError: bad window path name ".14557752.18889184.18889584.21763816.21764336"
     y_root: ??
 
 #@-node:ekr.20070124091018:Recent crash
+#@+node:ekr.20070125103950:Calls to w.xxx
+# Ok
+'_name'
+'delete'
+'deleteTextSelection'
+'flashCharacter'
+'clipboard_append'
+'clipboard_clear'
+'focus_force'
+'focus_set'
+'get'
+'getAllText'
+'getInsertPoint'
+'getName'
+'getSelectedText'
+'getSelectionRange'
+'hasSelection'
+'insert'
+'replace'
+'rowColToGuiIndex'
+'seeInsertPoint'
+'selectAllText'
+'setAllText'
+'setInsertPoint'
+'setSelectionRange'
+'toGuiIndex'
+'toPythonIndex'
+'xyToPythonIndex'
+
+# Ok: in leoTkinterTree.
+'leo_active'
+'leo_frame'
+'leo_insertSpot'
+'leo_label'
+'leo_label_s'
+'leo_name'
+'leo_p'
+'leo_position'
+'leo_scrollBarSpot'
+'leo_selection'
+'leo_v'
+'leo_window_id'
+
+# Ok only if in tk-specific files.
+'bind'
+'bind_all'
+'bind_class'
+'bindtags'
+'button'
+'columnconfigure'
+'compare'
+'dlineinfo'
+'event_generate'
+'grid'
+'image_create'
+'index'
+'mark_set'
+'pack'
+'pack_forget'
+'rowconfigure'
+'search'
+'see'
+'selection_clear'
+'selection_get'
+'tag_add'
+'tag_bind'
+'tag_config'
+'tag_delete'
+'tag_names'
+'tag_ranges'
+'update'
+'update_idletasks'
+'winfo_id'
+'winfo_toplevel'
+'wm_iconbitmap'
+'yview'
+
+# To be removed outside of tk-specific files.
+'cget'
+'config'
+'configure'
+#@nonl
+#@-node:ekr.20070125103950:Calls to w.xxx
+#@+node:ekr.20070125102904.1:remove w.configure & w.cget from Leo's core
+#@-node:ekr.20070125102904.1:remove w.configure & w.cget from Leo's core
 #@+node:ekr.20061130084909:Improve What's special whitepaper
 @nocolor
 
@@ -1960,6 +2045,61 @@ hide = unpack
 #@+node:ekr.20061213073718.1:Alt-D does not work when outline selected
 #@-node:ekr.20061213073718.1:Alt-D does not work when outline selected
 #@-node:ekr.20070105120506:Bugs in wx plugin
+#@+node:ekr.20070126072723:pychecker errors 3
+#leoGlobals.py:3933: No module attribute (CODESET) found
+#leoGlobals.py:118: No module attribute (leo_config_directory) found
+#leoGlobals.py:4494: No module attribute (mtime) found
+#leoGlobals.py:5112: No global (p) found
+#leoGlobals.py:5626: No global (c) found
+
+leoFind.py:1465: Redefining attribute (changeAllCommand) original line (1454)
+
+leoFind.py:248: No class attribute (svarDict) found
+leoFind.py:253: No class attribute (find_ctrl) found
+leoFind.py:254: No class attribute (change_ctrl) found
+leoFind.py:257: No class attribute (change_ctrl) found
+leoFind.py:257: No class attribute (find_ctrl) found
+leoFind.py:272: No class attribute (svarDict) found
+leoFind.py:274: No class attribute (svarDict) found
+leoFind.py:277: No class attribute (svarDict) found
+leoFind.py:285: No class attribute (svarDict) found
+leoFind.py:287: No class attribute (svarDict) found
+leoFind.py:290: No class attribute (svarDict) found
+leoFind.py:1109: No class attribute (find_ctrl) found
+leoFind.py:1128: No class attribute (frame) found
+leoFind.py:1358: No class attribute (svarDict) found
+leoFind.py:1362: No class attribute (svarDict) found
+leoFind.py:1369: No class attribute (find_ctrl) found
+leoFind.py:1376: No class attribute (change_ctrl) found
+leoFind.py:1412: Invalid arguments to (createFrame), got 1, expected 0
+
+leoKeys.py:1177: Local variable (b) not used
+leoKeys.py:2364: No module attribute (initAllEditCommanders) found
+leoKeys.py:2927: Local variable (gui) not used
+leoKeys.py:3756: No global (c) found
+leoFind.py:1398: No module attribute (__init__) found
+
+leoTkinterFind.py:389: Overridden method (createFrame) doesn't match signature in class (leoFind.findTab)
+
+leoTkinterMenu.py:145: Overridden method (insert) doesn't match signature in class (leoMenu.leoMenu)
+
+leoTkinterFrame.py:1944: Object (body) has no attribute (leo_p)
+
+leoTkinterGui.py:444: Overridden method (eventChar) doesn't match signature in class (leoGui.leoGui)
+leoTkinterGui.py:448: Overridden method (eventKeysym) doesn't match signature in class (leoGui.leoGui)
+leoTkinterGui.py:452: Overridden method (eventWidget) doesn't match signature in class (leoGui.leoGui)
+leoTkinterGui.py:456: Overridden method (eventXY) doesn't match signature in class (leoGui.leoGui)
+
+leoEditCommands.py:1110: Local variable (pythonDir) not used
+leoEditCommands.py:1484: Local variable (gui) not used
+leoEditCommands.py:4888: No global (c) found
+
+leoEditCommands.py:7637: Local variable (gui) not used
+leoFileCommands.py:2307: No global (c) found
+
+leoImport.py:1317: Global variable (c) not defined in module scope
+
+#@-node:ekr.20070126072723:pychecker errors 3
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070105135713:To do: 4.4.4 (new positions)
 #@+node:ekr.20070105135851.1:Most important

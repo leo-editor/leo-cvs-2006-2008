@@ -30002,7 +30002,7 @@ script will print every headline in the Leo outline in which the script occurs.
     for z in c.allNodes_iter():
         print z.headString()
 </t>
-<t tx="ekr.20070122070619">Leo 4.4.3 alpha 1                                  January 23, 2006
+<t tx="ekr.20070122070619">Leo 4.4.3 alpha 1                                  January 26, 2006
 
 Leo 4.4.3 alpha 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -30015,7 +30015,7 @@ Important: the wxGui plugin is still alpha-quality code at present.
 The highlights of Leo 4.4.3:
 ----------------------------
 - A functional wxWidgets plugin.
-- Leo's core contains no gui-dependent code.
+- Removed all gui-dependent code from Leo's core.
 - Better support for the winpdb debugger.
 - Many minor improvements, new settings and bug fixes.
 

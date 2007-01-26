@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="93" left="53" height="672" width="908"/>
+<globals body_outline_ratio="0.444165621079">
+	<global_window_position top="40" left="159" height="777" width="1061"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -115,8 +115,9 @@
 </v>
 <v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
-<v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent c:\prog\leoCVS\.pycheckrc</vh></v>
+<v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent C:\Documents and Settings\HP_Administrator\My Documents\Edward\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
+<v t="ekr.20070126082333"><vh>Output of pychecker -h</vh></v>
 <v t="ekr.20050212143754"><vh>*** Mods to pychecker in python23/site-packages ***</vh>
 <v t="ekr.20050212143754.1"><vh>What I did</vh></v>
 <v t="ekr.20050212143754.2"><vh>CodeChecks.py (modified)</vh>
@@ -137,7 +138,7 @@
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
-<v t="ekr.20050118095021"><vh>Leo 4.x installer  (update for each release)</vh>
+<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer  (update for each release)</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
@@ -192,7 +193,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="TV"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -276,7 +277,11 @@ Announcements
 # It should be placed in your home directory (value of $HOME).
 # If $HOME is not set, it will look in the current directory.
 
-# file = c:/prog/leoCVS/leo/src/leo.py
+# bool: only warn about files passed on the command line
+only = 0
+
+# int: the maximum number of warnings to be displayed
+limit = 1000
 
 # bool: warnings for Doc Strings
 noDocModule = 0
@@ -367,6 +372,9 @@ modulo1 = 1
 # doesn't always work on integers and strings
 isLiteral = 0 # EKR
 
+# bool: warn when possibly using string.find() improperly (if s.find():)
+stringFind = 1
+
 # bool: warn when using a deprecated module or function
 deprecated = 1
 
@@ -423,7 +431,8 @@ unusedNames = [
 
 # list of strings: ignore warnings generated from these modules
 blacklist = [
-	'leoFrame', 'leoMenu', 'leoGui', # Base classes have lots of unused params.
+	'leoFrame', 'leoMenu', 'leoGui',
+        # Base classes have lots of unused params.
 	'Tkinter', 'wxPython', 'gtk', 'GTK', 'GDK', 
     'mod_http',
 ]
@@ -455,12 +464,15 @@ intDivide = 1
 # bool: check if local variables shadow a global variable with same name
 shadows = 0 # EKR
 
+# bool: check if local variables shadow a builtin variable with same name
+shadowBuiltins = 1
+
 # bool: check if input() is used, which is a security problem, use raw_input()
 usesInput = 1
 
 # bool: check if using a constant string to getattr()/setattr()
 # Doesn't exist.
-## constAttr = 1
+constAttr = 1
 
 # bool: check for using +variable, since it is almost always has no effect
 unaryPositive = 1
@@ -484,17 +496,17 @@ checkImplicitReturns = 1
 #       { 'module1': 'no-namedargs maxlines=0',
 #	  'module2.my_func': 'argsused',
 #	  'module3.my_class': 'no-initreturn', }
-if 1:
+if 0:
 	suppressions = {}
-else: # Doesn't work
+else:
 	suppressions = {
-		'leoFrame' : 'argumentsUsed=0',
-		'leoGui' : 'argumentsUsed=0' }
+		'leoFrame' : 'argumentsUsed',
+		'leoGui' : 'argumentsUsed' }
 
 # dict: suppress warnings where keys can be regular expressions
 suppressionRegexs = {}</t>
 <t tx="EKR.20040519082027.28">name="leo",
-version="4-4-2-1-final", # No spaces here!
+version="4-4-3-alpha-1", # No spaces here!
 author="Edward K. Ream",
 author_email="edreamleo@charter.net",
 url="http://webpages.charter.net/edreamleo/front.html",
@@ -529,7 +541,7 @@ The gist of the license is that Leo is absolutely free, even for commercial use
 Initiative board has voted to certify the Python license as Open Source. This
 license is compatible with the GPL.
 
-Copyright (c) 1997-2006 by Edward K. Ream. All Rights Reserved.
+Copyright (c) 1997-2007 by Edward K. Ream. All Rights Reserved.
 
 Permission to use, copy, modify, and distribute this software and its
 documentation for any purpose and without fee is hereby granted, provided that
@@ -667,7 +679,7 @@ c:\python22\python &lt;leopath&gt;leo.py %1
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.2.1-final
+Version: 4.4.3-alpha-1
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -686,48 +698,30 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.2.1 final                                October 29, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.3 alpha 1                                  January 26, 2006
 
-Leo 4.4.2.1 final fixes a recent bug that caused Leo not to create the
-.leoRecentFiles.txt file properly in some situations. There are no known
-significant bugs in this version of Leo.
-
-Leo 4.4.2 final fixes a few bugs and adds support for pymacs. 
+Leo 4.4.3 alpha 1 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-The highlights of Leo 4.4.2:
+Important: the wxGui plugin is still alpha-quality code at present.
+
+The highlights of Leo 4.4.3:
 ----------------------------
-- You can now store settings in myLeoSettings.leo without fear of those settings
-  being changed by cvs updates or in future versions of Leo.
-- Leo's vnode and tnode classes are now completely independent of the rest of Leo.
-  Some api's have been changed.  This 'big reorg' and may affect scripts and plugins.
-- Leo's vnode and tnode classes can optionally be compatible with ZODB databases,
-  i.e., they can optionally derive from ZODB.Persistence.Persistent.
-  See Chapter 17: Using ZODB with Leo for details.
-- The leoOPML plugin defines commands to read and write OPML files.
-- The slideshow plugin allows Leo to run slideshows defined by @slideshow and @slide nodes.
-- The leo_to_rtf and leo_to_html plugins create rtf and html files from Leo outlines.
-- Much faster navigation through the outline.
-- When focus is in the outline pane, you can move to headlines by typing the first letter of headlines.
-- The find command now optionally closes nodes not needed to show the node containing the present match.
-- Numerous changes that make Leo easier to use without using a mouse, including new commands and options.
-- Many new minibuffer commands now appear in the Cmds menu.
-- A sax parser can now optionally read .leo files.
+- A functional wxWidgets plugin.
+- Removed all gui-dependent code from Leo's core.
+- Better support for the winpdb debugger.
+- Many minor improvements, new settings and bug fixes.
 
 Links:
 ------
-Leo:        http://webpages.charter.net/edreamleo/front.html
-What's new: http://webpages.charter.net/edreamleo/new-4-4-2.html
-Home:       http://sourceforge.net/projects/leo/
-Download:   http://sourceforge.net/project/showfiles.php?group_id=3458
-CVS:        http://leo.tigris.org/source/browse/leo/
-Leo's Wiki: http://leo.zwiki.org/FrontPage
-Wikipedia:  http://en.wikipedia.org/wiki/Leo_%28text_editor%29
-Quotes:     http://webpages.charter.net/edreamleo/testimonials.html
-
-</t>
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="EKR.20040519090846.10"># The manifest template: specifies all files to be included in the distribution.
 
 # Note: these are glob patterns.
@@ -3095,7 +3089,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-2-1-final.exe"
+OutFile "LeoSetup-4-4-3-alpha-1.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -3316,7 +3310,7 @@ Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\tests\*.*"</t>
 Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 </t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.2.1-final"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.3-alpha-1"</t>
 <t tx="ekr.20050118125236"></t>
 <t tx="ekr.20050119191034"></t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
@@ -5045,5 +5039,109 @@ for a terrific tool!!!!
  
 Julian S. Fecteau 
 </t>
+<t tx="ekr.20070126082333">
+C:\Installers\Prog\Python\PyChecker\pychecker-0.8.17\pychecker&gt;python checker.py -h
+Usage for: checker.py [options] PACKAGE ...
+
+    PACKAGEs can be a python package, module or filename
+
+Long options can be preceded with no- to turn off (e.g., no-namedargs)
+
+Category
+  Options:           Change warning for ... [default value]
+
+Major Options:
+      --only         only warn about files passed on the command line [off]
+  -e, --level        the maximum error level of warnings to be displayed
+  -#, --limit        the maximum number of warnings to be displayed [1000]
+  -F, --config       specify .pycheckrc file to use
+      --quixote      support Quixote's PTL modules
+      --evil         list of evil C extensions that crash the interpreter [[]]
+
+Error Control:
+  -i, --import       unused imports [on]
+  -k, --pkgimport    unused imports from __init__.py [on]
+  -M, --reimportself module imports itself [off]
+  -X, --reimport     reimporting a module [off]
+  -x, --miximport    module does import and from ... import [off]
+  -l, --local        unused local variables, except tuples [on]
+  -t, --tuple        all unused local variables, including tuples [off]
+  -9, --members      all unused class data members [off]
+  -v, --var          all unused module variables [off]
+  -p, --privatevar   unused private module variables [on]
+  -g, --allglobals   report each occurrence of global warnings [off]
+  -n, --namedargs    functions called with named arguments (like keywords) [off]
+  -a, --initattr     Attributes (members) must be defined in __init__() [off]
+  -I, --initsubclass Subclass.__init__() not defined [off]
+  -u, --callinit     Baseclass.__init__() not called [on]
+  -0, --abstract     Subclass needs to override methods that only throw exceptions [on]
+  -N, --initreturn   Return None from __init__() [on]
+  -8, --unreachable  unreachable code [off]
+  -2, --constCond    a constant is used in a conditional statement [on]
+  -1, --constant1    1 is used in a conditional statement (if 1: or while 1:) [off]
+      --stringiter   check if iterating over a string [on]
+      --stringfind   check improper use of string.find() [on]
+  -A, --callattr     Calling data members as functions [off]
+  -y, --classattr    class attribute does not exist [on]
+  -S, --self         First argument to methods [self]
+      --classmethodargs First argument to classmethods [['cls', 'klass']]
+  -T, --argsused     unused method/function arguments [on]
+  -z, --varargsused  unused method/function variable arguments [on]
+  -G, --selfused     ignore if self is unused in methods [off]
+  -o, --override     check if overridden methods have the same signature [on]
+      --special      check if __special__ methods exist and have the correct signature [on]
+  -U, --reuseattr    check if function/class/method names are reused [on]
+  -Y, --positive     check if using unary positive (+) which is usually meaningless [on]
+  -j, --moddefvalue  check if modify (call method) on a parameter that has a default value [on]
+      --changetypes  check if variables are set to different types [off]
+      --unpack       check if unpacking a non-sequence [on]
+      --unpacklen    check if unpacking sequence with the wrong length [on]
+      --badexcept    check if raising or catching bad exceptions [on]
+  -4, --noeffect     check if statement appears to have no effect [on]
+      --modulo1      check if using (expr % 1), it has no effect on integers and strings [on]
+      --isliteral    check if using (expr is const-literal), doesn't always work on integers and strings [off]
+
+Possible Errors:
+  -r, --returnvalues check consistent return values [on]
+  -C, --implicitreturns check if using implict and explicit return values [on]
+  -O, --objattrs     check that attributes of objects exist [on]
+  -7, --slots        various warnings about incorrect usage of __slots__ [on]
+  -3, --properties   using properties with classic classes [on]
+      --emptyslots   check if __slots__ is empty [on]
+  -D, --intdivide    check if using integer division [on]
+  -w, --shadow       check if local variable shadows a global [off]
+  -s, --shadowbuiltin check if a variable shadows a builtin [on]
+
+Security:
+      --input        check if input() is used [on]
+  -6, --exec         check if the exec statement is used [off]
+
+Suppressions:
+  -q, --stdlib       ignore warnings from files under standard library [on]
+  -b, --blacklist    ignore warnings from the list of modules
+                         [['leoFrame', 'leoMenu', 'leoGui', 'Tkinter', 'wxPython', 'gtk', 'GTK', 'GDK', 'mod_http']]
+  -Z, --varlist      ignore global variables not used if name is one of these values
+                         [['__all__', '__version__', '__copyright__']]
+  -E, --unusednames  ignore unused locals/arguments if name is one of these values
+                         [['_', 'empty', 'unused', 'dummy', 'event', 'commander', 'c', 'i', 'j', 'k', 's', 'tag', 'args', 'keys', 'keywords']]
+      --deprecated   ignore use of deprecated modules/functions [on]
+
+Complexity:
+  -L, --maxlines     maximum lines in a function [2000]
+  -B, --maxbranches  maximum branches in a function [500]
+  -R, --maxreturns   maximum returns in a function [100]
+  -J, --maxargs      maximum # of arguments to a function [100]
+  -K, --maxlocals    maximum # of locals in a function [250]
+  -5, --maxrefs      maximum # of identifier references (Law of Demeter) [500]
+  -m, --moduledoc    no module doc strings [off]
+  -c, --classdoc     no class doc strings [off]
+  -f, --funcdoc      no function/method doc strings [off]
+
+Debug:
+      --rcfile       print a .pycheckrc file generated from command line args
+  -P, --printparse   print internal checker parse structures [off]
+  -d, --debug        turn on debugging for checker [off]
+  -Q, --quiet        turn off all output except warnings [off]
+  -V, --version      print the version of PyChecker and exit</t>
 </tnodes>
 </leo_file>

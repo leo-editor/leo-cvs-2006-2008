@@ -4816,6 +4816,8 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
     return script
 #@+node:ekr.20050211100535:test_g_getScript_strips_crlf
 def test_g_getScript_strips_crlf():
+    
+    # __pychecker__ = '--limit=0' # Suppress warnings about c & p.
 
     script = g.getScript(c,p) # This will get the text of this node.
     assert script.find('\r\n') == -1, repr(script)
@@ -12272,7 +12274,7 @@ def skipToMatchingNodeSentinel (self,lines,n,delim):
 #@+node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
 def doNowebSecRef (self,s,i):
 
-    c = self.c ; w = c.frame.body.bodyCtrl
+    c = self.c
     self.tag("nameBrackets",i,i+2)
     
     # See if the line contains the right name bracket.
@@ -13516,7 +13518,6 @@ def insert(self,i,s):
 def createTextWidget (self,frame,parentFrame,p,name):
     
     # pychecker complains that there is no leo_p attribute.
-    __pychecker__ = '--no-errors' # suppress all pychecker errors.
     
     c = self.c
     
@@ -13583,7 +13584,6 @@ def createTextWidget (self,frame,parentFrame,p,name):
 def printGcAll (message=''):
 
     # Suppress warning about keywords arg not supported in sort.
-    __pychecker__ = '--no-errors' # suppress all pychecker errors.
     
     if not message:
         message = g._callerName(n=2)
@@ -20345,7 +20345,7 @@ def selectAllText (self,insert=None): # tkTextWidget
 #@+node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
 def doNowebSecRef (self,s,i):
 
-    c = self.c ; w = c.frame.body.bodyCtrl
+    c = self.c
     self.tag("nameBrackets",i,i+2)
     
     # See if the line contains the right name bracket.

@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.608260325407">
-	<global_window_position top="88" left="384" height="799" width="857"/>
+<globals body_outline_ratio="0.351473922902">
+	<global_window_position top="28" left="26" height="882" width="1193"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -150,7 +150,7 @@ if 0: # Set to 1 for lint-like testing.
 </t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.3 beta 1, build %s, October 29, 2006" % c.getBuildNumber()
+    return "Leo 4.4.3 alpha 1, build %s, January 26, 2006" % c.getBuildNumber()
 </t>
 <t tx="ekr.20040629121554.2">def initVersion (self):
     c = self
