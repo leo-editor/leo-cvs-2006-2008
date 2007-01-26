@@ -4920,6 +4920,11 @@ class wxLeoTextWidget (wx.TextCtrl):
     def __repr__(self):
         return 'wxLeoTextWidget: %s' % (id(self))
     #@-node:ekr.20061118101058:Birth & special methods (wxLeoTextCtrl)
+    #@+node:ekr.20070125153527:Do-nothing
+    def update (self,*args,**keys):             pass
+    def update_idletasks (self,*args,**keys):   pass
+    #@nonl
+    #@-node:ekr.20070125153527:Do-nothing
     #@+node:ekr.20061105125717:Index conversion
     #@+node:ekr.20061117150656:w.toGuiIndex & toPythonIndex
     # This plugin uses Python indices everywhere.
@@ -5099,12 +5104,6 @@ class wxLeoTextWidget (wx.TextCtrl):
         aList = [w.toPythonIndex(z) for z in aList]
         return tuple(aList)
     #@-node:ekr.20061115122034.8:tag_ranges 
-    #@+node:ekr.20070125125400:update
-    def update (self,*args,**keys):
-        
-        pass
-    #@nonl
-    #@-node:ekr.20070125125400:update
     #@-node:ekr.20061115122034.2:Wrapper methods
     #@+node:ekr.20061115122034.9:Convenience methods (tkTextWidget)
     # These have no direct Tk equivalents.  They used to be defined in the gui class.
@@ -5284,20 +5283,22 @@ class wxLeoHealineTextWidget:
     def bind (self,kind,*args,**keys):              pass
     
     def cget (self,*args,**keys):                   pass
-    def configure(self,*args,**keys):               pass
+    def configure (self,*args,**keys):              pass
     
     def mark_set(self,markName,i):                  pass
     
-    def see(self,index):                            pass
-    def seeInsertPoint(self):                       pass
+    def see (self,index):                           pass
+    def seeInsertPoint (self):                      pass
     
-    def tag_add(self,tagName,i,j=None,*args):       pass
+    def tag_add (self,tagName,i,j=None,*args):      pass
     def tag_configure (self,colorName,**keys):      pass
     def tag_delete (self,tagName,*args,**keys):     pass
-    def tag_ranges(self,tagName):                   return (0,0)
-    def tag_remove(self,tagName,i,j=None,*args):    pass
+    def tag_ranges (self,tagName):                   return (0,0)
+    def tag_remove (self,tagName,i,j=None,*args):   pass
     
-    def update(self,*args,**keys):                  pass
+    def update (self,*args,**keys):                 pass
+    def update_idletasks (self,*args,**keys):       pass
+    #@nonl
     #@-node:ekr.20070125075903:Do-nothing methods
     #@+node:ekr.20070125074101.3:Index conversion
     #@+node:ekr.20070125074101.4:w.toGuiIndex & toPythonIndex
