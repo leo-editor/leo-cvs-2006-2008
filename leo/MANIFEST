@@ -97,14 +97,11 @@ doc\html\design.html
 doc\html\directives.html
 doc\html\docModeOnlyTest.html
 doc\html\emacs.html
-doc\html\front.html
 doc\html\frontMatter.html
 doc\html\glossary.html
 doc\html\history.html
 doc\html\install.html
-doc\html\install.html.txt
 doc\html\intro.html
-doc\html\intro.tex
 doc\html\jythonShell.html
 doc\html\leo.gif
 doc\html\leo_TOC.html
@@ -546,6 +543,7 @@ plugins\chapter_hoist.py
 plugins\chinese_menu.py
 plugins\cleo.py
 plugins\color_markup.py
+plugins\cursesGui.py
 plugins\datenodes.py
 plugins\detect_urls.py
 plugins\dtest.py
@@ -581,6 +579,7 @@ plugins\leoupdate.py
 plugins\lineNumbers.py
 plugins\macros.py
 plugins\maximizeNewWindows.py
+plugins\mnplugins.py
 plugins\mod_autosave.ini
 plugins\mod_autosave.py
 plugins\mod_http.py
@@ -613,6 +612,7 @@ plugins\pluginsTest.py
 plugins\plugins_menu.py
 plugins\pretty_print.py
 plugins\print_cp.py
+plugins\quickMove.py
 plugins\quit_leo.py
 plugins\rClick.py
 plugins\read_only_nodes.py
@@ -683,12 +683,12 @@ src\leoGlobals.py
 src\leoGui.py
 src\leoImport.py
 src\leoKeys.py
+src\leoKeysNEW.py
 src\leoMenu.py
 src\leoNodes.py
 src\leoPlugins.py
 src\leoProjects.txt
 src\leoPymacs.py
-src\leoScriptModule.py
 src\leoTangle.py
 src\leoTest.py
 src\leoTkinterComparePanel.py

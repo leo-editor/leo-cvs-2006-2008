@@ -17735,9 +17735,14 @@ def redoGroup (self):
 #@+node:ekr.20050318085432.7:redoNodeContents
 def redoNodeContents (self):
     
-    u = self ; c = u.c
+    u = self ; c = u.c ; w = c.frame.body.bodyCtrl
     
+    # Restore the body.
     u.p.setTnodeText(u.newBody)
+    w.setAllText(u.newBody)
+    c.frame.body.recolor(u.p,incremental=False)
+    
+    # Restore the headline.
     u.p.initHeadString(u.newHead)
     c.frame.tree.setHeadline(u.p,u.newHead) # New in 4.4b2.
     
@@ -18033,9 +18038,12 @@ def undoNodeContents (self):
     including headline and body text, and dirty and marked bits.
     '''
     
-    u = self ; c = u.c
+    u = self ; c = u.c ;  w = c.frame.body.bodyCtrl
     
     u.p.setTnodeText(u.oldBody)
+    w.setAllText(u.oldBody)
+    c.frame.body.recolor(u.p,incremental=False)
+
     u.p.initHeadString(u.oldHead)
     c.frame.tree.setHeadline(u.p,u.oldHead) # New in 4.4b2.
 
@@ -22280,6 +22288,88 @@ def tag_remove (self,tagName,i,j=None,*args):
 #@-node:ekr.20070116073907.1:Added w.tag_remove
 #@-node:ekr.20041228084830.3:(Reorg for wxGui plugin)
 #@-node:ekr.20061029091751:Leo 4.4.3 alpha 1 projects
+#@+node:ekr.20070129082731:Leo 4.4.3 alpha 2 porjects
+#@+node:ekr.20070129082731.1:Bugs
+#@+node:ekr.20070129081218:Fixed bugs in undo/redoNodeContents
+#@+node:ekr.20040305223522:c.setBodyString
+def setBodyString (self,p,s,encoding="utf-8"):
+
+    c = self ; v = p.v
+    if not c or not v: return
+
+    s = g.toUnicode(s,encoding)
+    current = c.currentPosition()
+    # 1/22/05: Major change: the previous test was: 'if p == current:'
+    # This worked because commands work on the presently selected node.
+    # But setRecentFiles may change a _clone_ of the selected node!
+    if current and p.v.t==current.v.t:
+        # Revert to previous code, but force an empty selection.
+        c.frame.body.setSelectionAreas(s,None,None)
+        w = c.frame.body.bodyCtrl
+        i = w.getInsertPoint()
+        w.setSelectionRange(i,i)
+        # This code destoys all tags, so we must recolor.
+        c.recolor()
+        
+    # Keep the body text in the tnode up-to-date.
+    if v.t.bodyString != s:
+        v.setTnodeText(s)
+        v.t.setSelection(0,0)
+        p.setDirty()
+        if not c.isChanged():
+            c.setChanged(True)
+#@-node:ekr.20040305223522:c.setBodyString
+#@+node:ekr.20050318085713.1:undoNodeContents
+def undoNodeContents (self):
+    
+    '''Undo all changes to the contents of a node,
+    including headline and body text, and dirty and marked bits.
+    '''
+    
+    u = self ; c = u.c ;  w = c.frame.body.bodyCtrl
+    
+    u.p.setTnodeText(u.oldBody)
+    w.setAllText(u.oldBody)
+    c.frame.body.recolor(u.p,incremental=False)
+
+    u.p.initHeadString(u.oldHead)
+    c.frame.tree.setHeadline(u.p,u.oldHead) # New in 4.4b2.
+
+    if u.groupCount == 0 and u.oldSel:
+        u.c.frame.body.setSelectionRange(u.oldSel)
+    
+    u.updateMarks('old')
+    
+    for v in u.dirtyVnodeList:
+        v.t.clearDirty()
+#@-node:ekr.20050318085713.1:undoNodeContents
+#@+node:ekr.20050318085432.7:redoNodeContents
+def redoNodeContents (self):
+    
+    u = self ; c = u.c ; w = c.frame.body.bodyCtrl
+    
+    # Restore the body.
+    u.p.setTnodeText(u.newBody)
+    w.setAllText(u.newBody)
+    c.frame.body.recolor(u.p,incremental=False)
+    
+    # Restore the headline.
+    u.p.initHeadString(u.newHead)
+    c.frame.tree.setHeadline(u.p,u.newHead) # New in 4.4b2.
+    
+    # g.trace('newHead',u.newHead,'revert',c.frame.tree.revertHeadline)
+    
+    if u.groupCount == 0 and u.newSel:
+        u.c.frame.body.setSelectionRange(u.newSel)
+    
+    u.updateMarks('new')
+    
+    for v in u.dirtyVnodeList:
+        v.t.setDirty()
+#@-node:ekr.20050318085432.7:redoNodeContents
+#@-node:ekr.20070129081218:Fixed bugs in undo/redoNodeContents
+#@-node:ekr.20070129082731.1:Bugs
+#@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 porjects
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt

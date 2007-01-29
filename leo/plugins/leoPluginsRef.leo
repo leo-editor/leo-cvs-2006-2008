@@ -2,14 +2,14 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.45371577575">
-	<global_window_position top="39" left="243" height="839" width="973"/>
+<globals body_outline_ratio="0.549872122762">
+	<global_window_position top="55" left="232" height="782" width="992"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20041211035618" a="TV"><vh>Scripts, buttons &amp; settings</vh>
+<v t="ekr.20041211035618"><vh>Scripts, buttons &amp; settings</vh>
 <v t="ekr.20050217093214"><vh>@settings</vh>
 <v t="ekr.20050328101812"><vh>@page http plugin</vh>
 <v t="ekr.20050328101812.1"><vh>@bool http_active = False</vh></v>
@@ -43,7 +43,7 @@
 <v t="ekr.20050819055746"><vh>@@button Save</vh></v>
 </v>
 </v>
-<v t="edream.110203113231.618"><vh>Plugins</vh>
+<v t="edream.110203113231.618" a="TV"><vh>Plugins</vh>
 <v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
 <v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
 </v>
@@ -334,25 +334,23 @@
 </v>
 <v t="ekr.20070116074730"><vh>Gui plugins</vh>
 <v t="ekr.20061207074949"><vh>@thin cursesGui.py</vh></v>
-<v t="edream.110203113231.233"><vh>wxPython plugin (pre-alpha quality)</vh>
-<v t="edream.110203113231.302"
-marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.110203113231.261,edream.110203113231.264,ekr.20061119105509.1,ekr.20061118203148,ekr.20061118203148.1,ekr.20061118194416,edream.111303111942.1,edream.111303103141,edream.111303111942,edream.111603213329,ekr.20061105114250,edream.110203113231.298,edream.110203113231.299,ekr.20061118123730.1,edream.110203113231.283,edream.110203113231.287,edream.110203113231.289,ekr.20061118101058,ekr.20061117150656,ekr.20061115122034.5,ekr.20061115122034.10,"><vh>@thin __wx_gui.py</vh></v>
-<v t="ekr.20061130092420"><vh>wx stuff</vh>
-<v t="ekr.20061126193041"><vh>wx docs</vh>
-<v t="ekr.20061120095431"><vh>@url file:///C:/wxWidgets-2.6.3/docs/html/wx/wx_wxboxsizer.html#wxboxsizer</vh></v>
-<v t="ekr.20061120095431.1"><vh>@url file:///C:/wxWidgets-2.6.3/docs/html/wx/wx_wxsizer.html#wxsizer</vh></v>
-<v t="ekr.20061120095431.2"><vh>@url file:///C:/wxWidgets-2.6.3/docs/html/wx/wx_wxsplitterwindow.html#wxsplitterwindow</vh></v>
-<v t="ekr.20061120095431.3"><vh>@url file:///C:/wxWidgets-2.6.3/docs/html/wx/wx_wxtextctrl.html#wxtextctrl</vh></v>
-<v t="ekr.20061120095701"><vh>@url file:///C:/wxWidgets-2.6.3/docs/html/wx/wx_wxrichtextctrl.html#wxrichtextctrl</vh></v>
-<v t="ekr.20061120095701.1"><vh>@url file:///C:/wxWidgets-2.6.3/docs/html/wx/wx_wxtreectrl.html#wxtreectrl</vh></v>
-<v t="ekr.20061120095701.2"><vh>@url C:\wxWidgets-2.6.3\docs\html\wx\wx_contents.html</vh></v>
-<v t="ekr.20061121090620"><vh>@url http://www.scintilla.org/ScintillaDoc.html</vh></v>
-<v t="ekr.20061120095701.3"><vh>@url "C:\wxPython2.7 Docs and Demos\demo\demo.py"</vh></v>
-<v t="ekr.20061120095701.4"><vh>Where are the styled text docs?</vh></v>
+<v t="edream.110203113231.233" a="E"><vh>wxPython plugin (alpha quality)</vh>
+<v t="ekr.20070124093934"><vh>Recent wx bugs</vh>
+<v t="ekr.20070123150433"><vh>Failed unit tests (lengthy tests)</vh>
+<v t="ekr.20070124151504"><vh>Calls to menu.insert</vh>
+<v t="danr7.20060902215215.5"><vh>createExportMenu (leo_to_html)</vh></v>
+<v t="danr7.20060902083957.2"><vh>createExportMenu (leo_to_rtf)</vh></v>
+<v t="danr7.20060912105041.5"><vh>createPasteAsHeadlinesMenu</vh></v>
 </v>
+</v>
+<v t="ekr.20070125115547"><vh>Alt+4 is not handled properly</vh></v>
+<v t="ekr.20070125153352"><vh>Failed unit tests</vh></v>
+</v>
+<v t="ekr.20070123084929"><vh>Recent</vh>
 <v t="ekr.20061118094045"><vh>Font handling</vh>
 <v t="ekr.20061115122034"><vh>wxLeoTextWidget class</vh>
 <v t="ekr.20061118101058" a="M"><vh>Birth &amp; special methods (wxLeoTextCtrl)</vh></v>
+<v t="ekr.20070125153527"><vh>Do-nothing</vh></v>
 <v t="ekr.20061105125717"><vh>Index conversion</vh>
 <v t="ekr.20061117150656" a="M"><vh>w.toGuiIndex &amp; toPythonIndex</vh></v>
 <v t="ekr.20061117150523"><vh>w.rowColToGuiIndex</vh></v>
@@ -392,10 +390,9 @@ marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.1102
 <v t="edream.110203113231.542"><vh>wxBody.createControl</vh></v>
 </v>
 <v t="ekr.20061116084824"><vh>Key handling</vh>
-<v t="ekr.20061116093228"><vh>class leoEvent (wxGui)</vh></v>
-<v t="edream.110203113231.542"><vh>wxBody.createControl</vh></v>
 <v t="ekr.20061115122034"><vh>wxLeoTextWidget class</vh>
 <v t="ekr.20061118101058" a="M"><vh>Birth &amp; special methods (wxLeoTextCtrl)</vh></v>
+<v t="ekr.20070125153527"><vh>Do-nothing</vh></v>
 <v t="ekr.20061105125717"><vh>Index conversion</vh>
 <v t="ekr.20061117150656" a="M"><vh>w.toGuiIndex &amp; toPythonIndex</vh></v>
 <v t="ekr.20061117150523"><vh>w.rowColToGuiIndex</vh></v>
@@ -431,8 +428,6 @@ marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.1102
 <v t="ekr.20061115122034.24"><vh>xyToGui/PythonIndex (passed)</vh></v>
 </v>
 </v>
-<v t="ekr.20061116064914" a="M"><vh>onBodyChanged</vh></v>
-<v t="ekr.20061116083454" a="M"><vh>wxBody.onKeyUp/Down</vh></v>
 <v t="ekr.20061116085729"><vh>Events (wxGui)</vh>
 <v t="ekr.20061117204829"><vh>wxKeyDict</vh></v>
 <v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
@@ -444,68 +439,56 @@ marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.1102
 <v t="ekr.20061117155233.2"><vh>eventXY</vh></v>
 </v>
 <v t="ekr.20061118123730.1" a="M"><vh>wxTree.onKeyUp/Down</vh></v>
-</v>
-<v t="ekr.20061118204548"><vh>Menu accelerators</vh>
-<v t="edream.111303103141" a="M"><vh>menu.add_command</vh></v>
-<v t="edream.111303111942" a="M"><vh>insert_cascade</vh></v>
-<v t="edream.111303111942.1" a="M"><vh>add_cascade</vh></v>
-<v t="ekr.20061118194416" a="M"><vh>createAcceleratorTables</vh></v>
-<v t="ekr.20061118203148" a="M"><vh>createAccelLabel</vh></v>
-<v t="ekr.20061118203148.1" a="M"><vh>createAccelData</vh></v>
-</v>
-<v t="ekr.20061120081247"><vh>Creating the windows</vh>
-<v t="edream.110203113231.260" a="M"><vh>finishCreate (wxLeoFrame)</vh>
-<v t="edream.110203113231.261" a="M"><vh>createSplitters</vh></v>
-<v t="edream.110203113231.265"><vh>setWindowIcon</vh></v>
-<v t="edream.110203113231.264" a="M"><vh>setEventHandlers</vh></v>
-</v>
-<v t="ekr.20061119105509.1" a="M"><vh>__init__ wxLeoIconBar</vh></v>
-</v>
-<v t="ekr.20061127073512.1"><vh>Handling tree events</vh>
-<v t="edream.111303202917"><vh>Drawing</vh>
-<v t="ekr.20061105114250" a="M"><vh>drawIcon TO DO</vh></v>
-<v t="edream.110203113231.295"><vh>beginUpdate</vh></v>
-<v t="edream.110203113231.296"><vh>endUpdate</vh></v>
-<v t="edream.110203113231.298" a="M"><vh>redraw &amp; redraw_now &amp; helpers</vh>
-<v t="edream.110203113231.299" a="M"><vh>redraw_node</vh></v>
-<v t="edream.110203113231.300"><vh>redraw_subtree</vh></v>
-</v>
-<v t="edream.110203113231.299" a="M"><vh>redraw_node</vh></v>
-<v t="edream.110203113231.300"><vh>redraw_subtree</vh></v>
-<v t="ekr.20061211052926"><vh>assignIcon</vh></v>
-<v t="ekr.20061211072604"><vh>edit_widget</vh></v>
-<v t="ekr.20061211115055"><vh>updateVisibleIcons</vh></v>
-</v>
-<v t="edream.110203113231.278"><vh>Event handlers (wxTree)</vh>
-<v t="ekr.20061127075102"><vh>get_p</vh></v>
-<v t="ekr.20061127081233"><vh>selectHelper</vh></v>
-<v t="ekr.20061118144918"><vh>Keys</vh>
-<v t="ekr.20061118123730.1" a="M"><vh>wxTree.onKeyUp/Down</vh></v>
-</v>
-<v t="edream.110203113231.282"><vh>Clicks</vh>
-<v t="edream.110203113231.280"><vh>Collapse...</vh></v>
-<v t="edream.110203113231.281"><vh>Expand...</vh></v>
-<v t="edream.110203113231.283" a="M"><vh>Clicks</vh></v>
-<v t="ekr.20061211064516"><vh>onRightDown/Up</vh></v>
-</v>
-<v t="edream.110203113231.285"><vh>Editing labels</vh>
-<v t="edream.110203113231.286"><vh>onTreeBeginLabelEdit</vh></v>
-<v t="edream.110203113231.287" a="M"><vh>onTreeEndLabelEdit</vh></v>
-</v>
-<v t="ekr.20061105114250.1"><vh>Dragging</vh>
-<v t="edream.110203113231.289" a="M"><vh>onTreeBeginDrag</vh></v>
-<v t="edream.110203113231.290"><vh>onTreeEndDrag (NOT READY YET)</vh>
-<v t="edream.110203113231.291"><vh>&lt;&lt; Define onTreeEndDrag vars &gt;&gt;</vh></v>
-<v t="edream.110203113231.292"><vh>&lt;&lt; Insert src as the first child of dst &gt;&gt;</vh></v>
-<v t="edream.110203113231.293"><vh>&lt;&lt; Insert src after dst &gt;&gt;</vh></v>
-</v>
-</v>
-<v t="ekr.20061118123730.1" a="M"><vh>wxTree.onKeyUp/Down</vh></v>
-</v>
 <v t="edream.111603213329" a="M"><vh>wxTree.createBindings</vh></v>
+<v t="ekr.20070123101021"><vh>wx.defineSpecialKeys</vh></v>
+<v t="ekr.20070123101505"><vh>Constants</vh></v>
+<v t="ekr.20061116083454" a="M"><vh>wxBody.onKeyUp/Down</vh></v>
+<v t="ekr.20061116093228"><vh>class leoKeyEvent (wxGui)</vh></v>
+<v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
+<v t="ekr.20061117203128"><vh>keysymHelper</vh></v>
+<v t="ekr.20061118055443"><vh>getShiftChar</vh></v>
+<v t="ekr.20061118070150"><vh>getUnshiftChar</vh></v>
 </v>
-<v t="ekr.20061127092105"><vh>Failed unit tests</vh></v>
+<v t="ekr.20061117204829"><vh>wxKeyDict</vh></v>
 </v>
+<v t="ekr.20070123084337"><vh>Focus</vh>
+<v t="ekr.20061211083200"><vh>setFocus (wxFrame)</vh></v>
+<v t="edream.110203113231.337"><vh>set_focus (wxGui)</vh></v>
+<v t="edream.111403093559"><vh>Focus (wxTree)</vh></v>
+</v>
+<v t="ekr.20070125075418"><vh>Made wx headlines look like a Leo text widget</vh>
+<v t="ekr.20070125091308"><vh>setEditWidget</vh></v>
+<v t="edream.110203113231.299" a="M"><vh>redraw_node</vh></v>
+<v t="ekr.20061211072604"><vh>edit_widget</vh></v>
+<v t="ekr.20070125074101"><vh>wxLeoHeadlineTextWidget class</vh>
+<v t="ekr.20070125074101.2"><vh>Birth &amp; special methods</vh></v>
+<v t="ekr.20070125075903"><vh>Do-nothing methods</vh></v>
+<v t="ekr.20070125074101.3"><vh>Index conversion</vh>
+<v t="ekr.20070125074101.4"><vh>w.toGuiIndex &amp; toPythonIndex</vh></v>
+<v t="ekr.20070125074101.5"><vh>w.rowColToGuiIndex</vh></v>
+</v>
+<v t="ekr.20070125074101.6"><vh>Wrapper methods</vh>
+<v t="ekr.20070125074101.9"><vh>delete</vh></v>
+<v t="ekr.20070125074101.20" a="M"><vh>deleteTextSelection</vh></v>
+<v t="ekr.20070125074101.21"><vh>flashCharacter (to do)</vh></v>
+<v t="ekr.20070125074101.10"><vh>get</vh></v>
+<v t="ekr.20070125074101.22"><vh>getAllText</vh></v>
+<v t="ekr.20070125074101.23"><vh>getInsertPoint</vh></v>
+<v t="ekr.20070125074101.24"><vh>getSelectedText</vh></v>
+<v t="ekr.20070125074101.25"><vh>getSelectionRange</vh></v>
+<v t="ekr.20070125074101.26"><vh>hasSelection</vh></v>
+<v t="ekr.20070125074101.11"><vh>insert</vh></v>
+<v t="ekr.20070125074101.27"><vh>replace</vh></v>
+<v t="ekr.20070125074101.28"><vh>selectAllText</vh></v>
+<v t="ekr.20070125074101.29"><vh>setAllText</vh></v>
+<v t="ekr.20070125074101.31"><vh>setInsertPoint</vh></v>
+<v t="ekr.20070125074101.32"><vh>setSelectionRange</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="edream.110203113231.302"
+marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.110203113231.261,edream.110203113231.264,ekr.20061119105509.1,edream.111303111942.1,edream.111303103141,edream.111303111942,edream.111603213329,ekr.20061105114250,edream.110203113231.298,edream.110203113231.299,ekr.20061118123730.1,edream.110203113231.283,edream.110203113231.287,edream.110203113231.289,ekr.20061118101058,ekr.20061117150656,ekr.20061115122034.5,ekr.20061115122034.10,ekr.20070125074101.20,"><vh>@thin __wx_gui.py</vh></v>
 </v>
 </v>
 <v t="ekr.20040722135402"><vh>Icon and status areas</vh>
@@ -1427,6 +1410,43 @@ Leo loads plugins in the order they appear in this file.
 File names may be indented as desired.
 
 @color</t>
+<t tx="danr7.20060902083957.2">def createExportMenu (tag,keywords):
+
+    c = keywords.get("c")
+
+    # Insert leoToRTF in #3 position of the File &gt; Export menu.
+    c.frame.menu.insert('Export...',3,
+        label = 'Outline to Microsoft RTF',
+        command = lambda c = c: export_rtf(c))
+</t>
+<t tx="danr7.20060902215215.5">def createExportMenu (tag,keywords):
+
+    c = keywords.get("c")
+
+    # Insert leoToRTF in #3 position of the File &gt; Export menu.
+    c.frame.menu.insert('Export...',3,
+        label = 'Outline to HTML',
+        command = lambda c = c: export_html(c))
+</t>
+<t tx="danr7.20060912105041.5">def createPasteAsHeadlinesMenu (tag,keywords):
+
+    c = keywords.get("c")
+
+    # Use code to find index number of menu shortcut
+    index_label = 'Pa&amp;ste as Headlines'
+
+    # Find index position of ampersand -- index is how shortcut is defined
+    amp_index = index_label.find("&amp;")
+
+    # Eliminate ampersand from menu item text
+    index_label = index_label.replace("&amp;","")
+
+    # Add 'Word Count...' to the bottom of the Edit menu.
+    c.frame.menu.insert('Edit',6,
+        label = index_label,
+        underline = amp_index,
+        command = lambda c = c: paste_as_headlines(c))
+</t>
 <t tx="edream.110203113231.233">@nocolor
 
 To do:
@@ -1447,308 +1467,6 @@ To do:
 - Syntax coloring causes flash even when nothing is colored.
 
 @color</t>
-<t tx="edream.110203113231.260">def finishCreate (self,c):
-    
-    # g.trace('wxLeoFrame')
-    frame = self
-    frame.c = c
-    c.frame = frame
-    
-    self.topFrame = self.top = top = wx.Frame(
-        parent=None, id=-1, title=self.title,
-        pos = (200,50),size = (950, 720),
-        style=wx.DEFAULT_FRAME_STYLE | wx.NO_FULL_REPAINT_ON_RESIZE)
-        
-    # Set the official ivars.
-    self.topFrame = self.top = self.outerFrame = top
-    
-    # Create the icon area.
-    self.iconBar = wxLeoIconBar(c,parentFrame=top)
-    
-    # Create the splitters.
-    style = wx.CLIP_CHILDREN|wx.SP_LIVE_UPDATE|wx.SP_3D
-    self.splitter1 = splitter1 = wx.SplitterWindow(top,-1,style=style) # Contains body &amp; splitter2
-    self.splitter2 = splitter2 = wx.SplitterWindow(splitter1,-1,style=style) # Contains tree and log.
-    
-    # Create the tree.
-    self.tree = wxLeoTree(frame,parentFrame=splitter2)
-    
-    # Create the log pane and its wx.Noteboook.
-    self.nb = nb = wx.Notebook(splitter2,-1,style=wx.CLIP_CHILDREN)
-    self.log = wxLeoLog(c,nb)
-    g.app.setLog(self.log) # writeWaitingLog hangs without this(!)
-    
-    # Create the body pane.
-    self.body = wxLeoBody(frame,parentFrame=splitter1)
-    self.bodyCtrl = frame.body.bodyCtrl
-    
-    # Add the panes to the splitters.
-    splitter1.SplitHorizontally(splitter2,self.bodyCtrl,0)
-    splitter2.SplitVertically(self.tree.treeCtrl,nb,0)
-    
-    # Create the minibuffer
-    self.minibuffer = wxLeoMinibuffer(c,top)
-    ctrl = self.minibuffer.ctrl
-    box = wx.BoxSizer(wx.VERTICAL)
-    box2 = wx.BoxSizer(wx.HORIZONTAL)
-    box.Add(splitter1,1,wx.EXPAND)
-    label = wx.StaticText(top,label='Minibuffer')
-    label.SetBackgroundColour('light grey')
-    label.SetForegroundColour('red')
-    box2.Add(label,0,wx.EXPAND)
-    box2.Add(ctrl,1,wx.EXPAND)
-    box.Add(box2,0,wx.EXPAND)
-    self.top.SetSizer(box)
-
-    # Create the menus &amp; icon.
-    self.menu = wxLeoMenu(frame)
-    self.setWindowIcon()
-    
-    top.Show(True)
-    
-    self.setEventHandlers()
-    self.colorizer = self.body.colorizer
-    c.initVersion()
-    self.signOnWithVersion()
-    self.injectCallbacks()
-    g.app.windowList.append(self)
-    self.tree.redraw()
-
-    self.setFocus(g.choose(
-        c.config.getBool('outline_pane_has_initial_focus'),
-        self.tree.treeCtrl,self.bodyCtrl))
-</t>
-<t tx="edream.110203113231.261"></t>
-<t tx="edream.110203113231.264">def setEventHandlers (self):
-    
-    w = self.top
-
-    # if wx.Platform == "__WXMSW__": # Activate events exist only on Windows.
-        # wx.EVT_ACTIVATE(self.top,self.onActivate)
-    # else:
-        # wx.EVT_SET_FOCUS(self.top,self.OnSetFocus)
-    
-    # wx.EVT_CLOSE(self.top,self.onCloseLeoFrame)
-    
-    # wx.EVT_MENU_OPEN(self.top,self.updateAllMenus)
-    
-    if wx.Platform == "__WXMSW__": # Activate events exist only on Windows.
-        w.Bind(wx.EVT_ACTIVATE,self.onActivate)
-    else:
-        w.Bind(wx.EVT_SET_FOCUS,self.OnSetFocus)
-    
-    w.Bind(wx.EVT_CLOSE,self.onCloseLeoFrame)
-    
-    w.Bind(wx.EVT_MENU_OPEN,self.updateAllMenus) 
-</t>
-<t tx="edream.110203113231.265">def setWindowIcon(self):
-
-    if wx.Platform == "__WXMSW__":
-    
-        path = os.path.join(g.app.loadDir,"..","Icons","LeoApp16.ico")
-        icon = wx.Icon(path,wx.BITMAP_TYPE_ICO,16,16)
-        self.top.SetIcon(icon)
-</t>
-<t tx="edream.110203113231.278"></t>
-<t tx="edream.110203113231.280">def onTreeCollapsing(self,event):
-    
-    '''Handle a pre-collapse event due to a click in the +- box.'''
-
-    p = self.get_p(event)
-    if not p: return
-    
-    # p will be None while redrawing, so this is the outermost click event.
-    # Set the selection before redrawing so the tree is drawn properly.
-    c = self.c ; tree = self.treeCtrl
-    c.beginUpdate()
-    try:
-        c.selectPosition(p)
-        p.contract()
-    finally:
-        c.endUpdate(False)
-
-def onTreeCollapsed(self,event):
-    
-    '''Handle a post-collapse event due to a click in the +- box.'''
-
-    self.selectHelper(event)
-</t>
-<t tx="edream.110203113231.281">def onTreeExpanding (self,event):
-    
-    '''Handle a pre-expand event due to a click in the +- box.'''
-
-    p = self.get_p(event)
-    if not p: return
-    
-    # p will be None while redrawing, so this is the outermost click event.
-    # Set the selection before redrawing so the tree is drawn properly.
-    c = self.c ; tree = self.treeCtrl
-    c.beginUpdate()
-    try:
-        c.selectPosition(p)
-        p.expand()
-    finally:
-        c.endUpdate(False)
-        
-def onTreeExpanded (self,event):
-    
-    '''Handle a post-collapse event due to a click in the +- box.'''
-    
-    self.selectHelper(event)
-</t>
-<t tx="edream.110203113231.282"></t>
-<t tx="edream.110203113231.283">def onTreeSelChanging(self,event):
-    
-    p = self.get_p(event)
-    if not p: return
-    
-    # p will be None while redrawing, so this is the outermost click event.
-    # Set the selection before redrawing so the tree is drawn properly.
-    c = self.c
-    c.beginUpdate()
-    try:
-        c.selectPosition(p)
-    finally:
-        c.endUpdate(False)
-</t>
-<t tx="edream.110203113231.285"></t>
-<t tx="edream.110203113231.286"># Editing is allowed only if this routine exists.
-
-def onTreeBeginLabelEdit(self,event):
-
-    # Disallow editing of the dummy root node.
-    id = event.GetItem()
-    if id == self.root_id:
-        event.Veto()</t>
-<t tx="edream.110203113231.287"># Editing will be allowed only if this routine exists.
-
-def onTreeEndLabelEdit(self,event):
-
-    c = self.c ; tree = self.treeCtrl
-    s = event.GetLabel()
-    id = event.GetItem()
-    p = tree.GetItemData(id).GetData()
-    changed = s != p.headString()
-    
-    if not changed: return
-    
-    # Remember the string.
-    c.setHeadString(p,s)
-
-    # Update the labels as needed.
-    id = tree.GetFirstVisibleItem()
-    while id.IsOk():
-        p2 = tree.GetItemData(id).GetData()
-        if p2.v.t == p.v.t and p2 != p:
-            tree.SetItemText(id,s)
-        id = tree.GetNextVisible(id)
-</t>
-<t tx="edream.110203113231.289">def onTreeBeginDrag(self,event):
-
-    g.trace() ; return
-
-    if event.GetItem() != self.treeCtrl.GetRootItem():
-        mDraggedItem = event.GetItem()
-        event.Allow()
-</t>
-<t tx="edream.110203113231.290">def onTreeEndDrag(self,event):
-    
-    g.trace() ; return
-
-    &lt;&lt; Define onTreeEndDrag vars &gt;&gt;
-    if  src == 0 or dst == 0:  return
-    cookie = None
-    if (
-        # dst is the root
-        not parent.IsOk()or
-        # dst has visible children and dst isn't the first child.
-        self.tree.ItemHasChildren(dst)and self.tree.IsExpanded(dst)and
-        self.tree.GetFirstChild(dst,cookie) != src or
-        # back(src)== dst(would otherwise be a do-nothing)
-        self.tree.GetPrevSibling(src) == dst):
-        &lt;&lt; Insert src as the first child of dst &gt;&gt;
-    else:
-        # Not the root and no visible children.
-        &lt;&lt; Insert src after dst &gt;&gt;
-    self.c.selectVnode(src_v)
-    self.c.setChanged(True)
-</t>
-<t tx="edream.110203113231.291">assert(self.tree)
-assert(self.c)
-
-dst = event.GetItem()
-src = mDraggedItem
-mDraggedItem = 0
-
-if not dst.IsOk() or not src.IsOk():
-    return
-
-src_v = self.tree.GetItemData(src)
-if src_v == None:
-    return
-
-dst_v =self.tree.GetItemData(dst)
-if dst_v == None:
-    return
-
-parent = self.tree.GetParent(dst)
-parent_v = None</t>
-<t tx="edream.110203113231.292"># Make sure the drag will be valid.
-parent_v = self.tree.GetItemData(dst)
-
-if not self.c.checkMoveWithParentWithWarning(src_v,parent_v,True):
-    return
-
-src_v.moveToNthChildOf(dst_v,0)</t>
-<t tx="edream.110203113231.293"># Do nothing if dst is a child of src.
-p = parent
-while p.IsOk():
-    if p == src:
-        return
-    p = self.tree.GetParent(p)
-
-# Do nothing if dst is joined to src.
-if dst_v.isJoinedTo(src_v):
-    return
-
-# Make sure the drag will be valid.
-parent_v = self.tree.GetItemData(parent)
-if not self.c.checkMoveWithParentWithWarning(src_v,parent_v,True):
-    return
-
-src_v.moveAfter(dst_v)</t>
-<t tx="edream.110203113231.295">def beginUpdate (self):
-
-    self.updateCount += 1</t>
-<t tx="edream.110203113231.296">def endUpdate (self,flag=True,scroll=False):
-
-    assert(self.updateCount &gt; 0)
-
-    self.updateCount -= 1
-    if flag and self.updateCount == 0:
-        self.redraw()</t>
-<t tx="edream.110203113231.298">def redraw (self):
-    
-    c = self.c ; tree = self.treeCtrl
-    if c is None: return
-    p = c.rootPosition()
-    if not p: return
-
-    self.drawing = True # Tell event handlers not to call us.
-    try:
-        tree.DeleteAllItems()
-        self.root_id = root_id = tree.AddRoot('Root Node')
-        ### tree.SetItemFont(root_id,self.defaultFont)
-        while p:
-            self.redraw_subtree(root_id,p)
-            p.moveToNext()
-        if 0: # Don't do this when wx.TR_HIDE_ROOT is true.
-            tree.Expand(root_id)
-    finally:
-        self.drawing = False
-        
-def redraw_now(self,scroll=True):
-    self.redraw()</t>
 <t tx="edream.110203113231.299">def redraw_node(self,parent_id,p):
     
     tree = self.treeCtrl
@@ -1767,29 +1485,17 @@ def redraw_now(self,scroll=True):
     if p == self.c.currentPosition():
         tree.SelectItem(id) # Generates call to onTreeChanged.
     
+    p.tree_id = id
+    self.setEditWidget(p)
     assert (p == tree.GetItemData(id).GetData())
     return id
 </t>
-<t tx="edream.110203113231.300">def redraw_subtree(self,parent_id,p):
-
-    tree = self.treeCtrl
-    id = self.redraw_node(parent_id,p)
-    child = p.firstChild()
+<t tx="edream.110203113231.337">def set_focus(self,c,w):
     
-    # **Important**
-    # The calls to tree.Expand and tree.Collapse *will* generate events,
-    # This is the reason the event handlers must be disabled while drawing.
+    """Set the focus of the widget in the given commander if it needs to be changed."""
     
-    if p.isExpanded():
-        while child:
-            self.redraw_subtree(id,child)
-            child.moveToNext()
-        tree.Expand(id)
-    else:
-        while child:
-            self.redraw_node(id,child)
-            child.moveToNext()
-        tree.Collapse(id)</t>
+    c.frame.setFocus(w)
+</t>
 <t tx="edream.110203113231.542">def createControl (self,frame,parentFrame):
     
     w = g.app.gui.leoTextWidgetClass(
@@ -1801,8 +1507,9 @@ def redraw_now(self,scroll=True):
     )
 
     # wx.EVT_CHAR(w,self.onKey) # Provides translated keycodes.
-    wx.EVT_KEY_DOWN(w,self.onKeyDown) # Provides raw key codes.
-    wx.EVT_KEY_UP(w,self.onKeyUp) # Provides raw key codes.
+    wx.EVT_KEY_DOWN     (w,self.onKeyDown) # Provides raw key codes.
+    wx.EVT_KEY_UP       (w,self.onKeyUp) # Provides raw key codes.
+    wx.EVT_SET_FOCUS    (w,self.onFocusIn)
 
     return w
 </t>
@@ -1977,54 +1684,14 @@ def seeInsertPoint(self):
     w = self
     wx.TextCtrl.ShowPosition(w,w.GetInsertionPoint())
 </t>
-<t tx="edream.111303103141">def add_command (self,menu,**keys):
+<t tx="edream.111403093559">def focus_get (self):
     
-    if not menu:
-        return g.trace('Can not happen.  No menu')
+    return self.FindFocus()
     
-    callback = keys.get('command')
-    accel = keys.get('accelerator')
-    ch,label = self.createAccelLabel(keys)
+def SetFocus (self):
     
-    def wxMenuCallback (event,callback=callback):
-        return callback() # All args were bound when the callback was created.
-
-    id = const(label)
-    menu.Append(id,label,label)
-    key = (menu,label),
-    self.menuDict[key] = id # Remember id 
-    wx.EVT_MENU(self.frame.top,id,wxMenuCallback)
-    if ch or accel:
-        self.createAccelData(menu,ch,accel,id,label)
-    </t>
-<t tx="edream.111303111942">def insert_cascade (self,parent,index,label,menu,underline):
-
-    if not parent:
-        keys = {'label':label,'underline':underline}
-        ch,label = self.createAccelLabel(keys)
-        self.menuBar.append(menu,label)
-        id = const(label)
-        accel = None
-        if ch: self.createAccelData(menu,ch,accel,id,label)
+    self.treeCtrl.SetFocus()
 </t>
-<t tx="edream.111303111942.1">def add_cascade (self,parent,label,menu,underline):
-
-    """Create a menu with the given parent menu."""
-
-    if parent:
-        # Create a submenu of the parent menu.
-        keys = {'label':label,'underline':underline}
-        ch,label = self.createAccelLabel(keys)
-        id = const(label)
-        parent.AppendMenu(id,label,menu,label)
-        accel = None
-        if ch: self.createAccelData(menu,ch,accel,id,label)
-    else:
-        # Create a top-level menu.
-        self.menuBar.Append(menu,label)
-        
-</t>
-<t tx="edream.111303202917"></t>
 <t tx="edream.111603213329">def createBindings (self): # wxLeoTree
 
     w = self.treeCtrl ; id = const("cTree")
@@ -2049,6 +1716,8 @@ def seeInsertPoint(self):
     
     wx.EVT_RIGHT_DOWN           (w,self.onRightDown)
     wx.EVT_RIGHT_UP             (w,self.onRightUp)
+    
+    wx.EVT_SET_FOCUS            (w,self.onFocusIn)
 </t>
 <t tx="ekr.20040331071919"></t>
 <t tx="ekr.20040331071919.1">@language plain
@@ -11305,8 +10974,6 @@ if not ok:
 <t tx="ekr.20061023141638"></t>
 <t tx="ekr.20061023142737"></t>
 <t tx="ekr.20061023142737.1"></t>
-<t tx="ekr.20061105114250"></t>
-<t tx="ekr.20061105114250.1"></t>
 <t tx="ekr.20061105125717"></t>
 <t tx="ekr.20061115122034"># For the ctors of these widgets, look for g.app.gui.leoTextWidgetClass
 
@@ -11496,30 +11163,6 @@ tag_config = tag_configure</t>
 <t tx="ekr.20061116055348">def tag_delete (self,tagName,*args,**keys):
     
     pass # g.trace(tagName,args,keys)</t>
-<t tx="ekr.20061116064914">def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-    
-    # g.trace('undoType',undoType,'oldSel',oldSel,'len(oldText)',oldText and len(oldText) or 0)
-    
-    c = self.c ; w = c.frame.body.bodyCtrl
-    if not c:  return g.trace('no c!')
-    p = c.currentPosition()
-    if not p: return g.trace('no p!')
-    if self.frame.lockout &gt; 0: return g.trace('lockout!',g.callers())
-
-    self.frame.lockout += 1
-    try:
-        s = wx.TextCtrl.GetValue(w)
-        changed = s != p.bodyString()
-        # g.trace('changed',changed,len(s),p.headString(),g.callers())
-        if changed:
-            p.v.t.setTnodeText(s)
-            p.v.t.insertSpot = w.getInsertPoint()
-            if 0: # This causes flash even when nothing is actually colored!
-                self.frame.body.recolor_now(p)
-            if not c.changed: c.setChanged(True)
-            c.frame.tree.updateVisibleIcons(p)
-    finally:
-        self.frame.lockout -= 1</t>
 <t tx="ekr.20061116070156">def bind (self,kind,*args,**keys):
     
     pass # g.trace('wxLeoText',kind,args[0].__name__)</t>
@@ -11538,14 +11181,14 @@ def onKeyDown (self,event,*args,**keys):
 def onKeyUp (self,event):
     keycode = event.GetKeyCode()
     if keycode == wx.WXK_ALT:
-        g.trace('wxBody: alt')
+        # g.trace('wxBody: alt')
         event.Skip() # Do default processing.
     elif self.useWX:
         event.Skip()
     else:
         event.keyDownModifiers = self.keyDownModifiers
-        event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
-        g.trace('wxBody',event.keysym)
+        event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
+        # g.trace('wxBody',event.keysym)
         if event.keysym: # The key may have been a raw key.
             self.c.k.masterKeyHandler(event,stroke=event.keysym)
 </t>
@@ -11554,7 +11197,7 @@ def onKeyUp (self,event):
     '''Generate an event.'''
     return w.event_generate(kind,*args,**keys)
 </t>
-<t tx="ekr.20061116093228">class leoEvent:
+<t tx="ekr.20061116093228">class leoKeyEvent:
     
     '''A gui-independent wrapper for gui events.'''
     
@@ -11587,7 +11230,7 @@ def toPythonIndex (self,index):
     elif index == 'end':
         return w.GetLastPosition()
     else:
-        g.trace(index)
+        # g.trace(index)
         s = wx.TextCtrl.GetValue(w)
         row,col = index.split('.')
         row,col = int(row),int(col)
@@ -11601,14 +11244,14 @@ toGuiIndex = toPythonIndex</t>
     '''Return the char field of an event, either a wx event or a converted Leo event.'''
 
     if hasattr(event,'char'):
-        return event.char # A leoEvent.
+        return event.char # A leoKeyEvent.
     else:
         return self.keysymHelper(event,c=c,kind='char')
 
 def eventKeysym (self,event,c=None):
     
     if hasattr(event,'keysym'):
-        return event.keysym # A leoEvent: we have already computed the result.
+        return event.keysym # A leoKeyEvent: we have already computed the result.
     else:
         return self.keysymHelper(event,c=c,kind='keysym')
 </t>
@@ -11617,7 +11260,7 @@ def eventKeysym (self,event,c=None):
     '''Return the widget field of an event, either a wx event or a converted Leo event.'''
 
     if hasattr(event,'widget'):
-        return event.widget # a leoEvent.
+        return event.widget # a leoKeyEvent.
     elif hasattr(event,'GetEventObject'):
         return event.GetEventObject()
     else:
@@ -11637,6 +11280,9 @@ def eventKeysym (self,event,c=None):
     gui = self
     
     keycode = event.GetKeyCode()
+    
+    # g.trace(repr(keycode),kind)
+
     if keycode in (wx.WXK_SHIFT,wx.WXK_ALT,wx.WXK_CONTROL):
         return ''
 
@@ -11666,16 +11312,17 @@ def eventKeysym (self,event,c=None):
                 g.es('No translation for', repr(i))
                 char = repr(i)
    
-    # Adjust the case.
-    if char.isalpha():
-        if shift: # Case is also important for ctrl keys. # or alt or cmd or ctrl or meta:
-            char = char.upper()
+    # Adjust the case, but only for plain ascii characters characters.
+    if len(char) == 1:
+        if char.isalpha():
+            if shift: # Case is also important for ctrl keys. # or alt or cmd or ctrl or meta:
+                char = char.upper()
+            else:
+                char = char.lower()
+        elif shift:
+            char = self.getShiftChar(char)
         else:
-            char = char.lower()
-    elif shift:
-        char = self.getShiftChar(char)
-    else:
-        char = self.getUnshiftChar(char)
+            char = self.getUnshiftChar(char)
 
     # Create a value compatible with Leo's core.
     val = (
@@ -11687,10 +11334,11 @@ def eventKeysym (self,event,c=None):
         (char or '')
     )
 
-    # if kind == 'char': g.trace(repr(keycode),repr(val)) # Tracing just val can crash!
+    # if kind == 'char':  g.trace(repr(keycode),repr(val)) # Tracing just val can crash!
     return val
 </t>
 <t tx="ekr.20061117204829">wxKeyDict = {
+    # Keys are wxWidgets key codes.  Values are the standard (Tk) names.
     wx.WXK_DECIMAL  : '.',
     wx.WXK_BACK     : '\b', # 'BackSpace',
     wx.WXK_TAB      : '\t', # 'Tab',
@@ -11891,2565 +11539,30 @@ def onKeyUp (self,event):
         event.Skip()
     else:
         event.keyDownModifiers = self.keyDownModifiers
-        event = g.app.gui.leoEvent(event,c=self.c) # Convert event to canonical form.
-        g.trace('wxTree',event.keysym,self.keyDownModifiers)
+        event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
+        # g.trace('wxTree',event.keysym,self.keyDownModifiers)
         if event.keysym: # The key may have been a raw key.
             if event.keysym.isalnum() and len(event.keysym) == 1:
                 event.actualEvent.Skip(True) # Let the widget handle it.
             else:
-                g.trace(event.keysym)
+                # g.trace(event.keysym)
                 self.c.k.masterKeyHandler(event,stroke=event.keysym)
                 event.actualEvent.Skip(False) # Does not work.
 </t>
-<t tx="ekr.20061118144918"></t>
-<t tx="ekr.20061118194416">def createAcceleratorTables (self):
-    
-    d = self.acceleratorDict
-    entries = []
-    for menu in d.keys():
-        aList = d.get(menu)
-        for data in aList:
-            ch,accel,id,label = data
-            if ch:
-                entry = wx.AcceleratorEntry(wx.ACCEL_NORMAL,ord(ch),id)
-                entries.append(entry)
-    table = wx.AcceleratorTable(entries)
-    self.menuBar.SetAcceleratorTable(table)
-</t>
-<t tx="ekr.20061118203148">def createAccelLabel (self,keys):
-    
-    '''Create the menu label by inserting '&amp;' at the underline spot.'''
-    
-    label    = keys.get('label')
-    underline = keys.get('underline')
-    accel = keys.get('accelerator')
-    ch = 0 &lt;= underline &lt; len(label) and label[underline] or ''
-    if ch: label = label[:underline] + '&amp;' + label[underline:]
-    if accel: label = label + '\t' + accel 
-    return ch,label
-</t>
-<t tx="ekr.20061118203148.1">def createAccelData (self,menu,ch,accel,id,label):
-
-    d = self.acceleratorDict
-    aList = d.get(menu,[])
-    data = ch,accel,id,label
-    aList.append(data)
-    d [menu] = aList
-</t>
-<t tx="ekr.20061118204548"></t>
-<t tx="ekr.20061119105509.1">def __init__(self,c,parentFrame): # wxLeoIconBar
-
-    self.c = c
-    self.widgets = []
-    self.toolbar = self.iconFrame = parentFrame.CreateToolBar() # A wxFrame method
-
-    # Set the official ivar.
-    c.frame.iconFrame = self.iconFrame
-</t>
-<t tx="ekr.20061120081247"></t>
-<t tx="ekr.20061120095431"></t>
-<t tx="ekr.20061120095431.1"></t>
-<t tx="ekr.20061120095431.2"></t>
-<t tx="ekr.20061120095431.3"></t>
-<t tx="ekr.20061120095701"></t>
-<t tx="ekr.20061120095701.1"></t>
-<t tx="ekr.20061120095701.2"></t>
-<t tx="ekr.20061120095701.3"></t>
-<t tx="ekr.20061120095701.4"></t>
-<t tx="ekr.20061121090620"></t>
-<t tx="ekr.20061126193041"></t>
-<t tx="ekr.20061127073512.1"></t>
-<t tx="ekr.20061127075102">def get_p (self,event):
-    
-    tree = self.treeCtrl
-    id = event.GetItem()
-    p = id.IsOk() and tree.GetItemData(id).GetData()
-    
-    if 0:
-        g.trace(
-            'lockout',self.frame.lockout,
-            'drawing',self.drawing,
-            'id.IsOk',id.IsOk(),
-            'p',p and p.headString(),
-            g.callers(9))
-        
-    if self.frame.lockout or self.drawing or not p:
-        return None
-    else:
-        # g.trace(p.headString(),g.callers())
-        return p
-
-</t>
-<t tx="ekr.20061127081233">def selectHelper (self,event):
-    
-    '''Scroll so the presently selected node is in view.'''
-    
-    p = self.get_p(event)
-    if not p: return
-
-    # We can make this assertion because get_p has done the check.
-    id = event.GetItem()
-    assert (id.IsOk() and not self.frame.lockout)
-
-    # g.trace(p.headString(),g.callers())
-    tree = self.treeCtrl
-    self.frame.lockout = True
-    tree.SelectItem(id)
-    tree.ScrollTo(id)
-    self.frame.lockout = False
-</t>
-<t tx="ekr.20061127092105">leoID = ekr (in c:\Documents and Settings\Ed)
-reading settings in C:\prog\tigris-cvs\leo\config\leoSettings.leo
-reading settings in C:\prog\tigris-cvs\leo\config\myLeoSettings.leo
-reading settings in C:\prog\tigris-cvs\leo\test\unitTest.leo
-reading c:\Documents and Settings\Ed\.leoRecentFiles.txt
-rst3 plugin: SilverCity not loaded
-setMinibufferBindings: to do
-@command: unit-test-command1
-found  3 doctests for leoGlobals
-found  1 doctests for leoTest
-found  5 test routines for leoAtFile
-found  4 test routines for leoEditCommands
-found  1 test routine for leoFileCommands
-found 12 test routines for leoGlobals
-found  3 test routines for leoImport
-found  1 test routine for leoKeys
-found  1 test routine for leoKeysNEW
-found  1 test routine for leoTkinterKeys
-....
-End of doctests
-..........WindowsError: [Error 2] The system cannot find the file specified: 'xyzzy'
-
-....
-test of es_print: ─é
-.es_trace:
-test of es_trace: ─é
-..............
-End of test routines
-.leoFrame oops: bringToFront should be overridden in subclass
-EsetMinibufferBindings: to do
-EE
-End of commands tests
-.EEEEEEEEEEEEEE.F.EE
-End of unit tests for typing
-.FleoID = ekr (in c:\Documents and Settings\Ed)
-reading c:\Documents and Settings\Ed\.leoRecentFiles.txt
-leoID = ekr (in c:\Documents and Settings\Ed)
-reading c:\Documents and Settings\Ed\.leoRecentFiles.txt
-....runAskOkCancelNumberDialog:
-.EException exceptions.AttributeError: "IntVar instance has no attribute '_tk'" in &lt;bound method IntVar.__del__ of &lt;Tkin
-ter.IntVar instance at 0x02E84800&gt;&gt; ignored
-..........AttributeError: wxLeoFrame instance has no attribute 'GetPosition'
-
-F........
-End of tests of @file nodes
-.setMinibufferBindings: to do
-Traceback (most recent call last):
-
-  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 790, in openWithFileName
-    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-
-  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 847, in open
-    silent=silent)
-
-  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 776, in getLeoFile
-    c.selectVnode(c.currentPosition()) # load body pane
-
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6525, in selectPosition
-    c.frame.tree.select(p,updateBeadList)
-
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 3699, in select
-    g.trace('does not exist',p.headString())
-
-  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1542, in headString
-    return self.v.headString()
-
-AttributeError: 'NoneType' object has no attribute 'headString'
-
-EsetMinibufferBindings: to do
-Traceback (most recent call last):
-
-  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 790, in openWithFileName
-    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-
-  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 847, in open
-    silent=silent)
-
-  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 776, in getLeoFile
-    c.selectVnode(c.currentPosition()) # load body pane
-
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6525, in selectPosition
-    c.frame.tree.select(p,updateBeadList)
-
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 3699, in select
-    g.trace('does not exist',p.headString())
-
-  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1542, in headString
-    return self.v.headString()
-
-AttributeError: 'NoneType' object has no attribute 'headString'
-
-EsetMinibufferBindings: to do
-Traceback (most recent call last):
-
-  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 790, in openWithFileName
-    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-
-  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 847, in open
-    silent=silent)
-
-  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 776, in getLeoFile
-    c.selectVnode(c.currentPosition()) # load body pane
-
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6525, in selectPosition
-    c.frame.tree.select(p,updateBeadList)
-
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 3699, in select
-    g.trace('does not exist',p.headString())
-
-  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1542, in headString
-    return self.v.headString()
-
-AttributeError: 'NoneType' object has no attribute 'headString'
-
-EsetMinibufferBindings: to do
-setMinibufferBindings: to do
-.EEEEEEEEEEEE..EE.....................oops: leoBody oops: run,__call__,run,runTest,&lt;module&gt;,addEditor should be overridd
-en in subclass
-oops: leoBody oops: run,__call__,run,runTest,&lt;module&gt;,deleteEditor should be overridden in subclass
-.oops: leoBody oops: run,__call__,run,runTest,&lt;module&gt;,addEditor should be overridden in subclass
-EEEEE
-End of new find tests
-..E..................E........F......
-End of general unit tests
-.EEEEEEEEEEEEEEEEEEEEEEEEE
-End of undo/redo tests
-.................E..............
-End of colorizer tests
-.EEEEEEEEEEEEEEEEEEEEEEEFEEEFFEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-End of tests for edit commands.
-........EE...E.......leoFrame oops: pasteText should be overridden in subclass
-FEE....
-End of new unit tests
-.EopenURL: u'http://webpages.charter.net/edreamleo/front.html'
-.F..
-End of unit tests for plugins
-.....
-======================================================================
-ERROR: @test make sure the window is visible (Make this the first test)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-AttributeError: 'wxLeoTextWidget' object has no attribute 'update'
-
-======================================================================
-ERROR: @test Select a node when file is first loaded
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test Find keeps focus in body &amp; shows selected text
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 6, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7887, in openFindTab
-    wasOpen = log.frameDict.get(tabName)
-AttributeError: wxLeoLog instance has no attribute 'frameDict'
-
-======================================================================
-ERROR: @test return ends editing of headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 11, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test editLabel selects entire headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 13, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test paste at end of headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 12, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test typing and undo in headline - at end
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 12, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test paste and undo in headline - at end
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 12, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test paste and undo in headline - with selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 12, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test selecting new node retains typing in headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 12, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test paste from menu into body sticks
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 9, in &lt;module&gt;
-AttributeError: 'Menu' object has no attribute 'index'
-
-======================================================================
-ERROR: @test paste from menu into headline sticks
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 9, in &lt;module&gt;
-AttributeError: 'Menu' object has no attribute 'index'
-
-======================================================================
-ERROR: @test paste from menu to body recolors the body
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 10, in &lt;module&gt;
-AttributeError: 'Menu' object has no attribute 'index'
-
-======================================================================
-ERROR: @test typing in headline recomputes width
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 11, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test selecting new node retains paste in headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 12, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test typing in empty body text redraws the screen (and icon)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 14, in &lt;module&gt;
-AttributeError: 'wxLeoTextWidget' object has no attribute 'event_generate'
-
-======================================================================
-ERROR: @test typing in non-empty body text does not redraw the screen
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 14, in &lt;module&gt;
-AttributeError: 'wxLeoTextWidget' object has no attribute 'event_generate'
-
-======================================================================
-ERROR: @test &lt;Delete&gt; key sticks in body
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 14, in &lt;module&gt;
-AttributeError: 'wxLeoTextWidget' object has no attribute 'event_generate'
-
-======================================================================
-ERROR: @test &lt;Delete&gt; key sticks in headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 10, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test ctors for all panels
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 9, in &lt;module&gt;
-  File "C:\prog\tigris-cvs\leo\src\leoTkinterFind.py", line 98, in __init__
-    self.dict[key] = Tk.IntVar()
-  File "c:\python25\lib\lib-tk\Tkinter.py", line 276, in __init__
-    Variable.__init__(self, master, value, name)
-  File "c:\python25\lib\lib-tk\Tkinter.py", line 185, in __init__
-    self._tk = master.tk
-AttributeError: 'NoneType' object has no attribute 'tk'
-
-======================================================================
-ERROR: @test minimalLeoFile.leo
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 6, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 622, in runLeoTest
-    c.frame.top.update()
-AttributeError: 'Frame' object has no attribute 'update'
-
-======================================================================
-ERROR: @test minimalLeoFile2.leo
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 6, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 622, in runLeoTest
-    c.frame.top.update()
-AttributeError: 'Frame' object has no attribute 'update'
-
-======================================================================
-ERROR: @test minimalLeoFile3.leo
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 6, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 622, in runLeoTest
-    c.frame.top.update()
-AttributeError: 'Frame' object has no attribute 'update'
-
-======================================================================
-ERROR: ImportExportTestCase: importAtRoot
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: importDerivedFile
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: importNowebFiles
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: importFlattenedOutline
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: importCWEBFiles
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: removeSentinels
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: importAtFile
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: exportHeadlines
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: flattenOutline
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: weave
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: outlineToNoweb
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: ImportExportTestCase: outlineToCWEB
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1189, in setUp
-    c.setHeadString(child,"import test: " + self.v.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test k.registerCommand
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test changing headline marks descendent @thin nodes dirty
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 17, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6377, in setHeadString
-    c = self ; t = c.edit_widget(p)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6091, in edit_widget
-    return p and c.frame.tree.edit_widget(p)
-AttributeError: wxLeoTree instance has no attribute 'edit_widget'
-
-======================================================================
-ERROR: @test Add editor, Delete leftmost editor
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-AttributeError: wxLeoBody instance has no attribute 'editorWidgets'
-
-======================================================================
-ERROR: @test togle find options commands
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 17, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2742, in simulateCommand
-    k.masterCommand(event,func,stroke)
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2264, in masterCommand
-    c.doCommand(func,commandName,event=event)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7990, in toggleIgnoreCaseOption
-    return self.toggleOption('ignore_case')
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 8022, in toggleOption
-    def toggleOption (self, ivar):   self.getHandler().toggleOption(ivar)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7962, in getHandler
-    self.openFindTab(show=show)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7887, in openFindTab
-    wasOpen = log.frameDict.get(tabName)
-AttributeError: wxLeoLog instance has no attribute 'frameDict'
-
-======================================================================
-ERROR: @test set find mode commands
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 13, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2742, in simulateCommand
-    k.masterCommand(event,func,stroke)
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2264, in masterCommand
-    c.doCommand(func,commandName,event=event)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7974, in setFindScopeEveryWhere
-    return self.setFindScope('entire-outline')
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 8021, in setFindScope
-    def setFindScope (self, where):  self.getHandler().setFindScope(where)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7962, in getHandler
-    self.openFindTab(show=show)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7887, in openFindTab
-    wasOpen = log.frameDict.get(tabName)
-AttributeError: wxLeoLog instance has no attribute 'frameDict'
-
-======================================================================
-ERROR: @test minbuffer find commands
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 14, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2742, in simulateCommand
-    k.masterCommand(event,func,stroke)
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2264, in masterCommand
-    c.doCommand(func,commandName,event=event)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 8051, in reSearchForward
-    self.getHandler().reSearchForward(event)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7962, in getHandler
-    self.openFindTab(show=show)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7887, in openFindTab
-    wasOpen = log.frameDict.get(tabName)
-AttributeError: wxLeoLog instance has no attribute 'frameDict'
-
-======================================================================
-ERROR: @test show-find-options
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 3, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2742, in simulateCommand
-    k.masterCommand(event,func,stroke)
-  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2264, in masterCommand
-    c.doCommand(func,commandName,event=event)
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 264, in doCommand
-    val = command(event)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7986, in showFindOptions
-    self.getHandler().showFindOptions()
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7962, in getHandler
-    self.openFindTab(show=show)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7887, in openFindTab
-    wasOpen = log.frameDict.get(tabName)
-AttributeError: wxLeoLog instance has no attribute 'frameDict'
-
-======================================================================
-ERROR: @test p.setBodyStringOrPane
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 13, in &lt;module&gt;
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4142, in get
-    j = w.toGuiIndex(j)
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4096, in toGuiIndex
-    return len(s)
-NameError: global name 's' is not defined
-
-======================================================================
-ERROR: @test onHyperLinkControlClick
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 3, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1371, in __getattr__
-    raise AttributeError,attr
-AttributeError: OnHyperLinkControlClick
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1065, in setUp
-    w.setSelectionRange(lines[0],lines[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test noTrailingNewline (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test trailingNewline (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 8, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test mixedLineLengths
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test mixedLinesWithLeadingWS
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test noChangeRequired
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test honorLeadingWS
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test honorLeadingWSVar1
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test simpleHangingIndent
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test testSimpleHangingIndentVar1
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test simpleHangingIndentVar2
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
-    reformatParagraphTest.__init__(self,c,p)
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test multiParagraphTest
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 851, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test multiParagraphWithListTest
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 8, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 873, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test leadingWSOnEmptyLinesTest
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 18, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 899, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test directiveBreaksParagraphTest
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 5, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
-    self.go()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
-    self.runTest()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 925, in runTest
-    self.c.reformatParagraph()
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2654, in reformatParagraph
-    oldYview = body.getYScrollPosition()
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 371, in getYScrollPosition
-    return self.bodyCtrl.yview()
-AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
-
-======================================================================
-ERROR: @test colorizer mixed
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6525, in selectPosition
-    c.frame.tree.select(p,updateBeadList)
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 3699, in select
-    g.trace('does not exist',p.headString())
-  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1542, in headString
-    return self.v.headString()
-AttributeError: 'NoneType' object has no attribute 'headString'
-
-======================================================================
-ERROR: @test add-space-to-lines (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test add-tab-to-lines (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-char
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-char-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-paragraph-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-sentence
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-sentence-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-to-indentation
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-word
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test back-word-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test backward-delete-char
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test backward-kill-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test beginning-of-buffer
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test beginning-of-buffer-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test beginning-of-line
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test beginning-of-line-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test capitalize-word
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test center-line (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test center-region (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test clear-selected-text
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test count-region
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test delete-char
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test downcase-region
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test downcase-word
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test end-of-buffer
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test end-of-line-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test exchange-point-mark
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test extend-to-line
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test extend-to-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test extend-to-sentence
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test extend-to-word
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test fill-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-char
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-char-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-end-word (end of line)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-end-word (start of word)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-end-word-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-paragraph-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-sentence
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-sentence-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-word
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test forward-word-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test indent-relative
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test indent-rigidly
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test insert-newline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test insert-parentheses
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test kill-paragraph
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test move-lines-down (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test move-lines-up
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test move-past-close
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test move-past-close-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test newline-and-indent
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test remove-blank-lines (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test remove-space-from-lines
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test remove-tab-from-lines
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test reverse-region
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test sort-columns
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test sort-lines
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test split-line
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test tabify
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test transpose-chars
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test transpose-lines
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test untabify
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
-
-======================================================================
-ERROR: @test upcase-region
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test upcase-word
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
-    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4386, in setSelectionRange
-    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1923, in SetSelection
-    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test c.editCommands.moveUpOrDownHelper
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 10, in &lt;module&gt;
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4378, in setInsertPoint
-    wx.TextCtrl.SetInsertionPoint(w,w.toGuiIndex(pos))
-  File "c:\python25\lib\site-packages\wx-2.7.1-msw-unicode\wx\_controls.py", line 1907, in SetInsertionPoint
-    return _controls_.TextCtrl_SetInsertionPoint(*args, **kwargs)
-TypeError: in method 'TextCtrl_SetInsertionPoint', expected argument 2 of type 'long'
-
-======================================================================
-ERROR: @test c.editCommands.scrollHelper
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 10, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 4298, in scrollHelper
-    chng = self.measure(w) ; delta = chng [0]
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 4314, in measure
-    i = w.index('insert')
-AttributeError: 'wxLeoTextWidget' object has no attribute 'index'
-
-======================================================================
-ERROR: @test c.findMatchingBracket (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 15, in &lt;module&gt;
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4378, in setInsertPoint
-    wx.TextCtrl.SetInsertionPoint(w,w.toGuiIndex(pos))
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4096, in toGuiIndex
-    return len(s)
-NameError: global name 's' is not defined
-
-======================================================================
-ERROR: @test tkBody.onClick
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 9, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 216, in onClick
-    i = w.xyToPythonIndex(x,y)
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4400, in xyToPythonIndex
-    i = Tk.Text.index(w,"@%d,%d" % (x,y))
-NameError: global name 'Tk' is not defined
-
-======================================================================
-ERROR: @test k.autoCompleterClass.calltip
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 12, in &lt;module&gt;
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4378, in setInsertPoint
-    wx.TextCtrl.SetInsertionPoint(w,w.toGuiIndex(pos))
-  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4096, in toGuiIndex
-    return len(s)
-NameError: global name 's' is not defined
-
-======================================================================
-ERROR: @test rClick.py
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-  File "C:\prog\tigris-cvs\leo\plugins\rClick.py", line 81, in rClickbinder
-    c.frame.log.logCtrl.bind  ('&lt;Button-3&gt;',c.frame.OnBodyRClick)
-AttributeError: wxLeoFrame instance has no attribute 'OnBodyRClick'
-
-======================================================================
-FAIL: @test inserting a new node draws the screen exactly once
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-AssertionError: redraws: 0
-
-======================================================================
-FAIL: @test all commands have an event arg
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 14, in &lt;module&gt;
-AssertionError: no event arg for leoHelp, args: (['self'], None, None, None)
-
-======================================================================
-FAIL: @test write .leo file with @ignore node
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 7, in &lt;module&gt;
-AssertionError: error writing file
-
-======================================================================
-FAIL: @test script buttons create commands
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 5, in &lt;module&gt;
-AssertionError: no test-at-button-node command
-
-======================================================================
-FAIL: @test do-nothing
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('1.0', '1.0')
-     got: (0, 0)
-
-======================================================================
-FAIL: @test end-of-buffer-extend-selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('1.0', '7.0')
-     got: (0, 61)
-
-======================================================================
-FAIL: @test end-of-line
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 4, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
-    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
-AssertionError: mismatch in sel
-expected: ('1.10', '1.10')
-     got: (10, 10)
-
-======================================================================
-FAIL: @test c.frame.pasteText
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 14, in &lt;module&gt;
-AssertionError
-
-======================================================================
-FAIL: @test colorizerURLs
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 8, in &lt;module&gt;
-AssertionError: no URL tags
-
-----------------------------------------------------------------------
-Ran 337 tests in 48.229s
-
-FAILED (failures=9, errors=143)
-</t>
-<t tx="ekr.20061130092420"></t>
-<t tx="ekr.20061211052926">def assignIcon (self,p):
-    
-    val = p.v.computeIcon()
-    assert(0 &lt;= val &lt;= 15)
-    return val
-</t>
-<t tx="ekr.20061211064516">def onRightDown (self,event):
-    
-    tree = self.treeCtrl
-    pt = event.GetPosition()
-    item, flags = tree.HitTest(pt)
-    if item:
-        tree.SelectItem(item)
-
-def onRightUp (self,event):
-    
-    tree = self.treeCtrl
-    pt = event.GetPosition()
-    item, flags = tree.HitTest(pt)
-    if item:
-        tree.EditLabel(item)
-</t>
 <t tx="ekr.20061211072604">def edit_widget (self,p):
     
+    '''Return a widget (compatible with leoTextWidget) used for editing the headline.'''
     
-    '''A do-nothing method required for compatibility with Tkinter gui code.'''
+    w = self.editWidgetDict.get(p.v)
     
-    return None</t>
-<t tx="ekr.20061211115055">def updateVisibleIcons (self,p):
-
-    '''Update all visible icons joined to p.'''
-
-    tree = self.treeCtrl
-    val = p.v.computeIcon()
-    id = tree.GetFirstVisibleItem()
-    while id.IsOk():
-        p2 = tree.GetItemData(id).GetData()
-        if p2.v.t == p.v.t:
-            tree.SetItemImage(id,val)
-        id = tree.GetNextVisible(id)
+    return w
 </t>
+<t tx="ekr.20061211083200">def setFocus (self,w):
+
+    # g.trace(w,g.app.gui.widget_name(w))
+     
+    w.SetFocus()
+    self.focusWidget = w</t>
 <t tx="ekr.20070116073454">def tag_remove(self,tagName,i,j=None,*args):
     
     w = self
@@ -14468,6 +11581,1861 @@ def onRightUp (self,event):
         g.trace(i,j,tagName)
         wx.TextCtrl.SetStyle(w,i,j,style)</t>
 <t tx="ekr.20070116074730"></t>
+<t tx="ekr.20070123084337"></t>
+<t tx="ekr.20070123084929"></t>
+<t tx="ekr.20070123101021">def defineSpecialKeys (self):
+    
+    k = self
+    k.guiBindNamesDict = {}
+    k.guiBindNamesInverseDict = {}
+
+    # No translation.
+    for s in k.tkNamesList:
+        k.guiBindNamesDict[s] = s
+        
+    # Create the inverse dict.
+    for key in k.guiBindNamesDict.keys():
+        k.guiBindNamesInverseDict [k.guiBindNamesDict.get(key)] = key
+        
+        
+    # Important: only the inverse dict is actually used in the new key binding scheme.
+
+    # wxWidgets may return the *values* of this dict in event.keysym fields.
+    # Leo will warn if it gets a event whose keysym not in values of this table.
+    
+    # wxWidgets Keypresses are represented by an enumerated type, wxKeyCode.
+    # The possible values are the ASCII character codes, plus the following:
+    
+    # k.guiBindNamesDict = {
+        # "!" : "exclam",
+        # '"' : "quotedbl",
+        # "#" : "numbersign",
+        # "$" : "dollar",
+        # "%" : "percent",
+        # "&amp;" : "ampersand",
+        # "'" : "quoteright",
+        # "(" : "parenleft",
+        # ")" : "parenright",
+        # "*" : "asterisk",
+        # "+" : "plus",
+        # "," : "comma",
+        # "-" : "minus",
+        # "." : "period",
+        # "/" : "slash",
+        # ":" : "colon",
+        # ";" : "semicolon",
+        # "&lt;" : "less",
+        # "=" : "equal",
+        # "&gt;" : "greater",
+        # "?" : "question",
+        # "@" : "at",
+        # "[" : "bracketleft",
+        # "\\": "backslash",
+        # "]" : "bracketright",
+        # "^" : "asciicircum",
+        # "_" : "underscore",
+        # "`" : "quoteleft",
+        # "{" : "braceleft",
+        # "|" : "bar",
+        # "}" : "braceright",
+        # "~" : "asciitilde",
+    # }
+</t>
+<t tx="ekr.20070123101505"># g.es calls gui.color to do the translation,
+# so most code in Leo's core can simply use Tk color names.
+
+def color (self,color):
+    '''Return the gui-specific color corresponding to the Tk color name.'''
+    return color # Do not call oops: this method is essential for the config classes.
+</t>
+<t tx="ekr.20070123150433">Traceback (most recent call last):
+
+  File "C:\prog\tigris-cvs\leo\plugins\leo_to_html.py", line 61, in createExportMenu
+    exportMenu.insert(3,'command',label='Outline to HTML',command= lambda c = c : export_html(c))
+
+AttributeError: 'Menu' object has no attribute 'insert'
+
+----------------------------------------------------------------------
+Ran 124 tests in 25.797s
+
+FAILED (errors=5)
+</t>
+<t tx="ekr.20070124093934">@nocolor
+
+- Arrows always are bound in the outline pane.
+- Outline pane redrawn too many times.
+- Moving an outline down into a child position doesn't work.</t>
+<t tx="ekr.20070124151504"></t>
+<t tx="ekr.20070125074101">class wxLeoHealineTextWidget:
+    
+    '''A class to make a wxWidgets headline look like a wxLeoTextWidget.'''
+    
+    @others
+    
+
+    </t>
+<t tx="ekr.20070125074101.2">def __init__ (self,treeCtrl,tree_id):
+
+    self.tree = treeCtrl
+    self.init(tree_id)
+    
+def init (self,tree_id):
+    self.tree_id = tree_id
+    self.ins = 0
+    self.sel = 0,0
+
+def __repr__(self):
+    return 'wxLeoHeadlineTextWidget: %s' % (id(self))
+</t>
+<t tx="ekr.20070125074101.3"></t>
+<t tx="ekr.20070125074101.4"># This plugin uses Python indices everywhere.
+
+def toPythonIndex (self,index):
+    
+    w = self ; id = w.tree_id ; tree = w.tree
+
+    if type(index) == type(99):
+        return index
+    elif index == '1.0':
+        return 0
+    elif index == 'end':
+        s = tree.GetItemText(id)
+        return len(s)
+    else:
+        s = tree.GetItemText(id)
+        row,col = index.split('.')
+        row,col = int(row),int(col)
+        row -= 1
+        i = g.convertRowColToPythonIndex(s,row,col)
+        return index
+
+toGuiIndex = toPythonIndex</t>
+<t tx="ekr.20070125074101.5"># This method is called only from the colorizer.
+# It provides a huge speedup over naive code.
+
+def rowColToGuiIndex (self,s,row,col):
+
+    return g.convertRowColToPythonIndex(s,row,col)    
+</t>
+<t tx="ekr.20070125074101.6"></t>
+<t tx="ekr.20070125074101.9">def delete (self,i,j=None):
+
+    w = self
+    s = w.getAllText()
+    i = w.toPythonIndex(i)
+    if j is None: j = i + 1
+    j = w.toPythonIndex(j)
+
+    w.setAllText(s[:i]+s[j:])
+    w.ins = i
+    w.sel = i,i
+</t>
+<t tx="ekr.20070125074101.10">def get(self,i,j=None):
+    
+    w = self
+    s = w.getAllText()
+    i = w.toPythonIndex(i)
+    if j is None: j = i+1
+    j = w.toPythonIndex(j)
+
+    return g.toUnicode(s[i:j],g.app.tkEncoding)
+</t>
+<t tx="ekr.20070125074101.11"># The signature is more restrictive than the Tk.Text.insert method.
+
+def insert(self,i,s2):
+    
+    w = self
+    s = w.getAllText()
+    i = w.toPythonIndex(i)
+
+    w.setAllText(s[:i] + s2 + s[i:])
+    j = i + len(s2)
+    w.ins = j
+    w.sel = j,j
+</t>
+<t tx="ekr.20070125074101.20">def deleteTextSelection (self):
+    
+    w = self
+    if w.hasSelection():
+        i,j = w.sel
+        s = w.getAllText()
+        s = s[:i] + s[j:]
+        w.setAllText(s)
+        w.ins = i
+        w.sel = i,i
+</t>
+<t tx="ekr.20070125074101.21">def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75):
+
+    w = self
+</t>
+<t tx="ekr.20070125074101.22">def getAllText (self):
+    
+    w = self
+
+    s = w.tree.GetItemText(w.tree_id)
+
+    if s is None:
+        return u""
+    else:
+        return g.toUnicode(s,g.app.tkEncoding)</t>
+<t tx="ekr.20070125074101.23">def getInsertPoint(self):
+    
+    w = self
+    return w.ins</t>
+<t tx="ekr.20070125074101.24">def getSelectedText (self):
+    
+    w = self
+
+    if w.hasSelection():
+        i,j = w.sel
+        s = w.getAllText()
+        return s[i:j]
+    else:
+        return u''
+</t>
+<t tx="ekr.20070125074101.25">def getSelectionRange (self,sort=True):
+    
+    """Return a tuple representing the selected range of the widget.
+    
+    Return a tuple giving the insertion point if no range of text is selected."""
+    
+    w = self
+    i,j = w.sel ; ins = w.ins
+
+    if i == j:
+        return ins,ins
+    else:
+        return i,j
+</t>
+<t tx="ekr.20070125074101.26">def hasSelection (self):
+    
+    w = self
+    i,j = w.sel
+    return i != j
+</t>
+<t tx="ekr.20070125074101.27">def replace (self,i,j,s):
+    
+    w = self
+    w.delete(i,j)
+    w.insert(i,s)
+</t>
+<t tx="ekr.20070125074101.28">def selectAllText (self,insert=None):
+    
+    '''Select all text of the widget.'''
+
+    w = self
+    s = w.getAllText()
+    w.sel = 0,len(s)</t>
+<t tx="ekr.20070125074101.29">def setAllText (self,s):
+
+    w = self
+    g.trace(repr(w.tree_id))
+    w.tree.SetItemText(w.tree_id,s)
+</t>
+<t tx="ekr.20070125074101.31">def setInsertPoint (self,pos):
+    
+    w = self
+    w.ins = w.toPythonIndex(pos)
+</t>
+<t tx="ekr.20070125074101.32">def setSelectionRange (self,i,j,insert=None):
+    
+    w = self
+    w.sel = w.toPythonIndex(i),w.toPythonIndex(j)
+    if insert is not None:
+        w.ins = w.toPythonIndex(insert)
+</t>
+<t tx="ekr.20070125075418"></t>
+<t tx="ekr.20070125075903">def bind (self,kind,*args,**keys):              pass
+
+def cget (self,*args,**keys):                   pass
+def configure (self,*args,**keys):              pass
+
+def mark_set(self,markName,i):                  pass
+
+def see (self,index):                           pass
+def seeInsertPoint (self):                      pass
+
+def tag_add (self,tagName,i,j=None,*args):      pass
+def tag_configure (self,colorName,**keys):      pass
+def tag_delete (self,tagName,*args,**keys):     pass
+def tag_ranges (self,tagName):                   return (0,0)
+def tag_remove (self,tagName,i,j=None,*args):   pass
+
+def update (self,*args,**keys):                 pass
+def update_idletasks (self,*args,**keys):       pass</t>
+<t tx="ekr.20070125091308">def setEditWidget (self,p):
+    
+    w = self.editWidgetDict.get(p.v)
+
+    if w:
+        w.init(id)
+    else:
+        # g.trace(p.headString())
+        w = wxLeoHealineTextWidget(self.treeCtrl,id)
+        self.editWidgetDict[p.v] = w
+
+    p.edit_widget = w
+</t>
+<t tx="ekr.20070125115547"></t>
+<t tx="ekr.20070125153352">@killcolor
+
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 17, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6418, in setHeadString
+    w.setAllText(s)
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5469, in setAllText
+    w.tree.SetItemText(w.tree_id,s)
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 5277, in SetItemText
+    return _controls_.TreeCtrl_SetItemText(*args, **kwargs)
+TypeError: in method 'TreeCtrl_SetItemText', expected argument 2 of type 'wxTreeItemId const &amp;'
+
+AttributeError: wxLeoBody instance has no attribute 'editorWidgets'
+
+======================================================================
+ERROR: @test minbuffer find commands
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 14, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2666, in simulateCommand
+    k.masterCommand(event,func,stroke)
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2187, in masterCommand
+    c.doCommand(func,commandName,event=event)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 266, in doCommand
+    val = command(event)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7510, in reSearchForward
+    self.getHandler().reSearchForward(event)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7110, in reSearchForward
+    escapes=[self.replaceStringShortcut])
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 7210, in stateZeroHelper
+    self.addFindStringToLabel(protect=False)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 6935, in addFindStringToLabel
+    c.minibufferWantsFocusNow()
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 5563, in minibufferWantsFocusNow
+    k and k.minibufferWantsFocusNow()
+  File "c:\prog\tigris-cvs\leo\src\leoKeys.py", line 2880, in minibufferWantsFocusNow
+    c.widgetWantsFocusNow(c.miniBufferWidget)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 5570, in widgetWantsFocusNow
+    c = self ; c.set_focus(w,force=True)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 5746, in set_focus
+    g.app.gui.set_focus(c,w)
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 1881, in set_focus
+    c.frame.setFocus(w)
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 2606, in setFocus
+    w.SetFocus()
+AttributeError: 'NoneType' object has no attribute 'SetFocus'
+
+======================================================================
+ERROR: @test onHyperLinkControlClick
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 3, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1157, in __getattr__
+    raise AttributeError,attr
+AttributeError: OnHyperLinkControlClick
+
+======================================================================
+ERROR: @test noTrailingNewline (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 7, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 830, in __init__
+    reformatParagraphTest.__init__(self,c,p)
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 687, in __init__
+    self.go()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 694, in go
+    self.runTest()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 836, in runTest
+    self.c.reformatParagraph()
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 2658, in reformatParagraph
+    oldYview = body.getYScrollPosition()
+  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 377, in getYScrollPosition
+    return self.bodyCtrl.yview()
+AttributeError: 'wxLeoTextWidget' object has no attribute 'yview'
+
+======================================================================
+ERROR: @test colorizer mixed
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 7, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6559, in selectPosition
+    c.frame.tree.select(p,updateBeadList)
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4623, in select
+    g.trace('does not exist',p.headString())
+  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1328, in headString
+    return self.v.headString()
+AttributeError: 'NoneType' object has no attribute 'headString'
+
+======================================================================
+ERROR: @test add-space-to-lines (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test add-tab-to-lines (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-char
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-char-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-paragraph-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-sentence
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-sentence-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-to-indentation
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-word
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test back-word-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test backward-delete-char
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test backward-kill-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test beginning-of-buffer
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test beginning-of-buffer-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test beginning-of-line
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test beginning-of-line-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test capitalize-word
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test center-line (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test center-region (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test clear-selected-text
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test count-region
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test delete-char
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test downcase-region
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test downcase-word
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test end-of-buffer
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test end-of-line 2
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test end-of-line-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test exchange-point-mark
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test extend-to-line
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test extend-to-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test extend-to-sentence
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test extend-to-word
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test fill-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-char
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-char-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-end-word (end of line)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-end-word (start of word)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-end-word-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-paragraph-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-sentence
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-sentence-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-word
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test forward-word-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test indent-relative
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test indent-rigidly
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test insert-newline
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test insert-parentheses
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test kill-line middle-1
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test kill-line middle-2
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test kill-line end-1
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test kill-line end-2
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test kill-paragraph
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test move-lines-down (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test move-lines-up (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test move-past-close
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test move-past-close-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test newline-and-indent
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test remove-blank-lines (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test remove-space-from-lines
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test remove-tab-from-lines
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test reverse-region
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test sort-columns
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test sort-lines
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test split-line
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test tabify
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test transpose-chars
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test transpose-lines (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test untabify
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 3 of type 'long'
+
+======================================================================
+ERROR: @test upcase-region
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test upcase-word (pass)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1448, in runEditCommandTest
+    w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5252, in setSelectionRange
+    wx.TextCtrl.SetSelection(w,w.toGuiIndex(i),w.toGuiIndex(j))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1916, in SetSelection
+    return _controls_.TextCtrl_SetSelection(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetSelection', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test c.editCommands.moveUpOrDownHelper
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 10, in ?
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 5244, in setInsertPoint
+    wx.TextCtrl.SetInsertionPoint(w,w.toGuiIndex(pos))
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 1900, in SetInsertionPoint
+    return _controls_.TextCtrl_SetInsertionPoint(*args, **kwargs)
+TypeError: in method 'TextCtrl_SetInsertionPoint', expected argument 2 of type 'long'
+
+======================================================================
+ERROR: @test c.editCommands.scrollHelper
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 9, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 4231, in scrollHelper
+    chng = self.measure(w) ; delta = chng [0]
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 4246, in measure
+    i = w.index('insert')
+AttributeError: 'wxLeoTextWidget' object has no attribute 'index'
+
+======================================================================
+ERROR: @test tkBody.onClick
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 9, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoFrame.py", line 214, in onClick
+    i = w.xyToPythonIndex(x,y)
+AttributeError: 'wxLeoTextWidget' object has no attribute 'xyToPythonIndex'
+
+======================================================================
+ERROR: @test rClick.py
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 7, in ?
+  File "C:\prog\tigris-cvs\leo\plugins\rClick.py", line 81, in rClickbinder
+    c.frame.log.logCtrl.bind  ('&lt;Button-3&gt;',c.frame.OnBodyRClick)
+AttributeError: wxLeoFrame instance has no attribute 'OnBodyRClick'
+
+======================================================================
+FAIL: @test return ends editing of headline
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 10, in ?
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4778, in editLabel
+    id = tree.GetNextVisible(id)
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 5382, in GetNextVisible
+    return _controls_.TreeCtrl_GetNextVisible(*args, **kwargs)
+PyAssertionError: C++ assertion "IsVisible(item)" failed at ..\..\src\msw\treectrl.cpp(1393) in wxTreeCtrl::GetNextVisib
+le(): The item you call GetNextVisible() for must be visible itself!
+
+======================================================================
+FAIL: @test editLabel selects entire headline
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 12, in ?
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4778, in editLabel
+    id = tree.GetNextVisible(id)
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 5382, in GetNextVisible
+    return _controls_.TreeCtrl_GetNextVisible(*args, **kwargs)
+PyAssertionError: C++ assertion "IsVisible(item)" failed at ..\..\src\msw\treectrl.cpp(1393) in wxTreeCtrl::GetNextVisib
+le(): The item you call GetNextVisible() for must be visible itself!
+
+======================================================================
+FAIL: @test typing in non-empty body text does not redraw the screen
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 7, in ?
+AssertionError: node not found: Test headline abc
+
+======================================================================
+FAIL: @test inserting a new node can be undone and redone
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 3, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 3147, in insertHeadline
+    c.editPosition(p,selectAll=True)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6536, in editPosition
+    c.frame.tree.editLabel(p,selectAll=selectAll)
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4778, in editLabel
+    id = tree.GetNextVisible(id)
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 5382, in GetNextVisible
+    return _controls_.TreeCtrl_GetNextVisible(*args, **kwargs)
+PyAssertionError: C++ assertion "IsVisible(item)" failed at ..\..\src\msw\treectrl.cpp(1393) in wxTreeCtrl::GetNextVisib
+le(): The item you call GetNextVisible() for must be visible itself!
+
+======================================================================
+FAIL: @test inserting a new node draws the screen exactly once
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 3147, in insertHeadline
+    c.editPosition(p,selectAll=True)
+  File "c:\prog\tigris-cvs\leo\src\leoCommands.py", line 6536, in editPosition
+    c.frame.tree.editLabel(p,selectAll=selectAll)
+  File "C:\prog\tigris-cvs\leo\plugins\__wx_gui.py", line 4778, in editLabel
+    id = tree.GetNextVisible(id)
+  File "C:\Python24\Lib\site-packages\wx-2.8-msw-unicode\wx\_controls.py", line 5382, in GetNextVisible
+    return _controls_.TreeCtrl_GetNextVisible(*args, **kwargs)
+PyAssertionError: C++ assertion "IsVisible(item)" failed at ..\..\src\msw\treectrl.cpp(1393) in wxTreeCtrl::GetNextVisib
+le(): The item you call GetNextVisible() for must be visible itself!
+
+======================================================================
+FAIL: @test undoing insert node restores previous node's body text
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 6, in ?
+AssertionError: node not found: Test headline abc
+
+======================================================================
+FAIL: @test &lt;Delete&gt; key sticks in body
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 6, in ?
+AssertionError: node not found: Test headline abc
+
+======================================================================
+FAIL: @test &lt;Delete&gt; key sticks in headline
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 6, in ?
+AssertionError: node not found: Test headline abc
+
+======================================================================
+FAIL: @test all commands have an event arg
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 13, in ?
+AssertionError: no event arg for leoHelp, args: (['self'], None, None, None)
+
+======================================================================
+FAIL: @test minimalLeoFile.leo
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 6, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 614, in runLeoTest
+    assert(ok and frame)
+AssertionError
+
+======================================================================
+FAIL: @test minimalLeoFile2.leo
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 6, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 614, in runLeoTest
+    assert(ok and frame)
+AssertionError
+
+======================================================================
+FAIL: @test minimalLeoFile3.leo
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 6, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 614, in runLeoTest
+    assert(ok and frame)
+AssertionError
+
+======================================================================
+FAIL: @test strokeFromSetting
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 24, in ?
+AssertionError: Expected Alt+equal, Got Alt+=
+
+======================================================================
+FAIL: @test do-nothing
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('1.0', '1.0')
+     got: (0, 0)
+
+======================================================================
+FAIL: @test end-of-buffer-extend-selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('1.0', '7.0')
+     got: (61, 61)
+
+======================================================================
+FAIL: @test end-of-line
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 4, in ?
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1459, in runEditCommandTest
+    assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+AssertionError: mismatch in sel
+expected: ('1.10', '1.10')
+     got: (10, 10)
+
+======================================================================
+FAIL: @test c.editCommands.moveToHelper
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 15, in ?
+AssertionError: Expected 5, got 50
+
+======================================================================
+FAIL: @test c.frame.pasteText
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 14, in ?
+AssertionError
+
+======================================================================
+FAIL: @test w.toGuiIndex (test2)
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 19, in ?
+AssertionError
+
+======================================================================
+FAIL: @test colorizerURLs
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
+    exec script + '\n' in {'c':c,'g':g,'p':p}
+  File "&lt;string&gt;", line 8, in ?
+AssertionError: no URL tags
+
+----------------------------------------------------------------------
+Ran 342 tests in 50.094s
+
+FAILED (failures=20, errors=129)
+</t>
+<t tx="ekr.20070125153527">def update (self,*args,**keys):             pass
+def update_idletasks (self,*args,**keys):   pass</t>
 <t tx="rogererens.20041014110709">@
 
 How about other plugins that create a status line? Should I test whether the status line is already created?

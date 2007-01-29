@@ -16,7 +16,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="E"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070101093904"><vh>January 2007</vh></v>
@@ -27,6 +27,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
+<v t="ekr.20070126084440" a="V"><vh>ANN: Leo 4.4.3 alpha 1</vh></v>
 <v t="ekr.20061029080932.1"><vh>ANN: Leo 4.4.2.1 final</vh></v>
 <v t="ekr.20061026100827"><vh>ANN: Leo 4.4.2 final</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
@@ -138,7 +139,7 @@
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
-<v t="ekr.20050118095021" a="TV"><vh>Leo 4.x installer  (update for each release)</vh>
+<v t="ekr.20050118095021"><vh>Leo 4.x installer  (update for each release)</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
@@ -193,7 +194,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -5143,5 +5144,29 @@ Debug:
   -d, --debug        turn on debugging for checker [off]
   -Q, --quiet        turn off all output except warnings [off]
   -V, --version      print the version of PyChecker and exit</t>
+<t tx="ekr.20070126084440">Leo 4.4.3 alpha 1                                  January 26, 2006
+
+Leo 4.4.3 alpha 1 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+Important: the wxGui plugin is still alpha-quality code at present.
+
+The highlights of Leo 4.4.3:
+----------------------------
+- A functional wxWidgets plugin.
+- Removed all gui-dependent code from Leo's core.
+- Better support for the winpdb debugger.
+- Many minor improvements, new settings and bug fixes.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>
