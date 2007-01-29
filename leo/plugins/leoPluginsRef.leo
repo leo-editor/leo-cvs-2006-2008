@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet ekr_test?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.549872122762">
-	<global_window_position top="55" left="232" height="782" width="992"/>
+<globals body_outline_ratio="0.903133903134">
+	<global_window_position top="132" left="248" height="702" width="992"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -334,7 +334,8 @@
 </v>
 <v t="ekr.20070116074730"><vh>Gui plugins</vh>
 <v t="ekr.20061207074949"><vh>@thin cursesGui.py</vh></v>
-<v t="edream.110203113231.233" a="E"><vh>wxPython plugin (alpha quality)</vh>
+<v t="edream.110203113231.233"><vh>wxPython plugin (alpha quality)</vh>
+<v t="ekr.20070129072443"><vh>To do</vh></v>
 <v t="ekr.20070124093934"><vh>Recent wx bugs</vh>
 <v t="ekr.20070123150433"><vh>Failed unit tests (lengthy tests)</vh>
 <v t="ekr.20070124151504"><vh>Calls to menu.insert</vh>
@@ -349,17 +350,17 @@
 <v t="ekr.20070123084929"><vh>Recent</vh>
 <v t="ekr.20061118094045"><vh>Font handling</vh>
 <v t="ekr.20061115122034"><vh>wxLeoTextWidget class</vh>
-<v t="ekr.20061118101058" a="M"><vh>Birth &amp; special methods (wxLeoTextCtrl)</vh></v>
+<v t="ekr.20061118101058"><vh>Birth &amp; special methods (wxLeoTextCtrl)</vh></v>
 <v t="ekr.20070125153527"><vh>Do-nothing</vh></v>
 <v t="ekr.20061105125717"><vh>Index conversion</vh>
-<v t="ekr.20061117150656" a="M"><vh>w.toGuiIndex &amp; toPythonIndex</vh></v>
+<v t="ekr.20061117150656"><vh>w.toGuiIndex &amp; toPythonIndex</vh></v>
 <v t="ekr.20061117150523"><vh>w.rowColToGuiIndex</vh></v>
 </v>
 <v t="ekr.20061115122034.2"><vh>Wrapper methods</vh>
 <v t="ekr.20061116070156"><vh>bind</vh></v>
 <v t="ekr.20061115122034.3"><vh>delete</vh></v>
 <v t="ekr.20061115122034.4"><vh>get</vh></v>
-<v t="ekr.20061115122034.5" a="M"><vh>insert</vh></v>
+<v t="ekr.20061115122034.5"><vh>insert</vh></v>
 <v t="ekr.20061115122034.6"><vh>mark_set (do-nothing)</vh></v>
 <v t="ekr.20061115122034.7"><vh>tag_add</vh></v>
 <v t="ekr.20070116073454"><vh>tag_remove</vh></v>
@@ -370,7 +371,7 @@
 <v t="ekr.20061115122034.8"><vh>tag_ranges </vh></v>
 </v>
 <v t="ekr.20061115122034.9"><vh>Convenience methods (tkTextWidget)</vh>
-<v t="ekr.20061115122034.10" a="M"><vh>deleteTextSelection (to do)</vh></v>
+<v t="ekr.20061115122034.10"><vh>deleteTextSelection (to do)</vh></v>
 <v t="ekr.20061115122034.11"><vh>flashCharacter (to do)</vh></v>
 <v t="edream.111303093953.18"><vh>getAllText (test)</vh></v>
 <v t="edream.111303093953.9"><vh>getInsertPoint (test)</vh></v>
@@ -386,22 +387,22 @@
 <v t="ekr.20061115122034.24"><vh>xyToGui/PythonIndex (passed)</vh></v>
 </v>
 </v>
-<v t="ekr.20061118101058" a="M"><vh>Birth &amp; special methods (wxLeoTextCtrl)</vh></v>
+<v t="ekr.20061118101058"><vh>Birth &amp; special methods (wxLeoTextCtrl)</vh></v>
 <v t="edream.110203113231.542"><vh>wxBody.createControl</vh></v>
 </v>
 <v t="ekr.20061116084824"><vh>Key handling</vh>
 <v t="ekr.20061115122034"><vh>wxLeoTextWidget class</vh>
-<v t="ekr.20061118101058" a="M"><vh>Birth &amp; special methods (wxLeoTextCtrl)</vh></v>
+<v t="ekr.20061118101058"><vh>Birth &amp; special methods (wxLeoTextCtrl)</vh></v>
 <v t="ekr.20070125153527"><vh>Do-nothing</vh></v>
 <v t="ekr.20061105125717"><vh>Index conversion</vh>
-<v t="ekr.20061117150656" a="M"><vh>w.toGuiIndex &amp; toPythonIndex</vh></v>
+<v t="ekr.20061117150656"><vh>w.toGuiIndex &amp; toPythonIndex</vh></v>
 <v t="ekr.20061117150523"><vh>w.rowColToGuiIndex</vh></v>
 </v>
 <v t="ekr.20061115122034.2"><vh>Wrapper methods</vh>
 <v t="ekr.20061116070156"><vh>bind</vh></v>
 <v t="ekr.20061115122034.3"><vh>delete</vh></v>
 <v t="ekr.20061115122034.4"><vh>get</vh></v>
-<v t="ekr.20061115122034.5" a="M"><vh>insert</vh></v>
+<v t="ekr.20061115122034.5"><vh>insert</vh></v>
 <v t="ekr.20061115122034.6"><vh>mark_set (do-nothing)</vh></v>
 <v t="ekr.20061115122034.7"><vh>tag_add</vh></v>
 <v t="ekr.20070116073454"><vh>tag_remove</vh></v>
@@ -412,7 +413,7 @@
 <v t="ekr.20061115122034.8"><vh>tag_ranges </vh></v>
 </v>
 <v t="ekr.20061115122034.9"><vh>Convenience methods (tkTextWidget)</vh>
-<v t="ekr.20061115122034.10" a="M"><vh>deleteTextSelection (to do)</vh></v>
+<v t="ekr.20061115122034.10"><vh>deleteTextSelection (to do)</vh></v>
 <v t="ekr.20061115122034.11"><vh>flashCharacter (to do)</vh></v>
 <v t="edream.111303093953.18"><vh>getAllText (test)</vh></v>
 <v t="edream.111303093953.9"><vh>getInsertPoint (test)</vh></v>
@@ -438,11 +439,11 @@
 <v t="ekr.20061117155233.1"><vh>eventWidget</vh></v>
 <v t="ekr.20061117155233.2"><vh>eventXY</vh></v>
 </v>
-<v t="ekr.20061118123730.1" a="M"><vh>wxTree.onKeyUp/Down</vh></v>
-<v t="edream.111603213329" a="M"><vh>wxTree.createBindings</vh></v>
+<v t="ekr.20061118123730.1"><vh>wxTree.onKeyUp/Down</vh></v>
+<v t="edream.111603213329"><vh>wxTree.createBindings</vh></v>
 <v t="ekr.20070123101021"><vh>wx.defineSpecialKeys</vh></v>
 <v t="ekr.20070123101505"><vh>Constants</vh></v>
-<v t="ekr.20061116083454" a="M"><vh>wxBody.onKeyUp/Down</vh></v>
+<v t="ekr.20061116083454"><vh>wxBody.onKeyUp/Down</vh></v>
 <v t="ekr.20061116093228"><vh>class leoKeyEvent (wxGui)</vh></v>
 <v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
 <v t="ekr.20061117203128"><vh>keysymHelper</vh></v>
@@ -458,7 +459,7 @@
 </v>
 <v t="ekr.20070125075418"><vh>Made wx headlines look like a Leo text widget</vh>
 <v t="ekr.20070125091308"><vh>setEditWidget</vh></v>
-<v t="edream.110203113231.299" a="M"><vh>redraw_node</vh></v>
+<v t="edream.110203113231.299"><vh>redraw_node</vh></v>
 <v t="ekr.20061211072604"><vh>edit_widget</vh></v>
 <v t="ekr.20070125074101"><vh>wxLeoHeadlineTextWidget class</vh>
 <v t="ekr.20070125074101.2"><vh>Birth &amp; special methods</vh></v>
@@ -469,7 +470,7 @@
 </v>
 <v t="ekr.20070125074101.6"><vh>Wrapper methods</vh>
 <v t="ekr.20070125074101.9"><vh>delete</vh></v>
-<v t="ekr.20070125074101.20" a="M"><vh>deleteTextSelection</vh></v>
+<v t="ekr.20070125074101.20"><vh>deleteTextSelection</vh></v>
 <v t="ekr.20070125074101.21"><vh>flashCharacter (to do)</vh></v>
 <v t="ekr.20070125074101.10"><vh>get</vh></v>
 <v t="ekr.20070125074101.22"><vh>getAllText</vh></v>
@@ -487,8 +488,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203113231.302"
-marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.110203113231.261,edream.110203113231.264,ekr.20061119105509.1,edream.111303111942.1,edream.111303103141,edream.111303111942,edream.111603213329,ekr.20061105114250,edream.110203113231.298,edream.110203113231.299,ekr.20061118123730.1,edream.110203113231.283,edream.110203113231.287,edream.110203113231.289,ekr.20061118101058,ekr.20061117150656,ekr.20061115122034.5,ekr.20061115122034.10,ekr.20070125074101.20,"><vh>@thin __wx_gui.py</vh></v>
+<v t="edream.110203113231.302"><vh>@thin __wx_gui.py</vh></v>
 </v>
 </v>
 <v t="ekr.20040722135402"><vh>Icon and status areas</vh>
@@ -542,12 +542,14 @@ marks="ekr.20061116083454,ekr.20061116064914,edream.110203113231.260,edream.1102
 <v t="ktenney.20041211072654.1"><vh>@thin at_view.py</vh></v>
 <v t="mork.20041020082242.1"><vh>@thin base64Packager.py</vh></v>
 <v t="ekr.20060807103814.1"><vh>@thin datenodes.py</vh></v>
+<v t="ajones.20070122153625"><vh>@thin expfolder.py</vh></v>
 <v t="mork.20041018091414.1"><vh>@thin fastGotoNode.py</vh></v>
 <v t="ekr.20050301095332"><vh>@thin mod_labels.py</vh></v>
 <v t="edream.110203113231.876"><vh>@thin read_only_nodes.py</vh></v>
 <v t="ekr.20040910070811.1"><vh>@thin run_nodes.py</vh></v>
 <v t="ekr.20060831165821"><vh>@thin slideshow.py</vh></v>
 <v t="ekr.20040828103325"><vh>@thin startfile.py</vh></v>
+<v t="ajones.20070122160142"><vh>@thin textnode.py</vh></v>
 <v t="ekr.20050329082101"><vh>AutoTrees</vh>
 <v t="ekr.20050329082101.1"><vh>AutoTrees plugin</vh>
 <v t="ekr.20050329082101.2"><vh>Introduction</vh></v>
@@ -13436,6 +13438,11 @@ FAILED (failures=20, errors=129)
 </t>
 <t tx="ekr.20070125153527">def update (self,*args,**keys):             pass
 def update_idletasks (self,*args,**keys):   pass</t>
+<t tx="ekr.20070129072443">@nocolor
+
+- Make c.get_focus work.
+- Make sure tree only gets redrawn once.
+- Simulate dialogs during unit testing.</t>
 <t tx="rogererens.20041014110709">@
 
 How about other plugins that create a status line? Should I test whether the status line is already created?
