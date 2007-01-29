@@ -1417,9 +1417,14 @@ class baseUndoer:
     #@+node:ekr.20050318085432.7:redoNodeContents
     def redoNodeContents (self):
         
-        u = self ; c = u.c
+        u = self ; c = u.c ; w = c.frame.body.bodyCtrl
         
+        # Restore the body.
         u.p.setTnodeText(u.newBody)
+        w.setAllText(u.newBody)
+        c.frame.body.recolor(u.p,incremental=False)
+        
+        # Restore the headline.
         u.p.initHeadString(u.newHead)
         c.frame.tree.setHeadline(u.p,u.newHead) # New in 4.4b2.
         
@@ -1715,9 +1720,12 @@ class baseUndoer:
         including headline and body text, and dirty and marked bits.
         '''
         
-        u = self ; c = u.c
+        u = self ; c = u.c ;  w = c.frame.body.bodyCtrl
         
         u.p.setTnodeText(u.oldBody)
+        w.setAllText(u.oldBody)
+        c.frame.body.recolor(u.p,incremental=False)
+    
         u.p.initHeadString(u.oldHead)
         c.frame.tree.setHeadline(u.p,u.oldHead) # New in 4.4b2.
     
