@@ -4924,6 +4924,9 @@ def runAskOkCancelNumberDialog(self,c,title,message):
 def runAskOkCancelStringDialog(self,c,title,message):
     return self.simulateDialog("stringDialog",'')
     
+def runCompareDialog(self,c):
+    return self.simulateDialog("compareDialog",'')
+    
 def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
     return self.simulateDialog("openFileDialog")
 
@@ -4974,6 +4977,11 @@ def runAskYesNoCancelDialog(self,c,title,
     d = leoTkinterDialog.tkinterAskYesNoCancel(
         c,title,message,yesMessage,noMessage,defaultButton)
     return d.run(modal=True)
+    
+def runCompareDialog(self,c):
+    """Create and run an askYesNo dialog."""
+    if not g.app.unitTesting:
+        leoTkinterCompareDialog(c)
 #@+node:ekr.20031218072017.4057:tkGui file dialogs
 # We no longer specify default extensions so that we can open and save files without extensions.
 #@+node:ekr.20060212061804:runOpenFileDialog
@@ -13169,7 +13177,7 @@ class leoTkTextWidget (Tk.Text):
     __pychecker__ = '--no-override' # suppress warning about changed signature.
         
     def __repr__(self):
-        name = g.app.gui.widget_name(self)
+        name = hasattr(self,'_name') and self._name or '<no name>'
         return 'leoTkTextWidget id: %s name: %s' % (id(self),name)
         
     @others
@@ -21458,8 +21466,7 @@ class searchWidget:
     '''A class to simulating a hidden Tk Text widget.'''
 
     def __repr__(self):
-        name = g.app.gui.widget_name(self)
-        return 'searchWidget id: %s name: %s' % (id(self),name)
+        return 'searchWidget id: %s' % (id(self))
         
     @others
 #@nonl

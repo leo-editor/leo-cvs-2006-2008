@@ -66,8 +66,7 @@ class searchWidget:
     '''A class to simulating a hidden Tk Text widget.'''
 
     def __repr__(self):
-        name = g.app.gui.widget_name(self)
-        return 'searchWidget id: %s name: %s' % (id(self),name)
+        return 'searchWidget id: %s' % (id(self))
         
     #@    @+others
     #@+node:ekr.20070105092438:ctor

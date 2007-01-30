@@ -387,7 +387,7 @@ class leoGui:
     #@+node:ekr.20061111165041:widget_name
     def widget_name (self,w):
         
-        return repr(w)
+        return self.oops()
     #@-node:ekr.20061111165041:widget_name
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@-node:ekr.20061109212618:Must be defined in subclasses
@@ -534,6 +534,9 @@ class unitTestGui(leoGui):
     def runAskOkCancelStringDialog(self,c,title,message):
         return self.simulateDialog("stringDialog",'')
         
+    def runCompareDialog(self,c):
+        return self.simulateDialog("compareDialog",'')
+        
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
         return self.simulateDialog("openFileDialog")
     
@@ -569,6 +572,11 @@ class unitTestGui(leoGui):
     
         return val
     #@-node:ekr.20031218072017.3747:simulateDialog
+    #@+node:ekr.20070130094235:widget_name
+    def widget_name (self,w):
+        
+        return repr(w)
+    #@-node:ekr.20070130094235:widget_name
     #@-others
 #@-node:ekr.20031218072017.3742:class unitTestGui (leoGui)
 #@-others

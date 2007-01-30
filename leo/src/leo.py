@@ -82,6 +82,7 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     except ImportError:
         print "Error importing leoNodes.py"
         import traceback ; traceback.print_exc()
+    
     try:
         import leoConfig
     except ImportError:
@@ -111,31 +112,11 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     g.doHook("start1")
     if g.app.killed: return # Support for g.app.forceShutdown.
     # Create the default gui if needed.
-    if g.app.gui == None:
-        g.app.createTkGui() # Creates global windows.
+    if g.app.gui == None: g.app.createTkGui() # Creates global windows.
     # Initialize tracing and statistics.
     g.init_sherlock(args)
-    #@    << start psycho >>
-    #@+node:ekr.20040411081633:<< start psycho >>
-    if g.app and g.app.use_psyco:
-        try:
-            import psyco
-            if 0:
-                theFile = r"c:\prog\test\psycoLog.txt"
-                g.es("psyco now logging to",theFile,color="blue")
-                psyco.log(theFile)
-                psyco.profile()
-            psyco.full()
-            g.es("psyco now running",color="blue")
-        except ImportError:
-            g.app.use_psyco = False
-        except:
-            print "unexpected exception importing psyco"
-            g.es_exception()
-            g.app.use_psyco = False
-    #@-node:ekr.20040411081633:<< start psycho >>
-    #@nl
-    # New in 4.3: clear g.app.initing _before_ creating the frame.
+    if g.app and g.app.use_psyco: startPsyco()
+    # Clear g.app.initing _before_ creating the frame.
     g.app.initing = False # "idle" hooks may now call g.app.forceShutdown.
     # Create the main frame.  Show it and all queued messages.
     c,frame = createFrame(fileName)
@@ -154,6 +135,27 @@ def run(fileName=None,pymacs=None,*args,**keywords):
         c.redraw_now()
     c.bodyWantsFocus()
     g.app.gui.runMainLoop()
+#@+node:ekr.20040411081633:startPsyco
+def startPsyco ():
+    
+    import leoGlobals as g
+
+    try:
+        import psyco
+        if 0:
+            theFile = r"c:\prog\test\psycoLog.txt"
+            g.es("psyco now logging to",theFile,color="blue")
+            psyco.log(theFile)
+            psyco.profile()
+        psyco.full()
+        g.es("psyco now running",color="blue")
+    except ImportError:
+        g.app.use_psyco = False
+    except:
+        print "unexpected exception importing psyco"
+        g.es_exception()
+        g.app.use_psyco = False
+#@-node:ekr.20040411081633:startPsyco
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
 

@@ -3010,7 +3010,7 @@ class leoTkTextWidget (Tk.Text):
     __pychecker__ = '--no-override' # suppress warning about changed signature.
         
     def __repr__(self):
-        name = g.app.gui.widget_name(self)
+        name = hasattr(self,'_name') and self._name or '<no name>'
         return 'leoTkTextWidget id: %s name: %s' % (id(self),name)
         
     #@    @+others

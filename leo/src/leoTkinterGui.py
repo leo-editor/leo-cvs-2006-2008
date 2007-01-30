@@ -228,6 +228,11 @@ class tkinterGui(leoGui.leoGui):
         d = leoTkinterDialog.tkinterAskYesNoCancel(
             c,title,message,yesMessage,noMessage,defaultButton)
         return d.run(modal=True)
+        
+    def runCompareDialog(self,c):
+        """Create and run an askYesNo dialog."""
+        if not g.app.unitTesting:
+            leoTkinterCompareDialog(c)
     #@+node:ekr.20031218072017.4057:tkGui file dialogs
     # We no longer specify default extensions so that we can open and save files without extensions.
     #@+node:ekr.20060212061804:runOpenFileDialog
