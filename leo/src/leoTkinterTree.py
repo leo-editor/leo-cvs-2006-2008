@@ -2457,26 +2457,6 @@ class leoTkinterTree (leoFrame.leoTree):
         if 0: # This interferes with the find command and interferes with focus generally!
             c.bodyWantsFocus()
     #@-node:ekr.20040803072955.126:tree.endEditLabel
-    #@+node:ekr.20040803072955.143:tree.expandAllAncestors
-    def expandAllAncestors (self,p):
-        
-        '''Expand all ancestors without redrawing.
-        
-        Return a flag telling whether a redraw is needed.'''
-        
-        c = self.c ; redraw_flag = False
-    
-        c.beginUpdate()
-        try:
-            for p in p.parents_iter():
-                if not p.isExpanded():
-                    p.expand()
-                    redraw_flag = True
-        finally:
-            c.endUpdate(False)
-    
-        return redraw_flag
-    #@-node:ekr.20040803072955.143:tree.expandAllAncestors
     #@+node:ekr.20040803072955.128:tree.select
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
     

@@ -438,6 +438,13 @@ class leoFrame:
         'promptForSave',
         'scanForTabWidth',
         'shortFileName',
+        
+        # Cut/Copy/Paste.
+        'OnPaste',
+        'OnPasteFromMenu',
+        'copyText',
+        'cutText',
+        'pasteText',
     
         # Icon bar convenience methods.    
         'addIconButton',
@@ -464,16 +471,12 @@ class leoFrame:
     #@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
     mustBeDefinedInSubclasses = (
         #Gui-dependent commands.
-        'OnPaste',
-        'OnPasteFromMenu',
         'abortEditLabelCommand',
         'cascade',
         'contractBodyPane',
         'contractLogPane',
         'contractOutlinePane',
         'contractPane',
-        'copyText',
-        'cutText',
         'endEditLabelCommand',
         'equalSizedPanes',
         'expandLogPane',
@@ -490,7 +493,6 @@ class leoFrame:
         'insertHeadlineTime',
         'leoHelp',
         'minimizeAll',
-        'pasteText',
         'resizeToScreen',
         'toggleActivePane',
         'toggleSplitDirection',
@@ -524,13 +526,6 @@ class leoFrame:
     def OnCut   (self,event=None): self.oops()
     def OnCutFromMenu  (self,event=None):     self.oops()
     def OnCopyFromMenu (self,event=None):     self.oops()
-    
-    def OnPaste (self,event=None): self.oops()
-    def OnPasteFromMenu (self,event=None):    self.oops()
-    
-    def copyText  (self,event=None): self.oops()
-    def cutText   (self,event=None): self.oops()
-    def pasteText (self,event=None,middleButton=False): self.oops()
     
     def abortEditLabelCommand (self,event=None): self.oops()
     def endEditLabelCommand   (self,event=None): self.oops()
@@ -751,6 +746,116 @@ class leoFrame:
         self.statusLine and self.statusLine.update()
     #@nonl
     #@-node:ekr.20041223105114.1:Status line convenience methods
+    #@+node:ekr.20070130115927.4:Cut/Copy/Paste (leoFrame)
+    #@+node:ekr.20070130115927.5:copyText
+    def copyText (self,event=None):
+        
+        '''Copy the selected text from the widget to the clipboard.'''
+        
+        f = self ; c = f.c ; w = event and event.widget
+        if not w or not g.app.gui.isTextWidget(w): return
+    
+        # Set the clipboard text.
+        i,j = w.getSelectionRange()
+        if i != j:
+            s = w.get(i,j)
+            g.app.gui.replaceClipboardWith(s)
+            
+    OnCopyFromMenu = copyText
+    #@-node:ekr.20070130115927.5:copyText
+    #@+node:ekr.20070130115927.6:cutText
+    def cutText (self,event=None):
+        
+        '''Invoked from the mini-buffer and from shortcuts.'''
+        
+        f = self ; c = f.c ; w = event and event.widget
+        if not w or not g.app.gui.isTextWidget(w): return
+    
+        name = c.widget_name(w)
+        oldSel = w.getSelectionRange()
+        oldText = w.getAllText()
+        i,j = w.getSelectionRange()
+        
+        # Update the widget and set the clipboard text.
+        s = w.get(i,j)
+        if i != j:
+            w.delete(i,j)
+            g.app.gui.replaceClipboardWith(s)
+    
+        if name.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
+        elif name.startswith('head'):
+            # The headline is not officially changed yet.
+            # p.initHeadString(s)
+            s = w.getAllText()
+            w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    
+    OnCutFromMenu = cutText
+    #@-node:ekr.20070130115927.6:cutText
+    #@+node:ekr.20070130115927.7:pasteText
+    def pasteText (self,event=None,middleButton=False):
+    
+        '''Paste the clipboard into a widget.
+        If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
+    
+        f = self ; c = f.c ; w = event and event.widget
+        if not w or not g.app.gui.isTextWidget(w): return
+    
+        wname = c.widget_name(w)
+        i,j = oldSel = w.getSelectionRange()  # Returns insert point if no selection.
+        oldText = w.getAllText()
+        
+        # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
+        
+        if middleButton and c.k.previousSelection is not None:
+            start,end = c.k.previousSelection
+            s = w.getAllText()
+            s = s[start:end]
+            c.k.previousSelection = None
+        else:
+            s = s1 = g.app.gui.getTextFromClipboard()
+        
+        singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+        
+        if singleLine:
+            # Strip trailing newlines so the truncation doesn't cause confusion.
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+    
+        try:
+            # Update the widget.
+            if i != j:
+                w.delete(i,j)
+            w.insert(i,s)
+        
+            if wname.startswith('body'):
+                c.frame.body.forceFullRecolor()
+                c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+            elif singleLine:
+                s = w.getAllText()
+                while s and s [ -1] in ('\n','\r'):
+                    s = s [: -1]
+                if wname.startswith('head'):
+                    # The headline is not officially changed yet.
+                    # p.initHeadString(s)
+                    w.configure(width=f.tree.headWidth(s=s))
+            else: pass
+        except Exception:
+            pass # Tk sometimes throws weird exceptions here.
+            
+        return 'break' # Essential
+    
+    OnPasteFromMenu = pasteText
+    #@-node:ekr.20070130115927.7:pasteText
+    #@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
+    def OnPaste (self,event=None):
+        
+        return self.pasteText(event=event,middleButton=True)
+    #@nonl
+    #@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
+    #@-node:ekr.20070130115927.4:Cut/Copy/Paste (leoFrame)
     #@-node:ekr.20061109125528.1:Must be defined in base class
     #@+node:ekr.20060206093313:Focus (leoFrame)
     # For compatibility with old scripts.
@@ -893,6 +998,7 @@ class leoTree:
         'getEditTextDict',
         'setEditPosition',
         # Others.
+        'expandAllAncestors',
         'OnIconDoubleClick',
         'oops',
     )
@@ -913,8 +1019,7 @@ class leoTree:
         'editLabel',
         'endEditLabel',
         'setEditLabelState',
-        # Selecting & expanding.
-        'expandAllAncestors',
+        # Selecting.
         'select',
     )
     #@-node:ekr.20061109164610:leoTree.mustBeDefinedInSubclasses
@@ -935,7 +1040,6 @@ class leoTree:
     def endEditLabel(self):                         self.oops()
     def setEditLabelState(self,v,selectAll=False):  self.oops()
     # Selecting & expanding.
-    def expandAllAncestors(self,v):                 self.oops()
     def select(self,p,updateBeadList=True,scroll=True): self.oops()
     #@-node:ekr.20031218072017.3706: Must be defined in subclasses
     #@+node:ekr.20061109165848:Must be defined in base class
@@ -1059,6 +1163,26 @@ class leoTree:
         #@nl
     #@-node:ekr.20061030161842:handleUrlInUrlNode
     #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
+    #@+node:ekr.20040803072955.143:tree.expandAllAncestors
+    def expandAllAncestors (self,p):
+        
+        '''Expand all ancestors without redrawing.
+        
+        Return a flag telling whether a redraw is needed.'''
+        
+        c = self.c ; redraw_flag = False
+    
+        c.beginUpdate()
+        try:
+            for p in p.parents_iter():
+                if not p.isExpanded():
+                    p.expand()
+                    redraw_flag = True
+        finally:
+            c.endUpdate(False)
+    
+        return redraw_flag
+    #@-node:ekr.20040803072955.143:tree.expandAllAncestors
     #@+node:ekr.20031218072017.3718:oops
     def oops(self):
         
@@ -1224,13 +1348,6 @@ class nullFrame (leoFrame):
     #@+node:ekr.20061109124129:Gui-dependent commands
     # In the Edit menu...
     
-    def OnPaste (self,event=None):              pass
-    def OnPasteFromMenu (self,event=None):      pass
-    
-    def copyText  (self,event=None): pass
-    def cutText   (self,event=None): pass
-    def pasteText (self,event=None,middleButton=False): pass
-    
     def abortEditLabelCommand (self,event=None): pass
     def endEditLabelCommand   (self,event=None): pass
     def insertHeadlineTime    (self,event=None): pass
@@ -1363,8 +1480,7 @@ class nullTree (leoTree):
     def editLabel(self,v,selectAll=False):          pass
     def endEditLabel(self):                         pass
     def setEditLabelState(self,v,selectAll=False):  pass
-    # Selecting and expanding.
-    def expandAllAncestors(self,v):                 pass
+    # Selecting.
     def select(self,p,updateBeadList=True,scroll=True):
         self.c.setCurrentPosition(p)
         self.frame.scanForTabWidth(p)

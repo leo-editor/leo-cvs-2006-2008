@@ -2763,15 +2763,18 @@ class editCommandsClass (baseEditCommandsClass):
         c = self.c ; w = self.editWidget(event)
         if not w: return
     
+        s = w.getAllText()
         i,j = w.getSelectionRange()
-        end = w.index('end-1c')
+        
+        g.trace(i,j)
+        ###end = w.index('end-1c')
         
         self.beginCommand(undoType='delete-char')
     
         changed = True
         if i != j:
             w.delete(i,j)
-        elif j != end:
+        elif j < len(s):  ### end
             w.delete(i)
         else:
             changed = False

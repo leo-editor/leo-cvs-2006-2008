@@ -699,110 +699,6 @@ if u.debug_print:
     print "result:",result
 #@-node:ekr.20061106105812.1:<< Compute the result using p's body text >>
 #@-node:ekr.20031218072017.1493:undoRedoText (passed)
-#@+node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
-#@+node:ekr.20051011072903.2:copyText
-def copyText (self,event=None):
-    
-    '''Copy the selected text from the widget to the clipboard.'''
-    
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    # Set the clipboard text.
-    i,j = w.getSelectionRange()
-    if i != j:
-        s = w.get(i,j)
-        g.app.gui.replaceClipboardWith(s)
-        
-OnCopyFromMenu = copyText
-#@-node:ekr.20051011072903.2:copyText
-#@+node:ekr.20051011072049.2:cutText
-def cutText (self,event=None):
-    
-    '''Invoked from the mini-buffer and from shortcuts.'''
-    
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    name = c.widget_name(w)
-    oldSel = w.getSelectionRange()
-    oldText = w.getAllText()
-    i,j = w.getSelectionRange()
-    
-    # Update the widget and set the clipboard text.
-    s = w.get(i,j)
-    if i != j:
-        w.delete(i,j)
-        g.app.gui.replaceClipboardWith(s)
-
-    if name.startswith('body'):
-        c.frame.body.forceFullRecolor()
-        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
-    elif name.startswith('head'):
-        # The headline is not officially changed yet.
-        # p.initHeadString(s)
-        s = w.getAllText()
-        w.configure(width=f.tree.headWidth(s=s))
-    else: pass
-
-OnCutFromMenu = cutText
-#@-node:ekr.20051011072049.2:cutText
-#@+node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
-def pasteText (self,event=None,middleButton=False):
-
-    '''Paste the clipboard into a widget.
-    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
-
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    wname = c.widget_name(w)
-    i,j = oldSel = w.getSelectionRange()  # Returns insert point if no selection.
-    oldText = w.getAllText()
-    
-    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
-    
-    if middleButton and c.k.previousSelection is not None:
-        start,end = c.k.previousSelection
-        s = w.getAllText()
-        s = s[start:end]
-        c.k.previousSelection = None
-    else:
-        s = s1 = g.app.gui.getTextFromClipboard()
-    
-    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-    
-    if singleLine:
-        # Strip trailing newlines so the truncation doesn't cause confusion.
-        while s and s [ -1] in ('\n','\r'):
-            s = s [: -1]
-
-    try:
-        # Update the widget.
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,s)
-    
-        if wname.startswith('body'):
-            c.frame.body.forceFullRecolor()
-            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
-        elif singleLine:
-            s = w.getAllText()
-            while s and s [ -1] in ('\n','\r'):
-                s = s [: -1]
-            if wname.startswith('head'):
-                # The headline is not officially changed yet.
-                # p.initHeadString(s)
-                w.configure(width=f.tree.headWidth(s=s))
-        else: pass
-    except Exception:
-        pass # Tk sometimes throws weird exceptions here.
-        
-    return 'break' # Essential
-
-OnPasteFromMenu = pasteText
-#@-node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
-#@-node:ekr.20031218072017.840:Cut/Copy/Paste (tkFrame)
 #@-node:ekr.20061009152210.1:Fixed undo problems with yank/kill
 #@+node:ekr.20061101174435:Fixed clone-drag problem
 @nocolor
@@ -9363,15 +9259,18 @@ def deleteNextChar (self,event):
     c = self.c ; w = self.editWidget(event)
     if not w: return
 
+    s = w.getAllText()
     i,j = w.getSelectionRange()
-    end = w.index('end-1c')
+    
+    g.trace(i,j)
+    ###end = w.index('end-1c')
     
     self.beginCommand(undoType='delete-char')
 
     changed = True
     if i != j:
         w.delete(i,j)
-    elif j != end:
+    elif j < len(s):  ### end
         w.delete(i)
     else:
         changed = False
@@ -11757,61 +11656,6 @@ def startsDoc (self,s):
 #@-node:ekr.20061031131434.70:findClass & helpers
 #@-node:ekr.20061031131434.66:class classScannerClass
 #@-node:ekr.20061031131434.4:class autoCompleterClass
-#@+node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
-def pasteText (self,event=None,middleButton=False):
-
-    '''Paste the clipboard into a widget.
-    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
-
-    f = self ; c = f.c ; w = event and event.widget
-    if not w or not g.app.gui.isTextWidget(w): return
-
-    wname = c.widget_name(w)
-    i,j = oldSel = w.getSelectionRange()  # Returns insert point if no selection.
-    oldText = w.getAllText()
-    
-    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
-    
-    if middleButton and c.k.previousSelection is not None:
-        start,end = c.k.previousSelection
-        s = w.getAllText()
-        s = s[start:end]
-        c.k.previousSelection = None
-    else:
-        s = s1 = g.app.gui.getTextFromClipboard()
-    
-    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-    
-    if singleLine:
-        # Strip trailing newlines so the truncation doesn't cause confusion.
-        while s and s [ -1] in ('\n','\r'):
-            s = s [: -1]
-
-    try:
-        # Update the widget.
-        if i != j:
-            w.delete(i,j)
-        w.insert(i,s)
-    
-        if wname.startswith('body'):
-            c.frame.body.forceFullRecolor()
-            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
-        elif singleLine:
-            s = w.getAllText()
-            while s and s [ -1] in ('\n','\r'):
-                s = s [: -1]
-            if wname.startswith('head'):
-                # The headline is not officially changed yet.
-                # p.initHeadString(s)
-                w.configure(width=f.tree.headWidth(s=s))
-        else: pass
-    except Exception:
-        pass # Tk sometimes throws weird exceptions here.
-        
-    return 'break' # Essential
-
-OnPasteFromMenu = pasteText
-#@-node:ekr.20051011072903.5:pasteText (passed) (contains Tk code)
 #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
 # This is the only key handler for the body pane.
 def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
@@ -22376,6 +22220,120 @@ def redoNodeContents (self):
 #@-node:ekr.20050318085432.7:redoNodeContents
 #@-node:ekr.20070129081218:Fixed bugs in undo/redoNodeContents
 #@-node:ekr.20070129082731.1:Bugs
+#@+node:ekr.20070130123323:Code reorg
+#@+node:ekr.20070130120406:Moved cut/copy/pasteText into base leoFrame class
+#@+node:ekr.20070130115927.4:Cut/Copy/Paste (leoFrame)
+#@+node:ekr.20070130115927.5:copyText
+def copyText (self,event=None):
+    
+    '''Copy the selected text from the widget to the clipboard.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    # Set the clipboard text.
+    i,j = w.getSelectionRange()
+    if i != j:
+        s = w.get(i,j)
+        g.app.gui.replaceClipboardWith(s)
+        
+OnCopyFromMenu = copyText
+#@-node:ekr.20070130115927.5:copyText
+#@+node:ekr.20070130115927.6:cutText
+def cutText (self,event=None):
+    
+    '''Invoked from the mini-buffer and from shortcuts.'''
+    
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    name = c.widget_name(w)
+    oldSel = w.getSelectionRange()
+    oldText = w.getAllText()
+    i,j = w.getSelectionRange()
+    
+    # Update the widget and set the clipboard text.
+    s = w.get(i,j)
+    if i != j:
+        w.delete(i,j)
+        g.app.gui.replaceClipboardWith(s)
+
+    if name.startswith('body'):
+        c.frame.body.forceFullRecolor()
+        c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
+    elif name.startswith('head'):
+        # The headline is not officially changed yet.
+        # p.initHeadString(s)
+        s = w.getAllText()
+        w.configure(width=f.tree.headWidth(s=s))
+    else: pass
+
+OnCutFromMenu = cutText
+#@-node:ekr.20070130115927.6:cutText
+#@+node:ekr.20070130115927.7:pasteText
+def pasteText (self,event=None,middleButton=False):
+
+    '''Paste the clipboard into a widget.
+    If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
+
+    f = self ; c = f.c ; w = event and event.widget
+    if not w or not g.app.gui.isTextWidget(w): return
+
+    wname = c.widget_name(w)
+    i,j = oldSel = w.getSelectionRange()  # Returns insert point if no selection.
+    oldText = w.getAllText()
+    
+    # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
+    
+    if middleButton and c.k.previousSelection is not None:
+        start,end = c.k.previousSelection
+        s = w.getAllText()
+        s = s[start:end]
+        c.k.previousSelection = None
+    else:
+        s = s1 = g.app.gui.getTextFromClipboard()
+    
+    singleLine = wname.startswith('head') or wname.startswith('minibuffer')
+    
+    if singleLine:
+        # Strip trailing newlines so the truncation doesn't cause confusion.
+        while s and s [ -1] in ('\n','\r'):
+            s = s [: -1]
+
+    try:
+        # Update the widget.
+        if i != j:
+            w.delete(i,j)
+        w.insert(i,s)
+    
+        if wname.startswith('body'):
+            c.frame.body.forceFullRecolor()
+            c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
+        elif singleLine:
+            s = w.getAllText()
+            while s and s [ -1] in ('\n','\r'):
+                s = s [: -1]
+            if wname.startswith('head'):
+                # The headline is not officially changed yet.
+                # p.initHeadString(s)
+                w.configure(width=f.tree.headWidth(s=s))
+        else: pass
+    except Exception:
+        pass # Tk sometimes throws weird exceptions here.
+        
+    return 'break' # Essential
+
+OnPasteFromMenu = pasteText
+#@-node:ekr.20070130115927.7:pasteText
+#@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
+def OnPaste (self,event=None):
+    
+    return self.pasteText(event=event,middleButton=True)
+#@nonl
+#@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
+#@-node:ekr.20070130115927.4:Cut/Copy/Paste (leoFrame)
+#@-node:ekr.20070130120406:Moved cut/copy/pasteText into base leoFrame class
+#@-node:ekr.20070130123323:Code reorg
 #@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 porjects
 #@-all
 #@nonl
