@@ -3455,7 +3455,7 @@ def skip_id(s,i,chars=None):
     return i
 #@nonl
 #@-node:ekr.20040705195048:skip_id
-#@+node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line (passed)
+#@+node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line
 #@+at 
 #@nonl
 # These methods skip to the next newline, regardless of whether the newline 
@@ -3474,8 +3474,6 @@ def skip_line (s,i):
         
 def skip_to_end_of_line (s,i):
 
-    '''like w.index(i + 'lineend')'''
-
     if i >= len(s): i = len(s) - 1
     if i < 0: i = 0
     i = string.find(s,'\n',i)
@@ -3483,15 +3481,13 @@ def skip_to_end_of_line (s,i):
     else: return i
 
 def skip_to_start_of_line (s,i):
-    
-    '''like w.index(i + 'linestart')'''
 
     if i >= len(s): return len(s)
     if i <= 0:      return 0
     i = s.rfind('\n',0,i) # Don't find s[i], so it doesn't matter if s[i] is a newline.
     if i == -1: return 0
     else:       return i + 1
-#@-node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line (passed)
+#@-node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line
 #@+node:ekr.20031218072017.3188:skip_long
 def skip_long(s,i):
     
