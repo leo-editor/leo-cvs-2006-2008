@@ -1726,7 +1726,7 @@ class leoTkinterBody (leoFrame.leoBody):
         c = self.c ; p = c.currentPosition()
         self.editor_name = None
         self.editor_v = None
-        self.editorWidgets = {} # keys are pane names, values are Tk.Text widgets
+        
     
         self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
         self.bodyCtrl = self.createControl(frame,parentFrame,p)

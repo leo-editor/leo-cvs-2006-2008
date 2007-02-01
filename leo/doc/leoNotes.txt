@@ -3124,6 +3124,38 @@ def pasteText (self,event=None,middleButton=False):
 OnPasteFromMenu = pasteText
 #@-node:ekr.20070130115927.3:pasteText (passed) (contains Tk code)
 #@-node:ekr.20070130115927:Cut/Copy/Paste (tkFrame) (move to base class)
+#@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
+def indentRegion (self,event):
+    w = self.editWidget(event)
+    if not w: return
+
+    mrk = 'sel'
+    trange = w.tag_ranges(mrk)
+    if len(trange) != 0:
+        ind = w.search('\w','%s linestart' % trange[0],stopindex='end',regexp=True)
+        if not ind: return
+        text = w.get('%s linestart' % ind,'%s lineend' % ind)
+        sstring = text.lstrip()
+        sstring = sstring [0]
+        ws = text.split(sstring)
+        if len(ws) > 1:
+            ws = ws [0]
+        else:
+            ws = ''
+        s, s1 = trange [0].split('.')
+        e, e1 = trange [ -1].split('.')
+        s = int(s)
+        s = s + 1
+        e = int(e) + 1
+        for z in xrange(s,e):
+            t2 = w.get('%s.0' % z,'%s.0 lineend' % z)
+            t2 = t2.lstrip()
+            t2 = ws + t2
+            w.delete('%s.0' % z,'%s.0 lineend' % z)
+            w.insert('%s.0' % z,t2)
+    # self.removeRKeys(w)
+#@nonl
+#@-node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

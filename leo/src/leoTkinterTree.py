@@ -45,7 +45,6 @@ if g.app and g.app.use_psyco:
 Pmw = g.importExtension("Pmw",pluginName='LeoTkinterTree',verbose=True,required=True)
 
 import leoFrame
-import leoNodes
 import Tkinter as Tk
 import tkFont
 import sys
@@ -362,71 +361,6 @@ class leoTkinterTree (leoFrame.leoTree):
         #@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
         #@nl
     #@-node:ekr.20051024102724:tkTtree.setBindings
-    #@+node:ekr.20040803072955.21:tkTree.injectCallbacks
-    def injectCallbacks(self):
-        
-        c = self.c
-        
-        #@    << define tkinter callbacks to be injected in the position class >>
-        #@+node:ekr.20040803072955.22:<< define tkinter callbacks to be injected in the position class >>
-        # N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
-        
-        #@+others
-        #@+node:ekr.20040803072955.23:OnHyperLinkControlClick
-        def OnHyperLinkControlClick (self,event=None,c=c):
-            
-            """Callback injected into position class."""
-            
-            p = self
-            try:
-                if not g.doHook("hypercclick1",c=c,p=p,v=p,event=event):
-                    c.beginUpdate()
-                    try:
-                        c.selectPosition(p)
-                    finally:
-                        c.endUpdate()
-                    c.frame.bodyCtrl.setInsertPoint(0)
-                g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("hypercclick")
-        #@-node:ekr.20040803072955.23:OnHyperLinkControlClick
-        #@+node:ekr.20040803072955.24:OnHyperLinkEnter
-        def OnHyperLinkEnter (self,event=None,c=c):
-            
-            """Callback injected into position class."""
-        
-            try:
-                p = self
-                if not g.doHook("hyperenter1",c=c,p=p,v=p,event=event):
-                    if 0: # This works, and isn't very useful.
-                        c.frame.bodyCtrl.tag_config(p.tagName,background="green")
-                g.doHook("hyperenter2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("hyperenter")
-        #@-node:ekr.20040803072955.24:OnHyperLinkEnter
-        #@+node:ekr.20040803072955.25:OnHyperLinkLeave
-        def OnHyperLinkLeave (self,event=None,c=c):
-            
-            """Callback injected into position class."""
-        
-            try:
-                p = self
-                if not g.doHook("hyperleave1",c=c,p=p,v=p,event=event):
-                    if 0: # This works, and isn't very useful.
-                        c.frame.bodyCtrl.tag_config(p.tagName,background="white")
-                g.doHook("hyperleave2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("hyperleave")
-        #@-node:ekr.20040803072955.25:OnHyperLinkLeave
-        #@-others
-        #@-node:ekr.20040803072955.22:<< define tkinter callbacks to be injected in the position class >>
-        #@nl
-    
-        for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
-            
-            g.funcToMethod(f,leoNodes.position)
-    #@nonl
-    #@-node:ekr.20040803072955.21:tkTree.injectCallbacks
     #@-node:ekr.20040803072955.15: Birth... (tkTree)
     #@+node:ekr.20040803072955.6:Allocation...
     #@+node:ekr.20040803072955.7:newBox

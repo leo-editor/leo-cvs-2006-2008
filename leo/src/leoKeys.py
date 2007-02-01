@@ -2927,9 +2927,9 @@ class keyHandlerClass:
         k = self ; c = k.c ; gui = g.app.gui
         if event: event = g.app.gui.leoKeyEvent(event,c)
         
-        # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char))
+        # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char),g.callers())
         
-        trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+        trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
         #@    << define vars >>
         #@+node:ekr.20061031131434.147:<< define vars >>
         w = event.widget
@@ -3178,7 +3178,7 @@ class keyHandlerClass:
         
         k = self ; c = k.c ; w = c.frame.getFocus()
         
-        # g.trace('stroke',stroke,'func',func and func.__name__,commandName)
+        # g.trace('stroke',stroke,'func',func and func.__name__,commandName,g.callers())
         
         # Create a minimal event for commands that require them.
         event = g.Bunch(char='',keysym='',widget=w)

@@ -1003,8 +1003,7 @@ class wxKeyHandlerClass (leoKeys.keyHandlerClass):
         # Create the inverse dict.
         for key in k.guiBindNamesDict.keys():
             k.guiBindNamesInverseDict [k.guiBindNamesDict.get(key)] = key
-            
-            
+    
         # Important: only the inverse dict is actually used in the new key binding scheme.
     
         # wxWidgets may return the *values* of this dict in event.keysym fields.
@@ -1063,6 +1062,21 @@ class wxKeyHandlerClass (leoKeys.keyHandlerClass):
         self.setLabelGrey()
     #@nonl
     #@-node:ekr.20061116080942:finishCreate (wxKey)
+    #@+node:ekr.20070130212844:masterMenuHandler
+    def masterMenuHandler (self,stroke,func,commandName):
+        
+        k = self ; c = k.c ; w = c.frame.getFocus()
+        
+        g.trace('wx: stroke',stroke,'func',func and func.__name__,commandName,g.callers())
+        
+        # Create a minimal event for commands that require them.
+        event = g.Bunch(char='',keysym='',widget=w)
+        
+        if stroke:
+            return k.masterKeyHandler(event,stroke=stroke)
+        else:
+            return k.masterCommand(event,func,stroke,commandName)
+    #@-node:ekr.20070130212844:masterMenuHandler
     #@+node:ekr.20061116074003.3:Label (wx keys) (test all)
     #@+node:ekr.20061116074003.8:extendLabel
     def extendLabel(self,s,select=False,protect=False):
@@ -1705,23 +1719,23 @@ class wxGui(leoGui.leoGui):
     #@nonl
     #@-node:ekr.20061117204829:wxKeyDict
     #@+node:ekr.20061117155233:eventChar & eventKeysym & helper
-    def eventChar (self,event,c=None):
+    def eventChar (self,event):
     
         '''Return the char field of an event, either a wx event or a converted Leo event.'''
     
         if hasattr(event,'char'):
             return event.char # A leoKeyEvent.
         else:
-            return self.keysymHelper(event,c=c,kind='char')
+            return self.keysymHelper(event,kind='char')
     
-    def eventKeysym (self,event,c=None):
+    def eventKeysym (self,event):
         
         if hasattr(event,'keysym'):
             return event.keysym # A leoKeyEvent: we have already computed the result.
         else:
-            return self.keysymHelper(event,c=c,kind='keysym')
+            return self.keysymHelper(event,kind='keysym')
     #@+node:ekr.20061117203128:keysymHelper
-    def keysymHelper (self,event,c,kind):
+    def keysymHelper (self,event,kind):
         
         gui = self
         
@@ -2015,8 +2029,8 @@ class wxGui(leoGui.leoGui):
             gui = g.app.gui
             self.c                  = c
             self.actualEvent        = event
-            self.char               = gui.eventChar(event,c)
-            self.keysym             = gui.eventKeysym(event,c)
+            self.char               = gui.eventChar(event)
+            self.keysym             = gui.eventKeysym(event)
             self.widget = self.w    = gui.eventWidget(event)
             self.x,self.y           = gui.eventXY(event)
     #@-node:ekr.20061116093228:class leoKeyEvent (wxGui)
@@ -2093,7 +2107,7 @@ class wxLeoBody (leoFrame.leoBody):
         # g.trace('wxBody')
         
         w.bind('<Key>', k.masterKeyHandler)
-        
+    
         for kind,func,handler in (
             #('<Button-1>',  frame.OnBodyClick,          k.masterClickHandler),
             #('<Button-3>',  frame.OnBodyRClick,         k.masterClick3Handler),
@@ -2200,22 +2214,19 @@ class wxLeoBody (leoFrame.leoBody):
         self.keyDownModifiers = event.GetModifiers()
         if keycode == wx.WXK_ALT:
             event.Skip() # Do default processing.
-        elif self.useWX:
-            event.Skip()
         else:
             pass # This is required to suppress wx event handling.
         
     def onKeyUp (self,event):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_ALT:
-            # g.trace('wxBody: alt')
             event.Skip() # Do default processing.
         else:
             event.keyDownModifiers = self.keyDownModifiers
-            event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
-            # g.trace('wxBody',event.keysym)
-            if event.keysym: # The key may have been a raw key.
-                self.c.k.masterKeyHandler(event,stroke=event.keysym)
+            keysym = g.app.gui.eventKeysym(event)
+            if keysym:
+                # g.trace(keysym)
+                self.c.k.masterKeyHandler(event,stroke=keysym)
     #@-node:ekr.20061116083454:wxBody.onKeyUp/Down
     #@+node:ekr.20070125111939:wxBody.onFocuIn
     def onFocusIn (self,event=None):
@@ -3942,8 +3953,6 @@ class wxLeoLog (leoFrame.leoLog):
 #@+node:edream.111303095242:wxLeoMenu class
 class wxLeoMenu (leoMenu.leoMenu):
     
-    """A class that represents a wxPython Leo window."""
-    
     #@    @+others
     #@+node:ekr.20070125124900:Birth
     #@+node:edream.111303095242.3:  wxLeoMenu.__init__
@@ -3976,6 +3985,8 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@-node:ekr.20061118203148:createAccelLabel
     #@+node:ekr.20061118203148.1:createAccelData
     def createAccelData (self,menu,ch,accel,id,label):
+        
+        return ###
     
         d = self.acceleratorDict
         aList = d.get(menu,[])
@@ -3985,6 +3996,8 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@-node:ekr.20061118203148.1:createAccelData
     #@+node:ekr.20061118194416:createAcceleratorTables
     def createAcceleratorTables (self):
+        
+        return ###
         
         d = self.acceleratorDict
         entries = []
@@ -4000,29 +4013,17 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@-node:ekr.20061118194416:createAcceleratorTables
     #@-node:ekr.20070125124900:Birth
     #@+node:ekr.20061106062514:Not called
-    #@+node:edream.111303103141.1:bind (Not called)
     def bind (self,bind_shortcut,callback):
         
         g.trace(bind_shortcut,callback)
-        
-        pass
-    #@nonl
-    #@-node:edream.111303103141.1:bind (Not called)
-    #@+node:edream.111303103141.2:delete (not called?)
+    
     def delete (self,menu,readItemName):
         
         g.trace(menu,readItemName)
-        
-        ## return menu.delete(realItemName)
-    #@-node:edream.111303103141.2:delete (not called?)
-    #@+node:edream.111303103141.4:destroy (not called ?)
+    
     def destroy (self,menu):
         
-        g.trace()
-    
-        ## menu.destroy()
-    #@nonl
-    #@-node:edream.111303103141.4:destroy (not called ?)
+        g.trace(menu)
     #@-node:ekr.20061106062514:Not called
     #@+node:edream.111603104327:Menu methods (Tk names)
     #@+node:edream.111303111942.1:add_cascade
@@ -4043,13 +4044,7 @@ class wxLeoMenu (leoMenu.leoMenu):
             self.menuBar.Append(menu,label)
             
     #@-node:edream.111303111942.1:add_cascade
-    #@+node:ekr.20070124111252:insert (TO DO)
-    def insert (self,*args,**keys):
-    
-        pass # g.trace('wxMenu: to do',args,keys)
-    #@nonl
-    #@-node:ekr.20070124111252:insert (TO DO)
-    #@+node:edream.111303103141:menu.add_command
+    #@+node:edream.111303103141:add_command
     def add_command (self,menu,**keys):
         
         if not menu:
@@ -4069,9 +4064,10 @@ class wxLeoMenu (leoMenu.leoMenu):
         wx.EVT_MENU(self.frame.top,id,wxMenuCallback)
         if ch or accel:
             self.createAccelData(menu,ch,accel,id,label)
+    
         
     #@nonl
-    #@-node:edream.111303103141:menu.add_command
+    #@-node:edream.111303103141:add_command
     #@+node:edream.111303121150:add_separator
     def add_separator(self,menu):
         
@@ -4112,6 +4108,23 @@ class wxLeoMenu (leoMenu.leoMenu):
                 i += 1
     #@nonl
     #@-node:edream.111303103141.3:delete_range (wxMenu) (does not work)
+    #@+node:ekr.20070130183007:index & invoke
+    def index (self,name):
+        
+        '''Return the menu item whose name is given.'''
+        
+        g.trace(name)
+        
+    def invoke (self,i):
+        
+        '''Invoke the menu whose index is i'''
+    #@-node:ekr.20070130183007:index & invoke
+    #@+node:ekr.20070124111252:insert (TO DO)
+    def insert (self,*args,**keys):
+    
+        pass # g.trace('wxMenu: to do',args,keys)
+    #@nonl
+    #@-node:ekr.20070124111252:insert (TO DO)
     #@+node:edream.111303111942:insert_cascade
     def insert_cascade (self,parent,index,label,menu,underline):
     
@@ -4488,7 +4501,7 @@ class wxLeoTree (leoFrame.leoTree):
     
         wx.EVT_KEY_DOWN         (w,self.onKeyDown)  # Provides raw key codes.
         wx.EVT_KEY_UP           (w,self.onKeyUp)    # Provides raw key codes.
-        # wx.EVT_TREE_KEY_DOWN  (w,id,self.onTreeKeyDown) # Control keys do not fire this event.
+        #wx.EVT_TREE_KEY_DOWN  (w,id,self.onTreeKeyDown) # Control keys do not fire this event.
     
         wx.EVT_TREE_SEL_CHANGING    (w,id,self.onTreeSelChanging)
     
@@ -4603,7 +4616,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         self.redraw_count += 1
         self.idDict = {}
-        # g.trace(self.redraw_count,g.callers())
+        # g.trace(self.redraw_count)
     
         self.drawing = True # Tell event handlers not to call us.
         try:
@@ -4636,9 +4649,6 @@ class wxLeoTree (leoFrame.leoTree):
     
         ### tree.SetItemFont(id,self.defaultFont)
         
-        if p == self.c.currentPosition():
-            tree.SelectItem(id) # Generates call to onTreeChanged.
-        
         self.setEditWidget(p,id)
         assert (p == tree.GetItemData(id).GetData())
         return id
@@ -4661,6 +4671,10 @@ class wxLeoTree (leoFrame.leoTree):
             tree.Expand(id)
         else:
             tree.Collapse(id)
+            
+        # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+        if p == self.c.currentPosition():
+            tree.SelectItem(id) # Generates call to onTreeChanged.
     #@nonl
     #@-node:edream.110203113231.300:redraw_subtree
     #@-node:edream.110203113231.298:redraw & redraw_now & helpers
@@ -4680,9 +4694,6 @@ class wxLeoTree (leoFrame.leoTree):
     
         ### tree.SetItemFont(id,self.defaultFont)
         
-        if p == self.c.currentPosition():
-            tree.SelectItem(id) # Generates call to onTreeChanged.
-        
         self.setEditWidget(p,id)
         assert (p == tree.GetItemData(id).GetData())
         return id
@@ -4705,6 +4716,10 @@ class wxLeoTree (leoFrame.leoTree):
             tree.Expand(id)
         else:
             tree.Collapse(id)
+            
+        # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+        if p == self.c.currentPosition():
+            tree.SelectItem(id) # Generates call to onTreeChanged.
     #@nonl
     #@-node:edream.110203113231.300:redraw_subtree
     #@+node:ekr.20061211052926:assignIcon
@@ -4727,15 +4742,23 @@ class wxLeoTree (leoFrame.leoTree):
     def updateVisibleIcons (self,p):
     
         '''Update all visible icons joined to p.'''
+        
+        for p in self.c.rootPosition().self_and_siblings_iter():
+            self.updateIconsInSubtree(p)
     
-        tree = self.treeCtrl
+    def updateIconsInSubtree (self,p):
+        self.updateIcon(p)
+        if p.hasChildren() and p.isExpanded():
+            for child in p.firstChild().self_and_siblings_iter():
+                self.updateIconsInSubtree(child)
+                
+    def updateIcon(self,p):
         val = p.v.computeIcon()
-        id = tree.GetFirstVisibleItem()
-        while id.IsOk():
-            p2 = tree.GetItemData(id).GetData()
-            if p2.v.t == p.v.t:
-                tree.SetItemImage(id,val)
-            id = tree.GetNextVisible(id)
+        id = self.idDict.get(p.v)
+        if id:
+            self.treeCtrl.SetItemImage(id,val)
+        else:
+            g.trace('can not happen: no id',p.headString())
     #@-node:ekr.20061211115055:updateVisibleIcons
     #@-node:edream.111303202917:Drawing
     #@+node:edream.110203113231.278:Event handlers (wxTree)
@@ -4790,6 +4813,7 @@ class wxLeoTree (leoFrame.leoTree):
     
     def onKeyUp (self,event):
         keycode = event.GetKeyCode()
+        g.trace('tree:keycode',keycode)
         if keycode == wx.WXK_ALT:
             event.Skip() # Do default processing.
         else:
@@ -5014,34 +5038,6 @@ class wxLeoTree (leoFrame.leoTree):
         self.c.setChanged(True)
     #@-node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
     #@-node:ekr.20061105114250.1:Dragging
-    #@+node:ekr.20061118123730.1:wxTree.onKeyUp/Down
-    def onKeyDown (self,event,*args,**keys):
-        keycode = event.GetKeyCode()
-        self.keyDownModifiers = event.GetModifiers()
-        # g.trace('wxTree')
-        event.Skip() # Prepare to handle the event later.
-    
-    def onKeyUp (self,event):
-        keycode = event.GetKeyCode()
-        if keycode == wx.WXK_ALT:
-            event.Skip() # Do default processing.
-        else:
-            event.keyDownModifiers = self.keyDownModifiers
-            event.Skip()
-    
-            # event = g.app.gui.leoKeyEvent(event,c=self.c) # Convert event to canonical form.
-            # event.actualEvent.Skip()
-    
-            # if event.keysym: # The key may have been a raw key.
-                # g.trace('wxTree',event.keysym,self.keyDownModifiers)
-                # if event.keysym.isalnum() and len(event.keysym) == 1:
-                    # event.actualEvent.Skip(True) # Let the widget handle it.
-                # else:
-                    # # g.trace(event.keysym)
-                    # self.c.k.masterKeyHandler(event,stroke=event.keysym)
-              
-    #@nonl
-    #@-node:ekr.20061118123730.1:wxTree.onKeyUp/Down
     #@+node:ekr.20070125111939.1:onFocusIn
     def onFocusIn (self,event=None):
         
@@ -5067,9 +5063,11 @@ class wxLeoTree (leoFrame.leoTree):
         
         c = self.c ; frame = c.frame
         w = frame.body.bodyCtrl
+    
+        if not w:
+            g.trace('Null w','c',c,'c.frame',c.frame,'c.frame.body',c.frame.body)
         old_p = c.currentPosition()
         if not p or not c.positionExists(p):
-            g.trace('does not exist',p.headString())
             return # Not an error.
         
         # g.trace(p.headString(),g.callers())
@@ -5363,7 +5361,6 @@ class wxLeoTextWidget (wx.TextCtrl):
     #@+node:ekr.20070125153527:Do-nothing
     def update (self,*args,**keys):             pass
     def update_idletasks (self,*args,**keys):   pass
-    #@nonl
     #@-node:ekr.20070125153527:Do-nothing
     #@+node:ekr.20061105125717:Index conversion
     #@+node:ekr.20061117150656:w.toGuiIndex & toPythonIndex
@@ -5385,7 +5382,7 @@ class wxLeoTextWidget (wx.TextCtrl):
             row,col = index.split('.')
             row,col = int(row),int(col)
             row -= 1
-            i = g.convertRowColToPythonIndex(s,row,col)
+            index = g.convertRowColToPythonIndex(s,row,col)
             return index
     
     toGuiIndex = toPythonIndex
@@ -5407,6 +5404,16 @@ class wxLeoTextWidget (wx.TextCtrl):
         pass # g.trace('wxLeoText',kind,args[0].__name__)
     #@nonl
     #@-node:ekr.20061116070156:bind
+    #@+node:ekr.20070130185007:clipboard_clear & clipboard_append
+    def clipboard_clear (self):
+        
+        g.app.gui.replaceClipboardWith('')
+    
+    def clipboard_append(self,s):
+        
+        s1 = g.app.gui.getTextFromClipboard()
+        g.app.gui.replaceClipboardWith(s1 + s)
+    #@-node:ekr.20070130185007:clipboard_clear & clipboard_append
     #@+node:ekr.20061115122034.3:delete
     def delete(self,i,j=None):
     
@@ -5663,7 +5670,12 @@ class wxLeoTextWidget (wx.TextCtrl):
         pass # g.trace(tagName,args,keys)
     #@nonl
     #@-node:ekr.20061116055348:tag_delete (NEW)
-    #@+node:ekr.20061115122034.8:tag_ranges 
+    #@+node:ekr.20070130185103:tag_names
+    def tag_names (self, *args):
+        
+        return []
+    #@-node:ekr.20070130185103:tag_names
+    #@+node:ekr.20061115122034.8:tag_ranges
     def tag_ranges(self,tagName):
         
         return tuple() ###
@@ -5672,7 +5684,7 @@ class wxLeoTextWidget (wx.TextCtrl):
         aList = Tk.Text.tag_ranges(w,tagName)
         aList = [w.toPythonIndex(z) for z in aList]
         return tuple(aList)
-    #@-node:ekr.20061115122034.8:tag_ranges 
+    #@-node:ekr.20061115122034.8:tag_ranges
     #@+node:ekr.20070116073454:tag_remove
     def tag_remove(self,tagName,i,j=None,*args):
         
@@ -5693,7 +5705,21 @@ class wxLeoTextWidget (wx.TextCtrl):
             wx.TextCtrl.SetStyle(w,i,j,style)
     #@nonl
     #@-node:ekr.20070116073454:tag_remove
+    #@+node:ekr.20070130185224:yview
+    def yview (self,*args):
+        
+        '''w.yview('moveto',y) or w.yview()'''
+    
+        return 0,0
+    #@nonl
+    #@-node:ekr.20070130185224:yview
     #@+node:ekr.20061115122034.24:xyToGui/PythonIndex
+    def xyToPythonIndex (self,x,y):
+        
+        w = self
+        pos = wx.Point(x.y)
+        data = wx.TextCtrl.HitTest(pos)
+        g.trace(data)
     #@-node:ekr.20061115122034.24:xyToGui/PythonIndex
     #@-node:ekr.20061115122034.2:Wrapper methods
     #@-others

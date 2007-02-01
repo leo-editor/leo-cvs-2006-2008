@@ -26,17 +26,12 @@
 #     - Used code similar to rc_help code in getdoc.
 #       Both kinds of code work for me (using 4.2 code base)
 #     - Simplified crop method.
-# 0.6 EKR:
-#     - Use g.importExtension to import Tk.
-# 0.7 EKR:
-#     - Use e.widget._name.startswith('body') to test for the body pane.
-# 0.8 EKR:
-# - Added init function.
-# - Eliminated g.top.
-# 0.9 EKR:
-# - Define callbacks so that all are accessible.
-# 0.10 EKR:
-# - Removed call to str that was causing a unicode error.
+# 0.6 EKR: Use g.importExtension to import Tk.
+# 0.7 EKR: Use e.widget._name.startswith('body') to test for the body pane.
+# 0.8 EKR: Added init function. Eliminated g.top.
+# 0.9 EKR: Define callbacks so that all are accessible.
+# 0.10 EKR: Removed call to str that was causing a unicode error.
+# 0.11 EKR: init returns False if the gui is not tkinter.
 #@-at
 #@nonl
 #@-node:ekr.20040422081253:<< version history >>
@@ -52,25 +47,26 @@ import re
 import sys
 #@-node:ekr.20050101090207.2:<< imports >>
 #@nl
-__version__ = "0.10"
+__version__ = "0.11"
 
 #@+others
 #@+node:ekr.20060108122501:Module-level
 #@+node:ekr.20060108122501.1:init
 def init ():
     
-    if Tk: # OK for unit tests.
+    if not Tk: return False # OK for unit tests.
     
-        if g.app.gui is None:
-            g.app.createTkGui(__file__)
     
-        if g.app.gui.guiName() == "tkinter":
-            leoPlugins.registerHandler("after-create-leo-frame",rClickbinder)
-            leoPlugins.registerHandler("bodyrclick1",rClicker)
-            g.plugin_signon(__name__)
-            
-    return Tk is not None
-#@nonl
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+
+    if g.app.gui.guiName() == "tkinter":
+        leoPlugins.registerHandler("after-create-leo-frame",rClickbinder)
+        leoPlugins.registerHandler("bodyrclick1",rClicker)
+        g.plugin_signon(__name__)
+        return True
+    else:
+        return False
 #@-node:ekr.20060108122501.1:init
 #@+node:ekr.20040422072343.5:rClickbinder
 def rClickbinder(tag,keywords):

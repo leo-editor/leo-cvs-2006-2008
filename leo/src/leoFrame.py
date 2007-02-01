@@ -11,6 +11,7 @@ These classes should be overridden to create frames for a particular gui."""
 import leoGlobals as g
 import leoColor
 import leoMenu
+import leoNodes
 import leoUndo
 
 import re
@@ -67,6 +68,7 @@ class leoBody:
     
         self.frame = frame
         self.c = frame.c
+        self.editorWidgets = {} # keys are pane names, values are text widgets
         self.forceFullRecolorFlag = False
         frame.body = self
         
@@ -76,8 +78,6 @@ class leoBody:
         
         # Must be overridden in subclasses...
         self.colorizer = None
-        
-    #@nonl
     #@+node:ekr.20031218072017.3660:leoBody.mustBeDefinedInSubclasses
     mustBeDefinedInSubclasses = (
         # Birth, death & config.
@@ -999,6 +999,7 @@ class leoTree:
         'setEditPosition',
         # Others.
         'expandAllAncestors',
+        'injectCallbacks',
         'OnIconDoubleClick',
         'oops',
     )
@@ -1183,6 +1184,71 @@ class leoTree:
     
         return redraw_flag
     #@-node:ekr.20040803072955.143:tree.expandAllAncestors
+    #@+node:ekr.20040803072955.21:tree.injectCallbacks
+    def injectCallbacks(self):
+        
+        c = self.c
+        
+        #@    << define callbacks to be injected in the position class >>
+        #@+node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
+        # N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
+        
+        #@+others
+        #@+node:ekr.20040803072955.23:OnHyperLinkControlClick
+        def OnHyperLinkControlClick (self,event=None,c=c):
+            
+            """Callback injected into position class."""
+            
+            p = self
+            try:
+                if not g.doHook("hypercclick1",c=c,p=p,v=p,event=event):
+                    c.beginUpdate()
+                    try:
+                        c.selectPosition(p)
+                    finally:
+                        c.endUpdate()
+                    c.frame.bodyCtrl.setInsertPoint(0)
+                g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
+            except:
+                g.es_event_exception("hypercclick")
+        #@-node:ekr.20040803072955.23:OnHyperLinkControlClick
+        #@+node:ekr.20040803072955.24:OnHyperLinkEnter
+        def OnHyperLinkEnter (self,event=None,c=c):
+            
+            """Callback injected into position class."""
+        
+            try:
+                p = self
+                if not g.doHook("hyperenter1",c=c,p=p,v=p,event=event):
+                    if 0: # This works, and isn't very useful.
+                        c.frame.bodyCtrl.tag_config(p.tagName,background="green")
+                g.doHook("hyperenter2",c=c,p=p,v=p,event=event)
+            except:
+                g.es_event_exception("hyperenter")
+        #@-node:ekr.20040803072955.24:OnHyperLinkEnter
+        #@+node:ekr.20040803072955.25:OnHyperLinkLeave
+        def OnHyperLinkLeave (self,event=None,c=c):
+            
+            """Callback injected into position class."""
+        
+            try:
+                p = self
+                if not g.doHook("hyperleave1",c=c,p=p,v=p,event=event):
+                    if 0: # This works, and isn't very useful.
+                        c.frame.bodyCtrl.tag_config(p.tagName,background="white")
+                g.doHook("hyperleave2",c=c,p=p,v=p,event=event)
+            except:
+                g.es_event_exception("hyperleave")
+        #@-node:ekr.20040803072955.25:OnHyperLinkLeave
+        #@-others
+        #@-node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
+        #@nl
+    
+        for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
+            
+            g.funcToMethod(f,leoNodes.position)
+    #@nonl
+    #@-node:ekr.20040803072955.21:tree.injectCallbacks
     #@+node:ekr.20031218072017.3718:oops
     def oops(self):
         

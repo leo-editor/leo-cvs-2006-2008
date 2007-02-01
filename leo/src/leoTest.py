@@ -99,7 +99,7 @@ class generalTestCase(unittest.TestCase):
     
          # Init the base class.
         unittest.TestCase.__init__(self)
-    
+        
         self.c = c
         self.p = p.copy()
     #@-node:ekr.20051104075904.6:__init__
