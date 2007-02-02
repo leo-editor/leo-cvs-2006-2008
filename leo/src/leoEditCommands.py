@@ -211,13 +211,13 @@ class baseEditCommandsClass:
     
         c = self.c
         c.widgetWantsFocusNow(w)
+        
+        s = w.getAllText()
+        i,j = w.getSelectionRange()
+        r1,r2 = g.convertPythonIndexToRowCol(s,i)
+        r3,r4 = g.convertPythonIndexToRowCol(s,j)
     
-        i  = w.index('sel.first')
-        i2 = w.index('sel.last')
-        r1, r2 = i.split('.')
-        r3, r4 = i2.split('.')
-    
-        return int(r1), int(r2), int(r3), int(r4)
+        return r1,r2,r3,r4
     #@-node:ekr.20050920084036.233:getRectanglePoints
     #@+node:ekr.20050920084036.9:inRange
     def inRange (self,w,range,l='',r=''):
@@ -525,7 +525,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
         i1,i2 = w.getSelectionRange()
         ins = w.getInsertPoint()
         #@    << define a new generator searchXR >>
-        #@+node:ekr.20050920084036.22:<< define a new generator searchXR >> TODO
+        #@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
         #@+at 
         #@nonl
         # This is a generator (it contains a yield).
@@ -562,7 +562,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
             w.tag_delete('found')
             k.setLabelGrey('')
             self.k.regx = g.bunch(iter=None,key=None)
-        #@-node:ekr.20050920084036.22:<< define a new generator searchXR >> TODO
+        #@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
         #@nl
     
         # EKR: the 'result' of calling searchXR is a generator object.
@@ -3835,7 +3835,7 @@ class editCommandsClass (baseEditCommandsClass):
     
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.100:fillRegion
-    #@+node:ekr.20050920084036.104:fillRegionAsParagraph (test)
+    #@+node:ekr.20050920084036.104:fillRegionAsParagraph (Replace by reformat-paragraph)
     def fillRegionAsParagraph (self,event):
         
         '''Fill the selected text.'''
@@ -3846,17 +3846,17 @@ class editCommandsClass (baseEditCommandsClass):
         
         self.beginCommand(undoType='fill-region-as-paragraph')
     
-        s = w.getAllText()
-        i,j = w.getSelectionRange()
-        i1,junk = g.getLine(s,i)
-        junk,i2 = g.getLine(s,j)
-        s = s[i1:i2]
-        s = self._addPrefix(s)
-        w.delete(i1,i2)
-        w.insert(i1,s)
+        # s = w.getAllText()
+        # i,j = w.getSelectionRange()
+        # i1,junk = g.getLine(s,i)
+        # junk,i2 = g.getLine(s,j)
+        # s = s[i1:i2]
+        # s = self._addPrefix(s)
+        # w.delete(i1,i2)
+        # w.insert(i1,s)
     
         self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.104:fillRegionAsParagraph (test)
+    #@-node:ekr.20050920084036.104:fillRegionAsParagraph (Replace by reformat-paragraph)
     #@+node:ekr.20050920084036.103:fillParagraph
     def fillParagraph( self, event ):
         
@@ -4375,7 +4375,7 @@ class editCommandsClass (baseEditCommandsClass):
         w.mark_set('insert',ins)
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.118:sortLines
-    #@+node:ekr.20050920084036.119:sortColumns
+    #@+node:ekr.20050920084036.119:sortColumns TODO (create unit test)
     def sortColumns (self,event):
         
         '''Sort lines of selected text using only lines in the given columns to do the comparison.'''
@@ -4410,8 +4410,8 @@ class editCommandsClass (baseEditCommandsClass):
              i = i + 1
         w.mark_set('insert',ins)
         self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.119:sortColumns
-    #@+node:ekr.20050920084036.120:sortFields
+    #@-node:ekr.20050920084036.119:sortColumns TODO (create unit test)
+    #@+node:ekr.20050920084036.120:sortFields TEST
     def sortFields (self,event,which=None):
         
         '''Divide the selected text into lines and sort by comparing the contents of
@@ -4428,16 +4428,22 @@ class editCommandsClass (baseEditCommandsClass):
         if not w or not self._chckSel(event): return
     
         self.beginCommand(undoType='sort-fields')
-        ins = w.index('insert')
-        is1 = w.index('sel.first')
-        is2 = w.index('sel.last')
-        txt = w.get('%s linestart' % is1,'%s lineend' % is2)
+        
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        r1,r2,r3,r4 = self.getRectanglePoints(w)
+        # ins = w.index('insert')
+        # is1 = w.index('sel.first')
+        # is2 = w.index('sel.last')
+        #txt = w.get('%s linestart' % is1,'%s lineend' % is2)
+        i,junk = g.getLine(s,r1)
+        junk,j = g.getLine(s,r4)
         txt = txt.split('\n')
         fields = []
         fn = r'\w+'
         frx = re.compile(fn)
-        for z in txt:
-            f = frx.findall(z)
+        for line in txt:
+            f = frx.findall(line)
             if not which:
                 fields.append(f[0])
             else:
@@ -4447,15 +4453,19 @@ class editCommandsClass (baseEditCommandsClass):
                 fields.append(f[i])
         nz = zip(fields,txt)
         nz.sort()
-        w.delete('%s linestart' % is1,'%s lineend' % is2)
-        i = is1.split('.')
-        int1 = int(i[0])
+        #w.delete('%s linestart' % is1,'%s lineend' % is2)
+        w.delete(i,j)
+        #i = is1.split('.')
+        #int1 = int(i[0])
+        int1 = i
         for z in nz:
             w.insert('%s.0' % int1,'%s\n' % z[1])
             int1 = int1 + 1
-        w.mark_set('insert',ins)
+        #w.mark_set('insert',ins)
+        w.setInsertPoint(ins)
+    
         self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.120:sortFields
+    #@-node:ekr.20050920084036.120:sortFields TEST
     #@-node:ekr.20050920084036.117:sort...
     #@+node:ekr.20050920084036.121:swap/transpose...
     #@+node:ekr.20060529184652:swapHelper
@@ -6043,7 +6053,7 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             #@nl
         else:
             #@        << handle plain search >>
-            #@+node:ekr.20051005160923:<< handle plain search >> (Contains Tk code)
+            #@+node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config)
             i = w.search(self.qQ,'insert',stopindex='end')
             if i:
                 w.setInsertPoint(i)
@@ -6053,7 +6063,7 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
             else:
                 self.quitSearch(event)
                 return False
-            #@-node:ekr.20051005160923:<< handle plain search >> (Contains Tk code)
+            #@-node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config)
             #@nl
     #@-node:ekr.20050920084036.219:findNextMatch (query-replace)
     #@+node:ekr.20050920084036.211:getUserResponse
@@ -6205,11 +6215,12 @@ class rectangleCommandsClass (baseEditCommandsClass):
         w,r1,r2,r3,r4 = self.beginCommand('clear-rectangle')
     
         # Change the text.
-        
-        s = ' ' * (r4-r2)
+        fill = ' ' *(r4-r2)
         for r in xrange(r1,r3+1):
             w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-            w.insert('%s.%s' % (r,r2),s)
+            w.insert('%s.%s' % (r,r2),fill)
+            
+        w.setSelectionRange('%s.%s'%(r1,r2),'%s.%s'%(r3,r2+len(fill)))
             
         self.endCommand()
     #@-node:ekr.20050920084036.225:clearRectangle
@@ -6260,14 +6271,15 @@ class rectangleCommandsClass (baseEditCommandsClass):
         w,r1,r2,r3,r4 = self.beginCommand('kill-rectangle')
     
         self.theKillRectangle = []
+    
         for r in xrange(r1,r3+1):
             s = w.get('%s.%s' % (r,r2),'%s.%s' % (r,r4))
             self.theKillRectangle.append(s)
             w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
     
         if self.theKillRectangle:
-            w.mark_set('sel.start','insert')
-            w.mark_set('sel.end','insert')
+            ins = '%s.%s' % (r,r2)
+            w.setSelectionRange(ins,ins,insert=ins)
             
         self.endCommand()
     #@-node:ekr.20050920084036.228:killRectangle
@@ -6281,14 +6293,18 @@ class rectangleCommandsClass (baseEditCommandsClass):
         if not w or not self.check(event): return
         
         w,r1,r2,r3,r4 = self.beginCommand('open-rectangle')
-        
-        s = ' ' * (r4-r2)
+    
+        fill = ' ' * (r4-r2)
         for r in xrange(r1,r3+1):
-            w.insert('%s.%s' % (r,r2),s)
+            w.insert('%s.%s' % (r,r2),fill)
             
+        i = '%s.%s' % (r1,r2)
+        j = '%s.%s' % (r3,r2+len(fill))
+        w.setSelectionRange(i,j,insert=j)
+    
         self.endCommand()
     #@-node:ekr.20050920084036.230:openRectangle
-    #@+node:ekr.20050920084036.229:yankRectangle
+    #@+node:ekr.20050920084036.229:yankRectangle TODO
     def yankRectangle (self,event,killRect=None):
         
         '''Yank into the rectangle defined by the start and end of selected text.'''
@@ -6304,10 +6320,17 @@ class rectangleCommandsClass (baseEditCommandsClass):
             
         w,r1,r2,r3,r4 = self.beginCommand('yank-rectangle')
         
+        # g.trace('killRect',killRect,'r1..r4',r1,r2,r3,r4)
+        
         # Change the text.
-        txt = w.get('insert linestart','insert')
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        i,j = g.getLine(s,ins)
+        txt = s[i:ins]
+        # txt = w.get('insert linestart','insert')
         txt = self.getWSString(txt)
-        i = w.getInsertPoint()
+    
+        i = w.toGuiIndex(ins)
         i1, i2 = i.split('.')
         i1 = int(i1)
         for z in killRect:
@@ -6321,7 +6344,22 @@ class rectangleCommandsClass (baseEditCommandsClass):
             i1 += 1
     
         self.endCommand()
-    #@-node:ekr.20050920084036.229:yankRectangle
+        
+    #@+at
+    #     i = w.getInsertPoint()
+    #     #i1, i2 = i.split('.')
+    #     #i1 = int(i1)
+    #     for z in killRect:
+    #         txt2 = w.get('%s.0 linestart' % i1,'%s.%s' % (i1,i2))
+    #         if len(txt2) != len(txt):
+    #             amount = len(txt) - len(txt2)
+    #             z = txt [-amount:] + z
+    #         w.insert('%s.%s' % (i1,i2),z)
+    #         if w.index('%s.0 lineend +1c' % i1) == w.index('end'):
+    #             w.insert('%s.0 lineend' % i1,'\n')
+    #         i1 += 1
+    #@-at
+    #@-node:ekr.20050920084036.229:yankRectangle TODO
     #@+node:ekr.20050920084036.232:stringRectangle
     def stringRectangle (self,event):
         
@@ -6337,15 +6375,15 @@ class rectangleCommandsClass (baseEditCommandsClass):
         else:
             k.clearState()
             k.resetLabel()
+            c.bodyWantsFocus()
             w = self.w
             self.beginCommand('string-rectangle')
             r1, r2, r3, r4 = self.stringRect
-            w.mark_set('sel.start','%d.%d' % (r1,r2))
-            w.mark_set('sel.end',  '%d.%d' % (r3,r4))
-            c.bodyWantsFocus()
             for r in xrange(r1,r3+1):
                 w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
                 w.insert('%s.%s' % (r,r2),k.arg)
+            w.setSelectionRange('%d.%d' % (r1,r2),'%d.%d' % (r3,r2+len(k.arg)))
+            
             self.endCommand()
     #@nonl
     #@-node:ekr.20050920084036.232:stringRectangle
@@ -7610,7 +7648,7 @@ class searchCommandsClass (baseEditCommandsClass):
             self.iSearchHelper(event)
             self.scolorizer(event)
     #@-node:ekr.20050920084036.264:iSearchStateHandler
-    #@+node:ekr.20050920084036.265:scolorizer (contains lots of Tk code)
+    #@+node:ekr.20050920084036.265:scolorizer LATER
     def scolorizer (self,event,pattern=None):
         
         '''Colorizer for incremental searches.'''
@@ -7640,7 +7678,7 @@ class searchCommandsClass (baseEditCommandsClass):
     
         w.tag_config('color',foreground='red')
         w.tag_config('color1',background='lightblue')
-    #@-node:ekr.20050920084036.265:scolorizer (contains lots of Tk code)
+    #@-node:ekr.20050920084036.265:scolorizer LATER
     #@+node:ekr.20050920084036.263:iSearchHelper
     def iSearchHelper (self,event):
     

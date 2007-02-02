@@ -2928,7 +2928,7 @@ class leoTkTextWidget (Tk.Text):
         return i
     #@nonl
     #@-node:ekr.20061117085824:w.toGuiIndex
-    #@+node:ekr.20061117085824.1:w.toPYthonIndex
+    #@+node:ekr.20061117085824.1:w.toPythonIndex
     def toPythonIndex (self,i):
         '''Convert a Tk index to a Python index as needed.'''
         w =self
@@ -2944,7 +2944,7 @@ class leoTkTextWidget (Tk.Text):
             i = g.convertRowColToPythonIndex(s,row,col)
             #g.es_print(i)
         return i
-    #@-node:ekr.20061117085824.1:w.toPYthonIndex
+    #@-node:ekr.20061117085824.1:w.toPythonIndex
     #@+node:ekr.20061117085824.2:w.rowColToGuiIndex
     # This method is called only from the colorizer.
     # It provides a huge speedup over naive code.
