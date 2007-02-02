@@ -1299,12 +1299,12 @@ class baseFileCommands:
         
         # New in Leo 4.4.3: Ignore the dummy elements that allow
         # Pasted Leo outlines to be valid .leo files.
-        
         while 1:
-            if self.matchTag('<globals/>'): pass
-            elif self.matchTag('<preferences/>'): pass
-            elif self.matchTag('<find_panel_settings/>'): pass
-            else: break
+            for tag in ('<globals','<preferences','<find_panel_settings'):
+                if self.matchTag(tag) and self.matchTag('/>'):
+                    break
+            else:
+                break
     #@-node:ekr.20061209141653:getDummyElements
     #@+node:ekr.20031218072017.2064:getFindPanelSettings
     def getFindPanelSettings (self):
@@ -2917,7 +2917,6 @@ class baseFileCommands:
         self.put('<globals/>\n')
         self.put('<preferences/>\n')
         self.put('<find_panel_settings/>\n')
-    
     #@-node:ekr.20031218072017.1971:putClipboardHeader
     #@-node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
     #@+node:ekr.20060919064401:putToOPML
