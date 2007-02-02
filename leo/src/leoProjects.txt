@@ -1628,82 +1628,6 @@ I think it would be nice if copied nodes were valid Leo files.
 
 @color
 #@nonl
-#@+node:ekr.20031218072017.3022:getClipboardHeader
-def getClipboardHeader (self):
-
-    if self.getOpenTag("<leo_header"):
-        return # <leo_header> or <leo_header/> has been seen.
-
-    while 1:
-        if self.matchTag("file_format="):
-            self.getDquote() ; self.getLong() ; self.getDquote()
-        elif self.matchTag("tnodes="):
-            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
-        elif self.matchTag("max_tnode_index="):
-            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
-        elif self.matchTag("></leo_header>"): # new in 4.2: allow this form.
-            break
-        else:
-            self.getTag("/>")
-            break
-#@nonl
-#@-node:ekr.20031218072017.3022:getClipboardHeader
-#@+node:ekr.20061209141653:getDummyElements
-def getDummyElements (self):
-    
-    # New in Leo 4.4.3: Ignore the dummy elements that allow
-    # Pasted Leo outlines to be valid .leo files.
-    
-    while 1:
-        if self.matchTag('<globals/>'): pass
-        elif self.matchTag('<preferences/>'): pass
-        elif self.matchTag('<find_panel_settings/>'): pass
-        else: break
-#@-node:ekr.20061209141653:getDummyElements
-#@+node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
-# Writes a Leo outline to s in a format suitable for pasting to the clipboard.
-
-def putLeoOutline (self):
-
-    self.outputFile = g.fileLikeObject()
-    self.usingClipboard = True
-    self.assignFileIndices() # 6/11/03: Must do this for 3.x code.
-    self.putProlog()
-    self.putClipboardHeader()
-    self.putVnodes()
-    self.putTnodes()
-    self.putPostlog()
-    s = self.outputFile.getvalue()
-    self.outputFile = None
-    self.usingClipboard = False
-    return s
-#@+node:ekr.20031218072017.1971:putClipboardHeader
-def putClipboardHeader (self):
-
-    c = self.c ; tnodes = 0
-    << count the number of tnodes >>
-    self.put('<leo_header file_format="1" tnodes=')
-    self.put_in_dquotes(str(tnodes))
-    self.put(" max_tnode_index=")
-    self.put_in_dquotes(str(tnodes))
-    self.put("/>") ; self.put_nl()
-    
-    # New in Leo 4.4.3: Add dummy elements so copied nodes form a valid .leo file.
-    self.put('<globals/>\n')
-    self.put('<preferences/>\n')
-    self.put('<find_panel_settings/>\n')
-
-#@+node:ekr.20031218072017.1972:<< count the number of tnodes >>
-c.clearAllVisited()
-
-for p in c.currentPosition().self_and_subtree_iter():
-    t = p.v.t
-    if t and not t.isWriteBit():
-        t.setWriteBit()
-        tnodes += 1
-#@-node:ekr.20031218072017.1972:<< count the number of tnodes >>
-#@-node:ekr.20031218072017.1971:putClipboardHeader
-#@-node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
 #@-node:ekr.20061116064523:Made copied nodes valid Leo files
 #@+node:ekr.20061127171616:Added support for chdir_to_relative_path setting
 @nocolor
@@ -2659,7 +2583,7 @@ def iSearchStateHandler (self,event):
         self.iSearchHelper(event)
         self.scolorizer(event)
 #@-node:ekr.20050920084036.264:iSearchStateHandler
-#@+node:ekr.20050920084036.265:scolorizer (contains lots of Tk code)
+#@+node:ekr.20050920084036.265:scolorizer LATER
 def scolorizer (self,event,pattern=None):
     
     '''Colorizer for incremental searches.'''
@@ -2689,7 +2613,7 @@ def scolorizer (self,event,pattern=None):
 
     w.tag_config('color',foreground='red')
     w.tag_config('color1',background='lightblue')
-#@-node:ekr.20050920084036.265:scolorizer (contains lots of Tk code)
+#@-node:ekr.20050920084036.265:scolorizer LATER
 #@+node:ekr.20050920084036.263:iSearchHelper
 def iSearchHelper (self,event):
 
@@ -7523,7 +7447,7 @@ def sortLines (self,event,which=None):
     w.mark_set('insert',ins)
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.118:sortLines
-#@+node:ekr.20050920084036.119:sortColumns
+#@+node:ekr.20050920084036.119:sortColumns TODO (create unit test)
 def sortColumns (self,event):
     
     '''Sort lines of selected text using only lines in the given columns to do the comparison.'''
@@ -7558,8 +7482,8 @@ def sortColumns (self,event):
          i = i + 1
     w.mark_set('insert',ins)
     self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.119:sortColumns
-#@+node:ekr.20050920084036.120:sortFields
+#@-node:ekr.20050920084036.119:sortColumns TODO (create unit test)
+#@+node:ekr.20050920084036.120:sortFields TEST
 def sortFields (self,event,which=None):
     
     '''Divide the selected text into lines and sort by comparing the contents of
@@ -7576,16 +7500,22 @@ def sortFields (self,event,which=None):
     if not w or not self._chckSel(event): return
 
     self.beginCommand(undoType='sort-fields')
-    ins = w.index('insert')
-    is1 = w.index('sel.first')
-    is2 = w.index('sel.last')
-    txt = w.get('%s linestart' % is1,'%s lineend' % is2)
+    
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    r1,r2,r3,r4 = self.getRectanglePoints(w)
+    # ins = w.index('insert')
+    # is1 = w.index('sel.first')
+    # is2 = w.index('sel.last')
+    #txt = w.get('%s linestart' % is1,'%s lineend' % is2)
+    i,junk = g.getLine(s,r1)
+    junk,j = g.getLine(s,r4)
     txt = txt.split('\n')
     fields = []
     fn = r'\w+'
     frx = re.compile(fn)
-    for z in txt:
-        f = frx.findall(z)
+    for line in txt:
+        f = frx.findall(line)
         if not which:
             fields.append(f[0])
         else:
@@ -7595,15 +7525,19 @@ def sortFields (self,event,which=None):
             fields.append(f[i])
     nz = zip(fields,txt)
     nz.sort()
-    w.delete('%s linestart' % is1,'%s lineend' % is2)
-    i = is1.split('.')
-    int1 = int(i[0])
+    #w.delete('%s linestart' % is1,'%s lineend' % is2)
+    w.delete(i,j)
+    #i = is1.split('.')
+    #int1 = int(i[0])
+    int1 = i
     for z in nz:
         w.insert('%s.0' % int1,'%s\n' % z[1])
         int1 = int1 + 1
-    w.mark_set('insert',ins)
+    #w.mark_set('insert',ins)
+    w.setInsertPoint(ins)
+
     self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.120:sortFields
+#@-node:ekr.20050920084036.120:sortFields TEST
 #@-node:ekr.20050920084036.117:sort...
 #@+node:ekr.20050920084036.261:incremental search...
 def isearchForward (self,event):
@@ -7713,7 +7647,7 @@ def iSearchStateHandler (self,event):
         self.iSearchHelper(event)
         self.scolorizer(event)
 #@-node:ekr.20050920084036.264:iSearchStateHandler
-#@+node:ekr.20050920084036.265:scolorizer (contains lots of Tk code)
+#@+node:ekr.20050920084036.265:scolorizer LATER
 def scolorizer (self,event,pattern=None):
     
     '''Colorizer for incremental searches.'''
@@ -7743,7 +7677,7 @@ def scolorizer (self,event,pattern=None):
 
     w.tag_config('color',foreground='red')
     w.tag_config('color1',background='lightblue')
-#@-node:ekr.20050920084036.265:scolorizer (contains lots of Tk code)
+#@-node:ekr.20050920084036.265:scolorizer LATER
 #@+node:ekr.20050920084036.263:iSearchHelper
 def iSearchHelper (self,event):
 
@@ -7975,7 +7909,7 @@ def regionalExpandAbbrev (self,event):
     k.regx.iter = searchXR(i1,i2,ins,event)
     k.regx.iter.next() # Call it the first time.
 #@nonl
-#@+node:ekr.20050920084036.22:<< define a new generator searchXR >> TODO
+#@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
 @ This is a generator (it contains a yield).
 To make this work we must define a new generator for each call to regionalExpandAbbrev.
 @c
@@ -8008,7 +7942,7 @@ def searchXR (i1,i2,ins,event):
     w.tag_delete('found')
     k.setLabelGrey('')
     self.k.regx = g.bunch(iter=None,key=None)
-#@-node:ekr.20050920084036.22:<< define a new generator searchXR >> TODO
+#@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
 #@-node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
 #@+node:ekr.20061102064720:buffer class
 #@+node:ekr.20050920084036.35:appendToBuffer
@@ -8234,7 +8168,7 @@ else:
     self.quitSearch(event)
     return False
 #@-node:ekr.20051005155611:<< handle regexp >>
-#@+node:ekr.20051005160923:<< handle plain search >> (Contains Tk code)
+#@+node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config)
 i = w.search(self.qQ,'insert',stopindex='end')
 if i:
     w.setInsertPoint(i)
@@ -8244,7 +8178,7 @@ if i:
 else:
     self.quitSearch(event)
     return False
-#@-node:ekr.20051005160923:<< handle plain search >> (Contains Tk code)
+#@-node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config)
 #@-node:ekr.20050920084036.219:findNextMatch (query-replace)
 #@-node:ekr.20061102064720.2:query/replace
 #@+node:ekr.20050920084036.224:Entries (rectangleCommandsClass)
@@ -8259,11 +8193,12 @@ def clearRectangle (self,event):
     w,r1,r2,r3,r4 = self.beginCommand('clear-rectangle')
 
     # Change the text.
-    
-    s = ' ' * (r4-r2)
+    fill = ' ' *(r4-r2)
     for r in xrange(r1,r3+1):
         w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-        w.insert('%s.%s' % (r,r2),s)
+        w.insert('%s.%s' % (r,r2),fill)
+        
+    w.setSelectionRange('%s.%s'%(r1,r2),'%s.%s'%(r3,r2+len(fill)))
         
     self.endCommand()
 #@-node:ekr.20050920084036.225:clearRectangle
@@ -8314,14 +8249,15 @@ def killRectangle (self,event):
     w,r1,r2,r3,r4 = self.beginCommand('kill-rectangle')
 
     self.theKillRectangle = []
+
     for r in xrange(r1,r3+1):
         s = w.get('%s.%s' % (r,r2),'%s.%s' % (r,r4))
         self.theKillRectangle.append(s)
         w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
 
     if self.theKillRectangle:
-        w.mark_set('sel.start','insert')
-        w.mark_set('sel.end','insert')
+        ins = '%s.%s' % (r,r2)
+        w.setSelectionRange(ins,ins,insert=ins)
         
     self.endCommand()
 #@-node:ekr.20050920084036.228:killRectangle
@@ -8335,14 +8271,18 @@ def openRectangle (self,event):
     if not w or not self.check(event): return
     
     w,r1,r2,r3,r4 = self.beginCommand('open-rectangle')
-    
-    s = ' ' * (r4-r2)
+
+    fill = ' ' * (r4-r2)
     for r in xrange(r1,r3+1):
-        w.insert('%s.%s' % (r,r2),s)
+        w.insert('%s.%s' % (r,r2),fill)
         
+    i = '%s.%s' % (r1,r2)
+    j = '%s.%s' % (r3,r2+len(fill))
+    w.setSelectionRange(i,j,insert=j)
+
     self.endCommand()
 #@-node:ekr.20050920084036.230:openRectangle
-#@+node:ekr.20050920084036.229:yankRectangle
+#@+node:ekr.20050920084036.229:yankRectangle TODO
 def yankRectangle (self,event,killRect=None):
     
     '''Yank into the rectangle defined by the start and end of selected text.'''
@@ -8358,10 +8298,17 @@ def yankRectangle (self,event,killRect=None):
         
     w,r1,r2,r3,r4 = self.beginCommand('yank-rectangle')
     
+    # g.trace('killRect',killRect,'r1..r4',r1,r2,r3,r4)
+    
     # Change the text.
-    txt = w.get('insert linestart','insert')
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    txt = s[i:ins]
+    # txt = w.get('insert linestart','insert')
     txt = self.getWSString(txt)
-    i = w.getInsertPoint()
+
+    i = w.toGuiIndex(ins)
     i1, i2 = i.split('.')
     i1 = int(i1)
     for z in killRect:
@@ -8375,7 +8322,21 @@ def yankRectangle (self,event,killRect=None):
         i1 += 1
 
     self.endCommand()
-#@-node:ekr.20050920084036.229:yankRectangle
+    
+@
+    i = w.getInsertPoint()
+    #i1, i2 = i.split('.')
+    #i1 = int(i1)
+    for z in killRect:
+        txt2 = w.get('%s.0 linestart' % i1,'%s.%s' % (i1,i2))
+        if len(txt2) != len(txt):
+            amount = len(txt) - len(txt2)
+            z = txt [-amount:] + z
+        w.insert('%s.%s' % (i1,i2),z)
+        if w.index('%s.0 lineend +1c' % i1) == w.index('end'):
+            w.insert('%s.0 lineend' % i1,'\n')
+        i1 += 1
+#@-node:ekr.20050920084036.229:yankRectangle TODO
 #@+node:ekr.20050920084036.232:stringRectangle
 def stringRectangle (self,event):
     
@@ -8391,15 +8352,15 @@ def stringRectangle (self,event):
     else:
         k.clearState()
         k.resetLabel()
+        c.bodyWantsFocus()
         w = self.w
         self.beginCommand('string-rectangle')
         r1, r2, r3, r4 = self.stringRect
-        w.mark_set('sel.start','%d.%d' % (r1,r2))
-        w.mark_set('sel.end',  '%d.%d' % (r3,r4))
-        c.bodyWantsFocus()
         for r in xrange(r1,r3+1):
             w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
             w.insert('%s.%s' % (r,r2),k.arg)
+        w.setSelectionRange('%d.%d' % (r1,r2),'%d.%d' % (r3,r2+len(k.arg)))
+        
         self.endCommand()
 #@nonl
 #@-node:ekr.20050920084036.232:stringRectangle
@@ -9745,7 +9706,7 @@ def fillRegion (self,event):
 
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.100:fillRegion
-#@+node:ekr.20050920084036.104:fillRegionAsParagraph (test)
+#@+node:ekr.20050920084036.104:fillRegionAsParagraph (Replace by reformat-paragraph)
 def fillRegionAsParagraph (self,event):
     
     '''Fill the selected text.'''
@@ -9756,17 +9717,17 @@ def fillRegionAsParagraph (self,event):
     
     self.beginCommand(undoType='fill-region-as-paragraph')
 
-    s = w.getAllText()
-    i,j = w.getSelectionRange()
-    i1,junk = g.getLine(s,i)
-    junk,i2 = g.getLine(s,j)
-    s = s[i1:i2]
-    s = self._addPrefix(s)
-    w.delete(i1,i2)
-    w.insert(i1,s)
+    # s = w.getAllText()
+    # i,j = w.getSelectionRange()
+    # i1,junk = g.getLine(s,i)
+    # junk,i2 = g.getLine(s,j)
+    # s = s[i1:i2]
+    # s = self._addPrefix(s)
+    # w.delete(i1,i2)
+    # w.insert(i1,s)
 
     self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.104:fillRegionAsParagraph (test)
+#@-node:ekr.20050920084036.104:fillRegionAsParagraph (Replace by reformat-paragraph)
 #@+node:ekr.20050920084036.103:fillParagraph
 def fillParagraph( self, event ):
     
@@ -13001,7 +12962,7 @@ def toGuiIndex (self,i):
     return i
 #@nonl
 #@-node:ekr.20061117085824:w.toGuiIndex
-#@+node:ekr.20061117085824.1:w.toPYthonIndex
+#@+node:ekr.20061117085824.1:w.toPythonIndex
 def toPythonIndex (self,i):
     '''Convert a Tk index to a Python index as needed.'''
     w =self
@@ -13017,7 +12978,7 @@ def toPythonIndex (self,i):
         i = g.convertRowColToPythonIndex(s,row,col)
         #g.es_print(i)
     return i
-#@-node:ekr.20061117085824.1:w.toPYthonIndex
+#@-node:ekr.20061117085824.1:w.toPythonIndex
 #@+node:ekr.20061117085824.2:w.rowColToGuiIndex
 # This method is called only from the colorizer.
 # It provides a huge speedup over naive code.
@@ -14784,7 +14745,7 @@ def toGuiIndex (self,i):
     return i
 #@nonl
 #@-node:ekr.20061117085824:w.toGuiIndex
-#@+node:ekr.20061117085824.1:w.toPYthonIndex
+#@+node:ekr.20061117085824.1:w.toPythonIndex
 def toPythonIndex (self,i):
     '''Convert a Tk index to a Python index as needed.'''
     w =self
@@ -14800,7 +14761,7 @@ def toPythonIndex (self,i):
         i = g.convertRowColToPythonIndex(s,row,col)
         #g.es_print(i)
     return i
-#@-node:ekr.20061117085824.1:w.toPYthonIndex
+#@-node:ekr.20061117085824.1:w.toPythonIndex
 #@+node:ekr.20061117085824.2:w.rowColToGuiIndex
 # This method is called only from the colorizer.
 # It provides a huge speedup over naive code.
@@ -14844,7 +14805,7 @@ def toGuiIndex (self,i):
     return i
 #@nonl
 #@-node:ekr.20061117085824:w.toGuiIndex
-#@+node:ekr.20061117085824.1:w.toPYthonIndex
+#@+node:ekr.20061117085824.1:w.toPythonIndex
 def toPythonIndex (self,i):
     '''Convert a Tk index to a Python index as needed.'''
     w =self
@@ -14860,7 +14821,7 @@ def toPythonIndex (self,i):
         i = g.convertRowColToPythonIndex(s,row,col)
         #g.es_print(i)
     return i
-#@-node:ekr.20061117085824.1:w.toPYthonIndex
+#@-node:ekr.20061117085824.1:w.toPythonIndex
 #@+node:ekr.20061117085824.2:w.rowColToGuiIndex
 # This method is called only from the colorizer.
 # It provides a huge speedup over naive code.
@@ -15730,7 +15691,7 @@ def toGuiIndex (self,i):
     return i
 #@nonl
 #@-node:ekr.20061117085824:w.toGuiIndex
-#@+node:ekr.20061117085824.1:w.toPYthonIndex
+#@+node:ekr.20061117085824.1:w.toPythonIndex
 def toPythonIndex (self,i):
     '''Convert a Tk index to a Python index as needed.'''
     w =self
@@ -15746,7 +15707,7 @@ def toPythonIndex (self,i):
         i = g.convertRowColToPythonIndex(s,row,col)
         #g.es_print(i)
     return i
-#@-node:ekr.20061117085824.1:w.toPYthonIndex
+#@-node:ekr.20061117085824.1:w.toPythonIndex
 #@+node:ekr.20061117085824.2:w.rowColToGuiIndex
 # This method is called only from the colorizer.
 # It provides a huge speedup over naive code.
@@ -18893,7 +18854,7 @@ def moveToHelper (self,event,spot,extend):
     self.extendHelper(w,extend,spot,upOrDown=False)
 #@nonl
 #@-node:ekr.20051218122116:moveToHelper (passed)
-#@+node:ekr.20051218171457:movePastCloseHelper 
+#@+node:ekr.20051218171457:movePastCloseHelper
 def movePastCloseHelper (self,event,extend):
 
     c = self.c ; w = self.editWidget(event)
@@ -18926,7 +18887,7 @@ def movePastCloseHelper (self,event,extend):
     if i2 > j2: return
 
     self.moveToHelper(event,i2+1,extend)
-#@-node:ekr.20051218171457:movePastCloseHelper 
+#@-node:ekr.20051218171457:movePastCloseHelper
 #@+node:ekr.20051218121447:moveWordHelper
 def moveWordHelper (self,event,extend,forward,end=False):
 
