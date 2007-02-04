@@ -1355,299 +1355,10 @@ class baseLeoImportCommands:
     
     def scanCText (self,s,parent):
         
-        __pychecker__ = 'maxlines=500'
-    
-        #@    << define scanCText vars >>
-        #@+node:ekr.20031218072017.3251:<< define scanCText vars >>
-        c = self.c
-        include_seen = method_seen = False
-        methodKind = g.choose(self.fileType==".c","functions","methods")
-        lparen = None   # Non-null if '(' seen at outer level.
-        scan_start = function_start = 0
-        name = None
-        i = 0
-        #@-node:ekr.20031218072017.3251:<< define scanCText vars >>
-        #@nl
-        while i < len(s):
-            # line = g.get_line(s,i) ; g.trace(line)
-            ch = s[i]
-            # These cases skip tokens.
-            if ch == '/':
-                #@            << handle possible C comments >>
-                #@+node:ekr.20031218072017.3260:<< handle possible C comments >>
-                if g.match(s,i,"//"):
-                    i = g.skip_line(s,i)
-                elif g.match(s,i,"/*"):
-                    i = g.skip_block_comment(s,i)
-                else:
-                    i += 1
-                #@-node:ekr.20031218072017.3260:<< handle possible C comments >>
-                #@nl
-            elif ch == '"' or ch == '\'':
-                i = g.skip_string(s,i)
-            # These cases help determine where functions start.
-            elif ch == '=':
-                #@            << handle equal sign in C >>
-                #@+node:ekr.20031218072017.3261:<< handle equal sign in C>>
-                #@+at 
-                #@nonl
-                # We can not be seeing a function definition when we find an 
-                # equal sign at the top level. Equal signs inside parentheses 
-                # are handled by the open paren logic.
-                #@-at
-                #@@c
-                
-                i += 1 # skip the '='
-                function_start = None # We can't be in a function.
-                lparen = None   # We have not seen an argument list yet.
-                i = g.skip_ws(s,i) # 6/9/04
-                if g.match(s,i,'{'):
-                    i = g.skip_braces(s,i)
-                #@-node:ekr.20031218072017.3261:<< handle equal sign in C>>
-                #@nl
-            elif ch == '(':
-                #@            << handle open paren in C >>
-                #@+node:ekr.20031218072017.3262:<< handle open paren in C >>
-                lparen = i
-                # This will skip any equal signs inside the paren.
-                i = g.skip_parens(s,i)
-                if g.match(s,i,')'):
-                    i += 1
-                    i = g.skip_ws_and_nl(s,i)
-                    if g.match(s,i,';'):
-                        lparen = None # not a function definition.
-                else: lparen = None
-                #@-node:ekr.20031218072017.3262:<< handle open paren in C >>
-                #@nl
-            elif ch == ';':
-                #@            << handle semicolon in C >>
-                #@+node:ekr.20031218072017.3263:<< handle semicolon in C >>
-                #@+at 
-                #@nonl
-                # A semicolon signals the end of a declaration, thereby 
-                # potentially starting the _next_ function defintion.   
-                # Declarations end a function definition unless we have 
-                # already seen a parenthesis, in which case we are seeing an 
-                # old-style function definition.
-                #@-at
-                #@@c
-                
-                i += 1 # skip the semicolon.
-                if lparen == None:
-                    function_start = i + 1 # The semicolon ends the declaration.
-                #@-node:ekr.20031218072017.3263:<< handle semicolon in C >>
-                #@nl
-            # These cases and the default case can create child nodes.
-            elif ch == '#':
-                #@            << handle # sign >>
-                #@+node:ekr.20031218072017.3252:<< handle # sign >>
-                # if statements may contain function definitions.
-                i += 1  # Skip the '#'
-                if not include_seen and g.match_c_word(s,i,"include"):
-                    include_seen = True
-                    #@    << create a child node for all #include statements >>
-                    #@+node:ekr.20031218072017.3253:<< create a child node for all #include statements >>
-                    # Scan back to the start of the line.
-                    include_start = i = g.find_line_start(s,i)
-                    
-                    # Scan to the next line that is neither blank nor and #include.
-                    i = g.skip_pp_directive(s,i)
-                    i = g.skip_nl(s,i)
-                    include_end = i
-                    while i < len(s):
-                        i = g.skip_ws_and_nl(s,i)
-                        if g.match_c_word(s,i,"#include"):
-                            i = g.skip_pp_directive(s,i)
-                            i = g.skip_nl(s,i)
-                            include_end = i
-                        elif i + 2 < len(s) and s[i] == '\\':
-                            # Handle possible comment.
-                            if s[i+1] == '\\':
-                                i = g.skip_to_end_of_line(s,i)
-                            elif s[i+1] == '*':
-                                i = g.skip_block_comment(s,i + 2)
-                            else:
-                                i = include_end ; break
-                        else:
-                            i = include_end ; break
-                            
-                    
-                    headline = g.angleBrackets(" " + self.methodName + " #includes ")
-                    body = s[include_start:include_end]
-                    body = self.undentBody(body)
-                    prefix = g.choose(self.treeType == "@file","","@code\n\n")
-                    self.createHeadline(parent,prefix + body,headline)
-                    c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language c\n")
-                    
-                    # Append any previous text to the parent's body.
-                    save_ip = i ; i = scan_start
-                    while i < include_start and g.is_ws_or_nl(s,i):
-                        i += 1
-                    if i < include_start:
-                        c.appendStringToBody(parent,s[i:include_start])
-                    scan_start = function_start = i = save_ip
-                    # Append the headline to the parent's body.
-                    c.appendStringToBody(parent,headline + "\n")
-                    #@-node:ekr.20031218072017.3253:<< create a child node for all #include statements >>
-                    #@nl
-                else:
-                    j = i
-                    i = g.skip_pp_directive(s,i)
-                #@-node:ekr.20031218072017.3252:<< handle # sign >>
-                #@nl
-            elif ch == '{':
-                #@            << handle open curly bracket in C >>
-                #@+node:ekr.20031218072017.3254:<< handle open curly bracket in C >> (scans function)
-                j = i = g.skip_braces(s,i) # Skip all inner blocks.
-                
-                # This may fail if #if's contain unmatched curly braces.
-                if (g.match(s,i,'}') and lparen and name and function_start):
-                    # Point i _after_ the last character of the function.
-                    i += 1
-                    if g.is_nl(s,i):
-                        i = g.skip_nl(s,i)
-                    function_end = i
-                    if method_seen:
-                        # Include everything after the last function.
-                        function_start = scan_start 
-                    else:
-                        #@        << create a declaration node >>
-                        #@+node:ekr.20031218072017.3255:<< create a declaration node >>
-                        save_ip = i
-                        i = scan_start
-                        while i < function_start and g.is_ws_or_nl(s,i):
-                            i += 1
-                        if i < function_start:
-                            headline = g.angleBrackets(" " + self.methodName + " declarations ")
-                            # Append the headline to the parent's body.
-                            c.appendStringToBody(parent,headline + "\n")
-                            decls = s[scan_start:function_start]
-                            decls = self.undentBody(decls)
-                            if self.treeType == "@file":
-                                body = decls
-                            else:
-                                body = "@code\n\n" + decls
-                            self.createHeadline(parent,body,headline)
-                        i = save_ip
-                        scan_start = i
-                        #@-node:ekr.20031218072017.3255:<< create a declaration node >>
-                        #@nl
-                        #@        << append C function/method reference to parent node >>
-                        #@+node:ekr.20031218072017.3256:<< append C function/method reference to parent node >>
-                        if self.treeType == "@file":
-                            c.appendStringToBody(parent,"@others\n")
-                        else:
-                            cweb = c.target_language == "cweb"
-                            lb = g.choose(cweb,"@<","<<")
-                            rb = g.choose(cweb,"@>",">>")
-                            c.appendStringToBody(parent,
-                                lb + " " + self.methodName + " " + methodKind + " " + rb + "\n")
-                        #@-node:ekr.20031218072017.3256:<< append C function/method reference to parent node >>
-                        #@nl
-                    headline = name
-                    body = s[function_start:function_end]
-                    body = self.massageBody(body,"functions")
-                    self.createHeadline(parent,body,headline)
-                    
-                    method_seen = True
-                    scan_start = function_start = i # Set the start of the _next_ function.
-                    lparen = None
-                else:
-                    i += 1
-                #@-node:ekr.20031218072017.3254:<< handle open curly bracket in C >> (scans function)
-                #@nl
-            elif g.is_c_id(ch):
-                #@            << handle id, class, typedef, struct, union, namespace >>
-                #@+node:ekr.20031218072017.3257:<< handle id, class, typedef, struct, union, namespace >>
-                if g.match_c_word(s,i,"typedef"):
-                    i = g.skip_typedef(s,i)
-                    lparen = None
-                elif g.match_c_word(s,i,"struct"):
-                    i = g.skip_typedef(s,i)
-                    # lparen = None ;  # This can appear in an argument list.
-                elif g.match_c_word(s,i,"union"):
-                    i = g.skip_typedef(s,i)
-                    # lparen = None ;  # This can appear in an argument list.
-                elif g.match_c_word(s,i,"namespace"):
-                    g.trace("namespace")
-                    #@    << create children for the namespace >>
-                    #@+node:ekr.20031218072017.3258:<< create children for the namespace >>
-                    #@+at 
-                    #@nonl
-                    # Namesspaces change the self.moduleName and recursively 
-                    # call self function with a text covering only the range 
-                    # of the namespace. This effectively changes the 
-                    # definition line of any created child nodes. The 
-                    # namespace is written to the top level.
-                    #@-at
-                    #@@c
-                    
-                    # skip the "namespace" keyword.
-                    i += len("namespace")
-                    i = g.skip_ws_and_nl(s,i)
-                    # Skip the namespace name.
-                    namespace_name_start = i
-                    namespace_name_end = None
-                    if i < len(s) and g.is_c_id(s[i]):
-                        i = g.skip_c_id(s,i)
-                        namespace_name_end = i - 1
-                    else: namespace_name_start = None
-                    # Skip the '{'
-                    i = g.skip_ws_and_nl(s,i)
-                    if g.match(s,i,'{') and namespace_name_start:
-                        # g.trace(s[i],s[namespace_name_start:namespace_name_end+1])
-                        inner_ip = i + 1
-                        i = g.skip_braces(s,i)
-                        if g.match(s,i,'}'):
-                            # Append everything so far to the body.
-                            if inner_ip > scan_start:
-                                c.appendStringToBody(parent,s[scan_start:inner_ip])
-                            # Save and change self.moduleName to namespaceName
-                            savedMethodName = self.methodName
-                            namespaceName = s[namespace_name_start:namespace_name_end+1]
-                            self.methodName = "namespace " + namespaceName
-                            # Recursively call this function .
-                            self.scanCText(s[inner_ip:],parent)
-                            # Restore self.moduleName and continue scanning.
-                            self.methodName = savedMethodName
-                            scan_start = function_start = i
-                    #@-node:ekr.20031218072017.3258:<< create children for the namespace >>
-                    #@nl
-                # elif g.match_c_word(s,i,"class"):
-                    # < < create children for the class > >
-                else:
-                    # Remember the last name before an open parenthesis.
-                    if lparen == None:
-                        j = i ; i = g.skip_c_id(s,i) ; name = s[j:i]
-                    else:
-                        i = g.skip_c_id(s,i)
-                    #@    << test for operator keyword >>
-                    #@+node:ekr.20031218072017.3259:<< test for operator keyword >>
-                    # We treat a C++ a construct such as operator + as a function name.
-                    if g.match(name,0,"operator"):
-                        j = i
-                        i = g.skip_ws(s,i) # Don't allow newline in headline.
-                        if (i < len(s) and not g.is_c_id(s[i]) and
-                            s[i]!=' ' and s[i]!='\n' and s[i]!='\r'):
-                            while (i < len(s) and not g.is_c_id(s[i]) and
-                                s[i]!=' ' and s[i]!='\n' and s[i] != '\r'):
-                                i += 1
-                            name = s[j:i] # extend the name.
-                    #@-node:ekr.20031218072017.3259:<< test for operator keyword >>
-                    #@nl
-                #@-node:ekr.20031218072017.3257:<< handle id, class, typedef, struct, union, namespace >>
-                #@nl
-            else: i += 1
-        #@    << Append any unused text to the parent's body text >>
-        #@+node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
-        # Used by C, Java and Pascal parsers.
-        # Do nothing if only whitespace is left.
+        scanner = self.cScanner(self)
+        scanner.scan(s,parent)
         
-        i = g.skip_ws_and_nl(s,scan_start)
-        if i < len(s):
-            c.appendStringToBody(parent,s[scan_start:])
-        #@-node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
-        #@nl
+    #@nonl
     #@-node:ekr.20031218072017.3250:scanCText
     #@+node:ekr.20031218072017.3265:scanElispText & allies
     def scanElispText(self,s,p):
@@ -1986,14 +1697,13 @@ class baseLeoImportCommands:
                 #@nl
             else: i += 1
         #@    << Append any unused text to the parent's body text >>
-        #@+node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
-        # Used by C, Java and Pascal parsers.
-        # Do nothing if only whitespace is left.
+        #@+node:ekr.20031218072017.3264:<< append any unused text to the parent's body text >>
+        # Used by the Java and Pascal scanners.
         
         i = g.skip_ws_and_nl(s,scan_start)
         if i < len(s):
             c.appendStringToBody(parent,s[scan_start:])
-        #@-node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
+        #@-node:ekr.20031218072017.3264:<< append any unused text to the parent's body text >>
         #@nl
     #@-node:ekr.20031218072017.3270:scanJavaText
     #@+node:ekr.20060328112327:scanLuaText
@@ -2147,14 +1857,13 @@ class baseLeoImportCommands:
                 #@nl
             else: i += 1
         #@    << Append any unused text to the parent's body text >>
-        #@+node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
-        # Used by C, Java and Pascal parsers.
-        # Do nothing if only whitespace is left.
+        #@+node:ekr.20031218072017.3264:<< append any unused text to the parent's body text >>
+        # Used by the Java and Pascal scanners.
         
         i = g.skip_ws_and_nl(s,scan_start)
         if i < len(s):
             c.appendStringToBody(parent,s[scan_start:])
-        #@-node:ekr.20031218072017.3264:<< Append any unused text to the parent's body text >>
+        #@-node:ekr.20031218072017.3264:<< append any unused text to the parent's body text >>
         #@nl
     #@-node:ekr.20031218072017.3281:scanPascalText
     #@+node:ekr.20031218072017.3242:scanPHPText (Dave Hein)
@@ -2366,6 +2075,504 @@ class baseLeoImportCommands:
         c.appendStringToBody(parent,"@last ")
         c.appendStringToBody(parent,s[endOfCode:])
     #@-node:ekr.20031218072017.3242:scanPHPText (Dave Hein)
+    #@+node:ekr.20070202105339.1:class cScanner
+    #@+at
+    # The C scanner uses an internal class as an organizational aid. This is 
+    # far
+    # superior, imo, to using a single huge scanCText function organized with 
+    # noweb
+    # section references. Indeed, the helper class creates a separate 
+    # namespace for
+    # use by the various helper functions.
+    # 
+    # At present only the C scanner uses this organization, and the utilities 
+    # of the
+    # cScanner class are identical to the utilites of the leoImportCommands 
+    # class.
+    # This duplication would go away if all the scanners derived from a 
+    # baseScanner
+    # class, but that is not likely any time soon, if ever.
+    #@-at
+    #@@c
+    
+    class cScanner:
+        #@    @+others
+        #@+node:ekr.20070202105914:cScanner.ctor
+        def __init__ (self,importer):
+        
+            # Copy ivars.
+            self.c = importer.c
+            self.encoding = importer.encoding
+            self.methodKind = g.choose(importer.fileType==".c","functions","methods")
+            self.methodName = importer.methodName
+            self.rootLine = importer.rootLine
+            self.treeType = importer.treeType
+            
+            # Other ivars.
+            self.function_start = 0
+            self.name = None
+            self.scan_start = 0
+        #@-node:ekr.20070202105914:cScanner.ctor
+        #@+node:ekr.20070203074709:Utilities (should be in base class)
+        #@+node:ekr.20070203074709.1:createHeadline
+        def createHeadline (self,parent,body,headline):
+        
+            # g.trace("parent,headline:",parent,headline)
+            # Create the vnode.
+            p = parent.insertAsLastChild()
+            p.initHeadString(headline,self.encoding)
+            # Set the body.
+            if body:
+                self.c.setBodyString(p,body,self.encoding)
+            return p
+        #@-node:ekr.20070203074709.1:createHeadline
+        #@+node:ekr.20070203074709.2:error
+        def error (self,s): g.es(s)
+        #@-node:ekr.20070203074709.2:error
+        #@+node:ekr.20070203074709.3:getLeadingIndent
+        def getLeadingIndent (self,s,i):
+        
+            """Return the leading whitespace of a line, ignoring blank and comment lines."""
+        
+            i = g.find_line_start(s,i)
+            while i < len(s):
+                # g.trace(g.get_line(s,i))
+                j = g.skip_ws(s,i) # Bug fix: 2/14/03
+                if g.is_nl(s,j) or g.match(s,j,"#"): # Bug fix: 2/14/03
+                    i = g.skip_line(s,i) # ignore blank lines and comment lines.
+                else:
+                    i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                    # g.trace("returns:",width)
+                    return width
+            # g.trace("returns:0")
+            return 0
+        #@-node:ekr.20070203074709.3:getLeadingIndent
+        #@+node:ekr.20070203074709.4:isDocStart and isModuleStart
+        # The start of a document part or module in a noweb or cweb file.
+        # Exporters may have to test for @doc as well.
+        
+        def isDocStart (self,s,i):
+            
+            if not g.match(s,i,"@"):
+                return False
+        
+            j = g.skip_ws(s,i+1)
+            if g.match(s,j,"%defs"):
+                return False
+            elif self.webType == "cweb" and g.match(s,i,"@*"):
+                return True
+            else:
+                return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
+        
+        def isModuleStart (self,s,i):
+        
+            if self.isDocStart(s,i):
+                return True
+            else:
+                return self.webType == "cweb" and (
+                    g.match(s,i,"@c") or g.match(s,i,"@p") or
+                    g.match(s,i,"@d") or g.match(s,i,"@f"))
+        #@-node:ekr.20070203074709.4:isDocStart and isModuleStart
+        #@+node:ekr.20070203074709.5:massageBody
+        def massageBody (self,s,methodKind):
+            
+            # g.trace(s)
+            # g.trace(g.get_line(s,0))
+            c = self.c
+            if self.treeType == "@file":
+                if self.fileType == ".py": # 7/31/02: was "py"
+                    return self.undentBody(s)
+                else:
+                    newBody, comment = self.skipLeadingComments(s)
+                    newBody = self.undentBody(newBody)
+                    newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
+                    if len(comment) > 0:
+                        return comment + "\n@c" + newLine + newBody
+                    else:
+                        return newBody
+            else:
+                # Inserts < < self.methodName methodKind > > =
+                cweb = self.fileType == "c" and not c.use_noweb_flag
+                lb = g.choose(cweb,"@<","<<")
+                rb = g.choose(cweb,"@>=",">>=")
+                intro = lb + " " + self.methodName + " " + methodKind + " " + rb
+                if self.fileType == ".py": # 7/31/02: was "py"
+                    newBody = self.undentBody(s)
+                    newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
+                    return intro + newLine + newBody
+                else:
+                    newBody, comment = self.skipLeadingComments(s)
+                    newBody = self.undentBody(newBody)
+                    newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
+                    if len(comment) > 0:
+                        return comment + "\n" + intro + newLine + newBody
+                    else:
+                        return intro + newLine + newBody
+        #@-node:ekr.20070203074709.5:massageBody
+        #@+node:ekr.20070203074709.6:massageComment
+        def massageComment (self,s):
+        
+            """Returns s with all runs of whitespace and newlines converted to a single blank.
+            
+            Also removes leading and trailing whitespace."""
+        
+            s = s.strip()
+            s = s.replace("\n"," ")
+            s = s.replace("\r"," ")
+            s = s.replace("\t"," ")
+            s = s.replace("  "," ")
+            s = s.strip()
+            return s
+        #@-node:ekr.20070203074709.6:massageComment
+        #@+node:ekr.20070203074709.7:massageWebBody
+        def massageWebBody (self,s):
+        
+            theType = self.webType
+            lb = g.choose(theType=="cweb","@<","<<")
+            rb = g.choose(theType=="cweb","@>",">>")
+            #@    << Remove most newlines from @space and @* sections >>
+            #@+node:ekr.20070203074709.8:<< Remove most newlines from @space and @* sections >>
+            i = 0
+            while i < len(s):
+                i = g.skip_ws_and_nl(s,i)
+                if self.isDocStart(s,i):
+                    # Scan to end of the doc part.
+                    if g.match(s,i,"@ %def"):
+                        # Don't remove the newline following %def
+                        i = g.skip_line(s,i) ; start = end = i
+                    else:
+                        start = end = i ; i += 2
+                    while i < len(s):
+                        i = g.skip_ws_and_nl(s,i)
+                        if self.isModuleStart(s,i) or g.match(s,i,lb):
+                            end = i ; break
+                        elif theType == "cweb": i += 1
+                        else: i = g.skip_to_end_of_line(s,i)
+                    # Remove newlines from start to end.
+                    doc = s[start:end]
+                    doc = string.replace(doc,"\n"," ")
+                    doc = string.replace(doc,"\r","")
+                    doc = string.strip(doc)
+                    if doc and len(doc) > 0:
+                        if doc == "@":
+                            doc = g.choose(self.webType=="cweb", "@ ","@\n")
+                        else:
+                            doc += "\n\n"
+                        # g.trace("new doc:",doc)
+                        s = s[:start] + doc + s[end:]
+                        i = start + len(doc)
+                else: i = g.skip_line(s,i)
+            #@-node:ekr.20070203074709.8:<< Remove most newlines from @space and @* sections >>
+            #@nl
+            #@    << Replace abbreviated names with full names >>
+            #@+node:ekr.20070203074709.9:<< Replace abbreviated names with full names >>
+            i = 0
+            while i < len(s):
+                # g.trace(g.get_line(s,i))
+                if g.match(s,i,lb):
+                    i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
+                    if k > -1:
+                        name = s[j:k]
+                        name2 = self.cstLookup(name)
+                        if name != name2:
+                            # Replace name by name2 in s.
+                            # g.trace("replacing %s by %s" % (name,name2))
+                            s = s[:j] + name2 + s[k:]
+                            i = j + len(name2)
+                i = g.skip_line(s,i)
+            #@-node:ekr.20070203074709.9:<< Replace abbreviated names with full names >>
+            #@nl
+            s = string.rstrip(s)
+            return s
+        #@-node:ekr.20070203074709.7:massageWebBody
+        #@+node:ekr.20070203074709.10:setEncoding
+        def setEncoding (self):
+            
+            # scanDirectives checks the encoding: may return None.
+            theDict = g.scanDirectives(self.c)
+            encoding = theDict.get("encoding")
+            if encoding and g.isValidEncoding(encoding):
+                self.encoding = encoding
+            else:
+                self.encoding = g.app.tkEncoding # 2/25/03
+        
+            # print self.encoding
+        #@-node:ekr.20070203074709.10:setEncoding
+        #@+node:ekr.20070203074709.11:skipLeadingComments
+        def skipLeadingComments (self,s):
+        
+            """Skips all leading comments in s, returning the remaining body text and the massaged comment text.
+        
+            Returns (body, comment)"""
+        
+            # g.trace(g.get_line(s,0))
+            s_original = s
+            s = s.lstrip()
+            i = 0 ; comment = ""
+            if self.fileType in [".c", ".cpp"]: # 11/2/02: don't mess with java comments.
+                #@        << scan for C-style comments >>
+                #@+node:ekr.20070203074709.12:<< scan for C-style comments >>
+                while i < len(s):
+                    if g.match(s,i,"//"): # Handle a C++ comment.
+                        while g.match(s,i,'/'):
+                            i += 1
+                        j = i ; i = g.skip_line(s,i)
+                        comment = comment + self.massageComment(s[j:i]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    elif g.match(s,i,"/*"): # Handle a block C comment.
+                        j = i + 2 ; i = g.skip_block_comment (s,i)
+                        k = g.choose(g.match(s,i-2,"*/"),i-2,i)
+                        if self.fileType == ".java":
+                            # 8/2/02: a hack: add leading whitespace then remove it.
+                            comment = self.undentBody(comment)
+                            comment2 = ' ' * 2 + s[j:k]
+                            comment2 = self.undentBody(comment2)
+                            comment = comment + comment2 + "\n"
+                        else:
+                            comment = comment + self.massageComment(s[j:k]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    else: break
+                #@-node:ekr.20070203074709.12:<< scan for C-style comments >>
+                #@nl
+            elif self.fileType == ".lua":
+                #@        << scan for Lua comments >>
+                #@+node:ekr.20070203074709.13:<< scan for Lua comments >>
+                while i < len(s):
+                    if g.match(s,i,"--"): # Handle a Lua line comment.
+                        while g.match(s,i,'/'):
+                            i += 1
+                        j = i ; i = g.skip_line(s,i)
+                        comment = comment + self.massageComment(s[j:i]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    else: break
+                #@-node:ekr.20070203074709.13:<< scan for Lua comments >>
+                #@nl
+            elif self.fileType == ".pas":
+                #@        << scan for Pascal comments >>
+                #@+node:ekr.20070203074709.14:<< scan for Pascal comments >>
+                while i < len(s):
+                    if g.match(s,i,"//"): # Handle a Pascal line comment.
+                        while g.match(s,i,'/'):
+                            i += 1
+                        j = i ; i = g.skip_line(s,i)
+                        comment = comment + self.massageComment(s[j:i]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    elif g.match(s,i,'(*'):
+                        j = i + 1 ; i = g.skip_pascal_block_comment(s,i)
+                        comment = comment + self.massageComment(s[j:i]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    else: break
+                #@-node:ekr.20070203074709.14:<< scan for Pascal comments >>
+                #@nl
+            elif self.fileType == ".py":
+                #@        << scan for Python comments >>
+                #@+node:ekr.20070203074709.15:<< scan for Python comments >>
+                while i < len(s) and g.match(s,i,'#'):
+                    j = i + 1 ; i = g.skip_line(s,i)
+                    comment = self.undentBody(comment)
+                    comment = comment + self.massageComment(s[j:i]) + "\n"
+                    # 8/2/02: Preserve leading whitespace for undentBody
+                    i = g.skip_ws(s,i)
+                    i = g.skip_blank_lines(s,i)
+                #@-node:ekr.20070203074709.15:<< scan for Python comments >>
+                #@nl
+            comment = string.strip(comment)
+            if len(comment) == 0:
+                return s_original, "" # Bug fix: 11/2/02: don't skip leading whitespace!
+            elif self.treeType == "@file":
+                return s[i:], "@ " + comment
+            else:
+                return s[i:], "@ " + comment + "\n"
+        #@-node:ekr.20070203074709.11:skipLeadingComments
+        #@+node:ekr.20070203074709.16:undentBody
+        # We look at the first line to determine how much leading whitespace to delete.
+        
+        def undentBody (self,s):
+        
+            """Removes extra leading indentation from all lines."""
+        
+            # g.trace(s)
+            i = 0 ; result = ""
+            # Copy an @code line as is.
+            if g.match(s,i,"@code"):
+                j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+                result += s[j:i]
+            # Calculate the amount to be removed from each line.
+            undent = self.getLeadingIndent(s,i)
+            if undent == 0: return s
+            while i < len(s):
+                j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+                line = s[j:i]
+                # g.trace(line)
+                line = g.removeLeadingWhitespace(line,undent,self.tab_width)
+                result += line
+            return result
+        #@-node:ekr.20070203074709.16:undentBody
+        #@-node:ekr.20070203074709:Utilities (should be in base class)
+        #@+node:ekr.20070202105914.1:scan & helpers
+        def scan (self,s,parent,init=True):
+            
+            c = self.c
+            if init:
+                c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language c\n")
+            else:
+                saveData = self.name,self.function_start,self.scan_start
+        
+            self.name,self.function_start,self.scan_start = '',0,0
+            i = 0
+            while i < len(s):
+                progress = i
+                ch = s[i]
+                # if i == 0 or ch == '\n': g.trace('line',repr(g.get_line(s,i)))
+                # g.trace('ch',repr(ch))
+                if ch == '/':         i = self.skipComments()
+                elif ch in ('"',"'"): i = g.skip_string(s,i)
+                elif ch == '(':     i = self.doOuterParen(s,i,parent) # Possible function/method definition.
+                elif ch == ';':     i = self.doSemicolon(s,i) # Signals a possible start of a function.
+                elif g.is_c_id(ch): i = self.doId(s,i,parent) # Possible class/namespace definition.
+                else: i += 1
+                assert i > progress
+            self.appendUnusedText(s,i,parent)
+            if init:
+                if parent.hasChildren(): c.appendStringToBody(parent,'@others')
+            else:
+                self.name,self.function_start,self.scan_start = saveData
+        #@nonl
+        #@+node:ekr.20070202111549:appendUnusedText
+        def appendUnusedText (self,s,i,parent):
+            
+            c = self.c
+            
+            i = g.skip_ws_and_nl(s,self.scan_start)
+            if i < len(s):
+                s2 = s[self.scan_start:]
+                # g.trace(repr(s2))
+                c.appendStringToBody(parent,s2)
+        #@-node:ekr.20070202111549:appendUnusedText
+        #@+node:ekr.20031218072017.3257:doId
+        def doId (self,s,i,parent):
+            
+            j = i ; i = g.skip_c_id(s,i)
+            name = s[j:i]
+            if name in ('class','namespace'):
+                i = self.doInner(s,j,parent,name)
+            else:
+                self.name = name
+                while g.match(s,i,'::'):
+                    self.name = self.name + '::'
+                    i = g.skip_ws_and_nl(s,i+2)
+                    if g.match(s,i,'~'):
+                        i += 1
+                        self.name = self.name + '~'
+                    i = g.skip_ws_and_nl(s,i)
+                    j = i ; i = g.skip_c_id(s,i)
+                    name2 = s[j:i]
+                    self.name = self.name + name2
+            return i
+        #@-node:ekr.20031218072017.3257:doId
+        #@+node:ekr.20070203153208:doInner
+        def doInner (self,s,i,parent,kind):
+            
+            '''Handle a namespace or class definition.'''
+        
+            c = self.c
+            start = i
+            i += len(kind)
+            j = g.skip_ws_and_nl(s,i)
+            i = g.skip_c_id(s,j)
+            name = s[j:i].strip()
+            if not name: return i
+            i = g.skip_ws_and_nl(s,i)
+            bracket = i
+            if not g.match(s,i,'{'): return i
+            i = g.skip_braces(s,i)
+            if g.match(s,i,'}'):
+                end = i
+                i = g.skip_ws_and_nl(s,i+1)
+                if g.match(s,i,';'): i += 1
+                # Append previous text.
+                prev = s[self.scan_start:start]
+                c.appendStringToBody(parent,prev)
+                self.scan_start = self.function_start = i
+                preamble = s[start:bracket+1]
+                # Create children.
+                p = self.createHeadline(parent,headline='%s %s' % (kind,name),body=preamble)
+                body = s[bracket+1:end]
+                self.scan(body,p.copy(),init=False)
+                # Finish the text.
+                if p.hasChildren(): c.appendStringToBody(p,'\n\t@others')
+                c.appendStringToBody(p,s[end:i])    
+            else:
+                g.trace('missing "}" following %s' % kind)
+            return i
+        #@-node:ekr.20070203153208:doInner
+        #@+node:ekr.20031218072017.3262:doOuterParen
+        def doOuterParen (self,s,i,parent):
+            
+            '''Handle '(' at the top level.
+            This begins a function/method if and only if the character after the matching ')' is '{'.'''
+            
+            # Skip the param list.  It may not be properly matched if there are #if's involved.
+            c = self.c
+            i = g.skip_parens(s,i)
+            if not g.match(s,i,')'): return i
+            i = g.skip_ws_and_nl(s,i+1)
+            if g.match(s,i,';'):
+                return self.doSemicolon(s,i)
+            elif g.match(s,i,'='):
+                # An initializer ends a declaration.
+                i = g.skip_ws_and_nl(s,i+1)
+                if g.match(s,i,'{'):
+                    i = g.skip_braces(s,i)
+                self.function_start = i
+                return i
+            elif g.match(s,i,'{'):
+                i = g.skip_braces(s,i)
+                if g.match(s,i,'}'):
+                    i += 1
+                    # g.trace('function %s' % self.name)
+                    c.appendStringToBody(parent,s[self.scan_start:self.function_start])
+                    body = s[self.function_start:i]
+                    p = self.createHeadline(parent,headline=self.name,body=body)
+                else:
+                    g.trace('no matching "}" in function/method definition')
+                self.scan_start = self.function_start = i
+                return i
+            else:
+                return i
+        #@-node:ekr.20031218072017.3262:doOuterParen
+        #@+node:ekr.20031218072017.3263:doSemicolon
+        def doSemicolon (self,s,i):
+        
+            self.function_start = i+1 # The semicolon ends the declaration.
+            return i+1
+        #@-node:ekr.20031218072017.3263:doSemicolon
+        #@+node:ekr.20031218072017.3260:skipComments
+        def doComments (self,s,i):
+        
+            if g.match(s,i,"//"):
+                i = g.skip_line(s,i)
+            elif g.match(s,i,"/*"):
+                i = g.skip_block_comment(s,i)
+            else:
+                i += 1
+                
+            return i
+        #@-node:ekr.20031218072017.3260:skipComments
+        #@-node:ekr.20070202105914.1:scan & helpers
+        #@-others
+    #@nonl
+    #@-node:ekr.20070202105339.1:class cScanner
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@-node:ekr.20031218072017.3209:Import
     #@+node:ekr.20031218072017.3289:Export
