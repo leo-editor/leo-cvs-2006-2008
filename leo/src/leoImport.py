@@ -2435,7 +2435,7 @@ class baseLeoImportCommands:
                 ch = s[i]
                 # if i == 0 or ch == '\n': g.trace('line',repr(g.get_line(s,i)))
                 # g.trace('ch',repr(ch))
-                if ch == '/':         i = self.skipComments()
+                if ch == '/':         i = self.skipComments(s,i)
                 elif ch in ('"',"'"): i = g.skip_string(s,i)
                 elif ch == '(':     i = self.doOuterParen(s,i,parent) # Possible function/method definition.
                 elif ch == ';':     i = self.doSemicolon(s,i) # Signals a possible start of a function.
@@ -2558,7 +2558,7 @@ class baseLeoImportCommands:
             return i+1
         #@-node:ekr.20031218072017.3263:doSemicolon
         #@+node:ekr.20031218072017.3260:skipComments
-        def doComments (self,s,i):
+        def skipComments (self,s,i):
         
             if g.match(s,i,"//"):
                 i = g.skip_line(s,i)
@@ -2566,7 +2566,7 @@ class baseLeoImportCommands:
                 i = g.skip_block_comment(s,i)
             else:
                 i += 1
-                
+        
             return i
         #@-node:ekr.20031218072017.3260:skipComments
         #@-node:ekr.20070202105914.1:scan & helpers
