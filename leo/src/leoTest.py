@@ -1448,15 +1448,15 @@ def runEditCommandTest (c,p):
         w.setSelectionRange(sel1[0],sel1[1],insert=sel1[1])
         c.k.simulateCommand(commandName)
         s1 = work.bodyString() ; s2 = after.bodyString()
-        assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s1),repr(s2))
+        assert s1 == s2, 'mismatch in body\nexpected: %s\n     got: %s' % (repr(s2),repr(s1))
         sel3 = w.getSelectionRange()
         ins = w.toGuiIndex(w.getInsertPoint())
-        # The selection range is specified as Tk indices.
-        i,j = sel3
         #g.trace('ins',ins,'s1[j:...]',repr(s1[j:j+10]))
-        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
-        sel3 = i,j
-        assert sel2 == sel3, 'mismatch in sel\nexpected: %s\n     got: %s' % (sel2,sel3)
+        # Convert both selection ranges to gui indices.
+        sel2_orig = sel2
+        i,j = sel2 ; sel2 = w.toGuiIndex(i),w.toGuiIndex(j)
+        i,j = sel3 ; sel3 = w.toGuiIndex(i),w.toGuiIndex(j)
+        assert sel2 == sel3, 'mismatch in sel\nexpected: %s = %s, got: %s' % (sel2_orig,sel2,sel3)
         c.selectPosition(atTest)
         atTest.contract()
     finally:

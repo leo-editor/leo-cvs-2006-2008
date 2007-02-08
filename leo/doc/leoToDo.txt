@@ -189,7 +189,7 @@ def moveUpOrDownHelper (self,event,direction,extend):
     row,col = g.convertPythonIndexToRowCol(s,ins)
     i,j = g.getLine(s,ins)
     if direction == 'down':
-        i2,j2 = g.getLine(s,i+j+1)
+        i2,j2 = g.getLine(s,j+1)
     else:
         i2,j2 = g.getLine(s,i-1)
 
@@ -348,6 +348,10 @@ Labels
 between sessions, and (2) cannot be seen by "Edit Attributes."
 I'd be more inclined to use "Edit Attributes" and "C-Sort" IF there was some
 way to SEE the attributes (this goes for "Labels," as well).
+
+
+---- Enable Aspell automatically if possible.
+
 #@-node:ekr.20070202080824:Enable more plugins by default: make installing aspell easier
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070105135713:To do: 4.4.4 (new positions)

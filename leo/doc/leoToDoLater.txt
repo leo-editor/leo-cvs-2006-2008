@@ -2733,8 +2733,8 @@ def find (self,event=None):
     self.workCtrl.insert("end",s)
 
     # Reset the insertion point of the work widget.
-    ins = w.index("insert")
-    self.workCtrl.mark_set("insert",ins)
+    ins = w.getInsertPoint()
+    self.workCtrl.setInsertPoint(ins)
 
     alts, word = self.findNextMisspelledWord()
     self.currentWord = word # Need to remember this for 'add' and 'ignore'
