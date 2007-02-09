@@ -304,7 +304,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         #@    << make bindings for a common binding widget >>
         #@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
-        self.bindingWidget = w = g.app.gui.leoTextWidgetClass(
+        self.bindingWidget = w = g.app.gui.plainTextWidget(
             self.canvas,name='bindingWidget')
         
         w.bind('<Key>',k.masterKeyHandler)
@@ -472,7 +472,7 @@ class leoTkinterTree (leoFrame.leoTree):
         else:
             # Tags are not valid in Tk.Text widgets.
             self.textNumber += 1
-            w = g.app.gui.leoTextWidgetClass(
+            w = g.app.gui.plainTextWidget(
                 canvas,name='head-%d' % self.textNumber,
                 state="normal",font=self.font,bd=0,relief="flat",height=1)
             w.bindtags(self.textBindings) # Set the bindings for this widget.

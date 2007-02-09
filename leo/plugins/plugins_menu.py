@@ -567,7 +567,7 @@ class PluginAbout:
         #@+node:EKR.20040517080555.21:<< Create the contents of the about box >>
         Tk.Label(frame,text="Version " + version).pack()
         
-        body = w = g.app.gui.leoTextWidgetClass(
+        body = w = g.app.gui.leoPlainWidget(
             frame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap='word')
         w.insert(0,about)

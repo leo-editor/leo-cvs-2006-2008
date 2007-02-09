@@ -145,9 +145,9 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
         clab = Tk.Label(cpane, width=8, text="Change:")
         
         # Use bigger boxes for scripts.
-        self.find_ctrl   = ftxt = g.app.gui.leoTextWidgetClass(
+        self.find_ctrl   = ftxt = g.app.gui.plainTextWidget(
             fpane,bd=1,relief="groove",height=4,width=20)
-        self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+        self.change_ctrl = ctxt = g.app.gui.plainTextWidget(
             cpane,bd=1,relief="groove",height=4,width=20)
         
         #@<< Bind Tab and control-tab >>
@@ -431,15 +431,15 @@ class tkFindTab (leoFind.findTab):
         
         if self.optionsOnly:
             # Use one-line boxes.
-            self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
+            self.find_ctrl = ftxt = g.app.gui.plainTextWidget(
                 fpane,bd=1,relief="groove",height=1,width=25,name='find-text')
-            self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+            self.change_ctrl = ctxt = g.app.gui.plainTextWidget(
                 cpane,bd=1,relief="groove",height=1,width=25,name='change-text')
         else:
             # Use bigger boxes for scripts.
-            self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
+            self.find_ctrl = ftxt = g.app.gui.plainTextWidget(
                 fpane,bd=1,relief="groove",height=3,width=15,name='find-text')
-            self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+            self.change_ctrl = ctxt = g.app.gui.plainTextWidget(
                 cpane,bd=1,relief="groove",height=3,width=15,name='change-text')
         #@<< Bind Tab and control-tab >>
         #@+node:ekr.20051020120306.16:<< Bind Tab and control-tab >>

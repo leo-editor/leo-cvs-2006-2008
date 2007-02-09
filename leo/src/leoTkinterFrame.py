@@ -615,7 +615,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             self.labelWidget.pack(side="left",padx=1)
             
             bg = self.statusFrame.cget("background")
-            self.textWidget = w = g.app.gui.leoTextWidgetClass(
+            self.textWidget = w = g.app.gui.bodyTextWidget(
                 self.statusFrame,
                 height=1,state="disabled",bg=bg,relief="groove",name='status-line')
             self.textWidget.pack(side="left",expand=1,fill="x")
@@ -625,6 +625,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
             c.frame.statusFrame = self.statusFrame
             c.frame.statusLabel = self.labelWidget
             c.frame.statusText  = self.textWidget
+            
         #@nonl
         #@-node:ekr.20031218072017.3961: ctor
         #@+node:ekr.20031218072017.3962:clear
@@ -920,7 +921,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         lab.pack(side='left')
         
         if c.useTextMinibuffer:
-            label = g.app.gui.leoTextWidgetClass(
+            label = g.app.gui.plainTextWidget(
                 f,height=1,relief='groove',background='lightgrey',name='minibuffer')
             label.pack(side='left',fill='x',expand=1,padx=2,pady=1)
         else:
@@ -1726,7 +1727,6 @@ class leoTkinterBody (leoFrame.leoBody):
         c = self.c ; p = c.currentPosition()
         self.editor_name = None
         self.editor_v = None
-        
     
         self.trace_onBodyChanged = c.config.getBool('trace_onBodyChanged')
         self.bodyCtrl = self.createControl(frame,parentFrame,p)
@@ -2372,7 +2372,7 @@ class leoTkinterLog (leoFrame.leoLog):
     def createTextWidget (self,parentFrame):
         
         self.logNumber += 1
-        log = g.app.gui.leoTextWidgetClass(
+        log = g.app.gui.plainTextWidget(
             parentFrame,name="log-%d" % self.logNumber,
             setgrid=0,wrap=self.wrap,bd=2,bg="white",relief="flat")
         

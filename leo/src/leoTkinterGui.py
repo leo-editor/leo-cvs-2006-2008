@@ -44,7 +44,8 @@ class tkinterGui(leoGui.leoGui):
         self.win32clipboard = None
         self.defaultFont = None
         self.defaultFontFamily = None
-        self.leoTextWidgetClass = leoTkinterFrame.leoTkTextWidget
+        self.bodyTextWidget =  leoTkinterFrame.leoTkTextWidget
+        self.plainTextWidget = leoTkinterFrame.leoTkTextWidget
     
         if 0: # This seems both dangerous and non-functional.
             if sys.platform == "win32":
@@ -132,7 +133,7 @@ class tkinterGui(leoGui.leoGui):
     
         if not self.defaultFontFamily:
             # WARNING: retain NO references to widgets or fonts here!
-            w = g.app.gui.leoTextWidgetClass()
+            w = g.app.gui.plainTextWidget()
             fn = w.cget("font")
             font = tkFont.Font(font=fn) 
             family = font.cget("family")

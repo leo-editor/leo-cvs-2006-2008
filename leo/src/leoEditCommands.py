@@ -1821,7 +1821,7 @@ class editCommandsClass (baseEditCommandsClass):
         f2 = Tk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
         f3 = Tk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
         
-        label = g.app.gui.leoTextWidgetClass(f1,height=1,width=20)
+        label = g.app.gui.plainTextWidget(f1,height=1,width=20)
         label.insert('1.0','Color name or value...')
         label.pack(side='left',pady=6)
     
@@ -1940,7 +1940,7 @@ class editCommandsClass (baseEditCommandsClass):
         #@nl
         #@    << create the sample text widget >>
         #@+node:ekr.20051019202139.1:<< create the sample text widget >>
-        self.sampleWidget = sample = g.app.gui.leoTextWidgetClass(f,height=20,width=80,font=font)
+        self.sampleWidget = sample = g.app.gui.plainTextWidget(f,height=20,width=80,font=font)
         sample.pack(side='left')
         
         s = 'The quick brown fox\njumped over the lazy dog.\n0123456789'
@@ -7902,7 +7902,7 @@ class spellTab(leoFind.leoFind):
         self.suggestions = []
         self.messages = [] # List of message to be displayed when hiding the tab.
         self.outerScrolledFrame = None
-        self.workCtrl = g.app.gui.leoTextWidgetClass(parentFrame)
+        self.workCtrl = g.app.gui.plainTextWidget(parentFrame)
             # A text widget for scanning.
             # Must have a parent frame even though it is not packed.
         
