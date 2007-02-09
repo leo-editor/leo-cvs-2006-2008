@@ -2441,7 +2441,7 @@ def __init__(self,c,parentFrame):
     self.suggestions = []
     self.messages = [] # List of message to be displayed when hiding the tab.
     self.outerScrolledFrame = None
-    self.workCtrl = g.app.gui.leoTextWidgetClass(parentFrame)
+    self.workCtrl = g.app.gui.plainTextWidget(parentFrame)
         # A text widget for scanning.
         # Must have a parent frame even though it is not packed.
     

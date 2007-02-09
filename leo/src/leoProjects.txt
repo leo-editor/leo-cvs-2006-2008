@@ -5131,7 +5131,7 @@ def setBindings (self):
     << make bindings for tagged items on the canvas >>
     << create baloon bindings for tagged items on the canvas >>
 #@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
-self.bindingWidget = w = g.app.gui.leoTextWidgetClass(
+self.bindingWidget = w = g.app.gui.plainTextWidget(
     self.canvas,name='bindingWidget')
 
 w.bind('<Key>',k.masterKeyHandler)
@@ -8552,7 +8552,7 @@ def createColorPicker (self,parent,colors):
     f2 = Tk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
     f3 = Tk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
     
-    label = g.app.gui.leoTextWidgetClass(f1,height=1,width=20)
+    label = g.app.gui.plainTextWidget(f1,height=1,width=20)
     label.insert('1.0','Color name or value...')
     label.pack(side='left',pady=6)
 
@@ -8666,7 +8666,7 @@ slantBox.selectitem(0)
 slantBox.pack(side="left",padx=2,pady=2)
 #@-node:ekr.20051019201809.5:<< create the slant combo box>>
 #@+node:ekr.20051019202139.1:<< create the sample text widget >>
-self.sampleWidget = sample = g.app.gui.leoTextWidgetClass(f,height=20,width=80,font=font)
+self.sampleWidget = sample = g.app.gui.plainTextWidget(f,height=20,width=80,font=font)
 sample.pack(side='left')
 
 s = 'The quick brown fox\njumped over the lazy dog.\n0123456789'
@@ -19740,7 +19740,7 @@ def __init__ (self,c,parentFrame):
     self.labelWidget.pack(side="left",padx=1)
     
     bg = self.statusFrame.cget("background")
-    self.textWidget = w = g.app.gui.leoTextWidgetClass(
+    self.textWidget = w = g.app.gui.bodyTextWidget(
         self.statusFrame,
         height=1,state="disabled",bg=bg,relief="groove",name='status-line')
     self.textWidget.pack(side="left",expand=1,fill="x")
@@ -19750,6 +19750,7 @@ def __init__ (self,c,parentFrame):
     c.frame.statusFrame = self.statusFrame
     c.frame.statusLabel = self.labelWidget
     c.frame.statusText  = self.textWidget
+    
 #@nonl
 #@-node:ekr.20031218072017.3961: ctor
 #@+node:ekr.20031218072017.3962:clear
@@ -20947,7 +20948,7 @@ def createFrame (self):
 
     frame.pack(padx=6,pady=4)
     
-    self.text = w = g.app.gui.leoTextWidgetClass(
+    self.text = w = g.app.gui.plainTextWidget(
         frame,height=height,width=width,bd=0,bg=frame.cget("background"))
     w.pack(pady=10)
     
@@ -21702,15 +21703,15 @@ clab = Tk.Label(cpane, width=8, text="Change:",background=bg)
 
 if self.optionsOnly:
     # Use one-line boxes.
-    self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
+    self.find_ctrl = ftxt = g.app.gui.plainTextWidget(
         fpane,bd=1,relief="groove",height=1,width=25,name='find-text')
-    self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+    self.change_ctrl = ctxt = g.app.gui.plainTextWidget(
         cpane,bd=1,relief="groove",height=1,width=25,name='change-text')
 else:
     # Use bigger boxes for scripts.
-    self.find_ctrl = ftxt = g.app.gui.leoTextWidgetClass(
+    self.find_ctrl = ftxt = g.app.gui.plainTextWidget(
         fpane,bd=1,relief="groove",height=3,width=15,name='find-text')
-    self.change_ctrl = ctxt = g.app.gui.leoTextWidgetClass(
+    self.change_ctrl = ctxt = g.app.gui.plainTextWidget(
         cpane,bd=1,relief="groove",height=3,width=15,name='change-text')
 << Bind Tab and control-tab >>
 
