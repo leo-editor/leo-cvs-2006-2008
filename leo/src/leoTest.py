@@ -1454,6 +1454,7 @@ def runEditCommandTest (c,p):
         #g.trace('ins',ins,'s1[j:...]',repr(s1[j:j+10]))
         # Convert both selection ranges to gui indices.
         sel2_orig = sel2
+        # g.trace(w)
         i,j = sel2 ; sel2 = w.toGuiIndex(i),w.toGuiIndex(j)
         i,j = sel3 ; sel3 = w.toGuiIndex(i),w.toGuiIndex(j)
         assert sel2 == sel3, 'mismatch in sel\nexpected: %s = %s, got: %s' % (sel2_orig,sel2,sel3)

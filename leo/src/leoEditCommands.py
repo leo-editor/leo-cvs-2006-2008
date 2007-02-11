@@ -3280,7 +3280,7 @@ class editCommandsClass (baseEditCommandsClass):
         '''
         c = self.c ; p = c.currentPosition()
         extend = extend or self.extendMode
-        ins = w.getInsertPoint() ### This is wrong on wx gui.
+        ins = w.getInsertPoint()
         i,j = w.getSelectionRange()
         # g.trace('extend',extend,'ins',ins,'sel=',i,j,'spot=',spot,'moveSpot',self.moveSpot)
     
