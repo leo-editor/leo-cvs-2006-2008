@@ -2651,18 +2651,18 @@ class keyHandlerClass:
     #@-node:ekr.20061031131434.126:manufactureKeyPressForCommandName
     #@+node:ekr.20061031131434.127:simulateCommand
     def simulateCommand (self,commandName):
-        
+    
         k = self ; c = k.c
-        
+    
         func = c.commandsDict.get(commandName)
-        
+    
         if func:
             # g.trace(commandName,func.__name__)
             stroke = None
             if commandName.startswith('specialCallback'):
                 event = None # A legacy function.
             else: # Create a dummy event as a signal.
-                event = g.bunch(keysym = '',char = '',widget = None)
+                event = g.bunch(c=c,keysym='',char='',widget=None)
             k.masterCommand(event,func,stroke)
             return k.funcReturn
         else:
@@ -3181,8 +3181,8 @@ class keyHandlerClass:
         # g.trace('stroke',stroke,'func',func and func.__name__,commandName,g.callers())
         
         # Create a minimal event for commands that require them.
-        event = g.Bunch(char='',keysym='',widget=w)
-        
+        event = g.Bunch(c=c,char='',keysym='',widget=w)
+    
         if stroke:
             return k.masterKeyHandler(event,stroke=stroke)
         else:
