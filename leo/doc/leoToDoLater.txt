@@ -2476,7 +2476,7 @@ def init_aspell (self,c):
     
     return self.aspell.aspell
 #@-node:ekr.20051025094004:init_aspell
-#@+node:ekr.20051025071455.22:createSpellTab
+#@+node:ekr.20051025071455.22:editCommands.createSpellTab
 def createSpellTab(self,parentFrame):
 
     """Create the Spell tab."""
@@ -2497,7 +2497,7 @@ def createSpellTab(self,parentFrame):
     self.listBox.bind("<Double-1>",self.onChangeThenFindButton)
     self.listBox.bind("<Button-1>",self.onSelectListBox)
     self.listBox.bind("<Map>",self.onMap)
-#@+node:ekr.20051113090322:<< Create the outer frames >>
+#@+node:ekr.20051113090322:<< Create the outer frames >> (spellTab)
 self.outerScrolledFrame = Pmw.ScrolledFrame(
     parentFrame,usehullsize = 1)
 
@@ -2507,8 +2507,8 @@ self.outerFrame.configure(background=bg)
 for z in ('borderframe','clipper','frame','hull'):
     self.outerScrolledFrame.component(z).configure(
         relief='flat',background=bg)
-#@-node:ekr.20051113090322:<< Create the outer frames >>
-#@+node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
+#@-node:ekr.20051113090322:<< Create the outer frames >> (spellTab)
+#@+node:ekr.20051025071455.23:<< Create the text and suggestion panes >> spellTab (contains Tk code)
 f2 = Tk.Frame(outer,bg=bg)
 f2.pack(side='top',expand=0,fill='x')
 
@@ -2529,7 +2529,7 @@ bar, txt = listBoxBar, self.listBox
 txt ['yscrollcommand'] = bar.set
 bar ['command'] = txt.yview
 bar.pack(side='right',fill='y')
-#@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
+#@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >> spellTab (contains Tk code)
 #@+node:ekr.20051025071455.24:<< Create the spelling buttons >>
 # Create the alignment panes
 buttons1 = Tk.Frame(outer,bd=1,bg=bg)
@@ -2556,7 +2556,7 @@ for frame, text, command in (
  self.changeButton, self.changeFindButton,
  self.ignoreButton, self.hideButton) = buttonList
 #@-node:ekr.20051025071455.24:<< Create the spelling buttons >>
-#@-node:ekr.20051025071455.22:createSpellTab
+#@-node:ekr.20051025071455.22:editCommands.createSpellTab
 #@+node:ekr.20051025120920:createBindings (spellTab)
 def createBindings (self):
     
@@ -2840,7 +2840,7 @@ if self.dictionary.has_key(word.lower()):
     continue
 #@-node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
 #@-node:ekr.20051025071455.45:findNextMisspelledWord
-#@+node:ekr.20051025071455.47:findNextWord (tkSpell)
+#@+node:ekr.20051025071455.47:findNextWord (spellTab)
 def findNextWord(self,p):
     """Scan for the next word, leaving the result in the work widget"""
 
@@ -2871,7 +2871,7 @@ def findNextWord(self,p):
                 w.setSelectionRange(0,0,insert=0)
     return None,None
 #@nonl
-#@-node:ekr.20051025071455.47:findNextWord (tkSpell)
+#@-node:ekr.20051025071455.47:findNextWord (spellTab)
 #@+node:ekr.20051025071455.48:getSuggestion
 def getSuggestion(self):
     """Return the selected suggestion from the listBox."""
@@ -2919,7 +2919,7 @@ def update(self,show=True,fill=False):
         self.bringToFront()
         c.bodyWantsFocus()
 #@-node:ekr.20051025071455.51:update
-#@+node:ekr.20051025071455.52:updateButtons
+#@+node:ekr.20051025071455.52:updateButtons (spellTab)
 def updateButtons (self):
 
     """Enable or disable buttons in the Check Spelling dialog."""
@@ -2939,7 +2939,7 @@ def updateButtons (self):
 
     self.addButton.configure(state='normal')
     self.ignoreButton.configure(state='normal')
-#@-node:ekr.20051025071455.52:updateButtons
+#@-node:ekr.20051025071455.52:updateButtons (spellTab)
 #@-node:ekr.20051025071455.42:Helpers
 #@-node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)
 #@+node:ekr.20051025071455.6:class AspellClass

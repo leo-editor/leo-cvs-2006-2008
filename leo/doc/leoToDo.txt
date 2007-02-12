@@ -2,6 +2,15 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070211184127:New organization for leoPlugins.leo?
+@nocolor
+
+- 1 .leo file per plugin.
+- Use @url nodes to refer to the individual .leo files.
+
+The drawback: harder to do mass searches/replaces.
+#@nonl
+#@-node:ekr.20070211184127:New organization for leoPlugins.leo?
 #@+node:ekr.20070124091018:Recent crash
 Error: 1
 TclError Exception in Tk callback
@@ -41,109 +50,6 @@ TclError: bad window path name ".14557752.18889184.18889584.21763816.21764336"
     y_root: ??
 
 #@-node:ekr.20070124091018:Recent crash
-#@+node:ekr.20070125103950:Calls to w.xxx
-# Ok
-'_name'
-'delete'
-'deleteTextSelection'
-'flashCharacter'
-'clipboard_append'
-'clipboard_clear'
-'focus_force'
-'focus_set'
-'get'
-'getAllText'
-'getInsertPoint'
-'getName'
-'getSelectedText'
-'getSelectionRange'
-'hasSelection'
-'insert'
-'replace'
-'rowColToGuiIndex'
-'seeInsertPoint'
-'selectAllText'
-'setAllText'
-'setInsertPoint'
-'setSelectionRange'
-'toGuiIndex'
-'toPythonIndex'
-'xyToPythonIndex'
-
-# Ok: in leoTkinterTree.
-'leo_active'
-'leo_frame'
-'leo_insertSpot'
-'leo_label'
-'leo_label_s'
-'leo_name'
-'leo_p'
-'leo_position'
-'leo_scrollBarSpot'
-'leo_selection'
-'leo_v'
-'leo_window_id'
-
-# Ok only if in tk-specific files.
-'bind'
-'bind_all'
-'bind_class'
-'bindtags'
-'button'
-'columnconfigure'
-'compare'
-'dlineinfo'
-'event_generate'
-'grid'
-'image_create'
-'index'
-'mark_set'
-'pack'
-'pack_forget'
-'rowconfigure'
-'search'
-'see'
-'selection_clear'
-'selection_get'
-'tag_add'
-'tag_bind'
-'tag_config'
-'tag_delete'
-'tag_names'
-'tag_ranges'
-'update'
-'update_idletasks'
-'winfo_id'
-'winfo_toplevel'
-'wm_iconbitmap'
-'yview'
-
-# To be removed outside of tk-specific files.
-'cget'
-'config'
-'configure'
-#@nonl
-#@-node:ekr.20070125103950:Calls to w.xxx
-#@+node:ekr.20070125102904.1:remove w.configure & w.cget from Leo's core
-#@-node:ekr.20070125102904.1:remove w.configure & w.cget from Leo's core
-#@+node:ekr.20061130084909:Improve What's special whitepaper
-@nocolor
-
-- Answer the question: how can Leo help me with programming.
-#@nonl
-#@-node:ekr.20061130084909:Improve What's special whitepaper
-#@+node:ekr.20061209083136:Complete the wxGui plugin
-@nocolor
-
-- Make icon area and minibuffer functional.
-    - Refactor minibuffer and Find tab.
-- Fix all unit tests.
-
-- It's not clear what to do about k.shortcutFromSetting.
-- Move Tk tables to Tk gui.
-
-@color
-#@nonl
 #@+node:ekr.20061127171128:Fix wiki markup bug (test)
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3994218
@@ -202,50 +108,12 @@ def moveUpOrDownHelper (self,event,direction,extend):
 #@nonl
 #@-node:ekr.20060113105246.1:moveUpOrDownHelper
 #@-node:ekr.20061127171128:Fix wiki markup bug (test)
-#@+node:ekr.20061212110702:Remove Tk code from minibufferFind class
-#@+node:ekr.20060124122844:setOption (minibufferFind: Tk code)
-def setOption (self, ivar, val):
-    
-    h = self.finder
+#@+node:ekr.20061130084909:Improve What's special whitepaper
+@nocolor
 
-    if ivar in h.intKeys:
-        if val is not None:
-            var = h.svarDict.get(ivar)
-            var.set(val)
-            # g.trace('%s = %s' % (ivar,val))
-
-    elif not g.app.unitTesting:
-        g.trace('oops: bad find ivar %s' % ivar)
-#@-node:ekr.20060124122844:setOption (minibufferFind: Tk code)
-#@+node:ekr.20060125082510:getOption (minibufferFind: Tk code)
-def getOption (self,ivar,verbose=False):
-    
-    h = self.finder
-    
-    var = h.svarDict.get(ivar)
-    if var:
-        val = var.get()
-        verbose and g.trace('%s = %s' % (ivar,val))
-        return val
-    else:
-        g.trace('bad ivar name: %s' % ivar)
-        return None
-#@-node:ekr.20060125082510:getOption (minibufferFind: Tk code)
-#@+node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
-def toggleOption (self, ivar):
-    
-    h = self.finder
-
-    if ivar in h.intKeys:
-        var = h.svarDict.get(ivar)
-        val = not var.get()
-        var.set(val)
-        # g.trace('%s = %s' % (ivar,val),var)
-    else:
-        g.trace('oops: bad find ivar %s' % ivar)
-#@-node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
-#@-node:ekr.20061212110702:Remove Tk code from minibufferFind class
-#@-node:ekr.20061209083136:Complete the wxGui plugin
+- Answer the question: how can Leo help me with programming.
+#@nonl
+#@-node:ekr.20061130084909:Improve What's special whitepaper
 #@+node:ekr.20070126072723:pychecker errors 3
 #leoGlobals.py:3933: No module attribute (CODESET) found
 #leoGlobals.py:118: No module attribute (leo_config_directory) found
