@@ -25,12 +25,8 @@ import os
 import re
 import string
 import sys
-import Tkinter as Tk
 
 subprocess     = g.importExtension('subprocess',    pluginName=None,verbose=False)
-Pmw            = g.importExtension('Pmw',           pluginName=None,verbose=False)
-tkFileDialog   = g.importExtension('tkFileDialog',  pluginName=None,verbose=False)
-tkFont         = g.importExtension('tkFont',        pluginName=None,verbose=False)
 
 # The following imports is sometimes used.
 __pychecker__ = '--no-import'
@@ -504,14 +500,22 @@ class abbrevCommandsClass (baseEditCommandsClass):
         
         '''Read abbreviations from a file.'''
     
-        f = tkFileDialog and tkFileDialog.askopenfile()
-        if not f: return
+        fileName = g.app.gui.runOpenFileDialog(
+            title = 'Open Abbreviation File',
+            filetypes = [("Text","*.txt"), ("All files","*")],
+            defaultextension = ".txt")
     
-        for x in f:
-            a, b = x.split('=')
-            b = b [:-1]
-            self.abbrevs [a] = b
-        f.close()
+        if not fileName: return
+            
+        try:
+            f = open(fileName)
+            for x in f:
+                a, b = x.split('=')
+                b = b [:-1]
+                self.abbrevs [a] = b
+            f.close()
+        except IOError:
+            g.es('Can not open',fileName)
     #@-node:ekr.20050920084036.20:readAbbreviations
     #@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
     def regionalExpandAbbrev (self,event):
@@ -584,12 +588,21 @@ class abbrevCommandsClass (baseEditCommandsClass):
         
         '''Write abbreviations to a file.'''
     
-        f = tkFileDialog and tkFileDialog.asksaveasfile()
-        if not f: return
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = None,
+            title='Write Abbreviations',
+            filetypes = [("Text","*.txt"), ("All files","*")],
+            defaultextension = ".txt")
+            
+        if not fileName: return
     
-        for x in self.abbrevs:
-            f.write('%s=%s\n' % (x,self.abbrevs[x]))
-        f.close()
+        try:
+            f = open(fileName,'w')
+            for x in self.abbrevs:
+                f.write('%s=%s\n' % (x,self.abbrevs[x]))
+            f.close()
+        except IOError:
+            g.es('Can not create',fileName)
     #@-node:ekr.20050920084036.24:writeAbbreviations
     #@-others
 #@-node:ekr.20050920084036.13:abbrevCommandsClass (test)
@@ -4429,13 +4442,20 @@ class editFileCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.165:diff (revise)
     #@+node:ekr.20050920084036.166:getReadableTextFile
     def getReadableTextFile (self):
+     
+        fileName = g.app.gui.runOpenFileDialog(
+            title = 'Open Text File',
+            filetypes = [("Text","*.txt"), ("All files","*")],
+            defaultextension = ".txt")
+            
+        if not fileName: return None, None
     
-        fname = tkFileDialog and tkFileDialog.askopenfilename()
-        if fname == None:
-            return None, None
-        else:
-            f = open(fname,'rt')
-            return f, fname
+        try:
+            f = open(fileName,'rt')
+            return f, fileName
+        except IOError:
+            g.es('Can not open',fileName)
+            return None,None
     #@-node:ekr.20050920084036.166:getReadableTextFile
     #@+node:ekr.20050920084036.167:insertFile
     def insertFile (self,event):
@@ -4516,12 +4536,22 @@ class editFileCommandsClass (baseEditCommandsClass):
     
         w = self.editWidget(event)
         if not w: return
+        
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = None,
+            title='save-file',
+            filetypes = [("Text","*.txt"), ("All files","*")],
+            defaultextension = ".txt")
+            
+        if not fileName: return
     
-        s = w.getAllText()
-        f = tkFileDialog and tkFileDialog.asksaveasfile()
-        if f:
+        try:
+            s = w.getAllText()
+            f = open(fileName,'w')
             f.write(s)
             f.close()
+        except IOError:
+            g.es('Can not create',fileName)
     #@-node:ekr.20050920084036.170:saveFile
     #@-others
 #@-node:ekr.20050920084036.161:editFileCommandsClass
@@ -5114,8 +5144,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
         s = w.get(frm,to)
         if undoType: self.beginCommand(undoType=undoType)
         self.addToKillBuffer(s)
-        w.clipboard_clear()
-        w.clipboard_append(s)
+        g.app.gui.replaceClipboardWith(s)
         w.delete(frm,to)
         w.setInsertPoint(frm)
         if undoType:
@@ -5162,8 +5191,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
             self.c.frame.body.forceFullRecolor()
             self.endCommand(changed=True,setLabel=True)
         self.addToKillBuffer(s)
-        w.clipboard_clear()
-        w.clipboard_append(s)
+        g.app.gui.replaceClipboardWith(s)
         # self.removeRKeys(w)
     #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
     #@+node:ekr.20050930095323.1:killSentence
@@ -5555,9 +5583,18 @@ class macroCommandsClass (baseEditCommandsClass):
     
         '''Asks for a macro file name to load.'''
     
-        f = tkFileDialog and tkFileDialog.askopenfile()
-        if f:
+        fileName = g.app.gui.runOpenFileDialog(
+            title = 'Open Macro File',
+            filetypes = [("Text","*.txt"), ("All files","*")],
+            defaultextension = ".txt")
+            
+        if not fileName: return
+            
+        try:
+            f = open(fileName)
             self._loadMacros(f)
+        except IOError:
+            g.es('Can not open',fileName)
     #@+node:ekr.20050920084036.197:_loadMacros
     def _loadMacros (self,f):
     
@@ -5590,12 +5627,22 @@ class macroCommandsClass (baseEditCommandsClass):
     
         '''Asks for a file name and saves it.'''
     
-        name = tkFileDialog and tkFileDialog.asksaveasfilename()
-        if name:
-            f = file(name,'a+')
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = None,
+            title='Save Macros',
+            filetypes = [("Text","*.txt"), ("All files","*")],
+            defaultextension = ".txt")
+            
+        if not fileName: return
+        
+        try:
+            f = file(fileName,'a+')
             f.seek(0)
             if f:
                 self._saveMacros(f,macname)
+        except IOError:
+            g.es('Can not create',fileName)
+    
     #@+node:ekr.20050920084036.200:_saveMacros
     def _saveMacros( self, f , name ):
         '''Saves the macros as a pickled dictionary'''
@@ -5664,26 +5711,28 @@ class macroCommandsClass (baseEditCommandsClass):
     
         if self.lastMacro:
             self._executeMacro(self.lastMacro,w)
-    #@+node:ekr.20050920084036.203:_executeMacro (revise)
+    #@+node:ekr.20050920084036.203:_executeMacro (test)
     def _executeMacro (self,macro,w):
     
-        k = self.k
+        c = self.c ; k = self.k
     
         for z in macro:
             if len(z) == 2:
                 w.event_generate('<Key>',keycode=z[0],keysym=z[1])
             else:
-                meth = g.stripBrackets(z [0])
-                bunchList = k.bindingsDict.get(meth,[])  ### Probably should not strip < and >
+                meth = g.stripBrackets(z[0])
+                bunchList = k.bindingsDict.get(meth,[]) ### Probably should not strip < and >
                 if bunchList:
-                    b = bunchList[0]
-                    ev = Tk.Event()
-                    ev.widget = w
-                    ev.keycode = z [1]
-                    ev.keysym = z [2]
-                    ev.char = z [3]
+                    b = bunchList [0]
+                    # ev = Tk.Event()
+                    # ev.widget = w
+                    # ev.keycode = z [1]
+                    # ev.keysym = z [2]
+                    # ev.char = z [3]
+                    ev = g.Bunch(c = c, widget = w,
+                        keycode = z [1], keysym = z [2], char = z [3])
                     k.masterCommand(ev,b.f,'<%s>' % meth)
-    #@-node:ekr.20050920084036.203:_executeMacro (revise)
+    #@-node:ekr.20050920084036.203:_executeMacro (test)
     #@-node:ekr.20050920084036.202:callLastKeyboardMacro & helper (called from universal command)
     #@-node:ekr.20050920084036.193:Entry points
     #@+node:ekr.20051006065746:Common Helpers

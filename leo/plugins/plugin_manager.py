@@ -9,7 +9,7 @@ A plugin to manage Leo's Plugins:
 - Checks for and updates plugins from the web.
 """
 
-__version__ = "0.22"
+__version__ = "0.23"
 __plugin_name__ = "Plugin Manager"
 __plugin_priority__ = 10000
 __plugin_requires__ = ["plugin_menu"]
@@ -94,6 +94,8 @@ __plugin_group__ = "Core"
 # - Removed KEYWORDS hack.
 # 0.21 EKR: Removed the g.app.dialog hack.
 # 0.22 EKR: Just changed these comments.
+# 0.23 EKR: Changed g.createStandAloneApp to createStandAloneTkApp to make 
+# clear the dependency.
 #@-at
 #@nonl
 #@-node:pap.20041006184225.2:<< version history >>
@@ -157,7 +159,7 @@ if ok:
     except Exception:
         import sys
         s = 'plugins_manager.py: %s: %s' % (sys.exc_type,sys.exc_value)
-        print s ; g.es(s,color='blue')
+        print s
         ok = False
 
 #
@@ -2197,7 +2199,7 @@ class EnableManager:
 
 if __name__ == "__main__":
     if ok:
-        g.createStandAloneApp(pluginName=__name__)
+        g.createStandAloneTkApp(pluginName=__name__)
         topLevelMenu(c=None)
 #@nonl
 #@-node:pap.20041006184225:@thin plugin_manager.py

@@ -66,12 +66,16 @@ globalDirectiveList = [
 app = None # The singleton app object.
 
 #@+others
-#@+node:ekr.20050328133058:g.createStandAloneApp
-def createStandAloneApp(pluginName=''):
+#@+node:ekr.20050328133058:g.createStandAloneTkApp
+# This must be defined in leoGlobals: g.app.gui doesn't exist yet.
+
+def createStandAloneTkApp(pluginName=''):
     
-    '''Create a version of the g.app object for 'stand-alone' plugins.'''
+    '''Create a Tk version of the g.app object for 'stand-alone' plugins.'''
     
     if not g.app:
+        # Important: these references do not make Leo's core gui-dependent.
+        # In other words, this function is called only when Tkinter should be the gui.
         import Tkinter as Tk
         Pmw = g.importExtension('Pmw',pluginName=pluginName,verbose=True)
         if Tk and Pmw:
@@ -82,7 +86,7 @@ def createStandAloneApp(pluginName=''):
             g.app.gui = leoGui.nullGui('<stand-alone app gui>')
             g.computeStandardDirectories()
     return g.app
-#@-node:ekr.20050328133058:g.createStandAloneApp
+#@-node:ekr.20050328133058:g.createStandAloneTkApp
 #@+node:ekr.20031218072017.3095:Checking Leo Files...
 #@+node:ekr.20031218072017.822:createTopologyList
 def createTopologyList (c,root=None,useHeadlines=False):
@@ -5215,6 +5219,9 @@ def importExtension (moduleName,pluginName=None,verbose=False,required=False):
     return module
 #@+node:ekr.20060329083657:cantImportDialog & helpers
 def cantImportDialog (pluginName,moduleName):
+    
+    '''Attempt to show a Tk dialog if an import fails.
+    Yes, this is a small Tk dependency, but it can't be helped.'''
     
     message = '''
 %s requires the %s module.

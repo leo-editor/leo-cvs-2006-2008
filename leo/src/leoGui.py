@@ -129,6 +129,7 @@ class leoGui:
         'eventXY',
         'finishCreate',
         # 'getFontFromParams', # optional
+        # 'getFullVersion', # optional.
         'getTextFromClipboard',
         'get_focus',
         'get_window_info',
@@ -303,7 +304,7 @@ class leoGui:
     # dialog being created.  The commander may be a Commands instance or one 
     # of its subcommanders.
     #@-at
-    #@+node:ekr.20031218072017.3734:Clipboard
+    #@+node:ekr.20031218072017.3734:Clipboard (leoGui)
     def replaceClipboardWith (self,s):
         
         self.oops()
@@ -311,7 +312,7 @@ class leoGui:
     def getTextFromClipboard (self):
         
         self.oops()
-    #@-node:ekr.20031218072017.3734:Clipboard
+    #@-node:ekr.20031218072017.3734:Clipboard (leoGui)
     #@+node:ekr.20061031132712.1:color
     # g.es calls gui.color to do the translation,
     # so most code in Leo's core can simply use Tk color names.
@@ -361,6 +362,11 @@ class leoGui:
             return 0,0
     #@nonl
     #@-node:ekr.20061031132907:Events (leoGui)
+    #@+node:ekr.20070212145124:getFullVersion
+    def getFullVersion (self,c):
+        
+        return 'leoGui: dummy version'
+    #@-node:ekr.20070212145124:getFullVersion
     #@+node:ekr.20031218072017.3737:Focus
     def get_focus(self,frame):
         """Return the widget that has focus, or the body widget if None."""

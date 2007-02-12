@@ -446,8 +446,7 @@ def kill (self,event,frm,to,undoType=None):
     s = w.get(frm,to)
     if undoType: self.beginCommand(undoType=undoType)
     self.addToKillBuffer(s)
-    w.clipboard_clear()
-    w.clipboard_append(s)
+    g.app.gui.replaceClipboardWith(s)
     w.delete(frm,to)
     w.setInsertPoint(frm)
     if undoType:
@@ -494,8 +493,7 @@ def killRegionHelper (self,event,deleteFlag):
         self.c.frame.body.forceFullRecolor()
         self.endCommand(changed=True,setLabel=True)
     self.addToKillBuffer(s)
-    w.clipboard_clear()
-    w.clipboard_append(s)
+    g.app.gui.replaceClipboardWith(s)
     # self.removeRKeys(w)
 #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 #@+node:ekr.20050930095323.1:killSentence
@@ -5767,8 +5765,7 @@ def kill (self,event,frm,to,undoType=None):
     s = w.get(frm,to)
     if undoType: self.beginCommand(undoType=undoType)
     self.addToKillBuffer(s)
-    w.clipboard_clear()
-    w.clipboard_append(s)
+    g.app.gui.replaceClipboardWith(s)
     w.delete(frm,to)
     w.setInsertPoint(frm)
     if undoType:
@@ -14336,15 +14333,12 @@ def moveUpOrDownHelper (self,event,direction,extend):
 #@-node:ekr.20070204123507:Fixed recent bug in next-line command
 #@-node:ekr.20070129082731.1:Bugs
 #@+node:ekr.20070211192428:(Make code gui-indenpendent)
-#@+node:ekr.20070212070512:To do
 @nocolor
     
-** Remove Pmw from Leo's core (except for tk files)
+To do:
 
-- Remove w.clipboard methods.
-
-- ?? Define wxGui.log.createColorPicker and wxGui.log.createFontPicker.
-#@-node:ekr.20070212070512:To do
+@color
+#@nonl
 #@+node:ekr.20070212140907:What I did
 @nocolor
 
@@ -16099,6 +16093,473 @@ def updateButtons (self):
 #@-node:ekr.20051025071455.42:Helpers
 #@-node:ekr.20051025071455.22:class tkSpellTab
 #@-node:ekr.20070212065258:Refactored tk spell code tkSpellTab
+#@+node:ekr.20070212143353:Replaced w.clipboard* by gui methods
+#@+node:ekr.20031218072017.3734:Clipboard (leoGui)
+def replaceClipboardWith (self,s):
+    
+    self.oops()
+
+def getTextFromClipboard (self):
+    
+    self.oops()
+#@-node:ekr.20031218072017.3734:Clipboard (leoGui)
+#@+node:ekr.20031218072017.844:Clipboard (tkGui)
+#@+node:ekr.20031218072017.845:replaceClipboardWith
+def replaceClipboardWith (self,s):
+
+    # g.app.gui.win32clipboard is always None.
+    wcb = g.app.gui.win32clipboard
+
+    if wcb:
+        try:
+            wcb.OpenClipboard(0)
+            wcb.EmptyClipboard()
+            wcb.SetClipboardText(s)
+            wcb.CloseClipboard()
+        except:
+            g.es_exception()
+    else:
+        self.root.clipboard_clear()
+        self.root.clipboard_append(s)
+#@-node:ekr.20031218072017.845:replaceClipboardWith
+#@+node:ekr.20031218072017.846:getTextFromClipboard
+def getTextFromClipboard (self):
+    
+    # g.app.gui.win32clipboard is always None.
+    wcb = g.app.gui.win32clipboard
+    
+    if wcb:
+        try:
+            wcb.OpenClipboard(0)
+            data = wcb.GetClipboardData()
+            wcb.CloseClipboard()
+            # g.trace(data)
+            return data
+        except TypeError:
+            # g.trace(None)
+            return None
+        except:
+            g.es_exception()
+            return None
+    else:
+        try:
+            s = self.root.selection_get(selection="CLIPBOARD")
+            return s
+        except:
+            return None
+#@-node:ekr.20031218072017.846:getTextFromClipboard
+#@-node:ekr.20031218072017.844:Clipboard (tkGui)
+#@+node:ekr.20050920084036.178:kill, killLine
+def kill (self,event,frm,to,undoType=None):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.get(frm,to)
+    if undoType: self.beginCommand(undoType=undoType)
+    self.addToKillBuffer(s)
+    g.app.gui.replaceClipboardWith(s)
+    w.delete(frm,to)
+    w.setInsertPoint(frm)
+    if undoType:
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+
+def killLine (self,event):
+    '''Kill the line containing the cursor.'''
+    w = self.editWidget(event)
+    if not w: return
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getLine(s,ins)
+    # g.trace(i,j,ins,len(s),repr(s[i:j]))
+    if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
+        i = max(0,len(s)-1)
+        j = len(s)
+    elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
+        j -= 1
+    else: # Kill the newline.
+        pass
+    self.kill(event,i,j,undoType='kill-line')
+#@-node:ekr.20050920084036.178:kill, killLine
+#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+def killRegion (self,event):
+    '''Kill the text selection.'''
+    self.killRegionHelper(event,deleteFlag=True)
+    
+def killRegionSave (self,event):
+    '''Add the selected text to the kill ring, but do not delete it.'''
+    self.killRegionHelper(event,deleteFlag=False)
+
+def killRegionHelper (self,event,deleteFlag):
+
+    w = self.editWidget(event)
+    if not w: return
+    theRange = w.tag_ranges('sel')
+    if not theRange: return
+    
+    s = w.get(theRange[0],theRange[-1])
+    if deleteFlag:
+        self.beginCommand(undoType='kill-region')
+        w.delete(theRange[0],theRange[-1])
+        self.c.frame.body.forceFullRecolor()
+        self.endCommand(changed=True,setLabel=True)
+    self.addToKillBuffer(s)
+    g.app.gui.replaceClipboardWith(s)
+    # self.removeRKeys(w)
+#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
+#@-node:ekr.20070212143353:Replaced w.clipboard* by gui methods
+#@+node:ekr.20070212151339:Replaced tkFileDialog by gui.runOpenFileDialog
+#@+node:ekr.20050920084036.20:readAbbreviations
+def readAbbreviations (self,event):
+    
+    '''Read abbreviations from a file.'''
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title = 'Open Abbreviation File',
+        filetypes = [("Text","*.txt"), ("All files","*")],
+        defaultextension = ".txt")
+
+    if not fileName: return
+        
+    try:
+        f = open(fileName)
+        for x in f:
+            a, b = x.split('=')
+            b = b [:-1]
+            self.abbrevs [a] = b
+        f.close()
+    except IOError:
+        g.es('Can not open',fileName)
+#@-node:ekr.20050920084036.20:readAbbreviations
+#@+node:ekr.20050920084036.24:writeAbbreviations
+def writeAbbreviations (self,event):
+    
+    '''Write abbreviations to a file.'''
+
+    fileName = g.app.gui.runSaveFileDialog(
+        initialfile = None,
+        title='Write Abbreviations',
+        filetypes = [("Text","*.txt"), ("All files","*")],
+        defaultextension = ".txt")
+        
+    if not fileName: return
+
+    try:
+        f = open(fileName,'w')
+        for x in self.abbrevs:
+            f.write('%s=%s\n' % (x,self.abbrevs[x]))
+        f.close()
+    except IOError:
+        g.es('Can not create',fileName)
+#@-node:ekr.20050920084036.24:writeAbbreviations
+#@+node:ekr.20050920084036.166:getReadableTextFile
+def getReadableTextFile (self):
+ 
+    fileName = g.app.gui.runOpenFileDialog(
+        title = 'Open Text File',
+        filetypes = [("Text","*.txt"), ("All files","*")],
+        defaultextension = ".txt")
+        
+    if not fileName: return None, None
+
+    try:
+        f = open(fileName,'rt')
+        return f, fileName
+    except IOError:
+        g.es('Can not open',fileName)
+        return None,None
+#@-node:ekr.20050920084036.166:getReadableTextFile
+#@+node:ekr.20050920084036.196:loadFile & helpers
+def loadFile (self,event):
+
+    '''Asks for a macro file name to load.'''
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title = 'Open Macro File',
+        filetypes = [("Text","*.txt"), ("All files","*")],
+        defaultextension = ".txt")
+        
+    if not fileName: return
+        
+    try:
+        f = open(fileName)
+        self._loadMacros(f)
+    except IOError:
+        g.es('Can not open',fileName)
+#@+node:ekr.20050920084036.197:_loadMacros
+def _loadMacros (self,f):
+
+    '''Loads a macro file into the macros dictionary.'''
+
+    k = self.k
+    macros = cPickle.load(f)
+    for z in macros:
+        k.addToDoAltX(z,macros[z])
+#@-node:ekr.20050920084036.197:_loadMacros
+#@-node:ekr.20050920084036.196:loadFile & helpers
+#@+node:ekr.20050920084036.170:saveFile
+def saveFile (self,event):
+    
+    '''Prompt for the name of a file and put the body text of the selected node into it..'''
+
+    w = self.editWidget(event)
+    if not w: return
+    
+    fileName = g.app.gui.runSaveFileDialog(
+        initialfile = None,
+        title='save-file',
+        filetypes = [("Text","*.txt"), ("All files","*")],
+        defaultextension = ".txt")
+        
+    if not fileName: return
+
+    try:
+        s = w.getAllText()
+        f = open(fileName,'w')
+        f.write(s)
+        f.close()
+    except IOError:
+        g.es('Can not create',fileName)
+#@-node:ekr.20050920084036.170:saveFile
+#@+node:ekr.20050920084036.199:saveMacros & helper
+def saveMacros (self,event,macname):
+
+    '''Asks for a file name and saves it.'''
+
+    fileName = g.app.gui.runSaveFileDialog(
+        initialfile = None,
+        title='Save Macros',
+        filetypes = [("Text","*.txt"), ("All files","*")],
+        defaultextension = ".txt")
+        
+    if not fileName: return
+    
+    try:
+        f = file(fileName,'a+')
+        f.seek(0)
+        if f:
+            self._saveMacros(f,macname)
+    except IOError:
+        g.es('Can not create',fileName)
+
+#@+node:ekr.20050920084036.200:_saveMacros
+def _saveMacros( self, f , name ):
+    '''Saves the macros as a pickled dictionary'''
+    import cPickle
+    fname = f.name
+    try:
+        macs = cPickle.load( f )
+    except:
+        macs = {}
+    f.close()
+    if self.namedMacros.has_key( name ):
+        macs[ name ] = self.namedMacros[ name ]
+        f = file( fname, 'w' )
+        cPickle.dump( macs, f )
+        f.close()
+#@-node:ekr.20050920084036.200:_saveMacros
+#@-node:ekr.20050920084036.199:saveMacros & helper
+#@-node:ekr.20070212151339:Replaced tkFileDialog by gui.runOpenFileDialog
+#@+node:ekr.20070212144559.1:Removed references to Tk and  Pmw from Leo's core
+#@+node:ekr.20050920084036.203:_executeMacro (test)
+def _executeMacro (self,macro,w):
+
+    c = self.c ; k = self.k
+
+    for z in macro:
+        if len(z) == 2:
+            w.event_generate('<Key>',keycode=z[0],keysym=z[1])
+        else:
+            meth = g.stripBrackets(z[0])
+            bunchList = k.bindingsDict.get(meth,[]) ### Probably should not strip < and >
+            if bunchList:
+                b = bunchList [0]
+                # ev = Tk.Event()
+                # ev.widget = w
+                # ev.keycode = z [1]
+                # ev.keysym = z [2]
+                # ev.char = z [3]
+                ev = g.Bunch(c = c, widget = w,
+                    keycode = z [1], keysym = z [2], char = z [3])
+                k.masterCommand(ev,b.f,'<%s>' % meth)
+#@-node:ekr.20050920084036.203:_executeMacro (test)
+#@+node:ekr.20040629121554.3:c.signOnWithVersion
+def signOnWithVersion (self):
+
+    c = self
+    color = c.config.getColor("log_error_color")
+    signon = c.getSignOnLine()
+    n1,n2,n3,junk,junk=sys.version_info
+    
+    if sys.platform.startswith('win'):
+        version = 'Windows '
+        try:
+            v = os.sys.getwindowsversion()
+            version += ', '.join([str(z) for z in v])
+        except Exception:
+            pass
+            
+    else: version = sys.platform
+    
+    g.es("Leo Log Window...",color=color)
+    g.es(signon)
+    g.es("Python %d.%d.%d, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
+    g.enl()
+#@-node:ekr.20040629121554.3:c.signOnWithVersion
+#@+node:ekr.20070212144559:getFullVersion
+def getFullVersion (self,c):
+    
+    tkLevel = c.frame.top.getvar("tk_patchLevel")
+    
+    return 'Tk %s, Pmw %s' % (tkLevel,Pmw.version())
+#@-node:ekr.20070212144559:getFullVersion
+#@+node:ekr.20050328133058:g.createStandAloneTkApp
+# This must be defined in leoGlobals: g.app.gui doesn't exist yet.
+
+def createStandAloneTkApp(pluginName=''):
+    
+    '''Create a Tk version of the g.app object for 'stand-alone' plugins.'''
+    
+    if not g.app:
+        # Important: these references do not make Leo's core gui-dependent.
+        # In other words, this function is called only when Tkinter should be the gui.
+        import Tkinter as Tk
+        Pmw = g.importExtension('Pmw',pluginName=pluginName,verbose=True)
+        if Tk and Pmw:
+            import leoApp, leoGui
+            g.app = leoApp.LeoApp()
+            g.app.root = Tk.Tk()
+            Pmw.initialise(g.app.root)
+            g.app.gui = leoGui.nullGui('<stand-alone app gui>')
+            g.computeStandardDirectories()
+    return g.app
+#@-node:ekr.20050328133058:g.createStandAloneTkApp
+#@+node:ekr.20060329083657:cantImportDialog & helpers
+def cantImportDialog (pluginName,moduleName):
+    
+    '''Attempt to show a Tk dialog if an import fails.
+    Yes, this is a small Tk dependency, but it can't be helped.'''
+    
+    message = '''
+%s requires the %s module.
+Official distributions contain this module in Leo's extensions folder,
+but this module may be missing if you get Leo from cvs.
+''' % (pluginName,moduleName)
+
+    if 1: # Requires minimal further imports.
+        try:
+            import Tkinter as Tk
+            root = g.app.root or Tk.Tk()
+            title = 'Can not import %s' % moduleName
+            top = createDialogFrame(Tk,root,title,message)
+            root.wait_window(top)
+        except ImportError:
+            print 'Can not import %s' % moduleName
+            print 'Can not import Tkinter'
+            print 'Leo must now exit'
+        
+    else: # Can cause import problems during startup.
+        import leoTkinterDialog
+        
+        d = leoTkinterDialog.tkinterAskOk(
+            c=None,title='Can not import %s' %(moduleName),
+            message=message)
+        d.run(modal=True)
+#@+node:ekr.20060329083310.1:createDialogFrame
+def createDialogFrame(Tk,root,title,message):
+    
+    """Create the Tk.Toplevel widget for a leoTkinterDialog."""
+
+    top = Tk.Toplevel(root)
+    top.title(title)
+
+    def onKey(event,top=top):
+        if event.char.lower() in ('\n','\r'):
+            top.destroy()
+    top.bind("<Key>",onKey)
+
+    f = Tk.Frame(top)
+    f.pack(side="top",expand=1,fill="both")
+    
+    label = Tk.Label(f,text=message)
+    label.pack(pady=10)
+    
+    def okButton(top=top):
+        top.destroy()
+    
+    buttons = {"text":'OK',"command":okButton,"default":True}, # Singleton tuple.
+    createDialogButtons(Tk,top,buttons)
+    
+    center(top)
+    top.lift()
+    top.focus_force()
+    
+    # Attach the icon at idle time.
+    def attachIconCallback(top=top):
+        g.app.gui.attachLeoIcon(top)
+    top.after_idle(attachIconCallback)
+
+    return top
+#@-node:ekr.20060329083310.1:createDialogFrame
+#@+node:ekr.20060329083310.2:createDialogButtons
+def createDialogButtons (Tk,top,buttons):
+    
+    """Create a row of buttons.
+    
+    buttons is a list of dictionaries containing the properties of each button."""
+    
+    f = Tk.Frame(top)
+    f.pack(side="top",padx=30)
+
+    for d in buttons:
+        text = d.get("text","<missing button name>")
+        isDefault = d.get("default",False)
+        underline = d.get("underline",0)
+        command = d.get("command",None)
+        bd = g.choose(isDefault,4,2)
+
+        b = Tk.Button(f,width=6,text=text,bd=bd,underline=underline,command=command)
+        b.pack(side="left",padx=5,pady=10)
+#@-node:ekr.20060329083310.2:createDialogButtons
+#@+node:ekr.20060329085417.1:center
+def center(top):
+
+    """Center the dialog on the screen.
+
+    WARNING: Call this routine _after_ creating a dialog.
+    (This routine inhibits the grid and pack geometry managers.)"""
+
+    sw = top.winfo_screenwidth()
+    sh = top.winfo_screenheight()
+    w,h,x,y = get_window_info(top)
+    
+    # Set the new window coordinates, leaving w and h unchanged.
+    x = (sw - w)/2
+    y = (sh - h)/2
+    top.geometry("%dx%d%+d%+d" % (w,h,x,y))
+    
+    return w,h,x,y
+#@-node:ekr.20060329085417.1:center
+#@+node:ekr.20060329085612:get_window_info
+# WARNING: Call this routine _after_ creating a dialog.
+# (This routine inhibits the grid and pack geometry managers.)
+
+def get_window_info (top):
+    
+    top.update_idletasks() # Required to get proper info.
+
+    # Get the information about top and the screen.
+    geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
+    dim,x,y = string.split(geom,'+')
+    w,h = string.split(dim,'x')
+    w,h,x,y = int(w),int(h),int(x),int(y)
+    
+    return w,h,x,y
+#@-node:ekr.20060329085612:get_window_info
+#@-node:ekr.20060329083657:cantImportDialog & helpers
+#@-node:ekr.20070212144559.1:Removed references to Tk and  Pmw from Leo's core
 #@-node:ekr.20070212140907:What I did
 #@+node:ekr.20061031121511:Postings
 #@+node:ekr.20061031092226:what I did
@@ -17386,8 +17847,7 @@ def kill (self,event,frm,to,undoType=None):
     s = w.get(frm,to)
     if undoType: self.beginCommand(undoType=undoType)
     self.addToKillBuffer(s)
-    w.clipboard_clear()
-    w.clipboard_append(s)
+    g.app.gui.replaceClipboardWith(s)
     w.delete(frm,to)
     w.setInsertPoint(frm)
     if undoType:
@@ -17434,8 +17894,7 @@ def killRegionHelper (self,event,deleteFlag):
         self.c.frame.body.forceFullRecolor()
         self.endCommand(changed=True,setLabel=True)
     self.addToKillBuffer(s)
-    w.clipboard_clear()
-    w.clipboard_append(s)
+    g.app.gui.replaceClipboardWith(s)
     # self.removeRKeys(w)
 #@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
 #@+node:ekr.20050930095323.1:killSentence

@@ -34,7 +34,6 @@ import os
 import parser # needed only for weird Python 2.2 parser errors.
 import string
 
-Pmw        = g.importExtension("Pmw",pluginName=None,verbose=False)
 subprocess = g.importExtension('subprocess',None,verbose=False)
 
 import sys
@@ -313,7 +312,6 @@ class baseCommands:
         color = c.config.getColor("log_error_color")
         signon = c.getSignOnLine()
         n1,n2,n3,junk,junk=sys.version_info
-        tkLevel = c.frame.top.getvar("tk_patchLevel")
         
         if sys.platform.startswith('win'):
             version = 'Windows '
@@ -327,7 +325,7 @@ class baseCommands:
         
         g.es("Leo Log Window...",color=color)
         g.es(signon)
-        g.es("Python %d.%d.%d, Tk %s, Pmw %s\n%s" % (n1,n2,n3,tkLevel,Pmw.version(),version))
+        g.es("Python %d.%d.%d, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
         g.enl()
     #@-node:ekr.20040629121554.3:c.signOnWithVersion
     #@-node:ekr.20031218072017.2582: version & signon stuff

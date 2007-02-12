@@ -23,6 +23,7 @@ import os
 import string
 import sys
 import Tkinter as Tk
+
 Pmw = g.importExtension('Pmw',    pluginName='leoTkinterGui',verbose=True)
 #@-node:ekr.20041228050845:<< imports >>
 #@nl
@@ -309,12 +310,6 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4056:tkGui dialogs & panels
     #@+node:ekr.20031218072017.4059:tkGui utils
     #@+node:ekr.20031218072017.844:Clipboard (tkGui)
-    #@+at
-    # 
-    # The following are called only when g.app.gui.win32clipboard is not None, 
-    # and
-    # presently that never happens.
-    #@-at
     #@+node:ekr.20031218072017.845:replaceClipboardWith
     def replaceClipboardWith (self,s):
     
@@ -530,6 +525,13 @@ class tkinterGui(leoGui.leoGui):
             return g.app.config.defaultFont
     #@-node:ekr.20031218072017.2187:tkGui.getFontFromParams
     #@-node:ekr.20031218072017.4066:Font
+    #@+node:ekr.20070212144559:getFullVersion
+    def getFullVersion (self,c):
+        
+        tkLevel = c.frame.top.getvar("tk_patchLevel")
+        
+        return 'Tk %s, Pmw %s' % (tkLevel,Pmw.version())
+    #@-node:ekr.20070212144559:getFullVersion
     #@+node:ekr.20031218072017.4067:Icons
     #@+node:ekr.20031218072017.4068:attachLeoIcon & createLeoIcon
     def attachLeoIcon (self,w):

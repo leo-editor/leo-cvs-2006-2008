@@ -4157,6 +4157,7 @@ class keyHandlerClass:
                     if 1: # No need to do this: commands never alter events.
                         # ev = Tk.Event()
                         ev = g.Bunch(
+                            c = self.c,
                             widget = event.widget,
                             keysym = event.keysym,
                             keycode = event.keycode,
