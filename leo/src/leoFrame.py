@@ -82,8 +82,6 @@ class leoBody:
     mustBeDefinedInSubclasses = (
         # Birth, death & config.
         '__init__',
-        'cget',
-        'configure',
         'createBindings',
         'createControl',
         'setColorFromConfig',
@@ -145,8 +143,6 @@ class leoBody:
     #@-node:ekr.20031218072017.3657:leoBody.__init__
     #@+node:ekr.20061109173122:leoBody: must be defined in subclasses
     # Birth, death & config
-    def cget(self,*args,**keys):                    self.oops()
-    def configure (self,*args,**keys):              self.oops()
     def createBindings (self,w=None):               self.oops()
     def createControl (self,frame,parentFrame,p):   self.oops()
     def setColorFromConfig (self,w=None):           self.oops()
@@ -374,15 +370,14 @@ class leoBody:
     #@-node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
     #@+node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
     def getYScrollPosition (self):
-        return self.bodyCtrl.yview()
+        return self.bodyCtrl.getYScrollPosition()
         
     def setYScrollPosition (self,scrollPosition):
         if len(scrollPosition) == 2:
             first,last = scrollPosition
         else:
             first = scrollPosition
-        self.bodyCtrl.yview('moveto',first)
-        
+        self.bodyCtrl.setYScrollPosition(first)
     #@-node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
     #@-node:ekr.20031218072017.4018:Text (leoBody)
     #@-node:ekr.20061109173021:leoBody: must be defined in the base class
@@ -763,11 +758,11 @@ class leoFrame:
             
     OnCopyFromMenu = copyText
     #@-node:ekr.20070130115927.5:copyText
-    #@+node:ekr.20070130115927.6:cutText
+    #@+node:ekr.20070130115927.6:leoFrame.cutText
     def cutText (self,event=None):
         
         '''Invoked from the mini-buffer and from shortcuts.'''
-        
+    
         f = self ; c = f.c ; w = event and event.widget
         if not w or not g.app.gui.isTextWidget(w): return
     
@@ -789,12 +784,13 @@ class leoFrame:
             # The headline is not officially changed yet.
             # p.initHeadString(s)
             s = w.getAllText()
-            w.configure(width=f.tree.headWidth(s=s))
+            width = f.tree.headWidth(p=None,s=s)
+            w.setWidth(width)
         else: pass
     
     OnCutFromMenu = cutText
-    #@-node:ekr.20070130115927.6:cutText
-    #@+node:ekr.20070130115927.7:pasteText
+    #@-node:ekr.20070130115927.6:leoFrame.cutText
+    #@+node:ekr.20070130115927.7:leoFrame.pasteText
     def pasteText (self,event=None,middleButton=False):
     
         '''Paste the clipboard into a widget.
@@ -840,7 +836,8 @@ class leoFrame:
                 if wname.startswith('head'):
                     # The headline is not officially changed yet.
                     # p.initHeadString(s)
-                    w.configure(width=f.tree.headWidth(s=s))
+                    width = f.tree.headWidth(p=None,s=s)
+                    w.setWidth(width)
             else: pass
         except Exception:
             pass # Tk sometimes throws weird exceptions here.
@@ -848,7 +845,7 @@ class leoFrame:
         return 'break' # Essential
     
     OnPasteFromMenu = pasteText
-    #@-node:ekr.20070130115927.7:pasteText
+    #@-node:ekr.20070130115927.7:leoFrame.pasteText
     #@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
     def OnPaste (self,event=None):
         
@@ -1318,8 +1315,6 @@ class nullBody (leoBody):
     #@+node:ekr.20031218072017.2197:nullBody: leoBody interface
     # Birth, death & config
     def bind(self,*args,**keys):                pass
-    def cget(self,*args,**keys):                pass
-    def configure (self,*args,**keys):          pass
     def createBindings (self,w=None):           pass
     def createControl (self,frame,parentFrame,p): pass
     def setColorFromConfig (self,w=None):       pass

@@ -2963,7 +2963,7 @@ class leoTkTextWidget (Tk.Text):
     #@nonl
     #@-node:ekr.20061117160129:getName (Tk.Text)
     #@+node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
-    #@+node:ekr.20061113151148.4:delete (passed)
+    #@+node:ekr.20061113151148.4:delete
     def delete(self,i,j=None):
     
         w = self
@@ -2974,90 +2974,8 @@ class leoTkTextWidget (Tk.Text):
         else:
             j = w.toGuiIndex(j)
             Tk.Text.delete(w,i,j)
-    #@-node:ekr.20061113151148.4:delete (passed)
-    #@+node:ekr.20061113151148.5:get (passed)
-    def get(self,i,j=None):
-    
-        w = self
-        i = w.toGuiIndex(i)
-    
-        if j is None:
-            return Tk.Text.get(w,i)
-        else:
-            j = w.toGuiIndex(j)
-            return Tk.Text.get(w,i,j)
-    #@-node:ekr.20061113151148.5:get (passed)
-    #@+node:ekr.20061113151148.6:insert (passed)
-    # The signature is more restrictive than the Tk.Text.insert method.
-    
-    def insert(self,i,s):
-    
-        w = self
-        i = w.toGuiIndex(i)
-        Tk.Text.insert(w,i,s)
-    
-    #@-node:ekr.20061113151148.6:insert (passed)
-    #@+node:ekr.20061113151148.7:mark_set (passed)
-    def mark_set(self,markName,i):
-    
-        w = self
-        i = w.toGuiIndex(i)
-        Tk.Text.mark_set(w,markName,i)
-    #@-node:ekr.20061113151148.7:mark_set (passed)
-    #@+node:ekr.20061113151148.8:tag_add (passed)
-    # The signature is slightly different than the Tk.Text.insert method.
-    
-    def tag_add(self,tagName,i,j=None,*args):
-        
-        w = self
-        i = w.toGuiIndex(i)
-    
-        if j is None:
-            Tk.Text.tag_add(w,tagName,i,*args)
-        else:
-            j = w.toGuiIndex(j)
-            Tk.Text.tag_add(w,tagName,i,j,*args)
-            
-    #@-node:ekr.20061113151148.8:tag_add (passed)
-    #@+node:ekr.20070116073907:tag_remove (test)
-    def tag_remove (self,tagName,i,j=None,*args):
-    
-        w = self
-        i = w.toGuiIndex(i)
-    
-        if j is None:
-            Tk.Text.tag_remove(w,tagName,i,*args)
-        else:
-            j = w.toGuiIndex(j)
-            Tk.Text.tag_remove(w,tagName,i,j,*args)
-    
-        
-        
-    #@nonl
-    #@-node:ekr.20070116073907:tag_remove (test)
-    #@+node:ekr.20061113151148.9:tag_ranges (passed)
-    def tag_ranges(self,tagName):
-        
-        w = self
-        aList = Tk.Text.tag_ranges(w,tagName)
-        aList = [w.toPythonIndex(z) for z in aList]
-        return tuple(aList)
-    #@-node:ekr.20061113151148.9:tag_ranges (passed)
-    #@-node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
-    #@+node:ekr.20061113151148.10:Convenience methods (tkTextWidget)
-    # These have no direct Tk equivalents.  They used to be defined in the gui class.
-    # These methods must take care not to call overridden methods.
-    #@+node:ekr.20061113151148.11:w.deleteTextSelection
-    def deleteTextSelection (self): # tkTextWidget
-        
-        w = self
-        sel = Tk.Text.tag_ranges(w,"sel")
-        if len(sel) == 2:
-            start,end = sel
-            if Tk.Text.compare(w,start,"!=",end):
-                Tk.Text.delete(w,start,end)
-    #@-node:ekr.20061113151148.11:w.deleteTextSelection
-    #@+node:ekr.20061113151148.12:w.flashCharacter
+    #@-node:ekr.20061113151148.4:delete
+    #@+node:ekr.20061113151148.12:flashCharacter
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
     
         w = self
@@ -3080,8 +2998,20 @@ class leoTkTextWidget (Tk.Text):
         except Exception:
             pass ; g.es_exception()
     #@nonl
-    #@-node:ekr.20061113151148.12:w.flashCharacter
-    #@+node:ekr.20061113151148.13:w.getAllText
+    #@-node:ekr.20061113151148.12:flashCharacter
+    #@+node:ekr.20061113151148.5:get
+    def get(self,i,j=None):
+    
+        w = self
+        i = w.toGuiIndex(i)
+    
+        if j is None:
+            return Tk.Text.get(w,i)
+        else:
+            j = w.toGuiIndex(j)
+            return Tk.Text.get(w,i,j)
+    #@-node:ekr.20061113151148.5:get
+    #@+node:ekr.20061113151148.13:getAllText
     def getAllText (self): # tkTextWidget.
         
         """Return all the text of Tk.Text widget w converted to unicode."""
@@ -3093,16 +3023,16 @@ class leoTkTextWidget (Tk.Text):
             return u""
         else:
             return g.toUnicode(s,g.app.tkEncoding)
-    #@-node:ekr.20061113151148.13:w.getAllText
-    #@+node:ekr.20061113151148.14:w.getInsertPoint
+    #@-node:ekr.20061113151148.13:getAllText
+    #@+node:ekr.20061113151148.14:getInsertPoint
     def getInsertPoint(self): # tkTextWidget.
         
         w = self
         i = Tk.Text.index(w,'insert')
         i = w.toPythonIndex(i)
         return i
-    #@-node:ekr.20061113151148.14:w.getInsertPoint
-    #@+node:ekr.20061113151148.15:w.getSelectedText
+    #@-node:ekr.20061113151148.14:getInsertPoint
+    #@+node:ekr.20061113151148.15:getSelectedText
     def getSelectedText (self): # tkTextWidget.
     
         w = self
@@ -3113,8 +3043,8 @@ class leoTkTextWidget (Tk.Text):
             return g.toUnicode(s,g.app.tkEncoding)
         else:
             return u""
-    #@-node:ekr.20061113151148.15:w.getSelectedText
-    #@+node:ekr.20061113151148.16:w.getSelectionRange
+    #@-node:ekr.20061113151148.15:getSelectedText
+    #@+node:ekr.20061113151148.16:getSelectionRange
     def getSelectionRange (self,sort=True): # tkTextWidget.
         
         """Return a tuple representing the selected range.
@@ -3132,15 +3062,38 @@ class leoTkTextWidget (Tk.Text):
         if sort and i > j: i,j = j,i
         return i,j
     #@nonl
-    #@-node:ekr.20061113151148.16:w.getSelectionRange
-    #@+node:ekr.20061113151148.17:w.hasSelection (could be in base class)
+    #@-node:ekr.20061113151148.16:getSelectionRange
+    #@+node:ekr.20070211185433.1:getYScrollPosition
+    def getYScrollPosition (self):
+    
+         w = self
+         return w.yview()
+    #@-node:ekr.20070211185433.1:getYScrollPosition
+    #@+node:ekr.20061113151148.17:hasSelection
     def hasSelection (self):
         
         w = self
         i,j = w.getSelectionRange()
         return i != j
-    #@-node:ekr.20061113151148.17:w.hasSelection (could be in base class)
-    #@+node:ekr.20061113151148.18:w.replace (could be in base class)
+    #@-node:ekr.20061113151148.17:hasSelection
+    #@+node:ekr.20061113151148.6:insert
+    # The signature is more restrictive than the Tk.Text.insert method.
+    
+    def insert(self,i,s):
+    
+        w = self
+        i = w.toGuiIndex(i)
+        Tk.Text.insert(w,i,s)
+    
+    #@-node:ekr.20061113151148.6:insert
+    #@+node:ekr.20061113151148.7:mark_set
+    def mark_set(self,markName,i):
+    
+        w = self
+        i = w.toGuiIndex(i)
+        Tk.Text.mark_set(w,markName,i)
+    #@-node:ekr.20061113151148.7:mark_set
+    #@+node:ekr.20061113151148.18:replace
     def replace (self,i,j,s): # tkTextWidget
         
         w = self
@@ -3148,8 +3101,21 @@ class leoTkTextWidget (Tk.Text):
     
         Tk.Text.delete(w,i,j)
         Tk.Text.insert(w,i,s)
-    #@-node:ekr.20061113151148.18:w.replace (could be in base class)
-    #@+node:ekr.20061113151148.19:w.selectAllText
+    #@-node:ekr.20061113151148.18:replace
+    #@+node:ekr.20061113180616:see
+    def see (self,i): # tkTextWidget.
+    
+        w = self
+        i = w.toGuiIndex(i)
+        Tk.Text.see(w,i)
+    #@-node:ekr.20061113180616:see
+    #@+node:ekr.20061113175002:seeInsertPoint
+    def seeInsertPoint (self): # tkTextWidget.
+    
+        w = self
+        Tk.Text.see(w,'insert')
+    #@-node:ekr.20061113175002:seeInsertPoint
+    #@+node:ekr.20061113151148.19:selectAllText
     def selectAllText (self,insert=None): # tkTextWidget
         
         '''Select all text of the widget, *not* including the extra newline.'''
@@ -3157,36 +3123,29 @@ class leoTkTextWidget (Tk.Text):
         w = self ; s = w.getAllText()
         if insert is None: insert = len(s)
         w.setSelectionRange(0,len(s),insert=insert)
-    #@-node:ekr.20061113151148.19:w.selectAllText
-    #@+node:ekr.20061113151148.20:w.setAllText (could be in base class)
+    #@-node:ekr.20061113151148.19:selectAllText
+    #@+node:ekr.20061113151148.20:setAllText
     def setAllText (self,s): # tkTextWidget
     
         w = self
+        
+        state = Tk.Text.cget(w,"state")
+        Tk.Text.configure(w,state="normal")
+        
         Tk.Text.delete(w,'1.0','end')
         Tk.Text.insert(w,'1.0',s)
-    #@-node:ekr.20061113151148.20:w.setAllText (could be in base class)
-    #@+node:ekr.20061113180616:w.see
-    def see (self,i): # tkTextWidget.
-    
-        w = self
-        i = w.toGuiIndex(i)
-        Tk.Text.see(w,i)
-    #@-node:ekr.20061113180616:w.see
-    #@+node:ekr.20061113175002:w.seeInsertPoint
-    def seeInsertPoint (self): # tkTextWidget.
-    
-        w = self
-        Tk.Text.see(w,'insert')
-    #@-node:ekr.20061113175002:w.seeInsertPoint
-    #@+node:ekr.20061113151148.21:w.setInsertPoint
+        
+        Tk.Text.configure(w,state=state)
+    #@-node:ekr.20061113151148.20:setAllText
+    #@+node:ekr.20061113151148.21:setInsertPoint
     def setInsertPoint (self,i): # tkTextWidget.
     
         w = self
         i = w.toGuiIndex(i)
         # g.trace(i,g.callers())
         Tk.Text.mark_set(w,'insert',i)
-    #@-node:ekr.20061113151148.21:w.setInsertPoint
-    #@+node:ekr.20061113151148.22:w.setSelectionRange
+    #@-node:ekr.20061113151148.21:setInsertPoint
+    #@+node:ekr.20061113151148.22:setSelectionRange
     def setSelectionRange (self,i,j,insert=None): # tkTextWidget
         
         w = self
@@ -3203,8 +3162,74 @@ class leoTkTextWidget (Tk.Text):
     
         if insert is not None:
             w.setInsertPoint(insert)
-    #@-node:ekr.20061113151148.22:w.setSelectionRange
-    #@+node:ekr.20061113151148.23:w.xyToGui/PythonIndex
+    #@-node:ekr.20061113151148.22:setSelectionRange
+    #@+node:ekr.20070211185433:setYScrollPosition
+    def setYScrollPosition (self,i):
+    
+         w = self
+         w.yview('moveto',i)
+    #@nonl
+    #@-node:ekr.20070211185433:setYScrollPosition
+    #@+node:ekr.20070212081121:setWidth
+    def setWidth (self,width):
+        
+        '''Set the width of the widget.
+        This is only called for headline widgets,
+        and gui's may choose not to do anything here.'''
+        
+        w = self
+        w.configure(width=width)
+    #@-node:ekr.20070212081121:setWidth
+    #@+node:ekr.20061113151148.8:tag_add
+    # The signature is slightly different than the Tk.Text.insert method.
+    
+    def tag_add(self,tagName,i,j=None,*args):
+        
+        w = self
+        i = w.toGuiIndex(i)
+    
+        if j is None:
+            Tk.Text.tag_add(w,tagName,i,*args)
+        else:
+            j = w.toGuiIndex(j)
+            Tk.Text.tag_add(w,tagName,i,j,*args)
+            
+    #@-node:ekr.20061113151148.8:tag_add
+    #@+node:ekr.20061113151148.9:tag_ranges
+    def tag_ranges(self,tagName):
+        
+        w = self
+        aList = Tk.Text.tag_ranges(w,tagName)
+        aList = [w.toPythonIndex(z) for z in aList]
+        return tuple(aList)
+    #@-node:ekr.20061113151148.9:tag_ranges
+    #@+node:ekr.20070116073907:tag_remove
+    def tag_remove (self,tagName,i,j=None,*args):
+    
+        w = self
+        i = w.toGuiIndex(i)
+    
+        if j is None:
+            Tk.Text.tag_remove(w,tagName,i,*args)
+        else:
+            j = w.toGuiIndex(j)
+            Tk.Text.tag_remove(w,tagName,i,j,*args)
+    
+        
+        
+    #@nonl
+    #@-node:ekr.20070116073907:tag_remove
+    #@+node:ekr.20061113151148.11:w.deleteTextSelection
+    def deleteTextSelection (self): # tkTextWidget
+        
+        w = self
+        sel = Tk.Text.tag_ranges(w,"sel")
+        if len(sel) == 2:
+            start,end = sel
+            if Tk.Text.compare(w,start,"!=",end):
+                Tk.Text.delete(w,start,end)
+    #@-node:ekr.20061113151148.11:w.deleteTextSelection
+    #@+node:ekr.20061113151148.23:xyToGui/PythonIndex
     def xyToGuiIndex (self,x,y): # tkTextWidget
         
         w = self
@@ -3216,8 +3241,8 @@ class leoTkTextWidget (Tk.Text):
         i = Tk.Text.index(w,"@%d,%d" % (x,y))
         i = w.toPythonIndex(i)
         return i
-    #@-node:ekr.20061113151148.23:w.xyToGui/PythonIndex
-    #@-node:ekr.20061113151148.10:Convenience methods (tkTextWidget)
+    #@-node:ekr.20061113151148.23:xyToGui/PythonIndex
+    #@-node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
     #@-others
 #@nonl
 #@-node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)

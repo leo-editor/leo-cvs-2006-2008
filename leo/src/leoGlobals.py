@@ -3770,85 +3770,6 @@ def executeFile(filename, options= ''):
         os.system('%s %s' % (sys.executable, fname))
         if fdir: os.chdir(cwd)
 #@-node:ekr.20050503112513.7:g.executeFile
-#@+node:ekr.20060621164312:g.makeScriptButton
-def makeScriptButton (c,
-    p=None, # A node containing the script.
-    script=None, # The script itself.
-    buttonText=None,
-    balloonText='Script Button',
-    shortcut=None,bg='LightSteelBlue1',
-    define_g=True,define_name='__main__',silent=False, # Passed on to c.executeScript.
-):
-    
-    '''Create a script button for the script in node p.
-    The button's text defaults to p.headString'''
-
-    k = c.k
-    if p and not buttonText: buttonText = p.headString().strip()
-    if not buttonText: buttonText = 'Unnamed Script Button'
-    #@    << create the button b >>
-    #@+node:ekr.20060621164312.1:<< create the button b >>
-    iconBar = c.frame.getIconBarObject()
-    b = iconBar.add(text=buttonText)
-    
-    if balloonText and balloonText != buttonText:
-        Pmw = g.importExtension('Pmw',pluginName='g.makeScriptButton',verbose=False)
-        if Pmw:
-            balloon = Pmw.Balloon(b,initwait=100)
-            balloon.bind(b,balloonText)
-    
-    if sys.platform == "win32":
-        width = int(len(buttonText) * 0.9)
-        b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
-    #@-node:ekr.20060621164312.1:<< create the button b >>
-    #@nl
-    #@    << define the callbacks for b >>
-    #@+node:ekr.20060621164312.2:<< define the callbacks for b >>
-    def deleteButtonCallback(event=None,b=b,c=c):
-        if b: b.pack_forget()
-        c.bodyWantsFocus()
-        
-    def executeScriptCallback (event=None,
-        b=b,c=c,buttonText=buttonText,p=p and p.copy(),script=script):
-    
-        if c.disableCommandsMessage:
-            g.es(c.disableCommandsMessage,color='blue')
-        else:
-            g.app.scriptDict = {}
-            c.executeScript(p=p,script=script,
-            define_g= define_g,define_name=define_name,silent=silent)
-            # Remove the button if the script asks to be removed.
-            if g.app.scriptDict.get('removeMe'):
-                g.es("Removing '%s' button at its request" % buttonText)
-                b.pack_forget()
-        # Do not assume the script will want to remain in this commander.
-    #@-node:ekr.20060621164312.2:<< define the callbacks for b >>
-    #@nl
-    b.configure(command=executeScriptCallback)
-    b.bind('<3>',deleteButtonCallback)
-    if shortcut:
-        #@        << bind the shortcut to executeScriptCallback >>
-        #@+node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
-        func = executeScriptCallback
-        shortcut = k.canonicalizeShortcut(shortcut)
-        ok = k.bindKey ('button', shortcut,func,buttonText)
-        if ok:
-            g.es_print('Bound @button %s to %s' % (buttonText,shortcut),color='blue')
-        #@-node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
-        #@nl
-    #@    << create press-buttonText-button command >>
-    #@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
-    aList = [g.choose(ch.isalnum(),ch,'-') for ch in buttonText]
-    
-    buttonCommandName = ''.join(aList)
-    buttonCommandName = buttonCommandName.replace('--','-')
-    buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
-    
-    # This will use any shortcut defined in an @shortcuts node.
-    k.registerCommand(buttonCommandName,None,executeScriptCallback,pane='button',verbose=False)
-    #@-node:ekr.20060621164312.4:<< create press-buttonText-button command >>
-    #@nl
-#@-node:ekr.20060621164312:g.makeScriptButton
 #@-node:ekr.20040327103735.2:Script Tools (leoGlobals.py)
 #@+node:ekr.20031218072017.1498:Unicode utils...
 #@+node:ekr.20061006152327:g.isWordChar & g.isWordChar1
@@ -3952,8 +3873,6 @@ except Exception:
                         return locale.nl_langinfo(CODESET)
                 except:
                     return None
-                    
-        ###__pychecker__ = '--limit=2000' # Note: this is at the top level!
         #@-node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
         #@nl
         
@@ -4484,8 +4403,6 @@ class mulderUpdateAlgorithm:
         Set the target file's modification time to
         that of the source file.
         """
-        
-        ###__pychecker__ = '--limit=0' # Suppress warning about mtime.
     
         st = os.stat(sourcefilename)
     

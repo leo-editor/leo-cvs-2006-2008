@@ -1334,6 +1334,12 @@ class baseTextWidget (wx.EvtHandler):
             #g.trace(self,'baseWidget: i',i,g.callers(6))
             return i,i
     #@-node:ekr.20070209074555.18:getSelectionRange (baseText)
+    #@+node:ekr.20070211185536:getYScrollPosition
+    def getYScrollPosition (self):
+    
+         w = self
+         return w._getYScrollPosition()
+    #@-node:ekr.20070211185536:getYScrollPosition
     #@+node:ekr.20070209074555.19:hasSelection
     def hasSelection (self):
         
@@ -1435,6 +1441,13 @@ class baseTextWidget (wx.EvtHandler):
             if insert is not None: self.virtualInsertPoint = insert
             w._setSelectionRange(i,j)
     #@-node:ekr.20070209074555.27:setSelectionRange (baseText)
+    #@+node:ekr.20070211185611:setYScrollPosition
+    def setYScrollPosition (self,i):
+    
+         w = self
+         w._setYScrollPosition(i)
+    #@nonl
+    #@-node:ekr.20070211185611:setYScrollPosition
     #@+node:ekr.20070209080508:tags (to-do)
     #@+node:ekr.20070209074555.21:mark_set (to be removed)
     def mark_set(self,markName,i):
@@ -1755,6 +1768,7 @@ class stcWidget (baseTextWidget):
     def _getInsertPoint(self):          return self.widget.GetCurrentPos()
     def _getLastPosition(self):         return self.widget.GetLength()
     def _getSelectedText(self):         return self.widget.GetSelectedText()
+    def _getYScrollPosition(self):      return 0
     def _getSelectionRange(self):       return self.widget.GetSelection()
     def _hitTest(self,pos):             return slef.widget.HitTest(pos)
     def _insertText(self,i,s):          return self.widget.InsertText(i,s)
@@ -1765,6 +1779,7 @@ class stcWidget (baseTextWidget):
     def _setFocus(self):                return self.widget.SetFocus()
     def _setInsertPoint(self,i):        g.trace('oops',i) # Should not be called.
     def _setSelectionRange(self,i,j):   g.trace('oops',i,j) # Should not be called.
+    def _setYScrollPosition(self,i):    pass
     #@-node:ekr.20070210080936:bindings (stc)
     #@+node:ekr.20070209080938.2:Wrapper methods
     #@+node:ekr.20070209080938.18:see & seeInsertPoint

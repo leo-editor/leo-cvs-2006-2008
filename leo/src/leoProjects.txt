@@ -564,7 +564,7 @@ def yank (self,event):
         c.frame.body.forceFullRecolor()
         self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050930091642.1:yank
-#@+node:ekr.20050930091642.2:yankPop TODO
+#@+node:ekr.20050930091642.2:yankPop
 def yankPop (self,event):
     
     '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
@@ -588,7 +588,7 @@ def yankPop (self,event):
         w.tag_delete('kb') ###
         w.insert('insert',s,('kb')) ###
         w.setInsertPoint(ins)
-#@-node:ekr.20050930091642.2:yankPop TODO
+#@-node:ekr.20050930091642.2:yankPop
 #@+node:ekr.20050920084036.128:zapToCharacter
 def zapToCharacter (self,event):
     
@@ -1700,6 +1700,8 @@ class minibufferFind (baseEditCommandsClass):
 def __init__(self,c,finder):
     
     baseEditCommandsClass.__init__(self,c) # init the base class.
+    
+    g.trace('minibufferFind: finder',finder)
 
     self.c = c
     self.k = k = c.k
@@ -1714,7 +1716,7 @@ def __init__(self,c,finder):
     s = k.shortcutFromSetting(s)
     self.replaceStringShortcut = s
 #@-node:ekr.20060123125317.2: ctor (minibufferFind)
-#@+node:ekr.20060124140114: Options
+#@+node:ekr.20060124140114: Options (minibufferFind)
 #@+node:ekr.20060124123133:setFindScope
 def setFindScope(self,where):
     
@@ -1731,34 +1733,13 @@ def setFindScope(self,where):
     else:
         g.trace('oops: bad `where` value: %s' % where)
 #@-node:ekr.20060124123133:setFindScope
-#@+node:ekr.20060124122844:setOption (minibufferFind: Tk code)
-def setOption (self, ivar, val):
-    
-    h = self.finder
+#@+node:ekr.20060124122844:get/set/toggleOption (minibufferFind)
+# This redirection is required to remove gui-dependencies.
 
-    if ivar in h.intKeys:
-        if val is not None:
-            var = h.svarDict.get(ivar)
-            var.set(val)
-            # g.trace('%s = %s' % (ivar,val))
-
-    elif not g.app.unitTesting:
-        g.trace('oops: bad find ivar %s' % ivar)
-#@-node:ekr.20060124122844:setOption (minibufferFind: Tk code)
-#@+node:ekr.20060125082510:getOption (minibufferFind: Tk code)
-def getOption (self,ivar,verbose=False):
-    
-    h = self.finder
-    
-    var = h.svarDict.get(ivar)
-    if var:
-        val = var.get()
-        verbose and g.trace('%s = %s' % (ivar,val))
-        return val
-    else:
-        g.trace('bad ivar name: %s' % ivar)
-        return None
-#@-node:ekr.20060125082510:getOption (minibufferFind: Tk code)
+def getOption (self,ivar):          return self.finder.getOption(ivar)
+def setOption (self,ivar,val):      self.finder.setOption(ivar,val)
+def toggleOption (self,ivar):       self.finder.toggleOption(ivar)
+#@-node:ekr.20060124122844:get/set/toggleOption (minibufferFind)
 #@+node:ekr.20060125074939:showFindOptions
 def showFindOptions (self):
     
@@ -1804,19 +1785,6 @@ def showFindOptions (self):
 
     frame.putStatusLine(' '.join(z))
 #@-node:ekr.20060125074939:showFindOptions
-#@+node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
-def toggleOption (self, ivar):
-    
-    h = self.finder
-
-    if ivar in h.intKeys:
-        var = h.svarDict.get(ivar)
-        val = not var.get()
-        var.set(val)
-        # g.trace('%s = %s' % (ivar,val),var)
-    else:
-        g.trace('oops: bad find ivar %s' % ivar)
-#@-node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
 #@+node:ekr.20060205105950:setupChangePattern
 def setupChangePattern (self,pattern):
     
@@ -1841,7 +1809,7 @@ def setupSearchPattern (self,pattern):
     
     h.update_ivars()
 #@-node:ekr.20060125091234:setupSearchPattern
-#@-node:ekr.20060124140114: Options
+#@-node:ekr.20060124140114: Options (minibufferFind)
 #@+node:ekr.20060210180352:addChangeStringToLabel
 def addChangeStringToLabel (self,protect=True):
     
@@ -2679,8 +2647,10 @@ class leoFind:
     """The base class for Leo's Find commands."""
 
     @others
-#@+node:ekr.20031218072017.3053:leoFind.__init__
+#@+node:ekr.20031218072017.3053:leoFind.__init__ & helpers
 def __init__ (self,c,title=None):
+    
+    # g.trace('leoFind',c)
 
     self.c = c
     
@@ -2691,6 +2661,9 @@ def __init__ (self,c,title=None):
         << compute self.title >>
 
     << init the gui-independent ivars >>
+    
+def init (self,c):
+    self.oops()
 #@+node:ekr.20041121145452:<< compute self.title >>
 if not c.mFileName:
     s = "untitled"
@@ -2763,60 +2736,7 @@ if 1:
     self.whole_word = None
 #@-node:ekr.20050123164539:<< do dummy initialization to keep Pychecker happy >>
 #@-node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
-#@+node:ekr.20031218072017.2059:find.init
-def init (self,c):
-
-    # N.B.: separate c.ivars are much more convenient than a dict.
-    for key in self.intKeys:
-        # New in 4.3: get ivars from @settings.
-        val = c.config.getBool(key)
-        setattr(self,key,val)
-        val = g.choose(val,1,0) # Work around major Tk problem.
-        self.svarDict[key].set(val)
-        # g.trace(key,val)
-
-    << set find/change widgets >>
-    << set radio buttons from ivars >>
-#@+node:ekr.20031218072017.2060:<< set find/change widgets >>
-self.find_ctrl.delete(0,"end")
-self.change_ctrl.delete(0,"end")
-
-# New in 4.3: Get setting from @settings.
-for w,setting,defaultText in (
-    (self.find_ctrl,"find_text",'<find pattern here>'),
-    (self.change_ctrl,"change_text",''),
-):
-    s = c.config.getString(setting)
-    if not s: s = defaultText
-    w.insert("end",s)
-#@-node:ekr.20031218072017.2060:<< set find/change widgets >>
-#@+node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
-found = False
-for var,setting in (
-    ("pattern_match","pattern-search"),
-    ("script_search","script-search")):
-    val = self.svarDict[var].get()
-    if val:
-        self.svarDict["radio-find-type"].set(setting)
-        found = True ; break
-if not found:
-    self.svarDict["radio-find-type"].set("plain-search")
-    
-found = False
-for var,setting in (
-    ("suboutline_only","suboutline-only"),
-    ("node_only","node-only"),
-    # ("selection_only","selection-only"),
-):
-    val = self.svarDict[var].get()
-    if val:
-        self.svarDict["radio-search-scope"].set(setting)
-        found = True ; break
-if not found:
-    self.svarDict["radio-search-scope"].set("entire-outline")
-#@-node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
-#@-node:ekr.20031218072017.2059:find.init
-#@-node:ekr.20031218072017.3053:leoFind.__init__
+#@-node:ekr.20031218072017.3053:leoFind.__init__ & helpers
 #@+node:ekr.20060123065756.1:Top Level Buttons
 #@+node:ekr.20031218072017.3057:changeAllButton
 # The user has pushed the "Change All" button from the find panel.
@@ -3060,7 +2980,7 @@ def change(self,event=None):
 #@+node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
 def changeAll(self):
     
-    g.trace(g.callers())
+    # g.trace(g.callers())
 
     c = self.c ; u = c.undoer ; undoType = 'Change All'
     current = c.currentPosition()
@@ -3628,8 +3548,7 @@ def bringToFront (self):
 #@+node:ekr.20061111084423.1:oops (leoFind)
 def oops(self):
     print ("leoFind oops:",
-        g.callers(),"should be overridden in subclass")
-#@nonl
+        g.callers(10),"should be overridden in subclass")
 #@-node:ekr.20061111084423.1:oops (leoFind)
 #@+node:ekr.20051020120306.27:selectAllFindText (leoFind)
 def selectAllFindText (self,event=None):
@@ -3904,7 +3823,7 @@ class findTab (leoFind):
 #@+node:ekr.20051020120306.11:__init__ & initGui
 def __init__(self,c,parentFrame):
     
-    # g.trace('findTab',g.callers())
+    # g.trace('findTab',c)
 
     # Init the base class...
     leoFind.__init__(self,c,title='Find Tab')
@@ -3928,17 +3847,15 @@ def __init__(self,c,parentFrame):
 #@nonl
 #@-node:ekr.20051020120306.11:__init__ & initGui
 #@+node:ekr.20061212092124:Defined in subclasses
-def createBindings (self):
-    self.oops()
-    
-def createFrame (self):
-    self.oops()
-    
-def initGui (self):
-    pass # Optional method.
-    
+def createBindings (self):          self.oops()
+def createFrame (self):             self.oops()
+def getOption (self,ivar):          self.oops()
+def init (self):                    self.oops()
+def initGui (self):                 pass # Optional method.
+def setOption (self,ivar,val):      self.oops()
+def toggleOption (self,ivar,val):   self.oops()
+
 # self.oops is defined in the leoFind class.
-#@nonl
 #@-node:ekr.20061212092124:Defined in subclasses
 #@-node:ekr.20051020120306.10:Birth & death
 #@+node:ekr.20060221074900:Callbacks
@@ -7273,7 +7190,7 @@ def yank (self,event):
         c.frame.body.forceFullRecolor()
         self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050930091642.1:yank
-#@+node:ekr.20050930091642.2:yankPop TODO
+#@+node:ekr.20050930091642.2:yankPop
 def yankPop (self,event):
     
     '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
@@ -7297,7 +7214,7 @@ def yankPop (self,event):
         w.tag_delete('kb') ###
         w.insert('insert',s,('kb')) ###
         w.setInsertPoint(ins)
-#@-node:ekr.20050930091642.2:yankPop TODO
+#@-node:ekr.20050930091642.2:yankPop
 #@+node:ekr.20050920084036.128:zapToCharacter
 def zapToCharacter (self,event):
     
@@ -7485,7 +7402,7 @@ def sortColumns (self,event):
     finally:
         self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.119:sortColumns
-#@+node:ekr.20050920084036.120:sortFields (create unit tests)
+#@+node:ekr.20050920084036.120:sortFields
 def sortFields (self,event,which=None):
     
     '''Divide the selected text into lines and sort by comparing the contents of
@@ -7538,7 +7455,7 @@ def sortFields (self,event,which=None):
     w.setInsertPoint(ins)
 
     self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.120:sortFields (create unit tests)
+#@-node:ekr.20050920084036.120:sortFields
 #@-node:ekr.20050920084036.117:sort...
 #@+node:ekr.20050920084036.261:incremental search...
 def isearchForward (self,event):
@@ -7734,7 +7651,7 @@ def endSearch (self,i,j):
 #@-node:ekr.20060203072636:endSearch
 #@-node:ekr.20050920084036.261:incremental search...
 #@+node:ekr.20061102064720.5:spell classes
-#@+node:ekr.20051025071455.22:createSpellTab
+#@+node:ekr.20051025071455.22:editCommands.createSpellTab
 def createSpellTab(self,parentFrame):
 
     """Create the Spell tab."""
@@ -7755,7 +7672,7 @@ def createSpellTab(self,parentFrame):
     self.listBox.bind("<Double-1>",self.onChangeThenFindButton)
     self.listBox.bind("<Button-1>",self.onSelectListBox)
     self.listBox.bind("<Map>",self.onMap)
-#@+node:ekr.20051113090322:<< Create the outer frames >>
+#@+node:ekr.20051113090322:<< Create the outer frames >> (spellTab)
 self.outerScrolledFrame = Pmw.ScrolledFrame(
     parentFrame,usehullsize = 1)
 
@@ -7765,8 +7682,8 @@ self.outerFrame.configure(background=bg)
 for z in ('borderframe','clipper','frame','hull'):
     self.outerScrolledFrame.component(z).configure(
         relief='flat',background=bg)
-#@-node:ekr.20051113090322:<< Create the outer frames >>
-#@+node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
+#@-node:ekr.20051113090322:<< Create the outer frames >> (spellTab)
+#@+node:ekr.20051025071455.23:<< Create the text and suggestion panes >> spellTab (contains Tk code)
 f2 = Tk.Frame(outer,bg=bg)
 f2.pack(side='top',expand=0,fill='x')
 
@@ -7787,7 +7704,7 @@ bar, txt = listBoxBar, self.listBox
 txt ['yscrollcommand'] = bar.set
 bar ['command'] = txt.yview
 bar.pack(side='right',fill='y')
-#@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
+#@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >> spellTab (contains Tk code)
 #@+node:ekr.20051025071455.24:<< Create the spelling buttons >>
 # Create the alignment panes
 buttons1 = Tk.Frame(outer,bd=1,bg=bg)
@@ -7814,7 +7731,7 @@ for frame, text, command in (
  self.changeButton, self.changeFindButton,
  self.ignoreButton, self.hideButton) = buttonList
 #@-node:ekr.20051025071455.24:<< Create the spelling buttons >>
-#@-node:ekr.20051025071455.22:createSpellTab
+#@-node:ekr.20051025071455.22:editCommands.createSpellTab
 #@+node:ekr.20051025071455.38:change (spellTab)
 def change(self,event=None):
     """Make the selected change to the text"""
@@ -7842,7 +7759,7 @@ def change(self,event=None):
     c.bodyWantsFocusNow()
     return False
 #@-node:ekr.20051025071455.38:change (spellTab)
-#@+node:ekr.20051025071455.47:findNextWord (tkSpell)
+#@+node:ekr.20051025071455.47:findNextWord (spellTab)
 def findNextWord(self,p):
     """Scan for the next word, leaving the result in the work widget"""
 
@@ -7873,7 +7790,7 @@ def findNextWord(self,p):
                 w.setSelectionRange(0,0,insert=0)
     return None,None
 #@nonl
-#@-node:ekr.20051025071455.47:findNextWord (tkSpell)
+#@-node:ekr.20051025071455.47:findNextWord (spellTab)
 #@+node:ekr.20051025071455.44:fillbox (spellTab)
 def fillbox(self, alts, word=None):
     """Update the suggestions listbox in the Check Spelling dialog."""
@@ -8286,7 +8203,7 @@ def openRectangle (self,event):
 
     self.endCommand()
 #@-node:ekr.20050920084036.230:openRectangle
-#@+node:ekr.20050920084036.229:yankRectangle TODO (create unit test)
+#@+node:ekr.20050920084036.229:yankRectangle
 def yankRectangle (self,event,killRect=None):
     
     '''Yank into the rectangle defined by the start and end of selected text.'''
@@ -8340,7 +8257,7 @@ def yankRectangle (self,event,killRect=None):
         if w.index('%s.0 lineend +1c' % i1) == w.index('end'):
             w.insert('%s.0 lineend' % i1,'\n')
         i1 += 1
-#@-node:ekr.20050920084036.229:yankRectangle TODO (create unit test)
+#@-node:ekr.20050920084036.229:yankRectangle
 #@+node:ekr.20050920084036.232:stringRectangle
 def stringRectangle (self,event):
     
@@ -8537,7 +8454,7 @@ colors = (
     "MediumPurple3", "MediumPurple4", "thistle1", "thistle2", "thistle3",
     "thistle4" )
 #@-node:ekr.20051019183105.2:<< define colors >>
-#@+node:ekr.20051019183105.3:createColorPicker
+#@+node:ekr.20051019183105.3:editCommands.createColorPicker (Tk code)
 def createColorPicker (self,parent,colors):
     
     colors = list(colors)
@@ -8586,9 +8503,9 @@ b = Tk.Button(f3,text="Color Picker...",
     command=pickerCallback,background=bg)
 b.pack(side='left',pady=4)
 #@-node:ekr.20051019183105.5:<< create picker button and callback >>
-#@-node:ekr.20051019183105.3:createColorPicker
+#@-node:ekr.20051019183105.3:editCommands.createColorPicker (Tk code)
 #@-node:ekr.20051019183105.1:show-colors
-#@+node:ekr.20051019201809:show-fonts & helpers
+#@+node:ekr.20051019201809:editCommands.show-fonts & helpers
 def showFonts (self,event):
     
     '''Open a tab in the log pane showing a font picker.'''
@@ -8745,7 +8662,7 @@ def hideTab (self,event=None):
     c.frame.log.selectTab('Log')
     c.bodyWantsFocus()
 #@-node:ekr.20060726134339:hideTab
-#@-node:ekr.20051019201809:show-fonts & helpers
+#@-node:ekr.20051019201809:editCommands.show-fonts & helpers
 #@-node:ekr.20051019183105:color & font
 #@+node:ekr.20050920084036.132:comment column...
 #@+node:ekr.20050920084036.133:setCommentColumn
@@ -8755,10 +8672,6 @@ def setCommentColumn (self,event):
 
     w = self.editWidget(event)
     if not w: return
-
-    #cc = w.index('insert')
-    #cc1, cc2 = cc.split('.')
-    #self.ccolumn = cc2
 
     s = w.getAllText()
     ins = w.getInsertPoint()
@@ -8790,7 +8703,7 @@ def indentToCommentColumn (self,event):
 #@-node:ekr.20050920084036.134:indentToCommentColumn (test)
 #@-node:ekr.20050920084036.132:comment column...
 #@+node:ekr.20050920084036.58:dynamic abbreviation...
-#@+node:ekr.20050920084036.59:dynamicExpansion (to do)
+#@+node:ekr.20050920084036.59:dynamicExpansion LATER
 def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
 
     k = self.k
@@ -8830,8 +8743,8 @@ def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
         if not rlist: return
         txt = rlist.pop()
         doDa(txt)
-#@-node:ekr.20050920084036.59:dynamicExpansion (to do)
-#@+node:ekr.20050920084036.60:dynamicExpansion2 (to do)
+#@-node:ekr.20050920084036.59:dynamicExpansion LATER
+#@+node:ekr.20050920084036.60:dynamicExpansion2 LATER
 def dynamicExpansion2 (self,event):
 
     k = self.k
@@ -8847,7 +8760,7 @@ def dynamicExpansion2 (self,event):
     if dEstring:
         w.delete(i,i2)
         w.insert(i,dEstring)
-#@-node:ekr.20050920084036.60:dynamicExpansion2 (to do)
+#@-node:ekr.20050920084036.60:dynamicExpansion2 LATER
 #@+node:ekr.20050920084036.61:getDynamicList (helper)
 def getDynamicList (self,w,txt,rlist):
 
@@ -9041,7 +8954,7 @@ def indentRelative (self,event):
     s = w.getAllText()
     ins = w.getInsertPoint()
     oldSel = w.getSelectionRange()
-    oldYview = w.yview()
+    oldYview = w.getYScrollPosition()
     # Find the previous non-blank line
     i,j = g.getLine(s,ins)
     while 1:
@@ -9723,9 +9636,6 @@ def fillRegion (self,event):
     
     self.beginCommand(undoType='fill-region')
 
-    #s1 = w.index('sel.first')
-    #s2 = w.index('sel.last')
-    #w.mark_set('insert',s1)
     s1,s2 = w.getSelectionRange()
     w.setInsertPoint(s1)
     self.backwardParagraph(event)
@@ -9875,7 +9785,7 @@ def countRegion (self,event):
     k.setLabelGrey('Region has %s lines, %s character%s' % (
         lines,chars,g.choose(chars==1,'','s')))
 #@-node:ekr.20050920084036.109:countRegion
-#@+node:ekr.20060417183606:moveLinesDown (pass hand test)
+#@+node:ekr.20060417183606:moveLinesDown
 def moveLinesDown (self,event):
     
     '''Move all lines containing any selected text down one line,
@@ -9916,7 +9826,6 @@ def moveLinesDown (self,event):
                 c.selectPosition(p)
             finally:
                 c.endUpdate()
-            w.focus_force()
             s = w.getAllText()
             w.insert(0,lines)
             if not lines.endswith('\n'): w.insert(len(lines),'\n')
@@ -9925,8 +9834,8 @@ def moveLinesDown (self,event):
             changed = True
     finally:
         self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060417183606:moveLinesDown (pass hand test)
-#@+node:ekr.20060417183606.1:moveLinesUp (pass hand test)
+#@-node:ekr.20060417183606:moveLinesDown
+#@+node:ekr.20060417183606.1:moveLinesUp
 def moveLinesUp (self,event):
     
     '''Move all lines containing any selected text up one line,
@@ -9966,7 +9875,6 @@ def moveLinesUp (self,event):
                 c.selectPosition(p)
             finally:
                 c.endUpdate()
-            w.focus_force()
             s = w.getAllText()
             if not s.endswith('\n'): w.insert('end','\n')
             w.insert('end',lines)
@@ -9976,7 +9884,7 @@ def moveLinesUp (self,event):
             changed = True
     finally:
         self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060417183606.1:moveLinesUp (pass hand test)
+#@-node:ekr.20060417183606.1:moveLinesUp
 #@+node:ekr.20050920084036.110:reverseRegion
 def reverseRegion (self,event):
     
@@ -12242,15 +12150,14 @@ if w.leo_selection:
 #@-node:ekr.20061017083312:selectEditor (tkBody)
 #@+node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
 def getYScrollPosition (self):
-    return self.bodyCtrl.yview()
+    return self.bodyCtrl.getYScrollPosition()
     
 def setYScrollPosition (self,scrollPosition):
     if len(scrollPosition) == 2:
         first,last = scrollPosition
     else:
         first = scrollPosition
-    self.bodyCtrl.yview('moveto',first)
-    
+    self.bodyCtrl.setYScrollPosition(first)
 #@-node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
 #@-node:ekr.20061110115939:Unit tests needed
 #@+node:ekr.20061111083050:What I did
@@ -12478,8 +12385,6 @@ def getEditableTextRange (self):
     # g.trace(len(s),repr(s))
 
     i = len(k.mb_prefix)
-    ###while s.endswith('\n') or s.endswith('\r'):
-    ###    s = s[:-1]
     j = len(s)
     return i,j
 #@nonl
@@ -13040,7 +12945,7 @@ def getName (self):
 #@nonl
 #@-node:ekr.20061117160129:getName (Tk.Text)
 #@+node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
-#@+node:ekr.20061113151148.4:delete (passed)
+#@+node:ekr.20061113151148.4:delete
 def delete(self,i,j=None):
 
     w = self
@@ -13051,90 +12956,8 @@ def delete(self,i,j=None):
     else:
         j = w.toGuiIndex(j)
         Tk.Text.delete(w,i,j)
-#@-node:ekr.20061113151148.4:delete (passed)
-#@+node:ekr.20061113151148.5:get (passed)
-def get(self,i,j=None):
-
-    w = self
-    i = w.toGuiIndex(i)
-
-    if j is None:
-        return Tk.Text.get(w,i)
-    else:
-        j = w.toGuiIndex(j)
-        return Tk.Text.get(w,i,j)
-#@-node:ekr.20061113151148.5:get (passed)
-#@+node:ekr.20061113151148.6:insert (passed)
-# The signature is more restrictive than the Tk.Text.insert method.
-
-def insert(self,i,s):
-
-    w = self
-    i = w.toGuiIndex(i)
-    Tk.Text.insert(w,i,s)
-
-#@-node:ekr.20061113151148.6:insert (passed)
-#@+node:ekr.20061113151148.7:mark_set (passed)
-def mark_set(self,markName,i):
-
-    w = self
-    i = w.toGuiIndex(i)
-    Tk.Text.mark_set(w,markName,i)
-#@-node:ekr.20061113151148.7:mark_set (passed)
-#@+node:ekr.20061113151148.8:tag_add (passed)
-# The signature is slightly different than the Tk.Text.insert method.
-
-def tag_add(self,tagName,i,j=None,*args):
-    
-    w = self
-    i = w.toGuiIndex(i)
-
-    if j is None:
-        Tk.Text.tag_add(w,tagName,i,*args)
-    else:
-        j = w.toGuiIndex(j)
-        Tk.Text.tag_add(w,tagName,i,j,*args)
-        
-#@-node:ekr.20061113151148.8:tag_add (passed)
-#@+node:ekr.20070116073907:tag_remove (test)
-def tag_remove (self,tagName,i,j=None,*args):
-
-    w = self
-    i = w.toGuiIndex(i)
-
-    if j is None:
-        Tk.Text.tag_remove(w,tagName,i,*args)
-    else:
-        j = w.toGuiIndex(j)
-        Tk.Text.tag_remove(w,tagName,i,j,*args)
-
-    
-    
-#@nonl
-#@-node:ekr.20070116073907:tag_remove (test)
-#@+node:ekr.20061113151148.9:tag_ranges (passed)
-def tag_ranges(self,tagName):
-    
-    w = self
-    aList = Tk.Text.tag_ranges(w,tagName)
-    aList = [w.toPythonIndex(z) for z in aList]
-    return tuple(aList)
-#@-node:ekr.20061113151148.9:tag_ranges (passed)
-#@-node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
-#@+node:ekr.20061113151148.10:Convenience methods (tkTextWidget)
-# These have no direct Tk equivalents.  They used to be defined in the gui class.
-# These methods must take care not to call overridden methods.
-#@+node:ekr.20061113151148.11:w.deleteTextSelection
-def deleteTextSelection (self): # tkTextWidget
-    
-    w = self
-    sel = Tk.Text.tag_ranges(w,"sel")
-    if len(sel) == 2:
-        start,end = sel
-        if Tk.Text.compare(w,start,"!=",end):
-            Tk.Text.delete(w,start,end)
-#@-node:ekr.20061113151148.11:w.deleteTextSelection
-#@+node:ekr.20061113151148.12:w.flashCharacter
+#@-node:ekr.20061113151148.4:delete
+#@+node:ekr.20061113151148.12:flashCharacter
 def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
 
     w = self
@@ -13157,8 +12980,20 @@ def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidge
     except Exception:
         pass ; g.es_exception()
 #@nonl
-#@-node:ekr.20061113151148.12:w.flashCharacter
-#@+node:ekr.20061113151148.13:w.getAllText
+#@-node:ekr.20061113151148.12:flashCharacter
+#@+node:ekr.20061113151148.5:get
+def get(self,i,j=None):
+
+    w = self
+    i = w.toGuiIndex(i)
+
+    if j is None:
+        return Tk.Text.get(w,i)
+    else:
+        j = w.toGuiIndex(j)
+        return Tk.Text.get(w,i,j)
+#@-node:ekr.20061113151148.5:get
+#@+node:ekr.20061113151148.13:getAllText
 def getAllText (self): # tkTextWidget.
     
     """Return all the text of Tk.Text widget w converted to unicode."""
@@ -13170,16 +13005,16 @@ def getAllText (self): # tkTextWidget.
         return u""
     else:
         return g.toUnicode(s,g.app.tkEncoding)
-#@-node:ekr.20061113151148.13:w.getAllText
-#@+node:ekr.20061113151148.14:w.getInsertPoint
+#@-node:ekr.20061113151148.13:getAllText
+#@+node:ekr.20061113151148.14:getInsertPoint
 def getInsertPoint(self): # tkTextWidget.
     
     w = self
     i = Tk.Text.index(w,'insert')
     i = w.toPythonIndex(i)
     return i
-#@-node:ekr.20061113151148.14:w.getInsertPoint
-#@+node:ekr.20061113151148.15:w.getSelectedText
+#@-node:ekr.20061113151148.14:getInsertPoint
+#@+node:ekr.20061113151148.15:getSelectedText
 def getSelectedText (self): # tkTextWidget.
 
     w = self
@@ -13190,8 +13025,8 @@ def getSelectedText (self): # tkTextWidget.
         return g.toUnicode(s,g.app.tkEncoding)
     else:
         return u""
-#@-node:ekr.20061113151148.15:w.getSelectedText
-#@+node:ekr.20061113151148.16:w.getSelectionRange
+#@-node:ekr.20061113151148.15:getSelectedText
+#@+node:ekr.20061113151148.16:getSelectionRange
 def getSelectionRange (self,sort=True): # tkTextWidget.
     
     """Return a tuple representing the selected range.
@@ -13209,15 +13044,38 @@ def getSelectionRange (self,sort=True): # tkTextWidget.
     if sort and i > j: i,j = j,i
     return i,j
 #@nonl
-#@-node:ekr.20061113151148.16:w.getSelectionRange
-#@+node:ekr.20061113151148.17:w.hasSelection (could be in base class)
+#@-node:ekr.20061113151148.16:getSelectionRange
+#@+node:ekr.20070211185433.1:getYScrollPosition
+def getYScrollPosition (self):
+
+     w = self
+     return w.yview()
+#@-node:ekr.20070211185433.1:getYScrollPosition
+#@+node:ekr.20061113151148.17:hasSelection
 def hasSelection (self):
     
     w = self
     i,j = w.getSelectionRange()
     return i != j
-#@-node:ekr.20061113151148.17:w.hasSelection (could be in base class)
-#@+node:ekr.20061113151148.18:w.replace (could be in base class)
+#@-node:ekr.20061113151148.17:hasSelection
+#@+node:ekr.20061113151148.6:insert
+# The signature is more restrictive than the Tk.Text.insert method.
+
+def insert(self,i,s):
+
+    w = self
+    i = w.toGuiIndex(i)
+    Tk.Text.insert(w,i,s)
+
+#@-node:ekr.20061113151148.6:insert
+#@+node:ekr.20061113151148.7:mark_set
+def mark_set(self,markName,i):
+
+    w = self
+    i = w.toGuiIndex(i)
+    Tk.Text.mark_set(w,markName,i)
+#@-node:ekr.20061113151148.7:mark_set
+#@+node:ekr.20061113151148.18:replace
 def replace (self,i,j,s): # tkTextWidget
     
     w = self
@@ -13225,8 +13083,21 @@ def replace (self,i,j,s): # tkTextWidget
 
     Tk.Text.delete(w,i,j)
     Tk.Text.insert(w,i,s)
-#@-node:ekr.20061113151148.18:w.replace (could be in base class)
-#@+node:ekr.20061113151148.19:w.selectAllText
+#@-node:ekr.20061113151148.18:replace
+#@+node:ekr.20061113180616:see
+def see (self,i): # tkTextWidget.
+
+    w = self
+    i = w.toGuiIndex(i)
+    Tk.Text.see(w,i)
+#@-node:ekr.20061113180616:see
+#@+node:ekr.20061113175002:seeInsertPoint
+def seeInsertPoint (self): # tkTextWidget.
+
+    w = self
+    Tk.Text.see(w,'insert')
+#@-node:ekr.20061113175002:seeInsertPoint
+#@+node:ekr.20061113151148.19:selectAllText
 def selectAllText (self,insert=None): # tkTextWidget
     
     '''Select all text of the widget, *not* including the extra newline.'''
@@ -13234,36 +13105,29 @@ def selectAllText (self,insert=None): # tkTextWidget
     w = self ; s = w.getAllText()
     if insert is None: insert = len(s)
     w.setSelectionRange(0,len(s),insert=insert)
-#@-node:ekr.20061113151148.19:w.selectAllText
-#@+node:ekr.20061113151148.20:w.setAllText (could be in base class)
+#@-node:ekr.20061113151148.19:selectAllText
+#@+node:ekr.20061113151148.20:setAllText
 def setAllText (self,s): # tkTextWidget
 
     w = self
+    
+    state = Tk.Text.cget(w,"state")
+    Tk.Text.configure(w,state="normal")
+    
     Tk.Text.delete(w,'1.0','end')
     Tk.Text.insert(w,'1.0',s)
-#@-node:ekr.20061113151148.20:w.setAllText (could be in base class)
-#@+node:ekr.20061113180616:w.see
-def see (self,i): # tkTextWidget.
-
-    w = self
-    i = w.toGuiIndex(i)
-    Tk.Text.see(w,i)
-#@-node:ekr.20061113180616:w.see
-#@+node:ekr.20061113175002:w.seeInsertPoint
-def seeInsertPoint (self): # tkTextWidget.
-
-    w = self
-    Tk.Text.see(w,'insert')
-#@-node:ekr.20061113175002:w.seeInsertPoint
-#@+node:ekr.20061113151148.21:w.setInsertPoint
+    
+    Tk.Text.configure(w,state=state)
+#@-node:ekr.20061113151148.20:setAllText
+#@+node:ekr.20061113151148.21:setInsertPoint
 def setInsertPoint (self,i): # tkTextWidget.
 
     w = self
     i = w.toGuiIndex(i)
     # g.trace(i,g.callers())
     Tk.Text.mark_set(w,'insert',i)
-#@-node:ekr.20061113151148.21:w.setInsertPoint
-#@+node:ekr.20061113151148.22:w.setSelectionRange
+#@-node:ekr.20061113151148.21:setInsertPoint
+#@+node:ekr.20061113151148.22:setSelectionRange
 def setSelectionRange (self,i,j,insert=None): # tkTextWidget
     
     w = self
@@ -13280,23 +13144,25 @@ def setSelectionRange (self,i,j,insert=None): # tkTextWidget
 
     if insert is not None:
         w.setInsertPoint(insert)
-#@-node:ekr.20061113151148.22:w.setSelectionRange
-#@+node:ekr.20061113151148.23:w.xyToGui/PythonIndex
-def xyToGuiIndex (self,x,y): # tkTextWidget
+#@-node:ekr.20061113151148.22:setSelectionRange
+#@+node:ekr.20070211185433:setYScrollPosition
+def setYScrollPosition (self,i):
+
+     w = self
+     w.yview('moveto',i)
+#@nonl
+#@-node:ekr.20070211185433:setYScrollPosition
+#@+node:ekr.20070212081121:setWidth
+def setWidth (self,width):
+    
+    '''Set the width of the widget.
+    This is only called for headline widgets,
+    and gui's may choose not to do anything here.'''
     
     w = self
-    return Tk.Text.index(w,"@%d,%d" % (x,y))
-    
-def xyToPythonIndex(self,x,y): # tkTextWidget
-    
-    w = self
-    i = Tk.Text.index(w,"@%d,%d" % (x,y))
-    i = w.toPythonIndex(i)
-    return i
-#@-node:ekr.20061113151148.23:w.xyToGui/PythonIndex
-#@-node:ekr.20061113151148.10:Convenience methods (tkTextWidget)
-#@-node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)
-#@+node:ekr.20061113151148.8:tag_add (passed)
+    w.configure(width=width)
+#@-node:ekr.20070212081121:setWidth
+#@+node:ekr.20061113151148.8:tag_add
 # The signature is slightly different than the Tk.Text.insert method.
 
 def tag_add(self,tagName,i,j=None,*args):
@@ -13310,8 +13176,72 @@ def tag_add(self,tagName,i,j=None,*args):
         j = w.toGuiIndex(j)
         Tk.Text.tag_add(w,tagName,i,j,*args)
         
-#@-node:ekr.20061113151148.8:tag_add (passed)
-#@+node:ekr.20061113151148.6:insert (passed)
+#@-node:ekr.20061113151148.8:tag_add
+#@+node:ekr.20061113151148.9:tag_ranges
+def tag_ranges(self,tagName):
+    
+    w = self
+    aList = Tk.Text.tag_ranges(w,tagName)
+    aList = [w.toPythonIndex(z) for z in aList]
+    return tuple(aList)
+#@-node:ekr.20061113151148.9:tag_ranges
+#@+node:ekr.20070116073907:tag_remove
+def tag_remove (self,tagName,i,j=None,*args):
+
+    w = self
+    i = w.toGuiIndex(i)
+
+    if j is None:
+        Tk.Text.tag_remove(w,tagName,i,*args)
+    else:
+        j = w.toGuiIndex(j)
+        Tk.Text.tag_remove(w,tagName,i,j,*args)
+
+    
+    
+#@nonl
+#@-node:ekr.20070116073907:tag_remove
+#@+node:ekr.20061113151148.11:w.deleteTextSelection
+def deleteTextSelection (self): # tkTextWidget
+    
+    w = self
+    sel = Tk.Text.tag_ranges(w,"sel")
+    if len(sel) == 2:
+        start,end = sel
+        if Tk.Text.compare(w,start,"!=",end):
+            Tk.Text.delete(w,start,end)
+#@-node:ekr.20061113151148.11:w.deleteTextSelection
+#@+node:ekr.20061113151148.23:xyToGui/PythonIndex
+def xyToGuiIndex (self,x,y): # tkTextWidget
+    
+    w = self
+    return Tk.Text.index(w,"@%d,%d" % (x,y))
+    
+def xyToPythonIndex(self,x,y): # tkTextWidget
+    
+    w = self
+    i = Tk.Text.index(w,"@%d,%d" % (x,y))
+    i = w.toPythonIndex(i)
+    return i
+#@-node:ekr.20061113151148.23:xyToGui/PythonIndex
+#@-node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
+#@-node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)
+#@+node:ekr.20061113151148.8:tag_add
+# The signature is slightly different than the Tk.Text.insert method.
+
+def tag_add(self,tagName,i,j=None,*args):
+    
+    w = self
+    i = w.toGuiIndex(i)
+
+    if j is None:
+        Tk.Text.tag_add(w,tagName,i,*args)
+    else:
+        j = w.toGuiIndex(j)
+        Tk.Text.tag_add(w,tagName,i,j,*args)
+        
+#@-node:ekr.20061113151148.8:tag_add
+#@+node:ekr.20061113151148.6:insert
 # The signature is more restrictive than the Tk.Text.insert method.
 
 def insert(self,i,s):
@@ -13320,7 +13250,7 @@ def insert(self,i,s):
     i = w.toGuiIndex(i)
     Tk.Text.insert(w,i,s)
 
-#@-node:ekr.20061113151148.6:insert (passed)
+#@-node:ekr.20061113151148.6:insert
 #@+node:ekr.20060528100747.3:tkBody.createTextWidget
 def createTextWidget (self,frame,parentFrame,p,name):
     
@@ -14152,7 +14082,7 @@ for key in d.keys():
         b = d2.get(key2)
         print '%20s, %5s, %s' % (key2, b.pane,b.commandName)
 #@-node:ekr.20061118044529.1:Print k.masterBindingsDict
-#@+node:ekr.20061031132907:Events (tkGui)
+#@+node:ekr.20061031132907:Events (leoGui)
 def event_generate(self,w,kind,*args,**keys):
     '''Generate an event.'''
     pass
@@ -14175,7 +14105,7 @@ def eventXY (self,event,c=None):
     else:
         return 0,0
 #@nonl
-#@-node:ekr.20061031132907:Events (tkGui)
+#@-node:ekr.20061031132907:Events (leoGui)
 #@+node:ekr.20061031131434.146:masterKeyHandler
 master_key_count = 0
 
@@ -14739,15 +14669,15 @@ def runEditCommandTest (c,p):
         c.endUpdate(False) # Don't redraw.
 #@nonl
 #@-node:ekr.20061008140603:runEditCommandTest
-#@+node:ekr.20061113151148.21:w.setInsertPoint
+#@+node:ekr.20061113151148.21:setInsertPoint
 def setInsertPoint (self,i): # tkTextWidget.
 
     w = self
     i = w.toGuiIndex(i)
     # g.trace(i,g.callers())
     Tk.Text.mark_set(w,'insert',i)
-#@-node:ekr.20061113151148.21:w.setInsertPoint
-#@+node:ekr.20061113151148.22:w.setSelectionRange
+#@-node:ekr.20061113151148.21:setInsertPoint
+#@+node:ekr.20061113151148.22:setSelectionRange
 def setSelectionRange (self,i,j,insert=None): # tkTextWidget
     
     w = self
@@ -14764,7 +14694,7 @@ def setSelectionRange (self,i,j,insert=None): # tkTextWidget
 
     if insert is not None:
         w.setInsertPoint(insert)
-#@-node:ekr.20061113151148.22:w.setSelectionRange
+#@-node:ekr.20061113151148.22:setSelectionRange
 #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
 #@+node:ekr.20061117085824:w.toGuiIndex
 def toGuiIndex (self,i):
@@ -15067,7 +14997,7 @@ def replaceBackSlashes (self,s):
 #@-node:ekr.20070105165924:replaceBackSlashes
 #@-node:ekr.20060526081931:searchHelper & allies
 #@-node:ekr.20031218072017.3077:search & helpers
-#@+node:ekr.20061113151148.22:w.setSelectionRange
+#@+node:ekr.20061113151148.22:setSelectionRange
 def setSelectionRange (self,i,j,insert=None): # tkTextWidget
     
     w = self
@@ -15084,15 +15014,15 @@ def setSelectionRange (self,i,j,insert=None): # tkTextWidget
 
     if insert is not None:
         w.setInsertPoint(insert)
-#@-node:ekr.20061113151148.22:w.setSelectionRange
-#@+node:ekr.20061113151148.21:w.setInsertPoint
+#@-node:ekr.20061113151148.22:setSelectionRange
+#@+node:ekr.20061113151148.21:setInsertPoint
 def setInsertPoint (self,i): # tkTextWidget.
 
     w = self
     i = w.toGuiIndex(i)
     # g.trace(i,g.callers())
     Tk.Text.mark_set(w,'insert',i)
-#@-node:ekr.20061113151148.21:w.setInsertPoint
+#@-node:ekr.20061113151148.21:setInsertPoint
 #@+node:ekr.20031218072017.3070:changeSelection
 # Replace selection with self.change_text.
 # If no selection, insert self.change_text at the cursor.
@@ -15445,7 +15375,7 @@ def updateTab (self,p,w):
         w.insert(i,' ' * n)
 #@-node:ekr.20051026092433:updateTab (passed)
 #@-node:ekr.20051125080855:selfInsertCommand & helpers
-#@+node:ekr.20061113151148.12:w.flashCharacter
+#@+node:ekr.20061113151148.12:flashCharacter
 def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
 
     w = self
@@ -15468,7 +15398,7 @@ def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidge
     except Exception:
         pass ; g.es_exception()
 #@nonl
-#@-node:ekr.20061113151148.12:w.flashCharacter
+#@-node:ekr.20061113151148.12:flashCharacter
 #@+node:ekr.20031218072017.1827:c.findMatchingBracket & helper
 def findMatchingBracket (self,event=None):
     
@@ -15645,8 +15575,6 @@ def getEditableTextRange (self):
     # g.trace(len(s),repr(s))
 
     i = len(k.mb_prefix)
-    ###while s.endswith('\n') or s.endswith('\r'):
-    ###    s = s[:-1]
     j = len(s)
     return i,j
 #@nonl
@@ -15693,7 +15621,7 @@ def convertRowColToPythonIndex (s,row,col):
     return prev + col
 #@-node:ekr.20050315071727:g.convertRowColToPythonIndex
 #@-node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
-#@+node:ekr.20061113151148.22:w.setSelectionRange
+#@+node:ekr.20061113151148.22:setSelectionRange
 def setSelectionRange (self,i,j,insert=None): # tkTextWidget
     
     w = self
@@ -15710,7 +15638,7 @@ def setSelectionRange (self,i,j,insert=None): # tkTextWidget
 
     if insert is not None:
         w.setInsertPoint(insert)
-#@-node:ekr.20061113151148.22:w.setSelectionRange
+#@-node:ekr.20061113151148.22:setSelectionRange
 #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
 #@+node:ekr.20061117085824:w.toGuiIndex
 def toGuiIndex (self,i):
@@ -19532,7 +19460,7 @@ def moveToHelper (self,event,spot,extend):
     self.extendHelper(w,extend,spot,upOrDown=False)
 #@nonl
 #@-node:ekr.20051218122116:moveToHelper
-#@+node:ekr.20061113151148.8:tag_add (passed)
+#@+node:ekr.20061113151148.8:tag_add
 # The signature is slightly different than the Tk.Text.insert method.
 
 def tag_add(self,tagName,i,j=None,*args):
@@ -19546,7 +19474,7 @@ def tag_add(self,tagName,i,j=None,*args):
         j = w.toGuiIndex(j)
         Tk.Text.tag_add(w,tagName,i,j,*args)
         
-#@-node:ekr.20061113151148.8:tag_add (passed)
+#@-node:ekr.20061113151148.8:tag_add
 #@+node:ekr.20050920084036.96:extend-to-paragraph & helper
 def extendToParagraph (self,event):
     
@@ -20169,7 +20097,7 @@ w.delete(i,ins)
 w.setSelectionRange(i,i,insert=i)
 #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
 #@-node:ekr.20051026092433.1:backwardDeleteCharacter
-#@+node:ekr.20061113151148.19:w.selectAllText
+#@+node:ekr.20061113151148.19:selectAllText
 def selectAllText (self,insert=None): # tkTextWidget
     
     '''Select all text of the widget, *not* including the extra newline.'''
@@ -20177,7 +20105,7 @@ def selectAllText (self,insert=None): # tkTextWidget
     w = self ; s = w.getAllText()
     if insert is None: insert = len(s)
     w.setSelectionRange(0,len(s),insert=insert)
-#@-node:ekr.20061113151148.19:w.selectAllText
+#@-node:ekr.20061113151148.19:selectAllText
 #@-node:ekr.20061129104116:Select-all and delete shows too much in body pane
 #@+node:ekr.20061206103433:Fixed colorizer bug: section references not colored properly
 #@+node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
@@ -21187,7 +21115,7 @@ w.delete(i,ins)
 w.setSelectionRange(i,i,insert=i)
 #@-node:ekr.20051026092746:<< backspace with negative tab_width >>
 #@-node:ekr.20051026092433.1:backwardDeleteCharacter
-#@+node:ekr.20061113151148.19:w.selectAllText
+#@+node:ekr.20061113151148.19:selectAllText
 def selectAllText (self,insert=None): # tkTextWidget
     
     '''Select all text of the widget, *not* including the extra newline.'''
@@ -21195,7 +21123,7 @@ def selectAllText (self,insert=None): # tkTextWidget
     w = self ; s = w.getAllText()
     if insert is None: insert = len(s)
     w.setSelectionRange(0,len(s),insert=insert)
-#@-node:ekr.20061113151148.19:w.selectAllText
+#@-node:ekr.20061113151148.19:selectAllText
 #@-node:ekr.20061118044529:Fixed bugs in headline
 #@-node:ekr.20061128083024:Fixed bugs arising from new reorg
 #@+node:ekr.20070105091520:Replaced s_ctrl widget
@@ -21256,7 +21184,7 @@ u.afterCloneNode(q,undoType,undoData,dirtyVnodeList=[])
 #@+node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
 def changeAll(self):
     
-    g.trace(g.callers())
+    # g.trace(g.callers())
 
     c = self.c ; u = c.undoer ; undoType = 'Change All'
     current = c.currentPosition()
@@ -21354,754 +21282,9 @@ def toPythonIndex (self,i):
     return i
 #@-node:ekr.20070105092022.4:toPythonIndex
 #@-node:ekr.20070105092022.1:class searchWidget
-#@+node:ekr.20070105092022:Found: s_ctrl
-#@+node:ekr.20031218072017.3077:search & helpers
-def search (self):
-
-    """Search s_ctrl for self.find_text under the control of the
-    whole_word, ignore_case, and pattern_match ivars.
-    
-    Returns (pos, newpos) or (None,None)."""
-
-    c = self.c ; p = self.p ; w = self.s_ctrl
-    index = w.getInsertPoint()
-    
-    s = w.getAllText()
-    # g.trace(index,repr(s[index:index+20]))
-    stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
-    pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
-        backwards=self.reverse,nocase=self.ignore_case,
-        regexp=self.pattern_match,word=self.whole_word)
-    # g.trace('pos,newpos',pos,newpos)
-    if pos == -1: return None,None
-    << fail if we are passed the wrap point >>
-    insert = g.choose(self.reverse,min(pos,newpos),max(pos,newpos))
-    w.setSelectionRange(pos,newpos,insert=insert)
-    return pos,newpos
-#@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
-
-    if self.reverse and pos < self.wrapPos:
-        # g.trace("wrap done")
-        return None, None
-
-    if not self.reverse and newpos > self.wrapPos:
-        return None, None
-#@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-#@+node:ekr.20060526081931:searchHelper & allies
-def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
-    
-    if swapij and backwards: i,j = j,i
-        
-    # g.trace(backwards,i,j,repr(s[i:i+20]))
-
-    if not s[i:j] or not pattern:
-        # g.trace('empty',i,j)
-        return -1,-1
-        
-    if regexp:
-        pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
-    elif backwards:
-        pos,newpos = self.backwardsHelper(s,i,j,pattern,nocase,word)
-    else:
-        pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
-
-    return pos,newpos
-#@+node:ekr.20061207172210:patternLen
-#@-node:ekr.20061207172210:patternLen
-#@+node:ekr.20060526092203:regexHelper
-def regexHelper (self,s,i,j,pattern,backwards,nocase):
-   
-    try:
-        flags = re.MULTILINE
-        if nocase: flags |= re.IGNORECASE
-        re_obj = re.compile(pattern,flags)
-    except Exception:
-        g.es('Invalid regular expression: %s' % (pattern),color='blue')
-        self.errors += 1 # Abort the search.
-        return -1, -1
-        
-    if backwards: # Scan to the last match.
-        last_mo = None
-        while 1:
-            mo = re_obj.search(s,i,j)
-            if mo is None: break
-            i = mo.end()
-            last_mo = mo
-        self.match_obj = mo = last_mo
-    else:
-        self.match_obj = mo = re_obj.search(s,i,j)
-        
-    if mo is None:
-        return -1, -1
-    else:
-        k  = mo.start()
-        k2 = mo.end()
-        if 0:
-            g.trace('i: %d, j: %d k: %d, k2: %d, s[k:k2]: %s, len(s): %d, s[-1]: %s,' % (
-                i,j,k,k2,repr(s[k:k2]),len(s),repr(s[-1])))
-        # g.trace('groups',mo.groups())
-        if k == k2:
-            return -1, -1 # A non-empty pattern can match an empty string.  Move on!
-        else:
-            return k, k2
-#@-node:ekr.20060526092203:regexHelper
-#@+node:ekr.20060526140744:backwardsHelper
-def backwardsHelper (self,s,i,j,pattern,nocase,word):
-
-    if nocase:
-        s = s.lower() ; pattern.lower()
-    pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    
-    if word:
-        while 1:
-            k = s.rfind(pattern,i,j)
-            # g.trace(i,j,k)
-            if k == -1: return -1, -1
-            if self.matchWord(s,k,pattern):
-                return k,k+n
-            else:
-                j = max(0,k-1)
-    else:
-        k = s.rfind(pattern,i,j)
-        # g.trace(i,j,k)
-        if k == -1:
-            return -1, -1
-        else:
-            return k,k+n
-#@-node:ekr.20060526140744:backwardsHelper
-#@+node:ekr.20060526093531:plainHelper
-@tabwidth 4
-
-def plainHelper (self,s,i,j,pattern,nocase,word):
-    
-    # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
-    if nocase:
-        s = s.lower() ; pattern = pattern.lower()
-	pattern = self.replaceBackSlashes(pattern)
-    n = len(pattern)
-    if word:
-        while 1:
-            k = s.find(pattern,i,j)
-            # g.trace(k,n)
-            if k == -1: return -1, -1
-            elif self.matchWord(s,k,pattern):
-                return k, k + n
-            else: i = k + n
-    else:
-        k = s.find(pattern,i,j)
-        if k == -1:
-            return -1, -1
-        else:
-            return k, k + n
-#@-node:ekr.20060526093531:plainHelper
-#@+node:ekr.20060526140744.1:matchWord
-def matchWord(self,s,i,pattern):
-    
-    pattern = self.replaceBackSlashes(pattern)
-    if not s or not pattern or not g.match(s,i,pattern):
-        return False
-
-    pat1,pat2 = pattern[0],pattern[-1]
-    # n = self.patternLen(pattern)
-    n = len(pattern)
-    ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
-    ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
-    
-    isWordPat1 = g.isWordChar(pat1)
-    isWordPat2 = g.isWordChar(pat2)
-    isWordCh1 = g.isWordChar(ch1)
-    isWordCh2 = g.isWordChar(ch2)
-    
-    # g.trace('i',i,'ch1,ch2,pat',repr(ch1),repr(ch2),repr(pattern))
-    
-    if isWordPat1 and isWordCh1 or isWordPat2 and isWordCh2:
-        return False
-    else:
-        return True
-#@-node:ekr.20060526140744.1:matchWord
-#@+node:ekr.20070105165924:replaceBackSlashes
-def replaceBackSlashes (self,s):
-    
-    '''Carefully replace backslashes in a search pattern.'''
-    
-    # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
-    # because there is no rescanning.
-    
-    i = 0
-    while i + 1 < len(s):
-        if s[i] == '\\':
-            ch = s[i+1]
-            if ch == '\\':
-                s = s[:i] + s[i+1:] # replace \\ by \
-            elif ch == 'n':
-                s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
-            elif ch == 't':
-                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
-            else:
-                i += 1 # Skip the escaped character.
-        i += 1
-    return s
-#@-node:ekr.20070105165924:replaceBackSlashes
-#@-node:ekr.20060526081931:searchHelper & allies
-#@-node:ekr.20031218072017.3077:search & helpers
-#@+node:ekr.20031218072017.3070:changeSelection
-# Replace selection with self.change_text.
-# If no selection, insert self.change_text at the cursor.
-
-def changeSelection(self):
-    
-    c = self.c ; p = self.p
-    w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
-    oldSel = sel = w.getSelectionRange()
-    start,end = sel
-    if start > end: start,end = end,start
-    if start == end:
-        g.es("No text selected") ; return False
-        
-    # g.trace(start,end)
-
-    # Replace the selection in _both_ controls.
-    start,end = oldSel
-    change_text = self.change_text
-    
-    # Perform regex substitutions of \1, \2, ...\9 in the change text.
-    if self.pattern_match and self.match_obj:
-        groups = self.match_obj.groups()
-        if groups:
-            change_text = self.makeRegexSubs(change_text,groups)
-    # change_text = change_text.replace('\\n','\n').replace('\\t','\t')
-    change_text = self.replaceBackSlashes(change_text)
-
-    for w2 in (w,self.s_ctrl):
-        if start != end: w2.delete(start,end)
-        w2.insert(start,change_text)
-        w2.setInsertPoint(g.choose(self.reverse,start,start+len(change_text)))
-
-    # Update the selection for the next match.
-    w.setSelectionRange(start,start+len(change_text))
-    c.widgetWantsFocus(w)
-
-    # No redraws here: they would destroy the headline selection.
-    c.beginUpdate()
-    try:
-        if self.mark_changes:
-            p.setMarked()
-        if self.in_headline:
-            c.frame.tree.onHeadChanged(p,'Change')
-        else:
-            c.frame.body.onBodyChanged('Change',oldSel=oldSel)
-    finally:
-        c.endUpdate(False)
-        c.frame.tree.drawIcon(p) # redraw only the icon.
-     
-    return True
-#@+node:ekr.20060526201951:makeRegexSubs
-def makeRegexSubs(self,s,groups):
-    
-    '''Carefully substitute group[i-1] for \i strings in s.
-    The group strings may contain \i strings: they are *not* substituted.'''
-    
-    digits = '123456789'
-    result = [] ; n = len(s)
-    i = j = 0 # s[i:j] is the text between \i markers.
-    while j < n:
-        k = s.find('\\',j)
-        if k == -1 or k + 1 >= n:
-            break
-        j = k + 1 ; ch = s[j]
-        if ch in digits:
-            j += 1
-            result.append(s[i:k]) # Append up to \i
-            i = j
-            gn = int(ch)-1
-            if gn < len(groups):
-                result.append(groups[gn]) # Append groups[i-1]
-            else:
-                result.append('\\%s' % ch) # Append raw '\i'
-    result.append(s[i:])
-    return ''.join(result)
-#@-node:ekr.20060526201951:makeRegexSubs
-#@-node:ekr.20031218072017.3070:changeSelection
-#@+node:ekr.20051020120306.11:__init__ & initGui
-def __init__(self,c,parentFrame):
-    
-    # g.trace('findTab',g.callers())
-
-    # Init the base class...
-    leoFind.__init__(self,c,title='Find Tab')
-
-    self.c = c
-    self.parentFrame = parentFrame
-    self.frame = self.outerFrame = self.top = None
-    
-    self.optionsOnly = c.config.getBool('show_only_find_tab_options')
-    
-    # These are created later.
-    self.find_ctrl = None
-    self.change_ctrl = None 
-    self.outerScrolledFrame = None
-
-    self.initGui()
-    self.createFrame(parentFrame)
-    self.createBindings()
-    self.init(c) # New in 4.3: init only once.
-    
-#@nonl
-#@-node:ekr.20051020120306.11:__init__ & initGui
-#@+node:ekr.20051020120306.13:createFrame (tkFindTab)
-def createFrame (self,parentFrame):
-    
-    c = self.c
-    
-    # g.trace('findTab')
-
-    << Create the outer frames >>
-    << Create the Find and Change panes >>
-    << Create two columns of radio and checkboxes >>
-    
-    if  self.optionsOnly:
-        buttons = []
-    else:
-        << Create two columns of buttons >>
-    
-    # Pack this last so buttons don't get squashed when frame is resized.
-    self.outerScrolledFrame.pack(side='top',expand=1,fill='both',padx=2,pady=2)
-#@+node:ekr.20051020120306.14:<< Create the outer frames >>
-configName = 'log_pane_Find_tab_background_color'
-bg = c.config.getColor(configName) or 'MistyRose1'
-
-parentFrame.configure(background=bg)
-
-self.top = Tk.Frame(parentFrame,background=bg)
-self.top.pack(side='top',expand=0,fill='both',pady=5)
-    # Don't expand, so the frame goes to the top.
-
-self.outerScrolledFrame = Pmw.ScrolledFrame(
-    parentFrame,usehullsize = 1)
-
-self.outerFrame = outer = self.outerScrolledFrame.component('frame')
-self.outerFrame.configure(background=bg)
-
-for z in ('borderframe','clipper','frame','hull'):
-    self.outerScrolledFrame.component(z).configure(relief='flat',background=bg)
-#@-node:ekr.20051020120306.14:<< Create the outer frames >>
-#@+node:ekr.20051020120306.15:<< Create the Find and Change panes >>
-fc = Tk.Frame(outer, bd="1m",background=bg)
-fc.pack(anchor="n", fill="x", expand=1)
-
-# Removed unused height/width params: using fractions causes problems in some locales!
-fpane = Tk.Frame(fc, bd=1,background=bg)
-cpane = Tk.Frame(fc, bd=1,background=bg)
-
-fpane.pack(anchor="n", expand=1, fill="x")
-cpane.pack(anchor="s", expand=1, fill="x")
-
-# Create the labels and text fields...
-flab = Tk.Label(fpane, width=8, text="Find:",background=bg)
-clab = Tk.Label(cpane, width=8, text="Change:",background=bg)
-
-if self.optionsOnly:
-    # Use one-line boxes.
-    self.find_ctrl = ftxt = g.app.gui.plainTextWidget(
-        fpane,bd=1,relief="groove",height=1,width=25,name='find-text')
-    self.change_ctrl = ctxt = g.app.gui.plainTextWidget(
-        cpane,bd=1,relief="groove",height=1,width=25,name='change-text')
-else:
-    # Use bigger boxes for scripts.
-    self.find_ctrl = ftxt = g.app.gui.plainTextWidget(
-        fpane,bd=1,relief="groove",height=3,width=15,name='find-text')
-    self.change_ctrl = ctxt = g.app.gui.plainTextWidget(
-        cpane,bd=1,relief="groove",height=3,width=15,name='change-text')
-<< Bind Tab and control-tab >>
-
-if 0: # Add scrollbars.
-    fBar = Tk.Scrollbar(fpane,name='findBar')
-    cBar = Tk.Scrollbar(cpane,name='changeBar')
-    
-    for bar,txt in ((fBar,ftxt),(cBar,ctxt)):
-        txt['yscrollcommand'] = bar.set
-        bar['command'] = txt.yview
-        bar.pack(side="right", fill="y")
-        
-if self.optionsOnly:
-    flab.pack(side="left") ; ftxt.pack(side="left")
-    clab.pack(side="left") ; ctxt.pack(side="left")
-else:
-    flab.pack(side="left") ; ftxt.pack(side="right", expand=1, fill="x")
-    clab.pack(side="left") ; ctxt.pack(side="right", expand=1, fill="x")
-#@+node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
-def setFocus(w):
-    c = self.c
-    c.widgetWantsFocusNow(w)
-    w.setSelectionRange(0,0)
-    return "break"
-    
-def toFind(event,w=ftxt): return setFocus(w)
-def toChange(event,w=ctxt): return setFocus(w)
-    
-def insertTab(w):
-    data = w.getSelectionRange()
-    if data: start,end = data
-    else: start = end = w.getInsertPoint()
-    w.replace(start,end,"\t")
-    return "break"
-
-def insertFindTab(event,w=ftxt): return insertTab(w)
-def insertChangeTab(event,w=ctxt): return insertTab(w)
-
-ftxt.bind("<Tab>",toChange)
-ctxt.bind("<Tab>",toFind)
-ftxt.bind("<Control-Tab>",insertFindTab)
-ctxt.bind("<Control-Tab>",insertChangeTab)
-#@-node:ekr.20051020120306.16:<< Bind Tab and control-tab >>
-#@-node:ekr.20051020120306.15:<< Create the Find and Change panes >>
-#@+node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
-columnsFrame = Tk.Frame(outer,relief="groove",bd=2,background=bg)
-
-columnsFrame.pack(expand=0,padx="7p",pady="2p")
-
-numberOfColumns = 2 # Number of columns
-columns = [] ; radioLists = [] ; checkLists = []
-for i in xrange(numberOfColumns):
-    columns.append(Tk.Frame(columnsFrame,bd=1))
-    radioLists.append([])
-    checkLists.append([])
-
-for i in xrange(numberOfColumns):
-    columns[i].pack(side="left",padx="1p") # fill="y" Aligns to top. padx expands columns.
-
-radioLists[0] = []
-
-checkLists[0] = [
-    # ("Scrip&t Change",self.svarDict["script_change"]),
-    ("Whole &Word", self.svarDict["whole_word"]),
-    ("&Ignore Case",self.svarDict["ignore_case"]),
-    ("Wrap &Around",self.svarDict["wrap"]),
-    ("&Reverse",    self.svarDict["reverse"]),
-    ('Rege&xp',     self.svarDict['pattern_match']),
-    ("Mark &Finds", self.svarDict["mark_finds"]),
-]
-
-radioLists[1] = [
-    (self.svarDict["radio-search-scope"],"&Entire Outline","entire-outline"),
-    (self.svarDict["radio-search-scope"],"&Suboutline Only","suboutline-only"),  
-    (self.svarDict["radio-search-scope"],"&Node Only","node-only"),
-]
-
-checkLists[1] = [
-    ("Search &Headline", self.svarDict["search_headline"]),
-    ("Search &Body",     self.svarDict["search_body"]),
-    ("Mark &Changes",    self.svarDict["mark_changes"]),
-]
-
-for i in xrange(numberOfColumns):
-    for var,name,val in radioLists[i]:
-        box = underlinedTkButton(
-            "radio",columns[i],anchor="w",text=name,variable=var,value=val,background=bg)
-        box.button.pack(fill="x")
-        box.button.bind("<Button-1>", self.resetWrap)
-        if val == None: box.button.configure(state="disabled")
-        box.bindHotKey(ftxt)
-        box.bindHotKey(ctxt)
-    for name,var in checkLists[i]:
-        box = underlinedTkButton(
-            "check",columns[i],anchor="w",text=name,variable=var,background=bg)
-        box.button.pack(fill="x")
-        box.button.bind("<Button-1>", self.resetWrap)
-        box.bindHotKey(ftxt)
-        box.bindHotKey(ctxt)
-        if var is None: box.button.configure(state="disabled")
-#@-node:ekr.20051020120306.17:<< Create two columns of radio and checkboxes >>
-#@+node:ekr.20051020120306.18:<< Create two columns of buttons >>
-# Create the alignment panes.
-buttons  = Tk.Frame(outer,background=bg)
-buttons1 = Tk.Frame(buttons,bd=1,background=bg)
-buttons2 = Tk.Frame(buttons,bd=1,background=bg)
-buttons.pack(side='top',expand=1)
-buttons1.pack(side='left')
-buttons2.pack(side='right')
-
-width = 15 ; defaultText = 'Find' ; buttons = []
-
-for text,boxKind,frame,callback in (
-    # Column 1...
-    ('Find','button',buttons1,self.findButtonCallback),
-    ('Find All','button',buttons1,self.findAllButton),
-    # Column 2...
-    ('Change','button',buttons2,self.changeButton),
-    ('Change, Then Find','button',buttons2,self.changeThenFindButton),
-    ('Change All','button',buttons2,self.changeAllButton),
-):
-    w = underlinedTkButton(boxKind,frame,
-        text=text,command=callback)
-    buttons.append(w)
-    if text == defaultText:
-        w.button.configure(width=width-1,bd=4)
-    elif boxKind != 'check':
-        w.button.configure(width=width)
-    w.button.pack(side='top',anchor='w',pady=2,padx=2)
-#@-node:ekr.20051020120306.18:<< Create two columns of buttons >>
-#@-node:ekr.20051020120306.13:createFrame (tkFindTab)
-#@+node:ekr.20031218072017.2414:<< Theory of operation of find/change >>
-@ The find and change commands are tricky; there are many details that must be handled properly. This documentation describes the leo.py code. Previous versions of Leo used an inferior scheme.  The following principles govern the leoFind class:
-
-1. Find and Change commands initialize themselves using only the state of the present Leo window. In particular, the Find class must not save internal state information from one invocation to the next. This means that when the user changes the nodes, or selects new text in headline or body text, those changes will affect the next invocation of any Find or Change command. Failure to follow this principle caused all kinds of problems in the Borland and Macintosh codes. There is one exception to this rule: we must remember where interactive wrapped searches start. This principle simplifies the code because most ivars do not persist. However, each command must ensure that the Leo window is left in a state suitable for restarting the incremental (interactive) Find and Change commands. Details of initialization are discussed below.
-
-2. The Find and Change commands must not change the state of the outline or body pane during execution. That would cause severe flashing and slow down the commands a great deal. In particular, c.selectVnode and c.editPosition methods must not be called while looking for matches.
-
-3. When incremental Find or Change commands succeed they must leave the Leo window in the proper state to execute another incremental command. We restore the Leo window as it was on entry whenever an incremental search fails and after any Find All and Change All command.
-
-Initialization involves setting the c, p, in_headline, wrapping and s_ctrl ivars. Setting in_headline is tricky; we must be sure to retain the state of the outline pane until initialization is complete. Initializing the Find All and Change All commands is much easier because such initialization does not depend on the state of the Leo window.
-
-Using Tk.Text widgets for both headlines and body text results in a huge simplification of the code. Indeed, the searching code does not know whether it is searching headline or body text. The search code knows only that s_ctrl is a Tk.Text widget that contains the text to be searched or changed and the insert and sel Tk attributes of self.search_text indicate the range of text to be searched. Searching headline and body text simultaneously is complicated. The selectNextPosition() method handles the many details involved by setting s_ctrl and its insert and sel attributes.
-#@-node:ekr.20031218072017.2414:<< Theory of operation of find/change >>
-#@+node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
-self.wrapPosition = None
-self.onlyPosition = None
-self.find_text = ""
-self.change_text = ""
-self.unstick = False
-
-@
-New in 4.3:
-- These are the names of leoFind ivars. (no more _flag hack).
-- There are no corresponding commander ivars to keep in synch (hurray!)
-- These ivars are inited (in the subclass by init) when this class is created.
-- These ivars are updated by update_ivars just before doing any find.
-@c
-
-<< do dummy initialization to keep Pychecker happy >>
-
-self.intKeys = [
-    "batch","ignore_case", "node_only",
-    "pattern_match", "search_headline", "search_body",
-    "suboutline_only", "mark_changes", "mark_finds", "reverse",
-    "script_search","script_change","selection_only",
-    "wrap", "whole_word",
-]
-
-self.newStringKeys = ["radio-find-type", "radio-search-scope"]
-
-# Ivars containing internal state...
-self.c = None # The commander for this search.
-self.clone_find_all = False
-self.p = None # The position being searched.  Never saved between searches!
-self.in_headline = False # True: searching headline text.
-self.s_ctrl = searchWidget() # The search text for this search.
-self.wrapping = False # True: wrapping is enabled.
-    # This is _not_ the same as self.wrap for batch searches.
-
-@ Initializing a wrapped search is tricky.  The search() method will fail if p==wrapPosition and pos >= wrapPos.  selectNextPosition() will fail if p == wrapPosition.  We set wrapPos on entry, before the first search.  We set wrapPosition in selectNextPosition after the first search fails.  We also set wrapPosition on exit if the first search suceeds.
-@c
-
-self.wrapPosition = None # The start of wrapped searches: persists between calls.
-self.onlyPosition = None # The starting node for suboutline-only searches.
-self.wrapPos = None # The starting position of the wrapped search: persists between calls.
-self.errors = 0
-self.selStart = self.selEnd = None # For selection-only searches.
-#@+node:ekr.20050123164539:<< do dummy initialization to keep Pychecker happy >>
-if 1:
-    self.batch = None
-    self.clone_find_all = None
-    self.ignore_case = None
-    self.node_only = None
-    self.pattern_match = None
-    self.search_headline = None
-    self.search_body = None
-    self.suboutline_only = None
-    self.mark_changes = None
-    self.mark_finds = None
-    self.reverse = None
-    self.script_search = None
-    self.script_change = None
-    self.selection_only = None
-    self.wrap = None
-    self.whole_word = None
-#@-node:ekr.20050123164539:<< do dummy initialization to keep Pychecker happy >>
-#@-node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
-#@+node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
-@ This routine performs a single batch change operation, updating the head or body string of p and leaving the result in s_ctrl.  We update the body if we are changing the body text of c.currentVnode().
-
-s_ctrl contains the found text on entry and contains the changed text on exit.  pos and pos2 indicate the selection.  The selection will never be empty. NB: we can not assume that self.p is visible.
-@c
-
-def batchChange (self,pos1,pos2):
-
-    c = self.c ; u = c.undoer
-    p = self.p ; w = self.s_ctrl
-    # Replace the selection with self.change_text
-    if pos1 > pos2: pos1,pos2=pos2,pos1
-    s = w.getAllText()
-    if pos1 != pos2: w.delete(pos1,pos2)
-    w.insert(pos1,self.change_text)
-    # Update the selection.
-    insert=g.choose(self.reverse,pos1,pos1+len(self.change_text))
-    w.setSelectionRange(insert,insert)
-    w.setInsertPoint(insert)
-    # Update the node
-    s = w.getAllText() # Used below.
-    if self.in_headline:
-        << change headline >>
-    else:
-        << change body >>
-#@+node:ekr.20031218072017.2294:<< change headline >>
-if len(s) > 0 and s[-1]=='\n': s = s[:-1]
-
-if s != p.headString():
-    
-    undoData = u.beforeChangeNodeContents(p)
-
-    p.initHeadString(s)
-    if self.mark_changes:
-        p.setMarked()
-    p.setDirty()
-    if not c.isChanged():
-        c.setChanged(True)
-    
-    u.afterChangeNodeContents(p,'Change Headline',undoData)
-#@-node:ekr.20031218072017.2294:<< change headline >>
-#@+node:ekr.20031218072017.2295:<< change body >>
-if len(s) > 0 and s[-1]=='\n': s = s[:-1]
-
-if s != p.bodyString():
-    
-    undoData = u.beforeChangeNodeContents(p)
-
-    c.setBodyString(p,s)
-    if self.mark_changes:
-        p.setMarked()
-    p.setDirty()
-    if not c.isChanged():
-        c.setChanged(True)
-     
-    u.afterChangeNodeContents(p,'Change Body',undoData)
-#@-node:ekr.20031218072017.2295:<< change body >>
-#@-node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
-#@+node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
-def changeAll(self):
-    
-    g.trace(g.callers())
-
-    c = self.c ; u = c.undoer ; undoType = 'Change All'
-    current = c.currentPosition()
-    w = self.s_ctrl
-    if not self.checkArgs(): return
-    self.initInHeadline()
-    saveData = self.save()
-    self.initBatchCommands()
-    count = 0
-    c.beginUpdate()
-    try: # In update...
-        u.beforeChangeGroup(current,undoType)
-        while 1:
-            pos1, pos2 = self.findNextMatch()
-            if pos1 is None: break
-            count += 1
-            self.batchChange(pos1,pos2)
-            s = w.getAllText()
-            i,j = g.getLine(s,pos1)
-            line = s[i:j]
-            self.printLine(line,allFlag=True)
-        p = c.currentPosition()
-        u.afterChangeGroup(p,undoType,reportFlag=True)
-        g.es("changed: %d instances" % (count))
-    finally:
-        c.endUpdate()
-        self.restore(saveData)
-#@-node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
-#@+node:ekr.20031218072017.3073:findAll
-def findAll(self):
-
-    c = self.c ; w = self.s_ctrl ; u = c.undoer
-    undoType = 'Clone Find All'
-    if not self.checkArgs():
-        return
-    self.initInHeadline()
-    data = self.save()
-    self.initBatchCommands()
-    count = 0 ; clones = []
-    while 1:
-        pos, newpos = self.findNextMatch()
-        if pos is None: break
-        count += 1
-        s = w.getAllText()
-        i,j = g.getLine(s,pos)
-        line = s[i:j]
-        if not self.clone_find_all:
-            self.printLine(line,allFlag=True)
-        if self.clone_find_all and self.p.v.t not in clones:
-            # g.trace(self.p.v.t,self.p.headString())
-            if not clones:
-                << create the found node and begin the undo group >>
-            clones.append(self.p.v.t)
-            << create a clone of p under the find node >>
-    if self.clone_find_all and clones:
-        c.setRootPosition(c.findRootPosition(found)) # New in 4.4.2.
-        u.afterChangeGroup(found,undoType,reportFlag=True) 
-        c.selectPosition(found) # Recomputes root.
-        c.setChanged(True)
-          
-    c.redraw_now()
-    g.es("found: %d matches" % (count))
-    self.restore(data)
-#@+node:ekr.20051113110735:<< create the found node and begin the undo group >>
-u.beforeChangeGroup(c.currentPosition(),undoType)
-
-undoData = u.beforeInsertNode(c.currentPosition())
-
-oldRoot = c.rootPosition()
-found = oldRoot.insertAfter()
-found.moveToRoot(oldRoot)
-c.setHeadString(found,'Found: ' + self.find_text)
-
-u.afterInsertNode(found,undoType,undoData,dirtyVnodeList=[])
-#@-node:ekr.20051113110735:<< create the found node and begin the undo group >>
-#@+node:ekr.20051113110851:<< create a clone of p under the find node >>
-undoData = u.beforeCloneNode(self.p)
-q = self.p.clone()
-q.moveToLastChildOf(found)
-u.afterCloneNode(q,undoType,undoData,dirtyVnodeList=[])
-#@-node:ekr.20051113110851:<< create a clone of p under the find node >>
-#@-node:ekr.20031218072017.3073:findAll
-#@+node:ekr.20051020120306.28:init_s_ctrl
-def init_s_ctrl (self,s):
-    
-    w = self.s_ctrl
-    w.setAllText(s)
-    i = g.choose(self.reverse,len(s),0)
-    w.setInsertPoint(i)
-    return w
-#@-node:ekr.20051020120306.28:init_s_ctrl
-#@+node:ekr.20031218072017.3085:initBatchText & initNextText
-# Returns s_ctrl with "insert" point set properly for batch searches.
-def initBatchText(self):
-    p = self.p
-    self.wrapping = False # Only interactive commands allow wrapping.
-    s = g.choose(self.in_headline,p.headString(), p.bodyString())
-    return self.init_s_ctrl(s)
-
-# Call this routine when moving to the next node when a search fails.
-# Same as above except we don't reset wrapping flag.
-def initNextText(self):
-    p = self.p
-    s = g.choose(self.in_headline,p.headString(), p.bodyString())
-    return self.init_s_ctrl(s)
-#@-node:ekr.20031218072017.3085:initBatchText & initNextText
-#@+node:ekr.20031218072017.3900:<< create the tkinter intVars >>
-self.svarDict = {}
-
-for key in self.intKeys:
-    self.svarDict[key] = Tk.IntVar()
-
-for key in self.newStringKeys:
-    self.svarDict[key] = Tk.StringVar()
-#@-node:ekr.20031218072017.3900:<< create the tkinter intVars >>
-#@-node:ekr.20070105092022:Found: s_ctrl
 #@-node:ekr.20070105091520:Replaced s_ctrl widget
 #@+node:ekr.20070116073907.1:Added w.tag_remove
-#@+node:ekr.20070116073907:tag_remove (test)
+#@+node:ekr.20070116073907:tag_remove
 def tag_remove (self,tagName,i,j=None,*args):
 
     w = self
@@ -22116,7 +21299,7 @@ def tag_remove (self,tagName,i,j=None,*args):
     
     
 #@nonl
-#@-node:ekr.20070116073907:tag_remove (test)
+#@-node:ekr.20070116073907:tag_remove
 #@-node:ekr.20070116073907.1:Added w.tag_remove
 #@-node:ekr.20041228084830.3:(Reorg for wxGui plugin)
 #@-node:ekr.20061029091751:Leo 4.4.3 alpha 1 projects
@@ -22919,11 +22102,11 @@ def copyText (self,event=None):
         
 OnCopyFromMenu = copyText
 #@-node:ekr.20070130115927.5:copyText
-#@+node:ekr.20070130115927.6:cutText
+#@+node:ekr.20070130115927.6:leoFrame.cutText
 def cutText (self,event=None):
     
     '''Invoked from the mini-buffer and from shortcuts.'''
-    
+
     f = self ; c = f.c ; w = event and event.widget
     if not w or not g.app.gui.isTextWidget(w): return
 
@@ -22945,12 +22128,13 @@ def cutText (self,event=None):
         # The headline is not officially changed yet.
         # p.initHeadString(s)
         s = w.getAllText()
-        w.configure(width=f.tree.headWidth(s=s))
+        width = f.tree.headWidth(p=None,s=s)
+        w.setWidth(width)
     else: pass
 
 OnCutFromMenu = cutText
-#@-node:ekr.20070130115927.6:cutText
-#@+node:ekr.20070130115927.7:pasteText
+#@-node:ekr.20070130115927.6:leoFrame.cutText
+#@+node:ekr.20070130115927.7:leoFrame.pasteText
 def pasteText (self,event=None,middleButton=False):
 
     '''Paste the clipboard into a widget.
@@ -22996,7 +22180,8 @@ def pasteText (self,event=None,middleButton=False):
             if wname.startswith('head'):
                 # The headline is not officially changed yet.
                 # p.initHeadString(s)
-                w.configure(width=f.tree.headWidth(s=s))
+                width = f.tree.headWidth(p=None,s=s)
+                w.setWidth(width)
         else: pass
     except Exception:
         pass # Tk sometimes throws weird exceptions here.
@@ -23004,7 +22189,7 @@ def pasteText (self,event=None,middleButton=False):
     return 'break' # Essential
 
 OnPasteFromMenu = pasteText
-#@-node:ekr.20070130115927.7:pasteText
+#@-node:ekr.20070130115927.7:leoFrame.pasteText
 #@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
 def OnPaste (self,event=None):
     
@@ -23013,6 +22198,8 @@ def OnPaste (self,event=None):
 #@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
 #@-node:ekr.20070130115927.4:Cut/Copy/Paste (leoFrame)
 #@-node:ekr.20070130120406:Moved cut/copy/pasteText into base leoFrame class
+#@+node:ekr.20070209094628:Replaced leoTextWidgetClass by plainTextWidget or bodyTextWidget
+#@-node:ekr.20070209094628:Replaced leoTextWidgetClass by plainTextWidget or bodyTextWidget
 #@-node:ekr.20070130123323:Code reorg
 #@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 porjects
 #@-all

@@ -355,7 +355,7 @@ class tkinterGui(leoGui.leoGui):
                 return None
     #@-node:ekr.20031218072017.846:getTextFromClipboard
     #@-node:ekr.20031218072017.844:Clipboard (tkGui)
-    #@+node:ekr.20061109215304:Tk constants
+    #@+node:ekr.20061109215304:color
     # g.es calls gui.color to do the translation,
     # so most code in Leo's core can simply use Tk color names.
     
@@ -363,7 +363,7 @@ class tkinterGui(leoGui.leoGui):
         '''Return the gui-specific color corresponding to the Tk color name.'''
         return color
         
-    #@-node:ekr.20061109215304:Tk constants
+    #@-node:ekr.20061109215304:color
     #@+node:ekr.20031218072017.4060:Dialog
     #@+node:ekr.20031218072017.4061:get_window_info
     # WARNING: Call this routine _after_ creating a dialog.
@@ -467,14 +467,14 @@ class tkinterGui(leoGui.leoGui):
     #@nonl
     #@-node:ekr.20061109215734:Events (tkGui)
     #@+node:ekr.20031218072017.4064:Focus
-    #@+node:ekr.20031218072017.4065:get_focus
+    #@+node:ekr.20031218072017.4065:tkGui.get_focus
     def get_focus(self,c):
         
         """Returns the widget that has focus, or body if None."""
     
         return c.frame.top.focus_displayof()
-    #@-node:ekr.20031218072017.4065:get_focus
-    #@+node:ekr.20031218072017.2373:set_focus (app.gui)
+    #@-node:ekr.20031218072017.4065:tkGui.get_focus
+    #@+node:ekr.20031218072017.2373:tk.Gui.set_focus
     set_focus_count = 0
     
     def set_focus(self,c,w):
@@ -504,7 +504,7 @@ class tkinterGui(leoGui.leoGui):
             except Exception:
                 # g.es_exception()
                 return False
-    #@-node:ekr.20031218072017.2373:set_focus (app.gui)
+    #@-node:ekr.20031218072017.2373:tk.Gui.set_focus
     #@-node:ekr.20031218072017.4064:Focus
     #@+node:ekr.20031218072017.4066:Font
     #@+node:ekr.20031218072017.2187:tkGui.getFontFromParams
@@ -636,6 +636,85 @@ class tkinterGui(leoGui.leoGui):
         
         return w and isinstance(w,Tk.Text)
     #@-node:ekr.20051220144507:isTextWidget
+    #@+node:ekr.20060621164312:makeScriptButton
+    def makeScriptButton (c,
+        p=None, # A node containing the script.
+        script=None, # The script itself.
+        buttonText=None,
+        balloonText='Script Button',
+        shortcut=None,bg='LightSteelBlue1',
+        define_g=True,define_name='__main__',silent=False, # Passed on to c.executeScript.
+    ):
+        
+        '''Create a script button for the script in node p.
+        The button's text defaults to p.headString'''
+    
+        k = c.k
+        if p and not buttonText: buttonText = p.headString().strip()
+        if not buttonText: buttonText = 'Unnamed Script Button'
+        #@    << create the button b >>
+        #@+node:ekr.20060621164312.1:<< create the button b >>
+        iconBar = c.frame.getIconBarObject()
+        b = iconBar.add(text=buttonText)
+        
+        if balloonText and balloonText != buttonText:
+            Pmw = g.importExtension('Pmw',pluginName='gui.makeScriptButton',verbose=False)
+            if Pmw:
+                balloon = Pmw.Balloon(b,initwait=100)
+                balloon.bind(b,balloonText)
+        
+        if sys.platform == "win32":
+            width = int(len(buttonText) * 0.9)
+            b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
+        #@-node:ekr.20060621164312.1:<< create the button b >>
+        #@nl
+        #@    << define the callbacks for b >>
+        #@+node:ekr.20060621164312.2:<< define the callbacks for b >>
+        def deleteButtonCallback(event=None,b=b,c=c):
+            if b: b.pack_forget()
+            c.bodyWantsFocus()
+            
+        def executeScriptCallback (event=None,
+            b=b,c=c,buttonText=buttonText,p=p and p.copy(),script=script):
+        
+            if c.disableCommandsMessage:
+                g.es(c.disableCommandsMessage,color='blue')
+            else:
+                g.app.scriptDict = {}
+                c.executeScript(p=p,script=script,
+                define_g= define_g,define_name=define_name,silent=silent)
+                # Remove the button if the script asks to be removed.
+                if g.app.scriptDict.get('removeMe'):
+                    g.es("Removing '%s' button at its request" % buttonText)
+                    b.pack_forget()
+            # Do not assume the script will want to remain in this commander.
+        #@-node:ekr.20060621164312.2:<< define the callbacks for b >>
+        #@nl
+        b.configure(command=executeScriptCallback)
+        b.bind('<3>',deleteButtonCallback)
+        if shortcut:
+            #@        << bind the shortcut to executeScriptCallback >>
+            #@+node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
+            func = executeScriptCallback
+            shortcut = k.canonicalizeShortcut(shortcut)
+            ok = k.bindKey ('button', shortcut,func,buttonText)
+            if ok:
+                g.es_print('Bound @button %s to %s' % (buttonText,shortcut),color='blue')
+            #@-node:ekr.20060621164312.3:<< bind the shortcut to executeScriptCallback >>
+            #@nl
+        #@    << create press-buttonText-button command >>
+        #@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+        aList = [g.choose(ch.isalnum(),ch,'-') for ch in buttonText]
+        
+        buttonCommandName = ''.join(aList)
+        buttonCommandName = buttonCommandName.replace('--','-')
+        buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
+        
+        # This will use any shortcut defined in an @shortcuts node.
+        k.registerCommand(buttonCommandName,None,executeScriptCallback,pane='button',verbose=False)
+        #@-node:ekr.20060621164312.4:<< create press-buttonText-button command >>
+        #@nl
+    #@-node:ekr.20060621164312:makeScriptButton
     #@+node:ekr.20051206103652:widget_name (tkGui)
     def widget_name (self,w):
         

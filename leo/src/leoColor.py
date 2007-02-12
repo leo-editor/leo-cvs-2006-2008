@@ -1277,7 +1277,7 @@ class baseColorizer:
     
         self.enabled=True
     #@-node:ekr.20050420083821:disable & enable
-    #@+node:ekr.20041217041016:setFontFromConfig
+    #@+node:ekr.20041217041016:setFontFromConfig (colorizer)
     def setFontFromConfig (self):
         
         c = self.c
@@ -1308,7 +1308,7 @@ class baseColorizer:
             
         self.color_tags_list = []
         self.image_references = []
-    #@-node:ekr.20041217041016:setFontFromConfig
+    #@-node:ekr.20041217041016:setFontFromConfig (colorizer)
     #@+node:ekr.20031218072017.2801:colorize & recolor_range
     # The main colorizer entry point.
     

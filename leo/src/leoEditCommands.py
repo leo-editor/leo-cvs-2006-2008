@@ -1011,18 +1011,13 @@ class controlCommandsClass (baseEditCommandsClass):
         if not w: return
     
         if subprocess:
-            is1,is2 = None,None
-            try:
-                is1 = w.index('sel.first')
-                is2 = w.index('sel.last')
-            finally:
-                if is1:
-                    command = w.get(is1,is2)
-                    k.commandName = 'shell-command: %s' % command
-                    self.executeSubprocess(event,command,input=None)
-                else:
-                    k.clearState()
-                    k.resetLabel()
+            if w.hasSelection():
+                command = w.getSelectedText()
+                k.commandName = 'shell-command: %s' % command
+                self.executeSubprocess(event,command,input=None)
+            else:
+                k.clearState()
+                k.resetLabel()
         else:
             k.setLabelGrey('can not execute shell-command: can not import subprocess')
     #@-node:ekr.20050930112126:shellCommandOnRegion
@@ -1806,7 +1801,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.pack_forget()
             f = log.frameDict.get(tabName)
             self.createColorPicker(f,colors)
-    #@+node:ekr.20051019183105.3:createColorPicker
+    #@+node:ekr.20051019183105.3:editCommands.createColorPicker (Tk code)
     def createColorPicker (self,parent,colors):
         
         colors = list(colors)
@@ -1857,9 +1852,9 @@ class editCommandsClass (baseEditCommandsClass):
         b.pack(side='left',pady=4)
         #@-node:ekr.20051019183105.5:<< create picker button and callback >>
         #@nl
-    #@-node:ekr.20051019183105.3:createColorPicker
+    #@-node:ekr.20051019183105.3:editCommands.createColorPicker (Tk code)
     #@-node:ekr.20051019183105.1:show-colors
-    #@+node:ekr.20051019201809:show-fonts & helpers
+    #@+node:ekr.20051019201809:editCommands.show-fonts & helpers
     def showFonts (self,event):
         
         '''Open a tab in the log pane showing a font picker.'''
@@ -2023,7 +2018,7 @@ class editCommandsClass (baseEditCommandsClass):
         c.frame.log.selectTab('Log')
         c.bodyWantsFocus()
     #@-node:ekr.20060726134339:hideTab
-    #@-node:ekr.20051019201809:show-fonts & helpers
+    #@-node:ekr.20051019201809:editCommands.show-fonts & helpers
     #@-node:ekr.20051019183105:color & font
     #@+node:ekr.20050920084036.132:comment column...
     #@+node:ekr.20050920084036.133:setCommentColumn
@@ -2033,10 +2028,6 @@ class editCommandsClass (baseEditCommandsClass):
     
         w = self.editWidget(event)
         if not w: return
-    
-        #cc = w.index('insert')
-        #cc1, cc2 = cc.split('.')
-        #self.ccolumn = cc2
     
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -2068,7 +2059,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.134:indentToCommentColumn (test)
     #@-node:ekr.20050920084036.132:comment column...
     #@+node:ekr.20050920084036.58:dynamic abbreviation...
-    #@+node:ekr.20050920084036.59:dynamicExpansion (to do)
+    #@+node:ekr.20050920084036.59:dynamicExpansion LATER
     def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
     
         k = self.k
@@ -2108,8 +2099,8 @@ class editCommandsClass (baseEditCommandsClass):
             if not rlist: return
             txt = rlist.pop()
             doDa(txt)
-    #@-node:ekr.20050920084036.59:dynamicExpansion (to do)
-    #@+node:ekr.20050920084036.60:dynamicExpansion2 (to do)
+    #@-node:ekr.20050920084036.59:dynamicExpansion LATER
+    #@+node:ekr.20050920084036.60:dynamicExpansion2 LATER
     def dynamicExpansion2 (self,event):
     
         k = self.k
@@ -2125,7 +2116,7 @@ class editCommandsClass (baseEditCommandsClass):
         if dEstring:
             w.delete(i,i2)
             w.insert(i,dEstring)
-    #@-node:ekr.20050920084036.60:dynamicExpansion2 (to do)
+    #@-node:ekr.20050920084036.60:dynamicExpansion2 LATER
     #@+node:ekr.20050920084036.61:getDynamicList (helper)
     def getDynamicList (self,w,txt,rlist):
     
@@ -2321,7 +2312,6 @@ class editCommandsClass (baseEditCommandsClass):
         w = self.editWidget(event)
         if not w: return
     
-        ###txt = w.get( 'insert linestart', 'insert' )
         s = w.getAllText()
         ins = w.getInsertPoint()
         i,junk = g.getLine(s,ins)
@@ -2544,7 +2534,7 @@ class editCommandsClass (baseEditCommandsClass):
         s = w.getAllText()
         ins = w.getInsertPoint()
         oldSel = w.getSelectionRange()
-        oldYview = w.yview()
+        oldYview = w.getYScrollPosition()
         # Find the previous non-blank line
         i,j = g.getLine(s,ins)
         while 1:
@@ -3852,9 +3842,6 @@ class editCommandsClass (baseEditCommandsClass):
         
         self.beginCommand(undoType='fill-region')
     
-        #s1 = w.index('sel.first')
-        #s2 = w.index('sel.last')
-        #w.mark_set('insert',s1)
         s1,s2 = w.getSelectionRange()
         w.setInsertPoint(s1)
         self.backwardParagraph(event)
@@ -4005,7 +3992,7 @@ class editCommandsClass (baseEditCommandsClass):
         k.setLabelGrey('Region has %s lines, %s character%s' % (
             lines,chars,g.choose(chars==1,'','s')))
     #@-node:ekr.20050920084036.109:countRegion
-    #@+node:ekr.20060417183606:moveLinesDown (pass hand test)
+    #@+node:ekr.20060417183606:moveLinesDown
     def moveLinesDown (self,event):
         
         '''Move all lines containing any selected text down one line,
@@ -4046,7 +4033,6 @@ class editCommandsClass (baseEditCommandsClass):
                     c.selectPosition(p)
                 finally:
                     c.endUpdate()
-                w.focus_force()
                 s = w.getAllText()
                 w.insert(0,lines)
                 if not lines.endswith('\n'): w.insert(len(lines),'\n')
@@ -4055,8 +4041,8 @@ class editCommandsClass (baseEditCommandsClass):
                 changed = True
         finally:
             self.endCommand(changed=changed,setLabel=True)
-    #@-node:ekr.20060417183606:moveLinesDown (pass hand test)
-    #@+node:ekr.20060417183606.1:moveLinesUp (pass hand test)
+    #@-node:ekr.20060417183606:moveLinesDown
+    #@+node:ekr.20060417183606.1:moveLinesUp
     def moveLinesUp (self,event):
         
         '''Move all lines containing any selected text up one line,
@@ -4096,7 +4082,6 @@ class editCommandsClass (baseEditCommandsClass):
                     c.selectPosition(p)
                 finally:
                     c.endUpdate()
-                w.focus_force()
                 s = w.getAllText()
                 if not s.endswith('\n'): w.insert('end','\n')
                 w.insert('end',lines)
@@ -4106,7 +4091,7 @@ class editCommandsClass (baseEditCommandsClass):
                 changed = True
         finally:
             self.endCommand(changed=changed,setLabel=True)
-    #@-node:ekr.20060417183606.1:moveLinesUp (pass hand test)
+    #@-node:ekr.20060417183606.1:moveLinesUp
     #@+node:ekr.20050920084036.110:reverseRegion
     def reverseRegion (self,event):
         
@@ -4440,7 +4425,7 @@ class editCommandsClass (baseEditCommandsClass):
         finally:
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.119:sortColumns
-    #@+node:ekr.20050920084036.120:sortFields (create unit tests)
+    #@+node:ekr.20050920084036.120:sortFields
     def sortFields (self,event,which=None):
         
         '''Divide the selected text into lines and sort by comparing the contents of
@@ -4493,7 +4478,7 @@ class editCommandsClass (baseEditCommandsClass):
         w.setInsertPoint(ins)
     
         self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20050920084036.120:sortFields (create unit tests)
+    #@-node:ekr.20050920084036.120:sortFields
     #@-node:ekr.20050920084036.117:sort...
     #@+node:ekr.20050920084036.121:swap/transpose...
     #@+node:ekr.20060529184652:swapHelper
@@ -5523,7 +5508,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
             c.frame.body.forceFullRecolor()
             self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050930091642.1:yank
-    #@+node:ekr.20050930091642.2:yankPop TODO
+    #@+node:ekr.20050930091642.2:yankPop
     def yankPop (self,event):
         
         '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
@@ -5547,7 +5532,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
             w.tag_delete('kb') ###
             w.insert('insert',s,('kb')) ###
             w.setInsertPoint(ins)
-    #@-node:ekr.20050930091642.2:yankPop TODO
+    #@-node:ekr.20050930091642.2:yankPop
     #@+node:ekr.20050920084036.128:zapToCharacter
     def zapToCharacter (self,event):
         
@@ -6346,7 +6331,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
     
         self.endCommand()
     #@-node:ekr.20050920084036.230:openRectangle
-    #@+node:ekr.20050920084036.229:yankRectangle TODO (create unit test)
+    #@+node:ekr.20050920084036.229:yankRectangle
     def yankRectangle (self,event,killRect=None):
         
         '''Yank into the rectangle defined by the start and end of selected text.'''
@@ -6401,7 +6386,7 @@ class rectangleCommandsClass (baseEditCommandsClass):
     #             w.insert('%s.0 lineend' % i1,'\n')
     #         i1 += 1
     #@-at
-    #@-node:ekr.20050920084036.229:yankRectangle TODO (create unit test)
+    #@-node:ekr.20050920084036.229:yankRectangle
     #@+node:ekr.20050920084036.232:stringRectangle
     def stringRectangle (self,event):
         
@@ -6803,6 +6788,8 @@ class minibufferFind (baseEditCommandsClass):
     def __init__(self,c,finder):
         
         baseEditCommandsClass.__init__(self,c) # init the base class.
+        
+        g.trace('minibufferFind: finder',finder)
     
         self.c = c
         self.k = k = c.k
@@ -6817,7 +6804,7 @@ class minibufferFind (baseEditCommandsClass):
         s = k.shortcutFromSetting(s)
         self.replaceStringShortcut = s
     #@-node:ekr.20060123125317.2: ctor (minibufferFind)
-    #@+node:ekr.20060124140114: Options
+    #@+node:ekr.20060124140114: Options (minibufferFind)
     #@+node:ekr.20060124123133:setFindScope
     def setFindScope(self,where):
         
@@ -6834,34 +6821,13 @@ class minibufferFind (baseEditCommandsClass):
         else:
             g.trace('oops: bad `where` value: %s' % where)
     #@-node:ekr.20060124123133:setFindScope
-    #@+node:ekr.20060124122844:setOption (minibufferFind: Tk code)
-    def setOption (self, ivar, val):
-        
-        h = self.finder
+    #@+node:ekr.20060124122844:get/set/toggleOption (minibufferFind)
+    # This redirection is required to remove gui-dependencies.
     
-        if ivar in h.intKeys:
-            if val is not None:
-                var = h.svarDict.get(ivar)
-                var.set(val)
-                # g.trace('%s = %s' % (ivar,val))
-    
-        elif not g.app.unitTesting:
-            g.trace('oops: bad find ivar %s' % ivar)
-    #@-node:ekr.20060124122844:setOption (minibufferFind: Tk code)
-    #@+node:ekr.20060125082510:getOption (minibufferFind: Tk code)
-    def getOption (self,ivar,verbose=False):
-        
-        h = self.finder
-        
-        var = h.svarDict.get(ivar)
-        if var:
-            val = var.get()
-            verbose and g.trace('%s = %s' % (ivar,val))
-            return val
-        else:
-            g.trace('bad ivar name: %s' % ivar)
-            return None
-    #@-node:ekr.20060125082510:getOption (minibufferFind: Tk code)
+    def getOption (self,ivar):          return self.finder.getOption(ivar)
+    def setOption (self,ivar,val):      self.finder.setOption(ivar,val)
+    def toggleOption (self,ivar):       self.finder.toggleOption(ivar)
+    #@-node:ekr.20060124122844:get/set/toggleOption (minibufferFind)
     #@+node:ekr.20060125074939:showFindOptions
     def showFindOptions (self):
         
@@ -6907,19 +6873,6 @@ class minibufferFind (baseEditCommandsClass):
     
         frame.putStatusLine(' '.join(z))
     #@-node:ekr.20060125074939:showFindOptions
-    #@+node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
-    def toggleOption (self, ivar):
-        
-        h = self.finder
-    
-        if ivar in h.intKeys:
-            var = h.svarDict.get(ivar)
-            val = not var.get()
-            var.set(val)
-            # g.trace('%s = %s' % (ivar,val),var)
-        else:
-            g.trace('oops: bad find ivar %s' % ivar)
-    #@-node:ekr.20060124135401:toggleOption (minibufferFind: tk code)
     #@+node:ekr.20060205105950:setupChangePattern
     def setupChangePattern (self,pattern):
         
@@ -6944,7 +6897,7 @@ class minibufferFind (baseEditCommandsClass):
         
         h.update_ivars()
     #@-node:ekr.20060125091234:setupSearchPattern
-    #@-node:ekr.20060124140114: Options
+    #@-node:ekr.20060124140114: Options (minibufferFind)
     #@+node:ekr.20060210180352:addChangeStringToLabel
     def addChangeStringToLabel (self,protect=True):
         
@@ -7937,7 +7890,7 @@ class spellTab(leoFind.leoFind):
         
         return self.aspell.aspell
     #@-node:ekr.20051025094004:init_aspell
-    #@+node:ekr.20051025071455.22:createSpellTab
+    #@+node:ekr.20051025071455.22:editCommands.createSpellTab
     def createSpellTab(self,parentFrame):
     
         """Create the Spell tab."""
@@ -7948,7 +7901,7 @@ class spellTab(leoFind.leoFind):
         bg = c.config.getColor('log_pane_Spell_tab_background_color') or 'LightSteelBlue2'
         
         #@    << Create the outer frames >>
-        #@+node:ekr.20051113090322:<< Create the outer frames >>
+        #@+node:ekr.20051113090322:<< Create the outer frames >> (spellTab)
         self.outerScrolledFrame = Pmw.ScrolledFrame(
             parentFrame,usehullsize = 1)
         
@@ -7958,10 +7911,10 @@ class spellTab(leoFind.leoFind):
         for z in ('borderframe','clipper','frame','hull'):
             self.outerScrolledFrame.component(z).configure(
                 relief='flat',background=bg)
-        #@-node:ekr.20051113090322:<< Create the outer frames >>
+        #@-node:ekr.20051113090322:<< Create the outer frames >> (spellTab)
         #@nl
         #@    << Create the text and suggestion panes >>
-        #@+node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
+        #@+node:ekr.20051025071455.23:<< Create the text and suggestion panes >> spellTab (contains Tk code)
         f2 = Tk.Frame(outer,bg=bg)
         f2.pack(side='top',expand=0,fill='x')
         
@@ -7982,7 +7935,7 @@ class spellTab(leoFind.leoFind):
         txt ['yscrollcommand'] = bar.set
         bar ['command'] = txt.yview
         bar.pack(side='right',fill='y')
-        #@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
+        #@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >> spellTab (contains Tk code)
         #@nl
         #@    << Create the spelling buttons >>
         #@+node:ekr.20051025071455.24:<< Create the spelling buttons >>
@@ -8020,7 +7973,7 @@ class spellTab(leoFind.leoFind):
         self.listBox.bind("<Double-1>",self.onChangeThenFindButton)
         self.listBox.bind("<Button-1>",self.onSelectListBox)
         self.listBox.bind("<Map>",self.onMap)
-    #@-node:ekr.20051025071455.22:createSpellTab
+    #@-node:ekr.20051025071455.22:editCommands.createSpellTab
     #@+node:ekr.20051025120920:createBindings (spellTab)
     def createBindings (self):
         
@@ -8314,7 +8267,7 @@ class spellTab(leoFind.leoFind):
             g.es_exception()
         return alts, word
     #@-node:ekr.20051025071455.45:findNextMisspelledWord
-    #@+node:ekr.20051025071455.47:findNextWord (tkSpell)
+    #@+node:ekr.20051025071455.47:findNextWord (spellTab)
     def findNextWord(self,p):
         """Scan for the next word, leaving the result in the work widget"""
     
@@ -8345,7 +8298,7 @@ class spellTab(leoFind.leoFind):
                     w.setSelectionRange(0,0,insert=0)
         return None,None
     #@nonl
-    #@-node:ekr.20051025071455.47:findNextWord (tkSpell)
+    #@-node:ekr.20051025071455.47:findNextWord (spellTab)
     #@+node:ekr.20051025071455.48:getSuggestion
     def getSuggestion(self):
         """Return the selected suggestion from the listBox."""
@@ -8393,7 +8346,7 @@ class spellTab(leoFind.leoFind):
             self.bringToFront()
             c.bodyWantsFocus()
     #@-node:ekr.20051025071455.51:update
-    #@+node:ekr.20051025071455.52:updateButtons
+    #@+node:ekr.20051025071455.52:updateButtons (spellTab)
     def updateButtons (self):
     
         """Enable or disable buttons in the Check Spelling dialog."""
@@ -8413,7 +8366,7 @@ class spellTab(leoFind.leoFind):
     
         self.addButton.configure(state='normal')
         self.ignoreButton.configure(state='normal')
-    #@-node:ekr.20051025071455.52:updateButtons
+    #@-node:ekr.20051025071455.52:updateButtons (spellTab)
     #@-node:ekr.20051025071455.42:Helpers
     #@-others
 #@-node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)

@@ -135,6 +135,7 @@ class leoGui:
         'isTextWidget',
         'keysym',
         'killGui',
+        # 'makeScriptButton', # optional
         'recreateRootWindow',
         'replaceClipboardWith',
         'runAboutLeoDialog',
@@ -148,7 +149,7 @@ class leoGui:
         'runSaveFileDialog',
         'set_focus',
         #'setIdleTimeHook',             # optional       
-        #'setIdleTimeHookAfterDelay',   #optional
+        #'setIdleTimeHookAfterDelay',   # optional
         'widget_name',
     )
     #@-node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
@@ -311,14 +312,14 @@ class leoGui:
         
         self.oops()
     #@-node:ekr.20031218072017.3734:Clipboard
-    #@+node:ekr.20061031132712.1:Tk constants
+    #@+node:ekr.20061031132712.1:color
     # g.es calls gui.color to do the translation,
     # so most code in Leo's core can simply use Tk color names.
     
     def color (self,color):
         '''Return the gui-specific color corresponding to the Tk color name.'''
         return color # Do not call oops: this method is essential for the config classes.
-    #@-node:ekr.20061031132712.1:Tk constants
+    #@-node:ekr.20061031132712.1:color
     #@+node:ekr.20031218072017.3735:Dialog utils
     def attachLeoIcon (self,window):
         """Attach the Leo icon to a window."""
@@ -336,7 +337,7 @@ class leoGui:
         """Return the window information."""
         self.oops()
     #@-node:ekr.20031218072017.3735:Dialog utils
-    #@+node:ekr.20061031132907:Events (tkGui)
+    #@+node:ekr.20061031132907:Events (leoGui)
     def event_generate(self,w,kind,*args,**keys):
         '''Generate an event.'''
         pass
@@ -359,7 +360,7 @@ class leoGui:
         else:
             return 0,0
     #@nonl
-    #@-node:ekr.20061031132907:Events (tkGui)
+    #@-node:ekr.20061031132907:Events (leoGui)
     #@+node:ekr.20031218072017.3737:Focus
     def get_focus(self,frame):
         """Return the widget that has focus, or the body widget if None."""
@@ -369,12 +370,12 @@ class leoGui:
         """Set the focus of the widget in the given commander if it needs to be changed."""
         self.oops()
     #@-node:ekr.20031218072017.3737:Focus
-    #@+node:ekr.20031218072017.3736:Font
+    #@+node:ekr.20031218072017.3736:Font (leoGui)
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
         
         pass
         # self.oops()
-    #@-node:ekr.20031218072017.3736:Font
+    #@-node:ekr.20031218072017.3736:Font (leoGui)
     #@+node:ekr.20031218072017.3739:Idle time
     def setIdleTimeHook (self,idleTimeHookHandler):
         
@@ -386,6 +387,21 @@ class leoGui:
         # print 'leoGui:setIdleTimeHookAfterDelay'
         pass # Not an error.
     #@-node:ekr.20031218072017.3739:Idle time
+    #@+node:ekr.20070212070820:makeScriptButton
+    def makeScriptButton (c,
+        p=None,
+        script=None,
+        buttonText=None,
+        balloonText='Script Button',
+        shortcut=None,
+        bg='LightSteelBlue1',
+        define_g=True,
+        define_name='__main__',
+        silent=False, 
+    ):
+     
+        self.oops()
+    #@-node:ekr.20070212070820:makeScriptButton
     #@+node:ekr.20061111165041:widget_name
     def widget_name (self,w):
         

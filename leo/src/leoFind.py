@@ -136,8 +136,10 @@ class leoFind:
     """The base class for Leo's Find commands."""
 
     #@    @+others
-    #@+node:ekr.20031218072017.3053:leoFind.__init__
+    #@+node:ekr.20031218072017.3053:leoFind.__init__ & helpers
     def __init__ (self,c,title=None):
+        
+        # g.trace('leoFind',c)
     
         self.c = c
         
@@ -235,62 +237,10 @@ class leoFind:
         self.selStart = self.selEnd = None # For selection-only searches.
         #@-node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
         #@nl
-    #@+node:ekr.20031218072017.2059:find.init
-    def init (self,c):
-    
-        # N.B.: separate c.ivars are much more convenient than a dict.
-        for key in self.intKeys:
-            # New in 4.3: get ivars from @settings.
-            val = c.config.getBool(key)
-            setattr(self,key,val)
-            val = g.choose(val,1,0) # Work around major Tk problem.
-            self.svarDict[key].set(val)
-            # g.trace(key,val)
-    
-        #@    << set find/change widgets >>
-        #@+node:ekr.20031218072017.2060:<< set find/change widgets >>
-        self.find_ctrl.delete(0,"end")
-        self.change_ctrl.delete(0,"end")
         
-        # New in 4.3: Get setting from @settings.
-        for w,setting,defaultText in (
-            (self.find_ctrl,"find_text",'<find pattern here>'),
-            (self.change_ctrl,"change_text",''),
-        ):
-            s = c.config.getString(setting)
-            if not s: s = defaultText
-            w.insert("end",s)
-        #@-node:ekr.20031218072017.2060:<< set find/change widgets >>
-        #@nl
-        #@    << set radio buttons from ivars >>
-        #@+node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
-        found = False
-        for var,setting in (
-            ("pattern_match","pattern-search"),
-            ("script_search","script-search")):
-            val = self.svarDict[var].get()
-            if val:
-                self.svarDict["radio-find-type"].set(setting)
-                found = True ; break
-        if not found:
-            self.svarDict["radio-find-type"].set("plain-search")
-            
-        found = False
-        for var,setting in (
-            ("suboutline_only","suboutline-only"),
-            ("node_only","node-only"),
-            # ("selection_only","selection-only"),
-        ):
-            val = self.svarDict[var].get()
-            if val:
-                self.svarDict["radio-search-scope"].set(setting)
-                found = True ; break
-        if not found:
-            self.svarDict["radio-search-scope"].set("entire-outline")
-        #@-node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
-        #@nl
-    #@-node:ekr.20031218072017.2059:find.init
-    #@-node:ekr.20031218072017.3053:leoFind.__init__
+    def init (self,c):
+        self.oops()
+    #@-node:ekr.20031218072017.3053:leoFind.__init__ & helpers
     #@+node:ekr.20060123065756.1:Top Level Buttons
     #@+node:ekr.20031218072017.3057:changeAllButton
     # The user has pushed the "Change All" button from the find panel.
@@ -543,7 +493,7 @@ class leoFind:
     #@+node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
     def changeAll(self):
         
-        g.trace(g.callers())
+        # g.trace(g.callers())
     
         c = self.c ; u = c.undoer ; undoType = 'Change All'
         current = c.currentPosition()
@@ -1114,8 +1064,7 @@ class leoFind:
     #@+node:ekr.20061111084423.1:oops (leoFind)
     def oops(self):
         print ("leoFind oops:",
-            g.callers(),"should be overridden in subclass")
-    #@nonl
+            g.callers(10),"should be overridden in subclass")
     #@-node:ekr.20061111084423.1:oops (leoFind)
     #@+node:ekr.20051020120306.27:selectAllFindText (leoFind)
     def selectAllFindText (self,event=None):
@@ -1391,7 +1340,7 @@ class findTab (leoFind):
     #@+node:ekr.20051020120306.11:__init__ & initGui
     def __init__(self,c,parentFrame):
         
-        # g.trace('findTab',g.callers())
+        # g.trace('findTab',c)
     
         # Init the base class...
         leoFind.__init__(self,c,title='Find Tab')
@@ -1415,17 +1364,15 @@ class findTab (leoFind):
     #@nonl
     #@-node:ekr.20051020120306.11:__init__ & initGui
     #@+node:ekr.20061212092124:Defined in subclasses
-    def createBindings (self):
-        self.oops()
-        
-    def createFrame (self):
-        self.oops()
-        
-    def initGui (self):
-        pass # Optional method.
-        
+    def createBindings (self):          self.oops()
+    def createFrame (self):             self.oops()
+    def getOption (self,ivar):          self.oops()
+    def init (self):                    self.oops()
+    def initGui (self):                 pass # Optional method.
+    def setOption (self,ivar,val):      self.oops()
+    def toggleOption (self,ivar,val):   self.oops()
+    
     # self.oops is defined in the leoFind class.
-    #@nonl
     #@-node:ekr.20061212092124:Defined in subclasses
     #@-node:ekr.20051020120306.10:Birth & death
     #@+node:ekr.20060221074900:Callbacks

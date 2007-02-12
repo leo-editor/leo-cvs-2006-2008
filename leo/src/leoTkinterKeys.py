@@ -232,8 +232,6 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         # g.trace(len(s),repr(s))
     
         i = len(k.mb_prefix)
-        ###while s.endswith('\n') or s.endswith('\r'):
-        ###    s = s[:-1]
         j = len(s)
         return i,j
     #@nonl

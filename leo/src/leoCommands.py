@@ -6413,10 +6413,9 @@ class baseCommands:
         p.initHeadString(s,encoding)
     
         if w:
-            state = w.cget("state")
-            w.configure(state="normal")
             w.setAllText(s)
-            w.configure(state=state,width=c.frame.tree.headWidth(s=s))
+            width = c.frame.tree.headWidth(p=None,s=s)
+            w.setWidth(width)
     
         p.setDirty()
     #@nonl

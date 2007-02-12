@@ -86,7 +86,7 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
     #@+node:ekr.20031218072017.3899:__init__
     def __init__(self,c,resizeable=False,title=None,show=True):
     
-        # g.trace("leoTkinterFind",c)
+        # g.trace('leoTkinterFind',g.callers())
         
         # Init the base classes...
         leoFind.leoFind.__init__(self,c,title=title)
@@ -114,6 +114,61 @@ class leoTkinterFind (leoFind.leoFind,leoTkinterDialog.leoTkinterDialog):
             self.top.withdraw()
         self.init(c) # New in 4.3: init only once.
     #@-node:ekr.20031218072017.3899:__init__
+    #@+node:ekr.20031218072017.2059:tkFind.init
+    def init (self,c):
+    
+        # N.B.: separate c.ivars are much more convenient than a dict.
+        for key in self.intKeys:
+            # New in 4.3: get ivars from @settings.
+            val = c.config.getBool(key)
+            setattr(self,key,val)
+            val = g.choose(val,1,0) # Work around major Tk problem.
+            self.svarDict[key].set(val)
+            # g.trace(key,val)
+    
+        #@    << set find/change widgets >>
+        #@+node:ekr.20031218072017.2060:<< set find/change widgets >>
+        self.find_ctrl.delete(0,"end")
+        self.change_ctrl.delete(0,"end")
+        
+        # New in 4.3: Get setting from @settings.
+        for w,setting,defaultText in (
+            (self.find_ctrl,"find_text",'<find pattern here>'),
+            (self.change_ctrl,"change_text",''),
+        ):
+            s = c.config.getString(setting)
+            if not s: s = defaultText
+            w.insert("end",s)
+        #@-node:ekr.20031218072017.2060:<< set find/change widgets >>
+        #@nl
+        #@    << set radio buttons from ivars >>
+        #@+node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
+        found = False
+        for var,setting in (
+            ("pattern_match","pattern-search"),
+            ("script_search","script-search")):
+            val = self.svarDict[var].get()
+            if val:
+                self.svarDict["radio-find-type"].set(setting)
+                found = True ; break
+        if not found:
+            self.svarDict["radio-find-type"].set("plain-search")
+            
+        found = False
+        for var,setting in (
+            ("suboutline_only","suboutline-only"),
+            ("node_only","node-only"),
+            # ("selection_only","selection-only"),
+        ):
+            val = self.svarDict[var].get()
+            if val:
+                self.svarDict["radio-search-scope"].set(setting)
+                found = True ; break
+        if not found:
+            self.svarDict["radio-search-scope"].set("entire-outline")
+        #@-node:ekr.20031218072017.2061:<< set radio buttons from ivars >>
+        #@nl
+    #@-node:ekr.20031218072017.2059:tkFind.init
     #@+node:ekr.20031218072017.3901:destroySelf
     def destroySelf (self):
         
@@ -373,6 +428,63 @@ class tkFindTab (leoFind.findTab):
             leoFind.findTab.__init__(self,c,parentFrame)
                 # Init the base class.
                 # Calls initGui, createFrame, createBindings & init(c), in that order.
+    #@+node:ekr.20070212091209:tkFindTab.init
+    def init (self,c):
+        
+        # g.trace('tkFindTab',g.callers())
+    
+        # N.B.: separate c.ivars are much more convenient than a dict.
+        for key in self.intKeys:
+            # New in 4.3: get ivars from @settings.
+            val = c.config.getBool(key)
+            setattr(self,key,val)
+            val = g.choose(val,1,0) # Work around major Tk problem.
+            self.svarDict[key].set(val)
+            # g.trace(key,val)
+    
+        #@    << set find/change widgets >>
+        #@+node:ekr.20070212091209.1:<< set find/change widgets >>
+        self.find_ctrl.delete(0,"end")
+        self.change_ctrl.delete(0,"end")
+        
+        # New in 4.3: Get setting from @settings.
+        for w,setting,defaultText in (
+            (self.find_ctrl,"find_text",'<find pattern here>'),
+            (self.change_ctrl,"change_text",''),
+        ):
+            s = c.config.getString(setting)
+            if not s: s = defaultText
+            w.insert("end",s)
+        #@-node:ekr.20070212091209.1:<< set find/change widgets >>
+        #@nl
+        #@    << set radio buttons from ivars >>
+        #@+node:ekr.20070212091209.2:<< set radio buttons from ivars >>
+        found = False
+        for var,setting in (
+            ("pattern_match","pattern-search"),
+            ("script_search","script-search")):
+            val = self.svarDict[var].get()
+            if val:
+                self.svarDict["radio-find-type"].set(setting)
+                found = True ; break
+        if not found:
+            self.svarDict["radio-find-type"].set("plain-search")
+            
+        found = False
+        for var,setting in (
+            ("suboutline_only","suboutline-only"),
+            ("node_only","node-only"),
+            # ("selection_only","selection-only"),
+        ):
+            val = self.svarDict[var].get()
+            if val:
+                self.svarDict["radio-search-scope"].set(setting)
+                found = True ; break
+        if not found:
+            self.svarDict["radio-search-scope"].set("entire-outline")
+        #@-node:ekr.20070212091209.2:<< set radio buttons from ivars >>
+        #@nl
+    #@-node:ekr.20070212091209:tkFindTab.init
     #@+node:ekr.20051020120306.12:initGui
     def initGui (self):
     
@@ -612,6 +724,44 @@ class tkFindTab (leoFind.findTab):
                 w.bind(event,callback)
     #@-node:ekr.20051023181449:createBindings (tkFindTab)
     #@-node:ekr.20061212085958.1: Birth
+    #@+node:ekr.20070212092458:Support for minibufferFind class (tkFindTab)
+    #@+node:ekr.20070212093026:getOption
+    def getOption (self,ivar):
+    
+        var = self.svarDict.get(ivar)
+        
+        if var:
+            val = var.get()
+            # g.trace('%s = %s' % (ivar,val))
+            return val
+        else:
+            g.trace('bad ivar name: %s' % ivar)
+            return None
+    #@-node:ekr.20070212093026:getOption
+    #@+node:ekr.20070212092525:setOption
+    def setOption (self,ivar,val):
+    
+        if ivar in self.intKeys:
+            if val is not None:
+                var = self.svarDict.get(ivar)
+                var.set(val)
+                # g.trace('%s = %s' % (ivar,val))
+    
+        elif not g.app.unitTesting:
+            g.trace('oops: bad find ivar %s' % ivar)
+    #@-node:ekr.20070212092525:setOption
+    #@+node:ekr.20070212093026.1:toggleOption
+    def toggleOption (self,ivar):
+    
+        if ivar in self.intKeys:
+            var = self.svarDict.get(ivar)
+            val = not var.get()
+            var.set(val)
+            # g.trace('%s = %s' % (ivar,val),var)
+        else:
+            g.trace('oops: bad find ivar %s' % ivar)
+    #@-node:ekr.20070212093026.1:toggleOption
+    #@-node:ekr.20070212092458:Support for minibufferFind class (tkFindTab)
     #@-others
 #@nonl
 #@-node:ekr.20061212085958:class tkFindTab (findTab)
