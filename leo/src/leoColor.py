@@ -2590,7 +2590,7 @@ class baseColorizer:
             
         return word
     #@-node:ekr.20031218072017.2803:getCwebWord
-    #@+node:ekr.20031218072017.1944:removeAllImages (leoColor) (must be tested)
+    #@+node:ekr.20031218072017.1944:removeAllImages (leoColor)
     def removeAllImages (self):
         
         for photo,image,line_index,i in self.image_references:
@@ -2605,7 +2605,7 @@ class baseColorizer:
                 pass # The image may have been deleted earlier.
         
         self.image_references = []
-    #@-node:ekr.20031218072017.1944:removeAllImages (leoColor) (must be tested)
+    #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
     #@+node:ekr.20031218072017.2804:updateSyntaxColorer
     # self.flag is True unless an unambiguous @nocolor is seen.
     

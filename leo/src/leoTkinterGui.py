@@ -234,6 +234,11 @@ class tkinterGui(leoGui.leoGui):
         """Create and run an askYesNo dialog."""
         if not g.app.unitTesting:
             leoTkinterCompareDialog(c)
+    #@+node:ekr.20070212132230:tkGui.createSpellTab
+    def createSpellTab(self,c,spellHandler,tabName):
+        
+        return leoTkinterFind.tkSpellTab(c,spellHandler,tabName)
+    #@-node:ekr.20070212132230:tkGui.createSpellTab
     #@+node:ekr.20031218072017.4057:tkGui file dialogs
     # We no longer specify default extensions so that we can open and save files without extensions.
     #@+node:ekr.20060212061804:runOpenFileDialog

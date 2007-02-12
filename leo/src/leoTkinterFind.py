@@ -765,6 +765,278 @@ class tkFindTab (leoFind.findTab):
     #@-others
 #@nonl
 #@-node:ekr.20061212085958:class tkFindTab (findTab)
+#@+node:ekr.20051025071455.22:class tkSpellTab
+class tkSpellTab:
+    
+    #@    @+others
+    #@+node:ekr.20070212132230.1:tkSpellTab.__init__
+    def __init__ (self,c,handler,tabName):
+    
+        self.c = c
+        self.handler = handler
+        self.tabName = tabName
+        
+        self.createFrame()
+        self.createBindings()
+        self.fillbox([])
+    #@-node:ekr.20070212132230.1:tkSpellTab.__init__
+    #@+node:ekr.20051025120920:createBindings
+    def createBindings (self):
+        
+        c = self.c ; k = c.k
+        widgets = (self.listBox, self.outerFrame)
+    
+        for w in widgets:
+    
+            # Bind shortcuts for the following commands...
+            for commandName,func in (
+                ('full-command',            k.fullCommand),
+                ('hide-spell-tab',          self.handler.hide),
+                ('spell-add',               self.handler.add),
+                ('spell-find',              self.handler.find),
+                ('spell-ignore',            self.handler.ignore),
+                ('spell-change-then-find',  self.handler.changeThenFind),
+            ):
+                junk, bunchList = c.config.getShortcut(commandName)
+                for bunch in bunchList:
+                    accel = bunch.val
+                    shortcut = k.shortcutFromSetting(accel)
+                    if shortcut:
+                        # g.trace(shortcut,commandName)
+                        w.bind(shortcut,func)
+                        
+        self.listBox.bind("<Double-1>",self.onChangeThenFindButton)
+        self.listBox.bind("<Button-1>",self.onSelectListBox)
+        self.listBox.bind("<Map>",self.onMap)
+    #@nonl
+    #@-node:ekr.20051025120920:createBindings
+    #@+node:ekr.20070212132230.2:createFrame
+    def createFrame (self):
+        
+        c = self.c ; log = c.frame.log ; tabName = self.tabName
+        
+        parentFrame = log.frameDict.get(tabName)
+        w = log.textDict.get(tabName)
+        w.pack_forget()
+    
+        # Set the common background color.
+        bg = c.config.getColor('log_pane_Spell_tab_background_color') or 'LightSteelBlue2'
+    
+        #@    << Create the outer frames >>
+        #@+node:ekr.20051113090322:<< Create the outer frames >>
+        self.outerScrolledFrame = Pmw.ScrolledFrame(
+            parentFrame,usehullsize = 1)
+        
+        self.outerFrame = outer = self.outerScrolledFrame.component('frame')
+        self.outerFrame.configure(background=bg)
+        
+        for z in ('borderframe','clipper','frame','hull'):
+            self.outerScrolledFrame.component(z).configure(
+                relief='flat',background=bg)
+        #@-node:ekr.20051113090322:<< Create the outer frames >>
+        #@nl
+        #@    << Create the text and suggestion panes >>
+        #@+node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
+        f2 = Tk.Frame(outer,bg=bg)
+        f2.pack(side='top',expand=0,fill='x')
+        
+        self.wordLabel = Tk.Label(f2,text="Suggestions for:")
+        self.wordLabel.pack(side='left')
+        self.wordLabel.configure(font=('verdana',10,'bold'))
+        
+        fpane = Tk.Frame(outer,bg=bg,bd=2)
+        fpane.pack(side='top',expand=1,fill='both')
+        
+        self.listBox = Tk.Listbox(fpane,height=6,width=10,selectmode="single")
+        self.listBox.pack(side='left',expand=1,fill='both')
+        self.listBox.configure(font=('verdana',11,'normal'))
+        
+        listBoxBar = Tk.Scrollbar(fpane,name='listBoxBar')
+        
+        bar, txt = listBoxBar, self.listBox
+        txt ['yscrollcommand'] = bar.set
+        bar ['command'] = txt.yview
+        bar.pack(side='right',fill='y')
+        #@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >>
+        #@nl
+        #@    << Create the spelling buttons >>
+        #@+node:ekr.20051025071455.24:<< Create the spelling buttons >>
+        # Create the alignment panes
+        buttons1 = Tk.Frame(outer,bd=1,bg=bg)
+        buttons2 = Tk.Frame(outer,bd=1,bg=bg)
+        buttons3 = Tk.Frame(outer,bd=1,bg=bg)
+        for w in (buttons1,buttons2,buttons3):
+            w.pack(side='top',expand=0,fill='x')
+        
+        buttonList = [] ; font = ('verdana',9,'normal') ; width = 12
+        for frame, text, command in (
+            (buttons1,"Find",self.onFindButton),
+            (buttons1,"Add",self.onAddButton),
+            (buttons2,"Change",self.onChangeButton),
+            (buttons2,"Change, Find",self.onChangeThenFindButton),
+            (buttons3,"Ignore",self.onIgnoreButton),
+            (buttons3,"Hide",self.onHideButton),
+        ):
+            b = Tk.Button(frame,font=font,width=width,text=text,command=command)
+            b.pack(side='left',expand=0,fill='none')
+            buttonList.append(b)
+        
+        # Used to enable or disable buttons.
+        (self.findButton,self.addButton,
+         self.changeButton, self.changeFindButton,
+         self.ignoreButton, self.hideButton) = buttonList
+        #@-node:ekr.20051025071455.24:<< Create the spelling buttons >>
+        #@nl
+        
+        # Pack last so buttons don't get squished.
+        self.outerScrolledFrame.pack(expand=1,fill='both',padx=2,pady=2)
+    #@-node:ekr.20070212132230.2:createFrame
+    #@+node:ekr.20051025071455.29:Event handlers
+    #@+node:ekr.20051025071455.30:onAddButton
+    def onAddButton(self):
+        """Handle a click in the Add button in the Check Spelling dialog."""
+    
+        self.handler.add()
+    #@-node:ekr.20051025071455.30:onAddButton
+    #@+node:ekr.20051025071455.32:onChangeButton & onChangeThenFindButton
+    def onChangeButton(self,event=None):
+    
+        """Handle a click in the Change button in the Spell tab."""
+    
+        self.handler.change()
+        self.updateButtons()
+        
+    
+    def onChangeThenFindButton(self,event=None):
+        
+        """Handle a click in the "Change, Find" button in the Spell tab."""
+    
+        if self.change():
+            self.find()
+        self.updateButtons()
+    #@-node:ekr.20051025071455.32:onChangeButton & onChangeThenFindButton
+    #@+node:ekr.20051025071455.33:onFindButton
+    def onFindButton(self):
+    
+        """Handle a click in the Find button in the Spell tab."""
+    
+        c = self.c
+        self.handler.find()
+        self.updateButtons()
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+    #@-node:ekr.20051025071455.33:onFindButton
+    #@+node:ekr.20051025071455.34:onHideButton
+    def onHideButton(self):
+        
+        """Handle a click in the Hide button in the Spell tab."""
+        
+        self.handler.hide()
+    #@-node:ekr.20051025071455.34:onHideButton
+    #@+node:ekr.20051025071455.31:onIgnoreButton
+    def onIgnoreButton(self,event=None):
+    
+        """Handle a click in the Ignore button in the Check Spelling dialog."""
+    
+        self.handler.ignore()
+    #@-node:ekr.20051025071455.31:onIgnoreButton
+    #@+node:ekr.20051025071455.49:onMap
+    def onMap (self, event=None):
+        """Respond to a Tk <Map> event."""
+        
+        self.update(show= False, fill= False)
+    #@-node:ekr.20051025071455.49:onMap
+    #@+node:ekr.20051025071455.50:onSelectListBox
+    def onSelectListBox(self, event=None):
+        """Respond to a click in the selection listBox."""
+        
+        c = self.c
+        self.updateButtons()
+        c.bodyWantsFocus()
+    #@-node:ekr.20051025071455.50:onSelectListBox
+    #@-node:ekr.20051025071455.29:Event handlers
+    #@+node:ekr.20051025071455.42:Helpers
+    #@+node:ekr.20051025071455.43:bringToFront
+    def bringToFront (self):
+        
+        self.c.frame.log.selectTab('Spell')
+    #@-node:ekr.20051025071455.43:bringToFront
+    #@+node:ekr.20051025071455.44:fillbox
+    def fillbox(self, alts, word=None):
+        """Update the suggestions listBox in the Check Spelling dialog."""
+        
+        self.suggestions = alts
+        
+        if not word:
+            word = ""
+    
+        self.wordLabel.configure(text= "Suggestions for: " + word)
+        self.listBox.delete(0, "end")
+    
+        for i in xrange(len(self.suggestions)):
+            self.listBox.insert(i, self.suggestions[i])
+        
+        # This doesn't show up because we don't have focus.
+        if len(self.suggestions):
+            self.listBox.select_set(1)
+    #@-node:ekr.20051025071455.44:fillbox
+    #@+node:ekr.20051025071455.48:getSuggestion
+    def getSuggestion(self):
+        """Return the selected suggestion from the listBox."""
+        
+        # Work around an old Python bug.  Convert strings to ints.
+        items = self.listBox.curselection()
+        try:
+            items = map(int, items)
+        except ValueError: pass
+    
+        if items:
+            n = items[0]
+            suggestion = self.suggestions[n]
+            return suggestion
+        else:
+            return None
+    #@-node:ekr.20051025071455.48:getSuggestion
+    #@+node:ekr.20051025071455.51:update
+    def update(self,show=True,fill=False):
+        
+        """Update the Spell Check dialog."""
+        
+        c = self.c
+        
+        if fill:
+            self.fillbox([])
+    
+        self.updateButtons()
+    
+        if show:
+            self.bringToFront()
+            c.bodyWantsFocus()
+    #@-node:ekr.20051025071455.51:update
+    #@+node:ekr.20051025071455.52:updateButtons (spellTab)
+    def updateButtons (self):
+    
+        """Enable or disable buttons in the Check Spelling dialog."""
+    
+        c = self.c ; w = c.frame.body.bodyCtrl
+    
+        start, end = w.getSelectionRange()
+        state = g.choose(self.suggestions and start,"normal","disabled")
+    
+        self.changeButton.configure(state=state)
+        self.changeFindButton.configure(state=state)
+    
+        # state = g.choose(self.c.undoer.canRedo(),"normal","disabled")
+        # self.redoButton.configure(state=state)
+        # state = g.choose(self.c.undoer.canUndo(),"normal","disabled")
+        # self.undoButton.configure(state=state)
+    
+        self.addButton.configure(state='normal')
+        self.ignoreButton.configure(state='normal')
+    #@-node:ekr.20051025071455.52:updateButtons (spellTab)
+    #@-node:ekr.20051025071455.42:Helpers
+    #@-others
+#@-node:ekr.20051025071455.22:class tkSpellTab
 #@-others
 #@-node:ekr.20031218072017.3897:@thin leoTkinterFind.py
 #@-leo

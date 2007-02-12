@@ -95,6 +95,7 @@ GPL
 Galimberti
 Gansevles
 GetColor
+GetRange
 Gidion
 Gray80
 Greant
@@ -2061,6 +2062,7 @@ testsName
 tex
 text1
 text2
+textBaseClass
 textDict
 theDict
 theDir

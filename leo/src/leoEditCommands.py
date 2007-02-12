@@ -29,7 +29,6 @@ import Tkinter as Tk
 
 subprocess     = g.importExtension('subprocess',    pluginName=None,verbose=False)
 Pmw            = g.importExtension('Pmw',           pluginName=None,verbose=False)
-tkColorChooser = g.importExtension('tkColorChooser',pluginName=None,verbose=False)
 tkFileDialog   = g.importExtension('tkFileDialog',  pluginName=None,verbose=False)
 tkFont         = g.importExtension('tkFont',        pluginName=None,verbose=False)
 
@@ -1725,134 +1724,11 @@ class editCommandsClass (baseEditCommandsClass):
         
         c = self.c ; log = c.frame.log ; tabName = 'Colors'
         
-        #@    << define colors >>
-        #@+node:ekr.20051019183105.2:<< define colors >>
-        colors = (
-            "gray60", "gray70", "gray80", "gray85", "gray90", "gray95",
-            "snow1", "snow2", "snow3", "snow4", "seashell1", "seashell2",
-            "seashell3", "seashell4", "AntiqueWhite1", "AntiqueWhite2", "AntiqueWhite3",
-            "AntiqueWhite4", "bisque1", "bisque2", "bisque3", "bisque4", "PeachPuff1",
-            "PeachPuff2", "PeachPuff3", "PeachPuff4", "NavajoWhite1", "NavajoWhite2",
-            "NavajoWhite3", "NavajoWhite4", "LemonChiffon1", "LemonChiffon2",
-            "LemonChiffon3", "LemonChiffon4", "cornsilk1", "cornsilk2", "cornsilk3",
-            "cornsilk4", "ivory1", "ivory2", "ivory3", "ivory4", "honeydew1", "honeydew2",
-            "honeydew3", "honeydew4", "LavenderBlush1", "LavenderBlush2",
-            "LavenderBlush3", "LavenderBlush4", "MistyRose1", "MistyRose2",
-            "MistyRose3", "MistyRose4", "azure1", "azure2", "azure3", "azure4",
-            "SlateBlue1", "SlateBlue2", "SlateBlue3", "SlateBlue4", "RoyalBlue1",
-            "RoyalBlue2", "RoyalBlue3", "RoyalBlue4", "blue1", "blue2", "blue3", "blue4",
-            "DodgerBlue1", "DodgerBlue2", "DodgerBlue3", "DodgerBlue4", "SteelBlue1",
-            "SteelBlue2", "SteelBlue3", "SteelBlue4", "DeepSkyBlue1", "DeepSkyBlue2",
-            "DeepSkyBlue3", "DeepSkyBlue4", "SkyBlue1", "SkyBlue2", "SkyBlue3",
-            "SkyBlue4", "LightSkyBlue1", "LightSkyBlue2", "LightSkyBlue3",
-            "LightSkyBlue4", "SlateGray1", "SlateGray2", "SlateGray3", "SlateGray4",
-            "LightSteelBlue1", "LightSteelBlue2", "LightSteelBlue3",
-            "LightSteelBlue4", "LightBlue1", "LightBlue2", "LightBlue3",
-            "LightBlue4", "LightCyan1", "LightCyan2", "LightCyan3", "LightCyan4",
-            "PaleTurquoise1", "PaleTurquoise2", "PaleTurquoise3", "PaleTurquoise4",
-            "CadetBlue1", "CadetBlue2", "CadetBlue3", "CadetBlue4", "turquoise1",
-            "turquoise2", "turquoise3", "turquoise4", "cyan1", "cyan2", "cyan3", "cyan4",
-            "DarkSlateGray1", "DarkSlateGray2", "DarkSlateGray3",
-            "DarkSlateGray4", "aquamarine1", "aquamarine2", "aquamarine3",
-            "aquamarine4", "DarkSeaGreen1", "DarkSeaGreen2", "DarkSeaGreen3",
-            "DarkSeaGreen4", "SeaGreen1", "SeaGreen2", "SeaGreen3", "SeaGreen4",
-            "PaleGreen1", "PaleGreen2", "PaleGreen3", "PaleGreen4", "SpringGreen1",
-            "SpringGreen2", "SpringGreen3", "SpringGreen4", "green1", "green2",
-            "green3", "green4", "chartreuse1", "chartreuse2", "chartreuse3",
-            "chartreuse4", "OliveDrab1", "OliveDrab2", "OliveDrab3", "OliveDrab4",
-            "DarkOliveGreen1", "DarkOliveGreen2", "DarkOliveGreen3",
-            "DarkOliveGreen4", "khaki1", "khaki2", "khaki3", "khaki4",
-            "LightGoldenrod1", "LightGoldenrod2", "LightGoldenrod3",
-            "LightGoldenrod4", "LightYellow1", "LightYellow2", "LightYellow3",
-            "LightYellow4", "yellow1", "yellow2", "yellow3", "yellow4", "gold1", "gold2",
-            "gold3", "gold4", "goldenrod1", "goldenrod2", "goldenrod3", "goldenrod4",
-            "DarkGoldenrod1", "DarkGoldenrod2", "DarkGoldenrod3", "DarkGoldenrod4",
-            "RosyBrown1", "RosyBrown2", "RosyBrown3", "RosyBrown4", "IndianRed1",
-            "IndianRed2", "IndianRed3", "IndianRed4", "sienna1", "sienna2", "sienna3",
-            "sienna4", "burlywood1", "burlywood2", "burlywood3", "burlywood4", "wheat1",
-            "wheat2", "wheat3", "wheat4", "tan1", "tan2", "tan3", "tan4", "chocolate1",
-            "chocolate2", "chocolate3", "chocolate4", "firebrick1", "firebrick2",
-            "firebrick3", "firebrick4", "brown1", "brown2", "brown3", "brown4", "salmon1",
-            "salmon2", "salmon3", "salmon4", "LightSalmon1", "LightSalmon2",
-            "LightSalmon3", "LightSalmon4", "orange1", "orange2", "orange3", "orange4",
-            "DarkOrange1", "DarkOrange2", "DarkOrange3", "DarkOrange4", "coral1",
-            "coral2", "coral3", "coral4", "tomato1", "tomato2", "tomato3", "tomato4",
-            "OrangeRed1", "OrangeRed2", "OrangeRed3", "OrangeRed4", "red1", "red2", "red3",
-            "red4", "DeepPink1", "DeepPink2", "DeepPink3", "DeepPink4", "HotPink1",
-            "HotPink2", "HotPink3", "HotPink4", "pink1", "pink2", "pink3", "pink4",
-            "LightPink1", "LightPink2", "LightPink3", "LightPink4", "PaleVioletRed1",
-            "PaleVioletRed2", "PaleVioletRed3", "PaleVioletRed4", "maroon1",
-            "maroon2", "maroon3", "maroon4", "VioletRed1", "VioletRed2", "VioletRed3",
-            "VioletRed4", "magenta1", "magenta2", "magenta3", "magenta4", "orchid1",
-            "orchid2", "orchid3", "orchid4", "plum1", "plum2", "plum3", "plum4",
-            "MediumOrchid1", "MediumOrchid2", "MediumOrchid3", "MediumOrchid4",
-            "DarkOrchid1", "DarkOrchid2", "DarkOrchid3", "DarkOrchid4", "purple1",
-            "purple2", "purple3", "purple4", "MediumPurple1", "MediumPurple2",
-            "MediumPurple3", "MediumPurple4", "thistle1", "thistle2", "thistle3",
-            "thistle4" )
-        #@-node:ekr.20051019183105.2:<< define colors >>
-        #@nl
-        
         if log.frameDict.get(tabName):
             log.selectTab(tabName)
         else:
             log.selectTab(tabName)
-            w = log.textDict.get(tabName)
-            w.pack_forget()
-            f = log.frameDict.get(tabName)
-            self.createColorPicker(f,colors)
-    #@+node:ekr.20051019183105.3:editCommands.createColorPicker (Tk code)
-    def createColorPicker (self,parent,colors):
-        
-        colors = list(colors)
-        bg = parent.cget('background')
-        
-        outer = Tk.Frame(parent,background=bg)
-        outer.pack(side='top',fill='both',expand=1,pady=10)
-        
-        f = Tk.Frame(outer)
-        f.pack(side='top',expand=0,fill='x')
-        f1 = Tk.Frame(f) ; f1.pack(side='top',expand=0,fill='x')
-        f2 = Tk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
-        f3 = Tk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
-        
-        label = g.app.gui.plainTextWidget(f1,height=1,width=20)
-        label.insert('1.0','Color name or value...')
-        label.pack(side='left',pady=6)
-    
-        #@    << create optionMenu and callback >>
-        #@+node:ekr.20051019183105.4:<< create optionMenu and callback >>
-        colorBox = Pmw.ComboBox(f2,scrolledlist_items=colors)
-        colorBox.pack(side='left',pady=4)
-        
-        def colorCallback (newName): 
-            label.delete('1.0','end')
-            label.insert('1.0',newName)
-            try:
-                for theFrame in (parent,outer,f,f1,f2,f3):
-                    theFrame.configure(background=newName)
-            except: pass # Ignore invalid names.
-        
-        colorBox.configure(selectioncommand=colorCallback)
-        #@-node:ekr.20051019183105.4:<< create optionMenu and callback >>
-        #@nl
-        #@    << create picker button and callback >>
-        #@+node:ekr.20051019183105.5:<< create picker button and callback >>
-        def pickerCallback ():
-            rgb,val = tkColorChooser.askcolor(parent=parent,initialcolor=f.cget('background'))
-            if rgb or val:
-                # label.configure(text=val)
-                label.delete('1.0','end')
-                label.insert('1.0',val)
-                for theFrame in (parent,outer,f,f1,f2,f3):
-                    theFrame.configure(background=val)
-        
-        b = Tk.Button(f3,text="Color Picker...",
-            command=pickerCallback,background=bg)
-        b.pack(side='left',pady=4)
-        #@-node:ekr.20051019183105.5:<< create picker button and callback >>
-        #@nl
-    #@-node:ekr.20051019183105.3:editCommands.createColorPicker (Tk code)
+            log.createColorPicker(tabName)
     #@-node:ekr.20051019183105.1:show-colors
     #@+node:ekr.20051019201809:editCommands.show-fonts & helpers
     def showFonts (self,event):
@@ -1865,159 +1741,7 @@ class editCommandsClass (baseEditCommandsClass):
             log.selectTab(tabName)
         else:
             log.selectTab(tabName)
-            f = log.frameDict.get(tabName)
-            w = log.textDict.get(tabName)
-            w.pack_forget()
-            self.createFontPicker(f)
-    #@+node:ekr.20051019201809.1:createFontPicker
-    def createFontPicker (self,parent):
-    
-        bg = parent.cget('background')
-        font = self.getFont()
-        #@    << create the frames >>
-        #@+node:ekr.20051019202139:<< create the frames >>
-        f = Tk.Frame(parent,background=bg) ; f.pack (side='top',expand=0,fill='both')
-        f1 = Tk.Frame(f,background=bg)     ; f1.pack(side='top',expand=1,fill='x')
-        f2 = Tk.Frame(f,background=bg)     ; f2.pack(side='top',expand=1,fill='x')
-        f3 = Tk.Frame(f,background=bg)     ; f3.pack(side='top',expand=1,fill='x')
-        f4 = Tk.Frame(f,background=bg)     ; f4.pack(side='top',expand=1,fill='x')
-        #@-node:ekr.20051019202139:<< create the frames >>
-        #@nl
-        #@    << create the family combo box >>
-        #@+node:ekr.20051019201809.2:<< create the family combo box >>
-        names = tkFont.families()
-        names = list(names)
-        names.sort()
-        names.insert(0,'<None>')
-        
-        self.familyBox = familyBox = Pmw.ComboBox(f1,
-            labelpos="we",label_text='Family:',label_width=10,
-            label_background=bg,
-            arrowbutton_background=bg,
-            scrolledlist_items=names)
-        
-        familyBox.selectitem(0)
-        familyBox.pack(side="left",padx=2,pady=2)
-        #@-node:ekr.20051019201809.2:<< create the family combo box >>
-        #@nl
-        #@    << create the size entry >>
-        #@+node:ekr.20051019201809.3:<< create the size entry >>
-        Tk.Label(f2,text="Size:",width=10,background=bg).pack(side="left")
-        
-        sizeEntry = Tk.Entry(f2,width=4)
-        sizeEntry.insert(0,'12')
-        sizeEntry.pack(side="left",padx=2,pady=2)
-        #@-node:ekr.20051019201809.3:<< create the size entry >>
-        #@nl
-        #@    << create the weight combo box >>
-        #@+node:ekr.20051019201809.4:<< create the weight combo box >>
-        weightBox = Pmw.ComboBox(f3,
-            labelpos="we",label_text="Weight:",label_width=10,
-            label_background=bg,
-            arrowbutton_background=bg,
-            scrolledlist_items=['normal','bold'])
-        
-        weightBox.selectitem(0)
-        weightBox.pack(side="left",padx=2,pady=2)
-        #@-node:ekr.20051019201809.4:<< create the weight combo box >>
-        #@nl
-        #@    << create the slant combo box >>
-        #@+node:ekr.20051019201809.5:<< create the slant combo box>>
-        slantBox = Pmw.ComboBox(f4,
-            labelpos="we",label_text="Slant:",label_width=10,
-            label_background=bg,
-            arrowbutton_background=bg,
-            scrolledlist_items=['roman','italic'])
-        
-        slantBox.selectitem(0)
-        slantBox.pack(side="left",padx=2,pady=2)
-        #@-node:ekr.20051019201809.5:<< create the slant combo box>>
-        #@nl
-        #@    << create the sample text widget >>
-        #@+node:ekr.20051019202139.1:<< create the sample text widget >>
-        self.sampleWidget = sample = g.app.gui.plainTextWidget(f,height=20,width=80,font=font)
-        sample.pack(side='left')
-        
-        s = 'The quick brown fox\njumped over the lazy dog.\n0123456789'
-        sample.insert(0,s)
-        #@-node:ekr.20051019202139.1:<< create the sample text widget >>
-        #@nl
-        #@    << create and bind the callbacks >>
-        #@+node:ekr.20051019202328:<< create and bind the callbacks >>
-        def fontCallback(event=None):
-            self.setFont(familyBox,sizeEntry,slantBox,weightBox,sample)
-        
-        for w in (familyBox,slantBox,weightBox):
-            w.configure(selectioncommand=fontCallback)
-        
-        sizeEntry.bind('<Return>',fontCallback)
-        #@-node:ekr.20051019202328:<< create and bind the callbacks >>
-        #@nl
-        self.createBindings()
-    #@-node:ekr.20051019201809.1:createFontPicker
-    #@+node:ekr.20060726133852:createBindings (fontPicker)
-    def createBindings (self):
-        
-        c = self.c ; k = c.k
-        
-        table = (
-            ('<Button-1>',  k.masterClickHandler),
-            ('<Double-1>',  k.masterClickHandler),
-            ('<Button-3>',  k.masterClickHandler),
-            ('<Double-3>',  k.masterClickHandler),
-            ('<Key>',       k.masterKeyHandler),
-            ("<Escape>",    self.hideTab),
-        )
-    
-        w = self.sampleWidget
-        for event, callback in table:
-            w.bind(event,callback)
-            
-        k.completeAllBindingsForWidget(w)
-    #@-node:ekr.20060726133852:createBindings (fontPicker)
-    #@+node:ekr.20051019201809.6:getFont
-    def getFont(self,family=None,size=12,slant='roman',weight='normal'):
-        
-        try:
-            return tkFont.Font(family=family,size=size,slant=slant,weight=weight)
-        except Exception:
-            g.es("exception setting font")
-            g.es("family,size,slant,weight:",family,size,slant,weight)
-            # g.es_exception() # This just confuses people.
-            return g.app.config.defaultFont
-    #@-node:ekr.20051019201809.6:getFont
-    #@+node:ekr.20051019201809.7:setFont
-    def setFont(self,familyBox,sizeEntry,slantBox,weightBox,label):
-        
-        d = {}
-        for box,key in (
-            (familyBox, 'family'),
-            (None,      'size'),
-            (slantBox,  'slant'),
-            (weightBox, 'weight'),
-        ):
-            if box: val = box.get()
-            else:
-                val = sizeEntry.get().strip() or ''
-                try: int(val)
-                except ValueError: val = None
-            if val and val.lower() not in ('none','<none>',):
-                d[key] = val
-    
-        family=d.get('family',None)
-        size=d.get('size',12)
-        weight=d.get('weight','normal')
-        slant=d.get('slant','roman')
-        font = self.getFont(family,size,slant,weight)
-        label.configure(font=font)
-    #@-node:ekr.20051019201809.7:setFont
-    #@+node:ekr.20060726134339:hideTab
-    def hideTab (self,event=None):
-        
-        c = self.c
-        c.frame.log.selectTab('Log')
-        c.bodyWantsFocus()
-    #@-node:ekr.20060726134339:hideTab
+            log.createFontPicker(tabName)
     #@-node:ekr.20051019201809:editCommands.show-fonts & helpers
     #@-node:ekr.20051019183105:color & font
     #@+node:ekr.20050920084036.132:comment column...
@@ -7766,7 +7490,7 @@ class spellCommandsClass (baseEditCommandsClass):
         '''Open the Spell Checker tab in the log pane.'''
     
         c = self.c ; log = c.frame.log ; tabName = 'Spell'
-    
+        
         if log.frameDict.get(tabName):
             log.selectTab(tabName)
         elif self.handler:
@@ -7774,13 +7498,8 @@ class spellCommandsClass (baseEditCommandsClass):
                 self.handler.bringToFront()
         else:
             log.selectTab(tabName)
-            f = log.frameDict.get(tabName)
-            w = log.textDict.get(tabName)
-            w.pack_forget()
-            self.handler = spellTab(c,f)
-            if self.handler.aspell.aspell:
-                self.handler.bringToFront()
-            else:
+            self.handler = spellTabHandler(c,tabName)
+            if not self.handler.loaded:
                 log.deleteTab(tabName,force=True)
     #@+node:ekr.20051025080420.1:commands...
     # Just open the Spell tab if it has never been opened.
@@ -7835,15 +7554,15 @@ class spellCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20051025080633:openSpellTab
     #@-others
 #@-node:ekr.20051025071455.1:class spellCommandsClass
-#@+node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)
-class spellTab(leoFind.leoFind):
+#@+node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
+class spellTabHandler (leoFind.leoFind):
 
     """A class to create and manage Leo's Spell Check dialog."""
     
     #@    @+others
     #@+node:ekr.20051025071455.19:Birth & death
-    #@+node:ekr.20051025071455.20:spellTab.__init__
-    def __init__(self,c,parentFrame):
+    #@+node:ekr.20051025071455.20:spellTabHandler.__init__
+    def __init__(self,c,tabName):
         
         """Ctor for the Leo Spelling dialog."""
     
@@ -7855,15 +7574,14 @@ class spellTab(leoFind.leoFind):
         self.suggestions = []
         self.messages = [] # List of message to be displayed when hiding the tab.
         self.outerScrolledFrame = None
-        self.workCtrl = g.app.gui.plainTextWidget(parentFrame)
+        self.workCtrl = g.app.gui.plainTextWidget(c.frame.top)
             # A text widget for scanning.
             # Must have a parent frame even though it is not packed.
         
         self.loaded = self.init_aspell(c)
         if self.loaded:
-            self.createSpellTab(parentFrame)
-            self.createBindings()
-    #@-node:ekr.20051025071455.20:spellTab.__init__
+            self.tab = g.app.gui.createSpellTab(c,self,tabName)
+    #@-node:ekr.20051025071455.20:spellTabHandler.__init__
     #@+node:ekr.20051025094004:init_aspell
     def init_aspell (self,c):
     
@@ -7890,115 +7608,6 @@ class spellTab(leoFind.leoFind):
         
         return self.aspell.aspell
     #@-node:ekr.20051025094004:init_aspell
-    #@+node:ekr.20051025071455.22:editCommands.createSpellTab
-    def createSpellTab(self,parentFrame):
-    
-        """Create the Spell tab."""
-        
-        c = self.c
-        
-        # Set the common background color.
-        bg = c.config.getColor('log_pane_Spell_tab_background_color') or 'LightSteelBlue2'
-        
-        #@    << Create the outer frames >>
-        #@+node:ekr.20051113090322:<< Create the outer frames >> (spellTab)
-        self.outerScrolledFrame = Pmw.ScrolledFrame(
-            parentFrame,usehullsize = 1)
-        
-        self.outerFrame = outer = self.outerScrolledFrame.component('frame')
-        self.outerFrame.configure(background=bg)
-        
-        for z in ('borderframe','clipper','frame','hull'):
-            self.outerScrolledFrame.component(z).configure(
-                relief='flat',background=bg)
-        #@-node:ekr.20051113090322:<< Create the outer frames >> (spellTab)
-        #@nl
-        #@    << Create the text and suggestion panes >>
-        #@+node:ekr.20051025071455.23:<< Create the text and suggestion panes >> spellTab (contains Tk code)
-        f2 = Tk.Frame(outer,bg=bg)
-        f2.pack(side='top',expand=0,fill='x')
-        
-        self.wordLabel = Tk.Label(f2,text="Suggestions for:")
-        self.wordLabel.pack(side='left')
-        self.wordLabel.configure(font=('verdana',10,'bold'))
-        
-        fpane = Tk.Frame(outer,bg=bg,bd=2)
-        fpane.pack(side='top',expand=1,fill='both')
-        
-        self.listBox = Tk.Listbox(fpane,height=6,width=10,selectmode="single")
-        self.listBox.pack(side='left',expand=1,fill='both')
-        self.listBox.configure(font=('verdana',11,'normal'))
-        
-        listBoxBar = Tk.Scrollbar(fpane,name='listBoxBar')
-        
-        bar, txt = listBoxBar, self.listBox
-        txt ['yscrollcommand'] = bar.set
-        bar ['command'] = txt.yview
-        bar.pack(side='right',fill='y')
-        #@-node:ekr.20051025071455.23:<< Create the text and suggestion panes >> spellTab (contains Tk code)
-        #@nl
-        #@    << Create the spelling buttons >>
-        #@+node:ekr.20051025071455.24:<< Create the spelling buttons >>
-        # Create the alignment panes
-        buttons1 = Tk.Frame(outer,bd=1,bg=bg)
-        buttons2 = Tk.Frame(outer,bd=1,bg=bg)
-        buttons3 = Tk.Frame(outer,bd=1,bg=bg)
-        for w in (buttons1,buttons2,buttons3):
-            w.pack(side='top',expand=0,fill='x')
-        
-        buttonList = [] ; font = ('verdana',9,'normal') ; width = 12
-        for frame, text, command in (
-            (buttons1,"Find",self.onFindButton),
-            (buttons1,"Add",self.onAddButton),
-            (buttons2,"Change",self.onChangeButton),
-            (buttons2,"Change, Find",self.onChangeThenFindButton),
-            (buttons3,"Ignore",self.onIgnoreButton),
-            (buttons3,"Hide",self.onHideButton),
-        ):
-            b = Tk.Button(frame,font=font,width=width,text=text,command=command)
-            b.pack(side='left',expand=0,fill='none')
-            buttonList.append(b)
-        
-        # Used to enable or disable buttons.
-        (self.findButton,self.addButton,
-         self.changeButton, self.changeFindButton,
-         self.ignoreButton, self.hideButton) = buttonList
-        #@-node:ekr.20051025071455.24:<< Create the spelling buttons >>
-        #@nl
-        
-        # Pack last so buttons don't get squished.
-        self.outerScrolledFrame.pack(expand=1,fill='both',padx=2,pady=2)
-        
-        self.fillbox([])
-        self.listBox.bind("<Double-1>",self.onChangeThenFindButton)
-        self.listBox.bind("<Button-1>",self.onSelectListBox)
-        self.listBox.bind("<Map>",self.onMap)
-    #@-node:ekr.20051025071455.22:editCommands.createSpellTab
-    #@+node:ekr.20051025120920:createBindings (spellTab)
-    def createBindings (self):
-        
-        c = self.c ; k = c.k
-        widgets = (self.listBox, self.outerFrame)
-    
-        for w in widgets:
-    
-            # Bind shortcuts for the following commands...
-            for commandName,func in (
-                ('full-command',            k.fullCommand),
-                ('hide-spell-tab',          self.hide),
-                ('spell-add',               self.add),
-                ('spell-find',              self.find),
-                ('spell-ignore',            self.ignore),
-                ('spell-change-then-find',  self.changeThenFind),
-            ):
-                junk, bunchList = c.config.getShortcut(commandName)
-                for bunch in bunchList:
-                    accel = bunch.val
-                    shortcut = k.shortcutFromSetting(accel)
-                    if shortcut:
-                        # g.trace(shortcut,commandName)
-                        w.bind(shortcut,func)
-    #@-node:ekr.20051025120920:createBindings (spellTab)
     #@+node:ekr.20051025071455.16:readDictionary
     def readDictionary (self,fileName):
     
@@ -8027,56 +7636,6 @@ class spellTab(leoFind.leoFind):
         return d
     #@-node:ekr.20051025071455.16:readDictionary
     #@-node:ekr.20051025071455.19:Birth & death
-    #@+node:ekr.20051025071455.29:Buttons
-    #@+node:ekr.20051025071455.30:onAddButton
-    def onAddButton(self):
-        """Handle a click in the Add button in the Check Spelling dialog."""
-    
-        self.add()
-    #@-node:ekr.20051025071455.30:onAddButton
-    #@+node:ekr.20051025071455.31:onIgnoreButton
-    def onIgnoreButton(self,event=None):
-    
-        """Handle a click in the Ignore button in the Check Spelling dialog."""
-    
-        self.ignore()
-    #@-node:ekr.20051025071455.31:onIgnoreButton
-    #@+node:ekr.20051025071455.32:onChangeButton & onChangeThenFindButton
-    def onChangeButton(self,event=None):
-    
-        """Handle a click in the Change button in the Spell tab."""
-    
-        self.change()
-        self.updateButtons()
-        
-    
-    def onChangeThenFindButton(self,event=None):
-        
-        """Handle a click in the "Change, Find" button in the Spell tab."""
-    
-        if self.change():
-            self.find()
-        self.updateButtons()
-    #@-node:ekr.20051025071455.32:onChangeButton & onChangeThenFindButton
-    #@+node:ekr.20051025071455.33:onFindButton
-    def onFindButton(self):
-    
-        """Handle a click in the Find button in the Spell tab."""
-    
-        c = self.c
-        self.find()
-        self.updateButtons()
-        c.invalidateFocus()
-        c.bodyWantsFocusNow()
-    #@-node:ekr.20051025071455.33:onFindButton
-    #@+node:ekr.20051025071455.34:onHideButton
-    def onHideButton(self):
-        
-        """Handle a click in the Hide button in the Spell tab."""
-        
-        self.hide()
-    #@-node:ekr.20051025071455.34:onHideButton
-    #@-node:ekr.20051025071455.29:Buttons
     #@+node:ekr.20051025071455.36:Commands
     #@+node:ekr.20051025071455.37:add
     def add(self,event=None):
@@ -8109,9 +7668,9 @@ class spellTab(leoFind.leoFind):
             if f: f.close()
             
         self.dictionary[self.currentWord.lower()] = 0
-        self.onFindButton()
+        self.tab.onFindButton()
     #@-node:ekr.20051025071455.37:add
-    #@+node:ekr.20051025071455.38:change (spellTab)
+    #@+node:ekr.20051025071455.38:change (spellTab) 
     def change(self,event=None):
         """Make the selected change to the text"""
     
@@ -8120,7 +7679,7 @@ class spellTab(leoFind.leoFind):
     
         c = self.c ; body = self.body ; w = body.bodyCtrl
         
-        selection = self.getSuggestion()
+        selection = self.tab.getSuggestion()
         if selection:
             start,end = oldSel = w.getSelectionRange()
             if start:
@@ -8137,8 +7696,8 @@ class spellTab(leoFind.leoFind):
         c.invalidateFocus()
         c.bodyWantsFocusNow()
         return False
-    #@-node:ekr.20051025071455.38:change (spellTab)
-    #@+node:ekr.20051025071455.40:find
+    #@-node:ekr.20051025071455.38:change (spellTab) 
+    #@+node:ekr.20051025071455.40:find & helpers
     def find (self,event=None):
         """Find the next unknown word."""
     
@@ -8157,7 +7716,7 @@ class spellTab(leoFind.leoFind):
         self.currentWord = word # Need to remember this for 'add' and 'ignore'
     
         if alts:
-            self.fillbox(alts,word)
+            self.tab.fillbox(alts,word)
             c.invalidateFocus()
             c.bodyWantsFocusNow()
             # Copy the working selection range to the body pane
@@ -8166,62 +7725,9 @@ class spellTab(leoFind.leoFind):
             w.see(start)
         else:
             g.es("no more misspellings")
-            self.fillbox([])
+            self.tab.fillbox([])
             c.invalidateFocus()
             c.bodyWantsFocusNow()
-    #@-node:ekr.20051025071455.40:find
-    #@+node:ekr.20051025121408:hide
-    def hide (self,event=None):
-        
-        self.c.frame.log.selectTab('Log')
-        
-        for message in self.messages:
-            g.es(message,color='blue')
-            
-        self.messages = []
-    #@-node:ekr.20051025121408:hide
-    #@+node:ekr.20051025071455.41:ignore
-    def ignore(self,event=None):
-    
-        """Ignore the incorrect word for the duration of this spell check session."""
-        
-        if 1: # Somewhat helpful: applies until the tab is destroyed.
-            s = 'Spell: ignore %s' % self.currentWord
-            self.messages.append(s)
-    
-        if 0: # Too distracting
-            g.es("Ignoring ", color= "blue", newline= False)
-            g.es('%s' % self.currentWord)
-    
-        self.dictionary[self.currentWord.lower()] = 0
-        self.onFindButton()
-    #@-node:ekr.20051025071455.41:ignore
-    #@-node:ekr.20051025071455.36:Commands
-    #@+node:ekr.20051025071455.42:Helpers
-    #@+node:ekr.20051025071455.43:bringToFront
-    def bringToFront (self):
-        
-        self.c.frame.log.selectTab('Spell')
-    #@-node:ekr.20051025071455.43:bringToFront
-    #@+node:ekr.20051025071455.44:fillbox (spellTab)
-    def fillbox(self, alts, word=None):
-        """Update the suggestions listbox in the Check Spelling dialog."""
-        
-        self.suggestions = alts
-        
-        if not word:
-            word = ""
-    
-        self.wordLabel.configure(text= "Suggestions for: " + word)
-        self.listBox.delete(0, "end")
-    
-        for i in xrange(len(self.suggestions)):
-            self.listBox.insert(i, self.suggestions[i])
-        
-        # This doesn't show up because we don't have focus.
-        if len(self.suggestions):
-            self.listBox.select_set(1)
-    #@-node:ekr.20051025071455.44:fillbox (spellTab)
     #@+node:ekr.20051025071455.45:findNextMisspelledWord
     def findNextMisspelledWord(self):
         """Find the next unknown word."""
@@ -8267,7 +7773,7 @@ class spellTab(leoFind.leoFind):
             g.es_exception()
         return alts, word
     #@-node:ekr.20051025071455.45:findNextMisspelledWord
-    #@+node:ekr.20051025071455.47:findNextWord (spellTab)
+    #@+node:ekr.20051025071455.47:findNextWord
     def findNextWord(self,p):
         """Scan for the next word, leaving the result in the work widget"""
     
@@ -8298,78 +7804,37 @@ class spellTab(leoFind.leoFind):
                     w.setSelectionRange(0,0,insert=0)
         return None,None
     #@nonl
-    #@-node:ekr.20051025071455.47:findNextWord (spellTab)
-    #@+node:ekr.20051025071455.48:getSuggestion
-    def getSuggestion(self):
-        """Return the selected suggestion from the listBox."""
+    #@-node:ekr.20051025071455.47:findNextWord
+    #@-node:ekr.20051025071455.40:find & helpers
+    #@+node:ekr.20051025121408:hide
+    def hide (self,event=None):
         
-        # Work around an old Python bug.  Convert strings to ints.
-        items = self.listBox.curselection()
-        try:
-            items = map(int, items)
-        except ValueError: pass
-    
-        if items:
-            n = items[0]
-            suggestion = self.suggestions[n]
-            return suggestion
-        else:
-            return None
-    #@-node:ekr.20051025071455.48:getSuggestion
-    #@+node:ekr.20051025071455.49:onMap
-    def onMap (self, event=None):
-        """Respond to a Tk <Map> event."""
+        self.c.frame.log.selectTab('Log')
         
-        self.update(show= False, fill= False)
-    #@-node:ekr.20051025071455.49:onMap
-    #@+node:ekr.20051025071455.50:onSelectListBox
-    def onSelectListBox(self, event=None):
-        """Respond to a click in the selection listBox."""
+        for message in self.messages:
+            g.es(message,color='blue')
+            
+        self.messages = []
+    #@-node:ekr.20051025121408:hide
+    #@+node:ekr.20051025071455.41:ignore
+    def ignore(self,event=None):
+    
+        """Ignore the incorrect word for the duration of this spell check session."""
         
-        c = self.c
-        self.updateButtons()
-        c.bodyWantsFocus()
-    #@-node:ekr.20051025071455.50:onSelectListBox
-    #@+node:ekr.20051025071455.51:update
-    def update(self,show=True,fill=False):
-        
-        """Update the Spell Check dialog."""
-        
-        c = self.c
-        
-        if fill:
-            self.fillbox([])
+        if 1: # Somewhat helpful: applies until the tab is destroyed.
+            s = 'Spell: ignore %s' % self.currentWord
+            self.messages.append(s)
     
-        self.updateButtons()
+        if 0: # Too distracting
+            g.es("Ignoring ", color= "blue", newline= False)
+            g.es('%s' % self.currentWord)
     
-        if show:
-            self.bringToFront()
-            c.bodyWantsFocus()
-    #@-node:ekr.20051025071455.51:update
-    #@+node:ekr.20051025071455.52:updateButtons (spellTab)
-    def updateButtons (self):
-    
-        """Enable or disable buttons in the Check Spelling dialog."""
-    
-        c = self.c ; w = c.frame.body.bodyCtrl
-    
-        start, end = w.getSelectionRange()
-        state = g.choose(self.suggestions and start,"normal","disabled")
-    
-        self.changeButton.configure(state=state)
-        self.changeFindButton.configure(state=state)
-    
-        # state = g.choose(self.c.undoer.canRedo(),"normal","disabled")
-        # self.redoButton.configure(state=state)
-        # state = g.choose(self.c.undoer.canUndo(),"normal","disabled")
-        # self.undoButton.configure(state=state)
-    
-        self.addButton.configure(state='normal')
-        self.ignoreButton.configure(state='normal')
-    #@-node:ekr.20051025071455.52:updateButtons (spellTab)
-    #@-node:ekr.20051025071455.42:Helpers
+        self.dictionary[self.currentWord.lower()] = 0
+        self.tab.onFindButton()
+    #@-node:ekr.20051025071455.41:ignore
+    #@-node:ekr.20051025071455.36:Commands
     #@-others
-#@-node:ekr.20051025071455.18:class spellTab (leoFind.leoFind)
+#@-node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
 #@+node:ekr.20051025071455.6:class AspellClass
 class AspellClass:
     

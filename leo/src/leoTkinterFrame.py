@@ -22,6 +22,7 @@ import string
 import sys
 
 Pmw = g.importExtension("Pmw",pluginName="leoTkinterFrame.py",verbose=False)
+tkColorChooser = g.importExtension('tkColorChooser',pluginName=None,verbose=False)
 
 # The following imports _are_ used.
 __pychecker__ = '--no-import'
@@ -2886,6 +2887,288 @@ class leoTkinterLog (leoFrame.leoLog):
     #@-node:ekr.20051019172811:getTabName
     #@-node:ekr.20051019134106:Tab menu callbacks & helpers
     #@-node:ekr.20051018061932:Tab (TkLog)
+    #@+node:ekr.20051019183105.3:tkLog color tab stuff
+    def createColorPicker (self,tabName):
+        
+        log = self
+        
+        #@    << define colors >>
+        #@+node:ekr.20051019183105.2:<< define colors >>
+        colors = (
+            "gray60", "gray70", "gray80", "gray85", "gray90", "gray95",
+            "snow1", "snow2", "snow3", "snow4", "seashell1", "seashell2",
+            "seashell3", "seashell4", "AntiqueWhite1", "AntiqueWhite2", "AntiqueWhite3",
+            "AntiqueWhite4", "bisque1", "bisque2", "bisque3", "bisque4", "PeachPuff1",
+            "PeachPuff2", "PeachPuff3", "PeachPuff4", "NavajoWhite1", "NavajoWhite2",
+            "NavajoWhite3", "NavajoWhite4", "LemonChiffon1", "LemonChiffon2",
+            "LemonChiffon3", "LemonChiffon4", "cornsilk1", "cornsilk2", "cornsilk3",
+            "cornsilk4", "ivory1", "ivory2", "ivory3", "ivory4", "honeydew1", "honeydew2",
+            "honeydew3", "honeydew4", "LavenderBlush1", "LavenderBlush2",
+            "LavenderBlush3", "LavenderBlush4", "MistyRose1", "MistyRose2",
+            "MistyRose3", "MistyRose4", "azure1", "azure2", "azure3", "azure4",
+            "SlateBlue1", "SlateBlue2", "SlateBlue3", "SlateBlue4", "RoyalBlue1",
+            "RoyalBlue2", "RoyalBlue3", "RoyalBlue4", "blue1", "blue2", "blue3", "blue4",
+            "DodgerBlue1", "DodgerBlue2", "DodgerBlue3", "DodgerBlue4", "SteelBlue1",
+            "SteelBlue2", "SteelBlue3", "SteelBlue4", "DeepSkyBlue1", "DeepSkyBlue2",
+            "DeepSkyBlue3", "DeepSkyBlue4", "SkyBlue1", "SkyBlue2", "SkyBlue3",
+            "SkyBlue4", "LightSkyBlue1", "LightSkyBlue2", "LightSkyBlue3",
+            "LightSkyBlue4", "SlateGray1", "SlateGray2", "SlateGray3", "SlateGray4",
+            "LightSteelBlue1", "LightSteelBlue2", "LightSteelBlue3",
+            "LightSteelBlue4", "LightBlue1", "LightBlue2", "LightBlue3",
+            "LightBlue4", "LightCyan1", "LightCyan2", "LightCyan3", "LightCyan4",
+            "PaleTurquoise1", "PaleTurquoise2", "PaleTurquoise3", "PaleTurquoise4",
+            "CadetBlue1", "CadetBlue2", "CadetBlue3", "CadetBlue4", "turquoise1",
+            "turquoise2", "turquoise3", "turquoise4", "cyan1", "cyan2", "cyan3", "cyan4",
+            "DarkSlateGray1", "DarkSlateGray2", "DarkSlateGray3",
+            "DarkSlateGray4", "aquamarine1", "aquamarine2", "aquamarine3",
+            "aquamarine4", "DarkSeaGreen1", "DarkSeaGreen2", "DarkSeaGreen3",
+            "DarkSeaGreen4", "SeaGreen1", "SeaGreen2", "SeaGreen3", "SeaGreen4",
+            "PaleGreen1", "PaleGreen2", "PaleGreen3", "PaleGreen4", "SpringGreen1",
+            "SpringGreen2", "SpringGreen3", "SpringGreen4", "green1", "green2",
+            "green3", "green4", "chartreuse1", "chartreuse2", "chartreuse3",
+            "chartreuse4", "OliveDrab1", "OliveDrab2", "OliveDrab3", "OliveDrab4",
+            "DarkOliveGreen1", "DarkOliveGreen2", "DarkOliveGreen3",
+            "DarkOliveGreen4", "khaki1", "khaki2", "khaki3", "khaki4",
+            "LightGoldenrod1", "LightGoldenrod2", "LightGoldenrod3",
+            "LightGoldenrod4", "LightYellow1", "LightYellow2", "LightYellow3",
+            "LightYellow4", "yellow1", "yellow2", "yellow3", "yellow4", "gold1", "gold2",
+            "gold3", "gold4", "goldenrod1", "goldenrod2", "goldenrod3", "goldenrod4",
+            "DarkGoldenrod1", "DarkGoldenrod2", "DarkGoldenrod3", "DarkGoldenrod4",
+            "RosyBrown1", "RosyBrown2", "RosyBrown3", "RosyBrown4", "IndianRed1",
+            "IndianRed2", "IndianRed3", "IndianRed4", "sienna1", "sienna2", "sienna3",
+            "sienna4", "burlywood1", "burlywood2", "burlywood3", "burlywood4", "wheat1",
+            "wheat2", "wheat3", "wheat4", "tan1", "tan2", "tan3", "tan4", "chocolate1",
+            "chocolate2", "chocolate3", "chocolate4", "firebrick1", "firebrick2",
+            "firebrick3", "firebrick4", "brown1", "brown2", "brown3", "brown4", "salmon1",
+            "salmon2", "salmon3", "salmon4", "LightSalmon1", "LightSalmon2",
+            "LightSalmon3", "LightSalmon4", "orange1", "orange2", "orange3", "orange4",
+            "DarkOrange1", "DarkOrange2", "DarkOrange3", "DarkOrange4", "coral1",
+            "coral2", "coral3", "coral4", "tomato1", "tomato2", "tomato3", "tomato4",
+            "OrangeRed1", "OrangeRed2", "OrangeRed3", "OrangeRed4", "red1", "red2", "red3",
+            "red4", "DeepPink1", "DeepPink2", "DeepPink3", "DeepPink4", "HotPink1",
+            "HotPink2", "HotPink3", "HotPink4", "pink1", "pink2", "pink3", "pink4",
+            "LightPink1", "LightPink2", "LightPink3", "LightPink4", "PaleVioletRed1",
+            "PaleVioletRed2", "PaleVioletRed3", "PaleVioletRed4", "maroon1",
+            "maroon2", "maroon3", "maroon4", "VioletRed1", "VioletRed2", "VioletRed3",
+            "VioletRed4", "magenta1", "magenta2", "magenta3", "magenta4", "orchid1",
+            "orchid2", "orchid3", "orchid4", "plum1", "plum2", "plum3", "plum4",
+            "MediumOrchid1", "MediumOrchid2", "MediumOrchid3", "MediumOrchid4",
+            "DarkOrchid1", "DarkOrchid2", "DarkOrchid3", "DarkOrchid4", "purple1",
+            "purple2", "purple3", "purple4", "MediumPurple1", "MediumPurple2",
+            "MediumPurple3", "MediumPurple4", "thistle1", "thistle2", "thistle3",
+            "thistle4" )
+        #@-node:ekr.20051019183105.2:<< define colors >>
+        #@nl
+        
+        parent = log.frameDict.get(tabName)
+        w = log.textDict.get(tabName)
+        w.pack_forget()
+    
+        colors = list(colors)
+        bg = parent.cget('background')
+        
+        outer = Tk.Frame(parent,background=bg)
+        outer.pack(side='top',fill='both',expand=1,pady=10)
+        
+        f = Tk.Frame(outer)
+        f.pack(side='top',expand=0,fill='x')
+        f1 = Tk.Frame(f) ; f1.pack(side='top',expand=0,fill='x')
+        f2 = Tk.Frame(f) ; f2.pack(side='top',expand=1,fill='x')
+        f3 = Tk.Frame(f) ; f3.pack(side='top',expand=1,fill='x')
+        
+        label = g.app.gui.plainTextWidget(f1,height=1,width=20)
+        label.insert('1.0','Color name or value...')
+        label.pack(side='left',pady=6)
+    
+        #@    << create optionMenu and callback >>
+        #@+node:ekr.20051019183105.4:<< create optionMenu and callback >>
+        colorBox = Pmw.ComboBox(f2,scrolledlist_items=colors)
+        colorBox.pack(side='left',pady=4)
+        
+        def colorCallback (newName): 
+            label.delete('1.0','end')
+            label.insert('1.0',newName)
+            try:
+                for theFrame in (parent,outer,f,f1,f2,f3):
+                    theFrame.configure(background=newName)
+            except: pass # Ignore invalid names.
+        
+        colorBox.configure(selectioncommand=colorCallback)
+        #@-node:ekr.20051019183105.4:<< create optionMenu and callback >>
+        #@nl
+        #@    << create picker button and callback >>
+        #@+node:ekr.20051019183105.5:<< create picker button and callback >>
+        def pickerCallback ():
+            rgb,val = tkColorChooser.askcolor(parent=parent,initialcolor=f.cget('background'))
+            if rgb or val:
+                # label.configure(text=val)
+                label.delete('1.0','end')
+                label.insert('1.0',val)
+                for theFrame in (parent,outer,f,f1,f2,f3):
+                    theFrame.configure(background=val)
+        
+        b = Tk.Button(f3,text="Color Picker...",
+            command=pickerCallback,background=bg)
+        b.pack(side='left',pady=4)
+        #@-node:ekr.20051019183105.5:<< create picker button and callback >>
+        #@nl
+    #@-node:ekr.20051019183105.3:tkLog color tab stuff
+    #@+node:ekr.20070212102521:tkLog font tab stuff
+    #@+node:ekr.20051019201809.1:createFontPicker
+    def createFontPicker (self,tabName):
+        
+        log = self
+        parent = log.frameDict.get(tabName)
+        w = log.textDict.get(tabName)
+        w.pack_forget()
+    
+        bg = parent.cget('background')
+        font = self.getFont()
+        #@    << create the frames >>
+        #@+node:ekr.20051019202139:<< create the frames >>
+        f = Tk.Frame(parent,background=bg) ; f.pack (side='top',expand=0,fill='both')
+        f1 = Tk.Frame(f,background=bg)     ; f1.pack(side='top',expand=1,fill='x')
+        f2 = Tk.Frame(f,background=bg)     ; f2.pack(side='top',expand=1,fill='x')
+        f3 = Tk.Frame(f,background=bg)     ; f3.pack(side='top',expand=1,fill='x')
+        f4 = Tk.Frame(f,background=bg)     ; f4.pack(side='top',expand=1,fill='x')
+        #@-node:ekr.20051019202139:<< create the frames >>
+        #@nl
+        #@    << create the family combo box >>
+        #@+node:ekr.20051019201809.2:<< create the family combo box >>
+        names = tkFont.families()
+        names = list(names)
+        names.sort()
+        names.insert(0,'<None>')
+        
+        self.familyBox = familyBox = Pmw.ComboBox(f1,
+            labelpos="we",label_text='Family:',label_width=10,
+            label_background=bg,
+            arrowbutton_background=bg,
+            scrolledlist_items=names)
+        
+        familyBox.selectitem(0)
+        familyBox.pack(side="left",padx=2,pady=2)
+        #@-node:ekr.20051019201809.2:<< create the family combo box >>
+        #@nl
+        #@    << create the size entry >>
+        #@+node:ekr.20051019201809.3:<< create the size entry >>
+        Tk.Label(f2,text="Size:",width=10,background=bg).pack(side="left")
+        
+        sizeEntry = Tk.Entry(f2,width=4)
+        sizeEntry.insert(0,'12')
+        sizeEntry.pack(side="left",padx=2,pady=2)
+        #@-node:ekr.20051019201809.3:<< create the size entry >>
+        #@nl
+        #@    << create the weight combo box >>
+        #@+node:ekr.20051019201809.4:<< create the weight combo box >>
+        weightBox = Pmw.ComboBox(f3,
+            labelpos="we",label_text="Weight:",label_width=10,
+            label_background=bg,
+            arrowbutton_background=bg,
+            scrolledlist_items=['normal','bold'])
+        
+        weightBox.selectitem(0)
+        weightBox.pack(side="left",padx=2,pady=2)
+        #@-node:ekr.20051019201809.4:<< create the weight combo box >>
+        #@nl
+        #@    << create the slant combo box >>
+        #@+node:ekr.20051019201809.5:<< create the slant combo box>>
+        slantBox = Pmw.ComboBox(f4,
+            labelpos="we",label_text="Slant:",label_width=10,
+            label_background=bg,
+            arrowbutton_background=bg,
+            scrolledlist_items=['roman','italic'])
+        
+        slantBox.selectitem(0)
+        slantBox.pack(side="left",padx=2,pady=2)
+        #@-node:ekr.20051019201809.5:<< create the slant combo box>>
+        #@nl
+        #@    << create the sample text widget >>
+        #@+node:ekr.20051019202139.1:<< create the sample text widget >>
+        self.sampleWidget = sample = g.app.gui.plainTextWidget(f,height=20,width=80,font=font)
+        sample.pack(side='left')
+        
+        s = 'The quick brown fox\njumped over the lazy dog.\n0123456789'
+        sample.insert(0,s)
+        #@-node:ekr.20051019202139.1:<< create the sample text widget >>
+        #@nl
+        #@    << create and bind the callbacks >>
+        #@+node:ekr.20051019202328:<< create and bind the callbacks >>
+        def fontCallback(event=None):
+            self.setFont(familyBox,sizeEntry,slantBox,weightBox,sample)
+        
+        for w in (familyBox,slantBox,weightBox):
+            w.configure(selectioncommand=fontCallback)
+        
+        sizeEntry.bind('<Return>',fontCallback)
+        #@-node:ekr.20051019202328:<< create and bind the callbacks >>
+        #@nl
+        self.createBindings()
+    #@-node:ekr.20051019201809.1:createFontPicker
+    #@+node:ekr.20060726133852:createBindings (fontPicker)
+    def createBindings (self):
+        
+        c = self.c ; k = c.k
+        
+        table = (
+            ('<Button-1>',  k.masterClickHandler),
+            ('<Double-1>',  k.masterClickHandler),
+            ('<Button-3>',  k.masterClickHandler),
+            ('<Double-3>',  k.masterClickHandler),
+            ('<Key>',       k.masterKeyHandler),
+            ("<Escape>",    self.hideFontTab),
+        )
+    
+        w = self.sampleWidget
+        for event, callback in table:
+            w.bind(event,callback)
+            
+        k.completeAllBindingsForWidget(w)
+    #@-node:ekr.20060726133852:createBindings (fontPicker)
+    #@+node:ekr.20051019201809.6:getFont
+    def getFont(self,family=None,size=12,slant='roman',weight='normal'):
+        
+        try:
+            return tkFont.Font(family=family,size=size,slant=slant,weight=weight)
+        except Exception:
+            g.es("exception setting font")
+            g.es("family,size,slant,weight:",family,size,slant,weight)
+            # g.es_exception() # This just confuses people.
+            return g.app.config.defaultFont
+    #@-node:ekr.20051019201809.6:getFont
+    #@+node:ekr.20051019201809.7:setFont
+    def setFont(self,familyBox,sizeEntry,slantBox,weightBox,label):
+        
+        d = {}
+        for box,key in (
+            (familyBox, 'family'),
+            (None,      'size'),
+            (slantBox,  'slant'),
+            (weightBox, 'weight'),
+        ):
+            if box: val = box.get()
+            else:
+                val = sizeEntry.get().strip() or ''
+                try: int(val)
+                except ValueError: val = None
+            if val and val.lower() not in ('none','<none>',):
+                d[key] = val
+    
+        family=d.get('family',None)
+        size=d.get('size',12)
+        weight=d.get('weight','normal')
+        slant=d.get('slant','roman')
+        font = self.getFont(family,size,slant,weight)
+        label.configure(font=font)
+    #@-node:ekr.20051019201809.7:setFont
+    #@+node:ekr.20060726134339:hideFontTab
+    def hideFontTab (self,event=None):
+        
+        c = self.c
+        c.frame.log.selectTab('Log')
+        c.bodyWantsFocus()
+    #@-node:ekr.20060726134339:hideFontTab
+    #@-node:ekr.20070212102521:tkLog font tab stuff
     #@-others
 #@-node:ekr.20031218072017.4039:class leoTkinterLog
 #@+node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)
