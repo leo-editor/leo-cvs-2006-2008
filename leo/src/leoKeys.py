@@ -1664,10 +1664,6 @@ class keyHandlerClass:
         k = self ; c = k.c
         # g.trace('keyHandler')
         k.createInverseCommandsDict()
-        
-        if 0:
-            if not c.miniBufferWidget:
-                return # Does not exist for leoSettings.leo files.
     
         # Important: bindings exist even if c.showMiniBuffer is False.
         k.makeAllBindings()
@@ -4156,7 +4152,7 @@ class keyHandlerClass:
                 for z in xrange(n):
                     if 1: # No need to do this: commands never alter events.
                         # ev = Tk.Event()
-                        ev = g.Bunch(
+                        event = g.Bunch(
                             c = self.c,
                             widget = event.widget,
                             keysym = event.keysym,

@@ -189,18 +189,6 @@ class baseEditCommandsClass:
     
         return False
     #@-node:ekr.20050920084036.250:_checkIfRectangle
-    #@+node:ekr.20050920084036.10:contRanges
-    def contRanges (self,w,range):
-    
-        ranges = w.tag_ranges(range)
-        t1 = w.get(ranges[0],ranges[-1])
-        t2 = []
-        for z in xrange(0,len(ranges),2):
-            z1 = z + 1
-            t2.append(w.get(ranges[z],ranges[z1]))
-        t2 = '\n'.join(t2)
-        return t1 == t2
-    #@-node:ekr.20050920084036.10:contRanges
     #@+node:ekr.20050920084036.233:getRectanglePoints
     def getRectanglePoints (self,w):
     
@@ -214,18 +202,6 @@ class baseEditCommandsClass:
     
         return r1,r2,r3,r4
     #@-node:ekr.20050920084036.233:getRectanglePoints
-    #@+node:ekr.20050920084036.9:inRange
-    def inRange (self,w,range,l='',r=''):
-    
-        ranges = w.tag_ranges(range)
-        for z in xrange(0,len(ranges),2):
-            z1 = z + 1
-            l1 = 'insert%s' % l
-            r1 = 'insert%s' % r
-            if w.compare(l1,'>=',ranges[z]) and w.compare(r1,'<=',ranges[z1]):
-                return True
-        return False
-    #@-node:ekr.20050920084036.9:inRange
     #@+node:ekr.20051002090441:keyboardQuit
     def keyboardQuit (self,event):
         
@@ -233,15 +209,6 @@ class baseEditCommandsClass:
         
         return self.k.keyboardQuit(event)
     #@-node:ekr.20051002090441:keyboardQuit
-    #@+node:ekr.20050920084036.11:testinrange
-    def testinrange (self,w):
-    
-        if not self.inRange(w,'sel') or not self.contRanges(w,'sel'):
-            # self.removeRKeys(w)
-            return False
-        else:
-            return True
-    #@-node:ekr.20050920084036.11:testinrange
     #@-node:ekr.20050929161635:Helpers
     #@-others
 #@-node:ekr.20050920084036.1:<< define class baseEditCommandsClass >>
@@ -559,8 +526,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
                             w.delete('%s wordstart' % i1,'%s wordend' % i1)
                             w.insert(ind,self.abbrevs[word])
                     i1 = '%s wordend' % i1
-            w.setInsertPoint(ins)
-            w.selection_clear()
+            w.setInsertPoint(ins,ins,insert=ins)
             w.tag_delete('sXR')
             w.tag_delete('found')
             k.setLabelGrey('')
@@ -677,7 +643,7 @@ class bufferCommandsClass (baseEditCommandsClass):
                 c.selectPosition(p)
                 self.beginCommand('append-to-buffer: %s' % p.headString())
                 w.insert('end',s)
-                w.mark_set('insert','end')
+                w.setInsertPoint('end')
                 w.seeInsertPoint()
                 self.endCommand()
             finally:
@@ -707,8 +673,7 @@ class bufferCommandsClass (baseEditCommandsClass):
                 c.selectPosition(p)
                 self.beginCommand('copy-to-buffer: %s' % p.headString())
                 w.insert('end',s)
-                w.mark_set('insert','end')
-                w.seeInsertPoint()
+                w.setInsertPoint('end')
                 self.endCommand()
             finally:
                 c.endUpdate()
@@ -1049,7 +1014,7 @@ class controlCommandsClass (baseEditCommandsClass):
     
         w = self.editWidget(event)
         if not w: return
-        w.winfo_toplevel().iconify()
+        self.c.frame.top.iconify()
         
     # Must be a separate function so that k.inverseCommandsDict will be a true inverse.
         
@@ -2165,7 +2130,7 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             n = k.arg ; w = self.w
             if n.isdigit():
-                w.mark_set('insert','1.0 +%sc' % n)
+                w.setInsertPoint(n)
                 w.seeInsertPoint()
             k.resetLabel()
             k.clearState()
@@ -2205,7 +2170,9 @@ class editCommandsClass (baseEditCommandsClass):
         else:
             n = k.arg ;  w = self.w
             if n.isdigit():
-                w.mark_set('insert','%s.0' % n)
+                s = w.getAllText()
+                i = g.convertRowColToPythonIndex(s,n,0)
+                w.setInsertPoint(i)
                 w.seeInsertPoint()
             k.resetLabel()
             k.clearState()
@@ -2469,7 +2436,7 @@ class editCommandsClass (baseEditCommandsClass):
     
         self.beginCommand(undoType='clear-selected-text')
     
-        w.replace(i,j,'')
+        w.delete(i,j)
         w.setInsertPoint(i)
     
         self.endCommand(changed=True,setLabel=True)
@@ -2951,10 +2918,11 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return
        
         self.beginCommand(undoType=which+'-lines')
-        if w.tag_ranges('sel'):
-            i = w.index('sel.first') ; end = w.index('sel.last')
+        if w.hasSelection():
+            i,end = w.getSelectionRange()
         else:
-             i = w.index('insert') ; end = 'end'
+            i = w.getInsertPoint()
+            end = 'end'
         txt = w.get(i,end)
         tlines = txt.splitlines(True)
         if which == 'flush':    keeplines = list(tlines)
@@ -2974,7 +2942,7 @@ class editCommandsClass (baseEditCommandsClass):
             keeplines = [x for x in keeplines if x != None]
         w.delete(i,end)
         w.insert(i,''.join(keeplines))
-        w.mark_set('insert',i)
+        w.setInsertPoint(i)
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.92:linesHelper
     #@+node:ekr.20050920084036.77:splitLine
@@ -3579,10 +3547,13 @@ class editCommandsClass (baseEditCommandsClass):
         
         self.beginCommand(undoType='fill-region')
     
+        s = w.getAllText()
         s1,s2 = w.getSelectionRange()
         w.setInsertPoint(s1)
         self.backwardParagraph(event)
-        if w.index('insert linestart') == 0:
+        i = w.getInsertPoint()
+        i,junk = g.getLine(s,i)
+        if i == 0:
             self.fillParagraph(event)
         while 1:
             self.forwardParagraph(event)
@@ -3906,7 +3877,7 @@ class editCommandsClass (baseEditCommandsClass):
     def scrollUpExtendSelection (self,event):
         '''Extend the text selection by scrolling the body text up one page.'''
         self.scrollHelper(event,'up',extend=True)
-    #@+node:ekr.20060113082917:scrollHelper (passed)
+    #@+node:ekr.20060113082917:scrollHelper
     def scrollHelper (self,event,direction,extend):
     
         k = self.k ; c = k.c ; gui = g.app.gui
@@ -3920,7 +3891,7 @@ class editCommandsClass (baseEditCommandsClass):
             s = w.getAllText()
             row,col = g.convertPythonIndexToRowCol(s,ins1)
             # Compute the spot.
-            chng = self.measure(w) ; delta = chng [0]
+            delta = self.measure(w)
             row1 = g.choose(direction=='down',row+delta,row-delta)
             row1 = max(0,row1)
             spot = g.convertRowColToPythonIndex(s,row1,col)
@@ -3932,40 +3903,24 @@ class editCommandsClass (baseEditCommandsClass):
                 self.scrollOutlineDownPage()
             else:
                 self.scrollOutlineUpPage()
-    #@-node:ekr.20060113082917:scrollHelper (passed)
+    #@-node:ekr.20060113082917:scrollHelper
     #@+node:ekr.20050920084036.147:measure
     def measure (self,w):
-        #i = w.index('insert')
-        #i1, i2 = i.split('.')
-        #start = int(i1)
-        s = w.getAllText()
-        i = w.getInsertPoint()
-        start,junk = g.convertPythonIndexToRowCol(s,i)
-        start += 1
-        watch = 0
-        ustart = start
-        pone = 1
-        top = i
-        bottom = i
-        while pone:
-            ustart = ustart-1
-            if ustart < 0: break
-            ds = '%s.0' % ustart
-            pone = w.dlineinfo(ds)
-            if pone:
-                top = ds
-                watch = watch + 1
-        pone = 1
-        ustart = start
-        while pone:
-            ustart = ustart + 1
-            ds = '%s.0' % ustart
-            pone = w.dlineinfo(ds)
-            if pone:
-                bottom = ds
-                watch = watch + 1
     
-        return watch, top, bottom
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        start, junk = g.convertPythonIndexToRowCol(s,ins)
+        start += 1 ; delta = 0
+    
+        ustart = start - 1
+        while ustart >= 1 and w.indexIsVisible('%s.0' % ustart):
+            delta += 1 ; ustart -= 1
+    
+        ustart = start + 1
+        while w.indexIsVisible('%s.0' % ustart):
+            delta += 1 ; ustart += 1
+    
+        return delta
     #@-node:ekr.20050920084036.147:measure
     #@-node:ekr.20050920084036.116:scrollUp/Down/extendSelection
     #@+node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
@@ -4183,10 +4138,6 @@ class editCommandsClass (baseEditCommandsClass):
         s = w.getAllText()
         ins = w.getInsertPoint()
         r1,r2,r3,r4 = self.getRectanglePoints(w)
-        # ins = w.index('insert')
-        # is1 = w.index('sel.first')
-        # is2 = w.index('sel.last')
-        #txt = w.get('%s linestart' % is1,'%s lineend' % is2)
         i,junk = g.getLine(s,r1)
         junk,j = g.getLine(s,r4)
         txt = txt.split('\n')
@@ -4268,6 +4219,8 @@ class editCommandsClass (baseEditCommandsClass):
     
         w = self.editWidget(event)
         if not w: return
+        
+        s = w.getAllText()
     
         txt = w.get('insert wordstart','insert wordend') ###
         if not txt: return
@@ -4276,10 +4229,10 @@ class editCommandsClass (baseEditCommandsClass):
         
         self.beginCommand(undoType='swap-words')
     
-        if len(swapspots) != 0:
-            if w.compare(i,'>',swapspots[1]):
+        if len(swapspots):
+            if i > swapspots[1]:
                 self.swapHelper(w,i,txt,swapspots[1],swapspots[0])
-            elif w.compare(i,'<',swapspots[1]):
+            elif i < swapspots[1]:
                 self.swapHelper(w,swapspots[1],swapspots[0],i,txt)
         else:
             swapspots.append(txt)
@@ -4317,17 +4270,6 @@ class editCommandsClass (baseEditCommandsClass):
         self.endCommand(changed=True,setLabel=True)
     
     transposeCharacters = swapCharacters
-    
-        # i = w.getInsertPoint()
-        # c1 = w.get('insert','insert +1c')
-        # c2 = w.get('insert -1c','insert')
-        # w.delete('insert -1c','insert')
-        # w.insert('insert',c1)
-        # w.delete('insert','insert +1c')
-        # w.insert('insert',c2)
-        # w.mark_set('insert',i)
-        
-    #@nonl
     #@-node:ekr.20050920084036.124:swapCharacters & transeposeCharacters
     #@-node:ekr.20050920084036.121:swap/transpose...
     #@+node:ekr.20050920084036.126:tabify & untabify
@@ -5113,7 +5055,7 @@ class killBufferCommandsClass (baseEditCommandsClass):
     def getClipboard (self,w):
     
         try:
-            ctxt = w.selection_get(selection='CLIPBOARD')
+            ctxt = g.app.gui.getTextFromClipboard()
             if not self.killBuffer or ctxt != self.last_clipboard:
                 self.last_clipboard = ctxt
                 if not self.killBuffer or self.killBuffer [0] != ctxt:
@@ -5729,9 +5671,8 @@ class macroCommandsClass (baseEditCommandsClass):
                     # ev.keycode = z [1]
                     # ev.keysym = z [2]
                     # ev.char = z [3]
-                    ev = g.Bunch(c = c, widget = w,
-                        keycode = z [1], keysym = z [2], char = z [3])
-                    k.masterCommand(ev,b.f,'<%s>' % meth)
+                    event = g.Bunch(c=c,widget=w,keycode=z[1],keysym=z[2],char=z[3])
+                    k.masterCommand(event,b.f,'<%s>' % meth)
     #@-node:ekr.20050920084036.203:_executeMacro (test)
     #@-node:ekr.20050920084036.202:callLastKeyboardMacro & helper (called from universal command)
     #@-node:ekr.20050920084036.193:Entry points
@@ -5840,7 +5781,8 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
                 start = match.start()
                 end = match.end()
                 length = end - start
-                w.mark_set('insert','insert +%sc' % start)
+                i = w.getInsertPoint()
+                w.setInsertPoint(i+start)
                 w.tag_add('qR','insert','insert +%sc' % length)
                 w.tag_config('qR',background='lightblue')
                 txt = w.get('insert','insert +%sc' % length)
@@ -5884,7 +5826,8 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
                 self.doOneReplace(event)
         elif event.keysym in ('n','Delete'):
             # Skip over the present match.
-            w.mark_set('insert','insert +%sc' % len(self.qQ))
+            i = w.getInsertPoint()
+            w.setInsertPoint(i + len(self.qQ))
             if not self.findNextMatch(event):
                 self.quitSearch(event)
     
@@ -6127,7 +6070,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
         ins = w.getInsertPoint()
         i,j = g.getLine(s,ins)
         txt = s[i:ins]
-        # txt = w.get('insert linestart','insert')
         txt = self.getWSString(txt)
     
         i = w.toGuiIndex(ins)
@@ -6144,21 +6086,6 @@ class rectangleCommandsClass (baseEditCommandsClass):
             i1 += 1
     
         self.endCommand()
-        
-    #@+at
-    #     i = w.getInsertPoint()
-    #     #i1, i2 = i.split('.')
-    #     #i1 = int(i1)
-    #     for z in killRect:
-    #         txt2 = w.get('%s.0 linestart' % i1,'%s.%s' % (i1,i2))
-    #         if len(txt2) != len(txt):
-    #             amount = len(txt) - len(txt2)
-    #             z = txt [-amount:] + z
-    #         w.insert('%s.%s' % (i1,i2),z)
-    #         if w.index('%s.0 lineend +1c' % i1) == w.index('end'):
-    #             w.insert('%s.0 lineend' % i1,'\n')
-    #         i1 += 1
-    #@-at
     #@-node:ekr.20050920084036.229:yankRectangle
     #@+node:ekr.20050920084036.232:stringRectangle
     def stringRectangle (self,event):
@@ -6467,7 +6394,7 @@ class registerCommandsClass (baseEditCommandsClass):
                 c.bodyWantsFocus()
                 if val:
                     try:
-                        w.mark_set('insert',val)
+                        w.setInsertPoint(val)
                         k.setLabelGrey('At %s' % repr(val))
                     except Exception:
                         k.setLabelGrey('Register %s is not a valid location' % key)
@@ -6562,7 +6489,7 @@ class minibufferFind (baseEditCommandsClass):
         
         baseEditCommandsClass.__init__(self,c) # init the base class.
         
-        g.trace('minibufferFind: finder',finder)
+        # g.trace('minibufferFind: finder',finder)
     
         self.c = c
         self.k = k = c.k
@@ -7427,8 +7354,6 @@ class searchCommandsClass (baseEditCommandsClass):
         w.tag_delete('color','color1')
         if not s: return
         ind = 0
-        # index = w.index('insert')
-        # index2 = w.index('%s+%dc' % (index,len(s)))
         index = w.getInsertPoint()
         index2 = index + len(s)
         # g.trace(index,index2)

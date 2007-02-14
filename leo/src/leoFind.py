@@ -1336,8 +1336,7 @@ class findTab (leoFind):
     '''An adapter class that implements Leo's Find tab.'''
 
     #@    @+others
-    #@+node:ekr.20051020120306.10:Birth & death
-    #@+node:ekr.20051020120306.11:__init__ & initGui
+    #@+node:ekr.20051020120306.11:findTab.__init__
     def __init__(self,c,parentFrame):
         
         # g.trace('findTab',c)
@@ -1362,19 +1361,18 @@ class findTab (leoFind):
         self.init(c) # New in 4.3: init only once.
         
     #@nonl
-    #@-node:ekr.20051020120306.11:__init__ & initGui
-    #@+node:ekr.20061212092124:Defined in subclasses
+    #@-node:ekr.20051020120306.11:findTab.__init__
+    #@+node:ekr.20061212092124:Must be defined in subclasses
     def createBindings (self):          self.oops()
     def createFrame (self):             self.oops()
     def getOption (self,ivar):          self.oops()
     def init (self):                    self.oops()
     def initGui (self):                 pass # Optional method.
     def setOption (self,ivar,val):      self.oops()
-    def toggleOption (self,ivar,val):   self.oops()
+    def toggleOption (self,ivar):       self.oops()
     
     # self.oops is defined in the leoFind class.
-    #@-node:ekr.20061212092124:Defined in subclasses
-    #@-node:ekr.20051020120306.10:Birth & death
+    #@-node:ekr.20061212092124:Must be defined in subclasses
     #@+node:ekr.20060221074900:Callbacks
     #@+node:ekr.20060221074900.1:findButtonCallback
     def findButtonCallback(self,event=None):

@@ -782,10 +782,17 @@ for key in keys:
 #@-node:Find entries in k.guiBindNamesDict
 #@+node:find w.xxx
 import string
+import leoTkinterFrame
 words = {}
 word_chars = string.ascii_letters + string.digits + '_'
 p = g.findTopLevelNode(c,'Code')
+p1 = p.copy()
+baseClass = leoTkinterFrame.leoTkTextWidget
+allMatches = True
+seen = {}
 for p in p.self_and_subtree_iter():
+    if seen.get(p.v.t): continue # search clones once.
+    seen[p.v.t] = True
     s = p.bodyString()
     i = 0
     while 1:
@@ -796,13 +803,16 @@ for p in p.self_and_subtree_iter():
             j += 2
             k = g.skip_c_id(s,j)
             word = s[j:k]
-            words[word] = word
+            if allMatches or not hasattr(baseClass,word):
+                words[word] = 1 + words.get(word,0)
             i = k
         else:
             i += 2
 keys = words.keys()
 keys.sort()
-print g.listToString(keys)
+aList = ['%3d %s' % (words.get(key),str(key)) for key in keys]
+print g.listToString(aList)
+g.es('searched %s' % p1.headString())
 #@nonl
 #@-node:find w.xxx
 #@-node:Find scripts

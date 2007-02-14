@@ -415,7 +415,7 @@ def clearKillRing (self,event=None):
 def getClipboard (self,w):
 
     try:
-        ctxt = w.selection_get(selection='CLIPBOARD')
+        ctxt = g.app.gui.getTextFromClipboard()
         if not self.killBuffer or ctxt != self.last_clipboard:
             self.last_clipboard = ctxt
             if not self.killBuffer or self.killBuffer [0] != ctxt:
@@ -6767,7 +6767,7 @@ def moveToHelper (self,event,spot,extend):
     self.extendHelper(w,extend,spot,upOrDown=False)
 #@nonl
 #@-node:ekr.20051218122116:moveToHelper
-#@+node:ekr.20060113082917:scrollHelper (passed)
+#@+node:ekr.20060113082917:scrollHelper
 def scrollHelper (self,event,direction,extend):
 
     k = self.k ; c = k.c ; gui = g.app.gui
@@ -6781,7 +6781,7 @@ def scrollHelper (self,event,direction,extend):
         s = w.getAllText()
         row,col = g.convertPythonIndexToRowCol(s,ins1)
         # Compute the spot.
-        chng = self.measure(w) ; delta = chng [0]
+        delta = self.measure(w)
         row1 = g.choose(direction=='down',row+delta,row-delta)
         row1 = max(0,row1)
         spot = g.convertRowColToPythonIndex(s,row1,col)
@@ -6793,7 +6793,7 @@ def scrollHelper (self,event,direction,extend):
             self.scrollOutlineDownPage()
         else:
             self.scrollOutlineUpPage()
-#@-node:ekr.20060113082917:scrollHelper (passed)
+#@-node:ekr.20060113082917:scrollHelper
 #@-node:ekr.20061208073208:Found: moveSpot
 #@+node:ekr.20061208073208.1:Found: moveCol
 #@+node:ekr.20060113105246.1:moveUpOrDownHelper
@@ -7282,7 +7282,7 @@ def setMoveCol (self,w,spot):
     self.moveSpotNode = p.v.t
 #@nonl
 #@-node:ekr.20060209095101:setMoveCol
-#@+node:ekr.20060113082917:scrollHelper (passed)
+#@+node:ekr.20060113082917:scrollHelper
 def scrollHelper (self,event,direction,extend):
 
     k = self.k ; c = k.c ; gui = g.app.gui
@@ -7296,7 +7296,7 @@ def scrollHelper (self,event,direction,extend):
         s = w.getAllText()
         row,col = g.convertPythonIndexToRowCol(s,ins1)
         # Compute the spot.
-        chng = self.measure(w) ; delta = chng [0]
+        delta = self.measure(w)
         row1 = g.choose(direction=='down',row+delta,row-delta)
         row1 = max(0,row1)
         spot = g.convertRowColToPythonIndex(s,row1,col)
@@ -7308,7 +7308,7 @@ def scrollHelper (self,event,direction,extend):
             self.scrollOutlineDownPage()
         else:
             self.scrollOutlineUpPage()
-#@-node:ekr.20060113082917:scrollHelper (passed)
+#@-node:ekr.20060113082917:scrollHelper
 #@-node:ekr.20061208073322:Fixed cursor up/down bug
 #@+node:ekr.20061209135859:Fix recent crasher in about-leo command
 Traceback (most recent call last):
@@ -8233,7 +8233,7 @@ def __init__(self,c,finder):
     
     baseEditCommandsClass.__init__(self,c) # init the base class.
     
-    g.trace('minibufferFind: finder',finder)
+    # g.trace('minibufferFind: finder',finder)
 
     self.c = c
     self.k = k = c.k
@@ -9097,8 +9097,6 @@ def scolorizer (self,event,pattern=None):
     w.tag_delete('color','color1')
     if not s: return
     ind = 0
-    # index = w.index('insert')
-    # index2 = w.index('%s+%dc' % (index,len(s)))
     index = w.getInsertPoint()
     index2 = index + len(s)
     # g.trace(index,index2)
@@ -10351,8 +10349,7 @@ class findTab (leoFind):
     '''An adapter class that implements Leo's Find tab.'''
 
     @others
-#@+node:ekr.20051020120306.10:Birth & death
-#@+node:ekr.20051020120306.11:__init__ & initGui
+#@+node:ekr.20051020120306.11:findTab.__init__
 def __init__(self,c,parentFrame):
     
     # g.trace('findTab',c)
@@ -10377,19 +10374,18 @@ def __init__(self,c,parentFrame):
     self.init(c) # New in 4.3: init only once.
     
 #@nonl
-#@-node:ekr.20051020120306.11:__init__ & initGui
-#@+node:ekr.20061212092124:Defined in subclasses
+#@-node:ekr.20051020120306.11:findTab.__init__
+#@+node:ekr.20061212092124:Must be defined in subclasses
 def createBindings (self):          self.oops()
 def createFrame (self):             self.oops()
 def getOption (self,ivar):          self.oops()
 def init (self):                    self.oops()
 def initGui (self):                 pass # Optional method.
 def setOption (self,ivar,val):      self.oops()
-def toggleOption (self,ivar,val):   self.oops()
+def toggleOption (self,ivar):       self.oops()
 
 # self.oops is defined in the leoFind class.
-#@-node:ekr.20061212092124:Defined in subclasses
-#@-node:ekr.20051020120306.10:Birth & death
+#@-node:ekr.20061212092124:Must be defined in subclasses
 #@+node:ekr.20060221074900:Callbacks
 #@+node:ekr.20060221074900.1:findButtonCallback
 def findButtonCallback(self,event=None):
@@ -14333,11 +14329,7 @@ def moveUpOrDownHelper (self,event,direction,extend):
 #@-node:ekr.20070204123507:Fixed recent bug in next-line command
 #@-node:ekr.20070129082731.1:Bugs
 #@+node:ekr.20070211192428:(Make code gui-indenpendent)
-@nocolor
-    
-To do:
-
-@color
+# To do: use baseTextWidget class.  There seem to be problems :-)
 #@nonl
 #@+node:ekr.20070212140907:What I did
 @nocolor
@@ -14594,7 +14586,7 @@ def __init__(self,c,finder):
     
     baseEditCommandsClass.__init__(self,c) # init the base class.
     
-    g.trace('minibufferFind: finder',finder)
+    # g.trace('minibufferFind: finder',finder)
 
     self.c = c
     self.k = k = c.k
@@ -16381,9 +16373,8 @@ def _executeMacro (self,macro,w):
                 # ev.keycode = z [1]
                 # ev.keysym = z [2]
                 # ev.char = z [3]
-                ev = g.Bunch(c = c, widget = w,
-                    keycode = z [1], keysym = z [2], char = z [3])
-                k.masterCommand(ev,b.f,'<%s>' % meth)
+                event = g.Bunch(c=c,widget=w,keycode=z[1],keysym=z[2],char=z[3])
+                k.masterCommand(event,b.f,'<%s>' % meth)
 #@-node:ekr.20050920084036.203:_executeMacro (test)
 #@+node:ekr.20040629121554.3:c.signOnWithVersion
 def signOnWithVersion (self):
@@ -16604,94 +16595,8 @@ away completely. This is a conservative way, but it may be that one mass change
 would be faster and safe enough.
 #@-node:ekr.20061031112004:transition to Python indices
 #@-node:ekr.20061031121511:Postings
-#@+node:ekr.20070125103950: Calls to w.xxx
-# To be removed outside of tk-specific files.
-'cget'  # removed
-'clipboard_append'
-'clipboard_clear'
-'config' # removed
-'configure' # removed
-'focus_force' # removed
-'focus_set' # removed
-
-# Ok: defined in leoTkTextWidget, plainTextWidget, etc.
-'_name'
-'delete'
-'deleteTextSelection'
-'flashCharacter'
-'get'
-'getAllText'
-'getInsertPoint'
-'getName'
-'getSelectedText'
-'getSelectionRange'
-'getYScrollPosition'
-'hasSelection'
-'insert'
-'replace'
-'rowColToGuiIndex'
-'see'
-'seeInsertPoint'
-'selectAllText'
-'setAllText'
-'setBackgroundColor'
-'setInsertPoint'
-'setSelectionRange'
-'setYScrollPosition'
-'tag_add'
-'tag_bind'
-'tag_config'
-'tag_delete'
-'tag_names'
-'tag_ranges'
-'toGuiIndex'
-'toPythonIndex'
-'xyToPythonIndex'
-
-# Ok: in leoTkinterTree.
-'leo_active'
-'leo_frame'
-'leo_insertSpot'
-'leo_label'
-'leo_label_s'
-'leo_name'
-'leo_p'
-'leo_position'
-'leo_scrollBarSpot'
-'leo_selection'
-'leo_v'
-'leo_window_id'
-
-# Ok only if in tk-specific files.
-'bind'
-'bind_all'
-'bind_class'
-'bindtags'
-'button'
-'columnconfigure'
-'compare'
-'dlineinfo'
-'event_generate'
-'grid'
-'image_create'
-'index'
-'mark_set'
-'pack'
-'pack_forget'
-'rowconfigure'
-'search'
-'selection_clear'
-'selection_get'
-'update'
-'update_idletasks'
-'winfo_id'
-'winfo_toplevel'
-'wm_iconbitmap'
-'yview'
-#@nonl
-#@-node:ekr.20070125103950: Calls to w.xxx
 #@+node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)
-class leoTkTextWidget (Tk.Text):
+class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
     
     '''A class to wrap the Tk.Text widget.
     Translates Python (integer) indices to and from Tk (string) indices.
@@ -16707,6 +16612,55 @@ class leoTkTextWidget (Tk.Text):
         
     @others
 #@nonl
+#@+node:ekr.20070213170836:plainTextWidget.__init__
+if 0:
+    def __init__ (self,*args,**keys):
+    
+        w = self
+        
+        # Create the actual gui widget.
+        self.widget = Tk.Text(*args,**keys)
+        
+        # Init the base class.
+        name = keys.get('name') or '<unknown plainTextWidget>'
+        baseTextWidget.__init__(self,
+            baseClassName='plainTextWidget',name=name,widget=self.widget)
+    
+        # self.defaultFont = font = wx.Font(pointSize=10,
+            # family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
+            # style  = wx.FONTSTYLE_NORMAL,
+            # weight = wx.FONTWEIGHT_NORMAL,)
+#@-node:ekr.20070213170836:plainTextWidget.__init__
+#@+node:ekr.20070213170937:bindings
+if 0:
+    # Specify the names of widget-specific methods.
+    # These particular names are the names of wx.TextCtrl methods.
+    
+    def _appendText(self,s):            return self.widget.insert(s)
+    def _get(self,i,j):                 return self.widget.get(i,j)
+    def _getAllText(self):              return self.widget.get('1.0','end')
+    def _getFocus(self):                return self.widget.focus_get()
+    def _getInsertPoint(self):          return self.widget.index('insert')
+    def _getLastPosition(self):         return self.widget.index('end')
+    def _getSelectedText(self):         return self.widget.get('sel.start','sel.end')
+    def _getSelectionRange(self):       return self.widget.index('sel.start'),self.widget.index('sel.end')
+    def _hitTest(self,pos):             pass ###
+    def _insertText(self,i,s):          return self.widget.insert(i,s)
+    def _scrollLines(self,n):           pass ###
+    def _see(self,i):                   return self.widget.see(i)
+    def _setAllText(self,s):            self.widget.delete('1.0','end') ; self.widget.insert('1.0',s)
+    def _setBackgroundColor(self,color): return self.widget.configure(background=color)
+    def _setFocus(self):                return self.widget.focus_set()
+    def _setInsertPoint(self,i):        return self.widget.mark_set('insert',i)
+    # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
+#@-node:ekr.20070213170937:bindings
+#@+node:ekr.20070213170402:To be removed
+# def bind (self,*args,**keys):       Tk.Text.bind(self,*args,**keys)
+# def index (self,*args,**keys):      Tk.Text.index(self,*args,**keys)
+# def search (self,*args,**keys):     Tk.Text.search(self,*args,**keys)
+# def tag_config (self,*args,**keys): Tk.Text.tag_config(self,*args,**keys)
+# def tag_delete (self,*args,**keys): Tk.Text.tag_delete(self,*args,**keys)
+#@-node:ekr.20070213170402:To be removed
 #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
 #@+node:ekr.20061117085824:w.toGuiIndex
 def toGuiIndex (self,i):
@@ -16765,6 +16719,25 @@ def getName (self):
     return hasattr(w,'_name') and w._name or repr(w)
 #@nonl
 #@-node:ekr.20061117160129:getName (Tk.Text)
+#@+node:ekr.20070213171850:_setSelectionRange
+if 0:
+    def _setSelectionRange (self,i,j,insert=None):
+    
+        w = self.widget
+    
+        i,j = w.toGuiIndex(i),w.toGuiIndex(j)
+        
+        # g.trace('i,j,insert',repr(i),repr(j),repr(insert),g.callers())
+        
+        # g.trace('i,j,insert',i,j,repr(insert))
+        if w.compare(w,i, ">", j): i,j = j,i
+        w.tag_remove(w,"sel","1.0",i)
+        w.tag_add(w,"sel",i,j)
+        w.tag_remove(w,"sel",j,"end")
+    
+        if insert is not None:
+            w.setInsertPoint(insert)
+#@-node:ekr.20070213171850:_setSelectionRange
 #@+node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
 #@+node:ekr.20061113151148.4:delete
 def delete(self,i,j=None):
@@ -16872,6 +16845,16 @@ def getYScrollPosition (self):
      w = self
      return w.yview()
 #@-node:ekr.20070211185433.1:getYScrollPosition
+#@+node:ekr.20070212204016:getWidth
+def getWidth (self):
+    
+    '''Return the width of the widget.
+    This is only called for headline widgets,
+    and gui's may choose not to do anything here.'''
+    
+    w = self
+    return w.cget('width')
+#@-node:ekr.20070212204016:getWidth
 #@+node:ekr.20061113151148.17:hasSelection
 def hasSelection (self):
     
@@ -16889,13 +16872,21 @@ def insert(self,i,s):
     Tk.Text.insert(w,i,s)
 
 #@-node:ekr.20061113151148.6:insert
-#@+node:ekr.20061113151148.7:mark_set
-def mark_set(self,markName,i):
-
+#@+node:ekr.20070213104858.1:indexIsVisible
+def indexIsVisible (self,i):
+    
     w = self
-    i = w.toGuiIndex(i)
-    Tk.Text.mark_set(w,markName,i)
-#@-node:ekr.20061113151148.7:mark_set
+    
+    return w.dlineinfo(i)
+#@nonl
+#@-node:ekr.20070213104858.1:indexIsVisible
+#@+node:ekr.20061113151148.7:mark_set NO LONGER USED
+# def mark_set(self,markName,i):
+
+    # w = self
+    # i = w.toGuiIndex(i)
+    # Tk.Text.mark_set(w,markName,i)
+#@-node:ekr.20061113151148.7:mark_set NO LONGER USED
 #@+node:ekr.20061113151148.18:replace
 def replace (self,i,j,s): # tkTextWidget
     
@@ -17160,10 +17151,13 @@ def fillRegion (self,event):
     
     self.beginCommand(undoType='fill-region')
 
+    s = w.getAllText()
     s1,s2 = w.getSelectionRange()
     w.setInsertPoint(s1)
     self.backwardParagraph(event)
-    if w.index('insert linestart') == 0:
+    i = w.getInsertPoint()
+    i,junk = g.getLine(s,i)
+    if i == 0:
         self.fillParagraph(event)
     while 1:
         self.forwardParagraph(event)
@@ -17358,37 +17352,21 @@ def lineNumber (self,event):
 #@-node:ekr.20050920084036.81:lineNumber
 #@+node:ekr.20050920084036.147:measure
 def measure (self,w):
-    #i = w.index('insert')
-    #i1, i2 = i.split('.')
-    #start = int(i1)
-    s = w.getAllText()
-    i = w.getInsertPoint()
-    start,junk = g.convertPythonIndexToRowCol(s,i)
-    start += 1
-    watch = 0
-    ustart = start
-    pone = 1
-    top = i
-    bottom = i
-    while pone:
-        ustart = ustart-1
-        if ustart < 0: break
-        ds = '%s.0' % ustart
-        pone = w.dlineinfo(ds)
-        if pone:
-            top = ds
-            watch = watch + 1
-    pone = 1
-    ustart = start
-    while pone:
-        ustart = ustart + 1
-        ds = '%s.0' % ustart
-        pone = w.dlineinfo(ds)
-        if pone:
-            bottom = ds
-            watch = watch + 1
 
-    return watch, top, bottom
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    start, junk = g.convertPythonIndexToRowCol(s,ins)
+    start += 1 ; delta = 0
+
+    ustart = start - 1
+    while ustart >= 1 and w.indexIsVisible('%s.0' % ustart):
+        delta += 1 ; ustart -= 1
+
+    ustart = start + 1
+    while w.indexIsVisible('%s.0' % ustart):
+        delta += 1 ; ustart += 1
+
+    return delta
 #@-node:ekr.20050920084036.147:measure
 #@+node:ekr.20050920084036.133:setCommentColumn
 def setCommentColumn (self,event):
@@ -17445,10 +17423,6 @@ def sortFields (self,event,which=None):
     s = w.getAllText()
     ins = w.getInsertPoint()
     r1,r2,r3,r4 = self.getRectanglePoints(w)
-    # ins = w.index('insert')
-    # is1 = w.index('sel.first')
-    # is2 = w.index('sel.last')
-    #txt = w.get('%s linestart' % is1,'%s lineend' % is2)
     i,junk = g.getLine(s,r1)
     junk,j = g.getLine(s,r4)
     txt = txt.split('\n')
@@ -17485,6 +17459,8 @@ def swapWords (self,event,swapspots):
 
     w = self.editWidget(event)
     if not w: return
+    
+    s = w.getAllText()
 
     txt = w.get('insert wordstart','insert wordend') ###
     if not txt: return
@@ -17493,10 +17469,10 @@ def swapWords (self,event,swapspots):
     
     self.beginCommand(undoType='swap-words')
 
-    if len(swapspots) != 0:
-        if w.compare(i,'>',swapspots[1]):
+    if len(swapspots):
+        if i > swapspots[1]:
             self.swapHelper(w,i,txt,swapspots[1],swapspots[0])
-        elif w.compare(i,'<',swapspots[1]):
+        elif i < swapspots[1]:
             self.swapHelper(w,swapspots[1],swapspots[0],i,txt)
     else:
         swapspots.append(txt)
@@ -17613,8 +17589,6 @@ def scolorizer (self,event,pattern=None):
     w.tag_delete('color','color1')
     if not s: return
     ind = 0
-    # index = w.index('insert')
-    # index2 = w.index('%s+%dc' % (index,len(s)))
     index = w.getInsertPoint()
     index2 = index + len(s)
     # g.trace(index,index2)
@@ -17662,8 +17636,7 @@ def searchXR (i1,i2,ins,event):
                     w.delete('%s wordstart' % i1,'%s wordend' % i1)
                     w.insert(ind,self.abbrevs[word])
             i1 = '%s wordend' % i1
-    w.setInsertPoint(ins)
-    w.selection_clear()
+    w.setInsertPoint(ins,ins,insert=ins)
     w.tag_delete('sXR')
     w.tag_delete('found')
     k.setLabelGrey('')
@@ -17787,7 +17760,6 @@ def yankRectangle (self,event,killRect=None):
     ins = w.getInsertPoint()
     i,j = g.getLine(s,ins)
     txt = s[i:ins]
-    # txt = w.get('insert linestart','insert')
     txt = self.getWSString(txt)
 
     i = w.toGuiIndex(ins)
@@ -17804,20 +17776,6 @@ def yankRectangle (self,event,killRect=None):
         i1 += 1
 
     self.endCommand()
-    
-@
-    i = w.getInsertPoint()
-    #i1, i2 = i.split('.')
-    #i1 = int(i1)
-    for z in killRect:
-        txt2 = w.get('%s.0 linestart' % i1,'%s.%s' % (i1,i2))
-        if len(txt2) != len(txt):
-            amount = len(txt) - len(txt2)
-            z = txt [-amount:] + z
-        w.insert('%s.%s' % (i1,i2),z)
-        if w.index('%s.0 lineend +1c' % i1) == w.index('end'):
-            w.insert('%s.0 lineend' % i1,'\n')
-        i1 += 1
 #@-node:ekr.20050920084036.229:yankRectangle
 #@+node:ekr.20061111082139:In leoEditCommands
 #@+node:ekr.20061102080819.2:First
@@ -18176,10 +18134,6 @@ def sortFields (self,event,which=None):
     s = w.getAllText()
     ins = w.getInsertPoint()
     r1,r2,r3,r4 = self.getRectanglePoints(w)
-    # ins = w.index('insert')
-    # is1 = w.index('sel.first')
-    # is2 = w.index('sel.last')
-    #txt = w.get('%s linestart' % is1,'%s lineend' % is2)
     i,junk = g.getLine(s,r1)
     junk,j = g.getLine(s,r4)
     txt = txt.split('\n')
@@ -18329,8 +18283,6 @@ def scolorizer (self,event,pattern=None):
     w.tag_delete('color','color1')
     if not s: return
     ind = 0
-    # index = w.index('insert')
-    # index2 = w.index('%s+%dc' % (index,len(s)))
     index = w.getInsertPoint()
     index2 = index + len(s)
     # g.trace(index,index2)
@@ -18448,8 +18400,7 @@ def searchXR (i1,i2,ins,event):
                     w.delete('%s wordstart' % i1,'%s wordend' % i1)
                     w.insert(ind,self.abbrevs[word])
             i1 = '%s wordend' % i1
-    w.setInsertPoint(ins)
-    w.selection_clear()
+    w.setInsertPoint(ins,ins,insert=ins)
     w.tag_delete('sXR')
     w.tag_delete('found')
     k.setLabelGrey('')
@@ -18480,7 +18431,7 @@ def appendToBufferFinisher (self,name):
             c.selectPosition(p)
             self.beginCommand('append-to-buffer: %s' % p.headString())
             w.insert('end',s)
-            w.mark_set('insert','end')
+            w.setInsertPoint('end')
             w.seeInsertPoint()
             self.endCommand()
         finally:
@@ -18510,8 +18461,7 @@ def copyToBufferFinisher (self,event,name):
             c.selectPosition(p)
             self.beginCommand('copy-to-buffer: %s' % p.headString())
             w.insert('end',s)
-            w.mark_set('insert','end')
-            w.seeInsertPoint()
+            w.setInsertPoint('end')
             self.endCommand()
         finally:
             c.endUpdate()
@@ -18671,7 +18621,8 @@ if match:
     start = match.start()
     end = match.end()
     length = end - start
-    w.mark_set('insert','insert +%sc' % start)
+    i = w.getInsertPoint()
+    w.setInsertPoint(i+start)
     w.tag_add('qR','insert','insert +%sc' % length)
     w.tag_config('qR',background='lightblue')
     txt = w.get('insert','insert +%sc' % length)
@@ -18818,7 +18769,6 @@ def yankRectangle (self,event,killRect=None):
     ins = w.getInsertPoint()
     i,j = g.getLine(s,ins)
     txt = s[i:ins]
-    # txt = w.get('insert linestart','insert')
     txt = self.getWSString(txt)
 
     i = w.toGuiIndex(ins)
@@ -18835,20 +18785,6 @@ def yankRectangle (self,event,killRect=None):
         i1 += 1
 
     self.endCommand()
-    
-@
-    i = w.getInsertPoint()
-    #i1, i2 = i.split('.')
-    #i1 = int(i1)
-    for z in killRect:
-        txt2 = w.get('%s.0 linestart' % i1,'%s.%s' % (i1,i2))
-        if len(txt2) != len(txt):
-            amount = len(txt) - len(txt2)
-            z = txt [-amount:] + z
-        w.insert('%s.%s' % (i1,i2),z)
-        if w.index('%s.0 lineend +1c' % i1) == w.index('end'):
-            w.insert('%s.0 lineend' % i1,'\n')
-        i1 += 1
 #@-node:ekr.20050920084036.229:yankRectangle
 #@+node:ekr.20050920084036.232:stringRectangle
 def stringRectangle (self,event):
@@ -18929,7 +18865,7 @@ def jumpToRegister (self,event):
             c.bodyWantsFocus()
             if val:
                 try:
-                    w.mark_set('insert',val)
+                    w.setInsertPoint(val)
                     k.setLabelGrey('At %s' % repr(val))
                 except Exception:
                     k.setLabelGrey('Register %s is not a valid location' % key)
@@ -19175,7 +19111,7 @@ def gotoCharacter (self,event):
     else:
         n = k.arg ; w = self.w
         if n.isdigit():
-            w.mark_set('insert','1.0 +%sc' % n)
+            w.setInsertPoint(n)
             w.seeInsertPoint()
         k.resetLabel()
         k.clearState()
@@ -19215,7 +19151,9 @@ def gotoLine (self,event):
     else:
         n = k.arg ;  w = self.w
         if n.isdigit():
-            w.mark_set('insert','%s.0' % n)
+            s = w.getAllText()
+            i = g.convertRowColToPythonIndex(s,n,0)
+            w.setInsertPoint(i)
             w.seeInsertPoint()
         k.resetLabel()
         k.clearState()
@@ -19478,7 +19416,7 @@ def clearSelectedText (self,event):
 
     self.beginCommand(undoType='clear-selected-text')
 
-    w.replace(i,j,'')
+    w.delete(i,j)
     w.setInsertPoint(i)
 
     self.endCommand(changed=True,setLabel=True)
@@ -19890,10 +19828,11 @@ def linesHelper (self,event,pattern,which):
     if not w: return
    
     self.beginCommand(undoType=which+'-lines')
-    if w.tag_ranges('sel'):
-        i = w.index('sel.first') ; end = w.index('sel.last')
+    if w.hasSelection():
+        i,end = w.getSelectionRange()
     else:
-         i = w.index('insert') ; end = 'end'
+        i = w.getInsertPoint()
+        end = 'end'
     txt = w.get(i,end)
     tlines = txt.splitlines(True)
     if which == 'flush':    keeplines = list(tlines)
@@ -19913,7 +19852,7 @@ def linesHelper (self,event,pattern,which):
         keeplines = [x for x in keeplines if x != None]
     w.delete(i,end)
     w.insert(i,''.join(keeplines))
-    w.mark_set('insert',i)
+    w.setInsertPoint(i)
     self.endCommand(changed=True,setLabel=True)
 #@-node:ekr.20050920084036.92:linesHelper
 #@+node:ekr.20050920084036.77:splitLine
@@ -19963,10 +19902,13 @@ def fillRegion (self,event):
     
     self.beginCommand(undoType='fill-region')
 
+    s = w.getAllText()
     s1,s2 = w.getSelectionRange()
     w.setInsertPoint(s1)
     self.backwardParagraph(event)
-    if w.index('insert linestart') == 0:
+    i = w.getInsertPoint()
+    i,junk = g.getLine(s,i)
+    if i == 0:
         self.fillParagraph(event)
     while 1:
         self.forwardParagraph(event)
@@ -20322,6 +20264,8 @@ def swapWords (self,event,swapspots):
 
     w = self.editWidget(event)
     if not w: return
+    
+    s = w.getAllText()
 
     txt = w.get('insert wordstart','insert wordend') ###
     if not txt: return
@@ -20330,10 +20274,10 @@ def swapWords (self,event,swapspots):
     
     self.beginCommand(undoType='swap-words')
 
-    if len(swapspots) != 0:
-        if w.compare(i,'>',swapspots[1]):
+    if len(swapspots):
+        if i > swapspots[1]:
             self.swapHelper(w,i,txt,swapspots[1],swapspots[0])
-        elif w.compare(i,'<',swapspots[1]):
+        elif i < swapspots[1]:
             self.swapHelper(w,swapspots[1],swapspots[0],i,txt)
     else:
         swapspots.append(txt)
@@ -20371,17 +20315,6 @@ def swapCharacters (self,event):
     self.endCommand(changed=True,setLabel=True)
 
 transposeCharacters = swapCharacters
-
-    # i = w.getInsertPoint()
-    # c1 = w.get('insert','insert +1c')
-    # c2 = w.get('insert -1c','insert')
-    # w.delete('insert -1c','insert')
-    # w.insert('insert',c1)
-    # w.delete('insert','insert +1c')
-    # w.insert('insert',c2)
-    # w.mark_set('insert',i)
-    
-#@nonl
 #@-node:ekr.20050920084036.124:swapCharacters & transeposeCharacters
 #@-node:ekr.20050920084036.121:swap/transpose...
 #@+node:ekr.20050920084036.126:tabify & untabify

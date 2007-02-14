@@ -605,13 +605,14 @@ class wxFindPanel (wx.Panel):
     #@-others
 #@nonl
 #@-node:edream.110203113231.588:wxFindPanel class
-#@+node:ekr.20061212100034:wxFindTab class
+#@+node:ekr.20061212100034:wxFindTab class (leoFind.findTab)
 class wxFindTab (leoFind.findTab):
     
     '''A subclass of the findTab class containing all wxGui code.'''
 
     #@    @+others
-    #@+node:ekr.20061212100034.1:ctor
+    #@+node:ekr.20070214071433:Birth
+    #@+node:ekr.20061212100034.1:wxFindTab.ctor
     if 0: # We can use the base-class ctor.
     
         def __init__ (self,c,parentFrame):
@@ -619,18 +620,10 @@ class wxFindTab (leoFind.findTab):
             leoFind.findTab.__init__(self,c,parentFrame)
                 # Init the base class.
                 # Calls initGui, createFrame, createBindings & init(c), in that order.
-    #@-node:ekr.20061212100034.1:ctor
-    #@+node:ekr.20070105114426:class svar
-    class svar:
-        '''A class like Tk's IntVar and StringVar classes.'''
-        def __init__(self):
-            self.val = None
-        def get (self):
-            return self.val
-        def set (self,val):
-            self.val = val
-    #@-node:ekr.20070105114426:class svar
+    #@-node:ekr.20061212100034.1:wxFindTab.ctor
     #@+node:ekr.20061212100034.2:initGui
+    # Called from leoFind.findTab.ctor.
+    
     def initGui (self):
         
         # g.trace('wxFindTab')
@@ -643,6 +636,102 @@ class wxFindTab (leoFind.findTab):
         for key in self.newStringKeys:
             self.svarDict[key] = self.svar() # Was Tk.StringVar.
     #@-node:ekr.20061212100034.2:initGui
+    #@+node:ekr.20061212100034.10:init (wxFindTab)
+    # Called from leoFind.findTab.ctor.
+    # We must override leoFind.init to init the checkboxes 'by hand' here. 
+    
+    def init (self,c):
+    
+        # Separate c.ivars are much more convenient than a svarDict.
+        for key in self.intKeys:
+            # Get ivars from @settings.
+            val = c.config.getBool(key)
+            setattr(self,key,val)
+            val = g.choose(val,1,0)
+            svar = self.svarDict.get(key)
+            if svar: svar.set(val)
+            #g.trace(key,val)
+    
+        #@    << set find/change widgets >>
+        #@+node:ekr.20061212100034.11:<< set find/change widgets >>
+        self.find_ctrl.delete(0,"end")
+        self.change_ctrl.delete(0,"end")
+        
+        # Get setting from @settings.
+        for w,setting,defaultText in (
+            (self.find_ctrl,"find_text",'<find pattern here>'),
+            (self.change_ctrl,"change_text",''),
+        ):
+            s = c.config.getString(setting)
+            if not s: s = defaultText
+            w.insert("end",s)
+        #@-node:ekr.20061212100034.11:<< set find/change widgets >>
+        #@nl
+        #@    << set radio buttons from ivars >>
+        #@+node:ekr.20061212100034.12:<< set radio buttons from ivars >>
+        # In Tk, setting the var also sets the widget.
+        # Here, we do so explicitly.
+        d = self.widgetsDict
+        for ivar,key in (
+            ("pattern_match","pattern-search"),
+            #("script_search","script-search")
+        ):
+            svar = self.svarDict[ivar].get()
+            if svar:
+                self.svarDict["radio-find-type"].set(key)
+                w = d.get(key)
+                if w: w.SetValue(True)
+                break
+        else:
+            self.svarDict["radio-find-type"].set("plain-search")
+            
+        for ivar,key in (
+            ("suboutline_only","suboutline-only"),
+            ("node_only","node-only"),
+            # ("selection_only","selection-only")
+        ):
+            svar = self.svarDict[ivar].get()
+            if svar:
+                self.svarDict["radio-search-scope"].set(key)
+                break
+        else:
+            key = 'entire-outline'
+            self.svarDict["radio-search-scope"].set(key)
+            w = self.widgetsDict.get(key)
+            if w: w.SetValue(True)
+        #@-node:ekr.20061212100034.12:<< set radio buttons from ivars >>
+        #@nl
+        #@    << set checkboxes from ivars >>
+        #@+node:ekr.20061213063636:<< set checkboxes from ivars >>
+        for ivar in (
+            'ignore_case',
+            'mark_changes',
+            'mark_finds',
+            'pattern_match',
+            'reverse',
+            'search_body',
+            'search_headline',
+            'whole_word',
+            'wrap',
+        ):
+            svar = self.svarDict[ivar].get()
+            if svar:
+                w = self.widgetsDict.get(ivar)
+                if w: w.SetValue(True)
+        #@-node:ekr.20061213063636:<< set checkboxes from ivars >>
+        #@nl
+    #@-node:ekr.20061212100034.10:init (wxFindTab)
+    #@-node:ekr.20070214071433:Birth
+    #@+node:ekr.20070105114426:class svar
+    class svar:
+        '''A class like Tk's IntVar and StringVar classes.'''
+        def __init__(self):
+            self.val = None
+        def get (self):
+            return self.val
+        def set (self,val):
+            self.val = val
+    #@-node:ekr.20070105114426:class svar
     #@+node:ekr.20061212100034.3:createFrame (wxFindTab)
     def createFrame (self,parentFrame):
     
@@ -847,93 +936,49 @@ class wxFindTab (leoFind.findTab):
             for event, callback in table:
                 w.bind(event,callback)
     #@-node:ekr.20061212100034.9:createBindings (wsFindTab) TO DO
-    #@+node:ekr.20061212100034.10:init (wxFindTab)
-    # Important: we can not use leoFind.init because we must init the checkboxes 'by hand' here. 
+    #@+node:ekr.20070214070725:Support for minibufferFind class (wxFindTab)
+    # This is the same as the Tk code because we simulate Tk svars.
+    #@nonl
+    #@+node:ekr.20070214070725.1:getOption
+    def getOption (self,ivar):
     
-    def init (self,c):
-    
-        # Separate c.ivars are much more convenient than a svarDict.
-        for key in self.intKeys:
-            # Get ivars from @settings.
-            val = c.config.getBool(key)
-            setattr(self,key,val)
-            val = g.choose(val,1,0)
-            svar = self.svarDict.get(key)
-            if svar: svar.set(val)
-            #g.trace(key,val)
-    
-        #@    << set find/change widgets >>
-        #@+node:ekr.20061212100034.11:<< set find/change widgets >>
-        self.find_ctrl.delete(0,"end")
-        self.change_ctrl.delete(0,"end")
+        var = self.svarDict.get(ivar)
         
-        # Get setting from @settings.
-        for w,setting,defaultText in (
-            (self.find_ctrl,"find_text",'<find pattern here>'),
-            (self.change_ctrl,"change_text",''),
-        ):
-            s = c.config.getString(setting)
-            if not s: s = defaultText
-            w.insert("end",s)
-        #@-node:ekr.20061212100034.11:<< set find/change widgets >>
-        #@nl
-        #@    << set radio buttons from ivars >>
-        #@+node:ekr.20061212100034.12:<< set radio buttons from ivars >>
-        # In Tk, setting the var also sets the widget.
-        # Here, we do so explicitly.
-        d = self.widgetsDict
-        for ivar,key in (
-            ("pattern_match","pattern-search"),
-            #("script_search","script-search")
-        ):
-            svar = self.svarDict[ivar].get()
-            if svar:
-                self.svarDict["radio-find-type"].set(key)
-                w = d.get(key)
-                if w: w.SetValue(True)
-                break
+        if var:
+            val = var.get()
+            # g.trace('%s = %s' % (ivar,val))
+            return val
         else:
-            self.svarDict["radio-find-type"].set("plain-search")
-            
-        for ivar,key in (
-            ("suboutline_only","suboutline-only"),
-            ("node_only","node-only"),
-            # ("selection_only","selection-only")
-        ):
-            svar = self.svarDict[ivar].get()
-            if svar:
-                self.svarDict["radio-search-scope"].set(key)
-                break
+            g.trace('bad ivar name: %s' % ivar)
+            return None
+    #@-node:ekr.20070214070725.1:getOption
+    #@+node:ekr.20070214070725.2:setOption
+    def setOption (self,ivar,val):
+    
+        if ivar in self.intKeys:
+            if val is not None:
+                var = self.svarDict.get(ivar)
+                var.set(val)
+                # g.trace('%s = %s' % (ivar,val))
+    
+        elif not g.app.unitTesting:
+            g.trace('oops: bad find ivar %s' % ivar)
+    #@-node:ekr.20070214070725.2:setOption
+    #@+node:ekr.20070214070725.3:toggleOption
+    def toggleOption (self,ivar):
+    
+        if ivar in self.intKeys:
+            var = self.svarDict.get(ivar)
+            val = not var.get()
+            var.set(val)
+            # g.trace('%s = %s' % (ivar,val),var)
         else:
-            key = 'entire-outline'
-            self.svarDict["radio-search-scope"].set(key)
-            w = self.widgetsDict.get(key)
-            if w: w.SetValue(True)
-        #@-node:ekr.20061212100034.12:<< set radio buttons from ivars >>
-        #@nl
-        #@    << set checkboxes from ivars >>
-        #@+node:ekr.20061213063636:<< set checkboxes from ivars >>
-        for ivar in (
-            'ignore_case',
-            'mark_changes',
-            'mark_finds',
-            'pattern_match',
-            'reverse',
-            'search_body',
-            'search_headline',
-            'whole_word',
-            'wrap',
-        ):
-            svar = self.svarDict[ivar].get()
-            if svar:
-                w = self.widgetsDict.get(ivar)
-                if w: w.SetValue(True)
-        #@-node:ekr.20061213063636:<< set checkboxes from ivars >>
-        #@nl
-    #@-node:ekr.20061212100034.10:init (wxFindTab)
+            g.trace('oops: bad find ivar %s' % ivar)
+    #@-node:ekr.20070214070725.3:toggleOption
+    #@-node:ekr.20070214070725:Support for minibufferFind class (wxFindTab)
     #@-others
 #@nonl
-#@-node:ekr.20061212100034:wxFindTab class
+#@-node:ekr.20061212100034:wxFindTab class (leoFind.findTab)
 #@-node:edream.110203113231.560: Find classes
 #@+node:ekr.20050719111045.1: init
 def init ():
@@ -1340,6 +1385,16 @@ class baseTextWidget (wx.EvtHandler):
          w = self
          return w._getYScrollPosition()
     #@-node:ekr.20070211185536:getYScrollPosition
+    #@+node:ekr.20070212204217:getWidth
+    def getWidth (self):
+        
+        '''Return the width of the widget.
+        This is only called for headline widgets,
+        and gui's may choose not to do anything here.'''
+        
+        w = self
+        return 0
+    #@-node:ekr.20070212204217:getWidth
     #@+node:ekr.20070209074555.19:hasSelection
     def hasSelection (self):
         
@@ -1357,6 +1412,12 @@ class baseTextWidget (wx.EvtHandler):
         # w._setInsertPoint(i)
         w._insertText(i,s)
     #@-node:ekr.20070209074555.20:insert
+    #@+node:ekr.20070213104858:indexIsVisible
+    def indexIsVisible (self,i):
+        
+        return False # Code will loop if this returns True forever.
+    #@nonl
+    #@-node:ekr.20070213104858:indexIsVisible
     #@+node:ekr.20070209074555.22:replace
     def replace (self,i,j,s):
     
@@ -1441,6 +1502,16 @@ class baseTextWidget (wx.EvtHandler):
             if insert is not None: self.virtualInsertPoint = insert
             w._setSelectionRange(i,j)
     #@-node:ekr.20070209074555.27:setSelectionRange (baseText)
+    #@+node:ekr.20070212204242:setWidth
+    def setWidth (self,width):
+        
+        '''Set the width of the widget.
+        This is only called for headline widgets,
+        and gui's may choose not to do anything here.'''
+        
+        w = self
+        pass
+    #@-node:ekr.20070212204242:setWidth
     #@+node:ekr.20070211185611:setYScrollPosition
     def setYScrollPosition (self,i):
     
@@ -1576,7 +1647,7 @@ class baseTextWidget (wx.EvtHandler):
         w = self
         pos = wx.Point(x.y)
         data = w._hitTest(pos)
-        # g.trace(data)
+        return data
     #@-node:ekr.20070209074555.36:xyToGui/PythonIndex
     #@-node:ekr.20070209074555.7:Wrapper methods (widget-independent)
     #@-others
@@ -1665,7 +1736,7 @@ class plainTextWidget (baseTextWidget):
     def _getLastPosition(self):         return self.widget.GetLastPosition()
     def _getSelectedText(self):         return self.widget.GetStringSelection()
     def _getSelectionRange(self):       return self.widget.GetSelection()
-    def _hitTest(self,pos):             return slef.widget.HitTest(pos)
+    def _hitTest(self,pos):             return self.widget.HitTest(pos)
     def _insertText(self,i,s):          self.setInsertPoint(i) ; return self.widget.WriteText(s)
     def _scrollLines(self,n):           return self.widget.ScrollLines(n)
     def _see(self,i):                   return self.widget.ShowPosition(i)
@@ -1716,7 +1787,7 @@ class richTextWidget (baseTextWidget):
     def _getLastPosition(self):         return self.widget.GetLastPosition()
     def _getSelectedText(self):         return self.widget.GetStringSelection()
     def _getSelectionRange(self):       return self.widget.GetSelection()
-    def _hitTest(self,pos):             return slef.widget.HitTest(pos)
+    def _hitTest(self,pos):             return self.widget.HitTest(pos)
     def _insertText(self,i,s):            self.setInsertPoint(i) ; return self.widget.WriteText(s)
     def _scrollLines(self,n):           return self.widget.ScrollLines(n)
     def _see(self,i):                   return self.widget.ShowPosition(i)
@@ -1770,7 +1841,7 @@ class stcWidget (baseTextWidget):
     def _getSelectedText(self):         return self.widget.GetSelectedText()
     def _getYScrollPosition(self):      return 0
     def _getSelectionRange(self):       return self.widget.GetSelection()
-    def _hitTest(self,pos):             return slef.widget.HitTest(pos)
+    def _hitTest(self,pos):             return self.widget.HitTest(pos)
     def _insertText(self,i,s):          return self.widget.InsertText(i,s)
     def _scrollLines(self,n):           return self.widget.ScrollToLine(n)
     def _see(self,i):                   g.trace('oops',i) # Should not be called.
@@ -1844,10 +1915,12 @@ class stcWidget (baseTextWidget):
     def xyToPythonIndex (self,x,y):
         
         w = self
-        pos = wx.Point(x.y)
+        pos = wx.Point(x,y)
     
-        data = wx.stc.StyledTextCtrl.HitTest(pos)
-        # g.trace(data)
+        data = wx.stc.StyledTextCtrl.HitTest(w.widget,pos)
+        # g.trace('data',data)
+        
+        return 0 ### Non-zero value may loop.
     #@-node:ekr.20070209080938.31:xyToGui/PythonIndex (to do)
     #@-node:ekr.20070209080938.2:Wrapper methods
     #@-others
@@ -2872,7 +2945,11 @@ class wxGui(leoGui.leoGui):
         if isinstance(event,self.leoKeyEvent): # a leoKeyEvent.
             return event.widget 
         elif isinstance(event,g.Bunch): # A manufactured event.
-            return event.c.frame.body.bodyCtrl
+            if hasattr(event,'c'):
+                return event.c.frame.body.bodyCtrl
+            else:
+                g.trace('k.generalModeHandler event')
+                return None
         elif hasattr(event,'GetEventObject'): # A wx Event.
             return event.GetEventObject()
         else:
@@ -3517,7 +3594,7 @@ class wxLeoBody (leoFrame.leoBody):
     def tag_bind (self,*args,**keys):       return self.bodyCtrl.tag_bind(*args,**keys)
     def tag_configure (self,*args,**keys):  return self.bodyCtrl.tag_configure(*args,**keys)
     def tag_delete (self,*args,**keys):     return self.bodyCtrl.tag_delete(*args,**keys)
-    def tag_remove (self,*args,**keys):     return self.bodyCtrl.tag_Remove(*args,**keys)
+    def tag_remove (self,*args,**keys):     return self.bodyCtrl.tag_remove(*args,**keys)
     #@-node:edream.111303204836:Tk wrappers (wxBody)
     #@+node:ekr.20061116083454:wxBody.onKeyUp/Down
     def onKeyDown (self,event,*args,**keys):
@@ -3579,6 +3656,284 @@ class wxLeoBody (leoFrame.leoBody):
         self.forceFullRecolorFlag = True
     #@nonl
     #@-node:ekr.20070204123745:wxBody.forceFullRecolor
+    #@+node:ekr.20070214073624:Editors (wxBody) TO DO
+    #@+at 
+    #@nonl
+    # **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the 
+    # same.
+    #@-at
+    #@+node:ekr.20070214073624.1:recolorWidget
+    def recolorWidget (self,w):
+        
+        return ###
+    
+        c = self.c ; old_w = self.bodyCtrl
+        
+        # g.trace(id(w),c.currentPosition().headString())
+        
+        # Save.
+        self.bodyCtrl = self.frame.bodyCtrl = w
+        
+        c.recolor_now(interruptable=False) # Force a complete recoloring.
+        
+        # Restore.
+        self.bodyCtrl = self.frame.bodyCtrl = old_w
+    #@nonl
+    #@-node:ekr.20070214073624.1:recolorWidget
+    #@+node:ekr.20070214073624.2:create/select/unselect/Label
+    def unselectLabel (self,w):
+        
+        return ###
+        
+        # g.trace(w.leo_name,w.leo_label_s)
+        if not w.leo_label: self.createLabel(w)
+        w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
+            
+    def selectLabel (self,w):
+        
+        return ###
+        
+        # g.trace(w.leo_name,w.leo_label_s)
+        # g.trace(self.numberOfEditors)
+        if self.numberOfEditors > 1:
+            if not w.leo_label: self.createLabel(w)
+            w.leo_label.configure(text=w.leo_label_s,bg='white')
+        elif w.leo_label:
+            w.leo_label.pack_forget()
+            w.leo_label = None
+    
+    def createLabel (self,w):
+    
+        w.leo_label = Tk.Label(w.leo_frame)
+        w.pack_forget()
+        w.leo_label.pack(side='top')
+        w.pack(expand=1,fill='both')
+    #@-node:ekr.20070214073624.2:create/select/unselect/Label
+    #@+node:ekr.20070214073624.3:addEditor
+    def addEditor (self,event=None):
+        
+        '''Add another editor to the body pane.'''
+        
+        return ###
+        
+        c = self.c ; p = c.currentPosition()
+         
+        self.totalNumberOfEditors += 1
+        self.numberOfEditors += 1
+        if self.numberOfEditors == 2:
+            # Inject the ivars into the first editor.
+            w = self.editorWidgets.get('1')
+            w.leo_p = p.copy()
+            w.leo_v = w.leo_p.v
+            w.leo_label_s = p.headString()
+            self.selectLabel(w) # Immediately create the label in the old editor.
+       
+        name = '%d' % self.totalNumberOfEditors
+        pane = self.pb.add(name)
+        panes = self.pb.panes()
+        minSize = float(1.0/float(len(panes)))
+        
+        #@    << create label and text widgets >>
+        #@+node:ekr.20070214073624.4:<< create label and text widgets >>
+        f = Tk.Frame(pane)
+        f.pack(side='top',expand=1,fill='both')
+        
+        w = self.createTextWidget(self.frame,f,name=name,p=p)
+        
+        w.delete(0,'end')
+        w.insert('end',p.bodyString())
+        w.see(0)
+        self.setFontFromConfig(w=w)
+        self.setColorFromConfig(w=w)
+        self.createBindings(w=w)
+        c.k.completeAllBindingsForWidget(w)
+        
+        self.recolorWidget(w)
+        #@-node:ekr.20070214073624.4:<< create label and text widgets >>
+        #@nl
+        self.editorWidgets[name] = w
+    
+        for pane in panes:
+            self.pb.configurepane(pane,size=minSize)
+        
+        self.pb.updatelayout()
+        self.bodyCtrl = self.frame.bodyCtrl = w
+        self.selectEditor(w)
+        self.updateEditors()
+        c.bodyWantsFocusNow()
+    #@-node:ekr.20070214073624.3:addEditor
+    #@+node:ekr.20070214073624.5:setEditorColors
+    def setEditorColors (self,bg,fg):
+        
+        return ###
+        
+        c = self.c ; d = self.editorWidgets
+    
+        for key in d.keys():
+            w2 = d.get(key)
+            # g.trace(id(w2),bg,fg)
+            try:
+                w2.configure(bg=bg,fg=fg)
+            except Exception:
+                g.es_exception()
+                pass
+    #@-node:ekr.20070214073624.5:setEditorColors
+    #@+node:ekr.20070214073624.6:cycleEditorFocus
+    def cycleEditorFocus (self,event=None):
+        
+        '''Cycle keyboard focus between the body text editors.'''
+        
+        return ###
+        
+        c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+        values = d.values()
+        if len(values) > 1:
+            i = values.index(w) + 1
+            if i == len(values): i = 0
+            w2 = d.values()[i]
+            assert(w!=w2)
+            self.selectEditor(w2)
+            self.bodyCtrl = self.frame.bodyCtrl = w2
+            # print '***',g.app.gui.widget_name(w2),id(w2)
+    
+        return 'break'
+    #@-node:ekr.20070214073624.6:cycleEditorFocus
+    #@+node:ekr.20070214073624.7:deleteEditor
+    def deleteEditor (self,event=None):
+        
+        '''Delete the presently selected body text editor.'''
+        
+        return ###
+        
+        w = self.bodyCtrl ; d = self.editorWidgets
+        
+        if len(d.keys()) == 1: return
+        
+        name = w.leo_name
+        
+        del d [name] 
+        self.pb.delete(name)
+        panes = self.pb.panes()
+        minSize = float(1.0/float(len(panes)))
+        
+        for pane in panes:
+            self.pb.configurepane(pane,size=minSize)
+            
+        # Select another editor.
+        w = d.values()[0]
+        self.bodyCtrl = self.frame.bodyCtrl = w
+        self.numberOfEditors -= 1
+        self.selectEditor(w)
+    #@-node:ekr.20070214073624.7:deleteEditor
+    #@+node:ekr.20070214073624.8:selectEditor (tkBody)
+    def selectEditor(self,w):
+        
+        return ###
+        
+        c = self.c ; d = self.editorWidgets
+        trace = False
+        if trace: g.trace(g.app.gui.widget_name(w),id(w),g.callers())
+        if w.leo_p is None:
+            if trace: g.trace('no w.leo_p') 
+            return 'break'
+        # Inactivate the previously active editor.
+        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+        for key in d.keys():
+            w2 = d.get(key)
+            if w2 != w and w2.leo_active:
+                w2.leo_active = False
+                self.unselectLabel(w2)
+                w2.leo_scrollBarSpot = w2.yview()
+                w2.leo_insertSpot = w2.getInsertPoint()
+                w2.leo_selection = w2.getSelectionRange()
+                # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
+                break
+        else:
+            if trace: g.trace('no active editor!')
+        
+        # Careful, leo_p may not exist.
+        if not c.positionExists(w.leo_p):
+            if trace: g.trace('does not exist',w.leo_name)
+            for p2 in c.allNodes_iter():
+                if p2.v == w.leo_v:
+                    w.leo_p = p2.copy()
+                    break
+            else:
+                 # This *can* happen when selecting a deleted node.
+                w.leo_p = c.currentPosition()
+                if trace: g.trace('previously deleted node')
+                return 'break'
+    
+        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+        w.leo_active = True
+        c.frame.tree.expandAllAncestors(w.leo_p)
+        c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+        c.recolor_now()
+        #@    << restore the selection, insertion point and the scrollbar >>
+        #@+node:ekr.20070214073624.9:<< restore the selection, insertion point and the scrollbar >>
+        # g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
+        
+        if w.leo_insertSpot:
+            w.setInsertPoint(w.leo_insertSpot)
+        else:
+            w.setInsertPoint(0)
+            
+        if w.leo_scrollBarSpot is not None:
+            first,last = w.leo_scrollBarSpot
+            w.yview('moveto',first)
+        else:
+            w.seeInsertPoint()
+        
+        if w.leo_selection:
+            try:
+                start,end = w.leo_selection
+                w.setSelectionRange(start,end)
+            except Exception:
+                pass
+        #@-node:ekr.20070214073624.9:<< restore the selection, insertion point and the scrollbar >>
+        #@nl
+        c.bodyWantsFocusNow()
+        return 'break'
+    #@nonl
+    #@-node:ekr.20070214073624.8:selectEditor (tkBody)
+    #@+node:ekr.20070214073624.10:selectMainEditor
+    def selectMainEditor (self,p):
+        
+        '''Called from tree.select to select the present body editor.'''
+        
+        return ###
+    
+        c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
+    
+        # Don't inject ivars if there is only one editor.
+        if w.leo_p is not None:
+            # Keep w's ivars up-to-date.
+            w.leo_p = p.copy()
+            w.leo_v = p.v
+            w.leo_label_s = p.headString()
+            self.selectLabel(w)
+            # g.trace(w.leo_name,p.headString())
+    #@-node:ekr.20070214073624.10:selectMainEditor
+    #@+node:ekr.20070214073624.11:updateEditors
+    def updateEditors (self):
+        
+        return ###
+        
+        c = self.c ; p = c.currentPosition()
+        d = self.editorWidgets
+        if len(d.keys()) < 2: return # There is only the main widget.
+    
+        for key in d.keys():
+            w = d.get(key)
+            v = w.leo_v
+            if v and v == p.v and w != self.bodyCtrl:
+                w.delete(0,'end')
+                w.insert('end',p.bodyString())
+                # g.trace('update',w,v)
+                self.recolorWidget(w)
+        c.bodyWantsFocus()
+    #@-node:ekr.20070214073624.11:updateEditors
+    #@-node:ekr.20070214073624:Editors (wxBody) TO DO
     #@-others
 #@nonl
 #@-node:edream.110203113231.539:wxLeoBody class
@@ -3659,14 +4014,17 @@ class wxLeoFrame(leoFrame.leoFrame):
         
         # Create the body pane.
         self.body = wxLeoBody(frame,parentFrame=splitter1)
-        self.bodyCtrl = frame.body.bodyCtrl
+        
+        # g.trace('wxFrame: frame.body',self.body,'frame.body.bodyCtrl',self.body.bodyCtrl)
+        self.bodyCtrl = self.body.bodyCtrl
         
         # Add the panes to the splitters.
         splitter1.SplitHorizontally(splitter2,self.bodyCtrl.widget,0)
         splitter2.SplitVertically(self.tree.treeCtrl,nb,0)
         
-        # Create the minibuffer
+        # Create the minibuffer: c.frame.miniBufferWidget is a public ivar.
         self.minibuffer = wxLeoMinibuffer(c,top)
+        self.miniBufferWidget = self.minibuffer.widget
         ctrl = self.minibuffer.ctrl
         box = wx.BoxSizer(wx.VERTICAL)
         box2 = wx.BoxSizer(wx.HORIZONTAL)
@@ -4232,7 +4590,7 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@-node:edream.111303100039.7:Window Menu
     #@+node:edream.111703103908:Help Menu...
     #@+node:edream.111703103908.2:leoHelp
-    def leoHelp (self):
+    def leoHelp (self,event=None):
         
         g.es("leoHelp not ready yet")
         
@@ -5168,7 +5526,7 @@ class wxLeoMinibuffer:
             weight = wx.FONTWEIGHT_NORMAL,
         )
     
-        self.ctrl = w = plainTextWidget(
+        self.widget = w = plainTextWidget(
             parentFrame,
             pos = wx.DefaultPosition,
             size = (1000,-1),
@@ -5204,7 +5562,7 @@ class wxLeoMinibuffer:
     #@-others
 #@nonl
 #@-node:ekr.20061211091215:wxLeoMinibuffer class
-#@+node:edream.111603213219:wxLeoTree class
+#@+node:edream.111603213219:wxLeoTree class (leoFrame.leoTree):
 class wxLeoTree (leoFrame.leoTree):
 
     #@    @+others
@@ -5348,7 +5706,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         self.redraw_count += 1
         self.idDict = {}
-        # g.trace(self.redraw_count)
+        # g.trace(self.redraw_count,'c.fileName') # ,self.c.shortFileName(),'idDict',id(self.idDict))
     
         self.drawing = True # Tell event handlers not to call us.
         try:
@@ -5461,7 +5819,7 @@ class wxLeoTree (leoFrame.leoTree):
         assert(0 <= val <= 15)
         return val
     #@-node:ekr.20061211052926:assignIcon
-    #@+node:ekr.20061211072604:edit_widget
+    #@+node:ekr.20061211072604:tree.edit_widget
     def edit_widget (self,p):
         
         '''Return a widget (compatible with leoTextWidget) used for editing the headline.'''
@@ -5469,7 +5827,7 @@ class wxLeoTree (leoFrame.leoTree):
         w = self.editWidgetDict.get(p.v)
         
         return w
-    #@-node:ekr.20061211072604:edit_widget
+    #@-node:ekr.20061211072604:tree.edit_widget
     #@+node:ekr.20061211115055:updateVisibleIcons
     def updateVisibleIcons (self,p):
     
@@ -5949,25 +6307,45 @@ class wxLeoTree (leoFrame.leoTree):
         
         """Start editing p's headline."""
         
-        redrawFlag = self.expandAllAncestors(p)
-        if redrawFlag:
-            c.redraw()
-            
-        id = self.idDict.get(p.v)
-        assert(id)
-        self.treeCtrl.EditLabel(id)
+        c = self.c ; tree_id = self.idDict.get(p.v)
+        
+        # g.trace('editPosition',self.editPosition(),'id',id(tree_id))
+        
+        redrawFlag = self.expandAllAncestors(p) or not tree_id or p != self.editPosition()
+        
+        c.beginUpdate()
+        try:
+            self.endEditLabel()
+        finally:
+            c.endUpdate(redrawFlag)
+    
+        self.setEditPosition(p) # That is, self._editPosition = p
+        
+        # We may be in the middle of the first redraw, so tree_id may not exist!
+        tree_id = self.idDict.get(p.v)
+        if not tree_id: return 
+        
+        self.treeCtrl.EditLabel(tree_id)
+        
+        if p and c.edit_widget(p):
+            self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
+            self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
+            c.headlineWantsFocus(p) # Make sure the focus sticks.
+    
     #@-node:ekr.20050719121701.3:editLabel
     #@+node:ekr.20070125091308:setEditWidget
-    def setEditWidget (self,p,id):
+    def setEditWidget (self,p,tree_id):
+        
+        # g.trace('id',id(tree_id),'v',id(p.v),'p',p.headString(),self.c.shortFileName(),'idDict',id(self.idDict))
         
         w = self.editWidgetDict.get(p.v)
-        self.idDict[p.v] = id
+        self.idDict[p.v] = tree_id
     
         if w:
-            w.init(id)
+            w.init(tree_id)
         else:
             # g.trace(p.headString())
-            w = headlineWidget(self.treeCtrl,id)
+            w = headlineWidget(self.treeCtrl,tree_id)
             self.editWidgetDict[p.v] = w
     
         p.edit_widget = w
@@ -5995,7 +6373,7 @@ class wxLeoTree (leoFrame.leoTree):
     # For compatibility.
     setNormalLabelState = setEditLabelState 
     #@+node:ekr.20070130154139:headWidth
-    def headWidth (self,s):
+    def headWidth (self,p=None,s=''):
         
         return 0
     #@nonl
@@ -6055,7 +6433,7 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:ekr.20070123145604:tree.set...LabelState
     #@-others
 #@nonl
-#@-node:edream.111603213219:wxLeoTree class
+#@-node:edream.111603213219:wxLeoTree class (leoFrame.leoTree):
 #@-others
 #@-node:edream.110203113231.302:@thin __wx_gui.py
 #@-leo

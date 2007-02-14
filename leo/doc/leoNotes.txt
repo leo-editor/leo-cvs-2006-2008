@@ -2070,6 +2070,43 @@ def indentRegion (self,event):
     # self.removeRKeys(w)
 #@nonl
 #@-node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
+#@+node:ekr.20070213074001:Not used from leoEdit commands
+#@+node:ekr.20050920084036.9:inRange
+def inRange (self,w,range,l='',r=''):
+
+    ranges = w.tag_ranges(range)
+    
+    for z in xrange(0,len(ranges),2):
+        z1 = z + 1
+        l1 = 'insert%s' % l
+        r1 = 'insert%s' % r
+        # if w.compare(l1,'>=',ranges[z]) and w.compare(r1,'<=',ranges[z1]):
+        if i1 >= ranges[z] and r1 <= ranges[z1]:
+            return True
+    return False
+#@-node:ekr.20050920084036.9:inRange
+#@+node:ekr.20050920084036.11:testinrange
+def testinrange (self,w):
+
+    if not self.inRange(w,'sel') or not self.contRanges(w,'sel'):
+        # self.removeRKeys(w)
+        return False
+    else:
+        return True
+#@-node:ekr.20050920084036.11:testinrange
+#@+node:ekr.20050920084036.10:contRanges
+def contRanges (self,w,range):
+
+    ranges = w.tag_ranges(range)
+    t1 = w.get(ranges[0],ranges[-1])
+    t2 = []
+    for z in xrange(0,len(ranges),2):
+        z1 = z + 1
+        t2.append(w.get(ranges[z],ranges[z1]))
+    t2 = '\n'.join(t2)
+    return t1 == t2
+#@-node:ekr.20050920084036.10:contRanges
+#@-node:ekr.20070213074001:Not used from leoEdit commands
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

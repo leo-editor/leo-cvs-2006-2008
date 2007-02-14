@@ -1406,14 +1406,14 @@ class leoTkinterTree (leoFrame.leoTree):
             else:
                 print "w.leo_position == None",w
     #@-node:ekr.20040803072955.73:dumpWidgetList
-    #@+node:ekr.20040803072955.75:edit_widget
+    #@+node:ekr.20040803072955.75:tree.edit_widget
     def edit_widget (self,p):
         
         """Returns the Tk.Edit widget for position p."""
     
         return self.findEditWidget(p)
     #@nonl
-    #@-node:ekr.20040803072955.75:edit_widget
+    #@-node:ekr.20040803072955.75:tree.edit_widget
     #@+node:ekr.20040803072955.74:eventToPosition
     def eventToPosition (self,event):
     
@@ -2347,7 +2347,7 @@ class leoTkinterTree (leoFrame.leoTree):
         p = self.c.currentPosition()
         self.setSelectedLabelState(p)
     #@-node:ekr.20040803072955.142:dimEditLabel, undimEditLabel
-    #@+node:ekr.20040803072955.127:editLabel
+    #@+node:ekr.20040803072955.127:tree.editLabel
     def editLabel (self,p,selectAll=False):
         
         """Start editing p's headline."""
@@ -2370,7 +2370,7 @@ class leoTkinterTree (leoFrame.leoTree):
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
             self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.
-    #@-node:ekr.20040803072955.127:editLabel
+    #@-node:ekr.20040803072955.127:tree.editLabel
     #@+node:ekr.20040803072955.126:tree.endEditLabel
     def endEditLabel (self):
         

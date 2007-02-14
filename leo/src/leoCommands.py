@@ -421,7 +421,7 @@ class baseCommands:
         func = c.commandsDict.get(commandName)
         
         if func:
-            event = g.Bunch(char='',keysym=None,widget=c.frame.body.bodyCtrl)
+            event = g.Bunch(c=c,char='',keysym=None,widget=c.frame.body.bodyCtrl)
             stroke = None
             k.masterCommand(event,func,stroke)
             return k.funcReturn
