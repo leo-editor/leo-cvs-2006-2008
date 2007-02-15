@@ -9,7 +9,7 @@ A plugin to manage Leo's Plugins:
 - Checks for and updates plugins from the web.
 """
 
-__version__ = "0.23"
+__version__ = "0.24"
 __plugin_name__ = "Plugin Manager"
 __plugin_priority__ = 10000
 __plugin_requires__ = ["plugin_menu"]
@@ -96,6 +96,7 @@ __plugin_group__ = "Core"
 # 0.22 EKR: Just changed these comments.
 # 0.23 EKR: Changed g.createStandAloneApp to createStandAloneTkApp to make 
 # clear the dependency.
+# 0.24 EKR: Standalone version of the code now works again.
 #@-at
 #@nonl
 #@-node:pap.20041006184225.2:<< version history >>
