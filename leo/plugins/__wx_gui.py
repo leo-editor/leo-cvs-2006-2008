@@ -39,6 +39,8 @@ import traceback
 
 try:
     import wx
+    import wx.lib
+    import wx.lib.colourdb
     import wx.richtext
     import wx.stc
 except ImportError:
@@ -361,7 +363,7 @@ class wxFindPanel (wx.Panel):
         findSizer.Add(10,0) # Width.
         
         # Text. 
-        self.findText = plainTextWidget (self,const("find_text"),"",
+        self.findText = plainTextWidget (self,-1,"",
             wx.DefaultPosition, wx.Size(500,60),
             wx.TE_PROCESS_TAB | wx.TE_MULTILINE,
             wx.DefaultValidator,"")
@@ -390,7 +392,7 @@ class wxFindPanel (wx.Panel):
         
         # Text.
         
-        self.changeText = plainTextWidget (self,const("change_text"),"",
+        self.changeText = plainTextWidget (self,-1,"",
             wx.DefaultPosition, wx.Size(500,60),
             wx.TE_PROCESS_TAB | wx.TE_MULTILINE,
             wx.DefaultValidator,"")
@@ -416,8 +418,8 @@ class wxFindPanel (wx.Panel):
             ("script_search_flag","Script Search",0))
         
         for var,label,style in table:
-            
-            id = const(var)
+        
+            id = wx.NewId()
             box = wx.RadioButton(self,id,label,
                 wx.DefaultPosition,(100,25),
                 style,wx.DefaultValidator,"group1")
@@ -431,8 +433,8 @@ class wxFindPanel (wx.Panel):
         table = (("script_change_flag","Script Change"),)
         
         for var,label in table:
-            
-            id = const(var)
+        
+            id = wx.NewId()
             box = wx.CheckBox(self,id,label,
                 wx.DefaultPosition,(100,25),
                 0,wx.DefaultValidator,"")
@@ -455,7 +457,7 @@ class wxFindPanel (wx.Panel):
         
         for var,label in table:
         
-            id = const(var)
+            id = wx.NewId()
             box = wx.CheckBox(self,id,label,
                 wx.DefaultPosition,(100,25),
                 0,wx.DefaultValidator,"")
@@ -478,9 +480,7 @@ class wxFindPanel (wx.Panel):
             
         for label,var,group in table:
         
-            if var: id = const(var)
-            else:   id = const("entire-outline")
-                
+            id = wx.NewId()
             box = wx.RadioButton(self,id,label,
                 wx.DefaultPosition,(100,25),
                 group,wx.DefaultValidator,"group2")
@@ -503,8 +503,8 @@ class wxFindPanel (wx.Panel):
             ("mark_changes_flag","Mark Changes"))
         
         for var,label in table:
-            
-            id = const(var)
+        
+            id = wx.NewId()
             box = wx.CheckBox(self,id,label,
                 wx.DefaultPosition,(100,25),
                 0,wx.DefaultValidator,"")
@@ -542,8 +542,8 @@ class wxFindPanel (wx.Panel):
             ("findAllButton","Find All",True))
         
         for var,label,isButton in table:
-            
-            id = const(var)
+        
+            id = wx.NewId()
             if isButton:
                 widget = button = wx.Button(self,id,label,
                     wx.DefaultPosition,(100,25),
@@ -573,7 +573,7 @@ class wxFindPanel (wx.Panel):
         
         for var,label in table:
         
-            id = const(var)
+            id = wx.NewId()
             button = wx.Button(self,id,label,
                 wx.DefaultPosition,(100,25),
                 0,wx.DefaultValidator,"")
@@ -997,6 +997,21 @@ def init ():
     
     return ok
 #@-node:ekr.20050719111045.1: init
+#@+node:ekr.20070215095042:name2color
+def name2color (name,default='white'):
+    
+    # A hack: these names are *not* part of the color list!
+    if name in wx.GetApp().leo_colors:
+        return name
+
+    for z in (name,name.upper()):
+        for name2,r2,g2,b2 in wx.lib.colourdb.getColourInfoList():
+            if z == name2:
+                return wx.Colour(r2,g2,b2)
+
+    g.trace('color name not found',name)
+    return default
+#@-node:ekr.20070215095042:name2color
 #@+node:ekr.20070112173627:class wxStatusLineClass
 class wxStatusLineClass:
     
@@ -1110,24 +1125,6 @@ class wxStatusLineClass:
     #@-node:ekr.20070112173627.10:update (statusLine)
     #@-others
 #@-node:ekr.20070112173627:class wxStatusLineClass
-#@+node:ekr.20070130115253:const
-def const(name):
-    
-    """Return the wx id associated with name"""
-    
-    # Should this canonicalize the label?  Just remove '&' ??
-    global const_dict, const_lastVal
-
-    id = const_dict.get(name)
-    if id != None:
-        return id
-    else:
-        global const_lastVal
-        const_lastVal += 1
-        const_dict[name] = const_lastVal
-        # g.trace(name,const_lastVal)
-        return const_lastVal
-#@-node:ekr.20070130115253:const
 #@+node:ekr.20070209074655:Text widgets
 #@<< baseTextWidget class >>
 #@+node:ekr.20070209074555:<< baseTextWidget class >>
@@ -1818,6 +1815,14 @@ class stcWidget (baseTextWidget):
         w = self
     
         self.widget = wx.stc.StyledTextCtrl(parent,*args,**keys)
+        if 0: # does nothing.
+            self.widget.SetBackgroundColour(name2color('light blue')) #'lavender'))
+            self.widget.SetEdgeColour(name2color('leo pink'))
+        
+        if 1:
+            style = self.widget.GetStyleAt(0)
+            color = name2color('lavender blush')
+            self.widget.StyleSetBackground(style,color)
         
         # Init the base class.
         name = keys.get('name') or '<unknown stcWidget>'
@@ -2437,7 +2442,7 @@ class wxGui(leoGui.leoGui):
     #@+node:edream.110203113231.308:createRootWindow
     def createRootWindow(self):
     
-        self.wxApp = wxLeoApp(None) # This redirects stdout & stderr to stupid console.
+        self.wxApp = wxLeoApp(None)
         self.wxFrame = None
     
         if 0: # Not ready yet.
@@ -2449,6 +2454,14 @@ class wxGui(leoGui.leoGui):
         return self.wxFrame
     #@nonl
     #@-node:edream.110203113231.308:createRootWindow
+    #@+node:edream.111303092328.4:createLeoFrame
+    def createLeoFrame(self,title):
+        
+        """Create a new Leo frame."""
+    
+        return wxLeoFrame(title)
+    #@nonl
+    #@-node:edream.111303092328.4:createLeoFrame
     #@+node:edream.111303085447.1:destroySelf
     def destroySelf(self):
         
@@ -3012,14 +3025,6 @@ class wxGui(leoGui.leoGui):
         g.trace("not ready yet")
     #@nonl
     #@-node:edream.111303092328.3:createFontPanel
-    #@+node:edream.111303092328.4:createLeoFrame (wxGui panels)
-    def createLeoFrame(self,title):
-        
-        """Create a new Leo frame."""
-    
-        return wxLeoFrame(title)
-    #@nonl
-    #@-node:edream.111303092328.4:createLeoFrame (wxGui panels)
     #@+node:edream.110203113231.333:destroyLeoFrame (used??)
     def destroyLeoFrame (self,frame):
     
@@ -3436,7 +3441,7 @@ class wxKeyHandlerClass (leoKeys.keyHandlerClass):
         k = self ; w = k.widget
         if not w: return
     
-        w.SetBackgroundColour('sky blue')
+        w.SetBackgroundColour(name2color('leo blue'))
     
         if label is not None:
             k.setLabel(label,protect)
@@ -3491,6 +3496,12 @@ class wxLeoApp (wx.App):
     def OnInit(self):
     
         self.SetAppName("Leo")
+        
+        # Add some pre-defined default colors.
+        self.leo_colors = ('leo blue','leo pink','leo yellow')
+        wx.TheColourDatabase.AddColour('leo blue',  wx.Color(240,248,255)) # alice blue
+        wx.TheColourDatabase.AddColour('leo pink',  wx.Color(255,228,225)) # misty rose
+        wx.TheColourDatabase.AddColour('leo yellow',wx.Color(253,245,230)) # old lace
     
         return True
     #@nonl
@@ -4667,11 +4678,20 @@ class wxLeoIconBar:
     
     #@    @+others
     #@+node:ekr.20061119105509.1:__init__ wxLeoIconBar
-    def __init__(self,c,parentFrame): # wxLeoIconBar
+    def __init__ (self,c,parentFrame): # wxLeoIconBar
     
         self.c = c
         self.widgets = []
-        self.toolbar = self.iconFrame = parentFrame.CreateToolBar() # A wxFrame method
+        self.toolbar = toolbar = self.iconFrame = parentFrame.CreateToolBar() # A wxFrame method
+        # self.toolbar.SetToolPacking(5)
+    
+        # Insert a spacer to increase the height of the bar.
+        if wx.Platform == "__WXMSW__":
+            tsize = (32,32)
+            path = os.path.join(g.app.loadDir,"..","Icons","LeoApp.ico")
+            bitmap = wx.Bitmap(path,wx.BITMAP_TYPE_ICO)
+            toolbar.SetToolBitmapSize(tsize)
+            toolbar.AddLabelTool(-1,'',bitmap)
     
         # Set the official ivar.
         c.frame.iconFrame = self.iconFrame
@@ -4692,7 +4712,8 @@ class wxLeoIconBar:
         
         # Create the button with a unique id.
         id = wx.NewId()
-        b = wx.Button(toolbar,id,label=text)
+        b = wx.Button(toolbar,id,label=text,size=wx.Size(-1,24))
+        b.SetBackgroundColour('leo blue')
         self.widgets.append(b)
         
         # Right-clicks delete the button.
@@ -4801,11 +4822,11 @@ class wxLeoLog (leoFrame.leoLog):
         # Create the Log tab.
         self.logCtrl = self.selectTab('Log')
         
-        # wx.TheColourDatabase.AddColour('leo blue',wx.Color(214,250,254))
-        
         # Create the Find tab (Use gui.createFindTab so we won't create it twice.)
         win = self.createTab('Find',createText=False)
-        win.SetBackgroundColour('light blue') # 'leo blue','wheat','orchid','sky blue'
+        
+        color = name2color('leo blue')
+        win.SetBackgroundColour(color)
         self.findTabHandler = g.app.gui.createFindTab(c,parentFrame=win)
         
         # Make sure the Log is selected.
@@ -4901,7 +4922,9 @@ class wxLeoLog (leoFrame.leoLog):
             w = plainTextWidget(win,
                 style=wx.TE_MULTILINE,
                 name='text tab:%s' % tabName)
-            
+    
+            w.setBackgroundColor(name2color('leo blue'))
+    
             sizer = wx.BoxSizer(wx.HORIZONTAL)
             sizer.Add(w.widget,1,wx.EXPAND)
             win.SetSizer(sizer)
@@ -5241,7 +5264,7 @@ class wxLeoMenu (leoMenu.leoMenu):
             # Create a submenu of the parent menu.
             keys = {'label':label,'underline':underline}
             ch,label = self.createAccelLabel(keys)
-            id = const(label)
+            id = wx.NewId()
             parent.AppendMenu(id,label,menu,label)
             accel = None
             if ch: self.createAccelData(menu,ch,accel,id,label)
@@ -5263,7 +5286,7 @@ class wxLeoMenu (leoMenu.leoMenu):
         def wxMenuCallback (event,callback=callback):
             return callback() # All args were bound when the callback was created.
     
-        id = const(label)
+        id = wx.NewId()
         menu.Append(id,label,label)
         key = (menu,label),
         self.menuDict[key] = id # Remember id 
@@ -5338,7 +5361,7 @@ class wxLeoMenu (leoMenu.leoMenu):
             keys = {'label':label,'underline':underline}
             ch,label = self.createAccelLabel(keys)
             self.menuBar.append(menu,label)
-            id = const(label)
+            id = wx.NewId()
             accel = None
             if ch: self.createAccelData(menu,ch,accel,id,label)
     #@-node:edream.111303111942:insert_cascade
@@ -5580,6 +5603,7 @@ class wxLeoTree (leoFrame.leoTree):
         self.keyDownModifiers = None
         self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
         self.root_id = None
+        self.tree_id = wx.NewId()
         self.updateCount = 0
     
         self.treeCtrl = self.createControl(parentFrame)
@@ -5587,7 +5611,7 @@ class wxLeoTree (leoFrame.leoTree):
     #@+node:edream.111603213329:wxTree.createBindings
     def createBindings (self): # wxLeoTree
     
-        w = self.treeCtrl ; id = const("cTree")
+        w = self.treeCtrl ; id = self.tree_id
     
         wx.EVT_KEY_DOWN         (w,self.onKeyDown)  # Provides raw key codes.
         wx.EVT_KEY_UP           (w,self.onKeyUp)    # Provides raw key codes.
@@ -5624,12 +5648,14 @@ class wxLeoTree (leoFrame.leoTree):
             wx.TR_HAS_VARIABLE_ROW_HEIGHT )
         
         w = wx.TreeCtrl(parentFrame,
-            id = const("cTree"),
+            id = self.tree_id,
             pos = wx.DefaultPosition,
             size = wx.DefaultSize,
             style = style,
             validator = wx.DefaultValidator,
             name = "tree")
+    
+        w.SetBackgroundColour(name2color('leo yellow'))
     
         self.defaultFont = font = wx.Font(pointSize=12,
             family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
@@ -5695,7 +5721,7 @@ class wxLeoTree (leoFrame.leoTree):
                 g.trace("Can't happen: negative updateCount",g.callers())
     #@-node:edream.110203113231.296:endUpdate
     #@+node:edream.110203113231.298:redraw & redraw_now & helpers
-    redraw_count = 0
+    redrawCount = 0
     
     def redraw (self):
         
@@ -5704,9 +5730,9 @@ class wxLeoTree (leoFrame.leoTree):
         p = c.rootPosition()
         if not p: return
         
-        self.redraw_count += 1
+        self.redrawCount += 1
         self.idDict = {}
-        # g.trace(self.redraw_count,'c.fileName') # ,self.c.shortFileName(),'idDict',id(self.idDict))
+        g.trace(self.redrawCount) # ,'c.fileName',self.c.shortFileName(),'idDict',id(self.idDict))
     
         self.drawing = True # Tell event handlers not to call us.
         try:
