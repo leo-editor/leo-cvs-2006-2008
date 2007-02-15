@@ -2483,7 +2483,7 @@ def plugin_signon(module_name,verbose=False):
     
     exec("import %s ; m = %s" % (module_name,module_name))
     
-    if verbose: # or g.app.unitTesting:
+    if verbose:
         g.es("...%s.py v%s: %s" % (
             m.__name__, m.__version__, g.plugin_date(m)))
 
@@ -5164,7 +5164,7 @@ def cantImport (moduleName,pluginName=None,verbose=True):
     # g.trace(verbose,moduleName,repr(pluginName))
     # if not pluginName: g.printStack()
     
-    if verbose and not g.app.unitTesting:
+    if verbose and not (app and g.app.unitTesting):
         s = "Can not import %s" % moduleName
         if pluginName: s += " from plugin %s" % pluginName
         g.es_print(s,color="blue")
@@ -5203,11 +5203,14 @@ def importExtension (moduleName,pluginName=None,verbose=False,required=False):
     
     # g.trace(verbose,moduleName,pluginName)
     
+    import os
+    
     module = g.importModule(moduleName,pluginName=pluginName,verbose=False)
+    
+    extensionsDir = g.app and g.app.extensionsDir or os.path.join(os.path.dirname(__file__),'..','extensions')
 
     if not module:
-        module = g.importFromPath(moduleName,g.app.extensionsDir,
-            pluginName=pluginName,verbose=verbose)
+        module = g.importFromPath(moduleName,extensionsDir,pluginName=pluginName,verbose=verbose)
             
         if not module and required:
             g.cantImportDialog(pluginName,moduleName)
@@ -5347,7 +5350,7 @@ def importFromPath (name,path,pluginName=None,verbose=False):
     fn = g.shortFileName(name)
     moduleName,ext = g.os_path_splitext(fn)
     path = g.os_path_normpath(path)
-    path = g.toEncodedString(path,app.tkEncoding)
+    path = g.toEncodedString(path,app and app.tkEncoding or 'ascii')
     
     # g.trace(verbose,name,pluginName)
     module = sys.modules.get(moduleName)
