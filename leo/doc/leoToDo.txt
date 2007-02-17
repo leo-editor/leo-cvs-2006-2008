@@ -2432,49 +2432,6 @@ def get_window_info (top):
 #@-node:ekr.20060329083657:cantImportDialog & helpers
 #@-node:ekr.20070212144559.1:Removed references to Tk and  Pmw from Leo's core
 #@-node:ekr.20070212140907:What I did
-#@+node:ekr.20061031121511:Postings
-#@+node:ekr.20061031092226:what I did
-@nocolor
-
-It looks like leoTkinterKeys.py is not necessary.  The autoCompleterClass and keyHandlerClass in leoKeys.py can easily be made gui-independent using the g.app.gui class.  I am already about halfway through this project.
-
-What I did:
-
-- Created gui.eventWidget, gui.eventChar and gui.eventKeysym methods that return the gui analog of the Tk event.widget, event.char and event.keysym fields. Translated:
-
-ch = event and event.char or ''
-
-to:
-
-ch = gui.eventChar(event)
-
-and similarly for the other gui.eventX methods.
-
-- Created gui.keysym that translates the Tk symbol name (e.g. 'Return') to a gui-dependent character selector, like wxReturn, or whatever it is. Translated keysym constants like 'Return' to gui.keysym('Return')
-
-Those simple translations are about half the project.  There are about 7 methods in the autoCompleter class that contain 'raw' Tkinter code.  It will be straightforward to call g.app.gui methods to eliminate the code. Similarly about a dozen methods methods in the leoKeyHandler class must be revised.
-#@nonl
-#@-node:ekr.20061031092226:what I did
-#@+node:ekr.20061031112004:transition to Python indices
-@nocolor
-
-At present almost all methods in the g.app.gui class expect to give and get
-so-called 'gui' indices, e.g., Tkinter indices (strings) of the form 'x.y'.
-
-This project affords the opportunity, which I certainly shall take, of using
-Python indices (integer indices into Python strings) *everywhere*. This would
-save lots of calls to g.app.gui.toPythonIndex and g.app.gui.toGuiIndex.
-
-The transition will involve lots of little changes to code, but is well worth
-the bother. The result will be clean, clear, and will make Leo's core completely
-independent of all gui considerations.
-
-An intermediate step may be to add a toGui keyword to g.app.gui methods. This
-would be True initially by default, and then transition to False, and finally go
-away completely. This is a conservative way, but it may be that one mass change
-would be faster and safe enough.
-#@-node:ekr.20061031112004:transition to Python indices
-#@-node:ekr.20061031121511:Postings
 #@+node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)
 class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
     
@@ -3458,2801 +3415,6 @@ if w.leo_selection:
 #@-node:ekr.20061112172552:Unit tests for menu enablers
 #@-node:ekr.20070201111111: Create unit tests 17
 #@+node:ekr.20070212065133:Remove Tk code from commands (later)
-#@+node:ekr.20050920084036.265:scolorizer LATER
-def scolorizer (self,event,pattern=None):
-    
-    '''Colorizer for incremental searches.'''
-
-    k = self.k ; w = self.w
-    s = pattern or k.getLabel(ignorePrompt=True)
-    # g.trace(repr(s))
-    w.tag_delete('color','color1')
-    if not s: return
-    ind = 0
-    index = w.getInsertPoint()
-    index2 = index + len(s)
-    # g.trace(index,index2)
-    # Colorize in the forward direction, regardless of the kind of search.
-    while ind:
-        try:
-            ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
-        except: break
-        if ind:
-            i, d = ind.split('.')
-            d = str(int(d)+len(s))
-            # g.trace(ind)
-            if ind in (index,index2):
-                w.tag_add('color1',ind,'%s.%s' % (i,d))
-            w.tag_add('color',ind,'%s.%s' % (i,d))
-            ind = i + '.' + d
-
-    w.tag_config('color',foreground='red')
-    w.tag_config('color1',background='lightblue')
-#@-node:ekr.20050920084036.265:scolorizer LATER
-#@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
-@ This is a generator (it contains a yield).
-To make this work we must define a new generator for each call to regionalExpandAbbrev.
-@c
-def searchXR (i1,i2,ins,event):
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    w.tag_add('sXR',i1,i2)
-    while i1:
-        tr = w.tag_ranges('sXR')
-        if not tr: break
-        i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
-        if i1:
-            word = w.get('%s wordstart' % i1,'%s wordend' % i1)
-            w.tag_delete('found')
-            w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
-            w.tag_config('found',background='yellow')
-            if self.abbrevs.has_key(word):
-                k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
-                yield None
-                if k.regXKey == 'y':
-                    ind = w.index('%s wordstart' % i1)
-                    w.delete('%s wordstart' % i1,'%s wordend' % i1)
-                    w.insert(ind,self.abbrevs[word])
-            i1 = '%s wordend' % i1
-    w.setInsertPoint(ins,ins,insert=ins)
-    w.tag_delete('sXR')
-    w.tag_delete('found')
-    k.setLabelGrey('')
-    self.k.regx = g.bunch(iter=None,key=None)
-#@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
-#@+node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config) LATER
-i = w.search(self.qQ,'insert',stopindex='end')
-
-if i:
-    w.setInsertPoint(i)
-    w.tag_add('qR','insert','insert +%sc' % len(self.qQ))
-    w.tag_config('qR',background='lightblue')
-    return True
-else:
-    self.quitSearch(event)
-    return False
-#@-node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config) LATER
-#@+node:ekr.20050920084036.59:dynamicExpansion LATER
-def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    rlist = self.store ['rlist']
-    stext = self.store ['stext']
-    i = w.index('insert -1c wordstart')
-    i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
-    dA = w.tag_ranges('dA')
-    w.tag_delete('dA')
-    def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
-        w.delete(from_,to_)
-        w.insert('insert',txt,'dA')
-
-    if dA:
-        dA1, dA2 = dA
-        dtext = w.get(dA1,dA2)
-        if dtext.startswith(stext) and i2 == dA2:
-            #This seems reasonable, since we cant get a whole word that has the '-' char in it, we do a good guess
-            if rlist:
-                txt = rlist.pop()
-            else:
-                txt = stext
-                w.delete(dA1,dA2)
-                dA2 = dA1 # since the text is going to be reread, we dont want to include the last dynamic abbreviation
-                self.getDynamicList(w,txt,rlist)
-            doDa(txt,dA1,dA2) ; return
-        else: dA = None
-
-    if not dA:
-        self.store ['stext'] = txt
-        self.store ['rlist'] = rlist = []
-        self.getDynamicList(w,txt,rlist)
-        if not rlist: return
-        txt = rlist.pop()
-        doDa(txt)
-#@-node:ekr.20050920084036.59:dynamicExpansion LATER
-#@+node:ekr.20050920084036.60:dynamicExpansion2 LATER
-def dynamicExpansion2 (self,event):
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    i = w.index('insert -1c wordstart')
-    i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
-    rlist = []
-    self.getDynamicList(w,txt,rlist)
-    dEstring = reduce(g.longestCommonPrefix,rlist)
-    if dEstring:
-        w.delete(i,i2)
-        w.insert(i,dEstring)
-#@-node:ekr.20050920084036.60:dynamicExpansion2 LATER
-#@+node:ekr.20050930091642.2:yankPop
-def yankPop (self,event):
-    
-    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-    
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    t,t1 = g.convertPythonIndexToRowCol(s,ins)
-    clip_text = self.getClipboard(w)
-
-    if self.killBuffer or clip_text:
-        s = clip_text or self.kbiterator.next()
-        r = w.tag_ranges('kb') ###
-        if r:
-            r1,r2 = r
-            r1,r2 = w.toPythonIndex(r1),w.toPythonIndex(r2)
-            if r1 == ins:
-                w.delete(r1,r2)
-        w.tag_delete('kb') ###
-        w.insert('insert',s,('kb')) ###
-        w.setInsertPoint(ins)
-#@-node:ekr.20050930091642.2:yankPop
-#@+node:ekr.20050920084036.229:yankRectangle
-def yankRectangle (self,event,killRect=None):
-    
-    '''Yank into the rectangle defined by the start and end of selected text.'''
-    
-    c = self.c ; k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    killRect = killRect or self.theKillRectangle
-    if g.app.unitTesting:
-        # This value is used by the unit test.
-        killRect = ['Y1Y','Y2Y','Y3Y','Y4Y']
-    elif not killRect:
-        k.setLabelGrey('No kill rect') ; return
-        
-    w,r1,r2,r3,r4 = self.beginCommand('yank-rectangle')
-    
-    n = 0
-    for r in xrange(r1,r3+1):
-        # g.trace(n,r,killRect[n])
-        if n >= len(killRect): break
-        w.delete('%s.%s' % (r,r2), '%s.%s' % (r,r4))
-        w.insert('%s.%s' % (r,r2), killRect[n])
-        n += 1
-        
-    i = '%s.%s' % (r1,r2)
-    j = '%s.%s' % (r3,r2+len(killRect[n-1]))
-    w.setSelectionRange(i,j,insert=j)
-
-    self.endCommand()
-#@-node:ekr.20050920084036.229:yankRectangle
-#@+node:ekr.20061111082139:In leoEditCommands
-#@+node:ekr.20061102080819.2:First
-#@+node:ekr.20061102064720.1:yank/kill
-#@+node:ekr.20050920084036.167:insertFile
-def insertFile (self,event):
-    
-    '''Prompt for the name of a file and put the selected text into it.'''
-
-    k = self.k ; c = k.c ; w = self.editWidget(event)
-    if not w: return
-
-    f, name = self.getReadableTextFile()
-    if f:
-        txt = f.read()
-        f.close()
-        w.insert('insert',txt)
-        w.seeInsertPoint()
-#@-node:ekr.20050920084036.167:insertFile
-#@+node:ekr.20050920084036.178:kill, killLine
-def kill (self,event,frm,to,undoType=None):
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    s = w.get(frm,to)
-    if undoType: self.beginCommand(undoType=undoType)
-    self.addToKillBuffer(s)
-    g.app.gui.replaceClipboardWith(s)
-    w.delete(frm,to)
-    w.setInsertPoint(frm)
-    if undoType:
-        self.c.frame.body.forceFullRecolor()
-        self.endCommand(changed=True,setLabel=True)
-
-def killLine (self,event):
-    '''Kill the line containing the cursor.'''
-    w = self.editWidget(event)
-    if not w: return
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    # g.trace(i,j,ins,len(s),repr(s[i:j]))
-    if ins >= len(s) and g.match(s,j-1,'\n'): # Kill the trailing newline.
-        i = max(0,len(s)-1)
-        j = len(s)
-    elif j > i+1 and g.match(s,j-1,'\n'): # Kill the line, but not the newline.
-        j -= 1
-    else: # Kill the newline.
-        pass
-    self.kill(event,i,j,undoType='kill-line')
-#@-node:ekr.20050920084036.178:kill, killLine
-#@+node:ekr.20050920084036.182:killRegion & killRegionSave & helper
-def killRegion (self,event):
-    '''Kill the text selection.'''
-    self.killRegionHelper(event,deleteFlag=True)
-    
-def killRegionSave (self,event):
-    '''Add the selected text to the kill ring, but do not delete it.'''
-    self.killRegionHelper(event,deleteFlag=False)
-
-def killRegionHelper (self,event,deleteFlag):
-
-    w = self.editWidget(event)
-    if not w: return
-    theRange = w.tag_ranges('sel')
-    if not theRange: return
-    
-    s = w.get(theRange[0],theRange[-1])
-    if deleteFlag:
-        self.beginCommand(undoType='kill-region')
-        w.delete(theRange[0],theRange[-1])
-        self.c.frame.body.forceFullRecolor()
-        self.endCommand(changed=True,setLabel=True)
-    self.addToKillBuffer(s)
-    g.app.gui.replaceClipboardWith(s)
-    # self.removeRKeys(w)
-#@-node:ekr.20050920084036.182:killRegion & killRegionSave & helper
-#@+node:ekr.20050930095323.1:killSentence
-def killSentence (self,event):
-    
-    '''Kill the sentence containing the cursor.'''
-
-    w = self.editWidget(event)
-    if not w: return
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i = s.find('.',ins)
-    if i == -1: return
-
-    undoType='kill-sentence'
-
-    self.beginCommand(undoType=undoType)
-    
-    i2 = s.rfind('.',0,ins) + 1
-    self.kill(event,i2,i+1,undoType=undoType)
-    self.c.frame.body.forceFullRecolor()
-    w.setInsertPoint(i2)
-    
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050930095323.1:killSentence
-#@+node:ekr.20050930091642.1:yank
-def yank (self,event):
-    
-    '''Insert the next entry in the kill ring at the insert point.'''
-
-    c = self.c ; k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    i = w.getInsertPoint()
-    clip_text = self.getClipboard(w)
-
-    if self.killBuffer or clip_text:
-        self.beginCommand(undoType='yank')
-        self.reset = True
-        s = clip_text or self.kbiterator.next()
-        w.tag_delete('kb')
-        w.insert(i,s) # Insert the text, marked with the 'kb' tag.
-        w.tag_add('kb',w.toGuiIndex(i),w.toGuiIndex(i+len(s)))
-        w.setInsertPoint(i+len(s))
-        c.frame.body.forceFullRecolor()
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050930091642.1:yank
-#@+node:ekr.20050930091642.2:yankPop
-def yankPop (self,event):
-    
-    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-    
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    t,t1 = g.convertPythonIndexToRowCol(s,ins)
-    clip_text = self.getClipboard(w)
-
-    if self.killBuffer or clip_text:
-        s = clip_text or self.kbiterator.next()
-        r = w.tag_ranges('kb') ###
-        if r:
-            r1,r2 = r
-            r1,r2 = w.toPythonIndex(r1),w.toPythonIndex(r2)
-            if r1 == ins:
-                w.delete(r1,r2)
-        w.tag_delete('kb') ###
-        w.insert('insert',s,('kb')) ###
-        w.setInsertPoint(ins)
-#@-node:ekr.20050930091642.2:yankPop
-#@+node:ekr.20050920084036.128:zapToCharacter
-def zapToCharacter (self,event):
-    
-    '''Kill characters from the insertion point to a given character.'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-    
-    state = k.getState('zap-to-char')
-    if state == 0:
-        k.setLabelBlue('Zap To Character: ',protect=True)
-        k.setState('zap-to-char',1,handler=self.zapToCharacter)
-    else:
-        ch = event and event.char or ' '
-        k.resetLabel()
-        k.clearState()
-        if ch.isspace(): return
-        s = w.getAllText()
-        ins = w.getInsertPoint()
-        i = s.find(ch,ins)
-        if i == -1: return
-        self.beginCommand(undoType='zap-to-char')
-        self.addToKillBuffer(s[ins:i])
-        w.setAllText(s[:ins] + s[i:])
-        w.setInsertPoint(ins)
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.128:zapToCharacter
-#@-node:ekr.20061102064720.1:yank/kill
-#@+node:ekr.20050920084036.117:sort...
-'''XEmacs provides several commands for sorting text in a buffer.  All
-operate on the contents of the region (the text between point and the
-mark).  They divide the text of the region into many "sort records",
-identify a "sort key" for each record, and then reorder the records
-using the order determined by the sort keys.  The records are ordered so
-that their keys are in alphabetical order, or, for numerical sorting, in
-numerical order.  In alphabetical sorting, all upper-case letters `A'
-through `Z' come before lower-case `a', in accordance with the ASCII
-character sequence.
-
-   The sort commands differ in how they divide the text into sort
-records and in which part of each record they use as the sort key.
-Most of the commands make each line a separate sort record, but some
-commands use paragraphs or pages as sort records.  Most of the sort
-commands use each entire sort record as its own sort key, but some use
-only a portion of the record as the sort key.
-
-`M-x sort-lines'
-     Divide the region into lines and sort by comparing the entire text
-     of a line.  A prefix argument means sort in descending order.
-
-`M-x sort-paragraphs'
-     Divide the region into paragraphs and sort by comparing the entire
-     text of a paragraph (except for leading blank lines).  A prefix
-     argument means sort in descending order.
-
-`M-x sort-pages'
-     Divide the region into pages and sort by comparing the entire text
-     of a page (except for leading blank lines).  A prefix argument
-     means sort in descending order.
-
-`M-x sort-fields'
-     Divide the region into lines and sort by comparing the contents of
-     one field in each line.  Fields are defined as separated by
-     whitespace, so the first run of consecutive non-whitespace
-     characters in a line constitutes field 1, the second such run
-     constitutes field 2, etc.
-
-     You specify which field to sort by with a numeric argument: 1 to
-     sort by field 1, etc.  A negative argument means sort in descending
-     order.  Thus, minus 2 means sort by field 2 in reverse-alphabetical
-     order.
-
-`M-x sort-numeric-fields'
-     Like `M-x sort-fields', except the specified field is converted to
-     a number for each line and the numbers are compared.  `10' comes
-     before `2' when considered as text, but after it when considered
-     as a number.
-
-`M-x sort-columns'
-     Like `M-x sort-fields', except that the text within each line used
-     for comparison comes from a fixed range of columns.  An explanation
-     is given below.
-
-   For example, if the buffer contains:
-
-     On systems where clash detection (locking of files being edited) is
-     implemented, XEmacs also checks the first time you modify a buffer
-     whether the file has changed on disk since it was last visited or
-     saved.  If it has, you are asked to confirm that you want to change
-     the buffer.
-
-then if you apply `M-x sort-lines' to the entire buffer you get:
-
-     On systems where clash detection (locking of files being edited) is
-     implemented, XEmacs also checks the first time you modify a buffer
-     saved.  If it has, you are asked to confirm that you want to change
-     the buffer.
-     whether the file has changed on disk since it was last visited or
-
-where the upper case `O' comes before all lower case letters.  If you
-apply instead `C-u 2 M-x sort-fields' you get:
-
-     saved.  If it has, you are asked to confirm that you want to change
-     implemented, XEmacs also checks the first time you modify a buffer
-     the buffer.
-     On systems where clash detection (locking of files being edited) is
-     whether the file has changed on disk since it was last visited or
-
-where the sort keys were `If', `XEmacs', `buffer', `systems', and `the'.
-
-   `M-x sort-columns' requires more explanation.  You specify the
-columns by putting point at one of the columns and the mark at the other
-column.  Because this means you cannot put point or the mark at the
-beginning of the first line to sort, this command uses an unusual
-definition of `region': all of the line point is in is considered part
-of the region, and so is all of the line the mark is in.
-
-   For example, to sort a table by information found in columns 10 to
-15, you could put the mark on column 10 in the first line of the table,
-and point on column 15 in the last line of the table, and then use this
-command.  Or you could put the mark on column 15 in the first line and
-point on column 10 in the last line.
-
-   This can be thought of as sorting the rectangle specified by point
-and the mark, except that the text on each line to the left or right of
-the rectangle moves along with the text inside the rectangle.  *Note
-Rectangles::.
-
-'''
-#@+node:ekr.20050920084036.118:sortLines
-def sortLines (self,event,which=None):
-    
-    '''Sort lines of the selected text by comparing the entire text of a line.
-    A prefix argument means sort in descending order.'''
-
-    c = self.c ; k = c.k
-    w = self.editWidget(event)
-    if not self._chckSel(event): return
-
-    self.beginCommand(undoType='sort-lines')
-    try:
-        s = w.getAllText()
-        sel_1,sel_2 = w.getSelectionRange()
-        ins = w.getInsertPoint()
-        i,junk = g.getLine(s,sel_1)
-        junk,j = g.getLine(s,sel_2)
-        aList = g.splitLines(s[i:j])
-        aList.sort()
-        if which: aList.reverse()
-        s = g.joinLines(aList)
-        w.delete(i,j)
-        w.insert(i,s)
-        w.setSelectionRange(sel_1,sel_2,insert=ins)
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.118:sortLines
-#@+node:ekr.20050920084036.119:sortColumns
-def sortColumns (self,event):
-    
-    '''Sort lines of selected text using only lines in the given columns to do the comparison.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not self._chckSel(event): return
-    self.beginCommand(undoType='sort-columns')
-    try:
-        s = w.getAllText()
-        ins = w.getInsertPoint()
-        sel_1,sel_2 = w.getSelectionRange()
-        sint1,sint2 = g.convertPythonIndexToRowCol(s,sel_1)
-        sint3,sint4 = g.convertPythonIndexToRowCol(s,sel_2)
-        sint1 += 1 ; sint3 += 1
-        i,junk = g.getLine(s,sel_1)
-        junk,j = g.getLine(s,sel_2)
-        txt = s[i:j]
-        columns = [w.get('%s.%s' % (z,sint2),'%s.%s' % (z,sint4))
-            for z in xrange(sint1,sint3+1)]
-        aList = g.splitLines(txt)
-        zlist = zip(columns,aList)
-        zlist.sort()
-        s = g.joinLines([z[1] for z in zlist])
-        w.delete(i,j)
-        w.insert(i,s)
-        w.setSelectionRange(sel_1,sel_1+len(s),insert=sel_1+len(s))
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.119:sortColumns
-#@+node:ekr.20050920084036.120:sortFields
-def sortFields (self,event,which=None):
-    
-    '''Divide the selected text into lines and sort by comparing the contents of
-     one field in each line. Fields are defined as separated by whitespace, so
-     the first run of consecutive non-whitespace characters in a line
-     constitutes field 1, the second such run constitutes field 2, etc.
-
-     You specify which field to sort by with a numeric argument: 1 to sort by
-     field 1, etc. A negative argument means sort in descending order. Thus,
-     minus 2 means sort by field 2 in reverse-alphabetical order.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w or not self._chckSel(event): return
-
-    self.beginCommand(undoType='sort-fields')
-    
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    r1,r2,r3,r4 = self.getRectanglePoints(w)
-    i,junk = g.getLine(s,r1)
-    junk,j = g.getLine(s,r4)
-    txt = txt.split('\n')
-    fields = []
-    fn = r'\w+'
-    frx = re.compile(fn)
-    for line in txt:
-        f = frx.findall(line)
-        if not which:
-            fields.append(f[0])
-        else:
-            i = int(which)
-            if len(f) < i: return
-            i = i-1
-            fields.append(f[i])
-    nz = zip(fields,txt)
-    nz.sort()
-    #w.delete('%s linestart' % is1,'%s lineend' % is2)
-    w.delete(i,j)
-    #i = is1.split('.')
-    #int1 = int(i[0])
-    int1 = i
-    for z in nz:
-        w.insert('%s.0' % int1,'%s\n' % z[1])
-        int1 = int1 + 1
-    w.setInsertPoint(ins)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.120:sortFields
-#@-node:ekr.20050920084036.117:sort...
-#@+node:ekr.20050920084036.261:incremental search...
-def isearchForward (self,event):
-    '''Begin a forward incremental search.'''
-    self.startIncremental(event,forward=True,ignoreCase=False,regexp=False)
-    
-def isearchBackward (self,event):
-    '''Begin a backward incremental search.'''
-    self.startIncremental(event,forward=False,ignoreCase=False,regexp=False)
-    
-def isearchForwardRegexp (self,event):
-    '''Begin a forward incremental regexp search.'''
-    self.startIncremental(event,forward=True,ignoreCase=False,regexp=True)
-    
-def isearchBackwardRegexp (self,event):
-    '''Begin a backard incremental regexp search.'''
-    self.startIncremental(event,forward=False,ignoreCase=False,regexp=True)
-    
-def isearchWithPresentOptions (self,event):
-    '''Begin an incremental regexp search using the regexp and reverse options from the find panel.'''
-    self.startIncremental(event,forward=None,ignoreCase=None,regexp=None)
-#@+node:ekr.20060420144640:iSearchBackspace
-def iSearchBackspace (self):
-    
-    c = self.c ; k = self.k ; gui = g.app.gui ; w = self.w
-    
-    if not self.isearch_stack:
-        ins = w.getInsertPoint()
-        self.endSearch(ins,ins)
-        return 
-    
-    gui.set_focus(c,w)
-    pattern = k.getLabel(ignorePrompt=True)
-    self.scolorizer(event=None,pattern=pattern)
-
-    sel,ins = self.isearch_stack.pop()
-    
-    if sel:
-        i,j = sel
-        w.setSelectionRange(i,j,insert=ins)
-    else:
-        w.setInsertPoint(ins)
-
-    w.seeInsertPoint()
-    
-    if not self.isearch_stack:
-        self.endSearch(ins,ins)
-#@-node:ekr.20060420144640:iSearchBackspace
-#@+node:ekr.20050920084036.262:startIncremental
-def startIncremental (self,event,forward,ignoreCase,regexp):
-
-    c = self.c ; k = self.k ; w = self.w
-    
-    # None is a signal to get the option from the find tab.
-    if forward is None or regexp is None:
-        self.openFindTab(show=False)
-        if not self.minibufferFindHandler:
-            self.minibufferFindHandler = minibufferFind(c,self.findTabHandler)
-        getOption = self.minibufferFindHandler.getOption
-        # g.trace('reverse',getOption('reverse'))
-        # g.trace('pattern',getOption('pattern_match'))
-    else:
-        getOption = lambda a: False # The value isn't used.
-
-    self.event = event
-    self.forward    = g.choose(forward is None,not getOption('reverse'),forward)
-    self.ignoreCase = g.choose(ignoreCase is None,getOption('ignore_case'),ignoreCase)
-    self.regexp     = g.choose(regexp  is None,getOption('pattern_match'),regexp)
-    # Note: the word option can't be used with isearches!
-    
-    self.ins1 = ins = w.getInsertPoint()
-    sel = w.getSelectionRange() or (ins,ins),
-    self.isearch_stack = [(sel,ins),]
-
-    k.setLabelBlue('Isearch%s%s%s: ' % (
-            g.choose(self.forward,'',' Backward'),
-            g.choose(self.regexp,' Regexp',''),
-            g.choose(self.ignoreCase,' NoCase',''),
-        ),protect=True)
-    k.setState('isearch',1,handler=self.iSearchStateHandler)
-    c.minibufferWantsFocusNow()
-#@-node:ekr.20050920084036.262:startIncremental
-#@+node:ekr.20050920084036.264:iSearchStateHandler
-# Called when from the state manager when the state is 'isearch'
-
-def iSearchStateHandler (self,event):
-
-    c = self.c ; k = self.k ; w = self.w ; gui = g.app.gui
-    
-    if not event:
-        g.trace('no event',g.callers())
-        return
-    keysym = event.keysym
-    ch = event.char
-    if keysym == 'Control_L': return
-    
-    c.bodyWantsFocusNow()
-    if keysym == 'Return':
-        i,j = w.getSelectionRange()
-        if not self.forward: i,j = j,i
-        self.endSearch(i,j)
-    elif keysym == 'BackSpace':
-        k.updateLabel(event)
-        self.iSearchBackspace()
-    elif ch:
-        k.updateLabel(event)
-        self.iSearchHelper(event)
-        self.scolorizer(event)
-#@-node:ekr.20050920084036.264:iSearchStateHandler
-#@+node:ekr.20050920084036.265:scolorizer LATER
-def scolorizer (self,event,pattern=None):
-    
-    '''Colorizer for incremental searches.'''
-
-    k = self.k ; w = self.w
-    s = pattern or k.getLabel(ignorePrompt=True)
-    # g.trace(repr(s))
-    w.tag_delete('color','color1')
-    if not s: return
-    ind = 0
-    index = w.getInsertPoint()
-    index2 = index + len(s)
-    # g.trace(index,index2)
-    # Colorize in the forward direction, regardless of the kind of search.
-    while ind:
-        try:
-            ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
-        except: break
-        if ind:
-            i, d = ind.split('.')
-            d = str(int(d)+len(s))
-            # g.trace(ind)
-            if ind in (index,index2):
-                w.tag_add('color1',ind,'%s.%s' % (i,d))
-            w.tag_add('color',ind,'%s.%s' % (i,d))
-            ind = i + '.' + d
-
-    w.tag_config('color',foreground='red')
-    w.tag_config('color1',background='lightblue')
-#@-node:ekr.20050920084036.265:scolorizer LATER
-#@+node:ekr.20050920084036.263:iSearchHelper
-def iSearchHelper (self,event):
-
-    '''Move the cursor to position that matches the pattern in the miniBuffer.
-    isearches do not cross node boundaries.'''
-    
-    c = self.c ; gui = g.app.gui ; k = self.k ; w = self.w
-    p = c.currentPosition() ;
-    self.searchString = pattern = k.getLabel(ignorePrompt=True)
-    if not pattern: return
-    s = w.getAllText()
-
-    if self.isearch_v != p.v:
-        self.isearch_v = p.v
-        self.isearch_stack = []
-
-    sel = w.getSelectionRange()
-    startindex = insert = w.getInsertPoint()
-    
-    if self.forward:
-        i1 = startindex
-        j1 = len(s)
-    else:
-        i1 = 0
-        j1 = min(len(s),startindex + len(pattern))
-    
-    i,j = self.ifinder.searchHelper(s,i1,j1,pattern,
-        backwards=not self.forward,
-        nocase=self.ignoreCase,
-        regexp=self.regexp,
-        word=False, # Incremental word-matches are not possible!
-        swapij=False)
-
-    if i != -1:
-        self.isearch_stack.append((sel,insert),)
-        # g.trace(i1,j1,i,j,pos,newpos)
-        gui.set_focus(c,w)
-        w.setSelectionRange(i,j,insert=i)
-#@-node:ekr.20050920084036.263:iSearchHelper
-#@+node:ekr.20060203072636:endSearch
-def endSearch (self,i,j):
-
-    w = self.w
-    w.tag_delete('color','color1')
-    
-    insert = g.choose(self.forward,'sel.end','sel.start')
-    w.setSelectionRange(i,j,insert=insert)
-
-    self.k.keyboardQuit(event=None)
-#@nonl
-#@-node:ekr.20060203072636:endSearch
-#@-node:ekr.20050920084036.261:incremental search...
-#@-node:ekr.20061102080819.2:First
-#@+node:ekr.20061102080819.1:Others
-#@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
-def regionalExpandAbbrev (self,event):
-    
-    '''Exapand abbreviations throughout a region.'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w or not self._chckSel(event): return
-
-    i1,i2 = w.getSelectionRange()
-    ins = w.getInsertPoint()
-    << define a new generator searchXR >>
-
-    # EKR: the 'result' of calling searchXR is a generator object.
-    k.regx.iter = searchXR(i1,i2,ins,event)
-    k.regx.iter.next() # Call it the first time.
-#@nonl
-#@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
-@ This is a generator (it contains a yield).
-To make this work we must define a new generator for each call to regionalExpandAbbrev.
-@c
-def searchXR (i1,i2,ins,event):
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    w.tag_add('sXR',i1,i2)
-    while i1:
-        tr = w.tag_ranges('sXR')
-        if not tr: break
-        i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
-        if i1:
-            word = w.get('%s wordstart' % i1,'%s wordend' % i1)
-            w.tag_delete('found')
-            w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
-            w.tag_config('found',background='yellow')
-            if self.abbrevs.has_key(word):
-                k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
-                yield None
-                if k.regXKey == 'y':
-                    ind = w.index('%s wordstart' % i1)
-                    w.delete('%s wordstart' % i1,'%s wordend' % i1)
-                    w.insert(ind,self.abbrevs[word])
-            i1 = '%s wordend' % i1
-    w.setInsertPoint(ins,ins,insert=ins)
-    w.tag_delete('sXR')
-    w.tag_delete('found')
-    k.setLabelGrey('')
-    self.k.regx = g.bunch(iter=None,key=None)
-#@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
-#@-node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
-#@+node:ekr.20061102064720:buffer class
-#@+node:ekr.20050920084036.35:appendToBuffer
-def appendToBuffer (self,event):
-    
-    '''Add the selected body text to the end of the body text of a named buffer (node).'''
-    
-    w = self.editWidget(event) # Sets self.w
-    if not w: return
-
-    self.k.setLabelBlue('Append to buffer: ')
-    self.getBufferName(self.appendToBufferFinisher)
-
-def appendToBufferFinisher (self,name):
-
-    c = self.c ; k = self.k ; w = self.w
-    s = w.getSelectedText()
-    p = self.findBuffer(name)
-    if s and p:
-        c.beginUpdate()
-        try:
-            w = self.w
-            c.selectPosition(p)
-            self.beginCommand('append-to-buffer: %s' % p.headString())
-            w.insert('end',s)
-            w.setInsertPoint('end')
-            w.seeInsertPoint()
-            self.endCommand()
-        finally:
-            c.endUpdate()
-            c.recolor_now()
-#@nonl
-#@-node:ekr.20050920084036.35:appendToBuffer
-#@+node:ekr.20050920084036.36:copyToBuffer
-def copyToBuffer (self,event):
-    
-    '''Add the selected body text to the end of the body text of a named buffer (node).'''
-    
-    w = self.editWidget(event) # Sets self.w
-    if not w: return
-
-    self.k.setLabelBlue('Copy to buffer: ')
-    self.getBufferName(self.copyToBufferFinisher)
-
-def copyToBufferFinisher (self,event,name):
-
-    c = self.c ; k = self.k ; w = self.w
-    s = w.getSelectedText()
-    p = self.findBuffer(name)
-    if s and p:
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-            self.beginCommand('copy-to-buffer: %s' % p.headString())
-            w.insert('end',s)
-            w.setInsertPoint('end')
-            self.endCommand()
-        finally:
-            c.endUpdate()
-            c.recolor_now()
-#@-node:ekr.20050920084036.36:copyToBuffer
-#@+node:ekr.20050920084036.37:insertToBuffer
-def insertToBuffer (self,event):
-    
-    '''Add the selected body text at the insert point of the body text of a named buffer (node).'''
-    
-    w = self.editWidget(event) # Sets self.w
-    if not w: return
-
-    self.k.setLabelBlue('Insert to buffer: ')
-    self.getBufferName(self.insertToBufferFinisher)
-
-def insertToBufferFinisher (self,event,name):
-    
-    c = self.c ; k = self.k ; w = self.w
-    s = w.getSelectedText()
-    p = self.findBuffer(name)
-    if s and p:
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-            self.beginCommand('insert-to-buffer: %s' % p.headString())
-            i = w.getInsertPoint()
-            w.insert(i,s)
-            w.seeInsertPoint()
-            self.endCommand()
-        finally:
-            c.endUpdate()
-#@-node:ekr.20050920084036.37:insertToBuffer
-#@+node:ekr.20050920084036.39:prependToBuffer
-def prependToBuffer (self,event):
-    
-    '''Add the selected body text to the start of the body text of a named buffer (node).'''
-    
-    w = self.editWidget(event) # Sets self.w
-    if not w: return
-
-    self.k.setLabelBlue('Prepend to buffer: ')
-    self.getBufferName(self.prependToBufferFinisher)
-    
-def prependToBufferFinisher (self,event,name):
-    
-    c = self.c ; k = self.k ; w = self.w
-    s = w.getSelectedText()
-    p = self.findBuffer(name)
-    if s and p:
-        c.beginUpdate()
-        try:
-            c.selectPosition(p)
-            self.beginCommand('prepend-to-buffer: %s' % p.headString())
-            w.insert(0,s)
-            w.setInsertPoint(0)
-            w.seeInsertPoint()
-            self.endCommand()
-        finally:
-            c.endUpdate()
-            c.recolor_now()
-
-#@-node:ekr.20050920084036.39:prependToBuffer
-#@-node:ekr.20061102064720:buffer class
-#@+node:ekr.20050920084036.160:executeSubprocess
-def executeSubprocess (self,event,command,input):
-    
-    '''Execute a command in a separate process.'''
-    
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    k.setLabelBlue('started  shell-command: %s' % command)
-    try:
-        ofile = os.tmpfile()
-        efile = os.tmpfile()
-        process = subprocess.Popen(command,bufsize=-1,
-            stdout = ofile.fileno(), stderr = ofile.fileno(),
-            stdin = subprocess.PIPE, shell = True)
-        if input: process.communicate(input)
-        process.wait()
-        efile.seek(0)
-        errinfo = efile.read()
-        if errinfo: w.insert('insert',errinfo)
-        ofile.seek(0)
-        okout = ofile.read()
-        if okout: w.insert('insert',okout)
-    except Exception, x:
-        w.insert('insert',x)
-        
-    k.setLabelGrey('finished shell-command: %s' % command)
-#@-node:ekr.20050920084036.160:executeSubprocess
-#@+node:ekr.20050920084036.165:diff (revise)
-def diff (self,event):
-
-    '''Creates a node and puts the diff between 2 files into it.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    try:
-        f, name = self.getReadableTextFile()
-        txt1 = f.read() ; f.close()
-        f2, name2 = self.getReadableTextFile()
-        txt2 = f2.read() ; f2.close()
-    except IOError: return
-
-    ### self.switchToBuffer(event,"*diff* of ( %s , %s )" % (name,name2))
-    data = difflib.ndiff(txt1,txt2)
-    idata = []
-    for z in data:
-        idata.append(z)
-    w.delete(0,'end')
-    w.insert(0,''.join(idata))
-#@-node:ekr.20050920084036.165:diff (revise)
-#@+node:ekr.20061102064720.2:query/replace
-#@+node:ekr.20050920084036.212:doOneReplace
-def doOneReplace (self,event):
-
-    w = self.editWidget(event)
-    if not w: return
-    
-    i = w.tag_ranges('qR')
-    w.delete(i[0],i[1])
-    w.insert('insert',self.qR)
-    self.replaced += 1
-#@-node:ekr.20050920084036.212:doOneReplace
-#@+node:ekr.20050920084036.219:findNextMatch (query-replace)
-def findNextMatch (self,event):
-    
-    '''Find the next match and select it.
-    Return True if a match was found.
-    Otherwise, call quitSearch and return False.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-    
-    w.tag_delete('qR')
-    if self.regexp:
-        << handle regexp >>
-    else:
-        << handle plain search >>
-#@+node:ekr.20051005155611:<< handle regexp >>
-try:
-    regex = re.compile(self.qQ)
-except:
-    self.quitSearch(event,'Illegal regular expression')
-    return False
-
-txt = w.get('insert','end')
-match = regex.search(txt)
-
-if match:
-    start = match.start()
-    end = match.end()
-    length = end - start
-    i = w.getInsertPoint()
-    w.setInsertPoint(i+start)
-    w.tag_add('qR','insert','insert +%sc' % length)
-    w.tag_config('qR',background='lightblue')
-    txt = w.get('insert','insert +%sc' % length)
-    return True
-else:
-    self.quitSearch(event)
-    return False
-#@-node:ekr.20051005155611:<< handle regexp >>
-#@+node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config) LATER
-i = w.search(self.qQ,'insert',stopindex='end')
-
-if i:
-    w.setInsertPoint(i)
-    w.tag_add('qR','insert','insert +%sc' % len(self.qQ))
-    w.tag_config('qR',background='lightblue')
-    return True
-else:
-    self.quitSearch(event)
-    return False
-#@-node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config) LATER
-#@-node:ekr.20050920084036.219:findNextMatch (query-replace)
-#@-node:ekr.20061102064720.2:query/replace
-#@+node:ekr.20050920084036.224:Entries (rectangleCommandsClass)
-#@+node:ekr.20050920084036.225:clearRectangle
-def clearRectangle (self,event):
-    
-    '''Clear the rectangle defined by the start and end of selected text.'''
-    
-    w = self.editWidget(event)
-    if not w or not self.check(event): return
-    
-    w,r1,r2,r3,r4 = self.beginCommand('clear-rectangle')
-
-    # Change the text.
-    fill = ' ' *(r4-r2)
-    for r in xrange(r1,r3+1):
-        w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-        w.insert('%s.%s' % (r,r2),fill)
-        
-    w.setSelectionRange('%s.%s'%(r1,r2),'%s.%s'%(r3,r2+len(fill)))
-        
-    self.endCommand()
-#@-node:ekr.20050920084036.225:clearRectangle
-#@+node:ekr.20050920084036.226:closeRectangle
-def closeRectangle (self,event):
-    
-    '''Delete the rectangle if it contains nothing but whitespace..'''
-
-    w = self.editWidget(event)
-    if not w or not self.check(event): return
-
-    w,r1,r2,r3,r4 = self.beginCommand('close-rectangle')
-  
-    # Return if any part of the selection contains something other than whitespace.
-    for r in xrange(r1,r3+1):
-        s = w.get('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-        if s.strip(): return
-
-    # Change the text.
-    for r in xrange(r1,r3+1):
-        w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-        
-    i = '%s.%s' % (r1,r2)
-    j = '%s.%s' % (r3,r2)
-    w.setSelectionRange(i,j,insert=j)
-        
-    self.endCommand()
-#@-node:ekr.20050920084036.226:closeRectangle
-#@+node:ekr.20050920084036.227:deleteRectangle
-def deleteRectangle (self,event):
-    
-    '''Delete the rectangle defined by the start and end of selected text.'''
-
-    w = self.editWidget(event)
-    if not w or not self.check(event): return
-    
-    w,r1,r2,r3,r4 = self.beginCommand('delete-rectangle')
-
-    for r in xrange(r1,r3+1):
-        w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-        
-    i = '%s.%s' % (r1,r2)
-    j = '%s.%s' % (r3,r2)
-    w.setSelectionRange(i,j,insert=j)
-        
-    self.endCommand()
-#@-node:ekr.20050920084036.227:deleteRectangle
-#@+node:ekr.20050920084036.228:killRectangle
-def killRectangle (self,event):
-    
-    '''Kill the rectangle defined by the start and end of selected text.'''
-
-    w = self.editWidget(event)
-    if not w or not self.check(event): return
-    
-    w,r1,r2,r3,r4 = self.beginCommand('kill-rectangle')
-
-    self.theKillRectangle = []
-
-    for r in xrange(r1,r3+1):
-        s = w.get('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-        self.theKillRectangle.append(s)
-        w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-        
-    # g.trace('killRect',repr(self.theKillRectangle))
-
-    if self.theKillRectangle:
-        ins = '%s.%s' % (r,r2)
-        w.setSelectionRange(ins,ins,insert=ins)
-        
-    self.endCommand()
-#@-node:ekr.20050920084036.228:killRectangle
-#@+node:ekr.20050920084036.230:openRectangle
-def openRectangle (self,event):
-    
-    '''Insert blanks in the rectangle defined by the start and end of selected text.
-    This pushes the previous contents of the rectangle rightward.'''
-
-    w = self.editWidget(event)
-    if not w or not self.check(event): return
-    
-    w,r1,r2,r3,r4 = self.beginCommand('open-rectangle')
-
-    fill = ' ' * (r4-r2)
-    for r in xrange(r1,r3+1):
-        w.insert('%s.%s' % (r,r2),fill)
-        
-    i = '%s.%s' % (r1,r2)
-    j = '%s.%s' % (r3,r2+len(fill))
-    w.setSelectionRange(i,j,insert=j)
-
-    self.endCommand()
-#@-node:ekr.20050920084036.230:openRectangle
-#@+node:ekr.20050920084036.232:stringRectangle
-def stringRectangle (self,event):
-    
-    '''Prompt for a string, then replace the contents of a rectangle with a string on each line.'''
-
-    c = self.c ; k = self.k ; state = k.getState('string-rect')
-    if g.app.unitTesting:
-        state = 1 ; k.arg = 's...s' # This string is known to the unit test.
-        w = self.editWidget(event)
-        self.stringRect = self.getRectanglePoints(w)
-    if state == 0:
-        w = self.editWidget(event) # sets self.w
-        if not w or not self.check(event): return
-        self.stringRect = self.getRectanglePoints(w)
-        k.setLabelBlue('String rectangle: ',protect=True)
-        k.getArg(event,'string-rect',1,self.stringRectangle)
-    else:
-        k.clearState()
-        k.resetLabel()
-        c.bodyWantsFocus()
-        w = self.w
-        self.beginCommand('string-rectangle')
-        r1, r2, r3, r4 = self.stringRect
-        for r in xrange(r1,r3+1):
-            w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
-            w.insert('%s.%s' % (r,r2),k.arg)
-        w.setSelectionRange('%d.%d' % (r1,r2),'%d.%d' % (r3,r2+len(k.arg)))
-        
-        self.endCommand()
-#@nonl
-#@-node:ekr.20050920084036.232:stringRectangle
-#@+node:ekr.20050920084036.229:yankRectangle
-def yankRectangle (self,event,killRect=None):
-    
-    '''Yank into the rectangle defined by the start and end of selected text.'''
-    
-    c = self.c ; k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    killRect = killRect or self.theKillRectangle
-    if g.app.unitTesting:
-        # This value is used by the unit test.
-        killRect = ['Y1Y','Y2Y','Y3Y','Y4Y']
-    elif not killRect:
-        k.setLabelGrey('No kill rect') ; return
-        
-    w,r1,r2,r3,r4 = self.beginCommand('yank-rectangle')
-    
-    n = 0
-    for r in xrange(r1,r3+1):
-        # g.trace(n,r,killRect[n])
-        if n >= len(killRect): break
-        w.delete('%s.%s' % (r,r2), '%s.%s' % (r,r4))
-        w.insert('%s.%s' % (r,r2), killRect[n])
-        n += 1
-        
-    i = '%s.%s' % (r1,r2)
-    j = '%s.%s' % (r3,r2+len(killRect[n-1]))
-    w.setSelectionRange(i,j,insert=j)
-
-    self.endCommand()
-#@-node:ekr.20050920084036.229:yankRectangle
-#@-node:ekr.20050920084036.224:Entries (rectangleCommandsClass)
-#@+node:ekr.20061102064720.3:register class
-#@+node:ekr.20050920084036.242:insertRegister
-def insertRegister (self,event):
-    
-    '''Prompt for a register name and and insert the value of another register into its contents.'''
-    
-    c = self.c ; k = self.k ; state = k.getState('insert-reg')
-    
-    if state == 0:
-        k.commandName = 'insert-register'
-        k.setLabelBlue('Insert register: ',protect=True)
-        k.setState('insert-reg',1,self.insertRegister)
-    else:
-        k.clearState()
-        if event.keysym.isalpha():
-            w = c.frame.body.bodyCtrl
-            c.bodyWantsFocus()
-            key = event.keysym.lower()
-            val = self.registers.get(key)
-            if val:
-                if type(val)==type([]):
-                    c.rectangleCommands.yankRectangle(val)
-                else:
-                    w.insert('insert',val)
-                k.setLabelGrey('Inserted register %s' % key)
-            else:
-                k.setLabelGrey('Register %s is empty' % key)
-        else:
-            k.setLabelGrey('Register must be a letter')
-    c.bodyWantsFocus()
-#@-node:ekr.20050920084036.242:insertRegister
-#@+node:ekr.20050920084036.243:jumpToRegister
-def jumpToRegister (self,event):
-    
-    '''Prompt for a register name and set the insert point to the value in its register.'''
-
-    c = self.c ; k = self.k ; state = k.getState('jump-to-reg')
-
-    if state == 0:
-        k.setLabelBlue('Jump to register: ',protect=True)
-        k.setState('jump-to-reg',1,self.jumpToRegister)
-    else:
-        k.clearState()
-        if event.keysym.isalpha():
-            if self._checkIfRectangle(event): return
-            key = event.keysym.lower()
-            val = self.registers.get(key)
-            w = c.frame.body.bodyCtrl
-            c.bodyWantsFocus()
-            if val:
-                try:
-                    w.setInsertPoint(val)
-                    k.setLabelGrey('At %s' % repr(val))
-                except Exception:
-                    k.setLabelGrey('Register %s is not a valid location' % key)
-            else:
-                k.setLabelGrey('Register %s is empty' % key)
-    c.bodyWantsFocus()
-#@-node:ekr.20050920084036.243:jumpToRegister
-#@+node:ekr.20050920084036.245:pointToRegister
-def pointToRegister (self,event):
-    
-    '''Prompt for a register name and put a value indicating the insert point in the register.'''
-    
-    c = self.c ; k = self.k ; state = k.getState('point-to-reg')
-    
-    if state == 0:
-        k.commandName = 'point-to-register'
-        k.setLabelBlue('Point to register: ',protect=True)
-        k.setState('point-to-reg',1,self.pointToRegister)
-    else:
-        k.clearState()
-        if event.keysym.isalpha():
-            w = c.frame.body.bodyCtrl
-            c.bodyWantsFocus()
-            key = event.keysym.lower()
-            val = w.getInsertPoint()
-            self.registers[key] = val
-            k.setLabelGrey('Register %s = %s' % (key,repr(val)))
-        else:
-            k.setLabelGrey('Register must be a letter')
-    c.bodyWantsFocus()
-#@-node:ekr.20050920084036.245:pointToRegister
-#@-node:ekr.20061102064720.3:register class
-#@+node:ekr.20061102064720.6:edit commands
-#@+node:ekr.20051019183105:color & font
-#@+node:ekr.20051019183105.1:show-colors
-def showColors (self,event):
-    
-    '''Open a tab in the log pane showing various color pickers.'''
-    
-    c = self.c ; log = c.frame.log ; tabName = 'Colors'
-    
-    if log.frameDict.get(tabName):
-        log.selectTab(tabName)
-    else:
-        log.selectTab(tabName)
-        log.createColorPicker(tabName)
-#@-node:ekr.20051019183105.1:show-colors
-#@+node:ekr.20051019201809:editCommands.show-fonts & helpers
-def showFonts (self,event):
-    
-    '''Open a tab in the log pane showing a font picker.'''
-
-    c = self.c ; log = c.frame.log ; tabName = 'Fonts'
-
-    if log.frameDict.get(tabName):
-        log.selectTab(tabName)
-    else:
-        log.selectTab(tabName)
-        log.createFontPicker(tabName)
-#@-node:ekr.20051019201809:editCommands.show-fonts & helpers
-#@-node:ekr.20051019183105:color & font
-#@+node:ekr.20050920084036.132:comment column...
-#@+node:ekr.20050920084036.133:setCommentColumn
-def setCommentColumn (self,event):
-    
-    '''Set the comment column for the indent-to-comment-column command.'''
-
-    w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    row,col = g.convertPythonIndexToRowCol(s,ins)
-    self.ccolumn = col
-#@nonl
-#@-node:ekr.20050920084036.133:setCommentColumn
-#@+node:ekr.20050920084036.134:indentToCommentColumn (test)
-def indentToCommentColumn (self,event):
-
-    '''Insert whitespace to indent to the comment column.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType='indent-to-comment-column')
-
-    s = w.getAllText()
-    junk, i = g.getLine(s,w.getInsertPoint())
-    i1, i2 = g.convertPythonIndexToRowCol(s,i)
-    c1 = int(self.ccolumn)
-
-    if i2 < c1: w.insert(i,' '*(c1-i2))
-    if i2 >= c1: w.insert(i,' ')
-    w.setInsertPoint(i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.134:indentToCommentColumn (test)
-#@-node:ekr.20050920084036.132:comment column...
-#@+node:ekr.20050920084036.58:dynamic abbreviation...
-#@+node:ekr.20050920084036.59:dynamicExpansion LATER
-def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    rlist = self.store ['rlist']
-    stext = self.store ['stext']
-    i = w.index('insert -1c wordstart')
-    i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
-    dA = w.tag_ranges('dA')
-    w.tag_delete('dA')
-    def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
-        w.delete(from_,to_)
-        w.insert('insert',txt,'dA')
-
-    if dA:
-        dA1, dA2 = dA
-        dtext = w.get(dA1,dA2)
-        if dtext.startswith(stext) and i2 == dA2:
-            #This seems reasonable, since we cant get a whole word that has the '-' char in it, we do a good guess
-            if rlist:
-                txt = rlist.pop()
-            else:
-                txt = stext
-                w.delete(dA1,dA2)
-                dA2 = dA1 # since the text is going to be reread, we dont want to include the last dynamic abbreviation
-                self.getDynamicList(w,txt,rlist)
-            doDa(txt,dA1,dA2) ; return
-        else: dA = None
-
-    if not dA:
-        self.store ['stext'] = txt
-        self.store ['rlist'] = rlist = []
-        self.getDynamicList(w,txt,rlist)
-        if not rlist: return
-        txt = rlist.pop()
-        doDa(txt)
-#@-node:ekr.20050920084036.59:dynamicExpansion LATER
-#@+node:ekr.20050920084036.60:dynamicExpansion2 LATER
-def dynamicExpansion2 (self,event):
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    i = w.index('insert -1c wordstart')
-    i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
-    rlist = []
-    self.getDynamicList(w,txt,rlist)
-    dEstring = reduce(g.longestCommonPrefix,rlist)
-    if dEstring:
-        w.delete(i,i2)
-        w.insert(i,dEstring)
-#@-node:ekr.20050920084036.60:dynamicExpansion2 LATER
-#@+node:ekr.20050920084036.61:getDynamicList (helper)
-def getDynamicList (self,w,txt,rlist):
-
-     ttext = w.getAllText()
-     items = self.dynaregex.findall(ttext) #make a big list of what we are considering a 'word'
-     if items:
-         for word in items:
-             if not word.startswith(txt) or word == txt: continue #dont need words that dont match or == the pattern
-             if word not in rlist:
-                 rlist.append(word)
-             else:
-                 rlist.remove(word)
-                 rlist.append(word)
-#@-node:ekr.20050920084036.61:getDynamicList (helper)
-#@-node:ekr.20050920084036.58:dynamic abbreviation...
-#@+node:ekr.20050920084036.67:centerLine
-def centerLine (self,event):
-
-    '''Centers line within current fill column'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    i,j = g.getLine(s,w.getInsertPoint())
-    line = s [i:j].strip()
-    if not line or len(line) >= self.fillColumn: return
-    
-    self.beginCommand(undoType='center-line')
-    n = (self.fillColumn-len(line)) / 2
-    ws = ' ' * n
-    k = g.skip_ws(s,i)
-    if k > i: w.delete(i,k-i)
-    w.insert(i,ws)
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.67:centerLine
-#@+node:ekr.20050920084036.69:centerRegion
-def centerRegion (self,event):
-
-    '''Centers the selected text within the fill column'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    sel_1, sel_2 = w.getSelectionRange()
-    ind, junk = g.getLine(s,sel_1)
-    junk, end = g.getLine(s,sel_2)
-
-    self.beginCommand(undoType='center-region')
-    
-    inserted = 0
-    while ind < end:
-        s = w.getAllText()
-        i, j = g.getLine(s,ind)
-        line = s [i:j].strip()
-        # g.trace(len(line),repr(line))
-        if len(line) >= self.fillColumn:
-            ind = j
-        else:
-            n = (self.fillColumn-len(line)) / 2
-            inserted += n
-            k = g.skip_ws(s,i)
-            if k > i: w.delete(i,k-i)
-            w.insert(i,' '*n)
-            ind = j + n-(k-i)
-            
-    w.setSelectionRange(sel_1,sel_2+inserted)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.69:centerRegion
-#@+node:ekr.20050920084036.72:goto...
-#@+node:ekr.20050929115226:gotoCharacter
-def gotoCharacter (self,event):
-    
-    '''Put the cursor at the n'th character of the buffer.'''
-
-    k = self.k ; state = k.getState('goto-char')
-
-    if state == 0:
-        w = self.editWidget(event) # Sets self.w
-        if not w: return
-        k.setLabelBlue('Goto character: ')
-        k.getArg(event,'goto-char',1,self.gotoCharacter)
-    else:
-        n = k.arg ; w = self.w
-        if n.isdigit():
-            w.setInsertPoint(n)
-            w.seeInsertPoint()
-        k.resetLabel()
-        k.clearState()
-#@-node:ekr.20050929115226:gotoCharacter
-#@+node:ekr.20060417181052:gotoGlobalLine
-def gotoGlobalLine (self,event):
-    
-    '''Put the cursor at the n'th line of a file or script.
-    This is a minibuffer interface to Leo's legacy Go To Line number command.'''
-
-    k = self.k ; tag = 'goto-global-line' ; state = k.getState(tag)
-    
-    if state == 0:
-        w = self.editWidget(event) # Sets self.w
-        if not w: return
-        k.setLabelBlue('Goto global line: ')
-        k.getArg(event,tag,1,self.gotoGlobalLine)
-    else:
-        n = k.arg
-        k.resetLabel()
-        k.clearState()
-        if n.isdigit():
-            self.c.goToLineNumber (n=int(n))
-#@-node:ekr.20060417181052:gotoGlobalLine
-#@+node:ekr.20050929124234:gotoLine
-def gotoLine (self,event):
-    
-    '''Put the cursor at the n'th line of the buffer.'''
-
-    k = self.k ; state = k.getState('goto-line')
-    
-    if state == 0:
-        w = self.editWidget(event) # Sets self.w
-        if not w: return
-        k.setLabelBlue('Goto line: ')
-        k.getArg(event,'goto-line',1,self.gotoLine)
-    else:
-        n = k.arg ;  w = self.w
-        if n.isdigit():
-            s = w.getAllText()
-            i = g.convertRowColToPythonIndex(s,n,0)
-            w.setInsertPoint(i)
-            w.seeInsertPoint()
-        k.resetLabel()
-        k.clearState()
-#@-node:ekr.20050929124234:gotoLine
-#@-node:ekr.20050920084036.72:goto...
-#@+node:ekr.20050920084036.74:indent...
-#@+node:ekr.20050920084036.75:backToIndentation
-def backToIndentation (self,event):
-    
-    '''Position the point at the first non-blank character on the line.'''
-    
-    w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType='back-to-indentation')
-
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    while i < j and s[i] in (' \t'):
-        i += 1
-    w.setInsertPoint(i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.75:backToIndentation
-#@+node:ekr.20050920084036.76:deleteIndentation (test)
-def deleteIndentation (self,event):
-    
-    '''Delete indentation in the presently line.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-    
-    self.beginCommand(undoType='delete-indentation')
-
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    txt = s[i:j].strip()
-    w.delete(i,j)
-    w.insert(ins-1,txt)
-    w.setInsertPoint(i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.76:deleteIndentation (test)
-#@+node:ekr.20050920084036.78:indentRelative
-def indentRelative (self,event):
-    
-    '''The indent-relative command indents at the point based on the previous
-    line (actually, the last non-empty line.) It inserts whitespace at the
-    point, moving point, until it is underneath an indentation point in the
-    previous line.
-    
-    An indentation point is the end of a sequence of whitespace or the end of
-    the line. If the point is farther right than any indentation point in the
-    previous line, the whitespace before point is deleted and the first
-    indentation point then applicable is used. If no indentation point is
-    applicable even then whitespace equivalent to a single tab is inserted.'''
-    
-    c = self.c ; undoType = 'indent-relative' ; w = self.editWidget(event)
-    if not w: return
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    oldSel = w.getSelectionRange()
-    oldYview = w.getYScrollPosition()
-    # Find the previous non-blank line
-    i,j = g.getLine(s,ins)
-    while 1:
-        if i <= 0: return
-        i,j = g.getLine(s,i-1)
-        line = s[i:j]
-        if line.strip(): break
-    self.beginCommand(undoType=undoType)
-    try:
-        k = g.skip_ws(s,i)
-        ws = s[i:k]
-        i2,j2 = g.getLine(s,ins)
-        k = g.skip_ws(s,i2)
-        line = ws + s[k:j2]
-        w.delete(i2,j2)
-        w.insert(i2,line)
-        w.setInsertPoint(i2+len(ws))
-        c.frame.body.onBodyChanged(undoType,oldSel=oldSel,oldText=s,oldYview=oldYview)
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.78:indentRelative
-#@-node:ekr.20050920084036.74:indent...
-#@+node:ekr.20050920084036.85:insert & delete...
-#@+node:ekr.20060417171125:addSpace/TabToLines & removeSpace/TabFromLines & helper
-def addSpaceToLines (self,event):
-    '''Add a space to start of all lines, or all selected lines.'''
-    self.addRemoveHelper(event,ch=' ',add=True,undoType='add-space-to-lines')
-    
-def addTabToLines (self,event):
-    '''Add a tab to start of all lines, or all selected lines.'''
-    self.addRemoveHelper(event,ch='\t',add=True,undoType='add-tab-to-lines')
-    
-def removeSpaceFromLines (self,event):
-    '''Remove a space from start of all lines, or all selected lines.'''
-    self.addRemoveHelper(event,ch=' ',add=False,undoType='remove-space-from-lines')
-    
-def removeTabFromLines (self,event):
-    '''Remove a tab from start of all lines, or all selected lines.'''
-    self.addRemoveHelper(event,ch='\t',add=False,undoType='remove-tab-from-lines')
-#@+node:ekr.20060417172056:addRemoveHelper
-def addRemoveHelper(self,event,ch,add,undoType):
-
-    c = self.c ; k = self.k ; w = self.editWidget(event)
-    if not w: return
-
-    if w.hasSelection():s = w.getSelectedText()
-    else:               s = w.getAllText()
-    if not s: return
-
-    # Insert or delete spaces instead of tabs when negative tab width is in effect.
-    d = g.scanDirectives(c) ; width = d.get('tabwidth')
-    if ch == '\t' and width < 0: ch = ' ' * abs(width)
-
-    self.beginCommand(undoType=undoType)
-    
-    lines = g.splitLines(s)
-
-    if add:
-        result = [ch + line for line in lines]
-    else:
-        result = [g.choose(line.startswith(ch),line[len(ch):],line) for line in lines]
-
-    result = ''.join(result)
-    
-    # g.trace('add',add,'hasSelection',w.hasSelection(),'result',repr(result))
-
-    if w.hasSelection():
-        i,j = w.getSelectionRange()
-        w.delete(i,j)
-        w.insert(i,result)
-        w.setSelectionRange(i,i+len(result))
-    else:
-        w.setAllText(result)
-        w.setSelectionRange(0,len(s))
-
-    self.endCommand(changed=True,setLabel=True)
-
-#@-node:ekr.20060417172056:addRemoveHelper
-#@-node:ekr.20060417171125:addSpace/TabToLines & removeSpace/TabFromLines & helper
-#@+node:ekr.20051026092433.1:backwardDeleteCharacter
-def backwardDeleteCharacter (self,event=None):
-    
-    '''Delete the character to the left of the cursor.'''
-    
-    c = self.c ; p = c.currentPosition()
-    w = self.editWidget(event)
-    if not w: return
-    
-    wname = c.widget_name(w)
-    ins = w.getInsertPoint()
-    i,j = w.getSelectionRange()
-    #g.trace(wname,i,j,ins)
-
-    if wname.startswith('body'):
-        self.beginCommand()
-        try:
-            d = g.scanDirectives(c,p)
-            tab_width = d.get("tabwidth",c.tab_width)
-            changed = True
-            if i != j:
-                w.delete(i,j)
-                w.setSelectionRange(i,i,insert=i)
-            elif i == 0:
-                changed = False
-            elif tab_width > 0:
-                w.delete(ins-1)
-                w.setSelectionRange(ins-1,ins-1,insert=ins-1)
-            else:
-                << backspace with negative tab_width >>
-        finally:
-            self.endCommand(changed=True,setLabel=False) # Necessary to make text changes stick.
-    else:
-        # No undo in this widget.
-        # Make sure we actually delete something if we can.
-        s = w.getAllText()
-        if i != j:
-            j = max(i,min(j,len(s)))
-            w.delete(i,j)
-            w.setSelectionRange(i,i,insert=i)
-        elif ins != 0:
-            # Do nothing at the start of the headline.
-            w.delete(ins-1)
-            ins = ins-1
-            w.setSelectionRange(ins,ins,insert=ins)
-#@+node:ekr.20051026092746:<< backspace with negative tab_width >>
-s = prev = w.getAllText()
-ins = w.getInsertPoint()
-i,j = g.getLine(s,ins)
-s = prev = s[i:ins]
-n = len(prev)
-abs_width = abs(tab_width)
-
-# Delete up to this many spaces.
-n2 = (n % abs_width) or abs_width
-n2 = min(n,n2) ; count = 0
-
-while n2 > 0:
-    n2 -= 1
-    ch = prev[n-count-1]
-    if ch != ' ': break
-    else: count += 1
-
-# Make sure we actually delete something.
-i = ins-(max(1,count))
-w.delete(i,ins)
-w.setSelectionRange(i,i,insert=i)
-#@-node:ekr.20051026092746:<< backspace with negative tab_width >>
-#@-node:ekr.20051026092433.1:backwardDeleteCharacter
-#@+node:ekr.20060415112257:clean-lines
-def cleanLines (self,event):
-    
-    '''Removes leading whitespace from otherwise blanks lines.'''
-
-    k = self.k ; w = self.editWidget(event)
-    if not w: return
-    
-    if w.hasSelection():
-        s = w.getSelectedText()
-    else:
-        s = w.getAllText()
-
-    lines = [] ; changed = False
-    for line in g.splitlines(s):
-        if line.strip():
-            lines.append(line)
-        else:
-            if line.endswith('\n'):
-                lines.append('\n')
-            changed = '\n' != line
-
-    if changed:
-        self.beginCommand(undoType='clean-lines')
-        result = ''.join(lines)
-        if w.hasSelection():
-            i,j = w.getSelectionRange()
-            w.delete(i,j)
-            w.insert(i,result)
-            w.setSelectionRange(i,j+len(result))
-        else:
-            w.delete(0,'end')
-            w.insert(0,result)
-        self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060415112257:clean-lines
-#@+node:ekr.20060414085834:clearSelectedText
-def clearSelectedText (self,event):
-    
-    '''Delete the selected text.'''
-    
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-
-    i,j = w.getSelectionRange()
-    if i == j: return
-
-    self.beginCommand(undoType='clear-selected-text')
-
-    w.delete(i,j)
-    w.setInsertPoint(i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20060414085834:clearSelectedText
-#@+node:ekr.20050920084036.87:deleteNextChar
-def deleteNextChar (self,event):
-    
-    '''Delete the character to the right of the cursor.'''
-
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    i,j = w.getSelectionRange()
-    
-    self.beginCommand(undoType='delete-char')
-
-    changed = True
-    if i != j:
-        w.delete(i,j)
-        w.setInsertPoint(i)
-    elif j < len(s):
-        w.delete(i)
-        w.setInsertPoint(i)
-    else:
-        changed = False
-        
-    self.endCommand(changed=changed,setLabel=False)
-#@-node:ekr.20050920084036.87:deleteNextChar
-#@+node:ekr.20050920084036.135:deleteSpaces
-def deleteSpaces (self,event,insertspace=False):
-    
-    '''Delete all whitespace surrounding the cursor.'''
-
-    c = self.c ; w = self.editWidget(event)
-    undoType = g.choose(insertspace,'insert-space','delete-spaces')
-    if not w: return
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    w1 = ins-1
-    while w1 >= i and s[w1].isspace():
-        w1 -= 1
-    w1 += 1
-    w2 = ins
-    while w2 <= j and s[w2].isspace():
-        w2 += 1
-    spaces = s[w1:w2]
-    if spaces:
-        self.beginCommand(undoType=undoType)
-        if insertspace: s = s[:w1] + ' ' + s[w2:]
-        else:           s = s[:w1] + s[w2:]
-        w.setAllText(s)
-        w.setInsertPoint(w1)
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.135:deleteSpaces
-#@+node:ekr.20050920084036.138:insertNewLine
-def insertNewLine (self,event):
-    
-    '''Insert a newline at the cursor.'''
-
-    w = self.editWidget(event)
-    if not w: return
-    wname = g.app.gui.widget_name(w)
-    if wname.startswith('head'): return
-    
-    self.beginCommand(undoType='insert-newline')
-
-    i = w.getInsertPoint()
-    w.insert(i,'\n')
-    w.setInsertPoint(i+1)
-
-    self.endCommand(changed=True,setLabel=False)
-
-insertNewline = insertNewLine
-#@-node:ekr.20050920084036.138:insertNewLine
-#@+node:ekr.20050920084036.86:insertNewLineAndTab
-def insertNewLineAndTab (self,event):
-
-    '''Insert a newline and tab at the cursor.'''
-
-    w = self.editWidget(event)
-    if not w: return
-    wname = g.app.gui.widget_name(w)
-    if wname.startswith('head'): return
-    
-    self.beginCommand(undoType='insert-newline-and-indent')
-
-    i = w.getInsertPoint()
-    w.insert(i,'\n\t')
-    w.setInsertPoint(i+2)
-
-    self.endCommand(changed=True,setLabel=False)
-#@-node:ekr.20050920084036.86:insertNewLineAndTab
-#@+node:ekr.20050920084036.139:insertParentheses
-def insertParentheses (self,event):
-    
-    '''Insert () at the cursor.'''
-
-    w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType='insert-parenthesis')
-
-    i = w.getInsertPoint()
-    w.insert(i,'()')
-    w.setInsertPoint(i+1)
-
-    self.endCommand(changed=True,setLabel=False)
-#@-node:ekr.20050920084036.139:insertParentheses
-#@+node:ekr.20050920084036.141:removeBlankLines
-def removeBlankLines (self,event):
-    
-    '''The remove-blank-lines command removes lines containing nothing but
-    whitespace. If there is a text selection, only lines within the selected
-    text are affected; otherwise all blank lines in the selected node are
-    affected.'''
-    
-    c = self.c
-    head,lines,tail,oldSel,oldYview = c.getBodyLines()
-
-    changed = False ; result = []
-    for line in lines:
-        if line.strip():
-            result.append(line)
-        else:
-            changed = True
-    result = ''.join(result)
-
-    if changed:
-        oldSel = None ; undoType = 'remove-blank-lines'
-        c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
-#@-node:ekr.20050920084036.141:removeBlankLines
-#@+node:ekr.20051125080855:selfInsertCommand & helpers
-def selfInsertCommand(self,event,action='insert'):
-    
-    '''Insert a character in the body pane.
-    This is the default binding for all keys in the body pane.'''
-    
-    w = self.editWidget(event)
-    if not w: return 'break'
-    << set local vars >>
-    if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
-        return "break" # The hook claims to have handled the event.
-    if ch == '\t':
-        self.updateTab(p,w)
-    elif ch == '\b':
-        # This is correct: we only come here if there no bindngs for this key. 
-        self.backwardDeleteCharacter(event)
-    elif ch in ('\r','\n'):
-        ch = '\n'
-        self.insertNewlineHelper(w,oldSel,undoType)
-    elif inBrackets and self.autocompleteBrackets:
-        self.updateAutomatchBracket(p,w,ch,oldSel)
-    elif ch: # Null chars must not delete the selection.
-        i,j = oldSel
-        if i > j: i,j = j,i
-        # Use raw insert/delete to retain the coloring.
-        if i != j:                  w.delete(i,j)
-        elif action == 'overwrite': w.delete(i)
-        w.insert(i,ch)
-        w.setInsertPoint(i+1)
-        if inBrackets and self.flashMatchingBrackets:
-            self.flashMatchingBracketsHelper(w,i,ch)               
-    else:
-        return 'break' # This method *always* returns 'break'
-
-    # Set the column for up and down keys.
-    spot = w.getInsertPoint()
-    c.editCommands.setMoveCol(w,spot)
-
-    # Update the text and handle undo.
-    newText = w.getAllText()
-    changed = newText != oldText
-    # g.trace(changed)
-    if changed:
-        c.frame.body.onBodyChanged(undoType=undoType,
-            oldSel=oldSel,oldText=oldText,oldYview=None)
-            
-    g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
-    return 'break'
-#@nonl
-#@+node:ekr.20061103114242:<< set local vars >>
-c = self.c
-p = c.currentPosition()
-gui = g.app.gui
-ch = gui.eventChar(event)
-keysym = gui.eventKeysym(event)
-if keysym == 'Return':
-    ch = '\n' # This fixes the MacOS return bug.
-name = c.widget_name(w)
-oldSel =  name.startswith('body') and w.getSelectionRange() or (None,None)
-oldText = name.startswith('body') and p.bodyString() or ''
-undoType = 'Typing'
-trace = c.config.getBool('trace_masterCommand')
-brackets = self.openBracketsList + self.closeBracketsList
-inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
-if trace: g.trace(name,repr(ch),ch in brackets)
-#@nonl
-#@-node:ekr.20061103114242:<< set local vars >>
-#@+node:ekr.20051026171121:insertNewlineHelper (passed)
-def insertNewlineHelper (self,w,oldSel,undoType):
-
-    c = self.c ; p = c.currentPosition()
-    i,j = oldSel ; ch = '\n'
-
-    if i != j:
-        # No auto-indent if there is selected text.
-        w.delete(i,j)
-        w.insert(i,ch)
-        w.setInsertPoint(i+1)
-    else:
-        w.insert(i,ch)
-        w.setInsertPoint(i+1)
-
-        allow_in_nocolor = c.config.getBool('autoindent_in_nocolor_mode')
-        if (
-            (allow_in_nocolor or c.frame.body.colorizer.useSyntaxColoring(p)) and
-            undoType != "Change"
-        ):
-            # No auto-indent if in @nocolor mode or after a Change command.
-            self.updateAutoIndent(p,w)
-    
-    w.seeInsertPoint()
-#@nonl
-#@-node:ekr.20051026171121:insertNewlineHelper (passed)
-#@+node:ekr.20060804095512:initBracketMatcher
-def initBracketMatcher (self,c):
-
-    self.openBracketsList  = c.config.getString('open_flash_brackets')  or '([{'
-    self.closeBracketsList = c.config.getString('close_flash_brackets') or ')]}'
-    
-    if len(self.openBracketsList) != len(self.closeBracketsList):
-        g.es_print('bad open/close_flash_brackets setting: using defaults')
-        self.openBracketsList  = '([{'
-        self.closeBracketsList = ')]}'
-
-    # g.trace('self.openBrackets',openBrackets)
-    # g.trace('self.closeBrackets',closeBrackets)
-#@-node:ekr.20060804095512:initBracketMatcher
-#@+node:ekr.20060627083506:flashMatchingBracketsHelper
-def flashMatchingBracketsHelper (self,w,i,ch):
-
-    d = {}
-    if ch in self.openBracketsList:
-        for z in xrange(len(self.openBracketsList)):
-            d [self.openBracketsList[z]] = self.closeBracketsList[z]
-        reverse = False # Search forward
-    else:
-        for z in xrange(len(self.openBracketsList)):
-            d [self.closeBracketsList[z]] = self.openBracketsList[z]
-        reverse = True # Search backward
-
-    delim2 = d.get(ch)
-
-    s = w.getAllText()
-    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
-    if j != -1:
-        self.flashCharacter(w,j)
-#@-node:ekr.20060627083506:flashMatchingBracketsHelper
-#@+node:ekr.20060627091557:flashCharacter
-def flashCharacter(self,w,i):
-    
-    bg      = self.bracketsFlashBg or 'DodgerBlue1'
-    fg      = self.bracketsFlashFg or 'white'
-    flashes = self.bracketsFlashCount or 2
-    delay   = self.bracketsFlashDelay or 75
-    
-    w.flashCharacter(i,bg,fg,flashes,delay)
-#@-node:ekr.20060627091557:flashCharacter
-#@+node:ekr.20051027172949:updateAutomatchBracket (passed)
-def updateAutomatchBracket (self,p,w,ch,oldSel):
-
-    # assert ch in ('(',')','[',']','{','}')
-    
-    c = self.c ; d = g.scanDirectives(c,p)
-    i,j = oldSel
-    language = d.get('language')
-    s = w.getAllText()
-
-    if ch in ('(','[','{',):
-        automatch = language not in ('plain',)
-        if automatch:
-            ch = ch + {'(':')','[':']','{':'}'}.get(ch)
-        if i != j: w.delete(i,j)
-        w.insert(i,ch)
-        if automatch:
-            ins = w.getInsertPoint()
-            w.setInsertPoint(ins-1)
-    else:
-        ins = w.getInsertPoint()
-        ch2 = ins<len(s) and s[ins] or ''
-        if ch2 in (')',']','}'):
-            ins = w.getInsertPoint()
-            w.setInsertPoint(ins+1)
-        else:
-            if i != j: w.delete(i,j)
-            w.insert(i,ch)
-                                                            
-#@nonl
-#@-node:ekr.20051027172949:updateAutomatchBracket (passed)
-#@+node:ekr.20051026171121.1:udpateAutoIndent (passed)
-def updateAutoIndent (self,p,w):
-
-    c = self.c ; d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width)
-    # Get the previous line.
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i = g.skip_to_start_of_line(s,ins)
-    i,j = g.getLine(s,i-1)
-    s = s[i:j-1]
-    # g.trace(i,j,repr(s[i:j]))
-
-    # Add the leading whitespace to the present line.
-    junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-    if s and len(s) > 0 and s [-1] == ':':
-        # For Python: increase auto-indent after colons.
-        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
-            width += abs(tab_width)
-    if self.smartAutoIndent:
-        # Determine if prev line has unclosed parens/brackets/braces
-        bracketWidths = [width] ; tabex = 0
-        for i in range(0,len(s)):
-            if s [i] == '\t':
-                tabex += tab_width-1
-            if s [i] in '([{':
-                bracketWidths.append(i+tabex+1)
-            elif s [i] in '}])' and len(bracketWidths) > 1:
-                bracketWidths.pop()
-        width = bracketWidths.pop()
-    ws = g.computeLeadingWhitespace(width,tab_width)
-    if ws:
-        i = w.getInsertPoint()
-        w.insert(i,ws)
-#@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
-#@+node:ekr.20051026092433:updateTab (passed)
-def updateTab (self,p,w):
-
-    c = self.c
-    d = g.scanDirectives(c,p)
-    tab_width = d.get("tabwidth",c.tab_width)
-    i,j = w.getSelectionRange()
-        # Returns insert point if no selection, with i <= j.
-    
-
-    if i != j:
-        w.delete(i,j)
-
-    if tab_width > 0:
-        w.insert(i,'\t')
-    else:
-        # Get the preceeding characters.
-        s = w.getAllText()
-        start = g.skip_to_start_of_line(s,i)
-        s2 = s[start:i]
-        
-        # Compute n, the number of spaces to insert.
-        width = g.computeWidth(s2,tab_width)
-        n = abs(tab_width) - (width % abs(tab_width))
-        w.insert(i,' ' * n)
-#@-node:ekr.20051026092433:updateTab (passed)
-#@-node:ekr.20051125080855:selfInsertCommand & helpers
-#@-node:ekr.20050920084036.85:insert & delete...
-#@+node:ekr.20050920084036.80:howMany
-def howMany (self,event):
-    
-    '''Print how many occurances of a regular expression are found
-    in the body text of the presently selected node.'''
-    
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    state = k.getState('how-many')
-    if state == 0:
-        k.setLabelBlue('How many: ',protect = True)
-        k.getArg(event,'how-many',1,self.howMany)
-    else:
-        k.clearState()
-        s = w.getAllText()
-        reg = re.compile(k.arg)
-        i = reg.findall(s)
-        k.setLabelGrey('%s occurances of %s' % (len(i),k.arg))
-#@-node:ekr.20050920084036.80:howMany
-#@+node:ekr.20050920084036.81:lineNumber
-def lineNumber (self,event):
-    
-    '''Print the line and column number and percentage of insert point.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    s = w.getAllText()
-    i = w.getInsertPoint()
-    row,col = g.convertPythonIndexToRowCol(s,i)
-    percent = int((i*100)/len(s))
-
-    k.setLabelGrey(
-        'char: %s row: %d col: %d pos: %d (%d%% of %d)' % (
-            repr(s[i]),row,col,i,percent,len(s)))
-#@-node:ekr.20050920084036.81:lineNumber
-#@+node:ekr.20050920084036.92:linesHelper
-def linesHelper (self,event,pattern,which):
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-   
-    self.beginCommand(undoType=which+'-lines')
-    if w.hasSelection():
-        i,end = w.getSelectionRange()
-    else:
-        i = w.getInsertPoint()
-        end = 'end'
-    txt = w.get(i,end)
-    tlines = txt.splitlines(True)
-    if which == 'flush':    keeplines = list(tlines)
-    else:                   keeplines = []
-
-    try:
-        regex = re.compile(pattern)
-        for n, z in enumerate(tlines):
-            f = regex.findall(z)
-            if which == 'flush' and f:
-                keeplines [n] = None
-            elif f:
-                keeplines.append(z)
-    except Exception, x:
-        return
-    if which == 'flush':
-        keeplines = [x for x in keeplines if x != None]
-    w.delete(i,end)
-    w.insert(i,''.join(keeplines))
-    w.setInsertPoint(i)
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.92:linesHelper
-#@+node:ekr.20050920084036.77:splitLine
-def splitLine (self,event):
-    
-    '''Split a line at the cursor position.'''
-
-    w = self.editWidget(event)
-    if not w: return
-    
-    self.beginCommand(undoType='split-line')
-    
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    w.setAllText(s[:ins] + '\n' + s[ins:])
-    w.setInsertPoint(ins+1)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.77:splitLine
-#@+node:ekr.20050920084036.95:paragraph...
-@others
-#@+node:ekr.20050920084036.99:backwardKillParagraph
-def backwardKillParagraph (self,event):
-    
-    '''Kill the previous paragraph.'''
-
-    k = self.k ; c = k.c ; w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType='backward-kill-paragraph')
-    try:
-        self.backwardParagraphHelper(event,extend=True)
-        i,j = w.getSelectionRange()
-        if i > 0: i = min(i+1,j)
-        c.killBufferCommands.kill(event,i,j,undoType=None)
-        w.setSelectionRange(i,i,insert=i)
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.99:backwardKillParagraph
-#@+node:ekr.20050920084036.100:fillRegion
-def fillRegion (self,event):
-
-    '''Fill all paragraphs in the selected text.'''
-    k = self.k
-    w = self.editWidget(event)
-    if not w or not self._chckSel(event): return
-    
-    self.beginCommand(undoType='fill-region')
-
-    s = w.getAllText()
-    s1,s2 = w.getSelectionRange()
-    w.setInsertPoint(s1)
-    self.backwardParagraph(event)
-    i = w.getInsertPoint()
-    i,junk = g.getLine(s,i)
-    if i == 0:
-        self.fillParagraph(event)
-    while 1:
-        self.forwardParagraph(event)
-        if w.getInsertPoint() > s2:
-            break
-        self.fillParagraph(event)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.100:fillRegion
-#@+node:ekr.20050920084036.104:fillRegionAsParagraph
-def fillRegionAsParagraph (self,event):
-    
-    '''Fill the selected text.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w or not self._chckSel(event): return
-    
-    self.beginCommand(undoType='fill-region-as-paragraph')
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.104:fillRegionAsParagraph
-#@+node:ekr.20050920084036.103:fillParagraph
-def fillParagraph( self, event ):
-    
-    '''Fill the selected paragraph'''
-    
-    w = self.editWidget(event)
-    if not w: return
-    
-    # Clear the selection range.
-    i,j = w.getSelectionRange()
-    w.setSelectionRange(i,i,insert=i)
-
-    self.c.reformatParagraph(event)
-#@-node:ekr.20050920084036.103:fillParagraph
-#@+node:ekr.20050920084036.98:killParagraph
-def killParagraph (self,event):
-    
-    '''Kill the present paragraph.'''
-
-    k = self.k ; c = k.c ; w = self.editWidget(event)
-    if not w: return
-
-    self.beginCommand(undoType='kill-paragraph')
-    try:
-        self.extendToParagraph(event)
-        i,j = w.getSelectionRange()
-        c.killBufferCommands.kill(event,i,j,undoType=None)
-        w.setSelectionRange(i,i,insert=i)
-    finally:
-        self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.98:killParagraph
-#@+node:ekr.20050920084036.96:extend-to-paragraph & helper
-def extendToParagraph (self,event):
-    
-    '''Select the paragraph surrounding the cursor.'''
-
-    w = self.editWidget(event)
-    if not w: return
-    s = w.getAllText() ; ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
-    line = s[i:j]
-
-    # Find the start of the paragraph.
-    if line.strip(): # Search backward.
-        while i > 0:
-            i2,j2 = g.getLine(s,i-1)
-            line = s[i2:j2]
-            if line.strip(): i = i2
-            else: break # Use the previous line.
-    else: # Search forward.
-        while j < len(s):
-            i,j = g.getLine(s,j)
-            line = s[i:j]
-            if line.strip(): break
-        else: return
-
-    # Select from i to the end of the paragraph.
-    self.selectParagraphHelper(w,i)
-#@+node:ekr.20050920084036.97:selectParagraphHelper
-def selectParagraphHelper (self,w,start):
-    
-    '''Select from start to the end of the paragraph.'''
-
-    s = w.getAllText()
-    i1,j = g.getLine(s,start)
-    while j < len(s):
-        i,j2 = g.getLine(s,j)
-        line = s[i:j2]
-        if line.strip(): j = j2
-        else: break
-        
-    j = max(start,j-1)
-    w.setSelectionRange(i1,j,insert=j)
-#@-node:ekr.20050920084036.97:selectParagraphHelper
-#@-node:ekr.20050920084036.96:extend-to-paragraph & helper
-#@-node:ekr.20050920084036.95:paragraph...
-#@+node:ekr.20050920084036.105:region...
-@others
-#@+node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
-def tabIndentRegion (self,event):
-    
-    '''Insert a hard tab at the start of each line of the selected text.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w or not self._chckSel(event): return
-    
-    self.beginCommand(undoType='indent-rigidly')
-    
-    s = w.getAllText()
-    i1,j1 = w.getSelectionRange()
-    i,junk = g.getLine(s,i1)
-    junk,j = g.getLine(s,j1)
-    
-    lines = g.splitlines(s[i:j])
-    n = len(lines)
-    lines = g.joinLines(['\t' + line for line in lines])
-    s = s[:i] + lines + s[j:]
-    w.setAllText(s)
-
-    # Retain original row/col selection.
-    w.setSelectionRange(i1,j1+n,insert=j1+n)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.108:tabIndentRegion (indent-rigidly)
-#@+node:ekr.20050920084036.109:countRegion
-def countRegion (self,event):
-    
-    '''Print the number of lines and characters in the selected text.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    txt = w.getSelectedText()
-    lines = 1 ; chars = 0
-    for z in txt:
-        if z == '\n': lines += 1
-        else:         chars += 1
-
-    k.setLabelGrey('Region has %s lines, %s character%s' % (
-        lines,chars,g.choose(chars==1,'','s')))
-#@-node:ekr.20050920084036.109:countRegion
-#@+node:ekr.20060417183606:moveLinesDown
-def moveLinesDown (self,event):
-    
-    '''Move all lines containing any selected text down one line,
-    moving to the next node if the lines are the last lines of the body.'''
-
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-    
-    s = w.getAllText()
-    sel_1,sel_2 = w.getSelectionRange()
-    i,junk = g.getLine(s,sel_1)
-    i2,j   = g.getLine(s,sel_2)
-    lines  = s[i:j]
-    # Select from start of the first line to the *start* of the last line.
-    # This prevents selection creep.
-    n = i2-i 
-    # g.trace('lines',repr(lines))
-    
-    self.beginCommand(undoType='move-lines-down')
-    changed = False
-    try:
-        if j < len(s):
-            next_i,next_j = g.getLine(s,j+1)
-            next_line = s[next_i:next_j]
-            n2 = next_j-next_i
-            w.delete(i,next_j)
-            w.insert(i,next_line+lines)
-            w.setSelectionRange(i+n2,i+n2+n,insert=i+n2+n)
-            changed = True
-        elif g.app.gui.widget_name(w).startswith('body'):
-            p = c.currentPosition()
-            if not p.hasThreadNext(): return
-            w.delete(i,j)
-            c.setBodyString(p,w.getAllText())
-            p = p.threadNext()
-            c.beginUpdate()
-            try:
-                c.selectPosition(p)
-            finally:
-                c.endUpdate()
-            s = w.getAllText()
-            w.insert(0,lines)
-            if not lines.endswith('\n'): w.insert(len(lines),'\n')
-            s = w.getAllText()
-            w.setSelectionRange(0,n,insert=n)
-            changed = True
-    finally:
-        self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060417183606:moveLinesDown
-#@+node:ekr.20060417183606.1:moveLinesUp
-def moveLinesUp (self,event):
-    
-    '''Move all lines containing any selected text up one line,
-    moving to the previous node as needed.'''
-
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-    
-    s = w.getAllText()
-    sel_1,sel_2 = w.getSelectionRange()
-    i,junk = g.getLine(s,sel_1)
-    i2,j   = g.getLine(s,sel_2)
-    lines  = s[i:j]
-    # Select from start of the first line to the *start* of the last line.
-    # This prevents selection creep.
-    n = i2-i 
-    # g.trace('lines',repr(lines))
-    
-    self.beginCommand(undoType='move-lines-up')
-    changed = False
-    try:
-        if i > 0:
-            prev_i,prev_j = g.getLine(s,i-1)
-            prev_line = s[prev_i:prev_j]
-            w.delete(prev_i,j)
-            w.insert(prev_i,lines+prev_line)
-            w.setSelectionRange(prev_i,prev_i+n,insert=prev_i+n)
-            changed = True
-        elif g.app.gui.widget_name(w).startswith('body'):
-            p = c.currentPosition()
-            if not p.hasThreadBack(): return
-            w.delete(i,j)
-            c.setBodyString(p,w.getAllText())
-            p = p.threadBack()
-            c.beginUpdate()
-            try:
-                c.selectPosition(p)
-            finally:
-                c.endUpdate()
-            s = w.getAllText()
-            if not s.endswith('\n'): w.insert('end','\n')
-            w.insert('end',lines)
-            s = w.getAllText()
-            ins = len(s)-len(lines)+n
-            w.setSelectionRange(len(s)-len(lines),ins,insert=ins)
-            changed = True
-    finally:
-        self.endCommand(changed=changed,setLabel=True)
-#@-node:ekr.20060417183606.1:moveLinesUp
-#@+node:ekr.20050920084036.110:reverseRegion
-def reverseRegion (self,event):
-    
-    '''Reverse the order of lines in the selected text.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w or not self._chckSel(event): return
-
-    self.beginCommand(undoType='reverse-region')
-
-    s = w.getAllText()
-    ins = w.getInsertPoint()
-    i1,j1 = w.getSelectionRange()
-    i,junk = g.getLine(s,i1)
-    junk,j = g.getLine(s,j1)
-    
-    txt = s[i:j]
-    aList = txt.split('\n')
-    aList.reverse()
-    txt = '\n'.join(aList) + '\n'
-    
-    w.setAllText(s[:i1] + txt + s[j1:])
-    w.setInsertPoint(ins)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.110:reverseRegion
-#@+node:ekr.20050920084036.111:up/downCaseRegion & helper
-def downCaseRegion (self,event):
-    '''Convert all characters in the selected text to lower case.'''
-    self.caseHelper(event,'low','downcase-region')
-    
-def upCaseRegion (self,event):
-    '''Convert all characters in the selected text to UPPER CASE.'''
-    self.caseHelper(event,'up','upcase-region')
-    
-def caseHelper (self,event,way,undoType):
-
-    w = self.editWidget(event)
-    if not w or not w.hasSelection(): return
-
-    self.beginCommand(undoType=undoType)
-
-    s = w.getAllText()
-    i,j = w.getSelectionRange()
-    sel = g.choose(way=='low',s[i:j].lower(),s[i:j].upper())
-    # g.trace(repr(sel))
-    s = s[:i] + sel + s[j:]
-    w.setAllText(s)
-    w.setSelectionRange(i,j)
-    
-    # w.deleteTextSelection()
-    # s = g.choose(way=='low',s.lower(),s.upper())
-    # w.insert(i,s)
-    # w.setSelectionRange(i,j)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.111:up/downCaseRegion & helper
-#@-node:ekr.20050920084036.105:region...
-#@+node:ekr.20050920084036.121:swap/transpose...
-#@+node:ekr.20060529184652:swapHelper
-def swapHelper (self,w,find,ftext,lind,ltext):
-
-    w.delete(find,'%s wordend' % find)
-    w.insert(find,ltext)
-    w.delete(lind,'%s wordend' % lind)
-    w.insert(lind,ftext)
-    self.swapSpots.pop()
-    self.swapSpots.pop()
-#@-node:ekr.20060529184652:swapHelper
-#@+node:ekr.20050920084036.122:transposeLines (pass)
-def transposeLines (self,event):
-    
-    '''Transpose the line containing the cursor with the preceding line.'''
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-
-    ins = w.getInsertPoint()
-    s = w.getAllText()
-    if not s.strip(): return
-
-    i,j = g.getLine(s,ins)
-    line1 = s[i:j]
-    
-    self.beginCommand(undoType='transpose-lines')
-    
-    if i == 0: # Transpose the next line.
-        i2,j2 = g.getLine(s,j+1)
-        line2 = s[i2:j2]
-        w.delete(0,j2)
-        w.insert(0,line2+line1)
-        w.setInsertPoint(j2-1)
-    else: # Transpose the previous line.
-        i2,j2 = g.getLine(s,i-1)
-        line2 = s[i2:j2]
-        w.delete(i2,j)
-        w.insert(i2,line1+line2)
-        w.setInsertPoint(j-1)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.122:transposeLines (pass)
-#@+node:ekr.20050920084036.123:swapWords
-def swapWords (self,event,swapspots):
-    
-    '''Transpose the word at the cursor with the preceding word.'''
-
-    w = self.editWidget(event)
-    if not w: return
-    
-    s = w.getAllText()
-
-    txt = w.get('insert wordstart','insert wordend') ###
-    if not txt: return
-    
-    i = w.index('insert wordstart') ###
-    
-    self.beginCommand(undoType='swap-words')
-
-    if len(swapspots):
-        if i > swapspots[1]:
-            self.swapHelper(w,i,txt,swapspots[1],swapspots[0])
-        elif i < swapspots[1]:
-            self.swapHelper(w,swapspots[1],swapspots[0],i,txt)
-    else:
-        swapspots.append(txt)
-        swapspots.append(i)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.123:swapWords
-#@+node:ekr.20060529184652.1:transposeWords (doesn't work)
-def transposeWords (self,event):
-    
-    '''Transpose the word at the cursor with the preceding word.'''
-    
-    w = self.editWidget(event)
-    if not w: return
-    
-    self.beginCommand(undoType='transpose-words')
-    self.swapWords(event,self.swapSpots)
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20060529184652.1:transposeWords (doesn't work)
-#@+node:ekr.20050920084036.124:swapCharacters & transeposeCharacters
-def swapCharacters (self,event):
-
-    k = self.k
-    w = self.editWidget(event)
-    if not w: return
-    
-    self.beginCommand(undoType='swap-characters')
-    
-    s = w.getAllText()
-    i = w.getInsertPoint()
-    if 0 < i < len(s):
-        w.setAllText(s[:i-1] + s[i] + s[i-1] + s[i+1:])
-        w.setSelectionRange(i,i,insert=i)
-    
-    self.endCommand(changed=True,setLabel=True)
-
-transposeCharacters = swapCharacters
-#@-node:ekr.20050920084036.124:swapCharacters & transeposeCharacters
-#@-node:ekr.20050920084036.121:swap/transpose...
-#@+node:ekr.20050920084036.126:tabify & untabify
-def tabify (self,event):
-    '''Convert 4 spaces to tabs in the selected text.'''
-    self.tabifyHelper (event,which='tabify')
-    
-def untabify (self,event):
-    '''Convert tabs to 4 spaces in the selected text.'''
-    self.tabifyHelper (event,which='untabify')
-
-def tabifyHelper (self,event,which):
-
-    k = self.k ; w = self.editWidget(event)
-    if not w or not w.hasSelection(): return
-
-    self.beginCommand(undoType=which)
-
-    i,end = w.getSelectionRange()
-    txt = w.getSelectedText()
-    if which == 'tabify':
-        pattern = re.compile(' {4,4}') # Huh?
-        ntxt = pattern.sub('\t',txt)
-    else:
-        pattern = re.compile('\t')
-        ntxt = pattern.sub('    ',txt)
-    w.delete(i,end)
-    w.insert(i,ntxt)
-    n = i + len(ntxt)
-    w.setSelectionRange(n,n,insert=n)
-
-    self.endCommand(changed=True,setLabel=True)
-#@-node:ekr.20050920084036.126:tabify & untabify
-#@-node:ekr.20061102064720.6:edit commands
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper
-def moveUpOrDownHelper (self,event,direction,extend):
-
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-    
-    ins = w.getInsertPoint()
-    s = w.getAllText()
-    w.seeInsertPoint()
-    
-    # Find the start of the next/prev line.
-    row,col = g.convertPythonIndexToRowCol(s,ins)
-    i,j = g.getLine(s,ins)
-    if direction == 'down':
-        i2,j2 = g.getLine(s,j+1)
-    else:
-        i2,j2 = g.getLine(s,i-1)
-
-    # The spot is the start of the line plus the column index.
-    col2 = max(0,min(col,j2-i2-1))
-    spot = i2 + col2
-    # g.trace('spot',spot,'col',col,'line',repr(s[i2:j2]))
-
-    self.extendHelper(w,extend,spot,upOrDown=True)
-#@nonl
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper
 #@+node:ekr.20061031131434.4:class autoCompleterClass
 class autoCompleterClass:
     
@@ -7657,6 +4819,151 @@ def startsDoc (self,s):
 #@-node:ekr.20061031131434.70:findClass & helpers
 #@-node:ekr.20061031131434.66:class classScannerClass
 #@-node:ekr.20061031131434.4:class autoCompleterClass
+#@+node:ekr.20050920084036.59:dynamicExpansion LATER
+def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    rlist = self.store ['rlist']
+    stext = self.store ['stext']
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    dA = w.tag_ranges('dA')
+    w.tag_delete('dA')
+    def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
+        w.delete(from_,to_)
+        w.insert('insert',txt,'dA')
+
+    if dA:
+        dA1, dA2 = dA
+        dtext = w.get(dA1,dA2)
+        if dtext.startswith(stext) and i2 == dA2:
+            #This seems reasonable, since we cant get a whole word that has the '-' char in it, we do a good guess
+            if rlist:
+                txt = rlist.pop()
+            else:
+                txt = stext
+                w.delete(dA1,dA2)
+                dA2 = dA1 # since the text is going to be reread, we dont want to include the last dynamic abbreviation
+                self.getDynamicList(w,txt,rlist)
+            doDa(txt,dA1,dA2) ; return
+        else: dA = None
+
+    if not dA:
+        self.store ['stext'] = txt
+        self.store ['rlist'] = rlist = []
+        self.getDynamicList(w,txt,rlist)
+        if not rlist: return
+        txt = rlist.pop()
+        doDa(txt)
+#@-node:ekr.20050920084036.59:dynamicExpansion LATER
+#@+node:ekr.20050920084036.60:dynamicExpansion2 LATER
+def dynamicExpansion2 (self,event):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    rlist = []
+    self.getDynamicList(w,txt,rlist)
+    dEstring = reduce(g.longestCommonPrefix,rlist)
+    if dEstring:
+        w.delete(i,i2)
+        w.insert(i,dEstring)
+#@-node:ekr.20050920084036.60:dynamicExpansion2 LATER
+#@+node:ekr.20050920084036.160:executeSubprocess
+def executeSubprocess (self,event,command,input):
+    
+    '''Execute a command in a separate process.'''
+    
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    k.setLabelBlue('started  shell-command: %s' % command)
+    try:
+        ofile = os.tmpfile()
+        efile = os.tmpfile()
+        process = subprocess.Popen(command,bufsize=-1,
+            stdout = ofile.fileno(), stderr = ofile.fileno(),
+            stdin = subprocess.PIPE, shell = True)
+        if input: process.communicate(input)
+        process.wait()
+        efile.seek(0)
+        errinfo = efile.read()
+        if errinfo: w.insert('insert',errinfo)
+        ofile.seek(0)
+        okout = ofile.read()
+        if okout: w.insert('insert',okout)
+    except Exception, x:
+        w.insert('insert',x)
+        
+    k.setLabelGrey('finished shell-command: %s' % command)
+#@-node:ekr.20050920084036.160:executeSubprocess
+#@+node:ekr.20050920084036.242:insertRegister
+def insertRegister (self,event):
+    
+    '''Prompt for a register name and and insert the value of another register into its contents.'''
+    
+    c = self.c ; k = self.k ; state = k.getState('insert-reg')
+    
+    if state == 0:
+        k.commandName = 'insert-register'
+        k.setLabelBlue('Insert register: ',protect=True)
+        k.setState('insert-reg',1,self.insertRegister)
+    else:
+        k.clearState()
+        if event.keysym.isalpha():
+            w = c.frame.body.bodyCtrl
+            c.bodyWantsFocus()
+            key = event.keysym.lower()
+            val = self.registers.get(key)
+            if val:
+                if type(val)==type([]):
+                    c.rectangleCommands.yankRectangle(val)
+                else:
+                    w.insert('insert',val)
+                k.setLabelGrey('Inserted register %s' % key)
+            else:
+                k.setLabelGrey('Register %s is empty' % key)
+        else:
+            k.setLabelGrey('Register must be a letter')
+    c.bodyWantsFocus()
+#@-node:ekr.20050920084036.242:insertRegister
+#@+node:ekr.20050920084036.37:insertToBuffer
+def insertToBuffer (self,event):
+    
+    '''Add the selected body text at the insert point of the body text of a named buffer (node).'''
+    
+    w = self.editWidget(event) # Sets self.w
+    if not w: return
+
+    self.k.setLabelBlue('Insert to buffer: ')
+    self.getBufferName(self.insertToBufferFinisher)
+
+def insertToBufferFinisher (self,event,name):
+    
+    c = self.c ; k = self.k ; w = self.w
+    s = w.getSelectedText()
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+            self.beginCommand('insert-to-buffer: %s' % p.headString())
+            i = w.getInsertPoint()
+            w.insert(i,s)
+            w.seeInsertPoint()
+            self.endCommand()
+        finally:
+            c.endUpdate()
+#@-node:ekr.20050920084036.37:insertToBuffer
 #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
 # This is the only key handler for the body pane.
 def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
@@ -7710,8 +5017,416 @@ finally:
     c.endUpdate(redraw_flag)
 #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
 #@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
-#@-node:ekr.20061102080819.1:Others
-#@-node:ekr.20061111082139:In leoEditCommands
+#@+node:ekr.20050920084036.39:prependToBuffer
+def prependToBuffer (self,event):
+    
+    '''Add the selected body text to the start of the body text of a named buffer (node).'''
+    
+    w = self.editWidget(event) # Sets self.w
+    if not w: return
+
+    self.k.setLabelBlue('Prepend to buffer: ')
+    self.getBufferName(self.prependToBufferFinisher)
+    
+def prependToBufferFinisher (self,event,name):
+    
+    c = self.c ; k = self.k ; w = self.w
+    s = w.getSelectedText()
+    p = self.findBuffer(name)
+    if s and p:
+        c.beginUpdate()
+        try:
+            c.selectPosition(p)
+            self.beginCommand('prepend-to-buffer: %s' % p.headString())
+            w.insert(0,s)
+            w.setInsertPoint(0)
+            w.seeInsertPoint()
+            self.endCommand()
+        finally:
+            c.endUpdate()
+            c.recolor_now()
+
+#@-node:ekr.20050920084036.39:prependToBuffer
+#@+node:ekr.20050920084036.212:doOneReplace
+def doOneReplace (self,event):
+
+    w = self.editWidget(event)
+    if not w: return
+    
+    i = w.tag_ranges('qR')
+    w.delete(i[0],i[1])
+    w.insert('insert',self.qR)
+    self.replaced += 1
+#@-node:ekr.20050920084036.212:doOneReplace
+#@+node:ekr.20050920084036.219:findNextMatch (query-replace)
+def findNextMatch (self,event):
+    
+    '''Find the next match and select it.
+    Return True if a match was found.
+    Otherwise, call quitSearch and return False.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    
+    w.tag_delete('qR')
+    if self.regexp:
+        << handle regexp >>
+    else:
+        << handle plain search >>
+#@+node:ekr.20051005155611:<< handle regexp >>
+try:
+    regex = re.compile(self.qQ)
+except:
+    self.quitSearch(event,'Illegal regular expression')
+    return False
+
+txt = w.get('insert','end')
+match = regex.search(txt)
+
+if match:
+    start = match.start()
+    end = match.end()
+    length = end - start
+    i = w.getInsertPoint()
+    w.setInsertPoint(i+start)
+    w.tag_add('qR','insert','insert +%sc' % length)
+    w.tag_config('qR',background='lightblue')
+    txt = w.get('insert','insert +%sc' % length)
+    return True
+else:
+    self.quitSearch(event)
+    return False
+#@-node:ekr.20051005155611:<< handle regexp >>
+#@+node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config) LATER
+i = w.search(self.qQ,'insert',stopindex='end')
+
+if i:
+    w.setInsertPoint(i)
+    w.tag_add('qR','insert','insert +%sc' % len(self.qQ))
+    w.tag_config('qR',background='lightblue')
+    return True
+else:
+    self.quitSearch(event)
+    return False
+#@-node:ekr.20051005160923:<< handle plain search >> (tag_add & tag_config) LATER
+#@-node:ekr.20050920084036.219:findNextMatch (query-replace)
+#@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
+def regionalExpandAbbrev (self,event):
+    
+    '''Exapand abbreviations throughout a region.'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    i1,i2 = w.getSelectionRange()
+    ins = w.getInsertPoint()
+    << define a new generator searchXR >>
+
+    # EKR: the 'result' of calling searchXR is a generator object.
+    k.regx.iter = searchXR(i1,i2,ins,event)
+    k.regx.iter.next() # Call it the first time.
+#@nonl
+#@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
+@ This is a generator (it contains a yield).
+To make this work we must define a new generator for each call to regionalExpandAbbrev.
+@c
+def searchXR (i1,i2,ins,event):
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    w.tag_add('sXR',i1,i2)
+    while i1:
+        tr = w.tag_ranges('sXR')
+        if not tr: break
+        i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
+        if i1:
+            word = w.get('%s wordstart' % i1,'%s wordend' % i1)
+            w.tag_delete('found')
+            w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
+            w.tag_config('found',background='yellow')
+            if self.abbrevs.has_key(word):
+                k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
+                yield None
+                if k.regXKey == 'y':
+                    ind = w.index('%s wordstart' % i1)
+                    w.delete('%s wordstart' % i1,'%s wordend' % i1)
+                    w.insert(ind,self.abbrevs[word])
+            i1 = '%s wordend' % i1
+    w.setInsertPoint(ins,ins,insert=ins)
+    w.tag_delete('sXR')
+    w.tag_delete('found')
+    k.setLabelGrey('')
+    self.k.regx = g.bunch(iter=None,key=None)
+#@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
+#@-node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
+#@+node:ekr.20050920084036.265:scolorizer LATER
+def scolorizer (self,event,pattern=None):
+    
+    '''Colorizer for incremental searches.'''
+
+    k = self.k ; w = self.w
+    s = pattern or k.getLabel(ignorePrompt=True)
+    # g.trace(repr(s))
+    w.tag_delete('color','color1')
+    if not s: return
+    ind = 0
+    index = w.getInsertPoint()
+    index2 = index + len(s)
+    # g.trace(index,index2)
+    # Colorize in the forward direction, regardless of the kind of search.
+    while ind:
+        try:
+            ind = w.search(s,ind,stopindex='end',regexp=self.regexp)
+        except: break
+        if ind:
+            i, d = ind.split('.')
+            d = str(int(d)+len(s))
+            # g.trace(ind)
+            if ind in (index,index2):
+                w.tag_add('color1',ind,'%s.%s' % (i,d))
+            w.tag_add('color',ind,'%s.%s' % (i,d))
+            ind = i + '.' + d
+
+    w.tag_config('color',foreground='red')
+    w.tag_config('color1',background='lightblue')
+#@-node:ekr.20050920084036.265:scolorizer LATER
+#@+node:ekr.20050920084036.117:sort...
+'''XEmacs provides several commands for sorting text in a buffer.  All
+operate on the contents of the region (the text between point and the
+mark).  They divide the text of the region into many "sort records",
+identify a "sort key" for each record, and then reorder the records
+using the order determined by the sort keys.  The records are ordered so
+that their keys are in alphabetical order, or, for numerical sorting, in
+numerical order.  In alphabetical sorting, all upper-case letters `A'
+through `Z' come before lower-case `a', in accordance with the ASCII
+character sequence.
+
+   The sort commands differ in how they divide the text into sort
+records and in which part of each record they use as the sort key.
+Most of the commands make each line a separate sort record, but some
+commands use paragraphs or pages as sort records.  Most of the sort
+commands use each entire sort record as its own sort key, but some use
+only a portion of the record as the sort key.
+
+`M-x sort-lines'
+     Divide the region into lines and sort by comparing the entire text
+     of a line.  A prefix argument means sort in descending order.
+
+`M-x sort-paragraphs'
+     Divide the region into paragraphs and sort by comparing the entire
+     text of a paragraph (except for leading blank lines).  A prefix
+     argument means sort in descending order.
+
+`M-x sort-pages'
+     Divide the region into pages and sort by comparing the entire text
+     of a page (except for leading blank lines).  A prefix argument
+     means sort in descending order.
+
+`M-x sort-fields'
+     Divide the region into lines and sort by comparing the contents of
+     one field in each line.  Fields are defined as separated by
+     whitespace, so the first run of consecutive non-whitespace
+     characters in a line constitutes field 1, the second such run
+     constitutes field 2, etc.
+
+     You specify which field to sort by with a numeric argument: 1 to
+     sort by field 1, etc.  A negative argument means sort in descending
+     order.  Thus, minus 2 means sort by field 2 in reverse-alphabetical
+     order.
+
+`M-x sort-numeric-fields'
+     Like `M-x sort-fields', except the specified field is converted to
+     a number for each line and the numbers are compared.  `10' comes
+     before `2' when considered as text, but after it when considered
+     as a number.
+
+`M-x sort-columns'
+     Like `M-x sort-fields', except that the text within each line used
+     for comparison comes from a fixed range of columns.  An explanation
+     is given below.
+
+   For example, if the buffer contains:
+
+     On systems where clash detection (locking of files being edited) is
+     implemented, XEmacs also checks the first time you modify a buffer
+     whether the file has changed on disk since it was last visited or
+     saved.  If it has, you are asked to confirm that you want to change
+     the buffer.
+
+then if you apply `M-x sort-lines' to the entire buffer you get:
+
+     On systems where clash detection (locking of files being edited) is
+     implemented, XEmacs also checks the first time you modify a buffer
+     saved.  If it has, you are asked to confirm that you want to change
+     the buffer.
+     whether the file has changed on disk since it was last visited or
+
+where the upper case `O' comes before all lower case letters.  If you
+apply instead `C-u 2 M-x sort-fields' you get:
+
+     saved.  If it has, you are asked to confirm that you want to change
+     implemented, XEmacs also checks the first time you modify a buffer
+     the buffer.
+     On systems where clash detection (locking of files being edited) is
+     whether the file has changed on disk since it was last visited or
+
+where the sort keys were `If', `XEmacs', `buffer', `systems', and `the'.
+
+   `M-x sort-columns' requires more explanation.  You specify the
+columns by putting point at one of the columns and the mark at the other
+column.  Because this means you cannot put point or the mark at the
+beginning of the first line to sort, this command uses an unusual
+definition of `region': all of the line point is in is considered part
+of the region, and so is all of the line the mark is in.
+
+   For example, to sort a table by information found in columns 10 to
+15, you could put the mark on column 10 in the first line of the table,
+and point on column 15 in the last line of the table, and then use this
+command.  Or you could put the mark on column 15 in the first line and
+point on column 10 in the last line.
+
+   This can be thought of as sorting the rectangle specified by point
+and the mark, except that the text on each line to the left or right of
+the rectangle moves along with the text inside the rectangle.  *Note
+Rectangles::.
+
+'''
+#@+node:ekr.20050920084036.118:sortLines
+def sortLines (self,event,which=None):
+    
+    '''Sort lines of the selected text by comparing the entire text of a line.
+    A prefix argument means sort in descending order.'''
+
+    c = self.c ; k = c.k
+    w = self.editWidget(event)
+    if not self._chckSel(event): return
+
+    self.beginCommand(undoType='sort-lines')
+    try:
+        s = w.getAllText()
+        sel_1,sel_2 = w.getSelectionRange()
+        ins = w.getInsertPoint()
+        i,junk = g.getLine(s,sel_1)
+        junk,j = g.getLine(s,sel_2)
+        aList = g.splitLines(s[i:j])
+        aList.sort()
+        if which: aList.reverse()
+        s = g.joinLines(aList)
+        w.delete(i,j)
+        w.insert(i,s)
+        w.setSelectionRange(sel_1,sel_2,insert=ins)
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.118:sortLines
+#@+node:ekr.20050920084036.119:sortColumns
+def sortColumns (self,event):
+    
+    '''Sort lines of selected text using only lines in the given columns to do the comparison.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not self._chckSel(event): return
+    self.beginCommand(undoType='sort-columns')
+    try:
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        sel_1,sel_2 = w.getSelectionRange()
+        sint1,sint2 = g.convertPythonIndexToRowCol(s,sel_1)
+        sint3,sint4 = g.convertPythonIndexToRowCol(s,sel_2)
+        sint1 += 1 ; sint3 += 1
+        i,junk = g.getLine(s,sel_1)
+        junk,j = g.getLine(s,sel_2)
+        txt = s[i:j]
+        columns = [w.get('%s.%s' % (z,sint2),'%s.%s' % (z,sint4))
+            for z in xrange(sint1,sint3+1)]
+        aList = g.splitLines(txt)
+        zlist = zip(columns,aList)
+        zlist.sort()
+        s = g.joinLines([z[1] for z in zlist])
+        w.delete(i,j)
+        w.insert(i,s)
+        w.setSelectionRange(sel_1,sel_1+len(s),insert=sel_1+len(s))
+    finally:
+        self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.119:sortColumns
+#@+node:ekr.20050920084036.120:sortFields
+def sortFields (self,event,which=None):
+    
+    '''Divide the selected text into lines and sort by comparing the contents of
+     one field in each line. Fields are defined as separated by whitespace, so
+     the first run of consecutive non-whitespace characters in a line
+     constitutes field 1, the second such run constitutes field 2, etc.
+
+     You specify which field to sort by with a numeric argument: 1 to sort by
+     field 1, etc. A negative argument means sort in descending order. Thus,
+     minus 2 means sort by field 2 in reverse-alphabetical order.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    self.beginCommand(undoType='sort-fields')
+    
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    r1,r2,r3,r4 = self.getRectanglePoints(w)
+    i,junk = g.getLine(s,r1)
+    junk,j = g.getLine(s,r4)
+    txt = txt.split('\n')
+    fields = []
+    fn = r'\w+'
+    frx = re.compile(fn)
+    for line in txt:
+        f = frx.findall(line)
+        if not which:
+            fields.append(f[0])
+        else:
+            i = int(which)
+            if len(f) < i: return
+            i = i-1
+            fields.append(f[i])
+    nz = zip(fields,txt)
+    nz.sort()
+    #w.delete('%s linestart' % is1,'%s lineend' % is2)
+    w.delete(i,j)
+    #i = is1.split('.')
+    #int1 = int(i[0])
+    int1 = i
+    for z in nz:
+        w.insert('%s.0' % int1,'%s\n' % z[1])
+        int1 = int1 + 1
+    w.setInsertPoint(ins)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.120:sortFields
+#@-node:ekr.20050920084036.117:sort...
+#@+node:ekr.20050930091642.2:yankPop
+def yankPop (self,event):
+    
+    '''Replaces the just-yanked kill buffer with the contents of the previous kill buffer.'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w: return
+    
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    t,t1 = g.convertPythonIndexToRowCol(s,ins)
+    clip_text = self.getClipboard(w)
+
+    if self.killBuffer or clip_text:
+        s = clip_text or self.kbiterator.next()
+        r = w.tag_ranges('kb') ###
+        if r:
+            r1,r2 = r
+            r1,r2 = w.toPythonIndex(r1),w.toPythonIndex(r2)
+            if r1 == ins:
+                w.delete(r1,r2)
+        w.tag_delete('kb') ###
+        w.insert('insert',s,('kb')) ###
+        w.setInsertPoint(ins)
+#@-node:ekr.20050930091642.2:yankPop
 #@-node:ekr.20070212065133:Remove Tk code from commands (later)
 #@-node:ekr.20070212070512.1:Later
 #@+node:ekr.20070212080350:Maybe never
