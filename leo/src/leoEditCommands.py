@@ -7,7 +7,7 @@
 
 Modelled after Emacs and Vim commands.'''
 
-from __future__ import generators # To make Leo work with Python 2.2
+### from __future__ import generators # To make Leo work with Python 2.2
 
 #@<< imports >>
 #@+node:ekr.20050710151017:<< imports >>
@@ -200,7 +200,7 @@ class baseEditCommandsClass:
         r1,r2 = g.convertPythonIndexToRowCol(s,i)
         r3,r4 = g.convertPythonIndexToRowCol(s,j)
     
-        return r1,r2,r3,r4
+        return r1+1,r2,r3+1,r4
     #@-node:ekr.20050920084036.233:getRectanglePoints
     #@+node:ekr.20051002090441:keyboardQuit
     def keyboardQuit (self,event):
@@ -5931,20 +5931,17 @@ class rectangleCommandsClass (baseEditCommandsClass):
     def beginCommand (self,undoType='Typing'):
     
         w = baseEditCommandsClass.beginCommand(self,undoType)
+        r1,r2,r3,r4 = self.getRectanglePoints(w)
+        return w,r1,r2,r3,r4
     
-        r1, r2, r3, r4 = self.getRectanglePoints(w)
-    
-        return w, r1, r2, r3, r4
         
     def beginCommandWithEvent (self,event,undoType='Typing'):
         
         '''Do the common processing at the start of each command.'''
         
         w = baseEditCommandsClass.beginCommandWithEvent(self,event,undoType)
-        
-        r1, r2, r3, r4 = self.getRectanglePoints(w)
-    
-        return w, r1, r2, r3, r4
+        r1,r2,r3,r4 = self.getRectanglePoints(w)
+        return w,r1,r2,r3,r4
     #@-node:ekr.20051215103053:beginCommand & beginCommandWithEvent (rectangle)
     #@+node:ekr.20050920084036.224:Entries (rectangleCommandsClass)
     #@+node:ekr.20050920084036.225:clearRectangle
@@ -5986,6 +5983,10 @@ class rectangleCommandsClass (baseEditCommandsClass):
         for r in xrange(r1,r3+1):
             w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
             
+        i = '%s.%s' % (r1,r2)
+        j = '%s.%s' % (r3,r2)
+        w.setSelectionRange(i,j,insert=j)
+            
         self.endCommand()
     #@-node:ekr.20050920084036.226:closeRectangle
     #@+node:ekr.20050920084036.227:deleteRectangle
@@ -6000,6 +6001,10 @@ class rectangleCommandsClass (baseEditCommandsClass):
     
         for r in xrange(r1,r3+1):
             w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
+            
+        i = '%s.%s' % (r1,r2)
+        j = '%s.%s' % (r3,r2)
+        w.setSelectionRange(i,j,insert=j)
             
         self.endCommand()
     #@-node:ekr.20050920084036.227:deleteRectangle
@@ -6019,6 +6024,8 @@ class rectangleCommandsClass (baseEditCommandsClass):
             s = w.get('%s.%s' % (r,r2),'%s.%s' % (r,r4))
             self.theKillRectangle.append(s)
             w.delete('%s.%s' % (r,r2),'%s.%s' % (r,r4))
+            
+        # g.trace('killRect',repr(self.theKillRectangle))
     
         if self.theKillRectangle:
             ins = '%s.%s' % (r,r2)
@@ -6047,52 +6054,16 @@ class rectangleCommandsClass (baseEditCommandsClass):
     
         self.endCommand()
     #@-node:ekr.20050920084036.230:openRectangle
-    #@+node:ekr.20050920084036.229:yankRectangle
-    def yankRectangle (self,event,killRect=None):
-        
-        '''Yank into the rectangle defined by the start and end of selected text.'''
-        
-        c = self.c ; k = self.k
-        w = self.editWidget(event)
-        if not w: return
-    
-        killRect = killRect or self.theKillRectangle
-        if not killRect:
-            k.setLabelGrey('No kill rect')
-            return
-            
-        w,r1,r2,r3,r4 = self.beginCommand('yank-rectangle')
-        
-        # g.trace('killRect',killRect,'r1..r4',r1,r2,r3,r4)
-        
-        # Change the text.
-        s = w.getAllText()
-        ins = w.getInsertPoint()
-        i,j = g.getLine(s,ins)
-        txt = s[i:ins]
-        txt = self.getWSString(txt)
-    
-        i = w.toGuiIndex(ins)
-        i1, i2 = i.split('.')
-        i1 = int(i1)
-        for z in killRect:
-            txt2 = w.get('%s.0 linestart' % i1,'%s.%s' % (i1,i2))
-            if len(txt2) != len(txt):
-                amount = len(txt) - len(txt2)
-                z = txt [-amount:] + z
-            w.insert('%s.%s' % (i1,i2),z)
-            if w.index('%s.0 lineend +1c' % i1) == w.index('end'):
-                w.insert('%s.0 lineend' % i1,'\n')
-            i1 += 1
-    
-        self.endCommand()
-    #@-node:ekr.20050920084036.229:yankRectangle
     #@+node:ekr.20050920084036.232:stringRectangle
     def stringRectangle (self,event):
         
         '''Prompt for a string, then replace the contents of a rectangle with a string on each line.'''
     
         c = self.c ; k = self.k ; state = k.getState('string-rect')
+        if g.app.unitTesting:
+            state = 1 ; k.arg = 's...s' # This string is known to the unit test.
+            w = self.editWidget(event)
+            self.stringRect = self.getRectanglePoints(w)
         if state == 0:
             w = self.editWidget(event) # sets self.w
             if not w or not self.check(event): return
@@ -6114,6 +6085,38 @@ class rectangleCommandsClass (baseEditCommandsClass):
             self.endCommand()
     #@nonl
     #@-node:ekr.20050920084036.232:stringRectangle
+    #@+node:ekr.20050920084036.229:yankRectangle
+    def yankRectangle (self,event,killRect=None):
+        
+        '''Yank into the rectangle defined by the start and end of selected text.'''
+        
+        c = self.c ; k = self.k
+        w = self.editWidget(event)
+        if not w: return
+    
+        killRect = killRect or self.theKillRectangle
+        if g.app.unitTesting:
+            # This value is used by the unit test.
+            killRect = ['Y1Y','Y2Y','Y3Y','Y4Y']
+        elif not killRect:
+            k.setLabelGrey('No kill rect') ; return
+            
+        w,r1,r2,r3,r4 = self.beginCommand('yank-rectangle')
+        
+        n = 0
+        for r in xrange(r1,r3+1):
+            # g.trace(n,r,killRect[n])
+            if n >= len(killRect): break
+            w.delete('%s.%s' % (r,r2), '%s.%s' % (r,r4))
+            w.insert('%s.%s' % (r,r2), killRect[n])
+            n += 1
+            
+        i = '%s.%s' % (r1,r2)
+        j = '%s.%s' % (r3,r2+len(killRect[n-1]))
+        w.setSelectionRange(i,j,insert=j)
+    
+        self.endCommand()
+    #@-node:ekr.20050920084036.229:yankRectangle
     #@-node:ekr.20050920084036.224:Entries (rectangleCommandsClass)
     #@-others
 #@-node:ekr.20050920084036.221:rectangleCommandsClass
