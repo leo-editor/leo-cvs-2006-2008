@@ -3942,8 +3942,18 @@ class atFile:
         else:
             n1 = s.find("<<",i,end)
             n2 = s.find(">>",i,end)
+            
+        ok = -1 < n1 < n2
+        
+        # New in Leo 4.4.3: warn on extra brackets.
+        if ok:
+            for ch,j in (('<',n1-1),('<',n1+2),('>',n2-1),('>',n2+2)):
+                if g.match(s,j,ch):
+                    line = g.get_line(s,i)
+                    g.es('dubious brackets in %s' % line)
+                    break
     
-        return -1 < n1 < n2, n1, n2
+        return ok, n1, n2
     #@-node:ekr.20041005105605.199:hasSectionName
     #@+node:ekr.20041005105605.200:isSectionName
     # returns (flag, end). end is the index of the character after the section name.
