@@ -9,7 +9,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-from __future__ import generators # To make the code work in Python 2.2.
+### from __future__ import generators # To make the code work in Python 2.2.
 
 __pychecker__ = '--no-import --no-reimportself --no-reimport\
      --no-constCond --no-constant1'
@@ -22,27 +22,31 @@ import leoGlobals as g # So code can use g below.
 
 if 0: # Don't import this here: it messes up Leo's startup code.
     import leoTest
-    
 try:
     import gc
 except ImportError:
     gc = None
 
-import exceptions
-import filecmp
-import gettext
-import operator
-import os
 if 0: # Do NOT import pdb here!  We shall define pdb as a _function_ below.
     import pdb
+
+import exceptions
+import operator
 import re
-import string
 import sys
-import tempfile
 import time
+
+# These do not exist in IronPython.
+# However, it *is* valid for IronPython to use the Python 2.4 libs!
+import difflib
+import filecmp
+import gettext
+import os
+import shutil
+import string
+import tempfile
 import traceback
 import types
-import unicodedata
 #@-node:ekr.20050208101229:<< imports >>
 #@nl
 #@<< define general constants >>
@@ -185,10 +189,9 @@ def computeLoadDir():
     """Returns the directory containing leo.py."""
     
     import leoGlobals as g
-
+    import sys
+    
     try:
-        import sys
-        
         # Fix a hangnail: on Windows the drive letter returned by
         # __file__ is randomly upper or lower case!
         # The made for an ugly recent files list.
@@ -210,14 +213,14 @@ def computeLoadDir():
         ):
             loadDir = os.getcwd()
             print "Using emergency loadDir:",repr(loadDir)
-        
         loadDir = g.os_path_abspath(loadDir,encoding)
         # g.es("load dir: %s" % (loadDir),color="blue")
         return loadDir
     except:
         print "Exception getting load directory"
-        import traceback ; traceback.print_exc()
-        return None
+        raise
+        #import traceback ; traceback.print_exc()
+        #return None
 #@-node:ekr.20031218072017.1937:computeLoadDir
 #@+node:ekr.20050328133444:computeStandardDirectories
 def computeStandardDirectories():
@@ -3892,6 +3895,9 @@ def isValidEncoding (encoding):
     
     if not encoding:
         return False
+        
+    if sys.platform == 'cli':
+        return True
 
     import codecs
 
@@ -4349,8 +4355,6 @@ class Bunch (object):
 bunch = Bunch
 #@-node:ekr.20031218072017.3098:class Bunch (object)
 #@+node:EKR.20040504150046:class mulderUpdateAlgorithm (leoGlobals)
-import difflib,shutil
-
 class mulderUpdateAlgorithm:
     
     """A class to update derived files using

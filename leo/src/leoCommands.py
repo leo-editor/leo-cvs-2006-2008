@@ -4,7 +4,7 @@
 #@@tabwidth -4
 #@@pagewidth 80
 
-from __future__ import generators # To make the code work in Python 2.2.
+### from __future__ import generators # To make the code work in Python 2.2.
 
 __pychecker__ = '--no-constCond -- no-constant1'
     # Disable checks for constant conditionals.
@@ -28,23 +28,27 @@ import leoNodes
 import leoTangle
 import leoUndo
 
-import compiler # for Check Python command
 import keyword
 import os
-import parser # needed only for weird Python 2.2 parser errors.
 import string
-
-subprocess = g.importExtension('subprocess',None,verbose=False)
-
 import sys
 import tempfile
-import time
-
 import tabnanny # for Check Python command
+import time
 import tokenize # for Check Python command
+
+try:
+    # IronPython has troubles with these.
+    import compiler # for Check Python command
+    import parser # needed only for weird Python 2.2 parser errors.
+except Exception:
+    pass
+    
+subprocess = g.importExtension('subprocess',None,verbose=False)
 
 # The following import _is_ used.
 __pychecker__ = '--no-import'
+
 import token    # for Check Python command
 #@-node:ekr.20040712045933:<< imports  >> (leoCommands)
 #@nl

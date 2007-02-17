@@ -20,9 +20,7 @@ import leoCommands
 import leoFrame
 import leoGui
 import leoNodes
-import leoTkinterGui
 
-import compiler
 import doctest
 import glob
 import os
@@ -33,6 +31,7 @@ import tokenize
 import unittest
 
 try:
+    import compiler
     import gc
     import profile
     import pstats

@@ -21,8 +21,13 @@ import types
 
 # The following imports _are_ used.
 __pychecker__ = '--no-import'
-import compiler
-import parser
+
+try:
+    # These do not exist in IronPython or Python 2.4
+    import compiler
+    import parser
+except ImportError:
+    pass
 #@-node:ekr.20061031131434.1:<< imports >>
 #@nl
 #@<< about 'internal' bindings >>

@@ -158,6 +158,9 @@ def startPsyco ():
 #@-node:ekr.20040411081633:startPsyco
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
+    
+    if sys.platform == 'cli':
+        return True
 
     message = """\
 Leo requires Python 2.2.1 or higher.
