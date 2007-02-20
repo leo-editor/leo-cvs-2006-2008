@@ -127,7 +127,7 @@ class leoGui:
         'eventKeysym',
         'eventWidget',
         'eventXY',
-        'finishCreate',
+        # 'finishCreate', # optional.
         # 'getFontFromParams', # optional
         # 'getFullVersion', # optional.
         'getTextFromClipboard',
@@ -195,13 +195,6 @@ class leoGui:
     
         self.oops()
     #@-node:ekr.20031218072017.3725:destroySelf
-    #@+node:ekr.20031218072017.3726:finishCreate
-    def finishCreate (self):
-    
-        """Do any remaining chores after the root window has been created."""
-    
-        self.oops()
-    #@-node:ekr.20031218072017.3726:finishCreate
     #@+node:ekr.20031218072017.3727:killGui
     def killGui(self,exitFlag=True):
     
@@ -415,6 +408,12 @@ class leoGui:
     #@-node:ekr.20061111165041:widget_name
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@-node:ekr.20061109212618:Must be defined in subclasses
+    #@+node:ekr.20070219084912:finishCreate (may be overridden in subclasses)
+    def finishCreate (self):
+        
+        pass
+    #@nonl
+    #@-node:ekr.20070219084912:finishCreate (may be overridden in subclasses)
     #@-others
 #@-node:ekr.20031218072017.3720:class leoGui
 #@+node:ekr.20031218072017.2223:class nullGui (leoGui)

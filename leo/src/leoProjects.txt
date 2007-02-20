@@ -2037,7 +2037,7 @@ w.setSelectionRange(i,i,insert=i)
 # This special case is now covered in the unit test.
 #@nonl
 #@+node:ekr.20061117084407.1:Removed no-longer needed tests for newlines
-#@+node:ekr.20061031170011.13:getEditableTextRange (should return Python indices)
+#@+node:ekr.20061031170011.13:getEditableTextRange
 def getEditableTextRange (self):
     
     k = self ; w = self.widget
@@ -2048,7 +2048,7 @@ def getEditableTextRange (self):
     j = len(s)
     return i,j
 #@nonl
-#@-node:ekr.20061031170011.13:getEditableTextRange (should return Python indices)
+#@-node:ekr.20061031170011.13:getEditableTextRange
 #@-node:ekr.20061117084407.1:Removed no-longer needed tests for newlines
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20050314140957:g.convertPythonIndexToRowCol
@@ -5842,70 +5842,8 @@ def updateHead (self,event,w):
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
-#@+node:ekr.20040803072955.91:onHeadChanged
-# Tricky code: do not change without careful thought and testing.
-
-def onHeadChanged (self,p,undoType='Typing'):
-    
-    '''Officially change a headline.
-    Set the old undo text to the previous revert point.'''
-    
-    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
-    if not w: return
-    
-    ch = '\r' # New in 4.4: we only report the final keystroke.
-    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
-        return # The hook claims to have handled the event.
-
-    s = w.getAllText()
-    << truncate s if it has multiple lines >>
-    c.beginUpdate()
-    try:
-        # Make the change official, but undo to the *old* revert point.
-        oldRevert = self.revertHeadline
-        changed = s != oldRevert
-        self.revertHeadline = s
-        p.initHeadString(s)
-        # if self.trace_edit and not g.app.unitTesting:
-            # if changed:
-                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
-        if changed:
-            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
-            if not c.changed: c.setChanged(True)
-            dirtyVnodeList = p.setDirty()
-            u.afterChangeNodeContents(p,undoType,undoData,
-                dirtyVnodeList=dirtyVnodeList)
-    finally:
-        c.endUpdate(scroll=False) # New in 4.4.1
-        if changed:
-            if self.stayInTree:
-                c.treeWantsFocus()
-            else:
-                c.bodyWantsFocus()
-   
-    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
-#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
-# Remove one or two trailing newlines before warning of truncation.
-for i in (0,1):
-    if s and s[-1] == '\n':
-        if len(s) > 1: s = s[:-1]
-        else: s = ''
-
-# Warn if there are multiple lines.
-i = s.find('\n')
-if i > -1:
-    # g.trace(i,len(s),repr(s))
-    g.es("Truncating headline to one line",color="blue")
-    s = s[:i]
-
-limit = 1000
-if len(s) > limit:
-    g.es("Truncating headline to %d characters" % (limit),color="blue")
-    s = s[:limit]
-
-s = g.toUnicode(s or '',g.app.tkEncoding)
-#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
-#@-node:ekr.20040803072955.91:onHeadChanged
+#@+node:ekr.20070220085355:onHeadChanged is now in the base class
+#@-node:ekr.20070220085355:onHeadChanged is now in the base class
 #@-node:ekr.20040803072955.90:head key handlers
 #@-node:ekr.20061127161813:Replacing selection not done properly in headline
 #@+node:ekr.20061127150919:Fixed paragraph commands
@@ -7450,70 +7388,8 @@ def updateHead (self,event,w):
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
-#@+node:ekr.20040803072955.91:onHeadChanged
-# Tricky code: do not change without careful thought and testing.
-
-def onHeadChanged (self,p,undoType='Typing'):
-    
-    '''Officially change a headline.
-    Set the old undo text to the previous revert point.'''
-    
-    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
-    if not w: return
-    
-    ch = '\r' # New in 4.4: we only report the final keystroke.
-    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
-        return # The hook claims to have handled the event.
-
-    s = w.getAllText()
-    << truncate s if it has multiple lines >>
-    c.beginUpdate()
-    try:
-        # Make the change official, but undo to the *old* revert point.
-        oldRevert = self.revertHeadline
-        changed = s != oldRevert
-        self.revertHeadline = s
-        p.initHeadString(s)
-        # if self.trace_edit and not g.app.unitTesting:
-            # if changed:
-                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
-        if changed:
-            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
-            if not c.changed: c.setChanged(True)
-            dirtyVnodeList = p.setDirty()
-            u.afterChangeNodeContents(p,undoType,undoData,
-                dirtyVnodeList=dirtyVnodeList)
-    finally:
-        c.endUpdate(scroll=False) # New in 4.4.1
-        if changed:
-            if self.stayInTree:
-                c.treeWantsFocus()
-            else:
-                c.bodyWantsFocus()
-   
-    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
-#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
-# Remove one or two trailing newlines before warning of truncation.
-for i in (0,1):
-    if s and s[-1] == '\n':
-        if len(s) > 1: s = s[:-1]
-        else: s = ''
-
-# Warn if there are multiple lines.
-i = s.find('\n')
-if i > -1:
-    # g.trace(i,len(s),repr(s))
-    g.es("Truncating headline to one line",color="blue")
-    s = s[:i]
-
-limit = 1000
-if len(s) > limit:
-    g.es("Truncating headline to %d characters" % (limit),color="blue")
-    s = s[:limit]
-
-s = g.toUnicode(s or '',g.app.tkEncoding)
-#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
-#@-node:ekr.20040803072955.91:onHeadChanged
+#@+node:ekr.20070220085355:onHeadChanged is now in the base class
+#@-node:ekr.20070220085355:onHeadChanged is now in the base class
 #@-node:ekr.20040803072955.90:head key handlers
 #@+node:ekr.20051026092433.1:backwardDeleteCharacter
 def backwardDeleteCharacter (self,event=None):
@@ -7813,21 +7689,17 @@ def masterKeyHandler (self,event,stroke=None):
     
     '''This is the handler for almost all key bindings.'''
 
-    k = self ; c = k.c ; gui = g.app.gui
-    if event: event = g.app.gui.leoKeyEvent(event,c)
-    
-    # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char),g.callers())
-    
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
     << define vars >>
-
-    if keysym in special_keys:
-        return None
-
-    << do key traces >>
+    if keysym in special_keys: return None
+    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    if trace:
+        g.trace('stroke:',stroke,'keysym:',event.keysym,'ch:',repr(event.char),
+            'state.kind:',k.state.kind,g.callers(4))
+        # if (self.master_key_count % 100) == 0: g.printGcSummary(trace=True)
 
     # Handle keyboard-quit first.
     if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        g.trace('special case')
         return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
 
     if k.inState():
@@ -7838,6 +7710,10 @@ def masterKeyHandler (self,event,stroke=None):
     << handle per-pane bindings >>
     << handle keys without bindings >>
 #@+node:ekr.20061031131434.147:<< define vars >>
+k = self ; c = k.c ; gui = g.app.gui
+
+if event: event = gui.leoKeyEvent(event,c)
+
 w = event.widget
 char = event.char
 keysym = event.keysym
@@ -7851,20 +7727,10 @@ special_keys = (
     'Shift_L','Shift_R',
     'Win_L','Win_R',
 )
-    
-#@-node:ekr.20061031131434.147:<< define vars >>
-#@+node:ekr.20061031131434.148:<< do key traces >>
-self.master_key_count += 1
 
-if trace:
-    if (self.master_key_count % 100) == 0:
-        g.printGcSummary(trace=True)
-    g.trace(
-        # 'keysym',repr(event.keysym or ''),
-        'stroke',repr(stroke),
-        'state',state,
-        'unboundKeyAction',k.unboundKeyAction)
-#@-node:ekr.20061031131434.148:<< do key traces >>
+self.master_key_count += 1
+#@nonl
+#@-node:ekr.20061031131434.147:<< define vars >>
 #@+node:ekr.20061031131434.149:<< handle mode bindings >>
 # First, honor minibuffer bindings for all except user modes.
 if state in ('getArg','getFileName','full-command','auto-complete'):
@@ -7917,6 +7783,9 @@ else:
 key_states = ('command','insert','overwrite')
 isPlain =  k.isPlainKey(stroke)
 
+# g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
+# g.trace('button',k.masterBindingsDict.get('button'))
+
 for key,name in (
     # Order here is similar to bindtags order.
     ('command',None),
@@ -7937,8 +7806,8 @@ for key,name in (
         key in ('text','all') and g.app.gui.isTextWidget(w) or
         key in ('button','all')
     ):
-        d = k.masterBindingsDict.get(key)
-        # if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        d = k.masterBindingsDict.get(key,{})
+        # g.trace('key',key,'name',name,'stroke',stroke,'stroke in d.keys',stroke in d.keys())
         if d:
             b = d.get(stroke)
             if b:
@@ -7969,7 +7838,7 @@ else:
 def handleMiniBindings (self,event,state,stroke):
     
     k = self ; c = k.c
-    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
     
     if not state.startswith('auto-'):
         d = k.masterBindingsDict.get('mini')
@@ -8002,7 +7871,7 @@ def getArg (self,event,
     k = self ; c = k.c ; gui  = g.app.gui
     state = k.getState('getArg')
     keysym = gui.eventKeysym(event)
-    trace = c.config.getBool('trace_modes') and not g.app.unitTesting
+    trace = False or c.config.getBool('trace_modes') and not g.app.unitTesting
     if trace: g.trace(
         'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
         'completion', state==0 and completion or state!=0 and k.arg_completion)
@@ -8062,7 +7931,7 @@ def fullCommand (self,event,specialStroke=None,specialFunc=None,help=False,helpH
     state = k.getState('full-command')
     helpPrompt = 'Help for command: '
     keysym = gui.eventKeysym(event) ; ch = gui.eventChar(event)
-    trace = c.config.getBool('trace_modes')
+    trace = False or c.config.getBool('trace_modes')
     if trace: g.trace('state',state,keysym)
     if state == 0:
         k.mb_event = event # Save the full event for later.
@@ -11864,7 +11733,7 @@ def masterCommand (self,event,func,stroke,commandName=None):
 
     k = self ; c = k.c ; gui = g.app.gui
     c.setLog()
-    trace = c.config.getBool('trace_masterCommand')
+    trace = False or c.config.getBool('trace_masterCommand')
   
     c.startRedrawCount = c.frame.tree.redrawCount
     k.stroke = stroke # Set this global for general use.
@@ -11880,7 +11749,7 @@ def masterCommand (self,event,func,stroke,commandName=None):
     interesting = func is not None
     inserted = not special
 
-    if trace and interesting:
+    if trace: #  and interesting:
         g.trace(
             # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
             'w:',w and c.widget_name(w),'func:',func and func.__name__
@@ -11923,14 +11792,15 @@ def masterCommand (self,event,func,stroke,commandName=None):
         if expanded: return 'break'
 
     if func: # Func is an argument.
-        if trace: g.trace('command',commandName)
         if commandName.startswith('specialCallback'):
             # The callback function will call c.doCommand
+            if trace: g.trace('calling specialCallback for',commandName)
             val = func(event)
             # k.simulateCommand uses k.funcReturn.
             k.funcReturn = k.funcReturn or val # For unit tests.
         else:
             # Call c.doCommand directly
+            if trace: g.trace('calling command directly',commandName)
             c.doCommand(func,commandName,event=event)
         if c.exists:
             k.endCommand(event,commandName)
@@ -12333,21 +12203,17 @@ def masterKeyHandler (self,event,stroke=None):
     
     '''This is the handler for almost all key bindings.'''
 
-    k = self ; c = k.c ; gui = g.app.gui
-    if event: event = g.app.gui.leoKeyEvent(event,c)
-    
-    # g.trace('stroke',stroke,'keysym',event.keysym,'ch',repr(event.char),g.callers())
-    
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
     << define vars >>
-
-    if keysym in special_keys:
-        return None
-
-    << do key traces >>
+    if keysym in special_keys: return None
+    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    if trace:
+        g.trace('stroke:',stroke,'keysym:',event.keysym,'ch:',repr(event.char),
+            'state.kind:',k.state.kind,g.callers(4))
+        # if (self.master_key_count % 100) == 0: g.printGcSummary(trace=True)
 
     # Handle keyboard-quit first.
     if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        g.trace('special case')
         return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
 
     if k.inState():
@@ -12358,6 +12224,10 @@ def masterKeyHandler (self,event,stroke=None):
     << handle per-pane bindings >>
     << handle keys without bindings >>
 #@+node:ekr.20061031131434.147:<< define vars >>
+k = self ; c = k.c ; gui = g.app.gui
+
+if event: event = gui.leoKeyEvent(event,c)
+
 w = event.widget
 char = event.char
 keysym = event.keysym
@@ -12371,20 +12241,10 @@ special_keys = (
     'Shift_L','Shift_R',
     'Win_L','Win_R',
 )
-    
-#@-node:ekr.20061031131434.147:<< define vars >>
-#@+node:ekr.20061031131434.148:<< do key traces >>
-self.master_key_count += 1
 
-if trace:
-    if (self.master_key_count % 100) == 0:
-        g.printGcSummary(trace=True)
-    g.trace(
-        # 'keysym',repr(event.keysym or ''),
-        'stroke',repr(stroke),
-        'state',state,
-        'unboundKeyAction',k.unboundKeyAction)
-#@-node:ekr.20061031131434.148:<< do key traces >>
+self.master_key_count += 1
+#@nonl
+#@-node:ekr.20061031131434.147:<< define vars >>
 #@+node:ekr.20061031131434.149:<< handle mode bindings >>
 # First, honor minibuffer bindings for all except user modes.
 if state in ('getArg','getFileName','full-command','auto-complete'):
@@ -12437,6 +12297,9 @@ else:
 key_states = ('command','insert','overwrite')
 isPlain =  k.isPlainKey(stroke)
 
+# g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
+# g.trace('button',k.masterBindingsDict.get('button'))
+
 for key,name in (
     # Order here is similar to bindtags order.
     ('command',None),
@@ -12457,8 +12320,8 @@ for key,name in (
         key in ('text','all') and g.app.gui.isTextWidget(w) or
         key in ('button','all')
     ):
-        d = k.masterBindingsDict.get(key)
-        # if trace: g.trace(g.app.gui.isTextWidget(w),w_name,key,name,d and len(d.keys()))
+        d = k.masterBindingsDict.get(key,{})
+        # g.trace('key',key,'name',name,'stroke',stroke,'stroke in d.keys',stroke in d.keys())
         if d:
             b = d.get(stroke)
             if b:
@@ -12489,7 +12352,7 @@ else:
 def handleMiniBindings (self,event,state,stroke):
     
     k = self ; c = k.c
-    trace = c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
     
     if not state.startswith('auto-'):
         d = k.masterBindingsDict.get('mini')
@@ -14329,7 +14192,72 @@ def moveUpOrDownHelper (self,event,direction,extend):
 #@-node:ekr.20070204123507:Fixed recent bug in next-line command
 #@+node:ekr.20070212160231:Made standalone plugins manager work again
 #@-node:ekr.20070212160231:Made standalone plugins manager work again
+#@+node:ekr.20061127171128:Fixed wiki markup bug
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3994218
+By: rich_ries
+
+Leo 4.4.2.1 (also seen in 4.4 final)
+
+I was commenting some code, using the markup marks for various emphases. When
+I went back and moved the cursor over the first two characters (the hidden markup
+characters) of the line, I got the following error message:
+
+===========================================================
+exception executing command
+Traceback (most recent call last):
+
+  File "...leoCommands.py",line 264, in doCommand
+    val = command(event)
+
+  File "...leoEditCommands.py", line 3703, in nextLine
+    g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
+
+  File "...leoEditCommands.py", line 3314, in moveUpOrDownHelper
+    txt = w.get( 'insert linestart', 'insert lineend' )
+
+TypeError: unpack non-sequence
+===========================================================
+
+I did not get this when moving the cursor over the visible characters.
+
+@color
+#@nonl
+#@-node:ekr.20061127171128:Fixed wiki markup bug
 #@-node:ekr.20070129082731.1:Bugs
+#@+node:ekr.20070217114542:Features
+#@+node:ekr.20070216105848:Warn on dubious section brackets
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4162357
+
+@color
+#@nonl
+#@+node:ekr.20041005105605.199:hasSectionName
+def findSectionName(self,s,i):
+    
+    end = s.find('\n',i)
+    if end == -1:
+        n1 = s.find("<<",i)
+        n2 = s.find(">>",i)
+    else:
+        n1 = s.find("<<",i,end)
+        n2 = s.find(">>",i,end)
+        
+    ok = -1 < n1 < n2
+    
+    # New in Leo 4.4.3: warn on extra brackets.
+    if ok:
+        for ch,j in (('<',n1+2),('>',n2+2)):
+            if g.match(s,j,ch):
+                line = g.get_line(s,i)
+                g.es('dubious brackets in %s' % line)
+                break
+
+    return ok, n1, n2
+#@-node:ekr.20041005105605.199:hasSectionName
+#@-node:ekr.20070216105848:Warn on dubious section brackets
+#@-node:ekr.20070217114542:Features
 #@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 porjects
 #@-all
 #@nonl

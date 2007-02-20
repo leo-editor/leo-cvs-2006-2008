@@ -154,13 +154,6 @@ class tkinterGui(leoGui.leoGui):
         else: # Works in Python 2.3.  Closes Python window.
             self.root.quit()
     #@-node:ekr.20031218072017.4051:destroySelf
-    #@+node:ekr.20031218072017.4052:finishCreate (not used: must be present)
-    def finishCreate (self):
-        
-        pass
-        
-        # g.trace('g.app.gui')
-    #@-node:ekr.20031218072017.4052:finishCreate (not used: must be present)
     #@+node:ekr.20031218072017.4053:killGui (not used)
     def killGui(self,exitFlag=True):
         

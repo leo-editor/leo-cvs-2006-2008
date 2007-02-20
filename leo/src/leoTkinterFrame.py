@@ -3726,36 +3726,28 @@ class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
                 # style  = wx.FONTSTYLE_NORMAL,
                 # weight = wx.FONTWEIGHT_NORMAL,)
     #@-node:ekr.20070213170836:plainTextWidget.__init__
-    #@+node:ekr.20070213170937:bindings
-    if 0:
-        # Specify the names of widget-specific methods.
-        # These particular names are the names of wx.TextCtrl methods.
-        
-        def _appendText(self,s):            return self.widget.insert(s)
-        def _get(self,i,j):                 return self.widget.get(i,j)
-        def _getAllText(self):              return self.widget.get('1.0','end')
-        def _getFocus(self):                return self.widget.focus_get()
-        def _getInsertPoint(self):          return self.widget.index('insert')
-        def _getLastPosition(self):         return self.widget.index('end')
-        def _getSelectedText(self):         return self.widget.get('sel.start','sel.end')
-        def _getSelectionRange(self):       return self.widget.index('sel.start'),self.widget.index('sel.end')
-        def _hitTest(self,pos):             pass ###
-        def _insertText(self,i,s):          return self.widget.insert(i,s)
-        def _scrollLines(self,n):           pass ###
-        def _see(self,i):                   return self.widget.see(i)
-        def _setAllText(self,s):            self.widget.delete('1.0','end') ; self.widget.insert('1.0',s)
-        def _setBackgroundColor(self,color): return self.widget.configure(background=color)
-        def _setFocus(self):                return self.widget.focus_set()
-        def _setInsertPoint(self,i):        return self.widget.mark_set('insert',i)
-        # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
-    #@-node:ekr.20070213170937:bindings
-    #@+node:ekr.20070213170402:To be removed
-    # def bind (self,*args,**keys):       Tk.Text.bind(self,*args,**keys)
-    # def index (self,*args,**keys):      Tk.Text.index(self,*args,**keys)
-    # def search (self,*args,**keys):     Tk.Text.search(self,*args,**keys)
-    # def tag_config (self,*args,**keys): Tk.Text.tag_config(self,*args,**keys)
-    # def tag_delete (self,*args,**keys): Tk.Text.tag_delete(self,*args,**keys)
-    #@-node:ekr.20070213170402:To be removed
+    #@+node:ekr.20070213170937:bindings (not used)
+    # Specify the names of widget-specific methods.
+    # These particular names are the names of wx.TextCtrl methods.
+    
+    # def _appendText(self,s):            return self.widget.insert(s)
+    # def _get(self,i,j):                 return self.widget.get(i,j)
+    # def _getAllText(self):              return self.widget.get('1.0','end')
+    # def _getFocus(self):                return self.widget.focus_get()
+    # def _getInsertPoint(self):          return self.widget.index('insert')
+    # def _getLastPosition(self):         return self.widget.index('end')
+    # def _getSelectedText(self):         return self.widget.get('sel.start','sel.end')
+    # def _getSelectionRange(self):       return self.widget.index('sel.start'),self.widget.index('sel.end')
+    # def _hitTest(self,pos):             pass ###
+    # def _insertText(self,i,s):          return self.widget.insert(i,s)
+    # def _scrollLines(self,n):           pass ###
+    # def _see(self,i):                   return self.widget.see(i)
+    # def _setAllText(self,s):            self.widget.delete('1.0','end') ; self.widget.insert('1.0',s)
+    # def _setBackgroundColor(self,color): return self.widget.configure(background=color)
+    # def _setFocus(self):                return self.widget.focus_set()
+    # def _setInsertPoint(self,i):        return self.widget.mark_set('insert',i)
+    # # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
+    #@-node:ekr.20070213170937:bindings (not used)
     #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
     #@+node:ekr.20061117085824:w.toGuiIndex
     def toGuiIndex (self,i):
@@ -4026,6 +4018,13 @@ class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
         
         Tk.Text.configure(w,state=state)
     #@-node:ekr.20061113151148.20:setAllText
+    #@+node:ekr.20070218122857:setBackgroundColor
+    def setBackgroundColor (self,color):
+        
+        w = self
+        w.configure(background=color)
+    #@nonl
+    #@-node:ekr.20070218122857:setBackgroundColor
     #@+node:ekr.20061113151148.21:setInsertPoint
     def setInsertPoint (self,i): # tkTextWidget.
     

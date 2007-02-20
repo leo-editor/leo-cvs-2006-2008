@@ -1749,71 +1749,8 @@ class leoTkinterTree (leoFrame.leoTree):
         if ch in ('\n','\r'):
             self.endEditLabel() # Now calls self.onHeadChanged.
     #@-node:ekr.20051026083544.2:updateHead
-    #@+node:ekr.20040803072955.91:onHeadChanged
-    # Tricky code: do not change without careful thought and testing.
-    
-    def onHeadChanged (self,p,undoType='Typing'):
-        
-        '''Officially change a headline.
-        Set the old undo text to the previous revert point.'''
-        
-        c = self.c ; u = c.undoer ; w = c.edit_widget(p)
-        if not w: return
-        
-        ch = '\r' # New in 4.4: we only report the final keystroke.
-        if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
-            return # The hook claims to have handled the event.
-    
-        s = w.getAllText()
-        #@    << truncate s if it has multiple lines >>
-        #@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
-        # Remove one or two trailing newlines before warning of truncation.
-        for i in (0,1):
-            if s and s[-1] == '\n':
-                if len(s) > 1: s = s[:-1]
-                else: s = ''
-        
-        # Warn if there are multiple lines.
-        i = s.find('\n')
-        if i > -1:
-            # g.trace(i,len(s),repr(s))
-            g.es("Truncating headline to one line",color="blue")
-            s = s[:i]
-        
-        limit = 1000
-        if len(s) > limit:
-            g.es("Truncating headline to %d characters" % (limit),color="blue")
-            s = s[:limit]
-        
-        s = g.toUnicode(s or '',g.app.tkEncoding)
-        #@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
-        #@nl
-        c.beginUpdate()
-        try:
-            # Make the change official, but undo to the *old* revert point.
-            oldRevert = self.revertHeadline
-            changed = s != oldRevert
-            self.revertHeadline = s
-            p.initHeadString(s)
-            # if self.trace_edit and not g.app.unitTesting:
-                # if changed:
-                    # g.trace('changed: old',repr(oldRevert),'new',repr(s))
-            if changed:
-                undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
-                if not c.changed: c.setChanged(True)
-                dirtyVnodeList = p.setDirty()
-                u.afterChangeNodeContents(p,undoType,undoData,
-                    dirtyVnodeList=dirtyVnodeList)
-        finally:
-            c.endUpdate(scroll=False) # New in 4.4.1
-            if changed:
-                if self.stayInTree:
-                    c.treeWantsFocus()
-                else:
-                    c.bodyWantsFocus()
-       
-        g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
-    #@-node:ekr.20040803072955.91:onHeadChanged
+    #@+node:ekr.20070220085355:onHeadChanged is now in the base class
+    #@-node:ekr.20070220085355:onHeadChanged is now in the base class
     #@-node:ekr.20040803072955.90:head key handlers
     #@+node:ekr.20040803072955.80:Icon Box...
     #@+node:ekr.20040803072955.81:onIconBoxClick
