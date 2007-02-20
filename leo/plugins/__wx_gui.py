@@ -1319,7 +1319,7 @@ class baseTextWidget (wx.EvtHandler):
         keycode = event.GetKeyCode()
         event.leoWidget = self
         keysym = g.app.gui.eventKeysym(event)
-        # g.trace('text: keycode %3s keysym %s' % (keycode,keysym))
+        g.trace('text: keycode %3s keysym %s' % (keycode,keysym))
         if keysym:
             c.k.masterKeyHandler(event,stroke=keysym)
     #@nonl
@@ -1857,7 +1857,9 @@ class headlineWidget (baseTextWidget):
     #@+node:ekr.20070209111155:wx widget bindings
     def _appendText(self,s):            self.s = self.s + s
     def _get(self,i,j):                 return self.s[i:j]
-    def _getAllText(self):              return self.s
+    def _getAllText(self):
+        # g.trace(self.s)
+        return self.s
     def _getFocus(self):                return self
     def _getInsertPoint(self):          return self.ins
     def _getLastPosition(self):         return len(self.s)
@@ -1865,9 +1867,8 @@ class headlineWidget (baseTextWidget):
     def _getSelectionRange(self):       return self,sel
     def _hitTest(self,pos):             pass
     def _insertText(self,i,s):          self.s = self.s[:i] + s + self.s[i:]
-    # def _replace(self,i,j,s):           self.s = self.s[:i] + s + self.s[j:]
     def _see(self,i):                   pass
-    def _setAllText(self,s):            self.s = s
+    def _setAllText(self,s):            self.s = s # ; g.trace(s)
     def _setBackgroundColor(self,color): pass
     def _setFocus(self):                pass
     def _setInsertPoint(self,i):        self.ins = i
@@ -3100,6 +3101,9 @@ class wxGui(leoGui.leoGui):
                 char = self.getShiftChar(char)
             else:
                 char = self.getUnshiftChar(char)
+                
+        # Note: this must be Key- (not Key+) to match the corresponding Tk hack.
+        if alt and char.isdigit(): char = 'Key-' + char
     
         # Create a value compatible with Leo's core.
         val = (
@@ -6154,11 +6158,6 @@ class wxLeoTree (leoFrame.leoTree):
     def onTreeBeginLabelEdit(self,event):
         
         pass
-    
-        # # Disallow editing of the dummy root node.
-        # id = event.GetItem()
-        # if id == self.root_id:
-            # event.Veto()
     #@nonl
     #@-node:edream.110203113231.286:onTreeBeginLabelEdit
     #@+node:edream.110203113231.287:onTreeEndLabelEdit
@@ -6168,10 +6167,16 @@ class wxLeoTree (leoFrame.leoTree):
     
         c = self.c ; tree = self.treeCtrl
         id = event.GetItem()
-        s = tree.GetItemText(id)
+        s = event.GetLabel()
         p = self.treeCtrl.GetItemData(id).GetData()
+        h = p.headString()
         
-        if s != p.headString():
+        # for p2 in c.allNodes_iter():
+            # if not p2.equal(p) and p2.v.t == p.v.t:
+                # redraw = True ; break
+        # else: redraw = False
+    
+        if s != h:
             c.beginUpdate()
             try:
                 c.setHeadString(p,s)
@@ -6454,6 +6459,8 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:ekr.20061115172306:tree.select
     #@+node:ekr.20050719121701.2:endEditLabel
     def endEditLabel (self):
+        
+        g.trace(self.c.currentPosition())
         
         self.c.frame.bodyWantsFocus()
     #@-node:ekr.20050719121701.2:endEditLabel
