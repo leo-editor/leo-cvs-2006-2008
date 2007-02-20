@@ -1319,7 +1319,7 @@ class baseTextWidget (wx.EvtHandler):
         keycode = event.GetKeyCode()
         event.leoWidget = self
         keysym = g.app.gui.eventKeysym(event)
-        # g.trace('%25s keycode %3s keysym %s' % (self,keycode,keysym))
+        # g.trace('text: keycode %3s keysym %s' % (keycode,keysym))
         if keysym:
             c.k.masterKeyHandler(event,stroke=keysym)
     #@nonl
@@ -4964,7 +4964,7 @@ class wxLeoLog (leoFrame.leoLog):
     def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
     
         nb = self.nb
-        g.trace(tabName)
+        # g.trace(tabName)
         
         if createText:
             win = logFrame = wx.Panel(nb)
@@ -5219,7 +5219,6 @@ class wxLeoLog (leoFrame.leoLog):
 class wxLeoMenu (leoMenu.leoMenu):
     
     #@    @+others
-    #@+node:ekr.20070125124900:Birth
     #@+node:edream.111303095242.3:  wxLeoMenu.__init__
     def __init__ (self,frame):
         
@@ -5235,6 +5234,12 @@ class wxLeoMenu (leoMenu.leoMenu):
         self.menuDict = {}
     #@nonl
     #@-node:edream.111303095242.3:  wxLeoMenu.__init__
+    #@+node:ekr.20070125124900:Accelerators
+    #@+at
+    # Accelerators are NOT SHOWN when the user opens the menu with the mouse!
+    # This is a wx bug.
+    #@-at
+    #@nonl
     #@+node:ekr.20061118203148:createAccelLabel
     def createAccelLabel (self,keys):
         
@@ -5245,44 +5250,45 @@ class wxLeoMenu (leoMenu.leoMenu):
         accel = keys.get('accelerator')
         ch = 0 <= underline < len(label) and label[underline] or ''
         if ch: label = label[:underline] + '&' + label[underline:]
-        
-        # The accelerator actually creates a key binding!
-        # This must be cancelled later, or all sorts of bad things will happen.
-        ###if accel: label = label + '\t' + accel
-        
-        # g.trace(label)
+        if accel:
+            # The accelerator actually creates a key binding by default.
+            # The space following the tab prevents the binding.
+            # *** Accelerators are NOT SHOWN when the user opens the menu with the mouse!
+            accel = accel.replace('Alt+','Alt-').replace('Ctrl+','Ctrl-').replace('Shift+','Shift-')
+            label = label + '\t' + accel
     
+        # g.trace(label)
         return ch,label
     #@-node:ekr.20061118203148:createAccelLabel
-    #@+node:ekr.20061118203148.1:createAccelData
+    #@+node:ekr.20061118203148.1:createAccelData (not needed)
     def createAccelData (self,menu,ch,accel,id,label):
         
-        return ###
-    
         d = self.acceleratorDict
         aList = d.get(menu,[])
         data = ch,accel,id,label
         aList.append(data)
         d [menu] = aList
-    #@-node:ekr.20061118203148.1:createAccelData
-    #@+node:ekr.20061118194416:createAcceleratorTables
+    #@-node:ekr.20061118203148.1:createAccelData (not needed)
+    #@+node:ekr.20061118194416:createAcceleratorTables (not needed)
     def createAcceleratorTables (self):
         
-        pass
+        return ###
         
-        # d = self.acceleratorDict
-        # entries = []
-        # for menu in d.keys():
-            # aList = d.get(menu)
-            # for data in aList:
-                # ch,accel,id,label = data
-                # if ch:
-                    # entry = wx.AcceleratorEntry(wx.ACCEL_NORMAL,ord(ch),id)
-                    # entries.append(entry)
-        # table = wx.AcceleratorTable(entries)
-        # self.menuBar.SetAcceleratorTable(table)
-    #@-node:ekr.20061118194416:createAcceleratorTables
-    #@-node:ekr.20070125124900:Birth
+        d = self.acceleratorDict
+        entries = []
+        for menu in d.keys():
+            aList = d.get(menu)
+            for data in aList:
+                ch,accel,id,label = data
+                if ch:
+                    # g.trace(ch,id,label)
+                    entry = wx.AcceleratorEntry(wx.ACCEL_NORMAL,ord(ch),id)
+                    entries.append(entry)
+        table = wx.AcceleratorTable(entries)
+        self.menuBar.SetAcceleratorTable(table)
+    #@-node:ekr.20061118194416:createAcceleratorTables (not needed)
+    #@-node:ekr.20070125124900:Accelerators
+    #@+node:edream.111603104327:Menu methods (Tk names)
     #@+node:ekr.20061106062514:Not called
     def bind (self,bind_shortcut,callback):
         
@@ -5296,7 +5302,6 @@ class wxLeoMenu (leoMenu.leoMenu):
         
         g.trace(menu)
     #@-node:ekr.20061106062514:Not called
-    #@+node:edream.111603104327:Menu methods (Tk names)
     #@+node:edream.111303111942.1:add_cascade
     def add_cascade (self,parent,label,menu,underline):
     
@@ -5333,7 +5338,7 @@ class wxLeoMenu (leoMenu.leoMenu):
         key = (menu,label),
         self.menuDict[key] = id # Remember id 
         wx.EVT_MENU(self.frame.top,id,wxMenuCallback)
-        if ch or accel:
+        if ch:
             self.createAccelData(menu,ch,accel,id,label)
     
         
@@ -5426,8 +5431,7 @@ class wxLeoMenu (leoMenu.leoMenu):
     
         frame.top.SetMenuBar(menuBar)
         
-        g.trace('cancel acccel table')
-        self.c.frame.top.SetAcceleratorTable(wx.NullAcceleratorTable)
+        menuBar.SetAcceleratorTable(wx.NullAcceleratorTable)
     #@-node:edream.111303103457.2:createMenuBar
     #@+node:edream.111603112846.1:createOpenWithMenuFromTable (not ready yet)
     #@+at 
@@ -5874,7 +5878,7 @@ class wxLeoTree (leoFrame.leoTree):
         
         self.redrawCount += 1
         self.idDict = {}
-        g.trace(self.redrawCount) # ,'c.fileName',self.c.shortFileName(),'idDict',id(self.idDict))
+        # g.trace(self.redrawCount)
     
         self.drawing = True # Tell event handlers not to call us.
         try:
@@ -6291,7 +6295,7 @@ class wxLeoTree (leoFrame.leoTree):
         
     def setFocus (self):
         
-        g.trace('tree')
+        # g.trace('tree')
         self.treeCtrl.SetFocus()
         
     SetFocus = setFocus
