@@ -2598,6 +2598,7 @@ class editCommandsClass (baseEditCommandsClass):
         #@nonl
         #@-node:ekr.20061103114242:<< set local vars >>
         #@nl
+        # g.trace('ch',repr(ch))
         if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
             return "break" # The hook claims to have handled the event.
         if ch == '\t':
@@ -2638,7 +2639,7 @@ class editCommandsClass (baseEditCommandsClass):
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
     #@nonl
-    #@+node:ekr.20051026171121:insertNewlineHelper (passed)
+    #@+node:ekr.20051026171121:insertNewlineHelper
     def insertNewlineHelper (self,w,oldSel,undoType):
     
         c = self.c ; p = c.currentPosition()
@@ -2663,7 +2664,7 @@ class editCommandsClass (baseEditCommandsClass):
         
         w.seeInsertPoint()
     #@nonl
-    #@-node:ekr.20051026171121:insertNewlineHelper (passed)
+    #@-node:ekr.20051026171121:insertNewlineHelper
     #@+node:ekr.20060804095512:initBracketMatcher
     def initBracketMatcher (self,c):
     
@@ -2708,7 +2709,7 @@ class editCommandsClass (baseEditCommandsClass):
         
         w.flashCharacter(i,bg,fg,flashes,delay)
     #@-node:ekr.20060627091557:flashCharacter
-    #@+node:ekr.20051027172949:updateAutomatchBracket (passed)
+    #@+node:ekr.20051027172949:updateAutomatchBracket
     def updateAutomatchBracket (self,p,w,ch,oldSel):
     
         # assert ch in ('(',')','[',']','{','}')
@@ -2736,10 +2737,11 @@ class editCommandsClass (baseEditCommandsClass):
             else:
                 if i != j: w.delete(i,j)
                 w.insert(i,ch)
+                w.setInsertPoint(i+1)
                                                                 
     #@nonl
-    #@-node:ekr.20051027172949:updateAutomatchBracket (passed)
-    #@+node:ekr.20051026171121.1:udpateAutoIndent (passed)
+    #@-node:ekr.20051027172949:updateAutomatchBracket
+    #@+node:ekr.20051026171121.1:udpateAutoIndent
     def updateAutoIndent (self,p,w):
     
         c = self.c ; d = g.scanDirectives(c,p)
@@ -2773,8 +2775,9 @@ class editCommandsClass (baseEditCommandsClass):
         if ws:
             i = w.getInsertPoint()
             w.insert(i,ws)
-    #@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
-    #@+node:ekr.20051026092433:updateTab (passed)
+            w.setInsertPoint(i+1)
+    #@-node:ekr.20051026171121.1:udpateAutoIndent
+    #@+node:ekr.20051026092433:updateTab
     def updateTab (self,p,w):
     
         c = self.c
@@ -2782,13 +2785,13 @@ class editCommandsClass (baseEditCommandsClass):
         tab_width = d.get("tabwidth",c.tab_width)
         i,j = w.getSelectionRange()
             # Returns insert point if no selection, with i <= j.
-        
     
         if i != j:
             w.delete(i,j)
     
         if tab_width > 0:
             w.insert(i,'\t')
+            ins = i+1
         else:
             # Get the preceeding characters.
             s = w.getAllText()
@@ -2798,8 +2801,13 @@ class editCommandsClass (baseEditCommandsClass):
             # Compute n, the number of spaces to insert.
             width = g.computeWidth(s2,tab_width)
             n = abs(tab_width) - (width % abs(tab_width))
+            # g.trace('n',n)
             w.insert(i,' ' * n)
-    #@-node:ekr.20051026092433:updateTab (passed)
+            ins = i+n
+    
+        w.setSelectionRange(ins,ins,insert=ins)
+    #@nonl
+    #@-node:ekr.20051026092433:updateTab
     #@-node:ekr.20051125080855:selfInsertCommand & helpers
     #@-node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20050920084036.79:info...

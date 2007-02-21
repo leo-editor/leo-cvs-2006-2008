@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.407755581669">
-	<global_window_position top="10" left="322" height="831" width="864"/>
+	<global_window_position top="109" left="225" height="811" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -587,7 +587,7 @@
 </v>
 </v>
 <v t="ekr.20060612102055"><vh>Chapter 13: Writing Plugins</vh>
-<v t="ekr.20060612103240"><vh>@rst html\writingPlugins.html</vh>
+<v t="ekr.20060612103240" a="E"><vh>@rst html\writingPlugins.html</vh>
 <v t="ekr.20060612103824"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050903075144"><vh>Overview</vh></v>
 <v t="EKR.20040524104904.224"><vh>Important security warnings</vh></v>
@@ -3025,8 +3025,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070216095914" a="E"><vh>Chapter 5: Using Leo's Commands</vh>
-<v t="ekr.20070216095914.1" a="V"><vh>@rst html\commands.tex</vh>
+<v t="ekr.20070216095914"><vh>Chapter 5: Using Leo's Commands</vh>
+<v t="ekr.20070216095914.1"><vh>@rst html\commands.tex</vh>
 <v t="ekr.20070216095914.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070216095914.3"><vh>The minibuffer</vh>
 <v t="ekr.20070216095914.4"><vh>Basic editing commands</vh></v>
@@ -19209,10 +19209,11 @@ Hook name (tag argument)      Stop?    When called                         Keys 
     the editing of a headline, and ch is always '\r', regardless of platform.</t>
 <t tx="ekr.20050903075144">A **plugin** is a Python file that appears in Leo's plugin directory. Plugins
 are a powerful way of enhancing and customizing Leo. The file
-``pluginsManager.txt`` in the plugins directory controls tells which plugins are
-enabled. Midway during startup, Leo imports all enabled plugins. Plugins can
-register functions called **hooks** that are to be run at specified times.
-Plugins can:
+``pluginsManager.txt`` controls tells which plugins are enabled. Leo looks for
+``pluginsManager.txt`` first in the users ``HOME`` directory, and then in Leo's
+plugins directory. Midway during startup, Leo imports all enabled plugins.
+Plugins can register functions called **hooks** that are to be run at specified
+times. Plugins can:
 
 - add new commands
 - modify how existing commands work

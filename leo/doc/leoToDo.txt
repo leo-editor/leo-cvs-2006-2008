@@ -2,6 +2,40 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20061130084909:Improve What's special whitepaper
+@nocolor
+
+- Answer the question: how can Leo help me with programming.
+#@nonl
+#@-node:ekr.20061130084909:Improve What's special whitepaper
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@+node:ekr.20070220082124.1:Before next release
+#@+node:ekr.20070220090145:Fix crasher in rclicker plugin
+
+Traceback (most recent call last):
+
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2474, in doHook
+    return f(tag,keywords)
+
+  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 92, in doPlugins
+    return doHandlersForTag(tag,keywords)
+
+  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 70, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
+
+  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 49, in callTagHandler
+    result = handler(tag,keywords)
+
+  File "C:\prog\tigris-cvs\leo\plugins\rClick.py", line 156, in rClicker
+    n0,p0=ind0.split('.',2)
+
+AttributeError: 'int' object has no attribute 'split'
+
+#@-node:ekr.20070220090145:Fix crasher in rclicker plugin
+#@+node:ekr.20070220082216:Test with Linux
+#@-node:ekr.20070220082216:Test with Linux
+#@+node:ekr.20070218144114:Improve docs
 #@+node:ekr.20070215093739:Improve Leo's getting started page
 @nocolor
 
@@ -42,6 +76,161 @@ administrator or another user).
 
 Hope this helps to improve the installation experience for novices...
 #@-node:ekr.20070215093739:Improve Leo's getting started page
+#@+node:ekr.20070218143918:Improve Windows installation instructions
+This section is way too confusing:
+    
+Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to install Leo on Windows
+#@nonl
+#@-node:ekr.20070218143918:Improve Windows installation instructions
+#@-node:ekr.20070218144114:Improve docs
+#@+node:ekr.20070202080824:Enable more plugins by default
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4134565
+
+I have been talking more and more people lately into giving Leo a try. These
+are end-users, not programmer-type people. One of the problems I find is that
+many features users expect as standard are plug-ins that are disabled at
+startup.
+
+From my experience, some of the plug-ins that people seem to want right away
+are Cleo, Image, Maximize windows, Export to HTML, and Navibuttons.
+
+Also, everyone seems to ask for spell checking, which I know is a separate install
+(I haven't tried putting it in). Perhaps even that could be included?
+
+I think it is a lot easier for power users to turn off things they don't like
+than less sophisticated users to turn them on. However, I realize that each
+additional plug-in means a longer load time and large memory footprint.
+
+-------------------
+
+From: Rich
+
+These are the plugins that I use often:
+Add directives & color markup
+Cleo 3
+Chapters 2 (unless Chapters works with newer releases, I will stick with Leo 4.4 final)
+Group Operations
+Nav_buttons
+Open_with
+RClick
+Universal Scrolling
+
+These are the plugins that I do not use too often:
+New Buttons
+UNL
+
+The following are plugins I would like to use:
+Edit Attributes
+Conceptual Sort
+Labels
+
+"Labels" has a nice assortment of commands; however the labels are (1) not saved
+between sessions, and (2) cannot be seen by "Edit Attributes."
+I'd be more inclined to use "Edit Attributes" and "C-Sort" IF there was some
+way to SEE the attributes (this goes for "Labels," as well).
+
+
+---- Enable Aspell automatically if possible.
+
+#@-node:ekr.20070202080824:Enable more plugins by default
+#@+node:ekr.20070124091018:Recent crash (problem with pmw baloons)
+Error: 1
+TclError Exception in Tk callback
+  Function: <bound method Balloon._destroy of <_Pmw.Pmw_1_2.lib.PmwBalloon.Balloon instance at 0x014C1850>> (type: <type 'instancemethod'>)
+  Args: (<Tkinter.Event instance at 0x0542C788>,)
+  Event type: DestroyNotify (type num: 17)
+Traceback (innermost last):
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
+    return apply(self.func, args)
+  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBalloon.py", line 283, in _destroy
+    self.withdraw()
+  File "<string>", line 1, in withdraw
+    None
+  File "C:\Python24\lib\lib-tk\Tkinter.py", line 1541, in wm_withdraw
+    return self.tk.call('wm', 'withdraw', self._w)
+TclError: bad window path name ".14557752.18889184.18889584.21763816.21764336"
+
+================================================
+  Event contents:
+    char: ??
+    delta: 0
+    height: ??
+    keycode: ??
+    keysym: ??
+    keysym_num: ??
+    num: ??
+    send_event: False
+    serial: 53150
+    state: ??
+    time: ??
+    type: 17
+    widget: .14557752.18889184.18889584.21763816
+    width: ??
+    x: ??
+    x_root: ??
+    y: ??
+    y_root: ??
+
+#@-node:ekr.20070124091018:Recent crash (problem with pmw baloons)
+#@+node:ekr.20070126072723:pychecker errors 3
+#leoGlobals.py:3933: No module attribute (CODESET) found
+#leoGlobals.py:118: No module attribute (leo_config_directory) found
+#leoGlobals.py:4494: No module attribute (mtime) found
+#leoGlobals.py:5112: No global (p) found
+#leoGlobals.py:5626: No global (c) found
+
+leoFind.py:1465: Redefining attribute (changeAllCommand) original line (1454)
+
+leoFind.py:248: No class attribute (svarDict) found
+leoFind.py:253: No class attribute (find_ctrl) found
+leoFind.py:254: No class attribute (change_ctrl) found
+leoFind.py:257: No class attribute (change_ctrl) found
+leoFind.py:257: No class attribute (find_ctrl) found
+leoFind.py:272: No class attribute (svarDict) found
+leoFind.py:274: No class attribute (svarDict) found
+leoFind.py:277: No class attribute (svarDict) found
+leoFind.py:285: No class attribute (svarDict) found
+leoFind.py:287: No class attribute (svarDict) found
+leoFind.py:290: No class attribute (svarDict) found
+leoFind.py:1109: No class attribute (find_ctrl) found
+leoFind.py:1128: No class attribute (frame) found
+leoFind.py:1358: No class attribute (svarDict) found
+leoFind.py:1362: No class attribute (svarDict) found
+leoFind.py:1369: No class attribute (find_ctrl) found
+leoFind.py:1376: No class attribute (change_ctrl) found
+leoFind.py:1412: Invalid arguments to (createFrame), got 1, expected 0
+
+leoKeys.py:1177: Local variable (b) not used
+leoKeys.py:2364: No module attribute (initAllEditCommanders) found
+leoKeys.py:2927: Local variable (gui) not used
+leoKeys.py:3756: No global (c) found
+leoFind.py:1398: No module attribute (__init__) found
+
+leoTkinterFind.py:389: Overridden method (createFrame) doesn't match signature in class (leoFind.findTab)
+
+leoTkinterMenu.py:145: Overridden method (insert) doesn't match signature in class (leoMenu.leoMenu)
+
+leoTkinterFrame.py:1944: Object (body) has no attribute (leo_p)
+
+leoTkinterGui.py:444: Overridden method (eventChar) doesn't match signature in class (leoGui.leoGui)
+leoTkinterGui.py:448: Overridden method (eventKeysym) doesn't match signature in class (leoGui.leoGui)
+leoTkinterGui.py:452: Overridden method (eventWidget) doesn't match signature in class (leoGui.leoGui)
+leoTkinterGui.py:456: Overridden method (eventXY) doesn't match signature in class (leoGui.leoGui)
+
+leoEditCommands.py:1110: Local variable (pythonDir) not used
+leoEditCommands.py:1484: Local variable (gui) not used
+leoEditCommands.py:4888: No global (c) found
+
+leoEditCommands.py:7637: Local variable (gui) not used
+leoFileCommands.py:2307: No global (c) found
+
+leoImport.py:1317: Global variable (c) not defined in module scope
+
+#@-node:ekr.20070126072723:pychecker errors 3
+#@-node:ekr.20070220082124.1:Before next release
+#@+node:ekr.20070220082124.2:Before b1
 #@+node:ekr.20070211192428:(Make Leo's core gui-indenpendent)
 # To do: use baseTextWidget class.  There seem to be problems :-)
 #@nonl
@@ -2468,36 +2657,28 @@ if 0:
             # style  = wx.FONTSTYLE_NORMAL,
             # weight = wx.FONTWEIGHT_NORMAL,)
 #@-node:ekr.20070213170836:plainTextWidget.__init__
-#@+node:ekr.20070213170937:bindings
-if 0:
-    # Specify the names of widget-specific methods.
-    # These particular names are the names of wx.TextCtrl methods.
-    
-    def _appendText(self,s):            return self.widget.insert(s)
-    def _get(self,i,j):                 return self.widget.get(i,j)
-    def _getAllText(self):              return self.widget.get('1.0','end')
-    def _getFocus(self):                return self.widget.focus_get()
-    def _getInsertPoint(self):          return self.widget.index('insert')
-    def _getLastPosition(self):         return self.widget.index('end')
-    def _getSelectedText(self):         return self.widget.get('sel.start','sel.end')
-    def _getSelectionRange(self):       return self.widget.index('sel.start'),self.widget.index('sel.end')
-    def _hitTest(self,pos):             pass ###
-    def _insertText(self,i,s):          return self.widget.insert(i,s)
-    def _scrollLines(self,n):           pass ###
-    def _see(self,i):                   return self.widget.see(i)
-    def _setAllText(self,s):            self.widget.delete('1.0','end') ; self.widget.insert('1.0',s)
-    def _setBackgroundColor(self,color): return self.widget.configure(background=color)
-    def _setFocus(self):                return self.widget.focus_set()
-    def _setInsertPoint(self,i):        return self.widget.mark_set('insert',i)
-    # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
-#@-node:ekr.20070213170937:bindings
-#@+node:ekr.20070213170402:To be removed
-# def bind (self,*args,**keys):       Tk.Text.bind(self,*args,**keys)
-# def index (self,*args,**keys):      Tk.Text.index(self,*args,**keys)
-# def search (self,*args,**keys):     Tk.Text.search(self,*args,**keys)
-# def tag_config (self,*args,**keys): Tk.Text.tag_config(self,*args,**keys)
-# def tag_delete (self,*args,**keys): Tk.Text.tag_delete(self,*args,**keys)
-#@-node:ekr.20070213170402:To be removed
+#@+node:ekr.20070213170937:bindings (not used)
+# Specify the names of widget-specific methods.
+# These particular names are the names of wx.TextCtrl methods.
+
+# def _appendText(self,s):            return self.widget.insert(s)
+# def _get(self,i,j):                 return self.widget.get(i,j)
+# def _getAllText(self):              return self.widget.get('1.0','end')
+# def _getFocus(self):                return self.widget.focus_get()
+# def _getInsertPoint(self):          return self.widget.index('insert')
+# def _getLastPosition(self):         return self.widget.index('end')
+# def _getSelectedText(self):         return self.widget.get('sel.start','sel.end')
+# def _getSelectionRange(self):       return self.widget.index('sel.start'),self.widget.index('sel.end')
+# def _hitTest(self,pos):             pass ###
+# def _insertText(self,i,s):          return self.widget.insert(i,s)
+# def _scrollLines(self,n):           pass ###
+# def _see(self,i):                   return self.widget.see(i)
+# def _setAllText(self,s):            self.widget.delete('1.0','end') ; self.widget.insert('1.0',s)
+# def _setBackgroundColor(self,color): return self.widget.configure(background=color)
+# def _setFocus(self):                return self.widget.focus_set()
+# def _setInsertPoint(self,i):        return self.widget.mark_set('insert',i)
+# # def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
+#@-node:ekr.20070213170937:bindings (not used)
 #@+node:ekr.20061113151148.2:Index conversion (leoTextWidget)
 #@+node:ekr.20061117085824:w.toGuiIndex
 def toGuiIndex (self,i):
@@ -2768,6 +2949,13 @@ def setAllText (self,s): # tkTextWidget
     
     Tk.Text.configure(w,state=state)
 #@-node:ekr.20061113151148.20:setAllText
+#@+node:ekr.20070218122857:setBackgroundColor
+def setBackgroundColor (self,color):
+    
+    w = self
+    w.configure(background=color)
+#@nonl
+#@-node:ekr.20070218122857:setBackgroundColor
 #@+node:ekr.20061113151148.21:setInsertPoint
 def setInsertPoint (self,i): # tkTextWidget.
 
@@ -2875,7 +3063,7 @@ def xyToPythonIndex(self,x,y): # tkTextWidget
 #@-node:ekr.20061113151148.23:xyToGui/PythonIndex
 #@-node:ekr.20061113151148.3:Wrapper methods (leoTextWidget)
 #@-node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)
-#@+node:ekr.20070212070512.1:Later
+#@+node:ekr.20070212070512.1:Next
 #@+node:ekr.20070201111111: Create unit tests 17
 # Indices of the form %s.%s are benign because of w.rowColToGuiIndex.
 #@+node:ekr.20060417183606.1:moveLinesUp
@@ -5428,7 +5616,7 @@ def yankPop (self,event):
         w.setInsertPoint(ins)
 #@-node:ekr.20050930091642.2:yankPop
 #@-node:ekr.20070212065133:Remove Tk code from commands (later)
-#@-node:ekr.20070212070512.1:Later
+#@-node:ekr.20070212070512.1:Next
 #@+node:ekr.20070212080350:Maybe never
 #@+node:ekr.20070212080131:Font stuff in colorizer (maybe never)
 @
@@ -6110,225 +6298,9 @@ Traceback (most recent call last):
 AssertionError
 #@-node:ekr.20070214072721.5:Command failures 12
 #@-node:ekr.20070212181918.1:Fix failed unit tests 30
-#@+node:ekr.20070211184127:New organization for leoPlugins.leo?
-@nocolor
-
-- 1 .leo file per plugin.
-- Use @url nodes to refer to the individual .leo files.
-
-The drawback: harder to do mass searches/replaces.
-#@nonl
-#@-node:ekr.20070211184127:New organization for leoPlugins.leo?
-#@+node:ekr.20070124091018:Recent crash
-Error: 1
-TclError Exception in Tk callback
-  Function: <bound method Balloon._destroy of <_Pmw.Pmw_1_2.lib.PmwBalloon.Balloon instance at 0x014C1850>> (type: <type 'instancemethod'>)
-  Args: (<Tkinter.Event instance at 0x0542C788>,)
-  Event type: DestroyNotify (type num: 17)
-Traceback (innermost last):
-  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
-    return apply(self.func, args)
-  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBalloon.py", line 283, in _destroy
-    self.withdraw()
-  File "<string>", line 1, in withdraw
-    None
-  File "C:\Python24\lib\lib-tk\Tkinter.py", line 1541, in wm_withdraw
-    return self.tk.call('wm', 'withdraw', self._w)
-TclError: bad window path name ".14557752.18889184.18889584.21763816.21764336"
-
-================================================
-  Event contents:
-    char: ??
-    delta: 0
-    height: ??
-    keycode: ??
-    keysym: ??
-    keysym_num: ??
-    num: ??
-    send_event: False
-    serial: 53150
-    state: ??
-    time: ??
-    type: 17
-    widget: .14557752.18889184.18889584.21763816
-    width: ??
-    x: ??
-    x_root: ??
-    y: ??
-    y_root: ??
-
-#@-node:ekr.20070124091018:Recent crash
-#@+node:ekr.20061127171128:Fix wiki markup bug (test)
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3994218
-By: rich_ries
-
-Leo 4.4.2.1 (also seen in 4.4 final)
-
-I was commenting some code, using the markup marks for various emphases. When
-I went back and moved the cursor over the first two characters (the hidden markup
-characters) of the line, I got the following error message:
-
-===========================================================
-exception executing command
-Traceback (most recent call last):
-
-  File "...leoCommands.py",line 264, in doCommand
-    val = command(event)
-
-  File "...leoEditCommands.py", line 3703, in nextLine
-    g.app.gui.setSelectionRange(w,'end-%dc' % (len(selected)+1),'end-1c') # works
-
-  File "...leoEditCommands.py", line 3314, in moveUpOrDownHelper
-    txt = w.get( 'insert linestart', 'insert lineend' )
-
-TypeError: unpack non-sequence
-===========================================================
-
-I did not get this when moving the cursor over the visible characters.
-
-@color
-#@nonl
-#@+node:ekr.20060113105246.1:moveUpOrDownHelper
-def moveUpOrDownHelper (self,event,direction,extend):
-
-    c = self.c ; w = self.editWidget(event)
-    if not w: return
-    
-    ins = w.getInsertPoint()
-    s = w.getAllText()
-    w.seeInsertPoint()
-    
-    # Find the start of the next/prev line.
-    row,col = g.convertPythonIndexToRowCol(s,ins)
-    i,j = g.getLine(s,ins)
-    if direction == 'down':
-        i2,j2 = g.getLine(s,j+1)
-    else:
-        i2,j2 = g.getLine(s,i-1)
-
-    # The spot is the start of the line plus the column index.
-    col2 = max(0,min(col,j2-i2-1))
-    spot = i2 + col2
-    # g.trace('spot',spot,'col',col,'line',repr(s[i2:j2]))
-
-    self.extendHelper(w,extend,spot,upOrDown=True)
-#@nonl
-#@-node:ekr.20060113105246.1:moveUpOrDownHelper
-#@-node:ekr.20061127171128:Fix wiki markup bug (test)
-#@+node:ekr.20061130084909:Improve What's special whitepaper
-@nocolor
-
-- Answer the question: how can Leo help me with programming.
-#@nonl
-#@-node:ekr.20061130084909:Improve What's special whitepaper
-#@+node:ekr.20070126072723:pychecker errors 3
-#leoGlobals.py:3933: No module attribute (CODESET) found
-#leoGlobals.py:118: No module attribute (leo_config_directory) found
-#leoGlobals.py:4494: No module attribute (mtime) found
-#leoGlobals.py:5112: No global (p) found
-#leoGlobals.py:5626: No global (c) found
-
-leoFind.py:1465: Redefining attribute (changeAllCommand) original line (1454)
-
-leoFind.py:248: No class attribute (svarDict) found
-leoFind.py:253: No class attribute (find_ctrl) found
-leoFind.py:254: No class attribute (change_ctrl) found
-leoFind.py:257: No class attribute (change_ctrl) found
-leoFind.py:257: No class attribute (find_ctrl) found
-leoFind.py:272: No class attribute (svarDict) found
-leoFind.py:274: No class attribute (svarDict) found
-leoFind.py:277: No class attribute (svarDict) found
-leoFind.py:285: No class attribute (svarDict) found
-leoFind.py:287: No class attribute (svarDict) found
-leoFind.py:290: No class attribute (svarDict) found
-leoFind.py:1109: No class attribute (find_ctrl) found
-leoFind.py:1128: No class attribute (frame) found
-leoFind.py:1358: No class attribute (svarDict) found
-leoFind.py:1362: No class attribute (svarDict) found
-leoFind.py:1369: No class attribute (find_ctrl) found
-leoFind.py:1376: No class attribute (change_ctrl) found
-leoFind.py:1412: Invalid arguments to (createFrame), got 1, expected 0
-
-leoKeys.py:1177: Local variable (b) not used
-leoKeys.py:2364: No module attribute (initAllEditCommanders) found
-leoKeys.py:2927: Local variable (gui) not used
-leoKeys.py:3756: No global (c) found
-leoFind.py:1398: No module attribute (__init__) found
-
-leoTkinterFind.py:389: Overridden method (createFrame) doesn't match signature in class (leoFind.findTab)
-
-leoTkinterMenu.py:145: Overridden method (insert) doesn't match signature in class (leoMenu.leoMenu)
-
-leoTkinterFrame.py:1944: Object (body) has no attribute (leo_p)
-
-leoTkinterGui.py:444: Overridden method (eventChar) doesn't match signature in class (leoGui.leoGui)
-leoTkinterGui.py:448: Overridden method (eventKeysym) doesn't match signature in class (leoGui.leoGui)
-leoTkinterGui.py:452: Overridden method (eventWidget) doesn't match signature in class (leoGui.leoGui)
-leoTkinterGui.py:456: Overridden method (eventXY) doesn't match signature in class (leoGui.leoGui)
-
-leoEditCommands.py:1110: Local variable (pythonDir) not used
-leoEditCommands.py:1484: Local variable (gui) not used
-leoEditCommands.py:4888: No global (c) found
-
-leoEditCommands.py:7637: Local variable (gui) not used
-leoFileCommands.py:2307: No global (c) found
-
-leoImport.py:1317: Global variable (c) not defined in module scope
-
-#@-node:ekr.20070126072723:pychecker errors 3
-#@+node:ekr.20070202080824:Enable more plugins by default: make installing aspell easier
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4134565
-
-I have been talking more and more people lately into giving Leo a try. These
-are end-users, not programmer-type people. One of the problems I find is that
-many features users expect as standard are plug-ins that are disabled at
-startup.
-
-From my experience, some of the plug-ins that people seem to want right away
-are Cleo, Image, Maximize windows, Export to HTML, and Navibuttons.
-
-Also, everyone seems to ask for spell checking, which I know is a separate install
-(I haven't tried putting it in). Perhaps even that could be included?
-
-I think it is a lot easier for power users to turn off things they don't like
-than less sophisticated users to turn them on. However, I realize that each
-additional plug-in means a longer load time and large memory footprint.
-
--------------------
-
-From: Rich
-
-These are the plugins that I use often:
-Add directives & color markup
-Cleo 3
-Chapters 2 (unless Chapters works with newer releases, I will stick with Leo 4.4 final)
-Group Operations
-Nav_buttons
-Open_with
-RClick
-Universal Scrolling
-
-These are the plugins that I do not use too often:
-New Buttons
-UNL
-
-The following are plugins I would like to use:
-Edit Attributes
-Conceptual Sort
-Labels
-
-"Labels" has a nice assortment of commands; however the labels are (1) not saved
-between sessions, and (2) cannot be seen by "Edit Attributes."
-I'd be more inclined to use "Edit Attributes" and "C-Sort" IF there was some
-way to SEE the attributes (this goes for "Labels," as well).
-
-
----- Enable Aspell automatically if possible.
-
-#@-node:ekr.20070202080824:Enable more plugins by default: make installing aspell easier
+#@+node:ekr.20070220082124.3:Make installing aspell easier
+#@-node:ekr.20070220082124.3:Make installing aspell easier
+#@-node:ekr.20070220082124.2:Before b1
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070105135713:To do: 4.4.4 (new positions)
 #@+node:ekr.20070202095051:*** Get chapters working
@@ -9067,6 +9039,15 @@ other?
 #@-node:ekr.20060823105514.1:Really solid perfect import
 #@-node:ekr.20060822174843:Most important
 #@+node:ekr.20060527164612:Important 1-2 day projects
+#@+node:ekr.20070211184127:New organization for leoPlugins.leo?
+@nocolor
+
+- 1 .leo file per plugin.
+- Use @url nodes to refer to the individual .leo files.
+
+The drawback: harder to do mass searches/replaces.
+#@nonl
+#@-node:ekr.20070211184127:New organization for leoPlugins.leo?
 #@+node:ekr.20061207073104:Convert bottlenecks to pyrex code
 # To do:  actually generate Leo's bottlenecks.
 #@nonl

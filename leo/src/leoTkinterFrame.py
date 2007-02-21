@@ -173,14 +173,29 @@ class baseTextWidget:
         # g.trace(len(s),repr(s[:20]))
         w._setAllText(s)
     #@-node:ekr.20070213170721.13:deleteTextSelection
-    #@+node:ekr.20070213170721.14:event_generate (to do)
+    #@+node:ekr.20070213170721.14:event_generate (baseText)
     def event_generate(self,stroke):
         
-        w = self
+        w = self ; c = self.c
         
-        pass ## g.trace('wxTextWidget',stroke)
+        # g.trace('baseTextWidget',stroke)
+        
+        stroke = stroke.strip()
+        if stroke.startswith('<') and stroke.endswith('>'):
+            stroke = stroke[1:-1]
+            
+        class eventGenerateEvent:
+            def __init__ (self,c,w,char,keysym):
+                self.c = c
+                self.char = char
+                self.keysym = keysym
+                self.leoWidget = w
+                self.widget = w
+    
+        event = eventGenerateEvent(c,w,'',stroke)
+        c.k.masterKeyHandler(event,stroke=stroke)
     #@nonl
-    #@-node:ekr.20070213170721.14:event_generate (to do)
+    #@-node:ekr.20070213170721.14:event_generate (baseText)
     #@+node:ekr.20070213170721.15:flashCharacter (to do)
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
     
@@ -1927,75 +1942,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
     #@-node:ekr.20060210123852.1:fullyExpand/hide...Pane
     #@-node:ekr.20060209110128:Minibuffer commands... (tkFrame)
-    #@+node:ekr.20031218072017.3980:Edit Menu...
-    #@+node:ekr.20031218072017.3981:abortEditLabelCommand
-    def abortEditLabelCommand (self,event=None):
-        
-        '''End editing of a headline and revert to its previous value.'''
-        
-        frame = self ; c = frame.c ; tree = frame.tree
-        p = c.currentPosition() ; w = c.edit_widget(p)
-        
-        if g.app.batchMode:
-            c.notValidInBatchMode("Abort Edit Headline")
-            return
-            
-        # g.trace('isEditing',p == tree.editPosition(),'revertHeadline',repr(tree.revertHeadline))
-            
-        if w and p == tree.editPosition():
-            # Revert the headline text.
-            w.delete(0,"end")
-            w.insert("end",tree.revertHeadline)
-            p.initHeadString(tree.revertHeadline)
-            c.beginUpdate()
-            try:
-                c.endEditing()
-                c.selectPosition(p)
-            finally:
-                c.endUpdate()
-    #@-node:ekr.20031218072017.3981:abortEditLabelCommand
-    #@+node:ekr.20031218072017.3982:endEditLabelCommand
-    def endEditLabelCommand (self,event=None):
-        
-        '''End editing of a headline and move focus to the body pane.'''
-    
-        frame = self ; c = frame.c
-        if g.app.batchMode:
-            c.notValidInBatchMode("End Edit Headline")
-        else:
-            c.endEditing()
-            if c.config.getBool('stayInTreeAfterEditHeadline'):
-                c.treeWantsFocusNow()
-            else:
-                c.bodyWantsFocusNow() 
-    #@nonl
-    #@-node:ekr.20031218072017.3982:endEditLabelCommand
-    #@+node:ekr.20031218072017.3983:insertHeadlineTime
-    def insertHeadlineTime (self,event=None):
-        
-        '''Insert a date/time stamp in the headline of the selected node.'''
-    
-        frame = self ; c = frame.c ; p = c.currentPosition()
-        
-        if g.app.batchMode:
-            c.notValidInBatchMode("Insert Headline Time")
-            return
-            
-        c.editPosition(p)
-        c.frame.tree.setEditLabelState(p)
-        w = c.edit_widget(p)
-        if w:
-            time = c.getTime(body=False)
-            if 1: # We can't know if we were already editing, so insert at end.
-                w.setSelectionRange('end','end')
-                w.insert('end',time)
-            else:
-                i, j = w.getSelectionRange()
-                if i != j: w.delete(i,j)
-                w.insert("insert",time)
-            c.frame.tree.onHeadChanged(p,'Insert Headline Time')
-    #@-node:ekr.20031218072017.3983:insertHeadlineTime
-    #@-node:ekr.20031218072017.3980:Edit Menu...
     #@+node:ekr.20031218072017.3984:Window Menu...
     #@+node:ekr.20031218072017.3985:toggleActivePane
     def toggleActivePane (self,event=None):

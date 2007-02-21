@@ -1698,60 +1698,6 @@ class leoTkinterTree (leoFrame.leoTree):
         g.doHook("enddrag2",c=c,p=p,v=p,event=event)
     #@-node:ekr.20040803072955.103:onEndDrag
     #@-node:ekr.20040803072955.99:Dragging (tkTree)
-    #@+node:ekr.20040803072955.90:head key handlers
-    #@+node:ekr.20040803072955.88:onHeadlineKey
-    def onHeadlineKey (self,event):
-        
-        '''Handle a key event in a headline.'''
-    
-        w = event and event.widget or None
-        ch = event and event.char or ''
-        
-        # g.trace(repr(ch),g.callers())
-    
-        # Testing for ch here prevents flashing in the headline
-        # when the control key is held down.
-        if ch:
-            # g.trace(repr(ch),g.callers())
-            self.updateHead(event,w)
-    
-        return 'break' # Required
-    #@-node:ekr.20040803072955.88:onHeadlineKey
-    #@+node:ekr.20051026083544.2:updateHead
-    def updateHead (self,event,w):
-        
-        '''Update a headline from an event.
-        
-        The headline officially changes only when editing ends.'''
-        
-        c = self.c ; k = c.k
-        ch = event and event.char or ''
-        i,j = w.getSelectionRange()
-        ins = w.getInsertPoint()
-        if i != j: ins = i
-        
-        if ch == '\b':
-            if i != j:  w.delete(i,j)
-            else:       w.delete(ins-1)
-            w.setSelectionRange(i,i,insert=i)
-        elif ch and ch not in ('\n','\r'):
-            if i != j:                              w.delete(i,j)
-            elif k.unboundKeyAction == 'overwrite': w.delete(i,i+1)
-            w.insert(ins,ch)
-            w.setSelectionRange(ins+1,ins+1,insert=ins+1)
-    
-        s = w.getAllText()
-        if s.endswith('\n'):
-            # g.trace('can not happen: trailing newline')
-            s = s[:-1]
-        w.configure(width=self.headWidth(s=s))
-    
-        if ch in ('\n','\r'):
-            self.endEditLabel() # Now calls self.onHeadChanged.
-    #@-node:ekr.20051026083544.2:updateHead
-    #@+node:ekr.20070220085355:onHeadChanged is now in the base class
-    #@-node:ekr.20070220085355:onHeadChanged is now in the base class
-    #@-node:ekr.20040803072955.90:head key handlers
     #@+node:ekr.20040803072955.80:Icon Box...
     #@+node:ekr.20040803072955.81:onIconBoxClick
     def onIconBoxClick (self,event,p=None):
@@ -2304,6 +2250,7 @@ class leoTkinterTree (leoFrame.leoTree):
             g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
     
         if p and c.edit_widget(p):
+            # g.trace('selectAll',selectAll,g.callers())
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
             self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.

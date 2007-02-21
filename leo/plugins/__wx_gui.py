@@ -1319,7 +1319,7 @@ class baseTextWidget (wx.EvtHandler):
         keycode = event.GetKeyCode()
         event.leoWidget = self
         keysym = g.app.gui.eventKeysym(event)
-        g.trace('text: keycode %3s keysym %s' % (keycode,keysym))
+        #g.trace('text: keycode %3s keysym %s' % (keycode,keysym))
         if keysym:
             c.k.masterKeyHandler(event,stroke=keysym)
     #@nonl
@@ -1440,14 +1440,29 @@ class baseTextWidget (wx.EvtHandler):
         # g.trace(len(s),repr(s[:20]))
         w._setAllText(s)
     #@-node:ekr.20070209074555.11:deleteTextSelection
-    #@+node:ekr.20070209074555.12:event_generate (to do)
+    #@+node:ekr.20070209074555.12:event_generate (baseTextWidget)
     def event_generate(self,stroke):
         
-        w = self
+        w = self ; c = self.c
         
-        pass ## g.trace('wxTextWidget',stroke)
+        # g.trace('baseTextWidget',stroke)
+        
+        # Canonicalize the setting.
+        stroke = c.k.shortcutFromSetting(stroke)
+    
+        class eventGenerateEvent:  ### Should be a standard class, or a subclass of a standard class.
+            def __init__ (self,c,w,char,keysym):
+                self.c = c
+                self.char = char
+                self.keysym = keysym
+                self.leoWidget = w
+                self.widget = w
+    
+        event = eventGenerateEvent(c,w,'',stroke)
+        c.k.masterKeyHandler(event,stroke=stroke)
+        
     #@nonl
-    #@-node:ekr.20070209074555.12:event_generate (to do)
+    #@-node:ekr.20070209074555.12:event_generate (baseTextWidget)
     #@+node:ekr.20070209074555.13:flashCharacter (to do)
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
     
@@ -1851,28 +1866,65 @@ class headlineWidget (baseTextWidget):
         self.id = id
         self.ins = 0
         self.sel = 0,0
-        self.s = ''
+        # We now use the actual widget.
+        #self.s = ''
     #@nonl
     #@-node:ekr.20070125074101.2:Birth & special methods
     #@+node:ekr.20070209111155:wx widget bindings
-    def _appendText(self,s):            self.s = self.s + s
-    def _get(self,i,j):                 return self.s[i:j]
+    def _appendText(self,s):
+        # g.trace(s)
+        s1 = self.tree.GetItemText(self.id)
+        self.tree.SetItemText(self.id,s1+s)
+        self.ins = len(s1) + len(s)
+        self.sel = self.ins,self.ins
+    def _get(self,i,j):
+        s = self.tree.GetItemText(self.id)
+        return s[i:j]         
     def _getAllText(self):
-        # g.trace(self.s)
-        return self.s
-    def _getFocus(self):                return self
-    def _getInsertPoint(self):          return self.ins
-    def _getLastPosition(self):         return len(self.s)
-    def _getSelectedText(self):         i,j = self.sel ; return self.s[i:j]
-    def _getSelectionRange(self):       return self,sel
-    def _hitTest(self,pos):             pass
-    def _insertText(self,i,s):          self.s = self.s[:i] + s + self.s[i:]
-    def _see(self,i):                   pass
-    def _setAllText(self,s):            self.s = s # ; g.trace(s)
-    def _setBackgroundColor(self,color): pass
-    def _setFocus(self):                pass
-    def _setInsertPoint(self,i):        self.ins = i
-    def _setSelectionRange(self,i,j):   self.sel = i,j
+        return self.tree.GetItemText(self.id)                      
+    def _getFocus(self):
+        return self
+    def _getInsertPoint(self):
+        # g.trace(self.ins)
+        return self.ins
+    def _getLastPosition(self):
+        s = self.tree.GetItemText(self.id)
+        # g.trace(len(s))
+        return len(s)
+    def _getSelectedText(self):
+        s = self.tree.GetItemText(self.id)
+        return s[i:j]
+    def _getSelectionRange(self):
+        # g.trace(self.sel)
+        return self.sel
+    def _hitTest(self,pos):
+        pass
+    def _insertText(self,i,s):
+        s2 = self.tree.GetItemText(self.id)
+        s3 = s2[:i] + s + s2[i:]
+        self.tree.SetItemText(self.id,s3)
+        # g.trace('i',i,'s',s,'s3',s3)
+        self.ins = len(s3)
+        self.sel = self.ins,self.ins
+    def _see(self,i):
+        pass
+    def _setAllText(self,s):
+        # g.trace(s)
+        self.tree.SetItemText(self.id,s)
+        self.ins = len(s)
+        self.sel = self.ins,self.ins
+    def _setBackgroundColor(self,color):
+        pass
+    def _setFocus(self):
+        pass
+    def _setInsertPoint(self,i):
+        # g.trace(i)
+        self.ins = i
+        self.sel = i,i
+    def _setSelectionRange(self,i,j):
+        # g.trace(i,j)
+        self.sel = i,j
+        if i == j: self.ins = i
     #@-node:ekr.20070209111155:wx widget bindings
     #@-others
 #@-node:ekr.20070125074101:headlineWidget class (baseTextWidget)
@@ -2005,9 +2057,16 @@ class stcWidget (baseTextWidget):
             
         #w.SetLexerLanguage('Python')
         #style = w.GetStyleAt(0)
-        #g.trace(style)
         w.StyleClearAll()
-        w.StyleSetSize(0,14)
+        
+        self.font = font = wx.Font(
+            pointSize=10,
+            family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
+            style  = wx.FONTSTYLE_NORMAL,
+            weight = wx.FONTWEIGHT_NORMAL,)
+    
+        # Setting this font (rather than the size) clears the indentation guides.
+        w.StyleSetFont(0,font)
         
         if 0:
             color = name2color('lavender blush')
@@ -2880,8 +2939,11 @@ class wxGui(leoGui.leoGui):
             self.keysym         = gui.eventKeysym(event)
             self.widget         = gui.eventWidget(event)
             self.x,self.y       = gui.eventXY(event)
-    
             self.w = self.widget
+            
+        def __repr__ (self):
+            return 'leoKeyEvent char: %s keysym: %s widget: %s' % (
+                repr(self.char),self.keysym,self.widget)
     #@-node:ekr.20061116093228:class leoKeyEvent (wxGui)
     #@+node:ekr.20061117204829:wxKeyDict
     wxKeyDict = {
@@ -3173,7 +3235,7 @@ class wxGui(leoGui.leoGui):
             if hasattr(event,'c'):
                 return event.c.frame.body.bodyCtrl
             else:
-                g.trace('k.generalModeHandler event')
+                g.trace('k.generalModeHandler event: no event widget')
                 return None
         elif hasattr(event,'GetEventObject'): # A wx Event.
             return event.GetEventObject()
@@ -4358,7 +4420,6 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@nonl
     #@-node:ekr.20061211083200:setFocus (wxFrame)
     #@+node:ekr.20061106070201:Minibuffer commands... (wxFrame)
-    
     #@+node:ekr.20061106070201.1:contractPane
     def contractPane (self,event=None):
         
@@ -4504,73 +4565,6 @@ class wxLeoFrame(leoFrame.leoFrame):
         f = self ; f.divideLeoSplitter(f.splitVerticalFlag,0.0)
     #@-node:ekr.20061106070201.6:fullyExpand/hide...Pane
     #@-node:ekr.20061106070201:Minibuffer commands... (wxFrame)
-    #@+node:edream.111303100039.1:Edit Menu... (wxLeoFrame)
-    #@+node:edream.111303101257:abortEditLabelCommand
-    def abortEditLabelCommand (self,event=None):
-    
-        g.es("abortEditLabelCommand not ready yet")
-        return
-        
-        c = self.c ; v = c.currentVnode ; tree = self.tree
-        # g.trace(v)
-        if self.revertHeadline and c.edit_widget(v) and v == self.editVnode:
-            
-            # g.trace(`self.revertHeadline`)
-            c.edit_widget(v).delete("1.0","end")
-            c.edit_widget(v).insert("end",self.revertHeadline)
-            tree.idle_head_key(v) # Must be done immediately.
-            tree.revertHeadline = None
-            tree.select(v)
-            if v and len(v.t.joinList) > 0:
-                # 3/26/03: changed redraw_now to force_redraw.
-                tree.force_redraw() # force a redraw of joined headlines.
-    #@nonl
-    #@-node:edream.111303101257:abortEditLabelCommand
-    #@+node:edream.111303101257.1:endEditLabelCommand
-    def endEditLabelCommand (self,event=None):
-        
-        g.es("endEditLabelCommand not ready yet")
-        return
-    
-        c = self.c ; tree = self.tree ; v = self.editVnode
-        w = c.frame.body.bodyCtrl
-    
-        if v and c.edit_widget(v):
-            tree.select(v)
-    
-        if v: # Bug fix 10/9/02: also redraw ancestor headlines.
-            # 3/26/03: changed redraw_now to force_redraw.
-            tree.force_redraw() # force a redraw of joined headlines.
-    
-        g.app.gui.set_focus(c,w)
-    #@nonl
-    #@-node:edream.111303101257.1:endEditLabelCommand
-    #@+node:edream.111303100039.6:insertHeadlineTime
-    def insertHeadlineTime (self,event=None):
-        
-        g.es("insertHeadlineTime not ready yet")
-        return
-    
-        frame = self ; c = frame.c
-        w = c.edit_widget(v)
-        v = c.currentVnode()
-        h = v.headString() # Remember the old value.
-    
-        if w:
-            stamp = c.getTime(body=False)
-            sel1,sel2 = w.getSelectionRange()
-            if sel1 and sel2 and sel1 != sel2:
-                w.delete(sel1,sel2)
-            i = w.getInsertPoint()
-            w.insert(i,stamp)
-            frame.idle_head_key(v)
-    
-        # A kludge to get around not knowing whether we are editing or not.
-        if h.strip() == v.headString().strip():
-            g.es("Edit headline to append date/time")
-    #@nonl
-    #@-node:edream.111303100039.6:insertHeadlineTime
-    #@-node:edream.111303100039.1:Edit Menu... (wxLeoFrame)
     #@+node:edream.111303100039.7:Window Menu
     #@+node:edream.111303100039.8:cascade
     def cascade(self,event=None):
@@ -5256,9 +5250,12 @@ class wxLeoMenu (leoMenu.leoMenu):
         if ch: label = label[:underline] + '&' + label[underline:]
         if accel:
             # The accelerator actually creates a key binding by default.
-            # The space following the tab prevents the binding.
-            # *** Accelerators are NOT SHOWN when the user opens the menu with the mouse!
+            # Munge accel to make it invalid.
+            d = {'BackSpace':'BkSpc','Return':'Rtn','Tab':'TabChr'}
+            accel = d.get(accel,accel)
             accel = accel.replace('Alt+','Alt-').replace('Ctrl+','Ctrl-').replace('Shift+','Shift-')
+            
+            # *** Accelerators are NOT SHOWN when the user opens the menu with the mouse!
             label = label + '\t' + accel
     
         # g.trace(label)
@@ -6157,8 +6154,10 @@ class wxLeoTree (leoFrame.leoTree):
     
     def onTreeBeginLabelEdit(self,event):
         
-        pass
-    #@nonl
+        p = self.c.currentPosition()
+        
+        # Used by the base classes onHeadChanged method.
+        self.revertHeadline = p.headString()
     #@-node:edream.110203113231.286:onTreeBeginLabelEdit
     #@+node:edream.110203113231.287:onTreeEndLabelEdit
     # Editing will be allowed only if this routine exists.
@@ -6171,17 +6170,13 @@ class wxLeoTree (leoFrame.leoTree):
         p = self.treeCtrl.GetItemData(id).GetData()
         h = p.headString()
         
-        # for p2 in c.allNodes_iter():
-            # if not p2.equal(p) and p2.v.t == p.v.t:
-                # redraw = True ; break
-        # else: redraw = False
+        # g.trace('old:',h,'new:',s)
     
-        if s != h:
-            c.beginUpdate()
-            try:
-                c.setHeadString(p,s)
-            finally:
-                c.endUpdate()
+        # Don't clear the headline by default.
+        if s and s != h:
+            # Call the base-class method.
+            self.onHeadChanged (p,undoType='Typing',s=s)
+    #@nonl
     #@-node:edream.110203113231.287:onTreeEndLabelEdit
     #@-node:edream.110203113231.285:Editing labels
     #@+node:ekr.20061105114250.1:Dragging
@@ -6286,12 +6281,19 @@ class wxLeoTree (leoFrame.leoTree):
         c = self.c
         # Convert from tree event to key event.
         event = event.GetKeyEvent()
-        keycode = event.GetKeyCode()
         event.leoWidget = self
         keysym = g.app.gui.eventKeysym(event)
-        # g.trace('tree: keycode %3s keysym %s' % (keycode,keysym))
+        if 0:
+            keycode = event.GetKeyCode()
+            g.trace('tree: keycode %3s keysym %s' % (keycode,keysym))
         if keysym:
             c.k.masterKeyHandler(event,stroke=keysym)
+    
+    # k.handleDefaultChar calls onHeadlineKey.
+    def onHeadlineKey (self,event):
+        # g.trace(event)
+        if event and event.keysym:
+            self.updateHead(event,event.widget)
     #@-node:ekr.20061118123730.1:wxTree.onChar
     #@+node:edream.111403093559:Focus (wxTree)
     def focus_get (self):
@@ -6458,16 +6460,28 @@ class wxLeoTree (leoFrame.leoTree):
         return 'break' # Supresses unwanted selection.
     #@-node:ekr.20061115172306:tree.select
     #@+node:ekr.20050719121701.2:endEditLabel
+    label_lockout = False
+    
     def endEditLabel (self):
         
-        g.trace(self.c.currentPosition())
+        '''The end-edit-label command.'''
         
-        self.c.frame.bodyWantsFocus()
+        if self.label_lockout:
+            g.trace('label_lockout')
+            return
+    
+        c = self.c ; p = c.currentPosition()
+        
+        tree_id = self.idDict.get(p.v)
+        if tree_id:
+            self.label_lockout = True
+            self.treeCtrl.EndEditLabel(tree_id)
+            self.label_lockout = False
     #@-node:ekr.20050719121701.2:endEditLabel
     #@+node:ekr.20050719121701.3:editLabel
     def editLabel (self,p,selectAll=False): # wxTree
         
-        """Start editing p's headline."""
+        '''The edit-label command.'''
         
         c = self.c ; tree_id = self.idDict.get(p.v)
         
@@ -6482,18 +6496,16 @@ class wxLeoTree (leoFrame.leoTree):
             c.endUpdate(redrawFlag)
     
         self.setEditPosition(p) # That is, self._editPosition = p
-        
-        # We may be in the middle of the first redraw, so tree_id may not exist!
-        tree_id = self.idDict.get(p.v)
-        if not tree_id: return 
+        tree_id = self.idDict.get(p.v) 
+        if not tree_id: return # Not an error.
         
         self.treeCtrl.EditLabel(tree_id)
-        
-        if p and c.edit_widget(p):
+        w = c.edit_widget(p)
+        if p and w:
+            g.app.gui.focus_widget = w
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
             self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.
-    
     #@-node:ekr.20050719121701.3:editLabel
     #@+node:ekr.20070125091308:setEditWidget
     def setEditWidget (self,p,tree_id):

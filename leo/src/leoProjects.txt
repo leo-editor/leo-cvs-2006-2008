@@ -1624,6 +1624,7 @@ def selfInsertCommand(self,event,action='insert'):
     w = self.editWidget(event)
     if not w: return 'break'
     << set local vars >>
+    # g.trace('ch',repr(ch))
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
     if ch == '\t':
@@ -1682,7 +1683,7 @@ inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
 if trace: g.trace(name,repr(ch),ch in brackets)
 #@nonl
 #@-node:ekr.20061103114242:<< set local vars >>
-#@+node:ekr.20051026171121:insertNewlineHelper (passed)
+#@+node:ekr.20051026171121:insertNewlineHelper
 def insertNewlineHelper (self,w,oldSel,undoType):
 
     c = self.c ; p = c.currentPosition()
@@ -1707,7 +1708,7 @@ def insertNewlineHelper (self,w,oldSel,undoType):
     
     w.seeInsertPoint()
 #@nonl
-#@-node:ekr.20051026171121:insertNewlineHelper (passed)
+#@-node:ekr.20051026171121:insertNewlineHelper
 #@+node:ekr.20060804095512:initBracketMatcher
 def initBracketMatcher (self,c):
 
@@ -1752,7 +1753,7 @@ def flashCharacter(self,w,i):
     
     w.flashCharacter(i,bg,fg,flashes,delay)
 #@-node:ekr.20060627091557:flashCharacter
-#@+node:ekr.20051027172949:updateAutomatchBracket (passed)
+#@+node:ekr.20051027172949:updateAutomatchBracket
 def updateAutomatchBracket (self,p,w,ch,oldSel):
 
     # assert ch in ('(',')','[',']','{','}')
@@ -1780,10 +1781,11 @@ def updateAutomatchBracket (self,p,w,ch,oldSel):
         else:
             if i != j: w.delete(i,j)
             w.insert(i,ch)
+            w.setInsertPoint(i+1)
                                                             
 #@nonl
-#@-node:ekr.20051027172949:updateAutomatchBracket (passed)
-#@+node:ekr.20051026171121.1:udpateAutoIndent (passed)
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
 def updateAutoIndent (self,p,w):
 
     c = self.c ; d = g.scanDirectives(c,p)
@@ -1817,8 +1819,9 @@ def updateAutoIndent (self,p,w):
     if ws:
         i = w.getInsertPoint()
         w.insert(i,ws)
-#@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
-#@+node:ekr.20051026092433:updateTab (passed)
+        w.setInsertPoint(i+1)
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
 def updateTab (self,p,w):
 
     c = self.c
@@ -1826,13 +1829,13 @@ def updateTab (self,p,w):
     tab_width = d.get("tabwidth",c.tab_width)
     i,j = w.getSelectionRange()
         # Returns insert point if no selection, with i <= j.
-    
 
     if i != j:
         w.delete(i,j)
 
     if tab_width > 0:
         w.insert(i,'\t')
+        ins = i+1
     else:
         # Get the preceeding characters.
         s = w.getAllText()
@@ -1842,8 +1845,13 @@ def updateTab (self,p,w):
         # Compute n, the number of spaces to insert.
         width = g.computeWidth(s2,tab_width)
         n = abs(tab_width) - (width % abs(tab_width))
+        # g.trace('n',n)
         w.insert(i,' ' * n)
-#@-node:ekr.20051026092433:updateTab (passed)
+        ins = i+n
+
+    w.setSelectionRange(ins,ins,insert=ins)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand & helpers
 #@+node:ekr.20061113151148.12:flashCharacter
 def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
@@ -2212,6 +2220,8 @@ def updateHead (self,event,w):
     ins = w.getInsertPoint()
     if i != j: ins = i
     
+    # g.trace('ch',repr(ch),g.callers())
+
     if ch == '\b':
         if i != j:  w.delete(i,j)
         else:       w.delete(ins-1)
@@ -2226,7 +2236,7 @@ def updateHead (self,event,w):
     if s.endswith('\n'):
         # g.trace('can not happen: trailing newline')
         s = s[:-1]
-    w.configure(width=self.headWidth(s=s))
+    w.setWidth(self.headWidth(s=s))
 
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
@@ -5792,6 +5802,70 @@ def killLine (self,event):
 #@-node:ekr.20061127170820:Fixed new bug in kill-line
 #@+node:ekr.20061127161813:Replacing selection not done properly in headline
 #@+node:ekr.20040803072955.90:head key handlers
+#@+node:ekr.20040803072955.91:onHeadChanged
+# Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing',s=None):
+    
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+    
+    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if not w: return
+    
+    ch = '\n' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    if s is None: s = w.getAllText()
+    << truncate s if it has multiple lines >>
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        # if self.trace_edit and not g.app.unitTesting:
+            # if changed:
+                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(scroll=False) # New in 4.4.1
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+   
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+# Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) > 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i > -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) > limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+#@-node:ekr.20040803072955.91:onHeadChanged
 #@+node:ekr.20040803072955.88:onHeadlineKey
 def onHeadlineKey (self,event):
     
@@ -5823,6 +5897,8 @@ def updateHead (self,event,w):
     ins = w.getInsertPoint()
     if i != j: ins = i
     
+    # g.trace('ch',repr(ch),g.callers())
+
     if ch == '\b':
         if i != j:  w.delete(i,j)
         else:       w.delete(ins-1)
@@ -5837,13 +5913,11 @@ def updateHead (self,event,w):
     if s.endswith('\n'):
         # g.trace('can not happen: trailing newline')
         s = s[:-1]
-    w.configure(width=self.headWidth(s=s))
+    w.setWidth(self.headWidth(s=s))
 
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
-#@+node:ekr.20070220085355:onHeadChanged is now in the base class
-#@-node:ekr.20070220085355:onHeadChanged is now in the base class
 #@-node:ekr.20040803072955.90:head key handlers
 #@-node:ekr.20061127161813:Replacing selection not done properly in headline
 #@+node:ekr.20061127150919:Fixed paragraph commands
@@ -6214,6 +6288,7 @@ def selfInsertCommand(self,event,action='insert'):
     w = self.editWidget(event)
     if not w: return 'break'
     << set local vars >>
+    # g.trace('ch',repr(ch))
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
     if ch == '\t':
@@ -6272,7 +6347,7 @@ inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
 if trace: g.trace(name,repr(ch),ch in brackets)
 #@nonl
 #@-node:ekr.20061103114242:<< set local vars >>
-#@+node:ekr.20051026171121:insertNewlineHelper (passed)
+#@+node:ekr.20051026171121:insertNewlineHelper
 def insertNewlineHelper (self,w,oldSel,undoType):
 
     c = self.c ; p = c.currentPosition()
@@ -6297,7 +6372,7 @@ def insertNewlineHelper (self,w,oldSel,undoType):
     
     w.seeInsertPoint()
 #@nonl
-#@-node:ekr.20051026171121:insertNewlineHelper (passed)
+#@-node:ekr.20051026171121:insertNewlineHelper
 #@+node:ekr.20060804095512:initBracketMatcher
 def initBracketMatcher (self,c):
 
@@ -6342,7 +6417,7 @@ def flashCharacter(self,w,i):
     
     w.flashCharacter(i,bg,fg,flashes,delay)
 #@-node:ekr.20060627091557:flashCharacter
-#@+node:ekr.20051027172949:updateAutomatchBracket (passed)
+#@+node:ekr.20051027172949:updateAutomatchBracket
 def updateAutomatchBracket (self,p,w,ch,oldSel):
 
     # assert ch in ('(',')','[',']','{','}')
@@ -6370,10 +6445,11 @@ def updateAutomatchBracket (self,p,w,ch,oldSel):
         else:
             if i != j: w.delete(i,j)
             w.insert(i,ch)
+            w.setInsertPoint(i+1)
                                                             
 #@nonl
-#@-node:ekr.20051027172949:updateAutomatchBracket (passed)
-#@+node:ekr.20051026171121.1:udpateAutoIndent (passed)
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
 def updateAutoIndent (self,p,w):
 
     c = self.c ; d = g.scanDirectives(c,p)
@@ -6407,8 +6483,9 @@ def updateAutoIndent (self,p,w):
     if ws:
         i = w.getInsertPoint()
         w.insert(i,ws)
-#@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
-#@+node:ekr.20051026092433:updateTab (passed)
+        w.setInsertPoint(i+1)
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
 def updateTab (self,p,w):
 
     c = self.c
@@ -6416,13 +6493,13 @@ def updateTab (self,p,w):
     tab_width = d.get("tabwidth",c.tab_width)
     i,j = w.getSelectionRange()
         # Returns insert point if no selection, with i <= j.
-    
 
     if i != j:
         w.delete(i,j)
 
     if tab_width > 0:
         w.insert(i,'\t')
+        ins = i+1
     else:
         # Get the preceeding characters.
         s = w.getAllText()
@@ -6432,8 +6509,13 @@ def updateTab (self,p,w):
         # Compute n, the number of spaces to insert.
         width = g.computeWidth(s2,tab_width)
         n = abs(tab_width) - (width % abs(tab_width))
+        # g.trace('n',n)
         w.insert(i,' ' * n)
-#@-node:ekr.20051026092433:updateTab (passed)
+        ins = i+n
+
+    w.setSelectionRange(ins,ins,insert=ins)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand & helpers
 #@+node:ekr.20051026092433.1:backwardDeleteCharacter
 def backwardDeleteCharacter (self,event=None):
@@ -6867,6 +6949,7 @@ def selfInsertCommand(self,event,action='insert'):
     w = self.editWidget(event)
     if not w: return 'break'
     << set local vars >>
+    # g.trace('ch',repr(ch))
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
     if ch == '\t':
@@ -6925,7 +7008,7 @@ inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
 if trace: g.trace(name,repr(ch),ch in brackets)
 #@nonl
 #@-node:ekr.20061103114242:<< set local vars >>
-#@+node:ekr.20051026171121:insertNewlineHelper (passed)
+#@+node:ekr.20051026171121:insertNewlineHelper
 def insertNewlineHelper (self,w,oldSel,undoType):
 
     c = self.c ; p = c.currentPosition()
@@ -6950,7 +7033,7 @@ def insertNewlineHelper (self,w,oldSel,undoType):
     
     w.seeInsertPoint()
 #@nonl
-#@-node:ekr.20051026171121:insertNewlineHelper (passed)
+#@-node:ekr.20051026171121:insertNewlineHelper
 #@+node:ekr.20060804095512:initBracketMatcher
 def initBracketMatcher (self,c):
 
@@ -6995,7 +7078,7 @@ def flashCharacter(self,w,i):
     
     w.flashCharacter(i,bg,fg,flashes,delay)
 #@-node:ekr.20060627091557:flashCharacter
-#@+node:ekr.20051027172949:updateAutomatchBracket (passed)
+#@+node:ekr.20051027172949:updateAutomatchBracket
 def updateAutomatchBracket (self,p,w,ch,oldSel):
 
     # assert ch in ('(',')','[',']','{','}')
@@ -7023,10 +7106,11 @@ def updateAutomatchBracket (self,p,w,ch,oldSel):
         else:
             if i != j: w.delete(i,j)
             w.insert(i,ch)
+            w.setInsertPoint(i+1)
                                                             
 #@nonl
-#@-node:ekr.20051027172949:updateAutomatchBracket (passed)
-#@+node:ekr.20051026171121.1:udpateAutoIndent (passed)
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
 def updateAutoIndent (self,p,w):
 
     c = self.c ; d = g.scanDirectives(c,p)
@@ -7060,8 +7144,9 @@ def updateAutoIndent (self,p,w):
     if ws:
         i = w.getInsertPoint()
         w.insert(i,ws)
-#@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
-#@+node:ekr.20051026092433:updateTab (passed)
+        w.setInsertPoint(i+1)
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
 def updateTab (self,p,w):
 
     c = self.c
@@ -7069,13 +7154,13 @@ def updateTab (self,p,w):
     tab_width = d.get("tabwidth",c.tab_width)
     i,j = w.getSelectionRange()
         # Returns insert point if no selection, with i <= j.
-    
 
     if i != j:
         w.delete(i,j)
 
     if tab_width > 0:
         w.insert(i,'\t')
+        ins = i+1
     else:
         # Get the preceeding characters.
         s = w.getAllText()
@@ -7085,8 +7170,13 @@ def updateTab (self,p,w):
         # Compute n, the number of spaces to insert.
         width = g.computeWidth(s2,tab_width)
         n = abs(tab_width) - (width % abs(tab_width))
+        # g.trace('n',n)
         w.insert(i,' ' * n)
-#@-node:ekr.20051026092433:updateTab (passed)
+        ins = i+n
+
+    w.setSelectionRange(ins,ins,insert=ins)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand & helpers
 #@+node:ekr.20061109095450.8:onClick (passed)
 def onClick (self,event):
@@ -7338,6 +7428,70 @@ The problem was a special case in backwardDeleteCharacter.
 @color
 #@nonl
 #@+node:ekr.20040803072955.90:head key handlers
+#@+node:ekr.20040803072955.91:onHeadChanged
+# Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing',s=None):
+    
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+    
+    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if not w: return
+    
+    ch = '\n' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    if s is None: s = w.getAllText()
+    << truncate s if it has multiple lines >>
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        # if self.trace_edit and not g.app.unitTesting:
+            # if changed:
+                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(scroll=False) # New in 4.4.1
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+   
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+# Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) > 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i > -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) > limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+#@-node:ekr.20040803072955.91:onHeadChanged
 #@+node:ekr.20040803072955.88:onHeadlineKey
 def onHeadlineKey (self,event):
     
@@ -7369,6 +7523,8 @@ def updateHead (self,event,w):
     ins = w.getInsertPoint()
     if i != j: ins = i
     
+    # g.trace('ch',repr(ch),g.callers())
+
     if ch == '\b':
         if i != j:  w.delete(i,j)
         else:       w.delete(ins-1)
@@ -7383,13 +7539,11 @@ def updateHead (self,event,w):
     if s.endswith('\n'):
         # g.trace('can not happen: trailing newline')
         s = s[:-1]
-    w.configure(width=self.headWidth(s=s))
+    w.setWidth(self.headWidth(s=s))
 
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
-#@+node:ekr.20070220085355:onHeadChanged is now in the base class
-#@-node:ekr.20070220085355:onHeadChanged is now in the base class
 #@-node:ekr.20040803072955.90:head key handlers
 #@+node:ekr.20051026092433.1:backwardDeleteCharacter
 def backwardDeleteCharacter (self,event=None):
@@ -11897,6 +12051,7 @@ def selfInsertCommand(self,event,action='insert'):
     w = self.editWidget(event)
     if not w: return 'break'
     << set local vars >>
+    # g.trace('ch',repr(ch))
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
     if ch == '\t':
@@ -11955,7 +12110,7 @@ inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
 if trace: g.trace(name,repr(ch),ch in brackets)
 #@nonl
 #@-node:ekr.20061103114242:<< set local vars >>
-#@+node:ekr.20051026171121:insertNewlineHelper (passed)
+#@+node:ekr.20051026171121:insertNewlineHelper
 def insertNewlineHelper (self,w,oldSel,undoType):
 
     c = self.c ; p = c.currentPosition()
@@ -11980,7 +12135,7 @@ def insertNewlineHelper (self,w,oldSel,undoType):
     
     w.seeInsertPoint()
 #@nonl
-#@-node:ekr.20051026171121:insertNewlineHelper (passed)
+#@-node:ekr.20051026171121:insertNewlineHelper
 #@+node:ekr.20060804095512:initBracketMatcher
 def initBracketMatcher (self,c):
 
@@ -12025,7 +12180,7 @@ def flashCharacter(self,w,i):
     
     w.flashCharacter(i,bg,fg,flashes,delay)
 #@-node:ekr.20060627091557:flashCharacter
-#@+node:ekr.20051027172949:updateAutomatchBracket (passed)
+#@+node:ekr.20051027172949:updateAutomatchBracket
 def updateAutomatchBracket (self,p,w,ch,oldSel):
 
     # assert ch in ('(',')','[',']','{','}')
@@ -12053,10 +12208,11 @@ def updateAutomatchBracket (self,p,w,ch,oldSel):
         else:
             if i != j: w.delete(i,j)
             w.insert(i,ch)
+            w.setInsertPoint(i+1)
                                                             
 #@nonl
-#@-node:ekr.20051027172949:updateAutomatchBracket (passed)
-#@+node:ekr.20051026171121.1:udpateAutoIndent (passed)
+#@-node:ekr.20051027172949:updateAutomatchBracket
+#@+node:ekr.20051026171121.1:udpateAutoIndent
 def updateAutoIndent (self,p,w):
 
     c = self.c ; d = g.scanDirectives(c,p)
@@ -12090,8 +12246,9 @@ def updateAutoIndent (self,p,w):
     if ws:
         i = w.getInsertPoint()
         w.insert(i,ws)
-#@-node:ekr.20051026171121.1:udpateAutoIndent (passed)
-#@+node:ekr.20051026092433:updateTab (passed)
+        w.setInsertPoint(i+1)
+#@-node:ekr.20051026171121.1:udpateAutoIndent
+#@+node:ekr.20051026092433:updateTab
 def updateTab (self,p,w):
 
     c = self.c
@@ -12099,13 +12256,13 @@ def updateTab (self,p,w):
     tab_width = d.get("tabwidth",c.tab_width)
     i,j = w.getSelectionRange()
         # Returns insert point if no selection, with i <= j.
-    
 
     if i != j:
         w.delete(i,j)
 
     if tab_width > 0:
         w.insert(i,'\t')
+        ins = i+1
     else:
         # Get the preceeding characters.
         s = w.getAllText()
@@ -12115,8 +12272,13 @@ def updateTab (self,p,w):
         # Compute n, the number of spaces to insert.
         width = g.computeWidth(s2,tab_width)
         n = abs(tab_width) - (width % abs(tab_width))
+        # g.trace('n',n)
         w.insert(i,' ' * n)
-#@-node:ekr.20051026092433:updateTab (passed)
+        ins = i+n
+
+    w.setSelectionRange(ins,ins,insert=ins)
+#@nonl
+#@-node:ekr.20051026092433:updateTab
 #@-node:ekr.20051125080855:selfInsertCommand & helpers
 #@+node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
 class leoKeyEvent:

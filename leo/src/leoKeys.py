@@ -2664,7 +2664,7 @@ class keyHandlerClass:
         stroke = k.getShortcutForCommandName(commandName)
         
         if stroke and w:
-            # g.trace(c.widget_name(w))
+            # g.trace(stroke)
             g.app.gui.event_generate(w,stroke)
         else:
             g.trace('no shortcut for %s' % (commandName),color='red')

@@ -434,6 +434,11 @@ class leoFrame:
         'scanForTabWidth',
         'shortFileName',
         
+        # Headline editing.
+        'abortEditLabelCommand',
+        'endEditLabelCommand',
+        'insertHeadlineTime',
+        
         # Cut/Copy/Paste.
         'OnPaste',
         'OnPasteFromMenu',
@@ -466,13 +471,11 @@ class leoFrame:
     #@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
     mustBeDefinedInSubclasses = (
         #Gui-dependent commands.
-        'abortEditLabelCommand',
         'cascade',
         'contractBodyPane',
         'contractLogPane',
         'contractOutlinePane',
         'contractPane',
-        'endEditLabelCommand',
         'equalSizedPanes',
         'expandLogPane',
         'expandPane',
@@ -485,7 +488,6 @@ class leoFrame:
         'hideLogWindow',
         'hideOutlinePane',
         'hidePane',
-        'insertHeadlineTime',
         'leoHelp',
         'minimizeAll',
         'resizeToScreen',
@@ -521,10 +523,6 @@ class leoFrame:
     def OnCut   (self,event=None): self.oops()
     def OnCutFromMenu  (self,event=None):     self.oops()
     def OnCopyFromMenu (self,event=None):     self.oops()
-    
-    def abortEditLabelCommand (self,event=None): self.oops()
-    def endEditLabelCommand   (self,event=None): self.oops()
-    def insertHeadlineTime    (self,event=None): self.oops()
     
     # Expanding and contracting panes.
     def contractPane         (self,event=None): self.oops()
@@ -853,6 +851,75 @@ class leoFrame:
     #@nonl
     #@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
     #@-node:ekr.20070130115927.4:Cut/Copy/Paste (leoFrame)
+    #@+node:ekr.20031218072017.3980:Edit Menu... (leoFrame)
+    #@+node:ekr.20031218072017.3981:abortEditLabelCommand
+    def abortEditLabelCommand (self,event=None):
+        
+        '''End editing of a headline and revert to its previous value.'''
+        
+        frame = self ; c = frame.c ; tree = frame.tree
+        p = c.currentPosition() ; w = c.edit_widget(p)
+        
+        if g.app.batchMode:
+            c.notValidInBatchMode("Abort Edit Headline")
+            return
+            
+        # g.trace('isEditing',p == tree.editPosition(),'revertHeadline',repr(tree.revertHeadline))
+            
+        if w and p == tree.editPosition():
+            # Revert the headline text.
+            w.delete(0,"end")
+            w.insert("end",tree.revertHeadline)
+            p.initHeadString(tree.revertHeadline)
+            c.beginUpdate()
+            try:
+                c.endEditing()
+                c.selectPosition(p)
+            finally:
+                c.endUpdate()
+    #@-node:ekr.20031218072017.3981:abortEditLabelCommand
+    #@+node:ekr.20031218072017.3982:endEditLabelCommand
+    def endEditLabelCommand (self,event=None):
+        
+        '''End editing of a headline and move focus to the body pane.'''
+    
+        frame = self ; c = frame.c
+        if g.app.batchMode:
+            c.notValidInBatchMode("End Edit Headline")
+        else:
+            c.endEditing()
+            if c.config.getBool('stayInTreeAfterEditHeadline'):
+                c.treeWantsFocusNow()
+            else:
+                c.bodyWantsFocusNow()
+    #@nonl
+    #@-node:ekr.20031218072017.3982:endEditLabelCommand
+    #@+node:ekr.20031218072017.3983:insertHeadlineTime
+    def insertHeadlineTime (self,event=None):
+        
+        '''Insert a date/time stamp in the headline of the selected node.'''
+    
+        frame = self ; c = frame.c ; p = c.currentPosition()
+        
+        if g.app.batchMode:
+            c.notValidInBatchMode("Insert Headline Time")
+            return
+            
+        c.editPosition(p)
+        c.frame.tree.setEditLabelState(p)
+        w = c.edit_widget(p)
+        if w:
+            time = c.getTime(body=False)
+            if 1: # We can't know if we were already editing, so insert at end.
+                w.setSelectionRange('end','end')
+                w.insert('end',time)
+            else:
+                i, j = w.getSelectionRange()
+                if i != j: w.delete(i,j)
+                w.insert("insert",time)
+            c.frame.tree.onHeadChanged(p,'Insert Headline Time')
+    #@-node:ekr.20031218072017.3983:insertHeadlineTime
+    #@-node:ekr.20031218072017.3980:Edit Menu... (leoFrame)
     #@-node:ekr.20061109125528.1:Must be defined in base class
     #@+node:ekr.20060206093313:Focus (leoFrame)
     # For compatibility with old scripts.
@@ -999,6 +1066,8 @@ class leoTree:
         'injectCallbacks',
         'OnIconDoubleClick',
         'onHeadChanged',
+        'onHeadlineKey',
+        'updateHead',
         'oops',
     )
     #@nonl
@@ -1247,6 +1316,7 @@ class leoTree:
             g.funcToMethod(f,leoNodes.position)
     #@nonl
     #@-node:ekr.20040803072955.21:tree.injectCallbacks
+    #@+node:ekr.20040803072955.90:head key handlers
     #@+node:ekr.20040803072955.91:onHeadChanged
     # Tricky code: do not change without careful thought and testing.
     
@@ -1312,6 +1382,59 @@ class leoTree:
        
         g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
     #@-node:ekr.20040803072955.91:onHeadChanged
+    #@+node:ekr.20040803072955.88:onHeadlineKey
+    def onHeadlineKey (self,event):
+        
+        '''Handle a key event in a headline.'''
+    
+        w = event and event.widget or None
+        ch = event and event.char or ''
+        
+        # g.trace(repr(ch),g.callers())
+    
+        # Testing for ch here prevents flashing in the headline
+        # when the control key is held down.
+        if ch:
+            # g.trace(repr(ch),g.callers())
+            self.updateHead(event,w)
+    
+        return 'break' # Required
+    #@-node:ekr.20040803072955.88:onHeadlineKey
+    #@+node:ekr.20051026083544.2:updateHead
+    def updateHead (self,event,w):
+        
+        '''Update a headline from an event.
+        
+        The headline officially changes only when editing ends.'''
+        
+        c = self.c ; k = c.k
+        ch = event and event.char or ''
+        i,j = w.getSelectionRange()
+        ins = w.getInsertPoint()
+        if i != j: ins = i
+        
+        # g.trace('ch',repr(ch),g.callers())
+    
+        if ch == '\b':
+            if i != j:  w.delete(i,j)
+            else:       w.delete(ins-1)
+            w.setSelectionRange(i,i,insert=i)
+        elif ch and ch not in ('\n','\r'):
+            if i != j:                              w.delete(i,j)
+            elif k.unboundKeyAction == 'overwrite': w.delete(i,i+1)
+            w.insert(ins,ch)
+            w.setSelectionRange(ins+1,ins+1,insert=ins+1)
+    
+        s = w.getAllText()
+        if s.endswith('\n'):
+            # g.trace('can not happen: trailing newline')
+            s = s[:-1]
+        w.setWidth(self.headWidth(s=s))
+    
+        if ch in ('\n','\r'):
+            self.endEditLabel() # Now calls self.onHeadChanged.
+    #@-node:ekr.20051026083544.2:updateHead
+    #@-node:ekr.20040803072955.90:head key handlers
     #@-node:ekr.20061109165848:Must be defined in base class
     #@+node:ekr.20031218072017.3718:oops
     def oops(self):
@@ -1473,12 +1596,6 @@ class nullFrame (leoFrame):
     #@-node:ekr.20041130065718.1:setTopGeometry
     #@-node:ekr.20061109123828:Config...
     #@+node:ekr.20061109124129:Gui-dependent commands
-    # In the Edit menu...
-    
-    def abortEditLabelCommand (self,event=None): pass
-    def endEditLabelCommand   (self,event=None): pass
-    def insertHeadlineTime    (self,event=None): pass
-    
     # Expanding and contracting panes.
     def contractPane         (self,event=None): pass
     def expandPane           (self,event=None): pass
