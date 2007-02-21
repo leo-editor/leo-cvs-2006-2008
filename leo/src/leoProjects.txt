@@ -1819,7 +1819,7 @@ def updateAutoIndent (self,p,w):
     if ws:
         i = w.getInsertPoint()
         w.insert(i,ws)
-        w.setInsertPoint(i+1)
+        w.setInsertPoint(i+len(ws))
 #@-node:ekr.20051026171121.1:udpateAutoIndent
 #@+node:ekr.20051026092433:updateTab
 def updateTab (self,p,w):
@@ -4394,7 +4394,7 @@ def selectPosition(self,p,updateBeadList=True):
 
 selectVnode = selectPosition
 #@-node:ekr.20031218072017.2997:c.selectPosition
-#@+node:ekr.20040803072955.128:tree.select
+#@+node:ekr.20040803072955.128:leoTree.select
 #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
 def select (self,p,updateBeadList=True,scroll=True):
@@ -4443,7 +4443,7 @@ def select (self,p,updateBeadList=True,scroll=True):
     return 'break' # Supresses unwanted selection.
 #@+node:ekr.20040803072955.129:<< unselect the old node >>
 # Remember the position of the scrollbar before making any changes.
-yview=body.yview()
+yview = body.getYScrollPosition()
 insertSpot = c.frame.body.getInsertPoint()
 
 if old_p != p:
@@ -4457,10 +4457,8 @@ if c.edit_widget(old_p):
 #@+node:ekr.20040803072955.130:<< select the new node >>
 # Bug fix: we must always set this, even if we never edit the node.
 self.revertHeadline = p.headString()
-
 frame.setWrap(p)
 
-    
 # Always do this.  Otherwise there can be problems with trailing newlines.
 s = g.toUnicode(p.v.t.bodyString,"utf-8")
 w.setAllText(s)
@@ -4470,7 +4468,7 @@ self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
 
 if p.v and p.v.t.scrollBarSpot != None:
     first,last = p.v.t.scrollBarSpot
-    w.yview('moveto',first)
+    w.setYScrollPosition(first)
 
 if p.v and p.v.t.insertSpot != None:
     spot = p.v.t.insertSpot
@@ -4526,7 +4524,7 @@ if self.stayInTree:
 else:
     c.bodyWantsFocus()
 #@-node:ekr.20040803072955.133:<< set the current node >>
-#@-node:ekr.20040803072955.128:tree.select
+#@-node:ekr.20040803072955.128:leoTree.select
 #@+node:ekr.20040803140033.1:c.setCurrentPosition
 def setCurrentPosition (self,p):
     
@@ -6483,7 +6481,7 @@ def updateAutoIndent (self,p,w):
     if ws:
         i = w.getInsertPoint()
         w.insert(i,ws)
-        w.setInsertPoint(i+1)
+        w.setInsertPoint(i+len(ws))
 #@-node:ekr.20051026171121.1:udpateAutoIndent
 #@+node:ekr.20051026092433:updateTab
 def updateTab (self,p,w):
@@ -7144,7 +7142,7 @@ def updateAutoIndent (self,p,w):
     if ws:
         i = w.getInsertPoint()
         w.insert(i,ws)
-        w.setInsertPoint(i+1)
+        w.setInsertPoint(i+len(ws))
 #@-node:ekr.20051026171121.1:udpateAutoIndent
 #@+node:ekr.20051026092433:updateTab
 def updateTab (self,p,w):
@@ -12246,7 +12244,7 @@ def updateAutoIndent (self,p,w):
     if ws:
         i = w.getInsertPoint()
         w.insert(i,ws)
-        w.setInsertPoint(i+1)
+        w.setInsertPoint(i+len(ws))
 #@-node:ekr.20051026171121.1:udpateAutoIndent
 #@+node:ekr.20051026092433:updateTab
 def updateTab (self,p,w):

@@ -471,6 +471,7 @@ def pasteText (self,event=None,middleButton=False):
     If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
 
     f = self ; c = f.c ; w = event and event.widget
+    # g.trace('isText',g.app.gui.isTextWidget(w),w)
     if not w or not g.app.gui.isTextWidget(w): return
 
     wname = c.widget_name(w)
@@ -543,6 +544,7 @@ def pasteText (self,event=None,middleButton=False):
     If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
 
     f = self ; c = f.c ; w = event and event.widget
+    # g.trace('isText',g.app.gui.isTextWidget(w),w)
     if not w or not g.app.gui.isTextWidget(w): return
 
     wname = c.widget_name(w)
