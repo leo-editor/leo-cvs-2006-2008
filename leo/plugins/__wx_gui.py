@@ -1489,14 +1489,16 @@ class baseTextWidget (wx.EvtHandler):
             pass ; g.es_exception()
     #@nonl
     #@-node:ekr.20070209074555.13:flashCharacter (to do)
-    #@+node:ekr.20070209145308:getFocus
+    #@+node:ekr.20070209145308:getFocus (baseText)
     def getFocus (self):
         
         w = self
-        return w._getFocus()
+        w2 = w._getFocus()
+        g.trace('w',w,'focus',w2)
+        return w2
         
     findFocus = getFocus
-    #@-node:ekr.20070209145308:getFocus
+    #@-node:ekr.20070209145308:getFocus (baseText)
     #@+node:ekr.20070209074555.14:get
     def get(self,i,j=None):
     
@@ -1657,14 +1659,15 @@ class baseTextWidget (wx.EvtHandler):
     SetBackgroundColour = setBackgroundColor
     #@nonl
     #@-node:ekr.20070210080034:setBackgroundColor & SetBackgroundColour
-    #@+node:ekr.20070209145342:setFocus
+    #@+node:ekr.20070209145342:setFocus (baseText)
     def setFocus (self):
         
         w = self
+        g.trace('baseText')
         return w._setFocus()
         
     SetFocus = setFocus
-    #@-node:ekr.20070209145342:setFocus
+    #@-node:ekr.20070209145342:setFocus (baseText)
     #@+node:ekr.20070209074555.26:setInsertPoint (baseText)
     def setInsertPoint (self,pos):
     
@@ -1855,10 +1858,10 @@ class headlineWidget (baseTextWidget):
         self.c = c
         self.tree = treeCtrl
         
+        # Init the base class.
         baseTextWidget.__init__(self,
             baseClassName='headlineWidget',
             name='headline',widget=self)
-            # Init the base class.
     
         self.init(id)
     
@@ -1866,8 +1869,6 @@ class headlineWidget (baseTextWidget):
         self.id = id
         self.ins = 0
         self.sel = 0,0
-        # We now use the actual widget.
-        #self.s = ''
     #@nonl
     #@-node:ekr.20070125074101.2:Birth & special methods
     #@+node:ekr.20070209111155:wx widget bindings
@@ -1883,7 +1884,7 @@ class headlineWidget (baseTextWidget):
     def _getAllText(self):
         return self.tree.GetItemText(self.id)                      
     def _getFocus(self):
-        return self
+        return self.tree.FindFocus()
     def _getInsertPoint(self):
         # g.trace(self.ins)
         return self.ins
@@ -1903,20 +1904,20 @@ class headlineWidget (baseTextWidget):
         s2 = self.tree.GetItemText(self.id)
         s3 = s2[:i] + s + s2[i:]
         self.tree.SetItemText(self.id,s3)
-        # g.trace('i',i,'s',s,'s3',s3)
+        #g.trace('i',i,'s3',s3)
         self.ins = len(s3)
         self.sel = self.ins,self.ins
     def _see(self,i):
         pass
     def _setAllText(self,s):
-        # g.trace(s)
+        #g.trace(s,g.callers())
         self.tree.SetItemText(self.id,s)
         self.ins = len(s)
         self.sel = self.ins,self.ins
     def _setBackgroundColor(self,color):
         pass
     def _setFocus(self):
-        pass
+        g.trace('headline widget (does nothing)')
     def _setInsertPoint(self,i):
         # g.trace(i)
         self.ins = i
@@ -2095,7 +2096,7 @@ class stcWidget (baseTextWidget):
     def _getInsertPoint(self):          return self.widget.GetCurrentPos()
     def _getLastPosition(self):         return self.widget.GetLength()
     def _getSelectedText(self):         return self.widget.GetSelectedText()
-    def _getYScrollPosition(self):      return 0
+    def _getYScrollPosition(self):      return 0,0
     def _getSelectionRange(self):       return self.widget.GetSelection()
     def _hitTest(self,pos):             return self.widget.HitTest(pos)
     def _insertText(self,i,s):          return self.widget.InsertText(i,s)
@@ -2674,7 +2675,6 @@ class wxGui(leoGui.leoGui):
             
         self.bitmap_name = None
         self.bitmap = None
-        self.focus_widget = None
         
         self.plainTextWidget = plainTextWidget
         
@@ -3373,21 +3373,23 @@ class wxGui(leoGui.leoGui):
     #@-node:edream.110203113231.344:center_dialog
     #@-node:edream.110203113231.339:Dialog
     #@+node:edream.110203113231.335:Focus
-    #@+node:edream.110203113231.336:get_focus
-    def get_focus(self,top):
+    #@+node:edream.110203113231.336:get_focus (gui)
+    def get_focus(self,c):
         
         """Returns the widget that has focus, or body if None."""
     
-        return self.focus_widget
+        g.trace('gui')
+        return c.frame.body.bodyCtrl.findFocus()
     #@nonl
-    #@-node:edream.110203113231.336:get_focus
-    #@+node:edream.110203113231.337:set_focus
+    #@-node:edream.110203113231.336:get_focus (gui)
+    #@+node:edream.110203113231.337:set_focus (gui)
     def set_focus(self,c,w):
         
         """Set the focus of the widget in the given commander if it needs to be changed."""
         
+        g.trace('gui',w)
         c.frame.setFocus(w)
-    #@-node:edream.110203113231.337:set_focus
+    #@-node:edream.110203113231.337:set_focus (gui)
     #@-node:edream.110203113231.335:Focus
     #@+node:edream.110203113231.318:Font (wxGui) (to do)
     #@+node:edream.110203113231.319:getFontFromParams
@@ -3669,7 +3671,7 @@ class wxLeoApp (wx.App):
     #@-node:edream.110203113231.348:OnExit
     #@-others
 #@-node:edream.110203113231.346:wxLeoApp class
-#@+node:edream.110203113231.539:wxLeoBody class
+#@+node:edream.110203113231.539:wxLeoBody class (leoBody)
 class wxLeoBody (leoFrame.leoBody):
     
     """A class to create a wxPython body pane."""
@@ -3703,9 +3705,6 @@ class wxLeoBody (leoFrame.leoBody):
             ### style = (wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE),
             name = 'body', # Must be body for k.masterKeyHandler.
         )
-    
-        # Key events are handled by the body widget.
-        wx.EVT_SET_FOCUS    (w,self.onFocusIn)
     
         return w
     #@-node:edream.110203113231.542:wxBody.createControl
@@ -3748,8 +3747,9 @@ class wxLeoBody (leoFrame.leoBody):
     def configure (self,*args,**keys):      pass # to be removed from Leo's core.
     
     def hasFocus (self):                    return self.bodyCtrl.getFocus()
-    def setFocus (self):                    return self.bodyCtrl.setFocus()
+    def setFocus (self):                    g.trace('body') ; return self.bodyCtrl.setFocus()
     SetFocus = setFocus
+    getFocus = hasFocus
     
     def getBodyPaneHeight (self):           return self.bodyCtrl.GetCharHeight() # widget specific
     def getBodyPaneWidth (self):            return self.bodyCtrl.GetCharWidth()  # widget specific
@@ -3762,13 +3762,6 @@ class wxLeoBody (leoFrame.leoBody):
     def tag_delete (self,*args,**keys):     return self.bodyCtrl.tag_delete(*args,**keys)
     def tag_remove (self,*args,**keys):     return self.bodyCtrl.tag_remove(*args,**keys)
     #@-node:edream.111303204836:Tk wrappers (wxBody)
-    #@+node:ekr.20070125111939:wxBody.onFocuIn
-    def onFocusIn (self,event=None):
-        
-        g.app.gui.focus_widget = self.bodyCtrl
-        event.Skip()
-    #@nonl
-    #@-node:ekr.20070125111939:wxBody.onFocuIn
     #@+node:ekr.20061116064914:onBodyChanged
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
         
@@ -4082,7 +4075,7 @@ class wxLeoBody (leoFrame.leoBody):
     #@-node:ekr.20070214073624:Editors (wxBody) TO DO
     #@-others
 #@nonl
-#@-node:edream.110203113231.539:wxLeoBody class
+#@-node:edream.110203113231.539:wxLeoBody class (leoBody)
 #@+node:edream.110203113231.349:wxLeoFrame class (leoFrame)
 class wxLeoFrame(leoFrame.leoFrame):
         
@@ -4379,6 +4372,9 @@ class wxLeoFrame(leoFrame.leoFrame):
     
     def setTopGeometry (self,w,h,x,y,adjustSize=True):
         pass
+        
+    def setWrap (self,p):
+        pass
     
     def lift (self):
         self.top.Raise()
@@ -4411,8 +4407,7 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@+node:ekr.20061211083200:setFocus (wxFrame)
     def setFocus (self,w):
     
-        # g.trace(w,g.app.gui.widget_name(w))
-         
+        g.trace('frame',w)
         w.SetFocus()
         self.focusWidget = w
         
@@ -5386,15 +5381,15 @@ class wxLeoMenu (leoMenu.leoMenu):
     #@nonl
     #@-node:edream.111303103141.3:delete_range (wxMenu) (does not work)
     #@+node:ekr.20070130183007:index & invoke
-    def index (self,name):
-        
-        '''Return the menu item whose name is given.'''
-        
-        g.trace(name)
-        
-    def invoke (self,i):
-        
-        '''Invoke the menu whose index is i'''
+    # It appears wxWidgets can't invoke a menu programmatically.
+    # The workaround is to change the unit test.
+    
+    if 0:
+        def index (self,name):
+            '''Return the menu item whose name is given.'''
+    
+        def invoke (self,i):
+            '''Invoke the menu whose index is i'''
     #@-node:ekr.20070130183007:index & invoke
     #@+node:ekr.20070124111252:insert (TO DO)
     def insert (self,*args,**keys):
@@ -5432,7 +5427,7 @@ class wxLeoMenu (leoMenu.leoMenu):
     
         frame.top.SetMenuBar(menuBar)
         
-        menuBar.SetAcceleratorTable(wx.NullAcceleratorTable)
+        # menuBar.SetAcceleratorTable(wx.NullAcceleratorTable)
     #@-node:edream.111303103457.2:createMenuBar
     #@+node:edream.111603112846.1:createOpenWithMenuFromTable (not ready yet)
     #@+at 
@@ -5546,6 +5541,25 @@ class wxLeoMenu (leoMenu.leoMenu):
             g.trace("no item",name,val)
     #@nonl
     #@-node:edream.111303163727.1:enableMenu
+    #@+node:ekr.20070221045130:getMenu
+    def getMenu (self,name):
+        
+        # Get the actual menu from the base class.
+        menu = leoMenu.leoMenu.getMenu(self,name)
+        
+        # Create a wrapper class that defines 
+        class menuWrapperClass (wx.Menu):
+            def index (self,name):
+                '''Return the menu item whose name is given.'''
+                return self.FindItem(name)
+    
+            def invoke (self,i):
+                '''Invoke the menu whose index is i'''
+    
+            
+        return menu
+    #@nonl
+    #@-node:ekr.20070221045130:getMenu
     #@+node:edream.111303163727.3:setMenuLabel
     def setMenuLabel (self,menu,name,label,underline=-1):
     
@@ -5753,6 +5767,8 @@ class wxLeoTree (leoFrame.leoTree):
         self.root_id = None
         self.tree_id = wx.NewId()
         self.updateCount = 0
+        
+        self.trace_select = c.config.getBool('trace_select')
     
         self.treeCtrl = self.createControl(parentFrame)
         self.createBindings()
@@ -5780,8 +5796,6 @@ class wxLeoTree (leoFrame.leoTree):
         
         wx.EVT_RIGHT_DOWN           (w,self.onRightDown)
         wx.EVT_RIGHT_UP             (w,self.onRightUp)
-        
-        wx.EVT_SET_FOCUS            (w,self.onFocusIn)
     #@-node:edream.111603213329:wxTree.createBindings
     #@+node:ekr.20061118142055:wxTree.createControl
     def createControl (self,parentFrame):
@@ -6269,11 +6283,6 @@ class wxLeoTree (leoFrame.leoTree):
         self.c.setChanged(True)
     #@-node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
     #@-node:ekr.20061105114250.1:Dragging
-    #@+node:ekr.20070125111939.1:onFocusIn
-    def onFocusIn (self,event=None):
-        
-        g.app.gui.focus_widget = self.treeCtrl
-    #@-node:ekr.20070125111939.1:onFocusIn
     #@-node:edream.110203113231.278:Event handlers (wxTree)
     #@+node:ekr.20061118123730.1:wxTree.onChar
     def onChar (self,event):
@@ -6302,181 +6311,27 @@ class wxLeoTree (leoFrame.leoTree):
         
     def setFocus (self):
         
-        # g.trace('tree')
+        g.trace('tree')
         self.treeCtrl.SetFocus()
         
     SetFocus = setFocus
     #@-node:edream.111403093559:Focus (wxTree)
     #@+node:ekr.20050719121701:Selection
-    #@+node:ekr.20061115172306:tree.select
-    #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
-    
-    def select (self,p,updateBeadList=True,scroll=True):
-        
-        '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
-        
-        c = self.c ; frame = c.frame
-        w = frame.body.bodyCtrl
-    
-        if not w:
-            g.trace('Null w','c',c,'c.frame',c.frame,'c.frame.body',c.frame.body)
-        old_p = c.currentPosition()
-        if not p or not c.positionExists(p):
-            return # Not an error.
-        
-        # g.trace(p.headString(),g.callers())
-    
-        if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
-            if old_p:
-                #@            << unselect the old node >>
-                #@+node:ekr.20061115172306.1:<< unselect the old node >>
-                # Remember the position of the scrollbar before making any changes.
-                
-                if 0: ###
-                    yview = 0 ### yview=w.yview()
-                    insertSpot = w.getInsertPoint()
-                    
-                    if old_p != p:
-                        self.endEditLabel() # sets editPosition = None
-                        self.setUnselectedLabelState(old_p)
-                    
-                    if c.edit_widget(old_p):
-                        old_p.v.t.scrollBarSpot = yview
-                        old_p.v.t.insertSpot = insertSpot
-                    
-                #@nonl
-                #@-node:ekr.20061115172306.1:<< unselect the old node >>
-                #@nl
-    
-        g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-        
-        if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
-            #@        << select the new node >>
-            #@+node:ekr.20061115172306.2:<< select the new node >>
-            # Bug fix: we must always set this, even if we never edit the node.
-            self.revertHeadline = p.headString()
-            
-            ###frame.setWrap(p)
-                
-            # Always do this.  Otherwise there can be problems with trailing hewlines.
-            ###s = g.toUnicode(p.v.t.bodyString,"utf-8")
-            ###self.setText(0,body,s)
-            
-            w.setAllText(p.bodyString())
-            
-            # We must do a full recoloring: we may be changing context!
-            self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
-            
-            ###if p.v and p.v.t.scrollBarSpot != None:
-                ###first,last = p.v.t.scrollBarSpot
-                ### w.yview('moveto',first)
-            
-            ###if p.v and p.v.t.insertSpot != None:
-                ###spot = p.v.t.insertSpot
-                ###w.mark_set("insert",spot)
-                ###w.setInsertPoint(spot)
-                ###w.see(spot)
-            ###else:
-                ###w.mark_set("insert","1.0")
-                ### w.setInsertPoint(0)
-                
-            # g.trace("select:",p.headString())
-                    
-            #@nonl
-            #@-node:ekr.20061115172306.2:<< select the new node >>
-            #@nl
-            if 0: ### Not ready ###
-                if p and p != old_p: # Suppress duplicate call.
-                    try: # may fail during initialization.
-                        # p is NOT c.currentPosition() here!
-                        if 0: # Interferes with new colorizer.
-                            self.canvas.update_idletasks()
-                            self.scrollTo(p)
-                        if scroll:
-                            def scrollCallback(self=self,p=p):
-                                self.scrollTo(p)
-                            self.canvas.after(100,scrollCallback)
-                    except Exception: pass
-                #@            << update c.beadList or c.beadPointer >>
-                #@+node:ekr.20061115172306.3:<< update c.beadList or c.beadPointer >>
-                # c.beadList is the list of nodes for the back and forward commands.
-                
-                if updateBeadList:
-                    
-                    if c.beadPointer > -1:
-                        present_p = c.beadList[c.beadPointer]
-                    else:
-                        present_p = c.nullPosition()
-                    
-                    if p != present_p:
-                        # Replace the tail of c.beadList by p and make p the present node.
-                        c.beadPointer += 1
-                        c.beadList[c.beadPointer:] = []
-                        c.beadList.append(p.copy())
-                        
-                        # New in Leo 4.4: limit this list to 100 items.
-                        if 0: # Doesn't work yet.
-                            c.beadList = c.beadList [-100:]
-                            g.trace('len(c.beadList)',len(c.beadList))
-                        
-                    # g.trace(c.beadPointer,p,present_p)
-                #@-node:ekr.20061115172306.3:<< update c.beadList or c.beadPointer >>
-                #@nl
-            #@        << update c.visitedList >>
-            #@+node:ekr.20061115172306.4:<< update c.visitedList >>
-            # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
-            
-            # Make p the most recently visited position on the list.
-            if p in c.visitedList:
-                c.visitedList.remove(p)
-            
-            c.visitedList.insert(0,p.copy())
-            
-            # g.trace('len(c.visitedList)',len(c.visitedList))
-            # g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
-            #@-node:ekr.20061115172306.4:<< update c.visitedList >>
-            #@nl
-    
-        c.setCurrentPosition(p)
-        #@    << set the current node >>
-        #@+node:ekr.20061115172306.5:<< set the current node >>
-        ### self.setSelectedLabelState(p)
-        
-        frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
-        
-        if self.stayInTree:
-            c.treeWantsFocus()
-        else:
-            c.bodyWantsFocus()
-        #@-node:ekr.20061115172306.5:<< set the current node >>
-        #@nl
-        if 0: ### Not ready yet ###
-            c.frame.body.selectMainEditor(p) # New in Leo 4.4.1.
-            c.frame.updateStatusLine() # New in Leo 4.4.1.
-        
-        g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-        g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-        
-        return 'break' # Supresses unwanted selection.
-    #@-node:ekr.20061115172306:tree.select
     #@+node:ekr.20050719121701.2:endEditLabel
-    label_lockout = False
-    
     def endEditLabel (self):
-        
+    
         '''The end-edit-label command.'''
         
-        if self.label_lockout:
-            g.trace('label_lockout')
-            return
-    
         c = self.c ; p = c.currentPosition()
         
-        tree_id = self.idDict.get(p.v)
-        if tree_id:
-            self.label_lockout = True
-            self.treeCtrl.EndEditLabel(tree_id)
-            self.label_lockout = False
+        w = self.editWidgetDict[p.v]
+        if w:
+            g.trace(p.headString())
+            s = w.getAllText()
+            # g.trace(w,s)
+            p.initHeadString(s)
+       
+    #@nonl
     #@-node:ekr.20050719121701.2:endEditLabel
     #@+node:ekr.20050719121701.3:editLabel
     def editLabel (self,p,selectAll=False): # wxTree
@@ -6502,7 +6357,6 @@ class wxLeoTree (leoFrame.leoTree):
         self.treeCtrl.EditLabel(tree_id)
         w = c.edit_widget(p)
         if p and w:
-            g.app.gui.focus_widget = w
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
             self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.
