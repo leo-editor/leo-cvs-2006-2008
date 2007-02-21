@@ -138,7 +138,6 @@ class leoBody:
         'setYScrollPosition',
         'updateSyntaxColorer',
     )
-    
     #@-node:ekr.20061109102912:define leoBody.mustBeDefinedOnlyInBaseClass
     #@-node:ekr.20031218072017.3657:leoBody.__init__
     #@+node:ekr.20061109173122:leoBody: must be defined in subclasses
@@ -795,6 +794,7 @@ class leoFrame:
         If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
     
         f = self ; c = f.c ; w = event and event.widget
+        # g.trace('isText',g.app.gui.isTextWidget(w),w)
         if not w or not g.app.gui.isTextWidget(w): return
     
         wname = c.widget_name(w)
@@ -888,11 +888,11 @@ class leoFrame:
             c.notValidInBatchMode("End Edit Headline")
         else:
             c.endEditing()
+            # g.trace('setting focus')
             if c.config.getBool('stayInTreeAfterEditHeadline'):
                 c.treeWantsFocusNow()
             else:
                 c.bodyWantsFocusNow()
-    #@nonl
     #@-node:ekr.20031218072017.3982:endEditLabelCommand
     #@+node:ekr.20031218072017.3983:insertHeadlineTime
     def insertHeadlineTime (self,event=None):
@@ -1088,7 +1088,7 @@ class leoTree:
         'endEditLabel',
         'setEditLabelState',
         # Selecting.
-        'select',
+        # 'select', # Defined in base class, may be overridden in do-nothing subclasses.
     )
     #@-node:ekr.20061109164610:leoTree.mustBeDefinedInSubclasses
     #@-node:ekr.20031218072017.3705:  tree.__init__ (base class)
@@ -1098,17 +1098,17 @@ class leoTree:
     def setColorFromConfig (self):                  self.oops()
     def setFont(self,font=None,fontName=None):      self.oops()
     def setFontFromConfig (self):                   self.oops()
+    
     # Drawing & scrolling.
     def drawIcon(self,v,x=None,y=None):             self.oops()
     def redraw_now(self,scroll=True):               self.oops()
     def scrollTo(self,p):                           self.oops()
     idle_scrollTo = scrollTo # For compatibility.
+    
     # Headlines.
     def editLabel(self,v,selectAll=False):          self.oops()
     def endEditLabel(self):                         self.oops()
     def setEditLabelState(self,v,selectAll=False):  self.oops()
-    # Selecting & expanding.
-    def select(self,p,updateBeadList=True,scroll=True): self.oops()
     #@-node:ekr.20031218072017.3706: Must be defined in subclasses
     #@+node:ekr.20061109165848:Must be defined in base class
     #@+node:ekr.20031218072017.3716:Getters/Setters (tree)
@@ -1436,6 +1436,142 @@ class leoTree:
     #@-node:ekr.20051026083544.2:updateHead
     #@-node:ekr.20040803072955.90:head key handlers
     #@-node:ekr.20061109165848:Must be defined in base class
+    #@+node:ekr.20040803072955.128:leoTree.select
+    #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+    
+    def select (self,p,updateBeadList=True,scroll=True):
+        
+        '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+        
+        c = self.c ; frame = c.frame
+        body = w = frame.bodyCtrl
+        old_p = c.currentPosition()
+        if not p or not c.positionExists(p):
+            # g.trace('does not exist',p.headString())
+            return # Not an error.
+        
+        if self.trace_select and not g.app.unitTesting: g.trace(g.callers())
+    
+        if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+            if old_p:
+                #@            << unselect the old node >>
+                #@+node:ekr.20040803072955.129:<< unselect the old node >>
+                # Remember the position of the scrollbar before making any changes.
+                yview = body.getYScrollPosition()
+                insertSpot = c.frame.body.getInsertPoint()
+                
+                if old_p != p:
+                    self.endEditLabel() # sets editPosition = None
+                    self.setUnselectedLabelState(old_p) # 12/17/04
+                
+                if c.edit_widget(old_p):
+                    old_p.v.t.scrollBarSpot = yview
+                    old_p.v.t.insertSpot = insertSpot
+                #@-node:ekr.20040803072955.129:<< unselect the old node >>
+                #@nl
+    
+        g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+        
+        if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+            #@        << select the new node >>
+            #@+node:ekr.20040803072955.130:<< select the new node >>
+            # Bug fix: we must always set this, even if we never edit the node.
+            self.revertHeadline = p.headString()
+            frame.setWrap(p)
+            
+            # Always do this.  Otherwise there can be problems with trailing newlines.
+            s = g.toUnicode(p.v.t.bodyString,"utf-8")
+            w.setAllText(s)
+            
+            # We must do a full recoloring: we may be changing context!
+            self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+            
+            if p.v and p.v.t.scrollBarSpot != None:
+                first,last = p.v.t.scrollBarSpot
+                w.setYScrollPosition(first)
+            
+            if p.v and p.v.t.insertSpot != None:
+                spot = p.v.t.insertSpot
+                w.setInsertPoint(spot)
+                w.see(spot)
+            else:
+                w.setInsertPoint(0)
+                    
+            # g.trace("select:",p.headString())
+            #@-node:ekr.20040803072955.130:<< select the new node >>
+            #@nl
+            if p and p != old_p: # Suppress duplicate call.
+                try: # may fail during initialization.
+                    # p is NOT c.currentPosition() here!
+                    if 0: # Interferes with new colorizer.
+                        self.canvas.update_idletasks()
+                        self.scrollTo(p)
+                    if scroll:
+                        def scrollCallback(self=self,p=p):
+                            self.scrollTo(p)
+                        self.canvas.after(100,scrollCallback)
+                except Exception: pass
+            #@        << update c.beadList or c.beadPointer >>
+            #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+            # c.beadList is the list of nodes for the back and forward commands.
+            
+            if updateBeadList:
+                
+                if c.beadPointer > -1:
+                    present_p = c.beadList[c.beadPointer]
+                else:
+                    present_p = c.nullPosition()
+                
+                if p != present_p:
+                    # Replace the tail of c.beadList by p and make p the present node.
+                    c.beadPointer += 1
+                    c.beadList[c.beadPointer:] = []
+                    c.beadList.append(p.copy())
+                    
+                    # New in Leo 4.4: limit this list to 100 items.
+                    if 0: # Doesn't work yet.
+                        c.beadList = c.beadList [-100:]
+                        g.trace('len(c.beadList)',len(c.beadList))
+                    
+                # g.trace(c.beadPointer,p,present_p)
+            #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+            #@nl
+            #@        << update c.visitedList >>
+            #@+node:ekr.20040803072955.132:<< update c.visitedList >>
+            # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
+            
+            # Make p the most recently visited position on the list.
+            if p in c.visitedList:
+                c.visitedList.remove(p)
+            
+            c.visitedList.insert(0,p.copy())
+            
+            # g.trace('len(c.visitedList)',len(c.visitedList))
+            # g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
+            #@-node:ekr.20040803072955.132:<< update c.visitedList >>
+            #@nl
+    
+        c.setCurrentPosition(p)
+        #@    << set the current node >>
+        #@+node:ekr.20040803072955.133:<< set the current node >>
+        self.setSelectedLabelState(p)
+        
+        frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+        
+        if self.stayInTree:
+            c.treeWantsFocus()
+        else:
+            c.bodyWantsFocus()
+        #@-node:ekr.20040803072955.133:<< set the current node >>
+        #@nl
+        c.frame.body.selectMainEditor(p) # New in Leo 4.4.1.
+        c.frame.updateStatusLine() # New in Leo 4.4.1.
+        
+        g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+        g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+        
+        return 'break' # Supresses unwanted selection.
+    #@-node:ekr.20040803072955.128:leoTree.select
     #@+node:ekr.20031218072017.3718:oops
     def oops(self):
         
