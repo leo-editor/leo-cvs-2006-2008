@@ -2775,7 +2775,7 @@ class editCommandsClass (baseEditCommandsClass):
         if ws:
             i = w.getInsertPoint()
             w.insert(i,ws)
-            w.setInsertPoint(i+1)
+            w.setInsertPoint(i+len(ws))
     #@-node:ekr.20051026171121.1:udpateAutoIndent
     #@+node:ekr.20051026092433:updateTab
     def updateTab (self,p,w):
