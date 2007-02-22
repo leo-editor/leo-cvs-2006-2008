@@ -6179,7 +6179,8 @@ class wxLeoTree (leoFrame.leoTree):
                     event.SetEventObject(tree)
                     tree.GetEventHandler().ProcessEvent(event)
                 else:
-                    self.fullRedraw()
+                    self.cleverRedraw()
+                    # self.fullRedraw()
             finally:
                 self.drawing = False
     
@@ -6187,101 +6188,171 @@ class wxLeoTree (leoFrame.leoTree):
         self.redraw()
     #@nonl
     #@+node:ekr.20070221122411:cleverRedraw & helpers
+    initial_draw = True
+    
     def cleverRedraw (self):
         
-        return False ###
-        
-        c = self.c ; tree = self.treeCtrl
-        
-        p = c.rootPosition()
-        root_id = tree.GetRootItem()
-        if not root_id.IsOk(): return False # This is the first drawing
+        if self.initial_draw:
+            self.initial_draw = False
+            self.fullRedraw()
+        else:
+            c = self.c ; tree = self.treeCtrl
+            g.trace()
+            root_p = c.rootPosition()
+            root_id = tree.GetRootItem()
+            child_id,cookie = tree.GetFirstChild(root_id)
+            self.update_siblings(root_id,child_id,root_p)
+    #@nonl
+    #@+node:ekr.20070222092336:insertTreeAfter
+    def insertTreeAfter (self,parent_id,prev_id,p):
     
-        child_id,cookie = tree.GetFirstChild(root_id)
-        while p:
-            g.trace(p.headString())
-            self.update_subtree(root_id,child_id,p.copy())
-            p.moveToNext()
-            if child_id.IsOk:
-                child_id = tree.GetNextSibling(child_id)
-        if child_id.IsOk():
-            g.trace('delete')
-            tree.Delete(child_id)
-    
-        return True
-            
-    #@+node:ekr.20070221130134:update_node
-    def update_node(self,node_id,p):
+        tree = self.treeCtrl
+        ins_id = self.insert_node(parent_id,prev_id,p)
+        g.trace(p.headString())
+        child = p.firstChild()
+        while child:
+            # Create the entire tree, regardless of expansion state.
+            self.redraw_subtree(ins_id,child)
+            child.moveToNext()
+        return ins_id
+    #@-node:ekr.20070222092336:insertTreeAfter
+    #@+node:ekr.20070222091654:insert_node
+    def insert_node(self,parent_id,prev_id,p):
         
         tree = self.treeCtrl
         data = wx.TreeItemData(p.copy())
         image = self.assignIcon(p)
     
+        node_id = tree.InsertItem(
+            parent_id,
+            prev_id,
+            text=p.headString(),
+            image=image,
+            #selImage=image,
+            data=data)
+    
+        ### tree.SetItemFont(id,self.defaultFont)
+        
+        self.setEditWidget(p,node_id)
+        assert (p == tree.GetItemData(node_id).GetData())
+        
+        self.expandAndSelect(node_id,p)
+    
+        return node_id
+    #@-node:ekr.20070222091654:insert_node
+    #@+node:ekr.20070221130134:update_node
+    def update_node(self,node_id,p):
+        
+        tree = self.treeCtrl
+    
+        # data = wx.TreeItemData(p.copy())
         # id = tree.AppendItem(
             # parent_id,
             # text=p.headString(),
             # image=image,
             # #selImage=image,
             # data=data)
-            
+    
+        # update the data.
+        new_h = p.headString() ; old_h = tree.GetItemText(node_id)
+        if old_h != new_h:
+            g.trace('old:',old_h,'new:',new_h)
+            tree.SetItemText(node_id,new_h)
+        image = self.assignIcon(p)
+        if image != tree.GetItemImage(node_id):
+            tree.SetItemImage(node_id,image)
+        data = wx.TreeItemData(p.copy())
         tree.SetItemData(node_id,data)
+    
         self.setEditWidget(p,node_id)
         assert (p == tree.GetItemData(node_id).GetData())
-        return id
+        return node_id
     #@-node:ekr.20070221130134:update_node
-    #@+node:ekr.20070221122544.2:update_subtree
-    def update_subtree(self,parent_id,node_id,p):
+    #@+node:ekr.20070221122544.2:update_siblings
+    def update_siblings(self,parent_id,node_id,p):
         
-        g.trace(p.headString())
-        
-        tree = self.treeCtrl
-        if node_id.IsOk():
-            self.update_node(node_id,p)
-        else:
-            g.trace('insert',p.headString())
-            self.redraw_subtree(parent_id,id)
-            return True
-        
-        child_id,cookie = tree.GetFirstChild(node_id)
-        while p:
-            if child_id.IsOk():
-                self.update_subtree(node_id,child_id,p.copy())
-                p.moveToNext()
-                child_id = tree.GetNextSibling(child_id)
+        tree = self.treeCtrl ; trace = False
+        first_id,first_p = node_id,p.copy()
+        # Warning: we will visit each position only once even if the tree changes.
+        for p in p.self_and_siblings_iter(copy=True):
+            h = p.headString()
+            if node_id.IsOk():
+                data = tree.GetItemData(node_id)
+                node_id2,p2 = data.GetId(),data.GetData()
+                h2 = p2.headString()
+                assert node_id == node_id2,'expected id: %s, got %s' % (node_id,node_id2)
+                if p2 == p:
+                    # trace and g.trace('match at:',h,'next:',h2)
+                    self.update_node(node_id,p)
+                    self.expandAndSelect(node_id,p)
+                    # Recursively update.
+                    if p.hasChildren():
+                        child_id,cookie = tree.GetFirstChild(node_id)
+                        if child_id.IsOk():
+                            self.update_siblings(node_id,child_id,p.firstChild())
+                        else:
+                            trace and g.trace('***** no child id',h)
+                            return self.fullRedraw()
+                    node_id = tree.GetNextSibling(node_id)
+                    
+                elif p.hasNext() and p.next() == p2:
+                    # There is a node between p (in the new tree) and p2 (in the old tree).
+                    # Insert this node (before p2), then stay at (node_id == node_id2)
+                    prev_id = tree.GetPrevSibling(node_id)
+                    ins_id = self.insertTreeAfter(parent_id,prev_id,p.copy())
+                    trace and g.trace('at:',h,'insert before:',h2)
+                    trace and g.trace('prev id',id(node_id),'ins id',id(ins_id))
+                    # We will revisit node_id2 when we visit p.next()
+                    # But this is our last chance to visit ins_id.
+                    self.expandAndSelect(ins_id,p)
+                    node_id = tree.GetNextSibling(ins_id)
+                elif p2.hasNext() and p2.next() == p.next():
+                    # The node p (in the new tree) is p2.next (in the old tree)
+                    # Delete p2 from the tree, and stay at node_id (for a later update)
+                    trace and g.trace('at:',h,'delete',h2)
+                    next_id = tree.GetNextSibling(node_id)
+                    tree.Delete(node_id)
+                    node_id = next_id
+                    self.expandAndSelect(node_id,p)
+                else:
+                    # Moving nodes will cause this.
+                    trace and g.trace('****** move at:',h,'next:',h2)
+                    return self.fullRedraw()
             else:
-                g.trace('insert',p.headString())
-                self.redraw_subtree(parent_id,p.copy())
-                break
-        if child_id.IsOk():
-            data = tree.GetItemData(child_id)
-            g.trace('delete','data',data)
-            tree.Delete(child_id)
+                last_p = first_p.copy()
+                while last_p.hasNext():
+                    last_p.moveToNext()
+                prev_id = tree.GetLastChild(parent_id)
+                g.trace('insert at end after',last_p.headString())
+                ins_id = self.insertTreeAfter(parent_id,prev_id,last_p)
+                self.expandAndSelect(ins_id,p)
+        if node_id.IsOk():
+            g.trace('delete at end')
+            tree.Delete(node_id)
+    #@nonl
+    #@-node:ekr.20070221122544.2:update_siblings
+    #@+node:ekr.20070222083341:expandAndSelect
+    # This should be called after drawing so the +- box is drawn properly.
     
-    
-    if 0: #### original code
-        tree = self.treeCtrl
-        id = self.update_node(parent_id,p)
-        child = p.firstChild()
-    
-        while child:
-            # We must redraw the entire tree, regardless of expansion state.
-            self.redraw_subtree(id,child)
-            child.moveToNext()
+    def expandAndSelect (self,node_id,p,force=False):
         
+        c = self.c ; tree = self.treeCtrl
+    
         # The calls to tree.Expand and tree.Collapse *will* generate events,
         # This is the reason the event handlers must be disabled while drawing.
-        if p.isExpanded():
-            tree.Expand(id)
-        else:
-            tree.Collapse(id)
+    
+        if p.isExpanded():  tree.Expand(node_id)
+        else:               tree.Collapse(node_id)
             
         # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-        if p == self.c.currentPosition():
-            tree.SelectItem(id) # Generates call to onTreeChanged.
-            
-        return True
-    #@nonl
-    #@-node:ekr.20070221122544.2:update_subtree
+        if force:
+            g.trace('force selection',p.headString())
+            c.setCurrentPosition(p)
+            tree.SelectItem(node_id) # Generates call to onTreeChanged.
+        elif p == self.c.currentPosition():
+            g.trace('selecting',p.headString())
+            tree.SelectItem(node_id) # Generates call to onTreeChanged.
+    #@-node:ekr.20070222083341:expandAndSelect
     #@-node:ekr.20070221122411:cleverRedraw & helpers
     #@+node:ekr.20070221122411.1:fullRedraw & helpers
     def fullRedraw (self):
@@ -6301,7 +6372,7 @@ class wxLeoTree (leoFrame.leoTree):
         data = wx.TreeItemData(p.copy())
         image = self.assignIcon(p)
     
-        id = tree.AppendItem(
+        node_id = tree.AppendItem(
             parent_id,
             text=p.headString(),
             image=image,
@@ -6310,12 +6381,12 @@ class wxLeoTree (leoFrame.leoTree):
     
         ### tree.SetItemFont(id,self.defaultFont)
         
-        self.setEditWidget(p,id)
-        assert (p == tree.GetItemData(id).GetData())
-        return id
+        self.setEditWidget(p,node_id)
+        assert (p == tree.GetItemData(node_id).GetData())
+        return node_id
     #@-node:edream.110203113231.299:redraw_node
     #@+node:edream.110203113231.300:redraw_subtree
-    def redraw_subtree(self,parent_id,p):
+    def redraw_subtree(self,parent_id,p,trace=False):
     
         tree = self.treeCtrl
         id = self.redraw_node(parent_id,p)
