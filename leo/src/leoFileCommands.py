@@ -2943,6 +2943,7 @@ class baseFileCommands:
     
         # New in 4.2.  Return ok flag so shutdown logic knows if all went well.
         ok = g.doHook("save1",c=c,p=v,v=v,fileName=fileName)
+        redraw_flag = g.app.gui.guiName() == 'tkinter'
         if ok is None:
             c.beginUpdate()
             try:
@@ -2956,7 +2957,7 @@ class baseFileCommands:
                         g.es("clearing undo")
                         c.undoer.clearUndoState()
             finally:
-                c.endUpdate()
+                c.endUpdate(redraw_flag)
         g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
         return ok
     #@-node:ekr.20031218072017.1720:save
