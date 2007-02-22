@@ -6149,44 +6149,31 @@ class wxLeoTree (leoFrame.leoTree):
     redrawCount = 0
     
     def redraw (self):
-        
-        c = self.c
+        c = self.c ;  tree = self.treeCtrl
         if c is None: return
         p = c.rootPosition()
-        if not p: return
-        if self.drawing: return
-        tree = self.treeCtrl
-        
+        if not p or self.drawing: return
         self.redrawCount += 1
         self.idDict = {}
         if not g.app.unitTesting: g.trace(self.redrawCount)
         
-        if self.use_paint: # Doesn't work.
-            self.drawing = True
-            try:
-                self.expandAllAncestors(c.currentPosition()) # Important: do this when self.drawing is **False**.
+        self.drawing = True # Disable event handlers.
+        try:
+            self.expandAllAncestors(c.currentPosition())
+            if self.use_paint: # Doesn't work.
                 event = wx.PaintEvent()
                 event.SetEventObject(tree)
                 tree.GetEventHandler().ProcessEvent(event)
-            finally:
-                self.drawing = False
-        else:
-            self.drawing = True # Tell event handlers not to call us.
-            try:
-                self.expandAllAncestors(c.currentPosition()) # Important: do this when self.drawing is **True**.
-                if self.use_paint:
-                    event = wx.PaintEvent()
-                    event.SetEventObject(tree)
-                    tree.GetEventHandler().ProcessEvent(event)
-                else:
-                    self.cleverRedraw()
-                    # self.fullRedraw()
-            finally:
-                self.drawing = False
+            else:
+                # self.fullRedraw()
+                self.cleverRedraw()
+        finally:
+            self.drawing = False # Enable event handlers.
     
     def redraw_now(self,scroll=True):
         self.redraw()
     #@nonl
+    #@-node:edream.110203113231.298:redraw & redraw_now & helpers
     #@+node:ekr.20070221122411:cleverRedraw & helpers
     initial_draw = True
     
@@ -6197,7 +6184,6 @@ class wxLeoTree (leoFrame.leoTree):
             self.fullRedraw()
         else:
             c = self.c ; tree = self.treeCtrl
-            g.trace()
             root_p = c.rootPosition()
             root_id = tree.GetRootItem()
             child_id,cookie = tree.GetFirstChild(root_id)
@@ -6208,7 +6194,7 @@ class wxLeoTree (leoFrame.leoTree):
     
         tree = self.treeCtrl
         ins_id = self.insert_node(parent_id,prev_id,p)
-        g.trace(p.headString())
+        # g.trace(p.headString())
         child = p.firstChild()
         while child:
             # Create the entire tree, regardless of expansion state.
@@ -6282,19 +6268,14 @@ class wxLeoTree (leoFrame.leoTree):
                 h2 = p2.headString()
                 assert node_id == node_id2,'expected id: %s, got %s' % (node_id,node_id2)
                 if p2 == p:
-                    # trace and g.trace('match at:',h,'next:',h2)
+                    # trace and g.trace('match at:',h,'next:',p.next() and p.next().headString())
                     self.update_node(node_id,p)
                     self.expandAndSelect(node_id,p)
                     # Recursively update.
                     if p.hasChildren():
                         child_id,cookie = tree.GetFirstChild(node_id)
-                        if child_id.IsOk():
-                            self.update_siblings(node_id,child_id,p.firstChild())
-                        else:
-                            trace and g.trace('***** no child id',h)
-                            return self.fullRedraw()
+                        self.update_siblings(node_id,child_id,p.firstChild())
                     node_id = tree.GetNextSibling(node_id)
-                    
                 elif p.hasNext() and p.next() == p2:
                     # There is a node between p (in the new tree) and p2 (in the old tree).
                     # Insert this node (before p2), then stay at (node_id == node_id2)
@@ -6315,21 +6296,24 @@ class wxLeoTree (leoFrame.leoTree):
                     node_id = next_id
                     self.expandAndSelect(node_id,p)
                 else:
-                    # Moving nodes will cause this.
-                    trace and g.trace('****** move at:',h,'next:',h2)
-                    return self.fullRedraw()
+                    trace and g.trace('*** mismatch at:',h,'next:',h2)
+                    prev_id = tree.GetPrevSibling(node_id)
+                    tree.Delete(node_id)
+                    ins_id = self.insertTreeAfter(parent_id,prev_id,p.copy())
+                    node_id = tree.GetNextSibling(ins_id)
             else:
                 last_p = first_p.copy()
                 while last_p.hasNext():
                     last_p.moveToNext()
                 prev_id = tree.GetLastChild(parent_id)
-                g.trace('insert at end after',last_p.headString())
+                trace and g.trace('*** insert at end after',last_p.headString())
                 ins_id = self.insertTreeAfter(parent_id,prev_id,last_p)
                 self.expandAndSelect(ins_id,p)
-        if node_id.IsOk():
-            g.trace('delete at end')
+        while node_id.IsOk():
+            trace and g.trace('delete at end')
+            next_id = tree.GetNextSibling(node_id)
             tree.Delete(node_id)
-    #@nonl
+            node_id = next_id
     #@-node:ekr.20070221122544.2:update_siblings
     #@+node:ekr.20070222083341:expandAndSelect
     # This should be called after drawing so the +- box is drawn properly.
@@ -6350,7 +6334,7 @@ class wxLeoTree (leoFrame.leoTree):
             c.setCurrentPosition(p)
             tree.SelectItem(node_id) # Generates call to onTreeChanged.
         elif p == self.c.currentPosition():
-            g.trace('selecting',p.headString())
+            # g.trace('selecting',p.headString())
             tree.SelectItem(node_id) # Generates call to onTreeChanged.
     #@-node:ekr.20070222083341:expandAndSelect
     #@-node:ekr.20070221122411:cleverRedraw & helpers
@@ -6359,7 +6343,6 @@ class wxLeoTree (leoFrame.leoTree):
     
         c = self.c ; p = c.rootPosition()
         tree = self.treeCtrl
-    
         tree.DeleteAllItems()
         self.root_id = root_id = tree.AddRoot('Root Node')
         while p:
@@ -6389,25 +6372,24 @@ class wxLeoTree (leoFrame.leoTree):
     def redraw_subtree(self,parent_id,p,trace=False):
     
         tree = self.treeCtrl
-        id = self.redraw_node(parent_id,p)
-        child = p.firstChild()
-    
-        while child:
-            # We must redraw the entire tree, regardless of expansion state.
-            self.redraw_subtree(id,child)
-            child.moveToNext()
+        node_id = self.redraw_node(parent_id,p)
         
+        # Draw the entire tree, regardless of expansion state.
+        child_p = p.firstChild()
+        while child_p:
+            self.redraw_subtree(node_id,child_p)
+            child_p.moveToNext()
+    
         # The calls to tree.Expand and tree.Collapse *will* generate events,
         # This is the reason the event handlers must be disabled while drawing.
         if p.isExpanded():
-            tree.Expand(id)
+            tree.Expand(node_id)
         else:
-            tree.Collapse(id)
+            tree.Collapse(node_id)
             
         # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
         if p == self.c.currentPosition():
-            tree.SelectItem(id) # Generates call to onTreeChanged.
-    #@nonl
+            tree.SelectItem(node_id) # Generates call to onTreeChanged.
     #@-node:edream.110203113231.300:redraw_subtree
     #@-node:ekr.20070221122411.1:fullRedraw & helpers
     #@+node:ekr.20061211052926:assignIcon
@@ -6448,7 +6430,6 @@ class wxLeoTree (leoFrame.leoTree):
         else:
             g.trace('can not happen: no id',p.headString())
     #@-node:ekr.20061211115055:updateVisibleIcons
-    #@-node:edream.110203113231.298:redraw & redraw_now & helpers
     #@-node:edream.111303202917:Drawing
     #@+node:edream.110203113231.278:Event handlers (wxTree)
     #@+node:ekr.20061127075102:get_p
