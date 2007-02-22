@@ -1494,7 +1494,7 @@ class baseTextWidget (wx.EvtHandler):
         
         w = self
         w2 = w._getFocus()
-        g.trace('w',w,'focus',w2)
+        # g.trace('w',w,'focus',w2)
         return w2
         
     findFocus = getFocus
@@ -1663,7 +1663,7 @@ class baseTextWidget (wx.EvtHandler):
     def setFocus (self):
         
         w = self
-        g.trace('baseText')
+        # g.trace('baseText')
         return w._setFocus()
         
     SetFocus = setFocus
@@ -2051,40 +2051,155 @@ class stcWidget (baseTextWidget):
     
         self.c = c
         self.widget = w = wx.stc.StyledTextCtrl(parent,*args,**keys)
-    
-        if 0: # does nothing.
-            self.widget.SetBackgroundColour(name2color('light blue')) #'lavender'))
-            self.widget.SetEdgeColour(name2color('leo pink'))
-            
-        #w.SetLexerLanguage('Python')
-        #style = w.GetStyleAt(0)
-        w.StyleClearAll()
         
-        self.font = font = wx.Font(
-            pointSize=10,
-            family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
-            style  = wx.FONTSTYLE_NORMAL,
-            weight = wx.FONTWEIGHT_NORMAL,)
-    
-        # Setting this font (rather than the size) clears the indentation guides.
-        w.StyleSetFont(0,font)
-        
-        if 0:
-            color = name2color('lavender blush')
-            w.StyleSetBackground(style,color)
+        w.CmdKeyClearAll() # Essential so backspace is handled properly.
+        wx.EVT_CHAR (w,self.onChar)
+        # wx.EVT_STC_MARGINCLICK(w,self.onMarginClick)
+        w.Bind(wx.stc.EVT_STC_MARGINCLICK, self.onMarginClick)
         
         # Init the base class.
         name = keys.get('name') or '<unknown stcWidget>'
-        baseTextWidget.__init__(self,
-            baseClassName='stcWidget',name=name,widget=w)
+        baseTextWidget.__init__(self,baseClassName='stcWidget',name=name,widget=w)
+        
+        
+        
+        if 1:
+            self.initStc()
+        else: # old code
+            w.StyleClearAll()
             
-        w.CmdKeyClearAll() # Essential so backspace is handled properly.
-        wx.EVT_CHAR (w,self.onChar)
-    
-        w.SetIndent(4) ### Should be variable.
-        w.SetIndentationGuides(True)
+            self.font = font = wx.Font(
+                pointSize=10,
+                family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
+                style  = wx.FONTSTYLE_NORMAL,
+                weight = wx.FONTWEIGHT_NORMAL,)
+        
+            # Setting this font (rather than the size) clears the indentation guides.
+            w.StyleSetFont(0,font)
     #@nonl
     #@-node:ekr.20070205140140.1:stcWidget.__init__
+    #@+node:ekr.20070221103456:initStc
+    # Code copied from wxPython demo.
+    
+    def initStc (self):
+        import keyword
+        w = self.widget
+        use_fold = True
+        
+        w.SetLexer(wx.stc.STC_LEX_PYTHON)
+        w.SetKeyWords(0, " ".join(keyword.kwlist))
+    
+        # Enable folding
+        if use_fold:
+            w.SetProperty("fold", "1" ) 
+    
+        # Highlight tab/space mixing (shouldn't be any)
+        w.SetProperty("tab.timmy.whinge.level", "1")
+    
+        # Set left and right margins
+        w.SetMargins(2,2)
+    
+        # Set up the numbers in the margin for margin #1
+        w.SetMarginType(1, wx.stc.STC_MARGIN_NUMBER)
+        # Reasonable value for, say, 4-5 digits using a mono font (40 pix)
+        w.SetMarginWidth(1, 40)
+    
+        # Indentation and tab stuff
+        w.SetIndent(4)               # Proscribed indent size for wx
+        w.SetIndentationGuides(True) # Show indent guides
+        w.SetBackSpaceUnIndents(True)# Backspace unindents rather than delete 1 space
+        w.SetTabIndents(True)        # Tab key indents
+        w.SetTabWidth(4)             # Proscribed tab size for wx
+        w.SetUseTabs(False)          # Use spaces rather than tabs, or TabTimmy will complain!    
+        # White space
+        w.SetViewWhiteSpace(False)   # Don't view white space
+    
+        # EOL: Since we are loading/saving ourselves, and the
+        # strings will always have \n's in them, set the STC to
+        # edit them that way.            
+        w.SetEOLMode(wx.stc.STC_EOL_LF)
+        w.SetViewEOL(False)
+        
+        # No right-edge mode indicator
+        w.SetEdgeMode(wx.stc.STC_EDGE_NONE)
+    
+        # Setup a margin to hold fold markers
+        if use_fold:
+            w.SetMarginType(2, wx.stc.STC_MARGIN_SYMBOL)
+            w.SetMarginMask(2, wx.stc.STC_MASK_FOLDERS)
+            w.SetMarginSensitive(2, True)
+            w.SetMarginWidth(2, 12)
+    
+            # and now set up the fold markers
+            w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEREND,     wx.stc.STC_MARK_BOXPLUSCONNECTED,  "white", "black")
+            w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEROPENMID, wx.stc.STC_MARK_BOXMINUSCONNECTED, "white", "black")
+            w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERMIDTAIL, wx.stc.STC_MARK_TCORNER,  "white", "black")
+            w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERTAIL,    wx.stc.STC_MARK_LCORNER,  "white", "black")
+            w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERSUB,     wx.stc.STC_MARK_VLINE,    "white", "black")
+            w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDER,        wx.stc.STC_MARK_BOXPLUS,  "white", "black")
+            w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEROPEN,    wx.stc.STC_MARK_BOXMINUS, "white", "black")
+    
+        # Global default style
+        if wx.Platform == '__WXMSW__':
+            w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+                              'fore:#000000,back:#FFFFFF,face:Courier New,size:9')
+        elif wx.Platform == '__WXMAC__':
+            # TODO: if this looks fine on Linux too, remove the Mac-specific case 
+            # and use this whenever OS != MSW.
+            w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+                              'fore:#000000,back:#FFFFFF,face:Courier')
+        else:
+            w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+                              'fore:#000000,back:#FFFFFF,face:Courier,size:9')
+    
+        # Clear styles and revert to default.
+        w.StyleClearAll()
+    
+        # Following style specs only indicate differences from default.
+        # The rest remains unchanged.
+    
+        # Line numbers in margin
+        w.StyleSetSpec(wx.stc.STC_STYLE_LINENUMBER,'fore:#000000,back:#99A9C2')    
+        # Highlighted brace
+        w.StyleSetSpec(wx.stc.STC_STYLE_BRACELIGHT,'fore:#00009D,back:#FFFF00')
+        # Unmatched brace
+        w.StyleSetSpec(wx.stc.STC_STYLE_BRACEBAD,'fore:#00009D,back:#FF0000')
+        # Indentation guide
+        w.StyleSetSpec(wx.stc.STC_STYLE_INDENTGUIDE, "fore:#CDCDCD")
+    
+        # Python styles
+        w.StyleSetSpec(wx.stc.STC_P_DEFAULT, 'fore:#000000')
+        # Comments
+        w.StyleSetSpec(wx.stc.STC_P_COMMENTLINE,  'fore:#008000,back:#F0FFF0')
+        w.StyleSetSpec(wx.stc.STC_P_COMMENTBLOCK, 'fore:#008000,back:#F0FFF0')
+        # Numbers
+        w.StyleSetSpec(wx.stc.STC_P_NUMBER, 'fore:#008080')
+        # Strings and characters
+        w.StyleSetSpec(wx.stc.STC_P_STRING, 'fore:#800080')
+        w.StyleSetSpec(wx.stc.STC_P_CHARACTER, 'fore:#800080')
+        # Keywords
+        w.StyleSetSpec(wx.stc.STC_P_WORD, 'fore:#000080,bold')
+        # Triple quotes
+        w.StyleSetSpec(wx.stc.STC_P_TRIPLE, 'fore:#800080,back:#FFFFEA')
+        w.StyleSetSpec(wx.stc.STC_P_TRIPLEDOUBLE, 'fore:#800080,back:#FFFFEA')
+        # Class names
+        w.StyleSetSpec(wx.stc.STC_P_CLASSNAME, 'fore:#0000FF,bold')
+        # Function names
+        w.StyleSetSpec(wx.stc.STC_P_DEFNAME, 'fore:#008080,bold')
+        # Operators
+        w.StyleSetSpec(wx.stc.STC_P_OPERATOR, 'fore:#800000,bold')
+        # Identifiers. I leave this as not bold because everything seems
+        # to be an identifier if it doesn't match the above criterae
+        w.StyleSetSpec(wx.stc.STC_P_IDENTIFIER, 'fore:#000000')
+    
+        # Caret color
+        w.SetCaretForeground("BLUE")
+        # Selection background
+        w.SetSelBackground(1, '#66CCFF')
+    
+        w.SetSelBackground(True, wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT))
+        w.SetSelForeground(True, wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
+    #@-node:ekr.20070221103456:initStc
     #@+node:ekr.20070210080936:bindings (stc)
     # Specify the names of widget-specific methods.
     # These particular names are the names of wx.TextCtrl methods.
@@ -2109,6 +2224,98 @@ class stcWidget (baseTextWidget):
     def _setSelectionRange(self,i,j):   g.trace('oops',i,j) # Should not be called.
     def _setYScrollPosition(self,i):    pass
     #@-node:ekr.20070210080936:bindings (stc)
+    #@+node:ekr.20070221110435:onMarginClick & helpers
+    def onMarginClick(self, evt):
+        
+        self = w = self.widget
+        stc = wx.stc
+        # fold and unfold as needed
+        if evt.GetMargin() == 2:
+            if evt.GetShift() and evt.GetControl():
+                self.FoldAll()
+            else:
+                lineClicked = self.LineFromPosition(evt.GetPosition())
+    
+                if self.GetFoldLevel(lineClicked) & stc.STC_FOLDLEVELHEADERFLAG:
+                    if evt.GetShift():
+                        self.SetFoldExpanded(lineClicked, True)
+                        self.Expand(lineClicked, True, True, 1)
+                    elif evt.GetControl():
+                        if self.GetFoldExpanded(lineClicked):
+                            self.SetFoldExpanded(lineClicked, False)
+                            self.Expand(lineClicked, False, True, 0)
+                        else:
+                            self.SetFoldExpanded(lineClicked, True)
+                            self.Expand(lineClicked, True, True, 100)
+                    else:
+                        self.ToggleFold(lineClicked)
+    #@nonl
+    #@+node:ekr.20070221111716:FoldAll
+    def FoldAll(self):
+        lineCount = self.GetLineCount()
+        expanding = True
+    
+        # find out if we are folding or unfolding
+        for lineNum in range(lineCount):
+            if self.GetFoldLevel(lineNum) & stc.STC_FOLDLEVELHEADERFLAG:
+                expanding = not self.GetFoldExpanded(lineNum)
+                break
+    
+        lineNum = 0
+        while lineNum < lineCount:
+            level = self.GetFoldLevel(lineNum)
+            if (
+                level & stc.STC_FOLDLEVELHEADERFLAG and
+               (level & stc.STC_FOLDLEVELNUMBERMASK) == stc.STC_FOLDLEVELBASE
+            ):
+                if expanding:
+                    self.SetFoldExpanded(lineNum, True)
+                    lineNum = self.Expand(lineNum, True)
+                    lineNum = lineNum - 1
+                else:
+                    lastChild = self.GetLastChild(lineNum, -1)
+                    self.SetFoldExpanded(lineNum, False)
+                    if lastChild > lineNum:
+                        self.HideLines(lineNum+1, lastChild)
+            lineNum += 1
+    #@nonl
+    #@-node:ekr.20070221111716:FoldAll
+    #@+node:ekr.20070221111716.1:Expand
+    def Expand (self,line,doExpand,force=False,visLevels=0,level=-1):
+        lastChild = self.GetLastChild(line,level)
+        line = line + 1
+        while line <= lastChild:
+            if force:
+                if visLevels > 0:
+                    self.ShowLines(line,line)
+                else:
+                    self.HideLines(line,line)
+            else:
+                if doExpand:
+                    self.ShowLines(line,line)
+    
+            if level == -1:
+                level = self.GetFoldLevel(line)
+    
+            if level & stc.STC_FOLDLEVELHEADERFLAG:
+                if force:
+                    if visLevels > 1:
+                        self.SetFoldExpanded(line,True)
+                    else:
+                        self.SetFoldExpanded(line,False)
+                    line = self.Expand(line,doExpand,force,visLevels-1)
+                else:
+                    if doExpand and self.GetFoldExpanded(line):
+                        line = self.Expand(line,True,force,visLevels-1)
+                    else:
+                        line = self.Expand(line,False,force,visLevels-1)
+            else:
+                line += 1
+    
+        return line
+    #@nonl
+    #@-node:ekr.20070221111716.1:Expand
+    #@-node:ekr.20070221110435:onMarginClick & helpers
     #@+node:ekr.20070209080938.2:Wrapper methods
     #@+node:ekr.20070209080938.18:see & seeInsertPoint
     def see(self,index):
@@ -3378,7 +3585,7 @@ class wxGui(leoGui.leoGui):
         
         """Returns the widget that has focus, or body if None."""
     
-        g.trace('gui')
+        # g.trace('gui')
         return c.frame.body.bodyCtrl.findFocus()
     #@nonl
     #@-node:edream.110203113231.336:get_focus (gui)
@@ -3387,7 +3594,7 @@ class wxGui(leoGui.leoGui):
         
         """Set the focus of the widget in the given commander if it needs to be changed."""
         
-        g.trace('gui',w)
+        # g.trace('gui',w)
         c.frame.setFocus(w)
     #@-node:edream.110203113231.337:set_focus (gui)
     #@-node:edream.110203113231.335:Focus
@@ -3747,7 +3954,9 @@ class wxLeoBody (leoFrame.leoBody):
     def configure (self,*args,**keys):      pass # to be removed from Leo's core.
     
     def hasFocus (self):                    return self.bodyCtrl.getFocus()
-    def setFocus (self):                    g.trace('body') ; return self.bodyCtrl.setFocus()
+    def setFocus (self):
+        # g.trace('body')
+        return self.bodyCtrl.setFocus()
     SetFocus = setFocus
     getFocus = hasFocus
     
@@ -4143,10 +4352,6 @@ class wxLeoFrame(leoFrame.leoFrame):
         self.splitter1 = splitter1 = wx.SplitterWindow(top,-1,style=style) # Contains body & splitter2
         self.splitter2 = splitter2 = wx.SplitterWindow(splitter1,-1,style=style) # Contains tree and log.
         
-        # wx.EVT_CHAR     (top,self.onChar)
-        # wx.EVT_KEY_DOWN (top,self.onKeyDown)  # Provides raw key codes.
-        # wx.EVT_KEY_UP   (top,self.onKeyUp)    # Provides raw key codes.
-        
         # Create the tree.
         self.tree = wxLeoTree(frame,parentFrame=splitter2)
         
@@ -4363,6 +4568,9 @@ class wxLeoFrame(leoFrame.leoFrame):
     def get_window_info (self):
         """Return the window information."""
         return g.app.gui.get_window_info(self.topFrame)
+        
+    def OnBodyRClick (self,event=None):
+        pass
     
     def resizePanesToRatio(self,ratio1,ratio2):
         pass
@@ -4407,7 +4615,7 @@ class wxLeoFrame(leoFrame.leoFrame):
     #@+node:ekr.20061211083200:setFocus (wxFrame)
     def setFocus (self,w):
     
-        g.trace('frame',w)
+        # g.trace('frame',w)
         w.SetFocus()
         self.focusWidget = w
         
@@ -5759,7 +5967,9 @@ class wxLeoTree (leoFrame.leoTree):
         
         c = self.c
         self.canvas = self # A dummy ivar used in c.treeWantsFocus, etc.
+        self.drawing = False # A lockout that prevents event handlers from firing during redraws.
         self.editWidgetDict = {} # Keys are tnodes, values are leoHeadlineTextWidgets.
+        self.effects = wx.Effects()
         self.idDict = {} # Keys are vnodes, values are wxTree id's.
         self.imageList = None
         self.keyDownModifiers = None
@@ -5767,6 +5977,7 @@ class wxLeoTree (leoFrame.leoTree):
         self.root_id = None
         self.tree_id = wx.NewId()
         self.updateCount = 0
+        self.use_paint = False # Paint & background erase events are flakey!
         
         self.trace_select = c.config.getBool('trace_select')
     
@@ -5815,6 +6026,10 @@ class wxLeoTree (leoFrame.leoTree):
             style = style,
             validator = wx.DefaultValidator,
             name = "tree")
+            
+        if self.use_paint:
+            wx.EVT_PAINT(w,self.onPaint)
+            wx.EVT_ERASE_BACKGROUND(w,self.onEraseBackground)
     
         w.SetBackgroundColour(name2color('leo yellow'))
     
@@ -5864,6 +6079,54 @@ class wxLeoTree (leoFrame.leoTree):
     #@-node:ekr.20061118122218.1:setBindings
     #@-node:edream.111603213219.1:wxTree.__init__
     #@+node:edream.111303202917:Drawing
+    #@+node:ekr.20070222042542:onEraseBackground
+    backgroundEraseCount = 0
+    
+    def onEraseBackground (self,event):
+        
+        if 0: # Alas, this doesn't quite work.
+            if self.paintLockout:
+                return
+        # g.trace(self.backgroundEraseCount,g.callers())
+        self.backgroundEraseCount += 1
+        
+        if 0:
+            tree = self.treeCtrl
+            dc = event.GetDC() or wx.ClientDC(tree)
+            sz = tree.GetClientSize()
+            color = wx.Color(253,245,230) # for some reason, 'leo yellow' doesn't work here.
+            brush = wx.Brush(color,wx.SOLID)
+            dc.SetBrush(brush)
+            dc.Clear()
+        elif 1:
+           event.Skip() # Causes flash.
+    #@-node:ekr.20070222042542:onEraseBackground
+    #@+node:ekr.20070221170630:onPaint
+    paintCount = 0
+    paintLockout = False
+    
+    def onPaint (self,event):
+        
+        c = self.c
+        if self.paintLockout:
+            return # This does reduce some flash.
+        self.paintLockout = True # Disable this method until the next call to redraw.
+        
+        self.paintCount += 1
+        # g.trace(self.paintCount,g.callers())
+        
+        try:
+            dc = wx.PaintDC(self.treeCtrl) # Required, even if not used.
+            dc.DestroyClippingRegion()
+            dc.Clear()
+            c.beginUpdate()
+            try:
+                self.fullRedraw()
+            finally:
+                c.endUpdate(False)
+        finally:
+            self.paintLockout = False
+        event.Skip()
     #@+node:edream.110203113231.295:beginUpdate
     def beginUpdate (self):
     
@@ -5881,35 +6144,156 @@ class wxLeoTree (leoFrame.leoTree):
             if self.updateCount < 0:
                 g.trace("Can't happen: negative updateCount",g.callers())
     #@-node:edream.110203113231.296:endUpdate
+    #@-node:ekr.20070221170630:onPaint
     #@+node:edream.110203113231.298:redraw & redraw_now & helpers
     redrawCount = 0
     
     def redraw (self):
         
-        c = self.c ; tree = self.treeCtrl
+        c = self.c
         if c is None: return
         p = c.rootPosition()
         if not p: return
+        if self.drawing: return
+        tree = self.treeCtrl
         
         self.redrawCount += 1
         self.idDict = {}
-        # g.trace(self.redrawCount)
-    
-        self.drawing = True # Tell event handlers not to call us.
-        try:
-            self.expandAllAncestors(c.currentPosition())
-            tree.DeleteAllItems()
-            self.root_id = root_id = tree.AddRoot('Root Node')
-            ### tree.SetItemFont(root_id,self.defaultFont)
-            while p:
-                self.redraw_subtree(root_id,p)
-                p.moveToNext()
-        finally:
-            self.drawing = False
+        if not g.app.unitTesting: g.trace(self.redrawCount)
+        
+        if self.use_paint: # Doesn't work.
+            self.drawing = True
+            try:
+                self.expandAllAncestors(c.currentPosition()) # Important: do this when self.drawing is **False**.
+                event = wx.PaintEvent()
+                event.SetEventObject(tree)
+                tree.GetEventHandler().ProcessEvent(event)
+            finally:
+                self.drawing = False
+        else:
+            self.drawing = True # Tell event handlers not to call us.
+            try:
+                self.expandAllAncestors(c.currentPosition()) # Important: do this when self.drawing is **True**.
+                if self.use_paint:
+                    event = wx.PaintEvent()
+                    event.SetEventObject(tree)
+                    tree.GetEventHandler().ProcessEvent(event)
+                else:
+                    self.fullRedraw()
+            finally:
+                self.drawing = False
     
     def redraw_now(self,scroll=True):
         self.redraw()
     #@nonl
+    #@+node:ekr.20070221122411:cleverRedraw & helpers
+    def cleverRedraw (self):
+        
+        return False ###
+        
+        c = self.c ; tree = self.treeCtrl
+        
+        p = c.rootPosition()
+        root_id = tree.GetRootItem()
+        if not root_id.IsOk(): return False # This is the first drawing
+    
+        child_id,cookie = tree.GetFirstChild(root_id)
+        while p:
+            g.trace(p.headString())
+            self.update_subtree(root_id,child_id,p.copy())
+            p.moveToNext()
+            if child_id.IsOk:
+                child_id = tree.GetNextSibling(child_id)
+        if child_id.IsOk():
+            g.trace('delete')
+            tree.Delete(child_id)
+    
+        return True
+            
+    #@+node:ekr.20070221130134:update_node
+    def update_node(self,node_id,p):
+        
+        tree = self.treeCtrl
+        data = wx.TreeItemData(p.copy())
+        image = self.assignIcon(p)
+    
+        # id = tree.AppendItem(
+            # parent_id,
+            # text=p.headString(),
+            # image=image,
+            # #selImage=image,
+            # data=data)
+            
+        tree.SetItemData(node_id,data)
+        self.setEditWidget(p,node_id)
+        assert (p == tree.GetItemData(node_id).GetData())
+        return id
+    #@-node:ekr.20070221130134:update_node
+    #@+node:ekr.20070221122544.2:update_subtree
+    def update_subtree(self,parent_id,node_id,p):
+        
+        g.trace(p.headString())
+        
+        tree = self.treeCtrl
+        if node_id.IsOk():
+            self.update_node(node_id,p)
+        else:
+            g.trace('insert',p.headString())
+            self.redraw_subtree(parent_id,id)
+            return True
+        
+        child_id,cookie = tree.GetFirstChild(node_id)
+        while p:
+            if child_id.IsOk():
+                self.update_subtree(node_id,child_id,p.copy())
+                p.moveToNext()
+                child_id = tree.GetNextSibling(child_id)
+            else:
+                g.trace('insert',p.headString())
+                self.redraw_subtree(parent_id,p.copy())
+                break
+        if child_id.IsOk():
+            data = tree.GetItemData(child_id)
+            g.trace('delete','data',data)
+            tree.Delete(child_id)
+    
+    
+    if 0: #### original code
+        tree = self.treeCtrl
+        id = self.update_node(parent_id,p)
+        child = p.firstChild()
+    
+        while child:
+            # We must redraw the entire tree, regardless of expansion state.
+            self.redraw_subtree(id,child)
+            child.moveToNext()
+        
+        # The calls to tree.Expand and tree.Collapse *will* generate events,
+        # This is the reason the event handlers must be disabled while drawing.
+        if p.isExpanded():
+            tree.Expand(id)
+        else:
+            tree.Collapse(id)
+            
+        # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+        if p == self.c.currentPosition():
+            tree.SelectItem(id) # Generates call to onTreeChanged.
+            
+        return True
+    #@nonl
+    #@-node:ekr.20070221122544.2:update_subtree
+    #@-node:ekr.20070221122411:cleverRedraw & helpers
+    #@+node:ekr.20070221122411.1:fullRedraw & helpers
+    def fullRedraw (self):
+    
+        c = self.c ; p = c.rootPosition()
+        tree = self.treeCtrl
+    
+        tree.DeleteAllItems()
+        self.root_id = root_id = tree.AddRoot('Root Node')
+        while p:
+            self.redraw_subtree(root_id,p)
+            p.moveToNext()
     #@+node:edream.110203113231.299:redraw_node
     def redraw_node(self,parent_id,p):
         
@@ -5954,51 +6338,7 @@ class wxLeoTree (leoFrame.leoTree):
             tree.SelectItem(id) # Generates call to onTreeChanged.
     #@nonl
     #@-node:edream.110203113231.300:redraw_subtree
-    #@-node:edream.110203113231.298:redraw & redraw_now & helpers
-    #@+node:edream.110203113231.299:redraw_node
-    def redraw_node(self,parent_id,p):
-        
-        tree = self.treeCtrl
-        data = wx.TreeItemData(p.copy())
-        image = self.assignIcon(p)
-    
-        id = tree.AppendItem(
-            parent_id,
-            text=p.headString(),
-            image=image,
-            #selImage=image,
-            data=data)
-    
-        ### tree.SetItemFont(id,self.defaultFont)
-        
-        self.setEditWidget(p,id)
-        assert (p == tree.GetItemData(id).GetData())
-        return id
-    #@-node:edream.110203113231.299:redraw_node
-    #@+node:edream.110203113231.300:redraw_subtree
-    def redraw_subtree(self,parent_id,p):
-    
-        tree = self.treeCtrl
-        id = self.redraw_node(parent_id,p)
-        child = p.firstChild()
-    
-        while child:
-            # We must redraw the entire tree, regardless of expansion state.
-            self.redraw_subtree(id,child)
-            child.moveToNext()
-        
-        # The calls to tree.Expand and tree.Collapse *will* generate events,
-        # This is the reason the event handlers must be disabled while drawing.
-        if p.isExpanded():
-            tree.Expand(id)
-        else:
-            tree.Collapse(id)
-            
-        # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-        if p == self.c.currentPosition():
-            tree.SelectItem(id) # Generates call to onTreeChanged.
-    #@nonl
-    #@-node:edream.110203113231.300:redraw_subtree
+    #@-node:ekr.20070221122411.1:fullRedraw & helpers
     #@+node:ekr.20061211052926:assignIcon
     def assignIcon (self,p):
         
@@ -6037,6 +6377,7 @@ class wxLeoTree (leoFrame.leoTree):
         else:
             g.trace('can not happen: no id',p.headString())
     #@-node:ekr.20061211115055:updateVisibleIcons
+    #@-node:edream.110203113231.298:redraw & redraw_now & helpers
     #@-node:edream.111303202917:Drawing
     #@+node:edream.110203113231.278:Event handlers (wxTree)
     #@+node:ekr.20061127075102:get_p
@@ -6311,7 +6652,7 @@ class wxLeoTree (leoFrame.leoTree):
         
     def setFocus (self):
         
-        g.trace('tree')
+        # g.trace('tree')
         self.treeCtrl.SetFocus()
         
     SetFocus = setFocus
@@ -6324,17 +6665,15 @@ class wxLeoTree (leoFrame.leoTree):
         
         c = self.c ; p = c.currentPosition()
         
-        w = self.editWidgetDict[p.v]
+        w = self.editWidgetDict.get(p.v)
         if w:
-            g.trace(p.headString())
             s = w.getAllText()
-            # g.trace(w,s)
             p.initHeadString(s)
        
     #@nonl
     #@-node:ekr.20050719121701.2:endEditLabel
     #@+node:ekr.20050719121701.3:editLabel
-    def editLabel (self,p,selectAll=False): # wxTree
+    def editLabel (self,p,selectAll=False):
         
         '''The edit-label command.'''
         
@@ -6342,8 +6681,14 @@ class wxLeoTree (leoFrame.leoTree):
         
         # g.trace('editPosition',self.editPosition(),'id',id(tree_id))
         
-        redrawFlag = self.expandAllAncestors(p) or not tree_id or p != self.editPosition()
+        expandFlag = self.expandAllAncestors(p)
+        idFlag = not tree_id
+        switchFlag = p != self.editPosition()
+        # g.trace('expand',expandFlag,'id',idFlag,'switch',switchFlag)
         
+        # Eliminating switchFlag gets rid of most flashes.
+        redrawFlag = expandFlag or idFlag
+    
         c.beginUpdate()
         try:
             self.endEditLabel()
@@ -6358,7 +6703,13 @@ class wxLeoTree (leoFrame.leoTree):
         w = c.edit_widget(p)
         if p and w:
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
-            self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
+            # Important: this sets the 'virtual' selection (so, e.g., unit tests will pass)
+            # but it does *not* clear the actual selection (there is no way to do this programatically)
+            selectAll = c.config.getBool('select_all_text_when_editing_headlines')
+            if selectAll:
+                w.setSelectionRange(0,'end',insert='end')
+            else:
+                w.setSelectionRange('end','end',insert='end')
             c.headlineWantsFocus(p) # Make sure the focus sticks.
     #@-node:ekr.20050719121701.3:editLabel
     #@+node:ekr.20070125091308:setEditWidget
@@ -6411,16 +6762,11 @@ class wxLeoTree (leoFrame.leoTree):
     
         c = self.c ; w = c.edit_widget(p)
     
-        if self.trace and self.verbose:
-            if not self.redrawing:
-                g.trace("%10s %d %s" % ("disabled",id(w),p.headString()))
-                # import traceback ; traceback.print_stack(limit=6)
-    
-        fg = c.config.getColor("headline_text_selected_foreground_color") or 'black'
-        bg = c.config.getColor("headline_text_selected_background_color") or 'grey80'
+        # fg = c.config.getColor("headline_text_selected_foreground_color") or 'black'
+        # bg = c.config.getColor("headline_text_selected_background_color") or 'grey80'
         
-        selfg = c.config.getColor("headline_text_editing_selection_foreground_color")
-        selbg = c.config.getColor("headline_text_editing_selection_background_color")
+        # selfg = c.config.getColor("headline_text_editing_selection_foreground_color")
+        # selbg = c.config.getColor("headline_text_editing_selection_background_color")
     
         # try:
             # w.configure(state="disabled",highlightthickness=0,fg=fg,bg=bg,
@@ -6433,10 +6779,10 @@ class wxLeoTree (leoFrame.leoTree):
     
         c = self.c ; w = c.edit_widget(p)
         
-        fg    = c.config.getColor("headline_text_editing_foreground_color") or 'black'
-        bg    = c.config.getColor("headline_text_editing_background_color") or 'white'
-        selfg = c.config.getColor("headline_text_editing_selection_foreground_color") or 'white'
-        selbg = c.config.getColor("headline_text_editing_selection_background_color") or 'black'
+        # fg    = c.config.getColor("headline_text_editing_foreground_color") or 'black'
+        # bg    = c.config.getColor("headline_text_editing_background_color") or 'white'
+        # selfg = c.config.getColor("headline_text_editing_selection_foreground_color") or 'white'
+        # selbg = c.config.getColor("headline_text_editing_selection_background_color") or 'black'
         
         # try: # Use system defaults for selection foreground/background
             # w.configure(state="normal",highlightthickness=1,
@@ -6449,8 +6795,8 @@ class wxLeoTree (leoFrame.leoTree):
         
         c = self.c ; w = c.edit_widget(p)
         
-        fg = c.config.getColor("headline_text_unselected_foreground_color") or 'black'
-        bg = c.config.getColor("headline_text_unselected_background_color") or 'white'
+        # fg = c.config.getColor("headline_text_unselected_foreground_color") or 'black'
+        # bg = c.config.getColor("headline_text_unselected_background_color") or 'white'
         
         # try:
             # w.configure(state="disabled",highlightthickness=0,fg=fg,bg=bg,
