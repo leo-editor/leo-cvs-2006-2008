@@ -4243,11 +4243,13 @@ class baseCommands:
             c.treeWantsFocusNow()
             return
     
-        if not p.isExpanded():
-            c.expandNode()
+        ### if not p.isExpanded():
+            ### c.expandNode()
             
         c.beginUpdate()
         try:
+            if not p.isExpanded():
+                c.expandNode()
             c.selectVnode(p.firstChild())
         finally:
             c.endUpdate()
