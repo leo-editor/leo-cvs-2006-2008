@@ -4242,12 +4242,10 @@ class baseCommands:
         if not p.hasChildren():
             c.treeWantsFocusNow()
             return
-    
-        ### if not p.isExpanded():
-            ### c.expandNode()
             
         c.beginUpdate()
         try:
+            # Bug fix: 2/22/07: put this inside the begin/endUpdate so only one redraw happens.
             if not p.isExpanded():
                 c.expandNode()
             c.selectVnode(p.firstChild())
