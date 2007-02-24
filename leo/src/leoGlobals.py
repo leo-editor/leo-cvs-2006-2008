@@ -783,6 +783,8 @@ def openWithFileName(fileName,old_c,
             # g.trace('***** prereading',fileName)
             c2 = g.app.config.openSettingsFile(fileName)
             if c2: g.app.config.updateSettings(c2,localFlag=True)
+            g.doHook('open0')
+            
         # Open the file in binary mode to allow 0x1a in bodies & headlines.
         theFile = open(fileName,'rb')
         c,frame = app.newLeoCommanderAndFrame(fileName)
@@ -2456,7 +2458,7 @@ def doHook(tag,*args,**keywords):
         print "***ignoring args param.  tag = %s" % tag
 
     if not g.app.config.use_plugins:
-        if tag == "start1":
+        if tag in ('open0','start1'):
             s = "Plugins disabled: use_plugins is 0 in a leoSettings.leo file."
             g.es_print(s,color="blue")
         return None

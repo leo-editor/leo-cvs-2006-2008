@@ -29,7 +29,7 @@ class parserBaseClass:
         'float','path','ratio','shortcut','string','strings']
     
     control_types = [
-        'abbrev','font','if','ifgui','ifplatform','ignore','mode','page',
+        'abbrev','enabledplugins','font','if','ifgui','ifplatform','ignore','mode','page',
         'settings','shortcuts']
     
     # Keys are settings names, values are (type,value) tuples.
@@ -52,6 +52,7 @@ class parserBaseClass:
             'bool':         self.doBool,
             'color':        self.doColor,
             'directory':    self.doDirectory,
+            'enabledplugins': self.doEnabledPlugins,
             'font':         self.doFont,
             'if':           self.doIf,
             # 'ifgui':        self.doIfGui,  # Removed in 4.4 b3.
@@ -134,6 +135,20 @@ class parserBaseClass:
     
     doPath = doDirectory
     #@-node:ekr.20041120094940.3:doDirectory & doPath
+    #@+node:ekr.20070224075914:doEnabledPlugins
+    def doEnabledPlugins (self,p,kind,name,val):
+        
+        c = self.c ; d = self.shortcutsDict
+        s = p.bodyString()
+        
+        # This setting is handled differently from all other settings,
+        # because the last setting must be retrieved before any commander exists.
+        
+        # Set the global config ivars.
+        g.app.config.enabledPluginsString = s
+        g.app.config.enabledPluginsFileName = c and c.shortFileName() or '<no settings file>'
+    #@nonl
+    #@-node:ekr.20070224075914:doEnabledPlugins
     #@+node:ekr.20041120094940.6:doFloat
     def doFloat (self,p,kind,name,val):
         
@@ -786,6 +801,8 @@ class configClass:
         self.configsExist = False # True when we successfully open a setting file.
         self.defaultFont = None # Set in gui.getDefaultConfigFont.
         self.defaultFontFamily = None # Set in gui.getDefaultConfigFont.
+        self.enabledPluginsFileName = None
+        self.enabledPluginsString = '' 
         self.globalConfigFile = None # Set in initSettingsFiles
         self.homeFile = None # Set in initSettingsFiles
         self.inited = False
@@ -1078,6 +1095,16 @@ class configClass:
         else:
             return None
     #@-node:ekr.20041117093009.1:getDirectory
+    #@+node:ekr.20070224075914.1:getEnabledPlugins
+    def getEnabledPlugins (self):
+        
+        """Search all dictionaries for the setting & check it's type"""
+    
+        ##c = None
+        ##return self.get(c,'enabled-plugins','string')
+        
+        return g.app.config.enabledPluginsString
+    #@-node:ekr.20070224075914.1:getEnabledPlugins
     #@+node:ekr.20041117082135:getFloat
     def getFloat (self,c,setting):
         
@@ -1302,32 +1329,7 @@ class configClass:
     #@-node:ekr.20041201080436:appendToRecentFiles (g.app.config)
     #@-node:ekr.20041118084146:Setters (g.app.config)
     #@+node:ekr.20041117093246:Scanning @settings (g.app.config)
-    #@+node:ekr.20041117085625:g.app.config.openSettingsFile
-    def openSettingsFile (self,path):
-        
-        try:
-            # Open the file in binary mode to allow 0x1a in bodies & headlines.
-            theFile = open(path,'rb')
-        except IOError:
-            g.es("can not open: " + path, color="blue")
-            return None
-            
-        # Similar to g.openWithFileName except it uses a null gui.
-        # Changing g.app.gui here is a major hack.
-        oldGui = g.app.gui
-        g.app.gui = leoGui.nullGui("nullGui")
-        c,frame = g.app.newLeoCommanderAndFrame(path,updateRecentFiles=False)
-        frame.log.enable(False)
-        c.setLog()
-        g.app.lockLog()
-        ok = frame.c.fileCommands.open(
-            theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
-        g.app.unlockLog()
-        frame.openDirectory = g.os_path_dirname(path)
-        g.app.gui = oldGui
-        return ok and c
-    #@-node:ekr.20041117085625:g.app.config.openSettingsFile
-    #@+node:ekr.20041120064303:g.app.config.readSettingsFiles
+    #@+node:ekr.20041120064303:g.app.config.readSettingsFiles & helpers
     def readSettingsFiles (self,fileName,verbose=True):
             
         seen = []
@@ -1369,25 +1371,53 @@ class configClass:
                     self.updateSettings(c,localFlag)
                     g.app.destroyWindow(c.frame)
                     self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
-        # Read all .leoRecentFiles.txt files.
-        # The order of files in this list affects the order of the recent files list.
-        seen = []
-        localConfigPath = g.os_path_dirname(localConfigFile)
-        for path in (
-            g.app.homeDir,
-            g.app.globalConfigDir,
-            localConfigPath,
-        ):
-            if path and path not in seen:
-                ok = self.readRecentFilesFile(path)
-                if ok: seen.append(path)
-        if not seen and self.write_recent_files_as_needed:
-            self.createRecentFiles()
-    
+        self.readRecentFiles(localConfigFile)
         self.inited = True
         self.setIvarsFromSettings(None)
     #@nonl
-    #@-node:ekr.20041120064303:g.app.config.readSettingsFiles
+    #@+node:ekr.20041117085625:g.app.config.openSettingsFile
+    def openSettingsFile (self,path):
+        
+        try:
+            # Open the file in binary mode to allow 0x1a in bodies & headlines.
+            theFile = open(path,'rb')
+        except IOError:
+            g.es("can not open: " + path, color="blue")
+            return None
+            
+        # Similar to g.openWithFileName except it uses a null gui.
+        # Changing g.app.gui here is a major hack.
+        oldGui = g.app.gui
+        g.app.gui = leoGui.nullGui("nullGui")
+        c,frame = g.app.newLeoCommanderAndFrame(path,updateRecentFiles=False)
+        frame.log.enable(False)
+        c.setLog()
+        g.app.lockLog()
+        ok = frame.c.fileCommands.open(
+            theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+        g.app.unlockLog()
+        frame.openDirectory = g.os_path_dirname(path)
+        g.app.gui = oldGui
+        return ok and c
+    #@-node:ekr.20041117085625:g.app.config.openSettingsFile
+    #@+node:ekr.20051013161232:g.app.config.updateSettings
+    def updateSettings (self,c,localFlag):
+    
+        d = self.readSettings(c)
+        
+        if d:
+            d['_hash'] = theHash = c.hash()
+            if localFlag:
+                self.localOptionsDict[theHash] = d
+            else:
+                self.localOptionsList.insert(0,d)
+                
+        if 0: # Good trace.
+            if localFlag:
+                g.trace(c.fileName())
+                g.trace(d and d.keys())
+    #@-node:ekr.20051013161232:g.app.config.updateSettings
+    #@-node:ekr.20041120064303:g.app.config.readSettingsFiles & helpers
     #@+node:ekr.20041117083857.1:g.app.config.readSettings
     # Called to read all leoSettings.leo files.
     # Also called when opening an .leo file to read @settings tree.
@@ -1407,25 +1437,27 @@ class configClass:
     
         return d
     #@-node:ekr.20041117083857.1:g.app.config.readSettings
-    #@+node:ekr.20051013161232:g.app.config.updateSettings
-    def updateSettings (self,c,localFlag):
-    
-        d = self.readSettings(c)
-        
-        if d:
-            d['_hash'] = theHash = c.hash()
-            if localFlag:
-                self.localOptionsDict[theHash] = d
-            else:
-                self.localOptionsList.insert(0,d)
-                
-        if 0: # Good trace.
-            if localFlag:
-                g.trace(c.fileName())
-                g.trace(d and d.keys())
-    #@-node:ekr.20051013161232:g.app.config.updateSettings
     #@-node:ekr.20041117093246:Scanning @settings (g.app.config)
     #@+node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
+    #@+node:ekr.20070224115832:readRecentFiles & helpers
+    def readRecentFiles (self,localConfigFile):
+        
+        '''Read all .leoRecentFiles.txt files.'''
+    
+        # The order of files in this list affects the order of the recent files list.
+        seen = [] 
+        localConfigPath = g.os_path_dirname(localConfigFile)
+        for path in (
+            g.app.homeDir,
+            g.app.globalConfigDir,
+            localConfigPath,
+        ):
+            if path and path not in seen:
+                ok = self.readRecentFilesFile(path)
+                if ok: seen.append(path)
+        if not seen and self.write_recent_files_as_needed:
+            self.createRecentFiles()
+    #@nonl
     #@+node:ekr.20061010121944:createRecentFiles
     def createRecentFiles (self):
         
@@ -1464,6 +1496,7 @@ class configClass:
         return ok
     #@nonl
     #@-node:ekr.20050424115658:readRecentFilesFile
+    #@-node:ekr.20070224115832:readRecentFiles & helpers
     #@+node:ekr.20050424114937.2:writeRecentFilesFile & helper
     recentFileMessageWritten = False
     

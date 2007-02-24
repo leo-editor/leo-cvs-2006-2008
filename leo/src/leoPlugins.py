@@ -86,8 +86,8 @@ def doPlugins(tag,keywords):
         
     # g.trace(tag)
     
-    if tag == "start1":
-        loadHandlers()
+    if tag in ('start1','open0'):
+        loadHandlers(tag)
 
     return doHandlersForTag(tag,keywords)
 #@-node:ekr.20041001161108:doPlugins
@@ -126,64 +126,49 @@ def isLoaded (name):
     
     return name in g.app.loadedPlugins
 #@-node:ekr.20041001160216:isLoaded
-#@+node:ekr.20031218072017.3440:loadHandlers
-def loadHandlers():
+#@+node:ekr.20031218072017.3440:loadHandlers & helper
+def loadHandlers(tag):
 
     """Load all enabled plugins from the plugins directory"""
-    
-    tag = "pluginsManager.txt"
 
+    fileName = "pluginsManager.txt"
     plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
-    
-    for theDir,place in (
-        (g.app.homeDir,'HOME'),
-        (plugins_path,'leo/config')
-    ):
-        manager_path = g.os_path_join(theDir,tag)
-        if g.os_path_exists(manager_path):
-            g.es('%s: %s' % (tag,theDir),color='blue')
-            break
-    else:
-        g.es('%s not found. No plugins will be loaded' % tag)
-    
     files = glob.glob(g.os_path_join(plugins_path,"*.py"))
     files = [g.os_path_abspath(theFile) for theFile in files]
-
-    #@    << set enabled_files from pluginsManager.txt >>
-    #@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
-    if not g.os_path_exists(manager_path):
-        return
-        
-    # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
-    enabled_files = []
-    disabled_files = []
-    try:
-        theFile = open(manager_path)
-        lines = theFile.readlines()
-        for s in lines:
-            s = s.strip()
-            if s:
-                if g.match(s,0,"#"):
-                    s = s[1:].strip()
-                    # Kludge: ignore comment lines containing a blank or not ending in '.py'.
-                    if s and s.find(' ') == -1 and s[-3:] == '.py':
-                        path = g.os_path_abspath(g.os_path_join(plugins_path,s))
-                        if path not in enabled_files and path not in disabled_files:
-                            # print 'disabled',path
-                            disabled_files.append(path)
-                else:
-                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
-                    if path not in enabled_files and path not in disabled_files:
-                        # print 'enbled',path
-                        enabled_files.append(path)
-        theFile.close()
-    except IOError:
-        g.es("Can not open: " + manager_path)
-        # Don't import leoTest initially.  It causes problems.
-        import leoTest ; leoTest.fail()
-        return
-    #@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
-    #@nl
+    s = g.app.config.getEnabledPlugins()
+    theConfigFile = g.app.config.enabledPluginsFileName
+    # g.trace('len(s)',s and len(s) or 0)
+    if s:
+        g.es('@enabled-plugins found in %s' % (theConfigFile),color='blue')
+        enabled_files = getEnabledFiles(s,plugins_path)
+    else:
+        for theDir,place in (
+            (g.app.homeDir,'HOME'),
+            (plugins_path,'leo/config')
+        ):
+            manager_path = g.os_path_join(theDir,fileName)
+            if g.os_path_exists(manager_path):
+                g.es('%s: %s' % (fileName,theDir),color='blue')
+                break
+        else: g.es('%s not found. No plugins will be loaded' % fileName)
+        if g.os_path_exists(manager_path):
+            #@            << set enabled_files from pluginsManager.txt >>
+            #@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+            try:
+                # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
+                theFile = open(manager_path)
+                ###lines = theFile.readlines()
+                s = theFile.read()
+                enabled_files = getEnabledFiles(s,plugins_path)
+                theFile.close()
+            except IOError:
+                g.es("Can not open: " + manager_path)
+                # Don't import leoTest initially.  It causes problems.
+                import leoTest ; leoTest.fail()
+                return
+            #@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+            #@nl
+        else:  return
     
     # Load plugins in the order they appear in the enabled_files list.
     if files and enabled_files:
@@ -194,13 +179,38 @@ def loadHandlers():
     # Note: g.plugin_signon adds module names to g.app.loadedPlugins 
     if g.app.loadedPlugins:
         g.es("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
-#@-node:ekr.20031218072017.3440:loadHandlers
+#@+node:ekr.20070224082131:getEnabledFiles
+def getEnabledFiles (s,plugins_path):
+
+    enabled_files = []
+    disabled_files = []
+    for s in g.splitLines(s):
+        s = s.strip()
+        if s:
+            if g.match(s,0,"#"):
+                s = s[1:].strip()
+                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
+                if s and s.find(' ') == -1 and s[-3:] == '.py':
+                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                    if path not in enabled_files and path not in disabled_files:
+                        # print 'disabled',path
+                        disabled_files.append(path)
+            else:
+                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                if path not in enabled_files and path not in disabled_files:
+                    # print 'enabled',path
+                    enabled_files.append(path)
+
+    return enabled_files
+#@nonl
+#@-node:ekr.20070224082131:getEnabledFiles
+#@-node:ekr.20031218072017.3440:loadHandlers & helper
 #@+node:ekr.20041113113140:loadOnePlugin
 def loadOnePlugin (moduleOrFileName, verbose=False):
     
     global loadedModules,loadingModuleNameStack
     
-    # g.trace(moduleOrFileName, g.callers())
+    # g.trace(moduleOrFileName) # ,g.callers())
     
     if moduleOrFileName.endswith('.py'):
         moduleName = moduleOrFileName [:-3]

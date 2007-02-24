@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="724" width="973"/>
+	<global_window_position top="10" left="238" height="644" width="973"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -20,11 +20,11 @@
 <v t="ekr.20061002115414"><vh>@float</vh></v>
 <v t="ekr.20041119042929.5"><vh>@font</vh></v>
 <v t="ekr.20041120181045"><vh>@ratio</vh></v>
-<v t="ekr.20041119042929.6"><vh>@shortcut</vh></v>
 <v t="ekr.20041119042929.2"><vh>@path</vh></v>
 <v t="ekr.20041119042929.7"><vh>@string</vh></v>
 </v>
 <v t="ekr.20041119035704.1"><vh> Organizer nodes</vh></v>
+<v t="ekr.20070224073109"><vh>\@enabled-plugins</vh></v>
 <v t="ekr.20060913144412"><vh>\@keys keyset-name</vh></v>
 <v t="ekr.20041119035931"><vh>\@if expression</vh></v>
 <v t="ekr.20041119110141"><vh>\@ifplatform platform-name</vh></v>
@@ -453,6 +453,7 @@
 </v>
 <v t="ekr.20051123100536" a="E" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
+<v t="ekr.20070224073109.1" a="TV"><vh>@enabled-plugins</vh></v>
 <v t="ekr.20060807103220"><vh>datenodes plugin</vh>
 <v t="ekr.20060807103220.1"><vh>@string datenodes_body_text = To do...</vh></v>
 <v t="ekr.20060807103220.2"><vh>@string datenodes_day_node_headline = %Y-%m-%d</vh></v>
@@ -497,7 +498,7 @@
 <v t="ekr.20060930112030"><vh>@bool scripting-create-script-button-button = True</vh></v>
 <v t="ekr.20060930111325.1"><vh>@int scripting-max-button-size = 18</vh></v>
 </v>
-<v t="ekr.20051123100536.1" a="ETV"><vh>vim plugin</vh>
+<v t="ekr.20051123100536.1"><vh>vim plugin</vh>
 <v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
 <v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
 </v>
@@ -884,15 +885,10 @@ of this node for details.
 
 @type-name setting-name = value
 
-The basic types are: @bool, @color, @directory, @encoding, @font, @int, @path, @shortcut, @string.  However, @type nodes can define other types.  The body text of basic nodes contains comments to be displayed in the settings dialog.
+The basic types are: @bool, @color, @directory, @encoding, @font, @int, @path, and @string.  However, @type nodes can define other types.  The body text of basic nodes contains comments to be displayed in the settings dialog.
 
 None is a valid value for all types.  It indicates that the setting node has no effect.
-
-The dialog creator uses the type when creating the "picker" for the setting in the settings page.
-
-N.B.  The dialog code will change the @settings tree when the user changes the setting in the dialog.
-
-Some more work needs to be done with @font nodes because fonts are described (in Tk) as a tuple of four values.</t>
+</t>
 <t tx="ekr.20041119035704.1">Organizer nodes have headlines that do no start with @.
 
 Organizer nodes may be inserted freely without changing the meaning of an @setting tree.</t>
@@ -976,8 +972,12 @@ False: Leo retains whitespace even in otherwise blank lines.</t>
 <t tx="ekr.20041119042929.2">Same as @directory.</t>
 <t tx="ekr.20041119042929.3"></t>
 <t tx="ekr.20041119042929.4"></t>
-<t tx="ekr.20041119042929.5"></t>
-<t tx="ekr.20041119042929.6">Not supported at present.</t>
+<t tx="ekr.20041119042929.5">Valid values:
+    
+weight: bold, normal, None
+slant: roman, italic, None
+
+Use the show-fonts command to pick fonts, then copy the values shown by the show-fonts command to the values here.</t>
 <t tx="ekr.20041119042929.7"></t>
 <t tx="ekr.20041119042929.9">The encoding used for derived files if no @encoding directive is in effect.
 This setting is also used to encode files created by the Tangle commands.
@@ -6239,5 +6239,113 @@ Notes:
 - The default path is ../test/scriptFile.py if no path is given.
 - The path starts at g.app.loadDir, so for example ../test/scriptFile.py is equivalent to leo/test/scriptFile.py
 - The filename should end in .py.</t>
+<t tx="ekr.20070224073109">@enabled-plugins nodes contain the list of enabled plugins,
+just as was formerly contained in pluginsManager.txt files.
+
+Leo loads plugins in the order they appear. The *first* mention of a plugin in
+controls whether the plugin is enabled or not. If the plugin's name is commented
+out (appears on a line starting with #), it is disabled, otherwise it is
+enabled. Plugins not appearing here are disabled. File names may be indented as
+desired.</t>
+<t tx="ekr.20070224073109.1"># Leo loads plugins in the order they appear here.
+#
+# The FIRST mention of a plugin controls whether the plugin is enable or not:
+# - If the plugin's name is commented out, it is disabled, otherwise it is enabled.
+# - Plugins not appearing here are disabled.
+# 
+# File names may be indented as desired.
+
+##### Experimental.  Use with caution.
+#ironPythonGui.py
+#__wx_gui.py
+#cursesGui.py
+
+##### Standard plugins enabled in official distributions.
+
+# Plugin_manager.py needs plugins_menu.py
+plugins_menu.py
+plugin_manager.py
+open_with.py
+mod_scripting.py
+rst3.py
+UNL.py
+
+##### Recent work by EKR
+
+#leoOPML.py
+#__jEdit_colorizer__.py
+	# The new colorizer has some severe performance problems.
+
+##### All other plugins.
+##### Order is important for enabled plugins that add items to the icon area.
+
+#ConceptualSort.py
+#EditAttributes.py
+#FileActions.py
+#Library.py
+#UASearch.py
+#URLloader.py
+#UniversalScrolling.py
+
+#add_directives.py
+#arrows.py
+#at_folder.py
+#at_view.py
+#autotrees.py
+#base64Packager.py
+#bibtex.py
+#chapter_hoist.py
+#cleo.py
+#color_markup.py
+#datenodes.py
+#detect_urls.py
+#dyna_menu.py
+#fastGotoNode.py
+#footprints.py
+#groupOperations.py
+#hoist.py
+#image.py
+#import_cisco_config.py
+#keybindings.py
+#leo_to_html.py
+#leo_to_rtf.py
+#leoupdate.py
+#macros.py
+#mod_autosave.py
+#mod_http.py
+#mod_labels.py
+#mod_read_dir_outline.py
+#mod_shadow.py
+#multifile.py
+#nav_buttons.py
+#newButtons.py
+#niceNosent.py
+#nodebar.py
+#nodenavigator.py
+#open_shell.py
+#paste_as_headlines.py
+#pie_menus.py
+#pretty_print.py
+#print_cp.py
+#quickMove.py
+#rClick.py
+#read_only_nodes.py
+#rowcol.py
+#run_nodes.py
+#s_menu.py
+#scheduler.py
+#searchbox.py
+#shortcut_button.py
+#slideshow.py
+#table.py
+#templates.py
+#trace_tags.py
+#vim.py
+#word_count.py
+#word_export.py
+#xcc_nodes.py
+#xemacs.py
+#xsltWithNodes.py
+#zodb.py</t>
 </tnodes>
 </leo_file>

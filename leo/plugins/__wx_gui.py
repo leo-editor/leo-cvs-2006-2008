@@ -2930,7 +2930,8 @@ class wxGui(leoGui.leoGui):
     #@+node:edream.110203113231.314:finishCreate
     def finishCreate (self):
     
-       g.trace('gui',g.callers())
+       pass
+       # g.trace('gui',g.callers())
     #@-node:edream.110203113231.314:finishCreate
     #@+node:edream.110203113231.315:killGui
     def killGui(self,exitFlag=True):
