@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -600,7 +600,7 @@
 <v t="ekr.20060612104638"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831184021.1"><vh>Chapter 14: Using the rst3 plugin</vh>
+<v t="ekr.20050831184021.1" a="TV"><vh>Chapter 14: Using the rst3 plugin</vh>
 <v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050818163826.2"><vh>Overview</vh></v>
@@ -13910,7 +13910,20 @@ write_intermediate_file (default: False)
     True: writes intermediate files before sending them to docutils.
     This option only applies to .htm, .html and .tex files.
     The name of the intermediate file has the name of the output file with .txt appended.
-    This option has effect only if the generate_rst option is True.</t>
+    This option has effect only if the generate_rst option is True.
+    
+publish-argv-for-missing-stylesheets (Default: '')
+    The arguments to be passed to docutils.core.Publisher().publish()
+    when no stylesheet is in effect.
+    This is a string that represents a comma-separated list of strings:
+    For example, the option::
+
+        publish-argv-for-missing-stylesheets=--language=de,--documentclass=report,--use-latex-toc
+        
+    results in the call::
+        
+        publish(['--language=de','--documentclass=report','--use-latex-toc'])
+</t>
 <t tx="ekr.20050818163826.5">The following options are for the use of Bernhard Mulder's http plugin.  The http plugin creates an http server running on a local port, typically 8080.  When the http plugin is running you will see a purple message in the log window that looks something like this::
 
     http serving enabled on port 8080, version 0.91

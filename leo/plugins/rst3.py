@@ -47,7 +47,7 @@ bwm_file = None
 if 0:
     bwm_file = open("bwm_file", "w")
 
-__version__ = '1.20'
+__version__ = '1.21'
 
 #@<< imports >>
 #@+node:ekr.20050805162550.2:<< imports >>
@@ -104,6 +104,7 @@ except ImportError:
 # 1.18 BWM: Added support for mod_scripting plugin.
 # 1.19 EKR: Fixed crash that happens when invoked from menu.
 # 1.20 EKR: Registers the write-restructured-text command.
+# 1.21 EKR: Added rst3-publish-argv-for-missing-stylesheets setting.
 #@-at
 #@nonl
 #@-node:ekr.20050805162550.3:<< change log >>
@@ -753,6 +754,7 @@ class rstClass:
             'rst3_default_path': None, # New in Leo 4.4a4 # Bug fix: must be None, not ''.
             'rst3_stylesheet_name': 'default.css',
             'rst3_stylesheet_path': None, # Bug fix: must be None, not ''.
+            'rst3-publish-argv-for-missing-stylesheets': None,
             # Global options...
             'rst3_number_code_lines': True,
             'rst3_underline_characters': '''#=+*^~"'`-:><_''',
@@ -1278,7 +1280,14 @@ class rstClass:
                 return pub.publish(argv=['--stylesheet=%s' % path])
         else:
             g.es_print('stylesheet does not exist: %s' % (path),color='red')
-            return pub.publish(argv=[])
+            args = self.getOption('rst3-publish-argv-for-missing-stylesheets') or ''
+            args = args.strip()
+            if not args: args = []
+            elif args.find(',') == -1:
+                args = [args]
+            else:
+                args = ','.split(args)
+            return pub.publish(argv=args)
     #@nonl
     #@-node:ekr.20050809082854.1:writeToDocutils (sets argv)
     #@+node:ekr.20060525102337:writeNodeToString (New in 4.4.1)
