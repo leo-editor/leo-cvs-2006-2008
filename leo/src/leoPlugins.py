@@ -85,7 +85,6 @@ def doPlugins(tag,keywords):
         return
         
     # g.trace(tag)
-    
     if tag in ('start1','open0'):
         loadHandlers(tag)
 
