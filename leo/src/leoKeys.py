@@ -3156,7 +3156,6 @@ class keyHandlerClass:
         if not w: return
     
         if self.useTextWidget:
-            w.update_idletasks()
             k.mb_prefix = w.getAllText()
         else:
             if k.svar:

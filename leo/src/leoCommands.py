@@ -5539,10 +5539,7 @@ class baseCommands:
         c.frame.deiconify()
         
         if set_focus:
-            bodyCtrl = c.frame.body.bodyCtrl
-            # g.trace(g.app.gui.widget_name(bodyCtrl))
-            bodyCtrl.update_idletasks()
-            g.app.gui.set_focus(c,bodyCtrl)
+            c.frame.body.setFocus()
     
     BringToFront = bringToFront # Compatibility with old scripts
     #@-node:ekr.20031218072017.2951:c.bringToFront

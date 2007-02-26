@@ -5323,7 +5323,7 @@ def center(top):
 
     sw = top.winfo_screenwidth()
     sh = top.winfo_screenheight()
-    w,h,x,y = get_window_info(top)
+    w,h,x,y = g.get_window_info(top)
     
     # Set the new window coordinates, leaving w and h unchanged.
     x = (sw - w)/2
@@ -5338,6 +5338,7 @@ def center(top):
 
 def get_window_info (top):
     
+    # This is an emergency measure: this call is NOT a major Tk-dependency.
     top.update_idletasks() # Required to get proper info.
 
     # Get the information about top and the screen.
