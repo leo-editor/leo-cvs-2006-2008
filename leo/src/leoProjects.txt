@@ -14525,7 +14525,8 @@ def expandNodeAndGoToFirstChild (self,event=None):
 
     c = self ; p = c.currentPosition()
     if not p.hasChildren():
-        c.treeWantsFocusNow()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
         return
         
     c.beginUpdate()
@@ -14536,7 +14537,8 @@ def expandNodeAndGoToFirstChild (self,event=None):
         c.selectVnode(p.firstChild())
     finally:
         c.endUpdate()
-        c.treeWantsFocusNow()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
         
 def expandNodeOrGoToFirstChild (self,event=None):
     
@@ -14544,7 +14546,8 @@ def expandNodeOrGoToFirstChild (self,event=None):
 
     c = self ; p = c.currentPosition()
     if not p.hasChildren():
-        c.treeWantsFocusNow()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
         return
 
     if not p.isExpanded():
@@ -14555,7 +14558,8 @@ def expandNodeOrGoToFirstChild (self,event=None):
             c.selectVnode(p.firstChild())
         finally:
             c.endUpdate()
-    c.treeWantsFocusNow()
+    # c.treeWantsFocusNow()
+    c.treeFocusHelper()
 #@-node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
 #@+node:ekr.20040930064232:contractNodeOrGoToParent
 def contractNodeOrGoToParent (self,event=None):
@@ -14568,6 +14572,9 @@ def contractNodeOrGoToParent (self,event=None):
         c.contractNode()
     elif p.hasParent():
         c.goToParent()
+
+    c.treeFocusHelper()
+#@nonl
 #@-node:ekr.20040930064232:contractNodeOrGoToParent
 #@+node:ekr.20040803072955.143:tree.expandAllAncestors
 def expandAllAncestors (self,p):
