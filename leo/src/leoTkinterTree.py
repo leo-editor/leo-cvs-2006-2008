@@ -1805,10 +1805,11 @@ class leoTkinterTree (leoFrame.leoTree):
                 else:
                     w.setInsertPoint(0)
             
-                if self.stayInTree:
-                    c.treeWantsFocusNow()
-                else:
-                    c.bodyWantsFocusNow()
+                # if self.stayInTree:
+                    # c.treeWantsFocusNow()
+                # else:
+                    # c.bodyWantsFocusNow()
+                c.treeFocusHelper()
                 returnVal = 'break'
             
             # The next click *in the same headline* will start editing.
