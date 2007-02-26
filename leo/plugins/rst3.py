@@ -754,7 +754,7 @@ class rstClass:
             'rst3_default_path': None, # New in Leo 4.4a4 # Bug fix: must be None, not ''.
             'rst3_stylesheet_name': 'default.css',
             'rst3_stylesheet_path': None, # Bug fix: must be None, not ''.
-            'rst3-publish-argv-for-missing-stylesheets': None,
+            'rst3_publish_argv_for_missing_stylesheets': None,
             # Global options...
             'rst3_number_code_lines': True,
             'rst3_underline_characters': '''#=+*^~"'`-:><_''',
@@ -1237,12 +1237,18 @@ class rstClass:
     
         openDirectory = self.c.frame.openDirectory
         pub = docutils.core.Publisher()
-    
         pub.source      = docutils.io.StringInput(source=s)
         pub.destination = docutils.io.StringOutput(pub.settings,encoding=self.encoding)
-    
         pub.set_reader('standalone',None,'restructuredtext')
         
+        # Compute the args list if the stylesheet path does not exist.
+        args = self.getOption('publish_argv_for_missing_stylesheets') or ''
+        args = args1 = args.strip()
+        if not args: args = []
+        elif args.find(',') == -1: args = [args]
+        else: args = args.split(',')
+        # g.trace('args',repr(args))
+    
         for ext,writer in (
             ('.html','html'),
             ('.htm','html'),
@@ -1279,14 +1285,8 @@ class rstClass:
             else:
                 return pub.publish(argv=['--stylesheet=%s' % path])
         else:
-            g.es_print('stylesheet does not exist: %s' % (path),color='red')
-            args = self.getOption('rst3-publish-argv-for-missing-stylesheets') or ''
-            args = args.strip()
-            if not args: args = []
-            elif args.find(',') == -1:
-                args = [args]
-            else:
-                args = ','.split(args)
+            if not args1:
+                g.es_print('stylesheet does not exist: %s' % (path),color='red')
             return pub.publish(argv=args)
     #@nonl
     #@-node:ekr.20050809082854.1:writeToDocutils (sets argv)
