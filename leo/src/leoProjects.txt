@@ -14428,6 +14428,168 @@ def findSectionName(self,s,i):
 #@-node:ekr.20041005105605.199:hasSectionName
 #@-node:ekr.20070216105848:Warn on dubious section brackets
 #@-node:ekr.20070217114542:Features
+#@+node:ekr.20070221095637:Eliminating flash
+#@+node:ekr.20040803072955.91:onHeadChanged
+# Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing',s=None):
+    
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+    
+    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if not w: return
+    
+    ch = '\n' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    if s is None: s = w.getAllText()
+    << truncate s if it has multiple lines >>
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        # if self.trace_edit and not g.app.unitTesting:
+            # if changed:
+                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(scroll=False) # New in 4.4.1
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+   
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+# Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) > 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i > -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) > limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+#@-node:ekr.20040803072955.91:onHeadChanged
+#@+node:ekr.20031218072017.1720:save
+def save(self,fileName):
+
+    c = self.c ; v = c.currentVnode()
+
+    # New in 4.2.  Return ok flag so shutdown logic knows if all went well.
+    ok = g.doHook("save1",c=c,p=v,v=v,fileName=fileName)
+    # redraw_flag = g.app.gui.guiName() == 'tkinter'
+    if ok is None:
+        c.beginUpdate()
+        try:
+            c.endEditing()# Set the current headline text.
+            self.setDefaultDirectoryForNewFiles(fileName)
+            ok = self.write_Leo_file(fileName,False) # outlineOnlyFlag
+            if ok:
+                c.setChanged(False) # Clears all dirty bits.
+                g.es("saved: " + g.shortFileName(fileName))
+                if c.config.save_clears_undo_buffer:
+                    g.es("clearing undo")
+                    c.undoer.clearUndoState()
+        finally:
+            c.endUpdate()
+    g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
+    return ok
+#@-node:ekr.20031218072017.1720:save
+#@+node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
+def expandNodeAndGoToFirstChild (self,event=None):
+    
+    """If a node has children, expand it if needed and go to the first child."""
+
+    c = self ; p = c.currentPosition()
+    if not p.hasChildren():
+        c.treeWantsFocusNow()
+        return
+        
+    c.beginUpdate()
+    try:
+        # Bug fix: 2/22/07: put this inside the begin/endUpdate so only one redraw happens.
+        if not p.isExpanded():
+            c.expandNode()
+        c.selectVnode(p.firstChild())
+    finally:
+        c.endUpdate()
+        c.treeWantsFocusNow()
+        
+def expandNodeOrGoToFirstChild (self,event=None):
+    
+    """Simulate the Right Arrow Key in folder of Windows Explorer."""
+
+    c = self ; p = c.currentPosition()
+    if not p.hasChildren():
+        c.treeWantsFocusNow()
+        return
+
+    if not p.isExpanded():
+        c.expandNode()
+    else:
+        c.beginUpdate()
+        try:
+            c.selectVnode(p.firstChild())
+        finally:
+            c.endUpdate()
+    c.treeWantsFocusNow()
+#@-node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
+#@+node:ekr.20040930064232:contractNodeOrGoToParent
+def contractNodeOrGoToParent (self,event=None):
+    
+    """Simulate the left Arrow Key in folder of Windows Explorer."""
+
+    c = self ; p = c.currentPosition()
+ 
+    if p.hasChildren() and p.isExpanded():
+        c.contractNode()
+    elif p.hasParent():
+        c.goToParent()
+#@-node:ekr.20040930064232:contractNodeOrGoToParent
+#@+node:ekr.20040803072955.143:tree.expandAllAncestors
+def expandAllAncestors (self,p):
+    
+    '''Expand all ancestors without redrawing.
+    
+    Return a flag telling whether a redraw is needed.'''
+    
+    c = self.c ; redraw_flag = False
+
+    c.beginUpdate()
+    try:
+        for p in p.parents_iter():
+            if not p.isExpanded():
+                p.expand()
+                redraw_flag = True
+    finally:
+        c.endUpdate(False)
+
+    return redraw_flag
+#@-node:ekr.20040803072955.143:tree.expandAllAncestors
+#@-node:ekr.20070221095637:Eliminating flash
 #@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 porjects
 #@-all
 #@nonl

@@ -10,6 +10,8 @@
 #@-node:ekr.20061130084909:Improve What's special whitepaper
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@+node:ekr.20070226075816:Allow external programs to access settings in .leo files
+#@-node:ekr.20070226075816:Allow external programs to access settings in .leo files
 #@+node:ekr.20070220082124.1:Before next release
 #@+node:ekr.20070220090145:Fix crasher in rclicker plugin
 
@@ -231,6 +233,8 @@ leoImport.py:1317: Global variable (c) not defined in module scope
 #@-node:ekr.20070126072723:pychecker errors 3
 #@-node:ekr.20070220082124.1:Before next release
 #@+node:ekr.20070220082124.2:Before b1
+#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
 #@+node:ekr.20070211192428:(Make Leo's core gui-indenpendent)
 # To do: use baseTextWidget class.  There seem to be problems :-)
 #@nonl
@@ -320,7 +324,7 @@ leoImport.py:1317: Global variable (c) not defined in module scope
 'wm_iconbitmap'
 'yview'
 #@nonl
-#@+node:ekr.20070213165250:find w.xxx
+#@+node:ekr.20070213165250:find w.xxx script
 import string
 import leoTkinterFrame
 words = {}
@@ -354,51 +358,48 @@ aList = ['%3d %s' % (words.get(key),str(key)) for key in keys]
 print g.listToString(aList)
 g.es('searched %s' % p1.headString())
 #@nonl
-#@-node:ekr.20070213165250:find w.xxx
-#@+node:ekr.20070213100433:Summary
-w.dlineinfo:        Replaced by w.indexIsVisible(i)
-w.replace:          Valid, but no longer used.
-w.index:            Can be converted later.  g.getWord (similar to g.getLine) would be useful.
-w.mark_set:         Removed.
-w.search:           Can be converted later.
-w.selection_clear:  Removed.
-w.selection_get:    Removed.
-w.winfo_toplevel:   Removed.
-#@-node:ekr.20070213100433:Summary
-#@+node:ekr.20070213065957:Script results
-'  1 bind'
-' 64 delete'
-'  2 deleteTextSelection'
-'  1 event_generate' # ok.
+#@-node:ekr.20070213165250:find w.xxx script
+#@+node:ekr.20070226081522:Script results
+# To be removed.
+'  6 index' # later.
 '  1 flashCharacter'
-' 22 get'
-'118 getAllText'
-' 95 getInsertPoint'
-' 21 getSelectedText'
-' 60 getSelectionRange'
-'  1 getYScrollPosition'
-' 12 hasSelection'
-'  8 index' # later.
-'  2 indexIsVisible'
-' 72 insert'
-'  1 rowColToGuiIndex'
 '  3 search' # later.
-'  3 see'
-' 14 seeInsertPoint'
-'  3 selectAllText'
-' 14 setAllText'
-' 50 setInsertPoint'
-' 67 setSelectionRange'
-'  3 setWidth'
 '  7 tag_add'
 '  8 tag_config'
 ' 10 tag_delete'
 '  5 tag_ranges'
-'  8 toGuiIndex'
+
+# Can't be removed.
+'  1 update_idletasks' # In an emergency global function. (also top.geometry)
+
+# Ok.
+'  1 bind'
+' 73 delete'
+'  2 deleteTextSelection'
+'  1 event_generate' # ok.
+' 21 get'
+'123 getAllText'
+' 96 getInsertPoint'
+' 21 getSelectedText'
+' 63 getSelectionRange'
+'  1 getYScrollPosition'
+' 12 hasSelection'
+'  2 indexIsVisible'
+' 77 insert'
+'  1 rowColToGuiIndex'
+'  4 see'
+' 14 seeInsertPoint'
+'  3 selectAllText'
+' 16 setAllText'
+'  2 setBackgroundColor'
+' 54 setInsertPoint'
+' 76 setSelectionRange'
+'  4 setWidth'
+'  1 setYScrollPosition'
+'  7 toGuiIndex'
 '  4 toPythonIndex'
 '  3 xyToPythonIndex'
-#@nonl
-#@-node:ekr.20070213065957:Script results
+#@-node:ekr.20070226081522:Script results
 #@-node:ekr.20070125103950: Calls to w.xxx
 #@+node:ekr.20070212140907:What I did
 @nocolor
@@ -2595,7 +2596,7 @@ def center(top):
 
     sw = top.winfo_screenwidth()
     sh = top.winfo_screenheight()
-    w,h,x,y = get_window_info(top)
+    w,h,x,y = g.get_window_info(top)
     
     # Set the new window coordinates, leaving w and h unchanged.
     x = (sw - w)/2
@@ -2610,6 +2611,7 @@ def center(top):
 
 def get_window_info (top):
     
+    # This is an emergency measure: this call is NOT a major Tk-dependency.
     top.update_idletasks() # Required to get proper info.
 
     # Get the information about top and the screen.
