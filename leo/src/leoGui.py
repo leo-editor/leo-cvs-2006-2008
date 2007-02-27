@@ -428,8 +428,6 @@ class nullGui(leoGui):
     #@+node:ekr.20031218072017.2225: nullGui.__init__
     def __init__ (self,guiName):
         
-        # g.trace("nullGui")
-        
         leoGui.__init__ (self,guiName) # init the base class.
         
         self.script = None
