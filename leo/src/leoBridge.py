@@ -180,7 +180,7 @@ class bridgeController:
     def isValidPython(self):
         
         import sys
-        
+    
         if sys.platform == 'cli':
             return True
     
