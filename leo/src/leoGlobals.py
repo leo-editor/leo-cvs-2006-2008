@@ -2543,6 +2543,7 @@ def enl(tabName='Log'):
         log.putnl(tabName)
 
 def es(s,*args,**keys):
+    # print 'es','app.log',repr(app.log),'log.isNull',not app.log or app.log.isNull,repr(s)
     if app.killed:
         return
     newline = keys.get("newline",True)
