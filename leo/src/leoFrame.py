@@ -1704,6 +1704,8 @@ class nullFrame (leoFrame):
     def finishCreate(self,c):
     
         self.c = c
+        
+        # print 'nullFrame'
     
         # Create do-nothing component objects.
         self.tree = nullTree(frame=self)
@@ -1786,6 +1788,7 @@ class nullLog (leoLog):
         # Init the base class.
         leoLog.__init__(self,frame,parentFrame)
         self.isNull = True
+    #@nonl
     #@-node:ekr.20041012083237:nullLog.__init__
     #@+node:ekr.20041012083237.1:createControl
     def createControl (self,parentFrame):
@@ -1801,11 +1804,13 @@ class nullLog (leoLog):
     def put (self,s,color=None,tabName='Log'):
         if self.enabled:
             # g.trace('nullLog',s)
-            g.rawPrint(s)
+            ### g.rawPrint(s)
+            print s,
     
     def putnl (self,tabName='Log'):
         if self.enabled:
-            g.rawPrint("")
+            # g.rawPrint("")
+            print
     #@-node:ekr.20041012083237.3:put and putnl (nullLog)
     #@+node:ekr.20060124085830:tabs
     def clearTab        (self,tabName):     pass
