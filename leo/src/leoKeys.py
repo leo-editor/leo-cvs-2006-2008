@@ -2890,7 +2890,7 @@ class keyHandlerClass:
     
         # Handle keyboard-quit first.
         if k.abortAllModesKey and stroke == k.abortAllModesKey:
-            g.trace('special case')
+            # g.trace('special case')
             return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
     
         if k.inState():
