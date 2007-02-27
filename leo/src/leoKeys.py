@@ -2512,6 +2512,7 @@ class keyHandlerClass:
         keys = d.keys() ; keys.sort()
         c.frame.log.clearTab(tabName)
         data = [] ; n1 = 4 ; n2 = 20
+        if not keys: return g.es('no bindings')
         for key in keys:
             bunchList = d.get(key,[])
             for b in bunchList:
@@ -2563,7 +2564,7 @@ class keyHandlerClass:
     #@-node:ekr.20061031131434.120:printBindingsHelper
     #@-node:ekr.20061031131434.119:printBindings & helper
     #@+node:ekr.20061031131434.121:printCommands
-    def printCommands (self,event):
+    def printCommands (self,event=None):
     
         '''Print all the known commands and their bindings, if any.'''
     
