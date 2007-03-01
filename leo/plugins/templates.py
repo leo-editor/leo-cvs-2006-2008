@@ -32,7 +32,7 @@ This plugin requires the simplified atFile write code that is new in 4.2.1.
 #@@language python 
 #@@tabwidth -4
 
-__version__ = ".4"
+__version__ = ".5"
 #@<<version history>>
 #@+node:ekr.20041109171952:<< version history >>
 #@@killcolor 
@@ -48,6 +48,7 @@ __version__ = ".4"
 #     - Changed 'new_c' logic to 'c' logic.
 #     - Replaced 'start2' hook with 'new' hook.
 # 0.4 EKR: Added init function.
+# 0.5 EKR: Created initImages so Tk calls are not made at the top level.
 #@-at
 #@nonl
 #@-node:ekr.20041109171952:<< version history >>
@@ -72,24 +73,9 @@ except Exception, x:
 #@nonl
 #@-node:ekr.20041022165647:<< imports >>
 #@nl
-#@<<globals>>
-#@+node:ekr.20041109174046:<< globals >>
+
 templates = sets.Set()
 haveseen = weakref.WeakKeyDictionary()
-
-# Image data.
-template = r'''R0lGODlhFAAKAIABAAAAAP///ywAAAAAFAAKAAACJYxvABi6qY5DMbbbLJRrTvowUAhqo8honpl2
-VgdyX0ZmNovSRgEAOw=='''
-
-tempwiz = r'''R0lGODlhKAAKAIABAAAAAP///ywAAAAAKAAKAAACO4yPAckJix5scbp3ZFWWarZAn4GRHThmWMpd
-0guX6MmV8c2a9EapchX6XXq6xifEaxGFxaZKufTsXIYCADs='''
-
-# Create the images from the data.
-templatePI = Tkinter.PhotoImage(data=template)
-tempwizPI = Tkinter.PhotoImage(data=tempwiz)
-#@nonl
-#@-node:ekr.20041109174046:<< globals >>
-#@nl
 
 #@+others
 #@+node:ekr.20070125124515:init
@@ -103,6 +89,7 @@ def init ():
     ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
+        initImages()
         leoPlugins.registerHandler("after-create-leo-frame",addButtons)
         leoPlugins.registerHandler("after-redraw-outline",drawImages)
         leoPlugins.registerHandler(("new","open2"),scanForTemplates)
@@ -111,6 +98,20 @@ def init ():
     return ok
 #@nonl
 #@-node:ekr.20070125124515:init
+#@+node:ekr.20070301110439:initImages
+def initImages ():
+
+    # Image data.
+    template = r'''R0lGODlhFAAKAIABAAAAAP///ywAAAAAFAAKAAACJYxvABi6qY5DMbbbLJRrTvowUAhqo8honpl2
+    VgdyX0ZmNovSRgEAOw=='''
+
+    tempwiz = r'''R0lGODlhKAAKAIABAAAAAP///ywAAAAAKAAKAAACO4yPAckJix5scbp3ZFWWarZAn4GRHThmWMpd
+    0guX6MmV8c2a9EapchX6XXq6xifEaxGFxaZKufTsXIYCADs='''
+
+    # Create the images from the data.
+    global templatePI ; templatePI = Tkinter.PhotoImage(data=template)
+    global tempwizPI ; tempwizPI = Tkinter.PhotoImage(data=tempwiz)
+#@-node:ekr.20070301110439:initImages
 #@+node:mork.20041022093042:getSelectDialog
 def getSelectDialog (c):
     
