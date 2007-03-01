@@ -5,7 +5,7 @@
 #@+all
 #@+node:ekr.20061116060847:@url http://www.jhorman.org/wikidPad/
 #@-node:ekr.20061116060847:@url http://www.jhorman.org/wikidPad/
-#@+node:ekr.20050123161408:ExamDiff files
+#@+node:ekr.20050123161408:ExamDiff files & scripts
 0 leo.py
 1 leoApp.py
 2 leoAtFile.py
@@ -52,7 +52,7 @@ for s in d:
 
         
 #@-node:ekr.20050123160215.1:Put all files in alpha order in ExamDiff
-#@-node:ekr.20050123161408:ExamDiff files
+#@-node:ekr.20050123161408:ExamDiff files & scripts
 #@+node:ekr.20031218072017.365:How to...
 #@+node:ekr.20060208112908:CVS stuff...
 #@+node:ekr.20060331094112:How to generate keys using putty
@@ -2038,75 +2038,6 @@ Brian Theado
 @language python
 @color
 #@nonl
-#@+node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
-def indentRegion (self,event):
-    w = self.editWidget(event)
-    if not w: return
-
-    mrk = 'sel'
-    trange = w.tag_ranges(mrk)
-    if len(trange) != 0:
-        ind = w.search('\w','%s linestart' % trange[0],stopindex='end',regexp=True)
-        if not ind: return
-        text = w.get('%s linestart' % ind,'%s lineend' % ind)
-        sstring = text.lstrip()
-        sstring = sstring [0]
-        ws = text.split(sstring)
-        if len(ws) > 1:
-            ws = ws [0]
-        else:
-            ws = ''
-        s, s1 = trange [0].split('.')
-        e, e1 = trange [ -1].split('.')
-        s = int(s)
-        s = s + 1
-        e = int(e) + 1
-        for z in xrange(s,e):
-            t2 = w.get('%s.0' % z,'%s.0 lineend' % z)
-            t2 = t2.lstrip()
-            t2 = ws + t2
-            w.delete('%s.0' % z,'%s.0 lineend' % z)
-            w.insert('%s.0' % z,t2)
-    # self.removeRKeys(w)
-#@nonl
-#@-node:ekr.20050920084036.107:indentRegion (not used: use c.indentBody instead)
-#@+node:ekr.20070213074001:Not used from leoEdit commands
-#@+node:ekr.20050920084036.9:inRange
-def inRange (self,w,range,l='',r=''):
-
-    ranges = w.tag_ranges(range)
-    
-    for z in xrange(0,len(ranges),2):
-        z1 = z + 1
-        l1 = 'insert%s' % l
-        r1 = 'insert%s' % r
-        # if w.compare(l1,'>=',ranges[z]) and w.compare(r1,'<=',ranges[z1]):
-        if i1 >= ranges[z] and r1 <= ranges[z1]:
-            return True
-    return False
-#@-node:ekr.20050920084036.9:inRange
-#@+node:ekr.20050920084036.11:testinrange
-def testinrange (self,w):
-
-    if not self.inRange(w,'sel') or not self.contRanges(w,'sel'):
-        # self.removeRKeys(w)
-        return False
-    else:
-        return True
-#@-node:ekr.20050920084036.11:testinrange
-#@+node:ekr.20050920084036.10:contRanges
-def contRanges (self,w,range):
-
-    ranges = w.tag_ranges(range)
-    t1 = w.get(ranges[0],ranges[-1])
-    t2 = []
-    for z in xrange(0,len(ranges),2):
-        z1 = z + 1
-        t2.append(w.get(ranges[z],ranges[z1]))
-    t2 = '\n'.join(t2)
-    return t1 == t2
-#@-node:ekr.20050920084036.10:contRanges
-#@-node:ekr.20070213074001:Not used from leoEdit commands
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
