@@ -110,7 +110,8 @@ def init ():
         if g.app.gui is None:
             g.app.createTkGui(__file__)
     
-        if g.app.gui.guiName() == "tkinter":
+        ok = g.app.gui.guiName() == "tkinter"
+        if ok:
             leoPlugins.registerHandler(('new','open2'), on_open)
             leoPlugins.registerHandler("bodykey1", on_bodykey1)
             leoPlugins.registerHandler("headkey2", on_headkey2)

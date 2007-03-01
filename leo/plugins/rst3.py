@@ -197,7 +197,6 @@ def init ():
     ok = docutils is not None # Ok for unit testing.
     
     if ok:
-        
         leoPlugins.registerHandler(("new","open2"), onCreate)
         g.plugin_signon(__name__)
     else:

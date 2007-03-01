@@ -115,7 +115,10 @@ helpers = {}
 #@+node:pap.20051010170720.4:init
 def init ():
     
-    ok = True # This might depend on imports, etc.
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
     
     if ok:
         leoPlugins.registerHandler('after-create-leo-frame',onCreate)

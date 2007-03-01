@@ -102,6 +102,24 @@ import weakref
 #@nl
 
 #@+others
+#@+node:ekr.20070301072310:init
+def init ():
+    
+    if not (Tk and Pmw): return False
+        
+    # Ok for unit testing.  add's menu.
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
+        
+    if ok:
+        leoPlugins.registerHandler(('new2','open2'), addCommand)
+        g.plugin_signon( __name__ )
+
+    return ok
+#@nonl
+#@-node:ekr.20070301072310:init
 #@+node:ekr.20040916074337:class CSFrontend:
 class CSFrontend:
     
@@ -290,11 +308,6 @@ def addCommand (tag,keywords):
 #@-others
 
 haveseen = weakref.WeakKeyDictionary()
-
-if Tk and Pmw: # Ok for unit testing.  add's menu.
-    leoPlugins.registerHandler(('new2','open2'), addCommand)
-    __version__ = ".2"
-    g.plugin_signon( __name__ )
 #@nonl
 #@-node:ekr.20040916073636:@thin ConceptualSort.py
 #@-leo

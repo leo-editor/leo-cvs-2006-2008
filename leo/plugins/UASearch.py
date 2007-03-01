@@ -48,7 +48,12 @@ import weakref
 #@+node:ekr.20050311090939.6:init
 def init ():
     
-    ok = Tk is not None # Ok for unit tests: adds menu.
+    if Tk is None: return # Ok for unit tests: adds menu.
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
     
     if ok:
         leoPlugins.registerHandler(('new','open2'),addPMenu)

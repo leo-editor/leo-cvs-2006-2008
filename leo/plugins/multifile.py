@@ -21,8 +21,8 @@ for example:
 It will places copy of the written file in each of these directories.
 
 There is an additional directive that simplifies common paths, it is called
-#@@multiprefix. By typing @multiprefix with a path following it, before a
-#@@multipath directive you set the beginning of the paths in the @multipath
+@multiprefix. By typing @multiprefix with a path following it, before a
+@multipath directive you set the beginning of the paths in the @multipath
 directive.
 
 For example: (note I put # in front of the directives here because I
@@ -42,7 +42,7 @@ or
 copies a file to /leo/plugins /leo/fungus /leo/drain.
 
 The @multiprefix stays in effect for the entire tree until reset with another
-#@@multiprefix directive. @multipath is cumulitive, in that for each @multipath in
+@multiprefix directive. @multipath is cumulitive, in that for each @multipath in
 an ancestor a copy of the file is created. These directives must at the
 beginning of the line and by themselves.
 '''
@@ -113,24 +113,28 @@ def init ():
 
     global ok
     if ok:
-        #import leoGlobals # Append to the module list, not to the g.copy.
-        g.globalDirectiveList.append('multipath')
-        g.globalDirectiveList.append('multiprefix')
-        
-        # Workaround a bug in at.directiveKind4: add entries in leoColor.leoKeywords.
-        # This allows the code to work with the new colorizer.
-        leoColor.leoKeywords.append('@multipath')
-        leoColor.leoKeywords.append('@multiprefix')
-        
-        # Override all instances of leoAtFile.atFile.
-        at = leoAtFile.atFile
-        global originalOpenFileForWriting ; originalOpenFileForWriting = at.openFileForWriting
-        g.funcToMethod(decoratedOpenFileForWriting,at,name='openFileForWriting')
-        
-        # leoPlugins.registerHandler('save1',start)
-        leoPlugins.registerHandler('save2',stop)
-        leoPlugins.registerHandler(('new','start2'),addMenu)
-        g.plugin_signon(__name__)
+        if g.app.gui is None:
+            g.app.createTkGui(__file__)
+        ok = g.app.gui.guiName() == "tkinter"
+        if ok:
+            #import leoGlobals # Append to the module list, not to the g.copy.
+            g.globalDirectiveList.append('multipath')
+            g.globalDirectiveList.append('multiprefix')
+            
+            # Workaround a bug in at.directiveKind4: add entries in leoColor.leoKeywords.
+            # This allows the code to work with the new colorizer.
+            leoColor.leoKeywords.append('@multipath')
+            leoColor.leoKeywords.append('@multiprefix')
+            
+            # Override all instances of leoAtFile.atFile.
+            at = leoAtFile.atFile
+            global originalOpenFileForWriting ; originalOpenFileForWriting = at.openFileForWriting
+            g.funcToMethod(decoratedOpenFileForWriting,at,name='openFileForWriting')
+            
+            # leoPlugins.registerHandler('save1',start)
+            leoPlugins.registerHandler('save2',stop)
+            leoPlugins.registerHandler(('new','start2'),addMenu)
+            g.plugin_signon(__name__)
 
     return ok
 #@nonl

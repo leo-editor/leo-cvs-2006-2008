@@ -38,10 +38,16 @@ if 0:
 #@+node:ekr.20060621123339.4:init
 def init ():
     
-    # leoPlugins.registerHandler('after-create-leo-frame',onCreate)
-    leoPlugins.registerHandler(('new','open2'),onCreate)
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
     
-    return True
+    if ok:
+        # leoPlugins.registerHandler('after-create-leo-frame',onCreate)
+        leoPlugins.registerHandler(('new','open2'),onCreate)
+    
+    return ok
 #@nonl
 #@-node:ekr.20060621123339.4:init
 #@+node:ekr.20060621123339.5:onCreate

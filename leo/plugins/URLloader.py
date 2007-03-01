@@ -44,6 +44,12 @@ import weakref
 def init ():
     
     ok = Tk and Pmw # Ok for unit test: adds tabbed pane to log.
+    if not ok: return
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
     
     if ok:
         leoPlugins.registerHandler(('new','open2'), addURLPane)

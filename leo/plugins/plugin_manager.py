@@ -209,6 +209,14 @@ USE_PRIORITY = False # True: show non-functional priority field.
 #@+node:ekr.20050213122944:init
 def init():
     
+    global ok
+    if not ok: return None
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
+    
     # Ok for unit testing: adds menu.
     if ok:
         g.plugin_signon(__name__)

@@ -406,29 +406,30 @@ __version__ = "0.4"
 #@+node:ekr.20060513123144:init
 def init ():
     
-    ok = not g.app.unitTesting
+    if g.app.unitTesting: return False
     
-    if ok:
-        data = (
-            (("new","open2"), OnCreate),
-            # ("start2",      OnStart2),
-            ("select2",     OnSelect2),
-            ("idle",        OnIdle),
-            ("command2",    OnCommand2),
-            ("bodydclick2", OnBodyDoubleClick),
-            ("bodykey2",    OnBodyKey2),
-            ("headkey2",    OnHeadKey2),
-            ("end1",        OnQuit),
-        )
-        
-        for hook,f in data:
-            leoPlugins.registerHandler(hook,f)
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+    if g.app.gui.guiName() != "tkinter": return False
+   
+    data = (
+        (("new","open2"), OnCreate),
+        # ("start2",      OnStart2),
+        ("select2",     OnSelect2),
+        ("idle",        OnIdle),
+        ("command2",    OnCommand2),
+        ("bodydclick2", OnBodyDoubleClick),
+        ("bodykey2",    OnBodyKey2),
+        ("headkey2",    OnHeadKey2),
+        ("end1",        OnQuit),
+    )
     
+    for hook,f in data:
+        leoPlugins.registerHandler(hook,f)
         g.plugin_signon(__name__)
     
-    return ok
+    return True
 #@nonl
-#@-node:ekr.20060513123144:init
 #@+node:ekr.20060513122450.395:Module-level event handlers
 #@+node:ekr.20060513122450.397:OnCreate
 def OnCreate(tag,keywords):
@@ -714,6 +715,7 @@ def Warning(module,warning):
 #@nonl
 #@-node:ekr.20060513122450.35:Warning
 #@-node:ekr.20060513142641.1:Helpers
+#@-node:ekr.20060513123144:init
 #@-node:ekr.20060513142641:Module level
 #@+node:ekr.20060513122450.42:Classes
 #@+node:ekr.20060513141418:class controllerClass

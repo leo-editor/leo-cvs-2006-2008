@@ -54,9 +54,16 @@ def init ():
     
     # At present there is a problem with the interaction of this plugin and the chapters2 plugin.
     ok = Pmw is not None # and 'chapters2' not in leoPlugins.loadedModules
+    if not ok: return
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
         g.plugin_signon( __name__ )
+
     return ok
    
 

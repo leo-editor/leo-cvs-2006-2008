@@ -106,6 +106,12 @@ __version__ = '0.6'
 def init():
     
     ok = Ft and Tk
+    if not ok: return
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
         leoPlugins.registerHandler(('open2',"new"),addMenu)

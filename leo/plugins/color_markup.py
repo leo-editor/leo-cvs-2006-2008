@@ -81,7 +81,9 @@ def init ():
         if g.app.gui is None:
             g.app.createTkGui(__file__)
     
-        if g.app.gui.guiName() == "tkinter":
+        ok = g.app.gui.guiName() == "tkinter"
+            
+        if ok:
             print "wiki markup enabled"
 
             # default value for color-tagged wiki text

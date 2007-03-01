@@ -59,15 +59,15 @@ recentInitiallyVisible = False
 #@+node:ekr.20050219114353.2:init
 def init ():
     
-    ok = Tk is not None
+    if Tk is None: return False
     
-    if ok:
-        if g.app.gui is None:
-            g.app.createTkGui(__file__)
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
 
-        if g.app.gui.guiName() == "tkinter":
-            leoPlugins.registerHandler('after-create-leo-frame',onCreate)
-            g.plugin_signon(__name__)
+    ok = g.app.gui.guiName() == "tkinter"
+    if ok:
+        leoPlugins.registerHandler('after-create-leo-frame',onCreate)
+        g.plugin_signon(__name__)
             
     return ok
 #@nonl

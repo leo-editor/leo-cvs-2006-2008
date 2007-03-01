@@ -151,6 +151,13 @@ if ok: # Don't define this if import Tkinter failed.
 #@+node:tbrown.20060903121429.12:init
 def init():
 
+    if Tk is None: return False
+
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+
+    ok = g.app.gui.guiName() == "tkinter"
+    
     if ok:
         leoPlugins.registerHandler(('open2','new'), onCreate)
         g.plugin_signon(__name__)

@@ -95,18 +95,21 @@ tempwizPI = Tkinter.PhotoImage(data=tempwiz)
 #@+node:ekr.20070125124515:init
 def init ():
 
-    if not import_succeed: # OK for unit testing.
-        return False
+    if not import_succeed: return False # OK for unit testing.
+    
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-    if g.app.gui.guiName() != "tkinter":
-        return False
+        
+    ok = g.app.gui.guiName() == "tkinter"
 
-    leoPlugins.registerHandler("after-create-leo-frame",addButtons)
-    leoPlugins.registerHandler("after-redraw-outline",drawImages)
-    leoPlugins.registerHandler(("new","open2"),scanForTemplates)
-    g.plugin_signon(__name__)
-    return True
+    if ok:
+        leoPlugins.registerHandler("after-create-leo-frame",addButtons)
+        leoPlugins.registerHandler("after-redraw-outline",drawImages)
+        leoPlugins.registerHandler(("new","open2"),scanForTemplates)
+        g.plugin_signon(__name__)
+    
+    return ok
+#@nonl
 #@-node:ekr.20070125124515:init
 #@+node:mork.20041022093042:getSelectDialog
 def getSelectDialog (c):

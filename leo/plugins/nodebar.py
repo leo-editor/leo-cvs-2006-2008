@@ -234,18 +234,20 @@ __version__ = ".7"
 #@+node:ekr.20050311090939.5:init
 def init():
     
-    if load_ok: # Ok for unit test.
-
-        configureNodebar()
-        
-        if g.app.gui is None: 
-            g.app.createTkGui(__file__)
+    if not load_ok: return False
     
-        if g.app.gui.guiName() == "tkinter":
-            leoPlugins.registerHandler(('open2',"new"),addNodeBar )
-            g.plugin_signon(__name__)
+    # Ok for unit test.
+    if g.app.gui is None: 
+        g.app.createTkGui(__file__)
+
+    ok = g.app.gui.guiName() == "tkinter"
+
+    if ok:
+        configureNodebar()
+        leoPlugins.registerHandler(('open2',"new"),addNodeBar )
+        g.plugin_signon(__name__)
             
-    return load_ok
+    return ok
 #@nonl
 #@-node:ekr.20050311090939.5:init
 #@+node:mork.20041026090227:determineFrame

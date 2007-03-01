@@ -96,12 +96,16 @@ __version__ = "1.5"
 #@+others
 #@+node:ekr.20050301103957.1:init
 def init ():
-    
+
     ok = Pmw and Tk
     
     if ok:
-        leoPlugins.registerHandler('before-create-leo-frame',onCreate)
-        g.plugin_signon(__name__)
+        if g.app.gui is None:
+            g.app.createTkGui(__file__)
+        ok = g.app.gui.guiName() == "tkinter"
+        if ok:
+            leoPlugins.registerHandler('before-create-leo-frame',onCreate)
+            g.plugin_signon(__name__)
 
     return ok
 #@nonl

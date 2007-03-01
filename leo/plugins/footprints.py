@@ -67,14 +67,20 @@ def init ():
     global click_registry, coloured_nodes
     
     if ok:
-        # Internal controls 
-        click_registry = {} 
-        coloured_nodes = sets.Set() 
-        applyConfiguration(getConfiguration()) 
-        # 
-        leoPlugins.registerHandler("start2", installDrawMethod) 
-        leoPlugins.registerHandler("headclick1", storeHeadlineClick) 
-        g.plugin_signon(__name__)
+        if g.app.gui is None:
+            g.app.createTkGui(__file__)
+
+        ok = g.app.gui.guiName() == "tkinter"
+
+        if ok:
+            # Internal controls 
+            click_registry = {} 
+            coloured_nodes = sets.Set() 
+            applyConfiguration(getConfiguration()) 
+            # 
+            leoPlugins.registerHandler("start2", installDrawMethod) 
+            leoPlugins.registerHandler("headclick1", storeHeadlineClick) 
+            g.plugin_signon(__name__)
         
     return ok
 #@nonl

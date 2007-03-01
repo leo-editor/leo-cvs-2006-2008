@@ -54,6 +54,24 @@ SIZER_HEIGHT = 23 # was 25
 SIZER_WIDTH = 55 # was 70
 
 #@+others
+#@+node:ekr.20070301070027:init
+def init ():
+    
+    if Tk is None: return False
+    
+    # OK for unit testing.
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
+    
+    if ok:
+        leoPlugins.registerHandler("after-create-leo-frame",onCreate)
+        g.plugin_signon(__name__)
+
+    return ok
+#@nonl
+#@-node:ekr.20070301070027:init
 #@+node:ekr.20050104063423:onCreate
 def onCreate (tag,keys):
     
@@ -167,15 +185,5 @@ class HoistButtons:
 #@nonl
 #@-node:ekr.20040331072607.1:class HoistButtons
 #@-others
-
-if Tk: # OK for unit testing.
-
-    if g.app.gui is None:
-        g.app.createTkGui(__file__)
-    
-    if g.app.gui.guiName() == "tkinter":
-        leoPlugins.registerHandler("after-create-leo-frame",onCreate)
-        g.plugin_signon(__name__)
-#@nonl
 #@-node:ekr.20040331072607:@thin hoist.py
 #@-leo

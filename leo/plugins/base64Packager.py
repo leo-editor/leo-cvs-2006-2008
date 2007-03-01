@@ -137,10 +137,14 @@ def base64Import( c ):
 #@+node:ekr.20050307135219.1:init
 def init ():
     
-    ok = importok
-    
-    if ok:
+    if not importok: return False
 
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
+
+    if ok:
         leoPlugins.registerHandler(('open2', "new"), addMenu)
         g.plugin_signon( __name__ )   
     

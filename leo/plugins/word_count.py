@@ -26,6 +26,7 @@ The Word Count... menu has a shortcut key of 'W'.
 # 0.92 - Created line count routine
 # 0.91 - Created word count routine
 # 0.90 - Created initial plug-in framework
+# 1.1 - Load this plugin only if the Tkinter is in effect.
 #@-at
 #@nonl
 #@-node:danr7.20061010105952.3:<< version history >>
@@ -39,9 +40,27 @@ import tkMessageBox
 #@-node:danr7.20061010105952.4:<< imports >>
 #@nl
 
-__version__ = "1.0"
+__version__ = "1.1"
 
 #@+others
+#@+node:ekr.20070301062245:init
+def init ():
+    
+    ok = tkMessageBox is not None
+    
+    if ok: # Ok for unit testing: creates menu.
+        if g.app.gui is None:
+            g.app.createTkGui(__file__)
+            
+        ok = g.app.gui.guiName() == "tkinter"
+
+        if ok:
+            leoPlugins.registerHandler("create-optional-menus",createWordCountMenu)
+            g.plugin_signon(__name__)
+        
+    return ok
+#@nonl
+#@-node:ekr.20070301062245:init
 #@+node:danr7.20061010105952.5:createWordCountMenu
 def createWordCountMenu (tag,keywords):
 
@@ -79,10 +98,5 @@ def word_count( c ):
 
 #@-node:danr7.20061010105952.6:word_count
 #@-others
-
-if 1: # Ok for unit testing: creates menu.
-    leoPlugins.registerHandler("create-optional-menus",createWordCountMenu)
-    g.plugin_signon(__name__)
-#@nonl
 #@-node:danr7.20061010105952.1:@thin word_count.py
 #@-leo

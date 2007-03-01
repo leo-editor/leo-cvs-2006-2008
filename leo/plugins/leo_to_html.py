@@ -52,10 +52,16 @@ __version__ = "1.1"
 #@+others
 #@+node:ekr.20070124112251:init
 def init ():
+    
+    if g.app.gui is None:
+            g.app.createTkGui(__file__)
+    
+    if g.app.gui.guiName() != "tkinter": return False
 
-    if 1: # Ok for unit testing: creates menu.
-        leoPlugins.registerHandler("create-optional-menus",createExportMenu)
-        g.plugin_signon(__name__)
+    # Ok for unit testing: creates menu.
+    leoPlugins.registerHandler("create-optional-menus",createExportMenu)
+    g.plugin_signon(__name__)
+    
     return True
 #@nonl
 #@-node:ekr.20070124112251:init
