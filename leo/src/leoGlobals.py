@@ -2564,7 +2564,9 @@ def es(s,*args,**keys):
             app.log.put(s)
     else:
         log = app.log
-        if log and not log.isNull:
+        if log and log.isNull:
+            pass
+        elif log:
             # print 'g.es',s
             log.put(s,color=color,tabName=tabName)
             for ch in s:
@@ -5377,7 +5379,8 @@ def importFromPath (name,path,pluginName=None,verbose=False):
                     g.es_print("Exception in g.importFromPath",color='blue')
                     g.es_exception()
             except Exception:
-                g.es_print("unexpected exception in g.importFromPath",color='blue')
+                g.es_print("unexpected exception in g.importFromPath(%s)" %
+                    (name),color='blue')
                 g.es_exception()
         # Put no return statements before here!
         finally: 
