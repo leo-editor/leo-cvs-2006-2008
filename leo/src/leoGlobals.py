@@ -2488,6 +2488,8 @@ def plugin_signon(module_name,verbose=False):
     
     exec("import %s ; m = %s" % (module_name,module_name))
     
+    # print 'plugin_signon',module_name # ,'gui',g.app.gui
+    
     if verbose:
         g.es("...%s.py v%s: %s" % (
             m.__name__, m.__version__, g.plugin_date(m)))
