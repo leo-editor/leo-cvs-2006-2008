@@ -2626,7 +2626,7 @@ def get_window_info (top):
 #@-node:ekr.20070212144559.1:Removed references to Tk and  Pmw from Leo's core
 #@-node:ekr.20070212140907:What I did
 #@+node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)
-class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
+class leoTkTextWidget (Tk.Text):
     
     '''A class to wrap the Tk.Text widget.
     Translates Python (integer) indices to and from Tk (string) indices.
@@ -2644,7 +2644,7 @@ class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
 #@nonl
 #@+node:ekr.20070213170836:plainTextWidget.__init__
 if 0:
-    def __init__ (self,*args,**keys):
+    def __init__ (self,c,*args,**keys):
     
         w = self
         
@@ -2653,7 +2653,7 @@ if 0:
         
         # Init the base class.
         name = keys.get('name') or '<unknown plainTextWidget>'
-        baseTextWidget.__init__(self,
+        baseTextWidget.__init__(self,c=c,
             baseClassName='plainTextWidget',name=name,widget=self.widget)
     
         # self.defaultFont = font = wx.Font(pointSize=10,
@@ -3524,7 +3524,7 @@ def whatLine (self,event):
     k.keyboardQuit(event)
     k.setLabel("Line %s" % row)
 #@-node:ekr.20050920084036.84:whatLine
-#@+node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
+#@+node:ekr.20031218072017.4038:get/setYScrollPosition
 def getYScrollPosition (self):
     return self.bodyCtrl.getYScrollPosition()
     
@@ -3534,7 +3534,7 @@ def setYScrollPosition (self,scrollPosition):
     else:
         first = scrollPosition
     self.bodyCtrl.setYScrollPosition(first)
-#@-node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
+#@-node:ekr.20031218072017.4038:get/setYScrollPosition
 #@+node:ekr.20061017083312:selectEditor (tkBody)
 def selectEditor(self,w):
     
@@ -5156,59 +5156,6 @@ def insertToBufferFinisher (self,event,name):
         finally:
             c.endUpdate()
 #@-node:ekr.20050920084036.37:insertToBuffer
-#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
-# This is the only key handler for the body pane.
-def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-    
-    '''Update Leo after the body has been changed.'''
-    
-    body = self ; c = self.c
-    bodyCtrl = w = body.bodyCtrl
-    p = c.currentPosition()
-    insert = bodyCtrl.getInsertPoint()
-    ch = g.choose(insert==0,'',bodyCtrl.get('insert-1c'))
-    ch = g.toUnicode(ch,g.app.tkEncoding)
-    newText = w.getAllText() # Note: getAllText converts to unicode.
-    # g.trace('newText',repr(newText))
-    newSel = w.getSelectionRange()
-    if oldText is None: 
-        oldText = p.bodyString() ; changed = True
-    else:
-        changed = oldText != newText
-    # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
-    if not changed: return
-    c.undoer.setUndoTypingParams(p,undoType,
-        oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
-    p.v.setTnodeText(newText)
-    p.v.t.insertSpot = body.getInsertPoint()
-    << recolor the body >>
-    if not c.changed: c.setChanged(True)
-    self.updateEditors()
-    << redraw the screen if necessary >>
-#@+node:ekr.20051026083733.6:<< recolor the body >>
-body.colorizer.interrupt()
-c.frame.scanForTabWidth(p)
-body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
-self.forceFullRecolorFlag = False
-#@-node:ekr.20051026083733.6:<< recolor the body >>
-#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-c.beginUpdate()
-try:
-    redraw_flag = False
-    # Update dirty bits.
-    # p.setDirty() sets all cloned and @file dirty bits.
-    if not p.isDirty() and p.setDirty():
-        redraw_flag = True
-        
-    # Update icons. p.v.iconVal may not exist during unit tests.
-    val = p.computeIcon()
-    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-        p.v.iconVal = val
-        redraw_flag = True
-finally:
-    c.endUpdate(redraw_flag)
-#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
 #@+node:ekr.20050920084036.39:prependToBuffer
 def prependToBuffer (self,event):
     

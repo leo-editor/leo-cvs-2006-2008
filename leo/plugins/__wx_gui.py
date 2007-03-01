@@ -2211,7 +2211,7 @@ class stcWidget (baseTextWidget):
     def _getInsertPoint(self):          return self.widget.GetCurrentPos()
     def _getLastPosition(self):         return self.widget.GetLength()
     def _getSelectedText(self):         return self.widget.GetSelectedText()
-    def _getYScrollPosition(self):      return 0,0
+    def _getYScrollPosition(self):      return 0,0 # Could also return None.
     def _getSelectionRange(self):       return self.widget.GetSelection()
     def _hitTest(self,pos):             return self.widget.HitTest(pos)
     def _insertText(self,i,s):          return self.widget.InsertText(i,s)
