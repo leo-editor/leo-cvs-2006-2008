@@ -2740,21 +2740,16 @@ class nullColorizer (colorizer):
         self.enabled = False
     #@-node:ekr.20031218072017.2219:__init__
     #@+node:ekr.20031218072017.2220:entry points
-    def colorize(self,p,incremental=False,interruptable=True): pass
+    def colorize(self,p,incremental=False,interruptable=True):
+        return 'ok' # Used by unit tests.
     
-    def disable(self): pass
-        
-    def enable(self): pass
-        
-    # def idle_colorize(self): pass
-            
+    def disable(self):                          pass
+    def enable(self):                           pass
+    # def idle_colorize(self):                  pass
     def recolor_range(self,p,leading,trailing): pass
-    
-    def scanColorDirectives(self,p): pass
-        
-    def schedule(self,p,incremental=0): pass
-    
-    def updateSyntaxColorer (self,p): pass
+    def scanColorDirectives(self,p):            pass
+    def schedule(self,p,incremental=0):         pass
+    def updateSyntaxColorer (self,p):           pass
     #@-node:ekr.20031218072017.2220:entry points
     #@-others
 #@-node:ekr.20031218072017.2218:class nullColorizer

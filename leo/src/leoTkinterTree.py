@@ -2375,7 +2375,7 @@ class leoTkinterTree (leoFrame.leoTree):
             g.es_exception()
     #@-node:ekr.20040803072955.141:setUnselectedHeadlineColors
     #@-node:ekr.20040803072955.134:tree.set...LabelState
-    #@+node:ekr.20060207101443:tree.setHeadline (new in 4.4b2)
+    #@+node:ekr.20060207101443:tree.setHeadline (tkTree)
     def setHeadline (self,p,s):
         
         '''Set the actual text of the headline widget.
@@ -2393,7 +2393,7 @@ class leoTkinterTree (leoFrame.leoTree):
             # g.trace(repr(s),w.getAllText())
         else:
             g.trace('-'*20,'oops')
-    #@-node:ekr.20060207101443:tree.setHeadline (new in 4.4b2)
+    #@-node:ekr.20060207101443:tree.setHeadline (tkTree)
     #@-node:ekr.20040803072955.125:Selecting & editing... (tkTree)
     #@-others
 #@-node:ekr.20040803072955:@thin leoTkinterTree.py

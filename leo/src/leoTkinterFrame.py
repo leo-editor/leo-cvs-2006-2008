@@ -2635,61 +2635,6 @@ class leoTkinterBody (leoFrame.leoBody):
     
         # g.trace("BODY",body.cget("font"),font.cget("family"),font.cget("weight"))
     #@-node:ekr.20031218072017.2183:tkBody.setFontFromConfig
-    #@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
-    # This is the only key handler for the body pane.
-    def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-        
-        '''Update Leo after the body has been changed.'''
-        
-        body = self ; c = self.c
-        bodyCtrl = w = body.bodyCtrl
-        p = c.currentPosition()
-        insert = bodyCtrl.getInsertPoint()
-        ch = g.choose(insert==0,'',bodyCtrl.get('insert-1c'))
-        ch = g.toUnicode(ch,g.app.tkEncoding)
-        newText = w.getAllText() # Note: getAllText converts to unicode.
-        # g.trace('newText',repr(newText))
-        newSel = w.getSelectionRange()
-        if oldText is None: 
-            oldText = p.bodyString() ; changed = True
-        else:
-            changed = oldText != newText
-        # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
-        if not changed: return
-        c.undoer.setUndoTypingParams(p,undoType,
-            oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
-        p.v.setTnodeText(newText)
-        p.v.t.insertSpot = body.getInsertPoint()
-        #@    << recolor the body >>
-        #@+node:ekr.20051026083733.6:<< recolor the body >>
-        body.colorizer.interrupt()
-        c.frame.scanForTabWidth(p)
-        body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
-        self.forceFullRecolorFlag = False
-        #@-node:ekr.20051026083733.6:<< recolor the body >>
-        #@nl
-        if not c.changed: c.setChanged(True)
-        self.updateEditors()
-        #@    << redraw the screen if necessary >>
-        #@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-        c.beginUpdate()
-        try:
-            redraw_flag = False
-            # Update dirty bits.
-            # p.setDirty() sets all cloned and @file dirty bits.
-            if not p.isDirty() and p.setDirty():
-                redraw_flag = True
-                
-            # Update icons. p.v.iconVal may not exist during unit tests.
-            val = p.computeIcon()
-            if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-                p.v.iconVal = val
-                redraw_flag = True
-        finally:
-            c.endUpdate(redraw_flag)
-        #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-        #@nl
-    #@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
     #@+node:ekr.20031218072017.4003:Focus (tkBody)
     def hasFocus (self):
         
@@ -2759,6 +2704,25 @@ class leoTkinterBody (leoFrame.leoBody):
         
         return self.bodyCtrl.bind(*args,**keys)
     #@-node:ekr.20031218072017.4017:Menus
+    #@+node:ekr.20070228081242:Text (now in base class)
+    # def getAllText (self):              return self.bodyCtrl.getAllText()
+    # def getInsertPoint(self):           return self.bodyCtrl.getInsertPoint()
+    # def getSelectedText (self):         return self.bodyCtrl.getSelectedText()
+    # def getSelectionRange (self,sort=True): return self.bodyCtrl.getSelectionRange(sort)
+    # def hasTextSelection (self):        return self.bodyCtrl.hasSelection()
+    # # def scrollDown (self):            g.app.gui.yscroll(self.bodyCtrl,1,'units')
+    # # def scrollUp (self):              g.app.gui.yscroll(self.bodyCtrl,-1,'units')
+    # def see (self,index):               self.bodyCtrl.see(index)
+    # def seeInsertPoint (self):          self.bodyCtrl.seeInsertPoint()
+    # def selectAllText (self,event=None):
+        # w = g.app.gui.eventWidget(event) or self.bodyCtrl
+        # return w.selectAllText()
+    # def setInsertPoint (self,pos):      return self.bodyCtrl.getInsertPoint(pos)
+    # def setSelectionRange (self,sel):
+        # i,j = sel
+        # self.bodyCtrl.setSelectionRange(i,j)
+    #@nonl
+    #@-node:ekr.20070228081242:Text (now in base class)
     #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
     #@-others
 #@-node:ekr.20031218072017.3996:class leoTkinterBody
@@ -3638,7 +3602,7 @@ class leoTkinterLog (leoFrame.leoLog):
     #@-others
 #@-node:ekr.20031218072017.4039:class leoTkinterLog
 #@+node:ekr.20061113151148.1:class leoTkTextWidget (Tk.Text)
-class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
+class leoTkTextWidget (Tk.Text):
     
     '''A class to wrap the Tk.Text widget.
     Translates Python (integer) indices to and from Tk (string) indices.
@@ -3655,7 +3619,7 @@ class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
     #@    @+others
     #@+node:ekr.20070213170836:plainTextWidget.__init__
     if 0:
-        def __init__ (self,*args,**keys):
+        def __init__ (self,c,*args,**keys):
         
             w = self
             
@@ -3664,7 +3628,7 @@ class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
             
             # Init the base class.
             name = keys.get('name') or '<unknown plainTextWidget>'
-            baseTextWidget.__init__(self,
+            baseTextWidget.__init__(self,c=c,
                 baseClassName='plainTextWidget',name=name,widget=self.widget)
         
             # self.defaultFont = font = wx.Font(pointSize=10,

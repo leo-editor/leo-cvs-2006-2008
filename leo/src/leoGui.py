@@ -106,6 +106,7 @@ class leoGui:
         'guiName',
         'oops',
         'setScript',
+        'widget_name',
     )
     #@nonl
     #@-node:ekr.20061109211054:leoGui.mustBeDefinedOnlyInBaseClass
@@ -151,18 +152,9 @@ class leoGui:
         'set_focus',
         #'setIdleTimeHook',             # optional       
         #'setIdleTimeHookAfterDelay',   # optional
-        'widget_name',
     )
     #@-node:ekr.20061109211022:leoGui.mustBeDefinedInSubclasses
     #@-node:ekr.20031218072017.3721:app.gui Birth & death
-    #@+node:ekr.20031218072017.3741:oops
-    def oops (self):
-        
-        # It is not usually an error to call methods of this class.
-        # However, this message is useful when writing gui plugins.
-        if 1:
-            print "leoGui oops", g.callers(), "should be overridden in subclass"
-    #@-node:ekr.20031218072017.3741:oops
     #@+node:ekr.20061109212618.1:Must be defined only in base class
     #@+node:ekr.20031218072017.3740:guiName
     def guiName(self):
@@ -334,7 +326,7 @@ class leoGui:
     #@+node:ekr.20061031132907:Events (leoGui)
     def event_generate(self,w,kind,*args,**keys):
         '''Generate an event.'''
-        pass
+        return w.event_generate(kind,*args,**keys)
     
     def eventChar (self,event,c=None):
         '''Return the char field of an event.'''
@@ -401,19 +393,100 @@ class leoGui:
      
         self.oops()
     #@-node:ekr.20070212070820:makeScriptButton
-    #@+node:ekr.20061111165041:widget_name
-    def widget_name (self,w):
-        
-        return self.oops()
-    #@-node:ekr.20061111165041:widget_name
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@-node:ekr.20061109212618:Must be defined in subclasses
+    #@+node:ekr.20070228154059:May be defined in subclasses
+    #@+node:ekr.20031218072017.3744:dialogs (unitTestGui)
+    def runAboutLeoDialog(self,c,version,theCopyright,url,email):
+        return self.simulateDialog("aboutLeoDialog")
+        
+    def runAskLeoIDDialog(self):
+        return self.simulateDialog("leoIDDialog")
+    
+    def runAskOkDialog(self,c,title,message=None,text="Ok"):
+        return self.simulateDialog("okDialog","Ok")
+    
+    def runAskOkCancelNumberDialog(self,c,title,message):
+        return self.simulateDialog("numberDialog",-1)
+        
+    def runAskOkCancelStringDialog(self,c,title,message):
+        return self.simulateDialog("stringDialog",'')
+        
+    def runCompareDialog(self,c):
+        return self.simulateDialog("compareDialog",'')
+        
+    def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
+        return self.simulateDialog("openFileDialog")
+    
+    def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
+        return self.simulateDialog("saveFileDialog")
+    
+    def runAskYesNoDialog(self,c,title,message=None):
+        return self.simulateDialog("yesNoDialog","no")
+    
+    def runAskYesNoCancelDialog(self,c,title,
+        message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
+        return self.simulateDialog("yesNoCancelDialog","cancel")
+    #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20070219084912:finishCreate (may be overridden in subclasses)
     def finishCreate (self):
         
         pass
     #@nonl
     #@-node:ekr.20070219084912:finishCreate (may be overridden in subclasses)
+    #@+node:ekr.20031218072017.3741:oops
+    def oops (self):
+        
+        # It is not usually an error to call methods of this class.
+        # However, this message is useful when writing gui plugins.
+        if 1:
+            print "leoGui oops", g.callers(), "should be overridden in subclass"
+    #@-node:ekr.20031218072017.3741:oops
+    #@+node:ekr.20031218072017.3747:simulateDialog
+    def simulateDialog (self,key,defaultVal=None):
+        
+        val = self.dict.get(key,defaultVal)
+    
+        if self.trace:
+            print key, val
+    
+        return val
+    #@-node:ekr.20031218072017.3747:simulateDialog
+    #@+node:ekr.20051206103652:widget_name (leoGui)
+    def widget_name (self,w):
+        
+        # First try the widget's getName method.
+        if hasattr(w,'getName'):
+            return w.getName()
+        elif hasattr(w,'_name'):
+            return w._name
+        else:
+            return repr(w)
+    #@-node:ekr.20051206103652:widget_name (leoGui)
+    #@+node:ekr.20070228160107:class leoKeyEvent (leoGui)
+    class leoKeyEvent:
+        
+        '''A gui-independent wrapper for gui events.'''
+        
+        def __init__ (self,event,c):
+            
+            # g.trace('leoKeyEvent(leoGui)')
+            self.actualEvent = event
+            self.c      = c # Required to access c.k tables.
+            self.char   = hasattr(event,'char') and event.char or ''
+            self.keysym = hasattr(event,'keysym') and event.keysym or ''
+            self.w      = hasattr(event,'widget') and event.widget or None
+            self.x      = hasattr(event,'x') and event.x or 0
+            self.y      = hasattr(event,'y') and event.y or 0
+            
+            if self.keysym and c.k:
+                # Translate keysyms for ascii characters to the character itself.
+                self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
+            
+            self.widget = self.w
+    #@nonl
+    #@-node:ekr.20070228160107:class leoKeyEvent (leoGui)
+    #@-node:ekr.20070228154059:May be defined in subclasses
     #@-others
 #@-node:ekr.20031218072017.3720:class leoGui
 #@+node:ekr.20031218072017.2223:class nullGui (leoGui)
@@ -430,6 +503,8 @@ class nullGui(leoGui):
         
         leoGui.__init__ (self,guiName) # init the base class.
         
+        self.clipboardContents = ''
+        self.focusWidget = None
         self.script = None
         self.lastFrame = None
         self.isNullGui = True
@@ -491,6 +566,13 @@ class nullGui(leoGui):
         # Getting here will terminate Leo.
     #@-node:ekr.20031218072017.2229:runMainLoop
     #@-node:ekr.20031218072017.2224:Birth & death
+    #@+node:ekr.20070228155807:isTextWidget
+    def isTextWidget (self,w):
+        
+        '''Return True if w is a Text widget suitable for text-oriented commands.'''
+        
+        return w and isinstance(w,leoFrame.baseTextWidget)
+    #@-node:ekr.20070228155807:isTextWidget
     #@+node:ekr.20070123093822:set_focus
     def set_focus(self,c,w):
         
@@ -511,6 +593,25 @@ class nullGui(leoGui):
         if 1:
             g.trace("nullGui",g.callers())
     #@-node:ekr.20031218072017.2230:oops
+    #@+node:ekr.20070228104406:Clipboard (nullGui)
+    def replaceClipboardWith (self,s):
+    
+        self.clipboardContents = s
+        
+    def getTextFromClipboard (self):
+        
+        return self.clipboardContents
+    #@nonl
+    #@-node:ekr.20070228104406:Clipboard (nullGui)
+    #@+node:ekr.20070228200919:Focus
+    def get_focus(self,frame):
+        """Return the widget that has focus, or the body widget if None."""
+        return self.focusWidget or frame.body.bodyCtrl
+            
+    def set_focus(self,commander,widget):
+        """Set the focus of the widget in the given commander if it needs to be changed."""
+        self.focusWidget = widget
+    #@-node:ekr.20070228200919:Focus
     #@-others
 #@-node:ekr.20031218072017.2223:class nullGui (leoGui)
 #@+node:ekr.20031218072017.3742:class unitTestGui (leoGui)
@@ -543,38 +644,6 @@ class unitTestGui(leoGui):
         
         g.app.gui = self.oldGui
     #@-node:ekr.20031218072017.3743: test.gui.__init__& destroySelf
-    #@+node:ekr.20031218072017.3744:dialogs (unitTestGui)
-    def runAboutLeoDialog(self,c,version,theCopyright,url,email):
-        return self.simulateDialog("aboutLeoDialog")
-        
-    def runAskLeoIDDialog(self):
-        return self.simulateDialog("leoIDDialog")
-    
-    def runAskOkDialog(self,c,title,message=None,text="Ok"):
-        return self.simulateDialog("okDialog","Ok")
-    
-    def runAskOkCancelNumberDialog(self,c,title,message):
-        return self.simulateDialog("numberDialog",-1)
-        
-    def runAskOkCancelStringDialog(self,c,title,message):
-        return self.simulateDialog("stringDialog",'')
-        
-    def runCompareDialog(self,c):
-        return self.simulateDialog("compareDialog",'')
-        
-    def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
-        return self.simulateDialog("openFileDialog")
-    
-    def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
-        return self.simulateDialog("saveFileDialog")
-    
-    def runAskYesNoDialog(self,c,title,message=None):
-        return self.simulateDialog("yesNoDialog","no")
-    
-    def runAskYesNoCancelDialog(self,c,title,
-        message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
-        return self.simulateDialog("yesNoCancelDialog","cancel")
-    #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
     def get_focus (self,frame):     pass
     def set_focus (self,c,widget):  pass
@@ -587,21 +656,6 @@ class unitTestGui(leoGui):
         if 0: # Fail the unit test.
             assert 0,"call to undefined method in unitTestMethod class"
     #@-node:ekr.20031218072017.3746:oops
-    #@+node:ekr.20031218072017.3747:simulateDialog
-    def simulateDialog (self,key,defaultVal=None):
-        
-        val = self.dict.get(key,defaultVal)
-    
-        if self.trace:
-            print key, val
-    
-        return val
-    #@-node:ekr.20031218072017.3747:simulateDialog
-    #@+node:ekr.20070130094235:widget_name
-    def widget_name (self,w):
-        
-        return repr(w)
-    #@-node:ekr.20070130094235:widget_name
     #@-others
 #@-node:ekr.20031218072017.3742:class unitTestGui (leoGui)
 #@-others

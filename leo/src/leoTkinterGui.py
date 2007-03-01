@@ -715,17 +715,6 @@ class tkinterGui(leoGui.leoGui):
         #@-node:ekr.20060621164312.4:<< create press-buttonText-button command >>
         #@nl
     #@-node:ekr.20060621164312:makeScriptButton
-    #@+node:ekr.20051206103652:widget_name (tkGui)
-    def widget_name (self,w):
-        
-        # First try the widget's getName method.
-        if hasattr(w,'getName'):
-            return w.getName()
-        elif hasattr(w,'_name'):
-            return w._name
-        else:
-            return repr(w)
-    #@-node:ekr.20051206103652:widget_name (tkGui)
     #@-node:ekr.20031218072017.4059:tkGui utils
     #@+node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
     class leoKeyEvent:

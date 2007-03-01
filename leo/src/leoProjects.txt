@@ -2220,7 +2220,7 @@ def updateHead (self,event,w):
     ins = w.getInsertPoint()
     if i != j: ins = i
     
-    # g.trace('ch',repr(ch),g.callers())
+    # g.trace('w',w,'ch',repr(ch),g.callers())
 
     if ch == '\b':
         if i != j:  w.delete(i,j)
@@ -4400,7 +4400,7 @@ selectVnode = selectPosition
 def select (self,p,updateBeadList=True,scroll=True):
     
     '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
-    
+
     c = self.c ; frame = c.frame
     body = w = frame.bodyCtrl
     old_p = c.currentPosition()
@@ -4443,6 +4443,9 @@ def select (self,p,updateBeadList=True,scroll=True):
     return 'break' # Supresses unwanted selection.
 #@+node:ekr.20040803072955.129:<< unselect the old node >>
 # Remember the position of the scrollbar before making any changes.
+if not body: g.trace('no body!','c.frame',c.frame,g.callers())
+
+
 yview = body.getYScrollPosition()
 insertSpot = c.frame.body.getInsertPoint()
 
@@ -4756,7 +4759,7 @@ def updateBodyPane (self,head,middle,tail,undoType,oldSel,oldYview):
     c.recolor()
     return dirtyVnodeList
 #@-node:ekr.20031218072017.1838:updateBodyPane (handles changeNodeContents)
-#@+node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
+#@+node:ekr.20031218072017.4037:setSelectionAreas
 def setSelectionAreas (self,before,sel,after):
     
     """Replace the body text by before + sel + after and
@@ -4774,7 +4777,7 @@ def setSelectionAreas (self,before,sel,after):
     # g.trace(i,j,repr(sel))
     w.setSelectionRange(i,j,insert=j)
     return i,j
-#@-node:ekr.20031218072017.4037:setSelectionAreas (leoBody)
+#@-node:ekr.20031218072017.4037:setSelectionAreas
 #@+node:ekr.20031218072017.1829:getBodyLines
 def getBodyLines (self,expandSelection=False):
     
@@ -4806,7 +4809,7 @@ def getBodyLines (self,expandSelection=False):
     
     return head,lines,tail,oldSel,oldVview # string,list,string,tuple.
 #@-node:ekr.20031218072017.1829:getBodyLines
-#@+node:ekr.20031218072017.2377:getSelectionLines (leoBody)
+#@+node:ekr.20031218072017.2377:getSelectionLines
 def getSelectionLines (self):
     
     """Return before,sel,after where:
@@ -4838,8 +4841,8 @@ def getSelectionLines (self):
     
     # g.trace(i,j,'sel',repr(s[i:j]),'after',repr(after))
     return before,sel,after # 3 strings.
-#@-node:ekr.20031218072017.2377:getSelectionLines (leoBody)
-#@+node:ekr.20031218072017.4030:getInsertLines (passed)
+#@-node:ekr.20031218072017.2377:getSelectionLines
+#@+node:ekr.20031218072017.4030:getInsertLines
 def getInsertLines (self):
     
     """Return before,after where:
@@ -4863,7 +4866,7 @@ def getInsertLines (self):
     after  = g.toUnicode(after ,g.app.tkEncoding)
 
     return before,ins,after
-#@-node:ekr.20031218072017.4030:getInsertLines (passed)
+#@-node:ekr.20031218072017.4030:getInsertLines
 #@+node:ekr.20061127102233:Found: .getBodyLines
 #@+node:ekr.20050920084036.141:removeBlankLines
 def removeBlankLines (self,event):
@@ -5799,7 +5802,7 @@ def killLine (self,event):
 #@-node:ekr.20050920084036.178:kill, killLine
 #@-node:ekr.20061127170820:Fixed new bug in kill-line
 #@+node:ekr.20061127161813:Replacing selection not done properly in headline
-#@+node:ekr.20040803072955.90:head key handlers
+#@+node:ekr.20040803072955.90:head key handlers (leoTree)
 #@+node:ekr.20040803072955.91:onHeadChanged
 # Tricky code: do not change without careful thought and testing.
 
@@ -5895,7 +5898,7 @@ def updateHead (self,event,w):
     ins = w.getInsertPoint()
     if i != j: ins = i
     
-    # g.trace('ch',repr(ch),g.callers())
+    # g.trace('w',w,'ch',repr(ch),g.callers())
 
     if ch == '\b':
         if i != j:  w.delete(i,j)
@@ -5916,7 +5919,7 @@ def updateHead (self,event,w):
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
-#@-node:ekr.20040803072955.90:head key handlers
+#@-node:ekr.20040803072955.90:head key handlers (leoTree)
 #@-node:ekr.20061127161813:Replacing selection not done properly in headline
 #@+node:ekr.20061127150919:Fixed paragraph commands
 #@+node:ekr.20051218122116:moveToHelper
@@ -7425,7 +7428,7 @@ The problem was a special case in backwardDeleteCharacter.
 
 @color
 #@nonl
-#@+node:ekr.20040803072955.90:head key handlers
+#@+node:ekr.20040803072955.90:head key handlers (leoTree)
 #@+node:ekr.20040803072955.91:onHeadChanged
 # Tricky code: do not change without careful thought and testing.
 
@@ -7521,7 +7524,7 @@ def updateHead (self,event,w):
     ins = w.getInsertPoint()
     if i != j: ins = i
     
-    # g.trace('ch',repr(ch),g.callers())
+    # g.trace('w',w,'ch',repr(ch),g.callers())
 
     if ch == '\b':
         if i != j:  w.delete(i,j)
@@ -7542,7 +7545,7 @@ def updateHead (self,event,w):
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
-#@-node:ekr.20040803072955.90:head key handlers
+#@-node:ekr.20040803072955.90:head key handlers (leoTree)
 #@+node:ekr.20051026092433.1:backwardDeleteCharacter
 def backwardDeleteCharacter (self,event=None):
     
@@ -13581,7 +13584,7 @@ http://sourceforge.net/forum/message.php?msg_id=3985382
 #@-node:ekr.20061028211323:Added @bool show_full_tracebacks_in_scripts
 #@-node:ekr.20061030105954:Settings
 #@-node:ekr.20061029091751:Leo 4.4.3 alpha 1 projects
-#@+node:ekr.20070129082731:Leo 4.4.3 alpha 2 porjects
+#@+node:ekr.20070129082731:Leo 4.4.3 alpha 2 projects
 #@+node:ekr.20070129082731.1:Bugs
 #@+node:ekr.20070129081218:Fixed bugs in undo/redoNodeContents
 #@+node:ekr.20040305223522:c.setBodyString
@@ -14597,7 +14600,7 @@ def expandAllAncestors (self,p):
     return redraw_flag
 #@-node:ekr.20040803072955.143:tree.expandAllAncestors
 #@-node:ekr.20070221095637:Eliminating flash
-#@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 porjects
+#@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 projects
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt
