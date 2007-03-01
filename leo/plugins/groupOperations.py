@@ -39,124 +39,10 @@ Tkinter = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@nonl
 #@-node:mork.20041018131258.2:<< imports >>
 #@nl
-#@<< images >>
-#@+node:mork.20041021094915:<< images >>
-groupOps = r'''R0lGODlhZAAUAMZpAB8xvCAyvCEzvSIzvSM0vSM1vSQ2viU3viY3vig5vyk6vyo7vyo8vys8wCw9
-wC0+wDJDwjVFwztLxDxMxT1MxT5NxUBPxkJRx0NSx0RTx0VUx0dVyEhXyEpZyUtZyU1byk5cyk9d
-ylJgy1RhzFVizFVjzFdlzVhmzVpnzltozlxpzl5rz2Fu0GJu0GRw0GRx0WVy0WZy0Wh00ml10mp2
-0mt202t302x4021502561HaB1nqF15Ga3pKb3p2l4qCo46Sr5Keu5aux5qyz5q2056+157O66LS6
-6ba86bi+6rm+6rvB67zC673C677D7MLG7cLH7cPI7cnO78/T8dbZ89fa89nc9Nrd9Nve9Nzf9N3f
-9ebo+Ofp+Ojq+Onr+Ors+ezt+e3u+fT1/Pj5/fr6/fv7/vv8/vz9/v7+////////////////////
-/////////////////////////////////////////////////////////////////////////yH+
-FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAGQAFAAAB/6AaYKDhIWGh4iJiouMjY6PkJGSk5SV
-lpeYmZqbl0ogBRA8aJxQJQgHJE+caQAAnEUAOmJVD1GbSAApXl4pAEiYrauDFgBfha0fYDcMDDZg
-rK7B0CQGLVyDGABYglcAGtPVXF8yCQ0xVNAfSRcCET9pL60h0GnKzM7QHA4+aUYUBB5sISoAgAw0
-INCu9GLSJBc9aa2YLAFwYpAAAGYElQEwAJpEiihatUKQEAYKKwAICILoamHDFNCqACC5AIAUFDMS
-cQAwRdAKhK3QGABQZuOBh66glSEDoMCgC9oEYQGQQSnTAgTPEAoqpAMIlitdDS0K4GiwYENaIKjA
-I5GTAJ4iwEQhANSVCQBOXqYhAABl0lZOmABAMegIABVfuoQ8Ai3w4BE2tcjoQY+gzL8AxtC7m9fh
-WVc3dmSZqQhKCAIWdNRN84WGggU4wqThoWACyxMFWHghBIUaKlXQcOve4gJBgxy7g7kgIAFB1BoE
-SNBr/To20jRBIgzYQETY1qSOpHkf/0h8I/Pk06tfz769+/fw48ufT7++/fv48xMKBAA7'''
 
-bullseye=r'''R0lGODlhCgAKAKECAOcxcf/9/f///////ywAAAAACgAKAAACGpSBYIsRyMCTsMk36cR2084p1hc5
-0CIkilEAADs='''
-
-copy=r'''R0lGODlhCgAKAIABANupWv///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
-A6eYy62AhGbai+WjZ7rKRUsBADs='''
-
-clone=r'''R0lGODlhCgAKAIABADeHHv///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
-A6eYy62AhGbai+WjZ7rKRUsBADs='''
-
-move=r'''R0lGODlhCgAKAIABAB89vP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
-A6eYy62AhGbai+WjZ7rKRUsBADs='''
-
-move_Arrow=r'''R0lGODlhMgAUAIABAB89vP///ywAAAAAMgAUAAACToyPqcvtD6OctNqLs94WKOAZIPeMiRmg5KeK
-YRqC3ju3kfwec8rTPSyj4Ia7Ik/0ywmJwZgR2dRVcB/kMWgFXrArjK0rBIvH5LL5jD4UAAA7'''
-
-copy_Arrow=r'''R0lGODlhMgAUAIABANupWv///ywAAAAAMgAUAAACSYyPqcvtD6OctNqLs94WLAByUph4hik2IHoq
-6/mi7LTO9uHJ+FX3JLzT5Xi+GEwYnFFqH9IrwGxlnrQS5zdCYKeprvcLDovHlwIAOw=='''
-
-clone_Arrow=r'''R0lGODlhMgAUAIABADeHHv///ywAAAAAMgAUAAACTYyPqcvtD6OctNqLcwbcAC19iRh8JNh0yOl5
-KkfClrwq5nGXJcw+/FjL6URCCu+Y6wiTulYISYu6iE7a5IfSWLMYFXfzDYvH5LL5/CgAADs='''
-
-markSpot=r'''R0lGODlhZAAUAKECAOcxcf/9/f///////ywAAAAAZAAUAAACk5SPqcvtD6OctNqLs968+w+G4kiW
-JIACCHqwj5qkqdmhQeAKed7Aiq8BjmxE2M630ymFyhVyOdOxokMA7madLptGw3MB7HJb0hkTlMWl
-VeztytviwX/zp/D8Wa+57XHT/UbmZ0eG50GEpTboJfMnJshoFsdnZFiThUnTA6kZY6XYyUAV6ilH
-eoqaqrrK2ur6CitRAAA7'''
-
-markFor=r'''R0lGODlhZAAUAKU+AB8xvCEzvSM0vSM1vSQ2viU3vio7vz9OxUBPxk5dyk9dylBey1Ffy1Jgy1Nh
-zFRhzFVizF9sz2h00m971HF81HJ91XR/1XiD13mE13yH2H2H2ICK2YiR24+Y3ZCZ3pKb3pSc35Wd
-35eg4Jig4J2l4qOq46Wt5LW76bi+6rq/6sLH7cTJ7c7S8M/T8dTX8tXY8tbZ89ve9N3f9d/h9d/i
-9uDj9uLk9uTm9/T1/Pn5/fr6/fv8/vz9/v7+/////////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lN
-UAAsAAAAAGQAFAAABtJAn3BILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LD4CNAMNQBm2ghot8dh
-QGLn2ynWSjxRDwcDOCo+KxxrLAcGH0IAHgI+AD0ZKXtENQ0EDjWOjI59VAAwFj4XL2sIKDYBiiQ5
-jiIgRW5pDiU5JRCOq51Vjws4DT1pPCchI2sAdI4TFLBEAjo+OQOOyLpTaR4YHZwpADctAM94jxIu
-k0MNJjolD5zVnj4zADGcORUFGw8X7ZwyEeZCNBgMaJBJnLuDCBMqXMiwocOHECNKnEhxTBAAOw=='''
-
-operateOnMarked=r'''R0lGODlhZAAUAMZjAB8xvCEzvSIzvSM0vSM1vSQ2viU3viY3vio7vz5NxT9OxUBPxkFRxkJRx0NS
-x0RTx0VUx0ZVyEdWyEpZyU5cyk5dyk9dylBey1Ffy1Jgy1NhzFRhzFVizFdlzVxpzl9sz2Fu0GNv
-0Gh00m971HF81HJ91XJ+1XR/1XiD13mE13yH2H2H2ICK2YKM2oON2oiR24+Y3ZCZ3pKb3pSc35Wd
-35af4Jeg4Jig4J2l4p+n4qCo46Gp46Kp46Oq46Sr5KWt5K20566156+157W76bi+6rq/6rrA68LG
-7cLH7cTJ7c7S8M/T8dDT8dHV8dLW8tTX8tXY8tbZ89nc9Nve9N3f9d/h9d/i9uDj9uLk9uTm9+bo
-9/T1/Pj5/fn5/fr6/fv7/vv8/vz9/v7+////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////yH+
-FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAGQAFAAAB/6AY4KDhIWGh4iJiouMjY6PkJGSk5SV
-lpeYmZqbnJ2en4VBDQQNQKCQACuDKwCMrYuvi0ERTV5NEEKWsZUAFWBjYBa7iMOHxYcMToNMD2MA
-LAUVVlIVAxRHzjEDY0oKCDJjIAAJ1NbYglcZBRpXzikH4IQAL0hjSS+v3d+CANrOYiqKlLtmpYKB
-FscMDfgyyMs2AD644OAgAYDFhzi6jFlABEsAfmMqXhykoUeXHhycEZmyTV6UE2NQQHnF0SO/jM5s
-zAhpEcCADDm47EhYKNkgJxCcaeRCgAAXeb/CDKFx41Urpwq9jOlCwFkYZ4UAiLmwJYOYVlKpWv3l
-bASJMZ1YBQ1YSpQQkAhOvjiRUMSZjy45NHio0YVHCLBjigDIsgSAVseDCx8WlOGHlx4bEA9rFSMF
-DLCKGTtG/E/Ek8iGNejo4qOuXQYCIBjh56IABStaOhDYoAVxlxIGWGxAMWaCg9y7ewuygoFAhnZW
-w46pAmAK2N/Bh5NuReUDct4FA5hwrYj8qfOUzKNfz769+/fw48ufT7++/fv47wcCADs='''
-
-clearMarks=r'''R0lGODlhZAAUAMZoAB8xvCEzvSIzvSM0vSM1vSU3viY3vik6vyo7vy9AwTJDwjREwjVFwzZGwzlJ
-xD9OxUBPxkdWyEtZyU5cyk5dyk9dylBey1Jgy1RhzFdlzVxpzl5rz19sz2Ju0GNv0GZy0Wh00mt3
-02x402971HF81HJ91XR/1XiD13mE13yH2H2H2ICK2YGL2YKM2oiR24+Y3ZCZ3pKb3pSc35Wd35ae
-35af4Jeg4Jig4Jmh4Zuj4Z2l4qKp46Oq46at5Keu5a6157O66LW76be96bi+6rm+6rq/6sLG7cLH
-7cTJ7cbK7s7S8M/T8dDT8dTX8tXY8tbZ89fb89nc9Nve9N3f9d7g9d/h9eLk9uTm9+bo9+jq+Onr
-+O3v+vP0+/T1/PX2/Pb3/Pf4/fj5/fn5/fr6/fv7/vv8/vz9/v7+////////////////////////
-/////////////////////////////////////////////////////////////////////////yH+
-FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAGQAFAAAB/6AaIKDhIWGh4iJiouMjY6PkJGSk5SV
-lpeYmZqbnJ2en4RnOQ0FHltoAJQAKoMqqYuvoJI4H1phPiGoqhRlaGUVsYnBso8LWIWpURQDE0Zo
-Sg8IMYIAMAOEAC5HaEgur9DS1NaoZylFPw0GIl/EigJkyGgRAPTXEENWAdQ6YthPJmhOOHl1L9++
-fgBsyEBzAEqWCEDaJZLARBAYB7oIhBlkJsiMG68A9MJ2xkKXC2dSdfwYciSAESTQEIlBg0USiYiE
-SKDipQWrVBpqiNnhoQiAK0sAjNEVDwaKF7qMIlXKlByIJgyodOmAASciHgoKgOCiC0sGAhiwiClR
-YAWGEyxVB6WqAkCKrrVt31ZNNYVDjwQFNlTxSriw4cOIEytezLix48eQI0ueTPlQIAA7'''
-
-transferFrom = r'''R0lGODlhZAAUAMZUAB8xvCEzvSIzvSM0vSM1vSQ2viU3viY3vik6vyo7vy9AwTVFwzZGwzpKxD9O
-xUBPxkdWyE5cyk5dylFfy1Jgy1NhzFRhzFVizFdlzVpnzlxpzl5rz2Ju0GNv0GRx0Wx402561HJ9
-1XR/1XiD13mE14CK2YGL2YWP2ouU3JCZ3pKb3pWd35ae35af4Jig4J2l4qKp46Oq46Wt5Kat5K61
-57O66LW76bi+6rm+6rq/6r3C67/E7MLG7cbK7s7S8M/T8dfb89nc9Nve9N3f9d7g9d/h9d/i9uDj
-9uLk9uTm9+bo9+jq+PT1/Pb3/Pj5/fn5/fr6/fv8/vz9/v7+////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////yH+
-FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAGQAFAAAB/6AVIKDhIWGh4iJiouMjY6PkJGSk5SV
-lpeYmZqbnJ2en4QAoqIZliAOjaOioJYAmQBNqayvoSkDVD4OCSqCACQHvDQMBx9NHgANQRIDETxU
-ALahhdADRxQFFUfPIgMoHAQnvbOugwAvT1QPN0gBvTdCtwhASxA1z1QQo7fm6OWjvecqxHgS48Kz
-HUMA6BgiYFa5UFGoSLGxwgU5AFLu4VDBwkSPewScQJw2LeIAKFSeEHg2heU9hy/FUckBIMkPACgv
-UllAhAkHC/c0tHgCo0PMh9KoUJABJQZQnUdZkZP5JISBEhZGvHQ1Q4GBDUXuKcFAwIKSqFHJGZlA
-gII2qBhQYcqdS7eu3bt48+rdy7ev37+AAwvuFAgAOw=='''
-
-groupOpPI = Tkinter.PhotoImage( data = groupOps )
-bullseyePI = Tkinter.PhotoImage( data = bullseye )
-copyPI = Tkinter.PhotoImage( data = copy )
-clonePI = Tkinter.PhotoImage( data = clone )
-movePI = Tkinter.PhotoImage( data = move )
-move_arrowPI = Tkinter.PhotoImage( data = move_Arrow )
-copy_arrowPI = Tkinter.PhotoImage( data = copy_Arrow )
-clone_arrowPI = Tkinter.PhotoImage( data = clone_Arrow )
-markSpotPI = Tkinter.PhotoImage( data = markSpot )
-markForPI = Tkinter.PhotoImage( data = markFor )
-operateOnMarkedPI = Tkinter.PhotoImage( data = operateOnMarked )
-clearMarksPI = Tkinter.PhotoImage( data = clearMarks )
-transferFromPI = Tkinter.PhotoImage( data = transferFrom )
-#@nonl
-#@-node:mork.20041021094915:<< images >>
-#@nl
-
-# globals
 lassoers = {}
 
-__version__ = ".6"
+__version__ = ".7"
 #@<<version history>>
 #@+node:mork.20041021120027:<<version history>>
 #@@killcolor
@@ -182,6 +68,8 @@ __version__ = ".6"
 # - Major cleanup of code.
 # - Added support for minibuffer commands.
 # .6 EKR: Fixed a crasher introduced by 'the big reorg'.
+# .7 EKR: Defined images in initImages so there is no problem if the gui is 
+# not Tk.
 #@-at
 #@nonl
 #@-node:mork.20041021120027:<<version history>>
@@ -192,14 +80,139 @@ __version__ = ".6"
 #@+node:ekr.20050226114442:init
 def init ():
 
-    ok = Tkinter and sets
+    if not (Tkinter and sets): return False
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
+
     if ok:
         leoPlugins.registerHandler(('open2',"new"),addMenu)
         leoPlugins.registerHandler("after-redraw-outline",drawImages)
+        initImages()
         g.plugin_signon(__name__)
+
     return ok
 #@nonl
 #@-node:ekr.20050226114442:init
+#@+node:ekr.20070301091021:initImages
+def initImages ():
+    
+    #@    << define images >>
+    #@+node:ekr.20070301105150:<< define images >>
+    groupOps = r'''R0lGODlhZAAUAMZpAB8xvCAyvCEzvSIzvSM0vSM1vSQ2viU3viY3vig5vyk6vyo7vyo8vys8wCw9
+    wC0+wDJDwjVFwztLxDxMxT1MxT5NxUBPxkJRx0NSx0RTx0VUx0dVyEhXyEpZyUtZyU1byk5cyk9d
+    ylJgy1RhzFVizFVjzFdlzVhmzVpnzltozlxpzl5rz2Fu0GJu0GRw0GRx0WVy0WZy0Wh00ml10mp2
+    0mt202t302x4021502561HaB1nqF15Ga3pKb3p2l4qCo46Sr5Keu5aux5qyz5q2056+157O66LS6
+    6ba86bi+6rm+6rvB67zC673C677D7MLG7cLH7cPI7cnO78/T8dbZ89fa89nc9Nrd9Nve9Nzf9N3f
+    9ebo+Ofp+Ojq+Onr+Ors+ezt+e3u+fT1/Pj5/fr6/fv7/vv8/vz9/v7+////////////////////
+    /////////////////////////////////////////////////////////////////////////yH+
+    FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAGQAFAAAB/6AaYKDhIWGh4iJiouMjY6PkJGSk5SV
+    lpeYmZqbl0ogBRA8aJxQJQgHJE+caQAAnEUAOmJVD1GbSAApXl4pAEiYrauDFgBfha0fYDcMDDZg
+    rK7B0CQGLVyDGABYglcAGtPVXF8yCQ0xVNAfSRcCET9pL60h0GnKzM7QHA4+aUYUBB5sISoAgAw0
+    INCu9GLSJBc9aa2YLAFwYpAAAGYElQEwAJpEiihatUKQEAYKKwAICILoamHDFNCqACC5AIAUFDMS
+    cQAwRdAKhK3QGABQZuOBh66glSEDoMCgC9oEYQGQQSnTAgTPEAoqpAMIlitdDS0K4GiwYENaIKjA
+    I5GTAJ4iwEQhANSVCQBOXqYhAABl0lZOmABAMegIABVfuoQ8Ai3w4BE2tcjoQY+gzL8AxtC7m9fh
+    WVc3dmSZqQhKCAIWdNRN84WGggU4wqThoWACyxMFWHghBIUaKlXQcOve4gJBgxy7g7kgIAFB1BoE
+    SNBr/To20jRBIgzYQETY1qSOpHkf/0h8I/Pk06tfz769+/fw48ufT7++/fv48xMKBAA7'''
+    
+    bullseye=r'''R0lGODlhCgAKAKECAOcxcf/9/f///////ywAAAAACgAKAAACGpSBYIsRyMCTsMk36cR2084p1hc5
+    0CIkilEAADs='''
+    
+    copy=r'''R0lGODlhCgAKAIABANupWv///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
+    A6eYy62AhGbai+WjZ7rKRUsBADs='''
+    
+    clone=r'''R0lGODlhCgAKAIABADeHHv///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
+    A6eYy62AhGbai+WjZ7rKRUsBADs='''
+    
+    move=r'''R0lGODlhCgAKAIABAB89vP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
+    A6eYy62AhGbai+WjZ7rKRUsBADs='''
+    
+    move_Arrow=r'''R0lGODlhMgAUAIABAB89vP///ywAAAAAMgAUAAACToyPqcvtD6OctNqLs94WKOAZIPeMiRmg5KeK
+    YRqC3ju3kfwec8rTPSyj4Ia7Ik/0ywmJwZgR2dRVcB/kMWgFXrArjK0rBIvH5LL5jD4UAAA7'''
+    
+    copy_Arrow=r'''R0lGODlhMgAUAIABANupWv///ywAAAAAMgAUAAACSYyPqcvtD6OctNqLs94WLAByUph4hik2IHoq
+    6/mi7LTO9uHJ+FX3JLzT5Xi+GEwYnFFqH9IrwGxlnrQS5zdCYKeprvcLDovHlwIAOw=='''
+    
+    clone_Arrow=r'''R0lGODlhMgAUAIABADeHHv///ywAAAAAMgAUAAACTYyPqcvtD6OctNqLcwbcAC19iRh8JNh0yOl5
+    KkfClrwq5nGXJcw+/FjL6URCCu+Y6wiTulYISYu6iE7a5IfSWLMYFXfzDYvH5LL5/CgAADs='''
+    
+    markSpot=r'''R0lGODlhZAAUAKECAOcxcf/9/f///////ywAAAAAZAAUAAACk5SPqcvtD6OctNqLs968+w+G4kiW
+    JIACCHqwj5qkqdmhQeAKed7Aiq8BjmxE2M630ymFyhVyOdOxokMA7madLptGw3MB7HJb0hkTlMWl
+    VeztytviwX/zp/D8Wa+57XHT/UbmZ0eG50GEpTboJfMnJshoFsdnZFiThUnTA6kZY6XYyUAV6ilH
+    eoqaqrrK2ur6CitRAAA7'''
+    
+    markFor=r'''R0lGODlhZAAUAKU+AB8xvCEzvSM0vSM1vSQ2viU3vio7vz9OxUBPxk5dyk9dylBey1Ffy1Jgy1Nh
+    zFRhzFVizF9sz2h00m971HF81HJ91XR/1XiD13mE13yH2H2H2ICK2YiR24+Y3ZCZ3pKb3pSc35Wd
+    35eg4Jig4J2l4qOq46Wt5LW76bi+6rq/6sLH7cTJ7c7S8M/T8dTX8tXY8tbZ89ve9N3f9d/h9d/i
+    9uDj9uLk9uTm9/T1/Pn5/fr6/fv8/vz9/v7+/////////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lN
+    UAAsAAAAAGQAFAAABtJAn3BILBqPyKRyyWw6n9CodEqtWq/YrHbL7Xq/4LD4CNAMNQBm2ghot8dh
+    QGLn2ynWSjxRDwcDOCo+KxxrLAcGH0IAHgI+AD0ZKXtENQ0EDjWOjI59VAAwFj4XL2sIKDYBiiQ5
+    jiIgRW5pDiU5JRCOq51Vjws4DT1pPCchI2sAdI4TFLBEAjo+OQOOyLpTaR4YHZwpADctAM94jxIu
+    k0MNJjolD5zVnj4zADGcORUFGw8X7ZwyEeZCNBgMaJBJnLuDCBMqXMiwocOHECNKnEhxTBAAOw=='''
+    
+    operateOnMarked=r'''R0lGODlhZAAUAMZjAB8xvCEzvSIzvSM0vSM1vSQ2viU3viY3vio7vz5NxT9OxUBPxkFRxkJRx0NS
+    x0RTx0VUx0ZVyEdWyEpZyU5cyk5dyk9dylBey1Ffy1Jgy1NhzFRhzFVizFdlzVxpzl9sz2Fu0GNv
+    0Gh00m971HF81HJ91XJ+1XR/1XiD13mE13yH2H2H2ICK2YKM2oON2oiR24+Y3ZCZ3pKb3pSc35Wd
+    35af4Jeg4Jig4J2l4p+n4qCo46Gp46Kp46Oq46Sr5KWt5K20566156+157W76bi+6rq/6rrA68LG
+    7cLH7cTJ7c7S8M/T8dDT8dHV8dLW8tTX8tXY8tbZ89nc9Nve9N3f9d/h9d/i9uDj9uLk9uTm9+bo
+    9/T1/Pj5/fn5/fr6/fv7/vv8/vz9/v7+////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////yH+
+    FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAGQAFAAAB/6AY4KDhIWGh4iJiouMjY6PkJGSk5SV
+    lpeYmZqbnJ2en4VBDQQNQKCQACuDKwCMrYuvi0ERTV5NEEKWsZUAFWBjYBa7iMOHxYcMToNMD2MA
+    LAUVVlIVAxRHzjEDY0oKCDJjIAAJ1NbYglcZBRpXzikH4IQAL0hjSS+v3d+CANrOYiqKlLtmpYKB
+    FscMDfgyyMs2AD644OAgAYDFhzi6jFlABEsAfmMqXhykoUeXHhycEZmyTV6UE2NQQHnF0SO/jM5s
+    zAhpEcCADDm47EhYKNkgJxCcaeRCgAAXeb/CDKFx41Urpwq9jOlCwFkYZ4UAiLmwJYOYVlKpWv3l
+    bASJMZ1YBQ1YSpQQkAhOvjiRUMSZjy45NHio0YVHCLBjigDIsgSAVseDCx8WlOGHlx4bEA9rFSMF
+    DLCKGTtG/E/Ek8iGNejo4qOuXQYCIBjh56IABStaOhDYoAVxlxIGWGxAMWaCg9y7ewuygoFAhnZW
+    w46pAmAK2N/Bh5NuReUDct4FA5hwrYj8qfOUzKNfz769+/fw48ufT7++/fv47wcCADs='''
+    
+    clearMarks=r'''R0lGODlhZAAUAMZoAB8xvCEzvSIzvSM0vSM1vSU3viY3vik6vyo7vy9AwTJDwjREwjVFwzZGwzlJ
+    xD9OxUBPxkdWyEtZyU5cyk5dyk9dylBey1Jgy1RhzFdlzVxpzl5rz19sz2Ju0GNv0GZy0Wh00mt3
+    02x402971HF81HJ91XR/1XiD13mE13yH2H2H2ICK2YGL2YKM2oiR24+Y3ZCZ3pKb3pSc35Wd35ae
+    35af4Jeg4Jig4Jmh4Zuj4Z2l4qKp46Oq46at5Keu5a6157O66LW76be96bi+6rm+6rq/6sLG7cLH
+    7cTJ7cbK7s7S8M/T8dDT8dTX8tXY8tbZ89fb89nc9Nve9N3f9d7g9d/h9eLk9uTm9+bo9+jq+Onr
+    +O3v+vP0+/T1/PX2/Pb3/Pf4/fj5/fn5/fr6/fv7/vv8/vz9/v7+////////////////////////
+    /////////////////////////////////////////////////////////////////////////yH+
+    FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAGQAFAAAB/6AaIKDhIWGh4iJiouMjY6PkJGSk5SV
+    lpeYmZqbnJ2en4RnOQ0FHltoAJQAKoMqqYuvoJI4H1phPiGoqhRlaGUVsYnBso8LWIWpURQDE0Zo
+    Sg8IMYIAMAOEAC5HaEgur9DS1NaoZylFPw0GIl/EigJkyGgRAPTXEENWAdQ6YthPJmhOOHl1L9++
+    fgBsyEBzAEqWCEDaJZLARBAYB7oIhBlkJsiMG68A9MJ2xkKXC2dSdfwYciSAESTQEIlBg0USiYiE
+    SKDipQWrVBpqiNnhoQiAK0sAjNEVDwaKF7qMIlXKlByIJgyodOmAASciHgoKgOCiC0sGAhiwiClR
+    YAWGEyxVB6WqAkCKrrVt31ZNNYVDjwQFNlTxSriw4cOIEytezLix48eQI0ueTPlQIAA7'''
+    
+    transferFrom = r'''R0lGODlhZAAUAMZUAB8xvCEzvSIzvSM0vSM1vSQ2viU3viY3vik6vyo7vy9AwTVFwzZGwzpKxD9O
+    xUBPxkdWyE5cyk5dylFfy1Jgy1NhzFRhzFVizFdlzVpnzlxpzl5rz2Ju0GNv0GRx0Wx402561HJ9
+    1XR/1XiD13mE14CK2YGL2YWP2ouU3JCZ3pKb3pWd35ae35af4Jig4J2l4qKp46Oq46Wt5Kat5K61
+    57O66LW76bi+6rm+6rq/6r3C67/E7MLG7cbK7s7S8M/T8dfb89nc9Nve9N3f9d7g9d/h9d/i9uDj
+    9uLk9uTm9+bo9+jq+PT1/Pb3/Pj5/fn5/fr6/fv8/vz9/v7+////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////yH+
+    FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAGQAFAAAB/6AVIKDhIWGh4iJiouMjY6PkJGSk5SV
+    lpeYmZqbnJ2en4QAoqIZliAOjaOioJYAmQBNqayvoSkDVD4OCSqCACQHvDQMBx9NHgANQRIDETxU
+    ALahhdADRxQFFUfPIgMoHAQnvbOugwAvT1QPN0gBvTdCtwhASxA1z1QQo7fm6OWjvecqxHgS48Kz
+    HUMA6BgiYFa5UFGoSLGxwgU5AFLu4VDBwkSPewScQJw2LeIAKFSeEHg2heU9hy/FUckBIMkPACgv
+    UllAhAkHC/c0tHgCo0PMh9KoUJABJQZQnUdZkZP5JISBEhZGvHQ1Q4GBDUXuKcFAwIKSqFHJGZlA
+    gII2qBhQYcqdS7eu3bt48+rdy7ev37+AAwvuFAgAOw=='''
+    #@-node:ekr.20070301105150:<< define images >>
+    #@nl
+
+    global groupOpPI        ; groupOpPI = Tkinter.PhotoImage(data=groupOps)
+    global bullseyePI       ; bullseyePI = Tkinter.PhotoImage(data=bullseye)
+    global copyPI           ; copyPI = Tkinter.PhotoImage(data=copy)
+    global clonePI          ; clonePI = Tkinter.PhotoImage(data=clone)
+    global movePI           ; movePI = Tkinter.PhotoImage(data=move)
+    global move_arrowPI     ; move_arrowPI = Tkinter.PhotoImage(data=move_Arrow)
+    global copy_arrowPI     ; copy_arrowPI = Tkinter.PhotoImage(data=copy_Arrow)
+    global clone_arrowPI    ; clone_arrowPI = Tkinter.PhotoImage(data=clone_Arrow)
+    global markSpotPI       ; markSpotPI = Tkinter.PhotoImage(data=markSpot)
+    global markForPI        ; markForPI = Tkinter.PhotoImage(data=markFor)
+    global operateOnMarkedPI ; operateOnMarkedPI = Tkinter.PhotoImage(data=operateOnMarked)
+    global clearMarksPI     ; clearMarksPI = Tkinter.PhotoImage(data=clearMarks)
+    global transferFromPI   ; transferFromPI = Tkinter.PhotoImage(data=transferFrom)
+#@nonl
+#@-node:ekr.20070301091021:initImages
 #@+node:mork.20041018131258.34:drawImages
 def drawImages (tag,keywords):
     ''' draws a little yellow box on the node image to indicate selection'''

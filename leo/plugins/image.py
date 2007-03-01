@@ -41,7 +41,29 @@ except ImportError:
 
 __version__ = "1.3" # Set version for the plugin handler.
 
+import os
+
 #@+others
+#@+node:ekr.20070301085537:init
+def init ():
+    
+    if not (Tk and ImageTk): return False
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+        
+    ok = g.app.gui.guiName() == "tkinter"
+    
+    print 'image.init'
+    
+    if ok:
+        leoPlugins.registerHandler("select2", onSelect)
+        leoPlugins.registerHandler("unselect1", onUnselect)
+        g.plugin_signon(__name__)
+
+    return ok
+#@nonl
+#@-node:ekr.20070301085537:init
 #@+node:edream.110203113231.754:onSelect
 def onSelect (tag,keywords):
 
@@ -116,18 +138,5 @@ def onUnselect (tag,keywords):
 #@-node:edream.110203113231.756:onUnselect
 #@-others
 
-import os
-
-if Tk: # Ok for unit testing.
-
-    if g.app.gui is None:
-        g.app.createTkGui(__file__)
-
-    if g.app.gui.guiName() == "tkinter":
-        
-        leoPlugins.registerHandler("select2", onSelect)
-        leoPlugins.registerHandler("unselect1", onUnselect)
-        g.plugin_signon(__name__)
-#@nonl
 #@-node:edream.110203113231.753:@thin image.py
 #@-leo

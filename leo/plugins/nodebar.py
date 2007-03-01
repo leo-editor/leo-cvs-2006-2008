@@ -24,165 +24,37 @@ except Exception, x:
 #@nonl
 #@-node:ekr.20041030084334:<< imports >>
 #@nl
-#@<<images>>
-#@+node:mork.20041022160850:<<images>>
 
-nodeup = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhqM
-j6nL7QDcgVBS2u5dWqfeTWA4lqYnpeqqFgA7'''
-
-nodeupPI = Tk.PhotoImage( data = nodeup )
-
-nodedown = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhuM
-j6nL7Q2inLTaGW49Wqa+XBD1YE8GnOrKBgUAOw=='''
-
-nodedownPI = Tk.PhotoImage( data = nodedown )
-
-nodeleft = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiOM
-jwDIqd3Ug0dOam/MC3JdfR0jjuRHBWjKpUbmvlIsm65WAAA7'''
-
-nodeleftPI = Tk.PhotoImage( data = nodeleft )
-
-noderight = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiGM
-A3DLltrag/FMWi+WuiK9WWD4gdGYdenklUnrwqX8tQUAOw=='''
-
-noderightPI = Tk.PhotoImage( data = noderight )
-
-clone = r'''R0lGODlhEAAQAIABAP8AAP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhaM
-j6nL7Q8jBDRWG8DThjvqSeJIlkgBADs='''
-
-clonePI = Tk.PhotoImage( data = clone )
-
-
-copy = r'''R0lGODlhEAAQAMIEAAAAAI9pLOcxcaCclf///////////////ywAAAAAEAAQAAADLEi63P5vSLiC
-vYHiq6+wXSB8mQKcJ2GNLAssr0fCaOyB0IY/ekn9wKBwSEgAADs='''
-
-copyPI = Tk.PhotoImage( data = copy )
-
-cut = r'''R0lGODlhEAAQAKECAAAAAKCclf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
-EAAAAiaUDad7yS8cnDNYi4A0t7vNaCLTXR/ZZSBFrZMLbaIWzhLczCxTAAA7'''
-
-cutPI = Tk.PhotoImage( data = cut )
-
-
-paste = r'''R0lGODlhEAAQAKECAAAAAB89vP///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
-EAAAAiOUH3nLktHYm9HMV92FWfPugQcgjqVBnmm5dsD7gmsbwfEZFQA7'''
-
-pastePI = Tk.PhotoImage( data = paste )
-
-
-insert = r'''R0lGODlhEAAQAKECAAAAAB89vP///////ywAAAAAEAAQAAACKJRhqSvIDGJ8yjWa5MQ5BX4JwXdo
-3RiYRyeSjRqKmGZRVv3Q4M73VAEAOw=='''
-
-insertPI = Tk.PhotoImage( data = insert )
-
-demote = r'''R0lGODlhEAAQAKECACMj3ucxcf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
-EAAAAiiUj2nBrNniW+G4eSmulqssgAgoduYWeZ+kANPkCsBM1/abxLih70gBADs='''
-
-demotePI = Tk.PhotoImage( data = demote )
-
-promote = r'''R0lGODlhEAAQAKECACMj3ucxcf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
-EAAAAiWUj6kX7cvcgy1CUU1ecvJ+YUGIbKSJAAlqqGQLxPI8t29650YBADs='''
-
-promotePI = Tk.PhotoImage( data = promote )
-
-pasteclone = r'''R0lGODlhEAAQAKEDACMj3v8AAP/9/f///ywAAAAAEAAQAAACOJSPaTPgoxBzgEVDM4yZbtU91/R8
-ClkJzGqp7MK21rcG9tYedSCb7sDjwRLAGs7HsPF8khjzcigAADs='''
-
-pasteclonePI = Tk.PhotoImage( data = pasteclone )
-
-hoist = r'''R0lGODlhEAAQAKECAAAAAENMzf/9/f/9/SwAAAAAEAAQAAACI5SPaRCtypp7S9rw4sVwzwQYW4ZY
-JAWhqYqE7OG+QvzSrI0WADs='''
-
-hoistPI = Tk.PhotoImage( data = hoist )
-
-dehoist = r'''R0lGODlhEAAQAKECAAAAACMj3v/9/f/9/SH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
-EAAAAiOUj6lrwOteivLQKi4LXCcOegJIBmIZLminklbLISIzQ9hbAAA7'''
-
-dehoistPI = Tk.PhotoImage( data = dehoist )
-
-question = r'''R0lGODlhEAAQAIABAB89vP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiCM
-DwnHrNrcgzFQGuGrMnGEfdtnjKRJpt2SsuxZqqgaFQA7'''
-
-sortchildren = r'''R0lGODlhEAAQAKECAAAAAB89vP/9/f/9/SwAAAAAEAAQAAACJJSPKcGt2NwzbKpqYcg68oN9ITde
-UQCkKgCeCvutsDXPk/wlBQA7'''
-
-sortchildrenPI = Tk.PhotoImage( data = sortchildren )
-
-sortsiblings = r'''R0lGODlhEAAQAKECAAAAAB89vP/9/f/9/SH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
-EAAAAiWUFalxbatcS7IiZh3NE2L+fOAGXpknal4JlAIAw2Br0Fksu1YBADs='''
-
-sortsiblingsPI = Tk.PhotoImage( data = sortsiblings )
-
-questionPI = Tk.PhotoImage( data = question )
-
-delete = r'''R0lGODlhEAAQAMIEAAAAAB89vKCclbq3sv///////////////yH+FUNyZWF0ZWQgd2l0aCBUaGUg
-R0lNUAAsAAAAABAAEAAAAzJIutwKELoGVp02Xmy5294zDSSlBAupMleAEhoYuahaOq4yCPswvYQe
-LyT0eYpEW8iRAAA7'''
-
-deletePI = Tk.PhotoImage( data = delete )
-
-#@-node:mork.20041022160850:<<images>>
-#@nl
-#@<<images2>>
-#@+node:mork.20041023210407:<<images2>>
-moveup = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAh6M
-j6nL7QDcgVDWcFfGUW3zfVPHPZHoUeq6Su4LwwUAOw=='''
-
-moveupPI = Tk.PhotoImage( data = moveup )
-
-movedown = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAh+M
-j6nL7Q2inFS+EDFw2XT1eVsSHmGJdChpXesFx00BADs='''
-
-movedownPI = Tk.PhotoImage( data = movedown )
-
-moveleft = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiWM
-jwDIqd3egueFSe2lF2+oGV41fkwoZmNJJlxXvbDJSbKI1l4BADs='''
-
-moveleftPI = Tk.PhotoImage( data = moveleft )
-
-moveright = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiWM
-A3DLltqaSpFBWt3BFTovWeAyIiUinSNnkaf2Zagpo2x343IBADs='''
-
-moverightPI = Tk.PhotoImage( data = moveright )
-#@nonl
-#@-node:mork.20041023210407:<<images2>>
-#@nl
-__version__ = ".7"
+__version__ = ".8"
 #@<<version>>
 #@+node:mork.20041023091529:<<version>>
+#@@nocolor
 #@+at
 # 
 # .1 made initial icons
-# 
 # .15 eliminated most of the letter icons, made them node based icons.
-# 
 # .2 EKR:
 #     - Fixed hang when help dialog selected.
 #     - Write help string to status area on mouse over.
 #     - Added test for if g.app.gui.guiName() == "tkinter"
-# 
 # .25 added movement arrows.  These contrast with the move node arrows by 
 # being empty and on the other side of the nodebar.  A user may be able to do 
 # all the manipulations he needs of the outline at this point.  Note:  the bar 
 # is of such a size we may need to add some kind of scrolling mechanism.  Not 
 # sure if I like the hoist and dehoist icons yet. ????
-# 
 # --tried out scrollbar idea, what a terrible idea.  The user is just going to 
 # have to have a big enough screen to use it. :D
-# 
 # .3 Added balloon help.  Should help new users.  Added .config file machinery
-# 
-# .4 EKR:
-#     - Put load_ok code in root.  Added string.atoi = int
-# 
-# .5 EKR
-#     - Defined __version__
+# .4 EKR: Put load_ok code in root.  Added string.atoi = int
+# .5 EKR: Defined __version__
 # .6 EKR:
-#     - Changed 'new_c' logic to 'c' logic.
-#     - Added init function.
+# - Changed 'new_c' logic to 'c' logic.
+# - Added init function.
 # .7 EKR:
-#     - Removed 'start2' hook.
-#     - Removed haveseen dict.  It is no longer needed.
+# - Removed 'start2' hook.
+# - Removed haveseen dict.  It is no longer needed.
+# .8 EKR: Defined images in initImages so there is no problem if the gui is 
+# not Tk.
 #@-at
 #@nonl
 #@-node:mork.20041023091529:<<version>>
@@ -243,6 +115,7 @@ def init():
     ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
+        initImages()
         configureNodebar()
         leoPlugins.registerHandler(('open2',"new"),addNodeBar )
         g.plugin_signon(__name__)
@@ -250,6 +123,103 @@ def init():
     return ok
 #@nonl
 #@-node:ekr.20050311090939.5:init
+#@+node:ekr.20070301091637:initImages
+def initImages ():
+
+    #@    << define bitmaps >>
+    #@+node:ekr.20070301091637.1:<< define bitmaps >>
+    clone = r'''R0lGODlhEAAQAIABAP8AAP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhaM
+    j6nL7Q8jBDRWG8DThjvqSeJIlkgBADs='''
+    
+    copy = r'''R0lGODlhEAAQAMIEAAAAAI9pLOcxcaCclf///////////////ywAAAAAEAAQAAADLEi63P5vSLiC
+    vYHiq6+wXSB8mQKcJ2GNLAssr0fCaOyB0IY/ekn9wKBwSEgAADs='''
+    
+    cut = r'''R0lGODlhEAAQAKECAAAAAKCclf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
+    EAAAAiaUDad7yS8cnDNYi4A0t7vNaCLTXR/ZZSBFrZMLbaIWzhLczCxTAAA7'''
+    
+    dehoist = r'''R0lGODlhEAAQAKECAAAAACMj3v/9/f/9/SH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
+    EAAAAiOUj6lrwOteivLQKi4LXCcOegJIBmIZLminklbLISIzQ9hbAAA7'''
+    
+    delete = r'''R0lGODlhEAAQAMIEAAAAAB89vKCclbq3sv///////////////yH+FUNyZWF0ZWQgd2l0aCBUaGUg
+    R0lNUAAsAAAAABAAEAAAAzJIutwKELoGVp02Xmy5294zDSSlBAupMleAEhoYuahaOq4yCPswvYQe
+    LyT0eYpEW8iRAAA7'''
+    
+    demote = r'''R0lGODlhEAAQAKECACMj3ucxcf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
+    EAAAAiiUj2nBrNniW+G4eSmulqssgAgoduYWeZ+kANPkCsBM1/abxLih70gBADs='''
+    
+    insert = r'''R0lGODlhEAAQAKECAAAAAB89vP///////ywAAAAAEAAQAAACKJRhqSvIDGJ8yjWa5MQ5BX4JwXdo
+    3RiYRyeSjRqKmGZRVv3Q4M73VAEAOw=='''
+    
+    paste = r'''R0lGODlhEAAQAKECAAAAAB89vP///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
+    EAAAAiOUH3nLktHYm9HMV92FWfPugQcgjqVBnmm5dsD7gmsbwfEZFQA7'''
+    
+    promote = r'''R0lGODlhEAAQAKECACMj3ucxcf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
+    EAAAAiWUj6kX7cvcgy1CUU1ecvJ+YUGIbKSJAAlqqGQLxPI8t29650YBADs='''
+    
+    pasteclone = r'''R0lGODlhEAAQAKEDACMj3v8AAP/9/f///ywAAAAAEAAQAAACOJSPaTPgoxBzgEVDM4yZbtU91/R8
+    ClkJzGqp7MK21rcG9tYedSCb7sDjwRLAGs7HsPF8khjzcigAADs='''
+    
+    hoist = r'''R0lGODlhEAAQAKECAAAAAENMzf/9/f/9/SwAAAAAEAAQAAACI5SPaRCtypp7S9rw4sVwzwQYW4ZY
+    JAWhqYqE7OG+QvzSrI0WADs='''
+    
+    moveup = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAh6M
+    j6nL7QDcgVDWcFfGUW3zfVPHPZHoUeq6Su4LwwUAOw=='''
+    
+    movedown = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAh+M
+    j6nL7Q2inFS+EDFw2XT1eVsSHmGJdChpXesFx00BADs='''
+    
+    moveleft = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiWM
+    jwDIqd3egueFSe2lF2+oGV41fkwoZmNJJlxXvbDJSbKI1l4BADs='''
+    
+    moveright = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiWM
+    A3DLltqaSpFBWt3BFTovWeAyIiUinSNnkaf2Zagpo2x343IBADs='''
+    
+    nodeup = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhqM
+    j6nL7QDcgVBS2u5dWqfeTWA4lqYnpeqqFgA7'''
+    
+    nodedown = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhuM
+    j6nL7Q2inLTaGW49Wqa+XBD1YE8GnOrKBgUAOw=='''
+    
+    nodeleft = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiOM
+    jwDIqd3Ug0dOam/MC3JdfR0jjuRHBWjKpUbmvlIsm65WAAA7'''
+    
+    noderight = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiGM
+    A3DLltrag/FMWi+WuiK9WWD4gdGYdenklUnrwqX8tQUAOw=='''
+    
+    question = r'''R0lGODlhEAAQAIABAB89vP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiCM
+    DwnHrNrcgzFQGuGrMnGEfdtnjKRJpt2SsuxZqqgaFQA7'''
+    
+    sortchildren = r'''R0lGODlhEAAQAKECAAAAAB89vP/9/f/9/SwAAAAAEAAQAAACJJSPKcGt2NwzbKpqYcg68oN9ITde
+    UQCkKgCeCvutsDXPk/wlBQA7'''
+    
+    sortsiblings = r'''R0lGODlhEAAQAKECAAAAAB89vP/9/f/9/SH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
+    EAAAAiWUFalxbatcS7IiZh3NE2L+fOAGXpknal4JlAIAw2Br0Fksu1YBADs='''
+    #@-node:ekr.20070301091637.1:<< define bitmaps >>
+    #@nl
+
+    global clonePI ; clonePI = Tk.PhotoImage(data=clone)
+    global copyPI ; copyPI = Tk.PhotoImage(data=copy)
+    global cutPI ; cutPI = Tk.PhotoImage(data=cut)
+    global dehoistPI ; dehoistPI = Tk.PhotoImage(data=dehoist)
+    global deletePI ; deletePI = Tk.PhotoImage(data=delete)
+    global demotePI ; demotePI = Tk.PhotoImage(data=demote)
+    global hoistPI ; hoistPI = Tk.PhotoImage(data=hoist)
+    global insertPI ; insertPI = Tk.PhotoImage(data=insert)
+    global movedownPI ; movedownPI = Tk.PhotoImage(data=movedown)
+    global moveleftPI ; moveleftPI = Tk.PhotoImage(data=moveleft)
+    global moverightPI ; moverightPI = Tk.PhotoImage(data=moveright)
+    global moveupPI ; moveupPI = Tk.PhotoImage(data=moveup)
+    global nodedownPI ; nodedownPI = Tk.PhotoImage(data=nodedown)
+    global nodeleftPI ; nodeleftPI = Tk.PhotoImage(data=nodeleft)
+    global noderightPI ; noderightPI = Tk.PhotoImage(data=noderight)
+    global nodeupPI ; nodeupPI = Tk.PhotoImage(data=nodeup)
+    global pastePI ; pastePI = Tk.PhotoImage(data=paste)
+    global pasteclonePI ; pasteclonePI = Tk.PhotoImage(data=pasteclone)
+    global promotePI ; promotePI = Tk.PhotoImage(data=promote)
+    global questionPI ; questionPI = Tk.PhotoImage(data=question)
+    global sortchildrenPI ; sortchildrenPI = Tk.PhotoImage(data=sortchildren)
+    global sortsiblingsPI ; sortsiblingsPI = Tk.PhotoImage(data=sortsiblings)
+#@-node:ekr.20070301091637:initImages
 #@+node:mork.20041026090227:determineFrame
 def determineFrame( c ):
     '''Returns the area in Leo where the user wants the nodebar.  Default to are 1'''
