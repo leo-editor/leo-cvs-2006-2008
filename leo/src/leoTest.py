@@ -134,15 +134,18 @@ class generalTestCase(unittest.TestCase):
         c = self.c ; p = self.p.copy()
         script = g.getScript(c,p).strip()
         self.assert_(script)
-    
-        # Execute the script. Let unit test handle any errors!
         
         if define_g:
-            # Execute the test in an environment containing c, g & p.
-            exec script + '\n' in {'c':c,'g':g,'p':p}
+            d = {'c':c,'g':g,'p':p}
         else:
-            # Execute the test in a totally pristine environment.
-            exec script + '\n' in {}
+            d = {}
+    
+        # Execute the script. Let unit test handle any errors!
+        if 0: # debug
+            import pdb
+            pdb.run(script+'\n',d)
+        else:
+            exec script + '\n' in d
     #@nonl
     #@-node:ekr.20051104075904.10:runTest
     #@+node:ekr.20051104075904.11:shortDescription
