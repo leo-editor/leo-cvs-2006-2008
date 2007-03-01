@@ -49,21 +49,18 @@ import os
 #@nonl
 #@-node:mork.20041018091414.2:<< imports >>
 #@nl
-__version__ = ".106"
+__version__ = ".107"
 #@<< version history >>
 #@+node:ekr.20050226120947.1:<< version history >>
 #@@nocolor
 #@+at
 # 
-# .100 EKR:
-# - Added init functions.
+# .100 EKR: Added init functions.
 # .101 EKR:
 # - Removed 'start2' hook.
 # - Get c from keywords, not g.top().
-# .102 EKR:
-# - Added 'return True' to end of init function.
-# .103 EKR:
-# - Fixed crasher in addLanguageMenu.
+# .102 EKR: Added 'return True' to end of init function.
+# .103 EKR: Fixed crasher in addLanguageMenu.
 # .104 EKR:
 # - Define the fast-goto-node minibuffer command.
 # - Use the useKeyBinding constant to specify whether to use a key binding or 
@@ -77,9 +74,11 @@ __version__ = ".106"
 # - Use g.app.windowList to init windows.  This should be done dynamically.
 # - Removed langdict stuff, but left the disabled code as a guide in case
 #   somebody wants to implement langdict settings in leoSettings.leo.
-# .106 EKR:
-#     - Added from __future__ import generators to suppress warning in Python 
-# 2.2.
+# .106 EKR: Added from __future__ import generators to suppress warning in 
+# Python 2.2.
+# .107 EKR: Define smenu in init, **not** at the top level.
+# This was the plugin that caused a Tk window to appear, regardless of the 
+# gui.
 #@-at
 #@nonl
 #@-node:ekr.20050226120947.1:<< version history >>
@@ -88,19 +87,27 @@ __version__ = ".106"
 #@+others
 #@+node:ekr.20050226120947.2:init & helpers
 def init ():
+    
+    if Tkinter is None: return False
+    
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
 
-    calculateMenuSize()
-    leoPlugins.registerHandler(('open2','new'),registerPopupMenu)
-    g.plugin_signon(__name__)
+    ok = g.app.gui.guiName() == "tkinter"
     
-    if 0: # We now use leoSettings.leo to get all settings.
-        pth = os.path.split(g.app.loadDir)
-        lkpm = pth [0] + r"/plugins/fgn.fgn"
-    
-        if os.path.exists(lkpm):
-            loadLanguages(lkpm)
-    
-    return True
+    if ok:
+        global smenu
+        smenu = Tkinter.Menu(tearoff=0,activeforeground='blue',activebackground='white')
+        calculateMenuSize()
+        leoPlugins.registerHandler(('open2','new'),registerPopupMenu)
+        g.plugin_signon(__name__)
+        
+        if 0: # We now use leoSettings.leo to get all settings.
+            pth = os.path.split(g.app.loadDir)
+            lkpm = pth [0] + r"/plugins/fgn.fgn"
+            if os.path.exists(lkpm):
+                loadLanguages(lkpm)
+    return ok
 #@nonl
 #@+node:mork.20041018091414.20:calculateMenuSize
 def calculateMenuSize ():
@@ -167,11 +174,12 @@ if 0:
 #@-node:mork.20041018091414.21:loadLanguages (not used)
 #@-node:ekr.20050226120947.2:init & helpers
 #@+node:mork.20041018091414.3:disappear
-smenu = Tkinter.Menu(tearoff=0,activeforeground='blue',activebackground='white')
 maxmenu = 0
 menus = []
 
 def disappear (event,c):
+    
+    global smenu
     smenu.unpost()
     smenu.unbind_all("<Button-3>")
     c.frame.body.bodyCtrl.focus_set()
