@@ -760,7 +760,7 @@ class leoFind:
         if len(self.find_text) == 0:
             return None, None
     
-        p = self.p
+        p = self.p ; self.errors = 0
         while p:
             pos, newpos = self.search()
             # g.trace('pos',pos,'p',p.headString(),g.callers())
@@ -804,7 +804,7 @@ class leoFind:
         if pos == -1: return None,None
         #@    << fail if we are passed the wrap point >>
         #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
-        if self.wrapping and self.wrapPos and self.wrapPosition and p == self.wrapPosition:
+        if self.wrapping and self.wrapPos is not None and self.wrapPosition and p == self.wrapPosition:
         
             if self.reverse and pos < self.wrapPos:
                 # g.trace("wrap done")
@@ -836,8 +836,6 @@ class leoFind:
             pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
     
         return pos,newpos
-    #@+node:ekr.20061207172210:patternLen
-    #@-node:ekr.20061207172210:patternLen
     #@+node:ekr.20060526092203:regexHelper
     def regexHelper (self,s,i,j,pattern,backwards,nocase):
        
@@ -850,30 +848,36 @@ class leoFind:
             self.errors += 1 # Abort the search.
             return -1, -1
             
-        if backwards: # Scan to the last match.
-            last_mo = None
-            while 1:
+        if backwards: # Scan to the last match.  We must use search here.
+            last_mo = None ; i = 0
+            while i < len(s):
                 mo = re_obj.search(s,i,j)
-                if mo is None: break
-                i = mo.end()
-                last_mo = mo
-            self.match_obj = mo = last_mo
+                if not mo: break
+                i += 1 ; last_mo = mo
+            mo = last_mo
         else:
-            self.match_obj = mo = re_obj.search(s,i,j)
-            
-        if mo is None:
-            return -1, -1
-        else:
-            k  = mo.start()
-            k2 = mo.end()
-            if 0:
-                g.trace('i: %d, j: %d k: %d, k2: %d, s[k:k2]: %s, len(s): %d, s[-1]: %s,' % (
-                    i,j,k,k2,repr(s[k:k2]),len(s),repr(s[-1])))
-            # g.trace('groups',mo.groups())
-            if k == k2:
-                return -1, -1 # A non-empty pattern can match an empty string.  Move on!
+            mo = re_obj.search(s,i,j)
+    
+        if 0:
+            g.trace('i',i,'j',j,'s[i:j]',repr(s[i:j]),
+                'mo.start',mo and mo.start(),'mo.end',mo and mo.end())
+        
+        while mo and 0 <= i < len(s):
+            if mo.start() == mo.end():
+                if backwards:
+                    # Search backward using match instead of search.
+                    i -= 1
+                    while 0 <= i < len(s):
+                        mo = re_obj.match(s,i,j)
+                        if mo: break
+                        i -= 1
+                else:
+                    i += 1 ; mo = re_obj.search(s,i,j)
             else:
-                return k, k2
+                self.match_obj = mo
+                return mo.start(),mo.end()
+        self.match_obj = None
+        return -1,-1
     #@-node:ekr.20060526092203:regexHelper
     #@+node:ekr.20060526140744:backwardsHelper
     def backwardsHelper (self,s,i,j,pattern,nocase,word):
