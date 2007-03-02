@@ -621,7 +621,7 @@ class stringTextWidget (baseTextWidget):
     '''A class that represents text as a Python string.'''
     
     #@    @+others
-    #@+node:ekr.20070228074228.2:ctor 
+    #@+node:ekr.20070228074228.2:ctor
     def __init__ (self,c,name):
         
         # Init the base class
@@ -632,7 +632,7 @@ class stringTextWidget (baseTextWidget):
         self.sel = 0,0
         self.s = ''
         self.trace = False
-    #@-node:ekr.20070228074228.2:ctor 
+    #@-node:ekr.20070228074228.2:ctor
     #@+node:ekr.20070228074228.3:Overrides
     def _appendText(self,s):
         if self.trace: g.trace(self,'len(s)',len(s)) # 's',repr(s))
@@ -1616,8 +1616,7 @@ class leoLog:
     __pychecker__ = '--no-argsused' # base classes have many unused args.
     
     #@    @+others
-    #@+node:ekr.20070114071054:Birth
-    #@+node:ekr.20031218072017.3695:leoLog.__init__
+    #@+node:ekr.20031218072017.3695: ctor (leoLog)
     def __init__ (self,frame,parentFrame):
         
         self.frame = frame
@@ -1628,65 +1627,152 @@ class leoLog:
         self.enabled = True
         self.newlines = 0
         self.isNull = False
+        
+        # Official status variables.  Can be used by client code.
+        self.logCtrl = None # Set below. Same as self.textDict.get(self.tabName)
+        self.tabName = None # The name of the active tab.
+        self.tabFrame = None # Same as self.frameDict.get(self.tabName)
+        
+        self.frameDict = {}  # Keys are page names. Values are Tk.Frames.
+        self.logNumber = 0 # To create unique name fields for text widgets.
+        self.newTabCount = 0 # Number of new tabs created.
+        self.textDict = {}  # Keys are page names. Values are logCtrl's (text widgets).
     
-        # Note: self.logCtrl is None for nullLog's.
-        self.logCtrl = self.createControl(parentFrame)
-        self.setFontFromConfig()
-        self.setColorFromConfig()
-    #@-node:ekr.20031218072017.3695:leoLog.__init__
-    #@+node:ekr.20031218072017.3698:leoLog.createControl
-    def createControl (self,parentFrame):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3698:leoLog.createControl
-    #@+node:ekr.20070114070939.1:leoLog.finishCreate (may be overridden)
-    def finishCreate (self):
-        
-        pass
-    #@nonl
-    #@-node:ekr.20070114070939.1:leoLog.finishCreate (may be overridden)
-    #@-node:ekr.20070114071054:Birth
-    #@+node:ekr.20031218072017.3696:leoLog.configure
-    def configure (self,*args,**keys):
-        
-        __pychecker__ = '--no-argsused'
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3696:leoLog.configure
-    #@+node:ekr.20031218072017.3697:leoLog.configureBorder
-    def configureBorder(self,border):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3697:leoLog.configureBorder
-    #@+node:ekr.20031218072017.3699:leoLog.enable & disable
-    def enable (self,enabled=True):
-        
-        self.enabled = enabled
-        
-    def disable (self):
-        
-        self.enabled = False
-    #@-node:ekr.20031218072017.3699:leoLog.enable & disable
-    #@+node:ekr.20031218072017.3700:leoLog.oops
-    def oops (self):
-        
-        print "leoLog oops:", g.callers(), "should be overridden in subclass"
-    #@-node:ekr.20031218072017.3700:leoLog.oops
-    #@+node:ekr.20031218072017.3701:leoLog.setFontFromConfig & setColorFromConfig
-    def setFontFromConfig (self):
-        
-        self.oops()
-        
-    def setColorFromConfig (self):
-        
-        self.oops()
-    #@-node:ekr.20031218072017.3701:leoLog.setFontFromConfig & setColorFromConfig
-    #@+node:ekr.20031218072017.3702:leoLog.onActivateLog
+    
+    #@-node:ekr.20031218072017.3695: ctor (leoLog)
+    #@+node:ekr.20070302101344:Must be defined in the base class
     def onActivateLog (self,event=None):
     
         self.c.setLog()
-    #@-node:ekr.20031218072017.3702:leoLog.onActivateLog
-    #@+node:ekr.20031218072017.3703:leoLog.put & putnl
+    
+    def disable (self):
+        
+        self.enabled = False
+    
+    def enable (self,enabled=True):
+    
+        self.enabled = enabled
+        
+    #@-node:ekr.20070302101344:Must be defined in the base class
+    #@+node:ekr.20070302101023:May be overridden
+    def configure (self,*args,**keys):      pass
+    def configureBorder(self,border):       pass
+    def createControl (self,parentFrame):   pass
+    def finishCreate (self):                pass
+    def setColorFromConfig (self):          pass
+    def setFontFromConfig (self):           pass
+    #@+node:ekr.20070302094848.1:clearTab
+    def clearTab (self,tabName,wrap='none'):
+        
+        self.selectTab(tabName,wrap=wrap)
+        w = self.logCtrl
+        w and w.delete(0,'end')
+    #@-node:ekr.20070302094848.1:clearTab
+    #@+node:ekr.20070302094848.2:createTab
+    def createTab (self,tabName,createText=True,wrap='none'):
+        
+        # g.trace(tabName,wrap)
+        
+        c = self.c ; k = c.k
+    
+        if createText:
+            w = self.createTextWidget(tabFrame)
+            self.textDict [tabName] = w
+        else:
+            self.textDict [tabName] = None
+            self.frameDict [tabName] = tabName # tabFrame
+    #@-node:ekr.20070302094848.2:createTab
+    #@+node:ekr.20070302094848.4:cycleTabFocus
+    def cycleTabFocus (self,event=None,stop_w = None):
+    
+        '''Cycle keyboard focus between the tabs in the log pane.'''
+    
+        c = self.c ; d = self.frameDict # Keys are page names. Values are Tk.Frames.
+        w = d.get(self.tabName)
+        # g.trace(self.tabName,w)
+    
+        values = d.values()
+        if self.numberOfVisibleTabs() > 1:
+            i = i2 = values.index(w) + 1
+            if i == len(values): i = 0
+            tabName = d.keys()[i]
+            self.selectTab(tabName)
+            return 
+    #@nonl
+    #@-node:ekr.20070302094848.4:cycleTabFocus
+    #@+node:ekr.20070302094848.5:deleteTab
+    def deleteTab (self,tabName,force=False):
+    
+        if tabName == 'Log':
+            pass
+        elif tabName in ('Find','Spell') and not force:
+            self.selectTab('Log')
+        else:
+            for d in (self.textDict,self.frameDict):
+                if tabName in d.keys():
+                    del d[tabName]
+            self.tabName = None
+            self.selectTab('Log')
+    
+        self.c.invalidateFocus()
+        self.c.bodyWantsFocus()
+    #@-node:ekr.20070302094848.5:deleteTab
+    #@+node:ekr.20070302094848.6:hideTab
+    def hideTab (self,tabName):
+        
+        __pychecker__ = '--no-argsused' # tabName
+        
+        self.selectTab('Log')
+    #@-node:ekr.20070302094848.6:hideTab
+    #@+node:ekr.20070302094848.7:getSelectedTab
+    def getSelectedTab (self):
+        
+        return self.tabName
+    #@-node:ekr.20070302094848.7:getSelectedTab
+    #@+node:ekr.20070302094848.8:lower/raiseTab
+    def lowerTab (self,tabName):
+    
+        self.c.invalidateFocus()
+        self.c.bodyWantsFocus()
+    
+    def raiseTab (self,tabName):
+    
+        self.c.invalidateFocus()
+        self.c.bodyWantsFocus()
+    #@-node:ekr.20070302094848.8:lower/raiseTab
+    #@+node:ekr.20070302094848.9:numberOfVisibleTabs
+    def numberOfVisibleTabs (self):
+        
+        return len([val for val in self.frameDict.values() if val != None])
+    #@-node:ekr.20070302094848.9:numberOfVisibleTabs
+    #@+node:ekr.20070302094848.10:renameTab
+    def renameTab (self,oldName,newName):
+        pass
+    #@-node:ekr.20070302094848.10:renameTab
+    #@+node:ekr.20070302094848.11:selectTab
+    def selectTab (self,tabName,createText=True,wrap='none'):
+    
+        '''Create the tab if necessary and make it active.'''
+    
+        c = self.c
+        tabFrame = self.frameDict.get(tabName)
+        if not tabFrame:
+            self.createTab(tabName,createText=createText)
+    
+        # Update the status vars.
+        self.tabName = tabName
+        self.logCtrl = self.textDict.get(tabName)
+        self.tabFrame = self.frameDict.get(tabName)
+    
+        if 0:
+            # Absolutely do not do this here!
+            # It is a cause of the 'sticky focus' problem.
+            c.widgetWantsFocusNow(self.logCtrl)
+    
+        return tabFrame
+    #@-node:ekr.20070302094848.11:selectTab
+    #@-node:ekr.20070302101023:May be overridden
+    #@+node:ekr.20070302101304:Must be overridden
     # All output to the log stream eventually comes here.
     
     def put (self,s,color=None,tabName='Log'):
@@ -1694,7 +1780,12 @@ class leoLog:
     
     def putnl (self,tabName='Log'):
         self.oops()
-    #@-node:ekr.20031218072017.3703:leoLog.put & putnl
+    #@-node:ekr.20070302101304:Must be overridden
+    #@+node:ekr.20031218072017.3700:leoLog.oops
+    def oops (self):
+        
+        print "leoLog oops:", g.callers(), "should be overridden in subclass"
+    #@-node:ekr.20031218072017.3700:leoLog.oops
     #@-others
 #@-node:ekr.20031218072017.3694:class leoLog
 #@+node:ekr.20031218072017.3704:class leoTree
@@ -2505,7 +2596,7 @@ class nullIconBarClass:
         b = nullButtonWidget(self.c,command,name,text,name)
         return b
     #@-node:ekr.20070301164543.2:add
-    #@+node:ekr.20070301165343:do nothing 
+    #@+node:ekr.20070301165343:do nothing
     def clear(self):
         g.app.iconWidgetCount = 0
         g.app.iconImageRefs = []
@@ -2527,7 +2618,7 @@ class nullIconBarClass:
     
     hide = unpack
     show = pack
-    #@-node:ekr.20070301165343:do nothing 
+    #@-node:ekr.20070301165343:do nothing
     #@-others
 #@-node:ekr.20070301164543:class nullIconBarClass
 #@+node:ekr.20031218072017.2232:class nullLog
@@ -2536,19 +2627,39 @@ class nullLog (leoLog):
     __pychecker__ = '--no-argsused' # null classes have many unused args.
     
     #@    @+others
+    #@+node:ekr.20070302095500:Birth
     #@+node:ekr.20041012083237:nullLog.__init__
     def __init__ (self,frame=None,parentFrame=None):
             
         # Init the base class.
         leoLog.__init__(self,frame,parentFrame)
+    
         self.isNull = True
     #@nonl
     #@-node:ekr.20041012083237:nullLog.__init__
     #@+node:ekr.20041012083237.1:createControl
     def createControl (self,parentFrame):
-        
-        return None
+        pass
     #@-node:ekr.20041012083237.1:createControl
+    #@+node:ekr.20070302095121:createTextWidget
+    def createTextWidget (self,parentFrame=None):
+        
+        self.logNumber += 1
+        log = g.app.gui.plainTextWidget(
+            c = self.c,
+            name="log-%d" % self.logNumber,
+        )
+        
+        return log
+    #@-node:ekr.20070302095121:createTextWidget
+    #@+node:ekr.20041012083237.4:setColorFromConfig & setFontFromConfig
+    def setFontFromConfig (self):
+        pass
+        
+    def setColorFromConfig (self):
+        pass
+    #@-node:ekr.20041012083237.4:setColorFromConfig & setFontFromConfig
+    #@-node:ekr.20070302095500:Birth
     #@+node:ekr.20041012083237.2:oops
     def oops(self):
     
@@ -2580,13 +2691,6 @@ class nullLog (leoLog):
     def selectTab (self,tabName,createText=True,wrap='none'): pass
     def setTabBindings  (self,tabName):     pass
     #@-node:ekr.20060124085830:tabs
-    #@+node:ekr.20041012083237.4:setColorFromConfig & setFontFromConfig
-    def setFontFromConfig (self):
-        pass
-        
-    def setColorFromConfig (self):
-        pass
-    #@-node:ekr.20041012083237.4:setColorFromConfig & setFontFromConfig
     #@-others
 #@-node:ekr.20031218072017.2232:class nullLog
 #@+node:ekr.20031218072017.2233:class nullTree
