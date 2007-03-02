@@ -22,24 +22,26 @@
 # including all of Leo's source code, the contents of any .leo file, all
 # configuration settings in .leo files, etc.
 # 
-# Host programs will use the leoBridge module something like this::
+# Host programs will use the leoBridge module like this::
 #     import leoBridge
-#     bridge = leoBridge.controller(gui='nullGui')
+#     bridge = leoBridge.controller(gui='nullGui',verbose=False)
 #     if bridge.isOpen():
 #         g = bridge.globals()
-#         c = bridge.openLeoFile('test.leo')
+#         c = bridge.openLeoFile(path)
 # Notes:
-# - The leoBridge module imports no modules at all at the top level.
-# - leoBridge.controller creates a singleton *bridge controller* that grants 
-# access to Leo's objects, in particular the g and c objects.  These objects 
-# are fully initialized.  In particular, the g.app and g.app.gui vars are 
-# fully initialized.
 # 
-# - By default, leoBridge.controller creates a null gui: no Leo windows ever 
+# - The leoBridge module imports no modules at the top level.
+# 
+# - leoBridge.controller creates a singleton *bridge controller* that grants
+# access to Leo's objects, including fully initialized g and c objects. In
+# particular, the g.app and g.app.gui vars are fully initialized.
+# 
+# - By default, leoBridge.controller creates a null gui so that no Leo windows
 # appear on the screen.
 # 
-# - The host program will not import leoGlobals directly, but will instead 
-# gain access to Leo's leoGlobals using bridge.globals().
+# - As shown above, the host program should gain access to Leo's leoGlobals 
+# module using bridge.globals(). The host program should not import leoGlobals 
+# directly.
 # 
 # - bridge.openLeoFile(path) returns a completely standard Leo commander.  
 # Host programs can use these commanders as described in Leo's scripting 
@@ -143,12 +145,32 @@ class bridgeController:
         g.app.config.readSettingsFiles(None,verbose=True)
         self.createGui() # Create the gui *before* loading plugins.
         if self.verbose: self.reportDirectories()
+        self.adjustSysPath()
         g.doHook("start1") # Load plugins.
         g.init_sherlock(args=[])
         g.app.initing = False
         g.doHook("start2",c=None,p=None,v=None,fileName=None)
         
     #@nonl
+    #@+node:ekr.20070302061713:adjustSysPath
+    def adjustSysPath (self):
+        
+        '''Adjust sys.path to enable imports as usual with Leo.'''
+        
+        import sys
+        
+        g = self.g
+        
+        #g.trace('loadDir',g.app.loadDir)
+        
+        leoDirs = ('config','doc','extensions','modes','plugins','src','test')
+        
+        for theDir in leoDirs:
+            path = g.os_path_abspath(
+                g.os_path_join(g.app.loadDir,'..',theDir))
+            if path not in sys.path:
+                sys.path.append(path)
+    #@-node:ekr.20070302061713:adjustSysPath
     #@+node:ekr.20070227095743:createGui
     def createGui (self):
         
