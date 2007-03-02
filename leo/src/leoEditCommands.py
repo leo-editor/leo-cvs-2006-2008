@@ -2631,7 +2631,7 @@ class editCommandsClass (baseEditCommandsClass):
         # Update the text and handle undo.
         newText = w.getAllText()
         changed = newText != oldText
-        # g.trace(changed)
+        # g.trace('ch',repr(ch),'changed',changed,'newText',repr(newText[-10:]))
         if changed:
             c.frame.body.onBodyChanged(undoType=undoType,
                 oldSel=oldSel,oldText=oldText,oldYview=None)
@@ -2752,13 +2752,16 @@ class editCommandsClass (baseEditCommandsClass):
         i = g.skip_to_start_of_line(s,ins)
         i,j = g.getLine(s,i-1)
         s = s[i:j-1]
-        # g.trace(i,j,repr(s[i:j]))
+        # g.trace(i,j,repr(s))
     
         # Add the leading whitespace to the present line.
         junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-        if s and len(s) > 0 and s [-1] == ':':
+        # g.trace('width',width,'tab_width',tab_width)
+    
+        if s and s [-1] == ':':
             # For Python: increase auto-indent after colons.
-            if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            # if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+            if g.scanColorDirectives(c,p) == 'python':
                 width += abs(tab_width)
         if self.smartAutoIndent:
             # Determine if prev line has unclosed parens/brackets/braces

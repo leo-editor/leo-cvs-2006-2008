@@ -558,6 +558,25 @@ def scanAtTabwidthDirective(s,theDict,issue_error_flag=False):
             g.es("Ignoring " + s[k:i],color="red")
         return None
 #@-node:ekr.20031218072017.1390:scanAtTabwidthDirective
+#@+node:ekr.20070302160802:scanColorDirectives (new in Leo 4.4.3)
+def scanColorDirectives(c,p):
+    
+    '''Return the language in effect at position p.'''
+
+    if c is None: return # c may be None for testing.
+    
+    language = c.target_language and c.target_language.lower() or 'python'
+    p = p.copy()
+    for p in p.self_and_parents_iter():
+        s = p.v.t.bodyString
+        d = g.get_directives_dict(s)
+        i = d.get('language')
+        if i is not None:
+            language,junk,junk,junk = g.set_language(s,i)
+            break
+
+    return language
+#@-node:ekr.20070302160802:scanColorDirectives (new in Leo 4.4.3)
 #@+node:ekr.20040715155607:scanForAtIgnore
 def scanForAtIgnore(c,p):
     
