@@ -276,6 +276,7 @@ class leoGui:
         
     def createLeoFrame(self,title):
         """Create a new Leo frame."""
+        self.oops()
     #@-node:ekr.20031218072017.3732:app.gui panels
     #@+node:ekr.20031218072017.3733:app.gui utils
     #@+at 
@@ -396,38 +397,6 @@ class leoGui:
     #@-node:ekr.20031218072017.3733:app.gui utils
     #@-node:ekr.20061109212618:Must be defined in subclasses
     #@+node:ekr.20070228154059:May be defined in subclasses
-    #@+node:ekr.20031218072017.3744:dialogs (unitTestGui)
-    def runAboutLeoDialog(self,c,version,theCopyright,url,email):
-        return self.simulateDialog("aboutLeoDialog")
-        
-    def runAskLeoIDDialog(self):
-        return self.simulateDialog("leoIDDialog")
-    
-    def runAskOkDialog(self,c,title,message=None,text="Ok"):
-        return self.simulateDialog("okDialog","Ok")
-    
-    def runAskOkCancelNumberDialog(self,c,title,message):
-        return self.simulateDialog("numberDialog",-1)
-        
-    def runAskOkCancelStringDialog(self,c,title,message):
-        return self.simulateDialog("stringDialog",'')
-        
-    def runCompareDialog(self,c):
-        return self.simulateDialog("compareDialog",'')
-        
-    def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
-        return self.simulateDialog("openFileDialog")
-    
-    def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
-        return self.simulateDialog("saveFileDialog")
-    
-    def runAskYesNoDialog(self,c,title,message=None):
-        return self.simulateDialog("yesNoDialog","no")
-    
-    def runAskYesNoCancelDialog(self,c,title,
-        message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
-        return self.simulateDialog("yesNoCancelDialog","cancel")
-    #@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
     #@+node:ekr.20070219084912:finishCreate (may be overridden in subclasses)
     def finishCreate (self):
         
@@ -442,16 +411,6 @@ class leoGui:
         if 1:
             print "leoGui oops", g.callers(), "should be overridden in subclass"
     #@-node:ekr.20031218072017.3741:oops
-    #@+node:ekr.20031218072017.3747:simulateDialog
-    def simulateDialog (self,key,defaultVal=None):
-        
-        val = self.dict.get(key,defaultVal)
-    
-        if self.trace:
-            print key, val
-    
-        return val
-    #@-node:ekr.20031218072017.3747:simulateDialog
     #@+node:ekr.20051206103652:widget_name (leoGui)
     def widget_name (self,w):
         
@@ -504,6 +463,7 @@ class nullGui(leoGui):
         leoGui.__init__ (self,guiName) # init the base class.
         
         self.clipboardContents = ''
+        self.dict = {}
         self.focusWidget = None
         self.script = None
         self.lastFrame = None
@@ -511,25 +471,6 @@ class nullGui(leoGui):
         self.bodyTextWidget = None
         self.plainTextWidget = None
     #@-node:ekr.20031218072017.2225: nullGui.__init__
-    #@+node:ekr.20031219075221: nullGui.__getattr__
-    if 0: # This causes no end of problems.
-    
-        def __getattr__(self,attr):
-    
-            g.trace("nullGui",attr)
-            return nullObject()
-    #@-node:ekr.20031219075221: nullGui.__getattr__
-    #@+node:ekr.20031218072017.2226:nullGui.createLeoFrame
-    def createLeoFrame(self,title):
-        
-        """Create a null Leo Frame."""
-        
-        # print 'nullGui.createLeoFrame'
-        
-        gui = self
-        self.lastFrame = leoFrame.nullFrame(title,gui)
-        return self.lastFrame
-    #@-node:ekr.20031218072017.2226:nullGui.createLeoFrame
     #@+node:ekr.20070123092623:nullGui.createKeyHandlerClass
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
         
@@ -538,19 +479,6 @@ class nullGui(leoGui):
         return leoKeys.keyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
     #@nonl
     #@-node:ekr.20070123092623:nullGui.createKeyHandlerClass
-    #@+node:ekr.20050328144031:attachLeoIcon
-    def attachLeoIcon (self,w):
-        
-        pass
-    #@-node:ekr.20050328144031:attachLeoIcon
-    #@+node:ekr.20031218072017.2227:createRootWindow
-    def createRootWindow(self):
-        pass
-    #@-node:ekr.20031218072017.2227:createRootWindow
-    #@+node:ekr.20031218072017.2228:finishCreate
-    def finishCreate (self):
-        pass
-    #@-node:ekr.20031218072017.2228:finishCreate
     #@+node:ekr.20031218072017.2229:runMainLoop
     def runMainLoop(self):
     
@@ -573,14 +501,6 @@ class nullGui(leoGui):
         
         return w and isinstance(w,leoFrame.baseTextWidget)
     #@-node:ekr.20070228155807:isTextWidget
-    #@+node:ekr.20070123093822:set_focus
-    def set_focus(self,c,w):
-        
-        __pychecker__ = '--no-argsused' # c not used at present.
-        
-        pass
-    #@nonl
-    #@-node:ekr.20070123093822:set_focus
     #@+node:ekr.20031218072017.2230:oops
     def oops(self):
             
@@ -593,71 +513,120 @@ class nullGui(leoGui):
         if 1:
             g.trace("nullGui",g.callers())
     #@-node:ekr.20031218072017.2230:oops
-    #@+node:ekr.20070228104406:Clipboard (nullGui)
-    def replaceClipboardWith (self,s):
+    #@+node:ekr.20070301171901:do nothings
+    def attachLeoIcon (self,w):
+        pass
+        
+    def createRootWindow(self):
+        pass
     
-        self.clipboardContents = s
+    def destroySelf (self):
+        pass
         
+    def finishCreate (self):
+        pass
+    
     def getTextFromClipboard (self):
-        
         return self.clipboardContents
-    #@nonl
-    #@-node:ekr.20070228104406:Clipboard (nullGui)
-    #@+node:ekr.20070228200919:Focus
+    
     def get_focus(self,frame):
-        """Return the widget that has focus, or the body widget if None."""
         return self.focusWidget or frame.body.bodyCtrl
             
+    def get_window_info (self,window):
+        return 0,0,0,0
+        
+    def replaceClipboardWith (self,s):
+        self.clipboardContents = s
+    
     def set_focus(self,commander,widget):
-        """Set the focus of the widget in the given commander if it needs to be changed."""
         self.focusWidget = widget
-    #@-node:ekr.20070228200919:Focus
+    #@nonl
+    #@-node:ekr.20070301171901:do nothings
+    #@+node:ekr.20070301172456:app.gui panels
+    def createComparePanel(self,c):
+        """Create Compare panel."""
+        
+    def createFindPanel(self,c):
+        """Create a hidden Find panel."""
+    
+    def createLeoFrame(self,title):
+        """Create a null Leo Frame."""
+        gui = self
+        self.lastFrame = leoFrame.nullFrame(title,gui)
+        return self.lastFrame
+    #@-node:ekr.20070301172456:app.gui panels
+    #@+node:ekr.20031218072017.3744:dialogs (nullGui)
+    def runAboutLeoDialog(self,c,version,theCopyright,url,email):
+        return self.simulateDialog("aboutLeoDialog")
+        
+    def runAskLeoIDDialog(self):
+        return self.simulateDialog("leoIDDialog")
+    
+    def runAskOkDialog(self,c,title,message=None,text="Ok"):
+        return self.simulateDialog("okDialog","Ok")
+    
+    def runAskOkCancelNumberDialog(self,c,title,message):
+        return self.simulateDialog("numberDialog",-1)
+        
+    def runAskOkCancelStringDialog(self,c,title,message):
+        return self.simulateDialog("stringDialog",'')
+        
+    def runCompareDialog(self,c):
+        return self.simulateDialog("compareDialog",'')
+        
+    def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
+        return self.simulateDialog("openFileDialog")
+    
+    def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
+        return self.simulateDialog("saveFileDialog")
+    
+    def runAskYesNoDialog(self,c,title,message=None):
+        return self.simulateDialog("yesNoDialog","no")
+    
+    def runAskYesNoCancelDialog(self,c,title,
+        message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
+        return self.simulateDialog("yesNoCancelDialog","cancel")
+    #@-node:ekr.20031218072017.3744:dialogs (nullGui)
+    #@+node:ekr.20031218072017.3747:simulateDialog
+    def simulateDialog (self,key,defaultVal=None):
+        
+        val = self.dict.get(key,defaultVal)
+    
+        if self.trace:
+            print key, val
+    
+        return val
+    #@-node:ekr.20031218072017.3747:simulateDialog
     #@-others
 #@-node:ekr.20031218072017.2223:class nullGui (leoGui)
-#@+node:ekr.20031218072017.3742:class unitTestGui (leoGui)
-class unitTestGui(leoGui):
+#@+node:ekr.20031218072017.3742:class unitTestGui (nullGui)
+class unitTestGui(nullGui):
     
-    '''A gui class for use by unit tests that would otherwise be interrupted by dialogs.
-    
-    Except for how dialogs are handled, it is in effect the same as a nullGui.'''
-    
-    __pychecker__ = '--no-argsused' # This class has many unused args.
+    '''A gui class for use by unit tests.'''
     
     #@    @+others
-    #@+node:ekr.20031218072017.3743: test.gui.__init__& destroySelf
-    def __init__ (self,dict,trace=False):
+    #@+node:ekr.20031218072017.3743: ctor (unitTestGui)
+    def __init__ (self,dict={},trace=False):
         
-        self.dict = dict
         self.oldGui = g.app.gui
-        self.trace=trace
         
         # Init the base class
-        leoGui.__init__ (self,"unitTestGui")
+        nullGui.__init__ (self,"unitTestGui")
         
         # Use the same kind of widgets as the old gui.
         self.bodyTextWidget = self.oldGui.bodyTextWidget
         self.plainTextWidget = self.oldGui.plainTextWidget
-    
+        
+        self.dict = dict
+        self.trace = trace
         g.app.gui = self
         
     def destroySelf (self):
         
         g.app.gui = self.oldGui
-    #@-node:ekr.20031218072017.3743: test.gui.__init__& destroySelf
-    #@+node:ekr.20031218072017.3745:dummy routines (unitTestGui)
-    def get_focus (self,frame):     pass
-    def set_focus (self,c,widget):  pass
-    #@-node:ekr.20031218072017.3745:dummy routines (unitTestGui)
-    #@+node:ekr.20031218072017.3746:oops
-    def oops(self):
-        
-        g.trace("unitTestGui",g.callers())
-        
-        if 0: # Fail the unit test.
-            assert 0,"call to undefined method in unitTestMethod class"
-    #@-node:ekr.20031218072017.3746:oops
+    #@-node:ekr.20031218072017.3743: ctor (unitTestGui)
     #@-others
-#@-node:ekr.20031218072017.3742:class unitTestGui (leoGui)
+#@-node:ekr.20031218072017.3742:class unitTestGui (nullGui)
 #@-others
 #@-node:ekr.20031218072017.3719:@thin leoGui.py
 #@-leo

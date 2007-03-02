@@ -2363,6 +2363,8 @@ class nullFrame (leoFrame):
         
         self.body = None
         self.bodyCtrl = None
+        self.iconBar = nullIconBarClass(self.c,self)
+        # self.iconBarClass = self.nullIconBarClass
         self.isNullFrame = True
         self.title = title
         self.useNullUndoer = useNullUndoer
@@ -2391,18 +2393,18 @@ class nullFrame (leoFrame):
         self.log  = nullLog (frame=self,parentFrame=None)
         self.menu = leoMenu.nullMenu(frame=self)
         
+        c.setLog()
+        
+        # Set the official ivar.
         self.bodyCtrl = self.body.bodyCtrl
         
         assert(c.undoer)
         if self.useNullUndoer:
             c.undoer = leoUndo.nullUndoer(c)
+            
+            
     #@-node:ekr.20040327105706.2:finishCreate
     #@+node:ekr.20061109124552:Overrides
-    #@+node:ekr.20070228091950:Do nothing
-    def setWrap (self,flag):
-        pass
-    #@nonl
-    #@-node:ekr.20070228091950:Do nothing
     #@+node:ekr.20061109123828:Config...
     def resizePanesToRatio (self,ratio,secondary_ratio):    pass
     def setInitialWindowGeometry (self):                    pass
@@ -2454,13 +2456,80 @@ class nullFrame (leoFrame):
     #@+node:ekr.20041130065921:Window...
     def bringToFront (self):    pass
     def deiconify (self):       pass
-    def get_window_info(self):  pass
+    def get_window_info(self):  return 0,0,0,0
     def lift (self):            pass
+    def setWrap (self,flag):    pass
     def update (self):          pass
     #@-node:ekr.20041130065921:Window...
     #@-node:ekr.20061109124552:Overrides
     #@-others
 #@-node:ekr.20031218072017.2222:class nullFrame
+#@+node:ekr.20070301164543:class nullIconBarClass
+class nullIconBarClass:
+    
+    '''A class representing the singleton Icon bar'''
+    
+    #@    @+others
+    #@+node:ekr.20070301164543.1: ctor
+    def __init__ (self,c,parentFrame):
+    
+        self.c = c
+        self.parentFrame = parentFrame
+    #@nonl
+    #@-node:ekr.20070301164543.1: ctor
+    #@+node:ekr.20070301164543.2:add
+    def add(self,*args,**keys):
+        
+        '''Add a (virtual) button to the (virtual) icon bar.'''
+        
+        command = keys.get('command')
+        text = keys.get('text')
+        try:    g.app.iconWidgetCount += 1
+        except: g.app.iconWidgetCount = 1
+        n = g.app.iconWidgetCount
+        name = 'nullButtonWidget %d' % n
+    
+        if not command:
+            def command(name=name):
+                print "command for %s" % (name)
+                
+        class nullButtonWidget:
+            def __init__ (self,c,command,name,text):
+                self.c = c
+                self.command = command
+                self.name = name
+                self.text = text
+            def __repr__ (self):
+                return self.name
+                
+        b = nullButtonWidget(self.c,command,name,text,name)
+        return b
+    #@-node:ekr.20070301164543.2:add
+    #@+node:ekr.20070301165343:do nothing 
+    def clear(self):
+        g.app.iconWidgetCount = 0
+        g.app.iconImageRefs = []
+    
+    def deleteButton (self,w):
+        pass
+        
+    def getFrame (self):
+        return None
+        
+    def pack (self):
+        pass
+        
+    def setCommandForButton(self,b,command):
+        b.command = command
+        
+    def unpack (self):
+        pass
+    
+    hide = unpack
+    show = pack
+    #@-node:ekr.20070301165343:do nothing 
+    #@-others
+#@-node:ekr.20070301164543:class nullIconBarClass
 #@+node:ekr.20031218072017.2232:class nullLog
 class nullLog (leoLog):
     

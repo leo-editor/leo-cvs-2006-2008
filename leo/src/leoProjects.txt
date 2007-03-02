@@ -11210,258 +11210,6 @@ with 16 char keys it's probably appropriate.
 
 @color
 #@nonl
-#@+node:ekr.20031218072017.3730:app.gui dialogs
-def runAboutLeoDialog(self,c,version,theCopyright,url,email):
-    """Create and run Leo's About Leo dialog."""
-    self.oops()
-    
-def runAskLeoIDDialog(self):
-    """Create and run a dialog to get g.app.LeoID."""
-    self.oops()
-
-def runAskOkDialog(self,c,title,message=None,text="Ok"):
-    """Create and run an askOK dialog ."""
-    self.oops()
-
-def runAskOkCancelNumberDialog(self,c,title,message):
-    """Create and run askOkCancelNumber dialog ."""
-    self.oops()
-
-def runAskOkCancelStringDialog(self,c,title,message):
-    """Create and run askOkCancelString dialog ."""
-    self.oops()
-
-def runAskYesNoDialog(self,c,title,message=None):
-    """Create and run an askYesNo dialog."""
-    self.oops()
-
-def runAskYesNoCancelDialog(self,c,title,
-    message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
-    """Create and run an askYesNoCancel dialog ."""
-    self.oops()
-#@-node:ekr.20031218072017.3730:app.gui dialogs
-#@+node:ekr.20031218072017.3744:dialogs (unitTestGui)
-def runAboutLeoDialog(self,c,version,theCopyright,url,email):
-    return self.simulateDialog("aboutLeoDialog")
-    
-def runAskLeoIDDialog(self):
-    return self.simulateDialog("leoIDDialog")
-
-def runAskOkDialog(self,c,title,message=None,text="Ok"):
-    return self.simulateDialog("okDialog","Ok")
-
-def runAskOkCancelNumberDialog(self,c,title,message):
-    return self.simulateDialog("numberDialog",-1)
-    
-def runAskOkCancelStringDialog(self,c,title,message):
-    return self.simulateDialog("stringDialog",'')
-    
-def runCompareDialog(self,c):
-    return self.simulateDialog("compareDialog",'')
-    
-def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
-    return self.simulateDialog("openFileDialog")
-
-def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
-    return self.simulateDialog("saveFileDialog")
-
-def runAskYesNoDialog(self,c,title,message=None):
-    return self.simulateDialog("yesNoDialog","no")
-
-def runAskYesNoCancelDialog(self,c,title,
-    message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
-    return self.simulateDialog("yesNoCancelDialog","cancel")
-#@-node:ekr.20031218072017.3744:dialogs (unitTestGui)
-#@+node:ekr.20031218072017.4056:tkGui dialogs & panels
-def runAboutLeoDialog(self,c,version,theCopyright,url,email):
-    """Create and run a Tkinter About Leo dialog."""
-    d = leoTkinterDialog.tkinterAboutLeo(c,version,theCopyright,url,email)
-    return d.run(modal=False)
-    
-def runAskLeoIDDialog(self):
-    """Create and run a dialog to get g.app.LeoID."""
-    d = leoTkinterDialog.tkinterAskLeoID()
-    return d.run(modal=True)
-
-def runAskOkDialog(self,c,title,message=None,text="Ok"):
-    """Create and run a Tkinter an askOK dialog ."""
-    d = leoTkinterDialog.tkinterAskOk(c,title,message,text)
-    return d.run(modal=True)
-
-def runAskOkCancelNumberDialog(self,c,title,message):
-    """Create and run askOkCancelNumber dialog ."""
-    d = leoTkinterDialog.tkinterAskOkCancelNumber(c,title,message)
-    return d.run(modal=True)
-    
-def runAskOkCancelStringDialog(self,c,title,message):
-    """Create and run askOkCancelString dialog ."""
-    d = leoTkinterDialog.tkinterAskOkCancelString(c,title,message)
-    return d.run(modal=True)
-
-def runAskYesNoDialog(self,c,title,message=None):
-    """Create and run an askYesNo dialog."""
-    d = leoTkinterDialog.tkinterAskYesNo(c,title,message)
-    return d.run(modal=True)
-
-def runAskYesNoCancelDialog(self,c,title,
-    message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
-    """Create and run an askYesNoCancel dialog ."""
-    d = leoTkinterDialog.tkinterAskYesNoCancel(
-        c,title,message,yesMessage,noMessage,defaultButton)
-    return d.run(modal=True)
-    
-def runCompareDialog(self,c):
-    """Create and run an askYesNo dialog."""
-    if not g.app.unitTesting:
-        leoTkinterCompareDialog(c)
-#@+node:ekr.20070212132230:tkGui.createSpellTab
-def createSpellTab(self,c,spellHandler,tabName):
-    
-    return leoTkinterFind.tkSpellTab(c,spellHandler,tabName)
-#@-node:ekr.20070212132230:tkGui.createSpellTab
-#@+node:ekr.20031218072017.4057:tkGui file dialogs
-# We no longer specify default extensions so that we can open and save files without extensions.
-#@+node:ekr.20060212061804:runOpenFileDialog
-def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
-
-    """Create and run an Tkinter open file dialog ."""
-    
-    __pychecker__ = '--no-argsused' # defaultextension not used.
-    
-    initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
-    
-    if multiple:
-        # askopenfilenames requires Python 2.3 and Tk 8.4.
-        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
-        if (
-            g.CheckVersion(version,"2.3") and
-            g.CheckVersion(self.root.getvar("tk_patchLevel"),"8.4")
-        ):
-            files = tkFileDialog.askopenfilenames(
-                title=title,filetypes=filetypes,initialdir=initialdir)
-            # g.trace(files)
-            return list(files)
-        else:
-            # Get one file and return it as a list.
-            theFile = tkFileDialog.askopenfilename(
-                title=title,filetypes=filetypes,initialdir=initialdir)
-            return [theFile]
-    else:
-        # Return a single file name as a string.
-        return tkFileDialog.askopenfilename(
-            title=title,filetypes=filetypes,initialdir=initialdir)
-#@-node:ekr.20060212061804:runOpenFileDialog
-#@+node:ekr.20060212061804.1:runSaveFileDialog
-def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
-
-    """Create and run an Tkinter save file dialog ."""
-    
-    __pychecker__ = '--no-argsused' # defaultextension not used.
-    
-    initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
-
-    return tkFileDialog.asksaveasfilename(
-        initialdir=initialdir,initialfile=initialfile,
-        title=title,filetypes=filetypes)
-#@-node:ekr.20060212061804.1:runSaveFileDialog
-#@-node:ekr.20031218072017.4057:tkGui file dialogs
-#@+node:ekr.20031218072017.4058:tkGui panels
-def createComparePanel(self,c):
-    """Create a Tkinter color picker panel."""
-    return leoTkinterComparePanel.leoTkinterComparePanel(c)
-
-def createFindPanel(self,c):
-    """Create a hidden Tkinter find panel."""
-    panel = leoTkinterFind.leoTkinterFind(c)
-    panel.top.withdraw()
-    return panel
-    
-def createFindTab (self,c,parentFrame):
-    """Create a Tkinter find tab in the indicated frame."""
-    return leoTkinterFind.tkFindTab(c,parentFrame)
-    
-def createLeoFrame(self,title):
-    """Create a new Leo frame."""
-    # print 'tkGui.createLeoFrame'
-    gui = self
-    return leoTkinterFrame.leoTkinterFrame(title,gui)
-#@-node:ekr.20031218072017.4058:tkGui panels
-#@-node:ekr.20031218072017.4056:tkGui dialogs & panels
-#@+node:ekr.20070122103505:class tkinterAskOkCancelString
-class  tkinterAskOkCancelString (leoTkinterDialog):
-    
-    """Create and run a modal Tkinter dialog to get a string."""
-    
-    @others
-#@+node:ekr.20070122103505.1:tkinterAskOKCancelString.__init__
-def __init__ (self,c,title,message):
-    
-    """Create a number dialog"""
-
-    leoTkinterDialog.__init__(self,c,title,resizeable=False) # Initialize the base class.
-    
-    if g.app.unitTesting: return
-
-    self.answer = -1
-    self.number_entry = None
-
-    self.createTopFrame()
-    self.top.bind("<Key>", self.onKey)
-
-    self.createFrame(message)
-    self.focus_widget = self.number_entry
-
-    buttons = (
-            {"text":"Ok",    "command":self.okButton,     "default":True},
-            {"text":"Cancel","command":self.cancelButton} )
-    buttonList = self.createButtons(buttons)
-    self.ok_button = buttonList[0] # Override the default kind of Ok button.
-#@-node:ekr.20070122103505.1:tkinterAskOKCancelString.__init__
-#@+node:ekr.20070122103505.2:tkinterAskOkCancelString.createFrame
-def createFrame (self,message):
-    
-    """Create the frame for a number dialog."""
-    
-    if g.app.unitTesting: return
-    
-    c = self.c
-    
-    lab = Tk.Label(self.frame,text=message)
-    lab.pack(pady=10,side="left")
-    
-    self.number_entry = w = Tk.Entry(self.frame,width=20)
-    w.pack(side="left")
-    
-    c.set_focus(w)
-#@-node:ekr.20070122103505.2:tkinterAskOkCancelString.createFrame
-#@+node:ekr.20070122103505.3:tkinterAskOkCancelString.okButton, cancelButton
-def okButton(self):
-    
-    """Handle clicks in the ok button of a string dialog."""
-
-    self.answer = self.number_entry.get().strip()
-    self.top.destroy()
-    
-def cancelButton(self):
-    
-    """Handle clicks in the cancel button of a string dialog."""
-
-    self.answer=''
-    self.top.destroy()
-#@-node:ekr.20070122103505.3:tkinterAskOkCancelString.okButton, cancelButton
-#@+node:ekr.20070122103505.4:tkinterAskOkCancelString.onKey
-def onKey (self,event):
-
-    ch = event.char.lower()
-
-    if ch in ('o','\n','\r'):
-        self.okButton()
-    elif ch == 'c':
-        self.cancelButton()
-
-    return "break"
-#@-node:ekr.20070122103505.4:tkinterAskOkCancelString.onKey
-#@-node:ekr.20070122103505:class tkinterAskOkCancelString
 #@-node:ekr.20070122100746:Added \runAskOkCancelStringDialog
 #@+node:ekr.20070123160127:Use plain ascii characters instead of special Tk symbols
 # This is another step toward making Leo's core gui-independent
@@ -14413,6 +14161,529 @@ I did not get this when moving the cursor over the visible characters.
 @color
 #@nonl
 #@-node:ekr.20061127171128:Fixed wiki markup bug
+#@+node:ekr.20070301093525:Fixed bugs in regular expressions
+#@+node:ekr.20031218072017.3077:search & helpers
+def search (self):
+
+    """Search s_ctrl for self.find_text under the control of the
+    whole_word, ignore_case, and pattern_match ivars.
+    
+    Returns (pos, newpos) or (None,None)."""
+
+    c = self.c ; p = self.p ; w = self.s_ctrl
+    index = w.getInsertPoint()
+    
+    s = w.getAllText()
+    # g.trace(index,repr(s[index:index+20]))
+    stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
+    pos,newpos = self.searchHelper(s,index,stopindex,self.find_text,
+        backwards=self.reverse,nocase=self.ignore_case,
+        regexp=self.pattern_match,word=self.whole_word)
+    # g.trace('pos,newpos',pos,newpos)
+    if pos == -1: return None,None
+    << fail if we are passed the wrap point >>
+    insert = g.choose(self.reverse,min(pos,newpos),max(pos,newpos))
+    w.setSelectionRange(pos,newpos,insert=insert)
+    return pos,newpos
+#@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+if self.wrapping and self.wrapPos is not None and self.wrapPosition and p == self.wrapPosition:
+
+    if self.reverse and pos < self.wrapPos:
+        # g.trace("wrap done")
+        return None, None
+
+    if not self.reverse and newpos > self.wrapPos:
+        return None, None
+#@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
+#@+node:ekr.20060526081931:searchHelper & allies
+def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
+    
+    if swapij and backwards: i,j = j,i
+        
+    # g.trace(backwards,i,j,repr(s[i:i+20]))
+
+    if not s[i:j] or not pattern:
+        # g.trace('empty',i,j)
+        return -1,-1
+        
+    if regexp:
+        pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
+    elif backwards:
+        pos,newpos = self.backwardsHelper(s,i,j,pattern,nocase,word)
+    else:
+        pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
+
+    return pos,newpos
+#@+node:ekr.20060526092203:regexHelper
+def regexHelper (self,s,i,j,pattern,backwards,nocase):
+   
+    try:
+        flags = re.MULTILINE
+        if nocase: flags |= re.IGNORECASE
+        re_obj = re.compile(pattern,flags)
+    except Exception:
+        g.es('Invalid regular expression: %s' % (pattern),color='blue')
+        self.errors += 1 # Abort the search.
+        return -1, -1
+        
+    if backwards: # Scan to the last match.  We must use search here.
+        last_mo = None ; i = 0
+        while i < len(s):
+            mo = re_obj.search(s,i,j)
+            if not mo: break
+            i += 1 ; last_mo = mo
+        mo = last_mo
+    else:
+        mo = re_obj.search(s,i,j)
+
+    if 0:
+        g.trace('i',i,'j',j,'s[i:j]',repr(s[i:j]),
+            'mo.start',mo and mo.start(),'mo.end',mo and mo.end())
+    
+    while mo and 0 <= i < len(s):
+        if mo.start() == mo.end():
+            if backwards:
+                # Search backward using match instead of search.
+                i -= 1
+                while 0 <= i < len(s):
+                    mo = re_obj.match(s,i,j)
+                    if mo: break
+                    i -= 1
+            else:
+                i += 1 ; mo = re_obj.search(s,i,j)
+        else:
+            self.match_obj = mo
+            return mo.start(),mo.end()
+    self.match_obj = None
+    return -1,-1
+#@-node:ekr.20060526092203:regexHelper
+#@+node:ekr.20060526140744:backwardsHelper
+def backwardsHelper (self,s,i,j,pattern,nocase,word):
+
+    if nocase:
+        s = s.lower() ; pattern.lower()
+    pattern = self.replaceBackSlashes(pattern)
+    n = len(pattern)
+    
+    if word:
+        while 1:
+            k = s.rfind(pattern,i,j)
+            # g.trace(i,j,k)
+            if k == -1: return -1, -1
+            if self.matchWord(s,k,pattern):
+                return k,k+n
+            else:
+                j = max(0,k-1)
+    else:
+        k = s.rfind(pattern,i,j)
+        # g.trace(i,j,k)
+        if k == -1:
+            return -1, -1
+        else:
+            return k,k+n
+#@-node:ekr.20060526140744:backwardsHelper
+#@+node:ekr.20060526093531:plainHelper
+@tabwidth 4
+
+def plainHelper (self,s,i,j,pattern,nocase,word):
+    
+    # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
+    if nocase:
+        s = s.lower() ; pattern = pattern.lower()
+	pattern = self.replaceBackSlashes(pattern)
+    n = len(pattern)
+    if word:
+        while 1:
+            k = s.find(pattern,i,j)
+            # g.trace(k,n)
+            if k == -1: return -1, -1
+            elif self.matchWord(s,k,pattern):
+                return k, k + n
+            else: i = k + n
+    else:
+        k = s.find(pattern,i,j)
+        if k == -1:
+            return -1, -1
+        else:
+            return k, k + n
+#@-node:ekr.20060526093531:plainHelper
+#@+node:ekr.20060526140744.1:matchWord
+def matchWord(self,s,i,pattern):
+    
+    pattern = self.replaceBackSlashes(pattern)
+    if not s or not pattern or not g.match(s,i,pattern):
+        return False
+
+    pat1,pat2 = pattern[0],pattern[-1]
+    # n = self.patternLen(pattern)
+    n = len(pattern)
+    ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
+    ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
+    
+    isWordPat1 = g.isWordChar(pat1)
+    isWordPat2 = g.isWordChar(pat2)
+    isWordCh1 = g.isWordChar(ch1)
+    isWordCh2 = g.isWordChar(ch2)
+    
+    # g.trace('i',i,'ch1,ch2,pat',repr(ch1),repr(ch2),repr(pattern))
+    
+    if isWordPat1 and isWordCh1 or isWordPat2 and isWordCh2:
+        return False
+    else:
+        return True
+#@-node:ekr.20060526140744.1:matchWord
+#@+node:ekr.20070105165924:replaceBackSlashes
+def replaceBackSlashes (self,s):
+    
+    '''Carefully replace backslashes in a search pattern.'''
+    
+    # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
+    # because there is no rescanning.
+    
+    i = 0
+    while i + 1 < len(s):
+        if s[i] == '\\':
+            ch = s[i+1]
+            if ch == '\\':
+                s = s[:i] + s[i+1:] # replace \\ by \
+            elif ch == 'n':
+                s = s[:i] + '\n' + s[i+2:] # replace the \n by a newline
+            elif ch == 't':
+                 s = s[:i] + '\t' + s[i+2:] # replace \t by a tab
+            else:
+                i += 1 # Skip the escaped character.
+        i += 1
+    return s
+#@-node:ekr.20070105165924:replaceBackSlashes
+#@-node:ekr.20060526081931:searchHelper & allies
+#@-node:ekr.20031218072017.3077:search & helpers
+#@+node:ekr.20031218072017.3075:findNextMatch
+# Resumes the search where it left off.
+# The caller must call set_first_incremental_search or set_first_batch_search.
+
+def findNextMatch(self):
+
+    c = self.c
+
+    if not self.search_headline and not self.search_body:
+        return None, None
+
+    if len(self.find_text) == 0:
+        return None, None
+
+    p = self.p ; self.errors = 0
+    while p:
+        pos, newpos = self.search()
+        # g.trace('pos',pos,'p',p.headString(),g.callers())
+        if pos is not None:
+            if self.mark_finds:
+                p.setMarked()
+                c.frame.tree.drawIcon(p) # redraw only the icon.
+            return pos, newpos
+        elif self.errors:
+            return None,None # Abort the search.
+        elif self.node_only:
+            return None,None # We are only searching one node.
+        else:
+            p = self.p = self.selectNextPosition()
+    return None, None
+#@-node:ekr.20031218072017.3075:findNextMatch
+#@+node:ekr.20031218072017.3074:findNext
+def findNext(self,initFlag=True):
+
+    c = self.c
+    if not self.checkArgs():
+        return
+
+    if initFlag:
+        self.initInHeadline()
+        data = self.save()
+        self.initInteractiveCommands()
+    else:
+        data = self.save()
+
+    pos, newpos = self.findNextMatch()
+
+    if pos is not None:
+        self.showSuccess(pos,newpos)
+    else:
+        if self.wrapping:
+            g.es("end of wrapped search")
+        else:
+            g.es("not found: " + "'" + self.find_text + "'")
+        self.restore(data)
+#@-node:ekr.20031218072017.3074:findNext
+#@-node:ekr.20070301093525:Fixed bugs in regular expressions
+#@+node:ekr.20070301092452:Fixed memory error in leoBridge
+Traceback (most recent call last):
+
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5374, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5374, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+
+  File "C:\prog\tigris-cvs\leo\plugins\groupOperations.py", line 139, in <module>
+    groupOpPI = Tkinter.PhotoImage( data = groupOps )
+  File "C:\prog\tigris-cvs\leo\plugins\groupOperations.py", line 139, in <module>
+    groupOpPI = Tkinter.PhotoImage( data = groupOps )
+
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3270, in __init__
+    Image.__init__(self, 'photo', name, cnf, master, **kw)
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3270, in __init__
+    Image.__init__(self, 'photo', name, cnf, master, **kw)
+
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3211, in __init__
+    raise RuntimeError, 'Too early to create image'
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3211, in __init__
+    raise RuntimeError, 'Too early to create image'
+
+RuntimeError: Too early to create image
+RuntimeError: Too early to create image
+
+IronPythonGui 1
+found  1 test routine for leoOPML
+found  1 test routine for leoOPML
+unexpected exception in g.importFromPath(leo_pdf)
+unexpected exception in g.importFromPath(leo_pdf)
+Traceback (most recent call last):
+Traceback (most recent call last):
+
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5374, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5374, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+
+  File "C:\prog\tigris-cvs\leo\plugins\leo_pdf.py", line 401, in <module>
+    class Writer (docutils.writers.Writer):
+  File "C:\prog\tigris-cvs\leo\plugins\leo_pdf.py", line 401, in <module>
+    class Writer (docutils.writers.Writer):
+
+AttributeError: 'module' object has no attribute 'writers'
+AttributeError: 'module' object has no attribute 'writers'
+
+---mod_leo2asc 0.4-------
+unexpected exception in g.importFromPath(nodebar)
+unexpected exception in g.importFromPath(nodebar)
+Traceback (most recent call last):
+Traceback (most recent call last):
+
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5374, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5374, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+
+  File "C:\prog\tigris-cvs\leo\plugins\nodebar.py", line 33, in <module>
+    nodeupPI = Tk.PhotoImage( data = nodeup )
+  File "C:\prog\tigris-cvs\leo\plugins\nodebar.py", line 33, in <module>
+    nodeupPI = Tk.PhotoImage( data = nodeup )
+
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3270, in __init__
+    Image.__init__(self, 'photo', name, cnf, master, **kw)
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3270, in __init__
+    Image.__init__(self, 'photo', name, cnf, master, **kw)
+
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3211, in __init__
+    raise RuntimeError, 'Too early to create image'
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3211, in __init__
+    raise RuntimeError, 'Too early to create image'
+
+RuntimeError: Too early to create image
+RuntimeError: Too early to create image
+
+rst3 plugin: SilverCity not loaded
+unexpected exception in g.importFromPath(templates)
+unexpected exception in g.importFromPath(templates)
+Traceback (most recent call last):
+Traceback (most recent call last):
+
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5374, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5374, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+
+  File "C:\prog\tigris-cvs\leo\plugins\templates.py", line 88, in <module>
+    templatePI = Tkinter.PhotoImage(data=template)
+  File "C:\prog\tigris-cvs\leo\plugins\templates.py", line 88, in <module>
+    templatePI = Tkinter.PhotoImage(data=template)
+
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3270, in __init__
+    Image.__init__(self, 'photo', name, cnf, master, **kw)
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3270, in __init__
+    Image.__init__(self, 'photo', name, cnf, master, **kw)
+
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3211, in __init__
+    raise RuntimeError, 'Too early to create image'
+  File "c:\python25\lib\lib-tk\Tkinter.py", line 3211, in __init__
+    raise RuntimeError, 'Too early to create image'
+
+RuntimeError: Too early to create image
+RuntimeError: Too early to create image
+
+@suite test syntax of all plugins
+EEEEE..E.......................................................................................................................
+======================================================================
+ERROR: @test test.leo
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "<string>", line 6, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 615, in runLeoTest
+    ok, frame = g.openWithFileName(path,c,enableLog=False)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 822, in openWithFileName
+    g.es("exceptions opening: %s" % (fileName),color="red")
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2576, in es
+    app.logWaiting.append((s+'\n',color),)
+MemoryError
+
+======================================================================
+ERROR: @test leoDist.leo
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "<string>", line 6, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 615, in runLeoTest
+    ok, frame = g.openWithFileName(path,c,enableLog=False)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 822, in openWithFileName
+    g.es("exceptions opening: %s" % (fileName),color="red")
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2576, in es
+    app.logWaiting.append((s+'\n',color),)
+MemoryError
+
+======================================================================
+ERROR: @test LeoPy.leo
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "<string>", line 6, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 615, in runLeoTest
+    ok, frame = g.openWithFileName(path,c,enableLog=False)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 822, in openWithFileName
+    g.es("exceptions opening: %s" % (fileName),color="red")
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2576, in es
+    app.logWaiting.append((s+'\n',color),)
+MemoryError
+
+======================================================================
+ERROR: @test leoPlugins.leo
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "<string>", line 6, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 615, in runLeoTest
+    ok, frame = g.openWithFileName(path,c,enableLog=False)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 822, in openWithFileName
+    g.es("exceptions opening: %s" % (fileName),color="red")
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2576, in es
+    app.logWaiting.append((s+'\n',color),)
+MemoryError
+
+======================================================================
+ERROR: @test LeoDocs.leo
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "<string>", line 6, in <module>
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 615, in runLeoTest
+    ok, frame = g.openWithFileName(path,c,enableLog=False)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 822, in openWithFileName
+    g.es("exceptions opening: %s" % (fileName),color="red")
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2576, in es
+    app.logWaiting.append((s+'\n',color),)
+MemoryError
+
+======================================================================
+ERROR: ('test function', '<unbound method opmlFileCommandsClass.test_fc_deleteFileWithMessage>')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 57, in runTest
+  File "<string>", line 6, in <module>
+  File "<string>", line 4, in test_fc_deleteFileWithMessage
+  File "c:\prog\tigris-cvs\leo\src\leoFileCommands.py", line 2307, in deleteFileWithMessage
+    g.es("exception deleting backup file:" + fileName)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2576, in es
+    app.logWaiting.append((s+'\n',color),)
+MemoryError
+
+----------------------------------------------------------------------
+Ran 127 tests in 1077.640s
+
+FAILED (errors=6)
+Traceback (most recent call last):
+  File "C:\prog\test\leoBridgeTest.py", line 79, in <module>
+    main()
+  File "C:\prog\test\leoBridgeTest.py", line 32, in main
+    runUnitTests(c,g)
+  File "C:\prog\test\leoBridgeTest.py", line 71, in runUnitTests
+    g.es('unexpected exception')
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2576, in es
+    app.logWaiting.append((s+'\n',color),)
+MemoryError
+>>>
+#@nonl
+#@+node:ekr.20031218072017.1474:es, enl, ecnl
+def ecnl(tabName='Log'):
+    g.ecnls(1,tabName)
+
+def ecnls(n,tabName='Log'):
+    log = app.log
+    if log and not log.isNull:
+        while log.newlines < n:
+            g.enl(tabName)
+
+def enl(tabName='Log'):
+    log = app.log
+    if log and not log.isNull:
+        log.newlines += 1
+        log.putnl(tabName)
+
+def es(s,*args,**keys):
+    # print 'es','app.log',repr(app.log),'log.isNull',not app.log or app.log.isNull,repr(s)
+    if app.killed:
+        return
+    newline = keys.get("newline",True)
+    color = keys.get('color')
+    tabName = keys.get('tabName','Log')
+        # Default goes to log pane *Not* the presently active pane.
+    if color == 'suppress': return # New in 4.3.
+    if type(s) != type("") and type(s) != type(u""): # 1/20/03
+        s = repr(s)
+    for arg in args:
+        if type(arg) != type("") and type(arg) != type(u""): # 1/20/03
+            arg = repr(arg)
+        s = s + ", " + arg
+    if app.batchMode:
+        if app.log:
+            app.log.put(s)
+    else:
+        log = app.log
+        if log and log.isNull:
+            pass
+        elif log:
+            # print 'g.es',s
+            log.put(s,color=color,tabName=tabName)
+            for ch in s:
+                if ch == '\n': log.newlines += 1
+                else: log.newlines = 0
+            if newline:
+                g.ecnl(tabName=tabName) # only valid here
+        elif newline:
+            app.logWaiting.append((s+'\n',color),)
+            # print s
+        else:
+            app.logWaiting.append((s,color),)
+            # print s,
+#@-node:ekr.20031218072017.1474:es, enl, ecnl
+#@-node:ekr.20070301092452:Fixed memory error in leoBridge
 #@-node:ekr.20070129082731.1:Bugs
 #@+node:ekr.20070217114542:Features
 #@+node:ekr.20070216105848:Warn on dubious section brackets

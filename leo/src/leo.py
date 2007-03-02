@@ -212,6 +212,8 @@ def createFrame (fileName):
     """Create a LeoFrame during Leo's startup process."""
     
     import leoGlobals as g
+    
+    # g.trace('fileName',fileName)
 
     # Try to create a frame for the file.
     if fileName:
@@ -225,7 +227,7 @@ def createFrame (fileName):
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
-    # 3/2/05: Call the 'new' hook for compatibility with plugins.
+    # Call the 'new' hook for compatibility with plugins.
     g.doHook("new",old_c=None,c=c,new_c=c)
 
     # Report the failure to open the file.
@@ -243,9 +245,9 @@ def createNullGuiWithScript (script):
     
     g.app.batchMode = True
     g.app.gui = leoGui.nullGui("nullGui")
-    if not g.app.root:
-        g.app.root = g.app.gui.createRootWindow()
-    g.app.gui.finishCreate()
+    # if not g.app.root:
+        # g.app.root = g.app.gui.createRootWindow()
+    # g.app.gui.finishCreate()
     g.app.gui.setScript(script)
 #@-node:ekr.20031218072017.1938:createNullGuiWithScript (leo.py)
 #@+node:ekr.20031218072017.1939:getBatchScript
