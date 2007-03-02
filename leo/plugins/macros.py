@@ -62,7 +62,7 @@ It's a lot easier to use than to explain!
 #@-node:ekr.20061102090532:<< docstring >>
 #@nl
 
-__version__ = "1.7"
+__version__ = "1.8"
 #@<< version history >>
 #@+node:ekr.20040916091520:<< version history >>
 #@+at
@@ -78,6 +78,7 @@ __version__ = "1.7"
 # 1.5 EKR: Added event param to parameterize.
 # 1.6 EKR: imported leoNodes and changed tnode to leoNodes.tnode.
 # 1.7 Rich Ries: improved the docstring.
+# 1.8 EKR: Add the menu only for the tkinter gui.
 #@-at
 #@nonl
 #@-node:ekr.20040916091520:<< version history >>
@@ -89,6 +90,14 @@ import leoPlugins
 import re
 
 #@+others
+#@+node:ekr.20070302121133:init
+def init ():
+    
+    # Ok for unit testing: adds command to Outline menu.
+    leoPlugins.registerHandler( ('new','open2') ,onCreate)
+    g.plugin_signon(__name__)
+#@nonl
+#@-node:ekr.20070302121133:init
 #@+node:ekr.20040916091520.1:onCreate
 def onCreate(tag,keywords):
     
@@ -110,8 +119,8 @@ class paramClass:
         self.pattern = g.angleBrackets(r'\w*?\(([^,]*?,)*?([^,])+?\)') + '$'
         self.regex = re.compile(self.pattern)
     
-        self.addMenu()
-    #@nonl
+        if g.app.gui.guiName() == 'tkinter':
+            self.addMenu()
     #@-node:ekr.20040916091520.3:__init__
     #@+node:ekr.20040916084945.1:macros.parameterize
     def parameterize (self,event=None):
@@ -205,10 +214,5 @@ class paramClass:
 #@nonl
 #@-node:ekr.20040916091520.2:class paramClass
 #@-others
-
-if 1: # Ok for unit testing: adds command to Outline menu.
-    leoPlugins.registerHandler( ('new','open2') ,onCreate)
-    g.plugin_signon(__name__)
-#@nonl
 #@-node:ekr.20040916084945:@thin macros.py
 #@-leo
