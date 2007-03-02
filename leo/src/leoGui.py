@@ -15,6 +15,7 @@ Plugins may define their own gui classes by setting g.app.gui."""
 #@@pagewidth 80
 
 import leoGlobals as g
+import leoFind # for nullFindTab.
 import leoFrame # for nullGui.
 
 #@+others
@@ -99,6 +100,7 @@ class leoGui:
         self.isNullGui = False
         self.bodyTextWidget = None
         self.plainTextWidget = None
+        self.trace = False
         
     #@-node:ekr.20031218072017.3722: leoGui.__init__
     #@+node:ekr.20061109211054:leoGui.mustBeDefinedOnlyInBaseClass
@@ -266,13 +268,17 @@ class leoGui:
         self.oops()
     #@-node:ekr.20031218072017.3731:app.gui file dialogs
     #@+node:ekr.20031218072017.3732:app.gui panels
-    # New in 4.3: it is not an error to call these...
-        
     def createComparePanel(self,c):
         """Create Compare panel."""
+        self.oops()
         
     def createFindPanel(self,c):
         """Create a hidden Find panel."""
+        self.oops()
+        
+    def createFindTab (self,c,parentFrame):
+        """Create a Tkinter find tab in the indicated frame."""
+        self.oops()
         
     def createLeoFrame(self,title):
         """Create a new Leo frame."""
@@ -468,8 +474,8 @@ class nullGui(leoGui):
         self.script = None
         self.lastFrame = None
         self.isNullGui = True
-        self.bodyTextWidget = None
-        self.plainTextWidget = None
+        self.bodyTextWidget  = leoFrame.stringTextWidget
+        self.plainTextWidget = leoFrame.stringTextWidget
     #@-node:ekr.20031218072017.2225: nullGui.__init__
     #@+node:ekr.20070123092623:nullGui.createKeyHandlerClass
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
@@ -545,9 +551,15 @@ class nullGui(leoGui):
     #@+node:ekr.20070301172456:app.gui panels
     def createComparePanel(self,c):
         """Create Compare panel."""
+        self.oops()
         
     def createFindPanel(self,c):
         """Create a hidden Find panel."""
+        self.oops()
+        
+    def createFindTab (self,c,parentFrame):
+        """Create a Tkinter find tab in the indicated frame."""
+        return leoFind.nullFindTab(c,parentFrame)
     
     def createLeoFrame(self,title):
         """Create a null Leo Frame."""
