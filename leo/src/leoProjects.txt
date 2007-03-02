@@ -10417,7 +10417,7 @@ def __init__(self,c,parentFrame):
 #@-node:ekr.20051020120306.11:findTab.__init__
 #@+node:ekr.20061212092124:Must be defined in subclasses
 def createBindings (self):          self.oops()
-def createFrame (self):             self.oops()
+def createFrame (self,parent):      self.oops()
 def getOption (self,ivar):          self.oops()
 def init (self):                    self.oops()
 def initGui (self):                 pass # Optional method.
