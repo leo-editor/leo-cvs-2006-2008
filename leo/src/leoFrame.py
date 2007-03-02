@@ -635,7 +635,8 @@ class stringTextWidget (baseTextWidget):
     #@-node:ekr.20070228074228.2:ctor
     #@+node:ekr.20070228074228.3:Overrides
     def _appendText(self,s):
-        if self.trace: g.trace(self,'len(s)',len(s)) # 's',repr(s))
+        #if self.trace: g.trace(self,'len(s)',len(s))
+        if self.trace: g.trace(self,'ins',self.ins,'s',repr(s[-10:]),g.callers())
         self.s = self.s + s
         self.ins = len(self.s)
         self.sel = self.ins,self.ins
@@ -651,22 +652,27 @@ class stringTextWidget (baseTextWidget):
     def _getYScrollPosition(self):      return None # A flag.
     def _hitTest(self,pos):             pass
     def _insertText(self,i,s):
-        self.s = self.s[:i] + s + self.s[i:]
+        s1 = s
+        self.s = self.s[:i] + s1 + self.s[i:]
         # if self.trace: g.trace(self,'s',repr(s),'self.s',repr(self.s))
-        if self.trace: g.trace(self,'i',i,'len(s)',len(s),g.callers())
-        self.ins = len(self.s)
-        self.sel = self.ins,self.ins
+        # if self.trace: g.trace(self,'i',i,'len(s)',len(s),g.callers())
+        if self.trace: g.trace(self,'i',i,'s',repr(s[-10:]),g.callers())
+        i += len(s1)
+        self.ins = i
+        self.sel = i,i
     def _scrollLines(self,n):           pass
     def _see(self,i):                   pass
     def _setAllText(self,s):
-        if self.trace: g.trace(self,'len(s)',len(s),g.callers())
+        # if self.trace: g.trace(self,'len(s)',len(s),g.callers())
+        if self.trace: g.trace(self,'s',repr(s[-10:]),g.callers())
         self.s = s
-        self.ins = len(self.s)
-        self.sel = self.ins,self.ins
+        i = len(self.s)
+        self.ins = i
+        self.sel = i,i
     def _setBackgroundColor(self,color): pass
     def _setFocus(self):                pass
     def _setInsertPoint(self,i):
-        # if self.trace: g.trace(self,'i',i)
+        if self.trace: g.trace(self,'i',i)
         self.ins = i
         self.sel = i,i
     #@nonl
@@ -682,8 +688,10 @@ class stringTextWidget (baseTextWidget):
     
         if insert is not None: 
             self.ins = w.toPythonIndex(insert)
+        else:
+            self.ins = j
             
-        if self.trace: g.trace('i',i,'j',j,'insert',insert)
+        if self.trace: g.trace('i',i,'j',j,'insert',repr(insert))
     #@nonl
     #@-node:ekr.20070228111853:setSelectionRange (stringText)
     #@-others
@@ -984,10 +992,11 @@ class leoBody:
     # def scrollUp (self):                  g.app.gui.yscroll(self.bodyCtrl,-1,'units')
     def see (self,index):                   self.bodyCtrl.see(index)
     def seeInsertPoint (self):              self.bodyCtrl.seeInsertPoint()
-    def selectAllText (self,event=None):
+    def selectAllText (self,event=None): # This is a command.
         w = g.app.gui.eventWidget(event) or self.bodyCtrl
         return w.selectAllText()
-    def setInsertPoint (self,pos):          return self.bodyCtrl.getInsertPoint(pos)
+    def setInsertPoint (self,pos):          return self.bodyCtrl.setInsertPoint(pos)
+                                                    ### was getInsertPoint.
     def setSelectionRange (self,sel):       i,j = sel ; self.bodyCtrl.setSelectionRange(i,j)
     #@-node:ekr.20070228080627:Text Wrappers (base class)
     #@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
@@ -2635,16 +2644,19 @@ class nullLog (leoLog):
         leoLog.__init__(self,frame,parentFrame)
     
         self.isNull = True
+        self.logCtrl = self.createControl(parentFrame)
     #@nonl
     #@-node:ekr.20041012083237:nullLog.__init__
     #@+node:ekr.20041012083237.1:createControl
     def createControl (self,parentFrame):
-        pass
+        
+        return self.createTextWidget(parentFrame)
     #@-node:ekr.20041012083237.1:createControl
     #@+node:ekr.20070302095121:createTextWidget
     def createTextWidget (self,parentFrame=None):
         
         self.logNumber += 1
+    
         log = g.app.gui.plainTextWidget(
             c = self.c,
             name="log-%d" % self.logNumber,
@@ -2652,13 +2664,6 @@ class nullLog (leoLog):
         
         return log
     #@-node:ekr.20070302095121:createTextWidget
-    #@+node:ekr.20041012083237.4:setColorFromConfig & setFontFromConfig
-    def setFontFromConfig (self):
-        pass
-        
-    def setColorFromConfig (self):
-        pass
-    #@-node:ekr.20041012083237.4:setColorFromConfig & setFontFromConfig
     #@-node:ekr.20070302095500:Birth
     #@+node:ekr.20041012083237.2:oops
     def oops(self):
