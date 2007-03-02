@@ -55,18 +55,17 @@ __version__ = "0.11"
 def init ():
     
     if not Tk: return False # OK for unit tests.
-    
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
 
-    if g.app.gui.guiName() == "tkinter":
+    ok = g.app.gui.guiName() == "tkinter"
+    if ok:
         leoPlugins.registerHandler("after-create-leo-frame",rClickbinder)
         leoPlugins.registerHandler("bodyrclick1",rClicker)
         g.plugin_signon(__name__)
-        return True
-    else:
-        return False
+        
+    return ok
 #@-node:ekr.20060108122501.1:init
 #@+node:ekr.20040422072343.5:rClickbinder
 def rClickbinder(tag,keywords):
@@ -74,9 +73,7 @@ def rClickbinder(tag,keywords):
     c = keywords.get('c')
     
     if c and c.exists:
-        c.frame.log.logCtrl.bind  ('<Button-3>',c.frame.OnBodyRClick)
-        # c.frame.body.bodyCtrl.bind('<Button-3>',c.frame.OnBodyRClick)
-#@nonl
+        c.frame.log.logCtrl.bind('<Button-3>',c.frame.OnBodyRClick)
 #@-node:ekr.20040422072343.5:rClickbinder
 #@+node:ekr.20040422072343.6:rClicker
 # EKR: it is not necessary to catch exceptions or to return "break".
