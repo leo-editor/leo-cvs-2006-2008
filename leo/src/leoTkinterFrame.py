@@ -2738,31 +2738,29 @@ class leoTkinterLog (leoFrame.leoLog):
         
         # g.trace("leoTkinterLog")
         
+        # Call the base class constructor and calls createControl.
+        leoFrame.leoLog.__init__(self,frame,parentFrame)
+        
         self.c = c = frame.c # Also set in the base constructor, but we need it here.
         
         self.colorTags = []
             # The list of color names used as tags in present tab.
             # This gest switched by selectTab.
-    
+            
         self.wrap = g.choose(c.config.getBool('log_pane_wraps'),"word","none")
         
         # New in 4.4a2: The log pane is a Pmw.Notebook...
     
         self.nb = None      # The Pmw.Notebook that holds all the tabs.
         self.colorTagsDict = {} # Keys are page names.  Values are saved colorTags lists.
-        self.frameDict = {}  # Keys are page names. Values are Tk.Frames.
-        self.logNumber = 0 # To create unique name fields for Tk.Text widgets.
         self.menu = None # A menu that pops up on right clicks in the hull or in tabs.
-        self.textDict = {}  # Keys are page names. Values are Tk.Text widgets.
-        self.newTabCount = 0 # Number of new tabs created.
         
-        # Official status variables.  Can be used by client code.
-        self.tabName = None # The name of the active tab.
-        self.logCtrl = None # Same as self.textDict.get(self.tabName)
-        self.tabFrame = None # Same as self.frameDict.get(self.tabName)
+        self.logCtrl = self.createControl(parentFrame)
+        self.setFontFromConfig()
+        self.setColorFromConfig()
         
-        # Call the base class constructor and calls createControl.
-        leoFrame.leoLog.__init__(self,frame,parentFrame)
+        
+        
     #@-node:ekr.20031218072017.4040:tkLog.__init__
     #@+node:ekr.20031218072017.4042:tkLog.createControl
     def createControl (self,parentFrame):
