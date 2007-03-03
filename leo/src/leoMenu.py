@@ -1325,8 +1325,9 @@ class leoMenu:
         try:
             menu = self.getMenu(menuName)
             if menu == None:
-                print "menu does not exist: ",menuName
-                g.es("menu does not exist: ",menuName)
+                if not g.app.gui.isNullGui:
+                    print "menu does not exist: ",menuName
+                    g.es("menu does not exist: ",menuName)
                 return
             self.createMenuEntries(menu,table,dynamicMenu=dynamicMenu)
         except:
