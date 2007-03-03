@@ -57,7 +57,7 @@ import sys
 #@nonl
 #@-node:ekr.20050101090207.10:<< imports >>
 #@nl
-__version__ = "1.13"
+__version__ = "1.14"
 #@<< version history >>
 #@+node:ekr.20050101100033:<< version history >>
 #@@nocolor
@@ -92,6 +92,7 @@ __version__ = "1.13"
 # - Add plugins to Plugins menu *only* if they have been explicitly enabled.
 #   This solves the HTTP mystery: HTTP was being imported by mod_scripting 
 # plugin.
+# 1.14 EKR: Added init function.
 #@-at
 #@nonl
 #@-node:ekr.20050101100033:<< version history >>
@@ -198,6 +199,23 @@ def createPluginsMenu (tag,keywords):
     sys.path = old_path
 #@nonl
 #@-node:EKR.20040517080555.23:createPluginsMenu
+#@+node:ekr.20070302175530:init
+def init ():
+    
+    if not Tk or g.app.unitTesting: return None
+
+    if g.app.gui is None:
+        g.app.createTkGui(__file__)
+
+    ok = g.app.gui.guiName() == "tkinter"
+    
+    if ok:
+        leoPlugins.registerHandler("create-optional-menus",createPluginsMenu)
+        g.plugin_signon(__name__)
+        
+    return ok
+#@nonl
+#@-node:ekr.20070302175530:init
 #@-node:ekr.20060107091318:Functions
 #@+node:pap.20050305152751:class PluginDatabase
 class _PluginDatabase:
@@ -567,7 +585,7 @@ class PluginAbout:
         #@+node:EKR.20040517080555.21:<< Create the contents of the about box >>
         Tk.Label(frame,text="Version " + version).pack()
         
-        body = w = g.app.gui.leoPlainWidget(
+        body = w = g.app.gui.plainTextWidget(
             frame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap='word')
         w.insert(0,about)
@@ -612,15 +630,5 @@ class PluginAbout:
     #@-others
 #@-node:EKR.20040517080555.19:class PluginAbout
 #@-others
-
-if Tk and not g.app.unitTesting: # Register the handlers...
-
-    if g.app.gui is None:
-        g.app.createTkGui(__file__)
-
-    if g.app.gui.guiName() == "tkinter":
-        leoPlugins.registerHandler("create-optional-menus",createPluginsMenu)
-        g.plugin_signon(__name__)
-#@nonl
 #@-node:EKR.20040517080555.2:@thin plugins_menu.py
 #@-leo

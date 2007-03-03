@@ -1812,7 +1812,6 @@ def updateAutoIndent (self,p,w):
 
     if s and s [-1] == ':':
         # For Python: increase auto-indent after colons.
-        # if c.frame.body.colorizer.scanColorDirectives(p) == "python":
         if g.scanColorDirectives(c,p) == 'python':
             width += abs(tab_width)
     if self.smartAutoIndent:
@@ -6484,7 +6483,6 @@ def updateAutoIndent (self,p,w):
 
     if s and s [-1] == ':':
         # For Python: increase auto-indent after colons.
-        # if c.frame.body.colorizer.scanColorDirectives(p) == "python":
         if g.scanColorDirectives(c,p) == 'python':
             width += abs(tab_width)
     if self.smartAutoIndent:
@@ -7148,7 +7146,6 @@ def updateAutoIndent (self,p,w):
 
     if s and s [-1] == ':':
         # For Python: increase auto-indent after colons.
-        # if c.frame.body.colorizer.scanColorDirectives(p) == "python":
         if g.scanColorDirectives(c,p) == 'python':
             width += abs(tab_width)
     if self.smartAutoIndent:
@@ -12015,7 +12012,6 @@ def updateAutoIndent (self,p,w):
 
     if s and s [-1] == ':':
         # For Python: increase auto-indent after colons.
-        # if c.frame.body.colorizer.scanColorDirectives(p) == "python":
         if g.scanColorDirectives(c,p) == 'python':
             width += abs(tab_width)
     if self.smartAutoIndent:
@@ -12090,7 +12086,7 @@ class leoKeyEvent:
         self.widget = self.w
 #@nonl
 #@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
-#@+node:ekr.20070123085931: tkKeys.defineSpecialKeys
+#@+node:ekr.20070123085931:k.defineSpecialKeys
 def defineSpecialKeys (self):
     
     k = self
@@ -12144,7 +12140,7 @@ def defineSpecialKeys (self):
     for key in k.guiBindNamesDict.keys():
         k.guiBindNamesInverseDict [k.guiBindNamesDict.get(key)] = key
     
-#@-node:ekr.20070123085931: tkKeys.defineSpecialKeys
+#@-node:ekr.20070123085931:k.defineSpecialKeys
 #@+node:ekr.20061031131434.146:masterKeyHandler
 master_key_count = 0
 

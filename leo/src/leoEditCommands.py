@@ -2760,7 +2760,6 @@ class editCommandsClass (baseEditCommandsClass):
     
         if s and s [-1] == ':':
             # For Python: increase auto-indent after colons.
-            # if c.frame.body.colorizer.scanColorDirectives(p) == "python":
             if g.scanColorDirectives(c,p) == 'python':
                 width += abs(tab_width)
         if self.smartAutoIndent:
