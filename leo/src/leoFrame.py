@@ -212,14 +212,14 @@ class baseTextWidget:
     #@+node:ekr.20070228074312.15:event_generate (baseTextWidget)
     def event_generate(self,stroke):
         
-        w = self ; c = self.c
-        
-        # g.trace('baseTextWidget',stroke)
+        w = self ; c = self.c ; char = stroke
         
         # Canonicalize the setting.
         stroke = c.k.shortcutFromSetting(stroke)
+        
+        # g.trace('baseTextWidget','char',char,'stroke',stroke)
     
-        class eventGenerateEvent:  ### Should be a standard class, or a subclass of a standard class.
+        class eventGenerateEvent:
             def __init__ (self,c,w,char,keysym):
                 self.c = c
                 self.char = char
@@ -227,7 +227,7 @@ class baseTextWidget:
                 self.leoWidget = w
                 self.widget = w
     
-        event = eventGenerateEvent(c,w,'',stroke)
+        event = eventGenerateEvent(c,w,char,stroke)
         c.k.masterKeyHandler(event,stroke=stroke)
         
     #@nonl
@@ -982,7 +982,7 @@ class leoBody:
         self.bodyCtrl.setYScrollPosition(first)
     #@-node:ekr.20031218072017.4038:get/setYScrollPosition
     #@-node:ekr.20031218072017.4018:Text (leoBody)
-    #@+node:ekr.20070228080627:Text Wrappers (base class)
+    #@+node:ekr.20070228080627:Text Wrappers (base class) (RECENT BUG)
     def getAllText (self):                  return self.bodyCtrl.getAllText()
     def getInsertPoint(self):               return self.bodyCtrl.getInsertPoint()
     def getSelectedText (self):             return self.bodyCtrl.getSelectedText()
@@ -998,7 +998,7 @@ class leoBody:
     def setInsertPoint (self,pos):          return self.bodyCtrl.setInsertPoint(pos)
                                                     ### was getInsertPoint.
     def setSelectionRange (self,sel):       i,j = sel ; self.bodyCtrl.setSelectionRange(i,j)
-    #@-node:ekr.20070228080627:Text Wrappers (base class)
+    #@-node:ekr.20070228080627:Text Wrappers (base class) (RECENT BUG)
     #@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
     # This is the only key handler for the body pane.
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
@@ -2128,9 +2128,7 @@ class leoTree:
             changed = s != oldRevert
             self.revertHeadline = s
             p.initHeadString(s)
-            # if self.trace_edit and not g.app.unitTesting:
-                # if changed:
-                    # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+            # g.trace('changed: old',repr(oldRevert),'new',repr(s))
             if changed:
                 undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
                 if not c.changed: c.setChanged(True)
