@@ -242,7 +242,8 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
                 if init_result:
                     loadedModules[moduleName] = result
                 else:
-                    g.es_print('loadOnePlugin: loading module %s failed' % (moduleName),color="red")
+                    if verbose and not g.app.initing: ## or not g.app.unitTesting:
+                        g.es_print('loadOnePlugin: loading module %s failed' % (moduleName),color="red")
                     result = None
             except Exception:
                 g.es('Exception loading plugin',color='red')
@@ -261,8 +262,9 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
         loadingModuleNameStack.pop()
         
     if result is None:
-        s = 'can not load enabled %s plugin' % moduleName
-        g.es_print(s,color="red")
+        if verbose and not g.app.initing: # or not g.app.unitTesting:
+            s = 'can not load enabled %s plugin' % moduleName
+            g.es_print(s,color="red")
     elif verbose:
         s = 'loaded %s plugin' % moduleName
         g.es_print(s,color="blue")
