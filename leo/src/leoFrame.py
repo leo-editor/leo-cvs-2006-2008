@@ -982,7 +982,7 @@ class leoBody:
         self.bodyCtrl.setYScrollPosition(first)
     #@-node:ekr.20031218072017.4038:get/setYScrollPosition
     #@-node:ekr.20031218072017.4018:Text (leoBody)
-    #@+node:ekr.20070228080627:Text Wrappers (base class) (RECENT BUG)
+    #@+node:ekr.20070228080627:Text Wrappers (base class)
     def getAllText (self):                  return self.bodyCtrl.getAllText()
     def getInsertPoint(self):               return self.bodyCtrl.getInsertPoint()
     def getSelectedText (self):             return self.bodyCtrl.getSelectedText()
@@ -995,10 +995,9 @@ class leoBody:
     def selectAllText (self,event=None): # This is a command.
         w = g.app.gui.eventWidget(event) or self.bodyCtrl
         return w.selectAllText()
-    def setInsertPoint (self,pos):          return self.bodyCtrl.setInsertPoint(pos)
-                                                    ### was getInsertPoint.
+    def setInsertPoint (self,pos):          return self.bodyCtrl.setInsertPoint(pos) # was getInsertPoint.
     def setSelectionRange (self,sel):       i,j = sel ; self.bodyCtrl.setSelectionRange(i,j)
-    #@-node:ekr.20070228080627:Text Wrappers (base class) (RECENT BUG)
+    #@-node:ekr.20070228080627:Text Wrappers (base class)
     #@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
     # This is the only key handler for the body pane.
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
@@ -2181,7 +2180,7 @@ class leoTree:
         if ch == '\b':
             if i != j:  w.delete(i,j)
             else:       w.delete(ins-1)
-            w.setSelectionRange(i,i,insert=i)
+            w.setSelectionRange(i-1,i-1,insert=i-1)
         elif ch and ch not in ('\n','\r'):
             if i != j:                              w.delete(i,j)
             elif k.unboundKeyAction == 'overwrite': w.delete(i,i+1)
