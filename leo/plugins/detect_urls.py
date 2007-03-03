@@ -31,7 +31,7 @@ def openURL(tag,keywords):
     row,col = g.convertPythonIndexToRowCol(s,ins)
     i,j = g.getLine(s,ins)
     line = s[i:j]
-    g.trace(repr(line))
+    # g.trace(repr(line))
     
     for match in url_regex.finditer(line):
         if match.start() <= col <= match.end():
