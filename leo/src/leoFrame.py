@@ -2466,6 +2466,8 @@ class nullFrame (leoFrame):
         self.iconBar = nullIconBarClass(self.c,self)
         # self.iconBarClass = self.nullIconBarClass
         self.isNullFrame = True
+        self.outerFrame = None
+        self.statusLineClass = nullStatusLineClass
         self.title = title
         self.useNullUndoer = useNullUndoer
         
@@ -2602,7 +2604,7 @@ class nullIconBarClass:
             def __repr__ (self):
                 return self.name
                 
-        b = nullButtonWidget(self.c,command,name,text,name)
+        b = nullButtonWidget(self.c,command,name,text)
         return b
     #@-node:ekr.20070301164543.2:add
     #@+node:ekr.20070301165343:do nothing
@@ -2698,6 +2700,51 @@ class nullLog (leoLog):
     #@-node:ekr.20060124085830:tabs
     #@-others
 #@-node:ekr.20031218072017.2232:class nullLog
+#@+node:ekr.20070302171509:class nullStatusLineClass
+class nullStatusLineClass:
+    
+    '''A do-nothing status line.'''
+    
+    #@    @+others
+    #@+node:ekr.20070302171509.2: ctor
+    def __init__ (self,c,parentFrame):
+        
+        self.c = c
+        self.enabled = False
+        self.parentFrame = parentFrame
+    
+        self.textWidget = w = g.app.gui.plainTextWidget(c,name='status-line')
+        
+        # Set the official ivars.
+        c.frame.statusFrame = None
+        c.frame.statusLabel = None
+        c.frame.statusText  = self.textWidget
+    #@-node:ekr.20070302171509.2: ctor
+    #@+node:ekr.20070302171917:methods
+    def disable (self,background=None):
+        self.enabled = False
+        self.c.bodyWantsFocus()
+        
+    def enable (self,background="white"):
+        if w: self.c.widgetWantsFocus(self.textWidget)
+        self.enabled = True
+    
+    def clear (self):                   self.textWidget.delete(0,'end')
+    def get (self):                     return self.textWidget.getAllText()
+    def isEnabled(self):                return self.enabled
+    def getFrame (self):                return None
+    def onActivate (self,event=None):   pass 
+    def pack (self):                    pass
+    def put(self,s,color=None):         self.textWidget.insert('end',s)
+    def unpack (self):                  pass
+    def update (self):                  pass
+    
+    hide = unpack
+    show = pack
+    #@-node:ekr.20070302171917:methods
+    #@-others
+#@nonl
+#@-node:ekr.20070302171509:class nullStatusLineClass
 #@+node:ekr.20031218072017.2233:class nullTree
 class nullTree (leoTree):
     
