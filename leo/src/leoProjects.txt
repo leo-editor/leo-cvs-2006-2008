@@ -5841,9 +5841,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # if self.trace_edit and not g.app.unitTesting:
-            # if changed:
-                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
@@ -7471,9 +7469,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # if self.trace_edit and not g.app.unitTesting:
-            # if changed:
-                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
@@ -14751,9 +14747,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # if self.trace_edit and not g.app.unitTesting:
-            # if changed:
-                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
