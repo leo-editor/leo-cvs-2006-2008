@@ -2469,7 +2469,7 @@ def idleTimeHookHandler(*args,**keys):
 
 def doHook(tag,*args,**keywords):
     
-    if g.app.killed or g.app.hookError or (g.app.gui and g.app.gui.isNullGui):
+    if g.app.killed or g.app.hookError: # or (g.app.gui and g.app.gui.isNullGui):
         return None
         
     if args:
@@ -2604,7 +2604,8 @@ def es(s,*args,**keys):
 def es_print(s,*args,**keys):
     
     print g.toEncodedString(s,'ascii')
-    g.es(s,*args,**keys)
+    if not g.app.gui or g.app.gui.isNullGui:
+        g.es(s,*args,**keys)
     
 def test_g_es_print():
     
