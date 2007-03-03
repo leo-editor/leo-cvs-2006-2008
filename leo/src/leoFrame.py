@@ -1545,7 +1545,9 @@ class leoFrame:
     def contractBodyPane     (self,event=None): self.oops()
     def contractLogPane      (self,event=None): self.oops()
     def contractOutlinePane  (self,event=None): self.oops()
+    def expandBodyPane       (self,event=None): self.oops()
     def expandLogPane        (self,event=None): self.oops()
+    def expandOutlinePane    (self,event=None): self.oops()
     def fullyExpandBodyPane  (self,event=None): self.oops()
     def fullyExpandLogPane   (self,event=None): self.oops()
     def fullyExpandPane      (self,event=None): self.oops()
@@ -1554,9 +1556,6 @@ class leoFrame:
     def hideLogPane          (self,event=None): self.oops()
     def hidePane             (self,event=None): self.oops()
     def hideOutlinePane      (self,event=None): self.oops()
-        
-    expandBodyPane = contractOutlinePane
-    expandOutlinePane = contractBodyPane
     
     # In the Window menu...
     def cascade              (self,event=None): self.oops()
@@ -2529,7 +2528,9 @@ class nullFrame (leoFrame):
     def contractBodyPane     (self,event=None): pass
     def contractLogPane      (self,event=None): pass
     def contractOutlinePane  (self,event=None): pass
+    def expandBodyPane       (self,event=None): pass
     def expandLogPane        (self,event=None): pass
+    def expandOutlinePane    (self,event=None): pass
     def fullyExpandBodyPane  (self,event=None): pass
     def fullyExpandLogPane   (self,event=None): pass
     def fullyExpandPane      (self,event=None): pass
@@ -2538,9 +2539,6 @@ class nullFrame (leoFrame):
     def hideLogPane          (self,event=None): pass
     def hidePane             (self,event=None): pass
     def hideOutlinePane      (self,event=None): pass
-        
-    expandBodyPane = contractOutlinePane
-    expandOutlinePane = contractBodyPane
     
     # In the Window menu...
     def cascade              (self,event=None): pass
