@@ -616,6 +616,8 @@ class unitTestGui(nullGui):
     
     '''A gui class for use by unit tests.'''
     
+    # Presently used only by the import/export unit tests.
+    
     #@    @+others
     #@+node:ekr.20031218072017.3743: ctor (unitTestGui)
     def __init__ (self,dict={},trace=False):
