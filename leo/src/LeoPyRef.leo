@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.627428571429">
-	<global_window_position top="51" left="433" height="875" width="832"/>
+<globals body_outline_ratio="0.442285714286">
+	<global_window_position top="47" left="413" height="875" width="807"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -30,18 +30,83 @@
 <v t="ekr.20060217111834"><vh>@url http://docs.python.org/lib/re-syntax.html</vh></v>
 <v t="ekr.20060908104329"><vh>@url file:c:/prog/tigris-cvs/leo/doc/leoDocs.leo#Users Guide</vh></v>
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
-<v t="ekr.20070227091955"><vh>l</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933" a="E"
-marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20050921103736,ekr.20031218072017.3803,"
-expanded="ekr.20070129082731,"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"
+marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20050921103736,ekr.20031218072017.3803,ekr.20031218072017.2995,ekr.20031218072017.2996,"
+expanded="ekr.20070304133016,"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
+<v t="EKR.20040519090151.2"><vh>To do</vh>
+<v t="ekr.20070217114542.1"><vh>Urgent</vh></v>
+<v t="ekr.20070215183046"><vh>IronPython notes</vh></v>
+<v t="ekr.20040117181936"
+marks="ekr.20061028211424.46,ekr.20061028211424.47,ekr.20061028211424.50,ekr.20061028211424.52,ekr.20061028070057.22,ekr.20061028070057.37,ekr.20061028070057.54,ekr.20061028070057.55,"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20060207133601"
+marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
+</v>
+<v t="ekr.20031218072017.2406" a="V"><vh>Code</vh>
+<v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
+<v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
+<v t="ekr.20040629121554.1" a="M"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
+<v t="ekr.20040629121554.2" a="M" labels="2858060000006c6162656c737100540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571017471022e"><vh>initVersion</vh></v>
+<v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
+</v>
+<v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
+<v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
+<v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
+<v t="ekr.20041005105605.1"
+marks="ekr.20041005105605.52,ekr.20041005105605.198,"><vh>@thin leoAtFile.py</vh></v>
+<v t="ekr.20070227091955.1"><vh>@thin leoBridge.py</vh></v>
+<v t="ekr.20031218072017.2794"
+marks="ekr.20031218072017.1607,ekr.20031218072017.1896,ekr.20031218072017.2803,"><vh>@thin leoColor.py</vh></v>
+<v t="ekr.20031218072017.2810"
+marks="ekr.20040629121554.1,ekr.20040629121554.2,ekr.20031218072017.2995,ekr.20031218072017.2996,"><vh>@thin leoCommands.py</vh></v>
+<v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
+<v t="ekr.20050710142719"
+marks="ekr.20050920084036.138,"><vh>@thin leoEditCommands.py</vh></v>
+<v t="ekr.20031218072017.3018"
+marks="ekr.20060919110638.44,ekr.20040701065235.2,"><vh>@thin leoFileCommands.py</vh></v>
+<v t="ekr.20031218072017.3093"
+marks="ekr.20031218072017.3132,ekr.20031218072017.3124,"><vh>@thin leoGlobals.py</vh></v>
+<v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
+<v t="ekr.20031218072017.3320"
+marks="ekr.20031218072017.3419,ekr.20031218072017.3421,ekr.20031218072017.3426,ekr.20031218072017.3438,ekr.20040303214038,ekr.20040303163330,ekr.20040303175026.2,ekr.20040303175026.3,ekr.20040303175026.5,ekr.20040303175026.10,ekr.20040306060312,ekr.20040303175026.11,ekr.20040310062332.4,ekr.20040310062332.5,"><vh>@thin leoNodes.py</vh></v>
+<v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
+<v t="ekr.20061024060248.1"><vh>@thin leoPymacs.py</vh></v>
+<v t="ekr.20031218072017.3446"
+marks="ekr.20031218072017.3601,"><vh>@thin leoTangle.py</vh></v>
+<v t="ekr.20051104075904" annotate="285808000000616e6e6f7461746571007d71017471022e"><vh>@thin leoTest.py</vh></v>
+<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
+</v>
+<v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
+<v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
+<v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
+<v t="ekr.20060123151617"
+marks="ekr.20031218072017.3070,ekr.20051113110851,ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,"><vh>@thin leoFind.py</vh></v>
+<v t="ekr.20031218072017.3655"
+marks="ekr.20051026083544.2,"><vh>@thin leoFrame.py</vh></v>
+<v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
+<v t="ekr.20061031131434"><vh>@thin leoKeys.py</vh></v>
+<v t="ekr.20031218072017.3749"
+marks="ekr.20050921103736,ekr.20031218072017.3803,"><vh>@thin leoMenu.py</vh></v>
+</v>
+<v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
+<v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
+<v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
+<v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
+<v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
+<v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
+<v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
+<v t="ekr.20031218072017.4100"
+marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
+<v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
+</v>
+</v>
 <v t="ekr.20070227124520"><vh>To do asap</vh>
-<v t="ekr.20070228061150"><vh>Complete the leoBridge plugin: make unit tests pass</vh></v>
 <v t="ekr.20070227070257.1"><vh>give the tk gui a plain widget</vh></v>
-<v t="ekr.20070228055539"><vh>print-settings command</vh></v>
+<v t="ekr.20070228055539" a="M"><vh>print-settings command</vh></v>
+<v t="ekr.20070302164343" a="M"><vh>Find a way to see text in pdb when debugging exec statement</vh></v>
 <v t="ekr.20070211192428"><vh>(Make Leo's core gui-indenpendent)</vh>
 <v t="ekr.20070125103950"><vh> Calls to w.xxx</vh>
 <v t="ekr.20070213165250"><vh>find w.xxx script</vh></v>
@@ -275,7 +340,7 @@ expanded="ekr.20070129082731,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20050920084036.120"><vh>sortFields</vh></v>
 <v t="ekr.20050920084036.123"><vh>swapWords</vh></v>
 <v t="ekr.20050920084036.84"><vh>whatLine</vh></v>
-<v t="ekr.20031218072017.4038"><vh>get/setYScrollPosition (leoBody)</vh></v>
+<v t="ekr.20031218072017.4038"><vh>get/setYScrollPosition</vh></v>
 <v t="ekr.20061017083312"><vh>selectEditor (tkBody)</vh>
 <v t="ekr.20061017083312.1"><vh>&lt;&lt; restore the selection, insertion point and the scrollbar &gt;&gt;</vh></v>
 </v>
@@ -370,10 +435,6 @@ expanded="ekr.20070129082731,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20050920084036.160"><vh>executeSubprocess</vh></v>
 <v t="ekr.20050920084036.242"><vh>insertRegister</vh></v>
 <v t="ekr.20050920084036.37"><vh>insertToBuffer</vh></v>
-<v t="ekr.20031218072017.1329"><vh>onBodyChanged (tkBody)</vh>
-<v t="ekr.20051026083733.6"><vh>&lt;&lt; recolor the body &gt;&gt;</vh></v>
-<v t="ekr.20051026083733.7"><vh>&lt;&lt; redraw the screen if necessary &gt;&gt;</vh></v>
-</v>
 <v t="ekr.20050920084036.39"><vh>prependToBuffer</vh></v>
 <v t="ekr.20050920084036.212"><vh>doOneReplace</vh></v>
 <v t="ekr.20050920084036.219"><vh>findNextMatch (query-replace)</vh>
@@ -405,6 +466,8 @@ expanded="ekr.20070129082731,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20070214072721.5"><vh>Command failures 12</vh></v>
 </v>
 </v>
+</v>
+<v t="ekr.20070303144453"><vh>20 Failed wx unit tests</vh></v>
 <v t="ekr.20070218120027"><vh>Testing key code in wxGui plugin</vh>
 <v t="ekr.20031218072017.1723"><vh>createMenuEntries</vh>
 <v t="ekr.20051021091958"><vh>&lt;&lt; get label &amp; command or continue &gt;&gt;</vh></v>
@@ -429,7 +492,7 @@ expanded="ekr.20070129082731,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20061031131434.128"><vh>getArg</vh>
 <v t="ekr.20061031131434.129"><vh>&lt;&lt; init altX vars &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20040803072955.90"><vh>head key handlers</vh>
+<v t="ekr.20040803072955.90"><vh>head key handlers (leoTree)</vh>
 <v t="ekr.20040803072955.91"><vh>onHeadChanged</vh>
 <v t="ekr.20040803072955.94"><vh>&lt;&lt; truncate s if it has multiple lines &gt;&gt;</vh></v>
 </v>
@@ -472,207 +535,6 @@ expanded="ekr.20070129082731,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20031218072017.3977"><vh>OnBodyClick, OnBodyRClick (Events)</vh></v>
 <v t="ekr.20040803072955.127"><vh>tree.editLabel</vh></v>
 <v t="ekr.20040803072955.135"><vh>setEditLabelState</vh></v>
-</v>
-<v t="ekr.20070221082022"><vh>Failed unit tests</vh></v>
-<v t="ekr.20070223095700"><vh>Added new search path for pluginsManager.txt </vh>
-<v t="ekr.20070223095700.1"><vh>Request</vh></v>
-<v t="ekr.20031218072017.3440"><vh>loadHandlers &amp; helper</vh>
-<v t="ekr.20031218072017.3441"><vh>&lt;&lt; set enabled_files from pluginsManager.txt &gt;&gt;</vh></v>
-<v t="ekr.20070224082131"><vh>getEnabledFiles</vh></v>
-</v>
-</v>
-<v t="ekr.20070224073457"><vh>Added support for @enabled-plugins in settings files</vh>
-<v t="ekr.20041118053731"><vh>Getters</vh></v>
-<v t="ekr.20041117081009"><vh>Getters... (g.app.config)</vh>
-<v t="ekr.20041123070429"><vh>canonicalizeSettingName (munge)</vh></v>
-<v t="ekr.20041123092357"><vh>config.findSettingsPosition</vh></v>
-<v t="ekr.20041117083141"><vh>get &amp; allies (g.app.config)</vh>
-<v t="ekr.20041121143823"><vh>getValFromDict</vh></v>
-<v t="ekr.20051015093141"><vh>typesMatch</vh></v>
-</v>
-<v t="ekr.20051011105014"><vh>exists (g.app.config)</vh></v>
-<v t="ekr.20060608224112"><vh>getAbbrevDict</vh></v>
-<v t="ekr.20041117081009.3"><vh>getBool</vh></v>
-<v t="ekr.20041122070339"><vh>getColor</vh></v>
-<v t="ekr.20041117093009.1"><vh>getDirectory</vh></v>
-<v t="ekr.20070224075914.1"><vh>getEnabledPlugins</vh></v>
-<v t="ekr.20041117082135"><vh>getFloat</vh></v>
-<v t="ekr.20041117062717.13"><vh>getFontFromParams (config)</vh></v>
-<v t="ekr.20041117081513"><vh>getInt</vh></v>
-<v t="ekr.20041117093009.2"><vh>getLanguage</vh></v>
-<v t="ekr.20041122070752"><vh>getRatio</vh></v>
-<v t="ekr.20041117062717.11"><vh>getRecentFiles</vh></v>
-<v t="ekr.20041117062717.14"><vh>getShortcut (config)</vh></v>
-<v t="ekr.20041117081009.4"><vh>getString</vh></v>
-<v t="ekr.20041117062717.17"><vh>setCommandsIvars</vh></v>
-<v t="ekr.20041120074536"><vh>settingsRoot</vh></v>
-</v>
-<v t="ekr.20041120094940"><vh>kind handlers (parserBaseClass)</vh>
-<v t="ekr.20060608221203"><vh>doAbbrev</vh></v>
-<v t="ekr.20041120094940.1"><vh>doBool</vh></v>
-<v t="ekr.20041120094940.2"><vh>doColor</vh></v>
-<v t="ekr.20041120094940.3"><vh>doDirectory &amp; doPath</vh></v>
-<v t="ekr.20070224075914"><vh>doEnabledPlugins</vh></v>
-<v t="ekr.20041120094940.6"><vh>doFloat</vh></v>
-<v t="ekr.20041120094940.4"><vh>doFont</vh></v>
-<v t="ekr.20041120103933"><vh>doIf</vh></v>
-<v t="ekr.20041121125416"><vh>doIfGui</vh></v>
-<v t="ekr.20041120104215"><vh>doIfPlatform</vh></v>
-<v t="ekr.20041120104215.1"><vh>doIgnore</vh></v>
-<v t="ekr.20041120094940.5"><vh>doInt</vh></v>
-<v t="ekr.20041217132253"><vh>doInts</vh></v>
-<v t="ekr.20060102103625.1"><vh>doMode (ParserBaseClass)</vh>
-<v t="ekr.20060618110649"><vh>&lt;&lt; Compute modeName &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20041120104215.2"><vh>doPage</vh></v>
-<v t="ekr.20041121125741"><vh>doRatio</vh></v>
-<v t="ekr.20041120105609"><vh>doShortcuts (ParserBaseClass)</vh></v>
-<v t="ekr.20041217132028"><vh>doString</vh></v>
-<v t="ekr.20041120094940.8"><vh>doStrings</vh></v>
-</v>
-<v t="ekr.20041120064303"><vh>g.app.config.readSettingsFiles &amp; helpers</vh>
-<v t="ekr.20061028082834"><vh>&lt;&lt; define localDirectory, localConfigFile &amp; myLocalConfigFile &gt;&gt;</vh></v>
-<v t="ekr.20041117085625"><vh>g.app.config.openSettingsFile</vh></v>
-<v t="ekr.20051013161232"><vh>g.app.config.updateSettings</vh></v>
-</v>
-<v t="ekr.20041113113140"><vh>loadOnePlugin</vh></v>
-<v t="ekr.20031218072017.1934"><vh>run &amp; allies</vh>
-<v t="ekr.20041219072112"><vh>&lt;&lt; import leoGlobals and leoApp &gt;&gt;</vh></v>
-<v t="ekr.20041219072416.1"><vh>&lt;&lt; import leoNodes and leoConfig &gt;&gt;</vh></v>
-<v t="ekr.20040411081633"><vh>startPsyco</vh></v>
-<v t="ekr.20031218072017.1936"><vh>isValidPython</vh></v>
-<v t="ekr.20041124083125"><vh>completeFileName (leo.py)</vh></v>
-<v t="ekr.20031218072017.1624"><vh>createFrame (leo.py)</vh></v>
-<v t="ekr.20031218072017.1938"><vh>createNullGuiWithScript (leo.py)</vh></v>
-<v t="ekr.20031218072017.1939"><vh>getBatchScript</vh></v>
-<v t="ekr.20041130093254"><vh>reportDirectories</vh></v>
-</v>
-<v t="ekr.20070224075914"><vh>doEnabledPlugins</vh></v>
-<v t="ekr.20031218072017.2052"><vh>g.openWithFileName</vh></v>
-<v t="ekr.20041001161108"><vh>doPlugins</vh></v>
-<v t="ekr.20031218072017.3440"><vh>loadHandlers &amp; helper</vh>
-<v t="ekr.20031218072017.3441"><vh>&lt;&lt; set enabled_files from pluginsManager.txt &gt;&gt;</vh></v>
-<v t="ekr.20070224082131"><vh>getEnabledFiles</vh></v>
-</v>
-</v>
-<v t="ekr.20070225111331"><vh>Make sure alt-arrow keys honor focus settings</vh>
-<v t="ekr.20031218072017.2913"><vh>Goto</vh>
-<v t="ekr.20070226121510"><vh>treeFocusHelper (new in Leo 4.4.3)</vh></v>
-<v t="ekr.20070226113916"><vh>treeSelectHelper (new in Leo 4.4.3)</vh></v>
-<v t="ekr.20031218072017.1628"><vh>goNextVisitedNode</vh></v>
-<v t="ekr.20031218072017.1627"><vh>goPrevVisitedNode</vh></v>
-<v t="ekr.20031218072017.2914"><vh>goToFirstNode</vh></v>
-<v t="ekr.20051012092453"><vh>goToFirstSibling</vh></v>
-<v t="ekr.20031218072017.2915"><vh>goToLastNode</vh></v>
-<v t="ekr.20051012092847.1"><vh>goToLastSibling</vh></v>
-<v t="ekr.20050711153537"><vh>goToLastVisibleNode</vh></v>
-<v t="ekr.20031218072017.2916"><vh>goToNextClone</vh></v>
-<v t="ekr.20031218072017.2917"><vh>goToNextDirtyHeadline</vh></v>
-<v t="ekr.20031218072017.2918"><vh>goToNextMarkedHeadline</vh></v>
-<v t="ekr.20031218072017.2919"><vh>goToNextSibling</vh></v>
-<v t="ekr.20031218072017.2920"><vh>goToParent</vh></v>
-<v t="ekr.20031218072017.2921"><vh>goToPrevSibling</vh></v>
-<v t="ekr.20031218072017.2994"><vh>selectThreadNext</vh></v>
-<v t="ekr.20031218072017.2993"><vh>selectThreadBack</vh></v>
-<v t="ekr.20031218072017.2995" a="M"><vh>selectVisBack</vh></v>
-<v t="ekr.20031218072017.2996" a="M"><vh>selectVisNext</vh></v>
-</v>
-<v t="ekr.20031218072017.2899"><vh>Commands</vh>
-<v t="ekr.20031218072017.2900"><vh>contractAllHeadlines</vh></v>
-<v t="ekr.20031218072017.2901"><vh>contractNode</vh></v>
-<v t="ekr.20040930064232"><vh>contractNodeOrGoToParent</vh></v>
-<v t="ekr.20031218072017.2902"><vh>contractParent</vh></v>
-<v t="ekr.20031218072017.2903"><vh>expandAllHeadlines</vh></v>
-<v t="ekr.20031218072017.2904"><vh>expandAllSubheads</vh></v>
-<v t="ekr.20031218072017.2905"><vh>expandLevel1..9</vh></v>
-<v t="ekr.20031218072017.2906"><vh>expandNextLevel</vh></v>
-<v t="ekr.20031218072017.2907"><vh>expandNode</vh></v>
-<v t="ekr.20040930064232.1"><vh>expandNodeAnd/OrGoToFirstChild</vh></v>
-<v t="ekr.20060928062431"><vh>expandOnlyAncestorsOfNode</vh></v>
-<v t="ekr.20031218072017.2908"><vh>expandPrevLevel</vh></v>
-</v>
-<v t="ekr.20031218072017.1766"><vh>Move... (Commands)</vh>
-<v t="ekr.20031218072017.1767"><vh>demote</vh></v>
-<v t="ekr.20031218072017.1768"><vh>moveOutlineDown</vh>
-<v t="ekr.20031218072017.1769"><vh>&lt;&lt; Move p down &amp; set moved if successful &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.1770"><vh>moveOutlineLeft</vh></v>
-<v t="ekr.20031218072017.1771"><vh>moveOutlineRight</vh></v>
-<v t="ekr.20031218072017.1772"><vh>moveOutlineUp</vh>
-<v t="ekr.20031218072017.1773"><vh>&lt;&lt; Move p up &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20031218072017.1774"><vh>promote</vh></v>
-</v>
-<v t="ekr.20031218072017.3982"><vh>endEditLabelCommand</vh></v>
-<v t="ekr.20070227070257"><vh>NewHeadline</vh></v>
-<v t="ekr.20031218072017.2992"><vh>c.endEditing (calls tree.endEditLabel)</vh></v>
-</v>
-</v>
-<v t="ekr.20070217114542.1"><vh>Urgent</vh></v>
-<v t="ekr.20070215183046"><vh>IronPython notes</vh></v>
-<v t="ekr.20040117181936"
-marks="ekr.20061028211424.46,ekr.20061028211424.47,ekr.20061028211424.50,ekr.20061028211424.52,ekr.20061028070057.22,ekr.20061028070057.37,ekr.20061028070057.54,ekr.20061028070057.55,"><vh>@thin ../doc/leoToDo.txt</vh></v>
-<v t="ekr.20060207133601"
-marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
-</v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
-<v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
-<v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
-<v t="ekr.20040629121554.1" a="M"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
-<v t="ekr.20040629121554.2" a="M" labels="2858060000006c6162656c737100540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571017471022e"><vh>initVersion</vh></v>
-<v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
-</v>
-<v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
-<v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
-<v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
-<v t="ekr.20041005105605.1"
-marks="ekr.20041005105605.52,ekr.20041005105605.198,"><vh>@thin leoAtFile.py</vh></v>
-<v t="ekr.20070227091955.1"><vh>@thin leoBridge.py</vh></v>
-<v t="ekr.20031218072017.2794"
-marks="ekr.20031218072017.1607,ekr.20031218072017.1896,ekr.20031218072017.2803,"><vh>@thin leoColor.py</vh></v>
-<v t="ekr.20031218072017.2810"
-marks="ekr.20040629121554.1,ekr.20040629121554.2,ekr.20031218072017.2995,ekr.20031218072017.2996,"><vh>@thin leoCommands.py</vh></v>
-<v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
-<v t="ekr.20050710142719"
-marks="ekr.20050920084036.138,"><vh>@thin leoEditCommands.py</vh></v>
-<v t="ekr.20031218072017.3018"
-marks="ekr.20060919110638.44,ekr.20040701065235.2,"><vh>@thin leoFileCommands.py</vh></v>
-<v t="ekr.20031218072017.3093"
-marks="ekr.20031218072017.3132,ekr.20031218072017.3124,"><vh>@thin leoGlobals.py</vh></v>
-<v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
-<v t="ekr.20031218072017.3320"
-marks="ekr.20031218072017.3419,ekr.20031218072017.3421,ekr.20031218072017.3426,ekr.20031218072017.3438,ekr.20040303214038,ekr.20040303163330,ekr.20040303175026.2,ekr.20040303175026.3,ekr.20040303175026.5,ekr.20040303175026.10,ekr.20040306060312,ekr.20040303175026.11,ekr.20040310062332.4,ekr.20040310062332.5,"><vh>@thin leoNodes.py</vh></v>
-<v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
-<v t="ekr.20061024060248.1"><vh>@thin leoPymacs.py</vh></v>
-<v t="ekr.20031218072017.3446"
-marks="ekr.20031218072017.3601,"><vh>@thin leoTangle.py</vh></v>
-<v t="ekr.20051104075904" annotate="285808000000616e6e6f7461746571007d71017471022e"><vh>@thin leoTest.py</vh></v>
-<v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
-<v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
-<v t="ekr.20060123151617"
-marks="ekr.20031218072017.3070,ekr.20051113110851,ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,"><vh>@thin leoFind.py</vh></v>
-<v t="ekr.20031218072017.3655"
-marks="ekr.20051026083544.2,"><vh>@thin leoFrame.py</vh></v>
-<v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
-<v t="ekr.20061031131434"><vh>@thin leoKeys.py</vh></v>
-<v t="ekr.20031218072017.3749"
-marks="ekr.20050921103736,ekr.20031218072017.3803,"><vh>@thin leoMenu.py</vh></v>
-</v>
-<v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
-<v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
-<v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
-<v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
-<v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
-<v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
-<v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
-<v t="ekr.20031218072017.4100"
-marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
-<v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
-</v>
 </v>
 </vnodes>
 <tnodes>
@@ -721,101 +583,6 @@ marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
             return s
         except:
             return None
-</t>
-<t tx="ekr.20031218072017.1329"># This is the only key handler for the body pane.
-def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-    
-    '''Update Leo after the body has been changed.'''
-    
-    body = self ; c = self.c
-    bodyCtrl = w = body.bodyCtrl
-    p = c.currentPosition()
-    insert = bodyCtrl.getInsertPoint()
-    ch = g.choose(insert==0,'',bodyCtrl.get('insert-1c'))
-    ch = g.toUnicode(ch,g.app.tkEncoding)
-    newText = w.getAllText() # Note: getAllText converts to unicode.
-    # g.trace('newText',repr(newText))
-    newSel = w.getSelectionRange()
-    if oldText is None: 
-        oldText = p.bodyString() ; changed = True
-    else:
-        changed = oldText != newText
-    # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
-    if not changed: return
-    c.undoer.setUndoTypingParams(p,undoType,
-        oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
-    p.v.setTnodeText(newText)
-    p.v.t.insertSpot = body.getInsertPoint()
-    &lt;&lt; recolor the body &gt;&gt;
-    if not c.changed: c.setChanged(True)
-    self.updateEditors()
-    &lt;&lt; redraw the screen if necessary &gt;&gt;
-</t>
-<t tx="ekr.20031218072017.1624">def createFrame (fileName):
-    
-    """Create a LeoFrame during Leo's startup process."""
-    
-    import leoGlobals as g
-
-    # Try to create a frame for the file.
-    if fileName:
-        if g.os_path_exists(fileName):
-            ok, frame = g.openWithFileName(fileName,None)
-            if ok:
-                return frame.c,frame
-
-    # Create a _new_ frame &amp; indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
-    frame.setInitialWindowGeometry()
-    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
-    frame.startupWindow = True
-    # 3/2/05: Call the 'new' hook for compatibility with plugins.
-    g.doHook("new",old_c=None,c=c,new_c=c)
-
-    # Report the failure to open the file.
-    if fileName:
-        g.es("File not found: " + fileName)
-
-    return c,frame</t>
-<t tx="ekr.20031218072017.1627">def goPrevVisitedNode (self,event=None):
-    
-    '''Select the previously visited node.'''
-    
-    c = self
-
-    while c.beadPointer &gt; 0:
-        c.beadPointer -= 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            # c.beginUpdate()
-            # try:
-                # c.frame.tree.expandAllAncestors(v)
-                # c.selectVnode(v,updateBeadList=False)
-            # finally:
-                # c.endUpdate()
-            # c.treeWantsFocusNow()
-            c.treeCommandHelper(v)
-            return
-</t>
-<t tx="ekr.20031218072017.1628">def goNextVisitedNode (self,event=None):
-    
-    '''Select the next visited node.'''
-    
-    c = self
-
-    while c.beadPointer + 1 &lt; len(c.beadList):
-        c.beadPointer += 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            # c.beginUpdate()
-            # try:
-                # c.frame.tree.expandAllAncestors(v)
-                # c.selectVnode(v,updateBeadList=False)
-            # finally:
-                # c.endUpdate()
-            # c.treeWantsFocusNow()
-            c.treeSelectHelper(v)
-            return
 </t>
 <t tx="ekr.20031218072017.1723">def createMenuEntries (self,menu,table,dynamicMenu=False):
         
@@ -885,443 +652,6 @@ else:
         elif not dynamicMenu:
             g.trace('No inverse for %s' % commandName)
 </t>
-<t tx="ekr.20031218072017.1766"></t>
-<t tx="ekr.20031218072017.1767">def demote (self,event=None):
-    
-    '''Make all following siblings children of the selected node.'''
-
-    c = self ; u = c.undoer
-    current = c.currentPosition()
-    command = 'Demote'
-    if not current or not current.hasNext():
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-
-    # Make sure all the moves will be valid.
-    for child in current.children_iter():
-        if not c.checkMoveWithParentWithWarning(child,current,True):
-            # c.treeWantsFocusNow()
-            c.treeFocusHelper()
-            return
-    c.beginUpdate()
-    try: # update...
-        c.endEditing()
-        u.beforeChangeGroup(current,command)
-        p = current.copy()
-        while p.hasNext(): # Do not use iterator here.
-            child = p.next()
-            undoData = u.beforeMoveNode(child)
-            child.moveToNthChildOf(p,p.numberOfChildren())
-            u.afterMoveNode(child,command,undoData)
-        p.expand()
-        # Even if p is an @ignore node there is no need to mark the demoted children dirty.
-        dirtyVnodeList = current.setAllAncestorAtFileNodesDirty()
-        c.setChanged(True)
-        u.afterChangeGroup(current,command,dirtyVnodeList=dirtyVnodeList)
-    finally:
-        c.selectPosition(current)  # Also sets rootPosition.
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-    c.updateSyntaxColorer(current) # Moving can change syntax coloring.
-</t>
-<t tx="ekr.20031218072017.1768">@ Moving down is more tricky than moving up; we can't move p to be a child of itself.  An important optimization:  we don't have to call checkMoveWithParentWithWarning() if the parent of the moved node remains the same.
-@c
-
-def moveOutlineDown (self,event=None):
-    
-    '''Move the selected node down.'''
-
-    c = self ; u = c.undoer ; p = c.currentPosition()
-    if not p: return
-
-    if not c.canMoveOutlineDown():
-        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-        
-    inAtIgnoreRange = p.inAtIgnoreRange()
-    # Set next to the node after which p will be moved.
-    next = p.visNext()
-    while next and p.isAncestorOf(next):
-        next = next.visNext()
-    if not next:
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-
-    sparseMove = c.config.getBool('sparse_move_outline_left')
-    c.beginUpdate()
-    try: # update...
-        c.endEditing()
-        undoData = u.beforeMoveNode(p)
-        &lt;&lt; Move p down &amp; set moved if successful &gt;&gt;
-        if moved:
-            if inAtIgnoreRange and not p.inAtIgnoreRange():
-                # The moved nodes have just become newly unignored.
-                p.setDirty() # Mark descendent @thin nodes dirty.
-            else: # No need to mark descendents dirty.
-                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
-                dirtyVnodeList.extend(dirtyVnodeList2)
-            c.setChanged(True)
-            u.afterMoveNode(p,'Move Down',undoData,dirtyVnodeList)
-    finally:
-        c.selectPosition(p) # Also sets rootPosition.
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
-</t>
-<t tx="ekr.20031218072017.1769">parent = p.parent()
-
-if next.hasChildren() and next.isExpanded():
-    # Attempt to move p to the first child of next.
-    moved = c.checkMoveWithParentWithWarning(p,next,True)
-    if moved:
-        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-        p.moveToNthChildOf(next,0)
-        
-else:
-    # Attempt to move p after next.
-    moved = c.checkMoveWithParentWithWarning(p,next.parent(),True)
-    if moved:
-        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-        p.moveAfter(next)
-        
-if moved and sparseMove and parent and not parent.isAncestorOf(p):
-    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
-    parent.contract()
-</t>
-<t tx="ekr.20031218072017.1770">def moveOutlineLeft (self,event=None):
-    
-    '''Move the selected node left if possible.'''
-    
-    c = self ; u = c.undoer ; p = c.currentPosition()
-    if not p: return
-    if not c.canMoveOutlineLeft(): # 11/4/03: Support for hoist.
-        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-        # .treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-    if not p.hasParent():
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-
-    inAtIgnoreRange = p.inAtIgnoreRange()
-    parent = p.parent()
-    sparseMove = c.config.getBool('sparse_move_outline_left')
-    c.beginUpdate()
-    try: # In update...
-        c.endEditing()
-        undoData = u.beforeMoveNode(p)
-        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-        p.moveAfter(parent)
-        if inAtIgnoreRange and not p.inAtIgnoreRange():
-            # The moved nodes have just become newly unignored.
-            p.setDirty() # Mark descendent @thin nodes dirty.
-        else: # No need to mark descendents dirty.
-            dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
-            dirtyVnodeList.extend(dirtyVnodeList2)
-        c.setChanged(True)
-        u.afterMoveNode(p,'Move Left',undoData,dirtyVnodeList)
-        if sparseMove: # New in Leo 4.4.2
-            parent.contract()
-    finally:
-        c.selectPosition(p) # Also sets rootPosition.
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-    c.updateSyntaxColorer(p) # Moving can change syntax coloring.</t>
-<t tx="ekr.20031218072017.1771">def moveOutlineRight (self,event=None):
-    
-    '''Move the selected node right if possible.'''
-    
-    c = self ; u = c.undoer ; p = c.currentPosition()
-    if not p: return
-    if not c.canMoveOutlineRight(): # 11/4/03: Support for hoist.
-        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-    if not p.hasBack:
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-    back = p.back()
-    if not c.checkMoveWithParentWithWarning(p,back,True):
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-
-    c.beginUpdate()
-    try: # update...
-        c.endEditing()
-        undoData = u.beforeMoveNode(p)
-        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-        n = back.numberOfChildren()
-        p.moveToNthChildOf(back,n)
-        # g.trace(p,p.parent())
-        # Moving an outline right can never bring it outside the range of @ignore.
-        dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
-        dirtyVnodeList.extend(dirtyVnodeList2)
-        c.setChanged(True)
-        u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
-    finally:
-        c.selectPosition(p) # Also sets root position.
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
-</t>
-<t tx="ekr.20031218072017.1772">def moveOutlineUp (self,event=None):
-    
-    '''Move the selected node up if possible.'''
-
-    c = self ; u = c.undoer ; p = c.currentPosition()
-    if not p: return
-    if not c.canMoveOutlineUp(): # Support for hoist.
-        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-    back = p.visBack()
-    if not back: return
-    inAtIgnoreRange = p.inAtIgnoreRange()
-    back2 = back.visBack()
-    if back2 and p.v in back2.v.t.vnodeList:
-        # A weird special case: just select back2.
-        c.selectPosition(back2)
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-
-    sparseMove = c.config.getBool('sparse_move_outline_left')
-    c.beginUpdate()
-    try: # update...
-        c.endEditing()
-        undoData = u.beforeMoveNode(p)
-        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-        &lt;&lt; Move p up &gt;&gt;
-        if moved:
-            if inAtIgnoreRange and not p.inAtIgnoreRange():
-                # The moved nodes have just become newly unignored.
-                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
-            else: # No need to mark descendents dirty.
-                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
-            dirtyVnodeList.extend(dirtyVnodeList2)
-            c.setChanged(True)
-            u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
-            
-    finally:
-        c.selectPosition(p) # Also sets root position.
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
-</t>
-<t tx="ekr.20031218072017.1773">if 0:
-    g.trace("visBack",back)
-    g.trace("visBack2",back2)
-    g.trace("oldParent",oldParent)
-    g.trace("back2.hasChildren",back2.hasChildren())
-    g.trace("back2.isExpanded",back2.isExpanded())
-    
-parent = p.parent()
-
-if not back2:
-    # p will be the new root node
-    moved = True
-    p.moveToRoot(oldRoot=c.rootPosition())
-
-elif back2.hasChildren() and back2.isExpanded():
-    if c.checkMoveWithParentWithWarning(p,back2,True):
-        moved = True
-        p.moveToNthChildOf(back2,0)
-
-else:
-    if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
-        moved = True
-        p.moveAfter(back2)
-
-if moved and sparseMove and parent and not parent.isAncestorOf(p):
-    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
-    parent.contract()
-</t>
-<t tx="ekr.20031218072017.1774">def promote (self,event=None):
-    
-    '''Make all children of the selected nodes siblings of the selected node.'''
-
-    c = self ; u = c.undoer ; p = c.currentPosition()
-    command = 'Promote'
-    if not p or not p.hasChildren():
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-
-    isAtIgnoreNode = p.isAtIgnoreNode()
-    inAtIgnoreRange = p.inAtIgnoreRange()
-    c.beginUpdate()
-    try: # In update...
-        c.endEditing()
-        u.beforeChangeGroup(p,command)
-        after = p
-        while p.hasChildren(): # Don't use an iterator.
-            child = p.firstChild()
-            undoData = u.beforeMoveNode(child)
-            child.moveAfter(after)
-            after = child
-            u.afterMoveNode(child,command,undoData)
-        c.setChanged(True)
-        if not inAtIgnoreRange and isAtIgnoreNode:
-            # The promoted nodes have just become newly unignored.
-            dirtyVnodeList = p.setDirty() # Mark descendent @thin nodes dirty.
-        else: # No need to mark descendents dirty.
-            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-        u.afterChangeGroup(p,command,dirtyVnodeList=dirtyVnodeList)
-        c.selectPosition(p)
-    finally:
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
-</t>
-<t tx="ekr.20031218072017.1934">def run(fileName=None,pymacs=None,*args,**keywords):
-    
-    """Initialize and run Leo"""
-    
-    __pychecker__ = '--no-argsused' # keywords not used.
-    
-    if not isValidPython(): return
-    &lt;&lt; import leoGlobals and leoApp &gt;&gt;
-    g.computeStandardDirectories()
-    if pymacs:
-        script = windowFlag = False
-    else:
-        script, windowFlag = getBatchScript() # Do early so we can compute verbose next.
-    verbose = script is None
-    g.app.setLeoID(verbose=verbose) # Force the user to set g.app.leoID.
-    &lt;&lt; import leoNodes and leoConfig &gt;&gt;
-    g.app.nodeIndices = leoNodes.nodeIndices(g.app.leoID)
-    g.app.config = leoConfig.configClass()
-    fileName = completeFileName(fileName)
-    reportDirectories(verbose)
-    # Read settings *after* setting g.app.config.
-    # Read settings *before* opening plugins.  This means if-gui has effect only in per-file settings.
-    g.app.config.readSettingsFiles(fileName,verbose)
-    g.app.setEncoding()
-    if pymacs:
-        createNullGuiWithScript(None)
-    elif script:
-        if windowFlag:
-            g.app.createTkGui() # Creates global windows.
-            g.app.gui.setScript(script)
-            sys.args = []
-        else:
-            createNullGuiWithScript(script)
-        fileName = None
-    # Load plugins. Plugins may create g.app.gui.
-    g.doHook("start1")
-    if g.app.killed: return # Support for g.app.forceShutdown.
-    # Create the default gui if needed.
-    if g.app.gui == None: g.app.createTkGui() # Creates global windows.
-    # Initialize tracing and statistics.
-    g.init_sherlock(args)
-    if g.app and g.app.use_psyco: startPsyco()
-    # Clear g.app.initing _before_ creating the frame.
-    g.app.initing = False # "idle" hooks may now call g.app.forceShutdown.
-    # Create the main frame.  Show it and all queued messages.
-    c,frame = createFrame(fileName)
-    if not frame: return
-    g.app.trace_gc          = c.config.getBool('trace_gc')
-    g.app.trace_gc_calls    = c.config.getBool('trace_gc_calls')
-    g.app.trace_gc_verbose  = c.config.getBool('trace_gc_verbose')
-    if g.app.disableSave:
-        g.es("disabling save commands",color="red")
-    g.app.writeWaitingLog()
-    p = c.currentPosition()
-    g.doHook("start2",c=c,p=p,v=p,fileName=fileName)
-    if c.config.getBool('allow_idle_time_hook'):
-        g.enableIdleTimeHook()
-    if not fileName:
-        c.redraw_now()
-    c.bodyWantsFocus()
-    g.app.gui.runMainLoop()
-</t>
-<t tx="ekr.20031218072017.1936">def isValidPython():
-    
-    if sys.platform == 'cli':
-        return True
-
-    message = """\
-Leo requires Python 2.2.1 or higher.
-You may download Python from http://python.org/download/
-"""
-    try:
-        # This will fail if True/False are not defined.
-        import leoGlobals as g
-    except ImportError:
-        print "isValidPython: can not import leoGlobals"
-        return 0
-    except:
-        print "isValidPytyhon: unexpected exception: import leoGlobals.py as g"
-        import traceback ; traceback.print_exc()
-        return 0
-    try:
-        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
-        ok = g.CheckVersion(version,'2.2.1')
-        if not ok:
-            print message
-            g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
-        return ok
-    except:
-        print "isValidPython: unexpected exception: g.CheckVersion"
-        import traceback ; traceback.print_exc()
-        return 0</t>
-<t tx="ekr.20031218072017.1938">def createNullGuiWithScript (script):
-    
-    import leoGlobals as g
-    import leoGui
-    
-    g.app.batchMode = True
-    g.app.gui = leoGui.nullGui("nullGui")
-    if not g.app.root:
-        g.app.root = g.app.gui.createRootWindow()
-    g.app.gui.finishCreate()
-    g.app.gui.setScript(script)
-</t>
-<t tx="ekr.20031218072017.1939">def getBatchScript ():
-    
-    import leoGlobals as g
-    windowFlag = False
-    
-    name = None ; i = 1 # Skip the dummy first arg.
-    while i + 1 &lt; len(sys.argv):
-        arg = sys.argv[i].strip().lower()
-        if arg in ("--script","-script"):
-            name = sys.argv[i+1].strip() ; break
-        if arg in ("--script-window","-script-window"):
-            name = sys.argv[i+1].strip() ; windowFlag = True ; break
-        i += 1
-
-    if not name:
-        return None, windowFlag
-    name = g.os_path_join(g.app.loadDir,name)
-    try:
-        f = None
-        try:
-            f = open(name,'r')
-            script = f.read()
-            # g.trace("script",script)
-        except IOError:
-            g.es_print("can not open script file: " + name, color="red")
-            script = None
-    finally:
-        if f: f.close()
-        return script, windowFlag
-</t>
 <t tx="ekr.20031218072017.1944">def removeAllImages (self):
     
     for photo,image,line_index,i in self.image_references:
@@ -1337,74 +667,6 @@ You may download Python from http://python.org/download/
     
     self.image_references = []
 </t>
-<t tx="ekr.20031218072017.2052">def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
-    
-    """Create a Leo Frame for the indicated fileName if the file exists."""
-
-    if not fileName or len(fileName) == 0:
-        return False, None
-        
-    def munge(name):
-        name = name or ''
-        return g.os_path_normpath(name).lower()
-
-    # Create a full, normalized, Unicode path name, preserving case.
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
-
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    try:
-        if old_c:
-            # New in 4.4: We must read the file *twice*.
-            # The first time sets settings for the later call to c.finishCreate.
-            # g.trace('***** prereading',fileName)
-            c2 = g.app.config.openSettingsFile(fileName)
-            if c2: g.app.config.updateSettings(c2,localFlag=True)
-            g.doHook('open0')
-            
-        # Open the file in binary mode to allow 0x1a in bodies &amp; headlines.
-        theFile = open(fileName,'rb')
-        c,frame = app.newLeoCommanderAndFrame(fileName)
-        frame.log.enable(enableLog)
-        g.app.writeWaitingLog() # New in 4.3: write queued log first.
-        c.beginUpdate()
-        try:
-            if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-                c.setLog()
-                app.lockLog()
-                frame.c.fileCommands.open(
-                    theFile,fileName,
-                    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-                app.unlockLog()
-                for frame in g.app.windowList:
-                    # The recent files list has been updated by menu.updateRecentFiles.
-                    frame.c.config.setRecentFiles(g.app.config.recentFiles)
-            # Bug fix in 4.4.
-            frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-            g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-        finally:
-            c.endUpdate()
-            k = c.k
-            k and k.setInputState(k.unboundKeyAction)
-            if c.config.getBool('outline_pane_has_initial_focus'):
-                c.treeWantsFocusNow()
-            else:
-                c.bodyWantsFocusNow()
-        return True, frame
-    except IOError:
-        # Do not use string + here: it will fail for non-ascii strings!
-        g.es("can not open: %s" % (fileName), color="blue")
-        return False, None
-    except Exception:
-        g.es("exceptions opening: %s" % (fileName),color="red")
-        g.es_exception()
-        return False, None</t>
 <t tx="ekr.20031218072017.2406">@tabwidth -4
 @pagewidth 80
 
@@ -1442,492 +704,6 @@ if 0: # Set to 1 for lint-like testing.
         print ; print "Warning (in leo.py): pychecker.checker running..." ; print
     except:
         print ; print 'Can not import pychecker' ; print
-</t>
-<t tx="ekr.20031218072017.2899"></t>
-<t tx="ekr.20031218072017.2900">def contractAllHeadlines (self,event=None):
-    
-    '''Contract all nodes in the outline.'''
-
-    c = self
-    
-    c.beginUpdate()
-    try: # update...
-        for p in c.allNodes_iter():
-            p.contract()
-        # Select the topmost ancestor of the presently selected node.
-        p = c.currentPosition()
-        while p and p.hasParent():
-            p.moveToParent()
-        c.selectVnode(p)
-    finally:
-        c.endUpdate()
-    
-    # c.treeWantsFocusNow()
-    c.treeFocusHelper()
-
-    c.expansionLevel = 1 # Reset expansion level.
-</t>
-<t tx="ekr.20031218072017.2901">def contractNode (self,event=None):
-    
-    '''Contract the presently selected node.'''
-    
-    c = self ; v = c.currentVnode()
-    
-    c.beginUpdate()
-    try:
-        v.contract()
-    finally:
-        c.endUpdate()
-    
-    # c.treeWantsFocusNow()
-    c.treeFocusHelper()
-</t>
-<t tx="ekr.20031218072017.2902">def contractParent (self,event=None):
-    
-    '''Contract the parent of the presently selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    # v = c.currentVnode()
-    # parent = v.parent()
-    # if not parent: return
-    # c.beginUpdate()
-    # try:
-        # c.selectVnode(parent)
-        # parent.contract()
-    # finally:
-        # c.endUpdate()
-        # c.treeWantsFocusNow()
-        
-    c.treeSelectHelper(p and p.parent())
-</t>
-<t tx="ekr.20031218072017.2903">def expandAllHeadlines (self,event=None):
-    
-    '''Expand all headlines.
-    Warning: this can take a long time for large outlines.'''
-
-    c = self ; v = root = c.rootVnode()
-    c.beginUpdate()
-    try:
-        while v:
-            c.expandSubtree(v)
-            v = v.next()
-        c.selectVnode(root)
-    finally:
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-    c.expansionLevel = 0 # Reset expansion level.
-</t>
-<t tx="ekr.20031218072017.2904">def expandAllSubheads (self,event=None):
-    
-    '''Expand all children of the presently selected node.'''
-
-    c = self ; v = c.currentVnode()
-    if not v: return
-
-    child = v.firstChild()
-    c.beginUpdate()
-    try:
-        c.expandSubtree(v)
-        while child:
-            c.expandSubtree(child)
-            child = child.next()
-        c.selectVnode(v)
-    finally:
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-</t>
-<t tx="ekr.20031218072017.2905">def expandLevel1 (self,event=None):
-    '''Expand the outline to level 1'''
-    self.expandToLevel(1)
-
-def expandLevel2 (self,event=None):
-    '''Expand the outline to level 2'''
-    self.expandToLevel(2)
-
-def expandLevel3 (self,event=None):
-    '''Expand the outline to level 3'''
-    self.expandToLevel(3)
-
-def expandLevel4 (self,event=None):
-    '''Expand the outline to level 4'''
-    self.expandToLevel(4)
-
-def expandLevel5 (self,event=None):
-    '''Expand the outline to level 5'''
-    self.expandToLevel(5)
-
-def expandLevel6 (self,event=None):
-    '''Expand the outline to level 6'''
-    self.expandToLevel(6)
-
-def expandLevel7 (self,event=None):
-    '''Expand the outline to level 7'''
-    self.expandToLevel(7)
-
-def expandLevel8 (self,event=None):
-    '''Expand the outline to level 8'''
-    self.expandToLevel(8)
-
-def expandLevel9 (self,event=None):
-    '''Expand the outline to level 9'''
-    self.expandToLevel(9)
-</t>
-<t tx="ekr.20031218072017.2906">def expandNextLevel (self,event=None):
-    
-    '''Increase the expansion level of the outline and
-    Expand all nodes at that level or lower.'''
-
-    c = self ; v = c.currentVnode()
-    
-    # 1/31/02: Expansion levels are now local to a particular tree.
-    if c.expansionNode != v:
-        c.expansionLevel = 1
-        c.expansionNode = v
-        
-    self.expandToLevel(c.expansionLevel + 1)
-</t>
-<t tx="ekr.20031218072017.2907">def expandNode (self,event=None):
-    
-    '''Expand the presently selected node.'''
-    
-    c = self ; v = c.currentVnode()
-    
-    c.beginUpdate()
-    try:
-        v.expand()
-    finally:
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()</t>
-<t tx="ekr.20031218072017.2908">def expandPrevLevel (self,event=None):
-    
-    '''Decrease the expansion level of the outline and
-    Expand all nodes at that level or lower.'''
-
-    c = self ; v = c.currentVnode()
-    
-    # 1/31/02: Expansion levels are now local to a particular tree.
-    if c.expansionNode != v:
-        c.expansionLevel = 1
-        c.expansionNode = v
-        
-    self.expandToLevel(max(1,c.expansionLevel - 1))
-</t>
-<t tx="ekr.20031218072017.2913"></t>
-<t tx="ekr.20031218072017.2914">def goToFirstNode (self,event=None):
-    
-    '''Select the first node of the entire outline.'''
-    
-    c = self ; p = c.rootPosition()
-    # if p:
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(p)
-        # finally:
-            # c.endUpdate()
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p)
-</t>
-<t tx="ekr.20031218072017.2915">def goToLastNode (self,event=None):
-    
-    '''Select the last node in the selected tree.'''
-    
-    c = self ; p = c.rootPosition()
-    while p and p.hasThreadNext():
-        p.moveToThreadNext()
-
-    # if p:
-        # c.beginUpdate()
-        # try:
-            # c.frame.tree.expandAllAncestors(p)
-            # c.selectVnode(p)
-        # finally:
-            # c.endUpdate()
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p)
-</t>
-<t tx="ekr.20031218072017.2916">def goToNextClone (self,event=None):
-    
-    '''Select the next node that is a clone of the selected node.'''
-
-    c = self ; current = c.currentVnode()
-    if not current: return
-    if not current.isCloned(): return
-
-    v = current.threadNext()
-    while v and v.t != current.t:
-        v = v.threadNext()
-        
-    if not v:
-        # Wrap around.
-        v = c.rootVnode()
-        while v and v != current and v.t != current.t:
-            v = v.threadNext()
-
-    # if v:
-        # c.beginUpdate()
-        # try:
-            # c.endEditing()
-            # c.selectVnode(v)
-        # finally:
-            # c.endUpdate()
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(v)
-</t>
-<t tx="ekr.20031218072017.2917">def goToNextDirtyHeadline (self,event=None):
-    
-    '''Select the node that is marked as changed.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-
-    p.moveToThreadNext()
-    while p and not p.isDirty():
-        p.moveToThreadNext()
-
-    if not p:
-        # Wrap around.
-        p = c.rootPosition()
-        while p and not p.isDirty():
-            p.moveToThreadNext()
-
-    # if p:
-        # c.beginUpdate()
-        # try:
-            # c.endEditing()
-            # c.selectPosition(p)
-        # finally:
-            # c.endUpdate()
-    if not p:
-        g.es("done",color="blue")
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p)
-</t>
-<t tx="ekr.20031218072017.2918">def goToNextMarkedHeadline (self,event=None):
-    
-    '''Select the next marked node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-
-    p.moveToThreadNext()
-    while p and not p.isMarked():
-        p.moveToThreadNext()
-
-    # if p:
-        # c.beginUpdate()
-        # try:
-            # c.endEditing()
-            # c.selectPosition(p)
-        # finally:
-            # c.endUpdate()
-    if not p:
-        g.es("done",color="blue")
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p)
-</t>
-<t tx="ekr.20031218072017.2919">def goToNextSibling (self,event=None):
-    
-    '''Select the next sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    # if not p: return
-    # next = p.next()
-    # if next:
-        # c.beginUpdate()
-        # try:
-            # c.selectPosition(next)
-        # finally:
-            # c.endUpdate()
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p and p.next())
-</t>
-<t tx="ekr.20031218072017.2920">def goToParent (self,event=None):
-    
-    '''Select the parent of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    # if not p: return
-    # p = v.parent()
-    # if p:
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(p)
-        # finally:
-            # c.endUpdate()
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p and p.parent())
-</t>
-<t tx="ekr.20031218072017.2921">def goToPrevSibling (self,event=None):
-    
-    '''Select the previous sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    # if not p: return
-    # v = c.currentVnode()
-    # if not v: return
-    # back = v.back()
-    # if back:
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(back)
-        # finally:
-            # c.endUpdate()
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p and p.back())
-</t>
-<t tx="ekr.20031218072017.2992"># Ends the editing in the outline.
-
-def endEditing(self):
-    
-    c = self
-    c.frame.tree.endEditLabel()
-</t>
-<t tx="ekr.20031218072017.2993">def selectThreadBack (self,event=None):
-    
-    '''Select the node preceding the selected node in outline order.'''
-
-    c = self ; p = c.currentPosition()
-    
-    # ; current = c.currentVnode()
-    # if not current: return
-    
-    # v = current.threadBack()
-    # if v:
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(v)
-        # finally:
-            # c.endUpdate()
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p and p.threadBack())
-</t>
-<t tx="ekr.20031218072017.2994">def selectThreadNext (self,event=None):
-    
-    '''Select the node following the selected node in outline order.'''
-
-    c = self ; p = c.currentPosition()
-    
-    # current = c.currentPosition()
-    # if not current: return
-
-    # p = current.threadNext()
-    # if p:
-        # c.beginUpdate()
-        # try:
-            # c.selectPosition(p)
-        # finally:
-            # c.endUpdate()
-    # c.treeWantsFocusNow()
-    
-    c.treeSelectHelper(p and p.threadNext())</t>
-<t tx="ekr.20031218072017.2995"># This has an up arrow for a control key.
-
-def selectVisBack (self,event=None):
-    
-    '''Select the visible node preceding the presently selected node.'''
-
-    c = self ; current = c.currentPosition()
-    
-    # if not current: return
-    # p = current.visBack()
-    # if p:
-        # redraw = not p.isVisible()
-        # if not redraw: c.frame.tree.setSelectedLabelState(current)
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(p)
-        # finally:
-            # c.endUpdate(redraw)
-            
-    p = current and current.visBack()
-    if p:
-        redraw = not p.isVisible()
-        if not redraw: c.frame.tree.setSelectedLabelState(current)
-    else:
-        redraw = True
-    # c.treeWantsFocusNow(p)
-    c.treeSelectHelper(p,redraw=redraw)
-</t>
-<t tx="ekr.20031218072017.2996">def selectVisNext (self,event=None):
-    
-    '''Select the visible node following the presently selected node.'''
-
-    c = self ; current = c.currentPosition()
-    
-    # current = c.currentPosition()
-    # if not current: return
-    # p = current.visNext()
-    # if p:
-        # redraw = not p.isVisible()
-        # if not redraw: c.frame.tree.setSelectedLabelState(current)
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(p)
-        # finally:
-            # c.endUpdate(redraw)
-
-    # c.treeWantsFocusNow()
-    p = current and current.visNext()
-    if p:
-        redraw = not p.isVisible()
-        if not redraw: c.frame.tree.setSelectedLabelState(current)
-    else:
-        redraw = True
-    c.treeSelectHelper(p,redraw=redraw)</t>
-<t tx="ekr.20031218072017.3440">def loadHandlers(tag):
-
-    """Load all enabled plugins from the plugins directory"""
-
-    fileName = "pluginsManager.txt"
-    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
-    files = glob.glob(g.os_path_join(plugins_path,"*.py"))
-    files = [g.os_path_abspath(theFile) for theFile in files]
-    s = g.app.config.getEnabledPlugins()
-    theConfigFile = g.app.config.enabledPluginsFileName
-    # g.trace('len(s)',s and len(s) or 0)
-    if s:
-        g.es('@enabled-plugins found in %s' % (theConfigFile),color='blue')
-        enabled_files = getEnabledFiles(s,plugins_path)
-    else:
-        for theDir,place in (
-            (g.app.homeDir,'HOME'),
-            (plugins_path,'leo/config')
-        ):
-            manager_path = g.os_path_join(theDir,fileName)
-            if g.os_path_exists(manager_path):
-                g.es('%s: %s' % (fileName,theDir),color='blue')
-                break
-        else: g.es('%s not found. No plugins will be loaded' % fileName)
-        if g.os_path_exists(manager_path):
-            &lt;&lt; set enabled_files from pluginsManager.txt &gt;&gt;
-        else:  return
-    
-    # Load plugins in the order they appear in the enabled_files list.
-    if files and enabled_files:
-        for theFile in enabled_files:
-            if theFile in files:
-                loadOnePlugin(theFile)
-                
-    # Note: g.plugin_signon adds module names to g.app.loadedPlugins 
-    if g.app.loadedPlugins:
-        g.es("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
-</t>
-<t tx="ekr.20031218072017.3441">try:
-    # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
-    theFile = open(manager_path)
-    ###lines = theFile.readlines()
-    s = theFile.read()
-    enabled_files = getEnabledFiles(s,plugins_path)
-    theFile.close()
-except IOError:
-    g.es("Can not open: " + manager_path)
-    # Don't import leoTest initially.  It causes problems.
-    import leoTest ; leoTest.fail()
-    return
 </t>
 <t tx="ekr.20031218072017.3625">&lt;&lt; about gui classes and gui plugins &gt;&gt;
 </t>
@@ -1998,26 +774,6 @@ def setYScrollPosition (self,scrollPosition):
         w.setWidth(width)
 
     p.setDirty()</t>
-<t tx="ekr.20040411081633">def startPsyco ():
-    
-    import leoGlobals as g
-
-    try:
-        import psyco
-        if 0:
-            theFile = r"c:\prog\test\psycoLog.txt"
-            g.es("psyco now logging to",theFile,color="blue")
-            psyco.log(theFile)
-            psyco.profile()
-        psyco.full()
-        g.es("psyco now running",color="blue")
-    except ImportError:
-        g.app.use_psyco = False
-    except:
-        print "unexpected exception importing psyco"
-        g.es_exception()
-        g.app.use_psyco = False
-</t>
 <t tx="ekr.20040629121554">def getBuildNumber(self):
     c = self
     return c.ver[10:-1] # Strip off "(dollar)Revision" and the trailing "$"
@@ -2093,9 +849,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # if self.trace_edit and not g.app.unitTesting:
-            # if changed:
-                # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
@@ -2161,7 +915,7 @@ s = g.toUnicode(s or '',g.app.tkEncoding)
 def select (self,p,updateBeadList=True,scroll=True):
     
     '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
-    
+
     c = self.c ; frame = c.frame
     body = w = frame.bodyCtrl
     old_p = c.currentPosition()
@@ -2204,6 +958,9 @@ def select (self,p,updateBeadList=True,scroll=True):
     return 'break' # Supresses unwanted selection.
 </t>
 <t tx="ekr.20040803072955.129"># Remember the position of the scrollbar before making any changes.
+if not body: g.trace('no body!','c.frame',c.frame,g.callers())
+
+
 yview = body.getYScrollPosition()
 insertSpot = c.frame.body.getInsertPoint()
 
@@ -2298,640 +1055,6 @@ else:
         
 setNormalLabelState = setEditLabelState # For compatibility.
 </t>
-<t tx="ekr.20040930064232">def contractNodeOrGoToParent (self,event=None):
-    
-    """Simulate the left Arrow Key in folder of Windows Explorer."""
-
-    c = self ; p = c.currentPosition()
- 
-    if p.hasChildren() and p.isExpanded():
-        c.contractNode()
-    elif p.hasParent():
-        c.goToParent()
-
-    c.treeFocusHelper()</t>
-<t tx="ekr.20040930064232.1">def expandNodeAndGoToFirstChild (self,event=None):
-    
-    """If a node has children, expand it if needed and go to the first child."""
-
-    c = self ; p = c.currentPosition()
-    if not p.hasChildren():
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-        
-    c.beginUpdate()
-    try:
-        # Bug fix: 2/22/07: put this inside the begin/endUpdate so only one redraw happens.
-        if not p.isExpanded():
-            c.expandNode()
-        c.selectVnode(p.firstChild())
-    finally:
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        
-def expandNodeOrGoToFirstChild (self,event=None):
-    
-    """Simulate the Right Arrow Key in folder of Windows Explorer."""
-
-    c = self ; p = c.currentPosition()
-    if not p.hasChildren():
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-
-    if not p.isExpanded():
-        c.expandNode()
-    else:
-        c.beginUpdate()
-        try:
-            c.selectVnode(p.firstChild())
-        finally:
-            c.endUpdate()
-    # c.treeWantsFocusNow()
-    c.treeFocusHelper()
-</t>
-<t tx="ekr.20041001161108">def doPlugins(tag,keywords):
-    
-    if g.app.killed:
-        return
-        
-    # g.trace(tag)
-    if tag in ('start1','open0'):
-        loadHandlers(tag)
-
-    return doHandlersForTag(tag,keywords)
-</t>
-<t tx="ekr.20041113113140">def loadOnePlugin (moduleOrFileName, verbose=False):
-    
-    global loadedModules,loadingModuleNameStack
-    
-    # g.trace(moduleOrFileName) # ,g.callers())
-    
-    if moduleOrFileName.endswith('.py'):
-        moduleName = moduleOrFileName [:-3]
-    else:
-        moduleName = moduleOrFileName
-    moduleName = g.shortFileName(moduleName)
-
-    if isLoaded(moduleName):
-        module = loadedModules.get(moduleName)
-        if verbose:
-            s = 'plugin %s already loaded' % moduleName
-            g.es_print(s,color="blue")
-        return module
-
-    plugins_path = g.os_path_join(g.app.loadDir,"..","plugins")
-    moduleName = g.toUnicode(moduleName,g.app.tkEncoding)
-    
-    # This import will typically result in calls to registerHandler.
-    # if the plugin does _not_ use the init top-level function.
-    loadingModuleNameStack.append(moduleName)
-    result = g.importFromPath(moduleName,plugins_path)
-    loadingModuleNameStack.pop()
-
-    if result:
-        loadingModuleNameStack.append(moduleName)
-        if hasattr(result,'init'):
-            try:
-                # Indicate success only if init_result is True.
-                init_result = result.init()
-                if init_result:
-                    loadedModules[moduleName] = result
-                else:
-                    g.es_print('loadOnePlugin: loading module %s failed' % (moduleName),color="red")
-                    result = None
-            except Exception:
-                g.es('Exception loading plugin',color='red')
-                g.es_exception()
-                result = None
-        else:
-            # No top-level init function.
-            # Guess that the module was loaded correctly,
-            # but do *not* load the plugin if we are unit testing.
-            g.trace('no init()',moduleName)
-            if g.app.unitTesting:
-                result = None
-                loadedModules[moduleName] = None
-            else:
-                loadedModules[moduleName] = result
-        loadingModuleNameStack.pop()
-        
-    if result is None:
-        s = 'can not load enabled %s plugin' % moduleName
-        g.es_print(s,color="red")
-    elif verbose:
-        s = 'loaded %s plugin' % moduleName
-        g.es_print(s,color="blue")
-    
-    return result</t>
-<t tx="ekr.20041117062717.11">def getRecentFiles (self):
-
-    return self.recentFiles
-</t>
-<t tx="ekr.20041117062717.13">def getFontFromParams(self,c,family,size,slant,weight,defaultSize=12):
-
-    """Compute a font from font parameters.
-
-    Arguments are the names of settings to be use.
-    We default to size=12, slant="roman", weight="normal".
-
-    We return None if there is no family setting so we can use system default fonts."""
-
-    family = self.get(c,family,"family")
-    if family in (None,""):
-        family = self.defaultFontFamily
-
-    size = self.get(c,size,"size")
-    if size in (None,0): size = defaultSize
-    
-    slant = self.get(c,slant,"slant")
-    if slant in (None,""): slant = "roman"
-
-    weight = self.get(c,weight,"weight")
-    if weight in (None,""): weight = "normal"
-    
-    # g.trace(g.callers(3),family,size,slant,weight,g.shortFileName(c.mFileName))
-    
-    return g.app.gui.getFontFromParams(family,size,slant,weight)
-</t>
-<t tx="ekr.20041117062717.14">def getShortcut (self,c,shortcutName):
-    
-    '''Return rawKey,accel for shortcutName'''
-    
-    key = c.frame.menu.canonicalizeMenuName(shortcutName)
-    key = key.replace('&amp;','') # Allow '&amp;' in names.
-    
-    bunchList = self.get(c,key,"shortcut")
-    if bunchList:
-        bunchList = [bunch for bunch in bunchList
-            if bunch.val and bunch.val.lower() != 'none']
-        return key,bunchList
-    else:
-        return key,[]
-</t>
-<t tx="ekr.20041117062717.17"># Sets ivars of c that can be overridden by leoConfig.txt
-
-def setCommandsIvars (self,c):
-
-    data = (
-        ("default_tangle_directory","tangle_directory","directory"),
-        ("default_target_language","target_language","language"),
-        ("output_doc_chunks","output_doc_flag","bool"),
-        ("page_width","page_width","int"),
-        ("run_tangle_done.py","tangle_batch_flag","bool"),
-        ("run_untangle_done.py","untangle_batch_flag","bool"),
-        ("tab_width","tab_width","int"),
-        ("tangle_outputs_header","use_header_flag","bool"),
-    )
-    
-    for setting,ivar,theType in data:
-        val = g.app.config.get(c,setting,theType)
-        if val is None:
-            if not hasattr(c,setting):
-                setattr(c,setting,None)
-                # g.trace(setting,None)
-        else:
-            setattr(c,setting,val)
-            # g.trace(setting,val)
-</t>
-<t tx="ekr.20041117081009"></t>
-<t tx="ekr.20041117081009.3">def getBool (self,c,setting,default=None):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-    
-    val = self.get(c,setting,"bool")
-    
-    if val in (True,False):
-        return val
-    else:
-        return default
-</t>
-<t tx="ekr.20041117081009.4">def getString (self,c,setting):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-
-    return self.get(c,setting,"string")
-</t>
-<t tx="ekr.20041117081513">def getInt (self,c,setting):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-    
-    val = self.get(c,setting,"int")
-    try:
-        val = int(val)
-        return val
-    except TypeError:
-        return None
-</t>
-<t tx="ekr.20041117082135">def getFloat (self,c,setting):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-    
-    val = self.get(c,setting,"float")
-    try:
-        val = float(val)
-        return val
-    except TypeError:
-        return None
-</t>
-<t tx="ekr.20041117083141">def get (self,c,setting,kind):
-    
-    """Get the setting and make sure its type matches the expected type."""
-    
-    if c:
-        d = self.localOptionsDict.get(c.hash())
-        if d:
-            val,junk = self.getValFromDict(d,setting,kind)
-            if val is not None:
-                # g.trace(c.shortFileName(),setting,val)
-                return val
-                
-    for d in self.localOptionsList:
-        val,junk = self.getValFromDict(d,setting,kind)
-        if val is not None:
-            kind = d.get('_hash','&lt;no hash&gt;')
-            # g.trace(kind,setting,val)
-            return val
-
-    for d in self.dictList:
-        val,junk = self.getValFromDict(d,setting,kind)
-        if val is not None:
-            kind = d.get('_hash','&lt;no hash&gt;')
-            # g.trace(kind,setting,val)
-            return val
-
-    return None
-</t>
-<t tx="ekr.20041117085625">def openSettingsFile (self,path):
-    
-    try:
-        # Open the file in binary mode to allow 0x1a in bodies &amp; headlines.
-        theFile = open(path,'rb')
-    except IOError:
-        g.es("can not open: " + path, color="blue")
-        return None
-        
-    # Similar to g.openWithFileName except it uses a null gui.
-    # Changing g.app.gui here is a major hack.
-    oldGui = g.app.gui
-    g.app.gui = leoGui.nullGui("nullGui")
-    c,frame = g.app.newLeoCommanderAndFrame(path,updateRecentFiles=False)
-    frame.log.enable(False)
-    c.setLog()
-    g.app.lockLog()
-    ok = frame.c.fileCommands.open(
-        theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
-    g.app.unlockLog()
-    frame.openDirectory = g.os_path_dirname(path)
-    g.app.gui = oldGui
-    return ok and c
-</t>
-<t tx="ekr.20041117093009.1">def getDirectory (self,c,setting):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-    
-    theDir = self.getString(c,setting)
-
-    if g.os_path_exists(theDir) and g.os_path_isdir(theDir):
-         return theDir
-    else:
-        return None
-</t>
-<t tx="ekr.20041117093009.2">def getLanguage (self,c,setting):
-    
-    """Return the setting whose value should be a language known to Leo."""
-    
-    language = self.getString(c,setting)
-    # g.trace(setting,language)
-    
-    return language
-</t>
-<t tx="ekr.20041118053731">def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
-    return g.app.config.getFontFromParams(self.c,
-        family,size,slant,weight,defaultSize=defaultSize)
-
-def getRecentFiles (self):
-    return g.app.config.getRecentFiles()
-
-def get(self,setting,theType):
-    return g.app.config.get(self.c,setting,theType)
-
-def getAbbrevDict(self):         return g.app.config.getAbbrevDict(self.c)
-def getBool      (self,setting): return g.app.config.getBool     (self.c,setting)
-def getColor     (self,setting): return g.app.config.getColor    (self.c,setting)
-def getDirectory (self,setting): return g.app.config.getDirectory(self.c,setting)
-def getInt       (self,setting): return g.app.config.getInt      (self.c,setting)
-def getFloat     (self,setting): return g.app.config.getFloat    (self.c,setting)
-def getFontDict  (self,setting): return g.app.config.getFontDict (self.c,setting)
-def getLanguage  (self,setting): return g.app.config.getLanguage (self.c,setting)
-def getRatio     (self,setting): return g.app.config.getRatio    (self.c,setting)
-def getShortcut  (self,setting,):return g.app.config.getShortcut (self.c,setting)
-def getString    (self,setting): return g.app.config.getString   (self.c,setting)
-</t>
-<t tx="ekr.20041120064303">def readSettingsFiles (self,fileName,verbose=True):
-        
-    seen = []
-    self.write_recent_files_as_needed = False # Will be set later.
-    &lt;&lt; define localDirectory, localConfigFile &amp; myLocalConfigFile &gt;&gt;
-
-    # Init settings from leoSettings.leo and myLeoSettings.leo files.
-    for path,localFlag in (
-        (self.globalConfigFile,False),
-        (self.homeFile,False),
-        (localConfigFile,False),
-        (self.myGlobalConfigFile,False),
-        (self.myHomeConfigFile,False),
-        (myLocalConfigFile,False),
-        (fileName,True),
-    ):
-        if path and path.lower() not in seen:
-            seen.append(path.lower())
-            if verbose:
-                g.es_print('reading settings in %s' % path)
-            c = self.openSettingsFile(path)
-            if c:
-                self.updateSettings(c,localFlag)
-                g.app.destroyWindow(c.frame)
-                self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
-    self.readRecentFiles(localConfigFile)
-    self.inited = True
-    self.setIvarsFromSettings(None)</t>
-<t tx="ekr.20041120074536">def settingsRoot (self,c):
-    
-    # g.trace(c,c.rootPosition())
-
-    for p in c.allNodes_iter():
-        if p.headString().rstrip() == "@settings":
-            return p.copy()
-    else:
-        return c.nullPosition()
-</t>
-<t tx="ekr.20041120094940"></t>
-<t tx="ekr.20041120094940.1">def doBool (self,p,kind,name,val):
-
-    if val in ('True','true','1'):
-        self.set(p,kind,name,True)
-    elif val in ('False','false','0'):
-        self.set(p,kind,name,False)
-    else:
-        self.valueError(p,kind,name,val)
-</t>
-<t tx="ekr.20041120094940.2">def doColor (self,p,kind,name,val):
-    
-    # At present no checking is done.
-    val = val.lstrip('"').rstrip('"')
-    val = val.lstrip("'").rstrip("'")
-
-    self.set(p,kind,name,val)
-</t>
-<t tx="ekr.20041120094940.3">def doDirectory (self,p,kind,name,val):
-    
-    # At present no checking is done.
-    self.set(p,kind,name,val)
-
-doPath = doDirectory
-</t>
-<t tx="ekr.20041120094940.4">def doFont (self,p,kind,name,val):
-    
-    __pychecker__ = '--no-argsused' # kind not used.
-    
-    d = self.parseFont(p)
-    
-    # Set individual settings.
-    for key in ('family','size','slant','weight'):
-        data = d.get(key)
-        if data is not None:
-            name,val = data
-            setKind = key
-            self.set(p,setKind,name,val)
-</t>
-<t tx="ekr.20041120094940.5">def doInt (self,p,kind,name,val):
-    
-    try:
-        val = int(val)
-        self.set(p,kind,name,val)
-    except ValueError:
-        self.valueError(p,kind,name,val)
-</t>
-<t tx="ekr.20041120094940.6">def doFloat (self,p,kind,name,val):
-    
-    try:
-        val = float(val)
-        self.set(p,kind,name,val)
-    except ValueError:
-        self.valueError(p,kind,name,val)
-</t>
-<t tx="ekr.20041120094940.8">def doStrings (self,p,kind,name,val):
-    
-    '''We expect one of the following:
-    @strings aName[val1,val2...]=val
-    @strings [val1,val2,...]aName=val'''
-    
-    name = name.strip()
-    i = name.find('[')
-    j = name.find(']')
-
-    if -1 &lt; i &lt; j:
-        items = name[i+1:j]
-        items = items.split(',')
-        items = [item.strip() for item in items]
-        name = name[:i]+name[j+1:].strip()
-        kind = "strings[%s]" % (','.join(items))
-        # g.trace(repr(kind),repr(name),val)
-
-        # At present no checking is done.
-        self.set(p,kind,name,val)
-</t>
-<t tx="ekr.20041120103933">def doIf(self,p,kind,name,val):
-    
-    __pychecker__ = '--no-argsused' # args not used.
-
-    g.trace("'if' not supported yet")
-    return None
-</t>
-<t tx="ekr.20041120104215">def doIfPlatform (self,p,kind,name,val):
-    
-    __pychecker__ = '--no-argsused' # args not used.
-    
-    # g.trace(sys.platform,repr(name))
-
-    if sys.platform.lower() == name.lower():
-        return None
-    else:
-        return "skip"
-</t>
-<t tx="ekr.20041120104215.1">def doIgnore(self,p,kind,name,val):
-
-    return "skip"
-</t>
-<t tx="ekr.20041120104215.2">def doPage(self,p,kind,name,val):
-
-    pass # Ignore @page this while parsing settings.
-</t>
-<t tx="ekr.20041120105609">def doShortcuts(self,p,kind,name,val,s=None):
-    
-    __pychecker__ = '--no-argsused' # kind,val.
-    
-    # g.trace(self.c.fileName(),name)
-
-    c = self.c ; d = self.shortcutsDict
-    if s is None: s = p.bodyString()
-    lines = g.splitLines(s)
-    for line in lines:
-        line = line.strip()
-        if line and not g.match(line,0,'#'):
-            name,bunch = self.parseShortcutLine(line)
-            if bunch is not None:
-                # A regular shortcut.
-                bunchList = d.get(name,[])
-                bunchList.append(bunch)
-                d [name] = bunchList
-                self.set(p,"shortcut",name,bunchList)
-                self.setShortcut(name,bunchList)
-</t>
-<t tx="ekr.20041121125416">@ Alas, @if-gui can't be made to work. The problem is that plugins can set
-g.app.gui, but plugins need settings so the leoSettings.leo files must be parsed
-before g.app.gui.guiName() is known.
-@c
-
-if 0:
-
-    def doIfGui (self,p,kind,name,val):
-        
-        __pychecker__ = '--no-argsused' # args not used.
-        
-        # g.trace(repr(name))
-        
-        if not g.app.gui or not g.app.gui.guiName():
-            s = '@if-gui has no effect: g.app.gui not defined yet'
-            g.es_print(s,color='blue')
-            return "skip"
-        elif g.app.gui.guiName().lower() == name.lower():
-            return None
-        else:
-            return "skip"
-</t>
-<t tx="ekr.20041121125741">def doRatio (self,p,kind,name,val):
-    
-    try:
-        val = float(val)
-        if 0.0 &lt;= val &lt;= 1.0:
-            self.set(p,kind,name,val)
-        else:
-            self.valueError(p,kind,name,val)
-    except ValueError:
-        self.valueError(p,kind,name,val)
-</t>
-<t tx="ekr.20041121143823">def getValFromDict (self,d,setting,requestedType,warn=True):
-    
-    '''Look up the setting in d. If warn is True, warn if the requested type
-    does not (loosely) match the actual type.
-    returns (val,exists)'''
-
-    bunch = d.get(self.munge(setting))
-    if not bunch: return None,False
-
-    # g.trace(setting,requestedType,bunch.toString())
-    val = bunch.val
-    if not self.typesMatch(bunch.kind,requestedType):
-        # New in 4.4: make sure the types match.
-        # A serious warning: one setting may have destroyed another!
-        # Important: this is not a complete test of conflicting settings:
-        # The warning is given only if the code tries to access the setting.
-        if warn:
-            s = (
-                'Warning: ignoring %s:%s not %s\n' +
-                'There may be conflicting settings!')
-            g.es_print(s % (bunch.kind,setting,requestedType),color='red')
-            # g.trace(g.callers())
-        return None, False
-    elif val in (u'None',u'none','None','none','',None):
-        return None, True # Exists, but is None
-    else:
-        # g.trace(setting,val)
-        return val, True
-</t>
-<t tx="ekr.20041122070339">def getColor (self,c,setting):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-    
-    return self.get(c,setting,"color")
-</t>
-<t tx="ekr.20041122070752">def getRatio (self,c,setting):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-    
-    val = self.get(c,setting,"ratio")
-    try:
-        val = float(val)
-        if 0.0 &lt;= val &lt;= 1.0:
-            return val
-        else:
-            return None
-    except TypeError:
-        return None
-</t>
-<t tx="ekr.20041123070429">def canonicalizeSettingName (self,name):
-    
-    if name is None:
-        return None
-
-    name = name.lower()
-    for ch in ('-','_',' ','\n'):
-        name = name.replace(ch,'')
-        
-    return g.choose(name,name,None)
-    
-munge = canonicalizeSettingName
-</t>
-<t tx="ekr.20041123092357">def findSettingsPosition (self,c,setting):
-    
-    """Return the position for the setting in the @settings tree for c."""
-    
-    munge = self.munge
-    
-    root = self.settingsRoot(c)
-    if not root:
-        return c.nullPosition()
-        
-    setting = munge(setting)
-        
-    for p in root.subtree_iter():
-        h = munge(p.headString())
-        if h == setting:
-            return p.copy()
-    
-    return c.nullPosition()
-</t>
-<t tx="ekr.20041124083125">def completeFileName (fileName):
-    
-    import leoGlobals as g
-    
-    if not fileName:
-        return None
-        
-    # This does not depend on config settings.
-    fileName = g.os_path_join(os.getcwd(),fileName)
-
-    head,ext = g.os_path_splitext(fileName)
-    if not ext:
-        fileName = fileName + ".leo"
-
-    return fileName
-</t>
-<t tx="ekr.20041130093254">def reportDirectories(verbose):
-    
-    import leoGlobals as g
-   
-    if verbose:
-        for kind,theDir in (
-            ("global config",g.app.globalConfigDir),
-            ("home",g.app.homeDir),
-        ):
-            g.es("%s dir: %s" % (kind,theDir),color="blue")
-</t>
 <t tx="ekr.20041217041016">def setFontFromConfig (self):
     
     c = self.c
@@ -2963,78 +1086,6 @@ munge = canonicalizeSettingName
     self.color_tags_list = []
     self.image_references = []
 </t>
-<t tx="ekr.20041217132028">def doString (self,p,kind,name,val):
-    
-    # At present no checking is done.
-    self.set(p,kind,name,val)
-</t>
-<t tx="ekr.20041217132253">def doInts (self,p,kind,name,val):
-    
-    '''We expect either:
-    @ints [val1,val2,...]aName=val
-    @ints aName[val1,val2,...]=val'''
-
-    name = name.strip() # The name indicates the valid values.
-    i = name.find('[')
-    j = name.find(']')
-    
-    # g.trace(kind,name,val)
-
-    if -1 &lt; i &lt; j:
-        items = name[i+1:j]
-        items = items.split(',')
-        name = name[:i]+name[j+1:].strip()
-        # g.trace(name,items)
-        try:
-            items = [int(item.strip()) for item in items]
-        except ValueError:
-            items = []
-            self.valueError(p,'ints[]',name,val)
-            return
-        kind = "ints[%s]" % (','.join([str(item) for item in items]))
-        try:
-            val = int(val)
-        except ValueError:
-            self.valueError(p,'int',name,val)
-            return
-        if val not in items:
-            self.error("%d is not in %s in %s" % (val,kind,name))
-            return
-
-        # g.trace(repr(kind),repr(name),val)
-
-        # At present no checking is done.
-        self.set(p,kind,name,val)
-</t>
-<t tx="ekr.20041219072112"># Import leoGlobals, but do NOT set g.
-try:
-    import leoGlobals
-except ImportError:
-    print "Error importing leoGlobals.py"
-
-# Create the application object.
-try:
-    import leoApp
-    leoGlobals.app = leoApp.LeoApp()
-except ImportError:
-    print "Error importing leoApp.py"
-    
-# NOW we can set g.
-g = leoGlobals
-assert(g.app)
-</t>
-<t tx="ekr.20041219072416.1">try:
-    import leoNodes
-except ImportError:
-    print "Error importing leoNodes.py"
-    import traceback ; traceback.print_exc()
-
-try:
-    import leoConfig
-except ImportError:
-    print "Error importing leoConfig.py"
-    import traceback ; traceback.print_exc()
-</t>
 <t tx="ekr.20050328133058"># This must be defined in leoGlobals: g.app.gui doesn't exist yet.
 
 def createStandAloneTkApp(pluginName=''):
@@ -3054,29 +1105,6 @@ def createStandAloneTkApp(pluginName=''):
             g.app.gui = leoGui.nullGui('&lt;stand-alone app gui&gt;')
             g.computeStandardDirectories()
     return g.app
-</t>
-<t tx="ekr.20050711153537">def goToLastVisibleNode (self,event=None):
-    
-    '''Select the last visible node of the entire outline.'''
-    
-    c = self ; p = c.rootPosition()
-    
-    while p.hasNext():
-        p.moveToNext()
-        
-    while p and p.isExpanded():
-        p.moveToLastChild()
-
-    # if p:
-        # c.beginUpdate()
-        # try:
-            # c.frame.tree.expandAllAncestors(p)
-            # c.selectVnode(p)
-        # finally:
-            # c.endUpdate()
-    
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p)
 </t>
 <t tx="ekr.20050721093241">@nocolor
 
@@ -4049,104 +2077,6 @@ else:
     self.quitSearch(event)
     return False
 </t>
-<t tx="ekr.20051011105014">def exists (self,c,setting,kind):
-    
-    '''Return true if a setting of the given kind exists, even if it is None.'''
-
-    if c:
-        d = self.localOptionsDict.get(c.hash())
-        if d:
-            junk,found = self.getValFromDict(d,setting,kind)
-            if found: return True
-                
-    for d in self.localOptionsList:
-        junk,found = self.getValFromDict(d,setting,kind)
-        if found: return True
-
-    for d in self.dictList:
-        junk,found = self.getValFromDict(d,setting,kind)
-        if found: return True
-
-    # g.trace('does not exist',setting,kind)
-    return False
-</t>
-<t tx="ekr.20051012092453">def goToFirstSibling (self,event=None):
-    
-    '''Select the first sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    if p.hasBack():
-        while p.hasBack():
-            p.moveToBack()
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(p)
-        # finally:
-            # c.endUpdate()
-    else:
-        p = None
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p)
-</t>
-<t tx="ekr.20051012092847.1">def goToLastSibling (self,event=None):
-    
-    '''Select the last sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    if p.hasNext():
-        while p.hasNext():
-            p.moveToNext()
-
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(p)
-        # finally:
-            # c.endUpdate()
-    else:
-        p = None
-    # c.treeWantsFocusNow()
-    c.treeSelectHelper(p)
-</t>
-<t tx="ekr.20051013161232">def updateSettings (self,c,localFlag):
-
-    d = self.readSettings(c)
-    
-    if d:
-        d['_hash'] = theHash = c.hash()
-        if localFlag:
-            self.localOptionsDict[theHash] = d
-        else:
-            self.localOptionsList.insert(0,d)
-            
-    if 0: # Good trace.
-        if localFlag:
-            g.trace(c.fileName())
-            g.trace(d and d.keys())
-</t>
-<t tx="ekr.20051015093141">def typesMatch (self,type1,type2):
-    
-    '''
-    Return True if type1, the actual type, matches type2, the requeseted type.
-    
-    The following equivalences are allowed:
-
-    - None matches anything.
-    - An actual type of string or strings matches anything.
-    - Shortcut matches shortcuts.
-    '''
-
-    shortcuts = ('shortcut','shortcuts',)
-    
-    return (
-        type1 == None or type2 == None or
-        type1.startswith('string') or
-        type1 == 'int' and type2 == 'size' or
-        (type1 in shortcuts and type2 in shortcuts) or
-        type1 == type2
-    )
-</t>
 <t tx="ekr.20051019183105.1">def showColors (self,event):
     
     '''Open a tab in the log pane showing various color pickers.'''
@@ -4982,12 +2912,12 @@ def ignore (self,event=None):
     ins = w.getInsertPoint()
     if i != j: ins = i
     
-    # g.trace('ch',repr(ch),g.callers())
+    # g.trace('w',w,'ch',repr(ch),g.callers())
 
     if ch == '\b':
         if i != j:  w.delete(i,j)
         else:       w.delete(ins-1)
-        w.setSelectionRange(i,i,insert=i)
+        w.setSelectionRange(i-1,i-1,insert=i-1)
     elif ch and ch not in ('\n','\r'):
         if i != j:                              w.delete(i,j)
         elif k.unboundKeyAction == 'overwrite': w.delete(i,i+1)
@@ -5002,27 +2932,6 @@ def ignore (self,event=None):
 
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
-</t>
-<t tx="ekr.20051026083733.6">body.colorizer.interrupt()
-c.frame.scanForTabWidth(p)
-body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
-self.forceFullRecolorFlag = False
-</t>
-<t tx="ekr.20051026083733.7">c.beginUpdate()
-try:
-    redraw_flag = False
-    # Update dirty bits.
-    # p.setDirty() sets all cloned and @file dirty bits.
-    if not p.isDirty() and p.setDirty():
-        redraw_flag = True
-        
-    # Update icons. p.v.iconVal may not exist during unit tests.
-    val = p.computeIcon()
-    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-        p.v.iconVal = val
-        redraw_flag = True
-finally:
-    c.endUpdate(redraw_flag)
 </t>
 <t tx="ekr.20051026092433">def updateTab (self,p,w):
 
@@ -5085,13 +2994,15 @@ finally:
     i = g.skip_to_start_of_line(s,ins)
     i,j = g.getLine(s,i-1)
     s = s[i:j-1]
-    # g.trace(i,j,repr(s[i:j]))
+    # g.trace(i,j,repr(s))
 
     # Add the leading whitespace to the present line.
     junk, width = g.skip_leading_ws_with_indent(s,0,tab_width)
-    if s and len(s) &gt; 0 and s [-1] == ':':
+    # g.trace('width',width,'tab_width',tab_width)
+
+    if s and s [-1] == ':':
         # For Python: increase auto-indent after colons.
-        if c.frame.body.colorizer.scanColorDirectives(p) == "python":
+        if g.scanColorDirectives(c,p) == 'python':
             width += abs(tab_width)
     if self.smartAutoIndent:
         # Determine if prev line has unclosed parens/brackets/braces
@@ -5191,61 +3102,13 @@ for z in ('borderframe','clipper','frame','hull'):
     # Update the text and handle undo.
     newText = w.getAllText()
     changed = newText != oldText
-    # g.trace(changed)
+    # g.trace('ch',repr(ch),'changed',changed,'newText',repr(newText[-10:]))
     if changed:
         c.frame.body.onBodyChanged(undoType=undoType,
             oldSel=oldSel,oldText=oldText,oldYview=None)
             
     g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
     return 'break'</t>
-<t tx="ekr.20060102103625.1">def doMode(self,p,kind,name,val):
-    
-    '''Parse an @mode node and create the enter-&lt;name&gt;-mode command.'''
-    
-    __pychecker__ = '--no-argsused' # val not used.
-    
-    c = self.c ; k = c.k
-    
-    # g.trace('%20s' % (name),c.fileName())
-    &lt;&lt; Compute modeName &gt;&gt;
-    
-    # Create a local shortcutsDict.
-    old_d = self.shortcutsDict
-    d = self.shortcutsDict = {}
-    
-    s = p.bodyString()
-    lines = g.splitLines(s)
-    for line in lines:
-        line = line.strip()
-        if line and not g.match(line,0,'#'):
-            name,bunch = self.parseShortcutLine(line)
-            if not name:
-                # An entry command: put it in the special *entry-commands* key.
-                aList = d.get('*entry-commands*',[])
-                aList.append(bunch.entryCommandName)
-                d ['*entry-commands*'] = aList
-            elif bunch is not None:
-                # A regular shortcut.
-                bunch.val = k.strokeFromSetting(bunch.val)
-                bunch.pane = modeName
-                bunchList = d.get(name,[])
-                # Important: use previous bindings if possible.
-                key2,bunchList2 = c.config.getShortcut(name)
-                bunchList3 = [b for b in bunchList2 if b.pane != modeName]
-                if bunchList3:
-                    # g.trace('inheriting',[b.val for b in bunchList3])
-                    bunchList.extend(bunchList3)
-                bunchList.append(bunch)
-                d [name] = bunchList
-                self.set(p,"shortcut",name,bunchList)
-                self.setShortcut(name,bunchList)
-        
-    # Restore the global shortcutsDict.
-    self.shortcutsDict = old_d
-
-    # Create the command, but not any bindings to it.
-    self.createModeCommand(modeName,d)
-</t>
 <t tx="ekr.20060123125256">class minibufferFind (baseEditCommandsClass):
 
     '''An adapter class that implements minibuffer find commands using the (hidden) Find Tab.'''
@@ -5995,35 +3858,6 @@ def gotoSelectedPosition(event,lb=self.lb,c=c,positions=clones):
     c.selectPosition(p)
     return
 self.lb.bind(g.angleBrackets("ListboxSelect"), gotoSelectedPosition)</t>
-<t tx="ekr.20060608221203">def doAbbrev (self,p,kind,name,val):
-    
-    d = {}
-    s = p.bodyString()
-    lines = g.splitLines(s)
-    for line in lines:
-        line = line.strip()
-        if line and not g.match(line,0,'#'):
-            name,val = self.parseAbbrevLine(line)
-            if name: d [val] = name
-            
-    self.set (p,'abbrev','abbrev',d)
-</t>
-<t tx="ekr.20060608224112">def getAbbrevDict (self,c):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-    
-    d = self.get(c,'abbrev','abbrev')
-    return d or {}
-</t>
-<t tx="ekr.20060618110649">name = name.strip().lower()
-j = name.find(' ')
-if j &gt; -1: name = name[:j]
-if name.endswith('mode'):
-    name = name[:-4].strip()
-if name.endswith('-'):
-    name = name[:-1]
-modeName = name + '-mode'
-</t>
 <t tx="ekr.20060627083506">def flashMatchingBracketsHelper (self,w,i,ch):
 
     d = {}
@@ -6109,26 +3943,6 @@ if g.os_path_exists(path):
     c.zodbCommands.writeFile()
 else:
     g.es_print('not found: %s' % path)</t>
-<t tx="ekr.20060928062431">def expandOnlyAncestorsOfNode (self,event=None):
-    
-    '''Contract all nodes in the outline.'''
-
-    c = self ; level = 1
-    
-    c.beginUpdate()
-    try:
-        for p in c.allNodes_iter():
-            p.contract()
-        for p in c.currentPosition().parents_iter():
-            p.expand()
-            level += 1
-    finally:
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-
-    c.expansionLevel = level # Reset expansion level.
-</t>
 <t tx="ekr.20061016071937">def OnPaste (self,event=None):
     
     return self.pasteText(event=event,middleButton=True)</t>
@@ -6196,18 +4010,6 @@ if w.leo_selection:
     except Exception:
         pass
 </t>
-<t tx="ekr.20061028082834"># This can't be done in initSettingsFiles because the local directory does not exits.
-localDirectory = g.os_path_dirname(fileName)
-
-#  Set the local leoSettings.leo file.
-localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
-if not g.os_path_exists(localConfigFile):
-    localConfigFile = None
-
-# Set the local myLeoSetting.leo file.
-myLocalConfigFile = g.os_path_join(localDirectory,'myLeoSettings.leo')
-if not g.os_path_exists(myLocalConfigFile):
-    myLocalConfigFile = None</t>
 <t tx="ekr.20061031131434.4">class autoCompleterClass:
     
     '''A class that inserts autocompleted and calltip text in text widgets.
@@ -8156,7 +5958,7 @@ def eventXY (self,event):
     else:
         return 0,0</t>
 <t tx="ekr.20061112172552"></t>
-<t tx="ekr.20061113151148.1">class leoTkTextWidget (Tk.Text): ### (baseTextWidget):
+<t tx="ekr.20061113151148.1">class leoTkTextWidget (Tk.Text):
     
     '''A class to wrap the Tk.Text widget.
     Translates Python (integer) indices to and from Tk (string) indices.
@@ -8850,7 +6652,7 @@ aList = ['%3d %s' % (words.get(key),str(key)) for key in keys]
 print g.listToString(aList)
 g.es('searched %s' % p1.headString())</t>
 <t tx="ekr.20070213170836">if 0:
-    def __init__ (self,*args,**keys):
+    def __init__ (self,c,*args,**keys):
     
         w = self
         
@@ -8859,7 +6661,7 @@ g.es('searched %s' % p1.headString())</t>
         
         # Init the base class.
         name = keys.get('name') or '&lt;unknown plainTextWidget&gt;'
-        baseTextWidget.__init__(self,
+        baseTextWidget.__init__(self,c=c,
             baseClassName='plainTextWidget',name=name,widget=self.widget)
     
         # self.defaultFont = font = wx.Font(pointSize=10,
@@ -9209,375 +7011,6 @@ AssertionError
     
     w = self
     w.configure(background=color)</t>
-<t tx="ekr.20070221082022">@killcolor
-
-compareOutlines failed
-p1 &lt;pos 64899024 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 36121584 lvl: 6 [0] before&gt; &lt;vnode 33778672:'before'&gt;
-p1.body
-u'@language python\n\ndef addCommentTest():\n\n    # if 1:\n        # a = 2\n        # b = 3\n        \n    pass'
-p2.body
-u'@language python\n\ndef addCommentTest():\n\n    if 1:\n        a = 2\n        b = 3\n        \n    pass'
-F
-
-compareOutlines failed
-p1 &lt;pos 35536432 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 65393072 lvl: 6 [0] before&gt; &lt;vnode 33779088:'before'&gt;
-p1.body
-u'@tabwidth -4\n\nline 1\n\tline 2\n\t  line 3\nline4'
-p2.body
-u'@tabwidth -4\n\nline 1\n    line 2\n      line 3\nline4'
-F
-
-compareOutlines failed
-p1 &lt;pos 65393104 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 64899088 lvl: 6 [0] before&gt; &lt;vnode 33779504:'before'&gt;
-p1.body
-u'@tabwidth -4\n\nline 1\n    line 2\n      line 3\nline4'
-p2.body
-u'@tabwidth -4\n\nline 1\n\tline 2\n\t  line 3\nline4'
-F
-
-compareOutlines failed
-p1 &lt;pos 65393104 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 35536432 lvl: 6 [0] before&gt; &lt;vnode 33800432:'before'&gt;
-p1.body
-u'@tabwidth -4\n\nline 1\n\tline 2\n\t  line 3\nline4'
-p2.body
-u'@tabwidth -4\n\nline 1\n    line 2\n      line 3\nline4'
-F
-
-compareOutlines failed
-p1 &lt;pos 35561616 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 64899024 lvl: 6 [0] before&gt; &lt;vnode 33800848:'before'&gt;
-p1.body
-u'@tabwidth -4\n\nline 1\n    line 2\n      line 3\nline4'
-p2.body
-u'@tabwidth -4\n\nline 1\n\tline 2\n\t  line 3\nline4'
-F
-
-compareOutlines failed
-p1 &lt;pos 35536432 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 35564080 lvl: 6 [0] before&gt; &lt;vnode 33801264:'before'&gt;
-p1.body
-u'line 1\nline 2\nline 3\nline 4'
-p2.body
-u'line 1\n    line 2\n    line 3\nline 4'
-F
-
-compareOutlines failed
-p1 &lt;pos 35561616 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 64899024 lvl: 6 [0] before&gt; &lt;vnode 33801680:'before'&gt;
-p1.body
-u'@language python\n\ndef deleteCommentTest():\n\n    if 1:\n        a = 2\n        b = 3\n        \n    pass'
-p2.body
-u'@language python\n\ndef deleteCommentTest():\n\n    # if 1:\n        # a = 2\n        # b = 3\n        \n    pass'
-F
-
-compareOutlines failed
-p1 &lt;pos 35017968 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 36119536 lvl: 6 [0] before&gt; &lt;vnode 33802096:'before'&gt;
-p1.body
-u'before\nafter'
-p2.body
-u'before\n    &lt;&lt; section &gt;&gt;\n    sec line 1\n        sec line 2 indented\nsec line 3\nafter'
-F
-
-compareOutlines failed
-p1 &lt;pos 35717456 lvl: 5 [0] tempNode&gt; &lt;vnode 33777616:'tempNode'&gt;
-p2 &lt;pos 35670448 lvl: 6 [0] before&gt; &lt;vnode 33802608:'before'&gt;
-p1.body
-u'before\n    &lt;&lt; section &gt;&gt;\nafter'
-p2.body
-u'before\n    &lt;&lt; section &gt;&gt;\n    sec line 1\n        sec line 2 indented\nsec line 3\nafter'
-
-eventWidget: k.generalModeHandler event: no event widget
-eventWidget: k.generalModeHandler event: no event widget
-eventWidget: k.generalModeHandler event: no event widget
-eventWidget: k.generalModeHandler event: no event widget
-
-======================================================================
-FAIL: @test typing and undo in headline - at end
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 20, in &lt;module&gt;
-AssertionError: oops2
-
-======================================================================
-FAIL: @test paste and undo in headline - at end
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 23, in &lt;module&gt;
-AssertionError
-
-======================================================================
-FAIL: @test paste and undo in headline - with selection
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 22, in &lt;module&gt;
-AssertionError: head mismatch
-
-======================================================================
-FAIL: @test selecting new node retains typing in headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 20, in &lt;module&gt;
-AssertionError
-
-======================================================================
-FAIL: @test selecting new node retains paste in headline
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 23, in &lt;module&gt;
-AssertionError
-
-======================================================================
-FAIL: @test typing in empty body text redraws the screen (and icon)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 16, in &lt;module&gt;
-AssertionError: too many or too few redraws: 0
-
-======================================================================
-FAIL: @test &lt;Delete&gt; key sticks in body
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 15, in &lt;module&gt;
-AssertionError
-
-======================================================================
-FAIL: @test Find keeps focus in body &amp; shows selected text
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 16, in &lt;module&gt;
-AssertionError: focus &lt;wx.stc.StyledTextCtrl; proxy of &lt;Swig Object of type 'wxStyledTextCtrl *' at 0x1fae158&gt; &gt;
-
-======================================================================
-FAIL: @test strokeFromSetting
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 24, in &lt;module&gt;
-AssertionError: Expected Alt+equal, Got Alt+=
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: addComments: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: convertAllBlanks: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: convertAllTabs: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: convertBlanks: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: convertTabs: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: dedentBody: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: deleteComments: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: extract: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1039, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1030, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: extractSection: after undo1
-
-======================================================================
-FAIL: @test c.editCommands.selfInsertCommand-1
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 13, in &lt;module&gt;
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 2623, in selfInsertCommand
-    self.flashMatchingBracketsHelper(w,i,ch)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 2698, in flashMatchingBracketsHelper
-    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
-  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 3529, in skip_matching_python_delims
-    assert(g.match(s,i,delim1))
-AssertionError
-
-======================================================================
-FAIL: @test c.findMatchingBracket (pass)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 21, in &lt;module&gt;
-AssertionError: Expected: '(', got: u':'
-
-======================================================================
-FAIL: @test w.toGuiIndex (test2)
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 142, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "&lt;string&gt;", line 19, in &lt;module&gt;
-AssertionError
-
-----------------------------------------------------------------------
-Ran 218 tests in 26.344s
-
-FAILED (failures=23, errors=2)
-</t>
-<t tx="ekr.20070223095700"></t>
-<t tx="ekr.20070223095700.1">@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4169720
-By: ktenney
-
-from https://sourceforge.net/forum/message.php?msg_id=4167714
-
-&gt;So now the answer is clear: Leo searches for leoPluginsManager 
-&gt;first in the g.app.homeDir directory, and second, in the leo/plugins
-directory.
-
-I work from several machines, keep my files synced via 
-a svn server at home.
-
-I would really like to use a single pluginsManager.txt
-and sync it with the files.
-
-Here's a +1 on Leo looking in the directory of the Leo
-file being opened.
-
-This would make pluginsManager.txt behave like leoSettings.leo
-</t>
-<t tx="ekr.20070224073457"></t>
-<t tx="ekr.20070224075914">def doEnabledPlugins (self,p,kind,name,val):
-    
-    c = self.c ; d = self.shortcutsDict
-    s = p.bodyString()
-    
-    # This setting is handled differently from all other settings,
-    # because the last setting must be retrieved before any commander exists.
-    
-    # Set the global config ivars.
-    g.app.config.enabledPluginsString = s
-    g.app.config.enabledPluginsFileName = c and c.shortFileName() or '&lt;no settings file&gt;'</t>
-<t tx="ekr.20070224075914.1">def getEnabledPlugins (self):
-    
-    """Search all dictionaries for the setting &amp; check it's type"""
-
-    ##c = None
-    ##return self.get(c,'enabled-plugins','string')
-    
-    return g.app.config.enabledPluginsString
-</t>
-<t tx="ekr.20070224082131">def getEnabledFiles (s,plugins_path):
-
-    enabled_files = []
-    disabled_files = []
-    for s in g.splitLines(s):
-        s = s.strip()
-        if s:
-            if g.match(s,0,"#"):
-                s = s[1:].strip()
-                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
-                if s and s.find(' ') == -1 and s[-3:] == '.py':
-                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
-                    if path not in enabled_files and path not in disabled_files:
-                        # print 'disabled',path
-                        disabled_files.append(path)
-            else:
-                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
-                if path not in enabled_files and path not in disabled_files:
-                    # print 'enabled',path
-                    enabled_files.append(path)
-
-    return enabled_files</t>
-<t tx="ekr.20070225111331"></t>
 <t tx="ekr.20070226081522"># To be removed.
 '  6 index' # later.
 '  1 flashCharacter'
@@ -9618,30 +7051,6 @@ This would make pluginsManager.txt behave like leoSettings.leo
 '  4 toPythonIndex'
 '  3 xyToPythonIndex'
 </t>
-<t tx="ekr.20070226113916">def treeSelectHelper (self,p,redraw=True):
-    
-    c = self
-
-    if p:
-        c.beginUpdate()
-        try:
-            c.frame.tree.expandAllAncestors(p)
-            c.selectPosition(p,updateBeadList=False)
-        finally:
-            c.endUpdate(redraw)
-            
-    c.treeFocusHelper()
-</t>
-<t tx="ekr.20070226121510">def treeFocusHelper (self):
-    
-    c = self
-    
-    if c.config.getBool('stayInTreeAfterSelect'):
-        c.treeWantsFocusNow()
-    else:
-        c.bodyWantsFocusNow()
-</t>
-<t tx="ekr.20070227070257"></t>
 <t tx="ekr.20070227070257.1">@nocolor
 http://sourceforge.net/forum/message.php?msg_id=4180327
 
@@ -9662,11 +7071,299 @@ Traceback (most recent call last):
     body = w = g.app.gui.leoPlainWidget(
 
 AttributeError: tkinterGui instance has no attribute 'leoPlainWidget'</t>
-<t tx="ekr.20070227091955"></t>
-<t tx="ekr.20070227124520"></t>
+<t tx="ekr.20070227124520"> </t>
 <t tx="ekr.20070228055539">@nocolor
 
 A print-settings command would be useful.  This would  print the value of every setting, except key bindings which are already covered by the print-bindings and print-commands commands.  Ideally, the print-settings command would indicate the file that created the (active) setting, and possibly also the other files that contained overridden settings.  Something like this, where M indicates myLeoSettings.leo, SH indicates leoSettings.leo in the HOME directory, SC indicates leoSettings.leo in the config directory, etc.</t>
-<t tx="ekr.20070228061150"></t>
+<t tx="ekr.20070302164343"></t>
+<t tx="ekr.20070303144453">unexpected exception in g.importFromPath(leo_pdf)
+Traceback (most recent call last):
+
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 5396, in importFromPath
+    module = imp.load_module(moduleName,theFile,pathname,description)
+
+  File "C:\prog\tigris-cvs\leo\plugins\leo_pdf.py", line 401, in &lt;module&gt;
+    class Writer (docutils.writers.Writer):
+
+AttributeError: 'module' object has no attribute 'writers'
+
+compareOutlines failed
+p1 &lt;pos 124710608 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 127239664 lvl: 6 [0] before&gt; &lt;vnode 43093232:'before'&gt;
+p1.body
+u'@language python\n\ndef addCommentTest():\n\n    # if 1:\n        # a = 2\n        # b = 3\n        \n    pass'
+p2.body
+u'@language python\n\ndef addCommentTest():\n\n    if 1:\n        a = 2\n        b = 3\n        \n    pass'
+FcompareOutlines failed
+p1 &lt;pos 127239664 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 134606672 lvl: 6 [0] before&gt; &lt;vnode 43093648:'before'&gt;
+p1.body
+u'@tabwidth -4\n\nline 1\n\tline 2\n\t  line 3\nline4'
+p2.body
+u'@tabwidth -4\n\nline 1\n    line 2\n      line 3\nline4'
+FcompareOutlines failed
+p1 &lt;pos 135232624 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 134272752 lvl: 6 [0] before&gt; &lt;vnode 43118672:'before'&gt;
+p1.body
+u'@tabwidth -4\n\nline 1\n    line 2\n      line 3\nline4'
+p2.body
+u'@tabwidth -4\n\nline 1\n\tline 2\n\t  line 3\nline4'
+FcompareOutlines failed
+p1 &lt;pos 124710608 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 139186064 lvl: 6 [0] before&gt; &lt;vnode 43119088:'before'&gt;
+p1.body
+u'@tabwidth -4\n\nline 1\n\tline 2\n\t  line 3\nline4'
+p2.body
+u'@tabwidth -4\n\nline 1\n    line 2\n      line 3\nline4'
+FcompareOutlines failed
+p1 &lt;pos 135919760 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 128526384 lvl: 6 [0] before&gt; &lt;vnode 43119504:'before'&gt;
+p1.body
+u'@tabwidth -4\n\nline 1\n    line 2\n      line 3\nline4'
+p2.body
+u'@tabwidth -4\n\nline 1\n\tline 2\n\t  line 3\nline4'
+FcompareOutlines failed
+p1 &lt;pos 139186064 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 127991536 lvl: 6 [0] before&gt; &lt;vnode 43119920:'before'&gt;
+p1.body
+u'line 1\nline 2\nline 3\nline 4'
+p2.body
+u'line 1\n    line 2\n    line 3\nline 4'
+FcompareOutlines failed
+p1 &lt;pos 128526384 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 135919760 lvl: 6 [0] before&gt; &lt;vnode 43120336:'before'&gt;
+p1.body
+u'@language python\n\ndef deleteCommentTest():\n\n    if 1:\n        a = 2\n        b = 3\n        \n    pass'
+p2.body
+u'@language python\n\ndef deleteCommentTest():\n\n    # if 1:\n        # a = 2\n        # b = 3\n        \n    pass'
+FcompareOutlines failed
+p1 &lt;pos 137990032 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 143265456 lvl: 6 [0] before&gt; &lt;vnode 43120752:'before'&gt;
+p1.body
+u'before\nafter'
+p2.body
+u'before\n    &lt;&lt; section &gt;&gt;\n    sec line 1\n        sec line 2 indented\nsec line 3\nafter'
+FcompareOutlines failed
+p1 &lt;pos 127253040 lvl: 5 [0] tempNode&gt; &lt;vnode 43092176:'tempNode'&gt;
+p2 &lt;pos 131943984 lvl: 6 [0] before&gt; &lt;vnode 43121264:'before'&gt;
+p1.body
+u'before\n    &lt;&lt; section &gt;&gt;\nafter'
+p2.body
+u'before\n    &lt;&lt; section &gt;&gt;\n    sec line 1\n        sec line 2 indented\nsec line 3\nafter'
+F..............
+End of undo/redo tests
+eventWidget: k.generalModeHandler event: no event widget
+eventWidget: k.generalModeHandler event: no event widget
+eventWidget: k.generalModeHandler event: no event widget
+eventWidget: k.generalModeHandler event: no event widget
+
+
+======================================================================
+FAIL: @test typing and undo in headline - at end
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 25, in &lt;module&gt;
+AssertionError: oops3
+
+======================================================================
+FAIL: @test paste and undo in headline - at end
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 23, in &lt;module&gt;
+AssertionError
+
+======================================================================
+FAIL: @test paste and undo in headline - with selection
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 22, in &lt;module&gt;
+AssertionError: head mismatch
+
+======================================================================
+FAIL: @test selecting new node retains typing in headline
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 22, in &lt;module&gt;
+AssertionError
+
+======================================================================
+FAIL: @test selecting new node retains paste in headline
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 23, in &lt;module&gt;
+AssertionError
+
+======================================================================
+FAIL: @test typing in empty body text redraws the screen (and icon)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 18, in &lt;module&gt;
+AssertionError: too many or too few redraws: expected 1: got: 0
+
+======================================================================
+FAIL: @test Find keeps focus in body &amp; shows selected text
+
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 16, in &lt;module&gt;
+AssertionError: focus &lt;wx.stc.StyledTextCtrl; proxy of &lt;Swig Object of type 'wxStyledTextCtrl *' at 0x116be38&gt; &gt;
+
+======================================================================
+FAIL: @test strokeFromSetting
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 26, in &lt;module&gt;
+AssertionError: Expected Alt+equal, Got Alt+=
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: addComments: after undo1
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: convertAllBlanks: after undo1
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: convertAllTabs: after undo1
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: convertBlanks: after undo1
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: convertTabs: after undo1
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: dedentBody: after undo1
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: deleteComments: after undo1
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: extract: after undo1
+
+======================================================================
+FAIL: runTest (leoTest.editBodyTestCase)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1042, in runTest
+    self.editBody()
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1033, in editBody
+    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
+AssertionError: extractSection: after undo1
+
+======================================================================
+FAIL: @test c.editCommands.selfInsertCommand-1
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 14, in &lt;module&gt;
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 2623, in selfInsertCommand
+    self.flashMatchingBracketsHelper(w,i,ch)
+  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 2698, in flashMatchingBracketsHelper
+    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
+  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 3556, in skip_matching_python_delims
+    assert(g.match(s,i,delim1))
+AssertionError
+
+======================================================================
+FAIL: @test c.findMatchingBracket (pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 21, in &lt;module&gt;
+AssertionError: Expected: '(', got: u':'
+
+======================================================================
+FAIL: @test w.toGuiIndex (test2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 148, in runTest
+    exec script + '\n' in d
+  File "&lt;string&gt;", line 24, in &lt;module&gt;
+AssertionError: toGuiIndex(i): -1, expected: 1.0, got: -1
+
+----------------------------------------------------------------------
+Ran 476 tests in 75.328s
+
+FAILED (failures=20)
+select: no body! c.frame wxLeoFrame: unitTest.leo in C:\prog\tigris-cvs\leo\test atButtonCallback,executeScriptFromButto
+n,executeScript,&lt;module&gt;,doTests,selectPosition
+AttributeError: 'NoneType' object has no attribute 'getYScrollPosition'
+
+</t>
 </tnodes>
 </leo_file>

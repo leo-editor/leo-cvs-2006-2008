@@ -21,6 +21,65 @@ I'm using current CVS, W2k
 Zombie!
 #@-node:ekr.20060609070148:Fix hung (zombie) windows)
 #@+node:ekr.20060116173818:Fix vampire nodes (maybe)
+@nocolor
+
+Vampire nodes from cvs
+
+I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
+
+The discovery of this 'big bug' came about as the result of the following Aha:
+
+**@thin files that contain @all directives should be a cvs binary (-kb) files.**
+
+The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
+
+Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
+
+Ok, back to the 'big bug'.  Here is how I got bitten:
+
+- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
+
+- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
+
+- I did a update in sandbox 2.
+
+As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
+
+M src/LeoPyRef.leo
+...
+cvs update: nonmergeable file needs merge
+cvs update: revision 1.448 from repository is now in src/leoProjects.txt
+cvs update: file from working directory is now in .#leoProjects.txt.1.447
+
+To summarize the update:
+
+- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
+
+- As expected, leoProjects.txt contains the version from sandbox **1**.
+
+So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
+
+How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
+
+Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
+
+- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
+
+- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
+
+So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
+
+The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
+
+The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
+
+Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
+
+Edward
 #@-node:ekr.20060116173818:Fix vampire nodes (maybe)
 #@+node:ekr.20060329102951:@ref (maybe)
 @nocolor
