@@ -41,11 +41,19 @@ try:
     import wx
     import wx.lib
     import wx.lib.colourdb
-    import wx.richtext
-    import wx.stc
 except ImportError:
     wx = None
     g.es_print('wx_gui plugin: can not import wxWidgets')
+    
+try:
+    import wx.richtext as richtext
+except ImportError:
+    richtext = None
+    
+try:
+    import wx.stc as stc
+except ImportError:
+    stc = None
 #@nonl
 #@-node:edream.110203113231.303:<< imports >>
 #@nl
@@ -1495,8 +1503,7 @@ if wx:
             if keys.get('name'): del keys['name']
             
             # Create the actual gui widget.
-            self.widget = wx.richtext.RichTextCtrl(parent,*args,**keys)
-            # g.trace('\n'.join(dir(wx.richtext.RichTextCtrl)))
+            self.widget = richtext.RichTextCtrl(parent,*args,**keys)
             
             wx.EVT_CHAR (w.widget,self.onChar)
         
@@ -1547,12 +1554,12 @@ if wx:
         def __init__ (self,c,parent,*args,**keys):
         
             self.c = c
-            self.widget = w = wx.stc.StyledTextCtrl(parent,*args,**keys)
+            self.widget = w = stc.StyledTextCtrl(parent,*args,**keys)
             
             w.CmdKeyClearAll() # Essential so backspace is handled properly.
             wx.EVT_CHAR (w,self.onChar)
             # wx.EVT_STC_MARGINCLICK(w,self.onMarginClick)
-            w.Bind(wx.stc.EVT_STC_MARGINCLICK, self.onMarginClick)
+            w.Bind(stc.EVT_STC_MARGINCLICK, self.onMarginClick)
             
             # Init the base class.
             name = keys.get('name') or '<unknown stcWidget>'
@@ -1581,7 +1588,7 @@ if wx:
             w = self.widget
             use_fold = True
             
-            w.SetLexer(wx.stc.STC_LEX_PYTHON)
+            w.SetLexer(stc.STC_LEX_PYTHON)
             w.SetKeyWords(0, " ".join(keyword.kwlist))
         
             # Enable folding
@@ -1595,7 +1602,7 @@ if wx:
             w.SetMargins(2,2)
         
             # Set up the numbers in the margin for margin #1
-            w.SetMarginType(1, wx.stc.STC_MARGIN_NUMBER)
+            w.SetMarginType(1, stc.STC_MARGIN_NUMBER)
             # Reasonable value for, say, 4-5 digits using a mono font (40 pix)
             w.SetMarginWidth(1, 40)
         
@@ -1612,7 +1619,7 @@ if wx:
             # EOL: Since we are loading/saving ourselves, and the
             # strings will always have \n's in them, set the STC to
             # edit them that way.            
-            w.SetEOLMode(wx.stc.STC_EOL_LF)
+            w.SetEOLMode(stc.STC_EOL_LF)
             w.SetViewEOL(False)
             
             # No right-edge mode indicator
@@ -1620,31 +1627,31 @@ if wx:
         
             # Setup a margin to hold fold markers
             if use_fold:
-                w.SetMarginType(2, wx.stc.STC_MARGIN_SYMBOL)
-                w.SetMarginMask(2, wx.stc.STC_MASK_FOLDERS)
+                w.SetMarginType(2, stc.STC_MARGIN_SYMBOL)
+                w.SetMarginMask(2, stc.STC_MASK_FOLDERS)
                 w.SetMarginSensitive(2, True)
                 w.SetMarginWidth(2, 12)
         
                 # and now set up the fold markers
-                w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEREND,     wx.stc.STC_MARK_BOXPLUSCONNECTED,  "white", "black")
-                w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEROPENMID, wx.stc.STC_MARK_BOXMINUSCONNECTED, "white", "black")
-                w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERMIDTAIL, wx.stc.STC_MARK_TCORNER,  "white", "black")
-                w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERTAIL,    wx.stc.STC_MARK_LCORNER,  "white", "black")
-                w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERSUB,     wx.stc.STC_MARK_VLINE,    "white", "black")
-                w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDER,        wx.stc.STC_MARK_BOXPLUS,  "white", "black")
-                w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEROPEN,    wx.stc.STC_MARK_BOXMINUS, "white", "black")
+                w.MarkerDefine(stc.STC_MARKNUM_FOLDEREND,     stc.STC_MARK_BOXPLUSCONNECTED,  "white", "black")
+                w.MarkerDefine(stc.STC_MARKNUM_FOLDEROPENMID, stc.STC_MARK_BOXMINUSCONNECTED, "white", "black")
+                w.MarkerDefine(stc.STC_MARKNUM_FOLDERMIDTAIL, stc.STC_MARK_TCORNER,  "white", "black")
+                w.MarkerDefine(stc.STC_MARKNUM_FOLDERTAIL,    stc.STC_MARK_LCORNER,  "white", "black")
+                w.MarkerDefine(stc.STC_MARKNUM_FOLDERSUB,     stc.STC_MARK_VLINE,    "white", "black")
+                w.MarkerDefine(stc.STC_MARKNUM_FOLDER,        stc.STC_MARK_BOXPLUS,  "white", "black")
+                w.MarkerDefine(stc.STC_MARKNUM_FOLDEROPEN,    stc.STC_MARK_BOXMINUS, "white", "black")
         
             # Global default style
             if wx.Platform == '__WXMSW__':
-                w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+                w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
                                   'fore:#000000,back:#FFFFFF,face:Courier New,size:9')
             elif wx.Platform == '__WXMAC__':
                 # TODO: if this looks fine on Linux too, remove the Mac-specific case 
                 # and use this whenever OS != MSW.
-                w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+                w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
                                   'fore:#000000,back:#FFFFFF,face:Courier')
             else:
-                w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+                w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
                                   'fore:#000000,back:#FFFFFF,face:Courier,size:9')
         
             # Clear styles and revert to default.
@@ -1654,38 +1661,38 @@ if wx:
             # The rest remains unchanged.
         
             # Line numbers in margin
-            w.StyleSetSpec(wx.stc.STC_STYLE_LINENUMBER,'fore:#000000,back:#99A9C2')    
+            w.StyleSetSpec(stc.STC_STYLE_LINENUMBER,'fore:#000000,back:#99A9C2')    
             # Highlighted brace
-            w.StyleSetSpec(wx.stc.STC_STYLE_BRACELIGHT,'fore:#00009D,back:#FFFF00')
+            w.StyleSetSpec(stc.STC_STYLE_BRACELIGHT,'fore:#00009D,back:#FFFF00')
             # Unmatched brace
-            w.StyleSetSpec(wx.stc.STC_STYLE_BRACEBAD,'fore:#00009D,back:#FF0000')
+            w.StyleSetSpec(stc.STC_STYLE_BRACEBAD,'fore:#00009D,back:#FF0000')
             # Indentation guide
-            w.StyleSetSpec(wx.stc.STC_STYLE_INDENTGUIDE, "fore:#CDCDCD")
+            w.StyleSetSpec(stc.STC_STYLE_INDENTGUIDE, "fore:#CDCDCD")
         
             # Python styles
-            w.StyleSetSpec(wx.stc.STC_P_DEFAULT, 'fore:#000000')
+            w.StyleSetSpec(stc.STC_P_DEFAULT, 'fore:#000000')
             # Comments
-            w.StyleSetSpec(wx.stc.STC_P_COMMENTLINE,  'fore:#008000,back:#F0FFF0')
-            w.StyleSetSpec(wx.stc.STC_P_COMMENTBLOCK, 'fore:#008000,back:#F0FFF0')
+            w.StyleSetSpec(stc.STC_P_COMMENTLINE,  'fore:#008000,back:#F0FFF0')
+            w.StyleSetSpec(stc.STC_P_COMMENTBLOCK, 'fore:#008000,back:#F0FFF0')
             # Numbers
-            w.StyleSetSpec(wx.stc.STC_P_NUMBER, 'fore:#008080')
+            w.StyleSetSpec(stc.STC_P_NUMBER, 'fore:#008080')
             # Strings and characters
-            w.StyleSetSpec(wx.stc.STC_P_STRING, 'fore:#800080')
-            w.StyleSetSpec(wx.stc.STC_P_CHARACTER, 'fore:#800080')
+            w.StyleSetSpec(stc.STC_P_STRING, 'fore:#800080')
+            w.StyleSetSpec(stc.STC_P_CHARACTER, 'fore:#800080')
             # Keywords
-            w.StyleSetSpec(wx.stc.STC_P_WORD, 'fore:#000080,bold')
+            w.StyleSetSpec(stc.STC_P_WORD, 'fore:#000080,bold')
             # Triple quotes
-            w.StyleSetSpec(wx.stc.STC_P_TRIPLE, 'fore:#800080,back:#FFFFEA')
-            w.StyleSetSpec(wx.stc.STC_P_TRIPLEDOUBLE, 'fore:#800080,back:#FFFFEA')
+            w.StyleSetSpec(stc.STC_P_TRIPLE, 'fore:#800080,back:#FFFFEA')
+            w.StyleSetSpec(stc.STC_P_TRIPLEDOUBLE, 'fore:#800080,back:#FFFFEA')
             # Class names
-            w.StyleSetSpec(wx.stc.STC_P_CLASSNAME, 'fore:#0000FF,bold')
+            w.StyleSetSpec(stc.STC_P_CLASSNAME, 'fore:#0000FF,bold')
             # Function names
-            w.StyleSetSpec(wx.stc.STC_P_DEFNAME, 'fore:#008080,bold')
+            w.StyleSetSpec(stc.STC_P_DEFNAME, 'fore:#008080,bold')
             # Operators
-            w.StyleSetSpec(wx.stc.STC_P_OPERATOR, 'fore:#800000,bold')
+            w.StyleSetSpec(stc.STC_P_OPERATOR, 'fore:#800000,bold')
             # Identifiers. I leave this as not bold because everything seems
             # to be an identifier if it doesn't match the above criterae
-            w.StyleSetSpec(wx.stc.STC_P_IDENTIFIER, 'fore:#000000')
+            w.StyleSetSpec(stc.STC_P_IDENTIFIER, 'fore:#000000')
         
             # Caret color
             w.SetCaretForeground("BLUE")
@@ -1723,7 +1730,7 @@ if wx:
         def onMarginClick(self, evt):
             
             self = w = self.widget
-            stc = wx.stc
+        
             # fold and unfold as needed
             if evt.GetMargin() == 2:
                 if evt.GetShift() and evt.GetControl():
@@ -1876,7 +1883,7 @@ if wx:
             w = self
             pos = wx.Point(x,y)
         
-            data = wx.stc.StyledTextCtrl.HitTest(w.widget,pos)
+            data = stc.StyledTextCtrl.HitTest(w.widget,pos)
             # g.trace('data',data)
             
             return 0 ### Non-zero value may loop.
@@ -3218,10 +3225,6 @@ if wx:
         #@+node:ekr.20061116091006:isTextWidget
         def isTextWidget (self,w):
             
-            # rawClasses = (wx.TextCtrl,wx.richtext.RichTextCtrl,wx.stc.StyledTextCtrl)
-        
-            # wrapperClasses = (headlineWidget,plainTextWidget,richTextWidget,stcWidget)
-            
             return w and hasattr(w,'__class__') and issubclass(w.__class__,baseTextWidget)
         #@nonl
         #@-node:ekr.20061116091006:isTextWidget
@@ -3229,7 +3232,7 @@ if wx:
         def widget_name (self,w):
             
             # First try the wxWindow.GetName method.
-            # All wx Text widgets, including wx.stc.StyledControl, have this method.
+            # All wx Text widgets, including stc.StyledControl, have this method.
             if hasattr(w,'GetName'):
                 name = w.GetName()
             else:
