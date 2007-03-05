@@ -4404,13 +4404,6 @@ class baseCommands:
             c.beadPointer += 1
             v = c.beadList[c.beadPointer]
             if c.positionExists(v):
-                # c.beginUpdate()
-                # try:
-                    # c.frame.tree.expandAllAncestors(v)
-                    # c.selectVnode(v,updateBeadList=False)
-                # finally:
-                    # c.endUpdate()
-                # c.treeWantsFocusNow()
                 c.treeSelectHelper(v)
                 return
     #@-node:ekr.20031218072017.1628:goNextVisitedNode
@@ -4425,14 +4418,7 @@ class baseCommands:
             c.beadPointer -= 1
             v = c.beadList[c.beadPointer]
             if c.positionExists(v):
-                # c.beginUpdate()
-                # try:
-                    # c.frame.tree.expandAllAncestors(v)
-                    # c.selectVnode(v,updateBeadList=False)
-                # finally:
-                    # c.endUpdate()
-                # c.treeWantsFocusNow()
-                c.treeCommandHelper(v)
+                c.treeSelectHelper(v)
                 return
     #@-node:ekr.20031218072017.1627:goPrevVisitedNode
     #@+node:ekr.20031218072017.2914:goToFirstNode
@@ -4441,13 +4427,7 @@ class baseCommands:
         '''Select the first node of the entire outline.'''
         
         c = self ; p = c.rootPosition()
-        # if p:
-            # c.beginUpdate()
-            # try:
-                # c.selectVnode(p)
-            # finally:
-                # c.endUpdate()
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p)
     #@-node:ekr.20031218072017.2914:goToFirstNode
     #@+node:ekr.20051012092453:goToFirstSibling
@@ -4460,14 +4440,9 @@ class baseCommands:
         if p.hasBack():
             while p.hasBack():
                 p.moveToBack()
-            # c.beginUpdate()
-            # try:
-                # c.selectVnode(p)
-            # finally:
-                # c.endUpdate()
         else:
             p = None
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p)
     #@-node:ekr.20051012092453:goToFirstSibling
     #@+node:ekr.20031218072017.2915:goToLastNode
@@ -4479,14 +4454,6 @@ class baseCommands:
         while p and p.hasThreadNext():
             p.moveToThreadNext()
     
-        # if p:
-            # c.beginUpdate()
-            # try:
-                # c.frame.tree.expandAllAncestors(p)
-                # c.selectVnode(p)
-            # finally:
-                # c.endUpdate()
-        # c.treeWantsFocusNow()
         c.treeSelectHelper(p)
     #@-node:ekr.20031218072017.2915:goToLastNode
     #@+node:ekr.20051012092847.1:goToLastSibling
@@ -4499,15 +4466,9 @@ class baseCommands:
         if p.hasNext():
             while p.hasNext():
                 p.moveToNext()
-    
-            # c.beginUpdate()
-            # try:
-                # c.selectVnode(p)
-            # finally:
-                # c.endUpdate()
         else:
             p = None
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p)
     #@-node:ekr.20051012092847.1:goToLastSibling
     #@+node:ekr.20050711153537:goToLastVisibleNode
@@ -4523,15 +4484,6 @@ class baseCommands:
         while p and p.isExpanded():
             p.moveToLastChild()
     
-        # if p:
-            # c.beginUpdate()
-            # try:
-                # c.frame.tree.expandAllAncestors(p)
-                # c.selectVnode(p)
-            # finally:
-                # c.endUpdate()
-        
-        # c.treeWantsFocusNow()
         c.treeSelectHelper(p)
     #@-node:ekr.20050711153537:goToLastVisibleNode
     #@+node:ekr.20031218072017.2916:goToNextClone
@@ -4553,14 +4505,6 @@ class baseCommands:
             while v and v != current and v.t != current.t:
                 v = v.threadNext()
     
-        # if v:
-            # c.beginUpdate()
-            # try:
-                # c.endEditing()
-                # c.selectVnode(v)
-            # finally:
-                # c.endUpdate()
-        # c.treeWantsFocusNow()
         c.treeSelectHelper(v)
     #@-node:ekr.20031218072017.2916:goToNextClone
     #@+node:ekr.20031218072017.2917:goToNextDirtyHeadline
@@ -4581,16 +4525,9 @@ class baseCommands:
             while p and not p.isDirty():
                 p.moveToThreadNext()
     
-        # if p:
-            # c.beginUpdate()
-            # try:
-                # c.endEditing()
-                # c.selectPosition(p)
-            # finally:
-                # c.endUpdate()
         if not p:
             g.es("done",color="blue")
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p)
     #@-node:ekr.20031218072017.2917:goToNextDirtyHeadline
     #@+node:ekr.20031218072017.2918:goToNextMarkedHeadline
@@ -4605,16 +4542,9 @@ class baseCommands:
         while p and not p.isMarked():
             p.moveToThreadNext()
     
-        # if p:
-            # c.beginUpdate()
-            # try:
-                # c.endEditing()
-                # c.selectPosition(p)
-            # finally:
-                # c.endUpdate()
         if not p:
             g.es("done",color="blue")
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p)
     #@-node:ekr.20031218072017.2918:goToNextMarkedHeadline
     #@+node:ekr.20031218072017.2919:goToNextSibling
@@ -4623,15 +4553,7 @@ class baseCommands:
         '''Select the next sibling of the selected node.'''
         
         c = self ; p = c.currentPosition()
-        # if not p: return
-        # next = p.next()
-        # if next:
-            # c.beginUpdate()
-            # try:
-                # c.selectPosition(next)
-            # finally:
-                # c.endUpdate()
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p and p.next())
     #@-node:ekr.20031218072017.2919:goToNextSibling
     #@+node:ekr.20031218072017.2920:goToParent
@@ -4640,15 +4562,7 @@ class baseCommands:
         '''Select the parent of the selected node.'''
         
         c = self ; p = c.currentPosition()
-        # if not p: return
-        # p = v.parent()
-        # if p:
-            # c.beginUpdate()
-            # try:
-                # c.selectVnode(p)
-            # finally:
-                # c.endUpdate()
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p and p.parent())
     #@-node:ekr.20031218072017.2920:goToParent
     #@+node:ekr.20031218072017.2921:goToPrevSibling
@@ -4657,17 +4571,7 @@ class baseCommands:
         '''Select the previous sibling of the selected node.'''
         
         c = self ; p = c.currentPosition()
-        # if not p: return
-        # v = c.currentVnode()
-        # if not v: return
-        # back = v.back()
-        # if back:
-            # c.beginUpdate()
-            # try:
-                # c.selectVnode(back)
-            # finally:
-                # c.endUpdate()
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p and p.back())
     #@-node:ekr.20031218072017.2921:goToPrevSibling
     #@+node:ekr.20031218072017.2994:selectThreadNext
@@ -4676,18 +4580,6 @@ class baseCommands:
         '''Select the node following the selected node in outline order.'''
     
         c = self ; p = c.currentPosition()
-        
-        # current = c.currentPosition()
-        # if not current: return
-    
-        # p = current.threadNext()
-        # if p:
-            # c.beginUpdate()
-            # try:
-                # c.selectPosition(p)
-            # finally:
-                # c.endUpdate()
-        # c.treeWantsFocusNow()
         
         c.treeSelectHelper(p and p.threadNext())
     #@nonl
@@ -4698,18 +4590,7 @@ class baseCommands:
         '''Select the node preceding the selected node in outline order.'''
     
         c = self ; p = c.currentPosition()
-        
-        # ; current = c.currentVnode()
-        # if not current: return
-        
-        # v = current.threadBack()
-        # if v:
-            # c.beginUpdate()
-            # try:
-                # c.selectVnode(v)
-            # finally:
-                # c.endUpdate()
-        # c.treeWantsFocusNow()
+    
         c.treeSelectHelper(p and p.threadBack())
     #@-node:ekr.20031218072017.2993:selectThreadBack
     #@+node:ekr.20031218072017.2995:selectVisBack
@@ -4720,25 +4601,14 @@ class baseCommands:
         '''Select the visible node preceding the presently selected node.'''
     
         c = self ; current = c.currentPosition()
-        
-        # if not current: return
-        # p = current.visBack()
-        # if p:
-            # redraw = not p.isVisible()
-            # if not redraw: c.frame.tree.setSelectedLabelState(current)
-            # c.beginUpdate()
-            # try:
-                # c.selectVnode(p)
-            # finally:
-                # c.endUpdate(redraw)
-                
         p = current and current.visBack()
+        
         if p:
             redraw = not p.isVisible()
             if not redraw: c.frame.tree.setSelectedLabelState(current)
         else:
             redraw = True
-        # c.treeWantsFocusNow(p)
+    
         c.treeSelectHelper(p,redraw=redraw)
     #@-node:ekr.20031218072017.2995:selectVisBack
     #@+node:ekr.20031218072017.2996:selectVisNext
@@ -4748,27 +4618,14 @@ class baseCommands:
     
         c = self ; current = c.currentPosition()
         
-        # current = c.currentPosition()
-        # if not current: return
-        # p = current.visNext()
-        # if p:
-            # redraw = not p.isVisible()
-            # if not redraw: c.frame.tree.setSelectedLabelState(current)
-            # c.beginUpdate()
-            # try:
-                # c.selectVnode(p)
-            # finally:
-                # c.endUpdate(redraw)
-    
-        # c.treeWantsFocusNow()
         p = current and current.visNext()
         if p:
             redraw = not p.isVisible()
             if not redraw: c.frame.tree.setSelectedLabelState(current)
         else:
             redraw = True
+    
         c.treeSelectHelper(p,redraw=redraw)
-    #@nonl
     #@-node:ekr.20031218072017.2996:selectVisNext
     #@-node:ekr.20031218072017.2913:Goto
     #@+node:ekr.20031218072017.2922:Mark...
