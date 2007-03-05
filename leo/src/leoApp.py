@@ -422,7 +422,8 @@ class LeoApp:
         
         if hasattr(sys,nonConstantAttr):
             g.app.leoID = getattr(sys,nonConstantAttr)
-            if verbose: g.es_print("leoID = " + g.app.leoID, color='red')
+            if verbose and not g.app.unitTesting:
+                g.es_print("leoID = " + g.app.leoID, color='red')
             return
         else:
             g.app.leoID = None
@@ -440,10 +441,10 @@ class LeoApp:
                     f.close()
                     if s and len(s) > 0:
                         g.app.leoID = s.strip()
-                        if verbose:
+                        if verbose and not g.app.unitTesting:
                             g.es_print("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
                         return
-                    elif verbose:
+                    elif verbose and not g.app.unitTesting:
                         g.es_print("empty %s (in %s)" % (tag,theDir), color = "red")
                 except IOError:
                     g.app.leoID = None
@@ -459,7 +460,8 @@ class LeoApp:
         try:
             theId = os.getenv('USER')
             if theId:
-                if verbose: g.es_print("using os.getenv('USER'): %s " % (repr(theId)),color='red')
+                if verbose and not g.app.unitTesting:
+                    g.es_print("using os.getenv('USER'): %s " % (repr(theId)),color='red')
                 g.app.leoID = theId
                 return
                 
