@@ -186,6 +186,8 @@ class bridgeController:
             log.isNull = False
             log.enabled = True # Allow prints from nullLog.
             # g.app.writeWaitingLog()
+        else:
+            assert False,'leoBridge.py must run with nullGui'
             
         if 0: # A gui main loop is probably a bad idea.
             if self.guiName == 'tkinter':
