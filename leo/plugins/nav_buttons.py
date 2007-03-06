@@ -65,6 +65,7 @@ def init ():
         g.app.createTkGui(__file__)
 
     ok = g.app.gui.guiName() == "tkinter"
+
     if ok:
         leoPlugins.registerHandler('after-create-leo-frame',onCreate)
         g.plugin_signon(__name__)

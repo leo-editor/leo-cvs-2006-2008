@@ -2834,7 +2834,7 @@ def undoMenuName (self,name):
 #@+node:ekr.20031218072017.3614:setRedoType, setUndoType
 # These routines update both the ivar and the menu label.
 def setRedoType (self,theType):
-    # g.trace(theType,g.callers(7))
+    # g.trace(theType,g.callers())
     u = self ; frame = u.c.frame
     
     if type(theType) != type(''):
@@ -2857,7 +2857,8 @@ def setRedoType (self,theType):
         u.realRedoMenuLabel = realLabel
 
 def setUndoType (self,theType):
-    # g.trace(theType,g.callers(7))
+    # g.trace(theType,g.callers())
+    
     u = self ; frame = u.c.frame
     if type(theType) != type(''):
         g.trace('oops: expected string for command, got %s' % repr(theType))
@@ -3474,14 +3475,26 @@ def createCommonBunch (self,p):
 # Translation does not affect these routines.
 
 def canRedo (self):
-
+    
     u = self
+
     return u.redoMenuLabel != "Can't Redo"
 
-def canUndo (self):
+    # if g.app.gui.guiName() in ('tkinter','nullGui'):
+        # return u.redoMenuLabel != "Can't Redo"
+    # else:
+        # return u.getBead(u.bead) and u.redoHelper is not None
 
+def canUndo (self):
+    
     u = self
+
     return u.undoMenuLabel != "Can't Undo"
+
+    # if g.app.gui.guiName() in ('tkinter','nullGui'):
+        # return u.undoMenuLabel != "Can't Undo"
+    # else:
+        # return u.getBead(u.bead) and u.undoHelper is not None
 #@-node:ekr.20031218072017.3610:canRedo & canUndo
 #@+node:ekr.20031218072017.3609:clearUndoState
 def clearUndoState (self):
@@ -4457,7 +4470,7 @@ def select (self,p,updateBeadList=True,scroll=True):
     return 'break' # Supresses unwanted selection.
 #@+node:ekr.20040803072955.129:<< unselect the old node >>
 # Remember the position of the scrollbar before making any changes.
-if not body: g.trace('no body!','c.frame',c.frame,g.callers())
+if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
 
 
 yview = body.getYScrollPosition()
@@ -5931,6 +5944,26 @@ def updateHead (self,event,w):
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
+#@+node:ekr.20040803072955.126:endEditLabel
+def endEditLabel (self):
+    
+    '''End editing of a headline and update p.headString().'''
+
+    c = self.c ; k = c.k ; p = c.currentPosition()
+
+    self.setEditPosition(None) # That is, self._editPosition = None
+    
+    # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
+    # if k:
+        # k.setDefaultUnboundKeyAction()
+        # k.showStateAndMode() # Destroys UNL info.
+    
+    # Important: this will redraw if necessary.
+    self.onHeadChanged(p)
+    
+    if 0: # This interferes with the find command and interferes with focus generally!
+        c.bodyWantsFocus()
+#@-node:ekr.20040803072955.126:endEditLabel
 #@-node:ekr.20040803072955.90:head key handlers (leoTree)
 #@-node:ekr.20061127161813:Replacing selection not done properly in headline
 #@+node:ekr.20061127150919:Fixed paragraph commands
@@ -7559,6 +7592,26 @@ def updateHead (self,event,w):
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
+#@+node:ekr.20040803072955.126:endEditLabel
+def endEditLabel (self):
+    
+    '''End editing of a headline and update p.headString().'''
+
+    c = self.c ; k = c.k ; p = c.currentPosition()
+
+    self.setEditPosition(None) # That is, self._editPosition = None
+    
+    # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
+    # if k:
+        # k.setDefaultUnboundKeyAction()
+        # k.showStateAndMode() # Destroys UNL info.
+    
+    # Important: this will redraw if necessary.
+    self.onHeadChanged(p)
+    
+    if 0: # This interferes with the find command and interferes with focus generally!
+        c.bodyWantsFocus()
+#@-node:ekr.20040803072955.126:endEditLabel
 #@-node:ekr.20040803072955.90:head key handlers (leoTree)
 #@+node:ekr.20051026092433.1:backwardDeleteCharacter
 def backwardDeleteCharacter (self,event=None):
@@ -16415,6 +16468,7 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     if not isValidPython(): return
     << import leoGlobals and leoApp >>
     g.computeStandardDirectories()
+    adjustSysPath(g)
     if pymacs:
         script = windowFlag = False
     else:
@@ -16498,60 +16552,23 @@ except ImportError:
     print "Error importing leoConfig.py"
     import traceback ; traceback.print_exc()
 #@-node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
-#@+node:ekr.20040411081633:startPsyco
-def startPsyco ():
+#@+node:ekr.20070306085724:adjustSysPath
+def adjustSysPath (g):
     
-    import leoGlobals as g
-
-    try:
-        import psyco
-        if 0:
-            theFile = r"c:\prog\test\psycoLog.txt"
-            g.es("psyco now logging to",theFile,color="blue")
-            psyco.log(theFile)
-            psyco.profile()
-        psyco.full()
-        g.es("psyco now running",color="blue")
-    except ImportError:
-        g.app.use_psyco = False
-    except:
-        print "unexpected exception importing psyco"
-        g.es_exception()
-        g.app.use_psyco = False
-#@-node:ekr.20040411081633:startPsyco
-#@+node:ekr.20031218072017.1936:isValidPython
-def isValidPython():
+    '''Adjust sys.path to enable imports as usual with Leo.'''
     
-    if sys.platform == 'cli':
-        return True
-
-    message = """\
-Leo requires Python 2.2.1 or higher.
-You may download Python from http://python.org/download/
-"""
-    try:
-        # This will fail if True/False are not defined.
-        import leoGlobals as g
-    except ImportError:
-        print "isValidPython: can not import leoGlobals"
-        return 0
-    except:
-        print "isValidPytyhon: unexpected exception: import leoGlobals.py as g"
-        import traceback ; traceback.print_exc()
-        return 0
-    try:
-        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
-        ok = g.CheckVersion(version,'2.2.1')
-        if not ok:
-            print message
-            g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
-        return ok
-    except:
-        print "isValidPython: unexpected exception: g.CheckVersion"
-        import traceback ; traceback.print_exc()
-        return 0
-#@nonl
-#@-node:ekr.20031218072017.1936:isValidPython
+    import sys
+    
+    #g.trace('loadDir',g.app.loadDir)
+    
+    leoDirs = ('config','doc','extensions','modes','plugins','src','test')
+    
+    for theDir in leoDirs:
+        path = g.os_path_abspath(
+            g.os_path_join(g.app.loadDir,'..',theDir))
+        if path not in sys.path:
+            sys.path.append(path)
+#@-node:ekr.20070306085724:adjustSysPath
 #@+node:ekr.20041124083125:completeFileName (leo.py)
 def completeFileName (fileName):
     
@@ -16644,6 +16661,39 @@ def getBatchScript ():
         if f: f.close()
         return script, windowFlag
 #@-node:ekr.20031218072017.1939:getBatchScript
+#@+node:ekr.20031218072017.1936:isValidPython
+def isValidPython():
+    
+    if sys.platform == 'cli':
+        return True
+
+    message = """\
+Leo requires Python 2.2.1 or higher.
+You may download Python from http://python.org/download/
+"""
+    try:
+        # This will fail if True/False are not defined.
+        import leoGlobals as g
+    except ImportError:
+        print "isValidPython: can not import leoGlobals"
+        return 0
+    except:
+        print "isValidPytyhon: unexpected exception: import leoGlobals.py as g"
+        import traceback ; traceback.print_exc()
+        return 0
+    try:
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
+        ok = g.CheckVersion(version,'2.2.1')
+        if not ok:
+            print message
+            g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
+        return ok
+    except:
+        print "isValidPython: unexpected exception: g.CheckVersion"
+        import traceback ; traceback.print_exc()
+        return 0
+#@nonl
+#@-node:ekr.20031218072017.1936:isValidPython
 #@+node:ekr.20041130093254:reportDirectories
 def reportDirectories(verbose):
     
@@ -16656,6 +16706,27 @@ def reportDirectories(verbose):
         ):
             g.es("%s dir: %s" % (kind,theDir),color="blue")
 #@-node:ekr.20041130093254:reportDirectories
+#@+node:ekr.20040411081633:startPsyco
+def startPsyco ():
+    
+    import leoGlobals as g
+
+    try:
+        import psyco
+        if 0:
+            theFile = r"c:\prog\test\psycoLog.txt"
+            g.es("psyco now logging to",theFile,color="blue")
+            psyco.log(theFile)
+            psyco.profile()
+        psyco.full()
+        g.es("psyco now running",color="blue")
+    except ImportError:
+        g.app.use_psyco = False
+    except:
+        print "unexpected exception importing psyco"
+        g.es_exception()
+        g.app.use_psyco = False
+#@-node:ekr.20040411081633:startPsyco
 #@-node:ekr.20031218072017.1934:run & allies
 #@+node:ekr.20070227093530:initLeo & helpers
 def initLeo (self):
@@ -16746,6 +16817,8 @@ def createGui (self):
         log.isNull = False
         log.enabled = True # Allow prints from nullLog.
         # g.app.writeWaitingLog()
+    else:
+        assert False,'leoBridge.py must run with nullGui'
         
     if 0: # A gui main loop is probably a bad idea.
         if self.guiName == 'tkinter':
@@ -16987,6 +17060,26 @@ def updateHead (self,event,w):
     if ch in ('\n','\r'):
         self.endEditLabel() # Now calls self.onHeadChanged.
 #@-node:ekr.20051026083544.2:updateHead
+#@+node:ekr.20040803072955.126:endEditLabel
+def endEditLabel (self):
+    
+    '''End editing of a headline and update p.headString().'''
+
+    c = self.c ; k = c.k ; p = c.currentPosition()
+
+    self.setEditPosition(None) # That is, self._editPosition = None
+    
+    # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
+    # if k:
+        # k.setDefaultUnboundKeyAction()
+        # k.showStateAndMode() # Destroys UNL info.
+    
+    # Important: this will redraw if necessary.
+    self.onHeadChanged(p)
+    
+    if 0: # This interferes with the find command and interferes with focus generally!
+        c.bodyWantsFocus()
+#@-node:ekr.20040803072955.126:endEditLabel
 #@-node:ekr.20040803072955.90:head key handlers (leoTree)
 #@+node:ekr.20070228074312.15:event_generate (baseTextWidget)
 def event_generate(self,stroke):
@@ -18075,7 +18168,7 @@ def selectAllText (self,event=None): # This is a command.
 def setInsertPoint (self,pos):          return self.bodyCtrl.setInsertPoint(pos) # was getInsertPoint.
 def setSelectionRange (self,sel):       i,j = sel ; self.bodyCtrl.setSelectionRange(i,j)
 #@-node:ekr.20070228080627:Text Wrappers (base class)
-#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+#@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
 # This is the only key handler for the body pane.
 def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
     
@@ -18127,7 +18220,7 @@ try:
 finally:
     c.endUpdate(redraw_flag)
 #@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
+#@-node:ekr.20031218072017.1329:onBodyChanged (leoBody)
 #@-node:ekr.20061109173021:leoBody: must be defined in the base class
 #@-node:ekr.20031218072017.3656:class leoBody
 #@+node:ekr.20031218072017.3720:class leoGui
@@ -20488,26 +20581,6 @@ def editLabel (self,p,selectAll=False):
         self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
         c.headlineWantsFocus(p) # Make sure the focus sticks.
 #@-node:ekr.20070228164730:editLabel (nullTree) same as tkTree)
-#@+node:ekr.20070228164356:endEditLabel (nullTree) (same as tkTree)
-def endEditLabel (self):
-    
-    '''End editing of a headline and update p.headString().'''
-
-    c = self.c ; k = c.k ; p = c.currentPosition()
-
-    self.setEditPosition(None) # That is, self._editPosition = None
-    
-    # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
-    # if k:
-        # k.setDefaultUnboundKeyAction()
-        # k.showStateAndMode() # Destroys UNL info.
-    
-    # Important: this will redraw if necessary.
-    self.onHeadChanged(p)
-    
-    if 0: # This interferes with the find command and interferes with focus generally!
-        c.bodyWantsFocus()
-#@-node:ekr.20070228164356:endEditLabel (nullTree) (same as tkTree)
 #@+node:ekr.20070228160345:setHeadline (nullTree)
 def setHeadline (self,p,s):
     
@@ -21568,6 +21641,7 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     if not isValidPython(): return
     << import leoGlobals and leoApp >>
     g.computeStandardDirectories()
+    adjustSysPath(g)
     if pymacs:
         script = windowFlag = False
     else:
@@ -21651,60 +21725,23 @@ except ImportError:
     print "Error importing leoConfig.py"
     import traceback ; traceback.print_exc()
 #@-node:ekr.20041219072416.1:<< import leoNodes and leoConfig >>
-#@+node:ekr.20040411081633:startPsyco
-def startPsyco ():
+#@+node:ekr.20070306085724:adjustSysPath
+def adjustSysPath (g):
     
-    import leoGlobals as g
-
-    try:
-        import psyco
-        if 0:
-            theFile = r"c:\prog\test\psycoLog.txt"
-            g.es("psyco now logging to",theFile,color="blue")
-            psyco.log(theFile)
-            psyco.profile()
-        psyco.full()
-        g.es("psyco now running",color="blue")
-    except ImportError:
-        g.app.use_psyco = False
-    except:
-        print "unexpected exception importing psyco"
-        g.es_exception()
-        g.app.use_psyco = False
-#@-node:ekr.20040411081633:startPsyco
-#@+node:ekr.20031218072017.1936:isValidPython
-def isValidPython():
+    '''Adjust sys.path to enable imports as usual with Leo.'''
     
-    if sys.platform == 'cli':
-        return True
-
-    message = """\
-Leo requires Python 2.2.1 or higher.
-You may download Python from http://python.org/download/
-"""
-    try:
-        # This will fail if True/False are not defined.
-        import leoGlobals as g
-    except ImportError:
-        print "isValidPython: can not import leoGlobals"
-        return 0
-    except:
-        print "isValidPytyhon: unexpected exception: import leoGlobals.py as g"
-        import traceback ; traceback.print_exc()
-        return 0
-    try:
-        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
-        ok = g.CheckVersion(version,'2.2.1')
-        if not ok:
-            print message
-            g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
-        return ok
-    except:
-        print "isValidPython: unexpected exception: g.CheckVersion"
-        import traceback ; traceback.print_exc()
-        return 0
-#@nonl
-#@-node:ekr.20031218072017.1936:isValidPython
+    import sys
+    
+    #g.trace('loadDir',g.app.loadDir)
+    
+    leoDirs = ('config','doc','extensions','modes','plugins','src','test')
+    
+    for theDir in leoDirs:
+        path = g.os_path_abspath(
+            g.os_path_join(g.app.loadDir,'..',theDir))
+        if path not in sys.path:
+            sys.path.append(path)
+#@-node:ekr.20070306085724:adjustSysPath
 #@+node:ekr.20041124083125:completeFileName (leo.py)
 def completeFileName (fileName):
     
@@ -21797,6 +21834,39 @@ def getBatchScript ():
         if f: f.close()
         return script, windowFlag
 #@-node:ekr.20031218072017.1939:getBatchScript
+#@+node:ekr.20031218072017.1936:isValidPython
+def isValidPython():
+    
+    if sys.platform == 'cli':
+        return True
+
+    message = """\
+Leo requires Python 2.2.1 or higher.
+You may download Python from http://python.org/download/
+"""
+    try:
+        # This will fail if True/False are not defined.
+        import leoGlobals as g
+    except ImportError:
+        print "isValidPython: can not import leoGlobals"
+        return 0
+    except:
+        print "isValidPytyhon: unexpected exception: import leoGlobals.py as g"
+        import traceback ; traceback.print_exc()
+        return 0
+    try:
+        version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
+        ok = g.CheckVersion(version,'2.2.1')
+        if not ok:
+            print message
+            g.app.gui.runAskOkDialog(None,"Python version error",message=message,text="Exit")
+        return ok
+    except:
+        print "isValidPython: unexpected exception: g.CheckVersion"
+        import traceback ; traceback.print_exc()
+        return 0
+#@nonl
+#@-node:ekr.20031218072017.1936:isValidPython
 #@+node:ekr.20041130093254:reportDirectories
 def reportDirectories(verbose):
     
@@ -21809,6 +21879,27 @@ def reportDirectories(verbose):
         ):
             g.es("%s dir: %s" % (kind,theDir),color="blue")
 #@-node:ekr.20041130093254:reportDirectories
+#@+node:ekr.20040411081633:startPsyco
+def startPsyco ():
+    
+    import leoGlobals as g
+
+    try:
+        import psyco
+        if 0:
+            theFile = r"c:\prog\test\psycoLog.txt"
+            g.es("psyco now logging to",theFile,color="blue")
+            psyco.log(theFile)
+            psyco.profile()
+        psyco.full()
+        g.es("psyco now running",color="blue")
+    except ImportError:
+        g.app.use_psyco = False
+    except:
+        print "unexpected exception importing psyco"
+        g.es_exception()
+        g.app.use_psyco = False
+#@-node:ekr.20040411081633:startPsyco
 #@-node:ekr.20031218072017.1934:run & allies
 #@+node:ekr.20070224075914:doEnabledPlugins
 def doEnabledPlugins (self,p,kind,name,val):
