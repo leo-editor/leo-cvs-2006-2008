@@ -3463,7 +3463,7 @@ if wx:
         def tag_delete (self,*args,**keys):     return self.bodyCtrl.tag_delete(*args,**keys)
         def tag_remove (self,*args,**keys):     return self.bodyCtrl.tag_remove(*args,**keys)
         #@-node:edream.111303204836:Tk wrappers (wxBody)
-        #@+node:ekr.20061116064914:onBodyChanged
+        #@+node:ekr.20061116064914:onBodyChanged (wxBody: calls leoBody.onBodyChanged)
         def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
             
             # g.trace('undoType',undoType,'oldSel',oldSel,'len(oldText)',oldText and len(oldText) or 0)
@@ -3476,20 +3476,25 @@ if wx:
         
             self.frame.lockout += 1
             try:
-                s = w.getAllText()
-                changed = s != p.bodyString()
-                # g.trace('changed',changed,len(s),p.headString(),g.callers())
-                if changed:
-                    p.v.t.setTnodeText(s)
-                    p.v.t.insertSpot = w.getInsertPoint()
-                    if 0: # This causes flash even when nothing is actually colored!
-                        self.frame.body.recolor_now(p)
-                    if not c.changed: c.setChanged(True)
-                    c.frame.tree.updateVisibleIcons(p)
+                # Call the base class method.
+                if 1:
+                    leoFrame.leoBody.onBodyChanged(self,
+                        undoType,oldSel=oldSel,oldText=oldText,oldYview=oldYview)
+                else:
+                    s = w.getAllText()
+                    changed = s != p.bodyString()
+                    # g.trace('changed',changed,len(s),p.headString(),g.callers())
+                    if changed:
+                        p.v.t.setTnodeText(s)
+                        p.v.t.insertSpot = w.getInsertPoint()
+                        if 0: # This causes flash even when nothing is actually colored!
+                            self.frame.body.recolor_now(p)
+                        if not c.changed: c.setChanged(True)
+                        c.frame.tree.updateVisibleIcons(p)
             finally:
                 self.frame.lockout -= 1
         #@nonl
-        #@-node:ekr.20061116064914:onBodyChanged
+        #@-node:ekr.20061116064914:onBodyChanged (wxBody: calls leoBody.onBodyChanged)
         #@+node:ekr.20070204123745:wxBody.forceFullRecolor
         def forceFullRecolor (self):
            
@@ -6192,16 +6197,18 @@ if wx:
         #@-node:ekr.20061118123730.1:wxTree.onChar
         #@+node:ekr.20050719121701:Selection
         #@+node:ekr.20050719121701.2:endEditLabel
-        def endEditLabel (self):
+        # Now defined in the base class.
         
-            '''The end-edit-label command.'''
+        # def endEditLabel (self):
+        
+            # '''The end-edit-label command.'''
             
-            c = self.c ; p = c.currentPosition()
+            # c = self.c ; p = c.currentPosition()
             
-            w = self.editWidgetDict.get(p.v)
-            if w:
-                s = w.getAllText()
-                p.initHeadString(s)
+            # w = self.editWidgetDict.get(p.v)
+            # if w:
+                # s = w.getAllText()
+                # p.initHeadString(s)
            
         #@nonl
         #@-node:ekr.20050719121701.2:endEditLabel

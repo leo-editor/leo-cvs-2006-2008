@@ -892,7 +892,7 @@ class leoBody:
     
         return before,ins,after
     #@-node:ekr.20031218072017.4030:getInsertLines
-    #@+node:ekr.20031218072017.4031:getSelectionAreas 
+    #@+node:ekr.20031218072017.4031:getSelectionAreas
     def getSelectionAreas (self):
         
         """Return before,sel,after where:
@@ -917,7 +917,7 @@ class leoBody:
         after  = g.toUnicode(after ,g.app.tkEncoding)
         return before,sel,after
     #@nonl
-    #@-node:ekr.20031218072017.4031:getSelectionAreas 
+    #@-node:ekr.20031218072017.4031:getSelectionAreas
     #@+node:ekr.20031218072017.2377:getSelectionLines
     def getSelectionLines (self):
         
@@ -1826,6 +1826,7 @@ class leoTree:
         'getEditTextDict',
         'setEditPosition',
         # Others.
+        'endEditLabel',
         'expandAllAncestors',
         'injectCallbacks',
         'OnIconDoubleClick',
@@ -1849,7 +1850,6 @@ class leoTree:
         'scrollTo',
         # Headlines.
         'editLabel',
-        'endEditLabel',
         'setEditLabelState',
         # Selecting.
         # 'select', # Defined in base class, may be overridden in do-nothing subclasses.
@@ -1871,7 +1871,7 @@ class leoTree:
     
     # Headlines.
     def editLabel(self,v,selectAll=False):          self.oops()
-    def endEditLabel(self):                         self.oops()
+    ### def endEditLabel(self):                         self.oops()
     def setEditLabelState(self,v,selectAll=False):  self.oops()
     #@-node:ekr.20031218072017.3706: Must be defined in subclasses
     #@+node:ekr.20061109165848:Must be defined in base class
@@ -1886,200 +1886,6 @@ class leoTree:
     def setEditPosition(self,p):
         self._editPosition = p
     #@-node:ekr.20031218072017.3716:Getters/Setters (tree)
-    #@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
-    def OnIconDoubleClick (self,p):
-    
-        # Note: "icondclick" hooks handled by vnode callback routine.
-    
-        c = self.c
-        s = p.headString().strip()
-        if g.match_word(s,0,"@url"):
-            url = s[4:].strip()
-            if url.lstrip().startswith('--'):
-                # Get the url from the first body line.
-                lines = p.bodyString().split('\n')
-                url = lines and lines[0] or ''
-            else:
-                #@            << stop the url after any whitespace >>
-                #@+node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
-                # For safety, the URL string should end at the first whitespace, unless quoted.
-                # This logic is also found in the UNL plugin so we don't have to change the 'unl1' hook.
-                
-                url = url.replace('\t',' ')
-                
-                # Strip quotes.
-                i = -1
-                if url and url[0] in ('"',"'"):
-                    i = url.find(url[0],1)
-                    if i > -1:
-                        url = url[1:i]
-                
-                if i == -1:
-                    # Not quoted or no matching quote.
-                    i = url.find(' ')
-                    if i > -1:
-                        if 0: # No need for a warning.  Assume everything else is a comment.
-                            g.es("ignoring characters after space in url:"+url[i:])
-                            g.es("use %20 instead of spaces")
-                        url = url[:i]
-                #@-node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
-                #@nl
-            if not g.doHook("@url1",c=c,p=p,v=p,url=url):
-                self.handleUrlInUrlNode(url)
-            g.doHook("@url2",c=c,p=p,v=p)
-    
-        return 'break' # 11/19/06
-    #@nonl
-    #@+node:ekr.20061030161842:handleUrlInUrlNode
-    def handleUrlInUrlNode(self,url):
-        
-        # Note: the UNL plugin has its own notion of what a good url is.
-        
-        c = self.c
-        # g.trace(url)
-        #@    << check the url; return if bad >>
-        #@+node:ekr.20031218072017.2314:<< check the url; return if bad >>
-        #@+at 
-        #@nonl
-        # A valid url is (according to D.T.Hein):
-        # 
-        # 3 or more lowercase alphas, followed by,
-        # one ':', followed by,
-        # one or more of: (excludes !"#;<>[\]^`|)
-        #   $%&'()*+,-./0-9:=?@A-Z_a-z{}~
-        # followed by one of: (same as above, except no minus sign or comma).
-        #   $%&'()*+/0-9:=?@A-Z_a-z}~
-        #@-at
-        #@@c
-        
-        urlPattern = "[a-z]{3,}:[\$-:=?-Z_a-z{}~]+[\$-+\/-:=?-Z_a-z}~]"
-        
-        if not url or len(url) == 0:
-            g.es("no url following @url")
-            return
-        
-        # Add http:// if required.
-        if not re.match('^([a-z]{3,}:)',url):
-            url = 'http://' + url
-        if not re.match(urlPattern,url):
-            g.es("invalid url: "+url)
-            return
-        #@nonl
-        #@-node:ekr.20031218072017.2314:<< check the url; return if bad >>
-        #@nl
-        #@    << pass the url to the web browser >>
-        #@+node:ekr.20031218072017.2315:<< pass the url to the web browser >>
-        #@+at 
-        #@nonl
-        # Most browsers should handle the following urls:
-        #   ftp://ftp.uu.net/public/whatever.
-        #   http://localhost/MySiteUnderDevelopment/index.html
-        #   file://home/me/todolist.html
-        #@-at
-        #@@c
-        
-        try:
-            import os
-            os.chdir(g.app.loadDir)
-            if g.match(url,0,"file:") and url[-4:]==".leo":
-                ok,frame = g.openWithFileName(url[5:],c)
-            else:
-                import webbrowser
-                # Mozilla throws a weird exception, then opens the file!
-                try: webbrowser.open(url)
-                except: pass
-        except:
-            g.es("exception opening " + url)
-            g.es_exception()
-        #@-node:ekr.20031218072017.2315:<< pass the url to the web browser >>
-        #@nl
-    #@-node:ekr.20061030161842:handleUrlInUrlNode
-    #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
-    #@+node:ekr.20040803072955.143:tree.expandAllAncestors
-    def expandAllAncestors (self,p):
-        
-        '''Expand all ancestors without redrawing.
-        
-        Return a flag telling whether a redraw is needed.'''
-        
-        c = self.c ; redraw_flag = False
-    
-        c.beginUpdate()
-        try:
-            for p in p.parents_iter():
-                if not p.isExpanded():
-                    p.expand()
-                    redraw_flag = True
-        finally:
-            c.endUpdate(False)
-    
-        return redraw_flag
-    #@-node:ekr.20040803072955.143:tree.expandAllAncestors
-    #@+node:ekr.20040803072955.21:tree.injectCallbacks
-    def injectCallbacks(self):
-        
-        c = self.c
-        
-        #@    << define callbacks to be injected in the position class >>
-        #@+node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
-        # N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
-        
-        #@+others
-        #@+node:ekr.20040803072955.23:OnHyperLinkControlClick
-        def OnHyperLinkControlClick (self,event=None,c=c):
-            
-            """Callback injected into position class."""
-            
-            p = self
-            try:
-                if not g.doHook("hypercclick1",c=c,p=p,v=p,event=event):
-                    c.beginUpdate()
-                    try:
-                        c.selectPosition(p)
-                    finally:
-                        c.endUpdate()
-                    c.frame.bodyCtrl.setInsertPoint(0)
-                g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("hypercclick")
-        #@-node:ekr.20040803072955.23:OnHyperLinkControlClick
-        #@+node:ekr.20040803072955.24:OnHyperLinkEnter
-        def OnHyperLinkEnter (self,event=None,c=c):
-            
-            """Callback injected into position class."""
-        
-            try:
-                p = self
-                if not g.doHook("hyperenter1",c=c,p=p,v=p,event=event):
-                    if 0: # This works, and isn't very useful.
-                        c.frame.bodyCtrl.tag_config(p.tagName,background="green")
-                g.doHook("hyperenter2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("hyperenter")
-        #@-node:ekr.20040803072955.24:OnHyperLinkEnter
-        #@+node:ekr.20040803072955.25:OnHyperLinkLeave
-        def OnHyperLinkLeave (self,event=None,c=c):
-            
-            """Callback injected into position class."""
-        
-            try:
-                p = self
-                if not g.doHook("hyperleave1",c=c,p=p,v=p,event=event):
-                    if 0: # This works, and isn't very useful.
-                        c.frame.bodyCtrl.tag_config(p.tagName,background="white")
-                g.doHook("hyperleave2",c=c,p=p,v=p,event=event)
-            except:
-                g.es_event_exception("hyperleave")
-        #@-node:ekr.20040803072955.25:OnHyperLinkLeave
-        #@-others
-        #@-node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
-        #@nl
-    
-        for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
-            
-            g.funcToMethod(f,leoNodes.position)
-    #@nonl
-    #@-node:ekr.20040803072955.21:tree.injectCallbacks
     #@+node:ekr.20040803072955.90:head key handlers (leoTree)
     #@+node:ekr.20040803072955.91:onHeadChanged
     # Tricky code: do not change without careful thought and testing.
@@ -2196,7 +2002,221 @@ class leoTree:
         if ch in ('\n','\r'):
             self.endEditLabel() # Now calls self.onHeadChanged.
     #@-node:ekr.20051026083544.2:updateHead
+    #@+node:ekr.20040803072955.126:endEditLabel
+    def endEditLabel (self):
+        
+        '''End editing of a headline and update p.headString().'''
+    
+        c = self.c ; k = c.k ; p = c.currentPosition()
+    
+        self.setEditPosition(None) # That is, self._editPosition = None
+        
+        # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
+        # if k:
+            # k.setDefaultUnboundKeyAction()
+            # k.showStateAndMode() # Destroys UNL info.
+        
+        # Important: this will redraw if necessary.
+        self.onHeadChanged(p)
+        
+        if 0: # This interferes with the find command and interferes with focus generally!
+            c.bodyWantsFocus()
+    #@-node:ekr.20040803072955.126:endEditLabel
     #@-node:ekr.20040803072955.90:head key handlers (leoTree)
+    #@+node:ekr.20040803072955.143:tree.expandAllAncestors
+    def expandAllAncestors (self,p):
+        
+        '''Expand all ancestors without redrawing.
+        
+        Return a flag telling whether a redraw is needed.'''
+        
+        c = self.c ; redraw_flag = False
+    
+        c.beginUpdate()
+        try:
+            for p in p.parents_iter():
+                if not p.isExpanded():
+                    p.expand()
+                    redraw_flag = True
+        finally:
+            c.endUpdate(False)
+    
+        return redraw_flag
+    #@-node:ekr.20040803072955.143:tree.expandAllAncestors
+    #@+node:ekr.20040803072955.21:tree.injectCallbacks
+    def injectCallbacks(self):
+        
+        c = self.c
+        
+        #@    << define callbacks to be injected in the position class >>
+        #@+node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
+        # N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
+        
+        #@+others
+        #@+node:ekr.20040803072955.23:OnHyperLinkControlClick
+        def OnHyperLinkControlClick (self,event=None,c=c):
+            
+            """Callback injected into position class."""
+            
+            p = self
+            try:
+                if not g.doHook("hypercclick1",c=c,p=p,v=p,event=event):
+                    c.beginUpdate()
+                    try:
+                        c.selectPosition(p)
+                    finally:
+                        c.endUpdate()
+                    c.frame.bodyCtrl.setInsertPoint(0)
+                g.doHook("hypercclick2",c=c,p=p,v=p,event=event)
+            except:
+                g.es_event_exception("hypercclick")
+        #@-node:ekr.20040803072955.23:OnHyperLinkControlClick
+        #@+node:ekr.20040803072955.24:OnHyperLinkEnter
+        def OnHyperLinkEnter (self,event=None,c=c):
+            
+            """Callback injected into position class."""
+        
+            try:
+                p = self
+                if not g.doHook("hyperenter1",c=c,p=p,v=p,event=event):
+                    if 0: # This works, and isn't very useful.
+                        c.frame.bodyCtrl.tag_config(p.tagName,background="green")
+                g.doHook("hyperenter2",c=c,p=p,v=p,event=event)
+            except:
+                g.es_event_exception("hyperenter")
+        #@-node:ekr.20040803072955.24:OnHyperLinkEnter
+        #@+node:ekr.20040803072955.25:OnHyperLinkLeave
+        def OnHyperLinkLeave (self,event=None,c=c):
+            
+            """Callback injected into position class."""
+        
+            try:
+                p = self
+                if not g.doHook("hyperleave1",c=c,p=p,v=p,event=event):
+                    if 0: # This works, and isn't very useful.
+                        c.frame.bodyCtrl.tag_config(p.tagName,background="white")
+                g.doHook("hyperleave2",c=c,p=p,v=p,event=event)
+            except:
+                g.es_event_exception("hyperleave")
+        #@-node:ekr.20040803072955.25:OnHyperLinkLeave
+        #@-others
+        #@-node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
+        #@nl
+    
+        for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
+            
+            g.funcToMethod(f,leoNodes.position)
+    #@nonl
+    #@-node:ekr.20040803072955.21:tree.injectCallbacks
+    #@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
+    def OnIconDoubleClick (self,p):
+    
+        # Note: "icondclick" hooks handled by vnode callback routine.
+    
+        c = self.c
+        s = p.headString().strip()
+        if g.match_word(s,0,"@url"):
+            url = s[4:].strip()
+            if url.lstrip().startswith('--'):
+                # Get the url from the first body line.
+                lines = p.bodyString().split('\n')
+                url = lines and lines[0] or ''
+            else:
+                #@            << stop the url after any whitespace >>
+                #@+node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
+                # For safety, the URL string should end at the first whitespace, unless quoted.
+                # This logic is also found in the UNL plugin so we don't have to change the 'unl1' hook.
+                
+                url = url.replace('\t',' ')
+                
+                # Strip quotes.
+                i = -1
+                if url and url[0] in ('"',"'"):
+                    i = url.find(url[0],1)
+                    if i > -1:
+                        url = url[1:i]
+                
+                if i == -1:
+                    # Not quoted or no matching quote.
+                    i = url.find(' ')
+                    if i > -1:
+                        if 0: # No need for a warning.  Assume everything else is a comment.
+                            g.es("ignoring characters after space in url:"+url[i:])
+                            g.es("use %20 instead of spaces")
+                        url = url[:i]
+                #@-node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
+                #@nl
+            if not g.doHook("@url1",c=c,p=p,v=p,url=url):
+                self.handleUrlInUrlNode(url)
+            g.doHook("@url2",c=c,p=p,v=p)
+    
+        return 'break' # 11/19/06
+    #@nonl
+    #@+node:ekr.20061030161842:handleUrlInUrlNode
+    def handleUrlInUrlNode(self,url):
+        
+        # Note: the UNL plugin has its own notion of what a good url is.
+        
+        c = self.c
+        # g.trace(url)
+        #@    << check the url; return if bad >>
+        #@+node:ekr.20031218072017.2314:<< check the url; return if bad >>
+        #@+at 
+        #@nonl
+        # A valid url is (according to D.T.Hein):
+        # 
+        # 3 or more lowercase alphas, followed by,
+        # one ':', followed by,
+        # one or more of: (excludes !"#;<>[\]^`|)
+        #   $%&'()*+,-./0-9:=?@A-Z_a-z{}~
+        # followed by one of: (same as above, except no minus sign or comma).
+        #   $%&'()*+/0-9:=?@A-Z_a-z}~
+        #@-at
+        #@@c
+        
+        urlPattern = "[a-z]{3,}:[\$-:=?-Z_a-z{}~]+[\$-+\/-:=?-Z_a-z}~]"
+        
+        if not url or len(url) == 0:
+            g.es("no url following @url")
+            return
+        
+        # Add http:// if required.
+        if not re.match('^([a-z]{3,}:)',url):
+            url = 'http://' + url
+        if not re.match(urlPattern,url):
+            g.es("invalid url: "+url)
+            return
+        #@nonl
+        #@-node:ekr.20031218072017.2314:<< check the url; return if bad >>
+        #@nl
+        #@    << pass the url to the web browser >>
+        #@+node:ekr.20031218072017.2315:<< pass the url to the web browser >>
+        #@+at 
+        #@nonl
+        # Most browsers should handle the following urls:
+        #   ftp://ftp.uu.net/public/whatever.
+        #   http://localhost/MySiteUnderDevelopment/index.html
+        #   file://home/me/todolist.html
+        #@-at
+        #@@c
+        
+        try:
+            import os
+            os.chdir(g.app.loadDir)
+            if g.match(url,0,"file:") and url[-4:]==".leo":
+                ok,frame = g.openWithFileName(url[5:],c)
+            else:
+                import webbrowser
+                # Mozilla throws a weird exception, then opens the file!
+                try: webbrowser.open(url)
+                except: pass
+        except:
+            g.es("exception opening " + url)
+            g.es_exception()
+        #@-node:ekr.20031218072017.2315:<< pass the url to the web browser >>
+        #@nl
+    #@-node:ekr.20061030161842:handleUrlInUrlNode
+    #@-node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
     #@-node:ekr.20061109165848:Must be defined in base class
     #@+node:ekr.20040803072955.128:leoTree.select
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
@@ -2219,7 +2239,7 @@ class leoTree:
                 #@            << unselect the old node >>
                 #@+node:ekr.20040803072955.129:<< unselect the old node >>
                 # Remember the position of the scrollbar before making any changes.
-                if not body: g.trace('no body!','c.frame',c.frame,g.callers())
+                if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
                 
                 
                 yview = body.getYScrollPosition()
@@ -2858,26 +2878,6 @@ class nullTree (leoTree):
             self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.
     #@-node:ekr.20070228164730:editLabel (nullTree) same as tkTree)
-    #@+node:ekr.20070228164356:endEditLabel (nullTree) (same as tkTree)
-    def endEditLabel (self):
-        
-        '''End editing of a headline and update p.headString().'''
-    
-        c = self.c ; k = c.k ; p = c.currentPosition()
-    
-        self.setEditPosition(None) # That is, self._editPosition = None
-        
-        # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
-        # if k:
-            # k.setDefaultUnboundKeyAction()
-            # k.showStateAndMode() # Destroys UNL info.
-        
-        # Important: this will redraw if necessary.
-        self.onHeadChanged(p)
-        
-        if 0: # This interferes with the find command and interferes with focus generally!
-            c.bodyWantsFocus()
-    #@-node:ekr.20070228164356:endEditLabel (nullTree) (same as tkTree)
     #@+node:ekr.20070228160345:setHeadline (nullTree)
     def setHeadline (self,p,s):
         
