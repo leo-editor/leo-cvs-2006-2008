@@ -442,10 +442,10 @@ class LeoApp:
                     if s and len(s) > 0:
                         g.app.leoID = s.strip()
                         if verbose and not g.app.unitTesting:
-                            g.es_print("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
+                            g.es("leoID = %s (in %s)" % (g.app.leoID,theDir), color="red")
                         return
                     elif verbose and not g.app.unitTesting:
-                        g.es_print("empty %s (in %s)" % (tag,theDir), color = "red")
+                        g.es("empty %s (in %s)" % (tag,theDir), color = "red")
                 except IOError:
                     g.app.leoID = None
                     # g.es("%s not found in %s" % (tag,theDir),color="red")
@@ -461,7 +461,7 @@ class LeoApp:
             theId = os.getenv('USER')
             if theId:
                 if verbose and not g.app.unitTesting:
-                    g.es_print("using os.getenv('USER'): %s " % (repr(theId)),color='red')
+                    g.es("using os.getenv('USER'): %s " % (repr(theId)),color='red')
                 g.app.leoID = theId
                 return
                 
@@ -480,7 +480,7 @@ class LeoApp:
         g.app.leoID = g.app.gui.runAskLeoIDDialog()
         
         # g.trace(g.app.leoID)
-        g.es_print("leoID = %s" % (repr(g.app.leoID)),color="blue")
+        g.es("leoID = %s" % (repr(g.app.leoID)),color="blue")
         #@-node:ekr.20031218072017.1981:<< put up a dialog requiring a valid id >>
         #@nl
         #@    << attempt to create leoID.txt >>
