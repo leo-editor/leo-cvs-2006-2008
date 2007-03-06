@@ -2256,26 +2256,6 @@ class leoTkinterTree (leoFrame.leoTree):
             self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.
     #@-node:ekr.20040803072955.127:tree.editLabel
-    #@+node:ekr.20040803072955.126:tree.endEditLabel
-    def endEditLabel (self):
-        
-        '''End editing of a headline and update p.headString().'''
-    
-        c = self.c ; k = c.k ; p = c.currentPosition()
-    
-        self.setEditPosition(None) # That is, self._editPosition = None
-        
-        # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
-        # if k:
-            # k.setDefaultUnboundKeyAction()
-            # k.showStateAndMode() # Destroys UNL info.
-        
-        # Important: this will redraw if necessary.
-        self.onHeadChanged(p)
-        
-        if 0: # This interferes with the find command and interferes with focus generally!
-            c.bodyWantsFocus()
-    #@-node:ekr.20040803072955.126:tree.endEditLabel
     #@+node:ekr.20040803072955.134:tree.set...LabelState
     #@+node:ekr.20040803072955.135:setEditLabelState
     def setEditLabelState (self,p,selectAll=False): # selected, editing
