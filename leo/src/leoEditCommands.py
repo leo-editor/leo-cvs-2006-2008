@@ -7578,7 +7578,7 @@ class spellTabHandler (leoFind.leoFind):
     
         self.dictionaryFileName = dictionaryFileName = (
             c.config.getString('spell_local_dictionary') or
-            os.path.join(g.app.loadDir,"../","plugins",'spellpyx.txt'))
+            os.path.join(g.app.loadDir,"..","plugins",'spellpyx.txt'))
         
         if not dictionaryFileName or not g.os_path_exists(dictionaryFileName):
             g.es_print('Can not open dictionary file: %s' % (
