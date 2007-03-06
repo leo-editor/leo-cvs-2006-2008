@@ -2038,6 +2038,26 @@ Brian Theado
 @language python
 @color
 #@nonl
+#@+node:ekr.20070228164356:endEditLabel (nullTree) (same as tkTree) NO LONGER USED
+def endEditLabel (self):
+    
+    '''End editing of a headline and update p.headString().'''
+
+    c = self.c ; k = c.k ; p = c.currentPosition()
+
+    self.setEditPosition(None) # That is, self._editPosition = None
+    
+    # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
+    # if k:
+        # k.setDefaultUnboundKeyAction()
+        # k.showStateAndMode() # Destroys UNL info.
+    
+    # Important: this will redraw if necessary.
+    self.onHeadChanged(p)
+    
+    if 0: # This interferes with the find command and interferes with focus generally!
+        c.bodyWantsFocus()
+#@-node:ekr.20070228164356:endEditLabel (nullTree) (same as tkTree) NO LONGER USED
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

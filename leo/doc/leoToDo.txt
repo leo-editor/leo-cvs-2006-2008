@@ -1655,7 +1655,7 @@ def init_aspell (self,c):
 
     self.dictionaryFileName = dictionaryFileName = (
         c.config.getString('spell_local_dictionary') or
-        os.path.join(g.app.loadDir,"../","plugins",'spellpyx.txt'))
+        os.path.join(g.app.loadDir,"..","plugins",'spellpyx.txt'))
     
     if not dictionaryFileName or not g.os_path_exists(dictionaryFileName):
         g.es_print('Can not open dictionary file: %s' % (
@@ -3524,7 +3524,7 @@ def whatLine (self,event):
     k.keyboardQuit(event)
     k.setLabel("Line %s" % row)
 #@-node:ekr.20050920084036.84:whatLine
-#@+node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
+#@+node:ekr.20031218072017.4038:get/setYScrollPosition
 def getYScrollPosition (self):
     return self.bodyCtrl.getYScrollPosition()
     
@@ -3534,7 +3534,7 @@ def setYScrollPosition (self,scrollPosition):
     else:
         first = scrollPosition
     self.bodyCtrl.setYScrollPosition(first)
-#@-node:ekr.20031218072017.4038:get/setYScrollPosition (leoBody)
+#@-node:ekr.20031218072017.4038:get/setYScrollPosition
 #@+node:ekr.20061017083312:selectEditor (tkBody)
 def selectEditor(self,w):
     
@@ -5156,59 +5156,6 @@ def insertToBufferFinisher (self,event,name):
         finally:
             c.endUpdate()
 #@-node:ekr.20050920084036.37:insertToBuffer
-#@+node:ekr.20031218072017.1329:onBodyChanged (tkBody)
-# This is the only key handler for the body pane.
-def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-    
-    '''Update Leo after the body has been changed.'''
-    
-    body = self ; c = self.c
-    bodyCtrl = w = body.bodyCtrl
-    p = c.currentPosition()
-    insert = w.getInsertPoint()
-    ch = g.choose(insert==0,'',w.get(insert-1))
-    ch = g.toUnicode(ch,g.app.tkEncoding)
-    newText = w.getAllText() # Note: getAllText converts to unicode.
-    # g.trace('newText',repr(newText),g.callers())
-    newSel = w.getSelectionRange()
-    if oldText is None: 
-        oldText = p.bodyString() ; changed = True
-    else:
-        changed = oldText != newText
-    # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
-    if not changed: return
-    c.undoer.setUndoTypingParams(p,undoType,
-        oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
-    p.v.setTnodeText(newText)
-    p.v.t.insertSpot = body.getInsertPoint()
-    << recolor the body >>
-    if not c.changed: c.setChanged(True)
-    self.updateEditors()
-    << redraw the screen if necessary >>
-#@+node:ekr.20051026083733.6:<< recolor the body >>
-body.colorizer.interrupt()
-c.frame.scanForTabWidth(p)
-body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
-self.forceFullRecolorFlag = False
-#@-node:ekr.20051026083733.6:<< recolor the body >>
-#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-c.beginUpdate()
-try:
-    redraw_flag = False
-    # Update dirty bits.
-    # p.setDirty() sets all cloned and @file dirty bits.
-    if not p.isDirty() and p.setDirty():
-        redraw_flag = True
-        
-    # Update icons. p.v.iconVal may not exist during unit tests.
-    val = p.computeIcon()
-    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
-        p.v.iconVal = val
-        redraw_flag = True
-finally:
-    c.endUpdate(redraw_flag)
-#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
-#@-node:ekr.20031218072017.1329:onBodyChanged (tkBody)
 #@+node:ekr.20050920084036.39:prependToBuffer
 def prependToBuffer (self,event):
     
@@ -5619,6 +5566,59 @@ def yankPop (self,event):
         w.insert('insert',s,('kb')) ###
         w.setInsertPoint(ins)
 #@-node:ekr.20050930091642.2:yankPop
+#@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
+# This is the only key handler for the body pane.
+def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
+    
+    '''Update Leo after the body has been changed.'''
+    
+    body = self ; c = self.c
+    bodyCtrl = w = body.bodyCtrl
+    p = c.currentPosition()
+    insert = w.getInsertPoint()
+    ch = g.choose(insert==0,'',w.get(insert-1))
+    ch = g.toUnicode(ch,g.app.tkEncoding)
+    newText = w.getAllText() # Note: getAllText converts to unicode.
+    # g.trace('newText',repr(newText),g.callers())
+    newSel = w.getSelectionRange()
+    if oldText is None: 
+        oldText = p.bodyString() ; changed = True
+    else:
+        changed = oldText != newText
+    # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
+    if not changed: return
+    c.undoer.setUndoTypingParams(p,undoType,
+        oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
+    p.v.setTnodeText(newText)
+    p.v.t.insertSpot = body.getInsertPoint()
+    << recolor the body >>
+    if not c.changed: c.setChanged(True)
+    self.updateEditors()
+    << redraw the screen if necessary >>
+#@+node:ekr.20051026083733.6:<< recolor the body >>
+body.colorizer.interrupt()
+c.frame.scanForTabWidth(p)
+body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
+self.forceFullRecolorFlag = False
+#@-node:ekr.20051026083733.6:<< recolor the body >>
+#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+c.beginUpdate()
+try:
+    redraw_flag = False
+    # Update dirty bits.
+    # p.setDirty() sets all cloned and @file dirty bits.
+    if not p.isDirty() and p.setDirty():
+        redraw_flag = True
+        
+    # Update icons. p.v.iconVal may not exist during unit tests.
+    val = p.computeIcon()
+    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+        p.v.iconVal = val
+        redraw_flag = True
+finally:
+    c.endUpdate(redraw_flag)
+#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+#@-node:ekr.20031218072017.1329:onBodyChanged (leoBody)
 #@-node:ekr.20070212065133:Remove Tk code from commands (later)
 #@-node:ekr.20070212070512.1:Next
 #@+node:ekr.20070212080350:Maybe never
