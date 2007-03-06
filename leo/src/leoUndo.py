@@ -249,7 +249,7 @@ class baseUndoer:
     #@+node:ekr.20031218072017.3614:setRedoType, setUndoType
     # These routines update both the ivar and the menu label.
     def setRedoType (self,theType):
-        # g.trace(theType,g.callers(7))
+        # g.trace(theType,g.callers())
         u = self ; frame = u.c.frame
         
         if type(theType) != type(''):
@@ -272,7 +272,8 @@ class baseUndoer:
             u.realRedoMenuLabel = realLabel
     
     def setUndoType (self,theType):
-        # g.trace(theType,g.callers(7))
+        # g.trace(theType,g.callers())
+        
         u = self ; frame = u.c.frame
         if type(theType) != type(''):
             g.trace('oops: expected string for command, got %s' % repr(theType))
@@ -902,14 +903,26 @@ class baseUndoer:
     # Translation does not affect these routines.
     
     def canRedo (self):
-    
+        
         u = self
+    
         return u.redoMenuLabel != "Can't Redo"
     
-    def canUndo (self):
+        # if g.app.gui.guiName() in ('tkinter','nullGui'):
+            # return u.redoMenuLabel != "Can't Redo"
+        # else:
+            # return u.getBead(u.bead) and u.redoHelper is not None
     
+    def canUndo (self):
+        
         u = self
+    
         return u.undoMenuLabel != "Can't Undo"
+    
+        # if g.app.gui.guiName() in ('tkinter','nullGui'):
+            # return u.undoMenuLabel != "Can't Undo"
+        # else:
+            # return u.getBead(u.bead) and u.undoHelper is not None
     #@-node:ekr.20031218072017.3610:canRedo & canUndo
     #@+node:ekr.20031218072017.3609:clearUndoState
     def clearUndoState (self):
