@@ -293,7 +293,8 @@ class baseTextWidget:
         
         w = self
         i = w._getInsertPoint()
-        #g.trace(self,'baseWidget: get',i,'virtual',w.virtualInsertPoint)
+        
+        # g.trace(self,'baseWidget: i:',i,'virtual',w.virtualInsertPoint)
         
         if i is None:
             if w.virtualInsertPoint is None:
@@ -302,6 +303,7 @@ class baseTextWidget:
                 i = w.virtualInsertPoint
         
         w.virtualInsertPoint = i
+        
         return i
     #@-node:ekr.20070228074312.20:getInsertPoint (baseText)
     #@+node:ekr.20070228102413:getName & GetName
