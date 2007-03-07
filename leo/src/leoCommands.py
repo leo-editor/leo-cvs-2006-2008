@@ -2376,12 +2376,12 @@ class baseCommands:
         ins = w.getInsertPoint()
         ch1 = 0 <= ins-1 < len(s) and s[ins-1] or ''
         ch2 = 0 <= ins   < len(s) and s[ins] or ''
-        # g.trace(repr(ch1),repr(ch2))
+        # g.trace(repr(ch1),repr(ch2),ins)
     
         # Prefer to match the character to the left of the cursor.
-        if ch1 in brackets:
+        if ch1 and ch1 in brackets:
             ch = ch1 ; index = max(0,ins-1)
-        elif ch2 in brackets:
+        elif ch2 and ch2 in brackets:
             ch = ch2 ; index = ins
         else:
             return
@@ -2390,12 +2390,14 @@ class baseCommands:
         # g.trace('index,index2',index,index2)
         if index2 is not None:
             if index2 < index:
-                w.setSelectionRange(index2,index+1,insert=index2+1)
+                w.setSelectionRange(index2,index+1,insert=index2) # was insert=index2+1
+                # g.trace('case 1',s[index2:index+1])
             else:
-                w.setSelectionRange(index,index2+1,insert=index2+1)
+                w.setSelectionRange(index,index2+1,insert=min(len(s),index2+1))
+                # g.trace('case2',s[index:index2+1])
             w.see(index2)
         else:
-            g.es("unmatched '%s'",ch)
+            g.es("unmatched %s" % repr(ch))
     #@nonl
     #@+node:ekr.20061113221414:findMatchingBracketHelper
     # To do: replace comments with blanks before scanning.
@@ -2408,11 +2410,14 @@ class baseCommands:
         matching_brackets = close_brackets + open_brackets
         forward = ch in open_brackets
         # Find the character matching the initial bracket.
+        # g.trace('index',index,'ch',repr(ch),'brackets',brackets)
         for n in xrange(len(brackets)):
             if ch == brackets[n]:
                 match_ch = matching_brackets[n]
                 break
-        # g.trace(repr(ch),repr(match_ch))
+        else:
+            return None
+        # g.trace('index',index,'ch',repr(ch),'match_ch',repr(match_ch))
         level = 0
         while 1:
             if forward and index >= len(s):
