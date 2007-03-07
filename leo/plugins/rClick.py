@@ -10,28 +10,28 @@
 #@+at
 # 0.1, 0.2: Created by 'e'.
 # 0.3 EKR:
-#     - Converted to 4.2 code style. Use @file node.
-#     - Simplified rClickBinder, rClicker, rc_help.  Disabled signon.
-#     - Removed calls to registerHandler, "by" ivar, rClickNew, and shutdown 
-# code.
-#     - Added select all item for the log pane.
+# - Converted to 4.2 code style. Use @file node.
+# - Simplified rClickBinder, rClicker, rc_help.  Disabled signon.
+# - Removed calls to registerHandler, "by" ivar, rClickNew, and shutdown code.
+# - Added select all item for the log pane.
 # 0.4 Maxim Krikun:
-#     - added context-dependent commands:
-#        open url, jump to reference, pydoc help
-#     - replaced rc_help with context-dependent pydoc help;
-#     - rc_help was not working for me :(
+# - added context-dependent commands:
+#    open url, jump to reference, pydoc help
+# - replaced rc_help with context-dependent pydoc help;
+# - rc_help was not working for me :(
 # 0.5 EKR:
-#     - Style changes.
-#     - Help sends output to console as well as log pane.
-#     - Used code similar to rc_help code in getdoc.
-#       Both kinds of code work for me (using 4.2 code base)
-#     - Simplified crop method.
+# - Style changes.
+# - Help sends output to console as well as log pane.
+# - Used code similar to rc_help code in getdoc.
+#   Both kinds of code work for me (using 4.2 code base)
+# - Simplified crop method.
 # 0.6 EKR: Use g.importExtension to import Tk.
 # 0.7 EKR: Use e.widget._name.startswith('body') to test for the body pane.
 # 0.8 EKR: Added init function. Eliminated g.top.
 # 0.9 EKR: Define callbacks so that all are accessible.
 # 0.10 EKR: Removed call to str that was causing a unicode error.
 # 0.11 EKR: init returns False if the gui is not tkinter.
+# 0.12 EKR: Fixed various bugs related to the new reorg.
 #@-at
 #@nonl
 #@-node:ekr.20040422081253:<< version history >>
@@ -47,7 +47,7 @@ import re
 import sys
 #@-node:ekr.20050101090207.2:<< imports >>
 #@nl
-__version__ = "0.11"
+__version__ = "0.12"
 
 #@+others
 #@+node:ekr.20060108122501:Module-level
@@ -60,6 +60,7 @@ def init ():
         g.app.createTkGui(__file__)
 
     ok = g.app.gui.guiName() == "tkinter"
+
     if ok:
         leoPlugins.registerHandler("after-create-leo-frame",rClickbinder)
         leoPlugins.registerHandler("bodyrclick1",rClicker)
@@ -149,17 +150,24 @@ def rClicker(tag,keywords):
         if text:
             word = text.strip()
         else:
-            ind0,ind1 = w.getSelectionRange()
-            n0,p0=ind0.split('.',2)
-            n1,p1=ind1.split('.',2)
-            assert n0==n1
-            assert p0==p1
             s = w.getAllText()
-            index = w.index(n0+".0")
-            index = w.toPythonIndex(index)
-            i,j = g.getLine(s,index)
+            ins = w.getInsertPoint()
+            #ind0,ind1 = w.getSelectionRange()
+            # n0,p0=ind0.split('.',2)
+            # n1,p1=ind1.split('.',2)
+            # assert n0==n1
+            # assert p0==p1
+            #index = w.index(n0+".0")
+            #index = w.toPythonIndex(index)
+            # i,j = g.getLine(s,index)
+            #word=getword(text,int(p0))
+            #row,col = g.convertPythonIndexToRowCol(s,ins)
+            
+            i,j = g.getLine(s,ins)
             text = s[i:j]
-            word=getword(text,int(p0))
+            i,j = g.getWord(s,ins)
+            word = s[i:j]
+            
         #@nonl
         #@-node:ekr.20040422073911:<< get text and word from the body text >>
         #@nl
@@ -305,9 +313,13 @@ def rc_dbody(c):
 def rc_nl(c):
     
     """Insert a newline at the current curser position."""
-
-    c.frame.body.insertAtInsertPoint('\n')
-    c.frame.body.onBodyChanged("Typing")
+    
+    w = c.frame.body.bodyCtrl
+    
+    if w:
+        ins = w.getInsertPoint()
+        w.insert(ins,'\n')
+        c.frame.body.onBodyChanged("Typing")
 #@nonl
 #@-node:ekr.20040422072343.3:rc_nl
 #@+node:ekr.20040422072343.4:rc_selectAll
