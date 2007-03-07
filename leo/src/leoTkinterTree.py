@@ -868,11 +868,9 @@ class leoTkinterTree (leoFrame.leoTree):
         
         """Draws icon for position p at x,y, or at p.v.iconx,p.v.icony if x,y = None,None"""
     
-        c = self.c
+        c = self.c ; v = p.v
         #@    << compute x,y and iconVal >>
         #@+node:ekr.20040803072955.40:<< compute x,y and iconVal >>
-        v = p.v
-        
         if x is None and y is None:
             try:
                 x,y = v.iconx, v.icony
@@ -887,10 +885,11 @@ class leoTkinterTree (leoFrame.leoTree):
         
         # Always recompute v.iconVal.
         # This is an important drawing optimization.
-        val = v.iconVal = v.computeIcon()
+        val = v.computeIcon()
         assert(0 <= val <= 15)
         #@-node:ekr.20040803072955.40:<< compute x,y and iconVal >>
         #@nl
+        v.iconVal = val
     
         if not g.doHook("draw-outline-icon",tree=self,c=c,p=p,v=p,x=x,y=y):
     

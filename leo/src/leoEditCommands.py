@@ -2633,6 +2633,7 @@ class editCommandsClass (baseEditCommandsClass):
         changed = newText != oldText
         # g.trace('ch',repr(ch),'changed',changed,'newText',repr(newText[-10:]))
         if changed:
+            # g.trace('ins',w.getInsertPoint())
             c.frame.body.onBodyChanged(undoType=undoType,
                 oldSel=oldSel,oldText=oldText,oldYview=None)
                 

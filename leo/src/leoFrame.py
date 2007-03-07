@@ -1013,7 +1013,7 @@ class leoBody:
         newText = w.getAllText() # Note: getAllText converts to unicode.
         # g.trace('newText',repr(newText),g.callers())
         newSel = w.getSelectionRange()
-        if oldText is None: 
+        if not oldText:
             oldText = p.bodyString() ; changed = True
         else:
             changed = oldText != newText
@@ -1045,6 +1045,7 @@ class leoBody:
                 
             # Update icons. p.v.iconVal may not exist during unit tests.
             val = p.computeIcon()
+            # g.trace('new val:',val,'old val:',hasattr(p.v,'iconVal') and p.v.iconVal or '<None>')
             if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
                 p.v.iconVal = val
                 redraw_flag = True

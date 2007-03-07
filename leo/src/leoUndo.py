@@ -908,21 +908,11 @@ class baseUndoer:
     
         return u.redoMenuLabel != "Can't Redo"
     
-        # if g.app.gui.guiName() in ('tkinter','nullGui'):
-            # return u.redoMenuLabel != "Can't Redo"
-        # else:
-            # return u.getBead(u.bead) and u.redoHelper is not None
-    
     def canUndo (self):
         
         u = self
     
         return u.undoMenuLabel != "Can't Undo"
-    
-        # if g.app.gui.guiName() in ('tkinter','nullGui'):
-            # return u.undoMenuLabel != "Can't Undo"
-        # else:
-            # return u.getBead(u.bead) and u.undoHelper is not None
     #@-node:ekr.20031218072017.3610:canRedo & canUndo
     #@+node:ekr.20031218072017.3609:clearUndoState
     def clearUndoState (self):

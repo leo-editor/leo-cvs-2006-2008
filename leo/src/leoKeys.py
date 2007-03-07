@@ -1786,7 +1786,14 @@ class keyHandlerClass:
     #@+node:ekr.20070123085931:k.defineSpecialKeys
     def defineSpecialKeys (self):
         
+        '''Define k.guiBindNamesDict and k.guiBindNamesInverseDict.
+        
+        Important: all gui's use these dictionaries because bindings in
+        leoSettings.leo use these representations.'''
+        
         k = self
+        
+        # g.trace('base keyHandler')
         
         # These are defined at http://tcl.activestate.com/man/tcl8.4/TkCmd/keysyms.htm.
         # Important: only the inverse dict is actually used in the new key binding scheme.
@@ -3413,7 +3420,7 @@ class keyHandlerClass:
     
         k = self ; c = k.c
         state = k.getState(modeName)
-        trace = c.config.getBool('trace_modes')
+        trace = False or c.config.getBool('trace_modes')
         
         if trace: g.trace(modeName,'state',state)
        
@@ -4020,7 +4027,7 @@ class keyHandlerClass:
         return shortcut
         
     canonicalizeShortcut = shortcutFromSetting # For compatibility.
-    strokeFromSetting    = shortcutFromSetting
+    strokeFromSetting = shortcutFromSetting
     #@-node:ekr.20061031131434.184:shortcutFromSetting (uses k.guiBindNamesDict)
     #@+node:ekr.20061031131434.190:k.tkbindingFromStroke
     def tkbindingFromStroke (self,stroke):
