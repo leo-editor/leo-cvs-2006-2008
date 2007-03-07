@@ -2593,12 +2593,12 @@ class editCommandsClass (baseEditCommandsClass):
         undoType = 'Typing'
         trace = c.config.getBool('trace_masterCommand')
         brackets = self.openBracketsList + self.closeBracketsList
-        inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
-        if trace: g.trace(name,repr(ch),ch in brackets)
+        inBrackets = ch and g.toUnicode(ch,g.app.tkEncoding) in brackets
+        if trace: g.trace(name,repr(ch),ch and ch in brackets)
         #@nonl
         #@-node:ekr.20061103114242:<< set local vars >>
         #@nl
-        # g.trace('ch',repr(ch))
+        #g.trace('ch',repr(ch))
         if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
             return "break" # The hook claims to have handled the event.
         if ch == '\t':
@@ -2620,6 +2620,7 @@ class editCommandsClass (baseEditCommandsClass):
             w.insert(i,ch)
             w.setInsertPoint(i+1)
             if inBrackets and self.flashMatchingBrackets:
+               
                 self.flashMatchingBracketsHelper(w,i,ch)               
         else:
             return 'break' # This method *always* returns 'break'
@@ -3219,8 +3220,11 @@ class editCommandsClass (baseEditCommandsClass):
         if not w: return
     
         s = w.getAllText()
-        ins = w.getInsertPoint()
-        i,j = g.getLine(s,ins)
+        i,j = w.getSelectionRange()
+        # A hack for wx gui: set the insertion point to the end of the selection range.
+        if g.app.unitTesting:
+            w.setInsertPoint(j)
+        i,j = g.getLine(s,j)
         line = s[i:j]
     
         if line.strip():
@@ -3823,7 +3827,6 @@ class editCommandsClass (baseEditCommandsClass):
         self.beginCommand(undoType='reverse-region')
     
         s = w.getAllText()
-        ins = w.getInsertPoint()
         i1,j1 = w.getSelectionRange()
         i,junk = g.getLine(s,i1)
         junk,j = g.getLine(s,j1)
@@ -3834,7 +3837,8 @@ class editCommandsClass (baseEditCommandsClass):
         txt = '\n'.join(aList) + '\n'
         
         w.setAllText(s[:i1] + txt + s[j1:])
-        w.setInsertPoint(ins)
+        ins = i1 + len(txt) - 1
+        w.setSelectionRange(ins,ins,insert=ins)
     
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.110:reverseRegion
