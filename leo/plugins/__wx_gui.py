@@ -1849,13 +1849,13 @@ if wx:
         #@+node:ekr.20070209080938.22:stc.setSelectionRange
         def setSelectionRange (self,i,j,insert=None):
             
+            __pychecker__ = '--no-argsused' #  insert not used.
+            
             w = self ; i1,j1,insert1=i,j,insert
             i = w.toGuiIndex(i)
             j = w.toGuiIndex(j)
-            if insert is not None:
-                insert = w.toGuiIndex(insert)
-                w.widget
-                w.virtualInsertPoint = insert
+                
+            w.virtualInsertPoint = None # Don't use this hack.
             
             # g.trace(self,'stc',i1,j1,'=',i,j,g.callers(4))
         
