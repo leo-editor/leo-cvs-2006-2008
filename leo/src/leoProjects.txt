@@ -1632,7 +1632,7 @@ def selfInsertCommand(self,event,action='insert'):
     w = self.editWidget(event)
     if not w: return 'break'
     << set local vars >>
-    # g.trace('ch',repr(ch))
+    #g.trace('ch',repr(ch))
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
     if ch == '\t':
@@ -1654,6 +1654,7 @@ def selfInsertCommand(self,event,action='insert'):
         w.insert(i,ch)
         w.setInsertPoint(i+1)
         if inBrackets and self.flashMatchingBrackets:
+           
             self.flashMatchingBracketsHelper(w,i,ch)               
     else:
         return 'break' # This method *always* returns 'break'
@@ -1688,8 +1689,8 @@ oldText = name.startswith('body') and p.bodyString() or ''
 undoType = 'Typing'
 trace = c.config.getBool('trace_masterCommand')
 brackets = self.openBracketsList + self.closeBracketsList
-inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
-if trace: g.trace(name,repr(ch),ch in brackets)
+inBrackets = ch and g.toUnicode(ch,g.app.tkEncoding) in brackets
+if trace: g.trace(name,repr(ch),ch and ch in brackets)
 #@nonl
 #@-node:ekr.20061103114242:<< set local vars >>
 #@+node:ekr.20051026171121:insertNewlineHelper
@@ -5478,8 +5479,11 @@ def backwardParagraphHelper (self,event,extend):
     if not w: return
 
     s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
+    i,j = w.getSelectionRange()
+    # A hack for wx gui: set the insertion point to the end of the selection range.
+    if g.app.unitTesting:
+        w.setInsertPoint(j)
+    i,j = g.getLine(s,j)
     line = s[i:j]
 
     if line.strip():
@@ -6074,8 +6078,11 @@ def backwardParagraphHelper (self,event,extend):
     if not w: return
 
     s = w.getAllText()
-    ins = w.getInsertPoint()
-    i,j = g.getLine(s,ins)
+    i,j = w.getSelectionRange()
+    # A hack for wx gui: set the insertion point to the end of the selection range.
+    if g.app.unitTesting:
+        w.setInsertPoint(j)
+    i,j = g.getLine(s,j)
     line = s[i:j]
 
     if line.strip():
@@ -6330,7 +6337,7 @@ def selfInsertCommand(self,event,action='insert'):
     w = self.editWidget(event)
     if not w: return 'break'
     << set local vars >>
-    # g.trace('ch',repr(ch))
+    #g.trace('ch',repr(ch))
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
     if ch == '\t':
@@ -6352,6 +6359,7 @@ def selfInsertCommand(self,event,action='insert'):
         w.insert(i,ch)
         w.setInsertPoint(i+1)
         if inBrackets and self.flashMatchingBrackets:
+           
             self.flashMatchingBracketsHelper(w,i,ch)               
     else:
         return 'break' # This method *always* returns 'break'
@@ -6386,8 +6394,8 @@ oldText = name.startswith('body') and p.bodyString() or ''
 undoType = 'Typing'
 trace = c.config.getBool('trace_masterCommand')
 brackets = self.openBracketsList + self.closeBracketsList
-inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
-if trace: g.trace(name,repr(ch),ch in brackets)
+inBrackets = ch and g.toUnicode(ch,g.app.tkEncoding) in brackets
+if trace: g.trace(name,repr(ch),ch and ch in brackets)
 #@nonl
 #@-node:ekr.20061103114242:<< set local vars >>
 #@+node:ekr.20051026171121:insertNewlineHelper
@@ -11293,7 +11301,7 @@ def selfInsertCommand(self,event,action='insert'):
     w = self.editWidget(event)
     if not w: return 'break'
     << set local vars >>
-    # g.trace('ch',repr(ch))
+    #g.trace('ch',repr(ch))
     if g.doHook("bodykey1",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType):
         return "break" # The hook claims to have handled the event.
     if ch == '\t':
@@ -11315,6 +11323,7 @@ def selfInsertCommand(self,event,action='insert'):
         w.insert(i,ch)
         w.setInsertPoint(i+1)
         if inBrackets and self.flashMatchingBrackets:
+           
             self.flashMatchingBracketsHelper(w,i,ch)               
     else:
         return 'break' # This method *always* returns 'break'
@@ -11349,8 +11358,8 @@ oldText = name.startswith('body') and p.bodyString() or ''
 undoType = 'Typing'
 trace = c.config.getBool('trace_masterCommand')
 brackets = self.openBracketsList + self.closeBracketsList
-inBrackets = g.toUnicode(ch,g.app.tkEncoding) in brackets
-if trace: g.trace(name,repr(ch),ch in brackets)
+inBrackets = ch and g.toUnicode(ch,g.app.tkEncoding) in brackets
+if trace: g.trace(name,repr(ch),ch and ch in brackets)
 #@nonl
 #@-node:ekr.20061103114242:<< set local vars >>
 #@+node:ekr.20051026171121:insertNewlineHelper

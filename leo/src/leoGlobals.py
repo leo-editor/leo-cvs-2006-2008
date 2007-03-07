@@ -3553,6 +3553,7 @@ def skip_matching_python_delims(s,i,delim1,delim2,reverse=False):
     Return the index of the matching ')', or -1'''
     
     level = 0 ; n = len(s)
+    # g.trace('delim1/2',repr(delim1),repr(delim2),'i',i,'s[i]',repr(s[i]),'s',repr(s[i-5:i+5]))
     assert(g.match(s,i,delim1))
     if reverse:
          while i >= 0:
