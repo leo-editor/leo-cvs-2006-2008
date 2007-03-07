@@ -1702,30 +1702,6 @@ if wx:
             w.SetSelBackground(True, wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT))
             w.SetSelForeground(True, wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
         #@-node:ekr.20070221103456:initStc
-        #@+node:ekr.20070210080936:bindings (stc)
-        # Specify the names of widget-specific methods.
-        # These particular names are the names of wx.TextCtrl methods.
-        
-        def _appendText(self,s):            return self.widget.AppendText(s)
-        def _get(self,i,j):                 return self.widget.GetTextRange(i,j)
-        def _getAllText(self):              return self.widget.GetText()
-        def _getFocus(self):                return self.widget.FindFocus()
-        def _getInsertPoint(self):          return self.widget.GetCurrentPos()
-        def _getLastPosition(self):         return self.widget.GetLength()
-        def _getSelectedText(self):         return self.widget.GetSelectedText()
-        def _getYScrollPosition(self):      return 0,0 # Could also return None.
-        def _getSelectionRange(self):       return self.widget.GetSelection()
-        def _hitTest(self,pos):             return self.widget.HitTest(pos)
-        def _insertText(self,i,s):          return self.widget.InsertText(i,s)
-        def _scrollLines(self,n):           return self.widget.ScrollToLine(n)
-        def _see(self,i):                   g.trace('oops',i) # Should not be called.
-        def _setAllText(self,s):            return self.widget.SetText(s) 
-        def _setBackgroundColor(self,color): return self.widget.SetBackgroundColour(color)
-        def _setFocus(self):                return self.widget.SetFocus()
-        def _setInsertPoint(self,i):        g.trace('oops',i) # Should not be called.
-        def _setSelectionRange(self,i,j):   g.trace('oops',i,j) # Should not be called.
-        def _setYScrollPosition(self,i):    pass
-        #@-node:ekr.20070210080936:bindings (stc)
         #@+node:ekr.20070221110435:onMarginClick & helpers
         def onMarginClick(self, evt):
             
@@ -1819,6 +1795,31 @@ if wx:
         #@-node:ekr.20070221111716.1:Expand
         #@-node:ekr.20070221110435:onMarginClick & helpers
         #@+node:ekr.20070209080938.2:Wrapper methods
+        #@+node:ekr.20070210080936:bindings (stc)
+        # Specify the names of widget-specific methods.
+        # These particular names are the names of wx.TextCtrl methods.
+        
+        def _appendText(self,s):            return self.widget.AppendText(s)
+        def _get(self,i,j):                 return self.widget.GetTextRange(i,j)
+        def _getAllText(self):              return self.widget.GetText()
+        def _getFocus(self):                return self.widget.FindFocus()
+        def _getInsertPoint(self):          return self.widget.GetCurrentPos()
+        def _getLastPosition(self):         return self.widget.GetLength()
+        def _getSelectedText(self):         return self.widget.GetSelectedText()
+        def _getYScrollPosition(self):      return 0,0 # Could also return None.
+        def _getSelectionRange(self):       return self.widget.GetSelection()
+        def _hitTest(self,pos):             return self.widget.HitTest(pos)
+        #def _insertText(self,i,s):          return self.widget.InsertText(i,s)
+        def _scrollLines(self,n):           return self.widget.ScrollToLine(n)
+        def _see(self,i):                   g.trace('oops',i) # Should not be called.
+        def _setAllText(self,s):            return self.widget.SetText(s) 
+        def _setBackgroundColor(self,color): return self.widget.SetBackgroundColour(color)
+        def _setFocus(self):                return self.widget.SetFocus()
+        def _setInsertPoint(self,i):        g.trace('oops',i) # Should not be called.
+        def _setSelectionRange(self,i,j):   g.trace('oops',i,j) # Should not be called.
+        def _setYScrollPosition(self,i):    pass
+        #@-node:ekr.20070210080936:bindings (stc)
+        #@+node:ekr.20070307054602:Overrides of baseTextWidget methods
         #@+node:ekr.20070209080938.18:see & seeInsertPoint
         def see(self,index):
         
@@ -1835,6 +1836,19 @@ if wx:
             row,col = g.convertPythonIndexToRowCol(s,i)
             w.widget.ScrollToLine(row)
         #@-node:ekr.20070209080938.18:see & seeInsertPoint
+        #@+node:ekr.20070307054345:insert
+        def insert(self,i,s):
+            
+            '''Override the baseTextWidget insert method.
+            This is a workaround of an apparent stc problem.'''
+        
+            w = self
+            i = w.toPythonIndex(i)
+            
+            s2 = w.getAllText()
+            w.setAllText(s2[:i] + s + s2[i:])
+            # w.setInsertPoint(i+len(s))
+        #@-node:ekr.20070307054345:insert
         #@+node:ekr.20070209080938.21:stc.setInsertPoint
         def setInsertPoint (self,i):
         
@@ -1888,6 +1902,7 @@ if wx:
             
             return 0 ### Non-zero value may loop.
         #@-node:ekr.20070209080938.31:xyToGui/PythonIndex (to do)
+        #@-node:ekr.20070307054602:Overrides of baseTextWidget methods
         #@-node:ekr.20070209080938.2:Wrapper methods
         #@-others
     #@nonl
