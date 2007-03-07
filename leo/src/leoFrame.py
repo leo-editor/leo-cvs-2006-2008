@@ -2232,6 +2232,7 @@ class leoTree:
         
         '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
     
+        if g.app.killed: return
         c = self.c ; frame = c.frame
         body = w = frame.bodyCtrl
         old_p = c.currentPosition()
@@ -2298,7 +2299,7 @@ class leoTree:
                     if 0: # Interferes with new colorizer.
                         self.canvas.update_idletasks()
                         self.scrollTo(p)
-                    if scroll:
+                    if scroll and g.app.gui.guiName() == 'tkinter':
                         def scrollCallback(self=self,p=p):
                             self.scrollTo(p)
                         self.canvas.after(100,scrollCallback)
