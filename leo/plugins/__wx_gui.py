@@ -2943,10 +2943,13 @@ if wx:
             elif isinstance(event,self.leoKeyEvent): # a leoKeyEvent.
                 return event.widget 
             elif isinstance(event,g.Bunch): # A manufactured event.
+                if hasattr(event,'widget'):
+                    return event.widget
                 if hasattr(event,'c'):
                     return event.c.frame.body.bodyCtrl
                 else:
-                    g.trace('k.generalModeHandler event: no event widget')
+                    g.trace('wx gui: k.generalModeHandler event: no event widget: event = %s' % (
+                        event),g.callers())
                     return None
             elif hasattr(event,'GetEventObject'): # A wx Event.
                 return event.GetEventObject()
@@ -3259,64 +3262,6 @@ if wx:
             # Init the base class.
             leoKeys.keyHandlerClass.__init__(self,c,useGlobalKillbuffer,useGlobalRegisters)
         #@-node:ekr.20061116074003.1: wxKey.__init__
-        #@+node:ekr.20070123101021:wxKey.defineSpecialKeys
-        def defineSpecialKeys (self):
-            
-            k = self
-            k.guiBindNamesDict = {}
-            k.guiBindNamesInverseDict = {}
-        
-            # No translation.
-            for s in k.tkNamesList:
-                k.guiBindNamesDict[s] = s
-                
-            # Create the inverse dict.
-            for key in k.guiBindNamesDict.keys():
-                k.guiBindNamesInverseDict [k.guiBindNamesDict.get(key)] = key
-        
-            # Important: only the inverse dict is actually used in the new key binding scheme.
-        
-            # wxWidgets may return the *values* of this dict in event.keysym fields.
-            # Leo will warn if it gets a event whose keysym not in values of this table.
-            
-            # wxWidgets Keypresses are represented by an enumerated type, wxKeyCode.
-            # The possible values are the ASCII character codes, plus the following:
-            
-            # k.guiBindNamesDict = {
-                # "!" : "exclam",
-                # '"' : "quotedbl",
-                # "#" : "numbersign",
-                # "$" : "dollar",
-                # "%" : "percent",
-                # "&" : "ampersand",
-                # "'" : "quoteright",
-                # "(" : "parenleft",
-                # ")" : "parenright",
-                # "*" : "asterisk",
-                # "+" : "plus",
-                # "," : "comma",
-                # "-" : "minus",
-                # "." : "period",
-                # "/" : "slash",
-                # ":" : "colon",
-                # ";" : "semicolon",
-                # "<" : "less",
-                # "=" : "equal",
-                # ">" : "greater",
-                # "?" : "question",
-                # "@" : "at",
-                # "[" : "bracketleft",
-                # "\\": "backslash",
-                # "]" : "bracketright",
-                # "^" : "asciicircum",
-                # "_" : "underscore",
-                # "`" : "quoteleft",
-                # "{" : "braceleft",
-                # "|" : "bar",
-                # "}" : "braceright",
-                # "~" : "asciitilde",
-            # }
-        #@-node:ekr.20070123101021:wxKey.defineSpecialKeys
         #@+node:ekr.20061116080942:wxKey.finishCreate
         def finishCreate (self):
             
@@ -3466,31 +3411,19 @@ if wx:
         #@+node:ekr.20061116064914:onBodyChanged (wxBody: calls leoBody.onBodyChanged)
         def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
             
-            # g.trace('undoType',undoType,'oldSel',oldSel,'len(oldText)',oldText and len(oldText) or 0)
-            
             c = self.c ; w = c.frame.body.bodyCtrl
             if not c:  return g.trace('no c!')
             p = c.currentPosition()
             if not p: return g.trace('no p!')
             if self.frame.lockout > 0: return g.trace('lockout!',g.callers())
+            
+            # g.trace('undoType',undoType,'oldSel',oldSel,'len(oldText)',oldText and len(oldText) or 0)
         
             self.frame.lockout += 1
             try:
                 # Call the base class method.
-                if 1:
-                    leoFrame.leoBody.onBodyChanged(self,
-                        undoType,oldSel=oldSel,oldText=oldText,oldYview=oldYview)
-                else:
-                    s = w.getAllText()
-                    changed = s != p.bodyString()
-                    # g.trace('changed',changed,len(s),p.headString(),g.callers())
-                    if changed:
-                        p.v.t.setTnodeText(s)
-                        p.v.t.insertSpot = w.getInsertPoint()
-                        if 0: # This causes flash even when nothing is actually colored!
-                            self.frame.body.recolor_now(p)
-                        if not c.changed: c.setChanged(True)
-                        c.frame.tree.updateVisibleIcons(p)
+                leoFrame.leoBody.onBodyChanged(self,
+                    undoType,oldSel=oldSel,oldText=oldText,oldYview=oldYview)
             finally:
                 self.frame.lockout -= 1
         #@nonl
@@ -5650,10 +5583,12 @@ if wx:
             c = self.c ;  tree = self.treeCtrl
             if c is None: return
             p = c.rootPosition()
-            if not p or self.drawing: return
+            if not p or self.drawing:
+                g.trace('disabled')
+                return
             self.redrawCount += 1
             self.idDict = {}
-            if not g.app.unitTesting: g.trace(self.redrawCount)
+            if False or not g.app.unitTesting: g.trace(self.redrawCount)
             
             self.drawing = True # Disable event handlers.
             try:
@@ -5895,6 +5830,7 @@ if wx:
             
             val = p.v.computeIcon()
             assert(0 <= val <= 15)
+            p.v.iconVal = val
             return val
         #@-node:ekr.20061211052926:assignIcon
         #@+node:ekr.20061211072604:tree.edit_widget
