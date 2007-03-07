@@ -2818,7 +2818,7 @@ class baseCommands:
         c.frame.tree.editLabel(v)
         w = c.edit_widget(v)
         if w:
-            gui.setAllText(w,s)
+            w.setAllText(s)
             c.frame.tree.onHeadChanged(v,'Toggle Angle Brackets')
     #@-node:ekr.20031218072017.2290:toggleAngleBrackets
     #@-node:ekr.20031218072017.2885:Edit Headline submenu
