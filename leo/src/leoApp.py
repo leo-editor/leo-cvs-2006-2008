@@ -191,7 +191,7 @@ class LeoApp:
         #@-node:ekr.20031218072017.368:<< define global data structures >> app
         #@nl
     #@-node:ekr.20031218072017.1416:app.__init__
-    #@+node:ekr.20031218072017.2609:app.closeLeoWindow (test)
+    #@+node:ekr.20031218072017.2609:app.closeLeoWindow
     def closeLeoWindow (self,frame):
         
         """Attempt to close a Leo window.
@@ -226,11 +226,11 @@ class LeoApp:
             frame.lift()
             frame.c.setLog()
             frame.c.bodyWantsFocusNow()
-        else:
+        elif not g.app.unitTesting:
             g.app.finishQuit()
     
         return True # The window has been closed.
-    #@-node:ekr.20031218072017.2609:app.closeLeoWindow (test)
+    #@-node:ekr.20031218072017.2609:app.closeLeoWindow
     #@+node:ekr.20031218072017.2610:app.createTkGui
     def createTkGui (self,fileName=None):
         
@@ -321,12 +321,12 @@ class LeoApp:
         if g.app.gui:
             g.app.gui.destroySelf()
             
+        # Don't use g.trace!
+        # print 'app.finishQuit: setting g.app.killed',g.callers()
+            
         g.app.killed = True
             # Disable all further hooks and events.
             # Alas, "idle" events can still be called even after the following code.
-    
-        if 0: # Do not use g.trace here!
-            print "finishQuit",g.app.killed
             
         if g.app.afterHandler:
             # TK bug: This appears to have no effect, at least on Windows.

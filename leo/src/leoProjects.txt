@@ -4425,6 +4425,7 @@ def select (self,p,updateBeadList=True,scroll=True):
     
     '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
 
+    if g.app.killed: return
     c = self.c ; frame = c.frame
     body = w = frame.bodyCtrl
     old_p = c.currentPosition()
@@ -4448,7 +4449,7 @@ def select (self,p,updateBeadList=True,scroll=True):
                 if 0: # Interferes with new colorizer.
                     self.canvas.update_idletasks()
                     self.scrollTo(p)
-                if scroll:
+                if scroll and g.app.gui.guiName() == 'tkinter':
                     def scrollCallback(self=self,p=p):
                         self.scrollTo(p)
                     self.canvas.after(100,scrollCallback)
@@ -17268,7 +17269,7 @@ def add(self,event=None):
     self.dictionary[self.currentWord.lower()] = 0
     self.tab.onFindButton()
 #@-node:ekr.20051025071455.37:add
-#@+node:ekr.20051025071455.38:change (spellTab) 
+#@+node:ekr.20051025071455.38:change (spellTab)
 def change(self,event=None):
     """Make the selected change to the text"""
 
@@ -17294,7 +17295,7 @@ def change(self,event=None):
     c.invalidateFocus()
     c.bodyWantsFocusNow()
     return False
-#@-node:ekr.20051025071455.38:change (spellTab) 
+#@-node:ekr.20051025071455.38:change (spellTab)
 #@+node:ekr.20051025071455.40:find & helpers
 def find (self,event=None):
     """Find the next unknown word."""
@@ -28228,6 +28229,7 @@ def select (self,p,updateBeadList=True,scroll=True):
     
     '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
 
+    if g.app.killed: return
     c = self.c ; frame = c.frame
     body = w = frame.bodyCtrl
     old_p = c.currentPosition()
@@ -28251,7 +28253,7 @@ def select (self,p,updateBeadList=True,scroll=True):
                 if 0: # Interferes with new colorizer.
                     self.canvas.update_idletasks()
                     self.scrollTo(p)
-                if scroll:
+                if scroll and g.app.gui.guiName() == 'tkinter':
                     def scrollCallback(self=self,p=p):
                         self.scrollTo(p)
                     self.canvas.after(100,scrollCallback)
