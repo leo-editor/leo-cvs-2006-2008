@@ -1868,8 +1868,12 @@ if wx:
             w = self ; i1,j1,insert1=i,j,insert
             i = w.toGuiIndex(i)
             j = w.toGuiIndex(j)
-                
-            w.virtualInsertPoint = None # Don't use this hack.
+            
+            if insert is not None:
+                ins = w.toGuiIndex(insert)
+                w.virtualInsertPoint = ins
+            else:
+                w.virtualInsertPoint = None
             
             # g.trace(self,'stc',i1,j1,'=',i,j,g.callers(4))
         

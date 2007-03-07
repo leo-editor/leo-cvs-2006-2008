@@ -460,16 +460,20 @@ class baseTextWidget:
         w = self
         i1, j1, insert1 = i,j,insert
         i,j = w.toPythonIndex(i),w.toPythonIndex(j)
-        if insert is not None: insert = w.toPythonIndex(insert)
     
         # g.trace(self,'baseWidget',repr(i1),'=',repr(i),repr(j1),'=',repr(j),repr(insert1),'=',repr(insert),g.callers(4))
     
         if i == j:
-            w.virtualInsertPoint = ins = g.choose(insert is None,i,insert)
-            w._setInsertPoint(ins)
+            w._setInsertPoint(j)
         else:
-            if insert is not None: self.virtualInsertPoint = insert
             w._setSelectionRange(i,j)
+    
+        if insert is not None and insert in (i,j):
+            ins = w.toPythonIndex(insert)
+            if ins in (i,j):
+                self.virtualInsertPoint = ins
+                
+    #@nonl
     #@-node:ekr.20070228074312.36:setSelectionRange (baseText)
     #@+node:ekr.20070228074312.37:setWidth
     def setWidth (self,width):
