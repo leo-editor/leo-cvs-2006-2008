@@ -1672,6 +1672,21 @@ def createRootWindow(self):
 #@nonl
 #@-node:ekr.20041214135556:How to use Tile
 #@-node:ekr.20031218072017.365:How to...
+#@+node:ekr.20070215183046:IronPython notes
+@nocolor
+
+- IronPython does not accept 'from __future__ import x'
+  I could work around this, but perhaps it is time to abandon Python 2.2.2.
+  
+- Amazingly, it is possible to add Python24\Lib to IronPython's path!
+  Almost all of those modules import correct.
+
+- IronPython has troubles with the xml modules.
+  It complains about a missing 'strict' codec.
+  
+- IronPython has trouble with the pdb module, so some other way must be found to debug IronPython programs.
+#@nonl
+#@-node:ekr.20070215183046:IronPython notes
 #@+node:ekr.20050214055018:Mac Notes
 #@+node:ekr.20050221054932:How to make monolithic Leo app on MacOS X
  @killcolor
