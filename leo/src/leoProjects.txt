@@ -551,6 +551,8 @@ def yank (self,event):
     c = self.c ; k = self.k
     w = self.editWidget(event)
     if not w: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
 
     i = w.getInsertPoint()
     clip_text = self.getClipboard(w)
@@ -8608,6 +8610,9 @@ def scolorizer (self,event,pattern=None):
     # g.trace(repr(s))
     w.tag_delete('color','color1')
     if not s: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
+
     ind = 0
     index = w.getInsertPoint()
     index2 = index + len(s)
@@ -15770,14 +15775,14 @@ def expandAllAncestors (self,p):
     return redraw_flag
 #@-node:ekr.20040803072955.143:tree.expandAllAncestors
 #@-node:ekr.20070221095637:Eliminating flash
-#@+node:ekr.20070211192428:Made Leo's core gui-indenpendent)
+#@+node:ekr.20070211192428:Make Leo's core gui-indenpendent)
 # To do: use baseTextWidget class.  There seem to be problems :-)
 #@nonl
 #@+node:ekr.20070125103950: Calls to w.xxx
 # To be removed outside of tk-specific files.
 'cget'  # removed
-'clipboard_append'
-'clipboard_clear'
+'clipboard_append' # uses gui, so ok.
+'clipboard_clear' # uses gui, so ok.
 'config' # removed
 'configure' # removed
 'focus_force' # removed
@@ -15895,11 +15900,14 @@ g.es('searched %s' % p1.headString())
 #@nonl
 #@-node:ekr.20070213165250:find w.xxx script
 #@+node:ekr.20070226081522:Script results
+if g.app.gui.guiName() != 'tkinter':
+    return g.es('command not ready yet',color='blue')
+
 # To be removed.
-'  6 index' # later.
-'  1 flashCharacter'
-'  3 search' # later.
-'  7 tag_add'
+'  6 index' # later.  Disabled commands that use unless gui is tkinter.
+'  1 flashCharacter'  # Calls wrapper function.
+'  3 search' # later. Disabled commands that use this unless gui is tkinter.
+'  7 tag_add' # Used by Yank.  
 '  8 tag_config'
 ' 10 tag_delete'
 '  5 tag_ranges'
@@ -19023,6 +19031,8 @@ def swapWords (self,event,swapspots):
 
     w = self.editWidget(event)
     if not w: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('swap-words command not ready yet',color='blue')
     
     s = w.getAllText()
 
@@ -20552,6 +20562,8 @@ def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
     k = self.k
     w = self.editWidget(event)
     if not w: return
+    if g.app.gui.guiName() not in ('null','tkinter'):
+        return g.es('command not ready yet',color='blue')
 
     rlist = self.store ['rlist']
     stext = self.store ['stext']
@@ -20593,6 +20605,8 @@ def dynamicExpansion2 (self,event):
     k = self.k
     w = self.editWidget(event)
     if not w: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
 
     i = w.index('insert -1c wordstart')
     i2 = w.index('insert -1c wordend')
@@ -20743,6 +20757,9 @@ def findNextMatch (self,event):
     w = self.editWidget(event)
     if not w: return
     
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
+    
     w.tag_delete('qR')
     if self.regexp:
         << handle regexp >>
@@ -20845,6 +20862,9 @@ def scolorizer (self,event,pattern=None):
     # g.trace(repr(s))
     w.tag_delete('color','color1')
     if not s: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
+
     ind = 0
     index = w.getInsertPoint()
     index2 = index + len(s)
@@ -21525,7 +21545,7 @@ Traceback (most recent call last):
 AssertionError
 #@-node:ekr.20070214072721.5:Command failures 12
 #@-node:ekr.20070212181918.1:Fix failed unit tests 30
-#@-node:ekr.20070211192428:Made Leo's core gui-indenpendent)
+#@-node:ekr.20070211192428:Make Leo's core gui-indenpendent)
 #@-node:ekr.20070304133016:Code
 #@+node:ekr.20070217114542:Features
 #@+node:ekr.20070216105848:Warn on dubious section brackets

@@ -2,6 +2,215 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070308103059:Fix bugs
+#@+node:ekr.20070308081745:Fix slideshow/button problem
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4197778
+By: rogererens
+
+After enabling the slideshow plugin I can advance to the next slide using the
+next-slide-command, but the pressing the button that results from @button NxtSlide
+in leoslideshows.leo gives an error:
+simulateCommand: no command for next-slide
+
+Leo Log Window...
+Leo 4.4.3 alpha 1, build  1.125 , January 26, 2006
+Python 2.5.0, Tk 8.4.12, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+leoID = rogererens (in C:\Documents and Settings\Roger)
+global config dir: E:\_cvs_\Leo\config
+home dir: C:\Documents and Settings\Roger
+reading settings in E:\_cvs_\Leo\config\leoSettings.leo
+reading: C:\Documents and Settings\Roger\Desktop\leoslideshows.leo
+simulateCommand: no command for next-slide
+#@-node:ekr.20070308081745:Fix slideshow/button problem
+#@+node:ekr.20070308082140:Fix problem with settings report
+@nocolor
+
+the current CVS does not write to the log pane that settings, either present
+in myLeoSettings.leo or the current file, were read.
+#@-node:ekr.20070308082140:Fix problem with settings report
+#@+node:ekr.20070308085050:Arrow keys do not work in stc body pane
+#@+node:ekr.20070308082321.2:Test cursor extensions with wx plugin
+#@-node:ekr.20070308082321.2:Test cursor extensions with wx plugin
+#@+node:ekr.20070308090541:Add unit tests
+#@-node:ekr.20070308090541:Add unit tests
+#@+node:ekr.20061031131434.146:masterKeyHandler
+master_key_count = 0
+
+def masterKeyHandler (self,event,stroke=None):
+    
+    '''This is the handler for almost all key bindings.'''
+
+    << define vars >>
+    if keysym in special_keys: return None
+    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    if trace:
+        g.trace('stroke:',stroke,'keysym:',event.keysym,'ch:',repr(event.char),
+            'state.kind:',k.state.kind,g.callers(4))
+        # if (self.master_key_count % 100) == 0: g.printGcSummary(trace=True)
+
+    # Handle keyboard-quit first.
+    if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        # g.trace('special case')
+        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+
+    if k.inState():
+        # This will return unless k.autoCompleterStateHandler
+        # (called from k.callStateFunction) returns 'do-standard-keys'
+        << handle mode bindings >>
+        
+    << handle per-pane bindings >>
+    << handle keys without bindings >>
+#@+node:ekr.20061031131434.147:<< define vars >>
+k = self ; c = k.c ; gui = g.app.gui
+
+if event: event = gui.leoKeyEvent(event,c)
+
+w = event.widget
+char = event.char
+keysym = event.keysym
+w_name = c.widget_name(w)
+state = k.state.kind
+
+special_keys = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+    'Win_L','Win_R',
+)
+
+self.master_key_count += 1
+#@nonl
+#@-node:ekr.20061031131434.147:<< define vars >>
+#@+node:ekr.20061031131434.149:<< handle mode bindings >>
+# First, honor minibuffer bindings for all except user modes.
+if state in ('getArg','getFileName','full-command','auto-complete'):
+    if k.handleMiniBindings(event,state,stroke):
+        return 'break'
+
+# Second, honor general modes.
+if state == 'getArg':
+    return k.getArg(event,stroke=stroke)
+elif state == 'getFileName':
+    return k.getFileName(event)
+elif state in ('full-command','auto-complete'):
+    # Do the default state action.
+    if trace: g.trace('calling state function')
+    val = k.callStateFunction(event) # Calls end-command.
+    if val != 'do-standard-keys': return 'break'
+        
+# Third, pass keys to user modes.
+else:
+    d =  k.masterBindingsDict.get(state)
+    if d:
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace('calling generalModeHandler')
+            k.generalModeHandler (event,
+                commandName=b.commandName,func=b.func,
+                modeName=state,nextMode=b.nextMode)
+            return 'break'
+        else:
+            ok = k.handleMiniBindings(event,state,stroke)
+            if ok:
+                return 'break'
+            elif stroke and len(stroke) == 1:
+                # if trace: g.trace('calling modeHelp')
+                k.modeHelp(event)
+                return 'break'
+            else:
+                # End the mode and fall through to the pane bindings!
+                k.endMode(event)
+    else:
+        # New in 4.4b4.
+        handler = k.getStateHandler()
+        if handler:
+            handler(event)
+        else:
+            g.trace('No state handler for %s' % state)
+        return 'break'
+#@-node:ekr.20061031131434.149:<< handle mode bindings >>
+#@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
+key_states = ('command','insert','overwrite')
+isPlain =  k.isPlainKey(stroke)
+
+# g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
+# g.trace('button',k.masterBindingsDict.get('button'))
+
+for key,name in (
+    # Order here is similar to bindtags order.
+    ('command',None),
+    ('insert',None),
+    ('overwrite',None),
+    ('button',None),
+    ('body','body'),
+    ('text','head'), # Important: text bindings in head before tree bindings.
+    ('tree','head'),
+    ('tree','canvas'),
+    ('log', 'log'),
+    ('text','log'),
+    ('text',None), ('all',None),
+):
+    if (
+        key in key_states and isPlain and k.unboundKeyAction == key or
+        name and w_name.startswith(name) or
+        key in ('text','all') and g.app.gui.isTextWidget(w) or
+        key in ('button','all')
+    ):
+        d = k.masterBindingsDict.get(key,{})
+        # g.trace('key',key,'name',name,'stroke',stroke,'stroke in d.keys',stroke in d.keys())
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                return k.masterCommand(event,b.func,b.stroke,b.commandName)
+#@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
+#@+node:ekr.20061031131434.151:<< handle keys without bindings >>
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+    # insert/overwrite normal character.  <Return> is *not* a normal character.
+    if trace: g.trace('plain key in insert mode',stroke)
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+
+elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
+    # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+    if trace: g.trace('ignoring unbound non-ascii key')
+    return 'break'
+    
+elif keysym.find('Escape') != -1:
+    # Never insert escape characters.
+    return 'break'
+
+else:
+    # g.trace(stroke,char,keysym)
+    if trace: g.trace(repr(stroke),'no func')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+#@-node:ekr.20061031131434.151:<< handle keys without bindings >>
+#@+node:ekr.20061031131434.152:handleMiniBindings
+def handleMiniBindings (self,event,state,stroke):
+    
+    k = self ; c = k.c
+    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    if not state.startswith('auto-'):
+        d = k.masterBindingsDict.get('mini')
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                # Pass this on for macro recording.
+                k.masterCommand(event,b.func,stroke,b.commandName)
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
+                return True
+
+    return False
+#@-node:ekr.20061031131434.152:handleMiniBindings
+#@-node:ekr.20061031131434.146:masterKeyHandler
+#@-node:ekr.20070308085050:Arrow keys do not work in stc body pane
+#@-node:ekr.20070308103059:Fix bugs
 #@+node:ekr.20070307075714:Asap
 #@+node:ekr.20070307082814:Create g.startupController class
 #@-node:ekr.20070307082814:Create g.startupController class
