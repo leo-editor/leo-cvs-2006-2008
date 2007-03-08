@@ -1441,13 +1441,14 @@ if wx:
         
         #@    @+others
         #@+node:ekr.20070209095222:plainTextWidget.__init__
-        def __init__ (self,c,parent,*args,**keys):
+        def __init__ (self,c,parent,multiline=True,*args,**keys):
             
             w = self
             self.c = c
         
             # Create the actual gui widget.
-            self.widget = wx.TextCtrl(parent,style=wx.TE_MULTILINE,*args,**keys)
+            style = g.choose(multiline,wx.TE_MULTILINE,0)
+            self.widget = wx.TextCtrl(parent,id=-1,style=style,*args,**keys)
             
             # Init the base class.
             name = keys.get('name') or '<unknown plainTextWidget>'
@@ -5282,7 +5283,8 @@ if wx:
         
             self.widget = w = plainTextWidget(
                 self.c,
-                parentFrame,  
+                parentFrame,
+                multiline = False,
                 pos = wx.DefaultPosition,
                 size = (1000,-1),
                 name = 'minibuffer',
