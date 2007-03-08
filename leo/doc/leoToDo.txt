@@ -567,6 +567,45 @@ AssertionError
 #@-node:ekr.20070212181918.1:Fix failed unit tests 30
 #@+node:ekr.20070220082124.3:Make installing aspell easier
 #@-node:ekr.20070220082124.3:Make installing aspell easier
+#@+node:ekr.20070308062321:Fix @file nosent glitch
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4188344
+By: ktenney
+
+current cvs W2K
+
+Here's a @nosent node,
+legend: <> title
+        | between headline and body
+        \ indicates a child node
+
+<@nosent nosent.py>
+|
+@others
+
+t = 'test
+ \
+  <class test>
+  |
+  class test:
+      @others
+  \
+   <body>
+   |
+   pass
+
+this produces the file:
+
+class test:
+    pass    
+t = 'test'
+
+without the <BLANKLINE> between 
+@others and t = 'test' in the top node:
+
+class test:
+    pass    t = 'test'
+#@-node:ekr.20070308062321:Fix @file nosent glitch
 #@-node:ekr.20070220082124.2:Before b1
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070105135713:To do: 4.4.4 (new positions)

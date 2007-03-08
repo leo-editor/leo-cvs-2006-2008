@@ -2048,6 +2048,61 @@ Brian Theado
 #@nonl
 #@-node:ekr.20050306070535.3:How to detect changes in text
 #@-node:ekr.20050306070535:Tk Notes
+#@+node:ekr.20070308062440:Thread notes
+#@+node:ekr.20070308062440.1:Posting 2
+On 2/26/07, Edward Ream <edreamleo@charter.net> wrote:
+
+> threads will swap after sys.getcheckinterval() bytecodes have been
+> processed for that thread.
+
+Many thanks for this detailed summary.  I think this is the guarantee I need
+a) to experiment with threads and b) to fiddle with settings should that 
+appear to be necessary.
+
+Just be careful.  Test your assumptions before you rely on them, especially regarding threads.  Generally threading is seen as a "hard" problem.  If you want to help make them easier, use Queues to handle inter-thread communication. 
+
+
+> you can use a technique known as 'cooperative multithreading with 
+> generators'.
+
+Googling this leads directly to an entry in the Python Cookbook.  The site
+is down at present.  I'll study this entry when it's back up.
+
+The basic idea is to have each task be a generator, with each generator giving up control after some amount of work.  Here's a variant of the recipe in the cookbook... 
+
+ - Josiah
+
+import collections
+
+tasks = collections.deque()
+
+def busy():
+    while 1:
+        yield None
+
+def delay(v):
+    import time
+    while 1:
+        time.sleep(v)
+        yield None 
+
+def xpasses(x):
+    while x > 0:
+        x -= 1
+        yield None
+
+def runtasks():
+    while 1:
+        task = tasks.popleft()
+        try:
+            task.next()
+        except StopIteration: 
+            pass
+        else:
+            tasks.append(task)
+#@nonl
+#@-node:ekr.20070308062440.1:Posting 2
+#@-node:ekr.20070308062440:Thread notes
 #@+node:ekr.20031218072017.434:Unused code
 @ignore
 @language python
