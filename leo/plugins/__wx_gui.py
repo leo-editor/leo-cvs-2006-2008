@@ -5623,8 +5623,10 @@ if wx:
                     event.SetEventObject(tree)
                     tree.GetEventHandler().ProcessEvent(event)
                 else:
-                    if self.treeCtrl.IsDoubleBuffered():
-                        g.trace('tree is double buffered')
+                    if 1:
+                        self.partialRedraw()
+                    elif self.treeCtrl.IsDoubleBuffered():
+                        # g.trace('tree is double buffered')
                         self.fullRedraw()
                     else:
                         self.cleverRedraw()
@@ -5634,7 +5636,6 @@ if wx:
         def redraw_now(self,scroll=True):
             self.redraw()
         #@nonl
-        #@-node:edream.110203113231.298:redraw & redraw_now & helpers
         #@+node:ekr.20070221122411:cleverRedraw & helpers
         initial_draw = True
         
@@ -5853,6 +5854,53 @@ if wx:
                 tree.SelectItem(node_id) # Generates call to onTreeChanged.
         #@-node:edream.110203113231.300:redraw_subtree
         #@-node:ekr.20070221122411.1:fullRedraw & helpers
+        #@+node:ekr.20070308110121:partialRedraw & helpers
+        partialRedrawCount = 0
+        
+        def partialRedraw (self):
+        
+            c = self.c ; p = c.rootPosition()
+            tree = self.treeCtrl
+            tree.DeleteAllItems()
+            self.root_id = root_id = tree.AddRoot('Root Node')
+            
+            # g.trace('-' * 10,self.partialRedrawCount) ; self.partialRedrawCount += 1
+        
+            while p:
+                self.redraw_partial_subtree(root_id,p,levelCount=50)
+                p.moveToNext()
+        #@+node:ekr.20070308110145:redraw_partial_subtree
+        def redraw_partial_subtree(self,parent_id,p,levelCount,trace=False):
+        
+            tree = self.treeCtrl
+            node_id = self.redraw_node(parent_id,p)
+            
+            # g.trace('levelCount',levelCount,'p',p.headString())
+            
+            # Draw the entire tree, regardless of expansion state.
+            child_p = p.firstChild()
+            while child_p:
+                if levelCount -1 > 0:
+                    innerLevelCount = g.choose(child_p.hasChildren() and p.isExpanded(),levelCount,1)
+                    self.redraw_partial_subtree(node_id,child_p,innerLevelCount)
+                child_p.moveToNext()
+        
+            # The calls to tree.Expand and tree.Collapse *will* generate events,
+            # This is the reason the event handlers must be disabled while drawing.
+            if levelCount -1 <= 0:
+                tree.SetItemHasChildren(node_id,not not p.hasChildren())
+            else:
+                if p.isExpanded():
+                    tree.Expand(node_id)
+                else:
+                    tree.Collapse(node_id)
+                
+            # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+            if p == self.c.currentPosition():
+                tree.SelectItem(node_id) # Generates call to onTreeChanged.
+        #@-node:ekr.20070308110145:redraw_partial_subtree
+        #@-node:ekr.20070308110121:partialRedraw & helpers
+        #@-node:edream.110203113231.298:redraw & redraw_now & helpers
         #@+node:ekr.20061211052926:assignIcon
         def assignIcon (self,p):
             
@@ -5976,15 +6024,23 @@ if wx:
             p = self.get_p(event)
             if not p: return
             
+            c = self.c ; tree = self.treeCtrl
+            id = event.GetItem()
+            
+            child_id,cookie = tree.GetFirstChild(id)
+            hasRealChild = child_id.IsOk()
+            redrawFlag = not hasRealChild
+            if redrawFlag: g.trace('p',p.headString(),'hasRealChild',hasRealChild)
+            
             # p will be None while redrawing, so this is the outermost click event.
             # Set the selection before redrawing so the tree is drawn properly.
-            c = self.c ; tree = self.treeCtrl
+            
             c.beginUpdate()
             try:
                 c.selectPosition(p)
                 p.expand()
             finally:
-                c.endUpdate(False)
+                c.endUpdate(redrawFlag)
                 
         def onTreeExpanded (self,event):
             
