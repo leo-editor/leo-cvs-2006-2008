@@ -1767,6 +1767,8 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k
         w = self.editWidget(event)
         if not w: return
+        if g.app.gui.guiName() not in ('null','tkinter'):
+            return g.es('command not ready yet',color='blue')
     
         rlist = self.store ['rlist']
         stext = self.store ['stext']
@@ -1808,6 +1810,8 @@ class editCommandsClass (baseEditCommandsClass):
         k = self.k
         w = self.editWidget(event)
         if not w: return
+        if g.app.gui.guiName() != 'tkinter':
+            return g.es('command not ready yet',color='blue')
     
         i = w.index('insert -1c wordstart')
         i2 = w.index('insert -1c wordend')
@@ -4234,6 +4238,8 @@ class editCommandsClass (baseEditCommandsClass):
     
         w = self.editWidget(event)
         if not w: return
+        if g.app.gui.guiName() != 'tkinter':
+            return g.es('swap-words command not ready yet',color='blue')
         
         s = w.getAllText()
     
@@ -5202,6 +5208,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
         c = self.c ; k = self.k
         w = self.editWidget(event)
         if not w: return
+        if g.app.gui.guiName() != 'tkinter':
+            return g.es('command not ready yet',color='blue')
     
         i = w.getInsertPoint()
         clip_text = self.getClipboard(w)
@@ -5778,6 +5786,9 @@ class queryReplaceCommandsClass (baseEditCommandsClass):
         k = self.k
         w = self.editWidget(event)
         if not w: return
+        
+        if g.app.gui.guiName() != 'tkinter':
+            return g.es('command not ready yet',color='blue')
         
         w.tag_delete('qR')
         if self.regexp:
@@ -7371,6 +7382,9 @@ class searchCommandsClass (baseEditCommandsClass):
         # g.trace(repr(s))
         w.tag_delete('color','color1')
         if not s: return
+        if g.app.gui.guiName() != 'tkinter':
+            return g.es('command not ready yet',color='blue')
+    
         ind = 0
         index = w.getInsertPoint()
         index2 = index + len(s)
@@ -7662,7 +7676,7 @@ class spellTabHandler (leoFind.leoFind):
         self.dictionary[self.currentWord.lower()] = 0
         self.tab.onFindButton()
     #@-node:ekr.20051025071455.37:add
-    #@+node:ekr.20051025071455.38:change (spellTab) 
+    #@+node:ekr.20051025071455.38:change (spellTab)
     def change(self,event=None):
         """Make the selected change to the text"""
     
@@ -7688,7 +7702,7 @@ class spellTabHandler (leoFind.leoFind):
         c.invalidateFocus()
         c.bodyWantsFocusNow()
         return False
-    #@-node:ekr.20051025071455.38:change (spellTab) 
+    #@-node:ekr.20051025071455.38:change (spellTab)
     #@+node:ekr.20051025071455.40:find & helpers
     def find (self,event=None):
         """Find the next unknown word."""
