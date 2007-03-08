@@ -5623,8 +5623,11 @@ if wx:
                     event.SetEventObject(tree)
                     tree.GetEventHandler().ProcessEvent(event)
                 else:
-                    # self.fullRedraw()
-                    self.cleverRedraw()
+                    if self.treeCtrl.IsDoubleBuffered():
+                        g.trace('tree is double buffered')
+                        self.fullRedraw()
+                    else:
+                        self.cleverRedraw()
             finally:
                 self.drawing = False # Enable event handlers.
         
