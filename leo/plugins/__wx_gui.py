@@ -1705,7 +1705,7 @@ if wx:
         #@+node:ekr.20070221110435:onMarginClick & helpers
         def onMarginClick(self, evt):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             
             self = w = self.widget
         
@@ -3432,7 +3432,7 @@ if wx:
         #@+node:ekr.20061116064914:onBodyChanged (wxBody: calls leoBody.onBodyChanged)
         def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             c = self.c ; w = c.frame.body.bodyCtrl
             if not c:  return g.trace('no c!')
             p = c.currentPosition()
@@ -3964,7 +3964,7 @@ if wx:
         if wx.Platform == '__WXMSW__':
             
             def onActivate(self,event):
-                if g.app.killed: return
+                if g.app.killed or self.killed: return
                 if event.GetActive():
                     self.activeFrame = self
                     if self.c:
@@ -3972,7 +3972,7 @@ if wx:
         else:
             
             def OnSetFocus(self,event):
-                if g.app.killed: return
+                if g.app.killed or self.killed: return
                 self.activeFrame = self
                 if self.c:
                     self.c.checkAllFileDates()
@@ -3991,7 +3991,7 @@ if wx:
         #@+node:edream.110203113231.273:onResize
         def onResize(self,event):
         
-            if mIniting or g.app.killed:
+            if mIniting or g.app.killed or self.killed:
                 return
         
             # Resize splitter1 with equal sized panes.
@@ -5018,7 +5018,7 @@ if wx:
         def delete_range (self,menu,n1,n2):
             
             if not menu:
-                g.trace("no menu")
+                # g.trace("no menu")
                 return
                 
             # g.trace(n1,n2,menu.GetTitle())
@@ -5897,11 +5897,8 @@ if wx:
             
             # Almost all event handlers call this method,
             # so this is a good place to make sure we still exist.
-            if g.app.killed:
-                # g.trace('app killed')
-                return None
-            if self.c.frame.killed:
-                # g.trace('frame killed')
+            if g.app.killed or self.c.frame.killed:
+                # g.trace('killed')
                 return None
             tree = self.treeCtrl
             id = event.GetItem()
@@ -6008,7 +6005,7 @@ if wx:
         #@+node:ekr.20061211064516:onRightDown/Up
         def onRightDown (self,event):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             tree = self.treeCtrl
             pt = event.GetPosition()
             item, flags = tree.HitTest(pt)
@@ -6017,7 +6014,7 @@ if wx:
         
         def onRightUp (self,event):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             tree = self.treeCtrl
             pt = event.GetPosition()
             item, flags = tree.HitTest(pt)
@@ -6031,7 +6028,7 @@ if wx:
         
         def onTreeBeginLabelEdit(self,event):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             
             p = self.c.currentPosition()
             
@@ -6043,7 +6040,7 @@ if wx:
         
         def onTreeEndLabelEdit(self,event):
         
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
         
             c = self.c ; tree = self.treeCtrl
             id = event.GetItem()
@@ -6064,7 +6061,7 @@ if wx:
         #@+node:edream.110203113231.289:onTreeBeginDrag
         def onTreeBeginDrag(self,event):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
         
             g.trace() ; return
         
@@ -6075,7 +6072,7 @@ if wx:
         #@+node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
         def onTreeEndDrag(self,event):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             
             g.trace() ; return
         
@@ -6158,7 +6155,7 @@ if wx:
         #@+node:ekr.20061118123730.1:wxTree.onChar
         def onChar (self,event):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
         
             c = self.c
             # Convert from tree event to key event.
@@ -6174,7 +6171,7 @@ if wx:
         # k.handleDefaultChar calls onHeadlineKey.
         def onHeadlineKey (self,event):
             # g.trace(event)
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             if event and event.keysym:
                 self.updateHead(event,event.widget)
         #@-node:ekr.20061118123730.1:wxTree.onChar
@@ -6184,7 +6181,7 @@ if wx:
             
             '''The edit-label command.'''
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             
             c = self.c ; tree_id = self.idDict.get(p.v)
             
@@ -6224,7 +6221,7 @@ if wx:
         #@+node:ekr.20070125091308:setEditWidget
         def setEditWidget (self,p,tree_id):
             
-            if g.app.killed: return
+            if g.app.killed or self.c.frame.killed: return
             
             # g.trace('id',id(tree_id),'v',id(p.v),'p',p.headString(),self.c.shortFileName(),'idDict',id(self.idDict))
             
@@ -6252,7 +6249,7 @@ if wx:
             if w:
                 w.setAllText(s)
                 self.revertHeadline = s
-            elif g.app.killed:
+            elif g.app.killed or self.c.frame.killed:
                 return
             else:
                 g.trace('-'*20,'oops')
