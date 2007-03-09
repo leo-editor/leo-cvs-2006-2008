@@ -34,7 +34,6 @@ import leoNodes
 import leoUndo
 
 import os
-import string
 import sys
 import traceback
 
@@ -1442,14 +1441,13 @@ if wx:
         
         #@    @+others
         #@+node:ekr.20070209095222:plainTextWidget.__init__
-        def __init__ (self,c,parent,multiline=True,*args,**keys):
+        def __init__ (self,c,parent,*args,**keys):
             
             w = self
             self.c = c
         
             # Create the actual gui widget.
-            style = g.choose(multiline,wx.TE_MULTILINE,0)
-            self.widget = wx.TextCtrl(parent,id=-1,style=style,*args,**keys)
+            self.widget = wx.TextCtrl(parent,style=wx.TE_MULTILINE,*args,**keys)
             
             # Init the base class.
             name = keys.get('name') or '<unknown plainTextWidget>'
@@ -2656,11 +2654,9 @@ if wx:
         #@-node:edream.111403104835:getWildcardList
         #@-node:edream.110203113231.321:gui dialogs
         #@+node:ekr.20061116085729:gui events
-        #@+node:ekr.20070309085704:event_generate
         def event_generate(self,w,kind,*args,**keys):
             '''Generate an event.'''
             return w.event_generate(kind,*args,**keys)
-        #@-node:ekr.20070309085704:event_generate
         #@+node:ekr.20061116093228:class leoKeyEvent (wxGui)
         class leoKeyEvent:
             
@@ -5286,8 +5282,7 @@ if wx:
         
             self.widget = w = plainTextWidget(
                 self.c,
-                parentFrame,
-                multiline = False,
+                parentFrame,  
                 pos = wx.DefaultPosition,
                 size = (1000,-1),
                 name = 'minibuffer',
@@ -5451,7 +5446,6 @@ if wx:
             wx.EVT_TREE_KEY_DOWN(w,id,self.onChar)
         
             wx.EVT_TREE_SEL_CHANGING    (w,id,self.onTreeSelChanging)
-            wx.EVT_TREE_SEL_CHANGED     (w,id,self.onTreeSelChanged)
         
             wx.EVT_TREE_BEGIN_DRAG      (w,id,self.onTreeBeginDrag)
             wx.EVT_TREE_END_DRAG        (w,id,self.onTreeEndDrag)
@@ -5627,20 +5621,15 @@ if wx:
                     event.SetEventObject(tree)
                     tree.GetEventHandler().ProcessEvent(event)
                 else:
-                    if sys.platform.startswith('win'):
-                        self.partialRedraw()
-                    elif False and self.treeCtrl.IsDoubleBuffered():
-                        # g.trace('tree is double buffered')
-                        self.fullRedraw()
-                    else:
-                        self.cleverRedraw()
+                    # self.fullRedraw()
+                    self.cleverRedraw()
             finally:
                 self.drawing = False # Enable event handlers.
-                # g.trace('redraw done')
         
         def redraw_now(self,scroll=True):
             self.redraw()
         #@nonl
+        #@-node:edream.110203113231.298:redraw & redraw_now & helpers
         #@+node:ekr.20070221122411:cleverRedraw & helpers
         initial_draw = True
         
@@ -5859,88 +5848,6 @@ if wx:
                 tree.SelectItem(node_id) # Generates call to onTreeChanged.
         #@-node:edream.110203113231.300:redraw_subtree
         #@-node:ekr.20070221122411.1:fullRedraw & helpers
-        #@+node:ekr.20070308110121:partialRedraw & helpers
-        partialRedrawCount = 0
-        
-        def partialRedraw (self):
-        
-            c = self.c ; p = c.rootPosition()
-            tree = self.treeCtrl
-            
-            
-            tree.DeleteAllItems()
-            self.root_id = root_id = tree.AddRoot('Root Node')
-            
-            # g.trace('-' * 10,self.partialRedrawCount) ; self.partialRedrawCount += 1
-        
-            while p:
-                self.redraw_partial_subtree(root_id,p,createChildren=True)
-                p.moveToNext()
-        #@+node:ekr.20070308110145:OLDredraw_partial_subtree
-        # def redraw_partial_subtree(self,parent_id,p,levelCount,trace=False):
-        
-            # tree = self.treeCtrl
-            # node_id = self.redraw_node(parent_id,p)
-            
-            # # g.trace('levelCount',levelCount,'p',p.headString())
-            
-            # # Draw the entire tree, regardless of expansion state.
-            # child_p = p.firstChild()
-            # while child_p:
-                # if levelCount -1 > 0:
-                    # innerLevelCount = g.choose(child_p.hasChildren() and p.isExpanded(),levelCount,1)
-                    # self.redraw_partial_subtree(node_id,child_p,innerLevelCount)
-                # child_p.moveToNext()
-        
-            # # The calls to tree.Expand and tree.Collapse *will* generate events,
-            # # This is the reason the event handlers must be disabled while drawing.
-            # if levelCount -1 <= 0:
-                # flag = g.choose(p.hasChildren(),True,False)
-                # tree.SetItemHasChildren(node_id,flag)
-            # else:
-                # if p.isExpanded():
-                    # tree.Expand(node_id)
-                # else:
-                    # tree.Collapse(node_id)
-                
-            # # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-            # if p == self.c.currentPosition():
-                # tree.SelectItem(node_id) # Generates call to onTreeChanged.
-        #@-node:ekr.20070308110145:OLDredraw_partial_subtree
-        #@+node:ekr.20070308181029:redraw_partial_subtree
-        def redraw_partial_subtree(self,parent_id,p,createChildren,trace=False):
-        
-            tree = self.treeCtrl
-            node_id = self.redraw_node(parent_id,p)
-            # g.trace('createChildren',createChildren,'p',p.headString())
-        
-            if createChildren:
-                # Create one more level of children.
-                child_p = p.firstChild()
-                while child_p:
-                    innerCreateChildren = p.isExpanded() and child_p.hasChildren()
-                    self.redraw_partial_subtree(node_id,child_p,innerCreateChildren)
-                    child_p.moveToNext()
-        
-            # The calls to tree.Expand and tree.Collapse *will* generate events,
-            # This is the reason the event handlers must be disabled while drawing.
-            if createChildren:
-                if p.hasChildren():
-                    if p.isExpanded():
-                        tree.Expand(node_id)
-                    else:
-                        # g.trace('collapsing:',p.headString())
-                        tree.Collapse(node_id)
-            else:
-                flag = g.choose(p.hasChildren(),True,False)
-                tree.SetItemHasChildren(node_id,flag)
-        
-            # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-            if p == self.c.currentPosition():
-                tree.SelectItem(node_id) # Generates call to onTreeChanged.
-        #@-node:ekr.20070308181029:redraw_partial_subtree
-        #@-node:ekr.20070308110121:partialRedraw & helpers
-        #@-node:edream.110203113231.298:redraw & redraw_now & helpers
         #@+node:ekr.20061211052926:assignIcon
         def assignIcon (self,p):
             
@@ -5977,8 +5884,8 @@ if wx:
             id = self.idDict.get(p.v)
             if id:
                 self.treeCtrl.SetItemImage(id,val)
-            #else:
-            #    g.trace('can not happen: no id',p.headString())
+            else:
+                g.trace('can not happen: no id',p.headString())
         #@-node:ekr.20061211115055:updateVisibleIcons
         #@-node:edream.111303202917:Drawing
         #@+node:edream.110203113231.278:Event handlers (wxTree)
@@ -5990,11 +5897,12 @@ if wx:
             
             # Almost all event handlers call this method,
             # so this is a good place to make sure we still exist.
-            if g.app.killed or self.c.frame.killed: return None
-            if self.frame.lockout or self.drawing: return None
+            if g.app.killed or self.c.frame.killed:
+                # g.trace('killed')
+                return None
             tree = self.treeCtrl
             id = event.GetItem()
-            p = id.IsOk() and tree.GetItemData(id).GetData() or None
+            p = id.IsOk() and tree.GetItemData(id).GetData()
             
             if 0:
                 g.trace(
@@ -6003,97 +5911,57 @@ if wx:
                     'id.IsOk',id.IsOk(),
                     'p',p and p.headString(),
                     g.callers(9))
-                    
-            return p
+                
+            if self.frame.lockout or self.drawing or not p:
+                return None
+            else:
+                # g.trace(p.headString(),g.callers())
+                return p
         #@nonl
         #@-node:ekr.20061127075102:get_p
-        #@+node:ekr.20061118123730.1:onChar
-        if sys.platform.startswith('win'):
-            standardTreeKeys = []
-            for mod in ('Alt+','Alt+Ctrl+','',):
-                for base in ('Right','Left','Up','Down'):
-                    standardTreeKeys.append(mod+base)
-            for key in string.ascii_letters + string.digits + string.punctuation:
-                standardTreeKeys.append(key)
-        else: standardTreeKeys = []
-        
-        def onChar (self,event):
-            if g.app.killed or self.c.frame.killed: return
-            c = self.c
-            # Convert from tree event to key event.
-            keyEvent = event.GetKeyEvent()
-            keyEvent.leoWidget = self
-            keysym = g.app.gui.eventKeysym(keyEvent)
-            if 0:
-                keycode = keyEvent.GetKeyCode()
-                g.trace('tree: keycode %3s keysym %s' % (keycode,keysym))
-            if keysym:
-                # g.trace('keysym',keysym)
-                if keysym in self.standardTreeKeys:
-                    pass # g.trace('standard key',keysym)
-                else:
-                    c.k.masterKeyHandler(keyEvent,stroke=keysym)
-                    # keyEvent.Skip(False) # Try to kill the default key handling.
-        
-        #@-node:ekr.20061118123730.1:onChar
-        #@+node:ekr.20070309085343:onHeadlineKey
-        # k.handleDefaultChar calls onHeadlineKey.
-        
-        def onHeadlineKey (self,event):
-            # g.trace(event)
-            if g.app.killed or self.c.frame.killed: return
-            if event and event.keysym:
-                self.updateHead(event,event.widget)
-        #@-node:ekr.20070309085343:onHeadlineKey
-        #@+node:edream.110203113231.282:Clicks
         #@+node:ekr.20061127081233:selectHelper
         def selectHelper (self,event):
             
-            '''Select a tree item and its associated node.'''
+            '''Scroll so the presently selected node is in view.'''
             
             p = self.get_p(event)
-            if not p:return
-            # g.trace(p.headString())
-            
-            # Never redraw the outline.
-            c = self.c
-            c.beginUpdate()
-            try:
-                c.selectPosition(p)
-            finally:
-                c.endUpdate(False)
-            
-            if not self.frame.lockout:
-                id = event.GetItem()
-                if id.IsOk():
-                    # Important: we must call both SelectItem and event.Skip.
-                    tree = self.treeCtrl
-                    self.frame.lockout = True
-                    tree.SelectItem(id) # Yes, this is required.
-                    tree.ScrollTo(id) # Useful: expanding a node can put it off the screen.
-                    self.frame.lockout = False
-                    event.Skip()
+            if not p: return
+        
+            # We can make this assertion because get_p has done the check.
+            id = event.GetItem()
+            assert (id.IsOk() and not self.frame.lockout)
+        
+            # g.trace(p.headString(),g.callers())
+            tree = self.treeCtrl
+            self.frame.lockout = True
+            tree.SelectItem(id)
+            tree.ScrollTo(id)
+            self.frame.lockout = False
         #@-node:ekr.20061127081233:selectHelper
+        #@+node:edream.110203113231.282:Clicks
         #@+node:edream.110203113231.280:Collapse...
         def onTreeCollapsing(self,event):
             
-            '''Handle a pre-collapse event.'''
+            '''Handle a pre-collapse event due to a click in the +- box.'''
         
             p = self.get_p(event)
-            if not p: return # We are redrawing.
-            # g.trace(p.headString())
-        
-            c = self.c
+            if not p: return
+            
+            # p will be None while redrawing, so this is the outermost click event.
+            # Set the selection before redrawing so the tree is drawn properly.
+            c = self.c ; tree = self.treeCtrl
             c.beginUpdate()
             try:
-                p.contract() # Do not alter the selected node.
+                c.selectPosition(p)
+                p.contract()
             finally:
                 c.endUpdate(False)
         
         def onTreeCollapsed(self,event):
             
-            '''Handle a post-collapse event.'''
-            pass # Do not alter the selected node.
+            '''Handle a post-collapse event due to a click in the +- box.'''
+        
+            self.selectHelper(event)
         #@-node:edream.110203113231.280:Collapse...
         #@+node:edream.110203113231.281:Expand...
         def onTreeExpanding (self,event):
@@ -6101,45 +5969,39 @@ if wx:
             '''Handle a pre-expand event due to a click in the +- box.'''
         
             p = self.get_p(event)
-            if not p: return # We are redrawing.
+            if not p: return
             
+            # p will be None while redrawing, so this is the outermost click event.
+            # Set the selection before redrawing so the tree is drawn properly.
             c = self.c ; tree = self.treeCtrl
-            id = event.GetItem()
-            
-            child_id,cookie = tree.GetFirstChild(id)
-            hasRealChild = child_id.IsOk()
-            redrawFlag = p.hasChildren() and not hasRealChild
-            # g.trace('redraw:',redrawFlag,p.headString())
-            
             c.beginUpdate()
             try:
-                p.expand() # Do not alter the selected node.
+                c.selectPosition(p)
+                p.expand()
             finally:
-                c.endUpdate(redrawFlag)
+                c.endUpdate(False)
                 
         def onTreeExpanded (self,event):
             
-            '''Handle a post-collapse event.'''
-            pass # Do not alter the selected node.
-        #@nonl
+            '''Handle a post-collapse event due to a click in the +- box.'''
+            
+            self.selectHelper(event)
         #@-node:edream.110203113231.281:Expand...
-        #@+node:edream.110203113231.283:Change selection
+        #@+node:edream.110203113231.283:Clicks
         def onTreeSelChanging(self,event):
             
-            if g.app.killed or self.c.frame.killed: return
-            self.selectHelper(event)
-            event.Skip()
+            p = self.get_p(event)
+            if not p: return
             
-        def onTreeSelChanged(self,event):
-            pass
-        
-            # if g.app.killed or self.c.frame.killed: return
-            # if self.frame.lockout or self.drawing: return
-            # id = event.GetItem()
-            # if not id.IsOk(): return
-        
-            
-        #@-node:edream.110203113231.283:Change selection
+            # p will be None while redrawing, so this is the outermost click event.
+            # Set the selection before redrawing so the tree is drawn properly.
+            c = self.c
+            c.beginUpdate()
+            try:
+                c.selectPosition(p)
+            finally:
+                c.endUpdate(False)
+        #@-node:edream.110203113231.283:Clicks
         #@+node:ekr.20061211064516:onRightDown/Up
         def onRightDown (self,event):
             
@@ -6160,6 +6022,41 @@ if wx:
                 tree.EditLabel(item)
         #@-node:ekr.20061211064516:onRightDown/Up
         #@-node:edream.110203113231.282:Clicks
+        #@+node:edream.110203113231.285:Editing labels
+        #@+node:edream.110203113231.286:onTreeBeginLabelEdit
+        # Editing is allowed only if this routine exists.
+        
+        def onTreeBeginLabelEdit(self,event):
+            
+            if g.app.killed or self.c.frame.killed: return
+            
+            p = self.c.currentPosition()
+            
+            # Used by the base classes onHeadChanged method.
+            self.revertHeadline = p.headString()
+        #@-node:edream.110203113231.286:onTreeBeginLabelEdit
+        #@+node:edream.110203113231.287:onTreeEndLabelEdit
+        # Editing will be allowed only if this routine exists.
+        
+        def onTreeEndLabelEdit(self,event):
+        
+            if g.app.killed or self.c.frame.killed: return
+        
+            c = self.c ; tree = self.treeCtrl
+            id = event.GetItem()
+            s = event.GetLabel()
+            p = self.treeCtrl.GetItemData(id).GetData()
+            h = p.headString()
+            
+            # g.trace('old:',h,'new:',s)
+        
+            # Don't clear the headline by default.
+            if s and s != h:
+                # Call the base-class method.
+                self.onHeadChanged (p,undoType='Typing',s=s)
+        #@nonl
+        #@-node:edream.110203113231.287:onTreeEndLabelEdit
+        #@-node:edream.110203113231.285:Editing labels
         #@+node:ekr.20061105114250.1:Dragging
         #@+node:edream.110203113231.289:onTreeBeginDrag
         def onTreeBeginDrag(self,event):
@@ -6254,42 +6151,30 @@ if wx:
             self.c.setChanged(True)
         #@-node:edream.110203113231.290:onTreeEndDrag (NOT READY YET)
         #@-node:ekr.20061105114250.1:Dragging
-        #@+node:edream.110203113231.285:Editing labels
-        #@+node:edream.110203113231.286:onTreeBeginLabelEdit
-        # Editing is allowed only if this routine exists.
-        
-        def onTreeBeginLabelEdit(self,event):
-            
-            if g.app.killed or self.c.frame.killed: return
-            
-            p = self.c.currentPosition()
-            
-            # Used by the base classes onHeadChanged method.
-            self.revertHeadline = p.headString()
-        #@-node:edream.110203113231.286:onTreeBeginLabelEdit
-        #@+node:edream.110203113231.287:onTreeEndLabelEdit
-        # Editing will be allowed only if this routine exists.
-        
-        def onTreeEndLabelEdit(self,event):
-        
-            if g.app.killed or self.c.frame.killed: return
-        
-            c = self.c ; tree = self.treeCtrl
-            id = event.GetItem()
-            s = event.GetLabel()
-            p = self.treeCtrl.GetItemData(id).GetData()
-            h = p.headString()
-            
-            # g.trace('old:',h,'new:',s)
-        
-            # Don't clear the headline by default.
-            if s and s != h:
-                # Call the base-class method.
-                self.onHeadChanged (p,undoType='Typing',s=s)
-        #@nonl
-        #@-node:edream.110203113231.287:onTreeEndLabelEdit
-        #@-node:edream.110203113231.285:Editing labels
         #@-node:edream.110203113231.278:Event handlers (wxTree)
+        #@+node:ekr.20061118123730.1:wxTree.onChar
+        def onChar (self,event):
+            
+            if g.app.killed or self.c.frame.killed: return
+        
+            c = self.c
+            # Convert from tree event to key event.
+            event = event.GetKeyEvent()
+            event.leoWidget = self
+            keysym = g.app.gui.eventKeysym(event)
+            if 0:
+                keycode = event.GetKeyCode()
+                g.trace('tree: keycode %3s keysym %s' % (keycode,keysym))
+            if keysym:
+                c.k.masterKeyHandler(event,stroke=keysym)
+        
+        # k.handleDefaultChar calls onHeadlineKey.
+        def onHeadlineKey (self,event):
+            # g.trace(event)
+            if g.app.killed or self.c.frame.killed: return
+            if event and event.keysym:
+                self.updateHead(event,event.widget)
+        #@-node:ekr.20061118123730.1:wxTree.onChar
         #@+node:ekr.20050719121701:Selection
         #@+node:ekr.20050719121701.3:editLabel
         def editLabel (self,p,selectAll=False):
