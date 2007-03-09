@@ -2656,9 +2656,11 @@ if wx:
         #@-node:edream.111403104835:getWildcardList
         #@-node:edream.110203113231.321:gui dialogs
         #@+node:ekr.20061116085729:gui events
+        #@+node:ekr.20070309085704:event_generate
         def event_generate(self,w,kind,*args,**keys):
             '''Generate an event.'''
             return w.event_generate(kind,*args,**keys)
+        #@-node:ekr.20070309085704:event_generate
         #@+node:ekr.20061116093228:class leoKeyEvent (wxGui)
         class leoKeyEvent:
             
@@ -2913,7 +2915,7 @@ if wx:
         
             # Tracing just val can crash!
             # g.trace('mods',mods,'alt',alt,'ctrl',ctrl,'shift',shift,'code',keycode)
-            # g.trace('keycode',repr(keycode),'keysym',repr(keysym),'char',repr(char),'val',repr(val))
+            g.trace('keycode',repr(keycode),'keysym',repr(keysym),'char',repr(char),'val',repr(val))
         
             return val
         #@-node:ekr.20061117203128:keysymHelper
@@ -5980,6 +5982,69 @@ if wx:
         #@-node:ekr.20061211115055:updateVisibleIcons
         #@-node:edream.111303202917:Drawing
         #@+node:edream.110203113231.278:Event handlers (wxTree)
+        #@+node:ekr.20061127075102:get_p
+        def get_p (self,event):
+            
+            '''Return the position associated with an event.
+            Return None if the app or the frame has been killed.'''
+            
+            # Almost all event handlers call this method,
+            # so this is a good place to make sure we still exist.
+            if g.app.killed or self.c.frame.killed: return None
+            if self.frame.lockout or self.drawing: return None
+            tree = self.treeCtrl
+            id = event.GetItem()
+            p = id.IsOk() and tree.GetItemData(id).GetData() or None
+            
+            if 0:
+                g.trace(
+                    'lockout',self.frame.lockout,
+                    'drawing',self.drawing,
+                    'id.IsOk',id.IsOk(),
+                    'p',p and p.headString(),
+                    g.callers(9))
+                    
+            return p
+        #@nonl
+        #@-node:ekr.20061127075102:get_p
+        #@+node:ekr.20061118123730.1:onChar
+        if sys.platform.startswith('win'):
+            standardTreeKeys = []
+            for mod in ('Alt+','Alt+Ctrl+','',):
+                for base in ('Right','Left','Up','Down'):
+                    standardTreeKeys.append(mod+base)
+            for key in string.ascii_letters + string.digits + string.punctuation:
+                standardTreeKeys.append(key)
+        else: standardTreeKeys = []
+        
+        def onChar (self,event):
+            if g.app.killed or self.c.frame.killed: return
+            c = self.c
+            # Convert from tree event to key event.
+            keyEvent = event.GetKeyEvent()
+            keyEvent.leoWidget = self
+            keysym = g.app.gui.eventKeysym(keyEvent)
+            if 0:
+                keycode = keyEvent.GetKeyCode()
+                g.trace('tree: keycode %3s keysym %s' % (keycode,keysym))
+            if keysym:
+                # g.trace('keysym',keysym)
+                if keysym in self.standardTreeKeys:
+                    pass # g.trace('standard key',keysym)
+                else:
+                    c.k.masterKeyHandler(keyEvent,stroke=keysym)
+                    # keyEvent.Skip(False) # Try to kill the default key handling.
+        
+        #@-node:ekr.20061118123730.1:onChar
+        #@+node:ekr.20070309085343:onHeadlineKey
+        # k.handleDefaultChar calls onHeadlineKey.
+        
+        def onHeadlineKey (self,event):
+            # g.trace(event)
+            if g.app.killed or self.c.frame.killed: return
+            if event and event.keysym:
+                self.updateHead(event,event.widget)
+        #@-node:ekr.20070309085343:onHeadlineKey
         #@+node:edream.110203113231.282:Clicks
         #@+node:ekr.20061127081233:selectHelper
         def selectHelper (self,event):
@@ -6224,66 +6289,6 @@ if wx:
         #@nonl
         #@-node:edream.110203113231.287:onTreeEndLabelEdit
         #@-node:edream.110203113231.285:Editing labels
-        #@+node:ekr.20061127075102:get_p
-        def get_p (self,event):
-            
-            '''Return the position associated with an event.
-            Return None if the app or the frame has been killed.'''
-            
-            # Almost all event handlers call this method,
-            # so this is a good place to make sure we still exist.
-            if g.app.killed or self.c.frame.killed: return None
-            if self.frame.lockout or self.drawing: return None
-            tree = self.treeCtrl
-            id = event.GetItem()
-            p = id.IsOk() and tree.GetItemData(id).GetData() or None
-            
-            if 0:
-                g.trace(
-                    'lockout',self.frame.lockout,
-                    'drawing',self.drawing,
-                    'id.IsOk',id.IsOk(),
-                    'p',p and p.headString(),
-                    g.callers(9))
-                    
-            return p
-        #@nonl
-        #@-node:ekr.20061127075102:get_p
-        #@+node:ekr.20061118123730.1:onChar
-        standardTreeKeys = []
-        for mod in ('Alt+','Alt+Ctrl+','',):
-            for base in ('Right','Left','Up','Down'):
-                standardTreeKeys.append(mod+base)
-        for key in string.ascii_letters + string.digits + string.punctuation:
-            standardTreeKeys.append(key)
-        # print standardTreeKeys
-        
-        def onChar (self,event):
-            
-            if g.app.killed or self.c.frame.killed: return
-            c = self.c
-            # Convert from tree event to key event.
-            keyEvent = event.GetKeyEvent()
-            keyEvent.leoWidget = self
-            keysym = g.app.gui.eventKeysym(keyEvent)
-            if 0:
-                keycode = keyEvent.GetKeyCode()
-                g.trace('tree: keycode %3s keysym %s' % (keycode,keysym))
-            if keysym:
-                # g.trace('keysym',keysym)
-                if keysym in self.standardTreeKeys:
-                    pass # g.trace('standard key',keysym)
-                else:
-                    c.k.masterKeyHandler(keyEvent,stroke=keysym)
-                    # keyEvent.Skip(False) # Try to kill the default key handling.
-        
-        # k.handleDefaultChar calls onHeadlineKey.
-        def onHeadlineKey (self,event):
-            # g.trace(event)
-            if g.app.killed or self.c.frame.killed: return
-            if event and event.keysym:
-                self.updateHead(event,event.widget)
-        #@-node:ekr.20061118123730.1:onChar
         #@-node:edream.110203113231.278:Event handlers (wxTree)
         #@+node:ekr.20050719121701:Selection
         #@+node:ekr.20050719121701.3:editLabel
