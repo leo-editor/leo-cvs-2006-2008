@@ -5629,7 +5629,7 @@ if wx:
                 else:
                     if sys.platform.startswith('win'):
                         self.partialRedraw()
-                    elif self.treeCtrl.IsDoubleBuffered():
+                    elif False and self.treeCtrl.IsDoubleBuffered():
                         # g.trace('tree is double buffered')
                         self.fullRedraw()
                     else:
