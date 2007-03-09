@@ -6004,47 +6004,52 @@ if wx:
         #@nonl
         #@-node:ekr.20061127075102:get_p
         #@+node:edream.110203113231.282:Clicks
-        #@+node:ekr.20061127081233:selectHelper (scrolls)
+        #@+node:ekr.20061127081233:selectHelper
         def selectHelper (self,event):
             
             '''Select the event's item.'''
             
             p = self.get_p(event)
             if not p: return
+            # g.trace(p and p.headString() or 'None')
         
             id = event.GetItem()
             if id.IsOk():
-                # g.trace(p.headString(),g.callers())
                 tree = self.treeCtrl
                 self.frame.lockout = True
                 tree.SelectItem(id)
                 ### tree.ScrollTo(id)
                 self.frame.lockout = False
                 event.Skip()
-        #@-node:ekr.20061127081233:selectHelper (scrolls)
+                
+            ### New code.  Never redraw the outline.
+            c = self.c
+            c.beginUpdate()
+            try:
+                c.selectPosition(p)
+            finally:
+                c.endUpdate(False)
+        #@-node:ekr.20061127081233:selectHelper
         #@+node:edream.110203113231.280:Collapse...
         def onTreeCollapsing(self,event):
             
             '''Handle a pre-collapse event due to a click in the +- box.'''
         
             p = self.get_p(event)
-            if not p: return
+            if not p: return # We are redrawing.
+            # g.trace(p.headString())
             
-            # p will be None while redrawing, so this is the outermost click event.
-            # Set the selection before redrawing so the tree is drawn properly.
-            c = self.c ; tree = self.treeCtrl
+            c = self.c
             c.beginUpdate()
             try:
-                c.selectPosition(p)
-                p.contract()
+                p.contract() # Do not alter the selection.
             finally:
                 c.endUpdate(False)
         
         def onTreeCollapsed(self,event):
             
-            '''Handle a post-collapse event due to a click in the +- box.'''
-        
-            self.selectHelper(event)
+            '''Handle a post-collapse event.'''
+            pass # Do not alter the selection.
         #@-node:edream.110203113231.280:Collapse...
         #@+node:edream.110203113231.281:Expand...
         def onTreeExpanding (self,event):
@@ -6052,23 +6057,19 @@ if wx:
             '''Handle a pre-expand event due to a click in the +- box.'''
         
             p = self.get_p(event)
-            if not p: return
+            if not p: return # We are redrawing.
             
             c = self.c ; tree = self.treeCtrl
             id = event.GetItem()
             
             child_id,cookie = tree.GetFirstChild(id)
             hasRealChild = child_id.IsOk()
-            redrawFlag = not hasRealChild
-            if True or redrawFlag: g.trace('p',p.headString(),'hasRealChild',hasRealChild)
-            
-            # p will be None while redrawing, so this is the outermost click event.
-            # Set the selection before redrawing so the tree is drawn properly.
+            redrawFlag = p.hasChildren() and not hasRealChild
+            # if redrawFlag: g.trace('redraw:',p.headString())
             
             c.beginUpdate()
             try:
-                c.selectPosition(p)
-                p.expand()
+                p.expand() # Do not alter the selection.
             finally:
                 c.endUpdate(redrawFlag)
                 
@@ -6076,27 +6077,15 @@ if wx:
             
             '''Handle a post-collapse event due to a click in the +- box.'''
             
-            self.selectHelper(event)
+            pass # Do not alter the selection.
+        #@nonl
         #@-node:edream.110203113231.281:Expand...
-        #@+node:edream.110203113231.283:Clicks  DO WE NEED EVENT.SKIP?
+        #@+node:edream.110203113231.283:onTreeSelChanging
         def onTreeSelChanging(self,event):
-            
-            p = self.get_p(event)
-            if not p:
-                # We have already handled the event.
-                return
-            
-            # p will be None while redrawing, so this is the outermost click event.
-            # Set the selection before redrawing so the tree is drawn properly.
-            c = self.c
-            c.beginUpdate()
-            try:
-                c.selectPosition(p)
-            finally:
-                c.endUpdate(False)
         
-            event.Skip() # This could cause lots of problems.
-        #@-node:edream.110203113231.283:Clicks  DO WE NEED EVENT.SKIP?
+            self.selectHelper(event)
+            event.Skip()
+        #@-node:edream.110203113231.283:onTreeSelChanging
         #@+node:ekr.20061211064516:onRightDown/Up
         def onRightDown (self,event):
             
