@@ -5627,7 +5627,7 @@ if wx:
                     event.SetEventObject(tree)
                     tree.GetEventHandler().ProcessEvent(event)
                 else:
-                    if 1:
+                    if sys.platform.startswith('win'):
                         self.partialRedraw()
                     elif self.treeCtrl.IsDoubleBuffered():
                         # g.trace('tree is double buffered')
