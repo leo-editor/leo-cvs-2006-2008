@@ -2915,7 +2915,7 @@ if wx:
         
             # Tracing just val can crash!
             # g.trace('mods',mods,'alt',alt,'ctrl',ctrl,'shift',shift,'code',keycode)
-            g.trace('keycode',repr(keycode),'keysym',repr(keysym),'char',repr(char),'val',repr(val))
+            # g.trace('keycode',repr(keycode),'keysym',repr(keysym),'char',repr(char),'val',repr(val))
         
             return val
         #@-node:ekr.20061117203128:keysymHelper
