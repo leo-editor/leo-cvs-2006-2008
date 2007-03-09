@@ -5867,38 +5867,69 @@ if wx:
             # g.trace('-' * 10,self.partialRedrawCount) ; self.partialRedrawCount += 1
         
             while p:
-                self.redraw_partial_subtree(root_id,p,levelCount=50)
+                self.redraw_partial_subtree(root_id,p,createChildren=True)
                 p.moveToNext()
-        #@+node:ekr.20070308110145:redraw_partial_subtree
-        def redraw_partial_subtree(self,parent_id,p,levelCount,trace=False):
+        #@+node:ekr.20070308110145:OLDredraw_partial_subtree
+        # def redraw_partial_subtree(self,parent_id,p,levelCount,trace=False):
+        
+            # tree = self.treeCtrl
+            # node_id = self.redraw_node(parent_id,p)
+            
+            # # g.trace('levelCount',levelCount,'p',p.headString())
+            
+            # # Draw the entire tree, regardless of expansion state.
+            # child_p = p.firstChild()
+            # while child_p:
+                # if levelCount -1 > 0:
+                    # innerLevelCount = g.choose(child_p.hasChildren() and p.isExpanded(),levelCount,1)
+                    # self.redraw_partial_subtree(node_id,child_p,innerLevelCount)
+                # child_p.moveToNext()
+        
+            # # The calls to tree.Expand and tree.Collapse *will* generate events,
+            # # This is the reason the event handlers must be disabled while drawing.
+            # if levelCount -1 <= 0:
+                # flag = g.choose(p.hasChildren(),True,False)
+                # tree.SetItemHasChildren(node_id,flag)
+            # else:
+                # if p.isExpanded():
+                    # tree.Expand(node_id)
+                # else:
+                    # tree.Collapse(node_id)
+                
+            # # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+            # if p == self.c.currentPosition():
+                # tree.SelectItem(node_id) # Generates call to onTreeChanged.
+        #@-node:ekr.20070308110145:OLDredraw_partial_subtree
+        #@+node:ekr.20070308181029:redraw_partial_subtree
+        def redraw_partial_subtree(self,parent_id,p,createChildren,trace=False):
         
             tree = self.treeCtrl
             node_id = self.redraw_node(parent_id,p)
-            
-            # g.trace('levelCount',levelCount,'p',p.headString())
-            
-            # Draw the entire tree, regardless of expansion state.
-            child_p = p.firstChild()
-            while child_p:
-                if levelCount -1 > 0:
-                    innerLevelCount = g.choose(child_p.hasChildren() and p.isExpanded(),levelCount,1)
-                    self.redraw_partial_subtree(node_id,child_p,innerLevelCount)
-                child_p.moveToNext()
+            # g.trace('createChildren',createChildren,'p',p.headString())
+        
+            if createChildren:
+                # Create one more level of children.
+                child_p = p.firstChild()
+                while child_p:
+                    innerCreateChildren = p.isExpanded() and child_p.hasChildren()
+                    self.redraw_partial_subtree(node_id,child_p,innerCreateChildren)
+                    child_p.moveToNext()
         
             # The calls to tree.Expand and tree.Collapse *will* generate events,
             # This is the reason the event handlers must be disabled while drawing.
-            if levelCount -1 <= 0:
-                tree.SetItemHasChildren(node_id,not not p.hasChildren())
-            else:
+            if createChildren:
                 if p.isExpanded():
                     tree.Expand(node_id)
                 else:
                     tree.Collapse(node_id)
-                
+            else:
+                flag = g.choose(p.hasChildren(),True,False)
+                tree.SetItemHasChildren(node_id,flag)
+        
             # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
             if p == self.c.currentPosition():
                 tree.SelectItem(node_id) # Generates call to onTreeChanged.
-        #@-node:ekr.20070308110145:redraw_partial_subtree
+        #@-node:ekr.20070308181029:redraw_partial_subtree
         #@-node:ekr.20070308110121:partialRedraw & helpers
         #@-node:edream.110203113231.298:redraw & redraw_now & helpers
         #@+node:ekr.20061211052926:assignIcon
@@ -5937,8 +5968,8 @@ if wx:
             id = self.idDict.get(p.v)
             if id:
                 self.treeCtrl.SetItemImage(id,val)
-            else:
-                g.trace('can not happen: no id',p.headString())
+            #else:
+            #    g.trace('can not happen: no id',p.headString())
         #@-node:ekr.20061211115055:updateVisibleIcons
         #@-node:edream.111303202917:Drawing
         #@+node:edream.110203113231.278:Event handlers (wxTree)
@@ -5972,26 +6003,25 @@ if wx:
                 return p
         #@nonl
         #@-node:ekr.20061127075102:get_p
-        #@+node:ekr.20061127081233:selectHelper
+        #@+node:edream.110203113231.282:Clicks
+        #@+node:ekr.20061127081233:selectHelper (scrolls)
         def selectHelper (self,event):
             
-            '''Scroll so the presently selected node is in view.'''
+            '''Select the event's item.'''
             
             p = self.get_p(event)
             if not p: return
         
-            # We can make this assertion because get_p has done the check.
             id = event.GetItem()
-            assert (id.IsOk() and not self.frame.lockout)
-        
-            # g.trace(p.headString(),g.callers())
-            tree = self.treeCtrl
-            self.frame.lockout = True
-            tree.SelectItem(id)
-            tree.ScrollTo(id)
-            self.frame.lockout = False
-        #@-node:ekr.20061127081233:selectHelper
-        #@+node:edream.110203113231.282:Clicks
+            if id.IsOk():
+                # g.trace(p.headString(),g.callers())
+                tree = self.treeCtrl
+                self.frame.lockout = True
+                tree.SelectItem(id)
+                ### tree.ScrollTo(id)
+                self.frame.lockout = False
+                event.Skip()
+        #@-node:ekr.20061127081233:selectHelper (scrolls)
         #@+node:edream.110203113231.280:Collapse...
         def onTreeCollapsing(self,event):
             
@@ -6030,7 +6060,7 @@ if wx:
             child_id,cookie = tree.GetFirstChild(id)
             hasRealChild = child_id.IsOk()
             redrawFlag = not hasRealChild
-            if redrawFlag: g.trace('p',p.headString(),'hasRealChild',hasRealChild)
+            if True or redrawFlag: g.trace('p',p.headString(),'hasRealChild',hasRealChild)
             
             # p will be None while redrawing, so this is the outermost click event.
             # Set the selection before redrawing so the tree is drawn properly.
@@ -6048,11 +6078,13 @@ if wx:
             
             self.selectHelper(event)
         #@-node:edream.110203113231.281:Expand...
-        #@+node:edream.110203113231.283:Clicks
+        #@+node:edream.110203113231.283:Clicks  DO WE NEED EVENT.SKIP?
         def onTreeSelChanging(self,event):
             
             p = self.get_p(event)
-            if not p: return
+            if not p:
+                # We have already handled the event.
+                return
             
             # p will be None while redrawing, so this is the outermost click event.
             # Set the selection before redrawing so the tree is drawn properly.
@@ -6062,7 +6094,9 @@ if wx:
                 c.selectPosition(p)
             finally:
                 c.endUpdate(False)
-        #@-node:edream.110203113231.283:Clicks
+        
+            event.Skip() # This could cause lots of problems.
+        #@-node:edream.110203113231.283:Clicks  DO WE NEED EVENT.SKIP?
         #@+node:ekr.20061211064516:onRightDown/Up
         def onRightDown (self,event):
             
