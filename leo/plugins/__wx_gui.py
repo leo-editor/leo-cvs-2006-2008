@@ -5844,14 +5844,12 @@ if wx:
         #@nonl
         #@-node:ekr.20061127075102:get_p
         #@+node:ekr.20061118123730.1:onChar
-        if sys.platform.startswith('win'):
-            standardTreeKeys = []
-            for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
-                for base in ('Right','Left','Up','Down'):
-                    standardTreeKeys.append(mod+base)
-            for key in string.ascii_letters + string.digits + string.punctuation:
-                standardTreeKeys.append(key)
-        else: standardTreeKeys = []
+        standardTreeKeys = []
+        for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
+            for base in ('Right','Left','Up','Down'):
+                standardTreeKeys.append(mod+base)
+        for key in string.ascii_letters + string.digits + string.punctuation:
+            standardTreeKeys.append(key)
         
         def onChar (self,event):
             
@@ -6134,14 +6132,12 @@ if wx:
         #@-node:ekr.20061127081233:selectHelper
         #@-node:edream.110203113231.278:Event handlers (wxTree)
         #@+node:ekr.20061118123730.1:onChar
-        if sys.platform.startswith('win'):
-            standardTreeKeys = []
-            for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
-                for base in ('Right','Left','Up','Down'):
-                    standardTreeKeys.append(mod+base)
-            for key in string.ascii_letters + string.digits + string.punctuation:
-                standardTreeKeys.append(key)
-        else: standardTreeKeys = []
+        standardTreeKeys = []
+        for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
+            for base in ('Right','Left','Up','Down'):
+                standardTreeKeys.append(mod+base)
+        for key in string.ascii_letters + string.digits + string.punctuation:
+            standardTreeKeys.append(key)
         
         def onChar (self,event):
             
