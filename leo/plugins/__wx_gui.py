@@ -5691,14 +5691,6 @@ if wx:
                 finally:
                     self.frame.lockout = False
         #@-node:ekr.20070310124831:setSelectedLabelState
-        #@+node:ekr.20070310122945:forceSelect
-        def forceSelect (self,p):
-            
-            return ###
-        
-           
-        #@nonl
-        #@-node:ekr.20070310122945:forceSelect
         #@+node:ekr.20061127075102:get_p
         def get_p (self,event):
             
