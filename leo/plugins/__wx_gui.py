@@ -5662,7 +5662,7 @@ if wx:
                 return
             self.redrawCount += 1
             self.idDict = {}
-            if True and not g.app.unitTesting: g.trace(self.redrawCount)
+            if True and not g.app.unitTesting: g.trace(self.redrawCount,g.callers())
             
             self.drawing = True # Disable event handlers.
             try:
