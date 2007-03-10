@@ -4086,8 +4086,7 @@ class baseCommands:
             c.selectVnode(p)
         finally:
             c.endUpdate()
-        
-        # c.treeWantsFocusNow()
+    
         c.treeFocusHelper()
     
         c.expansionLevel = 1 # Reset expansion level.
@@ -4097,15 +4096,16 @@ class baseCommands:
         
         '''Contract the presently selected node.'''
         
-        c = self ; v = c.currentVnode()
+        c = self ; p = c.currentPosition()
+        
+        # g.trace(p.headString())
         
         c.beginUpdate()
         try:
-            v.contract()
+            p.contract()
         finally:
             c.endUpdate()
         
-        # c.treeWantsFocusNow()
         c.treeFocusHelper()
     #@-node:ekr.20031218072017.2901:contractNode
     #@+node:ekr.20040930064232:contractNodeOrGoToParent
@@ -4114,10 +4114,12 @@ class baseCommands:
         """Simulate the left Arrow Key in folder of Windows Explorer."""
     
         c = self ; p = c.currentPosition()
-     
+    
         if p.hasChildren() and p.isExpanded():
+            # g.trace('contract',p.headString())
             c.contractNode()
         elif p.hasParent():
+            # g.trace('goto parent',p.headString())
             c.goToParent()
     
         c.treeFocusHelper()
@@ -4130,18 +4132,16 @@ class baseCommands:
         
         c = self ; p = c.currentPosition()
         
-        # v = c.currentVnode()
-        # parent = v.parent()
-        # if not parent: return
-        # c.beginUpdate()
-        # try:
-            # c.selectVnode(parent)
-            # parent.contract()
-        # finally:
-            # c.endUpdate()
-            # c.treeWantsFocusNow()
+        parent = p.parent()
+        if not parent: return
+    
+        c.beginUpdate()
+        try:
+            parent.contract()
+        finally:
+            c.endUpdate(False)
             
-        c.treeSelectHelper(p and p.parent())
+        c.treeSelectHelper(parent)
     #@-node:ekr.20031218072017.2902:contractParent
     #@+node:ekr.20031218072017.2903:expandAllHeadlines
     def expandAllHeadlines (self,event=None):
@@ -4149,17 +4149,18 @@ class baseCommands:
         '''Expand all headlines.
         Warning: this can take a long time for large outlines.'''
     
-        c = self ; v = root = c.rootVnode()
+        c = self ; p = root = c.rootPosition()
+    
         c.beginUpdate()
         try:
-            while v:
-                c.expandSubtree(v)
-                v = v.next()
+            while p:
+                c.expandSubtree(p)
+                p.moveToNext()
             c.selectVnode(root)
         finally:
             c.endUpdate()
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
+    
         c.expansionLevel = 0 # Reset expansion level.
     #@-node:ekr.20031218072017.2903:expandAllHeadlines
     #@+node:ekr.20031218072017.2904:expandAllSubheads
@@ -4180,7 +4181,6 @@ class baseCommands:
             c.selectVnode(v)
         finally:
             c.endUpdate()
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
     #@-node:ekr.20031218072017.2904:expandAllSubheads
     #@+node:ekr.20031218072017.2905:expandLevel1..9
@@ -4228,7 +4228,7 @@ class baseCommands:
     
         c = self ; v = c.currentVnode()
         
-        # 1/31/02: Expansion levels are now local to a particular tree.
+        # Expansion levels are now local to a particular tree.
         if c.expansionNode != v:
             c.expansionLevel = 1
             c.expansionNode = v
@@ -4247,7 +4247,6 @@ class baseCommands:
             v.expand()
         finally:
             c.endUpdate()
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
     #@nonl
     #@-node:ekr.20031218072017.2907:expandNode
@@ -4258,19 +4257,16 @@ class baseCommands:
     
         c = self ; p = c.currentPosition()
         if not p.hasChildren():
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
             return
             
         c.beginUpdate()
         try:
-            # Bug fix: 2/22/07: put this inside the begin/endUpdate so only one redraw happens.
             if not p.isExpanded():
                 c.expandNode()
             c.selectVnode(p.firstChild())
         finally:
             c.endUpdate()
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
             
     def expandNodeOrGoToFirstChild (self,event=None):
@@ -4278,20 +4274,15 @@ class baseCommands:
         """Simulate the Right Arrow Key in folder of Windows Explorer."""
     
         c = self ; p = c.currentPosition()
-        if not p.hasChildren():
-            # c.treeWantsFocusNow()
-            c.treeFocusHelper()
-            return
-    
-        if not p.isExpanded():
-            c.expandNode()
-        else:
-            c.beginUpdate()
-            try:
-                c.selectVnode(p.firstChild())
-            finally:
-                c.endUpdate()
-        # c.treeWantsFocusNow()
+        if p.hasChildren():
+            if not p.isExpanded():
+                c.expandNode()
+            else:
+                c.beginUpdate()
+                try:
+                    c.selectVnode(p.firstChild())
+                finally:
+                    c.endUpdate()
         c.treeFocusHelper()
     #@-node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
     #@+node:ekr.20060928062431:expandOnlyAncestorsOfNode
@@ -4310,7 +4301,6 @@ class baseCommands:
                 level += 1
         finally:
             c.endUpdate()
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
     
         c.expansionLevel = level # Reset expansion level.
@@ -4323,7 +4313,7 @@ class baseCommands:
     
         c = self ; v = c.currentVnode()
         
-        # 1/31/02: Expansion levels are now local to a particular tree.
+        # Expansion levels are now local to a particular tree.
         if c.expansionNode != v:
             c.expansionLevel = 1
             c.expansionNode = v
