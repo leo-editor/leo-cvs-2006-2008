@@ -1442,14 +1442,15 @@ if wx:
         
         #@    @+others
         #@+node:ekr.20070209095222:plainTextWidget.__init__
-        def __init__ (self,c,parent,*args,**keys):
+        def __init__ (self,c,parent,multiline=True,*args,**keys):
             
             w = self
             self.c = c
         
             # Create the actual gui widget.
-            self.widget = wx.TextCtrl(parent,style=wx.TE_MULTILINE,*args,**keys)
-            
+            style = g.choose(multiline,wx.TE_MULTILINE,0)
+            self.widget = wx.TextCtrl(parent,id=-1,style=style,*args,**keys)
+        
             # Init the base class.
             name = keys.get('name') or '<unknown plainTextWidget>'
             baseTextWidget.__init__(self,c,
@@ -2838,121 +2839,6 @@ if wx:
                 return event.keysym # A leoKeyEvent: we have already computed the result.
             else:
                 return self.keysymHelper2(event,kind='keysym')
-        #@+node:ekr.20061117203128:keysymHelper & helpers(no longer used)
-        def keysymHelper (self,event,kind):
-            
-            gui = self
-            keycode = event.GetKeyCode()
-            if keycode in (wx.WXK_SHIFT,wx.WXK_ALT,wx.WXK_CONTROL):
-                return ''
-        
-            keysym = gui.wxKeyDict.get(keycode) or ''
-            mods = event.GetModifiers()
-            alt = event.AltDown()     or mods == wx.MOD_ALT
-            cmd = event.CmdDown()     or mods == wx.MOD_CMD
-            ctrl = event.ControlDown()or mods == wx.MOD_CONTROL
-            meta = event.MetaDown()   or mods == wx.MOD_META
-            shift = event.ShiftDown() or mods == wx.MOD_SHIFT
-            special = alt or cmd or ctrl or meta
-            
-            if special and kind == 'char':
-                # return '' as the char for all special keys.
-                return ''
-            
-            if ctrl and keycode < 32:
-                char = chr(ord('a')+keycode-1)
-            elif keysym in ('BackSpace','Return','Tab'):
-                d = {'BackSpace':'\b','Return':'\n','Tab':'\t'}
-                char = d.get(keysym)
-            else:
-                # Set the char field.
-                char = keysym or ''
-            if not char:
-                # Avoid GetUnicodeKey if possible.  It crashes on '.' (!)
-                try:
-                    char = chr(keycode)
-                except ValueError:
-                    char = ''
-            if not char and hasattr(event,'GetUnicodeKey'):
-                i = event.GetUnicodeKey()
-                if i is None: char = ''
-                else:
-                    try:
-                        char = unichr(i)
-                    except Exception:
-                        g.es('No translation for', repr(i))
-                        char = repr(i)
-           
-            # Adjust the case, but only for plain ascii characters characters.
-            if len(char) == 1:
-                if char.isalpha():
-                    if shift: # Case is also important for ctrl keys. # or alt or cmd or ctrl or meta:
-                        char = char.upper()
-                    else:
-                        char = char.lower()
-                elif shift:
-                    char = self.getShiftChar(char)
-                else:
-                    char = self.getUnshiftChar(char)
-                    
-            # Note: this must be Key- (not Key+) to match the corresponding Tk hack.
-            if alt and char.isdigit(): char = 'Key-' + char
-        
-            # Create a value compatible with Leo's core.
-            val = (
-                g.choose(alt,'Alt+','') +
-                # g.choose(cmd,'Cmd+','') +
-                g.choose(ctrl,'Ctrl+','') +
-                g.choose(meta,'Meta+','') +
-                g.choose(shift and (special or len(char)>1),'Shift+','') +
-                g.choose(kind=='char',(char or ''),(keysym or char or ''))
-            )
-        
-            # Tracing just val can crash!
-            if True and kind == 'keysym':
-                # g.trace('mods',mods,'alt',alt,'ctrl',ctrl,'shift',shift,'code',keycode)
-                g.trace('keycode',repr(keycode),'keysym',repr(keysym),'char',repr(char),'val',repr(val))
-        
-            return val
-        #@nonl
-        #@+node:ekr.20061118055443:getShiftChar
-        def getShiftChar (self,char):
-            
-            d = {
-                '1': '!',
-                '2': '@',
-                '3': '#',
-                '4': '$',
-                '5': '%',
-                '6': '^',
-                '7': '&',
-                '8': '*',
-                '9': '(',
-                '0': ')',
-                '-': '_',
-                '=': '+',
-                '[': '{',
-                ']': '}',
-                '\\': '|',
-                ';': ':',
-                "'": '"',
-                ',': '<',
-                '.': '>',
-                '/': '?',
-            }
-            return d.get(char,char) # There must be a better way.
-        #@nonl
-        #@-node:ekr.20061118055443:getShiftChar
-        #@+node:ekr.20061118070150:getUnshiftChar
-        def getUnshiftChar (self,char):
-            
-            d = {
-                '+': '='
-            }
-            return d.get(char,char)
-        #@nonl
-        #@-node:ekr.20061118070150:getUnshiftChar
-        #@-node:ekr.20061117203128:keysymHelper & helpers(no longer used)
         #@+node:ekr.20070310064845:keysymHelper2
         # Modified from LogKeyEvent in wxPython demo.
         
@@ -5333,7 +5219,8 @@ if wx:
         
             self.widget = w = plainTextWidget(
                 self.c,
-                parentFrame,  
+                parentFrame,
+                multiline = False,
                 pos = wx.DefaultPosition,
                 size = (1000,-1),
                 name = 'minibuffer',
@@ -5794,7 +5681,7 @@ if wx:
             if not p: return
             if self.frame.lockout: return
             
-            g.trace(p.headString(),g.callers())
+            # g.trace(p.headString(),g.callers())
             
             tree_id = self.idDict.get(p.v)
             if tree_id and tree_id.IsOk():
@@ -5861,9 +5748,10 @@ if wx:
             keyEvent = event.GetKeyEvent()
             keyEvent.leoWidget = self
             keysym = g.app.gui.eventKeysym(keyEvent)
-            g.trace('keysym',keysym)
+            # g.trace('keysym',keysym)
             if keysym in self.standardTreeKeys:
-                g.trace('standard key',keysym)
+                pass
+                # g.trace('standard key',keysym)
             else:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
                 # keyEvent.Skip(False) # Try to kill the default key handling.
@@ -6150,9 +6038,10 @@ if wx:
             keyEvent = event.GetKeyEvent()
             keyEvent.leoWidget = self
             keysym = g.app.gui.eventKeysym(keyEvent)
-            g.trace('keysym',keysym)
+            # g.trace('keysym',keysym)
             if keysym in self.standardTreeKeys:
-                g.trace('standard key',keysym)
+                pass
+                # g.trace('standard key',keysym)
             else:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
                 # keyEvent.Skip(False) # Try to kill the default key handling.
