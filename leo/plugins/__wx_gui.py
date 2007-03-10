@@ -2829,16 +2829,15 @@ if wx:
             if hasattr(event,'char'):
                 return event.char # A leoKeyEvent.
             else:
-                return self.keysymHelper(event,kind='char')
+                return self.keysymHelper2(event,kind='char')
         
         def eventKeysym (self,event):
             
             if hasattr(event,'keysym'):
                 return event.keysym # A leoKeyEvent: we have already computed the result.
             else:
-                self.keysymHelper2(event)
-                return self.keysymHelper(event,kind='keysym')
-        #@+node:ekr.20061117203128:keysymHelper
+                return self.keysymHelper2(event,kind='keysym')
+        #@+node:ekr.20061117203128:keysymHelper & helpers(no longer used)
         def keysymHelper (self,event,kind):
             
             gui = self
@@ -2914,44 +2913,7 @@ if wx:
                 g.trace('keycode',repr(keycode),'keysym',repr(keysym),'char',repr(char),'val',repr(val))
         
             return val
-        #@-node:ekr.20061117203128:keysymHelper
-        #@+node:ekr.20070310064845:keysymHelper2
-        # Slightly modified from wxPython demo.
-        
-        def keysymHelper2(self,event):
-            keycode = event.GetKeyCode()
-            keyname = g.app.gui.wxKeyDict.get(keycode) # was keyMap
-            if keyname is None:
-                if "unicode" in wx.PlatformInfo:
-                    keycode = event.GetUnicodeKey()
-                    if keycode <= 127:
-                        keycode = event.GetKeyCode()
-                    keyname = "\"" + unichr(event.GetUnicodeKey()) + "\""
-                    if keycode < 27:
-                        keyname = "Ctrl-%s" % chr(ord('A') + keycode-1)
-                    
-                elif keycode < 256:
-                    if keycode == 0:
-                        keyname = "NUL"
-                    elif keycode < 27:
-                        keyname = "Ctrl-%s" % chr(ord('A') + keycode-1)
-                    else:
-                        keyname = "\"%s\"" % chr(keycode)
-                else:
-                    keyname = "unknown (%s)" % keycode
-        
-            modifiers = ""
-            for mod, ch in [(event.ControlDown(), 'Ctrl+'),
-                            (event.AltDown(),     'Alt+'),
-                            (event.ShiftDown(),   'Shift+'),
-                            (event.MetaDown(),    'Meta+')]:
-                if mod: modifiers += ch
-                # else: modifiers += '-'
-            val = modifiers + keyname
-            g.trace('keycode',keycode,'val',repr(val))
-            return val
-        
-        #@-node:ekr.20070310064845:keysymHelper2
+        #@nonl
         #@+node:ekr.20061118055443:getShiftChar
         def getShiftChar (self,char):
             
@@ -2989,6 +2951,57 @@ if wx:
             return d.get(char,char)
         #@nonl
         #@-node:ekr.20061118070150:getUnshiftChar
+        #@-node:ekr.20061117203128:keysymHelper & helpers(no longer used)
+        #@+node:ekr.20070310064845:keysymHelper2
+        # Modified from LogKeyEvent in wxPython demo.
+        
+        def keysymHelper2(self,event,kind):
+            keycode = event.GetKeyCode()
+            if keycode in (wx.WXK_SHIFT,wx.WXK_ALT,wx.WXK_CONTROL):
+                return ''
+            keyname = g.app.gui.wxKeyDict.get(keycode) # was keyMap
+            special = False
+            if keyname is None:
+                if "unicode" in wx.PlatformInfo:
+                    keycode = event.GetUnicodeKey()
+                    if keycode <= 127:
+                        keycode = event.GetKeyCode()
+                    keyname = unichr(event.GetUnicodeKey())
+                    if keycode < 27:
+                        # keyname = "Ctrl+%s" % chr(ord('A') + keycode-1)
+                        keyname = "Ctrl+%s" % chr(ord('a') + keycode-1)
+                        special = True
+                elif keycode < 256:
+                    if keycode == 0:
+                        keyname = "NUL" # dubious.
+                    elif keycode < 27:
+                        # keyname = "Ctrl+%s" % chr(ord('A') + keycode-1)
+                        keyname = "Ctrl+%s" % chr(ord('a') + keycode-1)
+                        special = True
+                    else:
+                        keyname = chr(keycode)
+                else:
+                    keyname = "unknown (%s)" % keycode
+        
+            modifiers = ""
+            for mod, prefix in (
+                (event.ControlDown(), 'Ctrl+'),
+                (event.AltDown(),     'Alt+'),
+                (event.MetaDown(),    'Meta+'),
+            ):
+                if mod:
+                    if keyname.find('Ctrl+') == -1:
+                        modifiers += prefix
+                    special = True
+           
+            if special and kind == 'char':
+                return '' # return '' as the char for all special keys.
+            else:
+                val = modifiers + keyname
+                # g.trace('keycode',keycode,'val',repr(val))
+                return val
+        #@nonl
+        #@-node:ekr.20070310064845:keysymHelper2
         #@-node:ekr.20061117155233:eventChar & eventKeysym & helper
         #@+node:ekr.20061117155233.1:eventWidget
         def eventWidget (self,event):
