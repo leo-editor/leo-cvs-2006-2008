@@ -5667,19 +5667,7 @@ if wx:
             self.drawing = True # Disable event handlers.
             try:
                 self.expandAllAncestors(c.currentPosition())
-                self.partialRedraw() # If this doesn't work the entire project is toast.
-                # if False and self.use_paint: # Doesn't eliminate flash.
-                    # event = wx.PaintEvent()
-                    # event.SetEventObject(tree)
-                    # tree.GetEventHandler().ProcessEvent(event)
-                # else:
-                    # if sys.platform.startswith('win'):
-                        # # Dumps core on Ubuntu.
-                        # self.partialRedraw()
-                    # else:
-                        # # cleverRedraw does not draw the tree properly on Ubuntu.
-                        # self.fullRedraw()
-                        # # self.cleverRedraw()
+                self.partialRedraw()
             finally:
                 self.drawing = False # Enable event handlers.
         
@@ -5706,204 +5694,6 @@ if wx:
             assert (p == tree.GetItemData(node_id).GetData())
             return node_id
         #@-node:edream.110203113231.299:redraw_node
-        #@+node:ekr.20070221122411:cleverRedraw & helpers
-        initial_draw = True
-        
-        def cleverRedraw (self):
-            
-            if self.initial_draw:
-                self.initial_draw = False
-                self.fullRedraw()
-            else:
-                c = self.c ; tree = self.treeCtrl
-                root_p = c.rootPosition()
-                root_id = tree.GetRootItem()
-                child_id,cookie = tree.GetFirstChild(root_id)
-                self.update_siblings(root_id,child_id,root_p)
-        #@nonl
-        #@+node:ekr.20070222092336:insertTreeAfter
-        def insertTreeAfter (self,parent_id,prev_id,p):
-        
-            tree = self.treeCtrl
-            ins_id = self.insert_node(parent_id,prev_id,p)
-            # g.trace(p.headString())
-            child = p.firstChild()
-            while child:
-                # Create the entire tree, regardless of expansion state.
-                self.redraw_subtree(ins_id,child)
-                child.moveToNext()
-            return ins_id
-        #@-node:ekr.20070222092336:insertTreeAfter
-        #@+node:ekr.20070222091654:insert_node
-        def insert_node(self,parent_id,prev_id,p):
-            
-            tree = self.treeCtrl
-            data = wx.TreeItemData(p.copy())
-            image = self.assignIcon(p)
-        
-            node_id = tree.InsertItem(
-                parent_id,
-                prev_id,
-                text=p.headString(),
-                image=image,
-                #selImage=image,
-                data=data)
-        
-            ### tree.SetItemFont(id,self.defaultFont)
-            
-            self.setEditWidget(p,node_id)
-            assert (p == tree.GetItemData(node_id).GetData())
-            
-            self.expandAndSelect(node_id,p)
-        
-            return node_id
-        #@-node:ekr.20070222091654:insert_node
-        #@+node:ekr.20070221130134:update_node
-        def update_node(self,node_id,p):
-            
-            tree = self.treeCtrl
-        
-            # data = wx.TreeItemData(p.copy())
-            # id = tree.AppendItem(
-                # parent_id,
-                # text=p.headString(),
-                # image=image,
-                # #selImage=image,
-                # data=data)
-        
-            # update the data.
-            new_h = p.headString() ; old_h = tree.GetItemText(node_id)
-            if old_h != new_h:
-                g.trace('old:',old_h,'new:',new_h)
-                tree.SetItemText(node_id,new_h)
-            image = self.assignIcon(p)
-            if image != tree.GetItemImage(node_id):
-                tree.SetItemImage(node_id,image)
-            data = wx.TreeItemData(p.copy())
-            tree.SetItemData(node_id,data)
-        
-            self.setEditWidget(p,node_id)
-            assert (p == tree.GetItemData(node_id).GetData())
-            return node_id
-        #@-node:ekr.20070221130134:update_node
-        #@+node:ekr.20070221122544.2:update_siblings
-        def update_siblings(self,parent_id,node_id,p):
-            
-            tree = self.treeCtrl ; trace = False
-            first_id,first_p = node_id,p.copy()
-            # Warning: we will visit each position only once even if the tree changes.
-            for p in p.self_and_siblings_iter(copy=True):
-                h = p.headString()
-                if node_id.IsOk():
-                    data = tree.GetItemData(node_id)
-                    node_id2,p2 = data.GetId(),data.GetData()
-                    h2 = p2.headString()
-                    assert node_id == node_id2,'expected id: %s, got %s' % (node_id,node_id2)
-                    if p2 == p:
-                        # trace and g.trace('match at:',h,'next:',p.next() and p.next().headString())
-                        self.update_node(node_id,p)
-                        self.expandAndSelect(node_id,p)
-                        # Recursively update.
-                        if p.hasChildren():
-                            child_id,cookie = tree.GetFirstChild(node_id)
-                            self.update_siblings(node_id,child_id,p.firstChild())
-                        node_id = tree.GetNextSibling(node_id)
-                    elif p.hasNext() and p.next() == p2:
-                        # There is a node between p (in the new tree) and p2 (in the old tree).
-                        # Insert this node (before p2), then stay at (node_id == node_id2)
-                        prev_id = tree.GetPrevSibling(node_id)
-                        ins_id = self.insertTreeAfter(parent_id,prev_id,p.copy())
-                        trace and g.trace('at:',h,'insert before:',h2)
-                        trace and g.trace('prev id',id(node_id),'ins id',id(ins_id))
-                        # We will revisit node_id2 when we visit p.next()
-                        # But this is our last chance to visit ins_id.
-                        self.expandAndSelect(ins_id,p)
-                        node_id = tree.GetNextSibling(ins_id)
-                    elif p2.hasNext() and p2.next() == p.next():
-                        # The node p (in the new tree) is p2.next (in the old tree)
-                        # Delete p2 from the tree, and stay at node_id (for a later update)
-                        trace and g.trace('at:',h,'delete',h2)
-                        next_id = tree.GetNextSibling(node_id)
-                        tree.Delete(node_id)
-                        node_id = next_id
-                        self.expandAndSelect(node_id,p)
-                    else:
-                        trace and g.trace('*** mismatch at:',h,'next:',h2)
-                        prev_id = tree.GetPrevSibling(node_id)
-                        tree.Delete(node_id)
-                        ins_id = self.insertTreeAfter(parent_id,prev_id,p.copy())
-                        node_id = tree.GetNextSibling(ins_id)
-                else:
-                    last_p = first_p.copy()
-                    while last_p.hasNext():
-                        last_p.moveToNext()
-                    prev_id = tree.GetLastChild(parent_id)
-                    trace and g.trace('*** insert at end after',last_p.headString())
-                    ins_id = self.insertTreeAfter(parent_id,prev_id,last_p)
-                    self.expandAndSelect(ins_id,p)
-            while node_id.IsOk():
-                trace and g.trace('delete at end')
-                next_id = tree.GetNextSibling(node_id)
-                tree.Delete(node_id)
-                node_id = next_id
-        #@-node:ekr.20070221122544.2:update_siblings
-        #@+node:ekr.20070222083341:expandAndSelect
-        # This should be called after drawing so the +- box is drawn properly.
-        
-        def expandAndSelect (self,node_id,p,force=False):
-            
-            c = self.c ; tree = self.treeCtrl
-        
-            # The calls to tree.Expand and tree.Collapse *will* generate events,
-            # This is the reason the event handlers must be disabled while drawing.
-        
-            if p.isExpanded():  tree.Expand(node_id)
-            else:               tree.Collapse(node_id)
-                
-            # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-            if force:
-                g.trace('force selection',p.headString())
-                c.setCurrentPosition(p)
-                tree.SelectItem(node_id) # Generates call to onTreeChanged.
-            elif p == self.c.currentPosition():
-                # g.trace('selecting',p.headString())
-                tree.SelectItem(node_id) # Generates call to onTreeChanged.
-        #@-node:ekr.20070222083341:expandAndSelect
-        #@-node:ekr.20070221122411:cleverRedraw & helpers
-        #@+node:ekr.20070221122411.1:fullRedraw & helpers
-        def fullRedraw (self):
-        
-            c = self.c ; p = c.rootPosition()
-            tree = self.treeCtrl
-            tree.DeleteAllItems()
-            self.root_id = root_id = tree.AddRoot('Root Node')
-            while p:
-                self.redraw_subtree(root_id,p)
-                p.moveToNext()
-        #@+node:edream.110203113231.300:redraw_subtree
-        def redraw_subtree(self,parent_id,p,trace=False):
-        
-            tree = self.treeCtrl
-            node_id = self.redraw_node(parent_id,p)
-            
-            # Draw the entire tree, regardless of expansion state.
-            child_p = p.firstChild()
-            while child_p:
-                self.redraw_subtree(node_id,child_p)
-                child_p.moveToNext()
-        
-            # The calls to tree.Expand and tree.Collapse *will* generate events,
-            # This is the reason the event handlers must be disabled while drawing.
-            if p.isExpanded():
-                tree.Expand(node_id)
-            else:
-                tree.Collapse(node_id)
-                
-            # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-            if p == self.c.currentPosition():
-                tree.SelectItem(node_id) # Generates call to onTreeChanged.
-        #@-node:edream.110203113231.300:redraw_subtree
-        #@-node:ekr.20070221122411.1:fullRedraw & helpers
         #@+node:ekr.20070308110121:partialRedraw & helpers
         partialRedrawCount = 0
                 
@@ -5918,46 +5708,13 @@ if wx:
             # g.trace('-' * 10,self.partialRedrawCount) ; self.partialRedrawCount += 1
         
             while p:
-                # self.OLDredraw_partial_subtree(root_id,p,createChildren=True)
-                self.NEWredraw_partial_subtree(root_id,p,level=50)
+                self.redraw_partial_subtree(root_id,p,level=50)
                 p.moveToNext()
         #@nonl
-        #@+node:ekr.20070308181029:OLDredraw_partial_subtree
-        def OLDredraw_partial_subtree(self,parent_id,p,createChildren,trace=False):
+        #@+node:ekr.20070310083955:redraw_partial_subtree
+        def redraw_partial_subtree(self,parent_id,p,level,trace=False):
                 
-            tree = self.treeCtrl
-            node_id = self.redraw_node(parent_id,p)
-            # g.trace('createChildren',createChildren,'p',p.headString())
-        
-            if createChildren:
-                # Create one more level of children.
-                child_p = p.firstChild()
-                while child_p:
-                    innerCreateChildren = p.isExpanded() and child_p.hasChildren()
-                    self.OLDredraw_partial_subtree(node_id,child_p,innerCreateChildren)
-                    child_p.moveToNext()
-        
-            # The calls to tree.Expand and tree.Collapse *will* generate events,
-            # This is the reason the event handlers must be disabled while drawing.
-            if createChildren:
-                if p.hasChildren():
-                    if p.isExpanded():
-                        tree.Expand(node_id)
-                    else:
-                        # g.trace('collapsing:',p.headString())
-                        tree.Collapse(node_id)
-            else:
-                flag = g.choose(p.hasChildren(),True,False)
-                tree.SetItemHasChildren(node_id,flag)
-        
-            # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-            if p == self.c.currentPosition():
-                tree.SelectItem(node_id) # Generates call to onTreeChanged.
-        #@-node:ekr.20070308181029:OLDredraw_partial_subtree
-        #@+node:ekr.20070310083955:NEWredraw_partial_subtree
-        def NEWredraw_partial_subtree(self,parent_id,p,level,trace=False):
-                
-            tree = self.treeCtrl
+            c = self.c ; tree = self.treeCtrl
             node_id = self.redraw_node(parent_id,p)
             # g.trace('createChildren',createChildren,'p',p.headString())
         
@@ -5967,7 +5724,7 @@ if wx:
                 while child_p:
                     # Always draw the subtree so the child gets drawn.
                     newLevel = g.choose(child_p.hasChildren(),level-1,0)
-                    self.NEWredraw_partial_subtree(node_id,child_p,level=newLevel)
+                    self.redraw_partial_subtree(node_id,child_p,level=newLevel)
                     child_p.moveToNext()
         
             # The calls to tree.Expand and tree.Collapse *will* generate events,
@@ -5980,38 +5737,12 @@ if wx:
                     tree.Collapse(node_id)
         
             # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-            if p == self.c.currentPosition():
-                tree.SelectItem(node_id) # Generates call to onTreeChanged.
-        #@-node:ekr.20070310083955:NEWredraw_partial_subtree
+            if 0: # This is not always correct.
+                if p == c.currentPosition():
+                    tree.SelectItem(node_id) # Generates call to onTreeChanged.
+        #@-node:ekr.20070310083955:redraw_partial_subtree
         #@-node:ekr.20070308110121:partialRedraw & helpers
         #@-node:edream.110203113231.298:redraw & redraw_now & helpers
-        #@+node:ekr.20070221122411:cleverRedraw & helpers
-        initial_draw = True
-        
-        def cleverRedraw (self):
-            
-            if self.initial_draw:
-                self.initial_draw = False
-                self.fullRedraw()
-            else:
-                c = self.c ; tree = self.treeCtrl
-                root_p = c.rootPosition()
-                root_id = tree.GetRootItem()
-                child_id,cookie = tree.GetFirstChild(root_id)
-                self.update_siblings(root_id,child_id,root_p)
-        #@nonl
-        #@-node:ekr.20070221122411:cleverRedraw & helpers
-        #@+node:ekr.20070221122411.1:fullRedraw & helpers
-        def fullRedraw (self):
-        
-            c = self.c ; p = c.rootPosition()
-            tree = self.treeCtrl
-            tree.DeleteAllItems()
-            self.root_id = root_id = tree.AddRoot('Root Node')
-            while p:
-                self.redraw_subtree(root_id,p)
-                p.moveToNext()
-        #@-node:ekr.20070221122411.1:fullRedraw & helpers
         #@+node:ekr.20061211052926:assignIcon
         def assignIcon (self,p):
             
@@ -6054,6 +5785,32 @@ if wx:
         #@-node:edream.111303202917:Drawing
         #@+node:edream.110203113231.278:Event handlers (wxTree)
         # These event handlers work on both XP and Ubuntu.
+        #@+node:ekr.20070310124831:setSelectedLabelState
+        def setSelectedLabelState (self,p):
+        
+            c = self.c ; tree = self.treeCtrl
+            if not p: return
+            if self.frame.lockout: return
+            
+            # g.trace(p.headString())
+            
+            tree_id = self.idDict.get(p.v)
+            if tree_id and tree_id.IsOk():
+                self.frame.lockout = True
+                try:
+                    tree.SelectItem(tree_id)
+                    # tree.ScrollTo(tree_id)
+                finally:
+                    self.frame.lockout = False
+        #@-node:ekr.20070310124831:setSelectedLabelState
+        #@+node:ekr.20070310122945:forceSelect
+        def forceSelect (self,p):
+            
+            return ###
+        
+           
+        #@nonl
+        #@-node:ekr.20070310122945:forceSelect
         #@+node:ekr.20061127075102:get_p
         def get_p (self,event):
             
@@ -6127,15 +5884,17 @@ if wx:
             if not p: return
         
             # We can make this assertion because get_p has done the check.
-            id = event.GetItem()
-            assert (id.IsOk() and not self.frame.lockout)
+            tree_id = event.GetItem()
+            assert (tree_id.IsOk() and not self.frame.lockout)
         
             # g.trace(p.headString(),g.callers())
             tree = self.treeCtrl
             self.frame.lockout = True
-            tree.SelectItem(id)
-            tree.ScrollTo(id)
-            self.frame.lockout = False
+            try:
+                tree.SelectItem(tree_id)
+                tree.ScrollTo(tree_id)
+            finally:
+                self.frame.lockout = False
         #@-node:ekr.20061127081233:selectHelper
         #@+node:edream.110203113231.280:Collapse...
         def onTreeCollapsing(self,event):
@@ -6358,15 +6117,17 @@ if wx:
             if not p: return
         
             # We can make this assertion because get_p has done the check.
-            id = event.GetItem()
-            assert (id.IsOk() and not self.frame.lockout)
+            tree_id = event.GetItem()
+            assert (tree_id.IsOk() and not self.frame.lockout)
         
             # g.trace(p.headString(),g.callers())
             tree = self.treeCtrl
             self.frame.lockout = True
-            tree.SelectItem(id)
-            tree.ScrollTo(id)
-            self.frame.lockout = False
+            try:
+                tree.SelectItem(tree_id)
+                tree.ScrollTo(tree_id)
+            finally:
+                self.frame.lockout = False
         #@-node:ekr.20061127081233:selectHelper
         #@-node:edream.110203113231.278:Event handlers (wxTree)
         #@+node:ekr.20061118123730.1:onChar
@@ -6483,7 +6244,6 @@ if wx:
         
         # State.
         def setEditLabelState (self,p,selectAll=False):     pass
-        def setSelectedLabelState (self,p):                 pass
         def setUnselectedLabelState (self,p):               pass
         
         # Focus
