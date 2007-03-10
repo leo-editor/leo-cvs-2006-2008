@@ -34,6 +34,7 @@ import leoNodes
 import leoUndo
 
 import os
+import string
 import sys
 import traceback
 
@@ -5661,29 +5662,50 @@ if wx:
                 return
             self.redrawCount += 1
             self.idDict = {}
-            if False and not g.app.unitTesting: g.trace(self.redrawCount)
+            if True and not g.app.unitTesting: g.trace(self.redrawCount)
             
             self.drawing = True # Disable event handlers.
             try:
                 self.expandAllAncestors(c.currentPosition())
-                if False and self.use_paint: # Doesn't eliminate flash.
-                    event = wx.PaintEvent()
-                    event.SetEventObject(tree)
-                    tree.GetEventHandler().ProcessEvent(event)
-                else:
-                    if sys.platform.startswith('win'):
-                        # Dumps core on Ubuntu.
-                        self.partialRedraw()
-                    else:
-                        # cleverRedraw does not draw the tree properly on Ubuntu.
-                        self.fullRedraw()
-                        # self.cleverRedraw()
+                self.partialRedraw() # If this doesn't work the entire project is toast.
+                # if False and self.use_paint: # Doesn't eliminate flash.
+                    # event = wx.PaintEvent()
+                    # event.SetEventObject(tree)
+                    # tree.GetEventHandler().ProcessEvent(event)
+                # else:
+                    # if sys.platform.startswith('win'):
+                        # # Dumps core on Ubuntu.
+                        # self.partialRedraw()
+                    # else:
+                        # # cleverRedraw does not draw the tree properly on Ubuntu.
+                        # self.fullRedraw()
+                        # # self.cleverRedraw()
             finally:
                 self.drawing = False # Enable event handlers.
         
         def redraw_now(self,scroll=True):
             self.redraw()
         #@nonl
+        #@+node:edream.110203113231.299:redraw_node
+        def redraw_node(self,parent_id,p):
+            
+            tree = self.treeCtrl
+            data = wx.TreeItemData(p.copy())
+            image = self.assignIcon(p)
+        
+            node_id = tree.AppendItem(
+                parent_id,
+                text=p.headString(),
+                image=image,
+                #selImage=image,
+                data=data)
+        
+            ### tree.SetItemFont(id,self.defaultFont)
+            
+            self.setEditWidget(p,node_id)
+            assert (p == tree.GetItemData(node_id).GetData())
+            return node_id
+        #@-node:edream.110203113231.299:redraw_node
         #@+node:ekr.20070221122411:cleverRedraw & helpers
         initial_draw = True
         
@@ -5858,26 +5880,6 @@ if wx:
             while p:
                 self.redraw_subtree(root_id,p)
                 p.moveToNext()
-        #@+node:edream.110203113231.299:redraw_node
-        def redraw_node(self,parent_id,p):
-            
-            tree = self.treeCtrl
-            data = wx.TreeItemData(p.copy())
-            image = self.assignIcon(p)
-        
-            node_id = tree.AppendItem(
-                parent_id,
-                text=p.headString(),
-                image=image,
-                #selImage=image,
-                data=data)
-        
-            ### tree.SetItemFont(id,self.defaultFont)
-            
-            self.setEditWidget(p,node_id)
-            assert (p == tree.GetItemData(node_id).GetData())
-            return node_id
-        #@-node:edream.110203113231.299:redraw_node
         #@+node:edream.110203113231.300:redraw_subtree
         def redraw_subtree(self,parent_id,p,trace=False):
         
@@ -5909,19 +5911,19 @@ if wx:
         
             c = self.c ; p = c.rootPosition()
             tree = self.treeCtrl
-            
-            
+        
             tree.DeleteAllItems()
             self.root_id = root_id = tree.AddRoot('Root Node')
             
             # g.trace('-' * 10,self.partialRedrawCount) ; self.partialRedrawCount += 1
         
             while p:
-                self.redraw_partial_subtree(root_id,p,createChildren=True)
+                # self.OLDredraw_partial_subtree(root_id,p,createChildren=True)
+                self.NEWredraw_partial_subtree(root_id,p,level=50)
                 p.moveToNext()
         #@nonl
-        #@+node:ekr.20070308181029:redraw_partial_subtree
-        def redraw_partial_subtree(self,parent_id,p,createChildren,trace=False):
+        #@+node:ekr.20070308181029:OLDredraw_partial_subtree
+        def OLDredraw_partial_subtree(self,parent_id,p,createChildren,trace=False):
                 
             tree = self.treeCtrl
             node_id = self.redraw_node(parent_id,p)
@@ -5932,7 +5934,7 @@ if wx:
                 child_p = p.firstChild()
                 while child_p:
                     innerCreateChildren = p.isExpanded() and child_p.hasChildren()
-                    self.redraw_partial_subtree(node_id,child_p,innerCreateChildren)
+                    self.OLDredraw_partial_subtree(node_id,child_p,innerCreateChildren)
                     child_p.moveToNext()
         
             # The calls to tree.Expand and tree.Collapse *will* generate events,
@@ -5951,7 +5953,36 @@ if wx:
             # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
             if p == self.c.currentPosition():
                 tree.SelectItem(node_id) # Generates call to onTreeChanged.
-        #@-node:ekr.20070308181029:redraw_partial_subtree
+        #@-node:ekr.20070308181029:OLDredraw_partial_subtree
+        #@+node:ekr.20070310083955:NEWredraw_partial_subtree
+        def NEWredraw_partial_subtree(self,parent_id,p,level,trace=False):
+                
+            tree = self.treeCtrl
+            node_id = self.redraw_node(parent_id,p)
+            # g.trace('createChildren',createChildren,'p',p.headString())
+        
+            if level > 0:
+                # Create one more level of children.
+                child_p = p.firstChild()
+                while child_p:
+                    # Always draw the subtree so the child gets drawn.
+                    newLevel = g.choose(child_p.hasChildren(),level-1,0)
+                    self.NEWredraw_partial_subtree(node_id,child_p,level=newLevel)
+                    child_p.moveToNext()
+        
+            # The calls to tree.Expand and tree.Collapse *will* generate events,
+            # This is the reason the event handlers must be disabled while drawing.
+            if level > 0 and p.hasChildren():
+                if p.isExpanded():
+                    tree.Expand(node_id)
+                else:
+                    # g.trace('collapsing:',p.headString())
+                    tree.Collapse(node_id)
+        
+            # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+            if p == self.c.currentPosition():
+                tree.SelectItem(node_id) # Generates call to onTreeChanged.
+        #@-node:ekr.20070310083955:NEWredraw_partial_subtree
         #@-node:ekr.20070308110121:partialRedraw & helpers
         #@-node:edream.110203113231.298:redraw & redraw_now & helpers
         #@+node:ekr.20070221122411:cleverRedraw & helpers
@@ -6054,6 +6085,15 @@ if wx:
         #@nonl
         #@-node:ekr.20061127075102:get_p
         #@+node:ekr.20061118123730.1:onChar
+        if sys.platform.startswith('win'):
+            standardTreeKeys = []
+            for mod in ('Alt+','Alt+Ctrl+','',):
+                for base in ('Right','Left','Up','Down'):
+                    standardTreeKeys.append(mod+base)
+            for key in string.ascii_letters + string.digits + string.punctuation:
+                standardTreeKeys.append(key)
+        else: standardTreeKeys = []
+        
         def onChar (self,event):
             
             if g.app.killed or self.c.frame.killed: return
@@ -6063,9 +6103,11 @@ if wx:
             keyEvent = event.GetKeyEvent()
             keyEvent.leoWidget = self
             keysym = g.app.gui.eventKeysym(keyEvent)
-            if keysym:
+            if keysym in self.standardTreeKeys:
+                pass # g.trace('standard key',keysym)
+            else:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
-        
+                # keyEvent.Skip(False) # Try to kill the default key handling.
         #@-node:ekr.20061118123730.1:onChar
         #@+node:ekr.20070309085343:onHeadlineKey
         # k.handleDefaultChar calls onHeadlineKey.
@@ -6328,6 +6370,15 @@ if wx:
         #@-node:ekr.20061127081233:selectHelper
         #@-node:edream.110203113231.278:Event handlers (wxTree)
         #@+node:ekr.20061118123730.1:onChar
+        if sys.platform.startswith('win'):
+            standardTreeKeys = []
+            for mod in ('Alt+','Alt+Ctrl+','',):
+                for base in ('Right','Left','Up','Down'):
+                    standardTreeKeys.append(mod+base)
+            for key in string.ascii_letters + string.digits + string.punctuation:
+                standardTreeKeys.append(key)
+        else: standardTreeKeys = []
+        
         def onChar (self,event):
             
             if g.app.killed or self.c.frame.killed: return
@@ -6337,9 +6388,11 @@ if wx:
             keyEvent = event.GetKeyEvent()
             keyEvent.leoWidget = self
             keysym = g.app.gui.eventKeysym(keyEvent)
-            if keysym:
+            if keysym in self.standardTreeKeys:
+                pass # g.trace('standard key',keysym)
+            else:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
-        
+                # keyEvent.Skip(False) # Try to kill the default key handling.
         #@-node:ekr.20061118123730.1:onChar
         #@+node:ekr.20050719121701:Selection
         #@+node:ekr.20050719121701.3:editLabel
