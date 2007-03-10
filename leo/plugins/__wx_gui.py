@@ -5670,6 +5670,8 @@ if wx:
                 self.partialRedraw()
             finally:
                 self.drawing = False # Enable event handlers.
+                
+            if True and not g.app.unitTesting: g.trace('done')
         
         def redraw_now(self,scroll=True):
             self.redraw()
@@ -5792,7 +5794,7 @@ if wx:
             if not p: return
             if self.frame.lockout: return
             
-            # g.trace(p.headString())
+            g.trace(p.headString())
             
             tree_id = self.idDict.get(p.v)
             if tree_id and tree_id.IsOk():
