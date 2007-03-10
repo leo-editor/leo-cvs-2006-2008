@@ -2654,10 +2654,10 @@ if wx:
         #@-node:edream.111403104835:getWildcardList
         #@-node:edream.110203113231.321:gui dialogs
         #@+node:ekr.20061116085729:gui events
+        #@+node:ekr.20070309085704:event_generate
         def event_generate(self,w,kind,*args,**keys):
             '''Generate an event.'''
             return w.event_generate(kind,*args,**keys)
-        #@+node:ekr.20070309085704:event_generate
         #@-node:ekr.20070309085704:event_generate
         #@+node:ekr.20061116093228:class leoKeyEvent (wxGui)
         class leoKeyEvent:
@@ -5618,18 +5618,18 @@ if wx:
             self.drawing = True # Disable event handlers.
             try:
                 self.expandAllAncestors(c.currentPosition())
-                if self.use_paint: # Doesn't work.
+                if False and self.use_paint: # Doesn't eliminate flash.
                     event = wx.PaintEvent()
                     event.SetEventObject(tree)
                     tree.GetEventHandler().ProcessEvent(event)
                 else:
                     if sys.platform.startswith('win'):
+                        # Dumps core on Ubuntu.
                         self.partialRedraw()
-                    elif False: ## and self.treeCtrl.IsDoubleBuffered():
-                        # g.trace('tree is double buffered')
-                        self.fullRedraw()
                     else:
-                        self.cleverRedraw()
+                        # cleverRedraw does not draw the tree properly on Ubuntu.
+                        self.fullRedraw()
+                        # self.cleverRedraw()
             finally:
                 self.drawing = False # Enable event handlers.
         
@@ -5974,6 +5974,7 @@ if wx:
         #@-node:ekr.20061211115055:updateVisibleIcons
         #@-node:edream.111303202917:Drawing
         #@+node:edream.110203113231.278:Event handlers (wxTree)
+        # These event handlers work on both XP and Ubuntu.
         #@+node:ekr.20061127075102:get_p
         def get_p (self,event):
             
@@ -6011,14 +6012,14 @@ if wx:
         
             c = self.c
             # Convert from tree event to key event.
-            event = event.GetKeyEvent()
-            event.leoWidget = self
-            keysym = g.app.gui.eventKeysym(event)
+            keyEvent = event.GetKeyEvent()
+            keyEvent.leoWidget = self
+            keysym = g.app.gui.eventKeysym(keyEvent)
             if 0:
-                keycode = event.GetKeyCode()
+                keycode = keyEvent.GetKeyCode()
                 g.trace('tree: keycode %3s keysym %s' % (keycode,keysym))
             if keysym:
-                c.k.masterKeyHandler(event,stroke=keysym)
+                c.k.masterKeyHandler(keyEvent,stroke=keysym)
         
         #@-node:ekr.20061118123730.1:onChar
         #@+node:ekr.20070309085343:onHeadlineKey
@@ -6288,14 +6289,14 @@ if wx:
         
             c = self.c
             # Convert from tree event to key event.
-            event = event.GetKeyEvent()
-            event.leoWidget = self
-            keysym = g.app.gui.eventKeysym(event)
+            keyEvent = event.GetKeyEvent()
+            keyEvent.leoWidget = self
+            keysym = g.app.gui.eventKeysym(keyEvent)
             if 0:
-                keycode = event.GetKeyCode()
+                keycode = keyEvent.GetKeyCode()
                 g.trace('tree: keycode %3s keysym %s' % (keycode,keysym))
             if keysym:
-                c.k.masterKeyHandler(event,stroke=keysym)
+                c.k.masterKeyHandler(keyEvent,stroke=keysym)
         
         #@-node:ekr.20061118123730.1:onChar
         #@+node:ekr.20050719121701:Selection
