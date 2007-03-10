@@ -4259,8 +4259,6 @@ class baseCommands:
         if not p.hasChildren():
             c.treeFocusHelper()
             return
-            
-        g.trace()
     
         c.beginUpdate()
         try:
