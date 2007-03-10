@@ -5549,16 +5549,15 @@ if wx:
                 return
             self.redrawCount += 1
             self.idDict = {}
-            if True and not g.app.unitTesting: g.trace(self.redrawCount,g.callers())
-            
+        
+            # if True and not g.app.unitTesting: g.trace(self.redrawCount,g.callers())
             self.drawing = True # Disable event handlers.
             try:
                 self.expandAllAncestors(c.currentPosition())
                 self.partialRedraw()
             finally:
                 self.drawing = False # Enable event handlers.
-                
-            if True and not g.app.unitTesting: g.trace('done')
+            # if True and not g.app.unitTesting: g.trace('done')
         
         def redraw_now(self,scroll=True):
             self.redraw()
