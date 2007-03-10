@@ -14911,8 +14911,6 @@ def expandNodeAndGoToFirstChild (self,event=None):
     if not p.hasChildren():
         c.treeFocusHelper()
         return
-        
-    g.trace()
 
     c.beginUpdate()
     try:
@@ -15697,8 +15695,6 @@ def expandNodeAndGoToFirstChild (self,event=None):
     if not p.hasChildren():
         c.treeFocusHelper()
         return
-        
-    g.trace()
 
     c.beginUpdate()
     try:
