@@ -5862,6 +5862,7 @@ if wx:
             keyEvent = event.GetKeyEvent()
             keyEvent.leoWidget = self
             keysym = g.app.gui.eventKeysym(keyEvent)
+            g.trace('keysym',keysym)
             if keysym in self.standardTreeKeys:
                 pass # g.trace('standard key',keysym)
             else:
@@ -6151,6 +6152,7 @@ if wx:
             keyEvent = event.GetKeyEvent()
             keyEvent.leoWidget = self
             keysym = g.app.gui.eventKeysym(keyEvent)
+            g.trace('keysym',keysym)
             if keysym in self.standardTreeKeys:
                 pass # g.trace('standard key',keysym)
             else:
