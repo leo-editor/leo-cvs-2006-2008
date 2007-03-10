@@ -4260,6 +4260,8 @@ class baseCommands:
             c.treeFocusHelper()
             return
             
+        g.trace()
+    
         c.beginUpdate()
         try:
             if not p.isExpanded():

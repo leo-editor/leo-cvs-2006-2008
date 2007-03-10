@@ -14912,6 +14912,8 @@ def expandNodeAndGoToFirstChild (self,event=None):
         c.treeFocusHelper()
         return
         
+    g.trace()
+
     c.beginUpdate()
     try:
         if not p.isExpanded():
@@ -15696,6 +15698,8 @@ def expandNodeAndGoToFirstChild (self,event=None):
         c.treeFocusHelper()
         return
         
+    g.trace()
+
     c.beginUpdate()
     try:
         if not p.isExpanded():

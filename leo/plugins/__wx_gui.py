@@ -5794,7 +5794,7 @@ if wx:
             if not p: return
             if self.frame.lockout: return
             
-            g.trace(p.headString())
+            g.trace(p.headString(),g.callers())
             
             tree_id = self.idDict.get(p.v)
             if tree_id and tree_id.IsOk():
@@ -5846,7 +5846,7 @@ if wx:
         #@+node:ekr.20061118123730.1:onChar
         if sys.platform.startswith('win'):
             standardTreeKeys = []
-            for mod in ('Alt+','Alt+Ctrl+','',):
+            for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
                 for base in ('Right','Left','Up','Down'):
                     standardTreeKeys.append(mod+base)
             for key in string.ascii_letters + string.digits + string.punctuation:
@@ -5864,7 +5864,7 @@ if wx:
             keysym = g.app.gui.eventKeysym(keyEvent)
             g.trace('keysym',keysym)
             if keysym in self.standardTreeKeys:
-                pass # g.trace('standard key',keysym)
+                g.trace('standard key',keysym)
             else:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
                 # keyEvent.Skip(False) # Try to kill the default key handling.
@@ -6136,7 +6136,7 @@ if wx:
         #@+node:ekr.20061118123730.1:onChar
         if sys.platform.startswith('win'):
             standardTreeKeys = []
-            for mod in ('Alt+','Alt+Ctrl+','',):
+            for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
                 for base in ('Right','Left','Up','Down'):
                     standardTreeKeys.append(mod+base)
             for key in string.ascii_letters + string.digits + string.punctuation:
@@ -6154,7 +6154,7 @@ if wx:
             keysym = g.app.gui.eventKeysym(keyEvent)
             g.trace('keysym',keysym)
             if keysym in self.standardTreeKeys:
-                pass # g.trace('standard key',keysym)
+                g.trace('standard key',keysym)
             else:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
                 # keyEvent.Skip(False) # Try to kill the default key handling.
