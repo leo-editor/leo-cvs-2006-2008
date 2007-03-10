@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.482260183968">
-	<global_window_position top="118" left="450" height="701" width="782"/>
+<globals body_outline_ratio="0.39405204461">
+	<global_window_position top="110" left="360" height="767" width="847"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -650,7 +650,7 @@
 </v>
 </v>
 <v t="ekr.20050817132814"><vh>rst3</vh>
-<v t="ekr.20050817120850.1" tnodeList="ekr.20050817120850.1,ekr.20050817122915,ekr.20050822123348,ekr.20050817124859,ekr.20050817165745,ekr.20050822172321,ekr.20050817124859.1,ekr.20050817165745.1,ekr.20050818033610,ekr.20050818095347,ekr.20050819055746.1,ekr.20050820112549,ekr.20050822065754,ekr.20050822125824,ekr.20050822172321.1,ekr.20050825101903,ekr.20050818103031,ekr.20050817115636.2,ekr.20050825101321,ekr.20050818103441,ekr.20050817115636.4,ekr.20050817115636.5,ekr.20050817115636.6,ekr.20050820092312,ekr.20050817115636.8,ekr.20050817115636.9,ekr.20050817115636.7,ekr.20050820100547,ekr.20050820101355,ekr.20050820103029,ekr.20050820101522,ekr.20050820101355.1,ekr.20050820094818,ekr.20050820092312.1,ekr.20050817120850.10,ekr.20050817120850.11,ekr.20050818094118.2,ekr.20050818090152,ekr.20050818090152.1,ekr.20050817120850.98,ekr.20050817120850.99,ekr.20050817120850.94,ekr.20050817120850.95,ekr.20050817120850.96,ekr.20050817120850.108,ekr.20050817142135.1,ekr.20050817120850.143,ekr.20050817120850.144,ekr.20050817120850.141,ekr.20050817135706.1,ekr.20050817120850.157,ekr.20050817120850.158,ekr.20050818105023,ekr.20050817120850.15,ekr.20050817120850.12,ekr.20050817120850.14,ekr.20050818081715,ekr.20050819072001,ekr.20050819072001.1,ekr.20050817120850.13,ekr.20050818083045,ekr.20050821153838,ekr.20050818022030,ekr.20050818084920,ekr.20050818130249,ekr.20050818090907,ekr.20050817120850.32,ekr.20050817120850.34,ekr.20050817120850.39,ekr.20050817120850.42,ekr.20050817120850.44,ekr.20050817120850.46,ekr.20050817120850.48,ekr.20050817120850.62,ekr.20050817120850.64,ekr.20050817120850.74,ekr.20050817120850.78,ekr.20050817120850.86,ekr.20050817120850.92,ekr.20050817120850.162,ekr.20050817120850.102,ekr.20050817120850.106,ekr.20050817120850.110,ekr.20050817120850.122,ekr.20050817120850.124,ekr.20050817120850.126,ekr.20050817120850.130,ekr.20050817120850.132,ekr.20050817120850.138,ekr.20050817120850.28,ekr.20050817120850.147,ekr.20050817120850.18,ekr.20050817120850.20,ekr.20050817120850.40,ekr.20050817120850.54,ekr.20050817120850.82,ekr.20050817120850.100,ekr.20050817120850.105,ekr.20050817120850.120,ekr.20050817120850.36,ekr.20050817120850.58,ekr.20050817120850.60,ekr.20050817120850.66,ekr.20050817120850.24,ekr.20050817120850.22,ekr.20050817120850.50,ekr.20050817120850.52,ekr.20050817120850.56,ekr.20050818094118.1,ekr.20050817120850.68,ekr.20050817120850.134,ekr.20050817120850.145,ekr.20050817120850.151,ekr.20050817120850.26,ekr.20050817120850.76,ekr.20050817120850.80,ekr.20050817120850.88,ekr.20050817120850.112,ekr.20050817120850.128,ekr.20050817142135,ekr.20050817120850.153,ekr.20050817120850.155,ekr.20050817120850.30,ekr.20050817135706,ekr.20050817120850.160,ekr.20050818094954,ekr.20050818105023.1,ekr.20050817120850.84,ekr.20050817120850.90,ekr.20050818094954.1,ekr.20050817120850.165,ekr.20050817120850.116,ekr.20050817120850.70,ekr.20050817120850.72,ekr.20050817120850.164,ekr.20050817120850.114,ekr.20050817120850.118,ekr.20050817120850.149,ekr.20050817120850.159,ekr.20050817120850.140"><vh>@file leo_pdf.py</vh>
+<v t="ekr.20050817120850.1" tnodeList="ekr.20050817120850.1,ekr.20050817122915,ekr.20050822123348,ekr.20050817124859,ekr.20050817165745,ekr.20050822172321,ekr.20050817124859.1,ekr.20050817165745.1,ekr.20050818033610,ekr.20050818095347,ekr.20050819055746.1,ekr.20050820112549,ekr.20050822065754,ekr.20050822125824,ekr.20050822172321.1,ekr.20050825101903,ekr.20050818103031,ekr.20050817115636.2,ekr.20050825101321,ekr.20050818103441,ekr.20070305092828,ekr.20050817115636.4,ekr.20050817115636.5,ekr.20050817115636.6,ekr.20050820092312,ekr.20050817115636.8,ekr.20050817115636.9,ekr.20050817115636.7,ekr.20050820100547,ekr.20050820101355,ekr.20050820103029,ekr.20050820101522,ekr.20050820101355.1,ekr.20050820094818,ekr.20050820092312.1,ekr.20050817120850.10,ekr.20050817120850.11,ekr.20050818094118.2,ekr.20050818090152,ekr.20050818090152.1,ekr.20050817120850.98,ekr.20050817120850.99,ekr.20050817120850.94,ekr.20050817120850.95,ekr.20050817120850.96,ekr.20050817120850.108,ekr.20050817142135.1,ekr.20050817120850.143,ekr.20050817120850.144,ekr.20050817120850.141,ekr.20050817135706.1,ekr.20050817120850.157,ekr.20050817120850.158,ekr.20050818105023,ekr.20050817120850.15,ekr.20050817120850.12,ekr.20050817120850.14,ekr.20050818081715,ekr.20050819072001,ekr.20050819072001.1,ekr.20050817120850.13,ekr.20050818083045,ekr.20050821153838,ekr.20050818022030,ekr.20050818084920,ekr.20050818130249,ekr.20050818090907,ekr.20050817120850.32,ekr.20050817120850.34,ekr.20050817120850.39,ekr.20050817120850.42,ekr.20050817120850.44,ekr.20050817120850.46,ekr.20050817120850.48,ekr.20050817120850.62,ekr.20050817120850.64,ekr.20050817120850.74,ekr.20050817120850.78,ekr.20050817120850.86,ekr.20050817120850.92,ekr.20050817120850.162,ekr.20050817120850.102,ekr.20050817120850.106,ekr.20050817120850.110,ekr.20050817120850.122,ekr.20050817120850.124,ekr.20050817120850.126,ekr.20050817120850.130,ekr.20050817120850.132,ekr.20050817120850.138,ekr.20050817120850.28,ekr.20050817120850.147,ekr.20050817120850.18,ekr.20050817120850.20,ekr.20050817120850.40,ekr.20050817120850.54,ekr.20050817120850.82,ekr.20050817120850.100,ekr.20050817120850.105,ekr.20050817120850.120,ekr.20050817120850.36,ekr.20050817120850.58,ekr.20050817120850.60,ekr.20050817120850.66,ekr.20050817120850.24,ekr.20050817120850.22,ekr.20050817120850.50,ekr.20050817120850.52,ekr.20050817120850.56,ekr.20050818094118.1,ekr.20050817120850.68,ekr.20050817120850.134,ekr.20050817120850.145,ekr.20050817120850.151,ekr.20050817120850.26,ekr.20050817120850.76,ekr.20050817120850.80,ekr.20050817120850.88,ekr.20050817120850.112,ekr.20050817120850.128,ekr.20050817142135,ekr.20050817120850.153,ekr.20050817120850.155,ekr.20050817120850.30,ekr.20050817135706,ekr.20050817120850.160,ekr.20050818094954,ekr.20050818105023.1,ekr.20050817120850.84,ekr.20050817120850.90,ekr.20050818094954.1,ekr.20050817120850.165,ekr.20050817120850.116,ekr.20050817120850.70,ekr.20050817120850.72,ekr.20050817120850.164,ekr.20050817120850.114,ekr.20050817120850.118,ekr.20050817120850.149,ekr.20050817120850.159,ekr.20050817120850.140"><vh>@file leo_pdf.py</vh>
 <v t="ekr.20050817122915"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
 <v t="ekr.20050817115636.2"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20050822123348"><vh>&lt;&lt; about this code &gt;&gt;</vh></v>
@@ -672,6 +672,7 @@
 <v t="ekr.20050818103031"><vh>&lt;&lt; to do &gt;&gt;</vh></v>
 <v t="ekr.20050825101321"><vh>init</vh></v>
 <v t="ekr.20050818103441"><vh>class Bunch (object)</vh></v>
+<v t="ekr.20070305092828"><vh>&lt;&lt; define subclasses of docutils classes &gt;&gt;</vh>
 <v t="ekr.20050817115636.4"><vh>class Writer (docutils.writers.Writer)</vh>
 <v t="ekr.20050817115636.5"><vh>&lt;&lt; class Writer declarations &gt;&gt;</vh></v>
 <v t="ekr.20050817115636.6"><vh>__init__ (Writer)</vh></v>
@@ -812,6 +813,7 @@
 </v>
 </v>
 </v>
+</v>
 <v t="ekr.20050805162550"><vh>@thin rst3.py</vh></v>
 </v>
 <v t="ekr.20070119094733.1"><vh>@thin dtest.py</vh></v>
@@ -904,7 +906,7 @@
 <v t="ekr.20070209111155"><vh>wx widget bindings</vh></v>
 </v>
 <v t="ekr.20070209092215"><vh>plainTextWidget (baseTextWidget)</vh>
-<v t="ekr.20070209095222"><vh>plainTextWidget.__init__</vh></v>
+<v t="ekr.20070209095222" a="M"><vh>plainTextWidget.__init__</vh></v>
 <v t="ekr.20070209103124"><vh>bindings (TextCtrl)</vh></v>
 </v>
 <v t="ekr.20070209092215.1"><vh>richTextWidget (baseTextWidget)</vh>
@@ -914,17 +916,20 @@
 <v t="ekr.20070205140140"><vh>stcWidget (baseTextWidget)</vh>
 <v t="ekr.20070205140140.1"><vh>stcWidget.__init__</vh></v>
 <v t="ekr.20070221103456"><vh>initStc</vh></v>
-<v t="ekr.20070210080936" a="M"><vh>bindings (stc)</vh></v>
 <v t="ekr.20070221110435"><vh>onMarginClick &amp; helpers</vh>
 <v t="ekr.20070221111716"><vh>FoldAll</vh></v>
 <v t="ekr.20070221111716.1"><vh>Expand</vh></v>
 </v>
 <v t="ekr.20070209080938.2"><vh>Wrapper methods</vh>
+<v t="ekr.20070210080936" a="M"><vh>bindings (stc)</vh></v>
+<v t="ekr.20070307054602"><vh>Overrides of baseTextWidget methods</vh>
 <v t="ekr.20070209080938.18"><vh>see &amp; seeInsertPoint</vh></v>
+<v t="ekr.20070307054345"><vh>insert</vh></v>
 <v t="ekr.20070209080938.21"><vh>stc.setInsertPoint</vh></v>
 <v t="ekr.20070209080938.22"><vh>stc.setSelectionRange</vh></v>
 <v t="ekr.20070209080938.30"><vh>yview (to do)</vh></v>
 <v t="ekr.20070209080938.31"><vh>xyToGui/PythonIndex (to do)</vh></v>
+</v>
 </v>
 </v>
 </v>
@@ -957,7 +962,8 @@
 <v t="edream.111303163727.3"><vh>setMenuLabel</vh></v>
 </v>
 </v>
-<v t="ekr.20061116085729"><vh>gui events</vh>
+<v t="ekr.20061116085729" a="E"><vh>gui events</vh>
+<v t="ekr.20070309085704"><vh>event_generate</vh></v>
 <v t="ekr.20061116093228"><vh>class leoKeyEvent (wxGui)</vh></v>
 <v t="ekr.20061117204829"><vh>wxKeyDict</vh></v>
 <v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
@@ -968,7 +974,7 @@
 <v t="ekr.20061117155233.1"><vh>eventWidget</vh></v>
 <v t="ekr.20061117155233.2"><vh>eventXY</vh></v>
 </v>
-<v t="ekr.20061118123730.1"><vh>wxTree.onChar</vh></v>
+<v t="ekr.20061118123730.1" a="M"><vh>onChar</vh></v>
 <v t="ekr.20070219134728"><vh>baseTextWidget.onChar</vh></v>
 <v t="ekr.20061118203148"><vh>createAccelLabel</vh></v>
 <v t="ekr.20070209074555.12"><vh>event_generate (baseTextWidget)</vh></v>
@@ -979,30 +985,30 @@
 <v t="edream.110203113231.287"><vh>onTreeEndLabelEdit</vh></v>
 </v>
 <v t="ekr.20050719121701.3"><vh>editLabel</vh></v>
-<v t="ekr.20050719121701.2"><vh>endEditLabel</vh></v>
 <v t="ekr.20070125091308"><vh>setEditWidget</vh></v>
 <v t="ekr.20061211072604"><vh>tree.edit_widget</vh></v>
 </v>
-<v t="ekr.20070221095440"><vh>Eliminate flashing tree pane</vh>
-<v t="edream.111603213219.1"><vh>wxTree.__init__</vh>
-<v t="edream.111603213329"><vh>wxTree.createBindings</vh></v>
-<v t="ekr.20061118142055"><vh>wxTree.createControl</vh></v>
-<v t="ekr.20061211050723"><vh>wxTree.createImageList</vh></v>
-<v t="ekr.20061118122218.1"><vh>setBindings</vh></v>
+<v t="ekr.20070306155205"><vh>Found: assignIcon</vh>
+<v t="ekr.20070222091654"><vh>insert_node</vh></v>
+<v t="ekr.20070221130134"><vh>update_node</vh></v>
+<v t="edream.110203113231.299"><vh>redraw_node</vh></v>
+<v t="ekr.20061211052926"><vh>assignIcon</vh></v>
 </v>
-<v t="ekr.20061127081233"><vh>selectHelper</vh></v>
-<v t="ekr.20070125093538"><vh>tree.setHeadline (new in 4.4b2)</vh></v>
-<v t="edream.110203113231.285"><vh>Editing labels</vh>
-<v t="edream.110203113231.286"><vh>onTreeBeginLabelEdit</vh></v>
-<v t="edream.110203113231.287"><vh>onTreeEndLabelEdit</vh></v>
 </v>
-<v t="edream.111303202917"><vh>Drawing</vh>
-<v t="ekr.20070222042542"><vh>onEraseBackground</vh></v>
-<v t="ekr.20070221170630"><vh>onPaint</vh>
-<v t="edream.110203113231.295"><vh>beginUpdate</vh></v>
-<v t="edream.110203113231.296"><vh>endUpdate</vh></v>
+<v t="ekr.20070309085704.1"><vh>Tree woes</vh>
+<v t="ekr.20061116085729"><vh>gui events</vh>
+<v t="ekr.20070309085704"><vh>event_generate</vh></v>
+<v t="ekr.20061116093228"><vh>class leoKeyEvent (wxGui)</vh></v>
+<v t="ekr.20061117204829"><vh>wxKeyDict</vh></v>
+<v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
+<v t="ekr.20061117203128"><vh>keysymHelper</vh></v>
+<v t="ekr.20061118055443"><vh>getShiftChar</vh></v>
+<v t="ekr.20061118070150"><vh>getUnshiftChar</vh></v>
 </v>
-<v t="edream.110203113231.298"><vh>redraw &amp; redraw_now &amp; helpers</vh></v>
+<v t="ekr.20061117155233.1"><vh>eventWidget</vh></v>
+<v t="ekr.20061117155233.2"><vh>eventXY</vh></v>
+</v>
+<v t="edream.110203113231.298" a="M"><vh>redraw &amp; redraw_now &amp; helpers</vh>
 <v t="ekr.20070221122411"><vh>cleverRedraw &amp; helpers</vh>
 <v t="ekr.20070222092336"><vh>insertTreeAfter</vh></v>
 <v t="ekr.20070222091654"><vh>insert_node</vh></v>
@@ -1014,80 +1020,41 @@
 <v t="edream.110203113231.299"><vh>redraw_node</vh></v>
 <v t="edream.110203113231.300"><vh>redraw_subtree</vh></v>
 </v>
-<v t="ekr.20061211052926"><vh>assignIcon</vh></v>
-<v t="ekr.20061211072604"><vh>tree.edit_widget</vh></v>
-<v t="ekr.20061211115055"><vh>updateVisibleIcons</vh></v>
+<v t="ekr.20070308110121" a="E"><vh>partialRedraw &amp; helpers</vh>
+<v t="ekr.20070308181029"><vh>redraw_partial_subtree</vh></v>
 </v>
 </v>
+<v t="edream.110203113231.278"><vh>Event handlers (wxTree)</vh>
+<v t="ekr.20061127075102" a="M"><vh>get_p</vh></v>
+<v t="ekr.20061118123730.1" a="M"><vh>onChar</vh></v>
+<v t="ekr.20070309085343"><vh>onHeadlineKey</vh></v>
+<v t="edream.110203113231.282"><vh>Clicks</vh>
+<v t="ekr.20061127081233" a="M"><vh>selectHelper</vh></v>
+<v t="edream.110203113231.280" a="M"><vh>Collapse...</vh></v>
+<v t="edream.110203113231.281" a="M"><vh>Expand...</vh></v>
+<v t="edream.110203113231.283" a="M"><vh>Change selection</vh></v>
+<v t="ekr.20061211064516"><vh>onRightDown/Up</vh></v>
 </v>
-<v t="ekr.20070209080938"><vh>Not used</vh>
-<v t="ekr.20070220043034"><vh>Key stuff</vh>
-<v t="ekr.20070219111636"><vh>keyUp/Down (too low-level)</vh></v>
-<v t="ekr.20070218154954"><vh>gOnX</vh></v>
-<v t="ekr.20070219134847"><vh>class-specific onChar handlers: now in base class</vh>
-<v t="ekr.20070219100919"><vh>onChar (leoFrame) (Not used)</vh></v>
-<v t="ekr.20070218155921"><vh>stc.onChar</vh></v>
-<v t="ekr.20070219064235"><vh>richTextWidget.onChar</vh></v>
-<v t="ekr.20070219075351"><vh>plainTextWidget.onChar</vh></v>
+<v t="ekr.20061105114250.1"><vh>Dragging</vh>
+<v t="edream.110203113231.289"><vh>onTreeBeginDrag</vh></v>
+<v t="edream.110203113231.290"><vh>onTreeEndDrag (NOT READY YET)</vh>
+<v t="edream.110203113231.291"><vh>&lt;&lt; Define onTreeEndDrag vars &gt;&gt;</vh></v>
+<v t="edream.110203113231.292"><vh>&lt;&lt; Insert src as the first child of dst &gt;&gt;</vh></v>
+<v t="edream.110203113231.293"><vh>&lt;&lt; Insert src after dst &gt;&gt;</vh></v>
 </v>
 </v>
-<v t="ekr.20070303143804"><vh>From baseTextWidget</vh>
-<v t="ekr.20070209074555.7"><vh>Wrapper methods (widget-independent)</vh>
-<v t="ekr.20070209151217"><vh>appendText</vh></v>
-<v t="ekr.20070209074555.8"><vh>bind</vh></v>
-<v t="ekr.20070209074555.9"><vh>clipboard_clear &amp; clipboard_append</vh></v>
-<v t="ekr.20070209074555.10"><vh>delete</vh></v>
-<v t="ekr.20070209074555.11"><vh>deleteTextSelection</vh></v>
-<v t="ekr.20070209074555.12"><vh>event_generate (baseTextWidget)</vh></v>
-<v t="ekr.20070209074555.13"><vh>flashCharacter (to do)</vh></v>
-<v t="ekr.20070209145308"><vh>getFocus (baseText)</vh></v>
-<v t="ekr.20070209074555.14"><vh>get</vh></v>
-<v t="ekr.20070209074555.15"><vh>getAllText</vh></v>
-<v t="ekr.20070209074555.16"><vh>getInsertPoint (baseText)</vh></v>
-<v t="ekr.20070209074555.17"><vh>getSelectedText</vh></v>
-<v t="ekr.20070209074555.18"><vh>getSelectionRange (baseText)</vh></v>
-<v t="ekr.20070211185536"><vh>getYScrollPosition</vh></v>
-<v t="ekr.20070212204217"><vh>getWidth</vh></v>
-<v t="ekr.20070209074555.19"><vh>hasSelection</vh></v>
-<v t="ekr.20070209074555.20"><vh>insert</vh></v>
-<v t="ekr.20070213104858"><vh>indexIsVisible</vh></v>
-<v t="ekr.20070209074555.22"><vh>replace</vh></v>
-<v t="ekr.20070209151428"><vh>scrollLines</vh></v>
-<v t="ekr.20070209074555.23"><vh>see &amp; seeInsertPoint</vh></v>
-<v t="ekr.20070209074555.24"><vh>selectAllText</vh></v>
-<v t="ekr.20070209074555.25"><vh>setAllText</vh></v>
-<v t="ekr.20070210080034"><vh>setBackgroundColor &amp; SetBackgroundColour</vh></v>
-<v t="ekr.20070209145342"><vh>setFocus (baseText)</vh></v>
-<v t="ekr.20070209074555.26"><vh>setInsertPoint (baseText)</vh></v>
-<v t="ekr.20070209074555.27"><vh>setSelectionRange (baseText)</vh></v>
-<v t="ekr.20070212204242"><vh>setWidth</vh></v>
-<v t="ekr.20070211185611"><vh>setYScrollPosition</vh></v>
-<v t="ekr.20070209080508"><vh>tags (to-do)</vh>
-<v t="ekr.20070209074555.21"><vh>mark_set (to be removed)</vh></v>
-<v t="ekr.20070209074555.28"><vh>tag_add</vh></v>
-<v t="ekr.20070209074555.29"><vh>tag_configure &amp; helper</vh>
-<v t="ekr.20070209074555.30"><vh>tkColorToWxColor</vh></v>
+<v t="edream.110203113231.285"><vh>Editing labels</vh>
+<v t="edream.110203113231.286"><vh>onTreeBeginLabelEdit</vh></v>
+<v t="edream.110203113231.287"><vh>onTreeEndLabelEdit</vh></v>
 </v>
-<v t="ekr.20070209074555.31"><vh>tag_delete (NEW)</vh></v>
-<v t="ekr.20070209074555.32"><vh>tag_names</vh></v>
-<v t="ekr.20070209074555.33"><vh>tag_ranges</vh></v>
-<v t="ekr.20070209074555.34"><vh>tag_remove</vh></v>
-<v t="ekr.20070209074555.35"><vh>yview</vh></v>
+<v t="ekr.20061127081233" a="M"><vh>selectHelper</vh></v>
 </v>
-<v t="ekr.20070209074555.36"><vh>xyToGui/PythonIndex</vh></v>
-</v>
-<v t="ekr.20070209074555.4"><vh>Index conversion (baseTextWidget)</vh>
-<v t="ekr.20070209074555.5"><vh>w.toGuiIndex &amp; toPythonIndex</vh></v>
-<v t="ekr.20070209074555.6"><vh>w.rowColToGuiIndex</vh></v>
-</v>
-<v t="ekr.20070209074555.3"><vh>Do-nothing</vh></v>
-<v t="ekr.20070209150007"><vh>bindings (must be overridden in subclasses)</vh></v>
-</v>
+<v t="ekr.20070309095523"><vh>From wx demo: LogKeyEvent</vh></v>
 </v>
 </v>
 <v t="edream.110203113231.302"
-marks="ekr.20070210080936,"
-expanded="ekr.20070218134908,"><vh>@thin __wx_gui.py</vh></v>
+marks="ekr.20070209095222,ekr.20070210080936,edream.110203113231.298,ekr.20061127075102,ekr.20061118123730.1,ekr.20061127081233,edream.110203113231.280,edream.110203113231.281,edream.110203113231.283,"
+expanded="ekr.20061116085729,ekr.20070308110121,"><vh>@thin __wx_gui.py</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040517075110">"""Script to find and replace all functions in leoGlobals.py."""
@@ -1467,10 +1434,74 @@ File names may be indented as desired.
 
 @color</t>
 <t tx="edream.110203113231.233">@color</t>
+<t tx="edream.110203113231.278"></t>
+<t tx="edream.110203113231.280">def onTreeCollapsing(self,event):
+    
+    '''Handle a pre-collapse event due to a click in the +- box.'''
+
+    p = self.get_p(event)
+    if not p: return
+    
+    # p will be None while redrawing, so this is the outermost click event.
+    # Set the selection before redrawing so the tree is drawn properly.
+    c = self.c ; tree = self.treeCtrl
+    c.beginUpdate()
+    try:
+        c.selectPosition(p)
+        p.contract()
+    finally:
+        c.endUpdate(False)
+
+def onTreeCollapsed(self,event):
+    
+    '''Handle a post-collapse event due to a click in the +- box.'''
+
+    self.selectHelper(event)
+</t>
+<t tx="edream.110203113231.281">def onTreeExpanding (self,event):
+    
+    '''Handle a pre-expand event due to a click in the +- box.'''
+
+    p = self.get_p(event)
+    if not p: return
+    
+    # p will be None while redrawing, so this is the outermost click event.
+    # Set the selection before redrawing so the tree is drawn properly.
+    c = self.c ; tree = self.treeCtrl
+    c.beginUpdate()
+    try:
+        c.selectPosition(p)
+        p.expand()
+    finally:
+        c.endUpdate(False)
+        
+def onTreeExpanded (self,event):
+    
+    '''Handle a post-collapse event due to a click in the +- box.'''
+    
+    self.selectHelper(event)
+</t>
+<t tx="edream.110203113231.282"></t>
+<t tx="edream.110203113231.283">def onTreeSelChanging(self,event):
+    
+    p = self.get_p(event)
+    if not p: return
+    
+    # p will be None while redrawing, so this is the outermost click event.
+    # Set the selection before redrawing so the tree is drawn properly.
+    c = self.c
+    c.beginUpdate()
+    try:
+        c.selectPosition(p)
+    finally:
+        c.endUpdate(False)
+</t>
 <t tx="edream.110203113231.285"></t>
 <t tx="edream.110203113231.286"># Editing is allowed only if this routine exists.
 
 def onTreeBeginLabelEdit(self,event):
+    
+    if g.app.killed or self.c.frame.killed: return
     
     p = self.c.currentPosition()
     
@@ -1480,6 +1511,8 @@ def onTreeBeginLabelEdit(self,event):
 <t tx="edream.110203113231.287"># Editing will be allowed only if this routine exists.
 
 def onTreeEndLabelEdit(self,event):
+
+    if g.app.killed or self.c.frame.killed: return
 
     c = self.c ; tree = self.treeCtrl
     id = event.GetItem()
@@ -1493,29 +1526,96 @@ def onTreeEndLabelEdit(self,event):
     if s and s != h:
         # Call the base-class method.
         self.onHeadChanged (p,undoType='Typing',s=s)</t>
-<t tx="edream.110203113231.295">def beginUpdate (self):
+<t tx="edream.110203113231.289">def onTreeBeginDrag(self,event):
+    
+    if g.app.killed or self.c.frame.killed: return
 
-    self.updateCount += 1</t>
-<t tx="edream.110203113231.296">def endUpdate (self,flag=True,scroll=False):
+    g.trace() ; return
 
-    assert(self.updateCount &gt; 0)
-
-    self.updateCount -= 1
-    if flag and self.updateCount &lt;= 0:
-        self.redraw()
-        if self.updateCount &lt; 0:
-            g.trace("Can't happen: negative updateCount",g.callers())
+    if event.GetItem() != self.treeCtrl.GetRootItem():
+        mDraggedItem = event.GetItem()
+        event.Allow()
 </t>
+<t tx="edream.110203113231.290">def onTreeEndDrag(self,event):
+    
+    if g.app.killed or self.c.frame.killed: return
+    
+    g.trace() ; return
+
+    &lt;&lt; Define onTreeEndDrag vars &gt;&gt;
+    if  src == 0 or dst == 0:  return
+    cookie = None
+    if (
+        # dst is the root
+        not parent.IsOk()or
+        # dst has visible children and dst isn't the first child.
+        self.tree.ItemHasChildren(dst)and self.tree.IsExpanded(dst)and
+        self.tree.GetFirstChild(dst,cookie) != src or
+        # back(src)== dst(would otherwise be a do-nothing)
+        self.tree.GetPrevSibling(src) == dst):
+        &lt;&lt; Insert src as the first child of dst &gt;&gt;
+    else:
+        # Not the root and no visible children.
+        &lt;&lt; Insert src after dst &gt;&gt;
+    self.c.selectVnode(src_v)
+    self.c.setChanged(True)
+</t>
+<t tx="edream.110203113231.291">assert(self.tree)
+assert(self.c)
+
+dst = event.GetItem()
+src = mDraggedItem
+mDraggedItem = 0
+
+if not dst.IsOk() or not src.IsOk():
+    return
+
+src_v = self.tree.GetItemData(src)
+if src_v == None:
+    return
+
+dst_v =self.tree.GetItemData(dst)
+if dst_v == None:
+    return
+
+parent = self.tree.GetParent(dst)
+parent_v = None</t>
+<t tx="edream.110203113231.292"># Make sure the drag will be valid.
+parent_v = self.tree.GetItemData(dst)
+
+if not self.c.checkMoveWithParentWithWarning(src_v,parent_v,True):
+    return
+
+src_v.moveToNthChildOf(dst_v,0)</t>
+<t tx="edream.110203113231.293"># Do nothing if dst is a child of src.
+p = parent
+while p.IsOk():
+    if p == src:
+        return
+    p = self.tree.GetParent(p)
+
+# Do nothing if dst is joined to src.
+if dst_v.isJoinedTo(src_v):
+    return
+
+# Make sure the drag will be valid.
+parent_v = self.tree.GetItemData(parent)
+if not self.c.checkMoveWithParentWithWarning(src_v,parent_v,True):
+    return
+
+src_v.moveAfter(dst_v)</t>
 <t tx="edream.110203113231.298">redrawCount = 0
 
 def redraw (self):
     c = self.c ;  tree = self.treeCtrl
     if c is None: return
     p = c.rootPosition()
-    if not p or self.drawing: return
+    if not p or self.drawing:
+        # g.trace('disabled')
+        return
     self.redrawCount += 1
     self.idDict = {}
-    if not g.app.unitTesting: g.trace(self.redrawCount)
+    if False and not g.app.unitTesting: g.trace(self.redrawCount)
     
     self.drawing = True # Disable event handlers.
     try:
@@ -1525,8 +1625,13 @@ def redraw (self):
             event.SetEventObject(tree)
             tree.GetEventHandler().ProcessEvent(event)
         else:
-            # self.fullRedraw()
-            self.cleverRedraw()
+            if sys.platform.startswith('win'):
+                self.partialRedraw()
+            elif False: ## and self.treeCtrl.IsDoubleBuffered():
+                # g.trace('tree is double buffered')
+                self.fullRedraw()
+            else:
+                self.cleverRedraw()
     finally:
         self.drawing = False # Enable event handlers.
 
@@ -1770,7 +1875,7 @@ Made changes for 4.1 g.app.gui architecture. (More work needed).</t>
 def delete_range (self,menu,n1,n2):
     
     if not menu:
-        g.trace("no menu")
+        # g.trace("no menu")
         return
         
     # g.trace(n1,n2,menu.GetTitle())
@@ -1902,7 +2007,6 @@ def delete_range (self,menu,n1,n2):
         item.SetText(label)
     else:
         g.trace("no item",name,label)</t>
-<t tx="edream.111303202917"></t>
 <t tx="edream.111603104327"></t>
 <t tx="edream.111603112846"></t>
 <t tx="edream.111603112846.1">@ Entries in the table passed to createOpenWithMenuFromTable are
@@ -1952,54 +2056,6 @@ def createOpenWithMenuFromTable (self,table):
             
     # for i in shortcut_table: print i
     self.createMenuItemsFromTable("Open &amp;With...",shortcut_table,openWith=1)
-</t>
-<t tx="edream.111603213219.1">def __init__ (self,frame,parentFrame):
-
-    # Init the base class.
-    leoFrame.leoTree.__init__(self,frame)
-    
-    c = self.c
-    self.canvas = self # A dummy ivar used in c.treeWantsFocus, etc.
-    self.drawing = False # A lockout that prevents event handlers from firing during redraws.
-    self.editWidgetDict = {} # Keys are tnodes, values are leoHeadlineTextWidgets.
-    self.effects = wx.Effects()
-    self.idDict = {} # Keys are vnodes, values are wxTree id's.
-    self.imageList = None
-    self.keyDownModifiers = None
-    self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
-    self.root_id = None
-    self.tree_id = wx.NewId()
-    self.updateCount = 0
-    self.use_paint = False # Paint &amp; background erase events are flakey!
-    
-    self.trace_select = c.config.getBool('trace_select')
-
-    self.treeCtrl = self.createControl(parentFrame)
-    self.createBindings()
-</t>
-<t tx="edream.111603213329">def createBindings (self): # wxLeoTree
-
-    w = self.treeCtrl ; id = self.tree_id
-
-    # wx.EVT_CHAR (w,self.onChar)
-    wx.EVT_TREE_KEY_DOWN(w,id,self.onChar)
-
-    wx.EVT_TREE_SEL_CHANGING    (w,id,self.onTreeSelChanging)
-
-    wx.EVT_TREE_BEGIN_DRAG      (w,id,self.onTreeBeginDrag)
-    wx.EVT_TREE_END_DRAG        (w,id,self.onTreeEndDrag)
- 
-    wx.EVT_TREE_BEGIN_LABEL_EDIT(w,id,self.onTreeBeginLabelEdit)
-    wx.EVT_TREE_END_LABEL_EDIT  (w,id,self.onTreeEndLabelEdit)
-     
-    wx.EVT_TREE_ITEM_COLLAPSED  (w,id,self.onTreeCollapsed)
-    wx.EVT_TREE_ITEM_EXPANDED   (w,id,self.onTreeExpanded)
-    
-    wx.EVT_TREE_ITEM_COLLAPSING (w,id,self.onTreeCollapsing)
-    wx.EVT_TREE_ITEM_EXPANDING  (w,id,self.onTreeExpanding)
-    
-    wx.EVT_RIGHT_DOWN           (w,self.onRightDown)
-    wx.EVT_RIGHT_UP             (w,self.onRightUp)
 </t>
 <t tx="ekr.20040331071919"></t>
 <t tx="ekr.20040331071919.1">@language plain
@@ -7265,20 +7321,11 @@ Todo
 @language python
 
 </t>
-<t tx="ekr.20050719121701.2">def endEditLabel (self):
-
-    '''The end-edit-label command.'''
-    
-    c = self.c ; p = c.currentPosition()
-    
-    w = self.editWidgetDict.get(p.v)
-    if w:
-        s = w.getAllText()
-        p.initHeadString(s)
-   </t>
 <t tx="ekr.20050719121701.3">def editLabel (self,p,selectAll=False):
     
     '''The edit-label command.'''
+    
+    if g.app.killed or self.c.frame.killed: return
     
     c = self.c ; tree_id = self.idDict.get(p.v)
     
@@ -7338,9 +7385,7 @@ try:
     import time
     import types
 except ImportError:
-    pass
-
-
+    docutils = None
 
 </t>
 <t tx="ekr.20050817115636.4">class Writer (docutils.writers.Writer):
@@ -7446,11 +7491,14 @@ output = None
 &lt;&lt; version history &gt;&gt;
 &lt;&lt; to do &gt;&gt;
 
-__version__ = '0.4'
+__version__ = '0.5'
 __docformat__ = 'reStructuredText'
 &lt;&lt; imports &gt;&gt;
 
-@others</t>
+@others
+
+if docutils:
+    &lt;&lt; define subclasses of docutils classes &gt;&gt;</t>
 <t tx="ekr.20050817120850.10">class PDFTranslator (docutils.nodes.NodeVisitor):
 
 	@others
@@ -8375,7 +8423,12 @@ def depart_paragraph(self, node):
         self.putTail(b.start)</t>
 <t tx="ekr.20050817142135.1"></t>
 <t tx="ekr.20050817165745">@nocolor
-@others</t>
+@others
+
+@
+0.5 EKR: Define subclasses of docutils classes only if docutils can be imported.
+         This supresses errors during unit tests.
+</t>
 <t tx="ekr.20050817165745.1">@
 
 - Removed '\r' characters in Writer.translate.
@@ -11305,6 +11358,7 @@ if not ok:
 <t tx="ekr.20061023141638"></t>
 <t tx="ekr.20061023142737"></t>
 <t tx="ekr.20061023142737.1"></t>
+<t tx="ekr.20061105114250.1"></t>
 <t tx="ekr.20061106062514">def bind (self,bind_shortcut,callback):
     
     g.trace(bind_shortcut,callback)
@@ -11365,10 +11419,13 @@ def eventKeysym (self,event):
     elif isinstance(event,self.leoKeyEvent): # a leoKeyEvent.
         return event.widget 
     elif isinstance(event,g.Bunch): # A manufactured event.
+        if hasattr(event,'widget'):
+            return event.widget
         if hasattr(event,'c'):
             return event.c.frame.body.bodyCtrl
         else:
-            g.trace('k.generalModeHandler event: no event widget')
+            g.trace('wx gui: k.generalModeHandler event: no event widget: event = %s' % (
+                event),g.callers())
             return None
     elif hasattr(event,'GetEventObject'): # A wx Event.
         return event.GetEventObject()
@@ -11631,14 +11688,9 @@ WXK_SPECIAL20</t>
         '+': '='
     }
     return d.get(char,char)</t>
-<t tx="ekr.20061118122218.1">def setBindings(self):
-    
-    pass # g.trace('wxLeoTree: to do')
-
-def bind(self,*args,**keys):
-    
-    pass # g.trace('wxLeoTree',args,keys)</t>
 <t tx="ekr.20061118123730.1">def onChar (self,event):
+    
+    if g.app.killed or self.c.frame.killed: return
 
     c = self.c
     # Convert from tree event to key event.
@@ -11651,11 +11703,6 @@ def bind(self,*args,**keys):
     if keysym:
         c.k.masterKeyHandler(event,stroke=keysym)
 
-# k.handleDefaultChar calls onHeadlineKey.
-def onHeadlineKey (self,event):
-    # g.trace(event)
-    if event and event.keysym:
-        self.updateHead(event,event.widget)
 </t>
 <t tx="ekr.20061118142055">def createControl (self,parentFrame):
     
@@ -11739,6 +11786,33 @@ def onHeadlineKey (self,event):
     aList.append(data)
     d [menu] = aList
 </t>
+<t tx="ekr.20061127075102">def get_p (self,event):
+    
+    '''Return the position associated with an event.
+    Return None if the app or the frame has been killed.'''
+    
+    # Almost all event handlers call this method,
+    # so this is a good place to make sure we still exist.
+    if g.app.killed or self.c.frame.killed:
+        # g.trace('killed')
+        return None
+    tree = self.treeCtrl
+    id = event.GetItem()
+    p = id.IsOk() and tree.GetItemData(id).GetData()
+    
+    if 0:
+        g.trace(
+            'lockout',self.frame.lockout,
+            'drawing',self.drawing,
+            'id.IsOk',id.IsOk(),
+            'p',p and p.headString(),
+            g.callers(9))
+        
+    if self.frame.lockout or self.drawing or not p:
+        return None
+    else:
+        # g.trace(p.headString(),g.callers())
+        return p</t>
 <t tx="ekr.20061127081233">def selectHelper (self,event):
     
     '''Scroll so the presently selected node is in view.'''
@@ -11757,33 +11831,30 @@ def onHeadlineKey (self,event):
     tree.ScrollTo(id)
     self.frame.lockout = False
 </t>
-<t tx="ekr.20061211050723">def createImageList (self): # wxTree.
-
-    self.imageList = imageList = wx.ImageList(21,11)
-    theDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','Icons'))
-    
-    for i in xrange(16):
-        
-        # Get the original bitmap.
-        fileName = g.os_path_join(theDir,'box%02d.bmp' % i)
-        bitmap = wx.Bitmap(fileName,type=wx.BITMAP_TYPE_BMP)
-        
-        # Create a larger bitmap.
-        image = wx.ImageFromBitmap(bitmap)
-        # image.SetMask(False)
-        image.Resize(size=(21,11),pos=(0,0),)
-        bitmap = wx.BitmapFromImage(image)
-        
-        # And add the new bitmap to the list.
-        imageList.Add(bitmap)
-
-    return imageList
-</t>
 <t tx="ekr.20061211052926">def assignIcon (self,p):
     
     val = p.v.computeIcon()
     assert(0 &lt;= val &lt;= 15)
+    p.v.iconVal = val
     return val
+</t>
+<t tx="ekr.20061211064516">def onRightDown (self,event):
+    
+    if g.app.killed or self.c.frame.killed: return
+    tree = self.treeCtrl
+    pt = event.GetPosition()
+    item, flags = tree.HitTest(pt)
+    if item:
+        tree.SelectItem(item)
+
+def onRightUp (self,event):
+    
+    if g.app.killed or self.c.frame.killed: return
+    tree = self.treeCtrl
+    pt = event.GetPosition()
+    item, flags = tree.HitTest(pt)
+    if item:
+        tree.EditLabel(item)
 </t>
 <t tx="ekr.20061211072604">def edit_widget (self,p):
     
@@ -11792,27 +11863,6 @@ def onHeadlineKey (self,event):
     w = self.editWidgetDict.get(p.v)
     
     return w
-</t>
-<t tx="ekr.20061211115055">def updateVisibleIcons (self,p):
-
-    '''Update all visible icons joined to p.'''
-    
-    for p in self.c.rootPosition().self_and_siblings_iter():
-        self.updateIconsInSubtree(p)
-
-def updateIconsInSubtree (self,p):
-    self.updateIcon(p)
-    if p.hasChildren() and p.isExpanded():
-        for child in p.firstChild().self_and_siblings_iter():
-            self.updateIconsInSubtree(child)
-            
-def updateIcon(self,p):
-    val = p.v.computeIcon()
-    id = self.idDict.get(p.v)
-    if id:
-        self.treeCtrl.SetItemImage(id,val)
-    else:
-        g.trace('can not happen: no id',p.headString())
 </t>
 <t tx="ekr.20061211122107.2">def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
 
@@ -11878,6 +11928,8 @@ def init (self,id):
     self.sel = 0,0</t>
 <t tx="ekr.20070125091308">def setEditWidget (self,p,tree_id):
     
+    if g.app.killed or self.c.frame.killed: return
+    
     # g.trace('id',id(tree_id),'v',id(p.v),'p',p.headString(),self.c.shortFileName(),'idDict',id(self.idDict))
     
     w = self.editWidgetDict.get(p.v)
@@ -11891,19 +11943,6 @@ def init (self,id):
         self.editWidgetDict[p.v] = w
 
     p.edit_widget = w
-</t>
-<t tx="ekr.20070125093538">def setHeadline (self,p,s):
-    
-    '''Set the actual text of the headline widget.
-    
-    This is called from the undo/redo logic to change the text before redrawing.'''
-    
-    w = self.c.edit_widget(p)
-    if w:
-        w.setAllText(s)
-        self.revertHeadline = s
-    else:
-        g.trace('-'*20,'oops')
 </t>
 <t tx="ekr.20070125124900">@
 Accelerators are NOT SHOWN when the user opens the menu with the mouse!
@@ -11933,12 +11972,12 @@ if 0:
 <t tx="ekr.20070205140140.1">def __init__ (self,c,parent,*args,**keys):
 
     self.c = c
-    self.widget = w = wx.stc.StyledTextCtrl(parent,*args,**keys)
+    self.widget = w = stc.StyledTextCtrl(parent,*args,**keys)
     
     w.CmdKeyClearAll() # Essential so backspace is handled properly.
     wx.EVT_CHAR (w,self.onChar)
     # wx.EVT_STC_MARGINCLICK(w,self.onMarginClick)
-    w.Bind(wx.stc.EVT_STC_MARGINCLICK, self.onMarginClick)
+    w.Bind(stc.EVT_STC_MARGINCLICK, self.onMarginClick)
     
     # Init the base class.
     name = keys.get('name') or '&lt;unknown stcWidget&gt;'
@@ -11981,78 +12020,6 @@ def __repr__(self):
 def GetName(self):
     return self.name
 </t>
-<t tx="ekr.20070209074555.3">def update (self,*args,**keys):             pass
-def update_idletasks (self,*args,**keys):   pass
-</t>
-<t tx="ekr.20070209074555.4"></t>
-<t tx="ekr.20070209074555.5">def toPythonIndex (self,index):
-    
-    w = self
-
-    if type(index) == type(99):
-        return index
-    elif index == '1.0':
-        return 0
-    elif index == 'end':
-        return w._getLastPosition()
-    else:
-        s = w._getAllText()
-        row,col = index.split('.')
-        row,col = int(row),int(col)
-        i = g.convertRowColToPythonIndex(s,row-1,col)
-        # g.trace(index,row,col,i,g.callers(6))
-        return i
-
-toGuiIndex = toPythonIndex
-</t>
-<t tx="ekr.20070209074555.6"># This method is called only from the colorizer.
-# It provides a huge speedup over naive code.
-
-def rowColToGuiIndex (self,s,row,col):
-
-    return g.convertRowColToPythonIndex(s,row,col)    
-</t>
-<t tx="ekr.20070209074555.7"># These methods are widget-independent because they call the corresponding _xxx methods.
-if 0: #### now defined in leoFrame.baseTextWidget.
-    @others</t>
-<t tx="ekr.20070209074555.8">def bind (self,kind,*args,**keys):
-    
-    w = self
-    
-    pass # g.trace('wxLeoText',kind,args[0].__name__)</t>
-<t tx="ekr.20070209074555.9">def clipboard_clear (self):
-    
-    g.app.gui.replaceClipboardWith('')
-
-def clipboard_append(self,s):
-    
-    s1 = g.app.gui.getTextFromClipboard()
-
-    g.app.gui.replaceClipboardWith(s1 + s)
-</t>
-<t tx="ekr.20070209074555.10">def delete(self,i,j=None):
-
-    w = self
-    i = w.toPythonIndex(i)
-    if j is None: j = i+ 1
-    j = w.toPythonIndex(j)
-
-    # g.trace(i,j,len(s),repr(s[:20]))
-    s = w.getAllText()
-    w.setAllText(s[:i] + s[j:])
-</t>
-<t tx="ekr.20070209074555.11">def deleteTextSelection (self):
-    
-    w = self
-    i,j = w._getSelectionRange()
-    if i == j: return
-    
-    s = w._getAllText()
-    s = s[i:] + s[j:]
-
-    # g.trace(len(s),repr(s[:20]))
-    w._setAllText(s)
-</t>
 <t tx="ekr.20070209074555.12">def event_generate(self,stroke):
     
     w = self ; c = self.c
@@ -12073,266 +12040,9 @@ def clipboard_append(self,s):
     event = eventGenerateEvent(c,w,'',stroke)
     c.k.masterKeyHandler(event,stroke=stroke)
     </t>
-<t tx="ekr.20070209074555.13">def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
-
-    w = self
-    
-    return ###
-
-    def addFlashCallback(w,count,index):
-        # g.trace(count,index)
-        i,j = w.toPythonIndex(index),w.toPythonIndex(index+1)
-        Tk.Text.tag_add(w,'flash',i,j)
-        Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
-    
-    def removeFlashCallback(w,count,index):
-        # g.trace(count,index)
-        Tk.Text.tag_remove(w,'flash','1.0','end')
-        if count &gt; 0:
-            Tk.Text.after(w,delay,addFlashCallback,w,count,index)
-
-    try:
-        Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
-        addFlashCallback(w,flashes,i)
-    except Exception:
-        pass ; g.es_exception()</t>
-<t tx="ekr.20070209074555.14">def get(self,i,j=None):
-
-    w = self
-
-    i = w.toPythonIndex(i)
-    if j is None: j = i+ 1
-    j = w.toPythonIndex(j)
-    
-    s = w._get(i,j)
-    return g.toUnicode(s,g.app.tkEncoding)
-</t>
-<t tx="ekr.20070209074555.15">def getAllText (self):
-    
-    w = self
-
-    s = w._getAllText()
-    return g.toUnicode(s,g.app.tkEncoding)
-</t>
-<t tx="ekr.20070209074555.16">def getInsertPoint(self):
-    
-    w = self
-    i = w._getInsertPoint()
-    #g.trace(self,'baseWidget: get',i,'virtual',w.virtualInsertPoint)
-    
-    if i is None:
-        if w.virtualInsertPoint is None:
-            i = 0
-        else:
-            i = w.virtualInsertPoint
-    
-    w.virtualInsertPoint = i
-    return i
-</t>
-<t tx="ekr.20070209074555.17">def getSelectedText (self):
-
-    w = self
-    s = w._getSelectedText()
-    return g.toUnicode(s,g.app.tkEncoding)
-</t>
-<t tx="ekr.20070209074555.18">def getSelectionRange (self,sort=True):
-    
-    """Return a tuple representing the selected range of the widget.
-    
-    Return a tuple giving the insertion point if no range of text is selected."""
-
-    w = self
-
-    sel = w._getSelectionRange() # wx.richtext.RichTextCtrl returns (-1,-1) on no selection.
-    if len(sel) == 2 and sel[0] &gt;= 0 and sel[1] &gt;= 0:
-        #g.trace(self,'baseWidget: sel',repr(sel),g.callers(6))
-        i,j = sel
-        if sort and i &gt; j: i,j = j,i
-        return sel
-    else:
-        # Return the insertion point if there is no selected text.
-        i =  w._getInsertPoint()
-        #g.trace(self,'baseWidget: i',i,g.callers(6))
-        return i,i
-</t>
-<t tx="ekr.20070209074555.19">def hasSelection (self):
-    
-    w = self
-    i,j = w.getSelectionRange()
-    return i != j
-</t>
-<t tx="ekr.20070209074555.20"># The signature is more restrictive than the Tk.Text.insert method.
-
-def insert(self,i,s):
-    
-    w = self
-    i = w.toPythonIndex(i)
-    # w._setInsertPoint(i)
-    w._insertText(i,s)
-</t>
-<t tx="ekr.20070209074555.21">def mark_set(self,markName,i):
-
-    w = self
-    i = self.toPythonIndex(i)
-    
-    ### Tk.Text.mark_set(w,markName,i)
-</t>
-<t tx="ekr.20070209074555.22">def replace (self,i,j,s):
-
-    w = self
-    w.delete(i,j)
-    w.insert(i,s)
-</t>
-<t tx="ekr.20070209074555.23">def see(self,index):
-
-    w = self
-    i = self.toPythonIndex(index)
-    w._see(i)
-
-def seeInsertPoint(self):
-    
-    w = self
-    i = w._getInsertPoint()
-    w._see(i)
-</t>
-<t tx="ekr.20070209074555.24">def selectAllText (self,insert=None):
-    
-    '''Select all text of the widget.'''
-    
-    w = self
-    w.setSelectionRange(0,'end',insert=insert)
-</t>
-<t tx="ekr.20070209074555.25">def setAllText (self,s):
-
-    w = self
-    w._setAllText(s)</t>
-<t tx="ekr.20070209074555.26">def setInsertPoint (self,pos):
-
-    w = self
-    w.virtualInsertPoint = i = w.toPythonIndex(pos)
-    # g.trace(self,i)
-    w._setInsertPoint(i)
-</t>
-<t tx="ekr.20070209074555.27">def setSelectionRange (self,i,j,insert=None):
-    
-    w = self
-    i1, j1, insert1 = i,j,insert
-    i,j = w.toPythonIndex(i),w.toPythonIndex(j)
-    if insert is not None: insert = w.toPythonIndex(insert)
-
-    # g.trace(self,'baseWidget',repr(i1),'=',repr(i),repr(j1),'=',repr(j),repr(insert1),'=',repr(insert),g.callers(4))
-
-    if i == j:
-        w.virtualInsertPoint = ins = g.choose(insert is None,i,insert)
-        w._setInsertPoint(ins)
-    else:
-        if insert is not None: self.virtualInsertPoint = insert
-        w._setSelectionRange(i,j)
-</t>
-<t tx="ekr.20070209074555.28"># The signature is slightly different than the Tk.Text.insert method.
-
-def tag_add(self,tagName,i,j=None,*args):
-    
-    w = self
-    i = self.toPythonIndex(i)
-    if j is None: j = i + 1
-    j = self.toPythonIndex(j)
-    
-    return ###
-
-    if not hasattr(w,'leo_styles'):
-        w.leo_styles = {}
-
-    style = w.leo_styles.get(tagName)
-
-    if style is not None:
-        # g.trace(i,j,tagName)
-        w.textBaseClass.SetStyle(w,i,j,style)</t>
-<t tx="ekr.20070209074555.29">def tag_configure (self,colorName,**keys):
-    
-    # g.trace(colorName,keys)
-    
-    return ##### 
-    
-    w = self
-    foreground = keys.get("foreground")
-    background = keys.get("background")
-
-    fcolor = self.tkColorToWxColor (foreground) or wx.BLACK
-    bcolor = self.tkColorToWxColor (background) or wx.WHITE
-    # g.trace('%20s %10s %15s %10s %15s' % (colorName,foreground,fcolor,background,bcolor))
-    style = wx.TextAttr(fcolor,bcolor,font=w.defaultFont)
-    
-    if not hasattr(w,'leo_styles'):
-        w.leo_styles={}
-
-    if style is not None:
-        # g.trace(colorName,style)
-        w.leo_styles[colorName] = style
-        
-tag_config = tag_configure</t>
-<t tx="ekr.20070209074555.30">def tkColorToWxColor (self, color):
-    
-    d = {
-        'black':        wx.BLACK,
-        "red":          wx.RED,
-        "blue":         wx.BLUE,
-        "#00aa00":      wx.GREEN,
-        "firebrick3":   wx.RED,
-        'white':        wx.WHITE,
-    }
-        
-    return d.get(color)</t>
-<t tx="ekr.20070209074555.31">def tag_delete (self,tagName,*args,**keys):
-    
-    pass # g.trace(tagName,args,keys)</t>
-<t tx="ekr.20070209074555.32">def tag_names (self, *args):
-    
-    return []
-</t>
-<t tx="ekr.20070209074555.33">def tag_ranges(self,tagName):
-    
-    return tuple() ###
-    
-    w = self
-    aList = Tk.Text.tag_ranges(w,tagName)
-    aList = [w.toPythonIndex(z) for z in aList]
-    return tuple(aList)
-</t>
-<t tx="ekr.20070209074555.34">def tag_remove(self,tagName,i,j=None,*args):
-    
-    w = self
-    i = self.toPythonIndex(i)
-    if j is None: j = i + 1
-    j = self.toPythonIndex(j)
-    
-    return ### Not ready yet.
-
-    if not hasattr(w,'leo_styles'):
-        w.leo_styles = {}
-
-    style = w.leo_styles.get(tagName)
-
-    if style is not None:
-        # g.trace(i,j,tagName)
-        w.textBaseClass.SetStyle(w,i,j,style)</t>
-<t tx="ekr.20070209074555.35">def yview (self,*args):
-    
-    '''w.yview('moveto',y) or w.yview()'''
-
-    return 0,0</t>
-<t tx="ekr.20070209074555.36">def xyToPythonIndex (self,x,y):
-    
-    w = self
-    pos = wx.Point(x.y)
-    data = w._hitTest(pos)
-    return data
-</t>
 <t tx="ekr.20070209074655">&lt;&lt; baseTextWidget class &gt;&gt;
 
 @others</t>
-<t tx="ekr.20070209080508"></t>
-<t tx="ekr.20070209080938"></t>
 <t tx="ekr.20070209080938.2"></t>
 <t tx="ekr.20070209080938.18">def see(self,index):
 
@@ -12361,13 +12071,17 @@ def seeInsertPoint(self):
 </t>
 <t tx="ekr.20070209080938.22">def setSelectionRange (self,i,j,insert=None):
     
+    __pychecker__ = '--no-argsused' #  insert not used.
+    
     w = self ; i1,j1,insert1=i,j,insert
     i = w.toGuiIndex(i)
     j = w.toGuiIndex(j)
+    
     if insert is not None:
-        insert = w.toGuiIndex(insert)
-        w.widget
-        w.virtualInsertPoint = insert
+        ins = w.toGuiIndex(insert)
+        w.virtualInsertPoint = ins
+    else:
+        w.virtualInsertPoint = None
     
     # g.trace(self,'stc',i1,j1,'=',i,j,g.callers(4))
 
@@ -12391,7 +12105,7 @@ def seeInsertPoint(self):
     w = self
     pos = wx.Point(x,y)
 
-    data = wx.stc.StyledTextCtrl.HitTest(w.widget,pos)
+    data = stc.StyledTextCtrl.HitTest(w.widget,pos)
     # g.trace('data',data)
     
     return 0 ### Non-zero value may loop.
@@ -12436,8 +12150,7 @@ def seeInsertPoint(self):
     if keys.get('name'): del keys['name']
     
     # Create the actual gui widget.
-    self.widget = wx.richtext.RichTextCtrl(parent,*args,**keys)
-    # g.trace('\n'.join(dir(wx.richtext.RichTextCtrl)))
+    self.widget = richtext.RichTextCtrl(parent,*args,**keys)
     
     wx.EVT_CHAR (w.widget,self.onChar)
 
@@ -12526,57 +12239,11 @@ def _setSelectionRange(self,i,j):
     self.sel = i,j
     if i == j: self.ins = i
 </t>
-<t tx="ekr.20070209145308">def getFocus (self):
-    
-    w = self
-    w2 = w._getFocus()
-    # g.trace('w',w,'focus',w2)
-    return w2
-    
-findFocus = getFocus
-</t>
-<t tx="ekr.20070209145342">def setFocus (self):
-    
-    w = self
-    # g.trace('baseText')
-    return w._setFocus()
-    
-SetFocus = setFocus
-</t>
-<t tx="ekr.20070209150007"># def _appendText(self,s):            self.oops()
-# def _get(self,i,j):                 self.oops()
-# def _getAllText(self):              self.oops()
-# def _getFocus(self):                self.oops()
-# def _getInsertPoint(self):          self.oops()
-# def _getLastPosition(self):         self.oops()
-# def _getSelectedText(self):         self.oops()
-# def _getSelectionRange(self):       self.oops()
-# def _hitTest(self,pos):             self.oops()
-# def _insertText(self,i,s):          self.oops()
-# def _scrollLines(self,n):           self.oops()
-# def _see(self,i):                   self.oops()
-# def _setAllText(self,s):            self.oops()
-# def _setBackgroundColor(self,color): self.oops()
-# def _setFocus(self):                self.oops()
-# def _setInsertPoint(self,i):        self.oops()
-# def _setSelectionRange(self,i,j):   self.oops()
-
-# _findFocus = _getFocus
-</t>
 <t tx="ekr.20070209150246">def oops (self):
 
     print('wxGui baseTextWidget oops:',self,g.callers(),
         'must be overridden in subclass')
 </t>
-<t tx="ekr.20070209151217">def appendText (self,s):
-    
-    w = self
-    w._appendText(s)
-</t>
-<t tx="ekr.20070209151428">def scrollLines (self,n):
-    
-    w = self
-    w._scrollLines(n)</t>
 <t tx="ekr.20070209152234">def _appendText(self,s):            return self.widget.AppendText(s)
 def _get(self,i,j):                 return self.widget.GetRange(i,j)
 def _getAllText(self):              return self.widget.GetValue()
@@ -12595,18 +12262,6 @@ def _setFocus(self):                return self.widget.SetFocus()
 def _setInsertPoint(self,i):        return self.widget.SetInsertionPoint(i)
 def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
 </t>
-<t tx="ekr.20070210080034">def setBackgroundColor (self,color):
-    
-    w = self
-    
-    # Translate tk colors to wx colors.
-    d = { 'lightgrey': 'light grey', 'lightblue': 'leo blue',}
-    
-    color = d.get(color,color)
-    
-    return w._setBackgroundColor(color)
-    
-SetBackgroundColour = setBackgroundColor</t>
 <t tx="ekr.20070210080936"># Specify the names of widget-specific methods.
 # These particular names are the names of wx.TextCtrl methods.
 
@@ -12620,7 +12275,7 @@ def _getSelectedText(self):         return self.widget.GetSelectedText()
 def _getYScrollPosition(self):      return 0,0 # Could also return None.
 def _getSelectionRange(self):       return self.widget.GetSelection()
 def _hitTest(self,pos):             return self.widget.HitTest(pos)
-def _insertText(self,i,s):          return self.widget.InsertText(i,s)
+#def _insertText(self,i,s):          return self.widget.InsertText(i,s)
 def _scrollLines(self,n):           return self.widget.ScrollToLine(n)
 def _see(self,i):                   g.trace('oops',i) # Should not be called.
 def _setAllText(self,s):            return self.widget.SetText(s) 
@@ -12630,36 +12285,6 @@ def _setInsertPoint(self,i):        g.trace('oops',i) # Should not be called.
 def _setSelectionRange(self,i,j):   g.trace('oops',i,j) # Should not be called.
 def _setYScrollPosition(self,i):    pass
 </t>
-<t tx="ekr.20070211185536">def getYScrollPosition (self):
-
-     w = self
-     return w._getYScrollPosition()
-</t>
-<t tx="ekr.20070211185611">def setYScrollPosition (self,i):
-
-     w = self
-     w._setYScrollPosition(i)</t>
-<t tx="ekr.20070212204217">def getWidth (self):
-    
-    '''Return the width of the widget.
-    This is only called for headline widgets,
-    and gui's may choose not to do anything here.'''
-    
-    w = self
-    return 0
-</t>
-<t tx="ekr.20070212204242">def setWidth (self,width):
-    
-    '''Set the width of the widget.
-    This is only called for headline widgets,
-    and gui's may choose not to do anything here.'''
-    
-    w = self
-    pass
-</t>
-<t tx="ekr.20070213104858">def indexIsVisible (self,i):
-    
-    return False # Code will loop if this returns True forever.</t>
 <t tx="ekr.20070214102445">@nocolor
 
 Simplify new redraw logic:
@@ -12705,161 +12330,6 @@ Later:
 <t tx="ekr.20070218120743">top.SetAcceleratorTable(wx.NullAcceleratorTable)
 
 </t>
-<t tx="ekr.20070218154954">gKeyDownMods = None
-gKeyCount = 0
-
-# The focus can shift between key up and key down, so we use these global functions.
-
-def gOnKeyDown (event):
-    global gKeyDownMods
-    keycode = event.GetKeyCode()
-    gKeyDownMods = event.GetModifiers()
-    # if keycode == wx.WXK_ALT:   event.Skip() # Do default processing.
-    # else:                       pass # Suppress wx event handling.
-    
-def gOnKeyUp (event,leoWidget):
-    global gKeyCount,gKeyDownMods
-    c = leoWidget.c
-    keycode = event.GetKeyCode()
-    if keycode == wx.WXK_ALT:
-        g.trace('do default')
-        event.Skip() # Do default processing.
-    else:
-        gKeyCount += 1
-        event.keyDownModifiers = gKeyDownMods
-        event.leoWidget = leoWidget
-        keysym = g.app.gui.eventKeysym(event)
-        g.trace('count',gKeyCount,'mods',gKeyDownMods,'keycode',keycode,'keysym',keysym)
-        if keysym:
-            c.k.masterKeyHandler(event,stroke=keysym)
-    gKeyDownMods = None
-
-def gOnChar (event,leoWidget):
-    
-    c = leoWidget.c
-    keycode = event.GetKeyCode()
-    event.leoWidget = leoWidget
-    keysym = g.app.gui.eventKeysym(event)
-    g.trace('widget',leoWidget,'keycode',keycode,'keysym',keysym)
-    if keysym:
-        c.k.masterKeyHandler(event,stroke=keysym)
-    # else:
-        # event.Skip()
-</t>
-<t tx="ekr.20070218155921">def onChar (self,event):
-    
-    c = self.c
-    keycode = event.GetKeyCode()
-    if keycode == wx.WXK_ALT:
-        # g.trace('do default')
-        event.Skip() # Do default processing.
-    else:
-        event.leoWidget = self
-        keysym = g.app.gui.eventKeysym(event)
-        g.trace('stc','keycode',keycode,'keysym',keysym)
-        if keysym:
-            c.k.masterKeyHandler(event,stroke=keysym)</t>
-<t tx="ekr.20070219064235">def onChar (self,event):
-
-    c = self.c
-    keycode = event.GetKeyCode()
-    if keycode == wx.WXK_ALT:
-        # g.trace('do default')
-        event.Skip() # Do default processing.
-    else:
-        event.leoWidget = self
-        keysym = g.app.gui.eventKeysym(event)
-        g.trace('rtc','keycode',keycode,'keysym',keysym)
-        if keysym:
-            c.k.masterKeyHandler(event,stroke=keysym)
-</t>
-<t tx="ekr.20070219075351">def onChar (self,event):
-
-    c = self.c
-    keycode = event.GetKeyCode()
-    if keycode == wx.WXK_ALT:
-        # g.trace('do default')
-        event.Skip() # Do default processing.
-    else:
-        event.leoWidget = self
-        keysym = g.app.gui.eventKeysym(event)
-        g.trace('plain w: ',event.GetEventObject(),'keycode',keycode,'keysym',keysym)
-        if keysym:
-            c.k.masterKeyHandler(event,stroke=keysym)
-</t>
-<t tx="ekr.20070219100919">def onKeyDown (event):
-    g.trace('top')
-    event.Skip()
-    return ###
-    
-    global gKeyDownMods
-    keycode = event.GetKeyCode()
-    gKeyDownMods = event.GetModifiers()
-    # if keycode == wx.WXK_ALT:   event.Skip() # Do default processing.
-    # else:                       pass # Suppress wx event handling.
-    
-def onKeyUp (event,leoWidget):
-    g.trace('top')
-    event.Skip()
-    return ###
-
-    global gKeyCount,gKeyDownMods
-    c = leoWidget.c
-    keycode = event.GetKeyCode()
-    if keycode == wx.WXK_ALT:
-        g.trace('do default')
-        event.Skip() # Do default processing.
-    else:
-        gKeyCount += 1
-        event.keyDownModifiers = gKeyDownMods
-        event.leoWidget = leoWidget
-        keysym = g.app.gui.eventKeysym(event)
-        g.trace('count',gKeyCount,'mods',gKeyDownMods,'keycode',keycode,'keysym',keysym)
-        if keysym:
-            c.k.masterKeyHandler(event,stroke=keysym)
-    gKeyDownMods = None
-
-def onChar (event,leoWidget):
-    
-    g.trace('top')
-    event.Skip()
-    return ###
-    
-    c = leoWidget.c
-    keycode = event.GetKeyCode()
-    event.leoWidget = leoWidget
-    keysym = g.app.gui.eventKeysym(event)
-    g.trace('widget',leoWidget,'keycode',keycode,'keysym',keysym)
-    if keysym:
-        c.k.masterKeyHandler(event,stroke=keysym)
-    # else:
-        # event.Skip()
-</t>
-<t tx="ekr.20070219111636">def onKeyDown (self,event):
-    
-    global gKeyDownMods
-    keycode = event.GetKeyCode()
-    gKeyDownMods = event.GetModifiers()
-    # g.trace('stc','keycode',keycode)
-    if keycode == wx.WXK_ALT:
-        g.trace('stc do default')
-        event.Skip() # Do default processing *only* for alt keys.
-
-def onKeyUp (self,event):
-    global gKeyCount,gKeyDownMods
-    c = self.c
-    keycode = event.GetKeyCode()
-    if keycode == wx.WXK_ALT:
-        # g.trace('do default')
-        event.Skip() # Do default processing.
-    else:
-        gKeyCount += 1
-        event.keyDownModifiers = gKeyDownMods
-        event.leoWidget = self
-        keysym = g.app.gui.eventKeysym(event)
-        # g.trace('stc mods',gKeyDownMods,'keycode',keycode,'keysym',keysym)
-        if keysym:
-            c.k.masterKeyHandler(event,stroke=keysym</t>
 <t tx="ekr.20070219134728"># Don't even think of using key up/down events.
 # They don't work reliably and don't support auto-repeat.
 
@@ -12872,8 +12342,6 @@ def onChar (self, event):
     #g.trace('text: keycode %3s keysym %s' % (keycode,keysym))
     if keysym:
         c.k.masterKeyHandler(event,stroke=keysym)</t>
-<t tx="ekr.20070219134847"></t>
-<t tx="ekr.20070220043034"></t>
 <t tx="ekr.20070221045130">def getMenu (self,name):
     
     # Get the actual menu from the base class.
@@ -12890,7 +12358,6 @@ def onChar (self, event):
 
         
     return menu</t>
-<t tx="ekr.20070221095440"></t>
 <t tx="ekr.20070221103456"># Code copied from wxPython demo.
 
 def initStc (self):
@@ -12898,7 +12365,7 @@ def initStc (self):
     w = self.widget
     use_fold = True
     
-    w.SetLexer(wx.stc.STC_LEX_PYTHON)
+    w.SetLexer(stc.STC_LEX_PYTHON)
     w.SetKeyWords(0, " ".join(keyword.kwlist))
 
     # Enable folding
@@ -12912,7 +12379,7 @@ def initStc (self):
     w.SetMargins(2,2)
 
     # Set up the numbers in the margin for margin #1
-    w.SetMarginType(1, wx.stc.STC_MARGIN_NUMBER)
+    w.SetMarginType(1, stc.STC_MARGIN_NUMBER)
     # Reasonable value for, say, 4-5 digits using a mono font (40 pix)
     w.SetMarginWidth(1, 40)
 
@@ -12929,7 +12396,7 @@ def initStc (self):
     # EOL: Since we are loading/saving ourselves, and the
     # strings will always have \n's in them, set the STC to
     # edit them that way.            
-    w.SetEOLMode(wx.stc.STC_EOL_LF)
+    w.SetEOLMode(stc.STC_EOL_LF)
     w.SetViewEOL(False)
     
     # No right-edge mode indicator
@@ -12937,31 +12404,31 @@ def initStc (self):
 
     # Setup a margin to hold fold markers
     if use_fold:
-        w.SetMarginType(2, wx.stc.STC_MARGIN_SYMBOL)
-        w.SetMarginMask(2, wx.stc.STC_MASK_FOLDERS)
+        w.SetMarginType(2, stc.STC_MARGIN_SYMBOL)
+        w.SetMarginMask(2, stc.STC_MASK_FOLDERS)
         w.SetMarginSensitive(2, True)
         w.SetMarginWidth(2, 12)
 
         # and now set up the fold markers
-        w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEREND,     wx.stc.STC_MARK_BOXPLUSCONNECTED,  "white", "black")
-        w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEROPENMID, wx.stc.STC_MARK_BOXMINUSCONNECTED, "white", "black")
-        w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERMIDTAIL, wx.stc.STC_MARK_TCORNER,  "white", "black")
-        w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERTAIL,    wx.stc.STC_MARK_LCORNER,  "white", "black")
-        w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDERSUB,     wx.stc.STC_MARK_VLINE,    "white", "black")
-        w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDER,        wx.stc.STC_MARK_BOXPLUS,  "white", "black")
-        w.MarkerDefine(wx.stc.STC_MARKNUM_FOLDEROPEN,    wx.stc.STC_MARK_BOXMINUS, "white", "black")
+        w.MarkerDefine(stc.STC_MARKNUM_FOLDEREND,     stc.STC_MARK_BOXPLUSCONNECTED,  "white", "black")
+        w.MarkerDefine(stc.STC_MARKNUM_FOLDEROPENMID, stc.STC_MARK_BOXMINUSCONNECTED, "white", "black")
+        w.MarkerDefine(stc.STC_MARKNUM_FOLDERMIDTAIL, stc.STC_MARK_TCORNER,  "white", "black")
+        w.MarkerDefine(stc.STC_MARKNUM_FOLDERTAIL,    stc.STC_MARK_LCORNER,  "white", "black")
+        w.MarkerDefine(stc.STC_MARKNUM_FOLDERSUB,     stc.STC_MARK_VLINE,    "white", "black")
+        w.MarkerDefine(stc.STC_MARKNUM_FOLDER,        stc.STC_MARK_BOXPLUS,  "white", "black")
+        w.MarkerDefine(stc.STC_MARKNUM_FOLDEROPEN,    stc.STC_MARK_BOXMINUS, "white", "black")
 
     # Global default style
     if wx.Platform == '__WXMSW__':
-        w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+        w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
                           'fore:#000000,back:#FFFFFF,face:Courier New,size:9')
     elif wx.Platform == '__WXMAC__':
         # TODO: if this looks fine on Linux too, remove the Mac-specific case 
         # and use this whenever OS != MSW.
-        w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+        w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
                           'fore:#000000,back:#FFFFFF,face:Courier')
     else:
-        w.StyleSetSpec(wx.stc.STC_STYLE_DEFAULT, 
+        w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
                           'fore:#000000,back:#FFFFFF,face:Courier,size:9')
 
     # Clear styles and revert to default.
@@ -12971,38 +12438,38 @@ def initStc (self):
     # The rest remains unchanged.
 
     # Line numbers in margin
-    w.StyleSetSpec(wx.stc.STC_STYLE_LINENUMBER,'fore:#000000,back:#99A9C2')    
+    w.StyleSetSpec(stc.STC_STYLE_LINENUMBER,'fore:#000000,back:#99A9C2')    
     # Highlighted brace
-    w.StyleSetSpec(wx.stc.STC_STYLE_BRACELIGHT,'fore:#00009D,back:#FFFF00')
+    w.StyleSetSpec(stc.STC_STYLE_BRACELIGHT,'fore:#00009D,back:#FFFF00')
     # Unmatched brace
-    w.StyleSetSpec(wx.stc.STC_STYLE_BRACEBAD,'fore:#00009D,back:#FF0000')
+    w.StyleSetSpec(stc.STC_STYLE_BRACEBAD,'fore:#00009D,back:#FF0000')
     # Indentation guide
-    w.StyleSetSpec(wx.stc.STC_STYLE_INDENTGUIDE, "fore:#CDCDCD")
+    w.StyleSetSpec(stc.STC_STYLE_INDENTGUIDE, "fore:#CDCDCD")
 
     # Python styles
-    w.StyleSetSpec(wx.stc.STC_P_DEFAULT, 'fore:#000000')
+    w.StyleSetSpec(stc.STC_P_DEFAULT, 'fore:#000000')
     # Comments
-    w.StyleSetSpec(wx.stc.STC_P_COMMENTLINE,  'fore:#008000,back:#F0FFF0')
-    w.StyleSetSpec(wx.stc.STC_P_COMMENTBLOCK, 'fore:#008000,back:#F0FFF0')
+    w.StyleSetSpec(stc.STC_P_COMMENTLINE,  'fore:#008000,back:#F0FFF0')
+    w.StyleSetSpec(stc.STC_P_COMMENTBLOCK, 'fore:#008000,back:#F0FFF0')
     # Numbers
-    w.StyleSetSpec(wx.stc.STC_P_NUMBER, 'fore:#008080')
+    w.StyleSetSpec(stc.STC_P_NUMBER, 'fore:#008080')
     # Strings and characters
-    w.StyleSetSpec(wx.stc.STC_P_STRING, 'fore:#800080')
-    w.StyleSetSpec(wx.stc.STC_P_CHARACTER, 'fore:#800080')
+    w.StyleSetSpec(stc.STC_P_STRING, 'fore:#800080')
+    w.StyleSetSpec(stc.STC_P_CHARACTER, 'fore:#800080')
     # Keywords
-    w.StyleSetSpec(wx.stc.STC_P_WORD, 'fore:#000080,bold')
+    w.StyleSetSpec(stc.STC_P_WORD, 'fore:#000080,bold')
     # Triple quotes
-    w.StyleSetSpec(wx.stc.STC_P_TRIPLE, 'fore:#800080,back:#FFFFEA')
-    w.StyleSetSpec(wx.stc.STC_P_TRIPLEDOUBLE, 'fore:#800080,back:#FFFFEA')
+    w.StyleSetSpec(stc.STC_P_TRIPLE, 'fore:#800080,back:#FFFFEA')
+    w.StyleSetSpec(stc.STC_P_TRIPLEDOUBLE, 'fore:#800080,back:#FFFFEA')
     # Class names
-    w.StyleSetSpec(wx.stc.STC_P_CLASSNAME, 'fore:#0000FF,bold')
+    w.StyleSetSpec(stc.STC_P_CLASSNAME, 'fore:#0000FF,bold')
     # Function names
-    w.StyleSetSpec(wx.stc.STC_P_DEFNAME, 'fore:#008080,bold')
+    w.StyleSetSpec(stc.STC_P_DEFNAME, 'fore:#008080,bold')
     # Operators
-    w.StyleSetSpec(wx.stc.STC_P_OPERATOR, 'fore:#800000,bold')
+    w.StyleSetSpec(stc.STC_P_OPERATOR, 'fore:#800000,bold')
     # Identifiers. I leave this as not bold because everything seems
     # to be an identifier if it doesn't match the above criterae
-    w.StyleSetSpec(wx.stc.STC_P_IDENTIFIER, 'fore:#000000')
+    w.StyleSetSpec(stc.STC_P_IDENTIFIER, 'fore:#000000')
 
     # Caret color
     w.SetCaretForeground("BLUE")
@@ -13014,8 +12481,10 @@ def initStc (self):
 </t>
 <t tx="ekr.20070221110435">def onMarginClick(self, evt):
     
+    if g.app.killed or self.c.frame.killed: return
+    
     self = w = self.widget
-    stc = wx.stc
+
     # fold and unfold as needed
     if evt.GetMargin() == 2:
         if evt.GetShift() and evt.GetControl():
@@ -13205,53 +12674,6 @@ def cleverRedraw (self):
     assert (p == tree.GetItemData(node_id).GetData())
     return node_id
 </t>
-<t tx="ekr.20070221170630">paintCount = 0
-paintLockout = False
-
-def onPaint (self,event):
-    
-    c = self.c
-    if self.paintLockout:
-        return # This does reduce some flash.
-    self.paintLockout = True # Disable this method until the next call to redraw.
-    
-    self.paintCount += 1
-    # g.trace(self.paintCount,g.callers())
-    
-    try:
-        dc = wx.PaintDC(self.treeCtrl) # Required, even if not used.
-        dc.DestroyClippingRegion()
-        dc.Clear()
-        c.beginUpdate()
-        try:
-            self.fullRedraw()
-        finally:
-            c.endUpdate(False)
-    finally:
-        self.paintLockout = False
-    event.Skip()
-</t>
-<t tx="ekr.20070222042542">backgroundEraseCount = 0
-
-def onEraseBackground (self,event):
-    
-    if 0: # Alas, this doesn't quite work.
-        if self.paintLockout:
-            return
-    # g.trace(self.backgroundEraseCount,g.callers())
-    self.backgroundEraseCount += 1
-    
-    if 0:
-        tree = self.treeCtrl
-        dc = event.GetDC() or wx.ClientDC(tree)
-        sz = tree.GetClientSize()
-        color = wx.Color(253,245,230) # for some reason, 'leo yellow' doesn't work here.
-        brush = wx.Brush(color,wx.SOLID)
-        dc.SetBrush(brush)
-        dc.Clear()
-    elif 1:
-       event.Skip() # Causes flash.
-</t>
 <t tx="ekr.20070222083341"># This should be called after drawing so the +- box is drawn properly.
 
 def expandAndSelect (self,node_id,p,force=False):
@@ -13334,7 +12756,121 @@ yield control, you can use a technique known as 'cooperative multithreading with
 generators'. It gives you the total speed, more or less, of a single thread, but
 *you* choose where the context switches occur, for the cost of a bit of extra
 complication.</t>
-<t tx="ekr.20070303143804"></t>
+<t tx="ekr.20070305092828">@others</t>
+<t tx="ekr.20070306155205"></t>
+<t tx="ekr.20070307054345">def insert(self,i,s):
+    
+    '''Override the baseTextWidget insert method.
+    This is a workaround of an apparent stc problem.'''
+
+    w = self
+    i = w.toPythonIndex(i)
+    
+    s2 = w.getAllText()
+    w.setAllText(s2[:i] + s + s2[i:])
+    # w.setInsertPoint(i+len(s))
+</t>
+<t tx="ekr.20070307054602"></t>
+<t tx="ekr.20070308110121">partialRedrawCount = 0
+        
+def partialRedraw (self):
+
+    c = self.c ; p = c.rootPosition()
+    tree = self.treeCtrl
+    
+    
+    tree.DeleteAllItems()
+    self.root_id = root_id = tree.AddRoot('Root Node')
+    
+    # g.trace('-' * 10,self.partialRedrawCount) ; self.partialRedrawCount += 1
+
+    while p:
+        self.redraw_partial_subtree(root_id,p,createChildren=True)
+        p.moveToNext()</t>
+<t tx="ekr.20070308181029">def redraw_partial_subtree(self,parent_id,p,createChildren,trace=False):
+        
+    tree = self.treeCtrl
+    node_id = self.redraw_node(parent_id,p)
+    # g.trace('createChildren',createChildren,'p',p.headString())
+
+    if createChildren:
+        # Create one more level of children.
+        child_p = p.firstChild()
+        while child_p:
+            innerCreateChildren = p.isExpanded() and child_p.hasChildren()
+            self.redraw_partial_subtree(node_id,child_p,innerCreateChildren)
+            child_p.moveToNext()
+
+    # The calls to tree.Expand and tree.Collapse *will* generate events,
+    # This is the reason the event handlers must be disabled while drawing.
+    if createChildren:
+        if p.hasChildren():
+            if p.isExpanded():
+                tree.Expand(node_id)
+            else:
+                # g.trace('collapsing:',p.headString())
+                tree.Collapse(node_id)
+    else:
+        flag = g.choose(p.hasChildren(),True,False)
+        tree.SetItemHasChildren(node_id,flag)
+
+    # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+    if p == self.c.currentPosition():
+        tree.SelectItem(node_id) # Generates call to onTreeChanged.
+</t>
+<t tx="ekr.20070309085343"># k.handleDefaultChar calls onHeadlineKey.
+def onHeadlineKey (self,event):
+    # g.trace(event)
+    if g.app.killed or self.c.frame.killed: return
+    if event and event.keysym:
+        self.updateHead(event,event.widget)
+</t>
+<t tx="ekr.20070309085704"></t>
+<t tx="ekr.20070309085704.1"></t>
+<t tx="ekr.20070309095523">def LogKeyEvent(self, evType, evt):
+    keycode = evt.GetKeyCode()
+    keyname = keyMap.get(keycode, None)
+    if keyname is None:
+        if "unicode" in wx.PlatformInfo:
+            keycode = evt.GetUnicodeKey()
+            if keycode &lt;= 127:
+                keycode = evt.GetKeyCode()
+            keyname = "\"" + unichr(evt.GetUnicodeKey()) + "\""
+            if keycode &lt; 27:
+                keyname = "Ctrl-%s" % chr(ord('A') + keycode-1)
+            
+        elif keycode &lt; 256:
+            if keycode == 0:
+                keyname = "NUL"
+            elif keycode &lt; 27:
+                keyname = "Ctrl-%s" % chr(ord('A') + keycode-1)
+            else:
+                keyname = "\"%s\"" % chr(keycode)
+        else:
+            keyname = "unknown (%s)" % keycode
+
+    modifiers = ""
+    for mod, ch in [(evt.ControlDown(), 'C'),
+                    (evt.AltDown(),     'A'),
+                    (evt.ShiftDown(),   'S'),
+                    (evt.MetaDown(),    'M')]:
+        if mod:
+            modifiers += ch
+        else:
+            modifiers += '-'
+
+    # id = self.InsertStringItem(self.GetItemCount(), evType)
+    # self.SetStringItem(id, 1, keyname)
+    # self.SetStringItem(id, 2, str(keycode))
+    # self.SetStringItem(id, 3, modifiers)
+    # self.SetStringItem(id, 4, str(evt.GetUnicodeKey()))
+    # self.SetStringItem(id, 5, str(evt.GetRawKeyCode()))
+    # self.SetStringItem(id, 6, str(evt.GetRawKeyFlags()))
+
+    # #print ( id, evType, keyname, str(keycode), modifiers, str(evt.GetRawKeyCode()), str(evt.GetRawKeyFlags()))
+
+    # self.EnsureVisible(id)
+</t>
 <t tx="rogererens.20041014110709">@
 
 How about other plugins that create a status line? Should I test whether the status line is already created?
