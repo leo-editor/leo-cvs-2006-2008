@@ -5739,7 +5739,7 @@ if wx:
                     tree.Collapse(node_id)
         
             # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
-            if 0: # This is not always correct.
+            if 1: # May be changed later, but useful here.
                 if p == c.currentPosition():
                     tree.SelectItem(node_id) # Generates call to onTreeChanged.
         #@-node:ekr.20070310083955:redraw_partial_subtree
