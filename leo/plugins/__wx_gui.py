@@ -2877,6 +2877,8 @@ if wx:
                 (event.MetaDown(),    'Meta+'),
             ):
                 if mod:
+                    # Note: this must be Key- (not Key+) to match the corresponding Tk hack.
+                    if prefix == 'Alt+' and keyname.isdigit(): keyname = 'Key-' + keyname
                     if keyname.find('Ctrl+') == -1:
                         modifiers += prefix
                     special = True
