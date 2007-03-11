@@ -18,6 +18,34 @@ __version__ = '0.6'
 #@nonl
 #@-node:ekr.20050719111045:<< version history >>
 #@nl
+#@<< bug list & to-do >>
+#@+node:ekr.20070311064633:<< bug list & to-do >>
+#@@nocolor
+#@+at
+# 
+# First:
+# - Control-` does not clone a node (the clone node command does work).
+# - Test autocompletion.
+# * Undo does not work, and crashes unit tests in Linux.
+# - Don't redraw the entire screen to add/remove text box in the icon.
+# - Add color to Log pane text.
+# 
+# Bug list: (All unit tests pass on XP, 4 failures & 2 errors on Linux).
+# 
+# * Multiple body editors do not work, and crash unit tests in Linux.
+# - Completion tab is too small (XP only).
+# - The Spell tab functional is empty, and aspell is not imported properly.
+# 
+# Later:
+# 
+# - Change background of the tree pane when it has focus.
+# - Convert Tk color names to rgb values.
+# - Convert Tk font names to wx font names?
+# - Support user-colorizer in the stc.
+#@-at
+#@nonl
+#@-node:ekr.20070311064633:<< bug list & to-do >>
+#@nl
 #@<< imports >>
 #@+node:edream.110203113231.303:<< imports >>
 import leoGlobals as g
@@ -1336,7 +1364,7 @@ if wx:
             keycode = event.GetKeyCode()
             event.leoWidget = self
             keysym = g.app.gui.eventKeysym(event)
-            #g.trace('text: keycode %3s keysym %s' % (keycode,keysym))
+            # if keysym: g.trace('base text: keysym:',repr(keysym))
             if keysym:
                 c.k.masterKeyHandler(event,stroke=keysym)
         #@nonl
@@ -1559,28 +1587,20 @@ if wx:
             self.widget = w = stc.StyledTextCtrl(parent,*args,**keys)
             
             w.CmdKeyClearAll() # Essential so backspace is handled properly.
-            wx.EVT_CHAR (w,self.onChar)
-            # wx.EVT_STC_MARGINCLICK(w,self.onMarginClick)
+        
+            # w.Bind(wx.EVT_KEY_DOWN, self.onChar)
+            wx.EVT_KEY_DOWN(w,self.onChar)
             w.Bind(stc.EVT_STC_MARGINCLICK, self.onMarginClick)
+            
+            if 0: # Disable undo so the widget doesn't gobble undo.
+                w.SetUndoCollection(False)
+                w.EmptyUndoBuffer()
             
             # Init the base class.
             name = keys.get('name') or '<unknown stcWidget>'
             baseTextWidget.__init__(self,c,baseClassName='stcWidget',name=name,widget=w)
             
-            if 1:
-                self.initStc()
-            else: # old code
-                w.StyleClearAll()
-                
-                self.font = font = wx.Font(
-                    pointSize=10,
-                    family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
-                    style  = wx.FONTSTYLE_NORMAL,
-                    weight = wx.FONTWEIGHT_NORMAL,)
-            
-                # Setting this font (rather than the size) clears the indentation guides.
-                w.StyleSetFont(0,font)
-        #@nonl
+            self.initStc()
         #@-node:ekr.20070205140140.1:stcWidget.__init__
         #@+node:ekr.20070221103456:initStc
         # Code copied from wxPython demo.
@@ -1594,8 +1614,7 @@ if wx:
             w.SetKeyWords(0, " ".join(keyword.kwlist))
         
             # Enable folding
-            if use_fold:
-                w.SetProperty("fold", "1" ) 
+            if use_fold: w.SetProperty("fold", "1" ) 
         
             # Highlight tab/space mixing (shouldn't be any)
             w.SetProperty("tab.timmy.whinge.level", "1")
@@ -1646,15 +1665,15 @@ if wx:
             # Global default style
             if wx.Platform == '__WXMSW__':
                 w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
-                                  'fore:#000000,back:#FFFFFF,face:Courier New,size:9')
+                    'fore:#000000,back:#FFFFFF,face:Courier New,size:9')
             elif wx.Platform == '__WXMAC__':
                 # TODO: if this looks fine on Linux too, remove the Mac-specific case 
                 # and use this whenever OS != MSW.
                 w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
-                                  'fore:#000000,back:#FFFFFF,face:Courier')
+                    'fore:#000000,back:#FFFFFF,face:Courier')
             else:
                 w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 
-                                  'fore:#000000,back:#FFFFFF,face:Courier,size:9')
+                    'fore:#000000,back:#FFFFFF,face:Courier,size:9')
         
             # Clear styles and revert to default.
             w.StyleClearAll()
@@ -2840,55 +2859,82 @@ if wx:
             else:
                 return self.keysymHelper2(event,kind='keysym')
         #@+node:ekr.20070310064845:keysymHelper2
-        # Modified from LogKeyEvent in wxPython demo.
+        # Modified from LogKeyEvent in wxPython demo: marked by EKR.
         
         def keysymHelper2(self,event,kind):
+        
             keycode = event.GetKeyCode()
             if keycode in (wx.WXK_SHIFT,wx.WXK_ALT,wx.WXK_CONTROL):
+                return '' # EKR.
+        
+            keyname = g.app.gui.wxKeyDict.get(keycode) # EKR: was keyMap
+            
+            mods = event.GetModifiers()
+            alt = event.AltDown()     or mods == wx.MOD_ALT
+            cmd = event.CmdDown()     or mods == wx.MOD_CMD
+            ctrl = event.ControlDown()or mods == wx.MOD_CONTROL
+            meta = event.MetaDown()   or mods == wx.MOD_META
+            shift = event.ShiftDown() or mods == wx.MOD_SHIFT
+            special = alt or cmd or ctrl or meta
+            if special and kind == 'char':
+                # EKR: return '' as the char for all special keys.
                 return ''
-            keyname = g.app.gui.wxKeyDict.get(keycode) # was keyMap
-            special = False
+        
             if keyname is None:
                 if "unicode" in wx.PlatformInfo:
                     keycode = event.GetUnicodeKey()
                     if keycode <= 127:
                         keycode = event.GetKeyCode()
                     keyname = unichr(event.GetUnicodeKey())
+                    # g.trace('shift',shift,'keycode',repr(keycode),'keyname',repr(keyname))
                     if keycode < 27:
-                        # keyname = "Ctrl+%s" % chr(ord('A') + keycode-1)
-                        keyname = "Ctrl+%s" % chr(ord('a') + keycode-1)
-                        special = True
+                        # EKR: Follow Tk conventions.
+                        if shift:
+                            keyname = chr(ord('A') + keycode-1) # Return Ctrl+Z
+                        else:
+                            keyname = chr(ord('a') + keycode-1) # Return Ctrl+z
+                        shift = False ; ctrl = True ; special = True
+                    else: # EKR
+                        if len(keyname) == 1 and not special:
+                            if shift:
+                                keyname = keyname.upper()
+                            else:
+                                keyname = keyname.lower()
                 elif keycode < 256:
                     if keycode == 0:
                         keyname = "NUL" # dubious.
                     elif keycode < 27:
-                        # keyname = "Ctrl+%s" % chr(ord('A') + keycode-1)
-                        keyname = "Ctrl+%s" % chr(ord('a') + keycode-1)
-                        special = True
+                        # EKR: Follow Tk conventions.
+                        if shift:
+                            keyname = chr(ord('A') + keycode-1)
+                            shift = False # Return Ctrl+Z
+                        else:
+                            keyname = chr(ord('a') + keycode-1)
+                            # Return, Ctrl+z
+                        ctrl = True ; special = True
                     else:
                         keyname = chr(keycode)
                 else:
                     keyname = "unknown (%s)" % keycode
+            
+            char = keyname
+                            
+             # EKR: return Key- (not Key+) to match the corresponding Tk hack.
+            if alt and char.isdigit(): char = 'Key-' + char
         
-            modifiers = ""
-            for mod, prefix in (
-                (event.ControlDown(), 'Ctrl+'),
-                (event.AltDown(),     'Alt+'),
-                (event.MetaDown(),    'Meta+'),
-            ):
-                if mod:
-                    # Note: this must be Key- (not Key+) to match the corresponding Tk hack.
-                    if prefix == 'Alt+' and keyname.isdigit(): keyname = 'Key-' + keyname
-                    if keyname.find('Ctrl+') == -1:
-                        modifiers += prefix
-                    special = True
+            # Create a value compatible with Leo's core.
+            val = (
+                g.choose(alt,'Alt+','') +
+                # g.choose(cmd,'Cmd+','') +
+                g.choose(ctrl,'Ctrl+','') +
+                g.choose(meta,'Meta+','') +
+                g.choose(shift and (special or len(char)>1),'Shift+','') +
+                ###g.choose(kind=='char',(char or ''),(keysym or char or ''))
+                char or ''
+            )
            
-            if special and kind == 'char':
-                return '' # return '' as the char for all special keys.
-            else:
-                val = modifiers + keyname
-                # g.trace('keycode',keycode,'val',repr(val))
-                return val
+            # g.trace('keycode',keycode,'val',repr(val))
+            return val
         #@nonl
         #@-node:ekr.20070310064845:keysymHelper2
         #@-node:ekr.20061117155233:eventChar & eventKeysym & helper
@@ -5723,7 +5769,7 @@ if wx:
                 return p
         #@nonl
         #@-node:ekr.20061127075102:get_p
-        #@+node:ekr.20061118123730.1:onChar
+        #@+node:ekr.20061118123730.1:onChar (leoTree)
         standardTreeKeys = []
         if sys.platform.startswith('win'):
             for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
@@ -5741,14 +5787,14 @@ if wx:
             keyEvent = event.GetKeyEvent()
             keyEvent.leoWidget = self
             keysym = g.app.gui.eventKeysym(keyEvent)
-            # g.trace('keysym',keysym)
+            # if keysym: g.trace('keysym',repr(keysym))
             if keysym in self.standardTreeKeys:
                 pass
                 # g.trace('standard key',keysym)
             else:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
                 # keyEvent.Skip(False) # Try to kill the default key handling.
-        #@-node:ekr.20061118123730.1:onChar
+        #@-node:ekr.20061118123730.1:onChar (leoTree)
         #@+node:ekr.20070309085343:onHeadlineKey
         # k.handleDefaultChar calls onHeadlineKey.
         def onHeadlineKey (self,event):
@@ -6013,7 +6059,7 @@ if wx:
                 self.frame.lockout = False
         #@-node:ekr.20061127081233:selectHelper
         #@-node:edream.110203113231.278:Event handlers (wxTree)
-        #@+node:ekr.20061118123730.1:onChar
+        #@+node:ekr.20061118123730.1:onChar (leoTree)
         standardTreeKeys = []
         if sys.platform.startswith('win'):
             for mod in ('Alt+','Alt+Ctrl+','Ctrl+','',):
@@ -6031,14 +6077,14 @@ if wx:
             keyEvent = event.GetKeyEvent()
             keyEvent.leoWidget = self
             keysym = g.app.gui.eventKeysym(keyEvent)
-            # g.trace('keysym',keysym)
+            # if keysym: g.trace('keysym',repr(keysym))
             if keysym in self.standardTreeKeys:
                 pass
                 # g.trace('standard key',keysym)
             else:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
                 # keyEvent.Skip(False) # Try to kill the default key handling.
-        #@-node:ekr.20061118123730.1:onChar
+        #@-node:ekr.20061118123730.1:onChar (leoTree)
         #@+node:ekr.20050719121701:Selection
         #@+node:ekr.20050719121701.3:editLabel
         def editLabel (self,p,selectAll=False):
