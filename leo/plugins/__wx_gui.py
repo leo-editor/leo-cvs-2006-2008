@@ -5590,17 +5590,17 @@ if wx:
         
         def redraw (self):
             c = self.c ;  tree = self.treeCtrl
-            if c is None: return
+            if c is None or self.drawing: return
             p = c.rootPosition()
-            if not p or self.drawing:
-                # g.trace('disabled')
-                return
-            self.redrawCount += 1
-            self.idDict = {}
+            if not p: return
         
+            self.redrawCount += 1
             # if True and not g.app.unitTesting: g.trace(self.redrawCount,g.callers())
+        
             self.drawing = True # Disable event handlers.
             try:
+                self.editWidgetDict = {} # Bug fix.
+                self.idDict = {}
                 self.expandAllAncestors(c.currentPosition())
                 self.partialRedraw()
             finally:
@@ -5712,9 +5712,10 @@ if wx:
                     
         def updateIcon(self,p):
             val = p.v.computeIcon()
-            id = self.idDict.get(p.v)
-            if id:
-                self.treeCtrl.SetItemImage(id,val)
+            ###id = self.idDict.get(p.v)
+            tree_id = self.getIdDict(p)
+            if tree_id:
+                self.treeCtrl.SetItemImage(tree_id,val)
             else:
                 g.trace('can not happen: no id',p.headString())
         #@-node:ekr.20061211115055:updateVisibleIcons
@@ -5730,7 +5731,10 @@ if wx:
             
             # g.trace(p.headString(),g.callers())
             
-            tree_id = self.idDict.get(p.v)
+            ### tree_id = self.idDict.get(p.v)
+            
+            tree_id = self.getIdDict(p)
+        
             if tree_id and tree_id.IsOk():
                 self.frame.lockout = True
                 try:
@@ -6085,7 +6089,7 @@ if wx:
                 c.k.masterKeyHandler(keyEvent,stroke=keysym)
                 # keyEvent.Skip(False) # Try to kill the default key handling.
         #@-node:ekr.20061118123730.1:onChar (leoTree)
-        #@+node:ekr.20050719121701:Selection
+        #@+node:ekr.20050719121701:Selection (leoTree)
         #@+node:ekr.20050719121701.3:editLabel
         def editLabel (self,p,selectAll=False):
             
@@ -6093,12 +6097,15 @@ if wx:
             
             if g.app.killed or self.c.frame.killed: return
             
-            c = self.c ; tree_id = self.idDict.get(p.v)
+            c = self.c
+            
+            ### tree_id = self.idDict.get(p.v)
+            tree_id = self.getIdDict(p)
             
             # g.trace('editPosition',self.editPosition(),'id',id(tree_id))
             
             expandFlag = self.expandAllAncestors(p)
-            idFlag = not tree_id
+            idFlag = not tree_id or not tree_id.IsOk()
             switchFlag = p != self.editPosition()
             # g.trace('expand',expandFlag,'id',idFlag,'switch',switchFlag)
             
@@ -6112,7 +6119,7 @@ if wx:
                 c.endUpdate(redrawFlag)
         
             self.setEditPosition(p) # That is, self._editPosition = p
-            tree_id = self.idDict.get(p.v) 
+            tree_id = self.getIdDict(p) ### self.idDict.get(p.v) 
             if not tree_id: return # Not an error.
             
             self.treeCtrl.EditLabel(tree_id)
@@ -6129,25 +6136,55 @@ if wx:
                 c.headlineWantsFocus(p) # Make sure the focus sticks.
         #@-node:ekr.20050719121701.3:editLabel
         #@+node:ekr.20070125091308:setEditWidget
+        # Called only from wxTree.redraw_node,
+        # so creating a new headlineWidget each time is correct.
+        
         def setEditWidget (self,p,tree_id):
             
             if g.app.killed or self.c.frame.killed: return
             
             # g.trace('id',id(tree_id),'v',id(p.v),'p',p.headString(),self.c.shortFileName(),'idDict',id(self.idDict))
             
-            w = self.editWidgetDict.get(p.v)
-            self.idDict[p.v] = tree_id
+            # g.trace(p.headString())
+            self.setIdDict(p,tree_id)
+            p.edit_widget = w = headlineWidget(self.c,self.treeCtrl,tree_id)
+            self.editWidgetDict[p.v] = w
         
-            if w:
-                w.init(tree_id)
-            else:
-                # g.trace(p.headString())
-                w = headlineWidget(self.c,self.treeCtrl,tree_id)
-                self.editWidgetDict[p.v] = w
+            # w = self.editWidgetDict.get(p.v)
+            # self.idDict[p.v] = tree_id
         
-            p.edit_widget = w
+            # if w:
+                # w.init(tree_id)
+            # else:
+                # # g.trace(p.headString())
+                # w = headlineWidget(self.c,self.treeCtrl,tree_id)
+                # self.editWidgetDict[p.v] = w
+        
+            # p.edit_widget = w
         #@-node:ekr.20070125091308:setEditWidget
-        #@-node:ekr.20050719121701:Selection
+        #@+node:ekr.20070312083143:get/setIdDict
+        def getIdDict (self,p):
+            
+            '''Return the unique wx.Tree id for position p.'''
+            aList = self.idDict.get(p.v,[])
+            for p2,tree_id in aList:
+                if p.equal(p2):
+                    return tree_id
+            else:
+                # g.trace('No tree_id for position %s',p.headString()) # Not an error.
+                return None
+        
+        def setIdDict (self,p,tree_id):
+            
+            '''Associate the wx.Tree id with a position p.'''
+            
+            # Keys are vnodes, values are lists of position/tree_id pairs.
+            aList = self.idDict.get(p.v,[])
+            data = p.copy(),tree_id
+            aList.append(data)
+            self.idDict[p.v] = aList
+        #@-node:ekr.20070312083143:get/setIdDict
+        #@-node:ekr.20050719121701:Selection (leoTree)
         #@+node:ekr.20070125093538:tree.setHeadline (new in 4.4b2)
         def setHeadline (self,p,s):
             
