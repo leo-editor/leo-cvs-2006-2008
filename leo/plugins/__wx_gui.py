@@ -2914,7 +2914,7 @@ if wx:
                         keyname = "unknown (%s)" % keycode
                             
             # Return Key- (not Key+) to match the corresponding Tk hack.
-            if alt and char.isdigit(): keyname = 'Key-' + keyname
+            if alt and keyname.isdigit(): keyname = 'Key-' + keyname
         
             # Create a value compatible with Leo's core.
             val = (
