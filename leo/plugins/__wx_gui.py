@@ -23,15 +23,13 @@ __version__ = '0.6'
 #@@nocolor
 #@+at
 # 
-# Before changeover:
-# * '.' is not handled correctly!
-# - Recycle widgets at the start of redraw.
-# * Call cleverRedraw only if outlineChanged keyword arg to c.endUpdate is 
-# True.
-# - Add dummy transaction so ctrl-v works initially.
-# - Control-` does not clone a node (the clone node command does work).
+# First:
 # 
-# Next:
+# * Arrow keys do not work
+# - Recycle widgets at the start of redraw.
+# - (Maybe) Call cleverRedraw only if outlineChanged keyword arg to 
+# c.endUpdate is True.
+# - Add dummy transaction so ctrl-v works initially.
 # - Don't redraw the entire screen to add/remove text box in the icon.
 # - Add color to Log pane text.
 # - Get aspell working: use g.pdb to trace aspell startup logic.
@@ -1346,10 +1344,11 @@ if wx:
         #@+node:ekr.20070209074555.1:Birth & special methods (baseText)
         def __init__ (self,c,baseClassName,name,widget):
             
+            self.baseClassName = baseClassName # For repr.
+            
             wx.EvtHandler.__init__(self) # Init the base class.
             leoFrame.baseTextWidget.__init__(self,c,baseClassName,name,widget)
         
-            self.baseClassName = baseClassName
             self.name = name
             self.virtualInsertPoint = None
             self.widget = widget
@@ -1480,15 +1479,19 @@ if wx:
             
             w = self
             self.c = c
+            self.baseClassName = 'plainTextWidget'
         
             # Create the actual gui widget.
             style = g.choose(multiline,wx.TE_MULTILINE,0)
             self.widget = wx.TextCtrl(parent,id=-1,style=style,*args,**keys)
+            
+            # Inject the leo_wrapper_class ivar.
+            self.widget.leo_wrapper_object = self
         
             # Init the base class.
             name = keys.get('name') or '<unknown plainTextWidget>'
             baseTextWidget.__init__(self,c,
-                baseClassName='plainTextWidget',name=name,widget=self.widget)
+                baseClassName=self.baseClassName,name=name,widget=self.widget)
                 
             wx.EVT_CHAR (w.widget,self.onChar)
         
@@ -1533,6 +1536,7 @@ if wx:
             
             w = self
             self.c = c
+            self.baseClassName = 'richTextWidget'
             
             # Init the base class, removing the name keyword.
             name = keys.get('name') or '<unknown richTextWidget>'
@@ -1541,10 +1545,13 @@ if wx:
             # Create the actual gui widget.
             self.widget = richtext.RichTextCtrl(parent,*args,**keys)
             
+            # Inject the leo_wrapper_class ivar.
+            self.widget.leo_wrapper_object = self
+            
             wx.EVT_CHAR (w.widget,self.onChar)
         
             baseTextWidget.__init__(self,c,
-                baseClassName='richTextWidget',name=name,widget=self.widget)
+                baseClassName=self.baseClassName,name=name,widget=self.widget)
         
             self.defaultFont = font = wx.Font(pointSize=10,
                 family = wx.FONTFAMILY_TELETYPE, # wx.FONTFAMILY_ROMAN,
@@ -1593,7 +1600,12 @@ if wx:
         def __init__ (self,c,parent,*args,**keys):
         
             self.c = c
+            self.baseClassName = 'stcTextWidget'
+        
             self.widget = w = stc.StyledTextCtrl(parent,*args,**keys)
+            
+            # Inject the leo_wrapper_class ivar.
+            self.widget.leo_wrapper_object = self
             
             w.CmdKeyClearAll() # Essential so backspace is handled properly.
         
@@ -2887,7 +2899,6 @@ if wx:
             keyname = g.app.gui.wxKeyDict.get(keycode)
             w = self.eventWidget(event)
             isStc = isinstance(w,stcWidget)
-            # g.trace('isStc',isStc,'w',w)
         
             if keyname is None:
                 if 0 < keycode < 27:
@@ -2926,7 +2937,7 @@ if wx:
                 keyname or ''
             )
            
-            if 1:
+            if 0:
                 g.trace('shift',shift,
                     'keycode',repr(keycode),'ucode',ucode,
                     'uchar',repr(uchar),'keyname',repr(keyname),'val',repr(val))
@@ -2950,7 +2961,7 @@ if wx:
         
         def shift (self,keycode,uchar):
             
-            g.trace(repr(keycode),repr(uchar))
+            # g.trace(repr(keycode),repr(uchar))
             
             if keycode >= 256:
                 return uchar
@@ -3006,7 +3017,12 @@ if wx:
                 return event.widget 
             elif isinstance(event,g.Bunch): # A manufactured event.
                 if hasattr(event,'widget'):
-                    return event.widget
+                    w = event.widget
+                    if hasattr(w,'leo_wrapper_object'):
+                        # g.trace('Returning wrapper object',w.leo_wrapper_object)
+                        return w.leo_wrapper_object
+                    else:
+                        return w
                 if hasattr(event,'c'):
                     return event.c.frame.body.bodyCtrl
                 else:
@@ -3014,7 +3030,13 @@ if wx:
                         event),g.callers())
                     return None
             elif hasattr(event,'GetEventObject'): # A wx Event.
-                return event.GetEventObject()
+                # Return the wrapper class
+                w = event.GetEventObject()
+                if hasattr(w,'leo_wrapper_object'):
+                    # g.trace('Returning wrapper object',w.leo_wrapper_object)
+                    return w.leo_wrapper_object
+                else:
+                    return w
             else:
                 g.trace('no event widget',event)
                 return None
@@ -3291,6 +3313,10 @@ if wx:
         def isTextWidget (self,w):
             
             return w and hasattr(w,'__class__') and issubclass(w.__class__,baseTextWidget)
+                    
+            # or
+                # stc and issubclass(w.__class__,stc.StyledTextCtrl) or
+                # richtext and issubclass(w.__class__.richtext.RichTextCtrl)))
         #@nonl
         #@-node:ekr.20061116091006:isTextWidget
         #@+node:ekr.20061117162357:widget_name
@@ -5028,6 +5054,7 @@ if wx:
             ch,label = self.createAccelLabel(keys)
             
             def wxMenuCallback (event,callback=callback):
+                # g.trace('event',event)
                 return callback() # All args were bound when the callback was created.
         
             id = wx.NewId()
