@@ -31,185 +31,169 @@ simulateCommand: no command for next-slide
 the current CVS does not write to the log pane that settings, either present
 in myLeoSettings.leo or the current file, were read.
 #@-node:ekr.20070308082140:Fix problem with settings report
-#@+node:ekr.20070308085050:Arrow keys do not work in stc body pane
-#@+node:ekr.20070308082321.2:Test cursor extensions with wx plugin
-#@-node:ekr.20070308082321.2:Test cursor extensions with wx plugin
-#@+node:ekr.20070308090541:Add unit tests
-#@-node:ekr.20070308090541:Add unit tests
-#@+node:ekr.20061031131434.146:masterKeyHandler
-master_key_count = 0
+#@+node:ekr.20070312141330:Fix yet another cursor down bug
+@nocolor
 
-def masterKeyHandler (self,event,stroke=None):
-    
-    '''This is the handler for almost all key bindings.'''
+http://sourceforge.net/forum/message.php?msg_id=4201463
+By: fgeatfhv
 
-    << define vars >>
-    if keysym in special_keys: return None
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
-    if trace:
-        g.trace('stroke:',stroke,'keysym:',event.keysym,'ch:',repr(event.char),
-            'state.kind:',k.state.kind,g.callers(4))
-        # if (self.master_key_count % 100) == 0: g.printGcSummary(trace=True)
+Strange, I have done a cvs update today afternoon.
 
-    # Handle keyboard-quit first.
-    if k.abortAllModesKey and stroke == k.abortAllModesKey:
-        # g.trace('special case')
-        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+I know that there was an issue with the cursor. The problem there was that it
+jumped down several lines at once after the 2nd key press. This one seems different
+from that, though, as it goes down 2 lines if there are empty lines following
+the line the cursor currently stands on.
 
-    if k.inState():
-        # This will return unless k.autoCompleterStateHandler
-        # (called from k.callStateFunction) returns 'do-standard-keys'
-        << handle mode bindings >>
-        
-    << handle per-pane bindings >>
-    << handle keys without bindings >>
-#@+node:ekr.20061031131434.147:<< define vars >>
-k = self ; c = k.c ; gui = g.app.gui
-
-if event: event = gui.leoKeyEvent(event,c)
-
-w = event.widget
-char = event.char
-keysym = event.keysym
-w_name = c.widget_name(w)
-state = k.state.kind
-
-special_keys = (
-    'Alt_L','Alt_R',
-    'Caps_Lock','Control_L','Control_R',
-    'Num_Lock',
-    'Shift_L','Shift_R',
-    'Win_L','Win_R',
-)
-
-self.master_key_count += 1
+Franz
 #@nonl
-#@-node:ekr.20061031131434.147:<< define vars >>
-#@+node:ekr.20061031131434.149:<< handle mode bindings >>
-# First, honor minibuffer bindings for all except user modes.
-if state in ('getArg','getFileName','full-command','auto-complete'):
-    if k.handleMiniBindings(event,state,stroke):
-        return 'break'
+#@-node:ekr.20070312141330:Fix yet another cursor down bug
+#@+node:ekr.20070313103240:Improve special case in moveOutlineUp
+@nocolor
 
-# Second, honor general modes.
-if state == 'getArg':
-    return k.getArg(event,stroke=stroke)
-elif state == 'getFileName':
-    return k.getFileName(event)
-elif state in ('full-command','auto-complete'):
-    # Do the default state action.
-    if trace: g.trace('calling state function')
-    val = k.callStateFunction(event) # Calls end-command.
-    if val != 'do-standard-keys': return 'break'
-        
-# Third, pass keys to user modes.
+http://sourceforge.net/forum/message.php?msg_id=4205072
+By: rcy3cornelledu
+
+I find the following behavior strange: In a new window, make node "A" and clone
+it.  Then make node "B" and put it between the cloned nodes "A", and finally
+select the bottom node "A" so that the outline looks like:
+
+A
+B
+A <- select this node
+
+Now, perform a "Move Node Up" operation, with keyboard or menu.  I get:
+
+A <- this node selected
+B
+A
+
+It seems that the cloned nodes have swapped positions.  I would have expected
+to see:
+
+A
+A <- this node selected
+B
+
+which would be more like the behavior if I select the top node and "Move Down"
+
+
+I am using the evening-of-March 6, 2007 CVS snapshot of LEO on ActivePython,
+on the following platforms:
+
+Leo 4.4.3 alpha 1, build  1.124 , January 26, 2006
+Python 2.4.3, Tk 8.4.12, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+Leo 4.4.3 alpha 1, build  1.124 , January 26, 2006
+Python 2.4.3, Tk 8.4.12, Pmw 1.2
+linux2
+
+If I can provide any more information, please let me know:
+richard.c.yeh@bankofamerica.com, richard.c.yeh@gmail.com (I use LEO both at
+work and at home.)
+
+@color
+#@+node:ekr.20031218072017.1772:moveOutlineUp
+def moveOutlineUp (self,event=None):
+    
+    '''Move the selected node up if possible.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineUp(): # Support for hoist.
+        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+        return
+    back = p.visBack()
+    if not back: return
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    back2 = back.visBack()
+    if back2 and p.v in back2.v.t.vnodeList:
+        # A weird special case: just select back2.
+        c.selectPosition(back2)
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+        return
+
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        << Move p up >>
+        if moved:
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
+            
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@+node:ekr.20031218072017.1773:<< Move p up >>
+if 0:
+    g.trace("visBack",back)
+    g.trace("visBack2",back2)
+    g.trace("oldParent",oldParent)
+    g.trace("back2.hasChildren",back2.hasChildren())
+    g.trace("back2.isExpanded",back2.isExpanded())
+    
+parent = p.parent()
+
+if not back2:
+    # p will be the new root node
+    moved = True
+    p.moveToRoot(oldRoot=c.rootPosition())
+
+elif back2.hasChildren() and back2.isExpanded():
+    if c.checkMoveWithParentWithWarning(p,back2,True):
+        moved = True
+        p.moveToNthChildOf(back2,0)
+
 else:
-    d =  k.masterBindingsDict.get(state)
-    if d:
-        b = d.get(stroke)
-        if b:
-            if trace: g.trace('calling generalModeHandler')
-            k.generalModeHandler (event,
-                commandName=b.commandName,func=b.func,
-                modeName=state,nextMode=b.nextMode)
-            return 'break'
-        else:
-            ok = k.handleMiniBindings(event,state,stroke)
-            if ok:
-                return 'break'
-            elif stroke and len(stroke) == 1:
-                # if trace: g.trace('calling modeHelp')
-                k.modeHelp(event)
-                return 'break'
-            else:
-                # End the mode and fall through to the pane bindings!
-                k.endMode(event)
-    else:
-        # New in 4.4b4.
-        handler = k.getStateHandler()
-        if handler:
-            handler(event)
-        else:
-            g.trace('No state handler for %s' % state)
-        return 'break'
-#@-node:ekr.20061031131434.149:<< handle mode bindings >>
-#@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
-key_states = ('command','insert','overwrite')
-isPlain =  k.isPlainKey(stroke)
+    if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
+        moved = True
+        p.moveAfter(back2)
 
-# g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
-# g.trace('button',k.masterBindingsDict.get('button'))
+if moved and sparseMove and parent and not parent.isAncestorOf(p):
+    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+    parent.contract()
+#@-node:ekr.20031218072017.1773:<< Move p up >>
+#@-node:ekr.20031218072017.1772:moveOutlineUp
+#@-node:ekr.20070313103240:Improve special case in moveOutlineUp
+#@+node:ekr.20070313103608:Fix bugs in @url nodes
+@nocolor
 
-for key,name in (
-    # Order here is similar to bindtags order.
-    ('command',None),
-    ('insert',None),
-    ('overwrite',None),
-    ('button',None),
-    ('body','body'),
-    ('text','head'), # Important: text bindings in head before tree bindings.
-    ('tree','head'),
-    ('tree','canvas'),
-    ('log', 'log'),
-    ('text','log'),
-    ('text',None), ('all',None),
-):
-    if (
-        key in key_states and isPlain and k.unboundKeyAction == key or
-        name and w_name.startswith(name) or
-        key in ('text','all') and g.app.gui.isTextWidget(w) or
-        key in ('button','all')
-    ):
-        d = k.masterBindingsDict.get(key,{})
-        # g.trace('key',key,'name',name,'stroke',stroke,'stroke in d.keys',stroke in d.keys())
-        if d:
-            b = d.get(stroke)
-            if b:
-                if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
-                return k.masterCommand(event,b.func,b.stroke,b.commandName)
-#@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
-#@+node:ekr.20061031131434.151:<< handle keys without bindings >>
-if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
-    # insert/overwrite normal character.  <Return> is *not* a normal character.
-    if trace: g.trace('plain key in insert mode',stroke)
-    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+https://sourceforge.net/forum/message.php?msg_id=4204734
+By: fgeatfhv
 
-elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
-    # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
-    if trace: g.trace('ignoring unbound non-ascii key')
-    return 'break'
-    
-elif keysym.find('Escape') != -1:
-    # Never insert escape characters.
-    return 'break'
+This is something I encountered in 4.3.1 already, but seems to have gotten worse
+since then:
 
-else:
-    # g.trace(stroke,char,keysym)
-    if trace: g.trace(repr(stroke),'no func')
-    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
-#@-node:ekr.20061031131434.151:<< handle keys without bindings >>
-#@+node:ekr.20061031131434.152:handleMiniBindings
-def handleMiniBindings (self,event,state,stroke):
-    
-    k = self ; c = k.c
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
-    
-    if not state.startswith('auto-'):
-        d = k.masterBindingsDict.get('mini')
-        if d:
-            b = d.get(stroke)
-            if b:
-                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
-                # Pass this on for macro recording.
-                k.masterCommand(event,b.func,stroke,b.commandName)
-                if not k.silentMode:
-                    c.minibufferWantsFocus()
-                return True
+A double click on a @url node results in two single clicks on that node. Result:
+Nothing happens.
 
-    return False
-#@-node:ekr.20061031131434.152:handleMiniBindings
-#@-node:ekr.20061031131434.146:masterKeyHandler
-#@-node:ekr.20070308085050:Arrow keys do not work in stc body pane
+This occurs if there are many nodes expanded and/or the @url node itself contains
+a lot of text.
+
+If I contract all nodes (Alt+-), return to the @url node and double click it
+again, the double click works and the app starts.
+
+
+Franz
+
+@color
+#@nonl
+#@-node:ekr.20070313103608:Fix bugs in @url nodes
 #@-node:ekr.20070308103059:Fix bugs
 #@+node:ekr.20070307075714:Asap
 #@+node:ekr.20070307082814:Create g.startupController class
