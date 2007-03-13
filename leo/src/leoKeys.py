@@ -2918,6 +2918,9 @@ class keyHandlerClass:
         w = event.widget
         char = event.char
         keysym = event.keysym
+        if stroke and not keysym:
+            event.keysym = keysym = stroke
+        
         w_name = c.widget_name(w)
         state = k.state.kind
         
@@ -2936,7 +2939,7 @@ class keyHandlerClass:
         if keysym in special_keys: return None
         trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
         if trace:
-            g.trace('stroke:',stroke,'keysym:',event.keysym,'ch:',repr(event.char),
+            g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
                 'state.kind:',k.state.kind,g.callers(4))
             # if (self.master_key_count % 100) == 0: g.printGcSummary(trace=True)
     
@@ -3032,7 +3035,7 @@ class keyHandlerClass:
                 if d:
                     b = d.get(stroke)
                     if b:
-                        if trace: g.trace('%s found %s = %s' % (key,b.stroke,b.commandName))
+                        if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
                         return k.masterCommand(event,b.func,b.stroke,b.commandName)
         #@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
         #@nl
@@ -3040,7 +3043,7 @@ class keyHandlerClass:
         #@+node:ekr.20061031131434.151:<< handle keys without bindings >>
         if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
             # insert/overwrite normal character.  <Return> is *not* a normal character.
-            if trace: g.trace('plain key in insert mode',stroke)
+            if trace: g.trace('plain key in insert mode',repr(stroke))
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         
         elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
@@ -3053,7 +3056,6 @@ class keyHandlerClass:
             return 'break'
         
         else:
-            # g.trace(stroke,char,keysym)
             if trace: g.trace(repr(stroke),'no func')
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         #@-node:ekr.20061031131434.151:<< handle keys without bindings >>
