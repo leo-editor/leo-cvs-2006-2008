@@ -23,21 +23,27 @@ __version__ = '0.6'
 #@@nocolor
 #@+at
 # 
-# First:
+# Before changeover:
+# * '.' is not handled correctly!
+# - Recycle widgets at the start of redraw.
+# * Call cleverRedraw only if outlineChanged keyword arg to c.endUpdate is 
+# True.
+# - Add dummy transaction so ctrl-v works initially.
 # - Control-` does not clone a node (the clone node command does work).
-# - Test autocompletion.
-# * Undo does not work, and crashes unit tests in Linux.
+# 
+# Next:
 # - Don't redraw the entire screen to add/remove text box in the icon.
 # - Add color to Log pane text.
+# - Get aspell working: use g.pdb to trace aspell startup logic.
 # 
 # Bug list: (All unit tests pass on XP, 4 failures & 2 errors on Linux).
 # 
+# * Autocompletion does not work.
 # * Multiple body editors do not work, and crash unit tests in Linux.
 # - Completion tab is too small (XP only).
 # - The Spell tab functional is empty, and aspell is not imported properly.
 # 
 # Later:
-# 
 # - Change background of the tree pane when it has focus.
 # - Convert Tk color names to rgb values.
 # - Convert Tk font names to wx font names?
@@ -1555,6 +1561,7 @@ if wx:
         def _getLastPosition(self):         return self.widget.GetLastPosition()
         def _getSelectedText(self):         return self.widget.GetStringSelection()
         def _getSelectionRange(self):       return self.widget.GetSelection()
+        def _getYScrollPosition(self):      return 0,0 # Could also return None.
         def _hitTest(self,pos):             return self.widget.HitTest(pos)
         def _insertText(self,i,s):            self.setInsertPoint(i) ; return self.widget.WriteText(s)
         def _scrollLines(self,n):           return self.widget.ScrollLines(n)
@@ -1564,6 +1571,8 @@ if wx:
         def _setFocus(self):                return self.widget.SetFocus()
         def _setInsertPoint(self,i):        return self.widget.SetInsertionPoint(i)
         def _setSelectionRange(self,i,j):   return self.widget.SetSelection(i,j)
+        def _setYScrollPosition(self,i):    pass
+        #@nonl
         #@-node:ekr.20070209152234:bindings (RichTextCtrl)
         #@-others
     #@nonl
@@ -2429,7 +2438,7 @@ if wx:
             
             self.plainTextWidget = plainTextWidget
             
-            self.use_stc = True # Unit tests fail regardless of this setting.
+            self.use_stc = True
             self.bodyTextWidget = g.choose(self.use_stc,stcWidget,richTextWidget)
             self.plainTextWidget = plainTextWidget
         
@@ -2850,77 +2859,62 @@ if wx:
             if hasattr(event,'char'):
                 return event.char # A leoKeyEvent.
             else:
-                return self.keysymHelper2(event,kind='char')
+                return self.keysymHelper(event,kind='char')
         
         def eventKeysym (self,event):
             
             if hasattr(event,'keysym'):
                 return event.keysym # A leoKeyEvent: we have already computed the result.
             else:
-                return self.keysymHelper2(event,kind='keysym')
-        #@+node:ekr.20070310064845:keysymHelper2
-        # Modified from LogKeyEvent in wxPython demo: marked by EKR.
+                return self.keysymHelper(event,kind='keysym')
+        #@+node:ekr.20070310064845:keysymHelper & helpers
+        # Modified from LogKeyEvent in wxPython demo.
+        # However, the stc widget apparently generates different key events from the demo!
         
-        def keysymHelper2(self,event,kind):
+        def keysymHelper(self,event,kind):
         
             keycode = event.GetKeyCode()
             if keycode in (wx.WXK_SHIFT,wx.WXK_ALT,wx.WXK_CONTROL):
-                return '' # EKR.
-        
-            keyname = g.app.gui.wxKeyDict.get(keycode) # EKR: was keyMap
-            
-            mods = event.GetModifiers()
-            alt = event.AltDown()     or mods == wx.MOD_ALT
-            cmd = event.CmdDown()     or mods == wx.MOD_CMD
-            ctrl = event.ControlDown()or mods == wx.MOD_CONTROL
-            meta = event.MetaDown()   or mods == wx.MOD_META
-            shift = event.ShiftDown() or mods == wx.MOD_SHIFT
-            special = alt or cmd or ctrl or meta
-            if special and kind == 'char':
-                # EKR: return '' as the char for all special keys.
                 return ''
         
+            alt,cmd,ctrl,meta,shift = self.getMods(event)
+            special = alt or cmd or ctrl or meta
+            if special and kind == 'char':
+                return '' # The char for all special keys.
+                
+            ucode = event.GetUnicodeKey()
+            uchar = unichr(ucode)
+            keyname = g.app.gui.wxKeyDict.get(keycode)
+            w = self.eventWidget(event)
+            isStc = isinstance(w,stcWidget)
+            # g.trace('isStc',isStc,'w',w)
+        
             if keyname is None:
-                if "unicode" in wx.PlatformInfo:
-                    keycode = event.GetUnicodeKey()
-                    if keycode <= 127:
-                        keycode = event.GetKeyCode()
-                    keyname = unichr(event.GetUnicodeKey())
-                    # g.trace('shift',shift,'keycode',repr(keycode),'keyname',repr(keyname))
-                    if keycode < 27:
-                        # EKR: Follow Tk conventions.
-                        if shift:
-                            keyname = chr(ord('A') + keycode-1) # Return Ctrl+Z
-                        else:
-                            keyname = chr(ord('a') + keycode-1) # Return Ctrl+z
-                        shift = False ; ctrl = True ; special = True
-                    else: # EKR
-                        if len(keyname) == 1 and not special:
-                            if shift:
-                                keyname = keyname.upper()
-                            else:
-                                keyname = keyname.lower()
-                elif keycode < 256:
+                if 0 < keycode < 27:
+                    # EKR: Follow Tk conventions.
+                    if shift:
+                        keyname = chr(ord('A') + keycode-1) # Return Ctrl+Z
+                    else:
+                        keyname = chr(ord('a') + keycode-1) # Return Ctrl+z
+                    shift = False ; ctrl = True ; special = True
+                elif "unicode" in wx.PlatformInfo:
+                    if isStc:
+                        # A terrible hack: stc uchars do not uniquely identify the character.
+                        if shift:   keyname = self.shift(keycode,uchar)
+                        else:       keyname = self.unshift(keycode,uchar)
+                    else:
+                        keyname = uchar
+                else:
+                    # No unicode support.
                     if keycode == 0:
                         keyname = "NUL" # dubious.
-                    elif keycode < 27:
-                        # EKR: Follow Tk conventions.
-                        if shift:
-                            keyname = chr(ord('A') + keycode-1)
-                            shift = False # Return Ctrl+Z
-                        else:
-                            keyname = chr(ord('a') + keycode-1)
-                            # Return, Ctrl+z
-                        ctrl = True ; special = True
-                    else:
+                    elif keycode < 256:
                         keyname = chr(keycode)
-                else:
-                    keyname = "unknown (%s)" % keycode
-            
-            char = keyname
+                    else:
+                        keyname = "unknown (%s)" % keycode
                             
-             # EKR: return Key- (not Key+) to match the corresponding Tk hack.
-            if alt and char.isdigit(): char = 'Key-' + char
+            # Return Key- (not Key+) to match the corresponding Tk hack.
+            if alt and char.isdigit(): keyname = 'Key-' + keyname
         
             # Create a value compatible with Leo's core.
             val = (
@@ -2928,15 +2922,77 @@ if wx:
                 # g.choose(cmd,'Cmd+','') +
                 g.choose(ctrl,'Ctrl+','') +
                 g.choose(meta,'Meta+','') +
-                g.choose(shift and (special or len(char)>1),'Shift+','') +
-                ###g.choose(kind=='char',(char or ''),(keysym or char or ''))
-                char or ''
+                g.choose(shift and (special or len(keyname)>1),'Shift+','') +
+                keyname or ''
             )
            
-            # g.trace('keycode',keycode,'val',repr(val))
+            if 1:
+                g.trace('shift',shift,
+                    'keycode',repr(keycode),'ucode',ucode,
+                    'uchar',repr(uchar),'keyname',repr(keyname),'val',repr(val))
             return val
         #@nonl
-        #@-node:ekr.20070310064845:keysymHelper2
+        #@+node:ekr.20070313052040:getMods
+        def getMods (self,event):
+            
+            mods = event.GetModifiers()
+        
+            alt = event.AltDown()     or mods == wx.MOD_ALT
+            cmd = event.CmdDown()     or mods == wx.MOD_CMD
+            ctrl = event.ControlDown()or mods == wx.MOD_CONTROL
+            meta = event.MetaDown()   or mods == wx.MOD_META
+            shift = event.ShiftDown() or mods == wx.MOD_SHIFT
+            
+            return alt,cmd,ctrl,meta,shift
+        #@-node:ekr.20070313052040:getMods
+        #@+node:ekr.20070313055627:shift
+        # A helper for 'the terrible hack' in keysymHelper.
+        
+        def shift (self,keycode,uchar):
+            
+            g.trace(repr(keycode),repr(uchar))
+            
+            if keycode >= 256:
+                return uchar
+            elif chr(keycode).isalpha():
+                return unichr(keycode).upper()
+            else:
+                # The most odious, risible code in all of Leo.
+                d = {
+                    39:u'"',
+                    43:u'+',44:u'<',45:u'_',46:u'>',47:u'?',
+                    48:u')',49:u'!',50:u'@',51:u'#',52:u'$',
+                    53:u'%',54:u'^',55:u'&',56:u'*',57:u'(',
+                    59:u':',
+                    91:u'{',92:u'|',93:u'}',
+                }
+                return d.get(keycode,unichr(keycode))
+        #@-node:ekr.20070313055627:shift
+        #@+node:ekr.20070313055627.1:unshift
+        # A helper for 'the terrible hack' in keysymHelper.
+        
+        def unshift (self,keycode,uchar):
+            
+            # g.trace(repr(keycode),repr(uchar))
+            
+            if keycode >= 256:
+                return uchar
+            elif chr(keycode).isalpha():
+                return unichr(keycode).lower()
+            else:
+                # The most odious, risible code in all of Leo.
+                d = {
+                    39:u"'",
+                    43:u'=',44:u',',45:u'-',46:u'.',47:u'/',
+                    48:u'0',49:u'1',50:u'2',51:u'3',52:u'4',
+                    53:u'5',54:u'6',55:u'7',56:u'8',57:u'9',
+                    59:u';',
+                    91:u'[',92:u'\\',93:u']',
+                }
+                return d.get(keycode,unichr(keycode))
+        #@nonl
+        #@-node:ekr.20070313055627.1:unshift
+        #@-node:ekr.20070310064845:keysymHelper & helpers
         #@-node:ekr.20061117155233:eventChar & eventKeysym & helper
         #@+node:ekr.20061117155233.1:eventWidget
         def eventWidget (self,event):
@@ -3105,7 +3161,7 @@ if wx:
         #@+node:edream.110203113231.319:getFontFromParams
         def getFontFromParams(self,family,size,slant,weight):
             
-            ## g.trace(g.app.config.defaultFont)
+            # g.trace(g.app.config.defaultFont)
             
             return g.app.config.defaultFont ##
             
@@ -3337,8 +3393,6 @@ if wx:
             self.bodyCtrl = self.createControl(frame,parentFrame)
         
             self.colorizer = leoColor.colorizer(self.c)
-        
-            ### self.styles = {} # For syntax coloring.
             
             self.keyDownModifiers = None
             self.forceFullRecolorFlag = False
@@ -3352,7 +3406,6 @@ if wx:
                 parentFrame,
                 pos = wx.DefaultPosition,
                 size = wx.DefaultSize,
-                ### style = (wx.TE_RICH | wx.TE_RICH2 | wx.TE_MULTILINE),
                 name = 'body', # Must be body for k.masterKeyHandler.
             )
         
@@ -3364,7 +3417,7 @@ if wx:
             '''(wxBody) Create gui-dependent bindings.
             These are *not* made in nullBody instances.'''
             
-            return ######
+            return ###
         
             frame = self.frame ; c = self.c ; k = c.k
             if not w: w = self.bodyCtrl
@@ -5602,7 +5655,10 @@ if wx:
                 self.editWidgetDict = {} # Bug fix.
                 self.idDict = {}
                 self.expandAllAncestors(c.currentPosition())
-                self.partialRedraw()
+                if sys.platform.startswith('win') and not g.app.unitTesting:
+                    self.cleverRedraw() # Slow, but eliminates flash.
+                else:
+                    self.partialRedraw() # Essential for Linu.
             finally:
                 self.drawing = False # Enable event handlers.
             # if True and not g.app.unitTesting: g.trace('done')
@@ -5610,6 +5666,196 @@ if wx:
         def redraw_now(self,scroll=True):
             self.redraw()
         #@nonl
+        #@+node:ekr.20070221122411:cleverRedraw & helpers
+        initial_draw = True
+        
+        def cleverRedraw (self):
+            
+            # g.trace('initial_redraw',self.initial_draw)
+            
+            if self.initial_draw:
+                self.initial_draw = False
+                self.partialRedraw()
+            else:
+                c = self.c ; tree = self.treeCtrl
+                root_p = c.rootPosition()
+                root_id = tree.GetRootItem()
+                child_id,cookie = tree.GetFirstChild(root_id)
+                self.update_siblings(root_id,child_id,root_p)
+        #@nonl
+        #@+node:ekr.20070222092336:insertTreeAfter
+        def insertTreeAfter (self,parent_id,prev_id,p):
+        
+            tree = self.treeCtrl
+            ins_id = self.insert_node(parent_id,prev_id,p)
+            # g.trace(p.headString())
+            child = p.firstChild()
+            while child:
+                # Create the entire tree, regardless of expansion state.
+                self.redraw_subtree(ins_id,child)
+                child.moveToNext()
+            return ins_id
+        #@-node:ekr.20070222092336:insertTreeAfter
+        #@+node:ekr.20070222091654:insert_node
+        def insert_node(self,parent_id,prev_id,p):
+            
+            tree = self.treeCtrl
+            data = wx.TreeItemData(p.copy())
+            image = self.assignIcon(p)
+        
+            node_id = tree.InsertItem(
+                parent_id,
+                prev_id,
+                text=p.headString(),
+                image=image,
+                #selImage=image,
+                data=data)
+        
+            ### tree.SetItemFont(id,self.defaultFont)
+            
+            self.setEditWidget(p,node_id)
+            assert (p == tree.GetItemData(node_id).GetData())
+            
+            self.expandAndSelect(node_id,p)
+        
+            return node_id
+        #@-node:ekr.20070222091654:insert_node
+        #@+node:ekr.20070221130134:update_node
+        def update_node(self,node_id,p):
+            
+            tree = self.treeCtrl
+        
+            # data = wx.TreeItemData(p.copy())
+            # id = tree.AppendItem(
+                # parent_id,
+                # text=p.headString(),
+                # image=image,
+                # #selImage=image,
+                # data=data)
+        
+            # update the data.
+            new_h = p.headString() ; old_h = tree.GetItemText(node_id)
+            if old_h != new_h:
+                g.trace('old:',old_h,'new:',new_h)
+                tree.SetItemText(node_id,new_h)
+            image = self.assignIcon(p)
+            if image != tree.GetItemImage(node_id):
+                tree.SetItemImage(node_id,image)
+            data = wx.TreeItemData(p.copy())
+            tree.SetItemData(node_id,data)
+        
+            self.setEditWidget(p,node_id)
+            assert (p == tree.GetItemData(node_id).GetData())
+            return node_id
+        #@-node:ekr.20070221130134:update_node
+        #@+node:ekr.20070221122544.2:update_siblings
+        def update_siblings(self,parent_id,node_id,p):
+            
+            tree = self.treeCtrl ; trace = False
+            first_id,first_p = node_id,p.copy()
+            # Warning: we will visit each position only once even if the tree changes.
+            for p in p.self_and_siblings_iter(copy=True):
+                h = p.headString()
+                if node_id.IsOk():
+                    data = tree.GetItemData(node_id)
+                    node_id2,p2 = data.GetId(),data.GetData()
+                    h2 = p2.headString()
+                    assert node_id == node_id2,'expected id: %s, got %s' % (node_id,node_id2)
+                    if p2 == p:
+                        # trace and g.trace('match at:',h,'next:',p.next() and p.next().headString())
+                        self.update_node(node_id,p)
+                        self.expandAndSelect(node_id,p)
+                        # Recursively update.
+                        if p.hasChildren():
+                            child_id,cookie = tree.GetFirstChild(node_id)
+                            self.update_siblings(node_id,child_id,p.firstChild())
+                        node_id = tree.GetNextSibling(node_id)
+                    elif p.hasNext() and p.next() == p2:
+                        # There is a node between p (in the new tree) and p2 (in the old tree).
+                        # Insert this node (before p2), then stay at (node_id == node_id2)
+                        prev_id = tree.GetPrevSibling(node_id)
+                        ins_id = self.insertTreeAfter(parent_id,prev_id,p.copy())
+                        trace and g.trace('at:',h,'insert before:',h2)
+                        trace and g.trace('prev id',id(node_id),'ins id',id(ins_id))
+                        # We will revisit node_id2 when we visit p.next()
+                        # But this is our last chance to visit ins_id.
+                        self.expandAndSelect(ins_id,p)
+                        node_id = tree.GetNextSibling(ins_id)
+                    elif p2.hasNext() and p2.next() == p.next():
+                        # The node p (in the new tree) is p2.next (in the old tree)
+                        # Delete p2 from the tree, and stay at node_id (for a later update)
+                        trace and g.trace('at:',h,'delete',h2)
+                        next_id = tree.GetNextSibling(node_id)
+                        tree.Delete(node_id)
+                        node_id = next_id
+                        self.expandAndSelect(node_id,p)
+                    else:
+                        trace and g.trace('*** mismatch at:',h,'next:',h2)
+                        prev_id = tree.GetPrevSibling(node_id)
+                        tree.Delete(node_id)
+                        ins_id = self.insertTreeAfter(parent_id,prev_id,p.copy())
+                        node_id = tree.GetNextSibling(ins_id)
+                else:
+                    last_p = first_p.copy()
+                    while last_p.hasNext():
+                        last_p.moveToNext()
+                    prev_id = tree.GetLastChild(parent_id)
+                    trace and g.trace('*** insert at end after',last_p.headString())
+                    ins_id = self.insertTreeAfter(parent_id,prev_id,last_p)
+                    self.expandAndSelect(ins_id,p)
+            while node_id.IsOk():
+                trace and g.trace('delete at end')
+                next_id = tree.GetNextSibling(node_id)
+                tree.Delete(node_id)
+                node_id = next_id
+        #@-node:ekr.20070221122544.2:update_siblings
+        #@+node:ekr.20070222083341:expandAndSelect
+        # This should be called after drawing so the +- box is drawn properly.
+        
+        def expandAndSelect (self,node_id,p,force=False):
+            
+            c = self.c ; tree = self.treeCtrl
+        
+            # The calls to tree.Expand and tree.Collapse *will* generate events,
+            # This is the reason the event handlers must be disabled while drawing.
+        
+            if p.isExpanded():  tree.Expand(node_id)
+            else:               tree.Collapse(node_id)
+                
+            # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+            if force:
+                g.trace('force selection',p.headString())
+                c.setCurrentPosition(p)
+                tree.SelectItem(node_id) # Generates call to onTreeChanged.
+            elif p == self.c.currentPosition():
+                # g.trace('selecting',p.headString())
+                tree.SelectItem(node_id) # Generates call to onTreeChanged.
+        #@-node:ekr.20070222083341:expandAndSelect
+        #@+node:ekr.20070312095016:redraw_subtree
+        def redraw_subtree(self,parent_id,p,trace=False):
+                
+            tree = self.treeCtrl
+            node_id = self.redraw_node(parent_id,p)
+            
+            # Draw the entire tree, regardless of expansion state.
+            child_p = p.firstChild()
+            while child_p:
+                self.redraw_subtree(node_id,child_p)
+                child_p.moveToNext()
+        
+            # The calls to tree.Expand and tree.Collapse *will* generate events,
+            # This is the reason the event handlers must be disabled while drawing.
+            if p.isExpanded():
+                tree.Expand(node_id)
+            else:
+                tree.Collapse(node_id)
+                
+            # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
+            if p == self.c.currentPosition():
+                tree.SelectItem(node_id) # Generates call to onTreeChanged.
+        #@nonl
+        #@-node:ekr.20070312095016:redraw_subtree
+        #@-node:ekr.20070221122411:cleverRedraw & helpers
         #@+node:edream.110203113231.299:redraw_node
         def redraw_node(self,parent_id,p):
             
@@ -5712,7 +5958,6 @@ if wx:
                     
         def updateIcon(self,p):
             val = p.v.computeIcon()
-            ###id = self.idDict.get(p.v)
             tree_id = self.getIdDict(p)
             if tree_id:
                 self.treeCtrl.SetItemImage(tree_id,val)
@@ -5728,10 +5973,6 @@ if wx:
             c = self.c ; tree = self.treeCtrl
             if not p: return
             if self.frame.lockout: return
-            
-            # g.trace(p.headString(),g.callers())
-            
-            ### tree_id = self.idDict.get(p.v)
             
             tree_id = self.getIdDict(p)
         
@@ -6099,9 +6340,7 @@ if wx:
             
             c = self.c
             
-            ### tree_id = self.idDict.get(p.v)
             tree_id = self.getIdDict(p)
-            
             # g.trace('editPosition',self.editPosition(),'id',id(tree_id))
             
             expandFlag = self.expandAllAncestors(p)
@@ -6119,7 +6358,7 @@ if wx:
                 c.endUpdate(redrawFlag)
         
             self.setEditPosition(p) # That is, self._editPosition = p
-            tree_id = self.getIdDict(p) ### self.idDict.get(p.v) 
+            tree_id = self.getIdDict(p)
             if not tree_id: return # Not an error.
             
             self.treeCtrl.EditLabel(tree_id)
@@ -6142,25 +6381,11 @@ if wx:
         def setEditWidget (self,p,tree_id):
             
             if g.app.killed or self.c.frame.killed: return
-            
-            # g.trace('id',id(tree_id),'v',id(p.v),'p',p.headString(),self.c.shortFileName(),'idDict',id(self.idDict))
-            
-            # g.trace(p.headString())
+        
             self.setIdDict(p,tree_id)
             p.edit_widget = w = headlineWidget(self.c,self.treeCtrl,tree_id)
             self.editWidgetDict[p.v] = w
         
-            # w = self.editWidgetDict.get(p.v)
-            # self.idDict[p.v] = tree_id
-        
-            # if w:
-                # w.init(tree_id)
-            # else:
-                # # g.trace(p.headString())
-                # w = headlineWidget(self.c,self.treeCtrl,tree_id)
-                # self.editWidgetDict[p.v] = w
-        
-            # p.edit_widget = w
         #@-node:ekr.20070125091308:setEditWidget
         #@+node:ekr.20070312083143:get/setIdDict
         def getIdDict (self,p):
