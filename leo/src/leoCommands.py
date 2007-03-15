@@ -5034,12 +5034,15 @@ class baseCommands:
         if not back: return
         inAtIgnoreRange = p.inAtIgnoreRange()
         back2 = back.visBack()
-        if back2 and p.v in back2.v.t.vnodeList:
-            # A weird special case: just select back2.
-            c.selectPosition(back2)
-            # c.treeWantsFocusNow()
-            c.treeFocusHelper()
-            return
+        
+        # For this special case we move p after back2.
+        specialCase = back2 and p.v in back2.v.t.vnodeList
+        # if back2 and p.v in back2.v.t.vnodeList:
+            # # A weird special case: just select back2.
+            # c.selectPosition(back2)
+            # # c.treeWantsFocusNow()
+            # c.treeFocusHelper()
+            # return
     
         sparseMove = c.config.getBool('sparse_move_outline_left')
         c.beginUpdate()
@@ -5058,21 +5061,23 @@ class baseCommands:
                 
             parent = p.parent()
             
-            if not back2:
+            if specialCase:
+                # The move must be legal.
+                moved = True
+                back2.contract()
+                p.moveAfter(back2)
+            elif not back2:
                 # p will be the new root node
                 moved = True
                 p.moveToRoot(oldRoot=c.rootPosition())
-            
             elif back2.hasChildren() and back2.isExpanded():
                 if c.checkMoveWithParentWithWarning(p,back2,True):
                     moved = True
                     p.moveToNthChildOf(back2,0)
-            
             else:
                 if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
                     moved = True
                     p.moveAfter(back2)
-            
             if moved and sparseMove and parent and not parent.isAncestorOf(p):
                 # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
                 parent.contract()
