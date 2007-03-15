@@ -2,7 +2,7 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070308103059:Fix bugs
+#@+node:ekr.20070308103059:Fix bugs 4
 #@+node:ekr.20070308081745:Fix slideshow/button problem
 @nocolor
 https://sourceforge.net/forum/message.php?msg_id=4197778
@@ -31,22 +31,6 @@ simulateCommand: no command for next-slide
 the current CVS does not write to the log pane that settings, either present
 in myLeoSettings.leo or the current file, were read.
 #@-node:ekr.20070308082140:Fix problem with settings report
-#@+node:ekr.20070312141330:Fix yet another cursor down bug
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4201463
-By: fgeatfhv
-
-Strange, I have done a cvs update today afternoon.
-
-I know that there was an issue with the cursor. The problem there was that it
-jumped down several lines at once after the 2nd key press. This one seems different
-from that, though, as it goes down 2 lines if there are empty lines following
-the line the cursor currently stands on.
-
-Franz
-#@nonl
-#@-node:ekr.20070312141330:Fix yet another cursor down bug
 #@+node:ekr.20070313103240:Improve special case in moveOutlineUp
 @nocolor
 
@@ -194,7 +178,7 @@ Franz
 @color
 #@nonl
 #@-node:ekr.20070313103608:Fix bugs in @url nodes
-#@-node:ekr.20070308103059:Fix bugs
+#@-node:ekr.20070308103059:Fix bugs 4
 #@+node:ekr.20070307075714:Asap
 #@+node:ekr.20070307082814:Create g.startupController class
 #@-node:ekr.20070307082814:Create g.startupController class
