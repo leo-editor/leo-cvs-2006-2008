@@ -2,35 +2,7 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070308103059:Fix bugs 3
-#@+node:ekr.20070308081745:Fix slideshow/button problem
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4197778
-By: rogererens
-
-After enabling the slideshow plugin I can advance to the next slide using the
-next-slide-command, but the pressing the button that results from @button NxtSlide
-in leoslideshows.leo gives an error:
-simulateCommand: no command for next-slide
-
-Leo Log Window...
-Leo 4.4.3 alpha 1, build  1.125 , January 26, 2006
-Python 2.5.0, Tk 8.4.12, Pmw 1.2
-Windows 5, 1, 2600, 2, Service Pack 2
-
-leoID = rogererens (in C:\Documents and Settings\Roger)
-global config dir: E:\_cvs_\Leo\config
-home dir: C:\Documents and Settings\Roger
-reading settings in E:\_cvs_\Leo\config\leoSettings.leo
-reading: C:\Documents and Settings\Roger\Desktop\leoslideshows.leo
-simulateCommand: no command for next-slide
-#@-node:ekr.20070308081745:Fix slideshow/button problem
-#@+node:ekr.20070308082140:Fix problem with settings report
-@nocolor
-
-the current CVS does not write to the log pane that settings, either present
-in myLeoSettings.leo or the current file, were read.
-#@-node:ekr.20070308082140:Fix problem with settings report
+#@+node:ekr.20070308103059:Fix bugs (these two work for me)
 #@+node:ekr.20070313103608:Fix bugs in @url nodes (works for me)
 @nocolor
 
@@ -55,7 +27,86 @@ Franz
 @color
 #@nonl
 #@-node:ekr.20070313103608:Fix bugs in @url nodes (works for me)
-#@-node:ekr.20070308103059:Fix bugs 3
+#@+node:ekr.20070308081745:Fix slideshow/button problem (works for me)
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4197778
+By: rogererens
+
+After enabling the slideshow plugin I can advance to the next slide using the
+next-slide-command, but the pressing the button that results from @button NxtSlide
+in leoslideshows.leo gives an error:
+simulateCommand: no command for next-slide
+
+Leo Log Window...
+Leo 4.4.3 alpha 1, build  1.125 , January 26, 2006
+Python 2.5.0, Tk 8.4.12, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+
+leoID = rogererens (in C:\Documents and Settings\Roger)
+global config dir: E:\_cvs_\Leo\config
+home dir: C:\Documents and Settings\Roger
+reading settings in E:\_cvs_\Leo\config\leoSettings.leo
+reading: C:\Documents and Settings\Roger\Desktop\leoslideshows.leo
+simulateCommand: no command for next-slide
+
+@color
+#@+node:ekr.20061031131434.131:k.registerCommand
+def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
+    
+    '''Make the function available as a minibuffer command,
+    and optionally attempt to bind a shortcut.
+    
+    You can wrap any method in a callback function, so the
+    restriction to functions is not significant.'''
+    
+    k = self ; c = k.c
+    f = c.commandsDict.get(commandName)
+    verbose = verbose and not g.app.unitTesting
+    if f and f.__name__ != 'dummyCallback' and verbose:
+        g.es_print('Redefining %s' % (commandName), color='red')
+        
+    c.commandsDict [commandName] = func
+    k.inverseCommandsDict [func.__name__] = commandName
+    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
+    
+    if shortcut:
+        stroke = k.shortcutFromSetting(shortcut)
+    elif commandName.lower() == 'shortcut': # Causes problems.
+        stroke = None
+    else:
+        # Try to get a shortcut from leoSettings.leo.
+        junk,bunchList = c.config.getShortcut(commandName)
+        for bunch in bunchList:
+            accel2 = bunch.val ; pane2 = bunch.pane
+            if accel2 and not pane2.endswith('-mode'):
+                shortcut2 = accel2
+                stroke = k.shortcutFromSetting(shortcut2)
+                if stroke: break
+        else: stroke = None
+  
+    # g.trace('verbose',verbose,'stroke',stroke,commandName)
+    if stroke:
+        ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
+        k.makeMasterGuiBinding(stroke) # Must be a stroke.
+        if verbose and ok:
+             g.es_print('@command: %s = %s' % (
+                commandName,k.prettyPrintKey(stroke)),color='blue')
+    elif verbose:
+        g.es_print('@command: %s' % (commandName),color='blue')
+                
+    # Fixup any previous abbreviation to press-x-button commands.
+    if commandName.startswith('press-') and commandName.endswith('-button'):
+        d = c.config.getAbbrevDict()
+            # Keys are full command names, values are abbreviations.
+        if commandName in d.values():
+            for key in d.keys():
+                if d.get(key) == commandName:
+                    c.commandsDict [key] = c.commandsDict.get(commandName)
+                    break
+#@nonl
+#@-node:ekr.20061031131434.131:k.registerCommand
+#@-node:ekr.20070308081745:Fix slideshow/button problem (works for me)
+#@-node:ekr.20070308103059:Fix bugs (these two work for me)
 #@+node:ekr.20070307075714:Asap
 #@+node:ekr.20070307082814:Create g.startupController class
 #@-node:ekr.20070307082814:Create g.startupController class

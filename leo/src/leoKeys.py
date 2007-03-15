@@ -2880,6 +2880,7 @@ class keyHandlerClass:
                     if stroke: break
             else: stroke = None
       
+        # g.trace('verbose',verbose,'stroke',stroke,commandName)
         if stroke:
             ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
             k.makeMasterGuiBinding(stroke) # Must be a stroke.

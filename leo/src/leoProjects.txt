@@ -16307,6 +16307,105 @@ if moved and sparseMove and parent and not parent.isAncestorOf(p):
 #@-node:ekr.20031218072017.1773:<< Move p up >>
 #@-node:ekr.20031218072017.1772:moveOutlineUp
 #@-node:ekr.20070313103240:Improved special case in moveOutlineUp
+#@+node:ekr.20070308082140:Fixed problem with settings report
+@nocolor
+
+the current CVS does not write to the log pane that settings, either present
+in myLeoSettings.leo or the current file, were read.
+
+@color
+#@+node:ekr.20041120064303:g.app.config.readSettingsFiles & helpers
+def readSettingsFiles (self,fileName,verbose=True):
+        
+    seen = []
+    self.write_recent_files_as_needed = False # Will be set later.
+    << define localDirectory, localConfigFile & myLocalConfigFile >>
+
+    # Init settings from leoSettings.leo and myLeoSettings.leo files.
+    for path,localFlag in (
+        (self.globalConfigFile,False),
+        (self.homeFile,False),
+        (localConfigFile,False),
+        (self.myGlobalConfigFile,False),
+        (self.myHomeConfigFile,False),
+        (myLocalConfigFile,False),
+        (fileName,True),
+    ):
+        if path and path.lower() not in seen:
+            seen.append(path.lower())
+            if verbose and not g.app.unitTesting:
+                s = 'reading settings in %s' % path
+                # This occurs early in startup, so use the following instead of g.es_print()
+                print s
+                g.app.logWaiting.append((s+'\n','blue'),)
+            c = self.openSettingsFile(path)
+            if c:
+                self.updateSettings(c,localFlag)
+                g.app.destroyWindow(c.frame)
+                self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
+    self.readRecentFiles(localConfigFile)
+    self.inited = True
+    self.setIvarsFromSettings(None)
+#@nonl
+#@+node:ekr.20061028082834:<< define localDirectory, localConfigFile & myLocalConfigFile >>
+# This can't be done in initSettingsFiles because the local directory does not exits.
+localDirectory = g.os_path_dirname(fileName)
+
+#  Set the local leoSettings.leo file.
+localConfigFile = g.os_path_join(localDirectory,'leoSettings.leo')
+if not g.os_path_exists(localConfigFile):
+    localConfigFile = None
+
+# Set the local myLeoSetting.leo file.
+myLocalConfigFile = g.os_path_join(localDirectory,'myLeoSettings.leo')
+if not g.os_path_exists(myLocalConfigFile):
+    myLocalConfigFile = None
+#@nonl
+#@-node:ekr.20061028082834:<< define localDirectory, localConfigFile & myLocalConfigFile >>
+#@+node:ekr.20041117085625:g.app.config.openSettingsFile
+def openSettingsFile (self,path):
+    
+    try:
+        # Open the file in binary mode to allow 0x1a in bodies & headlines.
+        theFile = open(path,'rb')
+    except IOError:
+        g.es("can not open: " + path, color="blue")
+        return None
+        
+    # Similar to g.openWithFileName except it uses a null gui.
+    # Changing g.app.gui here is a major hack.
+    oldGui = g.app.gui
+    g.app.gui = leoGui.nullGui("nullGui")
+    c,frame = g.app.newLeoCommanderAndFrame(path,updateRecentFiles=False)
+    frame.log.enable(False)
+    c.setLog()
+    g.app.lockLog()
+    ok = frame.c.fileCommands.open(
+        theFile,path,readAtFileNodesFlag=False,silent=True) # closes theFile.
+    g.app.unlockLog()
+    frame.openDirectory = g.os_path_dirname(path)
+    g.app.gui = oldGui
+    return ok and c
+#@-node:ekr.20041117085625:g.app.config.openSettingsFile
+#@+node:ekr.20051013161232:g.app.config.updateSettings
+def updateSettings (self,c,localFlag):
+
+    d = self.readSettings(c)
+    
+    if d:
+        d['_hash'] = theHash = c.hash()
+        if localFlag:
+            self.localOptionsDict[theHash] = d
+        else:
+            self.localOptionsList.insert(0,d)
+            
+    if 0: # Good trace.
+        if localFlag:
+            g.trace(c.fileName())
+            g.trace(d and d.keys())
+#@-node:ekr.20051013161232:g.app.config.updateSettings
+#@-node:ekr.20041120064303:g.app.config.readSettingsFiles & helpers
+#@-node:ekr.20070308082140:Fixed problem with settings report
 #@-node:ekr.20070129082731.1:Bugs
 #@+node:ekr.20070304133016:Code
 #@+node:ekr.20070221095637:Eliminating flash
@@ -27402,8 +27501,11 @@ def readSettingsFiles (self,fileName,verbose=True):
     ):
         if path and path.lower() not in seen:
             seen.append(path.lower())
-            if verbose:
-                g.es_print('reading settings in %s' % path)
+            if verbose and not g.app.unitTesting:
+                s = 'reading settings in %s' % path
+                # This occurs early in startup, so use the following instead of g.es_print()
+                print s
+                g.app.logWaiting.append((s+'\n','blue'),)
             c = self.openSettingsFile(path)
             if c:
                 self.updateSettings(c,localFlag)
