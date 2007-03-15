@@ -2604,7 +2604,8 @@ def es(s,*args,**keys):
 def es_print(s,*args,**keys):
     
     print g.toEncodedString(s,'ascii')
-    if not g.app.gui or g.app.gui.isNullGui:
+
+    if g.app.gui and not g.app.gui.isNullGui:
         g.es(s,*args,**keys)
     
 def test_g_es_print():
