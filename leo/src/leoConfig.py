@@ -1364,8 +1364,11 @@ class configClass:
         ):
             if path and path.lower() not in seen:
                 seen.append(path.lower())
-                if verbose:
-                    g.es_print('reading settings in %s' % path)
+                if verbose and not g.app.unitTesting:
+                    s = 'reading settings in %s' % path
+                    # This occurs early in startup, so use the following instead of g.es_print()
+                    print s
+                    g.app.logWaiting.append((s+'\n','blue'),)
                 c = self.openSettingsFile(path)
                 if c:
                     self.updateSettings(c,localFlag)
