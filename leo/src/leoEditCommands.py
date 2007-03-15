@@ -3045,7 +3045,7 @@ class editCommandsClass (baseEditCommandsClass):
         row,col = g.convertPythonIndexToRowCol(s,ins)
         i,j = g.getLine(s,ins)
         if direction == 'down':
-            i2,j2 = g.getLine(s,j+1)
+            i2,j2 = g.getLine(s,j)
         else:
             i2,j2 = g.getLine(s,i-1)
     
