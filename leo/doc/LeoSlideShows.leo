@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet ekr_stylesheet?>
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
@@ -15,7 +15,7 @@
 <v t="ekr.20060901144149.3"><vh>@button next-show @key=Alt-5</vh></v>
 <v t="ekr.20060901144149.2"><vh>@button prev-slide @key=Alt-6</vh></v>
 <v t="ekr.20060901144359"><vh>@button next-slide @key=Alt-7</vh></v>
-<v t="ekr.20060902092242"><vh>@button 2slide @key=Alt-0</vh></v>
+<v t="ekr.20060902092242"><vh>@button make-slide @key=Alt-0</vh></v>
 </v>
 <v t="ekr.20060901144149.4"><vh>Sounds</vh>
 <v t="ekr.20060901144149.5"><vh>@url http://mail.python.org/pipermail/python-list/2004-October/248738.html</vh></v>
@@ -23,7 +23,18 @@
 <v t="ekr.20060901144149.7"><vh>@url c:\prog\Sounds\s2.wav</vh></v>
 </v>
 </v>
+<v t="ekr.20070315073704" a="E"><vh>@settings</vh>
+<v t="ekr.20070315073704.1"><vh>@enabled-plugins</vh></v>
+<v t="ekr.20070315073704.2"><vh>vim plugin</vh>
+<v t="ekr.20070315073704.3"><vh>@string vim_cmd = c:\vim\vim63\gvim --servername LEO</vh></v>
+<v t="ekr.20070315073704.4"><vh>@string vim_exe = c:\vim\vim63\gvim</vh></v>
+</v>
+</v>
 <v t="ekr.20060902100840"><vh>To do: rst + python colorizing</vh></v>
+<v t="ekr.20070315074504" a="E"><vh>To be made into slides</vh>
+<v t="ekr.20070315074504.1"><vh>a</vh></v>
+<v t="ekr.20070315074504.2"><vh>b</vh></v>
+</v>
 <v t="ekr.20060902101656" a="E"><vh>Slide shows</vh>
 <v t="ekr.20060901153101"><vh>@slideshow Introduction to Leo</vh>
 <v t="ekr.20060901153101.1"><vh>@slide topic 1</vh>
@@ -138,13 +149,18 @@ This is the start of the slideshow that introduces you to Leo.</t>
 <t tx="ekr.20060901153101.6">Slide 4
 </t>
 <t tx="ekr.20060902092242">c.beginUpdate()
+
 try:
+    p1 = p.copy()
+    undoData = c.undoer.beforeChangeTree(p1)
     for p in c.currentPosition().self_and_subtree_iter():
         h = p.headString().strip()
         if not h.startswith('@slide'):
             p.setHeadString('@slide ' + h)
+    c.undoer.afterChangeTree(p1,'make-slide',undoData)
 finally:
-    c.endUpdate()</t>
+    c.endUpdate()
+</t>
 <t tx="ekr.20060902092259">@nocolor
 
 This slideshow describes the most useful functions, classes and methods in
@@ -925,5 +941,24 @@ in the @button unit test node.</t>
 <t tx="ekr.20060904104955"></t>
 <t tx="ekr.20060904104955.1"></t>
 <t tx="ekr.20060904104955.2"></t>
+<t tx="ekr.20070315073704"></t>
+<t tx="ekr.20070315073704.1">plugins_menu.py
+plugin_manager.py
+open_with.py
+mod_scripting.py
+rst3.py
+slideshow.py
+UNL.py
+nav_buttons.py</t>
+<t tx="ekr.20070315073704.2">For MacOS X (darwin) the following are typical defaults:
+
+vim_cmd = /Applications/gvim.app/Contents/MacOS/gvim --servername LEO
+vim_exe = /Applications/gvim.app/Contents/MacOS/gvim
+</t>
+<t tx="ekr.20070315073704.3"></t>
+<t tx="ekr.20070315073704.4"></t>
+<t tx="ekr.20070315074504"># The children of this node can be made into slides using the make-slide button or make-slide command.</t>
+<t tx="ekr.20070315074504.1"></t>
+<t tx="ekr.20070315074504.2"></t>
 </tnodes>
 </leo_file>
