@@ -2,7 +2,7 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070308103059:Fix bugs 4
+#@+node:ekr.20070308103059:Fix bugs 3
 #@+node:ekr.20070308081745:Fix slideshow/button problem
 @nocolor
 https://sourceforge.net/forum/message.php?msg_id=4197778
@@ -31,133 +31,10 @@ simulateCommand: no command for next-slide
 the current CVS does not write to the log pane that settings, either present
 in myLeoSettings.leo or the current file, were read.
 #@-node:ekr.20070308082140:Fix problem with settings report
-#@+node:ekr.20070313103240:Improve special case in moveOutlineUp
+#@+node:ekr.20070313103608:Fix bugs in @url nodes (works for me)
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=4205072
-By: rcy3cornelledu
-
-I find the following behavior strange: In a new window, make node "A" and clone
-it.  Then make node "B" and put it between the cloned nodes "A", and finally
-select the bottom node "A" so that the outline looks like:
-
-A
-B
-A <- select this node
-
-Now, perform a "Move Node Up" operation, with keyboard or menu.  I get:
-
-A <- this node selected
-B
-A
-
-It seems that the cloned nodes have swapped positions.  I would have expected
-to see:
-
-A
-A <- this node selected
-B
-
-which would be more like the behavior if I select the top node and "Move Down"
-
-
-I am using the evening-of-March 6, 2007 CVS snapshot of LEO on ActivePython,
-on the following platforms:
-
-Leo 4.4.3 alpha 1, build  1.124 , January 26, 2006
-Python 2.4.3, Tk 8.4.12, Pmw 1.2
-Windows 5, 1, 2600, 2, Service Pack 2
-
-Leo 4.4.3 alpha 1, build  1.124 , January 26, 2006
-Python 2.4.3, Tk 8.4.12, Pmw 1.2
-linux2
-
-If I can provide any more information, please let me know:
-richard.c.yeh@bankofamerica.com, richard.c.yeh@gmail.com (I use LEO both at
-work and at home.)
-
-@color
-#@+node:ekr.20031218072017.1772:moveOutlineUp
-def moveOutlineUp (self,event=None):
-    
-    '''Move the selected node up if possible.'''
-
-    c = self ; u = c.undoer ; p = c.currentPosition()
-    if not p: return
-    if not c.canMoveOutlineUp(): # Support for hoist.
-        if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-    back = p.visBack()
-    if not back: return
-    inAtIgnoreRange = p.inAtIgnoreRange()
-    back2 = back.visBack()
-    if back2 and p.v in back2.v.t.vnodeList:
-        # A weird special case: just select back2.
-        c.selectPosition(back2)
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-        return
-
-    sparseMove = c.config.getBool('sparse_move_outline_left')
-    c.beginUpdate()
-    try: # update...
-        c.endEditing()
-        undoData = u.beforeMoveNode(p)
-        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-        << Move p up >>
-        if moved:
-            if inAtIgnoreRange and not p.inAtIgnoreRange():
-                # The moved nodes have just become newly unignored.
-                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
-            else: # No need to mark descendents dirty.
-                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
-            dirtyVnodeList.extend(dirtyVnodeList2)
-            c.setChanged(True)
-            u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
-            
-    finally:
-        c.selectPosition(p) # Also sets root position.
-        c.endUpdate()
-        # c.treeWantsFocusNow()
-        c.treeFocusHelper()
-    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
-#@+node:ekr.20031218072017.1773:<< Move p up >>
-if 0:
-    g.trace("visBack",back)
-    g.trace("visBack2",back2)
-    g.trace("oldParent",oldParent)
-    g.trace("back2.hasChildren",back2.hasChildren())
-    g.trace("back2.isExpanded",back2.isExpanded())
-    
-parent = p.parent()
-
-if not back2:
-    # p will be the new root node
-    moved = True
-    p.moveToRoot(oldRoot=c.rootPosition())
-
-elif back2.hasChildren() and back2.isExpanded():
-    if c.checkMoveWithParentWithWarning(p,back2,True):
-        moved = True
-        p.moveToNthChildOf(back2,0)
-
-else:
-    if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
-        moved = True
-        p.moveAfter(back2)
-
-if moved and sparseMove and parent and not parent.isAncestorOf(p):
-    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
-    parent.contract()
-#@-node:ekr.20031218072017.1773:<< Move p up >>
-#@-node:ekr.20031218072017.1772:moveOutlineUp
-#@-node:ekr.20070313103240:Improve special case in moveOutlineUp
-#@+node:ekr.20070313103608:Fix bugs in @url nodes
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=4204734
+http://sourceforge.net/forum/message.php?msg_id=4204734
 By: fgeatfhv
 
 This is something I encountered in 4.3.1 already, but seems to have gotten worse
@@ -177,8 +54,8 @@ Franz
 
 @color
 #@nonl
-#@-node:ekr.20070313103608:Fix bugs in @url nodes
-#@-node:ekr.20070308103059:Fix bugs 4
+#@-node:ekr.20070313103608:Fix bugs in @url nodes (works for me)
+#@-node:ekr.20070308103059:Fix bugs 3
 #@+node:ekr.20070307075714:Asap
 #@+node:ekr.20070307082814:Create g.startupController class
 #@-node:ekr.20070307082814:Create g.startupController class
