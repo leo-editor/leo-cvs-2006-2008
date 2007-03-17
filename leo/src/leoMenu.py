@@ -1602,7 +1602,7 @@ class leoMenu:
     def destroy (self,menu):
         self.oops()
         
-    def insert (self,menuName,position,label,command): # New in Leo 4.4.3 a1
+    def insert (self,menuName,position,label,command,underline=None): # New in Leo 4.4.3 a1
         self.oops()
     
     def insert_cascade (self,parent,index,label,menu,underline):

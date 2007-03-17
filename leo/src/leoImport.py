@@ -1312,6 +1312,8 @@ class baseLeoImportCommands:
     #@-node:ekr.20060627063313:test_skipPythonDef2
     #@+node:ekr.20060626100102.1:test_scanPythonClass
     def test_scanPythonClass (self):
+        
+        # pychecker complains about c.
     
         global c # Get syntax warning if this is not first.
         if self: c = self.c             # Run from @test node: c not global

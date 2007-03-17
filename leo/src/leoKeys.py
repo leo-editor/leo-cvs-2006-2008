@@ -1179,7 +1179,7 @@ class autoCompleterClass:
             pieces2 = z.split('(')
             # g.trace(pieces2)
             pieces2 [0] = pieces2 [0].split() [-1]
-            a, b = pieces2 [0], pieces2 [1]
+            a, junk = pieces2 [0], pieces2 [1]
             aList = d.get(a,[])
             if str(z) not in aList:
                 aList.append(str(z))
@@ -2419,6 +2419,8 @@ class keyHandlerClass:
         
         Never changes the minibuffer label: individual commands must do that.
         '''
+        
+        # pychecker complains about initAllEditCommanders.
     
         k = self ; c = k.c
         # The command may have closed the window.
@@ -3915,6 +3917,8 @@ class keyHandlerClass:
             return isPlain
     #@+node:ekr.20061031131434.183:test_isPlainKey
     def test_isPlainKey (self):
+        
+        # pychecker complains about c not being used.
         
         import string
         

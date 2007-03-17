@@ -3878,10 +3878,7 @@ except Exception:
     else:
         #@        << define getpreferredencoding for *nix >>
         #@+node:ekr.20031218072017.1505:<< define getpreferredencoding for *nix >>
-        # On Unix, if CODESET is available, use that.
-        
-        # __pychecker__ = '--limit=0' # Note: this is at the top level!
-        #__pychecker__ = '--varlist=[CODESET]'
+        # Pychecker complains about CODESET
         
         try:
             locale.CODESET # Bug fix, 2/12/05
@@ -4440,6 +4437,8 @@ class mulderUpdateAlgorithm:
         Set the target file's modification time to
         that of the source file.
         """
+        
+        # pychecker complains about mtime.
     
         st = os.stat(sourcefilename)
     
@@ -5583,6 +5582,8 @@ def removeExtraLws (s,tab_width):
     return result
 #@+node:ekr.20050211120837:test_g_removeExtraLws
 def test_g_removeExtraLws():
+    
+    # pychecker complains about c and p.
     
     for s,expected in (
         (' a\n b\n c', 'a\nb\nc'),
