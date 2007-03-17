@@ -2,164 +2,12 @@
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070308103059:Fix bugs (these two work for me)
-#@+node:ekr.20070313103608:Fix bugs in @url nodes (works for me)
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4204734
-By: fgeatfhv
-
-This is something I encountered in 4.3.1 already, but seems to have gotten worse
-since then:
-
-A double click on a @url node results in two single clicks on that node. Result:
-Nothing happens.
-
-This occurs if there are many nodes expanded and/or the @url node itself contains
-a lot of text.
-
-If I contract all nodes (Alt+-), return to the @url node and double click it
-again, the double click works and the app starts.
-
-
-Franz
-
-@color
-#@nonl
-#@-node:ekr.20070313103608:Fix bugs in @url nodes (works for me)
-#@+node:ekr.20070308081745:Fix slideshow/button problem (works for me)
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4197778
-By: rogererens
-
-After enabling the slideshow plugin I can advance to the next slide using the
-next-slide-command, but the pressing the button that results from @button NxtSlide
-in leoslideshows.leo gives an error:
-simulateCommand: no command for next-slide
-
-Leo Log Window...
-Leo 4.4.3 alpha 1, build  1.125 , January 26, 2006
-Python 2.5.0, Tk 8.4.12, Pmw 1.2
-Windows 5, 1, 2600, 2, Service Pack 2
-
-leoID = rogererens (in C:\Documents and Settings\Roger)
-global config dir: E:\_cvs_\Leo\config
-home dir: C:\Documents and Settings\Roger
-reading settings in E:\_cvs_\Leo\config\leoSettings.leo
-reading: C:\Documents and Settings\Roger\Desktop\leoslideshows.leo
-simulateCommand: no command for next-slide
-
-@color
-#@+node:ekr.20061031131434.131:k.registerCommand
-def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
-    
-    '''Make the function available as a minibuffer command,
-    and optionally attempt to bind a shortcut.
-    
-    You can wrap any method in a callback function, so the
-    restriction to functions is not significant.'''
-    
-    k = self ; c = k.c
-    f = c.commandsDict.get(commandName)
-    verbose = verbose and not g.app.unitTesting
-    if f and f.__name__ != 'dummyCallback' and verbose:
-        g.es_print('Redefining %s' % (commandName), color='red')
-        
-    c.commandsDict [commandName] = func
-    k.inverseCommandsDict [func.__name__] = commandName
-    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
-    
-    if shortcut:
-        stroke = k.shortcutFromSetting(shortcut)
-    elif commandName.lower() == 'shortcut': # Causes problems.
-        stroke = None
-    else:
-        # Try to get a shortcut from leoSettings.leo.
-        junk,bunchList = c.config.getShortcut(commandName)
-        for bunch in bunchList:
-            accel2 = bunch.val ; pane2 = bunch.pane
-            if accel2 and not pane2.endswith('-mode'):
-                shortcut2 = accel2
-                stroke = k.shortcutFromSetting(shortcut2)
-                if stroke: break
-        else: stroke = None
-  
-    # g.trace('verbose',verbose,'stroke',stroke,commandName)
-    if stroke:
-        ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
-        k.makeMasterGuiBinding(stroke) # Must be a stroke.
-        if verbose and ok:
-             g.es_print('@command: %s = %s' % (
-                commandName,k.prettyPrintKey(stroke)),color='blue')
-    elif verbose:
-        g.es_print('@command: %s' % (commandName),color='blue')
-                
-    # Fixup any previous abbreviation to press-x-button commands.
-    if commandName.startswith('press-') and commandName.endswith('-button'):
-        d = c.config.getAbbrevDict()
-            # Keys are full command names, values are abbreviations.
-        if commandName in d.values():
-            for key in d.keys():
-                if d.get(key) == commandName:
-                    c.commandsDict [key] = c.commandsDict.get(commandName)
-                    break
-#@nonl
-#@-node:ekr.20061031131434.131:k.registerCommand
-#@-node:ekr.20070308081745:Fix slideshow/button problem (works for me)
-#@-node:ekr.20070308103059:Fix bugs (these two work for me)
-#@+node:ekr.20070307075714:Asap
-#@+node:ekr.20070307082814:Create g.startupController class
-#@-node:ekr.20070307082814:Create g.startupController class
-#@+node:ekr.20070306103213:invoke-menu-bar command
-#@-node:ekr.20070306103213:invoke-menu-bar command
-#@+node:ekr.20070228055539:print-settings command
-@nocolor
-
-A print-settings command would be useful.  This would  print the value of every setting, except key bindings which are already covered by the print-bindings and print-commands commands.  Ideally, the print-settings command would indicate the file that created the (active) setting, and possibly also the other files that contained overridden settings.  Something like this, where M indicates myLeoSettings.leo, SH indicates leoSettings.leo in the HOME directory, SC indicates leoSettings.leo in the config directory, etc.
-#@nonl
-#@-node:ekr.20070228055539:print-settings command
-#@+node:ekr.20070302164343:Find a way to see text in pdb when debugging exec statement
-#@-node:ekr.20070302164343:Find a way to see text in pdb when debugging exec statement
-#@+node:ekr.20061130084909:Improve What's special whitepaper
-@nocolor
-
-- Answer the question: how can Leo help me with programming.
-#@nonl
-#@-node:ekr.20061130084909:Improve What's special whitepaper
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
-#@+node:ekr.20070307082503:Make Leo an IPython notebook
-#@-node:ekr.20070307082503:Make Leo an IPython notebook
-#@-node:ekr.20070307075714:Asap
-#@+node:ekr.20070220082124.1:Before next release
+#@+node:ekr.20070316181314:Create a2 release notes
+#@-node:ekr.20070316181314:Create a2 release notes
 #@+node:ekr.20070305110820:Document leoBridge
 #@-node:ekr.20070305110820:Document leoBridge
-#@+node:ekr.20070220090145:Fix crasher in rclicker plugin
-
-Traceback (most recent call last):
-
-  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 2474, in doHook
-    return f(tag,keywords)
-
-  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 92, in doPlugins
-    return doHandlersForTag(tag,keywords)
-
-  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 70, in doHandlersForTag
-    val = callTagHandler(bunch,tag,keywords)
-
-  File "c:\prog\tigris-cvs\leo\src\leoPlugins.py", line 49, in callTagHandler
-    result = handler(tag,keywords)
-
-  File "C:\prog\tigris-cvs\leo\plugins\rClick.py", line 156, in rClicker
-    n0,p0=ind0.split('.',2)
-
-AttributeError: 'int' object has no attribute 'split'
-
-#@-node:ekr.20070220090145:Fix crasher in rclicker plugin
-#@+node:ekr.20070220082216:Test with Linux
-#@-node:ekr.20070220082216:Test with Linux
-#@+node:ekr.20070218144114:Improve docs
-#@+node:ekr.20070215093739:Improve Leo's getting started page
+#@+node:ekr.20070220082124.2:Before b1
+#@+node:ekr.20070215093739:* Improve Leo's getting started page
 @nocolor
 
 http://sourceforge.net/forum/message.php?msg_id=4159734
@@ -198,14 +46,13 @@ his set of enabled plugins would overwrite the set of enabled plugins for the
 administrator or another user).
 
 Hope this helps to improve the installation experience for novices...
-#@-node:ekr.20070215093739:Improve Leo's getting started page
-#@+node:ekr.20070218143918:Improve Windows installation instructions
+#@-node:ekr.20070215093739:* Improve Leo's getting started page
+#@+node:ekr.20070218143918:* Improve Windows installation instructions
 This section is way too confusing:
     
 Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to install Leo on Windows
 #@nonl
-#@-node:ekr.20070218143918:Improve Windows installation instructions
-#@-node:ekr.20070218144114:Improve docs
+#@-node:ekr.20070218143918:* Improve Windows installation instructions
 #@+node:ekr.20070202080824:Enable more plugins by default
 @nocolor
 
@@ -258,460 +105,35 @@ way to SEE the attributes (this goes for "Labels," as well).
 ---- Enable Aspell automatically if possible.
 
 #@-node:ekr.20070202080824:Enable more plugins by default
-#@+node:ekr.20070124091018:Recent crash (problem with pmw baloons)
-Error: 1
-TclError Exception in Tk callback
-  Function: <bound method Balloon._destroy of <_Pmw.Pmw_1_2.lib.PmwBalloon.Balloon instance at 0x014C1850>> (type: <type 'instancemethod'>)
-  Args: (<Tkinter.Event instance at 0x0542C788>,)
-  Event type: DestroyNotify (type num: 17)
-Traceback (innermost last):
-  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752, in __call__
-    return apply(self.func, args)
-  File "C:\prog\tigris-cvs\leo\extensions\Pmw\Pmw_1_2\lib\PmwBalloon.py", line 283, in _destroy
-    self.withdraw()
-  File "<string>", line 1, in withdraw
-    None
-  File "C:\Python24\lib\lib-tk\Tkinter.py", line 1541, in wm_withdraw
-    return self.tk.call('wm', 'withdraw', self._w)
-TclError: bad window path name ".14557752.18889184.18889584.21763816.21764336"
-
-================================================
-  Event contents:
-    char: ??
-    delta: 0
-    height: ??
-    keycode: ??
-    keysym: ??
-    keysym_num: ??
-    num: ??
-    send_event: False
-    serial: 53150
-    state: ??
-    time: ??
-    type: 17
-    widget: .14557752.18889184.18889584.21763816
-    width: ??
-    x: ??
-    x_root: ??
-    y: ??
-    y_root: ??
-
-#@-node:ekr.20070124091018:Recent crash (problem with pmw baloons)
-#@+node:ekr.20070126072723:pychecker errors 3
-#leoGlobals.py:3933: No module attribute (CODESET) found
-#leoGlobals.py:118: No module attribute (leo_config_directory) found
-#leoGlobals.py:4494: No module attribute (mtime) found
-#leoGlobals.py:5112: No global (p) found
-#leoGlobals.py:5626: No global (c) found
-
-leoFind.py:1465: Redefining attribute (changeAllCommand) original line (1454)
-
-leoFind.py:248: No class attribute (svarDict) found
-leoFind.py:253: No class attribute (find_ctrl) found
-leoFind.py:254: No class attribute (change_ctrl) found
-leoFind.py:257: No class attribute (change_ctrl) found
-leoFind.py:257: No class attribute (find_ctrl) found
-leoFind.py:272: No class attribute (svarDict) found
-leoFind.py:274: No class attribute (svarDict) found
-leoFind.py:277: No class attribute (svarDict) found
-leoFind.py:285: No class attribute (svarDict) found
-leoFind.py:287: No class attribute (svarDict) found
-leoFind.py:290: No class attribute (svarDict) found
-leoFind.py:1109: No class attribute (find_ctrl) found
-leoFind.py:1128: No class attribute (frame) found
-leoFind.py:1358: No class attribute (svarDict) found
-leoFind.py:1362: No class attribute (svarDict) found
-leoFind.py:1369: No class attribute (find_ctrl) found
-leoFind.py:1376: No class attribute (change_ctrl) found
-leoFind.py:1412: Invalid arguments to (createFrame), got 1, expected 0
-
-leoKeys.py:1177: Local variable (b) not used
-leoKeys.py:2364: No module attribute (initAllEditCommanders) found
-leoKeys.py:2927: Local variable (gui) not used
-leoKeys.py:3756: No global (c) found
-leoFind.py:1398: No module attribute (__init__) found
-
-leoTkinterFind.py:389: Overridden method (createFrame) doesn't match signature in class (leoFind.findTab)
-
-leoTkinterMenu.py:145: Overridden method (insert) doesn't match signature in class (leoMenu.leoMenu)
-
-leoTkinterFrame.py:1944: Object (body) has no attribute (leo_p)
-
-leoTkinterGui.py:444: Overridden method (eventChar) doesn't match signature in class (leoGui.leoGui)
-leoTkinterGui.py:448: Overridden method (eventKeysym) doesn't match signature in class (leoGui.leoGui)
-leoTkinterGui.py:452: Overridden method (eventWidget) doesn't match signature in class (leoGui.leoGui)
-leoTkinterGui.py:456: Overridden method (eventXY) doesn't match signature in class (leoGui.leoGui)
-
-leoEditCommands.py:1110: Local variable (pythonDir) not used
-leoEditCommands.py:1484: Local variable (gui) not used
-leoEditCommands.py:4888: No global (c) found
-
-leoEditCommands.py:7637: Local variable (gui) not used
-leoFileCommands.py:2307: No global (c) found
-
-leoImport.py:1317: Global variable (c) not defined in module scope
-
-#@-node:ekr.20070126072723:pychecker errors 3
-#@-node:ekr.20070220082124.1:Before next release
-#@+node:ekr.20070220082124.2:Before b1
 #@+node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070307082503.1:Create Linux distribution
-#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@+node:ekr.20070212181918.1:Fix failed unit tests 30
-@killcolor
-
-Passed tests:
-- Length unit tests
-- Colorizer tests
-- Import/Export tests
-- Unit tests for edit commands
-
-Failed tests:
-- All other unit tests
-- Multiple editors
-
-----------------------------------------------------------------------
-Ran 218 tests in 25.484s
-
-FAILED (failures=26, errors=5)
-
-Fixed 1: total 30
-#@+node:ekr.20070214072721.1:Most important 4
-======================================================================
-FAIL: @test typing in empty body text redraws the screen (and icon)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 16, in <module>
-AssertionError: too many or too few redraws: 0
-
-======================================================================
-FAIL: @test strokeFromSetting
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 24, in <module>
-AssertionError: Expected Alt+equal, Got Alt+=
-
-======================================================================
-FAIL: @test w.toGuiIndex (test2)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 19, in <module>
-AssertionError
-
-======================================================================
-FAIL: @test <Delete> key sticks in body
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 15, in <module>
-AssertionError
-#@nonl
-#@-node:ekr.20070214072721.1:Most important 4
-#@+node:ekr.20070214072721.2:Headline failures 10
-======================================================================
-ERROR: @test paste from menu into body sticks
-
-======================================================================
-ERROR: @test paste from menu into headline sticks
-
-======================================================================
-ERROR: @test paste from menu to body recolors the body
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 10, in <module>
-AttributeError: 'Menu' object has no attribute 'index'
-
-======================================================================
-FAIL: @test return ends editing of headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 13, in <module>
-AssertionError: oops1 headlineWidget: 36546000 != <wx._controls.TreeCtrl; proxy of <Swig Object of type 'wxPyTreeCtrl *'
- at 0x19518e0> >
-
-======================================================================
-FAIL: @test paste at end of headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 20, in <module>
-AssertionError
-
-======================================================================
-FAIL: @test typing and undo in headline - at end
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 20, in <module>
-AssertionError: oops2
-
-======================================================================
-FAIL: @test paste and undo in headline - at end
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 21, in <module>
-AssertionError
-
-======================================================================
-FAIL: @test paste and undo in headline - with selection
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 20, in <module>
-AssertionError
-
-======================================================================
-FAIL: @test selecting new node retains typing in headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 20, in <module>
-AssertionError
-
-======================================================================
-FAIL: @test selecting new node retains paste in headline
-
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 21, in <module>
-AssertionError
-#@-node:ekr.20070214072721.2:Headline failures 10
-#@+node:ekr.20070214072721.4:Minor failures 4
-======================================================================
-FAIL: @test Find keeps focus in body & shows selected text
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 16, in <module>
-AssertionError: focus <wx._controls.TreeCtrl; proxy of <Swig Object of type 'wxPyTreeCtrl *' at 0x280d718> >
-
-======================================================================
-ERROR: @test onHyperLinkControlClick
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 3, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoNodes.py", line 1157, in __getattr__
-    raise AttributeError,attr
-AttributeError: OnHyperLinkControlClick
-
-======================================================================
-ERROR: @test rClick.py
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 7, in <module>
-  File "C:\prog\tigris-cvs\leo\plugins\rClick.py", line 77, in rClickbinder
-    c.frame.log.logCtrl.bind  ('<Button-3>',c.frame.OnBodyRClick)
-AttributeError: wxLeoFrame instance has no attribute 'OnBodyRClick'
-
-======================================================================
-FAIL: @test colorizerURLs
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 8, in <module>
-AssertionError: no URL tags
-#@nonl
-#@-node:ekr.20070214072721.4:Minor failures 4
-#@+node:ekr.20070214072721.5:Command failures 12
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: addComments: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: convertAllBlanks: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: convertAllTabs: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: convertBlanks: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: convertTabs: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: dedentBody: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: deleteComments: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: extract: after undo1
-
-======================================================================
-FAIL: runTest (leoTest.editBodyTestCase)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1040, in runTest
-    self.editBody()
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 1031, in editBody
-    assert u.compareOutlines(self.tempNode,self.before,compareHeadlines=False),'%s: after undo1' % commandName
-AssertionError: extractSection: after undo1
-
-======================================================================
-FAIL: @test c.editCommands.selfInsertCommand-1
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 13, in <module>
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 2655, in selfInsertCommand
-    self.flashMatchingBracketsHelper(w,i,ch)
-  File "c:\prog\tigris-cvs\leo\src\leoEditCommands.py", line 2730, in flashMatchingBracketsHelper
-    j = g.skip_matching_python_delims(s,i,ch,delim2,reverse=reverse)
-  File "c:\prog\tigris-cvs\leo\src\leoGlobals.py", line 3526, in skip_matching_python_delims
-    assert(g.match(s,i,delim1))
-AssertionError
-
-======================================================================
-FAIL: @test c.findMatchingBracket (pass)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 21, in <module>
-AssertionError: Expected: '(', got: u':'
-
-======================================================================
-FAIL: @test c.frame.pasteText
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "c:\prog\tigris-cvs\leo\src\leoTest.py", line 143, in runTest
-    exec script + '\n' in {'c':c,'g':g,'p':p}
-  File "<string>", line 14, in <module>
-AssertionError
-#@-node:ekr.20070214072721.5:Command failures 12
-#@-node:ekr.20070212181918.1:Fix failed unit tests 30
 #@+node:ekr.20070220082124.3:Make installing aspell easier
 #@-node:ekr.20070220082124.3:Make installing aspell easier
-#@+node:ekr.20070308062321:Fix @file nosent glitch
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4188344
-By: ktenney
-
-current cvs W2K
-
-Here's a @nosent node,
-legend: <> title
-        | between headline and body
-        \ indicates a child node
-
-<@nosent nosent.py>
-|
-@others
-
-t = 'test
- \
-  <class test>
-  |
-  class test:
-      @others
-  \
-   <body>
-   |
-   pass
-
-this produces the file:
-
-class test:
-    pass    
-t = 'test'
-
-without the <BLANKLINE> between 
-@others and t = 'test' in the top node:
-
-class test:
-    pass    t = 'test'
-#@-node:ekr.20070308062321:Fix @file nosent glitch
 #@-node:ekr.20070220082124.2:Before b1
+#@+node:ekr.20070307075714:Asap
+#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@+node:ekr.20070307082814:Create g.startupController class
+#@-node:ekr.20070307082814:Create g.startupController class
+#@+node:ekr.20070306103213:invoke-menu-bar command
+#@-node:ekr.20070306103213:invoke-menu-bar command
+#@+node:ekr.20070228055539:print-settings command
+@nocolor
+
+A print-settings command would be useful.  This would  print the value of every setting, except key bindings which are already covered by the print-bindings and print-commands commands.  Ideally, the print-settings command would indicate the file that created the (active) setting, and possibly also the other files that contained overridden settings.  Something like this, where M indicates myLeoSettings.leo, SH indicates leoSettings.leo in the HOME directory, SC indicates leoSettings.leo in the config directory, etc.
+#@nonl
+#@-node:ekr.20070228055539:print-settings command
+#@+node:ekr.20070302164343:Find a way to see text in pdb when debugging exec statement
+#@-node:ekr.20070302164343:Find a way to see text in pdb when debugging exec statement
+#@+node:ekr.20061130084909:Improve What's special whitepaper
+@nocolor
+
+- Answer the question: how can Leo help me with programming.
+#@nonl
+#@-node:ekr.20061130084909:Improve What's special whitepaper
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070307075714:Asap
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070105135713:To do: 4.4.4 (new positions)
 #@+node:ekr.20070202095051:*** Get chapters working
@@ -3064,6 +2486,8 @@ def defineHelpMenuTables (self):
 #@-node:ekr.20061028065955.4:New features
 #@-node:ekr.20070105135713:To do: 4.4.4 (new positions)
 #@+node:ekr.20060822174843:Most important
+#@+node:ekr.20070307082503:Make Leo an IPython notebook
+#@-node:ekr.20070307082503:Make Leo an IPython notebook
 #@+node:ekr.20061206084401:Look at launchpad and bazaar
 http://launchpad.net 
 #@-node:ekr.20061206084401:Look at launchpad and bazaar

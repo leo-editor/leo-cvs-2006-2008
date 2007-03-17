@@ -2591,7 +2591,7 @@ def add(self,event=None):
     self.dictionary[self.currentWord.lower()] = 0
     self.tab.onFindButton()
 #@-node:ekr.20051025071455.37:add
-#@+node:ekr.20051025071455.38:change (spellTab) 
+#@+node:ekr.20051025071455.38:change (spellTab)
 def change(self,event=None):
     """Make the selected change to the text"""
 
@@ -2617,7 +2617,7 @@ def change(self,event=None):
     c.invalidateFocus()
     c.bodyWantsFocusNow()
     return False
-#@-node:ekr.20051025071455.38:change (spellTab) 
+#@-node:ekr.20051025071455.38:change (spellTab)
 #@+node:ekr.20051025071455.40:find & helpers
 def find (self,event=None):
     """Find the next unknown word."""
@@ -5427,6 +5427,8 @@ def putDescendentAttributes (self,p):
 #@-node:ekr.20040701065235.2:putDescendentAttributes
 #@+node:EKR.20040627113418:putDescendentUnknownAttributes
 def putDescendentUnknownAttributes (self,p):
+    
+    # pychecker complains about dumps.
     
     # The bin param doesn't exist in Python 2.3;
     # the protocol param doesn't exist in earlier versions of Python.

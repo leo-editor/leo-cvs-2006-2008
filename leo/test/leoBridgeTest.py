@@ -2,32 +2,31 @@
 #@+node:ekr.20070227104713:@thin leoBridgeTest.py
 '''A program to run unit tests with the leoBridge module.'''
 
+import leoBridge
+import leoTest
+
 #@+others
 #@+node:ekr.20070227172826:main & helpers
 def main ():
-    
-    tag = 'leoTestBridge'
-    path = r'c:\prog\tigris-cvs\leo\test\test.leo'
-    path = r'c:\prog\tigris-cvs\leo\test\unitTest.leo'
 
-    import leoBridge
+    tag = 'leoTestBridge'
 
     # Setting verbose=True prints messages that would be sent to the log pane.
     bridge = leoBridge.controller(gui='nullGui',verbose=False)
     if bridge.isOpen():
         g = bridge.globals()
+        path = g.os_path_abspath(g.os_path_join(
+            g.app.loadDir,'..','test','unitTest.leo'))
         c = bridge.openLeoFile(path)
         g.es('%s %s' % (tag,c.shortFileName()))
         runUnitTests(c,g)
 
     print tag,'done'
-#@nonl
 #@+node:ekr.20070227172648:runUnitTests
 def runUnitTests (c,g):
 
-    nodeName = 'All unit tests'
-    
-    import leoTest
+    nodeName = 'All unit tests' # The tests to run.
+
     try:
         u = leoTest.testUtils(c)
         p = u.findNodeAnywhere(nodeName)
@@ -47,6 +46,7 @@ def runUnitTests (c,g):
 #@-node:ekr.20070227172826:main & helpers
 #@-others
 
-main()
+if __name__ == '__main__':
+    main()
 #@-node:ekr.20070227104713:@thin leoBridgeTest.py
 #@-leo
