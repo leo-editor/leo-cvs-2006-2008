@@ -224,10 +224,12 @@ class tkinterGui(leoGui.leoGui):
             c,title,message,yesMessage,noMessage,defaultButton)
         return d.run(modal=True)
         
-    def runCompareDialog(self,c):
-        """Create and run an askYesNo dialog."""
-        if not g.app.unitTesting:
-            leoTkinterCompareDialog(c)
+    # The compare panel has no run dialog.
+        
+    # def runCompareDialog(self,c):
+        # """Create and run an askYesNo dialog."""
+        # if not g.app.unitTesting:
+            # leoTkinterCompareDialog(c)
     #@+node:ekr.20070212132230:tkGui.createSpellTab
     def createSpellTab(self,c,spellHandler,tabName):
         
@@ -440,19 +442,19 @@ class tkinterGui(leoGui.leoGui):
         '''Generate an event.'''
         return w.event_generate(kind,*args,**keys)
     
-    def eventChar (self,event):
+    def eventChar (self,event,c=None):
         '''Return the char field of an event.'''
         return event and event.char or ''
         
-    def eventKeysym (self,event):
+    def eventKeysym (self,event,c=None):
         '''Return the keysym value of an event.'''
         return event and event.keysym
     
-    def eventWidget (self,event):
+    def eventWidget (self,event,c=None):
         '''Return the widget field of an event.'''   
         return event and event.widget
     
-    def eventXY (self,event):
+    def eventXY (self,event,c=None):
         if event:
             return event.x,event.y
         else:
@@ -559,7 +561,7 @@ class tkinterGui(leoGui.leoGui):
                 #@@c
                 
                 import Image
-                import tkIcon
+                import tkIcon # pychecker complains, but this *is* used.
                 
                 # Wait until the window has been drawn once before attaching the icon in OnVisiblity.
                 def visibilityCallback(event,self=self,w=w):
@@ -637,7 +639,7 @@ class tkinterGui(leoGui.leoGui):
         return w and isinstance(w,Tk.Text)
     #@-node:ekr.20051220144507:isTextWidget
     #@+node:ekr.20060621164312:makeScriptButton
-    def makeScriptButton (c,
+    def makeScriptButton (self,c,
         p=None, # A node containing the script.
         script=None, # The script itself.
         buttonText=None,
