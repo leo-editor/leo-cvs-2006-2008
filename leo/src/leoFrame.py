@@ -525,26 +525,7 @@ class baseTextWidget:
     #@-node:ekr.20070228074312.41:tag_add
     #@+node:ekr.20070228074312.42:tag_configure & helper
     def tag_configure (self,colorName,**keys):
-        
-        # g.trace(colorName,keys)
-        
-        return ##### 
-        
-        w = self
-        foreground = keys.get("foreground")
-        background = keys.get("background")
-    
-        fcolor = self.tkColorToWxColor (foreground) or wx.BLACK
-        bcolor = self.tkColorToWxColor (background) or wx.WHITE
-        # g.trace('%20s %10s %15s %10s %15s' % (colorName,foreground,fcolor,background,bcolor))
-        style = wx.TextAttr(fcolor,bcolor,font=w.defaultFont)
-        
-        if not hasattr(w,'leo_styles'):
-            w.leo_styles={}
-    
-        if style is not None:
-            # g.trace(colorName,style)
-            w.leo_styles[colorName] = style
+        pass
             
     tag_config = tag_configure
     #@nonl
@@ -848,12 +829,12 @@ class leoBody:
         
         return self.colorizer.updateSyntaxColorer(p.copy())
     #@-node:ekr.20031218072017.3677:Coloring
-    #@+node:ekr.20061109095450.8:onClick (passed)
+    #@+node:ekr.20061109095450.8:onClick
     def onClick (self,event):
         
         c = self.c ; k = c.k ; w = event and event.widget
         wname = c.widget_name(w)
-        
+    
         if wname.startswith('body'):
             # A hack to support middle-button pastes: remember the previous selection.
             k.previousSelection = w.getSelectionRange()
@@ -866,7 +847,7 @@ class leoBody:
             self.selectEditor(w)
         else:
             g.trace('can not happen')
-    #@-node:ekr.20061109095450.8:onClick (passed)
+    #@-node:ekr.20061109095450.8:onClick
     #@+node:ekr.20031218072017.3658:oops
     def oops (self):
         
