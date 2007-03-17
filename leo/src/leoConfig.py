@@ -138,7 +138,9 @@ class parserBaseClass:
     #@+node:ekr.20070224075914:doEnabledPlugins
     def doEnabledPlugins (self,p,kind,name,val):
         
-        c = self.c ; d = self.shortcutsDict
+        __pychecker__ = '--no-argsused' # kind,name,val not used.
+        
+        c = self.c
         s = p.bodyString()
         
         # This setting is handled differently from all other settings,

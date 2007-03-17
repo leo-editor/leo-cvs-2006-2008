@@ -2798,7 +2798,7 @@ class baseCommands:
         
         '''Add or remove double angle brackets from the headline of the selected node.'''
         
-        c = self ; v = c.currentVnode() ; gui = g.app.gui
+        c = self ; v = c.currentVnode()
         
         if g.app.batchMode:
             c.notValidInBatchMode("Toggle Angle Brackets")
@@ -6544,7 +6544,8 @@ class baseCommands:
             return
         c  = self ; p = c.currentPosition() ; p1 = p.copy()
         invisible = c.config.getBool('invisible_outline_navigation')
-        ch = event.char ; all = ch.isupper() and invisible
+        ch = event.char
+        allFlag = ch.isupper() and invisible # all is a global (!?)
         if not invisible: ch = ch.lower()
         found = False
         extend = self.navQuickKey()
@@ -6552,7 +6553,7 @@ class baseCommands:
         for extend2 in attempts:
             p = p1.copy()
             while 1:
-                if all:
+                if allFlag:
                     p.moveToThreadNext()
                 else:
                     p.moveToVisNext()
@@ -6566,7 +6567,7 @@ class baseCommands:
                     found = True ; break
             if found: break
         if found:
-            if all: c.frame.tree.expandAllAncestors(p)
+            if allFlag: c.frame.tree.expandAllAncestors(p)
             c.selectPosition(p)
             c.navTime = time.clock()
             c.navPrefix = newPrefix

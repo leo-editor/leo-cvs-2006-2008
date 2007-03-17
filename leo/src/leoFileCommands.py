@@ -2309,6 +2309,8 @@ class baseFileCommands:
             return False
     #@+node:ekr.20050404212949:test_fc_deleteFileWithMessage
     def test_fc_deleteFileWithMessage(self):
+        
+        # pychecker complains about c.
     
         fc=c.fileCommands # Self is a dummy argument.
         fc.deleteFileWithMessage('xyzzy','test')
@@ -2805,6 +2807,8 @@ class baseFileCommands:
     #@-node:ekr.20040701065235.2:putDescendentAttributes
     #@+node:EKR.20040627113418:putDescendentUnknownAttributes
     def putDescendentUnknownAttributes (self,p):
+        
+        # pychecker complains about dumps.
         
         # The bin param doesn't exist in Python 2.3;
         # the protocol param doesn't exist in earlier versions of Python.

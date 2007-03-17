@@ -197,6 +197,12 @@ class leoFind:
             self.selection_only = None
             self.wrap = None
             self.whole_word = None
+            
+        if 1:
+            self.change_ctrl = None
+            self.find_ctrl = None
+            self.frame = None
+            self.svarDict = {}
         #@-node:ekr.20050123164539:<< do dummy initialization to keep Pychecker happy >>
         #@nl
         
@@ -1367,13 +1373,28 @@ class findTab (leoFind):
     #@nonl
     #@-node:ekr.20051020120306.11:findTab.__init__
     #@+node:ekr.20061212092124:Must be defined in subclasses
-    def createBindings (self):          self.oops()
-    def createFrame (self,parent):      self.oops()
-    def getOption (self,ivar):          self.oops()
-    def init (self):                    self.oops()
-    def initGui (self):                 pass # Optional method.
-    def setOption (self,ivar,val):      self.oops()
-    def toggleOption (self,ivar):       self.oops()
+    def createBindings (self):
+        self.oops()
+    
+    def createFrame (self,parent):
+        __pychecker__ = '--no-argsused'
+        self.oops()
+       
+    def getOption (self,ivar):
+        self.oops()
+        
+    def init (self,c):
+        self.oops()
+    
+    def initGui (self):
+        pass # Optional method.
+    
+    def setOption (self,ivar,val):
+        __pychecker__ = '--no-argsused'
+        self.oops()
+        
+    def toggleOption (self,ivar):
+        self.oops()
     
     # self.oops is defined in the leoFind class.
     #@-node:ekr.20061212092124:Must be defined in subclasses
@@ -1398,11 +1419,6 @@ class findTab (leoFind):
     
         self.setup_command()
         self.change()
-        
-    def changeAllCommand (self,event=None):
-    
-        self.setup_command()
-        self.changeAll()
         
     def changeThenFindCommand(self,event=None):
         

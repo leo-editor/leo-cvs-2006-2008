@@ -1069,7 +1069,7 @@ class debugCommandsClass (baseEditCommandsClass):
     
         c = self.c ; p = c.currentPosition()
         python = sys.executable
-        pythonDir = g.os_path_dirname(python)
+        # pythonDir = g.os_path_dirname(python)
         script = p.bodyString()
         winpdb = self.findDebugger()
         if not winpdb: return
@@ -1443,7 +1443,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.145:changePreviousWord (not used)
     def changePreviousWord (self,event):
     
-        k = self.k ; stroke = k.stroke ; gui = g.app.gui
+        k = self.k ; stroke = k.stroke
         w = self.editWidget(event)
         if not w: return
     
@@ -4159,6 +4159,7 @@ class editCommandsClass (baseEditCommandsClass):
         r1,r2,r3,r4 = self.getRectanglePoints(w)
         i,junk = g.getLine(s,r1)
         junk,j = g.getLine(s,r4)
+        txt = s[i:j] # bug reported by pychecker.
         txt = txt.split('\n')
         fields = []
         fn = r'\w+'
@@ -4872,6 +4873,8 @@ class helpCommandsClass (baseEditCommandsClass):
             g.es_print(s)
     #@+node:ekr.20060205170552:test_apropos_find_commands
     def test_apropos_find_commands (self):
+        
+        # pychecker complains about c.
     
         c.helpCommands.aproposFindCommands()
     #@-node:ekr.20060205170552:test_apropos_find_commands
@@ -5074,6 +5077,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20051216151811:clearKillRing
     #@+node:ekr.20050920084036.185:getClipboard
     def getClipboard (self,w):
+        
+        __pychecker__ = '--no-argsused' # w not used.
     
         try:
             ctxt = g.app.gui.getTextFromClipboard()
@@ -7350,7 +7355,7 @@ class searchCommandsClass (baseEditCommandsClass):
     
     def iSearchStateHandler (self,event):
     
-        c = self.c ; k = self.k ; w = self.w ; gui = g.app.gui
+        c = self.c ; k = self.k ; w = self.w
         
         if not event:
             g.trace('no event',g.callers())
