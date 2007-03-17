@@ -911,8 +911,8 @@ class tkSpellTab:
         
         """Handle a click in the "Change, Find" button in the Spell tab."""
     
-        if self.change():
-            self.find()
+        if self.handler.change():
+            self.handler.find()
         self.updateButtons()
     #@-node:ekr.20051025071455.32:onChangeButton & onChangeThenFindButton
     #@+node:ekr.20051025071455.33:onFindButton
