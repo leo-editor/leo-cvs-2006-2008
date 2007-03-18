@@ -18,7 +18,7 @@
 ;@+node:ekr.20050118092706.1:<< defines >>
 ;@<< 4.3 nsi installer version >>
 ;@+node:ekr.20050118124408:<< 4.3 nsi installer version >>
-!define PRODUCT_VERSION "4.4.3-alpha-1"
+!define PRODUCT_VERSION "4.4.3-alpha-2"
 ;@nonl
 ;@-node:ekr.20050118124408:<< 4.3 nsi installer version >>
 ;@nl
@@ -73,7 +73,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-3-alpha-1.exe"
+OutFile "LeoSetup-4-4-3-alpha-2.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -350,6 +350,7 @@ Section "Leo" SEC01
   SetOutPath "$INSTDIR\plugins\trees"
   
   File "..\plugins\trees\*.py"
+  
   File "..\plugins\trees\pluginsManager.txt"
   ;@nonl
   ;@-node:ekr.20050118104901.7:<< install plugins >>
@@ -382,6 +383,7 @@ Section "Leo" SEC01
   File "..\test\__init__.py"
   File "..\test\test.leo"
   File "..\test\unitTest.leo"
+  File "..\test\leoBridgeTest.py"
   ;@-node:ekr.20050118122404.1:<< install test files >>
   ;@nl
   SetOutPath "$INSTDIR\test\unittest"
@@ -640,6 +642,7 @@ Section Uninstall
   Delete "$INSTDIR\plugins\*.p*"
   
   Delete "$INSTDIR\plugins\trees\*.p*"
+  
   Delete "$INSTDIR\plugins\trees\pluginsManager.txt"
   ;@nonl
   ;@-node:ekr.20050118104901.8:<< uninstall plugins >>
@@ -671,6 +674,8 @@ Section Uninstall
   Delete "$INSTDIR\test\__init__.py"
   Delete "$INSTDIR\test\test.leo"
   Delete "$INSTDIR\test\unitTest.leo"
+  Delete "$INSTDIR\test\leoBridgeTest.py"
+  ;@nonl
   ;@-node:ekr.20050118122740.3:<< uninstall test files >>
   ;@nl
   ;@  << uninstall unittest files >>

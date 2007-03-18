@@ -8,6 +8,7 @@ Icons\LeoApp16.ico
 Icons\LeoDoc.ico
 Icons\LeoWin.gif
 Icons\Leoapp.GIF
+Icons\Thumbs.db
 Icons\box00.GIF
 Icons\box00.bmp
 Icons\box01.GIF
@@ -90,6 +91,8 @@ doc\html\arrow_lt.gif
 doc\html\arrow_rt.gif
 doc\html\coloring.html
 doc\html\commands.html
+doc\html\commands.lyx
+doc\html\commands.tex
 doc\html\customizing.html
 doc\html\debuggers.html
 doc\html\default.css
@@ -97,6 +100,7 @@ doc\html\design.html
 doc\html\directives.html
 doc\html\docModeOnlyTest.html
 doc\html\emacs.html
+doc\html\front.html
 doc\html\frontMatter.html
 doc\html\glossary.html
 doc\html\history.html
@@ -104,6 +108,7 @@ doc\html\install.html
 doc\html\intro.html
 doc\html\jythonShell.html
 doc\html\leo.gif
+doc\html\leoBridge.html
 doc\html\leo_TOC.html
 doc\html\leo_rst.css
 doc\html\new-4-4-1.html
@@ -540,6 +545,8 @@ plugins\autotrees.py
 plugins\base64Packager.py
 plugins\bibtex.py
 plugins\chapter_hoist.py
+plugins\chapters(4.3).py
+plugins\chapters2(4.4).py
 plugins\chinese_menu.py
 plugins\cleo.py
 plugins\color_markup.py
@@ -555,6 +562,7 @@ plugins\dynacommon.py
 plugins\empty_leo_file.py
 plugins\enable_gc.py
 plugins\exampleTemacsExtension.py
+plugins\expfolder.py
 plugins\failed_import.py
 plugins\fastGotoNode.py
 plugins\footprints.ini
@@ -564,6 +572,7 @@ plugins\groupOperations.py
 plugins\hoist.py
 plugins\image.py
 plugins\import_cisco_config.py
+plugins\ironPythonGui.py
 plugins\keybindings.py
 plugins\leo-forthstringwords.txt
 plugins\leo-forthwords.txt
@@ -635,6 +644,7 @@ plugins\table.py
 plugins\temacs.py
 plugins\templates.py
 plugins\testRegisterCommand.py
+plugins\textnode.py
 plugins\trace_gc_plugin.py
 plugins\trace_keys.py
 plugins\trace_tags.py
@@ -670,6 +680,7 @@ src\buttons.txt
 src\leo.py
 src\leoApp.py
 src\leoAtFile.py
+src\leoBridge.py
 src\leoColor.py
 src\leoCommands.py
 src\leoCompare.py

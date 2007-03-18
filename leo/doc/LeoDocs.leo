@@ -46,7 +46,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -3037,7 +3037,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070316182323.1" a="E"><vh>4.4.3 alpha 2</vh>
+<v t="ekr.20070316182323.1" a="EV"><vh>4.4.3 alpha 2</vh>
 <v t="ekr.20070317044545.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070317044545.2"><vh>Bugs</vh>
 <v t="ekr.20070317044545.3"><vh>Fixed an escape bug in new colorizer</vh></v>
