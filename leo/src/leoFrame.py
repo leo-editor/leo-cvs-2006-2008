@@ -1085,6 +1085,7 @@ class leoFrame:
         self.startupWindow=False # True if initially opened window
         self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
         self.tab_width = 0 # The tab width in effect in this pane.
+        
     #@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
     mustBeDefinedOnlyInBaseClass = (
        
@@ -2353,6 +2354,54 @@ class leoTree:
     #@-node:ekr.20031218072017.3718:oops
     #@-others
 #@-node:ekr.20031218072017.3704:class leoTree
+#@+node:ekr.20070317073627:class leoTreeTab
+class leoTreeTab:
+    
+    '''A class representing a tabbed outline pane.'''
+    
+    #@    @+others
+    #@+node:ekr.20070317073627.1: ctor (leoTreeTab)
+    def __init__ (self,c,chapterController,parentFrame):
+        
+        self.c = c
+        self.cc = chapterController
+        self.nb = None # Created in createControl.
+        self.parentFrame = parentFrame
+    
+        self.selectedTabBackgroundColor = c.config.getColor(
+            'selected_chapter_tab_background_color') or 'LightSteelBlue2'
+    
+        self.selectedTabForegroundColor = c.config.getColor(
+            'selected_chapter_tab_foreground_color') or 'black'
+    
+        self.unselectedTabBackgroundColor = c.config.getColor(
+            'unselected_chapter_tab_background_color') or 'lightgrey'
+    
+        self.unselectedTabForegroundColor = c.config.getColor(
+            'unselected_chapter_tab_foreground_color') or 'black'
+    #@-node:ekr.20070317073627.1: ctor (leoTreeTab)
+    #@+node:ekr.20070317073755:Must be defined in subclasses
+    def createControl (self,c,parentFrame):
+        self.oops()
+    
+    def createTab (self,tabName):
+        self.oops()
+        
+    def destroyTab (self,tabName):
+        self.oops()
+    
+    def selectTab (self,tabName):
+        self.oops()
+    #@nonl
+    #@-node:ekr.20070317073755:Must be defined in subclasses
+    #@+node:ekr.20070317083104:oops
+    def oops(self):
+        
+        print "leoTreeTree oops:", g.callers(), "should be overridden in subclass"
+    #@-node:ekr.20070317083104:oops
+    #@-others
+#@nonl
+#@-node:ekr.20070317073627:class leoTreeTab
 #@+node:ekr.20031218072017.2191:class nullBody (leoBody)
 class nullBody (leoBody):
     
