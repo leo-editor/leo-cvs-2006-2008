@@ -55,7 +55,7 @@
 </v>
 <v t="ekr.20060824181946"><vh>@@button shadow</vh></v>
 </v>
-<v t="ekr.20051110105946" a="E"><vh>Find scripts</vh>
+<v t="ekr.20051110105946"><vh>Find scripts</vh>
 <v t="ekr.20051110105027.159"><vh>Find and replace all functions in leoGlobals.py</vh>
 <v t="ekr.20051110105027.160"><vh>findFunctionsInTree</vh></v>
 <v t="ekr.20051110105027.161"><vh>findDefs</vh></v>
@@ -72,7 +72,7 @@
 <v t="ekr.20041013101029.1"><vh>&lt;&lt; about this script &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20070124092048"><vh>Find entries in k.guiBindNamesDict</vh></v>
-<v t="ekr.20070213074001.1" a="V"><vh>find w.xxx</vh></v>
+<v t="ekr.20070213074001.1"><vh>find w.xxx</vh></v>
 </v>
 <v t="ekr.20040715105834"><vh>Fun...</vh>
 <v t="EKR.20040626212434"><vh>Drawing experiments</vh>
@@ -649,7 +649,7 @@
 <v t="ekr.20060928193919.4"><vh>@@button zodb-put-node</vh></v>
 </v>
 </v>
-<v t="ekr.20060824111500"><vh>jEdit2Py</vh>
+<v t="ekr.20060824111500" a="E"><vh>jEdit2Py</vh>
 <v t="ekr.20060824111500.1"><vh>Colorizing test scripts</vh>
 <v t="ekr.20060824111500.2"><vh>@@button colorize</vh></v>
 <v t="ekr.20060824111500.3"><vh>@@button red:f1</vh></v>
@@ -871,11 +871,11 @@
 </v>
 <v t="ekr.20060824111500.106"><vh>import from modes</vh></v>
 <v t="ekr.20060824111500.107"><vh>errors</vh></v>
-<v t="ekr.20060824111500.108"><vh>@button jEdit2Py</vh>
+<v t="ekr.20060824111500.108" a="E"><vh>@button jEdit2Py</vh>
 <v t="ekr.20060824111500.109"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20060824111500.110"><vh>&lt;&lt; to do &gt;&gt;</vh></v>
 <v t="ekr.20060824111500.111"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
-<v t="ekr.20060824111500.112"><vh>&lt;&lt; set files to convert &gt;&gt;</vh></v>
+<v t="ekr.20060824111500.112" a="TV"><vh>&lt;&lt; set files to convert &gt;&gt;</vh></v>
 <v t="ekr.20060824111500.113"><vh>top-level</vh>
 <v t="ekr.20060824111500.114"><vh>convert</vh></v>
 <v t="ekr.20060824111500.115"><vh>parse_jEdit_file</vh></v>
@@ -17966,7 +17966,8 @@ both elements has the same effect as setting them on the SPAN element.</t>
 8/26/06 EKR: No need for hash_char in pattern matchers, because they are called only if the hash_char matches.
 9/4/06  EKR: Added support for ESCAPE attribute of RULES element.
              This is required so the new colorizer plugin can support the no_escape argument to pattern matchers.</t>
-<t tx="ekr.20060824111500.112">theDir = r'c:\prog\tigris-cvs\leo\modes'
+<t tx="ekr.20060824111500.112"># theDir = r'c:\prog\tigris-cvs\leo\modes'
+theDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','modes'))
 fixed = ['antlr','applescript','apacheconf','bibtex','cil','pl1','shell','shellscript','ssharp','text']
 errors = ['cil',] # End keyword not matched by start.
 errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
@@ -17974,11 +17975,14 @@ errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
 if 0: # A a list of files.
     files = [r'%s\%s.xml' % (theDir,s) for s in ('python',)]
 elif 1: # translate all files.
-    files = glob.glob(r'c:\prog\tigris-cvs\leo\modes\*.xml')
+    # files = glob.glob(r'c:\prog\tigris-cvs\leo\modes\*.xml')
+    files = glob.glob(g.os_path_abspath(g.os_path_join(theDir,'*.xml')))
 elif 0: # error files
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('props',)]
+    # files = [r'%s\%s.xml' % (theDir,s) for s in ('props',)]
+    files = [g.os_path_abspath(g.os_path_join(theDir,s)) for s in ('props',)]
 else: # translate two representative files.
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('python','php')]
+    # files = [r'%s\%s.xml' % (theDir,s) for s in ('python','php')]
+    files = [g.os_path_abspath(g.os_path_join(theDir,s)) for s in ('python','php')]
 # for s in files: print s</t>
 <t tx="ekr.20060824111500.113"></t>
 <t tx="ekr.20060824111500.114">def convert (c,inputFileName,outputFileName):

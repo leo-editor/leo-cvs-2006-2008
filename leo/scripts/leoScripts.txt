@@ -14831,7 +14831,8 @@ both elements has the same effect as setting them on the SPAN element.
 #@nonl
 #@-node:<< version history >>
 #@+node:<< set files to convert >>
-theDir = r'c:\prog\tigris-cvs\leo\modes'
+# theDir = r'c:\prog\tigris-cvs\leo\modes'
+theDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','modes'))
 fixed = ['antlr','applescript','apacheconf','bibtex','cil','pl1','shell','shellscript','ssharp','text']
 errors = ['cil',] # End keyword not matched by start.
 errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
@@ -14839,11 +14840,14 @@ errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
 if 0: # A a list of files.
     files = [r'%s\%s.xml' % (theDir,s) for s in ('python',)]
 elif 1: # translate all files.
-    files = glob.glob(r'c:\prog\tigris-cvs\leo\modes\*.xml')
+    # files = glob.glob(r'c:\prog\tigris-cvs\leo\modes\*.xml')
+    files = glob.glob(g.os_path_abspath(g.os_path_join(theDir,'*.xml')))
 elif 0: # error files
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('props',)]
+    # files = [r'%s\%s.xml' % (theDir,s) for s in ('props',)]
+    files = [g.os_path_abspath(g.os_path_join(theDir,s)) for s in ('props',)]
 else: # translate two representative files.
-    files = [r'%s\%s.xml' % (theDir,s) for s in ('python','php')]
+    # files = [r'%s\%s.xml' % (theDir,s) for s in ('python','php')]
+    files = [g.os_path_abspath(g.os_path_join(theDir,s)) for s in ('python','php')]
 # for s in files: print s
 #@nonl
 #@-node:<< set files to convert >>
