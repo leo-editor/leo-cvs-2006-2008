@@ -1352,7 +1352,9 @@ class baseColorizer:
         c = self.c ; w = self.body.bodyCtrl
         
         if not c.config.getBool('use_syntax_coloring'):
-            g.trace('no coloring')
+            # There have been reports of this trace causing crashes.
+            # Certainly it is not necessary.
+            # g.trace('no coloring')
             return
     
         if self.killFlag:
