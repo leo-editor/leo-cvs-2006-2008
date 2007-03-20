@@ -2108,541 +2108,1256 @@ def runtasks():
 @language python
 @color
 #@nonl
-#@+node:ekr.20070228164356:endEditLabel (nullTree) (same as tkTree) NO LONGER USED
-def endEditLabel (self):
-    
-    '''End editing of a headline and update p.headString().'''
-
-    c = self.c ; k = c.k ; p = c.currentPosition()
-
-    self.setEditPosition(None) # That is, self._editPosition = None
-    
-    # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
-    # if k:
-        # k.setDefaultUnboundKeyAction()
-        # k.showStateAndMode() # Destroys UNL info.
-    
-    # Important: this will redraw if necessary.
-    self.onHeadChanged(p)
-    
-    if 0: # This interferes with the find command and interferes with focus generally!
-        c.bodyWantsFocus()
-#@-node:ekr.20070228164356:endEditLabel (nullTree) (same as tkTree) NO LONGER USED
-#@+node:ekr.20070213170721:class baseTextWidget (From leoTkinterFrame NO LONGER USED)
+#@+node:ekr.20070317085508:Not used from chapters.py
 if 0:
-    class baseTextWidget:
-
-        '''The base class for all wrapper classes for the Tk.Text widget.'''
-            
-        @others
-#@+node:ekr.20070213170721.1:Birth & special methods (baseText)
-def __init__ (self,c,baseClassName,name,widget):
-    
-    g.trace('***** TkFrame.baseTextWidget',g.callers())
-
-    self.c = c # big bug fix, reported by pychecker.
-    self.baseClassName = baseClassName
-    self.name = name
-    self.virtualInsertPoint = None
-    self.widget = widget
-
-def __repr__(self):
-    return '%s: %s' % (self.baseClassName,id(self))
-
-def GetName(self):
-    return self.name
-#@-node:ekr.20070213170721.1:Birth & special methods (baseText)
-#@+node:ekr.20070213170721.2:Do-nothing
-def update (self,*args,**keys):             pass
-def update_idletasks (self,*args,**keys):   pass
-#@-node:ekr.20070213170721.2:Do-nothing
-#@+node:ekr.20070213170721.3:bindings (must be overridden in subclasses)
-if 0: # Specify the names of widget-specific methods.
-
-    def _appendText(self,s):            self.oops()
-    def _get(self,i,j):                 self.oops()
-    def _getAllText(self):              self.oops()
-    def _getFocus(self):                self.oops()
-    def _getInsertPoint(self):          self.oops()
-    def _getLastPosition(self):         self.oops()
-    def _getSelectedText(self):         self.oops()
-    def _getSelectionRange(self):       self.oops()
-    def _hitTest(self,pos):             self.oops()
-    def _insertText(self,i,s):          self.oops()
-    def _scrollLines(self,n):           self.oops()
-    def _see(self,i):                   self.oops()
-    def _setAllText(self,s):            self.oops()
-    def _setBackgroundColor(self,color): self.oops()
-    def _setFocus(self):                self.oops()
-    def _setInsertPoint(self,i):        self.oops()
-    def _setSelectionRange(self,i,j):   self.oops()
-
-    _findFocus = _getFocus
+    @others
 #@nonl
-#@-node:ekr.20070213170721.3:bindings (must be overridden in subclasses)
-#@+node:ekr.20070213170721.4:oops
-def oops (self):
-
-    print('wxGui baseTextWidget oops:',self,g.callers(),
-        'must be overridden in subclass')
-#@-node:ekr.20070213170721.4:oops
-#@+node:ekr.20070213170721.5:Index conversion
-#@+node:ekr.20070213170721.6:w.toGuiIndex & toPythonIndex
-def toPythonIndex (self,index):
+#@+node:ekr.20070320090557:From tabController
+#@+node:ekr.20070317085437.81:tt.renumber
+# def renumber (self):
     
-    w = self
-
-    if type(index) == type(99):
-        return index
-    elif index == '1.0':
-        return 0
-    elif index == 'end':
-        return w._getLastPosition()
-    else:
-        s = w._getAllText()
-        row,col = index.split('.')
-        row,col = int(row),int(col)
-        i = g.convertRowColToPythonIndex(s,row-1,col)
-        # g.trace(index,row,col,i,g.callers(6))
-        return i
-
-toGuiIndex = toPythonIndex
-#@nonl
-#@-node:ekr.20070213170721.6:w.toGuiIndex & toPythonIndex
-#@+node:ekr.20070213170721.7:w.rowColToGuiIndex
-# This method is called only from the colorizer.
-# It provides a huge speedup over naive code.
-
-def rowColToGuiIndex (self,s,row,col):
-
-    return g.convertRowColToPythonIndex(s,row,col)    
-#@-node:ekr.20070213170721.7:w.rowColToGuiIndex
-#@-node:ekr.20070213170721.5:Index conversion
-#@+node:ekr.20070213170721.8:Wrapper methods (widget-independent)
-# These methods are widget-independent because they call the corresponding _xxx methods.
-#@nonl
-#@+node:ekr.20070213170721.9:appendText
-def appendText (self,s):
+    # '''Renumber all numbered chapters.'''
     
-    w = self
-    w._appendText(s)
-#@-node:ekr.20070213170721.9:appendText
-#@+node:ekr.20070213170721.10:bind
-def bind (self,kind,*args,**keys):
-    
-    w = self
-    
-    pass # g.trace('wxLeoText',kind,args[0].__name__)
-#@nonl
-#@-node:ekr.20070213170721.10:bind
-#@+node:ekr.20070213170721.11:clipboard_clear & clipboard_append
-def clipboard_clear (self):
-    
-    g.app.gui.replaceClipboardWith('')
-
-def clipboard_append(self,s):
-    
-    s1 = g.app.gui.getTextFromClipboard()
-
-    g.app.gui.replaceClipboardWith(s1 + s)
-#@-node:ekr.20070213170721.11:clipboard_clear & clipboard_append
-#@+node:ekr.20070213170721.12:delete
-def delete(self,i,j=None):
-
-    w = self
-    i = w.toPythonIndex(i)
-    if j is None: j = i+ 1
-    j = w.toPythonIndex(j)
-
-    # g.trace(i,j,len(s),repr(s[:20]))
-    s = w.getAllText()
-    w.setAllText(s[:i] + s[j:])
-#@-node:ekr.20070213170721.12:delete
-#@+node:ekr.20070213170721.13:deleteTextSelection
-def deleteTextSelection (self):
-    
-    w = self
-    i,j = w._getSelectionRange()
-    if i == j: return
-    
-    s = w._getAllText()
-    s = s[i:] + s[j:]
-
-    # g.trace(len(s),repr(s[:20]))
-    w._setAllText(s)
-#@-node:ekr.20070213170721.13:deleteTextSelection
-#@+node:ekr.20070213170721.14:event_generate (baseText)
-def event_generate(self,stroke):
-    
-    w = self ; c = self.c
-    
-    # g.trace('baseTextWidget',stroke)
-    
-    stroke = stroke.strip()
-    if stroke.startswith('<') and stroke.endswith('>'):
-        stroke = stroke[1:-1]
+    # nb = self.nb
         
-    class eventGenerateEvent:
-        def __init__ (self,c,w,char,keysym):
-            self.c = c
-            self.char = char
-            self.keysym = keysym
-            self.leoWidget = w
-            self.widget = w
-
-    event = eventGenerateEvent(c,w,'',stroke)
-    c.k.masterKeyHandler(event,stroke=stroke)
+    # i = 0
+    # for name in nb.pagenames():
+        # if name.isdigit():
+            # i += 1
+            # b = nb.tab(name) # A Tk.button.
+            # b.configure(text=str(i))
 #@nonl
-#@-node:ekr.20070213170721.14:event_generate (baseText)
-#@+node:ekr.20070213170721.15:flashCharacter (to do)
-def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
-
-    w = self
+#@-node:ekr.20070317085437.81:tt.renumber
+#@-node:ekr.20070320090557:From tabController
+#@+node:ekr.20070317085608:From chapterController
+#@+node:ekr.20070317085437.3:Create widgets
+#@+node:ekr.20070317085437.4:constructTree
+def constructTree (self,frame,pageName):
     
-    return ###
+    # g.trace(pageName)
 
-    def addFlashCallback(w,count,index):
-        # g.trace(count,index)
-        i,j = w.toPythonIndex(index),w.toPythonIndex(index+1)
-        Tk.Text.tag_add(w,'flash',i,j)
-        Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
+    cc = self ; c = self.c ; nb = self.nb
+    canvas = treeBar = tree = None
+    if frame.canvas:
+        canvas = frame.canvas
+        treeBar = frame.treeBar
+        tree = frame.tree
     
-    def removeFlashCallback(w,count,index):
-        # g.trace(count,index)
-        Tk.Text.tag_remove(w,'flash','1.0','end')
-        if count > 0:
-            Tk.Text.after(w,delay,addFlashCallback,w,count,index)
+    frame.canvas = canvas = frame.createCanvas(parentFrame=None,pageName=pageName)
+    frame.tree = leoTkinterTree.leoTkinterTree(frame.c,frame,frame.canvas)
+    frame.tree.setColorFromConfig()
 
+    return tree, cc.newPage
+#@nonl
+#@-node:ekr.20070317085437.4:constructTree
+#@+node:ekr.20070317085437.5:createBalloon
+def createBalloon (self,tab,sv):
+
+    '''Create a balloon showing the present chapter name for a tab.'''
+    
+    # g.trace(tab,sv.get())
+
+    balloon = Pmw.Balloon(tab,initwait=100)
+    balloon.bind(tab,'')
+    hull = balloon.component('hull')
+    def blockExpose (event):
+        if sv.get() == '':
+             hull.withdraw()
+    hull.bind('<Expose>',blockExpose,'+')
+    balloon._label.configure(textvariable=sv)
+#@nonl
+#@-node:ekr.20070317085437.5:createBalloon
+#@+node:ekr.20070317085437.6:createEditorPane
+def createEditorPane (self):
+    
+    '''Create a new pane with a unique name.'''
+
+    cc = self
+    cc.numberOfEditors += 1
+    name = str(cc.numberOfEditors)
+    pane = self.panedBody.add(name)
+    
+    # g.trace(pane)
+    return pane
+#@nonl
+#@-node:ekr.20070317085437.6:createEditorPane
+#@+node:ekr.20070317085437.7:createNoteBook
+def createNoteBook (self,parentFrame):
+
+    '''Construct a NoteBook widget for a frame.'''
+
+    c = self.c
+    self.nb = nb = Pmw.NoteBook(parentFrame,borderwidth=1,pagemargin=0)
+    hull = nb.component('hull')
+    self.makeTabMenu(hull)
+    
+    def lowerCallback(name,self=self):
+        return self.lowerPage(name)
+    nb.configure(lowercommand=lowerCallback)
+    
+    def raiseCallback(name,self=self):
+        return self.raisePage(name)
+    nb.configure(raisecommand=raiseCallback)
+
+    nb.pack(fill='both',expand=1)
+    return nb
+#@nonl
+#@-node:ekr.20070317085437.7:createNoteBook
+#@+node:ekr.20070317085437.8:createPanedWidget
+def createPanedWidget (self,parentFrame):
+
+    '''Construct a new panedwidget for a frame.'''
+
+    c = self.c
+    self.panedBody = panedBody = Pmw.PanedWidget(parentFrame,orient='horizontal')
+    # g.trace('creating',panedBody)
+    panedBody.pack(expand=1,fill='both')
+#@nonl
+#@-node:ekr.20070317085437.8:createPanedWidget
+#@+node:ekr.20070317085437.9:createTab
+def createTab (self,tabName):
+    
+    cc = self ; nb = cc.nb
+
+    page = nb.add(tabName) # page is a Tk.Frame.
+    button = nb.tab(tabName) # tab is a Tk.Button.
+
+    button.configure(
+        background=cc.selectedTabBackgroundColor,
+        foreground=cc.selectedTabForegroundColor)
+    
+    # g.trace(tabName,page,button)
+    return page,button
+#@nonl
+#@-node:ekr.20070317085437.9:createTab
+#@-node:ekr.20070317085437.3:Create widgets
+#@+node:ekr.20070317085437.10:makeTabMenu & helpers
+def makeTabMenu (self,widget):
+    
+    '''Create a tab menu.'''
+
+
+    cc = self
+    tmenu = Tk.Menu(widget,tearoff=0)
+    widget.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
+    widget.tmenu = tmenu
+    
+    # Huh?
+    # tmenu.add_command(command=tmenu.unpost)
+
+    cc.createTopLevelMenuItems(tmenu)
+    tmenu.add_separator()
+
+    cc.createConvertMenu(tmenu)
+    cc.createEditorMenu(tmenu)
+    cc.createImportExportMenu(tmenu)
+    cc.createIndexMenu(tmenu)
+    cc.createNodeMenu(tmenu)
+    cc.createTrashMenu(tmenu)
+#@nonl
+#@+node:ekr.20070317085437.11:createTopLevelMenuItems
+def createTopLevelMenuItems (self,tmenu):
+    
+    cc = self ; tt = self.tt
+    tmenu.add_command(label='Add Chapter',command=cc.addChapter)
+    
+    if 1: # 'Remove This Chapter'
+        def removeChapterCallback(event=None,cc=cc):
+            return cc.removeChapter(cc.nb.getcurselection())
+        tmenu.add_command(label='Remove This Chapter',command=removeChapterCallback)
+    else: # Create submenu of all chapters.
+        cc.rmenu = rmenu = Tk.Menu(tmenu,tearoff=0)
+        rmenu.configure(postcommand=cc.createRemoveChapterMenu)
+        tmenu.add_cascade(menu=rmenu,label="Remove This Chapter")
+
+    tmenu.add_command(
+        label="Rename This Chapter",
+        command=cc.renameChapter)
+        
+    swapmenu = Tk.Menu(tmenu,tearoff=0)
+    tmenu.add_cascade(menu=swapmenu,label='Swap With Chapter')
+        
+    def swapChaptersCallback  (cc=cc,menu=swapmenu):
+        tt.setupChaptersMenu(menu,cc.swapChapters)
+    swapmenu.configure(postcommand=swapChaptersCallback)
+    
+    tmenu.add_command(
+        label="Clone Find All",
+        command=cc.regexClone)
+#@nonl
+#@-node:ekr.20070317085437.11:createTopLevelMenuItems
+#@+node:ekr.20070317085437.12:createConvertMenu
+def createConvertMenu (self,tmenu):
+
+    cc = self ; m = Tk.Menu(tmenu,tearoff=0)
+    tmenu.add_cascade(menu=m,label='Convert')
+
+    m.add_command(
+        label="Convert Node To Chapter",
+        command=cc.makeNodeIntoChapter)
+    m.add_command(
+        label = "Convert Chapters To Simple Outline",
+        command=cc.conversionToSimple)
+    m.add_command(
+        label = "Convert Top Nodes to Chapters",
+        command=cc.convertTopLevelToChapters)
     try:
-        Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
-        addFlashCallback(w,flashes,i)
+        import reportlab
+        tmenu.add_command(label='Convert To PDF',command=cc.doPDFConversion)
     except Exception:
-        pass ; g.es_exception()
+        pass
+        # g.es("no reportlab")
 #@nonl
-#@-node:ekr.20070213170721.15:flashCharacter (to do)
-#@+node:ekr.20070213170721.16:getFocus
-def getFocus (self):
-    
-    w = self
-    return w._getFocus()
-    
-findFocus = getFocus
-#@-node:ekr.20070213170721.16:getFocus
-#@+node:ekr.20070213170721.17:get
-def get(self,i,j=None):
+#@-node:ekr.20070317085437.12:createConvertMenu
+#@+node:ekr.20070317085437.13:createEditorMenu
+def createEditorMenu (self,tmenu):
 
-    w = self
+    cc = self
 
-    i = w.toPythonIndex(i)
-    if j is None: j = i+ 1
-    j = w.toPythonIndex(j)
-    
-    s = w._get(i,j)
-    return g.toUnicode(s,g.app.tkEncoding)
-#@-node:ekr.20070213170721.17:get
-#@+node:ekr.20070213170721.18:getAllText
-def getAllText (self):
-    
-    w = self
+    m = Tk.Menu(tmenu,tearoff=0)
+    tmenu.add_cascade(label="Editor",menu=m)
 
-    s = w._getAllText()
-    return g.toUnicode(s,g.app.tkEncoding)
-#@-node:ekr.20070213170721.18:getAllText
-#@+node:ekr.20070213170721.19:getInsertPoint (baseText)
-def getInsertPoint(self):
-    
-    w = self
-    i = w._getInsertPoint()
-    #g.trace(self,'baseWidget: get',i,'virtual',w.virtualInsertPoint)
-    
-    if i is None:
-        if w.virtualInsertPoint is None:
-            i = 0
-        else:
-            i = w.virtualInsertPoint
-    
-    w.virtualInsertPoint = i
-    return i
-#@-node:ekr.20070213170721.19:getInsertPoint (baseText)
-#@+node:ekr.20070213170721.20:getSelectedText
-def getSelectedText (self):
+    m.add_command(label="Add Editor",command=cc.newEditor)
+    m.add_command(label="Remove Editor",command=cc.removeEditor)
+#@nonl
+#@-node:ekr.20070317085437.13:createEditorMenu
+#@+node:ekr.20070317085437.14:createImportExportMenu
+def createImportExportMenu (self,tmenu):
 
-    w = self
-    s = w._getSelectedText()
-    return g.toUnicode(s,g.app.tkEncoding)
-#@-node:ekr.20070213170721.20:getSelectedText
-#@+node:ekr.20070213170721.21:getSelectionRange (baseText)
-def getSelectionRange (self,sort=True):
-    
-    """Return a tuple representing the selected range of the widget.
-    
-    Return a tuple giving the insertion point if no range of text is selected."""
+    cc = self
 
-    w = self
+    m = Tk.Menu(tmenu,tearoff=0)
+    tmenu.add_cascade(label='Import/Export',menu=m)
 
-    sel = w._getSelectionRange() # wx.richtext.RichTextCtrl returns (-1,-1) on no selection.
-    if len(sel) == 2 and sel[0] >= 0 and sel[1] >= 0:
-        #g.trace(self,'baseWidget: sel',repr(sel),g.callers(6))
-        i,j = sel
-        if sort and i > j: i,j = j,i
-        return sel
+    m.add_command(label="Import Leo File To Chapter",command=cc.importLeoFile)
+    m.add_command(label="Export Chapter to Leo File",command=cc.exportLeoFile)
+#@nonl
+#@-node:ekr.20070317085437.14:createImportExportMenu
+#@+node:ekr.20070317085437.15:createIndexMenu
+def createIndexMenu (self,tmenu):
+
+    cc = self
+
+    m = Tk.Menu(tmenu,tearoff=0)
+    tmenu.add_cascade(label='Index',menu=m)
+
+    m.add_command(label='Make Index',command=cc.viewIndex)
+    m.add_command(label='Make Regex Index',command=cc.regexViewIndex)
+#@-node:ekr.20070317085437.15:createIndexMenu
+#@+node:ekr.20070317085437.16:createNodeMenu
+def createNodeMenu (self,tmenu):
+
+    cc = self
+    opmenu = Tk.Menu(tmenu,tearoff=0)
+    tmenu.add_cascade(menu=opmenu,label='Node')
+    
+    cmenu = Tk.Menu(opmenu,tearoff=0)
+    movmenu = Tk.Menu(opmenu,tearoff=0)
+    copymenu = Tk.Menu(opmenu,tearoff=0)
+    searchmenu = Tk.Menu(opmenu,tearoff=0)
+    
+    opmenu.add_cascade(menu=cmenu,label='Clone To Chapter')
+    opmenu.add_cascade(menu=movmenu,label='Move To Chapter')
+    opmenu.add_cascade(menu=copymenu,label='Copy To Chapter')
+
+    def cloneToChapterCallback (cc=cc,menu=cmenu):
+        cc.setupMenu(menu,cc.cloneToChapter)
+    cmenu.configure(postcommand=cloneToChapterCallback)
+
+    def moveToChapterCallback(cc=cc,menu=movmenu):
+        cc.setupMenu(menu,cc.moveToChapter)
+    movmenu.configure(postcommand=moveToChapterCallback)
+    
+    def copyToChapterCallback(cc=cc,menu=copymenu):
+        cc.setupMenu(menu,cc.copyToChapter)
+    copymenu.configure(postcommand=copyToChapterCallback)
+#@nonl
+#@-node:ekr.20070317085437.16:createNodeMenu
+#@+node:ekr.20070317085437.17:createTrashMenu
+def createTrashMenu (self,tmenu):
+
+    cc = self
+
+    m = Tk.Menu(tmenu,tearoff=0)
+    tmenu.add_cascade(menu=m,label='Trash')
+    
+    m.add_command(label="Add Trash Barrel",command=cc.addTrashBarrel)
+    m.add_command(label='Empty Trash Barrel',command=cc.emptyTrash)
+#@nonl
+#@-node:ekr.20070317085437.17:createTrashMenu
+#@+node:ekr.20070317085437.18:setupMenu
+def setupMenu (self,menu,command,all=False):
+
+    '''Create a menu.'''
+    
+    cc = self ; nb = cc.nb
+
+    menu.delete(0,'end')
+    current = nb.getcurselection()
+
+    i = 0
+    for name in nb.pagenames():
+        i = i + 1
+        if name == current and not all: continue
+        menu.add_command(
+            label=str(i),command=lambda name=name: command(name))
+#@nonl
+#@-node:ekr.20070317085437.18:setupMenu
+#@-node:ekr.20070317085437.10:makeTabMenu & helpers
+#@+node:ekr.20070317085437.55:Editor
+#@+node:ekr.20070317085437.56:...Heading
+#@+node:ekr.20070317085437.57:addHeading
+def addHeading (self,parentFrame):
+    '''Create a two-part editor label.
+    - The left label tracks the chapter name using a chapter.sv.
+    - The right label is the node's healine.'''
+    
+    cc = self
+    f = Tk.Frame(parentFrame) ; f.pack(side='top')
+    lt_label = Tk.Label(f)    ; lt_label.pack(side='left')
+    rt_label = Tk.Label(f)    ; rt_label.pack(side='right')
+    
+    # The lt_label tracks the present chapter name.
+    # chapter.updateHeadingSV changes this textvariable when chapters change.
+    chapter = cc.getChapter()
+    lt_label.configure(textvariable=chapter.sv)
+    
+    for w in (lt_label,rt_label,f,parentFrame):
+        w.configure(bg=cc.editorLabelBackgroundColor)
+    for w in (lt_label,rt_label):
+         w.configure(fg=cc.editorLabelForegroundColor)
+
+    return lt_label, rt_label, f
+#@nonl
+#@-node:ekr.20070317085437.57:addHeading
+#@+node:ekr.20070317085437.58:hide/showHeading
+def showHeading (self,body):
+    if 0:
+        body.editorLeftLabel.pack(side='left')
+        body.editorRightLabel.pack(side='right')
+
+def hideHeading (self,body):
+    if 0:
+        # If we unpack the frame we won't be able to repack it easily.
+        # Setting the height to zero also does not seem to work.
+        body.editorLabel.pack_forget()
+#@nonl
+#@-node:ekr.20070317085437.58:hide/showHeading
+#@-node:ekr.20070317085437.56:...Heading
+#@+node:ekr.20070317085437.59:activateEditor
+def activateEditor (self,body):
+
+    '''Activate an editor.'''
+
+    p = body.lastPosition
+    h = p and p.headString() or ''
+    body.editorRightLabel.configure(text=h)
+    ip = body.lastPosition.t.insertSpot
+    body.deleteAllText()
+    body.insertAtEnd(p.bodyString())
+    if ip: body.setInsertionPoint(ip)
+    body.colorizer.colorize(p)
+    # g.trace(id(body.bodyCtrl),p.headString())
+#@nonl
+#@-node:ekr.20070317085437.59:activateEditor
+#@+node:ekr.20070317085437.60:newEditor
+def newEditor (self):
+
+    cc = self ; c = cc.c
+    
+    pane = self.createEditorPane()
+    body = leoTkinterBody(self.frame,pane)
+    c.frame.bodyCtrl = body.bodyCtrl # Make body the 'official' body.
+    body.setFontFromConfig()
+    body.setColorFromConfig()
+    body.createBindings()
+    c.k.completeAllBindingsForWidget(body.bodyCtrl)
+    body.bodyCtrl.focus_set()
+    body.lastPosition = c.currentPosition()
+    cc.activateEditor(body)
+
+    # Configure the generic editor label for this chapter and position.
+    chapter = cc.getChapter()
+    body.editorLeftLabel.configure(textvariable=chapter.sv)
+    body.editorRightLabel.configure(text=c.currentPosition().headString())
+#@nonl
+#@-node:ekr.20070317085437.60:newEditor
+#@+node:ekr.20070317085437.61:removeEditor
+def removeEditor (self):
+    
+    cc = self ; c = cc.c
+    panedBody = cc.panedBody
+    panes = panedBody.panes()
+    if not panes: return
+    
+    pane = panes[0]
+    frame = panedBody.pane(pane)
+    panedBody.delete(pane)
+    panedBody.updatelayout()
+    del cc.editorBodies[frame]
+    
+    # Hide the label if there is only one editor left.
+    if len(cc.editorBodies.keys())==1:
+        panes = panedBody.panes()
+        frame = panedBody.pane(panes[0])
+        body = cc.editorBodies.get(frame)
+        cc.hideHeading(body)
+#@nonl
+#@-node:ekr.20070317085437.61:removeEditor
+#@-node:ekr.20070317085437.55:Editor
+#@+node:ekr.20070317085437.69:Overrides
+#@+node:ekr.20070317085437.70:createCanvas (injects ivars for treeInit)
+def createCanvas (self,frame,parentFrame,pageName):
+    
+    cc = self
+            
+    # Set ivars for cc.treeInit.
+    page,button = cc.createTab(pageName)
+    cc.newPageName = pageName
+    cc.newPage = page
+
+    # Create the canvas with page as the parentFrame.
+    cc.newCanvas = canvas = old_createCanvas(frame,page) 
+
+    # g.trace(pageName,id(canvas))
+    return canvas
+#@nonl
+#@-node:ekr.20070317085437.70:createCanvas (injects ivars for treeInit)
+#@+node:ekr.20070317085437.71:createControl (tkBody)
+def createControl(self,body,frame,parentFrame):
+    
+    '''Override for tkBody.createControl.
+    
+    This called for the 'main' body and once for each added editor. '''
+
+    cc = self ; c = cc.c ; nb = cc.nb
+    # assert(body == frame.body)
+    
+    if self.panedBody:
+        pane = parentFrame
     else:
-        # Return the insertion point if there is no selected text.
-        i =  w._getInsertPoint()
-        #g.trace(self,'baseWidget: i',i,g.callers(6))
-        return i,i
-#@-node:ekr.20070213170721.21:getSelectionRange (baseText)
-#@+node:ekr.20070213170721.22:getYScrollPosition
-def getYScrollPosition (self):
+        self.createPanedWidget(parentFrame)
+        pane = self.createEditorPane()
+    panedBody = self.panedBody
+    
+    # **Important**: addHeading creates a heading that works for *all* chapters.
+    lt_label,rt_label,label_frame = cc.addHeading(pane)
 
-     w = self
-     return w._getYScrollPosition()
-#@-node:ekr.20070213170721.22:getYScrollPosition
-#@+node:ekr.20070213170721.23:getWidth
-def getWidth (self):
-    
-    '''Return the width of the widget.
-    This is only called for headline widgets,
-    and gui's may choose not to do anything here.'''
-    
-    # w = self
-    return 0
-#@-node:ekr.20070213170721.23:getWidth
-#@+node:ekr.20070213170721.24:hasSelection
-def hasSelection (self):
-    
-    w = self
-    i,j = w.getSelectionRange()
-    return i != j
-#@-node:ekr.20070213170721.24:hasSelection
-#@+node:ekr.20070213170721.25:insert
-# The signature is more restrictive than the Tk.Text.insert method.
+    # Inject editor ivars into the leoTkinterBody.
+    body.editorRightLabel = rt_label
+    body.editorLeftLabel =  lt_label
+    body.editorLabelFrame = label_frame
 
-def insert(self,i,s):
+    ctrl = old_createControl(body,frame,pane)
     
-    w = self
-    i = w.toPythonIndex(i)
-    # w._setInsertPoint(i)
-    w._insertText(i,s)
-#@-node:ekr.20070213170721.25:insert
-#@+node:ekr.20070213170721.26:indexIsVisible
-def indexIsVisible (self,i):
+    # Create a focus-in event to keep the generic label widget in synch.
+    def focusInCallback(event,self=self,frame=frame):
+        return self.onFocusIn(event,body,ctrl)
+    ctrl.bind("<FocusIn>",focusInCallback,'+')
     
-    return False # Code will loop if this returns True forever.
+    i = 1.0 / len(panedBody.panes())
+    for z in panedBody.panes():
+        panedBody.configurepane(z,size=i)
+    panedBody.updatelayout()
+    
+    cc.editorBodies [pane] = body
+
+    if len(panedBody.panes()) > 1:
+        # Show the labels of all frames.
+        for pane in cc.editorBodies.keys():
+            body = cc.editorBodies.get(pane)
+            cc.showHeading(body)
+
+    return ctrl
 #@nonl
-#@-node:ekr.20070213170721.26:indexIsVisible
-#@+node:ekr.20070213170721.27:replace
-def replace (self,i,j,s):
-
-    w = self
-    w.delete(i,j)
-    w.insert(i,s)
-#@-node:ekr.20070213170721.27:replace
-#@+node:ekr.20070213170721.28:scrollLines
-def scrollLines (self,n):
+#@-node:ekr.20070317085437.71:createControl (tkBody)
+#@+node:ekr.20070317085437.72:doDelete
+def doDelete (self,p):
     
-    w = self
-    w._scrollLines(n)
-#@nonl
-#@-node:ekr.20070213170721.28:scrollLines
-#@+node:ekr.20070213170721.29:see & seeInsertPoint
-def see(self,index):
-
-    w = self
-    i = self.toPythonIndex(index)
-    w._see(i)
-
-def seeInsertPoint(self):
+    '''Override p.doDelete to add nodes to the trash if it exists.'''
     
-    w = self
-    i = w._getInsertPoint()
-    w._see(i)
-#@-node:ekr.20070213170721.29:see & seeInsertPoint
-#@+node:ekr.20070213170721.30:selectAllText
-def selectAllText (self,insert=None):
+    cc = self ; c = cc.c ; nb = cc.nb ;  trash = 'Trash'
     
-    '''Select all text of the widget.'''
+    # Do nothing if the node can't be deleted.
+    newNode = p and (p.visBack() or p.next()) # *not* p.visNext()
+    if not newNode: return
     
-    w = self
-    w.setSelectionRange(0,'end',insert=insert)
-#@-node:ekr.20070213170721.30:selectAllText
-#@+node:ekr.20070213170721.31:setAllText
-def setAllText (self,s):
-
-    w = self
-    w._setAllText(s)
-#@nonl
-#@-node:ekr.20070213170721.31:setAllText
-#@+node:ekr.20070213170721.32:setBackgroundColor & SetBackgroundColour
-def setBackgroundColor (self,color):
-    
-    w = self
-    return w._setBackgroundColor(color)
-    
-SetBackgroundColour = setBackgroundColor
-#@nonl
-#@-node:ekr.20070213170721.32:setBackgroundColor & SetBackgroundColour
-#@+node:ekr.20070213170721.33:setFocus
-def setFocus (self):
-    
-    w = self
-    return w._setFocus()
-    
-SetFocus = setFocus
-#@-node:ekr.20070213170721.33:setFocus
-#@+node:ekr.20070213170721.34:setInsertPoint (baseText)
-def setInsertPoint (self,pos):
-
-    w = self
-    w.virtualInsertPoint = i = w.toPythonIndex(pos)
-    # g.trace(self,i)
-    w._setInsertPoint(i)
-#@-node:ekr.20070213170721.34:setInsertPoint (baseText)
-#@+node:ekr.20070213170721.35:setSelectionRange (baseText)
-def setSelectionRange (self,i,j,insert=None):
-    
-    w = self
-    i1, j1, insert1 = i,j,insert
-    i,j = w.toPythonIndex(i),w.toPythonIndex(j)
-    if insert is not None: insert = w.toPythonIndex(insert)
-
-    # g.trace(self,'baseWidget',repr(i1),'=',repr(i),repr(j1),'=',repr(j),repr(insert1),'=',repr(insert),g.callers(4))
-
-    if i == j:
-        w.virtualInsertPoint = ins = g.choose(insert is None,i,insert)
-        w._setInsertPoint(ins)
+    name = nb.getcurselection()
+    if name != trash and trash in nb.pagenames():
+        chapter = self.getChapter(trash)
+        trashnode = chapter.rp
+        chapter.setVariables()
+        p.moveAfter(trashnode)
+        cc.currentChapter.setVariables()
+        c.selectPosition(newNode)
+        return p
     else:
-        if insert is not None: self.virtualInsertPoint = insert
-        w._setSelectionRange(i,j)
-#@-node:ekr.20070213170721.35:setSelectionRange (baseText)
-#@+node:ekr.20070213170721.36:setWidth
-def setWidth (self,width):
-    
-    '''Set the width of the widget.
-    This is only called for headline widgets,
-    and gui's may choose not to do anything here.'''
-
-    # w = self
-    pass
-#@-node:ekr.20070213170721.36:setWidth
-#@+node:ekr.20070213170721.37:setYScrollPosition
-def setYScrollPosition (self,i):
-
-     w = self
-     w._setYScrollPosition(i)
+        return old_doDelete(p)
 #@nonl
-#@-node:ekr.20070213170721.37:setYScrollPosition
-#@+node:ekr.20070213170721.38:tags (to-do)
-#@+node:ekr.20070213170721.39:mark_set (to be removed)
-# def mark_set(self,markName,i):
-
-    # w = self
-    # i = self.toPythonIndex(i)
-#@-node:ekr.20070213170721.39:mark_set (to be removed)
-#@+node:ekr.20070213170721.40:tag_add
-# The signature is slightly different than the Tk.Text.insert method.
-
-def tag_add(self,tagName,i,j=None,*args):
+#@-node:ekr.20070317085437.72:doDelete
+#@+node:ekr.20070317085437.73:getLeoFile
+def getLeoFile (self,fc,fileName,readAtFileNodesFlag=True,silent=False):
     
-    w = self
-    i = self.toPythonIndex(i)
-    if j is None: j = i + 1
-    j = self.toPythonIndex(j)
-    
-    return ###
+    global iscStringIO # For communication with g.os_path_dirname
 
-    if not hasattr(w,'leo_styles'):
-        w.leo_styles = {}
+    if iscStringIO:
+        def dontSetReadOnly (self,name,value):
+            if name not in ('read_only','tnodesDict'):
+                self.__dict__ [name] = value
 
-    style = w.leo_styles.get(tagName)
+        self.read_only = False
+        self.__class__.__setattr__ = dontSetReadOnly
 
-    if style is not None:
-        # g.trace(i,j,tagName)
-        w.textBaseClass.SetStyle(w,i,j,style)
+    rt = old_getLeoFile(fc,fileName,readAtFileNodesFlag,silent)
+
+    if iscStringIO:
+        del self.__class__.__setattr__
+
+    return rt
 #@nonl
-#@-node:ekr.20070213170721.40:tag_add
-#@+node:ekr.20070213170721.41:tag_configure & helper
-# def tag_configure (self,colorName,**keys):
-    # pass
+#@-node:ekr.20070317085437.73:getLeoFile
+#@+node:ekr.20070317085437.74:select
+def select (self,tree,p,updateBeadList=True):
 
-# tag_config = tag_configure
-#@nonl
-#@+node:ekr.20070213170721.42:tkColorToWxColor
-def tkColorToWxColor (self, color):
-    
-    d = {
-        'black':        wx.BLACK,
-        "red":          wx.RED,
-        "blue":         wx.BLUE,
-        "#00aa00":      wx.GREEN,
-        "firebrick3":   wx.RED,
-        'white':        wx.WHITE,
-    }
-        
-    return d.get(color)
-#@nonl
-#@-node:ekr.20070213170721.42:tkColorToWxColor
-#@-node:ekr.20070213170721.41:tag_configure & helper
-#@+node:ekr.20070213170721.43:tag_delete (NEW)
-def tag_delete (self,tagName,*args,**keys):
-    
-    pass # g.trace(tagName,args,keys)
-#@nonl
-#@-node:ekr.20070213170721.43:tag_delete (NEW)
-#@+node:ekr.20070213170721.44:tag_names
-def tag_names (self, *args):
-    
-    return []
-#@-node:ekr.20070213170721.44:tag_names
-#@+node:ekr.20070213170721.45:tag_ranges
-def tag_ranges(self,tagName):
-    
-    return tuple() ###
-    
-    w = self
-    aList = Tk.Text.tag_ranges(w,tagName)
-    aList = [w.toPythonIndex(z) for z in aList]
-    return tuple(aList)
-#@-node:ekr.20070213170721.45:tag_ranges
-#@+node:ekr.20070213170721.46:tag_remove
-def tag_remove(self,tagName,i,j=None,*args):
-    
-    w = self
-    i = self.toPythonIndex(i)
-    if j is None: j = i + 1
-    j = self.toPythonIndex(j)
-    
-    return ### Not ready yet.
+    cc = self ; c = p.v.c ; h = p.headString() ; nb = cc.nb
 
-    if not hasattr(w,'leo_styles'):
-        w.leo_styles = {}
+    c.frame.body.lastPosition = p.copy()
+    return_val = old_select(tree,p,updateBeadList)
 
-    style = w.leo_styles.get(tagName)
+    c.frame.body.lastChapter = n = nb.getcurselection()
+    chapter = cc.getChapter(n)
+    chapter._saveInfo()
 
-    if style is not None:
-        # g.trace(i,j,tagName)
-        w.textBaseClass.SetStyle(w,i,j,style)
+    if hasattr(p.c.frame.body,'editorRightLabel'):
+        h = p.headString() or ''
+        c.frame.body.editorRightLabel.configure(text=h)
+
+    return return_val
 #@nonl
-#@-node:ekr.20070213170721.46:tag_remove
-#@+node:ekr.20070213170721.47:yview
-def yview (self,*args):
-    
-    '''w.yview('moveto',y) or w.yview()'''
+#@-node:ekr.20070317085437.74:select
+#@+node:ekr.20070317085437.75:open
+def open (self,fc,file,fileName,readAtFileNodesFlag=True,silent=False):
 
-    return 0,0
+    cc = self ; c = cc.c
+
+    if zipfile.is_zipfile(fileName):
+        c.beginUpdate()
+        try:
+            # Set globals for g.os_path_dirname
+            global iscStringIO, stringIOCommander
+            iscStringIO = True ; stringIOCommander = c
+            chapters = cc.openChaptersFile(fileName)
+            g.es(str(len(chapters))+" Chapters To Read",color='blue')
+            cc.insertChapters(chapters)
+            g.es("Finished Reading Chapters",color='blue')
+            iscStringIO = False
+        finally:
+            c.endUpdate()
+        return True
+    else:
+        return old_open(fc,file,fileName,readAtFileNodesFlag,silent)
 #@nonl
-#@-node:ekr.20070213170721.47:yview
-#@-node:ekr.20070213170721.38:tags (to-do)
-#@+node:ekr.20070213170721.48:xyToGui/PythonIndex
-# def xyToPythonIndex (self,x,y):
+#@-node:ekr.20070317085437.75:open
+#@+node:ekr.20070317085437.76:treeInit (creates Chapter)
+def treeInit (self,tree,c,frame,canvas):
     
-    # w = self
-    # pos = wx.Point(x.y)
-    # data = w._hitTest(pos)
-    # # g.trace(data)
-#@-node:ekr.20070213170721.48:xyToGui/PythonIndex
-#@-node:ekr.20070213170721.8:Wrapper methods (widget-independent)
-#@-node:ekr.20070213170721:class baseTextWidget (From leoTkinterFrame NO LONGER USED)
+    cc = self
+    
+    assert canvas == cc.newCanvas
+    
+    # These ivars are set in cc.createCanvas.
+    pageName = cc.newPageName
+    page = cc.newPage
+    canvas = cc.newCanvas
+    
+    old_tree_init(tree,c,frame,canvas)
+    cc.chapters [pageName] = chapter(cc,c,tree,frame,canvas,page,pageName)
+    
+    # g.trace(pageName,id(canvas),cc.chapters.keys())
+#@-node:ekr.20070317085437.76:treeInit (creates Chapter)
+#@+node:ekr.20070317085437.77:write_Leo_file
+def write_Leo_file (self,fc,fileName,outlineOnlyFlag,singleChapter=False):
+
+    cc = self ; c = cc.c ; nb = cc.nb ; pagenames = nb.pagenames()
+
+    if len(pagenames) > 1 and not singleChapter:
+        rv,chapterList = cc.writeChapters(fc,fileName,pagenames,outlineOnlyFlag)
+        if rv: cc.zipChapters(fileName,pagenames,chapterList)
+        return rv
+    else:
+        global old_write_Leo_file
+        return old_write_Leo_file(fc,fileName,outlineOnlyFlag)
+#@nonl
+#@-node:ekr.20070317085437.77:write_Leo_file
+#@-node:ekr.20070317085437.69:Overrides
+#@+node:ekr.20070317125913.1:Commands
+#@+node:ekr.20070317085437.34:doPDFConversion & helper
+# Requires reportlab toolkit at http://www.reportlab.org
+
+def doPDFConversion (self,event=None):
+    cc = self ; c = cc.c ; nb = cc.nb
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.lib.units import inch
+    from reportlab.rl_config import defaultPageSize
+    PAGE_HEIGHT = defaultPageSize [1]
+    PAGE_WIDTH = defaultPageSize [0]
+    maxlen = 100
+    styles = getSampleStyleSheet()
+    pinfo = c.frame.shortFileName()
+    pinfo1 = pinfo.rstrip('.leo')
+    cs = cStringIO.StringIO()
+    doc = SimpleDocTemplate(cs,showBoundary=1)
+    Story = [Spacer(1,2*inch)]
+    pagenames = nb.pagenames()
+    cChapter = cc.currentChapter
+    n = 0
+    for z in pagenames:
+        chapter = self.getChapter(z)
+        chapter.setVariables()
+        p = chapter.rp
+        if p:
+            self._changeTreeToPDF(chapter.sv.get(),n,p,c,Story,styles,maxlen)
+        n += 1
+    << define otherPages callback >>
+    cChapter.setVariables()
+        # This sets the nodes back to the cChapter.
+        # If we didnt the makeCurrent would point to the wrong positions
+    cChapter.makeCurrent()
+    doc.build(Story,onLaterPages=otherPages)
+    f = open('%s.pdf' % pinfo1,'w')
+    cs.seek(0)
+    f.write(cs.read())
+    f.close()
+    cs.close()
+#@nonl
+#@+node:ekr.20070317085437.35:<< define otherPages callback >>
+def otherPages (canvas,doc,pageinfo=pinfo):
+
+    canvas.saveState()
+    canvas.setFont('Times-Roman',9)
+    canvas.drawString(inch,0.75*inch,"Page %d %s" % (doc.page,pageinfo))
+    canvas.restoreState()
+#@nonl
+#@-node:ekr.20070317085437.35:<< define otherPages callback >>
+#@+node:ekr.20070317085437.36:_changeTreeToPDF
+def _changeTreeToPDF (self,name,num,p,Story,styles,maxlen):
+    
+    c = self.c ; nb = self.nb
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, XPreformatted
+    from reportlab.lib.units import inch
+    from reportlab.rl_config import defaultPageSize
+    enc = c.importCommands.encoding
+    hstyle = styles ['title']
+    Story.append(Paragraph('Chapter %s: %s' % (num,name),hstyle))
+    style = styles ['Normal']
+    for p in p.allNodes_iter():
+        head = p.moreHead(0)
+        head = g.toEncodedString(head,enc,reportErrors=True)
+        s = head + '\n'
+        body = p2.moreBody() # Inserts escapes.
+        if len(body) > 0:
+            body = g.toEncodedString(body,enc,reportErrors=True)
+            s = s + body
+            s = s.split('\n')
+            s2 = []
+            for z in s:
+                if len(z) < maxlen:
+                    s2.append(z)
+                else:
+                    while 1:
+                        s2.append(z[: maxlen])
+                        if len(z[maxlen:]) > maxlen:
+                            z = z [maxlen:]
+                        else:
+                            s2.append(z[maxlen:])
+                            break
+            s = '\n'.join(s2)
+            s = s.replace('&','&amp;')
+            s = s.replace('<','&lt;')
+            s = s.replace('>','&gt;')
+            s = s.replace('"','&quot;')
+            s = s.replace("`",'&apos;')
+            Story.append(XPreformatted(s,style))
+            Story.append(Spacer(1,0.2*inch))
+
+    Story.append(PageBreak())
+#@nonl
+#@-node:ekr.20070317085437.36:_changeTreeToPDF
+#@-node:ekr.20070317085437.34:doPDFConversion & helper
+#@+node:ekr.20070317085437.32:convertTopLevelToChapters
+def convertTopLevelToChapters (self):
+    
+    cc = self ; c = cc.c
+
+    # It's more intuitive to leave the root position where it is.
+    p = c.rootPosition().next()
+    
+    # Dont' use an iterator here! makeNodeIntoChapter deletes nodes.
+    while p:
+        next = p.next()
+        # g.trace(p.headString())
+        self.makeNodeIntoChapter(p=p,redraw=False)
+        p = next
+
+    cc.setTree(cc.nb.pagenames()[0])
+    c.redraw_now()
+#@nonl
+#@-node:ekr.20070317085437.32:convertTopLevelToChapters
+#@+node:ekr.20070317085437.33:conversionToSimple
+def conversionToSimple (self):
+    
+    cc = self ; c = cc.c ; nb = cc.nb
+    
+    # Set last to the last top-level node.
+    for p in c.rootPosition().self_and_siblings_iter():
+        last = p.copy()
+
+    pagenames = nb.pagenames()
+    current = nb.getcurselection()
+    pagenames.remove(current)
+   
+    for pageName in pagenames:
+        chapter = self.getChapter(pageName)
+        # We can't use an iterator here because we are moving nodes.
+        p = chapter.rp
+        while p:
+            next = p.next()
+            p.moveAfter(last)
+            last = p.copy() ; p = next
+        nb.delete(pageName)
+    
+    nb.selectpage(current)
+    c.redraw_now()
+#@nonl
+#@-node:ekr.20070317085437.33:conversionToSimple
+#@+node:ekr.20070317085437.37:exportLeoFile
+def exportLeoFile (self,event=None):
+
+    c = self.c
+
+    name = tkFileDialog.asksaveasfilename()
+
+    if name:
+        if not name.endswith('.leo'): name = name + '.leo'
+        c.fileCommands.write_Leo_file(name,False,singleChapter=True)
+#@nonl
+#@-node:ekr.20070317085437.37:exportLeoFile
+#@+node:ekr.20070317085437.38:importLeoFile
+def importLeoFile (self,event=None):
+    
+    cc = self ; c = cc.c ; nb = cc.nb
+
+    fileName = tkFileDialog.askopenfilename()
+
+    if fileName:
+        cc.addPage()
+        c.fileCommands.open(file(fileName,'r'),fileName)
+        cc.currentChapter.makeCurrent()
+#@-node:ekr.20070317085437.38:importLeoFile
+#@+node:ekr.20070317085437.42:swapChapters
+def swapChapters (self,name):
+
+    cc = self ; c = cc.c ; nb = cc.nb
+    cselection = nb.getcurselection()
+    tab1 = nb.tab(cselection)
+    tab2 = nb.tab(name)
+    tval1 = tab1.cget('text')
+    tval2 = tab2.cget('text')
+    tv1 = cc.getChapter(cselection).sv
+    tv2 = cc.getChapter(name).sv
+    chap1 = cc.currentChapter
+    chap2 = self.getChapter(name)
+    rp, tp, cp = chap2.rp, chap2.tp, chap2.cp
+    chap2.rp, chap2.tp, chap2.cp = chap1.rp, chap1.tp, chap1.cp
+    chap1.rp, chap1.tp, chap1.cp = rp, tp, cp
+    chap1.setVariables()
+    c.redraw_now()
+    val1 = tv1.get()
+    val2 = tv2.get()
+    if val2.isdigit():
+        tv1.set(nb.index(cselection)+1)
+    else: tv1.set(val2)
+    if val1.isdigit():
+        tv2.set(nb.index(name)+1)
+    else: tv2.set(val1)
+#@nonl
+#@-node:ekr.20070317085437.42:swapChapters
+#@+node:ekr.20070317085437.43:Indexing
+@
+Indexing is complementary to find, it provides a gui Index of nodes.
+
+In comparison to regular find which bounces you around the tree,
+you can preview the node before you go to it.
+#@+node:ekr.20070317085437.44:viewIndex
+def viewIndex (self,nodes=None,tle=''):
+    c = self.c
+    if nodes == None:
+        nodes = [x for x in self.walkChapters(chapname=True)]
+    nodes = [(a[0].headString(),a[0],a[1]) for a in nodes]
+    nodes.sort()
+    if 1:
+        tl = Tk.Toplevel()
+        title = "%s Index of %s created at %s" % (tle,c.frame.shortFileName(),time.ctime())
+        tl.title(title)
+        f = Tk.Frame(tl)
+        f.pack(side='bottom')
+        l = Tk.Label(f,text='ScrollTo:')
+        e = Tk.Entry(f,bg='white',fg='blue')
+        l.pack(side='left')
+        e.pack(side='left')
+        b = Tk.Button(f,text='Close')
+        b.pack(side='left')
+        def rm (tl=tl):
+            tl.withdraw()
+            tl.destroy()
+        b.configure(command=rm)
+        sve = Tk.StringVar()
+        e.configure(textvariable=sve)
+        ms = tl.maxsize()
+        tl.geometry('%sx%s+0+0' % (ms[0],(ms[1]/4)*3))
+        sc = Pmw.ScrolledCanvas(
+            tl,vscrollmode='static',hscrollmode='static',
+            usehullsize = 1, borderframe = 1, hull_width = ms [0],
+            hull_height = (ms[1]/4) * 3)
+        sc.pack()
+        can = sc.interior()
+        can.configure(background='white')
+        bal = Pmw.Balloon(can)
+        tags = {}
+        self.buildIndex(nodes,can,tl,bal,tags)
+        sc.resizescrollregion()
+        << define scTo callback >>
+        e.bind('<Key>',scTo)
+        e.focus_set()
+#@nonl
+#@+node:ekr.20070317085437.45:<< define scTo callback >>
+def scTo (event,nodes=nodes,sve=sve,can=can,tags=tags):
+
+    t = sve.get()
+    if event.keysym == 'BackSpace':
+        t = t [: -1]
+    else:
+        t = t + event.char
+    if t:
+        for z in nodes:
+            if z [0].startswith(t) and tags.has_key(z[1]):
+                tg = tags [z [1]]
+                eh = can.bbox(self.ltag) [1]
+                eh = (eh*1.0) / 100
+                bh = can.bbox(tg) [1]
+                ncor = (bh/eh) * .01
+                can.yview('moveto',ncor)
+                return
+#@nonl
+#@-node:ekr.20070317085437.45:<< define scTo callback >>
+#@-node:ekr.20070317085437.44:viewIndex
+#@+node:ekr.20070317085437.46:buildIndex
+def buildIndex (self,nodes,can,tl,bal,tags):
+
+    cc = self ; c = cc.c ; nb = cc.nb
+    f = tkFont.Font()
+    f.configure(size=-20)
+    ltag = None
+    i = 0
+    for z in nodes:
+        i += 1
+        tg = 'abc' + str(i)
+        parent = z [1].parent()
+        if parent: parent = parent.headString()
+        else: parent = 'No Parent'
+        sv = cc.getChapter(z[2]).sv
+        if sv.get(): sv = ' - ' + sv.get()
+        else: sv = ''
+        tab = nb.tab(z[2])
+        tv = tab.cget('text')
+        isClone = z [1].isCloned()
+        if isClone: clone = ' (Clone) '
+        else:       clone = ''
+        txt = '%s  , parent: %s , chapter: %s%s%s' % (z[0],parent,tv,sv,clone)
+        self.ltag = ltag = tags [z [1]] = can.create_text(
+            20,i*20+20,text=txt,fill='blue',font=f,anchor=Tk.W,tag=tg)
+        bs = z [1].bodyString()
+        if bs.strip() != '':
+            bal.tagbind(can,tg,bs)
+        << def callbacks >>
+        can.tag_bind(tg,'<Button-1>',goto)
+        can.tag_bind(tg,'<Enter>',colorRd,'+')
+        can.tag_bind(tg,'<Leave>',colorBl,'+')
+#@nonl
+#@+node:ekr.20070317085437.47:<< def callbacks >>
+def goto (event,self=self,z=z,tl=tl):
+    c = self.c ; nb = self.nb
+    nb.selectpage(z[2])
+    c.selectPosition(z[1])
+    c.frame.outerFrame.update_idletasks()
+    c.frame.outerFrame.event_generate('<Button-1>')
+    c.frame.bringToFront()
+    return 'break'
+
+def colorRd (event,tg=ltag,can=can):
+    can.itemconfig(tg,fill='red')
+
+def colorBl (event,tg=ltag,can=can):
+    can.itemconfig(tg,fill='blue')
+#@nonl
+#@-node:ekr.20070317085437.47:<< def callbacks >>
+#@-node:ekr.20070317085437.46:buildIndex
+#@+node:ekr.20070317085437.48:regexViewIndex
+def regexViewIndex (self):
+    
+    c = self.c ; nb = self.nb
+
+    def regexWalk (result,entry,widget):
+        txt = entry.get()
+        widget.deactivate()
+        widget.destroy()
+        if result == 'Cancel': return None
+        nodes = [x for x in self.walkChapters(chapname=True)]
+        import re
+        regex = re.compile(txt)
+        def search (nd,regex=regex):
+            return regex.search(nd[0].bodyString())
+        nodes = filter(search,nodes)
+        self.viewIndex(nodes,'Regex( %s )' % txt)
+        return
+
+    sd = Pmw.PromptDialog(c.frame.top,
+        title = 'Regex Index',
+        buttons = ('Search','Cancel'),
+        command = regexWalk,
+    )
+    entry = sd.component('entry')
+    sd.configure(command=
+        lambda result, entry = entry, widget = sd:
+            regexWalk(result,entry,widget))
+    sd.activate(geometry='centerscreenalways')
+#@nonl
+#@-node:ekr.20070317085437.48:regexViewIndex
+#@-node:ekr.20070317085437.43:Indexing
+#@+node:ekr.20070317085437.53:regexClone & helper (replace by clone-find-all)
+def regexClone (self,name=None):
+
+    cc = self ; c = cc.c ; nb = cc.nb
+
+    chapter = self.getChapter(name)
+
+    d = Pmw.PromptDialog(c.frame.top,
+        title = 'Search and Clone',
+        buttons = ('Search','Cancel'),
+        defaultbutton = 'Search',
+    )
+    e = d.component('entry')
+    e.bind
+
+    def regexCloneCallback (result,cc=cc,e=e,d=d,chapter=chapter):
+        s = e.get() # Do this before destroying d.d
+        d.deactivate() ; d.destroy()
+        if result != 'Cancel':
+            cc.cloneWalk(chapter,s)
+
+    d.configure(command=regexCloneCallback)
+    d.activate(geometry='centerscreenalways')
+#@+node:ekr.20070317085437.54:cloneWalk
+def cloneWalk (self,chapter,s):
+    cc = self ; c = cc.c ; nb = cc.nb
+    regex = re.compile(s)
+    root = chapter.cp
+    chapter.setVariables()
+    t = leoNodes.tnode('',s)
+    v = leoNodes.vnode(c,t)
+    p = leoNodes.position(c,v,[])
+    p.moveAfter(root)
+    ignorelist = [p.v.t]
+    it = self.walkChapters(ignorelist=ignorelist)
+    for z in it:
+        f = regex.search(z.bodyString())
+        if f:
+            clone = z.clone(z)
+            i = p.numberOfChildren()
+            clone.moveToNthChildOf(p,i)
+            ignorelist.append(clone.v.t)
+    cc.currentChapter.setVariables()
+    nb.selectpage(chapter.pageName)
+    c.beginUpdate()
+    try:
+        p.moveToRoot(root)
+        c.setChanged(True)
+        c.selectPosition(p)
+        p.expand()
+    finally:
+        c.endUpdate()
+#@nonl
+#@-node:ekr.20070317085437.54:cloneWalk
+#@-node:ekr.20070317085437.53:regexClone & helper (replace by clone-find-all)
+#@-node:ekr.20070317125913.1:Commands
+#@+node:ekr.20070317085437.62:Files
+@ We need to decorate and be tricky here, since a Chapters leo file is a zip file.
+
+These functions are easy to break in my experience. :)
+#@nonl
+#@+node:ekr.20070317085437.63:Reading
+#@+node:ekr.20070317085437.64:openChaptersFile
+def openChaptersFile (self,fileName):
+
+    zf = zipfile.ZipFile(fileName)
+    file = cStringIO.StringIO()
+    name = zf.namelist()
+    csfiles = [[], []]
+    for x in name:
+        zi = zf.getinfo(x)
+        csfiles [0].append(zi.comment)
+        cs = cStringIO.StringIO()
+        csfiles [1].append(cs)
+        cs.write(zf.read(x))
+        cs.seek(0)
+    zf.close()
+    csfiles = zip(csfiles[0],csfiles[1])
+    return csfiles
+
+#@-node:ekr.20070317085437.64:openChaptersFile
+#@+node:ekr.20070317085437.65:insertChapters
+def insertChapters (self,chapters):
+
+    cc = self ; c = cc.c ; nb = cc.nb ; pagenames = nb.pagenames()
+    flipto = None
+    c.beginUpdate()
+    try:
+        i = 0
+        for tup in chapters:
+            x, y = tup
+            if i > 0:
+                page,pageName = self.addPage(x)
+                sv = cc.getChapter(pageName).sv
+                nb.nextpage()
+                cselection = nb.getcurselection()
+            else:
+                cselection = nb.getcurselection()
+                sv = cc.getChapter(cselection).sv
+            sv.set(x)
+            next = cselection
+            self.setTree(next)
+            c.fileCommands.open(y,sv.get())
+            if i == 0: flipto = cselection
+            i += 1
+        self.setTree(flipto)
+    finally:
+        c.endUpdate()
+#@nonl
+#@-node:ekr.20070317085437.65:insertChapters
+#@-node:ekr.20070317085437.63:Reading
+#@+node:ekr.20070317085437.66:Writing
+#@+node:ekr.20070317085437.67:writeChapters
+def writeChapters (self,fc,fileName,pagenames,outlineOnlyFlag):
+
+    '''Writes Chapters to StringIO instances.'''
+    
+    cc = self ; chapterList = []
+    global old_write_Leo_file
+
+    for z in pagenames:
+        chapter = self.getChapter(z)
+        chapter.setVariables()
+        rv = old_write_Leo_file(fc,fileName,outlineOnlyFlag,toString=True)
+        chapterList.append(g.app.write_Leo_file_string)
+        # g.trace(len(g.app.write_Leo_file_string))
+
+    cc.currentChapter.setVariables()
+    return rv,chapterList
+#@nonl
+#@-node:ekr.20070317085437.67:writeChapters
+#@+node:ekr.20070317085437.68:zipChapters
+def zipChapters (self,fileName,pagenames,chapList):
+
+    '''Writes StringIO instances to a zipped file.'''
+    
+    cc = self
+
+    zf = zipfile.ZipFile(fileName,'w',zipfile.ZIP_DEFLATED)
+
+    i = 0
+    for pageName in pagenames:
+        sv = cc.getChapter(pageName).sv
+        zif = zipfile.ZipInfo(str(i))
+        zif.comment = sv.get() or ''
+        zif.compress_type = zipfile.ZIP_DEFLATED
+        zf.writestr(zif,chapList[i])
+        i += 1
+
+    zf.close()
+#@nonl
+#@-node:ekr.20070317085437.68:zipChapters
+#@-node:ekr.20070317085437.66:Writing
+#@-node:ekr.20070317085437.62:Files
+#@+node:ekr.20070317085437.78:Utils
+#@+node:ekr.20070317085437.79:addPage
+def addPage (self,pageName=None):
+
+    cc = self ; c = cc.c
+    if not pageName:
+        pageName = str(len(cc.nb.pagenames()) + 1)
+    
+    # g.trace(pageName,cc.chapters.keys())
+    
+    old_chapter = cc.currentChapter
+    junk, page = cc.constructTree(self.frame,pageName)
+        # Creates a canvas, new tab and a new tree.
+
+    old_chapter.makeCurrent() # Essential to capture the present values.
+    chapter = cc.getChapter(cc.newPageName)
+    chapter.makeCurrent()
+    return page,pageName
+#@nonl
+#@-node:ekr.20070317085437.79:addPage
+#@+node:ekr.20070317085437.80:getChapter
+def getChapter (self,pageName=None):
+    
+    cc = self
+
+    return self.chapters.get(pageName or cc.nb.getcurselection())
+#@nonl
+#@-node:ekr.20070317085437.80:getChapter
+#@+node:ekr.20070317085437.82:walkChapters
+def walkChapters (self,ignorelist=[],chapname=False):
+
+    '''A generator that allows one to walk the chapters as one big tree.'''
+
+    for z in self.nb.pagenames():
+        chapter = self.getChapter(z)
+        for p in chapter.rp.allNodes_iter():
+            if chapname:
+                if p not in ignorelist: yield p.copy(), z
+            else:
+                if p.v.t not in ignorelist: yield p.copy()
+#@nonl
+#@-node:ekr.20070317085437.82:walkChapters
+#@-node:ekr.20070317085437.78:Utils
+#@-node:ekr.20070317085608:From chapterController
+#@+node:ekr.20070317131205:From chapter
+#@+node:ekr.20070317085708.5:_saveInfo
+def _saveInfo (self):
+
+    c = self.c
+    self.cp = c._currentPosition and c._currentPosition.copy() or c.nullPosition()
+    self.rp = c._rootPosition and c._rootPosition.copy() or c.nullPosition()
+    self.tp = c._topPosition and c._topPosition.copy() or c.nullPosition()
+    
+    # g.trace(self.cp)
+#@nonl
+#@-node:ekr.20070317085708.5:_saveInfo
+#@+node:ekr.20070317085708.4:initTree
+def initTree (self):
+    
+    '''Initialize the tree for this chapter.'''
+    
+    cc = self.cc ; c = cc.c
+    
+    if cc.currentChapter:
+        # g.trace()
+        # We are creating a *second* or following chapter.
+        t = leoNodes.tnode('','New Headline')
+        v = leoNodes.vnode(c,t)
+        # v.linkAsRoot(oldRoot=None)
+        p = leoNodes.position(c,v,[])
+        self.cp = p.copy()
+        self.rp = p.copy()
+        self.tp = p.copy()
+    else:
+        cc.currentChapter = self
+        self.cp = c._currentPosition and c._currentPosition.copy() or c.nullPosition()
+        self.tp = c._topPosition and c._topPosition.copy() or c.nullPosition()
+        self.rp = c._rootPosition and c._rootPosition.copy() or c.nullPosition()
+#@nonl
+#@-node:ekr.20070317085708.4:initTree
+#@+node:ekr.20070317085708.3:init
+def init (self):
+    
+    '''Complete the initialization of a chapter
+    by creating bindings and injecting ivars.
+    
+    Doing this here greatly simplifies the init logic.'''
+
+    c = self.c ; cc = self.cc ; nb = cc.nb
+    pageName = self.pageName ; page = self.page
+    
+    hull = nb.component('hull')
+    tab = nb.tab(pageName)
+    tab.bind('<Button-3>',lambda event,hull=hull: hull.tmenu.post(event.x_root,event.y_root))
+    cc.createBalloon(tab,self.sv)
+ 
+    # The keyhandler won't be defined for the first chapter,
+    # but that's ok: we only need to do this for later chapters.
+    if c.k:
+        # Same logic as in k.completeAllBindings, but for the new tree.
+        c.k and self.tree.setBindings()
+        for w in (self.canvas,self.tree.bindingWidget):
+            c.k.completeAllBindingsForWidget(w)
+#@nonl
+#@-node:ekr.20070317085708.3:init
+#@+node:ekr.20070317085708.6:setVariables
+def setVariables (self):
+    
+    '''Switch variables in Leo's core to represent this chapter.'''
+
+    c = self.c
+
+    # g.trace(self.pageName,'canvas:',id(self.canvas),self.cp.headString())
+
+    frame = self.frame
+    frame.tree = self.tree
+    frame.canvas = self.canvas
+    frame.treeBar = self.treeBar
+
+    c._currentPosition = self.cp and self.cp.copy() or c.nullPosition()
+    c._rootPosition    = self.rp and self.rp.copy() or c.nullPosition()
+    c._topPosition     = self.tp and self.tp.copy() or c.nullPosition()
+    
+    # g.trace(self.cp)
+#@nonl
+#@-node:ekr.20070317085708.6:setVariables
+#@+node:ekr.20070317085708.7:makeCurrent
+def makeCurrent (self):
+
+    c = self.c ; cc = self.cc
+    
+    # g.trace(self.pageName)
+    cc.nb.selectpage(self.pageName)
+    cc.currentChapter._saveInfo()
+    cc.currentChapter = self
+    self.setVariables()
+    self.updateHeadingSV(self.sv)
+    self.rp.v.linkAsRoot(oldRoot=self.rp.v._next)
+    c.redraw()
+    c.bodyWantsFocusNow()
+#@nonl
+#@-node:ekr.20070317085708.7:makeCurrent
+#@+node:ekr.20070317085708.8:updateHeadingSV
+def updateHeadingSV (self,sv):
+    
+    body = self.c.frame.body
+    
+    if hasattr(body,'editorLeftLabel'):
+        # g.trace(self)
+        body.editorLeftLabel.configure(textvariable=sv)
+#@nonl
+#@-node:ekr.20070317085708.8:updateHeadingSV
+#@+node:ekr.20070317085437.28:addTrashBarrel
+# def addTrashBarrel (self,event=None):
+    
+    # self.selectChapter('trash')
+
+    # c = self.c ; trash = 'Trash'
+    
+    # if self.getChapter(trash):
+        # return
+
+    # self.addPage(trash)
+    # chapter = self.getChapter(trash)
+    # chapter.sv.set(trash)
+    # chapter.rp.setHeadString(trash+' barrel')
+#@-node:ekr.20070317085437.28:addTrashBarrel
+#@-node:ekr.20070317131205:From chapter
+#@-node:ekr.20070317085508:Not used from chapters.py
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.407755581669">
-	<global_window_position top="47" left="154" height="792" width="1081"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="47" left="361" height="772" width="802"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -1031,7 +1031,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="ETV"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.646"><vh>Borland PC versions...</vh>
@@ -3037,7 +3037,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070316182323.1" a="EV"><vh>4.4.3 alpha 2</vh>
+<v t="ekr.20070316182323.1" a="E"><vh>4.4.3 alpha 2</vh>
 <v t="ekr.20070317044545.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070317044545.2"><vh>Bugs</vh>
 <v t="ekr.20070317044545.3"><vh>Fixed an escape bug in new colorizer</vh></v>

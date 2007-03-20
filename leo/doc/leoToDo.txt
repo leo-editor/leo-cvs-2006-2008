@@ -3,6 +3,19 @@
 #@+all
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070220082124.2:Before b1
+#@+node:ekr.20070319185656:Investigate chapter hoist bug
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4215654
+By: rogererens
+
+There's a bug with ordinary hoisting: in the "Outline" menu the "Delete Node"
+menu item is not disabled when the local root is selected.
+#@-node:ekr.20070319185656:Investigate chapter hoist bug
+#@+node:ekr.20070320065038:Improve option: @nosent add newline (true by default)
+@nocolor
+
+The documentation for @asis and @noref discusses suppressing 'extra' newlines in body text. The docs for @nosent are silent on this point.  The docs don't correspond with my memory and they don't describe @nosent properly.  Clearly, the docs must represent what actually happens, but what should that be?
+#@-node:ekr.20070320065038:Improve option: @nosent add newline (true by default)
 #@+node:ekr.20070215093739:* Improve Leo's getting started page
 @nocolor
 
