@@ -3080,7 +3080,8 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     '''A class representing a tabbed outline pane drawn with Tkinter.'''
     
     #@    @+others
-    #@+node:ekr.20070317073819.1:ctor (leoTreeTab)
+    #@+node:ekr.20070320090557.1: Birth & death
+    #@+node:ekr.20070317073819.1: ctor (leoTreeTab)
     def __init__ (self,c,parentFrame,chapterController):
         
         leoFrame.leoTreeTab.__init__ (self,c,chapterController,parentFrame)
@@ -3099,64 +3100,31 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     
         
     #@nonl
-    #@-node:ekr.20070317073819.1:ctor (leoTreeTab)
-    #@+node:ekr.20070317073819.2:createControl
+    #@-node:ekr.20070317073819.1: ctor (leoTreeTab)
+    #@+node:ekr.20070317073819.2:tt.createControl
     def createControl (self):
         
         tt = self
+        
+        def lowerCallback(tabName,self=self):
+            return self.lowerTab(tabName)
+        
+        def raiseCallback(tabName,self=self):
+            return self.raiseTab(tabName)
     
         tt.nb = nb = Pmw.NoteBook(self.parentFrame,
             borderwidth = 1, pagemargin = 0, 
-            raisecommand = self.raiseTab,
-            lowercommand = self.lowerTab,
+            raisecommand = raiseCallback,
+            lowercommand = lowerCallback,
             arrownavigation = 0,
         )
         
         hull = nb.component('hull')
     
-        def lowerCallback(name,self=self):
-            return self.lowerTab(name)
-        nb.configure(lowercommand=lowerCallback)
-        
-        def raiseCallback(name,self=self):
-            return self.raiseTab(name)
-        nb.configure(raisecommand=raiseCallback)
-    
         nb.pack(fill='both',expand=1)
-    #@-node:ekr.20070317073819.2:createControl
-    #@+node:ekr.20070317074824:createTab
-    def createTab (self,tabName):
-        
-        tt = self ; c = tt.c ; cc = self.cc ; nb = tt.nb
-        
-        parentFrame = nb.add(tabName) # page is a Tk.Frame.
-        self.tabNames.append(tabName)
-    
-        b = nb.tab(tabName) # b is a Tk.Button.
-        tt.makeTabMenu(b)
-    
-        b.configure(
-            background=self.selectedTabBackgroundColor,
-            foreground=self.selectedTabForegroundColor)
-            
-        canvas = c.frame.createCanvas(parentFrame)
-    
-        tt.canvasDict [tabName] = canvas
-        tt.stringVarDict [tabName] = Tk.StringVar()
-        tt.treeDict [tabName] = tree = leoTkinterTree.leoTkinterTree(c,c.frame,canvas)
-        
-        if tabName != 'main':
-            tree.redraw_now()
-    #@-node:ekr.20070317074824:createTab
-    #@+node:ekr.20070317074824.1:destroyTab
-    def destroyTab (self,tabName):
-        
-        if tabName in self.tabNames:
-            self.nb.delete(tabName)
-            self.tabNames.remove(tabName)
-        
-    #@-node:ekr.20070317074824.1:destroyTab
-    #@+node:ekr.20070317082315:getButton/Canvas/Frame/Tree
+    #@-node:ekr.20070317073819.2:tt.createControl
+    #@-node:ekr.20070320090557.1: Birth & death
+    #@+node:ekr.20070317082315:tt.getters
     def getButton (self,tabName):
         
         tt = self
@@ -3181,13 +3149,46 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             
     def getSelectedTabName (self):
         
-        return self.nb.getcurselection()
+        return self.nb.getcurselection() # An immutable tab name.
             
     def getTree (self,tabName):
         
         return self.treeDict.get(tabName) # A leoTkinterTree.
-    #@-node:ekr.20070317082315:getButton/Canvas/Frame/Tree
-    #@+node:ekr.20070317074813:makeTabMenu & helpers
+    #@-node:ekr.20070317082315:tt.getters
+    #@+node:ekr.20070320093038:Tabs...
+    #@+node:ekr.20070317074824:tt.createTab
+    def createTab (self,tabName):
+        
+        tt = self ; c = tt.c ; cc = self.cc ; nb = tt.nb
+        
+        parentFrame = nb.add(tabName) # page is a Tk.Frame.
+        self.tabNames.append(tabName)
+    
+        b = nb.tab(tabName) # b is a Tk.Button.
+        tt.makeTabMenu(b)
+    
+        b.configure(
+            background=self.selectedTabBackgroundColor,
+            foreground=self.selectedTabForegroundColor)
+            
+        canvas = c.frame.createCanvas(parentFrame)
+    
+        tt.canvasDict [tabName] = canvas
+        tt.stringVarDict [tabName] = Tk.StringVar()
+        tt.treeDict [tabName] = tree = leoTkinterTree.leoTkinterTree(c,c.frame,canvas)
+        
+        if tabName != 'main':
+            tree.redraw_now()
+    #@-node:ekr.20070317074824:tt.createTab
+    #@+node:ekr.20070317074824.1:tt.destroyTab
+    def destroyTab (self,tabName):
+        
+        if tabName in self.tabNames:
+            self.nb.delete(tabName)
+            self.tabNames.remove(tabName)
+        
+    #@-node:ekr.20070317074824.1:tt.destroyTab
+    #@+node:ekr.20070317074813:tt.makeTabMenu & helpers
     def makeTabMenu (self,widget):
         
         '''Create a tab menu.'''
@@ -3208,7 +3209,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             tt.createNodeMenu(tmenu)
             tt.createTrashMenu(tmenu)
     #@nonl
-    #@+node:ekr.20070317074813.1:createTopLevelMenuItems
+    #@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
     def createTopLevelMenuItems (self,tmenu):
         
         cc = self.cc ; menu = tmenu
@@ -3252,8 +3253,8 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     
         # menu.add_separator()
         
-    #@-node:ekr.20070317074813.1:createTopLevelMenuItems
-    #@+node:ekr.20070318120043:setupChaptersMenu
+    #@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
+    #@+node:ekr.20070318120043:tt.setupChaptersMenu
     def setupChaptersMenu (self,menu,command):
     
         '''Create a submenu containing the list of all chapters.'''
@@ -3270,24 +3271,30 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
                 menu.add_command(
                     label=name,command=lambda name=name: command(name))
     #@nonl
-    #@-node:ekr.20070318120043:setupChaptersMenu
-    #@-node:ekr.20070317074813:makeTabMenu & helpers
-    #@+node:ekr.20070317085437.81:renumber
-    def renumber (self):
+    #@-node:ekr.20070318120043:tt.setupChaptersMenu
+    #@-node:ekr.20070317074813:tt.makeTabMenu & helpers
+    #@+node:ekr.20070317075059.1:tt.raise/lowerTab
+    def lowerTab (self,tabName):
+    
+        tt = self ; tab = tt.nb.tab(tabName)
         
-        '''Renumber all numbered chapters.'''
-        
-        nb = self.nb
+        tab.configure(
+            background=tt.unselectedTabBackgroundColor,
+            foreground=tt.unselectedTabForegroundColor)
             
-        i = 0
-        for name in nb.pagenames():
-            if name.isdigit():
-                i += 1
-                b = nb.tab(name) # A Tk.button.
-                b.configure(text=str(i))
-    #@nonl
-    #@-node:ekr.20070317085437.81:renumber
-    #@+node:ekr.20070318125900.1:renameChapterHelper
+        tt.cc.unselectCallback(tabName)
+            
+    def raiseTab (self,tabName):
+        
+        tt = self ; tab = tt.nb.tab(tabName)
+    
+        tab.configure(
+            background=tt.selectedTabBackgroundColor,
+            foreground=tt.selectedTabForegroundColor)
+            
+        tt.cc.selectCallback(tabName)
+    #@-node:ekr.20070317075059.1:tt.raise/lowerTab
+    #@+node:ekr.20070318125900.1:tt.renameChapterHelper
     def renameChapterHelper (self,cc,tabName):
         
         '''Called from cc.renameChapter to prompt for a new name.'''
@@ -3316,8 +3323,8 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         b.configure(command=changeCallback)
         c.widgetWantsFocusNow(e)
     #@nonl
-    #@-node:ekr.20070318125900.1:renameChapterHelper
-    #@+node:ekr.20070318133725:renameTab
+    #@-node:ekr.20070318125900.1:tt.renameChapterHelper
+    #@+node:ekr.20070318133725:tt.renameTab
     def renameTab (self,newName):
         
         '''Change the button text of the presently selected tab.'''
@@ -3328,149 +3335,16 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         name = nb.getcurselection()
         b = nb.tab(name)
         b.configure(text=newName)
-    #@-node:ekr.20070318133725:renameTab
-    #@+node:ekr.20070317074824.3:selectTab
+    #@-node:ekr.20070318133725:tt.renameTab
+    #@+node:ekr.20070317074824.3:tt.selectTab
     def selectTab (self,tabName):
         
         if tabName not in self.tabNames:
             self.createTab(tabName)
         
         self.nb.selectpage(tabName)
-    #@-node:ekr.20070317074824.3:selectTab
-    #@+node:ekr.20070317075059:Callbacks (TO DO)
-    #@+node:ekr.20070317075059.1:raise/lowerTab
-    def lowerTab (self,name):
-    
-        tt = self ; tab = tt.nb.tab(name)
-        
-        tab.configure(
-            background=tt.unselectedTabBackgroundColor,
-            foreground=tt.unselectedTabForegroundColor)
-            
-    def raiseTab (self,name):
-        
-        tt = self ; c = tt.c ; tab = tt.nb.tab(name)
-    
-        tab.configure(
-            background=tt.selectedTabBackgroundColor,
-            foreground=tt.selectedTabForegroundColor)
-    #@-node:ekr.20070317075059.1:raise/lowerTab
-    #@+node:ekr.20070317075059.2:onFocusIn & helpers
-    def onFocusIn (self,event,body,bodyCtrl):
-        
-        '''Set the focus to the proper body and bodyCtrl.'''
-        
-        tt = self ; c = tt.c ; nb = tt.nb
-        
-        # g.trace(event,id(body),id(bodyCtrl))
-        
-        changeCtrl = body.frame.bodyCtrl != bodyCtrl
-        
-        # Switch the injected ivars.
-        body.frame.body = body
-        body.frame.bodyCtrl = body.bodyCtrl
-    
-        if not hasattr(body,'lastChapter'):
-            body.lastChapter = nb.getcurselection()
-            
-        # Select body.lastChapter if it exists, or the present chapter otherwise.
-        pageName = tt.getValidChapterName(body.lastChapter)
-        changePage = pageName != nb.getcurselection()
-        if changePage:
-            body.lastChapter = pageName
-            nb.selectpage(pageName)
-        
-        tt.selectNodeForEditor(body)
-        if changePage or changeCtrl:
-            # Do this only if necessary: it interferes with the Find command.
-            tt.activateEditor(body)
-    #@nonl
-    #@+node:ekr.20070317075059.3:getValidChapterName
-    def getValidChapterName (self,name):
-        
-        '''Return name if its chapter still exists.
-        Otherwise return the name of the presently selected tab.'''
-        
-        tt = self ; nb = tt.nb
-    
-        try:
-            nb.index(name)
-        except:
-            name = nb.getcurselection()
-            
-        # g.trace(name)
-        return name
-    #@nonl
-    #@-node:ekr.20070317075059.3:getValidChapterName
-    #@+node:ekr.20070317075059.4:selectNodeForEditor
-    def selectNodeForEditor (self,body):
-    
-        '''Select the next node for the editor.'''
-        
-        tt = self ; c = tt.c
-    
-        if not hasattr(body,'lastPosition'):
-            body.lastPosition = c.currentPosition()
-    
-        if body.lastPosition == c.currentPosition():
-            pass
-        elif body.lastPosition.exists(c):
-            c.selectPosition(body.lastPosition)
-        else:
-            g.trace('last position does not exist',color='red')
-            c.selectPosition(c.rootPosition())
-    
-        body.lastPosition = c.currentPosition()
-        # g.trace(body.lastPosition.headString())
-    #@nonl
-    #@-node:ekr.20070317075059.4:selectNodeForEditor
-    #@-node:ekr.20070317075059.2:onFocusIn & helpers
-    #@+node:ekr.20070317075059.5:raisePage (NOT USED)
-    def raisePage (self,name):
-        
-        tt = self ; c = tt.c ; tab = tt.nb.tab(name)
-    
-        tab.configure(
-            background=tt.selectedTabBackgroundColor,
-            foreground=tt.selectedTabForegroundColor)
-        
-        # This must be called before queuing up the callback.
-        self.setTree(name)
-        
-        # This can not be called immediately
-        def idleCallback(event=None,c=c):
-            c.invalidateFocus()
-            c.bodyWantsFocusNow()
-            
-        w = c.frame.body and c.frame.body.bodyCtrl
-        w and w.after_idle(idleCallback)
-    #@-node:ekr.20070317075059.5:raisePage (NOT USED)
-    #@+node:ekr.20070317075059.6:setTree (NOT USED YET)
-    def setTree (self,name):
-    
-        tt = self ; c = tt.c
-        chapter = self.getChapter(name)
-        sv = chapter and chapter.sv
-        
-        # g.trace(name,g.callers())
-        
-        if not sv:
-            # The page hasn't been fully created yet.  This is *not* an error.
-            return None
-    
-        chapter.makeCurrent()
-        
-        # Set body ivars.
-        body = c.frame.body
-        body.lastChapter = name
-        body.lastPosition = chapter.cp
-        
-        # Configure the tab.
-        tab = tt.nb.tab(name)
-        self.activateEditor(c.frame.body)
-    #@nonl
-    #@-node:ekr.20070317075059.6:setTree (NOT USED YET)
-    #@-node:ekr.20070317075059:Callbacks (TO DO)
+    #@-node:ekr.20070317074824.3:tt.selectTab
+    #@-node:ekr.20070320093038:Tabs...
     #@-others
 #@nonl
 #@-node:ekr.20070317073627.3:class leoTkinterTreeTab
