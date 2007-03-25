@@ -503,14 +503,18 @@ class chapter:
     #@+node:ekr.20070317131205.1:chapter.select (TO DO)
     def select (self):
         
-        g.trace(self.name)
+        '''Restore chapter information and redraw the tree when a chapter is selected.'''
+        
+        # g.trace(self.name)
         #self.root_p = self.findPositionAnywhere(self.root_v)
         #self.p = self.findPositionInTree(self.v)
     #@-node:ekr.20070317131205.1:chapter.select (TO DO)
     #@+node:ekr.20070320091806.1:chapter.unselect (TO DO)
     def unselect (self):
         
-        g.trace(self.name)
+        '''Remember chapter information when a chapter is about to be unselected.'''
+        
+        # g.trace(self.name)
     #@nonl
     #@-node:ekr.20070320091806.1:chapter.unselect (TO DO)
     #@-others

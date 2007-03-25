@@ -1,21 +1,564 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
+#@+node:ekr.20070317073627.4:(Chapters)
+#@+node:ekr.20070317125913:To do
+@nocolor
+@
+
+- Clicks in new chapters do not work.
+
+- Create @chapters and @chapter nodes as needed when creating a chapter.
+    
+- Body editors should support chapers.
+    - Prepend chapter name.
+    
+- Make body editors persistent.
+
+- Restrict searches to chapters.
+  - This is much more general than adding chapter-oriented find commands.
+  - In particular, clone-find-all should work on chapters.
+#@-node:ekr.20070317125913:To do
+#@+node:ekr.20070320093405:(recent)
+#@+node:ekr.20070318105131:Creating chapters
+#@+node:ekr.20031218072017.2176:f.finishCreate & helpers
+def finishCreate (self,c):
+    
+    f = self ; f.c = c
+    # g.trace('tkFrame')
+    
+    self.use_chapters = c.config.getBool('use_chapters')
+    
+    # This must be done after creating the commander.
+    f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
+    f.createOuterFrames()
+    f.createIconBar()
+    f.createSplitterComponents()
+    f.createStatusLine()
+    f.createFirstTreeNode()
+    f.menu = leoTkinterMenu.leoTkinterMenu(f)
+        # c.finishCreate calls f.createMenuBar later.
+    c.setLog()
+    g.app.windowList.append(f)
+    c.initVersion()
+    c.signOnWithVersion()
+    f.miniBufferWidget = f.createMiniBufferWidget()
+    c.bodyWantsFocusNow()
+    self.trace_status_line = c.config.getBool('trace_status_line')
+    # f.enableTclTraces()
+#@+node:ekr.20051009044751:createOuterFrames
+def createOuterFrames (self):
+
+    f = self ; c = f.c
+    f.top = top = Tk.Toplevel()
+    g.app.gui.attachLeoIcon(top)
+    top.title(f.title)
+    top.minsize(30,10) # In grid units.
+    
+    if g.os_path_exists(g.app.user_xresources_path):
+        f.top.option_readfile(g.app.user_xresources_path)
+    
+    f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
+    f.top.bind("<Button-1>", f.OnActivateLeoEvent)
+    
+    f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
+    f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
+    
+    # These don't work on Windows. Because of bugs in window managers,
+    # there is NO WAY to know which window is on top!
+    # f.top.bind("<Activate>",f.OnActivateLeoEvent)
+    # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
+    
+    # Create the outer frame, the 'hull' component.
+    f.outerFrame = Tk.Frame(top)
+    f.outerFrame.pack(expand=1,fill="both")
+#@nonl
+#@-node:ekr.20051009044751:createOuterFrames
+#@+node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
+def createSplitterComponents (self):
+
+    f = self ; c = f.c
+
+    f.createLeoSplitters(f.outerFrame)
+    
+    # Create the canvas, tree, log and body.
+    if self.use_chapters:
+        # Create the controllers.
+        cc = leoChapters.chapterController(c)
+        tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+        cc.finishCreate(tt)
+        tt.selectTab('main')
+        f.canvas = tt.getCanvas('main')
+        f.tree = tt.getTree('main')
+    else:
+        f.canvas = f.createCanvas(f.split2Pane1)
+        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+    f.log    = leoTkinterLog(f,f.split2Pane2)
+    f.body   = leoTkinterBody(f,f.split1Pane2)
+    
+    # Yes, this an "official" ivar: this is a kludge.
+    f.bodyCtrl = f.body.bodyCtrl
+    
+    # Configure.
+    f.setTabWidth(c.tab_width)
+    f.tree.setColorFromConfig()
+    f.reconfigurePanes()
+    f.body.setFontFromConfig()
+    f.body.setColorFromConfig()
+#@nonl
+#@-node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
+#@+node:ekr.20051009045404:createFirstTreeNode
+def createFirstTreeNode (self):
+    
+    f = self ; c = f.c
+
+    t = leoNodes.tnode()
+    v = leoNodes.vnode(t)
+    p = leoNodes.position(v,[])
+    v.initHeadString("NewHeadline")
+    p.moveToRoot(oldRoot=None)
+    c.setRootPosition(p) # New in 4.4.2.
+    c.editPosition(p)
+#@-node:ekr.20051009045404:createFirstTreeNode
+#@+node:ekr.20051121092320:f.enableTclTraces
+def enableTclTraces (self):
+    
+    c = self.c
+    
+    # pychecker complains that trace/untracewidget are not used.
+
+    def tracewidget(event):
+        g.trace('enabling widget trace')
+        Pmw.tracetk(event.widget, 1)
+    
+    def untracewidget(event):
+        g.trace('disabling widget trace')
+        Pmw.tracetk(event.widget,0)
+        
+    def focusIn (event):
+        print("Focus in  %s (%s)" % (
+            event.widget,event.widget.winfo_class()))
+        
+    def focusOut (event):
+        print("Focus out %s (%s)" % (
+            event.widget,event.widget.winfo_class()))
+
+    # Put this in unit tests before the assert:
+    # c.frame.bar1.unbind_all("<FocusIn>")
+    # c.frame.bar1.unbind_all("<FocusOut>")
+
+    # Any widget would do:
+    w = c.frame.bar1
+    if 1:
+        w.bind_all("<FocusIn>", focusIn)
+        w.bind_all("<FocusOut>", focusOut)
+    else:
+        w.bind_all("<Control-1>", tracewidget)
+        w.bind_all("<Control-Shift-1>", untracewidget)
+#@-node:ekr.20051121092320:f.enableTclTraces
+#@-node:ekr.20031218072017.2176:f.finishCreate & helpers
+#@+node:ekr.20070317085437.31:cc.createChapter
+numberOfChapters = 0
+
+def createChapter (self,event=None,name=None):
+    
+    cc = self ; c = cc.c ; tt = cc.tt
+    
+    if name == 'main':
+        p = c.rootPosition()
+    else:
+        p = c.currentPosition()
+    
+    if not name:
+        # The **immutable** chapter name is 'Chapter n'.
+        tabName = 'Chapter % d' % self.numberOfChapters
+        self.numberOfChapters += 1
+    else:
+        tabName = name
+    
+    self.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p)
+    tt.selectTab(tabName)
+    
+    if name not in ('trash','main'):
+        tt.renameChapterHelper(cc,tabName)
+
+    c.bodyWantsFocusNow()
+#@-node:ekr.20070317085437.31:cc.createChapter
+#@+node:ekr.20070317085437.41:cc.renameChapter
+def renameChapter (self,event=None):
+    
+    '''Handle the rename chapter command.'''
+    
+    cc = self ; tt = cc.tt
+    
+    tabName = tt.getSelectedTabName()
+
+    if tabName == 'trash':
+        return g.es('Can not rename the trash',color='red')
+    if tabName == 'main':
+        return g.es('Can not rename the main chapter',color='red')
+
+    tt.renameChapterHelper(cc,tabName)
+#@-node:ekr.20070317085437.41:cc.renameChapter
+#@+node:ekr.20070317074824:tt.createTab
+def createTab (self,tabName):
+    
+    tt = self ; c = tt.c ; cc = self.cc ; nb = tt.nb
+    
+    parentFrame = nb.add(tabName) # page is a Tk.Frame.
+    self.tabNames.append(tabName)
+
+    b = nb.tab(tabName) # b is a Tk.Button.
+    tt.makeTabMenu(b)
+
+    b.configure(
+        background=self.selectedTabBackgroundColor,
+        foreground=self.selectedTabForegroundColor)
+        
+    canvas = c.frame.createCanvas(parentFrame)
+
+    tt.canvasDict [tabName] = canvas
+    tt.stringVarDict [tabName] = Tk.StringVar()
+    tt.treeDict [tabName] = tree = leoTkinterTree.leoTkinterTree(c,c.frame,canvas)
+    
+    if tabName != 'main':
+        tree.redraw_now()
+#@-node:ekr.20070317074824:tt.createTab
+#@+node:ekr.20070318125900.1:tt.renameChapterHelper
+def renameChapterHelper (self,cc,tabName):
+    
+    '''Called from cc.renameChapter to prompt for a new name.'''
+    
+    tt = self ; c = tt.c ; nb = tt.nb
+    
+    frame = tt.getFrame(tabName)
+    tab = tt.getButton(tabName)
+    
+    # g.trace(chapter)
+    f = Tk.Frame(tab)
+    # Elegant code.  Setting e's textvariable to chapter.sv
+    # immediately updates the chapter labels as e changes.
+    sv = tt.stringVarDict.get(tabName)
+    e = Tk.Entry(f,background='white',textvariable=sv)
+    b = Tk.Button(f,text="Close")
+    f.pack(side='top')
+    e.pack(side='left')
+    b.pack(side='right')
+    def changeCallback (event=None,f=f,sv=sv):
+        newName = sv.get()
+        f.pack_forget()
+        tt.renameTab(newName)
+    e.bind('<Return>',changeCallback)
+    e.selection_range(0,'end')
+    b.configure(command=changeCallback)
+    c.widgetWantsFocusNow(e)
+#@nonl
+#@-node:ekr.20070318125900.1:tt.renameChapterHelper
+#@+node:ekr.20070318133725:tt.renameTab
+def renameTab (self,newName):
+    
+    '''Change the button text of the presently selected tab.'''
+    
+    # Important: the actual tab name *never* changes.
+    
+    tt = self ; nb = tt.nb
+    name = nb.getcurselection()
+    b = nb.tab(name)
+    b.configure(text=newName)
+#@-node:ekr.20070318133725:tt.renameTab
+#@+node:ekr.20070317074824.3:tt.selectTab
+def selectTab (self,tabName):
+    
+    if tabName not in self.tabNames:
+        self.createTab(tabName)
+    
+    self.nb.selectpage(tabName)
+#@-node:ekr.20070317074824.3:tt.selectTab
+#@-node:ekr.20070318105131:Creating chapters
+#@-node:ekr.20070320093405:(recent)
+#@+node:ekr.20070320090010:Selecting chapters
+#@+node:ekr.20070317075059.1:tt.raise/lowerTab
+def lowerTab (self,tabName):
+
+    tt = self ; tab = tt.nb.tab(tabName)
+    
+    tab.configure(
+        background=tt.unselectedTabBackgroundColor,
+        foreground=tt.unselectedTabForegroundColor)
+        
+    tt.cc.unselectCallback(tabName)
+        
+def raiseTab (self,tabName):
+    
+    tt = self ; tab = tt.nb.tab(tabName)
+
+    tab.configure(
+        background=tt.selectedTabBackgroundColor,
+        foreground=tt.selectedTabForegroundColor)
+        
+    tt.cc.selectCallback(tabName)
+#@-node:ekr.20070317075059.1:tt.raise/lowerTab
+#@+node:ekr.20070317130250:cc.selectChapter
+def selectChapter (self,event=None,tabName=None):
+    
+    chapter = self.chaptersDict.get(tabName)
+    
+    if chapter:
+        chapter.select()
+    else:
+        self.error('no such chapter: %s' % tabName)
+#@-node:ekr.20070317130250:cc.selectChapter
+#@+node:ekr.20070317131205.1:chapter.select (TO DO)
+def select (self):
+    
+    '''Restore chapter information and redraw the tree when a chapter is selected.'''
+    
+    # g.trace(self.name)
+    #self.root_p = self.findPositionAnywhere(self.root_v)
+    #self.p = self.findPositionInTree(self.v)
+#@-node:ekr.20070317131205.1:chapter.select (TO DO)
+#@+node:ekr.20070320091806.1:chapter.unselect (TO DO)
+def unselect (self):
+    
+    '''Remember chapter information when a chapter is about to be unselected.'''
+    
+    # g.trace(self.name)
+#@nonl
+#@-node:ekr.20070320091806.1:chapter.unselect (TO DO)
+#@-node:ekr.20070320090010:Selecting chapters
+#@-node:ekr.20070317073627.4:(Chapters)
+#@+node:ekr.20070325054325:Urgent
+#@+node:ekr.20061206084401:Look at launchpad and bazaar (bzr)
+http://launchpad.net 
+#@-node:ekr.20061206084401:Look at launchpad and bazaar (bzr)
+#@+node:ekr.20060530130736.2:Customize Open With menu without writing code
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+Desparately needs a way to modify the Open-With menu other than going
+in and changing the code.
+#@+node:ekr.20060619101345:@open-with settings
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3785897
+
+From: Rich
+
+Would it be possible to have the table of "Open With" editors to be part of
+the config system? I find myself patching the list every time I D/L a new Leo
+version to add the editor I use. This would also help isolate the user from
+the "guts" of Leo, theereby being less intimidating.
+
+Yes, it would be possible because everything in the table is a string (and not,
+e.g., a reference to a method). This would require support for @open-with in
+@settings trees.
+#@-node:ekr.20060619101345:@open-with settings
+#@-node:ekr.20060530130736.2:Customize Open With menu without writing code
+#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20050428062312:Request 1
+@nocolor
+
+By: samcollett ( Sam Collett ) 
+ Compressed LEO files   
+2003-01-07 16:57
+
+
+Would it be possible to have a new file format that was basically a compressed
+version of LEO files? Maybe using the gzip compression method. You could then
+save a lot of space when you do large files. Not being a professional
+programmer myself (I mainly dabble in web design - HTML and Active Server
+Pages) how difficult would this be to implement? You would just output using a
+different file extension so users of the older versions can still use files
+with the LEO extension.
+#@-node:ekr.20050428062312:Request 1
+#@+node:ekr.20040226092546:Request 2
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=2442772
+By: ejoy
+
+I made an experiment last night. I replaced the call to open()in leofilecommand.py
+with a call to gzip.open().
+
+The LeoPy.leo file saved this way is only 600K! And there is no significant
+speed down in saving.
+
+I think it is a good idea to add compression support for load/save .leo files.
+When reading or writing file with name ending with ".leo.gz", leo can call gzip
+module to uncompress/compress the file, saving a lot of disk space.
+
+What do you think of this?
+#@nonl
+#@-node:ekr.20040226092546:Request 2
+#@+node:ekr.20031218072017.2297:open (leoFileCommands)
+def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
+
+    c = self.c ; frame = c.frame
+    if not self.use_sax: # Read the entire file into the buffer
+        self.fileBuffer = theFile.read() ; theFile.close()
+        self.fileIndex = 0
+    << Set the default directory >>
+    self.topPosition = None
+    ok, ratio = self.getLeoFile(
+        theFile,fileName,
+        readAtFileNodesFlag=readAtFileNodesFlag,
+        silent=silent)
+    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
+    if 0: # 1/30/04: this is useless.
+        if self.topPosition: 
+            c.setTopVnode(self.topPosition)
+    if not self.use_sax: # Delete the file buffer
+        self.fileBuffer = ""
+    return ok
+#@nonl
+#@+node:ekr.20031218072017.2298:<< Set the default directory >>
+@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
+@c
+
+theDir = g.os_path_dirname(fileName)
+
+if len(theDir) > 0:
+    c.openDirectory = theDir
+#@-node:ekr.20031218072017.2298:<< Set the default directory >>
+#@-node:ekr.20031218072017.2297:open (leoFileCommands)
+#@+node:ekr.20050428063105:newOpen (From chapters.py)
+oldOpen = leoFileCommands.fileCommands.open
+
+def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
+
+    global iscStringIO
+    c = self.c
+    
+    if zipfile.is_zipfile( fileName ):
+        iscStringIO = True
+        chapters = openChaptersFile( fileName )
+        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
+        insertChapters( chapters, c.frame, c )
+        g.es( "Finished Reading Chapters", color = 'blue' )
+        iscStringIO = False
+        return True
+
+    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
+#@nonl
+#@-node:ekr.20050428063105:newOpen (From chapters.py)
+#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
+#@+node:ekr.20061130084909:Improve What's special whitepaper
+@nocolor
+
+- Answer the question: how can Leo help me with programming.
+#@nonl
+#@-node:ekr.20061130084909:Improve What's special whitepaper
+#@+node:ekr.20070306103213:invoke-menu-bar command
+#@-node:ekr.20070306103213:invoke-menu-bar command
+#@+node:ekr.20060306194040:Video and more screen shots Leo's web site
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3615177
+By: ktenney
+
+High on my ToLearn list is vnc2swf
+http://www.unixuser.org/~euske/vnc2swf/
+
+
+http://sourceforge.net/forum/message.php?msg_id=3615278
+By: James
+
+A lot of people are now using Wink for demonstrations
+(http://www.debugmode.com/wink/), it's is free and seems to work well.
+
+Check out http://murl.se/11332
+At the bottom they talk about tools and techniques.
+http://showmedo.com seems like it would be a good
+place to host vids also.
+
+I've listened/watched a fair number of things like this;
+my recomendation is to get a good microphone and
+pre-amp to record your voice, and prepare the audio
+track carefully. It is so aggravating when
+it's hard to discern the words being spoken.
+
+Thanks,
+Kent
+#@nonl
+#@+node:ekr.20060531134434:Tutorials
+http://sourceforge.net/forum/message.php?msg_id=3758271
+
+From: Rich
+
+Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
+and it has a very good tutorial -- leads the beginner by the hand through much
+of the language. Also the help file has working code snippets
+to cut-n-paste-n-play-with. I'd like to see something like:
+
+[Buttons]
+...[What are Buttons good for?]
+...[How do I make my own buttons?]
+......[Some commands you can use with buttons]
+......[Where to find button commands]
+#@nonl
+#@-node:ekr.20060531134434:Tutorials
+#@+node:ekr.20060531134434.1:Screencasts
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3758303
+By: ktenney
+
+My sense is that documentation/screencasts has the
+greatest potential for expanding Leo's mindshare.
+
+I really like those produced by the good folks
+at Dabo;
+http://leafe.com/screencasts/
+http://leafe.com/screencasts/populategrid.html
+
+The TurboGears people have taken this to the extreme;
+http://www.turbogears.org/ultimate.html
+
+Leo is different enough that it warrants a 
+demonstration of it's advantages.
+#@nonl
+#@-node:ekr.20060531134434.1:Screencasts
+#@+node:ekr.20060829103523:Render Leo slideshows
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3889246
+By: terry_n_brown
+
+Three packages that might be candidates for "rendering" slides authored in Leo:
+
+MagicPoint: http://member.wide.ad.jp/wg/mgp/
+
+  uses a text file format that leo could produce
+
+Slidy: http://www.w3.org/Talks/Tools/Slidy/
+
+  uses XHTML / canned Java script
+
+S5: http://meyerweb.com/eric/tools/s5/
+
+  Similar to Slidy I think, haven't looked at it
+#@nonl
+#@-node:ekr.20060829103523:Render Leo slideshows
+#@-node:ekr.20060306194040:Video and more screen shots Leo's web site
+#@-node:ekr.20070325054325:Urgent
+#@+node:ekr.20070307075714:Asap
+# These are easy & important
+
+# *** All of these should happen before 4.4.4 final.
+#@nonl
+#@+node:ekr.20070228055539:print-settings command
+@nocolor
+
+A print-settings command would be useful.  This would  print the value of every setting, except key bindings which are already covered by the print-bindings and print-commands commands.  Ideally, the print-settings command would indicate the file that created the (active) setting, and possibly also the other files that contained overridden settings.  Something like this, where M indicates myLeoSettings.leo, SH indicates leoSettings.leo in the HOME directory, SC indicates leoSettings.leo in the config directory, etc.
+#@nonl
+#@-node:ekr.20070228055539:print-settings command
+#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@+node:ekr.20070307082814:Create g.startupController class
+#@-node:ekr.20070307082814:Create g.startupController class
+#@+node:ekr.20070302164343:Find a way to see text in pdb when debugging exec statement
+#@-node:ekr.20070302164343:Find a way to see text in pdb when debugging exec statement
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070307075714:Asap
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070220082124.2:Before b1
-#@+node:ekr.20070319185656:Investigate chapter hoist bug
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4215654
-By: rogererens
-
-There's a bug with ordinary hoisting: in the "Outline" menu the "Delete Node"
-menu item is not disabled when the local root is selected.
-#@-node:ekr.20070319185656:Investigate chapter hoist bug
-#@+node:ekr.20070320065038:Improve option: @nosent add newline (true by default)
-@nocolor
-
-The documentation for @asis and @noref discusses suppressing 'extra' newlines in body text. The docs for @nosent are silent on this point.  The docs don't correspond with my memory and they don't describe @nosent properly.  Clearly, the docs must represent what actually happens, but what should that be?
-#@-node:ekr.20070320065038:Improve option: @nosent add newline (true by default)
+#@+node:ekr.20070325054325.1:Before b1
 #@+node:ekr.20070215093739:* Improve Leo's getting started page
 @nocolor
 
@@ -114,37 +657,749 @@ way to SEE the attributes (this goes for "Labels," as well).
 ---- Enable Aspell automatically if possible.
 
 #@-node:ekr.20070202080824:Enable more plugins by default
+#@-node:ekr.20070325054325.1:Before b1
+#@+node:ekr.20070220082124.2:Before b2
+#@+node:ekr.20070319185656:Investigate chapter hoist bug
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4215654
+By: rogererens
+
+There's a bug with ordinary hoisting: in the "Outline" menu the "Delete Node"
+menu item is not disabled when the local root is selected.
+#@-node:ekr.20070319185656:Investigate chapter hoist bug
+#@+node:ekr.20070320065038:Improve option: @nosent add newline (true by default)
+@nocolor
+
+The documentation for @asis and @noref discusses suppressing 'extra' newlines in body text. The docs for @nosent are silent on this point.  The docs don't correspond with my memory and they don't describe @nosent properly.  Clearly, the docs must represent what actually happens, but what should that be?
+#@-node:ekr.20070320065038:Improve option: @nosent add newline (true by default)
 #@+node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070307082503.1:Create Linux distribution
 #@+node:ekr.20070220082124.3:Make installing aspell easier
 #@-node:ekr.20070220082124.3:Make installing aspell easier
-#@-node:ekr.20070220082124.2:Before b1
-#@+node:ekr.20070307075714:Asap
-#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@+node:ekr.20070307082814:Create g.startupController class
-#@-node:ekr.20070307082814:Create g.startupController class
-#@+node:ekr.20070306103213:invoke-menu-bar command
-#@-node:ekr.20070306103213:invoke-menu-bar command
-#@+node:ekr.20070228055539:print-settings command
-@nocolor
-
-A print-settings command would be useful.  This would  print the value of every setting, except key bindings which are already covered by the print-bindings and print-commands commands.  Ideally, the print-settings command would indicate the file that created the (active) setting, and possibly also the other files that contained overridden settings.  Something like this, where M indicates myLeoSettings.leo, SH indicates leoSettings.leo in the HOME directory, SC indicates leoSettings.leo in the config directory, etc.
-#@nonl
-#@-node:ekr.20070228055539:print-settings command
-#@+node:ekr.20070302164343:Find a way to see text in pdb when debugging exec statement
-#@-node:ekr.20070302164343:Find a way to see text in pdb when debugging exec statement
-#@+node:ekr.20061130084909:Improve What's special whitepaper
-@nocolor
-
-- Answer the question: how can Leo help me with programming.
-#@nonl
-#@-node:ekr.20061130084909:Improve What's special whitepaper
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070307075714:Asap
+#@-node:ekr.20070220082124.2:Before b2
 #@-node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070105135713:To do: 4.4.4 (new positions)
+#@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20061006165447:Let import commands decide what kind of import to do
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3940843
+By: ktenney
+
+>the distiction between importing 'foreign' text files and importing derived
+files created by Leo.
+
+Couldn't Leo make this distinction by looking at
+the file being imported? If so, I think it should.
+
+This could eliminate a lot of confusion IMO, if
+I want to bring a file into a node, just
+'import' it, and the right thing happens.
+
+An emergency measure could be available in a 
+'File Special' menu.
+#@nonl
+#@-node:ekr.20061006165447:Let import commands decide what kind of import to do
+#@+node:ekr.20070324084040:Prototype of @auto
+#@+node:ekr.20070324084040.1:NEWscanPythonText
+def NEWscanPythonText (self,s,parent):
+    
+    scanner = self.pythonScanner(self,s,parent)
+    
+    scanner.parse()
+        # Discover the node boundaries.
+    scanner.checkWhitespace()
+        # Check that whitespace passes TabNanny.
+        # Check that whitespace is compatible with @tabwidth.
+        # Check for underindented lines.
+    scanner.generateNodes()
+        # Generate a single node if there are errors,
+        # otherwise generate the imported tree.
+    scanner.checkImport()
+        # Do trial write, verify that it would produce the original file.
+        # Insert an @ignore directive in the root if there are errors.
+#@nonl
+#@-node:ekr.20070324084040.1:NEWscanPythonText
+#@+node:ekr.20070324084040.13:class pythonScanner (not ready yet)
+class pythonScanner:
+    
+    @others
+    
+    
+#@nonl
+#@+node:ekr.20070324084040.14:ctor (pythonScanner)
+def __init__ (self,importer,s,parent):
+
+    baseScannerClass.__init__(self,importer)
+        # Init the base class.
+        # Copies ivars from importer class to scanner class.
+
+    # Other ivars.
+    self.preamble_seen = False
+    self.s = s
+    self.className = None
+    self.methodsSeen = False
+    self.root = parent
+    self.start = 0
+#@-node:ekr.20070324084040.14:ctor (pythonScanner)
+#@+node:ekr.20070324084040.15:scanPythonText
+# See the comments for scanCText for what the text looks like.
+
+def scanPythonText (self,s,parent):
+
+    """Creates a child of parent for each Python function definition seen."""
+
+    c = self.c
+    decls_seen = False ; start = i = 0
+    self.methodsSeen = False
+    while i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n' or ch == '\r': i = g.skip_nl(s,i)
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'': i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            << handle possible Python function or class >>
+        else: i += 1
+        assert(progress < i)
+    if not decls_seen: # 2/17/03
+        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language python\n")
+    << Append a reference to the methods of this file >>
+    << Append any unused python text to the parent's body text >>
+#@+node:ekr.20070324084040.16:<< Append a reference to the methods of this file >>
+if self.treeType == "@root" and self.methodsSeen:
+    c.appendStringToBody(parent,
+        g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
+#@-node:ekr.20070324084040.16:<< Append a reference to the methods of this file >>
+#@+node:ekr.20070324084040.9:<< handle possible Python function or class >> (NOT USED)
+if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
+    isDef = g.match_c_word(s,i,"def")
+    if not decls_seen:
+        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language python\n")
+        i = start = self.scanPythonDecls(s,start,parent,-1,indent_parent_ref_flag=False)
+        decls_seen = True
+        if self.treeType == "@file":
+            c.appendStringToBody(parent,"@others\n")
+    if isDef:
+        i = start = self.scanPythonDef(s,i,start,parent)
+    else:
+        i = start = self.scanPythonClass(s,i,start,parent)
+else:
+    i = g.skip_c_id(s,i)
+#@-node:ekr.20070324084040.9:<< handle possible Python function or class >> (NOT USED)
+#@+node:ekr.20070324084040.17:<< Append any unused python text to the parent's body text >>
+# Do nothing if only whitespace is left.
+i = start ; i = g.skip_ws_and_nl(s,i)
+if i < len(s):
+    c.appendStringToBody(parent,s[start:])
+#@-node:ekr.20070324084040.17:<< Append any unused python text to the parent's body text >>
+#@-node:ekr.20070324084040.15:scanPythonText
+#@+node:ekr.20070324084040.18:doPythonClass & helpers
+def doPythonClass (self,i,parent):
+    
+    c = self.c ; s = self.s
+    
+    if not self.preamble_seen:
+        self.doPreamble(i)
+    
+    class_indent = self.getLeadingIndent(s,i)
+    i,className,headline = self.getClassHeadline(i)
+    if self.className:
+        oldClassName = self.className
+        self.className = className
+        i = g.skip_line(s,i) # Skip the class line.
+        i,prefix,body = self.createClassNodeText(s,i,start)
+        class_vnode = self.createHeadline(parent,prefix + body,headline)
+        start,i = self.scanPythonClass(i,class_indent,class_vnode)
+        s2 = s[start:i]
+        if s2: c.appendStringToBody(class_vnode,s2)
+        self.className = oldClassName
+
+    return i
+#@nonl
+#@+node:ekr.20070324084040.19:getClassHeadline
+# Skip to the class name.
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # skip "class"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    class_name = s[j:i]
+    headline = "class " + class_name
+else:
+    headline = ''
+    class_name = ''
+#@-node:ekr.20070324084040.19:getClassHeadline
+#@+node:ekr.20070324084040.20:createParentText
+def createParentText (self,class_vnode,class_name):
+
+    '''Insert the proper body text in the class_vnode.'''
+    
+    c = self.c
+    
+    # This must be done after the declaration reference is generated.
+    if self.treeType == "@file":
+        c.appendStringToBody(class_vnode,"\t@others\n")
+    else:
+        ref = g.angleBrackets(' class %s methods ' % (class_name))
+        c.appendStringToBody(class_vnode,"\t" + ref + "\n\n")
+#@-node:ekr.20070324084040.20:createParentText
+#@+node:ekr.20070324084040.21:createClassNodeText
+def createClassNodeText (self,s,i,start):
+    
+    # Create the section name using the old value of self.methodName.
+    if  self.treeType == "@file":
+        prefix = ""
+    else:
+        prefix = g.angleBrackets(" " + self.methodName + " methods ") + "=\n\n"
+        self.methodsSeen = True
+    
+    # i points just after the class line.
+    
+    # Add a docstring to the class node.
+    docStringSeen = False
+    j = g.skip_ws_and_nl(s,i)
+    if g.match(s,j,'"""') or g.match(s,j,"'''"):
+        j = g.skip_python_string(s,j)
+        if j != len(s): # No scanning error.
+            i = j ; docStringSeen = True
+    
+    body = s[start:i]
+    body = self.undentBody(body)
+    if docStringSeen: body = body + '\n'
+    
+    return i,prefix,body
+#@-node:ekr.20070324084040.21:createClassNodeText
+#@-node:ekr.20070324084040.18:doPythonClass & helpers
+#@+node:ekr.20070324084040.22:doPythonDef
+def doPythonDef (self,i,parent):
+    
+    if not self.preamble_seen:
+        self.doPreamble(i)
+    
+    i = self.scanPythonDef(i,parent)
+   
+    return i
+#@nonl
+#@-node:ekr.20070324084040.22:doPythonDef
+#@+node:ekr.20070324084040.23:doPreamble
+def doPreamble (self,i):
+    
+    self.preamble_seen = True
+    
+    if i > 0:
+        # Append the preamble to the root's body text.
+        c.appendStringToBody(self.root,s[:i])
+
+    if self.treeType == '@file':
+        c.appendStringToBody(self.root,'@others\n')
+#@-node:ekr.20070324084040.23:doPreamble
+#@+node:ekr.20070324084040.24:scanPythonClass
+def scanPythonClassHelper(self,s,i,class_indent,class_name,class_vnode):
+    
+    indent =  self.getLeadingIndent(s,i)
+    start = i = g.skip_blank_lines(s,i)
+    parent_vnode = None
+    while i < len(s):
+        progress = i
+        # New in Leo 4.4.1: ignore comment lines, whatever their indentation.
+        if indent <= class_indent:
+            j = g.skip_ws(s,i)
+            if g.match(s,j,'#'):
+                i = g.skip_to_end_of_line(s,j)
+            else: break
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            j = g.skip_nl(s,i)
+            if not backslashNewline:
+                indent = self.getLeadingIndent(s,j)
+                if indent > class_indent: i = j
+                else: break
+            else: i = j
+        elif g.match_c_word(s,i,"def"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonDef(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif g.match_c_word(s,i,"class"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonClass(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif s[i] == '#': i = g.skip_to_end_of_line(s,i)
+        elif s[i] == '"' or s[i] == '\'': i = g.skip_python_string(s,i)
+        else: i += 1
+        assert(progress < i)
+    return start,i
+#@-node:ekr.20070324084040.24:scanPythonClass
+#@+node:ekr.20070324084040.25:scanPythonDef & helpers
+def scanPythonDef (self,s,i,start,parent):
+
+    """Creates a node of parent for the def."""
+
+    # g.trace(g.get_line(s,i))
+    << set headline or return i >>
+    i = self.skipPythonDef(s,i,start)
+    # Create the def node.
+    savedMethodName = self.methodName
+    self.methodName = headline
+    << Create def node >>
+    self.methodName = savedMethodName
+    return i
+#@+node:ekr.20070324084040.26:createDefNode
+# Create the prefix line for @root trees.
+if self.treeType == "@file":
+    prefix = ""
+else:
+    prefix = g.angleBrackets(" " + savedMethodName + " methods ") + "=\n\n"
+    self.methodsSeen = True
+
+# Create body.
+start = g.skip_blank_lines(s,start)
+body = s[start:i]
+body = self.undentBody(body)
+
+# Create the node.
+self.createHeadline(parent,prefix + body,headline)
+#@-node:ekr.20070324084040.26:createDefNode
+#@+node:ekr.20070324084040.27:getDefHeadline
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # Skip the "def"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    headline = s[j:i]
+    # g.trace("headline:" + headline)
+else: return i
+#@-node:ekr.20070324084040.27:getDefHeadline
+#@-node:ekr.20070324084040.25:scanPythonDef & helpers
+#@+node:ekr.20070324084040.28:skipPythonDef
+def skipPythonDef (self,s,i,start):
+    
+    # g.trace(g.get_line(s,i))
+
+    # Set defIndent to the indentation of the def line.
+    defIndent = self.getLeadingIndent(s,start)
+    parenCount = 0
+    << skip the entire signature >>
+    indent = self.getLeadingIndent(s,i)
+    while i < len(s): # and indent > defIndent
+        progress = i
+        ch = s[i]
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            if not backslashNewline:
+                # New in Leo 4.4.1: don't set indent for comment lines.
+                j = g.skip_ws(s,i)
+                if not g.match(s,j,'#'):
+                    indent = self.getLeadingIndent(s,i)
+                    if indent <= defIndent and parenCount == 0:
+                        break
+        elif ch == '#':
+            i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif ch in '[{(':
+            i += 1 ; parenCount += 1
+            # g.trace('ch',ch,parenCount)
+        elif ch in ']})':
+            i += 1 ; parenCount -= 1
+            # g.trace('ch',ch,parenCount)
+        else: i += 1
+        assert(progress < i)
+        
+    return i
+#@+node:ekr.20070324084040.29:<< skip the entire signature >>
+# Now that we count parens, we must be careful to skip the entire signature.
+
+j = s.find('(',i)
+if j != -1:
+    j = g.skip_matching_python_parens(s,j)
+
+if j == -1 or not g.match(s,j+1,':'):
+    g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
+    return i
+else:
+    i = g.skip_line(s,j) # Still not quite 100% correct.
+#@-node:ekr.20070324084040.29:<< skip the entire signature >>
+#@-node:ekr.20070324084040.28:skipPythonDef
+#@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
+#@-node:ekr.20070324084040:Prototype of @auto
+#@+node:ekr.20051202094427:Resolve cvs conflicts
+Investigate meld:  http://meld.sourceforge.net/
+#@nonl
+#@+node:ekr.20060601073503:Postings
+@nocolor
+#@nonl
+#@+node:ekr.20031218072017.658:Stepen Schaefer 1
+@nocolor
+
+There have been a couple different suggestions on how to obtain a .leo file
+that presents the conflicts for resolution.  My initial thought was to have
+some sort of external file containing only the structure information of interest.
+Edward has suggested that we could process the CVS created .leo file with all
+its conflict indicators.
+
+I'd like to offer another alternative: based on the ad-hoc procedure that Edward
+is currently using, i.e.,
+
+* Save your work to foo.leo file.
+* copy your foo.leo file to fooCvsTmp.leo
+* cvs ci
+* if there are no conflicts (hurray)
+*    remove fooCvsTmp.leo; finished
+* otherwise
+*    remove foo.leo
+*    cvs up foo.leo
+*    read foo.leo into an internal directed acyclic graph (DAG)
+*    generate the conflict resolution DAG from the proposed new leo internal
+DAG (which Leo already has as a matter of course) and the CVS derived DAG
+*    present for editting
+*    when you are satisfied and want to try to check in again, repeat.
+
+From the user's point of view, a CVS check in either succeeds or requires that
+the conflicts be resolved, after which another check in may be attempted.  If
+we're somehow interrupted in the middle of the process, the fooCvsTmp.leo file
+preserves the users work.
+#@-node:ekr.20031218072017.658:Stepen Schaefer 1
+#@+node:ekr.20050501111900:Stephen Schaefer 2
+@killcolor
+https://sourceforge.net/forum/message.php?msg_id=3125092
+By: thyrsus
+
+About a month ago, I posted a screed on how @thin was inadequate to address
+my needs; that what I needed to collaborate on via version control was exactly
+the essence of Leo's value: the multiple expressions of structure, which by
+their nature must exist outside of @thin.  I said I was going to live the pain
+to discover a modus vivendi.
+
+Having done that, let me now say:
+
+AAAAAAAAAAAAGGGGGGGGHHHHHHHHHH!
+
+But the exercise has led me to a vision, which I will implement to the extent
+my nonexistent spare time and paltry programming talents permit.
+
+The essence of the pain is "conflicts", which become more  certain to occur
+as the leo file encompases ever more related files.  As I work on a change to
+the Linux configuration, my colleague works on a change to the Solaris configuration,
+and one of us checks in our version of the leo file documenting the site
+configuration first, and the other cannot check in his version of that file.
+The conflict must be resolved by the human.  Using the "diff" tool on the .leo
+XML is not an answer (though thank Heaven and Ed for gnxs).  The resolution
+needs two levels of support: outline and node.
+
+With the .leo file declared binary, in the event of a conflict CVS leaves you
+with the most recent CVS version and your rejected version, and you're responsible
+for performing a reconciliation and then resubmitting that.  Leo will recognize
+the problem, and present both versions of the project, side by side, splitting
+the outline pane.  The parallel trees will scroll/expand/contract in unison.
+Outline branches present in CVS and not yours will display as blank space in
+your version; nodes present in your version and not CVS will display as blank
+space in the CVS version. The CVS version will be read only, your version editable.
+The same node with differences in its text or in its children will be highlighted.
+You will be able to drag nodes from the CVS version into your version. If the
+text of a selected node has conflicts, the text area will split in two, showing
+the CVS version and your version, with differences highlighted, both sides of
+the pane scrolling in unison, the CVS side read-only, and you can copy from
+that side to your side.  I intend to take as many ideas as I can from tkdiff
+(http://sourceforge.net/projects/tkdiff/ - see also
+http://freshmeat.net/screenshots/10602/ ).  (I have begun translating tkdiff
+from from tcl to python - nearly 9000 lines and I'm still learning both languages,
+so draw your own timeline.)  You edit your nodes, you edit your tree, you hit
+the "reconcile" button, and your reconciliation of the conflict goes into CVS.
+If, meanwhile, another one of your over-achieving colleages has again updated
+CVS, the process repeats with the most current CVS version.  Or you can hit
+the "abandon" button to give up on your changes.
+
+As the Hebrews say at Passover: "Next year in Jerusalem."
+#@nonl
+#@-node:ekr.20050501111900:Stephen Schaefer 2
+#@+node:ekr.20031218072017.659:Jonathon 1
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=1803722
+By: jmgilligan
+
+What is the intended behavior when foo.leo has a cloned node that appears several
+times in a derived (or multiple derived files) and the user edits this file
+or files to change two or more instances of the cloned node in different ways.
+
+Example:
+
+@file foo.py
+****begin tnode
+@others
+****end tnode
+...definition of procedure a
+***begin tnode
+def a:
+...print "a:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
+
+...definition of procedure b
+***begin tnode
+def b:
+...print "b:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
+
+...definition of procedure c
+***begin tnode
+def c:
+...print "a:", <<bar>>
+***end tnode
+...<<bar>>
+****begin tnode
+"bar"
+****end tnode
+
+In the .leo, if I edit <<bar>>, it will change simultaneously in each place,
+always in synch. However, suppose I edit foo.py in a text editor and change
+foo.py to read:
+
+#@verbatim
+#@+leo
+#@verbatim
+#@+node:0::@file foo.py
+#@verbatim
+#@+body
+#@verbatim
+#@+others
+#@verbatim
+#@+node:1::definition of a
+#@verbatim
+#@+body
+print "a:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"bar"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::definition of a
+#@verbatim
+#@+node:2::definition of b
+#@verbatim
+#@+body
+print "b:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"variation b"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:2::definition of b
+#@verbatim
+#@+node:3::definition of c
+#@verbatim
+#@+body
+print "c:", 
+#@verbatim
+#@<<bar>>
+#@verbatim
+#@+node:1::<<bar>>
+#@verbatim
+#@+body
+"variation c"
+#@verbatim
+#@-body
+#@verbatim
+#@-node:1::<<bar>>
+#@verbatim
+#@-body
+#@verbatim
+#@-node:3::definition of c
+#@verbatim
+#@-others
+#@verbatim
+#@-body
+#@verbatim
+#@-node:0::@file foo.py
+#@verbatim
+#@-leo
+
+Now what is supposed to happen when leo tries to read foo.py back in? It seems
+that there are three possible behaviors:
+
+1) leo reports a conflict that the user needs to resolve.
+2) leo breaks the clone: the three nodes become separate vnodes, not clones
+of the same one.
+3) leo arbitrarily takes one of the tnodes to be the new tnode for all of the
+clones. This is currently what happens. It creates something like a race condition,
+where the last node in the derived file determines what the final result will
+be. In this case, all three tnodes get text "variation c".
+
+This general question of how Leo should deal with conflicts in clone nodes seems
+to me that it needs to be addressed, particularly with respect to trying to
+avoid cvs conflicts via thick/thin modes.
+
+Note that this can become quite a subtle question because the same node can
+be cloned across several different derived files, in which case a serious race
+condition may pertain.
+
+At the least, I would like to see leo perform consistency checking on cloned
+nodes when it reads a derived file back in and warn the user if cloned nodes
+are inconsistent.
+
+Note that the issue also occurs with OpenWith: I can open each instance of a
+cloned node as a separate file in the external text editor. Which version is
+read back into leo depends on the order in which I save them from the external
+editor.
+#@-node:ekr.20031218072017.659:Jonathon 1
+#@+node:ekr.20031218072017.660:Jonathan 2
+@nocolor
+
+By: jmgilligan ( Jonathan M. Gilligan ) 
+ Possible solution   
+2003-01-13 20:55  
+One possible solution for the conflicting clones problem is to have Leo, when it detects a conflicting clone, generate a text file (perhaps named LeoConflict_NNNN.leo, where NNNN is the gid of the node in question), which contains all the different versions of the node in question, output in leo XML format. 
+
+The vnode would then be marked with a "conflict" flag that would prevent the user from opening it in Leo until the conflict is resolved. See below for how the user resolves the conflict. 
+
+What I have in mind is something similar to the CVS conflict file, where a conflict between two versions is marked 
+
+<<<<<<< 
+blah blah blah? 
+======= 
+blah blah blah! 
+>>>>>>> 
+
+Except that we would output this file in Leo XML format. The reason for XML format would be to avoid problems of how to generically delimit the different sections (different versions of the cloned node). Here leo's XML tags can unambiguously delimit the sections. 
+
+The user would then edit the conflict file and delete all but the desired version. Then he would tell leo to resolve the conflict by reading the corrected file in and replacing the contents of the conflicting node with the contents of the LeoConflict_NNNN.leo file. 
+
+On the down side, this may well be too baroque a fix for a problem that most users may never encounter. If so, perhaps it's best left alone until more pressing problems are solved. I know what I am doing with Leo and am always careful NOT to generate conflicting clones when I edit in an external text editor, so I don't absolutely need a resolution to this problem. I raised it because it's good for a program to have well-defined behavior when presented with anomalous input. 
+
+In this sense, perhaps the best thing is to allow users to generate code from clones (what Allan Holub referred to as "enough rope to shoot yourself in the foot"), but to tell them that this practice is frowned upon.  
+#@-node:ekr.20031218072017.660:Jonathan 2
+#@+node:ekr.20031218072017.661:Gil 1
+http://sourceforge.net/forum/message.php?msg_id=1836117
+By: gilshwartz
+
+Edward, now that conflicting clones may not be the result of bad style, I would
+like to propose yet another solution that I have been thinking of for a while.
+
+My basic approach is that cloning is not just a convenience tool, it may also
+reflect some of the properties of the code/code set. Therefore my goal is for
+clone links to remain even if they are conflicting, and let the user resolve
+them at any convenient time. I also think that Leo's user interface is the best
+tool to resolve such conflicts.
+
+Thus here is my view of clone management and resolution inside Leo. Anytime
+content is loaded into Leo, if a clone set agrees (i.e. have the same content)
+all clone copies are marked "green". When one green clone is edited, all green
+clones are changed. This is Leo as it is now.
+
+If at some point conflicting clones are loaded, Leo decides on some representing
+content (may be based on policies like most occurring content, or latest timestamp,
+etc.) and provides visual clues for the conflict. The visual clue is give by
+a double node box, e.g.
+
++---------------+
++ clone org +
++---------------+
++ resolution +
++---------------+
+
+such that it is a single node in the tree, but has two content node, the original
+text, and the possibly arbitrary resolution.
+
+The resolution pseudo node is marked "blue", while the original text is either
+"green", if it is identical to the blue node, or "red", if it is not. To emphasis,
+the red/green nodes contain the specific (possibly) unique code associated with
+the derived file, while the pseudo blue node contains the shared clone content.
+During save to derived files, only the red/green content is saved, so effectively
+the file is not changed and the conflict is not resolved until the user chooses
+to do so. However, the clone relationship (via the gti) remains.
+
+During editing, changes to red/green clones are local and do not propagate to
+other clone copies (actually any change to a green node would turn it red).
+Changes to the blue nodes do propagate since it is a single view of the clone.
+A node pair may be converted to a regular node, effectively getting a new gti
+and eliminating the blue copy. Or, it may be converted to the shared copy,
+effectively forgetting its original content (leaving only the blue node). Once
+there are no more red nodes in a clone set, all its nodes become green again
+and the conflict is resolved.
+
+Some additional clone actions I think are useful are:
+
+1. Go to next/prev clone.
+2. Go to next/prev green clone (useful when there are red ones).
+3. Convert all green copies to a new clone group (useful when some clone copies
+needs to remain clones, but break from the original clone set, thus getting
+a new clone gti)
+
+Action 3 enables the user to partition its clone set to several clone groups
+by copying a clone's original content to its blue copy and finding matching
+(green) clones.
+
+What do we gain by all this?
+
+1. We can have conflicting clones without catastrophes.
+2. We get tools to handle conflicts and resolve them.
+3. We keep on working is Leo's environment, which is the most supportive one
+we can expect.
+
+Gil
+
+(By the way, I have a feeling that it would be useful to include along with
+the gti a hash of its node content, which could tell Leo is a node was changed
+outside of it. Also, including a timestamp in the opening sentinel, indicating
+when Leo last saved it. These may help having intelligent decisions by Leo in
+cases like conflicting clones.)
+#@-node:ekr.20031218072017.661:Gil 1
+#@+node:ekr.20031218072017.662:Gil 2
+http://sourceforge.net/forum/message.php?msg_id=1804169
+By: gilshwartz
+
+Another thing to think about is what should happen when close heading is changing.
+Right now, if you are inside Leo, all headings will be changed, and if you try
+to change by hand it in the derived file, clone links are removed (after some
+error reporting). This is quite reasonable in the current scheme of things,
+where one is not really expected to mess up with Leo sentinels.
+
+However, if/when @include is implemented, one would probably edit some files
+with clones that may extend to other files and changing the clone node name
+(via Leo) is quite feasible. Note that the gti for the cloned node would probably
+not change. So
+
+1. Do Leo resync the clone content based on the gti?
+2. Does it break cloning and allocates a new gti for one (arbitrary?) clone
+set?
+3. Let the user resolve manually, offer undoable auto-resolution with reporting,
+other?
+#@nonl
+#@-node:ekr.20031218072017.662:Gil 2
+#@-node:ekr.20060601073503:Postings
+#@-node:ekr.20051202094427:Resolve cvs conflicts
+#@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070105135713:To do: 4.5 (new positions)
 #@+node:ekr.20070202095051:*** Get chapters working
 #@-node:ekr.20070202095051:*** Get chapters working
 #@+node:ekr.20070105135851.1:Most important
@@ -2493,405 +3748,61 @@ def defineHelpMenuTables (self):
 #@-node:ekr.20031218072017.3774:defineHelpMenuTables
 #@-node:ekr.20061108100143:Create '*open-&test.leo' command that t.bat or test.leo
 #@-node:ekr.20061028065955.4:New features
-#@-node:ekr.20070105135713:To do: 4.4.4 (new positions)
-#@+node:ekr.20060822174843:Most important
+#@-node:ekr.20070105135713:To do: 4.5 (new positions)
+#@+node:ekr.20060822174843:Most important projects
+# Most of these projects will take a week or more.
+#@nonl
 #@+node:ekr.20070307082503:Make Leo an IPython notebook
+#@+node:ekr.20060603090445.7:Ipython stuff
+#@+node:ekr.20060603085719.1:Use IPython autocompleter?
+#@-node:ekr.20060603085719.1:Use IPython autocompleter?
+#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@+node:ekr.20060603090445.9:Script button that saves environment between runs
+This would allow IPython-like operation.
+#@nonl
+#@-node:ekr.20060603090445.9:Script button that saves environment between runs
+#@-node:ekr.20060603090445.7:Ipython stuff
 #@-node:ekr.20070307082503:Make Leo an IPython notebook
-#@+node:ekr.20061206084401:Look at launchpad and bazaar
-http://launchpad.net 
-#@-node:ekr.20061206084401:Look at launchpad and bazaar
-#@+node:ekr.20051202094427:Resolve cvs conflicts
-Investigate meld:  http://meld.sourceforge.net/
-#@nonl
-#@+node:ekr.20060823105514:Simulate cvs conflicts by using 2 repositories simultaneously
-#@-node:ekr.20060823105514:Simulate cvs conflicts by using 2 repositories simultaneously
-#@+node:ekr.20060601073503:Postings
-@nocolor
-#@nonl
-#@+node:ekr.20031218072017.658:Stepen Schaefer 1
+#@+node:ekr.20060629154112:Merge Leo & jyLeo
 @nocolor
 
-There have been a couple different suggestions on how to obtain a .leo file
-that presents the conflicts for resolution.  My initial thought was to have
-some sort of external file containing only the structure information of interest.
-Edward has suggested that we could process the CVS created .leo file with all
-its conflict indicators.
+http://sourceforge.net/forum/message.php?msg_id=3799470
+By: leouser
 
-I'd like to offer another alternative: based on the ad-hoc procedure that Edward
-is currently using, i.e.,
+I guess its hard to say what pieces must merge and what can stay different.
+Id like it if the blasted nodes were the same.  I guess there is progress again
+on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
+the nodes will be the same code, at least it will be possible.
 
-* Save your work to foo.leo file.
-* copy your foo.leo file to fooCvsTmp.leo
-* cvs ci
-* if there are no conflicts (hurray)
-*    remove fooCvsTmp.leo; finished
-* otherwise
-*    remove foo.leo
-*    cvs up foo.leo
-*    read foo.leo into an internal directed acyclic graph (DAG)
-*    generate the conflict resolution DAG from the proposed new leo internal
-DAG (which Leo already has as a matter of course) and the CVS derived DAG
-*    present for editting
-*    when you are satisfied and want to try to check in again, repeat.
+At the top of my head the big differences outside of the position changes are:
+1. Some modifications to the read/write code so that Chapters can work and also
+Serialized positions.
+2. Commander has some things different, it looks to the Chapters instance to
+determine what is the curentPosition, top Position etc... instead of keeping
+track of it itself.
+3. GUI layers are very different.  Interesting tidbit here: the work I did to
+get the JTree to use positions to determine if a node is expanded or not looks
+like it has provided the outline for enhancing the JTree for Java itself to
+be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
+lead to user controled tree expansion models".
 
-From the user's point of view, a CVS check in either succeeds or requires that
-the conflicts be resolved, after which another check in may be attempted.  If
-we're somehow interrupted in the middle of the process, the fooCvsTmp.leo file
-preserves the users work.
-#@-node:ekr.20031218072017.658:Stepen Schaefer 1
-#@+node:ekr.20050501111900:Stephen Schaefer 2
-@killcolor
-https://sourceforge.net/forum/message.php?msg_id=3125092
-By: thyrsus
+There is a tremendous amount that is the same. Im sure you could make an interesting
+evening out of comparing the codebases to see where things change.
 
-About a month ago, I posted a screed on how @thin was inadequate to address
-my needs; that what I needed to collaborate on via version control was exactly
-the essence of Leo's value: the multiple expressions of structure, which by
-their nature must exist outside of @thin.  I said I was going to live the pain
-to discover a modus vivendi.
 
-Having done that, let me now say:
-
-AAAAAAAAAAAAGGGGGGGGHHHHHHHHHH!
-
-But the exercise has led me to a vision, which I will implement to the extent
-my nonexistent spare time and paltry programming talents permit.
-
-The essence of the pain is "conflicts", which become more  certain to occur
-as the leo file encompases ever more related files.  As I work on a change to
-the Linux configuration, my colleague works on a change to the Solaris configuration,
-and one of us checks in our version of the leo file documenting the site
-configuration first, and the other cannot check in his version of that file.
-The conflict must be resolved by the human.  Using the "diff" tool on the .leo
-XML is not an answer (though thank Heaven and Ed for gnxs).  The resolution
-needs two levels of support: outline and node.
-
-With the .leo file declared binary, in the event of a conflict CVS leaves you
-with the most recent CVS version and your rejected version, and you're responsible
-for performing a reconciliation and then resubmitting that.  Leo will recognize
-the problem, and present both versions of the project, side by side, splitting
-the outline pane.  The parallel trees will scroll/expand/contract in unison.
-Outline branches present in CVS and not yours will display as blank space in
-your version; nodes present in your version and not CVS will display as blank
-space in the CVS version. The CVS version will be read only, your version editable.
-The same node with differences in its text or in its children will be highlighted.
-You will be able to drag nodes from the CVS version into your version. If the
-text of a selected node has conflicts, the text area will split in two, showing
-the CVS version and your version, with differences highlighted, both sides of
-the pane scrolling in unison, the CVS side read-only, and you can copy from
-that side to your side.  I intend to take as many ideas as I can from tkdiff
-(http://sourceforge.net/projects/tkdiff/ - see also
-http://freshmeat.net/screenshots/10602/ ).  (I have begun translating tkdiff
-from from tcl to python - nearly 9000 lines and I'm still learning both languages,
-so draw your own timeline.)  You edit your nodes, you edit your tree, you hit
-the "reconcile" button, and your reconciliation of the conflict goes into CVS.
-If, meanwhile, another one of your over-achieving colleages has again updated
-CVS, the process repeats with the most current CVS version.  Or you can hit
-the "abandon" button to give up on your changes.
-
-As the Hebrews say at Passover: "Next year in Jerusalem."
-#@nonl
-#@-node:ekr.20050501111900:Stephen Schaefer 2
-#@+node:ekr.20031218072017.659:Jonathon 1
+#@-node:ekr.20060629154112:Merge Leo & jyLeo
+#@+node:ekr.20060202231708.1:@menu nodes in leoSettings.leo
 @nocolor
 
-http://sourceforge.net/forum/message.php?msg_id=1803722
-By: jmgilligan
+We could allow users to define Leo menus.
+To do this, we must use minibuffer names for all menu entries
 
-What is the intended behavior when foo.leo has a cloned node that appears several
-times in a derived (or multiple derived files) and the user edits this file
-or files to change two or more instances of the cloned node in different ways.
-
-Example:
-
-@file foo.py
-****begin tnode
-@others
-****end tnode
-...definition of procedure a
-***begin tnode
-def a:
-...print "a:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-...definition of procedure b
-***begin tnode
-def b:
-...print "b:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-...definition of procedure c
-***begin tnode
-def c:
-...print "a:", <<bar>>
-***end tnode
-...<<bar>>
-****begin tnode
-"bar"
-****end tnode
-
-In the .leo, if I edit <<bar>>, it will change simultaneously in each place,
-always in synch. However, suppose I edit foo.py in a text editor and change
-foo.py to read:
-
-#@verbatim
-#@+leo
-#@verbatim
-#@+node:0::@file foo.py
-#@verbatim
-#@+body
-#@verbatim
-#@+others
-#@verbatim
-#@+node:1::definition of a
-#@verbatim
-#@+body
-print "a:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"bar"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::definition of a
-#@verbatim
-#@+node:2::definition of b
-#@verbatim
-#@+body
-print "b:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"variation b"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:2::definition of b
-#@verbatim
-#@+node:3::definition of c
-#@verbatim
-#@+body
-print "c:", 
-#@verbatim
-#@<<bar>>
-#@verbatim
-#@+node:1::<<bar>>
-#@verbatim
-#@+body
-"variation c"
-#@verbatim
-#@-body
-#@verbatim
-#@-node:1::<<bar>>
-#@verbatim
-#@-body
-#@verbatim
-#@-node:3::definition of c
-#@verbatim
-#@-others
-#@verbatim
-#@-body
-#@verbatim
-#@-node:0::@file foo.py
-#@verbatim
-#@-leo
-
-Now what is supposed to happen when leo tries to read foo.py back in? It seems
-that there are three possible behaviors:
-
-1) leo reports a conflict that the user needs to resolve.
-2) leo breaks the clone: the three nodes become separate vnodes, not clones
-of the same one.
-3) leo arbitrarily takes one of the tnodes to be the new tnode for all of the
-clones. This is currently what happens. It creates something like a race condition,
-where the last node in the derived file determines what the final result will
-be. In this case, all three tnodes get text "variation c".
-
-This general question of how Leo should deal with conflicts in clone nodes seems
-to me that it needs to be addressed, particularly with respect to trying to
-avoid cvs conflicts via thick/thin modes.
-
-Note that this can become quite a subtle question because the same node can
-be cloned across several different derived files, in which case a serious race
-condition may pertain.
-
-At the least, I would like to see leo perform consistency checking on cloned
-nodes when it reads a derived file back in and warn the user if cloned nodes
-are inconsistent.
-
-Note that the issue also occurs with OpenWith: I can open each instance of a
-cloned node as a separate file in the external text editor. Which version is
-read back into leo depends on the order in which I save them from the external
-editor.
-#@-node:ekr.20031218072017.659:Jonathon 1
-#@+node:ekr.20031218072017.660:Jonathan 2
-@nocolor
-
-By: jmgilligan ( Jonathan M. Gilligan ) 
- Possible solution   
-2003-01-13 20:55  
-One possible solution for the conflicting clones problem is to have Leo, when it detects a conflicting clone, generate a text file (perhaps named LeoConflict_NNNN.leo, where NNNN is the gid of the node in question), which contains all the different versions of the node in question, output in leo XML format. 
-
-The vnode would then be marked with a "conflict" flag that would prevent the user from opening it in Leo until the conflict is resolved. See below for how the user resolves the conflict. 
-
-What I have in mind is something similar to the CVS conflict file, where a conflict between two versions is marked 
-
-<<<<<<< 
-blah blah blah? 
-======= 
-blah blah blah! 
->>>>>>> 
-
-Except that we would output this file in Leo XML format. The reason for XML format would be to avoid problems of how to generically delimit the different sections (different versions of the cloned node). Here leo's XML tags can unambiguously delimit the sections. 
-
-The user would then edit the conflict file and delete all but the desired version. Then he would tell leo to resolve the conflict by reading the corrected file in and replacing the contents of the conflicting node with the contents of the LeoConflict_NNNN.leo file. 
-
-On the down side, this may well be too baroque a fix for a problem that most users may never encounter. If so, perhaps it's best left alone until more pressing problems are solved. I know what I am doing with Leo and am always careful NOT to generate conflicting clones when I edit in an external text editor, so I don't absolutely need a resolution to this problem. I raised it because it's good for a program to have well-defined behavior when presented with anomalous input. 
-
-In this sense, perhaps the best thing is to allow users to generate code from clones (what Allan Holub referred to as "enough rope to shoot yourself in the foot"), but to tell them that this practice is frowned upon.  
-#@-node:ekr.20031218072017.660:Jonathan 2
-#@+node:ekr.20031218072017.661:Gil 1
-http://sourceforge.net/forum/message.php?msg_id=1836117
-By: gilshwartz
-
-Edward, now that conflicting clones may not be the result of bad style, I would
-like to propose yet another solution that I have been thinking of for a while.
-
-My basic approach is that cloning is not just a convenience tool, it may also
-reflect some of the properties of the code/code set. Therefore my goal is for
-clone links to remain even if they are conflicting, and let the user resolve
-them at any convenient time. I also think that Leo's user interface is the best
-tool to resolve such conflicts.
-
-Thus here is my view of clone management and resolution inside Leo. Anytime
-content is loaded into Leo, if a clone set agrees (i.e. have the same content)
-all clone copies are marked "green". When one green clone is edited, all green
-clones are changed. This is Leo as it is now.
-
-If at some point conflicting clones are loaded, Leo decides on some representing
-content (may be based on policies like most occurring content, or latest timestamp,
-etc.) and provides visual clues for the conflict. The visual clue is give by
-a double node box, e.g.
-
-+---------------+
-+ clone org +
-+---------------+
-+ resolution +
-+---------------+
-
-such that it is a single node in the tree, but has two content node, the original
-text, and the possibly arbitrary resolution.
-
-The resolution pseudo node is marked "blue", while the original text is either
-"green", if it is identical to the blue node, or "red", if it is not. To emphasis,
-the red/green nodes contain the specific (possibly) unique code associated with
-the derived file, while the pseudo blue node contains the shared clone content.
-During save to derived files, only the red/green content is saved, so effectively
-the file is not changed and the conflict is not resolved until the user chooses
-to do so. However, the clone relationship (via the gti) remains.
-
-During editing, changes to red/green clones are local and do not propagate to
-other clone copies (actually any change to a green node would turn it red).
-Changes to the blue nodes do propagate since it is a single view of the clone.
-A node pair may be converted to a regular node, effectively getting a new gti
-and eliminating the blue copy. Or, it may be converted to the shared copy,
-effectively forgetting its original content (leaving only the blue node). Once
-there are no more red nodes in a clone set, all its nodes become green again
-and the conflict is resolved.
-
-Some additional clone actions I think are useful are:
-
-1. Go to next/prev clone.
-2. Go to next/prev green clone (useful when there are red ones).
-3. Convert all green copies to a new clone group (useful when some clone copies
-needs to remain clones, but break from the original clone set, thus getting
-a new clone gti)
-
-Action 3 enables the user to partition its clone set to several clone groups
-by copying a clone's original content to its blue copy and finding matching
-(green) clones.
-
-What do we gain by all this?
-
-1. We can have conflicting clones without catastrophes.
-2. We get tools to handle conflicts and resolve them.
-3. We keep on working is Leo's environment, which is the most supportive one
-we can expect.
-
-Gil
-
-(By the way, I have a feeling that it would be useful to include along with
-the gti a hash of its node content, which could tell Leo is a node was changed
-outside of it. Also, including a timestamp in the opening sentinel, indicating
-when Leo last saved it. These may help having intelligent decisions by Leo in
-cases like conflicting clones.)
-#@-node:ekr.20031218072017.661:Gil 1
-#@+node:ekr.20031218072017.662:Gil 2
-http://sourceforge.net/forum/message.php?msg_id=1804169
-By: gilshwartz
-
-Another thing to think about is what should happen when close heading is changing.
-Right now, if you are inside Leo, all headings will be changed, and if you try
-to change by hand it in the derived file, clone links are removed (after some
-error reporting). This is quite reasonable in the current scheme of things,
-where one is not really expected to mess up with Leo sentinels.
-
-However, if/when @include is implemented, one would probably edit some files
-with clones that may extend to other files and changing the clone node name
-(via Leo) is quite feasible. Note that the gti for the cloned node would probably
-not change. So
-
-1. Do Leo resync the clone content based on the gti?
-2. Does it break cloning and allocates a new gti for one (arbitrary?) clone
-set?
-3. Let the user resolve manually, offer undoable auto-resolution with reporting,
-other?
+@color
 #@nonl
-#@-node:ekr.20031218072017.662:Gil 2
-#@-node:ekr.20060601073503:Postings
-#@-node:ekr.20051202094427:Resolve cvs conflicts
-#@+node:ekr.20060823105514.1:Really solid perfect import
-@nocolor
-
-- Make sure whitespace is preserved properly.
-
-- Make sure perfect import works.
-#@nonl
-#@-node:ekr.20060823105514.1:Really solid perfect import
-#@-node:ekr.20060822174843:Most important
-#@+node:ekr.20060527164612:Important 1-2 day projects
-#@+node:ekr.20070211184127:New organization for leoPlugins.leo?
-@nocolor
-
-- 1 .leo file per plugin.
-- Use @url nodes to refer to the individual .leo files.
-
-The drawback: harder to do mass searches/replaces.
-#@nonl
-#@-node:ekr.20070211184127:New organization for leoPlugins.leo?
+#@-node:ekr.20060202231708.1:@menu nodes in leoSettings.leo
 #@+node:ekr.20061207073104:Convert bottlenecks to pyrex code
 # To do:  actually generate Leo's bottlenecks.
 #@nonl
@@ -2987,136 +3898,6 @@ to build and install your module.
 #@-node:ekr.20061207073104.268:File code
 #@-node:ekr.20061207073104.5:Code to be optimized w/ pyrex
 #@-node:ekr.20061207073104:Convert bottlenecks to pyrex code
-#@+node:ekr.20060531161030.1:Make body editors persistant
-#@-node:ekr.20060531161030.1:Make body editors persistant
-#@+node:ekr.20061006165447:Let import commands decide what kind of import to do
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3940843
-By: ktenney
-
->the distiction between importing 'foreign' text files and importing derived
-files created by Leo.
-
-Couldn't Leo make this distinction by looking at
-the file being imported? If so, I think it should.
-
-This could eliminate a lot of confusion IMO, if
-I want to bring a file into a node, just
-'import' it, and the right thing happens.
-
-An emergency measure could be available in a 
-'File Special' menu.
-#@nonl
-#@-node:ekr.20061006165447:Let import commands decide what kind of import to do
-#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20050428062312:Request 1
-@nocolor
-
-By: samcollett ( Sam Collett ) 
- Compressed LEO files   
-2003-01-07 16:57
-
-
-Would it be possible to have a new file format that was basically a compressed
-version of LEO files? Maybe using the gzip compression method. You could then
-save a lot of space when you do large files. Not being a professional
-programmer myself (I mainly dabble in web design - HTML and Active Server
-Pages) how difficult would this be to implement? You would just output using a
-different file extension so users of the older versions can still use files
-with the LEO extension.
-#@-node:ekr.20050428062312:Request 1
-#@+node:ekr.20040226092546:Request 2
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2442772
-By: ejoy
-
-I made an experiment last night. I replaced the call to open()in leofilecommand.py
-with a call to gzip.open().
-
-The LeoPy.leo file saved this way is only 600K! And there is no significant
-speed down in saving.
-
-I think it is a good idea to add compression support for load/save .leo files.
-When reading or writing file with name ending with ".leo.gz", leo can call gzip
-module to uncompress/compress the file, saving a lot of disk space.
-
-What do you think of this?
-#@nonl
-#@-node:ekr.20040226092546:Request 2
-#@+node:ekr.20031218072017.2297:open (leoFileCommands)
-def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-
-    c = self.c ; frame = c.frame
-    if not self.use_sax: # Read the entire file into the buffer
-        self.fileBuffer = theFile.read() ; theFile.close()
-        self.fileIndex = 0
-    << Set the default directory >>
-    self.topPosition = None
-    ok, ratio = self.getLeoFile(
-        theFile,fileName,
-        readAtFileNodesFlag=readAtFileNodesFlag,
-        silent=silent)
-    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
-    if 0: # 1/30/04: this is useless.
-        if self.topPosition: 
-            c.setTopVnode(self.topPosition)
-    if not self.use_sax: # Delete the file buffer
-        self.fileBuffer = ""
-    return ok
-#@nonl
-#@+node:ekr.20031218072017.2298:<< Set the default directory >>
-@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
-@c
-
-theDir = g.os_path_dirname(fileName)
-
-if len(theDir) > 0:
-    c.openDirectory = theDir
-#@-node:ekr.20031218072017.2298:<< Set the default directory >>
-#@-node:ekr.20031218072017.2297:open (leoFileCommands)
-#@+node:ekr.20050428063105:newOpen (From chapters.py)
-oldOpen = leoFileCommands.fileCommands.open
-
-def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
-
-    global iscStringIO
-    c = self.c
-    
-    if zipfile.is_zipfile( fileName ):
-        iscStringIO = True
-        chapters = openChaptersFile( fileName )
-        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
-        insertChapters( chapters, c.frame, c )
-        g.es( "Finished Reading Chapters", color = 'blue' )
-        iscStringIO = False
-        return True
-
-    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
-#@nonl
-#@-node:ekr.20050428063105:newOpen (From chapters.py)
-#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20060530130736.2:Customize Open With menu without writing code
-http://sourceforge.net/forum/message.php?msg_id=3737745
-
-Desparately needs a way to modify the Open-With menu other than going
-in and changing the code.
-#@+node:ekr.20060619101345:@open-with settings
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3785897
-
-From: Rich
-
-Would it be possible to have the table of "Open With" editors to be part of
-the config system? I find myself patching the list every time I D/L a new Leo
-version to add the editor I use. This would also help isolate the user from
-the "guts" of Leo, theereby being less intimidating.
-
-Yes, it would be possible because everything in the table is a string (and not,
-e.g., a reference to a method). This would require support for @open-with in
-@settings trees.
-#@-node:ekr.20060619101345:@open-with settings
-#@-node:ekr.20060530130736.2:Customize Open With menu without writing code
 #@+node:ekr.20060530085844:Improve autocompletion
 #@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
 @nocolor
@@ -3138,146 +3919,7 @@ toggling autocompleter and calltips on and off.
 #@nonl
 #@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
 #@-node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20060306194040:Video and more screen shots Leo's web site
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3615177
-By: ktenney
-
-High on my ToLearn list is vnc2swf
-http://www.unixuser.org/~euske/vnc2swf/
-
-
-http://sourceforge.net/forum/message.php?msg_id=3615278
-By: James
-
-A lot of people are now using Wink for demonstrations
-(http://www.debugmode.com/wink/), it's is free and seems to work well.
-
-Check out http://murl.se/11332
-At the bottom they talk about tools and techniques.
-http://showmedo.com seems like it would be a good
-place to host vids also.
-
-I've listened/watched a fair number of things like this;
-my recomendation is to get a good microphone and
-pre-amp to record your voice, and prepare the audio
-track carefully. It is so aggravating when
-it's hard to discern the words being spoken.
-
-Thanks,
-Kent
-#@nonl
-#@+node:ekr.20060531134434:Tutorials
-http://sourceforge.net/forum/message.php?msg_id=3758271
-
-From: Rich
-
-Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
-and it has a very good tutorial -- leads the beginner by the hand through much
-of the language. Also the help file has working code snippets
-to cut-n-paste-n-play-with. I'd like to see something like:
-
-[Buttons]
-...[What are Buttons good for?]
-...[How do I make my own buttons?]
-......[Some commands you can use with buttons]
-......[Where to find button commands]
-#@nonl
-#@-node:ekr.20060531134434:Tutorials
-#@+node:ekr.20060531134434.1:Screencasts
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3758303
-By: ktenney
-
-My sense is that documentation/screencasts has the
-greatest potential for expanding Leo's mindshare.
-
-I really like those produced by the good folks
-at Dabo;
-http://leafe.com/screencasts/
-http://leafe.com/screencasts/populategrid.html
-
-The TurboGears people have taken this to the extreme;
-http://www.turbogears.org/ultimate.html
-
-Leo is different enough that it warrants a 
-demonstration of it's advantages.
-#@nonl
-#@-node:ekr.20060531134434.1:Screencasts
-#@+node:ekr.20060829103523:Render Leo slideshows
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3889246
-By: terry_n_brown
-
-Three packages that might be candidates for "rendering" slides authored in Leo:
-
-MagicPoint: http://member.wide.ad.jp/wg/mgp/
-
-  uses a text file format that leo could produce
-
-Slidy: http://www.w3.org/Talks/Tools/Slidy/
-
-  uses XHTML / canned Java script
-
-S5: http://meyerweb.com/eric/tools/s5/
-
-  Similar to Slidy I think, haven't looked at it
-#@nonl
-#@-node:ekr.20060829103523:Render Leo slideshows
-#@-node:ekr.20060306194040:Video and more screen shots Leo's web site
-#@+node:ekr.20060202231708.1:@menu nodes in leoSettings.leo
-@nocolor
-
-We could allow uses to define Leo menus.
-To do this, we must use minibuffer names for all menu entries
-
-@color
-#@nonl
-#@-node:ekr.20060202231708.1:@menu nodes in leoSettings.leo
-#@-node:ekr.20060527164612:Important 1-2 day projects
-#@+node:ekr.20060527182117:Important 1-2 week projects
-#@+node:ekr.20060603090445.7:Ipython stuff
-#@+node:ekr.20060603085719.1:Use IPython autocompleter?
-#@-node:ekr.20060603085719.1:Use IPython autocompleter?
-#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@+node:ekr.20060603090445.9:Script button that saves environment between runs
-This would allow IPython-like operation.
-#@nonl
-#@-node:ekr.20060603090445.9:Script button that saves environment between runs
-#@-node:ekr.20060603090445.7:Ipython stuff
-#@+node:ekr.20060629154112:Merge Leo & jyLeo
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3799470
-By: leouser
-
-I guess its hard to say what pieces must merge and what can stay different.
-Id like it if the blasted nodes were the same.  I guess there is progress again
-on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
-the nodes will be the same code, at least it will be possible.
-
-At the top of my head the big differences outside of the position changes are:
-1. Some modifications to the read/write code so that Chapters can work and also
-Serialized positions.
-2. Commander has some things different, it looks to the Chapters instance to
-determine what is the curentPosition, top Position etc... instead of keeping
-track of it itself.
-3. GUI layers are very different.  Interesting tidbit here: the work I did to
-get the JTree to use positions to determine if a node is expanded or not looks
-like it has provided the outline for enhancing the JTree for Java itself to
-be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
-lead to user controled tree expansion models".
-
-There is a tremendous amount that is the same. Im sure you could make an interesting
-evening out of comparing the codebases to see where things change.
-
-
-#@-node:ekr.20060629154112:Merge Leo & jyLeo
-#@-node:ekr.20060527182117:Important 1-2 week projects
+#@-node:ekr.20060822174843:Most important projects
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt

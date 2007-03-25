@@ -2115,6 +2115,157 @@ class baseLeoImportCommands:
             self.name = None
             self.scan_start = 0
         #@-node:ekr.20070202105914:cScanner.ctor
+        #@+node:ekr.20070202105914.1:scan & helpers
+        def scan (self,s,parent,init=True):
+            
+            c = self.c
+            if init:
+                c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language c\n")
+            else:
+                saveData = self.name,self.function_start,self.scan_start
+        
+            self.name,self.function_start,self.scan_start = '',0,0
+            i = 0
+            while i < len(s):
+                progress = i
+                ch = s[i]
+                # if i == 0 or ch == '\n': g.trace('line',repr(g.get_line(s,i)))
+                # g.trace('ch',repr(ch))
+                if ch == '/':         i = self.skipComments(s,i)
+                elif ch in ('"',"'"): i = g.skip_string(s,i)
+                elif ch == '(':     i = self.doOuterParen(s,i,parent) # Possible function/method definition.
+                elif ch == ';':     i = self.doSemicolon(s,i) # Signals a possible start of a function.
+                elif g.is_c_id(ch): i = self.doId(s,i,parent) # Possible class/namespace definition.
+                else: i += 1
+                assert i > progress
+            self.appendUnusedText(s,i,parent)
+            if init:
+                if parent.hasChildren(): c.appendStringToBody(parent,'@others')
+            else:
+                self.name,self.function_start,self.scan_start = saveData
+        #@nonl
+        #@+node:ekr.20070202111549:appendUnusedText
+        def appendUnusedText (self,s,i,parent):
+            
+            c = self.c
+            
+            i = g.skip_ws_and_nl(s,self.scan_start)
+            if i < len(s):
+                s2 = s[self.scan_start:]
+                # g.trace(repr(s2))
+                c.appendStringToBody(parent,s2)
+        #@-node:ekr.20070202111549:appendUnusedText
+        #@+node:ekr.20031218072017.3257:doId
+        def doId (self,s,i,parent):
+            
+            j = i ; i = g.skip_c_id(s,i)
+            name = s[j:i]
+            if name in ('class','namespace'):
+                i = self.doInner(s,j,parent,name)
+            else:
+                self.name = name
+                while g.match(s,i,'::'):
+                    self.name = self.name + '::'
+                    i = g.skip_ws_and_nl(s,i+2)
+                    if g.match(s,i,'~'):
+                        i += 1
+                        self.name = self.name + '~'
+                    i = g.skip_ws_and_nl(s,i)
+                    j = i ; i = g.skip_c_id(s,i)
+                    name2 = s[j:i]
+                    self.name = self.name + name2
+            return i
+        #@-node:ekr.20031218072017.3257:doId
+        #@+node:ekr.20070203153208:doInner
+        def doInner (self,s,i,parent,kind):
+            
+            '''Handle a namespace or class definition.'''
+        
+            c = self.c
+            start = i
+            i += len(kind)
+            j = g.skip_ws_and_nl(s,i)
+            i = g.skip_c_id(s,j)
+            name = s[j:i].strip()
+            if not name: return i
+            i = g.skip_ws_and_nl(s,i)
+            bracket = i
+            if not g.match(s,i,'{'): return i
+            i = g.skip_braces(s,i)
+            if g.match(s,i,'}'):
+                end = i
+                i = g.skip_ws_and_nl(s,i+1)
+                if g.match(s,i,';'): i += 1
+                # Append previous text.
+                prev = s[self.scan_start:start]
+                c.appendStringToBody(parent,prev)
+                self.scan_start = self.function_start = i
+                preamble = s[start:bracket+1]
+                # Create children.
+                p = self.createHeadline(parent,headline='%s %s' % (kind,name),body=preamble)
+                body = s[bracket+1:end]
+                self.scan(body,p.copy(),init=False)
+                # Finish the text.
+                if p.hasChildren(): c.appendStringToBody(p,'\n\t@others')
+                c.appendStringToBody(p,s[end:i])    
+            else:
+                g.trace('missing "}" following %s' % kind)
+            return i
+        #@-node:ekr.20070203153208:doInner
+        #@+node:ekr.20031218072017.3262:doOuterParen
+        def doOuterParen (self,s,i,parent):
+            
+            '''Handle '(' at the top level.
+            This begins a function/method if and only if the character after the matching ')' is '{'.'''
+            
+            # Skip the param list.  It may not be properly matched if there are #if's involved.
+            c = self.c
+            i = g.skip_parens(s,i)
+            if not g.match(s,i,')'): return i
+            i = g.skip_ws_and_nl(s,i+1)
+            if g.match(s,i,';'):
+                return self.doSemicolon(s,i)
+            elif g.match(s,i,'='):
+                # An initializer ends a declaration.
+                i = g.skip_ws_and_nl(s,i+1)
+                if g.match(s,i,'{'):
+                    i = g.skip_braces(s,i)
+                self.function_start = i
+                return i
+            elif g.match(s,i,'{'):
+                i = g.skip_braces(s,i)
+                if g.match(s,i,'}'):
+                    i += 1
+                    # g.trace('function %s' % self.name)
+                    c.appendStringToBody(parent,s[self.scan_start:self.function_start])
+                    body = s[self.function_start:i]
+                    p = self.createHeadline(parent,headline=self.name,body=body)
+                else:
+                    g.trace('no matching "}" in function/method definition')
+                self.scan_start = self.function_start = i
+                return i
+            else:
+                return i
+        #@-node:ekr.20031218072017.3262:doOuterParen
+        #@+node:ekr.20031218072017.3263:doSemicolon
+        def doSemicolon (self,s,i):
+        
+            self.function_start = i+1 # The semicolon ends the declaration.
+            return i+1
+        #@-node:ekr.20031218072017.3263:doSemicolon
+        #@+node:ekr.20031218072017.3260:skipComments
+        def skipComments (self,s,i):
+        
+            if g.match(s,i,"//"):
+                i = g.skip_line(s,i)
+            elif g.match(s,i,"/*"):
+                i = g.skip_block_comment(s,i)
+            else:
+                i += 1
+        
+            return i
+        #@-node:ekr.20031218072017.3260:skipComments
+        #@-node:ekr.20070202105914.1:scan & helpers
         #@+node:ekr.20070203074709:Utilities (should be in base class)
         #@+node:ekr.20070203074709.1:createHeadline
         def createHeadline (self,parent,body,headline):
@@ -2421,157 +2572,6 @@ class baseLeoImportCommands:
             return result
         #@-node:ekr.20070203074709.16:undentBody
         #@-node:ekr.20070203074709:Utilities (should be in base class)
-        #@+node:ekr.20070202105914.1:scan & helpers
-        def scan (self,s,parent,init=True):
-            
-            c = self.c
-            if init:
-                c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language c\n")
-            else:
-                saveData = self.name,self.function_start,self.scan_start
-        
-            self.name,self.function_start,self.scan_start = '',0,0
-            i = 0
-            while i < len(s):
-                progress = i
-                ch = s[i]
-                # if i == 0 or ch == '\n': g.trace('line',repr(g.get_line(s,i)))
-                # g.trace('ch',repr(ch))
-                if ch == '/':         i = self.skipComments(s,i)
-                elif ch in ('"',"'"): i = g.skip_string(s,i)
-                elif ch == '(':     i = self.doOuterParen(s,i,parent) # Possible function/method definition.
-                elif ch == ';':     i = self.doSemicolon(s,i) # Signals a possible start of a function.
-                elif g.is_c_id(ch): i = self.doId(s,i,parent) # Possible class/namespace definition.
-                else: i += 1
-                assert i > progress
-            self.appendUnusedText(s,i,parent)
-            if init:
-                if parent.hasChildren(): c.appendStringToBody(parent,'@others')
-            else:
-                self.name,self.function_start,self.scan_start = saveData
-        #@nonl
-        #@+node:ekr.20070202111549:appendUnusedText
-        def appendUnusedText (self,s,i,parent):
-            
-            c = self.c
-            
-            i = g.skip_ws_and_nl(s,self.scan_start)
-            if i < len(s):
-                s2 = s[self.scan_start:]
-                # g.trace(repr(s2))
-                c.appendStringToBody(parent,s2)
-        #@-node:ekr.20070202111549:appendUnusedText
-        #@+node:ekr.20031218072017.3257:doId
-        def doId (self,s,i,parent):
-            
-            j = i ; i = g.skip_c_id(s,i)
-            name = s[j:i]
-            if name in ('class','namespace'):
-                i = self.doInner(s,j,parent,name)
-            else:
-                self.name = name
-                while g.match(s,i,'::'):
-                    self.name = self.name + '::'
-                    i = g.skip_ws_and_nl(s,i+2)
-                    if g.match(s,i,'~'):
-                        i += 1
-                        self.name = self.name + '~'
-                    i = g.skip_ws_and_nl(s,i)
-                    j = i ; i = g.skip_c_id(s,i)
-                    name2 = s[j:i]
-                    self.name = self.name + name2
-            return i
-        #@-node:ekr.20031218072017.3257:doId
-        #@+node:ekr.20070203153208:doInner
-        def doInner (self,s,i,parent,kind):
-            
-            '''Handle a namespace or class definition.'''
-        
-            c = self.c
-            start = i
-            i += len(kind)
-            j = g.skip_ws_and_nl(s,i)
-            i = g.skip_c_id(s,j)
-            name = s[j:i].strip()
-            if not name: return i
-            i = g.skip_ws_and_nl(s,i)
-            bracket = i
-            if not g.match(s,i,'{'): return i
-            i = g.skip_braces(s,i)
-            if g.match(s,i,'}'):
-                end = i
-                i = g.skip_ws_and_nl(s,i+1)
-                if g.match(s,i,';'): i += 1
-                # Append previous text.
-                prev = s[self.scan_start:start]
-                c.appendStringToBody(parent,prev)
-                self.scan_start = self.function_start = i
-                preamble = s[start:bracket+1]
-                # Create children.
-                p = self.createHeadline(parent,headline='%s %s' % (kind,name),body=preamble)
-                body = s[bracket+1:end]
-                self.scan(body,p.copy(),init=False)
-                # Finish the text.
-                if p.hasChildren(): c.appendStringToBody(p,'\n\t@others')
-                c.appendStringToBody(p,s[end:i])    
-            else:
-                g.trace('missing "}" following %s' % kind)
-            return i
-        #@-node:ekr.20070203153208:doInner
-        #@+node:ekr.20031218072017.3262:doOuterParen
-        def doOuterParen (self,s,i,parent):
-            
-            '''Handle '(' at the top level.
-            This begins a function/method if and only if the character after the matching ')' is '{'.'''
-            
-            # Skip the param list.  It may not be properly matched if there are #if's involved.
-            c = self.c
-            i = g.skip_parens(s,i)
-            if not g.match(s,i,')'): return i
-            i = g.skip_ws_and_nl(s,i+1)
-            if g.match(s,i,';'):
-                return self.doSemicolon(s,i)
-            elif g.match(s,i,'='):
-                # An initializer ends a declaration.
-                i = g.skip_ws_and_nl(s,i+1)
-                if g.match(s,i,'{'):
-                    i = g.skip_braces(s,i)
-                self.function_start = i
-                return i
-            elif g.match(s,i,'{'):
-                i = g.skip_braces(s,i)
-                if g.match(s,i,'}'):
-                    i += 1
-                    # g.trace('function %s' % self.name)
-                    c.appendStringToBody(parent,s[self.scan_start:self.function_start])
-                    body = s[self.function_start:i]
-                    p = self.createHeadline(parent,headline=self.name,body=body)
-                else:
-                    g.trace('no matching "}" in function/method definition')
-                self.scan_start = self.function_start = i
-                return i
-            else:
-                return i
-        #@-node:ekr.20031218072017.3262:doOuterParen
-        #@+node:ekr.20031218072017.3263:doSemicolon
-        def doSemicolon (self,s,i):
-        
-            self.function_start = i+1 # The semicolon ends the declaration.
-            return i+1
-        #@-node:ekr.20031218072017.3263:doSemicolon
-        #@+node:ekr.20031218072017.3260:skipComments
-        def skipComments (self,s,i):
-        
-            if g.match(s,i,"//"):
-                i = g.skip_line(s,i)
-            elif g.match(s,i,"/*"):
-                i = g.skip_block_comment(s,i)
-            else:
-                i += 1
-        
-            return i
-        #@-node:ekr.20031218072017.3260:skipComments
-        #@-node:ekr.20070202105914.1:scan & helpers
         #@-others
     #@nonl
     #@-node:ekr.20070202105339.1:class cScanner

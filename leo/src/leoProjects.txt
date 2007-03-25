@@ -13173,6 +13173,157 @@ def __init__ (self,importer):
     self.name = None
     self.scan_start = 0
 #@-node:ekr.20070202105914:cScanner.ctor
+#@+node:ekr.20070202105914.1:scan & helpers
+def scan (self,s,parent,init=True):
+    
+    c = self.c
+    if init:
+        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language c\n")
+    else:
+        saveData = self.name,self.function_start,self.scan_start
+
+    self.name,self.function_start,self.scan_start = '',0,0
+    i = 0
+    while i < len(s):
+        progress = i
+        ch = s[i]
+        # if i == 0 or ch == '\n': g.trace('line',repr(g.get_line(s,i)))
+        # g.trace('ch',repr(ch))
+        if ch == '/':         i = self.skipComments(s,i)
+        elif ch in ('"',"'"): i = g.skip_string(s,i)
+        elif ch == '(':     i = self.doOuterParen(s,i,parent) # Possible function/method definition.
+        elif ch == ';':     i = self.doSemicolon(s,i) # Signals a possible start of a function.
+        elif g.is_c_id(ch): i = self.doId(s,i,parent) # Possible class/namespace definition.
+        else: i += 1
+        assert i > progress
+    self.appendUnusedText(s,i,parent)
+    if init:
+        if parent.hasChildren(): c.appendStringToBody(parent,'@others')
+    else:
+        self.name,self.function_start,self.scan_start = saveData
+#@nonl
+#@+node:ekr.20070202111549:appendUnusedText
+def appendUnusedText (self,s,i,parent):
+    
+    c = self.c
+    
+    i = g.skip_ws_and_nl(s,self.scan_start)
+    if i < len(s):
+        s2 = s[self.scan_start:]
+        # g.trace(repr(s2))
+        c.appendStringToBody(parent,s2)
+#@-node:ekr.20070202111549:appendUnusedText
+#@+node:ekr.20031218072017.3257:doId
+def doId (self,s,i,parent):
+    
+    j = i ; i = g.skip_c_id(s,i)
+    name = s[j:i]
+    if name in ('class','namespace'):
+        i = self.doInner(s,j,parent,name)
+    else:
+        self.name = name
+        while g.match(s,i,'::'):
+            self.name = self.name + '::'
+            i = g.skip_ws_and_nl(s,i+2)
+            if g.match(s,i,'~'):
+                i += 1
+                self.name = self.name + '~'
+            i = g.skip_ws_and_nl(s,i)
+            j = i ; i = g.skip_c_id(s,i)
+            name2 = s[j:i]
+            self.name = self.name + name2
+    return i
+#@-node:ekr.20031218072017.3257:doId
+#@+node:ekr.20070203153208:doInner
+def doInner (self,s,i,parent,kind):
+    
+    '''Handle a namespace or class definition.'''
+
+    c = self.c
+    start = i
+    i += len(kind)
+    j = g.skip_ws_and_nl(s,i)
+    i = g.skip_c_id(s,j)
+    name = s[j:i].strip()
+    if not name: return i
+    i = g.skip_ws_and_nl(s,i)
+    bracket = i
+    if not g.match(s,i,'{'): return i
+    i = g.skip_braces(s,i)
+    if g.match(s,i,'}'):
+        end = i
+        i = g.skip_ws_and_nl(s,i+1)
+        if g.match(s,i,';'): i += 1
+        # Append previous text.
+        prev = s[self.scan_start:start]
+        c.appendStringToBody(parent,prev)
+        self.scan_start = self.function_start = i
+        preamble = s[start:bracket+1]
+        # Create children.
+        p = self.createHeadline(parent,headline='%s %s' % (kind,name),body=preamble)
+        body = s[bracket+1:end]
+        self.scan(body,p.copy(),init=False)
+        # Finish the text.
+        if p.hasChildren(): c.appendStringToBody(p,'\n\t@others')
+        c.appendStringToBody(p,s[end:i])    
+    else:
+        g.trace('missing "}" following %s' % kind)
+    return i
+#@-node:ekr.20070203153208:doInner
+#@+node:ekr.20031218072017.3262:doOuterParen
+def doOuterParen (self,s,i,parent):
+    
+    '''Handle '(' at the top level.
+    This begins a function/method if and only if the character after the matching ')' is '{'.'''
+    
+    # Skip the param list.  It may not be properly matched if there are #if's involved.
+    c = self.c
+    i = g.skip_parens(s,i)
+    if not g.match(s,i,')'): return i
+    i = g.skip_ws_and_nl(s,i+1)
+    if g.match(s,i,';'):
+        return self.doSemicolon(s,i)
+    elif g.match(s,i,'='):
+        # An initializer ends a declaration.
+        i = g.skip_ws_and_nl(s,i+1)
+        if g.match(s,i,'{'):
+            i = g.skip_braces(s,i)
+        self.function_start = i
+        return i
+    elif g.match(s,i,'{'):
+        i = g.skip_braces(s,i)
+        if g.match(s,i,'}'):
+            i += 1
+            # g.trace('function %s' % self.name)
+            c.appendStringToBody(parent,s[self.scan_start:self.function_start])
+            body = s[self.function_start:i]
+            p = self.createHeadline(parent,headline=self.name,body=body)
+        else:
+            g.trace('no matching "}" in function/method definition')
+        self.scan_start = self.function_start = i
+        return i
+    else:
+        return i
+#@-node:ekr.20031218072017.3262:doOuterParen
+#@+node:ekr.20031218072017.3263:doSemicolon
+def doSemicolon (self,s,i):
+
+    self.function_start = i+1 # The semicolon ends the declaration.
+    return i+1
+#@-node:ekr.20031218072017.3263:doSemicolon
+#@+node:ekr.20031218072017.3260:skipComments
+def skipComments (self,s,i):
+
+    if g.match(s,i,"//"):
+        i = g.skip_line(s,i)
+    elif g.match(s,i,"/*"):
+        i = g.skip_block_comment(s,i)
+    else:
+        i += 1
+
+    return i
+#@-node:ekr.20031218072017.3260:skipComments
+#@-node:ekr.20070202105914.1:scan & helpers
 #@+node:ekr.20070203074709:Utilities (should be in base class)
 #@+node:ekr.20070203074709.1:createHeadline
 def createHeadline (self,parent,body,headline):
@@ -13473,157 +13624,6 @@ def undentBody (self,s):
     return result
 #@-node:ekr.20070203074709.16:undentBody
 #@-node:ekr.20070203074709:Utilities (should be in base class)
-#@+node:ekr.20070202105914.1:scan & helpers
-def scan (self,s,parent,init=True):
-    
-    c = self.c
-    if init:
-        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language c\n")
-    else:
-        saveData = self.name,self.function_start,self.scan_start
-
-    self.name,self.function_start,self.scan_start = '',0,0
-    i = 0
-    while i < len(s):
-        progress = i
-        ch = s[i]
-        # if i == 0 or ch == '\n': g.trace('line',repr(g.get_line(s,i)))
-        # g.trace('ch',repr(ch))
-        if ch == '/':         i = self.skipComments(s,i)
-        elif ch in ('"',"'"): i = g.skip_string(s,i)
-        elif ch == '(':     i = self.doOuterParen(s,i,parent) # Possible function/method definition.
-        elif ch == ';':     i = self.doSemicolon(s,i) # Signals a possible start of a function.
-        elif g.is_c_id(ch): i = self.doId(s,i,parent) # Possible class/namespace definition.
-        else: i += 1
-        assert i > progress
-    self.appendUnusedText(s,i,parent)
-    if init:
-        if parent.hasChildren(): c.appendStringToBody(parent,'@others')
-    else:
-        self.name,self.function_start,self.scan_start = saveData
-#@nonl
-#@+node:ekr.20070202111549:appendUnusedText
-def appendUnusedText (self,s,i,parent):
-    
-    c = self.c
-    
-    i = g.skip_ws_and_nl(s,self.scan_start)
-    if i < len(s):
-        s2 = s[self.scan_start:]
-        # g.trace(repr(s2))
-        c.appendStringToBody(parent,s2)
-#@-node:ekr.20070202111549:appendUnusedText
-#@+node:ekr.20031218072017.3257:doId
-def doId (self,s,i,parent):
-    
-    j = i ; i = g.skip_c_id(s,i)
-    name = s[j:i]
-    if name in ('class','namespace'):
-        i = self.doInner(s,j,parent,name)
-    else:
-        self.name = name
-        while g.match(s,i,'::'):
-            self.name = self.name + '::'
-            i = g.skip_ws_and_nl(s,i+2)
-            if g.match(s,i,'~'):
-                i += 1
-                self.name = self.name + '~'
-            i = g.skip_ws_and_nl(s,i)
-            j = i ; i = g.skip_c_id(s,i)
-            name2 = s[j:i]
-            self.name = self.name + name2
-    return i
-#@-node:ekr.20031218072017.3257:doId
-#@+node:ekr.20070203153208:doInner
-def doInner (self,s,i,parent,kind):
-    
-    '''Handle a namespace or class definition.'''
-
-    c = self.c
-    start = i
-    i += len(kind)
-    j = g.skip_ws_and_nl(s,i)
-    i = g.skip_c_id(s,j)
-    name = s[j:i].strip()
-    if not name: return i
-    i = g.skip_ws_and_nl(s,i)
-    bracket = i
-    if not g.match(s,i,'{'): return i
-    i = g.skip_braces(s,i)
-    if g.match(s,i,'}'):
-        end = i
-        i = g.skip_ws_and_nl(s,i+1)
-        if g.match(s,i,';'): i += 1
-        # Append previous text.
-        prev = s[self.scan_start:start]
-        c.appendStringToBody(parent,prev)
-        self.scan_start = self.function_start = i
-        preamble = s[start:bracket+1]
-        # Create children.
-        p = self.createHeadline(parent,headline='%s %s' % (kind,name),body=preamble)
-        body = s[bracket+1:end]
-        self.scan(body,p.copy(),init=False)
-        # Finish the text.
-        if p.hasChildren(): c.appendStringToBody(p,'\n\t@others')
-        c.appendStringToBody(p,s[end:i])    
-    else:
-        g.trace('missing "}" following %s' % kind)
-    return i
-#@-node:ekr.20070203153208:doInner
-#@+node:ekr.20031218072017.3262:doOuterParen
-def doOuterParen (self,s,i,parent):
-    
-    '''Handle '(' at the top level.
-    This begins a function/method if and only if the character after the matching ')' is '{'.'''
-    
-    # Skip the param list.  It may not be properly matched if there are #if's involved.
-    c = self.c
-    i = g.skip_parens(s,i)
-    if not g.match(s,i,')'): return i
-    i = g.skip_ws_and_nl(s,i+1)
-    if g.match(s,i,';'):
-        return self.doSemicolon(s,i)
-    elif g.match(s,i,'='):
-        # An initializer ends a declaration.
-        i = g.skip_ws_and_nl(s,i+1)
-        if g.match(s,i,'{'):
-            i = g.skip_braces(s,i)
-        self.function_start = i
-        return i
-    elif g.match(s,i,'{'):
-        i = g.skip_braces(s,i)
-        if g.match(s,i,'}'):
-            i += 1
-            # g.trace('function %s' % self.name)
-            c.appendStringToBody(parent,s[self.scan_start:self.function_start])
-            body = s[self.function_start:i]
-            p = self.createHeadline(parent,headline=self.name,body=body)
-        else:
-            g.trace('no matching "}" in function/method definition')
-        self.scan_start = self.function_start = i
-        return i
-    else:
-        return i
-#@-node:ekr.20031218072017.3262:doOuterParen
-#@+node:ekr.20031218072017.3263:doSemicolon
-def doSemicolon (self,s,i):
-
-    self.function_start = i+1 # The semicolon ends the declaration.
-    return i+1
-#@-node:ekr.20031218072017.3263:doSemicolon
-#@+node:ekr.20031218072017.3260:skipComments
-def skipComments (self,s,i):
-
-    if g.match(s,i,"//"):
-        i = g.skip_line(s,i)
-    elif g.match(s,i,"/*"):
-        i = g.skip_block_comment(s,i)
-    else:
-        i += 1
-
-    return i
-#@-node:ekr.20031218072017.3260:skipComments
-#@-node:ekr.20070202105914.1:scan & helpers
 #@-node:ekr.20070202105339.1:class cScanner
 #@-node:ekr.20070201172535:Fixed C++ import bug
 #@+node:ekr.20070204123507:Fixed recent bug in next-line command
@@ -27974,284 +27974,6 @@ def getEnabledFiles (s,plugins_path):
 #@-node:ekr.20070217114542:Features
 #@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 projects
 #@+node:ekr.20070318125900:Leo 4.4.3 b1 projects
-#@+node:ekr.20070317073627.4:(Chapters)
-#@+node:ekr.20070320091343:Cvs log
-- Clicks in tabs now select & unselect chapters properly.
-#@nonl
-#@-node:ekr.20070320091343:Cvs log
-#@+node:ekr.20070317125913:To do
-@nocolor
-@
-
-* Clicks in new chapters do not work.
-
-- Create @chapters and @chapter nodes as needed when creating a chapter.
-    
-* Body editors should support chapers.
-    - Prepend chapter name.
-
-- Restrict searches to chapters.
-  - This is much more general than adding chapter-oriented find commands.
-  - In particular, clone-find-all should work on chapters.
-#@-node:ekr.20070317125913:To do
-#@+node:ekr.20070320093405:(recent)
-#@+node:ekr.20070318105131:Creating chapters
-#@+node:ekr.20031218072017.2176:f.finishCreate & helpers
-def finishCreate (self,c):
-    
-    f = self ; f.c = c
-    # g.trace('tkFrame')
-    
-    self.use_chapters = c.config.getBool('use_chapters')
-    
-    # This must be done after creating the commander.
-    f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
-    f.createOuterFrames()
-    f.createIconBar()
-    f.createSplitterComponents()
-    f.createStatusLine()
-    f.createFirstTreeNode()
-    f.menu = leoTkinterMenu.leoTkinterMenu(f)
-        # c.finishCreate calls f.createMenuBar later.
-    c.setLog()
-    g.app.windowList.append(f)
-    c.initVersion()
-    c.signOnWithVersion()
-    f.miniBufferWidget = f.createMiniBufferWidget()
-    c.bodyWantsFocusNow()
-    self.trace_status_line = c.config.getBool('trace_status_line')
-    # f.enableTclTraces()
-#@+node:ekr.20051009044751:createOuterFrames
-def createOuterFrames (self):
-
-    f = self ; c = f.c
-    f.top = top = Tk.Toplevel()
-    g.app.gui.attachLeoIcon(top)
-    top.title(f.title)
-    top.minsize(30,10) # In grid units.
-    
-    if g.os_path_exists(g.app.user_xresources_path):
-        f.top.option_readfile(g.app.user_xresources_path)
-    
-    f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
-    f.top.bind("<Button-1>", f.OnActivateLeoEvent)
-    
-    f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
-    f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
-    
-    # These don't work on Windows. Because of bugs in window managers,
-    # there is NO WAY to know which window is on top!
-    # f.top.bind("<Activate>",f.OnActivateLeoEvent)
-    # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
-    
-    # Create the outer frame, the 'hull' component.
-    f.outerFrame = Tk.Frame(top)
-    f.outerFrame.pack(expand=1,fill="both")
-#@nonl
-#@-node:ekr.20051009044751:createOuterFrames
-#@+node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
-def createSplitterComponents (self):
-
-    f = self ; c = f.c
-
-    f.createLeoSplitters(f.outerFrame)
-    
-    # Create the canvas, tree, log and body.
-    if self.use_chapters:
-        # Create the controllers.
-        cc = leoChapters.chapterController(c)
-        tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-        cc.finishCreate(tt)
-        tt.selectTab('main')
-        f.canvas = tt.getCanvas('main')
-        f.tree = tt.getTree('main')
-    else:
-        f.canvas = f.createCanvas(f.split2Pane1)
-        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-    f.log    = leoTkinterLog(f,f.split2Pane2)
-    f.body   = leoTkinterBody(f,f.split1Pane2)
-    
-    # Yes, this an "official" ivar: this is a kludge.
-    f.bodyCtrl = f.body.bodyCtrl
-    
-    # Configure.
-    f.setTabWidth(c.tab_width)
-    f.tree.setColorFromConfig()
-    f.reconfigurePanes()
-    f.body.setFontFromConfig()
-    f.body.setColorFromConfig()
-#@nonl
-#@-node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
-#@+node:ekr.20051009045404:createFirstTreeNode
-def createFirstTreeNode (self):
-    
-    f = self ; c = f.c
-
-    t = leoNodes.tnode()
-    v = leoNodes.vnode(t)
-    p = leoNodes.position(v,[])
-    v.initHeadString("NewHeadline")
-    p.moveToRoot(oldRoot=None)
-    c.setRootPosition(p) # New in 4.4.2.
-    c.editPosition(p)
-#@-node:ekr.20051009045404:createFirstTreeNode
-#@+node:ekr.20051121092320:f.enableTclTraces
-def enableTclTraces (self):
-    
-    c = self.c
-    
-    # pychecker complains that trace/untracewidget are not used.
-
-    def tracewidget(event):
-        g.trace('enabling widget trace')
-        Pmw.tracetk(event.widget, 1)
-    
-    def untracewidget(event):
-        g.trace('disabling widget trace')
-        Pmw.tracetk(event.widget,0)
-        
-    def focusIn (event):
-        print("Focus in  %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-        
-    def focusOut (event):
-        print("Focus out %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-
-    # Put this in unit tests before the assert:
-    # c.frame.bar1.unbind_all("<FocusIn>")
-    # c.frame.bar1.unbind_all("<FocusOut>")
-
-    # Any widget would do:
-    w = c.frame.bar1
-    if 1:
-        w.bind_all("<FocusIn>", focusIn)
-        w.bind_all("<FocusOut>", focusOut)
-    else:
-        w.bind_all("<Control-1>", tracewidget)
-        w.bind_all("<Control-Shift-1>", untracewidget)
-#@-node:ekr.20051121092320:f.enableTclTraces
-#@-node:ekr.20031218072017.2176:f.finishCreate & helpers
-#@+node:ekr.20070317085437.31:cc.createChapter
-numberOfChapters = 0
-
-def createChapter (self,event=None,name=None):
-    
-    cc = self ; c = cc.c ; tt = cc.tt
-    
-    if name == 'main':
-        p = c.rootPosition()
-    else:
-        p = c.currentPosition()
-    
-    if not name:
-        # The **immutable** chapter name is 'Chapter n'.
-        tabName = 'Chapter % d' % self.numberOfChapters
-        self.numberOfChapters += 1
-    else:
-        tabName = name
-    
-    self.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p)
-    tt.selectTab(tabName)
-    
-    if name not in ('trash','main'):
-        tt.renameChapterHelper(cc,tabName)
-
-    c.bodyWantsFocusNow()
-#@-node:ekr.20070317085437.31:cc.createChapter
-#@+node:ekr.20070317085437.41:cc.renameChapter
-def renameChapter (self,event=None):
-    
-    '''Handle the rename chapter command.'''
-    
-    cc = self ; tt = cc.tt
-    
-    tabName = tt.getSelectedTabName()
-
-    if tabName == 'trash':
-        return g.es('Can not rename the trash',color='red')
-    if tabName == 'main':
-        return g.es('Can not rename the main chapter',color='red')
-
-    tt.renameChapterHelper(cc,tabName)
-#@-node:ekr.20070317085437.41:cc.renameChapter
-#@+node:ekr.20070317074824:tt.createTab
-def createTab (self,tabName):
-    
-    tt = self ; c = tt.c ; cc = self.cc ; nb = tt.nb
-    
-    parentFrame = nb.add(tabName) # page is a Tk.Frame.
-    self.tabNames.append(tabName)
-
-    b = nb.tab(tabName) # b is a Tk.Button.
-    tt.makeTabMenu(b)
-
-    b.configure(
-        background=self.selectedTabBackgroundColor,
-        foreground=self.selectedTabForegroundColor)
-        
-    canvas = c.frame.createCanvas(parentFrame)
-
-    tt.canvasDict [tabName] = canvas
-    tt.stringVarDict [tabName] = Tk.StringVar()
-    tt.treeDict [tabName] = tree = leoTkinterTree.leoTkinterTree(c,c.frame,canvas)
-    
-    if tabName != 'main':
-        tree.redraw_now()
-#@-node:ekr.20070317074824:tt.createTab
-#@+node:ekr.20070318125900.1:tt.renameChapterHelper
-def renameChapterHelper (self,cc,tabName):
-    
-    '''Called from cc.renameChapter to prompt for a new name.'''
-    
-    tt = self ; c = tt.c ; nb = tt.nb
-    
-    frame = tt.getFrame(tabName)
-    tab = tt.getButton(tabName)
-    
-    # g.trace(chapter)
-    f = Tk.Frame(tab)
-    # Elegant code.  Setting e's textvariable to chapter.sv
-    # immediately updates the chapter labels as e changes.
-    sv = tt.stringVarDict.get(tabName)
-    e = Tk.Entry(f,background='white',textvariable=sv)
-    b = Tk.Button(f,text="Close")
-    f.pack(side='top')
-    e.pack(side='left')
-    b.pack(side='right')
-    def changeCallback (event=None,f=f,sv=sv):
-        newName = sv.get()
-        f.pack_forget()
-        tt.renameTab(newName)
-    e.bind('<Return>',changeCallback)
-    e.selection_range(0,'end')
-    b.configure(command=changeCallback)
-    c.widgetWantsFocusNow(e)
-#@nonl
-#@-node:ekr.20070318125900.1:tt.renameChapterHelper
-#@+node:ekr.20070318133725:tt.renameTab
-def renameTab (self,newName):
-    
-    '''Change the button text of the presently selected tab.'''
-    
-    # Important: the actual tab name *never* changes.
-    
-    tt = self ; nb = tt.nb
-    name = nb.getcurselection()
-    b = nb.tab(name)
-    b.configure(text=newName)
-#@-node:ekr.20070318133725:tt.renameTab
-#@+node:ekr.20070317074824.3:tt.selectTab
-def selectTab (self,tabName):
-    
-    if tabName not in self.tabNames:
-        self.createTab(tabName)
-    
-    self.nb.selectpage(tabName)
-#@-node:ekr.20070317074824.3:tt.selectTab
-#@-node:ekr.20070318105131:Creating chapters
-#@-node:ekr.20070320093405:(recent)
-#@-node:ekr.20070317073627.4:(Chapters)
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
 #@+node:ekr.20070126072723:Ran pychecker
 #@+node:ekr.20070316175013:Real bugs found

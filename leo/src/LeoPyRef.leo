@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.614035087719">
-	<global_window_position top="24" left="396" height="855" width="803"/>
+<globals body_outline_ratio="0.477644492912">
+	<global_window_position top="10" left="385" height="917" width="867"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -33,15 +33,16 @@
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"
-marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20051009045208,ekr.20050921103736,ekr.20031218072017.3803,ekr.20031218072017.2995,ekr.20031218072017.2996,ekr.20031218072017.2176,"><vh>@thin leoProjects.txt</vh></v>
+marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20031218072017.2176,ekr.20051009045208,ekr.20050921103736,ekr.20031218072017.3803,ekr.20070202105914,ekr.20031218072017.2995,ekr.20031218072017.2996,"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="EKR.20040519090151.2"><vh>To do</vh>
+<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
 <v t="ekr.20040117181936"
-marks="ekr.20070228055539,ekr.20070302164343,ekr.20061028211424.46,ekr.20061028211424.47,ekr.20061028211424.50,ekr.20061028211424.52,ekr.20061028070057.22,ekr.20061028070057.37,ekr.20061028070057.54,ekr.20061028070057.55,"><vh>@thin ../doc/leoToDo.txt</vh></v>
+marks="ekr.20031218072017.2176,ekr.20051009045208,ekr.20070317085437.41,ekr.20070228055539,ekr.20070302164343,ekr.20070324084040.16,ekr.20070324084040.9,ekr.20070324084040.21,ekr.20070324084040.26,ekr.20070324084040.27,ekr.20061028211424.46,ekr.20061028211424.47,ekr.20061028211424.50,ekr.20061028211424.52,ekr.20061028070057.22,ekr.20061028070057.37,ekr.20061028070057.54,ekr.20061028070057.55,"
+expanded="ekr.20070320090010,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"
 marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -56,8 +57,7 @@ marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 marks="ekr.20041005105605.52,ekr.20041005105605.198,"><vh>@thin leoAtFile.py</vh></v>
 <v t="ekr.20070227091955.1"><vh>@thin leoBridge.py</vh></v>
 <v t="ekr.20070317085508.1"
-marks="ekr.20070317085437.40,ekr.20070317085437.41,"
-expanded="ekr.20070317085437,ekr.20070318124624,ekr.20070317130648,"><vh>@thin leoChapters.py</vh></v>
+marks="ekr.20070317085437.40,ekr.20070317085437.41,"><vh>@thin leoChapters.py</vh></v>
 <v t="ekr.20031218072017.2794"
 marks="ekr.20031218072017.1607,ekr.20031218072017.1896,ekr.20031218072017.2803,"><vh>@thin leoColor.py</vh></v>
 <v t="ekr.20031218072017.2810"
@@ -69,7 +69,8 @@ marks="ekr.20050920084036.138,"><vh>@thin leoEditCommands.py</vh></v>
 marks="ekr.20060919110638.44,ekr.20040701065235.2,"><vh>@thin leoFileCommands.py</vh></v>
 <v t="ekr.20031218072017.3093"
 marks="ekr.20031218072017.3132,ekr.20031218072017.3124,"><vh>@thin leoGlobals.py</vh></v>
-<v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
+<v t="ekr.20031218072017.3206"
+marks="ekr.20031218072017.2258,ekr.20060626100102,ekr.20060626101103.1,ekr.20060626103415,ekr.20031218072017.2263,ekr.20031218072017.2264,ekr.20031218072017.2266,ekr.20031218072017.2270,ekr.20031218072017.2271,ekr.20031218072017.2272,ekr.20070202105914,"><vh>@thin leoImport.py</vh></v>
 <v t="ekr.20031218072017.3320"
 marks="ekr.20031218072017.3419,ekr.20031218072017.3421,ekr.20031218072017.3426,ekr.20031218072017.3438,ekr.20040303214038,ekr.20040303163330,ekr.20040303175026.2,ekr.20040303175026.3,ekr.20040303175026.5,ekr.20040303175026.10,ekr.20040306060312,ekr.20040303175026.11,ekr.20040310062332.4,ekr.20040310062332.5,"><vh>@thin leoNodes.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
@@ -96,7 +97,7 @@ marks="ekr.20050921103736,ekr.20031218072017.3803,"><vh>@thin leoMenu.py</vh></v
 <v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
 <v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
 <v t="ekr.20031218072017.3939"
-marks="ekr.20051009045208,"><vh>@thin leoTkinterFrame.py</vh></v>
+marks="ekr.20031218072017.2176,ekr.20051009045208,"><vh>@thin leoTkinterFrame.py</vh></v>
 <v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
 <v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
 <v t="ekr.20031218072017.4100"
