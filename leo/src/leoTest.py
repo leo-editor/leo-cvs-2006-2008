@@ -620,6 +620,7 @@ def runLeoTest(c,path,verbose=False,full=False):
     finally:
         g.app.gui = old_gui
         if frame and frame.c != c:
+            frame.c.setChanged(False)
             g.app.closeLeoWindow(frame.c.frame)
         c.frame.update()
 #@nonl

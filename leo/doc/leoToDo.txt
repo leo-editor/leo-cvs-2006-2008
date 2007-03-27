@@ -6,17 +6,8 @@
 
 To do:
     
-- (done) Don't show @chapters tree in the main chapter.
-    (It's good for debugging, though)
-    
-- (done) tree.select must change chapter.p.
+- Handle bindings properly in all trees.
 
-- Complete chapter.select/unselect
-    - (done) Create @chapters and @chapter nodes as needed when creating a chapter.
-    - Handle bindings properly in all trees.
-    - Create clone of selected node as the first contents of the first chapter.
-    - Make sure scrollbars are updated properly.
-    
 - cc.makeTrees should reload previously saved trees.
 
 - Body editors should support chapers.
@@ -32,6 +23,21 @@ To do:
 
 @color
 #@nonl
+#@+node:ekr.20070327154725:what I did
+@nocolor
+@
+
+- (done) Make sure the minimal .leo files don't get @chapters trees.
+
+- (done) Complete chapter.select/unselect
+    
+- (done) Don't show @chapters tree in the main chapter. (might be good for debugging).
+    
+- (done) tree.select must change chapter.p.
+
+- (done) Create @chapters and @chapter nodes as needed when creating a chapter.
+#@nonl
+#@-node:ekr.20070327154725:what I did
 #@+node:ekr.20070325155208.2:Not used from chapter
 #@+node:ekr.20070317075059.2:chapter.onFocusIn & helpers (NOT USED)
 def onFocusIn (self,event,body,bodyCtrl):
