@@ -70,6 +70,7 @@ class baseCommands:
             # Do this early in the startup process so we can call hooks.
         
         # Init ivars with self.x instead of c.x to keep Pychecker happy
+        self.chapterController = None
         self.frame = frame
         self.mFileName = fileName
             # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
@@ -216,7 +217,7 @@ class baseCommands:
         # Create the menu last so that we can use the key handler for shortcuts.
         if not g.doHook("menu1",c=c,p=p,v=p):
             c.frame.menu.createMenuBar(c.frame)
-            
+    
         c.bodyWantsFocusNow()
     #@nonl
     #@+node:ekr.20051007143620:printCommandsDict
@@ -461,6 +462,10 @@ class baseCommands:
             c.editPosition(p)
         finally:
             c.endUpdate()
+            # makeTrees must be called after the first real redraw
+            # because it requires a valid value for c.rootPosition().
+            if c.config.getBool('use_chapters') and c.chapterController:
+                c.chapterController.makeTrees()
             if c.config.getBool('outline_pane_has_initial_focus'):
                 c.treeWantsFocusNow()
             else:
@@ -5477,14 +5482,16 @@ class baseCommands:
         until the matching call to endUpdate.'''
         
         c = self
-        c.frame.tree.beginUpdate()
+        if c.frame and c.frame.tree:
+            c.frame.tree.beginUpdate()
         
     def endUpdate(self,flag=True,scroll=True):
         
         '''Redraw the screen if flag is True.'''
     
         c = self
-        c.frame.tree.endUpdate(flag,scroll=scroll)
+        if c.frame and c.frame.tree:
+            c.frame.tree.endUpdate(flag,scroll=scroll)
     
     BeginUpdate = beginUpdate # Compatibility with old scripts
     EndUpdate = endUpdate # Compatibility with old scripts

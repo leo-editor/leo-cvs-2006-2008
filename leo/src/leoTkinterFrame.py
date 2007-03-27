@@ -649,14 +649,14 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         return "<leoTkinterFrame: %s>" % self.title
     #@-node:ekr.20031218072017.3942:__repr__ (tkFrame)
-    #@+node:ekr.20031218072017.2176:f.finishCreate & helpers
+    #@+node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
     def finishCreate (self,c):
-        
+    
         f = self ; f.c = c
         # g.trace('tkFrame')
-        
-        self.use_chapters = c.config.getBool('use_chapters')
-        
+    
+        self.use_chapters = True and c.config.getBool('use_chapters')
+    
         # This must be done after creating the commander.
         f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
         f.createOuterFrames()
@@ -682,21 +682,21 @@ class leoTkinterFrame (leoFrame.leoFrame):
         g.app.gui.attachLeoIcon(top)
         top.title(f.title)
         top.minsize(30,10) # In grid units.
-        
+    
         if g.os_path_exists(g.app.user_xresources_path):
             f.top.option_readfile(g.app.user_xresources_path)
-        
+    
         f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
         f.top.bind("<Button-1>", f.OnActivateLeoEvent)
-        
+    
         f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
         f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
-        
+    
         # These don't work on Windows. Because of bugs in window managers,
         # there is NO WAY to know which window is on top!
         # f.top.bind("<Activate>",f.OnActivateLeoEvent)
         # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
-        
+    
         # Create the outer frame, the 'hull' component.
         f.outerFrame = Tk.Frame(top)
         f.outerFrame.pack(expand=1,fill="both")
@@ -708,28 +708,28 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f = self ; c = f.c
     
         f.createLeoSplitters(f.outerFrame)
-        
+    
         # Create the canvas, tree, log and body.
         if self.use_chapters:
             # Create the controllers.
             cc = leoChapters.chapterController(c)
             tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+            c.chapterController = cc
             cc.finishCreate(tt)
-            tt.selectTab('main')
+            tt.selectTab('main') # Creates f.tree
             f.canvas = tt.getCanvas('main')
-            f.tree = tt.getTree('main')
         else:
             f.canvas = f.createCanvas(f.split2Pane1)
             f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
         f.log    = leoTkinterLog(f,f.split2Pane2)
         f.body   = leoTkinterBody(f,f.split1Pane2)
-        
+    
         # Yes, this an "official" ivar: this is a kludge.
         f.bodyCtrl = f.body.bodyCtrl
-        
+    
         # Configure.
         f.setTabWidth(c.tab_width)
-        f.tree.setColorFromConfig()
         f.reconfigurePanes()
         f.body.setFontFromConfig()
         f.body.setColorFromConfig()
@@ -737,7 +737,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
     #@+node:ekr.20051009045404:createFirstTreeNode
     def createFirstTreeNode (self):
-        
+    
         f = self ; c = f.c
     
         t = leoNodes.tnode()
@@ -750,23 +750,23 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20051009045404:createFirstTreeNode
     #@+node:ekr.20051121092320:f.enableTclTraces
     def enableTclTraces (self):
-        
+    
         c = self.c
-        
+    
         # pychecker complains that trace/untracewidget are not used.
     
         def tracewidget(event):
             g.trace('enabling widget trace')
             Pmw.tracetk(event.widget, 1)
-        
+    
         def untracewidget(event):
             g.trace('disabling widget trace')
             Pmw.tracetk(event.widget,0)
-            
+    
         def focusIn (event):
             print("Focus in  %s (%s)" % (
                 event.widget,event.widget.winfo_class()))
-            
+    
         def focusOut (event):
             print("Focus out %s (%s)" % (
                 event.widget,event.widget.winfo_class()))
@@ -784,8 +784,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
             w.bind_all("<Control-1>", tracewidget)
             w.bind_all("<Control-Shift-1>", untracewidget)
     #@-node:ekr.20051121092320:f.enableTclTraces
-    #@-node:ekr.20031218072017.2176:f.finishCreate & helpers
-    #@+node:ekr.20031218072017.3944:f.createCanvas & helpers
+    #@-node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
+    #@+node:ekr.20031218072017.3944:tkFrame.createCanvas & helpers
     def createCanvas (self,parentFrame,pack=True):
     
         c = self.c
@@ -793,10 +793,11 @@ class leoTkinterFrame (leoFrame.leoFrame):
         scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
         scrolls = g.choose(scrolls,1,0)
         canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
+        self.setCanvasColorFromConfig(canvas)
     
         return canvas
     #@nonl
-    #@+node:ekr.20041221071131.1:createTkTreeCanvas
+    #@+node:ekr.20041221071131.1:f.createTkTreeCanvas
     def createTkTreeCanvas (self,parentFrame,scrolls,pack):
         
         frame = self
@@ -892,9 +893,22 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         # g.print_bindings("canvas",canvas)
         return canvas
-    #@-node:ekr.20041221071131.1:createTkTreeCanvas
-    #@-node:ekr.20031218072017.3944:f.createCanvas & helpers
-    #@+node:ekr.20041221123325:createLeoSplitters & helpers
+    #@-node:ekr.20041221071131.1:f.createTkTreeCanvas
+    #@+node:ekr.20070327094252:f.setCanvasColorFromConfig
+    def setCanvasColorFromConfig (self,canvas):
+        
+        c = self.c
+    
+        bg = c.config.getColor("outline_pane_background_color") or 'white'
+    
+        try:
+            canvas.configure(bg=bg)
+        except:
+            g.es("exception setting outline pane background color")
+            g.es_exception()
+    #@-node:ekr.20070327094252:f.setCanvasColorFromConfig
+    #@-node:ekr.20031218072017.3944:tkFrame.createCanvas & helpers
+    #@+node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
     #@+at 
     #@nonl
     # The key invariants used throughout this code:
@@ -1072,8 +1086,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         apply(self.canvas.yview,args,keys)
     #@-node:ekr.20031218072017.998:Scrolling callbacks (frame)
-    #@-node:ekr.20041221123325:createLeoSplitters & helpers
-    #@+node:ekr.20031218072017.3964:Destroying the frame
+    #@-node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
+    #@+node:ekr.20031218072017.3964:Destroying the tkFrame
     #@+node:ekr.20031218072017.1975:destroyAllObjects
     def destroyAllObjects (self):
     
@@ -1149,7 +1163,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         top.destroy()
     #@-node:ekr.20031218072017.1974:destroySelf (tkFrame)
-    #@-node:ekr.20031218072017.3964:Destroying the frame
+    #@-node:ekr.20031218072017.3964:Destroying the tkFrame
     #@-node:ekr.20031218072017.3941: Birth & Death (tkFrame)
     #@+node:ekr.20041223104933:class tkStatusLineClass
     class tkStatusLineClass:
@@ -1580,7 +1594,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frame = self ; c = frame.c
         
         frame.tree.setFontFromConfig()
-        frame.tree.setColorFromConfig()
+        ### frame.tree.setColorFromConfig()
         
         frame.configureBarsFromConfig()
         
@@ -2660,8 +2674,13 @@ class leoTkinterLog (leoFrame.leoLog):
     #@+node:ekr.20051019170806:renameTab
     def renameTab (self,oldName,newName):
         
+        # g.trace('newName',newName)
+        
         label = self.nb.tab(oldName)
         label.configure(text=newName)
+        
+        # Tell the chapterController about the new name.
+        cc.updateChapterName(oldName,newName)
     #@-node:ekr.20051019170806:renameTab
     #@+node:ekr.20051016101724.1:selectTab
     def selectTab (self,tabName,createText=True,wrap='none'):
@@ -3076,39 +3095,38 @@ class leoTkinterLog (leoFrame.leoLog):
 #@-node:ekr.20031218072017.4039:class leoTkinterLog
 #@+node:ekr.20070317073627.3:class leoTkinterTreeTab
 class leoTkinterTreeTab (leoFrame.leoTreeTab):
-    
+
     '''A class representing a tabbed outline pane drawn with Tkinter.'''
-    
+
     #@    @+others
     #@+node:ekr.20070320090557.1: Birth & death
     #@+node:ekr.20070317073819.1: ctor (leoTreeTab)
     def __init__ (self,c,parentFrame,chapterController):
-        
+    
         leoFrame.leoTreeTab.__init__ (self,c,chapterController,parentFrame)
             # Init the base class.  Sets self.c, self.cc and self.parentFrame.
-            
+    
         self.tabNames = []
-        
+    
         # Keys are tabNames for all these dicts.
         # Important: tabNames never change, even if their button text changes
+    
+        self.buttonsDict = {} # values are Tk.Button's.
         self.canvasDict = {} # values are Tk.Canvas's.
         self.chapterDict = {} # values are chapters.
         self.stringVarDict = {} # values are Tk.StringVars.
-        self.treeDict = {} # values are leoTkTrees.
-        
+    
         self.createControl()
     
-        
-    #@nonl
     #@-node:ekr.20070317073819.1: ctor (leoTreeTab)
     #@+node:ekr.20070317073819.2:tt.createControl
     def createControl (self):
-        
+    
         tt = self
-        
+    
         def lowerCallback(tabName,self=self):
             return self.lowerTab(tabName)
-        
+    
         def raiseCallback(tabName,self=self):
             return self.raiseTab(tabName)
     
@@ -3118,7 +3136,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             lowercommand = lowerCallback,
             arrownavigation = 0,
         )
-        
+    
         hull = nb.component('hull')
     
         nb.pack(fill='both',expand=1)
@@ -3126,80 +3144,84 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@-node:ekr.20070320090557.1: Birth & death
     #@+node:ekr.20070317082315:tt.getters
     def getButton (self,tabName):
-        
+    
         tt = self
-        
+    
         if tabName in tt.tabNames:
             return tt.nb.tab(tabName) # A Tk.Button.
         else:
             return None
-            
+    
     def getCanvas (self,tabName):
-        
+    
         return self.canvasDict.get(tabName) # A Tk.Canvas
     
     def getFrame (self,tabName):
-        
+    
         tt = self
-        
+    
         if tabName in tt.tabNames:
             return tt.nb.page(tabName) # A Tk.Frame
         else:
             return None
-            
+    
     def getSelectedTabName (self):
-        
+    
         return self.nb.getcurselection() # An immutable tab name.
-            
-    def getTree (self,tabName):
-        
-        return self.treeDict.get(tabName) # A leoTkinterTree.
+    
+    # def getTree (self,tabName):
+        # return self.treeDict.get(tabName) # A leoTkinterTree.
     #@-node:ekr.20070317082315:tt.getters
     #@+node:ekr.20070320093038:Tabs...
     #@+node:ekr.20070317074824:tt.createTab
     def createTab (self,tabName):
-        
-        tt = self ; c = tt.c ; cc = self.cc ; nb = tt.nb
-        
+    
+        tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
+    
         parentFrame = nb.add(tabName) # page is a Tk.Frame.
         self.tabNames.append(tabName)
     
         b = nb.tab(tabName) # b is a Tk.Button.
-        tt.makeTabMenu(b)
     
         b.configure(
             background=self.selectedTabBackgroundColor,
             foreground=self.selectedTabForegroundColor)
-            
+    
         canvas = c.frame.createCanvas(parentFrame)
     
+        tt.buttonsDict [tabName ] = b
         tt.canvasDict [tabName] = canvas
         tt.stringVarDict [tabName] = Tk.StringVar()
-        tt.treeDict [tabName] = tree = leoTkinterTree.leoTkinterTree(c,c.frame,canvas)
         
+        if not f.tree:
+            f.tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
+    
         if tabName != 'main':
-            tree.redraw_now()
+            f.tree.redraw_now()
     #@-node:ekr.20070317074824:tt.createTab
     #@+node:ekr.20070317074824.1:tt.destroyTab
     def destroyTab (self,tabName):
-        
+    
         if tabName in self.tabNames:
             self.nb.delete(tabName)
             self.tabNames.remove(tabName)
-        
+    
     #@-node:ekr.20070317074824.1:tt.destroyTab
     #@+node:ekr.20070317074813:tt.makeTabMenu & helpers
-    def makeTabMenu (self,widget):
-        
+    def makeTabMenu (self,tabName,theChapter):
+    
         '''Create a tab menu.'''
+        
+        tt = self ; cc = tt.cc
+        w = self.buttonsDict.get(tabName)
+        if not w: return cc.error('tt.makeTabMenu: no w')
     
-        tt = self
-        tmenu = Tk.Menu(widget,tearoff=0)
-        widget.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
-        widget.tmenu = tmenu
+        tmenu = Tk.Menu(w,tearoff=0)
+        w.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
+        w.tmenu = tmenu
     
-        tt.createTopLevelMenuItems(tmenu)
-       
+        tt.createTopLevelMenuItems(tmenu,theChapter)
+    
         if 0:
             tmenu.add_separator()
             #tt.createConvertMenu(tmenu)
@@ -3210,10 +3232,10 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             tt.createTrashMenu(tmenu)
     #@nonl
     #@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-    def createTopLevelMenuItems (self,tmenu):
-        
+    def createTopLevelMenuItems (self,tmenu,theChapter):
+    
         cc = self.cc ; menu = tmenu
-        
+    
         for kind,label,command in (
             ('','New Chapter',cc.createChapter),
             ('','Remove This Chapter',cc.removeChapter),
@@ -3230,8 +3252,8 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             elif kind == '...':
                 submenu = Tk.Menu(menu,tearoff=0)
                 menu.add_cascade(menu=submenu,label=label)
-                def chapterMenuCallback(event=None,cc=cc,submenu=submenu):
-                    self.setupChaptersMenu(submenu,command)
+                def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu,theChapter=theChapter):
+                    self.setupChaptersMenu(submenu,command,theChapter)
                 submenu.configure(postcommand=chapterMenuCallback)
             else:
                 menu.add_command(label=label,command=command)
@@ -3245,31 +3267,33 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             # menu.add_cascade(
                 # menu=submenu,
                 # label='%s Node To Chapter...' % name)
-        
+    
             # def chapterMenuCallback(event=None,cc=cc,submenu=submenu):
                 # self.setupChaptersMenu(submenu,command)
     
             # submenu.configure(postcommand=chapterMenuCallback)
     
         # menu.add_separator()
-        
+    
     #@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
     #@+node:ekr.20070318120043:tt.setupChaptersMenu
-    def setupChaptersMenu (self,menu,command):
+    def setupChaptersMenu (self,menu,command,theChapter):
     
         '''Create a submenu containing the list of all chapters.'''
-        
+    
         tt = self ; nb = tt.nb
     
         menu.delete(0,'end')
         current = nb.getcurselection()
     
-        for name in nb.pagenames():
-            b = nb.tab(name) # Get the (possibly renamed) button text.
+        for tabName in nb.pagenames():
+            b = nb.tab(tabName) # Get the (possibly renamed) button text.
             name = b.cget('text')
-            if name != current:
-                menu.add_command(
-                    label=name,command=lambda name=name: command(name))
+            if tabName != current:
+                # g.trace('name',name,'command',command)
+                def chaptersMenuCallback(event=None,command=command,toChapter=tabName):
+                    return command(toChapter=toChapter)
+                menu.add_command(label=name,command=chaptersMenuCallback)
     #@nonl
     #@-node:ekr.20070318120043:tt.setupChaptersMenu
     #@-node:ekr.20070317074813:tt.makeTabMenu & helpers
@@ -3277,34 +3301,42 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     def lowerTab (self,tabName):
     
         tt = self ; tab = tt.nb.tab(tabName)
-        
+    
         tab.configure(
             background=tt.unselectedTabBackgroundColor,
             foreground=tt.unselectedTabForegroundColor)
-            
+    
         tt.cc.unselectCallback(tabName)
-            
+    
     def raiseTab (self,tabName):
-        
-        tt = self ; tab = tt.nb.tab(tabName)
+    
+        tt = self ; c = self.c ; tab = tt.nb.tab(tabName)
+        w = c.frame.body and c.frame.body.bodyCtrl
     
         tab.configure(
             background=tt.selectedTabBackgroundColor,
             foreground=tt.selectedTabForegroundColor)
-            
+    
         tt.cc.selectCallback(tabName)
+    
+        if w:
+            # This can not be called immediately
+            def idleCallback(event=None,c=c):
+                c.invalidateFocus()
+                c.bodyWantsFocusNow()
+    
+            w.after_idle(idleCallback)
     #@-node:ekr.20070317075059.1:tt.raise/lowerTab
     #@+node:ekr.20070318125900.1:tt.renameChapterHelper
     def renameChapterHelper (self,cc,tabName):
-        
+    
         '''Called from cc.renameChapter to prompt for a new name.'''
-        
+    
         tt = self ; c = tt.c ; nb = tt.nb
-        
+    
         frame = tt.getFrame(tabName)
         tab = tt.getButton(tabName)
-        
-        # g.trace(chapter)
+    
         f = Tk.Frame(tab)
         # Elegant code.  Setting e's textvariable to chapter.sv
         # immediately updates the chapter labels as e changes.
@@ -3326,11 +3358,11 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@-node:ekr.20070318125900.1:tt.renameChapterHelper
     #@+node:ekr.20070318133725:tt.renameTab
     def renameTab (self,newName):
-        
+    
         '''Change the button text of the presently selected tab.'''
-        
+    
         # Important: the actual tab name *never* changes.
-        
+    
         tt = self ; nb = tt.nb
         name = nb.getcurselection()
         b = nb.tab(name)
@@ -3338,10 +3370,11 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@-node:ekr.20070318133725:tt.renameTab
     #@+node:ekr.20070317074824.3:tt.selectTab
     def selectTab (self,tabName):
-        
+    
         if tabName not in self.tabNames:
             self.createTab(tabName)
         
+        # This will indirectly invoke chapter.select.
         self.nb.selectpage(tabName)
     #@-node:ekr.20070317074824.3:tt.selectTab
     #@-node:ekr.20070320093038:Tabs...

@@ -183,13 +183,13 @@ class leoTkinterTree (leoFrame.leoTree):
         leoFrame.leoTree.__init__(self,frame)
         
         trace = c.config.getBool('trace_chapters') and not g.app.unitTesting
-        if trace: g.trace('tkTree')
         
         # Configuration and debugging settings.
         self.expanded_click_area    = c.config.getBool('expanded_click_area')
         self.gc_before_redraw       = c.config.getBool('gc_before_redraw')
         self.idle_redraw            = c.config.getBool('idle_redraw')
         self.stayInTree             = c.config.getBool('stayInTreeAfterSelect')
+        self.use_chapters           = c.config.getBool('use_chapters')
     
         self.trace                  = c.config.getBool('trace_tree')
         self.trace_alloc            = c.config.getBool('trace_tree_alloc')
@@ -228,7 +228,6 @@ class leoTkinterTree (leoFrame.leoTree):
         
         # Set self.font and self.fontName.
         self.setFontFromConfig()
-        self.setColorFromConfig()
         
         # Drag and drop
         self.drag_p = None
@@ -302,6 +301,8 @@ class leoTkinterTree (leoFrame.leoTree):
         
         tree = self ; k = self.c.k
         
+        # g.trace('self',self,'canvas',self.canvas)
+        
         #@    << make bindings for a common binding widget >>
         #@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
         self.bindingWidget = w = g.app.gui.plainTextWidget(
@@ -324,9 +325,19 @@ class leoTkinterTree (leoFrame.leoTree):
         self.textBindings = w.bindtags()
         #@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
         #@nl
+        
+        self.setCanvasBindings(self.canvas)
     
-        self.canvas.bind('<Key>',k.masterKeyHandler)
-        self.canvas.bind('<Button-1>',self.onTreeClick)
+        
+    #@nonl
+    #@-node:ekr.20051024102724:tkTtree.setBindings
+    #@+node:ekr.20070327103016:tkTree.setCanvasBindings
+    def setCanvasBindings (self,canvas):
+        
+        k = self.c.k
+        
+        canvas.bind('<Key>',k.masterKeyHandler)
+        canvas.bind('<Button-1>',self.onTreeClick)
     
         #@    << make bindings for tagged items on the canvas >>
         #@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
@@ -342,7 +353,7 @@ class leoTkinterTree (leoFrame.leoTree):
             ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
         )
         for tag,event,callback in table:
-            self.canvas.tag_bind(tag,event,callback)
+            canvas.tag_bind(tag,event,callback)
         #@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
         #@nl
         #@    << create baloon bindings for tagged items on the canvas >>
@@ -360,7 +371,8 @@ class leoTkinterTree (leoFrame.leoTree):
                 balloon.tagbind(self.canvas,tag,balloonHelp=text)
         #@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
         #@nl
-    #@-node:ekr.20051024102724:tkTtree.setBindings
+    #@nonl
+    #@-node:ekr.20070327103016:tkTree.setCanvasBindings
     #@-node:ekr.20040803072955.15: Birth... (tkTree)
     #@+node:ekr.20040803072955.6:Allocation...
     #@+node:ekr.20040803072955.7:newBox
@@ -543,6 +555,12 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.12:recycleWidgets
     def recycleWidgets (self):
         
+        if self.use_chapters:
+            # Widgets are allocated in a specific canvas,
+            # so we must clear all the free lists when using multiple canvases.
+            self.destroyWidgets()
+            return
+        
         canvas = self.canvas
         
         for theId in self.visibleBoxes:
@@ -678,17 +696,17 @@ class leoTkinterTree (leoFrame.leoTree):
             g.es_exception()
     #@-node:ekr.20040803072955.29:setLineHeight
     #@+node:ekr.20040803072955.30:tkTree.setColorFromConfig
-    def setColorFromConfig (self):
+    # def setColorFromConfig (self):
         
-        c = self.c
+        # c = self.c
     
-        bg = c.config.getColor("outline_pane_background_color") or 'white'
+        # bg = c.config.getColor("outline_pane_background_color") or 'white'
     
-        try:
-            self.canvas.configure(bg=bg)
-        except:
-            g.es("exception setting outline pane background color")
-            g.es_exception()
+        # try:
+            # self.canvas.configure(bg=bg)
+        # except:
+            # g.es("exception setting outline pane background color")
+            # g.es_exception()
     #@-node:ekr.20040803072955.30:tkTree.setColorFromConfig
     #@-node:ekr.20040803072955.26:Config & Measuring...
     #@+node:ekr.20040803072955.31:Debugging...
@@ -806,7 +824,12 @@ class leoTkinterTree (leoFrame.leoTree):
             self.setVisibleAreaToFullCanvas()
             self.drawTopTree()
             # Set up the scroll region after the tree has been redrawn.
-            x0, y0, x1, y1 = self.canvas.bbox("all")
+            bbox = self.canvas.bbox('all')
+            # g.trace('canvas',self.canvas,'bbox',bbox)
+            if bbox is None:
+                x0,y0,x1,y1 = 0,0,100,100
+            else:
+                x0, y0, x1, y1 = bbox
             self.canvas.configure(scrollregion=(0, 0, x1, y1))
             if scroll:
                 self.canvas.update_idletasks() # Essential.
@@ -1125,9 +1148,16 @@ class leoTkinterTree (leoFrame.leoTree):
     
         if c.hoistStack:
             bunch = c.hoistStack[-1]
-            self.drawTree(bunch.p,self.root_left,self.root_top,0,0,hoistFlag=True)
+            # g.trace('hoist','canvas',self.canvas,'p',bunch.p.headString())
+            p = bunch.p ; h = p.headString()
+            if self.use_chapters and h.startswith('@chapter'):
+                if p.hasChildren():
+                    self.drawTree(p.firstChild(),self.root_left,self.root_top,0,0,hoistFlag=False)
+            else:
+                self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=True)
         else:
-            self.drawTree(c.rootPosition(),self.root_left,self.root_top,0,0)
+            ignoreChapters = self.use_chapters
+            self.drawTree(c.rootPosition(),self.root_left,self.root_top,0,0,ignoreChapters=ignoreChapters)
     
         if self.trace_stats: self.showStats()
         
@@ -1142,26 +1172,29 @@ class leoTkinterTree (leoFrame.leoTree):
         self.redrawing = False
     #@-node:ekr.20040803072955.52:drawTopTree
     #@+node:ekr.20040803072955.53:drawTree
-    def drawTree(self,p,x,y,h,level,hoistFlag=False):
+    def drawTree(self,p,x,y,h,level,hoistFlag=False,ignoreChapters=False):
     
         tree = self ; c = self.c
         yfirst = ylast = y
         h1 = None
-        
         data = g.doHook("draw-sub-outline",tree=tree,
             c=c,p=p,v=p,x=x,y=y,h=h,level=level,hoistFlag=hoistFlag)
         if data is not None: return data
         
         while p: # Do not use iterator.
+            # g.trace('p',p.headString())
             # N.B. This is the ONLY copy of p that needs to be made.
             # No other drawing routine calls any p.moveTo method.
             const_p = p.copy()
-            h,indent = self.drawNode(const_p,x,y)
-            if h1 is None: h1 = h
-            y += h ; ylast = y
-            if p.isExpanded() and p.hasFirstChild():
-                # Must make an additional copy here by calling firstChild.
-                y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
+            if ignoreChapters and p.headString().startswith('@chapter'):
+                pass # This can only happen at the top level.
+            else:
+                h,indent = self.drawNode(const_p,x,y)
+                if h1 is None: h1 = h
+                y += h ; ylast = y
+                if p.isExpanded() and p.hasFirstChild():
+                    # Must make an additional copy here by calling firstChild.
+                    y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
             if hoistFlag: break
             else:         p = p.next()
             # g.trace(p)
@@ -1849,6 +1882,7 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.87:onHeadlineClick
     def onHeadlineClick (self,event,p=None):
         
+        # g.trace('p',p)
         c = self.c ; w = event.widget
         
         if not p:

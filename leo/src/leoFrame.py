@@ -1808,6 +1808,7 @@ class leoTree:
         # "public" ivars: correspond to setters & getters.
         self._editPosition = None
         self.redrawCount = 0 # For traces
+        self.use_chapters = False # May be overridden in subclasses.
     #@+node:ekr.20061109164512:leoTree.mustBeDefinedOnlyInBaseClass
     mustBeDefinedOnlyInBaseClass = (
         # Getters & setters.
@@ -1830,7 +1831,6 @@ class leoTree:
     mustBeDefinedInSubclasses = (
         # Colors & fonts.
         'getFont',
-        'setColorFromConfig ',
         'setFont',
         'setFontFromConfig ',
         # Drawing & scrolling.
@@ -1848,7 +1848,7 @@ class leoTree:
     #@+node:ekr.20031218072017.3706: Must be defined in subclasses
     # Colors & fonts.
     def getFont(self):                              self.oops()
-    def setColorFromConfig (self):                  self.oops()
+    # def setColorFromConfig (self):                self.oops()
     def setFont(self,font=None,fontName=None):      self.oops()
     def setFontFromConfig (self):                   self.oops()
     
@@ -2332,6 +2332,13 @@ class leoTree:
         self.setSelectedLabelState(p)
         
         frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+        
+        if self.use_chapters:
+            cc = c.chapterController
+            theChapter = cc.getSelectedChapter()
+            if theChapter:
+                theChapter.p = p.copy()
+                # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
         
         if self.stayInTree:
             c.treeWantsFocus()
@@ -2838,8 +2845,8 @@ class nullTree (leoTree):
     def getFont(self):
         return self.font
     
-    def setColorFromConfig (self):
-        pass
+    # def setColorFromConfig (self):
+        # pass
     
     def setBindings (self):
         pass

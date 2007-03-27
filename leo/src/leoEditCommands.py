@@ -1283,6 +1283,7 @@ class editCommandsClass (baseEditCommandsClass):
             'capitalize-word':                      self.capitalizeWord,
             'center-line':                          self.centerLine,
             'center-region':                        self.centerRegion,
+            'clean-all-lines':                      self.cleanAllLines,
             'clean-lines':                          self.cleanLines,
             'clear-extend-mode':                    self.clearExtendMode,
             'clear-selected-text':                  self.clearSelectedText,
@@ -2392,14 +2393,33 @@ class editCommandsClass (baseEditCommandsClass):
                 ins = ins-1
                 w.setSelectionRange(ins,ins,insert=ins)
     #@-node:ekr.20051026092433.1:backwardDeleteCharacter
-    #@+node:ekr.20060415112257:clean-lines
+    #@+node:ekr.20070325094935:cleanAllLines
+    def cleanAllLines (self,event):
+    
+        '''Clean all lines in the selected tree.'''
+    
+        c = self.c ; current = c.currentPosition()
+        w = c.frame.body.bodyCtrl
+        if not w: return
+    
+        c.beginUpdate()
+        try:
+            for p in current.self_and_subtree_iter():
+                c.selectPosition(p)
+                w.setSelectionRange(0,0,insert=0)
+                c.editCommands.cleanLines(event)
+            c.selectPosition(current)
+        finally:
+            c.endUpdate(False)
+    #@-node:ekr.20070325094935:cleanAllLines
+    #@+node:ekr.20060415112257:cleanLines
     def cleanLines (self,event):
-        
+    
         '''Removes leading whitespace from otherwise blanks lines.'''
     
         k = self.k ; w = self.editWidget(event)
         if not w: return
-        
+    
         if w.hasSelection():
             s = w.getSelectedText()
         else:
@@ -2412,7 +2432,7 @@ class editCommandsClass (baseEditCommandsClass):
             else:
                 if line.endswith('\n'):
                     lines.append('\n')
-                changed = '\n' != line
+                changed = changed or '\n' != line
     
         if changed:
             self.beginCommand(undoType='clean-lines')
@@ -2426,7 +2446,7 @@ class editCommandsClass (baseEditCommandsClass):
                 w.delete(0,'end')
                 w.insert(0,result)
             self.endCommand(changed=changed,setLabel=True)
-    #@-node:ekr.20060415112257:clean-lines
+    #@-node:ekr.20060415112257:cleanLines
     #@+node:ekr.20060414085834:clearSelectedText
     def clearSelectedText (self,event):
         

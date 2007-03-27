@@ -826,6 +826,10 @@ def openWithFileName(fileName,old_c,
             g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
         finally:
             c.endUpdate()
+            # makeTrees must be called after the first real redraw
+            # because it requires a valid value for c.rootPosition().
+            if frame.c.chapterController:
+                frame.c.chapterController.makeTrees()
             k = c.k
             k and k.setInputState(k.unboundKeyAction)
             if c.config.getBool('outline_pane_has_initial_focus'):
