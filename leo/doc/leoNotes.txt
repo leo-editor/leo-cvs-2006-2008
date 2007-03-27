@@ -3356,6 +3356,26 @@ def updateHeadingSV (self,sv):
     # chapter.sv.set(trash)
     # chapter.rp.setHeadString(trash+' barrel')
 #@-node:ekr.20070317085437.28:addTrashBarrel
+#@+node:ekr.20070317075059.5:cc.raisePage
+def raisePage (self,name):
+    
+    tt = self ; c = tt.c ; tab = tt.nb.tab(name)
+
+    tab.configure(
+        background=tt.selectedTabBackgroundColor,
+        foreground=tt.selectedTabForegroundColor)
+    
+    # This must be called before queuing up the callback.
+    self.setTree(name)
+    
+    # This can not be called immediately
+    def idleCallback(event=None,c=c):
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+        
+    w = c.frame.body and c.frame.body.bodyCtrl
+    w and w.after_idle(idleCallback)
+#@-node:ekr.20070317075059.5:cc.raisePage
 #@-node:ekr.20070317131205:From chapter
 #@-node:ekr.20070317085508:Not used from chapters.py
 #@-node:ekr.20031218072017.434:Unused code

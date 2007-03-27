@@ -3,12 +3,15 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="564" width="973"/>
+	<global_window_position top="10" left="238" height="768" width="954"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
+<v t="ekr.20070326094544"><vh>@chapters</vh>
+<v t="ekr.20070326094544.1"><vh>@chapter trash</vh></v>
+</v>
 <v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
 <v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
@@ -55,6 +58,7 @@
 <v t="ekr.20060122105527.7"><vh>@bool stayInTreeAfterSelect = True</vh></v>
 <v t="ekr.20060215104345"><vh>@bool swap_mac_keys = False</vh></v>
 <v t="ekr.20070318065601"><vh>@bool use_chapters = True</vh></v>
+<v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 <v t="ekr.20070224073109.1"><vh>@enabled-plugins</vh></v>
@@ -6353,5 +6357,7 @@ UNL.py
 #zodb.py</t>
 <t tx="ekr.20070318065601">True: Chapter tabs are enabled in the outline pane, and chapter commands are functional.
 False: Chapter tabs are disabled, as are chapter commands.</t>
+<t tx="ekr.20070326094544"></t>
+<t tx="ekr.20070326094544.1">trash</t>
 </tnodes>
 </leo_file>

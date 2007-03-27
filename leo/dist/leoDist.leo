@@ -3,12 +3,15 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.444165621079">
-	<global_window_position top="40" left="159" height="777" width="1061"/>
+	<global_window_position top="40" left="159" height="757" width="1061"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
+<v t="ekr.20070325123540"><vh>@chapters</vh>
+<v t="ekr.20070325123540.1"><vh>@chapter trash</vh></v>
+</v>
 <v t="ekr.20050315084904"><vh>Startup</vh>
 <v t="ekr.20050315084904.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20050315084904.2"><vh>@recentfiles </vh></v>
@@ -115,7 +118,7 @@
 <v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
-<v t="EKR.20040519080201.1" a="V"><vh>Distribution checklist</vh></v>
+<v t="EKR.20040519080201.1" a="TV"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent C:\Documents and Settings\HP_Administrator\My Documents\Edward\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
@@ -5206,5 +5209,7 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070325123540"></t>
+<t tx="ekr.20070325123540.1">trash</t>
 </tnodes>
 </leo_file>

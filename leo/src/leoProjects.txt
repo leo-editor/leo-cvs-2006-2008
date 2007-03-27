@@ -743,21 +743,21 @@ def createOuterFrames (self):
     g.app.gui.attachLeoIcon(top)
     top.title(f.title)
     top.minsize(30,10) # In grid units.
-    
+
     if g.os_path_exists(g.app.user_xresources_path):
         f.top.option_readfile(g.app.user_xresources_path)
-    
+
     f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
     f.top.bind("<Button-1>", f.OnActivateLeoEvent)
-    
+
     f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
     f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
-    
+
     # These don't work on Windows. Because of bugs in window managers,
     # there is NO WAY to know which window is on top!
     # f.top.bind("<Activate>",f.OnActivateLeoEvent)
     # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
-    
+
     # Create the outer frame, the 'hull' component.
     f.outerFrame = Tk.Frame(top)
     f.outerFrame.pack(expand=1,fill="both")
@@ -4550,6 +4550,13 @@ c.visitedList.insert(0,p.copy())
 self.setSelectedLabelState(p)
 
 frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.use_chapters:
+    cc = c.chapterController
+    theChapter = cc.getSelectedChapter()
+    if theChapter:
+        theChapter.p = p.copy()
+        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
 
 if self.stayInTree:
     c.treeWantsFocus()
@@ -10134,7 +10141,7 @@ def finishCreate (self):  # New in 4.4.
     # Create the menu last so that we can use the key handler for shortcuts.
     if not g.doHook("menu1",c=c,p=p,v=p):
         c.frame.menu.createMenuBar(c.frame)
-        
+
     c.bodyWantsFocusNow()
 #@nonl
 #@+node:ekr.20051007143620:printCommandsDict
@@ -10151,14 +10158,14 @@ def printCommandsDict (self):
     print
 #@-node:ekr.20051007143620:printCommandsDict
 #@-node:ekr.20050920093543:c.finishCreate & helper
-#@+node:ekr.20031218072017.2176:f.finishCreate & helpers
+#@+node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
 def finishCreate (self,c):
-    
+
     f = self ; f.c = c
     # g.trace('tkFrame')
-    
-    self.use_chapters = c.config.getBool('use_chapters')
-    
+
+    self.use_chapters = True and c.config.getBool('use_chapters')
+
     # This must be done after creating the commander.
     f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
     f.createOuterFrames()
@@ -10184,21 +10191,21 @@ def createOuterFrames (self):
     g.app.gui.attachLeoIcon(top)
     top.title(f.title)
     top.minsize(30,10) # In grid units.
-    
+
     if g.os_path_exists(g.app.user_xresources_path):
         f.top.option_readfile(g.app.user_xresources_path)
-    
+
     f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
     f.top.bind("<Button-1>", f.OnActivateLeoEvent)
-    
+
     f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
     f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
-    
+
     # These don't work on Windows. Because of bugs in window managers,
     # there is NO WAY to know which window is on top!
     # f.top.bind("<Activate>",f.OnActivateLeoEvent)
     # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
-    
+
     # Create the outer frame, the 'hull' component.
     f.outerFrame = Tk.Frame(top)
     f.outerFrame.pack(expand=1,fill="both")
@@ -10210,28 +10217,28 @@ def createSplitterComponents (self):
     f = self ; c = f.c
 
     f.createLeoSplitters(f.outerFrame)
-    
+
     # Create the canvas, tree, log and body.
     if self.use_chapters:
         # Create the controllers.
         cc = leoChapters.chapterController(c)
         tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+        c.chapterController = cc
         cc.finishCreate(tt)
-        tt.selectTab('main')
+        tt.selectTab('main') # Creates f.tree
         f.canvas = tt.getCanvas('main')
-        f.tree = tt.getTree('main')
     else:
         f.canvas = f.createCanvas(f.split2Pane1)
         f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+    f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
     f.log    = leoTkinterLog(f,f.split2Pane2)
     f.body   = leoTkinterBody(f,f.split1Pane2)
-    
+
     # Yes, this an "official" ivar: this is a kludge.
     f.bodyCtrl = f.body.bodyCtrl
-    
+
     # Configure.
     f.setTabWidth(c.tab_width)
-    f.tree.setColorFromConfig()
     f.reconfigurePanes()
     f.body.setFontFromConfig()
     f.body.setColorFromConfig()
@@ -10239,7 +10246,7 @@ def createSplitterComponents (self):
 #@-node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
 #@+node:ekr.20051009045404:createFirstTreeNode
 def createFirstTreeNode (self):
-    
+
     f = self ; c = f.c
 
     t = leoNodes.tnode()
@@ -10252,23 +10259,23 @@ def createFirstTreeNode (self):
 #@-node:ekr.20051009045404:createFirstTreeNode
 #@+node:ekr.20051121092320:f.enableTclTraces
 def enableTclTraces (self):
-    
+
     c = self.c
-    
+
     # pychecker complains that trace/untracewidget are not used.
 
     def tracewidget(event):
         g.trace('enabling widget trace')
         Pmw.tracetk(event.widget, 1)
-    
+
     def untracewidget(event):
         g.trace('disabling widget trace')
         Pmw.tracetk(event.widget,0)
-        
+
     def focusIn (event):
         print("Focus in  %s (%s)" % (
             event.widget,event.widget.winfo_class()))
-        
+
     def focusOut (event):
         print("Focus out %s (%s)" % (
             event.widget,event.widget.winfo_class()))
@@ -10286,7 +10293,7 @@ def enableTclTraces (self):
         w.bind_all("<Control-1>", tracewidget)
         w.bind_all("<Control-Shift-1>", untracewidget)
 #@-node:ekr.20051121092320:f.enableTclTraces
-#@-node:ekr.20031218072017.2176:f.finishCreate & helpers
+#@-node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
 #@+node:ekr.20070114070939:tkLog.finishCreate
 def finishCreate (self):
     
@@ -10880,13 +10887,14 @@ def setBindings (self):
     
     tree = self ; k = self.c.k
     
+    # g.trace('self',self,'canvas',self.canvas)
+    
     << make bindings for a common binding widget >>
+    
+    self.setCanvasBindings(self.canvas)
 
-    self.canvas.bind('<Key>',k.masterKeyHandler)
-    self.canvas.bind('<Button-1>',self.onTreeClick)
-
-    << make bindings for tagged items on the canvas >>
-    << create baloon bindings for tagged items on the canvas >>
+    
+#@nonl
 #@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
 self.bindingWidget = w = g.app.gui.plainTextWidget(
     self.canvas,name='bindingWidget')
@@ -10907,34 +10915,6 @@ for a,handler,func in table:
     
 self.textBindings = w.bindtags()
 #@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
-#@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
-where = g.choose(self.expanded_click_area,'clickBox','plusBox')
-
-table = (
-    (where,    '<Button-1>',self.onClickBoxClick),
-    ('iconBox','<Button-1>',self.onIconBoxClick),
-    ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
-    ('iconBox','<Button-3>',self.onIconBoxRightClick),
-    ('iconBox','<Double-3>',self.onIconBoxRightClick),
-    ('iconBox','<B1-Motion>',self.onDrag),
-    ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
-)
-for tag,event,callback in table:
-    self.canvas.tag_bind(tag,event,callback)
-#@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
-#@+node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
-if 0: # I find these very irritating.
-    for tag,text in (
-        # ('plusBox','plusBox'),
-        ('iconBox','Icon Box'),
-        ('selectBox','Click to select'),
-        ('clickBox','Click to expand or contract'),
-        # ('textBox','Headline'),
-    ):
-        # A fairly long wait is best.
-        balloon = Pmw.Balloon(self.canvas,initwait=700)
-        balloon.tagbind(self.canvas,tag,balloonHelp=text)
-#@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
 #@-node:ekr.20051024102724:tkTtree.setBindings
 #@-node:ekr.20070123201540:Found: .bind
 #@+node:ekr.20061031131434.181:Shortcuts (keyHandler)
@@ -25168,8 +25148,13 @@ def numberOfVisibleTabs (self):
 #@+node:ekr.20051019170806:renameTab
 def renameTab (self,oldName,newName):
     
+    # g.trace('newName',newName)
+    
     label = self.nb.tab(oldName)
     label.configure(text=newName)
+    
+    # Tell the chapterController about the new name.
+    cc.updateChapterName(oldName,newName)
 #@-node:ekr.20051019170806:renameTab
 #@+node:ekr.20051016101724.1:selectTab
 def selectTab (self,tabName,createText=True,wrap='none'):
@@ -26390,8 +26375,8 @@ def printWidgets(self):
 def getFont(self):
     return self.font
 
-def setColorFromConfig (self):
-    pass
+# def setColorFromConfig (self):
+    # pass
 
 def setBindings (self):
     pass
@@ -27863,6 +27848,10 @@ def openWithFileName(fileName,old_c,
             g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
         finally:
             c.endUpdate()
+            # makeTrees must be called after the first real redraw
+            # because it requires a valid value for c.rootPosition().
+            if frame.c.chapterController:
+                frame.c.chapterController.makeTrees()
             k = c.k
             k and k.setInputState(k.unboundKeyAction)
             if c.config.getBool('outline_pane_has_initial_focus'):
@@ -27974,6 +27963,62 @@ def getEnabledFiles (s,plugins_path):
 #@-node:ekr.20070217114542:Features
 #@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 projects
 #@+node:ekr.20070318125900:Leo 4.4.3 b1 projects
+#@+node:ekr.20070325095127:Created clean-all-lines command
+#@+node:ekr.20070325094935:cleanAllLines
+def cleanAllLines (self,event):
+
+    '''Clean all lines in the selected tree.'''
+
+    c = self.c ; current = c.currentPosition()
+    w = c.frame.body.bodyCtrl
+    if not w: return
+
+    c.beginUpdate()
+    try:
+        for p in current.self_and_subtree_iter():
+            c.selectPosition(p)
+            w.setSelectionRange(0,0,insert=0)
+            c.editCommands.cleanLines(event)
+        c.selectPosition(current)
+    finally:
+        c.endUpdate(False)
+#@-node:ekr.20070325094935:cleanAllLines
+#@+node:ekr.20060415112257:cleanLines
+def cleanLines (self,event):
+
+    '''Removes leading whitespace from otherwise blanks lines.'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w: return
+
+    if w.hasSelection():
+        s = w.getSelectedText()
+    else:
+        s = w.getAllText()
+
+    lines = [] ; changed = False
+    for line in g.splitlines(s):
+        if line.strip():
+            lines.append(line)
+        else:
+            if line.endswith('\n'):
+                lines.append('\n')
+            changed = changed or '\n' != line
+
+    if changed:
+        self.beginCommand(undoType='clean-lines')
+        result = ''.join(lines)
+        if w.hasSelection():
+            i,j = w.getSelectionRange()
+            w.delete(i,j)
+            w.insert(i,result)
+            w.setSelectionRange(i,j+len(result))
+        else:
+            w.delete(0,'end')
+            w.insert(0,result)
+        self.endCommand(changed=changed,setLabel=True)
+#@-node:ekr.20060415112257:cleanLines
+#@-node:ekr.20070325095127:Created clean-all-lines command
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
 #@+node:ekr.20070126072723:Ran pychecker
 #@+node:ekr.20070316175013:Real bugs found
@@ -29098,6 +29143,13 @@ c.visitedList.insert(0,p.copy())
 self.setSelectedLabelState(p)
 
 frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.use_chapters:
+    cc = c.chapterController
+    theChapter = cc.getSelectedChapter()
+    if theChapter:
+        theChapter.p = p.copy()
+        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
 
 if self.stayInTree:
     c.treeWantsFocus()
