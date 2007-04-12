@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="688" width="954"/>
+	<global_window_position top="10" left="238" height="668" width="954"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -80,7 +80,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -262,6 +262,7 @@
 </v>
 </v>
 <v t="ekr.20061003173413"><vh>File options</vh>
+<v t="ekr.20070412085250"><vh>@bool compress_all_leo_files = False</vh></v>
 <v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 <v t="ekr.20041119034357.11"><vh>directory options</vh>
@@ -459,7 +460,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070411101857" a="E"><vh>Open With</vh>
+<v t="ekr.20070411101857"><vh>Open With</vh>
 <v t="ekr.20070411101857.1"><vh>@openwith Idle = Alt+Shift+Ctrl+I</vh></v>
 <v t="ekr.20070411101857.2"><vh>@openwith Word = Alt+Shift+Ctrl+W </vh></v>
 <v t="ekr.20070411101857.3"><vh>@openwith Wordpad = Alt+Shift+Ctrl+T</vh></v>
@@ -623,7 +624,7 @@
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
-<v t="ekr.20060512084639"><vh>Recent</vh>
+<v t="ekr.20060512084639" a="ETV"><vh>Recent</vh>
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20060207142012"><vh>@bool trace_focus = False</vh></v>
@@ -6412,5 +6413,6 @@ in myLeoSettings.leo override entries in leoSettings.leo.
 
 - If no @openwith nodes are found anywhere the openWith plugin uses hard-coded
 tables in the plugin itself.</t>
+<t tx="ekr.20070412085250"># If True, Leo will use Python's zipfile module to compress .leo files.  Such files will have a .zip extension.</t>
 </tnodes>
 </leo_file>
