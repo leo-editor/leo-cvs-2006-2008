@@ -20,7 +20,6 @@ import cStringIO
 import os
 import pickle
 import string
-import StringIO
 import sys
 import zipfile
 
@@ -3084,7 +3083,6 @@ class baseFileCommands:
                 #@nonl
                 #@-node:ekr.20060919070145:<< ensure that filename ends with .opml >>
                 #@nl
-            # self.outputFile = StringIO.StringIO()
             self.outputFile = cStringIO.StringIO()
             #@        << create theActualFile >>
             #@+node:ekr.20060929103258:<< create theActualFile >>
