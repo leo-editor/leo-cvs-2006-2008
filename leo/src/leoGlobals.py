@@ -1902,8 +1902,8 @@ def openLeoOrZipFile (fileName):
     try:
         isZipped = zipfile.is_zipfile(fileName)
         if isZipped:
-            thefile = zipfile.ZipFile(fileName,'r')
-            g.trace('opened zip file',theFile)
+            theFile = zipfile.ZipFile(fileName,'r')
+            # g.trace('opened zip file',theFile)
         else:
             theFile = file(fileName,'rb')
         return theFile,isZipped

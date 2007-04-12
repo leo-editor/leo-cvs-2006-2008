@@ -20,7 +20,9 @@ import cStringIO
 import os
 import pickle
 import string
+import StringIO
 import sys
+import zipfile
 
 try:
     # IronPython has problems with this.
@@ -828,8 +830,25 @@ class baseFileCommands:
     def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
     
         c = self.c ; frame = c.frame
-        if not self.use_sax: # Read the entire file into the buffer
-            self.fileBuffer = theFile.read() ; theFile.close()
+        if not self.use_sax:
+            #@        << read the entire file into the buffer >>
+            #@+node:ekr.20070412103240:<< read the entire file into the buffer >>
+            isZipped = zipfile.is_zipfile(fileName)
+            
+            if isZipped:
+                contentsName = g.shortFileName(fileName)
+                if contentsName.endswith('.zip.leo'):
+                    contentsName = contentsName[:-8]+'.leo'
+                elif contentsName.endswith('.zip'):
+                    contentsNmae = contentsName[:-4]
+                # g.trace('contentsName',contentsName)
+                contentsName = g.toEncodedString(contentsName,self.leo_file_encoding,reportErrors=True)
+                self.fileBuffer = theFile.read(contentsName)
+            else:
+                self.fileBuffer = theFile.read()
+            #@-node:ekr.20070412103240:<< read the entire file into the buffer >>
+            #@nl
+            theFile.close()
             self.fileIndex = 0
         #@    << Set the default directory >>
         #@+node:ekr.20031218072017.2298:<< Set the default directory >>
@@ -2324,24 +2343,14 @@ class baseFileCommands:
     #@-node:ekr.20050404190914.2:deleteFileWithMessage
     #@+node:ekr.20031218072017.1470:put
     def put (self,s):
-        '''
-        Put string s to self.outputFile.
-        All output eventually comes here.
-        '''
+    
+        '''Put string s to self.outputFile. All output eventually comes here.'''
     
         # Improved code: self.outputFile (a cStringIO object) always exists.
         if s:
             self.putCount += 1
             s = g.toEncodedString(s,self.leo_file_encoding,reportErrors=True)
             self.outputFile.write(s)
-            # New in Leo 4.4.2: writing non-ascii characters to a cStringIO object will throw a UnicodeError,
-            # but this try/except block might save a little time when encoding is not needed.
-            # try:
-                # # s = g.toEncodedString(s,self.leo_file_encoding,reportErrors=True)
-                # self.outputFile.write(s)
-            # except UnicodeError:
-                # s = g.toEncodedString(s,self.leo_file_encoding,reportErrors=True)
-                # self.outputFile.write(s)
     
     def put_dquote (self):
         self.put('"')
@@ -2956,7 +2965,7 @@ class baseFileCommands:
                 ok = self.write_Leo_file(fileName,False) # outlineOnlyFlag
                 if ok:
                     c.setChanged(False) # Clears all dirty bits.
-                    g.es("saved: " + g.shortFileName(fileName))
+                    ### g.es("saved: " + g.shortFileName(fileName))
                     if c.config.save_clears_undo_buffer:
                         g.es("clearing undo")
                         c.undoer.clearUndoState()
@@ -2977,7 +2986,7 @@ class baseFileCommands:
                 self.setDefaultDirectoryForNewFiles(fileName)
                 if self.write_Leo_file(fileName,False): # outlineOnlyFlag
                     c.setChanged(False) # Clears all dirty bits.
-                    g.es("saved: " + g.shortFileName(fileName))
+                    ### g.es("saved: " + g.shortFileName(fileName))
             finally:
                 c.endUpdate()
         g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
@@ -2992,8 +3001,7 @@ class baseFileCommands:
             try:
                 c.endEditing()# Set the current headline text.
                 self.setDefaultDirectoryForNewFiles(fileName)
-                if self.write_Leo_file(fileName,False): # outlineOnlyFlag
-                    g.es("saved: " + g.shortFileName(fileName))
+                self.write_Leo_file(fileName,False) # outlineOnlyFlag
             finally:
                 c.endUpdate()
         g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
@@ -3019,6 +3027,7 @@ class baseFileCommands:
         self.toString = toString
         self.assignFileIndices()
         theActualFile = None
+        toZip = False
         if not outlineOnlyFlag or toOPML:
             # Update .leoRecentFiles.txt if possible.
             g.app.config.writeRecentFilesFile(c)
@@ -3075,12 +3084,22 @@ class baseFileCommands:
                 #@nonl
                 #@-node:ekr.20060919070145:<< ensure that filename ends with .opml >>
                 #@nl
+            # self.outputFile = StringIO.StringIO()
             self.outputFile = cStringIO.StringIO()
             #@        << create theActualFile >>
             #@+node:ekr.20060929103258:<< create theActualFile >>
             if toString:
                 theActualFile = None
+            elif c.config.getBool('compress_all_leo_files'): # or c.isZipped
+                g.trace('writing zipped file')
+                self.toString = toString = True
+                theActualFile = None
+                toZip = True
             else:
+                if fileName.endswith('.zip'):
+                    fileName = fileName[:-4]
+                elif fileName.endswith('.zip.leo'):
+                    fileName = fileName[:-8]+'.leo'
                 theActualFile = open(fileName, 'wb')
             #@nonl
             #@-node:ekr.20060929103258:<< create theActualFile >>
@@ -3093,7 +3112,9 @@ class baseFileCommands:
             # t2 = time.clock()
             s = self.outputFile.getvalue()
             # g.trace(self.leo_file_encoding)
-            if toString:
+            if toZip:
+                self.writeZipFile(s)
+            elif toString:
                 # For support of chapters plugin.
                 g.app.write_Leo_file_string = s
             else:
@@ -3108,6 +3129,8 @@ class baseFileCommands:
                 #@nl
                 # t3 = time.clock()
                 # g.es_print('len %d, putCount %d' % (len(s),self.putCount)) # 'put',t2-t1,'write&close',t3-t2)
+            if not toZip:
+                g.es("saved: " + g.shortFileName(fileName))
             self.outputFile = None
             self.toString = False
             return True
@@ -3120,6 +3143,7 @@ class baseFileCommands:
                 #@            << delete fileName >>
                 #@+node:ekr.20050405103712:<< delete fileName >>
                 if fileName and g.os_path_exists(fileName):
+                
                     self.deleteFileWithMessage(fileName,'')
                 #@-node:ekr.20050405103712:<< delete fileName >>
                 #@nl
@@ -3135,6 +3159,33 @@ class baseFileCommands:
     
     write_LEO_file = write_Leo_file # For compatibility with old plugins.
     #@nonl
+    #@+node:ekr.20070412095520:writeZipFile
+    def writeZipFile (self,s):
+        
+        # contentsName is the name of the file in the archive.
+        contentsName = g.shortFileName(self.mFileName)
+        if contentsName.endswith('.zip.leo'):
+            contentsName = contentsName[:-8]+'.leo'
+        elif contentsName.endswith('.leo.zip'):
+            contentsName = contentsName[:-4]
+        
+        # The zipFileName is the name of the archive.
+        if 1: # Create .zip.leo files.
+            zipFileName = contentsName[:-4] + '.zip.leo'
+        else: # Create .leo.zip files
+            zipFileName = contentsName + '.zip'
+    
+        # g.trace('zipFileName',zipFileName,'contents',contentsName)
+    
+        # Write the archive.
+        contentsName = g.toEncodedString(contentsName,self.leo_file_encoding,reportErrors=True)
+        encodedZipFileName  = g.toEncodedString(zipFileName,self.leo_file_encoding,reportErrors=True)
+        theFile = zipfile.ZipFile(encodedZipFileName,'w')
+        theFile.writestr(contentsName,s)
+        theFile.close()
+        
+        g.es("saved: " + zipFileName)
+    #@-node:ekr.20070412095520:writeZipFile
     #@-node:ekr.20031218072017.3046:write_Leo_file
     #@+node:ekr.20031218072017.2012:writeAtFileNodes
     def writeAtFileNodes (self,event=None):
