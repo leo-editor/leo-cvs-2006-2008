@@ -1435,12 +1435,8 @@ class configClass:
     #@+node:ekr.20041117085625:g.app.config.openSettingsFile
     def openSettingsFile (self,path):
         
-        try:
-            # Open the file in binary mode to allow 0x1a in bodies & headlines.
-            theFile = open(path,'rb')
-        except IOError:
-            g.es("can not open: " + path, color="blue")
-            return None
+        theFile,isZipped = g.openLeoOrZipFile(path)
+        if not theFile: return None
             
         # Similar to g.openWithFileName except it uses a null gui.
         # Changing g.app.gui here is a major hack.

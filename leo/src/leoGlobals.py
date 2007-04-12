@@ -35,6 +35,7 @@ import operator
 import re
 import sys
 import time
+import zipfile
 
 # These do not exist in IronPython.
 # However, it *is* valid for IronPython to use the Python 2.4 libs!
@@ -772,81 +773,6 @@ def scanDirectives(c,p=None):
         "wrap"      : wrap }
 #@-node:ekr.20031218072017.1391:g.scanDirectives
 #@-node:ekr.20031218072017.1380:Directive utils...
-#@+node:ekr.20031218072017.2052:g.openWithFileName
-def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
-    
-    """Create a Leo Frame for the indicated fileName if the file exists."""
-
-    if not fileName or len(fileName) == 0:
-        return False, None
-        
-    def munge(name):
-        name = name or ''
-        return g.os_path_normpath(name).lower()
-
-    # Create a full, normalized, Unicode path name, preserving case.
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
-
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    try:
-        if old_c:
-            # New in 4.4: We must read the file *twice*.
-            # The first time sets settings for the later call to c.finishCreate.
-            # g.trace('***** prereading',fileName)
-            c2 = g.app.config.openSettingsFile(fileName)
-            if c2: g.app.config.updateSettings(c2,localFlag=True)
-            g.doHook('open0')
-            
-        # Open the file in binary mode to allow 0x1a in bodies & headlines.
-        theFile = open(fileName,'rb')
-        c,frame = app.newLeoCommanderAndFrame(fileName)
-        frame.log.enable(enableLog)
-        g.app.writeWaitingLog() # New in 4.3: write queued log first.
-        c.beginUpdate()
-        try:
-            if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-                c.setLog()
-                app.lockLog()
-                frame.c.fileCommands.open(
-                    theFile,fileName,
-                    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-                app.unlockLog()
-                for frame in g.app.windowList:
-                    # The recent files list has been updated by menu.updateRecentFiles.
-                    frame.c.config.setRecentFiles(g.app.config.recentFiles)
-            # Bug fix in 4.4.
-            frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-            g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-        finally:
-            c.endUpdate()
-            # makeTrees must be called after the first real redraw
-            # because it requires a valid value for c.rootPosition().
-            if frame.c.chapterController:
-                frame.c.chapterController.makeTrees()
-            k = c.k
-            k and k.setInputState(k.unboundKeyAction)
-            if c.config.getBool('outline_pane_has_initial_focus'):
-                c.treeWantsFocusNow()
-            else:
-                c.bodyWantsFocusNow()
-        return True, frame
-    except IOError:
-        # Do not use string + here: it will fail for non-ascii strings!
-        g.es("can not open: %s" % (fileName), color="blue")
-        return False, None
-    except Exception:
-        g.es("exceptions opening: %s" % (fileName),color="red")
-        g.es_exception()
-        return False, None
-#@nonl
-#@-node:ekr.20031218072017.2052:g.openWithFileName
 #@+node:ekr.20031218072017.3100:wrap_lines
 #@+at 
 #@nonl
@@ -1744,7 +1670,7 @@ def printDiffTime(message, start):
 #@-node:ekr.20031218072017.3137:Timing
 #@-node:ekr.20031218072017.3104:Debugging, Dumping, Timing, Tracing & Sherlock
 #@+node:ekr.20031218072017.3116:Files & Directories...
-#@+node:ekr.20031218072017.3117:create_temp_file & test
+#@+node:ekr.20031218072017.3117:g.create_temp_file & test
 def create_temp_file (textMode=False):
     '''Return a tuple (theFile,theFileName)
 
@@ -1785,8 +1711,8 @@ def test_g_create_temp_file():
     assert type(theFile) == types.FileType, 'not file type'
     assert type(theFileName) in (types.StringType, types.UnicodeType), 'not string type'
 #@-node:ekr.20050216052031:test_g_create_temp_file
-#@-node:ekr.20031218072017.3117:create_temp_file & test
-#@+node:ekr.20031218072017.3118:ensure_extension
+#@-node:ekr.20031218072017.3117:g.create_temp_file & test
+#@+node:ekr.20031218072017.3118:g.ensure_extension
 def ensure_extension (name, ext):
 
     theFile, old_ext = g.os_path_splitext(name)
@@ -1796,7 +1722,31 @@ def ensure_extension (name, ext):
         return name
     else:
         return name + ext
-#@-node:ekr.20031218072017.3118:ensure_extension
+#@-node:ekr.20031218072017.3118:g.ensure_extension
+#@+node:ekr.20031218072017.1264:g.getBaseDirectory
+# Handles the conventions applying to the "relative_path_base_directory" configuration option.
+
+def getBaseDirectory(c):
+
+    base = app.config.relative_path_base_directory
+
+    if base and base == "!":
+        base = app.loadDir
+    elif base and base == ".":
+        base = c.openDirectory
+
+    # g.trace(base)
+    if base and len(base) > 0 and g.os_path_isabs(base):
+        # Set c.chdir_to_relative_path as needed.
+        if not hasattr(c,'chdir_to_relative_path'):
+            c.chdir_to_relative_path = c.config.getBool('chdir_to_relative_path')
+        # Call os.chdir if requested.
+        if c.chdir_to_relative_path:
+            os.chdir(base)
+        return base # base need not exist yet.
+    else:
+        return "" # No relative base given.
+#@-node:ekr.20031218072017.1264:g.getBaseDirectory
 #@+node:EKR.20040504154039:g.is_sentinel
 def is_sentinel (line,delims):
     
@@ -1843,6 +1793,184 @@ def is_sentinel (line,delims):
         g.es("Can't happen: is_sentinel",color="red")
         return False
 #@-node:EKR.20040504154039:g.is_sentinel
+#@+node:ekr.20031218072017.3119:g.makeAllNonExistentDirectories
+# This is a generalization of os.makedir.
+
+def makeAllNonExistentDirectories (theDir):
+
+    """Attempt to make all non-existent directories"""
+
+    if not app.config.create_nonexistent_directories:
+        return None
+
+    dir1 = theDir = g.os_path_normpath(theDir)
+
+    # Split theDir into all its component parts.
+    paths = []
+    while len(theDir) > 0:
+        head,tail=g.os_path_split(theDir)
+        if len(tail) == 0:
+            paths.append(head)
+            break
+        else:
+            paths.append(tail)
+            theDir = head
+    path = ""
+    paths.reverse()
+    for s in paths:
+        path = g.os_path_join(path,s)
+        if not g.os_path_exists(path):
+            try:
+                os.mkdir(path)
+                g.es("created directory: "+path)
+            except:
+                g.es("exception creating directory: "+path)
+                g.es_exception()
+                return None
+    return dir1 # All have been created.
+#@-node:ekr.20031218072017.3119:g.makeAllNonExistentDirectories
+#@+node:ekr.20031218072017.2052:g.openWithFileName
+def openWithFileName(fileName,old_c,
+    enableLog=True,readAtFileNodesFlag=True):
+    
+    """Create a Leo Frame for the indicated fileName if the file exists."""
+
+    if not fileName or len(fileName) == 0:
+        return False, None
+        
+    def munge(name):
+        return g.os_path_normpath(name or '').lower()
+
+    # Create a full, normalized, Unicode path name, preserving case.
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+        
+    # Open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
+    try:
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # makeTrees must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.makeTrees()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame
+#@nonl
+#@-node:ekr.20031218072017.2052:g.openWithFileName
+#@+node:ekr.20070412082527:g.openLeoOrZipFile
+def openLeoOrZipFile (fileName):
+
+    try:
+        isZipped = zipfile.is_zipfile(fileName)
+        if isZipped:
+            thefile = zipfile.ZipFile(fileName,'r')
+            g.trace('opened zip file',theFile)
+        else:
+            theFile = file(fileName,'rb')
+        return theFile,isZipped
+    except IOError:
+        # Do not use string + here: it will fail for non-ascii strings!
+        g.es("can not open: %s" % (fileName),color="blue")
+        return None,False
+#@nonl
+#@-node:ekr.20070412082527:g.openLeoOrZipFile
+#@+node:ekr.20031218072017.3120:g.readlineForceUnixNewline (Steven P. Schaefer)
+#@+at 
+#@nonl
+# Stephen P. Schaefer 9/7/2002
+# 
+# The Unix readline() routine delivers "\r\n" line end strings verbatim, while 
+# the windows versions force the string to use the Unix convention of using 
+# only "\n".  This routine causes the Unix readline to do the same.
+#@-at
+#@@c
+
+def readlineForceUnixNewline(f):
+
+    s = f.readline()
+    if len(s) >= 2 and s[-2] == "\r" and s[-1] == "\n":
+        s = s[0:-2] + "\n"
+    return s
+#@-node:ekr.20031218072017.3120:g.readlineForceUnixNewline (Steven P. Schaefer)
+#@+node:ekr.20031218072017.3124:g.sanitize_filename
+def sanitize_filename(s):
+
+    """Prepares string s to be a valid file name:
+    
+    - substitute '_' whitespace and characters used special path characters.
+    - eliminate all other non-alphabetic characters.
+    - strip leading and trailing whitespace.
+    - return at most 128 characters."""
+
+    result = ""
+    for ch in s.strip():
+        if ch in string.ascii_letters:
+            result += ch
+        elif ch in string.whitespace: # Translate whitespace.
+            result += '_'
+        elif ch in ('.','\\','/',':'): # Translate special path characters.
+            result += '_'
+    while 1:
+        n = len(result)
+        result = result.replace('__','_')
+        if len(result) == n:
+            break
+    result = result.strip()
+    return result [:128]
+#@-node:ekr.20031218072017.3124:g.sanitize_filename
+#@+node:ekr.20060328150113:g.setGlobalOpenDir
+def setGlobalOpenDir (fileName):
+    
+    if fileName:
+        g.app.globalOpenDir = g.os_path_dirname(fileName)
+        # g.es('current directory: %s' %  g.app.globalOpenDir)
+#@-node:ekr.20060328150113:g.setGlobalOpenDir
+#@+node:ekr.20031218072017.3125:g.shortFileName & shortFilename
+def shortFileName (fileName):
+    
+    return g.os_path_basename(fileName)
+    
+shortFilename = shortFileName
+#@-node:ekr.20031218072017.3125:g.shortFileName & shortFilename
 #@+node:ekr.20050104135720:Used by tangle code & leoFileCommands
 #@+node:ekr.20031218072017.1241:g.update_file_if_changed
 # This is part of the tangle code.
@@ -2017,124 +2145,6 @@ def utils_stat (fileName):
     return mode
 #@-node:ekr.20050104123726.4:g.utils_stat
 #@-node:ekr.20050104135720:Used by tangle code & leoFileCommands
-#@+node:ekr.20031218072017.1264:getBaseDirectory
-# Handles the conventions applying to the "relative_path_base_directory" configuration option.
-
-def getBaseDirectory(c):
-
-    base = app.config.relative_path_base_directory
-
-    if base and base == "!":
-        base = app.loadDir
-    elif base and base == ".":
-        base = c.openDirectory
-
-    # g.trace(base)
-    if base and len(base) > 0 and g.os_path_isabs(base):
-        # Set c.chdir_to_relative_path as needed.
-        if not hasattr(c,'chdir_to_relative_path'):
-            c.chdir_to_relative_path = c.config.getBool('chdir_to_relative_path')
-        # Call os.chdir if requested.
-        if c.chdir_to_relative_path:
-            os.chdir(base)
-        return base # base need not exist yet.
-    else:
-        return "" # No relative base given.
-#@-node:ekr.20031218072017.1264:getBaseDirectory
-#@+node:ekr.20031218072017.3119:makeAllNonExistentDirectories
-# This is a generalization of os.makedir.
-
-def makeAllNonExistentDirectories (theDir):
-
-    """Attempt to make all non-existent directories"""
-
-    if not app.config.create_nonexistent_directories:
-        return None
-
-    dir1 = theDir = g.os_path_normpath(theDir)
-
-    # Split theDir into all its component parts.
-    paths = []
-    while len(theDir) > 0:
-        head,tail=g.os_path_split(theDir)
-        if len(tail) == 0:
-            paths.append(head)
-            break
-        else:
-            paths.append(tail)
-            theDir = head
-    path = ""
-    paths.reverse()
-    for s in paths:
-        path = g.os_path_join(path,s)
-        if not g.os_path_exists(path):
-            try:
-                os.mkdir(path)
-                g.es("created directory: "+path)
-            except:
-                g.es("exception creating directory: "+path)
-                g.es_exception()
-                return None
-    return dir1 # All have been created.
-#@-node:ekr.20031218072017.3119:makeAllNonExistentDirectories
-#@+node:ekr.20031218072017.3120:readlineForceUnixNewline (Steven P. Schaefer)
-#@+at 
-#@nonl
-# Stephen P. Schaefer 9/7/2002
-# 
-# The Unix readline() routine delivers "\r\n" line end strings verbatim, while 
-# the windows versions force the string to use the Unix convention of using 
-# only "\n".  This routine causes the Unix readline to do the same.
-#@-at
-#@@c
-
-def readlineForceUnixNewline(f):
-
-    s = f.readline()
-    if len(s) >= 2 and s[-2] == "\r" and s[-1] == "\n":
-        s = s[0:-2] + "\n"
-    return s
-#@-node:ekr.20031218072017.3120:readlineForceUnixNewline (Steven P. Schaefer)
-#@+node:ekr.20031218072017.3124:sanitize_filename
-def sanitize_filename(s):
-
-    """Prepares string s to be a valid file name:
-    
-    - substitute '_' whitespace and characters used special path characters.
-    - eliminate all other non-alphabetic characters.
-    - strip leading and trailing whitespace.
-    - return at most 128 characters."""
-
-    result = ""
-    for ch in s.strip():
-        if ch in string.ascii_letters:
-            result += ch
-        elif ch in string.whitespace: # Translate whitespace.
-            result += '_'
-        elif ch in ('.','\\','/',':'): # Translate special path characters.
-            result += '_'
-    while 1:
-        n = len(result)
-        result = result.replace('__','_')
-        if len(result) == n:
-            break
-    result = result.strip()
-    return result [:128]
-#@-node:ekr.20031218072017.3124:sanitize_filename
-#@+node:ekr.20060328150113:setGlobalOpenDir
-def setGlobalOpenDir (fileName):
-    
-    if fileName:
-        g.app.globalOpenDir = g.os_path_dirname(fileName)
-        # g.es('current directory: %s' %  g.app.globalOpenDir)
-#@-node:ekr.20060328150113:setGlobalOpenDir
-#@+node:ekr.20031218072017.3125:shortFileName & shortFilename
-def shortFileName (fileName):
-    
-    return g.os_path_basename(fileName)
-    
-shortFilename = shortFileName
-#@-node:ekr.20031218072017.3125:shortFileName & shortFilename
 #@-node:ekr.20031218072017.3116:Files & Directories...
 #@+node:ekr.20031218072017.1588:Garbage Collection
 # debugGC = False # Must be true to enable traces below.
