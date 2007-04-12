@@ -1437,6 +1437,7 @@ class leoMenu:
                 continue # Ignore bad data
             #@-node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
             #@nl
+            # g.trace(label,accelerator)
             realLabel = self.getRealMenuName(label)
             underline=realLabel.find("&")
             realLabel = realLabel.replace("&","")

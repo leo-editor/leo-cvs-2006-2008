@@ -29,8 +29,8 @@ class parserBaseClass:
         'float','path','ratio','shortcut','string','strings']
     
     control_types = [
-        'abbrev','enabledplugins','font','if','ifgui','ifplatform','ignore','mode','page',
-        'settings','shortcuts']
+        'abbrev','enabledplugins','font','if','ifgui','ifplatform','ignore','mode',
+        'openwith','page','settings','shortcuts']
     
     # Keys are settings names, values are (type,value) tuples.
     settingsDict = {}
@@ -44,7 +44,9 @@ class parserBaseClass:
         self.c = c
         self.recentFiles = [] # List of recent files.
         self.shortcutsDict = {}
-                # Keys are cononicalized shortcut names, values are bunches.
+            # Keys are cononicalized shortcut names, values are bunches.
+        self.openWithList = []
+            # A list of dicts containing 'name','shortcut','command' keys.
         
         # Keys are canonicalized names.
         self.dispatchDict = {
@@ -62,6 +64,7 @@ class parserBaseClass:
             'ints':         self.doInts,
             'float':        self.doFloat,
             'mode':         self.doMode, # New in 4.4b1.
+            'openwith':     self.doOpenWith, # New in 4.4.3 b1.
             'path':         self.doPath,
             'page':         self.doPage,
             'ratio':        self.doRatio,
@@ -335,6 +338,18 @@ class parserBaseClass:
         # Create the command, but not any bindings to it.
         self.createModeCommand(modeName,d)
     #@-node:ekr.20060102103625.1:doMode (ParserBaseClass)
+    #@+node:ekr.20070411101643.1:doOpenWith (ParserBaseClass)
+    def doOpenWith (self,p,kind,name,val):
+        
+        # g.trace('kind',kind,'name',name,'val',val,'c',self.c)
+        
+        d = self.parseOpenWith(p)
+        d['name']=name
+        d['shortcut']=val
+        name = kind = 'openwithtable'
+        self.openWithList.append(d)
+        self.set(p,kind,name,self.openWithList)
+    #@-node:ekr.20070411101643.1:doOpenWith (ParserBaseClass)
     #@+node:ekr.20041120104215.2:doPage
     def doPage(self,p,kind,name,val):
     
@@ -426,7 +441,7 @@ class parserBaseClass:
     
         return None
     #@-node:ekr.20041213083651:fontSettingNameToFontKind
-    #@+node:ekr.20041213082558.1:parseFont
+    #@+node:ekr.20041213082558.1:parseFont & helper
     def parseFont (self,p):
         
         d = {
@@ -447,7 +462,6 @@ class parserBaseClass:
         d['comments'] = '\n'.join(comments)
             
         return d
-    #@-node:ekr.20041213082558.1:parseFont
     #@+node:ekr.20041213082558.2:parseFontLine
     def parseFontLine (self,line,d):
         
@@ -479,6 +493,7 @@ class parserBaseClass:
             if fontKind:
                 d[fontKind] = name,val # Used only by doFont.
     #@-node:ekr.20041213082558.2:parseFontLine
+    #@-node:ekr.20041213082558.1:parseFont & helper
     #@+node:ekr.20041119205148:parseHeadline
     def parseHeadline (self,s):
         
@@ -503,6 +518,33 @@ class parserBaseClass:
         # g.trace("%50s %10s %s" %(name,kind,val))
         return kind,name,val
     #@-node:ekr.20041119205148:parseHeadline
+    #@+node:ekr.20070411101643.2:parseOpenWith & helper
+    def parseOpenWith (self,p):
+        
+        d = {'command': None,}
+    
+        s = p.bodyString()
+        lines = g.splitLines(s)
+    
+        for line in lines:
+            self.parseOpenWithLine(line,d)
+    
+        return d
+    #@+node:ekr.20070411101643.4:parseOpenWithLine
+    def parseOpenWithLine (self,line,d):
+        
+        s = line.strip()
+        if not s: return
+    
+        try:
+            s = str(s)
+        except UnicodeError:
+            pass
+        
+        if not g.match(s,0,'#'):
+            d['command'] = s
+    #@-node:ekr.20070411101643.4:parseOpenWithLine
+    #@-node:ekr.20070411101643.2:parseOpenWith & helper
     #@+node:ekr.20041120112043:parseShortcutLine (g.app.config)
     def parseShortcutLine (self,s):
         
@@ -606,6 +648,7 @@ class parserBaseClass:
     
         # N.B.  We can't use c here: it may be destroyed!
         d [key] = g.Bunch(path=c.mFileName,kind=kind,val=val,tag='setting')
+    
     #@-node:ekr.20041120094940.9:set (parseBaseClass)
     #@+node:ekr.20041227071423:setShortcut (ParserBaseClass)
     def setShortcut (self,name,bunch):
@@ -1168,6 +1211,15 @@ class configClass:
         
         return language
     #@-node:ekr.20041117093009.2:getLanguage
+    #@+node:ekr.20070411101643:getOpenWith
+    def getOpenWith (self,c):
+        
+        """Search all dictionaries for the setting & check it's type"""
+        
+        val = self.get(c,'openwithtable','openwithtable')
+        
+        return val
+    #@-node:ekr.20070411101643:getOpenWith
     #@+node:ekr.20041122070752:getRatio
     def getRatio (self,c,setting):
         

@@ -4385,7 +4385,7 @@ class baseCommands:
         '''Return True if p is a descendant of the active @chapters tree.'''
         
         p2 = self.getChaptersTree()
-        return p2 and p2.equal(p) or p2.isAncestorOf(p)
+        return p2 and (p2.equal(p) or p2.isAncestorOf(p))
     #@-node:ekr.20070410192154:inChaptersTree & getChaptersTree
     #@+node:ekr.20070226121510:treeFocusHelper (new in Leo 4.4.3)
     def treeFocusHelper (self):
@@ -6825,6 +6825,7 @@ class configSettings:
     def getFloat     (self,setting): return g.app.config.getFloat    (self.c,setting)
     def getFontDict  (self,setting): return g.app.config.getFontDict (self.c,setting)
     def getLanguage  (self,setting): return g.app.config.getLanguage (self.c,setting)
+    def getOpenWith  (self):         return g.app.config.getOpenWith (self.c)
     def getRatio     (self,setting): return g.app.config.getRatio    (self.c,setting)
     def getShortcut  (self,setting,):return g.app.config.getShortcut (self.c,setting)
     def getString    (self,setting): return g.app.config.getString   (self.c,setting)

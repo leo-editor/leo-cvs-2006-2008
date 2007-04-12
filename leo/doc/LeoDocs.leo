@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="47" left="361" height="752" width="802"/>
+	<global_window_position top="47" left="361" height="732" width="802"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -373,7 +373,7 @@
 <v t="ekr.20050901102400.3"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="EKR.20040524104904.211" a="E"><vh>Chapter 8: Customizing Leo</vh>
+<v t="EKR.20040524104904.211"><vh>Chapter 8: Customizing Leo</vh>
 <v t="ekr.20050901101608.4" a="E"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.140" a="E"><vh>Specifying settings</vh>
@@ -468,8 +468,8 @@
 <v t="ekr.20050901092232.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050912125144"><vh>Chapter 12: Plugins</vh>
-<v t="ekr.20050912125144.1"><vh>@rst html\plugins.html</vh>
+<v t="ekr.20050912125144" a="E"><vh>Chapter 12: Plugins</vh>
+<v t="ekr.20050912125144.1" a="E"><vh>@rst html\plugins.html</vh>
 <v t="ekr.20050912125735"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050912125735.868"><vh>Body pane</vh>
 <v t="ekr.20050912125735.869"><vh>arrows.py</vh></v>
@@ -508,10 +508,10 @@
 <v t="ekr.20050912125735.344"><vh>trace_keys.py</vh></v>
 <v t="ekr.20050912125735.346"><vh>trace_tags.py</vh></v>
 </v>
-<v t="ekr.20050912125735.2712"><vh>External editors &amp; Open With</vh>
+<v t="ekr.20050912125735.2712" a="E"><vh>External editors &amp; Open With</vh>
 <v t="ekr.20050912125735.2713"><vh>mod_tempfname.py</vh></v>
 <v t="ekr.20050912125735.2716"><vh>open_shell.py</vh></v>
-<v t="ekr.20050912125735.2726"><vh>open_with.py</vh></v>
+<v t="ekr.20050912125735.2726" a="TV"><vh>open_with.py</vh></v>
 <v t="ekr.20050912125735.3209"><vh>temacs.py &amp; usetemacs.py</vh></v>
 <v t="ekr.20050912125735.2736"><vh>vim.py</vh></v>
 <v t="ekr.20050912125735.2749"><vh>word_export.py</vh></v>
@@ -1034,7 +1034,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="ETV"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.646"><vh>Borland PC versions...</vh>
@@ -20194,10 +20194,61 @@ see which temporary file is related to which outline node.</t>
 or a cmd windows/explorer window on win32 in the directory of the current ``@file`` node.
 This allows quick navigation to facilitate testing and navigating large systems
 with complex directories.</t>
-<t tx="ekr.20050912125735.2726">Create menu for Open With command and handle the resulting commands.
+<t tx="ekr.20050912125735.2726">This plugin creates menu items in the File:Open With menu.
+
+@openwith nodes in @settings trees create menu items. The openWith
+plugin must be active for these settings to have any effect.
+
+The headline of an @openwith node has the form::
+
+    @openwith name = shortcut
+    
+name is name of the menu item. shortcut specifies the shortcut used to invoke
+the menu item. shortcut may be None.
+
+The body text @openwith nodes should contain a single line contain a tuple of the form::
+
+    command,arg,ext
+
+For example::
+    
+    'subprocess.Popen',['pythonw','C:/Python24/Lib/idlelib/idle.pyw'],'.py'
+    
+When the user selects this menu itmen Leo executes command(arg+path) where path
+is the full path to the temp file. The ext argument specifies the extension of
+the temp file.
+    
+Notes:
+
+- command is a string.  Valid values are::
+    
+  'subprocess.Popen'
+  'os.system'
+  'os.startfile'
+  'os.spawnl'
+  'os.spawnv'
+  'exec'
+  
+- arg is either a single string or a list of strings.
+
+- ext is a string or None. If None, Leo computes a file extension base on what
+  @language directive is in effect.
+
 This code will take advantage of Python's new subprocess module if it is
 present. This module comes standard with Python 2.4. For Linux systems, Leo will
-use subprocess.py in Leo's extensions folder if necessary.</t>
+use subprocess.py in Leo's extensions folder if necessary.
+
+For Windows systems you can install Python's subprocess module in Python 2.2 or
+2.3 as follows:
+    
+    - Go to http://www.effbot.org/downloads/#subprocess
+
+    - Download and execute one of the following installers, depending on your version of Python::
+
+        subprocess-0.1-20041012.win32-py2.3.exe 
+        subprocess-0.1-20041012.win32-py2.2.exe
+        
+This installer installs the subprocess sources and also _subprocess.pyd in Python's site-packages folder.</t>
 <t tx="ekr.20050912125735.2736">A plugin that communicates with VIM:
     
 - Double clicking on a node's icon opens that node in VIM. You can open nodes in

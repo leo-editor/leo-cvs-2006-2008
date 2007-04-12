@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="768" width="954"/>
+	<global_window_position top="10" left="238" height="708" width="954"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -12,7 +12,7 @@
 <v t="ekr.20070326094544"><vh>@chapters</vh>
 <v t="ekr.20070326094544.1"><vh>@chapter trash</vh></v>
 </v>
-<v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" a="E" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
 <v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
@@ -32,6 +32,7 @@
 <v t="ekr.20041119035931"><vh>\@if expression</vh></v>
 <v t="ekr.20041119110141"><vh>\@ifplatform platform-name</vh></v>
 <v t="ekr.20041119035704.2"><vh>\@ignore comment</vh></v>
+<v t="ekr.20070411172718" a="TV"><vh>\@openwith name = shortcut</vh></v>
 <v t="ekr.20041119035931.1"><vh>\@page comment</vh></v>
 <v t="ekr.20041119105509"><vh>\@set name = value</vh></v>
 <v t="ekr.20041120155431.1"><vh>\@shortcuts</vh></v>
@@ -49,7 +50,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20061011082224" a="TV"><vh>Candidates for settings in myLeoSettings.leo</vh>
+<v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
 <v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
@@ -79,7 +80,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -457,6 +458,11 @@
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
+</v>
+<v t="ekr.20070411101857" a="E"><vh>Open With</vh>
+<v t="ekr.20070411101857.1"><vh>@openwith Idle = Alt+Shift+Ctrl+I</vh></v>
+<v t="ekr.20070411101857.2"><vh>@openwith Word = Alt+Shift+Ctrl+W </vh></v>
+<v t="ekr.20070411101857.3"><vh>@openwith Wordpad = Alt+Shift+Ctrl+T</vh></v>
 </v>
 <v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
@@ -6359,5 +6365,47 @@ UNL.py
 False: Chapter tabs are disabled, as are chapter commands.</t>
 <t tx="ekr.20070326094544"></t>
 <t tx="ekr.20070326094544.1">trash</t>
+<t tx="ekr.20070411101857"></t>
+<t tx="ekr.20070411101857.1">'subprocess.Popen',['pythonw','C:/Python24/Lib/idlelib/idle.pyw'],'.py'
+</t>
+<t tx="ekr.20070411101857.2">'subprocess.Popen','C:/Program Files/Microsoft Office/Office/WINWORD.exe',None</t>
+<t tx="ekr.20070411101857.3">'subprocess.Popen','C:/Program Files/Windows NT/Accessories/wordpad.exe',None</t>
+<t tx="ekr.20070411172718">This plugin creates menu items in the File:Open With menu.
+
+@openwith nodes in @settings trees create menu items. The openWith
+plugin must be active for these settings to have any effect.
+
+The headline of an @openwith node has the form::
+
+    @openwith name = shortcut
+    
+name is name of the menu item. shortcut specifies the shortcut used to invoke
+the menu item. shortcut may be None.
+
+The body text @openwith nodes should contain a single line contain a tuple of the form::
+
+    command,arg,ext
+
+For example::
+    
+    'subprocess.Popen',['pythonw','C:/Python24/Lib/idlelib/idle.pyw'],'.py'
+    
+When the user selects this menu itmen Leo executes command(arg+path) where path
+is the full path to the temp file. The ext argument specifies the extension of
+the temp file. Notes:
+
+- command is a string.  Valid values are::
+    
+  'subprocess.Popen'
+  'os.system'
+  'os.startfile'
+  'os.spawnl'
+  'os.spawnv'
+  'exec'
+  
+- arg is either a single string or a list of strings.
+
+- ext is a string or None. If None, Leo computes a file extension base on what
+  @language directive is in effect.</t>
 </tnodes>
 </leo_file>

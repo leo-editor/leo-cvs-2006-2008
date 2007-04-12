@@ -4,20 +4,8 @@
 #@+node:ekr.20050910140846:<< docstring >>
 '''Create menu for Open With command and handle the resulting commands.
 
-This code will take advantage of Python's new subprocess module if it is
-present. This module comes standard with Python 2.4. For Linux systems, Leo will
-use subprocess.py in Leo's extensions folder if necessary.
-
-For Windows systems you can install Python's subprocess module in Python 2.2 or
-2.3 as follows:
-    
-    - Go to http://www.effbot.org/downloads/#subprocess
-
-    - Download and execute one of the following installers, depending on your version of Python:
-        subprocess-0.1-20041012.win32-py2.3.exe 
-        subprocess-0.1-20041012.win32-py2.2.exe
-        
-This installer installs the subprocess sources and also _subprocess.pyd in Python's site-packages folder.
+@openwith settings nodes specify entries.
+See the documentation for @openwith nodes in leoSettings.leo for details.
 '''
 #@nonl
 #@-node:ekr.20050910140846:<< docstring >>
@@ -37,32 +25,25 @@ subprocess =    g.importExtension('subprocess',pluginName=__name__,verbose=True)
 #@-node:ekr.20050101090207.8:<< imports >>
 #@nl
 
-__version__ = '1.9'
+__version__ = '1.11'
 #@<< version history >>
 #@+node:ekr.20050311110052:<< version history >>
 #@@killcolor
 
 #@+at
 # 
-# 1.5 EKR:
-#     - Use only 'new' and 'open2' hooks to create menu.
-# 1.6 EKR:
-#     - Installed patches from Jim Sizelove to use subprocess module if 
+# 1.5 EKR: Use only 'new' and 'open2' hooks to create menu.
+# 1.6 EKR: Installed patches from Jim Sizelove to use subprocess module if 
 # possible.
-# 1.7 EKR:
-#     - Set subprocess = None if import fails.
+# 1.7 EKR: Set subprocess = None if import fails.
 # 1.8 EKR:
-#     - Document how install subproces, and use g.importExtension to import 
+# - Document how install subproces, and use g.importExtension to import 
 # subprocess.
-#     - Import subprocess with g.importExtension.
-# 1.9 EKR:
-#     - Removed key bindings from default table.
-#       Some way should be find to specify these bindings from 
-# leoSettings.leo.
-# 1.10 EKR:
-#     - The init code now explicitly calls g.enableIdleTimeHook.
+# - Import subprocess with g.importExtension.
+# 1.9 EKR: Removed key bindings from default table.
+# 1.10 EKR: The init code now explicitly calls g.enableIdleTimeHook.
+# 1.11 EKR: Get the table from @openwith settings if possible.
 #@-at
-#@nonl
 #@-node:ekr.20050311110052:<< version history >>
 #@nl
 
@@ -155,7 +136,7 @@ def on_idle (tag,keywords):
                 pass
 #@nonl
 #@-node:EKR.20040517075715.5:on_idle
-#@+node:EKR.20040517075715.8:create_open_with_menu
+#@+node:EKR.20040517075715.8:create_open_with_menu & helpers
 #@+at 
 #@nonl
 # Entries in the following table are the tuple (commandName,shortcut,data).
@@ -176,62 +157,104 @@ def create_open_with_menu (tag,keywords):
     c = keywords.get('c')
     if not c: return
 
-    idle_arg = "c:/python22/tools/idle/idle.py -e "
-    
-    if subprocess:
-        if 1: # Default table.
-            # g.trace('using subprocess')
-            table = (
-                ("Idle", "Alt+Ctrl+I",
-                    ("subprocess.Popen",
-                        ["pythonw", "C:/Python24/Lib/idlelib/idle.pyw"], ".py")),
-                ("Word", "Alt+Ctrl+W",
-                    ("subprocess.Popen",
-                    "C:/Program Files/Microsoft Office/Office/WINWORD.exe",
-                    None)),
-                ("WordPad", "Alt+Ctrl+T",
-                    ("subprocess.Popen",
-                    "C:/Program Files/Windows NT/Accessories/wordpad.exe",
-                    None)),
-            )
-            
-        if 0:
-            #@            << Jim Sizelove's table >>
-            #@+node:ekr.20050909101202:<< Jim Sizelove's table >>
-            table = (
-                ("Emacs", "Alt+Ctrl+E",
-                    ("subprocess.Popen", "C:/Program Files/Emacs/bin/emacs.exe", None)),
-                ("Gvim", "Alt+Ctrl+G",
-                    ("subprocess.Popen",
-                    ["C:/Program Files/Vim/vim63/gvim.exe", 
-                    "--servername", "LEO", "--remote-silent"], None)),
-                ("Idle", "Alt+Ctrl+I",
-                    ("subprocess.Popen",
-                    ["pythonw", "C:/Python24/Lib/idlelib/idle.pyw"], ".py")),
-                ("NotePad", "Alt+Ctrl+N",
-                    ("os.startfile", None, ".txt")),
-                ("PythonWin", "Alt+Ctrl+P",
-                    ("subprocess.Popen", "C:/Python24/Lib/site-packages/pythonwin/Pythonwin.exe", None)),
-                ("WordPad", "Alt+Ctrl+W",
-                    ("subprocess.Popen", "C:/Program Files/Windows NT/Accessories/wordpad.exe", None)),
-            )
-            #@nonl
-            #@-node:ekr.20050909101202:<< Jim Sizelove's table >>
-            #@nl
-    elif 1: # Default table.
+    # Get the table from settings if possible.
+    aList = c.config.getOpenWith()
+    if aList:
+        table = doOpenWithSettings(aList)
+        
+    if not table:
+        if subprocess:
+            table = doSubprocessTable()
+        else:
+            table = doDefaultTable()
+
+    c.frame.menu.createOpenWithMenuFromTable(table)
+#@nonl
+#@+node:ekr.20070411165142:doDefaultTable
+def doDefaultTable ():
+
+    if 1: # Default table.
+        idle_arg = "c:/python22/tools/idle/idle.py -e "
         table = (
             # Opening idle this way doesn't work so well.
             # ("&Idle",   "Alt+Shift+I",("os.system",idle_arg,".py")),
             ("&Word",   "Alt+Shift+W",("os.startfile",None,".doc")),
             ("Word&Pad","Alt+Shift+T",("os.startfile",None,".txt")))
+
     elif 0: # Test table.
         table = ("&Word","Alt+Shift+W",("os.startfile",None,".doc")),
+
     elif 0: # David McNab's table.
         table = ("X&Emacs", "Ctrl+E", ("os.spawnl","/usr/bin/gnuclient", None)),
+        
+    return table
+#@-node:ekr.20070411165142:doDefaultTable
+#@+node:ekr.20070411165142.1:doOpenWithSettings
+def doOpenWithSettings (aList):
     
-    c.frame.menu.createOpenWithMenuFromTable(table)
+    '''Create an open-with table from a list of dictionaries.'''
+    
+    table = []
+    for z in aList:
+        command = z.get('command')
+        name = z.get('name')
+        shortcut = z.get('shortcut')
+        try:
+            data = eval(command)
+            if 0:
+                print name,shortcut
+                for i in xrange(len(data)):
+                    print i,repr(data[i])
+                print
+            entry = name,shortcut,data
+            table.append(entry)
+    
+        except SyntaxError:
+            print g.es_exception()
+            return None
+            
+    return table
+#@-node:ekr.20070411165142.1:doOpenWithSettings
+#@+node:ekr.20070411165142.2:doSubprocessTable
+def doSubprocessTable ():
+
+    if 1:
+        table = (
+            ("Idle", "Alt+Ctrl+I",
+                ("subprocess.Popen",
+                    ["pythonw", "C:/Python24/Lib/idlelib/idle.pyw"], ".py")),
+            ("Word", "Alt+Ctrl+W",
+                ("subprocess.Popen",
+                "C:/Program Files/Microsoft Office/Office/WINWORD.exe",
+                None)),
+            ("WordPad", "Alt+Ctrl+T",
+                ("subprocess.Popen",
+                "C:/Program Files/Windows NT/Accessories/wordpad.exe",
+                None)),
+        )
+    else: # Jim Sizelove's table
+        table = (
+            ("Emacs", "Alt+Ctrl+E",
+                ("subprocess.Popen", "C:/Program Files/Emacs/bin/emacs.exe", None)),
+            ("Gvim", "Alt+Ctrl+G",
+                ("subprocess.Popen",
+                ["C:/Program Files/Vim/vim63/gvim.exe", 
+                "--servername", "LEO", "--remote-silent"], None)),
+            ("Idle", "Alt+Ctrl+I",
+                ("subprocess.Popen",
+                ["pythonw", "C:/Python24/Lib/idlelib/idle.pyw"], ".py")),
+            ("NotePad", "Alt+Ctrl+N",
+                ("os.startfile", None, ".txt")),
+            ("PythonWin", "Alt+Ctrl+P",
+                ("subprocess.Popen", "C:/Python24/Lib/site-packages/pythonwin/Pythonwin.exe", None)),
+            ("WordPad", "Alt+Ctrl+W",
+                ("subprocess.Popen", "C:/Program Files/Windows NT/Accessories/wordpad.exe", None)),
+        )
+
+    return table
 #@nonl
-#@-node:EKR.20040517075715.8:create_open_with_menu
+#@-node:ekr.20070411165142.2:doSubprocessTable
+#@-node:EKR.20040517075715.8:create_open_with_menu & helpers
 #@-others
 #@nonl
 #@-node:EKR.20040517075715.4:@thin open_with.py
