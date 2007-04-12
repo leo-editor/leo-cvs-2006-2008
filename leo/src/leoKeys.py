@@ -1949,7 +1949,7 @@ class keyHandlerClass:
     
         # Use k.registerCommand to set the shortcuts in the various binding dicts.
         commandName = 'open-with-%s' % name.lower()
-        k.registerCommand(commandName,shortcut,openWithCallback,pane='text',verbose=False)
+        k.registerCommand(commandName,shortcut,openWithCallback,pane='all',verbose=False)
     #@-node:ekr.20061031131434.94:bindOpenWith
     #@+node:ekr.20061031131434.95:checkBindings
     def checkBindings (self):
