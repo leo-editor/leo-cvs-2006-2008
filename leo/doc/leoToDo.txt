@@ -2409,102 +2409,52 @@ def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
 #@nonl
 #@-node:ekr.20050428063105:newOpen (From chapters.py)
 #@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20070409171107:Docs
-#@+node:ekr.20061130084909:Improve What's special whitepaper
-@nocolor
+#@+node:ekr.20070306103213:activate-menu-bar command
+top = c.frame.top
+topx,topy = top.winfo_rootx(),top.winfo_rooty()
 
-- Answer the question: how can Leo help me with programming.
-#@nonl
-#@-node:ekr.20061130084909:Improve What's special whitepaper
-#@+node:ekr.20060306194040:Video and more screen shots on Leo's web site
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3615177
-By: ktenney
+topMenu = c.frame.menu.getMenu('top')
+topMenu.post(topx,topy)
+#@+node:ekr.20060211101811:Activate menu commands
+#@+node:ekr.20060211100905.1:tkMenu.activateMenu
+def activateMenu (self,menuName):
+    
+    c = self.c ;  top = c.frame.top
+    topx,topy = top.winfo_rootx(),top.winfo_rooty()
+    menu = c.frame.menu.getMenu(menuName)
 
-High on my ToLearn list is vnc2swf
-http://www.unixuser.org/~euske/vnc2swf/
-
-
-http://sourceforge.net/forum/message.php?msg_id=3615278
-By: James
-
-A lot of people are now using Wink for demonstrations
-(http://www.debugmode.com/wink/), it's is free and seems to work well.
-
-Check out http://murl.se/11332
-At the bottom they talk about tools and techniques.
-http://showmedo.com seems like it would be a good
-place to host vids also.
-
-I've listened/watched a fair number of things like this;
-my recomendation is to get a good microphone and
-pre-amp to record your voice, and prepare the audio
-track carefully. It is so aggravating when
-it's hard to discern the words being spoken.
-
-Thanks,
-Kent
-#@nonl
-#@+node:ekr.20060531134434:Tutorials
-http://sourceforge.net/forum/message.php?msg_id=3758271
-
-From: Rich
-
-Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
-and it has a very good tutorial -- leads the beginner by the hand through much
-of the language. Also the help file has working code snippets
-to cut-n-paste-n-play-with. I'd like to see something like:
-
-[Buttons]
-...[What are Buttons good for?]
-...[How do I make my own buttons?]
-......[Some commands you can use with buttons]
-......[Where to find button commands]
-#@nonl
-#@-node:ekr.20060531134434:Tutorials
-#@+node:ekr.20060531134434.1:Screencasts
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3758303
-By: ktenney
-
-My sense is that documentation/screencasts has the
-greatest potential for expanding Leo's mindshare.
-
-I really like those produced by the good folks
-at Dabo;
-http://leafe.com/screencasts/
-http://leafe.com/screencasts/populategrid.html
-
-The TurboGears people have taken this to the extreme;
-http://www.turbogears.org/ultimate.html
-
-Leo is different enough that it warrants a 
-demonstration of it's advantages.
-#@nonl
-#@-node:ekr.20060531134434.1:Screencasts
-#@+node:ekr.20060829103523:Render Leo slideshows
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3889246
-By: terry_n_brown
-
-Three packages that might be candidates for "rendering" slides authored in Leo:
-
-MagicPoint: http://member.wide.ad.jp/wg/mgp/
-
-  uses a text file format that leo could produce
-
-Slidy: http://www.w3.org/Talks/Tools/Slidy/
-
-  uses XHTML / canned Java script
-
-S5: http://meyerweb.com/eric/tools/s5/
-
-  Similar to Slidy I think, haven't looked at it
-#@nonl
-#@-node:ekr.20060829103523:Render Leo slideshows
-#@-node:ekr.20060306194040:Video and more screen shots on Leo's web site
-#@-node:ekr.20070409171107:Docs
+    if menu:
+        d = self.computeMenuPositions()
+        x = d.get(menuName)
+        if x is None:
+             x = 0 ; g.trace('oops, no menu offset: %s' % menuName)
+        
+        menu.tk_popup(topx+d.get(menuName,0),topy) # Fix by caugm.  Thanks!
+    else:
+        g.trace('oops, no menu: %s' % menuName)
+#@-node:ekr.20060211100905.1:tkMenu.activateMenu
+#@+node:ekr.20060210133835.1:tkMenu.computeMenuPositions
+def computeMenuPositions (self):
+    
+    # A hack.  It would be better to set this when creating the menus.
+    menus = ('File','Edit','Outline','Plugins','Cmds','Window','Help')
+    
+    # Compute the *approximate* x offsets of each menu.
+    d = {}
+    n = 0
+    for z in menus:
+        menu = self.getMenu(z)
+        fontName = menu.cget('font')
+        font = tkFont.Font(font=fontName)
+        # print '%8s' % (z),menu.winfo_reqwidth(),menu.master,menu.winfo_x()
+        d [z] = n
+        # A total hack: sorta works on windows.
+        n += font.measure(z+' '*4)+1
+        
+    return d
+#@-node:ekr.20060210133835.1:tkMenu.computeMenuPositions
+#@-node:ekr.20060211101811:Activate menu commands
+#@-node:ekr.20070306103213:activate-menu-bar command
 #@+node:ekr.20070317073627.4:(Chapters)
 @nocolor
 
@@ -4826,52 +4776,102 @@ else:
 #@-node:ekr.20040803072955.133:<< set the current node >>
 #@-node:ekr.20040803072955.128:leoTree.select
 #@-node:ekr.20070317073627.4:(Chapters)
-#@+node:ekr.20070306103213:activate-menu-bar command
-top = c.frame.top
-topx,topy = top.winfo_rootx(),top.winfo_rooty()
+#@+node:ekr.20070409171107:Docs
+#@+node:ekr.20061130084909:Improve What's special whitepaper
+@nocolor
 
-topMenu = c.frame.menu.getMenu('top')
-topMenu.post(topx,topy)
-#@+node:ekr.20060211101811:Activate menu commands
-#@+node:ekr.20060211100905.1:tkMenu.activateMenu
-def activateMenu (self,menuName):
-    
-    c = self.c ;  top = c.frame.top
-    topx,topy = top.winfo_rootx(),top.winfo_rooty()
-    menu = c.frame.menu.getMenu(menuName)
+- Answer the question: how can Leo help me with programming.
+#@nonl
+#@-node:ekr.20061130084909:Improve What's special whitepaper
+#@+node:ekr.20060306194040:Video and more screen shots on Leo's web site
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3615177
+By: ktenney
 
-    if menu:
-        d = self.computeMenuPositions()
-        x = d.get(menuName)
-        if x is None:
-             x = 0 ; g.trace('oops, no menu offset: %s' % menuName)
-        
-        menu.tk_popup(topx+d.get(menuName,0),topy) # Fix by caugm.  Thanks!
-    else:
-        g.trace('oops, no menu: %s' % menuName)
-#@-node:ekr.20060211100905.1:tkMenu.activateMenu
-#@+node:ekr.20060210133835.1:tkMenu.computeMenuPositions
-def computeMenuPositions (self):
-    
-    # A hack.  It would be better to set this when creating the menus.
-    menus = ('File','Edit','Outline','Plugins','Cmds','Window','Help')
-    
-    # Compute the *approximate* x offsets of each menu.
-    d = {}
-    n = 0
-    for z in menus:
-        menu = self.getMenu(z)
-        fontName = menu.cget('font')
-        font = tkFont.Font(font=fontName)
-        # print '%8s' % (z),menu.winfo_reqwidth(),menu.master,menu.winfo_x()
-        d [z] = n
-        # A total hack: sorta works on windows.
-        n += font.measure(z+' '*4)+1
-        
-    return d
-#@-node:ekr.20060210133835.1:tkMenu.computeMenuPositions
-#@-node:ekr.20060211101811:Activate menu commands
-#@-node:ekr.20070306103213:activate-menu-bar command
+High on my ToLearn list is vnc2swf
+http://www.unixuser.org/~euske/vnc2swf/
+
+
+http://sourceforge.net/forum/message.php?msg_id=3615278
+By: James
+
+A lot of people are now using Wink for demonstrations
+(http://www.debugmode.com/wink/), it's is free and seems to work well.
+
+Check out http://murl.se/11332
+At the bottom they talk about tools and techniques.
+http://showmedo.com seems like it would be a good
+place to host vids also.
+
+I've listened/watched a fair number of things like this;
+my recomendation is to get a good microphone and
+pre-amp to record your voice, and prepare the audio
+track carefully. It is so aggravating when
+it's hard to discern the words being spoken.
+
+Thanks,
+Kent
+#@nonl
+#@+node:ekr.20060531134434:Tutorials
+http://sourceforge.net/forum/message.php?msg_id=3758271
+
+From: Rich
+
+Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
+and it has a very good tutorial -- leads the beginner by the hand through much
+of the language. Also the help file has working code snippets
+to cut-n-paste-n-play-with. I'd like to see something like:
+
+[Buttons]
+...[What are Buttons good for?]
+...[How do I make my own buttons?]
+......[Some commands you can use with buttons]
+......[Where to find button commands]
+#@nonl
+#@-node:ekr.20060531134434:Tutorials
+#@+node:ekr.20060531134434.1:Screencasts
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3758303
+By: ktenney
+
+My sense is that documentation/screencasts has the
+greatest potential for expanding Leo's mindshare.
+
+I really like those produced by the good folks
+at Dabo;
+http://leafe.com/screencasts/
+http://leafe.com/screencasts/populategrid.html
+
+The TurboGears people have taken this to the extreme;
+http://www.turbogears.org/ultimate.html
+
+Leo is different enough that it warrants a 
+demonstration of it's advantages.
+#@nonl
+#@-node:ekr.20060531134434.1:Screencasts
+#@+node:ekr.20060829103523:Render Leo slideshows
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3889246
+By: terry_n_brown
+
+Three packages that might be candidates for "rendering" slides authored in Leo:
+
+MagicPoint: http://member.wide.ad.jp/wg/mgp/
+
+  uses a text file format that leo could produce
+
+Slidy: http://www.w3.org/Talks/Tools/Slidy/
+
+  uses XHTML / canned Java script
+
+S5: http://meyerweb.com/eric/tools/s5/
+
+  Similar to Slidy I think, haven't looked at it
+#@nonl
+#@-node:ekr.20060829103523:Render Leo slideshows
+#@-node:ekr.20060306194040:Video and more screen shots on Leo's web site
+#@-node:ekr.20070409171107:Docs
 #@-node:ekr.20070325054325:Urgent
 #@+node:ekr.20070307075714:Asap
 # These are easy & important
