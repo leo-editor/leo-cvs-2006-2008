@@ -72,6 +72,7 @@ class baseCommands:
         # Init ivars with self.x instead of c.x to keep Pychecker happy
         self.chapterController = None
         self.frame = frame
+        self.isZipped = False # May be set to True by g.openWithFileName.
         self.mFileName = fileName
             # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
     
