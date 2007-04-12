@@ -817,8 +817,7 @@ def openWithFileName(fileName,old_c,
         return False, None
         
     def munge(name):
-        name = name or ''
-        return g.os_path_normpath(name).lower()
+        return g.os_path_normpath(name or '').lower()
 
     # Create a full, normalized, Unicode path name, preserving case.
     fileName = g.os_path_normpath(g.os_path_abspath(fileName))
@@ -830,56 +829,49 @@ def openWithFileName(fileName,old_c,
             frame.bringToFront()
             frame.c.setLog()
             return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+        
+    # Open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
     try:
-        if old_c:
-            # New in 4.4: We must read the file *twice*.
-            # The first time sets settings for the later call to c.finishCreate.
-            # g.trace('***** prereading',fileName)
-            c2 = g.app.config.openSettingsFile(fileName)
-            if c2: g.app.config.updateSettings(c2,localFlag=True)
-            g.doHook('open0')
-            
-        # Open the file in binary mode to allow 0x1a in bodies & headlines.
-        theFile = open(fileName,'rb')
-        c,frame = app.newLeoCommanderAndFrame(fileName)
-        frame.log.enable(enableLog)
-        g.app.writeWaitingLog() # New in 4.3: write queued log first.
-        c.beginUpdate()
-        try:
-            if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-                c.setLog()
-                app.lockLog()
-                frame.c.fileCommands.open(
-                    theFile,fileName,
-                    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-                app.unlockLog()
-                for frame in g.app.windowList:
-                    # The recent files list has been updated by menu.updateRecentFiles.
-                    frame.c.config.setRecentFiles(g.app.config.recentFiles)
-            # Bug fix in 4.4.
-            frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-            g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-        finally:
-            c.endUpdate()
-            # makeTrees must be called after the first real redraw
-            # because it requires a valid value for c.rootPosition().
-            if frame.c.chapterController:
-                frame.c.chapterController.makeTrees()
-            k = c.k
-            k and k.setInputState(k.unboundKeyAction)
-            if c.config.getBool('outline_pane_has_initial_focus'):
-                c.treeWantsFocusNow()
-            else:
-                c.bodyWantsFocusNow()
-        return True, frame
-    except IOError:
-        # Do not use string + here: it will fail for non-ascii strings!
-        g.es("can not open: %s" % (fileName), color="blue")
-        return False, None
-    except Exception:
-        g.es("exceptions opening: %s" % (fileName),color="red")
-        g.es_exception()
-        return False, None
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # makeTrees must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.makeTrees()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame
 #@nonl
 #@-node:ekr.20031218072017.2052:g.openWithFileName
 #@+node:ekr.20070317074824:tt.createTab
@@ -2323,92 +2315,6 @@ else:
 #@-node:ekr.20040803072955.128:leoTree.select
 #@-node:ekr.20070317073627.4:(Chapters)
 #@+node:ekr.20070325054325:Urgent
-#@+node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
-#@+node:ekr.20050428062312:Request 1
-@nocolor
-
-By: samcollett ( Sam Collett ) 
- Compressed LEO files   
-2003-01-07 16:57
-
-Would it be possible to have a new file format that was basically a compressed
-version of LEO files? Maybe using the gzip compression method. You could then
-save a lot of space when you do large files. Not being a professional
-programmer myself (I mainly dabble in web design - HTML and Active Server
-Pages) how difficult would this be to implement? You would just output using a
-different file extension so users of the older versions can still use files
-with the LEO extension.
-#@-node:ekr.20050428062312:Request 1
-#@+node:ekr.20040226092546:Request 2
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=2442772
-By: ejoy
-
-I made an experiment last night. I replaced the call to open()in leofilecommand.py
-with a call to gzip.open().
-
-The LeoPy.leo file saved this way is only 600K! And there is no significant
-speed down in saving.
-
-I think it is a good idea to add compression support for load/save .leo files.
-When reading or writing file with name ending with ".leo.gz", leo can call gzip
-module to uncompress/compress the file, saving a lot of disk space.
-
-What do you think of this?
-#@nonl
-#@-node:ekr.20040226092546:Request 2
-#@+node:ekr.20031218072017.2297:open (leoFileCommands)
-def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-
-    c = self.c ; frame = c.frame
-    if not self.use_sax: # Read the entire file into the buffer
-        self.fileBuffer = theFile.read() ; theFile.close()
-        self.fileIndex = 0
-    << Set the default directory >>
-    self.topPosition = None
-    ok, ratio = self.getLeoFile(
-        theFile,fileName,
-        readAtFileNodesFlag=readAtFileNodesFlag,
-        silent=silent)
-    frame.resizePanesToRatio(ratio,frame.secondary_ratio)
-    if 0: # 1/30/04: this is useless.
-        if self.topPosition: 
-            c.setTopVnode(self.topPosition)
-    if not self.use_sax: # Delete the file buffer
-        self.fileBuffer = ""
-    return ok
-#@nonl
-#@+node:ekr.20031218072017.2298:<< Set the default directory >>
-@ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
-@c
-
-theDir = g.os_path_dirname(fileName)
-
-if len(theDir) > 0:
-    c.openDirectory = theDir
-#@-node:ekr.20031218072017.2298:<< Set the default directory >>
-#@-node:ekr.20031218072017.2297:open (leoFileCommands)
-#@+node:ekr.20050428063105:newOpen (From chapters.py)
-oldOpen = leoFileCommands.fileCommands.open
-
-def newOpen( self,file,fileName,readAtFileNodesFlag=True,silent=False):
-
-    global iscStringIO
-    c = self.c
-    
-    if zipfile.is_zipfile( fileName ):
-        iscStringIO = True
-        chapters = openChaptersFile( fileName )
-        g.es( str( len( chapters ) ) + " Chapters To Read", color = 'blue' )
-        insertChapters( chapters, c.frame, c )
-        g.es( "Finished Reading Chapters", color = 'blue' )
-        iscStringIO = False
-        return True
-
-    return oldOpen(self,file,fileName,readAtFileNodesFlag,silent)
-#@nonl
-#@-node:ekr.20050428063105:newOpen (From chapters.py)
-#@-node:ekr.20031218072017.801:Support .leo.gz or .leo.zip files
 #@+node:ekr.20070306103213:activate-menu-bar command
 top = c.frame.top
 topx,topy = top.winfo_rootx(),top.winfo_rooty()
@@ -3271,8 +3177,7 @@ def openWithFileName(fileName,old_c,
         return False, None
         
     def munge(name):
-        name = name or ''
-        return g.os_path_normpath(name).lower()
+        return g.os_path_normpath(name or '').lower()
 
     # Create a full, normalized, Unicode path name, preserving case.
     fileName = g.os_path_normpath(g.os_path_abspath(fileName))
@@ -3284,56 +3189,49 @@ def openWithFileName(fileName,old_c,
             frame.bringToFront()
             frame.c.setLog()
             return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+        
+    # Open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
     try:
-        if old_c:
-            # New in 4.4: We must read the file *twice*.
-            # The first time sets settings for the later call to c.finishCreate.
-            # g.trace('***** prereading',fileName)
-            c2 = g.app.config.openSettingsFile(fileName)
-            if c2: g.app.config.updateSettings(c2,localFlag=True)
-            g.doHook('open0')
-            
-        # Open the file in binary mode to allow 0x1a in bodies & headlines.
-        theFile = open(fileName,'rb')
-        c,frame = app.newLeoCommanderAndFrame(fileName)
-        frame.log.enable(enableLog)
-        g.app.writeWaitingLog() # New in 4.3: write queued log first.
-        c.beginUpdate()
-        try:
-            if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-                c.setLog()
-                app.lockLog()
-                frame.c.fileCommands.open(
-                    theFile,fileName,
-                    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-                app.unlockLog()
-                for frame in g.app.windowList:
-                    # The recent files list has been updated by menu.updateRecentFiles.
-                    frame.c.config.setRecentFiles(g.app.config.recentFiles)
-            # Bug fix in 4.4.
-            frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-            g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-        finally:
-            c.endUpdate()
-            # makeTrees must be called after the first real redraw
-            # because it requires a valid value for c.rootPosition().
-            if frame.c.chapterController:
-                frame.c.chapterController.makeTrees()
-            k = c.k
-            k and k.setInputState(k.unboundKeyAction)
-            if c.config.getBool('outline_pane_has_initial_focus'):
-                c.treeWantsFocusNow()
-            else:
-                c.bodyWantsFocusNow()
-        return True, frame
-    except IOError:
-        # Do not use string + here: it will fail for non-ascii strings!
-        g.es("can not open: %s" % (fileName), color="blue")
-        return False, None
-    except Exception:
-        g.es("exceptions opening: %s" % (fileName),color="red")
-        g.es_exception()
-        return False, None
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # makeTrees must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.makeTrees()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame
 #@nonl
 #@-node:ekr.20031218072017.2052:g.openWithFileName
 #@+node:ekr.20070317074824:tt.createTab

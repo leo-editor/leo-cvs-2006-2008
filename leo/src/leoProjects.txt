@@ -7720,7 +7720,7 @@ it should probably be configurable::
         return base # base need not exist yet.
         
 @color
-#@+node:ekr.20031218072017.1264:getBaseDirectory
+#@+node:ekr.20031218072017.1264:g.getBaseDirectory
 # Handles the conventions applying to the "relative_path_base_directory" configuration option.
 
 def getBaseDirectory(c):
@@ -7743,7 +7743,7 @@ def getBaseDirectory(c):
         return base # base need not exist yet.
     else:
         return "" # No relative base given.
-#@-node:ekr.20031218072017.1264:getBaseDirectory
+#@-node:ekr.20031218072017.1264:g.getBaseDirectory
 #@-node:ekr.20061127171616:Added support for chdir_to_relative_path setting
 #@+node:ekr.20070105122833:changeAll now works like findAll
 #@+node:ekr.20051023094009:Search classes
@@ -16574,12 +16574,8 @@ if not g.os_path_exists(myLocalConfigFile):
 #@+node:ekr.20041117085625:g.app.config.openSettingsFile
 def openSettingsFile (self,path):
     
-    try:
-        # Open the file in binary mode to allow 0x1a in bodies & headlines.
-        theFile = open(path,'rb')
-    except IOError:
-        g.es("can not open: " + path, color="blue")
-        return None
+    theFile,isZipped = g.openLeoOrZipFile(path)
+    if not theFile: return None
         
     # Similar to g.openWithFileName except it uses a null gui.
     # Changing g.app.gui here is a major hack.
@@ -27597,12 +27593,8 @@ if not g.os_path_exists(myLocalConfigFile):
 #@+node:ekr.20041117085625:g.app.config.openSettingsFile
 def openSettingsFile (self,path):
     
-    try:
-        # Open the file in binary mode to allow 0x1a in bodies & headlines.
-        theFile = open(path,'rb')
-    except IOError:
-        g.es("can not open: " + path, color="blue")
-        return None
+    theFile,isZipped = g.openLeoOrZipFile(path)
+    if not theFile: return None
         
     # Similar to g.openWithFileName except it uses a null gui.
     # Changing g.app.gui here is a major hack.
@@ -28001,8 +27993,7 @@ def openWithFileName(fileName,old_c,
         return False, None
         
     def munge(name):
-        name = name or ''
-        return g.os_path_normpath(name).lower()
+        return g.os_path_normpath(name or '').lower()
 
     # Create a full, normalized, Unicode path name, preserving case.
     fileName = g.os_path_normpath(g.os_path_abspath(fileName))
@@ -28014,56 +28005,49 @@ def openWithFileName(fileName,old_c,
             frame.bringToFront()
             frame.c.setLog()
             return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+        
+    # Open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
     try:
-        if old_c:
-            # New in 4.4: We must read the file *twice*.
-            # The first time sets settings for the later call to c.finishCreate.
-            # g.trace('***** prereading',fileName)
-            c2 = g.app.config.openSettingsFile(fileName)
-            if c2: g.app.config.updateSettings(c2,localFlag=True)
-            g.doHook('open0')
-            
-        # Open the file in binary mode to allow 0x1a in bodies & headlines.
-        theFile = open(fileName,'rb')
-        c,frame = app.newLeoCommanderAndFrame(fileName)
-        frame.log.enable(enableLog)
-        g.app.writeWaitingLog() # New in 4.3: write queued log first.
-        c.beginUpdate()
-        try:
-            if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-                c.setLog()
-                app.lockLog()
-                frame.c.fileCommands.open(
-                    theFile,fileName,
-                    readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-                app.unlockLog()
-                for frame in g.app.windowList:
-                    # The recent files list has been updated by menu.updateRecentFiles.
-                    frame.c.config.setRecentFiles(g.app.config.recentFiles)
-            # Bug fix in 4.4.
-            frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-            g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
-        finally:
-            c.endUpdate()
-            # makeTrees must be called after the first real redraw
-            # because it requires a valid value for c.rootPosition().
-            if frame.c.chapterController:
-                frame.c.chapterController.makeTrees()
-            k = c.k
-            k and k.setInputState(k.unboundKeyAction)
-            if c.config.getBool('outline_pane_has_initial_focus'):
-                c.treeWantsFocusNow()
-            else:
-                c.bodyWantsFocusNow()
-        return True, frame
-    except IOError:
-        # Do not use string + here: it will fail for non-ascii strings!
-        g.es("can not open: %s" % (fileName), color="blue")
-        return False, None
-    except Exception:
-        g.es("exceptions opening: %s" % (fileName),color="red")
-        g.es_exception()
-        return False, None
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # makeTrees must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.makeTrees()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame
 #@nonl
 #@-node:ekr.20031218072017.2052:g.openWithFileName
 #@+node:ekr.20041001161108:doPlugins

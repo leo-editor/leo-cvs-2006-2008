@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="47" left="361" height="732" width="802"/>
+	<global_window_position top="47" left="361" height="712" width="802"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -374,9 +374,9 @@
 </v>
 </v>
 <v t="EKR.20040524104904.211"><vh>Chapter 8: Customizing Leo</vh>
-<v t="ekr.20050901101608.4" a="E"><vh>@rst html\customizing.html</vh>
+<v t="ekr.20050901101608.4"><vh>@rst html\customizing.html</vh>
 <v t="ekr.20050901102055"><vh>@rst-no-head links</vh></v>
-<v t="EKR.20040524104904.140" a="E"><vh>Specifying settings</vh>
+<v t="EKR.20040524104904.140"><vh>Specifying settings</vh>
 <v t="ekr.20070317043727"><vh>Organizer nodes</vh></v>
 <v t="ekr.20070317043727.1"><vh>@ignore nodes</vh></v>
 <v t="ekr.20070317043727.2"><vh>Simple settings nodes</vh></v>
@@ -468,8 +468,8 @@
 <v t="ekr.20050901092232.7"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050912125144" a="E"><vh>Chapter 12: Plugins</vh>
-<v t="ekr.20050912125144.1" a="E"><vh>@rst html\plugins.html</vh>
+<v t="ekr.20050912125144"><vh>Chapter 12: Plugins</vh>
+<v t="ekr.20050912125144.1"><vh>@rst html\plugins.html</vh>
 <v t="ekr.20050912125735"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050912125735.868"><vh>Body pane</vh>
 <v t="ekr.20050912125735.869"><vh>arrows.py</vh></v>
@@ -508,10 +508,10 @@
 <v t="ekr.20050912125735.344"><vh>trace_keys.py</vh></v>
 <v t="ekr.20050912125735.346"><vh>trace_tags.py</vh></v>
 </v>
-<v t="ekr.20050912125735.2712" a="E"><vh>External editors &amp; Open With</vh>
+<v t="ekr.20050912125735.2712"><vh>External editors &amp; Open With</vh>
 <v t="ekr.20050912125735.2713"><vh>mod_tempfname.py</vh></v>
 <v t="ekr.20050912125735.2716"><vh>open_shell.py</vh></v>
-<v t="ekr.20050912125735.2726" a="TV"><vh>open_with.py</vh></v>
+<v t="ekr.20050912125735.2726"><vh>open_with.py</vh></v>
 <v t="ekr.20050912125735.3209"><vh>temacs.py &amp; usetemacs.py</vh></v>
 <v t="ekr.20050912125735.2736"><vh>vim.py</vh></v>
 <v t="ekr.20050912125735.2749"><vh>word_export.py</vh></v>
@@ -3039,8 +3039,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070316182323.1" a="E"><vh>4.4.3 alpha 2</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20070316182323.1"><vh>4.4.3 alpha 2</vh>
 <v t="ekr.20070317044545.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070317044545.2"><vh>Bugs</vh>
 <v t="ekr.20070317044545.3"><vh>Fixed an escape bug in new colorizer</vh></v>
@@ -20233,20 +20233,24 @@ Notes:
 
 - ext is a string or None. If None, Leo computes a file extension base on what
   @language directive is in effect.
+  
+- If the .leo file being loaded contains  @openwith nodes, the File:Open With menu contains only the items created by those nodes.  Similarly, @openwith nodes in myLeoSettings.leo override entries in leoSettings.leo.
 
-This code will take advantage of Python's new subprocess module if it is
-present. This module comes standard with Python 2.4. For Linux systems, Leo will
-use subprocess.py in Leo's extensions folder if necessary.
+- If no @openwith nodes are found anywhere the openWith plugin uses hard-coded tables in the plugin itself.
+
+This plugin will use Python's new subprocess module if it is present. This
+module comes standard with Python 2.4. For Linux systems, Leo will use
+subprocess.py in Leo's extensions folder if necessary.
 
 For Windows systems you can install Python's subprocess module in Python 2.2 or
 2.3 as follows:
     
-    - Go to http://www.effbot.org/downloads/#subprocess
+- Go to http://www.effbot.org/downloads/#subprocess
 
-    - Download and execute one of the following installers, depending on your version of Python::
+- Download and execute one of the following installers, depending on your version of Python::
 
-        subprocess-0.1-20041012.win32-py2.3.exe 
-        subprocess-0.1-20041012.win32-py2.2.exe
+    subprocess-0.1-20041012.win32-py2.3.exe 
+    subprocess-0.1-20041012.win32-py2.2.exe
         
 This installer installs the subprocess sources and also _subprocess.pyd in Python's site-packages folder.</t>
 <t tx="ekr.20050912125735.2736">A plugin that communicates with VIM:

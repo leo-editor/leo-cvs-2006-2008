@@ -3487,7 +3487,7 @@ self.extension_dict = {
     "w"     : "cweb" }
 #@-node:ekr.20031218072017.368:<< define global data structures >> app
 #@-node:ekr.20031218072017.1416:app.__init__
-#@+node:ekr.20031218072017.1264:getBaseDirectory
+#@+node:ekr.20031218072017.1264:g.getBaseDirectory
 # Handles the conventions applying to the "relative_path_base_directory" configuration option.
 
 def getBaseDirectory(c):
@@ -3510,7 +3510,7 @@ def getBaseDirectory(c):
         return base # base need not exist yet.
     else:
         return "" # No relative base given.
-#@-node:ekr.20031218072017.1264:getBaseDirectory
+#@-node:ekr.20031218072017.1264:g.getBaseDirectory
 #@-node:ekr.20050222045210:Better @path conventions
 #@-node:ekr.20050225070857:@path stuff
 #@+node:ekr.20031218072017.833:Use @file extension by default if no @language
