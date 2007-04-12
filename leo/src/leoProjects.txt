@@ -16836,7 +16836,7 @@ def save(self,fileName):
             ok = self.write_Leo_file(fileName,False) # outlineOnlyFlag
             if ok:
                 c.setChanged(False) # Clears all dirty bits.
-                g.es("saved: " + g.shortFileName(fileName))
+                ### g.es("saved: " + g.shortFileName(fileName))
                 if c.config.save_clears_undo_buffer:
                     g.es("clearing undo")
                     c.undoer.clearUndoState()

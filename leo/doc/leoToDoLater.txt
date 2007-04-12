@@ -5814,8 +5814,9 @@ if isOrphan and isThin:
 def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
 
     c = self.c ; frame = c.frame
-    if not self.use_sax: # Read the entire file into the buffer
-        self.fileBuffer = theFile.read() ; theFile.close()
+    if not self.use_sax:
+        << read the entire file into the buffer >>
+        theFile.close()
         self.fileIndex = 0
     << Set the default directory >>
     self.topPosition = None
@@ -5831,6 +5832,21 @@ def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
         self.fileBuffer = ""
     return ok
 #@nonl
+#@+node:ekr.20070412103240:<< read the entire file into the buffer >>
+isZipped = zipfile.is_zipfile(fileName)
+
+if isZipped:
+    contentsName = g.shortFileName(fileName)
+    if contentsName.endswith('.zip.leo'):
+        contentsName = contentsName[:-8]+'.leo'
+    elif contentsName.endswith('.zip'):
+        contentsNmae = contentsName[:-4]
+    # g.trace('contentsName',contentsName)
+    contentsName = g.toEncodedString(contentsName,self.leo_file_encoding,reportErrors=True)
+    self.fileBuffer = theFile.read(contentsName)
+else:
+    self.fileBuffer = theFile.read()
+#@-node:ekr.20070412103240:<< read the entire file into the buffer >>
 #@+node:ekr.20031218072017.2298:<< Set the default directory >>
 @ The most natural default directory is the directory containing the .leo file that we are about to open.  If the user has specified the "Default Directory" preference that will over-ride what we are about to set.
 @c
