@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="708" width="954"/>
+	<global_window_position top="10" left="238" height="688" width="954"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -12,7 +12,7 @@
 <v t="ekr.20070326094544"><vh>@chapters</vh>
 <v t="ekr.20070326094544.1"><vh>@chapter trash</vh></v>
 </v>
-<v t="ekr.20041119035137" a="E" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
 <v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
@@ -32,7 +32,7 @@
 <v t="ekr.20041119035931"><vh>\@if expression</vh></v>
 <v t="ekr.20041119110141"><vh>\@ifplatform platform-name</vh></v>
 <v t="ekr.20041119035704.2"><vh>\@ignore comment</vh></v>
-<v t="ekr.20070411172718" a="TV"><vh>\@openwith name = shortcut</vh></v>
+<v t="ekr.20070411172718"><vh>\@openwith name = shortcut</vh></v>
 <v t="ekr.20041119035931.1"><vh>\@page comment</vh></v>
 <v t="ekr.20041119105509"><vh>\@set name = value</vh></v>
 <v t="ekr.20041120155431.1"><vh>\@shortcuts</vh></v>
@@ -80,7 +80,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -6370,9 +6370,7 @@ False: Chapter tabs are disabled, as are chapter commands.</t>
 </t>
 <t tx="ekr.20070411101857.2">'subprocess.Popen','C:/Program Files/Microsoft Office/Office/WINWORD.exe',None</t>
 <t tx="ekr.20070411101857.3">'subprocess.Popen','C:/Program Files/Windows NT/Accessories/wordpad.exe',None</t>
-<t tx="ekr.20070411172718">This plugin creates menu items in the File:Open With menu.
-
-@openwith nodes in @settings trees create menu items. The openWith
+<t tx="ekr.20070411172718">@openwith nodes in @settings trees create menu items. The openWith
 plugin must be active for these settings to have any effect.
 
 The headline of an @openwith node has the form::
@@ -6390,7 +6388,7 @@ For example::
     
     'subprocess.Popen',['pythonw','C:/Python24/Lib/idlelib/idle.pyw'],'.py'
     
-When the user selects this menu itmen Leo executes command(arg+path) where path
+When the user selects this menu item Leo executes command(arg+path) where path
 is the full path to the temp file. The ext argument specifies the extension of
 the temp file. Notes:
 
@@ -6406,6 +6404,13 @@ the temp file. Notes:
 - arg is either a single string or a list of strings.
 
 - ext is a string or None. If None, Leo computes a file extension base on what
-  @language directive is in effect.</t>
+  @language directive is in effect.
+  
+- If the .leo file being loaded contains @openwith nodes, the File:Open With
+menu contains only the items created by those nodes. Similarly, @openwith nodes
+in myLeoSettings.leo override entries in leoSettings.leo.
+
+- If no @openwith nodes are found anywhere the openWith plugin uses hard-coded
+tables in the plugin itself.</t>
 </tnodes>
 </leo_file>
