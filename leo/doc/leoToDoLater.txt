@@ -5836,13 +5836,8 @@ def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
 isZipped = zipfile.is_zipfile(fileName)
 
 if isZipped:
-    contentsName = g.shortFileName(fileName)
-    if contentsName.endswith('.zip.leo'):
-        contentsName = contentsName[:-8]+'.leo'
-    elif contentsName.endswith('.zip'):
-        contentsNmae = contentsName[:-4]
-    # g.trace('contentsName',contentsName)
-    contentsName = g.toEncodedString(contentsName,self.leo_file_encoding,reportErrors=True)
+    aList = theFile.infolist()
+    contentsName = aList[0].filename
     self.fileBuffer = theFile.read(contentsName)
 else:
     self.fileBuffer = theFile.read()

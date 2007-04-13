@@ -12241,6 +12241,8 @@ def defineFileMenuTop2Table (self):
         ('&Close','close-window'),
         ('&Save','save-file'),
         ('Save &As','save-file-as'),
+        ('Save As &Unzipped','save-file-as-unzipped'),
+        ('Save As &Zipped','save-file-as-zipped'),
         ('Save &To','save-file-to'),
         ('Re&vert To Saved','revert'),
     ]
@@ -16836,7 +16838,7 @@ def save(self,fileName):
             ok = self.write_Leo_file(fileName,False) # outlineOnlyFlag
             if ok:
                 c.setChanged(False) # Clears all dirty bits.
-                ### g.es("saved: " + g.shortFileName(fileName))
+                self.putSavedMessage(fileName)
                 if c.config.save_clears_undo_buffer:
                     g.es("clearing undo")
                     c.undoer.clearUndoState()
