@@ -855,6 +855,29 @@ class baseCommands:
             c.fileCommands.saveAs(c.mFileName)
             c.updateRecentFiles(c.mFileName)
     #@-node:ekr.20031218072017.2835:saveAs
+    #@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
+    def saveAsUnzipped (self,event=None):
+        
+        '''Save a Leo outline to a file with a new filename,
+        ensuring that the file is not compressed.'''
+        self.saveAsZippedHelper(False)
+        
+    def saveAsZipped (self,event=None):
+    
+        '''Save a Leo outline to a file with a new filename,
+        ensuring that the file is compressed.'''
+        self.saveAsZippedHelper(True)
+        
+    def saveAsZippedHelper (self,isZipped):
+        
+        c = self
+        oldZipped = c.isZipped
+        c.isZipped = isZipped
+        try:
+            c.saveAs()
+        finally:
+            c.isZipped = oldZipped
+    #@-node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
     #@+node:ekr.20031218072017.2836:saveTo
     def saveTo (self,event=None):
         

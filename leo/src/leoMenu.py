@@ -608,6 +608,8 @@ class leoMenu:
             ('&Close','close-window'),
             ('&Save','save-file'),
             ('Save &As','save-file-as'),
+            ('Save As &Unzipped','save-file-as-unzipped'),
+            ('Save As &Zipped','save-file-as-zipped'),
             ('Save &To','save-file-to'),
             ('Re&vert To Saved','revert'),
         ]

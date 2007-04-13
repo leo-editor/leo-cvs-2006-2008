@@ -5455,6 +5455,8 @@ class leoCommandsClass (baseEditCommandsClass):
             'revert':                       c.revert,
             'save-file':                    c.save,
             'save-file-as':                 c.saveAs,
+            'save-file-as-unzipped':        c.saveAsUnzipped,
+            'save-file-as-zipped':          c.saveAsZipped,
             'save-file-to':                 c.saveTo,
             'settings':                     c.preferences,
             'set-colors':                   c.colorPanel,

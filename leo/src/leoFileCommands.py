@@ -835,13 +835,8 @@ class baseFileCommands:
             isZipped = zipfile.is_zipfile(fileName)
             
             if isZipped:
-                contentsName = g.shortFileName(fileName)
-                if contentsName.endswith('.zip.leo'):
-                    contentsName = contentsName[:-8]+'.leo'
-                elif contentsName.endswith('.zip'):
-                    contentsNmae = contentsName[:-4]
-                # g.trace('contentsName',contentsName)
-                contentsName = g.toEncodedString(contentsName,self.leo_file_encoding,reportErrors=True)
+                aList = theFile.infolist()
+                contentsName = aList[0].filename
                 self.fileBuffer = theFile.read(contentsName)
             else:
                 self.fileBuffer = theFile.read()
@@ -2286,6 +2281,76 @@ class baseFileCommands:
     #@-node:ekr.20060919104530:Sax
     #@-node:ekr.20031218072017.3020:Reading
     #@+node:ekr.20031218072017.3032:Writing
+    #@+node:ekr.20070413045221.2:Top-level  (leoFileCommands)
+    #@+node:ekr.20031218072017.1720:save
+    def save(self,fileName):
+    
+        c = self.c ; v = c.currentVnode()
+    
+        # New in 4.2.  Return ok flag so shutdown logic knows if all went well.
+        ok = g.doHook("save1",c=c,p=v,v=v,fileName=fileName)
+        # redraw_flag = g.app.gui.guiName() == 'tkinter'
+        if ok is None:
+            c.beginUpdate()
+            try:
+                c.endEditing()# Set the current headline text.
+                self.setDefaultDirectoryForNewFiles(fileName)
+                ok = self.write_Leo_file(fileName,False) # outlineOnlyFlag
+                if ok:
+                    c.setChanged(False) # Clears all dirty bits.
+                    self.putSavedMessage(fileName)
+                    if c.config.save_clears_undo_buffer:
+                        g.es("clearing undo")
+                        c.undoer.clearUndoState()
+            finally:
+                c.endUpdate()
+        g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
+        return ok
+    #@-node:ekr.20031218072017.1720:save
+    #@+node:ekr.20031218072017.3043:saveAs
+    def saveAs(self,fileName):
+    
+        c = self.c ; v = c.currentVnode()
+    
+        if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
+            c.beginUpdate()
+            try:
+                c.endEditing() # Set the current headline text.
+                self.setDefaultDirectoryForNewFiles(fileName)
+                if self.write_Leo_file(fileName,False): # outlineOnlyFlag
+                    c.setChanged(False) # Clears all dirty bits.
+                    self.putSavedMessage(fileName)
+            finally:
+                c.endUpdate()
+        g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
+    #@-node:ekr.20031218072017.3043:saveAs
+    #@+node:ekr.20031218072017.3044:saveTo
+    def saveTo (self,fileName):
+    
+        c = self.c ; v = c.currentVnode()
+    
+        if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
+            c.beginUpdate()
+            try:
+                c.endEditing()# Set the current headline text.
+                self.setDefaultDirectoryForNewFiles(fileName)
+                self.write_Leo_file(fileName,False) # outlineOnlyFlag
+                self.putSavedMessage(fileName)
+            finally:
+                c.endUpdate()
+        g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
+    #@-node:ekr.20031218072017.3044:saveTo
+    #@+node:ekr.20070413061552:putSavedMessage
+    def putSavedMessage (self,fileName):
+        
+        c = self.c
+        
+        zipMark = g.choose(c.isZipped,'[zipped] ','')
+        
+        g.es("saved: %s%s" % (zipMark,g.shortFileName(fileName)))
+    #@nonl
+    #@-node:ekr.20070413061552:putSavedMessage
+    #@-node:ekr.20070413045221.2:Top-level  (leoFileCommands)
     #@+node:ekr.20031218072017.1570:assignFileIndices & compactFileIndices
     def assignFileIndices (self):
         
@@ -2948,63 +3013,6 @@ class baseFileCommands:
         return None
     #@nonl
     #@-node:ekr.20060919064401:putToOPML
-    #@+node:ekr.20031218072017.1720:save
-    def save(self,fileName):
-    
-        c = self.c ; v = c.currentVnode()
-    
-        # New in 4.2.  Return ok flag so shutdown logic knows if all went well.
-        ok = g.doHook("save1",c=c,p=v,v=v,fileName=fileName)
-        # redraw_flag = g.app.gui.guiName() == 'tkinter'
-        if ok is None:
-            c.beginUpdate()
-            try:
-                c.endEditing()# Set the current headline text.
-                self.setDefaultDirectoryForNewFiles(fileName)
-                ok = self.write_Leo_file(fileName,False) # outlineOnlyFlag
-                if ok:
-                    c.setChanged(False) # Clears all dirty bits.
-                    ### g.es("saved: " + g.shortFileName(fileName))
-                    if c.config.save_clears_undo_buffer:
-                        g.es("clearing undo")
-                        c.undoer.clearUndoState()
-            finally:
-                c.endUpdate()
-        g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
-        return ok
-    #@-node:ekr.20031218072017.1720:save
-    #@+node:ekr.20031218072017.3043:saveAs
-    def saveAs(self,fileName):
-    
-        c = self.c ; v = c.currentVnode()
-    
-        if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
-            c.beginUpdate()
-            try:
-                c.endEditing() # Set the current headline text.
-                self.setDefaultDirectoryForNewFiles(fileName)
-                if self.write_Leo_file(fileName,False): # outlineOnlyFlag
-                    c.setChanged(False) # Clears all dirty bits.
-                    ### g.es("saved: " + g.shortFileName(fileName))
-            finally:
-                c.endUpdate()
-        g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
-    #@-node:ekr.20031218072017.3043:saveAs
-    #@+node:ekr.20031218072017.3044:saveTo
-    def saveTo (self,fileName):
-    
-        c = self.c ; v = c.currentVnode()
-    
-        if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
-            c.beginUpdate()
-            try:
-                c.endEditing()# Set the current headline text.
-                self.setDefaultDirectoryForNewFiles(fileName)
-                self.write_Leo_file(fileName,False) # outlineOnlyFlag
-            finally:
-                c.endUpdate()
-        g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
-    #@-node:ekr.20031218072017.3044:saveTo
     #@+node:ekr.20031218072017.3045:setDefaultDirectoryForNewFiles
     def setDefaultDirectoryForNewFiles (self,fileName):
         
@@ -3088,18 +3096,12 @@ class baseFileCommands:
             #@+node:ekr.20060929103258:<< create theActualFile >>
             if toString:
                 theActualFile = None
-            elif c.config.getBool('compress_all_leo_files'): # or c.isZipped
-                g.trace('writing zipped file')
+            elif c.isZipped:
                 self.toString = toString = True
                 theActualFile = None
                 toZip = True
             else:
-                if fileName.endswith('.zip'):
-                    fileName = fileName[:-4]
-                elif fileName.endswith('.zip.leo'):
-                    fileName = fileName[:-8]+'.leo'
                 theActualFile = open(fileName, 'wb')
-            #@nonl
             #@-node:ekr.20060929103258:<< create theActualFile >>
             #@nl
             # t1 = time.clock()
@@ -3127,8 +3129,6 @@ class baseFileCommands:
                 #@nl
                 # t3 = time.clock()
                 # g.es_print('len %d, putCount %d' % (len(s),self.putCount)) # 'put',t2-t1,'write&close',t3-t2)
-            if not toZip:
-                g.es("saved: " + g.shortFileName(fileName))
             self.outputFile = None
             self.toString = False
             return True
@@ -3160,29 +3160,20 @@ class baseFileCommands:
     #@+node:ekr.20070412095520:writeZipFile
     def writeZipFile (self,s):
         
-        # contentsName is the name of the file in the archive.
-        contentsName = g.shortFileName(self.mFileName)
-        if contentsName.endswith('.zip.leo'):
-            contentsName = contentsName[:-8]+'.leo'
-        elif contentsName.endswith('.leo.zip'):
-            contentsName = contentsName[:-4]
+        # The name of the file in the archive.
+        contentsName = g.toEncodedString(
+            g.shortFileName(self.mFileName),
+            self.leo_file_encoding,reportErrors=True)
         
-        # The zipFileName is the name of the archive.
-        if 1: # Create .zip.leo files.
-            zipFileName = contentsName[:-4] + '.zip.leo'
-        else: # Create .leo.zip files
-            zipFileName = contentsName + '.zip'
-    
-        # g.trace('zipFileName',zipFileName,'contents',contentsName)
-    
+        # The name of the archive itself.
+        fileName = g.toEncodedString(
+            self.mFileName,
+            self.leo_file_encoding,reportErrors=True)
+        
         # Write the archive.
-        contentsName = g.toEncodedString(contentsName,self.leo_file_encoding,reportErrors=True)
-        encodedZipFileName  = g.toEncodedString(zipFileName,self.leo_file_encoding,reportErrors=True)
-        theFile = zipfile.ZipFile(encodedZipFileName,'w')
+        theFile = zipfile.ZipFile(fileName,'w',zipfile.ZIP_DEFLATED)
         theFile.writestr(contentsName,s)
         theFile.close()
-        
-        g.es("saved: " + zipFileName)
     #@-node:ekr.20070412095520:writeZipFile
     #@-node:ekr.20031218072017.3046:write_Leo_file
     #@+node:ekr.20031218072017.2012:writeAtFileNodes
