@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.5">
-	<global_window_position top="47" left="361" height="712" width="802"/>
+<globals body_outline_ratio="0.647398843931">
+	<global_window_position top="47" left="361" height="818" width="894"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3478,6 +3478,16 @@ Notes:
 -   The ``Save``, ``Save As`` and ``Save To`` commands save the Leo window to a file.
     The ``Save As`` command changes the name of the outline being edited;
     the ``Save To`` command does not.
+    
+    **New in Leo 4.4.3**: The ``Save File As Zipped`` command is the same as the
+    ``Save As`` command except that the resulting .leo file is compressed with Python's zipfile module.
+    Similarly, the ``Save File As Unzipped`` command is the same as the ``Save As`` command
+    except that the resulting .leo file is not compressed.
+    The ``Save``, ``Save As`` and ``Save To`` commands compress the file if it was originally compressed.
+    **Note**: Leo writes files with .leo extension, regardless of whether the file is zipped or not.
+    Zipped .leo files contain a single archive, whose name is the same as the .leo file itself.
+    Outside of Leo you can change the extension to .leo.zip and use stuffit or other program to expand the .leo file
+    contained within.
 
 -   The ``Revert`` command reloads a file, discarding any changes made to the file since it was last saved.
 
