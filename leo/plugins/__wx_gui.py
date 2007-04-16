@@ -14,6 +14,7 @@ __version__ = '0.6'
 # 
 # 0.5 EKR: Released with Leo 4.4.3 a1.
 # 0.6 EKR: Released with Leo 4.4.3 a2.
+# 0.7 EKR: Added version check in init.
 #@-at
 #@nonl
 #@-node:ekr.20050719111045:<< version history >>
@@ -96,6 +97,15 @@ except ImportError:
 #@+node:ekr.20050719111045.1: init
 def init ():
     
+    if not wx: return false
+    
+    aList = wx.version().split('.')
+    v1,v2 = aList[0],aList[1]
+
+    if not g.CheckVersion ('%s.%s' % (v1,v2),'2.8'):  
+        g.es_print('wx_gui plugin requires wxPython 2.8 or later')
+        return False
+    
     ok = wx and not g.app.gui and not g.app.unitTesting # Not Ok for unit testing!
 
     if ok:
@@ -131,6 +141,7 @@ def name2color (name,default='white'):
 #@nl
 
 if wx:
+
     #@    @+others
     #@+node:edream.110203113231.560:Find/Spell classes
     #@+node:edream.111503093140:wxSearchWidget
