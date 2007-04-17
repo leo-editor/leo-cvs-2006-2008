@@ -2271,18 +2271,19 @@ class leoTkinterTree (leoFrame.leoTree):
     
         c = self.c
     
-        if self.editPosition() and p != self.editPosition():
+        if p and p != self.editPosition():
+            
+            if self.trace_edit and not g.app.unitTesting:
+                g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
+    
             c.beginUpdate()
             try:
                 self.endEditLabel()
             finally:
-                c.endUpdate(False)
+                c.endUpdate(True)
     
         self.setEditPosition(p) # That is, self._editPosition = p
         
-        if self.trace_edit and not g.app.unitTesting:
-            g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
-    
         if p and c.edit_widget(p):
             # g.trace('selectAll',selectAll,g.callers())
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
