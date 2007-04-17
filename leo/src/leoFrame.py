@@ -2654,7 +2654,7 @@ class nullIconBarClass:
         if not command:
             def command(name=name):
                 print "command for %s" % (name)
-                
+    
         class nullButtonWidget:
             def __init__ (self,c,command,name,text):
                 self.c = c
@@ -2663,6 +2663,11 @@ class nullIconBarClass:
                 self.text = text
             def __repr__ (self):
                 return self.name
+            def cget(self,*args,**keys):
+                pass
+            def configure (self,*args,**keys):
+                pass
+            
                 
         b = nullButtonWidget(self.c,command,name,text)
         return b
