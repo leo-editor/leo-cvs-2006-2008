@@ -209,7 +209,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
     
     global loadedModules,loadingModuleNameStack
     
-    # g.trace(moduleOrFileName) # ,g.callers())
+    verbose = verbose or g.app.config.getBool(c=None,setting='trace_plugins')
     
     if moduleOrFileName.endswith('.py'):
         moduleName = moduleOrFileName [:-3]
