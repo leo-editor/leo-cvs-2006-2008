@@ -3378,6 +3378,118 @@ def raisePage (self,name):
 #@-node:ekr.20070317075059.5:cc.raisePage
 #@-node:ekr.20070317131205:From chapter
 #@-node:ekr.20070317085508:Not used from chapters.py
+#@+node:ekr.20070325155208.2:Not used from chapter
+#@+node:ekr.20070317075059.2:chapter.onFocusIn & helpers (NOT USED)
+def onFocusIn (self,event,body,bodyCtrl):
+
+    '''Set the focus to the proper body and bodyCtrl.'''
+
+    tt = self ; c = tt.c ; nb = tt.nb
+
+    # g.trace(event,id(body),id(bodyCtrl))
+
+    changeCtrl = body.frame.bodyCtrl != bodyCtrl
+
+    # Switch the injected ivars.
+    body.frame.body = body
+    body.frame.bodyCtrl = body.bodyCtrl
+
+    if not hasattr(body,'lastChapter'):
+        body.lastChapter = nb.getcurselection()
+
+    # Select body.lastChapter if it exists, or the present chapter otherwise.
+    pageName = tt.getValidChapterName(body.lastChapter)
+    changePage = pageName != nb.getcurselection()
+    if changePage:
+        body.lastChapter = pageName
+        nb.selectpage(pageName)
+
+    tt.selectNodeForEditor(body)
+    if changePage or changeCtrl:
+        # Do this only if necessary: it interferes with the Find command.
+        tt.activateEditor(body)
+#@nonl
+#@+node:ekr.20070317075059.3:getValidChapterName
+def getValidChapterName (self,name):
+
+    '''Return name if its chapter still exists.
+    Otherwise return the name of the presently selected tab.'''
+
+    tt = self ; nb = tt.nb
+
+    try:
+        nb.index(name)
+    except:
+        name = nb.getcurselection()
+
+    # g.trace(name)
+    return name
+#@nonl
+#@-node:ekr.20070317075059.3:getValidChapterName
+#@+node:ekr.20070317075059.4:selectNodeForEditor
+def selectNodeForEditor (self,body):
+
+    '''Select the next node for the editor.'''
+
+    tt = self ; c = tt.c
+
+    if not hasattr(body,'lastPosition'):
+        body.lastPosition = c.currentPosition()
+
+    if body.lastPosition == c.currentPosition():
+        pass
+    elif body.lastPosition.exists(c):
+        c.selectPosition(body.lastPosition)
+    else:
+        g.trace('last position does not exist',color='red')
+        c.selectPosition(c.rootPosition())
+
+    body.lastPosition = c.currentPosition()
+    # g.trace(body.lastPosition.headString())
+#@nonl
+#@-node:ekr.20070317075059.4:selectNodeForEditor
+#@-node:ekr.20070317075059.2:chapter.onFocusIn & helpers (NOT USED)
+#@+node:ekr.20070317075059.6:chapter.setTree (NOT USED )
+def setTree (self,name):
+
+    tt = self ; c = tt.c
+    chapter = self.getChapter(name)
+    sv = chapter and chapter.sv
+
+    # g.trace(name,g.callers())
+
+    if not sv:
+        # The page hasn't been fully created yet.  This is *not* an error.
+        return None
+
+    chapter.makeCurrent()
+
+    # Set body ivars.
+    body = c.frame.body
+    body.lastChapter = name
+    body.lastPosition = chapter.cp
+
+    # Configure the tab.
+    tab = tt.nb.tab(name)
+    self.activateEditor(c.frame.body)
+#@nonl
+#@-node:ekr.20070317075059.6:chapter.setTree (NOT USED )
+#@+node:ekr.20070317130648.1:chapter.findRootPosition (use nodeController method instead)
+def findPositionAnywhere (self,v):
+    
+    '''Return a valid position p such that p.v == v.'''
+    
+    root = c.rootPosition()
+    if not root: return None
+   
+    for p in p.self_and_siblings_iter():
+        if p.v == v:
+                return p
+
+    return None
+#@nonl
+#@-node:ekr.20070317130648.1:chapter.findRootPosition (use nodeController method instead)
+#@-node:ekr.20070325155208.2:Not used from chapter
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
