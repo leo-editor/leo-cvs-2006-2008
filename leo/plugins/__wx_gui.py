@@ -5,7 +5,7 @@
 
 """A plugin to use wxWidgets as Leo's gui."""
 
-__version__ = '0.7.1'
+__version__ = '0.7.2'
 
 #@<< version history >>
 #@+node:ekr.20050719111045:<< version history >>
@@ -16,6 +16,7 @@ __version__ = '0.7.1'
 # 0.6 EKR: Released with Leo 4.4.3 a2.
 # 0.7 EKR: Added version check in init.
 # 0.7.1 EKR: Fixed blunder in init.
+# 0.7.2 EKR: Put a bad hack in redraw_partial_subtree.
 #@-at
 #@nonl
 #@-node:ekr.20050719111045:<< version history >>
@@ -5697,7 +5698,7 @@ if wx:
                 if sys.platform.startswith('win') and not g.app.unitTesting:
                     self.cleverRedraw() # Slow, but eliminates flash.
                 else:
-                    self.partialRedraw() # Essential for Linu.
+                    self.partialRedraw() # Essential for Linux.
             finally:
                 self.drawing = False # Enable event handlers.
             # if True and not g.app.unitTesting: g.trace('done')
@@ -5938,13 +5939,18 @@ if wx:
             c = self.c ; tree = self.treeCtrl
             node_id = self.redraw_node(parent_id,p)
             # g.trace('createChildren',createChildren,'p',p.headString())
+            
+            forceFull =  not sys.platform.startswith('win') # A terrible hack.
         
             if level > 0:
                 # Create one more level of children.
                 child_p = p.firstChild()
                 while child_p:
                     # Always draw the subtree so the child gets drawn.
-                    newLevel = g.choose(child_p.hasChildren(),level-1,0)
+                    if forceFull:
+                        newLevel = level
+                    else:
+                        newLevel = g.choose(child_p.hasChildren(),level-1,0)
                     self.redraw_partial_subtree(node_id,child_p,level=newLevel)
                     child_p.moveToNext()
         
