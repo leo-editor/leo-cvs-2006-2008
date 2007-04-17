@@ -5,7 +5,7 @@
 
 """A plugin to use wxWidgets as Leo's gui."""
 
-__version__ = '0.6'
+__version__ = '0.7.1'
 
 #@<< version history >>
 #@+node:ekr.20050719111045:<< version history >>
@@ -15,6 +15,7 @@ __version__ = '0.6'
 # 0.5 EKR: Released with Leo 4.4.3 a1.
 # 0.6 EKR: Released with Leo 4.4.3 a2.
 # 0.7 EKR: Added version check in init.
+# 0.7.1 EKR: Fixed blunder in init.
 #@-at
 #@nonl
 #@-node:ekr.20050719111045:<< version history >>
@@ -97,7 +98,7 @@ except ImportError:
 #@+node:ekr.20050719111045.1: init
 def init ():
     
-    if not wx: return false
+    if not wx: return False
     
     aList = wx.version().split('.')
     v1,v2 = aList[0],aList[1]
