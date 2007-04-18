@@ -4392,7 +4392,26 @@ class baseCommands:
     #@-node:ekr.20031218072017.2909:Utilities
     #@-node:ekr.20031218072017.2898:Expand & Contract...
     #@+node:ekr.20031218072017.2913:Goto
-    #@+node:ekr.20070410192154:inChaptersTree & getChaptersTree
+    #@+node:ekr.20070417112650:utils
+    #@+node:ekr.20070417112650.1:getChapterTree
+    def getChapterTree (self,p):
+        
+        '''return the @chapter node containing p or None.'''
+        
+        c = self ; cc = c.chapterController
+    
+        if cc and cc.nodesController and c.config.getBool('use_chapters'):
+            root = cc.nodesController.findChaptersNode()
+            if root:
+                for p2 in root.children_iter():
+                    if p2.isAncestorOf(p):
+                        return p2
+    
+        return None
+        
+    #@nonl
+    #@-node:ekr.20070417112650.1:getChapterTree
+    #@+node:ekr.20070410192154:getChaptersTree
     def getChaptersTree (self):
         
         '''return the node containing the active top-level @chapters tree.'''
@@ -4404,13 +4423,19 @@ class baseCommands:
         else:
             return None
         
+    #@nonl
+    #@-node:ekr.20070410192154:getChaptersTree
+    #@+node:ekr.20070417112650.2:inChaptersTree
     def inChaptersTree (self,p):
         
         '''Return True if p is a descendant of the active @chapters tree.'''
         
         p2 = self.getChaptersTree()
         return p2 and (p2.equal(p) or p2.isAncestorOf(p))
-    #@-node:ekr.20070410192154:inChaptersTree & getChaptersTree
+    #@-node:ekr.20070417112650.2:inChaptersTree
+    #@+node:ekr.20070417112650.3:NewHeadline
+    #@-node:ekr.20070417112650.3:NewHeadline
+    #@-node:ekr.20070417112650:utils
     #@+node:ekr.20070226121510:treeFocusHelper (new in Leo 4.4.3)
     def treeFocusHelper (self):
         
@@ -4424,7 +4449,11 @@ class baseCommands:
     #@+node:ekr.20070226113916:treeSelectHelper (new in Leo 4.4.3)
     def treeSelectHelper (self,p,redraw=True):
         
-        c = self
+        c = self ; current = c.currentPosition()
+        
+        # if c.inChaptersTree(current) and not c.inChaptersTree(p):
+            # g.trace('can not move outside chapter tree.',current,p)
+            # return
     
         if p:
             c.beginUpdate()
@@ -4695,10 +4724,16 @@ class baseCommands:
         c = self ; p = c.currentPosition()
         if not p: return
         
-        p.moveToVisBack()
-        
         if c.inChaptersTree(p):
-            p = c.getChaptersTree().visBack()
+            root = self.getChapterTree(p)
+            if not root: return None
+            p.moveToVisBack()
+            if not root.isAncestorOf(p):
+                return None
+        else:
+            p.moveToVisBack()
+            if c.inChaptersTree(p):
+                p = c.getChaptersTree().visBack()
     
         if p:
             redraw = not p.isVisible()
@@ -4716,10 +4751,16 @@ class baseCommands:
         c = self ; p = c.currentPosition()
         if not p: return
         
-        p.moveToVisNext()
-        
         if c.inChaptersTree(p):
-            p = c.getChaptersTree().lastNode().visNext()
+            root = self.getChapterTree(p)
+            if not root: return None
+            p.moveToVisNext()
+            if not root.isAncestorOf(p):
+                return None
+        else:
+            p.moveToVisNext()
+            if c.inChaptersTree(p):
+                p = c.getChaptersTree().lastNode().visNext()
     
         if p:
             redraw = not p.isVisible()

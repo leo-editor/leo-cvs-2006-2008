@@ -63,13 +63,27 @@ class chapterController:
         # This must be called late in the init process:
         # at present, called by g.openWithFileName and c.new.
         
-        cc = self ; c = cc.c ; nc = cc.nodesController
-    
+        cc = self ; c = cc.c ; nc = cc.nodesController ; tt = cc.tt
+        
         if not nc.findChaptersNode():
             nc.createChaptersNode()
     
         if not nc.findChapterNode('trash'):
             nc.createChapterNode('trash')
+            
+        # Create a chapter for each @chapter node.
+        p = nc.findChaptersNode()
+        if p:
+            tag = '@chapter'
+            for p in p.children_iter():
+                h = p.headString()
+                if h.startswith(tag):
+                    tabName = h[len(tag):].strip()
+                    if tabName and tabName not in ('main','trash') and not self.chaptersDict.get(tabName):
+                        theChapter = chapter(c=c,chapterController=cc,name=tabName,p=p)
+                        self.chaptersDict[tabName] = theChapter
+                        tt.createTab(tabName)
+                        tt.makeTabMenu(tabName,theChapter)
         
         for tabName in ('main','trash'):
             if not self.chaptersDict.get(tabName):
