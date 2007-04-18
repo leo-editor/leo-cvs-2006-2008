@@ -1619,6 +1619,69 @@ class configClass:
     #@-node:ekr.20050424131051:writeRecentFilesFileHelper
     #@-node:ekr.20050424114937.2:writeRecentFilesFile & helper
     #@-node:ekr.20050424114937.1:Reading and writing .leoRecentFiles.txt (g.app.config)
+    #@+node:ekr.20070418073400:g.app.config.printSettings & helper
+    def printSettings (self,c):
+    
+        '''Prints the value of every setting, except key bindings and commands and open-with tables.
+        The following letters indicate where the active setting came from:
+        
+        - D indicates default settings.
+        - F indicates the file being loaded,
+        - L indicates leoSettings.leo,
+        - M indicates myLeoSettings.leo,
+        '''
+        
+        settings = {} # Keys are setting names, values are (letter,val)
+        
+        if c:
+            d = self.localOptionsDict.get(c.hash())
+            self.printSettingsHelper(settings,d,letter='[F]')
+    
+        for d in self.localOptionsList:
+            self.printSettingsHelper(settings,d)
+    
+        for d in self.dictList:
+            self.printSettingsHelper(settings,d)
+            
+        keys = settings.keys() ; keys.sort()
+        for key in keys:
+            data = settings.get(key)
+            letter,val = data
+            print '%45s = %s %s' % (key,letter,val)
+            g.es('%s %s = %s' % (letter,key,val))
+    #@nonl
+    #@+node:ekr.20070418075804:printSettingsHelper
+    def printSettingsHelper(self,settings,d,letter=None):
+    
+        suppressKind = ('shortcut','shortcuts','openwithtable')
+        suppressKeys = (None,'_hash','shortcut')
+        
+        if d:
+            #@        << set letter >>
+            #@+node:ekr.20070418084502:<< set letter >>
+            hash = d.get('_hash').lower()
+            
+            if letter:
+                pass
+            elif hash.endswith('myleosettings.leo'):
+                letter = '[M]'
+            elif hash.endswith('leosettings.leo'):
+                letter = ' ' * 3
+            else:
+                letter = '[D]'
+            
+            # g.trace(letter,hash)
+            #@nonl
+            #@-node:ekr.20070418084502:<< set letter >>
+            #@nl
+            for key in d.keys():
+                if key not in suppressKeys and key not in settings.keys():
+                    bunch = d.get(key)
+                    if bunch.kind not in suppressKind:
+                        settings[key] = (letter,bunch.val)
+    #@nonl
+    #@-node:ekr.20070418075804:printSettingsHelper
+    #@-node:ekr.20070418073400:g.app.config.printSettings & helper
     #@-others
 #@-node:ekr.20041119203941:class configClass
 #@+node:ekr.20041119203941.3:class settingsTreeParser (parserBaseClass)

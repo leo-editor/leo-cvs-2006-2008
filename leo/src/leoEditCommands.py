@@ -4548,12 +4548,15 @@ class helpCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060205165501:getPublicCommands (helpCommands)
     def getPublicCommands (self):
         
+        c = self.c
+        
         return {
             'help-for-minibuffer':      self.helpForMinibuffer,
             'help-for-command':         self.helpForCommand,
             'apropos-autocompletion':   self.aproposAutocompletion,
             'apropos-bindings':         self.aproposBindings,
             'apropos-find-commands':    self.aproposFindCommands,
+            'print-settings':           self.printSettings,
             'python-help':              self.pythonHelp,
         }
     #@-node:ekr.20060205165501:getPublicCommands (helpCommands)
@@ -4922,6 +4925,11 @@ class helpCommandsClass (baseEditCommandsClass):
                 g.restoreStderr()
                 g.restoreStdout()
     #@-node:ekr.20060602154458:pythonHelp
+    #@+node:ekr.20070418074444:printSettings
+    def printSettings (self,event=None):
+        
+        g.app.config.printSettings(self.c)
+    #@-node:ekr.20070418074444:printSettings
     #@-others
 #@-node:ekr.20060205164707:helpCommandsClass
 #@+node:ekr.20050920084036.171:keyHandlerCommandsClass (add docstrings)
