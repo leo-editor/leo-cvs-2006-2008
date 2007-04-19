@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.647398843931">
-	<global_window_position top="47" left="361" height="818" width="894"/>
+<globals body_outline_ratio="0.472295514512">
+	<global_window_position top="14" left="358" height="911" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -730,7 +730,7 @@
 </v>
 </v>
 <v t="EKR.20040524104904.380"><vh>Glossary</vh>
-<v t="ekr.20050901071041"><vh>@rst html\glossary.html</vh>
+<v t="ekr.20050901071041" a="E"><vh>@rst html\glossary.html</vh>
 <v t="ekr.20050901071300"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050901073048"><vh>@rst-no-head glossary</vh></v>
 <v t="ekr.20050901083017"><vh>@rst-no-head end stuff</vh></v>
@@ -10771,7 +10771,10 @@ verbose=True
 
 ###################
 Leo's Users Guide
-###################</t>
+###################
+
+**Important**: LeoDocs.leo (included in all Leo distributions) contains the full source code for all parts of Leo's Users Guide.
+</t>
 <t tx="ekr.20040414163815">`Front Matter`_
 
 `What people are saying about Leo`_
@@ -15369,6 +15372,11 @@ Here are the six ways of creating derived files:
   *Consider using @thin even if you must produce derived files without sentinels*.
   You can use ``@thin`` for most work, then change ``@thin`` to ``@nosent``
   when showing your derived files to the world.
+  
+  **New in Leo 4.4.3**: The @bool force_newlines_in_at_nosent_bodies setting
+  controls whether Leo writes a trailing newline if non-empty body text does not
+  end in a newline. The default is True. In effect, the default value of this
+  setting was False in previous versions of Leo.
 
 \@noref
   This directive produces derived files with minimal sentinels.
@@ -15409,7 +15417,12 @@ For example::
 
 In ``@root`` and ``@unit`` trees, the headline must contain a valid section name.</t>
 <t tx="ekr.20050828174453.1">Leo writes ``@nosent`` trees just as for ``@thin`` trees,
-but Leo writes no sentinels at all.</t>
+but Leo writes no sentinels at all.
+
+**New in Leo 4.4.3**: The @bool force_newlines_in_at_nosent_bodies setting
+controls whether Leo writes a trailing newline if non-empty body text does not
+end in a newline. The default is True. In effect, the default value of this
+setting was False in previous versions of Leo.</t>
 <t tx="ekr.20050828174453.2">The only difference between ``@asis`` and ``@noref`` trees is that files derived from
 ``@noref`` contain sentinels while files derived from ``@asis`` do not.
 
