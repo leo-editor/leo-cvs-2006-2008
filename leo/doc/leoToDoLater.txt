@@ -131,117 +131,6 @@ Tree traversals will be tree traversals.
 Hope that did not muddy the waters even more ... 
 #@-node:ekr.20060329102951.2:Reply
 #@-node:ekr.20060329102951:@ref (maybe)
-#@+node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
-http://sourceforge.net/forum/message.php?msg_id=3578166
-#@nonl
-#@+node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-#@+node:ekr.20060808103849:Report
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=2674828
-By: bwmulder
-
-If I understand correctly, there are two different problems:
-
-- Trailing whitespaces
-- Left indented comments
-
-1. Before commenting on these, a question:
-
-If I write something like
-    a=b
-    if a:
-        @others
-
-[four spaces indentation]
-
-I sometimes see tab characters before the lines inserted for '@others'.
-
-It seems that Leo remembers 'two levels of indentation', and then
-fabricates this indentation using tab characters.
-
-I think it might be more robust if Leo remembered the actual
-characters in front of @others and would use them for indentation.
-
-I suspect that many indentation errors I had with Leo could have been
-avoided had not Leo had its own ideas on how to do indentation.
-
-Maybe Leo could use the exact sequence of characters in front of
-@others for all inserted lines?
-
-2. I do not care much about trailing whitespaces. Most of the time
-they are invisible, but sometimes they are very misleading (trailing in python or C).
-
-As far as I am concerned, Leo need never produce trailing whitespaces.
-
-Maybe we need special machinery if sources have trailing whitespaces
-and the sources are not under our control. 
-
-Not sure if everybody would be happy if we essentially ban all trailing
-whitespaces.
-
-3. Unindented commentlines could be dealt with by using indentation to
-indicate structure.
-
-Of course, this might break the correspondance Leo structure / Python
-structure, which is very ugly.
-
-4. One possible alternative might be a new directive which indicates outindent:
-
-@outindent <number>.
-
-This would apply to the next comment block.
-
-To me, 4. looks a little bit less ugly than 3.
-
-5. As indicated in a different post, I suspect that Leo has a problem
-if almost every node in an outline is changed. Profiling should point
-to the culprit.
-
-> 2. Have Leo strip whitespace from otherwise blank lines, and hope
-that that solves all problems in Perfect Import. This is solving the
-problem in the atFile code. The problem is that if we apply settings
-in general we will get massive changes to derived files. In most
-programming settings these changes might be welcome, but the problem
-is actually making these changes. My first few attempts met with
-abject failure.
-
-Are you saying that you could not remove trailing blanks? What kind of
-problems did you run into?
-
-Summary:
-- Use actual characters in front of @others or <<>> for indentation.
-- Don't write trailing whitespaces
-- Introduce directive for left-indendet comments.
-- Profile to find out what slows Leo down if many nodes change.
-#@nonl
-#@-node:ekr.20060808103849:Report
-#@+node:ekr.20041005105605.210:putIndent
-def putIndent(self,n):
-    
-    """Put tabs and spaces corresponding to n spaces, assuming that we are at the start of a line."""
-
-    if n != 0:
-        w = self.tab_width
-        if w > 1:
-            q,r = divmod(n,w) 
-            self.otabs(q) 
-            self.oblanks(r)
-        else:
-            self.oblanks(n)
-#@-node:ekr.20041005105605.210:putIndent
-#@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-#@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
-@nocolor
-
-- "asis":
-- "zero": no trailing newlines.
-- "one": exactly one trailing newline.
-
-Special case code is required so empty nodes stay empty with "one" option.
-#@nonl
-#@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
-#@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
 #@-node:ekr.20060528155800:Big, not so important
 #@+node:ekr.20060824110846:Colorizing
 #@+node:ekr.20060813121814:Add colorizer files for cweb, forth,  rapidq
@@ -1792,6 +1681,52 @@ It is possible to do pretty much anything you want but you will have to provide 
 #@-node:ekr.20041228074125:(Make drawing more flexible)
 #@-node:ekr.20060227142119:Drawing, printing and rendering
 #@+node:ekr.20041228091154:Commands
+#@+node:ekr.20070306103213:activate-menu-bar command
+top = c.frame.top
+topx,topy = top.winfo_rootx(),top.winfo_rooty()
+
+topMenu = c.frame.menu.getMenu('top')
+topMenu.post(topx,topy)
+#@+node:ekr.20060211101811:Activate menu commands
+#@+node:ekr.20060211100905.1:tkMenu.activateMenu
+def activateMenu (self,menuName):
+    
+    c = self.c ;  top = c.frame.top
+    topx,topy = top.winfo_rootx(),top.winfo_rooty()
+    menu = c.frame.menu.getMenu(menuName)
+
+    if menu:
+        d = self.computeMenuPositions()
+        x = d.get(menuName)
+        if x is None:
+             x = 0 ; g.trace('oops, no menu offset: %s' % menuName)
+        
+        menu.tk_popup(topx+d.get(menuName,0),topy) # Fix by caugm.  Thanks!
+    else:
+        g.trace('oops, no menu: %s' % menuName)
+#@-node:ekr.20060211100905.1:tkMenu.activateMenu
+#@+node:ekr.20060210133835.1:tkMenu.computeMenuPositions
+def computeMenuPositions (self):
+    
+    # A hack.  It would be better to set this when creating the menus.
+    menus = ('File','Edit','Outline','Plugins','Cmds','Window','Help')
+    
+    # Compute the *approximate* x offsets of each menu.
+    d = {}
+    n = 0
+    for z in menus:
+        menu = self.getMenu(z)
+        fontName = menu.cget('font')
+        font = tkFont.Font(font=fontName)
+        # print '%8s' % (z),menu.winfo_reqwidth(),menu.master,menu.winfo_x()
+        d [z] = n
+        # A total hack: sorta works on windows.
+        n += font.measure(z+' '*4)+1
+        
+    return d
+#@-node:ekr.20060210133835.1:tkMenu.computeMenuPositions
+#@-node:ekr.20060211101811:Activate menu commands
+#@-node:ekr.20070306103213:activate-menu-bar command
 #@+node:ekr.20061021131443:Emacs support
 #@+node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
 #@-node:ekr.20060628103226.3:Make sure repeat counts work on basic editing commands
