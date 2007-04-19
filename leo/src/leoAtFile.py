@@ -309,6 +309,7 @@ class atFile:
         self.fileChangedFlag = False # True: the file has actually been updated.
         self.shortFileName = "" # short version of file name used for messages.
         self.thinFile = False
+        self.force_newlines_in_at_nosent_bodies = self.c.config.getBool('force_newlines_in_at_nosent_bodies')
         
         if toString:
             self.outputFile = g.fileLikeObject()
@@ -3106,13 +3107,22 @@ class atFile:
         inCode = True
         #@    << Make sure all lines end in a newline >>
         #@+node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
-        # 11/20/03: except in nosentinel mode.
-        # 1/30/04: and especially in scripting mode.
-        # If we add a trailing newline, we'll generate an @nonl sentinel below.
+        #@+at
+        # 
+        # If we add a trailing newline, we'll generate an @nonl sentinel 
+        # below.
+        # 
+        # - We always ensure a newline in @file and @thin trees.
+        # - This code is not used used in @asis trees.
+        # - New in Leo 4.4.3 b1: We add a newline in @nosent trees unless
+        #   @bool force_newlines_in_at_nosent_bodies = False
+        #@-at
+        #@@c
         
         if s:
-            trailingNewlineFlag = s and s[-1] == '\n'
-            if at.sentinels and not trailingNewlineFlag:
+            trailingNewlineFlag = s[-1] == '\n'
+            if (at.sentinels or at.force_newlines_in_at_nosent_bodies) and not trailingNewlineFlag:
+                # g.trace('Added newline',repr(s))
                 s = s + '\n'
         else:
             trailingNewlineFlag = True # don't need to generate an @nonl
@@ -3358,6 +3368,8 @@ class atFile:
     
         j = g.skip_line(s,i)
         line = s[i:j]
+        
+        # g.trace('atRaw',at.raw,'line',repr(line),g.callers(4))
     
         # c.config.write_strips_blank_lines
         if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
