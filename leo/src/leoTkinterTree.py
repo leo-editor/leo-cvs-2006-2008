@@ -56,7 +56,7 @@ class leoTkinterTree (leoFrame.leoTree):
     callbacksInjected = False
 
     """Leo tkinter tree class."""
-    
+
     #@    @+others
     #@+node:ekr.20040803072955.2:  Notes
     #@@killcolor
@@ -1815,17 +1815,19 @@ class leoTkinterTree (leoFrame.leoTree):
             #@        << activate this window >>
             #@+node:ekr.20040803072955.106:<< activate this window >>
             if p == c.currentPosition():
-                # g.trace("is current")
+                
                 # The *second* click in the headline starts editing.
                 if self.active:
+                    #g.trace("click 2")
                     self.editLabel(p)
                     returnVal = 'continue'
                 else:
+                    #g.trace("click 1")
                     # Set the focus immediately.  This is essential for proper editing.
                     c.treeWantsFocusNow()
                     returnVal = 'break'
             else:
-                # g.trace("not current")
+                #g.trace("not current")
                 self.select(p,scroll=False)
                 w  = c.frame.body.bodyCtrl
                 if c.frame.findPanel:
@@ -1892,7 +1894,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 g.trace('*'*20,'oops')
         if not p: return 'break'
             
-        # g.trace(p.headString())
+        # g.trace(g.app.gui.widget_name(w)) #p.headString())
         
         c.setLog()
     
@@ -2284,8 +2286,9 @@ class leoTkinterTree (leoFrame.leoTree):
     
         self.setEditPosition(p) # That is, self._editPosition = p
         
+        #g.trace(c.edit_widget(p))
+        
         if p and c.edit_widget(p):
-            # g.trace('selectAll',selectAll,g.callers())
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
             self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
             c.headlineWantsFocus(p) # Make sure the focus sticks.
