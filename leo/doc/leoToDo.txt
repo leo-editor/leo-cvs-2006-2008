@@ -98,7 +98,7 @@ By: rogererens
 There's a bug with ordinary hoisting: in the "Outline" menu the "Delete Node"
 menu item is not disabled when the local root is selected.
 #@-node:ekr.20070319185656:Fix minor chapter hoist bug
-#@+node:ekr.20070320065038:.Added @bool force_newlines_in_at_nosent_bodies setting
+#@+node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
 @ 
 
 - It is True by default. In effect, this setting was False in previous versions
@@ -244,7 +244,7 @@ def putCodeLine (self,s,i):
         else:
             at.os(line)
 #@-node:ekr.20041005105605.174:putCodeLine
-#@-node:ekr.20070320065038:.Added @bool force_newlines_in_at_nosent_bodies setting
+#@-node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
 #@+node:ekr.20070325054325:Dist
 #@+node:ekr.20070220082124.3:Make installing aspell easier
 #@-node:ekr.20070220082124.3:Make installing aspell easier
@@ -360,7 +360,7 @@ Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to instal
 @nocolor
 
 To do:
-    
+
 - Create local tree for each chapter.
     - Must copy the hoist stack.
     
@@ -387,293 +387,6 @@ To do:
 - Create @chapters and @chapter nodes as needed when creating a chapter.
 #@nonl
 #@-node:ekr.20070327154725: What I did
-#@+node:ekr.20070317073627.3:class leoTkinterTreeTab
-class leoTkinterTreeTab (leoFrame.leoTreeTab):
-
-    '''A class representing a tabbed outline pane drawn with Tkinter.'''
-
-    @others
-#@nonl
-#@+node:ekr.20070320090557.1: Birth & death
-#@+node:ekr.20070317073819.1: ctor (leoTreeTab)
-def __init__ (self,c,parentFrame,chapterController):
-
-    leoFrame.leoTreeTab.__init__ (self,c,chapterController,parentFrame)
-        # Init the base class.  Sets self.c, self.cc and self.parentFrame.
-
-    self.tabNames = []
-
-    # Keys are tabNames for all these dicts.
-    # Important: tabNames never change, even if their button text changes
-
-    self.buttonsDict = {} # values are Tk.Button's.
-    self.canvasDict = {} # values are Tk.Canvas's.
-    self.chapterDict = {} # values are chapters.
-    self.stringVarDict = {} # values are Tk.StringVars.
-
-    self.createControl()
-
-#@-node:ekr.20070317073819.1: ctor (leoTreeTab)
-#@+node:ekr.20070317073819.2:tt.createControl
-def createControl (self):
-
-    tt = self
-
-    def lowerCallback(tabName,self=self):
-        return self.lowerTab(tabName)
-
-    def raiseCallback(tabName,self=self):
-        return self.raiseTab(tabName)
-
-    tt.nb = nb = Pmw.NoteBook(self.parentFrame,
-        borderwidth = 1, pagemargin = 0, 
-        raisecommand = raiseCallback,
-        lowercommand = lowerCallback,
-        arrownavigation = 0,
-    )
-
-    hull = nb.component('hull')
-
-    nb.pack(fill='both',expand=1)
-#@-node:ekr.20070317073819.2:tt.createControl
-#@-node:ekr.20070320090557.1: Birth & death
-#@+node:ekr.20070317082315:tt.getters
-def getButton (self,tabName):
-
-    tt = self
-
-    if tabName in tt.tabNames:
-        return tt.nb.tab(tabName) # A Tk.Button.
-    else:
-        return None
-
-def getCanvas (self,tabName):
-
-    return self.canvasDict.get(tabName) # A Tk.Canvas
-
-def getFrame (self,tabName):
-
-    tt = self
-
-    if tabName in tt.tabNames:
-        return tt.nb.page(tabName) # A Tk.Frame
-    else:
-        return None
-
-def getSelectedTabName (self):
-
-    return self.nb.getcurselection() # An immutable tab name.
-
-# def getTree (self,tabName):
-    # return self.treeDict.get(tabName) # A leoTkinterTree.
-#@-node:ekr.20070317082315:tt.getters
-#@+node:ekr.20070320093038:Tabs...
-#@+node:ekr.20070317074824:tt.createTab
-def createTab (self,tabName):
-
-    tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
-
-    parentFrame = nb.add(tabName) # page is a Tk.Frame.
-    self.tabNames.append(tabName)
-
-    b = nb.tab(tabName) # b is a Tk.Button.
-
-    b.configure(
-        background=self.selectedTabBackgroundColor,
-        foreground=self.selectedTabForegroundColor)
-
-    canvas = c.frame.createCanvas(parentFrame)
-
-    tt.buttonsDict [tabName ] = b
-    tt.canvasDict [tabName] = canvas
-    tt.stringVarDict [tabName] = Tk.StringVar()
-    
-    if not f.tree:
-        f.tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
-
-    if tabName != 'main':
-        f.tree.redraw_now()
-#@-node:ekr.20070317074824:tt.createTab
-#@+node:ekr.20070317074824.1:tt.destroyTab
-def destroyTab (self,tabName):
-
-    if tabName in self.tabNames:
-        self.nb.delete(tabName)
-        self.tabNames.remove(tabName)
-
-#@-node:ekr.20070317074824.1:tt.destroyTab
-#@+node:ekr.20070317074813:tt.makeTabMenu & helpers
-def makeTabMenu (self,tabName,theChapter):
-
-    '''Create a tab menu.'''
-    
-    tt = self ; cc = tt.cc
-    w = self.buttonsDict.get(tabName)
-    if not w: return cc.error('tt.makeTabMenu: no w')
-
-    tmenu = Tk.Menu(w,tearoff=0)
-    w.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
-    w.tmenu = tmenu
-
-    tt.createTopLevelMenuItems(tmenu,theChapter)
-
-    if 0:
-        tmenu.add_separator()
-        #tt.createConvertMenu(tmenu)
-        # tt.createEditorMenu(tmenu)
-        # tt.createImportExportMenu(tmenu)
-        # tt.createIndexMenu(tmenu)
-        tt.createNodeMenu(tmenu)
-        tt.createTrashMenu(tmenu)
-#@nonl
-#@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-def createTopLevelMenuItems (self,tmenu,theChapter):
-
-    cc = self.cc ; menu = tmenu
-
-    for kind,label,command in (
-        ('','New Chapter',cc.createChapter),
-        ('','Remove This Chapter',cc.removeChapter),
-        ('','Rename This Chapter',cc.renameChapter),
-        ('-',None,None),
-        ('','Empty Trash Barrel',cc.removeChapter),
-        ('-',None,None),
-        ('...','Clone Node To Chapter...',cc.cloneToChapter),
-        ('...','Copy Node To Chapter...',cc.copyToChapter),
-        ('...','Move Node To Chapter...',cc.moveToChapter),
-    ):
-        if kind == '-':
-            menu.add_separator()
-        elif kind == '...':
-            submenu = Tk.Menu(menu,tearoff=0)
-            menu.add_cascade(menu=submenu,label=label)
-            def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu,theChapter=theChapter):
-                self.setupChaptersMenu(submenu,command,theChapter)
-            submenu.configure(postcommand=chapterMenuCallback)
-        else:
-            menu.add_command(label=label,command=command)
-
-    # for name,command in (
-        # ('Clone',cc.cloneToChapter),
-        # ('Copy',cc.copyToChapter),
-        # ('Move',cc.moveToChapter),
-    # ):
-        # submenu = Tk.Menu(menu,tearoff=0)
-        # menu.add_cascade(
-            # menu=submenu,
-            # label='%s Node To Chapter...' % name)
-
-        # def chapterMenuCallback(event=None,cc=cc,submenu=submenu):
-            # self.setupChaptersMenu(submenu,command)
-
-        # submenu.configure(postcommand=chapterMenuCallback)
-
-    # menu.add_separator()
-
-#@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-#@+node:ekr.20070318120043:tt.setupChaptersMenu
-def setupChaptersMenu (self,menu,command,theChapter):
-
-    '''Create a submenu containing the list of all chapters.'''
-
-    tt = self ; nb = tt.nb
-
-    menu.delete(0,'end')
-    current = nb.getcurselection()
-
-    for tabName in nb.pagenames():
-        b = nb.tab(tabName) # Get the (possibly renamed) button text.
-        name = b.cget('text')
-        if tabName != current:
-            # g.trace('name',name,'command',command)
-            def chaptersMenuCallback(event=None,command=command,toChapter=tabName):
-                return command(toChapter=toChapter)
-            menu.add_command(label=name,command=chaptersMenuCallback)
-#@nonl
-#@-node:ekr.20070318120043:tt.setupChaptersMenu
-#@-node:ekr.20070317074813:tt.makeTabMenu & helpers
-#@+node:ekr.20070317075059.1:tt.raise/lowerTab
-def lowerTab (self,tabName):
-
-    tt = self ; tab = tt.nb.tab(tabName)
-
-    tab.configure(
-        background=tt.unselectedTabBackgroundColor,
-        foreground=tt.unselectedTabForegroundColor)
-
-    tt.cc.unselectCallback(tabName)
-
-def raiseTab (self,tabName):
-
-    tt = self ; c = self.c ; tab = tt.nb.tab(tabName)
-    w = c.frame.body and c.frame.body.bodyCtrl
-
-    tab.configure(
-        background=tt.selectedTabBackgroundColor,
-        foreground=tt.selectedTabForegroundColor)
-
-    tt.cc.selectCallback(tabName)
-
-    if w:
-        # This can not be called immediately
-        def idleCallback(event=None,c=c):
-            c.invalidateFocus()
-            c.bodyWantsFocusNow()
-
-        w.after_idle(idleCallback)
-#@-node:ekr.20070317075059.1:tt.raise/lowerTab
-#@+node:ekr.20070318125900.1:tt.renameChapterHelper
-def renameChapterHelper (self,cc,tabName):
-
-    '''Called from cc.renameChapter to prompt for a new name.'''
-
-    tt = self ; c = tt.c ; nb = tt.nb
-
-    frame = tt.getFrame(tabName)
-    tab = tt.getButton(tabName)
-
-    f = Tk.Frame(tab)
-    # Elegant code.  Setting e's textvariable to chapter.sv
-    # immediately updates the chapter labels as e changes.
-    sv = tt.stringVarDict.get(tabName)
-    e = Tk.Entry(f,background='white',textvariable=sv)
-    b = Tk.Button(f,text="Close")
-    f.pack(side='top')
-    e.pack(side='left')
-    b.pack(side='right')
-    def changeCallback (event=None,f=f,sv=sv):
-        newName = sv.get()
-        f.pack_forget()
-        tt.renameTab(newName)
-    e.bind('<Return>',changeCallback)
-    e.selection_range(0,'end')
-    b.configure(command=changeCallback)
-    c.widgetWantsFocusNow(e)
-#@nonl
-#@-node:ekr.20070318125900.1:tt.renameChapterHelper
-#@+node:ekr.20070318133725:tt.renameTab
-def renameTab (self,newName):
-
-    '''Change the button text of the presently selected tab.'''
-
-    # Important: the actual tab name *never* changes.
-
-    tt = self ; nb = tt.nb
-    name = nb.getcurselection()
-    b = nb.tab(name)
-    b.configure(text=newName)
-#@-node:ekr.20070318133725:tt.renameTab
-#@+node:ekr.20070317074824.3:tt.selectTab
-def selectTab (self,tabName):
-
-    if tabName not in self.tabNames:
-        self.createTab(tabName)
-    
-    # This will indirectly invoke chapter.select.
-    self.nb.selectpage(tabName)
-#@-node:ekr.20070317074824.3:tt.selectTab
-#@-node:ekr.20070320093038:Tabs...
-#@-node:ekr.20070317073627.3:class leoTkinterTreeTab
 #@+node:ekr.20070325104222:Birth...
 #@+node:ekr.20050920093543:c.finishCreate & helper
 def finishCreate (self):  # New in 4.4.
@@ -1545,137 +1258,264 @@ def hoist (self,event=None):
         c.frame.putStatusLine("Hoist: " + p.headString())
         c.undoer.afterHoist(p,'Hoist')
 #@-node:ekr.20031218072017.2028:Hoist & dehoist
-#@+node:ekr.20040803072955.87:onHeadlineClick
-def onHeadlineClick (self,event,p=None):
+#@+node:ekr.20060528100747:Editors
+@ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
+#@+node:ekr.20060530204135:recolorWidget
+def recolorWidget (self,w):
+
+    c = self.c ; old_w = self.bodyCtrl
     
-    # g.trace('p',p)
-    c = self.c ; w = event.widget
+    # g.trace(id(w),c.currentPosition().headString())
     
-    if not p:
-        try:
-            p = w.leo_position
-        except AttributeError:
-            g.trace('*'*20,'oops')
-    if not p: return 'break'
-        
-    # g.trace(p.headString())
+    # Save.
+    self.bodyCtrl = self.frame.bodyCtrl = w
     
-    c.setLog()
-
-    try:
-        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
-            returnVal = self.OnActivateHeadline(p)
-        g.doHook("headclick2",c=c,p=p,v=p,event=event)
-    except:
-        returnVal = 'break'
-        g.es_event_exception("headclick")
-
-    # 'continue' is sometimes correct here.
-    # 'break' would make it impossible to unselect the headline text.
-    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
-    return returnVal
-#@-node:ekr.20040803072955.87:onHeadlineClick
-#@+node:ekr.20070317085437.49:Node commands
-#@+node:ekr.20070317085437.50:cc.cloneToChapter
-def cloneToChapter (self,event=None,toChapter=None):
-
-    cc = self ; c = cc.c ; nc = cc.nodesController ; tt = cc.tt
-    p = c.currentPosition() ; h = p.headString()
-    fromChapter = cc.getSelectedChapter()
-    toChapter = cc.getChapter(toChapter)
-    if fromChapter.name == 'main' and h.startswith('@chapter'):
-        return self.error('can not clone @chapter node')
-    # g.trace('from',fromChapter.name,'to',toChapter)
+    c.recolor_now(interruptable=False) # Force a complete recoloring.
     
-    c.beginUpdate()
-    try:
-        parent = nc.getChapterNode(toChapter.name)
-        clone = c.clone()
-        clone.unlink()
-        clone.moveToLastChildOf(parent)
-        c.selectPosition(clone)
-    finally:
-        c.endUpdate(False)
-
-    toChapter.p = clone.copy()
-    tt.selectTab(toChapter.name)
-    fromChapter.p = p.copy()
-#@-node:ekr.20070317085437.50:cc.cloneToChapter
-#@+node:ekr.20070317085437.51:cc.copyToChapter
-def copyToChapter (self,event=None,toChapter=None):
-    
-    cc = self ; c = cc.c ; nc = cc.nodesController ; tt = cc.tt
-    p = c.currentPosition() ; h = p.headString()
-    fromChapter = cc.getSelectedChapter()
-    toChapter = cc.getChapter(toChapter)
-    if fromChapter.name == 'main' and h.startswith('@chapter'):
-        return self.error('can not copy @chapter node')
-    # g.trace('from',fromChapter.name,'to',toChapter.name)
-
-    c.beginUpdate()
-    try:
-        parent = nc.getChapterNode(toChapter.name)
-        s = c.fileCommands.putLeoOutline()
-        p2 = c.fileCommands.getLeoOutline(s)
-        p2.unlink()
-        p2.moveToLastChildOf(parent)
-        c.selectPosition(p2)
-    finally:
-        c.endUpdate(False)
-
-    toChapter.p = p2.copy()
-    tt.selectTab(toChapter.name)
-    fromChapter.p = p.copy()
-#@-node:ekr.20070317085437.51:cc.copyToChapter
-#@+node:ekr.20070317085437.52:cc.moveToChapter
-def moveToChapter (self,event=None,toChapter=None):
-    
-    cc = self ; c = cc.c ; nc = cc.nodesController ; tt = cc.tt
-    p = c.currentPosition() ; h = p.headString()
-    fromChapter = cc.getSelectedChapter()
-    toChapter = cc.getChapter(toChapter)
-    if fromChapter.name == 'main' and h.startswith('@chapter'):
-        return self.error('can not move @chapter node')
-    # g.trace('from',fromChapter.name,'to',toChapter.name)
-
-    c.beginUpdate()
-    try:
-        parent = nc.getChapterNode(toChapter.name)
-        sel = p.back() or p.next() or parent
-        p.unlink()
-        p.moveToLastChildOf(parent)
-        c.selectPosition(p)
-    finally:
-        c.endUpdate(False)
-
-    toChapter.p = p.copy() # Must be done before tt.selectTab.
-    tt.selectTab(toChapter.name)
-    fromChapter.p = sel.copy() # Must be done after tt.selectTab.
-#@-node:ekr.20070317085437.52:cc.moveToChapter
-#@+node:ekr.20070317085437.29:cc.emptyTrash
-def emptyTrash (self):
-    
-    cc = self ; c = cc.c
-    chapter = self.getChapter('trash')
-
-    root = chapter.rp
-    chapter.setVariables()
-    p = root.insertAfter()
-    p.moveToRoot()
-    p.setHeadString('trash barrel')
-    chapter.rp = c.rootPosition()
-    chapter.cp = c.currentPosition()
-    chapter.tp = c.topPosition()
-    cc.currentChapter.setVariables()
-    
-    c.beginUpdate()
-    try:
-        c.selectPosition(p)
-    finally:
-        c.endUpdate()
+    # Restore.
+    self.bodyCtrl = self.frame.bodyCtrl = old_w
 #@nonl
-#@-node:ekr.20070317085437.29:cc.emptyTrash
-#@-node:ekr.20070317085437.49:Node commands
+#@-node:ekr.20060530204135:recolorWidget
+#@+node:ekr.20060530210057:create/select/unselect/Label
+def unselectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    if not w.leo_label: self.createLabel(w)
+    w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
+        
+def selectLabel (self,w):
+    
+    # g.trace(w.leo_name,w.leo_label_s)
+    # g.trace(self.numberOfEditors)
+    if self.numberOfEditors > 1:
+        if not w.leo_label: self.createLabel(w)
+        w.leo_label.configure(text=w.leo_label_s,bg='white')
+    elif w.leo_label:
+        w.leo_label.pack_forget()
+        w.leo_label = None
+
+def createLabel (self,w):
+
+    w.leo_label = Tk.Label(w.leo_frame)
+    w.pack_forget()
+    w.leo_label.pack(side='top')
+    w.pack(expand=1,fill='both')
+#@-node:ekr.20060530210057:create/select/unselect/Label
+#@+node:ekr.20060528100747.1:addEditor
+def addEditor (self,event=None):
+    
+    '''Add another editor to the body pane.'''
+    
+    c = self.c ; p = c.currentPosition()
+     
+    self.totalNumberOfEditors += 1
+    self.numberOfEditors += 1
+    if self.numberOfEditors == 2:
+        # Inject the ivars into the first editor.
+        w = self.editorWidgets.get('1')
+        w.leo_p = p.copy()
+        w.leo_v = w.leo_p.v
+        w.leo_label_s = p.headString()
+        self.selectLabel(w) # Immediately create the label in the old editor.
+   
+    name = '%d' % self.totalNumberOfEditors
+    pane = self.pb.add(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    << create label and text widgets >>
+    self.editorWidgets[name] = w
+
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+    
+    self.pb.updatelayout()
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    self.selectEditor(w)
+    self.updateEditors()
+    c.bodyWantsFocusNow()
+#@+node:ekr.20060528110922:<< create label and text widgets >>
+f = Tk.Frame(pane)
+f.pack(side='top',expand=1,fill='both')
+
+w = self.createTextWidget(self.frame,f,name=name,p=p)
+
+w.delete(0,'end')
+w.insert('end',p.bodyString())
+w.see(0)
+self.setFontFromConfig(w=w)
+self.setColorFromConfig(w=w)
+self.createBindings(w=w)
+c.k.completeAllBindingsForWidget(w)
+
+self.recolorWidget(w)
+#@-node:ekr.20060528110922:<< create label and text widgets >>
+#@-node:ekr.20060528100747.1:addEditor
+#@+node:ekr.20060606090542:setEditorColors
+def setEditorColors (self,bg,fg):
+    
+    c = self.c ; d = self.editorWidgets
+
+    for key in d.keys():
+        w2 = d.get(key)
+        # g.trace(id(w2),bg,fg)
+        try:
+            w2.configure(bg=bg,fg=fg)
+        except Exception:
+            g.es_exception()
+            pass
+#@-node:ekr.20060606090542:setEditorColors
+#@+node:ekr.20060528170438:cycleEditorFocus
+def cycleEditorFocus (self,event=None):
+    
+    '''Cycle keyboard focus between the body text editors.'''
+    
+    c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
+    values = d.values()
+    if len(values) > 1:
+        i = values.index(w) + 1
+        if i == len(values): i = 0
+        w2 = d.values()[i]
+        assert(w!=w2)
+        self.selectEditor(w2)
+        self.bodyCtrl = self.frame.bodyCtrl = w2
+        # print '***',g.app.gui.widget_name(w2),id(w2)
+
+    return 'break'
+#@-node:ekr.20060528170438:cycleEditorFocus
+#@+node:ekr.20060528113806:deleteEditor
+def deleteEditor (self,event=None):
+    
+    '''Delete the presently selected body text editor.'''
+    
+    w = self.bodyCtrl ; d = self.editorWidgets
+    
+    if len(d.keys()) == 1: return
+    
+    name = w.leo_name
+    
+    del d [name] 
+    self.pb.delete(name)
+    panes = self.pb.panes()
+    minSize = float(1.0/float(len(panes)))
+    
+    for pane in panes:
+        self.pb.configurepane(pane,size=minSize)
+        
+    # Select another editor.
+    w = d.values()[0]
+    self.bodyCtrl = self.frame.bodyCtrl = w
+    self.numberOfEditors -= 1
+    self.selectEditor(w)
+#@-node:ekr.20060528113806:deleteEditor
+#@+node:ekr.20061017083312:selectEditor (tkBody)
+def selectEditor(self,w):
+    
+    c = self.c ; d = self.editorWidgets
+    trace = False
+    if trace: g.trace(g.app.gui.widget_name(w),id(w),g.callers())
+    if w.leo_p is None:
+        if trace: g.trace('no w.leo_p') 
+        return 'break'
+    # Inactivate the previously active editor.
+    # Don't capture ivars here! selectMainEditor keeps them up-to-date.
+    for key in d.keys():
+        w2 = d.get(key)
+        if w2 != w and w2.leo_active:
+            w2.leo_active = False
+            self.unselectLabel(w2)
+            w2.leo_scrollBarSpot = w2.yview()
+            w2.leo_insertSpot = w2.getInsertPoint()
+            w2.leo_selection = w2.getSelectionRange()
+            # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
+            break
+    else:
+        if trace: g.trace('no active editor!')
+    
+    # Careful, leo_p may not exist.
+    if not c.positionExists(w.leo_p):
+        if trace: g.trace('does not exist',w.leo_name)
+        for p2 in c.allNodes_iter():
+            if p2.v == w.leo_v:
+                w.leo_p = p2.copy()
+                break
+        else:
+             # This *can* happen when selecting a deleted node.
+            w.leo_p = c.currentPosition()
+            if trace: g.trace('previously deleted node')
+            return 'break'
+
+    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    w.leo_active = True
+    c.frame.tree.expandAllAncestors(w.leo_p)
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
+    c.recolor_now()
+    << restore the selection, insertion point and the scrollbar >>
+    c.bodyWantsFocusNow()
+    return 'break'
+#@nonl
+#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
+
+if w.leo_insertSpot:
+    w.setInsertPoint(w.leo_insertSpot)
+else:
+    w.setInsertPoint(0)
+    
+if w.leo_scrollBarSpot is not None:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+else:
+    w.seeInsertPoint()
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        w.setSelectionRange(start,end)
+    except Exception:
+        pass
+#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20061017083312:selectEditor (tkBody)
+#@+node:ekr.20060528132829:selectMainEditor
+def selectMainEditor (self,p):
+    
+    
+    '''Called from tree.select to select the present body editor.'''
+
+    c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
+
+    # Don't inject ivars if there is only one editor.
+    if w.leo_p is not None:
+        # Keep w's ivars up-to-date.
+        w.leo_p = p.copy()
+        w.leo_v = p.v
+        w.leo_label_s = p.headString()
+        self.selectLabel(w)
+        # g.trace(w.leo_name,p.headString())
+#@-node:ekr.20060528132829:selectMainEditor
+#@+node:ekr.20060528131618:updateEditors
+def updateEditors (self):
+    
+    c = self.c ; p = c.currentPosition()
+    d = self.editorWidgets
+    if len(d.keys()) < 2: return # There is only the main widget.
+
+    for key in d.keys():
+        w = d.get(key)
+        v = w.leo_v
+        if v and v == p.v and w != self.bodyCtrl:
+            w.delete(0,'end')
+            w.insert('end',p.bodyString())
+            # g.trace('update',w,v)
+            self.recolorWidget(w)
+    c.bodyWantsFocus()
+#@-node:ekr.20060528131618:updateEditors
+#@-node:ekr.20060528100747:Editors
+#@+node:ekr.20070410063711:(reverted) don't select nodes in active @chapters tree
+@ But only when chapter is enabled.
+This code created far too many special cases.
+These special cases have now been removed.
+#@nonl
 #@+node:ekr.20040803072955.35:Drawing... (tkTree)
 #@+node:ekr.20051216155728:tree.begin/endUpdate
 def beginUpdate (self):
@@ -2311,645 +2151,6 @@ def yoffsetTree(self,p,p1):
 #@-node:ekr.20040803072955.70:yoffset
 #@-node:ekr.20040803072955.62:Helpers...
 #@-node:ekr.20040803072955.35:Drawing... (tkTree)
-#@+node:ekr.20060528100747:Editors
-@ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
-#@+node:ekr.20060530204135:recolorWidget
-def recolorWidget (self,w):
-
-    c = self.c ; old_w = self.bodyCtrl
-    
-    # g.trace(id(w),c.currentPosition().headString())
-    
-    # Save.
-    self.bodyCtrl = self.frame.bodyCtrl = w
-    
-    c.recolor_now(interruptable=False) # Force a complete recoloring.
-    
-    # Restore.
-    self.bodyCtrl = self.frame.bodyCtrl = old_w
-#@nonl
-#@-node:ekr.20060530204135:recolorWidget
-#@+node:ekr.20060530210057:create/select/unselect/Label
-def unselectLabel (self,w):
-    
-    # g.trace(w.leo_name,w.leo_label_s)
-    if not w.leo_label: self.createLabel(w)
-    w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
-        
-def selectLabel (self,w):
-    
-    # g.trace(w.leo_name,w.leo_label_s)
-    # g.trace(self.numberOfEditors)
-    if self.numberOfEditors > 1:
-        if not w.leo_label: self.createLabel(w)
-        w.leo_label.configure(text=w.leo_label_s,bg='white')
-    elif w.leo_label:
-        w.leo_label.pack_forget()
-        w.leo_label = None
-
-def createLabel (self,w):
-
-    w.leo_label = Tk.Label(w.leo_frame)
-    w.pack_forget()
-    w.leo_label.pack(side='top')
-    w.pack(expand=1,fill='both')
-#@-node:ekr.20060530210057:create/select/unselect/Label
-#@+node:ekr.20060528100747.1:addEditor
-def addEditor (self,event=None):
-    
-    '''Add another editor to the body pane.'''
-    
-    c = self.c ; p = c.currentPosition()
-     
-    self.totalNumberOfEditors += 1
-    self.numberOfEditors += 1
-    if self.numberOfEditors == 2:
-        # Inject the ivars into the first editor.
-        w = self.editorWidgets.get('1')
-        w.leo_p = p.copy()
-        w.leo_v = w.leo_p.v
-        w.leo_label_s = p.headString()
-        self.selectLabel(w) # Immediately create the label in the old editor.
-   
-    name = '%d' % self.totalNumberOfEditors
-    pane = self.pb.add(name)
-    panes = self.pb.panes()
-    minSize = float(1.0/float(len(panes)))
-    
-    << create label and text widgets >>
-    self.editorWidgets[name] = w
-
-    for pane in panes:
-        self.pb.configurepane(pane,size=minSize)
-    
-    self.pb.updatelayout()
-    self.bodyCtrl = self.frame.bodyCtrl = w
-    self.selectEditor(w)
-    self.updateEditors()
-    c.bodyWantsFocusNow()
-#@+node:ekr.20060528110922:<< create label and text widgets >>
-f = Tk.Frame(pane)
-f.pack(side='top',expand=1,fill='both')
-
-w = self.createTextWidget(self.frame,f,name=name,p=p)
-
-w.delete(0,'end')
-w.insert('end',p.bodyString())
-w.see(0)
-self.setFontFromConfig(w=w)
-self.setColorFromConfig(w=w)
-self.createBindings(w=w)
-c.k.completeAllBindingsForWidget(w)
-
-self.recolorWidget(w)
-#@-node:ekr.20060528110922:<< create label and text widgets >>
-#@-node:ekr.20060528100747.1:addEditor
-#@+node:ekr.20060606090542:setEditorColors
-def setEditorColors (self,bg,fg):
-    
-    c = self.c ; d = self.editorWidgets
-
-    for key in d.keys():
-        w2 = d.get(key)
-        # g.trace(id(w2),bg,fg)
-        try:
-            w2.configure(bg=bg,fg=fg)
-        except Exception:
-            g.es_exception()
-            pass
-#@-node:ekr.20060606090542:setEditorColors
-#@+node:ekr.20060528170438:cycleEditorFocus
-def cycleEditorFocus (self,event=None):
-    
-    '''Cycle keyboard focus between the body text editors.'''
-    
-    c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
-    values = d.values()
-    if len(values) > 1:
-        i = values.index(w) + 1
-        if i == len(values): i = 0
-        w2 = d.values()[i]
-        assert(w!=w2)
-        self.selectEditor(w2)
-        self.bodyCtrl = self.frame.bodyCtrl = w2
-        # print '***',g.app.gui.widget_name(w2),id(w2)
-
-    return 'break'
-#@-node:ekr.20060528170438:cycleEditorFocus
-#@+node:ekr.20060528113806:deleteEditor
-def deleteEditor (self,event=None):
-    
-    '''Delete the presently selected body text editor.'''
-    
-    w = self.bodyCtrl ; d = self.editorWidgets
-    
-    if len(d.keys()) == 1: return
-    
-    name = w.leo_name
-    
-    del d [name] 
-    self.pb.delete(name)
-    panes = self.pb.panes()
-    minSize = float(1.0/float(len(panes)))
-    
-    for pane in panes:
-        self.pb.configurepane(pane,size=minSize)
-        
-    # Select another editor.
-    w = d.values()[0]
-    self.bodyCtrl = self.frame.bodyCtrl = w
-    self.numberOfEditors -= 1
-    self.selectEditor(w)
-#@-node:ekr.20060528113806:deleteEditor
-#@+node:ekr.20061017083312:selectEditor (tkBody)
-def selectEditor(self,w):
-    
-    c = self.c ; d = self.editorWidgets
-    trace = False
-    if trace: g.trace(g.app.gui.widget_name(w),id(w),g.callers())
-    if w.leo_p is None:
-        if trace: g.trace('no w.leo_p') 
-        return 'break'
-    # Inactivate the previously active editor.
-    # Don't capture ivars here! selectMainEditor keeps them up-to-date.
-    for key in d.keys():
-        w2 = d.get(key)
-        if w2 != w and w2.leo_active:
-            w2.leo_active = False
-            self.unselectLabel(w2)
-            w2.leo_scrollBarSpot = w2.yview()
-            w2.leo_insertSpot = w2.getInsertPoint()
-            w2.leo_selection = w2.getSelectionRange()
-            # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
-            break
-    else:
-        if trace: g.trace('no active editor!')
-    
-    # Careful, leo_p may not exist.
-    if not c.positionExists(w.leo_p):
-        if trace: g.trace('does not exist',w.leo_name)
-        for p2 in c.allNodes_iter():
-            if p2.v == w.leo_v:
-                w.leo_p = p2.copy()
-                break
-        else:
-             # This *can* happen when selecting a deleted node.
-            w.leo_p = c.currentPosition()
-            if trace: g.trace('previously deleted node')
-            return 'break'
-
-    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
-    w.leo_active = True
-    c.frame.tree.expandAllAncestors(w.leo_p)
-    c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
-    c.recolor_now()
-    << restore the selection, insertion point and the scrollbar >>
-    c.bodyWantsFocusNow()
-    return 'break'
-#@nonl
-#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
-# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
-
-if w.leo_insertSpot:
-    w.setInsertPoint(w.leo_insertSpot)
-else:
-    w.setInsertPoint(0)
-    
-if w.leo_scrollBarSpot is not None:
-    first,last = w.leo_scrollBarSpot
-    w.yview('moveto',first)
-else:
-    w.seeInsertPoint()
-
-if w.leo_selection:
-    try:
-        start,end = w.leo_selection
-        w.setSelectionRange(start,end)
-    except Exception:
-        pass
-#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
-#@-node:ekr.20061017083312:selectEditor (tkBody)
-#@+node:ekr.20060528132829:selectMainEditor
-def selectMainEditor (self,p):
-    
-    
-    '''Called from tree.select to select the present body editor.'''
-
-    c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
-
-    # Don't inject ivars if there is only one editor.
-    if w.leo_p is not None:
-        # Keep w's ivars up-to-date.
-        w.leo_p = p.copy()
-        w.leo_v = p.v
-        w.leo_label_s = p.headString()
-        self.selectLabel(w)
-        # g.trace(w.leo_name,p.headString())
-#@-node:ekr.20060528132829:selectMainEditor
-#@+node:ekr.20060528131618:updateEditors
-def updateEditors (self):
-    
-    c = self.c ; p = c.currentPosition()
-    d = self.editorWidgets
-    if len(d.keys()) < 2: return # There is only the main widget.
-
-    for key in d.keys():
-        w = d.get(key)
-        v = w.leo_v
-        if v and v == p.v and w != self.bodyCtrl:
-            w.delete(0,'end')
-            w.insert('end',p.bodyString())
-            # g.trace('update',w,v)
-            self.recolorWidget(w)
-    c.bodyWantsFocus()
-#@-node:ekr.20060528131618:updateEditors
-#@-node:ekr.20060528100747:Editors
-#@+node:ekr.20070417110537:Create local tree for each chapter
-#@+node:ekr.20031218072017.2913:Goto
-#@+node:ekr.20070417112650:utils
-#@+node:ekr.20070417112650.1:getChapterTree
-def getChapterTree (self,p):
-    
-    '''return the @chapter node containing p or None.'''
-    
-    c = self ; cc = c.chapterController
-
-    if cc and cc.nodesController and c.config.getBool('use_chapters'):
-        root = cc.nodesController.findChaptersNode()
-        if root:
-            for p2 in root.children_iter():
-                if p2.isAncestorOf(p):
-                    return p2
-
-    return None
-    
-#@nonl
-#@-node:ekr.20070417112650.1:getChapterTree
-#@+node:ekr.20070410192154:getChaptersTree
-def getChaptersTree (self):
-    
-    '''return the node containing the active top-level @chapters tree.'''
-    
-    c = self ; cc = c.chapterController
-
-    if cc and cc.nodesController and c.config.getBool('use_chapters'):
-        return cc.nodesController.findChaptersNode()
-    else:
-        return None
-    
-#@nonl
-#@-node:ekr.20070410192154:getChaptersTree
-#@+node:ekr.20070417112650.2:inChaptersTree
-def inChaptersTree (self,p):
-    
-    '''Return True if p is a descendant of the active @chapters tree.'''
-    
-    p2 = self.getChaptersTree()
-    return p2 and (p2.equal(p) or p2.isAncestorOf(p))
-#@-node:ekr.20070417112650.2:inChaptersTree
-#@+node:ekr.20070417112650.3:NewHeadline
-#@-node:ekr.20070417112650.3:NewHeadline
-#@-node:ekr.20070417112650:utils
-#@+node:ekr.20070226121510:treeFocusHelper (new in Leo 4.4.3)
-def treeFocusHelper (self):
-    
-    c = self
-    
-    if c.config.getBool('stayInTreeAfterSelect'):
-        c.treeWantsFocusNow()
-    else:
-        c.bodyWantsFocusNow()
-#@-node:ekr.20070226121510:treeFocusHelper (new in Leo 4.4.3)
-#@+node:ekr.20070226113916:treeSelectHelper (new in Leo 4.4.3)
-def treeSelectHelper (self,p,redraw=True):
-    
-    c = self ; current = c.currentPosition()
-    
-    # if c.inChaptersTree(current) and not c.inChaptersTree(p):
-        # g.trace('can not move outside chapter tree.',current,p)
-        # return
-
-    if p:
-        c.beginUpdate()
-        try:
-            c.frame.tree.expandAllAncestors(p)
-            c.selectPosition(p,updateBeadList=False)
-        finally:
-            c.endUpdate(redraw)
-            
-    c.treeFocusHelper()
-#@-node:ekr.20070226113916:treeSelectHelper (new in Leo 4.4.3)
-#@+node:ekr.20031218072017.1628:goNextVisitedNode
-def goNextVisitedNode (self,event=None):
-    
-    '''Select the next visited node.'''
-    
-    c = self
-
-    while c.beadPointer + 1 < len(c.beadList):
-        c.beadPointer += 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
-#@-node:ekr.20031218072017.1628:goNextVisitedNode
-#@+node:ekr.20031218072017.1627:goPrevVisitedNode
-def goPrevVisitedNode (self,event=None):
-    
-    '''Select the previously visited node.'''
-    
-    c = self
-
-    while c.beadPointer > 0:
-        c.beadPointer -= 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
-#@-node:ekr.20031218072017.1627:goPrevVisitedNode
-#@+node:ekr.20031218072017.2914:goToFirstNode (modified for chapters)
-def goToFirstNode (self,event=None):
-    
-    '''Select the first node of the entire outline.'''
-    
-    c = self ; p = c.rootPosition()
-        
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().next()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20031218072017.2914:goToFirstNode (modified for chapters)
-#@+node:ekr.20051012092453:goToFirstSibling  (modified for chapters)
-def goToFirstSibling (self,event=None):
-    
-    '''Select the first sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    if p.hasBack():
-        while p.hasBack():
-            p.moveToBack()
-            
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().next()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20051012092453:goToFirstSibling  (modified for chapters)
-#@+node:ekr.20031218072017.2915:goToLastNode  (modified for chapters)
-def goToLastNode (self,event=None):
-    
-    '''Select the last node in the entire tree.'''
-    
-    c = self ; p = c.rootPosition()
-    while p and p.hasThreadNext():
-        p.moveToThreadNext()
-        
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().back()
-        if p: p = p.lastNode()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20031218072017.2915:goToLastNode  (modified for chapters)
-#@+node:ekr.20051012092847.1:goToLastSibling  (modified for chapters)
-def goToLastSibling (self,event=None):
-    
-    '''Select the last sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    if p.hasNext():
-        while p.hasNext():
-            p.moveToNext()
-            
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().back()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20051012092847.1:goToLastSibling  (modified for chapters)
-#@+node:ekr.20050711153537:goToLastVisibleNode  (modified for chapters)
-def goToLastVisibleNode (self,event=None):
-    
-    '''Select the last visible node of the entire outline.'''
-    
-    c = self ; p = c.rootPosition()
-    
-    while p.hasNext():
-        p.moveToNext()
-        
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().back()
-        
-    while p and p.isExpanded():
-        p.moveToLastChild()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20050711153537:goToLastVisibleNode  (modified for chapters)
-#@+node:ekr.20031218072017.2916:goToNextClone (modified for chapters)
-def goToNextClone (self,event=None):
-    
-    '''Select the next node that is a clone of the selected node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    if not p.isCloned(): return
-    
-    t = p.v.t
-    p.moveToThreadNext()
-    wrapped = False
-    while 1:
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().next()
-        if p and p.v.t == t:
-            break
-        elif p:
-            p.moveToThreadNext()
-        elif wrapped:
-            break
-        else:
-            wrapped = True
-            p = c.rootPosition()
-
-    if not p: g.es("done",color="blue")
-    c.treeSelectHelper(p) # Sets focus.
-#@-node:ekr.20031218072017.2916:goToNextClone (modified for chapters)
-#@+node:ekr.20031218072017.2917:goToNextDirtyHeadline  (modified for chapters)
-def goToNextDirtyHeadline (self,event=None):
-    
-    '''Select the node that is marked as changed.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-
-    p.moveToThreadNext()
-    wrapped = False
-    while 1:
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().next()
-        if p and p.isDirty():
-            break
-        elif p:
-            p.moveToThreadNext()
-        elif wrapped:
-            break
-        else:
-            wrapped = True
-            p = c.rootPosition()
-
-    if not p: g.es("done",color="blue")
-    c.treeSelectHelper(p) # Sets focus.
-#@-node:ekr.20031218072017.2917:goToNextDirtyHeadline  (modified for chapters)
-#@+node:ekr.20031218072017.2918:goToNextMarkedHeadline  (modified for chapters)
-def goToNextMarkedHeadline (self,event=None):
-    
-    '''Select the next marked node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-
-    p.moveToThreadNext()
-    wrapped = False
-    while 1:
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().next()
-        if p and p.isMarked():
-            break
-        elif p:
-            p.moveToThreadNext()
-        elif wrapped:
-            break
-        else:
-            wrapped = True
-            p = c.rootPosition()
-
-    if not p: g.es("done",color="blue")
-    c.treeSelectHelper(p) # Sets focus.
-#@-node:ekr.20031218072017.2918:goToNextMarkedHeadline  (modified for chapters)
-#@+node:ekr.20031218072017.2919:goToNextSibling (modified for chapters)
-def goToNextSibling (self,event=None):
-    
-    '''Select the next sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().next()
-
-    c.treeSelectHelper(p and p.next())
-#@-node:ekr.20031218072017.2919:goToNextSibling (modified for chapters)
-#@+node:ekr.20031218072017.2920:goToParent
-def goToParent (self,event=None):
-    
-    '''Select the parent of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-
-    c.treeSelectHelper(p and p.parent())
-#@-node:ekr.20031218072017.2920:goToParent
-#@+node:ekr.20031218072017.2921:goToPrevSibling (modified for chapters)
-def goToPrevSibling (self,event=None):
-    
-    '''Select the previous sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-        
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().back()
-
-    c.treeSelectHelper(p and p.back())
-#@-node:ekr.20031218072017.2921:goToPrevSibling (modified for chapters)
-#@+node:ekr.20031218072017.2993:selectThreadBack (modified for chapters)
-def selectThreadBack (self,event=None):
-    
-    '''Select the node preceding the selected node in outline order.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    
-    p.moveToThreadBack()
-    
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().threadBack()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20031218072017.2993:selectThreadBack (modified for chapters)
-#@+node:ekr.20031218072017.2994:selectThreadNext  (modified for chapters)
-def selectThreadNext (self,event=None):
-    
-    '''Select the node following the selected node in outline order.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    
-    p.moveToThreadNext()
-    
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().next()
-    
-    c.treeSelectHelper(p)
-#@nonl
-#@-node:ekr.20031218072017.2994:selectThreadNext  (modified for chapters)
-#@+node:ekr.20031218072017.2995:selectVisBack (modified for chapters)
-# This has an up arrow for a control key.
-
-def selectVisBack (self,event=None):
-    
-    '''Select the visible node preceding the presently selected node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    
-    if c.inChaptersTree(p):
-        root = self.getChapterTree(p)
-        if not root: return None
-        p.moveToVisBack()
-        if not root.isAncestorOf(p):
-            return None
-    else:
-        p.moveToVisBack()
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().visBack()
-
-    if p:
-        redraw = not p.isVisible()
-        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
-    else:
-        redraw = True
-
-    c.treeSelectHelper(p,redraw=redraw)
-#@-node:ekr.20031218072017.2995:selectVisBack (modified for chapters)
-#@+node:ekr.20031218072017.2996:selectVisNext (modified for chapters)
-def selectVisNext (self,event=None):
-    
-    '''Select the visible node following the presently selected node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    
-    if c.inChaptersTree(p):
-        root = self.getChapterTree(p)
-        if not root: return None
-        p.moveToVisNext()
-        if not root.isAncestorOf(p):
-            return None
-    else:
-        p.moveToVisNext()
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().lastNode().visNext()
-
-    if p:
-        redraw = not p.isVisible()
-        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
-    else:
-        redraw = True
-
-    c.treeSelectHelper(p,redraw=redraw)
-#@-node:ekr.20031218072017.2996:selectVisNext (modified for chapters)
-#@-node:ekr.20031218072017.2913:Goto
-#@-node:ekr.20070417110537:Create local tree for each chapter
-#@+node:ekr.20070410063711:Fixed bugs: don't select nodes in active @chapters tree
-# But only when chapter is enabled.
-# Affects move up/down/right, and also the cursor move commands.
-#@nonl
 #@+node:ekr.20031218072017.1772:moveOutlineUp
 def moveOutlineUp (self,event=None):
     
@@ -3000,12 +2201,13 @@ if 0:
     
 parent = p.parent()
 backBack = p.hasBack() and p.back().back()
-chaptersSpecialCase = (
-    c.config.getBool('use_chapters') and
-    backBack and not parent and backBack.headString().startswith('@chapters'))
 
-if chaptersSpecialCase:
-    back2 = backBack.visBack()
+# chaptersSpecialCase = (
+    # c.config.getBool('use_chapters') and
+    # backBack and not parent and backBack.headString().startswith('@chapters'))
+
+# if chaptersSpecialCase:
+    # back2 = backBack.visBack()
 
 # For this special case we move p after back2.
 specialCase = back2 and p.v in back2.v.t.vnodeList
@@ -3051,15 +2253,18 @@ def moveOutlineDown (self,event=None):
         
     inAtIgnoreRange = p.inAtIgnoreRange()
     parent = p.parent()
-    chaptersSpecialCase = (
-        c.config.getBool('use_chapters') and
-        p.hasNext() and not parent and p.next().headString().startswith('@chapters'))
+    
+    # chaptersSpecialCase = (
+        # c.config.getBool('use_chapters') and
+        # p.hasNext() and not parent and p.next().headString().startswith('@chapters'))
 
-    # Set next to the node after which p will be moved.
-    if chaptersSpecialCase:
-        next = p.hasNext() and p.next().next()
-    else:
-        next = p.visNext()
+    # # Set next to the node after which p will be moved.
+    # if chaptersSpecialCase:
+        # next = p.hasNext() and p.next().next()
+    # else:
+        # next = p.visNext()
+        
+    next = p.visNext()
 
     while next and p.isAncestorOf(next):
         next = next.visNext()
@@ -3122,14 +2327,16 @@ def moveOutlineRight (self,event=None):
         c.treeFocusHelper()
         return
 
-    chaptersSpecialCase = (
-        c.config.getBool('use_chapters') and
-        p.hasBack() and not p.parent() and p.back().headString().startswith('@chapters'))
+    # chaptersSpecialCase = (
+        # c.config.getBool('use_chapters') and
+        # p.hasBack() and not p.parent() and p.back().headString().startswith('@chapters'))
 
-    if chaptersSpecialCase:
-        back = p.hasBack() and p.back().back()
-    else:
-        back = p.back()
+    # if chaptersSpecialCase:
+        # back = p.hasBack() and p.back().back()
+    # else:
+        # back = p.back()
+        
+    back = p.back()
 
     if not back:
         # c.treeWantsFocusNow()
@@ -3162,6 +2369,344 @@ def moveOutlineRight (self,event=None):
     c.updateSyntaxColorer(p) # Moving can change syntax coloring.
 #@-node:ekr.20031218072017.1771:moveOutlineRight
 #@+node:ekr.20031218072017.2913:Goto
+#@+node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+def treeFocusHelper (self):
+    
+    c = self
+    
+    if c.config.getBool('stayInTreeAfterSelect'):
+        c.treeWantsFocusNow()
+    else:
+        c.bodyWantsFocusNow()
+#@-node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+#@+node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+def treeSelectHelper (self,p,redraw=True):
+    
+    c = self ; current = c.currentPosition()
+    
+    # if c.inChaptersTree(current) and not c.inChaptersTree(p):
+        # g.trace('can not move outside chapter tree.',current,p)
+        # return
+
+    if p:
+        c.beginUpdate()
+        try:
+            c.frame.tree.expandAllAncestors(p)
+            c.selectPosition(p,updateBeadList=False)
+        finally:
+            c.endUpdate(redraw)
+            
+    c.treeFocusHelper()
+#@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+#@+node:ekr.20031218072017.1628:goNextVisitedNode
+def goNextVisitedNode (self,event=None):
+    
+    '''Select the next visited node.'''
+    
+    c = self
+
+    while c.beadPointer + 1 < len(c.beadList):
+        c.beadPointer += 1
+        v = c.beadList[c.beadPointer]
+        if c.positionExists(v):
+            c.treeSelectHelper(v)
+            return
+#@-node:ekr.20031218072017.1628:goNextVisitedNode
+#@+node:ekr.20031218072017.1627:goPrevVisitedNode
+def goPrevVisitedNode (self,event=None):
+    
+    '''Select the previously visited node.'''
+    
+    c = self
+
+    while c.beadPointer > 0:
+        c.beadPointer -= 1
+        v = c.beadList[c.beadPointer]
+        if c.positionExists(v):
+            c.treeSelectHelper(v)
+            return
+#@-node:ekr.20031218072017.1627:goPrevVisitedNode
+#@+node:ekr.20031218072017.2914:goToFirstNode (modified for chapters)
+def goToFirstNode (self,event=None):
+    
+    '''Select the first node of the entire outline.'''
+    
+    c = self ; p = c.rootPosition()
+        
+    # if c.inChaptersTree(p):
+        # p = c.getChaptersTree().next()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2914:goToFirstNode (modified for chapters)
+#@+node:ekr.20051012092453:goToFirstSibling  (modified for chapters)
+def goToFirstSibling (self,event=None):
+    
+    '''Select the first sibling of the selected node.'''
+    
+    c = self ; p = c.currentPosition()
+    
+    if p.hasBack():
+        while p.hasBack():
+            p.moveToBack()
+            
+        # if c.inChaptersTree(p):
+            # p = c.getChaptersTree().next()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20051012092453:goToFirstSibling  (modified for chapters)
+#@+node:ekr.20031218072017.2915:goToLastNode  (modified for chapters)
+def goToLastNode (self,event=None):
+    
+    '''Select the last node in the entire tree.'''
+    
+    c = self ; p = c.rootPosition()
+    while p and p.hasThreadNext():
+        p.moveToThreadNext()
+        
+    # if c.inChaptersTree(p):
+        # p = c.getChaptersTree().back()
+        # if p: p = p.lastNode()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2915:goToLastNode  (modified for chapters)
+#@+node:ekr.20051012092847.1:goToLastSibling  (modified for chapters)
+def goToLastSibling (self,event=None):
+    
+    '''Select the last sibling of the selected node.'''
+    
+    c = self ; p = c.currentPosition()
+    
+    if p.hasNext():
+        while p.hasNext():
+            p.moveToNext()
+            
+        # if c.inChaptersTree(p):
+            # p = c.getChaptersTree().back()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20051012092847.1:goToLastSibling  (modified for chapters)
+#@+node:ekr.20050711153537:goToLastVisibleNode  (modified for chapters)
+def goToLastVisibleNode (self,event=None):
+    
+    '''Select the last visible node of the entire outline.'''
+    
+    c = self ; p = c.rootPosition()
+    
+    while p.hasNext():
+        p.moveToNext()
+        
+    # if c.inChaptersTree(p):
+        # p = c.getChaptersTree().back()
+        
+    while p and p.isExpanded():
+        p.moveToLastChild()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20050711153537:goToLastVisibleNode  (modified for chapters)
+#@+node:ekr.20031218072017.2916:goToNextClone (modified for chapters)
+def goToNextClone (self,event=None):
+    
+    '''Select the next node that is a clone of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    if not p.isCloned(): return
+    
+    t = p.v.t
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        # if c.inChaptersTree(p):
+            # p = c.getChaptersTree().next()
+        if p and p.v.t == t:
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2916:goToNextClone (modified for chapters)
+#@+node:ekr.20031218072017.2917:goToNextDirtyHeadline  (modified for chapters)
+def goToNextDirtyHeadline (self,event=None):
+    
+    '''Select the node that is marked as changed.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        # if c.inChaptersTree(p):
+            # p = c.getChaptersTree().next()
+        if p and p.isDirty():
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2917:goToNextDirtyHeadline  (modified for chapters)
+#@+node:ekr.20031218072017.2918:goToNextMarkedHeadline  (modified for chapters)
+def goToNextMarkedHeadline (self,event=None):
+    
+    '''Select the next marked node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        # if c.inChaptersTree(p):
+            # p = c.getChaptersTree().next()
+        if p and p.isMarked():
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2918:goToNextMarkedHeadline  (modified for chapters)
+#@+node:ekr.20031218072017.2919:goToNextSibling (modified for chapters)
+def goToNextSibling (self,event=None):
+    
+    '''Select the next sibling of the selected node.'''
+    
+    c = self ; p = c.currentPosition()
+
+    # if c.inChaptersTree(p):
+        # p = c.getChaptersTree().next()
+
+    c.treeSelectHelper(p and p.next())
+#@-node:ekr.20031218072017.2919:goToNextSibling (modified for chapters)
+#@+node:ekr.20031218072017.2920:goToParent
+def goToParent (self,event=None):
+    
+    '''Select the parent of the selected node.'''
+    
+    c = self ; p = c.currentPosition()
+
+    c.treeSelectHelper(p and p.parent())
+#@-node:ekr.20031218072017.2920:goToParent
+#@+node:ekr.20031218072017.2921:goToPrevSibling (modified for chapters)
+def goToPrevSibling (self,event=None):
+    
+    '''Select the previous sibling of the selected node.'''
+    
+    c = self ; p = c.currentPosition()
+        
+    # if c.inChaptersTree(p):
+        # p = c.getChaptersTree().back()
+
+    c.treeSelectHelper(p and p.back())
+#@-node:ekr.20031218072017.2921:goToPrevSibling (modified for chapters)
+#@+node:ekr.20031218072017.2993:selectThreadBack (modified for chapters)
+def selectThreadBack (self,event=None):
+    
+    '''Select the node preceding the selected node in outline order.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    
+    p.moveToThreadBack()
+    
+    # if c.inChaptersTree(p):
+        # p = c.getChaptersTree().threadBack()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2993:selectThreadBack (modified for chapters)
+#@+node:ekr.20031218072017.2994:selectThreadNext  (modified for chapters)
+def selectThreadNext (self,event=None):
+    
+    '''Select the node following the selected node in outline order.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    
+    p.moveToThreadNext()
+    
+    # if c.inChaptersTree(p):
+        # p = c.getChaptersTree().next()
+    
+    c.treeSelectHelper(p)
+#@nonl
+#@-node:ekr.20031218072017.2994:selectThreadNext  (modified for chapters)
+#@+node:ekr.20031218072017.2995:selectVisBack (modified for chapters)
+# This has an up arrow for a control key.
+
+def selectVisBack (self,event=None):
+    
+    '''Select the visible node preceding the presently selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    
+    # if c.inChaptersTree(p):
+        # root = self.getChapterTree(p)
+        # if not root: return None
+        # p.moveToVisBack()
+        # if not root.isAncestorOf(p):
+            # return None
+    # else:
+        # p.moveToVisBack()
+        # if c.inChaptersTree(p):
+            # p = c.getChaptersTree().visBack()
+            
+    p.moveToVisBack()
+
+    if p:
+        redraw = not p.isVisible()
+        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
+    else:
+        redraw = True
+
+    c.treeSelectHelper(p,redraw=redraw)
+#@-node:ekr.20031218072017.2995:selectVisBack (modified for chapters)
+#@+node:ekr.20031218072017.2996:selectVisNext (modified for chapters)
+def selectVisNext (self,event=None):
+    
+    '''Select the visible node following the presently selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    
+    # if c.inChaptersTree(p):
+        # root = self.getChapterTree(p)
+        # if not root: return None
+        # p.moveToVisNext()
+        # if not root.isAncestorOf(p):
+            # return None
+    # else:
+        # p.moveToVisNext()
+        # if c.inChaptersTree(p):
+            # p = c.getChaptersTree().lastNode().visNext()
+            
+    p.moveToVisNext()
+
+    if p:
+        redraw = not p.isVisible()
+        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
+    else:
+        redraw = True
+
+    c.treeSelectHelper(p,redraw=redraw)
+#@-node:ekr.20031218072017.2996:selectVisNext (modified for chapters)
 #@+node:ekr.20070417112650:utils
 #@+node:ekr.20070417112650.1:getChapterTree
 def getChapterTree (self,p):
@@ -3206,638 +2751,10 @@ def inChaptersTree (self,p):
 #@+node:ekr.20070417112650.3:NewHeadline
 #@-node:ekr.20070417112650.3:NewHeadline
 #@-node:ekr.20070417112650:utils
-#@+node:ekr.20070226121510:treeFocusHelper (new in Leo 4.4.3)
-def treeFocusHelper (self):
-    
-    c = self
-    
-    if c.config.getBool('stayInTreeAfterSelect'):
-        c.treeWantsFocusNow()
-    else:
-        c.bodyWantsFocusNow()
-#@-node:ekr.20070226121510:treeFocusHelper (new in Leo 4.4.3)
-#@+node:ekr.20070226113916:treeSelectHelper (new in Leo 4.4.3)
-def treeSelectHelper (self,p,redraw=True):
-    
-    c = self ; current = c.currentPosition()
-    
-    # if c.inChaptersTree(current) and not c.inChaptersTree(p):
-        # g.trace('can not move outside chapter tree.',current,p)
-        # return
-
-    if p:
-        c.beginUpdate()
-        try:
-            c.frame.tree.expandAllAncestors(p)
-            c.selectPosition(p,updateBeadList=False)
-        finally:
-            c.endUpdate(redraw)
-            
-    c.treeFocusHelper()
-#@-node:ekr.20070226113916:treeSelectHelper (new in Leo 4.4.3)
-#@+node:ekr.20031218072017.1628:goNextVisitedNode
-def goNextVisitedNode (self,event=None):
-    
-    '''Select the next visited node.'''
-    
-    c = self
-
-    while c.beadPointer + 1 < len(c.beadList):
-        c.beadPointer += 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
-#@-node:ekr.20031218072017.1628:goNextVisitedNode
-#@+node:ekr.20031218072017.1627:goPrevVisitedNode
-def goPrevVisitedNode (self,event=None):
-    
-    '''Select the previously visited node.'''
-    
-    c = self
-
-    while c.beadPointer > 0:
-        c.beadPointer -= 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
-#@-node:ekr.20031218072017.1627:goPrevVisitedNode
-#@+node:ekr.20031218072017.2914:goToFirstNode (modified for chapters)
-def goToFirstNode (self,event=None):
-    
-    '''Select the first node of the entire outline.'''
-    
-    c = self ; p = c.rootPosition()
-        
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().next()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20031218072017.2914:goToFirstNode (modified for chapters)
-#@+node:ekr.20051012092453:goToFirstSibling  (modified for chapters)
-def goToFirstSibling (self,event=None):
-    
-    '''Select the first sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    if p.hasBack():
-        while p.hasBack():
-            p.moveToBack()
-            
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().next()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20051012092453:goToFirstSibling  (modified for chapters)
-#@+node:ekr.20031218072017.2915:goToLastNode  (modified for chapters)
-def goToLastNode (self,event=None):
-    
-    '''Select the last node in the entire tree.'''
-    
-    c = self ; p = c.rootPosition()
-    while p and p.hasThreadNext():
-        p.moveToThreadNext()
-        
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().back()
-        if p: p = p.lastNode()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20031218072017.2915:goToLastNode  (modified for chapters)
-#@+node:ekr.20051012092847.1:goToLastSibling  (modified for chapters)
-def goToLastSibling (self,event=None):
-    
-    '''Select the last sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    if p.hasNext():
-        while p.hasNext():
-            p.moveToNext()
-            
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().back()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20051012092847.1:goToLastSibling  (modified for chapters)
-#@+node:ekr.20050711153537:goToLastVisibleNode  (modified for chapters)
-def goToLastVisibleNode (self,event=None):
-    
-    '''Select the last visible node of the entire outline.'''
-    
-    c = self ; p = c.rootPosition()
-    
-    while p.hasNext():
-        p.moveToNext()
-        
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().back()
-        
-    while p and p.isExpanded():
-        p.moveToLastChild()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20050711153537:goToLastVisibleNode  (modified for chapters)
-#@+node:ekr.20031218072017.2916:goToNextClone (modified for chapters)
-def goToNextClone (self,event=None):
-    
-    '''Select the next node that is a clone of the selected node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    if not p.isCloned(): return
-    
-    t = p.v.t
-    p.moveToThreadNext()
-    wrapped = False
-    while 1:
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().next()
-        if p and p.v.t == t:
-            break
-        elif p:
-            p.moveToThreadNext()
-        elif wrapped:
-            break
-        else:
-            wrapped = True
-            p = c.rootPosition()
-
-    if not p: g.es("done",color="blue")
-    c.treeSelectHelper(p) # Sets focus.
-#@-node:ekr.20031218072017.2916:goToNextClone (modified for chapters)
-#@+node:ekr.20031218072017.2917:goToNextDirtyHeadline  (modified for chapters)
-def goToNextDirtyHeadline (self,event=None):
-    
-    '''Select the node that is marked as changed.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-
-    p.moveToThreadNext()
-    wrapped = False
-    while 1:
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().next()
-        if p and p.isDirty():
-            break
-        elif p:
-            p.moveToThreadNext()
-        elif wrapped:
-            break
-        else:
-            wrapped = True
-            p = c.rootPosition()
-
-    if not p: g.es("done",color="blue")
-    c.treeSelectHelper(p) # Sets focus.
-#@-node:ekr.20031218072017.2917:goToNextDirtyHeadline  (modified for chapters)
-#@+node:ekr.20031218072017.2918:goToNextMarkedHeadline  (modified for chapters)
-def goToNextMarkedHeadline (self,event=None):
-    
-    '''Select the next marked node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-
-    p.moveToThreadNext()
-    wrapped = False
-    while 1:
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().next()
-        if p and p.isMarked():
-            break
-        elif p:
-            p.moveToThreadNext()
-        elif wrapped:
-            break
-        else:
-            wrapped = True
-            p = c.rootPosition()
-
-    if not p: g.es("done",color="blue")
-    c.treeSelectHelper(p) # Sets focus.
-#@-node:ekr.20031218072017.2918:goToNextMarkedHeadline  (modified for chapters)
-#@+node:ekr.20031218072017.2919:goToNextSibling (modified for chapters)
-def goToNextSibling (self,event=None):
-    
-    '''Select the next sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().next()
-
-    c.treeSelectHelper(p and p.next())
-#@-node:ekr.20031218072017.2919:goToNextSibling (modified for chapters)
-#@+node:ekr.20031218072017.2920:goToParent
-def goToParent (self,event=None):
-    
-    '''Select the parent of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-
-    c.treeSelectHelper(p and p.parent())
-#@-node:ekr.20031218072017.2920:goToParent
-#@+node:ekr.20031218072017.2921:goToPrevSibling (modified for chapters)
-def goToPrevSibling (self,event=None):
-    
-    '''Select the previous sibling of the selected node.'''
-    
-    c = self ; p = c.currentPosition()
-        
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().back()
-
-    c.treeSelectHelper(p and p.back())
-#@-node:ekr.20031218072017.2921:goToPrevSibling (modified for chapters)
-#@+node:ekr.20031218072017.2993:selectThreadBack (modified for chapters)
-def selectThreadBack (self,event=None):
-    
-    '''Select the node preceding the selected node in outline order.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    
-    p.moveToThreadBack()
-    
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().threadBack()
-
-    c.treeSelectHelper(p)
-#@-node:ekr.20031218072017.2993:selectThreadBack (modified for chapters)
-#@+node:ekr.20031218072017.2994:selectThreadNext  (modified for chapters)
-def selectThreadNext (self,event=None):
-    
-    '''Select the node following the selected node in outline order.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    
-    p.moveToThreadNext()
-    
-    if c.inChaptersTree(p):
-        p = c.getChaptersTree().next()
-    
-    c.treeSelectHelper(p)
-#@nonl
-#@-node:ekr.20031218072017.2994:selectThreadNext  (modified for chapters)
-#@+node:ekr.20031218072017.2995:selectVisBack (modified for chapters)
-# This has an up arrow for a control key.
-
-def selectVisBack (self,event=None):
-    
-    '''Select the visible node preceding the presently selected node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    
-    if c.inChaptersTree(p):
-        root = self.getChapterTree(p)
-        if not root: return None
-        p.moveToVisBack()
-        if not root.isAncestorOf(p):
-            return None
-    else:
-        p.moveToVisBack()
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().visBack()
-
-    if p:
-        redraw = not p.isVisible()
-        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
-    else:
-        redraw = True
-
-    c.treeSelectHelper(p,redraw=redraw)
-#@-node:ekr.20031218072017.2995:selectVisBack (modified for chapters)
-#@+node:ekr.20031218072017.2996:selectVisNext (modified for chapters)
-def selectVisNext (self,event=None):
-    
-    '''Select the visible node following the presently selected node.'''
-
-    c = self ; p = c.currentPosition()
-    if not p: return
-    
-    if c.inChaptersTree(p):
-        root = self.getChapterTree(p)
-        if not root: return None
-        p.moveToVisNext()
-        if not root.isAncestorOf(p):
-            return None
-    else:
-        p.moveToVisNext()
-        if c.inChaptersTree(p):
-            p = c.getChaptersTree().lastNode().visNext()
-
-    if p:
-        redraw = not p.isVisible()
-        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
-    else:
-        redraw = True
-
-    c.treeSelectHelper(p,redraw=redraw)
-#@-node:ekr.20031218072017.2996:selectVisNext (modified for chapters)
 #@-node:ekr.20031218072017.2913:Goto
-#@+node:ekr.20031218072017.2898:Expand & Contract...
-#@+node:ekr.20031218072017.2899:Commands
-#@+node:ekr.20031218072017.2900:contractAllHeadlines
-def contractAllHeadlines (self,event=None):
-    
-    '''Contract all nodes in the outline.'''
-
-    c = self
-    
-    c.beginUpdate()
-    try: # update...
-        for p in c.allNodes_iter():
-            p.contract()
-        # Select the topmost ancestor of the presently selected node.
-        p = c.currentPosition()
-        while p and p.hasParent():
-            p.moveToParent()
-        c.selectVnode(p)
-    finally:
-        c.endUpdate()
-
-    c.treeFocusHelper()
-
-    c.expansionLevel = 1 # Reset expansion level.
-#@-node:ekr.20031218072017.2900:contractAllHeadlines
-#@+node:ekr.20031218072017.2901:contractNode
-def contractNode (self,event=None):
-    
-    '''Contract the presently selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    # g.trace(p.headString())
-    
-    c.beginUpdate()
-    try:
-        p.contract()
-    finally:
-        c.endUpdate()
-    
-    c.treeFocusHelper()
-#@-node:ekr.20031218072017.2901:contractNode
-#@+node:ekr.20040930064232:contractNodeOrGoToParent
-def contractNodeOrGoToParent (self,event=None):
-    
-    """Simulate the left Arrow Key in folder of Windows Explorer."""
-
-    c = self ; p = c.currentPosition()
-
-    if p.hasChildren() and p.isExpanded():
-        # g.trace('contract',p.headString())
-        c.contractNode()
-    elif p.hasParent():
-        # g.trace('goto parent',p.headString())
-        c.goToParent()
-
-    c.treeFocusHelper()
-#@nonl
-#@-node:ekr.20040930064232:contractNodeOrGoToParent
-#@+node:ekr.20031218072017.2902:contractParent
-def contractParent (self,event=None):
-    
-    '''Contract the parent of the presently selected node.'''
-    
-    c = self ; p = c.currentPosition()
-    
-    parent = p.parent()
-    if not parent: return
-
-    c.beginUpdate()
-    try:
-        parent.contract()
-    finally:
-        c.endUpdate(False)
-        
-    c.treeSelectHelper(parent)
-#@-node:ekr.20031218072017.2902:contractParent
-#@+node:ekr.20031218072017.2903:expandAllHeadlines
-def expandAllHeadlines (self,event=None):
-    
-    '''Expand all headlines.
-    Warning: this can take a long time for large outlines.'''
-
-    c = self ; p = root = c.rootPosition()
-
-    c.beginUpdate()
-    try:
-        while p:
-            c.expandSubtree(p)
-            p.moveToNext()
-        c.selectVnode(root)
-    finally:
-        c.endUpdate()
-        c.treeFocusHelper()
-
-    c.expansionLevel = 0 # Reset expansion level.
-#@-node:ekr.20031218072017.2903:expandAllHeadlines
-#@+node:ekr.20031218072017.2904:expandAllSubheads
-def expandAllSubheads (self,event=None):
-    
-    '''Expand all children of the presently selected node.'''
-
-    c = self ; v = c.currentVnode()
-    if not v: return
-
-    child = v.firstChild()
-    c.beginUpdate()
-    try:
-        c.expandSubtree(v)
-        while child:
-            c.expandSubtree(child)
-            child = child.next()
-        c.selectVnode(v)
-    finally:
-        c.endUpdate()
-        c.treeFocusHelper()
-#@-node:ekr.20031218072017.2904:expandAllSubheads
-#@+node:ekr.20031218072017.2905:expandLevel1..9
-def expandLevel1 (self,event=None):
-    '''Expand the outline to level 1'''
-    self.expandToLevel(1)
-
-def expandLevel2 (self,event=None):
-    '''Expand the outline to level 2'''
-    self.expandToLevel(2)
-
-def expandLevel3 (self,event=None):
-    '''Expand the outline to level 3'''
-    self.expandToLevel(3)
-
-def expandLevel4 (self,event=None):
-    '''Expand the outline to level 4'''
-    self.expandToLevel(4)
-
-def expandLevel5 (self,event=None):
-    '''Expand the outline to level 5'''
-    self.expandToLevel(5)
-
-def expandLevel6 (self,event=None):
-    '''Expand the outline to level 6'''
-    self.expandToLevel(6)
-
-def expandLevel7 (self,event=None):
-    '''Expand the outline to level 7'''
-    self.expandToLevel(7)
-
-def expandLevel8 (self,event=None):
-    '''Expand the outline to level 8'''
-    self.expandToLevel(8)
-
-def expandLevel9 (self,event=None):
-    '''Expand the outline to level 9'''
-    self.expandToLevel(9)
-#@-node:ekr.20031218072017.2905:expandLevel1..9
-#@+node:ekr.20031218072017.2906:expandNextLevel
-def expandNextLevel (self,event=None):
-    
-    '''Increase the expansion level of the outline and
-    Expand all nodes at that level or lower.'''
-
-    c = self ; v = c.currentVnode()
-    
-    # Expansion levels are now local to a particular tree.
-    if c.expansionNode != v:
-        c.expansionLevel = 1
-        c.expansionNode = v
-        
-    self.expandToLevel(c.expansionLevel + 1)
-#@-node:ekr.20031218072017.2906:expandNextLevel
-#@+node:ekr.20031218072017.2907:expandNode
-def expandNode (self,event=None):
-    
-    '''Expand the presently selected node.'''
-    
-    c = self ; v = c.currentVnode()
-    
-    c.beginUpdate()
-    try:
-        v.expand()
-    finally:
-        c.endUpdate()
-        c.treeFocusHelper()
-#@nonl
-#@-node:ekr.20031218072017.2907:expandNode
-#@+node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
-def expandNodeAndGoToFirstChild (self,event=None):
-    
-    """If a node has children, expand it if needed and go to the first child."""
-
-    c = self ; p = c.currentPosition()
-    if not p.hasChildren():
-        c.treeFocusHelper()
-        return
-
-    c.beginUpdate()
-    try:
-        if not p.isExpanded():
-            c.expandNode()
-        c.selectVnode(p.firstChild())
-    finally:
-        c.endUpdate()
-        c.treeFocusHelper()
-        
-def expandNodeOrGoToFirstChild (self,event=None):
-    
-    """Simulate the Right Arrow Key in folder of Windows Explorer."""
-
-    c = self ; p = c.currentPosition()
-    if p.hasChildren():
-        if not p.isExpanded():
-            c.expandNode()
-        else:
-            c.beginUpdate()
-            try:
-                c.selectVnode(p.firstChild())
-            finally:
-                c.endUpdate()
-    c.treeFocusHelper()
-#@-node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
-#@+node:ekr.20060928062431:expandOnlyAncestorsOfNode
-def expandOnlyAncestorsOfNode (self,event=None):
-    
-    '''Contract all nodes in the outline.'''
-
-    c = self ; level = 1
-    
-    c.beginUpdate()
-    try:
-        for p in c.allNodes_iter():
-            p.contract()
-        for p in c.currentPosition().parents_iter():
-            p.expand()
-            level += 1
-    finally:
-        c.endUpdate()
-        c.treeFocusHelper()
-
-    c.expansionLevel = level # Reset expansion level.
-#@-node:ekr.20060928062431:expandOnlyAncestorsOfNode
-#@+node:ekr.20031218072017.2908:expandPrevLevel
-def expandPrevLevel (self,event=None):
-    
-    '''Decrease the expansion level of the outline and
-    Expand all nodes at that level or lower.'''
-
-    c = self ; v = c.currentVnode()
-    
-    # Expansion levels are now local to a particular tree.
-    if c.expansionNode != v:
-        c.expansionLevel = 1
-        c.expansionNode = v
-        
-    self.expandToLevel(max(1,c.expansionLevel - 1))
-#@-node:ekr.20031218072017.2908:expandPrevLevel
-#@-node:ekr.20031218072017.2899:Commands
-#@+node:ekr.20031218072017.2909:Utilities
-#@+node:ekr.20031218072017.2910:contractSubtree
-def contractSubtree (self,p):
-
-    for p in p.subtree_iter():
-        p.contract()
-#@-node:ekr.20031218072017.2910:contractSubtree
-#@+node:ekr.20031218072017.2911:expandSubtree
-def expandSubtree (self,v):
-
-    c = self
-    last = v.lastNode()
-
-    c.beginUpdate()
-    try:
-        while v and v != last:
-            v.expand()
-            v = v.threadNext()
-    finally:
-        c.endUpdate()
-#@-node:ekr.20031218072017.2911:expandSubtree
-#@+node:ekr.20031218072017.2912:expandToLevel (rewritten in 4.4)
-def expandToLevel (self,level):
-
-    c = self
-    c.beginUpdate()
-    try:
-        current = c.currentPosition()
-        n = current.level()
-        for p in current.self_and_subtree_iter():
-            if p.level() - n + 1 < level:
-                p.expand()
-            else:
-                p.contract()
-        c.expansionLevel = level
-        c.expansionNode = c.currentPosition()
-    finally:
-        c.endUpdate()
-#@-node:ekr.20031218072017.2912:expandToLevel (rewritten in 4.4)
-#@-node:ekr.20031218072017.2909:Utilities
-#@-node:ekr.20031218072017.2898:Expand & Contract...
-#@-node:ekr.20070410063711:Fixed bugs: don't select nodes in active @chapters tree
+#@-node:ekr.20070410063711:(reverted) don't select nodes in active @chapters tree
+#@+node:ekr.20070417110537:Create local tree for each chapter
+#@-node:ekr.20070417110537:Create local tree for each chapter
 #@-node:ekr.20070317073627.4:(Chapters)
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
