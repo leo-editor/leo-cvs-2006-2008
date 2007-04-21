@@ -792,7 +792,8 @@ class baseCommands:
         
         '''Save a Leo outline to a file.'''
     
-        c = self
+        c = self ; cc = c.chapterController
+        oldChapter = cc and c.config.getBool('use_chapters') and cc.forceMainChapter()
         
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
@@ -822,13 +823,17 @@ class baseCommands:
                 c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
                 c.fileCommands.save(c.mFileName)
                 c.updateRecentFiles(c.mFileName)
+                
+        # if oldChapter:
+            # cc.selectChapter(oldChapter)
     #@-node:ekr.20031218072017.2834:save
     #@+node:ekr.20031218072017.2835:saveAs
     def saveAs (self,event=None):
         
         '''Save a Leo outline to a file with a new filename.'''
         
-        c = self
+        c = self ; cc = c.chapterController
+        oldChapter = cc and c.config.getBool('use_chapters') and cc.forceMainChapter()
         
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
@@ -854,6 +859,9 @@ class baseCommands:
             # Calls c.setChanged(False) if no error.
             c.fileCommands.saveAs(c.mFileName)
             c.updateRecentFiles(c.mFileName)
+            
+        # if oldChapter:
+            # cc.selectChapter(oldChapter)
     #@-node:ekr.20031218072017.2835:saveAs
     #@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
     def saveAsUnzipped (self,event=None):
@@ -883,7 +891,8 @@ class baseCommands:
         
         '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
         
-        c = self
+        c = self ; cc = c.chapterController
+        oldChapter = cc and c.config.getBool('use_chapters') and cc.forceMainChapter()
         
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
@@ -905,6 +914,9 @@ class baseCommands:
             fileName = g.ensure_extension(fileName, ".leo")
             c.fileCommands.saveTo(fileName)
             c.updateRecentFiles(fileName)
+            
+        # if oldChapter:
+            # cc.selectChapter(oldChapter)
     #@-node:ekr.20031218072017.2836:saveTo
     #@+node:ekr.20031218072017.2837:revert
     def revert (self,event=None):
@@ -4392,35 +4404,6 @@ class baseCommands:
     #@-node:ekr.20031218072017.2909:Utilities
     #@-node:ekr.20031218072017.2898:Expand & Contract...
     #@+node:ekr.20031218072017.2913:Goto
-    #@+node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
-    def treeFocusHelper (self):
-        
-        c = self
-        
-        if c.config.getBool('stayInTreeAfterSelect'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    #@-node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
-    #@+node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
-    def treeSelectHelper (self,p,redraw=True):
-        
-        c = self ; current = c.currentPosition()
-        
-        # if c.inChaptersTree(current) and not c.inChaptersTree(p):
-            # g.trace('can not move outside chapter tree.',current,p)
-            # return
-    
-        if p:
-            c.beginUpdate()
-            try:
-                c.frame.tree.expandAllAncestors(p)
-                c.selectPosition(p,updateBeadList=False)
-            finally:
-                c.endUpdate(redraw)
-                
-        c.treeFocusHelper()
-    #@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
     #@+node:ekr.20031218072017.1628:goNextVisitedNode
     def goNextVisitedNode (self,event=None):
         
@@ -4449,19 +4432,16 @@ class baseCommands:
                 c.treeSelectHelper(v)
                 return
     #@-node:ekr.20031218072017.1627:goPrevVisitedNode
-    #@+node:ekr.20031218072017.2914:goToFirstNode (modified for chapters)
+    #@+node:ekr.20031218072017.2914:goToFirstNode
     def goToFirstNode (self,event=None):
         
         '''Select the first node of the entire outline.'''
         
         c = self ; p = c.rootPosition()
-            
-        # if c.inChaptersTree(p):
-            # p = c.getChaptersTree().next()
     
         c.treeSelectHelper(p)
-    #@-node:ekr.20031218072017.2914:goToFirstNode (modified for chapters)
-    #@+node:ekr.20051012092453:goToFirstSibling  (modified for chapters)
+    #@-node:ekr.20031218072017.2914:goToFirstNode
+    #@+node:ekr.20051012092453:goToFirstSibling
     def goToFirstSibling (self,event=None):
         
         '''Select the first sibling of the selected node.'''
@@ -4471,13 +4451,10 @@ class baseCommands:
         if p.hasBack():
             while p.hasBack():
                 p.moveToBack()
-                
-            # if c.inChaptersTree(p):
-                # p = c.getChaptersTree().next()
     
         c.treeSelectHelper(p)
-    #@-node:ekr.20051012092453:goToFirstSibling  (modified for chapters)
-    #@+node:ekr.20031218072017.2915:goToLastNode  (modified for chapters)
+    #@-node:ekr.20051012092453:goToFirstSibling
+    #@+node:ekr.20031218072017.2915:goToLastNode
     def goToLastNode (self,event=None):
         
         '''Select the last node in the entire tree.'''
@@ -4485,14 +4462,10 @@ class baseCommands:
         c = self ; p = c.rootPosition()
         while p and p.hasThreadNext():
             p.moveToThreadNext()
-            
-        # if c.inChaptersTree(p):
-            # p = c.getChaptersTree().back()
-            # if p: p = p.lastNode()
     
         c.treeSelectHelper(p)
-    #@-node:ekr.20031218072017.2915:goToLastNode  (modified for chapters)
-    #@+node:ekr.20051012092847.1:goToLastSibling  (modified for chapters)
+    #@-node:ekr.20031218072017.2915:goToLastNode
+    #@+node:ekr.20051012092847.1:goToLastSibling
     def goToLastSibling (self,event=None):
         
         '''Select the last sibling of the selected node.'''
@@ -4502,13 +4475,10 @@ class baseCommands:
         if p.hasNext():
             while p.hasNext():
                 p.moveToNext()
-                
-            # if c.inChaptersTree(p):
-                # p = c.getChaptersTree().back()
     
         c.treeSelectHelper(p)
-    #@-node:ekr.20051012092847.1:goToLastSibling  (modified for chapters)
-    #@+node:ekr.20050711153537:goToLastVisibleNode  (modified for chapters)
+    #@-node:ekr.20051012092847.1:goToLastSibling
+    #@+node:ekr.20050711153537:goToLastVisibleNode
     def goToLastVisibleNode (self,event=None):
         
         '''Select the last visible node of the entire outline.'''
@@ -4518,15 +4488,12 @@ class baseCommands:
         while p.hasNext():
             p.moveToNext()
             
-        # if c.inChaptersTree(p):
-            # p = c.getChaptersTree().back()
-            
         while p and p.isExpanded():
             p.moveToLastChild()
     
         c.treeSelectHelper(p)
-    #@-node:ekr.20050711153537:goToLastVisibleNode  (modified for chapters)
-    #@+node:ekr.20031218072017.2916:goToNextClone (modified for chapters)
+    #@-node:ekr.20050711153537:goToLastVisibleNode
+    #@+node:ekr.20031218072017.2916:goToNextClone
     def goToNextClone (self,event=None):
         
         '''Select the next node that is a clone of the selected node.'''
@@ -4539,8 +4506,6 @@ class baseCommands:
         p.moveToThreadNext()
         wrapped = False
         while 1:
-            # if c.inChaptersTree(p):
-                # p = c.getChaptersTree().next()
             if p and p.v.t == t:
                 break
             elif p:
@@ -4553,8 +4518,8 @@ class baseCommands:
     
         if not p: g.es("done",color="blue")
         c.treeSelectHelper(p) # Sets focus.
-    #@-node:ekr.20031218072017.2916:goToNextClone (modified for chapters)
-    #@+node:ekr.20031218072017.2917:goToNextDirtyHeadline  (modified for chapters)
+    #@-node:ekr.20031218072017.2916:goToNextClone
+    #@+node:ekr.20031218072017.2917:goToNextDirtyHeadline
     def goToNextDirtyHeadline (self,event=None):
         
         '''Select the node that is marked as changed.'''
@@ -4565,8 +4530,6 @@ class baseCommands:
         p.moveToThreadNext()
         wrapped = False
         while 1:
-            # if c.inChaptersTree(p):
-                # p = c.getChaptersTree().next()
             if p and p.isDirty():
                 break
             elif p:
@@ -4579,8 +4542,8 @@ class baseCommands:
     
         if not p: g.es("done",color="blue")
         c.treeSelectHelper(p) # Sets focus.
-    #@-node:ekr.20031218072017.2917:goToNextDirtyHeadline  (modified for chapters)
-    #@+node:ekr.20031218072017.2918:goToNextMarkedHeadline  (modified for chapters)
+    #@-node:ekr.20031218072017.2917:goToNextDirtyHeadline
+    #@+node:ekr.20031218072017.2918:goToNextMarkedHeadline
     def goToNextMarkedHeadline (self,event=None):
         
         '''Select the next marked node.'''
@@ -4591,8 +4554,6 @@ class baseCommands:
         p.moveToThreadNext()
         wrapped = False
         while 1:
-            # if c.inChaptersTree(p):
-                # p = c.getChaptersTree().next()
             if p and p.isMarked():
                 break
             elif p:
@@ -4605,19 +4566,16 @@ class baseCommands:
     
         if not p: g.es("done",color="blue")
         c.treeSelectHelper(p) # Sets focus.
-    #@-node:ekr.20031218072017.2918:goToNextMarkedHeadline  (modified for chapters)
-    #@+node:ekr.20031218072017.2919:goToNextSibling (modified for chapters)
+    #@-node:ekr.20031218072017.2918:goToNextMarkedHeadline
+    #@+node:ekr.20031218072017.2919:goToNextSibling
     def goToNextSibling (self,event=None):
         
         '''Select the next sibling of the selected node.'''
         
         c = self ; p = c.currentPosition()
     
-        # if c.inChaptersTree(p):
-            # p = c.getChaptersTree().next()
-    
         c.treeSelectHelper(p and p.next())
-    #@-node:ekr.20031218072017.2919:goToNextSibling (modified for chapters)
+    #@-node:ekr.20031218072017.2919:goToNextSibling
     #@+node:ekr.20031218072017.2920:goToParent
     def goToParent (self,event=None):
         
@@ -4627,19 +4585,16 @@ class baseCommands:
     
         c.treeSelectHelper(p and p.parent())
     #@-node:ekr.20031218072017.2920:goToParent
-    #@+node:ekr.20031218072017.2921:goToPrevSibling (modified for chapters)
+    #@+node:ekr.20031218072017.2921:goToPrevSibling
     def goToPrevSibling (self,event=None):
         
         '''Select the previous sibling of the selected node.'''
         
         c = self ; p = c.currentPosition()
-            
-        # if c.inChaptersTree(p):
-            # p = c.getChaptersTree().back()
     
         c.treeSelectHelper(p and p.back())
-    #@-node:ekr.20031218072017.2921:goToPrevSibling (modified for chapters)
-    #@+node:ekr.20031218072017.2993:selectThreadBack (modified for chapters)
+    #@-node:ekr.20031218072017.2921:goToPrevSibling
+    #@+node:ekr.20031218072017.2993:selectThreadBack
     def selectThreadBack (self,event=None):
         
         '''Select the node preceding the selected node in outline order.'''
@@ -4648,13 +4603,10 @@ class baseCommands:
         if not p: return
         
         p.moveToThreadBack()
-        
-        # if c.inChaptersTree(p):
-            # p = c.getChaptersTree().threadBack()
     
         c.treeSelectHelper(p)
-    #@-node:ekr.20031218072017.2993:selectThreadBack (modified for chapters)
-    #@+node:ekr.20031218072017.2994:selectThreadNext  (modified for chapters)
+    #@-node:ekr.20031218072017.2993:selectThreadBack
+    #@+node:ekr.20031218072017.2994:selectThreadNext
     def selectThreadNext (self,event=None):
         
         '''Select the node following the selected node in outline order.'''
@@ -4663,14 +4615,11 @@ class baseCommands:
         if not p: return
         
         p.moveToThreadNext()
-        
-        # if c.inChaptersTree(p):
-            # p = c.getChaptersTree().next()
-        
+    
         c.treeSelectHelper(p)
     #@nonl
-    #@-node:ekr.20031218072017.2994:selectThreadNext  (modified for chapters)
-    #@+node:ekr.20031218072017.2995:selectVisBack (modified for chapters)
+    #@-node:ekr.20031218072017.2994:selectThreadNext
+    #@+node:ekr.20031218072017.2995:selectVisBack
     # This has an up arrow for a control key.
     
     def selectVisBack (self,event=None):
@@ -4679,17 +4628,6 @@ class baseCommands:
     
         c = self ; p = c.currentPosition()
         if not p: return
-        
-        # if c.inChaptersTree(p):
-            # root = self.getChapterTree(p)
-            # if not root: return None
-            # p.moveToVisBack()
-            # if not root.isAncestorOf(p):
-                # return None
-        # else:
-            # p.moveToVisBack()
-            # if c.inChaptersTree(p):
-                # p = c.getChaptersTree().visBack()
                 
         p.moveToVisBack()
     
@@ -4700,25 +4638,14 @@ class baseCommands:
             redraw = True
     
         c.treeSelectHelper(p,redraw=redraw)
-    #@-node:ekr.20031218072017.2995:selectVisBack (modified for chapters)
-    #@+node:ekr.20031218072017.2996:selectVisNext (modified for chapters)
+    #@-node:ekr.20031218072017.2995:selectVisBack
+    #@+node:ekr.20031218072017.2996:selectVisNext
     def selectVisNext (self,event=None):
         
         '''Select the visible node following the presently selected node.'''
     
         c = self ; p = c.currentPosition()
         if not p: return
-        
-        # if c.inChaptersTree(p):
-            # root = self.getChapterTree(p)
-            # if not root: return None
-            # p.moveToVisNext()
-            # if not root.isAncestorOf(p):
-                # return None
-        # else:
-            # p.moveToVisNext()
-            # if c.inChaptersTree(p):
-                # p = c.getChaptersTree().lastNode().visNext()
                 
         p.moveToVisNext()
     
@@ -4729,8 +4656,47 @@ class baseCommands:
             redraw = True
     
         c.treeSelectHelper(p,redraw=redraw)
-    #@-node:ekr.20031218072017.2996:selectVisNext (modified for chapters)
+    #@-node:ekr.20031218072017.2996:selectVisNext
     #@+node:ekr.20070417112650:utils
+    #@+node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+    def treeFocusHelper (self):
+        
+        c = self
+        
+        if c.config.getBool('stayInTreeAfterSelect'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    #@-node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+    #@+node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+    def treeSelectHelper (self,p,redraw=True):
+        
+        c = self ; current = c.currentPosition()
+    
+        if p:
+            c.beginUpdate()
+            try:
+                c.frame.tree.expandAllAncestors(p)
+                c.selectPosition(p,updateBeadList=False)
+            finally:
+                c.endUpdate(redraw)
+                
+        c.treeFocusHelper()
+    #@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+    #@+node:ekr.20070410192154:getChaptersTree
+    def getChaptersTree (self):
+        
+        '''return the node containing the active top-level @chapters tree.'''
+        
+        c = self ; cc = c.chapterController
+    
+        if cc and cc.nodesController and c.config.getBool('use_chapters'):
+            return cc.nodesController.findChaptersNode()
+        else:
+            return None
+        
+    #@nonl
+    #@-node:ekr.20070410192154:getChaptersTree
     #@+node:ekr.20070417112650.1:getChapterTree
     def getChapterTree (self,p):
         
@@ -4749,20 +4715,6 @@ class baseCommands:
         
     #@nonl
     #@-node:ekr.20070417112650.1:getChapterTree
-    #@+node:ekr.20070410192154:getChaptersTree
-    def getChaptersTree (self):
-        
-        '''return the node containing the active top-level @chapters tree.'''
-        
-        c = self ; cc = c.chapterController
-    
-        if cc and cc.nodesController and c.config.getBool('use_chapters'):
-            return cc.nodesController.findChaptersNode()
-        else:
-            return None
-        
-    #@nonl
-    #@-node:ekr.20070410192154:getChaptersTree
     #@+node:ekr.20070417112650.2:inChaptersTree
     def inChaptersTree (self,p):
         
@@ -4771,8 +4723,6 @@ class baseCommands:
         p2 = self.getChaptersTree()
         return p2 and (p2.equal(p) or p2.isAncestorOf(p))
     #@-node:ekr.20070417112650.2:inChaptersTree
-    #@+node:ekr.20070417112650.3:NewHeadline
-    #@-node:ekr.20070417112650.3:NewHeadline
     #@-node:ekr.20070417112650:utils
     #@-node:ekr.20031218072017.2913:Goto
     #@+node:ekr.20031218072017.2922:Mark...
@@ -4966,6 +4916,14 @@ class baseCommands:
     #@-node:ekr.20031218072017.2930:unmarkAll
     #@-node:ekr.20031218072017.2922:Mark...
     #@+node:ekr.20031218072017.1766:Move... (Commands)
+    #@+node:ekr.20070420092425:cantMoveMessage
+    def cantMoveMessage (self):
+        
+        c = self ; h = c.rootPosition().headString()
+        g.trace(h)
+        kind = g.choose(h.startswith('@chapter'),'chapter','hoist')
+        g.es("Can't move node out of %s" % (kind),color="blue")
+    #@-node:ekr.20070420092425:cantMoveMessage
     #@+node:ekr.20031218072017.1767:demote
     def demote (self,event=None):
         
@@ -5025,24 +4983,12 @@ class baseCommands:
         if not p: return
     
         if not c.canMoveOutlineDown():
-            if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-            # c.treeWantsFocusNow()
+            if c.hoistStack: self.cantMoveMessage()
             c.treeFocusHelper()
             return
             
         inAtIgnoreRange = p.inAtIgnoreRange()
         parent = p.parent()
-        
-        # chaptersSpecialCase = (
-            # c.config.getBool('use_chapters') and
-            # p.hasNext() and not parent and p.next().headString().startswith('@chapters'))
-    
-        # # Set next to the node after which p will be moved.
-        # if chaptersSpecialCase:
-            # next = p.hasNext() and p.next().next()
-        # else:
-            # next = p.visNext()
-            
         next = p.visNext()
     
         while next and p.isAncestorOf(next):
@@ -5101,13 +5047,11 @@ class baseCommands:
         
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
-        if not c.canMoveOutlineLeft(): # 11/4/03: Support for hoist.
-            if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-            # .treeWantsFocusNow()
+        if not c.canMoveOutlineLeft():
+            if c.hoistStack: self.cantMoveMessage()
             c.treeFocusHelper()
             return
         if not p.hasParent():
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
             return
     
@@ -5146,29 +5090,16 @@ class baseCommands:
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
         if not c.canMoveOutlineRight(): # 11/4/03: Support for hoist.
-            if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-            # c.treeWantsFocusNow()
+            if c.hoistStack: self.cantMoveMessage()
             c.treeFocusHelper()
             return
     
-        # chaptersSpecialCase = (
-            # c.config.getBool('use_chapters') and
-            # p.hasBack() and not p.parent() and p.back().headString().startswith('@chapters'))
-    
-        # if chaptersSpecialCase:
-            # back = p.hasBack() and p.back().back()
-        # else:
-            # back = p.back()
-            
         back = p.back()
-    
         if not back:
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
             return
     
         if not c.checkMoveWithParentWithWarning(p,back,True):
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
             return
     
@@ -5200,8 +5131,7 @@ class baseCommands:
         c = self ; u = c.undoer ; p = c.currentPosition()
         if not p: return
         if not c.canMoveOutlineUp(): # Support for hoist.
-            if c.hoistStack: g.es("Can't move node out of hoisted outline",color="blue")
-            # c.treeWantsFocusNow()
+            if c.hoistStack: self.cantMoveMessage()
             c.treeFocusHelper()
             return
         back = p.visBack()
@@ -5226,13 +5156,6 @@ class baseCommands:
                 
             parent = p.parent()
             backBack = p.hasBack() and p.back().back()
-            
-            # chaptersSpecialCase = (
-                # c.config.getBool('use_chapters') and
-                # backBack and not parent and backBack.headString().startswith('@chapters'))
-            
-            # if chaptersSpecialCase:
-                # back2 = backBack.visBack()
             
             # For this special case we move p after back2.
             specialCase = back2 and p.v in back2.v.t.vnodeList
@@ -5272,7 +5195,6 @@ class baseCommands:
         finally:
             c.selectPosition(p) # Also sets root position.
             c.endUpdate()
-            # c.treeWantsFocusNow()
             c.treeFocusHelper()
         c.updateSyntaxColorer(p) # Moving can change syntax coloring.
     #@-node:ekr.20031218072017.1772:moveOutlineUp
@@ -6293,6 +6215,7 @@ class baseCommands:
         
         while p and p.hasParent():
             p.moveToParent()
+            # g.trace(p.headString(),g.callers())
             
         while p and p.hasBack():
             p.moveToBack()
@@ -6517,7 +6440,7 @@ class baseCommands:
         
         Client code should use c.selectPosition instead."""
         
-        c = self
+        c = self ; cc = c.chapterController
         
         # g.trace(p.headString(),g.callers())
         
@@ -6527,7 +6450,11 @@ class baseCommands:
                 pass # We have already made a copy.
             else: # Must make a copy _now_
                 c._currentPosition = p.copy()
-                
+    
+            # inChapter = (
+                # cc and c.config.getBool('use_chapters') and
+                # cc.getSelectedChapter() != 'main')
+        
             # New in Leo 4.4.2: always recompute the root position here.
             # This *guarantees* that c.rootPosition always returns the proper value.
             c.setRootPosition(c.findRootPosition(c._currentPosition))
