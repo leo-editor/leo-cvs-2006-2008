@@ -3174,7 +3174,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@-node:ekr.20070317082315:tt.getters
     #@+node:ekr.20070320093038:Tabs...
     #@+node:ekr.20070317074824:tt.createTab
-    def createTab (self,tabName):
+    def createTab (self,tabName,select=True):
     
         tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
     
@@ -3183,9 +3183,10 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     
         b = nb.tab(tabName) # b is a Tk.Button.
     
-        b.configure(
-            background=self.selectedTabBackgroundColor,
-            foreground=self.selectedTabForegroundColor)
+        if select:
+            self.setSelectColor(b)
+        else:
+            self.setUnselectColor(b)
     
         canvas = c.frame.createCanvas(parentFrame)
     
@@ -3299,24 +3300,18 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@-node:ekr.20070317074813:tt.makeTabMenu & helpers
     #@+node:ekr.20070317075059.1:tt.raise/lowerTab
     def lowerTab (self,tabName):
-    
+        
+        # g.trace(tabName)
         tt = self ; tab = tt.nb.tab(tabName)
-    
-        tab.configure(
-            background=tt.unselectedTabBackgroundColor,
-            foreground=tt.unselectedTabForegroundColor)
-    
+        self.setUnselectColor(tab)
         tt.cc.unselectCallback(tabName)
     
     def raiseTab (self,tabName):
-    
+        
+        # g.trace(tabName)
         tt = self ; c = self.c ; tab = tt.nb.tab(tabName)
         w = c.frame.body and c.frame.body.bodyCtrl
-    
-        tab.configure(
-            background=tt.selectedTabBackgroundColor,
-            foreground=tt.selectedTabForegroundColor)
-    
+        self.setSelectColor(tab)
         tt.cc.selectCallback(tabName)
     
         if w:
@@ -3377,6 +3372,24 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         # This will indirectly invoke chapter.select.
         self.nb.selectpage(tabName)
     #@-node:ekr.20070317074824.3:tt.selectTab
+    #@+node:ekr.20070421095700:setSelect/UnselectColor
+    def setSelectColor (self,b):
+        
+        tt = self
+        
+        b.configure(
+            background=tt.selectedTabBackgroundColor,
+            foreground=tt.selectedTabForegroundColor)
+    
+    def setUnselectColor(self,b):
+        
+        tt = self
+        
+        b.configure(
+            background=tt.unselectedTabBackgroundColor,
+            foreground=tt.unselectedTabForegroundColor)
+    #@nonl
+    #@-node:ekr.20070421095700:setSelect/UnselectColor
     #@-node:ekr.20070320093038:Tabs...
     #@-others
 #@nonl

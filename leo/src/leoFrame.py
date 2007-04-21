@@ -2219,7 +2219,11 @@ class leoTree:
         body = w = frame.bodyCtrl
         old_p = c.currentPosition()
         if not p or not c.positionExists(p):
-            # g.trace('does not exist',p.headString())
+            if 0:
+                g.trace('does not exist',p and p.headString(),'root',c.rootPosition())
+                print 'self and parents...'
+                for p in p.self_and_parents_iter():
+                    print p
             return # Not an error.
         
         if self.trace_select and not g.app.unitTesting: g.trace(g.callers())
