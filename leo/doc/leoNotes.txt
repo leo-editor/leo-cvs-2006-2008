@@ -3490,6 +3490,45 @@ def findPositionAnywhere (self,v):
 #@nonl
 #@-node:ekr.20070317130648.1:chapter.findRootPosition (use nodeController method instead)
 #@-node:ekr.20070325155208.2:Not used from chapter
+#@+node:ekr.20070420085540.2:cc.saveMainRootPosition
+def saveMainRootPosition (self):
+    
+    cc = self
+    cc.mainRootPosition = cc.c.rootPosition()
+    g.trace(cc.mainRootPosition)
+#@nonl
+#@-node:ekr.20070420085540.2:cc.saveMainRootPosition
+#@+node:ekr.20070420085540:chapter.setChapterTree (no longer used)
+def setChapterTree (self,p):
+    
+    '''p is an @chapter node.
+    Create a standalone copy of p.v, say v2 to represent the chapter.
+    Set the global root position to a position, say p2, equivalent to v2 at the root.'''
+    
+    cc = self ; c = cc.c
+    # Copy just parts of the tnode.
+    t = p.v.t
+    t2 = leoNodes.tnode()
+    t2.headString = t.headString
+    t2.bodyString = t.bodyString
+    t2._firstChild = t._firstChild
+    v = leoNodes.vnode(t2) # Not linked.
+    p2 = leoNodes.position(v,[])
+    return p2
+    
+#@nonl
+#@-node:ekr.20070420085540:chapter.setChapterTree (no longer used)
+#@+node:ekr.20070420085540.1:chapter.setMainTree
+def setMainTree (self):
+    
+    c = self.c
+    
+    oldRoot = self.oldRoot or c.rootPosition()
+    c.setRootPosition(oldRoot)
+    # g.trace(oldRoot)
+    return oldRoot
+#@nonl
+#@-node:ekr.20070420085540.1:chapter.setMainTree
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
