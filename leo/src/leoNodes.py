@@ -2600,7 +2600,7 @@ class basePosition (object):
     #@+node:ekr.20040310062332.3:p.linkAsNthChild
     def linkAsNthChild (self,parent,n):
     
-        """Links self as the n'th child of vnode pv"""
+        """Links self as the n'th child of parent."""
         
         # g.trace(self,parent,n,parent.v)
     
