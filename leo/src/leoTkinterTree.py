@@ -787,7 +787,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     g.printGcSummary(trace=True)
             if self.trace_redraw_now or self.trace_alloc:
                 # g.trace(self.redrawCount,g.callers())
-                g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
+                # g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
                 if self.trace_stats:
                     g.print_stats()
                     g.clear_stats()
@@ -1147,17 +1147,13 @@ class leoTkinterTree (leoFrame.leoTree):
         self.prevPositions = g.app.positions
     
         if c.hoistStack:
-            bunch = c.hoistStack[-1]
-            # g.trace('hoist','canvas',self.canvas,'p',bunch.p.headString())
-            p = bunch.p ; h = p.headString()
-            if self.use_chapters and h.startswith('@chapter'):
-                if p.hasChildren():
-                    self.drawTree(p.firstChild(),self.root_left,self.root_top,0,0,hoistFlag=False)
-            else:
-                self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=True)
+            bunch = c.hoistStack[-1] ; p = bunch.p
+            # g.trace('  hoist','canvas',id(self.canvas),'p',bunch.p.headString())
+            self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=True)
         else:
-            ignoreChapters = self.use_chapters
-            self.drawTree(c.rootPosition(),self.root_left,self.root_top,0,0,ignoreChapters=ignoreChapters)
+            p = c.rootPosition()
+            # g.trace('no hoist','canvas',id(self.canvas),'p',p.headString())
+            self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=False)
     
         if self.trace_stats: self.showStats()
         
@@ -1172,7 +1168,7 @@ class leoTkinterTree (leoFrame.leoTree):
         self.redrawing = False
     #@-node:ekr.20040803072955.52:drawTopTree
     #@+node:ekr.20040803072955.53:drawTree
-    def drawTree(self,p,x,y,h,level,hoistFlag=False,ignoreChapters=False):
+    def drawTree(self,p,x,y,h,level,hoistFlag=False):
     
         tree = self ; c = self.c
         yfirst = ylast = y
@@ -1186,21 +1182,19 @@ class leoTkinterTree (leoFrame.leoTree):
             # N.B. This is the ONLY copy of p that needs to be made.
             # No other drawing routine calls any p.moveTo method.
             const_p = p.copy()
-            if ignoreChapters and p.headString().startswith('@chapter'):
-                pass # This can only happen at the top level.
-            else:
-                h,indent = self.drawNode(const_p,x,y)
-                if h1 is None: h1 = h
-                y += h ; ylast = y
-                if p.isExpanded() and p.hasFirstChild():
-                    # Must make an additional copy here by calling firstChild.
-                    y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
+            h,indent = self.drawNode(const_p,x,y)
+            if h1 is None: h1 = h
+            y += h ; ylast = y
+            if p.isExpanded() and p.hasFirstChild():
+                # Must make an additional copy here by calling firstChild.
+                y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
             if hoistFlag: break
             else:         p = p.next()
             # g.trace(p)
             
         # Draw the vertical line.
         if level==0: # Special case to get exposed first line exactly right.
+            # g.trace('yfirst',yfirst,'h1',h1,'self.hline_y',self.hline_y)
             self.drawLine(None,x,yfirst+(h1-1)/2,x,ylast+self.hline_y-h)
         else:
             self.drawLine(None,x,yfirst-h1/2-1,x,ylast+self.hline_y-h)
@@ -1497,7 +1491,7 @@ class leoTkinterTree (leoFrame.leoTree):
             aTuple = self.visibleText.get(p.key())
             if aTuple:
                 w,theId = aTuple
-                # if self.trace: g.trace('%4d' % (theId),self.textAddr(w),p.headString())
+                # g.trace('%4d' % (theId),self.textAddr(w),p.headString())
                 return w
             else:
                 # g.trace('oops: not found',p)
