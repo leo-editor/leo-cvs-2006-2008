@@ -159,6 +159,7 @@ class leoTkinterBody (leoFrame.leoBody):
             w.leo_v = body.leo_p.v
                 # pychecker complains body.leo_p does not exist.
         w.leo_active = True
+        w.leo_chapter = None
         w.leo_frame = parentFrame
         w.leo_name = name
         w.leo_label = None
@@ -171,265 +172,6 @@ class leoTkinterBody (leoFrame.leoBody):
     #@nonl
     #@-node:ekr.20060528100747.3:tkBody.createTextWidget
     #@-node:ekr.20031218072017.3997: Birth & death
-    #@+node:ekr.20060528100747:Editors
-    #@+at 
-    #@nonl
-    # **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the 
-    # same.
-    #@-at
-    #@+node:ekr.20060530204135:recolorWidget
-    def recolorWidget (self,w):
-    
-        c = self.c ; old_w = self.bodyCtrl
-        
-        # g.trace(id(w),c.currentPosition().headString())
-        
-        # Save.
-        self.bodyCtrl = self.frame.bodyCtrl = w
-        
-        c.recolor_now(interruptable=False) # Force a complete recoloring.
-        
-        # Restore.
-        self.bodyCtrl = self.frame.bodyCtrl = old_w
-    #@nonl
-    #@-node:ekr.20060530204135:recolorWidget
-    #@+node:ekr.20060530210057:create/select/unselect/Label
-    def unselectLabel (self,w):
-        
-        # g.trace(w.leo_name,w.leo_label_s)
-        if not w.leo_label: self.createLabel(w)
-        w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
-            
-    def selectLabel (self,w):
-        
-        # g.trace(w.leo_name,w.leo_label_s)
-        # g.trace(self.numberOfEditors)
-        if self.numberOfEditors > 1:
-            if not w.leo_label: self.createLabel(w)
-            w.leo_label.configure(text=w.leo_label_s,bg='white')
-        elif w.leo_label:
-            w.leo_label.pack_forget()
-            w.leo_label = None
-    
-    def createLabel (self,w):
-    
-        w.leo_label = Tk.Label(w.leo_frame)
-        w.pack_forget()
-        w.leo_label.pack(side='top')
-        w.pack(expand=1,fill='both')
-    #@-node:ekr.20060530210057:create/select/unselect/Label
-    #@+node:ekr.20060528100747.1:addEditor
-    def addEditor (self,event=None):
-        
-        '''Add another editor to the body pane.'''
-        
-        c = self.c ; p = c.currentPosition()
-         
-        self.totalNumberOfEditors += 1
-        self.numberOfEditors += 1
-        if self.numberOfEditors == 2:
-            # Inject the ivars into the first editor.
-            w = self.editorWidgets.get('1')
-            w.leo_p = p.copy()
-            w.leo_v = w.leo_p.v
-            w.leo_label_s = p.headString()
-            self.selectLabel(w) # Immediately create the label in the old editor.
-       
-        name = '%d' % self.totalNumberOfEditors
-        pane = self.pb.add(name)
-        panes = self.pb.panes()
-        minSize = float(1.0/float(len(panes)))
-        
-        #@    << create label and text widgets >>
-        #@+node:ekr.20060528110922:<< create label and text widgets >>
-        f = Tk.Frame(pane)
-        f.pack(side='top',expand=1,fill='both')
-        
-        w = self.createTextWidget(self.frame,f,name=name,p=p)
-        
-        w.delete(0,'end')
-        w.insert('end',p.bodyString())
-        w.see(0)
-        self.setFontFromConfig(w=w)
-        self.setColorFromConfig(w=w)
-        self.createBindings(w=w)
-        c.k.completeAllBindingsForWidget(w)
-        
-        self.recolorWidget(w)
-        #@-node:ekr.20060528110922:<< create label and text widgets >>
-        #@nl
-        self.editorWidgets[name] = w
-    
-        for pane in panes:
-            self.pb.configurepane(pane,size=minSize)
-        
-        self.pb.updatelayout()
-        self.bodyCtrl = self.frame.bodyCtrl = w
-        self.selectEditor(w)
-        self.updateEditors()
-        c.bodyWantsFocusNow()
-    #@-node:ekr.20060528100747.1:addEditor
-    #@+node:ekr.20060606090542:setEditorColors
-    def setEditorColors (self,bg,fg):
-        
-        c = self.c ; d = self.editorWidgets
-    
-        for key in d.keys():
-            w2 = d.get(key)
-            # g.trace(id(w2),bg,fg)
-            try:
-                w2.configure(bg=bg,fg=fg)
-            except Exception:
-                g.es_exception()
-                pass
-    #@-node:ekr.20060606090542:setEditorColors
-    #@+node:ekr.20060528170438:cycleEditorFocus
-    def cycleEditorFocus (self,event=None):
-        
-        '''Cycle keyboard focus between the body text editors.'''
-        
-        c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
-        values = d.values()
-        if len(values) > 1:
-            i = values.index(w) + 1
-            if i == len(values): i = 0
-            w2 = d.values()[i]
-            assert(w!=w2)
-            self.selectEditor(w2)
-            self.bodyCtrl = self.frame.bodyCtrl = w2
-            # print '***',g.app.gui.widget_name(w2),id(w2)
-    
-        return 'break'
-    #@-node:ekr.20060528170438:cycleEditorFocus
-    #@+node:ekr.20060528113806:deleteEditor
-    def deleteEditor (self,event=None):
-        
-        '''Delete the presently selected body text editor.'''
-        
-        w = self.bodyCtrl ; d = self.editorWidgets
-        
-        if len(d.keys()) == 1: return
-        
-        name = w.leo_name
-        
-        del d [name] 
-        self.pb.delete(name)
-        panes = self.pb.panes()
-        minSize = float(1.0/float(len(panes)))
-        
-        for pane in panes:
-            self.pb.configurepane(pane,size=minSize)
-            
-        # Select another editor.
-        w = d.values()[0]
-        self.bodyCtrl = self.frame.bodyCtrl = w
-        self.numberOfEditors -= 1
-        self.selectEditor(w)
-    #@-node:ekr.20060528113806:deleteEditor
-    #@+node:ekr.20061017083312:selectEditor (tkBody)
-    def selectEditor(self,w):
-        
-        c = self.c ; d = self.editorWidgets
-        trace = False
-        if trace: g.trace(g.app.gui.widget_name(w),id(w),g.callers())
-        if w.leo_p is None:
-            if trace: g.trace('no w.leo_p') 
-            return 'break'
-        # Inactivate the previously active editor.
-        # Don't capture ivars here! selectMainEditor keeps them up-to-date.
-        for key in d.keys():
-            w2 = d.get(key)
-            if w2 != w and w2.leo_active:
-                w2.leo_active = False
-                self.unselectLabel(w2)
-                w2.leo_scrollBarSpot = w2.yview()
-                w2.leo_insertSpot = w2.getInsertPoint()
-                w2.leo_selection = w2.getSelectionRange()
-                # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
-                break
-        else:
-            if trace: g.trace('no active editor!')
-        
-        # Careful, leo_p may not exist.
-        if not c.positionExists(w.leo_p):
-            if trace: g.trace('does not exist',w.leo_name)
-            for p2 in c.allNodes_iter():
-                if p2.v == w.leo_v:
-                    w.leo_p = p2.copy()
-                    break
-            else:
-                 # This *can* happen when selecting a deleted node.
-                w.leo_p = c.currentPosition()
-                if trace: g.trace('previously deleted node')
-                return 'break'
-    
-        self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
-        w.leo_active = True
-        c.frame.tree.expandAllAncestors(w.leo_p)
-        c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
-        c.recolor_now()
-        #@    << restore the selection, insertion point and the scrollbar >>
-        #@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
-        # g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
-        
-        if w.leo_insertSpot:
-            w.setInsertPoint(w.leo_insertSpot)
-        else:
-            w.setInsertPoint(0)
-            
-        if w.leo_scrollBarSpot is not None:
-            first,last = w.leo_scrollBarSpot
-            w.yview('moveto',first)
-        else:
-            w.seeInsertPoint()
-        
-        if w.leo_selection:
-            try:
-                start,end = w.leo_selection
-                w.setSelectionRange(start,end)
-            except Exception:
-                pass
-        #@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
-        #@nl
-        c.bodyWantsFocusNow()
-        return 'break'
-    #@nonl
-    #@-node:ekr.20061017083312:selectEditor (tkBody)
-    #@+node:ekr.20060528132829:selectMainEditor
-    def selectMainEditor (self,p):
-        
-        
-        '''Called from tree.select to select the present body editor.'''
-    
-        c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
-    
-        # Don't inject ivars if there is only one editor.
-        if w.leo_p is not None:
-            # Keep w's ivars up-to-date.
-            w.leo_p = p.copy()
-            w.leo_v = p.v
-            w.leo_label_s = p.headString()
-            self.selectLabel(w)
-            # g.trace(w.leo_name,p.headString())
-    #@-node:ekr.20060528132829:selectMainEditor
-    #@+node:ekr.20060528131618:updateEditors
-    def updateEditors (self):
-        
-        c = self.c ; p = c.currentPosition()
-        d = self.editorWidgets
-        if len(d.keys()) < 2: return # There is only the main widget.
-    
-        for key in d.keys():
-            w = d.get(key)
-            v = w.leo_v
-            if v and v == p.v and w != self.bodyCtrl:
-                w.delete(0,'end')
-                w.insert('end',p.bodyString())
-                # g.trace('update',w,v)
-                self.recolorWidget(w)
-        c.bodyWantsFocus()
-    #@-node:ekr.20060528131618:updateEditors
-    #@-node:ekr.20060528100747:Editors
     #@+node:ekr.20041217135735.1:tkBody.setColorFromConfig
     def setColorFromConfig (self,w=None):
         
@@ -584,6 +326,43 @@ class leoTkinterBody (leoFrame.leoBody):
     #@nonl
     #@-node:ekr.20070228081242:Text (now in base class)
     #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
+    #@+node:ekr.20070424053629.2:Editor (tkBody)
+    #@+node:ekr.20070424054235:createEditorLabel
+    def createEditorLabel (self,pane):
+        
+        f = Tk.Frame(pane)
+        f.pack(side='top',expand=1,fill='both')
+        return f
+    
+    
+    #@-node:ekr.20070424054235:createEditorLabel
+    #@+node:ekr.20070424054810:createLabelIvar
+    def createLabelIvar (self,w):
+        
+        '''Create a Tk label widget.'''
+    
+        if not hasattr(w,'leo_label') or not w.leo_label:
+            w.leo_label = Tk.Label(w.leo_frame)
+            w.pack_forget()
+            w.leo_label.pack(side='top')
+            w.pack(expand=1,fill='both')
+    #@nonl
+    #@-node:ekr.20070424054810:createLabelIvar
+    #@+node:ekr.20060606090542:setEditorColors
+    def setEditorColors (self,bg,fg):
+        
+        c = self.c ; d = self.editorWidgets
+    
+        for key in d.keys():
+            w2 = d.get(key)
+            # g.trace(id(w2),bg,fg)
+            try:
+                w2.configure(bg=bg,fg=fg)
+            except Exception:
+                g.es_exception()
+                pass
+    #@-node:ekr.20060606090542:setEditorColors
+    #@-node:ekr.20070424053629.2:Editor (tkBody)
     #@-others
 #@-node:ekr.20031218072017.3996:class leoTkinterBody
 #@+node:ekr.20031218072017.3940:class leoTkinterFrame
