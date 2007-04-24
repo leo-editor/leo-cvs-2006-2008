@@ -90,6 +90,18 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070423100318:Make sure editing doesn't slow down on Ubuntu
+@nocolor
+
+> I'm not keen to 'discard undo on save', because undo has saved my butt many times.
+
+It's possible that a fairly recent change to the undo logic (it was a major simplification) has had the unhappy side effect of generating too many permanent (un-garbage-collectable) strings.  I'll be testing Leo on Ubuntu in the near future to see whether this slowdown happens for me.
+
+Edward
+
+@color
+#@nonl
+#@-node:ekr.20070423100318:Make sure editing doesn't slow down on Ubuntu
 #@+node:ekr.20070319185656:Fix minor chapter hoist bug
 @nocolor
 https://sourceforge.net/forum/message.php?msg_id=4215654
@@ -361,6 +373,12 @@ Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to instal
 
 To do:
     
+- Create commands to choose chapters.
+
+?? Refactor common chapter/body code into base class.
+    
+* Don't show @chapters node in main view.
+    
 - Support chapters in body editors.
     - Prepend chapter name.
     - Selecting a chapter should select the present body editor for that chapter & vice versa.
@@ -368,27 +386,6 @@ To do:
 - Make body editors persistent.
     - Create @body-editor node?
 #@-node:ekr.20070413092046: To do
-#@+node:ekr.20070327154725: What I did
-@nocolor
-@
-
-- Select main chapter when doing a save; restore previous chapter afterwards.
-
-- Created local tree for each chapter.
-
-- cc.makeTrees creates tabs for all chapters.
-
-- Made sure the minimal .leo files don't get @chapters trees.
-
-- Completed chapter.select/unselect
-    
-- Don't show @chapters tree in the main chapter. (might be good for debugging).
-    
-- tree.select must change chapter.p.
-
-- Create @chapters and @chapter nodes as needed when creating a chapter.
-#@nonl
-#@-node:ekr.20070327154725: What I did
 #@+node:ekr.20070325104222:Birth...
 #@+node:ekr.20050920093543:c.finishCreate & helper
 def finishCreate (self):  # New in 4.4.
@@ -731,10 +728,11 @@ def setCanvasColorFromConfig (self,canvas):
 #@+node:ekr.20070318124624.1:cc.finishCreate
 def finishCreate (self,treeTabController):
     
-    cc = self
+    cc = self ; c = cc.c
     cc.tt = treeTabController
     cc.createChapter(name='trash')
     cc.createChapter(name='main')
+#@nonl
 #@-node:ekr.20070318124624.1:cc.finishCreate
 #@+node:ekr.20070325104904:cc.makeTrees
 def makeTrees (self):
@@ -966,41 +964,60 @@ def selectChapter (self,event=None,tabName=None):
     else:
         self.error('select chapter: no such chapter: %s' % tabName)
 #@-node:ekr.20070317130250:cc.selectChapter
-#@+node:ekr.20070317131205.1:chapter.select & helper
-def select (self):
-
+#@+node:ekr.20070317131205.1:chapter.select & helpers
+def select (self,kind=None):
+    
     '''Restore chapter information and redraw the tree when a chapter is selected.'''
+    
+    if self.selectLockout: return
+    
+    try:
+        self.selectLockout = True
+        self.selectHelper(kind)
+    finally:
+        self.selectLockout = False
+
+#@+node:ekr.20070423102603.1:chapter selectHelper
+def selectHelper (self,kind):
 
     c = self.c ; cc = self.cc ; nc = self.nc ; tt = cc.tt ; 
     name = self.name ; w = self.w
-    
-    # g.trace(name)
+
+    g.trace(name,'kind',repr(kind))
     
     chapters = nc.findChaptersNode()
     if not chapters:
-         return self.error(
-            'chapter:select: can not happen: no @chapters node: %s' % (name))
+         self.error(
+            '***** chapter:select: can not happen: no @chapters node: %s' % (name))
     root = nc.getChapterNode(name)
     if not root:
          return self.error(
-            'chapter:select: can not happen: no @chapter node: %s' % (name))
+            '***** chapter:select: can not happen: no @chapter node: %s' % (name))
 
     # The big switcharoo.
     canvas = tt.getCanvas(name)
     c.frame.canvas = c.frame.tree.canvas = canvas
+    if kind != 'tab': tt.selectTab(name)
+
     # An even bigger switcharoo.
     if name == 'main':
+        root = cc.mainRoot
         c.setRootPosition(root)
     else:
         self.unlink(root,chapters)
         c.setRootPosition(root)
-        
+
+    cc.selectedChapter = self
+    g.trace('*** chapter',name,root)
+
     # This must be done *after* switching roots.
     p = self.findPositionInChapter(self.p.v,root)
-    if not p: return self.error(
-        'chapter:select: can not happen: lost %s in %s' % (
-            self.p.v.t.headString,name))
-    
+    if not p:
+        self.error(
+            '***** chapter:select: can not happen: lost %s in %s' % (
+                self.p.v.t.headString,name))
+        self.p = p = c.rootPosition()
+
     c.beginUpdate()
     try:
         if self.inited:
@@ -1022,10 +1039,12 @@ def select (self):
                 self.hoistStack = c.hoistStack[:]
         # g.trace('chapter',name,'p.v',id(p.v),p.headString())
         if not w: self.w = w = c.frame.body.bodyCtrl
-        c.frame.body.selectEditor(w) # Switches text.
+        if kind == 'tab':
+            c.frame.body.selectEditor(w) # Switches text.
     finally:
         c.endUpdate()
 #@nonl
+#@-node:ekr.20070423102603.1:chapter selectHelper
 #@+node:ekr.20070317131708:chapter.findPositionInChapter
 def findPositionInChapter (self,v,root):
     
@@ -1064,15 +1083,29 @@ def findPositionInChapter (self,v,root):
     return None
 #@nonl
 #@-node:ekr.20070317131708:chapter.findPositionInChapter
-#@-node:ekr.20070317131205.1:chapter.select & helper
-#@+node:ekr.20040803072955.128:leoTree.select
-#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+#@-node:ekr.20070317131205.1:chapter.select & helpers
+#@+node:ekr.20040803072955.128:leoTree.select & helper
+tree_select_lockout = False
 
 def select (self,p,updateBeadList=True,scroll=True):
     
     '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+    
+    if g.app.killed or self.tree_select_lockout: return None
 
-    if g.app.killed: return
+    try:
+        val = 'break'
+        self.tree_select_lockout = True
+        val = self.selectHelper(p,updateBeadList,scroll)
+    finally:
+        self.tree_select_lockout = False
+        return val
+
+#@+node:ekr.20070423101911:selectHelper
+#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def selectHelper (self,p,updateBeadList,scroll):
+
     c = self.c ; frame = c.frame
     body = w = frame.bodyCtrl
     old_p = c.currentPosition()
@@ -1082,9 +1115,10 @@ def select (self,p,updateBeadList=True,scroll=True):
             print 'self and parents...'
             for p in p.self_and_parents_iter():
                 print p
-        return # Not an error.
+        return None # Not an error.
     
-    if self.trace_select and not g.app.unitTesting: g.trace(g.callers())
+    g.trace('tree',p and p.headString())
+    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
 
     if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
         if old_p:
@@ -1120,7 +1154,6 @@ def select (self,p,updateBeadList=True,scroll=True):
 #@+node:ekr.20040803072955.129:<< unselect the old node >>
 # Remember the position of the scrollbar before making any changes.
 if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
-
 
 yview = body.getYScrollPosition()
 insertSpot = c.frame.body.getInsertPoint()
@@ -1210,7 +1243,8 @@ if self.stayInTree:
 else:
     c.bodyWantsFocus()
 #@-node:ekr.20040803072955.133:<< set the current node >>
-#@-node:ekr.20040803072955.128:leoTree.select
+#@-node:ekr.20070423101911:selectHelper
+#@-node:ekr.20040803072955.128:leoTree.select & helper
 #@+node:ekr.20051019170806:renameTab
 def renameTab (self,oldName,newName):
     
@@ -1276,259 +1310,6 @@ def renameChapterHelper (self,cc,tabName):
 #@nonl
 #@-node:ekr.20070318125900.1:tt.renameChapterHelper
 #@-node:ekr.20070320090010:Selecting/creating chapters
-#@+node:ekr.20060528100747:Editors
-@ **Important**: body.bodyCtrl and body.frame.bodyCtrl must always be the same.
-#@+node:ekr.20060530204135:recolorWidget
-def recolorWidget (self,w):
-
-    c = self.c ; old_w = self.bodyCtrl
-    
-    # g.trace(id(w),c.currentPosition().headString())
-    
-    # Save.
-    self.bodyCtrl = self.frame.bodyCtrl = w
-    
-    c.recolor_now(interruptable=False) # Force a complete recoloring.
-    
-    # Restore.
-    self.bodyCtrl = self.frame.bodyCtrl = old_w
-#@nonl
-#@-node:ekr.20060530204135:recolorWidget
-#@+node:ekr.20060530210057:create/select/unselect/Label
-def unselectLabel (self,w):
-    
-    # g.trace(w.leo_name,w.leo_label_s)
-    if not w.leo_label: self.createLabel(w)
-    w.leo_label.configure(text=w.leo_label_s,bg='LightSteelBlue1')
-        
-def selectLabel (self,w):
-    
-    # g.trace(w.leo_name,w.leo_label_s)
-    # g.trace(self.numberOfEditors)
-    if self.numberOfEditors > 1:
-        if not w.leo_label: self.createLabel(w)
-        w.leo_label.configure(text=w.leo_label_s,bg='white')
-    elif w.leo_label:
-        w.leo_label.pack_forget()
-        w.leo_label = None
-
-def createLabel (self,w):
-
-    w.leo_label = Tk.Label(w.leo_frame)
-    w.pack_forget()
-    w.leo_label.pack(side='top')
-    w.pack(expand=1,fill='both')
-#@-node:ekr.20060530210057:create/select/unselect/Label
-#@+node:ekr.20060528100747.1:addEditor
-def addEditor (self,event=None):
-    
-    '''Add another editor to the body pane.'''
-    
-    c = self.c ; p = c.currentPosition()
-     
-    self.totalNumberOfEditors += 1
-    self.numberOfEditors += 1
-    if self.numberOfEditors == 2:
-        # Inject the ivars into the first editor.
-        w = self.editorWidgets.get('1')
-        w.leo_p = p.copy()
-        w.leo_v = w.leo_p.v
-        w.leo_label_s = p.headString()
-        self.selectLabel(w) # Immediately create the label in the old editor.
-   
-    name = '%d' % self.totalNumberOfEditors
-    pane = self.pb.add(name)
-    panes = self.pb.panes()
-    minSize = float(1.0/float(len(panes)))
-    
-    << create label and text widgets >>
-    self.editorWidgets[name] = w
-
-    for pane in panes:
-        self.pb.configurepane(pane,size=minSize)
-    
-    self.pb.updatelayout()
-    self.bodyCtrl = self.frame.bodyCtrl = w
-    self.selectEditor(w)
-    self.updateEditors()
-    c.bodyWantsFocusNow()
-#@+node:ekr.20060528110922:<< create label and text widgets >>
-f = Tk.Frame(pane)
-f.pack(side='top',expand=1,fill='both')
-
-w = self.createTextWidget(self.frame,f,name=name,p=p)
-
-w.delete(0,'end')
-w.insert('end',p.bodyString())
-w.see(0)
-self.setFontFromConfig(w=w)
-self.setColorFromConfig(w=w)
-self.createBindings(w=w)
-c.k.completeAllBindingsForWidget(w)
-
-self.recolorWidget(w)
-#@-node:ekr.20060528110922:<< create label and text widgets >>
-#@-node:ekr.20060528100747.1:addEditor
-#@+node:ekr.20060606090542:setEditorColors
-def setEditorColors (self,bg,fg):
-    
-    c = self.c ; d = self.editorWidgets
-
-    for key in d.keys():
-        w2 = d.get(key)
-        # g.trace(id(w2),bg,fg)
-        try:
-            w2.configure(bg=bg,fg=fg)
-        except Exception:
-            g.es_exception()
-            pass
-#@-node:ekr.20060606090542:setEditorColors
-#@+node:ekr.20060528170438:cycleEditorFocus
-def cycleEditorFocus (self,event=None):
-    
-    '''Cycle keyboard focus between the body text editors.'''
-    
-    c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
-    values = d.values()
-    if len(values) > 1:
-        i = values.index(w) + 1
-        if i == len(values): i = 0
-        w2 = d.values()[i]
-        assert(w!=w2)
-        self.selectEditor(w2)
-        self.bodyCtrl = self.frame.bodyCtrl = w2
-        # print '***',g.app.gui.widget_name(w2),id(w2)
-
-    return 'break'
-#@-node:ekr.20060528170438:cycleEditorFocus
-#@+node:ekr.20060528113806:deleteEditor
-def deleteEditor (self,event=None):
-    
-    '''Delete the presently selected body text editor.'''
-    
-    w = self.bodyCtrl ; d = self.editorWidgets
-    
-    if len(d.keys()) == 1: return
-    
-    name = w.leo_name
-    
-    del d [name] 
-    self.pb.delete(name)
-    panes = self.pb.panes()
-    minSize = float(1.0/float(len(panes)))
-    
-    for pane in panes:
-        self.pb.configurepane(pane,size=minSize)
-        
-    # Select another editor.
-    w = d.values()[0]
-    self.bodyCtrl = self.frame.bodyCtrl = w
-    self.numberOfEditors -= 1
-    self.selectEditor(w)
-#@-node:ekr.20060528113806:deleteEditor
-#@+node:ekr.20061017083312:selectEditor (tkBody)
-def selectEditor(self,w):
-    
-    c = self.c ; d = self.editorWidgets
-    trace = False
-    if trace: g.trace(g.app.gui.widget_name(w),id(w),g.callers())
-    if w.leo_p is None:
-        if trace: g.trace('no w.leo_p') 
-        return 'break'
-    # Inactivate the previously active editor.
-    # Don't capture ivars here! selectMainEditor keeps them up-to-date.
-    for key in d.keys():
-        w2 = d.get(key)
-        if w2 != w and w2.leo_active:
-            w2.leo_active = False
-            self.unselectLabel(w2)
-            w2.leo_scrollBarSpot = w2.yview()
-            w2.leo_insertSpot = w2.getInsertPoint()
-            w2.leo_selection = w2.getSelectionRange()
-            # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
-            break
-    else:
-        if trace: g.trace('no active editor!')
-    
-    # Careful, leo_p may not exist.
-    if not c.positionExists(w.leo_p):
-        if trace: g.trace('does not exist',w.leo_name)
-        for p2 in c.allNodes_iter():
-            if p2.v == w.leo_v:
-                w.leo_p = p2.copy()
-                break
-        else:
-             # This *can* happen when selecting a deleted node.
-            w.leo_p = c.currentPosition()
-            if trace: g.trace('previously deleted node')
-            return 'break'
-
-    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
-    w.leo_active = True
-    c.frame.tree.expandAllAncestors(w.leo_p)
-    c.selectPosition(w.leo_p,updateBeadList=True) # Calls selectMainEditor.
-    c.recolor_now()
-    << restore the selection, insertion point and the scrollbar >>
-    c.bodyWantsFocusNow()
-    return 'break'
-#@nonl
-#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
-# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
-
-if w.leo_insertSpot:
-    w.setInsertPoint(w.leo_insertSpot)
-else:
-    w.setInsertPoint(0)
-    
-if w.leo_scrollBarSpot is not None:
-    first,last = w.leo_scrollBarSpot
-    w.yview('moveto',first)
-else:
-    w.seeInsertPoint()
-
-if w.leo_selection:
-    try:
-        start,end = w.leo_selection
-        w.setSelectionRange(start,end)
-    except Exception:
-        pass
-#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
-#@-node:ekr.20061017083312:selectEditor (tkBody)
-#@+node:ekr.20060528132829:selectMainEditor
-def selectMainEditor (self,p):
-    
-    
-    '''Called from tree.select to select the present body editor.'''
-
-    c = self.c ; p = c.currentPosition() ; w = self.bodyCtrl
-
-    # Don't inject ivars if there is only one editor.
-    if w.leo_p is not None:
-        # Keep w's ivars up-to-date.
-        w.leo_p = p.copy()
-        w.leo_v = p.v
-        w.leo_label_s = p.headString()
-        self.selectLabel(w)
-        # g.trace(w.leo_name,p.headString())
-#@-node:ekr.20060528132829:selectMainEditor
-#@+node:ekr.20060528131618:updateEditors
-def updateEditors (self):
-    
-    c = self.c ; p = c.currentPosition()
-    d = self.editorWidgets
-    if len(d.keys()) < 2: return # There is only the main widget.
-
-    for key in d.keys():
-        w = d.get(key)
-        v = w.leo_v
-        if v and v == p.v and w != self.bodyCtrl:
-            w.delete(0,'end')
-            w.insert('end',p.bodyString())
-            # g.trace('update',w,v)
-            self.recolorWidget(w)
-    c.bodyWantsFocus()
-#@-node:ekr.20060528131618:updateEditors
-#@-node:ekr.20060528100747:Editors
 #@+node:ekr.20070410063711:(reverted) don't select nodes in active @chapters tree
 @ But only when chapter is enabled.
 This code created far too many special cases.
@@ -3296,45 +3077,65 @@ def unselect (self):
     # Restore the entire outline and
     # link the chapter's @chapter node into the entire outline.
     if self.name == 'main':
+        g.trace('*** setting mainRoot',c.rootPosition())
         cc.mainRoot = c.rootPosition()
     else:
         self.link()
 #@-node:ekr.20070320091806.1:chapter.unselect
-#@+node:ekr.20070317131205.1:chapter.select & helper
-def select (self):
-
+#@+node:ekr.20070317131205.1:chapter.select & helpers
+def select (self,kind=None):
+    
     '''Restore chapter information and redraw the tree when a chapter is selected.'''
+    
+    if self.selectLockout: return
+    
+    try:
+        self.selectLockout = True
+        self.selectHelper(kind)
+    finally:
+        self.selectLockout = False
+
+#@+node:ekr.20070423102603.1:chapter selectHelper
+def selectHelper (self,kind):
 
     c = self.c ; cc = self.cc ; nc = self.nc ; tt = cc.tt ; 
     name = self.name ; w = self.w
-    
-    # g.trace(name)
+
+    g.trace(name,'kind',repr(kind))
     
     chapters = nc.findChaptersNode()
     if not chapters:
-         return self.error(
-            'chapter:select: can not happen: no @chapters node: %s' % (name))
+         self.error(
+            '***** chapter:select: can not happen: no @chapters node: %s' % (name))
     root = nc.getChapterNode(name)
     if not root:
          return self.error(
-            'chapter:select: can not happen: no @chapter node: %s' % (name))
+            '***** chapter:select: can not happen: no @chapter node: %s' % (name))
 
     # The big switcharoo.
     canvas = tt.getCanvas(name)
     c.frame.canvas = c.frame.tree.canvas = canvas
+    if kind != 'tab': tt.selectTab(name)
+
     # An even bigger switcharoo.
     if name == 'main':
+        root = cc.mainRoot
         c.setRootPosition(root)
     else:
         self.unlink(root,chapters)
         c.setRootPosition(root)
-        
+
+    cc.selectedChapter = self
+    g.trace('*** chapter',name,root)
+
     # This must be done *after* switching roots.
     p = self.findPositionInChapter(self.p.v,root)
-    if not p: return self.error(
-        'chapter:select: can not happen: lost %s in %s' % (
-            self.p.v.t.headString,name))
-    
+    if not p:
+        self.error(
+            '***** chapter:select: can not happen: lost %s in %s' % (
+                self.p.v.t.headString,name))
+        self.p = p = c.rootPosition()
+
     c.beginUpdate()
     try:
         if self.inited:
@@ -3356,10 +3157,12 @@ def select (self):
                 self.hoistStack = c.hoistStack[:]
         # g.trace('chapter',name,'p.v',id(p.v),p.headString())
         if not w: self.w = w = c.frame.body.bodyCtrl
-        c.frame.body.selectEditor(w) # Switches text.
+        if kind == 'tab':
+            c.frame.body.selectEditor(w) # Switches text.
     finally:
         c.endUpdate()
 #@nonl
+#@-node:ekr.20070423102603.1:chapter selectHelper
 #@+node:ekr.20070317131708:chapter.findPositionInChapter
 def findPositionInChapter (self,v,root):
     
@@ -3398,7 +3201,7 @@ def findPositionInChapter (self,v,root):
     return None
 #@nonl
 #@-node:ekr.20070317131708:chapter.findPositionInChapter
-#@-node:ekr.20070317131205.1:chapter.select & helper
+#@-node:ekr.20070317131205.1:chapter.select & helpers
 #@+node:ekr.20070420173354:chapter.link/unlink
 def link (self):
     
@@ -3424,14 +3227,28 @@ def unlink (self,root,chapters):
 
     root.moveToRoot(oldRoot=None)
 #@-node:ekr.20070420173354:chapter.link/unlink
-#@+node:ekr.20040803072955.128:leoTree.select
-#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+#@+node:ekr.20040803072955.128:leoTree.select & helper
+tree_select_lockout = False
 
 def select (self,p,updateBeadList=True,scroll=True):
     
     '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+    
+    if g.app.killed or self.tree_select_lockout: return None
 
-    if g.app.killed: return
+    try:
+        val = 'break'
+        self.tree_select_lockout = True
+        val = self.selectHelper(p,updateBeadList,scroll)
+    finally:
+        self.tree_select_lockout = False
+        return val
+
+#@+node:ekr.20070423101911:selectHelper
+#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def selectHelper (self,p,updateBeadList,scroll):
+
     c = self.c ; frame = c.frame
     body = w = frame.bodyCtrl
     old_p = c.currentPosition()
@@ -3441,9 +3258,10 @@ def select (self,p,updateBeadList=True,scroll=True):
             print 'self and parents...'
             for p in p.self_and_parents_iter():
                 print p
-        return # Not an error.
+        return None # Not an error.
     
-    if self.trace_select and not g.app.unitTesting: g.trace(g.callers())
+    g.trace('tree',p and p.headString())
+    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
 
     if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
         if old_p:
@@ -3479,7 +3297,6 @@ def select (self,p,updateBeadList=True,scroll=True):
 #@+node:ekr.20040803072955.129:<< unselect the old node >>
 # Remember the position of the scrollbar before making any changes.
 if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
-
 
 yview = body.getYScrollPosition()
 insertSpot = c.frame.body.getInsertPoint()
@@ -3569,7 +3386,8 @@ if self.stayInTree:
 else:
     c.bodyWantsFocus()
 #@-node:ekr.20040803072955.133:<< set the current node >>
-#@-node:ekr.20040803072955.128:leoTree.select
+#@-node:ekr.20070423101911:selectHelper
+#@-node:ekr.20040803072955.128:leoTree.select & helper
 #@+node:ekr.20040307104131.3:c.positionExists
 def positionExists(self,p):
     
