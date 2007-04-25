@@ -720,7 +720,11 @@ class leoBody:
         'createBindings',
         'createControl',
         'setColorFromConfig',
-        'setFontFromConfig'   
+        'setFontFromConfig'
+        # Editors
+        'createEditorLabel',
+        'createLabelWidget',
+        'setEditorColors',
         # Events...
         'scheduleIdleTimeRoutine',
         # Low-level gui...(May be deleted)
@@ -767,8 +771,6 @@ class leoBody:
         'deleteEditor',
         'selectEditor',
         'selectLabel',
-        'selectMainEditor',
-        'setEditorColors',
         'unselectLabel',
         'updateEditors',
     )
