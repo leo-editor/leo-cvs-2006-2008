@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.444165621079">
-	<global_window_position top="40" left="159" height="757" width="1061"/>
+	<global_window_position top="40" left="159" height="737" width="1061"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -19,9 +19,10 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="TV"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
-<v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
+<v t="EKR.20040519091259.2" a="E"><vh>Quotes of the month</vh>
+<v t="ekr.20070425092712"><vh>April 2007</vh></v>
 <v t="ekr.20070101093904"><vh>January 2007</vh></v>
 <v t="ekr.20060823090437"><vh>August 2006</vh></v>
 <v t="ekr.20060213160806"><vh>February 2005</vh></v>
@@ -118,7 +119,7 @@
 <v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
-<v t="EKR.20040519080201.1" a="TV"><vh>Distribution checklist</vh></v>
+<v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent C:\Documents and Settings\HP_Administrator\My Documents\Edward\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
@@ -5211,5 +5212,11 @@ CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20070325123540"></t>
 <t tx="ekr.20070325123540.1">trash</t>
+<t tx="ekr.20070425092712">Leo--especially with its feature of user-controllable outlining and
+overview __has for the last 4-5 years had the greatest positive effect
+on my overall programming quality of life than anything else out there
+in the software world (apart maybe from the Python language itself,
+and those who contribute Python modules to the world). -- David McNab
+</t>
 </tnodes>
 </leo_file>
