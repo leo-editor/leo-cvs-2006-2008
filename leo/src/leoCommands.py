@@ -4690,8 +4690,8 @@ class baseCommands:
         
         c = self ; cc = c.chapterController
     
-        if cc and cc.nodesController and c.config.getBool('use_chapters'):
-            return cc.nodesController.findChaptersNode()
+        if cc and cc.nc and c.config.getBool('use_chapters'):
+            return cc.nc.findChaptersNode()
         else:
             return None
         
@@ -4704,8 +4704,8 @@ class baseCommands:
         
         c = self ; cc = c.chapterController
     
-        if cc and cc.nodesController and c.config.getBool('use_chapters'):
-            root = cc.nodesController.findChaptersNode()
+        if cc and cc.nc and c.config.getBool('use_chapters'):
+            root = cc.nc.findChaptersNode()
             if root:
                 for p2 in root.children_iter():
                     if p2.isAncestorOf(p):

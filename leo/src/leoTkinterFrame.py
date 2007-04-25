@@ -326,28 +326,27 @@ class leoTkinterBody (leoFrame.leoBody):
     #@nonl
     #@-node:ekr.20070228081242:Text (now in base class)
     #@-node:ekr.20031218072017.4000:Tk bindings (tkBbody)
-    #@+node:ekr.20070424053629.2:Editor (tkBody)
-    #@+node:ekr.20070424054235:createEditorLabel
-    def createEditorLabel (self,pane):
+    #@+node:ekr.20070424053629.2:Editors (tkBody)
+    #@+node:ekr.20070424054235:createEditorFrame
+    def createEditorFrame (self,pane):
         
         f = Tk.Frame(pane)
         f.pack(side='top',expand=1,fill='both')
         return f
-    
-    
-    #@-node:ekr.20070424054235:createEditorLabel
-    #@+node:ekr.20070424054810:createLabelIvar
-    def createLabelIvar (self,w):
+    #@-node:ekr.20070424054235:createEditorFrame
+    #@+node:ekr.20070424054810:packEditorLabelWidget
+    def packEditorLabelWidget (self,w):
         
         '''Create a Tk label widget.'''
     
         if not hasattr(w,'leo_label') or not w.leo_label:
-            w.leo_label = Tk.Label(w.leo_frame)
+            # g.trace('w.leo_frame',id(w.leo_frame))
             w.pack_forget()
+            w.leo_label = Tk.Label(w.leo_frame)
             w.leo_label.pack(side='top')
             w.pack(expand=1,fill='both')
     #@nonl
-    #@-node:ekr.20070424054810:createLabelIvar
+    #@-node:ekr.20070424054810:packEditorLabelWidget
     #@+node:ekr.20060606090542:setEditorColors
     def setEditorColors (self,bg,fg):
         
@@ -362,7 +361,7 @@ class leoTkinterBody (leoFrame.leoBody):
                 g.es_exception()
                 pass
     #@-node:ekr.20060606090542:setEditorColors
-    #@-node:ekr.20070424053629.2:Editor (tkBody)
+    #@-node:ekr.20070424053629.2:Editors (tkBody)
     #@-others
 #@-node:ekr.20031218072017.3996:class leoTkinterBody
 #@+node:ekr.20031218072017.3940:class leoTkinterFrame
