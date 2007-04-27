@@ -824,8 +824,8 @@ class baseCommands:
                 c.fileCommands.save(c.mFileName)
                 c.updateRecentFiles(c.mFileName)
                 
-        # if oldChapter:
-            # cc.selectChapter(oldChapter)
+        if oldChapter:
+            cc.selectChapter(oldChapter)
     #@-node:ekr.20031218072017.2834:save
     #@+node:ekr.20031218072017.2835:saveAs
     def saveAs (self,event=None):
@@ -860,8 +860,8 @@ class baseCommands:
             c.fileCommands.saveAs(c.mFileName)
             c.updateRecentFiles(c.mFileName)
             
-        # if oldChapter:
-            # cc.selectChapter(oldChapter)
+        if oldChapter:
+            cc.selectChapter(oldChapter)
     #@-node:ekr.20031218072017.2835:saveAs
     #@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
     def saveAsUnzipped (self,event=None):
@@ -915,8 +915,8 @@ class baseCommands:
             c.fileCommands.saveTo(fileName)
             c.updateRecentFiles(fileName)
             
-        # if oldChapter:
-            # cc.selectChapter(oldChapter)
+        if oldChapter:
+            cc.selectChapter(oldChapter)
     #@-node:ekr.20031218072017.2836:saveTo
     #@+node:ekr.20031218072017.2837:revert
     def revert (self,event=None):
@@ -6450,10 +6450,6 @@ class baseCommands:
                 pass # We have already made a copy.
             else: # Must make a copy _now_
                 c._currentPosition = p.copy()
-    
-            # inChapter = (
-                # cc and c.config.getBool('use_chapters') and
-                # cc.getSelectedChapter() != 'main')
         
             # New in Leo 4.4.2: always recompute the root position here.
             # This *guarantees* that c.rootPosition always returns the proper value.
