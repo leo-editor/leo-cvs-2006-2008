@@ -929,6 +929,31 @@ class leoBody:
         self.numberOfEditors -= 1
         self.selectEditor(w)
     #@-node:ekr.20060528113806:deleteEditor
+    #@+node:ekr.20070425180705:findEditorForChapter (leoBody)
+    def findEditorForChapter (self,chapter,p):
+        
+        '''Return an editor to be assigned to chapter.'''
+        
+        d = self.editorWidgets ; values = d.values()
+    
+        # First, try to match both the chapter and position.
+        for w in values:
+            if (
+                hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
+                hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
+                g.trace('***',id(w),'match chapter and p',p.headString())
+                return w
+                
+        # Next, try to match just the chapter.
+        for w in values:
+            if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
+                g.trace('***',id(w),'match only chapter',p.headString())
+                return w
+        
+        # As a last resort, return the present editor widget.
+        g.trace('***',id(self.bodyCtrl),'no match',p.headString())
+        return self.bodyCtrl
+    #@-node:ekr.20070425180705:findEditorForChapter (leoBody)
     #@+node:ekr.20060530210057:select/unselectLabel
     def unselectLabel (self,w):
         
@@ -976,18 +1001,32 @@ class leoBody:
         if not w.leo_p:
             g.trace('no w.leo_p') 
             return 'break'
+            
+        if 1:
+            g.trace('==1',id(w),
+                hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+                hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
     
         self.inactivateActiveEditor(w)
-        self.switchToChapter(w)
-        if not self.ensurePositionExists(w):
-            g.trace('***** no position editor!')
-            return 'break'
-            
-        g.trace('*** ',id(w))
     
         # The actual switch.
         self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
         w.leo_active = True
+        
+        ### g.pdb()
+    
+        self.switchToChapter(w)
+        self.selectLabel(w)
+    
+        if not self.ensurePositionExists(w):
+            g.trace('***** no position editor!')
+            return 'break'
+            
+        if 1:
+            g.trace('==2',id(w),
+                hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+                hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+    
         c.frame.tree.expandAllAncestors(w.leo_p)
         c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
         c.recolor_now()
@@ -1026,19 +1065,13 @@ class leoBody:
     
         c = self.c ; cc = c.chapterController ; w = self.bodyCtrl
     
-        # Don't inject ivars if there is only one editor.
-       
-    
-        if w.leo_p:
-            self.updateInjectedIvars(w,p)
-            self.selectLabel(w)
-            g.trace('*** ',w.leo_chapter and w.leo_chapter.name,p.headString())
-    
-        # else:
-            # g.trace('***** w.leo_p',w.leo_p,g.callers())
-    #@nonl
+        self.updateInjectedIvars(w,p)
+        self.selectLabel(w)
+        g.trace('===',id(w),w.leo_chapter.name,w.leo_p.headString())
     #@-node:ekr.20060528132829:assignPositionToEditor
     #@+node:ekr.20060528131618:updateEditors
+    # Called from addEditor and assignPositionToEditor
+    
     def updateEditors (self):
         
         c = self.c ; p = c.currentPosition()
@@ -1059,15 +1092,11 @@ class leoBody:
     #@+node:ekr.20070424053629.1:utils
     #@+node:ekr.20070422093128:computeLabel
     def computeLabel (self,w):
-        
-        c = self.c ; cc = c.chapterController
+    
         s = w.leo_label_s
-        
-        if cc and c.config.getBool('use_chapters'):
-            
-            chapter = cc.getSelectedChapter()
-            if chapter:
-                s = '%s: %s' % (chapter.name,s)
+    
+        if hasattr(w,'leo_chapter') and w.leo_chapter:
+            s = '%s: %s' % (w.leo_chapter.name,s)
     
         return s
     #@-node:ekr.20070422093128:computeLabel
@@ -1119,6 +1148,7 @@ class leoBody:
                 w2.leo_insertSpot = w2.getInsertPoint()
                 w2.leo_selection = w2.getSelectionRange()
                 # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
+                g.trace('inactivate',id(w2))
                 break
         else:
             if trace: g.trace('no active editor!')
@@ -1147,19 +1177,20 @@ class leoBody:
         
         c = self.c ; cc = c.chapterController
         
-        if (
-            cc and c.config.getBool('use_chapters') and
-            hasattr(w,'leo_chapter') and w.leo_chapter
-        ):
+        if hasattr(w,'leo_chapter') and w.leo_chapter:
             chapter = w.leo_chapter
             name = chapter and chapter.name
-        
-            if chapter != cc.getSelectedChapter():
-                g.trace('*** ',name,w.leo_p)
-                chapter.select()
+            oldChapter = cc.getSelectedChapter()
+            if chapter != oldChapter:
+                g.trace('===','old',oldChapter.name,'new',name,w.leo_p)
+                # This generate the events needed.
+                # Do **nothing** else.
                 cc.tt.selectTab(name)
+                c.bodyWantsFocusNow()
     #@-node:ekr.20070424084012:switchToChapter
     #@+node:ekr.20070424092855:updateInjectedIvars
+    # Called from addEditor and assignPositionToEditor.
+    
     def updateInjectedIvars (self,w,p):
         
         c = self.c ; cc = c.chapterController ; 
@@ -1171,9 +1202,9 @@ class leoBody:
     
         w.leo_p = p.copy()
         w.leo_v = w.leo_p.v
-        # g.trace(p,g.callers())
         w.leo_label_s = p.headString()
-    #@nonl
+        
+        g.trace('   ===', id(w),w.leo_chapter and w.leo_chapter.name,p.headString())
     #@-node:ekr.20070424092855:updateInjectedIvars
     #@-node:ekr.20070424053629.1:utils
     #@-node:ekr.20060528100747:Editors (leoBody)
@@ -2571,7 +2602,6 @@ class leoTree:
         finally:
             self.tree_select_lockout = False
             return val
-    
     #@+node:ekr.20070423101911:treeSelectHelper
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
     
@@ -2588,7 +2618,7 @@ class leoTree:
                     print p
             return None # Not an error.
         
-        g.trace(p and p.headString())
+        g.trace('      ===',id(w),p and p.headString(),g.callers())
         if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
     
         if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
