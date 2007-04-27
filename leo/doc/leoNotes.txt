@@ -3529,6 +3529,24 @@ def setMainTree (self):
     return oldRoot
 #@nonl
 #@-node:ekr.20070420085540.1:chapter.setMainTree
+#@+node:ekr.20070325063303.3:deleteChaptersNode
+def deleteChaptersNode (self):
+
+    '''Destroy the entire @chapters tree.'''
+    
+    cc = self ; root = cc.chaptersNode
+
+    if root:
+        c.beginUpdate()
+        try:
+            c.setCurrentPosition(root)
+            c.deleteOutline(event=None,op_name=None)
+        finally:
+            c.endUpdate(False)
+            
+        cc.chaptersNode = None
+#@nonl
+#@-node:ekr.20070325063303.3:deleteChaptersNode
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
