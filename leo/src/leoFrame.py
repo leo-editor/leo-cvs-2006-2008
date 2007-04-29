@@ -765,14 +765,14 @@ class leoBody:
         'setSelectionAreas',
         'setYScrollPosition',
         'updateSyntaxColorer',
-         # Editors...
-        'addEditor',
-        'cycleEditorFocus',
-        'deleteEditor',
-        'selectEditor',
-        'selectLabel',
-        'unselectLabel',
-        'updateEditors',
+        # Editors... (These may be overridden)
+        # 'addEditor',
+        # 'cycleEditorFocus',
+        # 'deleteEditor',
+        # 'selectEditor',
+        # 'selectLabel',
+        # 'unselectLabel',
+        # 'updateEditors',
     )
     #@-node:ekr.20061109102912:define leoBody.mustBeDefinedOnlyInBaseClass
     #@-node:ekr.20031218072017.3657:leoBody.__init__
@@ -951,7 +951,7 @@ class leoBody:
                 return w
         
         # As a last resort, return the present editor widget.
-        g.trace('***',id(self.bodyCtrl),'no match',p.headString())
+        # g.trace('***',id(self.bodyCtrl),'no match',p.headString())
         return self.bodyCtrl
     #@-node:ekr.20070425180705:findEditorForChapter (leoBody)
     #@+node:ekr.20060530210057:select/unselectLabel
@@ -992,7 +992,9 @@ class leoBody:
             val = self.selectEditorHelper(w)
         finally:
             self.selectEditorLockout = False
-            return val
+            
+        return val # Don't put a return in a finally clause.
+    
     #@+node:ekr.20070423102603:selectEditorHelper
     def selectEditorHelper (self,w):
         
@@ -1002,7 +1004,7 @@ class leoBody:
             g.trace('no w.leo_p') 
             return 'break'
             
-        if 1:
+        if 0:
             g.trace('==1',id(w),
                 hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
                 hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -1012,8 +1014,6 @@ class leoBody:
         # The actual switch.
         self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
         w.leo_active = True
-        
-        ### g.pdb()
     
         self.switchToChapter(w)
         self.selectLabel(w)
@@ -1022,7 +1022,7 @@ class leoBody:
             g.trace('***** no position editor!')
             return 'break'
             
-        if 1:
+        if 0:
             g.trace('==2',id(w),
                 hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
                 hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -1067,7 +1067,8 @@ class leoBody:
     
         self.updateInjectedIvars(w,p)
         self.selectLabel(w)
-        g.trace('===',id(w),w.leo_chapter.name,w.leo_p.headString())
+    
+        # g.trace('===',id(w),w.leo_chapter.name,w.leo_p.headString())
     #@-node:ekr.20060528132829:assignPositionToEditor
     #@+node:ekr.20060528131618:updateEditors
     # Called from addEditor and assignPositionToEditor
@@ -1148,7 +1149,7 @@ class leoBody:
                 w2.leo_insertSpot = w2.getInsertPoint()
                 w2.leo_selection = w2.getSelectionRange()
                 # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
-                g.trace('inactivate',id(w2))
+                # g.trace('inactivate',id(w2))
                 break
         else:
             if trace: g.trace('no active editor!')
@@ -1204,7 +1205,7 @@ class leoBody:
         w.leo_v = w.leo_p.v
         w.leo_label_s = p.headString()
         
-        g.trace('   ===', id(w),w.leo_chapter and w.leo_chapter.name,p.headString())
+        # g.trace('   ===', id(w),w.leo_chapter and w.leo_chapter.name,p.headString())
     #@-node:ekr.20070424092855:updateInjectedIvars
     #@-node:ekr.20070424053629.1:utils
     #@-node:ekr.20060528100747:Editors (leoBody)
@@ -2601,7 +2602,8 @@ class leoTree:
             val = self.treeSelectHelper(p,updateBeadList,scroll)
         finally:
             self.tree_select_lockout = False
-            return val
+            
+        return val  # Don't put a return in a finally clause.
     #@+node:ekr.20070423101911:treeSelectHelper
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
     
@@ -2618,7 +2620,7 @@ class leoTree:
                     print p
             return None # Not an error.
         
-        g.trace('      ===',id(w),p and p.headString(),g.callers())
+        # g.trace('      ===',id(w),p and p.headString())
         if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
     
         if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):

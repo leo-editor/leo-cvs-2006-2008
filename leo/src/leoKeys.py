@@ -1362,7 +1362,10 @@ class autoCompleterClass:
                 s = self.forgivingParser(p)
             finally:
                 c.atFileCommands.putBody = self.old_putBody
-                return s
+                
+            return s # Bug fix: 4/29/07: Don't put a return in a finally clause.
+            
+            
         #@-node:ekr.20061031131434.62:parse
         #@+node:ekr.20061031131434.63:forgivingParser
         def forgivingParser (self,p):
@@ -2239,8 +2242,9 @@ class keyHandlerClass:
             try:
                 k.regXKey = keysym
                 k.regx.iter.next() # EKR: next() may throw StopIteration.
-            finally:
-                return 'break'
+            except StopIteration:
+                pass
+            return 'break'
     
         if k.abbrevOn:
             expanded = c.abbrevCommands.expandAbbrev(event)

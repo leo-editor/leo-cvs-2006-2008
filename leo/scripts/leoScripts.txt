@@ -5215,19 +5215,30 @@ data = (
 ) 
 
 data = (
-    '4xxxxxxxx',
-    '96xxx85xx',
-    'x374x6xx1',
-    '3x48xxx6x',
-    'xxxx1xxxx',
-    'x5xxx92x7',
-    '5xx1x267x',
-    'xx95xxx82',
-    'xxxxxxxx9',
+    'xx24xxxxx',
+    'x41x3xxxx',
+    '8xxx6xx4x',
+    'x6xxx3xx9',
+    'x7x9x8x3x',
+    '2xx6xxx7x',
+    'x2xx4xxx1',
+    'xxxx1x72x',
+    'xxxxx64xx', # 4/27/07 5 stars (very hard)
 )
 #@-node:<< define data >>
 #@+node:<< 5-star puzzles >>
 # Neither of these are solvable without guessing.
+
+data = ( 
+    'xx24xxxxx',
+    'x41x3xxxx',
+    '8xxx6xx4x',
+    'x6xxx3xx9',
+    'x7x9x8x3x',
+    '2xx6xxx7x',
+    'x2xx4xxx1',
+    'xxxx1x72x',
+    'xxxxx64xx') # 4/27/07 5 stars (very hard)
 
 data = ( 
     '1x5xxx37x',

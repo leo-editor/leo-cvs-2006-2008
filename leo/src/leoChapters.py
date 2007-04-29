@@ -422,7 +422,7 @@ class chapterController:
         cc = self ; c = cc.c
     
         if not cc.mainRoot:
-            g.trace('setting cc.mainRoot',c.rootPosition())
+            # g.trace('setting cc.mainRoot',c.rootPosition())
             cc.mainRoot = c.rootPosition()
     
         root = cc and cc.mainRoot
@@ -432,7 +432,7 @@ class chapterController:
                 cc.chaptersNode = p.copy()
                 return p
                 
-        g.trace('*** no @chapters node','cc.mainRoot',cc.mainRoot)
+        # g.trace('*** no @chapters node','cc.mainRoot',cc.mainRoot)
         # cc.error('*** findChaptersNode: no @chapters node')
     
         return None
@@ -608,15 +608,14 @@ class chapter:
             assert w == c.frame.body.bodyCtrl
             assert w == c.frame.bodyCtrl
             p = self.findPositionInChapter(w.leo_p.v)
-            if p != w.leo_p:
-                g.trace('****** can not happen: lost p',w.leo_p,p)
+            if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
         else:
              # This must be done *after* switching roots.
             p = self.findPositionInChapter(self.p.v)
             w = self.findEditorInChapter(p)
             c.frame.body.selectEditor(w) # Switches text.
     
-        g.trace('   ***',id(w),root.headString(),p.headString())
+        # g.trace('   ***',id(w),root.headString(),p.headString())
     
         c.beginUpdate()
         try:
@@ -696,12 +695,12 @@ class chapter:
         c = self.c ; cc = self.cc
         self.hoistStack = c.hoistStack[:]
         self.p = c.currentPosition()
-        g.trace('chapter','***',self.name,self.p.headString())
+        # g.trace('chapter','***',self.name,self.p.headString())
         
         # Restore the entire outline and
         # link the chapter's @chapter node into the entire outline.
         if self.name == 'main':
-            g.trace('*** setting mainRoot',c.rootPosition(),g.callers())
+            # g.trace('*** setting mainRoot',c.rootPosition(),g.callers())
             cc.mainRoot = c.rootPosition()
         else:
             self.link()

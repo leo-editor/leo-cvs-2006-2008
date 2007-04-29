@@ -1048,8 +1048,12 @@ class leoTkinterFrame (leoFrame.leoFrame):
         #@+node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
         def put(self,s,color=None):
             
+            # g.trace('tkStatusLine',self.textWidget,s)
+            
             w = self.textWidget
-            if not w: return
+            if not w:
+                g.trace('tkStatusLine','***** disabled')
+                return
             
             w.configure(state="normal")
             w.insert("end",s)
@@ -2093,6 +2097,8 @@ class leoTkinterLog (leoFrame.leoLog):
     def makeTabMenu (self,tabName=None):
     
         '''Create a tab popup menu.'''
+        
+        g.trace(tabName,g.callers())
     
         c = self.c
         hull = self.nb.component('hull') # A Tk.Canvas.

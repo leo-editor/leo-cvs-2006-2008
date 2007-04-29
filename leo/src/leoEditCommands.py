@@ -17,6 +17,7 @@ import leoGlobals as g
 
 import leoFind
 import leoKeys
+import leoPlugins
 import leoTest
 
 import cPickle
@@ -908,6 +909,8 @@ class controlCommandsClass (baseEditCommandsClass):
             'keyboard-quit':                k.keyboardQuit,
             'save-buffers-kill-leo':        self.saveBuffersKillLeo,
             'set-silent-mode':              self.setSilentMode,
+            'print-plugins':                self.printPlugins,
+            'print-plugin-handlers':        self.printPluginHandlers,
             'shell-command':                self.shellCommand,
             'shell-command-on-region':      self.shellCommandOnRegion,
             'suspend':                      self.suspend,
@@ -949,6 +952,16 @@ class controlCommandsClass (baseEditCommandsClass):
             
         k.setLabelGrey('finished shell-command: %s' % command)
     #@-node:ekr.20050920084036.160:executeSubprocess
+    #@+node:ekr.20070429090859:print-plugins & print-handlers
+    def printPluginHandlers (self,event=None):
+        
+        leoPlugins.printHandlers()
+        
+    def printPlugins (self,event=None):
+        
+        leoPlugins.printPlugins()
+        
+    #@-node:ekr.20070429090859:print-plugins & print-handlers
     #@+node:ekr.20060603161041:setSilentMode
     def setSilentMode (self,event=None):
         
@@ -1182,11 +1195,11 @@ class debugCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20060210100432:printFocus
     #@+node:ekr.20060205043324.3:printGcSummary
     def printGcSummary (self,event=None):
-        
-        
+    
         '''Print a brief summary of all Python objects.'''
     
         g.printGcSummary()
+    
     #@-node:ekr.20060205043324.3:printGcSummary
     #@+node:ekr.20060202133313:printStats
     def printStats (self,event=None):
@@ -5114,7 +5127,8 @@ class killBufferCommandsClass (baseEditCommandsClass):
                 self.last_clipboard = ctxt
                 if not self.killBuffer or self.killBuffer [0] != ctxt:
                     return ctxt
-        except: pass
+        except:
+            g.es_exception()
     
         return None
     #@-node:ekr.20050920084036.185:getClipboard

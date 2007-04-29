@@ -426,7 +426,8 @@ def getClipboard (self,w):
             self.last_clipboard = ctxt
             if not self.killBuffer or self.killBuffer [0] != ctxt:
                 return ctxt
-    except: pass
+    except:
+        g.es_exception()
 
     return None
 #@-node:ekr.20050920084036.185:getClipboard
@@ -948,7 +949,9 @@ def selectEditor(self,w):
         val = self.selectEditorHelper(w)
     finally:
         self.selectEditorLockout = False
-        return val
+        
+    return val # Don't put a return in a finally clause.
+
 #@+node:ekr.20070423102603:selectEditorHelper
 def selectEditorHelper (self,w):
     
@@ -958,7 +961,7 @@ def selectEditorHelper (self,w):
         g.trace('no w.leo_p') 
         return 'break'
         
-    if 1:
+    if 0:
         g.trace('==1',id(w),
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -968,8 +971,6 @@ def selectEditorHelper (self,w):
     # The actual switch.
     self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
     w.leo_active = True
-    
-    ### g.pdb()
 
     self.switchToChapter(w)
     self.selectLabel(w)
@@ -978,7 +979,7 @@ def selectEditorHelper (self,w):
         g.trace('***** no position editor!')
         return 'break'
         
-    if 1:
+    if 0:
         g.trace('==2',id(w),
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -4451,7 +4452,8 @@ def select (self,p,updateBeadList=True,scroll=True):
         val = self.treeSelectHelper(p,updateBeadList,scroll)
     finally:
         self.tree_select_lockout = False
-        return val
+        
+    return val  # Don't put a return in a finally clause.
 #@+node:ekr.20070423101911:treeSelectHelper
 #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
@@ -4468,7 +4470,7 @@ def treeSelectHelper (self,p,updateBeadList,scroll):
                 print p
         return None # Not an error.
     
-    g.trace('      ===',id(w),p and p.headString(),g.callers())
+    # g.trace('      ===',id(w),p and p.headString())
     if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
 
     if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
@@ -6323,8 +6325,12 @@ show = pack
 #@+node:ekr.20031218072017.3963:put (leoTkinterFrame:statusLineClass)
 def put(self,s,color=None):
     
+    # g.trace('tkStatusLine',self.textWidget,s)
+    
     w = self.textWidget
-    if not w: return
+    if not w:
+        g.trace('tkStatusLine','***** disabled')
+        return
     
     w.configure(state="normal")
     w.insert("end",s)
@@ -11241,8 +11247,9 @@ def masterCommand (self,event,func,stroke,commandName=None):
         try:
             k.regXKey = keysym
             k.regx.iter.next() # EKR: next() may throw StopIteration.
-        finally:
-            return 'break'
+        except StopIteration:
+            pass
+        return 'break'
 
     if k.abbrevOn:
         expanded = c.abbrevCommands.expandAbbrev(event)
@@ -20211,7 +20218,9 @@ def selectEditor(self,w):
         val = self.selectEditorHelper(w)
     finally:
         self.selectEditorLockout = False
-        return val
+        
+    return val # Don't put a return in a finally clause.
+
 #@+node:ekr.20070423102603:selectEditorHelper
 def selectEditorHelper (self,w):
     
@@ -20221,7 +20230,7 @@ def selectEditorHelper (self,w):
         g.trace('no w.leo_p') 
         return 'break'
         
-    if 1:
+    if 0:
         g.trace('==1',id(w),
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -20231,8 +20240,6 @@ def selectEditorHelper (self,w):
     # The actual switch.
     self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
     w.leo_active = True
-    
-    ### g.pdb()
 
     self.switchToChapter(w)
     self.selectLabel(w)
@@ -20241,7 +20248,7 @@ def selectEditorHelper (self,w):
         g.trace('***** no position editor!')
         return 'break'
         
-    if 1:
+    if 0:
         g.trace('==2',id(w),
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -21527,7 +21534,10 @@ def parse (self,p):
         s = self.forgivingParser(p)
     finally:
         c.atFileCommands.putBody = self.old_putBody
-        return s
+        
+    return s # Bug fix: 4/29/07: Don't put a return in a finally clause.
+    
+    
 #@-node:ekr.20061031131434.62:parse
 #@+node:ekr.20061031131434.63:forgivingParser
 def forgivingParser (self,p):
@@ -22682,7 +22692,9 @@ def getBatchScript ():
             script = None
     finally:
         if f: f.close()
-        return script, windowFlag
+        
+    # Bug fix 4/27/07: Don't put a return in a finally clause.
+    return script, windowFlag
 #@-node:ekr.20031218072017.1939:getBatchScript
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
@@ -23968,14 +23980,14 @@ mustBeDefinedOnlyInBaseClass = (
     'setSelectionAreas',
     'setYScrollPosition',
     'updateSyntaxColorer',
-     # Editors...
-    'addEditor',
-    'cycleEditorFocus',
-    'deleteEditor',
-    'selectEditor',
-    'selectLabel',
-    'unselectLabel',
-    'updateEditors',
+    # Editors... (These may be overridden)
+    # 'addEditor',
+    # 'cycleEditorFocus',
+    # 'deleteEditor',
+    # 'selectEditor',
+    # 'selectLabel',
+    # 'unselectLabel',
+    # 'updateEditors',
 )
 #@-node:ekr.20061109102912:define leoBody.mustBeDefinedOnlyInBaseClass
 #@-node:ekr.20031218072017.3657:leoBody.__init__
@@ -24149,7 +24161,7 @@ def findEditorForChapter (self,chapter,p):
             return w
     
     # As a last resort, return the present editor widget.
-    g.trace('***',id(self.bodyCtrl),'no match',p.headString())
+    # g.trace('***',id(self.bodyCtrl),'no match',p.headString())
     return self.bodyCtrl
 #@-node:ekr.20070425180705:findEditorForChapter (leoBody)
 #@+node:ekr.20060530210057:select/unselectLabel
@@ -24190,7 +24202,9 @@ def selectEditor(self,w):
         val = self.selectEditorHelper(w)
     finally:
         self.selectEditorLockout = False
-        return val
+        
+    return val # Don't put a return in a finally clause.
+
 #@+node:ekr.20070423102603:selectEditorHelper
 def selectEditorHelper (self,w):
     
@@ -24200,7 +24214,7 @@ def selectEditorHelper (self,w):
         g.trace('no w.leo_p') 
         return 'break'
         
-    if 1:
+    if 0:
         g.trace('==1',id(w),
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -24210,8 +24224,6 @@ def selectEditorHelper (self,w):
     # The actual switch.
     self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
     w.leo_active = True
-    
-    ### g.pdb()
 
     self.switchToChapter(w)
     self.selectLabel(w)
@@ -24220,7 +24232,7 @@ def selectEditorHelper (self,w):
         g.trace('***** no position editor!')
         return 'break'
         
-    if 1:
+    if 0:
         g.trace('==2',id(w),
             hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
@@ -24264,7 +24276,8 @@ def assignPositionToEditor (self,p):
 
     self.updateInjectedIvars(w,p)
     self.selectLabel(w)
-    g.trace('===',id(w),w.leo_chapter.name,w.leo_p.headString())
+
+    # g.trace('===',id(w),w.leo_chapter.name,w.leo_p.headString())
 #@-node:ekr.20060528132829:assignPositionToEditor
 #@+node:ekr.20060528131618:updateEditors
 # Called from addEditor and assignPositionToEditor
@@ -24345,7 +24358,7 @@ def inactivateActiveEditor(self,w):
             w2.leo_insertSpot = w2.getInsertPoint()
             w2.leo_selection = w2.getSelectionRange()
             # g.trace('inactive:',id(w2),'scroll',w2.leo_scrollBarSpot,'ins',w2.leo_insertSpot)
-            g.trace('inactivate',id(w2))
+            # g.trace('inactivate',id(w2))
             break
     else:
         if trace: g.trace('no active editor!')
@@ -24401,7 +24414,7 @@ def updateInjectedIvars (self,w,p):
     w.leo_v = w.leo_p.v
     w.leo_label_s = p.headString()
     
-    g.trace('   ===', id(w),w.leo_chapter and w.leo_chapter.name,p.headString())
+    # g.trace('   ===', id(w),w.leo_chapter and w.leo_chapter.name,p.headString())
 #@-node:ekr.20070424092855:updateInjectedIvars
 #@-node:ekr.20070424053629.1:utils
 #@-node:ekr.20060528100747:Editors (leoBody)
@@ -25324,6 +25337,8 @@ def createTextWidget (self,parentFrame):
 def makeTabMenu (self,tabName=None):
 
     '''Create a tab popup menu.'''
+    
+    g.trace(tabName,g.callers())
 
     c = self.c
     hull = self.nb.component('hull') # A Tk.Canvas.
@@ -28255,7 +28270,9 @@ def getBatchScript ():
             script = None
     finally:
         if f: f.close()
-        return script, windowFlag
+        
+    # Bug fix 4/27/07: Don't put a return in a finally clause.
+    return script, windowFlag
 #@-node:ekr.20031218072017.1939:getBatchScript
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
@@ -30057,6 +30074,18 @@ else:
 #@-node:ekr.20070418075804:printSettingsHelper
 #@-node:ekr.20070418073400:g.app.config.printSettings & helper
 #@-node:ekr.20070228055539:Added print-settings command
+#@+node:ekr.20070427094856:Added print-plugins & print-plugin-handlers commands
+#@+node:ekr.20070429090122:printPlugins
+def printPlugins ():
+    
+    g.es_print('Enabled plugins...')
+    keys = loadedModules.keys()
+    keys = [s.lower() for s in keys]
+    keys.sort()
+    for key in keys:
+        g.es_print(key)
+#@-node:ekr.20070429090122:printPlugins
+#@-node:ekr.20070427094856:Added print-plugins & print-plugin-handlers commands
 #@-node:ekr.20070418094610:New features
 #@+node:ekr.20070418094610.1:Fixed bugs
 #@+node:ekr.20070417100138:Fixed bug: new-file doesn't allow edit of initial headline
@@ -30125,6 +30154,476 @@ def editLabel (self,p,selectAll=False):
         c.headlineWantsFocus(p) # Make sure the focus sticks.
 #@-node:ekr.20040803072955.127:tree.editLabel
 #@-node:ekr.20070417100138:Fixed bug: new-file doesn't allow edit of initial headline
+#@+node:ekr.20070427074100:Removed all returns from finally clauses
+# Returns in finally clauses prevent the re-raising of the saved exception(!!)
+#@nonl
+#@+node:ekr.20031218072017.1939:getBatchScript
+def getBatchScript ():
+    
+    import leoGlobals as g
+    windowFlag = False
+    
+    name = None ; i = 1 # Skip the dummy first arg.
+    while i + 1 < len(sys.argv):
+        arg = sys.argv[i].strip().lower()
+        if arg in ("--script","-script"):
+            name = sys.argv[i+1].strip() ; break
+        if arg in ("--script-window","-script-window"):
+            name = sys.argv[i+1].strip() ; windowFlag = True ; break
+        i += 1
+
+    if not name:
+        return None, windowFlag
+    name = g.os_path_join(g.app.loadDir,name)
+    try:
+        f = None
+        try:
+            f = open(name,'r')
+            script = f.read()
+            # g.trace("script",script)
+        except IOError:
+            g.es_print("can not open script file: " + name, color="red")
+            script = None
+    finally:
+        if f: f.close()
+        
+    # Bug fix 4/27/07: Don't put a return in a finally clause.
+    return script, windowFlag
+#@-node:ekr.20031218072017.1939:getBatchScript
+#@+node:ekr.20040803072955.128:leoTree.select & helper
+tree_select_lockout = False
+
+def select (self,p,updateBeadList=True,scroll=True):
+    
+    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+    
+    if g.app.killed or self.tree_select_lockout: return None
+
+    try:
+        val = 'break'
+        self.tree_select_lockout = True
+        val = self.treeSelectHelper(p,updateBeadList,scroll)
+    finally:
+        self.tree_select_lockout = False
+        
+    return val  # Don't put a return in a finally clause.
+#@+node:ekr.20070423101911:treeSelectHelper
+#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def treeSelectHelper (self,p,updateBeadList,scroll):
+
+    c = self.c ; frame = c.frame
+    body = w = frame.bodyCtrl
+    old_p = c.currentPosition()
+    if not p or not c.positionExists(p):
+        if 0:
+            g.trace('does not exist',p and p.headString(),'root',c.rootPosition())
+            print 'self and parents...'
+            for p in p.self_and_parents_iter():
+                print p
+        return None # Not an error.
+    
+    # g.trace('      ===',id(w),p and p.headString())
+    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
+
+    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        if old_p:
+            << unselect the old node >>
+
+    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    
+    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        << select the new node >>
+        if p and p != old_p: # Suppress duplicate call.
+            try: # may fail during initialization.
+                # p is NOT c.currentPosition() here!
+                if 0: # Interferes with new colorizer.
+                    self.canvas.update_idletasks()
+                    self.scrollTo(p)
+                if scroll and g.app.gui.guiName() == 'tkinter':
+                    def scrollCallback(self=self,p=p):
+                        self.scrollTo(p)
+                    self.canvas.after(100,scrollCallback)
+            except Exception: pass
+        << update c.beadList or c.beadPointer >>
+        << update c.visitedList >>
+
+    c.setCurrentPosition(p)
+    << set the current node >>
+    c.frame.body.assignPositionToEditor(p) # New in Leo 4.4.1.
+    c.frame.updateStatusLine() # New in Leo 4.4.1.
+    
+    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    
+    return 'break' # Supresses unwanted selection.
+#@+node:ekr.20040803072955.129:<< unselect the old node >>
+# Remember the position of the scrollbar before making any changes.
+if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
+
+yview = body.getYScrollPosition()
+insertSpot = c.frame.body.getInsertPoint()
+
+if old_p != p:
+    self.endEditLabel() # sets editPosition = None
+    self.setUnselectedLabelState(old_p) # 12/17/04
+
+if c.edit_widget(old_p):
+    old_p.v.t.scrollBarSpot = yview
+    old_p.v.t.insertSpot = insertSpot
+#@-node:ekr.20040803072955.129:<< unselect the old node >>
+#@+node:ekr.20040803072955.130:<< select the new node >>
+# Bug fix: we must always set this, even if we never edit the node.
+self.revertHeadline = p.headString()
+frame.setWrap(p)
+
+# Always do this.  Otherwise there can be problems with trailing newlines.
+s = g.toUnicode(p.v.t.bodyString,"utf-8")
+w.setAllText(s)
+
+# We must do a full recoloring: we may be changing context!
+self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+
+if p.v and p.v.t.scrollBarSpot != None:
+    first,last = p.v.t.scrollBarSpot
+    w.setYScrollPosition(first)
+
+if p.v and p.v.t.insertSpot != None:
+    spot = p.v.t.insertSpot
+    w.setInsertPoint(spot)
+    w.see(spot)
+else:
+    w.setInsertPoint(0)
+        
+# g.trace("select:",p.headString())
+#@-node:ekr.20040803072955.130:<< select the new node >>
+#@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+# c.beadList is the list of nodes for the back and forward commands.
+
+if updateBeadList:
+    
+    if c.beadPointer > -1:
+        present_p = c.beadList[c.beadPointer]
+    else:
+        present_p = c.nullPosition()
+    
+    if p != present_p:
+        # Replace the tail of c.beadList by p and make p the present node.
+        c.beadPointer += 1
+        c.beadList[c.beadPointer:] = []
+        c.beadList.append(p.copy())
+        
+        # New in Leo 4.4: limit this list to 100 items.
+        if 0: # Doesn't work yet.
+            c.beadList = c.beadList [-100:]
+            g.trace('len(c.beadList)',len(c.beadList))
+        
+    # g.trace(c.beadPointer,p,present_p)
+#@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+#@+node:ekr.20040803072955.132:<< update c.visitedList >>
+# The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
+
+# Make p the most recently visited position on the list.
+if p in c.visitedList:
+    c.visitedList.remove(p)
+
+c.visitedList.insert(0,p.copy())
+
+# g.trace('len(c.visitedList)',len(c.visitedList))
+# g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
+#@-node:ekr.20040803072955.132:<< update c.visitedList >>
+#@+node:ekr.20040803072955.133:<< set the current node >>
+self.setSelectedLabelState(p)
+
+frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.use_chapters:
+    cc = c.chapterController
+    theChapter = cc.getSelectedChapter()
+    if theChapter:
+        theChapter.p = p.copy()
+        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
+
+if self.stayInTree:
+    c.treeWantsFocus()
+else:
+    c.bodyWantsFocus()
+#@-node:ekr.20040803072955.133:<< set the current node >>
+#@-node:ekr.20070423101911:treeSelectHelper
+#@-node:ekr.20040803072955.128:leoTree.select & helper
+#@+node:ekr.20061031131434.105:masterCommand & helpers
+def masterCommand (self,event,func,stroke,commandName=None):
+
+    '''This is the central dispatching method.
+    All commands and keystrokes pass through here.'''
+
+    k = self ; c = k.c ; gui = g.app.gui
+    c.setLog()
+    trace = False or c.config.getBool('trace_masterCommand')
+  
+    c.startRedrawCount = c.frame.tree.redrawCount
+    k.stroke = stroke # Set this global for general use.
+    keysym = gui.eventKeysym(event)
+    ch = gui.eventChar(event)
+    w = gui.eventWidget(event)
+    state = event and hasattr(event,'state') and event.state or 0
+    k.func = func
+    k.funcReturn = None # For unit testing.
+    commandName = commandName or func and func.__name__ or '<no function>'
+    << define specialKeysyms >>
+    special = keysym in specialKeysyms
+    interesting = func is not None
+    inserted = not special
+
+    if trace: #  and interesting:
+        g.trace(
+            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
+            'w:',w and c.widget_name(w),'func:',func and func.__name__
+        )
+
+    if inserted:
+        # g.trace(stroke,keysym)
+        << add character to history >>
+        
+    # We *must not* interfere with the global state in the macro class.
+    if c.macroCommands.recordingMacro:
+        done = c.macroCommands.startKbdMacro(event)
+        if done: return 'break'
+        
+    # g.trace(stroke,k.abortAllModesKey)
+
+    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
+        k.keyboardQuit(event)
+        k.endCommand(event,commandName)
+        return 'break'
+        
+    if special: # Don't pass these on.
+        return 'break' 
+
+    if 0: # *** This is now handled by k.masterKeyHandler.
+        if k.inState():
+            val = k.callStateFunction(event) # Calls end-command.
+            if val != 'do-func': return 'break'
+            g.trace('Executing key outside of mode')
+
+    if k.regx.iter:
+        try:
+            k.regXKey = keysym
+            k.regx.iter.next() # EKR: next() may throw StopIteration.
+        except StopIteration:
+            pass
+        return 'break'
+
+    if k.abbrevOn:
+        expanded = c.abbrevCommands.expandAbbrev(event)
+        if expanded: return 'break'
+
+    if func: # Func is an argument.
+        if commandName.startswith('specialCallback'):
+            # The callback function will call c.doCommand
+            if trace: g.trace('calling specialCallback for',commandName)
+            val = func(event)
+            # k.simulateCommand uses k.funcReturn.
+            k.funcReturn = k.funcReturn or val # For unit tests.
+        else:
+            # Call c.doCommand directly
+            if trace: g.trace('calling command directly',commandName)
+            c.doCommand(func,commandName,event=event)
+        if c.exists:
+            k.endCommand(event,commandName)
+            c.frame.updateStatusLine()
+        return 'break'
+    elif k.inState():
+        return 'break' #Ignore unbound keys in a state.
+    else:
+        val = k.handleDefaultChar(event,stroke)
+        if c.exists:
+            c.frame.updateStatusLine()
+        return val
+#@nonl
+#@+node:ekr.20061031131434.106:<< define specialKeysyms >>
+specialKeysyms = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+)
+#@nonl
+#@-node:ekr.20061031131434.106:<< define specialKeysyms >>
+#@+node:ekr.20061031131434.107:<< add character to history >>
+if stroke or len(ch) > 0:
+    if len(keyHandlerClass.lossage) > 99:
+        keyHandlerClass.lossage.pop()
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
+#@-node:ekr.20061031131434.107:<< add character to history >>
+#@+node:ekr.20061031131434.108:callStateFunction
+def callStateFunction (self,event):
+    
+    k = self ; val = None
+    
+    # g.trace(k.state.kind)
+    
+    if k.state.kind:
+        if k.state.handler:
+            val = k.state.handler(event)
+            if val != 'continue':
+                k.endCommand(event,k.commandName)
+        else:
+            g.es_print('no state function for %s' % (k.state.kind),color='red')
+            
+    return val
+#@-node:ekr.20061031131434.108:callStateFunction
+#@+node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+def callKeystrokeFunction (self,event):
+    
+    '''Handle a quick keystroke function.
+    Return the function or None.'''
+    
+    k = self
+    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
+
+    if func:
+        func(event)
+        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
+        k.endCommand(event,commandName)
+    
+    return func
+#@-node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+#@+node:ekr.20061031131434.110:handleDefaultChar
+def handleDefaultChar(self,event,stroke):
+    
+    k = self ; c = k.c
+    w = event and event.widget
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        action = k.unboundKeyAction
+        if action in ('insert','overwrite'):
+            c.editCommands.selfInsertCommand(event,action=action)
+        else: pass # Ignore the key.
+        return 'break'
+    elif name.startswith('head'):
+        c.frame.tree.onHeadlineKey(event)
+        return 'break'
+    elif name.startswith('canvas'):
+        if not stroke: # Not exactly right, but it seems to be good enough.
+            c.onCanvasKey(event) # New in Leo 4.4.2
+        return 'break'
+    else:
+        # Let tkinter handle the event.
+        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
+        return None
+#@-node:ekr.20061031131434.110:handleDefaultChar
+#@-node:ekr.20061031131434.105:masterCommand & helpers
+#@+node:ekr.20061031131434.62:parse
+def parse (self,p):
+    
+    '''The top-level parser method.
+    
+    It patches c.atFileCommands.putBody, calls the forgiving parser and finally
+    restores c.atFileCommands.putBody.'''
+    
+    c = self.c
+    
+    # Create an ivar for communication with newPutBody.
+    self.old_putBody = c.atFileCommands.putBody
+    
+    # Override atFile.putBody.
+    c.atFileCommands.putBody = self.newPutBody
+    
+    try:
+        s = None
+        s = self.forgivingParser(p)
+    finally:
+        c.atFileCommands.putBody = self.old_putBody
+        
+    return s # Bug fix: 4/29/07: Don't put a return in a finally clause.
+    
+    
+#@-node:ekr.20061031131434.62:parse
+#@+node:ekr.20061017083312:selectEditor & helpers
+selectEditorLockout = False
+
+def selectEditor(self,w):
+    
+    '''Select editor w and node w.leo_p.'''
+
+    #  Called by body.onClick and whenever w must be selected.
+    
+    if self.selectEditorLockout or w and self.bodyCtrl == w: return
+    
+    try:
+        val = None
+        self.selectEditorLockout = True
+        val = self.selectEditorHelper(w)
+    finally:
+        self.selectEditorLockout = False
+        
+    return val # Don't put a return in a finally clause.
+
+#@+node:ekr.20070423102603:selectEditorHelper
+def selectEditorHelper (self,w):
+    
+    c = self.c ; cc = c.chapterController ; d = self.editorWidgets
+
+    if not w.leo_p:
+        g.trace('no w.leo_p') 
+        return 'break'
+        
+    if 0:
+        g.trace('==1',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    self.inactivateActiveEditor(w)
+
+    # The actual switch.
+    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    w.leo_active = True
+
+    self.switchToChapter(w)
+    self.selectLabel(w)
+
+    if not self.ensurePositionExists(w):
+        g.trace('***** no position editor!')
+        return 'break'
+        
+    if 0:
+        g.trace('==2',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    c.frame.tree.expandAllAncestors(w.leo_p)
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.recolor_now()
+    << restore the selection, insertion point and the scrollbar >>
+    c.bodyWantsFocusNow()
+    return 'break'
+#@nonl
+#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
+
+if w.leo_insertSpot:
+    w.setInsertPoint(w.leo_insertSpot)
+else:
+    w.setInsertPoint(0)
+    
+if w.leo_scrollBarSpot is not None:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+else:
+    w.seeInsertPoint()
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        w.setSelectionRange(start,end)
+    except Exception:
+        pass
+#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20070423102603:selectEditorHelper
+#@-node:ekr.20061017083312:selectEditor & helpers
+#@-node:ekr.20070427074100:Removed all returns from finally clauses
 #@-node:ekr.20070418094610.1:Fixed bugs
 #@+node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
 @ 
@@ -30635,8 +31134,9 @@ def masterCommand (self,event,func,stroke,commandName=None):
         try:
             k.regXKey = keysym
             k.regx.iter.next() # EKR: next() may throw StopIteration.
-        finally:
-            return 'break'
+        except StopIteration:
+            pass
+        return 'break'
 
     if k.abbrevOn:
         expanded = c.abbrevCommands.expandAbbrev(event)
@@ -31416,7 +31916,8 @@ def select (self,p,updateBeadList=True,scroll=True):
         val = self.treeSelectHelper(p,updateBeadList,scroll)
     finally:
         self.tree_select_lockout = False
-        return val
+        
+    return val  # Don't put a return in a finally clause.
 #@+node:ekr.20070423101911:treeSelectHelper
 #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
 
@@ -31433,7 +31934,7 @@ def treeSelectHelper (self,p,updateBeadList,scroll):
                 print p
         return None # Not an error.
     
-    g.trace('      ===',id(w),p and p.headString(),g.callers())
+    # g.trace('      ===',id(w),p and p.headString())
     if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
 
     if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):

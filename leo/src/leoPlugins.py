@@ -276,9 +276,9 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
 def printHandlers (moduleName=None):
     
     if moduleName:
-        print 'handlers for %s...' % moduleName
+        g.es_print('handlers for %s...' % (moduleName))
     else:
-        print 'all plugin handlers...'
+        g.es_print('all plugin handlers...')
 
     modules = {}
     for tag in handlers.keys():
@@ -294,8 +294,18 @@ def printHandlers (moduleName=None):
         tags = modules.get(key)
         if moduleName in (None,key):
             for tag in tags:
-                print '%25s %s' % (tag,key)
+                g.es_print('%25s %s' % (tag,key))
 #@-node:ekr.20050110191444:printHandlers
+#@+node:ekr.20070429090122:printPlugins
+def printPlugins ():
+    
+    g.es_print('Enabled plugins...')
+    keys = loadedModules.keys()
+    keys = [s.lower() for s in keys]
+    keys.sort()
+    for key in keys:
+        g.es_print(key)
+#@-node:ekr.20070429090122:printPlugins
 #@+node:ekr.20031218072017.3444:registerExclusiveHandler
 def registerExclusiveHandler(tags, fn):
     

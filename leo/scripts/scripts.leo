@@ -3,12 +3,15 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.562972292191">
-	<global_window_position top="33" left="219" height="714" width="950"/>
+	<global_window_position top="33" left="219" height="694" width="950"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
+<v t="ekr.20070427110751"><vh>@chapters</vh>
+<v t="ekr.20070427110751.1"><vh>@chapter trash</vh></v>
+</v>
 <v t="ekr.20041001211817"><vh>Buttons</vh>
 <v t="ekr.20051020124457"><vh>Disabled buttons</vh>
 <v t="ekr.20041230121429"><vh>@@ button pydoc</vh></v>
@@ -36,7 +39,7 @@
 <v t="ekr.20051110105027.102"><vh>Clear all timestamps</vh></v>
 <v t="ekr.20040318091620"><vh>Clear all uAs (unknown attributes)</vh></v>
 </v>
-<v t="ekr.20060531090036"><vh>Contributed @button nodes</vh>
+<v t="ekr.20060531090036" a="E"><vh>Contributed @button nodes</vh>
 <v t="ekr.20060531085804"><vh>@@button Show other clones</vh>
 <v t="ekr.20060531085804.1"><vh>class cloneNavigator</vh>
 <v t="ekr.20060531085804.2"><vh>init</vh></v>
@@ -74,7 +77,7 @@
 <v t="ekr.20070124092048"><vh>Find entries in k.guiBindNamesDict</vh></v>
 <v t="ekr.20070213074001.1"><vh>find w.xxx</vh></v>
 </v>
-<v t="ekr.20040715105834"><vh>Fun...</vh>
+<v t="ekr.20040715105834" a="E"><vh>Fun...</vh>
 <v t="EKR.20040626212434"><vh>Drawing experiments</vh>
 <v t="EKR.20040626212434.1"><vh>Rectangles &amp; ovals</vh></v>
 <v t="EKR.20040626212434.2"><vh>Lines &amp; arcs</vh></v>
@@ -381,8 +384,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050803075926"><vh>sudoku puzzle</vh>
-<v t="ekr.20050804073824"><vh>&lt;&lt; define data &gt;&gt;</vh></v>
+<v t="ekr.20050803075926" a="E"><vh>sudoku puzzle</vh>
+<v t="ekr.20050804073824" a="TV"><vh>&lt;&lt; define data &gt;&gt;</vh></v>
 <v t="ekr.20050911123109"><vh>&lt;&lt; 5-star puzzles &gt;&gt;</vh></v>
 <v t="ekr.20050911145104"><vh>&lt;&lt; 4-star puzzles &gt;&gt;</vh></v>
 <v t="ekr.20050811075608"><vh>&lt;&lt; 3-star puzzles &gt;&gt;</vh></v>
@@ -649,7 +652,7 @@
 <v t="ekr.20060928193919.4"><vh>@@button zodb-put-node</vh></v>
 </v>
 </v>
-<v t="ekr.20060824111500" a="E"><vh>jEdit2Py</vh>
+<v t="ekr.20060824111500"><vh>jEdit2Py</vh>
 <v t="ekr.20060824111500.1"><vh>Colorizing test scripts</vh>
 <v t="ekr.20060824111500.2"><vh>@@button colorize</vh></v>
 <v t="ekr.20060824111500.3"><vh>@@button red:f1</vh></v>
@@ -871,11 +874,11 @@
 </v>
 <v t="ekr.20060824111500.106"><vh>import from modes</vh></v>
 <v t="ekr.20060824111500.107"><vh>errors</vh></v>
-<v t="ekr.20060824111500.108" a="E"><vh>@button jEdit2Py</vh>
+<v t="ekr.20060824111500.108"><vh>@button jEdit2Py</vh>
 <v t="ekr.20060824111500.109"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20060824111500.110"><vh>&lt;&lt; to do &gt;&gt;</vh></v>
 <v t="ekr.20060824111500.111"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
-<v t="ekr.20060824111500.112" a="TV"><vh>&lt;&lt; set files to convert &gt;&gt;</vh></v>
+<v t="ekr.20060824111500.112"><vh>&lt;&lt; set files to convert &gt;&gt;</vh></v>
 <v t="ekr.20060824111500.113"><vh>top-level</vh>
 <v t="ekr.20060824111500.114"><vh>convert</vh></v>
 <v t="ekr.20060824111500.115"><vh>parse_jEdit_file</vh></v>
@@ -8695,15 +8698,15 @@ __str__ = __repr__</t>
 ) 
 
 data = (
-    '4xxxxxxxx',
-    '96xxx85xx',
-    'x374x6xx1',
-    '3x48xxx6x',
-    'xxxx1xxxx',
-    'x5xxx92x7',
-    '5xx1x267x',
-    'xx95xxx82',
-    'xxxxxxxx9',
+    'xx24xxxxx',
+    'x41x3xxxx',
+    '8xxx6xx4x',
+    'x6xxx3xx9',
+    'x7x9x8x3x',
+    '2xx6xxx7x',
+    'x2xx4xxx1',
+    'xxxx1x72x',
+    'xxxxx64xx', # 4/27/07 5 stars (very hard)
 )
 </t>
 <t tx="ekr.20050805150320">import leoPlugins
@@ -9146,6 +9149,17 @@ def trace (self,s):
     self.colGroups = [group for group in self.main.squareGroups if self.j in group.colNumbers]
     self.rowGroups = [group for group in self.main.squareGroups if self.i in group.rowNumbers]</t>
 <t tx="ekr.20050911123109"># Neither of these are solvable without guessing.
+
+data = ( 
+    'xx24xxxxx',
+    'x41x3xxxx',
+    '8xxx6xx4x',
+    'x6xxx3xx9',
+    'x7x9x8x3x',
+    '2xx6xxx7x',
+    'x2xx4xxx1',
+    'xxxx1x72x',
+    'xxxxx64xx') # 4/27/07 5 stars (very hard)
 
 data = ( 
     '1x5xxx37x',
@@ -19680,5 +19694,7 @@ keys.sort()
 aList = ['%3d %s' % (words.get(key),str(key)) for key in keys]
 print g.listToString(aList)
 g.es('searched %s' % p1.headString())</t>
+<t tx="ekr.20070427110751"></t>
+<t tx="ekr.20070427110751.1">trash</t>
 </tnodes>
 </leo_file>

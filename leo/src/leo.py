@@ -243,7 +243,9 @@ def getBatchScript ():
             script = None
     finally:
         if f: f.close()
-        return script, windowFlag
+        
+    # Bug fix 4/27/07: Don't put a return in a finally clause.
+    return script, windowFlag
 #@-node:ekr.20031218072017.1939:getBatchScript
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
