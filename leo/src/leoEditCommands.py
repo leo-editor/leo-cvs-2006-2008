@@ -7944,9 +7944,11 @@ class AspellClass:
         c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
         
         try:
-            self.aspell = aspell = ctypes.CDLL(g.os_path_join(self.aspell_bin_dir, "aspell-15.dll"))
+            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+            self.aspell = aspell = ctypes.CDLL(path)
         except Exception:
-            g.es_exception()
+            # g.es_exception()
+            g.es('Can not load %s' % (path),color='blue')
             self.aspell = None
             self.check = None
             self.sc = None
