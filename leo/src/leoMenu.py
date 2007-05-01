@@ -1161,6 +1161,7 @@ class leoMenu:
             '-',
             '*&apropos-autocompletion',
             '*apropos-&bindings',
+            '*apropos-&debugging-commands',
             '*apropos-&find-commands',
             '-',
             '*pri&nt-bindings',

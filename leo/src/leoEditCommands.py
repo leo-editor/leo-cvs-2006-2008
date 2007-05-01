@@ -4568,6 +4568,7 @@ class helpCommandsClass (baseEditCommandsClass):
             'help-for-command':         self.helpForCommand,
             'apropos-autocompletion':   self.aproposAutocompletion,
             'apropos-bindings':         self.aproposBindings,
+            'apropos-debugging-commands': self.aproposDebuggingCommands,
             'apropos-find-commands':    self.aproposFindCommands,
             'print-settings':           self.printSettings,
             'python-help':              self.pythonHelp,
@@ -4798,6 +4799,40 @@ class helpCommandsClass (baseEditCommandsClass):
         c.helpCommands.aproposBindings()
     #@-node:ekr.20060205170435:test_apropos_bindings
     #@-node:ekr.20060205170335:aproposBindings
+    #@+node:ekr.20070501092655:aproposDebuggingCommands
+    def aproposDebuggingCommands (self,event=None):
+        
+        '''Prints a discussion of of Leo's debugging commands.'''
+        
+        c = self.c
+        
+        #@    << define s >>
+        #@+node:ekr.20070501092655.1:<< define s >>
+        s = '''
+        The following commands are useful for debugging:
+        
+        collect-garbage:   Invoke the garbage collector.
+        debug:             Start an external debugger in another process.
+        disable-gc-trace:  Disable tracing of the garbage collector.
+        dump-all-objects:  Print a summary of all existing Python objects.
+        dump-new-objects:  Print a summary of all newly-created Python objects.
+        enable-gc-trace:   Enable tracing of the garbage collector.
+        free-tree-widgets: Free all widgets used in Leo's outline pane.
+        print-focus:       Print information about the requested focus.
+        print-stats:       Print statistics about existing Python objects.
+        print-gc-summary:  Print a brief summary of all Python objects.
+        run-unit-tests:    Run unit tests in the presently selected tree.
+        verbose-dump-objects: Print a more verbose listing of all existing Python objects.
+        '''
+        #@-node:ekr.20070501092655.1:<< define s >>
+        #@nl
+    
+        # Remove indentation from s: a workaround of a Leo bug.
+        s = g.adjustTripleString(s,c.tab_width)
+    
+        if not g.app.unitTesting:
+            g.es_print(s)
+    #@-node:ekr.20070501092655:aproposDebuggingCommands
     #@+node:ekr.20060205170335.1:aproposFindCommands
     def aproposFindCommands (self, event=None):
         
