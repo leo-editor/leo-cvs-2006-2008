@@ -1079,11 +1079,14 @@ def getLastTracebackFileAndLineNumber():
     else:
         # The proper line number is the second element in the last tuple.
         data = traceback.extract_tb(tb)
-        # g.es_print(repr(data))
-        item = data[-1]
-        filename = item[0]
-        n = item[1]
-        return filename,n
+        if data:
+            # g.es_print(repr(data))
+            item = data[-1]
+            filename = item[0]
+            n = item[1]
+            return filename,n
+        else:
+            return None,0
 #@-node:ekr.20040731204831:getLastTracebackFileAndLineNumber
 #@+node:ekr.20031218072017.3113:printBindings
 def print_bindings (name,window):
