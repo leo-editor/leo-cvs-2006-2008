@@ -450,6 +450,10 @@ class leoGui:
                 self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
             
             self.widget = self.w
+            
+        def __repr__ (self):
+            
+            return 'leoGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
     #@nonl
     #@-node:ekr.20070228160107:class leoKeyEvent (leoGui)
     #@-node:ekr.20070228154059:May be defined in subclasses
