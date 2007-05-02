@@ -589,10 +589,9 @@ class chapter:
         c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
     
         # The big switcharoo.
-        canvas = tt.getCanvas(name)
-        c.frame.canvas = c.frame.tree.canvas = canvas
-    
-        # An even bigger switcharoo.
+        c.frame.canvas = canvas = tt.getCanvas(name)
+        c.frame.tree = tree = tt.getTree(name)
+        
         if name == 'main':
             root = cc.mainRoot
             c.setRootPosition(root)
@@ -628,8 +627,8 @@ class chapter:
                     c.hoistStack = []
                     c.selectPosition(p)
                 else: # Finish initing the canvas and do the initial hoist.
-                    c.frame.tree.setCanvasBindings(canvas)
-                    c.k.completeAllBindingsForWidget(canvas)
+                    g.trace('finish init',name)
+                    tree.setBindings()
                     if name != 'main':
                         root.expand()
                     c.selectPosition(root)
@@ -667,9 +666,9 @@ class chapter:
                     
         g.es_print('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
         print 'cc.mainRoot',cc.mainRoot
-        print '******* top-level nodes *****'
-        for p in cc.mainRoot.self_and_siblings_iter():
-            print p.headStirng()
+        # print '******* top-level nodes *****'
+        # for p in cc.mainRoot.self_and_siblings_iter():
+            # print p.headStirng()
         return None
     #@nonl
     #@-node:ekr.20070317131708:chapter.findPositionInChapter
