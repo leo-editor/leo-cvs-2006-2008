@@ -739,6 +739,10 @@ class tkinterGui(leoGui.leoGui):
                 self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
             
             self.widget = self.w
+            
+        def __repr__ (self):
+            
+            return 'tkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
     #@nonl
     #@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
     #@-others
