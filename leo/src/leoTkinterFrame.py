@@ -490,16 +490,16 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # Create the canvas, tree, log and body.
         if self.use_chapters:
             # Create the controllers.
-            cc = leoChapters.chapterController(c)
+            c.chapterController = cc = leoChapters.chapterController(c)
             tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-            c.chapterController = cc
             cc.finishCreate(tt)
-            tt.selectTab('main') # Creates f.tree
+            tt.selectTab('main') # Creates f.canvas and f.tree
+            f.tree = tt.getTree('main')
             f.canvas = tt.getCanvas('main')
         else:
             f.canvas = f.createCanvas(f.split2Pane1)
             f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+    
         f.log    = leoTkinterLog(f,f.split2Pane2)
         f.body   = leoTkinterBody(f,f.split1Pane2)
     
@@ -872,6 +872,8 @@ class leoTkinterFrame (leoFrame.leoFrame):
         """Clear all links to objects in a Leo window."""
     
         frame = self ; c = self.c ; tree = frame.tree ; body = self.body
+        
+        # g.printGcAll()
     
         # Do this first.
         #@    << clear all vnodes and tnodes in the tree >>
@@ -898,10 +900,16 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         # Destroy all ivars in subcommanders.
         g.clearAllIvars(c.atFileCommands)
+        if c.chapterController:
+            # New in Leo 4.4.3 b1.
+            g.clearAllIvars(c.chapterController.tt) 
+            g.clearAllIvars(c.chapterController)
         g.clearAllIvars(c.fileCommands)
+        g.clearAllIvars(c.keyHandler) # New in Leo 4.4.3 b1.
         g.clearAllIvars(c.importCommands)
         g.clearAllIvars(c.tangleCommands)
         g.clearAllIvars(c.undoer)
+       
         g.clearAllIvars(c)
         g.clearAllIvars(body.colorizer)
         g.clearAllIvars(body)
@@ -910,6 +918,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
         # This must be done last.
         frame.destroyAllPanels()
         g.clearAllIvars(frame)
+        
+        
+    #@nonl
     #@-node:ekr.20031218072017.1975:destroyAllObjects
     #@+node:ekr.20031218072017.3965:destroyAllPanels
     def destroyAllPanels (self):
@@ -934,7 +945,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         # g.trace(self)
     
-        # Important: this destroys all the object of the commander too.
+        # Important: this destroys all the objects of the commander too.
         self.destroyAllObjects()
         
         c.exists = False # Make sure this one ivar has not been destroyed.
@@ -2098,7 +2109,7 @@ class leoTkinterLog (leoFrame.leoLog):
     
         '''Create a tab popup menu.'''
         
-        g.trace(tabName,g.callers())
+        # g.trace(tabName,g.callers())
     
         c = self.c
         hull = self.nb.component('hull') # A Tk.Canvas.
@@ -2899,6 +2910,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         self.canvasDict = {} # values are Tk.Canvas's.
         self.chapterDict = {} # values are chapters.
         self.stringVarDict = {} # values are Tk.StringVars.
+        self.treeDict = {} # values are tkTrees.
     
         self.createControl()
     
@@ -2937,7 +2949,6 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             return None
     
     def getCanvas (self,tabName):
-    
         return self.canvasDict.get(tabName) # A Tk.Canvas
     
     def getFrame (self,tabName):
@@ -2953,8 +2964,9 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     
         return self.nb.getcurselection() # An immutable tab name.
     
-    # def getTree (self,tabName):
-        # return self.treeDict.get(tabName) # A leoTkinterTree.
+    def getTree (self,tabName):
+        
+        return self.treeDict.get(tabName) # A leoTkinterTree.
     #@-node:ekr.20070317082315:tt.getters
     #@+node:ekr.20070320093038:Tabs...
     #@+node:ekr.20070317074824:tt.createTab
@@ -2967,22 +2979,16 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     
         b = nb.tab(tabName) # b is a Tk.Button.
     
-        if select:
-            self.setSelectColor(b)
-        else:
-            self.setUnselectColor(b)
+        if select:  self.setSelectColor(b)
+        else:       self.setUnselectColor(b)
     
         canvas = c.frame.createCanvas(parentFrame)
-    
+        tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
+        
         tt.buttonsDict [tabName ] = b
         tt.canvasDict [tabName] = canvas
         tt.stringVarDict [tabName] = Tk.StringVar()
-        
-        if not f.tree:
-            f.tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
-    
-        if tabName != 'main':
-            f.tree.redraw_now()
+        tt.treeDict [tabName] = tree
     #@-node:ekr.20070317074824:tt.createTab
     #@+node:ekr.20070317074824.1:tt.destroyTab
     def destroyTab (self,tabName):
@@ -3149,6 +3155,8 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@-node:ekr.20070318133725:tt.renameTab
     #@+node:ekr.20070317074824.3:tt.selectTab
     def selectTab (self,tabName):
+        
+        c = self.c
     
         if tabName not in self.tabNames:
             self.createTab(tabName)
