@@ -607,16 +607,16 @@ def createSplitterComponents (self):
     # Create the canvas, tree, log and body.
     if self.use_chapters:
         # Create the controllers.
-        cc = leoChapters.chapterController(c)
+        c.chapterController = cc = leoChapters.chapterController(c)
         tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-        c.chapterController = cc
         cc.finishCreate(tt)
-        tt.selectTab('main') # Creates f.tree
+        tt.selectTab('main') # Creates f.canvas and f.tree
+        f.tree = tt.getTree('main')
         f.canvas = tt.getCanvas('main')
     else:
         f.canvas = f.createCanvas(f.split2Pane1)
         f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-    f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+
     f.log    = leoTkinterLog(f,f.split2Pane2)
     f.body   = leoTkinterBody(f,f.split1Pane2)
 
@@ -930,22 +930,16 @@ def createTab (self,tabName,select=True):
 
     b = nb.tab(tabName) # b is a Tk.Button.
 
-    if select:
-        self.setSelectColor(b)
-    else:
-        self.setUnselectColor(b)
+    if select:  self.setSelectColor(b)
+    else:       self.setUnselectColor(b)
 
     canvas = c.frame.createCanvas(parentFrame)
-
+    tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
+    
     tt.buttonsDict [tabName ] = b
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
-    
-    if not f.tree:
-        f.tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
-
-    if tabName != 'main':
-        f.tree.redraw_now()
+    tt.treeDict [tabName] = tree
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070327103016:tkTree.setCanvasBindings
 def setCanvasBindings (self,canvas):
@@ -1017,6 +1011,8 @@ def redraw_now (self,scroll=False):
         return
         
     c = self.c ;  self.redrawCount += 1
+    
+    # g.trace(g.callers())
     
     if not g.app.unitTesting:
         if self.gc_before_redraw:
@@ -1503,7 +1499,7 @@ def scrollTo(self,p=None):
         return
     try:
         h1 = self.yoffset(p)
-        if c.config.getBool('center_selected_tree_node'): # New in Leo 4.4.3.
+        if self.center_selected_tree_node: # New in Leo 4.4.3.
             << compute frac0 >>
             delta = abs(self.prevMoveToFrac-frac0)
             # g.trace(delta)
@@ -2221,13 +2217,13 @@ def findEditorForChapter (self,chapter,p):
         if (
             hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
-            g.trace('***',id(w),'match chapter and p',p.headString())
+            # g.trace('***',id(w),'match chapter and p',p.headString())
             return w
             
     # Next, try to match just the chapter.
     for w in values:
         if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
-            g.trace('***',id(w),'match only chapter',p.headString())
+            # g.trace('***',id(w),'match only chapter',p.headString())
             return w
     
     # As a last resort, return the present editor widget.
@@ -2694,13 +2690,13 @@ def findEditorForChapter (self,chapter,p):
         if (
             hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
-            g.trace('***',id(w),'match chapter and p',p.headString())
+            # g.trace('***',id(w),'match chapter and p',p.headString())
             return w
             
     # Next, try to match just the chapter.
     for w in values:
         if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
-            g.trace('***',id(w),'match only chapter',p.headString())
+            # g.trace('***',id(w),'match only chapter',p.headString())
             return w
     
     # As a last resort, return the present editor widget.
@@ -2746,10 +2742,9 @@ def chapterSelectHelper (self,w):
     c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
 
     # The big switcharoo.
-    canvas = tt.getCanvas(name)
-    c.frame.canvas = c.frame.tree.canvas = canvas
-
-    # An even bigger switcharoo.
+    c.frame.canvas = canvas = tt.getCanvas(name)
+    c.frame.tree = tree = tt.getTree(name)
+    
     if name == 'main':
         root = cc.mainRoot
         c.setRootPosition(root)
@@ -2785,8 +2780,8 @@ def chapterSelectHelper (self,w):
                 c.hoistStack = []
                 c.selectPosition(p)
             else: # Finish initing the canvas and do the initial hoist.
-                c.frame.tree.setCanvasBindings(canvas)
-                c.k.completeAllBindingsForWidget(canvas)
+                g.trace('finish init',name)
+                tree.setBindings()
                 if name != 'main':
                     root.expand()
                 c.selectPosition(root)
@@ -2908,9 +2903,9 @@ def findPositionInChapter (self,v):
                 
     g.es_print('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
     print 'cc.mainRoot',cc.mainRoot
-    print '******* top-level nodes *****'
-    for p in cc.mainRoot.self_and_siblings_iter():
-        print p.headStirng()
+    # print '******* top-level nodes *****'
+    # for p in cc.mainRoot.self_and_siblings_iter():
+        # print p.headStirng()
     return None
 #@nonl
 #@-node:ekr.20070317131708:chapter.findPositionInChapter

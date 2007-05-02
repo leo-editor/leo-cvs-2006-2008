@@ -778,8 +778,8 @@ def endDrag (self,event):
     c.beginUpdate()
     try:
         << set vdrag, childFlag >>
-        if c.config.getBool("allow_clone_drags"):
-            if not c.config.getBool("look_for_control_drag_on_mouse_down"):
+        if self.allow_clone_drags:
+            if not self.look_for_control_drag_on_mouse_down:
                 self.controlDrag = c.frame.controlKeyIsDown
     
         if vdrag and vdrag.v.t != p.v.t: # Disallow drag to joined node.
@@ -849,10 +849,10 @@ def startDrag (self,event,p=None):
     # Only do this once: greatly speeds drags.
     self.savedNumberOfVisibleNodes = self.numberOfVisibleNodes()
     # g.trace('self.controlDrag',self.controlDrag)
-    if c.config.getBool("allow_clone_drags"):
+    if self.allow_clone_drags:
         self.controlDrag = c.frame.controlKeyIsDown
-        if c.config.getBool("look_for_control_drag_on_mouse_down"):
-            if c.config.getBool("enable_drag_messages"):
+        if self.look_for_control_drag_on_mouse_down:
+            if self.enable_drag_messages:
                 if self.controlDrag:
                     g.es("dragged node will be cloned")
                 else:
@@ -2214,7 +2214,7 @@ def setEditLabelState (self,p,selectAll=False): # selected, editing
     if p and w:
         c.widgetWantsFocusNow(w)
         self.setEditHeadlineColors(p)
-        selectAll = selectAll or c.config.getBool('select_all_text_when_editing_headlines')
+        selectAll = selectAll or self.select_all_text_when_editing_headlines
         if selectAll:
             w.setSelectionRange(0,'end',insert='end')
         else:
@@ -2316,8 +2316,8 @@ def endDrag (self,event):
     c.beginUpdate()
     try:
         << set vdrag, childFlag >>
-        if c.config.getBool("allow_clone_drags"):
-            if not c.config.getBool("look_for_control_drag_on_mouse_down"):
+        if self.allow_clone_drags:
+            if not self.look_for_control_drag_on_mouse_down:
                 self.controlDrag = c.frame.controlKeyIsDown
     
         if vdrag and vdrag.v.t != p.v.t: # Disallow drag to joined node.
@@ -2387,10 +2387,10 @@ def startDrag (self,event,p=None):
     # Only do this once: greatly speeds drags.
     self.savedNumberOfVisibleNodes = self.numberOfVisibleNodes()
     # g.trace('self.controlDrag',self.controlDrag)
-    if c.config.getBool("allow_clone_drags"):
+    if self.allow_clone_drags:
         self.controlDrag = c.frame.controlKeyIsDown
-        if c.config.getBool("look_for_control_drag_on_mouse_down"):
-            if c.config.getBool("enable_drag_messages"):
+        if self.look_for_control_drag_on_mouse_down:
+            if self.enable_drag_messages:
                 if self.controlDrag:
                     g.es("dragged node will be cloned")
                 else:
@@ -2718,6 +2718,7 @@ def __init__ (self,c):
     
     # New in 4.2...
     self.optionalIvars = []
+#@nonl
 #@+node:ekr.20031218072017.3607:clearIvars
 def clearIvars (self):
     
@@ -7383,7 +7384,10 @@ def masterKeyHandler (self,event,stroke=None):
 
     << define vars >>
     if keysym in special_keys: return None
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+    traceGC = False or self.trace_masterKeyHandlerGC and not g.app.unitTesting
+    if traceGC: g.printNewObjects('masterKey 1')
     if trace:
         g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
             'state.kind:',k.state.kind,g.callers(4))
@@ -7398,6 +7402,8 @@ def masterKeyHandler (self,event,stroke=None):
         # This will return unless k.autoCompleterStateHandler
         # (called from k.callStateFunction) returns 'do-standard-keys'
         << handle mode bindings >>
+        
+    if traceGC: g.printNewObjects('masterKey 2')
         
     << handle per-pane bindings >>
     << handle keys without bindings >>
@@ -7475,7 +7481,7 @@ else:
         return 'break'
 #@-node:ekr.20061031131434.149:<< handle mode bindings >>
 #@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
-key_states = ('command','insert','overwrite')
+keyStatesTuple = ('command','insert','overwrite')
 isPlain =  k.isPlainKey(stroke)
 
 # g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
@@ -7496,7 +7502,7 @@ for key,name in (
     ('text',None), ('all',None),
 ):
     if (
-        key in key_states and isPlain and k.unboundKeyAction == key or
+        key in keyStatesTuple and isPlain and k.unboundKeyAction == key or
         name and w_name.startswith(name) or
         key in ('text','all') and g.app.gui.isTextWidget(w) or
         key in ('button','all')
@@ -7507,12 +7513,18 @@ for key,name in (
             b = d.get(stroke)
             if b:
                 if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
+                if traceGC: g.printNewObjects('masterKey 3')
                 return k.masterCommand(event,b.func,b.stroke,b.commandName)
 #@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
 #@+node:ekr.20061031131434.151:<< handle keys without bindings >>
-if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+if traceGC: g.printNewObjects('masterKey 5')
+
+modesTuple = ('insert','overwrite')
+
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in modesTuple:
     # insert/overwrite normal character.  <Return> is *not* a normal character.
     if trace: g.trace('plain key in insert mode',repr(stroke))
+    if traceGC: g.printNewObjects('masterKey 4')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 
 elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
@@ -7526,13 +7538,14 @@ elif keysym.find('Escape') != -1:
 
 else:
     if trace: g.trace(repr(stroke),'no func')
+    if traceGC: g.printNewObjects('masterKey 6')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 #@-node:ekr.20061031131434.151:<< handle keys without bindings >>
 #@+node:ekr.20061031131434.152:handleMiniBindings
 def handleMiniBindings (self,event,state,stroke):
     
     k = self ; c = k.c
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
     
     if not state.startswith('auto-'):
         d = k.masterBindingsDict.get('mini')
@@ -10259,16 +10272,16 @@ def createSplitterComponents (self):
     # Create the canvas, tree, log and body.
     if self.use_chapters:
         # Create the controllers.
-        cc = leoChapters.chapterController(c)
+        c.chapterController = cc = leoChapters.chapterController(c)
         tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-        c.chapterController = cc
         cc.finishCreate(tt)
-        tt.selectTab('main') # Creates f.tree
+        tt.selectTab('main') # Creates f.canvas and f.tree
+        f.tree = tt.getTree('main')
         f.canvas = tt.getCanvas('main')
     else:
         f.canvas = f.createCanvas(f.split2Pane1)
         f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-    f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+
     f.log    = leoTkinterLog(f,f.split2Pane2)
     f.body   = leoTkinterBody(f,f.split1Pane2)
 
@@ -10922,14 +10935,16 @@ def setTabBindings (self,tabName):
 def setBindings (self):
     
     '''Create master bindings for all headlines.'''
+        
+    tree = self ; k = self.c.k ; canvas = self.canvas
     
-    tree = self ; k = self.c.k
-    
-    # g.trace('self',self,'canvas',self.canvas)
+    # g.trace('self',self,'canvas',canvas)
     
     << make bindings for a common binding widget >>
     
-    self.setCanvasBindings(self.canvas)
+    tree.setCanvasBindings(canvas)
+    
+    k.completeAllBindingsForWidget(canvas)
 
     
 #@nonl
@@ -11193,11 +11208,13 @@ def masterCommand (self,event,func,stroke,commandName=None):
 
     '''This is the central dispatching method.
     All commands and keystrokes pass through here.'''
-
+    
     k = self ; c = k.c ; gui = g.app.gui
+    trace = False or k.traceMasterCommand
+    traceGC = False
+    if traceGC: g.printNewObjects('masterCom 1')
+
     c.setLog()
-    trace = False or c.config.getBool('trace_masterCommand')
-  
     c.startRedrawCount = c.frame.tree.redrawCount
     k.stroke = stroke # Set this global for general use.
     keysym = gui.eventKeysym(event)
@@ -11269,13 +11286,16 @@ def masterCommand (self,event,func,stroke,commandName=None):
         if c.exists:
             k.endCommand(event,commandName)
             c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 2')
         return 'break'
     elif k.inState():
         return 'break' #Ignore unbound keys in a state.
     else:
+        if traceGC: g.printNewObjects('masterCom 3')
         val = k.handleDefaultChar(event,stroke)
         if c.exists:
             c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 4')
         return val
 #@nonl
 #@+node:ekr.20061031131434.106:<< define specialKeysyms >>
@@ -11291,6 +11311,8 @@ specialKeysyms = (
 if stroke or len(ch) > 0:
     if len(keyHandlerClass.lossage) > 99:
         keyHandlerClass.lossage.pop()
+
+    # This looks like a memory leak, but isn't.
     keyHandlerClass.lossage.insert(0,(ch,stroke),)
 #@-node:ekr.20061031131434.107:<< add character to history >>
 #@+node:ekr.20061031131434.108:callStateFunction
@@ -11615,6 +11637,10 @@ class leoKeyEvent:
             self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
         
         self.widget = self.w
+        
+    def __repr__ (self):
+        
+        return 'tkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
 #@nonl
 #@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
 #@+node:ekr.20070123085931:k.defineSpecialKeys
@@ -11688,7 +11714,10 @@ def masterKeyHandler (self,event,stroke=None):
 
     << define vars >>
     if keysym in special_keys: return None
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+    traceGC = False or self.trace_masterKeyHandlerGC and not g.app.unitTesting
+    if traceGC: g.printNewObjects('masterKey 1')
     if trace:
         g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
             'state.kind:',k.state.kind,g.callers(4))
@@ -11703,6 +11732,8 @@ def masterKeyHandler (self,event,stroke=None):
         # This will return unless k.autoCompleterStateHandler
         # (called from k.callStateFunction) returns 'do-standard-keys'
         << handle mode bindings >>
+        
+    if traceGC: g.printNewObjects('masterKey 2')
         
     << handle per-pane bindings >>
     << handle keys without bindings >>
@@ -11780,7 +11811,7 @@ else:
         return 'break'
 #@-node:ekr.20061031131434.149:<< handle mode bindings >>
 #@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
-key_states = ('command','insert','overwrite')
+keyStatesTuple = ('command','insert','overwrite')
 isPlain =  k.isPlainKey(stroke)
 
 # g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
@@ -11801,7 +11832,7 @@ for key,name in (
     ('text',None), ('all',None),
 ):
     if (
-        key in key_states and isPlain and k.unboundKeyAction == key or
+        key in keyStatesTuple and isPlain and k.unboundKeyAction == key or
         name and w_name.startswith(name) or
         key in ('text','all') and g.app.gui.isTextWidget(w) or
         key in ('button','all')
@@ -11812,12 +11843,18 @@ for key,name in (
             b = d.get(stroke)
             if b:
                 if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
+                if traceGC: g.printNewObjects('masterKey 3')
                 return k.masterCommand(event,b.func,b.stroke,b.commandName)
 #@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
 #@+node:ekr.20061031131434.151:<< handle keys without bindings >>
-if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+if traceGC: g.printNewObjects('masterKey 5')
+
+modesTuple = ('insert','overwrite')
+
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in modesTuple:
     # insert/overwrite normal character.  <Return> is *not* a normal character.
     if trace: g.trace('plain key in insert mode',repr(stroke))
+    if traceGC: g.printNewObjects('masterKey 4')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 
 elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
@@ -11831,13 +11868,14 @@ elif keysym.find('Escape') != -1:
 
 else:
     if trace: g.trace(repr(stroke),'no func')
+    if traceGC: g.printNewObjects('masterKey 6')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 #@-node:ekr.20061031131434.151:<< handle keys without bindings >>
 #@+node:ekr.20061031131434.152:handleMiniBindings
 def handleMiniBindings (self,event,state,stroke):
     
     k = self ; c = k.c
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
     
     if not state.startswith('auto-'):
         d = k.masterBindingsDict.get('mini')
@@ -14282,7 +14320,10 @@ def masterKeyHandler (self,event,stroke=None):
 
     << define vars >>
     if keysym in special_keys: return None
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+    traceGC = False or self.trace_masterKeyHandlerGC and not g.app.unitTesting
+    if traceGC: g.printNewObjects('masterKey 1')
     if trace:
         g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
             'state.kind:',k.state.kind,g.callers(4))
@@ -14297,6 +14338,8 @@ def masterKeyHandler (self,event,stroke=None):
         # This will return unless k.autoCompleterStateHandler
         # (called from k.callStateFunction) returns 'do-standard-keys'
         << handle mode bindings >>
+        
+    if traceGC: g.printNewObjects('masterKey 2')
         
     << handle per-pane bindings >>
     << handle keys without bindings >>
@@ -14374,7 +14417,7 @@ else:
         return 'break'
 #@-node:ekr.20061031131434.149:<< handle mode bindings >>
 #@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
-key_states = ('command','insert','overwrite')
+keyStatesTuple = ('command','insert','overwrite')
 isPlain =  k.isPlainKey(stroke)
 
 # g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
@@ -14395,7 +14438,7 @@ for key,name in (
     ('text',None), ('all',None),
 ):
     if (
-        key in key_states and isPlain and k.unboundKeyAction == key or
+        key in keyStatesTuple and isPlain and k.unboundKeyAction == key or
         name and w_name.startswith(name) or
         key in ('text','all') and g.app.gui.isTextWidget(w) or
         key in ('button','all')
@@ -14406,12 +14449,18 @@ for key,name in (
             b = d.get(stroke)
             if b:
                 if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
+                if traceGC: g.printNewObjects('masterKey 3')
                 return k.masterCommand(event,b.func,b.stroke,b.commandName)
 #@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
 #@+node:ekr.20061031131434.151:<< handle keys without bindings >>
-if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+if traceGC: g.printNewObjects('masterKey 5')
+
+modesTuple = ('insert','overwrite')
+
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in modesTuple:
     # insert/overwrite normal character.  <Return> is *not* a normal character.
     if trace: g.trace('plain key in insert mode',repr(stroke))
+    if traceGC: g.printNewObjects('masterKey 4')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 
 elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
@@ -14425,13 +14474,14 @@ elif keysym.find('Escape') != -1:
 
 else:
     if trace: g.trace(repr(stroke),'no func')
+    if traceGC: g.printNewObjects('masterKey 6')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 #@-node:ekr.20061031131434.151:<< handle keys without bindings >>
 #@+node:ekr.20061031131434.152:handleMiniBindings
 def handleMiniBindings (self,event,state,stroke):
     
     k = self ; c = k.c
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
     
     if not state.startswith('auto-'):
         d = k.masterBindingsDict.get('mini')
@@ -24152,13 +24202,13 @@ def findEditorForChapter (self,chapter,p):
         if (
             hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
             hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
-            g.trace('***',id(w),'match chapter and p',p.headString())
+            # g.trace('***',id(w),'match chapter and p',p.headString())
             return w
             
     # Next, try to match just the chapter.
     for w in values:
         if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
-            g.trace('***',id(w),'match only chapter',p.headString())
+            # g.trace('***',id(w),'match only chapter',p.headString())
             return w
     
     # As a last resort, return the present editor widget.
@@ -25055,6 +25105,10 @@ class leoKeyEvent:
             self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
         
         self.widget = self.w
+        
+    def __repr__ (self):
+        
+        return 'leoGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
 #@nonl
 #@-node:ekr.20070228160107:class leoKeyEvent (leoGui)
 #@-node:ekr.20070228154059:May be defined in subclasses
@@ -25339,7 +25393,7 @@ def makeTabMenu (self,tabName=None):
 
     '''Create a tab popup menu.'''
     
-    g.trace(tabName,g.callers())
+    # g.trace(tabName,g.callers())
 
     c = self.c
     hull = self.nb.component('hull') # A Tk.Canvas.
@@ -30087,6 +30141,8 @@ def printPlugins ():
         g.es_print(key)
 #@-node:ekr.20070429090122:printPlugins
 #@-node:ekr.20070427094856:Added print-plugins & print-plugin-handlers commands
+#@+node:ekr.20070501094623:Added apropos-debugging-commands command
+#@-node:ekr.20070501094623:Added apropos-debugging-commands command
 #@-node:ekr.20070418094610:New features
 #@+node:ekr.20070418094610.1:Fixed bugs
 #@+node:ekr.20070417100138:Fixed bug: new-file doesn't allow edit of initial headline
@@ -30357,11 +30413,13 @@ def masterCommand (self,event,func,stroke,commandName=None):
 
     '''This is the central dispatching method.
     All commands and keystrokes pass through here.'''
-
+    
     k = self ; c = k.c ; gui = g.app.gui
+    trace = False or k.traceMasterCommand
+    traceGC = False
+    if traceGC: g.printNewObjects('masterCom 1')
+
     c.setLog()
-    trace = False or c.config.getBool('trace_masterCommand')
-  
     c.startRedrawCount = c.frame.tree.redrawCount
     k.stroke = stroke # Set this global for general use.
     keysym = gui.eventKeysym(event)
@@ -30433,13 +30491,16 @@ def masterCommand (self,event,func,stroke,commandName=None):
         if c.exists:
             k.endCommand(event,commandName)
             c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 2')
         return 'break'
     elif k.inState():
         return 'break' #Ignore unbound keys in a state.
     else:
+        if traceGC: g.printNewObjects('masterCom 3')
         val = k.handleDefaultChar(event,stroke)
         if c.exists:
             c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 4')
         return val
 #@nonl
 #@+node:ekr.20061031131434.106:<< define specialKeysyms >>
@@ -30455,6 +30516,8 @@ specialKeysyms = (
 if stroke or len(ch) > 0:
     if len(keyHandlerClass.lossage) > 99:
         keyHandlerClass.lossage.pop()
+
+    # This looks like a memory leak, but isn't.
     keyHandlerClass.lossage.insert(0,(ch,stroke),)
 #@-node:ekr.20061031131434.107:<< add character to history >>
 #@+node:ekr.20061031131434.108:callStateFunction
@@ -30764,6 +30827,763 @@ suggest.argtypes = [c_int, c_char_p, c_int]
 #@-node:ekr.20061018111331:getAspellWithCtypes
 #@-node:ekr.20051025071455.7:Birth & death
 #@-node:ekr.20070501085759:Fixed crashes when trying to import aspell
+#@+node:ekr.20070501111644:Fixed repeatComplexCommand weirdness
+#@+node:ekr.20061031131434.122:repeatComplexCommand & helper
+def repeatComplexCommand (self,event):
+    
+    '''Repeat the previously executed minibuffer command.'''
+    k = self
+    if k.mb_history:
+        k.setState('last-full-command',1,handler=k.repeatComplexCommandHelper)
+        k.setLabelBlue("Redo: %s" % str(k.mb_history[0]))
+    else:
+        g.es('No previous command',color='blue')
+    return 'break'
+    
+def repeatComplexCommandHelper (self,event):
+    
+    k = self ; c = k.c ; gui = g.app.gui
+
+    keysym = gui.eventKeysym(event)
+    # g.trace('state',k.state.kind,'event',repr(event),g.callers())
+    if keysym == 'Return' and k.mb_history:
+    # if k.mb_history:
+        last = k.mb_history [0]
+        k.resetLabel()
+        k.clearState() # Bug fix.
+        c.commandsDict [last](event)
+        return 'break'
+    else:
+        g.trace('oops')
+        return k.keyboardQuit(event)
+#@-node:ekr.20061031131434.122:repeatComplexCommand & helper
+#@+node:ekr.20061031131434.130:keyboardQuit
+def keyboardQuit (self,event,hideTabs=True,setDefaultUnboundKeyAction=True):
+
+    '''This method clears the state and the minibuffer label.
+    
+    k.endCommand handles all other end-of-command chores.'''
+    
+    k = self ; c = k.c
+
+    if g.app.quitting:
+        return
+
+    if hideTabs:
+        k.autoCompleter.exit()
+        c.frame.log.deleteTab('Mode')
+        c.frame.log.hideTab('Completion')
+    
+    # Completely clear the mode.
+    if k.inputModeName:
+        k.endMode(event)
+
+    # Complete clear the state.
+    k.state.kind = None
+    k.state.n = None
+
+    k.clearState()
+    k.resetLabel()
+    
+    if setDefaultUnboundKeyAction: k.setDefaultUnboundKeyAction()
+    k.showStateAndMode()
+    c.endEditing()
+    c.bodyWantsFocus()
+#@-node:ekr.20061031131434.130:keyboardQuit
+#@+node:ekr.20040803072955.91:onHeadChanged
+# Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing',s=None):
+    
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+    
+    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if not w: return
+    
+    ch = '\n' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    if s is None: s = w.getAllText()
+    << truncate s if it has multiple lines >>
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(scroll=False) # New in 4.4.1
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+   
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+# Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) > 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i > -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) > limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+#@-node:ekr.20040803072955.91:onHeadChanged
+#@+node:ekr.20061031131434.128:getArg
+def getArg (self,event,
+    returnKind=None,returnState=None,handler=None,
+    prefix=None,tabList=[],completion=True,oneCharacter=False,
+    stroke=None, # New in 4.4.1.
+    useMinibuffer=True # New in 4.4.1
+):
+    
+    '''Accumulate an argument until the user hits return (or control-g).
+    Enter the given return state when done.
+    The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
+    '''
+
+    k = self ; c = k.c ; gui  = g.app.gui
+    state = k.getState('getArg')
+    keysym = gui.eventKeysym(event)
+    trace = False or c.config.getBool('trace_modes') and not g.app.unitTesting
+    if trace: g.trace(
+        'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
+        'completion', state==0 and completion or state!=0 and k.arg_completion)
+    if state == 0:
+        k.arg = ''
+        << init altX vars >>
+        # Set the states.
+        bodyCtrl = c.frame.body.bodyCtrl
+        c.widgetWantsFocus(bodyCtrl)
+        k.afterGetArgState=returnKind,returnState,handler
+        k.setState('getArg',1,k.getArg)
+        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+        if useMinibuffer and k.useTextWidget: c.minibufferWantsFocusNow()
+    elif keysym == 'Escape':
+        k.keyboardQuit(event)
+    elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
+        if stroke in k.getArgEscapes: k.getArgEscape = stroke
+        if k.oneCharacterArg:
+            k.arg = event.char
+        else:
+            k.arg = k.getLabel(ignorePrompt=True)
+        kind,n,handler = k.afterGetArgState
+        if kind: k.setState(kind,n,handler)
+        c.frame.log.deleteTab('Completion')
+        trace and g.trace('kind',kind,'n',n,'handler',handler and handler.__name__)
+        if handler: handler(event)
+    elif keysym == 'Tab':
+        k.doTabCompletion(k.argTabList,k.arg_completion)
+    elif keysym == 'BackSpace':
+        k.doBackSpace(k.argTabList,k.arg_completion)
+        c.minibufferWantsFocus()
+    else:
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+    return 'break'
+#@+node:ekr.20061031131434.129:<< init altX vars >>
+k.argTabList = tabList and tabList[:] or []
+k.arg_completion = completion
+
+k.mb_prefix = prefix or k.getLabel()
+k.mb_prompt = prefix or ''
+k.mb_tabList = []
+
+# Clear the list: any non-tab indicates that a new prefix is in effect.
+k.mb_tabListPrefix = k.getLabel()
+k.oneCharacterArg = oneCharacter
+#@-node:ekr.20061031131434.129:<< init altX vars >>
+#@-node:ekr.20061031131434.128:getArg
+#@+node:ekr.20061031131434.199:setState
+def setState (self,kind,n,handler=None):
+    
+    k = self
+    if kind and n != None:
+        k.state.kind = kind
+        k.state.n = n
+        if handler:
+            k.state.handler = handler
+    else:
+        k.clearState()
+        
+    # k.showStateAndMode()
+#@-node:ekr.20061031131434.199:setState
+#@+node:ekr.20070228160107:class leoKeyEvent (leoGui)
+class leoKeyEvent:
+    
+    '''A gui-independent wrapper for gui events.'''
+    
+    def __init__ (self,event,c):
+        
+        # g.trace('leoKeyEvent(leoGui)')
+        self.actualEvent = event
+        self.c      = c # Required to access c.k tables.
+        self.char   = hasattr(event,'char') and event.char or ''
+        self.keysym = hasattr(event,'keysym') and event.keysym or ''
+        self.w      = hasattr(event,'widget') and event.widget or None
+        self.x      = hasattr(event,'x') and event.x or 0
+        self.y      = hasattr(event,'y') and event.y or 0
+        
+        if self.keysym and c.k:
+            # Translate keysyms for ascii characters to the character itself.
+            self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
+        
+        self.widget = self.w
+        
+    def __repr__ (self):
+        
+        return 'leoGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
+#@nonl
+#@-node:ekr.20070228160107:class leoKeyEvent (leoGui)
+#@-node:ekr.20070501111644:Fixed repeatComplexCommand weirdness
+#@+node:ekr.20070501130458:Improved widget allocation in trees
+@
+
+Possibilities:
+    
+- Destroy all tree widgets only when switching chapters.
+- Create unique tree for each chapter.
+- Remember canvas from which each widget was allocated.
+#@nonl
+#@+node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
+def createSplitterComponents (self):
+
+    f = self ; c = f.c
+
+    f.createLeoSplitters(f.outerFrame)
+
+    # Create the canvas, tree, log and body.
+    if self.use_chapters:
+        # Create the controllers.
+        c.chapterController = cc = leoChapters.chapterController(c)
+        tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+        cc.finishCreate(tt)
+        tt.selectTab('main') # Creates f.canvas and f.tree
+        f.tree = tt.getTree('main')
+        f.canvas = tt.getCanvas('main')
+    else:
+        f.canvas = f.createCanvas(f.split2Pane1)
+        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
+
+    f.log    = leoTkinterLog(f,f.split2Pane2)
+    f.body   = leoTkinterBody(f,f.split1Pane2)
+
+    # Yes, this an "official" ivar: this is a kludge.
+    f.bodyCtrl = f.body.bodyCtrl
+
+    # Configure.
+    f.setTabWidth(c.tab_width)
+    f.reconfigurePanes()
+    f.body.setFontFromConfig()
+    f.body.setColorFromConfig()
+#@nonl
+#@-node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
+#@+node:ekr.20070317073627.3:class leoTkinterTreeTab
+class leoTkinterTreeTab (leoFrame.leoTreeTab):
+
+    '''A class representing a tabbed outline pane drawn with Tkinter.'''
+
+    @others
+#@nonl
+#@+node:ekr.20070320090557.1: Birth & death
+#@+node:ekr.20070317073819.1: ctor (leoTreeTab)
+def __init__ (self,c,parentFrame,chapterController):
+
+    leoFrame.leoTreeTab.__init__ (self,c,chapterController,parentFrame)
+        # Init the base class.  Sets self.c, self.cc and self.parentFrame.
+
+    self.tabNames = []
+
+    # Keys are tabNames for all these dicts.
+    # Important: tabNames never change, even if their button text changes
+
+    self.buttonsDict = {} # values are Tk.Button's.
+    self.canvasDict = {} # values are Tk.Canvas's.
+    self.chapterDict = {} # values are chapters.
+    self.stringVarDict = {} # values are Tk.StringVars.
+    self.treeDict = {} # values are tkTrees.
+
+    self.createControl()
+
+#@-node:ekr.20070317073819.1: ctor (leoTreeTab)
+#@+node:ekr.20070317073819.2:tt.createControl
+def createControl (self):
+
+    tt = self
+
+    def lowerCallback(tabName,self=self):
+        return self.lowerTab(tabName)
+
+    def raiseCallback(tabName,self=self):
+        return self.raiseTab(tabName)
+
+    tt.nb = nb = Pmw.NoteBook(self.parentFrame,
+        borderwidth = 1, pagemargin = 0, 
+        raisecommand = raiseCallback,
+        lowercommand = lowerCallback,
+        arrownavigation = 0,
+    )
+
+    hull = nb.component('hull')
+
+    nb.pack(fill='both',expand=1)
+#@-node:ekr.20070317073819.2:tt.createControl
+#@-node:ekr.20070320090557.1: Birth & death
+#@+node:ekr.20070317082315:tt.getters
+def getButton (self,tabName):
+
+    tt = self
+
+    if tabName in tt.tabNames:
+        return tt.nb.tab(tabName) # A Tk.Button.
+    else:
+        return None
+
+def getCanvas (self,tabName):
+    return self.canvasDict.get(tabName) # A Tk.Canvas
+
+def getFrame (self,tabName):
+
+    tt = self
+
+    if tabName in tt.tabNames:
+        return tt.nb.page(tabName) # A Tk.Frame
+    else:
+        return None
+
+def getSelectedTabName (self):
+
+    return self.nb.getcurselection() # An immutable tab name.
+
+def getTree (self,tabName):
+    
+    return self.treeDict.get(tabName) # A leoTkinterTree.
+#@-node:ekr.20070317082315:tt.getters
+#@+node:ekr.20070320093038:Tabs...
+#@+node:ekr.20070317074824:tt.createTab
+def createTab (self,tabName,select=True):
+
+    tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
+
+    parentFrame = nb.add(tabName) # page is a Tk.Frame.
+    self.tabNames.append(tabName)
+
+    b = nb.tab(tabName) # b is a Tk.Button.
+
+    if select:  self.setSelectColor(b)
+    else:       self.setUnselectColor(b)
+
+    canvas = c.frame.createCanvas(parentFrame)
+    tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
+    
+    tt.buttonsDict [tabName ] = b
+    tt.canvasDict [tabName] = canvas
+    tt.stringVarDict [tabName] = Tk.StringVar()
+    tt.treeDict [tabName] = tree
+#@-node:ekr.20070317074824:tt.createTab
+#@+node:ekr.20070317074824.1:tt.destroyTab
+def destroyTab (self,tabName):
+
+    if tabName in self.tabNames:
+        self.nb.delete(tabName)
+        self.tabNames.remove(tabName)
+
+#@-node:ekr.20070317074824.1:tt.destroyTab
+#@+node:ekr.20070317074813:tt.makeTabMenu & helpers
+def makeTabMenu (self,tabName,theChapter):
+
+    '''Create a tab menu.'''
+    
+    tt = self ; cc = tt.cc
+    w = self.buttonsDict.get(tabName)
+    if not w: return cc.error('tt.makeTabMenu: no w')
+
+    tmenu = Tk.Menu(w,tearoff=0)
+    w.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
+    w.tmenu = tmenu
+
+    tt.createTopLevelMenuItems(tmenu,theChapter)
+
+    if 0:
+        tmenu.add_separator()
+        #tt.createConvertMenu(tmenu)
+        # tt.createEditorMenu(tmenu)
+        # tt.createImportExportMenu(tmenu)
+        # tt.createIndexMenu(tmenu)
+        tt.createNodeMenu(tmenu)
+        tt.createTrashMenu(tmenu)
+#@nonl
+#@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
+def createTopLevelMenuItems (self,tmenu,theChapter):
+
+    cc = self.cc ; menu = tmenu
+
+    for kind,label,command in (
+        ('','New Chapter',cc.createChapter),
+        ('','Remove This Chapter',cc.removeChapter),
+        ('','Rename This Chapter',cc.renameChapter),
+        ('-',None,None),
+        ('','Empty Trash Barrel',cc.removeChapter),
+        ('-',None,None),
+        ('...','Clone Node To Chapter...',cc.cloneToChapter),
+        ('...','Copy Node To Chapter...',cc.copyToChapter),
+        ('...','Move Node To Chapter...',cc.moveToChapter),
+    ):
+        if kind == '-':
+            menu.add_separator()
+        elif kind == '...':
+            submenu = Tk.Menu(menu,tearoff=0)
+            menu.add_cascade(menu=submenu,label=label)
+            def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu,theChapter=theChapter):
+                self.setupChaptersMenu(submenu,command,theChapter)
+            submenu.configure(postcommand=chapterMenuCallback)
+        else:
+            menu.add_command(label=label,command=command)
+
+    # for name,command in (
+        # ('Clone',cc.cloneToChapter),
+        # ('Copy',cc.copyToChapter),
+        # ('Move',cc.moveToChapter),
+    # ):
+        # submenu = Tk.Menu(menu,tearoff=0)
+        # menu.add_cascade(
+            # menu=submenu,
+            # label='%s Node To Chapter...' % name)
+
+        # def chapterMenuCallback(event=None,cc=cc,submenu=submenu):
+            # self.setupChaptersMenu(submenu,command)
+
+        # submenu.configure(postcommand=chapterMenuCallback)
+
+    # menu.add_separator()
+
+#@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
+#@+node:ekr.20070318120043:tt.setupChaptersMenu
+def setupChaptersMenu (self,menu,command,theChapter):
+
+    '''Create a submenu containing the list of all chapters.'''
+
+    tt = self ; nb = tt.nb
+
+    menu.delete(0,'end')
+    current = nb.getcurselection()
+
+    for tabName in nb.pagenames():
+        b = nb.tab(tabName) # Get the (possibly renamed) button text.
+        name = b.cget('text')
+        if tabName != current:
+            # g.trace('name',name,'command',command)
+            def chaptersMenuCallback(event=None,command=command,toChapter=tabName):
+                return command(toChapter=toChapter)
+            menu.add_command(label=name,command=chaptersMenuCallback)
+#@nonl
+#@-node:ekr.20070318120043:tt.setupChaptersMenu
+#@-node:ekr.20070317074813:tt.makeTabMenu & helpers
+#@+node:ekr.20070317075059.1:tt.raise/lowerTab
+def lowerTab (self,tabName):
+    
+    # g.trace(tabName)
+    tt = self ; tab = tt.nb.tab(tabName)
+    self.setUnselectColor(tab)
+    tt.cc.unselectCallback(tabName)
+
+def raiseTab (self,tabName):
+    
+    # g.trace(tabName)
+    tt = self ; c = self.c ; tab = tt.nb.tab(tabName)
+    w = c.frame.body and c.frame.body.bodyCtrl
+    self.setSelectColor(tab)
+    tt.cc.selectCallback(tabName)
+
+    if w:
+        # This can not be called immediately
+        def idleCallback(event=None,c=c):
+            c.invalidateFocus()
+            c.bodyWantsFocusNow()
+
+        w.after_idle(idleCallback)
+#@-node:ekr.20070317075059.1:tt.raise/lowerTab
+#@+node:ekr.20070318125900.1:tt.renameChapterHelper
+def renameChapterHelper (self,cc,tabName):
+
+    '''Called from cc.renameChapter to prompt for a new name.'''
+
+    tt = self ; c = tt.c ; nb = tt.nb
+
+    frame = tt.getFrame(tabName)
+    tab = tt.getButton(tabName)
+
+    f = Tk.Frame(tab)
+    # Elegant code.  Setting e's textvariable to chapter.sv
+    # immediately updates the chapter labels as e changes.
+    sv = tt.stringVarDict.get(tabName)
+    e = Tk.Entry(f,background='white',textvariable=sv)
+    b = Tk.Button(f,text="Close")
+    f.pack(side='top')
+    e.pack(side='left')
+    b.pack(side='right')
+    def changeCallback (event=None,f=f,sv=sv):
+        newName = sv.get()
+        f.pack_forget()
+        tt.renameTab(newName)
+    e.bind('<Return>',changeCallback)
+    e.selection_range(0,'end')
+    b.configure(command=changeCallback)
+    c.widgetWantsFocusNow(e)
+#@nonl
+#@-node:ekr.20070318125900.1:tt.renameChapterHelper
+#@+node:ekr.20070318133725:tt.renameTab
+def renameTab (self,newName):
+
+    '''Change the button text of the presently selected tab.'''
+
+    # Important: the actual tab name *never* changes.
+
+    tt = self ; nb = tt.nb
+    name = nb.getcurselection()
+    b = nb.tab(name)
+    b.configure(text=newName)
+#@-node:ekr.20070318133725:tt.renameTab
+#@+node:ekr.20070317074824.3:tt.selectTab
+def selectTab (self,tabName):
+    
+    c = self.c
+
+    if tabName not in self.tabNames:
+        self.createTab(tabName)
+    
+    # This will indirectly invoke chapter.select.
+    self.nb.selectpage(tabName)
+#@-node:ekr.20070317074824.3:tt.selectTab
+#@+node:ekr.20070421095700:setSelect/UnselectColor
+def setSelectColor (self,b):
+    
+    tt = self
+    
+    b.configure(
+        background=tt.selectedTabBackgroundColor,
+        foreground=tt.selectedTabForegroundColor)
+
+def setUnselectColor(self,b):
+    
+    tt = self
+    
+    b.configure(
+        background=tt.unselectedTabBackgroundColor,
+        foreground=tt.unselectedTabForegroundColor)
+#@nonl
+#@-node:ekr.20070421095700:setSelect/UnselectColor
+#@-node:ekr.20070320093038:Tabs...
+#@-node:ekr.20070317073627.3:class leoTkinterTreeTab
+#@+node:ekr.20070317074824:tt.createTab
+def createTab (self,tabName,select=True):
+
+    tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
+
+    parentFrame = nb.add(tabName) # page is a Tk.Frame.
+    self.tabNames.append(tabName)
+
+    b = nb.tab(tabName) # b is a Tk.Button.
+
+    if select:  self.setSelectColor(b)
+    else:       self.setUnselectColor(b)
+
+    canvas = c.frame.createCanvas(parentFrame)
+    tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
+    
+    tt.buttonsDict [tabName ] = b
+    tt.canvasDict [tabName] = canvas
+    tt.stringVarDict [tabName] = Tk.StringVar()
+    tt.treeDict [tabName] = tree
+#@-node:ekr.20070317074824:tt.createTab
+#@+node:ekr.20070423102603.1:chapterSelectHelper
+def chapterSelectHelper (self,w):
+
+    c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
+
+    # The big switcharoo.
+    c.frame.canvas = canvas = tt.getCanvas(name)
+    c.frame.tree = tree = tt.getTree(name)
+    
+    if name == 'main':
+        root = cc.mainRoot
+        c.setRootPosition(root)
+    else:
+        root = self.root
+        self.unlink()
+        c.setRootPosition(root)
+
+    cc.selectedChapter = self
+
+    # Switch to the new editor.
+    if w:
+        assert w == c.frame.body.bodyCtrl
+        assert w == c.frame.bodyCtrl
+        p = self.findPositionInChapter(w.leo_p.v)
+        if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
+    else:
+         # This must be done *after* switching roots.
+        p = self.findPositionInChapter(self.p.v)
+        w = self.findEditorInChapter(p)
+        c.frame.body.selectEditor(w) # Switches text.
+
+    # g.trace('   ***',id(w),root.headString(),p.headString())
+
+    c.beginUpdate()
+    try:
+        if self.inited:
+            c.selectPosition(p)
+            c.hoistStack = self.hoistStack[:] # Restore the hoist state.
+        else:
+            self.inited = True
+            if name == 'main': # Clear all hoists.
+                c.hoistStack = []
+                c.selectPosition(p)
+            else: # Finish initing the canvas and do the initial hoist.
+                g.trace('finish init',name)
+                tree.setBindings()
+                if name != 'main':
+                    root.expand()
+                c.selectPosition(root)
+                c.hoistStack = []
+                c.hoist()
+                self.hoistStack = c.hoistStack[:]
+        # g.trace('chapter',name,'p.v',id(p.v),p.headString())
+    finally:
+        c.endUpdate()
+        c.bodyWantsFocusNow()
+#@nonl
+#@-node:ekr.20070423102603.1:chapterSelectHelper
+#@+node:ekr.20051024102724:tkTtree.setBindings
+def setBindings (self):
+    
+    '''Create master bindings for all headlines.'''
+        
+    tree = self ; k = self.c.k ; canvas = self.canvas
+    
+    # g.trace('self',self,'canvas',canvas)
+    
+    << make bindings for a common binding widget >>
+    
+    tree.setCanvasBindings(canvas)
+    
+    k.completeAllBindingsForWidget(canvas)
+
+    
+#@nonl
+#@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
+self.bindingWidget = w = g.app.gui.plainTextWidget(
+    self.canvas,name='bindingWidget')
+
+w.bind('<Key>',k.masterKeyHandler)
+
+table = (
+    ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
+    ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
+    ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
+    ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
+)
+
+for a,handler,func in table:
+    def treeBindingCallback(event,handler=handler,func=func):
+        return handler(event,func)
+    w.bind(a,treeBindingCallback)
+    
+self.textBindings = w.bindtags()
+#@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
+#@-node:ekr.20051024102724:tkTtree.setBindings
+#@+node:ekr.20070317074824.3:tt.selectTab
+def selectTab (self,tabName):
+    
+    c = self.c
+
+    if tabName not in self.tabNames:
+        self.createTab(tabName)
+    
+    # This will indirectly invoke chapter.select.
+    self.nb.selectpage(tabName)
+#@-node:ekr.20070317074824.3:tt.selectTab
+#@+node:ekr.20031218072017.1975:destroyAllObjects
+def destroyAllObjects (self):
+
+    """Clear all links to objects in a Leo window."""
+
+    frame = self ; c = self.c ; tree = frame.tree ; body = self.body
+    
+    # g.printGcAll()
+
+    # Do this first.
+    << clear all vnodes and tnodes in the tree >>
+
+    # Destroy all ivars in subcommanders.
+    g.clearAllIvars(c.atFileCommands)
+    if c.chapterController:
+        # New in Leo 4.4.3 b1.
+        g.clearAllIvars(c.chapterController.tt) 
+        g.clearAllIvars(c.chapterController)
+    g.clearAllIvars(c.fileCommands)
+    g.clearAllIvars(c.keyHandler) # New in Leo 4.4.3 b1.
+    g.clearAllIvars(c.importCommands)
+    g.clearAllIvars(c.tangleCommands)
+    g.clearAllIvars(c.undoer)
+   
+    g.clearAllIvars(c)
+    g.clearAllIvars(body.colorizer)
+    g.clearAllIvars(body)
+    g.clearAllIvars(tree)
+
+    # This must be done last.
+    frame.destroyAllPanels()
+    g.clearAllIvars(frame)
+    
+    
+#@nonl
+#@+node:ekr.20031218072017.1976:<< clear all vnodes and tnodes in the tree>>
+# Using a dict here is essential for adequate speed.
+vList = [] ; tDict = {}
+
+for p in c.allNodes_iter():
+    vList.append(p.v)
+    if p.v.t:
+        key = id(p.v.t)
+        if not tDict.has_key(key):
+            tDict[key] = p.v.t
+
+for key in tDict.keys():
+    g.clearAllIvars(tDict[key])
+
+for v in vList:
+    g.clearAllIvars(v)
+
+vList = [] ; tDict = {} # Remove these references immediately.
+#@-node:ekr.20031218072017.1976:<< clear all vnodes and tnodes in the tree>>
+#@-node:ekr.20031218072017.1975:destroyAllObjects
+#@-node:ekr.20070501130458:Improved widget allocation in trees
 #@-node:ekr.20070418094610.1:Fixed bugs
 #@+node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
 @ 
@@ -31220,11 +32040,13 @@ def masterCommand (self,event,func,stroke,commandName=None):
 
     '''This is the central dispatching method.
     All commands and keystrokes pass through here.'''
-
+    
     k = self ; c = k.c ; gui = g.app.gui
+    trace = False or k.traceMasterCommand
+    traceGC = False
+    if traceGC: g.printNewObjects('masterCom 1')
+
     c.setLog()
-    trace = False or c.config.getBool('trace_masterCommand')
-  
     c.startRedrawCount = c.frame.tree.redrawCount
     k.stroke = stroke # Set this global for general use.
     keysym = gui.eventKeysym(event)
@@ -31296,13 +32118,16 @@ def masterCommand (self,event,func,stroke,commandName=None):
         if c.exists:
             k.endCommand(event,commandName)
             c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 2')
         return 'break'
     elif k.inState():
         return 'break' #Ignore unbound keys in a state.
     else:
+        if traceGC: g.printNewObjects('masterCom 3')
         val = k.handleDefaultChar(event,stroke)
         if c.exists:
             c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 4')
         return val
 #@nonl
 #@+node:ekr.20061031131434.106:<< define specialKeysyms >>
@@ -31318,6 +32143,8 @@ specialKeysyms = (
 if stroke or len(ch) > 0:
     if len(keyHandlerClass.lossage) > 99:
         keyHandlerClass.lossage.pop()
+
+    # This looks like a memory leak, but isn't.
     keyHandlerClass.lossage.insert(0,(ch,stroke),)
 #@-node:ekr.20061031131434.107:<< add character to history >>
 #@+node:ekr.20061031131434.108:callStateFunction
@@ -32228,7 +33055,10 @@ def masterKeyHandler (self,event,stroke=None):
 
     << define vars >>
     if keysym in special_keys: return None
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+    traceGC = False or self.trace_masterKeyHandlerGC and not g.app.unitTesting
+    if traceGC: g.printNewObjects('masterKey 1')
     if trace:
         g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
             'state.kind:',k.state.kind,g.callers(4))
@@ -32243,6 +33073,8 @@ def masterKeyHandler (self,event,stroke=None):
         # This will return unless k.autoCompleterStateHandler
         # (called from k.callStateFunction) returns 'do-standard-keys'
         << handle mode bindings >>
+        
+    if traceGC: g.printNewObjects('masterKey 2')
         
     << handle per-pane bindings >>
     << handle keys without bindings >>
@@ -32320,7 +33152,7 @@ else:
         return 'break'
 #@-node:ekr.20061031131434.149:<< handle mode bindings >>
 #@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
-key_states = ('command','insert','overwrite')
+keyStatesTuple = ('command','insert','overwrite')
 isPlain =  k.isPlainKey(stroke)
 
 # g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
@@ -32341,7 +33173,7 @@ for key,name in (
     ('text',None), ('all',None),
 ):
     if (
-        key in key_states and isPlain and k.unboundKeyAction == key or
+        key in keyStatesTuple and isPlain and k.unboundKeyAction == key or
         name and w_name.startswith(name) or
         key in ('text','all') and g.app.gui.isTextWidget(w) or
         key in ('button','all')
@@ -32352,12 +33184,18 @@ for key,name in (
             b = d.get(stroke)
             if b:
                 if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
+                if traceGC: g.printNewObjects('masterKey 3')
                 return k.masterCommand(event,b.func,b.stroke,b.commandName)
 #@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
 #@+node:ekr.20061031131434.151:<< handle keys without bindings >>
-if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+if traceGC: g.printNewObjects('masterKey 5')
+
+modesTuple = ('insert','overwrite')
+
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in modesTuple:
     # insert/overwrite normal character.  <Return> is *not* a normal character.
     if trace: g.trace('plain key in insert mode',repr(stroke))
+    if traceGC: g.printNewObjects('masterKey 4')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 
 elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
@@ -32371,13 +33209,14 @@ elif keysym.find('Escape') != -1:
 
 else:
     if trace: g.trace(repr(stroke),'no func')
+    if traceGC: g.printNewObjects('masterKey 6')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 #@-node:ekr.20061031131434.151:<< handle keys without bindings >>
 #@+node:ekr.20061031131434.152:handleMiniBindings
 def handleMiniBindings (self,event,state,stroke):
     
     k = self ; c = k.c
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
     
     if not state.startswith('auto-'):
         d = k.masterBindingsDict.get('mini')
@@ -32537,7 +33376,7 @@ def setEditLabelState (self,p,selectAll=False): # selected, editing
     if p and w:
         c.widgetWantsFocusNow(w)
         self.setEditHeadlineColors(p)
-        selectAll = selectAll or c.config.getBool('select_all_text_when_editing_headlines')
+        selectAll = selectAll or self.select_all_text_when_editing_headlines
         if selectAll:
             w.setSelectionRange(0,'end',insert='end')
         else:
@@ -32573,7 +33412,10 @@ def masterKeyHandler (self,event,stroke=None):
 
     << define vars >>
     if keysym in special_keys: return None
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+    traceGC = False or self.trace_masterKeyHandlerGC and not g.app.unitTesting
+    if traceGC: g.printNewObjects('masterKey 1')
     if trace:
         g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
             'state.kind:',k.state.kind,g.callers(4))
@@ -32588,6 +33430,8 @@ def masterKeyHandler (self,event,stroke=None):
         # This will return unless k.autoCompleterStateHandler
         # (called from k.callStateFunction) returns 'do-standard-keys'
         << handle mode bindings >>
+        
+    if traceGC: g.printNewObjects('masterKey 2')
         
     << handle per-pane bindings >>
     << handle keys without bindings >>
@@ -32665,7 +33509,7 @@ else:
         return 'break'
 #@-node:ekr.20061031131434.149:<< handle mode bindings >>
 #@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
-key_states = ('command','insert','overwrite')
+keyStatesTuple = ('command','insert','overwrite')
 isPlain =  k.isPlainKey(stroke)
 
 # g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
@@ -32686,7 +33530,7 @@ for key,name in (
     ('text',None), ('all',None),
 ):
     if (
-        key in key_states and isPlain and k.unboundKeyAction == key or
+        key in keyStatesTuple and isPlain and k.unboundKeyAction == key or
         name and w_name.startswith(name) or
         key in ('text','all') and g.app.gui.isTextWidget(w) or
         key in ('button','all')
@@ -32697,12 +33541,18 @@ for key,name in (
             b = d.get(stroke)
             if b:
                 if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
+                if traceGC: g.printNewObjects('masterKey 3')
                 return k.masterCommand(event,b.func,b.stroke,b.commandName)
 #@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
 #@+node:ekr.20061031131434.151:<< handle keys without bindings >>
-if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+if traceGC: g.printNewObjects('masterKey 5')
+
+modesTuple = ('insert','overwrite')
+
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in modesTuple:
     # insert/overwrite normal character.  <Return> is *not* a normal character.
     if trace: g.trace('plain key in insert mode',repr(stroke))
+    if traceGC: g.printNewObjects('masterKey 4')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 
 elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
@@ -32716,13 +33566,14 @@ elif keysym.find('Escape') != -1:
 
 else:
     if trace: g.trace(repr(stroke),'no func')
+    if traceGC: g.printNewObjects('masterKey 6')
     return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
 #@-node:ekr.20061031131434.151:<< handle keys without bindings >>
 #@+node:ekr.20061031131434.152:handleMiniBindings
 def handleMiniBindings (self,event,state,stroke):
     
     k = self ; c = k.c
-    trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
     
     if not state.startswith('auto-'):
         d = k.masterBindingsDict.get('mini')
