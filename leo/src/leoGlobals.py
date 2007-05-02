@@ -2158,11 +2158,36 @@ lastTypesDict = {}
 lastFunctionsDict = {}
 
 #@+others
-#@+node:ekr.20060127162818:enable_gc_debug
-def enable_gc_debug(event=None):
+#@+node:ekr.20031218072017.1589:clearAllIvars
+def clearAllIvars (o):
     
-    if g.app.trace_gc_inited:
-        return
+    """Clear all ivars of o, a member of some class."""
+    
+    if o:
+        o.__dict__.clear()
+#@-node:ekr.20031218072017.1589:clearAllIvars
+#@+node:ekr.20031218072017.1590:collectGarbage
+def collectGarbage():
+
+    try:
+        if not g.app.trace_gc_inited:
+            g.enable_gc_debug()
+
+        if g.app.trace_gc_verbose or g.app.trace_gc_calls:
+            # print('Collecting garbage',g.callers())
+            print 'collectGarbage:'
+
+        gc.collect()
+    except Exception:
+        pass
+        
+    # Only init once, regardless of what happens.
+    g.app.trace_gc_inited = True
+#@-node:ekr.20031218072017.1590:collectGarbage
+#@+node:ekr.20060127162818:enable_gc_debug
+no_gc_message = False
+
+def enable_gc_debug(event=None):
     
     if gc:
         if g.app.trace_gc_verbose:
@@ -2175,74 +2200,57 @@ def enable_gc_debug(event=None):
                 gc.DEBUG_OBJECTS |
                 gc.DEBUG_SAVEALL
             )
-            g.es('enabled verbose gc stats',color='blue')
         else:
             gc.set_debug(gc.DEBUG_STATS)
-            g.es('enabled brief gc stats',color='blue')
-    else:
+    elif not no_gc_message:
+        no_gc_message = True
         g.es('Can not import gc module',color='blue')
 #@-node:ekr.20060127162818:enable_gc_debug
-#@+node:ekr.20031218072017.1589:clearAllIvars
-def clearAllIvars (o):
+#@+node:ekr.20031218072017.1592:printGc
+# Formerly called from unit tests.
+
+def printGc(tag=None):
     
-    """Clear all ivars of o, a member of some class."""
+    if not g.app.trace_gc: return None
     
-    o.__dict__.clear()
-#@-node:ekr.20031218072017.1589:clearAllIvars
-#@+node:ekr.20060205043324:Called from commands
-#@+node:ekr.20031218072017.1590:collectGarbage
-def collectGarbage():
-
-    try:
-        if not g.app.trace_gc_inited and g.app.trace_gc_verbose:
-            g.enable_gc_debug()
-
-        if g.app.trace_gc_verbose or g.app.trace_gc_calls:
-            g.es_print('Collecting garbage')
-
-        gc.collect()
-    except:
-        pass
+    tag = tag or g._callerName(n=2)
         
-    # Only init once, regardless of what happens.
-    g.app.trace_gc_inited = True
-#@-node:ekr.20031218072017.1590:collectGarbage
-#@+node:ekr.20060205043324.1:printGcSummary
-def printGcSummary (message='',trace=False):
+    printGcObjects(tag=tag)
+    printGcRefs(tag=tag)
     
-    if not message:
-        message = g._callerName(n=2)
+    if g.app.trace_gc_verbose:
+        printGcVerbose(tag=tag)
+#@+node:ekr.20031218072017.1593:printGcRefs
+def printGcRefs (tag=''):
 
-    g.enable_gc_debug()
+    refs = gc.get_referrers(app.windowList[0])
+    print('-' * 30,tag)
 
-    try:
-        n = len(gc.garbage)
-        n2 = len(gc.get_objects())
-        s = 'garbage: %d, objects: %d, %s' % (n,n2,message)
-        if trace:
-            print s
-        else:
-            g.es_print(s)
-    except:
-        traceback.print_exc()
-#@-node:ekr.20060205043324.1:printGcSummary
+    if g.app.trace_gc_verbose:
+        print("refs of", app.windowList[0])
+        for ref in refs:
+            print(type(ref))
+    else:
+        print("%d referers" % len(refs))
+#@-node:ekr.20031218072017.1593:printGcRefs
+#@-node:ekr.20031218072017.1592:printGc
 #@+node:ekr.20060202161935:printGcAll
-def printGcAll (message=''):
+def printGcAll (tag=''):
 
     # Suppress warning about keywords arg not supported in sort.
     
-    if not message:
-        message = g._callerName(n=2)
-    
+    tag = tag or g._callerName(n=2)
     d = {} ; objects = gc.get_objects()
-    g.es_print('-' * 30)
-    g.es_print('%d objects' % len(objects),message)
+    print('-' * 30)
+    print('%s: %d objects' % (tag,len(objects)))
 
     for obj in objects:
         t = type(obj)
         if t == 'instance':
             try: t = obj.__class__
             except: pass
+        # if type(obj) == type(()):
+            # print id(obj),repr(obj)
         d[t] = d.get(t,0) + 1
         
     if 1: # Sort by n
@@ -2253,28 +2261,29 @@ def printGcAll (message=''):
             items.sort(key=lambda x: x[1],reverse=True)
         except: pass
         for z in items:
-            g.es_print('%40s %7d' % (z[0],z[1]))
+            print '%40s %7d' % (z[0],z[1])
     else: # Sort by type
         keys = d.keys() ; keys.sort()
         for t in keys:
-            g.es_print('%40s %7d' % (t,d.get(t)))
+            print '%40s %7d' % (t,d.get(t))
 #@-node:ekr.20060202161935:printGcAll
-#@+node:ekr.20060127164729.1:printGcObjects
-def printGcObjects(message=''):
+#@+node:ekr.20060127164729.1:printGcObjects   (printNewObjects=pno)
+def printGcObjects(tag=''):
     
-    if not message:
-        message = g._callerName(n=2)
-
+    '''Print newly allocated objects.'''
+    
+    tag = tag or g._callerName(n=2)
     global lastObjectCount
 
     try:
         n = len(gc.garbage)
         n2 = len(gc.get_objects())
         delta = n2-lastObjectCount
+        if delta == 0: return
         lastObjectCount = n2
 
-        g.es_print('-' * 30)
-        g.es_print("garbage: %d, objects: %d, delta: %d %s" % (n,n2,delta,message))
+        print '-' * 30
+        print "%s: garbage: %d, objects: %d, delta: %d" % (tag,n,n2,delta)
         
         #@        << print number of each type of object >>
         #@+node:ekr.20040703054646:<< print number of each type of object >>
@@ -2287,6 +2296,8 @@ def printGcObjects(message=''):
             if t == 'instance':
                 try: t = obj.__class__
                 except: pass
+            # if type(obj) == type(()):
+                # print '*** tuple ***', repr(obj)
             typesDict[t] = n + 1
             
         # Create the union of all the keys.
@@ -2301,8 +2312,8 @@ def printGcObjects(message=''):
             n2 = typesDict.get(key,0)
             delta2 = n2-n1
             if delta2 != 0:
-                g.es_print("%+6d =%7d %s" % (delta2,n2,key))
-            
+                print("%+6d =%7d %s" % (delta2,n2,key))
+        
         lastTypesDict = typesDict
         typesDict = {}
         #@-node:ekr.20040703054646:<< print number of each type of object >>
@@ -2317,40 +2328,61 @@ def printGcObjects(message=''):
             
             funcDict = {}
             
+            # Don't print more than 50 objects.
+            n = 0
+            for obj in gc.get_objects():
+                if type(obj) == types.FunctionType:
+                    n += 1
+            
             for obj in gc.get_objects():
                 if type(obj) == types.FunctionType:
                     key = repr(obj) # Don't create a pointer to the object!
                     funcDict[key]=None 
-                    if not lastFunctionsDict.has_key(key):
-                        g.es_print(obj)
+                    if n < 50 and not lastFunctionsDict.has_key(key):
+                        print(obj)
                         args, varargs, varkw,defaults  = inspect.getargspec(obj)
-                        g.es_print("args", args)
-                        if varargs: g.es_print("varargs",varargs)
-                        if varkw: g.es_print("varkw",varkw)
+                        print("args", args)
+                        if varargs: print("varargs",varargs)
+                        if varkw: print("varkw",varkw)
                         if defaults:
-                            g.es_print("defaults...")
-                            for s in defaults: g.es_print(s)
+                            print("defaults...")
+                            for s in defaults: print(s)
             
             lastFunctionsDict = funcDict
             funcDict = {}
             #@-node:ekr.20040703065638:<< print added functions >>
             #@nl
 
+    except Exception:
+        traceback.print_exc()
+        
+printNewObjects = pno = printGcObjects
+
+#@-node:ekr.20060127164729.1:printGcObjects   (printNewObjects=pno)
+#@+node:ekr.20060205043324.1:printGcSummary
+def printGcSummary (tag=''):
+    
+    tag = tag or g._callerName(n=2)
+
+    g.enable_gc_debug()
+
+    try:
+        n = len(gc.garbage)
+        n2 = len(gc.get_objects())
+        s = '%s: printGCSummary: garbage: %d, objects: %d' % (tag,n,n2)
+        print s
     except:
         traceback.print_exc()
-#@-node:ekr.20060127164729.1:printGcObjects
+#@-node:ekr.20060205043324.1:printGcSummary
 #@+node:ekr.20060127165509:printGcVerbose
 # WARNING: the id trick is not proper because newly allocated objects
 #          can have the same address as old objets.
 
-def printGcVerbose(message=''):
+def printGcVerbose(tag=''):
     
-    if not message:
-        message = g._callerName(n=2)
-
+    tag = tag or g._callerName(n=2)
     global lastObjectsDict
     objects = gc.get_objects()
-    
     newObjects = [o for o in objects if not lastObjectsDict.has_key(id(o))]
     
     lastObjectsDict = {}
@@ -2364,44 +2396,16 @@ def printGcVerbose(message=''):
         o = newObjects[i]
         if type(o) == type({}): dicts += 1
         elif type(o) in (type(()),type([])):
+            #print id(o),repr(o)
             seqs += 1
-        else:
-            g.es_print(o)
+        #else:
+        #    print(o)
         i += 1
-    g.es_print('-' * 40)
-    g.es_print('dicts: %d, sequences: %d' % (dicts,seqs))
-    g.es_print("%25s: %d new, %d total objects" % (message,len(newObjects),len(objects)))
+    print('=' * 40)
+    print('dicts: %d, sequences: %d' % (dicts,seqs))
+    print("%s: %d new, %d total objects" % (tag,len(newObjects),len(objects)))
+    print('-' * 40)
 #@-node:ekr.20060127165509:printGcVerbose
-#@-node:ekr.20060205043324:Called from commands
-#@+node:ekr.20060205043324.2:Called from unit tests
-#@+node:ekr.20031218072017.1592:printGc
-def printGc(message=None):
-    
-    if not g.app.trace_gc: return None
-    
-    if not message:
-        message = g._callerName(n=2)
-        
-    printGcObjects(message)
-    printGcRefs(message)
-    
-    if g.app.trace_gc_verbose:
-        printGcVerbose(message)
-#@+node:ekr.20031218072017.1593:printGcRefs
-def printGcRefs (message=''):
-
-    refs = gc.get_referrers(app.windowList[0])
-    g.es_print('-' * 30,message)
-
-    if g.app.trace_gc_verbose:
-        g.es_print("refs of", app.windowList[0])
-        for ref in refs:
-            g.es_print(type(ref))
-    else:
-        g.es_print("%d referers" % len(refs))
-#@-node:ekr.20031218072017.1593:printGcRefs
-#@-node:ekr.20031218072017.1592:printGc
-#@-node:ekr.20060205043324.2:Called from unit tests
 #@-others
 #@-node:ekr.20031218072017.1588:Garbage Collection
 #@+node:ekr.20031218072017.3139:Hooks & plugins (leoGlobals)
