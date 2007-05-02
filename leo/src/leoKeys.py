@@ -1569,12 +1569,16 @@ class keyHandlerClass:
     
         self.altX_prompt = 'full-command: '
         
+        # These must be defined here to avoid memory leaks.
         self.enable_autocompleter           = c.config.getBool('enable_autocompleter_initially')
         self.enable_calltips                = c.config.getBool('enable_calltips_initially')
         self.ignore_caps_lock               = c.config.getBool('ignore_caps_lock')
         self.ignore_unbound_non_ascii_keys  = c.config.getBool('ignore_unbound_non_ascii_keys')
         self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
         self.trace_bind_key_exceptions      = c.config.getBool('trace_bind_key_exceptions')
+        self.traceMasterCommand             = c.config.getBool('trace_masterCommand')
+        self.trace_masterKeyHandler         = c.config.getBool('trace_masterKeyHandler')
+        self.trace_masterKeyHandlerGC       = c.config.getBool('trace_masterKeyHandlerGC')
         self.trace_key_event                = c.config.getBool('trace_key_event')
         self.trace_minibuffer               = c.config.getBool('trace_minibuffer')
         self.warn_about_redefined_shortcuts = c.config.getBool('warn_about_redefined_shortcuts')
@@ -2171,11 +2175,13 @@ class keyHandlerClass:
     
         '''This is the central dispatching method.
         All commands and keystrokes pass through here.'''
-    
+        
         k = self ; c = k.c ; gui = g.app.gui
+        trace = False or k.traceMasterCommand
+        traceGC = False
+        if traceGC: g.printNewObjects('masterCom 1')
+    
         c.setLog()
-        trace = False or c.config.getBool('trace_masterCommand')
-      
         c.startRedrawCount = c.frame.tree.redrawCount
         k.stroke = stroke # Set this global for general use.
         keysym = gui.eventKeysym(event)
@@ -2213,6 +2219,8 @@ class keyHandlerClass:
             if stroke or len(ch) > 0:
                 if len(keyHandlerClass.lossage) > 99:
                     keyHandlerClass.lossage.pop()
+            
+                # This looks like a memory leak, but isn't.
                 keyHandlerClass.lossage.insert(0,(ch,stroke),)
             #@-node:ekr.20061031131434.107:<< add character to history >>
             #@nl
@@ -2264,13 +2272,16 @@ class keyHandlerClass:
             if c.exists:
                 k.endCommand(event,commandName)
                 c.frame.updateStatusLine()
+            if traceGC: g.printNewObjects('masterCom 2')
             return 'break'
         elif k.inState():
             return 'break' #Ignore unbound keys in a state.
         else:
+            if traceGC: g.printNewObjects('masterCom 3')
             val = k.handleDefaultChar(event,stroke)
             if c.exists:
                 c.frame.updateStatusLine()
+            if traceGC: g.printNewObjects('masterCom 4')
             return val
     #@nonl
     #@+node:ekr.20061031131434.108:callStateFunction
@@ -2666,12 +2677,16 @@ class keyHandlerClass:
         k = self ; c = k.c ; gui = g.app.gui
     
         keysym = gui.eventKeysym(event)
+        # g.trace('state',k.state.kind,'event',repr(event),g.callers())
         if keysym == 'Return' and k.mb_history:
+        # if k.mb_history:
             last = k.mb_history [0]
             k.resetLabel()
+            k.clearState() # Bug fix.
             c.commandsDict [last](event)
             return 'break'
         else:
+            g.trace('oops')
             return k.keyboardQuit(event)
     #@-node:ekr.20061031131434.122:repeatComplexCommand & helper
     #@+node:ekr.20061031131434.123:set-xxx-State
@@ -2944,7 +2959,10 @@ class keyHandlerClass:
         #@-node:ekr.20061031131434.147:<< define vars >>
         #@nl
         if keysym in special_keys: return None
-        trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+        
+        trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+        traceGC = False or self.trace_masterKeyHandlerGC and not g.app.unitTesting
+        if traceGC: g.printNewObjects('masterKey 1')
         if trace:
             g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
                 'state.kind:',k.state.kind,g.callers(4))
@@ -3009,9 +3027,11 @@ class keyHandlerClass:
             #@-node:ekr.20061031131434.149:<< handle mode bindings >>
             #@nl
             
+        if traceGC: g.printNewObjects('masterKey 2')
+            
         #@    << handle per-pane bindings >>
         #@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
-        key_states = ('command','insert','overwrite')
+        keyStatesTuple = ('command','insert','overwrite')
         isPlain =  k.isPlainKey(stroke)
         
         # g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
@@ -3032,7 +3052,7 @@ class keyHandlerClass:
             ('text',None), ('all',None),
         ):
             if (
-                key in key_states and isPlain and k.unboundKeyAction == key or
+                key in keyStatesTuple and isPlain and k.unboundKeyAction == key or
                 name and w_name.startswith(name) or
                 key in ('text','all') and g.app.gui.isTextWidget(w) or
                 key in ('button','all')
@@ -3043,14 +3063,20 @@ class keyHandlerClass:
                     b = d.get(stroke)
                     if b:
                         if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
+                        if traceGC: g.printNewObjects('masterKey 3')
                         return k.masterCommand(event,b.func,b.stroke,b.commandName)
         #@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
         #@nl
         #@    << handle keys without bindings >>
         #@+node:ekr.20061031131434.151:<< handle keys without bindings >>
-        if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in ('insert','overwrite'):
+        if traceGC: g.printNewObjects('masterKey 5')
+        
+        modesTuple = ('insert','overwrite')
+        
+        if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in modesTuple:
             # insert/overwrite normal character.  <Return> is *not* a normal character.
             if trace: g.trace('plain key in insert mode',repr(stroke))
+            if traceGC: g.printNewObjects('masterKey 4')
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         
         elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
@@ -3064,6 +3090,7 @@ class keyHandlerClass:
         
         else:
             if trace: g.trace(repr(stroke),'no func')
+            if traceGC: g.printNewObjects('masterKey 6')
             return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
         #@-node:ekr.20061031131434.151:<< handle keys without bindings >>
         #@nl
@@ -3071,7 +3098,7 @@ class keyHandlerClass:
     def handleMiniBindings (self,event,state,stroke):
         
         k = self ; c = k.c
-        trace = False or c.config.getBool('trace_masterKeyHandler') and not g.app.unitTesting
+        trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
         
         if not state.startswith('auto-'):
             d = k.masterBindingsDict.get('mini')
