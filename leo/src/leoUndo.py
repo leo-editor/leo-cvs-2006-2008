@@ -107,6 +107,7 @@ class baseUndoer:
         
         # New in 4.2...
         self.optionalIvars = []
+    #@nonl
     #@+node:ekr.20031218072017.3607:clearIvars
     def clearIvars (self):
         
