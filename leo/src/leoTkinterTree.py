@@ -181,22 +181,40 @@ class leoTkinterTree (leoFrame.leoTree):
         
         # Init the base class.
         leoFrame.leoTree.__init__(self,frame)
-        
-        trace = c.config.getBool('trace_chapters') and not g.app.unitTesting
-        
-        # Configuration and debugging settings.
-        self.expanded_click_area    = c.config.getBool('expanded_click_area')
-        self.gc_before_redraw       = c.config.getBool('gc_before_redraw')
-        self.idle_redraw            = c.config.getBool('idle_redraw')
-        self.stayInTree             = c.config.getBool('stayInTreeAfterSelect')
-        self.use_chapters           = c.config.getBool('use_chapters')
     
+        # Configuration and debugging settings.
+        # These must be defined here to eliminate memory leaks.
+        self.allow_clone_drags          = c.config.getBool('allow_clone_drags')
+        self.center_selected_tree_node  = c.config.getBool('center_selected_tree_node')
+        self.enable_drag_messages       = c.config.getBool("enable_drag_messages")
+        self.expanded_click_area        = c.config.getBool('expanded_click_area')
+        self.gc_before_redraw           = c.config.getBool('gc_before_redraw')
+        
+        self.headline_text_editing_foreground_color = c.config.getColor('headline_text_editing_foreground_color')
+        self.headline_text_editing_background_color = c.config.getColor('headline_text_editing_background_color')
+        self.headline_text_editing_selection_foreground_color = c.config.getColor('headline_text_editing_selection_foreground_color')
+        self.headline_text_editing_selection_background_color = c.config.getColor('headline_text_editing_selection_background_color')
+        self.headline_text_selected_foreground_color = c.config.getColor("headline_text_selected_foreground_color")
+        self.headline_text_selected_background_color = c.config.getColor("headline_text_selected_background_color")
+        self.headline_text_editing_selection_foreground_color = c.config.getColor("headline_text_editing_selection_foreground_color")
+        self.headline_text_editing_selection_background_color = c.config.getColor("headline_text_editing_selection_background_color")
+        self.headline_text_unselected_foreground_color = c.config.getColor('headline_text_unselected_foreground_color')
+        self.headline_text_unselected_background_color = c.config.getColor('headline_text_unselected_background_color')
+       
+        self.idle_redraw                            = c.config.getBool('idle_redraw')
+        self.initialClickExpandsOrContractsNode     = c.config.getBool('initialClickExpandsOrContractsNode')
+        self.look_for_control_drag_on_mouse_down    = c.config.getBool('look_for_control_drag_on_mouse_down')
+        self.select_all_text_when_editing_headlines = c.config.getBool('select_all_text_when_editing_headlines')
+    
+        self.stayInTree             = c.config.getBool('stayInTreeAfterSelect')
         self.trace                  = c.config.getBool('trace_tree')
         self.trace_alloc            = c.config.getBool('trace_tree_alloc')
+        self.trace_chapters         = c.config.getBool('trace_chapters')
         self.trace_edit             = c.config.getBool('trace_tree_edit')
         self.trace_redraw_now       = c.config.getBool('trace_redraw_now')
         self.trace_select           = c.config.getBool('trace_select')
         self.trace_stats            = c.config.getBool('show_tree_stats')
+        self.use_chapters           = c.config.getBool('use_chapters')
      
         # Objects associated with this tree.
         self.canvas = canvas
@@ -255,7 +273,7 @@ class leoTkinterTree (leoFrame.leoTree):
             self.injectCallbacks()
         #@-node:ekr.20040803072955.19:<< inject callbacks into the position class >>
         #@nl
-        
+    
         self.dragging = False
         self.generation = 0
         self.prevPositions = 0
@@ -298,10 +316,10 @@ class leoTkinterTree (leoFrame.leoTree):
     def setBindings (self):
         
         '''Create master bindings for all headlines.'''
+            
+        tree = self ; k = self.c.k ; canvas = self.canvas
         
-        tree = self ; k = self.c.k
-        
-        # g.trace('self',self,'canvas',self.canvas)
+        # g.trace('self',self,'canvas',canvas)
         
         #@    << make bindings for a common binding widget >>
         #@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
@@ -326,7 +344,9 @@ class leoTkinterTree (leoFrame.leoTree):
         #@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
         #@nl
         
-        self.setCanvasBindings(self.canvas)
+        tree.setCanvasBindings(canvas)
+        
+        k.completeAllBindingsForWidget(canvas)
     
         
     #@nonl
@@ -555,12 +575,6 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.12:recycleWidgets
     def recycleWidgets (self):
         
-        if self.use_chapters:
-            # Widgets are allocated in a specific canvas,
-            # so we must clear all the free lists when using multiple canvases.
-            self.destroyWidgets()
-            return
-        
         canvas = self.canvas
         
         for theId in self.visibleBoxes:
@@ -695,19 +709,6 @@ class leoTkinterTree (leoFrame.leoTree):
             g.es("exception setting outline line height")
             g.es_exception()
     #@-node:ekr.20040803072955.29:setLineHeight
-    #@+node:ekr.20040803072955.30:tkTree.setColorFromConfig
-    # def setColorFromConfig (self):
-        
-        # c = self.c
-    
-        # bg = c.config.getColor("outline_pane_background_color") or 'white'
-    
-        # try:
-            # self.canvas.configure(bg=bg)
-        # except:
-            # g.es("exception setting outline pane background color")
-            # g.es_exception()
-    #@-node:ekr.20040803072955.30:tkTree.setColorFromConfig
     #@-node:ekr.20040803072955.26:Config & Measuring...
     #@+node:ekr.20040803072955.31:Debugging...
     #@+node:ekr.20040803072955.33:textAddr
@@ -778,6 +779,8 @@ class leoTkinterTree (leoFrame.leoTree):
             return
             
         c = self.c ;  self.redrawCount += 1
+        
+        # g.trace(g.callers())
         
         if not g.app.unitTesting:
             if self.gc_before_redraw:
@@ -1269,7 +1272,7 @@ class leoTkinterTree (leoFrame.leoTree):
             return
         try:
             h1 = self.yoffset(p)
-            if c.config.getBool('center_selected_tree_node'): # New in Leo 4.4.3.
+            if self.center_selected_tree_node: # New in Leo 4.4.3.
                 #@            << compute frac0 >>
                 #@+node:ekr.20061030091926:<< compute frac0 >>
                 # frac0 attempt to put the 
@@ -1540,7 +1543,7 @@ class leoTkinterTree (leoFrame.leoTree):
             if p and not g.doHook("boxclick1",c=c,p=p,v=p,event=event):
                 c.endEditing()
                 self.active = True
-                if p == p1 or c.config.getBool('initialClickExpandsOrContractsNode'):
+                if p == p1 or self.initialClickExpandsOrContractsNode:
                     if p.isExpanded(): p.contract()
                     else:              p.expand()
                 self.select(p)
@@ -1581,8 +1584,8 @@ class leoTkinterTree (leoFrame.leoTree):
             childFlag = vdrag and vdrag.hasChildren() and vdrag.isExpanded()
             #@-node:ekr.20040803072955.104:<< set vdrag, childFlag >>
             #@nl
-            if c.config.getBool("allow_clone_drags"):
-                if not c.config.getBool("look_for_control_drag_on_mouse_down"):
+            if self.allow_clone_drags:
+                if not self.look_for_control_drag_on_mouse_down:
                     self.controlDrag = c.frame.controlKeyIsDown
         
             if vdrag and vdrag.v.t != p.v.t: # Disallow drag to joined node.
@@ -1642,10 +1645,10 @@ class leoTkinterTree (leoFrame.leoTree):
         # Only do this once: greatly speeds drags.
         self.savedNumberOfVisibleNodes = self.numberOfVisibleNodes()
         # g.trace('self.controlDrag',self.controlDrag)
-        if c.config.getBool("allow_clone_drags"):
+        if self.allow_clone_drags:
             self.controlDrag = c.frame.controlKeyIsDown
-            if c.config.getBool("look_for_control_drag_on_mouse_down"):
-                if c.config.getBool("enable_drag_messages"):
+            if self.look_for_control_drag_on_mouse_down:
+                if self.enable_drag_messages:
                     if self.controlDrag:
                         g.es("dragged node will be cloned")
                     else:
@@ -2296,7 +2299,7 @@ class leoTkinterTree (leoFrame.leoTree):
         if p and w:
             c.widgetWantsFocusNow(w)
             self.setEditHeadlineColors(p)
-            selectAll = selectAll or c.config.getBool('select_all_text_when_editing_headlines')
+            selectAll = selectAll or self.select_all_text_when_editing_headlines
             if selectAll:
                 w.setSelectionRange(0,'end',insert='end')
             else:
@@ -2334,11 +2337,10 @@ class leoTkinterTree (leoFrame.leoTree):
                 g.trace("%10s %d %s" % ("disabled",id(w),p.headString()))
                 # import traceback ; traceback.print_stack(limit=6)
     
-        fg = c.config.getColor("headline_text_selected_foreground_color") or 'black'
-        bg = c.config.getColor("headline_text_selected_background_color") or 'grey80'
-        
-        selfg = c.config.getColor("headline_text_editing_selection_foreground_color")
-        selbg = c.config.getColor("headline_text_editing_selection_background_color")
+        fg = self.headline_text_selected_foreground_color or 'black'
+        bg = self.headline_text_selected_background_color or 'grey80'
+        selfg = self.headline_text_editing_selection_foreground_color
+        selbg = self.headline_text_editing_selection_background_color
     
         try:
             w.configure(state="disabled",highlightthickness=0,fg=fg,bg=bg,
@@ -2354,11 +2356,11 @@ class leoTkinterTree (leoFrame.leoTree):
         if self.trace and self.verbose:
             if not self.redrawing:
                 print "%10s %d %s" % ("edit",id(2),p.headString())
-        
-        fg    = c.config.getColor("headline_text_editing_foreground_color") or 'black'
-        bg    = c.config.getColor("headline_text_editing_background_color") or 'white'
-        selfg = c.config.getColor("headline_text_editing_selection_foreground_color") or 'white'
-        selbg = c.config.getColor("headline_text_editing_selection_background_color") or 'black'
+                  
+        fg    = self.headline_text_editing_foreground_color or 'black'
+        bg    = self.headline_text_editing_background_color or 'white'
+        selfg = self.headline_text_editing_selection_foreground_color or 'white'
+        selbg = self.headline_text_editing_selection_background_color or 'black'
         
         try: # Use system defaults for selection foreground/background
             w.configure(state="normal",highlightthickness=1,
@@ -2376,8 +2378,8 @@ class leoTkinterTree (leoFrame.leoTree):
                 print "%10s %d %s" % ("unselect",id(w),p.headString())
                 # import traceback ; traceback.print_stack(limit=6)
         
-        fg = c.config.getColor("headline_text_unselected_foreground_color") or 'black'
-        bg = c.config.getColor("headline_text_unselected_background_color") or 'white'
+        fg = self.headline_text_unselected_foreground_color or 'black'
+        bg = self.headline_text_unselected_background_color or 'white'
         
         try:
             w.configure(state="disabled",highlightthickness=0,fg=fg,bg=bg,
