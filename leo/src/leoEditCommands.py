@@ -1162,13 +1162,18 @@ class debugCommandsClass (baseEditCommandsClass):
         
         g.app.trace_gc = False
         
+        
     def enableGcTrace (self,event=None):
         
         '''Disable tracing of Python's Garbage Collector.'''
         
         g.app.trace_gc = True
-        g.app.trace_gc_inited = False
         g.enable_gc_debug()
+    
+        if g.app.trace_gc_verbose:
+            g.es('enabled verbose gc stats',color='blue')
+        else:
+            g.es('enabled brief gc stats',color='blue')
     #@-node:ekr.20060127163325.1:enable/disableGcTrace
     #@+node:ekr.20060202154734:freeTreeWidgets
     def freeTreeWidgets (self,event=None):
@@ -1199,7 +1204,6 @@ class debugCommandsClass (baseEditCommandsClass):
         '''Print a brief summary of all Python objects.'''
     
         g.printGcSummary()
-    
     #@-node:ekr.20060205043324.3:printGcSummary
     #@+node:ekr.20060202133313:printStats
     def printStats (self,event=None):
