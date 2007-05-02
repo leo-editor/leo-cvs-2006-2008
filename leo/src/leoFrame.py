@@ -941,13 +941,13 @@ class leoBody:
             if (
                 hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
                 hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
-                g.trace('***',id(w),'match chapter and p',p.headString())
+                # g.trace('***',id(w),'match chapter and p',p.headString())
                 return w
                 
         # Next, try to match just the chapter.
         for w in values:
             if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
-                g.trace('***',id(w),'match only chapter',p.headString())
+                # g.trace('***',id(w),'match only chapter',p.headString())
                 return w
         
         # As a last resort, return the present editor widget.
@@ -2240,7 +2240,6 @@ class leoTree:
     
     # Headlines.
     def editLabel(self,v,selectAll=False):          self.oops()
-    ### def endEditLabel(self):                         self.oops()
     def setEditLabelState(self,v,selectAll=False):  self.oops()
     #@-node:ekr.20031218072017.3706: Must be defined in subclasses
     #@+node:ekr.20061109165848:Must be defined in base class
