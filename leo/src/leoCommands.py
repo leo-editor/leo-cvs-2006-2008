@@ -825,7 +825,7 @@ class baseCommands:
                 c.updateRecentFiles(c.mFileName)
                 
         if oldChapter:
-            cc.selectChapter(oldChapter)
+            cc.restoreOldChapter(oldChapter)
     #@-node:ekr.20031218072017.2834:save
     #@+node:ekr.20031218072017.2835:saveAs
     def saveAs (self,event=None):
@@ -861,7 +861,7 @@ class baseCommands:
             c.updateRecentFiles(c.mFileName)
             
         if oldChapter:
-            cc.selectChapter(oldChapter)
+            cc.restoreOldChapter(oldChapter)
     #@-node:ekr.20031218072017.2835:saveAs
     #@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
     def saveAsUnzipped (self,event=None):
@@ -916,7 +916,7 @@ class baseCommands:
             c.updateRecentFiles(fileName)
             
         if oldChapter:
-            cc.selectChapter(oldChapter)
+            cc.restoreOldChapter(oldChapter)
     #@-node:ekr.20031218072017.2836:saveTo
     #@+node:ekr.20031218072017.2837:revert
     def revert (self,event=None):
