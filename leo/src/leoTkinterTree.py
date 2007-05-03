@@ -400,6 +400,8 @@ class leoTkinterTree (leoFrame.leoTree):
     def newBox (self,p,x,y,image):
         
         canvas = self.canvas ; tag = "plusBox"
+        
+        # if self.trace_gc: g.printNewObjects(tag='newBox 1')
     
         if self.freeBoxes:
             theId = self.freeBoxes.pop(0)
@@ -417,6 +419,8 @@ class leoTkinterTree (leoFrame.leoTree):
         # assert(not self.ids.get(theId))
         # assert(p)
         self.ids[theId] = p
+        
+        # if self.trace_gc: g.printNewObjects(tag='newBox 2')
     
         return theId
     #@-node:ekr.20040803072955.7:newBox
@@ -425,6 +429,8 @@ class leoTkinterTree (leoFrame.leoTree):
         
         canvas = self.canvas ; defaultColor = ""
         tag = g.choose(p.hasChildren(),'clickBox','selectBox')
+        
+        # if self.trace_gc: g.printNewObjects(tag='newClickBox 1')
     
         if self.freeClickBoxes:
             theId = self.freeClickBoxes.pop(0)
@@ -444,12 +450,16 @@ class leoTkinterTree (leoFrame.leoTree):
         # assert(not self.ids.get(theId))
         self.ids[theId] = p
         
+        # if self.trace_gc: g.printNewObjects(tag='newClickBox 2')
+        
         return theId
     #@-node:ekr.20040803072955.8:newClickBox
     #@+node:ekr.20040803072955.9:newIcon
     def newIcon (self,p,x,y,image):
         
         canvas = self.canvas ; tag = "iconBox"
+        
+        # if self.trace_gc: g.printNewObjects(tag='newIcon 1')
     
         if self.freeIcons:
             theId = self.freeIcons.pop(0)
@@ -468,6 +478,8 @@ class leoTkinterTree (leoFrame.leoTree):
         data = p,self.generation
         self.iconIds[theId] = data # Remember which vnode belongs to the icon.
         self.ids[theId] = p
+        
+        # if self.trace_gc: g.printNewObjects(tag='newIcon 2')
     
         return theId
     #@-node:ekr.20040803072955.9:newIcon
@@ -475,6 +487,8 @@ class leoTkinterTree (leoFrame.leoTree):
     def newLine (self,p,x1,y1,x2,y2):
         
         canvas = self.canvas
+        
+        # if self.trace_gc: g.printNewObjects(tag='newLine 1')
         
         if self.freeLines:
             theId = self.freeLines.pop(0)
@@ -486,6 +500,8 @@ class leoTkinterTree (leoFrame.leoTree):
         # assert(not self.ids.get(theId))
         self.ids[theId] = p
         self.visibleLines.append(theId)
+        
+        # if self.trace_gc: g.printNewObjects(tag='newLine 2')
     
         return theId
     #@-node:ekr.20040803072955.10:newLine
@@ -494,6 +510,8 @@ class leoTkinterTree (leoFrame.leoTree):
         
         canvas = self.canvas ; tag = "textBox"
         c = self.c ;  k = c.k
+        
+        # if self.trace_gc: g.printNewObjects(tag='newText 1')
     
         found = len(self.freeText) > 0
         if found:
@@ -552,6 +570,8 @@ class leoTkinterTree (leoFrame.leoTree):
         # Keys are p.key().  Entries are (w,theId)
         self.visibleText [p.key()] = w,theId
         
+        # if self.trace_gc: g.printNewObjects(tag='newText 2')
+        
         return w
     #@+node:ekr.20040803072955.32:tree.setHeadlineText
     def setHeadlineText (self,theId,w,s):
@@ -577,7 +597,7 @@ class leoTkinterTree (leoFrame.leoTree):
     def recycleWidgets (self):
         
         canvas = self.canvas
-        
+    
         for theId in self.visibleBoxes:
             # assert(theId not in self.freeBoxes)
             self.freeBoxes.append(theId)
@@ -874,9 +894,11 @@ class leoTkinterTree (leoFrame.leoTree):
         theId = g.doHook("draw-outline-box",tree=tree,c=c,p=p,v=p,x=x,y=y)
             
         if theId is None:
+            # if self.trace_gc: g.printNewObjects(tag='box 1')
             iconname = g.choose(p.isExpanded(),"minusnode.gif", "plusnode.gif")
             image = self.getIconImage(iconname)
             theId = self.newBox(p,x,y+self.lineyoffset,image)
+            # if self.trace_gc: g.printNewObjects(tag='box 2')
             return theId
         else:
             return theId
@@ -888,12 +910,16 @@ class leoTkinterTree (leoFrame.leoTree):
         
         # Define a slighly larger rect to catch clicks.
         if self.expanded_click_area:
+            # if self.trace_gc: g.printNewObjects(tag='clickbox 1')
             self.newClickBox(p,0,y,1000,y+h-2)
+            # if self.trace_gc: g.printNewObjects(tag='clickbox 2')
     #@-node:ekr.20040803072955.37:drawClickBox
     #@+node:ekr.20040803072955.39:drawIcon
     def drawIcon(self,p,x=None,y=None):
         
         """Draws icon for position p at x,y, or at p.v.iconx,p.v.icony if x,y = None,None"""
+        
+        # if self.trace_gc: g.printNewObjects(tag='icon 1')
     
         c = self.c ; v = p.v
         #@    << compute x,y and iconVal >>
@@ -919,18 +945,26 @@ class leoTkinterTree (leoFrame.leoTree):
         v.iconVal = val
     
         if not g.doHook("draw-outline-icon",tree=self,c=c,p=p,v=p,x=x,y=y):
+            
+            # if self.trace_gc: g.printNewObjects(tag='icon 2')
     
             # Get the image.
             imagename = "box%02d.GIF" % val
             image = self.getIconImage(imagename)
             self.newIcon(p,x,y+self.lineyoffset,image)
             
+            # if self.trace_gc: g.printNewObjects(tag='icon 3')
+            
         return 0,self.icon_width # dummy icon height,width
     #@-node:ekr.20040803072955.39:drawIcon
     #@+node:ekr.20040803072955.41:drawLine
     def drawLine (self,p,x1,y1,x2,y2):
         
+        # if self.trace_gc: g.printNewObjects(tag='line 1')
+        
         theId = self.newLine(p,x1,y1,x2,y2)
+        
+        # if self.trace_gc: g.printNewObjects(tag='line 2')
         
         return theId
     #@-node:ekr.20040803072955.41:drawLine
@@ -1004,6 +1038,8 @@ class leoTkinterTree (leoFrame.leoTree):
         """draw text for position p at nominal coordinates x,y."""
         
         assert(p)
+        
+        # if self.trace_gc: g.printNewObjects(tag='text 1')
     
         c = self.c
         x += self.text_indent
@@ -1014,6 +1050,8 @@ class leoTkinterTree (leoFrame.leoTree):
         self.newText(p,x,y+self.lineyoffset)
        
         self.configureTextState(p)
+        
+        # if self.trace_gc: g.printNewObjects(tag='text 2')
     
         return self.line_height
     #@-node:ekr.20040803072955.44:drawText
@@ -1049,6 +1087,8 @@ class leoTkinterTree (leoFrame.leoTree):
     
         if where != theDict.get("where","beforeHeadline"):
             return h,w
+            
+        # if self.trace_gc: g.printNewObjects(tag='userIcon 1')
     
         # g.trace(where,x,y,theDict)
         
@@ -1121,6 +1161,8 @@ class leoTkinterTree (leoFrame.leoTree):
         # Allow user to specify height, width explicitly.
         h = theDict.get("height",h)
         w = theDict.get("width",w)
+        
+        # if self.trace_gc: g.printNewObjects(tag='userIcon 2')
     
         return h,w
     #@-node:ekr.20040803072955.47:drawUserIcon
@@ -1186,8 +1228,11 @@ class leoTkinterTree (leoFrame.leoTree):
     
         while p: # Do not use iterator.
             # g.trace(self.use_chapters,p.level(),p.headString())
-            if False: #### self.use_chapters and p.level() == 0 and p.headString().startswith('@chapters'):
-                pass
+            if (
+                self.redrawCount == 1 and self.use_chapters and
+                p.level() == 0 and p.headString().startswith('@chapters')
+            ):
+                h1 = h # ; g.trace('skipping @chapters in initial draw')
             else:
                 # N.B. This is the ONLY copy of p that needs to be made.
                 # No other drawing routine calls any p.moveTo method.
@@ -1195,6 +1240,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 h,indent = self.drawNode(const_p,x,y)
                 if h1 is None: h1 = h
                 y += h ; ylast = y
+                # if self.trace_gc: g.printNewObjects(tag='tree 3')
                 if p.isExpanded() and p.hasFirstChild():
                     # Must make an additional copy here by calling firstChild.
                     y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
