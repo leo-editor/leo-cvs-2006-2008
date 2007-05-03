@@ -806,14 +806,10 @@ def makeTrees (self):
     # at present, called by g.openWithFileName and c.new.
     
     cc = self ; c = cc.c ; tt = cc.tt
-    
-    g.trace()
-    
+
     # Create the @chapters node if needed, and set cc.chaptersNode.
     if not cc.chaptersNode and not cc.findChaptersNode():
         cc.createChaptersNode()
-    
-    assert(cc.chaptersNode)
         
     if not cc.findChapterNode('trash'):
         cc.createChapterNode('trash')
