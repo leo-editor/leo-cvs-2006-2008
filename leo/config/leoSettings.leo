@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="840" width="937"/>
+	<global_window_position top="10" left="238" height="820" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -247,6 +247,7 @@
 <v t="ekr.20060202092911"><vh>@bool trace_tree = False</vh></v>
 <v t="ekr.20060206155101"><vh>@bool trace_tree_alloc = False</vh></v>
 <v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
+<v t="ekr.20070503080312"><vh>@bool trace_tree_gc = False</vh></v>
 <v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
 <v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
 <v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>
@@ -6409,5 +6410,6 @@ tables in the plugin itself.</t>
 <t tx="ekr.20070417071249">True: show info as plugins are loaded.</t>
 <t tx="ekr.20070419103554">True:  Leo ensures that non-empty body text ends in a newline in @nosent trees.
 False: Leo leaves body text alone when writing @nosent trees.</t>
+<t tx="ekr.20070503080312">True: trace storage allocation in Leo's tree.</t>
 </tnodes>
 </leo_file>
