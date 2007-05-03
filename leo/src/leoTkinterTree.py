@@ -211,6 +211,7 @@ class leoTkinterTree (leoFrame.leoTree):
         self.trace_alloc            = c.config.getBool('trace_tree_alloc')
         self.trace_chapters         = c.config.getBool('trace_chapters')
         self.trace_edit             = c.config.getBool('trace_tree_edit')
+        self.trace_gc               = c.config.getBool('trace_tree_gc')
         self.trace_redraw_now       = c.config.getBool('trace_redraw_now')
         self.trace_select           = c.config.getBool('trace_select')
         self.trace_stats            = c.config.getBool('show_tree_stats')
@@ -769,11 +770,11 @@ class leoTkinterTree (leoFrame.leoTree):
                 g.trace("Can't happen: negative updateCount",g.callers())
     #@-node:ekr.20051216155728:tree.begin/endUpdate
     #@+node:ekr.20040803072955.58:tree.redraw_now & helper
-    # Redraws immediately: used by Find so a redraw doesn't mess up selections in headlines.
-    
     # New in 4.4b2: suppress scrolling by default.
     
     def redraw_now (self,scroll=False):
+        
+        '''Redraw immediately: used by Find so a redraw doesn't mess up selections in headlines.'''
     
         if g.app.quitting or self.drag_p or self.frame not in g.app.windowList:
             return
@@ -1148,6 +1149,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     self.generation,g.app.positions,delta),g.callers())
             
         self.prevPositions = g.app.positions
+        if self.trace_gc: g.printNewObjects(tag='top 1')
     
         if c.hoistStack:
             bunch = c.hoistStack[-1] ; p = bunch.p
@@ -1156,8 +1158,10 @@ class leoTkinterTree (leoFrame.leoTree):
         else:
             p = c.rootPosition()
             # g.trace('no hoist','canvas',id(self.canvas),'p',p.headString())
+            
             self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=False)
-    
+        
+        if self.trace_gc: g.printNewObjects(tag='top 2')
         if self.trace_stats: self.showStats()
         
         canvas.lower("lines")  # Lowest.
@@ -1179,21 +1183,23 @@ class leoTkinterTree (leoFrame.leoTree):
         data = g.doHook("draw-sub-outline",tree=tree,
             c=c,p=p,v=p,x=x,y=y,h=h,level=level,hoistFlag=hoistFlag)
         if data is not None: return data
-        
+    
         while p: # Do not use iterator.
-            # g.trace('p',p.headString())
-            # N.B. This is the ONLY copy of p that needs to be made.
-            # No other drawing routine calls any p.moveTo method.
-            const_p = p.copy()
-            h,indent = self.drawNode(const_p,x,y)
-            if h1 is None: h1 = h
-            y += h ; ylast = y
-            if p.isExpanded() and p.hasFirstChild():
-                # Must make an additional copy here by calling firstChild.
-                y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
+            # g.trace(self.use_chapters,p.level(),p.headString())
+            if False: #### self.use_chapters and p.level() == 0 and p.headString().startswith('@chapters'):
+                pass
+            else:
+                # N.B. This is the ONLY copy of p that needs to be made.
+                # No other drawing routine calls any p.moveTo method.
+                const_p = p.copy()
+                h,indent = self.drawNode(const_p,x,y)
+                if h1 is None: h1 = h
+                y += h ; ylast = y
+                if p.isExpanded() and p.hasFirstChild():
+                    # Must make an additional copy here by calling firstChild.
+                    y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
             if hoistFlag: break
             else:         p = p.next()
-            # g.trace(p)
             
         # Draw the vertical line.
         if level==0: # Special case to get exposed first line exactly right.
