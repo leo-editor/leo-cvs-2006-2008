@@ -4827,6 +4827,9 @@ class helpCommandsClass (baseEditCommandsClass):
         print-gc-summary:  Print a brief summary of all Python objects.
         run-unit-tests:    Run unit tests in the presently selected tree.
         verbose-dump-objects: Print a more verbose listing of all existing Python objects.
+        
+        Leo also has many debugging settings that enable and disable traces.
+        For details, see the node: @settings-->Debugging in leoSettings.leo.
         '''
         #@-node:ekr.20070501092655.1:<< define s >>
         #@nl
