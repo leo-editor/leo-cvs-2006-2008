@@ -2109,7 +2109,7 @@ class basePosition (object):
     
         if not t:
             t = tnode(headString="NewHeadline")
-        
+    
         return p.insertAsNthChild(n,t)
     #@-node:ekr.20040303175026.4:p.insertAsLastChild
     #@+node:ekr.20040303175026.5:p.insertAsNthChild
