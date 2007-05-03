@@ -48,6 +48,9 @@ import string
 import tempfile
 import traceback
 import types
+
+# print '(types.FrameType)',repr(types.FrameType)
+# print '(types.StringTypes)',repr(types.StringTypes)
 #@-node:ekr.20050208101229:<< imports >>
 #@nl
 #@<< define general constants >>
@@ -2281,9 +2284,6 @@ def printGcObjects(tag=''):
         delta = n2-lastObjectCount
         if delta == 0: return
         lastObjectCount = n2
-
-        print '-' * 30
-        print "%s: garbage: %d, objects: %d, delta: %d" % (tag,n,n2,delta)
         
         #@        << print number of each type of object >>
         #@+node:ekr.20040703054646:<< print number of each type of object >>
@@ -2291,28 +2291,42 @@ def printGcObjects(tag=''):
         typesDict = {}
         
         for obj in gc.get_objects():
-            n = typesDict.get(type(obj),0)
             t = type(obj)
-            if t == 'instance':
+            if t == 'instance' and t not in types.StringTypes:
                 try: t = obj.__class__
                 except: pass
-            # if type(obj) == type(()):
-                # print '*** tuple ***', repr(obj)
-            typesDict[t] = n + 1
+            if t != types.FrameType:
+                r = repr(t) # was type(obj) instead of repr(t)
+                n = typesDict.get(r,0) 
+                typesDict[r] = n + 1
             
         # Create the union of all the keys.
         keys = typesDict.keys()
         for key in lastTypesDict.keys():
             if key not in keys:
                 keys.append(key)
-        
-        keys.sort()
+                   
+        empty = True
         for key in keys:
             n1 = lastTypesDict.get(key,0)
             n2 = typesDict.get(key,0)
             delta2 = n2-n1
             if delta2 != 0:
-                print("%+6d =%7d %s" % (delta2,n2,key))
+                empty = False
+                break
+        
+        if not empty:
+            # keys = [repr(key) for key in keys]
+            keys.sort()
+            print '-' * 30
+            print "%s: garbage: %d, objects: %d, delta: %d" % (tag,n,n2,delta)
+            
+            for key in keys:
+                n1 = lastTypesDict.get(key,0)
+                n2 = typesDict.get(key,0)
+                delta2 = n2-n1
+                if delta2 != 0:
+                    print("%+6d =%7d %s" % (delta2,n2,key))
         
         lastTypesDict = typesDict
         typesDict = {}
@@ -2321,7 +2335,7 @@ def printGcObjects(tag=''):
         if 0:
             #@            << print added functions >>
             #@+node:ekr.20040703065638:<< print added functions >>
-            import types
+            # import types
             import inspect
             
             global lastFunctionsDict
