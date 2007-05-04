@@ -1428,6 +1428,7 @@ class configClass:
                     self.updateSettings(c,localFlag)
                     g.app.destroyWindow(c.frame)
                     self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
+                    self.setIvarsFromSettings(c)
         self.readRecentFiles(localConfigFile)
         self.inited = True
         self.setIvarsFromSettings(None)
