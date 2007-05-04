@@ -2313,9 +2313,9 @@ def printGcObjects(tag=''):
                    
         empty = True
         for key in keys:
-            n1 = lastTypesDict.get(key,0)
-            n2 = typesDict.get(key,0)
-            delta2 = n2-n1
+            n3 = lastTypesDict.get(key,0)
+            n4 = typesDict.get(key,0)
+            delta2 = n4-n3
             if delta2 != 0:
                 empty = False
                 break
@@ -2326,12 +2326,13 @@ def printGcObjects(tag=''):
             print '-' * 30
             print "%s: garbage: %d, objects: %d, delta: %d" % (tag,n,n2,delta)
             
-            for key in keys:
-                n1 = lastTypesDict.get(key,0)
-                n2 = typesDict.get(key,0)
-                delta2 = n2-n1
-                if delta2 != 0:
-                    print("%+6d =%7d %s" % (delta2,n2,key))
+            if 0:
+                for key in keys:
+                    n1 = lastTypesDict.get(key,0)
+                    n2 = typesDict.get(key,0)
+                    delta2 = n2-n1
+                    if delta2 != 0:
+                        print("%+6d =%7d %s" % (delta2,n2,key))
         
         lastTypesDict = typesDict
         typesDict = {}
