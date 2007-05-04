@@ -3083,7 +3083,7 @@ class baseFileCommands:
                 backupName = fileName + ".bak"
                 if g.os_path_exists(backupName):
                     g.utils_remove(backupName)
-                ok = g.utils_rename(fileName,backupName)
+                ok = g.utils_rename(c,fileName,backupName)
                 if not ok:
                     if self.read_only:
                         g.es("read only",color="red")
@@ -3159,7 +3159,7 @@ class baseFileCommands:
                 #@+node:ekr.20050405103712.1:<< rename backupName to fileName >>
                 if backupName:
                     g.es("restoring " + fileName + " from " + backupName)
-                    g.utils_rename(backupName,fileName)
+                    g.utils_rename(c,backupName,fileName)
                 #@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
                 #@nl
             self.toString = False

@@ -4347,7 +4347,7 @@ class atFile:
         # Do _not_ call self.error here.
         return g.utils_chmod(fileName,mode)
     #@-node:ekr.20050104131820:chmod
-    #@+node:ekr.20050104131929.1:rename & test
+    #@+node:ekr.20050104131929.1:atFile.rename & test
     #@<< about os.rename >>
     #@+node:ekr.20050104131929.2:<< about os.rename >>
     #@+at 
@@ -4380,10 +4380,11 @@ class atFile:
         Change the mode of the renamed file if mode is given.
         
         Return True if all went well.'''
-    
+        
+        c = self.c
         head,tail=g.os_path_split(dst)
         if head and len(head) > 0:
-            g.makeAllNonExistentDirectories(head)
+            g.makeAllNonExistentDirectories(head,c=c)
             
         if g.os_path_exists(dst):
             if not self.remove(dst,verbose=verbose):
@@ -4432,7 +4433,7 @@ class atFile:
         os.remove(path2)
         assert not exists(path)
     #@-node:ekr.20050107085710:test_atFile_rename
-    #@-node:ekr.20050104131929.1:rename & test
+    #@-node:ekr.20050104131929.1:atFile.rename & test
     #@+node:ekr.20050104132018:remove & test
     def remove (self,fileName,verbose=True):
     
@@ -4572,7 +4573,7 @@ class atFile:
             if g.os_path_exists(theDir):
                 self.default_directory = theDir
             else: # 9/25/02
-                self.default_directory = g.makeAllNonExistentDirectories(theDir)
+                self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
                 if not self.default_directory:
                     self.error("Directory \"%s\" does not exist" % theDir)
         #@-node:ekr.20041005105605.224:<< Set path from @file node >> in scanDirectory in leoGlobals.py
@@ -4616,7 +4617,7 @@ class atFile:
                         if g.os_path_exists(path):
                             self.default_directory = path
                         else: # 9/25/02
-                            self.default_directory = g.makeAllNonExistentDirectories(path)
+                            self.default_directory = g.makeAllNonExistentDirectories(path,c=c)
                             if not self.default_directory:
                                 self.error("invalid @path: %s" % path)
                         #@-node:ekr.20041005105605.227:<< handle absolute path >>
@@ -4705,7 +4706,7 @@ class atFile:
                         if g.os_path_exists(theDir):
                             self.default_directory = theDir ; break
                         else: # 9/25/02
-                            self.default_directory = g.makeAllNonExistentDirectories(theDir)
+                            self.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
         
         if not self.default_directory and not scripting and not importing:
             # This should never happen: c.openDirectory should be a good last resort.
@@ -4743,7 +4744,7 @@ class atFile:
             #@-node:ekr.20041005105605.235:<< Set comment strings from delims >>
             #@nl
     #@-node:ekr.20041005105605.222:atFile.scanAllDirectives
-    #@+node:ekr.20041005105605.236:scanDefaultDirectory
+    #@+node:ekr.20041005105605.236:atFile.scanDefaultDirectory
     def scanDefaultDirectory(self,p,importing=False):
         
         """Set default_directory ivar by looking for @path directives."""
@@ -4763,7 +4764,7 @@ class atFile:
             if g.os_path_exists(theDir):
                 at.default_directory = theDir
             else:
-                at.default_directory = g.makeAllNonExistentDirectories(theDir)
+                at.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
                 if not at.default_directory:
                     at.error("Directory \"%s\" does not exist" % theDir)
         #@-node:ekr.20041005105605.237:<< Set path from @file node >>  in df.scanDeafaultDirectory in leoAtFile.py
@@ -4808,7 +4809,7 @@ class atFile:
                         if g.os_path_exists(path):
                             at.default_directory = path
                         else:
-                            at.default_directory = g.makeAllNonExistentDirectories(path)
+                            at.default_directory = g.makeAllNonExistentDirectories(path,c=c)
                             if not at.default_directory:
                                 at.error("invalid @path: %s" % path)
                         #@-node:ekr.20041005105605.240:<< handle absolute path >>
@@ -4836,7 +4837,7 @@ class atFile:
                         if g.os_path_exists(theDir):
                             at.default_directory = theDir ; break
                         else:
-                            at.default_directory = g.makeAllNonExistentDirectories(theDir)
+                            at.default_directory = g.makeAllNonExistentDirectories(theDir,c=c)
         #@-node:ekr.20041005105605.241:<< Set current directory >>
         #@nl
         if not at.default_directory and not importing:
@@ -4844,7 +4845,7 @@ class atFile:
             g.trace()
             at.error("No absolute directory specified anywhere.")
             at.default_directory = ""
-    #@-node:ekr.20041005105605.236:scanDefaultDirectory
+    #@-node:ekr.20041005105605.236:atFile.scanDefaultDirectory
     #@+node:ekr.20041005105605.242:scanForClonedSibs (reading & writing)
     def scanForClonedSibs (self,v):
         

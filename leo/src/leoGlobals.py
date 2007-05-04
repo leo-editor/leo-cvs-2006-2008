@@ -1802,9 +1802,12 @@ def is_sentinel (line,delims):
 #@+node:ekr.20031218072017.3119:g.makeAllNonExistentDirectories
 # This is a generalization of os.makedir.
 
-def makeAllNonExistentDirectories (theDir):
+def makeAllNonExistentDirectories (theDir,c=None):
 
     """Attempt to make all non-existent directories"""
+    
+    if c and not c.config.create_nonexistent_directories:
+        return None
 
     if not app.config.create_nonexistent_directories:
         return None
@@ -1981,7 +1984,7 @@ shortFilename = shortFileName
 #@+node:ekr.20031218072017.1241:g.update_file_if_changed
 # This is part of the tangle code.
 
-def update_file_if_changed(file_name,temp_name):
+def update_file_if_changed(c,file_name,temp_name):
 
     """Compares two files.
     
@@ -1995,10 +1998,10 @@ def update_file_if_changed(file_name,temp_name):
         else:
             kind = '***updating'
             mode = g.utils_stat(file_name)
-            ok = g.utils_rename(temp_name,file_name,mode)
+            ok = g.utils_rename(c,temp_name,file_name,mode)
     else:
         kind = 'creating'
-        ok = g.utils_rename(temp_name,file_name)
+        ok = g.utils_rename(c,temp_name,file_name)
         
     if ok:
         g.es('%12s: %s' % (kind,file_name))
@@ -2066,13 +2069,13 @@ def test_g_utils_remove():
 #@-node:ekr.20050104123726.1:<< about os.rename >>
 #@nl
 
-def utils_rename (src,dst,mode=None,verbose=True):
+def utils_rename (c,src,dst,mode=None,verbose=True):
 
     '''Platform independent rename.'''
 
     head, tail = g.os_path_split(dst)
     if head and len(head) > 0:
-        g.makeAllNonExistentDirectories(head)
+        g.makeAllNonExistentDirectories(head,c=c)
 
     if g.os_path_exists(dst):
         if not g.utils_remove(dst):

@@ -1434,7 +1434,7 @@ class baseTangleCommands:
             self.output_file.close()
             self.output_file = None
             if self.errors + g.app.scanErrors == 0:
-                g.update_file_if_changed(file_name,temp_name)
+                g.update_file_if_changed(c,file_name,temp_name)
             else:
                 g.es("unchanged:  " + file_name)
                 #@            << Erase the temporary file >>
@@ -3576,7 +3576,7 @@ class baseTangleCommands:
                             if g.os_path_exists(theDir):
                                 self.tangle_directory = theDir
                             else: # 11/19/02
-                                self.tangle_directory = g.makeAllNonExistentDirectories(theDir)
+                                self.tangle_directory = g.makeAllNonExistentDirectories(theDir,c=c)
                                 if not self.tangle_directory:
                                     if issue_error_flag and not self.path_warning_given:
                                         self.path_warning_given = True # supress future warnings
@@ -3690,7 +3690,7 @@ class baseTangleCommands:
                                 self.tangle_directory = theDir 
                             break
                         else: # 9/25/02
-                            self.tangle_directory = g.makeAllNonExistentDirectories(theDir)
+                            self.tangle_directory = g.makeAllNonExistentDirectories(theDir,c=c)
                             if not self.tangle_directory:
                                 # 10/27/02: It is an error for this not to exist now.
                                 self.error("@root directory does not exist:" + theDir)
