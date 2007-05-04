@@ -2966,7 +2966,7 @@ class keyHandlerClass:
         if trace:
             g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
                 'state.kind:',k.state.kind,g.callers(4))
-            # if (self.master_key_count % 100) == 0: g.printGcSummary(trace=True)
+            # if (self.master_key_count % 100) == 0: g.printGcSummary()
     
         # Handle keyboard-quit first.
         if k.abortAllModesKey and stroke == k.abortAllModesKey:
