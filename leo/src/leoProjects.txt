@@ -16580,6 +16580,7 @@ def readSettingsFiles (self,fileName,verbose=True):
                 self.updateSettings(c,localFlag)
                 g.app.destroyWindow(c.frame)
                 self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
+                self.setIvarsFromSettings(c)
     self.readRecentFiles(localConfigFile)
     self.inited = True
     self.setIvarsFromSettings(None)
@@ -27998,6 +27999,7 @@ def readSettingsFiles (self,fileName,verbose=True):
                 self.updateSettings(c,localFlag)
                 g.app.destroyWindow(c.frame)
                 self.write_recent_files_as_needed = c.config.getBool('write_recent_files_as_needed')
+                self.setIvarsFromSettings(c)
     self.readRecentFiles(localConfigFile)
     self.inited = True
     self.setIvarsFromSettings(None)
@@ -29493,7 +29495,7 @@ if not toString and g.os_path_exists(fileName):
     backupName = fileName + ".bak"
     if g.os_path_exists(backupName):
         g.utils_remove(backupName)
-    ok = g.utils_rename(fileName,backupName)
+    ok = g.utils_rename(c,fileName,backupName)
     if not ok:
         if self.read_only:
             g.es("read only",color="red")
@@ -29529,7 +29531,7 @@ if fileName and g.os_path_exists(fileName):
 #@+node:ekr.20050405103712.1:<< rename backupName to fileName >>
 if backupName:
     g.es("restoring " + fileName + " from " + backupName)
-    g.utils_rename(backupName,fileName)
+    g.utils_rename(c,backupName,fileName)
 #@-node:ekr.20050405103712.1:<< rename backupName to fileName >>
 #@+node:ekr.20070412095520:writeZipFile
 def writeZipFile (self,s):
