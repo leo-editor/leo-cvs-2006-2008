@@ -723,7 +723,6 @@ class leoBody:
         'setFontFromConfig'
         # Editors
         'createEditorLabel',
-        'createLabelWidget',
         'setEditorColors',
         # Events...
         'scheduleIdleTimeRoutine',
@@ -784,20 +783,9 @@ class leoBody:
     def setFontFromConfig (self,w=None):            self.oops()
     # Editor
     def createEditorLabel (self,pane):              self.oops()
-    def createLabelWidget (self,w):                   self.oops()
     def setEditorColors (self,bg,fg):               self.oops()
     # Events...
     def scheduleIdleTimeRoutine (self,function,*args,**keys): self.oops()
-    # Low-level gui...
-    # def getBodyPaneHeight (self):                   self.oops() # return 500
-    # def getBodyPaneWidth (self):                    self.oops() # return 600
-    # def hasFocus (self):                            self.oops()
-    # def setFocus (self):                            self.oops()
-    # def tag_add (self,tagName,index1,index2):       self.oops()
-    # def tag_bind (self,tagName,event,callback):     self.oops()
-    # def tag_configure (self,colorName,**keys):      self.oops()
-    # def tag_delete(self,tagName):                   self.oops()
-    # def tag_remove (self,tagName,index1,index2):    self.oops()
     #@-node:ekr.20061109173122:leoBody: must be defined in subclasses
     #@+node:ekr.20061109173021:leoBody: must be defined in the base class
     #@+node:ekr.20031218072017.3677:Coloring

@@ -549,7 +549,7 @@ class chapterController:
                     cc.mainRoot = newRoot
                     c.setRootPosition(newRoot)
                     if inChaptersFlag:
-                        g.trace('setting position to',newRoot.headString())
+                        # g.trace('setting position to',newRoot.headString())
                         c.setCurrentPosition(newRoot)
                 else:
                     self.error('***** no new root')
