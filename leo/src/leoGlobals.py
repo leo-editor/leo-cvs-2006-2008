@@ -1806,10 +1806,12 @@ def makeAllNonExistentDirectories (theDir,c=None):
 
     """Attempt to make all non-existent directories"""
     
-    if c and not c.config.create_nonexistent_directories:
-        return None
-
-    if not app.config.create_nonexistent_directories:
+    # g.trace(c and c.shortFileName(), c and c.config.create_nonexistent_directories)
+    
+    if c:
+        if not c.config.create_nonexistent_directories:
+            return None
+    elif not app.config.create_nonexistent_directories:
         return None
 
     dir1 = theDir = g.os_path_normpath(theDir)
