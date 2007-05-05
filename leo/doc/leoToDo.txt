@@ -160,18 +160,6 @@ considers other, e.g. previously viewed, nodes) or am I overlooking something ?
 @color
 #@nonl
 #@-node:ekr.20070426080015:Fix crasher in dynamic abbreviations
-#@+node:ekr.20070423100318:Make sure editing doesn't slow down on Ubuntu
-@nocolor
-
-> I'm not keen to 'discard undo on save', because undo has saved my butt many times.
-
-It's possible that a fairly recent change to the undo logic (it was a major simplification) has had the unhappy side effect of generating too many permanent (un-garbage-collectable) strings.  I'll be testing Leo on Ubuntu in the near future to see whether this slowdown happens for me.
-
-Edward
-
-@color
-#@nonl
-#@-node:ekr.20070423100318:Make sure editing doesn't slow down on Ubuntu
 #@+node:ekr.20070319185656:Fix minor chapter hoist bug
 @nocolor
 https://sourceforge.net/forum/message.php?msg_id=4215654
@@ -180,153 +168,6 @@ By: rogererens
 There's a bug with ordinary hoisting: in the "Outline" menu the "Delete Node"
 menu item is not disabled when the local root is selected.
 #@-node:ekr.20070319185656:Fix minor chapter hoist bug
-#@+node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
-@ 
-
-- It is True by default. In effect, this setting was False in previous versions
-of Leo, which might be considered a bug.
-  
-- Fixed docs.
-#@nonl
-#@+node:ekr.20041005105605.161:putBody
-# oneNodeOnly is no longer used, but it might be used in the future?
-
-def putBody(self,p,oneNodeOnly=False,fromString=''):
-    
-    """ Generate the body enclosed in sentinel lines."""
-
-    at = self
-    
-    # New in 4.3 b2: get s from fromString if possible.
-    s = g.choose(fromString,fromString,p.bodyString())
-
-    p.v.t.setVisited() # Suppress orphans check.
-    p.v.setVisited() # Make sure v is never expanded again.
-    if not at.thinFile:
-        p.v.t.setWriteBit() # Mark the tnode to be written.
-    if not at.thinFile and not s: return
-
-    inCode = True
-    << Make sure all lines end in a newline >>
-    i = 0
-    while i < len(s):
-        next_i = g.skip_line(s,i)
-        assert(next_i > i)
-        kind = at.directiveKind4(s,i)
-        << handle line at s[i] >>
-        i = next_i
-    if not inCode:
-        at.putEndDocLine()
-    if at.sentinels and not trailingNewlineFlag:
-        at.putSentinel("@nonl")
-#@+node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
-@
-
-If we add a trailing newline, we'll generate an @nonl sentinel below.
-
-- We always ensure a newline in @file and @thin trees.
-- This code is not used used in @asis trees.
-- New in Leo 4.4.3 b1: We add a newline in @nosent trees unless
-  @bool force_newlines_in_at_nosent_bodies = False
-@c
-
-if s:
-    trailingNewlineFlag = s[-1] == '\n'
-    if (at.sentinels or at.force_newlines_in_at_nosent_bodies) and not trailingNewlineFlag:
-        # g.trace('Added newline',repr(s))
-        s = s + '\n'
-else:
-    trailingNewlineFlag = True # don't need to generate an @nonl
-#@-node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
-#@+node:ekr.20041005105605.163:<< handle line at s[i]  >>
-if kind == at.noDirective:
-    if not oneNodeOnly:
-        if inCode:
-            hasRef,n1,n2 = at.findSectionName(s,i)
-            if hasRef and not at.raw:
-                at.putRefLine(s,i,n1,n2,p)
-            else:
-                at.putCodeLine(s,i)
-        else:
-            at.putDocLine(s,i)
-elif kind in (at.docDirective,at.atDirective):
-    assert(not at.pending)
-    if not inCode: # Bug fix 12/31/04: handle adjacent doc parts.
-        at.putEndDocLine() 
-    at.putStartDocLine(s,i,kind)
-    inCode = False
-elif kind in (at.cDirective,at.codeDirective):
-    # Only @c and @code end a doc part.
-    if not inCode:
-        at.putEndDocLine() 
-    at.putDirective(s,i)
-    inCode = True
-elif kind == at.allDirective:
-    if not oneNodeOnly:
-        if inCode: at.putAtAllLine(s,i,p)
-        else: at.putDocLine(s,i)
-elif kind == at.othersDirective:
-    if not oneNodeOnly:
-        if inCode: at.putAtOthersLine(s,i,p)
-        else: at.putDocLine(s,i)
-elif kind == at.rawDirective:
-    at.raw = True
-    at.putSentinel("@@raw")
-elif kind == at.endRawDirective:
-    at.raw = False
-    at.putSentinel("@@end_raw")
-    i = g.skip_line(s,i)
-elif kind == at.miscDirective:
-    # g.trace('miscDirective')
-    at.putDirective(s,i)
-else:
-    assert(0) # Unknown directive.
-#@-node:ekr.20041005105605.163:<< handle line at s[i]  >>
-#@-node:ekr.20041005105605.161:putBody
-#@+node:ekr.20041005105605.174:putCodeLine
-def putCodeLine (self,s,i):
-    
-    """Put a normal code line."""
-    
-    at = self
-    
-    # Put @verbatim sentinel if required.
-    k = g.skip_ws(s,i)
-    if g.match(s,k,self.startSentinelComment + '@'):
-        self.putSentinel("@verbatim")
-
-    j = g.skip_line(s,i)
-    line = s[i:j]
-    
-    # g.trace('atRaw',at.raw,'line',repr(line),g.callers(4))
-
-    # c.config.write_strips_blank_lines
-    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
-        if line.strip(): # The line has non-empty content.
-            if not at.raw:
-                at.putIndent(at.indent)
-        
-            if line[-1:]=="\n":
-                at.os(line[:-1])
-                at.onl()
-            else:
-                at.os(line)
-        elif line and line[-1] == '\n':
-            at.onl()
-        else:
-            g.trace("Can't happen: completely empty line")
-    else:
-        # 1/29/04: Don't put leading indent if the line is empty!
-        if line and not at.raw:
-            at.putIndent(at.indent)
-    
-        if line[-1:]=="\n":
-            at.os(line[:-1])
-            at.onl()
-        else:
-            at.os(line)
-#@-node:ekr.20041005105605.174:putCodeLine
-#@-node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
 #@+node:ekr.20070325054325:Dist
 #@+node:ekr.20070220082124.3:Make installing aspell easier
 #@-node:ekr.20070220082124.3:Make installing aspell easier
@@ -437,6 +278,138 @@ Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to instal
 #@+node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070325054325:Dist
+#@+node:ekr.20070420080132:Better focus handling when clicking headline
+# Tried and failed to improve things.  This logic is so tricky.
+#@nonl
+#@+node:ekr.20031218072017.2886:c.editHeadline
+def editHeadline (self,event=None):
+    
+    '''Begin editing the headline of the selected node.'''
+    
+    c = self ; k = c.k ; tree = c.frame.tree
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode("Edit Headline")
+        return
+        
+    if k:
+        k.setDefaultUnboundKeyAction()
+        k.showStateAndMode()
+
+    tree.editLabel(c.currentPosition())
+#@-node:ekr.20031218072017.2886:c.editHeadline
+#@+node:ekr.20040803072955.127:tree.editLabel
+def editLabel (self,p,selectAll=False):
+    
+    """Start editing p's headline."""
+
+    c = self.c
+
+    if p and p != self.editPosition():
+        
+        if self.trace_edit and not g.app.unitTesting:
+            g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
+
+        c.beginUpdate()
+        try:
+            self.endEditLabel()
+        finally:
+            c.endUpdate(True)
+
+    self.setEditPosition(p) # That is, self._editPosition = p
+    
+    #g.trace(c.edit_widget(p))
+    
+    if p and c.edit_widget(p):
+        self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
+        self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
+        c.headlineWantsFocus(p) # Make sure the focus sticks.
+#@-node:ekr.20040803072955.127:tree.editLabel
+#@+node:ekr.20040803072955.87:onHeadlineClick
+def onHeadlineClick (self,event,p=None):
+    
+    # g.trace('p',p)
+    c = self.c ; w = event.widget
+    
+    if not p:
+        try:
+            p = w.leo_position
+        except AttributeError:
+            g.trace('*'*20,'oops')
+    if not p: return 'break'
+        
+    # g.trace(g.app.gui.widget_name(w)) #p.headString())
+    
+    c.setLog()
+
+    try:
+        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
+            returnVal = self.OnActivateHeadline(p)
+        g.doHook("headclick2",c=c,p=p,v=p,event=event)
+    except:
+        returnVal = 'break'
+        g.es_event_exception("headclick")
+
+    # 'continue' is sometimes correct here.
+    # 'break' would make it impossible to unselect the headline text.
+    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
+    return returnVal
+#@-node:ekr.20040803072955.87:onHeadlineClick
+#@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
+def OnActivateHeadline (self,p,event=None):
+    
+    '''Handle common process when any part of a headline is clicked.'''
+    
+    # g.trace(p.headString())
+    
+    returnVal = 'break' # Default: do nothing more.
+
+    try:
+        c = self.c
+        c.setLog()
+        << activate this window >>
+    except:
+        g.es_event_exception("activate tree")
+        
+    return returnVal
+#@+node:ekr.20040803072955.106:<< activate this window >>
+if p == c.currentPosition():
+    
+    # The *second* click in the headline starts editing.
+    if self.active:
+        #g.trace("click 2")
+        self.editLabel(p)
+        returnVal = 'continue'
+    else:
+        #g.trace("click 1")
+        # Set the focus immediately.  This is essential for proper editing.
+        c.treeWantsFocusNow()
+        returnVal = 'break'
+else:
+    #g.trace("not current")
+    self.select(p,scroll=False)
+    w  = c.frame.body.bodyCtrl
+    if c.frame.findPanel:
+        c.frame.findPanel.handleUserClick(p)
+    if p.v.t.insertSpot != None:
+        spot = p.v.t.insertSpot
+        w.setInsertPoint(spot)
+        w.see(spot)
+    else:
+        w.setInsertPoint(0)
+
+    # if self.stayInTree:
+        # c.treeWantsFocusNow()
+    # else:
+        # c.bodyWantsFocusNow()
+    c.treeFocusHelper()
+    returnVal = 'break'
+
+# The next click *in the same headline* will start editing.
+self.active = True
+#@-node:ekr.20040803072955.106:<< activate this window >>
+#@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
+#@-node:ekr.20070420080132:Better focus handling when clicking headline
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20061006165447:Let import commands decide what kind of import to do

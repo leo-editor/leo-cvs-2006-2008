@@ -28564,6 +28564,745 @@ def getEnabledFiles (s,plugins_path):
 #@-node:ekr.20070129082731:Leo 4.4.3 alpha 2 projects
 #@+node:ekr.20070318125900:Leo 4.4.3 b1 projects
 #@+node:ekr.20070418094610:New features
+#@+node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
+@ 
+
+- It is True by default. In effect, this setting was False in previous versions
+of Leo, which might be considered a bug.
+  
+- Fixed docs.
+#@nonl
+#@+node:ekr.20041005105605.161:putBody
+# oneNodeOnly is no longer used, but it might be used in the future?
+
+def putBody(self,p,oneNodeOnly=False,fromString=''):
+    
+    """ Generate the body enclosed in sentinel lines."""
+
+    at = self
+    
+    # New in 4.3 b2: get s from fromString if possible.
+    s = g.choose(fromString,fromString,p.bodyString())
+
+    p.v.t.setVisited() # Suppress orphans check.
+    p.v.setVisited() # Make sure v is never expanded again.
+    if not at.thinFile:
+        p.v.t.setWriteBit() # Mark the tnode to be written.
+    if not at.thinFile and not s: return
+
+    inCode = True
+    << Make sure all lines end in a newline >>
+    i = 0
+    while i < len(s):
+        next_i = g.skip_line(s,i)
+        assert(next_i > i)
+        kind = at.directiveKind4(s,i)
+        << handle line at s[i] >>
+        i = next_i
+    if not inCode:
+        at.putEndDocLine()
+    if at.sentinels and not trailingNewlineFlag:
+        at.putSentinel("@nonl")
+#@+node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
+@
+
+If we add a trailing newline, we'll generate an @nonl sentinel below.
+
+- We always ensure a newline in @file and @thin trees.
+- This code is not used used in @asis trees.
+- New in Leo 4.4.3 b1: We add a newline in @nosent trees unless
+  @bool force_newlines_in_at_nosent_bodies = False
+@c
+
+if s:
+    trailingNewlineFlag = s[-1] == '\n'
+    if (at.sentinels or at.force_newlines_in_at_nosent_bodies) and not trailingNewlineFlag:
+        # g.trace('Added newline',repr(s))
+        s = s + '\n'
+else:
+    trailingNewlineFlag = True # don't need to generate an @nonl
+#@-node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
+#@+node:ekr.20041005105605.163:<< handle line at s[i]  >>
+if kind == at.noDirective:
+    if not oneNodeOnly:
+        if inCode:
+            hasRef,n1,n2 = at.findSectionName(s,i)
+            if hasRef and not at.raw:
+                at.putRefLine(s,i,n1,n2,p)
+            else:
+                at.putCodeLine(s,i)
+        else:
+            at.putDocLine(s,i)
+elif kind in (at.docDirective,at.atDirective):
+    assert(not at.pending)
+    if not inCode: # Bug fix 12/31/04: handle adjacent doc parts.
+        at.putEndDocLine() 
+    at.putStartDocLine(s,i,kind)
+    inCode = False
+elif kind in (at.cDirective,at.codeDirective):
+    # Only @c and @code end a doc part.
+    if not inCode:
+        at.putEndDocLine() 
+    at.putDirective(s,i)
+    inCode = True
+elif kind == at.allDirective:
+    if not oneNodeOnly:
+        if inCode: at.putAtAllLine(s,i,p)
+        else: at.putDocLine(s,i)
+elif kind == at.othersDirective:
+    if not oneNodeOnly:
+        if inCode: at.putAtOthersLine(s,i,p)
+        else: at.putDocLine(s,i)
+elif kind == at.rawDirective:
+    at.raw = True
+    at.putSentinel("@@raw")
+elif kind == at.endRawDirective:
+    at.raw = False
+    at.putSentinel("@@end_raw")
+    i = g.skip_line(s,i)
+elif kind == at.miscDirective:
+    # g.trace('miscDirective')
+    at.putDirective(s,i)
+else:
+    assert(0) # Unknown directive.
+#@-node:ekr.20041005105605.163:<< handle line at s[i]  >>
+#@-node:ekr.20041005105605.161:putBody
+#@+node:ekr.20041005105605.174:putCodeLine
+def putCodeLine (self,s,i):
+    
+    """Put a normal code line."""
+    
+    at = self
+    
+    # Put @verbatim sentinel if required.
+    k = g.skip_ws(s,i)
+    if g.match(s,k,self.startSentinelComment + '@'):
+        self.putSentinel("@verbatim")
+
+    j = g.skip_line(s,i)
+    line = s[i:j]
+    
+    # g.trace('atRaw',at.raw,'line',repr(line),g.callers(4))
+
+    # c.config.write_strips_blank_lines
+    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
+        if line.strip(): # The line has non-empty content.
+            if not at.raw:
+                at.putIndent(at.indent)
+        
+            if line[-1:]=="\n":
+                at.os(line[:-1])
+                at.onl()
+            else:
+                at.os(line)
+        elif line and line[-1] == '\n':
+            at.onl()
+        else:
+            g.trace("Can't happen: completely empty line")
+    else:
+        # 1/29/04: Don't put leading indent if the line is empty!
+        if line and not at.raw:
+            at.putIndent(at.indent)
+    
+        if line[-1:]=="\n":
+            at.os(line[:-1])
+            at.onl()
+        else:
+            at.os(line)
+#@-node:ekr.20041005105605.174:putCodeLine
+#@-node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
+#@+node:ekr.20070501094623:Added apropos-debugging-commands command
+#@-node:ekr.20070501094623:Added apropos-debugging-commands command
+#@+node:ekr.20070427094856:Added print-plugins & print-plugin-handlers commands
+#@+node:ekr.20070429090122:printPlugins
+def printPlugins ():
+    
+    g.es_print('Enabled plugins...')
+    keys = loadedModules.keys()
+    keys = [s.lower() for s in keys]
+    keys.sort()
+    for key in keys:
+        g.es_print(key)
+#@-node:ekr.20070429090122:printPlugins
+#@-node:ekr.20070427094856:Added print-plugins & print-plugin-handlers commands
+#@+node:ekr.20070228055539:Added print-settings command
+#@+node:ekr.20070418073400:g.app.config.printSettings & helper
+def printSettings (self,c):
+
+    '''Prints the value of every setting, except key bindings and commands and open-with tables.
+    The following letters indicate where the active setting came from:
+    
+    - D indicates default settings.
+    - F indicates the file being loaded,
+    - L indicates leoSettings.leo,
+    - M indicates myLeoSettings.leo,
+    '''
+    
+    settings = {} # Keys are setting names, values are (letter,val)
+    
+    if c:
+        d = self.localOptionsDict.get(c.hash())
+        self.printSettingsHelper(settings,d,letter='[F]')
+
+    for d in self.localOptionsList:
+        self.printSettingsHelper(settings,d)
+
+    for d in self.dictList:
+        self.printSettingsHelper(settings,d)
+        
+    keys = settings.keys() ; keys.sort()
+    for key in keys:
+        data = settings.get(key)
+        letter,val = data
+        print '%45s = %s %s' % (key,letter,val)
+        g.es('%s %s = %s' % (letter,key,val))
+#@nonl
+#@+node:ekr.20070418075804:printSettingsHelper
+def printSettingsHelper(self,settings,d,letter=None):
+
+    suppressKind = ('shortcut','shortcuts','openwithtable')
+    suppressKeys = (None,'_hash','shortcut')
+    
+    if d:
+        << set letter >>
+        for key in d.keys():
+            if key not in suppressKeys and key not in settings.keys():
+                bunch = d.get(key)
+                if bunch.kind not in suppressKind:
+                    settings[key] = (letter,bunch.val)
+#@nonl
+#@+node:ekr.20070418084502:<< set letter >>
+hash = d.get('_hash').lower()
+
+if letter:
+    pass
+elif hash.endswith('myleosettings.leo'):
+    letter = '[M]'
+elif hash.endswith('leosettings.leo'):
+    letter = ' ' * 3
+else:
+    letter = '[D]'
+
+# g.trace(letter,hash)
+#@nonl
+#@-node:ekr.20070418084502:<< set letter >>
+#@-node:ekr.20070418075804:printSettingsHelper
+#@-node:ekr.20070418073400:g.app.config.printSettings & helper
+#@-node:ekr.20070228055539:Added print-settings command
+#@+node:ekr.20060530130736.2:Added support for @openwith nodes
+
+#@+node:ekr.20060619101345:request
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3737745
+
+http://sourceforge.net/forum/message.php?msg_id=3785897
+
+Would it be possible to have the table of "Open With" editors to be part of
+the config system? I find myself patching the list every time I D/L a new Leo
+version to add the editor I use. This would also help isolate the user from
+the "guts" of Leo, theereby being less intimidating.
+#@-node:ekr.20060619101345:request
+#@+node:ekr.20070411101643.3:Config stuff
+#@+node:ekr.20041117083141:get & allies (g.app.config)
+def get (self,c,setting,kind):
+    
+    """Get the setting and make sure its type matches the expected type."""
+    
+    if c:
+        d = self.localOptionsDict.get(c.hash())
+        if d:
+            val,junk = self.getValFromDict(d,setting,kind)
+            if val is not None:
+                # g.trace(c.shortFileName(),setting,val)
+                return val
+                
+    for d in self.localOptionsList:
+        val,junk = self.getValFromDict(d,setting,kind)
+        if val is not None:
+            kind = d.get('_hash','<no hash>')
+            # g.trace(kind,setting,val)
+            return val
+
+    for d in self.dictList:
+        val,junk = self.getValFromDict(d,setting,kind)
+        if val is not None:
+            kind = d.get('_hash','<no hash>')
+            # g.trace(kind,setting,val)
+            return val
+
+    return None
+#@+node:ekr.20041121143823:getValFromDict
+def getValFromDict (self,d,setting,requestedType,warn=True):
+    
+    '''Look up the setting in d. If warn is True, warn if the requested type
+    does not (loosely) match the actual type.
+    returns (val,exists)'''
+
+    bunch = d.get(self.munge(setting))
+    if not bunch: return None,False
+
+    # g.trace(setting,requestedType,bunch.toString())
+    val = bunch.val
+    if not self.typesMatch(bunch.kind,requestedType):
+        # New in 4.4: make sure the types match.
+        # A serious warning: one setting may have destroyed another!
+        # Important: this is not a complete test of conflicting settings:
+        # The warning is given only if the code tries to access the setting.
+        if warn:
+            s = (
+                'Warning: ignoring %s:%s not %s\n' +
+                'There may be conflicting settings!')
+            g.es_print(s % (bunch.kind,setting,requestedType),color='red')
+            # g.trace(g.callers())
+        return None, False
+    elif val in (u'None',u'none','None','none','',None):
+        return None, True # Exists, but is None
+    else:
+        # g.trace(setting,val)
+        return val, True
+#@-node:ekr.20041121143823:getValFromDict
+#@+node:ekr.20051015093141:typesMatch
+def typesMatch (self,type1,type2):
+    
+    '''
+    Return True if type1, the actual type, matches type2, the requeseted type.
+    
+    The following equivalences are allowed:
+
+    - None matches anything.
+    - An actual type of string or strings matches anything.
+    - Shortcut matches shortcuts.
+    '''
+
+    shortcuts = ('shortcut','shortcuts',)
+    
+    return (
+        type1 == None or type2 == None or
+        type1.startswith('string') or
+        type1 == 'int' and type2 == 'size' or
+        (type1 in shortcuts and type2 in shortcuts) or
+        type1 == type2
+    )
+#@-node:ekr.20051015093141:typesMatch
+#@-node:ekr.20041117083141:get & allies (g.app.config)
+#@+node:ekr.20041120094940.9:set (parseBaseClass)
+def set (self,p,kind,name,val):
+    
+    """Init the setting for name to val."""
+    
+    __pychecker__ = '--no-argsused' # p used in subclasses, not here.
+    
+    c = self.c ; key = self.munge(name)
+    # if kind and kind.startswith('setting'): g.trace("settingsParser %10s %15s %s" %(kind,val,name))
+    d = self.settingsDict
+    bunch = d.get(key)
+    if bunch:
+        # g.trace(key,bunch.val,bunch.path)
+        path = bunch.path
+        if g.os_path_abspath(c.mFileName) != g.os_path_abspath(path):
+            g.es("over-riding setting: %s from %s" % (name,path))
+
+    # N.B.  We can't use c here: it may be destroyed!
+    d [key] = g.Bunch(path=c.mFileName,kind=kind,val=val,tag='setting')
+
+#@-node:ekr.20041120094940.9:set (parseBaseClass)
+#@+node:ekr.20070411101643:getOpenWith
+def getOpenWith (self,c):
+    
+    """Search all dictionaries for the setting & check it's type"""
+    
+    val = self.get(c,'openwithtable','openwithtable')
+    
+    return val
+#@-node:ekr.20070411101643:getOpenWith
+#@+node:ekr.20070411101643.1:doOpenWith (ParserBaseClass)
+def doOpenWith (self,p,kind,name,val):
+    
+    # g.trace('kind',kind,'name',name,'val',val,'c',self.c)
+    
+    d = self.parseOpenWith(p)
+    d['name']=name
+    d['shortcut']=val
+    name = kind = 'openwithtable'
+    self.openWithList.append(d)
+    self.set(p,kind,name,self.openWithList)
+#@-node:ekr.20070411101643.1:doOpenWith (ParserBaseClass)
+#@+node:ekr.20070411101643.2:parseOpenWith & helper
+def parseOpenWith (self,p):
+    
+    d = {'command': None,}
+
+    s = p.bodyString()
+    lines = g.splitLines(s)
+
+    for line in lines:
+        self.parseOpenWithLine(line,d)
+
+    return d
+#@+node:ekr.20070411101643.4:parseOpenWithLine
+def parseOpenWithLine (self,line,d):
+    
+    s = line.strip()
+    if not s: return
+
+    try:
+        s = str(s)
+    except UnicodeError:
+        pass
+    
+    if not g.match(s,0,'#'):
+        d['command'] = s
+#@-node:ekr.20070411101643.4:parseOpenWithLine
+#@-node:ekr.20070411101643.2:parseOpenWith & helper
+#@-node:ekr.20070411101643.3:Config stuff
+#@+node:ekr.20031218072017.2823:openWith and allies
+def openWith(self,event=None,data=None):
+
+    """This routine handles the items in the Open With... menu.
+
+    These items can only be created by createOpenWithMenuFromTable().
+    Typically this would be done from the "open2" hook.
+    
+    New in 4.3: The "os.spawnv" now works. You may specify arguments to spawnv
+    using a list, e.g.:
+        
+    openWith("os.spawnv", ["c:/prog.exe","--parm1","frog","--switch2"], None)
+    """
+    
+    c = self ; p = c.currentPosition()
+    n = data and len(data) or 0
+    if n != 3:
+        g.trace('bad data, length must be 3, got %d' % n)
+        return
+    try:
+        openType,arg,ext=data
+        if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
+            g.enableIdleTimeHook(idleTimeDelay=100)
+            << set ext based on the present language >>
+            << create or reopen temp file, testing for conflicting changes >>
+            << execute a command to open path in external editor >>
+        g.doHook("openwith2",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext)
+    except Exception:
+        g.es("unexpected exception in c.openWith")
+        g.es_exception()
+
+    return "break"
+#@+node:ekr.20031218072017.2824:<< set ext based on the present language >>
+if not ext:
+    theDict = g.scanDirectives(c)
+    language = theDict.get("language")
+    ext = g.app.language_extension_dict.get(language)
+    # print language,ext
+    if ext == None:
+        ext = "txt"
+    
+if ext[0] != ".":
+    ext = "."+ext
+    
+# print "ext",ext
+#@-node:ekr.20031218072017.2824:<< set ext based on the present language >>
+#@+node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
+theDict = None ; path = None
+<< set dict and path if a temp file already refers to p.v.t >>
+if path:
+    << create or recreate temp file as needed >>
+else:
+    path = c.createOpenWithTempFile(p,ext)
+
+if not path:
+    return # An error has occured.
+#@+node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
+searchPath = c.openWithTempFilePath(p,ext)
+
+if g.os_path_exists(searchPath):
+    for theDict in g.app.openWithFiles:
+        if p.v == theDict.get('v') and searchPath == theDict.get("path"):
+            path = searchPath
+            break
+#@-node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
+#@+node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
+@ We test for changes in both p and the temp file:
+
+- If only p's body text has changed, we recreate the temp file.
+- If only the temp file has changed, do nothing here.
+- If both have changed we must prompt the user to see which code to use.
+@c
+
+encoding = theDict.get("encoding")
+old_body = theDict.get("body")
+new_body = p.bodyString()
+new_body = g.toEncodedString(new_body,encoding,reportErrors=True)
+
+old_time = theDict.get("time")
+try:
+    new_time = g.os_path_getmtime(path)
+except:
+    new_time = None
+    
+body_changed = old_body != new_body
+temp_changed = old_time != new_time
+
+if body_changed and temp_changed:
+    << Raise dialog about conflict and set result >>
+    if result == "cancel": return
+    rewrite = result == "outline"
+else:
+    rewrite = body_changed
+        
+if rewrite:
+    path = c.createOpenWithTempFile(p,ext)
+else:
+    g.es("reopening: " + g.shortFileName(path),color="blue")
+#@+node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
+message = (
+    "Conflicting changes in outline and temp file\n\n" +
+    "Do you want to use the code in the outline or the temp file?\n\n")
+
+result = g.app.gui.runAskYesNoCancelDialog(c,
+    "Conflict!", message,
+    yesMessage = "Outline",
+    noMessage = "File",
+    defaultButton = "Cancel")
+#@-node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
+#@-node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
+#@-node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
+#@+node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
+try:
+    if arg == None: arg = ""
+    shortPath = path # g.shortFileName(path)
+    if openType == "os.system":
+        if 1:
+            # This works, _provided_ that arg does not contain blanks.  Sheesh.
+            command = 'os.system(%s)' % (arg+shortPath)
+            os.system(arg+shortPath)
+        else:
+            # XP does not like this format!
+            command = 'os.system("%s" "%s")' % (arg,shortPath)
+            os.system('"%s" "%s"' % (arg,shortPath))
+    elif openType == "os.startfile":
+        command = "os.startfile(%s)" % (arg+shortPath)
+        os.startfile(arg+path)
+    elif openType == "exec":
+        command = "exec(%s)" % (arg+shortPath)
+        exec arg+path in {}
+    elif openType == "os.spawnl":
+        filename = g.os_path_basename(arg)
+        command = "os.spawnl(%s,%s,%s)" % (arg,filename,path)
+        apply(os.spawnl,(os.P_NOWAIT,arg,filename,path))
+    elif openType == "os.spawnv":
+        filename = os.path.basename(arg[0]) 
+        vtuple = arg[1:]
+        vtuple.insert(0, filename)
+            # add the name of the program as the first argument.
+            # Change suggested by Jim Sizelove.
+        vtuple.append(path)
+        command = "os.spawnv(%s,%s)" % (arg[0],repr(vtuple))
+        apply(os.spawnv,(os.P_NOWAIT,arg[0],vtuple))
+    # This clause by Jim Sizelove.
+    elif openType == "subprocess.Popen":
+        if isinstance(arg, basestring):
+            vtuple = arg + " " + path
+        elif isinstance(arg, (list, tuple)):
+            vtuple = arg[:]
+            vtuple.append(path)
+        command = "subprocess.Popen(%s)" % repr(vtuple)
+        if subprocess:
+            subprocess.Popen(vtuple)
+        else:
+            g.grace('Can not import subprocess.  Skipping: "%s"' % command)
+    else:
+        command="bad command:"+str(openType)
+        g.trace(command)
+except Exception:
+    g.es("exception executing: "+command)
+    g.es_exception()
+#@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
+#@+node:ekr.20031218072017.2830:createOpenWithTempFile
+def createOpenWithTempFile (self,p,ext):
+    
+    c = self
+    path = c.openWithTempFilePath(p,ext)
+    try:
+        if g.os_path_exists(path):
+            g.es("recreating:  " + g.shortFileName(path),color="red")
+        else:
+            g.es("creating:  " + g.shortFileName(path),color="blue")
+        theFile = open(path,"w")
+        # Convert s to whatever encoding is in effect.
+        s = p.bodyString()
+        theDict = g.scanDirectives(c,p=p)
+        encoding = theDict.get("encoding",None)
+        if encoding == None:
+            encoding = c.config.default_derived_file_encoding
+        s = g.toEncodedString(s,encoding,reportErrors=True) 
+        theFile.write(s)
+        theFile.flush()
+        theFile.close()
+        try:    time = g.os_path_getmtime(path)
+        except: time = None
+        # g.es("time: " + str(time))
+        # New in 4.3: theDict now contains both 'p' and 'v' entries, of the expected type.
+        theDict = {
+            "body":s, "c":c, "encoding":encoding,
+            "f":theFile, "path":path, "time":time,
+            "p":p, "v":p.v }
+        << remove previous entry from app.openWithFiles if it exists >>
+        g.app.openWithFiles.append(theDict)
+        return path
+    except:
+        if theFile:
+            theFile.close()
+        theFile = None
+        g.es("exception creating temp file",color="red")
+        g.es_exception()
+        return None
+#@+node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
+for d in g.app.openWithFiles[:]:
+    p2 = d.get("p")
+    if p.v.t == p2.v.t:
+        # print "removing previous entry in g.app.openWithFiles for",p.headString()
+        g.app.openWithFiles.remove(d)
+#@-node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
+#@-node:ekr.20031218072017.2830:createOpenWithTempFile
+#@+node:ekr.20031218072017.2832:c.openWithTempFilePath
+def openWithTempFilePath (self,p,ext):
+    
+    """Return the path to the temp file corresponding to p and ext."""
+    
+    if 0: # new code: similar to code in mod_tempfname.py plugin.
+        try:
+            # At least in Windows, user name may contain special characters
+            # which would require escaping quotes.
+            leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
+        except:
+            leoTempDir = "LeoTemp"
+            g.es("Could not retrieve your user name.")
+            g.es("Temporary files will be stored in: %s" % leoTempDir)
+        
+        td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
+        if not os.path.exists(td):
+            os.mkdir(td)
+        
+        name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
+        path = os.path.join(td,name)
+        return path
+    else: # Original code.
+        name = "LeoTemp_%s_%s%s" % (
+            str(id(p.v.t)),
+            g.sanitize_filename(p.headString()),
+            ext)
+    
+        name = g.toUnicode(name,g.app.tkEncoding)
+    
+        if 1:
+            td = g.os_path_abspath(tempfile.gettempdir())
+        else:
+            td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
+    
+        path = g.os_path_join(td,name)
+    
+        return path
+#@-node:ekr.20031218072017.2832:c.openWithTempFilePath
+#@-node:ekr.20031218072017.2823:openWith and allies
+#@+node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
+def createOpenWithMenuFromTable (self,table):
+    
+    '''Entries in the table passed to createOpenWithMenuFromTable are
+tuples of the form (commandName,shortcut,data).
+
+- command is one of "os.system", "os.startfile", "os.spawnl", "os.spawnv" or "exec".
+- shortcut is a string describing a shortcut, just as for createMenuItemsFromTable.
+- data is a tuple of the form (command,arg,ext).
+
+Leo executes command(arg+path) where path is the full path to the temp file.
+If ext is not None, the temp file has the given extension.
+Otherwise, Leo computes an extension based on the @language directive in effect.'''
+
+    c = self.c
+    g.app.openWithTable = table # Override any previous table.
+    # Delete the previous entry.
+    parent = self.getMenu("File")
+    label = self.getRealMenuName("Open &With...")
+    amp_index = label.find("&")
+    label = label.replace("&","")
+    try:
+        index = parent.index(label)
+        parent.delete(index)
+    except:
+        try:
+            index = parent.index("Open With...")
+            parent.delete(index)
+        except: return
+    # Create the Open With menu.
+    openWithMenu = self.createOpenWithMenu(parent,label,index,amp_index)
+    self.setMenu("Open With...",openWithMenu)
+    # Create the menu items in of the Open With menu.
+    for entry in table:
+        if len(entry) != 3: # 6/22/03
+            g.es("createOpenWithMenuFromTable: invalid data",color="red")
+            return
+    self.createOpenWithMenuItemsFromTable(openWithMenu,table)
+    for entry in table:
+        name,shortcut,data = entry
+        c.k.bindOpenWith (shortcut,name,data)
+#@+node:ekr.20051022043608.1:createOpenWithMenuItemsFromTable
+def createOpenWithMenuItemsFromTable (self,menu,table):
+    
+    '''Create an entry in the Open with Menu from the table.
+    
+    Each entry should be a sequence with 2 or 3 elements.'''
+    
+    c = self.c ; k = c.k
+
+    if g.app.unitTesting: return
+
+    for data in table:
+        << get label, accelerator & command or continue >>
+        # g.trace(label,accelerator)
+        realLabel = self.getRealMenuName(label)
+        underline=realLabel.find("&")
+        realLabel = realLabel.replace("&","")
+        callback = self.defineOpenWithMenuCallback(openWithData)
+    
+        self.add_command(menu,label=realLabel,
+            accelerator=accelerator or '',
+            command=callback,underline=underline)
+#@+node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
+ok = (
+    type(data) in (type(()), type([])) and
+    len(data) in (2,3)
+)
+    
+if ok:
+    if len(data) == 2:
+        label,openWithData = data ; accelerator = None
+    else:
+        label,accelerator,openWithData = data
+        accelerator = k.shortcutFromSetting(accelerator)
+        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
+else:
+    g.trace('bad data in Open With table: %s' % repr(data))
+    continue # Ignore bad data
+#@-node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
+#@-node:ekr.20051022043608.1:createOpenWithMenuItemsFromTable
+#@-node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
+#@+node:ekr.20061031131434.94:bindOpenWith
+def bindOpenWith (self,shortcut,name,data):
+    
+    '''Register an open-with command.'''
+    
+    k = self ; c = k.c
+    
+    # The first parameter must be event, and it must default to None.
+    def openWithCallback(event=None,c=c,data=data):
+        return c.openWith(data=data)
+
+    # Use k.registerCommand to set the shortcuts in the various binding dicts.
+    commandName = 'open-with-%s' % name.lower()
+    k.registerCommand(commandName,shortcut,openWithCallback,pane='all',verbose=False)
+#@-node:ekr.20061031131434.94:bindOpenWith
+#@-node:ekr.20060530130736.2:Added support for @openwith nodes
 #@+node:ekr.20070325095127:Created clean-all-lines command
 #@+node:ekr.20070325094935:cleanAllLines
 def cleanAllLines (self,event):
@@ -29541,598 +30280,6 @@ def writeZipFile (self,s):
 #@-node:ekr.20070412095520:writeZipFile
 #@-node:ekr.20031218072017.3046:write_Leo_file
 #@-node:ekr.20031218072017.801:Support for compressed .leo files
-#@+node:ekr.20060530130736.2:Added support for @openwith nodes
-
-#@+node:ekr.20060619101345:request
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3737745
-
-http://sourceforge.net/forum/message.php?msg_id=3785897
-
-Would it be possible to have the table of "Open With" editors to be part of
-the config system? I find myself patching the list every time I D/L a new Leo
-version to add the editor I use. This would also help isolate the user from
-the "guts" of Leo, theereby being less intimidating.
-#@-node:ekr.20060619101345:request
-#@+node:ekr.20070411101643.3:Config stuff
-#@+node:ekr.20041117083141:get & allies (g.app.config)
-def get (self,c,setting,kind):
-    
-    """Get the setting and make sure its type matches the expected type."""
-    
-    if c:
-        d = self.localOptionsDict.get(c.hash())
-        if d:
-            val,junk = self.getValFromDict(d,setting,kind)
-            if val is not None:
-                # g.trace(c.shortFileName(),setting,val)
-                return val
-                
-    for d in self.localOptionsList:
-        val,junk = self.getValFromDict(d,setting,kind)
-        if val is not None:
-            kind = d.get('_hash','<no hash>')
-            # g.trace(kind,setting,val)
-            return val
-
-    for d in self.dictList:
-        val,junk = self.getValFromDict(d,setting,kind)
-        if val is not None:
-            kind = d.get('_hash','<no hash>')
-            # g.trace(kind,setting,val)
-            return val
-
-    return None
-#@+node:ekr.20041121143823:getValFromDict
-def getValFromDict (self,d,setting,requestedType,warn=True):
-    
-    '''Look up the setting in d. If warn is True, warn if the requested type
-    does not (loosely) match the actual type.
-    returns (val,exists)'''
-
-    bunch = d.get(self.munge(setting))
-    if not bunch: return None,False
-
-    # g.trace(setting,requestedType,bunch.toString())
-    val = bunch.val
-    if not self.typesMatch(bunch.kind,requestedType):
-        # New in 4.4: make sure the types match.
-        # A serious warning: one setting may have destroyed another!
-        # Important: this is not a complete test of conflicting settings:
-        # The warning is given only if the code tries to access the setting.
-        if warn:
-            s = (
-                'Warning: ignoring %s:%s not %s\n' +
-                'There may be conflicting settings!')
-            g.es_print(s % (bunch.kind,setting,requestedType),color='red')
-            # g.trace(g.callers())
-        return None, False
-    elif val in (u'None',u'none','None','none','',None):
-        return None, True # Exists, but is None
-    else:
-        # g.trace(setting,val)
-        return val, True
-#@-node:ekr.20041121143823:getValFromDict
-#@+node:ekr.20051015093141:typesMatch
-def typesMatch (self,type1,type2):
-    
-    '''
-    Return True if type1, the actual type, matches type2, the requeseted type.
-    
-    The following equivalences are allowed:
-
-    - None matches anything.
-    - An actual type of string or strings matches anything.
-    - Shortcut matches shortcuts.
-    '''
-
-    shortcuts = ('shortcut','shortcuts',)
-    
-    return (
-        type1 == None or type2 == None or
-        type1.startswith('string') or
-        type1 == 'int' and type2 == 'size' or
-        (type1 in shortcuts and type2 in shortcuts) or
-        type1 == type2
-    )
-#@-node:ekr.20051015093141:typesMatch
-#@-node:ekr.20041117083141:get & allies (g.app.config)
-#@+node:ekr.20041120094940.9:set (parseBaseClass)
-def set (self,p,kind,name,val):
-    
-    """Init the setting for name to val."""
-    
-    __pychecker__ = '--no-argsused' # p used in subclasses, not here.
-    
-    c = self.c ; key = self.munge(name)
-    # if kind and kind.startswith('setting'): g.trace("settingsParser %10s %15s %s" %(kind,val,name))
-    d = self.settingsDict
-    bunch = d.get(key)
-    if bunch:
-        # g.trace(key,bunch.val,bunch.path)
-        path = bunch.path
-        if g.os_path_abspath(c.mFileName) != g.os_path_abspath(path):
-            g.es("over-riding setting: %s from %s" % (name,path))
-
-    # N.B.  We can't use c here: it may be destroyed!
-    d [key] = g.Bunch(path=c.mFileName,kind=kind,val=val,tag='setting')
-
-#@-node:ekr.20041120094940.9:set (parseBaseClass)
-#@+node:ekr.20070411101643:getOpenWith
-def getOpenWith (self,c):
-    
-    """Search all dictionaries for the setting & check it's type"""
-    
-    val = self.get(c,'openwithtable','openwithtable')
-    
-    return val
-#@-node:ekr.20070411101643:getOpenWith
-#@+node:ekr.20070411101643.1:doOpenWith (ParserBaseClass)
-def doOpenWith (self,p,kind,name,val):
-    
-    # g.trace('kind',kind,'name',name,'val',val,'c',self.c)
-    
-    d = self.parseOpenWith(p)
-    d['name']=name
-    d['shortcut']=val
-    name = kind = 'openwithtable'
-    self.openWithList.append(d)
-    self.set(p,kind,name,self.openWithList)
-#@-node:ekr.20070411101643.1:doOpenWith (ParserBaseClass)
-#@+node:ekr.20070411101643.2:parseOpenWith & helper
-def parseOpenWith (self,p):
-    
-    d = {'command': None,}
-
-    s = p.bodyString()
-    lines = g.splitLines(s)
-
-    for line in lines:
-        self.parseOpenWithLine(line,d)
-
-    return d
-#@+node:ekr.20070411101643.4:parseOpenWithLine
-def parseOpenWithLine (self,line,d):
-    
-    s = line.strip()
-    if not s: return
-
-    try:
-        s = str(s)
-    except UnicodeError:
-        pass
-    
-    if not g.match(s,0,'#'):
-        d['command'] = s
-#@-node:ekr.20070411101643.4:parseOpenWithLine
-#@-node:ekr.20070411101643.2:parseOpenWith & helper
-#@-node:ekr.20070411101643.3:Config stuff
-#@+node:ekr.20031218072017.2823:openWith and allies
-def openWith(self,event=None,data=None):
-
-    """This routine handles the items in the Open With... menu.
-
-    These items can only be created by createOpenWithMenuFromTable().
-    Typically this would be done from the "open2" hook.
-    
-    New in 4.3: The "os.spawnv" now works. You may specify arguments to spawnv
-    using a list, e.g.:
-        
-    openWith("os.spawnv", ["c:/prog.exe","--parm1","frog","--switch2"], None)
-    """
-    
-    c = self ; p = c.currentPosition()
-    n = data and len(data) or 0
-    if n != 3:
-        g.trace('bad data, length must be 3, got %d' % n)
-        return
-    try:
-        openType,arg,ext=data
-        if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
-            g.enableIdleTimeHook(idleTimeDelay=100)
-            << set ext based on the present language >>
-            << create or reopen temp file, testing for conflicting changes >>
-            << execute a command to open path in external editor >>
-        g.doHook("openwith2",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext)
-    except Exception:
-        g.es("unexpected exception in c.openWith")
-        g.es_exception()
-
-    return "break"
-#@+node:ekr.20031218072017.2824:<< set ext based on the present language >>
-if not ext:
-    theDict = g.scanDirectives(c)
-    language = theDict.get("language")
-    ext = g.app.language_extension_dict.get(language)
-    # print language,ext
-    if ext == None:
-        ext = "txt"
-    
-if ext[0] != ".":
-    ext = "."+ext
-    
-# print "ext",ext
-#@-node:ekr.20031218072017.2824:<< set ext based on the present language >>
-#@+node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
-theDict = None ; path = None
-<< set dict and path if a temp file already refers to p.v.t >>
-if path:
-    << create or recreate temp file as needed >>
-else:
-    path = c.createOpenWithTempFile(p,ext)
-
-if not path:
-    return # An error has occured.
-#@+node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
-searchPath = c.openWithTempFilePath(p,ext)
-
-if g.os_path_exists(searchPath):
-    for theDict in g.app.openWithFiles:
-        if p.v == theDict.get('v') and searchPath == theDict.get("path"):
-            path = searchPath
-            break
-#@-node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
-#@+node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
-@ We test for changes in both p and the temp file:
-
-- If only p's body text has changed, we recreate the temp file.
-- If only the temp file has changed, do nothing here.
-- If both have changed we must prompt the user to see which code to use.
-@c
-
-encoding = theDict.get("encoding")
-old_body = theDict.get("body")
-new_body = p.bodyString()
-new_body = g.toEncodedString(new_body,encoding,reportErrors=True)
-
-old_time = theDict.get("time")
-try:
-    new_time = g.os_path_getmtime(path)
-except:
-    new_time = None
-    
-body_changed = old_body != new_body
-temp_changed = old_time != new_time
-
-if body_changed and temp_changed:
-    << Raise dialog about conflict and set result >>
-    if result == "cancel": return
-    rewrite = result == "outline"
-else:
-    rewrite = body_changed
-        
-if rewrite:
-    path = c.createOpenWithTempFile(p,ext)
-else:
-    g.es("reopening: " + g.shortFileName(path),color="blue")
-#@+node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
-message = (
-    "Conflicting changes in outline and temp file\n\n" +
-    "Do you want to use the code in the outline or the temp file?\n\n")
-
-result = g.app.gui.runAskYesNoCancelDialog(c,
-    "Conflict!", message,
-    yesMessage = "Outline",
-    noMessage = "File",
-    defaultButton = "Cancel")
-#@-node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
-#@-node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
-#@-node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
-#@+node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
-try:
-    if arg == None: arg = ""
-    shortPath = path # g.shortFileName(path)
-    if openType == "os.system":
-        if 1:
-            # This works, _provided_ that arg does not contain blanks.  Sheesh.
-            command = 'os.system(%s)' % (arg+shortPath)
-            os.system(arg+shortPath)
-        else:
-            # XP does not like this format!
-            command = 'os.system("%s" "%s")' % (arg,shortPath)
-            os.system('"%s" "%s"' % (arg,shortPath))
-    elif openType == "os.startfile":
-        command = "os.startfile(%s)" % (arg+shortPath)
-        os.startfile(arg+path)
-    elif openType == "exec":
-        command = "exec(%s)" % (arg+shortPath)
-        exec arg+path in {}
-    elif openType == "os.spawnl":
-        filename = g.os_path_basename(arg)
-        command = "os.spawnl(%s,%s,%s)" % (arg,filename,path)
-        apply(os.spawnl,(os.P_NOWAIT,arg,filename,path))
-    elif openType == "os.spawnv":
-        filename = os.path.basename(arg[0]) 
-        vtuple = arg[1:]
-        vtuple.insert(0, filename)
-            # add the name of the program as the first argument.
-            # Change suggested by Jim Sizelove.
-        vtuple.append(path)
-        command = "os.spawnv(%s,%s)" % (arg[0],repr(vtuple))
-        apply(os.spawnv,(os.P_NOWAIT,arg[0],vtuple))
-    # This clause by Jim Sizelove.
-    elif openType == "subprocess.Popen":
-        if isinstance(arg, basestring):
-            vtuple = arg + " " + path
-        elif isinstance(arg, (list, tuple)):
-            vtuple = arg[:]
-            vtuple.append(path)
-        command = "subprocess.Popen(%s)" % repr(vtuple)
-        if subprocess:
-            subprocess.Popen(vtuple)
-        else:
-            g.grace('Can not import subprocess.  Skipping: "%s"' % command)
-    else:
-        command="bad command:"+str(openType)
-        g.trace(command)
-except Exception:
-    g.es("exception executing: "+command)
-    g.es_exception()
-#@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
-#@+node:ekr.20031218072017.2830:createOpenWithTempFile
-def createOpenWithTempFile (self,p,ext):
-    
-    c = self
-    path = c.openWithTempFilePath(p,ext)
-    try:
-        if g.os_path_exists(path):
-            g.es("recreating:  " + g.shortFileName(path),color="red")
-        else:
-            g.es("creating:  " + g.shortFileName(path),color="blue")
-        theFile = open(path,"w")
-        # Convert s to whatever encoding is in effect.
-        s = p.bodyString()
-        theDict = g.scanDirectives(c,p=p)
-        encoding = theDict.get("encoding",None)
-        if encoding == None:
-            encoding = c.config.default_derived_file_encoding
-        s = g.toEncodedString(s,encoding,reportErrors=True) 
-        theFile.write(s)
-        theFile.flush()
-        theFile.close()
-        try:    time = g.os_path_getmtime(path)
-        except: time = None
-        # g.es("time: " + str(time))
-        # New in 4.3: theDict now contains both 'p' and 'v' entries, of the expected type.
-        theDict = {
-            "body":s, "c":c, "encoding":encoding,
-            "f":theFile, "path":path, "time":time,
-            "p":p, "v":p.v }
-        << remove previous entry from app.openWithFiles if it exists >>
-        g.app.openWithFiles.append(theDict)
-        return path
-    except:
-        if theFile:
-            theFile.close()
-        theFile = None
-        g.es("exception creating temp file",color="red")
-        g.es_exception()
-        return None
-#@+node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
-for d in g.app.openWithFiles[:]:
-    p2 = d.get("p")
-    if p.v.t == p2.v.t:
-        # print "removing previous entry in g.app.openWithFiles for",p.headString()
-        g.app.openWithFiles.remove(d)
-#@-node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
-#@-node:ekr.20031218072017.2830:createOpenWithTempFile
-#@+node:ekr.20031218072017.2832:c.openWithTempFilePath
-def openWithTempFilePath (self,p,ext):
-    
-    """Return the path to the temp file corresponding to p and ext."""
-    
-    if 0: # new code: similar to code in mod_tempfname.py plugin.
-        try:
-            # At least in Windows, user name may contain special characters
-            # which would require escaping quotes.
-            leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
-        except:
-            leoTempDir = "LeoTemp"
-            g.es("Could not retrieve your user name.")
-            g.es("Temporary files will be stored in: %s" % leoTempDir)
-        
-        td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
-        if not os.path.exists(td):
-            os.mkdir(td)
-        
-        name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
-        path = os.path.join(td,name)
-        return path
-    else: # Original code.
-        name = "LeoTemp_%s_%s%s" % (
-            str(id(p.v.t)),
-            g.sanitize_filename(p.headString()),
-            ext)
-    
-        name = g.toUnicode(name,g.app.tkEncoding)
-    
-        if 1:
-            td = g.os_path_abspath(tempfile.gettempdir())
-        else:
-            td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
-    
-        path = g.os_path_join(td,name)
-    
-        return path
-#@-node:ekr.20031218072017.2832:c.openWithTempFilePath
-#@-node:ekr.20031218072017.2823:openWith and allies
-#@+node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
-def createOpenWithMenuFromTable (self,table):
-    
-    '''Entries in the table passed to createOpenWithMenuFromTable are
-tuples of the form (commandName,shortcut,data).
-
-- command is one of "os.system", "os.startfile", "os.spawnl", "os.spawnv" or "exec".
-- shortcut is a string describing a shortcut, just as for createMenuItemsFromTable.
-- data is a tuple of the form (command,arg,ext).
-
-Leo executes command(arg+path) where path is the full path to the temp file.
-If ext is not None, the temp file has the given extension.
-Otherwise, Leo computes an extension based on the @language directive in effect.'''
-
-    c = self.c
-    g.app.openWithTable = table # Override any previous table.
-    # Delete the previous entry.
-    parent = self.getMenu("File")
-    label = self.getRealMenuName("Open &With...")
-    amp_index = label.find("&")
-    label = label.replace("&","")
-    try:
-        index = parent.index(label)
-        parent.delete(index)
-    except:
-        try:
-            index = parent.index("Open With...")
-            parent.delete(index)
-        except: return
-    # Create the Open With menu.
-    openWithMenu = self.createOpenWithMenu(parent,label,index,amp_index)
-    self.setMenu("Open With...",openWithMenu)
-    # Create the menu items in of the Open With menu.
-    for entry in table:
-        if len(entry) != 3: # 6/22/03
-            g.es("createOpenWithMenuFromTable: invalid data",color="red")
-            return
-    self.createOpenWithMenuItemsFromTable(openWithMenu,table)
-    for entry in table:
-        name,shortcut,data = entry
-        c.k.bindOpenWith (shortcut,name,data)
-#@+node:ekr.20051022043608.1:createOpenWithMenuItemsFromTable
-def createOpenWithMenuItemsFromTable (self,menu,table):
-    
-    '''Create an entry in the Open with Menu from the table.
-    
-    Each entry should be a sequence with 2 or 3 elements.'''
-    
-    c = self.c ; k = c.k
-
-    if g.app.unitTesting: return
-
-    for data in table:
-        << get label, accelerator & command or continue >>
-        # g.trace(label,accelerator)
-        realLabel = self.getRealMenuName(label)
-        underline=realLabel.find("&")
-        realLabel = realLabel.replace("&","")
-        callback = self.defineOpenWithMenuCallback(openWithData)
-    
-        self.add_command(menu,label=realLabel,
-            accelerator=accelerator or '',
-            command=callback,underline=underline)
-#@+node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
-ok = (
-    type(data) in (type(()), type([])) and
-    len(data) in (2,3)
-)
-    
-if ok:
-    if len(data) == 2:
-        label,openWithData = data ; accelerator = None
-    else:
-        label,accelerator,openWithData = data
-        accelerator = k.shortcutFromSetting(accelerator)
-        accelerator = accelerator and g.stripBrackets(k.prettyPrintKey(accelerator))
-else:
-    g.trace('bad data in Open With table: %s' % repr(data))
-    continue # Ignore bad data
-#@-node:ekr.20051022043713.1:<< get label, accelerator & command or continue >>
-#@-node:ekr.20051022043608.1:createOpenWithMenuItemsFromTable
-#@-node:ekr.20031218072017.4116:createOpenWithMenuFromTable & helper
-#@+node:ekr.20061031131434.94:bindOpenWith
-def bindOpenWith (self,shortcut,name,data):
-    
-    '''Register an open-with command.'''
-    
-    k = self ; c = k.c
-    
-    # The first parameter must be event, and it must default to None.
-    def openWithCallback(event=None,c=c,data=data):
-        return c.openWith(data=data)
-
-    # Use k.registerCommand to set the shortcuts in the various binding dicts.
-    commandName = 'open-with-%s' % name.lower()
-    k.registerCommand(commandName,shortcut,openWithCallback,pane='all',verbose=False)
-#@-node:ekr.20061031131434.94:bindOpenWith
-#@-node:ekr.20060530130736.2:Added support for @openwith nodes
-#@+node:ekr.20070228055539:Added print-settings command
-#@+node:ekr.20070418073400:g.app.config.printSettings & helper
-def printSettings (self,c):
-
-    '''Prints the value of every setting, except key bindings and commands and open-with tables.
-    The following letters indicate where the active setting came from:
-    
-    - D indicates default settings.
-    - F indicates the file being loaded,
-    - L indicates leoSettings.leo,
-    - M indicates myLeoSettings.leo,
-    '''
-    
-    settings = {} # Keys are setting names, values are (letter,val)
-    
-    if c:
-        d = self.localOptionsDict.get(c.hash())
-        self.printSettingsHelper(settings,d,letter='[F]')
-
-    for d in self.localOptionsList:
-        self.printSettingsHelper(settings,d)
-
-    for d in self.dictList:
-        self.printSettingsHelper(settings,d)
-        
-    keys = settings.keys() ; keys.sort()
-    for key in keys:
-        data = settings.get(key)
-        letter,val = data
-        print '%45s = %s %s' % (key,letter,val)
-        g.es('%s %s = %s' % (letter,key,val))
-#@nonl
-#@+node:ekr.20070418075804:printSettingsHelper
-def printSettingsHelper(self,settings,d,letter=None):
-
-    suppressKind = ('shortcut','shortcuts','openwithtable')
-    suppressKeys = (None,'_hash','shortcut')
-    
-    if d:
-        << set letter >>
-        for key in d.keys():
-            if key not in suppressKeys and key not in settings.keys():
-                bunch = d.get(key)
-                if bunch.kind not in suppressKind:
-                    settings[key] = (letter,bunch.val)
-#@nonl
-#@+node:ekr.20070418084502:<< set letter >>
-hash = d.get('_hash').lower()
-
-if letter:
-    pass
-elif hash.endswith('myleosettings.leo'):
-    letter = '[M]'
-elif hash.endswith('leosettings.leo'):
-    letter = ' ' * 3
-else:
-    letter = '[D]'
-
-# g.trace(letter,hash)
-#@nonl
-#@-node:ekr.20070418084502:<< set letter >>
-#@-node:ekr.20070418075804:printSettingsHelper
-#@-node:ekr.20070418073400:g.app.config.printSettings & helper
-#@-node:ekr.20070228055539:Added print-settings command
-#@+node:ekr.20070427094856:Added print-plugins & print-plugin-handlers commands
-#@+node:ekr.20070429090122:printPlugins
-def printPlugins ():
-    
-    g.es_print('Enabled plugins...')
-    keys = loadedModules.keys()
-    keys = [s.lower() for s in keys]
-    keys.sort()
-    for key in keys:
-        g.es_print(key)
-#@-node:ekr.20070429090122:printPlugins
-#@-node:ekr.20070427094856:Added print-plugins & print-plugin-handlers commands
-#@+node:ekr.20070501094623:Added apropos-debugging-commands command
-#@-node:ekr.20070501094623:Added apropos-debugging-commands command
 #@-node:ekr.20070418094610:New features
 #@+node:ekr.20070418094610.1:Fixed bugs
 #@+node:ekr.20070417100138:Fixed bug: new-file doesn't allow edit of initial headline
@@ -31297,14 +31444,14 @@ def setupChaptersMenu (self,menu,command,theChapter):
 #@+node:ekr.20070317075059.1:tt.raise/lowerTab
 def lowerTab (self,tabName):
     
-    # g.trace(tabName)
+    g.trace(tabName)
     tt = self ; tab = tt.nb.tab(tabName)
     self.setUnselectColor(tab)
     tt.cc.unselectCallback(tabName)
 
 def raiseTab (self,tabName):
     
-    # g.trace(tabName)
+    g.trace(tabName)
     tt = self ; c = self.c ; tab = tt.nb.tab(tabName)
     w = c.frame.body and c.frame.body.bodyCtrl
     self.setSelectColor(tab)
@@ -31419,6 +31566,8 @@ def chapterSelectHelper (self,w):
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tree = tt.getTree(name)
+    
+    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
     
     if name == 'main':
         root = cc.mainRoot
@@ -32715,285 +32864,6 @@ def test_g_utils_rename():
 #@-node:ekr.20070504083945:Found: utils_rename
 #@-node:ekr.20070504081851:initing g.app.ivars
 #@-node:ekr.20070418094610.1:Fixed bugs
-#@+node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
-@ 
-
-- It is True by default. In effect, this setting was False in previous versions
-of Leo, which might be considered a bug.
-  
-- Fixed docs.
-#@nonl
-#@+node:ekr.20041005105605.161:putBody
-# oneNodeOnly is no longer used, but it might be used in the future?
-
-def putBody(self,p,oneNodeOnly=False,fromString=''):
-    
-    """ Generate the body enclosed in sentinel lines."""
-
-    at = self
-    
-    # New in 4.3 b2: get s from fromString if possible.
-    s = g.choose(fromString,fromString,p.bodyString())
-
-    p.v.t.setVisited() # Suppress orphans check.
-    p.v.setVisited() # Make sure v is never expanded again.
-    if not at.thinFile:
-        p.v.t.setWriteBit() # Mark the tnode to be written.
-    if not at.thinFile and not s: return
-
-    inCode = True
-    << Make sure all lines end in a newline >>
-    i = 0
-    while i < len(s):
-        next_i = g.skip_line(s,i)
-        assert(next_i > i)
-        kind = at.directiveKind4(s,i)
-        << handle line at s[i] >>
-        i = next_i
-    if not inCode:
-        at.putEndDocLine()
-    if at.sentinels and not trailingNewlineFlag:
-        at.putSentinel("@nonl")
-#@+node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
-@
-
-If we add a trailing newline, we'll generate an @nonl sentinel below.
-
-- We always ensure a newline in @file and @thin trees.
-- This code is not used used in @asis trees.
-- New in Leo 4.4.3 b1: We add a newline in @nosent trees unless
-  @bool force_newlines_in_at_nosent_bodies = False
-@c
-
-if s:
-    trailingNewlineFlag = s[-1] == '\n'
-    if (at.sentinels or at.force_newlines_in_at_nosent_bodies) and not trailingNewlineFlag:
-        # g.trace('Added newline',repr(s))
-        s = s + '\n'
-else:
-    trailingNewlineFlag = True # don't need to generate an @nonl
-#@-node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
-#@+node:ekr.20041005105605.163:<< handle line at s[i]  >>
-if kind == at.noDirective:
-    if not oneNodeOnly:
-        if inCode:
-            hasRef,n1,n2 = at.findSectionName(s,i)
-            if hasRef and not at.raw:
-                at.putRefLine(s,i,n1,n2,p)
-            else:
-                at.putCodeLine(s,i)
-        else:
-            at.putDocLine(s,i)
-elif kind in (at.docDirective,at.atDirective):
-    assert(not at.pending)
-    if not inCode: # Bug fix 12/31/04: handle adjacent doc parts.
-        at.putEndDocLine() 
-    at.putStartDocLine(s,i,kind)
-    inCode = False
-elif kind in (at.cDirective,at.codeDirective):
-    # Only @c and @code end a doc part.
-    if not inCode:
-        at.putEndDocLine() 
-    at.putDirective(s,i)
-    inCode = True
-elif kind == at.allDirective:
-    if not oneNodeOnly:
-        if inCode: at.putAtAllLine(s,i,p)
-        else: at.putDocLine(s,i)
-elif kind == at.othersDirective:
-    if not oneNodeOnly:
-        if inCode: at.putAtOthersLine(s,i,p)
-        else: at.putDocLine(s,i)
-elif kind == at.rawDirective:
-    at.raw = True
-    at.putSentinel("@@raw")
-elif kind == at.endRawDirective:
-    at.raw = False
-    at.putSentinel("@@end_raw")
-    i = g.skip_line(s,i)
-elif kind == at.miscDirective:
-    # g.trace('miscDirective')
-    at.putDirective(s,i)
-else:
-    assert(0) # Unknown directive.
-#@-node:ekr.20041005105605.163:<< handle line at s[i]  >>
-#@-node:ekr.20041005105605.161:putBody
-#@+node:ekr.20041005105605.174:putCodeLine
-def putCodeLine (self,s,i):
-    
-    """Put a normal code line."""
-    
-    at = self
-    
-    # Put @verbatim sentinel if required.
-    k = g.skip_ws(s,i)
-    if g.match(s,k,self.startSentinelComment + '@'):
-        self.putSentinel("@verbatim")
-
-    j = g.skip_line(s,i)
-    line = s[i:j]
-    
-    # g.trace('atRaw',at.raw,'line',repr(line),g.callers(4))
-
-    # c.config.write_strips_blank_lines
-    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
-        if line.strip(): # The line has non-empty content.
-            if not at.raw:
-                at.putIndent(at.indent)
-        
-            if line[-1:]=="\n":
-                at.os(line[:-1])
-                at.onl()
-            else:
-                at.os(line)
-        elif line and line[-1] == '\n':
-            at.onl()
-        else:
-            g.trace("Can't happen: completely empty line")
-    else:
-        # 1/29/04: Don't put leading indent if the line is empty!
-        if line and not at.raw:
-            at.putIndent(at.indent)
-    
-        if line[-1:]=="\n":
-            at.os(line[:-1])
-            at.onl()
-        else:
-            at.os(line)
-#@-node:ekr.20041005105605.174:putCodeLine
-#@-node:ekr.20070320065038:Added @bool force_newlines_in_at_nosent_bodies setting
-#@+node:ekr.20070420080132:Better focus handling when clicking headline
-# Tried and failed to improve things.  This logic is so tricky.
-#@nonl
-#@+node:ekr.20031218072017.2886:c.editHeadline
-def editHeadline (self,event=None):
-    
-    '''Begin editing the headline of the selected node.'''
-    
-    c = self ; k = c.k ; tree = c.frame.tree
-    
-    if g.app.batchMode:
-        c.notValidInBatchMode("Edit Headline")
-        return
-        
-    if k:
-        k.setDefaultUnboundKeyAction()
-        k.showStateAndMode()
-
-    tree.editLabel(c.currentPosition())
-#@-node:ekr.20031218072017.2886:c.editHeadline
-#@+node:ekr.20040803072955.127:tree.editLabel
-def editLabel (self,p,selectAll=False):
-    
-    """Start editing p's headline."""
-
-    c = self.c
-
-    if p and p != self.editPosition():
-        
-        if self.trace_edit and not g.app.unitTesting:
-            g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
-
-        c.beginUpdate()
-        try:
-            self.endEditLabel()
-        finally:
-            c.endUpdate(True)
-
-    self.setEditPosition(p) # That is, self._editPosition = p
-    
-    #g.trace(c.edit_widget(p))
-    
-    if p and c.edit_widget(p):
-        self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
-        self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
-        c.headlineWantsFocus(p) # Make sure the focus sticks.
-#@-node:ekr.20040803072955.127:tree.editLabel
-#@+node:ekr.20040803072955.87:onHeadlineClick
-def onHeadlineClick (self,event,p=None):
-    
-    # g.trace('p',p)
-    c = self.c ; w = event.widget
-    
-    if not p:
-        try:
-            p = w.leo_position
-        except AttributeError:
-            g.trace('*'*20,'oops')
-    if not p: return 'break'
-        
-    # g.trace(g.app.gui.widget_name(w)) #p.headString())
-    
-    c.setLog()
-
-    try:
-        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
-            returnVal = self.OnActivateHeadline(p)
-        g.doHook("headclick2",c=c,p=p,v=p,event=event)
-    except:
-        returnVal = 'break'
-        g.es_event_exception("headclick")
-
-    # 'continue' is sometimes correct here.
-    # 'break' would make it impossible to unselect the headline text.
-    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
-    return returnVal
-#@-node:ekr.20040803072955.87:onHeadlineClick
-#@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
-def OnActivateHeadline (self,p,event=None):
-    
-    '''Handle common process when any part of a headline is clicked.'''
-    
-    # g.trace(p.headString())
-    
-    returnVal = 'break' # Default: do nothing more.
-
-    try:
-        c = self.c
-        c.setLog()
-        << activate this window >>
-    except:
-        g.es_event_exception("activate tree")
-        
-    return returnVal
-#@+node:ekr.20040803072955.106:<< activate this window >>
-if p == c.currentPosition():
-    
-    # The *second* click in the headline starts editing.
-    if self.active:
-        #g.trace("click 2")
-        self.editLabel(p)
-        returnVal = 'continue'
-    else:
-        #g.trace("click 1")
-        # Set the focus immediately.  This is essential for proper editing.
-        c.treeWantsFocusNow()
-        returnVal = 'break'
-else:
-    #g.trace("not current")
-    self.select(p,scroll=False)
-    w  = c.frame.body.bodyCtrl
-    if c.frame.findPanel:
-        c.frame.findPanel.handleUserClick(p)
-    if p.v.t.insertSpot != None:
-        spot = p.v.t.insertSpot
-        w.setInsertPoint(spot)
-        w.see(spot)
-    else:
-        w.setInsertPoint(0)
-
-    # if self.stayInTree:
-        # c.treeWantsFocusNow()
-    # else:
-        # c.bodyWantsFocusNow()
-    c.treeFocusHelper()
-    returnVal = 'break'
-
-# The next click *in the same headline* will start editing.
-self.active = True
-#@-node:ekr.20040803072955.106:<< activate this window >>
-#@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
-#@-node:ekr.20070420080132:Better focus handling when clicking headline
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
 #@+node:ekr.20070126072723:Ran pychecker
 #@+node:ekr.20070316175013:Real bugs found
@@ -38097,7 +37967,7 @@ def unselect (self):
     c = self.c ; cc = self.cc
     self.hoistStack = c.hoistStack[:]
     self.p = c.currentPosition()
-    # g.trace('chapter','***',self.name,self.p.headString())
+    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
     
     # Restore the entire outline and
     # link the chapter's @chapter node into the entire outline.
@@ -38313,7 +38183,7 @@ def forceMainChapter (self):
     cc = self
     oldChapter = cc.getSelectedChapter()
 
-    if oldChapter.name != 'main':
+    if oldChapter and oldChapter.name != 'main':
         oldChapter.unselect()
         cc.selectChapter('main')
     
@@ -38349,6 +38219,8 @@ def chapterSelectHelper (self,w):
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tree = tt.getTree(name)
+    
+    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
     
     if name == 'main':
         root = cc.mainRoot
@@ -38497,13 +38369,13 @@ def findPositionInChapter (self,v):
             if not p.headString().startswith('@chapters'):
                 for p2 in p.self_and_subtree_iter():
                     if p2.v == v:
-                        # g.trace('*** found outside @chapters','v',p2.v)
+                        if self.trace: g.trace('*** found outside @chapters','v',p2.v)
                         return p2
     else:
         # Search only the @chapter tree.
         for p in self.root.self_and_subtree_iter():
             if p.v == v:
-                # g.trace('*** found in chapter',p)
+                if self.trace: g.trace('*** found in chapter',p)
                 return p
     
     self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
@@ -38576,7 +38448,7 @@ def forceMainChapter (self):
     cc = self
     oldChapter = cc.getSelectedChapter()
 
-    if oldChapter.name != 'main':
+    if oldChapter and oldChapter.name != 'main':
         oldChapter.unselect()
         cc.selectChapter('main')
     
@@ -38694,12 +38566,15 @@ def link (self):
     '''Link the chapter's @chapter node back into the full outline.'''
 
     b = self.unlinkData ; c = self.c ; cc = self.cc
-    assert(b)
-    c.setRootPosition(cc.mainRoot) # Restore the main outline.
-    parent = cc.chaptersNode
-    n,root = b.childIndex,b.root
-    root.linkAsNthChild(parent,n)
-    self.unlinkData = None
+    if self.trace: g.trace('chapter',self.name,'unlinkData',b)
+    if b:
+        c.setRootPosition(cc.mainRoot) # Restore the main outline.
+        parent = cc.chaptersNode
+        n,root = b.childIndex,b.root
+        root.linkAsNthChild(parent,n)
+        self.unlinkData = None
+    else:
+        g.trace('**** no unlinkData')
     
 def unlink (self):
     
@@ -38713,7 +38588,7 @@ def unlink (self):
 
     # Remember the data.
     self.unlinkData = g.Bunch(childIndex=root.childIndex(),root=root)
-    # g.trace('chapter',root.headString())
+    if self.trace: g.trace('chapter',self.name,'unlinkData',self.unlinkData)
     root.moveToRoot(oldRoot=None)
    
 #@nonl
@@ -38807,13 +38682,13 @@ def findPositionInChapter (self,v):
             if not p.headString().startswith('@chapters'):
                 for p2 in p.self_and_subtree_iter():
                     if p2.v == v:
-                        # g.trace('*** found outside @chapters','v',p2.v)
+                        if self.trace: g.trace('*** found outside @chapters','v',p2.v)
                         return p2
     else:
         # Search only the @chapter tree.
         for p in self.root.self_and_subtree_iter():
             if p.v == v:
-                # g.trace('*** found in chapter',p)
+                if self.trace: g.trace('*** found in chapter',p)
                 return p
     
     self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))

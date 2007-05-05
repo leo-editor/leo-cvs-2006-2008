@@ -620,7 +620,7 @@ class chapter:
         '''Link the chapter's @chapter node back into the full outline.'''
     
         b = self.unlinkData ; c = self.c ; cc = self.cc
-        if self.trace: g.trace('chapter',self.name,'b',b)
+        if self.trace: g.trace('chapter',self.name,'unlinkData',b)
         if b:
             c.setRootPosition(cc.mainRoot) # Restore the main outline.
             parent = cc.chaptersNode
@@ -628,7 +628,7 @@ class chapter:
             root.linkAsNthChild(parent,n)
             self.unlinkData = None
         else:
-            g.trace('**** no b')
+            g.trace('**** no unlinkData')
         
     def unlink (self):
         
@@ -642,7 +642,7 @@ class chapter:
     
         # Remember the data.
         self.unlinkData = g.Bunch(childIndex=root.childIndex(),root=root)
-        if self.trace: g.trace('chapter',self.name,'b',b)
+        if self.trace: g.trace('chapter',self.name,'unlinkData',self.unlinkData)
         root.moveToRoot(oldRoot=None)
        
     #@nonl
