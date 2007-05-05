@@ -3091,14 +3091,14 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@+node:ekr.20070317075059.1:tt.raise/lowerTab
     def lowerTab (self,tabName):
         
-        # g.trace(tabName)
+        g.trace(tabName)
         tt = self ; tab = tt.nb.tab(tabName)
         self.setUnselectColor(tab)
         tt.cc.unselectCallback(tabName)
     
     def raiseTab (self,tabName):
         
-        # g.trace(tabName)
+        g.trace(tabName)
         tt = self ; c = self.c ; tab = tt.nb.tab(tabName)
         w = c.frame.body and c.frame.body.bodyCtrl
         self.setSelectColor(tab)
