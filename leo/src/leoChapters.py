@@ -440,7 +440,7 @@ class chapterController:
         cc = self
         oldChapter = cc.getSelectedChapter()
     
-        if oldChapter.name != 'main':
+        if oldChapter and oldChapter.name != 'main':
             oldChapter.unselect()
             cc.selectChapter('main')
         
@@ -595,6 +595,7 @@ class chapter:
         self.p = p.copy() # The current position...
         self.root = root and root.copy() # The immutable @chapter node (not used for the main chapter).
         self.selectLockout = False # True: in chapter.select logic.
+        self.trace = True
         self.unlinkData = None # Used to link the @chapter node back into the outline.
     #@-node:ekr.20070317085708.1: ctor: chapter
     #@+node:ekr.20070317085708.2:__str__ and __repr__(chapter)
@@ -619,12 +620,15 @@ class chapter:
         '''Link the chapter's @chapter node back into the full outline.'''
     
         b = self.unlinkData ; c = self.c ; cc = self.cc
-        assert(b)
-        c.setRootPosition(cc.mainRoot) # Restore the main outline.
-        parent = cc.chaptersNode
-        n,root = b.childIndex,b.root
-        root.linkAsNthChild(parent,n)
-        self.unlinkData = None
+        if self.trace: g.trace('chapter',self.name,'b',b)
+        if b:
+            c.setRootPosition(cc.mainRoot) # Restore the main outline.
+            parent = cc.chaptersNode
+            n,root = b.childIndex,b.root
+            root.linkAsNthChild(parent,n)
+            self.unlinkData = None
+        else:
+            g.trace('**** no b')
         
     def unlink (self):
         
@@ -638,7 +642,7 @@ class chapter:
     
         # Remember the data.
         self.unlinkData = g.Bunch(childIndex=root.childIndex(),root=root)
-        # g.trace('chapter',root.headString())
+        if self.trace: g.trace('chapter',self.name,'b',b)
         root.moveToRoot(oldRoot=None)
        
     #@nonl
@@ -663,6 +667,8 @@ class chapter:
         # The big switcharoo.
         c.frame.canvas = canvas = tt.getCanvas(name)
         c.frame.tree = tree = tt.getTree(name)
+        
+        if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
         
         if name == 'main':
             root = cc.mainRoot
@@ -727,13 +733,13 @@ class chapter:
                 if not p.headString().startswith('@chapters'):
                     for p2 in p.self_and_subtree_iter():
                         if p2.v == v:
-                            # g.trace('*** found outside @chapters','v',p2.v)
+                            if self.trace: g.trace('*** found outside @chapters','v',p2.v)
                             return p2
         else:
             # Search only the @chapter tree.
             for p in self.root.self_and_subtree_iter():
                 if p.v == v:
-                    # g.trace('*** found in chapter',p)
+                    if self.trace: g.trace('*** found in chapter',p)
                     return p
         
         self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
@@ -767,7 +773,7 @@ class chapter:
         c = self.c ; cc = self.cc
         self.hoistStack = c.hoistStack[:]
         self.p = c.currentPosition()
-        # g.trace('chapter','***',self.name,self.p.headString())
+        if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
         
         # Restore the entire outline and
         # link the chapter's @chapter node into the entire outline.
