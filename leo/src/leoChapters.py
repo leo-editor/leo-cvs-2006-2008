@@ -375,7 +375,7 @@ class chapterController:
         
         chapter = cc.chaptersDict.get(chapterName)
     
-        if chpater:
+        if chapter:
             c.beginUpdate()
             try:
                 c.setCurrentPosition(chapter.root)
@@ -595,7 +595,7 @@ class chapter:
         self.p = p.copy() # The current position...
         self.root = root and root.copy() # The immutable @chapter node (not used for the main chapter).
         self.selectLockout = False # True: in chapter.select logic.
-        self.trace = True
+        self.trace = False
         self.unlinkData = None # Used to link the @chapter node back into the outline.
     #@-node:ekr.20070317085708.1: ctor: chapter
     #@+node:ekr.20070317085708.2:__str__ and __repr__(chapter)
