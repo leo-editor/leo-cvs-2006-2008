@@ -2910,6 +2910,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         self.canvasDict = {} # values are Tk.Canvas's.
         self.chapterDict = {} # values are chapters.
         self.stringVarDict = {} # values are Tk.StringVars.
+        self.trace = False
         self.treeDict = {} # values are tkTrees.
     
         self.createControl()
@@ -2940,9 +2941,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@-node:ekr.20070320090557.1: Birth & death
     #@+node:ekr.20070317082315:tt.getters
     def getButton (self,tabName):
-    
         tt = self
-    
         if tabName in tt.tabNames:
             return tt.nb.tab(tabName) # A Tk.Button.
         else:
@@ -2952,20 +2951,18 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         return self.canvasDict.get(tabName) # A Tk.Canvas
     
     def getFrame (self,tabName):
-    
         tt = self
-    
         if tabName in tt.tabNames:
             return tt.nb.page(tabName) # A Tk.Frame
         else:
             return None
     
     def getSelectedTabName (self):
-    
-        return self.nb.getcurselection() # An immutable tab name.
+        name = self.nb.getcurselection() # An immutable tab name.
+        if self.trace: g.trace(name)
+        return name
     
     def getTree (self,tabName):
-        
         return self.treeDict.get(tabName) # A leoTkinterTree.
     #@-node:ekr.20070317082315:tt.getters
     #@+node:ekr.20070320093038:Tabs...
@@ -3091,14 +3088,14 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     #@+node:ekr.20070317075059.1:tt.raise/lowerTab
     def lowerTab (self,tabName):
         
-        g.trace(tabName)
+        if self.trace: g.trace(tabName)
         tt = self ; tab = tt.nb.tab(tabName)
         self.setUnselectColor(tab)
         tt.cc.unselectCallback(tabName)
     
     def raiseTab (self,tabName):
         
-        g.trace(tabName)
+        if self.trace: g.trace(tabName)
         tt = self ; c = self.c ; tab = tt.nb.tab(tabName)
         w = c.frame.body and c.frame.body.bodyCtrl
         self.setSelectColor(tab)
