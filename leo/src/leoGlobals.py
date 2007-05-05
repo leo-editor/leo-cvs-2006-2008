@@ -2208,8 +2208,8 @@ def enable_gc_debug(event=None):
                 gc.DEBUG_OBJECTS |
                 gc.DEBUG_SAVEALL
             )
-        else:
-            gc.set_debug(gc.DEBUG_STATS)
+        # else:
+            # gc.set_debug(gc.DEBUG_STATS)
     elif not no_gc_message:
         no_gc_message = True
         g.es('Can not import gc module',color='blue')
