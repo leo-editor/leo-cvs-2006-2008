@@ -754,7 +754,7 @@ class chapter:
     
         w = c.frame.body.findEditorForChapter(chapter,p)
         w.leo_chapter = chapter
-        w.leo_p = p.copy()
+        w.leo_p = p and p.copy()
         return w
     #@nonl
     #@-node:ekr.20070425175522:chapter.findEditorInChapter
