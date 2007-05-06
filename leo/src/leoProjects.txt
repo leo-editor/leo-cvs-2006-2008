@@ -33130,6 +33130,31 @@ def yviewCallback (self,*args,**keys):
 #@-node:ekr.20031218072017.998:Scrolling callbacks (tkFrame)
 #@-node:ekr.20041221071131.1:f.createTkTreeCanvas & callbacks
 #@-node:ekr.20070506074557:Fixed crash when deleting a chapter
+#@+node:ekr.20070319185656:Fixed minor chapter hoist bug
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4215654
+By: rogererens
+
+There's a bug with ordinary hoisting: in the "Outline" menu the "Delete Node"
+menu item is not disabled when the local root is selected.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2960:canCutOutline & canDeleteHeadline
+def canDeleteHeadline (self):
+    
+    c = self ; p = c.currentPosition()
+    
+    if c.hoistStack:
+         bunch = c.hoistStack[0]
+         if p == bunch.p: return False
+
+    return p.hasParent() or p.hasThreadBack() or p.hasNext()
+
+canCutOutline = canDeleteHeadline
+#@-node:ekr.20031218072017.2960:canCutOutline & canDeleteHeadline
+#@-node:ekr.20070319185656:Fixed minor chapter hoist bug
 #@-node:ekr.20070418094610.1:Fixed bugs
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
 #@+node:ekr.20070126072723:Ran pychecker
