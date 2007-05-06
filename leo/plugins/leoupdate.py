@@ -16,7 +16,7 @@ a CVS client.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.1"
+__version__ = "0.2"
 __plugin_name__ = "Leo Update"
 __plugin_priority__ = 100
 __plugin_group__ = "Core"
@@ -41,8 +41,8 @@ sets = g.importExtension('sets',pluginName=__name__,verbose=True)
 #@@killcolor
 #@+at
 # 
-# 0.1 Paul Paterson:
-#     - Initial version
+# 0.1 Paul Paterson: Initial version.
+# 0.2 EKR: Added c arg to topLevelMenu.
 #@-at
 #@-node:pap.20050605183206.3:<< version history >>
 #@nl
@@ -106,7 +106,7 @@ def onCreate (tag, keys):
 #@+node:pap.20050605183206.8:topLevelMenu
 # This is called from plugins_menu plugin.
 
-def topLevelMenu():   
+def topLevelMenu(c):   
     """Manage the tree handlers"""
     global thePluginController    
     thePluginController.showManagerDialog()
