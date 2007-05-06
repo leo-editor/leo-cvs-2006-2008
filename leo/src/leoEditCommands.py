@@ -1818,9 +1818,9 @@ class editCommandsClass (baseEditCommandsClass):
             self.store ['stext'] = txt
             self.store ['rlist'] = rlist = []
             self.getDynamicList(w,txt,rlist)
-            if not rlist: return
-            txt = rlist.pop()
-            doDa(txt)
+            if rlist:
+                txt = rlist.pop()
+                doDa(txt)
     #@-node:ekr.20050920084036.59:dynamicExpansion LATER
     #@+node:ekr.20050920084036.60:dynamicExpansion2 LATER
     def dynamicExpansion2 (self,event):
@@ -1836,10 +1836,11 @@ class editCommandsClass (baseEditCommandsClass):
         txt = w.get(i,i2)
         rlist = []
         self.getDynamicList(w,txt,rlist)
-        dEstring = reduce(g.longestCommonPrefix,rlist)
-        if dEstring:
-            w.delete(i,i2)
-            w.insert(i,dEstring)
+        if rlist:
+            dEstring = reduce(g.longestCommonPrefix,rlist)
+            if dEstring:
+                w.delete(i,i2)
+                w.insert(i,dEstring)
     #@-node:ekr.20050920084036.60:dynamicExpansion2 LATER
     #@+node:ekr.20050920084036.61:getDynamicList (helper)
     def getDynamicList (self,w,txt,rlist):
