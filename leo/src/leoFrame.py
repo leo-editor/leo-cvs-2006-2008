@@ -925,12 +925,13 @@ class leoBody:
         d = self.editorWidgets ; values = d.values()
     
         # First, try to match both the chapter and position.
-        for w in values:
-            if (
-                hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
-                hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
-                # g.trace('***',id(w),'match chapter and p',p.headString())
-                return w
+        if p:
+            for w in values:
+                if (
+                    hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
+                    hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
+                    # g.trace('***',id(w),'match chapter and p',p.headString())
+                    return w
                 
         # Next, try to match just the chapter.
         for w in values:
