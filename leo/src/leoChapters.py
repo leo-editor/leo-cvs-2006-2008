@@ -9,6 +9,10 @@
 import leoGlobals as g
 import leoNodes
 
+# To do: later or never:
+# - Create commands to choose chapters.
+# - Make body editors persistent. Create @body-editor node?
+
 #@+others
 #@+node:ekr.20070317085437:class chapterController
 class chapterController:
@@ -28,6 +32,7 @@ class chapterController:
         self.mainRoot = None # Set later
         self.selectedChapter = None
         self.tabNames = []
+        self.trace = False
         self.tt = None # Set in finishCreate.
         
     #@nonl
@@ -107,7 +112,8 @@ class chapterController:
             if not cc.chaptersDict.get(tabName):
                 p = c.currentPosition()
                 cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=None)
-    
+                
+        cc.selectChapter('main')
         cc.inited = True
     #@-node:ekr.20070325104904:cc.makeTrees
     #@+node:ekr.20070317085437.30:Chapter commands
@@ -443,8 +449,8 @@ class chapterController:
         
         cc.linkChaptersNode()
             
-        # g.trace('-----',oldChapter.name)
-        return oldChapter.name
+        if self.trace: g.trace('-----',oldChapter and oldChapter.name or '<no chapter>')
+        return oldChapter and oldChapter.name
     #@-node:ekr.20070421092158:cc.forceMainChapter
     #@+node:ekr.20070325115102:cc.getChaperNode
     def getChapterNode (self,chapterName):
@@ -477,12 +483,11 @@ class chapterController:
     def getSelectedChapter (self):
     
         cc = self
-    
-        if cc.selectedChapter:
-            return cc.selectedChapter
-        else:
-            tabName = cc.tt.nb.getcurselection()
-            return cc.chaptersDict.get(tabName)
+        
+        tabName = cc.tt.nb.getcurselection()
+        theChapter = cc.chaptersDict.get(tabName) or cc.selectedChapter
+        if self.trace: g.trace(theChapter and theChapter.name or '<no chapter>')
+        return theChapter
     #@-node:ekr.20070318122708:cc.getSelectedChapter
     #@+node:ekr.20070503083301:cc.linkChaptersNode
     def linkChaptersNode (self):
@@ -771,8 +776,6 @@ class chapter:
             cc.mainRoot = c.rootPosition()
         else:
             self.link()
-            
-        cc.selectedChapter = None
     #@-node:ekr.20070320091806.1:chapter.unselect
     #@-others
 #@nonl
