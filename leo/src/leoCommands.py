@@ -5908,6 +5908,10 @@ class baseCommands:
     def canDeleteHeadline (self):
         
         c = self ; p = c.currentPosition()
+        
+        if c.hoistStack:
+             bunch = c.hoistStack[0]
+             if p == bunch.p: return False
     
         return p.hasParent() or p.hasThreadBack() or p.hasNext()
     
