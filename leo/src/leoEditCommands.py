@@ -3982,25 +3982,25 @@ class editCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
     def scrollOutlineDownLine (self,event=None):
         '''Scroll the outline pane down one line.'''
-        a,b = self.c.frame.treeBar.get()
+        a,b = self.c.frame.canvas.leo_treeBar.get()
         if b < 1.0:
             self.c.frame.tree.canvas.yview_scroll(1,"unit")
         
     def scrollOutlineDownPage (self,event=None):
         '''Scroll the outline pane down one page.'''
-        a,b = self.c.frame.treeBar.get()
+        a,b = self.c.frame.canvas.leo_treeBar.get()
         if b < 1.0:
             self.c.frame.tree.canvas.yview_scroll(1,"page")
     
     def scrollOutlineUpLine (self,event=None):
         '''Scroll the outline pane up one line.'''
-        a,b = self.c.frame.treeBar.get()
+        a,b = self.c.frame.canvas.leo_treeBar.get()
         if a > 0.0:
             self.c.frame.tree.canvas.yview_scroll(-1,"unit")
     
     def scrollOutlineUpPage (self,event=None):
         '''Scroll the outline pane up one page.'''
-        a,b = self.c.frame.treeBar.get()
+        a,b = self.c.frame.canvas.leo_treeBar.get()
         if a > 0.0:
             self.c.frame.tree.canvas.yview_scroll(-1,"page")
     #@-node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page

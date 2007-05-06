@@ -409,7 +409,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         self.statusLabel = None 
         self.top = None
         self.tree = None
-        self.treeBar = None
+        # self.treeBar = None # Replaced by injected frame.canvas.leo_treeBar.
         
         # Used by event handlers...
         self.controlKeyIsDown = False # For control-drags
@@ -575,7 +575,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     
         return canvas
     #@nonl
-    #@+node:ekr.20041221071131.1:f.createTkTreeCanvas
+    #@+node:ekr.20041221071131.1:f.createTkTreeCanvas & callbacks
     def createTkTreeCanvas (self,parentFrame,scrolls,pack):
         
         frame = self
@@ -583,7 +583,10 @@ class leoTkinterFrame (leoFrame.leoFrame):
         canvas = Tk.Canvas(parentFrame,name="canvas",
             bd=0,bg="white",relief="flat")
     
-        frame.treeBar = treeBar = Tk.Scrollbar(parentFrame,name="treeBar")
+        treeBar = Tk.Scrollbar(parentFrame,name="treeBar")
+        
+        # New in Leo 4.4.3 b1: inject the ivar into the canvas.
+        canvas.leo_treeBar = treeBar
         
         # Bind mouse wheel event to canvas
         if sys.platform != "win32": # Works on 98, crashes on XP.
@@ -671,7 +674,33 @@ class leoTkinterFrame (leoFrame.leoFrame):
         
         # g.print_bindings("canvas",canvas)
         return canvas
-    #@-node:ekr.20041221071131.1:f.createTkTreeCanvas
+    #@+node:ekr.20031218072017.998:Scrolling callbacks (tkFrame)
+    def setCallback (self,*args,**keys):
+        
+        """Callback to adjust the scrollbar.
+        
+        Args is a tuple of two floats describing the fraction of the visible area."""
+    
+        #g.trace(self.tree.redrawCount,args,g.callers())
+    
+        apply(self.canvas.leo_treeBar.set,args,keys)
+    
+        if self.tree.allocateOnlyVisibleNodes:
+            self.tree.setVisibleArea(args)
+    
+    def yviewCallback (self,*args,**keys):
+        
+        """Tell the canvas to scroll"""
+        
+        #g.trace(vyiewCallback,args,keys,g.callers())
+    
+        if self.tree.allocateOnlyVisibleNodes:
+            self.tree.allocateNodesBeforeScrolling(args)
+    
+        apply(self.canvas.yview,args,keys)
+    #@nonl
+    #@-node:ekr.20031218072017.998:Scrolling callbacks (tkFrame)
+    #@-node:ekr.20041221071131.1:f.createTkTreeCanvas & callbacks
     #@+node:ekr.20070327094252:f.setCanvasColorFromConfig
     def setCanvasColorFromConfig (self,canvas):
         
@@ -839,31 +868,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             pane2.place(rely=0.5, relx = 1.0, anchor="e", relheight=1.0, relwidth=1.0-adj)
             bar.place  (rely=0.5, relx = adj, anchor="c", relheight=1.0)
     #@-node:ekr.20031218072017.3952:placeSplitter
-    #@+node:ekr.20031218072017.998:Scrolling callbacks (frame)
-    def setCallback (self,*args,**keys):
-        
-        """Callback to adjust the scrollbar.
-        
-        Args is a tuple of two floats describing the fraction of the visible area."""
-    
-        #g.trace(self.tree.redrawCount,args,g.callers())
-    
-        apply(self.treeBar.set,args,keys)
-    
-        if self.tree.allocateOnlyVisibleNodes:
-            self.tree.setVisibleArea(args)
-            
-    def yviewCallback (self,*args,**keys):
-        
-        """Tell the canvas to scroll"""
-        
-        #g.trace(vyiewCallback,args,keys,g.callers())
-    
-        if self.tree.allocateOnlyVisibleNodes:
-            self.tree.allocateNodesBeforeScrolling(args)
-    
-        apply(self.canvas.yview,args,keys)
-    #@-node:ekr.20031218072017.998:Scrolling callbacks (frame)
     #@-node:ekr.20041221123325:tkFrame.createLeoSplitters & helpers
     #@+node:ekr.20031218072017.3964:Destroying the tkFrame
     #@+node:ekr.20031218072017.1975:destroyAllObjects
@@ -2914,7 +2918,6 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         self.treeDict = {} # values are tkTrees.
     
         self.createControl()
-    
     #@-node:ekr.20070317073819.1: ctor (leoTreeTab)
     #@+node:ekr.20070317073819.2:tt.createControl
     def createControl (self):

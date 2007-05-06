@@ -1330,7 +1330,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 #@nl
                 #@            << Compute the fractions to scroll down/up >>
                 #@+node:ekr.20040803072955.67:<< Compute the fractions to scroll down/up >>
-                data = frame.treeBar.get() # Get the previous values of the scrollbar.
+                data = frame.canvas.leo_treeBar.get() # Get the previous values of the scrollbar.
                 try: lo, hi = data
                 except: lo,hi = 0.0,1.0
                 
@@ -1690,7 +1690,7 @@ class leoTkinterTree (leoFrame.leoTree):
                 h = canvas.winfo_height()
                 
                 if y < 0 or y > h:
-                    lo, hi = frame.treeBar.get()
+                    lo, hi = frame.canvas.leo_treeBar.get()
                     n = self.savedNumberOfVisibleNodes
                     line_frac = 1.0 / float(n)
                     frac = g.choose(y < 0, lo - line_frac, lo + line_frac)
@@ -1700,7 +1700,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     canvas.yview("moveto", frac)
                     
                     # Queue up another event to keep scrolling while the cursor is outside the canvas.
-                    lo, hi = frame.treeBar.get()
+                    lo, hi = frame.canvas.leo_treeBar.get()
                     if (y < 0 and lo > 0.1) or (y > h and hi < 0.9):
                         canvas.after_idle(self.onContinueDrag,None) # Don't propagate the event.
                 #@-node:ekr.20040803072955.101:<< scroll the canvas as needed >>
