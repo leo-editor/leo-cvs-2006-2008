@@ -2,14 +2,17 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.477644492912">
-	<global_window_position top="10" left="385" height="917" width="867"/>
+<globals body_outline_ratio="0.506063947078">
+	<global_window_position top="33" left="272" height="907" width="966"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20051031040240" str_leo_pos="9"><vh>Buttons, commands &amp; scripts</vh>
+<v t="ekr.20070503103015"><vh>@chapters</vh>
+<v t="ekr.20070503103015.1" a="E"><vh>@chapter trash</vh></v>
+</v>
+<v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
 <v t="ekr.20060531093331"><vh>@command clones-tab</vh>
 <v t="ekr.20060531093331.1"><vh>class cloneNavigator</vh>
 <v t="ekr.20060531093331.2"><vh>init</vh></v>
@@ -25,6 +28,9 @@
 <v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
 <v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
 </v>
+<v t="ekr.20070326080447"><vh>@settings</vh>
+<v t="ekr.20070326080447.1"><vh>@bool use_chapters = True</vh></v>
+</v>
 </v>
 <v t="EKR.20040430162943"><vh>Notes</vh>
 <v t="ekr.20060217111834"><vh>@url http://docs.python.org/lib/re-syntax.html</vh></v>
@@ -33,16 +39,15 @@
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"
-marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20031218072017.2176,ekr.20051009045208,ekr.20050921103736,ekr.20031218072017.3803,ekr.20070202105914,ekr.20031218072017.2995,ekr.20031218072017.2996,"><vh>@thin leoProjects.txt</vh></v>
+marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20031218072017.2176,ekr.20051009045208,ekr.20050921103736,ekr.20031218072017.3803,ekr.20070202105914,ekr.20060528100747,ekr.20051019134106.1,ekr.20070317073819.1,ekr.20070317082315,ekr.20070317074824,ekr.20031218072017.1975,ekr.20031218072017.998,ekr.20040701065235.2,ekr.20070503081539,"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
+<v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"
-marks="ekr.20031218072017.2176,ekr.20051009045208,ekr.20070317085437.41,ekr.20070228055539,ekr.20070302164343,ekr.20070324084040.16,ekr.20070324084040.9,ekr.20070324084040.21,ekr.20070324084040.26,ekr.20070324084040.27,ekr.20061028211424.46,ekr.20061028211424.47,ekr.20061028211424.50,ekr.20061028211424.52,ekr.20061028070057.22,ekr.20061028070057.37,ekr.20061028070057.54,ekr.20061028070057.55,"
-expanded="ekr.20070320090010,"><vh>@thin ../doc/leoToDo.txt</vh></v>
+marks="ekr.20031218072017.1975,ekr.20070324084040.16,ekr.20070324084040.9,ekr.20070324084040.21,ekr.20070324084040.26,ekr.20070324084040.27,ekr.20061028211424.46,ekr.20061028211424.47,ekr.20061028211424.50,ekr.20061028211424.52,ekr.20061028070057.22,ekr.20061028070057.37,ekr.20061028070057.54,ekr.20061028070057.55,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"
 marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
+<v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -57,11 +62,11 @@ marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 marks="ekr.20041005105605.52,ekr.20041005105605.198,"><vh>@thin leoAtFile.py</vh></v>
 <v t="ekr.20070227091955.1"><vh>@thin leoBridge.py</vh></v>
 <v t="ekr.20070317085508.1"
-marks="ekr.20070317085437.40,ekr.20070317085437.41,"><vh>@thin leoChapters.py</vh></v>
+marks="ekr.20070317085437.31,ekr.20070317085437.40,ekr.20070317085437.41,ekr.20070503081539,"><vh>@thin leoChapters.py</vh></v>
 <v t="ekr.20031218072017.2794"
 marks="ekr.20031218072017.1607,ekr.20031218072017.1896,ekr.20031218072017.2803,"><vh>@thin leoColor.py</vh></v>
 <v t="ekr.20031218072017.2810"
-marks="ekr.20040629121554.1,ekr.20040629121554.2,ekr.20031218072017.2995,ekr.20031218072017.2996,"><vh>@thin leoCommands.py</vh></v>
+marks="ekr.20040629121554.1,ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
 <v t="ekr.20050710142719"
 marks="ekr.20050920084036.138,"><vh>@thin leoEditCommands.py</vh></v>
@@ -86,7 +91,7 @@ marks="ekr.20031218072017.3601,"><vh>@thin leoTangle.py</vh></v>
 <v t="ekr.20060123151617"
 marks="ekr.20031218072017.3070,ekr.20051113110851,ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,"><vh>@thin leoFind.py</vh></v>
 <v t="ekr.20031218072017.3655"
-marks="ekr.20051026083544.2,"><vh>@thin leoFrame.py</vh></v>
+marks="ekr.20060528100747,ekr.20051026083544.2,"><vh>@thin leoFrame.py</vh></v>
 <v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
 <v t="ekr.20061031131434"><vh>@thin leoKeys.py</vh></v>
 <v t="ekr.20031218072017.3749"
@@ -97,7 +102,7 @@ marks="ekr.20050921103736,ekr.20031218072017.3803,"><vh>@thin leoMenu.py</vh></v
 <v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
 <v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
 <v t="ekr.20031218072017.3939"
-marks="ekr.20031218072017.2176,ekr.20051009045208,"><vh>@thin leoTkinterFrame.py</vh></v>
+marks="ekr.20031218072017.2176,ekr.20051009045208,ekr.20031218072017.998,ekr.20031218072017.1975,ekr.20051019134106.1,ekr.20070317073819.1,ekr.20070317082315,ekr.20070317074824,"><vh>@thin leoTkinterFrame.py</vh></v>
 <v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
 <v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
 <v t="ekr.20031218072017.4100"
@@ -119,7 +124,7 @@ Leo's code uses the following conventions throughout:
 
 c:  a commander
 ch: a character
-d:  a dialog or a dict.
+ d:  a dialog or a dict.
 g:  the leoGlobal module.
 i, j, k: indices into a string
 p:  a position.
@@ -346,5 +351,7 @@ if g.os_path_exists(path):
 else:
     g.es_print('not found: %s' % path)</t>
 <t tx="ekr.20070201082722">c.prettyPrintPythonNode()</t>
+<t tx="ekr.20070326080447"></t>
+<t tx="ekr.20070326080447.1"></t>
 </tnodes>
 </leo_file>

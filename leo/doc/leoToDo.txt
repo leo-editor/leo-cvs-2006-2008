@@ -90,29 +90,7 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070426092031:Consider another way to compute home directory
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4281562
-By: ktenney
-
-I don't know if this is a resolved issue, here's another approach,
-looks like a good one.
-
-email link
-http://murl.se/24201
-
-python.org os.path doc
-http://murl.se/24202
-
->>> import os
->>> lin_key, win_key = "home", "Documents"
->>> homedir = os.path.expanduser('~')
->>> if os.name == 'nt': os_key = win_key
->>> if os.name == 'posix': os_key = lin_key
->>> print homedir.find(os_key) > -1
-True
-
-#@-node:ekr.20070426092031:Consider another way to compute home directory
+#@+node:ekr.20070505121642:Before b1
 #@+node:ekr.20070426080015:Fix crasher in dynamic abbreviations
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4255709
@@ -168,6 +146,65 @@ By: rogererens
 There's a bug with ordinary hoisting: in the "Outline" menu the "Delete Node"
 menu item is not disabled when the local root is selected.
 #@-node:ekr.20070319185656:Fix minor chapter hoist bug
+#@+node:ekr.20070504160630:Fix crash in plugins_meny.py
+@nocolor
+
+    it looks like Murphy is "on duty" today ;-)
+
+1) Enable only "leoupdate.py" in *this* outline additionally.
+
+    * No menu entry found to execute update of Leo!
+
+2) Add "plugin_manager.py" additionally ...
+
+    * Still no new menu entry found to execute update of Leo!
+
+3) Add "plugins_menu.py" additionally ...
+
+    * Received the following traceback :-(
+
+"""
+exception executing command
+Traceback (most recent call last):
+  File "C:\Programme\Leo\src\leoCommands.py", line 269, in doCommand
+    val = command(event)
+  File "C:\Programme\Leo\plugins\plugins_menu.py", line 120, in callback
+    p.hastoplevel(c)
+TypeError: topLevelMenu() takes no arguments (1 given)
+"""
+
+Am I missing something?
+
+Kind regards,
+
+    Viktor
+
+#@-node:ekr.20070504160630:Fix crash in plugins_meny.py
+#@-node:ekr.20070505121642:Before b1
+#@+node:ekr.20070505121642.1:Others
+#@+node:ekr.20070426092031:Consider another way to compute home directory
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4281562
+By: ktenney
+
+I don't know if this is a resolved issue, here's another approach,
+looks like a good one.
+
+email link
+http://murl.se/24201
+
+python.org os.path doc
+http://murl.se/24202
+
+>>> import os
+>>> lin_key, win_key = "home", "Documents"
+>>> homedir = os.path.expanduser('~')
+>>> if os.name == 'nt': os_key = win_key
+>>> if os.name == 'posix': os_key = lin_key
+>>> print homedir.find(os_key) > -1
+True
+
+#@-node:ekr.20070426092031:Consider another way to compute home directory
 #@+node:ekr.20070325054325:Dist
 #@+node:ekr.20070220082124.3:Make installing aspell easier
 #@-node:ekr.20070220082124.3:Make installing aspell easier
@@ -410,6 +447,1102 @@ self.active = True
 #@-node:ekr.20040803072955.106:<< activate this window >>
 #@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
 #@-node:ekr.20070420080132:Better focus handling when clicking headline
+#@+node:ekr.20070506075357:Scroll commands are gui-dependent
+#@+node:ekr.20060309060654:scrolling...
+#@+node:ekr.20050920084036.116:scrollUp/Down/extendSelection
+def scrollDown (self,event):
+    '''Scroll the presently selected pane down one page.'''
+    self.scrollHelper(event,'down',extend=False)
+
+def scrollDownExtendSelection (self,event):
+    '''Extend the text selection by scrolling the body text down one page.'''
+    self.scrollHelper(event,'down',extend=True)
+
+def scrollUp (self,event):
+    '''Scroll the presently selected pane up one page.'''
+    self.scrollHelper(event,'up',extend=False)
+
+def scrollUpExtendSelection (self,event):
+    '''Extend the text selection by scrolling the body text up one page.'''
+    self.scrollHelper(event,'up',extend=True)
+#@+node:ekr.20060113082917:scrollHelper
+def scrollHelper (self,event,direction,extend):
+
+    k = self.k ; c = k.c ; gui = g.app.gui
+    w = gui.eventWidget(event)
+    if not w: return #  This does **not** require a text widget.
+
+    if gui.isTextWidget(w):
+        c.widgetWantsFocusNow(w)
+        # Remember the original insert point.  This may become the moveSpot.
+        ins1 = w.getInsertPoint()
+        s = w.getAllText()
+        row,col = g.convertPythonIndexToRowCol(s,ins1)
+        # Compute the spot.
+        delta = self.measure(w)
+        row1 = g.choose(direction=='down',row+delta,row-delta)
+        row1 = max(0,row1)
+        spot = g.convertRowColToPythonIndex(s,row1,col)
+        # g.trace('spot',spot,'row1',row1)
+        self.extendHelper(w,extend,spot)
+        w.seeInsertPoint()
+    elif gui.widget_name(w).startswith('canvas'):
+        if direction=='down':
+            self.scrollOutlineDownPage()
+        else:
+            self.scrollOutlineUpPage()
+#@-node:ekr.20060113082917:scrollHelper
+#@+node:ekr.20050920084036.147:measure
+def measure (self,w):
+
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    start, junk = g.convertPythonIndexToRowCol(s,ins)
+    start += 1 ; delta = 0
+
+    ustart = start - 1
+    while ustart >= 1 and w.indexIsVisible('%s.0' % ustart):
+        delta += 1 ; ustart -= 1
+
+    ustart = start + 1
+    while w.indexIsVisible('%s.0' % ustart):
+        delta += 1 ; ustart += 1
+
+    return delta
+#@-node:ekr.20050920084036.147:measure
+#@-node:ekr.20050920084036.116:scrollUp/Down/extendSelection
+#@+node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
+def scrollOutlineDownLine (self,event=None):
+    '''Scroll the outline pane down one line.'''
+    a,b = self.c.frame.canvas.leo_treeBar.get()
+    if b < 1.0:
+        self.c.frame.tree.canvas.yview_scroll(1,"unit")
+    
+def scrollOutlineDownPage (self,event=None):
+    '''Scroll the outline pane down one page.'''
+    a,b = self.c.frame.canvas.leo_treeBar.get()
+    if b < 1.0:
+        self.c.frame.tree.canvas.yview_scroll(1,"page")
+
+def scrollOutlineUpLine (self,event=None):
+    '''Scroll the outline pane up one line.'''
+    a,b = self.c.frame.canvas.leo_treeBar.get()
+    if a > 0.0:
+        self.c.frame.tree.canvas.yview_scroll(-1,"unit")
+
+def scrollOutlineUpPage (self,event=None):
+    '''Scroll the outline pane up one page.'''
+    a,b = self.c.frame.canvas.leo_treeBar.get()
+    if a > 0.0:
+        self.c.frame.tree.canvas.yview_scroll(-1,"page")
+#@-node:ekr.20060309060654.1:scrollOutlineUp/Down/Line/Page
+#@+node:ekr.20060726154531:scrollOutlineLeftRight
+def scrollOutlineLeft (self,event=None):
+    '''Scroll the outline left.'''
+    self.c.frame.tree.canvas.xview_scroll(1,"unit")
+    
+def scrollOutlineRight (self,event=None):
+    '''Scroll the outline left.'''
+    self.c.frame.tree.canvas.xview_scroll(-1,"unit")
+#@-node:ekr.20060726154531:scrollOutlineLeftRight
+#@-node:ekr.20060309060654:scrolling...
+#@-node:ekr.20070506075357:Scroll commands are gui-dependent
+#@+node:ekr.20070427094150:Fix memory leaks
+#@+node:ekr.20070505072655:To do: clear injected ivars (w.leo_xxx etc) when recycling widgets
+#@-node:ekr.20070505072655:To do: clear injected ivars (w.leo_xxx etc) when recycling widgets
+#@+node:ekr.20031218072017.3964:Destroying the tkFrame
+#@+node:ekr.20031218072017.1975:destroyAllObjects
+def destroyAllObjects (self):
+
+    """Clear all links to objects in a Leo window."""
+
+    frame = self ; c = self.c ; tree = frame.tree ; body = self.body
+    
+    # g.printGcAll()
+
+    # Do this first.
+    << clear all vnodes and tnodes in the tree >>
+
+    # Destroy all ivars in subcommanders.
+    g.clearAllIvars(c.atFileCommands)
+    if c.chapterController:
+        # New in Leo 4.4.3 b1.
+        g.clearAllIvars(c.chapterController.tt) 
+        g.clearAllIvars(c.chapterController)
+    g.clearAllIvars(c.fileCommands)
+    g.clearAllIvars(c.keyHandler) # New in Leo 4.4.3 b1.
+    g.clearAllIvars(c.importCommands)
+    g.clearAllIvars(c.tangleCommands)
+    g.clearAllIvars(c.undoer)
+   
+    g.clearAllIvars(c)
+    g.clearAllIvars(body.colorizer)
+    g.clearAllIvars(body)
+    g.clearAllIvars(tree)
+
+    # This must be done last.
+    frame.destroyAllPanels()
+    g.clearAllIvars(frame)
+    
+    
+#@nonl
+#@+node:ekr.20031218072017.1976:<< clear all vnodes and tnodes in the tree>>
+# Using a dict here is essential for adequate speed.
+vList = [] ; tDict = {}
+
+for p in c.allNodes_iter():
+    vList.append(p.v)
+    if p.v.t:
+        key = id(p.v.t)
+        if not tDict.has_key(key):
+            tDict[key] = p.v.t
+
+for key in tDict.keys():
+    g.clearAllIvars(tDict[key])
+
+for v in vList:
+    g.clearAllIvars(v)
+
+vList = [] ; tDict = {} # Remove these references immediately.
+#@-node:ekr.20031218072017.1976:<< clear all vnodes and tnodes in the tree>>
+#@-node:ekr.20031218072017.1975:destroyAllObjects
+#@+node:ekr.20031218072017.3965:destroyAllPanels
+def destroyAllPanels (self):
+
+    """Destroy all panels attached to this frame."""
+    
+    panels = (self.comparePanel, self.colorPanel, self.findPanel, self.fontPanel, self.prefsPanel)
+
+    for panel in panels:
+        if panel:
+            panel.top.destroy()
+#@-node:ekr.20031218072017.3965:destroyAllPanels
+#@+node:ekr.20031218072017.1974:destroySelf (tkFrame)
+def destroySelf (self):
+    
+    # Remember these: we are about to destroy all of our ivars!
+    top = self.top 
+    c = self.c
+    
+    # Indicate that the commander is no longer valid.
+    c.exists = False 
+    
+    # g.trace(self)
+
+    # Important: this destroys all the objects of the commander too.
+    self.destroyAllObjects()
+    
+    c.exists = False # Make sure this one ivar has not been destroyed.
+
+    top.destroy()
+#@-node:ekr.20031218072017.1974:destroySelf (tkFrame)
+#@-node:ekr.20031218072017.3964:Destroying the tkFrame
+#@+node:ekr.20070429092848.1:Interesting methods
+#@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
+# This is the only key handler for the body pane.
+def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
+    
+    '''Update Leo after the body has been changed.'''
+    
+    body = self ; c = self.c
+    bodyCtrl = w = body.bodyCtrl
+    p = c.currentPosition()
+    insert = w.getInsertPoint()
+    ch = g.choose(insert==0,'',w.get(insert-1))
+    ch = g.toUnicode(ch,g.app.tkEncoding)
+    newText = w.getAllText() # Note: getAllText converts to unicode.
+    # g.trace('newText',repr(newText),g.callers())
+    newSel = w.getSelectionRange()
+    if not oldText:
+        oldText = p.bodyString() ; changed = True
+    else:
+        changed = oldText != newText
+    # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
+    if not changed: return
+    c.undoer.setUndoTypingParams(p,undoType,
+        oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
+    p.v.setTnodeText(newText)
+    p.v.t.insertSpot = body.getInsertPoint()
+    << recolor the body >>
+    if not c.changed: c.setChanged(True)
+    self.updateEditors()
+    << redraw the screen if necessary >>
+#@+node:ekr.20051026083733.6:<< recolor the body >>
+body.colorizer.interrupt()
+c.frame.scanForTabWidth(p)
+body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
+self.forceFullRecolorFlag = False
+#@-node:ekr.20051026083733.6:<< recolor the body >>
+#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+c.beginUpdate()
+try:
+    redraw_flag = False
+    # Update dirty bits.
+    # p.setDirty() sets all cloned and @file dirty bits.
+    if not p.isDirty() and p.setDirty():
+        redraw_flag = True
+        
+    # Update icons. p.v.iconVal may not exist during unit tests.
+    val = p.computeIcon()
+    # g.trace('new val:',val,'old val:',hasattr(p.v,'iconVal') and p.v.iconVal or '<None>')
+    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+        p.v.iconVal = val
+        redraw_flag = True
+finally:
+    c.endUpdate(redraw_flag)
+#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+#@-node:ekr.20031218072017.1329:onBodyChanged (leoBody)
+#@+node:ekr.20031218072017.1315:idle time functions (leoGlobals)
+#@+node:EKR.20040602125018:enableIdleTimeHook
+@ Enables the "idle" hook.
+After enableIdleTimeHook is called, Leo will call the "idle" hook
+approximately every g.idleTimeDelay milliseconds.
+@c
+
+def enableIdleTimeHook(idleTimeDelay=100):
+
+    if not g.app.idleTimeHook:
+        # g.trace('start idle-time hook: %d msec.' % idleTimeDelay)
+        # Start idle-time processing only after the first idle-time event.
+        g.app.gui.setIdleTimeHook(g.idleTimeHookHandler)
+        g.app.afterHandler = g.idleTimeHookHandler
+        
+    # 1/4/05: Always update these.
+    g.app.idleTimeHook = True
+    g.app.idleTimeDelay = idleTimeDelay # Delay in msec.
+#@-node:EKR.20040602125018:enableIdleTimeHook
+#@+node:EKR.20040602125018.1:disableIdleTimeHook
+# Disables the "idle" hook.
+def disableIdleTimeHook():
+    
+    g.app.idleTimeHook = False
+#@-node:EKR.20040602125018.1:disableIdleTimeHook
+#@+node:EKR.20040602125018.2:idleTimeHookHandler
+# An internal routine used to dispatch the "idle" hook.
+trace_count = 0
+
+def idleTimeHookHandler(*args,**keys):
+    
+    __pychecker__ = '--no-argsused' # args & keys not used.
+    
+    if 0: # Do not use g.trace here!
+        global trace_count ; trace_count += 1
+        if trace_count % 10 == 0:
+            for z in g.app.windowList:
+                c = z.c
+                print "idleTimeHookHandler",trace_count,c.shortFileName()
+
+    # New for Python 2.3: may be called during shutdown.
+    if g.app.killed: return
+    
+    for z in g.app.windowList:
+        c = z.c
+        # Do NOT compute c.currentPosition.
+        # This would be a MAJOR leak of positions.
+        g.doHook("idle",c=c)
+
+    # Requeue this routine after g.app.idleTimeDelay msec.
+    # (This delay is set by g.enableIdleTimeHook.)
+    # Faster requeues overload the system.
+    if g.app.idleTimeHook:
+        g.app.gui.setIdleTimeHookAfterDelay(g.idleTimeHookHandler)
+        g.app.afterHandler = g.idleTimeHookHandler
+    else:
+        g.app.afterHandler = None
+#@-node:EKR.20040602125018.2:idleTimeHookHandler
+#@-node:ekr.20031218072017.1315:idle time functions (leoGlobals)
+#@+node:ekr.20031218072017.1596:g.doHook
+@ This global function calls a hook routine.  Hooks are identified by the tag param.
+Returns the value returned by the hook routine, or None if the there is an exception.
+
+We look for a hook routine in three places:
+1. c.hookFunction
+2. app.hookFunction
+3. leoPlugins.doPlugins()
+We set app.hookError on all exceptions.  Scripts may reset app.hookError to try again.
+@c
+
+def doHook(tag,*args,**keywords):
+    
+    if g.app.killed or g.app.hookError: # or (g.app.gui and g.app.gui.isNullGui):
+        return None
+        
+    if args:
+        # A minor error in Leo's core.
+        print "***ignoring args param.  tag = %s" % tag
+
+    if not g.app.config.use_plugins:
+        if tag in ('open0','start1'):
+            s = "Plugins disabled: use_plugins is 0 in a leoSettings.leo file."
+            g.es_print(s,color="blue")
+        return None
+         
+    # Get the hook handler function.  Usually this is doPlugins.
+    c = keywords.get("c")
+    f = (c and c.hookFunction) or g.app.hookFunction
+    if not f:
+        import leoPlugins
+        g.app.hookFunction = f = leoPlugins.doPlugins
+        
+    try:
+        # Pass the hook to the hook handler.
+        # print 'doHook',f.__name__,keywords.get('c')
+        return f(tag,keywords)
+    except Exception:
+        g.es_exception()
+        g.app.hookError = True # Supress this function.
+        g.app.idleTimeHook = False # Supress idle-time hook
+        return None # No return value
+#@-node:ekr.20031218072017.1596:g.doHook
+#@+node:ekr.20061031131434.105:masterCommand & helpers
+def masterCommand (self,event,func,stroke,commandName=None):
+
+    '''This is the central dispatching method.
+    All commands and keystrokes pass through here.'''
+    
+    k = self ; c = k.c ; gui = g.app.gui
+    trace = False or k.traceMasterCommand
+    traceGC = False
+    if traceGC: g.printNewObjects('masterCom 1')
+
+    c.setLog()
+    c.startRedrawCount = c.frame.tree.redrawCount
+    k.stroke = stroke # Set this global for general use.
+    keysym = gui.eventKeysym(event)
+    ch = gui.eventChar(event)
+    w = gui.eventWidget(event)
+    state = event and hasattr(event,'state') and event.state or 0
+    k.func = func
+    k.funcReturn = None # For unit testing.
+    commandName = commandName or func and func.__name__ or '<no function>'
+    << define specialKeysyms >>
+    special = keysym in specialKeysyms
+    interesting = func is not None
+    inserted = not special
+
+    if trace: #  and interesting:
+        g.trace(
+            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
+            'w:',w and c.widget_name(w),'func:',func and func.__name__
+        )
+
+    if inserted:
+        # g.trace(stroke,keysym)
+        << add character to history >>
+        
+    # We *must not* interfere with the global state in the macro class.
+    if c.macroCommands.recordingMacro:
+        done = c.macroCommands.startKbdMacro(event)
+        if done: return 'break'
+        
+    # g.trace(stroke,k.abortAllModesKey)
+
+    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
+        k.keyboardQuit(event)
+        k.endCommand(event,commandName)
+        return 'break'
+        
+    if special: # Don't pass these on.
+        return 'break' 
+
+    if 0: # *** This is now handled by k.masterKeyHandler.
+        if k.inState():
+            val = k.callStateFunction(event) # Calls end-command.
+            if val != 'do-func': return 'break'
+            g.trace('Executing key outside of mode')
+
+    if k.regx.iter:
+        try:
+            k.regXKey = keysym
+            k.regx.iter.next() # EKR: next() may throw StopIteration.
+        except StopIteration:
+            pass
+        return 'break'
+
+    if k.abbrevOn:
+        expanded = c.abbrevCommands.expandAbbrev(event)
+        if expanded: return 'break'
+
+    if func: # Func is an argument.
+        if commandName.startswith('specialCallback'):
+            # The callback function will call c.doCommand
+            if trace: g.trace('calling specialCallback for',commandName)
+            val = func(event)
+            # k.simulateCommand uses k.funcReturn.
+            k.funcReturn = k.funcReturn or val # For unit tests.
+        else:
+            # Call c.doCommand directly
+            if trace: g.trace('calling command directly',commandName)
+            c.doCommand(func,commandName,event=event)
+        if c.exists:
+            k.endCommand(event,commandName)
+            c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 2')
+        return 'break'
+    elif k.inState():
+        return 'break' #Ignore unbound keys in a state.
+    else:
+        if traceGC: g.printNewObjects('masterCom 3')
+        val = k.handleDefaultChar(event,stroke)
+        if c.exists:
+            c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 4')
+        return val
+#@nonl
+#@+node:ekr.20061031131434.106:<< define specialKeysyms >>
+specialKeysyms = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+)
+#@nonl
+#@-node:ekr.20061031131434.106:<< define specialKeysyms >>
+#@+node:ekr.20061031131434.107:<< add character to history >>
+if stroke or len(ch) > 0:
+    if len(keyHandlerClass.lossage) > 99:
+        keyHandlerClass.lossage.pop()
+
+    # This looks like a memory leak, but isn't.
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
+#@-node:ekr.20061031131434.107:<< add character to history >>
+#@+node:ekr.20061031131434.108:callStateFunction
+def callStateFunction (self,event):
+    
+    k = self ; val = None
+    
+    # g.trace(k.state.kind)
+    
+    if k.state.kind:
+        if k.state.handler:
+            val = k.state.handler(event)
+            if val != 'continue':
+                k.endCommand(event,k.commandName)
+        else:
+            g.es_print('no state function for %s' % (k.state.kind),color='red')
+            
+    return val
+#@-node:ekr.20061031131434.108:callStateFunction
+#@+node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+def callKeystrokeFunction (self,event):
+    
+    '''Handle a quick keystroke function.
+    Return the function or None.'''
+    
+    k = self
+    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
+
+    if func:
+        func(event)
+        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
+        k.endCommand(event,commandName)
+    
+    return func
+#@-node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+#@+node:ekr.20061031131434.110:handleDefaultChar
+def handleDefaultChar(self,event,stroke):
+    
+    k = self ; c = k.c
+    w = event and event.widget
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        action = k.unboundKeyAction
+        if action in ('insert','overwrite'):
+            c.editCommands.selfInsertCommand(event,action=action)
+        else: pass # Ignore the key.
+        return 'break'
+    elif name.startswith('head'):
+        c.frame.tree.onHeadlineKey(event)
+        return 'break'
+    elif name.startswith('canvas'):
+        if not stroke: # Not exactly right, but it seems to be good enough.
+            c.onCanvasKey(event) # New in Leo 4.4.2
+        return 'break'
+    else:
+        # Let tkinter handle the event.
+        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
+        return None
+#@-node:ekr.20061031131434.110:handleDefaultChar
+#@-node:ekr.20061031131434.105:masterCommand & helpers
+#@+node:ekr.20061031131434.146:masterKeyHandler
+master_key_count = 0
+
+def masterKeyHandler (self,event,stroke=None):
+    
+    '''This is the handler for almost all key bindings.'''
+
+    << define vars >>
+    if keysym in special_keys: return None
+    
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+    traceGC = False or self.trace_masterKeyHandlerGC and not g.app.unitTesting
+    if traceGC: g.printNewObjects('masterKey 1')
+    if trace:
+        g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
+            'state.kind:',k.state.kind,g.callers(4))
+        # if (self.master_key_count % 100) == 0: g.printGcSummary()
+
+    # Handle keyboard-quit first.
+    if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        # g.trace('special case')
+        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+
+    if k.inState():
+        # This will return unless k.autoCompleterStateHandler
+        # (called from k.callStateFunction) returns 'do-standard-keys'
+        << handle mode bindings >>
+        
+    if traceGC: g.printNewObjects('masterKey 2')
+        
+    << handle per-pane bindings >>
+    << handle keys without bindings >>
+#@+node:ekr.20061031131434.147:<< define vars >>
+k = self ; c = k.c ; gui = g.app.gui
+
+if event: event = gui.leoKeyEvent(event,c)
+
+w = event.widget
+char = event.char
+keysym = event.keysym
+if stroke and not keysym:
+    event.keysym = keysym = stroke
+
+w_name = c.widget_name(w)
+state = k.state.kind
+
+special_keys = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+    'Win_L','Win_R',
+)
+
+self.master_key_count += 1
+#@nonl
+#@-node:ekr.20061031131434.147:<< define vars >>
+#@+node:ekr.20061031131434.149:<< handle mode bindings >>
+# First, honor minibuffer bindings for all except user modes.
+if state in ('getArg','getFileName','full-command','auto-complete'):
+    if k.handleMiniBindings(event,state,stroke):
+        return 'break'
+
+# Second, honor general modes.
+if state == 'getArg':
+    return k.getArg(event,stroke=stroke)
+elif state == 'getFileName':
+    return k.getFileName(event)
+elif state in ('full-command','auto-complete'):
+    # Do the default state action.
+    if trace: g.trace('calling state function')
+    val = k.callStateFunction(event) # Calls end-command.
+    if val != 'do-standard-keys': return 'break'
+        
+# Third, pass keys to user modes.
+else:
+    d =  k.masterBindingsDict.get(state)
+    if d:
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace('calling generalModeHandler')
+            k.generalModeHandler (event,
+                commandName=b.commandName,func=b.func,
+                modeName=state,nextMode=b.nextMode)
+            return 'break'
+        else:
+            ok = k.handleMiniBindings(event,state,stroke)
+            if ok:
+                return 'break'
+            elif stroke and len(stroke) == 1:
+                # if trace: g.trace('calling modeHelp')
+                k.modeHelp(event)
+                return 'break'
+            else:
+                # End the mode and fall through to the pane bindings!
+                k.endMode(event)
+    else:
+        # New in 4.4b4.
+        handler = k.getStateHandler()
+        if handler:
+            handler(event)
+        else:
+            g.trace('No state handler for %s' % state)
+        return 'break'
+#@-node:ekr.20061031131434.149:<< handle mode bindings >>
+#@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
+keyStatesTuple = ('command','insert','overwrite')
+isPlain =  k.isPlainKey(stroke)
+
+# g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
+# g.trace('button',k.masterBindingsDict.get('button'))
+
+for key,name in (
+    # Order here is similar to bindtags order.
+    ('command',None),
+    ('insert',None),
+    ('overwrite',None),
+    ('button',None),
+    ('body','body'),
+    ('text','head'), # Important: text bindings in head before tree bindings.
+    ('tree','head'),
+    ('tree','canvas'),
+    ('log', 'log'),
+    ('text','log'),
+    ('text',None), ('all',None),
+):
+    if (
+        key in keyStatesTuple and isPlain and k.unboundKeyAction == key or
+        name and w_name.startswith(name) or
+        key in ('text','all') and g.app.gui.isTextWidget(w) or
+        key in ('button','all')
+    ):
+        d = k.masterBindingsDict.get(key,{})
+        # g.trace('key',key,'name',name,'stroke',stroke,'stroke in d.keys',stroke in d.keys())
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
+                if traceGC: g.printNewObjects('masterKey 3')
+                return k.masterCommand(event,b.func,b.stroke,b.commandName)
+#@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
+#@+node:ekr.20061031131434.151:<< handle keys without bindings >>
+if traceGC: g.printNewObjects('masterKey 5')
+
+modesTuple = ('insert','overwrite')
+
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in modesTuple:
+    # insert/overwrite normal character.  <Return> is *not* a normal character.
+    if trace: g.trace('plain key in insert mode',repr(stroke))
+    if traceGC: g.printNewObjects('masterKey 4')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+
+elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
+    # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+    if trace: g.trace('ignoring unbound non-ascii key')
+    return 'break'
+    
+elif keysym.find('Escape') != -1:
+    # Never insert escape characters.
+    return 'break'
+
+else:
+    if trace: g.trace(repr(stroke),'no func')
+    if traceGC: g.printNewObjects('masterKey 6')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+#@-node:ekr.20061031131434.151:<< handle keys without bindings >>
+#@+node:ekr.20061031131434.152:handleMiniBindings
+def handleMiniBindings (self,event,state,stroke):
+    
+    k = self ; c = k.c
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+    
+    if not state.startswith('auto-'):
+        d = k.masterBindingsDict.get('mini')
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                # Pass this on for macro recording.
+                k.masterCommand(event,b.func,stroke,b.commandName)
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
+                return True
+
+    return False
+#@-node:ekr.20061031131434.152:handleMiniBindings
+#@-node:ekr.20061031131434.146:masterKeyHandler
+#@+node:ekr.20061031131434.76: ctor (keyHandler)
+def __init__ (self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
+    
+    '''Create a key handler for c.
+    c.frame.miniBufferWidget is a Tk.Label.
+    
+    useGlobalRegisters and useGlobalKillbuffer indicate whether to use
+    global (class vars) or per-instance (ivars) for kill buffers and registers.'''
+    
+    # g.trace('base keyHandler',g.callers())
+    
+    self.c = c
+    self.widget = c.frame.miniBufferWidget
+    self.useTextWidget = c.useTextMinibuffer
+        # A Tk Label or Text widget.
+        # Exists even if c.showMinibuffer is False.
+    self.useGlobalKillbuffer = useGlobalKillbuffer
+    self.useGlobalRegisters = useGlobalRegisters
+
+    # Generalize...
+    self.x_hasNumeric = ['sort-lines','sort-fields']
+
+    self.altX_prompt = 'full-command: '
+    
+    # These must be defined here to avoid memory leaks.
+    self.enable_autocompleter           = c.config.getBool('enable_autocompleter_initially')
+    self.enable_calltips                = c.config.getBool('enable_calltips_initially')
+    self.ignore_caps_lock               = c.config.getBool('ignore_caps_lock')
+    self.ignore_unbound_non_ascii_keys  = c.config.getBool('ignore_unbound_non_ascii_keys')
+    self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
+    self.trace_bind_key_exceptions      = c.config.getBool('trace_bind_key_exceptions')
+    self.traceMasterCommand             = c.config.getBool('trace_masterCommand')
+    self.trace_masterKeyHandler         = c.config.getBool('trace_masterKeyHandler')
+    self.trace_masterKeyHandlerGC       = c.config.getBool('trace_masterKeyHandlerGC')
+    self.trace_key_event                = c.config.getBool('trace_key_event')
+    self.trace_minibuffer               = c.config.getBool('trace_minibuffer')
+    self.warn_about_redefined_shortcuts = c.config.getBool('warn_about_redefined_shortcuts')
+    << define externally visible ivars >>
+    << define internal ivars >>
+    
+    self.defineTkNames()
+    self.defineSpecialKeys()
+    self.autoCompleter = autoCompleterClass(self)
+    self.setDefaultUnboundKeyAction()
+#@+node:ekr.20061031131434.78:<< define externally visible ivars >>
+self.abbrevOn = False # True: abbreviations are on.
+self.arg = '' # The value returned by k.getArg.
+self.commandName = None # The name of the command being executed.
+self.funcReturn = None # For k.simulateCommand
+self.getArgEscape = None # A signal that the user escaped getArg in an unusual way.
+self.inputModeBindings = {}
+self.inputModeName = '' # The name of the input mode, or None.
+self.inverseCommandsDict = {}
+    # Completed in k.finishCreate, but leoCommands.getPublicCommands adds entries first.
+self.negativeArg = False
+self.newMinibufferWidget = None # Usually the minibuffer restores focus.  This overrides this default.
+self.regx = g.bunch(iter=None,key=None)
+self.repeatCount = None
+self.previousSelection = None # A hack for middle-button paste: set by masterClickHandler, used by pasteText.
+self.state = g.bunch(kind=None,n=None,handler=None)
+#@-node:ekr.20061031131434.78:<< define externally visible ivars >>
+#@+node:ekr.20061031131434.79:<< define internal ivars >>
+self.abbreviationsDict = {} # Abbreviations created by @alias nodes.
+
+# Previously defined bindings.
+self.bindingsDict = {}
+    # Keys are Tk key names, values are lists of g.bunch(pane,func,commandName)
+# Previously defined binding tags.
+self.bindtagsDict = {}
+    # Keys are strings (the tag), values are 'True'
+self.masterBindingsDict = {}
+    # Keys are scope names: 'all','text',etc. or mode names.
+    # Values are dicts: keys are strokes, values are g.bunch(commandName,func,pane,stroke)
+self.masterGuiBindingsDict = {}
+    # Keys are strokes; value is True;
+
+# Special bindings for k.fullCommand.
+self.mb_copyKey = None
+self.mb_pasteKey = None
+self.mb_cutKey = None
+self.mb_help = False
+
+self.abortAllModesKey = None
+self.fullCommandKey = None
+self.universalArgKey = None
+
+# Keepting track of the characters in the mini-buffer.
+self.arg_completion = True
+self.mb_event = None
+self.mb_history = []
+self.mb_prefix = ''
+self.mb_tabListPrefix = ''
+self.mb_tabList = []
+self.mb_tabListIndex = -1
+self.mb_prompt = ''
+
+self.func = None
+self.previous = []
+self.stroke = None
+
+# For onIdleTime
+self.idleCount = 0
+
+# For modes
+self.afterGetArgState = None
+self.argTabList = []
+self.getArgEscapes = []
+self.modeBindingsDict = {}
+self.modeWidget = None
+self.silentMode = False
+
+# The actual values are set later in k.finishCreate.
+self.command_mode_bg_color = 'white'
+self.command_mode_fg_color = 'black'
+self.insert_mode_bg_color = 'white'
+self.insert_mode_fg_color = 'black'
+self.overwrite_mode_bg_color = 'white'
+self.overwrite_mode_fg_color = 'black'
+#@-node:ekr.20061031131434.79:<< define internal ivars >>
+#@-node:ekr.20061031131434.76: ctor (keyHandler)
+#@-node:ekr.20070429092848.1:Interesting methods
+#@+node:ekr.20031218072017.1588:Garbage Collection
+# debugGC = False # Must be true to enable traces below.
+
+lastObjectCount = 0
+lastObjectsDict = {}
+lastTypesDict = {}
+lastFunctionsDict = {}
+
+@others
+#@+node:ekr.20031218072017.1589:clearAllIvars
+def clearAllIvars (o):
+    
+    """Clear all ivars of o, a member of some class."""
+    
+    if o:
+        o.__dict__.clear()
+#@-node:ekr.20031218072017.1589:clearAllIvars
+#@+node:ekr.20031218072017.1590:collectGarbage
+def collectGarbage():
+
+    try:
+        if not g.app.trace_gc_inited:
+            g.enable_gc_debug()
+
+        if g.app.trace_gc_verbose or g.app.trace_gc_calls:
+            # print('Collecting garbage',g.callers())
+            print 'collectGarbage:'
+
+        gc.collect()
+    except Exception:
+        pass
+        
+    # Only init once, regardless of what happens.
+    g.app.trace_gc_inited = True
+#@-node:ekr.20031218072017.1590:collectGarbage
+#@+node:ekr.20060127162818:enable_gc_debug
+no_gc_message = False
+
+def enable_gc_debug(event=None):
+    
+    if gc:
+        if g.app.trace_gc_verbose:
+            gc.set_debug(
+                gc.DEBUG_STATS | # prints statistics.
+                gc.DEBUG_LEAK | # Same as all below.
+                gc.DEBUG_COLLECTABLE |
+                gc.DEBUG_UNCOLLECTABLE |
+                gc.DEBUG_INSTANCES |
+                gc.DEBUG_OBJECTS |
+                gc.DEBUG_SAVEALL
+            )
+        # else:
+            # gc.set_debug(gc.DEBUG_STATS)
+    elif not no_gc_message:
+        no_gc_message = True
+        g.es('Can not import gc module',color='blue')
+#@-node:ekr.20060127162818:enable_gc_debug
+#@+node:ekr.20031218072017.1592:printGc
+# Formerly called from unit tests.
+
+def printGc(tag=None):
+    
+    if not g.app.trace_gc: return None
+    
+    tag = tag or g._callerName(n=2)
+        
+    printGcObjects(tag=tag)
+    printGcRefs(tag=tag)
+    
+    if g.app.trace_gc_verbose:
+        printGcVerbose(tag=tag)
+#@+node:ekr.20031218072017.1593:printGcRefs
+def printGcRefs (tag=''):
+
+    refs = gc.get_referrers(app.windowList[0])
+    print('-' * 30,tag)
+
+    if g.app.trace_gc_verbose:
+        print("refs of", app.windowList[0])
+        for ref in refs:
+            print(type(ref))
+    else:
+        print("%d referers" % len(refs))
+#@-node:ekr.20031218072017.1593:printGcRefs
+#@-node:ekr.20031218072017.1592:printGc
+#@+node:ekr.20060202161935:printGcAll
+def printGcAll (tag=''):
+
+    # Suppress warning about keywords arg not supported in sort.
+    
+    tag = tag or g._callerName(n=2)
+    d = {} ; objects = gc.get_objects()
+    print('-' * 30)
+    print('%s: %d objects' % (tag,len(objects)))
+
+    for obj in objects:
+        t = type(obj)
+        if t == 'instance':
+            try: t = obj.__class__
+            except: pass
+        # if type(obj) == type(()):
+            # print id(obj),repr(obj)
+        d[t] = d.get(t,0) + 1
+        
+    if 1: # Sort by n
+        items = d.items()
+        try:
+            # Support for keword args to sort function exists in Python 2.4.
+            # Support for None as an alternative to omitting cmp exists in Python 2.3.
+            items.sort(key=lambda x: x[1],reverse=True)
+        except: pass
+        for z in items:
+            print '%40s %7d' % (z[0],z[1])
+    else: # Sort by type
+        keys = d.keys() ; keys.sort()
+        for t in keys:
+            print '%40s %7d' % (t,d.get(t))
+#@-node:ekr.20060202161935:printGcAll
+#@+node:ekr.20060127164729.1:printGcObjects   (printNewObjects=pno)
+def printGcObjects(tag=''):
+    
+    '''Print newly allocated objects.'''
+    
+    tag = tag or g._callerName(n=2)
+    global lastObjectCount
+
+    try:
+        n = len(gc.garbage)
+        n2 = len(gc.get_objects())
+        delta = n2-lastObjectCount
+        if delta == 0: return
+        lastObjectCount = n2
+        
+        << print number of each type of object >>
+        if 0:
+            << print added functions >>
+
+    except Exception:
+        traceback.print_exc()
+        
+printNewObjects = pno = printGcObjects
+
+#@+node:ekr.20040703054646:<< print number of each type of object >>
+global lastTypesDict
+typesDict = {}
+
+for obj in gc.get_objects():
+    t = type(obj)
+    if t == 'instance' and t not in types.StringTypes:
+        try: t = obj.__class__
+        except: pass
+    if t != types.FrameType:
+        r = repr(t) # was type(obj) instead of repr(t)
+        n = typesDict.get(r,0) 
+        typesDict[r] = n + 1
+    
+# Create the union of all the keys.
+keys = typesDict.keys()
+for key in lastTypesDict.keys():
+    if key not in keys:
+        keys.append(key)
+           
+empty = True
+for key in keys:
+    n3 = lastTypesDict.get(key,0)
+    n4 = typesDict.get(key,0)
+    delta2 = n4-n3
+    if delta2 != 0:
+        empty = False
+        break
+
+if not empty:
+    # keys = [repr(key) for key in keys]
+    keys.sort()
+    print '-' * 30
+    print "%s: garbage: %d, objects: %d, delta: %d" % (tag,n,n2,delta)
+    
+    if 0:
+        for key in keys:
+            n1 = lastTypesDict.get(key,0)
+            n2 = typesDict.get(key,0)
+            delta2 = n2-n1
+            if delta2 != 0:
+                print("%+6d =%7d %s" % (delta2,n2,key))
+
+lastTypesDict = typesDict
+typesDict = {}
+#@-node:ekr.20040703054646:<< print number of each type of object >>
+#@+node:ekr.20040703065638:<< print added functions >>
+# import types
+import inspect
+
+global lastFunctionsDict
+
+funcDict = {}
+
+# Don't print more than 50 objects.
+n = 0
+for obj in gc.get_objects():
+    if type(obj) == types.FunctionType:
+        n += 1
+
+for obj in gc.get_objects():
+    if type(obj) == types.FunctionType:
+        key = repr(obj) # Don't create a pointer to the object!
+        funcDict[key]=None 
+        if n < 50 and not lastFunctionsDict.has_key(key):
+            print(obj)
+            args, varargs, varkw,defaults  = inspect.getargspec(obj)
+            print("args", args)
+            if varargs: print("varargs",varargs)
+            if varkw: print("varkw",varkw)
+            if defaults:
+                print("defaults...")
+                for s in defaults: print(s)
+
+lastFunctionsDict = funcDict
+funcDict = {}
+#@-node:ekr.20040703065638:<< print added functions >>
+#@-node:ekr.20060127164729.1:printGcObjects   (printNewObjects=pno)
+#@+node:ekr.20060205043324.1:printGcSummary
+def printGcSummary (tag=''):
+    
+    tag = tag or g._callerName(n=2)
+
+    g.enable_gc_debug()
+
+    try:
+        n = len(gc.garbage)
+        n2 = len(gc.get_objects())
+        s = '%s: printGCSummary: garbage: %d, objects: %d' % (tag,n,n2)
+        print s
+    except:
+        traceback.print_exc()
+#@-node:ekr.20060205043324.1:printGcSummary
+#@+node:ekr.20060127165509:printGcVerbose
+# WARNING: the id trick is not proper because newly allocated objects
+#          can have the same address as old objets.
+
+def printGcVerbose(tag=''):
+    
+    tag = tag or g._callerName(n=2)
+    global lastObjectsDict
+    objects = gc.get_objects()
+    newObjects = [o for o in objects if not lastObjectsDict.has_key(id(o))]
+    
+    lastObjectsDict = {}
+    for o in objects:
+        lastObjectsDict[id(o)]=o
+        
+    dicts = 0 ; seqs = 0
+    
+    i = 0 ; n = len(newObjects)
+    while i < 100 and i < n:
+        o = newObjects[i]
+        if type(o) == type({}): dicts += 1
+        elif type(o) in (type(()),type([])):
+            #print id(o),repr(o)
+            seqs += 1
+        #else:
+        #    print(o)
+        i += 1
+    print('=' * 40)
+    print('dicts: %d, sequences: %d' % (dicts,seqs))
+    print("%s: %d new, %d total objects" % (tag,len(newObjects),len(objects)))
+    print('-' * 40)
+#@-node:ekr.20060127165509:printGcVerbose
+#@-node:ekr.20031218072017.1588:Garbage Collection
+#@-node:ekr.20070427094150:Fix memory leaks
+#@-node:ekr.20070505121642.1:Others
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20061006165447:Let import commands decide what kind of import to do

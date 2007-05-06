@@ -4180,62 +4180,6 @@ To do:
 
 @color
 #@nonl
-#@+node:ekr.20031218072017.996:From Frame class
-#@+node:ekr.20031218072017.997:<< create the tree canvas >>
-scrolls = config.getBoolWindowPref('outline_pane_scrolls_horizontally')
-scrolls = choose(scrolls,1,0)
-
-self.canvas = canvas = Tk.Canvas(split2Pane1,name="canvas",
-	bd=0,bg="white",relief="flat")
-	
-self.setTreeColorsFromConfig()
-
-self.treeBar = treeBar = Tk.Scrollbar(split2Pane1,name="treeBar")
-
-# Bind mouse wheel event to canvas
-if sys.platform != "win32": # Works on 98, crashes on XP.
-	self.canvas.bind("<MouseWheel>", self.OnMouseWheel)
-	
-canvas['yscrollcommand'] = self.setCallback
-treeBar['command']     = self.yviewCallback
-
-treeBar.pack(side="right", fill="y")
-if scrolls: 
-	treeXBar = Tk.Scrollbar( 
-		split2Pane1,name='treeXBar',orient="horizontal") 
-	canvas['xscrollcommand'] = treeXBar.set 
-	treeXBar['command'] = canvas.xview 
-	treeXBar.pack(side="bottom", fill="x")
-
-canvas.pack(expand=1,fill="both")
-#@nonl
-#@-node:ekr.20031218072017.997:<< create the tree canvas >>
-#@+node:ekr.20031218072017.998:Scrolling callbacks (frame)
-def setCallback (self,*args,**keys):
-    
-    """Callback to adjust the scrollbar.
-    
-    Args is a tuple of two floats describing the fraction of the visible area."""
-
-    #g.trace(self.tree.redrawCount,args,g.callers())
-
-    apply(self.treeBar.set,args,keys)
-
-    if self.tree.allocateOnlyVisibleNodes:
-        self.tree.setVisibleArea(args)
-        
-def yviewCallback (self,*args,**keys):
-    
-    """Tell the canvas to scroll"""
-    
-    #g.trace(vyiewCallback,args,keys,g.callers())
-
-    if self.tree.allocateOnlyVisibleNodes:
-        self.tree.allocateNodesBeforeScrolling(args)
-
-    apply(self.canvas.yview,args,keys)
-#@-node:ekr.20031218072017.998:Scrolling callbacks (frame)
-#@-node:ekr.20031218072017.996:From Frame class
 #@-node:ekr.20031218072017.995:(Incremental update of screen)
 #@+node:ekr.20040812170616:Pyrex versions of key classes
 #@+node:ekr.20040812155849.74:v.Iterators (Can't use yield in pyrex)
