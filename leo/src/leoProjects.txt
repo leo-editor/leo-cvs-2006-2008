@@ -2228,6 +2228,8 @@ setNormalLabelState = setEditLabelState # For compatibility.
 def setHeadlineText (self,theId,w,s):
     
     """All changes to text widgets should come here."""
+    
+    __pychecker__ = '--no-argsused' # theId not used.
 
     # if self.trace_alloc: g.trace('%4d %6s %s' % (theId,self.textAddr(w),s),align=-20)
             
@@ -15393,7 +15395,6 @@ if 0:
     g.trace("back2.isExpanded",back2.isExpanded())
     
 parent = p.parent()
-backBack = p.hasBack() and p.back().back()
 
 # For this special case we move p after back2.
 specialCase = back2 and p.v in back2.v.t.vnodeList
@@ -16495,7 +16496,6 @@ if 0:
     g.trace("back2.isExpanded",back2.isExpanded())
     
 parent = p.parent()
-backBack = p.hasBack() and p.back().back()
 
 # For this special case we move p after back2.
 specialCase = back2 and p.v in back2.v.t.vnodeList
@@ -20099,9 +20099,6 @@ def renameTab (self,oldName,newName):
     
     label = self.nb.tab(oldName)
     label.configure(text=newName)
-    
-    # Tell the chapterController about the new name.
-    cc.updateChapterName(oldName,newName)
 #@-node:ekr.20051019170806:renameTab
 #@+node:ekr.20051016101724.1:selectTab
 def selectTab (self,tabName,createText=True,wrap='none'):
@@ -30089,18 +30086,18 @@ def printSettingsHelper(self,settings,d,letter=None):
                     settings[key] = (letter,bunch.val)
 #@nonl
 #@+node:ekr.20070418084502:<< set letter >>
-hash = d.get('_hash').lower()
+theHash = d.get('_hash').lower()
 
 if letter:
     pass
-elif hash.endswith('myleosettings.leo'):
+elif theHash.endswith('myleosettings.leo'):
     letter = '[M]'
-elif hash.endswith('leosettings.leo'):
+elif theHash.endswith('leosettings.leo'):
     letter = ' ' * 3
 else:
     letter = '[D]'
 
-# g.trace(letter,hash)
+# g.trace(letter,theHash)
 #@nonl
 #@-node:ekr.20070418084502:<< set letter >>
 #@-node:ekr.20070418075804:printSettingsHelper
@@ -32615,8 +32612,6 @@ def createControl (self):
         arrownavigation = 0,
     )
 
-    hull = nb.component('hull')
-
     nb.pack(fill='both',expand=1)
 #@-node:ekr.20070317073819.2:tt.createControl
 #@-node:ekr.20070320090557.1: Birth & death
@@ -32677,7 +32672,7 @@ def destroyTab (self,tabName):
 
 #@-node:ekr.20070317074824.1:tt.destroyTab
 #@+node:ekr.20070317074813:tt.makeTabMenu & helpers
-def makeTabMenu (self,tabName,theChapter):
+def makeTabMenu (self,tabName):
 
     '''Create a tab menu.'''
     
@@ -32689,19 +32684,10 @@ def makeTabMenu (self,tabName,theChapter):
     w.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
     w.tmenu = tmenu
 
-    tt.createTopLevelMenuItems(tmenu,theChapter)
-
-    if 0:
-        tmenu.add_separator()
-        #tt.createConvertMenu(tmenu)
-        # tt.createEditorMenu(tmenu)
-        # tt.createImportExportMenu(tmenu)
-        # tt.createIndexMenu(tmenu)
-        tt.createNodeMenu(tmenu)
-        tt.createTrashMenu(tmenu)
+    tt.createTopLevelMenuItems(tmenu)
 #@nonl
 #@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-def createTopLevelMenuItems (self,tmenu,theChapter):
+def createTopLevelMenuItems (self,tmenu):
 
     cc = self.cc ; menu = tmenu
 
@@ -32721,32 +32707,15 @@ def createTopLevelMenuItems (self,tmenu,theChapter):
         elif kind == '...':
             submenu = Tk.Menu(menu,tearoff=0)
             menu.add_cascade(menu=submenu,label=label)
-            def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu,theChapter=theChapter):
-                self.setupChaptersMenu(submenu,command,theChapter)
+            def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu):
+                self.setupChaptersMenu(submenu,command)
             submenu.configure(postcommand=chapterMenuCallback)
         else:
             menu.add_command(label=label,command=command)
-
-    # for name,command in (
-        # ('Clone',cc.cloneToChapter),
-        # ('Copy',cc.copyToChapter),
-        # ('Move',cc.moveToChapter),
-    # ):
-        # submenu = Tk.Menu(menu,tearoff=0)
-        # menu.add_cascade(
-            # menu=submenu,
-            # label='%s Node To Chapter...' % name)
-
-        # def chapterMenuCallback(event=None,cc=cc,submenu=submenu):
-            # self.setupChaptersMenu(submenu,command)
-
-        # submenu.configure(postcommand=chapterMenuCallback)
-
-    # menu.add_separator()
-
+#@nonl
 #@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
 #@+node:ekr.20070318120043:tt.setupChaptersMenu
-def setupChaptersMenu (self,menu,command,theChapter):
+def setupChaptersMenu (self,menu,command):
 
     '''Create a submenu containing the list of all chapters.'''
 
@@ -32795,9 +32764,7 @@ def renameChapterHelper (self,cc,tabName):
 
     '''Called from cc.renameChapter to prompt for a new name.'''
 
-    tt = self ; c = tt.c ; nb = tt.nb
-
-    frame = tt.getFrame(tabName)
+    tt = self ; c = tt.c
     tab = tt.getButton(tabName)
 
     f = Tk.Frame(tab)
@@ -34328,7 +34295,7 @@ def unlink (self):
     assert(root)
 
     # Remember the data.
-    self.unlinkData = b = g.Bunch(childIndex=root.childIndex(),root=root)
+    self.unlinkData = g.Bunch(childIndex=root.childIndex(),root=root)
     if self.trace: g.trace('chapter',self.name,'unlinkData.root',root)
     root.moveToRoot(oldRoot=None)
 #@-node:ekr.20070420173354:chapter.link/unlink
@@ -34798,6 +34765,1052 @@ def putDescendentUnknownAttributes (self,p):
 #@-node:EKR.20040627113418:putDescendentUnknownAttributes
 #@-node:ekr.20031218072017.1579:putVnodes & helpers
 #@-node:ekr.20070503100926:error writing file with newly-created @chapters node
+#@+node:ekr.20070506151218:Fixed problem with forceMainChapter
+#@+node:ekr.20070317085437.2: ctor: chapterController
+def __init__ (self,c):
+    
+    self.c = c
+    self.chaptersDict = {}
+        # Keys are tabNames, values are chapters.
+        # Important: tabNames never change, even if their button text changes.
+    self.chaptersLinked = True # True: the @chapters node is linked into the outline.
+    self.chaptersNode = None # Set later
+    self.inited = False # Set in makeTrees.
+    self.mainRoot = None # Set later
+    self.oldMainRoot = None # Set to cc.mainRoot in cc.unlinkChaptersNode.
+    self.selectedChapter = None
+    self.tabNames = []
+    self.trace = False
+    self.tt = None # Set in finishCreate.
+#@-node:ekr.20070317085437.2: ctor: chapterController
+#@+node:ekr.20070318122708:cc.getSelectedChapter
+def getSelectedChapter (self):
+
+    cc = self
+    
+    tabName = cc.tt.nb.getcurselection()
+    theChapter = cc.chaptersDict.get(tabName) or cc.selectedChapter
+    if self.trace: g.trace(theChapter and theChapter.name or '<no chapter>')
+    return theChapter
+#@-node:ekr.20070318122708:cc.getSelectedChapter
+#@+node:ekr.20070317131205.1:chapter.select & helpers
+def select (self,w=None,selectEditor=True):
+    
+    '''Restore chapter information and redraw the tree when a chapter is selected.'''
+    
+    if self.selectLockout: return
+    
+    try:
+        self.selectLockout = True
+        self.chapterSelectHelper(w,selectEditor)
+    finally:
+        self.selectLockout = False
+#@+node:ekr.20070423102603.1:chapterSelectHelper
+def chapterSelectHelper (self,w,selectEditor):
+
+    c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
+
+    # The big switcharoo.
+    c.frame.canvas = canvas = tt.getCanvas(name)
+    c.frame.tree = tree = tt.getTree(name)
+    
+    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
+    
+    if name == 'main':
+        root = cc.mainRoot
+        c.setRootPosition(root)
+    else:
+        root = self.root
+        self.unlink()
+        c.setRootPosition(root)
+
+    cc.selectedChapter = self
+
+    # Switch to the new editor.
+    if selectEditor:
+        if w:
+            assert w == c.frame.body.bodyCtrl
+            assert w == c.frame.bodyCtrl
+            p = self.findPositionInChapter(w.leo_p.v)
+            if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
+        else:
+             # This must be done *after* switching roots.
+            p = self.findPositionInChapter(self.p.v) ######################
+            w = self.findEditorInChapter(p)
+            c.frame.body.selectEditor(w) # Switches text.
+
+    # g.trace('   ***',id(w),root.headString(),p.headString())
+
+    c.beginUpdate()
+    try:
+        if self.inited:
+            c.selectPosition(p)
+            c.hoistStack = self.hoistStack[:] # Restore the hoist state.
+        else:
+            self.inited = True
+            if name == 'main': # Clear all hoists.
+                c.hoistStack = []
+                c.selectPosition(p)
+            else: # Finish initing the canvas and do the initial hoist.
+                # g.trace('finish init',name)
+                tree.setBindings()
+                if name != 'main':
+                    root.expand()
+                c.selectPosition(root)
+                c.hoistStack = []
+                c.hoist()
+                self.hoistStack = c.hoistStack[:]
+        # g.trace('chapter',name,'p.v',id(p.v),p.headString())
+    finally:
+        c.endUpdate()
+        c.bodyWantsFocusNow()
+#@nonl
+#@-node:ekr.20070423102603.1:chapterSelectHelper
+#@+node:ekr.20070317131708:chapter.findPositionInChapter
+def findPositionInChapter (self,v):
+    
+    '''Return a valid position p such that p.v == v.'''
+    
+    cc = self.cc ; name = self.name
+
+    if name == 'main':
+        # Search the entire tree, but not the @chapters tree.
+        assert(cc.mainRoot)
+        for p in cc.mainRoot.self_and_siblings_iter():
+            if not p.headString().startswith('@chapters'):
+                for p2 in p.self_and_subtree_iter():
+                    if p2.v == v:
+                        if self.trace: g.trace('*** found outside @chapters','v',p2.v)
+                        return p2
+    else:
+        # Search only the @chapter tree.
+        for p in self.root.self_and_subtree_iter():
+            if p.v == v:
+                if self.trace: g.trace('*** found in chapter',p)
+                return p
+    
+    self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
+    g.trace(g.callers())
+    if 0: # This could crash.
+        print 'cc.mainRoot',cc.mainRoot
+        print '******* top-level nodes *****'
+        for p in cc.mainRoot.self_and_siblings_iter():
+            print p.headStirng()
+    return self.root
+#@nonl
+#@-node:ekr.20070317131708:chapter.findPositionInChapter
+#@+node:ekr.20070425175522:chapter.findEditorInChapter
+def findEditorInChapter (self,p):
+    
+    '''return w, an editor displaying position p.'''
+    
+    chapter = self ; c = self.c
+
+    w = c.frame.body.findEditorForChapter(chapter,p)
+    w.leo_chapter = chapter
+    w.leo_p = p and p.copy()
+    return w
+#@nonl
+#@-node:ekr.20070425175522:chapter.findEditorInChapter
+#@-node:ekr.20070317131205.1:chapter.select & helpers
+#@+node:ekr.20070325104904:cc.makeTrees
+def makeTrees (self):
+    
+    '''Find or make the @chapters and @chapter trash nodes.'''
+    
+    # This must be called late in the init process:
+    # at present, called by g.openWithFileName and c.new.
+
+    cc = self ; c = cc.c ; tt = cc.tt
+
+    # Create the @chapters node if needed, and set cc.chaptersNode.
+    if not cc.chaptersNode and not cc.findChaptersNode():
+        cc.createChaptersNode()
+        
+    # The chapters node is always unlinked, except when saving .leo files.
+    cc.unlinkChaptersNode()
+        
+    if not cc.findChapterNode('trash'):
+        cc.createChapterNode('trash')
+        
+    # Create a chapter for each @chapter node.
+    tag = '@chapter'
+    for p in cc.chaptersNode.children_iter():
+        h = p.headString()
+        if h.startswith(tag):
+            tabName = h[len(tag):].strip()
+            if tabName and tabName not in ('main','trash') and not cc.chaptersDict.get(tabName):
+                theChapter = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
+                cc.chaptersDict[tabName] = theChapter
+                tt.createTab(tabName,select=False)
+                tt.makeTabMenu(tabName)
+    
+    for tabName in ('trash',):
+        if not cc.chaptersDict.get(tabName):
+            p = cc.getChapterNode(tabName)
+            cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
+            
+    for tabName in ('main',):
+        if not cc.chaptersDict.get(tabName):
+            p = c.currentPosition()
+            cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=None)
+            
+    cc.selectChapter('main')
+    cc.inited = True
+#@nonl
+#@-node:ekr.20070325104904:cc.makeTrees
+#@+node:ekr.20070425180705:findEditorForChapter (leoBody)
+def findEditorForChapter (self,chapter,p):
+    
+    '''Return an editor to be assigned to chapter.'''
+    
+    d = self.editorWidgets ; values = d.values()
+
+    # First, try to match both the chapter and position.
+    if p:
+        for w in values:
+            if (
+                hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
+                hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
+                # g.trace('***',id(w),'match chapter and p',p.headString())
+                return w
+            
+    # Next, try to match just the chapter.
+    for w in values:
+        if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
+            # g.trace('***',id(w),'match only chapter',p.headString())
+            return w
+    
+    # As a last resort, return the present editor widget.
+    # g.trace('***',id(self.bodyCtrl),'no match',p.headString())
+    return self.bodyCtrl
+#@-node:ekr.20070425180705:findEditorForChapter (leoBody)
+#@+node:ekr.20070425175522:chapter.findEditorInChapter
+def findEditorInChapter (self,p):
+    
+    '''return w, an editor displaying position p.'''
+    
+    chapter = self ; c = self.c
+
+    w = c.frame.body.findEditorForChapter(chapter,p)
+    w.leo_chapter = chapter
+    w.leo_p = p and p.copy()
+    return w
+#@nonl
+#@-node:ekr.20070425175522:chapter.findEditorInChapter
+#@+node:ekr.20070317131708:chapter.findPositionInChapter
+def findPositionInChapter (self,v):
+    
+    '''Return a valid position p such that p.v == v.'''
+    
+    cc = self.cc ; name = self.name
+
+    if name == 'main':
+        # Search the entire tree, but not the @chapters tree.
+        assert(cc.mainRoot)
+        for p in cc.mainRoot.self_and_siblings_iter():
+            if not p.headString().startswith('@chapters'):
+                for p2 in p.self_and_subtree_iter():
+                    if p2.v == v:
+                        if self.trace: g.trace('*** found outside @chapters','v',p2.v)
+                        return p2
+    else:
+        # Search only the @chapter tree.
+        for p in self.root.self_and_subtree_iter():
+            if p.v == v:
+                if self.trace: g.trace('*** found in chapter',p)
+                return p
+    
+    self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
+    g.trace(g.callers())
+    if 0: # This could crash.
+        print 'cc.mainRoot',cc.mainRoot
+        print '******* top-level nodes *****'
+        for p in cc.mainRoot.self_and_siblings_iter():
+            print p.headStirng()
+    return self.root
+#@nonl
+#@-node:ekr.20070317131708:chapter.findPositionInChapter
+#@+node:ekr.20070320091806.1:chapter.unselect
+def unselect (self):
+
+    '''Remember chapter info when a chapter is about to be unselected.'''
+
+    c = self.c ; cc = self.cc
+    self.hoistStack = c.hoistStack[:]
+    self.p = c.currentPosition()
+    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
+    
+    # Restore the entire outline and
+    # link the chapter's @chapter node into the entire outline.
+    if self.name != 'main':
+        self.link()
+#@-node:ekr.20070320091806.1:chapter.unselect
+#@+node:ekr.20070421092158:cc.forceMainChapter
+def forceMainChapter (self):
+    
+    cc = self
+    oldChapter = cc.getSelectedChapter()
+    # g.trace(oldChapter)
+    
+    if oldChapter:
+        if oldChapter.name == 'main':
+            oldChapter = None # Don't unlink the main chapter in unlinkChaptersNode.
+        else:
+            oldChapter.link()
+            if self.trace: g.trace('oldChapter',oldChapter.name)
+    
+    cc.linkChaptersNode()
+
+    return oldChapter
+#@-node:ekr.20070421092158:cc.forceMainChapter
+#@+node:ekr.20070503082757:cc.restoreOldChapter
+def restoreOldChapter (self, oldChapter):
+    
+    cc = self ; c = self.c
+    
+    # g.trace(oldChapter)
+    cc.unlinkChaptersNode()
+    if oldChapter:
+        oldChapter.unlink()
+        oldChapter.select()
+   
+#@nonl
+#@-node:ekr.20070503082757:cc.restoreOldChapter
+#@+node:ekr.20070503083301:cc.linkChaptersNode
+def linkChaptersNode (self):
+    
+    cc = self
+    
+    if not cc.chaptersNode:
+        self.error('***** no @chapters node')
+    elif not cc.mainRoot:
+        self.error('***** no cc.mainRoot')
+    elif cc.chaptersLinked:
+        g.trace('***** can not happen: @chapters already linked')
+    else:
+        cc.chaptersLinked = True
+        cc.oldMainRoot = cc.mainRoot
+        cc.chaptersNode.linkAsRoot(oldRoot=cc.mainRoot)
+        if self.trace: g.trace('*** setting mainRoot',cc.chaptersNode)
+        cc.mainRoot = cc.chaptersNode
+#@-node:ekr.20070503083301:cc.linkChaptersNode
+#@+node:ekr.20070503081539:cc.unlinkChaptersNode
+def unlinkChaptersNode (self):
+    
+    '''unlink the @chapters node from the headline.'''
+    
+    cc = self ; c = cc.c
+    
+    if not cc.chaptersNode:
+        g.trace('***** can not happen: no @chapters node')
+    elif not cc.chaptersLinked:
+        g.trace('***** can not happen: @chapters already unlinked')
+    else:
+        c.beginUpdate()
+        try:
+            p = cc.chaptersNode
+            newRoot = cc.oldMainRoot or p.back() or p.next()
+            if newRoot:
+                # Test whether we are in the @chpaters tree **before** unlinking.
+                current = c.currentPosition()
+                inChaptersFlag = cc.chaptersNode == current or cc.chaptersNode.isAncestorOf(current)
+                if self.trace: g.trace('*** unlinking @chapters node','newRoot',newRoot)
+                cc.chaptersNode.unlink() # unlink the node.
+                if self.trace: g.trace('*** setting mainRoot',newRoot)
+                cc.mainRoot = newRoot
+                c.setRootPosition(newRoot)
+                if inChaptersFlag:
+                    # g.trace('setting position to',newRoot.headString())
+                    c.setCurrentPosition(newRoot)
+            else:
+                self.error('***** no new root')
+        finally:
+            cc.oldMainRoot = None
+            cc.chaptersLinked = False
+            c.endUpdate(flag=False) # Do not redraw: the canvas has not been saved/restored.
+#@-node:ekr.20070503081539:cc.unlinkChaptersNode
+#@+node:ekr.20070420173354:chapter.link/unlink
+def link (self):
+    
+    '''Link the chapter's @chapter node back into the full outline.'''
+
+    b = self.unlinkData ; c = self.c ; cc = self.cc
+    if self.trace: g.trace('chapter',self.name,'unlinkData.root',b and b.root)
+    if b:
+        c.setRootPosition(cc.mainRoot) # Restore the main outline.
+        parent = cc.chaptersNode
+        n,root = b.childIndex,b.root
+        root.linkAsNthChild(parent,n)
+        self.unlinkData = None
+    else:
+        g.trace('**** can not happen: no unlinkData')
+    
+def unlink (self):
+    
+    '''Unlink the root node (the chapter's @chapter node) from the full outine.
+    set unlinkData for later use by self.link.'''
+    
+    cc = self.cc ; name = self.name ; root = self.root
+    assert(name != 'main')
+    assert(cc.chaptersNode)
+    assert(root)
+
+    # Remember the data.
+    self.unlinkData = g.Bunch(childIndex=root.childIndex(),root=root)
+    if self.trace: g.trace('chapter',self.name,'unlinkData.root',root)
+    root.moveToRoot(oldRoot=None)
+#@-node:ekr.20070420173354:chapter.link/unlink
+#@+node:ekr.20070413045221.2:Top-level  (leoFileCommands)
+#@+node:ekr.20031218072017.1720:save
+def save(self,fileName):
+
+    c = self.c ; v = c.currentVnode()
+
+    # New in 4.2.  Return ok flag so shutdown logic knows if all went well.
+    ok = g.doHook("save1",c=c,p=v,v=v,fileName=fileName)
+    # redraw_flag = g.app.gui.guiName() == 'tkinter'
+    if ok is None:
+        c.beginUpdate()
+        try:
+            c.endEditing()# Set the current headline text.
+            self.setDefaultDirectoryForNewFiles(fileName)
+            ok = self.write_Leo_file(fileName,False) # outlineOnlyFlag
+            if ok:
+                c.setChanged(False) # Clears all dirty bits.
+                self.putSavedMessage(fileName)
+                if c.config.save_clears_undo_buffer:
+                    g.es("clearing undo")
+                    c.undoer.clearUndoState()
+        finally:
+            c.endUpdate() # We must redraw in order to clear dirty node icons.
+    g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
+    return ok
+#@-node:ekr.20031218072017.1720:save
+#@+node:ekr.20031218072017.3043:saveAs
+def saveAs(self,fileName):
+
+    c = self.c ; v = c.currentVnode()
+
+    if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
+        c.beginUpdate()
+        try:
+            c.endEditing() # Set the current headline text.
+            self.setDefaultDirectoryForNewFiles(fileName)
+            if self.write_Leo_file(fileName,False): # outlineOnlyFlag
+                c.setChanged(False) # Clears all dirty bits.
+                self.putSavedMessage(fileName)
+        finally:
+            c.endUpdate() # We must redraw in order to clear dirty node icons.
+    g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
+#@-node:ekr.20031218072017.3043:saveAs
+#@+node:ekr.20031218072017.3044:saveTo
+def saveTo (self,fileName):
+
+    c = self.c ; v = c.currentVnode()
+
+    if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
+        c.beginUpdate()
+        try:
+            c.endEditing()# Set the current headline text.
+            self.setDefaultDirectoryForNewFiles(fileName)
+            self.write_Leo_file(fileName,False) # outlineOnlyFlag
+            self.putSavedMessage(fileName)
+        finally:
+            c.endUpdate() # We must redraw in order to clear dirty node icons.
+    g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
+#@-node:ekr.20031218072017.3044:saveTo
+#@+node:ekr.20070413061552:putSavedMessage
+def putSavedMessage (self,fileName):
+    
+    c = self.c
+    
+    zipMark = g.choose(c.isZipped,'[zipped] ','')
+    
+    g.es("saved: %s%s" % (zipMark,g.shortFileName(fileName)))
+#@nonl
+#@-node:ekr.20070413061552:putSavedMessage
+#@-node:ekr.20070413045221.2:Top-level  (leoFileCommands)
+#@+node:ekr.20031218072017.2820:top level (file menu)
+#@+node:ekr.20031218072017.1623:new
+def new (self,event=None):
+    
+    '''Create a new Leo window.'''
+
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
+    c.beginUpdate()
+    try:
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
+    finally:
+        c.endUpdate()
+        # makeTrees must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if c.config.getBool('use_chapters') and c.chapterController:
+            c.chapterController.makeTrees()
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+#@-node:ekr.20031218072017.1623:new
+#@+node:ekr.20031218072017.2821:open
+def open (self,event=None):
+    
+    '''Open a Leo window containing the contents of a .leo file.'''
+
+    c = self
+    << Set closeFlag if the only open window is empty >>
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title = "Open",
+        filetypes = [("Leo files","*.leo"), ("All files","*")],
+        defaultextension = ".leo")
+    c.bringToFront()
+
+    ok = False
+    if fileName and len(fileName) > 0:
+        ok, frame = g.openWithFileName(fileName,c)
+        if ok:
+            g.setGlobalOpenDir(fileName)
+        if ok and closeFlag:
+            g.app.destroyWindow(c.frame)
+            
+    # openWithFileName sets focus if ok.
+    if not ok:
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+#@nonl
+#@+node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
+@ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
+@c
+    
+closeFlag = (
+    c.frame.startupWindow and # The window was open on startup
+    not c.changed and not c.frame.saved and # The window has never been changed
+    g.app.numberOfWindows == 1) # Only one untitled window has ever been opened
+#@-node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
+#@-node:ekr.20031218072017.2821:open
+#@+node:ekr.20031218072017.2823:openWith and allies
+def openWith(self,event=None,data=None):
+
+    """This routine handles the items in the Open With... menu.
+
+    These items can only be created by createOpenWithMenuFromTable().
+    Typically this would be done from the "open2" hook.
+    
+    New in 4.3: The "os.spawnv" now works. You may specify arguments to spawnv
+    using a list, e.g.:
+        
+    openWith("os.spawnv", ["c:/prog.exe","--parm1","frog","--switch2"], None)
+    """
+    
+    c = self ; p = c.currentPosition()
+    n = data and len(data) or 0
+    if n != 3:
+        g.trace('bad data, length must be 3, got %d' % n)
+        return
+    try:
+        openType,arg,ext=data
+        if not g.doHook("openwith1",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext):
+            g.enableIdleTimeHook(idleTimeDelay=100)
+            << set ext based on the present language >>
+            << create or reopen temp file, testing for conflicting changes >>
+            << execute a command to open path in external editor >>
+        g.doHook("openwith2",c=c,p=p,v=p.v,openType=openType,arg=arg,ext=ext)
+    except Exception:
+        g.es("unexpected exception in c.openWith")
+        g.es_exception()
+
+    return "break"
+#@+node:ekr.20031218072017.2824:<< set ext based on the present language >>
+if not ext:
+    theDict = g.scanDirectives(c)
+    language = theDict.get("language")
+    ext = g.app.language_extension_dict.get(language)
+    # print language,ext
+    if ext == None:
+        ext = "txt"
+    
+if ext[0] != ".":
+    ext = "."+ext
+    
+# print "ext",ext
+#@-node:ekr.20031218072017.2824:<< set ext based on the present language >>
+#@+node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
+theDict = None ; path = None
+<< set dict and path if a temp file already refers to p.v.t >>
+if path:
+    << create or recreate temp file as needed >>
+else:
+    path = c.createOpenWithTempFile(p,ext)
+
+if not path:
+    return # An error has occured.
+#@+node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
+searchPath = c.openWithTempFilePath(p,ext)
+
+if g.os_path_exists(searchPath):
+    for theDict in g.app.openWithFiles:
+        if p.v == theDict.get('v') and searchPath == theDict.get("path"):
+            path = searchPath
+            break
+#@-node:ekr.20031218072017.2826:<<set dict and path if a temp file already refers to p.v.t >>
+#@+node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
+@ We test for changes in both p and the temp file:
+
+- If only p's body text has changed, we recreate the temp file.
+- If only the temp file has changed, do nothing here.
+- If both have changed we must prompt the user to see which code to use.
+@c
+
+encoding = theDict.get("encoding")
+old_body = theDict.get("body")
+new_body = p.bodyString()
+new_body = g.toEncodedString(new_body,encoding,reportErrors=True)
+
+old_time = theDict.get("time")
+try:
+    new_time = g.os_path_getmtime(path)
+except:
+    new_time = None
+    
+body_changed = old_body != new_body
+temp_changed = old_time != new_time
+
+if body_changed and temp_changed:
+    << Raise dialog about conflict and set result >>
+    if result == "cancel": return
+    rewrite = result == "outline"
+else:
+    rewrite = body_changed
+        
+if rewrite:
+    path = c.createOpenWithTempFile(p,ext)
+else:
+    g.es("reopening: " + g.shortFileName(path),color="blue")
+#@+node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
+message = (
+    "Conflicting changes in outline and temp file\n\n" +
+    "Do you want to use the code in the outline or the temp file?\n\n")
+
+result = g.app.gui.runAskYesNoCancelDialog(c,
+    "Conflict!", message,
+    yesMessage = "Outline",
+    noMessage = "File",
+    defaultButton = "Cancel")
+#@-node:ekr.20031218072017.2828:<< Raise dialog about conflict and set result >>
+#@-node:ekr.20031218072017.2827:<< create or recreate temp file as needed >>
+#@-node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
+#@+node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
+try:
+    if arg == None: arg = ""
+    shortPath = path # g.shortFileName(path)
+    if openType == "os.system":
+        if 1:
+            # This works, _provided_ that arg does not contain blanks.  Sheesh.
+            command = 'os.system(%s)' % (arg+shortPath)
+            os.system(arg+shortPath)
+        else:
+            # XP does not like this format!
+            command = 'os.system("%s" "%s")' % (arg,shortPath)
+            os.system('"%s" "%s"' % (arg,shortPath))
+    elif openType == "os.startfile":
+        command = "os.startfile(%s)" % (arg+shortPath)
+        os.startfile(arg+path)
+    elif openType == "exec":
+        command = "exec(%s)" % (arg+shortPath)
+        exec arg+path in {}
+    elif openType == "os.spawnl":
+        filename = g.os_path_basename(arg)
+        command = "os.spawnl(%s,%s,%s)" % (arg,filename,path)
+        apply(os.spawnl,(os.P_NOWAIT,arg,filename,path))
+    elif openType == "os.spawnv":
+        filename = os.path.basename(arg[0]) 
+        vtuple = arg[1:]
+        vtuple.insert(0, filename)
+            # add the name of the program as the first argument.
+            # Change suggested by Jim Sizelove.
+        vtuple.append(path)
+        command = "os.spawnv(%s,%s)" % (arg[0],repr(vtuple))
+        apply(os.spawnv,(os.P_NOWAIT,arg[0],vtuple))
+    # This clause by Jim Sizelove.
+    elif openType == "subprocess.Popen":
+        if isinstance(arg, basestring):
+            vtuple = arg + " " + path
+        elif isinstance(arg, (list, tuple)):
+            vtuple = arg[:]
+            vtuple.append(path)
+        command = "subprocess.Popen(%s)" % repr(vtuple)
+        if subprocess:
+            subprocess.Popen(vtuple)
+        else:
+            g.grace('Can not import subprocess.  Skipping: "%s"' % command)
+    else:
+        command="bad command:"+str(openType)
+        g.trace(command)
+except Exception:
+    g.es("exception executing: "+command)
+    g.es_exception()
+#@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
+#@+node:ekr.20031218072017.2830:createOpenWithTempFile
+def createOpenWithTempFile (self,p,ext):
+    
+    c = self
+    path = c.openWithTempFilePath(p,ext)
+    try:
+        if g.os_path_exists(path):
+            g.es("recreating:  " + g.shortFileName(path),color="red")
+        else:
+            g.es("creating:  " + g.shortFileName(path),color="blue")
+        theFile = open(path,"w")
+        # Convert s to whatever encoding is in effect.
+        s = p.bodyString()
+        theDict = g.scanDirectives(c,p=p)
+        encoding = theDict.get("encoding",None)
+        if encoding == None:
+            encoding = c.config.default_derived_file_encoding
+        s = g.toEncodedString(s,encoding,reportErrors=True) 
+        theFile.write(s)
+        theFile.flush()
+        theFile.close()
+        try:    time = g.os_path_getmtime(path)
+        except: time = None
+        # g.es("time: " + str(time))
+        # New in 4.3: theDict now contains both 'p' and 'v' entries, of the expected type.
+        theDict = {
+            "body":s, "c":c, "encoding":encoding,
+            "f":theFile, "path":path, "time":time,
+            "p":p, "v":p.v }
+        << remove previous entry from app.openWithFiles if it exists >>
+        g.app.openWithFiles.append(theDict)
+        return path
+    except:
+        if theFile:
+            theFile.close()
+        theFile = None
+        g.es("exception creating temp file",color="red")
+        g.es_exception()
+        return None
+#@+node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
+for d in g.app.openWithFiles[:]:
+    p2 = d.get("p")
+    if p.v.t == p2.v.t:
+        # print "removing previous entry in g.app.openWithFiles for",p.headString()
+        g.app.openWithFiles.remove(d)
+#@-node:ekr.20031218072017.2831:<< remove previous entry from app.openWithFiles if it exists >>
+#@-node:ekr.20031218072017.2830:createOpenWithTempFile
+#@+node:ekr.20031218072017.2832:c.openWithTempFilePath
+def openWithTempFilePath (self,p,ext):
+    
+    """Return the path to the temp file corresponding to p and ext."""
+    
+    if 0: # new code: similar to code in mod_tempfname.py plugin.
+        try:
+            # At least in Windows, user name may contain special characters
+            # which would require escaping quotes.
+            leoTempDir = g.sanitize_filename(getpass.getuser()) + "_" + "Leo"
+        except:
+            leoTempDir = "LeoTemp"
+            g.es("Could not retrieve your user name.")
+            g.es("Temporary files will be stored in: %s" % leoTempDir)
+        
+        td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
+        if not os.path.exists(td):
+            os.mkdir(td)
+        
+        name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
+        path = os.path.join(td,name)
+        return path
+    else: # Original code.
+        name = "LeoTemp_%s_%s%s" % (
+            str(id(p.v.t)),
+            g.sanitize_filename(p.headString()),
+            ext)
+    
+        name = g.toUnicode(name,g.app.tkEncoding)
+    
+        if 1:
+            td = g.os_path_abspath(tempfile.gettempdir())
+        else:
+            td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
+    
+        path = g.os_path_join(td,name)
+    
+        return path
+#@-node:ekr.20031218072017.2832:c.openWithTempFilePath
+#@-node:ekr.20031218072017.2823:openWith and allies
+#@+node:ekr.20031218072017.2833:close
+def close (self,event=None):
+    
+    '''Close the Leo window, prompting to save it if it has been changed.'''
+
+    g.app.closeLeoWindow(self.frame)
+#@-node:ekr.20031218072017.2833:close
+#@+node:ekr.20031218072017.2834:save
+def save (self,event=None):
+    
+    '''Save a Leo outline to a file.'''
+
+    c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
+    oldChapter = cc and cc.forceMainChapter()
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+    
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+        c.mFileName = ""
+        
+    c.beginUpdate()
+    try:
+        if c.mFileName != "":
+            # Calls c.setChanged(False) if no error.
+            c.fileCommands.save(c.mFileName)
+        else:
+            fileName = g.app.gui.runSaveFileDialog(
+                initialfile = c.mFileName,
+                title="Save",
+                filetypes=[("Leo files", "*.leo")],
+                defaultextension=".leo")
+            c.bringToFront()
+    
+            if fileName:
+                # Don't change mFileName until the dialog has suceeded.
+                c.mFileName = g.ensure_extension(fileName, ".leo")
+                c.frame.title = c.mFileName
+                c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+                c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+                c.fileCommands.save(c.mFileName)
+                c.updateRecentFiles(c.mFileName)
+                
+        if cc:
+            cc.restoreOldChapter(oldChapter)
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2834:save
+#@+node:ekr.20031218072017.2835:saveAs
+def saveAs (self,event=None):
+    
+    '''Save a Leo outline to a file with a new filename.'''
+    
+    c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
+    oldChapter = cc and cc.forceMainChapter()
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+        
+    c.beginUpdate()
+    try:
+        # Make sure we never pass None to the ctor.
+        if not c.mFileName:
+            c.frame.title = ""
+    
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = c.mFileName,
+            title="Save As",
+            filetypes=[("Leo files", "*.leo")],
+            defaultextension=".leo")
+        c.bringToFront()
+    
+        if fileName:
+            # 7/2/02: don't change mFileName until the dialog has suceeded.
+            c.mFileName = g.ensure_extension(fileName, ".leo")
+            c.frame.title = c.mFileName
+            c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+            c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+            # Calls c.setChanged(False) if no error.
+            c.fileCommands.saveAs(c.mFileName)
+            c.updateRecentFiles(c.mFileName)
+            
+        if cc:
+            cc.restoreOldChapter(oldChapter)
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2835:saveAs
+#@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
+def saveAsUnzipped (self,event=None):
+    
+    '''Save a Leo outline to a file with a new filename,
+    ensuring that the file is not compressed.'''
+    self.saveAsZippedHelper(False)
+    
+def saveAsZipped (self,event=None):
+
+    '''Save a Leo outline to a file with a new filename,
+    ensuring that the file is compressed.'''
+    self.saveAsZippedHelper(True)
+    
+def saveAsZippedHelper (self,isZipped):
+    
+    c = self
+    oldZipped = c.isZipped
+    c.isZipped = isZipped
+    try:
+        c.saveAs()
+    finally:
+        c.isZipped = oldZipped
+#@-node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
+#@+node:ekr.20031218072017.2836:saveTo
+def saveTo (self,event=None):
+    
+    '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
+    
+    c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
+    oldChapter = cc and cc.forceMainChapter()
+    
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+        
+    c.beginUpdate()
+    try:
+        # Make sure we never pass None to the ctor.
+        if not c.mFileName:
+            c.frame.title = ""
+    
+        # set local fileName, _not_ c.mFileName
+        fileName = g.app.gui.runSaveFileDialog(
+            initialfile = c.mFileName,
+            title="Save To",
+            filetypes=[("Leo files", "*.leo")],
+            defaultextension=".leo")
+        c.bringToFront()
+    
+        if fileName:
+            fileName = g.ensure_extension(fileName, ".leo")
+            c.fileCommands.saveTo(fileName)
+            c.updateRecentFiles(fileName)
+            
+        if cc:
+            cc.restoreOldChapter(oldChapter)
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2836:saveTo
+#@+node:ekr.20031218072017.2837:revert
+def revert (self,event=None):
+    
+    '''Revert the contents of a Leo outline to last saved contents.'''
+    
+    c = self
+
+    # Make sure the user wants to Revert.
+    if not c.mFileName:
+        return
+        
+    reply = g.app.gui.runAskYesNoDialog(c,"Revert",
+        "Revert to previous version of " + c.mFileName + "?")
+    c.bringToFront()
+
+    if reply=="no":
+        return
+
+    # Kludge: rename this frame so openWithFileName won't think it is open.
+    fileName = c.mFileName ; c.mFileName = ""
+
+    # Create a new frame before deleting this frame.
+    ok, frame = g.openWithFileName(fileName,c)
+    if ok:
+        frame.deiconify()
+        g.app.destroyWindow(c.frame)
+    else:
+        c.mFileName = fileName
+#@-node:ekr.20031218072017.2837:revert
+#@-node:ekr.20031218072017.2820:top level (file menu)
+#@+node:ekr.20040803072955.58:tree.redraw_now & helper
+# New in 4.4b2: suppress scrolling by default.
+
+def redraw_now (self,scroll=False):
+    
+    '''Redraw immediately: used by Find so a redraw doesn't mess up selections in headlines.'''
+
+    if g.app.quitting or self.drag_p or self.frame not in g.app.windowList:
+        return
+        
+    c = self.c ;  self.redrawCount += 1
+    
+    # g.trace(g.callers())
+    
+    if not g.app.unitTesting:
+        if self.gc_before_redraw:
+            g.collectGarbage()
+        if g.app.trace_gc_verbose:
+            if (self.redrawCount % 5) == 0:
+                g.printGcSummary()
+        if self.trace_redraw_now or self.trace_alloc:
+            # g.trace(self.redrawCount,g.callers())
+            # g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
+            if self.trace_stats:
+                g.print_stats()
+                g.clear_stats()
+                
+    # New in 4.4b2: Call endEditLabel, but suppress the redraw.
+    self.beginUpdate()
+    try:
+        self.endEditLabel()
+    finally:
+        self.endUpdate(False)
+
+    # Do the actual redraw.
+    self.expandAllAncestors(c.currentPosition())
+    if self.idle_redraw:
+        def idleRedrawCallback(event=None,self=self,scroll=scroll):
+            self.redrawHelper(scroll=scroll)
+        self.canvas.after_idle(idleRedrawCallback)
+    else:
+        self.redrawHelper(scroll=scroll)
+    if g.app.unitTesting:
+        self.canvas.update_idletasks() # Important for unit tests.
+    c.masterFocusHandler()
+    
+redraw = redraw_now # Compatibility
+#@+node:ekr.20040803072955.59:redrawHelper
+def redrawHelper (self,scroll=True):
+    
+    c = self.c
+    oldcursor = self.canvas['cursor']
+    self.canvas['cursor'] = "watch"
+
+    if not g.doHook("redraw-entire-outline",c=c):
+        c.setTopVnode(None)
+        self.setVisibleAreaToFullCanvas()
+        self.drawTopTree()
+        # Set up the scroll region after the tree has been redrawn.
+        bbox = self.canvas.bbox('all')
+        # g.trace('canvas',self.canvas,'bbox',bbox)
+        if bbox is None:
+            x0,y0,x1,y1 = 0,0,100,100
+        else:
+            x0, y0, x1, y1 = bbox
+        self.canvas.configure(scrollregion=(0, 0, x1, y1))
+        if scroll:
+            self.canvas.update_idletasks() # Essential.
+            self.scrollTo()
+            
+    g.doHook("after-redraw-outline",c=c)
+
+    self.canvas['cursor'] = oldcursor
+#@-node:ekr.20040803072955.59:redrawHelper
+#@-node:ekr.20040803072955.58:tree.redraw_now & helper
+#@-node:ekr.20070506151218:Fixed problem with forceMainChapter
 #@-node:ekr.20070418094610.1:Fixed bugs
 #@+node:ekr.20070317073627.4:(Chapters)
 #@+node:ekr.20070325104222:Birth...
@@ -35206,10 +36219,9 @@ def makeTrees (self):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main','trash') and not cc.chaptersDict.get(tabName):
                 theChapter = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
-                cc.numberOfChapters += 1
                 cc.chaptersDict[tabName] = theChapter
                 tt.createTab(tabName,select=False)
-                tt.makeTabMenu(tabName,theChapter)
+                tt.makeTabMenu(tabName)
     
     for tabName in ('trash',):
         if not cc.chaptersDict.get(tabName):
@@ -35356,49 +36368,6 @@ if 0: # I find these very irritating.
 #@-node:ekr.20070325104222:Birth...
 #@-node:ekr.20070317073627.4:(Chapters)
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
-#@+node:ekr.20070126072723:Ran pychecker
-#@+node:ekr.20070316175013:Real bugs found
-leoEditCommands.py:4162: Variable (txt) used before being set
-    # A real bug in sort-fields. 
-
-leoTkinterFind.py:914: No class attribute (change) found
-leoTkinterFind.py:915: No class attribute (find) found
-    # Two real bugs in spell-tab change-then-find.  Now works.
-
-leoTkinterFrame.py:179: No class attribute (c) found
-    # A real bug.  baseTextWidget ctor now has c as an arg.
-
-leoTkinterFrame.py:441: Local variable (w) not used
-    # A real bug: removed frame.mark_set method.
-
-leoTkinterFrame.py:479: No global (wx) found
-    # A real bug removed frame.tag_configure method.
-
-leoTkinterFrame.py:564: Local variable (data) not used
-    # A real bug.  Removed body.xyToPythonIndex methods.
-
-leoTkinterGui.py:640: self is not first method argument
-    # A real bug.  It's not clear that this method was ever called.
-#@-node:ekr.20070316175013:Real bugs found
-#@+node:ekr.20070316175323:Invalid warnings
-C:\prog\tigris-cvs\leo\src\leoGlobals.py:127: No module attribute (leo_config_directory) found # wrong
-C:\prog\tigris-cvs\leo\src\leoGlobals.py:3884: Statement appears to have no effect # wrong
-C:\prog\tigris-cvs\leo\src\leoGlobals.py:3884: No module attribute (CODESET) found # wrong
-C:\prog\tigris-cvs\leo\src\leoGlobals.py:4448: No module attribute (mtime) found # wrong
-
-C:\prog\tigris-cvs\leo\src\leoGlobals.py:5068: No global (p) found # test_ function
-C:\prog\tigris-cvs\leo\src\leoGlobals.py:5592: No global (c) found # test_ function
-
-C:\prog\tigris-cvs\leo\src\leoAtFile.py:3907: No global (c) found # test_ function
-C:\prog\tigris-cvs\leo\src\leoKeys.py:2438: No module attribute (initAllEditCommanders) found
-C:\prog\tigris-cvs\leo\src\leoKeys.py:3925: No global (c) found
-C:\prog\tigris-cvs\leo\src\leoEditCommands.py:4879: No global (c) found # test_ function
-C:\prog\tigris-cvs\leo\src\leoFileCommands.py:2315: No global (c) found # test_ function
-C:\prog\tigris-cvs\leo\src\leoImport.py:1319: Global variable (c) not defined in module scope # test_ function
-
-C:\prog\tigris-cvs\leo\src\leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p)
-#@-node:ekr.20070316175323:Invalid warnings
-#@-node:ekr.20070126072723:Ran pychecker
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt
