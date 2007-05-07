@@ -792,8 +792,8 @@ class baseCommands:
         
         '''Save a Leo outline to a file.'''
     
-        c = self ; cc = c.chapterController
-        oldChapter = cc and c.config.getBool('use_chapters') and cc.forceMainChapter()
+        c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
+        oldChapter = cc and cc.forceMainChapter()
         
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
@@ -803,65 +803,73 @@ class baseCommands:
         if not c.mFileName:
             c.frame.title = ""
             c.mFileName = ""
-    
-        if c.mFileName != "":
-            # Calls c.setChanged(False) if no error.
-            c.fileCommands.save(c.mFileName)
-        else:
-            fileName = g.app.gui.runSaveFileDialog(
-                initialfile = c.mFileName,
-                title="Save",
-                filetypes=[("Leo files", "*.leo")],
-                defaultextension=".leo")
-            c.bringToFront()
-    
-            if fileName:
-                # Don't change mFileName until the dialog has suceeded.
-                c.mFileName = g.ensure_extension(fileName, ".leo")
-                c.frame.title = c.mFileName
-                c.frame.setTitle(g.computeWindowTitle(c.mFileName))
-                c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+            
+        c.beginUpdate()
+        try:
+            if c.mFileName != "":
+                # Calls c.setChanged(False) if no error.
                 c.fileCommands.save(c.mFileName)
-                c.updateRecentFiles(c.mFileName)
-                
-        if oldChapter:
-            cc.restoreOldChapter(oldChapter)
+            else:
+                fileName = g.app.gui.runSaveFileDialog(
+                    initialfile = c.mFileName,
+                    title="Save",
+                    filetypes=[("Leo files", "*.leo")],
+                    defaultextension=".leo")
+                c.bringToFront()
+        
+                if fileName:
+                    # Don't change mFileName until the dialog has suceeded.
+                    c.mFileName = g.ensure_extension(fileName, ".leo")
+                    c.frame.title = c.mFileName
+                    c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+                    c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+                    c.fileCommands.save(c.mFileName)
+                    c.updateRecentFiles(c.mFileName)
+                    
+            if cc:
+                cc.restoreOldChapter(oldChapter)
+        finally:
+            c.endUpdate()
     #@-node:ekr.20031218072017.2834:save
     #@+node:ekr.20031218072017.2835:saveAs
     def saveAs (self,event=None):
         
         '''Save a Leo outline to a file with a new filename.'''
         
-        c = self ; cc = c.chapterController
-        oldChapter = cc and c.config.getBool('use_chapters') and cc.forceMainChapter()
+        c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
+        oldChapter = cc and cc.forceMainChapter()
         
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
             return
-    
-        # Make sure we never pass None to the ctor.
-        if not c.mFileName:
-            c.frame.title = ""
-    
-        fileName = g.app.gui.runSaveFileDialog(
-            initialfile = c.mFileName,
-            title="Save As",
-            filetypes=[("Leo files", "*.leo")],
-            defaultextension=".leo")
-        c.bringToFront()
-    
-        if fileName:
-            # 7/2/02: don't change mFileName until the dialog has suceeded.
-            c.mFileName = g.ensure_extension(fileName, ".leo")
-            c.frame.title = c.mFileName
-            c.frame.setTitle(g.computeWindowTitle(c.mFileName))
-            c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
-            # Calls c.setChanged(False) if no error.
-            c.fileCommands.saveAs(c.mFileName)
-            c.updateRecentFiles(c.mFileName)
             
-        if oldChapter:
-            cc.restoreOldChapter(oldChapter)
+        c.beginUpdate()
+        try:
+            # Make sure we never pass None to the ctor.
+            if not c.mFileName:
+                c.frame.title = ""
+        
+            fileName = g.app.gui.runSaveFileDialog(
+                initialfile = c.mFileName,
+                title="Save As",
+                filetypes=[("Leo files", "*.leo")],
+                defaultextension=".leo")
+            c.bringToFront()
+        
+            if fileName:
+                # 7/2/02: don't change mFileName until the dialog has suceeded.
+                c.mFileName = g.ensure_extension(fileName, ".leo")
+                c.frame.title = c.mFileName
+                c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+                c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+                # Calls c.setChanged(False) if no error.
+                c.fileCommands.saveAs(c.mFileName)
+                c.updateRecentFiles(c.mFileName)
+                
+            if cc:
+                cc.restoreOldChapter(oldChapter)
+        finally:
+            c.endUpdate()
     #@-node:ekr.20031218072017.2835:saveAs
     #@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
     def saveAsUnzipped (self,event=None):
@@ -891,32 +899,36 @@ class baseCommands:
         
         '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
         
-        c = self ; cc = c.chapterController
-        oldChapter = cc and c.config.getBool('use_chapters') and cc.forceMainChapter()
+        c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
+        oldChapter = cc and cc.forceMainChapter()
         
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
             return
-    
-        # Make sure we never pass None to the ctor.
-        if not c.mFileName:
-            c.frame.title = ""
-    
-        # set local fileName, _not_ c.mFileName
-        fileName = g.app.gui.runSaveFileDialog(
-            initialfile = c.mFileName,
-            title="Save To",
-            filetypes=[("Leo files", "*.leo")],
-            defaultextension=".leo")
-        c.bringToFront()
-    
-        if fileName:
-            fileName = g.ensure_extension(fileName, ".leo")
-            c.fileCommands.saveTo(fileName)
-            c.updateRecentFiles(fileName)
             
-        if oldChapter:
-            cc.restoreOldChapter(oldChapter)
+        c.beginUpdate()
+        try:
+            # Make sure we never pass None to the ctor.
+            if not c.mFileName:
+                c.frame.title = ""
+        
+            # set local fileName, _not_ c.mFileName
+            fileName = g.app.gui.runSaveFileDialog(
+                initialfile = c.mFileName,
+                title="Save To",
+                filetypes=[("Leo files", "*.leo")],
+                defaultextension=".leo")
+            c.bringToFront()
+        
+            if fileName:
+                fileName = g.ensure_extension(fileName, ".leo")
+                c.fileCommands.saveTo(fileName)
+                c.updateRecentFiles(fileName)
+                
+            if cc:
+                cc.restoreOldChapter(oldChapter)
+        finally:
+            c.endUpdate()
     #@-node:ekr.20031218072017.2836:saveTo
     #@+node:ekr.20031218072017.2837:revert
     def revert (self,event=None):
