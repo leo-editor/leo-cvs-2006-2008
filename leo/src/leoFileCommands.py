@@ -2303,7 +2303,7 @@ class baseFileCommands:
                         g.es("clearing undo")
                         c.undoer.clearUndoState()
             finally:
-                c.endUpdate()
+                c.endUpdate() # We must redraw in order to clear dirty node icons.
         g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
         return ok
     #@-node:ekr.20031218072017.1720:save
@@ -2321,7 +2321,7 @@ class baseFileCommands:
                     c.setChanged(False) # Clears all dirty bits.
                     self.putSavedMessage(fileName)
             finally:
-                c.endUpdate()
+                c.endUpdate() # We must redraw in order to clear dirty node icons.
         g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
     #@-node:ekr.20031218072017.3043:saveAs
     #@+node:ekr.20031218072017.3044:saveTo
@@ -2337,7 +2337,7 @@ class baseFileCommands:
                 self.write_Leo_file(fileName,False) # outlineOnlyFlag
                 self.putSavedMessage(fileName)
             finally:
-                c.endUpdate()
+                c.endUpdate() # We must redraw in order to clear dirty node icons.
         g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
     #@-node:ekr.20031218072017.3044:saveTo
     #@+node:ekr.20070413061552:putSavedMessage
