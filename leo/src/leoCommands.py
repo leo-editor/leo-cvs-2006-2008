@@ -5167,7 +5167,6 @@ class baseCommands:
                 g.trace("back2.isExpanded",back2.isExpanded())
                 
             parent = p.parent()
-            backBack = p.hasBack() and p.back().back()
             
             # For this special case we move p after back2.
             specialCase = back2 and p.v in back2.v.t.vnodeList

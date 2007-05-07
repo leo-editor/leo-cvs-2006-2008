@@ -1660,18 +1660,18 @@ class configClass:
         if d:
             #@        << set letter >>
             #@+node:ekr.20070418084502:<< set letter >>
-            hash = d.get('_hash').lower()
+            theHash = d.get('_hash').lower()
             
             if letter:
                 pass
-            elif hash.endswith('myleosettings.leo'):
+            elif theHash.endswith('myleosettings.leo'):
                 letter = '[M]'
-            elif hash.endswith('leosettings.leo'):
+            elif theHash.endswith('leosettings.leo'):
                 letter = ' ' * 3
             else:
                 letter = '[D]'
             
-            # g.trace(letter,hash)
+            # g.trace(letter,theHash)
             #@nonl
             #@-node:ekr.20070418084502:<< set letter >>
             #@nl

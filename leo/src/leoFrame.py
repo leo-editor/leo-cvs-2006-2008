@@ -2775,10 +2775,10 @@ class leoTreeTab:
             'unselected_chapter_tab_foreground_color') or 'black'
     #@-node:ekr.20070317073627.1: ctor (leoTreeTab)
     #@+node:ekr.20070317073755:Must be defined in subclasses
-    def createControl (self,c,parentFrame):
+    def createControl (self):
         self.oops()
     
-    def createTab (self,tabName):
+    def createTab (self,tabName,select=True):
         self.oops()
         
     def destroyTab (self,tabName):

@@ -2210,8 +2210,8 @@ def enable_gc_debug(event=None):
             )
         # else:
             # gc.set_debug(gc.DEBUG_STATS)
-    elif not no_gc_message:
-        no_gc_message = True
+    elif not g.no_gc_message:
+        g.no_gc_message = True
         g.es('Can not import gc module',color='blue')
 #@-node:ekr.20060127162818:enable_gc_debug
 #@+node:ekr.20031218072017.1592:printGc

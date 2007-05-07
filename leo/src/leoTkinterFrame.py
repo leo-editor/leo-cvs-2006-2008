@@ -2477,9 +2477,6 @@ class leoTkinterLog (leoFrame.leoLog):
         
         label = self.nb.tab(oldName)
         label.configure(text=newName)
-        
-        # Tell the chapterController about the new name.
-        cc.updateChapterName(oldName,newName)
     #@-node:ekr.20051019170806:renameTab
     #@+node:ekr.20051016101724.1:selectTab
     def selectTab (self,tabName,createText=True,wrap='none'):
@@ -2937,8 +2934,6 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             arrownavigation = 0,
         )
     
-        hull = nb.component('hull')
-    
         nb.pack(fill='both',expand=1)
     #@-node:ekr.20070317073819.2:tt.createControl
     #@-node:ekr.20070320090557.1: Birth & death
@@ -2999,7 +2994,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     
     #@-node:ekr.20070317074824.1:tt.destroyTab
     #@+node:ekr.20070317074813:tt.makeTabMenu & helpers
-    def makeTabMenu (self,tabName,theChapter):
+    def makeTabMenu (self,tabName):
     
         '''Create a tab menu.'''
         
@@ -3011,19 +3006,10 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         w.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
         w.tmenu = tmenu
     
-        tt.createTopLevelMenuItems(tmenu,theChapter)
-    
-        if 0:
-            tmenu.add_separator()
-            #tt.createConvertMenu(tmenu)
-            # tt.createEditorMenu(tmenu)
-            # tt.createImportExportMenu(tmenu)
-            # tt.createIndexMenu(tmenu)
-            tt.createNodeMenu(tmenu)
-            tt.createTrashMenu(tmenu)
+        tt.createTopLevelMenuItems(tmenu)
     #@nonl
     #@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-    def createTopLevelMenuItems (self,tmenu,theChapter):
+    def createTopLevelMenuItems (self,tmenu):
     
         cc = self.cc ; menu = tmenu
     
@@ -3043,32 +3029,15 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             elif kind == '...':
                 submenu = Tk.Menu(menu,tearoff=0)
                 menu.add_cascade(menu=submenu,label=label)
-                def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu,theChapter=theChapter):
-                    self.setupChaptersMenu(submenu,command,theChapter)
+                def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu):
+                    self.setupChaptersMenu(submenu,command)
                 submenu.configure(postcommand=chapterMenuCallback)
             else:
                 menu.add_command(label=label,command=command)
-    
-        # for name,command in (
-            # ('Clone',cc.cloneToChapter),
-            # ('Copy',cc.copyToChapter),
-            # ('Move',cc.moveToChapter),
-        # ):
-            # submenu = Tk.Menu(menu,tearoff=0)
-            # menu.add_cascade(
-                # menu=submenu,
-                # label='%s Node To Chapter...' % name)
-    
-            # def chapterMenuCallback(event=None,cc=cc,submenu=submenu):
-                # self.setupChaptersMenu(submenu,command)
-    
-            # submenu.configure(postcommand=chapterMenuCallback)
-    
-        # menu.add_separator()
-    
+    #@nonl
     #@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
     #@+node:ekr.20070318120043:tt.setupChaptersMenu
-    def setupChaptersMenu (self,menu,command,theChapter):
+    def setupChaptersMenu (self,menu,command):
     
         '''Create a submenu containing the list of all chapters.'''
     
@@ -3117,9 +3086,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
     
         '''Called from cc.renameChapter to prompt for a new name.'''
     
-        tt = self ; c = tt.c ; nb = tt.nb
-    
-        frame = tt.getFrame(tabName)
+        tt = self ; c = tt.c
         tab = tt.getButton(tabName)
     
         f = Tk.Frame(tab)

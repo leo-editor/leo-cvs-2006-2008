@@ -548,6 +548,8 @@ class leoTkinterTree (leoFrame.leoTree):
     def setHeadlineText (self,theId,w,s):
         
         """All changes to text widgets should come here."""
+        
+        __pychecker__ = '--no-argsused' # theId not used.
     
         # if self.trace_alloc: g.trace('%4d %6s %s' % (theId,self.textAddr(w),s),align=-20)
                 
