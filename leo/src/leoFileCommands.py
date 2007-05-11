@@ -2704,24 +2704,29 @@ class baseFileCommands:
         forceWrite = isIgnore or not isThin or (isThin and isOrphan)
         #@    << Set gnx = tnode index >>
         #@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
-        if 1: # New in Leo 4.4.3
-            if not v.t.fileIndex:
-                g.trace('*** missing t.fileIndex','v',repr(v))
-                v.t.fileIndex = g.app.nodeIndices.getNewIndex()
-                
-            gnx = g.app.nodeIndices.toString(v.t.fileIndex)
-            if forceWrite or self.usingClipboard:
-                v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+        # New in Leo 4.4.3
+        if not v.t.fileIndex:
+            g.trace('*** missing t.fileIndex','v',repr(v))
+            # c.dumpOutline() # Can be called inside pdb.
+            if 1:
+                # Print the @chapters tree
+                c.chapterController.printChaptersTree()
+            g.pdb()
+            v.t.fileIndex = g.app.nodeIndices.getNewIndex()
         
-        else: # old code.
-            if v.t.fileIndex:
-                gnx = g.app.nodeIndices.toString(v.t.fileIndex)
-                if forceWrite or self.usingClipboard:
-                    v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
-            else:
-                g.trace(v.t.fileIndex,v)
-                g.es("error writing file(bad v.t.fileIndex)!")
-                g.es("try using the Save To command")
+        gnx = g.app.nodeIndices.toString(v.t.fileIndex)
+        if forceWrite or self.usingClipboard:
+            v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+        
+        # old code.
+        # if v.t.fileIndex:
+            # gnx = g.app.nodeIndices.toString(v.t.fileIndex)
+            # if forceWrite or self.usingClipboard:
+                # v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+        # else:
+            # g.trace(v.t.fileIndex,v)
+            # g.es("error writing file(bad v.t.fileIndex)!")
+            # g.es("try using the Save To command")
         #@-node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
         #@nl
         attrs = []
