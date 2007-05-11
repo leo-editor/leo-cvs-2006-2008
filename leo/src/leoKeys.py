@@ -190,6 +190,7 @@ class autoCompleterClass:
             # Python globals...
             (['aList','bList'],     'python','list'),
             (['aString'],           'object','aString'), # An actual string object.
+            (['cc'],                'object',c.chapterController),
             (['c','old_c','new_c'], 'object',c),            
             (['d','d1','d2'],       'python','dict'),
             (['f'],                 'object',c.frame), 
