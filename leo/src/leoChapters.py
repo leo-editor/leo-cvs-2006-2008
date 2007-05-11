@@ -26,15 +26,26 @@ class chapterController:
         self.chaptersDict = {}
             # Keys are tabNames, values are chapters.
             # Important: tabNames never change, even if their button text changes.
-        self.chaptersLinked = True # True: the @chapters node is linked into the outline.
         self.chaptersNode = None # Set later
-        self.inited = False # Set in makeTrees.
-        self.mainRoot = None # Set later
-        self.oldMainRoot = None # Set to cc.mainRoot in cc.unlinkChaptersNode.
+        self.mainRoot = None
+            # c.rootPosition() when the main chapter is active.
+            # It must be updated whenever we choose another chapter.
         self.selectedChapter = None
         self.tabNames = []
         self.trace = False
         self.tt = None # Set in finishCreate.
+        
+        # Save/restore vars used *only* by a cooperating pair of methods.
+        # For forceMainChapter/restoreOldChapter...
+        self.savedCurrent = None
+            # c.currentPosition() when forceMainChapter is called.
+        self.savedMainRoot = None
+            # c.rootPosition() when forceMainChapter is called.
+        # For link/unlinkChaptersNode...
+        self.chaptersLinked = True
+            # True if the @chapters node is linked into the outline.
+          
+    #@nonl
     #@-node:ekr.20070317085437.2: ctor: chapterController
     #@+node:ekr.20070320091806:Callbacks (chapter)
     def selectCallback (self,tabName):
@@ -42,29 +53,16 @@ class chapterController:
         cc = self ; chapter = cc.chaptersDict.get(tabName)
         if chapter:
             chapter.select()
-        else:
-            cc.error('select: no such chapter: %s' % tabName)
             
     def unselectCallback (self,tabName):
         
         cc = self ; chapter = cc.chaptersDict.get(tabName)
         if chapter:
             chapter.unselect()
-        else:
-            cc.error('unselect: no such chapter: %s' % tabName)
-    #@-node:ekr.20070320091806:Callbacks (chapter)
-    #@+node:ekr.20070318124624.1:cc.finishCreate
-    def finishCreate (self,treeTabController):
-        
-        cc = self ; c = cc.c
-    
-        cc.tt = treeTabController
-        cc.createChapter(name='trash')
-        cc.createChapter(name='main')
     #@nonl
-    #@-node:ekr.20070318124624.1:cc.finishCreate
-    #@+node:ekr.20070325104904:cc.makeTrees
-    def makeTrees (self):
+    #@-node:ekr.20070320091806:Callbacks (chapter)
+    #@+node:ekr.20070325104904:cc.finishCreate
+    def finishCreate (self):
         
         '''Find or make the @chapters and @chapter trash nodes.'''
         
@@ -83,32 +81,38 @@ class chapterController:
         if not cc.findChapterNode('trash'):
             cc.createChapterNode('trash')
             
+        # Create the two default chapters.
+        for tabName in ('trash','main'):
+            p = cc.getChapterNode(tabName)
+            cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
+            if tabName == 'main':
+                # The main tab, tree and canvas were created earlier.
+                c.frame.tree = tt.getTree(tabName)
+                c.frame.canvas = tt.getCanvas(tabName)
+            else:
+                tt.createTab(tabName,select=False)
+                tree = tt.getTree(tabName)
+                tree.setBindings()
+            tt.makeTabMenu(tabName)
+            
         # Create a chapter for each @chapter node.
         tag = '@chapter'
         for p in cc.chaptersNode.children_iter():
             h = p.headString()
             if h.startswith(tag):
                 tabName = h[len(tag):].strip()
-                if tabName and tabName not in ('main','trash') and not cc.chaptersDict.get(tabName):
-                    theChapter = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
-                    cc.chaptersDict[tabName] = theChapter
-                    tt.createTab(tabName,select=False)
-                    tt.makeTabMenu(tabName)
-        
-        for tabName in ('trash',):
-            if not cc.chaptersDict.get(tabName):
-                p = cc.getChapterNode(tabName)
-                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
-                
-        for tabName in ('main',):
-            if not cc.chaptersDict.get(tabName):
-                p = c.currentPosition()
-                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=None)
+                if tabName and tabName not in ('main','trash'):
+                    cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
+                    s = p.bodyString() or tabName
+                    # g.trace('s',s,'tabName',tabName)
+                    tt.createTab(s,select=False) # s was tabName
+                    tt.makeTabMenu(s) # s was tabName
+                    tree = tt.getTree(tabName)
+                    tree.setBindings()
                 
         cc.selectChapter('main')
-        cc.inited = True
     #@nonl
-    #@-node:ekr.20070325104904:cc.makeTrees
+    #@-node:ekr.20070325104904:cc.finishCreate
     #@+node:ekr.20070317085437.30:Chapter commands
     #@+node:ekr.20070317085437.31:cc.createChapter
     def createChapter (self,event=None,name=None):
@@ -118,7 +122,7 @@ class chapterController:
         if name:
             tabName = name
         else:
-            # Find an unused name.  This is *not* the present number of chapters + 1
+            # Find an unused name.  This is *not* 1 + the present number of chapters.
             # The **immutable** chapter name is 'Chapter n'.
             n  = 1
             while True:
@@ -127,8 +131,6 @@ class chapterController:
                     n += 1
                 else:
                     break
-            
-        # g.trace(name)
     
         if name in ('trash','main',):
             tt.selectTab(tabName)
@@ -137,8 +139,7 @@ class chapterController:
             cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=root,root=root)
             tt.selectTab(tabName)
             tt.renameChapterHelper(cc,tabName)
-            
-        theChapter = cc.chaptersDict.get(tabName)
+    
         tt.makeTabMenu(tabName)
             
         # tt.selectTab indirectly unselects the previous chapter.
@@ -146,40 +147,6 @@ class chapterController:
        
         c.bodyWantsFocusNow()
     #@-node:ekr.20070317085437.31:cc.createChapter
-    #@+node:ekr.20070317085437.39:cc.makeNodeIntoChapter (TO DO)
-    def makeNodeIntoChapter (self,p=None,redraw=True):
-        
-        pass
-        
-        # cc = self ; c = cc.c
-        # renum = p and p.copy()
-        # if not p: p = c.currentPosition()
-        
-        # if p == c.rootPosition() and not p.next(): return
-        
-        # c.beginUpdate()
-        # try:
-            # p.doDelete()
-        # finally:
-            # c.endUpdate(False)
-        
-        # page,pageName = cc.addPage()
-        # mnChapter = cc.getChapter(pageName)
-        # oldChapter = cc.currentChapter
-        # mnChapter.makeCurrent()
-        # root = mnChapter.rp
-        # p.moveAfter(root)
-        # c.setRootPosition(p)
-        # oldChapter.makeCurrent()
-       
-        # c.beginUpdate()
-        # try:
-            # c.selectPosition(oldChapter.rp)
-        # finally:
-            # c.endUpdate(redraw)
-            # if redraw: cc.nb.selectpage(pageName)
-    #@nonl
-    #@-node:ekr.20070317085437.39:cc.makeNodeIntoChapter (TO DO)
     #@+node:ekr.20070317085437.40:cc.removeChapter
     def removeChapter (self,event=None):
     
@@ -229,6 +196,7 @@ class chapterController:
             clone.unlink()
             clone.moveToLastChildOf(parent)
             c.selectPosition(clone)
+            c.setChanged(True)
         finally:
             c.endUpdate(False)
     
@@ -255,6 +223,7 @@ class chapterController:
             p2.unlink()
             p2.moveToLastChildOf(parent)
             c.selectPosition(p2)
+            c.setChanged(True)
         finally:
             c.endUpdate(False)
     
@@ -262,55 +231,153 @@ class chapterController:
         tt.selectTab(toChapter.name)
         fromChapter.p = p.copy()
     #@-node:ekr.20070317085437.51:cc.copyToChapter
-    #@+node:ekr.20070317085437.52:cc.moveToChapter
-    def moveToChapter (self,event=None,toChapter=None):
-        
-        cc = self ; c = cc.c ; tt = cc.tt
-        p = c.currentPosition() ; h = p.headString()
-        fromChapter = cc.getSelectedChapter()
-        toChapter = cc.getChapter(toChapter)
-        if fromChapter.name == 'main' and h.startswith('@chapter'):
-            return cc.error('can not move @chapter node')
-        # g.trace('from',fromChapter.name,'to',toChapter.name)
-    
-        c.beginUpdate()
-        try:
-            parent = cc.getChapterNode(toChapter.name)
-            sel = p.back() or p.next() or parent
-            p.unlink()
-            p.moveToLastChildOf(parent)
-            c.selectPosition(p)
-        finally:
-            c.endUpdate(False)
-    
-        toChapter.p = p.copy() # Must be done before tt.selectTab.
-        tt.selectTab(toChapter.name)
-        fromChapter.p = sel.copy() # Must be done after tt.selectTab.
-    #@-node:ekr.20070317085437.52:cc.moveToChapter
     #@+node:ekr.20070317085437.29:cc.emptyTrash
     def emptyTrash (self):
         
         cc = self ; c = cc.c
-        chapter = cc.getChapter('trash')
-    
-        root = chapter.rp
-        chapter.setVariables()
-        p = root.insertAfter()
-        p.moveToRoot()
-        p.setHeadString('trash barrel')
-        chapter.rp = c.rootPosition()
-        chapter.cp = c.currentPosition()
-        chapter.tp = c.topPosition()
-        cc.currentChapter.setVariables()
+        trashChapter = cc.getChapter('trash')
+        selChapter = cc.getSelectedChapter()
+        flag=selChapter.name=='trash'
         
         c.beginUpdate()
         try:
-            c.selectPosition(p)
+            root = cc.findChapterNode('trash')
+            while root.hasChildren():
+                root.firstChild().doDelete()
+            trashChapter.p = cc.createChild(root,'trash')
+            if flag:
+                c.selectPosition(trashChapter.p)
         finally:
-            c.endUpdate()
+            c.endUpdate(flag=flag)
     #@nonl
     #@-node:ekr.20070317085437.29:cc.emptyTrash
+    #@+node:ekr.20070317085437.52:cc.moveToChapter
+    def moveToChapter (self,event=None,toChapter=None):
+        
+        cc = self ; c = cc.c ; tt = cc.tt ; p = c.currentPosition()
+        fromChapter = cc.getSelectedChapter()
+        toChapter = cc.getChapter(toChapter)
+        
+        if 1: # Defensive code: should never happen.
+            if fromChapter.name == 'main' and p.headString().startswith('@chapter'):
+                return cc.error('can not move @chapter node')
+    
+        c.beginUpdate()
+        try:
+            sel = p.visBack() or p.visNext()
+            if sel:
+                if toChapter.name == 'main':
+                    p.unlink()
+                    p.moveAfter(toChapter.p)
+                else:
+                    parent = cc.getChapterNode(toChapter.name)
+                    p.unlink()
+                    p.moveToLastChildOf(parent)
+                c.selectPosition(sel)
+        finally:
+            c.endUpdate(False)
+    
+        if sel:
+            toChapter.p = p.copy() # Must be done before tt.selectTab.
+            tt.selectTab(toChapter.name)
+            fromChapter.p = sel.copy() # Must be done after tt.selectTab.
+            c.setChanged(True)
+        else:
+            cc.error('Can not move the last node of a chapter.')
+    #@-node:ekr.20070317085437.52:cc.moveToChapter
     #@-node:ekr.20070317085437.49:Node commands
+    #@+node:ekr.20070511065107:Linking/unlinking trees (chapterController)
+    #@+node:ekr.20070421092158:cc.forceMainChapter
+    def forceMainChapter (self):
+        
+        cc = self ; c = self.c
+        cc.savedMainRoot = c.rootPosition()
+        cc.savedCurrent = c.currentPosition()
+        oldChapter = cc.getSelectedChapter()
+    
+        g.trace('****',oldChapter and oldChapter.name,'savedMainRoot',cc.savedMainRoot)
+        g.pdb()
+        
+        if oldChapter:
+            if oldChapter.name == 'main':
+                oldChapter = None # Don't unlink the main chapter in unlinkChaptersNode.
+            else:
+                oldChapter.link()
+                if self.trace: g.trace('oldChapter',oldChapter.name)
+        
+        cc.linkChaptersNode()
+        
+        c.selectPosition(cc.mainRoot)
+        g.printEntireTree(cc.c,'forceMainChapter:after')
+    
+        return oldChapter
+    #@-node:ekr.20070421092158:cc.forceMainChapter
+    #@+node:ekr.20070503083301:cc.linkChaptersNode
+    def linkChaptersNode (self):
+        
+        '''Called only from forceMainChapter to link in the @chapters node.
+        The caller is responsible for saving state.'''
+        
+        cc = self
+        
+        if not cc.chaptersNode:
+            self.error('***** no @chapters node')
+        elif not cc.mainRoot:
+            self.error('***** no cc.mainRoot')
+        elif cc.chaptersLinked:
+            g.trace('***** can not happen: @chapters already linked')
+        else:
+            cc.chaptersLinked = True
+            cc.chaptersNode.linkAsRoot(oldRoot=cc.mainRoot)
+    #@-node:ekr.20070503083301:cc.linkChaptersNode
+    #@+node:ekr.20070503082757:cc.restoreOldChapter
+    def restoreOldChapter (self, oldChapter):
+        
+        cc = self ; c = self.c
+        
+        g.trace('****',oldChapter)
+        
+        cc.unlinkChaptersNode()
+    
+        if oldChapter:
+            oldChapter.unlink()
+        
+        cc.mainRoot = cc.savedMainRoot
+        cc.savedMainRoot = None
+        c.selectPosition(cc.savedCurrent)
+        cc.savedCurrent = None
+       
+        g.printEntireTree(cc.c,'restoreOldChapter:after')
+            
+        
+       
+    #@nonl
+    #@-node:ekr.20070503082757:cc.restoreOldChapter
+    #@+node:ekr.20070503081539:cc.unlinkChaptersNode
+    def unlinkChaptersNode (self):
+        
+        '''unlink the @chapters node from the headline.'''
+        
+        cc = self ; c = cc.c
+        
+        if not cc.chaptersNode:
+            g.trace('***** can not happen: no @chapters node')
+        elif not cc.chaptersLinked:
+            g.trace('***** can not happen: @chapters already unlinked')
+        else:
+            p = cc.chaptersNode
+            g.trace('mainRoot',cc.mainRoot,'chaptersNode',cc.chaptersNode)
+            if not cc.mainRoot or cc.mainRoot == p:
+                cc.mainRoot = p.visBack() or p.visNext()
+                if True or self.trace: g.trace('*** setting mainRoot',cc.mainRoot)
+            if p:
+                p.unlink()
+                cc.chaptersLinked = False
+            else:
+                self.error('***** no @chapters node')
+    #@nonl
+    #@-node:ekr.20070503081539:cc.unlinkChaptersNode
+    #@-node:ekr.20070511065107:Linking/unlinking trees (chapterController)
     #@+node:ekr.20070317130648:Utils
     #@+node:ekr.20070325063303.2:cc.createChapterNode
     def createChapterNode (self,chapterName):
@@ -330,11 +397,14 @@ class chapterController:
             p.initHeadString('@chapter ' + chapterName)
             c.setBodyString(p,chapterName)
             p.moveToFirstChildOf(cc.chaptersNode)
-            t = p.v.t
-            if t.fileIndex:
-                self.error('***** t.fileIndex already exists')
-            else:
-                t.setFileIndex(g.app.nodeIndices.getNewIndex())
+            p2 = p.insertAsLastChild()
+            p2.initHeadString('New Chapter')
+            if 0: ### This absolutely should not be necessary.
+                t = p.v.t
+                if t.fileIndex:
+                    self.error('***** t.fileIndex already exists')
+                else:
+                    t.setFileIndex(g.app.nodeIndices.getNewIndex())
         finally:
             c.endUpdate(False)
             
@@ -365,6 +435,26 @@ class chapterController:
             c.endUpdate(False)
     #@nonl
     #@-node:ekr.20070325101652:cc.createChaptersNode
+    #@+node:ekr.20070509081915.1:cc.createChild
+    def createChild (self,parent,s):
+        
+        '''Create a child node of parent without changing the undo stack.
+        set the headString of the new node to s.'''
+        
+        c = self.c
+        
+        # g.trace('parent',parent,'s',s)
+    
+        c.beginUpdate()
+        try:
+            p = parent.insertAsLastChild()
+            p.initHeadString(s)
+            c.setChanged(True)
+        finally:
+            c.endUpdate(False)
+    
+        return p
+    #@-node:ekr.20070509081915.1:cc.createChild
     #@+node:ekr.20070325063303.4:cc.deleteChapterNode
     def deleteChapterNode (self,chapterName):
     
@@ -385,11 +475,8 @@ class chapterController:
     #@-node:ekr.20070325063303.4:cc.deleteChapterNode
     #@+node:ekr.20070320085610:cc.error
     def error (self,s):
-        
-        cc = self
-        
-        if cc.inited:
-            g.es_print(s,color='red')
+    
+        g.es_print(s,color='red')
     #@-node:ekr.20070320085610:cc.error
     #@+node:ekr.20070325093617:cc.findChapterNode
     def findChapterNode (self,chapterName,giveError=True):
@@ -434,24 +521,6 @@ class chapterController:
     
         return None
     #@-node:ekr.20070325094401:cc.findChaptersNode
-    #@+node:ekr.20070421092158:cc.forceMainChapter
-    def forceMainChapter (self):
-        
-        cc = self
-        oldChapter = cc.getSelectedChapter()
-        # g.trace(oldChapter)
-        
-        if oldChapter:
-            if oldChapter.name == 'main':
-                oldChapter = None # Don't unlink the main chapter in unlinkChaptersNode.
-            else:
-                oldChapter.link()
-                if self.trace: g.trace('oldChapter',oldChapter.name)
-        
-        cc.linkChaptersNode()
-    
-        return oldChapter
-    #@-node:ekr.20070421092158:cc.forceMainChapter
     #@+node:ekr.20070325115102:cc.getChaperNode
     def getChapterNode (self,chapterName):
     
@@ -489,37 +558,27 @@ class chapterController:
         if self.trace: g.trace(theChapter and theChapter.name or '<no chapter>')
         return theChapter
     #@-node:ekr.20070318122708:cc.getSelectedChapter
-    #@+node:ekr.20070503083301:cc.linkChaptersNode
-    def linkChaptersNode (self):
+    #@+node:ekr.20070510064813:cc.printChaptersTree
+    def printChaptersTree(self,tag=''):
+    
+        cc = self ; root = cc.chaptersNode
         
-        cc = self
-        
-        if not cc.chaptersNode:
-            self.error('***** no @chapters node')
-        elif not cc.mainRoot:
-            self.error('***** no cc.mainRoot')
-        elif cc.chaptersLinked:
-            g.trace('***** can not happen: @chapters already linked')
+        for p in cc.mainRoot.self_and_siblings_iter():
+            for p2 in p.self_and_subtree_iter():
+                if p2 == root:
+                    inTree = True ; break
         else:
-            cc.chaptersLinked = True
-            cc.oldMainRoot = cc.mainRoot
-            cc.chaptersNode.linkAsRoot(oldRoot=cc.mainRoot)
-            if self.trace: g.trace('*** setting mainRoot',cc.chaptersNode)
-            cc.mainRoot = cc.chaptersNode
-    #@-node:ekr.20070503083301:cc.linkChaptersNode
-    #@+node:ekr.20070503082757:cc.restoreOldChapter
-    def restoreOldChapter (self, oldChapter):
+            inTree = False
+            
+        g.trace('********',tag,'cc.mainRoot',cc.mainRoot)
+        g.trace('root.firstChild',root.firstChild())
         
-        cc = self ; c = self.c
-        
-        # g.trace(oldChapter)
-        cc.unlinkChaptersNode()
-        if oldChapter:
-            oldChapter.unlink()
-            oldChapter.select()
-       
+        if root:
+            print '@chapters tree...','(in main tree: %s)' % inTree
+            for p in root.self_and_subtree_iter():
+                print '.'*p.level(),p.headString()
     #@nonl
-    #@-node:ekr.20070503082757:cc.restoreOldChapter
+    #@-node:ekr.20070510064813:cc.printChaptersTree
     #@+node:ekr.20070317130250:cc.selectChapter
     def selectChapter (self,tabName):
     
@@ -528,44 +587,9 @@ class chapterController:
         if chapter:
             chapter.select()
         else:
-            cc.error('select chapter: no such chapter: %s' % tabName)
+            cc.error('cc.selectShapter: no such chapter: %s' % tabName)
     #@-node:ekr.20070317130250:cc.selectChapter
-    #@+node:ekr.20070503081539:cc.unlinkChaptersNode
-    def unlinkChaptersNode (self):
-        
-        '''unlink the @chapters node from the headline.'''
-        
-        cc = self ; c = cc.c
-        
-        if not cc.chaptersNode:
-            g.trace('***** can not happen: no @chapters node')
-        elif not cc.chaptersLinked:
-            g.trace('***** can not happen: @chapters already unlinked')
-        else:
-            c.beginUpdate()
-            try:
-                p = cc.chaptersNode
-                newRoot = cc.oldMainRoot or p.back() or p.next()
-                if newRoot:
-                    # Test whether we are in the @chpaters tree **before** unlinking.
-                    current = c.currentPosition()
-                    inChaptersFlag = cc.chaptersNode == current or cc.chaptersNode.isAncestorOf(current)
-                    if self.trace: g.trace('*** unlinking @chapters node','newRoot',newRoot)
-                    cc.chaptersNode.unlink() # unlink the node.
-                    if self.trace: g.trace('*** setting mainRoot',newRoot)
-                    cc.mainRoot = newRoot
-                    c.setRootPosition(newRoot)
-                    if inChaptersFlag:
-                        # g.trace('setting position to',newRoot.headString())
-                        c.setCurrentPosition(newRoot)
-                else:
-                    self.error('***** no new root')
-            finally:
-                cc.oldMainRoot = None
-                cc.chaptersLinked = False
-                c.endUpdate(flag=False) # Do not redraw: the canvas has not been saved/restored.
-    #@-node:ekr.20070503081539:cc.unlinkChaptersNode
-    #@+node:ekr.20070325121800:cc.updateChapterName
+    #@+node:ekr.20070325121800:cc.updateChapterName (not used)
     def updateChapterName(self,oldName,newName):
         
         '''oldName is the immutable name of a chapter.
@@ -576,13 +600,15 @@ class chapterController:
         
         p = cc.findChapterNode(oldName)
         
+        g.trace(g.callers())
+        
         if p:
             c.setBodyString(p,newName)
         else:
             cc.error('no such chapter: %s' % oldName)
       
     #@nonl
-    #@-node:ekr.20070325121800:cc.updateChapterName
+    #@-node:ekr.20070325121800:cc.updateChapterName (not used)
     #@-node:ekr.20070317130648:Utils
     #@-others
 #@nonl
@@ -599,15 +625,21 @@ class chapter:
         self.c = c 
         self.cc = chapterController
         self.hoistStack = []
-        self.inited = False
         self.name = name # The immutable chapter name.  Not necessarily the same as the chapter's tabName.
         self.p = p.copy() # The current position...
         self.root = root and root.copy() # The immutable @chapter node (not used for the main chapter).
         self.selectLockout = False # True: in chapter.select logic.
         self.trace = False
-        self.unlinkData = None # Used to link the @chapter node back into the outline.
+        self.unlinkedRoot = None # data for link()
         
-        # g.trace('chapter','name',self.name,'p',self.p.headString())
+        # g.trace('chapter',self.name,g.callers())
+            #'p',self.p.headString(),'root',root and root.headString())
+        
+        # Create the dummy first node of the Chapter.
+        if name != 'main' and not root.hasChildren():
+            self.cc.createChild(root,self.name)
+        
+        
     #@-node:ekr.20070317085708.1: ctor: chapter
     #@+node:ekr.20070317085708.2:__str__ and __repr__(chapter)
     def __str__ (self):
@@ -626,35 +658,71 @@ class chapter:
     #@nonl
     #@-node:ekr.20070325155208.1:chapter.error
     #@+node:ekr.20070420173354:chapter.link/unlink
+    #@+node:ekr.20070509081411:link
     def link (self):
         
-        '''Link the chapter's @chapter node back into the full outline.'''
-    
-        b = self.unlinkData ; c = self.c ; cc = self.cc
-        if self.trace: g.trace('chapter',self.name,'unlinkData.root',b and b.root)
-        if b:
-            c.setRootPosition(cc.mainRoot) # Restore the main outline.
-            parent = cc.chaptersNode
-            n,root = b.childIndex,b.root
-            root.linkAsNthChild(parent,n)
-            self.unlinkData = None
-        else:
-            g.trace('**** can not happen: no unlinkData')
+        '''Link the chapter's root.firstChild node back into the full outline.'''
         
+        c = self.c
+        
+        g.trace('=====',self.name)
+        # g.printEntireTree(self.c,'link:before')
+        self.cc.printChaptersTree('before')
+        
+        if self.name == 'main':
+            self.error('*** linking main chapter!')
+        elif not self.root:
+            self.error('*** link: no root:',self)
+        elif not self.unlinkedRoot:
+            self.error('*** link: no unlinkedRoot')
+        elif self.unlinkedRoot != c.rootPosition():
+            self.error('*** link: unlinkedRoot != c.rootPosition(): %s, %s' % (
+                self.unlinkedRoot,c.rootPosition()))
+        else:
+            # Like the demote logic.
+            p = self.unlinkedRoot
+            while p: # Do not use iterator here.
+                g.trace('linking',p)
+                next = p.next()
+                p.moveToLastChildOf(self.root)
+                p = next
+            self.unlinkedRoot = None
+            self.cc.printChaptersTree('after')
+    #@-node:ekr.20070509081411:link
+    #@+node:ekr.20070509081411.1:unlink
     def unlink (self):
         
         '''Unlink the root node (the chapter's @chapter node) from the full outine.
         set unlinkData for later use by self.link.'''
         
-        cc = self.cc ; name = self.name ; root = self.root
-        assert(name != 'main')
-        assert(cc.chaptersNode)
-        assert(root)
+        g.trace('=====',self.name)
+        g.printEntireTree(self.c,'link:before')
+        self.cc.printChaptersTree('before')
     
-        # Remember the data.
-        self.unlinkData = g.Bunch(childIndex=root.childIndex(),root=root)
-        if self.trace: g.trace('chapter',self.name,'unlinkData.root',root)
-        root.moveToRoot(oldRoot=None)
+        if self.name == 'main':
+            self.error('*** unlinking main chapter!')
+        elif not self.root:
+            self.error('*** unlink: no root:',self)
+        elif not self.root.hasChildren():
+            self.error('*** unlink: no children: %s' % self.root)
+        elif self.unlinkedRoot:
+            self.error('*** unlink: unlinkedRoot: %s' % (self.unlinkedRoot))
+        else:
+            # Like the promote logic.
+            after = None
+            while self.root.hasChildren(): # Don't use an iterator.
+                p = self.root.firstChild()
+                g.trace('unlinking',p)
+                if after:
+                    p.moveAfter(after)
+                else:
+                    p.unlink()
+                    p.linkAsRoot(oldRoot=None)
+                    self.unlinkedRoot = p.copy()
+                g.trace('after unlink',p)
+                after = p.copy()
+            self.cc.printChaptersTree('after')
+    #@-node:ekr.20070509081411.1:unlink
     #@-node:ekr.20070420173354:chapter.link/unlink
     #@+node:ekr.20070317131205.1:chapter.select & helpers
     def select (self,w=None,selectEditor=True):
@@ -669,61 +737,49 @@ class chapter:
         finally:
             self.selectLockout = False
     #@+node:ekr.20070423102603.1:chapterSelectHelper
-    def chapterSelectHelper (self,w,selectEditor):
+    def chapterSelectHelper (self,w=None,selectEditor=True):
     
         c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
+        trace = True
     
         # The big switcharoo.
         c.frame.canvas = canvas = tt.getCanvas(name)
         c.frame.tree = tree = tt.getTree(name)
         
-        if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
+        if trace or self.trace:
+            g.trace(
+                'chapter',self.name,'w',w,
+                'selectEditor',selectEditor,'p',self.p and self.p.headString())
         
+        # First, switch roots.
         if name == 'main':
             root = cc.mainRoot
-            c.setRootPosition(root)
+            c.setRootPosition(cc.mainRoot)
         else:
-            root = self.root
+            root = self.root.firstChild()
             self.unlink()
             c.setRootPosition(root)
     
         cc.selectedChapter = self
     
-        # Switch to the new editor.
-        if selectEditor:
-            if w:
-                assert w == c.frame.body.bodyCtrl
-                assert w == c.frame.bodyCtrl
-                p = self.findPositionInChapter(w.leo_p.v)
-                if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
-            else:
-                 # This must be done *after* switching roots.
-                p = self.findPositionInChapter(self.p.v) ######################
+        # Next, recompute p and possibly select a new editor.
+        if w:
+            assert w == c.frame.body.bodyCtrl
+            assert w == c.frame.bodyCtrl
+            p = self.findPositionInChapter(w.leo_p.v)
+            if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
+        else:
+            # This must be done *after* switching roots.
+            p = self.findPositionInChapter(self.p.v)
+            if selectEditor:
                 w = self.findEditorInChapter(p)
                 c.frame.body.selectEditor(w) # Switches text.
     
-        # g.trace('   ***',id(w),root.headString(),p.headString())
-    
         c.beginUpdate()
         try:
-            if self.inited:
-                c.selectPosition(p)
-                c.hoistStack = self.hoistStack[:] # Restore the hoist state.
-            else:
-                self.inited = True
-                if name == 'main': # Clear all hoists.
-                    c.hoistStack = []
-                    c.selectPosition(p)
-                else: # Finish initing the canvas and do the initial hoist.
-                    # g.trace('finish init',name)
-                    tree.setBindings()
-                    if name != 'main':
-                        root.expand()
-                    c.selectPosition(root)
-                    c.hoistStack = []
-                    c.hoist()
-                    self.hoistStack = c.hoistStack[:]
-            # g.trace('chapter',name,'p.v',id(p.v),p.headString())
+            c.hoistStack = self.hoistStack[:]
+            c.selectPosition(p)
+            # c.hoistStack = self.hoistStack[:] ### Should this be here?? ###
         finally:
             c.endUpdate()
             c.bodyWantsFocusNow()
@@ -735,6 +791,7 @@ class chapter:
         '''Return a valid position p such that p.v == v.'''
         
         cc = self.cc ; name = self.name
+        trace = False
     
         if name == 'main':
             # Search the entire tree, but not the @chapters tree.
@@ -743,14 +800,27 @@ class chapter:
                 if not p.headString().startswith('@chapters'):
                     for p2 in p.self_and_subtree_iter():
                         if p2.v == v:
-                            if self.trace: g.trace('*** found outside @chapters','v',p2.v)
+                            if trace or self.trace: g.trace('*** found outside @chapters','v',p2.v)
                             return p2
         else:
-            # Search only the @chapter tree.
-            for p in self.root.self_and_subtree_iter():
-                if p.v == v:
-                    if self.trace: g.trace('*** found in chapter',p)
-                    return p
+            if v == self.root.v:
+                g.trace('*** v == root.v',self.root)
+                return self.root
+            elif self.unlinkedRoot:
+                g.trace('unlinkRoot',self.unlinkedRoot)
+                # Search the unlinked tree.
+                for p2 in self.unlinkedRoot.self_and_siblings_iter():
+                    for p in p2.self_and_subtree_iter():
+                        if p.v == v:
+                            if trace or self.trace: g.trace('*** found in chapter',p)
+                            return p
+            else:
+                g.trace('@chapter',self.root)
+                # Search the @chapter tree.
+                for p in self.root.self_and_subtree_iter():
+                    if p.v == v:
+                        if trace or self.trace: g.trace('*** found in chapter',p)
+                        return p
         
         self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
         g.trace(g.callers())
