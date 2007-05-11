@@ -463,10 +463,10 @@ class baseCommands:
             c.editPosition(p)
         finally:
             c.endUpdate()
-            # makeTrees must be called after the first real redraw
+            # chapterController.finishCreate must be called after the first real redraw
             # because it requires a valid value for c.rootPosition().
             if c.config.getBool('use_chapters') and c.chapterController:
-                c.chapterController.makeTrees()
+                c.chapterController.finishCreate()
             if c.config.getBool('outline_pane_has_initial_focus'):
                 c.treeWantsFocusNow()
             else:
@@ -6468,7 +6468,11 @@ class baseCommands:
         
             # New in Leo 4.4.2: always recompute the root position here.
             # This *guarantees* that c.rootPosition always returns the proper value.
-            c.setRootPosition(c.findRootPosition(c._currentPosition))
+            newRoot = c.findRootPosition(c._currentPosition)
+            if newRoot:
+                c.setRootPosition(newRoot)
+            # This is *not* an error: newRoot can be None when switching chapters.
+            # else: g.trace('******** no new root',g.callers())
         else:
             c._currentPosition = None
     
@@ -6519,7 +6523,7 @@ class baseCommands:
     
         c = self
         
-        # g.trace(p.headString(),g.callers())
+        # g.trace(p and p.headString(),g.callers())
         
         if p:
             # Important: p.equal requires c._rootPosition to be non-None.
