@@ -1114,6 +1114,15 @@ def printGlobals(message=None):
     for glob in globs:
         print glob
 #@-node:ekr.20031218072017.3114:printGlobals
+#@+node:ekr.20070510074941:g.printEntireTree
+def printEntireTree(c,tag=''):
+
+    print tag,'-' * 50
+    for p in c.rootPosition().self_and_siblings_iter():
+        for p2 in p.self_and_subtree_iter():
+            print '..'*p2.level(),p2.v
+#@nonl
+#@-node:ekr.20070510074941:g.printEntireTree
 #@+node:ekr.20031218072017.3115:printLeoModules
 def printLeoModules(message=None):
     
@@ -1894,10 +1903,10 @@ def openWithFileName(fileName,old_c,
         g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
     finally:
         c.endUpdate()
-        # makeTrees must be called after the first real redraw
+        # chapterController.finishCreate must be called after the first real redraw
         # because it requires a valid value for c.rootPosition().
         if frame.c.chapterController:
-            frame.c.chapterController.makeTrees()
+            frame.c.chapterController.finishCreate()
         k = c.k
         k and k.setInputState(k.unboundKeyAction)
         if c.config.getBool('outline_pane_has_initial_focus'):
