@@ -4621,7 +4621,11 @@ def setCurrentPosition (self,p):
     
         # New in Leo 4.4.2: always recompute the root position here.
         # This *guarantees* that c.rootPosition always returns the proper value.
-        c.setRootPosition(c.findRootPosition(c._currentPosition))
+        newRoot = c.findRootPosition(c._currentPosition)
+        if newRoot:
+            c.setRootPosition(newRoot)
+        # This is *not* an error: newRoot can be None when switching chapters.
+        # else: g.trace('******** no new root',g.callers())
     else:
         c._currentPosition = None
 
@@ -10275,9 +10279,9 @@ def createSplitterComponents (self):
     if self.use_chapters:
         # Create the controllers.
         c.chapterController = cc = leoChapters.chapterController(c)
-        tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-        cc.finishCreate(tt)
-        tt.selectTab('main') # Creates f.canvas and f.tree
+        cc.tt = tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+        # We must create the tab here so we can set f.tree and f.canvas.
+        tt.createTab('main')
         f.tree = tt.getTree('main')
         f.canvas = tt.getCanvas('main')
     else:
@@ -22813,10 +22817,10 @@ def openWithFileName(fileName,old_c,
         g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
     finally:
         c.endUpdate()
-        # makeTrees must be called after the first real redraw
+        # chapterController.finishCreate must be called after the first real redraw
         # because it requires a valid value for c.rootPosition().
         if frame.c.chapterController:
-            frame.c.chapterController.makeTrees()
+            frame.c.chapterController.finishCreate()
         k = c.k
         k and k.setInputState(k.unboundKeyAction)
         if c.config.getBool('outline_pane_has_initial_focus'):
@@ -26390,6 +26394,7 @@ def defineObjectDict (self):
         # Python globals...
         (['aList','bList'],     'python','list'),
         (['aString'],           'object','aString'), # An actual string object.
+        (['cc'],                'object',c.chapterController),
         (['c','old_c','new_c'], 'object',c),            
         (['d','d1','d2'],       'python','dict'),
         (['f'],                 'object',c.frame), 
@@ -30838,10 +30843,10 @@ def openWithFileName(fileName,old_c,
         g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
     finally:
         c.endUpdate()
-        # makeTrees must be called after the first real redraw
+        # chapterController.finishCreate must be called after the first real redraw
         # because it requires a valid value for c.rootPosition().
         if frame.c.chapterController:
-            frame.c.chapterController.makeTrees()
+            frame.c.chapterController.finishCreate()
         k = c.k
         k and k.setInputState(k.unboundKeyAction)
         if c.config.getBool('outline_pane_has_initial_focus'):
@@ -30915,10 +30920,10 @@ def new (self,event=None):
         c.editPosition(p)
     finally:
         c.endUpdate()
-        # makeTrees must be called after the first real redraw
+        # chapterController.finishCreate must be called after the first real redraw
         # because it requires a valid value for c.rootPosition().
         if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.makeTrees()
+            c.chapterController.finishCreate()
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -31636,10 +31641,10 @@ def new (self,event=None):
         c.editPosition(p)
     finally:
         c.endUpdate()
-        # makeTrees must be called after the first real redraw
+        # chapterController.finishCreate must be called after the first real redraw
         # because it requires a valid value for c.rootPosition().
         if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.makeTrees()
+            c.chapterController.finishCreate()
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -32544,9 +32549,9 @@ def createSplitterComponents (self):
     if self.use_chapters:
         # Create the controllers.
         c.chapterController = cc = leoChapters.chapterController(c)
-        tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-        cc.finishCreate(tt)
-        tt.selectTab('main') # Creates f.canvas and f.tree
+        cc.tt = tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+        # We must create the tab here so we can set f.tree and f.canvas.
+        tt.createTab('main')
         f.tree = tt.getTree('main')
         f.canvas = tt.getCanvas('main')
     else:
@@ -32634,9 +32639,7 @@ def getFrame (self,tabName):
         return None
 
 def getSelectedTabName (self):
-    name = self.nb.getcurselection() # An immutable tab name.
-    if self.trace: g.trace(name)
-    return name
+    return self.nb.getcurselection() # An immutable tab name.
 
 def getTree (self,tabName):
     return self.treeDict.get(tabName) # A leoTkinterTree.
@@ -32696,7 +32699,7 @@ def createTopLevelMenuItems (self,tmenu):
         ('','Remove This Chapter',cc.removeChapter),
         ('','Rename This Chapter',cc.renameChapter),
         ('-',None,None),
-        ('','Empty Trash Barrel',cc.removeChapter),
+        ('','Empty Trash Barrel',cc.emptyTrash),
         ('-',None,None),
         ('...','Clone Node To Chapter...',cc.cloneToChapter),
         ('...','Copy Node To Chapter...',cc.copyToChapter),
@@ -32780,6 +32783,9 @@ def renameChapterHelper (self,cc,tabName):
         newName = sv.get()
         f.pack_forget()
         tt.renameTab(newName)
+        # g.trace(tabName,newName)
+        theChapter = cc.getChapter(tabName)
+        c.setBodyString(theChapter.root,newName)
     e.bind('<Return>',changeCallback)
     e.selection_range(0,'end')
     b.configure(command=changeCallback)
@@ -32851,61 +32857,49 @@ def createTab (self,tabName,select=True):
     tt.treeDict [tabName] = tree
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070423102603.1:chapterSelectHelper
-def chapterSelectHelper (self,w,selectEditor):
+def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
+    trace = True
 
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tree = tt.getTree(name)
     
-    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
+    if trace or self.trace:
+        g.trace(
+            'chapter',self.name,'w',w,
+            'selectEditor',selectEditor,'p',self.p and self.p.headString())
     
+    # First, switch roots.
     if name == 'main':
         root = cc.mainRoot
-        c.setRootPosition(root)
+        c.setRootPosition(cc.mainRoot)
     else:
-        root = self.root
+        root = self.root.firstChild()
         self.unlink()
         c.setRootPosition(root)
 
     cc.selectedChapter = self
 
-    # Switch to the new editor.
-    if selectEditor:
-        if w:
-            assert w == c.frame.body.bodyCtrl
-            assert w == c.frame.bodyCtrl
-            p = self.findPositionInChapter(w.leo_p.v)
-            if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
-        else:
-             # This must be done *after* switching roots.
-            p = self.findPositionInChapter(self.p.v) ######################
+    # Next, recompute p and possibly select a new editor.
+    if w:
+        assert w == c.frame.body.bodyCtrl
+        assert w == c.frame.bodyCtrl
+        p = self.findPositionInChapter(w.leo_p.v)
+        if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
+    else:
+        # This must be done *after* switching roots.
+        p = self.findPositionInChapter(self.p.v)
+        if selectEditor:
             w = self.findEditorInChapter(p)
             c.frame.body.selectEditor(w) # Switches text.
 
-    # g.trace('   ***',id(w),root.headString(),p.headString())
-
     c.beginUpdate()
     try:
-        if self.inited:
-            c.selectPosition(p)
-            c.hoistStack = self.hoistStack[:] # Restore the hoist state.
-        else:
-            self.inited = True
-            if name == 'main': # Clear all hoists.
-                c.hoistStack = []
-                c.selectPosition(p)
-            else: # Finish initing the canvas and do the initial hoist.
-                # g.trace('finish init',name)
-                tree.setBindings()
-                if name != 'main':
-                    root.expand()
-                c.selectPosition(root)
-                c.hoistStack = []
-                c.hoist()
-                self.hoistStack = c.hoistStack[:]
-        # g.trace('chapter',name,'p.v',id(p.v),p.headString())
+        c.hoistStack = self.hoistStack[:]
+        c.selectPosition(p)
+        # c.hoistStack = self.hoistStack[:] ### Should this be here?? ###
     finally:
         c.endUpdate()
         c.bodyWantsFocusNow()
@@ -34177,15 +34171,21 @@ def __init__ (self,c,chapterController,name,p,root):
     self.c = c 
     self.cc = chapterController
     self.hoistStack = []
-    self.inited = False
     self.name = name # The immutable chapter name.  Not necessarily the same as the chapter's tabName.
     self.p = p.copy() # The current position...
     self.root = root and root.copy() # The immutable @chapter node (not used for the main chapter).
     self.selectLockout = False # True: in chapter.select logic.
     self.trace = False
-    self.unlinkData = None # Used to link the @chapter node back into the outline.
+    self.unlinkedRoot = None # data for link()
     
-    # g.trace('chapter','name',self.name,'p',self.p.headString())
+    # g.trace('chapter',self.name,g.callers())
+        #'p',self.p.headString(),'root',root and root.headString())
+    
+    # Create the dummy first node of the Chapter.
+    if name != 'main' and not root.hasChildren():
+        self.cc.createChild(root,self.name)
+    
+    
 #@-node:ekr.20070317085708.1: ctor: chapter
 #@+node:ekr.20070317073819.1: ctor (leoTreeTab)
 def __init__ (self,c,parentFrame,chapterController):
@@ -34208,96 +34208,120 @@ def __init__ (self,c,parentFrame,chapterController):
     self.createControl()
 #@-node:ekr.20070317073819.1: ctor (leoTreeTab)
 #@+node:ekr.20070423102603.1:chapterSelectHelper
-def chapterSelectHelper (self,w,selectEditor):
+def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
+    trace = True
 
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tree = tt.getTree(name)
     
-    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
+    if trace or self.trace:
+        g.trace(
+            'chapter',self.name,'w',w,
+            'selectEditor',selectEditor,'p',self.p and self.p.headString())
     
+    # First, switch roots.
     if name == 'main':
         root = cc.mainRoot
-        c.setRootPosition(root)
+        c.setRootPosition(cc.mainRoot)
     else:
-        root = self.root
+        root = self.root.firstChild()
         self.unlink()
         c.setRootPosition(root)
 
     cc.selectedChapter = self
 
-    # Switch to the new editor.
-    if selectEditor:
-        if w:
-            assert w == c.frame.body.bodyCtrl
-            assert w == c.frame.bodyCtrl
-            p = self.findPositionInChapter(w.leo_p.v)
-            if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
-        else:
-             # This must be done *after* switching roots.
-            p = self.findPositionInChapter(self.p.v) ######################
+    # Next, recompute p and possibly select a new editor.
+    if w:
+        assert w == c.frame.body.bodyCtrl
+        assert w == c.frame.bodyCtrl
+        p = self.findPositionInChapter(w.leo_p.v)
+        if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
+    else:
+        # This must be done *after* switching roots.
+        p = self.findPositionInChapter(self.p.v)
+        if selectEditor:
             w = self.findEditorInChapter(p)
             c.frame.body.selectEditor(w) # Switches text.
 
-    # g.trace('   ***',id(w),root.headString(),p.headString())
-
     c.beginUpdate()
     try:
-        if self.inited:
-            c.selectPosition(p)
-            c.hoistStack = self.hoistStack[:] # Restore the hoist state.
-        else:
-            self.inited = True
-            if name == 'main': # Clear all hoists.
-                c.hoistStack = []
-                c.selectPosition(p)
-            else: # Finish initing the canvas and do the initial hoist.
-                # g.trace('finish init',name)
-                tree.setBindings()
-                if name != 'main':
-                    root.expand()
-                c.selectPosition(root)
-                c.hoistStack = []
-                c.hoist()
-                self.hoistStack = c.hoistStack[:]
-        # g.trace('chapter',name,'p.v',id(p.v),p.headString())
+        c.hoistStack = self.hoistStack[:]
+        c.selectPosition(p)
+        # c.hoistStack = self.hoistStack[:] ### Should this be here?? ###
     finally:
         c.endUpdate()
         c.bodyWantsFocusNow()
 #@nonl
 #@-node:ekr.20070423102603.1:chapterSelectHelper
 #@+node:ekr.20070420173354:chapter.link/unlink
+#@+node:ekr.20070509081411:link
 def link (self):
     
-    '''Link the chapter's @chapter node back into the full outline.'''
-
-    b = self.unlinkData ; c = self.c ; cc = self.cc
-    if self.trace: g.trace('chapter',self.name,'unlinkData.root',b and b.root)
-    if b:
-        c.setRootPosition(cc.mainRoot) # Restore the main outline.
-        parent = cc.chaptersNode
-        n,root = b.childIndex,b.root
-        root.linkAsNthChild(parent,n)
-        self.unlinkData = None
-    else:
-        g.trace('**** can not happen: no unlinkData')
+    '''Link the chapter's root.firstChild node back into the full outline.'''
     
+    c = self.c
+    
+    g.trace('=====',self.name)
+    # g.printEntireTree(self.c,'link:before')
+    self.cc.printChaptersTree('before')
+    
+    if self.name == 'main':
+        self.error('*** linking main chapter!')
+    elif not self.root:
+        self.error('*** link: no root:',self)
+    elif not self.unlinkedRoot:
+        self.error('*** link: no unlinkedRoot')
+    elif self.unlinkedRoot != c.rootPosition():
+        self.error('*** link: unlinkedRoot != c.rootPosition(): %s, %s' % (
+            self.unlinkedRoot,c.rootPosition()))
+    else:
+        # Like the demote logic.
+        p = self.unlinkedRoot
+        while p: # Do not use iterator here.
+            g.trace('linking',p)
+            next = p.next()
+            p.moveToLastChildOf(self.root)
+            p = next
+        self.unlinkedRoot = None
+        self.cc.printChaptersTree('after')
+#@-node:ekr.20070509081411:link
+#@+node:ekr.20070509081411.1:unlink
 def unlink (self):
     
     '''Unlink the root node (the chapter's @chapter node) from the full outine.
     set unlinkData for later use by self.link.'''
     
-    cc = self.cc ; name = self.name ; root = self.root
-    assert(name != 'main')
-    assert(cc.chaptersNode)
-    assert(root)
+    g.trace('=====',self.name)
+    g.printEntireTree(self.c,'link:before')
+    self.cc.printChaptersTree('before')
 
-    # Remember the data.
-    self.unlinkData = g.Bunch(childIndex=root.childIndex(),root=root)
-    if self.trace: g.trace('chapter',self.name,'unlinkData.root',root)
-    root.moveToRoot(oldRoot=None)
+    if self.name == 'main':
+        self.error('*** unlinking main chapter!')
+    elif not self.root:
+        self.error('*** unlink: no root:',self)
+    elif not self.root.hasChildren():
+        self.error('*** unlink: no children: %s' % self.root)
+    elif self.unlinkedRoot:
+        self.error('*** unlink: unlinkedRoot: %s' % (self.unlinkedRoot))
+    else:
+        # Like the promote logic.
+        after = None
+        while self.root.hasChildren(): # Don't use an iterator.
+            p = self.root.firstChild()
+            g.trace('unlinking',p)
+            if after:
+                p.moveAfter(after)
+            else:
+                p.unlink()
+                p.linkAsRoot(oldRoot=None)
+                self.unlinkedRoot = p.copy()
+            g.trace('after unlink',p)
+            after = p.copy()
+        self.cc.printChaptersTree('after')
+#@-node:ekr.20070509081411.1:unlink
 #@-node:ekr.20070420173354:chapter.link/unlink
 #@-node:ekr.20070505121642.2:Fixed problems creating new chapter
 #@+node:ekr.20070506074557:Fixed crash when deleting a chapter
@@ -34527,24 +34551,29 @@ def putVnode (self,p,isIgnore=False):
         fc.put('%s</v>\n' % v_head) # Call put only once.
 #@nonl
 #@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
-if 1: # New in Leo 4.4.3
-    if not v.t.fileIndex:
-        g.trace('*** missing t.fileIndex','v',repr(v))
-        v.t.fileIndex = g.app.nodeIndices.getNewIndex()
-        
-    gnx = g.app.nodeIndices.toString(v.t.fileIndex)
-    if forceWrite or self.usingClipboard:
-        v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+# New in Leo 4.4.3
+if not v.t.fileIndex:
+    g.trace('*** missing t.fileIndex','v',repr(v))
+    # c.dumpOutline() # Can be called inside pdb.
+    if 1:
+        # Print the @chapters tree
+        c.chapterController.printChaptersTree()
+    g.pdb()
+    v.t.fileIndex = g.app.nodeIndices.getNewIndex()
 
-else: # old code.
-    if v.t.fileIndex:
-        gnx = g.app.nodeIndices.toString(v.t.fileIndex)
-        if forceWrite or self.usingClipboard:
-            v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
-    else:
-        g.trace(v.t.fileIndex,v)
-        g.es("error writing file(bad v.t.fileIndex)!")
-        g.es("try using the Save To command")
+gnx = g.app.nodeIndices.toString(v.t.fileIndex)
+if forceWrite or self.usingClipboard:
+    v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+
+# old code.
+# if v.t.fileIndex:
+    # gnx = g.app.nodeIndices.toString(v.t.fileIndex)
+    # if forceWrite or self.usingClipboard:
+        # v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+# else:
+    # g.trace(v.t.fileIndex,v)
+    # g.es("error writing file(bad v.t.fileIndex)!")
+    # g.es("try using the Save To command")
 #@-node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
 #@+node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
 # These string catenations are benign because they rarely happen.
@@ -34765,156 +34794,543 @@ def putDescendentUnknownAttributes (self,p):
 #@-node:EKR.20040627113418:putDescendentUnknownAttributes
 #@-node:ekr.20031218072017.1579:putVnodes & helpers
 #@-node:ekr.20070503100926:error writing file with newly-created @chapters node
-#@+node:ekr.20070506151218:Fixed problem with forceMainChapter
-#@+node:ekr.20070317085437.2: ctor: chapterController
-def __init__ (self,c):
-    
-    self.c = c
-    self.chaptersDict = {}
-        # Keys are tabNames, values are chapters.
-        # Important: tabNames never change, even if their button text changes.
-    self.chaptersLinked = True # True: the @chapters node is linked into the outline.
-    self.chaptersNode = None # Set later
-    self.inited = False # Set in makeTrees.
-    self.mainRoot = None # Set later
-    self.oldMainRoot = None # Set to cc.mainRoot in cc.unlinkChaptersNode.
-    self.selectedChapter = None
-    self.tabNames = []
-    self.trace = False
-    self.tt = None # Set in finishCreate.
-#@-node:ekr.20070317085437.2: ctor: chapterController
-#@+node:ekr.20070318122708:cc.getSelectedChapter
-def getSelectedChapter (self):
+#@-node:ekr.20070418094610.1:Fixed bugs
+#@+node:ekr.20070126072723:Fixed all pychecker problems
+#@+node:ekr.20070316175323:Invalid warnings
+leoGlobals.py:127: No module attribute (leo_config_directory) found # wrong
+leoGlobals.py:3884: Statement appears to have no effect # wrong
+leoGlobals.py:3884: No module attribute (CODESET) found # wrong
+leoGlobals.py:4448: No module attribute (mtime) found # wrong
+leoGlobals.py:5068: No global (p) found # test_ function
+leoGlobals.py:5592: No global (c) found # test_ function
 
-    cc = self
-    
-    tabName = cc.tt.nb.getcurselection()
-    theChapter = cc.chaptersDict.get(tabName) or cc.selectedChapter
-    if self.trace: g.trace(theChapter and theChapter.name or '<no chapter>')
-    return theChapter
-#@-node:ekr.20070318122708:cc.getSelectedChapter
-#@+node:ekr.20070317131205.1:chapter.select & helpers
-def select (self,w=None,selectEditor=True):
-    
-    '''Restore chapter information and redraw the tree when a chapter is selected.'''
-    
-    if self.selectLockout: return
-    
-    try:
-        self.selectLockout = True
-        self.chapterSelectHelper(w,selectEditor)
-    finally:
-        self.selectLockout = False
-#@+node:ekr.20070423102603.1:chapterSelectHelper
-def chapterSelectHelper (self,w,selectEditor):
+leoAtFile.py:3907: No global (c) found # test_ function
 
-    c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
+leoKeys.py:2438: No module attribute (initAllEditCommanders) found
+leoKeys.py:3925: No global (c) found
 
-    # The big switcharoo.
-    c.frame.canvas = canvas = tt.getCanvas(name)
-    c.frame.tree = tree = tt.getTree(name)
+leoChapters.py:47: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
+leoChapters.py:55: Invalid arguments to (unselect), got 0, expected 1 # wrong
+leoChapters.py:535: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
+
+leoEditCommands.py:4879: No global (c) found # test_ function
+
+leoFileCommands.py:2315: No global (c) found # test_ function
+
+leoFind.py:1355: No module attribute (__init__) found # wrong
+
+leoImport.py:1319: Global variable (c) not defined in module scope # test_ function
+
+leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p) # wrong.
+#@-node:ekr.20070316175323:Invalid warnings
+#@+node:ekr.20070507083524:Report 5-7-07
+# fixed: leoGlobals.py:2213: Variable (no_gc_message) used before being set
+
+# fixed: leoConfig.py:1663: (hash) shadows builtin
+
+# fixed: leoCommands.py:5170: Local variable (backBack) not used
+
+# fixed: leoChapters.py:10: Imported module (leoNodes) not used
+# fixed: leoChapters.py:574: Redefining attribute (updateChapterName) original line (59)
+# fixed: leoChapters.py:519: Local variable (tt) not used
+# fixed: leoChapters.py:660: Local variable (b) not used
+
+# fixed: leoTkinterTree.py:548: Parameter (theId) not used
+
+# fixed: leoTkinterFrame.py:2482: No global (cc) found.
+# fixed: leoTkinterFrame.py:2923: Overridden method (createControl) doesnt match signature in class (leoFrame.leoTreeTab)
+# fixed: leoTkinterFrame.py:2940: Local variable (hull) not used
+# fixed: leoTkinterFrame.py:2973: Overridden method (createTab) doesnt match signature in class (leoFrame.leoTreeTab)
+# fixed: leoTkinterFrame.py:3085: Parameter (theChapter) not used
+# fixed: leoTkinterFrame.py:3120: Local variable (nb) not used
+# fixed: leoTkinterFrame.py:3122: Local variable (frame) not used
+#@-node:ekr.20070507083524:Report 5-7-07
+#@-node:ekr.20070126072723:Fixed all pychecker problems
+#@+node:ekr.20070509074834:Fix chapters problems
+#@+node:ekr.20070509082456:To do
+@ To do:
+
+- Link existing root.firstChild node when creating a tree.
+
+** Why does hoisting work as all?  Is there special-case code for the goto commands?
+
+What I did:
     
-    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
+- Removed special-case chapters code from drawTree.
+- Cleared hoist stack when initing any chapter.
+- Empty trash recreates a root node.
+#@nonl
+#@+node:ekr.20070508111458:Fix crash when creating a chapter when staring from leo.py
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4301913
+By: yarkot
+
+Hmmm.... from CVS snapshot of last night, I'm not able to create a new chapter
+in a new file.
+
+Here's what I have running:
+-----------------
+Leo Log Window...
+Leo 4.4.3 alpha 2, build  1.147 , March 17, 2007
+Python 2.5.1, Tk 8.4.12, Pmw 1.2
+Windows 5, 1, 2600, 2, Service Pack 2
+--------------------
+
+Here's what I do:   RIGHT-CLICK MAIN, select "New Chapter"
+
+Here's the result:  (In a Tk Window "Error in background function"; also in
+startup command window):
+--------------
+Error: 1
+AttributeError Exception in Tk callback
+  Function: <bound method chapterController.createChapter of
+<leoChapters.chapterController instance at 0x01549F58>> (type: <type
+'instancemethod'>)
+  Args: ()
+Traceback (innermost last):
+  File "D:\Workspace\Leo\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752,
+in __call__
+    return apply(self.func, args)
+  File "D:\Workspace\Leo\leo\src\leoChapters.py", line 136, in createChapter
+    root = cc.getChapterNode(tabName)
+  File "D:\Workspace\Leo\leo\src\leoChapters.py", line 471, in getChapterNode
+    cc.createChapterNode(chapterName))
+  File "D:\Workspace\Leo\leo\src\leoChapters.py", line 332, in
+createChapterNode
+    p.moveToFirstChildOf(cc.chaptersNode)
+  File "D:\Workspace\Leo\leo\src\leoNodes.py", line 2165, in moveToFirstChildOf
+    p.linkAsNthChild(parent,0)
+  File "D:\Workspace\Leo\leo\src\leoNodes.py", line 2610, in linkAsNthChild
+    p.stack = parent.stack[:]
+AttributeError: 'NoneType' object has no attribute 'stack'
+-----------------
+
+Hope this helps,
+Yarko
+#@-node:ekr.20070508111458:Fix crash when creating a chapter when staring from leo.py
+#@+node:ekr.20070508080330:Fix focus when clicking chapter tab
+#@-node:ekr.20070508080330:Fix focus when clicking chapter tab
+#@+node:ekr.20070508092110:Finish rename command
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=4300665
+By: ktenney
+
+Current cvs (as was the previous renaming post)
+
+- Right click on chapter tab
+- Select 'New Chapter'
+- Put a name into the new chapter tab <My New Tab>
+- the chapter contains one node "@chapter Chapter 1"
+- save file
+- open file
+- the chapter tab now says "Chapter 1"
+
+@color
+#@nonl
+#@+node:ekr.20070318125900.1:tt.renameChapterHelper
+def renameChapterHelper (self,cc,tabName):
+
+    '''Called from cc.renameChapter to prompt for a new name.'''
+
+    tt = self ; c = tt.c
+    tab = tt.getButton(tabName)
+
+    f = Tk.Frame(tab)
+    # Elegant code.  Setting e's textvariable to chapter.sv
+    # immediately updates the chapter labels as e changes.
+    sv = tt.stringVarDict.get(tabName)
+    e = Tk.Entry(f,background='white',textvariable=sv)
+    b = Tk.Button(f,text="Close")
+    f.pack(side='top')
+    e.pack(side='left')
+    b.pack(side='right')
+    def changeCallback (event=None,f=f,sv=sv):
+        newName = sv.get()
+        f.pack_forget()
+        tt.renameTab(newName)
+        # g.trace(tabName,newName)
+        theChapter = cc.getChapter(tabName)
+        c.setBodyString(theChapter.root,newName)
+    e.bind('<Return>',changeCallback)
+    e.selection_range(0,'end')
+    b.configure(command=changeCallback)
+    c.widgetWantsFocusNow(e)
+#@nonl
+#@-node:ekr.20070318125900.1:tt.renameChapterHelper
+#@-node:ekr.20070508092110:Finish rename command
+#@-node:ekr.20070509082456:To do
+#@+node:ekr.20070325104222:Birth...
+#@+node:ekr.20050920093543:c.finishCreate & helper
+def finishCreate (self):  # New in 4.4.
     
-    if name == 'main':
-        root = cc.mainRoot
-        c.setRootPosition(root)
+    '''Finish creating the commander after frame.finishCreate.
+    
+    Important: this is the last step in the startup process.'''
+    
+    c = self ; p = c.currentPosition()
+    c.miniBufferWidget = c.frame.miniBufferWidget
+    # g.trace('Commands',c.fileName())
+    
+    # Create a keyHandler even if there is no miniBuffer.
+    c.keyHandler = c.k = k = g.app.gui.createKeyHandlerClass(c,
+        useGlobalKillbuffer=True,
+        useGlobalRegisters=True)
+
+    if g.app.config and g.app.config.inited:
+        # A 'real' .leo file.
+        c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
+        k.finishCreate()
     else:
-        root = self.root
-        self.unlink()
-        c.setRootPosition(root)
+        # A leoSettings.leo file.
+        c.commandsDict = {}
+        
+    c.frame.log.finishCreate()
 
-    cc.selectedChapter = self
+    # Create the menu last so that we can use the key handler for shortcuts.
+    if not g.doHook("menu1",c=c,p=p,v=p):
+        c.frame.menu.createMenuBar(c.frame)
 
-    # Switch to the new editor.
-    if selectEditor:
-        if w:
-            assert w == c.frame.body.bodyCtrl
-            assert w == c.frame.bodyCtrl
-            p = self.findPositionInChapter(w.leo_p.v)
-            if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p,p)
-        else:
-             # This must be done *after* switching roots.
-            p = self.findPositionInChapter(self.p.v) ######################
-            w = self.findEditorInChapter(p)
-            c.frame.body.selectEditor(w) # Switches text.
+    c.bodyWantsFocusNow()
+#@nonl
+#@+node:ekr.20051007143620:printCommandsDict
+def printCommandsDict (self):
+    
+    c = self
+    
+    print 'Commands...'
+    keys = c.commandsDict.keys()
+    keys.sort()
+    for key in keys:
+        command = c.commandsDict.get(key)
+        print '%30s = %s' % (key,g.choose(command,command.__name__,'<None>'))
+    print
+#@-node:ekr.20051007143620:printCommandsDict
+#@-node:ekr.20050920093543:c.finishCreate & helper
+#@+node:ekr.20031218072017.1623:new
+def new (self,event=None):
+    
+    '''Create a new Leo window.'''
 
-    # g.trace('   ***',id(w),root.headString(),p.headString())
-
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
     c.beginUpdate()
     try:
-        if self.inited:
-            c.selectPosition(p)
-            c.hoistStack = self.hoistStack[:] # Restore the hoist state.
-        else:
-            self.inited = True
-            if name == 'main': # Clear all hoists.
-                c.hoistStack = []
-                c.selectPosition(p)
-            else: # Finish initing the canvas and do the initial hoist.
-                # g.trace('finish init',name)
-                tree.setBindings()
-                if name != 'main':
-                    root.expand()
-                c.selectPosition(root)
-                c.hoistStack = []
-                c.hoist()
-                self.hoistStack = c.hoistStack[:]
-        # g.trace('chapter',name,'p.v',id(p.v),p.headString())
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
     finally:
         c.endUpdate()
-        c.bodyWantsFocusNow()
-#@nonl
-#@-node:ekr.20070423102603.1:chapterSelectHelper
-#@+node:ekr.20070317131708:chapter.findPositionInChapter
-def findPositionInChapter (self,v):
-    
-    '''Return a valid position p such that p.v == v.'''
-    
-    cc = self.cc ; name = self.name
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if c.config.getBool('use_chapters') and c.chapterController:
+            c.chapterController.finishCreate()
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+#@-node:ekr.20031218072017.1623:new
+#@+node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
+def finishCreate (self,c):
 
-    if name == 'main':
-        # Search the entire tree, but not the @chapters tree.
-        assert(cc.mainRoot)
-        for p in cc.mainRoot.self_and_siblings_iter():
-            if not p.headString().startswith('@chapters'):
-                for p2 in p.self_and_subtree_iter():
-                    if p2.v == v:
-                        if self.trace: g.trace('*** found outside @chapters','v',p2.v)
-                        return p2
+    f = self ; f.c = c
+    # g.trace('tkFrame')
+
+    self.use_chapters = True and c.config.getBool('use_chapters')
+
+    # This must be done after creating the commander.
+    f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
+    f.createOuterFrames()
+    f.createIconBar()
+    f.createSplitterComponents()
+    f.createStatusLine()
+    f.createFirstTreeNode()
+    f.menu = leoTkinterMenu.leoTkinterMenu(f)
+        # c.finishCreate calls f.createMenuBar later.
+    c.setLog()
+    g.app.windowList.append(f)
+    c.initVersion()
+    c.signOnWithVersion()
+    f.miniBufferWidget = f.createMiniBufferWidget()
+    c.bodyWantsFocusNow()
+    self.trace_status_line = c.config.getBool('trace_status_line')
+    # f.enableTclTraces()
+#@+node:ekr.20051009044751:createOuterFrames
+def createOuterFrames (self):
+
+    f = self ; c = f.c
+    f.top = top = Tk.Toplevel()
+    g.app.gui.attachLeoIcon(top)
+    top.title(f.title)
+    top.minsize(30,10) # In grid units.
+
+    if g.os_path_exists(g.app.user_xresources_path):
+        f.top.option_readfile(g.app.user_xresources_path)
+
+    f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
+    f.top.bind("<Button-1>", f.OnActivateLeoEvent)
+
+    f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
+    f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
+
+    # These don't work on Windows. Because of bugs in window managers,
+    # there is NO WAY to know which window is on top!
+    # f.top.bind("<Activate>",f.OnActivateLeoEvent)
+    # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
+
+    # Create the outer frame, the 'hull' component.
+    f.outerFrame = Tk.Frame(top)
+    f.outerFrame.pack(expand=1,fill="both")
+#@nonl
+#@-node:ekr.20051009044751:createOuterFrames
+#@+node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
+def createSplitterComponents (self):
+
+    f = self ; c = f.c
+
+    f.createLeoSplitters(f.outerFrame)
+
+    # Create the canvas, tree, log and body.
+    if self.use_chapters:
+        # Create the controllers.
+        c.chapterController = cc = leoChapters.chapterController(c)
+        cc.tt = tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+        # We must create the tab here so we can set f.tree and f.canvas.
+        tt.createTab('main')
+        f.tree = tt.getTree('main')
+        f.canvas = tt.getCanvas('main')
     else:
-        # Search only the @chapter tree.
-        for p in self.root.self_and_subtree_iter():
-            if p.v == v:
-                if self.trace: g.trace('*** found in chapter',p)
-                return p
-    
-    self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
-    g.trace(g.callers())
-    if 0: # This could crash.
-        print 'cc.mainRoot',cc.mainRoot
-        print '******* top-level nodes *****'
-        for p in cc.mainRoot.self_and_siblings_iter():
-            print p.headStirng()
-    return self.root
-#@nonl
-#@-node:ekr.20070317131708:chapter.findPositionInChapter
-#@+node:ekr.20070425175522:chapter.findEditorInChapter
-def findEditorInChapter (self,p):
-    
-    '''return w, an editor displaying position p.'''
-    
-    chapter = self ; c = self.c
+        f.canvas = f.createCanvas(f.split2Pane1)
+        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
 
-    w = c.frame.body.findEditorForChapter(chapter,p)
-    w.leo_chapter = chapter
-    w.leo_p = p and p.copy()
-    return w
+    f.log    = leoTkinterLog(f,f.split2Pane2)
+    f.body   = leoTkinterBody(f,f.split1Pane2)
+
+    # Yes, this an "official" ivar: this is a kludge.
+    f.bodyCtrl = f.body.bodyCtrl
+
+    # Configure.
+    f.setTabWidth(c.tab_width)
+    f.reconfigurePanes()
+    f.body.setFontFromConfig()
+    f.body.setColorFromConfig()
 #@nonl
-#@-node:ekr.20070425175522:chapter.findEditorInChapter
-#@-node:ekr.20070317131205.1:chapter.select & helpers
-#@+node:ekr.20070325104904:cc.makeTrees
-def makeTrees (self):
+#@-node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
+#@+node:ekr.20051009045404:createFirstTreeNode
+def createFirstTreeNode (self):
+
+    f = self ; c = f.c
+
+    t = leoNodes.tnode()
+    v = leoNodes.vnode(t)
+    p = leoNodes.position(v,[])
+    v.initHeadString("NewHeadline")
+    p.moveToRoot(oldRoot=None)
+    c.setRootPosition(p) # New in 4.4.2.
+    c.editPosition(p)
+#@-node:ekr.20051009045404:createFirstTreeNode
+#@+node:ekr.20051121092320:f.enableTclTraces
+def enableTclTraces (self):
+
+    c = self.c
+
+    # pychecker complains that trace/untracewidget are not used.
+
+    def tracewidget(event):
+        g.trace('enabling widget trace')
+        Pmw.tracetk(event.widget, 1)
+
+    def untracewidget(event):
+        g.trace('disabling widget trace')
+        Pmw.tracetk(event.widget,0)
+
+    def focusIn (event):
+        print("Focus in  %s (%s)" % (
+            event.widget,event.widget.winfo_class()))
+
+    def focusOut (event):
+        print("Focus out %s (%s)" % (
+            event.widget,event.widget.winfo_class()))
+
+    # Put this in unit tests before the assert:
+    # c.frame.bar1.unbind_all("<FocusIn>")
+    # c.frame.bar1.unbind_all("<FocusOut>")
+
+    # Any widget would do:
+    w = c.frame.bar1
+    if 1:
+        w.bind_all("<FocusIn>", focusIn)
+        w.bind_all("<FocusOut>", focusOut)
+    else:
+        w.bind_all("<Control-1>", tracewidget)
+        w.bind_all("<Control-Shift-1>", untracewidget)
+#@-node:ekr.20051121092320:f.enableTclTraces
+#@-node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
+#@+node:ekr.20031218072017.3944:tkFrame.createCanvas & helpers
+def createCanvas (self,parentFrame,pack=True):
+
+    c = self.c
+
+    scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
+    scrolls = g.choose(scrolls,1,0)
+    canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
+    self.setCanvasColorFromConfig(canvas)
+
+    return canvas
+#@nonl
+#@+node:ekr.20041221071131.1:f.createTkTreeCanvas & callbacks
+def createTkTreeCanvas (self,parentFrame,scrolls,pack):
+    
+    frame = self
+    
+    canvas = Tk.Canvas(parentFrame,name="canvas",
+        bd=0,bg="white",relief="flat")
+
+    treeBar = Tk.Scrollbar(parentFrame,name="treeBar")
+    
+    # New in Leo 4.4.3 b1: inject the ivar into the canvas.
+    canvas.leo_treeBar = treeBar
+    
+    # Bind mouse wheel event to canvas
+    if sys.platform != "win32": # Works on 98, crashes on XP.
+        canvas.bind("<MouseWheel>", frame.OnMouseWheel)
+        if 1: # New in 4.3.
+            << workaround for mouse-wheel problems >>
+        
+    canvas['yscrollcommand'] = self.setCallback
+    treeBar['command']     = self.yviewCallback
+    treeBar.pack(side="right", fill="y")
+    if scrolls: 
+        treeXBar = Tk.Scrollbar( 
+            parentFrame,name='treeXBar',orient="horizontal") 
+        canvas['xscrollcommand'] = treeXBar.set 
+        treeXBar['command'] = canvas.xview 
+        treeXBar.pack(side="bottom", fill="x")
+    
+    if pack:
+        canvas.pack(expand=1,fill="both")
+
+    canvas.bind("<Button-1>", frame.OnActivateTree)
+
+    # Handle mouse wheel in the outline pane.
+    if sys.platform == "linux2": # This crashes tcl83.dll
+        canvas.bind("<MouseWheel>", frame.OnMouseWheel)
+    if 0:
+        << do scrolling by hand in a separate thread >>
+    
+    # g.print_bindings("canvas",canvas)
+    return canvas
+#@+node:ekr.20050119210541:<< workaround for mouse-wheel problems >>
+# Handle mapping of mouse-wheel to buttons 4 and 5.
+
+def mapWheel(e):
+    if e.num == 4: # Button 4
+        e.delta = 120
+        return frame.OnMouseWheel(e)
+    elif e.num == 5: # Button 5
+        e.delta = -120
+        return frame.OnMouseWheel(e)
+
+canvas.bind("<ButtonPress>",mapWheel,add=1)
+#@-node:ekr.20050119210541:<< workaround for mouse-wheel problems >>
+#@+node:ekr.20040709081208:<< do scrolling by hand in a separate thread >>
+# New in 4.3: replaced global way with scrollWay ivar.
+ev = threading.Event()
+
+def run(self=self,canvas=canvas,ev=ev):
+
+    while 1:
+        ev.wait()
+        if self.scrollWay =='Down': canvas.yview("scroll", 1,"units")
+        else:                       canvas.yview("scroll",-1,"units")
+        time.sleep(.1)
+
+t = threading.Thread(target = run)
+t.setDaemon(True)
+t.start()
+
+def scrollUp(event): scrollUpOrDown(event,'Down')
+def scrollDn(event): scrollUpOrDown(event,'Up')
+    
+def scrollUpOrDown(event,theWay):
+    if event.widget!=canvas: return
+    if 0: # This seems to interfere with scrolling.
+        if canvas.find_overlapping(event.x,event.y,event.x,event.y): return
+    ev.set()
+    self.scrollWay = theWay
+        
+def off(event,ev=ev,canvas=canvas):
+    if event.widget!=canvas: return
+    ev.clear()
+
+if 1: # Use shift-click
+    # Shift-button-1 scrolls up, Shift-button-2 scrolls down
+    canvas.bind_all('<Shift Button-3>',scrollDn)
+    canvas.bind_all('<Shift Button-1>',scrollUp)
+    canvas.bind_all('<Shift ButtonRelease-1>',off)
+    canvas.bind_all('<Shift ButtonRelease-3>',off)
+else: # Use plain click.
+    canvas.bind_all( '<Button-3>',scrollDn)
+    canvas.bind_all( '<Button-1>',scrollUp)
+    canvas.bind_all( '<ButtonRelease-1>',off)
+    canvas.bind_all( '<ButtonRelease-3>',off)
+#@-node:ekr.20040709081208:<< do scrolling by hand in a separate thread >>
+#@+node:ekr.20031218072017.998:Scrolling callbacks (tkFrame)
+def setCallback (self,*args,**keys):
+    
+    """Callback to adjust the scrollbar.
+    
+    Args is a tuple of two floats describing the fraction of the visible area."""
+
+    #g.trace(self.tree.redrawCount,args,g.callers())
+
+    apply(self.canvas.leo_treeBar.set,args,keys)
+
+    if self.tree.allocateOnlyVisibleNodes:
+        self.tree.setVisibleArea(args)
+
+def yviewCallback (self,*args,**keys):
+    
+    """Tell the canvas to scroll"""
+    
+    #g.trace(vyiewCallback,args,keys,g.callers())
+
+    if self.tree.allocateOnlyVisibleNodes:
+        self.tree.allocateNodesBeforeScrolling(args)
+
+    apply(self.canvas.yview,args,keys)
+#@nonl
+#@-node:ekr.20031218072017.998:Scrolling callbacks (tkFrame)
+#@-node:ekr.20041221071131.1:f.createTkTreeCanvas & callbacks
+#@+node:ekr.20070327094252:f.setCanvasColorFromConfig
+def setCanvasColorFromConfig (self,canvas):
+    
+    c = self.c
+
+    bg = c.config.getColor("outline_pane_background_color") or 'white'
+
+    try:
+        canvas.configure(bg=bg)
+    except:
+        g.es("exception setting outline pane background color")
+        g.es_exception()
+#@-node:ekr.20070327094252:f.setCanvasColorFromConfig
+#@-node:ekr.20031218072017.3944:tkFrame.createCanvas & helpers
+#@+node:ekr.20070325104904:cc.finishCreate
+def finishCreate (self):
     
     '''Find or make the @chapters and @chapter trash nodes.'''
     
@@ -34933,304 +35349,245 @@ def makeTrees (self):
     if not cc.findChapterNode('trash'):
         cc.createChapterNode('trash')
         
+    # Create the two default chapters.
+    for tabName in ('trash','main'):
+        p = cc.getChapterNode(tabName)
+        cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
+        if tabName == 'main':
+            # The main tab, tree and canvas were created earlier.
+            c.frame.tree = tt.getTree(tabName)
+            c.frame.canvas = tt.getCanvas(tabName)
+        else:
+            tt.createTab(tabName,select=False)
+            tree = tt.getTree(tabName)
+            tree.setBindings()
+        tt.makeTabMenu(tabName)
+        
     # Create a chapter for each @chapter node.
     tag = '@chapter'
     for p in cc.chaptersNode.children_iter():
         h = p.headString()
         if h.startswith(tag):
             tabName = h[len(tag):].strip()
-            if tabName and tabName not in ('main','trash') and not cc.chaptersDict.get(tabName):
-                theChapter = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
-                cc.chaptersDict[tabName] = theChapter
-                tt.createTab(tabName,select=False)
-                tt.makeTabMenu(tabName)
-    
-    for tabName in ('trash',):
-        if not cc.chaptersDict.get(tabName):
-            p = cc.getChapterNode(tabName)
-            cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
-            
-    for tabName in ('main',):
-        if not cc.chaptersDict.get(tabName):
-            p = c.currentPosition()
-            cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=None)
+            if tabName and tabName not in ('main','trash'):
+                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
+                s = p.bodyString() or tabName
+                # g.trace('s',s,'tabName',tabName)
+                tt.createTab(s,select=False) # s was tabName
+                tt.makeTabMenu(s) # s was tabName
+                tree = tt.getTree(tabName)
+                tree.setBindings()
             
     cc.selectChapter('main')
-    cc.inited = True
 #@nonl
-#@-node:ekr.20070325104904:cc.makeTrees
-#@+node:ekr.20070425180705:findEditorForChapter (leoBody)
-def findEditorForChapter (self,chapter,p):
+#@-node:ekr.20070325104904:cc.finishCreate
+#@+node:ekr.20031218072017.2052:g.openWithFileName
+def openWithFileName(fileName,old_c,
+    enableLog=True,readAtFileNodesFlag=True):
     
-    '''Return an editor to be assigned to chapter.'''
-    
-    d = self.editorWidgets ; values = d.values()
+    """Create a Leo Frame for the indicated fileName if the file exists."""
 
-    # First, try to match both the chapter and position.
-    if p:
-        for w in values:
-            if (
-                hasattr(w,'leo_chapter') and w.leo_chapter == chapter and
-                hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
-                # g.trace('***',id(w),'match chapter and p',p.headString())
-                return w
-            
-    # Next, try to match just the chapter.
-    for w in values:
-        if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
-            # g.trace('***',id(w),'match only chapter',p.headString())
-            return w
-    
-    # As a last resort, return the present editor widget.
-    # g.trace('***',id(self.bodyCtrl),'no match',p.headString())
-    return self.bodyCtrl
-#@-node:ekr.20070425180705:findEditorForChapter (leoBody)
-#@+node:ekr.20070425175522:chapter.findEditorInChapter
-def findEditorInChapter (self,p):
-    
-    '''return w, an editor displaying position p.'''
-    
-    chapter = self ; c = self.c
+    if not fileName or len(fileName) == 0:
+        return False, None
+        
+    def munge(name):
+        return g.os_path_normpath(name or '').lower()
 
-    w = c.frame.body.findEditorForChapter(chapter,p)
-    w.leo_chapter = chapter
-    w.leo_p = p and p.copy()
-    return w
-#@nonl
-#@-node:ekr.20070425175522:chapter.findEditorInChapter
-#@+node:ekr.20070317131708:chapter.findPositionInChapter
-def findPositionInChapter (self,v):
-    
-    '''Return a valid position p such that p.v == v.'''
-    
-    cc = self.cc ; name = self.name
+    # Create a full, normalized, Unicode path name, preserving case.
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
 
-    if name == 'main':
-        # Search the entire tree, but not the @chapters tree.
-        assert(cc.mainRoot)
-        for p in cc.mainRoot.self_and_siblings_iter():
-            if not p.headString().startswith('@chapters'):
-                for p2 in p.self_and_subtree_iter():
-                    if p2.v == v:
-                        if self.trace: g.trace('*** found outside @chapters','v',p2.v)
-                        return p2
-    else:
-        # Search only the @chapter tree.
-        for p in self.root.self_and_subtree_iter():
-            if p.v == v:
-                if self.trace: g.trace('*** found in chapter',p)
-                return p
-    
-    self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
-    g.trace(g.callers())
-    if 0: # This could crash.
-        print 'cc.mainRoot',cc.mainRoot
-        print '******* top-level nodes *****'
-        for p in cc.mainRoot.self_and_siblings_iter():
-            print p.headStirng()
-    return self.root
-#@nonl
-#@-node:ekr.20070317131708:chapter.findPositionInChapter
-#@+node:ekr.20070320091806.1:chapter.unselect
-def unselect (self):
-
-    '''Remember chapter info when a chapter is about to be unselected.'''
-
-    c = self.c ; cc = self.cc
-    self.hoistStack = c.hoistStack[:]
-    self.p = c.currentPosition()
-    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
-    
-    # Restore the entire outline and
-    # link the chapter's @chapter node into the entire outline.
-    if self.name != 'main':
-        self.link()
-#@-node:ekr.20070320091806.1:chapter.unselect
-#@+node:ekr.20070421092158:cc.forceMainChapter
-def forceMainChapter (self):
-    
-    cc = self
-    oldChapter = cc.getSelectedChapter()
-    # g.trace(oldChapter)
-    
-    if oldChapter:
-        if oldChapter.name == 'main':
-            oldChapter = None # Don't unlink the main chapter in unlinkChaptersNode.
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+        
+    # Open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
+    try:
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.finishCreate()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
         else:
-            oldChapter.link()
-            if self.trace: g.trace('oldChapter',oldChapter.name)
-    
-    cc.linkChaptersNode()
-
-    return oldChapter
-#@-node:ekr.20070421092158:cc.forceMainChapter
-#@+node:ekr.20070503082757:cc.restoreOldChapter
-def restoreOldChapter (self, oldChapter):
-    
-    cc = self ; c = self.c
-    
-    # g.trace(oldChapter)
-    cc.unlinkChaptersNode()
-    if oldChapter:
-        oldChapter.unlink()
-        oldChapter.select()
-   
+            c.bodyWantsFocusNow()
+    return True, frame
 #@nonl
-#@-node:ekr.20070503082757:cc.restoreOldChapter
-#@+node:ekr.20070503083301:cc.linkChaptersNode
-def linkChaptersNode (self):
-    
-    cc = self
-    
-    if not cc.chaptersNode:
-        self.error('***** no @chapters node')
-    elif not cc.mainRoot:
-        self.error('***** no cc.mainRoot')
-    elif cc.chaptersLinked:
-        g.trace('***** can not happen: @chapters already linked')
-    else:
-        cc.chaptersLinked = True
-        cc.oldMainRoot = cc.mainRoot
-        cc.chaptersNode.linkAsRoot(oldRoot=cc.mainRoot)
-        if self.trace: g.trace('*** setting mainRoot',cc.chaptersNode)
-        cc.mainRoot = cc.chaptersNode
-#@-node:ekr.20070503083301:cc.linkChaptersNode
-#@+node:ekr.20070503081539:cc.unlinkChaptersNode
-def unlinkChaptersNode (self):
-    
-    '''unlink the @chapters node from the headline.'''
-    
-    cc = self ; c = cc.c
-    
-    if not cc.chaptersNode:
-        g.trace('***** can not happen: no @chapters node')
-    elif not cc.chaptersLinked:
-        g.trace('***** can not happen: @chapters already unlinked')
-    else:
-        c.beginUpdate()
-        try:
-            p = cc.chaptersNode
-            newRoot = cc.oldMainRoot or p.back() or p.next()
-            if newRoot:
-                # Test whether we are in the @chpaters tree **before** unlinking.
-                current = c.currentPosition()
-                inChaptersFlag = cc.chaptersNode == current or cc.chaptersNode.isAncestorOf(current)
-                if self.trace: g.trace('*** unlinking @chapters node','newRoot',newRoot)
-                cc.chaptersNode.unlink() # unlink the node.
-                if self.trace: g.trace('*** setting mainRoot',newRoot)
-                cc.mainRoot = newRoot
-                c.setRootPosition(newRoot)
-                if inChaptersFlag:
-                    # g.trace('setting position to',newRoot.headString())
-                    c.setCurrentPosition(newRoot)
-            else:
-                self.error('***** no new root')
-        finally:
-            cc.oldMainRoot = None
-            cc.chaptersLinked = False
-            c.endUpdate(flag=False) # Do not redraw: the canvas has not been saved/restored.
-#@-node:ekr.20070503081539:cc.unlinkChaptersNode
-#@+node:ekr.20070420173354:chapter.link/unlink
-def link (self):
-    
-    '''Link the chapter's @chapter node back into the full outline.'''
+#@-node:ekr.20031218072017.2052:g.openWithFileName
+#@+node:ekr.20070317074824:tt.createTab
+def createTab (self,tabName,select=True):
 
-    b = self.unlinkData ; c = self.c ; cc = self.cc
-    if self.trace: g.trace('chapter',self.name,'unlinkData.root',b and b.root)
-    if b:
-        c.setRootPosition(cc.mainRoot) # Restore the main outline.
-        parent = cc.chaptersNode
-        n,root = b.childIndex,b.root
-        root.linkAsNthChild(parent,n)
-        self.unlinkData = None
-    else:
-        g.trace('**** can not happen: no unlinkData')
+    tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
+
+    parentFrame = nb.add(tabName) # page is a Tk.Frame.
+    self.tabNames.append(tabName)
+
+    b = nb.tab(tabName) # b is a Tk.Button.
+
+    if select:  self.setSelectColor(b)
+    else:       self.setUnselectColor(b)
+
+    canvas = c.frame.createCanvas(parentFrame)
+    tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
     
-def unlink (self):
+    tt.buttonsDict [tabName ] = b
+    tt.canvasDict [tabName] = canvas
+    tt.stringVarDict [tabName] = Tk.StringVar()
+    tt.treeDict [tabName] = tree
+#@-node:ekr.20070317074824:tt.createTab
+#@+node:ekr.20070327103016:tkTree.setCanvasBindings
+def setCanvasBindings (self,canvas):
     
-    '''Unlink the root node (the chapter's @chapter node) from the full outine.
-    set unlinkData for later use by self.link.'''
+    k = self.c.k
     
-    cc = self.cc ; name = self.name ; root = self.root
-    assert(name != 'main')
-    assert(cc.chaptersNode)
-    assert(root)
+    canvas.bind('<Key>',k.masterKeyHandler)
+    canvas.bind('<Button-1>',self.onTreeClick)
 
-    # Remember the data.
-    self.unlinkData = g.Bunch(childIndex=root.childIndex(),root=root)
-    if self.trace: g.trace('chapter',self.name,'unlinkData.root',root)
-    root.moveToRoot(oldRoot=None)
-#@-node:ekr.20070420173354:chapter.link/unlink
-#@+node:ekr.20070413045221.2:Top-level  (leoFileCommands)
-#@+node:ekr.20031218072017.1720:save
-def save(self,fileName):
-
-    c = self.c ; v = c.currentVnode()
-
-    # New in 4.2.  Return ok flag so shutdown logic knows if all went well.
-    ok = g.doHook("save1",c=c,p=v,v=v,fileName=fileName)
-    # redraw_flag = g.app.gui.guiName() == 'tkinter'
-    if ok is None:
-        c.beginUpdate()
-        try:
-            c.endEditing()# Set the current headline text.
-            self.setDefaultDirectoryForNewFiles(fileName)
-            ok = self.write_Leo_file(fileName,False) # outlineOnlyFlag
-            if ok:
-                c.setChanged(False) # Clears all dirty bits.
-                self.putSavedMessage(fileName)
-                if c.config.save_clears_undo_buffer:
-                    g.es("clearing undo")
-                    c.undoer.clearUndoState()
-        finally:
-            c.endUpdate() # We must redraw in order to clear dirty node icons.
-    g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
-    return ok
-#@-node:ekr.20031218072017.1720:save
-#@+node:ekr.20031218072017.3043:saveAs
-def saveAs(self,fileName):
-
-    c = self.c ; v = c.currentVnode()
-
-    if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
-        c.beginUpdate()
-        try:
-            c.endEditing() # Set the current headline text.
-            self.setDefaultDirectoryForNewFiles(fileName)
-            if self.write_Leo_file(fileName,False): # outlineOnlyFlag
-                c.setChanged(False) # Clears all dirty bits.
-                self.putSavedMessage(fileName)
-        finally:
-            c.endUpdate() # We must redraw in order to clear dirty node icons.
-    g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
-#@-node:ekr.20031218072017.3043:saveAs
-#@+node:ekr.20031218072017.3044:saveTo
-def saveTo (self,fileName):
-
-    c = self.c ; v = c.currentVnode()
-
-    if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
-        c.beginUpdate()
-        try:
-            c.endEditing()# Set the current headline text.
-            self.setDefaultDirectoryForNewFiles(fileName)
-            self.write_Leo_file(fileName,False) # outlineOnlyFlag
-            self.putSavedMessage(fileName)
-        finally:
-            c.endUpdate() # We must redraw in order to clear dirty node icons.
-    g.doHook("save2",c=c,p=v,v=v,fileName=fileName)
-#@-node:ekr.20031218072017.3044:saveTo
-#@+node:ekr.20070413061552:putSavedMessage
-def putSavedMessage (self,fileName):
-    
-    c = self.c
-    
-    zipMark = g.choose(c.isZipped,'[zipped] ','')
-    
-    g.es("saved: %s%s" % (zipMark,g.shortFileName(fileName)))
+    << make bindings for tagged items on the canvas >>
+    << create baloon bindings for tagged items on the canvas >>
 #@nonl
-#@-node:ekr.20070413061552:putSavedMessage
-#@-node:ekr.20070413045221.2:Top-level  (leoFileCommands)
+#@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
+where = g.choose(self.expanded_click_area,'clickBox','plusBox')
+
+table = (
+    (where,    '<Button-1>',self.onClickBoxClick),
+    ('iconBox','<Button-1>',self.onIconBoxClick),
+    ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
+    ('iconBox','<Button-3>',self.onIconBoxRightClick),
+    ('iconBox','<Double-3>',self.onIconBoxRightClick),
+    ('iconBox','<B1-Motion>',self.onDrag),
+    ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
+)
+for tag,event,callback in table:
+    canvas.tag_bind(tag,event,callback)
+#@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
+#@+node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
+if 0: # I find these very irritating.
+    for tag,text in (
+        # ('plusBox','plusBox'),
+        ('iconBox','Icon Box'),
+        ('selectBox','Click to select'),
+        ('clickBox','Click to expand or contract'),
+        # ('textBox','Headline'),
+    ):
+        # A fairly long wait is best.
+        balloon = Pmw.Balloon(self.canvas,initwait=700)
+        balloon.tagbind(self.canvas,tag,balloonHelp=text)
+#@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
+#@-node:ekr.20070327103016:tkTree.setCanvasBindings
+#@-node:ekr.20070325104222:Birth...
+#@+node:ekr.20070509075200:Drawing stuff
+#@+node:ekr.20040803072955.52:drawTopTree
+def drawTopTree (self):
+    
+    """Draws the top-level tree, taking into account the hoist state."""
+    
+    c = self.c ; canvas = self.canvas
+
+    self.redrawing = True
+    
+    # Recycle all widgets and clear all widget lists.
+    self.recycleWidgets()
+    # Clear all ids so invisible id's don't confuse eventToPosition & findPositionWithIconId
+    self.ids = {}
+    self.iconIds = {}
+    self.generation += 1
+    self.drag_p = None # Disable drags across redraws.
+    self.dragging = False
+    if self.trace:
+        self.redrawCount += 1
+        if 0:
+            delta = g.app.positions - self.prevPositions
+            g.trace("**** gen: %-3d positions: %5d +%4d" % (
+                self.generation,g.app.positions,delta),g.callers())
+        
+    self.prevPositions = g.app.positions
+    if self.trace_gc: g.printNewObjects(tag='top 1')
+
+    if c.hoistStack:
+        bunch = c.hoistStack[-1] ; p = bunch.p
+    else:
+        p = c.rootPosition()
+    
+    # g.trace('hoist',hoistFlag,'canvas',id(self.canvas),'p', p and p.headString())
+    self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=c.hoistStack)
+    
+    if self.trace_gc: g.printNewObjects(tag='top 2')
+    if self.trace_stats: self.showStats()
+    
+    canvas.lower("lines")  # Lowest.
+    canvas.lift("textBox") # Not the Tk.Text widget: it should be low.
+    canvas.lift("userIcon")
+    canvas.lift("plusBox")
+    canvas.lift("clickBox")
+    canvas.lift("clickExpandBox")
+    canvas.lift("iconBox") # Higest.
+
+    self.redrawing = False
+#@-node:ekr.20040803072955.52:drawTopTree
+#@+node:ekr.20040803072955.53:drawTree
+def drawTree(self,p,x,y,h,level,hoistFlag=False):
+
+    tree = self ; c = self.c
+    yfirst = ylast = y ; h1 = None
+    data = g.doHook("draw-sub-outline",tree=tree,
+        c=c,p=p,v=p,x=x,y=y,h=h,level=level,hoistFlag=hoistFlag)
+    if data is not None: return data
+
+    while p: # Do not use iterator.
+        # This is the ONLY copy of p that needs to be made;
+        # no other drawing routine calls any p.moveTo method.
+        const_p = p.copy()
+        h,indent = self.drawNode(const_p,x,y)
+        if h1 is None: h1 = h # Set h1 *after* calling drawNode.
+        y += h ; ylast = y
+        if p.isExpanded() and p.hasFirstChild():
+            # Must make an additional copy here by calling firstChild.
+            y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
+        if hoistFlag: break
+        else:         p = p.next()
+    # Draw the vertical line.
+    if h1 is None: h1 = h
+    y2 = g.choose(level==0,yfirst+(h1-1)/2,yfirst-h1/2-1)
+    self.drawLine(None,x,y2,x,ylast+self.hline_y-h)
+    return y
+#@-node:ekr.20040803072955.53:drawTree
+#@-node:ekr.20070509075200:Drawing stuff
+#@+node:ekr.20070509075654:File stuff
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
 def new (self,event=None):
@@ -35257,10 +35614,10 @@ def new (self,event=None):
         c.editPosition(p)
     finally:
         c.endUpdate()
-        # makeTrees must be called after the first real redraw
+        # chapterController.finishCreate must be called after the first real redraw
         # because it requires a valid value for c.rootPosition().
         if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.makeTrees()
+            c.chapterController.finishCreate()
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -35735,638 +36092,663 @@ def revert (self,event=None):
         c.mFileName = fileName
 #@-node:ekr.20031218072017.2837:revert
 #@-node:ekr.20031218072017.2820:top level (file menu)
-#@+node:ekr.20040803072955.58:tree.redraw_now & helper
-# New in 4.4b2: suppress scrolling by default.
+#@+node:ekr.20031218072017.1579:putVnodes & helpers
+def putVnodes (self):
 
-def redraw_now (self,scroll=False):
-    
-    '''Redraw immediately: used by Find so a redraw doesn't mess up selections in headlines.'''
-
-    if g.app.quitting or self.drag_p or self.frame not in g.app.windowList:
-        return
-        
-    c = self.c ;  self.redrawCount += 1
-    
-    # g.trace(g.callers())
-    
-    if not g.app.unitTesting:
-        if self.gc_before_redraw:
-            g.collectGarbage()
-        if g.app.trace_gc_verbose:
-            if (self.redrawCount % 5) == 0:
-                g.printGcSummary()
-        if self.trace_redraw_now or self.trace_alloc:
-            # g.trace(self.redrawCount,g.callers())
-            # g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
-            if self.trace_stats:
-                g.print_stats()
-                g.clear_stats()
-                
-    # New in 4.4b2: Call endEditLabel, but suppress the redraw.
-    self.beginUpdate()
-    try:
-        self.endEditLabel()
-    finally:
-        self.endUpdate(False)
-
-    # Do the actual redraw.
-    self.expandAllAncestors(c.currentPosition())
-    if self.idle_redraw:
-        def idleRedrawCallback(event=None,self=self,scroll=scroll):
-            self.redrawHelper(scroll=scroll)
-        self.canvas.after_idle(idleRedrawCallback)
-    else:
-        self.redrawHelper(scroll=scroll)
-    if g.app.unitTesting:
-        self.canvas.update_idletasks() # Important for unit tests.
-    c.masterFocusHandler()
-    
-redraw = redraw_now # Compatibility
-#@+node:ekr.20040803072955.59:redrawHelper
-def redrawHelper (self,scroll=True):
-    
-    c = self.c
-    oldcursor = self.canvas['cursor']
-    self.canvas['cursor'] = "watch"
-
-    if not g.doHook("redraw-entire-outline",c=c):
-        c.setTopVnode(None)
-        self.setVisibleAreaToFullCanvas()
-        self.drawTopTree()
-        # Set up the scroll region after the tree has been redrawn.
-        bbox = self.canvas.bbox('all')
-        # g.trace('canvas',self.canvas,'bbox',bbox)
-        if bbox is None:
-            x0,y0,x1,y1 = 0,0,100,100
-        else:
-            x0, y0, x1, y1 = bbox
-        self.canvas.configure(scrollregion=(0, 0, x1, y1))
-        if scroll:
-            self.canvas.update_idletasks() # Essential.
-            self.scrollTo()
-            
-    g.doHook("after-redraw-outline",c=c)
-
-    self.canvas['cursor'] = oldcursor
-#@-node:ekr.20040803072955.59:redrawHelper
-#@-node:ekr.20040803072955.58:tree.redraw_now & helper
-#@-node:ekr.20070506151218:Fixed problem with forceMainChapter
-#@-node:ekr.20070418094610.1:Fixed bugs
-#@+node:ekr.20070317073627.4:(Chapters)
-#@+node:ekr.20070325104222:Birth...
-#@+node:ekr.20050920093543:c.finishCreate & helper
-def finishCreate (self):  # New in 4.4.
-    
-    '''Finish creating the commander after frame.finishCreate.
-    
-    Important: this is the last step in the startup process.'''
-    
-    c = self ; p = c.currentPosition()
-    c.miniBufferWidget = c.frame.miniBufferWidget
-    # g.trace('Commands',c.fileName())
-    
-    # Create a keyHandler even if there is no miniBuffer.
-    c.keyHandler = c.k = k = g.app.gui.createKeyHandlerClass(c,
-        useGlobalKillbuffer=True,
-        useGlobalRegisters=True)
-
-    if g.app.config and g.app.config.inited:
-        # A 'real' .leo file.
-        c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
-        k.finishCreate()
-    else:
-        # A leoSettings.leo file.
-        c.commandsDict = {}
-        
-    c.frame.log.finishCreate()
-
-    # Create the menu last so that we can use the key handler for shortcuts.
-    if not g.doHook("menu1",c=c,p=p,v=p):
-        c.frame.menu.createMenuBar(c.frame)
-
-    c.bodyWantsFocusNow()
-#@nonl
-#@+node:ekr.20051007143620:printCommandsDict
-def printCommandsDict (self):
-    
-    c = self
-    
-    print 'Commands...'
-    keys = c.commandsDict.keys()
-    keys.sort()
-    for key in keys:
-        command = c.commandsDict.get(key)
-        print '%30s = %s' % (key,g.choose(command,command.__name__,'<None>'))
-    print
-#@-node:ekr.20051007143620:printCommandsDict
-#@-node:ekr.20050920093543:c.finishCreate & helper
-#@+node:ekr.20031218072017.1623:new
-def new (self,event=None):
-    
-    '''Create a new Leo window.'''
-
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
-    
-    # Needed for plugins.
-    g.doHook("new",old_c=self,c=c,new_c=c)
-    # Use the config params to set the size and location of the window.
-    c.beginUpdate()
-    try:
-        frame.setInitialWindowGeometry()
-        frame.deiconify()
-        frame.lift()
-        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
-        t = leoNodes.tnode()
-        v = leoNodes.vnode(t)
-        p = leoNodes.position(v,[])
-        v.initHeadString("NewHeadline")
-        v.moveToRoot(oldRoot=None)
-        c.setRootVnode(v) # New in Leo 4.4.2.
-        c.editPosition(p)
-    finally:
-        c.endUpdate()
-        # makeTrees must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.makeTrees()
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
-        else:
-            c.bodyWantsFocusNow()
-    return c # For unit test.
-#@-node:ekr.20031218072017.1623:new
-#@+node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
-def finishCreate (self,c):
-
-    f = self ; f.c = c
-    # g.trace('tkFrame')
-
-    self.use_chapters = True and c.config.getBool('use_chapters')
-
-    # This must be done after creating the commander.
-    f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
-    f.createOuterFrames()
-    f.createIconBar()
-    f.createSplitterComponents()
-    f.createStatusLine()
-    f.createFirstTreeNode()
-    f.menu = leoTkinterMenu.leoTkinterMenu(f)
-        # c.finishCreate calls f.createMenuBar later.
-    c.setLog()
-    g.app.windowList.append(f)
-    c.initVersion()
-    c.signOnWithVersion()
-    f.miniBufferWidget = f.createMiniBufferWidget()
-    c.bodyWantsFocusNow()
-    self.trace_status_line = c.config.getBool('trace_status_line')
-    # f.enableTclTraces()
-#@+node:ekr.20051009044751:createOuterFrames
-def createOuterFrames (self):
-
-    f = self ; c = f.c
-    f.top = top = Tk.Toplevel()
-    g.app.gui.attachLeoIcon(top)
-    top.title(f.title)
-    top.minsize(30,10) # In grid units.
-
-    if g.os_path_exists(g.app.user_xresources_path):
-        f.top.option_readfile(g.app.user_xresources_path)
-
-    f.top.protocol("WM_DELETE_WINDOW", f.OnCloseLeoEvent)
-    f.top.bind("<Button-1>", f.OnActivateLeoEvent)
-
-    f.top.bind("<Control-KeyPress>",f.OnControlKeyDown)
-    f.top.bind("<Control-KeyRelease>",f.OnControlKeyUp)
-
-    # These don't work on Windows. Because of bugs in window managers,
-    # there is NO WAY to know which window is on top!
-    # f.top.bind("<Activate>",f.OnActivateLeoEvent)
-    # f.top.bind("<Deactivate>",f.OnDeactivateLeoEvent)
-
-    # Create the outer frame, the 'hull' component.
-    f.outerFrame = Tk.Frame(top)
-    f.outerFrame.pack(expand=1,fill="both")
-#@nonl
-#@-node:ekr.20051009044751:createOuterFrames
-#@+node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
-def createSplitterComponents (self):
-
-    f = self ; c = f.c
-
-    f.createLeoSplitters(f.outerFrame)
-
-    # Create the canvas, tree, log and body.
-    if self.use_chapters:
-        # Create the controllers.
-        c.chapterController = cc = leoChapters.chapterController(c)
-        tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-        cc.finishCreate(tt)
-        tt.selectTab('main') # Creates f.canvas and f.tree
-        f.tree = tt.getTree('main')
-        f.canvas = tt.getCanvas('main')
-    else:
-        f.canvas = f.createCanvas(f.split2Pane1)
-        f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
-
-    f.log    = leoTkinterLog(f,f.split2Pane2)
-    f.body   = leoTkinterBody(f,f.split1Pane2)
-
-    # Yes, this an "official" ivar: this is a kludge.
-    f.bodyCtrl = f.body.bodyCtrl
-
-    # Configure.
-    f.setTabWidth(c.tab_width)
-    f.reconfigurePanes()
-    f.body.setFontFromConfig()
-    f.body.setColorFromConfig()
-#@nonl
-#@-node:ekr.20051009045208:createSplitterComponents (creates chapter tabs)
-#@+node:ekr.20051009045404:createFirstTreeNode
-def createFirstTreeNode (self):
-
-    f = self ; c = f.c
-
-    t = leoNodes.tnode()
-    v = leoNodes.vnode(t)
-    p = leoNodes.position(v,[])
-    v.initHeadString("NewHeadline")
-    p.moveToRoot(oldRoot=None)
-    c.setRootPosition(p) # New in 4.4.2.
-    c.editPosition(p)
-#@-node:ekr.20051009045404:createFirstTreeNode
-#@+node:ekr.20051121092320:f.enableTclTraces
-def enableTclTraces (self):
+    """Puts all <v> elements in the order in which they appear in the outline."""
 
     c = self.c
+    c.clearAllVisited()
 
-    # pychecker complains that trace/untracewidget are not used.
+    self.put("<vnodes>\n")
 
-    def tracewidget(event):
-        g.trace('enabling widget trace')
-        Pmw.tracetk(event.widget, 1)
+    # Make only one copy for all calls.
+    self.currentPosition = c.currentPosition() 
+    self.rootPosition    = c.rootPosition()
+    self.topPosition     = c.topPosition()
 
-    def untracewidget(event):
-        g.trace('disabling widget trace')
-        Pmw.tracetk(event.widget,0)
+    if self.usingClipboard:
+        self.putVnode(self.currentPosition) # Write only current tree.
+    else:
+        for p in c.rootPosition().self_and_siblings_iter():
+            # New in Leo 4.4.2 b2 An optimization:
+            self.putVnode(p,isIgnore=p.isAtIgnoreNode()) # Write the next top-level node.
 
-    def focusIn (event):
-        print("Focus in  %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
+    self.put("</vnodes>\n")
+#@nonl
+#@+node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
+def putVnode (self,p,isIgnore=False):
 
-    def focusOut (event):
-        print("Focus out %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
+    """Write a <v> element corresponding to a vnode."""
 
-    # Put this in unit tests before the assert:
-    # c.frame.bar1.unbind_all("<FocusIn>")
-    # c.frame.bar1.unbind_all("<FocusOut>")
-
-    # Any widget would do:
-    w = c.frame.bar1
+    fc = self ; c = fc.c ; v = p.v
+    isThin = p.isAtThinFileNode()
+    isOrphan = p.isOrphan()
+    if not isIgnore: isIgnore = p.isAtIgnoreNode()
+    forceWrite = isIgnore or not isThin or (isThin and isOrphan)
+    << Set gnx = tnode index >>
+    attrs = []
+    << Append attribute bits to attrs >>
+    << Append tnodeList and unKnownAttributes to attrs >>
+    attrs = ''.join(attrs)
+    v_head = '<v t="%s"%s><vh>%s</vh>' % (gnx,attrs,xml.sax.saxutils.escape(p.v.headString()or''))
+    # The string catentation is faster than repeated calls to fc.put.
+    if not self.usingClipboard:
+        << issue informational messages >>
+    # New in 4.2: don't write child nodes of @file-thin trees (except when writing to clipboard)
+    if p.hasChildren() and (forceWrite or self.usingClipboard):
+        fc.put('%s\n' % v_head)
+        # This optimization eliminates all "recursive" copies.
+        p.moveToFirstChild()
+        while 1:
+            fc.putVnode(p,isIgnore)
+            if p.hasNext(): p.moveToNext()
+            else:           break
+        p.moveToParent() # Restore p in the caller.
+        fc.put('</v>\n')
+    else:
+        fc.put('%s</v>\n' % v_head) # Call put only once.
+#@nonl
+#@+node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
+# New in Leo 4.4.3
+if not v.t.fileIndex:
+    g.trace('*** missing t.fileIndex','v',repr(v))
+    # c.dumpOutline() # Can be called inside pdb.
     if 1:
-        w.bind_all("<FocusIn>", focusIn)
-        w.bind_all("<FocusOut>", focusOut)
+        # Print the @chapters tree
+        c.chapterController.printChaptersTree()
+    g.pdb()
+    v.t.fileIndex = g.app.nodeIndices.getNewIndex()
+
+gnx = g.app.nodeIndices.toString(v.t.fileIndex)
+if forceWrite or self.usingClipboard:
+    v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+
+# old code.
+# if v.t.fileIndex:
+    # gnx = g.app.nodeIndices.toString(v.t.fileIndex)
+    # if forceWrite or self.usingClipboard:
+        # v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
+# else:
+    # g.trace(v.t.fileIndex,v)
+    # g.es("error writing file(bad v.t.fileIndex)!")
+    # g.es("try using the Save To command")
+#@-node:ekr.20031218072017.1864:<< Set gnx = tnode index >>
+#@+node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
+# These string catenations are benign because they rarely happen.
+attr = ""
+if v.isExpanded(): attr += "E"
+if v.isMarked():   attr += "M"
+if v.isOrphan():   attr += "O"
+
+# No longer a bottleneck now that we use p.equal rather than p.__cmp__
+# Almost 30% of the entire writing time came from here!!!
+if not self.use_sax:
+    if p.equal(self.topPosition):     attr += "T" # was a bottleneck
+    if p.equal(self.currentPosition): attr += "V" # was a bottleneck
+
+if attr:
+    attrs.append(' a="%s"' % attr)
+    
+# Put the archived *current* position in the *root* positions <v> element.
+if self.use_sax and p.equal(self.rootPosition):
+    aList = [str(z) for z in self.currentPosition.archivedPosition()]
+    d = hasattr(v,'unKnownAttributes') and v.unknownAttributes or {}
+    d['str_leo_pos'] = ','.join(aList)
+    # g.trace(aList,d)
+    v.unknownAttributes = d
+#@nonl
+#@-node:ekr.20031218072017.1865:<< Append attribute bits to attrs >>
+#@+node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
+# Write the tnodeList only for @file nodes.
+# New in 4.2: tnode list is in tnode.
+
+# Debugging.
+# if v.isAnyAtFileNode():
+    # if hasattr(v.t,"tnodeList"):
+        # g.trace(v.headString(),len(v.t.tnodeList))
+    # else:
+        # g.trace(v.headString(),"no tnodeList")
+
+if hasattr(v.t,"tnodeList") and len(v.t.tnodeList) > 0 and v.isAnyAtFileNode():
+    if isThin:
+        if g.app.unitTesting:
+            g.app.unitTestDict["warning"] = True
+        g.es("deleting tnode list for %s" % p.headString(),color="blue")
+        # This is safe: cloning can't change the type of this node!
+        delattr(v.t,"tnodeList")
     else:
-        w.bind_all("<Control-1>", tracewidget)
-        w.bind_all("<Control-Shift-1>", untracewidget)
-#@-node:ekr.20051121092320:f.enableTclTraces
-#@-node:ekr.20031218072017.2176:tkFrame.finishCreate & helpers
-#@+node:ekr.20031218072017.3944:tkFrame.createCanvas & helpers
-def createCanvas (self,parentFrame,pack=True):
+        attrs.append(fc.putTnodeList(v)) # New in 4.0
 
-    c = self.c
-
-    scrolls = c.config.getBool('outline_pane_scrolls_horizontally')
-    scrolls = g.choose(scrolls,1,0)
-    canvas = self.createTkTreeCanvas(parentFrame,scrolls,pack)
-    self.setCanvasColorFromConfig(canvas)
-
-    return canvas
+if hasattr(v,"unknownAttributes"): # New in 4.0
+    attrs.append(self.putUnknownAttributes(v))
+    
+if p.hasChildren() and not forceWrite and not self.usingClipboard:
+    # We put the entire tree when using the clipboard, so no need for this.
+    attrs.append(self.putDescendentUnknownAttributes(p))
+    attrs.append(self.putDescendentAttributes(p))
 #@nonl
-#@+node:ekr.20041221071131.1:f.createTkTreeCanvas & callbacks
-def createTkTreeCanvas (self,parentFrame,scrolls,pack):
-    
-    frame = self
-    
-    canvas = Tk.Canvas(parentFrame,name="canvas",
-        bd=0,bg="white",relief="flat")
+#@-node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
+#@+node:ekr.20040702085529:<< issue informational messages >>
+if isOrphan and isThin:
+    g.es("Writing erroneous: %s" % p.headString(),color="blue")
+    p.clearOrphan()
 
-    treeBar = Tk.Scrollbar(parentFrame,name="treeBar")
+# For testing.
+# if p.isAtIgnoreNode():
+     # for p2 in p.self_and_subtree_iter():
+            # if p2.isAtThinFileNode():
+                # g.es("Writing @ignore'd: %s" % p2.headString(),color="blue")
+#@-node:ekr.20040702085529:<< issue informational messages >>
+#@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
+#@+node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
+def putTnodeList (self,v):
     
-    # New in Leo 4.4.3 b1: inject the ivar into the canvas.
-    canvas.leo_treeBar = treeBar
+    """Put the tnodeList attribute of a tnode."""
     
-    # Bind mouse wheel event to canvas
-    if sys.platform != "win32": # Works on 98, crashes on XP.
-        canvas.bind("<MouseWheel>", frame.OnMouseWheel)
-        if 1: # New in 4.3.
-            << workaround for mouse-wheel problems >>
-        
-    canvas['yscrollcommand'] = self.setCallback
-    treeBar['command']     = self.yviewCallback
-    treeBar.pack(side="right", fill="y")
-    if scrolls: 
-        treeXBar = Tk.Scrollbar( 
-            parentFrame,name='treeXBar',orient="horizontal") 
-        canvas['xscrollcommand'] = treeXBar.set 
-        treeXBar['command'] = canvas.xview 
-        treeXBar.pack(side="bottom", fill="x")
+    # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
+    nodeIndices = g.app.nodeIndices
+    tnodeList = v.t.tnodeList
+    if tnodeList:
+        # g.trace("%4d" % len(tnodeList),v)
+        for t in tnodeList:
+            try: # Will fail for None or any pre 4.1 file index.
+                theId,time,n = t.fileIndex
+            except:
+                g.trace("assigning gnx for ",v,t)
+                gnx = nodeIndices.getNewIndex()
+                v.t.setFileIndex(gnx) # Don't convert to string until the actual write.
+        s = ','.join([nodeIndices.toString(t.fileIndex) for t in tnodeList])
+        return ' tnodeList="%s"' % (s)
+    else:
+        return ''
+#@nonl
+#@-node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
+#@+node:ekr.20040701065235.2:putDescendentAttributes
+def putDescendentAttributes (self,p):
     
-    if pack:
-        canvas.pack(expand=1,fill="both")
+    nodeIndices = g.app.nodeIndices
 
-    canvas.bind("<Button-1>", frame.OnActivateTree)
+    # Create a list of all tnodes whose vnodes are marked or expanded
+    if 1: # New in Leo 4.4.2 b2.
+        # Put each tnode in the list only once.
+        # This should have been done long ago.
+        marks = [] ; expanded = []
+        for p in p.subtree_iter():
+            t = p.v.t
+            if p.isMarked() and p.v.t not in marks:
+                marks.append(t)
+            if p.hasChildren() and p.isExpanded() and t not in expanded:
+                expanded.append(t)
+    
+        result = []
+        for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+            if theList:
+                sList = []
+                for t in theList:
+                    gnx = t.fileIndex
+                    sList.append("%s," % nodeIndices.toString(gnx))
+                s = string.join(sList,'')
+                # g.trace(tag,[str(p.headString()) for p in theList])
+                result.append('\n%s="%s"' % (tag,s))
+    else:
+        marks = [] ; expanded = []
+        for p in p.subtree_iter():
+            if p.isMarked() and not p in marks:
+                marks.append(p.copy())
+            if p.hasChildren() and p.isExpanded() and not p in expanded:
+                expanded.append(p.copy())
+    
+        result = []
+        for theList,tag in ((marks,"marks"),(expanded,"expanded")):
+            if theList:
+                sList = []
+                for p in theList:
+                    gnx = p.v.t.fileIndex
+                    sList.append("%s," % nodeIndices.toString(gnx))
+                s = string.join(sList,'')
+                # g.trace(tag,[str(p.headString()) for p in theList])
+                result.append('\n%s="%s"' % (tag,s))
+            
+    return ''.join(result)
+#@nonl
+#@-node:ekr.20040701065235.2:putDescendentAttributes
+#@+node:EKR.20040627113418:putDescendentUnknownAttributes
+def putDescendentUnknownAttributes (self,p):
+    
+    # pychecker complains about dumps.
+    
+    # The bin param doesn't exist in Python 2.3;
+    # the protocol param doesn't exist in earlier versions of Python.
+    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+    python23 = g.CheckVersion(version,'2.3')
 
-    # Handle mouse wheel in the outline pane.
-    if sys.platform == "linux2": # This crashes tcl83.dll
-        canvas.bind("<MouseWheel>", frame.OnMouseWheel)
+    # Create a list of all tnodes having a valid unknownAttributes dict.
+    tnodes = []
+    tnodesData = []
+    for p2 in p.subtree_iter():
+        t = p2.v.t
+        if hasattr(t,"unknownAttributes"):
+            if t not in tnodes :
+                # g.trace(p2.headString(),t)
+                tnodes.append(t) # Bug fix: 10/4/06.
+                tnodesData.append((p2,t),)
+    
+    # Create a list of pairs (t,d) where d contains only pickleable entries.
+    data = []
+    for p,t in tnodesData:
+        if type(t.unknownAttributes) != type({}):
+             g.es("ignoring non-dictionary unknownAttributes for",p,color="blue")
+        else:
+            # Create a new dict containing only entries that can be pickled.
+            d = dict(t.unknownAttributes) # Copy the dict.
+            
+            for key in d.keys():
+                try:
+                    # We don't actually save the pickled values here.
+                    if python23:
+                        pickle.dumps(d[key],protocol=1) # Requires Python 2.3
+                    else:
+                        pickle.dumps(d[key],bin=True) # Requires earlier versions of Python.
+                except pickle.PicklingError:
+                    del d[key]
+                    g.es("ignoring bad unknownAttributes key %s in %s" % (
+                        key,p),color="blue")
+                except Exception:
+                    del d[key]
+                    g.es('putDescendentUnknownAttributes: unexpected pickling exception',color='red')
+                    g.es_exception()
+            data.append((t,d),)
+            
+    # Create resultDict, an enclosing dict to hold all the data.
+    resultDict = {}
+    nodeIndices = g.app.nodeIndices
+    for t,d in data:
+        gnx = nodeIndices.toString(t.fileIndex)
+        resultDict[gnx]=d
+    
     if 0:
-        << do scrolling by hand in a separate thread >>
-    
-    # g.print_bindings("canvas",canvas)
-    return canvas
-#@+node:ekr.20050119210541:<< workaround for mouse-wheel problems >>
-# Handle mapping of mouse-wheel to buttons 4 and 5.
+        print "resultDict..."
+        for key in resultDict:
+            print repr(key),repr(resultDict.get(key))
 
-def mapWheel(e):
-    if e.num == 4: # Button 4
-        e.delta = 120
-        return frame.OnMouseWheel(e)
-    elif e.num == 5: # Button 5
-        e.delta = -120
-        return frame.OnMouseWheel(e)
-
-canvas.bind("<ButtonPress>",mapWheel,add=1)
-#@-node:ekr.20050119210541:<< workaround for mouse-wheel problems >>
-#@+node:ekr.20040709081208:<< do scrolling by hand in a separate thread >>
-# New in 4.3: replaced global way with scrollWay ivar.
-ev = threading.Event()
-
-def run(self=self,canvas=canvas,ev=ev):
-
-    while 1:
-        ev.wait()
-        if self.scrollWay =='Down': canvas.yview("scroll", 1,"units")
-        else:                       canvas.yview("scroll",-1,"units")
-        time.sleep(.1)
-
-t = threading.Thread(target = run)
-t.setDaemon(True)
-t.start()
-
-def scrollUp(event): scrollUpOrDown(event,'Down')
-def scrollDn(event): scrollUpOrDown(event,'Up')
-    
-def scrollUpOrDown(event,theWay):
-    if event.widget!=canvas: return
-    if 0: # This seems to interfere with scrolling.
-        if canvas.find_overlapping(event.x,event.y,event.x,event.y): return
-    ev.set()
-    self.scrollWay = theWay
-        
-def off(event,ev=ev,canvas=canvas):
-    if event.widget!=canvas: return
-    ev.clear()
-
-if 1: # Use shift-click
-    # Shift-button-1 scrolls up, Shift-button-2 scrolls down
-    canvas.bind_all('<Shift Button-3>',scrollDn)
-    canvas.bind_all('<Shift Button-1>',scrollUp)
-    canvas.bind_all('<Shift ButtonRelease-1>',off)
-    canvas.bind_all('<Shift ButtonRelease-3>',off)
-else: # Use plain click.
-    canvas.bind_all( '<Button-3>',scrollDn)
-    canvas.bind_all( '<Button-1>',scrollUp)
-    canvas.bind_all( '<ButtonRelease-1>',off)
-    canvas.bind_all( '<ButtonRelease-3>',off)
-#@-node:ekr.20040709081208:<< do scrolling by hand in a separate thread >>
-#@+node:ekr.20031218072017.998:Scrolling callbacks (tkFrame)
-def setCallback (self,*args,**keys):
-    
-    """Callback to adjust the scrollbar.
-    
-    Args is a tuple of two floats describing the fraction of the visible area."""
-
-    #g.trace(self.tree.redrawCount,args,g.callers())
-
-    apply(self.canvas.leo_treeBar.set,args,keys)
-
-    if self.tree.allocateOnlyVisibleNodes:
-        self.tree.setVisibleArea(args)
-
-def yviewCallback (self,*args,**keys):
-    
-    """Tell the canvas to scroll"""
-    
-    #g.trace(vyiewCallback,args,keys,g.callers())
-
-    if self.tree.allocateOnlyVisibleNodes:
-        self.tree.allocateNodesBeforeScrolling(args)
-
-    apply(self.canvas.yview,args,keys)
-#@nonl
-#@-node:ekr.20031218072017.998:Scrolling callbacks (tkFrame)
-#@-node:ekr.20041221071131.1:f.createTkTreeCanvas & callbacks
-#@+node:ekr.20070327094252:f.setCanvasColorFromConfig
-def setCanvasColorFromConfig (self,canvas):
-    
-    c = self.c
-
-    bg = c.config.getColor("outline_pane_background_color") or 'white'
-
-    try:
-        canvas.configure(bg=bg)
-    except:
-        g.es("exception setting outline pane background color")
-        g.es_exception()
-#@-node:ekr.20070327094252:f.setCanvasColorFromConfig
-#@-node:ekr.20031218072017.3944:tkFrame.createCanvas & helpers
-#@+node:ekr.20070318124624.1:cc.finishCreate
-def finishCreate (self,treeTabController):
-    
-    cc = self ; c = cc.c
-
-    cc.tt = treeTabController
-    cc.createChapter(name='trash')
-    cc.createChapter(name='main')
-#@nonl
-#@-node:ekr.20070318124624.1:cc.finishCreate
-#@+node:ekr.20070325104904:cc.makeTrees
-def makeTrees (self):
-    
-    '''Find or make the @chapters and @chapter trash nodes.'''
-    
-    # This must be called late in the init process:
-    # at present, called by g.openWithFileName and c.new.
+    # Pickle and hexlify resultDict.
+    if resultDict:
+        try:
+            tag = "descendentTnodeUnknownAttributes"
+            if python23:
+                s = pickle.dumps(resultDict,protocol=1) # Requires Python 2.3
+                # g.trace('protocol=1')
+            else:
+                s = pickle.dumps(resultDict,bin=True) # Requires Earlier version of Python.
+                # g.trace('bin=True')
+            field = ' %s="%s"' % (tag,binascii.hexlify(s))
+            return field
+        except pickle.PicklingError:
+            g.trace("putDescendentUnknownAttributes can't happen 1",color="red")
+        except Exception:
+            g.es("putDescendentUnknownAttributes can't happen 2",color='red')
+            g.es_exception()
+    return ''
+#@-node:EKR.20040627113418:putDescendentUnknownAttributes
+#@-node:ekr.20031218072017.1579:putVnodes & helpers
+#@-node:ekr.20070509075654:File stuff
+#@+node:ekr.20070509081411.2:Creating a new chapter
+#@+node:ekr.20070317085437.31:cc.createChapter
+def createChapter (self,event=None,name=None):
 
     cc = self ; c = cc.c ; tt = cc.tt
 
-    # Create the @chapters node if needed, and set cc.chaptersNode.
-    if not cc.chaptersNode and not cc.findChaptersNode():
-        cc.createChaptersNode()
+    if name:
+        tabName = name
+    else:
+        # Find an unused name.  This is *not* 1 + the present number of chapters.
+        # The **immutable** chapter name is 'Chapter n'.
+        n  = 1
+        while True:
+            tabName = 'Chapter %d' % n
+            if self.chaptersDict.get(tabName):
+                n += 1
+            else:
+                break
+
+    if name in ('trash','main',):
+        tt.selectTab(tabName)
+    else:
+        root = cc.getChapterNode(tabName)
+        cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=root,root=root)
+        tt.selectTab(tabName)
+        tt.renameChapterHelper(cc,tabName)
+
+    tt.makeTabMenu(tabName)
         
-    # The chapters node is always unlinked, except when saving .leo files.
-    cc.unlinkChaptersNode()
-        
-    if not cc.findChapterNode('trash'):
-        cc.createChapterNode('trash')
-        
-    # Create a chapter for each @chapter node.
-    tag = '@chapter'
-    for p in cc.chaptersNode.children_iter():
-        h = p.headString()
-        if h.startswith(tag):
-            tabName = h[len(tag):].strip()
-            if tabName and tabName not in ('main','trash') and not cc.chaptersDict.get(tabName):
-                theChapter = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
-                cc.chaptersDict[tabName] = theChapter
-                tt.createTab(tabName,select=False)
-                tt.makeTabMenu(tabName)
+    # tt.selectTab indirectly unselects the previous chapter.
+    cc.selectChapter(tabName)
+   
+    c.bodyWantsFocusNow()
+#@-node:ekr.20070317085437.31:cc.createChapter
+#@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
     
-    for tabName in ('trash',):
-        if not cc.chaptersDict.get(tabName):
-            p = cc.getChapterNode(tabName)
-            cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=p)
-            
-    for tabName in ('main',):
-        if not cc.chaptersDict.get(tabName):
-            p = c.currentPosition()
-            cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,p=p,root=None)
-            
-    cc.selectChapter('main')
-    cc.inited = True
-#@nonl
-#@-node:ekr.20070325104904:cc.makeTrees
-#@+node:ekr.20031218072017.2052:g.openWithFileName
-def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
+    """Return False if root or any of root's descedents is a clone of
+    parent or any of parents ancestors."""
+
+    message = "Illegal move or drag: no clone may contain a clone of itself"
+
+    # g.trace("root",root,"parent",parent)
+    clonedTnodes = {}
+    for ancestor in parent.self_and_parents_iter():
+        if ancestor.isCloned():
+            t = ancestor.v.t
+            clonedTnodes[t] = t
+
+    if not clonedTnodes:
+        return True
+
+    for p in root.self_and_subtree_iter():
+        if p.isCloned() and clonedTnodes.get(p.v.t):
+            if warningFlag:
+                g.alert(message)
+            return False
+    return True
+#@-node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+#@+node:ekr.20031218072017.1193:c.deleteOutline
+def deleteOutline (self,event=None,op_name="Delete Node"):
     
-    """Create a Leo Frame for the indicated fileName if the file exists."""
+    """Deletes the selected outline."""
 
-    if not fileName or len(fileName) == 0:
-        return False, None
-        
-    def munge(name):
-        return g.os_path_normpath(name or '').lower()
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
 
-    # Create a full, normalized, Unicode path name, preserving case.
-    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+    if p.hasVisBack(): newNode = p.visBack()
+    else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
+    if not newNode: return
 
-    # If the file is already open just bring its window to the front.
-    theList = app.windowList
-    for frame in theList:
-        if munge(fileName) == munge(frame.c.mFileName):
-            frame.bringToFront()
-            frame.c.setLog()
-            return True, frame
-    if old_c:
-        # New in 4.4: We must read the file *twice*.
-        # The first time sets settings for the later call to c.finishCreate.
-        # g.trace('***** prereading',fileName)
-        c2 = g.app.config.openSettingsFile(fileName)
-        if c2: g.app.config.updateSettings(c2,localFlag=True)
-        g.doHook('open0')
-        
-    # Open the file in binary mode to allow 0x1a in bodies & headlines.
-    theFile,isZipped = g.openLeoOrZipFile(fileName)
-    if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName)
-    c.isZipped = isZipped
-    frame.log.enable(enableLog)
-    g.app.writeWaitingLog() # New in 4.3: write queued log first.
     c.beginUpdate()
     try:
-        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
-            c.setLog()
-            app.lockLog()
-            frame.c.fileCommands.open(
-                theFile,fileName,
-                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
-            app.unlockLog()
-            for frame in g.app.windowList:
-                # The recent files list has been updated by menu.updateRecentFiles.
-                frame.c.config.setRecentFiles(g.app.config.recentFiles)
-        # Bug fix in 4.4.
-        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
-        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+       c.endEditing() # Make sure we capture the headline for Undo.
+       undoData = u.beforeDeleteNode(p)
+       dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+       p.doDelete()
+       c.selectPosition(newNode)
+       c.setChanged(True)
+       u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
     finally:
         c.endUpdate()
-        # makeTrees must be called after the first real redraw
-        # because it requires a valid value for c.rootPosition().
-        if frame.c.chapterController:
-            frame.c.chapterController.makeTrees()
-        k = c.k
-        k and k.setInputState(k.unboundKeyAction)
-        if c.config.getBool('outline_pane_has_initial_focus'):
-            c.treeWantsFocusNow()
+
+    c.validateOutline()
+#@-node:ekr.20031218072017.1193:c.deleteOutline
+#@+node:ekr.20031218072017.1761:c.insertHeadline
+def insertHeadline (self,event=None,op_name="Insert Node"):
+    
+    '''Insert a node after the presently selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    
+    if not current: return
+
+    c.beginUpdate()
+    try:
+        undoData = c.undoer.beforeInsertNode(current)
+        # Make sure the new node is visible when hoisting.
+        if (
+            (current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)
+        ):
+            if c.config.getBool('insert_new_nodes_at_end'):
+                p = current.insertAsLastChild()
+            else:
+                p = current.insertAsNthChild(0)
         else:
-            c.bodyWantsFocusNow()
-    return True, frame
+            p = current.insertAfter()
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+    c.beginUpdate()
+    try:
+        c.editPosition(p,selectAll=True)
+    finally:
+        c.endUpdate(False)
+
+    return p # for mod_labels plugin.
+#@-node:ekr.20031218072017.1761:c.insertHeadline
+#@+node:ekr.20031218072017.1762:c.clone
+def clone (self,event=None):
+    
+    '''Create a clone of the selected outline.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    
+    c.beginUpdate()
+    try: # In update...
+        undoData = c.undoer.beforeCloneNode(p)
+        clone = p.clone()
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        if c.validateOutline():
+            u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
+            c.selectPosition(clone)
+    finally:
+        c.endUpdate()
+
+    return clone # For mod_labels and chapters plugins.
+#@-node:ekr.20031218072017.1762:c.clone
+#@+node:ekr.20031218072017.1765:c.validateOutline
+# Makes sure all nodes are valid.
+
+def validateOutline (self,event=None):
+
+    c = self
+    
+    if not g.app.debug:
+        return True
+
+    root = c.rootPosition()
+    parent = c.nullPosition()
+
+    if root:
+        return root.validateOutlineWithParent(parent)
+    else:
+        return True
+#@-node:ekr.20031218072017.1765:c.validateOutline
+#@-node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@+node:ekr.20070317085708.1: ctor: chapter
+def __init__ (self,c,chapterController,name,p,root):
+
+    self.c = c 
+    self.cc = chapterController
+    self.hoistStack = []
+    self.name = name # The immutable chapter name.  Not necessarily the same as the chapter's tabName.
+    self.p = p.copy() # The current position...
+    self.root = root and root.copy() # The immutable @chapter node (not used for the main chapter).
+    self.selectLockout = False # True: in chapter.select logic.
+    self.trace = False
+    self.unlinkedRoot = None # data for link()
+    
+    # g.trace('chapter',self.name,g.callers())
+        #'p',self.p.headString(),'root',root and root.headString())
+    
+    # Create the dummy first node of the Chapter.
+    if name != 'main' and not root.hasChildren():
+        self.cc.createChild(root,self.name)
+    
+    
+#@-node:ekr.20070317085708.1: ctor: chapter
+#@+node:ekr.20070509081915.1:cc.createChild
+def createChild (self,parent,s):
+    
+    '''Create a child node of parent without changing the undo stack.
+    set the headString of the new node to s.'''
+    
+    c = self.c
+    
+    # g.trace('parent',parent,'s',s)
+
+    c.beginUpdate()
+    try:
+        p = parent.insertAsLastChild()
+        p.initHeadString(s)
+        c.setChanged(True)
+    finally:
+        c.endUpdate(False)
+
+    return p
+#@-node:ekr.20070509081915.1:cc.createChild
+#@-node:ekr.20070509081411.2:Creating a new chapter
+#@+node:ekr.20070509075654.1:Chapter selection stuff
+#@+node:ekr.20060906134053:c.findRootPosition New in 4.4.2
+@ Aha! The Commands class can easily recompute the root position::
+
+    c.setRootPosition(c.findRootPosition(p))
+
+Any command that changes the outline should call this code.
+
+As a result, the fundamental p and v methods that alter trees need never
+convern themselves about reporting the changed root.  A big improvement.
+@c
+
+def findRootPosition (self,p):
+    
+    '''Return the root position of the outline containing p.'''
+    
+    c = self ; p = p.copy()
+    
+    while p and p.hasParent():
+        p.moveToParent()
+        # g.trace(p.headString(),g.callers())
+        
+    while p and p.hasBack():
+        p.moveToBack()
+        
+    # g.trace(p and p.headString())
+
+    return p
 #@nonl
-#@-node:ekr.20031218072017.2052:g.openWithFileName
-#@+node:ekr.20070317074824:tt.createTab
-def createTab (self,tabName,select=True):
-
-    tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
-
-    parentFrame = nb.add(tabName) # page is a Tk.Frame.
-    self.tabNames.append(tabName)
-
-    b = nb.tab(tabName) # b is a Tk.Button.
-
-    if select:  self.setSelectColor(b)
-    else:       self.setUnselectColor(b)
-
-    canvas = c.frame.createCanvas(parentFrame)
-    tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
+#@-node:ekr.20060906134053:c.findRootPosition New in 4.4.2
+#@+node:ekr.20031218072017.2997:c.selectPosition
+def selectPosition(self,p,updateBeadList=True):
     
-    tt.buttonsDict [tabName ] = b
-    tt.canvasDict [tabName] = canvas
-    tt.stringVarDict [tabName] = Tk.StringVar()
-    tt.treeDict [tabName] = tree
-#@-node:ekr.20070317074824:tt.createTab
-#@+node:ekr.20070327103016:tkTree.setCanvasBindings
-def setCanvasBindings (self,canvas):
-    
-    k = self.c.k
-    
-    canvas.bind('<Key>',k.masterKeyHandler)
-    canvas.bind('<Button-1>',self.onTreeClick)
+    """Select a new position."""
 
-    << make bindings for tagged items on the canvas >>
-    << create baloon bindings for tagged items on the canvas >>
+    c = self
+    
+    # g.trace(p.headString(),g.callers())
+
+    c.frame.tree.select(p,updateBeadList)
+    
+    # New in Leo 4.4.2.
+    c.setCurrentPosition(p)
+        # Do *not* test whether the position exists!
+        # We may be in the midst of an undo.
+
+selectVnode = selectPosition
+#@-node:ekr.20031218072017.2997:c.selectPosition
+#@+node:ekr.20040803140033.1:c.setCurrentPosition
+def setCurrentPosition (self,p):
+    
+    """Set the presently selected position. For internal use only.
+    
+    Client code should use c.selectPosition instead."""
+    
+    c = self ; cc = c.chapterController
+    
+    # g.trace(p.headString(),g.callers())
+    
+    if p:
+        # Important: p.equal requires c._currentPosition to be non-None.
+        if c._currentPosition and p.equal(c._currentPosition):
+            pass # We have already made a copy.
+        else: # Must make a copy _now_
+            c._currentPosition = p.copy()
+    
+        # New in Leo 4.4.2: always recompute the root position here.
+        # This *guarantees* that c.rootPosition always returns the proper value.
+        newRoot = c.findRootPosition(c._currentPosition)
+        if newRoot:
+            c.setRootPosition(newRoot)
+        # This is *not* an error: newRoot can be None when switching chapters.
+        # else: g.trace('******** no new root',g.callers())
+    else:
+        c._currentPosition = None
+
+# For compatibiility with old scripts.
+setCurrentVnode = setCurrentPosition
 #@nonl
-#@+node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
-where = g.choose(self.expanded_click_area,'clickBox','plusBox')
+#@-node:ekr.20040803140033.1:c.setCurrentPosition
+#@+node:ekr.20040803140033.3:c.setRootPosition
+def setRootPosition(self,p):
+    
+    """Set the root positioin."""
 
-table = (
-    (where,    '<Button-1>',self.onClickBoxClick),
-    ('iconBox','<Button-1>',self.onIconBoxClick),
-    ('iconBox','<Double-1>',self.onIconBoxDoubleClick),
-    ('iconBox','<Button-3>',self.onIconBoxRightClick),
-    ('iconBox','<Double-3>',self.onIconBoxRightClick),
-    ('iconBox','<B1-Motion>',self.onDrag),
-    ('iconBox','<Any-ButtonRelease-1>',self.onEndDrag),
-)
-for tag,event,callback in table:
-    canvas.tag_bind(tag,event,callback)
-#@-node:ekr.20060131173440.2:<< make bindings for tagged items on the canvas >>
-#@+node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
-if 0: # I find these very irritating.
-    for tag,text in (
-        # ('plusBox','plusBox'),
-        ('iconBox','Icon Box'),
-        ('selectBox','Click to select'),
-        ('clickBox','Click to expand or contract'),
-        # ('textBox','Headline'),
-    ):
-        # A fairly long wait is best.
-        balloon = Pmw.Balloon(self.canvas,initwait=700)
-        balloon.tagbind(self.canvas,tag,balloonHelp=text)
-#@-node:ekr.20060307080642:<< create baloon bindings for tagged items on the canvas >>
-#@-node:ekr.20070327103016:tkTree.setCanvasBindings
-#@-node:ekr.20070325104222:Birth...
-#@-node:ekr.20070317073627.4:(Chapters)
+    c = self
+    
+    # g.trace(p and p.headString(),g.callers())
+    
+    if p:
+        # Important: p.equal requires c._rootPosition to be non-None.
+        if c._rootPosition and p.equal(c._rootPosition):
+            pass # We have already made a copy.
+        else:
+            # We must make a copy _now_.
+            c._rootPosition = p.copy()
+    else:
+        c._rootPosition = None
+#@nonl
+#@-node:ekr.20040803140033.3:c.setRootPosition
+#@+node:ekr.20070317131708:chapter.findPositionInChapter
+def findPositionInChapter (self,v):
+    
+    '''Return a valid position p such that p.v == v.'''
+    
+    cc = self.cc ; name = self.name
+    trace = False
+
+    if name == 'main':
+        # Search the entire tree, but not the @chapters tree.
+        assert(cc.mainRoot)
+        for p in cc.mainRoot.self_and_siblings_iter():
+            if not p.headString().startswith('@chapters'):
+                for p2 in p.self_and_subtree_iter():
+                    if p2.v == v:
+                        if trace or self.trace: g.trace('*** found outside @chapters','v',p2.v)
+                        return p2
+    else:
+        if v == self.root.v:
+            g.trace('*** v == root.v',self.root)
+            return self.root
+        elif self.unlinkedRoot:
+            g.trace('unlinkRoot',self.unlinkedRoot)
+            # Search the unlinked tree.
+            for p2 in self.unlinkedRoot.self_and_siblings_iter():
+                for p in p2.self_and_subtree_iter():
+                    if p.v == v:
+                        if trace or self.trace: g.trace('*** found in chapter',p)
+                        return p
+        else:
+            g.trace('@chapter',self.root)
+            # Search the @chapter tree.
+            for p in self.root.self_and_subtree_iter():
+                if p.v == v:
+                    if trace or self.trace: g.trace('*** found in chapter',p)
+                    return p
+    
+    self.error('***** findPositionInChapter: lost %s in %s' % (v.t.headString,name))
+    g.trace(g.callers())
+    if 0: # This could crash.
+        print 'cc.mainRoot',cc.mainRoot
+        print '******* top-level nodes *****'
+        for p in cc.mainRoot.self_and_siblings_iter():
+            print p.headStirng()
+    return self.root
+#@nonl
+#@-node:ekr.20070317131708:chapter.findPositionInChapter
+#@-node:ekr.20070509075654.1:Chapter selection stuff
+#@-node:ekr.20070509074834:Fix chapters problems
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
 #@-all
 #@nonl

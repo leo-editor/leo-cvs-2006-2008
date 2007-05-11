@@ -4519,10 +4519,10 @@ def new (self,event=None):
         c.editPosition(p)
     finally:
         c.endUpdate()
-        # makeTrees must be called after the first real redraw
+        # chapterController.finishCreate must be called after the first real redraw
         # because it requires a valid value for c.rootPosition().
         if c.config.getBool('use_chapters') and c.chapterController:
-            c.chapterController.makeTrees()
+            c.chapterController.finishCreate()
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
