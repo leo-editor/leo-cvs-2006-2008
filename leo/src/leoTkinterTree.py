@@ -1156,13 +1156,11 @@ class leoTkinterTree (leoFrame.leoTree):
     
         if c.hoistStack:
             bunch = c.hoistStack[-1] ; p = bunch.p
-            # g.trace('  hoist','canvas',id(self.canvas),'p',bunch.p.headString())
-            self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=True)
         else:
             p = c.rootPosition()
-            # g.trace('no hoist','canvas',id(self.canvas),'p',p.headString())
-            
-            self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=False)
+        
+        # g.trace('hoist',hoistFlag,'canvas',id(self.canvas),'p', p and p.headString())
+        self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=c.hoistStack)
         
         if self.trace_gc: g.printNewObjects(tag='top 2')
         if self.trace_stats: self.showStats()
@@ -1181,39 +1179,27 @@ class leoTkinterTree (leoFrame.leoTree):
     def drawTree(self,p,x,y,h,level,hoistFlag=False):
     
         tree = self ; c = self.c
-        yfirst = ylast = y
-        h1 = None
+        yfirst = ylast = y ; h1 = None
         data = g.doHook("draw-sub-outline",tree=tree,
             c=c,p=p,v=p,x=x,y=y,h=h,level=level,hoistFlag=hoistFlag)
         if data is not None: return data
     
         while p: # Do not use iterator.
-            # g.trace(self.use_chapters,p.level(),p.headString())
-            if (
-                self.redrawCount == 1 and self.use_chapters and
-                p.level() == 0 and p.headString().startswith('@chapters')
-            ):
-                h1 = h # ; g.trace('skipping @chapters in initial draw')
-            else:
-                # N.B. This is the ONLY copy of p that needs to be made.
-                # No other drawing routine calls any p.moveTo method.
-                const_p = p.copy()
-                h,indent = self.drawNode(const_p,x,y)
-                if h1 is None: h1 = h
-                y += h ; ylast = y
-                # if self.trace_gc: g.printNewObjects(tag='tree 3')
-                if p.isExpanded() and p.hasFirstChild():
-                    # Must make an additional copy here by calling firstChild.
-                    y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
+            # This is the ONLY copy of p that needs to be made;
+            # no other drawing routine calls any p.moveTo method.
+            const_p = p.copy()
+            h,indent = self.drawNode(const_p,x,y)
+            if h1 is None: h1 = h # Set h1 *after* calling drawNode.
+            y += h ; ylast = y
+            if p.isExpanded() and p.hasFirstChild():
+                # Must make an additional copy here by calling firstChild.
+                y = self.drawTree(p.firstChild(),x+indent,y,h,level+1)
             if hoistFlag: break
             else:         p = p.next()
-            
         # Draw the vertical line.
-        if level==0: # Special case to get exposed first line exactly right.
-            # g.trace('yfirst',yfirst,'h1',h1,'self.hline_y',self.hline_y)
-            self.drawLine(None,x,yfirst+(h1-1)/2,x,ylast+self.hline_y-h)
-        else:
-            self.drawLine(None,x,yfirst-h1/2-1,x,ylast+self.hline_y-h)
+        if h1 is None: h1 = h
+        y2 = g.choose(level==0,yfirst+(h1-1)/2,yfirst-h1/2-1)
+        self.drawLine(None,x,y2,x,ylast+self.hline_y-h)
         return y
     #@-node:ekr.20040803072955.53:drawTree
     #@-node:ekr.20051105073850:drawX...
