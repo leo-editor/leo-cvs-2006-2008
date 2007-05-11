@@ -491,9 +491,9 @@ class leoTkinterFrame (leoFrame.leoFrame):
         if self.use_chapters:
             # Create the controllers.
             c.chapterController = cc = leoChapters.chapterController(c)
-            tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
-            cc.finishCreate(tt)
-            tt.selectTab('main') # Creates f.canvas and f.tree
+            cc.tt = tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+            # We must create the tab here so we can set f.tree and f.canvas.
+            tt.createTab('main')
             f.tree = tt.getTree('main')
             f.canvas = tt.getCanvas('main')
         else:
@@ -2956,9 +2956,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             return None
     
     def getSelectedTabName (self):
-        name = self.nb.getcurselection() # An immutable tab name.
-        if self.trace: g.trace(name)
-        return name
+        return self.nb.getcurselection() # An immutable tab name.
     
     def getTree (self,tabName):
         return self.treeDict.get(tabName) # A leoTkinterTree.
@@ -3018,7 +3016,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             ('','Remove This Chapter',cc.removeChapter),
             ('','Rename This Chapter',cc.renameChapter),
             ('-',None,None),
-            ('','Empty Trash Barrel',cc.removeChapter),
+            ('','Empty Trash Barrel',cc.emptyTrash),
             ('-',None,None),
             ('...','Clone Node To Chapter...',cc.cloneToChapter),
             ('...','Copy Node To Chapter...',cc.copyToChapter),
@@ -3102,6 +3100,9 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             newName = sv.get()
             f.pack_forget()
             tt.renameTab(newName)
+            # g.trace(tabName,newName)
+            theChapter = cc.getChapter(tabName)
+            c.setBodyString(theChapter.root,newName)
         e.bind('<Return>',changeCallback)
         e.selection_range(0,'end')
         b.configure(command=changeCallback)
