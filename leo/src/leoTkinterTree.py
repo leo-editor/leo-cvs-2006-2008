@@ -1132,7 +1132,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         """Draws the top-level tree, taking into account the hoist state."""
         
-        c = self.c ; canvas = self.canvas
+        c = self.c ; canvas = self.canvas ; trace = False or self.trace
     
         self.redrawing = True
         
@@ -1144,8 +1144,9 @@ class leoTkinterTree (leoFrame.leoTree):
         self.generation += 1
         self.drag_p = None # Disable drags across redraws.
         self.dragging = False
-        if self.trace:
+        if trace:
             self.redrawCount += 1
+            g.trace(self.redrawCount,g.callers())
             if 0:
                 delta = g.app.positions - self.prevPositions
                 g.trace("**** gen: %-3d positions: %5d +%4d" % (
@@ -1158,8 +1159,7 @@ class leoTkinterTree (leoFrame.leoTree):
             bunch = c.hoistStack[-1] ; p = bunch.p
         else:
             p = c.rootPosition()
-        
-        # g.trace('hoist',hoistFlag,'canvas',id(self.canvas),'p', p and p.headString())
+    
         self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=c.hoistStack)
         
         if self.trace_gc: g.printNewObjects(tag='top 2')
