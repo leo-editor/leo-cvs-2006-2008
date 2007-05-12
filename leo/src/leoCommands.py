@@ -787,14 +787,20 @@ class baseCommands:
     
         g.app.closeLeoWindow(self.frame)
     #@-node:ekr.20031218072017.2833:close
-    #@+node:ekr.20031218072017.2834:save
+    #@+node:ekr.20031218072017.2834:save (commands)
     def save (self,event=None):
         
         '''Save a Leo outline to a file.'''
     
-        c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
+        c = self ; trace = False
+        cc = c.config.getBool('use_chapters') and c.chapterController
         oldChapter = cc and cc.forceMainChapter()
         
+        if trace and cc:
+            g.trace('cc',cc)
+            g.printEntireTree(c,'save:before')
+            cc.printChaptersTree('save:before')
+    
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
             return
@@ -830,7 +836,12 @@ class baseCommands:
                 cc.restoreOldChapter(oldChapter)
         finally:
             c.endUpdate()
-    #@-node:ekr.20031218072017.2834:save
+            
+        if trace and cc:
+            g.printEntireTree(c,'save:after')
+            cc.printChaptersTree('save:after')
+    #@nonl
+    #@-node:ekr.20031218072017.2834:save (commands)
     #@+node:ekr.20031218072017.2835:saveAs
     def saveAs (self,event=None):
         
