@@ -1117,10 +1117,10 @@ def printGlobals(message=None):
 #@+node:ekr.20070510074941:g.printEntireTree
 def printEntireTree(c,tag=''):
 
-    print tag,'-' * 50
-    for p in c.rootPosition().self_and_siblings_iter():
-        for p2 in p.self_and_subtree_iter():
-            print '..'*p2.level(),p2.v
+    print 'printEntireTree','=' * 50
+    print 'printEntireTree',tag,'root',c.rootPosition()
+    for p in c.allNodes_iter():
+        print '..'*p.level(),p.v
 #@nonl
 #@-node:ekr.20070510074941:g.printEntireTree
 #@+node:ekr.20031218072017.3115:printLeoModules
