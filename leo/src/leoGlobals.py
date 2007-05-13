@@ -4085,15 +4085,22 @@ def toUnicodeWithErrorCode (s,encoding):
 #@-node:ekr.20050208095723:toUnicodeWithErrorCode
 #@+node:ekr.20050208104358:test_round_trip_toUnicode_toEncodedString
 def test_round_trip_toUnicode_toEncodedString ():
-   
-    for s,encoding in (
+    
+    table = [
         ('a',    'utf-8'),
         ('a',    'ascii'),
         ('äöü',  'utf-8'),
         ('äöü',  'mbcs'),
         ('炰',   'utf-8'),
-        ('炰',   'mbcs'),
-    ):
+    ]
+    
+    import sys
+    
+    if sys.platform.startswith('win'):
+        data = ('炰','mbcs'),
+        table.append
+   
+    for s,encoding in table:
         if g.isValidEncoding(encoding):
             s2,ok = g.toUnicodeWithErrorCode(s,encoding)
             assert ok, 'toUnicodeWithErrorCode fails for %s' %s
@@ -4104,6 +4111,7 @@ def test_round_trip_toUnicode_toEncodedString ():
             s2 = g.toUnicode(s,encoding)
             s3 = g.toEncodedString(s2,encoding)
             assert s3 == s, 'Round-trip two failed for %s' %s
+
 #@-node:ekr.20050208104358:test_round_trip_toUnicode_toEncodedString
 #@+node:ekr.20050208112123:test_failure_with_ascii_encodings
 def test_failure_with_ascii_encodings():
