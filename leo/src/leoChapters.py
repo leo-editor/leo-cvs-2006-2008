@@ -137,10 +137,10 @@ class chapterController:
                 tabName = h[len(tag):].strip()
                 if tabName and tabName not in ('main','trash'):
                     cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                    s = p.bodyString() or tabName
-                    # g.trace('s',s,'tabName',tabName)
-                    tt.createTab(s,select=False) # s was tabName
-                    tt.makeTabMenu(s) # s was tabName
+                    ### tabName = p.bodyString() or tabName
+                    # g.trace('tabName',tabName)
+                    tt.createTab(tabName,select=False)
+                    tt.makeTabMenu(tabName)
                     tree = tt.getTree(tabName)
                     tree.setBindings()
                 
@@ -544,8 +544,16 @@ class chapterController:
     
         s = '@chapter ' + chapterName
         for p in cc.chaptersNode.children_iter():
-            if p.headString() == s:
+            h = p.headString()
+            if h == s:
                 return p
+            # elif h.startswith('@chapter '):
+                # body = p.bodyString()
+                # if body:
+                    # lines = g.splitLines(body)
+                    # line = lines[0].strip()
+                    # if line == chapterName:
+                        # return p
     
         if giveError:
             cc.error('*** findChapterNode: no @chapter node for: %s' % (chapterName))
