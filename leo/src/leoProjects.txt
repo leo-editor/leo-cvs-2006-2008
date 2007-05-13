@@ -32677,9 +32677,6 @@ def createTab (self,tabName,select=True):
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
     tt.treeDict [tabName] = tree
-    
-    if not tree:
-        g.pdb()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070317074824.1:tt.destroyTab
 def destroyTab (self,tabName):
@@ -32870,9 +32867,6 @@ def createTab (self,tabName,select=True):
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
     tt.treeDict [tabName] = tree
-    
-    if not tree:
-        g.pdb()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070423102603.1:chapterSelectHelper
 def chapterSelectHelper (self,w=None,selectEditor=True):
@@ -35377,9 +35371,6 @@ def createTab (self,tabName,select=True):
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
     tt.treeDict [tabName] = tree
-    
-    if not tree:
-        g.pdb()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070327103016:tkTree.setCanvasBindings
 def setCanvasBindings (self,canvas):
@@ -37685,9 +37676,6 @@ def createTab (self,tabName,select=True):
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
     tt.treeDict [tabName] = tree
-    
-    if not tree:
-        g.pdb()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070325094401:cc.findChaptersNode
 def findChaptersNode (self):
