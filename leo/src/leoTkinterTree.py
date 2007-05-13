@@ -774,7 +774,7 @@ class leoTkinterTree (leoFrame.leoTree):
         if g.app.quitting or self.drag_p or self.frame not in g.app.windowList:
             return
             
-        c = self.c ;  self.redrawCount += 1
+        c = self.c
         
         # g.trace(g.callers())
         
@@ -913,6 +913,8 @@ class leoTkinterTree (leoFrame.leoTree):
         # This is an important drawing optimization.
         val = v.computeIcon()
         assert(0 <= val <= 15)
+        # g.trace(v,val)
+        #@nonl
         #@-node:ekr.20040803072955.40:<< compute x,y and iconVal >>
         #@nl
         v.iconVal = val
@@ -1142,10 +1144,10 @@ class leoTkinterTree (leoFrame.leoTree):
         self.ids = {}
         self.iconIds = {}
         self.generation += 1
+        self.redrawCount += 1
         self.drag_p = None # Disable drags across redraws.
         self.dragging = False
         if trace:
-            self.redrawCount += 1
             g.trace(self.redrawCount,g.callers())
             if 0:
                 delta = g.app.positions - self.prevPositions
