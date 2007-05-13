@@ -794,6 +794,7 @@ class baseCommands:
     
         c = self ; trace = False
         cc = c.config.getBool('use_chapters') and c.chapterController
+        
         oldChapter = cc and cc.forceMainChapter()
         
         if trace and cc:

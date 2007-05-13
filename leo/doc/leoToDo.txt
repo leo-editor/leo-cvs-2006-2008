@@ -1840,6 +1840,8 @@ def getDynamicList (self,w,txt,rlist):
 #@-node:ekr.20070505121642.1:Others
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
+#@-node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
 #@+node:ekr.20061006165447:Let import commands decide what kind of import to do
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=3940843
@@ -2672,14 +2674,36 @@ Special case code is required so empty nodes stay empty with "one" option.
 #@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070105135713:To do: 4.5 (new positions)
-#@+node:ekr.20070202095051:*** Get chapters working
-#@-node:ekr.20070202095051:*** Get chapters working
-#@+node:ekr.20070105135851.1:Most important
 #@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.
 
 # Important: the new vnode class implies that the read code must be rewritten to be similar to the opml read code.
 #@nonl
+#@+node:ekr.20070512131018:Thoughts about positions 1
+http://sourceforge.net/forum/message.php?msg_id=4308503
+
+@nocolor
+
+After more thought I am ready to back off my earlier post. Positions are perfectly reasonable things to support. Indeed, they can be, and probably should be, coequal with iterators. 
+ 
+My 'revulsion' to positions stems from their present implementation--the 'optimization' of positions to avoid adding items to p.stack is certainly the worst optimization presently in Leo. It dates from the days when I was obsessing about reducing the amount of positions created. That was a valid concern then, but Leo now does an excellent job of not generating excess positions. Thus, there is no reason not to have p.stack contain all the parent vnodes at the present spot in a traversal. 
+ 
+The idea of representing a position by a count in a traversal is cute, but of no practical importance. Indeed, why should Leo be forced to stupidly step through an entire traversal when a list of vnodes in p.stack would get to the proper spot in exponentially shorter time. Moreover, a list of vnodes in p.stack is great information to have, while a count N is almost exactly useless :-) 
+ 
+Still, it is good to emphasize that *any* position, no matter how it is represented, makes sense *only* for a particular outline, that is, for a particular set of vnodes. In short, positions will stay, but will be reimplemented for the graph world. 
+#@nonl
+#@-node:ekr.20070512131018:Thoughts about positions 1
+#@+node:ekr.20070512130855:Thoughts about positions 2
+@nocolor
+
+There will be some significant changes to the position and vnode classes for the graph world (Leo 4.5).  These changes will be common to both the graph and clone worlds:
+
+Only vnode methods will be allowed to alter outline/graph data.  This would have been a good rule to following earlier, but up until now Leo has allowed 'confused' scripts--script that treat positions like vnodes.  This confusion will not be allowed in Leo 4.5.  The need for strict separation between vnodes and positions has become apparent in the recent chapters work.
+
+It would be best to think of a position as a *path* to a particular vnode.  In the present (clone) world, the path is used exclusively by the tree drawing logic.  That logic tests whether the node being drawn matches (has the same position) as c.currentPosition.  In the graph world it probably makes sense to speak only of the current *vnode*, say v, so a position p is *a* current position if p.v == v.
+
+The (renewed) focus on vnodes will be necessary.  For example, there will be no such things as p.back() or v._back in the graph world.  That is, a vnode v will have no *intrinsic* siblings.  Instead, siblings are relative to a parent: the order of vnodes in the parent.children links implicitly define sibling relationships, but a vnode v may have many 'parents', i.e. there may be many nodes that point to v.  We could speak of 'siblings with respect to a particular parent', but I suspect that will not be a particularly useful concept.  Rather, it will probably be more natural simply to define node relationships using iterators.  We shall see...
+#@-node:ekr.20070512130855:Thoughts about positions 2
 #@+node:ekr.20031218072017.3019:leoFileCommands._init_
 def __init__(self,c):
 
@@ -4460,6 +4484,7 @@ def unlink (self):
 #@-node:ekr.20061028070057.51:p.Link/Unlink methods (all new)
 #@-node:ekr.20061028211424.1:position class
 #@-node:ekr.20061028070132:New positions
+#@+node:ekr.20070105135851.1:Most important
 #@+node:ekr.20061206060454:Improve import code
 @nocolor
 
@@ -4831,6 +4856,7 @@ def save (self,event=None):
 
     c = self ; trace = False
     cc = c.config.getBool('use_chapters') and c.chapterController
+    
     oldChapter = cc and cc.forceMainChapter()
     
     if trace and cc:
