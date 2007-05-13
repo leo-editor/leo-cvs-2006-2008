@@ -92,16 +92,27 @@ class chapterController:
         # This must be called late in the init process:
         # at present, called by g.openWithFileName and c.new.
     
-        cc = self ; c = cc.c ; tt = cc.tt
-    
+        cc = self ; c = cc.c ; tt = cc.tt ; trace = False or self.trace
+        
+        current = c.currentPosition()
+        cc.mainRoot = c.rootPosition()
+        if trace: g.trace('chapterController: currentPosition',current,'rootPosition',cc.mainRoot)
+        
         # Create the @chapters node if needed, and set cc.chaptersNode.
         if not cc.chaptersNode and not cc.findChaptersNode():
             cc.createChaptersNode()
             
+        if cc.mainRoot == cc.chaptersNode and cc.mainRoot.hasNext():
+            cc.mainRoot = cc.mainRoot.next()
+            c.setRootPosition(cc.mainRoot)
+            c.setCurrentPosition(current)
+            
+        if trace:g.trace('chapterController: mainRoot',cc.mainRoot)
+          
         # The chapters node is always unlinked, except when saving .leo files.
         cc.unlinkChaptersNode()
             
-        if not cc.findChapterNode('trash'):
+        if not cc.findChapterNode('trash',giveError=False):
             cc.createChapterNode('trash')
             
         # Create the two default chapters.
@@ -367,7 +378,7 @@ class chapterController:
         
         c = self.c
         
-        g.trace('parent',parent,'s',s)
+        # g.trace('parent',parent,'s',s)
     
         p = parent.insertAsLastChild()
         p.initHeadString(s)
@@ -397,13 +408,12 @@ class chapterController:
     #@+node:ekr.20070511065107:Linking/unlinking trees (chapterController)
     #@+node:ekr.20070421092158:cc.forceMainChapter
     def forceMainChapter (self):
-        
-        
+    
         cc = self ; c = self.c ; trace = False or self.trace
         if not cc.enabled: return
     
         cc.savedRoot = c.rootPosition()
-        cc.savedCurrent = c.currentPosition()
+        cc.savedCurrent = current = c.currentPosition()
         oldChapter = cc.getSelectedChapter()
     
         if trace: g.trace('****',oldChapter and oldChapter.name,'savedRoot',cc.savedRoot)
@@ -415,9 +425,16 @@ class chapterController:
                 oldChapter.link()
                 if trace: g.trace('oldChapter',oldChapter.name)
         
-        cc.linkChaptersNode()
-        c.selectPosition(cc.mainRoot)
-        
+        cc.linkChaptersNode() # sets c.rootPosition()
+    
+        # Tricky code:
+        # 1. Set the 'raw' current position without affecting c._rootPosition.
+        #    Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
+        # 2. Use current only if we are in the main chapter; otherwise use cc.main.
+        #    The reason for this hack is that cc.finishCreate always selects the main chapter,
+        #    so cc.finishCreate won't find a vnode that exists only in another chapter.
+        c._currentPosition = g.choose(oldChapter,cc.mainRoot,current)
+    
         if trace: g.printEntireTree(cc.c,'forceMainChapter:after')
     
         return oldChapter
@@ -540,20 +557,14 @@ class chapterController:
     
         '''Return the position of the @chapters node.'''
     
-        cc = self ; c = cc.c ; trace = True or self.trace
+        cc = self ; c = cc.c ; trace = False or self.trace
     
-        if not cc.mainRoot:
-            if trace: g.trace('*** setting mainRoot',c.rootPosition())
-            cc.mainRoot = c.rootPosition()
-    
-        root = cc and cc.mainRoot
-    
-        for p in root.self_and_siblings_iter():
+        for p in cc.mainRoot.self_and_siblings_iter():
             if p.headString() == '@chapters':
                 cc.chaptersNode = p.copy()
                 return p
-                
-        if 0: # This is *not* an error.
+    
+        if trace: # This is *not* an error.
             g.trace('*** no @chapters node','cc.mainRoot',cc.mainRoot)
     
         return None
@@ -840,6 +851,7 @@ class chapter:
         self.error('***** findPositionInChapter: lost %s in %s' % (
             v.t.headString,self.name))
         g.trace(g.callers())
+    
         if 0: # This could crash.
             cc = self.cc
             print 'cc.mainRoot',cc.mainRoot
