@@ -32677,6 +32677,9 @@ def createTab (self,tabName,select=True):
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
     tt.treeDict [tabName] = tree
+    
+    if not tree:
+        g.pdb()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070317074824.1:tt.destroyTab
 def destroyTab (self,tabName):
@@ -32867,6 +32870,9 @@ def createTab (self,tabName,select=True):
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
     tt.treeDict [tabName] = tree
+    
+    if not tree:
+        g.pdb()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070423102603.1:chapterSelectHelper
 def chapterSelectHelper (self,w=None,selectEditor=True):
@@ -35274,10 +35280,10 @@ def finishCreate (self):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main','trash'):
                 cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                s = p.bodyString() or tabName
-                # g.trace('s',s,'tabName',tabName)
-                tt.createTab(s,select=False) # s was tabName
-                tt.makeTabMenu(s) # s was tabName
+                ### tabName = p.bodyString() or tabName
+                # g.trace('tabName',tabName)
+                tt.createTab(tabName,select=False)
+                tt.makeTabMenu(tabName)
                 tree = tt.getTree(tabName)
                 tree.setBindings()
             
@@ -35371,6 +35377,9 @@ def createTab (self,tabName,select=True):
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
     tt.treeDict [tabName] = tree
+    
+    if not tree:
+        g.pdb()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070327103016:tkTree.setCanvasBindings
 def setCanvasBindings (self,canvas):
@@ -37646,10 +37655,10 @@ def finishCreate (self):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main','trash'):
                 cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                s = p.bodyString() or tabName
-                # g.trace('s',s,'tabName',tabName)
-                tt.createTab(s,select=False) # s was tabName
-                tt.makeTabMenu(s) # s was tabName
+                ### tabName = p.bodyString() or tabName
+                # g.trace('tabName',tabName)
+                tt.createTab(tabName,select=False)
+                tt.makeTabMenu(tabName)
                 tree = tt.getTree(tabName)
                 tree.setBindings()
             
@@ -37676,6 +37685,9 @@ def createTab (self,tabName,select=True):
     tt.canvasDict [tabName] = canvas
     tt.stringVarDict [tabName] = Tk.StringVar()
     tt.treeDict [tabName] = tree
+    
+    if not tree:
+        g.pdb()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070325094401:cc.findChaptersNode
 def findChaptersNode (self):

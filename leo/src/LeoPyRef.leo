@@ -2,17 +2,14 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.506063947078">
-	<global_window_position top="33" left="272" height="907" width="966"/>
+<globals body_outline_ratio="0.472987872106">
+	<global_window_position top="20" left="455" height="907" width="858"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20070503103015"><vh>@chapters</vh>
-<v t="ekr.20070503103015.1" a="E"><vh>@chapter trash</vh></v>
-</v>
-<v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
+<v t="ekr.20051031040240" a="TV" str_leo_pos="9"><vh>Startup</vh>
 <v t="ekr.20060531093331"><vh>@command clones-tab</vh>
 <v t="ekr.20060531093331.1"><vh>class cloneNavigator</vh>
 <v t="ekr.20060531093331.2"><vh>init</vh></v>
@@ -29,7 +26,7 @@
 <v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
 </v>
 <v t="ekr.20070326080447"><vh>@settings</vh>
-<v t="ekr.20070326080447.1"><vh>@bool use_chapters = True</vh></v>
+<v t="ekr.20070326080447.1"><vh>@bool use_chapters = False</vh></v>
 </v>
 </v>
 <v t="EKR.20040430162943"><vh>Notes</vh>
@@ -39,7 +36,7 @@
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"
-marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20031218072017.2176,ekr.20051009045208,ekr.20050921103736,ekr.20031218072017.3803,ekr.20070202105914,ekr.20060528100747,ekr.20051019134106.1,ekr.20070317073819.1,ekr.20070317082315,ekr.20070317074824,ekr.20031218072017.1975,ekr.20031218072017.998,ekr.20040701065235.2,ekr.20070503081539,"><vh>@thin leoProjects.txt</vh></v>
+marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20031218072017.2176,ekr.20051009045208,ekr.20050921103736,ekr.20031218072017.3803,ekr.20070202105914,ekr.20060528100747,ekr.20051019134106.1,ekr.20070317073819.1,ekr.20070317082315,ekr.20070317074824,ekr.20031218072017.1975,ekr.20031218072017.998,ekr.20040701065235.2,ekr.20040310062332.4,ekr.20031218072017.3426,ekr.20040310062332.5,ekr.20031218072017.3438,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"
@@ -47,7 +44,7 @@ marks="ekr.20031218072017.1975,ekr.20070324084040.16,ekr.20070324084040.9,ekr.20
 <v t="ekr.20060207133601"
 marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
@@ -61,8 +58,6 @@ marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 <v t="ekr.20041005105605.1"
 marks="ekr.20041005105605.52,ekr.20041005105605.198,"><vh>@thin leoAtFile.py</vh></v>
 <v t="ekr.20070227091955.1"><vh>@thin leoBridge.py</vh></v>
-<v t="ekr.20070317085508.1"
-marks="ekr.20070317085437.31,ekr.20070317085437.40,ekr.20070317085437.41,ekr.20070503081539,"><vh>@thin leoChapters.py</vh></v>
 <v t="ekr.20031218072017.2794"
 marks="ekr.20031218072017.1607,ekr.20031218072017.1896,ekr.20031218072017.2803,"><vh>@thin leoColor.py</vh></v>
 <v t="ekr.20031218072017.2810"
@@ -110,6 +105,14 @@ marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 </v>
+<v t="ekr.20070506093903"><vh>Fix all unit tests on ubuntu</vh></v>
+<v t="ekr.20070317085508.1"
+marks="ekr.20070317085437.41,"><vh>@thin leoChapters.py</vh></v>
+<v t="ekr.20070513171702" a="E"><vh>Failing unit tests</vh>
+<v t="ekr.20070317074824"><vh>tt.createTab</vh></v>
+<v t="ekr.20070325104904"><vh>cc.finishCreate</vh></v>
+</v>
+<v t="ekr.20070513144044"><vh>Run pychecker</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040430162943"></t>
@@ -162,7 +165,7 @@ if 0: # Set to 1 for lint-like testing.
 </t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.3 alpha 2, build %s, March 17, 2007" % c.getBuildNumber()
+    return "Leo 4.4.3 beta 1, build %s, May 14, 2007" % c.getBuildNumber()
 </t>
 <t tx="ekr.20040629121554.2">def initVersion (self):
     c = self
@@ -351,7 +354,93 @@ if g.os_path_exists(path):
 else:
     g.es_print('not found: %s' % path)</t>
 <t tx="ekr.20070201082722">c.prettyPrintPythonNode()</t>
+<t tx="ekr.20070317074824">def createTab (self,tabName,select=True):
+
+    tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
+
+    parentFrame = nb.add(tabName) # page is a Tk.Frame.
+    self.tabNames.append(tabName)
+
+    b = nb.tab(tabName) # b is a Tk.Button.
+
+    if select:  self.setSelectColor(b)
+    else:       self.setUnselectColor(b)
+
+    canvas = c.frame.createCanvas(parentFrame)
+    tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
+    
+    tt.buttonsDict [tabName ] = b
+    tt.canvasDict [tabName] = canvas
+    tt.stringVarDict [tabName] = Tk.StringVar()
+    tt.treeDict [tabName] = tree
+    
+    if not tree:
+        g.pdb()
+</t>
+<t tx="ekr.20070325104904">def finishCreate (self):
+    
+    '''Find or make the @chapters and @chapter trash nodes.'''
+    
+    # This must be called late in the init process:
+    # at present, called by g.openWithFileName and c.new.
+
+    cc = self ; c = cc.c ; tt = cc.tt ; trace = False or self.trace
+    
+    current = c.currentPosition()
+    cc.mainRoot = c.rootPosition()
+    if trace: g.trace('chapterController: currentPosition',current,'rootPosition',cc.mainRoot)
+    
+    # Create the @chapters node if needed, and set cc.chaptersNode.
+    if not cc.chaptersNode and not cc.findChaptersNode():
+        cc.createChaptersNode()
+        
+    if cc.mainRoot == cc.chaptersNode and cc.mainRoot.hasNext():
+        cc.mainRoot = cc.mainRoot.next()
+        c.setRootPosition(cc.mainRoot)
+        c.setCurrentPosition(current)
+        
+    if trace:g.trace('chapterController: mainRoot',cc.mainRoot)
+      
+    # The chapters node is always unlinked, except when saving .leo files.
+    cc.unlinkChaptersNode()
+        
+    if not cc.findChapterNode('trash',giveError=False):
+        cc.createChapterNode('trash')
+        
+    # Create the two default chapters.
+    for tabName in ('trash','main'):
+        p = cc.getChapterNode(tabName)
+        cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+        if tabName == 'main':
+            # The main tab, tree and canvas were created earlier.
+            c.frame.tree = tt.getTree(tabName)
+            c.frame.canvas = tt.getCanvas(tabName)
+        else:
+            tt.createTab(tabName,select=False)
+            tree = tt.getTree(tabName)
+            tree.setBindings()
+        tt.makeTabMenu(tabName)
+        
+    # Create a chapter for each @chapter node.
+    tag = '@chapter'
+    for p in cc.chaptersNode.children_iter():
+        h = p.headString()
+        if h.startswith(tag):
+            tabName = h[len(tag):].strip()
+            if tabName and tabName not in ('main','trash'):
+                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+                s = p.bodyString() or tabName
+                # g.trace('s',s,'tabName',tabName)
+                tt.createTab(s,select=False) # s was tabName
+                tt.makeTabMenu(s) # s was tabName
+                tree = tt.getTree(tabName)
+                tree.setBindings()
+            
+    cc.selectChapter('main')</t>
 <t tx="ekr.20070326080447"></t>
 <t tx="ekr.20070326080447.1"></t>
+<t tx="ekr.20070506093903"></t>
+<t tx="ekr.20070513144044"></t>
+<t tx="ekr.20070513171702"></t>
 </tnodes>
 </leo_file>
