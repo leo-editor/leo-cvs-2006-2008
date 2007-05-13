@@ -3980,7 +3980,9 @@ def isValidEncoding (encoding):
     try:
         codecs.lookup(encoding)
         return True
-    except LookupError:
+    except LookupError: # Windows.
+        return False
+    except AttributeError: # Linux.
         return False
 #@nonl
 #@-node:ekr.20031218072017.1500:isValidEncoding
