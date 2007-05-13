@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.580941446613">
-	<global_window_position top="30" left="340" height="871" width="897"/>
+	<global_window_position top="30" left="340" height="851" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -50,8 +50,8 @@
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
 <v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
-<v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20050831184021.2" a="E"><vh>Table of contents</vh>
+<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -10924,6 +10924,8 @@ Appendices_
 
 Glossary_
 
+`What's new in Leo 4.4.3`_
+
 `What's new in Leo 4.4.2`_
 
 `What's new in Leo 4.4.1`_
@@ -15388,6 +15390,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 19\: Embedding Leo with the leoBridge Module`: leoBridge.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
+.. _`What's new in Leo 4.4.3`:                      new-4-4-3.html
 .. _`What's new in Leo 4.4.2`:                      new-4-4-2.html
 .. _`What's new in Leo 4.4.1`:                      new-4-4-1.html
 .. _`What's new in Leo 4.4`:                        new-4-4.html
