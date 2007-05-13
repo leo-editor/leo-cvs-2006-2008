@@ -90,12 +90,6 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070505121642:Before b1
-#@+node:ekr.20070506093903:Fix all unit tests on ubuntu
-#@-node:ekr.20070506093903:Fix all unit tests on ubuntu
-#@+node:ekr.20070506092941:Update release notes
-#@-node:ekr.20070506092941:Update release notes
-#@-node:ekr.20070505121642:Before b1
 #@+node:ekr.20070505121642.1:Others
 #@+node:ekr.20070426092031:Consider another way to compute home directory
 @nocolor
