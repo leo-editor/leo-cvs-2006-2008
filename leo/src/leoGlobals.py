@@ -4295,8 +4295,7 @@ def test_CheckVersionToInt (*args):
 def oldCheckVersion( version, againstVersion, condition=">=", stringCompare="0.0.0.0", delimiter='.' ):
 
     __pychecker__ = 'maxreturns=20'
-    
-    # g.pdb()
+
 
     # tokenize the stringCompare flags
     compareFlag = string.split( stringCompare, '.' )

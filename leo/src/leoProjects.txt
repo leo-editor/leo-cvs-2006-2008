@@ -34565,7 +34565,6 @@ if not v.t.fileIndex:
     if 1:
         # Print the @chapters tree
         c.chapterController.printChaptersTree()
-    g.pdb()
     v.t.fileIndex = g.app.nodeIndices.getNewIndex()
 
 gnx = g.app.nodeIndices.toString(v.t.fileIndex)
@@ -34853,121 +34852,7 @@ leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p) # wrong.
 # fixed: leoTkinterFrame.py:3122: Local variable (frame) not used
 #@-node:ekr.20070507083524:Report 5-7-07
 #@-node:ekr.20070126072723:Fixed all pychecker problems
-#@+node:ekr.20070509074834:Fix chapters problems
-#@+node:ekr.20070509082456:To do
-@ To do:
-
-- Link existing root.firstChild node when creating a tree.
-
-** Why does hoisting work as all?  Is there special-case code for the goto commands?
-
-What I did:
-    
-- Removed special-case chapters code from drawTree.
-- Cleared hoist stack when initing any chapter.
-- Empty trash recreates a root node.
-#@nonl
-#@+node:ekr.20070508111458:Fix crash when creating a chapter when staring from leo.py
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=4301913
-By: yarkot
-
-Hmmm.... from CVS snapshot of last night, I'm not able to create a new chapter
-in a new file.
-
-Here's what I have running:
------------------
-Leo Log Window...
-Leo 4.4.3 alpha 2, build  1.147 , March 17, 2007
-Python 2.5.1, Tk 8.4.12, Pmw 1.2
-Windows 5, 1, 2600, 2, Service Pack 2
---------------------
-
-Here's what I do:   RIGHT-CLICK MAIN, select "New Chapter"
-
-Here's the result:  (In a Tk Window "Error in background function"; also in
-startup command window):
---------------
-Error: 1
-AttributeError Exception in Tk callback
-  Function: <bound method chapterController.createChapter of
-<leoChapters.chapterController instance at 0x01549F58>> (type: <type
-'instancemethod'>)
-  Args: ()
-Traceback (innermost last):
-  File "D:\Workspace\Leo\leo\extensions\Pmw\Pmw_1_2\lib\PmwBase.py", line 1752,
-in __call__
-    return apply(self.func, args)
-  File "D:\Workspace\Leo\leo\src\leoChapters.py", line 136, in createChapter
-    root = cc.getChapterNode(tabName)
-  File "D:\Workspace\Leo\leo\src\leoChapters.py", line 471, in getChapterNode
-    cc.createChapterNode(chapterName))
-  File "D:\Workspace\Leo\leo\src\leoChapters.py", line 332, in
-createChapterNode
-    p.moveToFirstChildOf(cc.chaptersNode)
-  File "D:\Workspace\Leo\leo\src\leoNodes.py", line 2165, in moveToFirstChildOf
-    p.linkAsNthChild(parent,0)
-  File "D:\Workspace\Leo\leo\src\leoNodes.py", line 2610, in linkAsNthChild
-    p.stack = parent.stack[:]
-AttributeError: 'NoneType' object has no attribute 'stack'
------------------
-
-Hope this helps,
-Yarko
-#@-node:ekr.20070508111458:Fix crash when creating a chapter when staring from leo.py
-#@+node:ekr.20070508080330:Fix focus when clicking chapter tab
-#@-node:ekr.20070508080330:Fix focus when clicking chapter tab
-#@+node:ekr.20070508092110:Finish rename command
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=4300665
-By: ktenney
-
-Current cvs (as was the previous renaming post)
-
-- Right click on chapter tab
-- Select 'New Chapter'
-- Put a name into the new chapter tab <My New Tab>
-- the chapter contains one node "@chapter Chapter 1"
-- save file
-- open file
-- the chapter tab now says "Chapter 1"
-
-@color
-#@nonl
-#@+node:ekr.20070318125900.1:tt.renameChapterHelper
-def renameChapterHelper (self,cc,tabName):
-
-    '''Called from cc.renameChapter to prompt for a new name.'''
-
-    tt = self ; c = tt.c
-    tab = tt.getButton(tabName)
-
-    f = Tk.Frame(tab)
-    # Elegant code.  Setting e's textvariable to chapter.sv
-    # immediately updates the chapter labels as e changes.
-    sv = tt.stringVarDict.get(tabName)
-    e = Tk.Entry(f,background='white',textvariable=sv)
-    b = Tk.Button(f,text="Close")
-    f.pack(side='top')
-    e.pack(side='left')
-    b.pack(side='right')
-    def changeCallback (event=None,f=f,sv=sv):
-        newName = sv.get()
-        f.pack_forget()
-        tt.renameTab(newName)
-        # g.trace(tabName,newName)
-        theChapter = cc.getChapter(tabName)
-        c.setBodyString(theChapter.root,newName)
-    e.bind('<Return>',changeCallback)
-    e.selection_range(0,'end')
-    b.configure(command=changeCallback)
-    c.widgetWantsFocusNow(e)
-#@nonl
-#@-node:ekr.20070318125900.1:tt.renameChapterHelper
-#@-node:ekr.20070508092110:Finish rename command
-#@-node:ekr.20070509082456:To do
+#@+node:ekr.20070509074834:Fixed chapters problems
 #@+node:ekr.20070325104222:Birth...
 #@+node:ekr.20050920093543:c.finishCreate & helper
 def finishCreate (self):  # New in 4.4.
@@ -36187,7 +36072,6 @@ if not v.t.fileIndex:
     if 1:
         # Print the @chapters tree
         c.chapterController.printChaptersTree()
-    g.pdb()
     v.t.fileIndex = g.app.nodeIndices.getNewIndex()
 
 gnx = g.app.nodeIndices.toString(v.t.fileIndex)
@@ -37327,83 +37211,6 @@ def save (self,event=None):
 #@nonl
 #@-node:ekr.20031218072017.2834:save (commands)
 #@-node:ekr.20070510064228:Linking/unlinking
-#@+node:ekr.20070513073421:Focus problem in headline
-#@+node:ekr.20040803072955.58:tree.redraw_now & helper
-# New in 4.4b2: suppress scrolling by default.
-
-def redraw_now (self,scroll=False):
-    
-    '''Redraw immediately: used by Find so a redraw doesn't mess up selections in headlines.'''
-
-    if g.app.quitting or self.drag_p or self.frame not in g.app.windowList:
-        return
-        
-    c = self.c
-    
-    # g.trace(g.callers())
-    
-    if not g.app.unitTesting:
-        if self.gc_before_redraw:
-            g.collectGarbage()
-        if g.app.trace_gc_verbose:
-            if (self.redrawCount % 5) == 0:
-                g.printGcSummary()
-        if self.trace_redraw_now or self.trace_alloc:
-            # g.trace(self.redrawCount,g.callers())
-            # g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
-            if self.trace_stats:
-                g.print_stats()
-                g.clear_stats()
-                
-    # New in 4.4b2: Call endEditLabel, but suppress the redraw.
-    self.beginUpdate()
-    try:
-        self.endEditLabel()
-    finally:
-        self.endUpdate(False)
-
-    # Do the actual redraw.
-    self.expandAllAncestors(c.currentPosition())
-    if self.idle_redraw:
-        def idleRedrawCallback(event=None,self=self,scroll=scroll):
-            self.redrawHelper(scroll=scroll)
-        self.canvas.after_idle(idleRedrawCallback)
-    else:
-        self.redrawHelper(scroll=scroll)
-    if g.app.unitTesting:
-        self.canvas.update_idletasks() # Important for unit tests.
-    c.masterFocusHandler()
-    
-redraw = redraw_now # Compatibility
-#@+node:ekr.20040803072955.59:redrawHelper
-def redrawHelper (self,scroll=True):
-    
-    c = self.c
-    oldcursor = self.canvas['cursor']
-    self.canvas['cursor'] = "watch"
-
-    if not g.doHook("redraw-entire-outline",c=c):
-        c.setTopVnode(None)
-        self.setVisibleAreaToFullCanvas()
-        self.drawTopTree()
-        # Set up the scroll region after the tree has been redrawn.
-        bbox = self.canvas.bbox('all')
-        # g.trace('canvas',self.canvas,'bbox',bbox)
-        if bbox is None:
-            x0,y0,x1,y1 = 0,0,100,100
-        else:
-            x0, y0, x1, y1 = bbox
-        self.canvas.configure(scrollregion=(0, 0, x1, y1))
-        if scroll:
-            self.canvas.update_idletasks() # Essential.
-            self.scrollTo()
-            
-    g.doHook("after-redraw-outline",c=c)
-
-    self.canvas['cursor'] = oldcursor
-#@-node:ekr.20040803072955.59:redrawHelper
-#@-node:ekr.20040803072955.58:tree.redraw_now & helper
-#@-node:ekr.20070513073421:Focus problem in headline
 #@+node:ekr.20070512114241:Fixed save problems
 @
 - (fixed) The save command is not clearing the changed bit.
@@ -37971,7 +37778,7 @@ def drawTopTree (self):
     self.redrawing = False
 #@-node:ekr.20040803072955.52:drawTopTree
 #@-node:ekr.20070512111721:Fixed Init/Bind stuff...
-#@-node:ekr.20070509074834:Fix chapters problems
+#@-node:ekr.20070509074834:Fixed chapters problems
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
 #@-all
 #@nonl

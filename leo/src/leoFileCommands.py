@@ -2711,7 +2711,6 @@ class baseFileCommands:
             if 1:
                 # Print the @chapters tree
                 c.chapterController.printChaptersTree()
-            g.pdb()
             v.t.fileIndex = g.app.nodeIndices.getNewIndex()
         
         gnx = g.app.nodeIndices.toString(v.t.fileIndex)

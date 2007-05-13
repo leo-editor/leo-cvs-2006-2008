@@ -1838,6 +1838,83 @@ def getDynamicList (self,w,txt,rlist):
 #@-node:ekr.20050920084036.58:dynamic abbreviation...
 #@-node:ekr.20070426080015:Fix crasher in dynamic abbreviations
 #@-node:ekr.20070505121642.1:Others
+#@+node:ekr.20070513073421:Focus problem in headline
+#@+node:ekr.20040803072955.58:tree.redraw_now & helper
+# New in 4.4b2: suppress scrolling by default.
+
+def redraw_now (self,scroll=False):
+    
+    '''Redraw immediately: used by Find so a redraw doesn't mess up selections in headlines.'''
+
+    if g.app.quitting or self.drag_p or self.frame not in g.app.windowList:
+        return
+        
+    c = self.c
+    
+    # g.trace(g.callers())
+    
+    if not g.app.unitTesting:
+        if self.gc_before_redraw:
+            g.collectGarbage()
+        if g.app.trace_gc_verbose:
+            if (self.redrawCount % 5) == 0:
+                g.printGcSummary()
+        if self.trace_redraw_now or self.trace_alloc:
+            # g.trace(self.redrawCount,g.callers())
+            # g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
+            if self.trace_stats:
+                g.print_stats()
+                g.clear_stats()
+                
+    # New in 4.4b2: Call endEditLabel, but suppress the redraw.
+    self.beginUpdate()
+    try:
+        self.endEditLabel()
+    finally:
+        self.endUpdate(False)
+
+    # Do the actual redraw.
+    self.expandAllAncestors(c.currentPosition())
+    if self.idle_redraw:
+        def idleRedrawCallback(event=None,self=self,scroll=scroll):
+            self.redrawHelper(scroll=scroll)
+        self.canvas.after_idle(idleRedrawCallback)
+    else:
+        self.redrawHelper(scroll=scroll)
+    if g.app.unitTesting:
+        self.canvas.update_idletasks() # Important for unit tests.
+    c.masterFocusHandler()
+    
+redraw = redraw_now # Compatibility
+#@+node:ekr.20040803072955.59:redrawHelper
+def redrawHelper (self,scroll=True):
+    
+    c = self.c
+    oldcursor = self.canvas['cursor']
+    self.canvas['cursor'] = "watch"
+
+    if not g.doHook("redraw-entire-outline",c=c):
+        c.setTopVnode(None)
+        self.setVisibleAreaToFullCanvas()
+        self.drawTopTree()
+        # Set up the scroll region after the tree has been redrawn.
+        bbox = self.canvas.bbox('all')
+        # g.trace('canvas',self.canvas,'bbox',bbox)
+        if bbox is None:
+            x0,y0,x1,y1 = 0,0,100,100
+        else:
+            x0, y0, x1, y1 = bbox
+        self.canvas.configure(scrollregion=(0, 0, x1, y1))
+        if scroll:
+            self.canvas.update_idletasks() # Essential.
+            self.scrollTo()
+            
+    g.doHook("after-redraw-outline",c=c)
+
+    self.canvas['cursor'] = oldcursor
+#@-node:ekr.20040803072955.59:redrawHelper
+#@-node:ekr.20040803072955.58:tree.redraw_now & helper
+#@-node:ekr.20070513073421:Focus problem in headline
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
