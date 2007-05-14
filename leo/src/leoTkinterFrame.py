@@ -1516,7 +1516,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f = self ; c = f.c
         
         if c.inCommand:
-            g.trace('requesting window close')
+            # g.trace('requesting window close')
             c.requestCloseWindow = True
         else:
             g.app.closeLeoWindow(self)

@@ -1613,7 +1613,10 @@ class leoFrame:
                 #@-node:ekr.20031218072017.3693:<< Put up a file save dialog to set mFileName >>
                 #@nl
             if c.mFileName:
+                cc = c.config.getBool('use_chapters') and c.chapterController
+                oldChapter = cc and cc.forceMainChapter()
                 ok = c.fileCommands.save(c.mFileName)
+                if cc: cc.restoreOldChapter(oldChapter)
                 return not ok # New in 4.2: Veto if the save did not succeed.
             else:
                 return True # Veto.
