@@ -807,7 +807,7 @@ class chapter:
     
         # The big switcharoo.
         c.frame.canvas = canvas = tt.getCanvas(name)
-        c.frame.tree = tree = tt.getTree(name)
+        c.frame.tree = tt.getTree(name)
         
         if trace: g.trace(
             'chapter',self.name,'w',w,
