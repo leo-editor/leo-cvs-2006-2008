@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="800" width="937"/>
+	<global_window_position top="10" left="238" height="780" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -50,7 +50,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20061011082224" a="TV"><vh>Candidates for settings in myLeoSettings.leo</vh>
+<v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
@@ -81,7 +81,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -216,7 +216,7 @@
 <v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
 </v>
-<v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging</vh>
+<v t="ekr.20051126062243" a="E" annotate="7d71002e"><vh>Debugging</vh>
 <v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = True</vh></v>
@@ -232,7 +232,7 @@
 <v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
 <v t="ekr.20060126075152"><vh>@bool trace_gc = False</vh></v>
 <v t="ekr.20060212103826"><vh>@bool trace_gc_calls = False</vh></v>
-<v t="ekr.20060126083715"><vh>@bool trace_gc_verbose = True</vh></v>
+<v t="ekr.20060126083715" a="V"><vh>@bool trace_gc_verbose = False</vh></v>
 <v t="ekr.20060215054710"><vh>@bool trace_key_event= False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
@@ -6359,6 +6359,8 @@ UNL.py
 #zodb.py</t>
 <t tx="ekr.20070318065601">True: Chapter tabs are enabled in the outline pane, and chapter commands are functional.
 False: Chapter tabs are disabled, as are chapter commands.</t>
+<t tx="ekr.20070326094544"></t>
+<t tx="ekr.20070326094544.1"></t>
 <t tx="ekr.20070411101857"></t>
 <t tx="ekr.20070411101857.1">'subprocess.Popen',['pythonw','C:/Python24/Lib/idlelib/idle.pyw'],'.py'
 </t>
