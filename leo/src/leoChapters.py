@@ -832,12 +832,12 @@ class chapter:
             assert w == c.frame.body.bodyCtrl
             assert w == c.frame.bodyCtrl
             root = w.leo_p or self.root.firstChild() or self.root
-            p = self.findPositionInChapter(root.v)
+            self.p = p = self.findPositionInChapter(root.v)
             if p != w.leo_p: g.trace('****** can not happen: lost p',root,p)
         else:
             # This must be done *after* switching roots.
             root = self.p or self.root.firstChild() or self.root
-            p = self.findPositionInChapter(root.v)
+            self.p = p = self.findPositionInChapter(root.v)
             if selectEditor:
                 w = self.findEditorInChapter(p)
                 c.frame.body.selectEditor(w) # Switches text.
