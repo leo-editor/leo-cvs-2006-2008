@@ -176,9 +176,7 @@ class chapterController:
     
         tt.makeTabMenu(tabName)
             
-        # tt.selectTab indirectly unselects the previous chapter.
-        cc.selectChapter(tabName)
-       
+        # tt.selectTab unselects the previous chapter and selects the present chapter.
         c.bodyWantsFocusNow()
     #@-node:ekr.20070317085437.31:cc.createChapter
     #@+node:ekr.20070317085437.40:cc.removeChapter
@@ -398,8 +396,10 @@ class chapterController:
         if chapter:
             c.beginUpdate()
             try:
+                # Do not involve undo logic.
                 c.setCurrentPosition(chapter.root)
-                c.deleteOutline(event=None,op_name=None)
+                chapter.root.doDelete()
+                # The chapter selection logic will select a new node.
             finally:
                 c.endUpdate(False)
     #@nonl
@@ -722,6 +722,8 @@ class chapter:
         c = self.c ; cc = self.cc ; trace = False or self.trace
         if not cc.enabled: return
         
+        # g.trace('chapter',self.name)
+        
         if trace: g.printEntireTree(self.c,'link:before')
         if trace: cc.printChaptersTree('link:before')
         
@@ -753,6 +755,8 @@ class chapter:
         
         cc = self.cc ; c = cc.c ; trace = False or self.trace
         if not cc.enabled: return
+        
+        # g.trace('chapter',self.name,g.callers())
         
         if trace: g.printEntireTree(self.c,'link:before')
         if trace: cc.printChaptersTree('link:before')
@@ -808,6 +812,8 @@ class chapter:
         # The big switcharoo.
         c.frame.canvas = canvas = tt.getCanvas(name)
         c.frame.tree = tt.getTree(name)
+        
+        # g.trace(name,g.callers())
         
         if trace: g.trace(
             'chapter',self.name,'w',w,
