@@ -94,6 +94,8 @@ class chapterController:
     
         cc = self ; c = cc.c ; tt = cc.tt ; trace = False or self.trace
         
+        # g.trace(g.callers())
+        
         current = c.currentPosition()
         cc.mainRoot = c.rootPosition()
         if trace: g.trace('chapterController: currentPosition',current,'rootPosition',cc.mainRoot)

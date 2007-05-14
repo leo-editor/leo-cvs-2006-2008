@@ -17055,6 +17055,8 @@ def createFrame (fileName):
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
+    if frame.c.chapterController:
+        frame.c.chapterController.finishCreate()
     # Call the 'new' hook for compatibility with plugins.
     g.doHook("new",old_c=None,c=c,new_c=c)
 
@@ -22625,6 +22627,8 @@ def createFrame (fileName):
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
+    if frame.c.chapterController:
+        frame.c.chapterController.finishCreate()
     # Call the 'new' hook for compatibility with plugins.
     g.doHook("new",old_c=None,c=c,new_c=c)
 
@@ -34813,6 +34817,211 @@ def putDescendentUnknownAttributes (self,p):
 #@-node:EKR.20040627113418:putDescendentUnknownAttributes
 #@-node:ekr.20031218072017.1579:putVnodes & helpers
 #@-node:ekr.20070503100926:error writing file with newly-created @chapters node
+#@+node:ekr.20070514105433:Fixed chapter-save code when clicking on window's close box
+@nocolor
+
+So I'm still getting no trash tab / context menu on startup, so to 
+get them I have to use the new file menu.
+
+The content loss on save I'm thinking may be related to a really 
+obnoxious habit I have, I know I shouldn't do this, but I often 
+click the window manager close box when I want to 'save and exit'. 
+That should work, but it's not safe... leo's not the only app. that 
+can give trouble when you do that.
+
+Anyway, I don't lose content when I select the Save menu item 
+explicitly, but I do when I just click the close box and answer 
+'yes' to the 'do you want to save' question.
+
+@color
+#@nonl
+#@+node:ekr.20031218072017.2609:app.closeLeoWindow
+def closeLeoWindow (self,frame):
+    
+    """Attempt to close a Leo window.
+    
+    Return False if the user veto's the close."""
+    
+    c = frame.c
+    
+    if c.promptingForClose:
+        # There is already a dialog open asking what to do.
+        return False
+        
+    g.app.config.writeRecentFilesFile(c) # Make sure .leoRecentFiles.txt is written.
+
+    if c.changed:
+        c.promptingForClose = True
+        veto = frame.promptForSave()
+        c.promptingForClose = False
+        if veto: return False
+
+    g.app.setLog(None) # no log until we reactive a window.
+    
+    g.doHook("close-frame",c=c) # This may remove frame from the window list.
+    
+    if frame in g.app.windowList:
+        g.app.destroyWindow(frame)
+    
+    if g.app.windowList:
+        # Pick a window to activate so we can set the log.
+        frame = g.app.windowList[0]
+        frame.deiconify()
+        frame.lift()
+        frame.c.setLog()
+        frame.c.bodyWantsFocusNow()
+    elif not g.app.unitTesting:
+        g.app.finishQuit()
+
+    return True # The window has been closed.
+#@-node:ekr.20031218072017.2609:app.closeLeoWindow
+#@+node:ekr.20031218072017.3692:promptForSave
+def promptForSave (self):
+    
+    """Prompt the user to save changes.
+    
+    Return True if the user vetos the quit or save operation."""
+    
+    c = self.c
+    name = g.choose(c.mFileName,c.mFileName,self.title)
+    theType = g.choose(g.app.quitting, "quitting?", "closing?")
+
+    answer = g.app.gui.runAskYesNoCancelDialog(c,
+        "Confirm",
+        'Save changes to %s before %s' % (name,theType))
+        
+    # print answer
+    if answer == "cancel":
+        return True # Veto.
+    elif answer == "no":
+        return False # Don't save and don't veto.
+    else:
+        if not c.mFileName:
+            << Put up a file save dialog to set mFileName >>
+        if c.mFileName:
+            cc = c.config.getBool('use_chapters') and c.chapterController
+            oldChapter = cc and cc.forceMainChapter()
+            ok = c.fileCommands.save(c.mFileName)
+            if cc: cc.restoreOldChapter(oldChapter)
+            return not ok # New in 4.2: Veto if the save did not succeed.
+        else:
+            return True # Veto.
+#@+node:ekr.20031218072017.3693:<< Put up a file save dialog to set mFileName >>
+# Make sure we never pass None to the ctor.
+if not c.mFileName:
+    c.mFileName = ""
+
+c.mFileName = g.app.gui.runSaveFileDialog(
+    initialfile = c.mFileName,
+    title="Save",
+    filetypes=[("Leo files", "*.leo")],
+    defaultextension=".leo")
+c.bringToFront()
+#@-node:ekr.20031218072017.3693:<< Put up a file save dialog to set mFileName >>
+#@-node:ekr.20031218072017.3692:promptForSave
+#@-node:ekr.20070514105433:Fixed chapter-save code when clicking on window's close box
+#@+node:ekr.20070514133415:Made sure starting from leo.py inits chapters properly
+#@+node:ekr.20031218072017.1624:createFrame (leo.py)
+def createFrame (fileName):
+    
+    """Create a LeoFrame during Leo's startup process."""
+    
+    import leoGlobals as g
+    
+    # g.trace('fileName',fileName)
+
+    # Try to create a frame for the file.
+    if fileName:
+        if g.os_path_exists(fileName):
+            ok, frame = g.openWithFileName(fileName,None)
+            if ok:
+                return frame.c,frame
+
+    # Create a _new_ frame & indicate it is the startup window.
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
+    frame.setInitialWindowGeometry()
+    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
+    frame.startupWindow = True
+    if frame.c.chapterController:
+        frame.c.chapterController.finishCreate()
+    # Call the 'new' hook for compatibility with plugins.
+    g.doHook("new",old_c=None,c=c,new_c=c)
+
+    # Report the failure to open the file.
+    if fileName:
+        g.es("File not found: " + fileName)
+
+    return c,frame
+#@nonl
+#@-node:ekr.20031218072017.1624:createFrame (leo.py)
+#@+node:ekr.20031218072017.2052:g.openWithFileName
+def openWithFileName(fileName,old_c,
+    enableLog=True,readAtFileNodesFlag=True):
+    
+    """Create a Leo Frame for the indicated fileName if the file exists."""
+
+    if not fileName or len(fileName) == 0:
+        return False, None
+        
+    def munge(name):
+        return g.os_path_normpath(name or '').lower()
+
+    # Create a full, normalized, Unicode path name, preserving case.
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+        
+    # Open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
+    try:
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.finishCreate()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame
+#@nonl
+#@-node:ekr.20031218072017.2052:g.openWithFileName
+#@-node:ekr.20070514133415:Made sure starting from leo.py inits chapters properly
 #@-node:ekr.20070418094610.1:Fixed bugs
 #@+node:ekr.20070509074834:Fixed chapters problems
 #@+node:ekr.20070325104222:Birth...
@@ -35192,6 +35401,8 @@ def finishCreate (self):
     # at present, called by g.openWithFileName and c.new.
 
     cc = self ; c = cc.c ; tt = cc.tt ; trace = False or self.trace
+    
+    # g.trace(g.callers())
     
     current = c.currentPosition()
     cc.mainRoot = c.rootPosition()
@@ -37570,6 +37781,8 @@ def finishCreate (self):
     # at present, called by g.openWithFileName and c.new.
 
     cc = self ; c = cc.c ; tt = cc.tt ; trace = False or self.trace
+    
+    # g.trace(g.callers())
     
     current = c.currentPosition()
     cc.mainRoot = c.rootPosition()
