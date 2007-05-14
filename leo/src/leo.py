@@ -191,6 +191,8 @@ def createFrame (fileName):
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
+    if frame.c.chapterController:
+        frame.c.chapterController.finishCreate()
     # Call the 'new' hook for compatibility with plugins.
     g.doHook("new",old_c=None,c=c,new_c=c)
 
