@@ -1172,7 +1172,8 @@ class leoBody:
             name = chapter and chapter.name
             oldChapter = cc.getSelectedChapter()
             if chapter != oldChapter:
-                g.trace('===','old',oldChapter.name,'new',name,w.leo_p)
+                # g.trace('===','old',oldChapter.name,'new',name,w.leo_p)
+                
                 # This generate the events needed.
                 # Do **nothing** else.
                 cc.tt.selectTab(name)
