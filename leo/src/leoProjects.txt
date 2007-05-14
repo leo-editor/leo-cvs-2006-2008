@@ -32876,7 +32876,7 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
-    c.frame.tree = tree = tt.getTree(name)
+    c.frame.tree = tt.getTree(name)
     
     if trace: g.trace(
         'chapter',self.name,'w',w,
@@ -34220,7 +34220,7 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
-    c.frame.tree = tree = tt.getTree(name)
+    c.frame.tree = tt.getTree(name)
     
     if trace: g.trace(
         'chapter',self.name,'w',w,
@@ -34306,7 +34306,7 @@ def unlink (self):
         self.error('!!! unlink: no @chapter node:',self)
     elif self.unlinkedRoot:
         self.error('!!! unlink: chapter already unlinked: unlinkedRoot: %s' % (self.unlinkedRoot))
-    elif not self.root.firstChild:
+    elif not self.root.firstChild():
         self.error('!!! unlink: no root.firstChild')
     else:
         # Like the promote logic.
@@ -34801,57 +34801,6 @@ def putDescendentUnknownAttributes (self,p):
 #@-node:ekr.20031218072017.1579:putVnodes & helpers
 #@-node:ekr.20070503100926:error writing file with newly-created @chapters node
 #@-node:ekr.20070418094610.1:Fixed bugs
-#@+node:ekr.20070126072723:Fixed all pychecker problems
-#@+node:ekr.20070316175323:Invalid warnings
-leoGlobals.py:127: No module attribute (leo_config_directory) found # wrong
-leoGlobals.py:3884: Statement appears to have no effect # wrong
-leoGlobals.py:3884: No module attribute (CODESET) found # wrong
-leoGlobals.py:4448: No module attribute (mtime) found # wrong
-leoGlobals.py:5068: No global (p) found # test_ function
-leoGlobals.py:5592: No global (c) found # test_ function
-
-leoAtFile.py:3907: No global (c) found # test_ function
-
-leoKeys.py:2438: No module attribute (initAllEditCommanders) found
-leoKeys.py:3925: No global (c) found
-
-leoChapters.py:47: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
-leoChapters.py:55: Invalid arguments to (unselect), got 0, expected 1 # wrong
-leoChapters.py:535: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
-
-leoEditCommands.py:4879: No global (c) found # test_ function
-
-leoFileCommands.py:2315: No global (c) found # test_ function
-
-leoFind.py:1355: No module attribute (__init__) found # wrong
-
-leoImport.py:1319: Global variable (c) not defined in module scope # test_ function
-
-leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p) # wrong.
-#@-node:ekr.20070316175323:Invalid warnings
-#@+node:ekr.20070507083524:Report 5-7-07
-# fixed: leoGlobals.py:2213: Variable (no_gc_message) used before being set
-
-# fixed: leoConfig.py:1663: (hash) shadows builtin
-
-# fixed: leoCommands.py:5170: Local variable (backBack) not used
-
-# fixed: leoChapters.py:10: Imported module (leoNodes) not used
-# fixed: leoChapters.py:574: Redefining attribute (updateChapterName) original line (59)
-# fixed: leoChapters.py:519: Local variable (tt) not used
-# fixed: leoChapters.py:660: Local variable (b) not used
-
-# fixed: leoTkinterTree.py:548: Parameter (theId) not used
-
-# fixed: leoTkinterFrame.py:2482: No global (cc) found.
-# fixed: leoTkinterFrame.py:2923: Overridden method (createControl) doesnt match signature in class (leoFrame.leoTreeTab)
-# fixed: leoTkinterFrame.py:2940: Local variable (hull) not used
-# fixed: leoTkinterFrame.py:2973: Overridden method (createTab) doesnt match signature in class (leoFrame.leoTreeTab)
-# fixed: leoTkinterFrame.py:3085: Parameter (theChapter) not used
-# fixed: leoTkinterFrame.py:3120: Local variable (nb) not used
-# fixed: leoTkinterFrame.py:3122: Local variable (frame) not used
-#@-node:ekr.20070507083524:Report 5-7-07
-#@-node:ekr.20070126072723:Fixed all pychecker problems
 #@+node:ekr.20070509074834:Fixed chapters problems
 #@+node:ekr.20070325104222:Birth...
 #@+node:ekr.20050920093543:c.finishCreate & helper
@@ -36897,7 +36846,7 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
-    c.frame.tree = tree = tt.getTree(name)
+    c.frame.tree = tt.getTree(name)
     
     if trace: g.trace(
         'chapter',self.name,'w',w,
@@ -37130,7 +37079,7 @@ def unlink (self):
         self.error('!!! unlink: no @chapter node:',self)
     elif self.unlinkedRoot:
         self.error('!!! unlink: chapter already unlinked: unlinkedRoot: %s' % (self.unlinkedRoot))
-    elif not self.root.firstChild:
+    elif not self.root.firstChild():
         self.error('!!! unlink: no root.firstChild')
     else:
         # Like the promote logic.
@@ -37780,6 +37729,57 @@ def drawTopTree (self):
 #@-node:ekr.20070512111721:Fixed Init/Bind stuff...
 #@-node:ekr.20070509074834:Fixed chapters problems
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
+#@+node:ekr.20070126072723:pychecker
+#@+node:ekr.20070316175323:Invalid warnings
+leoGlobals.py:127: No module attribute (leo_config_directory) found # wrong
+leoGlobals.py:3884: Statement appears to have no effect # wrong
+leoGlobals.py:3884: No module attribute (CODESET) found # wrong
+leoGlobals.py:4448: No module attribute (mtime) found # wrong
+leoGlobals.py:5068: No global (p) found # test_ function
+leoGlobals.py:5592: No global (c) found # test_ function
+
+leoAtFile.py:3907: No global (c) found # test_ function
+
+leoKeys.py:2438: No module attribute (initAllEditCommanders) found
+leoKeys.py:3925: No global (c) found
+
+leoChapters.py:47: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
+leoChapters.py:55: Invalid arguments to (unselect), got 0, expected 1 # wrong
+leoChapters.py:535: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
+
+leoEditCommands.py:4879: No global (c) found # test_ function
+
+leoFileCommands.py:2315: No global (c) found # test_ function
+
+leoFind.py:1355: No module attribute (__init__) found # wrong
+
+leoImport.py:1319: Global variable (c) not defined in module scope # test_ function
+
+leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p) # wrong.
+#@-node:ekr.20070316175323:Invalid warnings
+#@+node:ekr.20070507083524:Report 5-7-07
+# fixed: leoGlobals.py:2213: Variable (no_gc_message) used before being set
+
+# fixed: leoConfig.py:1663: (hash) shadows builtin
+
+# fixed: leoCommands.py:5170: Local variable (backBack) not used
+
+# fixed: leoChapters.py:10: Imported module (leoNodes) not used
+# fixed: leoChapters.py:574: Redefining attribute (updateChapterName) original line (59)
+# fixed: leoChapters.py:519: Local variable (tt) not used
+# fixed: leoChapters.py:660: Local variable (b) not used
+
+# fixed: leoTkinterTree.py:548: Parameter (theId) not used
+
+# fixed: leoTkinterFrame.py:2482: No global (cc) found.
+# fixed: leoTkinterFrame.py:2923: Overridden method (createControl) doesnt match signature in class (leoFrame.leoTreeTab)
+# fixed: leoTkinterFrame.py:2940: Local variable (hull) not used
+# fixed: leoTkinterFrame.py:2973: Overridden method (createTab) doesnt match signature in class (leoFrame.leoTreeTab)
+# fixed: leoTkinterFrame.py:3085: Parameter (theChapter) not used
+# fixed: leoTkinterFrame.py:3120: Local variable (nb) not used
+# fixed: leoTkinterFrame.py:3122: Local variable (frame) not used
+#@-node:ekr.20070507083524:Report 5-7-07
+#@-node:ekr.20070126072723:pychecker
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt
