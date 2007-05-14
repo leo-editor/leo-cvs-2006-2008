@@ -18796,7 +18796,8 @@ def switchToChapter (self,w):
         name = chapter and chapter.name
         oldChapter = cc.getSelectedChapter()
         if chapter != oldChapter:
-            g.trace('===','old',oldChapter.name,'new',name,w.leo_p)
+            # g.trace('===','old',oldChapter.name,'new',name,w.leo_p)
+            
             # This generate the events needed.
             # Do **nothing** else.
             cc.tt.selectTab(name)
@@ -32878,6 +32879,8 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tt.getTree(name)
     
+    # g.trace(name,g.callers())
+    
     if trace: g.trace(
         'chapter',self.name,'w',w,
         'selectEditor',selectEditor,'p',self.p and self.p.headString())
@@ -34222,6 +34225,8 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tt.getTree(name)
     
+    # g.trace(name,g.callers())
+    
     if trace: g.trace(
         'chapter',self.name,'w',w,
         'selectEditor',selectEditor,'p',self.p and self.p.headString())
@@ -34265,6 +34270,8 @@ def link (self):
     c = self.c ; cc = self.cc ; trace = False or self.trace
     if not cc.enabled: return
     
+    # g.trace('chapter',self.name)
+    
     if trace: g.printEntireTree(self.c,'link:before')
     if trace: cc.printChaptersTree('link:before')
     
@@ -34296,6 +34303,8 @@ def unlink (self):
     
     cc = self.cc ; c = cc.c ; trace = False or self.trace
     if not cc.enabled: return
+    
+    # g.trace('chapter',self.name,g.callers())
     
     if trace: g.printEntireTree(self.c,'link:before')
     if trace: cc.printChaptersTree('link:before')
@@ -36412,9 +36421,7 @@ def createChapter (self,event=None,name=None):
 
     tt.makeTabMenu(tabName)
         
-    # tt.selectTab indirectly unselects the previous chapter.
-    cc.selectChapter(tabName)
-   
+    # tt.selectTab unselects the previous chapter and selects the present chapter.
     c.bodyWantsFocusNow()
 #@-node:ekr.20070317085437.31:cc.createChapter
 #@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
@@ -36848,6 +36855,8 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tt.getTree(name)
     
+    # g.trace(name,g.callers())
+    
     if trace: g.trace(
         'chapter',self.name,'w',w,
         'selectEditor',selectEditor,'p',self.p and self.p.headString())
@@ -37038,6 +37047,8 @@ def link (self):
     c = self.c ; cc = self.cc ; trace = False or self.trace
     if not cc.enabled: return
     
+    # g.trace('chapter',self.name)
+    
     if trace: g.printEntireTree(self.c,'link:before')
     if trace: cc.printChaptersTree('link:before')
     
@@ -37069,6 +37080,8 @@ def unlink (self):
     
     cc = self.cc ; c = cc.c ; trace = False or self.trace
     if not cc.enabled: return
+    
+    # g.trace('chapter',self.name,g.callers())
     
     if trace: g.printEntireTree(self.c,'link:before')
     if trace: cc.printChaptersTree('link:before')

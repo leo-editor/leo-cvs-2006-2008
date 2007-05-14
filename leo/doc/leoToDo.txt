@@ -90,31 +90,7 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070505121642.1:Others
-#@+node:ekr.20070426092031:Consider another way to compute home directory
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4281562
-By: ktenney
-
-I don't know if this is a resolved issue, here's another approach,
-looks like a good one.
-
-email link
-http://murl.se/24201
-
-python.org os.path doc
-http://murl.se/24202
-
->>> import os
->>> lin_key, win_key = "home", "Documents"
->>> homedir = os.path.expanduser('~')
->>> if os.name == 'nt': os_key = win_key
->>> if os.name == 'posix': os_key = lin_key
->>> print homedir.find(os_key) > -1
-True
-
-#@-node:ekr.20070426092031:Consider another way to compute home directory
-#@+node:ekr.20070325054325:Dist
+#@+node:ekr.20070325054325:Dist & docs
 #@+node:ekr.20070220082124.3:Make installing aspell easier
 #@-node:ekr.20070220082124.3:Make installing aspell easier
 #@+node:ekr.20070202080824:Enable more plugins by default
@@ -223,139 +199,33 @@ Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to instal
 #@-node:ekr.20070218143918:Improve Windows installation instructions
 #@+node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070307082503.1:Create Linux distribution
-#@-node:ekr.20070325054325:Dist
-#@+node:ekr.20070420080132:Better focus handling when clicking headline
-# Tried and failed to improve things.  This logic is so tricky.
-#@nonl
-#@+node:ekr.20031218072017.2886:c.editHeadline
-def editHeadline (self,event=None):
-    
-    '''Begin editing the headline of the selected node.'''
-    
-    c = self ; k = c.k ; tree = c.frame.tree
-    
-    if g.app.batchMode:
-        c.notValidInBatchMode("Edit Headline")
-        return
-        
-    if k:
-        k.setDefaultUnboundKeyAction()
-        k.showStateAndMode()
+#@-node:ekr.20070325054325:Dist & docs
+#@+node:ekr.20070513175217:Allow permanent renames
+#@-node:ekr.20070513175217:Allow permanent renames
+#@+node:ekr.20070505121642.1:Others
+#@+node:ekr.20070426092031:Consider another way to compute home directory
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4281562
+By: ktenney
 
-    tree.editLabel(c.currentPosition())
-#@-node:ekr.20031218072017.2886:c.editHeadline
-#@+node:ekr.20040803072955.127:tree.editLabel
-def editLabel (self,p,selectAll=False):
-    
-    """Start editing p's headline."""
+I don't know if this is a resolved issue, here's another approach,
+looks like a good one.
 
-    c = self.c
+email link
+http://murl.se/24201
 
-    if p and p != self.editPosition():
-        
-        if self.trace_edit and not g.app.unitTesting:
-            g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
+python.org os.path doc
+http://murl.se/24202
 
-        c.beginUpdate()
-        try:
-            self.endEditLabel()
-        finally:
-            c.endUpdate(True)
+>>> import os
+>>> lin_key, win_key = "home", "Documents"
+>>> homedir = os.path.expanduser('~')
+>>> if os.name == 'nt': os_key = win_key
+>>> if os.name == 'posix': os_key = lin_key
+>>> print homedir.find(os_key) > -1
+True
 
-    self.setEditPosition(p) # That is, self._editPosition = p
-    
-    #g.trace(c.edit_widget(p))
-    
-    if p and c.edit_widget(p):
-        self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
-        self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
-        c.headlineWantsFocus(p) # Make sure the focus sticks.
-#@-node:ekr.20040803072955.127:tree.editLabel
-#@+node:ekr.20040803072955.87:onHeadlineClick
-def onHeadlineClick (self,event,p=None):
-    
-    # g.trace('p',p)
-    c = self.c ; w = event.widget
-    
-    if not p:
-        try:
-            p = w.leo_position
-        except AttributeError:
-            g.trace('*'*20,'oops')
-    if not p: return 'break'
-        
-    # g.trace(g.app.gui.widget_name(w)) #p.headString())
-    
-    c.setLog()
-
-    try:
-        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
-            returnVal = self.OnActivateHeadline(p)
-        g.doHook("headclick2",c=c,p=p,v=p,event=event)
-    except:
-        returnVal = 'break'
-        g.es_event_exception("headclick")
-
-    # 'continue' is sometimes correct here.
-    # 'break' would make it impossible to unselect the headline text.
-    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
-    return returnVal
-#@-node:ekr.20040803072955.87:onHeadlineClick
-#@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
-def OnActivateHeadline (self,p,event=None):
-    
-    '''Handle common process when any part of a headline is clicked.'''
-    
-    # g.trace(p.headString())
-    
-    returnVal = 'break' # Default: do nothing more.
-
-    try:
-        c = self.c
-        c.setLog()
-        << activate this window >>
-    except:
-        g.es_event_exception("activate tree")
-        
-    return returnVal
-#@+node:ekr.20040803072955.106:<< activate this window >>
-if p == c.currentPosition():
-    
-    # The *second* click in the headline starts editing.
-    if self.active:
-        #g.trace("click 2")
-        self.editLabel(p)
-        returnVal = 'continue'
-    else:
-        #g.trace("click 1")
-        # Set the focus immediately.  This is essential for proper editing.
-        c.treeWantsFocusNow()
-        returnVal = 'break'
-else:
-    #g.trace("not current")
-    self.select(p,scroll=False)
-    w  = c.frame.body.bodyCtrl
-    if c.frame.findPanel:
-        c.frame.findPanel.handleUserClick(p)
-    if p.v.t.insertSpot != None:
-        spot = p.v.t.insertSpot
-        w.setInsertPoint(spot)
-        w.see(spot)
-    else:
-        w.setInsertPoint(0)
-
-    # if self.stayInTree:
-        # c.treeWantsFocusNow()
-    # else:
-        # c.bodyWantsFocusNow()
-    c.treeFocusHelper()
-    returnVal = 'break'
-
-# The next click *in the same headline* will start editing.
-self.active = True
-#@-node:ekr.20040803072955.106:<< activate this window >>
-#@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
-#@-node:ekr.20070420080132:Better focus handling when clicking headline
+#@-node:ekr.20070426092031:Consider another way to compute home directory
 #@+node:ekr.20070506075357:Scroll commands are gui-dependent
 #@+node:ekr.20060309060654:scrolling...
 #@+node:ekr.20050920084036.116:scrollUp/Down/extendSelection
@@ -1833,6 +1703,138 @@ def getDynamicList (self,w,txt,rlist):
 #@-node:ekr.20070426080015:Fix crasher in dynamic abbreviations
 #@-node:ekr.20070505121642.1:Others
 #@+node:ekr.20070513073421:Focus problem in headline
+#@+node:ekr.20070420080132:Better focus handling when clicking headline
+# Tried and failed to improve things.  This logic is so tricky.
+#@nonl
+#@+node:ekr.20031218072017.2886:c.editHeadline
+def editHeadline (self,event=None):
+    
+    '''Begin editing the headline of the selected node.'''
+    
+    c = self ; k = c.k ; tree = c.frame.tree
+    
+    if g.app.batchMode:
+        c.notValidInBatchMode("Edit Headline")
+        return
+        
+    if k:
+        k.setDefaultUnboundKeyAction()
+        k.showStateAndMode()
+
+    tree.editLabel(c.currentPosition())
+#@-node:ekr.20031218072017.2886:c.editHeadline
+#@+node:ekr.20040803072955.127:tree.editLabel
+def editLabel (self,p,selectAll=False):
+    
+    """Start editing p's headline."""
+
+    c = self.c
+
+    if p and p != self.editPosition():
+        
+        if self.trace_edit and not g.app.unitTesting:
+            g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
+
+        c.beginUpdate()
+        try:
+            self.endEditLabel()
+        finally:
+            c.endUpdate(True)
+
+    self.setEditPosition(p) # That is, self._editPosition = p
+    
+    #g.trace(c.edit_widget(p))
+    
+    if p and c.edit_widget(p):
+        self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
+        self.setEditLabelState(p,selectAll=selectAll) # Sets the focus immediately.
+        c.headlineWantsFocus(p) # Make sure the focus sticks.
+#@-node:ekr.20040803072955.127:tree.editLabel
+#@+node:ekr.20040803072955.87:onHeadlineClick
+def onHeadlineClick (self,event,p=None):
+    
+    # g.trace('p',p)
+    c = self.c ; w = event.widget
+    
+    if not p:
+        try:
+            p = w.leo_position
+        except AttributeError:
+            g.trace('*'*20,'oops')
+    if not p: return 'break'
+        
+    # g.trace(g.app.gui.widget_name(w)) #p.headString())
+    
+    c.setLog()
+
+    try:
+        if not g.doHook("headclick1",c=c,p=p,v=p,event=event):
+            returnVal = self.OnActivateHeadline(p)
+        g.doHook("headclick2",c=c,p=p,v=p,event=event)
+    except:
+        returnVal = 'break'
+        g.es_event_exception("headclick")
+
+    # 'continue' is sometimes correct here.
+    # 'break' would make it impossible to unselect the headline text.
+    # g.trace('returnVal',returnVal,'stayInTree',self.stayInTree)
+    return returnVal
+#@-node:ekr.20040803072955.87:onHeadlineClick
+#@+node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
+def OnActivateHeadline (self,p,event=None):
+    
+    '''Handle common process when any part of a headline is clicked.'''
+    
+    # g.trace(p.headString())
+    
+    returnVal = 'break' # Default: do nothing more.
+
+    try:
+        c = self.c
+        c.setLog()
+        << activate this window >>
+    except:
+        g.es_event_exception("activate tree")
+        
+    return returnVal
+#@+node:ekr.20040803072955.106:<< activate this window >>
+if p == c.currentPosition():
+    
+    # The *second* click in the headline starts editing.
+    if self.active:
+        #g.trace("click 2")
+        self.editLabel(p)
+        returnVal = 'continue'
+    else:
+        #g.trace("click 1")
+        # Set the focus immediately.  This is essential for proper editing.
+        c.treeWantsFocusNow()
+        returnVal = 'break'
+else:
+    #g.trace("not current")
+    self.select(p,scroll=False)
+    w  = c.frame.body.bodyCtrl
+    if c.frame.findPanel:
+        c.frame.findPanel.handleUserClick(p)
+    if p.v.t.insertSpot != None:
+        spot = p.v.t.insertSpot
+        w.setInsertPoint(spot)
+        w.see(spot)
+    else:
+        w.setInsertPoint(0)
+
+    # if self.stayInTree:
+        # c.treeWantsFocusNow()
+    # else:
+        # c.bodyWantsFocusNow()
+    c.treeFocusHelper()
+    returnVal = 'break'
+
+# The next click *in the same headline* will start editing.
+self.active = True
+#@-node:ekr.20040803072955.106:<< activate this window >>
+#@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
+#@-node:ekr.20070420080132:Better focus handling when clicking headline
 #@+node:ekr.20040803072955.58:tree.redraw_now & helper
 # New in 4.4b2: suppress scrolling by default.
 
