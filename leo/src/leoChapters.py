@@ -763,7 +763,7 @@ class chapter:
             self.error('!!! unlink: no @chapter node:',self)
         elif self.unlinkedRoot:
             self.error('!!! unlink: chapter already unlinked: unlinkedRoot: %s' % (self.unlinkedRoot))
-        elif not self.root.firstChild:
+        elif not self.root.firstChild():
             self.error('!!! unlink: no root.firstChild')
         else:
             # Like the promote logic.
