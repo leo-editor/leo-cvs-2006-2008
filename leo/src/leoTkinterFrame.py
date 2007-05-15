@@ -1972,6 +1972,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     #@-node:ekr.20050120083053:Delayed Focus (tkFrame)
     #@+node:ekr.20031218072017.3995:Tk bindings...
     def bringToFront (self):
+        # g.trace(g.callers())
         self.top.deiconify()
         self.top.lift()
     
@@ -2573,6 +2574,7 @@ class leoTkinterLog (leoFrame.leoLog):
         canvas = self.nb.component('hull')
     
         # Overlay what is there!
+        c = self.c
         f = Tk.Frame(canvas)
         f.pack(side='top',fill='both',expand=1)
         
@@ -2600,7 +2602,7 @@ class leoTkinterLog (leoFrame.leoLog):
         b = Tk.Button(row2,text='Cancel',width=6,command=closeTabNameCallback)
         b.pack(side='left')
     
-        e.focus_force()
+        g.app.gui.set_focus(c,e)
         e.bind('<Return>',getNameCallback)
     #@-node:ekr.20051019172811:getTabName
     #@-node:ekr.20051019134106:Tab menu callbacks & helpers
