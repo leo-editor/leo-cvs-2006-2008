@@ -2005,11 +2005,13 @@ class keyHandlerClass:
         
         k = self
         
+        # g.trace('w',w,g.callers())
+        
         for stroke in k.bindingsDict.keys():
             k.makeMasterGuiBinding(stroke,w=w)
     #@-node:ekr.20061031131434.96:k.completeAllBindingsForWidget
     #@+node:ekr.20061031131434.97:k.completeAllBindings
-    def completeAllBindings (self):
+    def completeAllBindings (self,w=None):
         
         '''New in 4.4b3: make an actual binding in *all* the standard places.
         
@@ -2018,7 +2020,7 @@ class keyHandlerClass:
         
         k = self
         for stroke in k.bindingsDict.keys():
-            k.makeMasterGuiBinding(stroke)
+            k.makeMasterGuiBinding(stroke,w=w)
     #@-node:ekr.20061031131434.97:k.completeAllBindings
     #@+node:ekr.20061031131434.98:k.makeAllBindings
     def makeAllBindings (self):
@@ -2139,14 +2141,17 @@ class keyHandlerClass:
        
         bindStroke = k.tkbindingFromStroke(stroke)
         # g.trace('stroke',stroke,'bindStroke',bindStroke)
-        
+    
         if w:
             widgets = [w]
         else:
-            bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None
-            canvas   = f.tree and hasattr(f.tree,'canvas')   and f.tree.canvas   or None
-            bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
-            widgets=(c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
+            bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None     
+            if 1: # Canvas and bindingWidget bindings are now set in tree.setBindings.
+                widgets = (c.miniBufferWidget,bodyCtrl)
+            else:
+                bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+                canvas = f.tree and hasattr(f.tree,'canvas') and f.tree.canvas   or None
+                widgets = (c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
         
         # This is the only real key callback.
         def masterBindKeyCallback (event,k=k,stroke=stroke):
@@ -2962,12 +2967,12 @@ class keyHandlerClass:
         #@nl
         if keysym in special_keys: return None
         
-        trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
-        traceGC = False or self.trace_masterKeyHandlerGC and not g.app.unitTesting
+        trace = (False or self.trace_masterKeyHandler) and not g.app.unitTesting
+        traceGC = (False or self.trace_masterKeyHandlerGC) and not g.app.unitTesting
         if traceGC: g.printNewObjects('masterKey 1')
         if trace:
             g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
-                'state.kind:',k.state.kind,g.callers(4))
+                'state.kind:',k.state.kind,'\n',g.callers())
             # if (self.master_key_count % 100) == 0: g.printGcSummary()
     
         # Handle keyboard-quit first.
