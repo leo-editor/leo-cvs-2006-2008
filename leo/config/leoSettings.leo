@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="780" width="937"/>
+	<global_window_position top="10" left="238" height="760" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -232,7 +232,7 @@
 <v t="ekr.20051126062830"><vh>@bool trace_g.app.gui.set_focus = False</vh></v>
 <v t="ekr.20060126075152"><vh>@bool trace_gc = False</vh></v>
 <v t="ekr.20060212103826"><vh>@bool trace_gc_calls = False</vh></v>
-<v t="ekr.20060126083715" a="V"><vh>@bool trace_gc_verbose = False</vh></v>
+<v t="ekr.20060126083715"><vh>@bool trace_gc_verbose = False</vh></v>
 <v t="ekr.20060215054710"><vh>@bool trace_key_event= False</vh></v>
 <v t="ekr.20060131071947"><vh>@bool trace_masterClickHandler = False</vh></v>
 <v t="ekr.20051126062525"><vh>@bool trace_masterCommand = False</vh></v>
@@ -242,13 +242,13 @@
 <v t="ekr.20060121102627"><vh>@bool trace_modes = False</vh></v>
 <v t="ekr.20060306031258"><vh>@bool trace_onBodyChanged = False</vh></v>
 <v t="ekr.20070417071249"><vh>@bool trace_plugins = False</vh></v>
-<v t="ekr.20051126062243.1"><vh>@bool trace_redraw_now = False</vh></v>
 <v t="ekr.20060210105437"><vh>@bool trace_select = False</vh></v>
 <v t="ekr.20060216130607"><vh>@bool trace_status_line = False</vh></v>
 <v t="ekr.20060202092911"><vh>@bool trace_tree = False</vh></v>
 <v t="ekr.20060206155101"><vh>@bool trace_tree_alloc = False</vh></v>
 <v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
 <v t="ekr.20070503080312"><vh>@bool trace_tree_gc = False</vh></v>
+<v t="ekr.20051126062243.1" a="TV"><vh>@bool trace_tree_redraw = False</vh></v>
 <v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
 <v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
 <v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>

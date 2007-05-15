@@ -2212,6 +2212,7 @@ def setEditLabelState (self,p,selectAll=False): # selected, editing
     c = self.c ; w = c.edit_widget(p)
 
     if p and w:
+        # g.trace('*****',g.callers())
         c.widgetWantsFocusNow(w)
         self.setEditHeadlineColors(p)
         selectAll = selectAll or self.select_all_text_when_editing_headlines
@@ -9666,6 +9667,7 @@ def bringToFront (self):
 
     c = self.c ; w = self.find_ctrl
         
+    # g.trace(g.callers())
     c.widgetWantsFocusNow(w)
     g.app.gui.selectAllText(w)
     c.widgetWantsFocus(w)
@@ -20202,6 +20204,7 @@ def getTabName (self,exitCallback):
     canvas = self.nb.component('hull')
 
     # Overlay what is there!
+    c = self.c
     f = Tk.Frame(canvas)
     f.pack(side='top',fill='both',expand=1)
     
@@ -20229,7 +20232,7 @@ def getTabName (self,exitCallback):
     b = Tk.Button(row2,text='Cancel',width=6,command=closeTabNameCallback)
     b.pack(side='left')
 
-    e.focus_force()
+    g.app.gui.set_focus(c,e)
     e.bind('<Return>',getNameCallback)
 #@-node:ekr.20051019172811:getTabName
 #@-node:ekr.20051019134106:Tab menu callbacks & helpers
@@ -29737,7 +29740,7 @@ def masterClickHandler (self,event,func=None):
     k = self ; c = k.c ; gui = g.app.gui
     if not event: return
     w = event.widget ; wname = c.widget_name(w)
-    trace = c.config.getBool('trace_masterClickHandler') and not g.app.unitTesting
+    trace = not g.app.unitTesting and (False or k.trace_masterClickHandler)
 
     if trace: g.trace(wname,func and func.__name__)
     # c.frame.body.colorizer.interrupt() # New in 4.4.1
@@ -29765,11 +29768,10 @@ def masterClickHandler (self,event,func=None):
             if trace: g.trace('2: break')
             return 'break'
     if event and func:
-        # Don't even *think* of overriding this.
-        # g.trace(func.__name__)
-        val = func(event)
+        if trace: g.trace(func.__name__)
+        val = func(event) # Don't even *think* of overriding this.
         c.masterFocusHandler()
-        if trace: g.trace('val:',val)
+        if trace: g.trace('val:',val,g.callers())
         return val
     else:
         # All tree callbacks have a func, so we can't be in the tree.
@@ -29845,10 +29847,11 @@ def editLabel (self,p,selectAll=False):
     """Start editing p's headline."""
 
     c = self.c
+    trace = not g.app.unitTesting and (False or self.trace_edit)
 
     if p and p != self.editPosition():
         
-        if self.trace_edit and not g.app.unitTesting:
+        if trace:
             g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
 
         c.beginUpdate()
@@ -29859,7 +29862,7 @@ def editLabel (self,p,selectAll=False):
 
     self.setEditPosition(p) # That is, self._editPosition = p
     
-    #g.trace(c.edit_widget(p))
+    if trace: g.trace(c.edit_widget(p))
     
     if p and c.edit_widget(p):
         self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
@@ -29872,6 +29875,7 @@ def setEditLabelState (self,p,selectAll=False): # selected, editing
     c = self.c ; w = c.edit_widget(p)
 
     if p and w:
+        # g.trace('*****',g.callers())
         c.widgetWantsFocusNow(w)
         self.setEditHeadlineColors(p)
         selectAll = selectAll or self.select_all_text_when_editing_headlines
@@ -31674,10 +31678,11 @@ def editLabel (self,p,selectAll=False):
     """Start editing p's headline."""
 
     c = self.c
+    trace = not g.app.unitTesting and (False or self.trace_edit)
 
     if p and p != self.editPosition():
         
-        if self.trace_edit and not g.app.unitTesting:
+        if trace:
             g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
 
         c.beginUpdate()
@@ -31688,7 +31693,7 @@ def editLabel (self,p,selectAll=False):
 
     self.setEditPosition(p) # That is, self._editPosition = p
     
-    #g.trace(c.edit_widget(p))
+    if trace: g.trace(c.edit_widget(p))
     
     if p and c.edit_widget(p):
         self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
@@ -35592,7 +35597,8 @@ def drawTopTree (self):
     
     """Draws the top-level tree, taking into account the hoist state."""
     
-    c = self.c ; canvas = self.canvas ; trace = False or self.trace
+    c = self.c ; canvas = self.canvas
+    trace = False or self.trace or self.trace_redraw
 
     self.redrawing = True
     
@@ -36628,14 +36634,18 @@ def createChapter (self,event=None,name=None):
 
     if name in ('trash','main',):
         tt.selectTab(tabName)
+        tt.makeTabMenu(tabName)
     else:
         root = cc.getChapterNode(tabName) # Creates @chapter node and one child.
         cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=root)
+        tt.createTab(tabName)
+        tt.makeTabMenu(tabName)
+        tree = tt.getTree(tabName)
+        tree.setBindings()
         tt.selectTab(tabName)
+        c.redraw_now()
         tt.renameChapterHelper(cc,tabName)
 
-    tt.makeTabMenu(tabName)
-        
     # tt.selectTab unselects the previous chapter and selects the present chapter.
     c.bodyWantsFocusNow()
 #@-node:ekr.20070317085437.31:cc.createChapter
@@ -37483,7 +37493,8 @@ def drawTopTree (self):
     
     """Draws the top-level tree, taking into account the hoist state."""
     
-    c = self.c ; canvas = self.canvas ; trace = False or self.trace
+    c = self.c ; canvas = self.canvas
+    trace = False or self.trace or self.trace_redraw
 
     self.redrawing = True
     
@@ -37546,7 +37557,7 @@ def redraw_now (self,scroll=False):
         if g.app.trace_gc_verbose:
             if (self.redrawCount % 5) == 0:
                 g.printGcSummary()
-        if self.trace_redraw_now or self.trace_alloc:
+        if self.trace_redraw or self.trace_alloc:
             # g.trace(self.redrawCount,g.callers())
             # g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
             if self.trace_stats:
@@ -37915,7 +37926,8 @@ def drawTopTree (self):
     
     """Draws the top-level tree, taking into account the hoist state."""
     
-    c = self.c ; canvas = self.canvas ; trace = False or self.trace
+    c = self.c ; canvas = self.canvas
+    trace = False or self.trace or self.trace_redraw
 
     self.redrawing = True
     
