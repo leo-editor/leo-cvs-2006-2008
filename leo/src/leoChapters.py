@@ -24,6 +24,7 @@ class chapterController:
     def __init__ (self,c):
         
         self.c = c
+    
         self.chaptersDict = {}
             # Keys are tabNames, values are chapters.
             # Important: tabNames never change, even if their button text changes.
@@ -123,13 +124,15 @@ class chapterController:
             cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
             if tabName == 'main':
                 # The main tab, tree and canvas were created earlier.
-                c.frame.tree = tt.getTree(tabName)
+                c.frame.tree = tree = tt.getTree(tabName)
                 c.frame.canvas = tt.getCanvas(tabName)
             else:
                 tt.createTab(tabName,select=False)
                 tree = tt.getTree(tabName)
-                tree.setBindings()
-    
+                
+            # This is required even in the 'main' chapter so that
+            # bindings set by k.registerCommand are updated.
+            tree.setBindings()
             tt.makeTabMenu(tabName)
     
         # Create a chapter for each @chapter node.
