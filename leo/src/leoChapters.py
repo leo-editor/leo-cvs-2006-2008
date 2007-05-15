@@ -170,14 +170,18 @@ class chapterController:
     
         if name in ('trash','main',):
             tt.selectTab(tabName)
+            tt.makeTabMenu(tabName)
         else:
             root = cc.getChapterNode(tabName) # Creates @chapter node and one child.
             cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=root)
+            tt.createTab(tabName)
+            tt.makeTabMenu(tabName)
+            tree = tt.getTree(tabName)
+            tree.setBindings()
             tt.selectTab(tabName)
+            c.redraw_now()
             tt.renameChapterHelper(cc,tabName)
     
-        tt.makeTabMenu(tabName)
-            
         # tt.selectTab unselects the previous chapter and selects the present chapter.
         c.bodyWantsFocusNow()
     #@-node:ekr.20070317085437.31:cc.createChapter
