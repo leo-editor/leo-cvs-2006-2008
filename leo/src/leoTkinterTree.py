@@ -206,16 +206,16 @@ class leoTkinterTree (leoFrame.leoTree):
         self.look_for_control_drag_on_mouse_down    = c.config.getBool('look_for_control_drag_on_mouse_down')
         self.select_all_text_when_editing_headlines = c.config.getBool('select_all_text_when_editing_headlines')
     
-        self.stayInTree             = c.config.getBool('stayInTreeAfterSelect')
-        self.trace                  = c.config.getBool('trace_tree')
-        self.trace_alloc            = c.config.getBool('trace_tree_alloc')
-        self.trace_chapters         = c.config.getBool('trace_chapters')
-        self.trace_edit             = c.config.getBool('trace_tree_edit')
-        self.trace_gc               = c.config.getBool('trace_tree_gc')
-        self.trace_redraw_now       = c.config.getBool('trace_redraw_now')
-        self.trace_select           = c.config.getBool('trace_select')
-        self.trace_stats            = c.config.getBool('show_tree_stats')
-        self.use_chapters           = c.config.getBool('use_chapters')
+        self.stayInTree         = c.config.getBool('stayInTreeAfterSelect')
+        self.trace              = c.config.getBool('trace_tree')
+        self.trace_alloc        = c.config.getBool('trace_tree_alloc')
+        self.trace_chapters     = c.config.getBool('trace_chapters')
+        self.trace_edit         = c.config.getBool('trace_tree_edit')
+        self.trace_gc           = c.config.getBool('trace_tree_gc')
+        self.trace_redraw       = c.config.getBool('trace_tree_redraw')
+        self.trace_select       = c.config.getBool('trace_select')
+        self.trace_stats        = c.config.getBool('show_tree_stats')
+        self.use_chapters       = c.config.getBool('use_chapters')
      
         # Objects associated with this tree.
         self.canvas = canvas
@@ -239,7 +239,7 @@ class leoTkinterTree (leoFrame.leoTree):
         #@+node:ekr.20040803072955.18:<< old ivars >>
         # Miscellaneous info.
         self.iconimages = {} # Image cache set by getIconImage().
-        self.active = False # True if tree is active
+        self.active = False # True if present headline is active
         self._editPosition = None # Returned by leoTree.editPosition()
         self.lineyoffset = 0 # y offset for this headline.
         self.lastClickFrameId = None # id of last entered clickBox.
@@ -784,7 +784,7 @@ class leoTkinterTree (leoFrame.leoTree):
             if g.app.trace_gc_verbose:
                 if (self.redrawCount % 5) == 0:
                     g.printGcSummary()
-            if self.trace_redraw_now or self.trace_alloc:
+            if self.trace_redraw or self.trace_alloc:
                 # g.trace(self.redrawCount,g.callers())
                 # g.trace(c.rootPosition().headString(),'canvas:',id(self.canvas),g.callers())
                 if self.trace_stats:
@@ -1134,7 +1134,8 @@ class leoTkinterTree (leoFrame.leoTree):
         
         """Draws the top-level tree, taking into account the hoist state."""
         
-        c = self.c ; canvas = self.canvas ; trace = False or self.trace
+        c = self.c ; canvas = self.canvas
+        trace = False or self.trace or self.trace_redraw
     
         self.redrawing = True
         
@@ -1545,7 +1546,6 @@ class leoTkinterTree (leoFrame.leoTree):
         try:
             if p and not g.doHook("boxclick1",c=c,p=p,v=p,event=event):
                 c.endEditing()
-                self.active = True
                 if p == p1 or self.initialClickExpandsOrContractsNode:
                     if p.isExpanded(): p.contract()
                     else:              p.expand()
@@ -1808,6 +1808,7 @@ class leoTkinterTree (leoFrame.leoTree):
         # g.trace(p.headString())
         
         returnVal = 'break' # Default: do nothing more.
+        trace = False
     
         try:
             c = self.c
@@ -1816,18 +1817,14 @@ class leoTkinterTree (leoFrame.leoTree):
             #@+node:ekr.20040803072955.106:<< activate this window >>
             if p == c.currentPosition():
                 
-                # The *second* click in the headline starts editing.
-                if self.active:
-                    #g.trace("click 2")
-                    self.editLabel(p)
-                    returnVal = 'continue'
-                else:
-                    #g.trace("click 1")
-                    # Set the focus immediately.  This is essential for proper editing.
-                    c.treeWantsFocusNow()
-                    returnVal = 'break'
+                if trace: g.trace('current','active',self.active)
+                self.editLabel(p) # sets focus.
+                # If we are active, pass the event along so the click gets handled.
+                # Otherwise, do *not* pass the event along so the focus stays the same.
+                returnVal = g.choose(self.active,'continue','break')
+                self.active = True
             else:
-                #g.trace("not current")
+                if trace: g.trace("not current")
                 self.select(p,scroll=False)
                 w  = c.frame.body.bodyCtrl
                 if c.frame.findPanel:
@@ -1838,16 +1835,10 @@ class leoTkinterTree (leoFrame.leoTree):
                     w.see(spot)
                 else:
                     w.setInsertPoint(0)
-            
-                # if self.stayInTree:
-                    # c.treeWantsFocusNow()
-                # else:
-                    # c.bodyWantsFocusNow()
-                c.treeFocusHelper()
+                c.headlineWantsFocus(p)
+                self.active = False
                 returnVal = 'break'
-            
-            # The next click *in the same headline* will start editing.
-            self.active = True
+            #@nonl
             #@-node:ekr.20040803072955.106:<< activate this window >>
             #@nl
         except:
@@ -2272,10 +2263,11 @@ class leoTkinterTree (leoFrame.leoTree):
         """Start editing p's headline."""
     
         c = self.c
+        trace = not g.app.unitTesting and (False or self.trace_edit)
     
         if p and p != self.editPosition():
             
-            if self.trace_edit and not g.app.unitTesting:
+            if trace:
                 g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
     
             c.beginUpdate()
@@ -2286,7 +2278,7 @@ class leoTkinterTree (leoFrame.leoTree):
     
         self.setEditPosition(p) # That is, self._editPosition = p
         
-        #g.trace(c.edit_widget(p))
+        if trace: g.trace(c.edit_widget(p))
         
         if p and c.edit_widget(p):
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
@@ -2300,6 +2292,7 @@ class leoTkinterTree (leoFrame.leoTree):
         c = self.c ; w = c.edit_widget(p)
     
         if p and w:
+            # g.trace('*****',g.callers())
             c.widgetWantsFocusNow(w)
             self.setEditHeadlineColors(p)
             selectAll = selectAll or self.select_all_text_when_editing_headlines
