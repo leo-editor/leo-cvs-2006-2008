@@ -190,32 +190,45 @@ class leoTkinterTree (leoFrame.leoTree):
         self.expanded_click_area        = c.config.getBool('expanded_click_area')
         self.gc_before_redraw           = c.config.getBool('gc_before_redraw')
         
-        self.headline_text_editing_foreground_color = c.config.getColor('headline_text_editing_foreground_color')
-        self.headline_text_editing_background_color = c.config.getColor('headline_text_editing_background_color')
-        self.headline_text_editing_selection_foreground_color = c.config.getColor('headline_text_editing_selection_foreground_color')
-        self.headline_text_editing_selection_background_color = c.config.getColor('headline_text_editing_selection_background_color')
-        self.headline_text_selected_foreground_color = c.config.getColor("headline_text_selected_foreground_color")
-        self.headline_text_selected_background_color = c.config.getColor("headline_text_selected_background_color")
-        self.headline_text_editing_selection_foreground_color = c.config.getColor("headline_text_editing_selection_foreground_color")
-        self.headline_text_editing_selection_background_color = c.config.getColor("headline_text_editing_selection_background_color")
-        self.headline_text_unselected_foreground_color = c.config.getColor('headline_text_unselected_foreground_color')
-        self.headline_text_unselected_background_color = c.config.getColor('headline_text_unselected_background_color')
-       
-        self.idle_redraw                            = c.config.getBool('idle_redraw')
-        self.initialClickExpandsOrContractsNode     = c.config.getBool('initialClickExpandsOrContractsNode')
-        self.look_for_control_drag_on_mouse_down    = c.config.getBool('look_for_control_drag_on_mouse_down')
-        self.select_all_text_when_editing_headlines = c.config.getBool('select_all_text_when_editing_headlines')
+        self.headline_text_editing_foreground_color = c.config.getColor(
+            'headline_text_editing_foreground_color')
+        self.headline_text_editing_background_color = c.config.getColor(
+            'headline_text_editing_background_color')
+        self.headline_text_editing_selection_foreground_color = c.config.getColor(
+            'headline_text_editing_selection_foreground_color')
+        self.headline_text_editing_selection_background_color = c.config.getColor(
+            'headline_text_editing_selection_background_color')
+        self.headline_text_selected_foreground_color = c.config.getColor(
+            "headline_text_selected_foreground_color")
+        self.headline_text_selected_background_color = c.config.getColor(
+            "headline_text_selected_background_color")
+        self.headline_text_editing_selection_foreground_color = c.config.getColor(
+            "headline_text_editing_selection_foreground_color")
+        self.headline_text_editing_selection_background_color = c.config.getColor(
+            "headline_text_editing_selection_background_color")
+        self.headline_text_unselected_foreground_color = c.config.getColor(
+            'headline_text_unselected_foreground_color')
+        self.headline_text_unselected_background_color = c.config.getColor(
+            'headline_text_unselected_background_color')
+            
+        self.idle_redraw = c.config.getBool('idle_redraw')
+        self.initialClickExpandsOrContractsNode = c.config.getBool(
+            'initialClickExpandsOrContractsNode')
+        self.look_for_control_drag_on_mouse_down = c.config.getBool(
+            'look_for_control_drag_on_mouse_down')
+        self.select_all_text_when_editing_headlines = c.config.getBool(
+            'select_all_text_when_editing_headlines')
     
-        self.stayInTree         = c.config.getBool('stayInTreeAfterSelect')
-        self.trace              = c.config.getBool('trace_tree')
-        self.trace_alloc        = c.config.getBool('trace_tree_alloc')
-        self.trace_chapters     = c.config.getBool('trace_chapters')
-        self.trace_edit         = c.config.getBool('trace_tree_edit')
-        self.trace_gc           = c.config.getBool('trace_tree_gc')
-        self.trace_redraw       = c.config.getBool('trace_tree_redraw')
-        self.trace_select       = c.config.getBool('trace_select')
-        self.trace_stats        = c.config.getBool('show_tree_stats')
-        self.use_chapters       = c.config.getBool('use_chapters')
+        self.stayInTree     = c.config.getBool('stayInTreeAfterSelect')
+        self.trace          = c.config.getBool('trace_tree')
+        self.trace_alloc    = c.config.getBool('trace_tree_alloc')
+        self.trace_chapters = c.config.getBool('trace_chapters')
+        self.trace_edit     = c.config.getBool('trace_tree_edit')
+        self.trace_gc       = c.config.getBool('trace_tree_gc')
+        self.trace_redraw   = c.config.getBool('trace_tree_redraw')
+        self.trace_select   = c.config.getBool('trace_select')
+        self.trace_stats    = c.config.getBool('show_tree_stats')
+        self.use_chapters   = c.config.getBool('use_chapters')
      
         # Objects associated with this tree.
         self.canvas = canvas
@@ -314,7 +327,7 @@ class leoTkinterTree (leoFrame.leoTree):
         self.freeUserIcons = []
     #@-node:ekr.20040803072955.16:__init__ (tkTree)
     #@+node:ekr.20051024102724:tkTtree.setBindings
-    def setBindings (self):
+    def setBindings (self,):
         
         '''Create master bindings for all headlines.'''
             
@@ -338,6 +351,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         for a,handler,func in table:
             def treeBindingCallback(event,handler=handler,func=func):
+                # g.trace('func',func)
                 return handler(event,func)
             w.bind(a,treeBindingCallback)
             
@@ -348,6 +362,8 @@ class leoTkinterTree (leoFrame.leoTree):
         tree.setCanvasBindings(canvas)
         
         k.completeAllBindingsForWidget(canvas)
+    
+        k.completeAllBindings(w=self.bindingWidget)
     
         
     #@nonl
