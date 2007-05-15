@@ -477,8 +477,7 @@ class tkinterGui(leoGui.leoGui):
         __pychecker__ = '--no-argsused' # c not used at present.
         
         """Put the focus on the widget."""
-    
-                    
+          
         if not g.app.unitTesting and c and c.config.getBool('trace_g.app.gui.set_focus'):
             self.set_focus_count += 1
             # Do not call trace here: that might affect focus!
