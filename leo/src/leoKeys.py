@@ -1577,6 +1577,7 @@ class keyHandlerClass:
         self.ignore_unbound_non_ascii_keys  = c.config.getBool('ignore_unbound_non_ascii_keys')
         self.swap_mac_keys                  = c.config.getBool('swap_mac_keys')
         self.trace_bind_key_exceptions      = c.config.getBool('trace_bind_key_exceptions')
+        self.trace_masterClickHandler       = c.config.getBool('trace_masterClickHandler')
         self.traceMasterCommand             = c.config.getBool('trace_masterCommand')
         self.trace_masterKeyHandler         = c.config.getBool('trace_masterKeyHandler')
         self.trace_masterKeyHandlerGC       = c.config.getBool('trace_masterKeyHandlerGC')
@@ -3122,7 +3123,7 @@ class keyHandlerClass:
         k = self ; c = k.c ; gui = g.app.gui
         if not event: return
         w = event.widget ; wname = c.widget_name(w)
-        trace = c.config.getBool('trace_masterClickHandler') and not g.app.unitTesting
+        trace = not g.app.unitTesting and (False or k.trace_masterClickHandler)
     
         if trace: g.trace(wname,func and func.__name__)
         # c.frame.body.colorizer.interrupt() # New in 4.4.1
@@ -3150,11 +3151,10 @@ class keyHandlerClass:
                 if trace: g.trace('2: break')
                 return 'break'
         if event and func:
-            # Don't even *think* of overriding this.
-            # g.trace(func.__name__)
-            val = func(event)
+            if trace: g.trace(func.__name__)
+            val = func(event) # Don't even *think* of overriding this.
             c.masterFocusHandler()
-            if trace: g.trace('val:',val)
+            if trace: g.trace('val:',val,g.callers())
             return val
         else:
             # All tree callbacks have a func, so we can't be in the tree.
