@@ -92,7 +92,7 @@ class chapterController:
         # This must be called late in the init process:
         # at present, called by g.openWithFileName and c.new.
     
-        cc = self ; c = cc.c ; tt = cc.tt ; trace = False or self.trace
+        cc = self ; c = cc.c ; k = c.k ; tt = cc.tt ; trace = False or self.trace
         
         # g.trace(g.callers())
         
@@ -129,8 +129,9 @@ class chapterController:
                 tt.createTab(tabName,select=False)
                 tree = tt.getTree(tabName)
                 tree.setBindings()
+    
             tt.makeTabMenu(tabName)
-            
+    
         # Create a chapter for each @chapter node.
         tag = '@chapter'
         for p in cc.chaptersNode.children_iter():
