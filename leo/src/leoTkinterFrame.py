@@ -3105,6 +3105,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             # g.trace(tabName,newName)
             theChapter = cc.getChapter(tabName)
             c.setBodyString(theChapter.root,newName)
+            c.bodyWantsFocusNow()
         e.bind('<Return>',changeCallback)
         e.selection_range(0,'end')
         b.configure(command=changeCallback)
