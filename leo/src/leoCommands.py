@@ -5615,6 +5615,8 @@ class baseCommands:
     #@+node:ekr.20031218072017.2951:c.bringToFront
     def bringToFront(self,set_focus=True):
         
+        # g.trace(g.callers())
+        
         c = self
         c.frame.deiconify()
         

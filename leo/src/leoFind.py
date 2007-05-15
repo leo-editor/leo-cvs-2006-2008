@@ -1067,6 +1067,7 @@ class leoFind:
     
         c = self.c ; w = self.find_ctrl
             
+        # g.trace(g.callers())
         c.widgetWantsFocusNow(w)
         g.app.gui.selectAllText(w)
         c.widgetWantsFocus(w)
