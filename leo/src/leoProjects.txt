@@ -10804,7 +10804,7 @@ def bindHotKey (self,widget):
         for key in (self.hotKey.lower(),self.hotKey.upper()):
             widget.bind("<Alt-%s>" % key,self.buttonCallback)
 #@-node:ekr.20051020120306.4:bindHotKey
-#@+node:ekr.20061031131434.103:makeMasterGuiBinding
+#@+node:ekr.20061031131434.103:k.makeMasterGuiBinding
 def makeMasterGuiBinding (self,stroke,w=None):
     
     '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
@@ -10846,7 +10846,7 @@ def makeMasterGuiBinding (self,stroke,w=None):
                 g.es_print('exception binding %s to %s' % (
                     bindStroke, c.widget_name(w)), color = 'blue')
                 if g.app.unitTesting: raise
-#@-node:ekr.20061031131434.103:makeMasterGuiBinding
+#@-node:ekr.20061031131434.103:k.makeMasterGuiBinding
 #@+node:ekr.20031218072017.3113:printBindings
 def print_bindings (name,window):
 
@@ -10957,7 +10957,7 @@ def setBindings (self,):
     
     k.completeAllBindingsForWidget(canvas)
 
-    k.completeAllBindings(w=self.bindingWidget)
+    k.completeAllBindingsForWidget(self.bindingWidget)
 
     
 #@nonl
@@ -11177,7 +11177,7 @@ def prettyPrintKey (self,stroke,brief=False):
     return g.choose(brief,s,'<%s>' % s)
 #@-node:ekr.20061031131434.191:k.prettyPrintKey
 #@-node:ekr.20061031131434.181:Shortcuts (keyHandler)
-#@+node:ekr.20061031131434.103:makeMasterGuiBinding
+#@+node:ekr.20061031131434.103:k.makeMasterGuiBinding
 def makeMasterGuiBinding (self,stroke,w=None):
     
     '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
@@ -11219,7 +11219,7 @@ def makeMasterGuiBinding (self,stroke,w=None):
                 g.es_print('exception binding %s to %s' % (
                     bindStroke, c.widget_name(w)), color = 'blue')
                 if g.app.unitTesting: raise
-#@-node:ekr.20061031131434.103:makeMasterGuiBinding
+#@-node:ekr.20061031131434.103:k.makeMasterGuiBinding
 #@+node:ekr.20061031131434.105:masterCommand & helpers
 def masterCommand (self,event,func,stroke,commandName=None):
 
@@ -16714,7 +16714,7 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
     
     k = self ; c = k.c
     f = c.commandsDict.get(commandName)
-    verbose = verbose and not g.app.unitTesting
+    verbose = (False or verbose) and not g.app.unitTesting
     if f and f.__name__ != 'dummyCallback' and verbose:
         g.es_print('Redefining %s' % (commandName), color='red')
         
@@ -16737,7 +16737,7 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
                 if stroke: break
         else: stroke = None
   
-    # g.trace('verbose',verbose,'stroke',stroke,commandName)
+    # g.trace('stroke',stroke,commandName)
     if stroke:
         ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
         k.makeMasterGuiBinding(stroke) # Must be a stroke.
@@ -32817,6 +32817,7 @@ def renameChapterHelper (self,cc,tabName):
         # g.trace(tabName,newName)
         theChapter = cc.getChapter(tabName)
         c.setBodyString(theChapter.root,newName)
+        c.bodyWantsFocusNow()
     e.bind('<Return>',changeCallback)
     e.selection_range(0,'end')
     b.configure(command=changeCallback)
@@ -32950,7 +32951,7 @@ def setBindings (self,):
     
     k.completeAllBindingsForWidget(canvas)
 
-    k.completeAllBindings(w=self.bindingWidget)
+    k.completeAllBindingsForWidget(self.bindingWidget)
 
     
 #@nonl
@@ -35779,13 +35780,15 @@ def finishCreate (self):
         cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
         if tabName == 'main':
             # The main tab, tree and canvas were created earlier.
-            c.frame.tree = tt.getTree(tabName)
+            c.frame.tree = tree = tt.getTree(tabName)
             c.frame.canvas = tt.getCanvas(tabName)
         else:
             tt.createTab(tabName,select=False)
             tree = tt.getTree(tabName)
-            tree.setBindings()
-
+            
+        # This is required even in the 'main' chapter so that
+        # bindings set by k.registerCommand are updated.
+        tree.setBindings()
         tt.makeTabMenu(tabName)
 
     # Create a chapter for each @chapter node.
@@ -36986,8 +36989,6 @@ def createChapter (self,event=None,name=None):
         tt.makeTabMenu(tabName)
         tree = tt.getTree(tabName)
         tree.setBindings()
-        canvas = tt.getCanvas(tabName)
-        c.k.completeAllBindingsForWidget(w=canvas)
         tt.selectTab(tabName)
         c.redraw_now()
         tt.renameChapterHelper(cc,tabName)
@@ -37368,6 +37369,7 @@ def printEntireTree(c,tag=''):
 def __init__ (self,c):
     
     self.c = c
+
     self.chaptersDict = {}
         # Keys are tabNames, values are chapters.
         # Important: tabNames never change, even if their button text changes.
@@ -38106,7 +38108,7 @@ def setBindings (self,):
     
     k.completeAllBindingsForWidget(canvas)
 
-    k.completeAllBindings(w=self.bindingWidget)
+    k.completeAllBindingsForWidget(self.bindingWidget)
 
     
 #@nonl
@@ -38171,13 +38173,15 @@ def finishCreate (self):
         cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
         if tabName == 'main':
             # The main tab, tree and canvas were created earlier.
-            c.frame.tree = tt.getTree(tabName)
+            c.frame.tree = tree = tt.getTree(tabName)
             c.frame.canvas = tt.getCanvas(tabName)
         else:
             tt.createTab(tabName,select=False)
             tree = tt.getTree(tabName)
-            tree.setBindings()
-
+            
+        # This is required even in the 'main' chapter so that
+        # bindings set by k.registerCommand are updated.
+        tree.setBindings()
         tt.makeTabMenu(tabName)
 
     # Create a chapter for each @chapter node.
@@ -38347,6 +38351,7 @@ def renameChapterHelper (self,cc,tabName):
         # g.trace(tabName,newName)
         theChapter = cc.getChapter(tabName)
         c.setBodyString(theChapter.root,newName)
+        c.bodyWantsFocusNow()
     e.bind('<Return>',changeCallback)
     e.selection_range(0,'end')
     b.configure(command=changeCallback)
@@ -38381,8 +38386,6 @@ def createChapter (self,event=None,name=None):
         tt.makeTabMenu(tabName)
         tree = tt.getTree(tabName)
         tree.setBindings()
-        canvas = tt.getCanvas(tabName)
-        c.k.completeAllBindingsForWidget(w=canvas)
         tt.selectTab(tabName)
         c.redraw_now()
         tt.renameChapterHelper(cc,tabName)
@@ -38581,7 +38584,7 @@ def setBindings (self,):
     
     k.completeAllBindingsForWidget(canvas)
 
-    k.completeAllBindings(w=self.bindingWidget)
+    k.completeAllBindingsForWidget(self.bindingWidget)
 
     
 #@nonl
@@ -38731,7 +38734,7 @@ def setHeadlineText (self,theId,w,s):
         w.configure(state=state)
 #@-node:ekr.20040803072955.32:tree.setHeadlineText
 #@-node:ekr.20040803072955.11:newText (tkTree) and helper
-#@+node:ekr.20061031131434.103:makeMasterGuiBinding
+#@+node:ekr.20061031131434.103:k.makeMasterGuiBinding
 def makeMasterGuiBinding (self,stroke,w=None):
     
     '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
@@ -38773,16 +38776,16 @@ def makeMasterGuiBinding (self,stroke,w=None):
                 g.es_print('exception binding %s to %s' % (
                     bindStroke, c.widget_name(w)), color = 'blue')
                 if g.app.unitTesting: raise
-#@-node:ekr.20061031131434.103:makeMasterGuiBinding
+#@-node:ekr.20061031131434.103:k.makeMasterGuiBinding
 #@+node:ekr.20070515101507:Found: makeMasterGuiBinding
 #@+node:ekr.20061031131434.96:k.completeAllBindingsForWidget
 def completeAllBindingsForWidget (self,w):
     
-    k = self
+    k = self ; d = k.bindingsDict
     
-    # g.trace('w',w,g.callers())
+    # g.trace('w',w,d.has_key('Alt+Key-4'))
     
-    for stroke in k.bindingsDict.keys():
+    for stroke in d.keys():
         k.makeMasterGuiBinding(stroke,w=w)
 #@-node:ekr.20061031131434.96:k.completeAllBindingsForWidget
 #@+node:ekr.20061031131434.97:k.completeAllBindings
@@ -38797,7 +38800,7 @@ def completeAllBindings (self,w=None):
     for stroke in k.bindingsDict.keys():
         k.makeMasterGuiBinding(stroke,w=w)
 #@-node:ekr.20061031131434.97:k.completeAllBindings
-#@+node:ekr.20061031131434.103:makeMasterGuiBinding
+#@+node:ekr.20061031131434.103:k.makeMasterGuiBinding
 def makeMasterGuiBinding (self,stroke,w=None):
     
     '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
@@ -38839,7 +38842,7 @@ def makeMasterGuiBinding (self,stroke,w=None):
                 g.es_print('exception binding %s to %s' % (
                     bindStroke, c.widget_name(w)), color = 'blue')
                 if g.app.unitTesting: raise
-#@-node:ekr.20061031131434.103:makeMasterGuiBinding
+#@-node:ekr.20061031131434.103:k.makeMasterGuiBinding
 #@+node:ekr.20061031131434.131:k.registerCommand
 def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
     
@@ -38851,7 +38854,7 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
     
     k = self ; c = k.c
     f = c.commandsDict.get(commandName)
-    verbose = verbose and not g.app.unitTesting
+    verbose = (False or verbose) and not g.app.unitTesting
     if f and f.__name__ != 'dummyCallback' and verbose:
         g.es_print('Redefining %s' % (commandName), color='red')
         
@@ -38874,7 +38877,7 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
                 if stroke: break
         else: stroke = None
   
-    # g.trace('verbose',verbose,'stroke',stroke,commandName)
+    # g.trace('stroke',stroke,commandName)
     if stroke:
         ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
         k.makeMasterGuiBinding(stroke) # Must be a stroke.
@@ -38979,13 +38982,15 @@ def finishCreate (self):
         cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
         if tabName == 'main':
             # The main tab, tree and canvas were created earlier.
-            c.frame.tree = tt.getTree(tabName)
+            c.frame.tree = tree = tt.getTree(tabName)
             c.frame.canvas = tt.getCanvas(tabName)
         else:
             tt.createTab(tabName,select=False)
             tree = tt.getTree(tabName)
-            tree.setBindings()
-
+            
+        # This is required even in the 'main' chapter so that
+        # bindings set by k.registerCommand are updated.
+        tree.setBindings()
         tt.makeTabMenu(tabName)
 
     # Create a chapter for each @chapter node.
@@ -40191,6 +40196,257 @@ def printGcVerbose(tag=''):
 #@-node:ekr.20060127165509:printGcVerbose
 #@-node:ekr.20031218072017.1588:Garbage Collection
 #@-node:ekr.20070427094150:Fixed memory leaks
+#@+node:ekr.20070515131952:Fixed bug: Key bindings were not set in @command nodes
+#@+node:ekr.20061031131434.131:k.registerCommand
+def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
+    
+    '''Make the function available as a minibuffer command,
+    and optionally attempt to bind a shortcut.
+    
+    You can wrap any method in a callback function, so the
+    restriction to functions is not significant.'''
+    
+    k = self ; c = k.c
+    f = c.commandsDict.get(commandName)
+    verbose = (False or verbose) and not g.app.unitTesting
+    if f and f.__name__ != 'dummyCallback' and verbose:
+        g.es_print('Redefining %s' % (commandName), color='red')
+        
+    c.commandsDict [commandName] = func
+    k.inverseCommandsDict [func.__name__] = commandName
+    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
+    
+    if shortcut:
+        stroke = k.shortcutFromSetting(shortcut)
+    elif commandName.lower() == 'shortcut': # Causes problems.
+        stroke = None
+    else:
+        # Try to get a shortcut from leoSettings.leo.
+        junk,bunchList = c.config.getShortcut(commandName)
+        for bunch in bunchList:
+            accel2 = bunch.val ; pane2 = bunch.pane
+            if accel2 and not pane2.endswith('-mode'):
+                shortcut2 = accel2
+                stroke = k.shortcutFromSetting(shortcut2)
+                if stroke: break
+        else: stroke = None
+  
+    # g.trace('stroke',stroke,commandName)
+    if stroke:
+        ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
+        k.makeMasterGuiBinding(stroke) # Must be a stroke.
+        if verbose and ok:
+             g.es_print('@command: %s = %s' % (
+                commandName,k.prettyPrintKey(stroke)),color='blue')
+    elif verbose:
+        g.es_print('@command: %s' % (commandName),color='blue')
+                
+    # Fixup any previous abbreviation to press-x-button commands.
+    if commandName.startswith('press-') and commandName.endswith('-button'):
+        d = c.config.getAbbrevDict()
+            # Keys are full command names, values are abbreviations.
+        if commandName in d.values():
+            for key in d.keys():
+                if d.get(key) == commandName:
+                    c.commandsDict [key] = c.commandsDict.get(commandName)
+                    break
+#@nonl
+#@-node:ekr.20061031131434.131:k.registerCommand
+#@+node:ekr.20061031131434.103:k.makeMasterGuiBinding
+def makeMasterGuiBinding (self,stroke,w=None):
+    
+    '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
+    
+    k = self ; c = k.c ; f = c.frame
+   
+    bindStroke = k.tkbindingFromStroke(stroke)
+    # g.trace('stroke',stroke,'bindStroke',bindStroke)
+
+    if w:
+        widgets = [w]
+    else:
+        bodyCtrl = f.body and hasattr(f.body,'bodyCtrl') and f.body.bodyCtrl or None     
+        if 1: # Canvas and bindingWidget bindings are now set in tree.setBindings.
+            widgets = (c.miniBufferWidget,bodyCtrl)
+        else:
+            bindingWidget = f.tree and hasattr(f.tree,'bindingWidget') and f.tree.bindingWidget or None
+            canvas = f.tree and hasattr(f.tree,'canvas') and f.tree.canvas   or None
+            widgets = (c.miniBufferWidget,bodyCtrl,canvas,bindingWidget)
+    
+    # This is the only real key callback.
+    def masterBindKeyCallback (event,k=k,stroke=stroke):
+        # g.trace(stroke)
+        return k.masterKeyHandler(event,stroke=stroke)
+
+    for w in widgets:
+        if not w: continue
+        # Make the binding only if no binding for the stroke exists in the widget.
+        aList = k.masterGuiBindingsDict.get(bindStroke,[])
+        if w not in aList:
+            aList.append(w)
+            k.masterGuiBindingsDict [bindStroke] = aList
+            try:
+                w.bind(bindStroke,masterBindKeyCallback)
+                # g.trace(stroke,bindStroke,g.app.gui.widget_name(w))
+            except Exception:
+                if self.trace_bind_key_exceptions:
+                    g.es_exception()
+                g.es_print('exception binding %s to %s' % (
+                    bindStroke, c.widget_name(w)), color = 'blue')
+                if g.app.unitTesting: raise
+#@-node:ekr.20061031131434.103:k.makeMasterGuiBinding
+#@+node:ekr.20070325104904:cc.finishCreate
+def finishCreate (self):
+    
+    '''Find or make the @chapters and @chapter trash nodes.'''
+    
+    # This must be called late in the init process:
+    # at present, called by g.openWithFileName and c.new.
+
+    cc = self ; c = cc.c ; k = c.k ; tt = cc.tt ; trace = False or self.trace
+    
+    # g.trace(g.callers())
+    
+    current = c.currentPosition()
+    cc.mainRoot = c.rootPosition()
+    if trace: g.trace('chapterController: currentPosition',current,'rootPosition',cc.mainRoot)
+    
+    # Create the @chapters node if needed, and set cc.chaptersNode.
+    if not cc.chaptersNode and not cc.findChaptersNode():
+        cc.createChaptersNode()
+        
+    if cc.mainRoot == cc.chaptersNode and cc.mainRoot.hasNext():
+        cc.mainRoot = cc.mainRoot.next()
+        c.setRootPosition(cc.mainRoot)
+        c.setCurrentPosition(current)
+        
+    if trace:g.trace('chapterController: mainRoot',cc.mainRoot)
+      
+    # The chapters node is always unlinked, except when saving .leo files.
+    cc.unlinkChaptersNode()
+        
+    if not cc.findChapterNode('trash',giveError=False):
+        cc.createChapterNode('trash')
+        
+    # Create the two default chapters.
+    for tabName in ('trash','main'):
+        p = cc.getChapterNode(tabName)
+        cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+        if tabName == 'main':
+            # The main tab, tree and canvas were created earlier.
+            c.frame.tree = tree = tt.getTree(tabName)
+            c.frame.canvas = tt.getCanvas(tabName)
+        else:
+            tt.createTab(tabName,select=False)
+            tree = tt.getTree(tabName)
+            
+        # This is required even in the 'main' chapter so that
+        # bindings set by k.registerCommand are updated.
+        tree.setBindings()
+        tt.makeTabMenu(tabName)
+
+    # Create a chapter for each @chapter node.
+    tag = '@chapter'
+    for p in cc.chaptersNode.children_iter():
+        h = p.headString()
+        if h.startswith(tag):
+            tabName = h[len(tag):].strip()
+            if tabName and tabName not in ('main','trash'):
+                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+                ### tabName = p.bodyString() or tabName
+                # g.trace('tabName',tabName)
+                tt.createTab(tabName,select=False)
+                tt.makeTabMenu(tabName)
+                tree = tt.getTree(tabName)
+                tree.setBindings()
+            
+    cc.selectChapter('main')
+#@nonl
+#@-node:ekr.20070325104904:cc.finishCreate
+#@+node:ekr.20051024102724:tkTtree.setBindings
+def setBindings (self,):
+    
+    '''Create master bindings for all headlines.'''
+        
+    tree = self ; k = self.c.k ; canvas = self.canvas
+    
+    # g.trace('self',self,'canvas',canvas)
+    
+    << make bindings for a common binding widget >>
+    
+    tree.setCanvasBindings(canvas)
+    
+    k.completeAllBindingsForWidget(canvas)
+
+    k.completeAllBindingsForWidget(self.bindingWidget)
+
+    
+#@nonl
+#@+node:ekr.20060131173440:<< make bindings for a common binding widget >>
+self.bindingWidget = w = g.app.gui.plainTextWidget(
+    self.canvas,name='bindingWidget')
+
+w.bind('<Key>',k.masterKeyHandler)
+
+table = (
+    ('<Button-1>',       k.masterClickHandler,          tree.onHeadlineClick),
+    ('<Button-3>',       k.masterClick3Handler,         tree.onHeadlineRightClick),
+    ('<Double-Button-1>',k.masterDoubleClickHandler,    tree.onHeadlineClick),
+    ('<Double-Button-3>',k.masterDoubleClick3Handler,   tree.onHeadlineRightClick),
+)
+
+for a,handler,func in table:
+    def treeBindingCallback(event,handler=handler,func=func):
+        # g.trace('func',func)
+        return handler(event,func)
+    w.bind(a,treeBindingCallback)
+    
+self.textBindings = w.bindtags()
+#@-node:ekr.20060131173440:<< make bindings for a common binding widget >>
+#@-node:ekr.20051024102724:tkTtree.setBindings
+#@+node:ekr.20061031131434.96:k.completeAllBindingsForWidget
+def completeAllBindingsForWidget (self,w):
+    
+    k = self ; d = k.bindingsDict
+    
+    # g.trace('w',w,d.has_key('Alt+Key-4'))
+    
+    for stroke in d.keys():
+        k.makeMasterGuiBinding(stroke,w=w)
+#@-node:ekr.20061031131434.96:k.completeAllBindingsForWidget
+#@+node:ekr.20061031131434.188:<< compute the last field >>
+if s.endswith('+'):
+    last = '+'
+else:
+    fields = s.split('+') # Don't lower this field.
+    last = fields and fields[-1]
+    if not last:
+        if not g.app.menuWarningsGiven:
+            print "bad shortcut specifier:", s
+        return None
+
+if len(last) == 1:
+    last2 = k.guiBindNamesDict.get(last) # Fix new bug introduced in 4.4b2.
+    # g.trace(last,last2)
+    if last2:
+        last = last2 ; shift = False # Ignore the shift state for these special chars.
+    else:
+        if shift:
+            last = last.upper()
+            shift = False
+        else:
+            last = last.lower()
+            
+        # New in Leo 4.4.2: Alt-2 is not a key event!
+        if last.isdigit():
+            last = 'Key-' + last
+else:
+    # Translate from a made-up (or lowercase) name to 'official' Tk binding name.
+    # This is a *one-way* translation, done only here.
+    d = k.settingsNameDict
+    last = d.get(last.lower(),last)
+#@-node:ekr.20061031131434.188:<< compute the last field >>
+#@-node:ekr.20070515131952:Fixed bug: Key bindings were not set in @command nodes
 #@-node:ekr.20070418094610.1:Fixed bugs
 #@-node:ekr.20070318125900:Leo 4.4.3 b1 projects
 #@+node:ekr.20070126072723:pychecker

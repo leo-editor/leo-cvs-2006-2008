@@ -363,7 +363,7 @@ class leoTkinterTree (leoFrame.leoTree):
         
         k.completeAllBindingsForWidget(canvas)
     
-        k.completeAllBindings(w=self.bindingWidget)
+        k.completeAllBindingsForWidget(self.bindingWidget)
     
         
     #@nonl

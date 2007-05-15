@@ -2003,11 +2003,11 @@ class keyHandlerClass:
     #@+node:ekr.20061031131434.96:k.completeAllBindingsForWidget
     def completeAllBindingsForWidget (self,w):
         
-        k = self
+        k = self ; d = k.bindingsDict
         
-        # g.trace('w',w,g.callers())
+        # g.trace('w',w,d.has_key('Alt+Key-4'))
         
-        for stroke in k.bindingsDict.keys():
+        for stroke in d.keys():
             k.makeMasterGuiBinding(stroke,w=w)
     #@-node:ekr.20061031131434.96:k.completeAllBindingsForWidget
     #@+node:ekr.20061031131434.97:k.completeAllBindings
@@ -2132,7 +2132,7 @@ class keyHandlerClass:
         # g.trace(g.listToString(k.bindingsDict.keys(),sort=True))
         # g.trace('Ctrl+g',k.bindingsDict.get('Ctrl+g'))
     #@-node:ekr.20061031131434.102:makeBindingsFromCommandsDict
-    #@+node:ekr.20061031131434.103:makeMasterGuiBinding
+    #@+node:ekr.20061031131434.103:k.makeMasterGuiBinding
     def makeMasterGuiBinding (self,stroke,w=None):
         
         '''Make a master gui binding for stroke in pane w, or in all the standard widgets.'''
@@ -2174,7 +2174,7 @@ class keyHandlerClass:
                     g.es_print('exception binding %s to %s' % (
                         bindStroke, c.widget_name(w)), color = 'blue')
                     if g.app.unitTesting: raise
-    #@-node:ekr.20061031131434.103:makeMasterGuiBinding
+    #@-node:ekr.20061031131434.103:k.makeMasterGuiBinding
     #@-node:ekr.20061031131434.88:Binding (keyHandler)
     #@+node:ekr.20061031131434.104:Dispatching (keyHandler)
     #@+node:ekr.20061031131434.105:masterCommand & helpers
@@ -2885,7 +2885,7 @@ class keyHandlerClass:
         
         k = self ; c = k.c
         f = c.commandsDict.get(commandName)
-        verbose = verbose and not g.app.unitTesting
+        verbose = (False or verbose) and not g.app.unitTesting
         if f and f.__name__ != 'dummyCallback' and verbose:
             g.es_print('Redefining %s' % (commandName), color='red')
             
@@ -2908,7 +2908,7 @@ class keyHandlerClass:
                     if stroke: break
             else: stroke = None
       
-        # g.trace('verbose',verbose,'stroke',stroke,commandName)
+        # g.trace('stroke',stroke,commandName)
         if stroke:
             ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
             k.makeMasterGuiBinding(stroke) # Must be a stroke.
