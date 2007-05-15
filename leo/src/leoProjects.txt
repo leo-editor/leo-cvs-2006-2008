@@ -38657,8 +38657,6 @@ def newText (self,p,x,y):
         w,theId = self.freeText.pop()
         canvas.coords(theId,x,y) # Make the window visible again.
             # theId is the id of the *window* not the text.
-        ### Must do this every time when chapters are in effect.
-        w.bindtags(self.textBindings) # Set the bindings for this widget.
     else:
         # Tags are not valid in Tk.Text widgets.
         self.textNumber += 1
