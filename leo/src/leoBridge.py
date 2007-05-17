@@ -15,7 +15,7 @@
 # 
 # A **host** program is a Python program separate from Leo. Host programs may 
 # be
-# created by Leo, but at the time they are run host programs are no part of 
+# created by Leo, but at the time they are run host programs are not part of 
 # Leo in
 # any way. The leoBridge module gives host programs access to all aspects of 
 # Leo,
@@ -40,12 +40,12 @@
 # appear on the screen.
 # 
 # - As shown above, the host program should gain access to Leo's leoGlobals 
-# module using bridge.globals(). The host program should not import leoGlobals 
+# module
+# using bridge.globals(). The host program should not import leoGlobals 
 # directly.
 # 
-# - bridge.openLeoFile(path) returns a completely standard Leo commander.  
-# Host programs can use these commanders as described in Leo's scripting 
-# chapter.
+# - bridge.openLeoFile(path) returns a completely standard Leo commander. Host
+# programs can use these commanders as described in Leo's scripting chapter.
 #@-at
 #@nonl
 #@-node:ekr.20070227091955.2:<< about the leoBridge module >>
@@ -297,7 +297,6 @@ class bridgeController:
                 if theId:
                     if verbose: g.es_print("using os.getenv('USER'): %s " % (repr(theId)),color='red')
                     g.app.leoID = theId
-                    return
                     
             except Exception:
                 pass
