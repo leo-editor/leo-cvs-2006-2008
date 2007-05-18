@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.580941446613">
-	<global_window_position top="30" left="340" height="851" width="897"/>
+<globals body_outline_ratio="0.4440433213">
+	<global_window_position top="93" left="343" height="831" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2" a="E"><vh>Table of contents</vh>
 <v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -1046,7 +1046,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.646"><vh>Borland PC versions...</vh>
@@ -3120,8 +3120,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20070513111132"><vh>4.4.3 beta 1</vh>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20070513111132" a="ETV"><vh>4.4.3 beta 1</vh>
 <v t="ekr.20070513111132.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070513111132.2"><vh>Bugs</vh>
 <v t="ekr.20070513111132.3"><vh>Fixed an escape bug in new colorizer</vh></v>
@@ -31071,14 +31071,10 @@ when I meant Ctrl-whatever.
 <t tx="ekr.20070317044921"></t>
 <t tx="ekr.20070325123558"></t>
 <t tx="ekr.20070325123558.1">trash</t>
-<t tx="ekr.20070513111132">Leo 4.4.3 beta 1                                May 14, 2006
+<t tx="ekr.20070513111132">Leo 4.4.3 beta 1                                May 18, 2006
 
 Leo 4.4.3 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
-
-This beta 1 version is the first widely-distributed version supporting chapters.
-This version should be safe enough to use--if problems are found with chapters
-the chapter code can be completely bypassed by setting @bool use_chapters = False.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -31086,8 +31082,9 @@ http://webpages.charter.net/edreamleo/intro.html
 The highlights of Leo 4.4.3:
 ----------------------------
 - Added support for chapters in Leo's core.
+  Chapters are disabled by default.  To enable, set @bool use_chapters = True.
 - Added support for zipped .leo files.
-- A leoBridge module that allows full access to all of Leo's capabilities
+- Added a leoBridge module that allows full access to all of Leo's capabilities
   from programs running outside of Leo.
 - Removed all gui-dependent code from Leo's core.
 - Better support for the winpdb debugger.
@@ -31523,7 +31520,8 @@ There was a bug with ordinary hoisting: in the "Outline" menu the "Delete Node"
 menu item was not disabled when the local root is selected.
 </t>
 <t tx="ekr.20070513111526.200"></t>
-<t tx="ekr.20070513112414">Chapters are only enabled if @bool use_chapters is True.
+<t tx="ekr.20070513112414">Chapters are only enabled if @bool use_chapters = True.
+At present, Leo is distributed with use_chapters = False.
 
 When chapters are enabled Leo draws tabs in the outline pane--one tab per
 chapter. Right-clicking any chapter tab shows the list of available chapter
@@ -31532,8 +31530,16 @@ clone nodes from one chapter to another.
 
 The 'main' chapter represents the entire outline.
 
-When chapters are in effect, Leo creates a hidden @chapters node containing one
-@chapter node for every chapter except the 'main' chapter.</t>
+Leo creates a hidden @chapters node containing one @chapter node for every
+chapter except the 'main' chapter. These nodes are written when Leo saves the
+.leo file. In particular, @chapters and @chapter nodes are visible, ordinary
+nodes when @bool use_chapters = False.
+
+Known problems with chapters:
+    
+- Renaming chapters do not retain their new names when .leo file is reloaded.
+- Chapters can only be moved when the @chapters node is visible, that is, when
+  @bool use_chapters = False.</t>
 <t tx="ekr.20070513113903"></t>
 <t tx="ekr.20070513113931">@ @rst-options
 code_mode=False

@@ -546,6 +546,7 @@ class baseLeoImportCommands:
         #@    << Create a symbol table of all section names >>
         #@+node:ekr.20031218072017.3232:<< Create a symbol table of all section names >>
         i = 0 ; self.web_st = []
+        
         while i < len(s):
             i = g.skip_ws_and_nl(s,i)
             # line = g.get_line(s,i) ; g.trace(line)

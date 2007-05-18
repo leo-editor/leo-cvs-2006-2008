@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="760" width="937"/>
+	<global_window_position top="10" left="238" height="740" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -81,7 +81,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -216,7 +216,7 @@
 <v t="ekr.20060524151415.1"><vh>@string debugger_kind = winpdb</vh></v>
 <v t="ekr.20060521132401"><vh>@string debugger_path = None</vh></v>
 </v>
-<v t="ekr.20051126062243" a="E" annotate="7d71002e"><vh>Debugging</vh>
+<v t="ekr.20051126062243" annotate="7d71002e"><vh>Debugging</vh>
 <v t="ekr.20060408090018"><vh>@bool added_setting = True</vh></v>
 <v t="ekr.20060201110016"><vh>@bool allow_idle_time_hook = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = True</vh></v>
@@ -248,7 +248,7 @@
 <v t="ekr.20060206155101"><vh>@bool trace_tree_alloc = False</vh></v>
 <v t="ekr.20060206161839"><vh>@bool trace_tree_edit = False</vh></v>
 <v t="ekr.20070503080312"><vh>@bool trace_tree_gc = False</vh></v>
-<v t="ekr.20051126062243.1" a="TV"><vh>@bool trace_tree_redraw = False</vh></v>
+<v t="ekr.20051126062243.1"><vh>@bool trace_tree_redraw = False</vh></v>
 <v t="ekr.20060425125015"><vh>@bool verbose_trace_color_parser = False</vh></v>
 <v t="ekr.20060323131801"><vh>@bool warn_about_missing_settings = False</vh></v>
 <v t="ekr.20060521134125"><vh>@string debugger_default_target = None</vh></v>

@@ -1,24 +1,24 @@
-Leo 4.4.3 alpha 2                                  March 17, 2006
+Leo 4.4.3 beta 1                                May 18, 2006
 
-Leo 4.4.3 alpha 2 is available at:
+Leo 4.4.3 beta 1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
-
-This version of Leo should be safe enough for production use. It is an alpha
-distribution because not all plugins have been tested on the reorganized code
-base.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
 The highlights of Leo 4.4.3:
 ----------------------------
-- A leoBridge module that allows full access to all of Leo's capabilities
+- Added support for chapters in Leo's core.
+  Chapters are disabled by default.  To enable, set @bool use_chapters = True.
+- Added support for zipped .leo files.
+- Added a leoBridge module that allows full access to all of Leo's capabilities
   from programs running outside of Leo.
-- Added support for @enabled-plugins nodes in settings files.
-- The__wx_gui plugin is now functional.
 - Removed all gui-dependent code from Leo's core.
 - Better support for the winpdb debugger.
-- Many minor improvements, new settings and bug fixes.
+- Added support for @enabled-plugins nodes in settings files.
+- Added support for @open-with nodes in settings files.
+- The__wx_gui plugin is now functional.
+- Many minor improvements, new settings, commands and bug fixes.
 
 Links:
 ------

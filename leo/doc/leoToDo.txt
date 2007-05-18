@@ -90,10 +90,62 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070515113324:To do: b1
+#@+node:ekr.20070515100356:To do: b2
+#@+node:ekr.20070325054325:Docs
+#@+node:ekr.20070215093739:Improve Leo's getting started page
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4159734
+By: rogererens
+
+Here are some issues with respect to installing Leo on Windows:
+
+I think you should divide the "How to install Leo on Windows" into separate
+sections: one section that describes the use of the installer and another one
+that describes the use of the .zip-file. In the near future probably Vista deserves
+its own section, too.
+
+The notes warn about Python 2.4 and spaces in paths. The installer appears to
+work properly with Python 2.5 though, and installing into a path that contains
+spaces works fine too, AFAIK. Or are there any usability test cases to check
+this?
+
+Also, I would advice the person that is installing Leo to create an environment
+variable (either a user variable or a system variable) called HOME with the
+value "%USERPROFILE%\My Documents" when %HOME% does not yet exist (check in
+a cmd-window by typing "echo %HOME%" without the quotes).
+Then, after installing, a user should have the shortcut icon on his/her desktop;
+change this by right-clicking and choosing properties to change the directory
+where the application starts from the default "C:\Program Files\Leo\test\unittest"
+into %HOME%.
+I'm not sure if this could all be done automatically by the NSIS installer.
+
+Finally, there's the issue that I installed Leo in the default Program Files
+folder, while having the Administrator's role. After which I copied and adapted
+the Leo shortcut to the desktop of a user with limited rights.
+Unfortunately, when logged on as such a limited user, no plugins can be
+enabled/disabled because of the restrictions on writing in program
+files\leo\plugin.
+(Even if the limited user _could_ write in that folder, it would be problematic:
+his set of enabled plugins would overwrite the set of enabled plugins for the
+administrator or another user).
+
+Hope this helps to improve the installation experience for novices...
+#@-node:ekr.20070215093739:Improve Leo's getting started page
+#@+node:ekr.20070218143918:Improve Windows installation instructions
+This section is way too confusing:
+    
+Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to install Leo on Windows
+#@nonl
+#@-node:ekr.20070218143918:Improve Windows installation instructions
+#@+node:ekr.20061130084909:Improve What's special whitepaper
+@nocolor
+
+- Answer the question: how can Leo help me with programming?
+#@nonl
+#@-node:ekr.20061130084909:Improve What's special whitepaper
+#@-node:ekr.20070325054325:Docs
 #@+node:ekr.20070515113707:Dist
-#@+node:ekr.20070515113707.1:Make sure LeoPyRef  doesn't reference non-existent files
-#@-node:ekr.20070515113707.1:Make sure LeoPyRef  doesn't reference non-existent files
 #@+node:ekr.20070202080824:Enable more plugins by default
 @nocolor
 
@@ -149,62 +201,303 @@ way to SEE the attributes (this goes for "Labels," as well).
 #@+node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070515113707:Dist
-#@+node:ekr.20070325054325:Docs
-#@+node:ekr.20061130084909:Improve What's special whitepaper
-@nocolor
+#@+node:ekr.20070518062728:Fix noweb problems
+#@+node:ekr.20031218072017.3224:importWebCommand & allies
+#@+node:ekr.20031218072017.3225:createOutlineFromWeb
+def createOutlineFromWeb (self,path,parent):
 
-- Answer the question: how can Leo help me with programming?
-#@nonl
-#@-node:ekr.20061130084909:Improve What's special whitepaper
-#@+node:ekr.20070215093739:Improve Leo's getting started page
-@nocolor
+    c = self.c ; u = c.undoer
+    junk,fileName = g.os_path_split(path)
 
-http://sourceforge.net/forum/message.php?msg_id=4159734
-By: rogererens
-
-Here are some issues with respect to installing Leo on Windows:
-
-I think you should divide the "How to install Leo on Windows" into separate
-sections: one section that describes the use of the installer and another one
-that describes the use of the .zip-file. In the near future probably Vista deserves
-its own section, too.
-
-The notes warn about Python 2.4 and spaces in paths. The installer appears to
-work properly with Python 2.5 though, and installing into a path that contains
-spaces works fine too, AFAIK. Or are there any usability test cases to check
-this?
-
-Also, I would advice the person that is installing Leo to create an environment
-variable (either a user variable or a system variable) called HOME with the
-value "%USERPROFILE%\My Documents" when %HOME% does not yet exist (check in
-a cmd-window by typing "echo %HOME%" without the quotes).
-Then, after installing, a user should have the shortcut icon on his/her desktop;
-change this by right-clicking and choosing properties to change the directory
-where the application starts from the default "C:\Program Files\Leo\test\unittest"
-into %HOME%.
-I'm not sure if this could all be done automatically by the NSIS installer.
-
-Finally, there's the issue that I installed Leo in the default Program Files
-folder, while having the Administrator's role. After which I copied and adapted
-the Leo shortcut to the desktop of a user with limited rights.
-Unfortunately, when logged on as such a limited user, no plugins can be
-enabled/disabled because of the restrictions on writing in program
-files\leo\plugin.
-(Even if the limited user _could_ write in that folder, it would be problematic:
-his set of enabled plugins would overwrite the set of enabled plugins for the
-administrator or another user).
-
-Hope this helps to improve the installation experience for novices...
-#@-node:ekr.20070215093739:Improve Leo's getting started page
-#@+node:ekr.20070218143918:Improve Windows installation instructions
-This section is way too confusing:
+    undoData = u.beforeInsertNode(parent)
     
-Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to install Leo on Windows
-#@nonl
-#@-node:ekr.20070218143918:Improve Windows installation instructions
-#@-node:ekr.20070325054325:Docs
-#@-node:ekr.20070515113324:To do: b1
-#@+node:ekr.20070515100356:To do: b2
+    # Create the top-level headline.
+    p = parent.insertAsLastChild()
+    p.initHeadString(fileName)
+    if self.webType=="cweb":
+        c.setBodyString(p,"@ignore\n" + self.rootLine + "@language cweb")
+
+    # Scan the file, creating one section for each function definition.
+    self.scanWebFile(path,p)
+
+    u.afterInsertNode(p,'Import',undoData)
+
+    return p
+#@-node:ekr.20031218072017.3225:createOutlineFromWeb
+#@+node:ekr.20031218072017.3226:importWebCommand
+def importWebCommand (self,files,webType):
+
+    c = self.c ; current = c.currentVnode()
+    if current == None: return
+    if not files: return
+    self.tab_width = self.getTabWidth() # New in 4.3.
+    self.webType = webType
+
+    c.beginUpdate()
+    try:
+        for fileName in files:
+            g.setGlobalOpenDir(fileName)
+            v = self.createOutlineFromWeb(fileName,current)
+            v.contract()
+            v.setDirty()
+            c.setChanged(True)
+        c.selectVnode(current)
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.3226:importWebCommand
+#@+node:ekr.20031218072017.3227:findFunctionDef
+def findFunctionDef (self,s,i):
+    
+    # Look at the next non-blank line for a function name.
+    i = g.skip_ws_and_nl(s,i)
+    k = g.skip_line(s,i)
+    name = None
+    while i < k:
+        if g.is_c_id(s[i]):
+            j = i ; i = g.skip_c_id(s,i) ; name = s[j:i]
+        elif s[i] == '(':
+            if name: return name
+            else: break
+        else: i += 1
+    return None
+#@-node:ekr.20031218072017.3227:findFunctionDef
+#@+node:ekr.20031218072017.3228:scanBodyForHeadline
+@ This method returns the proper headline text.
+
+1. If s contains a section def, return the section ref.
+2. cweb only: if s contains @c, return the function name following the @c.
+3. cweb only: if s contains @d name, returns @d name.
+4. Otherwise, returns "@"
+@c
+
+def scanBodyForHeadline (self,s):
+    
+    if self.webType == "cweb":
+        << scan cweb body for headline >>
+    else:
+        << scan noweb body for headline >>
+    return "@" # default.
+#@+node:ekr.20031218072017.3229:<< scan cweb body for headline >>
+i = 0
+while i < len(s):
+    i = g.skip_ws_and_nl(s,i)
+    # line = g.get_line(s,i) ; g.trace(line)
+    # Allow constructs such as @ @c, or @ @<.
+    if self.isDocStart(s,i):
+        i += 2 ; i = g.skip_ws(s,i)
+    if g.match(s,i,"@d") or g.match(s,i,"@f"):
+        # Look for a macro name.
+        directive = s[i:i+2]
+        i = g.skip_ws(s,i+2) # skip the @d or @f
+        if i < len(s) and g.is_c_id(s[i]):
+            j = i ; g.skip_c_id(s,i) ; return s[j:i]
+        else: return directive
+    elif g.match(s,i,"@c") or g.match(s,i,"@p"):
+        # Look for a function def.
+        name = self.findFunctionDef(s,i+2)
+        return g.choose(name,name,"outer function")
+    elif g.match(s,i,"@<"):
+        # Look for a section def.
+        # A small bug: the section def must end on this line.
+        j = i ; k = g.find_on_line(s,i,"@>")
+        if k > -1 and (g.match(s,k+2,"+=") or g.match(s,k+2,"=")):
+            return s[j:k+2] # return the section ref.
+    i = g.skip_line(s,i)
+#@-node:ekr.20031218072017.3229:<< scan cweb body for headline >>
+#@+node:ekr.20031218072017.3230:<< scan noweb body for headline >>
+i = 0
+while i < len(s):
+    i = g.skip_ws_and_nl(s,i)
+    # line = g.get_line(s,i) ; g.trace(line)
+    if g.match(s,i,"<<"):
+        k = g.find_on_line(s,i,">>=")
+        if k > -1:
+            ref = s[i:k+2]
+            name = string.strip(s[i+2:k])
+            if name != "@others":
+                return ref
+    else:
+        name = self.findFunctionDef(s,i)
+        if name:
+            return name
+    i = g.skip_line(s,i)
+#@-node:ekr.20031218072017.3230:<< scan noweb body for headline >>
+#@-node:ekr.20031218072017.3228:scanBodyForHeadline
+#@+node:ekr.20031218072017.3231:scanWebFile (handles limbo)
+def scanWebFile (self,fileName,parent):
+
+    theType = self.webType
+    lb = g.choose(theType=="cweb","@<","<<")
+    rb = g.choose(theType=="cweb","@>",">>")
+
+    try: # Read the file into s.
+        f = open(fileName)
+        s = f.read()
+    except:
+        g.es("Can not import " + fileName, color="blue")
+        return
+
+    << Create a symbol table of all section names >>
+    << Create nodes for limbo text and the root section >>
+    while i < len(s):
+        progress = i
+        << Create a node for the next module >>
+        assert(progress < i)
+#@+node:ekr.20031218072017.3232:<< Create a symbol table of all section names >>
+i = 0 ; self.web_st = []
+
+while i < len(s):
+    i = g.skip_ws_and_nl(s,i)
+    # line = g.get_line(s,i) ; g.trace(line)
+    if self.isDocStart(s,i):
+        if theType == "cweb": i += 2
+        else: i = g.skip_line(s,i)
+    elif theType == "cweb" and g.match(s,i,"@@"):
+        i += 2
+    elif g.match(s,i,lb):
+        i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
+        if k > -1: self.cstEnter(s[j:k])
+    else: i += 1
+
+# g.trace(self.cstDump())
+#@-node:ekr.20031218072017.3232:<< Create a symbol table of all section names >>
+#@+node:ekr.20031218072017.3233:<< Create nodes for limbo text and the root section >>
+i = 0
+while i < len(s):
+    i = g.skip_ws_and_nl(s,i)
+    if self.isModuleStart(s,i) or g.match(s,i,lb):
+        break
+    else: i = g.skip_line(s,i)
+    
+j = g.skip_ws(s,0)
+if j < i:
+    self.createHeadline(parent,"@ " + s[j:i],"Limbo")
+
+j = i
+if g.match(s,i,lb):
+    while i < len(s):
+        i = g.skip_ws_and_nl(s,i)
+        if self.isModuleStart(s,i):
+            break
+        else: i = g.skip_line(s,i)
+    self.createHeadline(parent,s[j:i],g.angleBrackets(" @ "))
+    
+# g.trace(g.get_line(s,i))
+#@-node:ekr.20031218072017.3233:<< Create nodes for limbo text and the root section >>
+#@+node:ekr.20031218072017.3234:<< Create a node for the next module >>
+if theType=="cweb":
+    assert(self.isModuleStart(s,i))
+    start = i
+    if self.isDocStart(s,i):
+        i += 2
+        while i < len(s):
+            i = g.skip_ws_and_nl(s,i)
+            if self.isModuleStart(s,i): break
+            else: i = g.skip_line(s,i)
+    << Handle cweb @d, @f, @c and @p directives >>
+else:
+    assert(self.isDocStart(s,i)) # isModuleStart == isDocStart for noweb.
+    start = i ; i = g.skip_line(s,i)
+    while i < len(s):
+        i = g.skip_ws_and_nl(s,i)
+        if self.isDocStart(s,i): break
+        else: i = g.skip_line(s,i)
+    
+body = s[start:i]
+body = self.massageWebBody(body)
+headline = self.scanBodyForHeadline(body)
+self.createHeadline(parent,body,headline)
+#@+node:ekr.20031218072017.3235:<< Handle cweb @d, @f, @c and @p directives >>
+if g.match(s,i,"@d") or g.match(s,i,"@f"):
+    i += 2 ; i = g.skip_line(s,i)
+    # Place all @d and @f directives in the same node.
+    while i < len(s):
+        i = g.skip_ws_and_nl(s,i)
+        if g.match(s,i,"@d") or g.match(s,i,"@f"): i = g.skip_line(s,i)
+        else: break
+    i = g.skip_ws_and_nl(s,i)
+    
+while i < len(s) and not self.isModuleStart(s,i):
+    i = g.skip_line(s,i)
+    i = g.skip_ws_and_nl(s,i)
+
+if g.match(s,i,"@c") or g.match(s,i,"@p"):
+    i += 2 ; 
+    while i < len(s):
+        i = g.skip_line(s,i)
+        i = g.skip_ws_and_nl(s,i)
+        if self.isModuleStart(s,i):
+            break
+#@-node:ekr.20031218072017.3235:<< Handle cweb @d, @f, @c and @p directives >>
+#@-node:ekr.20031218072017.3234:<< Create a node for the next module >>
+#@-node:ekr.20031218072017.3231:scanWebFile (handles limbo)
+#@+node:ekr.20031218072017.3236:Symbol table
+#@+node:ekr.20031218072017.3237:cstCanonicalize
+# We canonicalize strings before looking them up, but strings are entered in the form they are first encountered.
+
+def cstCanonicalize (self,s,lower=True):
+    
+    if lower:
+        s = string.lower(s)
+    s = string.replace(s,"\t"," ")
+    s = string.replace(s,"\r","")
+    s = string.replace(s,"\n"," ")
+    s = string.replace(s,"  "," ")
+    s = string.strip(s)
+    return s
+#@-node:ekr.20031218072017.3237:cstCanonicalize
+#@+node:ekr.20031218072017.3238:cstDump
+def cstDump (self):
+
+    self.web_st.sort()
+    s = "Web Symbol Table...\n\n"
+    for name in self.web_st:
+        s += name + "\n"
+    return s
+#@-node:ekr.20031218072017.3238:cstDump
+#@+node:ekr.20031218072017.3239:cstEnter
+# We only enter the section name into the symbol table if the ... convention is not used.
+
+def cstEnter (self,s):
+
+    # Don't enter names that end in "..."
+    s = string.rstrip(s)
+    if s.endswith("..."): return
+    
+    # Put the section name in the symbol table, retaining capitalization.
+    lower = self.cstCanonicalize(s,True)  # do lower
+    upper = self.cstCanonicalize(s,False) # don't lower.
+    for name in self.web_st:
+        if string.lower(name) == lower:
+            return
+    self.web_st.append(upper)
+#@-node:ekr.20031218072017.3239:cstEnter
+#@+node:ekr.20031218072017.3240:cstLookup
+# This method returns a string if the indicated string is a prefix of an entry in the web_st.
+
+def cstLookup (self,target):
+    
+    # Do nothing if the ... convention is not used.
+    target = string.strip(target)
+    if not target.endswith("..."): return target
+    # Canonicalize the target name, and remove the trailing "..."
+    ctarget = target[:-3]
+    ctarget = self.cstCanonicalize(ctarget)
+    ctarget = string.strip(ctarget)
+    found = False ; result = target
+    for s in self.web_st:
+        cs = self.cstCanonicalize(s)
+        if cs[:len(ctarget)] == ctarget:
+            if found:
+                g.es("****** " + target + ": is also a prefix of: " + s)
+            else:
+                found = True ; result = s
+                # g.es("replacing: " + target + " with: " + s)
+    return result
+#@-node:ekr.20031218072017.3240:cstLookup
+#@-node:ekr.20031218072017.3236:Symbol table
+#@-node:ekr.20031218072017.3224:importWebCommand & allies
+#@-node:ekr.20070518062728:Fix noweb problems
 #@+node:ekr.20070514102229.1:Fix automatic directory creation
 @nocolor
 https://sourceforge.net/forum/message.php?msg_id=4301021
