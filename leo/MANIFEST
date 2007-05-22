@@ -113,6 +113,7 @@ doc\html\leo_TOC.html
 doc\html\leo_rst.css
 doc\html\new-4-4-1.html
 doc\html\new-4-4-2.html
+doc\html\new-4-4-3.html
 doc\html\new-4-4.html
 doc\html\outlines.html
 doc\html\plugins.html
@@ -544,9 +545,8 @@ plugins\at_view.py
 plugins\autotrees.py
 plugins\base64Packager.py
 plugins\bibtex.py
+plugins\bookmarks.py
 plugins\chapter_hoist.py
-plugins\chapters(4.3).py
-plugins\chapters2(4.4).py
 plugins\chinese_menu.py
 plugins\cleo.py
 plugins\color_markup.py
@@ -681,6 +681,7 @@ src\leo.py
 src\leoApp.py
 src\leoAtFile.py
 src\leoBridge.py
+src\leoChapters.py
 src\leoColor.py
 src\leoCommands.py
 src\leoCompare.py

@@ -2028,41 +2028,6 @@ scripts.
 #@-node:ekr.20031218072017.401:Yet another Python .bat wrapper
 #@-node:ekr.20031218072017.399:How to run Python programs easily on NT,2K,XP
 #@-node:ekr.20031218072017.392:Python Notes...
-#@+node:ekr.20050306070535:Tk Notes
-@killcolor
-#@nonl
-#@+node:ekr.20050306070535.3:How to detect changes in text
-http://sourceforge.net/forum/message.php?msg_id=1864564
-By: btheado
-
-WAS:RE: Leo 3.10 comments
-edream wrote:
-
->This is due to apparent glitches in the Tk event dispatching. The problem is
-that pressing a control or alt or shift key _all by themselves_ will generate
-keypress events that are passed on to Leo's key handlers
-
-This should be easy to make simpler--just bind an empty script to <Alt-KeyPress>,
-<Shift-KeyPress>, etc.  Tk chooses the most specific event it can find, so the
-more general <KeyPress> handler will not fire.
-
-On a broader note, when programming the text widget in Tcl/Tk, watching key
-events is not the easiest way to detect changes in the text.  The only way the
-text in a text widget can change is if either the delete or the insert subcommands
-(methods) are called.  Any keypresses that end up changing text will have called
-one of these subcommands.
-
-So the simplest way to detect changes is to just intercept the calls to insert
-and delete.  In Tcl/Tk intercepting these calls is pretty straightforward. 
-I don't know if the same is true in Tkinter.
-
-Also note the text widget in Tk8.4 (http://www.tcl.tk/man/tcl8.4/TkCmd/text.htm#M72)
-has a built-in way of seeing if the text has changed
-
-Brian Theado
-#@nonl
-#@-node:ekr.20050306070535.3:How to detect changes in text
-#@-node:ekr.20050306070535:Tk Notes
 #@+node:ekr.20070308062440:Thread notes
 #@+node:ekr.20070308062440.1:Posting 2
 On 2/26/07, Edward Ream <edreamleo@charter.net> wrote:
@@ -2118,6 +2083,41 @@ def runtasks():
 #@nonl
 #@-node:ekr.20070308062440.1:Posting 2
 #@-node:ekr.20070308062440:Thread notes
+#@+node:ekr.20050306070535:Tk Notes
+@killcolor
+#@nonl
+#@+node:ekr.20050306070535.3:How to detect changes in text
+http://sourceforge.net/forum/message.php?msg_id=1864564
+By: btheado
+
+WAS:RE: Leo 3.10 comments
+edream wrote:
+
+>This is due to apparent glitches in the Tk event dispatching. The problem is
+that pressing a control or alt or shift key _all by themselves_ will generate
+keypress events that are passed on to Leo's key handlers
+
+This should be easy to make simpler--just bind an empty script to <Alt-KeyPress>,
+<Shift-KeyPress>, etc.  Tk chooses the most specific event it can find, so the
+more general <KeyPress> handler will not fire.
+
+On a broader note, when programming the text widget in Tcl/Tk, watching key
+events is not the easiest way to detect changes in the text.  The only way the
+text in a text widget can change is if either the delete or the insert subcommands
+(methods) are called.  Any keypresses that end up changing text will have called
+one of these subcommands.
+
+So the simplest way to detect changes is to just intercept the calls to insert
+and delete.  In Tcl/Tk intercepting these calls is pretty straightforward. 
+I don't know if the same is true in Tkinter.
+
+Also note the text widget in Tk8.4 (http://www.tcl.tk/man/tcl8.4/TkCmd/text.htm#M72)
+has a built-in way of seeing if the text has changed
+
+Brian Theado
+#@nonl
+#@-node:ekr.20050306070535.3:How to detect changes in text
+#@-node:ekr.20050306070535:Tk Notes
 #@+node:ekr.20031218072017.434:Unused code
 @ignore
 @language python

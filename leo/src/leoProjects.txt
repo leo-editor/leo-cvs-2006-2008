@@ -13461,42 +13461,6 @@ def isModuleStart (self,s,i):
             g.match(s,i,"@c") or g.match(s,i,"@p") or
             g.match(s,i,"@d") or g.match(s,i,"@f"))
 #@-node:ekr.20070203074709.4:isDocStart and isModuleStart
-#@+node:ekr.20070203074709.5:massageBody
-def massageBody (self,s,methodKind):
-    
-    # g.trace(s)
-    # g.trace(g.get_line(s,0))
-    c = self.c
-    if self.treeType == "@file":
-        if self.fileType == ".py": # 7/31/02: was "py"
-            return self.undentBody(s)
-        else:
-            newBody, comment = self.skipLeadingComments(s)
-            newBody = self.undentBody(newBody)
-            newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
-            if len(comment) > 0:
-                return comment + "\n@c" + newLine + newBody
-            else:
-                return newBody
-    else:
-        # Inserts < < self.methodName methodKind > > =
-        cweb = self.fileType == "c" and not c.use_noweb_flag
-        lb = g.choose(cweb,"@<","<<")
-        rb = g.choose(cweb,"@>=",">>=")
-        intro = lb + " " + self.methodName + " " + methodKind + " " + rb
-        if self.fileType == ".py": # 7/31/02: was "py"
-            newBody = self.undentBody(s)
-            newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
-            return intro + newLine + newBody
-        else:
-            newBody, comment = self.skipLeadingComments(s)
-            newBody = self.undentBody(newBody)
-            newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
-            if len(comment) > 0:
-                return comment + "\n" + intro + newLine + newBody
-            else:
-                return intro + newLine + newBody
-#@-node:ekr.20070203074709.5:massageBody
 #@+node:ekr.20070203074709.6:massageComment
 def massageComment (self,s):
 
@@ -13512,65 +13476,6 @@ def massageComment (self,s):
     s = s.strip()
     return s
 #@-node:ekr.20070203074709.6:massageComment
-#@+node:ekr.20070203074709.7:massageWebBody
-def massageWebBody (self,s):
-
-    theType = self.webType
-    lb = g.choose(theType=="cweb","@<","<<")
-    rb = g.choose(theType=="cweb","@>",">>")
-    << Remove most newlines from @space and @* sections >>
-    << Replace abbreviated names with full names >>
-    s = string.rstrip(s)
-    return s
-#@+node:ekr.20070203074709.8:<< Remove most newlines from @space and @* sections >>
-i = 0
-while i < len(s):
-    i = g.skip_ws_and_nl(s,i)
-    if self.isDocStart(s,i):
-        # Scan to end of the doc part.
-        if g.match(s,i,"@ %def"):
-            # Don't remove the newline following %def
-            i = g.skip_line(s,i) ; start = end = i
-        else:
-            start = end = i ; i += 2
-        while i < len(s):
-            i = g.skip_ws_and_nl(s,i)
-            if self.isModuleStart(s,i) or g.match(s,i,lb):
-                end = i ; break
-            elif theType == "cweb": i += 1
-            else: i = g.skip_to_end_of_line(s,i)
-        # Remove newlines from start to end.
-        doc = s[start:end]
-        doc = string.replace(doc,"\n"," ")
-        doc = string.replace(doc,"\r","")
-        doc = string.strip(doc)
-        if doc and len(doc) > 0:
-            if doc == "@":
-                doc = g.choose(self.webType=="cweb", "@ ","@\n")
-            else:
-                doc += "\n\n"
-            # g.trace("new doc:",doc)
-            s = s[:start] + doc + s[end:]
-            i = start + len(doc)
-    else: i = g.skip_line(s,i)
-#@-node:ekr.20070203074709.8:<< Remove most newlines from @space and @* sections >>
-#@+node:ekr.20070203074709.9:<< Replace abbreviated names with full names >>
-i = 0
-while i < len(s):
-    # g.trace(g.get_line(s,i))
-    if g.match(s,i,lb):
-        i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
-        if k > -1:
-            name = s[j:k]
-            name2 = self.cstLookup(name)
-            if name != name2:
-                # Replace name by name2 in s.
-                # g.trace("replacing %s by %s" % (name,name2))
-                s = s[:j] + name2 + s[k:]
-                i = j + len(name2)
-    i = g.skip_line(s,i)
-#@-node:ekr.20070203074709.9:<< Replace abbreviated names with full names >>
-#@-node:ekr.20070203074709.7:massageWebBody
 #@+node:ekr.20070203074709.10:setEncoding
 def setEncoding (self):
     
