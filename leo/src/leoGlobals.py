@@ -3551,7 +3551,7 @@ def skip_id(s,i,chars=None):
 
 def skip_line (s,i):
 
-    if i >= len(s): i = len(s) - 1
+    if i >= len(s): return len(s) # Bug fix: 2007/5/22
     if i < 0: i = 0
     i = string.find(s,'\n',i)
     if i == -1: return len(s)
@@ -3559,7 +3559,7 @@ def skip_line (s,i):
         
 def skip_to_end_of_line (s,i):
 
-    if i >= len(s): i = len(s) - 1
+    if i >= len(s): return len(s) # Bug fix: 2007/5/22
     if i < 0: i = 0
     i = string.find(s,'\n',i)
     if i == -1: return len(s)
