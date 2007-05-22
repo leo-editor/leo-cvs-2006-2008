@@ -548,6 +548,7 @@ class baseLeoImportCommands:
         i = 0 ; self.web_st = []
         
         while i < len(s):
+            progress = i
             i = g.skip_ws_and_nl(s,i)
             # line = g.get_line(s,i) ; g.trace(line)
             if self.isDocStart(s,i):
@@ -559,6 +560,7 @@ class baseLeoImportCommands:
                 i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
                 if k > -1: self.cstEnter(s[j:k])
             else: i += 1
+            assert (i > progress)
         
         # g.trace(self.cstDump())
         #@-node:ekr.20031218072017.3232:<< Create a symbol table of all section names >>
@@ -567,10 +569,12 @@ class baseLeoImportCommands:
         #@+node:ekr.20031218072017.3233:<< Create nodes for limbo text and the root section >>
         i = 0
         while i < len(s):
+            progress = i
             i = g.skip_ws_and_nl(s,i)
             if self.isModuleStart(s,i) or g.match(s,i,lb):
                 break
             else: i = g.skip_line(s,i)
+            assert(i > progress)
             
         j = g.skip_ws(s,0)
         if j < i:
@@ -579,17 +583,19 @@ class baseLeoImportCommands:
         j = i
         if g.match(s,i,lb):
             while i < len(s):
+                progress = i
                 i = g.skip_ws_and_nl(s,i)
                 if self.isModuleStart(s,i):
                     break
                 else: i = g.skip_line(s,i)
+                assert(i > progress)
             self.createHeadline(parent,s[j:i],g.angleBrackets(" @ "))
             
         # g.trace(g.get_line(s,i))
         #@-node:ekr.20031218072017.3233:<< Create nodes for limbo text and the root section >>
         #@nl
         while i < len(s):
-            progress = i
+            outer_progress = i
             #@        << Create a node for the next module >>
             #@+node:ekr.20031218072017.3234:<< Create a node for the next module >>
             if theType=="cweb":
@@ -598,40 +604,50 @@ class baseLeoImportCommands:
                 if self.isDocStart(s,i):
                     i += 2
                     while i < len(s):
+                        progress = i
                         i = g.skip_ws_and_nl(s,i)
                         if self.isModuleStart(s,i): break
                         else: i = g.skip_line(s,i)
+                        assert (i > progress)
                 #@    << Handle cweb @d, @f, @c and @p directives >>
                 #@+node:ekr.20031218072017.3235:<< Handle cweb @d, @f, @c and @p directives >>
                 if g.match(s,i,"@d") or g.match(s,i,"@f"):
                     i += 2 ; i = g.skip_line(s,i)
                     # Place all @d and @f directives in the same node.
                     while i < len(s):
+                        progress = i
                         i = g.skip_ws_and_nl(s,i)
                         if g.match(s,i,"@d") or g.match(s,i,"@f"): i = g.skip_line(s,i)
                         else: break
+                        assert (i > progress)
                     i = g.skip_ws_and_nl(s,i)
                     
                 while i < len(s) and not self.isModuleStart(s,i):
+                    progress = i
                     i = g.skip_line(s,i)
                     i = g.skip_ws_and_nl(s,i)
+                    assert (i > progress)
                 
                 if g.match(s,i,"@c") or g.match(s,i,"@p"):
-                    i += 2 ; 
+                    i += 2
                     while i < len(s):
+                        progress = i
                         i = g.skip_line(s,i)
                         i = g.skip_ws_and_nl(s,i)
                         if self.isModuleStart(s,i):
                             break
+                        assert (i > progress)
                 #@-node:ekr.20031218072017.3235:<< Handle cweb @d, @f, @c and @p directives >>
                 #@nl
             else:
                 assert(self.isDocStart(s,i)) # isModuleStart == isDocStart for noweb.
                 start = i ; i = g.skip_line(s,i)
                 while i < len(s):
+                    progress = i
                     i = g.skip_ws_and_nl(s,i)
                     if self.isDocStart(s,i): break
                     else: i = g.skip_line(s,i)
+                    assert (i > progress)
                 
             body = s[start:i]
             body = self.massageWebBody(body)
@@ -639,7 +655,8 @@ class baseLeoImportCommands:
             self.createHeadline(parent,body,headline)
             #@-node:ekr.20031218072017.3234:<< Create a node for the next module >>
             #@nl
-            assert(progress < i)
+            assert(i > outer_progress)
+    #@nonl
     #@-node:ekr.20031218072017.3231:scanWebFile (handles limbo)
     #@+node:ekr.20031218072017.3236:Symbol table
     #@+node:ekr.20031218072017.3237:cstCanonicalize
@@ -2327,42 +2344,6 @@ class baseLeoImportCommands:
                     g.match(s,i,"@c") or g.match(s,i,"@p") or
                     g.match(s,i,"@d") or g.match(s,i,"@f"))
         #@-node:ekr.20070203074709.4:isDocStart and isModuleStart
-        #@+node:ekr.20070203074709.5:massageBody
-        def massageBody (self,s,methodKind):
-            
-            # g.trace(s)
-            # g.trace(g.get_line(s,0))
-            c = self.c
-            if self.treeType == "@file":
-                if self.fileType == ".py": # 7/31/02: was "py"
-                    return self.undentBody(s)
-                else:
-                    newBody, comment = self.skipLeadingComments(s)
-                    newBody = self.undentBody(newBody)
-                    newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
-                    if len(comment) > 0:
-                        return comment + "\n@c" + newLine + newBody
-                    else:
-                        return newBody
-            else:
-                # Inserts < < self.methodName methodKind > > =
-                cweb = self.fileType == "c" and not c.use_noweb_flag
-                lb = g.choose(cweb,"@<","<<")
-                rb = g.choose(cweb,"@>=",">>=")
-                intro = lb + " " + self.methodName + " " + methodKind + " " + rb
-                if self.fileType == ".py": # 7/31/02: was "py"
-                    newBody = self.undentBody(s)
-                    newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
-                    return intro + newLine + newBody
-                else:
-                    newBody, comment = self.skipLeadingComments(s)
-                    newBody = self.undentBody(newBody)
-                    newLine = g.choose(g.is_nl(newBody,0),"\n","\n\n")
-                    if len(comment) > 0:
-                        return comment + "\n" + intro + newLine + newBody
-                    else:
-                        return intro + newLine + newBody
-        #@-node:ekr.20070203074709.5:massageBody
         #@+node:ekr.20070203074709.6:massageComment
         def massageComment (self,s):
         
@@ -2378,67 +2359,6 @@ class baseLeoImportCommands:
             s = s.strip()
             return s
         #@-node:ekr.20070203074709.6:massageComment
-        #@+node:ekr.20070203074709.7:massageWebBody
-        def massageWebBody (self,s):
-        
-            theType = self.webType
-            lb = g.choose(theType=="cweb","@<","<<")
-            rb = g.choose(theType=="cweb","@>",">>")
-            #@    << Remove most newlines from @space and @* sections >>
-            #@+node:ekr.20070203074709.8:<< Remove most newlines from @space and @* sections >>
-            i = 0
-            while i < len(s):
-                i = g.skip_ws_and_nl(s,i)
-                if self.isDocStart(s,i):
-                    # Scan to end of the doc part.
-                    if g.match(s,i,"@ %def"):
-                        # Don't remove the newline following %def
-                        i = g.skip_line(s,i) ; start = end = i
-                    else:
-                        start = end = i ; i += 2
-                    while i < len(s):
-                        i = g.skip_ws_and_nl(s,i)
-                        if self.isModuleStart(s,i) or g.match(s,i,lb):
-                            end = i ; break
-                        elif theType == "cweb": i += 1
-                        else: i = g.skip_to_end_of_line(s,i)
-                    # Remove newlines from start to end.
-                    doc = s[start:end]
-                    doc = string.replace(doc,"\n"," ")
-                    doc = string.replace(doc,"\r","")
-                    doc = string.strip(doc)
-                    if doc and len(doc) > 0:
-                        if doc == "@":
-                            doc = g.choose(self.webType=="cweb", "@ ","@\n")
-                        else:
-                            doc += "\n\n"
-                        # g.trace("new doc:",doc)
-                        s = s[:start] + doc + s[end:]
-                        i = start + len(doc)
-                else: i = g.skip_line(s,i)
-            #@-node:ekr.20070203074709.8:<< Remove most newlines from @space and @* sections >>
-            #@nl
-            #@    << Replace abbreviated names with full names >>
-            #@+node:ekr.20070203074709.9:<< Replace abbreviated names with full names >>
-            i = 0
-            while i < len(s):
-                # g.trace(g.get_line(s,i))
-                if g.match(s,i,lb):
-                    i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
-                    if k > -1:
-                        name = s[j:k]
-                        name2 = self.cstLookup(name)
-                        if name != name2:
-                            # Replace name by name2 in s.
-                            # g.trace("replacing %s by %s" % (name,name2))
-                            s = s[:j] + name2 + s[k:]
-                            i = j + len(name2)
-                i = g.skip_line(s,i)
-            #@-node:ekr.20070203074709.9:<< Replace abbreviated names with full names >>
-            #@nl
-            s = string.rstrip(s)
-            return s
-        #@-node:ekr.20070203074709.7:massageWebBody
         #@+node:ekr.20070203074709.10:setEncoding
         def setEncoding (self):
             
@@ -3198,6 +3118,7 @@ class baseLeoImportCommands:
         #@+node:ekr.20031218072017.3313:<< Remove most newlines from @space and @* sections >>
         i = 0
         while i < len(s):
+            progress = i
             i = g.skip_ws_and_nl(s,i)
             if self.isDocStart(s,i):
                 # Scan to end of the doc part.
@@ -3207,11 +3128,13 @@ class baseLeoImportCommands:
                 else:
                     start = end = i ; i += 2
                 while i < len(s):
+                    progress2 = i
                     i = g.skip_ws_and_nl(s,i)
                     if self.isModuleStart(s,i) or g.match(s,i,lb):
                         end = i ; break
                     elif theType == "cweb": i += 1
                     else: i = g.skip_to_end_of_line(s,i)
+                    assert (i > progress2)
                 # Remove newlines from start to end.
                 doc = s[start:end]
                 doc = string.replace(doc,"\n"," ")
@@ -3226,12 +3149,14 @@ class baseLeoImportCommands:
                     s = s[:start] + doc + s[end:]
                     i = start + len(doc)
             else: i = g.skip_line(s,i)
+            assert (i > progress)
         #@-node:ekr.20031218072017.3313:<< Remove most newlines from @space and @* sections >>
         #@nl
         #@    << Replace abbreviated names with full names >>
         #@+node:ekr.20031218072017.3314:<< Replace abbreviated names with full names >>
         i = 0
         while i < len(s):
+            progress = i
             # g.trace(g.get_line(s,i))
             if g.match(s,i,lb):
                 i += 2 ; j = i ; k = g.find_on_line(s,j,rb)
@@ -3244,6 +3169,7 @@ class baseLeoImportCommands:
                         s = s[:j] + name2 + s[k:]
                         i = j + len(name2)
             i = g.skip_line(s,i)
+            assert (i > progress)
         #@-node:ekr.20031218072017.3314:<< Replace abbreviated names with full names >>
         #@nl
         s = string.rstrip(s)
