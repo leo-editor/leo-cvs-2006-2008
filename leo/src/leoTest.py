@@ -1624,17 +1624,17 @@ def safeImportModule (fileName):
 #@-node:ekr.20051104075904.103:safeImportModule
 #@-node:ekr.20051104075904.98:Docutils stuff
 #@+node:ekr.20051104075904.104:Test of doTestRoutinesInModule
-#@+node:ekr.20051104075904.105:test_dummy & dummyTestCase
+#@+node:ekr.20051104075904.105:test_dummy
 def test_dummy():
     import leoGlobals as g
     g.trace()
     # raise SyntaxError
 
-class dummyTestClass: # NOT a TestCase.
-    def test_one (self):
-        import leoGlobals as g
-        g.trace(self)
-#@-node:ekr.20051104075904.105:test_dummy & dummyTestCase
+# class dummyTestClass: # NOT a TestCase.
+    # def test_one (self):
+        # import leoGlobals as g
+        # g.trace(self)
+#@-node:ekr.20051104075904.105:test_dummy
 #@-node:ekr.20051104075904.104:Test of doTestRoutinesInModule
 #@-others
 #@-node:ekr.20051104075904:@thin leoTest.py
