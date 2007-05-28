@@ -887,6 +887,44 @@ class bufferCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050927102133.1:Utils
     #@-others
 #@-node:ekr.20050920084036.31:bufferCommandsClass
+#@+node:ekr.20070522085324:chapterCommandsClass
+class chapterCommandsClass (baseEditCommandsClass):
+    
+    #@    @+others
+    #@+node:ekr.20070522085340: ctor
+    def __init__ (self,c):
+    
+        baseEditCommandsClass.__init__(self,c) # init the base class.
+    
+        # c.chapterController does not exist yet.
+    #@-node:ekr.20070522085340: ctor
+    #@+node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
+    # c.chapterController does not exist when getPublicCommands is called,
+    # so we must wait until the command is actually called to get c.chapterController.
+    
+    def getPublicCommands (self):
+    
+        if self.c.config.getBool('use_chapters'):
+            return {
+               'create-chapter': self.createChapter,
+               'remove-chapter': self.removeChapter,
+               'rename-chapter': self.renameChapter,
+            }
+        else:
+            return {}
+    
+    def createChapter (self,event=None):
+        return self.c.chapterController.createChapter()
+        
+    def removeChapter (self,event=None):
+        return self.c.chapterController.removeChapter()
+        
+    def renameChapter (self,event=None):
+        return self.c.chapterController.renameChapter()
+    #@nonl
+    #@-node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
+    #@-others
+#@-node:ekr.20070522085324:chapterCommandsClass
 #@+node:ekr.20050920084036.150:controlCommandsClass
 class controlCommandsClass (baseEditCommandsClass):
     
@@ -4613,7 +4651,7 @@ class helpCommandsClass (baseEditCommandsClass):
         if not g.app.unitTesting:
             g.es_print(s)
     #@+node:ekr.20060205165654:test_helpForMinibuffer
-    def test_help(self):
+    def test_helpForMinibuffer(self):
         
         c.helpCommands.helpForMinibuffer()
     #@-node:ekr.20060205165654:test_helpForMinibuffer
@@ -8149,6 +8187,7 @@ classesList = [
     ('abbrevCommands',      abbrevCommandsClass),
     ('bufferCommands',      bufferCommandsClass),
     ('editCommands',        editCommandsClass),
+    ('chapterCommands',     chapterCommandsClass),
     ('controlCommands',     controlCommandsClass),
     ('debugCommands',       debugCommandsClass),
     ('editFileCommands',    editFileCommandsClass),
