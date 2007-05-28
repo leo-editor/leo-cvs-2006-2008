@@ -3094,7 +3094,7 @@ class atFile:
 
         """ Generate the body enclosed in sentinel lines."""
 
-        at = self
+        at = self ; c = at.c
 
         # New in 4.3 b2: get s from fromString if possible.
         s = g.choose(fromString,fromString,p.bodyString())
@@ -3129,6 +3129,29 @@ class atFile:
             trailingNewlineFlag = True # don't need to generate an @nonl
         #@-node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
         #@nl
+        if self.write_strips_blank_lines:
+            #@        << strip all trailing whitespace from p's body>>
+            #@+node:ekr.20070528093412:<< strip all trailing whitespace from p's body>>
+            lines = g.splitLines(s)
+            cleanLines = [] ; changed = False
+            for line in lines:
+                if line.strip():
+                    cleanLines.append(line)
+                elif line.endswith('\n'):
+                    cleanLines.append('\n')
+                    if line != '\n': changed = True
+                else:
+                    cleanLines.append('')
+                    if line != '': changed = True
+            s = g.joinLines(cleanLines)
+
+            if changed:
+                p.setTnodeText(s)
+                c.setBodyString(p,s)
+                c.setChanged(True)
+            #@nonl
+            #@-node:ekr.20070528093412:<< strip all trailing whitespace from p's body>>
+            #@nl
         i = 0
         while i < len(s):
             next_i = g.skip_line(s,i)
