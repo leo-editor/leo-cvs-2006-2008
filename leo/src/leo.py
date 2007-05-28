@@ -42,11 +42,11 @@ import sys
 #@+others
 #@+node:ekr.20031218072017.1934:run & allies
 def run(fileName=None,pymacs=None,*args,**keywords):
-    
+
     """Initialize and run Leo"""
-    
+
     __pychecker__ = '--no-argsused' # keywords not used.
-    
+
     if not isValidPython(): return
     #@    << import leoGlobals and leoApp >>
     #@+node:ekr.20041219072112:<< import leoGlobals and leoApp >>
@@ -55,14 +55,14 @@ def run(fileName=None,pymacs=None,*args,**keywords):
         import leoGlobals
     except ImportError:
         print "Error importing leoGlobals.py"
-    
+
     # Create the application object.
     try:
         import leoApp
         leoGlobals.app = leoApp.LeoApp()
     except ImportError:
         print "Error importing leoApp.py"
-        
+
     # NOW we can set g.
     g = leoGlobals
     assert(g.app)
@@ -83,7 +83,7 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     except ImportError:
         print "Error importing leoNodes.py"
         import traceback ; traceback.print_exc()
-    
+
     try:
         import leoConfig
     except ImportError:
@@ -138,15 +138,15 @@ def run(fileName=None,pymacs=None,*args,**keywords):
     g.app.gui.runMainLoop()
 #@+node:ekr.20070306085724:adjustSysPath
 def adjustSysPath (g):
-    
+
     '''Adjust sys.path to enable imports as usual with Leo.'''
-    
+
     import sys
-    
+
     #g.trace('loadDir',g.app.loadDir)
-    
+
     leoDirs = ('config','doc','extensions','modes','plugins','src','test')
-    
+
     for theDir in leoDirs:
         path = g.os_path_abspath(
             g.os_path_join(g.app.loadDir,'..',theDir))
@@ -155,12 +155,12 @@ def adjustSysPath (g):
 #@-node:ekr.20070306085724:adjustSysPath
 #@+node:ekr.20041124083125:completeFileName (leo.py)
 def completeFileName (fileName):
-    
+
     import leoGlobals as g
-    
+
     if not fileName:
         return None
-        
+
     # This does not depend on config settings.
     fileName = g.os_path_join(os.getcwd(),fileName)
 
@@ -172,11 +172,11 @@ def completeFileName (fileName):
 #@-node:ekr.20041124083125:completeFileName (leo.py)
 #@+node:ekr.20031218072017.1624:createFrame (leo.py)
 def createFrame (fileName):
-    
+
     """Create a LeoFrame during Leo's startup process."""
-    
+
     import leoGlobals as g
-    
+
     # g.trace('fileName',fileName)
 
     # Try to create a frame for the file.
@@ -205,10 +205,10 @@ def createFrame (fileName):
 #@-node:ekr.20031218072017.1624:createFrame (leo.py)
 #@+node:ekr.20031218072017.1938:createNullGuiWithScript (leo.py)
 def createNullGuiWithScript (script):
-    
+
     import leoGlobals as g
     import leoGui
-    
+
     g.app.batchMode = True
     g.app.gui = leoGui.nullGui("nullGui")
     # if not g.app.root:
@@ -218,10 +218,10 @@ def createNullGuiWithScript (script):
 #@-node:ekr.20031218072017.1938:createNullGuiWithScript (leo.py)
 #@+node:ekr.20031218072017.1939:getBatchScript
 def getBatchScript ():
-    
+
     import leoGlobals as g
     windowFlag = False
-    
+
     name = None ; i = 1 # Skip the dummy first arg.
     while i + 1 < len(sys.argv):
         arg = sys.argv[i].strip().lower()
@@ -245,13 +245,13 @@ def getBatchScript ():
             script = None
     finally:
         if f: f.close()
-        
+
     # Bug fix 4/27/07: Don't put a return in a finally clause.
     return script, windowFlag
 #@-node:ekr.20031218072017.1939:getBatchScript
 #@+node:ekr.20031218072017.1936:isValidPython
 def isValidPython():
-    
+
     if sys.platform == 'cli':
         return True
 
@@ -284,9 +284,9 @@ You may download Python from http://python.org/download/
 #@-node:ekr.20031218072017.1936:isValidPython
 #@+node:ekr.20041130093254:reportDirectories
 def reportDirectories(verbose):
-    
+
     import leoGlobals as g
-   
+
     if verbose:
         for kind,theDir in (
             ("global config",g.app.globalConfigDir),
@@ -296,7 +296,7 @@ def reportDirectories(verbose):
 #@-node:ekr.20041130093254:reportDirectories
 #@+node:ekr.20040411081633:startPsyco
 def startPsyco ():
-    
+
     import leoGlobals as g
 
     try:
@@ -329,14 +329,14 @@ def startPsyco ():
 #@@c
 
 def profile ():
-    
+
     """Gather and print statistics about Leo"""
 
     import profile, pstats
-    
+
     # name = "c:/prog/test/leoProfile.txt"
     name = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','leoProfile.txt'))
-    
+
     profile.run('leo.run()',name)
 
     p = pstats.Stats(name)

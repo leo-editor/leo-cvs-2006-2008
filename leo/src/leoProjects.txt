@@ -29925,8 +29925,8 @@ def putCodeLine (self,s,i):
     
     # g.trace('atRaw',at.raw,'line',repr(line),g.callers(4))
 
-    # c.config.write_strips_blank_lines
-    if 0: # 7/22/04: Don't put any whitespace in otherwise blank lines.
+    if self.write_strips_blank_lines:
+        # Don't put any whitespace in otherwise blank lines.
         if line.strip(): # The line has non-empty content.
             if not at.raw:
                 at.putIndent(at.indent)

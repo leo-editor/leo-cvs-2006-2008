@@ -69,7 +69,7 @@ def doTests(c,all,verbosity=1):
         g.app.unitTestDict["fail"] = False
         if all: theIter = c.all_positions_iter()
         else:   theIter = p.self_and_subtree_iter()
-        
+
         # c.undoer.clearUndoState() # New in 4.3.1.
         changed = c.isChanged()
         suite = unittest.makeSuite(unittest.TestCase)
@@ -80,7 +80,7 @@ def doTests(c,all,verbosity=1):
             elif isSuiteNode(p):
                 test = makeTestSuite(c,p)
                 if test: suite.addTest(test)
-    
+
         # Verbosity: 1: print just dots.
         unittest.TextTestRunner(verbosity=verbosity).run(suite)
     finally:
@@ -95,51 +95,51 @@ class generalTestCase(unittest.TestCase):
     #@    @+others
     #@+node:ekr.20051104075904.6:__init__
     def __init__ (self,c,p):
-    
+
          # Init the base class.
         unittest.TestCase.__init__(self)
-        
+
         self.c = c
         self.p = p.copy()
     #@-node:ekr.20051104075904.6:__init__
     #@+node:ekr.20051104075904.7: fail
     def fail (self,msg=None):
-    
+
         """Mark a unit test as having failed."""
-        
+
         __pychecker__ = '--no-argsused'
             #  msg needed so signature matches base class.
-    
+
         import leoGlobals as g
-    
+
         g.app.unitTestDict["fail"] = g.callers()
     #@-node:ekr.20051104075904.7: fail
     #@+node:ekr.20051104075904.8:setUp
     def setUp (self):
-    
+
         c = self.c ; p = self.p
-    
+
         c.selectPosition(p)
     #@-node:ekr.20051104075904.8:setUp
     #@+node:ekr.20051104075904.9:tearDown
     def tearDown (self):
-    
+
         pass
-    
+
         # To do: restore the outline.
     #@-node:ekr.20051104075904.9:tearDown
     #@+node:ekr.20051104075904.10:runTest
     def runTest (self,define_g = True):
-    
+
         c = self.c ; p = self.p.copy()
         script = g.getScript(c,p).strip()
         self.assert_(script)
-        
+
         if define_g:
             d = {'c':c,'g':g,'p':p}
         else:
             d = {}
-    
+
         # Execute the script. Let unit test handle any errors!
         if 0: # debug
             import pdb
@@ -150,7 +150,7 @@ class generalTestCase(unittest.TestCase):
     #@-node:ekr.20051104075904.10:runTest
     #@+node:ekr.20051104075904.11:shortDescription
     def shortDescription (self):
-    
+
         return self.p.headString() + '\n'
     #@-node:ekr.20051104075904.11:shortDescription
     #@-others
@@ -167,7 +167,7 @@ class generalTestCase(unittest.TestCase):
 def makeTestSuite (c,p):
 
     """Create a suite of test cases by executing the script in an @suite node."""
-    
+
     p = p.copy()
 
     h = p.headString()
@@ -189,7 +189,7 @@ def makeTestSuite (c,p):
 #@-node:ekr.20051104075904.12:makeTestSuite
 #@+node:ekr.20051104075904.13:makeTestCase
 def makeTestCase (c,p):
-    
+
     p = p.copy()
 
     if p.bodyString().strip():
@@ -218,10 +218,10 @@ def runProfileOnNode (p,outputPath):
 def runTimerOnNode (c,p,count):
 
     s = p.bodyString().rstrip() + '\n'
-    
+
     # A kludge so we the statement below can get c and p.
     g.app.unitTestDict = {'c':c,'p':p}
-    
+
     # This looks like the best we can do.
     setup = 'import leoGlobals as g; c = g.app.unitTestDict.get("c"); p = g.app.unitTestDict.get("p")'
 
@@ -245,7 +245,7 @@ lastFunctionsDict = {}
 
 # Adapted from similar code in leoGlobals.g.
 def runGc(disable=False):
-    
+
     message = "runGC"
 
     if gc is None:
@@ -292,7 +292,7 @@ def makeObjectList(message):
 #@-node:ekr.20051104075904.19:makeObjectList
 #@+node:ekr.20051104075904.20:printGc
 def printGc(message=None):
-    
+
     '''Called from unit tests.'''
 
     if not message:
@@ -312,17 +312,17 @@ def printGc(message=None):
     #@+node:ekr.20051104075904.21:<< print number of each type of object >>
     global lastTypesDict
     typesDict = {}
-    
+
     for obj in gc.get_objects():
         n = typesDict.get(type(obj),0)
         typesDict[type(obj)] = n + 1
-    
+
     # Create the union of all the keys.
     keys = typesDict.keys()
     for key in lastTypesDict.keys():
         if key not in keys:
             keys.append(key)
-    
+
     keys.sort()
     for key in keys:
         n1 = lastTypesDict.get(key,0)
@@ -330,7 +330,7 @@ def printGc(message=None):
         delta2 = n2-n1
         if delta2 != 0:
             print "%+6d =%7d %s" % (delta2,n2,key)
-    
+
     lastTypesDict = typesDict
     typesDict = {}
     #@-node:ekr.20051104075904.21:<< print number of each type of object >>
@@ -340,11 +340,11 @@ def printGc(message=None):
         #@+node:ekr.20051104075904.22:<< print added functions >>
         import types
         import inspect
-        
+
         global lastFunctionsDict
-        
+
         funcDict = {}
-        
+
         for obj in gc.get_objects():
             if type(obj) == types.FunctionType:
                 key = repr(obj) # Don't create a pointer to the object!
@@ -358,7 +358,7 @@ def printGc(message=None):
                     if defaults:
                         print "defaults..."
                         for s in defaults: print s
-        
+
         lastFunctionsDict = funcDict
         funcDict = {}
         #@-node:ekr.20051104075904.22:<< print added functions >>
@@ -389,15 +389,15 @@ class testUtils:
     #@    @+others
     #@+node:ekr.20060106114716.1:ctor (testUtils)
     def __init__ (self,c):
-        
+
         self.c = c
     #@-node:ekr.20060106114716.1:ctor (testUtils)
     #@+node:ekr.20051104075904.25:compareOutlines
     def compareOutlines (self,root1,root2,compareHeadlines=True,tag='',report=True):
-    
+
         """Compares two outlines, making sure that their topologies,
         content and join lists are equivalent"""
-    
+
         p2 = root2.copy() ; ok = True
         for p1 in root1.self_and_subtree_iter():
             ok = (
@@ -409,10 +409,10 @@ class testUtils:
             )
             if not ok: break
             p2.moveToThreadNext()
-            
+
         if not report:
             return ok
-    
+
         if ok:
             if 0:
                 print 'compareOutlines ok',
@@ -441,34 +441,34 @@ class testUtils:
                 print repr(p2.bodyString())
             if p1.isCloned() != p2.isCloned():
                 print 'p1.isCloned() == p2.isCloned()'
-    
+
         return ok
     #@-node:ekr.20051104075904.25:compareOutlines
     #@+node:ekr.20051104075904.26:Finding nodes...
     #@+node:ekr.20051104075904.27:findChildrenOf
     def findChildrenOf (self,root):
-    
+
         return [p.copy() for p in root.children_iter()]
     #@-node:ekr.20051104075904.27:findChildrenOf
     #@+node:ekr.20051104075904.28:findSubnodesOf
     def findSubnodesOf (self,root):
-    
+
         return [p.copy() for p in root.subtree_iter()]
     #@-node:ekr.20051104075904.28:findSubnodesOf
     #@+node:ekr.20051104075904.29:findNodeInRootTree
     def findRootNode (self,p):
-    
+
         """Return the root of p's tree."""
-    
+
         while p and p.hasParent():
             p.moveToParent()
         return p
     #@-node:ekr.20051104075904.29:findNodeInRootTree
     #@+node:ekr.20051104075904.30:u.findNodeInTree
     def findNodeInTree(self,p,headline,startswith=False):
-    
+
         """Search for a node in p's tree matching the given headline."""
-    
+
         c = self.c
         h = headline.strip().lower()
         for p in p.subtree_iter():
@@ -476,11 +476,11 @@ class testUtils:
             if h2 == h or startswith and h2.startswith(h):
                 return p.copy()
         return c.nullPosition()
-    
+
     #@-node:ekr.20051104075904.30:u.findNodeInTree
     #@+node:ekr.20051104075904.31:findNodeAnywhere
     def findNodeAnywhere(self,headline):
-        
+
         c = self.c
         for p in c.allNodes_iter():
             h = headline.strip().lower()
@@ -491,9 +491,9 @@ class testUtils:
     #@-node:ekr.20051104075904.26:Finding nodes...
     #@+node:ekr.20051104075904.33:numberOfClonesInOutline
     def numberOfClonesInOutline (self):
-    
+
         """Returns the number of cloned nodes in an outline"""
-    
+
         c = self.c ; n = 0
         for p in c.allNodes_iter():
             if p.isCloned():
@@ -502,15 +502,15 @@ class testUtils:
     #@-node:ekr.20051104075904.33:numberOfClonesInOutline
     #@+node:ekr.20051104075904.34:numberOfNodesInOutline
     def numberOfNodesInOutline (self):
-    
+
         """Returns the total number of nodes in an outline"""
-    
+
         return len([p for p in self.c.allNodes_iter()])
     #@-node:ekr.20051104075904.34:numberOfNodesInOutline
     #@+node:ekr.20051104075904.36:testUtils.writeNode/sToNode
     #@+node:ekr.20051104075904.37:writeNodesToNode
     def writeNodesToNode (self,c,input,output,sentinels=True):
-    
+
         result = []
         for p in input.self_and_subtree_iter():
             s = self.writeNodeToString(c,p,sentinels)
@@ -520,21 +520,21 @@ class testUtils:
     #@-node:ekr.20051104075904.37:writeNodesToNode
     #@+node:ekr.20051104075904.38:writeNodeToNode
     def writeNodeToNode (self,c,input,output,sentinels=True):
-    
+
         """Do an atFile.write the input tree to the body text of the output node."""
-    
+
         s = self.writeNodeToString(c,input,sentinels)
-    
+
         output.scriptSetBodyString (s)
     #@-node:ekr.20051104075904.38:writeNodeToNode
     #@+node:ekr.20051104075904.39:writeNodeToString
     def writeNodeToString (self,c,input,sentinels):
-    
+
         """Return an atFile.write of the input tree to a string."""
-    
+
         df = c.atFileCommands
         nodeIndices = g.app.nodeIndices
-    
+
         # Assign input.v.t.fileIndex
         nodeIndices.setTimestamp()
         for p in input.self_and_subtree_iter():
@@ -542,26 +542,26 @@ class testUtils:
                 theId,time,n = p.v.t.fileIndex
             except TypeError:
                 p.v.t.fileIndex = nodeIndices.getNewIndex()
-    
+
         # Write the file to a string.
         df.write(input,thinFile=True,nosentinels= not sentinels,toString=True)
         s = df.stringOutput
-    
+
         return s
     #@-node:ekr.20051104075904.39:writeNodeToString
     #@-node:ekr.20051104075904.36:testUtils.writeNode/sToNode
     #@+node:ekr.20051104075904.40:testUtils.compareIgnoringNodeNames
     def compareIgnoringNodeNames (self,s1,s2,delims,verbose=False):
-    
+
         # Compare text containing sentinels, but ignore differences in @+-nodes.
         delim1,delim2,delim3 = delims
-    
+
         lines1 = g.splitLines(s1)
         lines2 = g.splitLines(s2)
         if len(lines1) != len(lines2):
             if verbose: g.trace("Different number of lines")
             return False
-    
+
         for i in xrange(len(lines2)):
             line1 = lines1[i]
             line2 = lines2[i]
@@ -596,7 +596,7 @@ class testUtils:
 def fail ():
 
     """Mark a unit test as having failed."""
-    
+
     __pychecker__ = '--no-argsused'
         #  msg needed so signature matches base class.
 
@@ -608,7 +608,7 @@ def fail ():
 def runLeoTest(c,path,verbose=False,full=False):
 
     frame = None ; ok = False ; old_gui = g.app.gui
-    
+
     # Do not set or clear g.app.unitTesting: that is only done in leoTest.runTest.
 
     try:
@@ -677,21 +677,21 @@ def runAtFileTest(c,p):
 # DTHEIN 2004.01.11: Added unit tests for reformatParagraph
 #@+node:ekr.20051104075904.47:class reformatParagraphTest
 class reformatParagraphTest:
-    
+
     '''A class to work around stupidities of the Unittest classes.'''
-    
+
     #@    @+others
     #@+node:ekr.20051104075904.48:__init__
     def __init__ (self,c,p):
-        
+
         self.c = c
         self.p = p.copy()
-    
+
         self.go()
     #@-node:ekr.20051104075904.48:__init__
     #@+node:ekr.20051104075904.49:go
     def go (self):
-        
+
         try:
             self.setUp()
             self.runTest()
@@ -700,16 +700,16 @@ class reformatParagraphTest:
     #@-node:ekr.20051104075904.49:go
     #@+node:ekr.20051104075904.50:checkPosition
     def checkPosition(self,expRow,expCol):
-    
+
         row,col = self.getRowCol()
-    
+
         assert expCol == col, "Got column %d.  Expected %d" % (col,expCol)
-    
+
         assert expRow == row, "Got row %d.  Expected %d" % (row,expRow)
     #@-node:ekr.20051104075904.50:checkPosition
     #@+node:ekr.20051104075904.51:checkText
     def checkText(self):
-    
+
         new_text = self.tempChild.bodyString()
         ref_text = self.after.bodyString()
         newLines = new_text.splitlines(1)
@@ -721,32 +721,32 @@ class reformatParagraphTest:
                 "Mismatch on line " + str(i) + "." \
                 + "\nExpected text: " + `refLines[i]` \
                 + "\n  Actual text: " + `newLines[i]`
-                
+
         assert newLinesCount == refLinesCount, \
             "Expected " + str(refLinesCount) + " lines, but " \
             + "received " + str(newLinesCount) + " lines."
     #@-node:ekr.20051104075904.51:checkText
     #@+node:ekr.20051104075904.52:copyBeforeToTemp
     def copyBeforeToTemp(self):
-    
+
         c = self.c ; tempNode = self.tempNode
-    
+
         # Delete all children of temp node.
         while tempNode.firstChild():
             tempNode.firstChild().doDelete()
-    
+
         # Copy the before node text to the temp node.
         text = self.before.bodyString()
         tempNode.setTnodeText(text,g.app.tkEncoding)
-    
+
         # create the child node that holds the text.
         t = leoNodes.tnode(headString="tempChildNode")
         self.tempChild = self.tempNode.insertAsNthChild(0,t)
-    
+
         # copy the before text to the temp text.
         text = self.before.bodyString()
         self.tempChild.setTnodeText(text,g.app.tkEncoding)
-    
+
         # Make the temp child node current, and put the cursor at the beginning.
         c.selectPosition(self.tempChild)
         w = c.frame.body.bodyCtrl
@@ -754,64 +754,64 @@ class reformatParagraphTest:
     #@-node:ekr.20051104075904.52:copyBeforeToTemp
     #@+node:ekr.20051104075904.53:getRowCol
     def getRowCol(self):
-    
+
         c = self.c ; w = c.frame.body.bodyCtrl
         tab_width = c.frame.tab_width
-    
+
         # Get the Tkinter row col position of the insert cursor.
         s = w.getAllText()
         index = w.getInsertPoint()
         row,col = g.convertPythonIndexToRowCol(s,index)
         row += 1
         # g.trace(index,row,col)
-    
+
         # Adjust col position for tabs.
         if col > 0:
             s2 = s[index-col:index]
             s2 = g.toUnicode(s2,g.app.tkEncoding)
             col = g.computeWidth(s2,tab_width)
-    
+
         return row,col
     #@-node:ekr.20051104075904.53:getRowCol
     #@+node:ekr.20051104075904.54:runTest
     def runTest(self):
-        
+
         g.trace('must be overridden in subclasses')
     #@-node:ekr.20051104075904.54:runTest
     #@+node:ekr.20051104075904.55:setUp
     def setUp(self):
-        
+
         c = self.c ; p = self.p
         u = self.u = testUtils(c)
-        
+
         # self.undoMark = c.undoer.getMark()
         c.undoer.clearUndoState()
-    
+
         assert(c.positionExists(p))
         self.before = u.findNodeInTree(p,"before")
         self.after  = u.findNodeInTree(p,"after")
         self.tempNode = u.findNodeInTree(p,"tempNode")
-    
+
         assert self.tempNode,'no tempNode: ' + p
         assert c.positionExists(self.tempNode),'tempNode does not exist'
         self.tempChild = None
-    
+
         self.copyBeforeToTemp()
     #@-node:ekr.20051104075904.55:setUp
     #@+node:ekr.20051104075904.56:tearDown
     def tearDown(self):
-        
+
         c = self.c ; tempNode = self.tempNode
-    
+
         # clear the temp node and mark it unchanged
         tempNode.setTnodeText("",g.app.tkEncoding)
         tempNode.clearDirty()
-        
+
         if 1: # Disabling this is good for debugging.
             # Delete all children of temp node.
             while tempNode.firstChild():
                 tempNode.firstChild().doDelete()
-            
+
         # c.undoer.rollbackToMark(self.undoMark)
         c.undoer.clearUndoState()
     #@-node:ekr.20051104075904.56:tearDown
@@ -819,25 +819,25 @@ class reformatParagraphTest:
 #@-node:ekr.20051104075904.47:class reformatParagraphTest
 #@+node:ekr.20051104075904.57:class singleParagraphTest (reformatParagraphTest)
 class singleParagraphTest (reformatParagraphTest):
-    
+
     '''A class to work around stupidities of the Unittest classes.'''
-    
+
     #@    @+others
     #@+node:ekr.20051104075904.58:__init__
     def __init__ (self,c,p,finalRow,finalCol):
-        
+
         self.finalCol = finalCol
         self.finalRow = finalRow
-        
+
         # Call the base class.
         reformatParagraphTest.__init__(self,c,p)
     #@-node:ekr.20051104075904.58:__init__
     #@+node:ekr.20051104075904.59:runTest
     def runTest(self):
-    
+
         # Reformat the paragraph
         self.c.reformatParagraph()
-    
+
         # Compare the computed result to the reference result.
         self.checkText()
         self.checkPosition(self.finalRow,self.finalCol)
@@ -846,20 +846,20 @@ class singleParagraphTest (reformatParagraphTest):
 #@-node:ekr.20051104075904.57:class singleParagraphTest (reformatParagraphTest)
 #@+node:ekr.20051104075904.60:class multiParagraphTest (reformatParagraphTest)
 class multiParagraphTest (reformatParagraphTest):
-    
+
     #@    @+others
     #@+node:ekr.20051104075904.61:runTest
     def runTest(self):
-    
+
         self.c.reformatParagraph()
         self.checkPosition(13,0)
-    
+
         # Keep going, in the same manner
         self.c.reformatParagraph()
         self.checkPosition(25,0)
         self.c.reformatParagraph()
         self.checkPosition(32,11)
-    
+
         # Compare the computed result to the reference result.
         self.checkText()
     #@-node:ekr.20051104075904.61:runTest
@@ -867,15 +867,15 @@ class multiParagraphTest (reformatParagraphTest):
 #@-node:ekr.20051104075904.60:class multiParagraphTest (reformatParagraphTest)
 #@+node:ekr.20051104075904.62:class multiParagraphWithListTest (reformatParagraphTest)
 class multiParagraphWithListTest (reformatParagraphTest):
-    
+
     #@    @+others
     #@+node:ekr.20051104075904.63:runTest
     def runTest(self):
-    
+
         # reformat the paragraph and check insertion cursor position
         self.c.reformatParagraph()
         self.checkPosition(4,0)
-    
+
         # Keep going, in the same manner.
         self.c.reformatParagraph()
         self.checkPosition(7,0)
@@ -885,7 +885,7 @@ class multiParagraphWithListTest (reformatParagraphTest):
         self.checkPosition(13,0)
         self.c.reformatParagraph()
         self.checkPosition(14,18)
-    
+
         # Compare the computed result to the reference result.
         self.checkText()
     #@-node:ekr.20051104075904.63:runTest
@@ -893,15 +893,15 @@ class multiParagraphWithListTest (reformatParagraphTest):
 #@-node:ekr.20051104075904.62:class multiParagraphWithListTest (reformatParagraphTest)
 #@+node:ekr.20051104075904.64:class leadingWSOnEmptyLinesTest (reformatParagraphTest)
 class leadingWSOnEmptyLinesTest (reformatParagraphTest):
-    
+
     #@    @+others
     #@+node:ekr.20051104075904.65:runTest
     def runTest(self):
-    
+
         # reformat the paragraph and check insertion cursor position
         self.c.reformatParagraph()
         self.checkPosition(4,0)
-    
+
         # Keep going, in the same manner
         self.c.reformatParagraph()
         self.checkPosition(7,0)
@@ -911,7 +911,7 @@ class leadingWSOnEmptyLinesTest (reformatParagraphTest):
         self.checkPosition(13,0)
         self.c.reformatParagraph()
         self.checkPosition(14,18)
-    
+
         # Compare the computed result to the reference result.
         self.checkText()
     #@-node:ekr.20051104075904.65:runTest
@@ -919,21 +919,21 @@ class leadingWSOnEmptyLinesTest (reformatParagraphTest):
 #@-node:ekr.20051104075904.64:class leadingWSOnEmptyLinesTest (reformatParagraphTest)
 #@+node:ekr.20051104075904.66:class testDirectiveBreaksParagraph (reformatParagraphTest)
 class directiveBreaksParagraphTest (reformatParagraphTest):
-    
+
     #@    @+others
     #@+node:ekr.20051104075904.67:runTest
     def runTest(self):
-    
+
         # reformat the paragraph and check insertion cursor position
         self.c.reformatParagraph()
         self.checkPosition(13,0) # at next paragraph
-    
+
         # Keep going, in the same manner
         self.c.reformatParagraph()
         self.checkPosition(25,0) # at next paragraph
         self.c.reformatParagraph()
         self.checkPosition(32,11)
-    
+
         # Compare the computed result to the reference result.
         self.checkText()
     #@-node:ekr.20051104075904.67:runTest
@@ -979,10 +979,10 @@ class editBodyTestCase(unittest.TestCase):
     #@    @+others
     #@+node:ekr.20051104075904.71: __init__
     def __init__ (self,c,parent,before,after,sel,ins,tempNode):
-    
+
         # Init the base class.
         unittest.TestCase.__init__(self)
-    
+
         self.u = testUtils(c)
         self.c = c
         self.parent = parent.copy()
@@ -991,7 +991,7 @@ class editBodyTestCase(unittest.TestCase):
         self.sel    = sel.copy() # Two lines giving the selection range in tk coordinates.
         self.ins    = ins.copy() # One line giving the insert point in tk coordinate.
         self.tempNode = tempNode.copy()
-        
+
         if 0:
             g.trace('parent',parent)
             g.trace('before',before)
@@ -999,34 +999,34 @@ class editBodyTestCase(unittest.TestCase):
     #@-node:ekr.20051104075904.71: __init__
     #@+node:ekr.20051104075904.72: fail
     def fail (self,msg=None):
-    
+
         """Mark a unit test as having failed."""
-        
+
         __pychecker__ = '--no-argsused'
             #  msg needed so signature matches base class.
-    
+
         import leoGlobals as g
-    
+
         g.app.unitTestDict["fail"] = g.callers()
     #@-node:ekr.20051104075904.72: fail
     #@+node:ekr.20051104075904.73:editBody
     def editBody (self):
-    
+
         c = self.c ; u = self.u
-        
+
         if not g.app.enableUnitTest: return
-    
+
         # Blank stops the command name.
         commandName = self.parent.headString()
         i = commandName.find(' ')
         if i > -1:
             commandName = commandName[:i] 
         # g.trace(commandName)
-        
+
         # Compute the result in tempNode.bodyString()
         command = getattr(c,commandName)
         command()
-        
+
         # Don't call the undoer if we expect no change.
         if not u.compareOutlines(self.before,self.after,compareHeadlines=False,report=False):
             assert u.compareOutlines(self.tempNode,self.after,compareHeadlines=False),'%s: before undo1' % commandName
@@ -1039,58 +1039,58 @@ class editBodyTestCase(unittest.TestCase):
     #@-node:ekr.20051104075904.73:editBody
     #@+node:ekr.20051104075904.74:runTest
     def runTest(self):
-    
+
         self.editBody()
     #@-node:ekr.20051104075904.74:runTest
     #@+node:ekr.20051104075904.75:setUp
     def setUp(self):
-    
+
         c = self.c ; tempNode = self.tempNode
-        
+
         if not g.app.enableUnitTest: return
-        
+
         # self.undoMark = c.undoer.getMark()
         c.undoer.clearUndoState()
-    
+
         # Delete all children of temp node.
         while tempNode.firstChild():
             tempNode.firstChild().doDelete()
-    
+
         text = self.before.bodyString()
-    
+
         tempNode.setTnodeText(text,g.app.tkEncoding)
         c.selectPosition(self.tempNode)
-    
+
         w = c.frame.body.bodyCtrl
         if self.sel:
             s = str(self.sel.bodyString()) # Can't be unicode.
             lines = s.split('\n')
             w.setSelectionRange(lines[0],lines[1])
-    
+
         if self.ins:
             s = str(self.ins.bodyString()) # Can't be unicode.
             lines = s.split('\n')
             g.trace(lines)
             w.setInsertPoint(lines[0])
-    
+
         if not self.sel and not self.ins: # self.sel is a **tk** index.
             w.setInsertPoint(0)
             w.setSelectionRange(0,0)
     #@-node:ekr.20051104075904.75:setUp
     #@+node:ekr.20051104075904.76:tearDown
     def tearDown (self):
-    
+
         c = self.c ; tempNode = self.tempNode
-    
+
         c.selectVnode(tempNode)
         tempNode.setTnodeText("",g.app.tkEncoding)
-    
+
         # Delete all children of temp node.
         while tempNode.firstChild():
             tempNode.firstChild().doDelete()
-            
+
         tempNode.clearDirty()
-        
+
         # c.undoer.rollbackToMark(self.undoMark)
         c.undoer.clearUndoState()
     #@-node:ekr.20051104075904.76:tearDown
@@ -1129,75 +1129,75 @@ class importExportTestCase(unittest.TestCase):
     #@    @+others
     #@+node:ekr.20051104075904.80:__init__
     def __init__ (self,c,v,dialog,temp_v,doImport):
-    
+
         # Init the base class.
         unittest.TestCase.__init__(self)
-    
+
         self.c = c
         self.dialog = dialog
         self.v = v
         self.temp_v = temp_v
-    
+
         self.gui = None
         self.oldGui = None
         self.wasChanged = c.changed
         self.fileName = ""
         self.doImport = doImport
-    
+
         self.old_v = c.currentVnode()
     #@-node:ekr.20051104075904.80:__init__
     #@+node:ekr.20051104075904.81: fail
     def fail (self,msg=None):
-    
+
         """Mark a unit test as having failed."""
-        
+
         __pychecker__ = '--no-argsused'
             #  msg needed so signature matches base class.
-    
+
         import leoGlobals as g
-    
+
         g.app.unitTestDict["fail"] = g.callers()
     #@-node:ekr.20051104075904.81: fail
     #@+node:ekr.20051104075904.82:importExport
     def importExport (self):
-    
+
         c = self.c ; v = self.v
-    
+
         g.app.unitTestDict = {}
-    
+
         commandName = v.headString()
         command = getattr(c,commandName) # Will fail if command does not exist.
         command(event=None)
-    
+
         failedMethod = g.app.unitTestDict.get("fail")
         self.failIf(failedMethod,failedMethod)
     #@-node:ekr.20051104075904.82:importExport
     #@+node:ekr.20051104075904.83:runTest
     def runTest(self):
-    
+
         # """Import Export Test Case"""
-    
+
         self.importExport()
     #@-node:ekr.20051104075904.83:runTest
     #@+node:ekr.20051104075904.84:setUp
     def setUp(self):
-    
+
         c = self.c ; temp_v = self.temp_v ; d = self.dialog
-    
+
         temp_v.setTnodeText('',g.app.tkEncoding)
-    
+
         # Create a node under temp_v.
         child = temp_v.insertAsLastChild()
         assert(child)
         c.setHeadString(child,"import test: " + self.v.headString())
         c.selectVnode(child)
-    
+
         assert(d)
         s = d.bodyString()
         lines = s.split('\n')
         name = lines[0]
         fileName = lines[1]
-        
+
         # Replace '\\' by os.path.sep in fileName
         try:
             # os.path.sep does not exist in Python 2.2.x.
@@ -1205,20 +1205,20 @@ class importExportTestCase(unittest.TestCase):
             fileName = fileName.replace('\\',sep)
         except AttributeError:
             fileName = g.os_path_normpath(fileName)
-    
+
         self.fileName = fileName = g.os_path_join(g.app.loadDir,"..",fileName)
-    
+
         if self.doImport:
             theDict = {name: [fileName]}
         else:
             theDict = {name: fileName}
-    
+
         self.oldGui = g.app.gui
         self.gui = leoGui.unitTestGui(theDict,trace=False)
     #@-node:ekr.20051104075904.84:setUp
     #@+node:ekr.20051104075904.85:shortDescription
     def shortDescription (self):
-    
+
         try:
             return "ImportExportTestCase: %s %s" % (self.v.headString(),self.fileName)
         except:
@@ -1226,23 +1226,23 @@ class importExportTestCase(unittest.TestCase):
     #@-node:ekr.20051104075904.85:shortDescription
     #@+node:ekr.20051104075904.86:tearDown
     def tearDown (self):
-    
+
         c = self.c ; temp_v = self.temp_v
-    
+
         if self.gui:
             self.gui.destroySelf()
             self.gui = None
-    
+
         temp_v.setTnodeText("",g.app.tkEncoding)
         temp_v.clearDirty()
-    
+
         if not self.wasChanged:
             c.setChanged (False)
-    
+
         if 1: # Delete all children of temp node.
             while temp_v.firstChild():
                 temp_v.firstChild().doDelete()
-                
+
         g.app.gui = self.oldGui
         c.selectVnode(self.old_v)
     #@-node:ekr.20051104075904.86:tearDown
@@ -1282,7 +1282,7 @@ class importExportTestCase(unittest.TestCase):
 def runPerfectImportTest(c,p,
     testing=False,verbose=False,
     ignoreSentinelsInCompare=False):
-        
+
     __pychecker__ = '--no-shadowbuiltin' # input is a builtin.
 
     # The contents of the "-input" and "-input-after" nodes define the changes.
@@ -1351,13 +1351,13 @@ def getAllPluginFilenames ():
 #@-node:ekr.20051104075904.91:getAllPluginFilenames
 #@+node:ekr.20051104075904.92:testPlugin (no longer used)
 def oldTestPlugin (fileName,verbose=False):
-        
+
     path = g.os_path_join(g.app.loadDir,"..","plugins")
     path = g.os_path_abspath(path)
 
     module = g.importFromPath(fileName,path)
     assert module, "Can not import %s" % path
-    
+
     # Run any unit tests in the module itself.
     if hasattr(module,"unitTest"):
         if verbose:
@@ -1367,7 +1367,7 @@ def oldTestPlugin (fileName,verbose=False):
 #@-node:ekr.20051104075904.92:testPlugin (no longer used)
 #@+node:ekr.20051104075904.93:checkFileSyntax
 def checkFileSyntax (fileName,s):
-    
+
     try:
         compiler.parse(s + '\n')
     except SyntaxError:
@@ -1409,12 +1409,12 @@ def checkFileTabs (fileName,s):
 #@-node:ekr.20051104075904.90:Plugin tests... (leoTest.py)
 #@+node:ekr.20051104075904.95:throwAssertionError
 def throwAssertionError():
-    
+
     assert 0, 'assert(0) as a test of catching assertions'
 #@-node:ekr.20051104075904.95:throwAssertionError
 #@+node:ekr.20061008140603:runEditCommandTest
 def runEditCommandTest (c,p):
-    
+
     u = testUtils(c) ; atTest = p.copy()
     w = c.frame.body.bodyCtrl
 
@@ -1427,7 +1427,7 @@ def runEditCommandTest (c,p):
     assert commandName, 'empty command name'
     command = c.commandsDict.get(commandName)
     assert command, 'no command: %s' % (commandName)
-    
+
     work,before,after = u.findChildrenOf(atTest)
     before_h = 'before sel='
     after_h = 'after sel='
@@ -1442,7 +1442,7 @@ def runEditCommandTest (c,p):
         sels.append(tuple(aList))
     sel1,sel2 = sels
     #g.trace(repr(sels))
-    
+
     c.beginUpdate()
     try:
         c.selectPosition(work)
@@ -1586,7 +1586,7 @@ def importAllModulesInPath (path):
 
     path2 = g.os_path_join(path,"leo*.py")
     files = glob.glob(path2)
-    
+
     modules = []
 
     for theFile in files:

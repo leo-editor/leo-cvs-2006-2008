@@ -11,7 +11,7 @@ All code in this module must be called *from* Emacs:
 calling Pymacs.lisp in other situations will hang Leo.
 
 Emacs code initiallizes this module with::
-    
+
     (pymacs-eval "sys.path.append('c:\\prog\\tigris-cvs\\leo\\src')")
     (setq leo (pymacs-load "leoPymacs"))
 
@@ -29,9 +29,9 @@ inited = False
 #@+others
 #@+node:ekr.20061024131236:dump
 def dump (anObject):
-    
+
     init()
-    
+
     return str(g.toEncodedString(repr(anObject),encoding='ascii'))
 #@-node:ekr.20061024131236:dump
 #@+node:ekr.20061024130957:getters
@@ -39,11 +39,11 @@ def get_app ():
     '''Scripts can use g.app.scriptDict for communication with pymacs.'''
     init()
     return g.app
-    
+
 def get_g():
     init()
     return g
-    
+
 def script_result():
     init()
     return g.app.scriptResult
@@ -58,18 +58,18 @@ def hello():
 #@-node:ekr.20061024060248.3:hello
 #@+node:ekr.20061024075542:init
 def init ():
-    
+
     global inited
 
     if inited:
         return
     else:
         inited = True
-    
+
     # Create the dummy app
     import leo 
     leo.run(pymacs=True)
-    
+
     import leoGlobals
     global g ; g = leoGlobals
 
@@ -79,12 +79,12 @@ def init ():
 #@-node:ekr.20061024075542:init
 #@+node:ekr.20061024075542.1:open
 def open (fileName=None):
-    
+
     init()
-    
+
     if g.app.unitTesting:
         return
-    
+
     if not fileName:
         g.es_print('leoPymacs.open: no file name')
         return None
@@ -107,14 +107,14 @@ def open (fileName=None):
 #@-node:ekr.20061024075542.1:open
 #@+node:ekr.20061024084200:run-script
 def run_script(c,script,p=None):
-    
+
     # It is possible to use script=None, in which case p must be defined.
-    
+
     init()
-    
+
     if c is None:
         c,frame = g.app.newLeoCommanderAndFrame(fileName='dummy script file')
-            
+
     g.app.scriptResult = None
 
     c.executeScript(
@@ -126,7 +126,7 @@ def run_script(c,script,p=None):
         define_name='__main__',
         silent=True,  # Don't write to the log.
     )
-    
+
     # g.trace('script returns: ',repr(g.app.scriptResult))
     return g.app.scriptResult
 #@nonl

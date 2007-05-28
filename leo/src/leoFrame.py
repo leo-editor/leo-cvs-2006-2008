@@ -62,27 +62,27 @@ import re
 class baseTextWidget:
 
     '''The base class for all wrapper classes for leo Text widgets.'''
-        
+
     #@    @+others
     #@+node:ekr.20070228074312.1:Birth & special methods (baseText)
     def __init__ (self,c,baseClassName,name,widget):
-    
+
         self.baseClassName = baseClassName
         self.c = c
         self.name = name
         self.virtualInsertPoint = None
         self.widget = widget # Not used at present.
-    
+
     def __repr__(self):
         return '%s: %s' % (self.baseClassName,id(self))
-    
+
     #@-node:ekr.20070228074312.1:Birth & special methods (baseText)
     #@+node:ekr.20070228074312.2:baseTextWidget.onChar
     # Don't even think of using key up/down events.
     # They don't work reliably and don't support auto-repeat.
-    
+
     def onChar (self, event):
-        
+
         c = self.c
         keycode = event.GetKeyCode()
         event.leoWidget = self
@@ -114,21 +114,21 @@ class baseTextWidget:
     # def _setFocus(self):                self.oops()
     # def _setInsertPoint(self,i):        self.oops()
     # def _setSelectionRange(self,i,j):   self.oops()
-    
+
     # _findFocus = _getFocus
     #@-node:ekr.20070228074312.4:bindings (must be overridden in subclasses)
     #@+node:ekr.20070228074312.5:oops
     def oops (self):
-    
+
         print('wxGui baseTextWidget oops:',self,g.callers(),
             'must be overridden in subclass')
     #@-node:ekr.20070228074312.5:oops
     #@+node:ekr.20070228074312.6:Index conversion
     #@+node:ekr.20070228074312.7:w.toGuiIndex & toPythonIndex
     def toPythonIndex (self,index):
-        
+
         w = self
-    
+
         if type(index) == type(99):
             return index
         elif index == '1.0':
@@ -143,16 +143,16 @@ class baseTextWidget:
             i = g.convertRowColToPythonIndex(s,row-1,col)
             # g.trace(index,row,col,i,g.callers(6))
             return i
-    
+
     toGuiIndex = toPythonIndex
     #@nonl
     #@-node:ekr.20070228074312.7:w.toGuiIndex & toPythonIndex
     #@+node:ekr.20070228074312.8:w.rowColToGuiIndex
     # This method is called only from the colorizer.
     # It provides a huge speedup over naive code.
-    
+
     def rowColToGuiIndex (self,s,row,col):
-    
+
         return g.convertRowColToPythonIndex(s,row,col)    
     #@-node:ekr.20070228074312.8:w.rowColToGuiIndex
     #@-node:ekr.20070228074312.6:Index conversion
@@ -161,64 +161,64 @@ class baseTextWidget:
     #@nonl
     #@+node:ekr.20070228074312.10:appendText
     def appendText (self,s):
-        
+
         w = self
         w._appendText(s)
     #@-node:ekr.20070228074312.10:appendText
     #@+node:ekr.20070228074312.11:bind
     def bind (self,kind,*args,**keys):
-        
+
         w = self
-        
+
         pass # g.trace('wxLeoText',kind,args[0].__name__)
     #@nonl
     #@-node:ekr.20070228074312.11:bind
     #@+node:ekr.20070228074312.12:clipboard_clear & clipboard_append
     def clipboard_clear (self):
-        
+
         g.app.gui.replaceClipboardWith('')
-    
+
     def clipboard_append(self,s):
-        
+
         s1 = g.app.gui.getTextFromClipboard()
-    
+
         g.app.gui.replaceClipboardWith(s1 + s)
     #@-node:ekr.20070228074312.12:clipboard_clear & clipboard_append
     #@+node:ekr.20070228074312.13:delete
     def delete(self,i,j=None):
-    
+
         w = self
         i = w.toPythonIndex(i)
         if j is None: j = i+ 1
         j = w.toPythonIndex(j)
-    
+
         # g.trace(i,j,len(s),repr(s[:20]))
         s = w.getAllText()
         w.setAllText(s[:i] + s[j:])
     #@-node:ekr.20070228074312.13:delete
     #@+node:ekr.20070228074312.14:deleteTextSelection
     def deleteTextSelection (self):
-        
+
         w = self
         i,j = w._getSelectionRange()
         if i == j: return
-        
+
         s = w._getAllText()
         s = s[i:] + s[j:]
-    
+
         # g.trace(len(s),repr(s[:20]))
         w._setAllText(s)
     #@-node:ekr.20070228074312.14:deleteTextSelection
     #@+node:ekr.20070228074312.15:event_generate (baseTextWidget)
     def event_generate(self,stroke):
-        
+
         w = self ; c = self.c ; char = stroke
-        
+
         # Canonicalize the setting.
         stroke = c.k.shortcutFromSetting(stroke)
-        
+
         # g.trace('baseTextWidget','char',char,'stroke',stroke)
-    
+
         class eventGenerateEvent:
             def __init__ (self,c,w,char,keysym):
                 self.c = c
@@ -226,31 +226,31 @@ class baseTextWidget:
                 self.keysym = keysym
                 self.leoWidget = w
                 self.widget = w
-    
+
         event = eventGenerateEvent(c,w,char,stroke)
         c.k.masterKeyHandler(event,stroke=stroke)
-        
+
     #@nonl
     #@-node:ekr.20070228074312.15:event_generate (baseTextWidget)
     #@+node:ekr.20070228074312.16:flashCharacter (to do)
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
-    
+
         w = self
-        
+
         return ###
-    
+
         def addFlashCallback(w,count,index):
             # g.trace(count,index)
             i,j = w.toPythonIndex(index),w.toPythonIndex(index+1)
             Tk.Text.tag_add(w,'flash',i,j)
             Tk.Text.after(w,delay,removeFlashCallback,w,count-1,index)
-        
+
         def removeFlashCallback(w,count,index):
             # g.trace(count,index)
             Tk.Text.tag_remove(w,'flash','1.0','end')
             if count > 0:
                 Tk.Text.after(w,delay,addFlashCallback,w,count,index)
-    
+
         try:
             Tk.Text.tag_configure(w,'flash',foreground=fg,background=bg)
             addFlashCallback(w,flashes,i)
@@ -260,75 +260,75 @@ class baseTextWidget:
     #@-node:ekr.20070228074312.16:flashCharacter (to do)
     #@+node:ekr.20070228074312.17:getFocus (baseText)
     def getFocus (self):
-        
+
         w = self
         w2 = w._getFocus()
         # g.trace('w',w,'focus',w2)
         return w2
-        
+
     findFocus = getFocus
     #@-node:ekr.20070228074312.17:getFocus (baseText)
     #@+node:ekr.20070228074312.18:get
     def get(self,i,j=None):
-    
+
         w = self
-    
+
         i = w.toPythonIndex(i)
         if j is None: j = i+ 1
         j = w.toPythonIndex(j)
-        
+
         s = w._get(i,j)
         return g.toUnicode(s,g.app.tkEncoding)
     #@-node:ekr.20070228074312.18:get
     #@+node:ekr.20070228074312.19:getAllText
     def getAllText (self):
-        
+
         w = self
-    
+
         s = w._getAllText()
         return g.toUnicode(s,g.app.tkEncoding)
     #@-node:ekr.20070228074312.19:getAllText
     #@+node:ekr.20070228074312.20:getInsertPoint (baseText)
     def getInsertPoint(self):
-        
+
         w = self
         i = w._getInsertPoint()
-        
+
         # g.trace(self,'baseWidget: i:',i,'virtual',w.virtualInsertPoint)
-        
+
         if i is None:
             if w.virtualInsertPoint is None:
                 i = 0
             else:
                 i = w.virtualInsertPoint
-        
+
         w.virtualInsertPoint = i
-        
+
         return i
     #@-node:ekr.20070228074312.20:getInsertPoint (baseText)
     #@+node:ekr.20070228102413:getName & GetName
     def GetName(self):
         return self.name
-        
+
     getName = GetName
     #@nonl
     #@-node:ekr.20070228102413:getName & GetName
     #@+node:ekr.20070228074312.21:getSelectedText
     def getSelectedText (self):
-    
+
         w = self
         s = w._getSelectedText()
         return g.toUnicode(s,g.app.tkEncoding)
     #@-node:ekr.20070228074312.21:getSelectedText
     #@+node:ekr.20070228074312.22:getSelectionRange (baseText)
     def getSelectionRange (self,sort=True):
-        
+
         """Return a tuple representing the selected range of the widget.
-        
+
         Return a tuple giving the insertion point if no range of text is selected."""
-    
+
         w = self
-    
+
         sel = w._getSelectionRange() # wx.richtext.RichTextCtrl returns (-1,-1) on no selection.
         if len(sel) == 2 and sel[0] >= 0 and sel[1] >= 0:
             #g.trace(self,'baseWidget: sel',repr(sel),g.callers(6))
@@ -343,32 +343,32 @@ class baseTextWidget:
     #@-node:ekr.20070228074312.22:getSelectionRange (baseText)
     #@+node:ekr.20070228074312.23:getYScrollPosition
     def getYScrollPosition (self):
-    
+
          w = self
          return w._getYScrollPosition()
     #@-node:ekr.20070228074312.23:getYScrollPosition
     #@+node:ekr.20070228074312.24:getWidth
     def getWidth (self):
-        
+
         '''Return the width of the widget.
         This is only called for headline widgets,
         and gui's may choose not to do anything here.'''
-        
+
         w = self
         return 0
     #@-node:ekr.20070228074312.24:getWidth
     #@+node:ekr.20070228074312.25:hasSelection
     def hasSelection (self):
-        
+
         w = self
         i,j = w.getSelectionRange()
         return i != j
     #@-node:ekr.20070228074312.25:hasSelection
     #@+node:ekr.20070228074312.26:insert
     # The signature is more restrictive than the Tk.Text.insert method.
-    
+
     def insert(self,i,s):
-        
+
         w = self
         i = w.toPythonIndex(i)
         # w._setInsertPoint(i)
@@ -376,79 +376,79 @@ class baseTextWidget:
     #@-node:ekr.20070228074312.26:insert
     #@+node:ekr.20070228074312.27:indexIsVisible
     def indexIsVisible (self,i):
-        
+
         return False # Code will loop if this returns True forever.
     #@nonl
     #@-node:ekr.20070228074312.27:indexIsVisible
     #@+node:ekr.20070228074312.28:replace
     def replace (self,i,j,s):
-    
+
         w = self
         w.delete(i,j)
         w.insert(i,s)
     #@-node:ekr.20070228074312.28:replace
     #@+node:ekr.20070228074312.29:scrollLines
     def scrollLines (self,n):
-        
+
         w = self
         w._scrollLines(n)
     #@nonl
     #@-node:ekr.20070228074312.29:scrollLines
     #@+node:ekr.20070228074312.30:see & seeInsertPoint
     def see(self,index):
-    
+
         w = self
         i = self.toPythonIndex(index)
         w._see(i)
-    
+
     def seeInsertPoint(self):
-        
+
         w = self
         i = w._getInsertPoint()
         w._see(i)
     #@-node:ekr.20070228074312.30:see & seeInsertPoint
     #@+node:ekr.20070228074312.31:selectAllText
     def selectAllText (self,insert=None):
-        
+
         '''Select all text of the widget.'''
-        
+
         w = self
         w.setSelectionRange(0,'end',insert=insert)
     #@-node:ekr.20070228074312.31:selectAllText
     #@+node:ekr.20070228074312.32:setAllText
     def setAllText (self,s):
-    
+
         w = self
         w._setAllText(s)
     #@nonl
     #@-node:ekr.20070228074312.32:setAllText
     #@+node:ekr.20070228074312.33:setBackgroundColor & SetBackgroundColour
     def setBackgroundColor (self,color):
-        
+
         w = self
-        
+
         # Translate tk colors to wx colors.
         d = { 'lightgrey': 'light grey', 'lightblue': 'leo blue',}
-        
+
         color = d.get(color,color)
-        
+
         return w._setBackgroundColor(color)
-        
+
     SetBackgroundColour = setBackgroundColor
     #@nonl
     #@-node:ekr.20070228074312.33:setBackgroundColor & SetBackgroundColour
     #@+node:ekr.20070228074312.34:setFocus (baseText)
     def setFocus (self):
-        
+
         w = self
         # g.trace('baseText')
         return w._setFocus()
-        
+
     SetFocus = setFocus
     #@-node:ekr.20070228074312.34:setFocus (baseText)
     #@+node:ekr.20070228074312.35:setInsertPoint (baseText)
     def setInsertPoint (self,pos):
-    
+
         w = self
         w.virtualInsertPoint = i = w.toPythonIndex(pos)
         # g.trace(self,i)
@@ -456,38 +456,38 @@ class baseTextWidget:
     #@-node:ekr.20070228074312.35:setInsertPoint (baseText)
     #@+node:ekr.20070228074312.36:setSelectionRange (baseText)
     def setSelectionRange (self,i,j,insert=None):
-        
+
         w = self
         i1, j1, insert1 = i,j,insert
         i,j = w.toPythonIndex(i),w.toPythonIndex(j)
-    
+
         # g.trace(self,'baseWidget',repr(i1),'=',repr(i),repr(j1),'=',repr(j),repr(insert1),'=',repr(insert),g.callers(4))
-    
+
         if i == j:
             w._setInsertPoint(j)
         else:
             w._setSelectionRange(i,j)
-    
+
         if insert is not None and insert in (i,j):
             ins = w.toPythonIndex(insert)
             if ins in (i,j):
                 self.virtualInsertPoint = ins
-                
+
     #@nonl
     #@-node:ekr.20070228074312.36:setSelectionRange (baseText)
     #@+node:ekr.20070228074312.37:setWidth
     def setWidth (self,width):
-        
+
         '''Set the width of the widget.
         This is only called for headline widgets,
         and gui's may choose not to do anything here.'''
-        
+
         w = self
         pass
     #@-node:ekr.20070228074312.37:setWidth
     #@+node:ekr.20070228074312.38:setYScrollPosition
     def setYScrollPosition (self,i):
-    
+
          w = self
          w._setYScrollPosition(i)
     #@nonl
@@ -495,29 +495,29 @@ class baseTextWidget:
     #@+node:ekr.20070228074312.39:tags (to-do)
     #@+node:ekr.20070228074312.40:mark_set (to be removed)
     def mark_set(self,markName,i):
-    
+
         w = self
         i = self.toPythonIndex(i)
-        
+
         ### Tk.Text.mark_set(w,markName,i)
     #@-node:ekr.20070228074312.40:mark_set (to be removed)
     #@+node:ekr.20070228074312.41:tag_add
     # The signature is slightly different than the Tk.Text.insert method.
-    
+
     def tag_add(self,tagName,i,j=None,*args):
-        
+
         w = self
         i = self.toPythonIndex(i)
         if j is None: j = i + 1
         j = self.toPythonIndex(j)
-        
+
         return ###
-    
+
         if not hasattr(w,'leo_styles'):
             w.leo_styles = {}
-    
+
         style = w.leo_styles.get(tagName)
-    
+
         if style is not None:
             # g.trace(i,j,tagName)
             w.textBaseClass.SetStyle(w,i,j,style)
@@ -526,12 +526,12 @@ class baseTextWidget:
     #@+node:ekr.20070228074312.42:tag_configure & helper
     def tag_configure (self,colorName,**keys):
         pass
-            
+
     tag_config = tag_configure
     #@nonl
     #@+node:ekr.20070228074312.43:tkColorToWxColor
     def tkColorToWxColor (self, color):
-        
+
         d = {
             'black':        wx.BLACK,
             "red":          wx.RED,
@@ -540,27 +540,27 @@ class baseTextWidget:
             "firebrick3":   wx.RED,
             'white':        wx.WHITE,
         }
-            
+
         return d.get(color)
     #@nonl
     #@-node:ekr.20070228074312.43:tkColorToWxColor
     #@-node:ekr.20070228074312.42:tag_configure & helper
     #@+node:ekr.20070228074312.44:tag_delete (NEW)
     def tag_delete (self,tagName,*args,**keys):
-        
+
         pass # g.trace(tagName,args,keys)
     #@nonl
     #@-node:ekr.20070228074312.44:tag_delete (NEW)
     #@+node:ekr.20070228074312.45:tag_names
     def tag_names (self, *args):
-        
+
         return []
     #@-node:ekr.20070228074312.45:tag_names
     #@+node:ekr.20070228074312.46:tag_ranges
     def tag_ranges(self,tagName):
-        
+
         return tuple() ###
-        
+
         w = self
         aList = Tk.Text.tag_ranges(w,tagName)
         aList = [w.toPythonIndex(z) for z in aList]
@@ -568,19 +568,19 @@ class baseTextWidget:
     #@-node:ekr.20070228074312.46:tag_ranges
     #@+node:ekr.20070228074312.47:tag_remove
     def tag_remove(self,tagName,i,j=None,*args):
-        
+
         w = self
         i = self.toPythonIndex(i)
         if j is None: j = i + 1
         j = self.toPythonIndex(j)
-        
+
         return ### Not ready yet.
-    
+
         if not hasattr(w,'leo_styles'):
             w.leo_styles = {}
-    
+
         style = w.leo_styles.get(tagName)
-    
+
         if style is not None:
             # g.trace(i,j,tagName)
             w.textBaseClass.SetStyle(w,i,j,style)
@@ -588,9 +588,9 @@ class baseTextWidget:
     #@-node:ekr.20070228074312.47:tag_remove
     #@+node:ekr.20070228074312.48:yview
     def yview (self,*args):
-        
+
         '''w.yview('moveto',y) or w.yview()'''
-    
+
         return 0,0
     #@nonl
     #@-node:ekr.20070228074312.48:yview
@@ -604,17 +604,17 @@ class baseTextWidget:
 #@-node:ekr.20070228074312:class baseTextWidget
 #@+node:ekr.20070228074228.1:class stringTextWidget (stringTextWidget)
 class stringTextWidget (baseTextWidget):
-    
+
     '''A class that represents text as a Python string.'''
-    
+
     #@    @+others
     #@+node:ekr.20070228074228.2:ctor
     def __init__ (self,c,name):
-        
+
         # Init the base class
         baseTextWidget.__init__ (self,c=c,
             baseClassName='stringTextWidget',name=name,widget=None)
-    
+
         self.ins = 0
         self.sel = 0,0
         self.s = ''
@@ -666,18 +666,18 @@ class stringTextWidget (baseTextWidget):
     #@-node:ekr.20070228074228.3:Overrides
     #@+node:ekr.20070228111853:setSelectionRange (stringText)
     def setSelectionRange (self,i,j,insert=None):
-        
+
         w = self
         i1, j1, insert1 = i,j,insert
         i,j = w.toPythonIndex(i),w.toPythonIndex(j)
-        
+
         self.sel = i,j
-    
+
         if insert is not None: 
             self.ins = w.toPythonIndex(insert)
         else:
             self.ins = j
-            
+
         if self.trace: g.trace('i',i,'j',j,'insert',repr(insert))
     #@nonl
     #@-node:ekr.20070228111853:setSelectionRange (stringText)
@@ -691,26 +691,26 @@ class stringTextWidget (baseTextWidget):
 #@+others
 #@+node:ekr.20031218072017.3656:class leoBody
 class leoBody:
-    
+
     """The base class for the body pane in Leo windows."""
-    
+
     __pychecker__ = '--no-argsused' # base classes have many unused args.
-    
+
     #@    @+others
     #@+node:ekr.20031218072017.3657:leoBody.__init__
     def __init__ (self,frame,parentFrame):
-    
+
         self.frame = frame
         self.c = frame.c
         self.editorWidgets = {} # keys are pane names, values are text widgets
         self.forceFullRecolorFlag = False
         frame.body = self
-        
+
         # May be overridden in subclasses...
         self.bodyCtrl = self.widget = None ### self
         self.numberOfEditors = 1
         self.pb = None # paned body widget.
-    
+
         # Must be overridden in subclasses...
         self.colorizer = None
     #@+node:ekr.20031218072017.3660:leoBody.mustBeDefinedInSubclasses
@@ -790,26 +790,26 @@ class leoBody:
     #@+node:ekr.20061109173021:leoBody: must be defined in the base class
     #@+node:ekr.20031218072017.3677:Coloring
     def getColorizer(self):
-        
+
         return self.colorizer
-    
+
     def recolor_now(self,p,incremental=False):
-    
+
         self.colorizer.colorize(p.copy(),incremental)
-    
+
     def recolor_range(self,p,leading,trailing):
-        
+
         self.colorizer.recolor_range(p.copy(),leading,trailing)
-    
+
     def recolor(self,p,incremental=False):
-        
+
         if 0: # Do immediately
             self.colorizer.colorize(p.copy(),incremental)
         else: # Do at idle time
             self.colorizer.schedule(p.copy(),incremental)
-        
+
     def updateSyntaxColorer(self,p):
-        
+
         return self.colorizer.updateSyntaxColorer(p.copy())
     #@-node:ekr.20031218072017.3677:Coloring
     #@+node:ekr.20060528100747:Editors (leoBody)
@@ -826,25 +826,25 @@ class leoBody:
     #@+node:ekr.20070424053629:entries
     #@+node:ekr.20060528100747.1:addEditor
     def addEditor (self,event=None):
-        
+
         '''Add another editor to the body pane.'''
-        
+
         c = self.c ; p = c.currentPosition()
-         
+
         self.totalNumberOfEditors += 1
         self.numberOfEditors += 1
-    
+
         if self.numberOfEditors == 2:
             # Inject the ivars into the first editor.
             w_old = self.editorWidgets.get('1')
             self.updateInjectedIvars(w_old,p)
             self.selectLabel(w_old) # Immediately create the label in the old editor.
-    
+
         name = '%d' % self.totalNumberOfEditors
         pane = self.pb.add(name)
         panes = self.pb.panes()
         minSize = float(1.0/float(len(panes)))
-        
+
         f = self.createEditorFrame(pane)
         #@    << create text widget w >>
         #@+node:ekr.20060528110922:<< create text widget w >>
@@ -852,20 +852,20 @@ class leoBody:
         w.delete(0,'end')
         w.insert('end',p.bodyString())
         w.see(0)
-        
+
         self.setFontFromConfig(w=w)
         self.setColorFromConfig(w=w)
         self.createBindings(w=w)
         c.k.completeAllBindingsForWidget(w)
-        
+
         self.recolorWidget(w)
         #@-node:ekr.20060528110922:<< create text widget w >>
         #@nl
         self.editorWidgets[name] = w
-    
+
         for pane in panes:
             self.pb.configurepane(pane,size=minSize)
-        
+
         self.pb.updatelayout()
         self.bodyCtrl = self.frame.bodyCtrl = w
         self.updateInjectedIvars(w,p)
@@ -876,9 +876,9 @@ class leoBody:
     #@-node:ekr.20060528100747.1:addEditor
     #@+node:ekr.20060528170438:cycleEditorFocus
     def cycleEditorFocus (self,event=None):
-        
+
         '''Cycle keyboard focus between the body text editors.'''
-        
+
         c = self.c ; d = self.editorWidgets ; w = self.bodyCtrl
         values = d.values()
         if len(values) > 1:
@@ -889,28 +889,28 @@ class leoBody:
             self.selectEditor(w2)
             self.bodyCtrl = self.frame.bodyCtrl = w2
             # print '***',g.app.gui.widget_name(w2),id(w2)
-    
+
         return 'break'
     #@-node:ekr.20060528170438:cycleEditorFocus
     #@+node:ekr.20060528113806:deleteEditor
     def deleteEditor (self,event=None):
-        
+
         '''Delete the presently selected body text editor.'''
-        
+
         w = self.bodyCtrl ; d = self.editorWidgets
-        
+
         if len(d.keys()) == 1: return
-        
+
         name = w.leo_name
-        
+
         del d [name] 
         self.pb.delete(name)
         panes = self.pb.panes()
         minSize = float(1.0/float(len(panes)))
-        
+
         for pane in panes:
             self.pb.configurepane(pane,size=minSize)
-            
+
         # Select another editor.
         w = d.values()[0]
         self.bodyCtrl = self.frame.bodyCtrl = w
@@ -919,11 +919,11 @@ class leoBody:
     #@-node:ekr.20060528113806:deleteEditor
     #@+node:ekr.20070425180705:findEditorForChapter (leoBody)
     def findEditorForChapter (self,chapter,p):
-        
+
         '''Return an editor to be assigned to chapter.'''
-        
+
         d = self.editorWidgets ; values = d.values()
-    
+
         # First, try to match both the chapter and position.
         if p:
             for w in values:
@@ -932,27 +932,27 @@ class leoBody:
                     hasattr(w,'leo_p') and w.leo_p and w.leo_p.equal(p)):
                     # g.trace('***',id(w),'match chapter and p',p.headString())
                     return w
-                
+
         # Next, try to match just the chapter.
         for w in values:
             if hasattr(w,'leo_chapter') and w.leo_chapter == chapter:
                 # g.trace('***',id(w),'match only chapter',p.headString())
                 return w
-        
+
         # As a last resort, return the present editor widget.
         # g.trace('***',id(self.bodyCtrl),'no match',p.headString())
         return self.bodyCtrl
     #@-node:ekr.20070425180705:findEditorForChapter (leoBody)
     #@+node:ekr.20060530210057:select/unselectLabel
     def unselectLabel (self,w):
-        
+
         self.createChapterIvar(w)
         self.packEditorLabelWidget(w)
         s = self.computeLabel(w)
         w.leo_label.configure(text=s,bg='LightSteelBlue1')
-            
+
     def selectLabel (self,w):
-        
+
         if self.numberOfEditors > 1:
             self.createChapterIvar(w)
             self.packEditorLabelWidget(w)
@@ -966,74 +966,74 @@ class leoBody:
     #@-node:ekr.20060530210057:select/unselectLabel
     #@+node:ekr.20061017083312:selectEditor & helpers
     selectEditorLockout = False
-    
+
     def selectEditor(self,w):
-        
+
         '''Select editor w and node w.leo_p.'''
-    
+
         #  Called by body.onClick and whenever w must be selected.
-        
+
         if self.selectEditorLockout or w and self.bodyCtrl == w: return
-        
+
         try:
             val = None
             self.selectEditorLockout = True
             val = self.selectEditorHelper(w)
         finally:
             self.selectEditorLockout = False
-            
+
         return val # Don't put a return in a finally clause.
-    
+
     #@+node:ekr.20070423102603:selectEditorHelper
     def selectEditorHelper (self,w):
-        
+
         c = self.c ; cc = c.chapterController ; d = self.editorWidgets
-    
+
         if not w.leo_p:
             g.trace('no w.leo_p') 
             return 'break'
-            
+
         if 0:
             g.trace('==1',id(w),
                 hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
                 hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
-    
+
         self.inactivateActiveEditor(w)
-    
+
         # The actual switch.
         self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
         w.leo_active = True
-    
+
         self.switchToChapter(w)
         self.selectLabel(w)
-    
+
         if not self.ensurePositionExists(w):
             g.trace('***** no position editor!')
             return 'break'
-            
+
         if 0:
             g.trace('==2',id(w),
                 hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
                 hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
-    
+
         c.frame.tree.expandAllAncestors(w.leo_p)
         c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
         c.recolor_now()
         #@    << restore the selection, insertion point and the scrollbar >>
         #@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
         # g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
-        
+
         if w.leo_insertSpot:
             w.setInsertPoint(w.leo_insertSpot)
         else:
             w.setInsertPoint(0)
-            
+
         if w.leo_scrollBarSpot is not None:
             first,last = w.leo_scrollBarSpot
             w.yview('moveto',first)
         else:
             w.seeInsertPoint()
-        
+
         if w.leo_selection:
             try:
                 start,end = w.leo_selection
@@ -1049,25 +1049,25 @@ class leoBody:
     #@-node:ekr.20061017083312:selectEditor & helpers
     #@+node:ekr.20060528132829:assignPositionToEditor
     def assignPositionToEditor (self,p):
-    
+
         '''Called *only* from tree.select to select the present body editor.'''
-    
+
         c = self.c ; cc = c.chapterController ; w = self.bodyCtrl
-    
+
         self.updateInjectedIvars(w,p)
         self.selectLabel(w)
-    
+
         # g.trace('===',id(w),w.leo_chapter.name,w.leo_p.headString())
     #@-node:ekr.20060528132829:assignPositionToEditor
     #@+node:ekr.20060528131618:updateEditors
     # Called from addEditor and assignPositionToEditor
-    
+
     def updateEditors (self):
-        
+
         c = self.c ; p = c.currentPosition()
         d = self.editorWidgets
         if len(d.keys()) < 2: return # There is only the main widget.
-    
+
         for key in d.keys():
             w = d.get(key)
             v = w.leo_v
@@ -1082,19 +1082,19 @@ class leoBody:
     #@+node:ekr.20070424053629.1:utils
     #@+node:ekr.20070422093128:computeLabel
     def computeLabel (self,w):
-    
+
         s = w.leo_label_s
-    
+
         if hasattr(w,'leo_chapter') and w.leo_chapter:
             s = '%s: %s' % (w.leo_chapter.name,s)
-    
+
         return s
     #@-node:ekr.20070422093128:computeLabel
     #@+node:ekr.20070422094710:createChapterIvar
     def createChapterIvar (self,w):
-        
+
         c = self.c ; cc = c.chapterController
-        
+
         if not hasattr(w,'leo_chapter') or not w.leo_chapter:
             if cc and c.config.getBool('use_chapters'):
                 w.leo_chapter = cc.getSelectedChapter()
@@ -1103,11 +1103,11 @@ class leoBody:
     #@-node:ekr.20070422094710:createChapterIvar
     #@+node:ekr.20070424084651:ensurePositionExists
     def ensurePositionExists(self,w):
-        
+
         '''Return True if w.leo_p exists or can be reconstituted.'''
-        
+
         c = self.c
-    
+
         if c.positionExists(w.leo_p):
             return True
         else:
@@ -1123,11 +1123,11 @@ class leoBody:
     #@-node:ekr.20070424084651:ensurePositionExists
     #@+node:ekr.20070424080640:inactivateActiveEditor
     def inactivateActiveEditor(self,w):
-        
+
         '''Inactivate all the previously active editor.'''
-        
+
         d = self.editorWidgets
-    
+
         # Don't capture ivars here! assignPositionToEditor keeps them up-to-date. (??)
         for key in d.keys():
             w2 = d.get(key)
@@ -1146,34 +1146,34 @@ class leoBody:
     #@-node:ekr.20070424080640:inactivateActiveEditor
     #@+node:ekr.20060530204135:recolorWidget
     def recolorWidget (self,w):
-    
+
         c = self.c ; old_w = self.bodyCtrl
-        
+
         # g.trace(id(w),c.currentPosition().headString())
-        
+
         # Save.
         self.bodyCtrl = self.frame.bodyCtrl = w
-        
+
         c.recolor_now(interruptable=False) # Force a complete recoloring.
-        
+
         # Restore.
         self.bodyCtrl = self.frame.bodyCtrl = old_w
     #@nonl
     #@-node:ekr.20060530204135:recolorWidget
     #@+node:ekr.20070424084012:switchToChapter
     def switchToChapter (self,w):
-        
+
         '''select w.leo_chapter.'''
-        
+
         c = self.c ; cc = c.chapterController
-        
+
         if hasattr(w,'leo_chapter') and w.leo_chapter:
             chapter = w.leo_chapter
             name = chapter and chapter.name
             oldChapter = cc.getSelectedChapter()
             if chapter != oldChapter:
                 # g.trace('===','old',oldChapter.name,'new',name,w.leo_p)
-                
+
                 # This generate the events needed.
                 # Do **nothing** else.
                 cc.tt.selectTab(name)
@@ -1181,20 +1181,20 @@ class leoBody:
     #@-node:ekr.20070424084012:switchToChapter
     #@+node:ekr.20070424092855:updateInjectedIvars
     # Called from addEditor and assignPositionToEditor.
-    
+
     def updateInjectedIvars (self,w,p):
-        
+
         c = self.c ; cc = c.chapterController ; 
-    
+
         if cc and c.config.getBool('use_chapters'):
             w.leo_chapter = cc.getSelectedChapter()
         else:
             w.leo_chapter = None
-    
+
         w.leo_p = p.copy()
         w.leo_v = w.leo_p.v
         w.leo_label_s = p.headString()
-        
+
         # g.trace('   ===', id(w),w.leo_chapter and w.leo_chapter.name,p.headString())
     #@-node:ekr.20070424092855:updateInjectedIvars
     #@-node:ekr.20070424053629.1:utils
@@ -1202,9 +1202,9 @@ class leoBody:
     #@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
     # This is the only key handler for the body pane.
     def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
-        
+
         '''Update Leo after the body has been changed.'''
-        
+
         body = self ; c = self.c
         bodyCtrl = w = body.bodyCtrl
         p = c.currentPosition()
@@ -1243,7 +1243,7 @@ class leoBody:
             # p.setDirty() sets all cloned and @file dirty bits.
             if not p.isDirty() and p.setDirty():
                 redraw_flag = True
-                
+
             # Update icons. p.v.iconVal may not exist during unit tests.
             val = p.computeIcon()
             # g.trace('new val:',val,'old val:',hasattr(p.v,'iconVal') and p.v.iconVal or '<None>')
@@ -1257,10 +1257,10 @@ class leoBody:
     #@-node:ekr.20031218072017.1329:onBodyChanged (leoBody)
     #@+node:ekr.20061109095450.8:onClick
     def onClick (self,event):
-        
+
         c = self.c ; k = c.k ; w = event and event.widget
         wname = c.widget_name(w)
-    
+
         if wname.startswith('body'):
             # A hack to support middle-button pastes: remember the previous selection.
             k.previousSelection = w.getSelectionRange()
@@ -1276,21 +1276,21 @@ class leoBody:
     #@-node:ekr.20061109095450.8:onClick
     #@+node:ekr.20031218072017.3658:oops
     def oops (self):
-        
+
         g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
     #@-node:ekr.20031218072017.3658:oops
     #@+node:ekr.20031218072017.4018:Text (leoBody)
     #@+node:ekr.20031218072017.4030:getInsertLines
     def getInsertLines (self):
-        
+
         """Return before,after where:
-            
+
         before is all the lines before the line containing the insert point.
         sel is the line containing the insert point.
         after is all the lines after the line containing the insert point.
-        
+
         All lines end in a newline, except possibly the last line."""
-        
+
         w = self.bodyCtrl
         s = w.getAllText()
         insert = w.getInsertPoint()
@@ -1298,33 +1298,33 @@ class leoBody:
         before = s[0:i]
         ins = s[i:j]
         after = s[j:]
-    
+
         before = g.toUnicode(before,g.app.tkEncoding)
         ins    = g.toUnicode(ins,   g.app.tkEncoding)
         after  = g.toUnicode(after ,g.app.tkEncoding)
-    
+
         return before,ins,after
     #@-node:ekr.20031218072017.4030:getInsertLines
     #@+node:ekr.20031218072017.4031:getSelectionAreas
     def getSelectionAreas (self):
-        
+
         """Return before,sel,after where:
-            
+
         before is the text before the selected text
         (or the text before the insert point if no selection)
         sel is the selected text (or "" if no selection)
         after is the text after the selected text
         (or the text after the insert point if no selection)"""
-    
+
         w = self.bodyCtrl
         s = w.getAllText()
         i,j = w.getSelectionRange()
         if i == j: j = i + 1
-    
+
         before = s[0:i]
         sel    = s[i:j]
         after  = s[j:]
-        
+
         before = g.toUnicode(before,g.app.tkEncoding)
         sel    = g.toUnicode(sel,   g.app.tkEncoding)
         after  = g.toUnicode(after ,g.app.tkEncoding)
@@ -1333,19 +1333,19 @@ class leoBody:
     #@-node:ekr.20031218072017.4031:getSelectionAreas
     #@+node:ekr.20031218072017.2377:getSelectionLines
     def getSelectionLines (self):
-        
+
         """Return before,sel,after where:
-            
+
         before is the all lines before the selected text
         (or the text before the insert point if no selection)
         sel is the selected text (or "" if no selection)
         after is all lines after the selected text
         (or the text after the insert point if no selection)"""
-        
+
         if g.app.batchMode:
             c.notValidInBatchMode(undoType)
             return '','',''
-        
+
         # At present, called only by c.getBodyLines.
         w = self.bodyCtrl
         s = w.getAllText()
@@ -1355,21 +1355,21 @@ class leoBody:
         else:
             i,junk = g.getLine(s,i)
             junk,j = g.getLine(s,j)
-       
-        
+
+
         before = g.toUnicode(s[0:i],g.app.tkEncoding)
         sel    = g.toUnicode(s[i:j],g.app.tkEncoding)
         after  = g.toUnicode(s[j:len(s)],g.app.tkEncoding)
-        
+
         # g.trace(i,j,'sel',repr(s[i:j]),'after',repr(after))
         return before,sel,after # 3 strings.
     #@-node:ekr.20031218072017.2377:getSelectionLines
     #@+node:ekr.20031218072017.4037:setSelectionAreas
     def setSelectionAreas (self,before,sel,after):
-        
+
         """Replace the body text by before + sel + after and
         set the selection so that the sel text is selected."""
-    
+
         w = self.bodyCtrl
         s = w.getAllText()
         before = before or ''
@@ -1386,7 +1386,7 @@ class leoBody:
     #@+node:ekr.20031218072017.4038:get/setYScrollPosition
     def getYScrollPosition (self):
         return self.bodyCtrl.getYScrollPosition()
-        
+
     def setYScrollPosition (self,scrollPosition):
         if len(scrollPosition) == 2:
             first,last = scrollPosition
@@ -1416,21 +1416,21 @@ class leoBody:
 #@-node:ekr.20031218072017.3656:class leoBody
 #@+node:ekr.20031218072017.3678:class leoFrame
 class leoFrame:
-    
+
     """The base class for all Leo windows."""
-    
+
     __pychecker__ = '--no-argsused' # base classes have many unused args.
-    
+
     instances = 0
-    
+
     #@    @+others
     #@+node:ekr.20031218072017.3679:  leoFrame.__init__
     def __init__ (self,gui):
-        
+
         self.c = None # Must be created by subclasses.
         self.title = None # Must be created by subclasses.
         self.gui = gui
-        
+
         # Objects attached to this frame.
         self.colorPanel = None 
         self.comparePanel = None
@@ -1444,7 +1444,7 @@ class leoFrame:
         self.prefsPanel = None
         self.statusLine = None
         self.useMiniBufferWidget = False # New in 4.4
-    
+
         # Gui-independent data
         self.componentsDict = {} # Keys are names, values are componentClass instances.
         self.es_newlines = 0 # newline count for this log stream
@@ -1455,29 +1455,29 @@ class leoFrame:
         self.startupWindow=False # True if initially opened window
         self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
         self.tab_width = 0 # The tab width in effect in this pane.
-        
+
     #@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
     mustBeDefinedOnlyInBaseClass = (
-       
+
         'initialRatios',
         'longFileName',
         'oops',
         'promptForSave',
         'scanForTabWidth',
         'shortFileName',
-        
+
         # Headline editing.
         'abortEditLabelCommand',
         'endEditLabelCommand',
         'insertHeadlineTime',
-        
+
         # Cut/Copy/Paste.
         'OnPaste',
         'OnPasteFromMenu',
         'copyText',
         'cutText',
         'pasteText',
-    
+
         # Icon bar convenience methods.    
         'addIconButton',
         'clearIconBar',
@@ -1485,7 +1485,7 @@ class leoFrame:
         'getIconBar',
         'getIconBarObject',
         'hideIconBar',
-        
+
         # Status line convenience methods.
         'createStatusLine',
         'clearStatusLine',
@@ -1542,12 +1542,12 @@ class leoFrame:
     #@+node:ekr.20061109125528.1:Must be defined in base class
     #@+node:ekr.20031218072017.3689:initialRatios
     def initialRatios (self):
-        
+
         c = self.c
-    
+
         s = c.config.get("initial_splitter_orientation","string")
         verticalFlag = s == None or (s != "h" and s != "horizontal")
-    
+
         if verticalFlag:
             r = c.config.getRatio("initial_vertical_ratio")
             if r == None or r < 0.0 or r > 1.0: r = 0.5
@@ -1558,39 +1558,39 @@ class leoFrame:
             if r == None or r < 0.0 or r > 1.0: r = 0.3
             r2 = c.config.getRatio("initial_horizontal_secondary_ratio")
             if r2 == None or r2 < 0.0 or r2 > 1.0: r2 = 0.8
-    
+
         # g.trace(r,r2)
         return verticalFlag,r,r2
     #@-node:ekr.20031218072017.3689:initialRatios
     #@+node:ekr.20031218072017.3690:longFileName & shortFileName
     def longFileName (self):
-    
+
         return self.c.mFileName
-        
+
     def shortFileName (self):
-    
+
         return g.shortFileName(self.c.mFileName)
     #@-node:ekr.20031218072017.3690:longFileName & shortFileName
     #@+node:ekr.20031218072017.3691:oops
     def oops(self):
-        
+
         print "leoFrame oops:", g.callers(3), "should be overridden in subclass"
     #@-node:ekr.20031218072017.3691:oops
     #@+node:ekr.20031218072017.3692:promptForSave
     def promptForSave (self):
-        
+
         """Prompt the user to save changes.
-        
+
         Return True if the user vetos the quit or save operation."""
-        
+
         c = self.c
         name = g.choose(c.mFileName,c.mFileName,self.title)
         theType = g.choose(g.app.quitting, "quitting?", "closing?")
-    
+
         answer = g.app.gui.runAskYesNoCancelDialog(c,
             "Confirm",
             'Save changes to %s before %s' % (name,theType))
-            
+
         # print answer
         if answer == "cancel":
             return True # Veto.
@@ -1603,7 +1603,7 @@ class leoFrame:
                 # Make sure we never pass None to the ctor.
                 if not c.mFileName:
                     c.mFileName = ""
-                
+
                 c.mFileName = g.app.gui.runSaveFileDialog(
                     initialfile = c.mFileName,
                     title="Save",
@@ -1623,46 +1623,46 @@ class leoFrame:
     #@-node:ekr.20031218072017.3692:promptForSave
     #@+node:ekr.20031218072017.1375:scanForTabWidth
     # Similar to code in scanAllDirectives.
-    
+
     def scanForTabWidth (self,p):
-    
+
         c = self.c ; w = c.tab_width
-    
+
         for p in p.self_and_parents_iter():
             s = p.v.t.bodyString
             theDict = g.get_directives_dict(s)
             #@        << set w and break on @tabwidth >>
             #@+node:ekr.20031218072017.1376:<< set w and break on @tabwidth >>
             if theDict.has_key("tabwidth"):
-                
+
                 val = g.scanAtTabwidthDirective(s,theDict,issue_error_flag=False)
                 if val and val != 0:
                     w = val
                     break
             #@-node:ekr.20031218072017.1376:<< set w and break on @tabwidth >>
             #@nl
-    
+
         c.frame.setTabWidth(w)
     #@-node:ekr.20031218072017.1375:scanForTabWidth
     #@+node:ekr.20061119120006:Icon area convenience methods
     def addIconButton (self,*args,**keys):
         return self.iconBar and self.iconBar.add(*args,**keys)
-    
+
     def clearIconBar (self):
         self.iconBar and self.iconBar.clear()
-    
+
     def createIconBar (self):
         if not self.iconBar:
             self.iconBar = self.iconBarClass(self.c,self.outerFrame)
         return self.iconBar
-        
+
     def getIconBar(self):
         if not self.iconBar:
             self.iconBar = self.iconBarClass(self.c,self.outerFrame)
         return self.iconBar
-    
+
     getIconBarObject = getIconBar
-    
+
     def hideIconBar (self):
         self.iconBar and self.iconBar.hide()
     #@nonl
@@ -1672,30 +1672,30 @@ class leoFrame:
         if not self.statusLine:
             self.statusLine  = self.statusLineClass(self.c,self.outerFrame)
         return self.statusLine
-    
+
     def clearStatusLine (self):
         self.statusLine and self.statusLine.clear()
-        
+
     def disableStatusLine (self,background=None):
         self.statusLine and self.statusLine.disable(background)
-    
+
     def enableStatusLine (self,background="white"):
         self.statusLine and self.statusLine.enable(background)
-    
+
     def getStatusLine (self):
         return self.statusLine
-        
+
     getStatusObject = getStatusLine
-        
+
     def putStatusLine (self,s,color=None):
         self.statusLine and self.statusLine.put(s,color)
-        
+
     def setFocusStatusLine (self):
         self.statusLine and self.statusLine.setFocus()
-    
+
     def statusLineIsEnabled(self):
         return self.statusLine and self.statusLine.isEnabled()
-        
+
     def updateStatusLine(self):
         self.statusLine and self.statusLine.update()
     #@nonl
@@ -1703,39 +1703,39 @@ class leoFrame:
     #@+node:ekr.20070130115927.4:Cut/Copy/Paste (leoFrame)
     #@+node:ekr.20070130115927.5:copyText
     def copyText (self,event=None):
-        
+
         '''Copy the selected text from the widget to the clipboard.'''
-        
+
         f = self ; c = f.c ; w = event and event.widget
         if not w or not g.app.gui.isTextWidget(w): return
-    
+
         # Set the clipboard text.
         i,j = w.getSelectionRange()
         if i != j:
             s = w.get(i,j)
             g.app.gui.replaceClipboardWith(s)
-            
+
     OnCopyFromMenu = copyText
     #@-node:ekr.20070130115927.5:copyText
     #@+node:ekr.20070130115927.6:leoFrame.cutText
     def cutText (self,event=None):
-        
+
         '''Invoked from the mini-buffer and from shortcuts.'''
-    
+
         f = self ; c = f.c ; w = event and event.widget
         if not w or not g.app.gui.isTextWidget(w): return
-    
+
         name = c.widget_name(w)
         oldSel = w.getSelectionRange()
         oldText = w.getAllText()
         i,j = w.getSelectionRange()
-        
+
         # Update the widget and set the clipboard text.
         s = w.get(i,j)
         if i != j:
             w.delete(i,j)
             g.app.gui.replaceClipboardWith(s)
-    
+
         if name.startswith('body'):
             c.frame.body.forceFullRecolor()
             c.frame.body.onBodyChanged('Cut',oldSel=oldSel,oldText=oldText)
@@ -1746,25 +1746,25 @@ class leoFrame:
             width = f.tree.headWidth(p=None,s=s)
             w.setWidth(width)
         else: pass
-    
+
     OnCutFromMenu = cutText
     #@-node:ekr.20070130115927.6:leoFrame.cutText
     #@+node:ekr.20070130115927.7:leoFrame.pasteText
     def pasteText (self,event=None,middleButton=False):
-    
+
         '''Paste the clipboard into a widget.
         If middleButton is True, support x-windows middle-mouse-button easter-egg.'''
-    
+
         f = self ; c = f.c ; w = event and event.widget
         # g.trace('isText',g.app.gui.isTextWidget(w),w)
         if not w or not g.app.gui.isTextWidget(w): return
-    
+
         wname = c.widget_name(w)
         i,j = oldSel = w.getSelectionRange()  # Returns insert point if no selection.
         oldText = w.getAllText()
-        
+
         # print 'pasteText',i,j,middleButton,wname,repr(c.k.previousSelection)
-        
+
         if middleButton and c.k.previousSelection is not None:
             start,end = c.k.previousSelection
             s = w.getAllText()
@@ -1772,20 +1772,20 @@ class leoFrame:
             c.k.previousSelection = None
         else:
             s = s1 = g.app.gui.getTextFromClipboard()
-        
+
         singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-        
+
         if singleLine:
             # Strip trailing newlines so the truncation doesn't cause confusion.
             while s and s [ -1] in ('\n','\r'):
                 s = s [: -1]
-    
+
         try:
             # Update the widget.
             if i != j:
                 w.delete(i,j)
             w.insert(i,s)
-        
+
             if wname.startswith('body'):
                 c.frame.body.forceFullRecolor()
                 c.frame.body.onBodyChanged('Paste',oldSel=oldSel,oldText=oldText)
@@ -1801,14 +1801,14 @@ class leoFrame:
             else: pass
         except Exception:
             pass # Tk sometimes throws weird exceptions here.
-            
+
         return 'break' # Essential
-    
+
     OnPasteFromMenu = pasteText
     #@-node:ekr.20070130115927.7:leoFrame.pasteText
     #@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
     def OnPaste (self,event=None):
-        
+
         return self.pasteText(event=event,middleButton=True)
     #@nonl
     #@-node:ekr.20061016071937:OnPaste (To support middle-button paste)
@@ -1816,18 +1816,18 @@ class leoFrame:
     #@+node:ekr.20031218072017.3980:Edit Menu... (leoFrame)
     #@+node:ekr.20031218072017.3981:abortEditLabelCommand
     def abortEditLabelCommand (self,event=None):
-        
+
         '''End editing of a headline and revert to its previous value.'''
-        
+
         frame = self ; c = frame.c ; tree = frame.tree
         p = c.currentPosition() ; w = c.edit_widget(p)
-        
+
         if g.app.batchMode:
             c.notValidInBatchMode("Abort Edit Headline")
             return
-            
+
         # g.trace('isEditing',p == tree.editPosition(),'revertHeadline',repr(tree.revertHeadline))
-            
+
         if w and p == tree.editPosition():
             # Revert the headline text.
             w.delete(0,"end")
@@ -1842,9 +1842,9 @@ class leoFrame:
     #@-node:ekr.20031218072017.3981:abortEditLabelCommand
     #@+node:ekr.20031218072017.3982:endEditLabelCommand
     def endEditLabelCommand (self,event=None):
-        
+
         '''End editing of a headline and move focus to the body pane.'''
-    
+
         frame = self ; c = frame.c
         if g.app.batchMode:
             c.notValidInBatchMode("End Edit Headline")
@@ -1858,15 +1858,15 @@ class leoFrame:
     #@-node:ekr.20031218072017.3982:endEditLabelCommand
     #@+node:ekr.20031218072017.3983:insertHeadlineTime
     def insertHeadlineTime (self,event=None):
-        
+
         '''Insert a date/time stamp in the headline of the selected node.'''
-    
+
         frame = self ; c = frame.c ; p = c.currentPosition()
-        
+
         if g.app.batchMode:
             c.notValidInBatchMode("Insert Headline Time")
             return
-            
+
         c.editPosition(p)
         c.frame.tree.setEditLabelState(p)
         w = c.edit_widget(p)
@@ -1887,19 +1887,19 @@ class leoFrame:
     #@+node:ekr.20031218072017.3683:Config...
     def resizePanesToRatio (self,ratio,secondary_ratio):    self.oops()
     def setInitialWindowGeometry (self):                    self.oops()
-    
+
     def setTopGeometry (self,w,h,x,y,adjustSize=True):
         __pychecker__ = '--no-argsused' # adjustSize used in derived classes.
         self.oops()
     #@-node:ekr.20031218072017.3683:Config...
     #@+node:ekr.20031218072017.3681:Gui-dependent commands
     # In the Edit menu...
-    
+
     def OnCopy  (self,event=None): self.oops()
     def OnCut   (self,event=None): self.oops()
     def OnCutFromMenu  (self,event=None):     self.oops()
     def OnCopyFromMenu (self,event=None):     self.oops()
-    
+
     # Expanding and contracting panes.
     def contractPane         (self,event=None): self.oops()
     def expandPane           (self,event=None): self.oops()
@@ -1917,7 +1917,7 @@ class leoFrame:
     def hideLogPane          (self,event=None): self.oops()
     def hidePane             (self,event=None): self.oops()
     def hideOutlinePane      (self,event=None): self.oops()
-    
+
     # In the Window menu...
     def cascade              (self,event=None): self.oops()
     def equalSizedPanes      (self,event=None): self.oops()
@@ -1926,14 +1926,14 @@ class leoFrame:
     def resizeToScreen       (self,event=None): self.oops()
     def toggleActivePane     (self,event=None): self.oops()
     def toggleSplitDirection (self,event=None): self.oops()
-    
+
     # In help menu...
     def leoHelp (self,event=None): self.oops()
     #@-node:ekr.20031218072017.3681:Gui-dependent commands
     #@+node:ekr.20031218072017.3682:Window...
     # Important: nothing would be gained by calling gui versions of these methods:
     #            they can be defined in a gui-dependent way in a subclass.
-    
+
     def bringToFront (self):    self.oops()
     def deiconify (self):       self.oops()
     def get_window_info(self):  self.oops()
@@ -1944,14 +1944,14 @@ class leoFrame:
     #@+node:ekr.20061109125528:May be defined in subclasses
     #@+node:ekr.20031218072017.3687:setTabWidth
     def setTabWidth (self,w):
-        
+
         # Subclasses may override this to affect drawing.
         self.tab_width = w
     #@-node:ekr.20031218072017.3687:setTabWidth
     #@+node:ekr.20031218072017.3688:getTitle & setTitle
     def getTitle (self):
         return self.title
-        
+
     def setTitle (self,title):
         self.title = title
     #@-node:ekr.20031218072017.3688:getTitle & setTitle
@@ -1959,19 +1959,19 @@ class leoFrame:
     #@+node:ekr.20060206093313:Focus (leoFrame)
     # For compatibility with old scripts.
     # Using the commander methods directly is recommended.
-    
+
     def getFocus(self):
         return g.app.gui.get_focus(self.c) # Used by wxGui plugin.
-    
+
     def bodyWantsFocus(self):
         return self.c.bodyWantsFocus()
-    
+
     def headlineWantsFocus(self,p):
         return self.c.headlineWantsFocus(p)
-    
+
     def logWantsFocus(self):
         return self.c.logWantsFocus()
-    
+
     def minibufferWantsFocus(self):
         return self.c.minibufferWantsFocus()
     #@-node:ekr.20060206093313:Focus (leoFrame)
@@ -1979,15 +1979,15 @@ class leoFrame:
 #@-node:ekr.20031218072017.3678:class leoFrame
 #@+node:ekr.20031218072017.3694:class leoLog
 class leoLog:
-    
+
     """The base class for the log pane in Leo windows."""
-    
+
     __pychecker__ = '--no-argsused' # base classes have many unused args.
-    
+
     #@    @+others
     #@+node:ekr.20031218072017.3695: ctor (leoLog)
     def __init__ (self,frame,parentFrame):
-        
+
         self.frame = frame
         if frame: # 7/16/05: Allow no commander for Null logs.
             self.c = frame.c
@@ -1996,32 +1996,32 @@ class leoLog:
         self.enabled = True
         self.newlines = 0
         self.isNull = False
-        
+
         # Official status variables.  Can be used by client code.
         self.logCtrl = None # Set below. Same as self.textDict.get(self.tabName)
         self.tabName = None # The name of the active tab.
         self.tabFrame = None # Same as self.frameDict.get(self.tabName)
-        
+
         self.frameDict = {}  # Keys are page names. Values are Tk.Frames.
         self.logNumber = 0 # To create unique name fields for text widgets.
         self.newTabCount = 0 # Number of new tabs created.
         self.textDict = {}  # Keys are page names. Values are logCtrl's (text widgets).
-    
-    
+
+
     #@-node:ekr.20031218072017.3695: ctor (leoLog)
     #@+node:ekr.20070302101344:Must be defined in the base class
     def onActivateLog (self,event=None):
-    
+
         self.c.setLog()
-    
+
     def disable (self):
-        
+
         self.enabled = False
-    
+
     def enable (self,enabled=True):
-    
+
         self.enabled = enabled
-        
+
     #@-node:ekr.20070302101344:Must be defined in the base class
     #@+node:ekr.20070302101023:May be overridden
     def configure (self,*args,**keys):      pass
@@ -2032,18 +2032,18 @@ class leoLog:
     def setFontFromConfig (self):           pass
     #@+node:ekr.20070302094848.1:clearTab
     def clearTab (self,tabName,wrap='none'):
-        
+
         self.selectTab(tabName,wrap=wrap)
         w = self.logCtrl
         w and w.delete(0,'end')
     #@-node:ekr.20070302094848.1:clearTab
     #@+node:ekr.20070302094848.2:createTab
     def createTab (self,tabName,createText=True,wrap='none'):
-        
+
         # g.trace(tabName,wrap)
-        
+
         c = self.c ; k = c.k
-    
+
         if createText:
             w = self.createTextWidget(tabFrame)
             self.textDict [tabName] = w
@@ -2053,13 +2053,13 @@ class leoLog:
     #@-node:ekr.20070302094848.2:createTab
     #@+node:ekr.20070302094848.4:cycleTabFocus
     def cycleTabFocus (self,event=None,stop_w = None):
-    
+
         '''Cycle keyboard focus between the tabs in the log pane.'''
-    
+
         c = self.c ; d = self.frameDict # Keys are page names. Values are Tk.Frames.
         w = d.get(self.tabName)
         # g.trace(self.tabName,w)
-    
+
         values = d.values()
         if self.numberOfVisibleTabs() > 1:
             i = i2 = values.index(w) + 1
@@ -2071,7 +2071,7 @@ class leoLog:
     #@-node:ekr.20070302094848.4:cycleTabFocus
     #@+node:ekr.20070302094848.5:deleteTab
     def deleteTab (self,tabName,force=False):
-    
+
         if tabName == 'Log':
             pass
         elif tabName in ('Find','Spell') and not force:
@@ -2082,36 +2082,36 @@ class leoLog:
                     del d[tabName]
             self.tabName = None
             self.selectTab('Log')
-    
+
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
     #@-node:ekr.20070302094848.5:deleteTab
     #@+node:ekr.20070302094848.6:hideTab
     def hideTab (self,tabName):
-        
+
         __pychecker__ = '--no-argsused' # tabName
-        
+
         self.selectTab('Log')
     #@-node:ekr.20070302094848.6:hideTab
     #@+node:ekr.20070302094848.7:getSelectedTab
     def getSelectedTab (self):
-        
+
         return self.tabName
     #@-node:ekr.20070302094848.7:getSelectedTab
     #@+node:ekr.20070302094848.8:lower/raiseTab
     def lowerTab (self,tabName):
-    
+
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
-    
+
     def raiseTab (self,tabName):
-    
+
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
     #@-node:ekr.20070302094848.8:lower/raiseTab
     #@+node:ekr.20070302094848.9:numberOfVisibleTabs
     def numberOfVisibleTabs (self):
-        
+
         return len([val for val in self.frameDict.values() if val != None])
     #@-node:ekr.20070302094848.9:numberOfVisibleTabs
     #@+node:ekr.20070302094848.10:renameTab
@@ -2120,39 +2120,39 @@ class leoLog:
     #@-node:ekr.20070302094848.10:renameTab
     #@+node:ekr.20070302094848.11:selectTab
     def selectTab (self,tabName,createText=True,wrap='none'):
-    
+
         '''Create the tab if necessary and make it active.'''
-    
+
         c = self.c
         tabFrame = self.frameDict.get(tabName)
         if not tabFrame:
             self.createTab(tabName,createText=createText)
-    
+
         # Update the status vars.
         self.tabName = tabName
         self.logCtrl = self.textDict.get(tabName)
         self.tabFrame = self.frameDict.get(tabName)
-    
+
         if 0:
             # Absolutely do not do this here!
             # It is a cause of the 'sticky focus' problem.
             c.widgetWantsFocusNow(self.logCtrl)
-    
+
         return tabFrame
     #@-node:ekr.20070302094848.11:selectTab
     #@-node:ekr.20070302101023:May be overridden
     #@+node:ekr.20070302101304:Must be overridden
     # All output to the log stream eventually comes here.
-    
+
     def put (self,s,color=None,tabName='Log'):
         self.oops()
-    
+
     def putnl (self,tabName='Log'):
         self.oops()
     #@-node:ekr.20070302101304:Must be overridden
     #@+node:ekr.20031218072017.3700:leoLog.oops
     def oops (self):
-        
+
         print "leoLog oops:", g.callers(), "should be overridden in subclass"
     #@-node:ekr.20031218072017.3700:leoLog.oops
     #@-others
@@ -2162,22 +2162,22 @@ class leoLog:
 # However, those routines are pretty ingrained into Leo...
 
 class leoTree:
-    
+
     """The base class for the outline pane in Leo windows."""
-    
+
     __pychecker__ = '--no-argsused' # base classes have many unused args.
-    
+
     #@    @+others
     #@+node:ekr.20031218072017.3705:  tree.__init__ (base class)
     def __init__ (self,frame):
-        
+
         self.frame = frame
         self.c = frame.c
-    
+
         self.edit_text_dict = {}
             # New in 3.12: keys vnodes, values are edit_widget (Tk.Text widgets)
             # New in 4.2: keys are vnodes, values are pairs (p,Tk.Text).
-        
+
         # "public" ivars: correspond to setters & getters.
         self._editPosition = None
         self.redrawCount = 0 # For traces
@@ -2224,13 +2224,13 @@ class leoTree:
     # def setColorFromConfig (self):                self.oops()
     def setFont(self,font=None,fontName=None):      self.oops()
     def setFontFromConfig (self):                   self.oops()
-    
+
     # Drawing & scrolling.
     def drawIcon(self,v,x=None,y=None):             self.oops()
     def redraw_now(self,scroll=True):               self.oops()
     def scrollTo(self,p):                           self.oops()
     idle_scrollTo = scrollTo # For compatibility.
-    
+
     # Headlines.
     def editLabel(self,v,selectAll=False):          self.oops()
     def setEditLabelState(self,v,selectAll=False):  self.oops()
@@ -2240,29 +2240,29 @@ class leoTree:
     def getEditTextDict(self,v):
         # New in 4.2: the default is an empty list.
         return self.edit_text_dict.get(v,[])
-    
+
     def editPosition(self):
         return self._editPosition
-    
+
     def setEditPosition(self,p):
         self._editPosition = p
     #@-node:ekr.20031218072017.3716:Getters/Setters (tree)
     #@+node:ekr.20040803072955.90:head key handlers (leoTree)
     #@+node:ekr.20040803072955.91:onHeadChanged
     # Tricky code: do not change without careful thought and testing.
-    
+
     def onHeadChanged (self,p,undoType='Typing',s=None):
-        
+
         '''Officially change a headline.
         Set the old undo text to the previous revert point.'''
-        
+
         c = self.c ; u = c.undoer ; w = c.edit_widget(p)
         if not w: return
-        
+
         ch = '\n' # New in 4.4: we only report the final keystroke.
         if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
             return # The hook claims to have handled the event.
-    
+
         if s is None: s = w.getAllText()
         #@    << truncate s if it has multiple lines >>
         #@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
@@ -2271,19 +2271,19 @@ class leoTree:
             if s and s[-1] == '\n':
                 if len(s) > 1: s = s[:-1]
                 else: s = ''
-        
+
         # Warn if there are multiple lines.
         i = s.find('\n')
         if i > -1:
             # g.trace(i,len(s),repr(s))
             g.es("Truncating headline to one line",color="blue")
             s = s[:i]
-        
+
         limit = 1000
         if len(s) > limit:
             g.es("Truncating headline to %d characters" % (limit),color="blue")
             s = s[:limit]
-        
+
         s = g.toUnicode(s or '',g.app.tkEncoding)
         #@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
         #@nl
@@ -2308,42 +2308,42 @@ class leoTree:
                     c.treeWantsFocus()
                 else:
                     c.bodyWantsFocus()
-       
+
         g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
     #@-node:ekr.20040803072955.91:onHeadChanged
     #@+node:ekr.20040803072955.88:onHeadlineKey
     def onHeadlineKey (self,event):
-        
+
         '''Handle a key event in a headline.'''
-    
+
         w = event and event.widget or None
         ch = event and event.char or ''
-        
+
         # g.trace(repr(ch),g.callers())
-    
+
         # Testing for ch here prevents flashing in the headline
         # when the control key is held down.
         if ch:
             # g.trace(repr(ch),g.callers())
             self.updateHead(event,w)
-    
+
         return 'break' # Required
     #@-node:ekr.20040803072955.88:onHeadlineKey
     #@+node:ekr.20051026083544.2:updateHead
     def updateHead (self,event,w):
-        
+
         '''Update a headline from an event.
-        
+
         The headline officially changes only when editing ends.'''
-        
+
         c = self.c ; k = c.k
         ch = event and event.char or ''
         i,j = w.getSelectionRange()
         ins = w.getInsertPoint()
         if i != j: ins = i
-        
+
         # g.trace('w',w,'ch',repr(ch),g.callers())
-    
+
         if ch == '\b':
             if i != j:  w.delete(i,j)
             else:       w.delete(ins-1)
@@ -2353,46 +2353,46 @@ class leoTree:
             elif k.unboundKeyAction == 'overwrite': w.delete(i,i+1)
             w.insert(ins,ch)
             w.setSelectionRange(ins+1,ins+1,insert=ins+1)
-    
+
         s = w.getAllText()
         if s.endswith('\n'):
             # g.trace('can not happen: trailing newline')
             s = s[:-1]
         w.setWidth(self.headWidth(s=s))
-    
+
         if ch in ('\n','\r'):
             self.endEditLabel() # Now calls self.onHeadChanged.
     #@-node:ekr.20051026083544.2:updateHead
     #@+node:ekr.20040803072955.126:endEditLabel
     def endEditLabel (self):
-        
+
         '''End editing of a headline and update p.headString().'''
-    
+
         c = self.c ; k = c.k ; p = c.currentPosition()
-    
+
         self.setEditPosition(None) # That is, self._editPosition = None
-        
+
         # Can't call setDefaultUnboundKeyAction here: it might put us in ignore mode!
         # if k:
             # k.setDefaultUnboundKeyAction()
             # k.showStateAndMode() # Destroys UNL info.
-        
+
         # Important: this will redraw if necessary.
         self.onHeadChanged(p)
-        
+
         if 0: # This interferes with the find command and interferes with focus generally!
             c.bodyWantsFocus()
     #@-node:ekr.20040803072955.126:endEditLabel
     #@-node:ekr.20040803072955.90:head key handlers (leoTree)
     #@+node:ekr.20040803072955.143:tree.expandAllAncestors
     def expandAllAncestors (self,p):
-        
+
         '''Expand all ancestors without redrawing.
-        
+
         Return a flag telling whether a redraw is needed.'''
-        
+
         c = self.c ; redraw_flag = False
-    
+
         c.beginUpdate()
         try:
             for p in p.parents_iter():
@@ -2401,24 +2401,24 @@ class leoTree:
                     redraw_flag = True
         finally:
             c.endUpdate(False)
-    
+
         return redraw_flag
     #@-node:ekr.20040803072955.143:tree.expandAllAncestors
     #@+node:ekr.20040803072955.21:tree.injectCallbacks
     def injectCallbacks(self):
-        
+
         c = self.c
-        
+
         #@    << define callbacks to be injected in the position class >>
         #@+node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
         # N.B. These vnode methods are entitled to know about details of the leoTkinterTree class.
-        
+
         #@+others
         #@+node:ekr.20040803072955.23:OnHyperLinkControlClick
         def OnHyperLinkControlClick (self,event=None,c=c):
-            
+
             """Callback injected into position class."""
-            
+
             p = self
             try:
                 if not g.doHook("hypercclick1",c=c,p=p,v=p,event=event):
@@ -2434,9 +2434,9 @@ class leoTree:
         #@-node:ekr.20040803072955.23:OnHyperLinkControlClick
         #@+node:ekr.20040803072955.24:OnHyperLinkEnter
         def OnHyperLinkEnter (self,event=None,c=c):
-            
+
             """Callback injected into position class."""
-        
+
             try:
                 p = self
                 if not g.doHook("hyperenter1",c=c,p=p,v=p,event=event):
@@ -2448,9 +2448,9 @@ class leoTree:
         #@-node:ekr.20040803072955.24:OnHyperLinkEnter
         #@+node:ekr.20040803072955.25:OnHyperLinkLeave
         def OnHyperLinkLeave (self,event=None,c=c):
-            
+
             """Callback injected into position class."""
-        
+
             try:
                 p = self
                 if not g.doHook("hyperleave1",c=c,p=p,v=p,event=event):
@@ -2463,17 +2463,17 @@ class leoTree:
         #@-others
         #@-node:ekr.20040803072955.22:<< define callbacks to be injected in the position class >>
         #@nl
-    
+
         for f in (OnHyperLinkControlClick,OnHyperLinkEnter,OnHyperLinkLeave):
-            
+
             g.funcToMethod(f,leoNodes.position)
     #@nonl
     #@-node:ekr.20040803072955.21:tree.injectCallbacks
     #@+node:ekr.20031218072017.2312:tree.OnIconDoubleClick (@url) & helper
     def OnIconDoubleClick (self,p):
-    
+
         # Note: "icondclick" hooks handled by vnode callback routine.
-    
+
         c = self.c
         s = p.headString().strip()
         if g.match_word(s,0,"@url"):
@@ -2487,16 +2487,16 @@ class leoTree:
                 #@+node:ekr.20031218072017.2313:<< stop the url after any whitespace  >>
                 # For safety, the URL string should end at the first whitespace, unless quoted.
                 # This logic is also found in the UNL plugin so we don't have to change the 'unl1' hook.
-                
+
                 url = url.replace('\t',' ')
-                
+
                 # Strip quotes.
                 i = -1
                 if url and url[0] in ('"',"'"):
                     i = url.find(url[0],1)
                     if i > -1:
                         url = url[1:i]
-                
+
                 if i == -1:
                     # Not quoted or no matching quote.
                     i = url.find(' ')
@@ -2510,14 +2510,14 @@ class leoTree:
             if not g.doHook("@url1",c=c,p=p,v=p,url=url):
                 self.handleUrlInUrlNode(url)
             g.doHook("@url2",c=c,p=p,v=p)
-    
+
         return 'break' # 11/19/06
     #@nonl
     #@+node:ekr.20061030161842:handleUrlInUrlNode
     def handleUrlInUrlNode(self,url):
-        
+
         # Note: the UNL plugin has its own notion of what a good url is.
-        
+
         c = self.c
         # g.trace(url)
         #@    << check the url; return if bad >>
@@ -2534,13 +2534,13 @@ class leoTree:
         #   $%&'()*+/0-9:=?@A-Z_a-z}~
         #@-at
         #@@c
-        
+
         urlPattern = "[a-z]{3,}:[\$-:=?-Z_a-z{}~]+[\$-+\/-:=?-Z_a-z}~]"
-        
+
         if not url or len(url) == 0:
             g.es("no url following @url")
             return
-        
+
         # Add http:// if required.
         if not re.match('^([a-z]{3,}:)',url):
             url = 'http://' + url
@@ -2560,7 +2560,7 @@ class leoTree:
         #   file://home/me/todolist.html
         #@-at
         #@@c
-        
+
         try:
             import os
             os.chdir(g.app.loadDir)
@@ -2581,26 +2581,26 @@ class leoTree:
     #@-node:ekr.20061109165848:Must be defined in base class
     #@+node:ekr.20040803072955.128:leoTree.select & helper
     tree_select_lockout = False
-    
+
     def select (self,p,updateBeadList=True,scroll=True):
-        
+
         '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
-        
+
         if g.app.killed or self.tree_select_lockout: return None
-    
+
         try:
             val = 'break'
             self.tree_select_lockout = True
             val = self.treeSelectHelper(p,updateBeadList,scroll)
         finally:
             self.tree_select_lockout = False
-            
+
         return val  # Don't put a return in a finally clause.
     #@+node:ekr.20070423101911:treeSelectHelper
     #  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
-    
+
     def treeSelectHelper (self,p,updateBeadList,scroll):
-    
+
         c = self.c ; frame = c.frame
         body = w = frame.bodyCtrl
         old_p = c.currentPosition()
@@ -2611,57 +2611,57 @@ class leoTree:
                 for p in p.self_and_parents_iter():
                     print p
             return None # Not an error.
-        
+
         # g.trace('      ===',id(w),p and p.headString())
         if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
-    
+
         if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
             if old_p:
                 #@            << unselect the old node >>
                 #@+node:ekr.20040803072955.129:<< unselect the old node >>
                 # Remember the position of the scrollbar before making any changes.
                 if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
-                
+
                 yview = body.getYScrollPosition()
                 insertSpot = c.frame.body.getInsertPoint()
-                
+
                 if old_p != p:
                     self.endEditLabel() # sets editPosition = None
                     self.setUnselectedLabelState(old_p) # 12/17/04
-                
+
                 if c.edit_widget(old_p):
                     old_p.v.t.scrollBarSpot = yview
                     old_p.v.t.insertSpot = insertSpot
                 #@-node:ekr.20040803072955.129:<< unselect the old node >>
                 #@nl
-    
+
         g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-        
+
         if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
             #@        << select the new node >>
             #@+node:ekr.20040803072955.130:<< select the new node >>
             # Bug fix: we must always set this, even if we never edit the node.
             self.revertHeadline = p.headString()
             frame.setWrap(p)
-            
+
             # Always do this.  Otherwise there can be problems with trailing newlines.
             s = g.toUnicode(p.v.t.bodyString,"utf-8")
             w.setAllText(s)
-            
+
             # We must do a full recoloring: we may be changing context!
             self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
-            
+
             if p.v and p.v.t.scrollBarSpot != None:
                 first,last = p.v.t.scrollBarSpot
                 w.setYScrollPosition(first)
-            
+
             if p.v and p.v.t.insertSpot != None:
                 spot = p.v.t.insertSpot
                 w.setInsertPoint(spot)
                 w.see(spot)
             else:
                 w.setInsertPoint(0)
-                    
+
             # g.trace("select:",p.headString())
             #@-node:ekr.20040803072955.130:<< select the new node >>
             #@nl
@@ -2679,57 +2679,57 @@ class leoTree:
             #@        << update c.beadList or c.beadPointer >>
             #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
             # c.beadList is the list of nodes for the back and forward commands.
-            
+
             if updateBeadList:
-                
+
                 if c.beadPointer > -1:
                     present_p = c.beadList[c.beadPointer]
                 else:
                     present_p = c.nullPosition()
-                
+
                 if p != present_p:
                     # Replace the tail of c.beadList by p and make p the present node.
                     c.beadPointer += 1
                     c.beadList[c.beadPointer:] = []
                     c.beadList.append(p.copy())
-                    
+
                     # New in Leo 4.4: limit this list to 100 items.
                     if 0: # Doesn't work yet.
                         c.beadList = c.beadList [-100:]
                         g.trace('len(c.beadList)',len(c.beadList))
-                    
+
                 # g.trace(c.beadPointer,p,present_p)
             #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
             #@nl
             #@        << update c.visitedList >>
             #@+node:ekr.20040803072955.132:<< update c.visitedList >>
             # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
-            
+
             # Make p the most recently visited position on the list.
             if p in c.visitedList:
                 c.visitedList.remove(p)
-            
+
             c.visitedList.insert(0,p.copy())
-            
+
             # g.trace('len(c.visitedList)',len(c.visitedList))
             # g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
             #@-node:ekr.20040803072955.132:<< update c.visitedList >>
             #@nl
-    
+
         c.setCurrentPosition(p)
         #@    << set the current node >>
         #@+node:ekr.20040803072955.133:<< set the current node >>
         self.setSelectedLabelState(p)
-        
+
         frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
-        
+
         if self.use_chapters:
             cc = c.chapterController
             theChapter = cc.getSelectedChapter()
             if theChapter:
                 theChapter.p = p.copy()
                 # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
-        
+
         if self.stayInTree:
             c.treeWantsFocus()
         else:
@@ -2738,63 +2738,63 @@ class leoTree:
         #@nl
         c.frame.body.assignPositionToEditor(p) # New in Leo 4.4.1.
         c.frame.updateStatusLine() # New in Leo 4.4.1.
-        
+
         g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
         g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-        
+
         return 'break' # Supresses unwanted selection.
     #@-node:ekr.20070423101911:treeSelectHelper
     #@-node:ekr.20040803072955.128:leoTree.select & helper
     #@+node:ekr.20031218072017.3718:oops
     def oops(self):
-        
+
         print "leoTree oops:", g.callers(), "should be overridden in subclass"
     #@-node:ekr.20031218072017.3718:oops
     #@-others
 #@-node:ekr.20031218072017.3704:class leoTree
 #@+node:ekr.20070317073627:class leoTreeTab
 class leoTreeTab:
-    
+
     '''A class representing a tabbed outline pane.'''
-    
+
     #@    @+others
     #@+node:ekr.20070317073627.1: ctor (leoTreeTab)
     def __init__ (self,c,chapterController,parentFrame):
-        
+
         self.c = c
         self.cc = chapterController
         self.nb = None # Created in createControl.
         self.parentFrame = parentFrame
-    
+
         self.selectedTabBackgroundColor = c.config.getColor(
             'selected_chapter_tab_background_color') or 'LightSteelBlue2'
-    
+
         self.selectedTabForegroundColor = c.config.getColor(
             'selected_chapter_tab_foreground_color') or 'black'
-    
+
         self.unselectedTabBackgroundColor = c.config.getColor(
             'unselected_chapter_tab_background_color') or 'lightgrey'
-    
+
         self.unselectedTabForegroundColor = c.config.getColor(
             'unselected_chapter_tab_foreground_color') or 'black'
     #@-node:ekr.20070317073627.1: ctor (leoTreeTab)
     #@+node:ekr.20070317073755:Must be defined in subclasses
     def createControl (self):
         self.oops()
-    
+
     def createTab (self,tabName,select=True):
         self.oops()
-        
+
     def destroyTab (self,tabName):
         self.oops()
-    
+
     def selectTab (self,tabName):
         self.oops()
     #@nonl
     #@-node:ekr.20070317073755:Must be defined in subclasses
     #@+node:ekr.20070317083104:oops
     def oops(self):
-        
+
         print "leoTreeTree oops:", g.callers(), "should be overridden in subclass"
     #@-node:ekr.20070317083104:oops
     #@-others
@@ -2802,21 +2802,21 @@ class leoTreeTab:
 #@-node:ekr.20070317073627:class leoTreeTab
 #@+node:ekr.20031218072017.2191:class nullBody (leoBody)
 class nullBody (leoBody):
-    
+
     __pychecker__ = '--no-argsused' # null classes have many unused args.
 
     #@    @+others
     #@+node:ekr.20031218072017.2192: nullBody.__init__
     def __init__ (self,frame,parentFrame):
-        
+
         # g.trace('nullBody','frame',frame,g.callers())
-        
+
         leoBody.__init__ (self,frame,parentFrame) # Init the base class.
-    
+
         self.insertPoint = 0
         self.selection = 0,0
         self.s = "" # The body text
-    
+
         w = stringTextWidget(c=self.c,name='body')
         self.bodyCtrl = self.widget = w
         self.editorWidgets['1'] = w
@@ -2825,7 +2825,7 @@ class nullBody (leoBody):
     #@+node:ekr.20031218072017.2193:Utils (internal use)
     #@+node:ekr.20031218072017.2194:findStartOfLine
     def findStartOfLine (self,lineNumber):
-        
+
         lines = g.splitLines(self.s)
         i = 0 ; index = 0
         for line in lines:
@@ -2836,30 +2836,30 @@ class nullBody (leoBody):
     #@-node:ekr.20031218072017.2194:findStartOfLine
     #@+node:ekr.20031218072017.2195:scanToStartOfLine
     def scanToStartOfLine (self,i):
-        
+
         if i <= 0:
             return 0
-            
+
         assert(self.s[i] != '\n')
-        
+
         while i >= 0:
             if self.s[i] == '\n':
                 return i + 1
-        
+
         return 0
     #@-node:ekr.20031218072017.2195:scanToStartOfLine
     #@+node:ekr.20031218072017.2196:scanToEndOfLine
     def scanToEndOfLine (self,i):
-        
+
         if i >= len(self.s):
             return len(self.s)
-            
+
         assert(self.s[i] != '\n')
-        
+
         while i < len(self.s):
             if self.s[i] == '\n':
                 return i - 1
-        
+
         return i
     #@-node:ekr.20031218072017.2196:scanToEndOfLine
     #@-node:ekr.20031218072017.2193:Utils (internal use)
@@ -2899,20 +2899,20 @@ class nullBody (leoBody):
 #@-node:ekr.20031218072017.2191:class nullBody (leoBody)
 #@+node:ekr.20031218072017.2222:class nullFrame
 class nullFrame (leoFrame):
-    
+
     """A null frame class for tests and batch execution."""
-    
+
     __pychecker__ = '--no-argsused' # null classes have many unused args.
-    
+
     #@    @+others
     #@+node:ekr.20040327105706: ctor
     def __init__ (self,title,gui,useNullUndoer=False):
-        
+
         # g.trace('nullFrame')
-    
+
         leoFrame.__init__(self,gui) # Init the base class.
         assert(self.c is None)
-        
+
         self.body = None
         self.bodyCtrl = None
         self.iconBar = nullIconBarClass(self.c,self)
@@ -2922,7 +2922,7 @@ class nullFrame (leoFrame):
         self.statusLineClass = nullStatusLineClass
         self.title = title
         self.useNullUndoer = useNullUndoer
-        
+
         # Default window position.
         self.w = 600
         self.h = 500
@@ -2931,32 +2931,32 @@ class nullFrame (leoFrame):
     #@-node:ekr.20040327105706: ctor
     #@+node:ekr.20041120073824:destroySelf
     def destroySelf (self):
-        
+
         pass
     #@-node:ekr.20041120073824:destroySelf
     #@+node:ekr.20040327105706.2:finishCreate
     def finishCreate(self,c):
-    
+
         self.c = c
-        
+
         # print 'nullFrame'
-    
+
         # Create do-nothing component objects.
         self.tree = nullTree(frame=self)
         self.body = nullBody(frame=self,parentFrame=None)
         self.log  = nullLog (frame=self,parentFrame=None)
         self.menu = leoMenu.nullMenu(frame=self)
-        
+
         c.setLog()
-        
+
         # Set the official ivar.
         self.bodyCtrl = self.body.bodyCtrl
-        
+
         assert(c.undoer)
         if self.useNullUndoer:
             c.undoer = leoUndo.nullUndoer(c)
-            
-            
+
+
     #@-node:ekr.20040327105706.2:finishCreate
     #@+node:ekr.20061109124552:Overrides
     #@+node:ekr.20061109123828:Config...
@@ -2965,9 +2965,9 @@ class nullFrame (leoFrame):
     def setMinibufferBindings(self):                        pass
     #@+node:ekr.20041130065718.1:setTopGeometry
     def setTopGeometry (self,w,h,x,y,adjustSize=True):
-        
+
         __pychecker__ = '--no-argsused' # adjustSize used in derived classes.
-        
+
         self.w = w
         self.h = h
         self.x = x
@@ -2992,7 +2992,7 @@ class nullFrame (leoFrame):
     def hideLogPane          (self,event=None): pass
     def hidePane             (self,event=None): pass
     def hideOutlinePane      (self,event=None): pass
-    
+
     # In the Window menu...
     def cascade              (self,event=None): pass
     def equalSizedPanes      (self,event=None): pass
@@ -3001,7 +3001,7 @@ class nullFrame (leoFrame):
     def resizeToScreen       (self,event=None): pass
     def toggleActivePane     (self,event=None): pass
     def toggleSplitDirection (self,event=None): pass
-    
+
     # In help menu...
     def leoHelp (self,event=None): pass
     #@nonl
@@ -3019,33 +3019,33 @@ class nullFrame (leoFrame):
 #@-node:ekr.20031218072017.2222:class nullFrame
 #@+node:ekr.20070301164543:class nullIconBarClass
 class nullIconBarClass:
-    
+
     '''A class representing the singleton Icon bar'''
-    
+
     #@    @+others
     #@+node:ekr.20070301164543.1: ctor
     def __init__ (self,c,parentFrame):
-    
+
         self.c = c
         self.parentFrame = parentFrame
     #@nonl
     #@-node:ekr.20070301164543.1: ctor
     #@+node:ekr.20070301164543.2:add
     def add(self,*args,**keys):
-        
+
         '''Add a (virtual) button to the (virtual) icon bar.'''
-        
+
         command = keys.get('command')
         text = keys.get('text')
         try:    g.app.iconWidgetCount += 1
         except: g.app.iconWidgetCount = 1
         n = g.app.iconWidgetCount
         name = 'nullButtonWidget %d' % n
-    
+
         if not command:
             def command(name=name):
                 print "command for %s" % (name)
-    
+
         class nullButtonWidget:
             def __init__ (self,c,command,name,text):
                 self.c = c
@@ -3058,8 +3058,8 @@ class nullIconBarClass:
                 pass
             def configure (self,*args,**keys):
                 pass
-            
-                
+
+
         b = nullButtonWidget(self.c,command,name,text)
         return b
     #@-node:ekr.20070301164543.2:add
@@ -3067,22 +3067,22 @@ class nullIconBarClass:
     def clear(self):
         g.app.iconWidgetCount = 0
         g.app.iconImageRefs = []
-    
+
     def deleteButton (self,w):
         pass
-        
+
     def getFrame (self):
         return None
-        
+
     def pack (self):
         pass
-        
+
     def setCommandForButton(self,b,command):
         b.command = command
-        
+
     def unpack (self):
         pass
-    
+
     hide = unpack
     show = pack
     #@-node:ekr.20070301165343:do nothing
@@ -3090,42 +3090,42 @@ class nullIconBarClass:
 #@-node:ekr.20070301164543:class nullIconBarClass
 #@+node:ekr.20031218072017.2232:class nullLog
 class nullLog (leoLog):
-    
+
     __pychecker__ = '--no-argsused' # null classes have many unused args.
-    
+
     #@    @+others
     #@+node:ekr.20070302095500:Birth
     #@+node:ekr.20041012083237:nullLog.__init__
     def __init__ (self,frame=None,parentFrame=None):
-            
+
         # Init the base class.
         leoLog.__init__(self,frame,parentFrame)
-    
+
         self.isNull = True
         self.logCtrl = self.createControl(parentFrame)
     #@nonl
     #@-node:ekr.20041012083237:nullLog.__init__
     #@+node:ekr.20041012083237.1:createControl
     def createControl (self,parentFrame):
-        
+
         return self.createTextWidget(parentFrame)
     #@-node:ekr.20041012083237.1:createControl
     #@+node:ekr.20070302095121:createTextWidget
     def createTextWidget (self,parentFrame=None):
-        
+
         self.logNumber += 1
-    
+
         log = g.app.gui.plainTextWidget(
             c = self.c,
             name="log-%d" % self.logNumber,
         )
-        
+
         return log
     #@-node:ekr.20070302095121:createTextWidget
     #@-node:ekr.20070302095500:Birth
     #@+node:ekr.20041012083237.2:oops
     def oops(self):
-    
+
         g.trace("nullLog:", g.callers())
     #@-node:ekr.20041012083237.2:oops
     #@+node:ekr.20041012083237.3:put and putnl (nullLog)
@@ -3137,7 +3137,7 @@ class nullLog (leoLog):
             except UnicodeError:
                 s = s.encode('ascii','replace')
                 print s,
-    
+
     def putnl (self,tabName='Log'):
         if self.enabled:
             # g.rawPrint("")
@@ -3158,19 +3158,19 @@ class nullLog (leoLog):
 #@-node:ekr.20031218072017.2232:class nullLog
 #@+node:ekr.20070302171509:class nullStatusLineClass
 class nullStatusLineClass:
-    
+
     '''A do-nothing status line.'''
-    
+
     #@    @+others
     #@+node:ekr.20070302171509.2: ctor
     def __init__ (self,c,parentFrame):
-        
+
         self.c = c
         self.enabled = False
         self.parentFrame = parentFrame
-    
+
         self.textWidget = w = g.app.gui.plainTextWidget(c,name='status-line')
-        
+
         # Set the official ivars.
         c.frame.statusFrame = None
         c.frame.statusLabel = None
@@ -3180,11 +3180,11 @@ class nullStatusLineClass:
     def disable (self,background=None):
         self.enabled = False
         self.c.bodyWantsFocus()
-        
+
     def enable (self,background="white"):
         if w: self.c.widgetWantsFocus(self.textWidget)
         self.enabled = True
-    
+
     def clear (self):                   self.textWidget.delete(0,'end')
     def get (self):                     return self.textWidget.getAllText()
     def isEnabled(self):                return self.enabled
@@ -3194,7 +3194,7 @@ class nullStatusLineClass:
     def put(self,s,color=None):         self.textWidget.insert('end',s)
     def unpack (self):                  pass
     def update (self):                  pass
-    
+
     hide = unpack
     show = pack
     #@-node:ekr.20070302171917:methods
@@ -3203,17 +3203,17 @@ class nullStatusLineClass:
 #@-node:ekr.20070302171509:class nullStatusLineClass
 #@+node:ekr.20031218072017.2233:class nullTree
 class nullTree (leoTree):
-    
+
     __pychecker__ = '--no-argsused' # null classes have many unused args.
 
     #@    @+others
     #@+node:ekr.20031218072017.2234: nullTree.__init__
     def __init__ (self,frame):
-        
+
         leoTree.__init__(self,frame) # Init the base class.
-        
+
         assert(self.frame)
-     
+
         self.editWidgetsDict = {} # Keys are tnodes, values are stringTextWidgets.
         self.font = None
         self.fontName = None
@@ -3225,50 +3225,50 @@ class nullTree (leoTree):
     #@-node:ekr.20031218072017.2234: nullTree.__init__
     #@+node:ekr.20070228173611:printWidgets
     def printWidgets(self):
-        
+
         d = self.editWidgetsDict
         keys = d.keys()
         for key in keys:
             # keys are tnodes, values are stringTextWidgets.
             w = d.get(key)
             print 'w',w,'t.headString:',key.headString,'s:',repr(w.s)
-            
-        
+
+
     #@nonl
     #@-node:ekr.20070228173611:printWidgets
     #@+node:ekr.20031218072017.2236:Overrides
     #@+node:ekr.20070228163350:Colors & fonts
     def getFont(self):
         return self.font
-    
+
     # def setColorFromConfig (self):
         # pass
-    
+
     def setBindings (self):
         pass
-    
+
     def setFont(self,font=None,fontName=None):
         self.font,self.fontName = font,fontName
-    
+
     def setFontFromConfig (self):
         pass
     #@-node:ekr.20070228163350:Colors & fonts
     #@+node:ekr.20070228163350.1:Drawing & scrolling
     def beginUpdate (self):
         self.updateCount += 1
-    
+
     def endUpdate (self,flag,scroll=False):
         self.updateCount -= 1
         if flag and self.updateCount <= 0:
             self.redraw_now()
-    
+
     def drawIcon(self,v,x=None,y=None):
         pass
-        
+
     def redraw_now(self,scroll=True):
         self.redrawCount += 1
         # g.trace('nullTree')
-    
+
     def scrollTo(self,p):
         pass
     #@-node:ekr.20070228163350.1:Drawing & scrolling
@@ -3282,37 +3282,37 @@ class nullTree (leoTree):
             w.setAllText(p.headString())
         # g.trace('w',w,'p',p.headString())
         return w
-        
+
     def headWidth(self,p=None,s=''):
         return len(s)
-    
+
     def setEditLabelState(self,v,selectAll=False):
         pass
-        
+
     def setSelectedLabelState(self,*args,**keys):
         pass
-        
+
     def setUnselectedLabelState(self,*args,**keys):
         pass
     #@+node:ekr.20070228164730:editLabel (nullTree) same as tkTree)
     def editLabel (self,p,selectAll=False):
-        
+
         """Start editing p's headline."""
-    
+
         c = self.c
-    
+
         if self.editPosition() and p != self.editPosition():
             c.beginUpdate()
             try:
                 self.endEditLabel()
             finally:
                 c.endUpdate(False)
-    
+
         self.setEditPosition(p) # That is, self._editPosition = p
-        
+
         if self.trace_edit and not g.app.unitTesting:
             g.trace(p.headString(),g.choose(c.edit_widget(p),'','no edit widget'))
-    
+
         if p and c.edit_widget(p):
             # g.trace('selectAll',selectAll,g.callers())
             self.revertHeadline = p.headString() # New in 4.4b2: helps undo.
@@ -3321,13 +3321,13 @@ class nullTree (leoTree):
     #@-node:ekr.20070228164730:editLabel (nullTree) same as tkTree)
     #@+node:ekr.20070228160345:setHeadline (nullTree)
     def setHeadline (self,p,s):
-        
+
         '''Set the actual text of the headline widget.
-        
+
         This is called from the undo/redo logic to change the text before redrawing.'''
-        
+
         # g.trace('p',p.headString(),'s',repr(s),g.callers())
-        
+
         w = self.edit_widget(p)
         if w:
             w.delete(0,'end')

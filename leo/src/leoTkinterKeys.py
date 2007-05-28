@@ -14,16 +14,16 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
     #@    @+others
     #@+node:ekr.20061031170011:tkKeys.ctor
     def __init__(self,c,useGlobalKillbuffer=False,useGlobalRegisters=False):
-        
+
         # Init the base class.
         leoKeys.keyHandlerClass.__init__(self,c,useGlobalKillbuffer,useGlobalRegisters)
-        
+
         # Create
         self.createTkIvars()
     #@-node:ekr.20061031170011:tkKeys.ctor
     #@+node:ekr.20061031170011.1:createTkIvars
     def createTkIvars(self):
-    
+
         if not self.useTextWidget and self.widget:
             self.svar = Tk.StringVar()
             self.widget.configure(textvariable=self.svar)

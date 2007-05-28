@@ -12,7 +12,7 @@ if g.app and g.app.use_psyco:
     # print "enabled psyco classes",__file__
     try: from psyco.classes import *
     except ImportError: pass
-    
+
 import leoNodes
 
 import binascii
@@ -45,7 +45,7 @@ class BadLeoFile(Exception):
         Exception.__init__(self,message) # Init the base class.
     def __str__(self):
         return "Bad Leo File:" + self.message
-        
+
 class invalidPaste(Exception):
     pass
 #@nonl
@@ -58,24 +58,24 @@ if sys.platform != 'cli':
     #@+others
     #@+node:ekr.20060919110638.19:class saxContentHandler (XMLGenerator)
     class saxContentHandler (xml.sax.saxutils.XMLGenerator):
-        
+
         '''A sax content handler class that reads Leo files.'''
-    
+
         #@    @+others
         #@+node:ekr.20060919110638.20: __init__ & helpers
         def __init__ (self,c,fileName,silent):
-        
+
             self.c = c
             self.fileName = fileName
             self.silent = silent
-        
+
             # Init the base class.
             xml.sax.saxutils.XMLGenerator.__init__(self)
-            
+
             #@    << define dispatch dict >>
             #@+node:ekr.20060919110638.21:<< define dispatch dict >>
             # There is no need for an 'end' method if all info is carried in attributes.
-            
+
             self.dispatchDict = {
                 'find_panel_settings':         (None,None),
                 'globals':                     (self.startGlobals,None),
@@ -93,14 +93,14 @@ if sys.platform != 'cli':
             #@nonl
             #@-node:ekr.20060919110638.21:<< define dispatch dict >>
             #@nl
-            
+
             self.printElements = [] # 'all', 'v'
-            
+
             # Global attributes of the .leo file...
             # self.body_outline_ratio = '0.5'
             self.global_window_position = {}
             self.encoding = 'utf-8' 
-        
+
             # Semantics...
             self.content = None
             self.currentNode = None
@@ -119,22 +119,22 @@ if sys.platform != 'cli':
         def endElementNS(self,name,qname):
             __pychecker__ = '--no-argsused'
             g.trace(name)
-            
+
         def endDocument(self):
             pass
-        
+
         def ignorableWhitespace(self,whitespace):
             __pychecker__ = '--no-argsused'
             pass
-        
+
         def skippedEntity(self,name):
             __pychecker__ = '--no-argsused'
             g.trace(name)
-        
+
         def startElementNS(self,name,qname,attrs):
             __pychecker__ = '--no-argsused'
             g.trace(name)
-            
+
         def startDocument(self):
             pass
         #@nonl
@@ -142,19 +142,19 @@ if sys.platform != 'cli':
         #@+node:ekr.20060919134313: Utils
         #@+node:ekr.20060919110638.23:attrsToList
         def attrsToList (self,attrs):
-            
+
             '''Convert the attributes to a list of g.Bunches.
-            
+
             attrs: an Attributes item passed to startElement.'''
-            
+
             if 1:
                 for name in attrs.getNames():
                     val = attrs.getValue(name)
                     if type(val) != type(u''):
                         g.trace('Non-unicode attribute',name,val)
-        
+
             # g.trace(g.listToString([repr() for name in attrs.getNames()]))
-            
+
             return [
                 g.Bunch(name=name,val=attrs.getValue(name))
                     for name in attrs.getNames()]
@@ -162,26 +162,26 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919110638.23:attrsToList
         #@+node:ekr.20060919110638.26:error
         def error (self, message):
-            
+
             print
             print
             print 'XML error: %s' % (message)
             print
-            
+
             self.errors += 1
         #@nonl
         #@-node:ekr.20060919110638.26:error
         #@+node:ekr.20060919110638.27:inElement
         def inElement (self,name):
-            
+
             return self.elementStack and name in self.elementStack
         #@nonl
         #@-node:ekr.20060919110638.27:inElement
         #@+node:ekr.20060919110638.28:printStartElement
         def printStartElement(self,name,attrs):
-            
+
             indent = '\t' * self.level or ''
-        
+
             if attrs.getLength() > 0:
                 print '%s<%s %s>' % (
                     indent,
@@ -191,30 +191,30 @@ if sys.platform != 'cli':
                 print '%s<%s>' % (
                     indent,
                     self.clean(name).strip()),
-        
+
             if name.lower() in ['v','t','vnodes','tnodes',]:
                 print
         #@nonl
         #@+node:ekr.20060919110638.24:attrsToString
         def attrsToString (self,attrs,sep='\n'):
-            
+
             '''Convert the attributes to a string.
-            
+
             attrs: an Attributes item passed to startElement.
-            
+
             sep: the separator charater between attributes.'''
-        
+
             result = [
                 '%s="%s"' % (bunch.name,bunch.val)
                 for bunch in self.attrsToList(attrs)
             ]
-        
+
             return sep.join(result)
         #@nonl
         #@-node:ekr.20060919110638.24:attrsToString
         #@+node:ekr.20060919110638.25:clean
         def clean(self,s):
-        
+
             return g.toEncodedString(s,"ascii")
         #@nonl
         #@-node:ekr.20060919110638.25:clean
@@ -222,33 +222,33 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919134313: Utils
         #@+node:ekr.20060919110638.30:characters
         def characters(self,content):
-            
+
             if content and type(content) != type(u''):
                 g.trace('Non-unicode content',repr(content))
-        
+
             content = content.replace('\r','')
             if not content: return
-        
+
             elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
-            
+
             if elementName in ('t','vh'):
                 # if elementName == 'vh': g.trace(elementName,repr(content))
                 self.content.append(content)
-        
+
             elif content.strip():
                 print 'unexpected content:',elementName,repr(content)
         #@nonl
         #@-node:ekr.20060919110638.30:characters
         #@+node:ekr.20060919110638.31:endElement & helpers
         def endElement(self,name):
-            
+
             name = name.lower()
             if name in self.printElements or 'all' in self.printElements:
                 indent = '\t' * (self.level-1) or ''
                 print '%s</%s>' % (indent,self.clean(name).strip())
-            
+
             data = self.dispatchDict.get(name)
-        
+
             if data is None:
                 if 0:
                     g.trace('unknown element',name)
@@ -256,32 +256,32 @@ if sys.platform != 'cli':
                 junk,func = data
                 if func:
                     func()
-        
+
             name2 = self.elementStack.pop()
             assert name == name2
         #@nonl
         #@+node:ekr.20060919110638.32:endTnode
         def endTnode (self):
-            
+
             for node in self.nodeList:
                 node.bodyString = ''.join(self.content)
-        
+
             self.content = []
         #@nonl
         #@-node:ekr.20060919110638.32:endTnode
         #@+node:ekr.20060919110638.33:endVnode
         def endVnode (self):
-            
+
             self.level -= 1
             self.node = self.nodeStack.pop()
         #@nonl
         #@-node:ekr.20060919110638.33:endVnode
         #@+node:ekr.20060919110638.34:endVH
         def endVH (self):
-              
+
             if self.node:
                 self.node.headString = ''.join(self.content)
-        
+
             self.content = []
         #@nonl
         #@-node:ekr.20060919110638.34:endVH
@@ -289,17 +289,17 @@ if sys.platform != 'cli':
         #@+node:ekr.20060919110638.45:getters
         def getCurrentNode (self):
             return self.currentNode
-            
+
         def getRootNode (self):
             return self.rootNode
-            
+
         def getTopNode (self):
             return self.topNode
         #@nonl
         #@-node:ekr.20060919110638.45:getters
         #@+node:ekr.20061004054323:processingInstruction (stylesheet)
         def processingInstruction (self,target,data):
-            
+
             if target == 'xml-stylesheet':
                 self.c.frame.stylesheet = data
                 if not self.silent:
@@ -310,15 +310,15 @@ if sys.platform != 'cli':
         #@-node:ekr.20061004054323:processingInstruction (stylesheet)
         #@+node:ekr.20060919110638.35:startElement & helpers
         def startElement(self,name,attrs):
-            
+
             name = name.lower()
             if name in self.printElements or 'all' in self.printElements:
                 self.printStartElement(name,attrs)
-        
+
             self.elementStack.append(name)
-            
+
             data = self.dispatchDict.get(name)
-        
+
             if data is None:
                 if 0:
                     g.trace('unknown element',name)
@@ -329,9 +329,9 @@ if sys.platform != 'cli':
         #@nonl
         #@+node:ekr.20060919110638.36:getPositionAttributes
         def getPositionAttributes (self,attrs):
-            
+
             d = {}
-            
+
             for bunch in self.attrsToList(attrs):
                 name = bunch.name ; val = bunch.val
                 if name in ('top','left','width','height'):
@@ -341,16 +341,16 @@ if sys.platform != 'cli':
                         d[name] = 100 # A reasonable emergency default.
                 else:
                     g.trace(name,len(val))
-                    
+
             return d
         #@nonl
         #@-node:ekr.20060919110638.36:getPositionAttributes
         #@+node:ekr.20060919110638.37:startGlobals
         def startGlobals (self,attrs):
-            
+
             for bunch in self.attrsToList(attrs):
                 name = bunch.name ; val = bunch.val
-                
+
                 if name == 'body_outline_ratio':
                     # self.body_outline_ratio = val
                     self.c.ratio = val
@@ -361,7 +361,7 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919110638.37:startGlobals
         #@+node:ekr.20060919110638.38:startWinPos
         def startWinPos (self,attrs):
-            
+
             self.global_window_position = self.getPositionAttributes(attrs)
         #@nonl
         #@-node:ekr.20060919110638.38:startWinPos
@@ -372,31 +372,31 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919110638.39:startLeoHeader
         #@+node:ekr.20060919110638.40:startVH
         def startVH (self,attrs):
-            
+
             __pychecker__ = '--no-argsused'
-        
+
             self.content = []
         #@nonl
         #@-node:ekr.20060919110638.40:startVH
         #@+node:ekr.20060919112118:startVnodes
         def startVnodes (self,attrs):
-            
+
             __pychecker__ = '--no-argsused'
-            
+
             c = self.c ; d = self.global_window_position
-        
+
             w = d.get('width',700)
             h = d.get('height',500)
             x = d.get('left',50)
             y = d.get('top',50)
             # g.trace(d,w,h,x,y)
-            
+
             # Redraw the window before writing into it.
             c.frame.setTopGeometry(w,h,x,y)
             c.frame.deiconify()
             c.frame.lift()
             c.frame.update()
-        
+
             # Causes window to appear.
             # g.trace('ratio',c.frame.ratio,c.frame.secondary_ratio)
             c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
@@ -406,22 +406,22 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919112118:startVnodes
         #@+node:ekr.20060919110638.41:startTnode
         def startTnode (self,attrs):
-            
+
             if not self.inElement('tnodes'):
                 self.error('<t> outside <tnodes>')
-                
+
             self.content = []
-            
+
             self.tnodeAttributes(attrs)
         #@nonl
         #@+node:ekr.20060919110638.42:tnodeAttributes
         def tnodeAttributes (self,attrs):
-            
+
             # The tnode must have a tx attribute to associate content with the proper node.
-                
+
             node = self.node
             self.nodeList = []
-        
+
             for bunch in self.attrsToList(attrs):
                 name = bunch.name ; val = bunch.val
                 if name == 'tx':
@@ -430,7 +430,7 @@ if sys.platform != 'cli':
                         self.error('Bad leo file: no node for <t tx=%s>' % (val))
                 else:
                     node.tnodeAttributes[name] = val
-                    
+
             if not self.nodeList:
                 self.error('Bad leo file: no tx attribute for tnode')
         #@nonl
@@ -438,32 +438,32 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919110638.41:startTnode
         #@+node:ekr.20060919110638.43:startVnode
         def startVnode (self,attrs):
-            
+
             if not self.inElement('vnodes'):
                 self.error('<v> outside <vnodes>')
-        
+
             if self.rootNode:
                 parent = self.node
             else:
                 self.rootNode = parent = saxNodeClass() # The dummy parent node.
                 parent.headString = 'dummyNode'
-        
+
             self.node = saxNodeClass()
-        
+
             parent.children.append(self.node)
             self.vnodeAttributes(attrs)
             self.nodeStack.append(parent)
-                
+
             return parent
         #@nonl
         #@+node:ekr.20060919110638.44:vnodeAttributes
         # The native attributes of <v> elements are a, t, vtag, tnodeList,
         # marks, expanded and descendentTnodeUnknownAttributes.
-        
+
         def vnodeAttributes (self,attrs):
-            
+
             node = self.node
-        
+
             for bunch in self.attrsToList(attrs):
                 name = bunch.name ; val = bunch.val
                 if name == 't':
@@ -482,15 +482,15 @@ if sys.platform != 'cli':
     #@-node:ekr.20060919110638.19:class saxContentHandler (XMLGenerator)
     #@+node:ekr.20060919110638.15:class saxNodeClass
     class saxNodeClass:
-        
+
         '''A class representing one <v> element.
-        
+
         Use getters to access the attributes, properties and rules of this mode.'''
-        
+
         #@    @+others
         #@+node:ekr.20060919110638.16: node.__init__
         def __init__ (self):
-        
+
             self.attributes = {}
             self.bodyString = ''
             self.headString = ''
@@ -502,15 +502,15 @@ if sys.platform != 'cli':
         #@-node:ekr.20060919110638.16: node.__init__
         #@+node:ekr.20060919110638.17: node.__str__ & __repr__
         def __str__ (self):
-        
+
             return '<v: %s>' % self.headString
-        
+
         __repr__ = __str__
         #@nonl
         #@-node:ekr.20060919110638.17: node.__str__ & __repr__
         #@+node:ekr.20060919110638.18:node.dump
         def dump (self):
-             
+
             print
             print 'node: tnx: %s body: %d %s' % (self.tnx,len(self.bodyString),self.headString)
             print 'children:',g.listToString([child for child in self.children])
@@ -530,16 +530,16 @@ class baseFileCommands:
     #@    @+others
     #@+node:ekr.20031218072017.3019:leoFileCommands._init_
     def __init__(self,c):
-    
+
         # g.trace("__init__", "fileCommands.__init__")
         self.c = c
         self.frame = c.frame
-    
+
         self.use_new_positions = False
-        
+
         # New positions require the sax-based read code.
         self.use_sax = self.use_new_positions or c.config.getBool('use_sax_based_read')
-        
+
         self.nativeTnodeAttributes = ('tx',)
         self.nativeVnodeAttributes = (
             'a','descendentTnodeUnknownAttributes',
@@ -547,9 +547,9 @@ class baseFileCommands:
             # 'vtag',
         )
         self.initIvars()
-    
+
     def initIvars(self):
-    
+
         # General
         c = self.c
         self.mFileName = ""
@@ -591,9 +591,9 @@ class baseFileCommands:
     #@+node:ekr.20060919104836: Top-level
     #@+node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
     def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
-        
+
         '''Read a Leo outline from string s in clipboard format.'''
-    
+
         try:
             v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
             v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
@@ -603,18 +603,18 @@ class baseFileCommands:
         except BadLeoFile:
             v = None
             g.es("The clipboard is not valid ",color="blue")
-    
+
         return v
-        
+
     getLeoOutline = getLeoOutlineFromClipboard # for compatibility
     #@nonl
     #@+node:ekr.20031218072017.1557:finishPaste
     def finishPaste(self,reassignIndices=True):
-        
+
         """Finish pasting an outline from the clipboard.
-        
+
         Retain clone links if reassignIndices is False."""
-    
+
         c = self.c
         current = c.currentPosition()
         if reassignIndices:
@@ -628,11 +628,11 @@ class baseFileCommands:
             # clones" are created.
             #@-at
             #@@c
-            
+
             nodeIndices = g.app.nodeIndices
-            
+
             current.clearVisitedInTree()
-            
+
             for p in current.self_and_subtree_iter():
                 t = p.v.t
                 if not t.isVisited():
@@ -648,27 +648,27 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1557:finishPaste
     #@+node:ekr.20060826052453.1:getLeoOutlineHelper
     def getLeoOutlineHelper (self,s,reassignIndices,checking):
-        
+
         self.checking = checking
         self.usingClipboard = True
         self.fileBuffer = s ; self.fileIndex = 0
         self.descendentUnknownAttributesDictList = []
         v = None
-    
+
         self.tnodesDict = {}
         if not reassignIndices:
             #@        << recreate tnodesDict >>
             #@+node:EKR.20040610134756:<< recreate tnodesDict >>
             nodeIndices = g.app.nodeIndices
-            
+
             self.tnodesDict = {}
-            
+
             for t in self.c.all_unique_tnodes_iter():
                 tref = t.fileIndex
                 if nodeIndices.isGnx(tref):
                     tref = nodeIndices.toString(tref)
                 self.tnodesDict[tref] = t
-                
+
             if 0:
                 print '-'*40
                 for key in self.tnodesDict.keys():
@@ -695,10 +695,10 @@ class baseFileCommands:
     #@-node:ekr.20060826052453.1:getLeoOutlineHelper
     #@+node:ekr.20031218072017.3022:getClipboardHeader
     def getClipboardHeader (self):
-    
+
         if self.getOpenTag("<leo_header"):
             return # <leo_header> or <leo_header/> has been seen.
-    
+
         while 1:
             if self.matchTag("file_format="):
                 self.getDquote() ; self.getLong() ; self.getDquote()
@@ -716,22 +716,22 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
     #@+node:ekr.20031218072017.1553:getLeoFile
     # The caller should enclose this in begin/endUpdate.
-    
+
     def getLeoFile (self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-    
+
         c = self.c
         c.setChanged(False) # May be set when reading @file nodes.
         #@    << warn on read-only files >>
         #@+node:ekr.20031218072017.1554:<< warn on read-only files >>
         # os.access may not exist on all platforms.
-        
+
         try:
             self.read_only = not os.access(fileName,os.W_OK)
         except AttributeError:
             self.read_only = False
         except UnicodeError:
             self.read_only = False
-                
+
         if self.read_only:
             g.es("read only: " + fileName,color="red")
         #@-node:ekr.20031218072017.1554:<< warn on read-only files >>
@@ -740,7 +740,7 @@ class baseFileCommands:
         self.mFileName = c.mFileName
         self.initReadIvars()
         c.loading = True # disable c.changed
-        
+
         try:
             ok = True
             # t1 = time.clock()
@@ -760,7 +760,7 @@ class baseFileCommands:
                 g.es_exception()
                 g.alert(self.mFileName + " is not a valid Leo file: " + str(message))
             ok = False
-            
+
         # New in Leo 4.2.2: before reading derived files.
         if self.use_sax:
             self.resolveTnodeLists()
@@ -769,7 +769,7 @@ class baseFileCommands:
             # This is important for big files like LeoPy.leo.
             c.redraw_now()
             c.atFileCommands.readAll(c.rootVnode(),partialFlag=False)
-        
+
         # Do this after reading derived files.
         if readAtFileNodesFlag:
             # The descendent nodes won't exist unless we have read the @thin nodes!
@@ -781,7 +781,7 @@ class baseFileCommands:
                 self.setPositionsFromStacks()
             if not c.currentPosition():
                 c.setCurrentPosition(c.rootPosition())
-    
+
         c.selectVnode(c.currentPosition()) # load body pane
         c.loading = False # reenable c.changed
         c.setChanged(c.changed) # Refresh the changed marker.
@@ -791,7 +791,7 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1553:getLeoFile
     #@+node:ekr.20031218072017.2009:newTnode
     def newTnode(self,index):
-    
+
         if self.tnodesDict.has_key(index):
             g.es("bad tnode index: %s. Using empty text." % str(index))
             return leoNodes.tnode()
@@ -799,41 +799,41 @@ class baseFileCommands:
             # Create the tnode.  Use the _original_ index as the key in tnodesDict.
             t = leoNodes.tnode()
             self.tnodesDict[index] = t
-        
+
             if type(index) not in (type(""),type(u"")):
                 g.es("newTnode: unexpected index type:",type(index),index,color="red")
-            
+
             # Convert any pre-4.1 index to a gnx.
             theId,time,n = gnx = g.app.nodeIndices.scanGnx(index,0)
             if time != None:
                 t.setFileIndex(gnx)
-    
+
             return t
     #@-node:ekr.20031218072017.2009:newTnode
     #@+node:ekr.20031218072017.3029:readAtFileNodes (leoAtFile)
     def readAtFileNodes (self):
-    
+
         c = self.c ; p = c.currentPosition()
-        
+
         c.beginUpdate()
         try:
             c.atFileCommands.readAll(p,partialFlag=True)
         finally:
             c.endUpdate()
-        
+
         # Force an update of the body pane.
         c.setBodyString(p,p.bodyString())
         c.frame.body.onBodyChanged(undoType=None)
     #@-node:ekr.20031218072017.3029:readAtFileNodes (leoAtFile)
     #@+node:ekr.20031218072017.2297:open (leoFileCommands)
     def open(self,theFile,fileName,readAtFileNodesFlag=True,silent=False):
-    
+
         c = self.c ; frame = c.frame
         if not self.use_sax:
             #@        << read the entire file into the buffer >>
             #@+node:ekr.20070412103240:<< read the entire file into the buffer >>
             isZipped = zipfile.is_zipfile(fileName)
-            
+
             if isZipped:
                 aList = theFile.infolist()
                 contentsName = aList[0].filename
@@ -854,9 +854,9 @@ class baseFileCommands:
         # to set.
         #@-at
         #@@c
-        
+
         theDir = g.os_path_dirname(fileName)
-        
+
         if len(theDir) > 0:
             c.openDirectory = theDir
         #@-node:ekr.20031218072017.2298:<< Set the default directory >>
@@ -877,7 +877,7 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.2297:open (leoFileCommands)
     #@+node:ekr.20031218072017.3030:readOutlineOnly
     def readOutlineOnly (self,theFile,fileName):
-    
+
         c = self.c
         # Read the entire file into the buffer
         self.fileBuffer = theFile.read() ; theFile.close()
@@ -892,9 +892,9 @@ class baseFileCommands:
         # to set.
         #@-at
         #@@c
-        
+
         theDir = g.os_path_dirname(fileName)
-        
+
         if len(theDir) > 0:
             c.openDirectory = theDir
         #@-node:ekr.20031218072017.2298:<< Set the default directory >>
@@ -922,28 +922,28 @@ class baseFileCommands:
     #@nonl
     #@+node:ekr.20031218072017.2004:canonicalTnodeIndex
     def canonicalTnodeIndex(self,index):
-        
+
         """Convert Tnnn to nnn, leaving gnx's unchanged."""
-    
+
         # index might be Tnnn, nnn, or gnx.
         theId,time,n = g.app.nodeIndices.scanGnx(index,0)
         if time == None: # A pre-4.1 file index.
             if index[0] == "T":
                 index = index[1:]
-    
+
         return index
     #@-node:ekr.20031218072017.2004:canonicalTnodeIndex
     #@+node:ekr.20040701065235.1:getDescendentAttributes
     def getDescendentAttributes (self,s,tag=""):
-        
+
         '''s is a list of gnx's, separated by commas from a <v> or <t> element.
         Parses s into a list.
-        
+
         This is used to record marked and expanded nodes.
         '''
-        
+
         __pychecker__ = '--no-argsused' # tag used only for debugging.
-    
+
         gnxs = s.split(',')
         result = [gnx for gnx in gnxs if len(gnx) > 0]
         # g.trace(tag,result)
@@ -952,21 +952,21 @@ class baseFileCommands:
     #@+node:EKR.20040627114602:getDescendentUnknownAttributes
     # Only @thin vnodes have the descendentTnodeUnknownAttributes field.
     # The question is: what are we to do about this?
-    
+
     def getDescendentUnknownAttributes (self,s):
-        
+
         try:
             bin = binascii.unhexlify(s) # Throws a TypeError if val is not a hex string.
             val = pickle.loads(bin)
             return val
-    
+
         except (TypeError,pickle.UnpicklingError,ImportError):
             g.trace('Can not unpickle',s)
             return None
     #@-node:EKR.20040627114602:getDescendentUnknownAttributes
     #@+node:ekr.20060919142200.1:initReadIvars
     def initReadIvars (self):
-    
+
         self.descendentUnknownAttributesDictList = []
         self.descendentExpandedList = []
         self.descendentMarksList = []
@@ -975,9 +975,9 @@ class baseFileCommands:
     #@-node:ekr.20060919142200.1:initReadIvars
     #@+node:EKR.20040627120120:restoreDescendentAttributes
     def restoreDescendentAttributes (self):
-    
+
         c = self.c ; verbose = True 
-    
+
         for resultDict in self.descendentUnknownAttributesDictList:
             for gnx in resultDict.keys():
                 tref = self.canonicalTnodeIndex(gnx)
@@ -994,14 +994,14 @@ class baseFileCommands:
             if t: expanded[t]=t
             elif verbose:
                 g.trace('can not find tnode (expanded): gnx = %s, tref: %s' % (gnx,tref),color='red')
-            
+
         for gnx in self.descendentMarksList:
             tref = self.canonicalTnodeIndex(gnx)
             t = self.tnodesDict.get(gnx)
             if t: marks[t]=t
             elif verbose:
                 g.trace('can not find tnode (marks): gnx = %s tref: %s' % (gnx,tref),color='red')
-        
+
         if marks or expanded:
             # g.trace('marks',len(marks),'expanded',len(expanded))
             for p in c.all_positions_iter():
@@ -1016,10 +1016,10 @@ class baseFileCommands:
     #@+node:ekr.20031218072017.3021:Non-sax
     #@+node:ekr.20040326052245:convertStackToPosition
     def convertStackToPosition (self,stack):
-    
+
         c = self.c ; p2 = None
         if not stack: return None
-    
+
         for p in c.allNodes_iter():
             if p.v == stack[0]:
                 p2 = p.copy()
@@ -1034,14 +1034,14 @@ class baseFileCommands:
                         p2.moveToParent()
                 if p2:
                     return p
-    
+
         return None
     #@-node:ekr.20040326052245:convertStackToPosition
     #@+node:ekr.20031218072017.1243:get, match & skip (basic)
     #@+node:ekr.20031218072017.1244:get routines (basic)
     #@+node:EKR.20040526204706:getBool
     def getBool (self):
-    
+
         self.skipWs() # guarantees at least one more character.
         ch = self.fileBuffer[self.fileIndex]
         if ch == '0':
@@ -1053,7 +1053,7 @@ class baseFileCommands:
     #@-node:EKR.20040526204706:getBool
     #@+node:EKR.20040526204706.1:getDouble
     def getDouble (self):
-    
+
         self.skipWs()
         i = self.fileIndex ; buf = self.fileBuffer
         floatChars = 'eE.+-'
@@ -1068,7 +1068,7 @@ class baseFileCommands:
     #@-node:EKR.20040526204706.1:getDouble
     #@+node:EKR.20040526204706.2:getDqBool
     def getDqBool (self):
-    
+
         self.getDquote()
         val = self.getBool()
         self.getDquote()
@@ -1076,7 +1076,7 @@ class baseFileCommands:
     #@-node:EKR.20040526204706.2:getDqBool
     #@+node:EKR.20040526204706.3:getDqString
     def getDqString (self):
-    
+
         self.getDquote()
         i = self.fileIndex
         self.fileIndex = j = string.find(self.fileBuffer,'"',i)
@@ -1087,12 +1087,12 @@ class baseFileCommands:
     #@-node:EKR.20040526204706.3:getDqString
     #@+node:EKR.20040526204706.4:getDquote
     def getDquote (self):
-    
+
         self.getTag('"')
     #@-node:EKR.20040526204706.4:getDquote
     #@+node:ekr.20031218072017.3024:getEscapedString
     def getEscapedString (self):
-    
+
         # The next '<' begins the ending tag.
         i = self.fileIndex
         self.fileIndex = j = string.find(self.fileBuffer,'<',i)
@@ -1105,14 +1105,14 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3024:getEscapedString
     #@+node:EKR.20040526204706.5:getIndex
     def getIndex (self):
-    
+
         val = self.getLong()
         if val < 0: raise BadLeoFile("expecting index")
         return val
     #@-node:EKR.20040526204706.5:getIndex
     #@+node:EKR.20040526204706.6:getLong
     def getLong (self):
-    
+
         self.skipWs() # guarantees at least one more character.
         i = self.fileIndex
         if self.fileBuffer[i] == u'-':
@@ -1128,14 +1128,14 @@ class baseFileCommands:
     #@-node:EKR.20040526204706.6:getLong
     #@+node:EKR.20040526204706.7:getOpenTag
     def getOpenTag (self,tag):
-        
+
         """
         Look ahead for collapsed tag: tag may or may not end in ">"
         Skips tag and /> if found, otherwise does not alter index.
         Returns True if the closing part was found.
         Throws BadLeoFile if the tag does not exist.
         """
-    
+
         if tag[-1] == ">":
             # Only the tag itself or a collapsed tag are valid.
             if self.matchTag(tag):
@@ -1163,7 +1163,7 @@ class baseFileCommands:
     #@-node:EKR.20040526204706.7:getOpenTag
     #@+node:EKR.20040526204706.8:getStringToTag
     def getStringToTag (self,tag):
-    
+
         buf = self.fileBuffer
         blen = len(buf) ; tlen = len(tag)
         i = j = self.fileIndex
@@ -1177,12 +1177,12 @@ class baseFileCommands:
     #@-node:EKR.20040526204706.8:getStringToTag
     #@+node:EKR.20040526204706.9:getTag
     def getTag (self,tag):
-        
+
         """
         Look ahead for closing />
         Return True if found.
         """
-        
+
         if self.matchTag(tag):
             return
         else:
@@ -1191,13 +1191,13 @@ class baseFileCommands:
     #@-node:EKR.20040526204706.9:getTag
     #@+node:EKR.20040526204036:getUnknownTag
     def getUnknownTag(self):
-        
+
         self.skipWsAndNl() # guarantees at least one more character.
         tag = self.getStringToTag('=')
         if not tag:
             print "getUnknownTag failed"
             raise BadLeoFile("unknown tag not followed by '='")
-    
+
         self.fileIndex += 1
         val = self.getDqString()
         # g.trace(tag,val)
@@ -1210,7 +1210,7 @@ class baseFileCommands:
         if ch == self.fileBuffer[self.fileIndex]:
             self.fileIndex += 1 ; return True
         else: return False
-    
+
     # Warning: does not check for end-of-word,
     # so caller must match prefixes first.
     def matchTag (self,tag):
@@ -1221,7 +1221,7 @@ class baseFileCommands:
             return True
         else:
             return False
-    
+
     def matchTagWordIgnoringCase (self,tag):
         self.skipWsAndNl() # guarantees at least one more character.
         i = self.fileIndex
@@ -1237,33 +1237,33 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1245:match routines
     #@+node:ekr.20031218072017.3027:skipWs
     def skipWs (self):
-    
+
         while self.fileIndex < len(self.fileBuffer):
             ch = self.fileBuffer[self.fileIndex]
             if ch == ' ' or ch == '\t':
                 self.fileIndex += 1
             else: break
-    
+
         # The caller is entitled to get the next character.
         if  self.fileIndex >= len(self.fileBuffer):
             raise BadLeoFile("")
     #@-node:ekr.20031218072017.3027:skipWs
     #@+node:ekr.20031218072017.3028:skipWsAndNl
     def skipWsAndNl (self):
-    
+
         while self.fileIndex < len(self.fileBuffer):
             ch = self.fileBuffer[self.fileIndex]
             if ch == ' ' or ch == '\t' or ch == '\r' or ch == '\n':
                 self.fileIndex += 1
             else: break
-    
+
         # The caller is entitled to get the next character.
         if  self.fileIndex >= len(self.fileBuffer):
             raise BadLeoFile("")
     #@-node:ekr.20031218072017.3028:skipWsAndNl
     #@+node:ekr.20031218072017.3031:xmlUnescape
     def xmlUnescape(self,s):
-    
+
         if s:
             s = string.replace(s, '\r', '')
             s = string.replace(s, "&lt;", '<')
@@ -1275,21 +1275,21 @@ class baseFileCommands:
     #@+node:ekr.20031218072017.1555:getAllLeoElements
     def getAllLeoElements (self,fileName,silent):
         c = self.c
-    
+
         self.getXmlVersionTag()
         self.getXmlStylesheetTag()
-    
+
         self.getTag("<leo_file>") # Must match exactly.
         self.getLeoHeader()
         self.getGlobals()
         self.getPrefs()
         self.getFindPanelSettings()
-        
+
         # Causes window to appear.
         c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
         if not silent:
             g.es("reading: " + fileName)
-        
+
         self.getVnodes()
         self.getTnodes()
         self.getCloneWindows()
@@ -1298,12 +1298,12 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1555:getAllLeoElements
     #@+node:ekr.20031218072017.3023:getCloneWindows
     # For compatibility with old file formats.
-    
+
     def getCloneWindows (self):
-    
+
         if not self.matchTag("<clone_windows>"):
             return # <clone_windows/> seen.
-    
+
         while self.matchTag("<clone_window vtag=\"V"):
             self.getLong() ; self.getDquote() ; self.getTag(">")
             if not self.getOpenTag("<global_window_position"):
@@ -1315,7 +1315,7 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3023:getCloneWindows
     #@+node:ekr.20061209141653:getDummyElements
     def getDummyElements (self):
-        
+
         # New in Leo 4.4.3: Ignore the dummy elements that allow
         # Pasted Leo outlines to be valid .leo files.
         while 1:
@@ -1327,10 +1327,10 @@ class baseFileCommands:
     #@-node:ekr.20061209141653:getDummyElements
     #@+node:ekr.20031218072017.2064:getFindPanelSettings
     def getFindPanelSettings (self):
-        
+
         if self.getOpenTag("<find_panel_settings"):
             return # <find_panel_settings/> seen.
-        
+
         # New in 4.3: ignore all pre-4.3 find settings.
         while 1:
             if   self.matchTag("batch="):           self.getDqBool()
@@ -1364,7 +1364,7 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.2064:getFindPanelSettings
     #@+node:ekr.20031218072017.2306:getGlobals
     def getGlobals (self):
-    
+
         if self.getOpenTag("<globals"):
             # <globals/> seen: set reasonable defaults:
             self.ratio = 0.5
@@ -1372,17 +1372,17 @@ class baseFileCommands:
         else:
             self.getTag("body_outline_ratio=\"")
             self.ratio = self.getDouble() ; self.getDquote() ; self.getTag(">")
-    
+
             self.getTag("<global_window_position")
             y,x,h,w = self.getPosition()
             self.getTag("/>")
-    
+
             self.getTag("<global_log_window_position")
             self.getPosition()
             self.getTag("/>") # no longer used.
-    
+
             self.getTag("</globals>")
-    
+
         # Redraw the window before writing into it.
         self.frame.setTopGeometry(w,h,x,y)
         self.frame.deiconify()
@@ -1391,10 +1391,10 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.2306:getGlobals
     #@+node:ekr.20031218072017.1970:getLeoHeader
     def getLeoHeader (self):
-    
+
         if self.getOpenTag("<leo_header"):
             return # <leo_header/> seen.
-    
+
         # New in version 1.7: attributes may appear in any order.
         while 1:
             if self.matchTag("file_format="):
@@ -1413,7 +1413,7 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1970:getLeoHeader
     #@+node:ekr.20031218072017.3025:getPosition
     def getPosition (self):
-    
+
         top = left = height = width = 0
         # New in version 1.7: attributes may appear in any order.
         while 1:
@@ -1431,14 +1431,14 @@ class baseFileCommands:
     #@+node:ekr.20031218072017.2062:getPrefs
     # Note: Leo 4.3 does not write these settings to local .leo files.
     # Instead, corresponding settings are contained in leoConfig.leo files.
-    
+
     def getPrefs (self):
-    
+
         c = self.c
-        
+
         if self.getOpenTag("<preferences"):
             return # <preferences/> seen
-    
+
         table = (
             ("allow_rich_text",None,None), # Ignored.
             ("tab_width","tab_width",self.getLong),
@@ -1450,7 +1450,7 @@ class baseFileCommands:
             ("extended_noweb_flag",None,None), # Ignored.
             ("defaultTargetLanguage","target_language",self.getTargetLanguage),
             ("use_header_flag","use_header_flag",self.getBool))
-        
+
         done = False
         while 1:
             found = False
@@ -1470,7 +1470,7 @@ class baseFileCommands:
                     break
                 else: # New in 4.1: ignore all other tags.
                     self.getUnknownTag()
-    
+
         if not done:
             while 1:
                 if self.matchTag("<defaultDirectory>"):
@@ -1486,20 +1486,20 @@ class baseFileCommands:
             self.getTag("</preferences>")
     #@+node:ekr.20031218072017.2063:getTargetLanguage
     def getTargetLanguage (self):
-        
+
         # Must match longer tags before short prefixes.
         for name in g.app.language_delims_dict.keys():
             if self.matchTagWordIgnoringCase(name):
                 language = name.replace("/","")
                 # self.getDquote()
                 return language
-                
+
         return "c" # default
     #@-node:ekr.20031218072017.2063:getTargetLanguage
     #@-node:ekr.20031218072017.2062:getPrefs
     #@+node:ekr.20031218072017.3026:getSize (not used!)
     def getSize (self):
-    
+
         # New in version 1.7: attributes may appear in any order.
         height = 0 ; width = 0
         while 1:
@@ -1512,14 +1512,14 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3026:getSize (not used!)
     #@+node:ekr.20031218072017.1561:getTnode (changed for 4.4)
     def getTnode (self):
-    
+
         # we have already matched <t.
         index = -1 ; attrDict = {}
-    
+
         # New in Leo 4.4: support collapsed tnodes.
         if self.matchTag('/>'): # A collapsed tnode.
             return
-    
+
         # Attributes may appear in any order.
         while 1:
             if self.matchTag("tx="):
@@ -1532,13 +1532,13 @@ class baseFileCommands:
                 # New in 4.2: allow pickle'd and hexlify'ed values.
                 attr,val = self.getUa("tnode")
                 if attr: attrDict[attr] = val
-                
+
         # index might be Tnnn, nnn, or gnx.
         theId,time,n = g.app.nodeIndices.scanGnx(index,0)
         if time == None: # A pre-4.1 file index.
             if index[0] == "T":
                 index = index[1:]
-    
+
         index = self.canonicalTnodeIndex(index)
         t = self.tnodesDict.get(index)
         #@    << handle unknown attributes >>
@@ -1564,13 +1564,13 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1561:getTnode (changed for 4.4)
     #@+node:ekr.20031218072017.2008:getTnodeList (4.0,4.2)
     def getTnodeList (self,s):
-    
+
         """Parse a list of tnode indices in string s."""
-        
+
         # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
-        
+
         fc = self ; 
-    
+
         indexList = s.split(',') # The list never ends in a comma.
         tnodeList = []
         for index in indexList:
@@ -1581,48 +1581,48 @@ class baseFileCommands:
                 # g.trace("not allocated: %s" % index)
                 t = self.newTnode(index)
             tnodeList.append(t)
-            
+
         # if tnodeList: g.trace(len(tnodeList))
         return tnodeList
     #@-node:ekr.20031218072017.2008:getTnodeList (4.0,4.2)
     #@+node:ekr.20031218072017.1560:getTnodes
     def getTnodes (self):
-    
+
         # A slight change: we require a tnodes element.  But Leo always writes this.
         if self.getOpenTag("<tnodes>"):
             return # <tnodes/> seen.
-        
+
         while self.matchTag("<t"):
                 self.getTnode()
-    
+
         self.getTag("</tnodes>")
     #@-node:ekr.20031218072017.1560:getTnodes
     #@+node:EKR.20040526204036.1:getUa (non-sax)
     # changed for 4.3.
-    
+
     def getUa(self,nodeType):
-        
+
         """Parse an unknown attribute in a <v> or <t> element."""
-        
+
         __pychecker__ = '--no-argsused' # nodeType not used: good for debugging.
-        
+
         # New in 4.2.  The unknown tag has been pickled and hexlify'd.
         attr,val = self.getUnknownTag()
         # g.trace(attr,repr(val))
         if not attr:
             return None,None
-            
+
         # New in 4.3: leave string attributes starting with 'str_' alone.
         if attr.startswith('str_') and type(val) == type(''):
             # g.trace(attr,val)
             return attr,val
-            
+
         # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
         if 0: # Not ready yet.
             if attr.startswith('b64_'):
                 try: pass
                 except Exception: pass
-            
+
         try:
             binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
         except TypeError:
@@ -1640,19 +1640,19 @@ class baseFileCommands:
     #@+node:ekr.20031218072017.1566:getVnode & helpers
     # changed for 4.2 & 4.4
     def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
-    
+
         v = None
         setCurrent = setExpanded = setMarked = setOrphan = setTop = False
         tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
-    
+
         # we have already matched <v.
-        
+
         # New in Leo 4.4: support collapsed tnodes.
         if self.matchTag('/>'): # A collapsed vnode.
             v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
             if self.checking: return None
             else: return v
-        
+
         while 1:
             if self.matchTag("a=\""):
                 #@            << Handle vnode attribute bits >>
@@ -1667,7 +1667,7 @@ class baseFileCommands:
                     elif self.matchChar('T'): setTop = True
                     elif self.matchChar('V'): setCurrent = True
                     else: break
-                
+
                 self.getDquote()
                 #@-node:ekr.20031218072017.1567:<< Handle vnode attribute bits  >>
                 #@nl
@@ -1681,10 +1681,10 @@ class baseFileCommands:
                     theId,time,n = g.app.nodeIndices.scanGnx(index,0)
                     if not time and index[0] == "T":
                         index = index[1:]
-                        
+
                     index = self.canonicalTnodeIndex(index)
                     t = self.tnodesDict.get(index)
-                    
+
                     if t in self.forbiddenTnodes:
                         # g.trace(t)
                         raise invalidPaste
@@ -1727,27 +1727,27 @@ class baseFileCommands:
                 skip = skip or skip2
                 if tnodeList:
                     v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
-                
+
         if not self.checking:
             #@        << Set the remembered status bits >>
             #@+node:ekr.20031218072017.1568:<< Set the remembered status bits >>
             if setCurrent:
                 self.currentVnodeStack = [v]
-            
+
             if setTop:
                 self.topVnodeStack = [v]
-                
+
             if setExpanded:
                 v.initExpandedBit()
-                
+
             if setMarked:
                 v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
-            
+
             if setOrphan:
                 v.setOrphan()
             #@-node:ekr.20031218072017.1568:<< Set the remembered status bits >>
             #@nl
-    
+
         # Recursively create all nested nodes.
         parent = v ; back = None
         while self.matchTag("<v"):
@@ -1755,29 +1755,29 @@ class baseFileCommands:
             append2 = appendToTopStack and len(self.topVnodeStack) == 0
             back = self.getVnode(parent,back,skip,
                 appendToCurrentStack=append1,appendToTopStack=append2)
-        
+
         if not self.checking:
             #@        << Append to current or top stack >>
             #@+node:ekr.20040326055828:<< Append to current or top stack >>
             if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
                 #g.trace("append current",v)
                 self.currentVnodeStack.append(v)
-                
+
             if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
                 #g.trace("append top",v)
                 self.topVnodeStack.append(v)
             #@-node:ekr.20040326055828:<< Append to current or top stack >>
             #@nl
-    
+
         # End this vnode.
         self.getTag("</v>")
         return v
     #@nonl
     #@+node:ekr.20031218072017.1860:createVnode
     # (changed for 4.2) sets skip
-    
+
     def createVnode (self,parent,back,tref,headline,attrDict):
-        
+
         # g.trace(parent,headline)
         v = None ; c = self.c
         # Shared tnodes are placed in the file even if empty.
@@ -1788,9 +1788,9 @@ class baseFileCommands:
             t = self.tnodesDict.get(tref)
             if not t:
                 t = self.newTnode(tref)
-                
+
         if self.checking: return None,False
-        
+
         if back: # create v after back.
             v = back.insertAfter(t)
         elif parent: # create v as the parent's first child.
@@ -1799,10 +1799,10 @@ class baseFileCommands:
             v = leoNodes.vnode(t)
             v.moveToRoot(oldRoot=None)
             c.setRootVnode(v) # New in Leo 4.4.2.
-    
+
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v) # New in 4.2.
-    
+
         skip = len(v.t.vnodeList) > 1
         v.initHeadString(headline,encoding=self.leo_file_encoding)
         #@    << handle unknown vnode attributes >>
@@ -1811,7 +1811,7 @@ class baseFileCommands:
         if keys:
             v.unknownAttributes = attrDict
             v._p_changed = 1
-        
+
             if 0: # For debugging.
                 s = "unknown attributes for " + v.headString()
                 g.es_print(s,color="blue")
@@ -1826,7 +1826,7 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1860:createVnode
     #@+node:ekr.20040326063413:getExistingVnode
     def getExistingVnode (self,tref,headline):
-    
+
         assert(tref > -1)
         tref = self.canonicalTnodeIndex(tref)
         t = self.tnodesDict.get(tref)
@@ -1840,17 +1840,17 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1566:getVnode & helpers
     #@+node:ekr.20031218072017.1565:getVnodes
     def getVnodes (self,reassignIndices=True):
-    
+
         c = self.c
-    
+
         if self.getOpenTag("<vnodes>"):
             return # <vnodes/> seen.
-            
+
         self.forbiddenTnodes = []
         back = parent = None # This routine _must_ work on vnodes!
         self.currentVnodeStack = []
         self.topVnodeStack = []
-            
+
         if self.usingClipboard:
             oldRoot = c.rootPosition()
             oldCurrent = c.currentPosition()
@@ -1858,21 +1858,21 @@ class baseFileCommands:
                 #@            << set self.forbiddenTnodes to tnodes than must not be pasted >>
                 #@+node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
                 self.forbiddenTnodes = []
-                
+
                 for p in oldCurrent.self_and_parents_iter():
                     if p.v.t not in self.forbiddenTnodes:
                         self.forbiddenTnodes.append(p.v.t)
-                        
+
                 # g.trace("forbiddenTnodes",self.forbiddenTnodes)
                 #@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
                 #@nl
-    
+
         while self.matchTag("<v"):
             append1 = not self.usingClipboard and len(self.currentVnodeStack) == 0
             append2 = not self.usingClipboard and len(self.topVnodeStack) == 0
             back = self.getVnode(parent,back,skip=False,
                 appendToCurrentStack=append1,appendToTopStack=append2)
-    
+
         if self.usingClipboard and not self.checking:
             # Link in the pasted nodes after the current position.
             newRoot = c.rootPosition()
@@ -1881,19 +1881,19 @@ class baseFileCommands:
             newCurrent = oldCurrent.copy()
             newCurrent.v = newRoot.v
             c.setCurrentPosition(newCurrent)
-    
+
         self.getTag("</vnodes>")
     #@-node:ekr.20031218072017.1565:getVnodes
     #@+node:ekr.20031218072017.1249:getXmlStylesheetTag
     def getXmlStylesheetTag (self):
-    
+
         """Parses the optional xml stylesheet string, and sets the corresponding config option.
-        
+
         For example, given: <?xml_stylesheet s?> the config option is s."""
-        
+
         c = self.c
         tag = "<?xml-stylesheet "
-    
+
         if self.matchTag(tag):
             s = self.getStringToTag("?>")
             # print "reading:", tag + s + "?>"
@@ -1902,13 +1902,13 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1249:getXmlStylesheetTag
     #@+node:ekr.20031218072017.1468:getXmlVersionTag
     # Parses the encoding string, and sets self.leo_file_encoding.
-    
+
     def getXmlVersionTag (self):
-    
+
         self.getTag(g.app.prolog_prefix_string)
         encoding = self.getDqString()
         self.getTag(g.app.prolog_postfix_string)
-    
+
         if g.isValidEncoding(encoding):
             self.leo_file_encoding = encoding
             # g.trace('self.leo_file_encoding:',encoding, color="blue")
@@ -1917,18 +1917,18 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1468:getXmlVersionTag
     #@+node:ekr.20040326054052:setPositionsFromStacks (silly)
     def setPositionsFromStacks (self):
-        
+
         c = self.c
-    
+
         current = self.convertStackToPosition(self.currentVnodeStack)
-        
+
         if current:
             # g.trace('using convertStackToPosition',current)
             c.setCurrentPosition(current)
         else:
             # g.trace(self.currentVnodeStack)
             c.setCurrentPosition(c.rootPosition())
-            
+
         # At present this is useless: the drawing code doesn't set the top position properly.
         if 0:
             top = self.convertStackToPosition(self.topVnodeStack)
@@ -1940,23 +1940,23 @@ class baseFileCommands:
     #@+node:ekr.20060919104530:Sax
     #@+node:ekr.20060919110638.4:createSaxVnodes & helpers
     def createSaxVnodes (self, dummyRoot):
-        
+
         '''**Important**: this method and its helpers are low-level code
         corresponding to link/unlink methods in leoNodes.py.
         Modify this with extreme care.'''
-    
+
         children = self.createSaxChildren(dummyRoot,parent_v = None)
         firstChild = children and children[0]
-    
+
         return firstChild
     #@nonl
     #@+node:ekr.20060919110638.5:createSaxChildren
     # node is a saxNodeClass object, parent_v is a vnode.
-    
+
     def createSaxChildren (self, node, parent_v):
-        
+
         result = []
-        
+
         for child in node.children:
             tnx = child.tnx
             t = self.tnodesDict.get(tnx)
@@ -1967,7 +1967,7 @@ class baseFileCommands:
             else:
                 v = self.createSaxVnodeTree(child,parent_v)
             result.append(v)
-            
+
         self.linkSiblings(result)
         if parent_v: self.linkParentAndChildren(parent_v,result)
         return result
@@ -1975,20 +1975,20 @@ class baseFileCommands:
     #@-node:ekr.20060919110638.5:createSaxChildren
     #@+node:ekr.20060919110638.6:createSaxVnodeTree
     def createSaxVnodeTree (self,node,parent_v):
-    
+
         v = self.createSaxVnode(node,parent_v)
-    
+
         self.createSaxChildren(node,v)
-    
+
         return v
     #@nonl
     #@-node:ekr.20060919110638.6:createSaxVnodeTree
     #@+node:ekr.20060919110638.7:createSaxVnode
     def createSaxVnode (self,node,parent_v,t=None):
-        
+
         h = node.headString
         b = node.bodyString
-    
+
         if not t:
             t = leoNodes.tnode(bodyString=b,headString=h)
             if node.tnx:
@@ -1996,28 +1996,28 @@ class baseFileCommands:
         v = leoNodes.vnode(t)
         v.t.vnodeList.append(v)
         v._parent = parent_v
-    
+
         index = self.canonicalTnodeIndex(node.tnx)
         self.tnodesDict [index] = t
-        
+
         # g.trace('tnx','%-22s' % (index),'v',id(v),'v.t',id(v.t),'body','%-4d' % (len(b)),h)
-        
+
         self.handleVnodeSaxAttributes(node,v)
         self.handleTnodeSaxAttributes(node,t)
-        
+
         return v
     #@nonl
     #@+node:ekr.20060919110638.8:handleTnodeSaxAttributes
     def handleTnodeSaxAttributes (self,node,t):
-        
+
         d = node.tnodeAttributes
-            
+
         aDict = {}
         for key in d.keys():
             val = d.get(key)
             val2 = self.getSaxUa(key,val)
             aDict[key] = val2
-    
+
         if aDict:
             # g.trace('uA',aDict)
             t.unknownAttributes = aDict
@@ -2026,9 +2026,9 @@ class baseFileCommands:
     #@+node:ekr.20061004053644:handleVnodeSaxAttributes
     # The native attributes of <v> elements are a, t, vtag, tnodeList,
     # marks, expanded and descendentTnodeUnknownAttributes.
-    
+
     def handleVnodeSaxAttributes (self,node,v):
-        
+
         d = node.attributes
         s = d.get('a')
         if s:
@@ -2041,33 +2041,33 @@ class baseFileCommands:
             if 'V' in s:
                 # g.trace('setting currentVnode',v,color='red')
                 self.currentVnode = v
-    
+
         s = d.get('tnodeList','')
         tnodeList = s and s.split(',')
         if tnodeList:
             # This tnode list will be resolved later.
             # g.trace('found tnodeList',v.headString(),tnodeList)
             v.tempTnodeList = tnodeList
-            
+
         s = d.get('descendentTnodeUnknownAttributes') # Correct: only tnode have descendent uA's.
         if s: 
             aDict = self.getDescendentUnknownAttributes(s)
             if aDict:
                 # g.trace('descendentUaDictList',aDict)
                 self.descendentUnknownAttributesDictList.append(aDict)
-        
+
         s = d.get('expanded')
         if s:
             aList = self.getDescendentAttributes(s,tag="expanded")
             # g.trace('expanded list',len(aList))
             self.descendentExpandedList.extend(aList)
-        
+
         s = d.get('marks')
         if s:
             aList = self.getDescendentAttributes(s,tag="marks")
             # g.trace('marks list',len(aList))
             self.descendentMarksList.extend(aList)
-            
+
         aDict = {}
         for key in d.keys():
             if key in self.nativeVnodeAttributes:
@@ -2085,16 +2085,16 @@ class baseFileCommands:
     #@-node:ekr.20060919110638.7:createSaxVnode
     #@+node:ekr.20060919110638.9:linkParentAndChildren
     def linkParentAndChildren (self, parent_v, children):
-        
+
         # if children: g.trace(parent_v,len(children))
-        
+
         firstChild_v = children and children[0] or None
-    
+
         parent_v.t._firstChild = firstChild_v
-        
+
         for child in children:
             child._parent = parent_v
-        
+
         v = parent_v
         if v not in v.t.vnodeList:
             v.t.vnodeList.append(v)
@@ -2102,11 +2102,11 @@ class baseFileCommands:
     #@-node:ekr.20060919110638.9:linkParentAndChildren
     #@+node:ekr.20060919110638.10:linkSiblings
     def linkSiblings (self, sibs):
-        
+
         '''Set the v._back and v._next links for all vnodes v in sibs.'''
-        
+
         n = len(sibs)
-    
+
         for i in xrange(n):
             v = sibs[i]
             v._back = (i-1 >= 0 and sibs[i-1]) or None
@@ -2116,7 +2116,7 @@ class baseFileCommands:
     #@-node:ekr.20060919110638.4:createSaxVnodes & helpers
     #@+node:ekr.20060919110638.2:dumpSaxTree
     def dumpSaxTree (self,root,dummy):
-        
+
         if not root:
             print 'dumpSaxTree: empty tree'
             return
@@ -2128,30 +2128,30 @@ class baseFileCommands:
     #@-node:ekr.20060919110638.2:dumpSaxTree
     #@+node:ekr.20061003093021:getSaxUa
     def getSaxUa(self,attr,val):
-        
+
         """Parse an unknown attribute in a <v> or <t> element.
         The unknown tag has been pickled and hexlify'd.
         """
-        
+
         try:
             val = str(val)
         except UnicodeError:
             g.es_print('Unexpected exception converting hexlified string to string')
             g.es_exception()
-            
+
         # g.trace(attr,repr(val))
-            
+
         # New in 4.3: leave string attributes starting with 'str_' alone.
         if attr.startswith('str_') and type(val) == type(''):
             # g.trace(attr,val)
             return val
-            
+
         # New in 4.3: convert attributes starting with 'b64_' using the base64 conversion.
         if 0: # Not ready yet.
             if attr.startswith('b64_'):
                 try: pass
                 except Exception: pass
-            
+
         try:
             binString = binascii.unhexlify(val) # Throws a TypeError if val is not a hex string.
         except TypeError:
@@ -2169,9 +2169,9 @@ class baseFileCommands:
     #@-node:ekr.20061003093021:getSaxUa
     #@+node:ekr.20060919110638.14:parse_leo_file
     def parse_leo_file (self,theFile,inputFileName,silent):
-        
+
         c = self.c
-    
+
         try:
             # Use cStringIo to avoid a crash in sax when inputFileName has unicode characters.
             s = theFile.read()
@@ -2195,20 +2195,20 @@ class baseFileCommands:
         except Exception:
             g.es_print('Unexpected exception parsing %s' % (inputFileName),color='red')
             g.es_exception()
-            
+
         return node
     #@nonl
     #@-node:ekr.20060919110638.14:parse_leo_file
     #@+node:ekr.20060919110638.3:readSaxFile
     def readSaxFile (self,theFile,fileName,silent):
-    
+
         c = self.c
-    
+
         # Pass one: create the intermediate nodes.
         self.dummyRoot = dummyRoot = self.parse_leo_file(theFile,fileName,silent=silent)
-    
+
         # self.dumpSaxTree(dummyRoot,dummy=True)
-    
+
         # Pass two: create the tree of vnodes and tnodes from the intermediate nodes.
         v = dummyRoot and self.createSaxVnodes(dummyRoot)
         return v
@@ -2216,9 +2216,9 @@ class baseFileCommands:
     #@-node:ekr.20060919110638.3:readSaxFile
     #@+node:ekr.20060919110638.11:resolveTnodeLists
     def resolveTnodeLists (self):
-    
+
         c = self.c
-    
+
         for p in c.allNodes_iter():
             if hasattr(p.v,'tempTnodeList'):
                 # g.trace(p.v.headString())
@@ -2237,21 +2237,21 @@ class baseFileCommands:
     #@-node:ekr.20060919110638.11:resolveTnodeLists
     #@+node:ekr.20060919110638.13:setPositionsFromVnodes & helper
     def setPositionsFromVnodes (self):
-        
+
         c = self.c ; p = c.rootPosition()
-        
+
         current = None
         d = hasattr(p.v,'unknownAttributes') and p.v.unknownAttributes
         if d:
             s = d.get('str_leo_pos')
             if s:
                 current = self.archivedPositionToPosition(s)
-        
+
         c.setCurrentPosition(current or c.rootPosition())
     #@nonl
     #@+node:ekr.20061006104837.1:archivedPositionToPosition
     def archivedPositionToPosition (self,s):
-    
+
         c = self.c
         aList = s.split(',')
         try:
@@ -2284,9 +2284,9 @@ class baseFileCommands:
     #@+node:ekr.20070413045221.2:Top-level  (leoFileCommands)
     #@+node:ekr.20031218072017.1720:save (fileCommands)
     def save(self,fileName):
-    
+
         c = self.c ; v = c.currentVnode()
-    
+
         # New in 4.2.  Return ok flag so shutdown logic knows if all went well.
         ok = g.doHook("save1",c=c,p=v,v=v,fileName=fileName)
         # redraw_flag = g.app.gui.guiName() == 'tkinter'
@@ -2309,9 +2309,9 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1720:save (fileCommands)
     #@+node:ekr.20031218072017.3043:saveAs
     def saveAs(self,fileName):
-    
+
         c = self.c ; v = c.currentVnode()
-    
+
         if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
             c.beginUpdate()
             try:
@@ -2326,9 +2326,9 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3043:saveAs
     #@+node:ekr.20031218072017.3044:saveTo
     def saveTo (self,fileName):
-    
+
         c = self.c ; v = c.currentVnode()
-    
+
         if not g.doHook("save1",c=c,p=v,v=v,fileName=fileName):
             c.beginUpdate()
             try:
@@ -2342,24 +2342,24 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3044:saveTo
     #@+node:ekr.20070413061552:putSavedMessage
     def putSavedMessage (self,fileName):
-        
+
         c = self.c
-        
+
         zipMark = g.choose(c.isZipped,'[zipped] ','')
-        
+
         g.es("saved: %s%s" % (zipMark,g.shortFileName(fileName)))
     #@nonl
     #@-node:ekr.20070413061552:putSavedMessage
     #@-node:ekr.20070413045221.2:Top-level  (leoFileCommands)
     #@+node:ekr.20031218072017.1570:assignFileIndices & compactFileIndices
     def assignFileIndices (self):
-        
+
         """Assign a file index to all tnodes"""
-        
+
         c = self.c ; nodeIndices = g.app.nodeIndices
-    
+
         nodeIndices.setTimestamp() # This call is fairly expensive.
-    
+
         # Assign missing gnx's, converting ints to gnx's.
         # Always assign an (immutable) index, even if the tnode is empty.
         for p in c.allNodes_iter():
@@ -2368,22 +2368,22 @@ class baseFileCommands:
             except TypeError:
                 # Don't convert to string until the actual write.
                 p.v.t.fileIndex = nodeIndices.getNewIndex()
-    
+
         if 0: # debugging:
             for p in c.allNodes_iter():
                 g.trace(p.v.t.fileIndex)
-    
+
     # Indices are now immutable, so there is no longer any difference between these two routines.
     compactFileIndices = assignFileIndices
     #@-node:ekr.20031218072017.1570:assignFileIndices & compactFileIndices
     #@+node:ekr.20050404190914.2:deleteFileWithMessage
     def deleteFileWithMessage(self,fileName,kind):
-        
+
         __pychecker__ = '--no-argsused' # kind unused: retained for debugging.
-    
+
         try:
             os.remove(fileName)
-    
+
         except Exception:
             if self.read_only:
                 g.es("read only",color="red")
@@ -2392,12 +2392,12 @@ class baseFileCommands:
             return False
     #@+node:ekr.20050404212949:test_fc_deleteFileWithMessage
     def test_fc_deleteFileWithMessage(self):
-        
+
         # pychecker complains about c.
-    
+
         fc=c.fileCommands # Self is a dummy argument.
         fc.deleteFileWithMessage('xyzzy','test')
-        
+
     if 0: # one-time test of es statements.
         fileName = 'fileName' ; kind = 'kind'
         g.es("read only",color="red")
@@ -2407,38 +2407,38 @@ class baseFileCommands:
     #@-node:ekr.20050404190914.2:deleteFileWithMessage
     #@+node:ekr.20031218072017.1470:put
     def put (self,s):
-    
+
         '''Put string s to self.outputFile. All output eventually comes here.'''
-    
+
         # Improved code: self.outputFile (a cStringIO object) always exists.
         if s:
             self.putCount += 1
             s = g.toEncodedString(s,self.leo_file_encoding,reportErrors=True)
             self.outputFile.write(s)
-    
+
     def put_dquote (self):
         self.put('"')
-            
+
     def put_dquoted_bool (self,b):
         if b: self.put('"1"')
         else: self.put('"0"')
-            
+
     def put_flag (self,a,b):
         if a:
             self.put(" ") ; self.put(b) ; self.put('="1"')
-            
+
     def put_in_dquotes (self,a):
         self.put('"')
         if a: self.put(a) # will always be True if we use backquotes.
         else: self.put('0')
         self.put('"')
-    
+
     def put_nl (self):
         self.put("\n")
-        
+
     def put_tab (self):
         self.put("\t")
-        
+
     def put_tabs (self,n):
         while n > 0:
             self.put("\t")
@@ -2447,7 +2447,7 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1470:put
     #@+node:ekr.20040324080819.1:putLeoFile & helpers
     def putLeoFile (self):
-    
+
         self.putProlog()
         self.putHeader()
         self.putGlobals()
@@ -2462,22 +2462,22 @@ class baseFileCommands:
     #@nonl
     #@+node:ekr.20031218072017.3035:putFindSettings
     def putFindSettings (self):
-        
+
         # New in 4.3:  These settings never get written to the .leo file.
         self.put("<find_panel_settings/>")
         self.put_nl()
     #@-node:ekr.20031218072017.3035:putFindSettings
     #@+node:ekr.20031218072017.3037:putGlobals
     # Changed for Leo 4.0.
-    
+
     def putGlobals (self):
-    
+
         c = self.c
         self.put("<globals")
         #@    << put the body/outline ratio >>
         #@+node:ekr.20031218072017.3038:<< put the body/outline ratio >>
         # Puts an innumerate number of digits
-        
+
         self.put(" body_outline_ratio=")
         self.put_in_dquotes(str(c.frame.ratio))
         #@-node:ekr.20031218072017.3038:<< put the body/outline ratio >>
@@ -2486,7 +2486,7 @@ class baseFileCommands:
         #@    << put the position of this frame >>
         #@+node:ekr.20031218072017.3039:<< put the position of this frame >>
         width,height,left,top = c.frame.get_window_info()
-        
+
         self.put_tab()
         self.put("<global_window_position")
         self.put(" top=") ; self.put_in_dquotes(str(top))
@@ -2512,9 +2512,9 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3037:putGlobals
     #@+node:ekr.20031218072017.3041:putHeader
     def putHeader (self):
-    
+
         tnodes = 0 ; clone_windows = 0 # Always zero in Leo2.
-    
+
         self.put("<leo_header")
         self.put(" file_format=") ; self.put_in_dquotes("2")
         self.put(" tnodes=") ; self.put_in_dquotes(str(tnodes))
@@ -2524,32 +2524,32 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3041:putHeader
     #@+node:ekr.20031218072017.3042:putPostlog
     def putPostlog (self):
-    
+
         self.put("</leo_file>") ; self.put_nl()
     #@-node:ekr.20031218072017.3042:putPostlog
     #@+node:ekr.20031218072017.2066:putPrefs
     def putPrefs (self):
-        
+
         # New in 4.3:  These settings never get written to the .leo file.
         self.put("<preferences/>")
         self.put_nl()
     #@-node:ekr.20031218072017.2066:putPrefs
     #@+node:ekr.20031218072017.1246:putProlog & helpers
     def putProlog (self):
-    
+
         c = self.c
-        
+
         self.putXMLLine()
-        
+
         if c.config.stylesheet or c.frame.stylesheet:
             self.putStyleSheetLine()
-    
+
         self.put("<leo_file>") ; self.put_nl()
     #@+node:ekr.20031218072017.1247:putXMLLine
     def putXMLLine (self):
-        
+
         '''Put the **properly encoded** <?xml> element.'''
-        
+
         # Use self.leo_file_encoding encoding.
         self.put('%s"%s"%s\n' % (
             g.app.prolog_prefix_string,
@@ -2559,9 +2559,9 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1247:putXMLLine
     #@+node:ekr.20031218072017.1248:putStyleSheetLine
     def putStyleSheetLine (self):
-        
+
         c = self.c
-        
+
         # The stylesheet in the .leo file takes precedence over the default stylesheet.
         self.put("<?xml-stylesheet ")
         self.put(c.frame.stylesheet or c.config.stylesheet)
@@ -2572,7 +2572,7 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1246:putProlog & helpers
     #@+node:ekr.20031218072017.1577:putTnode
     def putTnode (self,t):
-        
+
         # New in Leo 4.4.2 b2: call put just once.
         gnx = g.app.nodeIndices.toString(t.fileIndex)
         ua = hasattr(t,'unknownAttributes') and self.putUnknownAttributes(t) or ''
@@ -2582,11 +2582,11 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1577:putTnode
     #@+node:ekr.20031218072017.1575:putTnodes
     def putTnodes (self):
-        
+
         """Puts all tnodes as required for copy or save commands"""
-    
+
         c = self.c
-    
+
         self.put("<tnodes>\n")
         #@    << write only those tnodes that were referenced >>
         #@+node:ekr.20031218072017.1576:<< write only those tnodes that were referenced >>
@@ -2594,15 +2594,15 @@ class baseFileCommands:
             theIter = c.currentPosition().self_and_subtree_iter()
         else: # write everything
             theIter = c.allNodes_iter()
-        
+
         # Populate tnodes
         tnodes = {}
-        
+
         for p in theIter:
             index = p.v.t.fileIndex
             assert(index)
             tnodes[index] = p.v.t
-        
+
         # Put all tnodes in index order.
         keys = tnodes.keys() ; keys.sort()
         for index in keys:
@@ -2619,9 +2619,9 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1575:putTnodes
     #@+node:EKR.20040526202501:putUnknownAttributes & helper
     def putUnknownAttributes (self,torv):
-        
+
         """Put pickleable values for all keys in torv.unknownAttributes dictionary."""
-        
+
         attrDict = torv.unknownAttributes
         if type(attrDict) != type({}):
             g.es("ignoring non-dictionary unknownAttributes for",torv,color="blue")
@@ -2631,11 +2631,11 @@ class baseFileCommands:
     #@nonl
     #@+node:ekr.20050418161620.2:putUaHelper
     def putUaHelper (self,torv,key,val):
-        
+
         '''Put attribute whose name is key and value is val to the output stream.'''
-        
+
         # g.trace(key,repr(val),g.callers())
-        
+
         # New in 4.3: leave string attributes starting with 'str_' alone.
         if key.startswith('str_'):
             if type(val) == type(''):
@@ -2670,33 +2670,33 @@ class baseFileCommands:
     #@-node:EKR.20040526202501:putUnknownAttributes & helper
     #@+node:ekr.20031218072017.1579:putVnodes & helpers
     def putVnodes (self):
-    
+
         """Puts all <v> elements in the order in which they appear in the outline."""
-    
+
         c = self.c
         c.clearAllVisited()
-    
+
         self.put("<vnodes>\n")
-    
+
         # Make only one copy for all calls.
         self.currentPosition = c.currentPosition() 
         self.rootPosition    = c.rootPosition()
         self.topPosition     = c.topPosition()
-    
+
         if self.usingClipboard:
             self.putVnode(self.currentPosition) # Write only current tree.
         else:
             for p in c.rootPosition().self_and_siblings_iter():
                 # New in Leo 4.4.2 b2 An optimization:
                 self.putVnode(p,isIgnore=p.isAtIgnoreNode()) # Write the next top-level node.
-    
+
         self.put("</vnodes>\n")
     #@nonl
     #@+node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
     def putVnode (self,p,isIgnore=False):
-    
+
         """Write a <v> element corresponding to a vnode."""
-    
+
         fc = self ; c = fc.c ; v = p.v
         isThin = p.isAtThinFileNode()
         isOrphan = p.isOrphan()
@@ -2712,11 +2712,11 @@ class baseFileCommands:
                 # Print the @chapters tree
                 c.chapterController.printChaptersTree()
             v.t.fileIndex = g.app.nodeIndices.getNewIndex()
-        
+
         gnx = g.app.nodeIndices.toString(v.t.fileIndex)
         if forceWrite or self.usingClipboard:
             v.t.setWriteBit() # 4.2: Indicate we wrote the body text.
-        
+
         # old code.
         # if v.t.fileIndex:
             # gnx = g.app.nodeIndices.toString(v.t.fileIndex)
@@ -2736,16 +2736,16 @@ class baseFileCommands:
         if v.isExpanded(): attr += "E"
         if v.isMarked():   attr += "M"
         if v.isOrphan():   attr += "O"
-        
+
         # No longer a bottleneck now that we use p.equal rather than p.__cmp__
         # Almost 30% of the entire writing time came from here!!!
         if not self.use_sax:
             if p.equal(self.topPosition):     attr += "T" # was a bottleneck
             if p.equal(self.currentPosition): attr += "V" # was a bottleneck
-        
+
         if attr:
             attrs.append(' a="%s"' % attr)
-            
+
         # Put the archived *current* position in the *root* positions <v> element.
         if self.use_sax and p.equal(self.rootPosition):
             aList = [str(z) for z in self.currentPosition.archivedPosition()]
@@ -2760,14 +2760,14 @@ class baseFileCommands:
         #@+node:ekr.20040324082713:<< Append tnodeList and unKnownAttributes to attrs>>
         # Write the tnodeList only for @file nodes.
         # New in 4.2: tnode list is in tnode.
-        
+
         # Debugging.
         # if v.isAnyAtFileNode():
             # if hasattr(v.t,"tnodeList"):
                 # g.trace(v.headString(),len(v.t.tnodeList))
             # else:
                 # g.trace(v.headString(),"no tnodeList")
-        
+
         if hasattr(v.t,"tnodeList") and len(v.t.tnodeList) > 0 and v.isAnyAtFileNode():
             if isThin:
                 if g.app.unitTesting:
@@ -2777,10 +2777,10 @@ class baseFileCommands:
                 delattr(v.t,"tnodeList")
             else:
                 attrs.append(fc.putTnodeList(v)) # New in 4.0
-        
+
         if hasattr(v,"unknownAttributes"): # New in 4.0
             attrs.append(self.putUnknownAttributes(v))
-            
+
         if p.hasChildren() and not forceWrite and not self.usingClipboard:
             # We put the entire tree when using the clipboard, so no need for this.
             attrs.append(self.putDescendentUnknownAttributes(p))
@@ -2797,7 +2797,7 @@ class baseFileCommands:
             if isOrphan and isThin:
                 g.es("Writing erroneous: %s" % p.headString(),color="blue")
                 p.clearOrphan()
-            
+
             # For testing.
             # if p.isAtIgnoreNode():
                  # for p2 in p.self_and_subtree_iter():
@@ -2822,9 +2822,9 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
     #@+node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
     def putTnodeList (self,v):
-        
+
         """Put the tnodeList attribute of a tnode."""
-        
+
         # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
         nodeIndices = g.app.nodeIndices
         tnodeList = v.t.tnodeList
@@ -2845,9 +2845,9 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
     #@+node:ekr.20040701065235.2:putDescendentAttributes
     def putDescendentAttributes (self,p):
-        
+
         nodeIndices = g.app.nodeIndices
-    
+
         # Create a list of all tnodes whose vnodes are marked or expanded
         if 1: # New in Leo 4.4.2 b2.
             # Put each tnode in the list only once.
@@ -2859,7 +2859,7 @@ class baseFileCommands:
                     marks.append(t)
                 if p.hasChildren() and p.isExpanded() and t not in expanded:
                     expanded.append(t)
-        
+
             result = []
             for theList,tag in ((marks,"marks"),(expanded,"expanded")):
                 if theList:
@@ -2877,7 +2877,7 @@ class baseFileCommands:
                     marks.append(p.copy())
                 if p.hasChildren() and p.isExpanded() and not p in expanded:
                     expanded.append(p.copy())
-        
+
             result = []
             for theList,tag in ((marks,"marks"),(expanded,"expanded")):
                 if theList:
@@ -2888,20 +2888,20 @@ class baseFileCommands:
                     s = string.join(sList,'')
                     # g.trace(tag,[str(p.headString()) for p in theList])
                     result.append('\n%s="%s"' % (tag,s))
-                
+
         return ''.join(result)
     #@nonl
     #@-node:ekr.20040701065235.2:putDescendentAttributes
     #@+node:EKR.20040627113418:putDescendentUnknownAttributes
     def putDescendentUnknownAttributes (self,p):
-        
+
         # pychecker complains about dumps.
-        
+
         # The bin param doesn't exist in Python 2.3;
         # the protocol param doesn't exist in earlier versions of Python.
         version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
         python23 = g.CheckVersion(version,'2.3')
-    
+
         # Create a list of all tnodes having a valid unknownAttributes dict.
         tnodes = []
         tnodesData = []
@@ -2912,7 +2912,7 @@ class baseFileCommands:
                     # g.trace(p2.headString(),t)
                     tnodes.append(t) # Bug fix: 10/4/06.
                     tnodesData.append((p2,t),)
-        
+
         # Create a list of pairs (t,d) where d contains only pickleable entries.
         data = []
         for p,t in tnodesData:
@@ -2921,7 +2921,7 @@ class baseFileCommands:
             else:
                 # Create a new dict containing only entries that can be pickled.
                 d = dict(t.unknownAttributes) # Copy the dict.
-                
+
                 for key in d.keys():
                     try:
                         # We don't actually save the pickled values here.
@@ -2938,19 +2938,19 @@ class baseFileCommands:
                         g.es('putDescendentUnknownAttributes: unexpected pickling exception',color='red')
                         g.es_exception()
                 data.append((t,d),)
-                
+
         # Create resultDict, an enclosing dict to hold all the data.
         resultDict = {}
         nodeIndices = g.app.nodeIndices
         for t,d in data:
             gnx = nodeIndices.toString(t.fileIndex)
             resultDict[gnx]=d
-        
+
         if 0:
             print "resultDict..."
             for key in resultDict:
                 print repr(key),repr(resultDict.get(key))
-    
+
         # Pickle and hexlify resultDict.
         if resultDict:
             try:
@@ -2974,9 +2974,9 @@ class baseFileCommands:
     #@-node:ekr.20040324080819.1:putLeoFile & helpers
     #@+node:ekr.20031218072017.1573:putLeoOutline (to clipboard) & helper
     # Writes a Leo outline to s in a format suitable for pasting to the clipboard.
-    
+
     def putLeoOutline (self):
-    
+
         self.outputFile = g.fileLikeObject()
         self.usingClipboard = True
         self.assignFileIndices() # 6/11/03: Must do this for 3.x code.
@@ -2991,12 +2991,12 @@ class baseFileCommands:
         return s
     #@+node:ekr.20031218072017.1971:putClipboardHeader
     def putClipboardHeader (self):
-    
+
         c = self.c ; tnodes = 0
         #@    << count the number of tnodes >>
         #@+node:ekr.20031218072017.1972:<< count the number of tnodes >>
         c.clearAllVisited()
-        
+
         for p in c.currentPosition().self_and_subtree_iter():
             t = p.v.t
             if t and not t.isWriteBit():
@@ -3009,7 +3009,7 @@ class baseFileCommands:
         self.put(" max_tnode_index=")
         self.put_in_dquotes(str(tnodes))
         self.put("/>") ; self.put_nl()
-        
+
         # New in Leo 4.4.3: Add dummy elements so copied nodes form a valid .leo file.
         self.put('<globals/>\n')
         self.put('<preferences/>\n')
@@ -3019,30 +3019,30 @@ class baseFileCommands:
     #@+node:ekr.20060919064401:putToOPML
     # All elements and attributes prefixed by ':' are leo-specific.
     # All other elements and attributes are specified by the OPML 1 spec.
-    
+
     def putToOPML (self):
-        
+
         '''Should be overridden by the opml plugin.'''
-        
+
         return None
     #@nonl
     #@-node:ekr.20060919064401:putToOPML
     #@+node:ekr.20031218072017.3045:setDefaultDirectoryForNewFiles
     def setDefaultDirectoryForNewFiles (self,fileName):
-        
+
         """Set c.openDirectory for new files for the benefit of leoAtFile.scanAllDirectives."""
-        
+
         c = self.c
-    
+
         if not c.openDirectory or len(c.openDirectory) == 0:
             theDir = g.os_path_dirname(fileName)
-    
+
             if len(theDir) > 0 and g.os_path_isabs(theDir) and g.os_path_exists(theDir):
                 c.openDirectory = theDir
     #@-node:ekr.20031218072017.3045:setDefaultDirectoryForNewFiles
     #@+node:ekr.20031218072017.3046:write_Leo_file
     def write_Leo_file(self,fileName,outlineOnlyFlag,toString=False,toOPML=False):
-    
+
         c = self.c
         self.putCount = 0
         self.toString = toString
@@ -3066,7 +3066,7 @@ class baseFileCommands:
         #@    << return if the .leo file is read-only >>
         #@+node:ekr.20040324080359.1:<< return if the .leo file is read-only >>
         # self.read_only is not valid for Save As and Save To commands.
-        
+
         if g.os_path_exists(fileName):
             try:
                 if not os.access(fileName,os.W_OK):
@@ -3080,7 +3080,7 @@ class baseFileCommands:
             #@        << create backup file >>
             #@+node:ekr.20031218072017.3047:<< create backup file >>
             backupName = None
-            
+
             # rename fileName to fileName.bak if fileName exists.
             if not toString and g.os_path_exists(fileName):
                 backupName = g.os_path_join(g.app.loadDir,fileName)
@@ -3137,7 +3137,7 @@ class baseFileCommands:
                 #@            << delete backup file >>
                 #@+node:ekr.20031218072017.3048:<< delete backup file >>
                 if backupName and g.os_path_exists(backupName):
-                
+
                     self.deleteFileWithMessage(backupName,'backup')
                 #@-node:ekr.20031218072017.3048:<< delete backup file >>
                 #@nl
@@ -3155,7 +3155,7 @@ class baseFileCommands:
                 #@            << delete fileName >>
                 #@+node:ekr.20050405103712:<< delete fileName >>
                 if fileName and g.os_path_exists(fileName):
-                
+
                     self.deleteFileWithMessage(fileName,'')
                 #@-node:ekr.20050405103712:<< delete fileName >>
                 #@nl
@@ -3168,22 +3168,22 @@ class baseFileCommands:
                 #@nl
             self.toString = False
             return False
-    
+
     write_LEO_file = write_Leo_file # For compatibility with old plugins.
     #@nonl
     #@+node:ekr.20070412095520:writeZipFile
     def writeZipFile (self,s):
-        
+
         # The name of the file in the archive.
         contentsName = g.toEncodedString(
             g.shortFileName(self.mFileName),
             self.leo_file_encoding,reportErrors=True)
-        
+
         # The name of the archive itself.
         fileName = g.toEncodedString(
             self.mFileName,
             self.leo_file_encoding,reportErrors=True)
-        
+
         # Write the archive.
         theFile = zipfile.ZipFile(fileName,'w',zipfile.ZIP_DEFLATED)
         theFile.writestr(contentsName,s)
@@ -3192,11 +3192,11 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.3046:write_Leo_file
     #@+node:ekr.20031218072017.2012:writeAtFileNodes
     def writeAtFileNodes (self,event=None):
-        
+
         '''Write all @file nodes in the selected outline.'''
-    
+
         c = self.c
-    
+
         self.assignFileIndices()
         changedFiles = c.atFileCommands.writeAll(writeAtFileNodesFlag=True)
         assert(changedFiles != None)
@@ -3206,11 +3206,11 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.2012:writeAtFileNodes
     #@+node:ekr.20031218072017.1666:writeDirtyAtFileNodes
     def writeDirtyAtFileNodes (self,event=None):
-    
+
         '''Write all changed @file Nodes.'''
-        
+
         c = self.c
-    
+
         self.assignFileIndices() # 4/3/04
         changedFiles = c.atFileCommands.writeAll(writeDirtyAtFileNodesFlag=True)
         if changedFiles:
@@ -3219,11 +3219,11 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.1666:writeDirtyAtFileNodes
     #@+node:ekr.20031218072017.2013:writeMissingAtFileNodes
     def writeMissingAtFileNodes (self,event=None):
-        
+
         '''Write all missing @file nodes.'''
-    
+
         c = self.c ; v = c.currentVnode()
-    
+
         if v:
             at = c.atFileCommands
             self.assignFileIndices() # 4/3/04
@@ -3235,16 +3235,16 @@ class baseFileCommands:
     #@-node:ekr.20031218072017.2013:writeMissingAtFileNodes
     #@+node:ekr.20031218072017.3050:writeOutlineOnly
     def writeOutlineOnly (self,event=None):
-        
+
         '''Write the entire outline without writing any derived files.'''
-    
+
         c = self.c
         c.endEditing()
         self.write_Leo_file(self.mFileName,True) # outlineOnlyFlag
     #@-node:ekr.20031218072017.3050:writeOutlineOnly
     #@-node:ekr.20031218072017.3032:Writing
     #@-others
-    
+
 class fileCommands (baseFileCommands):
     """A class creating the fileCommands subcommander."""
     pass

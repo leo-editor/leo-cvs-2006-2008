@@ -29,17 +29,17 @@ Pmw = g.importExtension('Pmw',    pluginName='leoTkinterGui',verbose=True)
 #@nl
 
 class tkinterGui(leoGui.leoGui):
-    
+
     """A class encapulating all calls to tkinter."""
-    
+
     #@    @+others
     #@+node:ekr.20031218072017.4048:tkGui birth & death
     #@+node:ekr.20031218072017.837: tkGui.__init__
     def __init__ (self):
-    
+
         # Initialize the base class.
         leoGui.leoGui.__init__(self,"tkinter")
-    
+
         self.bitmap_name = None
         self.bitmap = None
         self.win32clipboard = None
@@ -47,7 +47,7 @@ class tkinterGui(leoGui.leoGui):
         self.defaultFontFamily = None
         self.bodyTextWidget =  leoTkinterFrame.leoTkTextWidget
         self.plainTextWidget = leoTkinterFrame.leoTkTextWidget
-    
+
         if 0: # This seems both dangerous and non-functional.
             if sys.platform == "win32":
                 try:
@@ -58,17 +58,17 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.837: tkGui.__init__
     #@+node:ekr.20061031172934:createKeyHandlerClass (tkGui)
     def createKeyHandlerClass (self,c,useGlobalKillbuffer=True,useGlobalRegisters=True):
-        
+
         import leoTkinterKeys # Do this here to break any circular dependency.
-                
+
         return leoTkinterKeys.tkinterKeyHandlerClass(c,useGlobalKillbuffer,useGlobalRegisters)
     #@nonl
     #@-node:ekr.20061031172934:createKeyHandlerClass (tkGui)
     #@+node:ekr.20031218072017.4049:createRootWindow & allies
     def createRootWindow(self):
-    
+
         """Create a hidden Tk root window."""
-    
+
         if 0: # Use Tix.
             import Tix
             self.root = root = Tix.Tk()
@@ -88,31 +88,31 @@ class tkinterGui(leoGui.leoGui):
             # g.trace('Pmw.init')
             self.root = root = Tk.Tk()
             Pmw.initialise(self.root)
-    
+
         root.title("Leo Main Window")
         root.withdraw()
-        
+
         self.setDefaultIcon()
         if g.app.config:
             self.getDefaultConfigFont(g.app.config)
-            
+
         root.withdraw()
-    
+
         return root
     #@+node:ekr.20031218072017.1856:setDefaultIcon
     def setDefaultIcon(self):
-        
+
         """Set the icon to be used in all Leo windows.
-        
+
         This code does nothing for Tk versions before 8.4.3."""
-        
+
         gui = self
-    
+
         try:
             version = gui.root.getvar("tk_patchLevel")
             # g.trace(repr(version),g.CheckVersion(version,"8.4.3"))
             if g.CheckVersion(version,"8.4.3") and sys.platform == "win32":
-                
+
                 # tk 8.4.3 or greater: load a 16 by 16 icon.
                 path = g.os_path_join(g.app.loadDir,"..","Icons")
                 if g.os_path_exists(path):
@@ -129,9 +129,9 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.1856:setDefaultIcon
     #@+node:ekr.20031218072017.2186:tkGui.getDefaultConfigFont
     def getDefaultConfigFont(self,config):
-        
+
         """Get the default font from a new text widget."""
-    
+
         if not self.defaultFontFamily:
             # WARNING: retain NO references to widgets or fonts here!
             w = g.app.gui.plainTextWidget()
@@ -140,39 +140,39 @@ class tkinterGui(leoGui.leoGui):
             family = font.cget("family")
             self.defaultFontFamily = family[:]
             # print '***** getDefaultConfigFont',repr(family)
-    
+
         config.defaultFont = None
         config.defaultFontFamily = self.defaultFontFamily
     #@-node:ekr.20031218072017.2186:tkGui.getDefaultConfigFont
     #@-node:ekr.20031218072017.4049:createRootWindow & allies
     #@+node:ekr.20031218072017.4051:destroySelf
     def destroySelf (self):
-    
+
         if 0: # Works in Python 2.1 and 2.2.  Leaves Python window open.
             self.root.destroy()
-            
+
         else: # Works in Python 2.3.  Closes Python window.
             self.root.quit()
     #@-node:ekr.20031218072017.4051:destroySelf
     #@+node:ekr.20031218072017.4053:killGui (not used)
     def killGui(self,exitFlag=True):
-        
+
         """Destroy a gui and terminate Leo if exitFlag is True."""
-    
+
         pass # Not ready yet.
     #@-node:ekr.20031218072017.4053:killGui (not used)
     #@+node:ekr.20031218072017.4054:recreateRootWindow (not used)
     def recreateRootWindow(self):
         """A do-nothing base class to create the hidden root window of a gui
-    
+
         after a previous gui has terminated with killGui(False)."""
         pass
     #@-node:ekr.20031218072017.4054:recreateRootWindow (not used)
     #@+node:ekr.20031218072017.4055:runMainLoop (tkGui)
     def runMainLoop(self):
-    
+
         """Run tkinter's main loop."""
-    
+
         if self.script:
             log = g.app.log
             if log:
@@ -191,61 +191,61 @@ class tkinterGui(leoGui.leoGui):
         """Create and run a Tkinter About Leo dialog."""
         d = leoTkinterDialog.tkinterAboutLeo(c,version,theCopyright,url,email)
         return d.run(modal=False)
-        
+
     def runAskLeoIDDialog(self):
         """Create and run a dialog to get g.app.LeoID."""
         d = leoTkinterDialog.tkinterAskLeoID()
         return d.run(modal=True)
-    
+
     def runAskOkDialog(self,c,title,message=None,text="Ok"):
         """Create and run a Tkinter an askOK dialog ."""
         d = leoTkinterDialog.tkinterAskOk(c,title,message,text)
         return d.run(modal=True)
-    
+
     def runAskOkCancelNumberDialog(self,c,title,message):
         """Create and run askOkCancelNumber dialog ."""
         d = leoTkinterDialog.tkinterAskOkCancelNumber(c,title,message)
         return d.run(modal=True)
-        
+
     def runAskOkCancelStringDialog(self,c,title,message):
         """Create and run askOkCancelString dialog ."""
         d = leoTkinterDialog.tkinterAskOkCancelString(c,title,message)
         return d.run(modal=True)
-    
+
     def runAskYesNoDialog(self,c,title,message=None):
         """Create and run an askYesNo dialog."""
         d = leoTkinterDialog.tkinterAskYesNo(c,title,message)
         return d.run(modal=True)
-    
+
     def runAskYesNoCancelDialog(self,c,title,
         message=None,yesMessage="Yes",noMessage="No",defaultButton="Yes"):
         """Create and run an askYesNoCancel dialog ."""
         d = leoTkinterDialog.tkinterAskYesNoCancel(
             c,title,message,yesMessage,noMessage,defaultButton)
         return d.run(modal=True)
-        
+
     # The compare panel has no run dialog.
-        
+
     # def runCompareDialog(self,c):
         # """Create and run an askYesNo dialog."""
         # if not g.app.unitTesting:
             # leoTkinterCompareDialog(c)
     #@+node:ekr.20070212132230:tkGui.createSpellTab
     def createSpellTab(self,c,spellHandler,tabName):
-        
+
         return leoTkinterFind.tkSpellTab(c,spellHandler,tabName)
     #@-node:ekr.20070212132230:tkGui.createSpellTab
     #@+node:ekr.20031218072017.4057:tkGui file dialogs
     # We no longer specify default extensions so that we can open and save files without extensions.
     #@+node:ekr.20060212061804:runOpenFileDialog
     def runOpenFileDialog(self,title,filetypes,defaultextension,multiple=False):
-    
+
         """Create and run an Tkinter open file dialog ."""
-        
+
         __pychecker__ = '--no-argsused' # defaultextension not used.
-        
+
         initialdir = g.app.globalOpenDir or g.os_path_abspath(os.getcwd())
-        
+
         if multiple:
             # askopenfilenames requires Python 2.3 and Tk 8.4.
             version = '.'.join([str(sys.version_info[i]) for i in (0,1,2)])
@@ -269,13 +269,13 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20060212061804:runOpenFileDialog
     #@+node:ekr.20060212061804.1:runSaveFileDialog
     def runSaveFileDialog(self,initialfile,title,filetypes,defaultextension):
-    
+
         """Create and run an Tkinter save file dialog ."""
-        
+
         __pychecker__ = '--no-argsused' # defaultextension not used.
-        
+
         initialdir=g.app.globalOpenDir or g.os_path_abspath(os.getcwd()),
-    
+
         return tkFileDialog.asksaveasfilename(
             initialdir=initialdir,initialfile=initialfile,
             title=title,filetypes=filetypes)
@@ -285,17 +285,17 @@ class tkinterGui(leoGui.leoGui):
     def createComparePanel(self,c):
         """Create a Tkinter color picker panel."""
         return leoTkinterComparePanel.leoTkinterComparePanel(c)
-    
+
     def createFindPanel(self,c):
         """Create a hidden Tkinter find panel."""
         panel = leoTkinterFind.leoTkinterFind(c)
         panel.top.withdraw()
         return panel
-        
+
     def createFindTab (self,c,parentFrame):
         """Create a Tkinter find tab in the indicated frame."""
         return leoTkinterFind.tkFindTab(c,parentFrame)
-        
+
     def createLeoFrame(self,title):
         """Create a new Leo frame."""
         # print 'tkGui.createLeoFrame'
@@ -307,10 +307,10 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.844:Clipboard (tkGui)
     #@+node:ekr.20031218072017.845:replaceClipboardWith
     def replaceClipboardWith (self,s):
-    
+
         # g.app.gui.win32clipboard is always None.
         wcb = g.app.gui.win32clipboard
-    
+
         if wcb:
             try:
                 wcb.OpenClipboard(0)
@@ -325,10 +325,10 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.845:replaceClipboardWith
     #@+node:ekr.20031218072017.846:getTextFromClipboard
     def getTextFromClipboard (self):
-        
+
         # g.app.gui.win32clipboard is always None.
         wcb = g.app.gui.win32clipboard
-        
+
         if wcb:
             try:
                 wcb.OpenClipboard(0)
@@ -353,59 +353,59 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20061109215304:color
     # g.es calls gui.color to do the translation,
     # so most code in Leo's core can simply use Tk color names.
-    
+
     def color (self,color):
         '''Return the gui-specific color corresponding to the Tk color name.'''
         return color
-        
+
     #@-node:ekr.20061109215304:color
     #@+node:ekr.20031218072017.4060:Dialog
     #@+node:ekr.20031218072017.4061:get_window_info
     # WARNING: Call this routine _after_ creating a dialog.
     # (This routine inhibits the grid and pack geometry managers.)
-    
+
     def get_window_info (self,top):
-        
+
         top.update_idletasks() # Required to get proper info.
-    
+
         # Get the information about top and the screen.
         geom = top.geometry() # geom = "WidthxHeight+XOffset+YOffset"
         dim,x,y = string.split(geom,'+')
         w,h = string.split(dim,'x')
         w,h,x,y = int(w),int(h),int(x),int(y)
-        
+
         return w,h,x,y
     #@-node:ekr.20031218072017.4061:get_window_info
     #@+node:ekr.20031218072017.4062:center_dialog
     def center_dialog(self,top):
-    
+
         """Center the dialog on the screen.
-    
+
         WARNING: Call this routine _after_ creating a dialog.
         (This routine inhibits the grid and pack geometry managers.)"""
-    
+
         sw = top.winfo_screenwidth()
         sh = top.winfo_screenheight()
         w,h,x,y = self.get_window_info(top)
-        
+
         # Set the new window coordinates, leaving w and h unchanged.
         x = (sw - w)/2
         y = (sh - h)/2
         top.geometry("%dx%d%+d%+d" % (w,h,x,y))
-        
+
         return w,h,x,y
     #@-node:ekr.20031218072017.4062:center_dialog
     #@+node:ekr.20031218072017.4063:create_labeled_frame
     # Returns frames w and f.
     # Typically the caller would pack w into other frames, and pack content into f.
-    
+
     def create_labeled_frame (self,parent,
         caption=None,relief="groove",bd=2,padx=0,pady=0):
-    
+
         # Create w, the master frame.
         w = Tk.Frame(parent)
         w.grid(sticky="news")
-        
+
         # Configure w as a grid with 5 rows and columns.
         # The middle of this grid will contain f, the expandable content area.
         w.columnconfigure(1,minsize=bd)
@@ -413,27 +413,27 @@ class tkinterGui(leoGui.leoGui):
         w.columnconfigure(3,weight=1)
         w.columnconfigure(4,minsize=padx)
         w.columnconfigure(5,minsize=bd)
-        
+
         w.rowconfigure(1,minsize=bd)
         w.rowconfigure(2,minsize=pady)
         w.rowconfigure(3,weight=1)
         w.rowconfigure(4,minsize=pady)
         w.rowconfigure(5,minsize=bd)
-    
+
         # Create the border spanning all rows and columns.
         border = Tk.Frame(w,bd=bd,relief=relief) # padx=padx,pady=pady)
         border.grid(row=1,column=1,rowspan=5,columnspan=5,sticky="news")
-        
+
         # Create the content frame, f, in the center of the grid.
         f = Tk.Frame(w,bd=bd)
         f.grid(row=3,column=3,sticky="news")
-        
+
         # Add the caption.
         if caption and len(caption) > 0:
             caption = Tk.Label(parent,text=caption,highlightthickness=0,bd=0)
             caption.tkraise(w)
             caption.grid(in_=w,row=0,column=2,rowspan=2,columnspan=3,padx=4,sticky="w")
-    
+
         return w,f
     #@-node:ekr.20031218072017.4063:create_labeled_frame
     #@-node:ekr.20031218072017.4060:Dialog
@@ -441,19 +441,19 @@ class tkinterGui(leoGui.leoGui):
     def event_generate(self,w,kind,*args,**keys):
         '''Generate an event.'''
         return w.event_generate(kind,*args,**keys)
-    
+
     def eventChar (self,event,c=None):
         '''Return the char field of an event.'''
         return event and event.char or ''
-        
+
     def eventKeysym (self,event,c=None):
         '''Return the keysym value of an event.'''
         return event and event.keysym
-    
+
     def eventWidget (self,event,c=None):
         '''Return the widget field of an event.'''   
         return event and event.widget
-    
+
     def eventXY (self,event,c=None):
         if event:
             return event.x,event.y
@@ -464,34 +464,34 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.4064:Focus
     #@+node:ekr.20031218072017.4065:tkGui.get_focus
     def get_focus(self,c):
-        
+
         """Returns the widget that has focus, or body if None."""
-    
+
         return c.frame.top.focus_displayof()
     #@-node:ekr.20031218072017.4065:tkGui.get_focus
     #@+node:ekr.20031218072017.2373:tk.Gui.set_focus
     set_focus_count = 0
-    
+
     def set_focus(self,c,w):
-        
+
         __pychecker__ = '--no-argsused' # c not used at present.
-        
+
         """Put the focus on the widget."""
-          
+
         if not g.app.unitTesting and c and c.config.getBool('trace_g.app.gui.set_focus'):
             self.set_focus_count += 1
             # Do not call trace here: that might affect focus!
             print 'gui.set_focus: %4d %10s %s' % (
                 self.set_focus_count,c and c.shortFileName(),
                 c and c.widget_name(w)), g.callers(5)
-        
+
         if w:
             try:
                 if 0: # No longer needed.
                     # A call to findTab.bringToFront caused
                     # the focus problems with Pmw.Notebook.
                     w.update()
-    
+
                 # It's possible that the widget doesn't exist now.
                 w.focus_set()
                 return True
@@ -503,11 +503,11 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.4066:Font
     #@+node:ekr.20031218072017.2187:tkGui.getFontFromParams
     def getFontFromParams(self,family,size,slant,weight,defaultSize=12):
-        
+
         __pychecker__ = '--no-argsused' # defaultSize not used.
-    
+
         family_name = family
-        
+
         try:
             font = tkFont.Font(family=family,size=size,slant=slant,weight=weight)
             # if g.app.trace: g.trace(font)
@@ -521,27 +521,27 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4066:Font
     #@+node:ekr.20070212144559:getFullVersion
     def getFullVersion (self,c):
-        
+
         tkLevel = c.frame.top.getvar("tk_patchLevel")
-        
+
         return 'Tk %s, Pmw %s' % (tkLevel,Pmw.version())
     #@-node:ekr.20070212144559:getFullVersion
     #@+node:ekr.20031218072017.4067:Icons
     #@+node:ekr.20031218072017.4068:attachLeoIcon & createLeoIcon
     def attachLeoIcon (self,w):
-        
+
         """Try to attach a Leo icon to the Leo Window.
-        
+
         Use tk's wm_iconbitmap function if available (tk 8.3.4 or greater).
         Otherwise, try to use the Python Imaging Library and the tkIcon package."""
-    
+
         if self.bitmap != None:
             # We don't need PIL or tkicon: this is tk 8.3.4 or greater.
             try:
                 w.wm_iconbitmap(self.bitmap)
             except:
                 self.bitmap = None
-        
+
         if self.bitmap == None:
             try:
                 #@            << try to use the PIL and tkIcon packages to draw the icon >>
@@ -558,16 +558,16 @@ class tkinterGui(leoGui.leoGui):
                 # code.
                 #@-at
                 #@@c
-                
+
                 import Image
                 import tkIcon # pychecker complains, but this *is* used.
-                
+
                 # Wait until the window has been drawn once before attaching the icon in OnVisiblity.
                 def visibilityCallback(event,self=self,w=w):
                     try: self.leoIcon.attach(w.winfo_id())
                     except: pass
                 w.bind("<Visibility>",visibilityCallback)
-                
+
                 if not self.leoIcon:
                     # Load a 16 by 16 gif.  Using .gif rather than an .ico allows us to specify transparency.
                     icon_file_name = g.os_path_join(g.app.loadDir,'..','Icons','LeoWin.gif')
@@ -586,12 +586,12 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.4070:createLeoIcon
     # This code is adapted from tkIcon.__init__
     # Unlike the tkIcon code, this code does _not_ resize the icon file.
-    
+
     def createLeoIcon (self,icon):
-        
+
         try:
             import Image,_tkicon
-            
+
             i = icon ; m = None
             # create transparency mask
             if i.mode == "P":
@@ -619,22 +619,22 @@ class tkinterGui(leoGui.leoGui):
     #@+node:ekr.20031218072017.4071:Idle Time
     #@+node:ekr.20031218072017.4072:tkinterGui.setIdleTimeHook
     def setIdleTimeHook (self,idleTimeHookHandler):
-    
+
         if self.root:
             self.root.after_idle(idleTimeHookHandler)
     #@-node:ekr.20031218072017.4072:tkinterGui.setIdleTimeHook
     #@+node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     def setIdleTimeHookAfterDelay (self,idleTimeHookHandler):
-        
+
         if self.root:
             g.app.root.after(g.app.idleTimeDelay,idleTimeHookHandler)
     #@-node:ekr.20031218072017.4073:setIdleTimeHookAfterDelay
     #@-node:ekr.20031218072017.4071:Idle Time
     #@+node:ekr.20051220144507:isTextWidget
     def isTextWidget (self,w):
-        
+
         '''Return True if w is a Text widget suitable for text-oriented commands.'''
-        
+
         return w and isinstance(w,Tk.Text)
     #@-node:ekr.20051220144507:isTextWidget
     #@+node:ekr.20060621164312:makeScriptButton
@@ -646,10 +646,10 @@ class tkinterGui(leoGui.leoGui):
         shortcut=None,bg='LightSteelBlue1',
         define_g=True,define_name='__main__',silent=False, # Passed on to c.executeScript.
     ):
-        
+
         '''Create a script button for the script in node p.
         The button's text defaults to p.headString'''
-    
+
         k = c.k
         if p and not buttonText: buttonText = p.headString().strip()
         if not buttonText: buttonText = 'Unnamed Script Button'
@@ -657,13 +657,13 @@ class tkinterGui(leoGui.leoGui):
         #@+node:ekr.20060621164312.1:<< create the button b >>
         iconBar = c.frame.getIconBarObject()
         b = iconBar.add(text=buttonText)
-        
+
         if balloonText and balloonText != buttonText:
             Pmw = g.importExtension('Pmw',pluginName='gui.makeScriptButton',verbose=False)
             if Pmw:
                 balloon = Pmw.Balloon(b,initwait=100)
                 balloon.bind(b,balloonText)
-        
+
         if sys.platform == "win32":
             width = int(len(buttonText) * 0.9)
             b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
@@ -674,10 +674,10 @@ class tkinterGui(leoGui.leoGui):
         def deleteButtonCallback(event=None,b=b,c=c):
             if b: b.pack_forget()
             c.bodyWantsFocus()
-            
+
         def executeScriptCallback (event=None,
             b=b,c=c,buttonText=buttonText,p=p and p.copy(),script=script):
-        
+
             if c.disableCommandsMessage:
                 g.es(c.disableCommandsMessage,color='blue')
             else:
@@ -706,11 +706,11 @@ class tkinterGui(leoGui.leoGui):
         #@    << create press-buttonText-button command >>
         #@+node:ekr.20060621164312.4:<< create press-buttonText-button command >>
         aList = [g.choose(ch.isalnum(),ch,'-') for ch in buttonText]
-        
+
         buttonCommandName = ''.join(aList)
         buttonCommandName = buttonCommandName.replace('--','-')
         buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
-        
+
         # This will use any shortcut defined in an @shortcuts node.
         k.registerCommand(buttonCommandName,None,executeScriptCallback,pane='button',verbose=False)
         #@-node:ekr.20060621164312.4:<< create press-buttonText-button command >>
@@ -719,11 +719,11 @@ class tkinterGui(leoGui.leoGui):
     #@-node:ekr.20031218072017.4059:tkGui utils
     #@+node:ekr.20061112152012.2:class leoKeyEvent (tkGui)
     class leoKeyEvent:
-        
+
         '''A gui-independent wrapper for gui events.'''
-        
+
         def __init__ (self,event,c):
-            
+
             # g.trace('leoKeyEvent(tkGui)')
             self.actualEvent = event
             self.c      = c # Required to access c.k tables.
@@ -732,15 +732,15 @@ class tkinterGui(leoGui.leoGui):
             self.w      = hasattr(event,'widget') and event.widget or None
             self.x      = hasattr(event,'x') and event.x or 0
             self.y      = hasattr(event,'y') and event.y or 0
-            
+
             if self.keysym and c.k:
                 # Translate keysyms for ascii characters to the character itself.
                 self.keysym = c.k.guiBindNamesInverseDict.get(self.keysym,self.keysym)
-            
+
             self.widget = self.w
-            
+
         def __repr__ (self):
-            
+
             return 'tkGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char),repr(self.keysym))
     #@nonl
     #@-node:ekr.20061112152012.2:class leoKeyEvent (tkGui)

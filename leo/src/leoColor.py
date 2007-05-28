@@ -258,24 +258,24 @@ class baseColorizer:
         "<", "<=", "=", ">=", ">",
         "invert", "and", "or", 
         ]
-    
+
     # Forth words which define other words: extended by leo-forthdefwords.txt.
     forth_definingwords = [
         ":", "variable", "constant", "code",
         ]
-    
+
     # Forth words which start strings: extended by leo-forthstringwords.txt.
     forth_stringwords = [
         's"', '."', '"', '."',
         'abort"',
         ]
-    
+
     # Forth words to be rendered in boldface: extended by leo-forthboldwords.txt.
     forth_boldwords = [ ]
-    
+
     # Forth words to be rendered in italics: extended by leo-forthitalicwords.txt.
     forth_italicwords = [ ]
-    
+
     # Forth bold-italics words: extemded leo-forthbolditalicwords.txt if present
     # Note: on some boxen, bold italics may show in plain bold.
     forth_bolditalicwords = [ ]
@@ -283,7 +283,7 @@ class baseColorizer:
     #@+node:ekr.20031218072017.375:html keywords
     # No longer used by syntax colorer.
     html_keywords = []
-    
+
     if 0: # Not used at present.
         unused_keywords = [
             # html constructs.
@@ -296,7 +296,7 @@ class baseColorizer:
             "caption","col","colgroup",
             "table","tbody","td","tfoot","th","thead","tr",
             "script","style"]
-    
+
         html_specials = [ "<%","%>" ]
     #@-node:ekr.20031218072017.375:html keywords
     #@+node:ekr.20031218072017.376:java keywords
@@ -318,9 +318,9 @@ class baseColorizer:
     #DO NOT ASSUME that they are the same word. For example \vert produces
     #a single vertical line and \Vert produces a double vertical line
     #Marcus A. Martin.
-    
+
     latex_special_keyword_characters = "@(){}%"
-    
+
     latex_keywords = [
         #special keyworlds
         "\\%", # 11/9/03
@@ -552,14 +552,14 @@ class baseColorizer:
         "for", "foreach", "function", "global", "if",
         "new", "old_function", "or", "static", "switch",
         "use", "var", "while", "xor" ]
-        
+
     # The following are supposed to be followed by ()
     php_paren_keywords = [
         "array", "die", "echo", "empty", "exit",
         "include", "include_once", "isset", "list",
         "print", "require", "require_once", "return",
         "unset" ]
-        
+
     # The following are handled by special case code:
     # "<?php", "?>"
     #@-node:ekr.20031218072017.380:php keywords
@@ -1094,7 +1094,7 @@ class baseColorizer:
         "while" ]
     #@-node:ekr.20031218072017.383:tcl/tk keywords
     #@-others
-    
+
     cweb_keywords = c_keywords
     perlpod_keywords = perl_keywords
     #@-node:ekr.20031218072017.371:<< define colorizer keywords >> colorizer
@@ -1103,13 +1103,13 @@ class baseColorizer:
     #@    @+others
     #@+node:ekr.20031218072017.1605:color.__init__
     def __init__(self,c):
-    
+
         self.c = c
         self.frame = c.frame
         self.body = c.frame.body
-        
+
         self.trace = c.config.getBool('trace_colorizer')
-    
+
         self.count = 0 # how many times this has been called.
         self.use_hyperlinks = False # True: use hyperlinks and underline "live" links.
         self.enabled = True # True: syntax coloring enabled
@@ -1144,7 +1144,7 @@ class baseColorizer:
         self.flag = None
         self.killFlag = False
         self.line_index = 0
-        
+
         # Others.
         self.single_comment_start = None
         self.block_comment_start = None
@@ -1157,7 +1157,7 @@ class baseColorizer:
         self.lb = None
         self.rb = None
         self.rootMode = None # None, "code" or "doc"
-        
+
         self.latex_cweb_docs     = c.config.getBool("color_cweb_doc_parts_with_latex")
         self.latex_cweb_comments = c.config.getBool("color_cweb_comments_with_latex")
         # print "docs,comments",self.latex_cweb_docs,self.latex_cweb_comments
@@ -1176,45 +1176,45 @@ class baseColorizer:
             "doc"          : self.continueDocPart,
             "unknown"      : self.doNormalState, # 8/25/05
         }
-            
+
         # Eventually all entries in these dicts will be entered dynamically
         # under the control of the XML description of the present language.
-        
+
         if 0: # not ready yet.
-        
+
             self.dict1 = { # 1-character patterns.
                 '"' : self.doString,
                 "'" : self.doString,
                 '@' : self.doPossibleLeoKeyword,
                 ' ' : self.doBlank,
                 '\t': self.doTab }
-        
+
             self.dict2 = {} # 2-character patterns
-            
+
             # Searching this list might be very slow!
             mutli_list = [] # Multiple character patterns.
-            
+
             # Enter single-character patterns...
             if self.has_pp_directives:
                 dict1 ["#"] = self.doPPDirective
-                        
+
             for ch in string.ascii_letters:
                 dict1 [ch] = self.doPossibleKeyword
             dict1 ['_'] = self.doPossibleKeyword
-            
+
             if self.language == "latex":
                 dict1 ['\\'] = self.doPossibleKeyword
-                
+
             if self.language == "php":
                 dict1 ['<'] = self.doSpecialPHPKeyword
                 dict1 ['?'] = self.doSpecialPHPKeyword
-            
+
             # Enter potentially multi-character patterns.  (or should this be just 2-character patterns)
             if self.language == "cweb":
                 dict2 ["@("] = self.doPossibleSectionRefOrDef
             else:
                 dict2 ["<<"] = self.doPossibleSectionRefOrDef
-                
+
             if self.single_comment_start:
                 n = len(self.single_comment_start)
                 if n == 1:
@@ -1223,7 +1223,7 @@ class baseColorizer:
                     dict2 [self.single_comment_start] = self.doSingleCommentLine
                 else:
                     mutli_list.append((self.single_comment_start,self.doSingleCommentLine),)
-            
+
             if self.block_comment_start:
                 n = len(self.block_comment_start)
                 if n == 1:
@@ -1246,7 +1246,7 @@ class baseColorizer:
             (self.forth_bolditalicwords, "leo-forthbolditalicwords.txt", "bold-italic words"),
             (self.forth_italicwords, "leo-forthitalicwords.txt", "italic words"),
         )
-        
+
         # Add entries from files (if they exist) and to the corresponding wordlists.
         for (lst, path, typ) in forth_items:
             try:
@@ -1269,54 +1269,54 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1605:color.__init__
     #@+node:ekr.20050420083821:disable & enable
     def disable (self):
-    
+
         # print "disabling all syntax coloring"
         self.enabled=False
-        
+
     def enable (self):
-    
+
         self.enabled=True
     #@-node:ekr.20050420083821:disable & enable
     #@+node:ekr.20041217041016:setFontFromConfig (colorizer)
     def setFontFromConfig (self):
-        
+
         c = self.c
-        
+
         self.bold_font = c.config.getFontFromParams(
             "body_text_font_family", "body_text_font_size",
             "body_text_font_slant",  "body_text_font_weight",
             c.config.defaultBodyFontSize)
-        
+
         if self.bold_font:
             self.bold_font.configure(weight="bold")
-        
+
         self.italic_font = c.config.getFontFromParams(
             "body_text_font_family", "body_text_font_size",
             "body_text_font_slant",  "body_text_font_weight",
             c.config.defaultBodyFontSize)
-            
+
         if self.italic_font:
             self.italic_font.configure(slant="italic",weight="normal")
-        
+
         self.bolditalic_font = c.config.getFontFromParams(
             "body_text_font_family", "body_text_font_size",
             "body_text_font_slant",  "body_text_font_weight",
             c.config.defaultBodyFontSize)
-            
+
         if self.bolditalic_font:
             self.bolditalic_font.configure(weight="bold",slant="italic")
-            
+
         self.color_tags_list = []
         self.image_references = []
     #@-node:ekr.20041217041016:setFontFromConfig (colorizer)
     #@+node:ekr.20031218072017.2801:colorize & recolor_range
     # The main colorizer entry point.
-    
+
     def colorize(self,p,incremental=False,interruptable=True):
         # interruptable used only in new colorizer.
-        
+
         # g.trace(g.callers())
-    
+
         if self.enabled:
             # if self.trace: g.trace("incremental",incremental)
             self.incremental=incremental
@@ -1324,14 +1324,14 @@ class baseColorizer:
             return self.colorizeAnyLanguage(p)
         else:
             return "ok" # For unit testing.
-            
+
     # Called from incremental undo code.
     # Colorizes the lines between the leading and trailing lines.
-            
+
     def recolor_range(self,p,leading,trailing):
-        
+
         # g.trace(g.callers())
-        
+
         if self.enabled:
             # if self.trace: g.trace("leading,trailing",leading,trailing)
             self.incremental=True
@@ -1342,21 +1342,21 @@ class baseColorizer:
     #@-node:ekr.20031218072017.2801:colorize & recolor_range
     #@+node:ekr.20031218072017.1880:colorizeAnyLanguage & allies
     def colorizeAnyLanguage (self,p,leading=None,trailing=None):
-        
+
         """Color the body pane either incrementally or non-incrementally"""
-        
+
         __pychecker__ = 'maxlines=500'
-        
+
         # g.trace(p and p.headString())
-        
+
         c = self.c ; w = self.body.bodyCtrl
-        
+
         if not c.config.getBool('use_syntax_coloring'):
             # There have been reports of this trace causing crashes.
             # Certainly it is not necessary.
             # g.trace('no coloring')
             return
-    
+
         if self.killFlag:
             self.removeAllTags()
             return
@@ -1368,28 +1368,28 @@ class baseColorizer:
                 name = '@' + d
                 if name not in leoKeywords:
                     leoKeywords.append(name)
-            
+
             # Copy the arguments.
             self.p = p
-            
+
             # Get the body text, converted to unicode.
             self.allBodyText = w.getAllText()
             sel = w.getInsertPoint()
             start,end = g.convertPythonIndexToRowCol(self.allBodyText,sel)
             start += 1 # Simulate the old 1-based Tk scheme.  self.index undoes this hack.
             # g.trace('new',start,end)
-            
+
             if self.language: self.language = self.language.lower()
             # g.trace(self.count,self.p)
             # g.trace(body.tag_names())
-            
+
             if not self.incremental:
                 self.removeAllTags()
                 self.removeAllImages()
-            
+
             self.redoColoring = False
             self.redoingColoring = False
-            
+
             #@<< configure fonts >>
             #@+node:ekr.20060829084924:<< configure fonts >> (revise,maybe)
             # Get the default body font.
@@ -1400,7 +1400,7 @@ class baseColorizer:
                     "body_text_font_slant",  "body_text_font_weight",
                     c.config.defaultBodyFontSize)
                 self.fonts['default_body_font'] = defaultBodyfont
-            
+
             # Configure fonts.
             w = c.frame.body.bodyCtrl
             keys = default_font_dict.keys() ; keys.sort()
@@ -1439,7 +1439,7 @@ class baseColorizer:
             #@<< configure tags >>
             #@+node:ekr.20031218072017.1603:<< configure tags >>
             # g.trace('configure tags',self.body.bodyCtrl)
-            
+
             for name in default_colors_dict.keys(): # Python 2.1 support.
                 option_name,default_color = default_colors_dict[name]
                 option_color = c.config.getColor(option_name)
@@ -1449,11 +1449,11 @@ class baseColorizer:
                     self.body.tag_configure(name, foreground=color)
                 except: # Recover after a user error.
                     self.body.tag_configure(name, foreground=default_color)
-            
+
             underline_undefined = c.config.getBool("underline_undefined_section_names")
             use_hyperlinks      = c.config.getBool("use_hyperlinks")
             self.use_hyperlinks = use_hyperlinks
-            
+
             # underline=var doesn't seem to work.
             if 0: # use_hyperlinks: # Use the same coloring, even when hyperlinks are in effect.
                 self.body.tag_configure("link",underline=1) # defined
@@ -1464,7 +1464,7 @@ class baseColorizer:
                     self.body.tag_configure("name",underline=1)
                 else:
                     self.body.tag_configure("name",underline=0)
-                    
+
             # 8/4/02: we only create tags for whitespace when showing invisibles.
             if self.showInvisibles:
                 for name,option_name,default_color in (
@@ -1476,9 +1476,9 @@ class baseColorizer:
                         self.body.tag_configure(name,background=color)
                     except: # Recover after a user error.
                         self.body.tag_configure(name,background=default_color)
-                
+
             # 11/15/02: Colors for latex characters.  Should be user options...
-            
+
             if 1: # Alas, the selection doesn't show if a background color is specified.
                 self.body.tag_configure("latexModeBackground",foreground="black")
                 self.body.tag_configure("latexModeKeyword",foreground="blue")
@@ -1489,7 +1489,7 @@ class baseColorizer:
                 self.body.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
                 self.body.tag_configure("latexBackground",foreground="black",background="white")
                 self.body.tag_configure("latexKeyword",foreground="blue",background="white")
-                
+
             # Tags for wiki coloring.
             if self.showInvisibles:
                 self.body.tag_configure("elide",background="yellow")
@@ -1505,7 +1505,7 @@ class baseColorizer:
             #@<< configure language-specific settings >>
             #@+node:ekr.20031218072017.370:<< configure language-specific settings >> colorizer
             # Define has_string, keywords, single_comment_start, block_comment_start, block_comment_end.
-            
+
             if self.language == "cweb": # Use C comments, not cweb sentinel comments.
                 delim1,delim2,delim3 = g.set_delims_from_language("c")
             elif self.comment_string:
@@ -1514,11 +1514,11 @@ class baseColorizer:
                 delim1,delim2,delim3 = None,None,None
             else:
                 delim1,delim2,delim3 = g.set_delims_from_language(self.language)
-            
+
             self.single_comment_start = delim1
             self.block_comment_start = delim2
             self.block_comment_end = delim3
-            
+
             # A strong case can be made for making this code as fast as possible.
             # Whether this is compatible with general language descriptions remains to be seen.
             self.case_sensitiveLanguage = self.language not in case_insensitiveLanguages
@@ -1530,13 +1530,13 @@ class baseColorizer:
             else:
                 self.string_delims = ("'",'"')
             self.has_pp_directives = self.language in ("c","csharp","cweb","latex")
-            
+
             # The list of languages for which keywords exist.
             # Eventually we might just use language_delims_dict.keys()
             languages = [
                 "actionscript","ada","c","csharp","css","cweb","elisp","forth","html","java","latex","lua",
                 "pascal","perl","perlpod","php","plsql","python","rapidq","rebol","shell","tcltk"]
-            
+
             self.keywords = []
             if self.language == "cweb":
                 for i in self.c_keywords:
@@ -1548,14 +1548,14 @@ class baseColorizer:
                     if self.language==name: 
                         # g.trace("setting keywords for",name)
                         self.keywords = getattr(self, name + "_keywords")
-            
+
             # For forth.
             self.nextForthWordIsNew = False
-            
+
             # Color plain text unless we are under the control of @nocolor.
             # state = g.choose(self.flag,"normal","nocolor")
             state = self.setFirstLineState()
-            
+
             if 1: # 10/25/02: we color both kinds of references in cweb mode.
                 self.lb = "<<"
                 self.rb = ">>"
@@ -1564,7 +1564,7 @@ class baseColorizer:
                 self.rb = g.choose(self.language == "cweb","@>",">>")
             #@-node:ekr.20031218072017.370:<< configure language-specific settings >> colorizer
             #@nl
-            
+
             self.hyperCount = 0 # Number of hypertext tags
             self.count += 1
             lines = string.split(self.allBodyText,'\n')
@@ -1603,23 +1603,23 @@ class baseColorizer:
                 # result of changes to the middle lines.
                 #@-at
                 #@@c
-                
+
                 if self.trace: g.trace("incremental",self.language)
-                
+
                 # 6/30/03: make a copies of everything
                 old_lines = self.lines[:]
                 old_states = self.states[:]
                 new_lines = lines[:]
                 new_states = []
-                
+
                 new_len = len(new_lines)
                 old_len = len(old_lines)
-                
+
                 if new_len == 0:
                     self.states = []
                     self.lines = []
                     return
-                
+
                 # Bug fix: 11/21/02: must test against None.
                 if leading != None and trailing != None:
                     # print "leading,trailing:",leading,trailing
@@ -1637,16 +1637,16 @@ class baseColorizer:
                     # lines if we delete lines.
                     #@-at
                     #@@c
-                    
+
                     min_len = min(old_len,new_len)
-                    
+
                     i = 0
                     while i < min_len:
                         if old_lines[i] != new_lines[i]:
                             break
                         i += 1
                     leading_lines = i
-                    
+
                     if leading_lines == new_len:
                         # All lines match, and we must color _everything_.
                         # (several routine delete, then insert the text again,
@@ -1662,10 +1662,10 @@ class baseColorizer:
                         trailing_lines = i
                     #@-node:ekr.20031218072017.1883:<< compute leading, middle & trailing  lines >>
                     #@nl
-                    
+
                 middle_lines = new_len - leading_lines - trailing_lines
                 # print "middle lines", middle_lines
-                
+
                 #@<< clear leading_lines if middle lines involve @color or @recolor  >>
                 #@+node:ekr.20031218072017.1884:<< clear leading_lines if middle lines involve @color or @recolor  >>
                 #@+at 
@@ -1674,7 +1674,7 @@ class baseColorizer:
                 # recolor all leading states as well.
                 #@-at
                 #@@c
-                
+
                 if trailing_lines == 0:
                     m1 = new_lines[leading_lines:]
                     m2 = old_lines[leading_lines:]
@@ -1698,24 +1698,24 @@ class baseColorizer:
                 while i < leading_lines and i < old_len: # 12/8/02
                     new_states.append(old_states[i])
                     i += 1
-                    
+
                 # We know the starting state of the first middle line!
                 if middle_lines > 0 and i < old_len:
                     new_states.append(old_states[i])
                     i += 1
-                    
+
                 # Set the state of all other middle lines to "unknown".
                 first_trailing_line = max(0,new_len - trailing_lines)
                 while i < first_trailing_line:
                     new_states.append("unknown")
                     i += 1
-                
+
                 # Copy the trailing states from the old to the new lines.
                 i = max(0,old_len - trailing_lines)
                 while i < old_len and i < len(old_states):
                     new_states.append(old_states[i])
                     i += 1
-                
+
                 # 1/8/03: complete new_states by brute force.
                 while len(new_states) < new_len:
                     new_states.append("unknown")
@@ -1725,7 +1725,7 @@ class baseColorizer:
                 #@+node:ekr.20031218072017.1886:<< colorize until the states match >>
                 # Colorize until the states match.
                 # All middle lines have "unknown" state, so they will all be colored.
-                
+
                 # Start in the state _after_ the last leading line, which may be unknown.
                 i = leading_lines
                 while i > 0:
@@ -1735,13 +1735,13 @@ class baseColorizer:
                         break
                     else:
                         i -= 1
-                
+
                 if i == 0:
                     # Color plain text unless we are under the control of @nocolor.
                     # state = g.choose(self.flag,"normal","nocolor")
                     state = self.setFirstLineState()
                     new_states[0] = state
-                
+
                 # The new_states[] will be "unknown" unless the lines match,
                 # so we do not need to compare lines here.
                 while i < new_len:
@@ -1752,7 +1752,7 @@ class baseColorizer:
                     if i < new_len and state != new_states[i]:
                         new_states[i] = state
                     else: break
-                    
+
                 # Update the ivars
                 self.states = new_states
                 self.lines = new_lines
@@ -1764,7 +1764,7 @@ class baseColorizer:
                 #@            << non-incrementally color the text >>
                 #@+node:ekr.20031218072017.1887:<< non-incrementally color the text >>
                 if self.trace: g.trace("non-incremental",self.language)
-                
+
                 self.line_index = 1 # The Tk line number for indices, as in n.i
                 for s in lines:
                     state = self.colorizeLine(s,state)
@@ -1775,21 +1775,21 @@ class baseColorizer:
                 #@            << completely recolor in two passes >>
                 #@+node:ekr.20031218072017.1890:<< completely recolor in two passes >>
                 # This code is executed only if graphics characters will be inserted by user markup code.
-                
+
                 # Pass 1:  Insert all graphics characters.
-                
+
                 self.removeAllImages()
                 lines = self.allBodyText.split('\n')
-                
+
                 self.color_pass = 1
                 self.line_index = 1
                 state = self.setFirstLineState()
                 for s in lines:
                     state = self.colorizeLine(s,state)
                     self.line_index += 1
-                
+
                 # Pass 2: Insert one blank for each previously inserted graphic.
-                
+
                 self.color_pass = 2
                 self.line_index = 1
                 state = self.setFirstLineState()
@@ -1807,9 +1807,9 @@ class baseColorizer:
                     # image.
                     #@-at
                     #@@c
-                    
+
                     inserted = 0
-                    
+
                     for photo,image,line_index,i in self.image_references:
                         if self.line_index == line_index:
                             n = i+inserted ; inserted += 1
@@ -1845,26 +1845,26 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1880:colorizeAnyLanguage & allies
     #@+node:ekr.20031218072017.1892:colorizeLine & allies
     def colorizeLine (self,s,state):
-    
+
         # print "line,inc,state,s:",self.line_index,self.incremental,state,s
-    
+
         s = g.toUnicode(s,g.app.tkEncoding) # 10/28/03
-    
+
         if self.incremental:
             self.removeTagsFromLine()
-    
+
         i = 0
         while i < len(s):
             self.progress = i
             func = self.state_dict[state]
             i,state = func(s,i)
-    
+
         return state
     #@+node:ekr.20031218072017.1618:continueBlockComment
     def continueBlockComment (self,s,i):
-        
+
         j = s.find(self.block_comment_end,i)
-    
+
         if j == -1:
             j = len(s) # The entire line is part of the block comment.
             if self.language=="cweb":
@@ -1874,7 +1874,7 @@ class baseColorizer:
                     colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag="comment"):
                     self.tag("comment",i,j)
             return j,"blockComment" # skip the rest of the line.
-    
+
         else:
             # End the block comment.
             k = len(self.block_comment_end)
@@ -1891,10 +1891,10 @@ class baseColorizer:
     #@+node:ekr.20031218072017.1893:continueSingle/DoubleString
     def continueDoubleString (self,s,i):
         return self.continueString(s,i,'"',"doubleString")
-        
+
     def continueSingleString (self,s,i):
         return self.continueString(s,i,"'","singleString")
-    
+
     # Similar to skip_string.
     def continueString (self,s,i,delim,continueState):
         # g.trace(delim + s[i:])
@@ -1917,7 +1917,7 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1893:continueSingle/DoubleString
     #@+node:ekr.20031218072017.1614:continueDocPart
     def continueDocPart (self,s,i):
-        
+
         state = "doc"
         if self.language == "cweb":
             #@        << handle cweb doc part >>
@@ -1962,14 +1962,14 @@ class baseColorizer:
             if i == 0 and g.match(s,i,"<<"):
                 # Possible section definition line.
                 return i,"normal" # rescan the line.
-            
+
             if i == 0 and s[i] == '@':
                 j = self.skip_id(s,i+1,chars='-')
                 word = s[i:j]
                 word = word.lower()
             else:
                 word = ""
-                
+
             if word in ["@c","@code","@unit","@root","@root-code","@root-doc","@color","@nocolor"]:
                 # End of the doc part.
                 self.body.tag_remove("docPart",self.index(i),self.index(j)) # 10/27/03
@@ -1989,14 +1989,14 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1614:continueDocPart
     #@+node:ekr.20031218072017.1894:continueNocolor
     def continueNocolor (self,s,i):
-    
+
         if i == 0 and s[i] == '@':
             j = self.skip_id(s,i+1)
             word = s[i:j]
             word = word.lower()
         else:
             word = ""
-        
+
         if word == "@color" and self.language != "plain":
             # End of the nocolor part.
             self.tag("leoKeyword",0,j)
@@ -2016,13 +2016,13 @@ class baseColorizer:
     def continueDoublePythonString (self,s,i):
         j = s.find('"""',i)
         return self.continuePythonString(s,i,j,"string3d")
-    
+
     def continueSinglePythonString (self,s,i):
         j = s.find("'''",i)
         return self.continuePythonString(s,i,j,"string3s")
-    
+
     def continuePythonString (self,s,i,j,continueState):
-    
+
         if j == -1: # The entire line is part of the triple-quoted string.
             j = len(s)
             if continueState == "string3d":
@@ -2032,7 +2032,7 @@ class baseColorizer:
             else:
                 self.tag("string",i,j)
             return j,continueState # skip the rest of the line.
-    
+
         else: # End the string
             if continueState == "string3d":
                 if not g.doHook("color-optional-markup",
@@ -2046,15 +2046,15 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1613:continueSingle/DoublePythonString
     #@+node:ekr.20031218072017.1620:doAtKeyword: NOT for cweb keywords
     # Handles non-cweb keyword.
-    
+
     def doAtKeyword (self,s,i):
-    
+
         j = self.skip_id(s,i+1,chars="-") # to handle @root-code, @root-doc
         word = s[i:j]
         word = word.lower()
         if i != 0 and word not in ("@others","@all"):
             word = "" # can't be a Leo keyword, even if it looks like it.
-        
+
         # 7/8/02: don't color doc parts in plain text.
         if self.language != "plain" and (word == "@" or word == "@doc"):
             # at-space is a Leo keyword.
@@ -2076,9 +2076,9 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1620:doAtKeyword: NOT for cweb keywords
     #@+node:ekr.20031218072017.1895:doLatexLine
     # Colorize the line from i to j.
-    
+
     def doLatexLine (self,s,i,j):
-    
+
         while i < j:
             if g.match(s,i,"\\"):
                 k = self.skip_id(s,i+1)
@@ -2092,12 +2092,12 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1895:doLatexLine
     #@+node:ekr.20031218072017.1896:doNormalState
     def doNormalState (self,s,i):
-        
+
         __pychecker__ = 'maxlines=500'
-    
+
         ch = s[i] ; state = "normal"
         assert(type(ch)==type(u""))
-    
+
         if ch in string.ascii_letters or ch == '_' or (
             (ch == '\\' and self.language=="latex") or
             (ch in '/&<>' and self.language=="html") or
@@ -2156,12 +2156,12 @@ class baseColorizer:
                 #@+node:ekr.20041107093219.3:<< handle possible forth keyword >>
                 j = self.skip_id(s,i+1,chars="`~!@#$%^&*()-_=+[]{};:'\\\",./<>?")
                 word = s[i:j]
-                
+
                 #print "word=%s" % repr(word)
-                
+
                 if not self.case_sensitiveLanguage:
                     word = word.lower()
-                
+
                 if self.nextForthWordIsNew:
                     #print "trying to bold the defined word '%s'" % word
                     self.tag("bold", i, j)
@@ -2169,7 +2169,7 @@ class baseColorizer:
                 else:
                     if word in self.forth_definingwords:
                         self.nextForthWordIsNew = True
-                    
+
                     if word in self.forth_boldwords:
                         self.tag("bold", i, j)
                     elif word in self.forth_bolditalicwords:
@@ -2197,11 +2197,11 @@ class baseColorizer:
                     j = self.skip_id(s,i+1,chars="-")
                 else:
                     j = self.skip_id(s,i)
-                
+
                 word = s[i:j]
                 if not self.case_sensitiveLanguage:
                     word = word.lower()
-                
+
                 if word in self.keywords:
                     self.tag("keyword",i,j)
                 elif self.language == "php":
@@ -2225,13 +2225,13 @@ class baseColorizer:
                     #@        << handle cweb ref or def >>
                     #@+node:ekr.20031218072017.1904:<< handle cweb ref or def >>
                     self.tag("nameBrackets",i,i+2)
-                    
+
                     # See if the line contains the right name bracket.
                     j = s.find("@>=",i+2)
                     k = g.choose(j==-1,2,3)
                     if j == -1:
                         j = s.find("@>",i+2)
-                    
+
                     if j == -1:
                         i += 2
                     else:
@@ -2247,11 +2247,11 @@ class baseColorizer:
                         #@+node:ekr.20031218072017.1903:<< Handle cweb control word >>
                         # Color and skip the word.
                         assert(self.language=="cweb")
-                        
+
                         j = i + len(word)
                         self.tag("keyword",i,j)
                         i = j
-                        
+
                         if word in ("@ ","@\t","@\n","@*","@**"):
                             state = "doc"
                         elif word in ("@<","@(","@c","@d","@f","@p"):
@@ -2276,7 +2276,7 @@ class baseColorizer:
             #@+middle:ekr.20031218072017.1897:Valid regardless of latex mode
             #@+node:ekr.20031218072017.1617:<< handle single-line comment >>
             # print "single-line comment i,s:",i,s
-            
+
             if self.language == "cweb" and self.latex_cweb_comments:
                 j = i + len(self.single_comment_start)
                 self.tag("comment",i,j)
@@ -2298,11 +2298,11 @@ class baseColorizer:
             #@+middle:ekr.20031218072017.1897:Valid regardless of latex mode
             #@+node:ekr.20031218072017.1619:<< start block comment >>
             k = len(self.block_comment_start)
-            
+
             if not g.doHook("color-optional-markup",
                 colorer=self,p=self.p,v=self.p,s=s,i=i,j=i+k,colortag="comment"):
                 self.tag("comment",i,i+k)
-            
+
             i += k ; state = "blockComment"
             #@-node:ekr.20031218072017.1619:<< start block comment >>
             #@-middle:ekr.20031218072017.1897:Valid regardless of latex mode
@@ -2336,9 +2336,9 @@ class baseColorizer:
             #@+middle:ekr.20031218072017.1908:Valid when not in latex_mode
             #@+node:ekr.20031218072017.1612:<< handle string >>
             # g.trace(self.language)
-            
+
             if self.language == "python":
-            
+
                 delim = s[i:i+3]
                 j, state = self.skip_python_string(s,i)
                 if delim == '"""':
@@ -2349,7 +2349,7 @@ class baseColorizer:
                 else:
                     self.tag("string",i,j)
                 i = j
-            
+
             else:
                 j, state = self.skip_string(s,i)
                 self.tag("string",i,j)
@@ -2367,7 +2367,7 @@ class baseColorizer:
                 if g.match(s,i,self.single_comment_start) or g.match(s,i,self.block_comment_start):
                     break
                 else: i += 1
-            
+
             self.tag("pp",j,i)
             #@-node:ekr.20031218072017.1909:<< handle C preprocessor line >>
             #@-middle:ekr.20031218072017.1908:Valid when not in latex_mode
@@ -2417,7 +2417,7 @@ class baseColorizer:
             #@-node:ekr.20031218072017.1913:<< handle normal character >>
             #@-middle:ekr.20031218072017.1908:Valid when not in latex_mode
             #@nl
-    
+
         if 0: # This can fail harmlessly when using wxPython plugin.  Don't know exactly why.
             g.trace(self.progress,i,state)
             assert(self.progress < i)
@@ -2431,10 +2431,10 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1896:doNormalState
     #@+node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
     def doNowebSecRef (self,s,i):
-    
+
         c = self.c
         self.tag("nameBrackets",i,i+2)
-        
+
         # See if the line contains the right name bracket.
         j = s.find(self.rb+"=",i+2)
         k = g.choose(j==-1,2,3)
@@ -2458,7 +2458,7 @@ class baseColorizer:
                     self.hyperCount += 1
                     self.body.tag_delete(tagName)
                     self.tag(tagName,i+2,j)
-                    
+
                     ref.tagName = tagName
                     self.body.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
                     self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
@@ -2475,40 +2475,40 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1914:doNowebSecRef (colorizer)
     #@+node:ekr.20031218072017.1604:removeAllTags & removeTagsFromLines
     def removeAllTags (self):
-        
+
         # Warning: the following DOES NOT WORK: self.body.tag_delete(self.tags)
         for tag in self.tags:
             self.body.tag_delete(tag) # 10/27/03
-    
+
         for tag in self.color_tags_list:
             self.body.tag_delete(tag) # 10/27/03
-        
+
     def removeTagsFromLine (self):
-        
+
         # print "removeTagsFromLine",self.line_index
         for tag in self.tags:
             self.body.tag_remove(tag,self.index(0),self.index("end")) # 10/27/03
-            
+
         for tag in self.color_tags_list:
             self.body.tag_remove(tag,self.index(0),self.index("end")) # 10/27/03
     #@-node:ekr.20031218072017.1604:removeAllTags & removeTagsFromLines
     #@-node:ekr.20031218072017.1892:colorizeLine & allies
     #@+node:ekr.20031218072017.1377:scanColorDirectives
     def scanColorDirectives(self,p):
-        
+
         """Scan position p and p's ancestors looking for @comment, @language and @root directives,
         setting corresponding colorizer ivars.
         """
-    
+
         p = p.copy() ; c = self.c
         if c == None: return # self.c may be None for testing.
-    
+
         if c.target_language:
             c.target_language = c.target_language.lower()
         self.language = language = c.target_language
         self.comment_string = None
         self.rootMode = None # None, "code" or "doc"
-        
+
         for p in p.self_and_parents_iter():
             # g.trace(p)
             s = p.v.t.bodyString
@@ -2516,16 +2516,16 @@ class baseColorizer:
             #@        << Test for @comment or @language >>
             #@+node:ekr.20031218072017.1378:<< Test for @comment or @language >>
             # 10/17/02: @comment and @language may coexist in the same node.
-            
+
             if theDict.has_key("comment"):
                 k = theDict["comment"]
                 self.comment_string = s[k:]
-            
+
             if theDict.has_key("language"):
                 i = theDict["language"]
                 language,junk,junk,junk = g.set_language(s,i)
                 self.language = language
-            
+
             if theDict.has_key("comment") or theDict.has_key("language"):
                 break
             #@-node:ekr.20031218072017.1378:<< Test for @comment or @language >>
@@ -2533,7 +2533,7 @@ class baseColorizer:
             #@        << Test for @root, @root-doc or @root-code >>
             #@+node:ekr.20031218072017.1379:<< Test for @root, @root-doc or @root-code >>
             if theDict.has_key("root") and not self.rootMode:
-            
+
                 k = theDict["root"]
                 if g.match_word(s,k,"@root-code"):
                     self.rootMode = "code"
@@ -2544,21 +2544,21 @@ class baseColorizer:
                     self.rootMode = g.choose(doc,"doc","code")
             #@-node:ekr.20031218072017.1379:<< Test for @root, @root-doc or @root-code >>
             #@nl
-    
+
         return self.language # For use by external routines.
     #@-node:ekr.20031218072017.1377:scanColorDirectives
     #@+node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
     def schedule(self,p,incremental=0):
-        
+
         __pychecker__ = '--no-argsused'
             # p not used, but it is difficult to remove.
-    
+
         if self.enabled:
             self.incremental=incremental
             g.app.gui.setIdleTimeHook(self.idle_colorize)
-            
+
     def idle_colorize(self):
-    
+
         # New in 4.3b1: make sure the colorizer still exists!
         if hasattr(self,'enabled') and self.enabled:
             p = self.c.currentPosition()
@@ -2567,15 +2567,15 @@ class baseColorizer:
     #@-node:ekr.20031218072017.2802:color.schedule & idle_colorize (not used)
     #@+node:ekr.20031218072017.2803:getCwebWord
     def getCwebWord (self,s,i):
-        
+
         # g.trace(g.get_line(s,i))
         if not g.match(s,i,"@"):
             return None
-        
+
         ch1 = ch2 = word = None
         if i + 1 < len(s): ch1 = s[i+1]
         if i + 2 < len(s): ch2 = s[i+2]
-    
+
         if g.match(s,i,"@**"):
             word = "@**"
         elif not ch1:
@@ -2587,14 +2587,14 @@ class baseColorizer:
             ch1 not in string.ascii_letters # non-letter control code
         ):
             word = s[i:i+2]
-    
+
         # if word: g.trace(word)
-            
+
         return word
     #@-node:ekr.20031218072017.2803:getCwebWord
     #@+node:ekr.20031218072017.1944:removeAllImages (leoColor)
     def removeAllImages (self):
-        
+
         for photo,image,line_index,i in self.image_references:
             try:
                 ### self.body.deleteCharacter(image)
@@ -2605,23 +2605,23 @@ class baseColorizer:
                 self.allBodyText = w.getAllText()
             except:
                 pass # The image may have been deleted earlier.
-        
+
         self.image_references = []
     #@-node:ekr.20031218072017.1944:removeAllImages (leoColor)
     #@+node:ekr.20031218072017.2804:updateSyntaxColorer
     # self.flag is True unless an unambiguous @nocolor is seen.
-    
+
     def updateSyntaxColorer (self,p):
-    
+
         p = p.copy()
         self.flag = self.useSyntaxColoring(p)
         self.scanColorDirectives(p)
     #@-node:ekr.20031218072017.2804:updateSyntaxColorer
     #@+node:ekr.20031218072017.2805:useSyntaxColoring
     def useSyntaxColoring (self,p):
-        
+
         """Return True unless p is unambiguously under the control of @nocolor."""
-        
+
         p = p.copy() ; first = p.copy()
         val = True ; self.killFlag = False
         for p in p.self_and_parents_iter():
@@ -2642,7 +2642,7 @@ class baseColorizer:
                 val = False ; break
             elif color and not no_color:
                 val = True ; break
-    
+
         return val
     #@-node:ekr.20031218072017.2805:useSyntaxColoring
     #@+node:ekr.20031218072017.2806:Utils
@@ -2653,19 +2653,19 @@ class baseColorizer:
     #@-at
     #@+node:ekr.20031218072017.1609:index & tag (leoColor)
     def index (self,i):
-    
+
         # Short-circuit the redundant computations.
         w = self.body.bodyCtrl ; s = self.allBodyText
         return w.rowColToGuiIndex(s,self.line_index-1,i)
-    
+
     def tag (self,name,i,j):
-    
+
         self.body.tag_add(name,self.index(i),self.index(j))
     #@nonl
     #@-node:ekr.20031218072017.1609:index & tag (leoColor)
     #@+node:ekr.20031218072017.2807:setFirstLineState
     def setFirstLineState (self):
-        
+
         if self.flag:
             if self.rootMode:
                 state = g.choose(self.rootMode=="code","normal","doc")
@@ -2673,12 +2673,12 @@ class baseColorizer:
                 state = "normal"
         else:
             state = "nocolor"
-    
+
         return state
     #@-node:ekr.20031218072017.2807:setFirstLineState
     #@+node:ekr.20031218072017.2808:skip_id
     def skip_id(self,s,i,chars=None):
-    
+
         n = len(s)
         chars = chars and g.toUnicode(chars,encoding='ascii') or u''
         while i < n and (g.isWordChar(s[i]) or s[i] in chars):
@@ -2687,7 +2687,7 @@ class baseColorizer:
     #@-node:ekr.20031218072017.2808:skip_id
     #@+node:ekr.20031218072017.1610:skip_python_string
     def skip_python_string(self,s,i):
-    
+
         delim = s[i:i+3]
         if delim == "'''" or delim == '"""':
             k = s.find(delim,i+3)
@@ -2700,9 +2700,9 @@ class baseColorizer:
     #@-node:ekr.20031218072017.1610:skip_python_string
     #@+node:ekr.20031218072017.2809:skip_string
     def skip_string(self,s,i):
-        
+
         """Skip a string literal."""
-    
+
         allow_newlines = self.language == "elisp"
         delim = s[i] ; i += 1
         continue_state = g.choose(delim=="'","singleString","doubleString")
@@ -2713,7 +2713,7 @@ class baseColorizer:
                 return n,continue_state
             elif s[i] == '\\': i += 2
             else: i += 1
-    
+
         if i >= n:
             return n, g.choose(allow_newlines,continue_state,"normal")
         if s[i] == delim:
@@ -2722,29 +2722,29 @@ class baseColorizer:
     #@-node:ekr.20031218072017.2809:skip_string
     #@-node:ekr.20031218072017.2806:Utils
     #@-others
-    
+
 class colorizer (baseColorizer):
     """Leo's syntax colorer class"""
     pass
 #@-node:ekr.20031218072017.2796:class colorizer
 #@+node:ekr.20031218072017.2218:class nullColorizer
 class nullColorizer (colorizer):
-    
+
     """A do-nothing colorer class"""
-    
+
     #@    @+others
     #@+node:ekr.20031218072017.2219:__init__
     def __init__ (self,c):
-        
+
         colorizer.__init__(self,c) # init the base class.
-    
+
         self.c = c
         self.enabled = False
     #@-node:ekr.20031218072017.2219:__init__
     #@+node:ekr.20031218072017.2220:entry points
     def colorize(self,p,incremental=False,interruptable=True):
         return 'ok' # Used by unit tests.
-    
+
     def disable(self):                          pass
     def enable(self):                           pass
     # def idle_colorize(self):                  pass

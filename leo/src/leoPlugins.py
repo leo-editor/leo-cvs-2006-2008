@@ -30,7 +30,7 @@ loadingModuleNameStack = [] # The stack of module names.  Top is the module bein
 def callTagHandler (bunch,tag,keywords):
 
     handler = bunch.fn ; moduleName = bunch.moduleName
-    
+
     # if tag != 'idle': print 'callTagHandler',tag,keywords.get('c')
 
     # Make sure the new commander exists.
@@ -52,9 +52,9 @@ def callTagHandler (bunch,tag,keywords):
 #@-node:ekr.20050102094729:callTagHandler
 #@+node:ekr.20031218072017.3442:doHandlersForTag
 def doHandlersForTag (tag,keywords):
-    
+
     """Execute all handlers for a given tag, in alphabetical order.
-    
+
     All exceptions are caught by the caller, doHook."""
 
     global handlers
@@ -80,10 +80,10 @@ def doHandlersForTag (tag,keywords):
 #@-node:ekr.20031218072017.3442:doHandlersForTag
 #@+node:ekr.20041001161108:doPlugins
 def doPlugins(tag,keywords):
-    
+
     if g.app.killed:
         return
-        
+
     # g.trace(tag)
     if tag in ('start1','open0'):
         loadHandlers(tag)
@@ -92,7 +92,7 @@ def doPlugins(tag,keywords):
 #@-node:ekr.20041001161108:doPlugins
 #@+node:ekr.20041111124831:getHandlersForTag
 def getHandlersForTag(tags):
-    
+
     import types
 
     if type(tags) in (types.TupleType,types.ListType):
@@ -113,16 +113,16 @@ def getHandlersForOneTag (tag):
 #@-node:ekr.20041111124831:getHandlersForTag
 #@+node:ekr.20041114113029:getPluginModule
 def getPluginModule (moduleName):
-    
+
     global loadedModules
-    
+
     return loadedModules.get(moduleName)
 #@-node:ekr.20041114113029:getPluginModule
 #@+node:ekr.20041001160216:isLoaded
 def isLoaded (name):
-    
+
     if name.endswith('.py'): name = name[:-3]
-    
+
     return name in g.app.loadedPlugins
 #@-node:ekr.20041001160216:isLoaded
 #@+node:ekr.20031218072017.3440:loadHandlers & helper
@@ -168,13 +168,13 @@ def loadHandlers(tag):
             #@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
             #@nl
         else:  return
-    
+
     # Load plugins in the order they appear in the enabled_files list.
     if files and enabled_files:
         for theFile in enabled_files:
             if theFile in files:
                 loadOnePlugin(theFile)
-                
+
     # Note: g.plugin_signon adds module names to g.app.loadedPlugins 
     if g.app.loadedPlugins:
         g.es("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
@@ -206,11 +206,11 @@ def getEnabledFiles (s,plugins_path):
 #@-node:ekr.20031218072017.3440:loadHandlers & helper
 #@+node:ekr.20041113113140:loadOnePlugin
 def loadOnePlugin (moduleOrFileName, verbose=False):
-    
+
     global loadedModules,loadingModuleNameStack
-    
+
     verbose = verbose or g.app.config.getBool(c=None,setting='trace_plugins')
-    
+
     if moduleOrFileName.endswith('.py'):
         moduleName = moduleOrFileName [:-3]
     else:
@@ -226,7 +226,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
 
     plugins_path = g.os_path_join(g.app.loadDir,"..","plugins")
     moduleName = g.toUnicode(moduleName,g.app.tkEncoding)
-    
+
     # This import will typically result in calls to registerHandler.
     # if the plugin does _not_ use the init top-level function.
     loadingModuleNameStack.append(moduleName)
@@ -260,7 +260,7 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
             else:
                 loadedModules[moduleName] = result
         loadingModuleNameStack.pop()
-        
+
     if result is None:
         if verbose and not g.app.initing: # or not g.app.unitTesting:
             s = 'can not load enabled %s plugin' % moduleName
@@ -268,13 +268,13 @@ def loadOnePlugin (moduleOrFileName, verbose=False):
     elif verbose:
         s = 'loaded %s plugin' % moduleName
         g.es_print(s,color="blue")
-    
+
     return result
 #@nonl
 #@-node:ekr.20041113113140:loadOnePlugin
 #@+node:ekr.20050110191444:printHandlers
 def printHandlers (moduleName=None):
-    
+
     if moduleName:
         g.es_print('handlers for %s...' % (moduleName))
     else:
@@ -298,7 +298,7 @@ def printHandlers (moduleName=None):
 #@-node:ekr.20050110191444:printHandlers
 #@+node:ekr.20070429090122:printPlugins
 def printPlugins ():
-    
+
     g.es_print('Enabled plugins...')
     keys = loadedModules.keys()
     keys = [s.lower() for s in keys]
@@ -308,31 +308,31 @@ def printPlugins ():
 #@-node:ekr.20070429090122:printPlugins
 #@+node:ekr.20031218072017.3444:registerExclusiveHandler
 def registerExclusiveHandler(tags, fn):
-    
+
     """ Register one or more exclusive handlers"""
-    
+
     import types
-    
+
     if type(tags) in (types.TupleType,types.ListType):
         for tag in tags:
             registerOneExclusiveHandler(tag,fn)
     else:
         registerOneExclusiveHandler(tags,fn)
-            
+
 def registerOneExclusiveHandler(tag, fn):
-    
+
     """Register one exclusive handler"""
-    
+
     global handlers, loadingModuleNameStack
     try:
         moduleName = loadingModuleNameStack[-1]
     except IndexError:
         moduleName = '<no module>'
-    
+
     if 0:
         if g.app.unitTesting: print
         print '%6s %15s %25s %s' % (g.app.unitTesting,moduleName,tag,fn.__name__)
-    
+
     if g.app.unitTesting: return
 
     if handlers.has_key(tag):
@@ -343,7 +343,7 @@ def registerOneExclusiveHandler(tag, fn):
 #@-node:ekr.20031218072017.3444:registerExclusiveHandler
 #@+node:ekr.20031218072017.3443:registerHandler
 def registerHandler(tags,fn):
-    
+
     """ Register one or more handlers"""
 
     import types
@@ -355,31 +355,31 @@ def registerHandler(tags,fn):
         registerOneHandler(tags,fn)
 
 def registerOneHandler(tag,fn):
-    
+
     """Register one handler"""
-    
+
     global handlers, loadingModuleNameStack
     try:
         moduleName = loadingModuleNameStack[-1]
     except IndexError:
         moduleName = '<no module>'
-    
+
     if 0:
         if g.app.unitTesting: print
         print '%6s %15s %25s %s' % (g.app.unitTesting,moduleName,tag,fn.__name__)
 
     items = handlers.get(tag,[])
     if fn not in items:
-        
+
         bunch = g.Bunch(fn=fn,moduleName=moduleName,tag='handler')
         items.append(bunch)
-        
+
     # g.trace(tag) ; g.printList(items)
     handlers[tag] = items
 #@-node:ekr.20031218072017.3443:registerHandler
 #@+node:ekr.20050110182317:unloadOnePlugin
 def unloadOnePlugin (moduleOrFileName,verbose=False):
-    
+
     if moduleOrFileName [-3:] == ".py":
         moduleName = moduleOrFileName [:-3]
     else:
@@ -390,7 +390,7 @@ def unloadOnePlugin (moduleOrFileName,verbose=False):
         if verbose:
             print 'unloading',moduleName
         g.app.loadedPlugins.remove(moduleName)
-        
+
     for tag in handlers.keys():
         bunches = handlers.get(tag)
         bunches = [bunch for bunch in bunches if bunch.moduleName != moduleName]
@@ -398,7 +398,7 @@ def unloadOnePlugin (moduleOrFileName,verbose=False):
 #@-node:ekr.20050110182317:unloadOnePlugin
 #@+node:ekr.20041111123313:unregisterHandler
 def unregisterHandler(tags,fn):
-    
+
     import types
 
     if type(tags) in (types.TupleType,types.ListType):
@@ -410,7 +410,7 @@ def unregisterHandler(tags,fn):
 def unregisterOneHandler (tag,fn):
 
     global handlers
-    
+
     if 1: # New code
         bunches = handlers.get(tag)
         bunches = [bunch for bunch in bunches if bunch.fn != fn]
@@ -428,110 +428,110 @@ class baseLeoPlugin(object):
     #@    <<docstring>>
     #@+node:ktenney.20060628092017.2:<<docstring>>
     """A Convenience class to simplify plugin authoring
-    
+
     .. contents::
-    
+
     Usage
     =====
-    
-    
+
+
     Initialization
     --------------
-    
+
     - import the base class::
-        
+
         from leoPlugins import leoBasePlugin
-    
+
     - create a class which inherits from leoBasePlugin::
-        
+
         class myPlugin(leoBasePlugin):
-            
+
     - in the __init__ method of the class, call the parent constructor::
-        
+
         def __init__(self, tag, keywords):
             leoBasePlugin.__init__(self, tag, keywords)
-            
+
     - put the actual plugin code into a method; for this example, the work
       is done by myPlugin.handler()
-      
+
     - put the class in a file which lives in the <LeoDir>/plugins directory
         for this example it is named myPlugin.py
-    
+
     - add code to register the plugin::
-       
+
         leoPlugins.registerHandler("after-create-leo-frame", Hello)
-            
+
     Configuration
     -------------
-    
+
     baseLeoPlugins has 3 *methods* for setting commands
-    
+
     - setCommand::
-        
+
             def setCommand(self, commandName, handler, 
                     shortcut = None, pane = 'all', verbose = True):
-    
+
     - setMenuItem::
-        
+
             def setMenuItem(self, menu, commandName = None, handler = None):
-    
+
     - setButton::
-        
+
             def setButton(self, buttonText = None, commandName = None, color = None):
-                
+
     *variables*
-    
+
     :commandName:  the string typed into minibuffer to execute the ``handler``
-     
+
     :handler:  the method in the class which actually does the work
-     
+
     :shortcut:  the key combination to activate the command
-     
+
     :menu:  a string designating on of the menus ('File', Edit', 'Outline', ...)
-     
+
     :buttonText:  the text to put on the button if one is being created.
-    
+
     Example
     =======
-    
+
     Contents of file ``<LeoDir>/plugins/hello.py``::
-    
+
         class Hello(baseLeoPlugin):
             def __init__(self, tag, keywords):
-                
+
                 # call parent __init__
                 baseLeoPlugin.__init__(self, tag, keywords)
-                
+
                 # if the plugin object defines only one command, 
                 # just give it a name. You can then create a button and menu entry
                 self.setCommand('Hello', self.hello)
                 self.setButton()
                 self.setMenuItem('Cmds')
-                
+
                 # create a command with a shortcut
                 self.setCommand('Hola', self.hola, 'Alt-Ctrl-H')
-                
+
                 # create a button using different text than commandName
                 self.setButton('Hello in Spanish')
-                
+
                 # create a menu item with default text
                 self.setMenuItem('Cmds')
-                
+
                 # define a command using setMenuItem 
                 self.setMenuItem('Cmds', 'Ciao baby', self.ciao)
-                                
+
             def hello(self, event):
                 self.g.es( "hello from node %s" % self.c.currentPosition().headString())
-        
+
             def hola(self, event):
                 self.g.es( "hola from node %s" % self.c.currentPosition().headString())
-                
+
             def ciao(self, event):
                 self.g.es( "ciao baby (%s)" % self.c.currentPosition().headString())
-                    
-           
+
+
         leoPlugins.registerHandler("after-create-leo-frame", Hello)
-        
+
     """
     #@-node:ktenney.20060628092017.2:<<docstring>>
     #@nl
@@ -543,23 +543,23 @@ class baseLeoPlugin(object):
     #@    @+others
     #@+node:ktenney.20060628092017.4:__init__
     def __init__(self, tag, keywords):
-        
+
         """Set self.c to be the ``commander`` of the active node
         """
-                    
+
         self.c = keywords['c']
         self.commandNames = []
     #@-node:ktenney.20060628092017.4:__init__
     #@+node:ktenney.20060628092017.5:setCommand
     def setCommand(self, commandName, handler, 
                     shortcut = None, pane = 'all', verbose = True):
-        
+
         """Associate a command name with handler code, 
         optionally defining a keystroke shortcut
         """
-        
+
         self.commandNames.append(commandName)
-        
+
         self.commandName = commandName
         self.shortcut = shortcut
         self.handler = handler
@@ -568,11 +568,11 @@ class baseLeoPlugin(object):
     #@-node:ktenney.20060628092017.5:setCommand
     #@+node:ktenney.20060628092017.6:setMenuItem
     def setMenuItem(self, menu, commandName = None, handler = None):
-        
+
         """Create a menu item in 'menu' using text 'commandName' calling handler 'handler'
         if commandName and handler are none, use the most recently defined values
         """
-        
+
         # setMenuItem can create a command, or use a previously defined one.
         if commandName is None:
             commandName = self.commandName
@@ -580,28 +580,28 @@ class baseLeoPlugin(object):
         else:
             if commandName not in self.commandNames:
                 self.commandNames.append(commandName) 
-                       
+
         if handler is None:
             handler = self.handler
-            
+
         table = ((commandName, None, handler),)
         self.c.frame.menu.createMenuItemsFromTable(menu, table)
     #@-node:ktenney.20060628092017.6:setMenuItem
     #@+node:ktenney.20060628092017.7:setButton
     def setButton(self, buttonText = None, commandName = None, color = None):
-        
+
         """Associate an existing command with a 'button'
         """
-        
+
         if buttonText is None:
             buttonText = self.commandName
-            
+
         if commandName is None:
             commandName = self.commandName       
         else:
             if commandName not in self.commandNames:
                 raise NameError, "setButton error, %s is not a commandName" % commandName
-            
+
         if color is None:
             color = 'grey'
         script = "c.k.simulateCommand('%s')" % self.commandName

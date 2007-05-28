@@ -14,13 +14,13 @@ import sys
 class LeoApp:
 
     """A class representing the Leo application itself.
-    
+
     Ivars of this class are Leo's global variables."""
-    
+
     #@    @+others
     #@+node:ekr.20031218072017.1416:app.__init__
     def __init__(self):
-    
+
         # These ivars are the global vars of this program.
         self.afterHandler = None
         self.batchMode = False # True: run in batch mode.
@@ -80,18 +80,18 @@ class LeoApp:
         self.use_psyco = False # Can't be a config param because it is used before config module can be inited.
         self.user_xresources_path = None # Resource file for Tk/tcl.
         self.windowList = [] # Global list of all frames.  Does not include hidden root window.
-    
+
         # Global panels.  Destroyed when Leo ends.
         self.pythonFrame = None
-        
+
         #@    << Define global constants >>
         #@+node:ekr.20031218072017.1417:<< define global constants >>
         self.prolog_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-        
+
         # New in leo.py 3.0
         self.prolog_prefix_string = "<?xml version=\"1.0\" encoding="
         self.prolog_postfix_string = "?>"
-        
+
         # leo.py 3.11
         self.use_unicode = True # True: use new unicode logic.
         #@-node:ekr.20031218072017.1417:<< define global constants >>
@@ -127,7 +127,7 @@ class LeoApp:
             "shell" : "#",  # shell scripts
             "tcltk" : "#",
             "unknown" : "#" } # Set when @comment is seen.
-        
+
         self.language_extension_dict = {
             "ada" : "ads",
             "actionscript" : "as", #jason 2003-07-03
@@ -159,7 +159,7 @@ class LeoApp:
             "tex" : "tex",
             "tcltk" : "tcl",
             "unknown" : "txt" } # Set when @comment is seen.
-            
+
         self.extension_dict = {
             "ads"   : "ada",
             "adb"   : "ada",
@@ -193,32 +193,32 @@ class LeoApp:
     #@-node:ekr.20031218072017.1416:app.__init__
     #@+node:ekr.20031218072017.2609:app.closeLeoWindow
     def closeLeoWindow (self,frame):
-        
+
         """Attempt to close a Leo window.
-        
+
         Return False if the user veto's the close."""
-        
+
         c = frame.c
-        
+
         if c.promptingForClose:
             # There is already a dialog open asking what to do.
             return False
-            
+
         g.app.config.writeRecentFilesFile(c) # Make sure .leoRecentFiles.txt is written.
-    
+
         if c.changed:
             c.promptingForClose = True
             veto = frame.promptForSave()
             c.promptingForClose = False
             if veto: return False
-    
+
         g.app.setLog(None) # no log until we reactive a window.
-        
+
         g.doHook("close-frame",c=c) # This may remove frame from the window list.
-        
+
         if frame in g.app.windowList:
             g.app.destroyWindow(frame)
-        
+
         if g.app.windowList:
             # Pick a window to activate so we can set the log.
             frame = g.app.windowList[0]
@@ -228,53 +228,53 @@ class LeoApp:
             frame.c.bodyWantsFocusNow()
         elif not g.app.unitTesting:
             g.app.finishQuit()
-    
+
         return True # The window has been closed.
     #@-node:ekr.20031218072017.2609:app.closeLeoWindow
     #@+node:ekr.20031218072017.2610:app.createTkGui
     def createTkGui (self,fileName=None):
-        
+
         # Do NOT omit fileName param: it is used in plugin code.
         __pychecker__ = '--no-argsused'
-        
+
         """A convenience routines for plugins to create the default Tk gui class."""
-        
+
         import leoTkinterGui # Do this import after app module is fully imported.
-    
+
         g.app.gui = leoTkinterGui.tkinterGui()
         g.app.root = g.app.gui.createRootWindow()
-        
+
         # Show a dialog and exit immediately if Pmw can not be imported.
         g.importExtension("Pmw",pluginName="Leo's core",verbose=False,required=True)
         g.app.gui.finishCreate()
-        
+
         if 0:
             if fileName:
                 print "Tk gui created in", g.shortFileName(fileName)
     #@-node:ekr.20031218072017.2610:app.createTkGui
     #@+node:ekr.20031218072017.2612:app.destroyAllOpenWithFiles
     def destroyAllOpenWithFiles (self):
-    
+
         """Try to remove temp files created with the Open With command.
-        
+
         This may fail if the files are still open."""
-        
+
         # We can't use g.es here because the log stream no longer exists.
-    
+
         for theDict in self.openWithFiles[:]: # 7/10/03.
             g.app.destroyOpenWithFileWithDict(theDict)
-            
+
         # Delete the list so the gc can recycle Leo windows!
         g.app.openWithFiles = []
     #@-node:ekr.20031218072017.2612:app.destroyAllOpenWithFiles
     #@+node:ekr.20031218072017.2613:app.destroyOpenWithFilesForFrame
     def destroyOpenWithFilesForFrame (self,frame):
-        
+
         """Close all "Open With" files associated with frame"""
-        
+
         # Make a copy of the list: it may change in the loop.
         openWithFiles = g.app.openWithFiles
-    
+
         for theDict in openWithFiles[:]: # 6/30/03
             c = theDict.get("c")
             if c.frame == frame:
@@ -282,7 +282,7 @@ class LeoApp:
     #@-node:ekr.20031218072017.2613:app.destroyOpenWithFilesForFrame
     #@+node:ekr.20031218072017.2614:app.destroyOpenWithFileWithDict
     def destroyOpenWithFileWithDict (self,theDict):
-        
+
         path = theDict.get("path")
         if path and g.os_path_exists(path):
             try:
@@ -290,44 +290,44 @@ class LeoApp:
                 print "deleting temp file:", g.shortFileName(path)
             except:
                 print "can not delete temp file:", path
-                
+
         # Remove theDict from the list so the gc can recycle the Leo window!
         g.app.openWithFiles.remove(theDict)
     #@-node:ekr.20031218072017.2614:app.destroyOpenWithFileWithDict
     #@+node:ekr.20031218072017.2615:app.destroyWindow
     def destroyWindow (self,frame):
-        
+
         # g.trace(frame in g.app.windowList,frame)
-            
+
         g.app.destroyOpenWithFilesForFrame(frame)
-    
+
         if frame in g.app.windowList:
             g.app.windowList.remove(frame)
             # g.trace(g.app.windowList)
-    
+
         # force the window to go away now.
         # Important: this also destroys all the objects of the commander.
         frame.destroySelf()
     #@-node:ekr.20031218072017.2615:app.destroyWindow
     #@+node:ekr.20031218072017.1732:app.finishQuit
     def finishQuit(self):
-        
+
         # forceShutdown may already have fired the "end1" hook.
         if not g.app.killed:
             g.doHook("end1")
-    
+
         self.destroyAllOpenWithFiles()
-        
+
         if g.app.gui:
             g.app.gui.destroySelf()
-            
+
         # Don't use g.trace!
         # print 'app.finishQuit: setting g.app.killed',g.callers()
-            
+
         g.app.killed = True
             # Disable all further hooks and events.
             # Alas, "idle" events can still be called even after the following code.
-            
+
         if g.app.afterHandler:
             # TK bug: This appears to have no effect, at least on Windows.
             # print "finishQuit: cancelling",g.app.afterHandler
@@ -337,34 +337,34 @@ class LeoApp:
     #@-node:ekr.20031218072017.1732:app.finishQuit
     #@+node:ekr.20031218072017.2616:app.forceShutdown
     def forceShutdown (self):
-        
+
         """Forces an immediate shutdown of Leo at any time.
-        
+
         In particular, may be called from plugins during startup."""
-        
+
         # Wait until everything is quiet before really quitting.
         g.doHook("end1")
-        
+
         self.log = None # Disable writeWaitingLog
         self.killed = True # Disable all further hooks.
-        
+
         for w in self.windowList[:]:
             self.destroyWindow(w)
-    
+
         self.finishQuit()
     #@-node:ekr.20031218072017.2616:app.forceShutdown
     #@+node:ekr.20031218072017.2617:app.onQuit
     def onQuit (self,event=None):
-        
+
         '''Exit Leo, prompting to save unsaved outlines first.'''
-        
+
         g.app.quitting = True
-        
+
         while g.app.windowList:
             w = g.app.windowList[0]
             if not g.app.closeLeoWindow(w):
                 break
-    
+
         if g.app.windowList:
             g.app.quitting = False # If we get here the quit has been disabled.
     #@-node:ekr.20031218072017.2617:app.onQuit
@@ -377,23 +377,23 @@ class LeoApp:
     # leoGlobals.py.
     #@-at
     #@@c
-    
+
     def setEncoding (self):
-        
+
         """Set g.app.tkEncoding."""
-    
+
         try: locale_encoding = g.getpreferredencoding()
         except Exception: locale_encoding = None
-        
+
         try: sys_encoding = sys.getdefaultencoding()
         except Exception: sys_encoding = None
-    
+
         for (encoding,src) in (
             (self.config.tkEncoding,"config"),
             (locale_encoding,"locale"),
             (sys_encoding,"sys"),
             ("utf-8","default")):
-        
+
             if g.isValidEncoding (encoding):
                 self.tkEncoding = encoding
                 # g.trace(self.tkEncoding,src)
@@ -404,22 +404,22 @@ class LeoApp:
     #@-node:ekr.20031218072017.2618:app.setEncoding
     #@+node:ekr.20031218072017.1978:app.setLeoID
     def setLeoID (self,verbose=True):
-    
+
         tag = ".leoID.txt"
         homeDir = g.app.homeDir
         globalConfigDir = g.app.globalConfigDir
         loadDir = g.app.loadDir
-        
+
         verbose = not g.app.unitTesting
         #@    << return if we can set leoID from sys.leoID >>
         #@+node:ekr.20031218072017.1979:<< return if we can set leoID from sys.leoID>>
         # This would be set by in Python's sitecustomize.py file.
-        
+
         # 7/2/04: Use hasattr & getattr to suppress pychecker warning.
         # We also have to use a "non-constant" attribute to suppress another warning!
-        
+
         nonConstantAttr = "leoID"
-        
+
         if hasattr(sys,nonConstantAttr):
             g.app.leoID = getattr(sys,nonConstantAttr)
             if verbose and not g.app.unitTesting:
@@ -464,7 +464,7 @@ class LeoApp:
                     g.es("using os.getenv('USER'): %s " % (repr(theId)),color='red')
                 g.app.leoID = theId
                 return
-                
+
         except Exception:
             pass
         #@-node:ekr.20060211140947.1:<< return if we can set leoID from os.getenv('USER') >>
@@ -472,13 +472,13 @@ class LeoApp:
         #@    << put up a dialog requiring a valid id >>
         #@+node:ekr.20031218072017.1981:<< put up a dialog requiring a valid id >>
         # New in 4.1: get an id for gnx's.  Plugins may set g.app.leoID.
-        
+
         # Create an emergency gui and a Tk root window.
         g.app.createTkGui("startup")
-        
+
         # Bug fix: 2/6/05: put result in g.app.leoID.
         g.app.leoID = g.app.gui.runAskLeoIDDialog()
-        
+
         # g.trace(g.app.leoID)
         g.es("leoID = %s" % (repr(g.app.leoID)),color="blue")
         #@-node:ekr.20031218072017.1981:<< put up a dialog requiring a valid id >>
@@ -507,26 +507,26 @@ class LeoApp:
     #@-node:ekr.20031218072017.1978:app.setLeoID
     #@+node:ekr.20031218072017.1847:app.setLog, lockLog, unlocklog
     def setLog (self,log):
-    
+
         """set the frame to which log messages will go"""
-        
+
         # print "setLog:",tag,"locked:",self.logIsLocked,log
         if not self.logIsLocked:
             self.log = log
-    
+
     def lockLog(self):
         """Disable changes to the log"""
         self.logIsLocked = True
-        
+
     def unlockLog(self):
         """Enable changes to the log"""
         self.logIsLocked = False
     #@-node:ekr.20031218072017.1847:app.setLog, lockLog, unlocklog
     #@+node:ekr.20031218072017.2619:app.writeWaitingLog
     def writeWaitingLog (self):
-    
+
         # g.trace(g.app.gui,self.log)
-    
+
         if self.log:
             if 1: # not self.log.isNull: # The test for isNull would probably interfere with batch mode.
                 for s,color in self.logWaiting:
@@ -537,13 +537,13 @@ class LeoApp:
     #@-node:ekr.20031218072017.2619:app.writeWaitingLog
     #@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
     def newLeoCommanderAndFrame(self,fileName,updateRecentFiles=True):
-        
+
         """Create a commander and its view frame for the Leo main window."""
-        
+
         app = self
-        
+
         import leoCommands
-        
+
         if not fileName: fileName = ""
         #@    << compute the window title >>
         #@+node:ekr.20031218072017.2189:<< compute the window title >>
@@ -559,28 +559,28 @@ class LeoApp:
             g.app.numberOfWindows = n+1
         #@-node:ekr.20031218072017.2189:<< compute the window title >>
         #@nl
-    
+
         # Create an unfinished frame to pass to the commanders.
         frame = app.gui.createLeoFrame(title)
-        
+
         # Create the commander and its subcommanders.
         c = leoCommands.Commands(frame,fileName)
-        
+
         if not app.initing:
             g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
-            
+
         frame.finishCreate(c)
         c.finishCreate()
-        
+
         # Finish initing the subcommanders.
         c.undoer.clearUndoState() # Menus must exist at this point.
-        
+
         if updateRecentFiles:
             c.updateRecentFiles(fileName)
-        
+
         if not g.app.initing:
             g.doHook("after-create-leo-frame",c=c)
-    
+
         return c,frame
     #@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
     #@-others

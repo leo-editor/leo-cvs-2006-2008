@@ -62,18 +62,18 @@ import re
 #@+others
 #@+node:ekr.20070105092022.1:class searchWidget
 class searchWidget:
-    
+
     '''A class to simulating a hidden Tk Text widget.'''
 
     def __repr__(self):
         return 'searchWidget id: %s' % (id(self))
-        
+
     #@    @+others
     #@+node:ekr.20070105092438:ctor
     def __init__ (self,*args,**keys):
-        
+
         # g.trace ('searchWidget',g.callers())
-        
+
         self.s = ''    # The widget text
         self.i = 0     # The insert point
         self.sel = 0,0 # The selection range
@@ -82,7 +82,7 @@ class searchWidget:
     def getAllText (self):          return self.s
     def getInsertPoint (self):      return self.i       # Returns Python index.
     def getSelectionRange(self):    return self.sel     # Returns Python indices.
-    
+
     #@-node:ekr.20070105093138:getters
     #@+node:ekr.20070105102419:setters
     def delete(self,i,j=None):
@@ -90,22 +90,22 @@ class searchWidget:
         if j is None: j = i + 1
         else: j = self.toPythonIndex(j)
         self.s = self.s[:i] + self.s[j:]
-    
+
     def insert(self,i,s):
         if not s: return
         i = self.toPythonIndex(i)
         self.s = self.s[:i] + s + self.s[i:]
         self.i = i
         self.sel = i,i
-        
+
     def setAllText (self,s):
         self.s = s
         self.i = 0
         self.sel = 0,0
-    
+
     def setInsertPoint (self,i):
         self.i = i
-    
+
     def setSelectionRange (self,i,j,insert=None):
         self.sel = self.toPythonIndex(i),self.toPythonIndex(j)
         if insert is not None:
@@ -113,18 +113,18 @@ class searchWidget:
     #@-node:ekr.20070105102419:setters
     #@+node:ekr.20070105092022.4:toPythonIndex
     def toPythonIndex (self,i):
-        
+
         '''Make sure i is a Python index.'''
-    
+
         if i is None:
             return 0
-    
+
         elif type(i) in (type('a'),type(u'a')):
             row,col = i.split('.')
             row,col = int(row),int(col)
             row -= 1
             i = g.convertRowColToPythonIndex(self.s,row,col)
-    
+
         return i
     #@-node:ekr.20070105092022.4:toPythonIndex
     #@-others
@@ -138,11 +138,11 @@ class leoFind:
     #@    @+others
     #@+node:ekr.20031218072017.3053:leoFind.__init__ & helpers
     def __init__ (self,c,title=None):
-        
+
         # g.trace('leoFind',c)
-    
+
         self.c = c
-        
+
         # Spell checkers use this class, so we can't always compute a title.
         if title:
             self.title = title
@@ -153,11 +153,11 @@ class leoFind:
                 s = "untitled"
             else:
                 path,s = g.os_path_split(c.mFileName)
-                
+
             self.title = "Find/Change for %s" %  s
             #@-node:ekr.20041121145452:<< compute self.title >>
             #@nl
-    
+
         #@    << init the gui-independent ivars >>
         #@+node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
         self.wrapPosition = None
@@ -165,7 +165,7 @@ class leoFind:
         self.find_text = ""
         self.change_text = ""
         self.unstick = False
-        
+
         #@+at
         # New in 4.3:
         # - These are the names of leoFind ivars. (no more _flag hack).
@@ -177,7 +177,7 @@ class leoFind:
         # find.
         #@-at
         #@@c
-        
+
         #@<< do dummy initialization to keep Pychecker happy >>
         #@+node:ekr.20050123164539:<< do dummy initialization to keep Pychecker happy >>
         if 1:
@@ -197,7 +197,7 @@ class leoFind:
             self.selection_only = None
             self.wrap = None
             self.whole_word = None
-            
+
         if 1:
             self.change_ctrl = None
             self.find_ctrl = None
@@ -205,7 +205,7 @@ class leoFind:
             self.svarDict = {}
         #@-node:ekr.20050123164539:<< do dummy initialization to keep Pychecker happy >>
         #@nl
-        
+
         self.intKeys = [
             "batch","ignore_case", "node_only",
             "pattern_match", "search_headline", "search_body",
@@ -213,9 +213,9 @@ class leoFind:
             "script_search","script_change","selection_only",
             "wrap", "whole_word",
         ]
-        
+
         self.newStringKeys = ["radio-find-type", "radio-search-scope"]
-        
+
         # Ivars containing internal state...
         self.c = None # The commander for this search.
         self.clone_find_all = False
@@ -224,7 +224,7 @@ class leoFind:
         self.s_ctrl = searchWidget() # The search text for this search.
         self.wrapping = False # True: wrapping is enabled.
             # This is _not_ the same as self.wrap for batch searches.
-        
+
         #@+at 
         #@nonl
         # Initializing a wrapped search is tricky.  The search() method will 
@@ -235,7 +235,7 @@ class leoFind:
         # search suceeds.
         #@-at
         #@@c
-        
+
         self.wrapPosition = None # The start of wrapped searches: persists between calls.
         self.onlyPosition = None # The starting node for suboutline-only searches.
         self.wrapPos = None # The starting position of the wrapped search: persists between calls.
@@ -243,20 +243,20 @@ class leoFind:
         self.selStart = self.selEnd = None # For selection-only searches.
         #@-node:ekr.20031218072017.3054:<< init the gui-independent ivars >>
         #@nl
-        
+
     def init (self,c):
         self.oops()
     #@-node:ekr.20031218072017.3053:leoFind.__init__ & helpers
     #@+node:ekr.20060123065756.1:Top Level Buttons
     #@+node:ekr.20031218072017.3057:changeAllButton
     # The user has pushed the "Change All" button from the find panel.
-    
+
     def changeAllButton(self):
-    
+
         c = self.c
         self.setup_button()
         c.clearAllVisited() # Clear visited for context reporting.
-    
+
         if self.script_change:
             self.doChangeAllScript()
         elif self.selection_only:
@@ -266,11 +266,11 @@ class leoFind:
     #@-node:ekr.20031218072017.3057:changeAllButton
     #@+node:ekr.20031218072017.3056:changeButton
     # The user has pushed the "Change" button from the find panel.
-    
+
     def changeButton(self):
-    
+
         self.setup_button()
-    
+
         if self.script_change:
             self.doChangeScript()
         else:
@@ -278,11 +278,11 @@ class leoFind:
     #@-node:ekr.20031218072017.3056:changeButton
     #@+node:ekr.20031218072017.3058:changeThenFindButton
     # The user has pushed the "Change Then Find" button from the find panel.
-    
+
     def changeThenFindButton(self):
-    
+
         self.setup_button()
-    
+
         if self.script_change:
             self.doChangeScript()
             if self.script_search:
@@ -298,13 +298,13 @@ class leoFind:
     #@-node:ekr.20031218072017.3058:changeThenFindButton
     #@+node:ekr.20031218072017.3060:findAllButton
     # The user has pushed the "Find All" button from the find panel.
-    
+
     def findAllButton(self):
-    
+
         c = self.c
         self.setup_button()
         c.clearAllVisited() # Clear visited for context reporting.
-    
+
         if self.script_search:
             self.doFindAllScript()
         elif self.selection_only:
@@ -314,11 +314,11 @@ class leoFind:
     #@-node:ekr.20031218072017.3060:findAllButton
     #@+node:ekr.20031218072017.3059:findButton
     # The user has pushed the "Find" button from the find panel.
-    
+
     def findButton(self):
-    
+
         self.setup_button()
-    
+
         if self.script_search:
             self.doFindScript()
         else:
@@ -326,27 +326,27 @@ class leoFind:
     #@-node:ekr.20031218072017.3059:findButton
     #@+node:ekr.20031218072017.3065:setup_button
     # Initializes a search when a button is pressed in the Find panel.
-    
+
     def setup_button(self):
-        
+
         c = self.c
         self.p = c.currentPosition()
-    
+
         c.bringToFront()
         if 0: # We _must_ retain the editing status for incremental searches!
             c.endEditing()
-    
+
         self.update_ivars()
     #@-node:ekr.20031218072017.3065:setup_button
     #@-node:ekr.20060123065756.1:Top Level Buttons
     #@+node:ekr.20031218072017.3055:Top Level Commands
     #@+node:ekr.20031218072017.3061:changeCommand
     # The user has selected the "Replace" menu item.
-    
+
     def changeCommand(self,c):
-    
+
         self.setup_command()
-    
+
         if self.script_search:
             self.doChangeScript()
         else:
@@ -354,11 +354,11 @@ class leoFind:
     #@-node:ekr.20031218072017.3061:changeCommand
     #@+node:ekr.20031218072017.3062:changeThenFindCommand
     # The user has pushed the "Change Then Find" button from the Find menu.
-    
+
     def changeThenFindCommand(self,c):
-    
+
         self.setup_command()
-    
+
         if self.script_search:
             self.doChangeScript()
             self.doFindScript()
@@ -371,11 +371,11 @@ class leoFind:
     #@-node:ekr.20051013084200.1:dismiss: defined in subclass class
     #@+node:ekr.20031218072017.3063:findNextCommand
     # The user has selected the "Find Next" menu item.
-    
+
     def findNextCommand(self,c):
-    
+
         self.setup_command()
-    
+
         if self.script_search:
             self.doFindScript()
         else:
@@ -383,25 +383,25 @@ class leoFind:
     #@-node:ekr.20031218072017.3063:findNextCommand
     #@+node:ekr.20031218072017.3064:findPreviousCommand
     # The user has selected the "Find Previous" menu item.
-    
+
     def findPreviousCommand(self,c):
-    
+
         self.setup_command()
-    
+
         self.reverse = not self.reverse
-    
+
         if self.script_search:
             self.doFindScript()
         else:
             self.findNext()
-    
+
         self.reverse = not self.reverse
     #@-node:ekr.20031218072017.3064:findPreviousCommand
     #@+node:EKR.20040503070514:handleUserClick
     def handleUserClick (self,p):
-        
+
         """Reset suboutline-only search when the user clicks a headline."""
-        
+
         try:
             if self.c and self.suboutline_only:
                 # g.trace(p)
@@ -410,14 +410,14 @@ class leoFind:
     #@-node:EKR.20040503070514:handleUserClick
     #@+node:ekr.20031218072017.3066:setup_command
     # Initializes a search when a command is invoked from the menu.
-    
+
     def setup_command(self):
-        
+
         # g.trace('leoFind')
-    
+
         if 0: # We _must_ retain the editing status for incremental searches!
             self.c.endEditing()
-    
+
         self.update_ivars()
     #@-node:ekr.20031218072017.3066:setup_command
     #@-node:ekr.20031218072017.3055:Top Level Commands
@@ -434,9 +434,9 @@ class leoFind:
     # empty. NB: we can not assume that self.p is visible.
     #@-at
     #@@c
-    
+
     def batchChange (self,pos1,pos2):
-    
+
         c = self.c ; u = c.undoer
         p = self.p ; w = self.s_ctrl
         # Replace the selection with self.change_text
@@ -454,18 +454,18 @@ class leoFind:
             #@        << change headline >>
             #@+node:ekr.20031218072017.2294:<< change headline >>
             if len(s) > 0 and s[-1]=='\n': s = s[:-1]
-            
+
             if s != p.headString():
-                
+
                 undoData = u.beforeChangeNodeContents(p)
-            
+
                 p.initHeadString(s)
                 if self.mark_changes:
                     p.setMarked()
                 p.setDirty()
                 if not c.isChanged():
                     c.setChanged(True)
-                
+
                 u.afterChangeNodeContents(p,'Change Headline',undoData)
             #@-node:ekr.20031218072017.2294:<< change headline >>
             #@nl
@@ -473,34 +473,34 @@ class leoFind:
             #@        << change body >>
             #@+node:ekr.20031218072017.2295:<< change body >>
             if len(s) > 0 and s[-1]=='\n': s = s[:-1]
-            
+
             if s != p.bodyString():
-                
+
                 undoData = u.beforeChangeNodeContents(p)
-            
+
                 c.setBodyString(p,s)
                 if self.mark_changes:
                     p.setMarked()
                 p.setDirty()
                 if not c.isChanged():
                     c.setChanged(True)
-                 
+
                 u.afterChangeNodeContents(p,'Change Body',undoData)
             #@-node:ekr.20031218072017.2295:<< change body >>
             #@nl
     #@-node:ekr.20031218072017.2293:batchChange (sets start of change-all group)
     #@+node:ekr.20031218072017.3068:change
     def change(self,event=None):
-    
+
         if self.checkArgs():
             self.initInHeadline()
             self.changeSelection()
     #@-node:ekr.20031218072017.3068:change
     #@+node:ekr.20031218072017.3069:changeAll (sets end of change-all group)
     def changeAll(self):
-        
+
         # g.trace(g.callers())
-    
+
         c = self.c ; u = c.undoer ; undoType = 'Change All'
         current = c.currentPosition()
         w = self.s_ctrl
@@ -531,9 +531,9 @@ class leoFind:
     #@+node:ekr.20031218072017.3070:changeSelection
     # Replace selection with self.change_text.
     # If no selection, insert self.change_text at the cursor.
-    
+
     def changeSelection(self):
-        
+
         c = self.c ; p = self.p
         w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
         oldSel = sel = w.getSelectionRange()
@@ -541,13 +541,13 @@ class leoFind:
         if start > end: start,end = end,start
         if start == end:
             g.es("No text selected") ; return False
-            
+
         # g.trace(start,end)
-    
+
         # Replace the selection in _both_ controls.
         start,end = oldSel
         change_text = self.change_text
-        
+
         # Perform regex substitutions of \1, \2, ...\9 in the change text.
         if self.pattern_match and self.match_obj:
             groups = self.match_obj.groups()
@@ -555,16 +555,16 @@ class leoFind:
                 change_text = self.makeRegexSubs(change_text,groups)
         # change_text = change_text.replace('\\n','\n').replace('\\t','\t')
         change_text = self.replaceBackSlashes(change_text)
-    
+
         for w2 in (w,self.s_ctrl):
             if start != end: w2.delete(start,end)
             w2.insert(start,change_text)
             w2.setInsertPoint(g.choose(self.reverse,start,start+len(change_text)))
-    
+
         # Update the selection for the next match.
         w.setSelectionRange(start,start+len(change_text))
         c.widgetWantsFocus(w)
-    
+
         # No redraws here: they would destroy the headline selection.
         c.beginUpdate()
         try:
@@ -577,14 +577,14 @@ class leoFind:
         finally:
             c.endUpdate(False)
             c.frame.tree.drawIcon(p) # redraw only the icon.
-         
+
         return True
     #@+node:ekr.20060526201951:makeRegexSubs
     def makeRegexSubs(self,s,groups):
-        
+
         '''Carefully substitute group[i-1] for \i strings in s.
         The group strings may contain \i strings: they are *not* substituted.'''
-        
+
         digits = '123456789'
         result = [] ; n = len(s)
         i = j = 0 # s[i:j] is the text between \i markers.
@@ -608,34 +608,34 @@ class leoFind:
     #@-node:ekr.20031218072017.3070:changeSelection
     #@+node:ekr.20031218072017.3071:changeThenFind
     def changeThenFind(self):
-    
+
         if not self.checkArgs():
             return
-    
+
         self.initInHeadline()
         if self.changeSelection():
             self.findNext(False) # don't reinitialize
     #@-node:ekr.20031218072017.3071:changeThenFind
     #@+node:ekr.20031218072017.2417:doChange...Script
     def doChangeScript (self):
-    
+
         g.app.searchDict["type"] = "change"
         self.runChangeScript()
-    
+
     def doChangeAllScript (self):
-    
+
         """The user has just pressed the Change All button with script-change box checked.
-    
+
         N.B. Only this code is executed."""
-    
+
         g.app.searchDict["type"] = "changeAll"
         while 1:
             self.runChangeScript()
             if not g.app.searchDict.get("continue"):
                 break
-    
+
     def runChangeScript (self):
-    
+
         try:
             assert(self.script_change)
             exec self.change_text in {} # Use {} to get a pristine environment.
@@ -646,24 +646,24 @@ class leoFind:
     #@-node:ekr.20031218072017.2417:doChange...Script
     #@+node:ekr.20031218072017.3072:doFind...Script
     def doFindScript (self):
-    
+
         g.app.searchDict["type"] = "find"
         self.runFindScript()
-    
+
     def doFindAllScript (self):
-    
+
         """The user has just pressed the Find All button with script-find radio button checked.
-    
+
         N.B. Only this code is executed."""
-    
+
         g.app.searchDict["type"] = "findAll"
         while 1:
             self.runFindScript()
             if not g.app.searchDict.get("continue"):
                 break
-    
+
     def runFindScript (self):
-    
+
         try:
             exec self.find_text in {} # Use {} to get a pristine environment.
         except:
@@ -673,7 +673,7 @@ class leoFind:
     #@-node:ekr.20031218072017.3072:doFind...Script
     #@+node:ekr.20031218072017.3073:findAll
     def findAll(self):
-    
+
         c = self.c ; w = self.s_ctrl ; u = c.undoer
         undoType = 'Clone Find All'
         if not self.checkArgs():
@@ -697,14 +697,14 @@ class leoFind:
                     #@                << create the found node and begin the undo group >>
                     #@+node:ekr.20051113110735:<< create the found node and begin the undo group >>
                     u.beforeChangeGroup(c.currentPosition(),undoType)
-                    
+
                     undoData = u.beforeInsertNode(c.currentPosition())
-                    
+
                     oldRoot = c.rootPosition()
                     found = oldRoot.insertAfter()
                     found.moveToRoot(oldRoot)
                     c.setHeadString(found,'Found: ' + self.find_text)
-                    
+
                     u.afterInsertNode(found,undoType,undoData,dirtyVnodeList=[])
                     #@-node:ekr.20051113110735:<< create the found node and begin the undo group >>
                     #@nl
@@ -722,27 +722,27 @@ class leoFind:
             u.afterChangeGroup(found,undoType,reportFlag=True) 
             c.selectPosition(found) # Recomputes root.
             c.setChanged(True)
-              
+
         c.redraw_now()
         g.es("found: %d matches" % (count))
         self.restore(data)
     #@-node:ekr.20031218072017.3073:findAll
     #@+node:ekr.20031218072017.3074:findNext
     def findNext(self,initFlag=True):
-    
+
         c = self.c
         if not self.checkArgs():
             return
-    
+
         if initFlag:
             self.initInHeadline()
             data = self.save()
             self.initInteractiveCommands()
         else:
             data = self.save()
-    
+
         pos, newpos = self.findNextMatch()
-    
+
         if pos is not None:
             self.showSuccess(pos,newpos)
         else:
@@ -755,17 +755,17 @@ class leoFind:
     #@+node:ekr.20031218072017.3075:findNextMatch
     # Resumes the search where it left off.
     # The caller must call set_first_incremental_search or set_first_batch_search.
-    
+
     def findNextMatch(self):
-    
+
         c = self.c
-    
+
         if not self.search_headline and not self.search_body:
             return None, None
-    
+
         if len(self.find_text) == 0:
             return None, None
-    
+
         p = self.p ; self.errors = 0
         while p:
             pos, newpos = self.search()
@@ -785,21 +785,21 @@ class leoFind:
     #@-node:ekr.20031218072017.3075:findNextMatch
     #@+node:ekr.20031218072017.3076:resetWrap
     def resetWrap (self,event=None):
-    
+
         self.wrapPosition = None
         self.onlyPosition = None
     #@-node:ekr.20031218072017.3076:resetWrap
     #@+node:ekr.20031218072017.3077:search & helpers
     def search (self):
-    
+
         """Search s_ctrl for self.find_text under the control of the
         whole_word, ignore_case, and pattern_match ivars.
-        
+
         Returns (pos, newpos) or (None,None)."""
-    
+
         c = self.c ; p = self.p ; w = self.s_ctrl
         index = w.getInsertPoint()
-        
+
         s = w.getAllText()
         # g.trace(index,repr(s[index:index+20]))
         stopindex = g.choose(self.reverse,0,len(s)) # 'end' doesn't work here.
@@ -811,11 +811,11 @@ class leoFind:
         #@    << fail if we are passed the wrap point >>
         #@+node:ekr.20060526140328:<< fail if we are passed the wrap point >>
         if self.wrapping and self.wrapPos is not None and self.wrapPosition and p == self.wrapPosition:
-        
+
             if self.reverse and pos < self.wrapPos:
                 # g.trace("wrap done")
                 return None, None
-        
+
             if not self.reverse and newpos > self.wrapPos:
                 return None, None
         #@-node:ekr.20060526140328:<< fail if we are passed the wrap point >>
@@ -825,26 +825,26 @@ class leoFind:
         return pos,newpos
     #@+node:ekr.20060526081931:searchHelper & allies
     def searchHelper (self,s,i,j,pattern,backwards,nocase,regexp,word,swapij=True):
-        
+
         if swapij and backwards: i,j = j,i
-            
+
         # g.trace(backwards,i,j,repr(s[i:i+20]))
-    
+
         if not s[i:j] or not pattern:
             # g.trace('empty',i,j)
             return -1,-1
-            
+
         if regexp:
             pos,newpos = self.regexHelper(s,i,j,pattern,backwards,nocase)
         elif backwards:
             pos,newpos = self.backwardsHelper(s,i,j,pattern,nocase,word)
         else:
             pos,newpos = self.plainHelper(s,i,j,pattern,nocase,word)
-    
+
         return pos,newpos
     #@+node:ekr.20060526092203:regexHelper
     def regexHelper (self,s,i,j,pattern,backwards,nocase):
-       
+
         try:
             flags = re.MULTILINE
             if nocase: flags |= re.IGNORECASE
@@ -853,7 +853,7 @@ class leoFind:
             g.es('Invalid regular expression: %s' % (pattern),color='blue')
             self.errors += 1 # Abort the search.
             return -1, -1
-            
+
         if backwards: # Scan to the last match.  We must use search here.
             last_mo = None ; i = 0
             while i < len(s):
@@ -863,11 +863,11 @@ class leoFind:
             mo = last_mo
         else:
             mo = re_obj.search(s,i,j)
-    
+
         if 0:
             g.trace('i',i,'j',j,'s[i:j]',repr(s[i:j]),
                 'mo.start',mo and mo.start(),'mo.end',mo and mo.end())
-        
+
         while mo and 0 <= i < len(s):
             if mo.start() == mo.end():
                 if backwards:
@@ -887,12 +887,12 @@ class leoFind:
     #@-node:ekr.20060526092203:regexHelper
     #@+node:ekr.20060526140744:backwardsHelper
     def backwardsHelper (self,s,i,j,pattern,nocase,word):
-    
+
         if nocase:
             s = s.lower() ; pattern.lower()
         pattern = self.replaceBackSlashes(pattern)
         n = len(pattern)
-        
+
         if word:
             while 1:
                 k = s.rfind(pattern,i,j)
@@ -912,9 +912,9 @@ class leoFind:
     #@-node:ekr.20060526140744:backwardsHelper
     #@+node:ekr.20060526093531:plainHelper
     #@@tabwidth 4
-    
+
     def plainHelper (self,s,i,j,pattern,nocase,word):
-        
+
         # g.trace(i,j,repr(s[i:i+20]),'pattern',repr(pattern),'word',repr(word))
         if nocase:
             s = s.lower() ; pattern = pattern.lower()
@@ -937,24 +937,24 @@ class leoFind:
     #@-node:ekr.20060526093531:plainHelper
     #@+node:ekr.20060526140744.1:matchWord
     def matchWord(self,s,i,pattern):
-        
+
         pattern = self.replaceBackSlashes(pattern)
         if not s or not pattern or not g.match(s,i,pattern):
             return False
-    
+
         pat1,pat2 = pattern[0],pattern[-1]
         # n = self.patternLen(pattern)
         n = len(pattern)
         ch1 = 0 <= i-1 < len(s) and s[i-1] or '.'
         ch2 = 0 <= i+n < len(s) and s[i+n] or '.'
-        
+
         isWordPat1 = g.isWordChar(pat1)
         isWordPat2 = g.isWordChar(pat2)
         isWordCh1 = g.isWordChar(ch1)
         isWordCh2 = g.isWordChar(ch2)
-        
+
         # g.trace('i',i,'ch1,ch2,pat',repr(ch1),repr(ch2),repr(pattern))
-        
+
         if isWordPat1 and isWordCh1 or isWordPat2 and isWordCh2:
             return False
         else:
@@ -962,12 +962,12 @@ class leoFind:
     #@-node:ekr.20060526140744.1:matchWord
     #@+node:ekr.20070105165924:replaceBackSlashes
     def replaceBackSlashes (self,s):
-        
+
         '''Carefully replace backslashes in a search pattern.'''
-        
+
         # This is NOT the same as s.replace('\\n','\n').replace('\\t','\t').replace('\\\\','\\')
         # because there is no rescanning.
-        
+
         i = 0
         while i + 1 < len(s):
             if s[i] == '\\':
@@ -987,37 +987,37 @@ class leoFind:
     #@-node:ekr.20031218072017.3077:search & helpers
     #@+node:ekr.20031218072017.3081:selectNextPosition
     # Selects the next node to be searched.
-    
+
     def selectNextPosition(self):
-    
+
         c = self.c ; p = self.p
-    
+
         if self.selection_only:
             return None
-    
+
         # Start suboutline only searches.
         if self.suboutline_only and not self.onlyPosition:
             # p.copy not needed because the find code never calls p.moveToX.
             # Furthermore, p might be None, so p.copy() would be wrong!
             self.onlyPosition = p 
-    
+
         # Start wrapped searches.
         if self.wrapping and not self.wrapPosition:
             assert(self.wrapPos != None)
             # p.copy not needed because the find code never calls p.moveToX.
             # Furthermore, p might be None, so p.copy() would be wrong!
             self.wrapPosition = p 
-    
+
         if self.in_headline and self.search_body:
             # just switch to body pane.
             self.in_headline = False
             self.initNextText()
             # g.trace('switching to body',g.callers(5))
             return p
-    
+
         if self.reverse: p = p.threadBack()
         else:            p = p.threadNext()
-        
+
         # New in 4.3: restrict searches to hoisted area.
         # End searches outside hoisted area.
         if c.hoistStack:
@@ -1029,7 +1029,7 @@ class leoFind:
             if not bunch.p.isAncestorOf(p):
                 g.es('Found match outside of hoisted outline',color='blue')
                 return None
-    
+
         # Wrap if needed.
         if not p and self.wrapping and not self.suboutline_only:
             p = c.rootPosition()
@@ -1038,18 +1038,18 @@ class leoFind:
                 while p and p.next():
                     p = p.next()
                 if p: p = p.lastNode()
-    
+
         # End wrapped searches.
         if self.wrapping and p and p == self.wrapPosition:
             # g.trace("ending wrapped search")
             p = None ; self.resetWrap()
-    
+
         # End suboutline only searches.
         if (self.suboutline_only and self.onlyPosition and p and
             (p == self.onlyPosition or not self.onlyPosition.isAncestorOf(p))):
             # g.trace("end outline-only")
             p = None ; self.onlyPosition = None
-    
+
         # p.copy not needed because the find code never calls p.moveToX.
         # Furthermore, p might be None, so p.copy() would be wrong!
         self.p = p # used in initNextText().
@@ -1062,11 +1062,11 @@ class leoFind:
     #@+node:ekr.20061212095134.1:General utils
     #@+node:ekr.20051020120306.26:bringToFront (leoFind)
     def bringToFront (self):
-    
+
         """Bring the Find Tab to the front and select the entire find text."""
-    
+
         c = self.c ; w = self.find_ctrl
-            
+
         # g.trace(g.callers())
         c.widgetWantsFocusNow(w)
         g.app.gui.selectAllText(w)
@@ -1079,22 +1079,22 @@ class leoFind:
     #@-node:ekr.20061111084423.1:oops (leoFind)
     #@+node:ekr.20051020120306.27:selectAllFindText (leoFind)
     def selectAllFindText (self,event=None):
-        
+
         __pychecker__ = '--no-argsused' # event
-        
+
         # This is called only when the user presses ctrl-a in the find panel.
-    
+
         w = self.frame.focus_get()
         if g.app.gui.isTextWidget(w):
             w.selectAllText()
-    
+
         return "break"
     #@-node:ekr.20051020120306.27:selectAllFindText (leoFind)
     #@-node:ekr.20061212095134.1:General utils
     #@+node:ekr.20031218072017.3082:Initing & finalizing
     #@+node:ekr.20031218072017.3083:checkArgs
     def checkArgs (self):
-    
+
         val = True
         if not self.search_headline and not self.search_body:
             g.es("not searching headline or body")
@@ -1106,7 +1106,7 @@ class leoFind:
     #@-node:ekr.20031218072017.3083:checkArgs
     #@+node:ekr.20051020120306.28:init_s_ctrl
     def init_s_ctrl (self,s):
-        
+
         w = self.s_ctrl
         w.setAllText(s)
         i = g.choose(self.reverse,len(s),0)
@@ -1115,13 +1115,13 @@ class leoFind:
     #@-node:ekr.20051020120306.28:init_s_ctrl
     #@+node:ekr.20031218072017.3084:initBatchCommands
     # Initializes for the Find All and Change All commands.
-    
+
     def initBatchCommands (self):
-    
+
         c = self.c ; w = c.frame.body.bodyCtrl
         self.in_headline = self.search_headline # Search headlines first.
         self.errors = 0
-    
+
         # Select the first node.
         if self.suboutline_only or self.node_only or self.selection_only:
             self.p = c.currentPosition()
@@ -1134,7 +1134,7 @@ class leoFind:
                     p = p.next()
                 p = p.lastNode()
             self.p = p
-    
+
         # Set the insert point.
         self.initBatchText()
     #@-node:ekr.20031218072017.3084:initBatchCommands
@@ -1145,7 +1145,7 @@ class leoFind:
         self.wrapping = False # Only interactive commands allow wrapping.
         s = g.choose(self.in_headline,p.headString(), p.bodyString())
         return self.init_s_ctrl(s)
-    
+
     # Call this routine when moving to the next node when a search fails.
     # Same as above except we don't reset wrapping flag.
     def initNextText(self):
@@ -1156,11 +1156,11 @@ class leoFind:
     #@+node:ekr.20031218072017.3086:initInHeadline
     # Guesses which pane to start in for incremental searches and changes.
     # This must not alter the current "insert" or "sel" marks.
-    
+
     def initInHeadline (self):
-    
+
         c = self.c ; p = self.p
-    
+
         # Do not change this without careful thought and extensive testing!
         if self.search_headline and self.search_body:
             # A temporary expedient.
@@ -1176,11 +1176,11 @@ class leoFind:
     #@-node:ekr.20031218072017.3086:initInHeadline
     #@+node:ekr.20031218072017.3087:initInteractiveCommands
     # For incremental searches
-    
+
     def initInteractiveCommands(self):
-    
+
         c = self.c ; p = self.p
-    
+
         self.errors = 0
         if self.in_headline:
             c.frame.tree.setEditPosition(p)
@@ -1204,10 +1204,10 @@ class leoFind:
     #@-node:ekr.20031218072017.3087:initInteractiveCommands
     #@+node:ekr.20031218072017.3088:printLine
     def printLine (self,line,allFlag=False):
-    
+
         both = self.search_body and self.search_headline
         context = self.batch # "batch" now indicates context
-    
+
         if allFlag and both and context:
             g.es('-' * 20,self.p.headString())
             theType = g.choose(self.in_headline,"head: ","body: ")
@@ -1222,25 +1222,25 @@ class leoFind:
     #@-node:ekr.20031218072017.3088:printLine
     #@+node:ekr.20031218072017.3089:restore
     # Restores the screen after a search fails
-    
+
     def restore (self,data):
-    
+
         c = self.c
         in_headline,p,t,insert,start,end = data
-        
+
         c.frame.bringToFront() # Needed on the Mac
-    
+
         # Don't try to reedit headline.
         c.selectPosition(p)
-        
+
         if not in_headline:
             # Looks good and provides clear indication of failure or termination.
             t.setSelectionRange(insert,insert)
             t.setInsertPoint(insert)
             t.seeInsertPoint()
-        
+
         #g.trace(c.widget_name(t))
-        
+
         if 1: # I prefer always putting the focus in the body.
             c.invalidateFocus()
             c.bodyWantsFocusNow()
@@ -1249,7 +1249,7 @@ class leoFind:
     #@-node:ekr.20031218072017.3089:restore
     #@+node:ekr.20031218072017.3090:save
     def save (self):
-    
+
         c = self.c ; p = self.p
         w = g.choose(self.in_headline,c.edit_widget(p),c.frame.bodyCtrl)
         insert = w.getInsertPoint()
@@ -1262,12 +1262,12 @@ class leoFind:
     #@-node:ekr.20031218072017.3090:save
     #@+node:ekr.20031218072017.3091:showSuccess
     def showSuccess(self,pos,newpos):
-    
+
         """Displays the final result.
-    
+
         Returns self.dummy_vnode, c.edit_widget(p) or c.frame.bodyCtrl with
         "insert" and "sel" points set properly."""
-    
+
         c = self.c ; p = self.p
         sparseFind = c.config.getBool('collapse_nodes_during_finds')
         c.frame.bringToFront() # Needed on the Mac
@@ -1304,25 +1304,25 @@ class leoFind:
     #@-node:ekr.20031218072017.3091:showSuccess
     #@+node:ekr.20031218072017.1460:update_ivars (leoFind)
     # New in Leo 4.4.3: This is now gui-independent code.
-    
+
     def update_ivars (self):
-        
+
         """Called just before doing a find to update ivars from the find panel."""
-        
+
         self.p = self.c.currentPosition()
         self.v = self.p.v
-    
+
         for key in self.intKeys:
             # g.trace(self.svarDict.get(key))
             val = self.svarDict[key].get()
             setattr(self, key, val) # No more _flag hack.
-    
+
         # Set ivars from radio buttons. Convert these to 1 or 0.
         search_scope = self.svarDict["radio-search-scope"].get()
         self.suboutline_only = g.choose(search_scope == "suboutline-only",1,0)
         self.node_only       = g.choose(search_scope == "node-only",1,0)
         self.selection       = g.choose(search_scope == "selection-only",1,0)
-    
+
         # New in 4.3: The caller is responsible for removing most trailing cruft.
         # Among other things, this allows Leo to search for a single trailing space.
         s = self.find_ctrl.getAllText()
@@ -1331,7 +1331,7 @@ class leoFind:
         if s and s[-1] in ('\r','\n'):
             s = s[:-1]
         self.find_text = s
-    
+
         s = self.change_ctrl.getAllText()
         if s and s[-1] in ('\r','\n'):
             s = s[:-1]
@@ -1343,72 +1343,72 @@ class leoFind:
 #@-node:ekr.20061212084717:class leoFind
 #@+node:ekr.20051020120306.6:class findTab (leoFind)
 class findTab (leoFind):
-    
+
     '''An adapter class that implements Leo's Find tab.'''
 
     #@    @+others
     #@+node:ekr.20051020120306.11:findTab.__init__
     def __init__(self,c,parentFrame):
-        
+
         # g.trace('findTab',c)
-    
+
         # Init the base class...
         leoFind.__init__(self,c,title='Find Tab')
-    
+
         self.c = c
         self.parentFrame = parentFrame
         self.frame = self.outerFrame = self.top = None
-        
+
         self.optionsOnly = c.config.getBool('show_only_find_tab_options')
-        
+
         # These are created later.
         self.find_ctrl = None
         self.change_ctrl = None 
         self.outerScrolledFrame = None
-    
+
         self.initGui()
         self.createFrame(parentFrame)
         self.createBindings()
         self.init(c) # New in 4.3: init only once.
-        
+
     #@nonl
     #@-node:ekr.20051020120306.11:findTab.__init__
     #@+node:ekr.20061212092124:Must be defined in subclasses
     def createBindings (self):
         self.oops()
-    
+
     def createFrame (self,parent):
         __pychecker__ = '--no-argsused'
         self.oops()
-       
+
     def getOption (self,ivar):
         self.oops()
-        
+
     def init (self,c):
         self.oops()
-    
+
     def initGui (self):
         pass # Optional method.
-    
+
     def setOption (self,ivar,val):
         __pychecker__ = '--no-argsused'
         self.oops()
-        
+
     def toggleOption (self,ivar):
         self.oops()
-    
+
     # self.oops is defined in the leoFind class.
     #@-node:ekr.20061212092124:Must be defined in subclasses
     #@+node:ekr.20060221074900:Callbacks
     #@+node:ekr.20060221074900.1:findButtonCallback
     def findButtonCallback(self,event=None):
-        
+
         self.findButton()
         return 'break'
     #@-node:ekr.20060221074900.1:findButtonCallback
     #@+node:ekr.20051020120306.25:hideTab
     def hideTab (self,event=None):
-        
+
         c = self.c
         c.frame.log.selectTab('Log')
         c.bodyWantsFocus()
@@ -1417,24 +1417,24 @@ class findTab (leoFind):
     #@+node:ekr.20051024192602: Top level
     #@+node:ekr.20051024192642.3:change/ThenFindCommand
     def changeCommand (self,event=None):
-    
+
         self.setup_command()
         self.change()
-        
+
     def changeThenFindCommand(self,event=None):
-        
+
         self.setup_command()
         self.changeThenFind()
     #@-node:ekr.20051024192642.3:change/ThenFindCommand
     #@+node:ekr.20070105123638:changeAllCommand
     def changeAllCommand (self,event=None):
-    
+
         self.setup_command()
         self.changeAll()
     #@-node:ekr.20070105123638:changeAllCommand
     #@+node:ekr.20060128075225:cloneFindAllCommand
     def cloneFindAllCommand (self,event=None):
-        
+
         self.setup_command()
         self.clone_find_all = True
         self.findAll()
@@ -1442,9 +1442,9 @@ class findTab (leoFind):
     #@-node:ekr.20060128075225:cloneFindAllCommand
     #@+node:ekr.20060204120158.1:findAgainCommand
     def findAgainCommand (self):
-        
+
         s = self.find_ctrl.getAllText()
-        
+
         if s and s != '<find pattern here>':
             self.findNextCommand()
             return True
@@ -1454,18 +1454,18 @@ class findTab (leoFind):
     #@-node:ekr.20060204120158.1:findAgainCommand
     #@+node:ekr.20060209064832:findAllCommand
     def findAllCommand (self,event=None):
-    
+
         self.setup_command()
         self.findAll()
     #@-node:ekr.20060209064832:findAllCommand
     #@+node:ekr.20051024192642.2:findNext/PrefCommand
     def findNextCommand (self,event=None):
-    
+
         self.setup_command()
         self.findNext()
-        
+
     def findPrevCommand (self,event=None):
-        
+
         self.setup_command()
         self.reverse = not self.reverse
         self.findNext()
@@ -1481,31 +1481,31 @@ class nullFindTab (findTab):
     #@+node:ekr.20070302090616.1:Birth (nullFindTab)
     #@+node:ekr.20070302090616.2: ctor (nullFindTab)
     if 0: # Use the base-class ctor.
-    
+
         def __init__ (self,c,parentFrame):
-        
+
             findTab.__init__(self,c,parentFrame)
                 # Init the base class.
                 # Calls initGui, createFrame, createBindings & init(c), in that order.
     #@-node:ekr.20070302090616.2: ctor (nullFindTab)
     #@+node:ekr.20070302090616.3:initGui
     # Called from findTab.ctor.
-    
+
     def initGui (self):
-    
+
         self.svarDict = {} # Keys are ivar names, values are svar objects.
-        
+
         for key in self.intKeys:
             self.svarDict[key] = self.svar() # Was Tk.IntVar.
-        
+
         for key in self.newStringKeys:
             self.svarDict[key] = self.svar() # Was Tk.StringVar.
     #@-node:ekr.20070302090616.3:initGui
     #@+node:ekr.20070302090616.4:init
     # Called from findTab.ctor.
-    
+
     def init (self,c):
-    
+
         # Separate c.ivars are much more convenient than a svarDict.
         for key in self.intKeys:
             # Get ivars from @settings.
@@ -1515,12 +1515,12 @@ class nullFindTab (findTab):
             svar = self.svarDict.get(key)
             if svar: svar.set(val)
             #g.trace(key,val)
-    
+
         #@    << set find/change widgets >>
         #@+node:ekr.20070302090616.5:<< set find/change widgets >>
         self.find_ctrl.delete(0,"end")
         self.change_ctrl.delete(0,"end")
-        
+
         # Get setting from @settings.
         for w,setting,defaultText in (
             (self.find_ctrl,"find_text",'<find pattern here>'),
@@ -1548,7 +1548,7 @@ class nullFindTab (findTab):
                 break
         else:
             self.svarDict["radio-find-type"].set("plain-search")
-            
+
         for ivar,key in (
             ("suboutline_only","suboutline-only"),
             ("node_only","node-only"),
@@ -1592,36 +1592,36 @@ class nullFindTab (findTab):
     #@-node:ekr.20070302090616.15:createBindings
     #@+node:ekr.20070302090616.9:createFrame
     def createFrame (self,parentFrame):
-    
+
         self.parentFrame = self.top = parentFrame
-        
+
         self.createFindChangeAreas()
         self.createBoxes()
     #@nonl
     #@+node:ekr.20070302090616.10:createFindChangeAreas
     def createFindChangeAreas (self):
-        
+
         c = self.c
-        
+
         # A plainTextWidget must be a stringTextWidget
         plainTextWidget = g.app.gui.plainTextWidget
-        
+
         import leoFrame
         assert issubclass(plainTextWidget,leoFrame.stringTextWidget)
-        
+
         self.find_ctrl   = plainTextWidget(c,name='find-text')
         self.change_ctrl = plainTextWidget(c,name='change-text')
     #@-node:ekr.20070302090616.10:createFindChangeAreas
     #@+node:ekr.20070302090616.12:createBoxes
     def createBoxes (self):
-        
+
         '''Create two columns of radio buttons & check boxes.'''
-        
+
         c = self.c
         # f = self.parentFrame
         self.boxes = []
         self.widgetsDict = {} # Keys are ivars, values are checkboxes or radio buttons.
-        
+
         data = ( # Leading star denotes a radio button.
             ('Whole &Word', 'whole_word',),
             ('&Ignore Case','ignore_case'),
@@ -1636,7 +1636,7 @@ class nullFindTab (findTab):
             ('Search &Body','search_body'),
             ('Mark &Changes','mark_changes'),
         )
-    
+
         # Important: changing these controls merely changes entries in self.svarDict.
         # First, leoFind.update_ivars sets the find ivars from self.svarDict.
         # Second, self.init sets the values of widgets from the ivars.
@@ -1668,9 +1668,9 @@ class nullFindTab (findTab):
     #@-node:ekr.20070302090616.12:createBoxes
     #@+node:ekr.20070302090616.14:createButtons (not used)
     def createButtons (self):
-        
+
         '''Create two columns of buttons.'''
-    
+
         # # Create the alignment panes.
         # buttons  = Tk.Frame(outer,background=bg)
         # buttons1 = Tk.Frame(buttons,bd=1,background=bg)
@@ -1678,9 +1678,9 @@ class nullFindTab (findTab):
         # buttons.pack(side='top',expand=1)
         # buttons1.pack(side='left')
         # buttons2.pack(side='right')
-        
+
         # width = 15 ; defaultText = 'Find' ; buttons = []
-        
+
         # for text,boxKind,frame,callback in (
             # # Column 1...
             # ('Find','button',buttons1,self.findButtonCallback),
@@ -1710,25 +1710,25 @@ class nullFindTab (findTab):
             return self.val
         def set (self,val):
             self.val = val
-    
+
         SetValue = set # SetValue is the wxWidgets spelling.
     #@nonl
     #@-node:ekr.20070302090616.8:class svar (nullFindTab)
     #@+node:ekr.20070302092907:class buttonWidget (nullFindTab)
     class buttonWidget:
-    
+
         '''A class to simulate a Tk.Button.'''
-        
+
         def __init__ (self,label):
             self.label = label
             self.val = False
-            
+
         def __repr (self):
             return 'nullFindTab.buttonWidget: %s' % self.label
-    
+
         def get (self):
             return self.val
-    
+
         def set (self,val):
             self.val = val
     #@-node:ekr.20070302092907:class buttonWidget (nullFindTab)
@@ -1737,9 +1737,9 @@ class nullFindTab (findTab):
     #@nonl
     #@+node:ekr.20070302090616.17:getOption
     def getOption (self,ivar):
-    
+
         var = self.svarDict.get(ivar)
-        
+
         if var:
             val = var.get()
             # g.trace('%s = %s' % (ivar,val))
@@ -1750,19 +1750,19 @@ class nullFindTab (findTab):
     #@-node:ekr.20070302090616.17:getOption
     #@+node:ekr.20070302090616.18:setOption
     def setOption (self,ivar,val):
-    
+
         if ivar in self.intKeys:
             if val is not None:
                 var = self.svarDict.get(ivar)
                 var.set(val)
                 # g.trace('%s = %s' % (ivar,val))
-    
+
         elif not g.app.unitTesting:
             g.trace('oops: bad find ivar %s' % ivar)
     #@-node:ekr.20070302090616.18:setOption
     #@+node:ekr.20070302090616.19:toggleOption
     def toggleOption (self,ivar):
-    
+
         if ivar in self.intKeys:
             var = self.svarDict.get(ivar)
             val = not var.get()

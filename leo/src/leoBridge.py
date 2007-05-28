@@ -58,49 +58,49 @@ gBridgeController = None # The singleton bridge controller.
 #@+others
 #@+node:ekr.20070227092442:controller
 def controller(gui='nullGui',verbose='True'):
-    
+
     '''Create an singleton instance of a bridge controller.'''
-    
+
     global gBridgeController
 
     if not gBridgeController:
         gBridgeController = bridgeController(gui,verbose)
-    
+
     return gBridgeController
 #@nonl
 #@-node:ekr.20070227092442:controller
 #@+node:ekr.20070227092442.2:class bridgeController
 class bridgeController:
-    
+
     '''Creates a way for host programs to access Leo.'''
-    
+
     #@    @+others
     #@+node:ekr.20070227092442.3:ctor (bridgeController)
     def __init__ (self,guiName,verbose):
-        
+
         self.g = None
         self.gui = None
         self.guiName = guiName
         self.mainLoop = False # True only if a non-null-gui mainloop is active.
         self.verbose = verbose
-    
+
         self.initLeo()
     #@nonl
     #@-node:ekr.20070227092442.3:ctor (bridgeController)
     #@+node:ekr.20070227092442.4:globals
     def globals (self):
-        
+
         '''Return a fully initialized leoGlobals module.'''
-    
+
         return self.isOpen() and self.g
     #@nonl
     #@-node:ekr.20070227092442.4:globals
     #@+node:ekr.20070227093530:initLeo & helpers
     def initLeo (self):
-        
+
         '''Init the Leo app to which this class gives access.
         This code is based on leo.run().'''
-    
+
         if not self.isValidPython(): return
         #@    << import leoGlobals and leoApp >>
         #@+node:ekr.20070227093629.1:<< import leoGlobals and leoApp >>
@@ -109,14 +109,14 @@ class bridgeController:
             import leoGlobals
         except ImportError:
             print "Error importing leoGlobals.py"
-        
+
         # Create the application object.
         try:
             import leoApp
             leoGlobals.app = leoApp.LeoApp()
         except ImportError:
             print "Error importing leoApp.py"
-            
+
         # NOW we can set g.
         self.g = g = leoGlobals
         assert(g.app)
@@ -132,7 +132,7 @@ class bridgeController:
         except ImportError:
             print "Error importing leoNodes.py"
             import traceback ; traceback.print_exc()
-        
+
         try:
             import leoConfig
         except ImportError:
@@ -150,21 +150,21 @@ class bridgeController:
         g.init_sherlock(args=[])
         g.app.initing = False
         g.doHook("start2",c=None,p=None,v=None,fileName=None)
-        
+
     #@nonl
     #@+node:ekr.20070302061713:adjustSysPath
     def adjustSysPath (self):
-        
+
         '''Adjust sys.path to enable imports as usual with Leo.'''
-        
+
         import sys
-        
+
         g = self.g
-        
+
         #g.trace('loadDir',g.app.loadDir)
-        
+
         leoDirs = ('config','doc','extensions','modes','plugins','src','test')
-        
+
         for theDir in leoDirs:
             path = g.os_path_abspath(
                 g.os_path_join(g.app.loadDir,'..',theDir))
@@ -173,9 +173,9 @@ class bridgeController:
     #@-node:ekr.20070302061713:adjustSysPath
     #@+node:ekr.20070227095743:createGui
     def createGui (self):
-        
+
         g = self.g
-        
+
         if self.guiName == 'nullGui':
             import leoGui
             import leoFrame
@@ -188,26 +188,26 @@ class bridgeController:
             # g.app.writeWaitingLog()
         else:
             assert False,'leoBridge.py must run with nullGui'
-            
+
         if 0: # A gui main loop is probably a bad idea.
             if self.guiName == 'tkinter':
                 import leoTkinterGui
                 g.app.gui = leoTkinterGui.tkinterGui()
                 g.app.root = g.app.gui.createRootWindow()
                 g.app.gui.finishCreate()
-    
-    
-       
+
+
+
     #@nonl
     #@-node:ekr.20070227095743:createGui
     #@+node:ekr.20070227093629.4:isValidPython
     def isValidPython(self):
-        
+
         import sys
-    
+
         if sys.platform == 'cli':
             return True
-    
+
         message = """\
     Leo requires Python 2.2.1 or higher.
     You may download Python from http://python.org/download/
@@ -237,25 +237,25 @@ class bridgeController:
     #@-node:ekr.20070227093629.4:isValidPython
     #@+node:ekr.20070227094232:getLeoID
     def getLeoID (self):
-        
+
         import os
         import sys
-    
+
         g = self.g ; tag = ".leoID.txt"
         homeDir = g.app.homeDir
         globalConfigDir = g.app.globalConfigDir
         loadDir = g.app.loadDir
-    
+
         verbose = False and not g.app.unitTesting
         #@    << try to get leoID from sys.leoID >>
         #@+node:ekr.20070227094232.1:<< try to get leoID from sys.leoID>>
         # This would be set by in Python's sitecustomize.py file.
-        
+
         # Use hasattr & getattr to suppress pychecker warning.
         # We also have to use a "non-constant" attribute to suppress another warning!
-        
+
         nonConstantAttr = "leoID"
-        
+
         if hasattr(sys,nonConstantAttr):
             g.app.leoID = getattr(sys,nonConstantAttr)
             if verbose: g.es("leoID = " + g.app.leoID, color='red')
@@ -297,7 +297,7 @@ class bridgeController:
                 if theId:
                     if verbose: g.es_print("using os.getenv('USER'): %s " % (repr(theId)),color='red')
                     g.app.leoID = theId
-                    
+
             except Exception:
                 pass
             #@-node:ekr.20070227094232.3:<< try to get leoID from os.getenv('USER') >>
@@ -306,9 +306,9 @@ class bridgeController:
     #@-node:ekr.20070227094232:getLeoID
     #@+node:ekr.20070227093629.9:reportDirectories
     def reportDirectories (self):
-        
+
         g = self.g
-       
+
         for kind,theDir in (
             ("global config",g.app.globalConfigDir),
             ("home",g.app.homeDir),
@@ -318,19 +318,19 @@ class bridgeController:
     #@-node:ekr.20070227093530:initLeo & helpers
     #@+node:ekr.20070227093918:isOpen
     def isOpen (self):
-        
+
         g = self.g
-    
+
         return g and g.app and g.app.gui
     #@nonl
     #@-node:ekr.20070227093918:isOpen
     #@+node:ekr.20070227092442.5:openLeoFile & helpers
     def openLeoFile (self,fileName):
-        
+
         '''Open a .leo file, or create a new Leo frame if no fileName is given.'''
-        
+
         g = self.g
-        
+
         if self.isOpen():
             fileName = self.completeFileName(fileName)
             c = self.createFrame(fileName)
@@ -344,33 +344,33 @@ class bridgeController:
             return None
     #@+node:ekr.20070227093629.5:completeFileName
     def completeFileName (self,fileName):
-        
+
         g = self.g
-        
+
         if not fileName.strip(): return ''
-        
+
         import os
-    
+
         fileName = g.os_path_join(os.getcwd(),fileName)
         head,ext = g.os_path_splitext(fileName)
         if not ext: fileName = fileName + ".leo"
-    
+
         return fileName
     #@-node:ekr.20070227093629.5:completeFileName
     #@+node:ekr.20070227093629.6:createFrame
     def createFrame (self,fileName):
-        
+
         '''Create a commander and frame for the given file.
         Create a new frame if the fileName is empty or non-exisent.'''
-        
+
         g = self.g
-    
+
         if fileName.strip():
             if g.os_path_exists(fileName):
                 ok, frame = g.openWithFileName(fileName,None)
                 if ok: return frame.c
             else: g.es("File not found %s, creating new window: " % fileName)
-                
+
         # Create a new frame. Unlike leo.run, this is not a startup window.
         c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
         frame.setInitialWindowGeometry()

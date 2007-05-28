@@ -78,23 +78,23 @@ class baseUndoer:
     #@    @+others
     #@+node:ekr.20031218072017.3606:undo.__init__ & clearIvars
     def __init__ (self,c):
-    
+
         self.c = c
         self.debug = False # True: enable debugging code in new undo scheme.
         self.debug_print = False # True: enable print statements in debug code.
-    
+
         self.granularity = c.config.getString('undo_granularity')
         if self.granularity: self.granularity = self.granularity.lower()
         if self.granularity not in ('node','line','word','char'):
             self.granularity = 'line'
         # g.trace('undoer',self.granularity)
-        
+
         self.max_undo_stack_size = c.config.getInt('max_undo_stack_size') or 0
-    
+
         # Statistics comparing old and new ways (only if self.debug is on).
         self.new_mem = 0
         self.old_mem = 0
-    
+
         # State ivars...
         self.undoType = "Can't Undo"
         # These must be set here, _not_ in clearUndoState.
@@ -104,17 +104,17 @@ class baseUndoer:
         self.realUndoMenuLabel = "Can't Undo"
         self.undoing = False # True if executing an Undo command.
         self.redoing = False # True if executing a Redo command.
-        
+
         # New in 4.2...
         self.optionalIvars = []
     #@nonl
     #@+node:ekr.20031218072017.3607:clearIvars
     def clearIvars (self):
-        
+
         u = self
-        
+
         u.p = None # The position/node being operated upon for undo and redo.
-    
+
         for ivar in u.optionalIvars:
             setattr(u,ivar,None)
     #@-node:ekr.20031218072017.3607:clearIvars
@@ -122,11 +122,11 @@ class baseUndoer:
     #@+node:ekr.20050416092908.1:Internal helpers
     #@+node:ekr.20060127052111.1:cutStack
     def cutStack (self):
-        
+
         u = self ; n = u.max_undo_stack_size
-    
+
         if n > 0 and u.bead >= n and not g.app.unitTesting:
-            
+
             # Do nothing if we are in the middle of creating a group.
             i = len(u.beads)-1
             while i >= 0:
@@ -134,7 +134,7 @@ class baseUndoer:
                 if hasattr(bunch,'kind') and bunch.kind == 'beforeGroup':
                     return
                 i -= 1
-    
+
             # This work regardless of how many items appear after bead n.
             # g.trace('Cutting undo stack to %d entries' % (n))
             u.beads = u.beads[-n:]
@@ -143,22 +143,22 @@ class baseUndoer:
     #@-node:ekr.20060127052111.1:cutStack
     #@+node:EKR.20040526150818:getBead
     def getBead (self,n):
-        
+
         '''Set undoer ivars from the bunch at the top of the undo stack.'''
-        
+
         u = self
         if n < 0 or n >= len(u.beads):
             return None
-    
+
         bunch = u.beads[n]
-    
+
         self.setIvarsFromBunch(bunch)
-        
+
         return bunch
     #@-node:EKR.20040526150818:getBead
     #@+node:EKR.20040526150818.1:peekBead
     def peekBead (self,n):
-        
+
         u = self
         if n < 0 or n >= len(u.beads):
             return None
@@ -168,12 +168,12 @@ class baseUndoer:
     #@-node:EKR.20040526150818.1:peekBead
     #@+node:ekr.20060127113243:pushBead
     def pushBead (self,bunch):
-        
+
         u = self
-        
+
         # New in 4.4b2:  Add this to the group if it is being accumulated.
         bunch2 = u.bead >= 0 and u.bead < len(u.beads) and u.beads[u.bead]
-    
+
         if bunch2 and hasattr(bunch2,'kind') and bunch2.kind == 'beforeGroup':
             # Just append the new bunch the group's items.
             bunch2.items.append(bunch)
@@ -182,17 +182,17 @@ class baseUndoer:
             u.bead += 1
             u.beads[u.bead:] = [bunch]
             # g.trace('u.bead',u.bead,'len u.beads',len(u.beads))
-    
+
             # Recalculate the menu labels.
             u.setUndoTypes()
     #@-node:ekr.20060127113243:pushBead
     #@+node:ekr.20060127070008:setIvarsFromBunch
     def setIvarsFromBunch (self,bunch):
-        
+
         u = self
-    
+
         u.clearIvars()
-    
+
         if 0: # Debugging.
             print '-' * 40
             keys = bunch.keys()
@@ -200,7 +200,7 @@ class baseUndoer:
             for key in keys:
                 g.trace(key,bunch.get(key))
             print '-' * 20
-    
+
         for key in bunch.keys():
             val = bunch.get(key)
             # g.trace(key,val)
@@ -212,36 +212,36 @@ class baseUndoer:
     def recognizeStartOfTypingWord (self,
         old_lines,old_row,old_col,old_ch, 
         new_lines,new_row,new_col,new_ch):
-    
+
         __pychecker__ = '--no-argsused' # Ignore all unused arguments here.
-            
+
         ''' A potentially user-modifiable method that should return True if the
         typing indicated by the params starts a new 'word' for the purposes of
         undo with 'word' granularity.
-        
+
         u.setUndoTypingParams calls this method only when the typing could possibly
         continue a previous word. In other words, undo will work safely regardless
         of the value returned here.
-        
+
         old_ch is the char at the given (Tk) row, col of old_lines.
         new_ch is the char at the given (Tk) row, col of new_lines.
-        
+
         The present code uses only old_ch and new_ch. The other arguments are given
         for use by more sophisticated algorithms.'''
-        
+
         # Start a word if new_ch begins whitespace + word
         return not old_ch.isspace() and new_ch.isspace()
     #@-node:ekr.20050126081529:recognizeStartOfTypingWord
     #@+node:ekr.20031218072017.3613:redoMenuName, undoMenuName
     def redoMenuName (self,name):
-    
+
         if name=="Can't Redo":
             return name
         else:
             return "Redo " + name
-    
+
     def undoMenuName (self,name):
-    
+
         if name=="Can't Undo":
             return name
         else:
@@ -252,12 +252,12 @@ class baseUndoer:
     def setRedoType (self,theType):
         # g.trace(theType,g.callers())
         u = self ; frame = u.c.frame
-        
+
         if type(theType) != type(''):
             g.trace('oops: expected string for command, got %s' % repr(theType))
             g.trace(g.callers())
             theType = '<unknown>'
-        
+
         menu = frame.menu.getMenu("Edit")
         name = u.redoMenuName(theType)
         if name != u.redoMenuLabel:
@@ -271,10 +271,10 @@ class baseUndoer:
             frame.menu.setMenuLabel(menu,u.realRedoMenuLabel,realLabel,underline=underline)
             u.redoMenuLabel = name
             u.realRedoMenuLabel = realLabel
-    
+
     def setUndoType (self,theType):
         # g.trace(theType,g.callers())
-        
+
         u = self ; frame = u.c.frame
         if type(theType) != type(''):
             g.trace('oops: expected string for command, got %s' % repr(theType))
@@ -297,11 +297,11 @@ class baseUndoer:
     #@-node:ekr.20031218072017.3614:setRedoType, setUndoType
     #@+node:ekr.20031218072017.3616:setUndoTypes
     def setUndoTypes (self):
-        
+
         u = self
-        
+
         # g.trace(g.callers(7))
-    
+
         # Set the undo type and undo menu label.
         bunch = u.peekBead(u.bead)
         if bunch:
@@ -310,40 +310,40 @@ class baseUndoer:
         else:
             # g.trace(u.bead,len(u.beads))
             u.setUndoType("Can't Undo")
-    
+
         # Set only the redo menu label.
         bunch = u.peekBead(u.bead+1)
         if bunch:
             u.setRedoType(bunch.undoType)
         else:
             u.setRedoType("Can't Redo")
-        
+
         u.cutStack()
     #@-node:ekr.20031218072017.3616:setUndoTypes
     #@+node:EKR.20040530121329:u.restoreTree & helpers
     def restoreTree (self,treeInfo):
-        
+
         """Use the tree info to restore all vnode and tnode data,
         including all links."""
-        
+
         u = self
-        
+
         # This effectively relinks all vnodes.
         for v,vInfo,tInfo in treeInfo:
             u.restoreVnodeUndoInfo(vInfo)
             u.restoreTnodeUndoInfo(tInfo)
     #@+node:ekr.20050415170737.2:restoreVnodeUndoInfo
     def restoreVnodeUndoInfo (self,bunch):
-        
+
         """Restore all ivars saved in the bunch."""
-        
+
         v = bunch.v
-    
+
         v.statusBits = bunch.statusBits
         v._parent    = bunch.parent
         v._next      = bunch.next
         v._back      = bunch.back
-        
+
         uA = bunch.get('unknownAttributes')
         if uA is not None:
             v.unknownAttributes = uA
@@ -351,15 +351,15 @@ class baseUndoer:
     #@-node:ekr.20050415170737.2:restoreVnodeUndoInfo
     #@+node:ekr.20050415170812.2:restoreTnodeUndoInfo
     def restoreTnodeUndoInfo (self,bunch):
-        
+
         t = bunch.t
-    
+
         t.headString  = bunch.headString
         t.bodyString  = bunch.bodyString
         t.vnodeList   = bunch.vnodeList
         t.statusBits  = bunch.statusBits
         t._firstChild = bunch.firstChild
-        
+
         uA = bunch.get('unknownAttributes')
         if uA is not None:
             t.unknownAttributes = uA
@@ -368,9 +368,9 @@ class baseUndoer:
     #@-node:EKR.20040530121329:u.restoreTree & helpers
     #@+node:EKR.20040528075307:u.saveTree & helpers
     def saveTree (self,p,treeInfo=None):
-        
+
         """Return a list of tuples with all info needed to handle a general undo operation."""
-    
+
         # WARNING: read this before doing anything "clever"
         #@    << about u.saveTree >>
         #@+node:EKR.20040530114124:<< about u.saveTree >>
@@ -398,27 +398,27 @@ class baseUndoer:
         #@-at
         #@-node:EKR.20040530114124:<< about u.saveTree >>
         #@nl
-        
+
         u = self ; topLevel = (treeInfo == None)
         if topLevel: treeInfo = []
-    
+
         # Add info for p.v and p.v.t.  Duplicate tnode info is harmless.
         data = (p.v,u.createVnodeUndoInfo(p.v),u.createTnodeUndoInfo(p.v.t))
         treeInfo.append(data)
-    
+
         # Recursively add info for the subtree.
         child = p.firstChild()
         while child:
             self.saveTree(child,treeInfo)
             child = child.next()
-    
+
         # if topLevel: g.trace(treeInfo)
         return treeInfo
     #@+node:ekr.20050415170737.1:createVnodeUndoInfo
     def createVnodeUndoInfo (self,v):
-        
+
         """Create a bunch containing all info needed to recreate a vnode for undo."""
-        
+
         bunch = g.Bunch(
             v = v,
             statusBits = v.statusBits,
@@ -427,17 +427,17 @@ class baseUndoer:
             back       = v._back,
             # The tnode never changes so there is no need to save it here.
         )
-        
+
         if hasattr(v,'unknownAttributes'):
             bunch.unknownAttributes = v.unknownAttributes
-    
+
         return bunch
     #@-node:ekr.20050415170737.1:createVnodeUndoInfo
     #@+node:ekr.20050415170812.1:createTnodeUndoInfo
     def createTnodeUndoInfo (self,t):
-        
+
         """Create a bunch containing all info needed to recreate a vnode."""
-    
+
         bunch = g.Bunch(
             t = t,
             headString = t.headString,
@@ -446,43 +446,43 @@ class baseUndoer:
             statusBits = t.statusBits,
             firstChild = t._firstChild,
         )
-        
+
         if hasattr(t,'unknownAttributes'):
             bunch.unknownAttributes = t.unknownAttributes
-    
+
         return bunch
     #@-node:ekr.20050415170812.1:createTnodeUndoInfo
     #@-node:EKR.20040528075307:u.saveTree & helpers
     #@+node:ekr.20050525151449:u.trace
     def trace (self):
-        
+
         ivars = ('kind','undoType')
-        
+
         for ivar in ivars:
             print ivar, getattr(self,ivar)
     #@-node:ekr.20050525151449:u.trace
     #@+node:ekr.20050410095424:updateMarks
     def updateMarks (self,oldOrNew):
-        
+
         '''Update dirty and marked bits.'''
-        
+
         u = self ; c = u.c
-        
+
         if oldOrNew not in ('new','old'):
             g.trace("can't happen")
             return
-    
+
         isOld = oldOrNew=='old'
         dirty   = g.choose(isOld,u.oldDirty,  u.newDirty)
         marked  = g.choose(isOld,u.oldMarked, u.newMarked)
         changed = g.choose(isOld,u.oldChanged,u.newChanged)
-    
+
         if dirty:   u.p.setDirty(setDescendentsDirty=False)
         else:       u.p.clearDirty()
-            
+
         if marked:  c.setMarked(u.p)
         else:       c.clearMarked(u.p)
-    
+
         u.c.setChanged(changed)
     #@-node:ekr.20050410095424:updateMarks
     #@-node:ekr.20050416092908.1:Internal helpers
@@ -490,218 +490,218 @@ class baseUndoer:
     #@+node:ekr.20050318085432.4:afterX...
     #@+node:ekr.20050315134017.4:afterChangeGroup
     def afterChangeGroup (self,p,undoType,reportFlag=False,dirtyVnodeList=[]):
-    
+
         '''Create an undo node for general tree operations using d created by beforeChangeTree'''
-        
+
         u = self ; c = self.c ; w = c.frame.body.bodyCtrl
         if u.redoing or u.undoing: return
-        
+
         # g.trace('u.bead',u.bead,'len u.beads',len(u.beads))
-    
+
         bunch = u.beads[u.bead]
         if bunch.kind == 'beforeGroup':
             bunch.kind = 'afterGroup'
         else:
             g.trace('oops: expecting beforeGroup, got %s' % bunch.kind)
-    
+
         # Set the types & helpers.
         bunch.kind = 'afterGroup'
         bunch.undoType = undoType
-        
+
         # Set helper only for undo:
         # The bead pointer will point to an 'beforeGroup' bead for redo.
         bunch.undoHelper = u.undoGroup
         bunch.redoHelper = u.redoGroup
-        
+
         bunch.dirtyVnodeList = dirtyVnodeList
-        
+
         bunch.newP = p.copy()
         bunch.newSel = w.getSelectionRange()
-        
+
         # Tells whether to report the number of separate changes undone/redone.
         bunch.reportFlag = reportFlag
-        
+
         if 0:
             # Push the bunch.
             u.bead += 1
             u.beads[u.bead:] = [bunch]
-    
+
         # Recalculate the menu labels.
         u.setUndoTypes()
-        
+
         # g.trace(u.undoMenuLabel,u.redoMenuLabel)
     #@-node:ekr.20050315134017.4:afterChangeGroup
     #@+node:ekr.20050315134017.2:afterChangeNodeContents
     def afterChangeNodeContents (self,p,command,bunch,dirtyVnodeList=[]):
-    
+
         '''Create an undo node using d created by beforeChangeNode.'''
-        
+
         u = self ; c = self.c ; w = c.frame.body.bodyCtrl
         if u.redoing or u.undoing: return
-    
+
         # Set the type & helpers.
         bunch.kind = 'node'
         bunch.undoType = command
         bunch.undoHelper = u.undoNodeContents
         bunch.redoHelper = u.redoNodeContents
-        
+
         bunch.dirtyVnodeList = dirtyVnodeList
-    
+
         bunch.newBody = p.bodyString()
         bunch.newChanged = u.c.isChanged()
         bunch.newDirty = p.isDirty()
         bunch.newHead = p.headString()
         bunch.newMarked = p.isMarked()
         bunch.newSel = w.getSelectionRange()
-        
+
         u.pushBead(bunch)
     #@-node:ekr.20050315134017.2:afterChangeNodeContents
     #@+node:ekr.20050315134017.3:afterChangeTree
     def afterChangeTree (self,p,command,bunch):
-    
+
         '''Create an undo node for general tree operations using d created by beforeChangeTree'''
-        
+
         u = self ; c = self.c ; w = c.frame.body.bodyCtrl
         if u.redoing or u.undoing: return
-        
+
         # Set the types & helpers.
         bunch.kind = 'tree'
         bunch.undoType = command
         bunch.undoHelper = u.undoTree
         bunch.redoHelper = u.redoTree
-    
+
         # Set by beforeChangeTree: changed, oldSel, oldText, oldTree, p
         bunch.newSel = w.getSelectionRange()
         bunch.newText = w.getAllText()
         bunch.newTree = u.saveTree(p)
-        
+
         u.pushBead(bunch)
     #@-node:ekr.20050315134017.3:afterChangeTree
     #@+node:ekr.20050424161505:afterClearRecentFiles
     def afterClearRecentFiles (self,bunch):
-        
+
         u = self
-    
+
         bunch.newRecentFiles = g.app.config.recentFiles[:]
-        
+
         bunch.undoType = 'Clear Recent Files'
         bunch.undoHelper = u.undoClearRecentFiles
         bunch.redoHelper = u.redoClearRecentFiles
-        
+
         u.pushBead(bunch)
-    
+
         return bunch
     #@-node:ekr.20050424161505:afterClearRecentFiles
     #@+node:ekr.20050411193627.5:afterCloneNode
     def afterCloneNode (self,p,command,bunch,dirtyVnodeList=[]):
-        
+
         u = self ; c = u.c
         if u.redoing or u.undoing: return
-        
+
         # Set types & helpers
         bunch.kind = 'clone'
         bunch.undoType = command
-        
+
         # Set helpers
         bunch.undoHelper = u.undoCloneNode
         bunch.redoHelper = u.redoCloneNode
-    
+
         bunch.newBack = p.back() # 6/15/05
         bunch.newParent = p.parent() # 6/15/05
-        
+
         bunch.newP = p.copy()
         bunch.dirtyVnodeList = dirtyVnodeList
-        
+
         bunch.newChanged = c.isChanged()
         bunch.newDirty = p.isDirty()
         bunch.newMarked = p.isMarked()
-    
+
         u.pushBead(bunch)
     #@-node:ekr.20050411193627.5:afterCloneNode
     #@+node:ekr.20050411193627.6:afterDehoist
     def afterDehoist (self,p,command):
-    
+
         u = self
         if u.redoing or u.undoing: return
-        
+
         bunch = u.createCommonBunch(p)
-        
+
         # Set types & helpers
         bunch.kind = 'dehoist'
         bunch.undoType = command
-        
+
         # Set helpers
         bunch.undoHelper = u.undoDehoistNode
         bunch.redoHelper = u.redoDehoistNode
-    
+
         u.pushBead(bunch)
     #@-node:ekr.20050411193627.6:afterDehoist
     #@+node:ekr.20050411193627.8:afterDeleteNode
     def afterDeleteNode (self,p,command,bunch,dirtyVnodeList=[]):
-        
+
         u = self ; c = u.c
         if u.redoing or u.undoing: return
-        
+
         # Set types & helpers
         bunch.kind = 'delete'
         bunch.undoType = command
-        
+
         # Set helpers
         bunch.undoHelper = u.undoDeleteNode
         bunch.redoHelper = u.redoDeleteNode
-        
+
         bunch.newP = p.copy()
         bunch.dirtyVnodeList = dirtyVnodeList
-        
+
         bunch.newChanged = c.isChanged()
         bunch.newDirty = p.isDirty()
         bunch.newMarked = p.isMarked()
-    
+
         u.pushBead(bunch)
     #@-node:ekr.20050411193627.8:afterDeleteNode
     #@+node:ekr.20050411193627.7:afterHoist
     def afterHoist (self,p,command):
-        
+
         u = self
         if u.redoing or u.undoing: return
-        
+
         bunch = u.createCommonBunch(p)
-        
+
         # Set types & helpers
         bunch.kind = 'hoist'
         bunch.undoType = command
-        
+
         # Set helpers
         bunch.undoHelper = u.undoHoistNode
         bunch.redoHelper = u.redoHoistNode
-    
+
         u.pushBead(bunch)
     #@-node:ekr.20050411193627.7:afterHoist
     #@+node:ekr.20050411193627.9:afterInsertNode
     def afterInsertNode (self,p,command,bunch,dirtyVnodeList=[]):
-        
+
         u = self ; c = u.c
         if u.redoing or u.undoing: return
-        
+
         # Set types & helpers
         bunch.kind = 'insert'
         bunch.undoType = command
         # g.trace(repr(command),g.callers())
-        
+
         # Set helpers
         bunch.undoHelper = u.undoInsertNode
         bunch.redoHelper = u.redoInsertNode
-        
+
         bunch.newP = p.copy()
         bunch.dirtyVnodeList = dirtyVnodeList
-    
+
         bunch.newBack = p.back()
         bunch.newParent = p.parent()
-    
+
         bunch.newChanged = c.isChanged()
         bunch.newDirty = p.isDirty()
         bunch.newMarked = p.isMarked()
-        
+
         if bunch.pasteAsClone:
             beforeTree=bunch.beforeTree
             afterTree = []
@@ -711,186 +711,186 @@ class baseUndoer:
                     g.Bunch(t=t,head=t.headString[:],body=t.bodyString[:]))
             bunch.afterTree=afterTree
             # g.trace(afterTree)
-    
+
         u.pushBead(bunch)
     #@-node:ekr.20050411193627.9:afterInsertNode
     #@+node:ekr.20050526124257:afterMark
     def afterMark (self,p,command,bunch,dirtyVnodeList=[]):
-        
+
         '''Create an undo node for mark and unmark commands.'''
-        
+
         __pychecker__ = '--no-argsused'
             # 'command' unused, but present for compatibility with similar methods.
-        
+
         u = self
         if u.redoing or u.undoing: return
-    
+
         # Set the type & helpers.
         bunch.undoHelper = u.undoMark
         bunch.redoHelper = u.redoMark
-        
+
         bunch.dirtyVnodeList = dirtyVnodeList
         bunch.newChanged = u.c.isChanged()
         bunch.newDirty = p.isDirty()
         bunch.newMarked = p.isMarked()
-    
+
         u.pushBead(bunch)
     #@-node:ekr.20050526124257:afterMark
     #@+node:ekr.20050410110343:afterMoveNode
     def afterMoveNode (self,p,command,bunch,dirtyVnodeList=[]):
-        
+
         u = self ; c = u.c
         if u.redoing or u.undoing: return
-        
+
         # Set the types & helpers.
         bunch.kind = 'move'
         bunch.undoType = command
-        
+
         # Set helper only for undo:
         # The bead pointer will point to an 'beforeGroup' bead for redo.
         bunch.undoHelper = u.undoMove
         bunch.redoHelper = u.redoMove
-        
+
         bunch.dirtyVnodeList = dirtyVnodeList
-        
+
         bunch.newChanged = c.isChanged()
         bunch.newDirty = p.isDirty()
         bunch.newMarked = p.isMarked()
-    
+
         bunch.newBack   = p.back()
         bunch.newN = p.childIndex()
         bunch.newParent = p.parent()
-        
+
         u.pushBead(bunch)
     #@-node:ekr.20050410110343:afterMoveNode
     #@-node:ekr.20050318085432.4:afterX...
     #@+node:ekr.20050318085432.3:beforeX...
     #@+node:ekr.20050315134017.7:beforeChangeGroup
     def beforeChangeGroup (self,p,command):
-        
+
         u = self
         bunch = u.createCommonBunch(p)
-        
+
         # Set types.
         bunch.kind = 'beforeGroup'
         bunch.undoType = command
-        
+
         # Set helper only for redo:
         # The bead pointer will point to an 'afterGroup' bead for undo.
         bunch.undoHelper = u.undoGroup
         bunch.redoHelper = u.redoGroup
         bunch.items = []
-    
+
         # Push the bunch.
         u.bead += 1
         u.beads[u.bead:] = [bunch]
     #@-node:ekr.20050315134017.7:beforeChangeGroup
     #@+node:ekr.20050315133212.2:beforeChangeNodeContents
     def beforeChangeNodeContents (self,p,oldBody=None,oldHead=None):
-        
+
         '''Return data that gets passed to afterChangeNode'''
-        
+
         u = self
-        
+
         bunch = u.createCommonBunch(p)
-        
+
         bunch.oldBody = oldBody or p.bodyString()
         bunch.oldHead = oldHead or p.headString()
-    
+
         return bunch
     #@-node:ekr.20050315133212.2:beforeChangeNodeContents
     #@+node:ekr.20050315134017.6:beforeChangeTree
     def beforeChangeTree (self,p):
-        
+
         # g.trace(p.headString())
-        
+
         u = self ; c = u.c ; w = c.frame.body.bodyCtrl
-    
+
         bunch = u.createCommonBunch(p)
         bunch.oldSel = w.getSelectionRange()
         bunch.oldText = w.getAllText()
         bunch.oldTree = u.saveTree(p)
-        
+
         return bunch
     #@-node:ekr.20050315134017.6:beforeChangeTree
     #@+node:ekr.20050424161505.1:beforeClearRecentFiles
     def beforeClearRecentFiles (self):
-        
+
         u = self ; p = u.c.currentPosition()
-        
+
         bunch = u.createCommonBunch(p)
         bunch.oldRecentFiles = g.app.config.recentFiles[:]
-    
+
         return bunch
     #@-node:ekr.20050424161505.1:beforeClearRecentFiles
     #@+node:ekr.20050412080354:beforeCloneNode
     def beforeCloneNode (self,p):
-        
+
         u = self
-    
+
         bunch = u.createCommonBunch(p)
-    
+
         return bunch
     #@-node:ekr.20050412080354:beforeCloneNode
     #@+node:ekr.20050411193627.3:beforeDeleteNode
     def beforeDeleteNode (self,p):
-        
+
         u = self
-    
+
         bunch = u.createCommonBunch(p)
-        
+
         bunch.oldBack = p.back()
         bunch.oldParent = p.parent()
-        
+
         return bunch
     #@-node:ekr.20050411193627.3:beforeDeleteNode
     #@+node:ekr.20050411193627.4:beforeInsertNode
     def beforeInsertNode (self,p,pasteAsClone=False,copiedBunchList=[]):
-        
+
         u = self
-    
+
         bunch = u.createCommonBunch(p)
         bunch.pasteAsClone = pasteAsClone
-        
+
         if pasteAsClone:
             # Save the list of bunches created by fc.createVnode.
             bunch.beforeTree = copiedBunchList
             # g.trace(bunch.beforeTree)
-    
+
         return bunch
     #@-node:ekr.20050411193627.4:beforeInsertNode
     #@+node:ekr.20050526131252:beforeMark
     def beforeMark (self,p,command):
-        
+
         u = self
         bunch = u.createCommonBunch(p)
-    
+
         bunch.kind = 'mark'
         bunch.undoType = command
-        
+
         return bunch
     #@-node:ekr.20050526131252:beforeMark
     #@+node:ekr.20050410110215:beforeMoveNode
     def beforeMoveNode (self,p):
-        
+
         u = self
-        
+
         bunch = u.createCommonBunch(p)
-        
+
         bunch.oldBack = p.back()
         bunch.oldN = p.childIndex()
         bunch.oldParent = p.parent()
-    
+
         return bunch
     #@-node:ekr.20050410110215:beforeMoveNode
     #@+node:ekr.20050318085432.2:createCommonBunch
     def createCommonBunch (self,p):
-        
+
         '''Return a bunch containing all common undo info.
         This is mostly the info for recreating an empty node at position p.'''
-        
+
         u = self ; c = u.c ; w = c.frame.body.bodyCtrl
-        
+
         return g.Bunch(
             oldChanged = c.isChanged(),
             oldDirty = p.isDirty(),
@@ -902,26 +902,26 @@ class baseUndoer:
     #@-node:ekr.20050318085432.3:beforeX...
     #@+node:ekr.20031218072017.3610:canRedo & canUndo
     # Translation does not affect these routines.
-    
+
     def canRedo (self):
-        
+
         u = self
-    
+
         return u.redoMenuLabel != "Can't Redo"
-    
+
     def canUndo (self):
-        
+
         u = self
-    
+
         return u.undoMenuLabel != "Can't Undo"
     #@-node:ekr.20031218072017.3610:canRedo & canUndo
     #@+node:ekr.20031218072017.3609:clearUndoState
     def clearUndoState (self):
-    
+
         """Clears then entire Undo state.
-        
+
         All non-undoable commands should call this method."""
-        
+
         u = self
         u.setRedoType("Can't Redo")
         u.setUndoType("Can't Undo")
@@ -931,9 +931,9 @@ class baseUndoer:
     #@-node:ekr.20031218072017.3609:clearUndoState
     #@+node:ekr.20031218072017.3611:enableMenuItems
     def enableMenuItems (self):
-    
+
         u = self ; frame = u.c.frame
-        
+
         menu = frame.menu.getMenu("Edit")
         frame.menu.enableMenu(menu,u.redoMenuLabel,u.canRedo())
         frame.menu.enableMenu(menu,u.undoMenuLabel,u.canUndo())
@@ -941,45 +941,45 @@ class baseUndoer:
     #@+node:ekr.20050525151217:getMark & rollbackToMark (no longer used)
     if 0:
         def getMark (self):
-        
+
             __pychecker__ = '--no-classattr' # self.bead does, in fact, exist.
-            
+
             return self.bead
-            
+
         def rollbackToMark (self,n):
-            
+
             u = self
-        
+
             u.bead = n
             u.beads = u.beads[:n+1]
             u.setUndoTypes()
-            
+
         rollBackToMark = rollbackToMark
     #@-node:ekr.20050525151217:getMark & rollbackToMark (no longer used)
     #@+node:ekr.20031218072017.1490:setUndoTypingParams
     def setUndoTypingParams (self,p,undo_type,oldText,newText,oldSel,newSel,oldYview=None):
-        
+
         __pychecker__ = 'maxlines=2000' # Ignore the size of this method.
-        
+
         '''Save enough information so a typing operation can be undone and redone.
-    
+
         Do nothing when called from the undo/redo logic because the Undo and Redo commands merely reset the bead pointer.'''
-    
+
         u = self ; c = u.c
         trace = False # Can cause unit tests to fail.
         #@    << return if there is nothing to do >>
         #@+node:ekr.20040324061854:<< return if there is nothing to do >>
         if u.redoing or u.undoing:
             return None
-        
+
         if undo_type == None:
             return None
-        
+
         if undo_type == "Can't Undo":
             u.clearUndoState()
             u.setUndoTypes() # Must still recalculate the menu labels.
             return None
-        
+
         if oldText == newText:
             # g.trace("no change")
             u.setUndoTypes() # Must still recalculate the menu labels.
@@ -992,7 +992,7 @@ class baseUndoer:
         # Clear all optional params.
         for ivar in u.optionalIvars:
             setattr(u,ivar,None)
-        
+
         # Set the params.
         u.undoType = undo_type
         u.p = p.copy()
@@ -1009,20 +1009,20 @@ class baseUndoer:
         # different.
         #@-at
         #@@c
-        
+
         old_lines = string.split(oldText,'\n')
         new_lines = string.split(newText,'\n')
         new_len = len(new_lines)
         old_len = len(old_lines)
         min_len = min(old_len,new_len)
-        
+
         i = 0
         while i < min_len:
             if old_lines[i] != new_lines[i]:
                 break
             i += 1
         leading = i
-        
+
         if leading == new_len:
             # This happens when we remove lines from the end.
             # The new text is simply the leading lines from the old text.
@@ -1034,7 +1034,7 @@ class baseUndoer:
                     break
                 i += 1
             trailing = i
-            
+
         # NB: the number of old and new middle lines may be different.
         if trailing == 0:
             old_middle_lines = old_lines[leading:]
@@ -1042,18 +1042,18 @@ class baseUndoer:
         else:
             old_middle_lines = old_lines[leading:-trailing]
             new_middle_lines = new_lines[leading:-trailing]
-        
+
         # Remember how many trailing newlines in the old and new text.
         i = len(oldText) - 1 ; old_newlines = 0
         while i >= 0 and oldText[i] == '\n':
             old_newlines += 1
             i -= 1
-        
+
         i = len(newText) - 1 ; new_newlines = 0
         while i >= 0 and newText[i] == '\n':
             new_newlines += 1
             i -= 1
-        
+
         if trace:
             print "lead,trail",leading,trailing
             print "old mid,nls:",len(old_middle_lines),old_newlines,oldText
@@ -1079,7 +1079,7 @@ class baseUndoer:
         # p.bodyString().
         #@-at
         #@@c
-        
+
         if u.debug:
             # Remember the complete text for comparisons...
             u.oldText = oldText
@@ -1093,7 +1093,7 @@ class baseUndoer:
         else:
             u.oldText = None
             u.newText = None
-        
+
         u.leading = leading
         u.trailing = trailing
         u.oldMiddleLines = old_middle_lines
@@ -1107,7 +1107,7 @@ class baseUndoer:
         #Remember the selection.
         u.oldSel = oldSel
         u.newSel = newSel
-        
+
         # Remember the scrolling position.
         if oldYview:
             u.yview = oldYview
@@ -1130,12 +1130,12 @@ class baseUndoer:
         # the same node.
         #@-at
         #@@c
-        
+
         granularity = u.granularity
-        
+
         old_d = u.peekBead(u.bead)
         old_p = old_d and old_d.get('p')
-        
+
         #@<< set newBead if we can't share the previous bead >>
         #@+node:ekr.20050125220613:<< set newBead if we can't share the previous bead >>
         #@+at 
@@ -1219,7 +1219,7 @@ class baseUndoer:
                     newBead = True
         #@-node:ekr.20050125220613:<< set newBead if we can't share the previous bead >>
         #@nl
-        
+
         if newBead:
             # Push params on undo stack, clearing all forward entries.
             bunch = g.Bunch(
@@ -1236,7 +1236,7 @@ class baseUndoer:
             u.pushBead(bunch)
         else:
             bunch = old_d
-        
+
         bunch.dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
         if not p.isDirty():
             bunch.dirtyVnodeList.append(p.copy())
@@ -1254,12 +1254,12 @@ class baseUndoer:
     #@-node:ekr.20031218072017.3608:Externally visible entries
     #@+node:ekr.20031218072017.2030:redo & helpers...
     def redo (self,event=None):
-        
+
         '''Redo the operation undone by the last undo.'''
-    
+
         u = self ; c = u.c
         # g.trace(g.callers(7))
-    
+
         if not u.canRedo():
             # g.trace('cant redo',u.undoMenuLabel,u.redoMenuLabel)
             return
@@ -1267,12 +1267,12 @@ class baseUndoer:
             g.trace('no bead') ; return
         if not c.currentPosition():
             g.trace('no current position') ; return
-    
+
         # g.trace(u.undoType)
         # g.trace(u.bead+1,len(u.beads),u.peekBead(u.bead+1))
         u.redoing = True 
         u.groupCount = 0
-    
+
         c.beginUpdate()
         try:
             c.endEditing()
@@ -1294,19 +1294,19 @@ class baseUndoer:
     #@nonl
     #@+node:ekr.20050424170219:redoClearRecentFiles
     def redoClearRecentFiles (self):
-        
+
         u = self ; c = u.c
-    
+
         g.app.recentFiles = u.newRecentFiles[:]
         c.recentFiles = u.newRecentFiles[:]
-        
+
         c.frame.menu.createRecentFilesMenuItems()
     #@-node:ekr.20050424170219:redoClearRecentFiles
     #@+node:ekr.20050412083057:redoCloneNode
     def redoCloneNode (self):
-        
+
         u = self ; c = u.c
-        
+
         if u.newBack:
             u.newP.linkAfter(u.newBack)
         elif u.newParent:
@@ -1314,28 +1314,28 @@ class baseUndoer:
         else:
             oldRoot = c.rootPosition()
             u.newP.linkAsRoot(oldRoot)
-            
+
         for v in u.dirtyVnodeList: # New in 4.4b3.
             v.t.setDirty()
-    
+
         c.selectPosition(u.newP)
     #@-node:ekr.20050412083057:redoCloneNode
     #@+node:EKR.20040526072519.2:redoDeleteNode
     def redoDeleteNode (self):
-        
+
         u = self ; c = u.c
-    
+
         c.selectPosition(u.p)
         c.deleteOutline()
         c.selectPosition(u.newP)
     #@-node:EKR.20040526072519.2:redoDeleteNode
     #@+node:ekr.20050412084532:redoInsertNode
     def redoInsertNode (self):
-    
+
         u = self ; c = u.c
-        
+
         # g.trace('p',u.newP.v,'parent',u.newParent.v)
-    
+
         if u.newBack:
             u.newP.linkAfter(u.newBack)
         elif u.newParent:
@@ -1343,10 +1343,10 @@ class baseUndoer:
         else:
             oldRoot = c.rootPosition()
             u.newP.linkAsRoot(oldRoot)
-            
+
         # Restore all vnodeLists (and thus all clone marks).
         u.newP.restoreLinksInTree()
-        
+
         if u.pasteAsClone:
             for bunch in u.afterTree:
                 t = bunch.t
@@ -1357,40 +1357,40 @@ class baseUndoer:
                     t.setTnodeText(bunch.body)
                     t.setHeadString(bunch.head)
                 # g.trace(t,bunch.head,bunch.body)
-    
+
         c.selectPosition(u.newP)
     #@-node:ekr.20050412084532:redoInsertNode
     #@+node:ekr.20050412085138.1:redoHoistNode & redoDehoistNode
     def redoHoistNode (self):
-        
+
         u = self ; c = u.c
-        
+
         c.selectPosition(u.p)
         c.hoist()
-        
+
     def redoDehoistNode (self):
-        
+
         u = self ; c = u.c
-        
+
         c.selectPosition(u.p)
         c.dehoist()
     #@-node:ekr.20050412085138.1:redoHoistNode & redoDehoistNode
     #@+node:ekr.20050318085432.6:redoGroup
     def redoGroup (self):
-        
+
         '''Process beads until the matching 'afterGroup' bead is seen.'''
-        
+
         u = self
-    
+
         # Remember these values.
         c = u.c
         dirtyVnodeList = u.dirtyVnodeList or []
         newSel = u.newSel
         p = u.p.copy()
-        
+
         u.groupCount += 1
-    
-        
+
+
         bunch = u.beads[u.bead] ; count = 0
         if not hasattr(bunch,'items'):
             g.trace('oops: expecting bunch.items.  bunch.kind = %s' % bunch.kind)
@@ -1406,64 +1406,64 @@ class baseUndoer:
                         g.trace('oops: no redo helper for %s' % u.undoType)
             finally:
                 c.endUpdate(False)
-    
+
         u.groupCount -= 1
-        
+
         for v in dirtyVnodeList:
             v.t.setDirty()
-    
+
         g.es("redo %d instances" % count)
-            
+
         c.selectPosition(p)
         newSel and c.frame.body.setSelectionRange(newSel)
     #@nonl
     #@-node:ekr.20050318085432.6:redoGroup
     #@+node:ekr.20050318085432.7:redoNodeContents
     def redoNodeContents (self):
-        
+
         u = self ; c = u.c ; w = c.frame.body.bodyCtrl
-        
+
         # Restore the body.
         u.p.setTnodeText(u.newBody)
         w.setAllText(u.newBody)
         c.frame.body.recolor(u.p,incremental=False)
-        
+
         # Restore the headline.
         u.p.initHeadString(u.newHead)
         c.frame.tree.setHeadline(u.p,u.newHead) # New in 4.4b2.
-        
+
         # g.trace('newHead',u.newHead,'revert',c.frame.tree.revertHeadline)
-        
+
         if u.groupCount == 0 and u.newSel:
             u.c.frame.body.setSelectionRange(u.newSel)
-        
+
         u.updateMarks('new')
-        
+
         for v in u.dirtyVnodeList:
             v.t.setDirty()
     #@-node:ekr.20050318085432.7:redoNodeContents
     #@+node:ekr.20050526125801:redoMark
     def redoMark (self):
-        
+
         u = self ; c = u.c
-    
+
         u.updateMarks('new')
-        
+
         if u.groupCount == 0:
-        
+
             for v in u.dirtyVnodeList:
                 v.t.setDirty()
-            
+
             c.selectPosition(u.p)
     #@nonl
     #@-node:ekr.20050526125801:redoMark
     #@+node:ekr.20050411111847:redoMove
     def redoMove (self):
-        
+
         u = self ; c = u.c
-    
+
         # g.trace(u.p)
-    
+
         if u.newParent:
             u.p.moveToNthChildOf(u.newParent,u.newN)
         elif u.newBack:
@@ -1471,21 +1471,21 @@ class baseUndoer:
         else:
             oldRoot = c.rootPosition()
             u.p.moveToRoot(oldRoot=oldRoot)
-            
+
         u.updateMarks('new')
-    
+
         for v in u.dirtyVnodeList:
             v.t.setDirty()
-            
+
         c.selectPosition(u.p)
     #@-node:ekr.20050411111847:redoMove
     #@+node:ekr.20050318085432.8:redoTree
     def redoTree (self):
-        
+
         '''Redo replacement of an entire tree.'''
-        
+
         u = self ; c = u.c
-    
+
         u.p = self.undoRedoTree(u.p,u.oldTree,u.newTree)
         c.selectPosition(u.p) # Does full recolor.
         if u.newSel:
@@ -1493,25 +1493,25 @@ class baseUndoer:
     #@-node:ekr.20050318085432.8:redoTree
     #@+node:EKR.20040526075238.5:redoTyping
     def redoTyping (self):
-    
+
         u = self ; c = u.c ; current = c.currentPosition()
         w = c.frame.body.bodyCtrl
-    
+
         # selectPosition causes recoloring, so avoid if possible.
         if current != u.p:
             c.selectPosition(u.p)
         elif u.undoType in ('Cut','Paste','Clear Recent Files'):
             c.frame.body.forceFullRecolor()
-    
+
         self.undoRedoText(
             u.p,u.leading,u.trailing,
             u.newMiddleLines,u.oldMiddleLines,
             u.newNewlines,u.oldNewlines,
             tag="redo",undoType=u.undoType)
-            
+
         for v in u.dirtyVnodeList:
             v.t.setDirty()
-        
+
         if u.newSel:
             c.bodyWantsFocusNow()
             i,j = u.newSel
@@ -1523,12 +1523,12 @@ class baseUndoer:
     #@-node:ekr.20031218072017.2030:redo & helpers...
     #@+node:ekr.20031218072017.2039:undo & helpers...
     def undo (self,event=None):
-    
+
         """Undo the operation described by the undo parameters."""
-        
+
         u = self ; c = u.c
         # g.trace(g.callers(7))
-        
+
         if not u.canUndo():
             # g.trace('cant undo',u.undoMenuLabel,u.redoMenuLabel)
             return
@@ -1536,12 +1536,12 @@ class baseUndoer:
             g.trace('no bead') ; return
         if not c.currentPosition():
             g.trace('no current position') ; return
-            
+
         # g.trace(u.undoType)
         # g.trace(len(u.beads),u.bead,u.peekBead(u.bead))
         u.undoing = True
         u.groupCount = 0
-    
+
         c.beginUpdate()
         try:
             c.endEditing()
@@ -1563,32 +1563,32 @@ class baseUndoer:
     #@nonl
     #@+node:ekr.20050424170219.1:undoClearRecentFiles
     def undoClearRecentFiles (self):
-        
+
         u = self ; c = u.c
-        
+
         g.app.recentFiles = u.oldRecentFiles[:]
         c.recentFiles = u.oldRecentFiles[:]
-    
+
         c.frame.menu.createRecentFilesMenuItems()
     #@-node:ekr.20050424170219.1:undoClearRecentFiles
     #@+node:ekr.20050412083057.1:undoCloneNode
     def undoCloneNode (self):
-        
+
         u = self ; c = u.c
-    
+
         c.selectPosition(u.newP)
         c.deleteOutline()
-        
+
         for v in u.dirtyVnodeList: # New in 4.4b3.
             v.t.clearDirty()
-    
+
         c.selectPosition(u.p)
     #@-node:ekr.20050412083057.1:undoCloneNode
     #@+node:ekr.20050412084055:undoDeleteNode
     def undoDeleteNode (self):
-        
+
         u = self ; c = u.c
-        
+
         if u.oldBack:
             u.p.linkAfter(u.oldBack)
         elif u.oldParent:
@@ -1596,7 +1596,7 @@ class baseUndoer:
         else:
             oldRoot = c.rootPosition()
             u.p.linkAsRoot(oldRoot)
-            
+
         # Restore all vnodeLists (and thus all clone marks).
         u.p.restoreLinksInTree()
         u.p.setAllAncestorAtFileNodesDirty() # New in 4.4b3.
@@ -1604,21 +1604,21 @@ class baseUndoer:
     #@-node:ekr.20050412084055:undoDeleteNode
     #@+node:ekr.20050318085713:undoGroup
     def undoGroup (self):
-        
+
         '''Process beads until the matching 'beforeGroup' bead is seen.'''
-    
+
         u = self
-        
+
         # Remember these values.
         c = u.c
         dirtyVnodeList = u.dirtyVnodeList or []
         oldSel = u.oldSel
         p = u.p.copy()
-    
+
         u.groupCount += 1
-        
+
         bunch = u.beads[u.bead] ; count = 0
-        
+
         if not hasattr(bunch,'items'):
             g.trace('oops: expecting bunch.items.  bunch.kind = %s' % bunch.kind)
         else:
@@ -1636,41 +1636,41 @@ class baseUndoer:
                         g.trace('oops: no undo helper for %s' % u.undoType)
             finally:
                 c.endUpdate(False)
-            
+
         u.groupCount -= 1
-                   
+
         for v in dirtyVnodeList:
             v.t.clearDirty()
-    
+
         g.es("undo %d instances" % count)
-        
+
         c.selectPosition(p)
         oldSel and c.frame.body.setSelectionRange(oldSel)
     #@nonl
     #@-node:ekr.20050318085713:undoGroup
     #@+node:ekr.20050412083244:undoHoistNode & undoDehoistNode
     def undoHoistNode (self):
-        
+
         u = self ; c = u.c
-    
+
         c.selectPosition(u.p)
         c.dehoist()
-        
+
     def undoDehoistNode (self):
-        
+
         u = self ; c = u.c
-    
+
         c.selectPosition(u.p)
         c.hoist()
     #@-node:ekr.20050412083244:undoHoistNode & undoDehoistNode
     #@+node:ekr.20050412085112:undoInsertNode
     def undoInsertNode (self):
-        
+
         u = self ; c = u.c
-    
+
         c.selectPosition(u.newP)
         c.deleteOutline()
-        
+
         if u.pasteAsClone:
             for bunch in u.beforeTree:
                 t = bunch.t
@@ -1680,74 +1680,74 @@ class baseUndoer:
                 else:
                     t.setTnodeText(bunch.body)
                     t.setHeadString(bunch.head)
-    
+
         c.selectPosition(u.p)
     #@-node:ekr.20050412085112:undoInsertNode
     #@+node:ekr.20050526124906:undoMark
     def undoMark (self):
-        
+
         u = self ; c = u.c
-    
+
         u.updateMarks('old')
-        
+
         if u.groupCount == 0:
-    
+
             for v in u.dirtyVnodeList:
                 v.t.clearDirty()
             c.selectPosition(u.p)
     #@-node:ekr.20050526124906:undoMark
     #@+node:ekr.20050411112033:undoMove
     def undoMove (self):
-        
+
         u = self ; c = u.c
-    
+
         # g.trace(u.p,u.oldParent,u.oldN)
-    
+
         if u.oldParent:
             u.p.moveToNthChildOf(u.oldParent,u.oldN)
         elif u.oldBack:
             u.p.moveAfter(u.oldBack)
         else:
             u.p.moveToRoot(oldRoot=c.rootPosition())
-    
+
         u.updateMarks('old')
-        
+
         for v in u.dirtyVnodeList:
             v.t.clearDirty()
-            
+
         c.selectPosition(u.p)
     #@-node:ekr.20050411112033:undoMove
     #@+node:ekr.20050318085713.1:undoNodeContents
     def undoNodeContents (self):
-        
+
         '''Undo all changes to the contents of a node,
         including headline and body text, and dirty and marked bits.
         '''
-        
+
         u = self ; c = u.c ;  w = c.frame.body.bodyCtrl
-        
+
         u.p.setTnodeText(u.oldBody)
         w.setAllText(u.oldBody)
         c.frame.body.recolor(u.p,incremental=False)
-    
+
         u.p.initHeadString(u.oldHead)
         c.frame.tree.setHeadline(u.p,u.oldHead) # New in 4.4b2.
-    
+
         if u.groupCount == 0 and u.oldSel:
             u.c.frame.body.setSelectionRange(u.oldSel)
-        
+
         u.updateMarks('old')
-        
+
         for v in u.dirtyVnodeList:
             v.t.clearDirty()
     #@-node:ekr.20050318085713.1:undoNodeContents
     #@+node:ekr.20050318085713.2:undoTree
     def undoTree (self):
-        
+
         '''Redo replacement of an entire tree.'''
-        
+
         u = self ; c = u.c
-    
+
         u.p = self.undoRedoTree(u.p,u.newTree,u.oldTree)
         c.selectPosition(u.p) # Does full recolor.
         if u.oldSel:
@@ -1755,47 +1755,47 @@ class baseUndoer:
     #@-node:ekr.20050318085713.2:undoTree
     #@+node:ekr.20050408100042:undoRedoTree
     def undoRedoTree (self,p,new_data,old_data):
-        
+
         '''Replace p and its subtree using old_data during undo.'''
-        
+
         # Same as undoReplace except uses g.Bunch.
-    
+
         u = self ; c = u.c
-        
+
         if new_data == None:
             # This is the first time we have undone the operation.
             # Put the new data in the bead.
             bunch = u.beads[u.bead]
             bunch.newTree = u.saveTree(p.copy())
             u.beads[u.bead] = bunch
-        
+
         # Replace data in tree with old data.
         u.restoreTree(old_data)
         c.setBodyString(p,p.bodyString())
-        
+
         return p # Nothing really changes.
     #@-node:ekr.20050408100042:undoRedoTree
     #@+node:EKR.20040526090701.4:undoTyping
     def undoTyping (self):
-        
+
         u = self ; c = u.c ; current = c.currentPosition()
         w = c.frame.body.bodyCtrl
-    
+
         # selectPosition causes recoloring, so don't do this unless needed.
         if current != u.p:
             c.selectPosition(u.p)
         elif u.undoType in ("Cut","Paste",'Clear Recent Files'):
             c.frame.body.forceFullRecolor()
-    
+
         self.undoRedoText(
             u.p,u.leading,u.trailing,
             u.oldMiddleLines,u.newMiddleLines,
             u.oldNewlines,u.newNewlines,
             tag="undo",undoType=u.undoType)
-    
+
         for v in u.dirtyVnodeList: # New in 4.4b3.
             v.t.clearDirty()
-    
+
         if u.oldSel:
             c.bodyWantsFocusNow()
             i,j = u.oldSel
@@ -1811,13 +1811,13 @@ class baseUndoer:
         oldNewlines,newNewlines, # Number of trailing newlines.
         tag="undo", # "undo" or "redo"
         undoType=None):
-            
+
         __pychecker__ = '--no-argsused' # newNewlines is unused, but it has symmetry.
-        
+
         '''Handle text undo and redo: converts _new_ text into _old_ text.'''
-    
+
         u = self ; c = u.c ; w = c.frame.body.bodyCtrl
-        
+
         #@    << Compute the result using p's body text >>
         #@+node:ekr.20061106105812.1:<< Compute the result using p's body text >>
         # Recreate the text using the present body text.
@@ -1839,7 +1839,7 @@ class baseUndoer:
         if oldNewlines > 0:
             s = s + '\n' * oldNewlines
         result = s
-        
+
         if u.debug_print:
             print "body:  ",body
             print "result:",result
@@ -1851,7 +1851,7 @@ class baseUndoer:
     #@-node:ekr.20031218072017.1493:undoRedoText (passed)
     #@-node:ekr.20031218072017.2039:undo & helpers...
     #@-others
-    
+
 class undoer (baseUndoer):
     """A class that implements unlimited undo and redo."""
     pass
@@ -1860,26 +1860,26 @@ class undoer (baseUndoer):
 class nullUndoer (undoer):
 
     def __init__ (self,c):
-        
+
         undoer.__init__(self,c) # init the base class.
-        
+
     #@    @+others
     #@+node:ekr.20050415165731:other methods
     def clearUndoState (self):
         pass
-        
+
     def canRedo (self):
         return False
-    
+
     def canUndo (self):
         return False
-        
+
     def enableMenuItems (self):
         pass
-        
+
     def setUndoTypingParams (self,p,undo_type,oldText,newText,oldSel,newSel,oldYview=None):
         pass
-        
+
     def setUndoTypes (self):
         pass
     #@-node:ekr.20050415165731:other methods
@@ -1922,10 +1922,10 @@ class nullUndoer (undoer):
         pass
     def afterInsertNode (self,p,command,bunch,dirtyVnodeList=[]):
         pass
-        
+
     def afterMark (self,p,command,bunch,dirtyVnodeList=[]):
         pass
-        
+
     def afterMoveNode (self,p,command,bunch,dirtyVnodeList=[]):
         pass
     #@-node:ekr.20050415170018:after undo handlers...
