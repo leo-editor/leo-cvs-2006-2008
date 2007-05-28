@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="720" width="937"/>
+	<global_window_position top="10" left="238" height="700" width="937"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -275,7 +275,7 @@
 <v t="ekr.20041119034357.12" a="E"><vh>derived files options</vh>
 <v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
 <v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
-<v t="ekr.20041119041747.4" a="TV"><vh>@bool write_strips_blank_lines = True</vh></v>
+<v t="ekr.20041119041747.4" a="V"><vh>@bool write_strips_blank_lines = True</vh></v>
 <v t="ekr.20070419103554"><vh>@bool force_newlines_in_at_nosent_bodies = True</vh></v>
 </v>
 <v t="ekr.20041119034357.7"><vh>.leo file options</vh>
