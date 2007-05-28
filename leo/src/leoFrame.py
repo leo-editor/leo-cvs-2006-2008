@@ -229,8 +229,6 @@ class baseTextWidget:
 
         event = eventGenerateEvent(c,w,char,stroke)
         c.k.masterKeyHandler(event,stroke=stroke)
-
-    #@nonl
     #@-node:ekr.20070228074312.15:event_generate (baseTextWidget)
     #@+node:ekr.20070228074312.16:flashCharacter (to do)
     def flashCharacter(self,i,bg='white',fg='red',flashes=3,delay=75): # tkTextWidget.
@@ -472,8 +470,6 @@ class baseTextWidget:
             ins = w.toPythonIndex(insert)
             if ins in (i,j):
                 self.virtualInsertPoint = ins
-
-    #@nonl
     #@-node:ekr.20070228074312.36:setSelectionRange (baseText)
     #@+node:ekr.20070228074312.37:setWidth
     def setWidth (self,width):
@@ -3233,8 +3229,6 @@ class nullTree (leoTree):
             w = d.get(key)
             print 'w',w,'t.headString:',key.headString,'s:',repr(w.s)
 
-
-    #@nonl
     #@-node:ekr.20070228173611:printWidgets
     #@+node:ekr.20031218072017.2236:Overrides
     #@+node:ekr.20070228163350:Colors & fonts

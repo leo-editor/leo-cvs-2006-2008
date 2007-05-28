@@ -88,25 +88,25 @@ Edward
 http://sourceforge.net/forum/message.php?msg_id=3598136
 
 > It appears that @ref nodes introduce a flexibility that can not be simulated (at all?) with clones.  
- 
+
 Now that something like @ref appears necessary, it is so much easier to see how @ref is useful :-) 
- 
+
 1. @ref is an explicit link (arc) that creates the links of a general graph structure explictily. 
- 
+
 The simplest cycle is: 
- 
+
 - root 
 ..- a 
 .... - @ref b 
 ..- b 
 .... - @ref a 
- 
+
 This is not possible with clones! No more mumbling about being able to represent such links in uA's! 
- 
+
 2. @ref allows users to compose documents from 'atomic' pieces of text properly. That is, adding a 'virtual' child to a piece of text does not add it to all other uses of that text in (possibly unrelated) documents. This vastly increases the flexibility of rst3 plugin. 
- 
+
 I suspect other essential uses of @ref will appear. I am sure we can declare the 'post-leo LP tool' project a great success already :-) 
- 
+
 Edward 
 #@-node:ekr.20060329102951.1:My summary post
 #@+node:ekr.20060329102951.2:Reply
@@ -653,7 +653,7 @@ if __name__ == "__main__":
 
 #@+node:ekr.20060110102239.2:def profile
 def profile (statfile='/tmp/leoProfile.txt', leofile= ''):
-    
+
     """Gather and print statistics about Leo
     using new speedy hprof 
     http://www.planetsoc.com
@@ -665,7 +665,7 @@ def profile (statfile='/tmp/leoProfile.txt', leofile= ''):
     add option to force profile, hotshot, hprof or lstat
 
     valid combined w/script or batch mode as well.
-    
+
     may have the default args and calling sequence wrong
     refactored too much too fast with no time for testing
     should be easily fixed though. it did work yesterday!
@@ -725,14 +725,14 @@ def parseopts(argv):
     #description is in addition to normal help
     #any way to get description to be the help w/o subclassing?
     #later can use parser.usage= '%prog [-h,-n etc  defaults: -c ]'
-    
+
     #if a filename doesn't have leo extension is it assumed?
     #I think some of the comments are starting to repeat.
     #maybe come will get closer to the point of active choice
     #and I can delete the impostor comments.
 
     descript = 'Leo the python scriptable literate programming editor '
-        
+
     #usage  and description mutually exclusive?
     #usage alone is printed on unknown option or maybe other error
     #no wrap in that case
@@ -743,12 +743,12 @@ def parseopts(argv):
     #maybe point to the webspace and docs is enough
     #.py not required for some , python not required for others
     #maybe no choice but to generate some os specific strings
-    
+
     #doesn't mac also have pythonw and can we detect running under wine?
     #has to be some way of embedding \n 
 
     #-s file -sfile --script=file or --script file all the same?
-    
+
     usage = r'''options [-s/--script scriptfile -b/--batch batchfile leofile]
         more options [-h, --help  and --version]
         problems: try quoting any filenames
@@ -760,8 +760,8 @@ def parseopts(argv):
         usage = 'python -i %%prog leofile.leo  no console pythonw leo.py'+ usage
     else:
         usage = 'python %%prog leofile.leo  -h or --help' + usage
-        
-    
+
+
     parser = optparse.OptionParser(version='%%prog %s' % __version__, 
                         description=descript, usage= usage)
 
@@ -840,17 +840,17 @@ def parseopts(argv):
 
     #is there a generic way to check for / used as an option trigger?
     #is // even valid as a trigger
-    
+
 
     #woops, if -h in argv a little too good
     #better not prevent -high 20 or something similar
     if '-h' in argv or '--help' in argv
-           
+
     #for the win nubiee, / is the default win option starter
     #have to check every arg individually, py2.2 no substring in
     #definate bug that -? is not expected as help in optparse.
     #able to enter -? as an option though.
-    
+
     #can't seem to get /h to trigger help
     for h in argv:
         for i in ('-?', '/help', '/h', '/?'):
@@ -861,7 +861,7 @@ def parseopts(argv):
                 #print "didn't already exit!"
                 raise SystemExit(2)
 @c
-                
+
 
     (opts, args) = parser.parse_args(argv)
 
@@ -877,7 +877,7 @@ def concatate(argv, paramdict={}):
     """
     paramdict is a dict of single letter keys and
     item = [T/F, 'longname'] set [1] as True/False for require param
-    
+
     walk the list concatate anything with a space
     to the previous item if it doesn't look like a valid option.
     what are the valid options? we don't care...
@@ -891,7 +891,7 @@ def concatate(argv, paramdict={}):
     lets assume an options param can't have spaces, just get it working for now.
     if you enter an option you better quote it if you need to
     leave the space correcting behaviour for default or trailing filenames only
-    
+
     now there is a problem need to know which oiptions have required params
     otherwise can't decide how to concate, unless the space was preserved (it isn't)
     I think on win or anywhere argv[n][0] is never going to be a space
@@ -904,12 +904,12 @@ def concatate(argv, paramdict={}):
     maybe optparse team needs to gix this not the module user
     maybe someone filed a patch already? more study!
     if not who is going to need optparse after this gets done?
-    
+
     maybe just concatate all trailing args till an option, process backward
     its looking moore like a parser than a FSM now and I need to know too much.
     maybe assume all options have required params for now untill imp paramdict
     what about "-script=name, the doc implys that this may be valid?
-    
+
     all validm but they don't mention -file=outfile, maybe is a typo missing -?
     <yourscript> -f outfile --quiet
     <yourscript> --quiet --file outfile
@@ -934,7 +934,7 @@ def concatate(argv, paramdict={}):
     >>> #fix for extra credit, user probably screwed up? should ask them?
     >>> concatate(['1','- 2','3'])
     ['1', '- 2', '3']
-    
+
     """
 
     #preparse sys.argv concating filenames w/spaces 
@@ -945,10 +945,10 @@ def concatate(argv, paramdict={}):
     #if any options start w/ - or / then it gets dicey
     # could be a space in the last part of a directory in seperate items
     #we may not be able to cover every concievable case
-    
+
     prev = ''
     lst = []
-    
+
     for x in argv:
 
         if x[0] == '-':  #or '/' or x in '/-'
@@ -959,14 +959,14 @@ def concatate(argv, paramdict={}):
         else:
             if prev: prev = prev + ' ' + x
             else:    prev = x
-        
+
         #print 'droped thru x:prev', `x`, `prev`
     else:
         if prev:
             lst.append(prev)
 
     return lst
-    
+
 
 #@-node:ekr.20060110102239.4:concatate(sys.argv)
 #@+node:ekr.20060110102239.5:test run manual
@@ -1145,7 +1145,7 @@ on a run of 5 or 10 minutes.
 from dyna_menu import dtef
 @others 
 
- 
+
 def showstats():
     """ log sort of stops printing when you type! or grab scrollbars.
     need to print to copybuffer, redirect io to log print very slow
@@ -1160,7 +1160,7 @@ def showstats():
     except ImportError:
         from hotshot import Stats
     import sys
-    
+
     name = "/tmp/leoProfile.txt"
     print 'processing ', name
 
@@ -1174,12 +1174,12 @@ def showstats():
     #p.sort_stats('cum','file','name')
     #p.print_stats()
 
-    
+
     #would be nicer if strip_dirs left one more level of dir
     #or even better took an int to leave how many levels
     #several modules have similar def names, __init__ etc
     #will have to override that.
-    
+
     s = Stats(name).strip_dirs()
 
     #need to reverse or trap stdout to file    
@@ -1188,7 +1188,7 @@ def showstats():
     #weird no one thinks of these things. is it just me?
 
 #    sys.stdout = g.fileLikeObject()
-    
+
     print 'start.sort', dtef(c),
     s.sort_stats("time").print_stats()  #.print_callers()
 @
@@ -1402,7 +1402,7 @@ Still very vauable for creating dynamic narrative tutorials [aka screencasting]
 AS you know I am very excited about what flash can do for Leo, and vice versa.
 But I am concerned that there is not yet a 100% Leo means which supports people's
 standard print needs and habits.
-   
+
 -- PRINT MENU-- 
 Leo deserves good friendly printing features which anyone can use. At the moment
 we have a confusing patchwork of choices. Printing Leo seems to be both harder
@@ -1608,9 +1608,9 @@ a default, so plugins only need to specify keys that have non-default values.
 #@-node:ekr.20040317184631.1:To do
 #@+node:EKR.20040526202501:putUnknownAttributes & helper
 def putUnknownAttributes (self,torv):
-    
+
     """Put pickleable values for all keys in torv.unknownAttributes dictionary."""
-    
+
     attrDict = torv.unknownAttributes
     if type(attrDict) != type({}):
         g.es("ignoring non-dictionary unknownAttributes for",torv,color="blue")
@@ -1620,11 +1620,11 @@ def putUnknownAttributes (self,torv):
 #@nonl
 #@+node:ekr.20050418161620.2:putUaHelper
 def putUaHelper (self,torv,key,val):
-    
+
     '''Put attribute whose name is key and value is val to the output stream.'''
-    
+
     # g.trace(key,repr(val),g.callers())
-    
+
     # New in 4.3: leave string attributes starting with 'str_' alone.
     if key.startswith('str_'):
         if type(val) == type(''):
@@ -1668,13 +1668,13 @@ RE: Can I color the headline text ?
 2004-12-01 08:01
 
 The cleo plugin makes a permanent change to the headline appearance (using node attributes) while the footprints plugin makes a temporary change in the current session. Footprints was derived from cleo, although you might not be able to tell from looking at it! 
- 
+
 Cleo: http://sourceforge.net/forum/message.php?msg_id=2617221 
- 
+
 Footprints: http://sourceforge.net/forum/message.php?msg_id=2813450 
- 
+
 Between the two of them there should be enough information to help you achieve what you want. 
- 
+
 It is possible to do pretty much anything you want but you will have to provide the infrastructure yourself because Leo doesn't natively support it.  
 #@nonl
 #@-node:ekr.20041201084142:Add convenience methods to change individual headlines color directly
@@ -1690,7 +1690,7 @@ topMenu.post(topx,topy)
 #@+node:ekr.20060211101811:Activate menu commands
 #@+node:ekr.20060211100905.1:tkMenu.activateMenu
 def activateMenu (self,menuName):
-    
+
     c = self.c ;  top = c.frame.top
     topx,topy = top.winfo_rootx(),top.winfo_rooty()
     menu = c.frame.menu.getMenu(menuName)
@@ -1700,17 +1700,17 @@ def activateMenu (self,menuName):
         x = d.get(menuName)
         if x is None:
              x = 0 ; g.trace('oops, no menu offset: %s' % menuName)
-        
+
         menu.tk_popup(topx+d.get(menuName,0),topy) # Fix by caugm.  Thanks!
     else:
         g.trace('oops, no menu: %s' % menuName)
 #@-node:ekr.20060211100905.1:tkMenu.activateMenu
 #@+node:ekr.20060210133835.1:tkMenu.computeMenuPositions
 def computeMenuPositions (self):
-    
+
     # A hack.  It would be better to set this when creating the menus.
     menus = ('File','Edit','Outline','Plugins','Cmds','Window','Help')
-    
+
     # Compute the *approximate* x offsets of each menu.
     d = {}
     n = 0
@@ -1722,7 +1722,7 @@ def computeMenuPositions (self):
         d [z] = n
         # A total hack: sorta works on windows.
         n += font.measure(z+' '*4)+1
-        
+
     return d
 #@-node:ekr.20060210133835.1:tkMenu.computeMenuPositions
 #@-node:ekr.20060211101811:Activate menu commands
@@ -1850,10 +1850,10 @@ node...
 #@nonl
 #@+node:EKR.20040610130943:pasteOutlineRetainingClones
 def pasteOutlineRetainingClones (self,event=None):
-    
+
     '''Paste an outline into the present outline from the clipboard.
     Nodes *retain* their original identify.'''
-    
+
     c = self
 
     return c.pasteOutline(reassignIndices=False)
@@ -1862,7 +1862,7 @@ def pasteOutlineRetainingClones (self,event=None):
 # To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
 
 def pasteOutline(self,event=None,reassignIndices=True):
-    
+
     '''Paste an outline into the present outline from the clipboard.
     Nodes do *not* retain their original identify.'''
 
@@ -1870,7 +1870,7 @@ def pasteOutline(self,event=None,reassignIndices=True):
     s = g.app.gui.getTextFromClipboard()
     pasteAsClone = not reassignIndices
     undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
-    
+
     c.endEditing()
 
     if not s or not c.canPasteOutline(s):
@@ -1932,7 +1932,7 @@ copiedTnodeDict = {}
 for p in pasted.self_and_subtree_iter():
     if p.v.t not in copiedTnodeDict:
         copiedTnodeDict[p.v.t] = p.v.t
-        
+
 # g.trace(copiedTnodeDict.keys())
 
 for t in tnodeInfoDict.keys():
@@ -1945,7 +1945,7 @@ for t in tnodeInfoDict.keys():
 #@-node:ekr.20031218072017.1551:pasteOutline
 #@+node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
 def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
-    
+
     '''Read a Leo outline from string s in clipboard format.'''
 
     try:
@@ -1959,14 +1959,14 @@ def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
         g.es("The clipboard is not valid ",color="blue")
 
     return v
-    
+
 getLeoOutline = getLeoOutlineFromClipboard # for compatibility
 #@nonl
 #@+node:ekr.20031218072017.1557:finishPaste
 def finishPaste(self,reassignIndices=True):
-    
+
     """Finish pasting an outline from the clipboard.
-    
+
     Retain clone links if reassignIndices is False."""
 
     c = self.c
@@ -1996,7 +1996,7 @@ for p in current.self_and_subtree_iter():
 #@-node:ekr.20031218072017.1557:finishPaste
 #@+node:ekr.20060826052453.1:getLeoOutlineHelper
 def getLeoOutlineHelper (self,s,reassignIndices,checking):
-    
+
     self.checking = checking
     self.usingClipboard = True
     self.fileBuffer = s ; self.fileIndex = 0
@@ -2033,7 +2033,7 @@ for t in self.c.all_unique_tnodes_iter():
     if nodeIndices.isGnx(tref):
         tref = nodeIndices.toString(tref)
     self.tnodesDict[tref] = t
-    
+
 if 0:
     print '-'*40
     for key in self.tnodesDict.keys():
@@ -2068,12 +2068,12 @@ def getVnodes (self,reassignIndices=True):
 
     if self.getOpenTag("<vnodes>"):
         return # <vnodes/> seen.
-        
+
     self.forbiddenTnodes = []
     back = parent = None # This routine _must_ work on vnodes!
     self.currentVnodeStack = []
     self.topVnodeStack = []
-        
+
     if self.usingClipboard:
         oldRoot = c.rootPosition()
         oldCurrent = c.currentPosition()
@@ -2102,7 +2102,7 @@ self.forbiddenTnodes = []
 for p in oldCurrent.self_and_parents_iter():
     if p.v.t not in self.forbiddenTnodes:
         self.forbiddenTnodes.append(p.v.t)
-        
+
 # g.trace("forbiddenTnodes",self.forbiddenTnodes)
 #@-node:ekr.20041023105832:<< set self.forbiddenTnodes to tnodes than must not be pasted >>
 #@-node:ekr.20031218072017.1565:getVnodes
@@ -2115,13 +2115,13 @@ def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
     tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
 
     # we have already matched <v.
-    
+
     # New in Leo 4.4: support collapsed tnodes.
     if self.matchTag('/>'): # A collapsed vnode.
         v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
         if self.checking: return None
         else: return v
-    
+
     while 1:
         if self.matchTag("a=\""):
             << Handle vnode attribute bits >>
@@ -2167,7 +2167,7 @@ def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
             skip = skip or skip2
             if tnodeList:
                 v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
-            
+
     if not self.checking:
         << Set the remembered status bits >>
 
@@ -2178,7 +2178,7 @@ def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
         append2 = appendToTopStack and len(self.topVnodeStack) == 0
         back = self.getVnode(parent,back,skip,
             appendToCurrentStack=append1,appendToTopStack=append2)
-    
+
     if not self.checking:
         << Append to current or top stack >>
 
@@ -2205,7 +2205,7 @@ self.getDquote()
 theId,time,n = g.app.nodeIndices.scanGnx(index,0)
 if not time and index[0] == "T":
     index = index[1:]
-    
+
 index = self.canonicalTnodeIndex(index)
 t = self.tnodesDict.get(index)
 
@@ -2219,10 +2219,10 @@ if setCurrent:
 
 if setTop:
     self.topVnodeStack = [v]
-    
+
 if setExpanded:
     v.initExpandedBit()
-    
+
 if setMarked:
     v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
 
@@ -2233,7 +2233,7 @@ if setOrphan:
 if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
     #g.trace("append current",v)
     self.currentVnodeStack.append(v)
-    
+
 if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
     #g.trace("append top",v)
     self.topVnodeStack.append(v)
@@ -2242,7 +2242,7 @@ if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
 # (changed for 4.2) sets skip
 
 def createVnode (self,parent,back,tref,headline,attrDict):
-    
+
     # g.trace(parent,headline)
     v = None ; c = self.c
     # Shared tnodes are placed in the file even if empty.
@@ -2253,9 +2253,9 @@ def createVnode (self,parent,back,tref,headline,attrDict):
         t = self.tnodesDict.get(tref)
         if not t:
             t = self.newTnode(tref)
-            
+
     if self.checking: return None,False
-    
+
     if back: # create v after back.
         v = back.insertAfter(t)
     elif parent: # create v as the parent's first child.
@@ -2316,7 +2316,7 @@ def getExistingVnode (self,tref,headline):
 @others
 #@+node:ekr.20051025071455.1:class spellCommandsClass
 class spellCommandsClass (baseEditCommandsClass):
-    
+
     '''Commands to support the Spell Tab.'''
 
     @others
@@ -2324,14 +2324,14 @@ class spellCommandsClass (baseEditCommandsClass):
 def __init__ (self,c):
 
     baseEditCommandsClass.__init__(self,c) # init the base class.
-    
+
     self.handler = None
-    
+
     # All the work happens when we first open the frame.
 #@-node:ekr.20051025080056:ctor
 #@+node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
 def getPublicCommands (self):
-    
+
     return {
         'open-spell-tab':           self.openSpellTab,
         'spell-find':               self.find,
@@ -2343,11 +2343,11 @@ def getPublicCommands (self):
 #@-node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
 #@+node:ekr.20051025080633:openSpellTab
 def openSpellTab (self,event=None):
-    
+
     '''Open the Spell Checker tab in the log pane.'''
 
     c = self.c ; log = c.frame.log ; tabName = 'Spell'
-    
+
     if log.frameDict.get(tabName):
         log.selectTab(tabName)
     elif self.handler:
@@ -2377,7 +2377,7 @@ def change(self,event=None):
         self.handler.change()
     else:
         self.openSpellTab()
-        
+
 def changeAll(self,event=None):
 
     if self.handler:
@@ -2393,7 +2393,7 @@ def changeThenFind (self,event=None):
         self.handler.changeThenFind()
     else:
         self.openSpellTab()
-        
+
 def hide (self,event=None):
     '''Hide the Spell tab.'''
     if self.handler:
@@ -2414,12 +2414,12 @@ def ignore (self,event=None):
 class spellTabHandler (leoFind.leoFind):
 
     """A class to create and manage Leo's Spell Check dialog."""
-    
+
     @others
 #@+node:ekr.20051025071455.19:Birth & death
 #@+node:ekr.20051025071455.20:spellTabHandler.__init__
 def __init__(self,c,tabName):
-    
+
     """Ctor for the Leo Spelling dialog."""
 
     leoFind.leoFind.__init__(self,c) # Call the base ctor.
@@ -2433,7 +2433,7 @@ def __init__(self,c,tabName):
     self.workCtrl = g.app.gui.plainTextWidget(c.frame.top)
         # A text widget for scanning.
         # Must have a parent frame even though it is not packed.
-    
+
     self.loaded = self.init_aspell(c)
     if self.loaded:
         self.tab = g.app.gui.createSpellTab(c,self,tabName)
@@ -2448,31 +2448,31 @@ def init_aspell (self,c):
     self.dictionaryFileName = dictionaryFileName = (
         c.config.getString('spell_local_dictionary') or
         os.path.join(g.app.loadDir,"..","plugins",'spellpyx.txt'))
-    
+
     if not dictionaryFileName or not g.os_path_exists(dictionaryFileName):
         g.es_print('Can not open dictionary file: %s' % (
             dictionaryFileName), color='red')
         return False
 
     self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
-    
+
     if self.aspell.aspell:
         self.dictionary = self.readDictionary(dictionaryFileName)
     else:
         self.dictionary = False
         # g.es_print('Can not open Aspell',color='red')
-    
+
     return self.aspell.aspell
 #@-node:ekr.20051025094004:init_aspell
 #@+node:ekr.20051025071455.16:readDictionary
 def readDictionary (self,fileName):
 
     """Read the dictionary of words which we use as a local dictionary
-    
+
     Although Aspell itself has the functionality to handle this kind of things
     we duplicate it here so that we can also use it for the "ignore" functionality
     and so that in future a Python only solution could be developed."""
-    
+
     d = {}
 
     try:
@@ -2496,7 +2496,7 @@ def readDictionary (self,fileName):
 #@+node:ekr.20051025071455.37:add
 def add(self,event=None):
     """Add the selected suggestion to the dictionary."""
-    
+
     try:
         f = None
         try:
@@ -2522,7 +2522,7 @@ def add(self,event=None):
             g.es("Can not add %s to dictionary" % self.currentWord, color="red")
     finally:
         if f: f.close()
-        
+
     self.dictionary[self.currentWord.lower()] = 0
     self.tab.onFindButton()
 #@-node:ekr.20051025071455.37:add
@@ -2534,7 +2534,7 @@ def change(self,event=None):
          # event param is not used, required, and different from base class.
 
     c = self.c ; body = self.body ; w = body.bodyCtrl
-    
+
     selection = self.tab.getSuggestion()
     if selection:
         start,end = oldSel = w.getSelectionRange()
@@ -2587,10 +2587,10 @@ def find (self,event=None):
 #@+node:ekr.20051025071455.45:findNextMisspelledWord
 def findNextMisspelledWord(self):
     """Find the next unknown word."""
-    
+
     c = self.c ; p = c.currentPosition()
     aspell = self.aspell ; alts = None ; word = None
-   
+
     try:
         while 1:
             p, word = self.findNextWord(p) 
@@ -2654,19 +2654,19 @@ def findNextWord(self,p):
 #@-node:ekr.20051025071455.40:find & helpers
 #@+node:ekr.20051025121408:hide
 def hide (self,event=None):
-    
+
     self.c.frame.log.selectTab('Log')
-    
+
     for message in self.messages:
         g.es(message,color='blue')
-        
+
     self.messages = []
 #@-node:ekr.20051025121408:hide
 #@+node:ekr.20051025071455.41:ignore
 def ignore(self,event=None):
 
     """Ignore the incorrect word for the duration of this spell check session."""
-    
+
     if 1: # Somewhat helpful: applies until the tab is destroyed.
         s = 'Spell: ignore %s' % self.currentWord
         self.messages.append(s)
@@ -2682,9 +2682,9 @@ def ignore(self,event=None):
 #@-node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
 #@+node:ekr.20051025071455.6:class AspellClass
 class AspellClass:
-    
+
     """A wrapper class for Aspell spell checker"""
-    
+
     @others
 #@+node:ekr.20051025071455.7:Birth & death
 #@+node:ekr.20051025071455.8:__init__
@@ -2696,18 +2696,18 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
 
     self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
     self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
-    
+
     self.local_language_code = local_language_code or 'en'
     self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
     self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
-    
+
     # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
     # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
-    
+
     version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
     self.use_ctypes = g.CheckVersion(version,'2.5')
     self.aspell = self.sc = None
-    
+
     if self.use_ctypes:
         self.getAspellWithCtypes()
     else:
@@ -2729,10 +2729,10 @@ def getAspell (self):
 #@-node:ekr.20061017125710:getAspell
 #@+node:ekr.20061018111331:getAspellWithCtypes
 def getAspellWithCtypes (self):
-    
+
     import ctypes
     c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
-    
+
     try:
         path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
         self.aspell = aspell = ctypes.CDLL(path)
@@ -2832,7 +2832,7 @@ def processWord(self, word):
     # «original» «offset» 
     simplifyed to not create the string then make a list from it
     """
-    
+
     if not self.aspell:
         return None
     elif self.use_ctypes:
@@ -2850,7 +2850,7 @@ def processWord(self, word):
 def suggestions(self,word):
 
     "return list of words found"
-    
+
     aList = []
     sw = self.suggest(self.spell_checker, word, len(word))
 
@@ -2867,7 +2867,7 @@ def suggestions(self,word):
 def updateDictionary(self):
 
     """Update the aspell dictionary from a list of words.
-    
+
     Return True if the dictionary was updated correctly."""
 
     try:
@@ -3318,7 +3318,7 @@ def __init__(self):
 
     # Global panels.  Destroyed when Leo ends.
     self.pythonFrame = None
-    
+
     << Define global constants >>
     << Define global data structures >>
 #@+node:ekr.20031218072017.1417:<< define global constants >>
@@ -3393,7 +3393,7 @@ self.language_extension_dict = {
     "tex" : "tex",
     "tcltk" : "tcl",
     "unknown" : "txt" } # Set when @comment is seen.
-    
+
 self.extension_dict = {
     "ads"   : "ada",
     "adb"   : "ada",
@@ -3547,7 +3547,7 @@ By: nobody ( Nobody/Anonymous )
 2003-02-11 03:25  
 
 Here are some features I'd like to see: 
- 
+
 3. Metatags. @sectionname or @savedate are expanded to the appropriate text when saved.
 
 -marshall-  
@@ -3563,7 +3563,7 @@ RE: Haskell support
 2004-11-18 22:55
 
 There's a literate programming mode in Haskell (and in a number of other functional programming languages such as Clean & Curry), where the program is in a comment, usually where the line starts with ">" (bird track style, I think it's called), and the comments/documentation are freeform. It would be difficult but cool if Leo could support it, if only because the sentinels in the derived files wouldn't make whole file look so busy. 
- 
+
 Günther 
 #@nonl
 #@-node:ekr.20041130104552:(Support bird-track programs/comments?)
@@ -3643,7 +3643,7 @@ def scrollOutlineDownLine (self,event=None):
     a,b = self.c.frame.canvas.leo_treeBar.get()
     if b < 1.0:
         self.c.frame.tree.canvas.yview_scroll(1,"unit")
-    
+
 def scrollOutlineDownPage (self,event=None):
     '''Scroll the outline pane down one page.'''
     a,b = self.c.frame.canvas.leo_treeBar.get()
@@ -3666,7 +3666,7 @@ def scrollOutlineUpPage (self,event=None):
 def scrollOutlineLeft (self,event=None):
     '''Scroll the outline left.'''
     self.c.frame.tree.canvas.xview_scroll(1,"unit")
-    
+
 def scrollOutlineRight (self,event=None):
     '''Scroll the outline left.'''
     self.c.frame.tree.canvas.xview_scroll(-1,"unit")
@@ -4009,7 +4009,7 @@ Edward
 #@-node:ekr.20041022083005.2:add a Stop button for find/change
 #@+node:ekr.20040908104644:Leo splash screen
 To create a splash screen:
-    
+
 - Draw the screen.
 - Erase the screen with self.after(5000, self.destroy)
 #@+node:ekr.20040908221501:@url http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/120687
@@ -4078,7 +4078,7 @@ publishing via upload/import etc all still apply.
 
 LeoJabber would mean subscribing developers could immediately be aware of changes
 and then apply whatever strategy is appropriate for handling them, such as:
- 
+
 a. autoUpdate()
 b. makeNewNode()
 c. runDiffFunctions()
@@ -4293,7 +4293,7 @@ to Alt-x.
 To enable incremental allocation of Tk widgets during redraws, set self.allocateOnlyVisibleNodes = True in tree.__init__.
 
 To do:
-	
+
 - We might switch to a line-oriented scheme.
 	- This might simplify the code and make the code more useful to users.
 	- Conceivably this scheme might eliminate the need for the auto-scroll in the redraw code,
@@ -4310,7 +4310,7 @@ To do:
 def subtree_iter(self):
 
     """Return all nodes of self's tree in outline order."""
-    
+
     v = self
 
     if v:
@@ -4320,7 +4320,7 @@ def subtree_iter(self):
             for v1 in child.subtree_iter():
                 yield v1
             child = child.next()
-            
+
 self_and_subtree_iter = subtree_iter
 #@nonl
 #@-node:ekr.20040812155849.75:self_subtree_iter
@@ -4328,7 +4328,7 @@ self_and_subtree_iter = subtree_iter
 def unique_subtree_iter(self,marks=None):
 
     """Return all vnodes in self's tree, discarding duplicates """
-    
+
     v = self
 
     if marks == None: marks = {}
@@ -4344,7 +4344,7 @@ def unique_subtree_iter(self,marks=None):
             for v in v.unique_subtree_iter(marks):
                 yield v
             v = v._next
-            
+
 self_and_unique_subtree_iter = unique_subtree_iter
 #@nonl
 #@-node:ekr.20040812155849.76:unique_subtree_iter
@@ -4359,17 +4359,17 @@ Iterators make no copies at all if they would return an empty sequence.
 #@nonl
 #@+node:ekr.20040812154341.65:p.tnodes_iter & unique_tnodes_iter
 def tnodes_iter(self):
-    
+
     """Return all tnode's in a positions subtree."""
-    
+
     p = self
     for p in p.self_and_subtree_iter():
         yield p.v
-        
+
 def unique_tnodes_iter(self):
-    
+
     """Return all unique tnode's in a positions subtree."""
-    
+
     p = self
     marks = {}
     for p in p.self_and_subtree_iter():
@@ -4380,17 +4380,17 @@ def unique_tnodes_iter(self):
 #@-node:ekr.20040812154341.65:p.tnodes_iter & unique_tnodes_iter
 #@+node:ekr.20040812154341.66:p.vnodes_iter & unique_vnodes_iter
 def vnodes_iter(self):
-    
+
     """Return all vnode's in a positions subtree."""
-    
+
     p = self
     for p in p.self_and_subtree_iter():
         yield p.v
-        
+
 def unique_vnodes_iter(self):
-    
+
     """Return all unique vnode's in a positions subtree."""
-    
+
     p = self
     marks = {}
     for p in p.self_and_subtree_iter():
@@ -4407,7 +4407,7 @@ class allNodes_iter_class:
     @others
 
 def allNodes_iter (self,copy=False):
-    
+
     return self.allNodes_iter_class(self,copy)
 #@nonl
 #@+node:ekr.20040812154341.68:__init__ & __iter__
@@ -4416,14 +4416,14 @@ def __init__(self,p,copy):
     self.first = p.c.rootPosition().copy()
     self.p = None
     self.copy = copy
-    
+
 def __iter__(self):
 
     return self
 #@-node:ekr.20040812154341.68:__init__ & __iter__
 #@+node:ekr.20040812154341.69:next
 def next(self):
-    
+
     if self.first:
         self.p = self.first
         self.first = None
@@ -4446,16 +4446,16 @@ class subtree_iter_class:
     @others
 
 def subtree_iter (self,copy=False):
-    
+
     return self.subtree_iter_class(self,copy,includeSelf=False)
-    
+
 def self_and_subtree_iter (self,copy=False):
-    
+
     return self.subtree_iter_class(self,copy,includeSelf=True)
 #@nonl
 #@+node:ekr.20040812154341.71:__init__ & __iter__
 def __init__(self,p,copy,includeSelf):
-    
+
     if includeSelf:
         self.first = p.copy()
         self.after = p.nodeAfterTree()
@@ -4468,14 +4468,14 @@ def __init__(self,p,copy,includeSelf):
 
     self.p = None
     self.copy = copy
-    
+
 def __iter__(self):
 
     return self
 #@-node:ekr.20040812154341.71:__init__ & __iter__
 #@+node:ekr.20040812154341.72:next
 def next(self):
-    
+
     if self.first:
         self.p = self.first
         self.first = None
@@ -4499,7 +4499,7 @@ class children_iter_class:
     @others
 
 def children_iter (self,copy=False):
-    
+
     return self.children_iter_class(self,copy)
 #@nonl
 #@+node:ekr.20040812154341.74:__init__ & __iter__
@@ -4514,12 +4514,12 @@ def __init__(self,p,copy):
     self.copy = copy
 
 def __iter__(self):
-    
+
     return self
 #@-node:ekr.20040812154341.74:__init__ & __iter__
 #@+node:ekr.20040812154341.75:next
 def next(self):
-    
+
     if self.first:
         self.p = self.first
         self.first = None
@@ -4542,13 +4542,13 @@ class parents_iter_class:
     @others
 
 def parents_iter (self,copy=False):
-    
+
     p = self
 
     return self.parents_iter_class(self,copy,includeSelf=False)
-    
+
 def self_and_parents_iter(self,copy=False):
-    
+
     return self.parents_iter_class(self,copy,includeSelf=True)
 #@nonl
 #@+node:ekr.20040812154341.77:__init__ & __iter__
@@ -4571,7 +4571,7 @@ def __iter__(self):
 #@-node:ekr.20040812154341.77:__init__ & __iter__
 #@+node:ekr.20040812154341.78:next
 def next(self):
-    
+
     if self.first:
         self.p = self.first
         self.first = None
@@ -4594,20 +4594,20 @@ class siblings_iter_class:
     @others
 
 def siblings_iter (self,copy=False,following=False):
-    
+
     return self.siblings_iter_class(self,copy,following)
-    
+
 self_and_siblings_iter = siblings_iter
-    
+
 def following_siblings_iter (self,copy=False):
-    
+
     return self.siblings_iter_class(self,copy,following=True)
 #@nonl
 #@+node:ekr.20040812154341.80:__init__ & __iter__
 def __init__(self,p,copy,following):
-    
+
     # We always include p, even if following is True.
-    
+
     if following:
         self.first = p.copy()
     else:
@@ -4620,13 +4620,13 @@ def __init__(self,p,copy,following):
     self.copy = copy
 
 def __iter__(self):
-    
+
     return self
 
 #@-node:ekr.20040812154341.80:__init__ & __iter__
 #@+node:ekr.20040812154341.81:next
 def next(self):
-    
+
     if self.first:
         self.p = self.first
         self.first = None
@@ -4696,13 +4696,13 @@ a location that pointed to a nonexistent path.
 #@nonl
 #@+node:ekr.20031218072017.2932:openPythonWindow
 def openPythonWindow (self,event=None):
-    
+
     '''Open Python's Idle debugger in a separate process.'''
-    
+
     pythonDir = g.os_path_dirname(sys.executable)
     idle = g.os_path_join(pythonDir,'Lib','idlelib','idle.py')
     args = [sys.executable, idle ]
-    
+
     if 1: # Use present environment.
         os.spawnv(os.P_NOWAIT, sys.executable, args)
     else: # Use a pristine environment.
@@ -4912,11 +4912,11 @@ RE: Leo freezing up
 
 The freezing problem on debian sid (which is also my current OS) is caused by a bug in Tkinter: Tkinter does not work when libtk is compiled with thread support, which is the case on debian sid for tk8.4 
 I compiled my own non-threaded libtk with the corresponding python/tkinter, and the freeze magically vanished.  
- 
+
 This is a known bug in debian bugtrack: 
- 
+
 http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=171353 
- 
+
 Skal
 #@-node:ekr.20041201071145:Tk Freezes on debean when libtk is compiled with thread support
 #@+node:EKR.20040523192553:(Crash when pasting large text into headlines)
@@ -5192,7 +5192,7 @@ reading d:\test.leo
 #@-node:ekr.20031218072017.721:Test File for Non Expanding Tabs
 #@+node:ekr.20031218072017.722:setTabWidth
 def setTabWidth (self, w):
-    
+
     try: # This can fail when called from scripts
         # Use the present font for computations.
         font = self.bodyCtrl.cget("font")
@@ -5319,7 +5319,7 @@ if not self.use_sax:
 
 if attr:
     attrs.append(' a="%s"' % attr)
-    
+
 # Put the archived *current* position in the *root* positions <v> element.
 if self.use_sax and p.equal(self.rootPosition):
     aList = [str(z) for z in self.currentPosition.archivedPosition()]
@@ -5352,7 +5352,7 @@ if hasattr(v.t,"tnodeList") and len(v.t.tnodeList) > 0 and v.isAnyAtFileNode():
 
 if hasattr(v,"unknownAttributes"): # New in 4.0
     attrs.append(self.putUnknownAttributes(v))
-    
+
 if p.hasChildren() and not forceWrite and not self.usingClipboard:
     # We put the entire tree when using the clipboard, so no need for this.
     attrs.append(self.putDescendentUnknownAttributes(p))
@@ -5373,9 +5373,9 @@ if isOrphan and isThin:
 #@-node:ekr.20031218072017.1863:putVnode (3.x and 4.x)
 #@+node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
 def putTnodeList (self,v):
-    
+
     """Put the tnodeList attribute of a tnode."""
-    
+
     # Remember: entries in the tnodeList correspond to @+node sentinels, _not_ to tnodes!
     nodeIndices = g.app.nodeIndices
     tnodeList = v.t.tnodeList
@@ -5396,7 +5396,7 @@ def putTnodeList (self,v):
 #@-node:ekr.20031218072017.2002:putTnodeList (4.0,4.2)
 #@+node:ekr.20040701065235.2:putDescendentAttributes
 def putDescendentAttributes (self,p):
-    
+
     nodeIndices = g.app.nodeIndices
 
     # Create a list of all tnodes whose vnodes are marked or expanded
@@ -5410,7 +5410,7 @@ def putDescendentAttributes (self,p):
                 marks.append(t)
             if p.hasChildren() and p.isExpanded() and t not in expanded:
                 expanded.append(t)
-    
+
         result = []
         for theList,tag in ((marks,"marks"),(expanded,"expanded")):
             if theList:
@@ -5428,7 +5428,7 @@ def putDescendentAttributes (self,p):
                 marks.append(p.copy())
             if p.hasChildren() and p.isExpanded() and not p in expanded:
                 expanded.append(p.copy())
-    
+
         result = []
         for theList,tag in ((marks,"marks"),(expanded,"expanded")):
             if theList:
@@ -5439,15 +5439,15 @@ def putDescendentAttributes (self,p):
                 s = string.join(sList,'')
                 # g.trace(tag,[str(p.headString()) for p in theList])
                 result.append('\n%s="%s"' % (tag,s))
-            
+
     return ''.join(result)
 #@nonl
 #@-node:ekr.20040701065235.2:putDescendentAttributes
 #@+node:EKR.20040627113418:putDescendentUnknownAttributes
 def putDescendentUnknownAttributes (self,p):
-    
+
     # pychecker complains about dumps.
-    
+
     # The bin param doesn't exist in Python 2.3;
     # the protocol param doesn't exist in earlier versions of Python.
     version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
@@ -5463,7 +5463,7 @@ def putDescendentUnknownAttributes (self,p):
                 # g.trace(p2.headString(),t)
                 tnodes.append(t) # Bug fix: 10/4/06.
                 tnodesData.append((p2,t),)
-    
+
     # Create a list of pairs (t,d) where d contains only pickleable entries.
     data = []
     for p,t in tnodesData:
@@ -5472,7 +5472,7 @@ def putDescendentUnknownAttributes (self,p):
         else:
             # Create a new dict containing only entries that can be pickled.
             d = dict(t.unknownAttributes) # Copy the dict.
-            
+
             for key in d.keys():
                 try:
                     # We don't actually save the pickled values here.
@@ -5489,14 +5489,14 @@ def putDescendentUnknownAttributes (self,p):
                     g.es('putDescendentUnknownAttributes: unexpected pickling exception',color='red')
                     g.es_exception()
             data.append((t,d),)
-            
+
     # Create resultDict, an enclosing dict to hold all the data.
     resultDict = {}
     nodeIndices = g.app.nodeIndices
     for t,d in data:
         gnx = nodeIndices.toString(t.fileIndex)
         resultDict[gnx]=d
-    
+
     if 0:
         print "resultDict..."
         for key in resultDict:
@@ -5531,13 +5531,13 @@ def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
     tref = -1 ; headline = '' ; tnodeList = None ; attrDict = {}
 
     # we have already matched <v.
-    
+
     # New in Leo 4.4: support collapsed tnodes.
     if self.matchTag('/>'): # A collapsed vnode.
         v,skip2 = self.createVnode(parent,back,tref,headline,attrDict)
         if self.checking: return None
         else: return v
-    
+
     while 1:
         if self.matchTag("a=\""):
             << Handle vnode attribute bits >>
@@ -5583,7 +5583,7 @@ def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
             skip = skip or skip2
             if tnodeList:
                 v.t.tnodeList = tnodeList # New for 4.0, 4.2: now in tnode.
-            
+
     if not self.checking:
         << Set the remembered status bits >>
 
@@ -5594,7 +5594,7 @@ def getVnode (self,parent,back,skip,appendToCurrentStack,appendToTopStack):
         append2 = appendToTopStack and len(self.topVnodeStack) == 0
         back = self.getVnode(parent,back,skip,
             appendToCurrentStack=append1,appendToTopStack=append2)
-    
+
     if not self.checking:
         << Append to current or top stack >>
 
@@ -5621,7 +5621,7 @@ self.getDquote()
 theId,time,n = g.app.nodeIndices.scanGnx(index,0)
 if not time and index[0] == "T":
     index = index[1:]
-    
+
 index = self.canonicalTnodeIndex(index)
 t = self.tnodesDict.get(index)
 
@@ -5635,10 +5635,10 @@ if setCurrent:
 
 if setTop:
     self.topVnodeStack = [v]
-    
+
 if setExpanded:
     v.initExpandedBit()
-    
+
 if setMarked:
     v.initMarkedBit() # 3/25/03: Do not call setMarkedBit here!
 
@@ -5649,7 +5649,7 @@ if setOrphan:
 if not setCurrent and len(self.currentVnodeStack) > 0 and appendToCurrentStack:
     #g.trace("append current",v)
     self.currentVnodeStack.append(v)
-    
+
 if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
     #g.trace("append top",v)
     self.topVnodeStack.append(v)
@@ -5658,7 +5658,7 @@ if not setTop and len(self.topVnodeStack) > 0 and appendToTopStack:
 # (changed for 4.2) sets skip
 
 def createVnode (self,parent,back,tref,headline,attrDict):
-    
+
     # g.trace(parent,headline)
     v = None ; c = self.c
     # Shared tnodes are placed in the file even if empty.
@@ -5669,9 +5669,9 @@ def createVnode (self,parent,back,tref,headline,attrDict):
         t = self.tnodesDict.get(tref)
         if not t:
             t = self.newTnode(tref)
-            
+
     if self.checking: return None,False
-    
+
     if back: # create v after back.
         v = back.insertAfter(t)
     elif parent: # create v as the parent's first child.
@@ -5790,7 +5790,7 @@ if not self.use_sax:
 
 if attr:
     attrs.append(' a="%s"' % attr)
-    
+
 # Put the archived *current* position in the *root* positions <v> element.
 if self.use_sax and p.equal(self.rootPosition):
     aList = [str(z) for z in self.currentPosition.archivedPosition()]
@@ -5823,7 +5823,7 @@ if hasattr(v.t,"tnodeList") and len(v.t.tnodeList) > 0 and v.isAnyAtFileNode():
 
 if hasattr(v,"unknownAttributes"): # New in 4.0
     attrs.append(self.putUnknownAttributes(v))
-    
+
 if p.hasChildren() and not forceWrite and not self.usingClipboard:
     # We put the entire tree when using the clipboard, so no need for this.
     attrs.append(self.putDescendentUnknownAttributes(p))
@@ -6091,35 +6091,35 @@ By: Edward K. Ream - edream
    RE: Dividing The Undo: doing w/o v.uA 
 2005-09-09 14:17  
 > If we can open up how [Leo] reads xml, it may make it simpler to start developing a stash scheme. 
- 
+
 I agree that reading xml more properly would be A Good Thing (tm). As we shall see, however, it is not the main issue. 
- 
+
 > DOM seems like a good path to start out on. 
- 
+
 This is not the path I would have chosen. The new colorizer at in leoPlugins.leo at: 
- 
+
 Plugins-->Experimental/unfinished-->New colorizer-->@thin __jEdit_colorizer__.py 
- 
+
 uses sax. I like the light-weight approach. I would rather do a bit more work in the initial parsing and create the data structures myself then relying on DOM. 
- 
+
 But parsing is irrelevant. The problem is the design of *thin* derived files and the code that reads such files. Let us consider how we can "do without" v.unknownAttributes in thin derived files. I **shall not** change the format of thin derived files, so some trickery is required. The first step is read this section of Leo's new docs: 
- 
+
 http://webpages.charter.net/edreamleo/customizing.html#adding-extensible-attributes-to-nodes-and-leo-files  /> 
 The key here is the so-called 'hidden machinery'. This is an essential feature of the code that reads and writes thin derived files and it **will not** change. **Note**: Leo has two sets of read code: the code that reads .leo files has no trouble whatever recreating vnodes. It is only vnodes in thin derived files that may not have attributes. 
- 
+
 **Important**: for @thin trees (in the outline) Leo saves *only* the <v> element corresponding to the @thin node itself. It is this <v> element that contains the 'hidden machinery'. Don't even think about having Leo write the whole tree of <v> elements: the 4.0 read code is made possible because these <v> elements do *not* exist. This eliminates all the error 'recovery' schemes that can not, if fact, be robust enough. 
- 
+
 So the only real alternative is to add uA's sufficient to recreate elements in the *reconstituted* vnodes that Leo creates in the leoAtFile read logic. Happily, we can do this as follows. When writing, a plugin (or an extended Leo) would 'piggyback' the vnode attributes in the corresponding **t**.unknownAttributes field. When reading, the plugin (or Leo) would put the vnode attributes "where they belong" in the appropriate vnode. We associate a 'vnode traversal index' with each vnode. This is simply how many previous "same" vnodes appeared in the traversal before getting to the desired vnode. Something like this:: 
- 
+
 vx = {} # traversal indices for vnodes. 
 for p in c.allNodes_iter(): 
 ....n = vx.get(p.v.t,0) # n is the traversal index for vnode p.v. 
 ....vx[p.v.t] = n+1 # bump the index for the next v such that v.t == p.v.t 
- 
+
 We store attributes for vnode v in v.t.unknownAttributes, along with the traversal index. The read code uses the traversal index to copy vnode attributes from t.unknownAttributes to v.unknownAttrutes. Rather than forcing each plugin to do this, Leo should probably have support for this in the leoFileCommands read/write code. In short, the t.unknownAttributes machinery suffices in theory, and in practice a bit of support code would be good. 
- 
+
 Glad you asked :-) . I have been willing to live without v.uA's in thin derived files. I never thought much about this until you asked, but necessity is the mother... So this is good. A way exists to treat all vnodes as first-class citizens. 
- 
+
 Edward 
 #@-node:ekr.20060201161901.2:@url http://sourceforge.net/forum/message.php?msg_id=3332355
 #@-node:ekr.20060201161901.1:Postings re undo
@@ -6133,10 +6133,10 @@ commanders = {}
 
 class NodeUndoer:
     '''A class that manages NodeUndoerBase instances for tnodes'''
-    
+
     undoers = {} #util.WeakHashMap()
     checksums = util.WeakHashMap()
-    
+
     def __init__( self, c, umenu, rmenu, gtnu, gtnr, vunstack, clearundo ):
         '''c -> a commander
            umenu -> a JMenuItem that is the 'undo' action
@@ -6146,7 +6146,7 @@ class NodeUndoer:
            vunstack -> a JMenuItem that is the 'visualise undo stack' action
            clearundo -> a JMenuItem that is the 'clear undo stack' action
         '''
-        
+
         self.c = c
         self.umenu = umenu
         umenu.actionPerformed = lambda event: self.undo()
@@ -6171,38 +6171,38 @@ class NodeUndoer:
         leoPlugins.registerHandler( "write-leo-file-data", wm1 )
         leoPlugins.registerHandler( "read-leo-file-data", wm2 )
         leoPlugins.registerHandler( "checksum-violation", wm3 )
-    
+
     def undo( self ):
-        
+
         if self.ignore: return
         self.ignore = 1
         self.umanager.undo()
         self.setMenu()
         self.ignore = 0
         return
-        
+
     def redo( self ):
-        
+
         if self.ignore: return
         self.ignore = 1
         self.umanager.redo()
         self.setMenu()
         self.ignore = 0
         return
-        
-    
+
+
     def setNode( self, p ):
-        
+
         #print "SETTING NODE!!! %s" % t
         #print "FILEINDEX %s" % t.fileIndex
         #java.lang.Thread.dumpStack()
         v = p.v
         t = v.t
         #vid = v.vid
-        
+
         if self.tnode:
             self.checksums[ self.tnode ] = md5.md5( self.tnode.bodyString ).hexdigest()
-        
+
         #if self.undoers.containsKey( t ):
         if self.undoers.has_key( v ):
             #print "CONTAINTS %s" % t
@@ -6238,7 +6238,7 @@ class NodeUndoer:
                     #return
             for z in self.umanager.undostack:
                 commanders[ z ] = self.c
-                                    
+
         else:
             print "V not in Undoers %s" % v
             #print v.vid
@@ -6247,29 +6247,29 @@ class NodeUndoer:
 
         self.tnode = t
         self.setMenu()
-        
+
     def __addUndo( self, undo ):
         #self.umanager.addEdit( undo )
         self.umanager.addUndo( undo )
         #upe = self.UndoableProxyEvent( undo, self.umanager, self, self.c )
         #self.c.undoer.addUndo( upe )
         #die_listeners[ undo ] = upe
-        
-        
+
+
     def addUndo( self, undo ):
-        
+
         if not self.ignore:
-            
+
             if self.compound:
                 self.compound.addEdit( undo )
                 return
-            
+
             self.__addUndo( undo )                
-    
+
         self.setMenu()
-            
+
     def setMenu( self ):
-        
+
         self.umenu.setText( self.umanager.getUndoPresentationName() )
         self.umenu.setEnabled( self.umanager.canUndo() )
         if self.umanager.canUndo():
@@ -6282,34 +6282,34 @@ class NodeUndoer:
             self.gtnr.setEnabled( 1 )
         else:
             self.gtnr.setEnabled( 0 )
-        
+
         self.c.undoer.setMenu()
-               
-    
-    
+
+
+
     def getUStack( self, tnode ):
-            
+
         if hasattr( tnode, 'unknownAttributes' ):
             uas = tnode.unknownAttributes
         else:
             tnode.unknownAttributes = uas = {}
-        
+
         return uas
-        
+
 
     def clearUndo( self ):
-        
+
         self.umanager.discardAllEdits()
         self.setMenu()
-        
+
     def gotoNextUndoSpot( self ):
-        
+
         ua = self.umanager.editToBeUndone()
         if ua:
             spot = ua.spot
             self.c.frame.body._current_editor.setCaretPosition( spot )
             return
-            
+
     def gotoNextRedoSpot( self ):
         ua = self.umanager.editToBeRedone()
         if ua:
@@ -6318,9 +6318,9 @@ class NodeUndoer:
             return
 
     @others
-    
 
-                    
+
+
 <<UndoableDocumentEvent>>
 <<UndoableCompoundEvent>>
 
@@ -6352,13 +6352,13 @@ from utilities.WeakMethod import WeakMethod
 #@-node:ekr.20060201152349.1:<<imports>>
 #@+node:ekr.20060201152349.2:visualiseUndoStack
 def visualiseUndoStack( self ):
-    
+
     umanager = self.umanager            
     table = swing.JTable( self.UneditableTableModel() )#( data, util.Vector( [ 'spot', 'data', 'action', 'redo/undo' ] ) )
     table.setSelectionMode( swing.ListSelectionModel.SINGLE_SELECTION )
     self.setDataForTable( table )
 
-    
+
     jd = swing.JDialog()
     jd.setTitle( "Undo Stack" )
     cp = jd.getContentPane()
@@ -6369,13 +6369,13 @@ def visualiseUndoStack( self ):
     bholder.add( uto )
     <<_undoTo>>
     uto.actionPerformed = _undoTo
-    
+
     rto = swing.JButton( "Redo To" )
     bholder.add( rto )
     <<_redoTo>>
     rto.actionPerformed = _redoTo
-    
-        
+
+
     jb = swing.JButton( "Close" )
     jb.actionPerformed = lambda event : jd.dispose()
     bholder.add( jb )
@@ -6383,8 +6383,8 @@ def visualiseUndoStack( self ):
     g.app.gui.center_dialog( jd )
     jd.setModal( 1 )
     jd.show()
-    
-    
+
+
 #@+node:ekr.20060201152349.3:<<_undoTo>>
 def _undoTo( event ):
     sr = table.getSelectedRow()
@@ -6424,17 +6424,17 @@ def _redoTo( event ):
                                             "Illegal Redo Selection", 
                                             swing.JOptionPane.WARNING_MESSAGE )
         return
-        
+
     self.ignore = 1
     umanager.redoTo( undo )
     self.ignore = 0
     self.setDataForTable( table )
-    
+
 #@-node:ekr.20060201152349.4:<<_redoTo>>
 #@-node:ekr.20060201152349.2:visualiseUndoStack
 #@+node:ekr.20060201152349.5:buildTableData
 def buildTableData( self ):
-    
+
     data = util.Vector()
     editu = self.umanager.editToBeUndone()
     editr = self.umanager.editToBeRedone()
@@ -6452,7 +6452,7 @@ def buildTableData( self ):
             vec.add( "" )
         else:
             vec = z.getForTableModel()
-            
+
         if z is editu:
             vec.set( 3, 'current undo' )
             cu = edits.indexOf( z )
@@ -6464,14 +6464,14 @@ def buildTableData( self ):
         elif z.canRedo():
             vec.set( 3, 'redo' )
         data.add( vec )
-    
+
     return data, cu, cr
 
 
 #@-node:ekr.20060201152349.5:buildTableData
 #@+node:ekr.20060201152349.6:setDataForTable
 def setDataForTable( self, table ):
-    
+
     data, cu, cr = self.buildTableData()
     dm = table.getModel()
     dm.setDataVector( data, util.Vector( [ 'spot', 'data', 'action', 'redo/undo' ] ) )
@@ -6480,13 +6480,13 @@ def setDataForTable( self, table ):
         lsm.setLeadSelectionIndex( cu )
     elif cr != -1:
         lsm.setLeadSelectionIndex( cr )
-        
-    
+
+
 #@nonl
 #@-node:ekr.20060201152349.6:setDataForTable
 #@+node:ekr.20060201152349.7:pickle and unpickle
 def serializeForLeoFile( self, tag, *args, **kwords ):
-    
+
     if not args[ 0 ].has_key( "c" ): return
     c = args[ 0 ][ 'c' ]
     store = args[ 0 ][ 'store' ]
@@ -6497,9 +6497,9 @@ def serializeForLeoFile( self, tag, *args, **kwords ):
                 nwundoers[ z.vid ] = cPickle.dumps( self.undoers[ z ] )
             else:
                 nwundoers[ z.vid ] = self.undoers[ z ]
-                
+
         store.addData( "tundoer", nwundoers ) #the storage class does the rest of the work for us
-        
+
 
 def unserializeFromLeoFile( self, tag, *args, **kwords ):
 
@@ -6525,11 +6525,11 @@ def unserializeFromLeoFile( self, tag, *args, **kwords ):
         self.checksum_violations = []
         self.undostack = []
         self.undopointer = 0
-        
+
 #@-node:ekr.20060201152349.7:pickle and unpickle
 #@+node:ekr.20060201152349.8:checkSumViolation
 def checkSumViolation( self, tag, *args, **kwords ):
-    
+
     if not args[ 0 ].has_key( "c" ): return
     c = args[ 0 ][ 'c' ]
     filename = args[ 0 ][ 'filename' ]
@@ -6542,9 +6542,9 @@ def checkSumViolation( self, tag, *args, **kwords ):
 def startCompounding( self, name ):
     self.compound = UndoableCompoundEvent( name )
     #self.compound = LeoCompoundEdit( name )
-        
+
 def stopCompounding( self ):
-        
+
     compound = self.compound
     compound.end()
     self.compound = None
@@ -6557,26 +6557,26 @@ def stopCompounding( self ):
 #@nonl
 #@+node:ekr.20060201152349.11:UneditableTableModel
 class UneditableTableModel( swing.table.DefaultTableModel ):
-    
+
     def __init__( self ):
         swing.table.DefaultTableModel.__init__( self )
-        
+
     def isCellEditable( self, row, column ):
         return 0
-        
+
 #@-node:ekr.20060201152349.11:UneditableTableModel
 #@+node:ekr.20060201152349.12:PickleProxy
 class PickleProxy:
     '''This class exists to pickle the NodeUndoerBase instance into a form
        that can be safely stored in a Leo ua.'''
-       
+
     def __init__( self, undoer, t ):
         self.undoer = undoer
         self.t = t
-            
+
     def getPickleProxy( self ):
-        
-      
+
+
         try:
             #array = self.undoer.serializeSelf()
             data = pickle.dumps( self.undoer )
@@ -6593,9 +6593,9 @@ class PickleProxy:
 #@+node:ekr.20060201152349.13:UndoableProxyEvent
 class UndoableProxyEvent( sundo.UndoableEdit ):
 
-       
+
     def __init__( self, event, owner, master , c):
-        
+
         self.event = event
         self.owner = owner
         self.master = master
@@ -6607,74 +6607,74 @@ class UndoableProxyEvent( sundo.UndoableEdit ):
         self.can_redo = self._can_redo
         self.dieable = 0
         self.ignore = 0
-        
-    
+
+
     def __canRedo( self ):
         return self._can_redo == self.event.canRedo()
-        
+
     def __canUndo( self ):
         return self._can_undo == self.event.canUndo()
-            
-            
+
+
     def addEdit( self, edit ):
         return 0
-        
+
     def canRedo( self ):
         #if self.__canUndo():
         return self.can_redo
         #else:
         #    return self.event.canRedo()
-        
+
     def canUndo( self ):
         #if self.__canRedo():
         return self.can_undo
         #else:
         #    return self.event.canUndo()
-        
+
     def isAlive( self ):
         return self.can_redo or self.can_undo
-    
+
     def invalidate( self ):
         self.c.undoer.killFromEvent( self )
-        
+
     def die( self ):    
         self.can_undo = self.can_redo = 0
         #edits = self.owner.getEdits()
         #spot = edits.indexOf( self.event )
         #self.owner.trimEdits( spot, edits.size() )
-    
-        
+
+
     def getPresentationName( self ):
         return self.event.getPresentationName()
-        
+
     def getRedoPresentationName( self ):
-        
+
         if self.__canRedo():
             return self.event.getRedoPresentationName()
         elif self.isAlive():
             return "Expended %s" % self.event.getRedoPresentationName()
         else:
             return "Dead %s" % self.event.getRedoPresentationName()
-        
+
     def getUndoPresentationName( self ):
-        
+
         if self.__canUndo():
             return self.event.getUndoPresentationName()
         elif self.isAlive():
             return "Expended %s" % self.event.getUndoPresentationName()
         else:
             return "Dead %s" % self.event.getUndoPresentationName()
-        
-        
+
+
     def isSignificant( self ):
         return 1
-    
+
     def sync( self ):
         self._can_redo = self.event.canRedo()
         self._can_undo = self.event.canUndo()
-        
+
     def redo( self ):
-        
+
         self.c.selectPosition( self.cp.copy() )
         self.can_redo = 0
         self.can_undo = 1
@@ -6684,12 +6684,12 @@ class UndoableProxyEvent( sundo.UndoableEdit ):
                 self.owner.redo()
             self.master.ignore = 0
             self.master.setMenu()
-            
+
         self.sync()
-            
-        
+
+
     def undo( self ):
-        
+
         self.c.selectPosition( self.cp.copy() )
         self.can_undo = 0
         self.can_redo = 1
@@ -6699,12 +6699,12 @@ class UndoableProxyEvent( sundo.UndoableEdit ):
                 self.owner.undo()
             self.master.ignore = 0
             self.master.setMenu()
-            
+
         self.sync()
-        
+
     def replaceEdit( self, edit ):
         return 0
-        
+
 
 #@-node:ekr.20060201152349.13:UndoableProxyEvent
 #@+node:ekr.20060201152349.14:<<UndoableDocumentEvent>>
@@ -6712,9 +6712,9 @@ class UndoableDocumentEvent3:#( sundo.UndoableEdit, io.Serializable ):
     '''A class that takes the current Editors document and does undo changes
        upon the data within the Editor.  It is assumed that the data in the document
        will be in sync with the changes represented within the UndoableDocumentEvent'''
-       
+
     def __init__( self, c, event, txt = "" ):
-        
+
         commanders[ self ] = c
         self.spot = event.getOffset()
         self.length = event.getLength()
@@ -6726,36 +6726,36 @@ class UndoableDocumentEvent3:#( sundo.UndoableEdit, io.Serializable ):
            name_txt = "%s whitespaces" % len( self.txt )
         else:
            name_txt = self.txt
-        
+
         if event.getType() == sevent.DocumentEvent.EventType.INSERT:
             self.etype = "insert"
         elif event.getType() == sevent.DocumentEvent.EventType.REMOVE:
             self.etype = "remove"
 
-            
-            
+
+
         if self.etype == "insert":
             self.name = "insert %s" % name_txt  
         elif self.etype == "remove":
             self.name = "remove %s" % name_txt
-    
+
     #def __getstate__( self ):
     #    dic = self.__dict__
     #    import copy
     #    rv = copy.copy( dic )
     #    #del rv[ c ]
     #    return rv        
-            
+
     def addEdit( self, edit ):
         return 0
-        
+
     def canRedo( self ):
         return self.can_redo
-        
+
     def canUndo( self ):
-        
+
         return self.can_undo
-        
+
     def die( self ):    
         self.can_undo = self.can_redo = 0
         #if die_listeners.has_key( self ):
@@ -6763,37 +6763,37 @@ class UndoableDocumentEvent3:#( sundo.UndoableEdit, io.Serializable ):
         #    if dlistener.dieable:
         #        print "WHACKING %s" % dlistener
         #        dlistener.invalidate()
-    
-        
+
+
     def getPresentationName( self ):
         return self.name 
-        
+
     def getRedoPresentationName( self ):
         return "Redo %s" % self.name
-        
+
     def getUndoPresentationName( self ):
         return "Undo %s" % self.name
-        
+
     def isSignificant( self ):
         return 1
-        
+
     def redo( self ):
-        
+
         self.can_redo = 0
         self.can_undo = 1
         self.redoEvent()
-        
+
     def undo( self ):
-        
+
         self.can_undo = 0
         self.can_redo = 1
         self.undoEvent()
-        
+
     def replaceEdit( self, edit ):
         return 0
-        
+
     def redoEvent( self ):
-        
+
         c = commanders.get( self )
         doc = c.frame.body._current_editor.getDocument()
         if self.etype == "insert":
@@ -6802,9 +6802,9 @@ class UndoableDocumentEvent3:#( sundo.UndoableEdit, io.Serializable ):
         elif self.etype == "remove":            
             doc.remove( self.spot, self.length )
             return    
-        
+
     def undoEvent( self ):
-        
+
 
         c = commanders.get( self )                
         doc = c.frame.body._current_editor.getDocument()
@@ -6819,76 +6819,76 @@ class UndoableDocumentEvent3:#( sundo.UndoableEdit, io.Serializable ):
 
     def getForTableModel( self ):
         return util.Vector( [ self.spot, self.txt, self.name, '' ] )
-        
+
 
 
 #@-node:ekr.20060201152349.14:<<UndoableDocumentEvent>>
 #@+node:ekr.20060201152349.15:<<UndoableCompoundEvent>>
 class UndoableCompoundEvent3:
-    
+
     def __init__( self, pname ):
         #self.ce = sundo.CompoundEdit()
         self.pname = pname
         self.undostack = []
         self.can_undo = 1
         self.can_redo = 0
-        
+
     def getPresentationName( self ):
         return self.pname
-        
+
     def getRedoPresentationName( self ):
         return "Redo %s" % self.pname
-        
+
     def getUndoPresentationName( self ):
         return "Undo %s" % self.pname
-        
+
     def canUndo( self ):
         return self.can_undo
         #return self.ce.canUndo()
-        
+
     def canRedo( self ):
         return self.can_redo
         #return self.ce.canRedo()
-        
+
     def undo( self ):
         for z in self.undostack:
             print z
             z.undo()
         self.can_undo = 0
         self.can_redo = 1
-        
+
     def redo( self ):
-        
+
         self.undostack.reverse()
         for z in self.undostack:
             print z
             z.redo()
-        
+
         self.undostack.reverse()
         self.can_undo = 1
         self.can_redo = 0
-        
+
     def isSignificant( self ):
         return 1
         #return self.ce.isSignificant()
-        
+
     def addEdit( self, edit ):
         self.undostack.insert( 0, edit )
-        
 
-    
+
+
     def die( self ):
         pass
         #return self.ce.die()
-        
+
     def end( self ):
         pass
         #return self.ce.end()
-        
-        
 
-            
-        
+
+
+
+
 
 #@-node:ekr.20060201152349.15:<<UndoableCompoundEvent>>
 #@-node:ekr.20060201152349:NodeUndoer.py

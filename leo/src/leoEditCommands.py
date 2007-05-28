@@ -2820,8 +2820,6 @@ class editCommandsClass (baseEditCommandsClass):
                 if i != j: w.delete(i,j)
                 w.insert(i,ch)
                 w.setInsertPoint(i+1)
-
-    #@nonl
     #@-node:ekr.20051027172949:updateAutomatchBracket
     #@+node:ekr.20051026171121.1:udpateAutoIndent
     def updateAutoIndent (self,p,w):

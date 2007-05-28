@@ -1370,8 +1370,6 @@ class findTab (leoFind):
         self.createFrame(parentFrame)
         self.createBindings()
         self.init(c) # New in 4.3: init only once.
-
-    #@nonl
     #@-node:ekr.20051020120306.11:findTab.__init__
     #@+node:ekr.20061212092124:Must be defined in subclasses
     def createBindings (self):

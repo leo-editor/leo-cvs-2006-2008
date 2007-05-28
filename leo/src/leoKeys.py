@@ -586,8 +586,6 @@ class autoCompleterClass:
                 return
         self.extendSelection('.')
         self.finish()
-
-    #@nonl
     #@-node:ekr.20061031131434.27:chain
     #@+node:ekr.20061031131434.28:computeCompletionList
     def computeCompletionList (self,verbose=False):
@@ -618,8 +616,6 @@ class autoCompleterClass:
             self.setSelection(common_prefix)
         for name in self.tabList:
             g.es('%s' % (name),tabName=self.tabName)
-
-    #@nonl
     #@-node:ekr.20061031131434.28:computeCompletionList
     #@+node:ekr.20061031131434.29:doBackSpace (autocompleter)
     def doBackSpace (self):
@@ -746,8 +742,6 @@ class autoCompleterClass:
         c.recolor()
         self.clear()
         self.object = None
-
-    #@nonl
     #@-node:ekr.20061031131434.34:finish
     #@+node:ekr.20061031131434.35:getAttr and hasAttr
     # The values of self.attrDictDic are anonymous attrDict's.
@@ -1033,8 +1027,6 @@ class autoCompleterClass:
         c.frame.body.recolor_now(c.currentPosition(),incremental=True)
         # Usually this call will have no effect because the body text has not changed.
         c.frame.body.onBodyChanged('Typing')
-
-    #@nonl
     #@-node:ekr.20061031131434.45:setSelection
     #@+node:ekr.20061031131434.46:start
     def start (self,event=None,w=None):

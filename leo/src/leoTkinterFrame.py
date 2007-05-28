@@ -923,8 +923,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
         frame.destroyAllPanels()
         g.clearAllIvars(frame)
 
-
-    #@nonl
     #@-node:ekr.20031218072017.1975:destroyAllObjects
     #@+node:ekr.20031218072017.3965:destroyAllPanels
     def destroyAllPanels (self):
@@ -993,8 +991,6 @@ class leoTkinterFrame (leoFrame.leoFrame):
             c.frame.statusFrame = self.statusFrame
             c.frame.statusLabel = self.labelWidget
             c.frame.statusText  = self.textWidget
-
-        #@nonl
         #@-node:ekr.20031218072017.3961: ctor
         #@+node:ekr.20031218072017.3962:clear
         def clear (self):
@@ -3570,8 +3566,6 @@ class leoTkTextWidget (Tk.Text):
             Tk.Text.tag_remove(w,tagName,i,j,*args)
 
 
-
-    #@nonl
     #@-node:ekr.20070116073907:tag_remove
     #@+node:ekr.20061113151148.11:w.deleteTextSelection
     def deleteTextSelection (self): # tkTextWidget

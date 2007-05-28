@@ -365,8 +365,6 @@ class leoTkinterTree (leoFrame.leoTree):
 
         k.completeAllBindingsForWidget(self.bindingWidget)
 
-
-    #@nonl
     #@-node:ekr.20051024102724:tkTtree.setBindings
     #@+node:ekr.20070327103016:tkTree.setCanvasBindings
     def setCanvasBindings (self,canvas):

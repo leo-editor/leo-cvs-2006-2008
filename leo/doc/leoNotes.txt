@@ -43,14 +43,14 @@ for p in c.allNodes_iter():
     s = p.headString()
     if s.startswith('@thin'):
         d.append(s[5:].strip())
-        
+
 d.sort()
 
 for s in d:
     print s
-    
 
-        
+
+
 #@-node:ekr.20050123160215.1:Put all files in alpha order in ExamDiff
 #@-node:ekr.20050123161408:ExamDiff files & scripts
 #@+node:ekr.20070515083528:Focus notes
@@ -179,7 +179,7 @@ This will not hurt your ability to use branches, only your ability to automatica
 
 - Add any language-specifig code to leoColor.colorizeAnyLanguage.
   For most languages nothing need be done in this step.
-  
+
 - If the language is case insensitive, add it to the list of
 case_insensitiveLanguages found in  << define global colorizer data >>
 
@@ -267,7 +267,7 @@ self.language_extension_dict = {
     "tex" : "tex",
     "tcltk" : "tcl",
     "unknown" : "txt" } # Set when @comment is seen.
-    
+
 self.extension_dict = {
     "ads"   : "ada",
     "adb"   : "ada",
@@ -835,14 +835,14 @@ php_keywords = [ # 08-SEP-2002 DTHEIN
     "for", "foreach", "function", "global", "if",
     "new", "old_function", "or", "static", "switch",
     "use", "var", "while", "xor" ]
-    
+
 # The following are supposed to be followed by ()
 php_paren_keywords = [
     "array", "die", "echo", "empty", "exit",
     "include", "include_once", "isset", "list",
     "print", "require", "require_once", "return",
     "unset" ]
-    
+
 # The following are handled by special case code:
 # "<?php", "?>"
 #@-node:ekr.20031218072017.380:php keywords
@@ -1492,40 +1492,40 @@ http://sourceforge.net/forum/message.php?msg_id=3053534
 By: paulpaterson
 
 Very interesting indeed - great work! 
- 
+
 I didn't have Java/Jython installed so for others in the same boat here's what I had to do to get it work on my platform (Win2k). Some of this is in the README but I had to do some extra but I'm not sure why. 
- 
+
 1. Install 1.5 JDK  
 http://java.sun.com/j2se/1.5.0/download.jsp 
- 
+
 2. Install Jython 
 http://www.jython.org/jython22a1.zip 
- 
+
 3. Edit Jython.bat file - the part that calls Java.exe to ... 
 "C:\Program Files\Java\jdk1.5.0_02\jre\bin\java" -cp "C:\Program Files\Java\jdk1.5.0_02\jre\lib";"c:\Apps\Python23\Jython";"C:\Apps\jLeo\j-leo-MAR15\Icons";"C:\Apps\jLeo\j-leo-MAR15\skins";"C:\Apps\jLeo\j-leo-MAR15\src";"C:\Apps\jLeo\j-leo-MAR15\skinimages" -Dpython.home="c:\Apps\Python23\Jython" -jar jython.jar %ARGS% 
- 
+
 Where  
 - Java installed at C:\Program Files\Java\jdk1.5.0_02 
 - Jython at c:\Apps\Python23\Jython 
 - jLeo at C:\Apps\jLeo\j-leo-MAR15 
- 
+
 Change your paths as appropriate! There must be a better way to do this - Java confuses me! 
- 
+
 4. Edit leo.py in jleo/src directory to fix failure to find HOME env variable. 
- 
+
 line 241 becomes ... 
- 
+
 ....try:home = os.getenv('HOME' )#,default=dotDir) 
 ....except KeyError:home="" 
- 
- 
+
+
 Then, from the Jython install directory ... 
- 
+
 Jython " 
 C:\Apps\jLeo\j-leo-MAR15\src\leo.py" 
- 
+
 Works a treat!  
- 
+
 Paul
 #@-node:ekr.20050317153447:jy-Leo install instructions by Paul Paterson
 #@-node:ekr.20050316092232:How to install jyLeo
@@ -1549,7 +1549,7 @@ Sorry for being a bit vague, I was talking about the Leo source files themselves
 
 If Leo itself does not solve the problem, may I suggest the 
 Tools/scripts/crlf.py script in the Python source distibution? It's nice and simple, and skips binary files, too. That's what I use every time I install a new version of Leo. :^) 
- 
+
 #@+node:ekr.20031218072017.387:The solution
 Under unix, python writes "\n" as "\n"; under windows, it writes it as "\r\n". The unix python interpreter ignores trailing "\r" in python source files. There are no such guarantees for other languages. Unix users should be able to get rid of the cosmetically detrimental "\r" either by running dos2unix on the offending files, or, if they're part of a .leo project, reading them into leo and writing them out again.  
 
@@ -1678,7 +1678,7 @@ def createRootWindow(self):
     #self.root = root = Tix.Tk()
     root.title("Leo Main Window")
     root.withdraw()
-    
+
     self.setDefaultIcon()
     self.getDefaultConfigFont(g.app.config)
     self.createGlobalWindows()
@@ -1692,13 +1692,13 @@ def createRootWindow(self):
 
 - IronPython does not accept 'from __future__ import x'
   I could work around this, but perhaps it is time to abandon Python 2.2.2.
-  
+
 - Amazingly, it is possible to add Python24\Lib to IronPython's path!
   Almost all of those modules import correct.
 
 - IronPython has troubles with the xml modules.
   It complains about a missing 'strict' codec.
-  
+
 - IronPython has trouble with the pdb module, so some other way must be found to debug IronPython programs.
 #@nonl
 #@-node:ekr.20070215183046:IronPython notes
@@ -1758,7 +1758,7 @@ Jon Schull <jschull@softlock.com>
 Date:  2003/12/30 Tue PM 05:50:51 EST 
 To:  edreamleo@charter.net 
 Subject:  Leo, Mac OS X 10.3, and VPython 
-             
+
 I've been evaluating leo or vpython programming on  Mac OS X 10.3, and 
 have some observations and a suggestion.
 
@@ -1769,48 +1769,48 @@ Observations:
 
 In both environments I can run leo under python leo.py and under idle.
 Under OS X we get font smoothing, but we can't run visual python programs (python crashes;  this is a known incompatibility with  MacPython.)
-    
+
 - Under X11 we can run visual python programs like this one
     #box.py
     from visual import *
     box()
-            
+
 And we can even run them under leo (under X11). HOWEVER, when the visual python program is terminated, leo vanishes (leo and the vp program apparently run in the same space)
-    
+
 Under x11, we can keep leo alive by putting the vp program in its own space:
-    
+
     os.popen3('/sw/bin/python /Users/jis/box.py')
-    
+
 However,  this doesn't let us see the output of stderr and stdout.  
 Those text streams are available...
-        
+
     def do(cmd='ls'):
         from os import popen3
         pIn,pOut,pErr=0,1,2
         popenResults=popen3(cmd)
         print popenResults[pOut].read()
         print popenResults[pErr].read()
-    
+
     import os	
     do('/sw/bin/python /Users/jis/box.py')
-        
+
 ...but only when the vpython program terminates.
-    
+
 Here's the good news:  if we execute our vp program with 
 /sw/bin/idle.py rather than with python, we get to see the program 
 output in real time (under idle, under X11).
-    
+
     import os	
     os.chdir('/sw/lib/python2.3/idlelib')
     os.popen3('/sw/bin/python idle.py -r /Users/jis/box.py')
-        
+
 #this runs as an executed script in leo, and produces a live idle 
 with real time ongoing output.
-    
+
 Now, while idle is running, leo sits in suspended animation.  But when 
 the vpython program terminates, we are left in idle, and when idle is 
 terminated, leo becomes active again.
-    
+
 It would be even better if leo were not suspended (using os.spawn, 
 perhaps) but the real point is that I would really really like leo's 
 "Execute script" command to execute code this way and spare me having 
@@ -1971,9 +1971,9 @@ leouser
 In general, everything you can do in Python is accessible through the C API.
 
 	lines = block.split('\n');
- 
+
 > That will be
- 
+
 	lines = PyObject_CallMethod(block, "split", "s", "\n");
 #@-node:ekr.20031218072017.398:How to call any Python method from the C API
 #@+node:ekr.20031218072017.399:How to run Python programs easily on NT,2K,XP
@@ -2130,11 +2130,11 @@ if 0:
 #@+node:ekr.20070320090557:From tabController
 #@+node:ekr.20070317085437.81:tt.renumber
 # def renumber (self):
-    
+
     # '''Renumber all numbered chapters.'''
-    
+
     # nb = self.nb
-        
+
     # i = 0
     # for name in nb.pagenames():
         # if name.isdigit():
@@ -2148,7 +2148,7 @@ if 0:
 #@+node:ekr.20070317085437.3:Create widgets
 #@+node:ekr.20070317085437.4:constructTree
 def constructTree (self,frame,pageName):
-    
+
     # g.trace(pageName)
 
     cc = self ; c = self.c ; nb = self.nb
@@ -2157,7 +2157,7 @@ def constructTree (self,frame,pageName):
         canvas = frame.canvas
         treeBar = frame.treeBar
         tree = frame.tree
-    
+
     frame.canvas = canvas = frame.createCanvas(parentFrame=None,pageName=pageName)
     frame.tree = leoTkinterTree.leoTkinterTree(frame.c,frame,frame.canvas)
     frame.tree.setColorFromConfig()
@@ -2169,7 +2169,7 @@ def constructTree (self,frame,pageName):
 def createBalloon (self,tab,sv):
 
     '''Create a balloon showing the present chapter name for a tab.'''
-    
+
     # g.trace(tab,sv.get())
 
     balloon = Pmw.Balloon(tab,initwait=100)
@@ -2184,14 +2184,14 @@ def createBalloon (self,tab,sv):
 #@-node:ekr.20070317085437.5:createBalloon
 #@+node:ekr.20070317085437.6:createEditorPane
 def createEditorPane (self):
-    
+
     '''Create a new pane with a unique name.'''
 
     cc = self
     cc.numberOfEditors += 1
     name = str(cc.numberOfEditors)
     pane = self.panedBody.add(name)
-    
+
     # g.trace(pane)
     return pane
 #@nonl
@@ -2205,11 +2205,11 @@ def createNoteBook (self,parentFrame):
     self.nb = nb = Pmw.NoteBook(parentFrame,borderwidth=1,pagemargin=0)
     hull = nb.component('hull')
     self.makeTabMenu(hull)
-    
+
     def lowerCallback(name,self=self):
         return self.lowerPage(name)
     nb.configure(lowercommand=lowerCallback)
-    
+
     def raiseCallback(name,self=self):
         return self.raisePage(name)
     nb.configure(raisecommand=raiseCallback)
@@ -2231,7 +2231,7 @@ def createPanedWidget (self,parentFrame):
 #@-node:ekr.20070317085437.8:createPanedWidget
 #@+node:ekr.20070317085437.9:createTab
 def createTab (self,tabName):
-    
+
     cc = self ; nb = cc.nb
 
     page = nb.add(tabName) # page is a Tk.Frame.
@@ -2240,7 +2240,7 @@ def createTab (self,tabName):
     button.configure(
         background=cc.selectedTabBackgroundColor,
         foreground=cc.selectedTabForegroundColor)
-    
+
     # g.trace(tabName,page,button)
     return page,button
 #@nonl
@@ -2248,7 +2248,7 @@ def createTab (self,tabName):
 #@-node:ekr.20070317085437.3:Create widgets
 #@+node:ekr.20070317085437.10:makeTabMenu & helpers
 def makeTabMenu (self,widget):
-    
+
     '''Create a tab menu.'''
 
 
@@ -2256,7 +2256,7 @@ def makeTabMenu (self,widget):
     tmenu = Tk.Menu(widget,tearoff=0)
     widget.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
     widget.tmenu = tmenu
-    
+
     # Huh?
     # tmenu.add_command(command=tmenu.unpost)
 
@@ -2272,10 +2272,10 @@ def makeTabMenu (self,widget):
 #@nonl
 #@+node:ekr.20070317085437.11:createTopLevelMenuItems
 def createTopLevelMenuItems (self,tmenu):
-    
+
     cc = self ; tt = self.tt
     tmenu.add_command(label='Add Chapter',command=cc.addChapter)
-    
+
     if 1: # 'Remove This Chapter'
         def removeChapterCallback(event=None,cc=cc):
             return cc.removeChapter(cc.nb.getcurselection())
@@ -2288,14 +2288,14 @@ def createTopLevelMenuItems (self,tmenu):
     tmenu.add_command(
         label="Rename This Chapter",
         command=cc.renameChapter)
-        
+
     swapmenu = Tk.Menu(tmenu,tearoff=0)
     tmenu.add_cascade(menu=swapmenu,label='Swap With Chapter')
-        
+
     def swapChaptersCallback  (cc=cc,menu=swapmenu):
         tt.setupChaptersMenu(menu,cc.swapChapters)
     swapmenu.configure(postcommand=swapChaptersCallback)
-    
+
     tmenu.add_command(
         label="Clone Find All",
         command=cc.regexClone)
@@ -2365,12 +2365,12 @@ def createNodeMenu (self,tmenu):
     cc = self
     opmenu = Tk.Menu(tmenu,tearoff=0)
     tmenu.add_cascade(menu=opmenu,label='Node')
-    
+
     cmenu = Tk.Menu(opmenu,tearoff=0)
     movmenu = Tk.Menu(opmenu,tearoff=0)
     copymenu = Tk.Menu(opmenu,tearoff=0)
     searchmenu = Tk.Menu(opmenu,tearoff=0)
-    
+
     opmenu.add_cascade(menu=cmenu,label='Clone To Chapter')
     opmenu.add_cascade(menu=movmenu,label='Move To Chapter')
     opmenu.add_cascade(menu=copymenu,label='Copy To Chapter')
@@ -2382,7 +2382,7 @@ def createNodeMenu (self,tmenu):
     def moveToChapterCallback(cc=cc,menu=movmenu):
         cc.setupMenu(menu,cc.moveToChapter)
     movmenu.configure(postcommand=moveToChapterCallback)
-    
+
     def copyToChapterCallback(cc=cc,menu=copymenu):
         cc.setupMenu(menu,cc.copyToChapter)
     copymenu.configure(postcommand=copyToChapterCallback)
@@ -2395,7 +2395,7 @@ def createTrashMenu (self,tmenu):
 
     m = Tk.Menu(tmenu,tearoff=0)
     tmenu.add_cascade(menu=m,label='Trash')
-    
+
     m.add_command(label="Add Trash Barrel",command=cc.addTrashBarrel)
     m.add_command(label='Empty Trash Barrel',command=cc.emptyTrash)
 #@nonl
@@ -2404,7 +2404,7 @@ def createTrashMenu (self,tmenu):
 def setupMenu (self,menu,command,all=False):
 
     '''Create a menu.'''
-    
+
     cc = self ; nb = cc.nb
 
     menu.delete(0,'end')
@@ -2426,17 +2426,17 @@ def addHeading (self,parentFrame):
     '''Create a two-part editor label.
     - The left label tracks the chapter name using a chapter.sv.
     - The right label is the node's healine.'''
-    
+
     cc = self
     f = Tk.Frame(parentFrame) ; f.pack(side='top')
     lt_label = Tk.Label(f)    ; lt_label.pack(side='left')
     rt_label = Tk.Label(f)    ; rt_label.pack(side='right')
-    
+
     # The lt_label tracks the present chapter name.
     # chapter.updateHeadingSV changes this textvariable when chapters change.
     chapter = cc.getChapter()
     lt_label.configure(textvariable=chapter.sv)
-    
+
     for w in (lt_label,rt_label,f,parentFrame):
         w.configure(bg=cc.editorLabelBackgroundColor)
     for w in (lt_label,rt_label):
@@ -2479,7 +2479,7 @@ def activateEditor (self,body):
 def newEditor (self):
 
     cc = self ; c = cc.c
-    
+
     pane = self.createEditorPane()
     body = leoTkinterBody(self.frame,pane)
     c.frame.bodyCtrl = body.bodyCtrl # Make body the 'official' body.
@@ -2499,18 +2499,18 @@ def newEditor (self):
 #@-node:ekr.20070317085437.60:newEditor
 #@+node:ekr.20070317085437.61:removeEditor
 def removeEditor (self):
-    
+
     cc = self ; c = cc.c
     panedBody = cc.panedBody
     panes = panedBody.panes()
     if not panes: return
-    
+
     pane = panes[0]
     frame = panedBody.pane(pane)
     panedBody.delete(pane)
     panedBody.updatelayout()
     del cc.editorBodies[frame]
-    
+
     # Hide the label if there is only one editor left.
     if len(cc.editorBodies.keys())==1:
         panes = panedBody.panes()
@@ -2523,9 +2523,9 @@ def removeEditor (self):
 #@+node:ekr.20070317085437.69:Overrides
 #@+node:ekr.20070317085437.70:createCanvas (injects ivars for treeInit)
 def createCanvas (self,frame,parentFrame,pageName):
-    
+
     cc = self
-            
+
     # Set ivars for cc.treeInit.
     page,button = cc.createTab(pageName)
     cc.newPageName = pageName
@@ -2540,21 +2540,21 @@ def createCanvas (self,frame,parentFrame,pageName):
 #@-node:ekr.20070317085437.70:createCanvas (injects ivars for treeInit)
 #@+node:ekr.20070317085437.71:createControl (tkBody)
 def createControl(self,body,frame,parentFrame):
-    
+
     '''Override for tkBody.createControl.
-    
+
     This called for the 'main' body and once for each added editor. '''
 
     cc = self ; c = cc.c ; nb = cc.nb
     # assert(body == frame.body)
-    
+
     if self.panedBody:
         pane = parentFrame
     else:
         self.createPanedWidget(parentFrame)
         pane = self.createEditorPane()
     panedBody = self.panedBody
-    
+
     # **Important**: addHeading creates a heading that works for *all* chapters.
     lt_label,rt_label,label_frame = cc.addHeading(pane)
 
@@ -2564,17 +2564,17 @@ def createControl(self,body,frame,parentFrame):
     body.editorLabelFrame = label_frame
 
     ctrl = old_createControl(body,frame,pane)
-    
+
     # Create a focus-in event to keep the generic label widget in synch.
     def focusInCallback(event,self=self,frame=frame):
         return self.onFocusIn(event,body,ctrl)
     ctrl.bind("<FocusIn>",focusInCallback,'+')
-    
+
     i = 1.0 / len(panedBody.panes())
     for z in panedBody.panes():
         panedBody.configurepane(z,size=i)
     panedBody.updatelayout()
-    
+
     cc.editorBodies [pane] = body
 
     if len(panedBody.panes()) > 1:
@@ -2588,15 +2588,15 @@ def createControl(self,body,frame,parentFrame):
 #@-node:ekr.20070317085437.71:createControl (tkBody)
 #@+node:ekr.20070317085437.72:doDelete
 def doDelete (self,p):
-    
+
     '''Override p.doDelete to add nodes to the trash if it exists.'''
-    
+
     cc = self ; c = cc.c ; nb = cc.nb ;  trash = 'Trash'
-    
+
     # Do nothing if the node can't be deleted.
     newNode = p and (p.visBack() or p.next()) # *not* p.visNext()
     if not newNode: return
-    
+
     name = nb.getcurselection()
     if name != trash and trash in nb.pagenames():
         chapter = self.getChapter(trash)
@@ -2612,7 +2612,7 @@ def doDelete (self,p):
 #@-node:ekr.20070317085437.72:doDelete
 #@+node:ekr.20070317085437.73:getLeoFile
 def getLeoFile (self,fc,fileName,readAtFileNodesFlag=True,silent=False):
-    
+
     global iscStringIO # For communication with g.os_path_dirname
 
     if iscStringIO:
@@ -2675,19 +2675,19 @@ def open (self,fc,file,fileName,readAtFileNodesFlag=True,silent=False):
 #@-node:ekr.20070317085437.75:open
 #@+node:ekr.20070317085437.76:treeInit (creates Chapter)
 def treeInit (self,tree,c,frame,canvas):
-    
+
     cc = self
-    
+
     assert canvas == cc.newCanvas
-    
+
     # These ivars are set in cc.createCanvas.
     pageName = cc.newPageName
     page = cc.newPage
     canvas = cc.newCanvas
-    
+
     old_tree_init(tree,c,frame,canvas)
     cc.chapters [pageName] = chapter(cc,c,tree,frame,canvas,page,pageName)
-    
+
     # g.trace(pageName,id(canvas),cc.chapters.keys())
 #@-node:ekr.20070317085437.76:treeInit (creates Chapter)
 #@+node:ekr.20070317085437.77:write_Leo_file
@@ -2757,7 +2757,7 @@ def otherPages (canvas,doc,pageinfo=pinfo):
 #@-node:ekr.20070317085437.35:<< define otherPages callback >>
 #@+node:ekr.20070317085437.36:_changeTreeToPDF
 def _changeTreeToPDF (self,name,num,p,Story,styles,maxlen):
-    
+
     c = self.c ; nb = self.nb
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, XPreformatted
     from reportlab.lib.units import inch
@@ -2802,12 +2802,12 @@ def _changeTreeToPDF (self,name,num,p,Story,styles,maxlen):
 #@-node:ekr.20070317085437.34:doPDFConversion & helper
 #@+node:ekr.20070317085437.32:convertTopLevelToChapters
 def convertTopLevelToChapters (self):
-    
+
     cc = self ; c = cc.c
 
     # It's more intuitive to leave the root position where it is.
     p = c.rootPosition().next()
-    
+
     # Dont' use an iterator here! makeNodeIntoChapter deletes nodes.
     while p:
         next = p.next()
@@ -2821,9 +2821,9 @@ def convertTopLevelToChapters (self):
 #@-node:ekr.20070317085437.32:convertTopLevelToChapters
 #@+node:ekr.20070317085437.33:conversionToSimple
 def conversionToSimple (self):
-    
+
     cc = self ; c = cc.c ; nb = cc.nb
-    
+
     # Set last to the last top-level node.
     for p in c.rootPosition().self_and_siblings_iter():
         last = p.copy()
@@ -2831,7 +2831,7 @@ def conversionToSimple (self):
     pagenames = nb.pagenames()
     current = nb.getcurselection()
     pagenames.remove(current)
-   
+
     for pageName in pagenames:
         chapter = self.getChapter(pageName)
         # We can't use an iterator here because we are moving nodes.
@@ -2841,7 +2841,7 @@ def conversionToSimple (self):
             p.moveAfter(last)
             last = p.copy() ; p = next
         nb.delete(pageName)
-    
+
     nb.selectpage(current)
     c.redraw_now()
 #@nonl
@@ -2860,7 +2860,7 @@ def exportLeoFile (self,event=None):
 #@-node:ekr.20070317085437.37:exportLeoFile
 #@+node:ekr.20070317085437.38:importLeoFile
 def importLeoFile (self,event=None):
-    
+
     cc = self ; c = cc.c ; nb = cc.nb
 
     fileName = tkFileDialog.askopenfilename()
@@ -3020,7 +3020,7 @@ def colorBl (event,tg=ltag,can=can):
 #@-node:ekr.20070317085437.46:buildIndex
 #@+node:ekr.20070317085437.48:regexViewIndex
 def regexViewIndex (self):
-    
+
     c = self.c ; nb = self.nb
 
     def regexWalk (result,entry,widget):
@@ -3166,7 +3166,7 @@ def insertChapters (self,chapters):
 def writeChapters (self,fc,fileName,pagenames,outlineOnlyFlag):
 
     '''Writes Chapters to StringIO instances.'''
-    
+
     cc = self ; chapterList = []
     global old_write_Leo_file
 
@@ -3185,7 +3185,7 @@ def writeChapters (self,fc,fileName,pagenames,outlineOnlyFlag):
 def zipChapters (self,fileName,pagenames,chapList):
 
     '''Writes StringIO instances to a zipped file.'''
-    
+
     cc = self
 
     zf = zipfile.ZipFile(fileName,'w',zipfile.ZIP_DEFLATED)
@@ -3211,9 +3211,9 @@ def addPage (self,pageName=None):
     cc = self ; c = cc.c
     if not pageName:
         pageName = str(len(cc.nb.pagenames()) + 1)
-    
+
     # g.trace(pageName,cc.chapters.keys())
-    
+
     old_chapter = cc.currentChapter
     junk, page = cc.constructTree(self.frame,pageName)
         # Creates a canvas, new tab and a new tree.
@@ -3226,7 +3226,7 @@ def addPage (self,pageName=None):
 #@-node:ekr.20070317085437.79:addPage
 #@+node:ekr.20070317085437.80:getChapter
 def getChapter (self,pageName=None):
-    
+
     cc = self
 
     return self.chapters.get(pageName or cc.nb.getcurselection())
@@ -3256,17 +3256,17 @@ def _saveInfo (self):
     self.cp = c._currentPosition and c._currentPosition.copy() or c.nullPosition()
     self.rp = c._rootPosition and c._rootPosition.copy() or c.nullPosition()
     self.tp = c._topPosition and c._topPosition.copy() or c.nullPosition()
-    
+
     # g.trace(self.cp)
 #@nonl
 #@-node:ekr.20070317085708.5:_saveInfo
 #@+node:ekr.20070317085708.4:initTree
 def initTree (self):
-    
+
     '''Initialize the tree for this chapter.'''
-    
+
     cc = self.cc ; c = cc.c
-    
+
     if cc.currentChapter:
         # g.trace()
         # We are creating a *second* or following chapter.
@@ -3286,20 +3286,20 @@ def initTree (self):
 #@-node:ekr.20070317085708.4:initTree
 #@+node:ekr.20070317085708.3:init
 def init (self):
-    
+
     '''Complete the initialization of a chapter
     by creating bindings and injecting ivars.
-    
+
     Doing this here greatly simplifies the init logic.'''
 
     c = self.c ; cc = self.cc ; nb = cc.nb
     pageName = self.pageName ; page = self.page
-    
+
     hull = nb.component('hull')
     tab = nb.tab(pageName)
     tab.bind('<Button-3>',lambda event,hull=hull: hull.tmenu.post(event.x_root,event.y_root))
     cc.createBalloon(tab,self.sv)
- 
+
     # The keyhandler won't be defined for the first chapter,
     # but that's ok: we only need to do this for later chapters.
     if c.k:
@@ -3311,7 +3311,7 @@ def init (self):
 #@-node:ekr.20070317085708.3:init
 #@+node:ekr.20070317085708.6:setVariables
 def setVariables (self):
-    
+
     '''Switch variables in Leo's core to represent this chapter.'''
 
     c = self.c
@@ -3326,7 +3326,7 @@ def setVariables (self):
     c._currentPosition = self.cp and self.cp.copy() or c.nullPosition()
     c._rootPosition    = self.rp and self.rp.copy() or c.nullPosition()
     c._topPosition     = self.tp and self.tp.copy() or c.nullPosition()
-    
+
     # g.trace(self.cp)
 #@nonl
 #@-node:ekr.20070317085708.6:setVariables
@@ -3334,7 +3334,7 @@ def setVariables (self):
 def makeCurrent (self):
 
     c = self.c ; cc = self.cc
-    
+
     # g.trace(self.pageName)
     cc.nb.selectpage(self.pageName)
     cc.currentChapter._saveInfo()
@@ -3348,9 +3348,9 @@ def makeCurrent (self):
 #@-node:ekr.20070317085708.7:makeCurrent
 #@+node:ekr.20070317085708.8:updateHeadingSV
 def updateHeadingSV (self,sv):
-    
+
     body = self.c.frame.body
-    
+
     if hasattr(body,'editorLeftLabel'):
         # g.trace(self)
         body.editorLeftLabel.configure(textvariable=sv)
@@ -3358,11 +3358,11 @@ def updateHeadingSV (self,sv):
 #@-node:ekr.20070317085708.8:updateHeadingSV
 #@+node:ekr.20070317085437.28:addTrashBarrel
 # def addTrashBarrel (self,event=None):
-    
+
     # self.selectChapter('trash')
 
     # c = self.c ; trash = 'Trash'
-    
+
     # if self.getChapter(trash):
         # return
 
@@ -3373,21 +3373,21 @@ def updateHeadingSV (self,sv):
 #@-node:ekr.20070317085437.28:addTrashBarrel
 #@+node:ekr.20070317075059.5:cc.raisePage
 def raisePage (self,name):
-    
+
     tt = self ; c = tt.c ; tab = tt.nb.tab(name)
 
     tab.configure(
         background=tt.selectedTabBackgroundColor,
         foreground=tt.selectedTabForegroundColor)
-    
+
     # This must be called before queuing up the callback.
     self.setTree(name)
-    
+
     # This can not be called immediately
     def idleCallback(event=None,c=c):
         c.invalidateFocus()
         c.bodyWantsFocusNow()
-        
+
     w = c.frame.body and c.frame.body.bodyCtrl
     w and w.after_idle(idleCallback)
 #@-node:ekr.20070317075059.5:cc.raisePage
@@ -3491,12 +3491,12 @@ def setTree (self,name):
 #@-node:ekr.20070317075059.6:chapter.setTree (NOT USED )
 #@+node:ekr.20070317130648.1:chapter.findRootPosition (use nodeController method instead)
 def findPositionAnywhere (self,v):
-    
+
     '''Return a valid position p such that p.v == v.'''
-    
+
     root = c.rootPosition()
     if not root: return None
-   
+
     for p in p.self_and_siblings_iter():
         if p.v == v:
                 return p
@@ -3507,7 +3507,7 @@ def findPositionAnywhere (self,v):
 #@-node:ekr.20070325155208.2:Not used from chapter
 #@+node:ekr.20070420085540.2:cc.saveMainRootPosition
 def saveMainRootPosition (self):
-    
+
     cc = self
     cc.mainRootPosition = cc.c.rootPosition()
     g.trace(cc.mainRootPosition)
@@ -3515,11 +3515,11 @@ def saveMainRootPosition (self):
 #@-node:ekr.20070420085540.2:cc.saveMainRootPosition
 #@+node:ekr.20070420085540:chapter.setChapterTree (no longer used)
 def setChapterTree (self,p):
-    
+
     '''p is an @chapter node.
     Create a standalone copy of p.v, say v2 to represent the chapter.
     Set the global root position to a position, say p2, equivalent to v2 at the root.'''
-    
+
     cc = self ; c = cc.c
     # Copy just parts of the tnode.
     t = p.v.t
@@ -3530,14 +3530,14 @@ def setChapterTree (self,p):
     v = leoNodes.vnode(t2) # Not linked.
     p2 = leoNodes.position(v,[])
     return p2
-    
+
 #@nonl
 #@-node:ekr.20070420085540:chapter.setChapterTree (no longer used)
 #@+node:ekr.20070420085540.1:chapter.setMainTree
 def setMainTree (self):
-    
+
     c = self.c
-    
+
     oldRoot = self.oldRoot or c.rootPosition()
     c.setRootPosition(oldRoot)
     # g.trace(oldRoot)
@@ -3548,7 +3548,7 @@ def setMainTree (self):
 def deleteChaptersNode (self):
 
     '''Destroy the entire @chapters tree.'''
-    
+
     cc = self ; root = cc.chaptersNode
 
     if root:
@@ -3558,7 +3558,7 @@ def deleteChaptersNode (self):
             c.deleteOutline(event=None,op_name=None)
         finally:
             c.endUpdate(False)
-            
+
         cc.chaptersNode = None
 #@nonl
 #@-node:ekr.20070325063303.3:deleteChaptersNode

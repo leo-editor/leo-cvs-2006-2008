@@ -47,8 +47,6 @@ class chapterController:
         # For link/unlinkChaptersNode...
         self.chaptersLinked = True
             # True if the @chapters node is linked into the outline.
-
-    #@nonl
     #@-node:ekr.20070317085437.2: ctor: chapterController
     #@+node:ekr.20070320091806:Callbacks (chapter)
     def selectCallback (self,tabName):
@@ -674,8 +672,6 @@ class chapterController:
             c.setBodyString(p,newName)
         else:
             cc.error('no such chapter: %s' % oldName)
-
-    #@nonl
     #@-node:ekr.20070325121800:cc.updateChapterName (not used)
     #@-node:ekr.20070317130648:Utils
     #@-others

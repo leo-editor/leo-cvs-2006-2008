@@ -30,19 +30,19 @@ Does anyone have any ideas on how to accomodate this workflow?
 ------ Reply
 
 A most interesting and important question--with such a capability one could make Leo into a full-fledged engineering notebook, e.g., as envisaged by the IPython Notebook project: 
- 
+
 http://projects.scipy.org/ipython/ipython/wiki/NbshellManual 
- 
+
 I can think of several possible approaches: 
- 
+
 1. Create a custom version of the execute script command that would put script output in a particular node. Perhaps the headline of the node could be an argument to the enhanced command. 
- 
+
 2. Have your script write to some 'standard place', and create a command to put that script in the presently selected node. Something like insert-script-output. 
- 
+
 3. Create a script button that executes the script in the presently selected node and puts the result in the node *following* the selected node. You can then either move the node by hand, or use another script button to move the node to a 'standard place', say the last child of the <<results>> node. 
- 
+
 As I write this I think the script-button approach is likely to be the simplest, most flexible and most powerful. I'll look into this myself soon... 
- 
+
 Edward
 
 
@@ -207,7 +207,7 @@ Hope this helps to improve the installation experience for novices...
 #@-node:ekr.20070215093739:Improve Leo's getting started page
 #@+node:ekr.20070218143918:Improve Windows installation instructions
 This section is way too confusing:
-    
+
 Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to install Leo on Windows
 #@nonl
 #@-node:ekr.20070218143918:Improve Windows installation instructions
@@ -419,7 +419,7 @@ describes Leo's support for dynamic abbreviations?
 
 -----------
 http://sourceforge.net/forum/message.php?msg_id=4260706
- 
+
 command completion is shell or readline functionality to automatically finish
 what you've typed so far, thus "completing" the type-in of the command for you.
 
@@ -467,19 +467,19 @@ class abbrevCommandsClass (baseEditCommandsClass):
     @others
 #@+node:ekr.20050920084036.14: ctor & finishCreate
 def __init__ (self,c):
-    
+
     baseEditCommandsClass.__init__(self,c) # init the base class.
-    
+
     # Set local ivars.
     self.abbrevs ={}
-    
+
 def finishCreate(self):
-    
+
     baseEditCommandsClass.finishCreate(self)
 #@-node:ekr.20050920084036.14: ctor & finishCreate
 #@+node:ekr.20050920084036.15: getPublicCommands & getStateCommands
 def getPublicCommands (self):
-    
+
     return {
         'abbrev-mode':                  self.toggleAbbrevMode,
         'add-global-abbrev':            self.addAbbreviation,
@@ -494,12 +494,12 @@ def getPublicCommands (self):
 #@-node:ekr.20050920084036.15: getPublicCommands & getStateCommands
 #@+node:ekr.20050920084036.25:addAbbreviation
 def addAbbreviation (self,event):
-    
+
     '''Add an abbreviation:
     The selected text is the abbreviation;
     the minibuffer prompts you for the name of the abbreviation.
     Also sets abbreviations on.'''
-            
+
     k = self.k ; state = k.getState('add-abbr')
 
     if state == 0:
@@ -524,11 +524,11 @@ def addAbbreviation (self,event):
 #@-node:ekr.20050920084036.25:addAbbreviation
 #@+node:ekr.20051004080550:addInverseAbbreviation
 def addInverseAbbreviation (self,event):
-    
+
     '''Add an inverse abbreviation:
     The selected text is the abbreviation name;
     the minibuffer prompts you for the value of the abbreviation.'''
-    
+
     k = self.k ; state = k.getState('add-inverse-abbr')
 
     if state == 0:
@@ -549,7 +549,7 @@ def addInverseAbbreviation (self,event):
 #@-node:ekr.20051004080550:addInverseAbbreviation
 #@+node:ekr.20050920084036.27:expandAbbrev
 def expandAbbrev (self,event):
-    
+
     '''Not a command.  Called from k.masterCommand to expand
     abbreviations in event.widget.'''
 
@@ -563,7 +563,7 @@ def expandAbbrev (self,event):
         # We must do this: expandAbbrev is called from Alt-x and Control-x,
         # we get two differnt types of data and w states.
         word = '%s%s'% (word,ch)
-        
+
     val = self.abbrevs.get(word)
     if val is not None:
         s = w.getAllText()
@@ -572,30 +572,30 @@ def expandAbbrev (self,event):
         if i != j: w.delete(i,j)
         w.insert(i,val)
         c.frame.body.onBodyChanged(undoType='Typing')
-        
+
     return val is not None
 #@-node:ekr.20050920084036.27:expandAbbrev
 #@+node:ekr.20050920084036.18:killAllAbbrevs
 def killAllAbbrevs (self,event):
-    
+
     '''Delete all abbreviations.'''
 
     self.abbrevs = {}
 #@-node:ekr.20050920084036.18:killAllAbbrevs
 #@+node:ekr.20050920084036.19:listAbbrevs
 def listAbbrevs (self,event):
-    
+
     '''List all abbreviations.'''
 
     k = self.k
-    
+
     if self.abbrevs:
         for z in self.abbrevs:
             g.es('%s=%s' % (z,self.abbrevs[z]))
 #@-node:ekr.20050920084036.19:listAbbrevs
 #@+node:ekr.20050920084036.20:readAbbreviations
 def readAbbreviations (self,event):
-    
+
     '''Read abbreviations from a file.'''
 
     fileName = g.app.gui.runOpenFileDialog(
@@ -604,7 +604,7 @@ def readAbbreviations (self,event):
         defaultextension = ".txt")
 
     if not fileName: return
-        
+
     try:
         f = open(fileName)
         for x in f:
@@ -617,7 +617,7 @@ def readAbbreviations (self,event):
 #@-node:ekr.20050920084036.20:readAbbreviations
 #@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
 def regionalExpandAbbrev (self,event):
-    
+
     '''Exapand abbreviations throughout a region.'''
 
     k = self.k ; w = self.editWidget(event)
@@ -667,9 +667,9 @@ def searchXR (i1,i2,ins,event):
 #@-node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
 #@+node:ekr.20050920084036.23:toggleAbbrevMode
 def toggleAbbrevMode (self,event):
-    
+
     '''Toggle abbreviation mode.'''
- 
+
     k = self.k
     k.abbrevOn = not k.abbrevOn
     k.keyboardQuit(event)
@@ -677,7 +677,7 @@ def toggleAbbrevMode (self,event):
 #@-node:ekr.20050920084036.23:toggleAbbrevMode
 #@+node:ekr.20050920084036.24:writeAbbreviations
 def writeAbbreviations (self,event):
-    
+
     '''Write abbreviations to a file.'''
 
     fileName = g.app.gui.runSaveFileDialog(
@@ -685,7 +685,7 @@ def writeAbbreviations (self,event):
         title='Write Abbreviations',
         filetypes = [("Text","*.txt"), ("All files","*")],
         defaultextension = ".txt")
-        
+
     if not fileName: return
 
     try:
@@ -805,9 +805,9 @@ An emergency measure could be available in a
 #@+node:ekr.20070324084040:Prototype of @auto
 #@+node:ekr.20070324084040.1:NEWscanPythonText
 def NEWscanPythonText (self,s,parent):
-    
+
     scanner = self.pythonScanner(self,s,parent)
-    
+
     scanner.parse()
         # Discover the node boundaries.
     scanner.checkWhitespace()
@@ -824,11 +824,9 @@ def NEWscanPythonText (self,s,parent):
 #@-node:ekr.20070324084040.1:NEWscanPythonText
 #@+node:ekr.20070324084040.13:class pythonScanner (not ready yet)
 class pythonScanner:
-    
+
     @others
-    
-    
-#@nonl
+
 #@+node:ekr.20070324084040.14:ctor (pythonScanner)
 def __init__ (self,importer,s,parent):
 
@@ -899,12 +897,12 @@ if i < len(s):
 #@-node:ekr.20070324084040.15:scanPythonText
 #@+node:ekr.20070324084040.18:doPythonClass & helpers
 def doPythonClass (self,i,parent):
-    
+
     c = self.c ; s = self.s
-    
+
     if not self.preamble_seen:
         self.doPreamble(i)
-    
+
     class_indent = self.getLeadingIndent(s,i)
     i,className,headline = self.getClassHeadline(i)
     if self.className:
@@ -937,9 +935,9 @@ else:
 def createParentText (self,class_vnode,class_name):
 
     '''Insert the proper body text in the class_vnode.'''
-    
+
     c = self.c
-    
+
     # This must be done after the declaration reference is generated.
     if self.treeType == "@file":
         c.appendStringToBody(class_vnode,"\t@others\n")
@@ -949,16 +947,16 @@ def createParentText (self,class_vnode,class_name):
 #@-node:ekr.20070324084040.20:createParentText
 #@+node:ekr.20070324084040.21:createClassNodeText
 def createClassNodeText (self,s,i,start):
-    
+
     # Create the section name using the old value of self.methodName.
     if  self.treeType == "@file":
         prefix = ""
     else:
         prefix = g.angleBrackets(" " + self.methodName + " methods ") + "=\n\n"
         self.methodsSeen = True
-    
+
     # i points just after the class line.
-    
+
     # Add a docstring to the class node.
     docStringSeen = False
     j = g.skip_ws_and_nl(s,i)
@@ -966,30 +964,30 @@ def createClassNodeText (self,s,i,start):
         j = g.skip_python_string(s,j)
         if j != len(s): # No scanning error.
             i = j ; docStringSeen = True
-    
+
     body = s[start:i]
     body = self.undentBody(body)
     if docStringSeen: body = body + '\n'
-    
+
     return i,prefix,body
 #@-node:ekr.20070324084040.21:createClassNodeText
 #@-node:ekr.20070324084040.18:doPythonClass & helpers
 #@+node:ekr.20070324084040.22:doPythonDef
 def doPythonDef (self,i,parent):
-    
+
     if not self.preamble_seen:
         self.doPreamble(i)
-    
+
     i = self.scanPythonDef(i,parent)
-   
+
     return i
 #@nonl
 #@-node:ekr.20070324084040.22:doPythonDef
 #@+node:ekr.20070324084040.23:doPreamble
 def doPreamble (self,i):
-    
+
     self.preamble_seen = True
-    
+
     if i > 0:
         # Append the preamble to the root's body text.
         c.appendStringToBody(self.root,s[:i])
@@ -999,7 +997,7 @@ def doPreamble (self,i):
 #@-node:ekr.20070324084040.23:doPreamble
 #@+node:ekr.20070324084040.24:scanPythonClass
 def scanPythonClassHelper(self,s,i,class_indent,class_name,class_vnode):
-    
+
     indent =  self.getLeadingIndent(s,i)
     start = i = g.skip_blank_lines(s,i)
     parent_vnode = None
@@ -1080,7 +1078,7 @@ else: return i
 #@-node:ekr.20070324084040.25:scanPythonDef & helpers
 #@+node:ekr.20070324084040.28:skipPythonDef
 def skipPythonDef (self,s,i,start):
-    
+
     # g.trace(g.get_line(s,i))
 
     # Set defIndent to the indentation of the def line.
@@ -1113,7 +1111,7 @@ def skipPythonDef (self,s,i,start):
             # g.trace('ch',ch,parenCount)
         else: i += 1
         assert(progress < i)
-        
+
     return i
 #@+node:ekr.20070324084040.29:<< skip the entire signature >>
 # Now that we count parens, we must be careful to skip the entire signature.
@@ -1589,7 +1587,7 @@ Summary:
 #@-node:ekr.20060808103849:Report
 #@+node:ekr.20041005105605.210:putIndent
 def putIndent(self,n):
-    
+
     """Put tabs and spaces corresponding to n spaces, assuming that we are at the start of a line."""
 
     if n != 0:
@@ -1626,11 +1624,11 @@ http://sourceforge.net/forum/message.php?msg_id=4308503
 @nocolor
 
 After more thought I am ready to back off my earlier post. Positions are perfectly reasonable things to support. Indeed, they can be, and probably should be, coequal with iterators. 
- 
+
 My 'revulsion' to positions stems from their present implementation--the 'optimization' of positions to avoid adding items to p.stack is certainly the worst optimization presently in Leo. It dates from the days when I was obsessing about reducing the amount of positions created. That was a valid concern then, but Leo now does an excellent job of not generating excess positions. Thus, there is no reason not to have p.stack contain all the parent vnodes at the present spot in a traversal. 
- 
+
 The idea of representing a position by a count in a traversal is cute, but of no practical importance. Indeed, why should Leo be forced to stupidly step through an entire traversal when a list of vnodes in p.stack would get to the proper spot in exponentially shorter time. Moreover, a list of vnodes in p.stack is great information to have, while a count N is almost exactly useless :-) 
- 
+
 Still, it is good to emphasize that *any* position, no matter how it is represented, makes sense *only* for a particular outline, that is, for a particular set of vnodes. In short, positions will stay, but will be reimplemented for the graph world. 
 #@nonl
 #@-node:ekr.20070512131018:Thoughts about positions 1
@@ -1653,10 +1651,10 @@ def __init__(self,c):
     self.frame = c.frame
 
     self.use_new_positions = False
-    
+
     # New positions require the sax-based read code.
     self.use_sax = self.use_new_positions or c.config.getBool('use_sax_based_read')
-    
+
     self.nativeTnodeAttributes = ('tx',)
     self.nativeVnodeAttributes = (
         'a','descendentTnodeUnknownAttributes',
@@ -1707,9 +1705,9 @@ def initIvars(self):
 #@+node:ekr.20061029093342:Reading (sax)
 #@+node:ekr.20061029093342.75:linkParentAndChildren (changed)
 def linkParentAndChildren (self, parent_v, children):
-    
+
     # if children: g.trace(parent_v,len(children))
-    
+
     if self.use_new_positions:
         parent_v.t.links = children
     else:
@@ -1717,7 +1715,7 @@ def linkParentAndChildren (self, parent_v, children):
         parent_v.t._firstChild = firstChild_v
         for child in children:
             child._parent = parent_v
-            
+
     v = parent_v
     if v not in v.t.vnodeList:
         v.t.vnodeList.append(v)
@@ -1725,9 +1723,9 @@ def linkParentAndChildren (self, parent_v, children):
 #@-node:ekr.20061029093342.75:linkParentAndChildren (changed)
 #@+node:ekr.20061029093342.76:linkSiblings (changed)
 def linkSiblings (self, sibs):
-    
+
     '''Set the v._back and v._next links for all vnodes v in sibs.'''
-    
+
     if self.use_new_positions:
         pass
     else:
@@ -1744,7 +1742,7 @@ def linkSiblings (self, sibs):
 #@+node:ekr.20061028211424.5:v.__cmp__ (not used)
 if 0: # not used
     def __cmp__(self,other):
-        
+
         g.trace(self,other)
         return not (self is other) # Must return 0, 1 or -1
 #@-node:ekr.20061028211424.5:v.__cmp__ (not used)
@@ -1752,25 +1750,25 @@ if 0: # not used
 def __init__ (self,t):
 
     assert(t)
-    
+
     # To support ZODB the code must set v._p_changed = 1 whenever
     # v.unknownAttributes or any mutable vnode object changes.
 
     self.t = t # The tnode.
     self.statusBits = 0 # status bits
-    
+
     # Structure links.
     #### self._parent = self._next = self._back = None
 #@nonl
 #@-node:ekr.20061028211424.6:v.__init__
 #@+node:ekr.20061028211424.7:v.__repr__ & v.__str__
 def __repr__ (self):
-    
+
     if self.t:
         return "<vnode %d:'%s'>" % (id(self),self.cleanHeadString())
     else:
         return "<vnode %d:NULL tnode>" % (id(self))
-        
+
 __str__ = __repr__
 #@-node:ekr.20061028211424.7:v.__repr__ & v.__str__
 #@+node:ekr.20061028211424.8:v.dump (to be deleted)
@@ -1778,7 +1776,7 @@ def dumpLink (self,link):
     return g.choose(link,link,"<none>")
 
 def dump (self,label=""):
-    
+
     v = self
 
     if label:
@@ -1791,7 +1789,7 @@ def dump (self,label=""):
     print "_next   ",v.dumpLink(v._next)
     print "_parent ",v.dumpLink(v._parent)
     print "t._child",v.dumpLink(v.t._firstChild)
-    
+
     if 1:
         print "t",v.dumpLink(v.t)
         print "vnodeList"
@@ -1808,15 +1806,15 @@ if use_zodb and ZODB:
 #@+node:ekr.20061028211424.10:v.Comparisons (no change)
 #@+node:ekr.20061028211424.11:v.findAtFileName (new in 4.2 b3)
 def findAtFileName (self,names):
-    
+
     """Return the name following one of the names in nameList.
     Return an empty string."""
 
     h = self.headString()
-    
+
     if not g.match(h,0,'@'):
         return ""
-    
+
     i = g.skip_id(h,1,'-')
     word = h[:i]
     if word in names and g.match_word(h,0,word):
@@ -1828,7 +1826,7 @@ def findAtFileName (self,names):
 #@-node:ekr.20061028211424.11:v.findAtFileName (new in 4.2 b3)
 #@+node:ekr.20061028211424.12:anyAtFileNodeName
 def anyAtFileNodeName (self):
-    
+
     """Return the file name following an @file node or an empty string."""
 
     names = (
@@ -1855,15 +1853,15 @@ def atNoSentinelsFileNodeName (self):
 def atRawFileNodeName (self):
     names = ("@noref", "@file-noref", "@rawfile")
     return self.findAtFileName(names)
-    
+
 def atSilentFileNodeName (self):
     names = ("@asis", "@file-asis", "@silentfile")
     return self.findAtFileName(names)
-    
+
 def atThinFileNodeName (self):
     names = ("@thin", "@file-thin", "@thinfile")
     return self.findAtFileName(names)
-    
+
 # New names, less confusing
 atNoSentFileNodeName  = atNoSentinelsFileNodeName
 atNorefFileNodeName   = atRawFileNodeName
@@ -1879,9 +1877,9 @@ def isAtAllNode (self):
 #@-node:ekr.20061028211424.14:isAtAllNode
 #@+node:ekr.20061028211424.15:isAnyAtFileNode good
 def isAnyAtFileNode (self):
-    
+
     """Return True if v is any kind of @file or related node."""
-    
+
     # This routine should be as fast as possible.
     # It is called once for every vnode when writing a file.
 
@@ -1891,7 +1889,7 @@ def isAnyAtFileNode (self):
 #@+node:ekr.20061028211424.16:isAt...FileNode (vnode)
 def isAtFileNode (self):
     return g.choose(self.atFileNodeName(),True,False)
-    
+
 def isAtNoSentinelsFileNode (self):
     return g.choose(self.atNoSentinelsFileNodeName(),True,False)
 
@@ -1903,7 +1901,7 @@ def isAtSilentFileNode (self): # @file-asis
 
 def isAtThinFileNode (self):
     return g.choose(self.atThinFileNodeName(),True,False)
-    
+
 # New names, less confusing:
 isAtNoSentFileNode = isAtNoSentinelsFileNode
 isAtNorefFileNode  = isAtRawFileNode
@@ -1929,17 +1927,17 @@ def isAtOthersNode (self):
 def matchHeadline (self,pattern):
 
     """Returns True if the headline matches the pattern ignoring whitespace and case.
-    
+
     The headline may contain characters following the successfully matched pattern."""
-    
+
     v = self
-    
+
     h = g.toUnicode(v.headString(),'utf-8')
     h = h.lower().replace(' ','').replace('\t','')
 
     pattern = g.toUnicode(pattern,'utf-8')
     pattern = pattern.lower().replace(' ','').replace('\t','')
-    
+
     return h.startswith(pattern)
 #@-node:ekr.20061028211424.19:matchHeadline
 #@-node:ekr.20061028211424.10:v.Comparisons (no change)
@@ -1964,7 +1962,7 @@ def next (self):
 #@+node:ekr.20061028211424.24:Children (to be deleted)
 #@+node:ekr.20061028211424.25:v.childIndex
 def childIndex(self):
-    
+
     v = self
 
     if not v._back:
@@ -1978,12 +1976,12 @@ def childIndex(self):
 #@-node:ekr.20061028211424.25:v.childIndex
 #@+node:ekr.20061028211424.26:v.firstChild (changed for 4.2)
 def firstChild (self):
-    
+
     return self.t._firstChild
 #@-node:ekr.20061028211424.26:v.firstChild (changed for 4.2)
 #@+node:ekr.20061028211424.27:v.hasChildren & hasFirstChild
 def hasChildren (self):
-    
+
     v = self
     return v.firstChild()
 
@@ -2023,7 +2021,7 @@ def numberOfChildren (self):
 #@+node:ekr.20061028211424.31:Status Bits (no chnage)
 #@+node:ekr.20061028211424.32:v.isCloned (4.2)
 def isCloned (self):
-    
+
     return len(self.t.vnodeList) > 1
 #@-node:ekr.20061028211424.32:v.isCloned (4.2)
 #@+node:ekr.20061028211424.33:isDirty
@@ -2082,31 +2080,31 @@ def bodyString (self):
 #@-node:ekr.20061028211424.41:v.bodyString
 #@+node:ekr.20061028211424.42:v.headString & v.cleanHeadString
 def headString (self):
-    
+
     """Return the headline string."""
-    
+
     # This message should never be printed and we want to avoid crashing here!
     if not g.isUnicode(self.t.headString):
         s = "Leo internal error: not unicode:" + repr(self.t.headString)
         g.es_print(s,color="red")
-        
+
     # Make _sure_ we return a unicode string.
     return g.toUnicode(self.t.headString,g.app.tkEncoding)
 
 def cleanHeadString (self):
-    
+
     s = self.headString()
     return g.toEncodedString(s,"ascii") # Replaces non-ascii characters by '?'
 #@-node:ekr.20061028211424.42:v.headString & v.cleanHeadString
 #@+node:ekr.20061028211424.43:v.directParents (new method in 4.2)
 def directParents (self):
-    
+
     """(New in 4.2) Return a list of all direct parent vnodes of a vnode.
-    
+
     This is NOT the same as the list of ancestors of the vnode."""
-    
+
     v = self
-    
+
     if v._parent:
         return v._parent.t.vnodeList
     else:
@@ -2117,17 +2115,17 @@ def directParents (self):
 # These remain in 4.2: the file read logic calls these before creating positions.
 #@+node:ekr.20061028211424.45:v.detach
 def detach (self):
-    
+
     '''Return a standalone copy of a vnode,
     detached from all other nodes and with a new tnode.'''
-    
+
     v = self
-    
+
     # Create a completely separate tnode.
     t2 = tnode(
         bodyString=v.bodyString(),
         headString=v.headString())
-    
+
     return vnode(t2)
 #@nonl
 #@-node:ekr.20061028211424.45:v.detach
@@ -2162,7 +2160,7 @@ def insertAsNthChild (self,n,t=None):
 def linkAfter (self,v):
 
     """Link self after v."""
-    
+
     self._parent = v._parent
     self._back = v
     self._next = v._next
@@ -2195,7 +2193,7 @@ def linkAsNthChild (self,pv,n):
 #@-node:ekr.20061028211424.49:v.linkAsNthChild
 #@+node:ekr.20061028211424.50:v.linkAsRoot
 def linkAsRoot (self,oldRoot):
-    
+
     """Link a vnode as the root node and set the root _position_."""
 
     v = self
@@ -2204,7 +2202,7 @@ def linkAsRoot (self,oldRoot):
     v._parent = None
     v._back = None
     v._next = oldRoot
-    
+
     # Add v to it's tnode's vnodeList. Bug fix: 5/02/04.
     if v not in v.t.vnodeList:
         v.t.vnodeList.append(v)
@@ -2220,14 +2218,14 @@ def linkAsRoot (self,oldRoot):
 def moveToRoot (self,oldRoot=None):
 
     '''Moves a vnode to the root position.
-    
+
     Important: oldRoot must the previous root vnode if it exists.'''
 
     v = self
 
     v.unlink()
     v.linkAsRoot(oldRoot)
-    
+
     return v
 #@nonl
 #@-node:ekr.20061028211424.51:v.moveToRoot
@@ -2288,13 +2286,13 @@ def clearVisited (self):
 def contract(self):
 
     self.statusBits &= ~ self.expandedBit
-    
+
     # g.trace(self.statusBits)
 
 def expand(self):
 
     self.statusBits |= self.expandedBit
-    
+
     # g.trace(self.statusBits)
 
 def initExpandedBit (self):
@@ -2356,18 +2354,18 @@ def computeIcon (self):
     if v.isCloned(): val += 4
     if v.isDirty(): val += 8
     return val
-    
+
 def setIcon (self):
 
     pass # Compatibility routine for old scripts
 #@-node:ekr.20061028211424.67:v.computeIcon & setIcon
 #@+node:ekr.20061028211424.68:v.initHeadString
 def initHeadString (self,s,encoding="utf-8"):
-    
+
     v = self
     s = g.toUnicode(s,encoding,reportErrors=True)
     v.t.headString = s
-    
+
     # g.trace(g.callers(5))
 #@-node:ekr.20061028211424.68:v.initHeadString
 #@+node:ekr.20061028211424.69:v.setSelection
@@ -2377,7 +2375,7 @@ def setSelection (self, start, length):
 #@-node:ekr.20061028211424.69:v.setSelection
 #@+node:ekr.20061028211424.70:v.setTnodeText
 def setTnodeText (self,s,encoding="utf-8"):
-    
+
     return self.t.setTnodeText(s,encoding)
 #@-node:ekr.20061028211424.70:v.setTnodeText
 #@-node:ekr.20061028211424.53:Setters (no change)
@@ -2391,7 +2389,7 @@ def __cmp__(self,p2):
 
     # Use p.equal if speed is crucial.
     p1 = self
-    
+
     # g.trace(p1.headString(),p2 and p2.headString())
 
     if p2 is None: # Allow tests like "p == None"
@@ -2417,9 +2415,9 @@ def __cmp__(self,p2):
 if 1: # Good for compatibility, bad for finding conversion problems.
 
     def __getattr__ (self,attr):
-        
+
         """Convert references to p.t into references to p.v.t.
-        
+
         N.B. This automatically keeps p.t in synch with p.v.t."""
 
         if attr=="t":
@@ -2443,14 +2441,14 @@ def __init__ (self,v,childIndex=0,stack=None):
 
     self.v = v
     self._childIndex = childIndex
-    
+
     if stack:
         self.stack = stack[:] # Creating a copy here is safest and best.
     else:
         self.stack = []
-    
+
     g.app.positions += 1
-    
+
     # Note: __getattr__ implements p.t.
 #@nonl
 #@-node:ekr.20061028070057.4:p.__init__
@@ -2461,30 +2459,30 @@ In particular, tests like 'if p is None' or 'if p is not None' will not work pro
 @c
 
 def __nonzero__ ( self):
-    
+
     """Return True if a position is valid."""
-    
+
     # if g.app.trace: "__nonzero__",self.v
 
     return self.v is not None
 #@-node:ekr.20061028070057.5:p.__nonzero__
 #@+node:ekr.20061028070057.6:p.__str__ and p.__repr__
 def __str__ (self):
-    
+
     p = self
-    
+
     if p.v:
         return "<pos %d lvl: %d [%d] %s>" % (id(p),p.level(),len(p.stack),p.cleanHeadString())
     else:
         return "<pos %d        [%d] None>" % (id(p),len(p.stack))
-        
+
 __repr__ = __str__
 #@-node:ekr.20061028070057.6:p.__str__ and p.__repr__
 #@+node:ekr.20061028070057.7:p.archivedPosition
 def archivedPosition (self):
-    
+
     '''Return a representation of a position suitable for use in .leo files.'''
-    
+
     p = self
     aList = [p2.v.childIndex() for p2 in p.self_and_parents_iter()]
     aList.reverse()
@@ -2495,7 +2493,7 @@ def archivedPosition (self):
 # Using this routine can generate huge numbers of temporary positions during a tree traversal.
 
 def copy (self):
-    
+
     """"Return an independent copy of a position."""
 
     return position(self.v,self.stack)
@@ -2506,14 +2504,14 @@ def dumpLink (self,link):
     return g.choose(link,link,"<none>")
 
 def dump (self,label=""):
-    
+
     p = self
     print '-'*10,label,p
     if p.v:
         p.v.dump() # Don't print a label
-        
+
 def vnodeListIds (self):
-    
+
     p = self
     return [id(v) for v in p.v.t.vnodeList]
 #@-node:ekr.20061028070057.9:p.dump & p.vnodeListIds
@@ -2521,9 +2519,9 @@ def vnodeListIds (self):
 def equal(self,p2):
 
     """Return True if two postions are equivalent.
-    
+
     Use this method when the speed comparisons is crucial
-    
+
     N.B. Unlike __cmp__, p2 must not be None.
     """
 
@@ -2536,12 +2534,12 @@ def equal(self,p2):
         p1._childIndex == p2._childIndex and
         p1.stack == p2.stack
     )
-        
+
 isEqual = equal
 #@-node:ekr.20061028070057.10:p.equal & isEqual (changed)
 #@+node:ekr.20061028070057.11:p.key
 def key (self):
-    
+
     p = self
 
     return '%s:%d.%s' % (
@@ -2564,9 +2562,9 @@ These routines all return self on exit so the following kind of code will work:
     after = p.copy().moveToNodeAfterTree()
 #@+node:ekr.20061028070057.13:p.moveToBack (new)
 def moveToBack (self):
-    
+
     '''Move position p to its previous sibling.'''
-    
+
     p = self
     if p.stack and p._childIndex > 0:
         parent_v,junk = p.stack[-1]
@@ -2580,7 +2578,7 @@ def moveToBack (self):
     else:
         p.v = None
     return p
-    
+
     # p = self
     # p.v = p.v and p.v._back
     # return p
@@ -2590,7 +2588,7 @@ def moveToBack (self):
 def moveToFirstChild (self):
 
     '''Move a position to it's first child's position.'''
-    
+
     p = self
     if p.stack:
         parent_v,junk = p.stack[-1]
@@ -2617,9 +2615,9 @@ def moveToFirstChild (self):
 #@-node:ekr.20061028070057.14:p.moveToFirstChild (new)
 #@+node:ekr.20061028070057.15:p.moveToLastChild (new)
 def moveToLastChild (self):
-    
+
     '''Move a position to it's last child's position.'''
-    
+
     p = self
     if p.stack:
         parent_v,junk = p.stack[-1]
@@ -2630,7 +2628,7 @@ def moveToLastChild (self):
     else:
         p.v = None
     return p
-    
+
     # p = self
     # if p:
         # if p.v.t._firstChild:
@@ -2644,11 +2642,11 @@ def moveToLastChild (self):
 #@-node:ekr.20061028070057.15:p.moveToLastChild (new)
 #@+node:ekr.20061028070057.16:p.moveToLastNode (no change)
 def moveToLastNode (self):
-    
+
     """Move a position to last node of its tree.
-    
+
     N.B. Returns p if p has no children."""
-    
+
     p = self
     while p.hasChildren():
         p.moveToLastChild()
@@ -2658,7 +2656,7 @@ def moveToLastNode (self):
 def moveToNext (self):
 
     '''Move position p to its next sibling.'''
-    
+
     p = self
     if p.stack:
         parent_v,junk = p.stack[-1]
@@ -2671,18 +2669,18 @@ def moveToNext (self):
     else:
         p.v = None
     return p
-    
+
     # p = self
     # p.v = p.v and p.v._next
     # return p
 #@-node:ekr.20061028070057.17:p.moveToNext (new)
 #@+node:ekr.20061028070057.18:p.moveToNodeAfterTree (no change)
 def moveToNodeAfterTree (self):
-    
+
     """Move a position to the node after the position's tree."""
-    
+
     p = self
-    
+
     while p:
         if p.hasNext():
             p.moveToNext()
@@ -2693,7 +2691,7 @@ def moveToNodeAfterTree (self):
 #@-node:ekr.20061028070057.18:p.moveToNodeAfterTree (no change)
 #@+node:ekr.20061028070057.19:p.moveToNthChild (new)
 def moveToNthChild (self,n):
-    
+
     p = self
     if p.stack:
         parent_v,junk = p.stack[-1]
@@ -2706,7 +2704,7 @@ def moveToNthChild (self,n):
     else:
         p.v = None
     return p
-    
+
     # p = self
     # if p:
         # child = p.v.nthChild(n) # Must call vnode method here!
@@ -2720,15 +2718,15 @@ def moveToNthChild (self,n):
 #@-node:ekr.20061028070057.19:p.moveToNthChild (new)
 #@+node:ekr.20061028070057.20:p.moveToParent (new)
 def moveToParent (self):
-    
+
     '''Move a position to its parent position.'''
-    
+
     if p.stack:
         p.v,p._childIndex = p.stack.pop()
     else:
         p.v = None
     return p
-    
+
     # p = self
     # if not p: return p
     # if p.v._parent and len(p.v._parent.t.vnodeList) == 1:
@@ -2742,7 +2740,7 @@ def moveToParent (self):
 #@-node:ekr.20061028070057.20:p.moveToParent (new)
 #@+node:ekr.20061028070057.21:p.moveToThreadBack (no change)
 def moveToThreadBack (self):
-    
+
     """Move a position to it's threadBack position."""
 
     p = self
@@ -2794,11 +2792,11 @@ def moveToThreadNext (self):
 #@-node:ekr.20061028070057.22:p.moveToThreadNext (little change)
 #@+node:ekr.20061028070057.23:p.moveToVisBack (no change)
 def moveToVisBack (self):
-    
+
     """Move a position to the position of the previous visible node."""
 
     p = self
-    
+
     if p:
         p.moveToThreadBack()
         while p and not p.isVisible():
@@ -2809,7 +2807,7 @@ def moveToVisBack (self):
 #@-node:ekr.20061028070057.23:p.moveToVisBack (no change)
 #@+node:ekr.20061028070057.24:p.moveToVisNext (no change)
 def moveToVisNext (self):
-    
+
     """Move a position to the position of the next visible node."""
 
     p = self
@@ -2817,7 +2815,7 @@ def moveToVisNext (self):
     p.moveToThreadNext()
     while p and not p.isVisible():
         p.moveToThreadNext()
-            
+
     return p
 #@-node:ekr.20061028070057.24:p.moveToVisNext (no change)
 #@-node:ekr.20061028070057.12:p.moveToX (many changes)
@@ -2857,15 +2855,15 @@ def matchHeadline (self,pattern): return self.v.matchHeadline(pattern)
 #@-node:ekr.20061028070057.27:p.Comparisons (no change)
 #@+node:ekr.20061028070057.28:p.Headline & body strings (no change)
 def bodyString (self):
-    
+
     return self.v.bodyString()
 
 def headString (self):
-    
+
     return self.v.headString()
-    
+
 def cleanHeadString (self):
-    
+
     return self.v.cleanHeadString()
 #@-node:ekr.20061028070057.28:p.Headline & body strings (no change)
 #@+node:ekr.20061028070057.29:p.Status bits (no change)
@@ -2880,7 +2878,7 @@ def status      (self): return self.v.status()
 #@-node:ekr.20061028070057.29:p.Status bits (no change)
 #@+node:ekr.20061028070057.30:p.directParents (new, faster)
 def directParents (self):
-    
+
     p = self
     return p and p.stack or []
 
@@ -2890,7 +2888,7 @@ def directParents (self):
 # This is time-critical code!
 
 def childIndex(self):
-    
+
     return p and p._childIndex or 0
 
     # p = self ; v = p.v
@@ -2907,9 +2905,9 @@ def childIndex(self):
 #@+node:ekr.20061028070057.32:children (slightly new)
 #@+node:ekr.20061028070057.33:p.hasChildren (new)
 def hasChildren(self):
-    
+
     p = self
-    
+
     if p.v and p.v.t:
         return len(p.v.t.links) > 0
     else:
@@ -2919,12 +2917,12 @@ def hasChildren(self):
 #@-node:ekr.20061028070057.33:p.hasChildren (new)
 #@+node:ekr.20061028070057.34:p.numberOfChildren (new)
 def numberOfChildren (self):
-    
+
     if p.v:
         return len(p.v.t.links)
     else:
         return 0
-    
+
     # return self.v.numberOfChildren()
 #@-node:ekr.20061028070057.34:p.numberOfChildren (new)
 #@-node:ekr.20061028070057.32:children (slightly new)
@@ -2968,7 +2966,7 @@ def hasBack(self):
     # return self.v and self.v._back
 
 hasFirstChild = hasChildren
-    
+
 def hasNext(self):
     p = self
     if p.stack:
@@ -2978,19 +2976,19 @@ def hasNext(self):
     else:
         return False
     # return self.v and self.v._next
-    
+
 def hasParent(self):
     return len(self.stack) > 1 # The first item of each stack is the dummy parent.
     # return self.v and self.v._parent is not None
-    
+
 def hasThreadBack(self):
     return self.hasParent() or self.hasBack() # Much cheaper than computing the actual value.
-    
+
 hasVisBack = hasThreadBack
 #@-node:ekr.20061028070057.36:p.hasX (new)
 #@+node:ekr.20061028070057.37:hasThreadNext (big change)
 def hasThreadNext(self):
-    
+
     p = self ; v = p.v
     if not p.v: return False
 
@@ -3038,7 +3036,7 @@ hasVisNext = hasThreadNext
 #@-node:ekr.20061028070057.37:hasThreadNext (big change)
 #@+node:ekr.20061028070057.38:p.findRootPosition (unchanged)
 def findRootPosition (self):
-    
+
     p = self.copy()
     while p.hasParent():
         p.moveToParent()
@@ -3049,7 +3047,7 @@ def findRootPosition (self):
 #@-node:ekr.20061028070057.38:p.findRootPosition (unchanged)
 #@+node:ekr.20061028070057.39:p.isAncestorOf (new)(test thoroughly)
 def isAncestorOf (self, p2):
-    
+
     p = self
     if not p.stack:
         return False
@@ -3061,7 +3059,7 @@ def isAncestorOf (self, p2):
                 return True
         else:
             return False
-    
+
     # p = self
     # # Avoid calling p.copy() or copying the stack.
     # v2 = p2.v ; n = len(p2.stack)-1
@@ -3076,21 +3074,21 @@ def isAncestorOf (self, p2):
 #@-node:ekr.20061028070057.39:p.isAncestorOf (new)(test thoroughly)
 #@+node:ekr.20061028070057.40:p.isCloned (unchanged)
 def isCloned (self):
-    
+
     return len(self.v.t.vnodeList) > 1
 #@-node:ekr.20061028070057.40:p.isCloned (unchanged)
 #@+node:ekr.20061028070057.41:p.isRoot (unchanged)
 def isRoot (self):
-    
+
     p = self
 
     return not p.hasParent() and not p.hasBack()
 #@-node:ekr.20061028070057.41:p.isRoot (unchanged)
 #@+node:ekr.20061028070057.42:p.isVisible (new)
 def isVisible (self):
-    
+
     """Return True if all of a position's parents are expanded."""
-    
+
     p = self
     for v in p.stack:
         if not v.isExpanded():
@@ -3110,7 +3108,7 @@ def isVisible (self):
 #@+node:ekr.20061028070057.43:p.level & simpleLevel (new)
 def level(self):
     return len(self.stack)
-    
+
 simpleLevel = level
 
 # def simpleLevel(self):
@@ -3145,9 +3143,9 @@ simpleLevel = level
 << about the vParentWithStack utility method >>
 
 def vParentWithStack(self,v,stack,n):
-    
+
     """A utility that allows the computation of p.v without calling p.copy().
-    
+
     v,stack[:n] correspond to p.v,p.stack for some intermediate position p.
 
     Returns (v,n) such that v,stack[:n] correpond to the parent position of p."""
@@ -3187,7 +3185,7 @@ while v:
 def restoreLinksInTree (self):
 
     """Restore links when undoing a delete node operation."""
-    
+
     root = p = self
 
     if p.v not in p.v.t.vnodeList:
@@ -3199,9 +3197,9 @@ def restoreLinksInTree (self):
 #@-node:ekr.20061028070057.47:p.restoreLinksInTree
 #@+node:ekr.20061028070057.48:p.deleteLinksInTree & allies
 def deleteLinksInTree (self):
-    
+
     """Delete and otherwise adjust links when deleting node."""
-    
+
     root = self
 
     root.deleteLinksInSubtree()
@@ -3231,15 +3229,15 @@ def deleteLinksInSubtree (self):
 #@-node:ekr.20061028070057.49:p.deleteLinksInSubtree
 #@+node:ekr.20061028070057.50:p.adjustParentLinksInSubtree (no longer used)
 def adjustParentLinksInSubtree (self,parent):
-    
+
     root = p = self
-    
+
     assert(parent)
-    
+
     if p.v._parent and parent.v.t.vnodeList and p.v._parent not in parent.v.t.vnodeList:
         # g.trace('**** adjust parent in %s' % p.headString())
         p.v._parent = parent.v.t.vnodeList[0]
-        
+
     for p in root.children_iter():
         p.adjustParentLinksInSubtree(parent=root)
 #@-node:ekr.20061028070057.50:p.adjustParentLinksInSubtree (no longer used)
@@ -3253,25 +3251,25 @@ def adjustParentLinksInSubtree (self,parent):
 def linkAfter (self,after):
 
     """Link self after position 'after'."""
-    
+
     p = self
     if not after.stack:
         g.trace('Can not happen: no dummy root.',after)
         return
-    
+
     p.stack = after.stack[:]
     p._childIndex = after._childIndex + 1 #### New
     parent_v,junk = p.stack[-1] #### New
     links = parent_v.t.links #### New
     links.insert(p._childIndex,p.v) #### New
-        
+
     #### p.v._parent = after.v._parent
-    
+
     # Add v to it's tnode's vnodeList.
     if p.v not in p.v.t.vnodeList:
         p.v.t.vnodeList.append(p.v)
         p.v.t._p_changed = 1 # Support for tnode class.
-    
+
     #### p.v._back = after.v
     #### p.v._next = after.v._next
     #### after.v._next = p.v
@@ -3288,7 +3286,7 @@ def linkAfter (self,after):
 def linkAsNthChild (self,parent,n):
 
     """Links self as the n'th child of parent position 'parent'."""
-    
+
     # g.trace(self,parent,n,parent.v)
 
     p = self
@@ -3298,7 +3296,7 @@ def linkAsNthChild (self,parent,n):
     else:
         g.trace('Can not happen: n too large.',n,p)
         return
-        
+
     if p.v not in p.v.t.vnodeList:
         p.v.t.vnodeList.append(p.v)
         p.v.t._p_changed = 1 # Support for tnode class.
@@ -3335,26 +3333,26 @@ def linkAsNthChild (self,parent,n):
 #@-node:ekr.20061028070057.53:p.linkAsNthChild
 #@+node:ekr.20061028070057.54:p.linkAsRoot
 def linkAsRoot (self,oldRoot):
-    
+
     """Link self as the root node."""
 
     p = self ; v = p.v
     if oldRoot: oldRootVnode = oldRoot.v
     else:       oldRootVnode = None
-    
+
     root_v,junk = p.stack[0]
     links = root_v.t.links
     p.stack = [root_v] # Clear the stack, except for the dummy root.
     links = [p.v]
     if oldRoot:
         links.append(oldRoot.v)
-    
+
     # p.stack = [] # Clear the stack.
     # # Clear all links except the child link.
     # v._parent = None
     # v._back = None
     # v._next = oldRootVnode
-    
+
     # Add v to it's tnode's vnodeList.
     if v not in v.t.vnodeList:
         v.t.vnodeList.append(v)
@@ -3372,18 +3370,18 @@ def linkAsRoot (self,oldRoot):
 def unlink (self):
 
     """Unlinks a position p from the tree before moving or deleting.
-    
+
     The p.v.t.links does NOT change."""
 
     p = self ; v = p.v
-    
+
     # Remove v from it's tnode's vnodeList.
     vnodeList = v.t.vnodeList
     if v in vnodeList:
         vnodeList.remove(v)
         v.t._p_changed = 1 # Support for tnode class.
     assert(v not in vnodeList)
-    
+
     if p.stack:
         parent,junk = p.stack[-1]
         links = parent.t.links
@@ -3393,7 +3391,7 @@ def unlink (self):
             g.trace("Can not happen: not its father's child.",p)
     else:
         g.trace('Can not happen: missing root.',p)
-    
+
     # Reset the firstChild link in its direct father.
     # if p.v._parent:
         # if 0: # This can fail.  I have no idea why it was present.
@@ -3462,11 +3460,11 @@ add-new-icon-row command?
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
 def new (self,event=None):
-    
+
     '''Create a new Leo window.'''
 
     c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
-    
+
     # Needed for plugins.
     g.doHook("new",old_c=self,c=c,new_c=c)
     # Use the config params to set the size and location of the window.
@@ -3497,7 +3495,7 @@ def new (self,event=None):
 #@-node:ekr.20031218072017.1623:new
 #@+node:ekr.20031218072017.2821:open
 def open (self,event=None):
-    
+
     '''Open a Leo window containing the contents of a .leo file.'''
 
     c = self
@@ -3516,7 +3514,7 @@ def open (self,event=None):
             g.setGlobalOpenDir(fileName)
         if ok and closeFlag:
             g.app.destroyWindow(c.frame)
-            
+
     # openWithFileName sets focus if ok.
     if not ok:
         if c.config.getBool('outline_pane_has_initial_focus'):
@@ -3527,7 +3525,7 @@ def open (self,event=None):
 #@+node:ekr.20031218072017.2822:<< Set closeFlag if the only open window is empty >>
 @ If this is the only open window was opened when the app started, and the window has never been written to or saved, then we will automatically close that window if this open command completes successfully.
 @c
-    
+
 closeFlag = (
     c.frame.startupWindow and # The window was open on startup
     not c.changed and not c.frame.saved and # The window has never been changed
@@ -3541,13 +3539,13 @@ def openWith(self,event=None,data=None):
 
     These items can only be created by createOpenWithMenuFromTable().
     Typically this would be done from the "open2" hook.
-    
+
     New in 4.3: The "os.spawnv" now works. You may specify arguments to spawnv
     using a list, e.g.:
-        
+
     openWith("os.spawnv", ["c:/prog.exe","--parm1","frog","--switch2"], None)
     """
-    
+
     c = self ; p = c.currentPosition()
     n = data and len(data) or 0
     if n != 3:
@@ -3574,10 +3572,10 @@ if not ext:
     # print language,ext
     if ext == None:
         ext = "txt"
-    
+
 if ext[0] != ".":
     ext = "."+ext
-    
+
 # print "ext",ext
 #@-node:ekr.20031218072017.2824:<< set ext based on the present language >>
 #@+node:ekr.20031218072017.2825:<< create or reopen temp file, testing for conflicting changes >>
@@ -3617,7 +3615,7 @@ try:
     new_time = g.os_path_getmtime(path)
 except:
     new_time = None
-    
+
 body_changed = old_body != new_body
 temp_changed = old_time != new_time
 
@@ -3627,7 +3625,7 @@ if body_changed and temp_changed:
     rewrite = result == "outline"
 else:
     rewrite = body_changed
-        
+
 if rewrite:
     path = c.createOpenWithTempFile(p,ext)
 else:
@@ -3698,7 +3696,7 @@ except Exception:
 #@-node:ekr.20031218072017.2829:<< execute a command to open path in external editor >>
 #@+node:ekr.20031218072017.2830:createOpenWithTempFile
 def createOpenWithTempFile (self,p,ext):
-    
+
     c = self
     path = c.openWithTempFilePath(p,ext)
     try:
@@ -3745,9 +3743,9 @@ for d in g.app.openWithFiles[:]:
 #@-node:ekr.20031218072017.2830:createOpenWithTempFile
 #@+node:ekr.20031218072017.2832:c.openWithTempFilePath
 def openWithTempFilePath (self,p,ext):
-    
+
     """Return the path to the temp file corresponding to p and ext."""
-    
+
     if 0: # new code: similar to code in mod_tempfname.py plugin.
         try:
             # At least in Windows, user name may contain special characters
@@ -3757,11 +3755,11 @@ def openWithTempFilePath (self,p,ext):
             leoTempDir = "LeoTemp"
             g.es("Could not retrieve your user name.")
             g.es("Temporary files will be stored in: %s" % leoTempDir)
-        
+
         td = os.path.join(g.os_path_abspath(tempfile.gettempdir()),leoTempDir)
         if not os.path.exists(td):
             os.mkdir(td)
-        
+
         name = g.sanitize_filename(v.headString()) + '_' + str(id(v.t))  + ext
         path = os.path.join(td,name)
         return path
@@ -3770,36 +3768,36 @@ def openWithTempFilePath (self,p,ext):
             str(id(p.v.t)),
             g.sanitize_filename(p.headString()),
             ext)
-    
+
         name = g.toUnicode(name,g.app.tkEncoding)
-    
+
         if 1:
             td = g.os_path_abspath(tempfile.gettempdir())
         else:
             td = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','temp'))
-    
+
         path = g.os_path_join(td,name)
-    
+
         return path
 #@-node:ekr.20031218072017.2832:c.openWithTempFilePath
 #@-node:ekr.20031218072017.2823:openWith and allies
 #@+node:ekr.20031218072017.2833:close
 def close (self,event=None):
-    
+
     '''Close the Leo window, prompting to save it if it has been changed.'''
 
     g.app.closeLeoWindow(self.frame)
 #@-node:ekr.20031218072017.2833:close
 #@+node:ekr.20031218072017.2834:save (commands)
 def save (self,event=None):
-    
+
     '''Save a Leo outline to a file.'''
 
     c = self ; trace = False
     cc = c.config.getBool('use_chapters') and c.chapterController
-    
+
     oldChapter = cc and cc.forceMainChapter()
-    
+
     if trace and cc:
         g.trace('cc',cc)
         g.printEntireTree(c,'save:before')
@@ -3808,12 +3806,12 @@ def save (self,event=None):
     if g.app.disableSave:
         g.es("Save commands disabled",color="purple")
         return
-    
+
     # Make sure we never pass None to the ctor.
     if not c.mFileName:
         c.frame.title = ""
         c.mFileName = ""
-        
+
     c.beginUpdate()
     try:
         if c.mFileName != "":
@@ -3826,7 +3824,7 @@ def save (self,event=None):
                 filetypes=[("Leo files", "*.leo")],
                 defaultextension=".leo")
             c.bringToFront()
-    
+
             if fileName:
                 # Don't change mFileName until the dialog has suceeded.
                 c.mFileName = g.ensure_extension(fileName, ".leo")
@@ -3835,12 +3833,12 @@ def save (self,event=None):
                 c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
                 c.fileCommands.save(c.mFileName)
                 c.updateRecentFiles(c.mFileName)
-                
+
         if cc:
             cc.restoreOldChapter(oldChapter)
     finally:
         c.endUpdate()
-        
+
     if trace and cc:
         g.printEntireTree(c,'save:after')
         cc.printChaptersTree('save:after')
@@ -3848,29 +3846,29 @@ def save (self,event=None):
 #@-node:ekr.20031218072017.2834:save (commands)
 #@+node:ekr.20031218072017.2835:saveAs
 def saveAs (self,event=None):
-    
+
     '''Save a Leo outline to a file with a new filename.'''
-    
+
     c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
     oldChapter = cc and cc.forceMainChapter()
-    
+
     if g.app.disableSave:
         g.es("Save commands disabled",color="purple")
         return
-        
+
     c.beginUpdate()
     try:
         # Make sure we never pass None to the ctor.
         if not c.mFileName:
             c.frame.title = ""
-    
+
         fileName = g.app.gui.runSaveFileDialog(
             initialfile = c.mFileName,
             title="Save As",
             filetypes=[("Leo files", "*.leo")],
             defaultextension=".leo")
         c.bringToFront()
-    
+
         if fileName:
             # 7/2/02: don't change mFileName until the dialog has suceeded.
             c.mFileName = g.ensure_extension(fileName, ".leo")
@@ -3880,7 +3878,7 @@ def saveAs (self,event=None):
             # Calls c.setChanged(False) if no error.
             c.fileCommands.saveAs(c.mFileName)
             c.updateRecentFiles(c.mFileName)
-            
+
         if cc:
             cc.restoreOldChapter(oldChapter)
     finally:
@@ -3888,19 +3886,19 @@ def saveAs (self,event=None):
 #@-node:ekr.20031218072017.2835:saveAs
 #@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
 def saveAsUnzipped (self,event=None):
-    
+
     '''Save a Leo outline to a file with a new filename,
     ensuring that the file is not compressed.'''
     self.saveAsZippedHelper(False)
-    
+
 def saveAsZipped (self,event=None):
 
     '''Save a Leo outline to a file with a new filename,
     ensuring that the file is compressed.'''
     self.saveAsZippedHelper(True)
-    
+
 def saveAsZippedHelper (self,isZipped):
-    
+
     c = self
     oldZipped = c.isZipped
     c.isZipped = isZipped
@@ -3911,22 +3909,22 @@ def saveAsZippedHelper (self,isZipped):
 #@-node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
 #@+node:ekr.20031218072017.2836:saveTo
 def saveTo (self,event=None):
-    
+
     '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
-    
+
     c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
     oldChapter = cc and cc.forceMainChapter()
-    
+
     if g.app.disableSave:
         g.es("Save commands disabled",color="purple")
         return
-        
+
     c.beginUpdate()
     try:
         # Make sure we never pass None to the ctor.
         if not c.mFileName:
             c.frame.title = ""
-    
+
         # set local fileName, _not_ c.mFileName
         fileName = g.app.gui.runSaveFileDialog(
             initialfile = c.mFileName,
@@ -3934,12 +3932,12 @@ def saveTo (self,event=None):
             filetypes=[("Leo files", "*.leo")],
             defaultextension=".leo")
         c.bringToFront()
-    
+
         if fileName:
             fileName = g.ensure_extension(fileName, ".leo")
             c.fileCommands.saveTo(fileName)
             c.updateRecentFiles(fileName)
-            
+
         if cc:
             cc.restoreOldChapter(oldChapter)
     finally:
@@ -3947,15 +3945,15 @@ def saveTo (self,event=None):
 #@-node:ekr.20031218072017.2836:saveTo
 #@+node:ekr.20031218072017.2837:revert
 def revert (self,event=None):
-    
+
     '''Revert the contents of a Leo outline to last saved contents.'''
-    
+
     c = self
 
     # Make sure the user wants to Revert.
     if not c.mFileName:
         return
-        
+
     reply = g.app.gui.runAskYesNoDialog(c,"Revert",
         "Revert to previous version of " + c.mFileName + "?")
     c.bringToFront()
@@ -3997,16 +3995,16 @@ Help-menu seem out-of-place.
 #@nonl
 #@+node:ekr.20061209131102.1:openTest
 def openTest (self, event=None):
-    
+
     if 1: # Open in a new process.
         cmd = 'c:\Windows\System32\cmd.exe' # Hangs if used.
         python = sys.executable
         leo = g.os_path_abspath(g.os_path_join(g.app.loadDir,'leo.py'))
         test = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test'))
-        
+
         os.system('%s %s %s %s' % (cmd, python,leo,test))
         # args = [python, leo, test]
-        
+
         # if 1: # Use present environment.
             # os.spawnv(os.P_NOWAIT, sys.executable, args)
         # else: # Use a pristine environment.
@@ -4014,14 +4012,14 @@ def openTest (self, event=None):
     else:
         c = self
         fileName = g.os_path_join(g.app.loadDir,'..','test','test.leo')
-    
+
         ok, frame = g.openWithFileName(fileName,c)
         if not ok:
             g.es('not found: %s' % fileName)
 #@-node:ekr.20061209131102.1:openTest
 #@+node:ekr.20031218072017.3774:defineHelpMenuTables
 def defineHelpMenuTables (self):
-    
+
     self.helpMenuTable = [
         # &: a,b,c,d,e,f,h,l,m,n,o,p,r,s,t,u
         ('&About Leo...',           'about-leo'),
@@ -4186,13 +4184,13 @@ if 0: # Build myModule library using distutils.
 
     # Make the extension module ("mymodule") link against xosd
     xosdExtn = Extension("mymodule", ["mymodule.c"], libraries=["xosd"])
-    
+
     # Compile the extension module
     setup(name="mymodule", ext_modules=[xosdExtn])
-    
+
 @ Save the above code in a file called setup.py and run the following code
 to build and install your module.
-    
+
     python setup.py build
     python setup.py install
 #@nonl

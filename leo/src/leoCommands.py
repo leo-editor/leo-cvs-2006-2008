@@ -4718,8 +4718,6 @@ class baseCommands:
             return cc.findChaptersNode()
         else:
             return None
-
-    #@nonl
     #@-node:ekr.20070410192154:getChaptersTree
     #@+node:ekr.20070417112650.1:getChapterTree
     def getChapterTree (self,p):
@@ -4736,8 +4734,6 @@ class baseCommands:
                         return p2
 
         return None
-
-    #@nonl
     #@-node:ekr.20070417112650.1:getChapterTree
     #@+node:ekr.20070417112650.2:inChaptersTree
     def inChaptersTree (self,p):

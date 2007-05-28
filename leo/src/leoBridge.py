@@ -150,8 +150,6 @@ class bridgeController:
         g.init_sherlock(args=[])
         g.app.initing = False
         g.doHook("start2",c=None,p=None,v=None,fileName=None)
-
-    #@nonl
     #@+node:ekr.20070302061713:adjustSysPath
     def adjustSysPath (self):
 
@@ -197,8 +195,6 @@ class bridgeController:
                 g.app.gui.finishCreate()
 
 
-
-    #@nonl
     #@-node:ekr.20070227095743:createGui
     #@+node:ekr.20070227093629.4:isValidPython
     def isValidPython(self):

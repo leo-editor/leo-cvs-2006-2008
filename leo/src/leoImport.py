@@ -1377,8 +1377,6 @@ class baseLeoImportCommands:
 
         scanner = self.cScanner(self)
         scanner.scan(s,parent)
-
-    #@nonl
     #@-node:ekr.20031218072017.3250:scanCText
     #@+node:ekr.20031218072017.3265:scanElispText & allies
     def scanElispText(self,s,p):
