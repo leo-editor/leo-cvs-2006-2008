@@ -310,6 +310,7 @@ class atFile:
         self.shortFileName = "" # short version of file name used for messages.
         self.thinFile = False
         self.force_newlines_in_at_nosent_bodies = self.c.config.getBool('force_newlines_in_at_nosent_bodies')
+        self.write_strips_blank_lines = c.config.getBool('write_strips_blank_lines')
         
         if toString:
             self.outputFile = g.fileLikeObject()
