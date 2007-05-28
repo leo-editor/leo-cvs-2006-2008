@@ -4130,6 +4130,31 @@ def test_failure_with_ascii_encodings():
 #@-node:ekr.20050208112123:test_failure_with_ascii_encodings
 #@-node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
 #@-node:ekr.20031218072017.1498:Unicode utils...
+#@+node:ekr.20070524083513:Unit testing (leoGlobals.py)
+#@+node:ekr.20070524075713:@test test-proto
+if g.app and g.app.unitTesting:
+    
+    def sendEmail(self):
+        g.trace('self',self,'p',p.headString())
+        
+    class test:
+        pass
+
+    sendEmail(test())
+#@-node:ekr.20070524075713:@test test-proto
+#@+node:ekr.20070524083726:test_unit_testing_with_embedded_class
+def test_unit_testing_with_embedded_class():
+    
+    def sendEmail(self):
+        g.trace('self2',self)
+        
+    class test:
+        pass
+
+    X = test()
+    sendEmail(X)
+#@-node:ekr.20070524083726:test_unit_testing_with_embedded_class
+#@-node:ekr.20070524083513:Unit testing (leoGlobals.py)
 #@+node:EKR.20040612114220:Utility classes, functions & objects...
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20050314140957:g.convertPythonIndexToRowCol
