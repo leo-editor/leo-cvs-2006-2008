@@ -283,11 +283,42 @@ Pythonistas have come to expect that::
 will locate and install the most recent version of app and install it.
 #@-node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070515113707:Dist
-#@+node:ekr.20070522052905:Bugs 5
+#@+node:ekr.20070522052905:Bugs & Incompletions 8
+#@+node:ekr.20070529104436:Alt-4 not working in tree pane in unitTest.leo
+#@-node:ekr.20070529104436:Alt-4 not working in tree pane in unitTest.leo
+#@+node:ekr.20070522082646.1:Complete & test chapters commands
+create-chapter
+show-chapters
+hide-chapters
+#@nonl
+#@+node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
+# c.chapterController does not exist when getPublicCommands is called,
+# so we must wait until the command is actually called to get c.chapterController.
+
+def getPublicCommands (self):
+
+    if self.c.config.getBool('use_chapters'):
+        return {
+           'create-chapter': self.createChapter,
+           'remove-chapter': self.removeChapter,
+           'rename-chapter': self.renameChapter,
+        }
+    else:
+        return {}
+
+def createChapter (self,event=None):
+    return self.c.chapterController.createChapter()
+
+def removeChapter (self,event=None):
+    return self.c.chapterController.removeChapter()
+
+def renameChapter (self,event=None):
+    return self.c.chapterController.renameChapter()
+#@nonl
+#@-node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
+#@-node:ekr.20070522082646.1:Complete & test chapters commands
 #@+node:ekr.20070513175217:Allow permanent chapter renames
 #@-node:ekr.20070513175217:Allow permanent chapter renames
-#@+node:ekr.20070522082646:Fix any problems
-#@-node:ekr.20070522082646:Fix any problems
 #@+node:ekr.20070521104213:Get aspell working on Linux
 Make installing aspell easier.
 
@@ -364,6 +395,49 @@ Kind regards,
 
     Viktor
 #@-node:ekr.20070514102229.1:Fix automatic directory creation
+#@+node:ekr.20070528170642:Fix problem with subprocess
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4320971
+By: rickardlindberg
+
+------
+
+http://sourceforge.net/forum/message.php?msg_id=4325739
+
+
+I created a cmd file like this:
+
+script.cmd:
+@echo off
+echo Hello World
+
+Then I wrote some python code to execute it:
+
+import subprocess
+output = subprocess.Popen(["script.cmd"],
+stdout=subprocess.PIPE).communicate()[0]
+print output
+
+When I saved this script to test.py and ran the file, I got the correct output;
+when I entered the script in the python prompt, I got the correct output; but
+when I pasted the code in a leo node and executed it, I got the error message
+described in my first post.
+
+---------
+
+exception executing script
+    TypeError: an integer is required
+    --------------------
+      line 634:                                    GetCurrentProcess(), 0, 1,
+    * line 635:                                    DUPLICATE_SAME_ACCESS)
+      line 636: 
+      line 637: 
+
+If I remove the `stdout=subprocess.PIPE` part, it works fine, but then I cannot
+get the output of the command.
+#@nonl
+#@-node:ekr.20070528170642:Fix problem with subprocess
 #@+node:ekr.20070514100340:Fix problem with update plugin
 @nocolor
 
@@ -777,7 +851,7 @@ def getDynamicList (self,w,txt,rlist):
 #@-node:ekr.20050920084036.61:getDynamicList (helper)
 #@-node:ekr.20050920084036.58:dynamic abbreviation...
 #@-node:ekr.20070426080015:Fix crasher in dynamic abbreviations
-#@-node:ekr.20070522052905:Bugs 5
+#@-node:ekr.20070522052905:Bugs & Incompletions 8
 #@-node:ekr.20070515100356:To do: b2
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
