@@ -46,23 +46,22 @@ import os
 #@+others
 #@+node:ekr.20070301085537:init
 def init ():
-    
+
     if not (Tk and ImageTk): return False
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     print 'image.init'
-    
+
     if ok:
         leoPlugins.registerHandler("select2", onSelect)
         leoPlugins.registerHandler("unselect1", onUnselect)
         g.plugin_signon(__name__)
 
     return ok
-#@nonl
 #@-node:ekr.20070301085537:init
 #@+node:edream.110203113231.754:onSelect
 def onSelect (tag,keywords):
@@ -78,7 +77,7 @@ def onSelect (tag,keywords):
         c = keywords.get("c")
         body = c.frame.body
         photo = None
-        
+
         if os.path.isfile(filename):
             if ImageTk: # ImageTk understands several file formats.
                 try:
@@ -119,13 +118,13 @@ def onUnselect (tag,keywords):
             #@+node:edream.110203113231.757:<< Unselect Image >>
             # Erase image if it was previously displayed
             a = g.app ; c = keywords.get("c")
-            
+
             if a.gsimage:
                 try:
                      c.frame.body.bodyCtrl.delete(a.gsimage)
                 except:
                     g.es("info: no image to erase")
-            
+
             # And forget about it
             a.gsimage = None
             a.gsphoto = None

@@ -64,7 +64,7 @@ import leoPlugins
 #@+others
 #@+node:ekr.20060831165845.4:init
 def init ():
-    
+
     leoPlugins.registerHandler(('open2','new2'),onCreate)
     g.plugin_signon(__name__)
 
@@ -73,20 +73,20 @@ def init ():
 #@-node:ekr.20060831165845.4:init
 #@+node:ekr.20060831165845.5:onCreate
 def onCreate (tag, keys):
-    
+
     c = keys.get('c')
     if not c: return
-    
+
     slideshowController(c)
 #@nonl
 #@-node:ekr.20060831165845.5:onCreate
 #@+node:ekr.20060831165845.6:class slideshowController
 class slideshowController:
-    
+
     #@    @+others
     #@+node:ekr.20060831165845.7:__init__
     def __init__ (self,c):
-        
+
         self.c = c
         self.firstSlideShow = None
         self.slideShowRoot = None
@@ -96,9 +96,9 @@ class slideshowController:
     #@-node:ekr.20060831165845.7:__init__
     #@+node:ekr.20060831171016:createCommands
     def createCommands (self):
-        
+
         c = self.c ; k = c.k
-            
+
         for name,func in (
             ('next-slide-command',      self.nextSlide),
             ('next-slide-show-command', self.nextSlideShow),
@@ -110,7 +110,7 @@ class slideshowController:
     #@-node:ekr.20060831171016:createCommands
     #@+node:ekr.20060901182318:findFirstSlideShow
     def findFirstSlideShow (self):
-    
+
         c = self.c
         for p in c.allNodes_iter():
             h = p.headString().strip()
@@ -119,14 +119,14 @@ class slideshowController:
                 return p
             elif g.match_word(h,0,'@ignore'):
                 p = p.nodeAfterTree()
-    
+
         self.firstSlideShow = None
         return None
     #@nonl
     #@-node:ekr.20060901182318:findFirstSlideShow
     #@+node:ekr.20060904110319:ignored
     def ignored (self,p):
-        
+
         for p2 in p.self_and_parents_iter():
             if g.match_word(p2.headString(),0,'@ignore'):
                 return True
@@ -136,7 +136,7 @@ class slideshowController:
     #@-node:ekr.20060904110319:ignored
     #@+node:ekr.20060831171016.5:nextSlide
     def nextSlide (self,event=None):
-        
+
         c = self.c ; p = c.currentPosition()
         if p == self.slide:
             p = self.slide.threadNext()
@@ -163,7 +163,7 @@ class slideshowController:
     #@-node:ekr.20060831171016.5:nextSlide
     #@+node:ekr.20060901142848:nextSlideShow
     def nextSlideShow (self,event=None):
-        
+
         c = self.c
         self.findFirstSlideShow()
         if not self.firstSlideShow:
@@ -186,12 +186,12 @@ class slideshowController:
                 p = p.threadNext()
         self.select(self.slideShowRoot)
         g.es('At start of last slide show')
-           
+
     #@nonl
     #@-node:ekr.20060901142848:nextSlideShow
     #@+node:ekr.20060831171016.4:prevSlide
     def prevSlide (self,event=None):
-        
+
         c = self.c ; p = c.currentPosition()
         if self.ignored(p):
             p = p.threadBack()
@@ -221,7 +221,7 @@ class slideshowController:
     #@-node:ekr.20060831171016.4:prevSlide
     #@+node:ekr.20060901142848.1:prevSlideShow
     def prevSlideShow (self,event=None):
-        
+
         c = self.c
         self.findFirstSlideShow()
         if not self.firstSlideShow:
@@ -246,20 +246,20 @@ class slideshowController:
     #@-node:ekr.20060901142848.1:prevSlideShow
     #@+node:ekr.20060901145257:select
     def select (self,p):
-        
+
         '''Make p the present slide, and set self.slide and maybe self.slideShowRoot.'''
-    
+
         c = self.c ; h = p.headString().strip()
         w = c.frame.body.bodyCtrl
-    
+
         g.es('%s' % h)
         c.frame.tree.expandAllAncestors(p)
         c.selectPosition(p)
         w.see('1.0')
-    
+
         if h.startswith('@slideshow'):
             self.slideShowRoot = p.copy()
-    
+
         self.slide = p.copy()
     #@nonl
     #@-node:ekr.20060901145257:select

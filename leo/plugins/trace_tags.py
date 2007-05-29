@@ -28,23 +28,23 @@ tagCount = 0
 #@+others
 #@+node:ekr.20050303073056.1:init
 def init ():
-    
+
     ok = not g.app.unitTesting
-        
+
     if ok:
         leoPlugins.registerHandler("all",trace_tags)
         g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:ekr.20050303073056.1:init
 #@+node:edream.110203113231.739:trace_tags
 def trace_tags (tag,keywords):
-    
+
     global tagCount ; brief = True
-    
+
     tagCount += 1 # Always count the hook.
-    
+
     # List of hooks to suppress.
     if tag in (
         'bodykey1','bodykey2','dragging1','dragging2',

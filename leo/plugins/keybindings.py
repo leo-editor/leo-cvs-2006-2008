@@ -59,13 +59,13 @@ import webbrowser
 #@+others
 #@+node:pap.20060703102546.4:init
 def init ():
-    
+
     ok = Pmw and Tk
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-            
+
         ok = g.app.gui.guiName() == "tkinter"
 
         if ok:
@@ -74,20 +74,20 @@ def init ():
             else: # Use this if you want to create the commander class after the frame is fully created.
                 leoPlugins.registerHandler('after-create-leo-frame',onCreate)
             g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:pap.20060703102546.4:init
 #@+node:pap.20060703102546.5:onCreate
 def onCreate (tag, keys):
-    
+
     c = keys.get('c')
     if not c: return
-    
+
     global thePluginController
     thePluginController = pluginController(c)
-    
- 
+
+
 #@nonl
 #@-node:pap.20060703102546.5:onCreate
 #@+node:pap.20060703102832:topLevelMenu
@@ -101,7 +101,7 @@ def topLevelMenu(c):
 #@+node:pap.20060703104701:inColumns
 def inColumns(data, columnwidths):
     """Return the items of data with the specified column widths
-    
+
     The list of widths should be one less than the list of data, eg
         inColumns((10,20,30), (5,5))
     """
@@ -115,36 +115,36 @@ def inColumns(data, columnwidths):
 #@+node:pap.20060703103820:class KeyHandlerDialog
 class KeyHandlerDialog:
     """The dialog to show the key handlers"""
-    
+
     #@    @+others
     #@+node:pap.20060703103942:__init__
     def __init__ (self,c):
-        
+
         self.c = c
         # Warning: hook handlers must use keywords.get('c'), NOT self.c.
-    
+
         #@    << Main window >>
         #@+node:pap.20060703130408:<< Main window >>
         root = g.app.root
         top = Tk.Toplevel(root)
-        
+
         self.root = root
         self.top = top
-        
+
         g.app.gui.attachLeoIcon(top)
         top.title("Leo Key Bindings")
         #@nonl
         #@-node:pap.20060703130408:<< Main window >>
         #@nl
-        
+
         self.filter_pane = "Bound only"
         self.filter_keys = "*"
         self.filter_commands = "*"
         self.sort_by = "By key"
-        
+
         self.getAllCommands()    
         self.populateKeys()
-        
+
         #@    << Frames >>
         #@+node:pap.20060703105742:<< Frames >>
         self.upper = Pmw.Group(top,
@@ -152,10 +152,10 @@ class KeyHandlerDialog:
         )
         self.upper.pack(side="top", fill='both', expand=0, padx=5, pady=5)
         upper = self.upper.interior()
-        
+
         self.middle = middle = Tk.Frame(top)
         self.middle.pack(side="top", fill='both', expand=1, padx=5, pady=5)
-        
+
         #@-node:pap.20060703105742:<< Frames >>
         #@nl
         #@    << Filtering >>
@@ -168,21 +168,21 @@ class KeyHandlerDialog:
                 command=self.filterPane,
         )    
         self.pane.pack(side="left")
-        
+
         self.keys = Pmw.EntryField(upper,
                 labelpos = 'w',
                 value = '',
                 label_text = 'Key:',
                 modifiedcommand = self.filterKey)
         self.keys.pack(side="left", padx=10)
-        
+
         self.commands = Pmw.EntryField(upper,
                 labelpos = 'w',
                 value = '',
                 label_text = 'Commands:',
                 modifiedcommand = self.filterCommands)
         self.commands.pack(side="left", padx=10)
-        
+
         self.sorting = Pmw.OptionMenu(upper,
                 labelpos = 'w',
                 label_text = 'Sort:',
@@ -190,15 +190,15 @@ class KeyHandlerDialog:
                 menubutton_width = 16,
                 command = self.sortItems)
         self.sorting.pack(side="left", padx=10)
-        
-        
+
+
         self.printable = Tk.Button(upper, 
                 text = "Print", 
                 width = 16,
                 command = self.printKeys)
         self.printable.pack(side="right", fill="none", expand=0, padx=20)
-            
-        
+
+
         #@-node:pap.20060703112856:<< Filtering >>
         #@nl
         #@    << List >>
@@ -215,11 +215,11 @@ class KeyHandlerDialog:
         #@nonl
         #@-node:pap.20060703123943:<< List >>
         #@nl
-        
+
         self.box.setlist(self.bindings)    
         self.box.component("listbox").configure(font=("Courier", 8))
         self.box.pack(side="bottom", fill='both', expand=1)    
-        
+
         #top.grab_set() # Make the dialog a modal dialog.
         #top.focus_force() # Get all keystrokes.
         #root.wait_window(top)
@@ -246,19 +246,19 @@ class KeyHandlerDialog:
                             binding.commandName,
                             binding.pane,
                         ])
-        
+
         if self.filter_pane in ("Show all", "Unbound only"):
             self.addUnboundCommands(bindings)
-               
+
         sorter = {
             "By key" : lambda item1, item2 : cmp(item1[1], item2[1]),
             "By command" : lambda item1, item2 : cmp(item1[2], item2[2]),
             "By pane" : lambda item1, item2 : cmp(item1[3], item2[3]),
     }
-        
+
         bindings.sort(sorter[self.sort_by])
         self.full_bindings = bindings
-        
+
         self.bindings = [item[0] for item in bindings] 
     #@nonl
     #@-node:pap.20060703104556:populateKeys
@@ -274,7 +274,7 @@ class KeyHandlerDialog:
         self.filter_pane = filter
         self.populateKeys()
         self.box.setlist(self.bindings)
-        
+
     #@nonl
     #@-node:pap.20060703105742.1:filterPane
     #@+node:pap.20060703111744:filterKey
@@ -283,7 +283,7 @@ class KeyHandlerDialog:
         self.filter_keys = "*%s*" % self.keys.getvalue()
         self.populateKeys()
         self.box.setlist(self.bindings)
-        
+
     #@nonl
     #@-node:pap.20060703111744:filterKey
     #@+node:pap.20060703112417:filterCommands
@@ -292,7 +292,7 @@ class KeyHandlerDialog:
         self.filter_commands = "*%s*" % self.commands.getvalue()
         self.populateKeys()
         self.box.setlist(self.bindings)
-        
+
     #@nonl
     #@-node:pap.20060703112417:filterCommands
     #@+node:pap.20060703113646:sortItems
@@ -319,18 +319,18 @@ class KeyHandlerDialog:
                   "<table>",
                     "<tr><th>Pane</th><th>Key</th><th>Command</th></tr>",
         ]
-        
+
         for item in self.full_bindings:
             _, key, command, pane = item
             report.append("<tr><td>%s</td><td>%s</td><td>%s</td></tr>" % (pane, key, command))
-            
+
         report.append("</table>")
-        
+
         f.write("\n".join(report))
         f.close()
-        
+
         webbrowser.open(fname)
-        
+
     #@nonl
     #@-node:pap.20060703123659:printKeys
     #@+node:pap.20060703131850:getAllCommands
@@ -363,15 +363,15 @@ class KeyHandlerDialog:
 #@-node:pap.20060703103820:class KeyHandlerDialog
 #@+node:pap.20060703102546.6:class pluginController
 class pluginController:
-    
+
     #@    @+others
     #@+node:pap.20060703102546.7:__init__
     def __init__ (self,c):
-        
+
         self.c = c
         # Warning: hook handlers must use keywords.get('c'), NOT self.c.
-        
-    
+
+
     #@-node:pap.20060703102546.7:__init__
     #@+node:pap.20060703103603:onClick
     def onClick(self):

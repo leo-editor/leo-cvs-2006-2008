@@ -45,19 +45,19 @@ __version__ = "1.1"
 #@+others
 #@+node:ekr.20070301062245:init
 def init ():
-    
+
     ok = tkMessageBox is not None
-    
+
     if ok: # Ok for unit testing: creates menu.
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-            
+
         ok = g.app.gui.guiName() == "tkinter"
 
         if ok:
             leoPlugins.registerHandler("create-optional-menus",createWordCountMenu)
             g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:ekr.20070301062245:init
@@ -67,7 +67,7 @@ def createWordCountMenu (tag,keywords):
     c = keywords.get("c")
 
     # Get reference to current File > Export... menu
-    
+
     # Use code to find index of menu shortcut
     index_label = '&Word Count...'
     # Find index position of ampersand -- index is how shortcut is defined

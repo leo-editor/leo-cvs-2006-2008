@@ -37,13 +37,13 @@ outline::
      +@string
       j2 = {Journal2}
       j3 = {Journal3}
-    
+
 Will be written as::
 
     @string{j1 = {Journal1}}
     @string{j2 = {Journal2}}
     @string{j3 = {Journal3}}
-    
+
     @article{AUj1,
     author = {A. Uthor},
     journal = j1}
@@ -135,7 +135,7 @@ templates = {'@article':'author       = {},\ntitle        = {},\njournal      = 
              '@techreport':'author       = {},\ntitle        = {},\ninstitution  = {},\nyear         = ',
              '@unpublished':'author       = {},\ntitle        = {},\nnote         = {}'
              }
-             
+
 entrytypes = templates.keys()
 entrytypes.append('@string') 
 #@nonl
@@ -174,10 +174,10 @@ entrytypes.append('@string')
 
 def onIconDoubleClick(tag,keywords):
     """Read or write a bibtex file when the node is double-clicked.
-    
+
     Write the @bibtex tree as bibtex file when the root node is double-clicked. 
     If it has no child nodes, read bibtex file."""
-    
+
     v = keywords.get("p") or keywords.get("v")
     c = keywords.get("c")
     h = v.headString().strip()
@@ -188,7 +188,7 @@ def onIconDoubleClick(tag,keywords):
             #@+node:timo.20050213160555.6:<< write bibtex file >>
             bibFile = file(fname,'w')
             writeTreeAsBibTex(bibFile, v, c)
-            
+
             bibFile.close()
             g.es('written: '+str(fname))
             #@nonl
@@ -204,20 +204,20 @@ def onIconDoubleClick(tag,keywords):
                 g.es('IOError: file not found')
                 return    
             readBibTexFileIntoTree(bibFile, c)
-            
+
             bibFile.close()
             #@-node:timo.20050214174623:<< read bibtex file >>
             #@nl
-       
-               
+
+
 #@-node:timo.20050213160555.3:onIconDoubleClick
 #@+node:timo.20050215222802:onHeadKey
 def onHeadKey(tag,keywords):
     """Write template for the entry in body pane.
-    
+
     If body pane is empty, get template for the entry from a dictionary 'templates ' and write it in the body pane."""
     # checking for duplicate keys will be also done in this function (to be implemented).
-    
+
     v = keywords.get("p") or keywords.get("v")
     c = keywords.get("c")
     h = v.headString().strip()
@@ -233,20 +233,20 @@ def onHeadKey(tag,keywords):
                 #@nonl
                 #@-node:timo.20050215232157:<< write template >>
                 #@nl
-                
-       
+
+
 #@nonl
 #@-node:timo.20050215222802:onHeadKey
 #@+node:timo.20050213160555.7:writeTreeAsBibTex
 def writeTreeAsBibTex(bibFile, vnode, c):
     """Write the tree under vnode to the file bibFile"""
-    
+
     # body text of @bibtex node is ignored
     dict = g.scanDirectives(c,p=vnode)
     encoding = dict.get("encoding",None)
     if encoding == None:
         encoding = g.app.config.default_derived_file_encoding
-    
+
     strings = ''
     entries = ''
     # iterate over nodes in this tree
@@ -273,7 +273,7 @@ def writeTreeAsBibTex(bibFile, vnode, c):
 #@+node:timo.20050214174623.1:readBibTexFileIntoTree
 def readBibTexFileIntoTree(bibFile, c):
     """Read BibTeX file and parse it into @bibtex tree
-    
+
     The file is split at '\n@' and each section is divided into headline
     ('@string' in strings and '@entrytype key' in others) and body text
     (without outmost braces). These are stored in biblist, which is a list
@@ -301,7 +301,7 @@ def readBibTexFileIntoTree(bibFile, c):
         v = p.insertAsLastChild()
         c.setHeadString(v,str(i[0]))
         c.setBodyString(v,str(i[1]))
-          
+
 
 
 

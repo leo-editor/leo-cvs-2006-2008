@@ -70,71 +70,71 @@ def export_rtf( c ):
     flagIgnoreFiles =  config.get("Main", "flagIgnoreFiles") == "Yes"
     flagJustHeadlines = config.get("Main", "flagJustHeadlines") == "Yes"
     filePath = config.get("Main", "exportPath").strip() # "c:\\"
-    
+
     myFileName = c.frame.shortFileName()    # Get current outline filename
     myFileName = myFileName[:-4]            # Remove .leo suffix
-    
+
     g.es(" Leo -> RTF started...",color="turquoise4")
-    
+
     # Open file for output
     f=open(filePath + myFileName + ".rtf", 'w')
-    
+
     # Write RTF header information
     f.write("{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}}\n\n")
-    
+
     # Write RTF list table that provides numbered list formatting
     #@    << listtable >>
     #@+node:danr7.20060902085826:<< listtable >>
     f.write("{\\*\\listtable{\\list\\listtemplateid1723346216\\listhybrid\n")
-    
+
     f.write("{\\listlevel\\levelnfc0\\levelnfcn0\\leveljc0\\leveljcn0\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0\n")
     f.write("{\\leveltext\\leveltemplateid67698703\\\'02\\\'00.;}\n\n")
     f.write("{\\levelnumbers\\\'01;}\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-360\\li720\\jclisttab\\tx720 }")
-    
+
     f.write("{\\listlevel\\levelnfc4\\levelnfcn4\\leveljc0\\leveljcn0\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0")
     f.write("{\\leveltext\\leveltemplateid67698713\\\'02\\\'01.;} {\\levelnumbers\\\'01;}")
     f.write("\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-360\\li1440\\jclisttab\\tx1440 }")
-    
+
     f.write("{\\listlevel\\levelnfc2\\levelnfcn2\\leveljc2\\leveljcn2\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0")
     f.write("{\\leveltext\\leveltemplateid67698715\\\'02\\\'02.;} {\\levelnumbers\\\'01;}")
     f.write("\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1\\fi-180\\li2160\\jclisttab\\tx2160 }")
-    
+
     f.write("{\\listlevel\\levelnfc0\\levelnfcn0\\leveljc0\\leveljcn0\\levelfollow0\\levelstartat1")
     f.write("\\levelspace360\\levelindent0{\\leveltext\\leveltemplateid67698703\\\'02\\\'03.;}")
     f.write("{\\levelnumbers\\\'01;}\\chbrdr\\brdrnone\\brdrcf1\\chshdng0\\chcfpat1\\chcbpat1 \\fi-360\\li2880\\jclisttab\\tx2880 }")
-    
+
     f.write("{\\listlevel\\levelnfc4\\levelnfcn4\\leveljc0\\leveljcn0")
     f.write("\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0{\\leveltext\\leveltemplateid67698713\\\'02\\\'04.;}")
     f.write("{\\levelnumbers\\\'01;} \\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-360\\li3600\\jclisttab\\tx3600 }")
-    
+
     f.write("{\\listlevel\\levelnfc2\\levelnfcn2\\leveljc2")
     f.write("\\leveljcn2\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0{\\leveltext\\leveltemplateid67698715\\\'02\\\'05.;} {\\levelnumbers\\\'01;} \\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-180\\li4320\\jclisttab\\tx4320 }")
-    
+
     f.write("{\\listlevel\\levelnfc0\\levelnfcn0")
     f.write("\\leveljc0\\leveljcn0\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0{\\leveltext\\leveltemplateid67698703\\\'02\\\'06.;}")
     f.write("{\\levelnumbers\\\'01;}\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-360\\li5040\\jclisttab\\tx5040 }")
-    
+
     f.write("{\\listlevel\\levelnfc4\\levelnfcn4\\leveljc0\\leveljcn0\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0")
     f.write("{\\leveltext\\leveltemplateid67698713\\\'02\\\'07.;}")
     f.write("{\\levelnumbers\\\'01;}\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-360\\li5760\\jclisttab\\tx5760 }")
-    
+
     f.write("{\\listlevel\\levelnfc2\\levelnfcn2\\leveljc2\\leveljcn2\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0")
     f.write("{\\leveltext\\leveltemplateid67698715\\\'02\\\'08.;}{\\levelnumbers\\\'01;}")
     f.write("\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-180\\li6480\\jclisttab\\tx6480 }")
-    
+
     f.write("{\\listname ;}\\listid127936308}}\n\n")
-    
+
     f.write("{\\*\\listoverridetable{\\listoverride\\listid127936308\\listoverridecount0\\ls1}}\n\n")
     #@-node:danr7.20060902085826:<< listtable >>
     #@nl
-    
+
     # Write text formatting foundation
     f.write("\\viewkind4\\uc1\\pard\\f0\\fs20\n\n")
-    
+
     # Create generic level header
     levelHeader = "\\pard \\ql \\fi-360\\ri0\\widctlpar\\jclisttab\\faauto\\ls1\\adjustright\\rin0\\itap0"
     myLevel = -1
-    
+
     for p in c.allNodes_iter():
         curLevel = p.level() + 1    # Store current level so method doesn't have to be called again
         if curLevel <> myLevel:
@@ -144,10 +144,10 @@ def export_rtf( c ):
             f.write(levelHeader)            # Output the generic RTF level info
             f.write("\\li" + levelIndent + "\\tx" + levelIndent + "\\ilvl" + str(curLevel-1) + "\\lin" + levelIndent)        
             f.write("{")
-                
+
         myLevel = curLevel
         myHeadline = p.headString()
-        
+
         # Check if node is an @file and ignore if configured to
         if not (myHeadline[:5] == "@file" and flagIgnoreFiles):
             # Write headline with correct # of tabs for indentation
@@ -162,14 +162,14 @@ def export_rtf( c ):
 
     # Write final level close
     f.write("}")  
-    
+
     # Write RTF close
     f.write("}")  
-    
+
     # Close file
     f.close()
     g.es(" Leo -> RTF completed.",color="turquoise4")
-    
+
 #@nonl
 #@-node:danr7.20060902083957.3:export_rtf
 #@-others

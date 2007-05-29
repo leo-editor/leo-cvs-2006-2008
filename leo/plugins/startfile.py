@@ -85,7 +85,7 @@ def onIconDoubleClick(tag,keywords):
                     break # we found the closest @folder
                 else:
                     parv = parv.parent() # try the parent of the parent
-            
+
             fname = os.path.join(basedir,h) # join path and filename
             startdir, filename = os.path.split(fname)
             try:
@@ -94,7 +94,7 @@ def onIconDoubleClick(tag,keywords):
             except:
                 g.es(startdir+' - folder not found')
                 dirfound = 0
-            
+
             if dirfound:
                 fullpath = g.os_path_join(startdir,filename)
                 fullpath = g.os_path_abspath(fullpath)
@@ -119,7 +119,7 @@ if hasattr(os,"startfile"): # Ok for unit testing, but may be icondclick1 confli
 
     # Register the handlers...
     leoPlugins.registerHandler("icondclick1",onIconDoubleClick)
-    
+
     __version__ = "1.4"
     g.plugin_signon(__name__)
 #@nonl

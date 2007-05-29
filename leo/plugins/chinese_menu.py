@@ -9,7 +9,7 @@
 Translate a few menu items into Simplified Chinese
 本插件将部分Leo菜单翻译成简体中文
    By Zhang Le <ejoy@xinhuanet.com>
-   
+
 """
 
 # Chinese translation completed by Zhang Le, May 2004
@@ -226,7 +226,7 @@ if not g.app.unitTesting: # Unpleasant for unit testing.
 
     # Register the handlers...
     leoPlugins.registerHandler("menu1", onMenu)
-    
+
     __version__ = "1.1" # Set version for the plugin handler.
     g.plugin_signon(__name__)
 #@nonl

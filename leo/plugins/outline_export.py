@@ -39,7 +39,7 @@ if not g.app.unitTesting: # Not for unit testing: modifies core class.
 
     # Register the handlers...
     leoPlugins.registerHandler("start2", onStart)
-    
+
     __version__ = "1.2" # Set version for the plugin handler.
     g.plugin_signon(__name__)
 #@nonl

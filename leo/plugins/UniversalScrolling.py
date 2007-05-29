@@ -28,7 +28,7 @@ import leoGlobals as g
 import leoTkinterFrame
 
 Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
-    
+
 import threading
 import time
 #@nonl
@@ -59,19 +59,19 @@ createCanvas = leoTkinterFrame.leoTkinterFrame.createCanvas
 #@+others
 #@+node:ekr.20050526121026:init
 def init ():
-    
+
     ok = Tk and not g.app.unitTesting
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-            
+
         ok = g.app.gui.guiName() == "tkinter"
 
         if ok:
             leoTkinterFrame.leoTkinterFrame.createCanvas = addUThreading
             g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:ekr.20050526121026:init
@@ -79,20 +79,20 @@ def init ():
 def addUThreading (tkFrame,parentFrame):
 
     '''Replaces createCanvas, adding UniversalScolling'''
-    
+
     class directionClass:
         way = 'Down'
-        
+
     canvas = createCanvas(tkFrame,parentFrame)
     ev = threading.Event()
     presentDirection = directionClass()
-    
+
     # Define callbacks.
     #@    @+others
     #@+node:ekr.20040915104230.2:run
     # Watch for events to begin scrolling.  This is also the target of the thread.
     def run( ev = ev):
-    
+
         while 1:
             ev.wait()
             # g.trace(presentDirection.way)
@@ -105,9 +105,9 @@ def addUThreading (tkFrame,parentFrame):
     #@-node:ekr.20040915104230.2:run
     #@+node:ekr.20050526094449.2:scroll & helpers
     def scroll(event,way):
-    
+
         """A callback that starts scrolling."""
-    
+
         x = event.widget.canvasx( event.x )
         y = event.widget.canvasy( event.y )
         item = event.widget.find_overlapping(x,y,x,y)
@@ -118,24 +118,24 @@ def addUThreading (tkFrame,parentFrame):
             ev.set()
             presentDirection.way = way
             return 'break'
-    
+
     def scrollDown(event):
         scroll(event,'Down')
-        
+
     def scrollUp(event):
         scroll(event,'Up')
     #@nonl
     #@-node:ekr.20050526094449.2:scroll & helpers
     #@+node:ekr.20040915104230.4:stopScrolling
     def stopScrolling (event,ev=ev):
-        
+
         """A callback that stops scrolling."""
-    
+
         ev.clear()
     #@nonl
     #@-node:ekr.20040915104230.4:stopScrolling
     #@-others
-    
+
     # Start the thread.
     t = threading.Thread(target = run)
     t.setDaemon(True)

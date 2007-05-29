@@ -104,15 +104,15 @@ import weakref
 #@+others
 #@+node:ekr.20070301072310:init
 def init ():
-    
+
     if not (Tk and Pmw): return False
-        
+
     # Ok for unit testing.  add's menu.
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
-        
+
     if ok:
         leoPlugins.registerHandler(('new2','open2'), addCommand)
         g.plugin_signon( __name__ )
@@ -122,7 +122,7 @@ def init ():
 #@-node:ekr.20070301072310:init
 #@+node:ekr.20040916074337:class CSFrontend:
 class CSFrontend:
-    
+
     #@    @+others
     #@+node:ekr.20040916074337.1:__init__
     def __init__( self , c ):
@@ -145,7 +145,7 @@ class CSFrontend:
             while p:
                 children.append( p )
                 p = p.next()
-    
+
         alist = list( self._makeAttrList( children ) )
         self.omuatts = Pmw.OptionMenu( f, labelpos = 'n', label_text = 'Attribute:',
         items = alist )
@@ -283,7 +283,7 @@ def getChildren( v ):
 #@-node:ekr.20040916074337.8:getChildren
 #@+node:ekr.20040916074337.9:csort
 def csort( a, b, atdict ):
-    
+
     a1 = atdict[ a ]
     b1 = atdict[ b ]
     if a1 == None and b1 != None: return 1

@@ -25,7 +25,7 @@ def init():
     leoPlugins.registerHandler("icondclick1", on_icondclick)
 
     g.plugin_signon(__name__)
-    
+
     return 1
 #@nonl
 #@-node:ajones.20070122160142.2:init

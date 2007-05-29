@@ -98,18 +98,18 @@ __version__ = '1.8'
 #@nonl
 #@-node:ekr.20050311091110:<< version history >>
 #@nl
-    
+
 #@+others
 #@+node:ekr.20050311092840:init
 def init ():
-    
-    
+
+
     ok = tkFileDialog and not g.app.unitTesting # Not Ok for unit testing.
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-    
+
         ok = g.app.gui.guiName() == "tkinter"
         if ok:
             leoPlugins.registerHandler(('new','open2'), on_open)
@@ -119,9 +119,9 @@ def init ():
             if 0: # doesn't work: the cursor stops blinking.
                 leoPlugins.registerHandler("select1", on_select1)
                 leoPlugins.registerHandler("select2", on_select2)
-    
+
             g.plugin_signon(__name__)
-            
+
     return ok
 #@nonl
 #@-node:ekr.20050311092840:init
@@ -134,24 +134,24 @@ class FTPurl:
         FTPurl(url[, mode])
 
     The url should have the following syntax:
-    
+
         ftp://[username:password@]remotehost/filename
-    
+
     If username and password are left out, the connection is made using
     username=anonymous and password=realuser@host (for more information,
     see the documentation of module ftplib).
-    
+
     The mode can be '' (default, for ASCII mode) or 'b' (for binary mode).
     This class raises an IOError exception if something goes wrong.
     """
-    
+
     #@    @+others
     #@+node:edream.110203113231.880:__init__
     def __init__(self, ftpURL, mode=''):
         parse = urlparse.urlparse(ftpURL)
         if parse[0] != 'ftp':
             raise IOError, "error reading %s: malformed ftp URL" % ftpURL
-    
+
         # ftp URL; syntax: ftp://[username:password@]hostname/filename
         self.mode = mode
         authIndex = parse[1].find('@')
@@ -188,7 +188,7 @@ class FTPurl:
         self.checkParams()
         if self.filename=='' or self.path[-1]=='/':
             return self.dir()
-    
+
         try:
             if self.mode == '':  # mode='': ASCII mode
                 slist = []
@@ -203,7 +203,7 @@ class FTPurl:
         except:
             exception, msg, tb = sys.exc_info()
             raise IOError, msg
-    
+
     #@-node:edream.110203113231.882:read
     #@+node:edream.110203113231.883:readline
     def readline(self):
@@ -212,7 +212,7 @@ class FTPurl:
             self.lst
         except AttributeError:
             self.lst = self.read().splitlines(1)
-        
+
         if self.currentLine < len(self.lst):
             s = self.lst[self.currentLine]
             self.currentLine = self.currentLine + 1
@@ -229,7 +229,7 @@ class FTPurl:
         self.checkParams()
         if self.filename == '':
             raise IOError, 'filename not specified'
-        
+
         try:
             file = cStringIO.StringIO(s)
             if self.mode == '':  # mode='': ASCII mode
@@ -256,7 +256,7 @@ class FTPurl:
     def dir(self, path=None):
         """Issue a LIST command passing the specified argument and return output as a string."""
         s = []
-    
+
         if path == None:
             path = self.dirname
         try:
@@ -272,7 +272,7 @@ class FTPurl:
         """Return 1 if the specified path exists. If path is omitted, the current file name is tried."""
         if path == None:
             path = self.filename
-    
+
         s = self.dir(path)
         if s.lower().find('no such file') == -1:
             return 1
@@ -313,7 +313,7 @@ def enable_body(body):
             body.configure(state="normal")
             body.configure(insertontime=insertOnTime,insertofftime=insertOffTime)
         except: g.es_exception()
-            
+
 def disable_body(body):
     global insertOnTime,insertOffTime
     if body.cget("state") == "normal":
@@ -362,15 +362,15 @@ def insert_read_only_node (c,v,name):
             fmt = AbstractFormatter(DumbWriter(fh))
             # the parser stores parsed data into fh (file-like handle)
             parser = HTMLParser(fmt)
-            
+
             # send the HTML text to the parser
             parser.feed(new)
             parser.close()
-            
+
             # now replace the old string with the parsed text
             new = fh.getvalue()
             fh.close()
-            
+
             # finally, get the list of hyperlinks and append to the end of the text
             hyperlinks = parser.anchorlist
             numlinks = len(hyperlinks)
@@ -418,7 +418,7 @@ def on_open (tag,keywords):
 # override the body key handler if we are in an @read-only node.
 
 def on_bodykey1 (tag,keywords):
-    
+
     g.trace()
 
     c = keywords.get("c")
@@ -445,7 +445,7 @@ def on_headkey2 (tag,keywords):
     v = keywords.get("v")
     h = v.headString()
     ch = keywords.get("ch")
-    
+
     g.trace(repr(ch))
 
     if ch == '\r' and g.match_word(h,0,"@read-only"):

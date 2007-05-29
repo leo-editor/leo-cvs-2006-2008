@@ -106,7 +106,5 @@ UNL.py
 #xemacs.py
 #xsltWithNodes.py
 #zodb.py
-
-#@nonl
 #@-node:edream.120603093808:@thin pluginsManager.txt
 #@-leo

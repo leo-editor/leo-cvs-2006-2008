@@ -6,13 +6,13 @@
 
 The parameter in the @auto-rss headline is the news server followed
 by the group name in the form:
-    
+
     @auto-news newserver.myisp.com/comp.lang.python
-    
+
 Messages will be downloaded directly as nodes. Doesn't support threading
 but message bodies are downloaded lazily, ie only when you click on the
 header. This is achieved by using the @auto-newsitem headline. 
-    
+
 """
 #@-node:ekr.20050329082101.154:<< docstring >>
 #@nl
@@ -44,7 +44,7 @@ __plugin_group__ = "Network"
 #@+node:ekr.20050329082101.156:Error Classes
 class NewsTreeError(Exception):
     """Something went wrong with the tree"""
-    
+
 #@-node:ekr.20050329082101.156:Error Classes
 #@+node:ekr.20050329082101.157:getConnection
 def getConnection(parameter):
@@ -73,7 +73,7 @@ def getConnection(parameter):
 #@+node:ekr.20050329082101.158:class News
 class News(BaseTreeHandler):
     """News auto tree handler"""
-        
+
     #@    @+others
     #@+node:ekr.20050329082101.159:initFrom
     def initFrom(self, parameter):
@@ -94,7 +94,7 @@ class News(BaseTreeHandler):
                          parameter
                 )
             )
-        
+
         connection.quit()
     #@nonl
     #@-node:ekr.20050329082101.159:initFrom
@@ -104,9 +104,9 @@ class News(BaseTreeHandler):
 #@+node:ekr.20050329082101.160:class NewsItem
 class NewsItem(BaseTreeHandler):
     """Handlers news item bodies"""
-    
+
     handles = sets.Set(["headclick1"])    
-    
+
     #@    @+others
     #@+node:ekr.20050329082101.161:initFrom
     def initFrom(self, parameter):
@@ -126,7 +126,7 @@ class NewsItem(BaseTreeHandler):
         self.c.setBodyText(self.node,"\n".join(article[-1]))
         #
         connection.quit()
-    
+
     #@-node:ekr.20050329082101.161:initFrom
     #@-others
 #@-node:ekr.20050329082101.160:class NewsItem

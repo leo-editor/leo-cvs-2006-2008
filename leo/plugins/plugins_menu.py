@@ -106,7 +106,7 @@ __plugin_group__ = "Core"
 #@+node:ekr.20060107091318:Functions
 #@+node:EKR.20040517080555.24:addPluginMenuItem
 def addPluginMenuItem (p,c):
-    
+
     # g.trace(p.name,g.callers())
 
     if p.hastoplevel:
@@ -161,7 +161,7 @@ def createPluginsMenu (tag,keywords):
 
     path = os.path.join(g.app.loadDir,"..","plugins")
     sys.path = path
-        
+
     if os.path.exists(path):
         # Create a list of all active plugins.
         files = glob.glob(os.path.join(path,"*.py"))
@@ -195,24 +195,24 @@ def createPluginsMenu (tag,keywords):
             #@nl
             for name,p in items:
                 addPluginMenuItem(p, c)
-            
+
     sys.path = old_path
 #@nonl
 #@-node:EKR.20040517080555.23:createPluginsMenu
 #@+node:ekr.20070302175530:init
 def init ():
-    
+
     if not Tk or g.app.unitTesting: return None
 
     if g.app.gui is None:
         g.app.createTkGui(__file__)
 
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     if ok:
         leoPlugins.registerHandler("create-optional-menus",createPluginsMenu)
         g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:ekr.20070302175530:init
@@ -220,7 +220,7 @@ def init ():
 #@+node:pap.20050305152751:class PluginDatabase
 class _PluginDatabase:
     """Stores information on Plugins"""
-    
+
     #@    @+others
     #@+node:pap.20050305152751.1:__init__
     def __init__(self):
@@ -269,7 +269,7 @@ class _PluginDatabase:
     #@nonl
     #@-node:pap.20051008005012:storeAllPlugins
     #@-others
-    
+
 PluginDatabase = _PluginDatabase()
 #@nonl
 #@-node:pap.20050305152751:class PluginDatabase
@@ -281,9 +281,9 @@ class PlugIn:
     #@    @+others
     #@+node:EKR.20040517080555.4:__init__
     def __init__(self, filename):
-    
+
         """Initialize the plug-in"""
-    
+
         # Import the file to find out some interesting stuff
         # Do not use the imp module: we only want to import these files once!
         self.name = self.realname = self.moduleName = None
@@ -320,7 +320,7 @@ class PlugIn:
             s = 'Unexpected exception in plugins_menu plugin importing %s' % filename
             print s ; g.es(s,color='red')
             return
-    
+
         #@    << Check if this can be configured >>
         #@+node:EKR.20040517080555.5:<< Check if this can be configured >>
         # Look for a configuration file
@@ -338,7 +338,7 @@ class PlugIn:
         # window
         #@-at
         #@@c
-        
+
         self.hasapply = hasattr(self.mod, "applyConfiguration")
         #@-node:EKR.20040517080555.6:<< Check if this has an apply >>
         #@nl
@@ -351,9 +351,9 @@ class PlugIn:
         # the main menu and will be called when clicked
         #@-at
         #@@c
-        
+
         self.othercmds = {}
-        
+
         for item in self.mod.__dict__.keys():
             if item.startswith("cmd_"):
                 self.othercmds[self.niceMenuName(item)] = self.mod.__dict__[item]
@@ -367,7 +367,7 @@ class PlugIn:
         # instead of the default About
         #@-at
         #@@c
-        
+
         try:
             self.hastoplevel = self.mod.__dict__["topLevelMenu"]
         except KeyError:
@@ -379,21 +379,21 @@ class PlugIn:
     #@-node:EKR.20040517080555.4:__init__
     #@+node:EKR.20040517080555.8:about
     def about(self,event=None):
-        
+
         """Put up an "about" dialog for this plugin"""
-    
+
         PluginAbout(self.name, self.version, self.doc)
     #@nonl
     #@-node:EKR.20040517080555.8:about
     #@+node:pap.20050317183526:getNiceName
     def getNiceName(self, name):
         """Return a nice version of the plugin name
-        
+
         Historically some plugins had "at_" and "mod_" prefixes to their
         name which makes the name look a little ugly in the lists. There is
         no real reason why the majority of users need to know the underlying
         name so here we create a nice readable version.
-        
+
         """
         lname = name.lower()
         if lname.startswith("at_"):
@@ -404,22 +404,22 @@ class PlugIn:
     #@-node:pap.20050317183526:getNiceName
     #@+node:EKR.20040517080555.9:properties
     def properties(self, event=None):
-        
+
         """Create a modal properties dialog for this plugin"""
-    
+
         PropertiesWindow(self.configfilename, self)
     #@nonl
     #@-node:EKR.20040517080555.9:properties
     #@+node:pap.20051011215345:niceMenuName
     def niceMenuName(self, name):
         """Return a nice version of the command name for the menu
-        
+
         The command will be of the form::
-        
+
             cmd_ThisIsIt
-            
+
         We want to convert this to "This Is It".
-        
+
         """
         text = ""
         for char in name[4:]:
@@ -430,7 +430,7 @@ class PlugIn:
     #@nonl
     #@-node:pap.20051011215345:niceMenuName
     #@-others
-    
+
 #@-node:EKR.20040517080555.3:class Plugin
 #@+node:EKR.20040517080555.10:class PropertiesWindow
 class PropertiesWindow:
@@ -440,9 +440,9 @@ class PropertiesWindow:
     #@    @+others
     #@+node:EKR.20040517080555.11:__init__
     def __init__(self, filename, plugin):
-    
+
         """Initialize the property window"""
-        
+
         #@    << initialize all ivars >>
         #@+node:EKR.20040517080555.12:<< initialize all ivars >>
         # config stuff.
@@ -451,7 +451,7 @@ class PropertiesWindow:
         self.filename = filename
         self.config = config
         self.plugin = plugin
-        
+
         # self.entries is a list of tuples (section, option, e),
         # where section and options are strings and e is a Tk.Entry widget.
         # This list is used by writeConfiguration to write all settings.
@@ -461,14 +461,14 @@ class PropertiesWindow:
         #@    << create the frame from the configuration data >>
         #@+node:EKR.20040517080555.13:<< create the frame from the configuration data >>
         root = g.app.root
-        
+
         #@<< Create the top level and the main frame >>
         #@+node:EKR.20040517080555.14:<< Create the top level and the main frame >>
         self.top = top = Tk.Toplevel(root)
         g.app.gui.attachLeoIcon(self.top)
         top.title("Properties of "+ plugin.name)
         top.resizable(0,0) # neither height or width is resizable.
-            
+
         self.frame = frame = Tk.Frame(top)
         frame.pack(side="top")
         #@nonl
@@ -505,21 +505,21 @@ class PropertiesWindow:
         #@+node:EKR.20040517080555.16:<< Create Ok, Cancel and Apply buttons >>
         box = Tk.Frame(top, borderwidth=5)
         box.pack(side="bottom")
-        
+
         list = [("OK",self.onOk),("Cancel",top.destroy)]
         if plugin.hasapply:
             list.append(("Apply",self.onApply),)
-        
+
         for text,f in list:
             Tk.Button(box,text=text,width=6,command=f).pack(side="left",padx=5)
         #@nonl
         #@-node:EKR.20040517080555.16:<< Create Ok, Cancel and Apply buttons >>
         #@nl
-        
+
         g.app.gui.center_dialog(top) # Do this after packing.
         top.grab_set() # Make the dialog a modal dialog.
         top.focus_force() # Get all keystrokes.
-        
+
         root.wait_window(top)
         #@nonl
         #@-node:EKR.20040517080555.13:<< create the frame from the configuration data >>
@@ -528,13 +528,13 @@ class PropertiesWindow:
     #@-node:EKR.20040517080555.11:__init__
     #@+node:EKR.20040517080555.17:Event Handlers
     def onApply(self):
-        
+
         """Event handler for Apply button"""
         self.writeConfiguration()
         self.plugin.mod.applyConfiguration(self.config)
-    
+
     def onOk(self):
-    
+
         """Event handler for Ok button"""
         self.writeConfiguration()
         self.top.destroy()
@@ -542,15 +542,15 @@ class PropertiesWindow:
     #@-node:EKR.20040517080555.17:Event Handlers
     #@+node:EKR.20040517080555.18:writeConfiguration
     def writeConfiguration(self):
-        
+
         """Write the configuration to disk"""
-    
+
         # Set values back into the config item.
         for section, option, entry in self.entries:
             s = entry.get()
             s = g.toEncodedString(s,"ascii",reportErrors=True) # Config params had better be ascii.
             self.config.set(section,option,s)
-    
+
         # Write out to the file.
         f = open(self.filename, "w")
         self.config.write(f)
@@ -562,29 +562,29 @@ class PropertiesWindow:
 #@-node:EKR.20040517080555.10:class PropertiesWindow
 #@+node:EKR.20040517080555.19:class PluginAbout
 class PluginAbout:
-    
+
     """A class to create and run an About Plugin dialog"""
-    
+
     #@    @+others
     #@+node:EKR.20040517080555.20:__init__
     def __init__(self, name, version, about):
-        
+
         """# Create and run a modal dialog giving the name,
         version and description of a plugin.
         """
-    
+
         root = g.app.root
         self.top = top = Tk.Toplevel(root)
         g.app.gui.attachLeoIcon(self.top)
         top.title("About " + name)
         top.resizable(0,0) # neither height or width is resizable.
-        
+
         frame = Tk.Frame(top)
         frame.pack(side="top")
         #@    << Create the contents of the about box >>
         #@+node:EKR.20040517080555.21:<< Create the contents of the about box >>
         Tk.Label(frame,text="Version " + version).pack()
-        
+
         body = w = g.app.gui.plainTextWidget(
             frame,name='body-pane',
             bd=2,bg="white",relief="flat",setgrid=0,wrap='word')
@@ -593,19 +593,19 @@ class PluginAbout:
             w.configure(state='disabled')
         w.setInsertPoint(0)
         w.see(0)
-        
+
         bodyBar = Tk.Scrollbar(frame,name='bodyBar')
         body['yscrollcommand'] = bodyBar.set
         bodyBar['command'] = body.yview
-        
+
         bodyBar.pack(side="right", fill="y")
         body.pack(expand=1,fill="both")
-        
+
         def destroyCallback(event=None,top=top):
             top.destroy()
-        
+
         body.bind('<Return>',destroyCallback)
-        
+
         g.app.gui.set_focus(None,body)
         #@nonl
         #@-node:EKR.20040517080555.21:<< Create the contents of the about box >>
@@ -614,16 +614,16 @@ class PluginAbout:
         #@+node:EKR.20040517080555.22:<< Create the close button >>
         buttonbox = Tk.Frame(top, borderwidth=5)
         buttonbox.pack(side="bottom")
-        
+
         self.button = b = Tk.Button(buttonbox, text="Close", command=top.destroy)
         b.pack(side="bottom")
         #@-node:EKR.20040517080555.22:<< Create the close button >>
         #@nl
-        
+
         g.app.gui.center_dialog(top) # Do this after packing.
         top.grab_set() # Make the dialog a modal dialog.
         top.focus_force() # Get all keystrokes.
-        
+
         root.wait_window(top)
     #@nonl
     #@-node:EKR.20040517080555.20:__init__

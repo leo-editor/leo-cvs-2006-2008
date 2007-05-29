@@ -42,7 +42,7 @@ __version__ = "0.3"
 #@+others
 #@+node:ekr.20060108123141.2:init
 def init ():
-    
+
     ok = not g.app.unitTesting # Don't want autosave after unit testing.
     if ok:
         # Register the handlers...
@@ -57,13 +57,13 @@ def init ():
         leoPlugins.registerHandler("idle", autosave)
         g.es("auto save enabled",color="orange")
         g.plugin_signon( __name__ )
-        
+
     return ok
 #@nonl
 #@-node:ekr.20060108123141.2:init
 #@+node:edream.110203113231.725:applyConfiguration
 def applyConfiguration(config=None):
-    
+
     """Called when the user presses the "Apply" button on the Properties form"""
 
     global LAST_AUTOSAVE, ACTIVE, AUTOSAVE_INTERVAL
@@ -79,13 +79,13 @@ def applyConfiguration(config=None):
 #@-node:edream.110203113231.725:applyConfiguration
 #@+node:edream.110203113231.726:autosave
 def autosave(tag, keywords):
-    
+
     """Save the current document if it has a name"""
 
     global LAST_AUTOSAVE
-    
+
     c = keywords.get('c')
-    
+
     if g.app.killed or not c or not c.exists: return
 
     if ACTIVE == "Yes":

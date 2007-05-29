@@ -82,10 +82,10 @@ haveseen = weakref.WeakKeyDictionary()
 def init ():
 
     if not import_succeed: return False # OK for unit testing.
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
@@ -94,7 +94,7 @@ def init ():
         leoPlugins.registerHandler("after-redraw-outline",drawImages)
         leoPlugins.registerHandler(("new","open2"),scanForTemplates)
         g.plugin_signon(__name__)
-    
+
     return ok
 #@nonl
 #@-node:ekr.20070125124515:init
@@ -114,27 +114,27 @@ def initImages ():
 #@-node:ekr.20070301110439:initImages
 #@+node:mork.20041022093042:getSelectDialog
 def getSelectDialog (c):
-    
+
     global templates 
-    
+
     if templates:
         #@        <<ask the user what template to use>>
         #@+node:ekr.20041109175757:<< ask the user what template to use >>
         hlines ={}
         for z in templates:
             hlines[str(z.headString())] = z 
-        
+
         dialog = Pmw.Dialog(
             c.frame.top,# EKR
             title='Select Template',buttons=['Select','Cancel'])
-        
+
         sbox = Pmw.ScrolledListBox(
             dialog.interior(),
             listbox_selectbackground='#FFE7C6',
             listbox_selectforeground='blue',
             listbox_background='white',
             listbox_foreground='blue')
-        
+
         hlis = hlines.keys()
         hlis.sort()
         sbox.setlist(hlis)
@@ -143,7 +143,7 @@ def getSelectDialog (c):
         #@<<define the select callback>>
         #@+node:ekr.20041022170322:<< define the select callback >>
         def select (name):
-        
+
             if name=="Select":
                 which = sbox.getcurselection()
                 if which:
@@ -169,7 +169,7 @@ def getSelectDialog (c):
 #@-node:mork.20041022093042:getSelectDialog
 #@+node:mork.20041022093042.1:getTemplateDialog
 def getTemplateDialog (pos,c):
-    
+
     """Put up a dialog that asks the user to enter template params."""
 
     tnode = pos.v.t 
@@ -183,7 +183,7 @@ def getTemplateDialog (pos,c):
         values =[]
         dialog = Pmw.Dialog(c.frame.top,# EKR
             title='Enter Template Parameters',buttons=['Ok','Cancel'])
-        
+
         sframe = Pmw.ScrolledFrame(dialog.interior())
         efs = addEntries(sframe.interior(),num)
         sframe.pack(side='left')
@@ -198,7 +198,7 @@ def getTemplateDialog (pos,c):
         stext.settext(bS)
         colorize(stext.component('text'))
         stext.pack(side='right')
-        
+
         #@<<define the action callback>>
         #@+node:ekr.20041109180357:<< define the action callback >>
         def action (name,dialog=dialog,efs=efs,values=values):
@@ -214,7 +214,7 @@ def getTemplateDialog (pos,c):
         #@nl
         dialog.configure(command=action)
         dialog.activate()
-        
+
         try:
             values = tuple(values)
             hS = '<'+'<%s%s>'%(hS,str(values))+'>'
@@ -267,13 +267,13 @@ def addEntries (parent,num):
             entry_background='white',entry_foreground='blue')
         efs.append(ef)
         ef.pack()
-    
+
     return efs 
 #@nonl
 #@-node:mork.20041022105558:addEntries
 #@+node:mork.20041022105954:getNoTemplates
 def getNoTemplates (c):
-    
+
     """Put up a dialog when no nodes are marked as templates."""
 
     md = Pmw.MessageDialog(c.frame.top,# EKR
@@ -287,9 +287,9 @@ def getNoTemplates (c):
 #@-node:mork.20041022105954:getNoTemplates
 #@+node:mork.20041022114642:getNodeAsString
 def getNodeAsString (c,p):
-    
+
     """Return position p's tree written to a string.
-    
+
     This code requires the new simplified atFile class."""
 
     at = c.atFileCommands 
@@ -301,9 +301,9 @@ def getNodeAsString (c,p):
 #@-node:mork.20041022114642:getNodeAsString
 #@+node:mork.20041022091020:markAsTemplate
 def markAsTemplate (c):
-    
+
     """Mark or unmark the present node as a template."""
-    
+
     global templates 
 
     pos = c.currentPosition()
@@ -326,9 +326,9 @@ def markAsTemplate (c):
 #@-node:mork.20041022091020:markAsTemplate
 #@+node:mork.20041022110551:drawImages
 def drawImages (tag,keywords):
-    
+
     """Draw the %s image to the far left of each template node."""
-    
+
     global templates 
 
     c = keywords.get('c')
@@ -345,15 +345,15 @@ def drawImages (tag,keywords):
 #@-node:mork.20041022110551:drawImages
 #@+node:mork.20041022090036.2:addButtons
 def addButtons (tags,keywords):
-    
+
     """Add the "%s" and "---> %s" buttons to the icon area."""
-    
+
     c = keywords['c']
     toolbar = c.frame.iconFrame 
-    
+
     bbox = Pmw.ButtonBox(toolbar,pady=0,padx=0)
     bbox.pack()
-    
+
     bbox.add(r"%s",
         command=lambda c=c:markAsTemplate(c),image=templatePI)
     bbox.add(r"%s wizard",
@@ -362,9 +362,9 @@ def addButtons (tags,keywords):
 #@-node:mork.20041022090036.2:addButtons
 #@+node:mork.20041022122959:scanForTemplates
 def scanForTemplates (tag,keywords):
-    
+
     """Scans the entire outline looking for template nodes."""
-    
+
     global templates 
     global haveseen 
 

@@ -51,21 +51,21 @@ __version__ = ".5"
 #@+others
 #@+node:ekr.20050226091648:init
 def init ():
-    
+
     # At present there is a problem with the interaction of this plugin and the chapters2 plugin.
     ok = Pmw is not None # and 'chapters2' not in leoPlugins.loadedModules
     if not ok: return
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
         g.plugin_signon( __name__ )
 
     return ok
-   
+
 
 
 #@-node:ekr.20050226091648:init
@@ -74,7 +74,7 @@ class AttrEditor:
     #@	@+others
     #@+node:mork.20041018162155.4:__init__
     def __init__ (self,c,p):
-    
+
         self.c = c
         t = p.v.t
         self.uAs = t.unknownAttributes = getattr(t,'unknownAttributes',{})
@@ -98,7 +98,7 @@ class AttrEditor:
     #@-node:mork.20041018162155.5:buttonCommands
     #@+node:mork.20041018162155.6:_mkGui
     def _mkGui( self, frame ):
-    
+
         group = Pmw.Group( frame , tag_text = "Attributes")
         group.pack( side = 'left' )
         lb = self.lb = Pmw.ScrolledListBox( group.interior() ,
@@ -169,9 +169,9 @@ class AttrEditor:
 olCreateCanvas = leoTkinterFrame.leoTkinterFrame.createCanvas
 
 def newCreateCanvas (self,parentFrame,pageName=None):
-    
+
     # g.trace('editAttributes plugin',pageName)
-    
+
     if pageName:
         # Support the chapters2 plugin.
         can = olCreateCanvas(self,parentFrame,pageName=pageName)

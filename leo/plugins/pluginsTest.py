@@ -20,7 +20,7 @@ import os
 #@+others
 #@+node:EKR.20040517080555.26:applyConfiguration
 def applyConfiguration(config):
-    
+
     sections = config.sections()
     sections.sort()
 
@@ -53,9 +53,9 @@ def onSelect (tag,keywords):
         a = g.app
         c = keywords.get("c")
         if not c: return
-        
+
         body = c.frame.body
-        
+
         if os.path.isfile(filename):
             try:
                 # Note that Tkinter only understands GIF
@@ -97,7 +97,7 @@ def onUnselect (tag,keywords):
                      c.frame.body.bodyCtrl.delete(a.gsimage)
                 except:
                     g.es("info: no image to erase")
-            
+
             # And forget about it
             a.gsimage = None
             a.gsphoto = None
@@ -119,7 +119,7 @@ if Tk and not g.app.unitTesting: # Register the handlers...
 
         leoPlugins.registerHandler("select2", onSelect)
         leoPlugins.registerHandler("unselect1", onUnselect)
-        
+
         __version__ = "1.1"
         g.plugin_signon(__name__)
 #@nonl

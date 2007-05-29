@@ -40,7 +40,7 @@ nosentNodes = []
 #@+others
 #@+node:ekr.20050917082031:init
 def init ():
-    
+
     # Don't bother with unit testing.
     return not g.app.unitTesting
 #@nonl
@@ -49,7 +49,7 @@ def init ():
 def onPreSave(tag=None, keywords=None):
 
     """Before saving a nosentinels file, make sure that all nodes have a blank line at the end."""
-    
+
     global nosentNodes
     c = keywords.get('c')
     if c:
@@ -66,7 +66,7 @@ def onPreSave(tag=None, keywords=None):
 #@+node:ekr.20040331151007.2:onPostSave
 def onPostSave(tag=None, keywords=None):
     """After saving a nosentinels file, replace all tabs with spaces."""
-    
+
     global nosentNodes
     c = keywords.get('c')
     if c:

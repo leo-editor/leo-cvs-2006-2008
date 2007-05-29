@@ -94,7 +94,7 @@ def is_subnodesOK(v):
 #@-node:ekr.20040205071616.6:is_subnodesOK
 #@+node:ekr.20040205071616.7:onRclick
 def onRclick(tag,keywords):
-    
+
     """Handle right click in body pane."""
 
     c=keywords.get('c')
@@ -105,7 +105,7 @@ def onRclick(tag,keywords):
 def insertOKcmd(self,event=None):
 
     c=self; v=c.currentVnode()  
-    
+
     if is_subnodesOK(v) :
         setHeadOK(v)
         insertBodystamp(c,v)
@@ -115,15 +115,15 @@ def insertOKcmd(self,event=None):
 #@-node:ekr.20040205071616.8:insertOKcmd
 #@+node:ekr.20040205071616.9:insertUser
 def insertUser (self,event=None):
-    
+
     """Handle the Insert User command."""
 
     c = self ; v = c.currentVnode()
     w = c.frame.body.bodyCtrl
-    
+
     oldSel = w.getSelectionRange()
     w.deleteTextSelection() # Works if nothing is selected.
-    
+
     stamp = mnstamp()
     i = w.getInsertPoint()
     w.insert(i,stamp)
@@ -134,7 +134,7 @@ def insertUser (self,event=None):
 def create_UserMenu (tag,keywords):
 
     c = keywords.get("c")
-    
+
     c.pluginsMenu = c.frame.menu.createNewMenu("UserMenu")
 
     table = [

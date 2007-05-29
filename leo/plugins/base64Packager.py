@@ -78,7 +78,7 @@ b64 = "@base64"
 haveseen = weakref.WeakKeyDictionary()
 
 def addMenu( tag, keywords ):
-    
+
     c = keywords.get('c')
     if not c or haveseen.has_key( c ):
         return
@@ -110,7 +110,7 @@ def base64Export( c ):
 #@-node:mork.20041020082907:base64Export
 #@+node:mork.20041020082653:base64Import
 def base64Import( c ):
-    
+
     pos = c.currentPosition()
     f = tkFileDialog.askopenfile()
     if f:
@@ -125,7 +125,7 @@ def base64Import( c ):
             @%s
             size: %s
             lastchanged: %s
-                
+
             %s 
                 '''% ( "killcolor", size, ltime, pload)
         tnode = leoNodes.tnode( body, "%s %s" % ( b64, name ) )
@@ -136,24 +136,24 @@ def base64Import( c ):
 #@-node:mork.20041020082653:base64Import
 #@+node:ekr.20050307135219.1:init
 def init ():
-    
+
     if not importok: return False
 
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
         leoPlugins.registerHandler(('open2', "new"), addMenu)
         g.plugin_signon( __name__ )   
-    
+
     return ok
 #@nonl
 #@-node:ekr.20050307135219.1:init
 #@+node:mork.20041020092429:viewAsGif
 def viewAsGif( c ):
-    
+
     pos = c.currentPosition()
     hS = pos.headString()
     if not hS.startswith( b64 ): return None

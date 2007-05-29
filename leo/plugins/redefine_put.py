@@ -28,10 +28,10 @@ def onStart (tag,keywords):
 
     import leoTkinterFrame
     log = leoTkinterFrame.leoTkinterLog
-    
+
     # Replace frame.put with newPut.
     g.funcToMethod(newPut,log,"put")
-    
+
     # Replace frame.putnl with newPutNl.
     g.funcToMethod(newPutNl,log,"putnl")
 #@nonl
@@ -69,7 +69,7 @@ if Tk and not g.app.unitTesting: # Not for unit testing: overrides core methods.
 
     # Register the handlers...
     leoPlugins.registerHandler("start2", onStart)
-    
+
     __version__ = "1.2"
     g.plugin_signon(__name__)
 #@nonl

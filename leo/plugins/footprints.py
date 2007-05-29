@@ -9,7 +9,7 @@ have visited most and most recently will stand out.
 
 __version__ = "0.3" 
 __plugin_name__ = "Footprints" 
- 
+
 #@<< version history >>
 #@+node:pap.20041020001240.1:<< version history >>
 #@@killcolor
@@ -32,13 +32,13 @@ __plugin_name__ = "Footprints"
 import leoGlobals as g 
 import leoPlugins 
 import leoTkinterTree 
- 
+
 try: 
     import Tkinter as Tk 
 except ImportError: 
     Tk = g.cantImport("Tkinter") 
-     
- 
+
+
 import threading 
 import sets 
 import time 
@@ -48,24 +48,23 @@ import ConfigParser
 #@<< todo >>
 #@+node:pap.20041020001240.3:<< todo >>
 """ 
- 
+
 Todo list: 
- 
+
 - pretty much everything 
- 
+
 """ 
-#@nonl
 #@-node:pap.20041020001240.3:<< todo >>
 #@nl
- 
+
 #@+others
 #@+node:ekr.20050310105438:init
 def init ():
-    
+
     ok = Tk and not g.app.unitTesting # Not safe for unit testing because of lock.
-    
+
     global click_registry, coloured_nodes
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
@@ -81,9 +80,8 @@ def init ():
             leoPlugins.registerHandler("start2", installDrawMethod) 
             leoPlugins.registerHandler("headclick1", storeHeadlineClick) 
             g.plugin_signon(__name__)
-        
+
     return ok
-#@nonl
 #@-node:ekr.20050310105438:init
 #@+node:pap.20041020001240.5:Error Classes
 pass 
@@ -109,25 +107,24 @@ def applyConfiguration(config):
 #@-node:pap.20041020012723:applyConfiguration
 #@+node:pap.20041020001800:installDrawMethod
 registered = False 
- 
+
 def installDrawMethod(tags, kw): 
     global registered 
     if registered: 
         return 
- 
+
     g.funcToMethod(doFootprint, 
                  leoTkinterTree.leoTkinterTree, 
                  "setUnselectedLabelState") 
- 
+
     registered = True 
- 
+
     updater = threading.Thread(target=updateNodes) 
     updater.setDaemon(True) 
     updater.start() 
-     
+
     global lock 
     lock = threading.Lock() 
-#@nonl
 #@-node:pap.20041020001800:installDrawMethod
 #@+node:pap.20041020001841:doFootprint
 def doFootprint(self, p):  
@@ -135,22 +132,21 @@ def doFootprint(self, p):
     c = self.c
     if p and c.edit_widget(p): 
         config = g.app.config 
-         
+
         #fg = config.getWindowPref("headline_text_unselected_foreground_color") 
         #bg = config.getWindowPref("headline_text_unselected_background_color") 
         fg = COLD_FG      
         bg = "white" 
-         
+
         if click_registry.get(p.v, 0) >= HITS_TO_HOT: 
             fg, bg = HOT_FG, "white" 
             coloured_nodes.add(p) 
- 
+
         try: 
             c.edit_widget(p).configure( 
                 state="disabled",highlightthickness=0, fg=fg, bg=bg) 
         except: 
          g.es_exception()
-#@nonl
 #@-node:pap.20041020001841:doFootprint
 #@+node:pap.20041020002741:storeHeadlineClick
 def storeHeadlineClick(tag, keywords): 
@@ -171,7 +167,7 @@ def updateNodes():
     #fg = config.getWindowPref("headline_text_unselected_foreground_color") 
     #bg = config.getWindowPref("headline_text_unselected_background_color") 
     fg, bg = COLD_FG, "white" 
-     
+
     while 1: 
         time.sleep(REFRESH) # Sleep for indicated number of seconds.
         # 
@@ -200,10 +196,8 @@ def updateNodes():
             # 
         finally: 
             lock.release() 
-#@nonl
 #@-node:pap.20041020004243:updateNodes
 #@-node:pap.20041020001240.55:Implementation
 #@-others
-#@nonl
 #@-node:pap.20041020001240:@thin footprints.py
 #@-leo

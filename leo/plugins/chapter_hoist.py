@@ -45,13 +45,13 @@ __version__ = "0.4"
 #@+others
 #@+node:ekr.20060328125925.4:init
 def init ():
-    
+
     ok = Tk is not None # OK for unit tests.
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-            
+
         ok = g.app.gui.guiName() == "tkinter"
 
         if ok:
@@ -59,7 +59,7 @@ def init ():
             # That is, the 'after-create-leo-frame' hook is too early!
             leoPlugins.registerHandler(('new','open2'),onCreate)
             g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:ekr.20060328125925.4:init
@@ -67,7 +67,7 @@ def init ():
 def onCreate (tag, keys):
 
     """Handle the onCreate event in the chapterHoist plugin."""
-    
+
     c = keys.get('c')
 
     if c:
@@ -84,54 +84,54 @@ class chapterHoist:
     #@-node:ekr.20060328125925.7: ctor
     #@+node:ekr.20060328125925.8:createSaveHoistButton
     def createSaveHoistButton(self,sc,c):
-        
+
         def saveHoistCallback(event=None,self=self,sc=sc,c=c):
             self.createChapterHoistButton(sc,c,c.currentPosition())
             c.hoist()
             return 'break'
-    
+
         b = sc.createIconButton(
             text='save-hoist',
             command = saveHoistCallback,
             shortcut = None,
             statusLine='Create hoist button current node',
             bg='LightSteelBlue1')
-    
+
         return b
     #@nonl
     #@-node:ekr.20060328125925.8:createSaveHoistButton
     #@+node:ekr.20060328125925.9:createDehoistButton
     def createDehoistButton(self,sc,c):
-        
+
         def dehoistCallback(event=None,c=c):
             c.dehoist()
             return 'break'
-        
+
         b = sc.createIconButton(
             text='dehoist',
             command=dehoistCallback,
             shortcut=None,
             statusLine='Dehoist',
             bg='LightSteelBlue1')
-    
+
         return b
     #@nonl
     #@-node:ekr.20060328125925.9:createDehoistButton
     #@+node:ekr.20060328125925.10:createChapterHoistButton
     def createChapterHoistButton (self,sc,c,p):
-    
+
         '''Generates a hoist button for the headline at the given position'''    
         h = p.headString()
         buttonText = sc.getButtonText(h)
         statusLine = "Hoist %s" % h
-        
+
         def hoistButtonCallback (event=None,self=self,c=c,p=p.copy()):
             while (c.canDehoist()):
                 c.dehoist()
             c.selectPosition(p)
             c.hoist()
             return 'break'
-            
+
         b = sc.createIconButton(
             text=buttonText,
             command=hoistButtonCallback,

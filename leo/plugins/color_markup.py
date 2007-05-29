@@ -74,15 +74,15 @@ __version__ = "1.6"
 #@+node:ekr.20060108112937:Module-level
 #@+node:ekr.20050311104330.1:init
 def init ():
-    
+
     ok = Tk and tkColorChooser # Ok for unit tests.
-    
+
     if ok: 
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-    
+
         ok = g.app.gui.guiName() == "tkinter"
-            
+
         if ok:
             print "wiki markup enabled"
 
@@ -97,15 +97,14 @@ def init ():
             g.plugin_signon(__name__)
 
     return ok
-#@nonl
 #@-node:ekr.20050311104330.1:init
 #@+node:edream.110403140857.9:initAnyMarkup
 def initAnyMarkup (tag,keywords):
-    
+
     """initialize colorer.markup_string
-    
+
     The colorer completely recolors the body pane when this changes"""
-    
+
     keys = ("colorer","v")
     colorer,v = [keywords.get(key) for key in keys]
 
@@ -117,7 +116,7 @@ def initAnyMarkup (tag,keywords):
     c.frame.body.tag_configure("https",underline=1) # EKR: 11/4/03
     dict = g.scanDirectives(c,p=v) # v arg is essential.
     pluginsList = dict.get("pluginsList")
-    
+
     if pluginsList:
         for d,v,s,k in pluginsList:
             if d == "markup":
@@ -125,9 +124,8 @@ def initAnyMarkup (tag,keywords):
                 if kind:
                     colorer.markup_string = kind
                     return
-                    
+
     colorer.markup_string = "unknown" # default
-#@nonl
 #@-node:edream.110403140857.9:initAnyMarkup
 #@+node:edream.110403140857.16:onBodykey1 (not ready)
 def onBodykey1(tag,keywords):
@@ -163,7 +161,7 @@ def onBodydclick1(tag,keywords):
 #@+node:edream.110403140857.18:getUrl
 def getUrl(c, *tags):
     """See if the current text belongs to a hyperlink tag and, if so, return the url."""
-    
+
     body = c.frame.body
     selStart,selEnd = body.getSelectionRange() # EKR: 11/4/03
     for tag in tags:
@@ -176,7 +174,6 @@ def getUrl(c, *tags):
                     url = body.bodyCtrl.get(hyperStart,hyperEnd)
                     return url
     return None
-#@nonl
 #@-node:edream.110403140857.18:getUrl
 #@-node:edream.110403140857.17:onBodydclick1 & allies
 #@+node:edream.110403140857.20:onCreate
@@ -201,22 +198,22 @@ def onCreate (tag,keywords):
     #@+node:ekr.20060108113303:<< define menu callbacks >>
     def doWikiBoldCallback (event,c=c):
         doWikiBold(c)
-    
+
     def doWikiItalicCallback (event,c=c):
         doWikiItalic(c)
-    
+
     def doWikiPictureCallback (event,c=c):
         doWikiPicture(c)
-    
+
     def doWikiColorCallback (event,c=c):
         doWikiColor(c)
-    
+
     def doWikiChooseColorCallback (event,c=c):
         doWikiChooseColor(c)
     #@nonl
     #@-node:ekr.20060108113303:<< define menu callbacks >>
     #@nl
-    
+
     newEntries = (
         ("&Bold","Alt+Shift+B",doWikiBoldCallback),
         ("&Italic","Alt+Shift+I",doWikiItalicCallback),
@@ -226,7 +223,6 @@ def onCreate (tag,keywords):
     )
 
     c.frame.menu.createMenuEntries(wikiMenu,newEntries,dynamicMenu=True)
-#@nonl
 #@-node:edream.110403140857.20:onCreate
 #@+node:edream.110403140857.10:colorWikiMarkup & helper
 def colorWikiMarkup (tag,keywords):
@@ -236,16 +232,15 @@ def colorWikiMarkup (tag,keywords):
     c = colorer.c
     dict = g.scanDirectives(c,p=v) # v arg is essential.
     pluginsList = dict.get("pluginsList")
-    
+
     if pluginsList:
         for d,v,s2,k in pluginsList:
             if d == "markup":
                 if g.match_word(s2,k,"wiki"):
                     doWikiText(colorer,v,s,i,j,colortag)
                     return True # We have colored the text.
-            
+
     return None # We have not colored the text.
-#@nonl
 #@+node:edream.110403140857.11:doWikiText
 def doWikiText (colorer,v,s,i,end,colortag):
 
@@ -255,7 +250,7 @@ def doWikiText (colorer,v,s,i,end,colortag):
         #@        << set first to a tuple describing the first tag to be handled >>
         #@+node:edream.110403140857.12:<< set first to a tuple describing the first tag to be handled >>
         first = None
-        
+
         for tag,delim1,delim2 in (
             ("bold","__","__"),
             ("italic","''","''"),
@@ -337,16 +332,15 @@ def doWikiText (colorer,v,s,i,end,colortag):
             #@-node:edream.110403140857.13:<< handle the tag using n1,n2,delim1,delim2 >>
             #@nl
         else: i = end
-        
+
     colorer.tag(colortag,firsti,end+inserted)
-#@nonl
 #@-node:edream.110403140857.11:doWikiText
 #@-node:edream.110403140857.10:colorWikiMarkup & helper
 #@+node:edream.110403140857.15:insertWikiPicture
 def insertWikiPicture (colorer,filename,i):
-    
+
     """Try to insert a picture with the give filename.
-    
+
     Returns the number of characters actually inserted"""
 
     if colorer.color_pass == 0:
@@ -363,22 +357,20 @@ def insertWikiPicture (colorer,filename,i):
         # Create the image
         photo = Tk.PhotoImage(master=g.app.root, file=filename)
         image = colorer.body.bodyCtrl.image_create(colorer.index(i),image=photo,padx=0)
-        
+
         # Keep references so images stay on the canvas.
         colorer.image_references.append((photo,image,colorer.line_index,i),)
         return 1
     except:
         g.es_exception()
         return 0
-#@nonl
 #@-node:edream.110403140857.15:insertWikiPicture
 #@-node:ekr.20060108112937:Module-level
 #@+node:edream.110403140857.19:Menu commands
 #@+node:edream.110403140857.21:doWikiBold
 def doWikiBold(c):
-    
+
     insertWikiMarkup(c,"__","__")
-#@nonl
 #@-node:edream.110403140857.21:doWikiBold
 #@+node:edream.110403140857.22:doWikiItalic
 def doWikiItalic(c):
@@ -388,27 +380,25 @@ def doWikiItalic(c):
 #@-node:edream.110403140857.22:doWikiItalic
 #@+node:edream.110403140857.23:doWikiColor
 def doWikiColor(c):
-    
+
     global wikiColoredText
-    
+
     insertWikiMarkup(c,"~~%s:" % wikiColoredText,"~~")
-#@nonl
 #@-node:edream.110403140857.23:doWikiColor
 #@+node:edream.110403140857.24:doWikiChooseColor
 def doWikiChooseColor(c):
-    
+
     global wikiColoredText
-    
+
     if c and c.exists:
         rgb,val = tkColorChooser.askcolor(color=wikiColoredText)
         if val:
             wikiColoredText = val
             doWikiColor()
-#@nonl
 #@-node:edream.110403140857.24:doWikiChooseColor
 #@+node:edream.110403140857.25:doWikiPicture (not ready)
 def doWikiPicture(c):
-    
+
     if c and c.exists:
         name = tkFileDialog.askopenfilename(
             title="Insert Picture",
@@ -416,13 +406,12 @@ def doWikiPicture(c):
         )
         if name:
             insertWikiMarkup(c,"{picture file=%s}" % name,"")
-#@nonl
 #@-node:edream.110403140857.25:doWikiPicture (not ready)
 #@+node:edream.110403140857.26:insertWikiMarkup
 def insertWikiMarkup(c,leftTag,rightTag):
-    
+
     if not c or not c.exists: return
-    
+
     body = c.frame.body ; w = body.bodyCtrl
     oldSel = w.getSelectionPoint()
     if oldSel:
@@ -461,7 +450,6 @@ def insertWikiMarkup(c,leftTag,rightTag):
         #@nl
 
     body.focus_set()
-#@nonl
 #@-node:edream.110403140857.26:insertWikiMarkup
 #@-node:edream.110403140857.19:Menu commands
 #@-others

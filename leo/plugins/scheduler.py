@@ -79,9 +79,9 @@ __version__ = "0.6"
 #@+others
 #@+node:ekr.20050311102853.2:init
 def init ():
-    
+
     ok = Tk is not None # Ok for unit testing: creates new menu.
-    
+
     if ok: 
         global sc,sd,lk
         sc = sched.scheduler(time.time,time.sleep)
@@ -90,7 +90,7 @@ def init ():
         sd.start()
         leoPlugins.registerHandler(('open2','new'),addScheduleMenu)
         g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:ekr.20050311102853.2:init
@@ -117,7 +117,7 @@ class Schedule(threading.Thread):
 #@-node:ekr.20040331153923.4:class Schedule
 #@+node:ekr.20040331153923.5:viewQueue
 def viewQueue(event=None,c=None):
-    
+
     '''Brings up a dialog showing qscheduled commands and messages'''
 
     tl = Tk.Toplevel()
@@ -136,7 +136,7 @@ def viewQueue(event=None,c=None):
     #@    << define cancel and close callbacks >>
     #@+node:ekr.20040331160627:<< define cancel and close callbacks >>
     def cancel(lb=lb):
-    
+
         try:
             i = int(lb.curselection()[0])
             x = sc.queue[i]
@@ -144,9 +144,9 @@ def viewQueue(event=None,c=None):
             lb.delete(i,i)
         except:
             print "BOOM!"
-    
+
     def close(tl=tl):
-        
+
         tl.withdraw()
         tl.destroy()
     #@nonl
@@ -177,7 +177,7 @@ def popupMessage(message):
         #@        << define close callback >>
         #@+node:ekr.20040331155341:<< define close callback >>
         def close(dialog=dialog):
-        
+
             dialog.withdraw()
             dialog.destroy()
         #@nonl
@@ -195,7 +195,7 @@ def popupMessage(message):
 #@+node:ekr.20040331153923.7:createMessage
 def createMessage(event=None,c=None):
     '''Creates dialog to enter message to self in'''
-    
+
     dialog = Tk.Toplevel()
     dialog.title("Enter Message")
     t = Tk.StringVar()
@@ -207,7 +207,7 @@ def createMessage(event=None,c=None):
     #@    << define schedule callback >>
     #@+node:ekr.20040331155341.1:<< define schedule callback >>
     def schedule(dialog=dialog,lk=lk,sc=sc):
-    
+
         dialog.withdraw()
         lk.acquire()
         lt = time.localtime()
@@ -282,7 +282,7 @@ def endRecord(event,c):
         value = timepanel.e.get()
         for z in svs:
             z.set(value)
-    
+
     def set_time(*ignore):
         which = timepanel.lb.curselection()
         which = int(which[0])
@@ -338,14 +338,14 @@ def endRecord(event,c):
 def prepareCom(p,c,command,label):
 
     ''' a simple method that executes commands'''
-    
+
     c.selectPosition(p)
     command()
 #@nonl
 #@-node:ekr.20040331153923.11:prepareCom
 #@+node:ekr.20040331153923.12:doCommand
 def doCommand (command,label,event=None,c=None):
-    
+
     ''' a swap method.  When Leo is recording, most methods pass through here, we record them'''
 
     global commands
@@ -365,7 +365,7 @@ def doCommand (command,label,event=None,c=None):
 #@-node:ekr.20040331153923.12:doCommand
 #@+node:ekr.20040331153923.13:addScheduleMenu
 def addScheduleMenu(tag,keywords):
-    
+
     c = keywords.get('c')
     if not c: return
 
@@ -377,7 +377,7 @@ def addScheduleMenu(tag,keywords):
     name = 'Schedule'
     men.createNewMenu(name)
     event = None
-    
+
     table = (
         ('Begin Recording', None,lambda event=None,c=c: startRecord(event,c)),
         ('End Recording',   None,lambda event=None,c=c: endRecord(event,c)),

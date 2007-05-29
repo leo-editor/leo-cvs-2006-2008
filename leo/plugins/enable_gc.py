@@ -24,7 +24,7 @@ if not g.app.unitTesting: # Not for unit testing.
 
     # Register the handlers...
     leoPlugins.registerHandler("start2", onStart)
-    
+
     __version__ = "1.2"
     g.plugin_signon(__name__)
 #@nonl

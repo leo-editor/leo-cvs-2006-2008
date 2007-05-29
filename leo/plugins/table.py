@@ -8,7 +8,7 @@ This command checks the current node using the csv (comma separated values) mods
 Sniffer. It tries to determine the format that is in the nodes data. If you had
 excel data in it, it should be able to determine its excel data. It then creates
 a dialog with the data presented as in a table for the user to see it.
- 
+
 Requires Pmw and the tktable widget at http://sourceforge.net/projects/tktable
 '''
 #@nonl
@@ -55,30 +55,30 @@ haveseen = weakref.WeakKeyDictionary()
 #@+others
 #@+node:ekr.20050311103711.1:init
 def init ():
-    
+
     ok = Pmw and Tk and tktab # Ok for unit testing.
-    
+
     if ok:
-        
+
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-        
+
         ok = g.app.gui.guiName() == "tkinter"
         if ok:
             leoPlugins.registerHandler(('new','open2'),addMenu )
             g.plugin_signon( __name__ )
-        
+
     return ok
 #@-node:ekr.20050311103711.1:init
 #@+node:ekr.20041017035937.2:class CSVVisualizer
 class CSVVisualizer:
-    
+
     arrays = []
-    
+
     #@    @+others
     #@+node:ekr.20041017035937.3:CSVVisualizer.__init__
     def __init__( self, c ):
-        
+
         self.c = c
         self.arr = tktab.ArrayVar()
         CSVVisualizer.arrays.append( self.arr )
@@ -87,21 +87,21 @@ class CSVVisualizer:
     #@-node:ekr.20041017035937.3:CSVVisualizer.__init__
     #@+node:ekr.20041017035937.4:addData
     def addData( self ):
-    
+
         arr = self.arr
         reader = self.readData() 
         hc = False
         for n, d in enumerate( reader ):
             for n1, d2 in enumerate( d ):
                 arr.set( "%s,%s" %( n, n1 ), str(d2) )
-        
+
         self.columns = n1 + 1
         self.rows = n + 1
         return self.columns, self.rows
     #@-node:ekr.20041017035937.4:addData
     #@+node:ekr.20041017035937.5:readData
     def readData( self ):
-        
+
         c = self.c
         pos = c.currentPosition()
         data = pos.bodyString()
@@ -115,7 +115,7 @@ class CSVVisualizer:
     #@-node:ekr.20041017035937.5:readData
     #@+node:ekr.20041017035937.6:writeData
     def writeData( self, save ):
-        
+
         pos = self.c.currentPosition()
         n2 = self.rows
         n = self.columns
@@ -140,7 +140,7 @@ class CSVVisualizer:
     #@-node:ekr.20041017035937.6:writeData
     #@+node:ekr.20041017035937.7:addRow
     def addRow( self , tab ):
-        
+
         self.rows = self.rows + 1
         tab.configure( rows = self.rows )
         rc =  '%s,0' % (self.rows -1 )
@@ -151,7 +151,7 @@ class CSVVisualizer:
     #@-node:ekr.20041017035937.7:addRow
     #@+node:ekr.20041017035937.8:deleteRow
     def deleteRow( self, tab ):
-        
+
         i = tab.index( 'active' )
         if i:
             tab.delete_rows( i[ 0 ], 1 )
@@ -162,7 +162,7 @@ class CSVVisualizer:
 #@-node:ekr.20041017035937.2:class CSVVisualizer
 #@+node:ekr.20041017035937.9:viewTable
 def viewTable( c ):
-    
+
     pos = c.currentPosition()
     dialog = Pmw.Dialog(
         title = "Table Editor for " + str( pos.headString()),
@@ -197,7 +197,7 @@ def viewTable( c ):
 #@-node:ekr.20041017035937.9:viewTable
 #@+node:ekr.20041017035937.11:createTable
 def createTable( parent , arr ):
-    
+
     tab = tktab.Table(
         parent,
         rows = 0, cols = 0, variable = arr,
@@ -211,7 +211,7 @@ def createTable( parent , arr ):
 #@-node:ekr.20041017035937.11:createTable
 #@+node:ekr.20041017035937.12:createBBox
 def createBBox( parent, csvv, tab ):
-    
+
     bbox = Pmw.ButtonBox( parent )
     bconfig = (
         ( "Add Row", lambda tab = tab : csvv.addRow( tab ) ),

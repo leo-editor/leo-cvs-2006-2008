@@ -30,7 +30,7 @@ delete-x-button, where x is the 'cleaned' name of the button. The 'x' command is
 equivalent to pushing the script button.
 
 The cleaned name of an @button node is the headline text of the button with:
-    
+
 - Leading @button or @command removed,
 - @key and all following text removed, and
 - all non-alphanumeric characters converted to a single '-' characters.
@@ -195,7 +195,7 @@ __version__ = '1.10'
 #@+others
 #@+node:ekr.20060328125248.4:init
 def init ():
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
 
@@ -207,7 +207,7 @@ def init ():
         # That is, the 'after-create-leo-frame' hook is too early!
         leoPlugins.registerHandler(('new','open2'),onCreate)
         g.plugin_signon(__name__)
-    
+
     return ok
 #@nonl
 #@-node:ekr.20060328125248.4:init
@@ -215,7 +215,7 @@ def init ():
 def onCreate (tag, keys):
 
     """Handle the onCreate event in the mod_scripting plugin."""
-    
+
     c = keys.get('c')
 
     if c:
@@ -225,18 +225,18 @@ def onCreate (tag, keys):
 #@-node:ekr.20060328125248.5:onCreate
 #@+node:ekr.20060328125248.6:class scriptingController
 class scriptingController:
-    
+
     #@    @+others
     #@+node:ekr.20060328125248.7: ctor
     def __init__ (self,c,iconBar=None):
-        
+
         self.c = c
         getBool = c.config.getBool
         self.scanned = False
         kind = c.config.getString('debugger_kind') or 'idle'
         self.buttonsDict = {} # Keys are buttons, values are button names (strings).
         self.debuggerKind = kind.lower()
-        
+
         self.atButtonNodes = getBool('scripting-at-button-nodes')
             # True: adds a button for every @button node.
         self.atCommandsNodes = getBool('scripting-at-commands-nodes')
@@ -253,7 +253,7 @@ class scriptingController:
             # True: create Script Button button.
         self.maxButtonSize = c.config.getInt('scripting-max-button-size')
             # Maximum length of button names.
-        
+
         if not iconBar:
             self.iconBar = c.frame.getIconBarObject()
         else:
@@ -262,11 +262,11 @@ class scriptingController:
     #@-node:ekr.20060328125248.7: ctor
     #@+node:ekr.20060328125248.8:createAllButtons & helpers
     def createAllButtons (self):
-        
+
         '''Scans the outline looking for @button, @command, @plugin and @script nodes.'''
-        
+
         c = self.c
-    
+
         if not self.scanned: # Not really needed, but can't hurt.
             self.scanned = True
             if self.createRunScriptButton:
@@ -275,7 +275,7 @@ class scriptingController:
                 self.createScriptButtonIconButton()
             if self.createDebugButton:
                 self.createDebugIconButton()
-    
+
             # scan for user-defined nodes.
             for p in c.allNodes_iter():
                 if self.atButtonNodes and p.headString().startswith("@button"):
@@ -289,9 +289,9 @@ class scriptingController:
     #@nonl
     #@+node:ekr.20060328125248.20:createRunScriptIconButton 'run-script' & callback
     def createRunScriptIconButton (self):
-        
+
         '''Create the 'run-script' button and the run-script command.'''
-    
+
         self.createIconButton(
             text='run-script',
             command = self.runScriptCommand,
@@ -300,12 +300,12 @@ class scriptingController:
             bg='MistyRose1')
     #@+node:ekr.20060328125248.21:runScriptCommand
     def runScriptCommand (self,event=None):
-        
+
         '''Called when user presses the 'run-script' button or executes the run-script command.'''
-    
+
         c = self.c
         c.executeScript(c.currentPosition(),useSelectedText=True,silent=True)
-        
+
         if 0:
             # Do not assume the script will want to remain in this commander.
             c.frame.bodyWantsFocus()
@@ -314,9 +314,9 @@ class scriptingController:
     #@-node:ekr.20060328125248.20:createRunScriptIconButton 'run-script' & callback
     #@+node:ekr.20060522105937:createDebugIconButton 'debug-script' & callback
     def createDebugIconButton (self):
-        
+
         '''Create the 'debug-script' button and the debug-script command.'''
-    
+
         self.createIconButton(
             text='debug-script',
             command=self.runDebugScriptCommand,
@@ -325,17 +325,17 @@ class scriptingController:
             bg='MistyRose1')
     #@+node:ekr.20060522105937.1:runDebugScriptCommand
     def runDebugScriptCommand (self,event=None):
-        
+
         '''Called when user presses the 'debug-script' button or executes the debug-script command.'''
-    
+
         c = self.c ; p = c.currentPosition()
-        
+
         script = g.getScript(c,p,useSelectedText=True,useSentinels=False)
         if script:
             #@        << set debugging if debugger is active >>
             #@+node:ekr.20060523084441:<< set debugging if debugger is active >>
             g.trace(self.debuggerKind)
-            
+
             if self.debuggerKind == 'winpdb':
                 try:
                     import rpdb2
@@ -385,16 +385,16 @@ class scriptingController:
                 import leoScriptModule      
             else:
                 g.es('No debugger active',color='blue')
-        
+
         c.frame.bodyWantsFocus()
     #@nonl
     #@-node:ekr.20060522105937.1:runDebugScriptCommand
     #@-node:ekr.20060522105937:createDebugIconButton 'debug-script' & callback
     #@+node:ekr.20060328125248.22:createScriptButtonIconButton 'script-button' & callback
     def createScriptButtonIconButton (self):
-        
+
         '''Create the 'script-button' button and the script-button command.'''
-        
+
         self.createIconButton(
             text='script-button',
             command = self.addScriptButtonCommand,
@@ -403,9 +403,9 @@ class scriptingController:
             bg="#ffffcc")
     #@+node:ekr.20060328125248.23:addScriptButtonCommand
     def addScriptButtonCommand (self,event=None):
-        
+
         '''Called when the user presses the 'script-button' button or executes the script-button command.'''
-    
+
         c = self.c ; p = c.currentPosition(); h = p.headString()
         buttonText = self.getButtonText(h)
         shortcut = self.getShortcut(h)
@@ -419,32 +419,32 @@ class scriptingController:
     #@-node:ekr.20060328125248.22:createScriptButtonIconButton 'script-button' & callback
     #@+node:ekr.20060328125248.12:handleAtButtonNode @button
     def handleAtButtonNode (self,p):
-        
+
         '''Create a button in the icon area for an @button node.
-        
+
         An optional @key=shortcut defines a shortcut that is bound to the button's script.
         The @key=shortcut does not appear in the button's name, but
         it *does* appear in the statutus line shown when the mouse moves over the button.'''
-    
+
         c = self.c ; h = p.headString()
         shortcut = self.getShortcut(h)
         statusLine = shortcut and " @key=" + shortcut or 'Script button'
-    
+
         # This helper is also called by the script-button callback.
         b = self.createAtButtonHelper(p,h,statusLine,shortcut)
     #@-node:ekr.20060328125248.12:handleAtButtonNode @button
     #@+node:ekr.20060328125248.10:handleAtCommandNode @command
     def handleAtCommandNode (self,p):
-        
+
         '''Handle @command name [@key[=]shortcut].'''
-        
+
         c = self.c ; k = c.keyHandler ; h = p.headString()
         if not h.strip(): return
-        
+
         #@    << get the commandName and optional shortcut >>
         #@+node:ekr.20060328125248.11:<< get the commandName and optional shortcut >>
         tag = '@command' ; shortcut = None
-        
+
         i = h.find('@key')
         if i > -1:
             commandName = h[len(tag):i].strip()
@@ -457,30 +457,30 @@ class scriptingController:
         #@nonl
         #@-node:ekr.20060328125248.11:<< get the commandName and optional shortcut >>
         #@nl
-    
+
         def atCommandCallback (event=None,c=c,p=p.copy()):
             # The 'end-of-script command messes up tabs.
             c.executeScript(p=p,silent=True)
-    
+
         k.registerCommand(commandName,shortcut,atCommandCallback,verbose=True)
     #@nonl
     #@-node:ekr.20060328125248.10:handleAtCommandNode @command
     #@+node:ekr.20060328125248.13:handleAtPluginNode @plugin
     def handleAtPluginNode (self,p):
-        
+
         '''Handle @plugin nodes.'''
-            
+
         c = self.c
         tag = "@plugin"
         h = p.headString()
         assert(g.match(h,0,tag))
-        
+
         # Get the name of the module.
         theFile = h[len(tag):].strip()
         if theFile[-3:] == ".py":
             theFile = theFile[:-3]
         theFile = g.toUnicode(theFile,g.app.tkEncoding)
-        
+
         if not self.atPluginNodes:
             g.es("disabled @plugin: %s" % (theFile),color="blue")
         elif theFile in g.app.loadedPlugins:
@@ -498,21 +498,21 @@ class scriptingController:
     #@-node:ekr.20060328125248.13:handleAtPluginNode @plugin
     #@+node:ekr.20060328125248.14:handleAtScriptNode @script
     def handleAtScriptNode (self,p):
-        
+
         '''Handle @script nodes.'''
-        
+
         c = self.c
         tag = "@script"
         h = p.headString()
         assert(g.match(h,0,tag))
         name = h[len(tag):].strip()
-    
+
         if self.atPluginNodes:
             g.es("executing script %s" % (name),color="blue")
             c.executeScript(p,useSelectedText=False,silent=True)
         else:
             g.es("disabled @script: %s" % (name),color="blue")
-    
+
         if 0:
             # Do not assume the script will want to remain in this commander.
             c.frame.bodyWantsFocus()
@@ -522,9 +522,9 @@ class scriptingController:
     #@+node:ekr.20061014075212:Utils
     #@+node:ekr.20060929135558:cleanButtonText
     def cleanButtonText (self,s):
-        
+
         '''Clean the text following @button or @command so that it is a valid name of a minibuffer command.'''
-        
+
         # Strip @...@button.
         while s.startswith('@'):
             s = s[1:]
@@ -547,40 +547,40 @@ class scriptingController:
     #@-node:ekr.20060929135558:cleanButtonText
     #@+node:ekr.20060328125248.24:createAtButtonHelper & callback
     def createAtButtonHelper (self,p,h,statusLine,shortcut,bg='LightSteelBlue1'):
-        
+
         '''Create a button from an @button node.
-        
+
         - Calls createIconButton to do all standard button creation tasks.
         - Binds button presses to a callback that executes the script in node p.
         '''
         c = self.c ; k = c.k
         buttonText = self.cleanButtonText(h)
-        
+
         # We must define the callback *after* defining b, so set both command and shortcut to None here.
         b = self.createIconButton(text=h,command=None,shortcut=None,statusLine=statusLine,bg=bg)
         if not b: return None
-        
+
         # Now that b is defined we can define the callback.
         # Yes, executeScriptFromButton *does* use b (to delete b if requested by the script).
         def atButtonCallback (event=None,self=self,p=p.copy(),b=b,buttonText=buttonText):
             self.executeScriptFromButton (p,b,buttonText)
-            
+
         self.iconBar.setCommandForButton(b,atButtonCallback)
-        
+
         # At last we can define the command and use the shortcut.
         k.registerCommand(buttonText.lower(),
             shortcut=shortcut,func=atButtonCallback,
             pane='button',verbose=shortcut)
-       
+
         return b
     #@nonl
     #@+node:ekr.20060328125248.28:executeScriptFromButton
     def executeScriptFromButton (self,p,b,buttonText):
-        
+
         '''Called from callbacks to execute the script in node p.'''
-        
+
         c = self.c
-    
+
         if c.disableCommandsMessage:
             g.es(c.disableCommandsMessage,color='blue')
         else:
@@ -590,7 +590,7 @@ class scriptingController:
             if g.app.scriptDict.get('removeMe'):
                 g.es("Removing '%s' button at its request" % buttonText)
                 self.deleteButton(b)
-    
+
         if 0: # Do *not* set focus here: the script may have changed the focus.
             c.frame.bodyWantsFocus()
     #@nonl
@@ -598,66 +598,66 @@ class scriptingController:
     #@-node:ekr.20060328125248.24:createAtButtonHelper & callback
     #@+node:ekr.20060328125248.17:createIconButton
     def createIconButton (self,text,command,shortcut,statusLine,bg):
-        
+
         '''Create an icon button.  All icon buttons get created using this utility.
-        
+
         - Creates the actual button and its balloon.
         - Adds the button to buttonsDict.
         - Registers command with the shortcut.
         - Creates x amd delete-x-button commands, where x is the cleaned button name.
         - Binds a right-click in the button to a callback that deletes the button.'''
-        
+
         c = self.c ; k = c.k
-        
+
         # Create the button and add it to the buttons dict.
         commandName = self.cleanButtonText(text).lower()
-        
+
         # Truncate only the text of the button, not the command name.
         truncatedText = self.truncateButtonText(commandName)
         if not truncatedText.strip():
             g.es_print('%s ignored: no cleaned text' % (text.strip() or ''),color='red')
             return None
-    
+
         # Command may be None.
         b = self.iconBar.add(text=truncatedText,command=command,bg=bg)
         if not b: return None
-    
+
         self.buttonsDict[b] = truncatedText
-        
+
         if statusLine:
             self.createBalloon(b,statusLine)
-    
+
         if g.app.gui.guiName() == 'tkinter':
             if sys.platform == "win32":
                 width = int(len(truncatedText) * 0.9)
                 b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
-            
+
         # Register the command name if it exists.
         if command:
             k.registerCommand(commandName,shortcut=shortcut,func=command,pane='button',verbose=shortcut)
-        
+
         # Define the callback used to delete the button.
         def deleteButtonCallback(event=None,self=self,b=b):
             self.deleteButton(b)
-        
+
         if g.app.gui.guiName() == 'tkinter':
             # Bind right-clicks to deleteButton.
             b.bind('<3>',deleteButtonCallback)
-        
+
         # Register the delete-x-button command.
         deleteCommandName= 'delete-%s-button' % commandName
         k.registerCommand(deleteCommandName,shortcut=None,
             func=deleteButtonCallback,pane='button',verbose=False)
             # Reporting this command is way too annoying.
-    
+
         return b
     #@nonl
     #@-node:ekr.20060328125248.17:createIconButton
     #@+node:ekr.20060522104419.1:createBalloon (gui-dependent)
     def createBalloon (self,w,label):
-    
+
         'Create a balloon for a widget.'
-    
+
         if g.app.gui.guiName() == 'tkinter':
             balloon = Pmw.Balloon(w,initwait=100)
             if w and balloon:
@@ -665,29 +665,29 @@ class scriptingController:
     #@-node:ekr.20060522104419.1:createBalloon (gui-dependent)
     #@+node:ekr.20060929131245:definePressButtonCommand (no longer used)
     def definePressButtonCommand (self,buttonText,atButtonCallback,shortcut=None):
-        
+
         '''Define the press-x-button command, were x is the cleaned button text.
-        
+
         Called to create the run-script, script-button and debug-script buttons.'''
-    
+
         # This will use any shortcut defined in an @shortcuts node if no shortcut is defined.
-        
+
         # New in Leo 4.4.2: Just use the (cleaned) name of the button text
         c = self.c ; k = c.k
         buttonText = self.cleanButtonText(buttonText).lower()
-    
+
         # if shortcut: shortcut = k.canonicalizeShortcut(shortcut)
-    
+
         k.registerCommand(buttonText,shortcut=shortcut,func=atButtonCallback,pane='button',verbose=shortcut)
     #@-node:ekr.20060929131245:definePressButtonCommand (no longer used)
     #@+node:ekr.20060328125248.26:deleteButton
     def deleteButton(self,button):
-        
+
         """Delete the given button.
         This is called from callbacks, it is not a callback."""
-        
+
         w = button
-    
+
         if button and self.buttonsDict.get(w):
             del self.buttonsDict[w]
             self.iconBar.deleteButton(w)
@@ -695,44 +695,44 @@ class scriptingController:
     #@-node:ekr.20060328125248.26:deleteButton
     #@+node:ekr.20060328125248.15:getButtonText
     def getButtonText(self,h):
-        
+
         '''Returns the button text found in the given headline string'''
-        
+
         tag = "@button"
         if h.startswith(tag):
             h = h[len(tag):].strip()
-        
+
         i = h.find('@key')
-    
+
         if i > -1:
             buttonText = h[:i].strip()
-        
+
         else:
             buttonText = h
-        
+
         fullButtonText = buttonText
         return buttonText
     #@nonl
     #@-node:ekr.20060328125248.15:getButtonText
     #@+node:ekr.20060328125248.16:getShortcut
     def getShortcut(self,h):
-        
+
         '''Returns the keyboard shortcut from the given headline string'''
-        
+
         shortcut = None
         i = h.find('@key')
-    
+
         if i > -1:
             j = g.skip_ws(h,i+len('@key'))
             if g.match(h,j,'='):
                 shortcut = h[j+1:].strip()
-    
+
         return shortcut
     #@nonl
     #@-node:ekr.20060328125248.16:getShortcut
     #@+node:ekr.20061015125212:truncateButtonText
     def truncateButtonText (self,s):
-        
+
         if self.maxButtonSize > 10:
             s = s[:self.maxButtonSize]
             if s.endswith('-'):

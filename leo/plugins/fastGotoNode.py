@@ -5,7 +5,7 @@
 '''A Leo plugin that adds the fast-goto-node minibuffer command that creates a
 popup menu. You can summon this menu in two ways, depending on the
 ``fastgotonode_useKeyBinding`` setting:
-    
+
 - If this setting is True, the ``fastgotonode_binding`` setting should be a Key
   specifier that does not conflict with any key binding in leoSettings.leo.
 
@@ -15,7 +15,7 @@ popup menu. You can summon this menu in two ways, depending on the
 You may also invoke the popup menu using Alt-x fast-goto-node.
 
 This plugin offers 3 main feature sets:
-    
+
 1. Movement. If a node has ancestors,siblings or children a menu option will
 appear offering the user the ability to jump to the node from the current node.
 This is an improvement over moving one node at a time with the keyboard
@@ -87,21 +87,21 @@ __version__ = ".107"
 #@+others
 #@+node:ekr.20050226120947.2:init & helpers
 def init ():
-    
+
     if Tkinter is None: return False
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
 
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     if ok:
         global smenu
         smenu = Tkinter.Menu(tearoff=0,activeforeground='blue',activebackground='white')
         calculateMenuSize()
         leoPlugins.registerHandler(('open2','new'),registerPopupMenu)
         g.plugin_signon(__name__)
-        
+
         if 0: # We now use leoSettings.leo to get all settings.
             pth = os.path.split(g.app.loadDir)
             lkpm = pth [0] + r"/plugins/fgn.fgn"
@@ -123,13 +123,13 @@ def registerPopupMenu (tag,keywords):
 
     c = keywords.get('c')
     if not c: return
-    
+
     useKeyBinding = c.config.getBool('fastgotonode_useKeyBinding')
     binding = c.config.getString('fastgotonode_binding')
-    
+
     def popper (event,c=c):
         pop(event,c)
-    
+
     if useKeyBinding:
         if binding.startswith('<'): binding = binding[1:-1] # Stirp < and >
         c.keyHandler.registerCommand ('fast-goto-node',binding,popper,pane='all',verbose=True)
@@ -143,7 +143,7 @@ def registerPopupMenu (tag,keywords):
 if 0:
 
     langdict = {}
-    
+
     def loadLanguages (lkpm):
         import ConfigParser
         cp = ConfigParser.ConfigParser()
@@ -178,7 +178,7 @@ maxmenu = 0
 menus = []
 
 def disappear (event,c):
-    
+
     global smenu
     smenu.unpost()
     smenu.unbind_all("<Button-3>")
@@ -388,7 +388,7 @@ def getAncestorList (p):
 def addLanguageMenu (pmenu,c,haveseen={}):
     colorizer = c.frame.body.getColorizer()
     if not colorizer.language: return None, None
-    
+
     if not haveseen.has_key(colorizer.language):
         lk = colorizer.language + '_keywords'
         try:
@@ -554,7 +554,7 @@ def shouldBreak():
 #@-node:mork.20041018091414.12:shouldBreak
 #@+node:mork.20041018095448:setFileDirective
 def setFileDirective( c , directive, names ):
-    
+
     p = c.currentPosition()
     hS = p.headString()
     hS = getCleanHeadString( hS, names )

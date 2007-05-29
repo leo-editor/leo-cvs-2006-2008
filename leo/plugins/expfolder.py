@@ -40,7 +40,7 @@ def init():
 
 
     textexts.extend(config.get("Main", "TextExtensions").split())
-    
+
     #g.es("textexts =", str(textexts))
 
     return 1
@@ -65,11 +65,11 @@ def on_icondclick(tag, keywords):
                 if result == "yes":
                     for kid in kids:
                         savetextnode(c, kid)
-            
+
             # delete children
             while p.firstChild():
                 p.firstChild().doDelete()
-            
+
         #changed = c.isChanged()
         dir = h[11:]
         dirs = []
@@ -80,13 +80,13 @@ def on_icondclick(tag, keywords):
                 dirs.append(path)
             else:
                 files.append(path)
-                
+
         #g.es('dirs: '+str(dirs))
         #g.es('files: '+str(files))
-        
+
         dirs.sort()
         files.sort()
-        
+
         for f in files:
             pn = p.insertAsNthChild(0)
             if os.path.splitext(f)[1] in textexts:
@@ -95,16 +95,16 @@ def on_icondclick(tag, keywords):
             else:
                 c.setHeadString(pn, f)
             #pn.clearDirty()
-            
+
         for d in dirs:
             pn = p.insertAsNthChild(0)
             c.setHeadString(pn, "@expfolder "+d)
             #pn.clearDirty()
-            
+
         #p.clearDirty()
-        
+
         #c.setChanged(changed)
-        
+
         c.expandSubtree(p)
 #@nonl
 #@-node:ajones.20070122153625.2:on_icondclick

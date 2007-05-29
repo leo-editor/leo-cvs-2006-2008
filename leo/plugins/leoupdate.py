@@ -68,7 +68,7 @@ Done:
 #@+node:pap.20050605183206.5:Error Classes
 class LeoUpdateError(Exception):
     """Something went wrong with the update"""
-    
+
 #@-node:pap.20050605183206.5:Error Classes
 #@+node:pap.20050605183206.6:init
 def init():
@@ -78,7 +78,7 @@ def init():
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-            
+
         ok = g.app.gui.guiName() == "tkinter"
 
         if ok:
@@ -89,16 +89,16 @@ def init():
             g.plugin_signon(__name__)
         else:
             g.es("autotrees requires Tkinter",color='blue')
-              
+
     return ok
 #@nonl
 #@-node:pap.20050605183206.6:init
 #@+node:pap.20050605183206.7:onCreate
 def onCreate (tag, keys):
-    
+
     c = keys.get('c')
     if not c: return
-    
+
     global thePluginController
     thePluginController = LeoUpdater(c)
 #@nonl
@@ -114,7 +114,7 @@ def topLevelMenu(c):
 #@-node:pap.20050605183206.8:topLevelMenu
 #@+node:pap.20050605183206.17:class LeoUpdater
 class LeoUpdater:
-    
+
     #@    @+others
     #@+node:pap.20050605183206.18:__init__
     def __init__ (self,c):
@@ -127,7 +127,7 @@ class LeoUpdater:
         except ImportError, err:
             g.es("LeoUpdate did not load plugin manager: %s" % (err,), color="red")
             self.plugin_manager = None
-        
+
     #@nonl
     #@-node:pap.20050605183206.18:__init__
     #@+node:pap.20050605183206.27:showManagerDialog
@@ -144,18 +144,18 @@ class LeoUpdater:
             #@+node:pap.20050605183206.28:<< class HandlerDialog >>
             class HandlerDialog(self.plugin_manager.ManagerDialog):
                 """A dialog to manager leo files"""
-                
+
                 dialog_caption = "Leo File Manager"
-            
+
                 #@    @+others
                 #@+node:pap.20050605184344:initLocalCollection
                 def initLocalCollection(self):
                     """Initialize the local file collection"""
-                
+
                     # Get the local plugins information
                     self.local = plugin_manager.LocalPluginCollection()
                     self.local.initFrom(self.local_path)
-                
+
                 #@-node:pap.20050605184344:initLocalCollection
                 #@+node:pap.20050605183206.29:setPaths
                 def setPaths(self):
@@ -171,13 +171,13 @@ class LeoUpdater:
                 #@+node:pap.20050605192322.1:installPlugin
                 def installPlugin(self):
                     """Install all the files"""
-                
+
                     # Write the files
                     for plugin in self.remote_plugin_list.getAllPlugins():     
                         self.messagebar.message("busy", "Writing file '%s'" % plugin.name)
                         plugin.writeTo(self.local_path)
                         plugin.enabled = "Up to date"
-                        
+
                     self.messagebar.message("busy", "Scanning local files") 
                     # Go and check local filesystem for all plugins   
                     self.initLocalCollection()
@@ -187,7 +187,7 @@ class LeoUpdater:
                     # Update the current list too
                     self.remote_plugin_list.populateList()
                     self.messagebar.resetmessages('busy')
-                
+
                 #@-node:pap.20050605192322.1:installPlugin
                 #@-others
             #@nonl

@@ -49,7 +49,7 @@ def moving( event, c ):
         idict = c.frame.tree.icon_id_dict
     else:
         idict = c.frame.tree.icon_id_dict = c.frame.tree.ids # EKR
-        
+
     for z in items:
         if idict.has_key( z ):
             fa = fas[ canvas ]
@@ -78,7 +78,7 @@ class PieMenu:
     #@	@+others
     #@+node:ekr.20040828122150.5:__init__
     def __init__( self, can, c ):
-    
+
         self.canvas = can
         self.c = c
         self.rmvgroup = {}
@@ -94,7 +94,7 @@ class PieMenu:
     #@-node:ekr.20040828122150.5:__init__
     #@+node:ekr.20040828122150.6:drawString
     def drawString( self, event ):
-    
+
         self.message.after_cancel( self.sid )
         self.message_box.delete( 'help' )  
         x, y = self.l4.winfo_x(), self.l4.winfo_y()
@@ -112,42 +112,42 @@ class PieMenu:
     #@-node:ekr.20040828122150.6:drawString
     #@+node:ekr.20040828122150.7:construct
     def construct( self ):
-    
+
         f = tkFont.Font( weight = tkFont.BOLD, size = -15, family = 'courier')
-        
+
         for i in xrange(1,8):
             w = Tk.Toplevel()
             w.withdraw()
             exec("l%d = self.l%d = w" % (i,i))
             w.overrideredirect(1)
-    
+
         fc = 'darkgreen'
         h = self.help
-    
+
         #@    << create h1 area >>
         #@+node:ekr.20040828131454:<< create h1 area >>
         if 1: # old code
             self.copy = copy = Tk.Canvas( l1, background = 'orange', width = 15,height = 15 )
             h[ copy ] = 'copy'
             copy.create_text( 5, 6, text = 'C' , anchor = 'center', fill = 'white', font = f)
-        
+
             self.paste = paste = Tk.Canvas( l1, background = 'white', width = 15,height = 15 )
             h[ paste ] = 'paste'
             paste.create_text( 5, 6, text = 'P' , anchor = 'center', fill = 'orange',font = f)
-            
+
             self.iu = iu = Tk.Canvas( l1 , background = 'white' , width = 15, height= 15)
             h[ iu ] = 'up'
             iu.create_line( 0, 7, 8, 0, 15, 7, fill = fc, width = 2 )
             iu.create_line( 8, 0, 8, 15, fill = fc, width = 2 )
-            
+
             self.hoist = hoist = Tk.Canvas( l1, background = 'yellow', width = 15,height = 15 )
             h[ hoist ] = 'hoist'
             hoist.create_text( 5, 6, text = 'H' , anchor = 'center', fill = 'green',font = f)
-            
+
             self.insert = insert = Tk.Canvas( l1, background = 'blue', width = 15,height = 15 )
             h[ insert ] = 'insert'
             insert.create_text( 6, 6, text = 'In' , anchor = 'center', fill = 'white', font = f)
-        
+
             for w in copy,paste,iu,hoist,insert:
                 w.pack( side = 'left' ) 
                 w.bind( '<Enter>', self.drawString )
@@ -178,7 +178,7 @@ class PieMenu:
         h[ dele ] = 'delete'
         dele.create_text( 5, 6, text = 'D' , anchor = 'center', fill = 'white',font = f)
         dele.bind( '<Enter>', self.drawString )
-        
+
         dele.pack()
         self.il = il = Tk.Canvas( l3 , background = 'white' , width = 15, height= 15)
         h[ il ] = 'left'
@@ -186,7 +186,7 @@ class PieMenu:
         il.create_line( 0, 7, 15, 7 , fill = fc, width = 2 )
         il.pack()
         il.bind( '<Enter>', self.drawString )
-        
+
         self.promote = promote = Tk.Canvas( l3, background = 'darkgreen', width= 15, height = 15 )
         h[ promote] = 'promote'
         promote.create_text( 5, 6, text = 'P' , anchor = 'center', fill = 'white',font = f)
@@ -202,26 +202,26 @@ class PieMenu:
         iclone.create_text( 5, 6, text = 'C' , anchor = 'center', fill = 'red',font = f)
         iclone.pack( side = 'left' )
         iclone.bind( '<Enter>', self.drawString )
-        
+
         self.cut = cut = Tk.Canvas( l2, background = 'orange', width = 15, height= 15 )
         h[ cut ] = 'cut'
         cut.create_text( 5, 6, text = 'X' , anchor = 'center', fill = 'white',font = f)
         cut.pack( side = 'left' )
         cut.bind( '<Enter>', self.drawString )
-        
+
         self.ib = ib = Tk.Canvas( l2 , background = 'white' , width = 15, height= 15)
         h[ ib ] = 'down'
         ib.create_line( 0, 7, 8, 15, 15, 7, fill = fc, width = 2 )
         ib.create_line( 8, 0, 8, 15, fill = fc, width = 2 )
         ib.pack( side = 'left' ) 
         ib.bind( '<Enter>', self.drawString )
-        
+
         self.mark = mark = Tk.Canvas( l2, background = 'red', width = 15, height= 15 )
         h[ mark ] = 'mark'
         mark.create_text( 5, 6, text = 'M' , anchor = 'center', fill = 'white',font = f)
         mark.pack( side = 'left' ) 
         mark.bind( '<Enter>', self.drawString )
-        
+
         self.ichild = ichild = Tk.Canvas( l2, background = 'blue', width = 15,height = 15 )
         h[ ichild ] = 'child'
         ichild.create_text( 5, 6, text = 'C' , anchor = 'center', fill = 'white',font = f)
@@ -237,14 +237,14 @@ class PieMenu:
         uhoist.create_text( 5, 6, text = 'U' , anchor = 'center', fill = 'green',font = f)
         uhoist.pack()
         uhoist.bind( '<Enter>', self.drawString )
-        
+
         self.ir = ir = Tk.Canvas( l4 , background = 'white' , width = 15, height= 15 )
         h[ ir ] = 'right'
         ir.create_line( 7, 0, 15, 8, 7, 15, fill = fc, width = 2 )
         ir.create_line( 0, 7, 15, 7, fill = fc, width = 2 )
         ir.pack()
         ir.bind( '<Enter>', self.drawString )
-        
+
         self.demote = demote = Tk.Canvas( l4, background = 'darkgreen', width= 15, height = 15 )
         h[ demote ] = 'demote'
         demote.create_text( 5, 6, text = 'D' , anchor = 'center', fill = 'white',font = f)
@@ -280,13 +280,13 @@ class PieMenu:
         u1.create_text( 5,6, text = '1', anchor = 'center', fill = 'black',font = f )
         u1.pack( side = 'left')
         u1.bind( '<Enter>', self.drawString )
-        
+
         self.u2 =  u2 = Tk.Canvas( l7, background = 'grey', width = 15, height= 15 )
         h[ u2 ] = 'user two '
         u2.create_text( 5,6, text = '2', anchor = 'center', fill = 'black',font = f )
         u2.pack( side = 'left' )
         u2.bind( '<Enter>', self.drawString )
-        
+
         self.u3 =  u3 = Tk.Canvas( l7, background = 'grey', width = 15, height= 15 )
         h[ u3 ] = 'user three'
         u3.create_text( 5,6, text = '3', anchor = 'center', fill = 'black',font = f )
@@ -300,7 +300,7 @@ class PieMenu:
         self.message = message =  Tk.Toplevel()
         self.message.withdraw()
         self.message.overrideredirect( 1 )
-        
+
         self.message_box =Tk.Canvas( self.message , width = 95, height = 15,background = 'white' )
         self.message_box.bind( '<Enter>', lambda event, self = self: self.clean())
         self.message_box.pack()
@@ -391,7 +391,7 @@ class PieMenu:
     #@-node:ekr.20040828122150.8:bind
     #@+node:ekr.20040828122150.9:clean
     def clean( self ):
-    
+
         if hasattr( self, 'ri2' ):
             self.l1.withdraw()
             self.l2.withdraw()
@@ -409,7 +409,7 @@ class PieMenu:
     #@-node:ekr.20040828122150.9:clean
     #@+node:ekr.20040828122150.10:leave
     def leave( self, event ):
-    
+
         x, y = event.x, event.y
         can = self.canvas
         x = can.canvasx( x )
@@ -422,7 +422,7 @@ class PieMenu:
     #@-node:ekr.20040828122150.10:leave
     #@+node:ekr.20040828122150.11:draw
     def draw( self, x, y, v, z ):
-    
+
         if not v: return # EKR
         evdict = v.c.frame.tree.edit_text_dict  
         can = self.canvas
@@ -433,7 +433,7 @@ class PieMenu:
         self.y = y 
         self.y1 = int( self.y1 )
         self.x1 = int( self.x1 )
-        
+
         i = 1
         for (dx,dy) in (
             (0,0),  (0,64), (0,16),
@@ -483,7 +483,7 @@ def addPMenu( self, parentFrame ):
 
     can = createCanvas( self, parentFrame )
     c = self.c
-    
+
     can.bind( '<Motion>', lambda event , c = c: moving( event, c ) )
 
     fa = PieMenu( can, c )

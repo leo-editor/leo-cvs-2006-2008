@@ -10,13 +10,13 @@ Use a subfolder for files with Leo comments.
 The shadow plugin allows you to use Leo with files which contain no
 Leo comments, and still have information flow in both directions:
 from the file into Leo, and from Leo into the file.
- 
+
 To use this plugin:
 
 1. Install the shadow script button found in leoPy.leo in the node::
-    
+
     Code-->Buttons and settings-->@@button shadow
-    
+
    That is, copy and paste this @button node to your Leo outline, and change @@ to @.
 
 2. Position the cursor somewhere in your tree.
@@ -34,7 +34,7 @@ Note that the plugin never structures input; this has to be done manually
 within Leo.
 
 You can set settings for this plugin in leoSettings.leo at::
-    
+
     @settings-->Plugins-->shadow plugin.
 
 - @string shadow_subdir (default: LeoFolder): name of the shadow directory.
@@ -186,12 +186,12 @@ shadow_subdir_default = 'LeoFolder'
 shadow_prefix_default = ''
 #@-node:ekr.20060801095508:<< imports >>
 #@nl
-   
+
 #@+others
 #@+node:ekr.20060801095508.1:Module level
 #@+node:ekr.20060801095508.2:init
 def init ():
-    
+
     ok = mod_shadow_core is not None and not g.app.unitTesting
         # Not safe for unit testing: changes Leo's core.
 
@@ -205,7 +205,7 @@ def init ():
 #@+node:ekr.20060715100156.61:putInHooks
 def putInHooks ():
     """Modify methods in Leo's core to support this plugin."""
-    
+
     # Need to modify Leo's Kernel first
     # Overwrite existing Leo methods.
     g.funcToMethod(replaceTargetFileIfDifferent,leoAtFile.atFile)
@@ -221,7 +221,7 @@ def putInHooks ():
 def applyConfiguration (config=None):
 
     """Called when the user presses the "Apply" button on the Properties form.
-   
+
     Not sure yet if we need configuration options for this plugin."""
 
     if config is None:
@@ -266,7 +266,7 @@ def check_for_shadow_file (self,filename):
 #@-node:ekr.20060715100156.63:check_for_shadow_file (Not used)
 #@+node:ekr.20060801102118:getVerbosity
 def getVerbosity (c):
-    
+
     verbosity = c.config.getInt('shadow_verbose')
     if verbosity is None: verbosity = 1
     return verbosity
@@ -385,7 +385,7 @@ def applyLineNumberMappingIfAny(self, n):
     """
     Hook for mod_shadow plugin.
     """
-    
+
     if hasattr(self,'line_mapping') and self.line_mapping:
         return self.line_mapping[n]
     else:
@@ -412,7 +412,7 @@ def applyLineNumberMappingIfAny(self, n):
 original_replaceTargetFileIfDifferent = leoAtFile.atFile.replaceTargetFileIfDifferent
 
 def replaceTargetFileIfDifferent (self):
-    
+
     # Check if we are dealing with a shadow file
     try:
         c = self.c
@@ -439,7 +439,7 @@ def replaceTargetFileIfDifferent (self):
             assert self.targetFileName == targetFileName
             assert self.outputFileName == outputFileName
             # We need to check what's going on if the targetFileName or the outputFileName is changed.
-        
+
         # Not sure if this finally clause is needed or not
         self.targetFileName = targetFileName
         self.outputFileName = outputFileName 
@@ -461,18 +461,18 @@ def do_test_propagate_changes_Leo(c):
     Gets the arguments from Leo nodes.
     """
     from leoTest import testUtils
-    
+
     def get_node_lines(title):
         unicode_string = u.findNodeInTree(p, title).bodyString()
         return unicode_string.split("\n")
     try:
         p = c.currentPosition()
         u = testUtils(c)
-        
+
         before_with_sentinels_lines = get_node_lines ("before with sentinels")
         changed_without_sentinels_lines = get_node_lines ("changed without sentinels")
         after_with_sentinel_lines = get_node_lines ("after with sentinels")
-        
+
         sq = mod_shadow_core.sentinel_squasher(g.es, g.nullObject)
         mod_shadow_core.propagate_changes_test (c,
             before_with_sentinels_lines,

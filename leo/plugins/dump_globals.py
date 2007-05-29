@@ -16,7 +16,7 @@ def onStart (tag,keywords):
     for s in globals():
         if s not in __builtins__:
             print s
-    
+
     print "\nlocals..."
     for s in locals():
         if s not in __builtins__:
@@ -28,7 +28,7 @@ if not g.app.unitTesting: # Not for unit testing.
 
     # Register the handlers...
     leoPlugins.registerHandler("start2", onStart)
-    
+
     __version__ = "1.2"
     g.plugin_signon(__name__)
 #@nonl

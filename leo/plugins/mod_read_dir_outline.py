@@ -75,7 +75,7 @@ language = 'english' # Anything except 'french' uses english.
 #@+others
 #@+node:ekr.20050301083306.4:init
 def init ():
-    
+
     if tkFileDialog is None: return False
 
     if g.app.gui is None:
@@ -92,49 +92,49 @@ def init ():
 #@-node:ekr.20050301083306.4:init
 #@+node:ekr.20050301083306.5:onCreate
 def onCreate (tag, keywords):
-    
+
     c = keywords.get('c')
     cc = controller(c)
 
     menu = c.frame.menu.getMenu('Outline')
-    
+
     if language == 'french':
         mess1 = "Lit un Répertoire..."
     else:
         mess1 = "Read a Directory..."
-        
+
     table = (
         ("-", None, None),
         (mess1, "Shift+Ctrl+Alt+D",cc.readDir))
-    
+
     c.frame.menu.createMenuEntries(menu,table,dynamicMenu=True)
 #@nonl
 #@-node:ekr.20050301083306.5:onCreate
 #@+node:ekr.20050301083306.6:class controller
 class controller:
-    
+
     #@    @+others
     #@+node:ekr.20050301083306.7:ctor
     def __init__ (self,c):
-    
+
         self.c = c
     #@nonl
     #@-node:ekr.20050301083306.7:ctor
     #@+node:ekr.20050301083306.8:readDir
     def readDir (self,event=None):
-            
+
         # fr - Modifier pour adapter à votre environnement
         # en - Change it to select the starting browsing directory
         c = self.c ; startdir = "/home/"
-        
+
         if language == 'french':
             titledialog = "Choisir le répertoire..."
         else:
             titledialog = "Please, select a directory..."
-        
+
         dirName = tkFileDialog.askdirectory(
             title=titledialog,initialdir=startdir,mustexist="true")
-        
+
         if dirName and len(dirName) > 0:
             g.es(dirName)
             c.beginUpdate() # EKR: doing this here saves lots of time.
@@ -150,13 +150,13 @@ class controller:
     #@-node:ekr.20050301083306.8:readDir
     #@+node:ekr.20050301083306.9:esfm
     def esfm (self,chaine,**keys):
-    
+
         """ Pour imprimer une chaîne de caractères sans retour à la ligne """
-        
+
         if 1: # No longer needed so much now that we don't redraw as much.
-    
+
             color = keys.get('color')
-        
+
             if g.app.log:
                 g.app.log.put(chaine,color=color)
             else:
@@ -166,16 +166,16 @@ class controller:
     #@-node:ekr.20050301083306.9:esfm
     #@+node:ekr.20050301083306.10:importDir
     def importDir (self,dir,compteur,compteurglobal):
-        
+
         """ La routine récursive de lecture des fichiers """
-    
+
         if not g.os_path_exists(dir):
             if language == 'french':
                 g.es("Ce répertoire n'existe pas: %s" + dir)
             else:
                 g.es("No such Directory: %s" + dir)
             return compteur, compteurglobal # EKR
-        
+
         head,tail = g.os_path_split(dir)
         c = self.c ; v = c.currentVnode()
         try:
@@ -198,7 +198,7 @@ class controller:
                     else:
                         # c'est alors un répertoire
                         dossiers.append(path)
-                    
+
                     self.esfm(".")
                     compteur += 1
                     compteurglobal += 1
@@ -225,7 +225,7 @@ class controller:
             else:
                 g.es("error while creating vnode...")
             g.es_exception()
-            
+
         return compteur, compteurglobal
     #@nonl
     #@-node:ekr.20050301083306.10:importDir

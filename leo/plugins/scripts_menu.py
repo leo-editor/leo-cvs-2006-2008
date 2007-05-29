@@ -27,7 +27,7 @@ def createScriptsMenu (tag,keywords):
 
     c = keywords.get("c")
     path = os.path.join(g.app.loadDir,"..","scripts")
-    
+
     if os.path.exists(path):
 
         # Create lists of scripts and subdirectories.
@@ -46,7 +46,7 @@ def createScriptsMenu (tag,keywords):
                 return
         #@-node:EKR.20040517080555.38:<< Return if no scripts exist anywhere >>
         #@nl
-    
+
         scriptsMenu = c.frame.menu.createNewMenu("&Scripts")
         table = []
         #@        << Create top-level entries for every script in top_scripts >>
@@ -58,7 +58,7 @@ def createScriptsMenu (tag,keywords):
             def doScript(event=None,name=name):
                 g.executeScript(name)
             table.append((name,None,doScript),)
-            
+
         c.frame.menu.createMenuEntries(scriptsMenu, table,dynamicMenu=True)
         #@-node:EKR.20040517080555.39:<< Create top-level entries for every script in top_scripts >>
         #@nl
@@ -70,7 +70,7 @@ def createScriptsMenu (tag,keywords):
                 # Create the submenu.
                 name = os.path.join("scripts",g.shortFileName(dir))
                 menu = c.frame.menu.createNewMenu(name,"&Scripts")
-                
+
                 # Populate the submenu.
                 table = []
                 for file in files:
@@ -78,7 +78,7 @@ def createScriptsMenu (tag,keywords):
                     def doScript(event=None,name=name):
                         g.executeScript(name)
                     table.append((name,None,doScript),)
-                
+
                 c.frame.menu.createMenuEntries(menu, table,dynamicMenu=True)
                 #@nonl
                 #@-node:EKR.20040517080555.40:<< Create a submenu for dir containing each file in files >>

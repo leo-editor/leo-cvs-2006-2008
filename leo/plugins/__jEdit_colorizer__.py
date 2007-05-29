@@ -119,7 +119,7 @@ default_colors_dict = {
     'string'         :('string_color',                '#00aa00'), # Used by IDLE.
     'name'           :('undefined_section_name_color','red'),
     'latexBackground':('latex_background_color',      'white'),
-    
+
     # jEdit tags.
     'comment1'  :('comment1_color', 'red'),
     'comment2'  :('comment2_color', 'red'),
@@ -159,7 +159,7 @@ default_font_dict = {
     'string'         :'string_font',
     'name'           :'undefined_section_name_font',
     'latexBackground':'latex_background_font',
-    
+
     # jEdit tags.
     'comment1'  :'comment1_font',
     'comment2'  :'comment2_font',
@@ -197,13 +197,13 @@ def init ():
 #@-node:ekr.20060530091119.26:init
 #@+node:ekr.20060530091119.27:onStart1
 def onStart1 (tag, keywords):
-    
+
     '''Override Leo's core colorizer classes.'''
-    
+
     import leoColor
 
     leoColor.colorizer = colorizer
-    
+
     leoColor.nullColorizer = nullColorizer
 #@nonl
 #@-node:ekr.20060530091119.27:onStart1
@@ -221,11 +221,11 @@ trace_leo_matches = False
 #@nonl
 #@+node:ekr.20060530091119.29:match_at_color
 def match_at_color (self,s,i):
-    
+
     if trace_leo_matches: g.trace()
 
     seq = '@color'
-    
+
     if i != 0 and s[i-1] != '\n': return 0
 
     if g.match_word(s,i,seq):
@@ -239,11 +239,11 @@ def match_at_color (self,s,i):
 #@-node:ekr.20060530091119.29:match_at_color
 #@+node:ekr.20060530091119.30:match_at_nocolor
 def match_at_nocolor (self,s,i):
-    
+
     if trace_leo_matches: g.trace()
-    
+
     seq = '@nocolor'
-    
+
     if i != 0 and s[i-1] != '\n':
         return 0
 
@@ -258,7 +258,7 @@ def match_at_nocolor (self,s,i):
 #@-node:ekr.20060530091119.30:match_at_nocolor
 #@+node:ekr.20060530091119.31:match_doc_part
 def match_doc_part (self,s,i):
-    
+
     if g.match_word(s,i,'@doc'):
         j = i+4
         self.colorRangeWithTag(s,i,j,'leoKeyword')
@@ -287,13 +287,13 @@ def match_doc_part (self,s,i):
 #@-node:ekr.20060530091119.31:match_doc_part
 #@+node:ekr.20060703123822:match_leo_keywords
 def match_leo_keywords(self,s,i):
-    
+
     '''Succeed if s[i:] is a Leo keyword.'''
-    
+
     # We must be at the start of a word.
     if i > 0 and s[i-1] in self.word_chars:
         return 0
-        
+
     if s[i] != '@':
         return 0
 
@@ -301,7 +301,7 @@ def match_leo_keywords(self,s,i):
     j = i ; n = len(s) ; w = self.word_chars
     while j < n and s[j] in w:
         j += 1
-        
+
     word = s[i:j]
     # g.trace(i,word,repr(self.word_chars))
     if leoKeywordsDict.get(word):
@@ -317,10 +317,10 @@ def match_leo_keywords(self,s,i):
 #@-node:ekr.20060703123822:match_leo_keywords
 #@+node:ekr.20060530091119.32:match_section_ref
 def match_section_ref (self,s,i):
-    
+
     if trace_leo_matches: g.trace()
     c=self.c
-    
+
     if not g.match(s,i,'<<'):
         return 0
     k = g.find_on_line(s,i+2,'>>')
@@ -339,7 +339,7 @@ def match_section_ref (self,s,i):
                 self.hyperCount += 1
                 self.body.tag_delete(tagName)
                 self.tag(tagName,i+2,j)
-                
+
                 ref.tagName = tagName
                 self.body.tag_bind(tagName,"<Control-1>",ref.OnHyperLinkControlClick)
                 self.body.tag_bind(tagName,"<Any-Enter>",ref.OnHyperLinkEnter)
@@ -359,14 +359,14 @@ def match_section_ref (self,s,i):
 #@-node:ekr.20060530091119.32:match_section_ref
 #@+node:ekr.20060601083619:match_blanks
 def match_blanks (self,s,i):
-    
+
     if trace_leo_matches: g.trace()
-    
+
     j = i ; n = len(s)
-    
+
     while j < n and s[j] == ' ':
         j += 1
-        
+
     if j > i:
         # g.trace(i,j)
         self.colorRangeWithTag(s,i,j,'blank')
@@ -377,14 +377,14 @@ def match_blanks (self,s,i):
 #@-node:ekr.20060601083619:match_blanks
 #@+node:ekr.20060601083619.1:match_tabs
 def match_tabs (self,s,i):
-    
+
     if trace_leo_matches: g.trace()
-    
+
     j = i ; n = len(s)
-    
+
     while j < n and s[j] == '\t':
         j += 1
-        
+
     if j > i:
         # g.trace(i,j)
         self.colorRangeWithTag(s,i,j,'tab')
@@ -478,16 +478,16 @@ class baseColorizer:
     #@-node:ekr.20060530091119.8:__init__
     #@+node:ekr.20060623081100:addImportedRules
     def addImportedRules (self,mode,rulesDict,rulesetName):
-        
+
         '''Append any imported rules at the end of the rulesets specified in mode.importDict'''
-        
+
         if self.importedRulesets.get(rulesetName):
             return
         else:
             self.importedRulesets [rulesetName] = True
-        
+
         names = hasattr(mode,'importDict') and mode.importDict.get(rulesetName,[]) or []
-    
+
         for name in names:
             savedBunch = self.modeBunch
             ok = self.init_mode(name)
@@ -509,9 +509,9 @@ class baseColorizer:
     #@-node:ekr.20060623081100:addImportedRules
     #@+node:ekr.20060530091119.36:addLeoRules
     def addLeoRules (self,theDict):
-    
+
         '''Put Leo-specific rules to theList.'''
-    
+
         for ch, rule, atFront, in (
             # Rules added at front are added in **reverse** order.
             ('@',  match_leo_keywords,True), # Called after all other Leo matchers.
@@ -534,9 +534,9 @@ class baseColorizer:
     #@-node:ekr.20060530091119.36:addLeoRules
     #@+node:ekr.20060530091119.37:configure_tags
     def configure_tags (self):
-    
+
         c = self.c ; w = self.w
-        
+
         # Get the default body font.
         defaultBodyfont = self.fonts.get('default_body_font')
         if not defaultBodyfont:
@@ -545,7 +545,7 @@ class baseColorizer:
                 "body_text_font_slant",  "body_text_font_weight",
                 c.config.defaultBodyFontSize)
             self.fonts['default_body_font'] = defaultBodyfont
-        
+
         # Configure fonts.
         keys = default_font_dict.keys() ; keys.sort()
         for key in keys:
@@ -577,7 +577,7 @@ class baseColorizer:
                 if self.fonts.keys(): # Restore the default font.
                     # g.trace('default',key)
                     w.tag_config(key,font=defaultBodyfont)
-    
+
         keys = default_colors_dict.keys() ; keys.sort()
         for name in keys:
             option_name,default_color = default_colors_dict[name]
@@ -587,14 +587,14 @@ class baseColorizer:
                 default_color
             )
             # g.trace(option_name,color)
-                
+
             # Must use foreground, not fg.
             try:
                 self.body.tag_configure(name, foreground=color)
             except: # Recover after a user error.
                 g.es_exception()
                 self.body.tag_configure(name, foreground=default_color)
-        
+
         # underline=var doesn't seem to work.
         if 0: # self.use_hyperlinks: # Use the same coloring, even when hyperlinks are in effect.
             self.body.tag_configure("link",underline=1) # defined
@@ -605,11 +605,11 @@ class baseColorizer:
                 self.body.tag_configure("name",underline=1)
             else:
                 self.body.tag_configure("name",underline=0)
-                
+
         self.configure_variable_tags()
-            
+
         # Colors for latex characters.  Should be user options...
-        
+
         if 1: # Alas, the selection doesn't show if a background color is specified.
             self.body.tag_configure("latexModeBackground",foreground="black")
             self.body.tag_configure("latexModeKeyword",foreground="blue")
@@ -620,7 +620,7 @@ class baseColorizer:
             self.body.tag_configure("latexModeKeyword",foreground="blue",background="seashell1")
             self.body.tag_configure("latexBackground",foreground="black",background="white")
             self.body.tag_configure("latexKeyword",foreground="blue",background="white")
-            
+
         # Tags for wiki coloring.
         self.body.tag_configure("bold",font=self.bold_font)
         self.body.tag_configure("italic",font=self.italic_font)
@@ -631,9 +631,9 @@ class baseColorizer:
     #@-node:ekr.20060530091119.37:configure_tags
     #@+node:ekr.20060601085857:configure_variable_tags
     def configure_variable_tags (self):
-        
+
         c = self.c
-    
+
         for name,option_name,default_color in (
             ("blank","show_invisibles_space_background_color","Gray90"),
             ("tab",  "show_invisibles_tab_background_color",  "Gray80"),
@@ -648,7 +648,7 @@ class baseColorizer:
                 self.body.tag_configure(name,background=color)
             except: # A user error.
                 self.body.tag_configure(name,background=default_color)
-    
+
         # Special case:
         if not self.showInvisibles:
             self.body.tag_configure("elide",elide="1")
@@ -656,9 +656,9 @@ class baseColorizer:
     #@-node:ekr.20060601085857:configure_variable_tags
     #@+node:ekr.20060530091119.9:init_mode & helpers
     def init_mode (self,name):
-        
+
         '''Name may be a language name or a delegate name.'''
-    
+
         if not name: return False
         language,rulesetName = self.nameToRulesetName(name)
         bunch = self.modes.get(rulesetName)
@@ -692,7 +692,7 @@ class baseColorizer:
             self.setModeAttributes()
             self.rulesDict = hasattr(mode,'rulesDictDict') and mode.rulesDictDict.get(rulesetName) or {}
             self.addLeoRules(self.rulesDict)
-            
+
             self.defaultColor = 'null'
             self.mode = mode
             self.modes [rulesetName] = self.modeBunch = g.Bunch(
@@ -711,11 +711,11 @@ class baseColorizer:
     #@nonl
     #@+node:ekr.20060827170228:nameToRulesetName
     def nameToRulesetName (self,name):
-        
+
         '''Compute language and rulesetName from name, which is either a language or a delegate name.'''
-        
+
         if not name: return ''
-        
+
         i = name.find('::')
         if i == -1:
             language = name
@@ -724,28 +724,28 @@ class baseColorizer:
             language = name[:i]
             delegate = name[i+2:]
             rulesetName = self.munge('%s_%s' % (language,delegate))
-        
+
         # g.trace(name,language,rulesetName)
         return language,rulesetName
     #@nonl
     #@-node:ekr.20060827170228:nameToRulesetName
     #@+node:ekr.20060530091119.18:setKeywords
     def setKeywords (self):
-        
+
         '''Initialize the keywords for the present language.
-        
+
          Set self.word_chars ivar to string.letters + string.digits
          plus any other character appearing in any keyword.'''
-         
+
         d = self.keywordsDict
-    
+
         # Add any new user keywords to leoKeywords.
         keys = d.keys()
         for s in g.globalDirectiveList:
             key = '@' + s
             if key not in keys:
                 d [key] = 'leoKeyword'
-    
+
         # Create the word_chars list. 
         self.word_chars = [g.toUnicode(ch,encoding='UTF-8') for ch in (string.letters + string.digits)]
         for key in d.keys():
@@ -753,22 +753,22 @@ class baseColorizer:
                 # if ch == ' ': g.trace('blank in key: %s' % repr (key))
                 if ch not in self.word_chars:
                     self.word_chars.append(g.toUnicode(ch,encoding='UTF-8'))
-                    
+
         # jEdit2Py now does this check, so this isn't really needed.
         for ch in (' ', '\t'):
             if ch in self.word_chars:
                 g.es_print('removing %s from word_chars' % (repr(ch)))
                 self.word_chars.remove(ch)
-                    
+
         # g.trace(len(d.keys()))
     #@nonl
     #@-node:ekr.20060530091119.18:setKeywords
     #@+node:ekr.20060703070148:setModeAttributes
     def setModeAttributes (self):
-    
+
         '''Set the ivars from self.attributesDict,
         converting 'true'/'false' to True and False.'''
-    
+
         d = self.attributesDict
         aList = (
             ('default',         'null'),
@@ -778,7 +778,7 @@ class baseColorizer:
     	    ('ignore_case',     True),
     	    ('no_word_sep',     ''),
         )
-    
+
         for key, default in aList:
             val = d.get(key,default)
             if val in ('true','True'): val = True
@@ -789,7 +789,7 @@ class baseColorizer:
     #@-node:ekr.20060703070148:setModeAttributes
     #@+node:ekr.20060703110708:initModeFromBunch
     def initModeFromBunch (self,bunch):
-        
+
         self.modeBunch = bunch
         self.attributesDict = bunch.attributesDict
         self.setModeAttributes()
@@ -800,20 +800,20 @@ class baseColorizer:
         self.properties     = bunch.properties
         self.rulesDict      = bunch.rulesDict
         self.rulesetName    = bunch.rulesetName
-        
+
         # g.trace(self.rulesetName)
     #@nonl
     #@-node:ekr.20060703110708:initModeFromBunch
     #@+node:ekr.20060727084423:updateDelimsTables
     def updateDelimsTables (self):
-        
+
         '''Update g.app.language_delims_dict if no entry for the language exists.'''
-    
+
         d = self.properties
         lineComment = d.get('lineComment')
         startComment = d.get('commentStart')
         endComment = d.get('commentEnd')
-        
+
         if lineComment and startComment and endComment:
             delims = '%s %s %s' % (lineComment,startComment,endComment)
         elif startComment and endComment:
@@ -822,13 +822,13 @@ class baseColorizer:
             delims = '%s' % lineComment
         else:
             delims = None
-            
+
         if delims:
             d = g.app.language_delims_dict
             if not d.get(self.language):
                 d [self.language] = delims
                 # g.trace(self.language,'delims:',repr(delims))
-       
+
     #@nonl
     #@-node:ekr.20060727084423:updateDelimsTables
     #@-node:ekr.20060530091119.9:init_mode & helpers
@@ -836,26 +836,26 @@ class baseColorizer:
     #@+node:ekr.20060530091119.38:Entry points
     #@+node:ekr.20060530091119.11:colorize
     def colorize(self,p,incremental=False,interruptable=True):
-        
+
         '''The main colorizer entry point.'''
-        
+
         self.count += 1 # For unit testing.
-        
+
         c = self.c
-        
+
         if c.frame.body.numberOfEditors > 1:
             interruptable = False
-    
+
         # g.trace(self.count,'interrupt:',g.choose(interruptable,1,0),id(c.frame.body.bodyCtrl))
-            
+
         if interruptable:
             self.interrupt() # New in 4.4.1
         else:
             data = p.copy(),c.frame.body.bodyCtrl
             self.queue.append(data)
-    
+
         self.interruptable = interruptable
-    
+
         if self.enabled:
             self.updateSyntaxColorer(p)
             val = self.colorizeAnyLanguage(p)
@@ -866,21 +866,21 @@ class baseColorizer:
     #@nonl
     #@+node:ekr.20060530091119.39:enable & disable
     def disable (self):
-    
+
         print "disabling all syntax coloring"
         self.enabled=False
-        
+
     def enable (self):
         self.enabled=True
     #@nonl
     #@-node:ekr.20060530091119.39:enable & disable
     #@+node:ekr.20060530091119.10:interrupt
     # This is needed, even without threads.
-    
+
     def interrupt(self):
-        
+
         '''Interrupt colorOneChunk'''
-    
+
         self.chunk_s = ''
         self.chunk_i = 0
         self.tagList = []
@@ -890,21 +890,21 @@ class baseColorizer:
     #@-node:ekr.20060530091119.10:interrupt
     #@+node:ekr.20060530091119.41:recolor_all (rewrite)
     def recolor_all (self):
-    
+
         # This code is executed only if graphics characters will be inserted by user markup code.
-        
+
         # Pass 1:  Insert all graphics characters.
         self.removeAllImages()
         s = self.body.getAllText()
         lines = s.split('\n')
-        
+
         self.color_pass = 1
         self.line_index = 1
         state = self.setFirstLineState()
         for s in lines:
             state = self.colorizeLine(s,state)
             self.line_index += 1
-        
+
         # Pass 2: Insert one blank for each previously inserted graphic.
         self.color_pass = 2
         self.line_index = 1
@@ -922,9 +922,9 @@ class baseColorizer:
             # blanks in s at the positions corresponding to each image.
             #@-at
             #@@c
-            
+
             inserted = 0
-            
+
             for photo,image,line_index,i in self.image_references:
                 if self.line_index == line_index:
                     n = i+inserted ; 	inserted += 1
@@ -937,28 +937,28 @@ class baseColorizer:
     #@-node:ekr.20060530091119.41:recolor_all (rewrite)
     #@+node:ekr.20060530091119.43:schedule & recolor_range
     # Called by body.recolor.
-    
+
     def schedule(self,p,incremental=0):
-        
+
         __pychecker__ = '--no-argsused' # incremental not used.
-        
+
         self.colorize(p)
-        
+
     def recolor_range(self,p,leading,trailing):
-        
+
         '''An entry point for the colorer called from incremental undo code.
         Colorizes the lines between the leading and trailing lines.'''
-        
+
         __pychecker__ = '--no-argsused' # leading,trailing not used.
-        
+
         return self.colorize(p)
     #@nonl
     #@-node:ekr.20060530091119.43:schedule & recolor_range
     #@+node:ekr.20060530091119.44:useSyntaxColoring
     def useSyntaxColoring (self,p):
-        
+
         """Return True unless p is unambiguously under the control of @nocolor."""
-        
+
         p = p.copy() ; first = p.copy()
         val = True ; self.killcolorFlag = False
         for p in p.self_and_parents_iter():
@@ -978,16 +978,16 @@ class baseColorizer:
                 val = False ; break
             elif color and not no_color:
                 val = True ; break
-    
+
         # g.trace(first.headString(),val)
         return val
     #@nonl
     #@-node:ekr.20060530091119.44:useSyntaxColoring
     #@+node:ekr.20060530091119.45:updateSyntaxColorer
     def updateSyntaxColorer (self,p):
-    
+
         p = p.copy()
-    
+
         # self.flag is True unless an unambiguous @nocolor is seen.
         self.flag = self.useSyntaxColoring(p)
         self.scanColorDirectives(p)
@@ -998,9 +998,9 @@ class baseColorizer:
     #@+node:ekr.20060530091119.46:Colorizer code
     #@+node:ekr.20060530091119.12:colorAll
     def colorAll(self,s):
-        
+
         '''Colorize all of s.'''
-    
+
         # Init ivars used by colorOneChunk.
         w = self.w
         self.chunk_s = s
@@ -1018,11 +1018,11 @@ class baseColorizer:
     #@-node:ekr.20060530091119.12:colorAll
     #@+node:ekr.20060530091119.47:colorizeAnyLanguage
     def colorizeAnyLanguage (self,p,leading=None,trailing=None):
-        
+
         '''Color the body pane.  All coloring starts here.'''
-    
+
         # g.trace(p and p.headString(), self.killcolorFlag or not self.mode)
-    
+
         self.init_mode(self.language)
         self.configure_tags() # Must do this every time to support multiple editors.
         if self.killcolorFlag or not self.mode:
@@ -1073,7 +1073,7 @@ class baseColorizer:
                 if n > 0:
                     i += n ; break
             else: i += 1
-    
+
         self.removeAllTags()
         self.tagAll()
         self.tagList = []
@@ -1091,15 +1091,15 @@ class baseColorizer:
     #@-node:ekr.20060530091119.13:colorOneChunk
     #@+node:ekr.20060530091119.48:colorRangeWithTag
     def colorRangeWithTag (self,s,i,j,tag,delegate='',exclude_match=False):
-    
+
         '''Add an item to the tagList if colorizing is enabled.'''
-    
+
         w = self.w 
         if not self.flag: return
-        
+
         # toGuiIndex could be slow for large s...
         x1,x2 = w.toGuiIndex(i),w.toGuiIndex(j)
-    
+
         if delegate:
             # g.trace(delegate,i,j)
             self.modeStack.append(self.modeBunch)
@@ -1121,9 +1121,9 @@ class baseColorizer:
     #@-node:ekr.20060530091119.48:colorRangeWithTag
     #@+node:ekr.20060530091119.14:quickColor
     def quickColor (self):
-        
+
         '''Give the inserted character the previous color tag by default.'''
-        
+
         w = self.w
         i = w.getInsertPoint()
         if i == 0: return # No previous character.
@@ -1174,15 +1174,15 @@ class baseColorizer:
         kind=None,seq='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
         delegate='',exclude_match=False):
-        
+
         '''Succeed if seq matches s[i:]'''
-        
+
         if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
-    
+
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-    
+
         if g.match(s,i,seq):
             j = g.skip_to_end_of_line(s,i)
             self.colorRangeWithTag(s,i,j,kind,delegate=delegate,exclude_match=exclude_match)
@@ -1197,15 +1197,15 @@ class baseColorizer:
         kind='',regexp='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
         delegate='',exclude_match=False):
-        
+
         '''Succeed if the regular expression regex matches s[i:].'''
-        
+
         if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
-    
+
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-        
+
         n = self.match_regexp_helper(s,i,regexp)
         if n > 0:
             j = g.skip_to_end_of_line(s,i)
@@ -1220,18 +1220,18 @@ class baseColorizer:
     #@+node:ekr.20060530091119.17:match_keywords
     # This is a time-critical method.
     def match_keywords (self,s,i):
-        
+
         '''Succeed if s[i:] is a keyword.'''
-        
+
         # We must be at the start of a word.
         if i > 0 and s[i-1] in self.word_chars:
             return 0
-    
+
         # Get the word as quickly as possible.
         j = i ; n = len(s) ; chars = self.word_chars
         while j < n and s[j] in chars:
             j += 1
-            
+
         word = s[i:j]
         if self.ignore_case: word = word.lower()
         kind = self.keywordsDict.get(word)
@@ -1250,15 +1250,15 @@ class baseColorizer:
         kind='',pattern='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
         exclude_match=False):
-        
+
         '''Succeed if s[i:] matches pattern.'''
-        
+
         if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
-    
+
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-    
+
         if g.match(s,i,pattern):
             j = i + len(pattern)
             self.colorRangeWithTag(s,i,j,kind,exclude_match=exclude_match)
@@ -1274,15 +1274,15 @@ class baseColorizer:
     #@nonl
     #@+node:ekr.20060704095454:getNextToken
     def getNextToken (self,s,i):
-        
+
         '''Return the index of the end of the next token for match_mark_following.
-        
+
         The jEdit docs are not clear about what a 'token' is, but experiments with jEdit
         show that token means a word, as defined by word_chars.'''
-        
+
         while i < len(s) and s[i] in self.word_chars:
             i += 1
-            
+
         return min(len(s),i+1)
     #@nonl
     #@-node:ekr.20060704095454:getNextToken
@@ -1292,19 +1292,19 @@ class baseColorizer:
         kind='',pattern='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
         exclude_match=False):
-        
+
         '''Return the length of a matched SEQ or 0 if no match.
-    
+
         'at_line_start':    True: sequence must start the line.
         'at_whitespace_end':True: sequence must be first non-whitespace text of the line.
         'at_word_start':    True: sequence must start a word.'''
-        
+
         if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
-    
+
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-    
+
         if g.match(s,i,pattern):
             j = i + len(pattern)
             # Color the previous token.
@@ -1322,11 +1322,11 @@ class baseColorizer:
     #@-node:ekr.20060530091119.54:match_mark_previous
     #@+node:ekr.20060530091119.50:match_regexp_helper
     def match_regexp_helper (self,s,i,pattern):
-    
+
         '''Return the length of the matching text if seq (a regular expression) matches the present position.'''
-        
+
         if self.trace_match_flag: g.trace(pattern)
-    
+
         try:
             flags = re.MULTILINE
             if self.ignore_case: flags|= re.IGNORECASE
@@ -1334,9 +1334,9 @@ class baseColorizer:
         except Exception:
             g.es('Invalid regular expression: %s' % (pattern),color='blue')
             return 0
-    
+
         self.match_obj = mo = re_obj.search(s,i)
-    
+
         if mo is None:
             return 0
         else:
@@ -1350,9 +1350,9 @@ class baseColorizer:
         kind='',seq='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
         delegate=''):
-        
+
         '''Succeed if s[:] mathces seq.'''
-        
+
         if at_line_start and i != 0 and s[i-1] != '\n':
             j = i
         elif at_whitespace_end and i != g.skip_ws(s,0):
@@ -1374,15 +1374,15 @@ class baseColorizer:
         kind='',regexp='',
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
         delegate=''):
-        
+
         '''Succeed if the regular expression regexp matches at s[i:].'''
-        
+
         if self.trace_match_flag: g.trace(g.callers(2),i,repr(s[i:i+20]))
-    
+
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-        
+
         j = self.match_regexp_helper(s,i,regexp)
         self.colorRangeWithTag(s,i,j,kind,delegate=delegate)
         self.prev = (i,j,kind)
@@ -1396,9 +1396,9 @@ class baseColorizer:
         at_line_start=False,at_whitespace_end=False,at_word_start=False,
         delegate='',exclude_match=False,
         no_escape=False,no_line_break=False,no_word_break=False):
-    
+
         '''Succeed if s[i:] starts with 'begin' and contains a following 'end'.'''
-        
+
         if at_line_start and i != 0 and s[i-1] != '\n':
             j = i
         elif at_whitespace_end and i != g.skip_ws(s,0):
@@ -1419,17 +1419,17 @@ class baseColorizer:
                 self.colorRangeWithTag(s,j,j2,kind,delegate=None,    exclude_match=exclude_match)
                 j = j2
                 self.prev = (i,j,kind)
-    
+
         self.trace_match(kind,s,i,j)
         return j - i
     #@nonl
     #@+node:ekr.20060904084624:match_span_helper
     def match_span_helper (self,s,i,pattern,no_escape,no_line_break):
-        
+
         '''Return n >= 0 if s[i] ends with a non-escaped 'end' string.'''
-        
+
         esc = self.escape
-            
+
         while 1:
             j = s.find(pattern,i)
             if j == -1:
@@ -1458,16 +1458,16 @@ class baseColorizer:
         delegate='',exclude_match=False,
         no_escape=False,no_line_break=False, no_word_break=False,
     ):
-            
+
         '''Succeed if s[i:] starts with 'begin' (a regular expression) and contains a following 'end'.'''
-        
+
         if self.trace_match_flag:
             g.trace('begin',repr(begin),'end',repr(end),self.dump(s[i:]))
-        
+
         if at_line_start and i != 0 and s[i-1] != '\n': return 0
         if at_whitespace_end and i != g.skip_ws(s,0): return 0
         if at_word_start and i > 0 and s[i-1] not in self.word_chars: return 0
-        
+
         n = self.match_regexp_helper(s,i,begin)
         # We may have to allow $n here, in which case we must use a regex object?
         if n > 0:
@@ -1491,7 +1491,7 @@ class baseColorizer:
             self.trace_match(kind,s,i,j2)
             return j2 - i
         else: return 0
-       
+
     #@nonl
     #@-node:ekr.20060530091119.58:match_span_regexp
     #@-node:ekr.20060530091119.49:jEdit matchers
@@ -1503,7 +1503,7 @@ class baseColorizer:
     #@-at
     #@+node:ekr.20060827102330:dump
     def dump (self,s):
-        
+
         if s.find('\n') == -1:
             return s
         else:
@@ -1512,25 +1512,25 @@ class baseColorizer:
     #@-node:ekr.20060827102330:dump
     #@+node:ekr.20060530091119.61:index
     def index (self,i):
-        
+
         index = self.body.convertRowColumnToIndex(self.line_index,i)
         # g.trace(self.line_index,i,index)
         return index
-        
+
     #@-node:ekr.20060530091119.61:index
     #@+node:ekr.20060703120853:munge
     def munge(self,s):
-        
+
         '''Munge a mode name so that it is a valid python id.'''
-        
+
         valid = string.ascii_letters + string.digits + '_'
-        
+
         return ''.join([g.choose(ch in valid,ch.lower(),'_') for ch in s])
     #@nonl
     #@-node:ekr.20060703120853:munge
     #@+node:ekr.20060530091119.62:removeAllImages
     def removeAllImages (self):
-        
+
         for photo,image,line_index,i in self.image_references:
             try:
                 ### self.body.deleteCharacter(image)
@@ -1539,16 +1539,16 @@ class baseColorizer:
                 self.allBodyText = w.getAllText()
             except:
                 pass # The image may have been deleted earlier.
-        
+
         self.image_references = []
     #@nonl
     #@-node:ekr.20060530091119.62:removeAllImages
     #@+node:ekr.20060530091119.63:removeAllTags
     def removeAllTags (self):
-        
+
         w = self.w
         # g.trace(len(self.tagList)/3,w)
-    
+
         names = w.tag_names()
         for name in names:
             if name not in ('sel','insert'):
@@ -1562,18 +1562,18 @@ class baseColorizer:
     #@-node:ekr.20060530091119.63:removeAllTags
     #@+node:ekr.20060530091119.64:scanColorDirectives
     def scanColorDirectives(self,p):
-        
+
         """Scan position p and p's ancestors looking for @comment, @language and @root directives,
         setting corresponding colorizer ivars.
         """
-    
+
         p = p.copy() ; c = self.c
         if c == None: return # self.c may be None for testing.
-    
+
         self.language = language = c.target_language
         self.comment_string = None
         self.rootMode = None # None, "code" or "doc"
-        
+
         for p in p.self_and_parents_iter():
             # g.trace(p)
             s = p.v.t.bodyString
@@ -1581,11 +1581,11 @@ class baseColorizer:
             #@        << Test for @comment or @language >>
             #@+node:ekr.20060530091119.65:<< Test for @comment or @language >>
             # @comment and @language may coexist in the same node.
-            
+
             if theDict.has_key("comment"):
                 k = theDict["comment"]
                 self.comment_string = s[k:]
-            
+
             if theDict.has_key("language"):
                 i = theDict["language"]
                 tag = "@language"
@@ -1593,7 +1593,7 @@ class baseColorizer:
                 i = g.skip_ws(s,i+len(tag))
                 j = g.skip_c_id(s,i)
                 self.language = s[i:j].lower()
-            
+
             if theDict.has_key("comment") or theDict.has_key("language"):
                 break
             #@nonl
@@ -1602,7 +1602,7 @@ class baseColorizer:
             #@        << Test for @root, @root-doc or @root-code >>
             #@+node:ekr.20060530091119.66:<< Test for @root, @root-doc or @root-code >>
             if theDict.has_key("root") and not self.rootMode:
-            
+
                 k = theDict["root"]
                 if g.match_word(s,k,"@root-code"):
                     self.rootMode = "code"
@@ -1614,66 +1614,66 @@ class baseColorizer:
             #@nonl
             #@-node:ekr.20060530091119.66:<< Test for @root, @root-doc or @root-code >>
             #@nl
-            
+
         # g.trace(self.language)
-    
+
         return self.language # For use by external routines.
     #@nonl
     #@-node:ekr.20060530091119.64:scanColorDirectives
     #@+node:ekr.20060530091119.67:setFontFromConfig
     def setFontFromConfig (self):
-        
+
         c = self.c
-        
+
         self.bold_font = c.config.getFontFromParams(
             "body_text_font_family", "body_text_font_size",
             "body_text_font_slant",  "body_text_font_weight",
             c.config.defaultBodyFontSize) # , tag = "colorer bold")
-        
+
         if self.bold_font:
             self.bold_font.configure(weight="bold")
-        
+
         self.italic_font = c.config.getFontFromParams(
             "body_text_font_family", "body_text_font_size",
             "body_text_font_slant",  "body_text_font_weight",
             c.config.defaultBodyFontSize) # , tag = "colorer italic")
-            
+
         if self.italic_font:
             self.italic_font.configure(slant="italic",weight="normal")
-        
+
         self.bolditalic_font = c.config.getFontFromParams(
             "body_text_font_family", "body_text_font_size",
             "body_text_font_slant",  "body_text_font_weight",
             c.config.defaultBodyFontSize) # , tag = "colorer bold italic")
-            
+
         if self.bolditalic_font:
             self.bolditalic_font.configure(weight="bold",slant="italic")
-            
+
         self.color_tags_list = []
         self.image_references = []
     #@nonl
     #@-node:ekr.20060530091119.67:setFontFromConfig
     #@+node:ekr.20060530091119.19:tagAll
     def tagAll (self):
-    
+
         w = self.w
         # g.trace(len(self.tagList)/3,w)
-        
+
         for tag,x1,x2 in self.tagList:
-    
+
             # Remove any old tags from the range.
             for tag2 in w.tag_names(x1):
                 w.tag_remove(tag2,x1,x2)
-                
+
             # Add the new tag.
             w.tag_add(tag,x1,x2)
-            
+
         w.update_idletasks()
     #@nonl
     #@-node:ekr.20060530091119.19:tagAll
     #@+node:ekr.20060827121307:trace_match
     def trace_match(self,kind,s,i,j):
-        
+
         if j != i and self.trace_match_flag:
             g.trace(kind,i,j,g.callers(4),self.dump(s[i:j]))
     #@nonl
@@ -1690,31 +1690,31 @@ class colorizer (baseColorizer):
 #@<< class nullColorizer (colorizer) >>
 #@+node:ekr.20060530091119.68:<< class nullColorizer (colorizer) >>
 class nullColorizer (colorizer):
-    
+
     """A do-nothing colorer class"""
-    
+
     #@    @+others
     #@+node:ekr.20060530091119.69:__init__
     def __init__ (self,c):
-        
+
         colorizer.__init__(self,c) # init the base class.
-    
+
         self.c = c
         self.enabled = False
     #@-node:ekr.20060530091119.69:__init__
     #@+node:ekr.20060530091119.70:entry points
     def colorize(self,p,incremental=False): pass
-    
+
     def disable(self): pass
-        
+
     def enable(self): pass
-            
+
     def recolor_range(self,p,leading,trailing): pass
-    
+
     def scanColorDirectives(self,p): pass
-        
+
     def schedule(self,p,incremental=0): pass
-    
+
     def updateSyntaxColorer (self,p): pass
     #@nonl
     #@-node:ekr.20060530091119.70:entry points

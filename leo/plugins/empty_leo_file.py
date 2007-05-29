@@ -46,7 +46,7 @@ if 1:  # Ok for unit testing.  Only rewrites empty files.
 
     # Register the handlers...
     leoPlugins.registerHandler("open1", onOpen)
-    
+
     __version__ = "1.2"
     g.plugin_signon(__name__)
 #@nonl

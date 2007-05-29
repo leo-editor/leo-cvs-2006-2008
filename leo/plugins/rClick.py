@@ -53,7 +53,7 @@ __version__ = "0.12"
 #@+node:ekr.20060108122501:Module-level
 #@+node:ekr.20060108122501.1:init
 def init ():
-    
+
     if not Tk: return False # OK for unit tests.
 
     if g.app.gui is None:
@@ -65,14 +65,14 @@ def init ():
         leoPlugins.registerHandler("after-create-leo-frame",rClickbinder)
         leoPlugins.registerHandler("bodyrclick1",rClicker)
         g.plugin_signon(__name__)
-        
+
     return ok
 #@-node:ekr.20060108122501.1:init
 #@+node:ekr.20040422072343.5:rClickbinder
 def rClickbinder(tag,keywords):
 
     c = keywords.get('c')
-    
+
     if c and c.exists:
         c.frame.log.logCtrl.bind('<Button-3>',c.frame.OnBodyRClick)
 #@-node:ekr.20040422072343.5:rClickbinder
@@ -80,7 +80,7 @@ def rClickbinder(tag,keywords):
 # EKR: it is not necessary to catch exceptions or to return "break".
 
 def rClicker(tag,keywords):
-    
+
     c = keywords.get("c")
     e = keywords.get("event")
     if not c or not c.exists or not e: return
@@ -115,15 +115,14 @@ def rClicker(tag,keywords):
             ('Dedent',c.dedentBody),  
             ('Find Bracket',c.findMatchingBracket),
             ('Insert newline', rc_nlCallback),
-            
+
             # this option seems not working, at least in win32
             # replaced with context-sensitive "pydoc help"  --Maxim Krikun
             # ('Help(txt)',rc_helpCallback),   #how to highlight 'txt' in the menu?
-            
+
             ('Execute Script',c.executeScript)
             # ('-||-|-||-',None),   # 1st & last needed because of freaky sticky finger
             ]
-        #@nonl
         #@-node:ekr.20040422072343.7:<< define commandList for body >>
         #@nl
         #@        << add entries for context sensitive commands in body >>
@@ -143,7 +142,7 @@ def rClicker(tag,keywords):
         # 
         #@-at
         #@@c
-        
+
         #@<< get text and word from the body text >>
         #@+node:ekr.20040422073911:<< get text and word from the body text >>
         text = c.frame.body.getSelectedText()
@@ -162,31 +161,30 @@ def rClicker(tag,keywords):
             # i,j = g.getLine(s,index)
             #word=getword(text,int(p0))
             #row,col = g.convertPythonIndexToRowCol(s,ins)
-            
+
             i,j = g.getLine(s,ins)
             text = s[i:j]
             i,j = g.getWord(s,ins)
             word = s[i:j]
-            
-        #@nonl
+
         #@-node:ekr.20040422073911:<< get text and word from the body text >>
         #@nl
-        
+
         if 0:
             g.es("selected text: "+text)
             g.es("selected word: "+repr(word))
-        
+
         contextCommands=[]
-        
+
         #@<< add entry for open url >>
         #@+node:ekr.20040422072343.13:<< add entry for open url >>
         scan_url_re="""(http|https|ftp)://([^/?#\s'"]*)([^?#\s"']*)(\\?([^#\s"']*))?(#(.*))?"""
-        
+
         for match in re.finditer(scan_url_re, text):
-            
+
             #get the underlying text
             url=match.group()
-            
+
             #create new command callback
             def url_open_command(*k,**kk):
                 import webbrowser
@@ -194,17 +192,16 @@ def rClicker(tag,keywords):
                     webbrowser.open_new(url)
                 except:
                     g.es("not found: " + url,color='red')
-        
+
             #add to menu
             menu_item=( 'Open URL: '+crop(url,30), url_open_command)
             contextCommands.append( menu_item )
-        #@nonl
         #@-node:ekr.20040422072343.13:<< add entry for open url >>
         #@nl
         #@<< add entry for jump to section >>
         #@+node:ekr.20040422072343.14:<< add entry for jump to section >>
         scan_jump_re="<"+"<[^<>]+>"+">"
-        
+
         p=c.currentPosition()
         for match in re.finditer(scan_jump_re,text):
             name=match.group()
@@ -239,13 +236,13 @@ def rClicker(tag,keywords):
                     print doc
                 except Exception, value:
                     g.es(str(value),color="red")
-            
+
             menu_item=('Help on: '+crop(word,30), help_command)
             contextCommands.append( menu_item )
             #@nonl
             #@-node:ekr.20040422072343.15:<< add epydoc help >>
             #@nl
-        
+
         if contextCommands:
             commandList.append(("-",None))
             commandList.extend(contextCommands)
@@ -263,7 +260,7 @@ def rClicker(tag,keywords):
         #@nonl
         #@-node:ekr.20040422072343.16:<< define commandList for log pane >>
         #@nl
-                
+
     rmenu = Tk.Menu(None,tearoff=0,takefocus=0)
     for (txt,cmd) in commandList:
         if txt == '-':
@@ -272,14 +269,13 @@ def rClicker(tag,keywords):
             rmenu.add_command(label=txt,command=cmd)
 
     rmenu.tk_popup(e.x_root-23,e.y_root+13)
-#@nonl
 #@-node:ekr.20040422072343.6:rClicker
 #@-node:ekr.20060108122501:Module-level
 #@+node:ekr.20040422072343.1:rc_help
 def rc_help(c):
-    
+
     """Highlight txt then rclick for python help() builtin."""
-    
+
     if c.frame.body.hasTextSelection():
 
         newSel = c.frame.body.getSelectedText()
@@ -287,19 +283,18 @@ def rc_help(c):
         # EKR: nothing bad happens if the status line does not exist.
         c.frame.clearStatusLine()
         c.frame.putStatusLine(' Help for '+newSel) 
-    
+
         # Redirect stdout to a "file like object".
         sys.stdout = fo = g.fileLikeObject()
-    
+
         # Python's builtin help function writes to stdout.
         help(str(newSel))
-        
+
         # Restore original stdout.
         sys.stdout = sys.__stdout__
 
         # Print what was written to fo.
         s = fo.get() ; g.es(s) ; print s
-#@nonl
 #@-node:ekr.20040422072343.1:rc_help
 #@+node:ekr.20040422072343.2:rc_dbody
 def rc_dbody(c):
@@ -311,36 +306,33 @@ def rc_dbody(c):
 #@-node:ekr.20040422072343.2:rc_dbody
 #@+node:ekr.20040422072343.3:rc_nl
 def rc_nl(c):
-    
+
     """Insert a newline at the current curser position."""
-    
+
     w = c.frame.body.bodyCtrl
-    
+
     if w:
         ins = w.getInsertPoint()
         w.insert(ins,'\n')
         c.frame.body.onBodyChanged("Typing")
-#@nonl
 #@-node:ekr.20040422072343.3:rc_nl
 #@+node:ekr.20040422072343.4:rc_selectAll
 def rc_selectAll(c):
-    
+
     """Select the entire log pane."""
-    
+
     c.frame.log.logCtrl.selectAllText()
-#@nonl
 #@-node:ekr.20040422072343.4:rc_selectAll
 #@+node:ekr.20040422072343.9:Utils for context sensitive commands
 #@+node:ekr.20040422072343.10:crop
 def crop(s,n=20,end="..."):
 
     """return a part of string s, no more than n characters; optionally add ... at the end"""
-    
+
     if len(s)<=n:
         return s
     else:
         return s[:n]+end # EKR
-#@nonl
 #@-node:ekr.20040422072343.10:crop
 #@+node:ekr.20040422072343.11:getword
 def getword(s,pos):
@@ -354,7 +346,7 @@ def getword(s,pos):
 #@-node:ekr.20040422072343.11:getword
 #@+node:ekr.20040422072343.12:getdoc
 def getdoc(thing, title='Help on %s', forceload=0):
-    
+
     #g.trace(thing)
 
     if 1: # Both seem to work.
@@ -381,7 +373,6 @@ def getdoc(thing, title='Help on %s', forceload=0):
             desc += ' in module ' + module.__name__
         doc = title % desc + '\n\n' + text.document(object, name)
         return plain(doc)
-#@nonl
 #@-node:ekr.20040422072343.12:getdoc
 #@-node:ekr.20040422072343.9:Utils for context sensitive commands
 #@-others

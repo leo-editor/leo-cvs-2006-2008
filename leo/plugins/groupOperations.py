@@ -81,10 +81,10 @@ __version__ = ".7"
 def init ():
 
     if not (Tkinter and sets): return False
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
@@ -98,7 +98,7 @@ def init ():
 #@-node:ekr.20050226114442:init
 #@+node:ekr.20070301091021:initImages
 def initImages ():
-    
+
     #@    << define images >>
     #@+node:ekr.20070301105150:<< define images >>
     groupOps = r'''R0lGODlhZAAUAMZpAB8xvCAyvCEzvSIzvSM0vSM1vSQ2viU3viY3vig5vyk6vyo7vyo8vys8wCw9
@@ -116,33 +116,33 @@ def initImages ():
     I5GTAJ4iwEQhANSVCQBOXqYhAABl0lZOmABAMegIABVfuoQ8Ai3w4BE2tcjoQY+gzL8AxtC7m9fh
     WVc3dmSZqQhKCAIWdNRN84WGggU4wqThoWACyxMFWHghBIUaKlXQcOve4gJBgxy7g7kgIAFB1BoE
     SNBr/To20jRBIgzYQETY1qSOpHkf/0h8I/Pk06tfz769+/fw48ufT7++/fv48xMKBAA7'''
-    
+
     bullseye=r'''R0lGODlhCgAKAKECAOcxcf/9/f///////ywAAAAACgAKAAACGpSBYIsRyMCTsMk36cR2084p1hc5
     0CIkilEAADs='''
-    
+
     copy=r'''R0lGODlhCgAKAIABANupWv///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
     A6eYy62AhGbai+WjZ7rKRUsBADs='''
-    
+
     clone=r'''R0lGODlhCgAKAIABADeHHv///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
     A6eYy62AhGbai+WjZ7rKRUsBADs='''
-    
+
     move=r'''R0lGODlhCgAKAIABAB89vP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAAAoACgAAAhOM
     A6eYy62AhGbai+WjZ7rKRUsBADs='''
-    
+
     move_Arrow=r'''R0lGODlhMgAUAIABAB89vP///ywAAAAAMgAUAAACToyPqcvtD6OctNqLs94WKOAZIPeMiRmg5KeK
     YRqC3ju3kfwec8rTPSyj4Ia7Ik/0ywmJwZgR2dRVcB/kMWgFXrArjK0rBIvH5LL5jD4UAAA7'''
-    
+
     copy_Arrow=r'''R0lGODlhMgAUAIABANupWv///ywAAAAAMgAUAAACSYyPqcvtD6OctNqLs94WLAByUph4hik2IHoq
     6/mi7LTO9uHJ+FX3JLzT5Xi+GEwYnFFqH9IrwGxlnrQS5zdCYKeprvcLDovHlwIAOw=='''
-    
+
     clone_Arrow=r'''R0lGODlhMgAUAIABADeHHv///ywAAAAAMgAUAAACTYyPqcvtD6OctNqLcwbcAC19iRh8JNh0yOl5
     KkfClrwq5nGXJcw+/FjL6URCCu+Y6wiTulYISYu6iE7a5IfSWLMYFXfzDYvH5LL5/CgAADs='''
-    
+
     markSpot=r'''R0lGODlhZAAUAKECAOcxcf/9/f///////ywAAAAAZAAUAAACk5SPqcvtD6OctNqLs968+w+G4kiW
     JIACCHqwj5qkqdmhQeAKed7Aiq8BjmxE2M630ymFyhVyOdOxokMA7madLptGw3MB7HJb0hkTlMWl
     VeztytviwX/zp/D8Wa+57XHT/UbmZ0eG50GEpTboJfMnJshoFsdnZFiThUnTA6kZY6XYyUAV6ilH
     eoqaqrrK2ur6CitRAAA7'''
-    
+
     markFor=r'''R0lGODlhZAAUAKU+AB8xvCEzvSM0vSM1vSQ2viU3vio7vz9OxUBPxk5dyk9dylBey1Ffy1Jgy1Nh
     zFRhzFVizF9sz2h00m971HF81HJ91XR/1XiD13mE13yH2H2H2ICK2YiR24+Y3ZCZ3pKb3pSc35Wd
     35eg4Jig4J2l4qOq46Wt5LW76bi+6rq/6sLH7cTJ7c7S8M/T8dTX8tXY8tbZ89ve9N3f9d/h9d/i
@@ -151,7 +151,7 @@ def initImages ():
     QGLn2ynWSjxRDwcDOCo+KxxrLAcGH0IAHgI+AD0ZKXtENQ0EDjWOjI59VAAwFj4XL2sIKDYBiiQ5
     jiIgRW5pDiU5JRCOq51Vjws4DT1pPCchI2sAdI4TFLBEAjo+OQOOyLpTaR4YHZwpADctAM94jxIu
     k0MNJjolD5zVnj4zADGcORUFGw8X7ZwyEeZCNBgMaJBJnLuDCBMqXMiwocOHECNKnEhxTBAAOw=='''
-    
+
     operateOnMarked=r'''R0lGODlhZAAUAMZjAB8xvCEzvSIzvSM0vSM1vSQ2viU3viY3vio7vz5NxT9OxUBPxkFRxkJRx0NS
     x0RTx0VUx0ZVyEdWyEpZyU5cyk5dyk9dylBey1Ffy1Jgy1NhzFRhzFVizFdlzVxpzl9sz2Fu0GNv
     0Gh00m971HF81HJ91XJ+1XR/1XiD13mE13yH2H2H2ICK2YKM2oON2oiR24+Y3ZCZ3pKb3pSc35Wd
@@ -167,7 +167,7 @@ def initImages ():
     bASJMZ1YBQ1YSpQQkAhOvjiRUMSZjy45NHio0YVHCLBjigDIsgSAVseDCx8WlOGHlx4bEA9rFSMF
     DLCKGTtG/E/Ek8iGNejo4qOuXQYCIBjh56IABStaOhDYoAVxlxIGWGxAMWaCg9y7ewuygoFAhnZW
     w46pAmAK2N/Bh5NuReUDct4FA5hwrYj8qfOUzKNfz769+/fw48ufT7++/fv47wcCADs='''
-    
+
     clearMarks=r'''R0lGODlhZAAUAMZoAB8xvCEzvSIzvSM0vSM1vSU3viY3vik6vyo7vy9AwTJDwjREwjVFwzZGwzlJ
     xD9OxUBPxkdWyEtZyU5cyk5dyk9dylBey1Jgy1RhzFdlzVxpzl5rz19sz2Ju0GNv0GZy0Wh00mt3
     02x402971HF81HJ91XR/1XiD13mE13yH2H2H2ICK2YGL2YKM2oiR24+Y3ZCZ3pKb3pSc35Wd35ae
@@ -181,7 +181,7 @@ def initImages ():
     fgBsyEBzAEqWCEDaJZLARBAYB7oIhBlkJsiMG68A9MJ2xkKXC2dSdfwYciSAESTQEIlBg0USiYiE
     SKDipQWrVBpqiNnhoQiAK0sAjNEVDwaKF7qMIlXKlByIJgyodOmAASciHgoKgOCiC0sGAhiwiClR
     YAWGEyxVB6WqAkCKrrVt31ZNNYVDjwQFNlTxSriw4cOIEytezLix48eQI0ueTPlQIAA7'''
-    
+
     transferFrom = r'''R0lGODlhZAAUAMZUAB8xvCEzvSIzvSM0vSM1vSQ2viU3viY3vik6vyo7vy9AwTVFwzZGwzpKxD9O
     xUBPxkdWyE5cyk5dylFfy1Jgy1NhzFRhzFVizFdlzVpnzlxpzl5rz2Ju0GNv0GRx0Wx402561HJ9
     1XR/1XiD13mE14CK2YGL2YWP2ouU3JCZ3pKb3pWd35ae35af4Jig4J2l4qKp46Oq46Wt5Kat5K61
@@ -253,7 +253,7 @@ def drawArrowImages (p,image,canvas):
 #@-node:mork.20041018131258.35:drawArrowImages
 #@+node:mork.20041018131258.36:addMenu & helper
 def addMenu (tag,keywords):
-   
+
     global lassoers
     c = keywords.get('c')
     if not c or not c.exists or c in lassoers.keys(): return
@@ -309,7 +309,7 @@ class Lassoer(object):
     #@	@+others
     #@+node:mork.20041018131258.7:__init__
     def __init__( self , c ):
-    
+
         self.nodes = []
         self.c = c
         self.k = k = c.k
@@ -319,7 +319,7 @@ class Lassoer(object):
         self.mvForClone = []
         self.moveNode = None
         self.canvases = sets.Set()
-    
+
         for commandName,func in (
             ('group-operations-clear-marked',       self.clear),
             ('group-operations-mark-for-move',      self.addForMove),
@@ -334,17 +334,17 @@ class Lassoer(object):
     #@-node:mork.20041018131258.7:__init__
     #@+node:mork.20041018131258.6:__lcmp__
     def __lcmp__ (p1,p2):
-    
+
         if   p1.v.icony >  p2.v.icony: return  1
         elif p1.v.icony <  p2.v.icony: return -1
         elif p1.v.icony == p2.v.icony: return  0
-    
+
     __lcmp__ = staticmethod(__lcmp__)
     #@nonl
     #@-node:mork.20041018131258.6:__lcmp__
     #@+node:mork.20041019124112:__len__
     def __len__( self ):
-        
+
         return len( self.mvForClone ) + \
                len( self.mvForCopy ) + \
                len( self.mvForM )
@@ -352,11 +352,11 @@ class Lassoer(object):
     #@+node:ekr.20060325094821:Commands
     #@+node:mork.20041018131258.9:addForMove
     def addForMove (self,event=None):
-    
+
         c = self.c ; p = c.currentPosition()
         aList = self.mvForM ; justRmv = p in aList
         # g.trace(justRmv)
-    
+
         self.remove(p)
         if not justRmv:
             aList.append(p)
@@ -368,10 +368,10 @@ class Lassoer(object):
     #@-node:mork.20041018131258.9:addForMove
     #@+node:mork.20041019102247:addForCopy
     def addForCopy (self,event=None):
-    
+
         c = self.c ; p = c.currentPosition()
         aList = self.mvForCopy ; justRmv = p in aList
-    
+
         self.remove(p)
         if not justRmv:
             aList.append(p)
@@ -383,10 +383,10 @@ class Lassoer(object):
     #@-node:mork.20041019102247:addForCopy
     #@+node:mork.20041019102247.1:addForClone
     def addForClone (self,event=None):
-        
+
         c = self.c ; p = self.c.currentPosition()
         aList = self.mvForClone ; justRmv = p in aList
-    
+
         self.remove(p)
         if not justRmv:
             aList.append(p)
@@ -398,7 +398,7 @@ class Lassoer(object):
     #@-node:mork.20041019102247.1:addForClone
     #@+node:mork.20041018131258.11:clear
     def clear (self,event=None):
-    
+
         self.mvForM = []
         self.mvForCopy = []
         self.mvForClone = []
@@ -410,23 +410,23 @@ class Lassoer(object):
     #@-node:mork.20041018131258.11:clear
     #@+node:mork.20041019121125:markTarget
     def markTarget (self,event=None):
-        
+
         c = self.c ; p = c.currentPosition()
-    
+
         if p == self.moveNode:
             self.moveNode = None
         else:
             self.remove(p)
             self.moveNode = p
-    
+
         c.redraw()
     #@nonl
     #@-node:mork.20041019121125:markTarget
     #@+node:ekr.20060325113340:operateOnMarked
     def operateOnMarked (self,event=None):
-        
+
         c = self.c
-    
+
         if self.validMove():
             c.beginUpdate()
             self.moveTo()
@@ -440,9 +440,9 @@ class Lassoer(object):
     #@-node:ekr.20060325113340:operateOnMarked
     #@+node:mork.20041019125724.3:transfer
     def transfer (self,event=None,lassoer=None):
-        
+
         '''Inter-window transfer.'''
-    
+
         c = self.c
         if not lassoer.validMove():
             g.es('Transfer not valid',color='blue')
@@ -467,7 +467,7 @@ class Lassoer(object):
     #@+node:ekr.20060325103727:Utils
     #@+node:mork.20041019125724:copyTo
     def copyTo( self, mN = None ):
-    
+
         if not mN: mN = self.moveNode
         for z in self.mvForCopy:
             nn = mN.insertAfter()
@@ -477,7 +477,7 @@ class Lassoer(object):
     #@-node:mork.20041019125724:copyTo
     #@+node:mork.20041019125724.1:cloneTo
     def cloneTo (self,mN=None):
-    
+
         if not mN: mN = self.moveNode
         for z in self.mvForClone:
             clo = z.clone()
@@ -486,7 +486,7 @@ class Lassoer(object):
     #@-node:mork.20041019125724.1:cloneTo
     #@+node:mork.20041019125724.2:moveTo
     def moveTo (self,mN=None):
-    
+
         if not mN: mN = self.moveNode
         for z in self.mvForM:
             if z.isRoot():
@@ -500,37 +500,37 @@ class Lassoer(object):
             else:
                 z.moveAfter(mN)
                 mN = z
-    
-    
+
+
     #@-node:mork.20041019125724.2:moveTo
     #@+node:ekr.20060325113814:reset
     def reset (self):
-        
+
         self.clear()
         self.c.redraw()
     #@nonl
     #@-node:ekr.20060325113814:reset
     #@+node:mork.20041018131258.10:remove
     def remove (self,p):
-        
+
         c = self.c
-        
+
         for aList in (self.mvForCopy, self.mvForClone, self.mvForM):
             if p in aList: aList.remove(p)
-    
+
         if p == self.moveNode:
             self.moveNode = None
     #@nonl
     #@-node:mork.20041018131258.10:remove
     #@+node:mork.20041019121125.1:contains
     def contains (self,p):
-        
+
         return p in self.mvForClone or p in self.mvForCopy or p in self.mvForM
     #@nonl
     #@-node:mork.20041019121125.1:contains
     #@+node:mork.20041019151511:validMove
     def validMove (self):
-    
+
         return self.moveNode and self.c.positionExists(self.moveNode)
     #@nonl
     #@-node:mork.20041019151511:validMove

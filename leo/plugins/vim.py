@@ -7,7 +7,7 @@
 *** The open_with plugin must be enabled for this plugin to work properly!***
 
 When properly installed, this plugin does the following:
-    
+
 - Double clicking on a node's icon opens that node in VIM. You can open nodes in
 VIM with a single-click if you set useDoubleClick = False. However, that
 interfere's with Leo's dragging logic.
@@ -15,9 +15,9 @@ interfere's with Leo's dragging logic.
 - Leo will update the node in the outline when you save the file in VIM.
 
 To install this plugin do the following:
-    
+
 1. Make sure to enable open_with plugin.
-    
+
 2. Set the vim_cmd and vim_exe settings to the path to vim or gvim as shown in leoSettings.leo.
 
 3. If you are using Python 2.4 or above, that's all you need to do. Jim
@@ -26,23 +26,23 @@ module. The subprocess module comes standard with Python 2.4. For Linux systems,
 Leo will use subprocess.py in Leo's extensions folder if necessary.
 
 On Windows, you can install Python's subprocess module in Python 2.2 or 2.3 as follows:
-    
+
     - Go to http://www.effbot.org/downloads/#subprocess
 
     - Download and execute one of the following installers, depending on your verions of Python:
         subprocess-0.1-20041012.win32-py2.3.exe 
         subprocess-0.1-20041012.win32-py2.2.exe
-        
+
 This installer installs the subprocess sources and also _subprocess.pyd in Python's site-packages folder.
-        
+
 4. If you **don't** have Python's subprocess module available you must start the vim server in one of two ways:
-            
+
 - **Manually**, from a console::
-    
+
     vim --servername "LEO" # The name of the server *must* be LEO.
 
 - **Automatically**, when Leo starts up.  Uncomment the following line in the init function::
-    
+
     os.system(_vim_cmd) # Don't do this if using Python 2.4 or above!
 '''
 #@-node:ekr.20050226184411:<< docstring >>
@@ -216,9 +216,9 @@ else:
 #@+others
 #@+node:ekr.20050226184624:init
 def init ():
-    
+
     ok = not g.app.unitTesting # Don't conflict with xemacs plugin.
-    
+
     if ok:
         # Register the handlers...
         if useDoubleClick:
@@ -227,28 +227,28 @@ def init ():
         else:
             # Open on single click: interferes with dragging.
             leoPlugins.registerHandler("iconclick2",open_in_vim,val=True)
-        
+
         # Enable the os.system call if you want to start a (g)vim server when Leo starts.
         if 0:
             os.system(_vim_cmd)
-        
+
         g.plugin_signon(__name__)
-    
+
     return ok
 #@nonl
 #@-node:ekr.20050226184624:init
 #@+node:EKR.20040517075715.11:open_in_vim
 def open_in_vim (tag,keywords,val=None):
-    
+
     # g.trace(keywords)
     c = keywords.get('c')
     p = keywords.get("p")
     if not c or not p: return
     v = p.v
-    
+
     vim_cmd = c.config.getString('vim_cmd') or _vim_cmd
     vim_exe = c.config.getString('vim_exe') or _vim_exe
-    
+
     # Search g.app.openWithFiles for a file corresponding to v.
     for d in g.app.openWithFiles:
         if d.get('v') == id(v):
@@ -281,7 +281,7 @@ def open_in_vim (tag,keywords,val=None):
     else:
         # Reopen the old temp file.
         os.system(vim_cmd+"--remote-send '<C-\\><C-N>:e "+path+"<CR>'")
-        
+
     return val
 #@nonl
 #@-node:EKR.20040517075715.11:open_in_vim

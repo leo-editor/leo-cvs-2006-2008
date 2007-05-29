@@ -20,7 +20,7 @@ def printIdleRefs(tag,keywords):
 #@-node:ekr.20050111084900:printIdleRefs
 #@+node:ekr.20050111084900.1:printIdleGC
 def printIdleGC(tag,keywords):
-    
+
     # Calling printGc is too expensive to do on every idle call.
     if g.app.killed:
         return # Work around a Tk bug.
@@ -33,7 +33,7 @@ def printIdleGC(tag,keywords):
 #@nonl
 #@-node:ekr.20050111084900.1:printIdleGC
 #@-others
-        
+
 if not g.app.unitTesting: # Not for unit testing.
 
     # Register the handlers...
@@ -43,7 +43,7 @@ if not g.app.unitTesting: # Not for unit testing.
         leoPlugins.registerHandler("all", printIdleGC)
     if 0: # Another idea.
         leoPlugins.registerHandler("command2", printIdleRefs)
-    
+
     __version__ = "1.3"
     g.plugin_signon(__name__)
 #@nonl

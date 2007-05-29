@@ -99,7 +99,7 @@ OPTION_DICT = dict(OPTION_LIST)
 #@+others
 #@+node:ekr.20040909132007:onCreate
 def onCreate(tag, keywords):
-    
+
     # Not ok for unit testing: can't use unitTestGui.
     if g.app.unitTesting:
         return
@@ -117,7 +117,7 @@ class SearchBox:
     #@    @+others
     #@+node:ekr.20040909132007.1:ctor
     def __init__ (self,c):
-        
+
         self.c = c
     #@nonl
     #@-node:ekr.20040909132007.1:ctor
@@ -136,7 +136,7 @@ class SearchBox:
     #@+node:ekr.20040108054555.3:addWidgets
     def addWidgets(self):
         """Add the widgets to the navigation bar"""
-        
+
         c = self.c ; toolbar = c.frame.iconFrame
         # Button.
         self.go = Tk.Button(self._getSizer(toolbar, 25, 32), text="GO", command=self.doSearch)
@@ -157,7 +157,7 @@ class SearchBox:
     #@-node:ekr.20040108054555.3:addWidgets
     #@+node:ekr.20040107092135.5:doSearch
     def doSearch(self,*args,**keys):
-        
+
         """Do the actual search"""
         # import pdb; pdb.set_trace()
         c = self.c
@@ -166,13 +166,13 @@ class SearchBox:
         search_mode = self.option_value.get() 
         new_find = QuickFind(c,text,search_mode)
         old_find, c.frame.findPanel = c.frame.findPanel, new_find
-    
+
         # Do the search.
         c.findNext()
-    
+
         # Restore the find frame.
         c.frame.findPanel = old_find
-        
+
         # Remember this list 
         self.updateRecentList(text, search_mode) 
         if 0: # This doesn't work yet: the user can't see the match.
@@ -210,18 +210,18 @@ class SearchBox:
     #@+node:ekr.20040108054555.7:updateRecentList
     def updateRecentList(self, text, search_mode):
         """Update the list of recently searched items"""
-    
+
         # First update the menu - delete all the options if there are any
         menu = self.options["menu"]
         if self.search_list:
             menu.delete(len(OPTION_LIST),"end")
-    
+
         menu.add_command(label="-------------", command=lambda:0) 
-    
+
         # Update and prune list to remove a previous search for this text 
         self.search_list = [(text, search_mode)] +  [
             (name, mode) for name, mode in self.search_list[:SEARCH_LIST_LENGTH] if name <> text] 
-    
+
         # Now update the menu 
         for name, mode in self.search_list:
             menu.add_command(
@@ -233,18 +233,18 @@ class SearchBox:
 #@-node:ekr.20040107092135.3:class SearchBox
 #@+node:ekr.20040107092135.6:class QuickFind
 class QuickFind(leoFind.leoFind):
-    
+
     """A class for quick searching"""
-    
+
     #@    @+others
     #@+node:ekr.20040107092135.7:__init__
     def __init__(self,c,text,search_option=""):
-        
+
         """Initialize the finder"""
-    
+
         # Init the base class.
         leoFind.leoFind.__init__(self,c)
-        
+
         self.c = c
         self.p = c.currentPosition() # Bug fix: 5/14/06
         self.s_ctrl = Tk.Text() # Used by find.search()
@@ -254,18 +254,18 @@ class QuickFind(leoFind.leoFind):
     #@-node:ekr.20040107092135.7:__init__
     #@+node:ekr.20040107092135.8:update_ivars
     # Modified from leoTkinterFind.update_ivars.
-    
+
     def update_ivars (self):
-        
+
         """Called just before doing a find to update ivars."""
-    
+
         for key in self.intKeys:
             # g.trace('settattr',key,False)
             setattr(self, key,False)
-    
+
         self.change_text = ""
         self.find_text = self.__find_text
-    
+
         # Set options from OPTIONS_DICT.
         for flag_name in OPTION_DICT[self.search_option]: 
             if flag_name.startswith("!"): 
@@ -280,7 +280,7 @@ class QuickFind(leoFind.leoFind):
     #@-node:ekr.20040107092135.8:update_ivars
     #@+node:ekr.20040107103252:init_s_ctrl
     def init_s_ctrl (self,s):
-        
+
         t = self.s_ctrl
         t.delete("1.0","end")
         t.insert("end",s)
@@ -290,7 +290,7 @@ class QuickFind(leoFind.leoFind):
     #@-node:ekr.20040107103252:init_s_ctrl
     #@+node:ekr.20040107103339:gui_search
     def gui_search (self,t,*args,**keys):
-    
+
         return t.search(*args,**keys)
     #@nonl
     #@-node:ekr.20040107103339:gui_search

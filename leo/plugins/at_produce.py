@@ -72,15 +72,15 @@ pr = '@' + 'produce'
 #@+others
 #@+node:ekr.20050311110629.1:init
 def init ():
-    
+
     ok = Tk is not None
-    
+
     if ok: # Ok for unit testing: adds menu and new directive.
 
         leoPlugins.registerHandler( ('new','open2') , addMenu )
         g.globalDirectiveList.append( 'produce' ) 
         g.plugin_signon( __name__ )
-    
+
     return ok
 #@nonl
 #@-node:ekr.20050311110629.1:init
@@ -101,7 +101,7 @@ def makeProduceList( c, root = True ):
         body = filter(teststart, body)
         if body:
             map( lambda i : pl.append( i ), body )
-    
+
     return pl
 #@nonl
 #@+node:ekr.20040915085351.3:teststart
@@ -164,7 +164,7 @@ def exeProduce(  c, root = True ):
 #@-node:ekr.20040915085351.5:exeProduce
 #@+node:ekr.20040915085351.7:addMenu
 def addMenu( tag, keywords ):
-    
+
     c = keywords.get('c')
     if not c: return
 

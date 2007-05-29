@@ -15,7 +15,7 @@ section references. To do so, go the Outline menu and select the
 it adds a node/nodes to the current tree.
 
 To see this in action, do the following:
-    
+
 0. **Important**: in the examples below, type << instead of < < and
    type >> instead of > >.  Docstrings can not contain section references!
 
@@ -26,11 +26,11 @@ I mmmm sooo happy I could < < 1$ > >.  But I dont know if I have all the < < 2$ 
 money in the world.
 
 2. In a node called A, type::
-    
+
 < < meow( purrrrrr, zzooot ) > > (leave the cursor at the end of the line)
 
 3. In a node called B, type::
-    
+
 < < meow ( spit or puke, blinkin  ) > > (leave the cursor at the end of the line)
 
 4. Leave the cursor in Node A at the designated point.
@@ -92,7 +92,7 @@ import re
 #@+others
 #@+node:ekr.20070302121133:init
 def init ():
-    
+
     # Ok for unit testing: adds command to Outline menu.
     leoPlugins.registerHandler( ('new','open2') ,onCreate)
     g.plugin_signon(__name__)
@@ -100,7 +100,7 @@ def init ():
 #@-node:ekr.20070302121133:init
 #@+node:ekr.20040916091520.1:onCreate
 def onCreate(tag,keywords):
-    
+
     c = keywords.get("c")
     if c:
         paramClass(c)
@@ -108,55 +108,55 @@ def onCreate(tag,keywords):
 #@-node:ekr.20040916091520.1:onCreate
 #@+node:ekr.20040916091520.2:class paramClass
 class paramClass:
-    
+
     #@    @+others
     #@+node:ekr.20040916091520.3:__init__
     def __init__ (self,c):
-        
+
         self.c = c
         self.body = c.frame.body
         self.params = None
         self.pattern = g.angleBrackets(r'\w*?\(([^,]*?,)*?([^,])+?\)') + '$'
         self.regex = re.compile(self.pattern)
-    
+
         if g.app.gui.guiName() == 'tkinter':
             self.addMenu()
     #@-node:ekr.20040916091520.3:__init__
     #@+node:ekr.20040916084945.1:macros.parameterize
     def parameterize (self,event=None):
-    
+
         c = self.c
         tree = c.frame.tree
         body = c.frame.body
         w = body.bodyCtrl
         current = c.currentVnode()
-    
+
         if not self.params:
             self.params = self.findParameters(current)
             if not self.params: return
-    
+
         sr = body.getAllText()
         sr = sr.split('\n')
-    
+
         t = str(g.app.gui.getInsertPoint(w)).split('.')
         sr = sr [int(t[0]) -1]
         sr = sr [: int(t[1])]
         sr = sr.rstrip()
         match = self.regex.search(sr)
         if not match: return
-    
+
         sr = sr [match.start(): match.end()]
         for z in xrange(current.numberOfChildren()):
             child = current.nthChild(z)
             if child.headString == sr:
                 return
-    
+
         pieces = sr.split('(',1)
         searchline = pieces [0] + ">>"
         pieces [1] = pieces [1].rstrip('>')
         pieces [1] = pieces [1].rstrip(')')
         sections = pieces [1].split(',') ;
-    
+
         node = None
         for z in xrange(self.params.numberOfChildren()):
             child = self.params.nthChild(z)
@@ -164,7 +164,7 @@ class paramClass:
                 node = child
                 break
             return
-    
+
         bodys = node.bodyString()
         tn = leoNodes.tnode(bodys,sr)
         c.beginUpdate()
@@ -181,30 +181,30 @@ class paramClass:
     #@-node:ekr.20040916084945.1:macros.parameterize
     #@+node:ekr.20040916084945.2:findParameters
     def findParameters (self,v):
-        
+
         tag = "Parameterized Nodes"
-        
+
         if v.level() != 0:
             rnode = self.findParameters( v.parent())
-    
+
         bnode = v
         while bnode:
             if bnode.headString() == tag:
                 return bnode
             bnode = bnode.back()
-    
+
         nnode = v
         while nnode:
             if nnode.headString() == tag:
                 return nnode
             nnode = nnode.next()
-    
+
         return None
     #@nonl
     #@-node:ekr.20040916084945.2:findParameters
     #@+node:ekr.20040916084945.3:addMenu
     def addMenu(self):
-        
+
         c = self.c
         table = ("Parameterize Section Reference",None,self.parameterize),
         c.frame.menu.createMenuItemsFromTable("Outline",table,dynamicMenu=True)

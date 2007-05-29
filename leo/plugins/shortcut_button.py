@@ -40,13 +40,13 @@ __version__ = "0.4"
 #@+others
 #@+node:ekr.20060601151845.4:init
 def init ():
-    
+
     ok = Tk and mod_scripting and not g.app.unitTesting
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-            
+
         ok = g.app.gui.guiName() == "tkinter"
 
         if ok:
@@ -54,7 +54,7 @@ def init ():
             # That is, the 'after-create-leo-frame' hook is too early!
             leoPlugins.registerHandler(('new','open2'),onCreate)
             g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:ekr.20060601151845.4:init
@@ -62,7 +62,7 @@ def init ():
 def onCreate (tag, keys):
 
     """Handle the onCreate event in the chapterHoist plugin."""
-    
+
     c = keys.get('c')
 
     if c:
@@ -72,20 +72,20 @@ def onCreate (tag, keys):
 #@-node:ekr.20060601151845.5:onCreate
 #@+node:ekr.20060601151845.6:class shortcutButton
 class shortcutButton:
-    
+
     #@    @+others
     #@+node:ekr.20060601151845.7: ctor
     def __init__ (self,sc,c):
-    
+
         self.createShortcutButtonButton(sc,c)
     #@-node:ekr.20060601151845.7: ctor
     #@+node:ekr.20060601153526:createShortcutButtonButton
     def createShortcutButtonButton(self,sc,c):
-        
+
         def shortcutButtonButtonCallback(event=None,self=self,sc=sc,c=c):
             self.createShortcutButton(sc,c)
             return 'break'
-    
+
         b = sc.createIconButton(
             text='shortcut',
             command=shortcutButtonButtonCallback,
@@ -95,11 +95,11 @@ class shortcutButton:
     #@-node:ekr.20060601153526:createShortcutButtonButton
     #@+node:ekr.20060601151845.10:createShortcutButton
     def createShortcutButton (self,sc,c):
-        
+
         '''Create a button which selects the present position (when the button was created).'''
         p = c.currentPosition() ; h = p.headString()
         commandName = 'go-%s-node' % h
-        
+
         def shortcutButtonCallback (event=None,c=c,p=p):
             c.beginUpdate()
             try:
@@ -107,7 +107,7 @@ class shortcutButton:
             finally:
                 c.endUpdate()
             return 'break'
-        
+
         b = sc.createIconButton(
             text=commandName,
             command=shortcutButtonCallback,

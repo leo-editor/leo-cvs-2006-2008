@@ -46,7 +46,7 @@ from leoTkinterDialog import tkinterListBoxDialog, leoTkinterDialog
 
 if 0: # Not anymore
     from leoGlobals import * # required by read :-(.
-    
+
 Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 Pmw = g.importExtension("Pmw",pluginName=__name__,verbose=True)
 
@@ -98,7 +98,7 @@ __version__ = "1.5"
 def init ():
 
     ok = Pmw and Tk
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
@@ -112,16 +112,16 @@ def init ():
 #@-node:ekr.20050301103957.1:init
 #@+node:ekr.20050301105220:onCreate
 def onCreate (tag,keywords):
-    
+
     if g.app.unitTesting: return
-    
+
     c = keywords.get('c')
 
     controller = labelsController(c)
-    
+
     # EKR: Add an ivar to the commander for use by atFile.
     c.mod_label_controller = controller
-    
+
     leoPlugins.registerHandler("create-optional-menus",controller.onCreateOptionalMenus)
 #@nonl
 #@-node:ekr.20050301105220:onCreate
@@ -164,14 +164,14 @@ class labelsController(object):
     #@    @+others
     #@+node:ekr.20050301095332.18:__init__
     def __init__(self, c):
-    
+
         self.c = c
         self.installed = False
     #@nonl
     #@-node:ekr.20050301095332.18:__init__
     #@+node:ekr.20050301103957.3:onCreateOptionalMenus
     def onCreateOptionalMenus(self,tag,keywords):
-        
+
         c = keywords.get('c')
         # g.trace('mod_labels',c)
         if c == self.c and not self.installed:
@@ -218,12 +218,12 @@ class labelsController(object):
     #@nonl
     #@+node:ekr.20050301095332.22:get_labels_dict
     def get_labels_dict(self,p):
-    
+
         """Get the labels dictionary of a positions vnode."""
-        
+
         if not hasattr(p.v,'unknownAttributes'):
             return {}
-            
+
         hex = p.v.unknownAttributes.get('labels')
         if hex:
             try:
@@ -242,9 +242,9 @@ class labelsController(object):
     def set_labels_dict(self, p, vlabels):
         """
         Create a labels dictionary for the positions vnode.
-        
+
         Create unknownAttributes if necessary.
-        
+
         Delete empty dictionaries (to reduce overhead).
         """
         if vlabels == None or vlabels == {}:
@@ -266,9 +266,9 @@ class labelsController(object):
     #@-node:ekr.20050301095332.23:set_labels_dict
     #@+node:ekr.20050301095332.24:add_label
     def add_label(self, p, labelname,  labelContent = ""):
-    
+
         labels_dict = self.get_labels_dict(p)
-         
+
         if not labels_dict.has_key(labelname):
             # g.trace('adding label',labelname,labelContent)
             labels_dict[labelname] = labelContent
@@ -278,9 +278,9 @@ class labelsController(object):
     #@-node:ekr.20050301095332.21:getters and setters
     #@+node:ekr.20050301095332.25:collect_labels
     def collect_labels(self):
-    
+
         '''Return a sorted list of all labels in the outline.'''
-    
+
         labels = {}
         for p in self.c.allNodes_iter():
             vlabels = self.get_labels_dict(p)
@@ -296,9 +296,9 @@ class labelsController(object):
         """
         Insert a subnode with the header "labelname".
         Set the content of the node to "labelcontent".
-        
+
         Do not do the insertion if such a node already exists.
-        
+
         Returns the inserted child or existing child.
         """
         c = self.c
@@ -322,7 +322,7 @@ class labelsController(object):
     #@-node:ekr.20050301095332.26:insert_node_for_label_as_child
     #@+node:ekr.20050301095332.27:insert_nodes_for_labels_as_children
     def insert_nodes_for_labels_as_children(self, nodes_to_expand):
-    
+
         """
         Works like insert_node_for_label_as_child for a list.
         Returns the list of inserted children.
@@ -336,11 +336,11 @@ class labelsController(object):
         Present a dialog to select one of all the global labels.
         """
         label_text = "Existing labels"
-    
+
         labellist = self.collect_labels()
         if len(labellist) == 0:
             return None
-    
+
         root = self.c.frame.outerFrame
         widget = Pmw_combobox(root, title = title, label_text = label_text, scrolledlist_items = labellist)
         result = widget.doit()
@@ -383,7 +383,7 @@ class labelsController(object):
         """
         Get the sorted list of labels for the current node.
         """
-    
+
         label_dict = self.get_labels_dict(self.c.currentPosition())
         labellist = label_dict.keys()
         labellist.sort()
@@ -392,7 +392,7 @@ class labelsController(object):
     #@-node:ekr.20050301095332.31:get_labellist_for_current_position
     #@+node:ekr.20050301095332.32:show_label_list_box
     def show_label_list_box(self, title, label_text, labellist):
-    
+
         root = self.c.frame.outerFrame
         widget = Pmw_combobox(root, title = title, label_text = label_text, scrolledlist_items = labellist)
         result = widget.doit()
@@ -401,7 +401,7 @@ class labelsController(object):
     #@-node:ekr.20050301095332.32:show_label_list_box
     #@+node:ekr.20050301095332.33:create_subnodes_for_labelname
     def create_subnodes_for_labelname(self, labelname):
-    
+
         """
         Create subnodes for 'labelname'.
         Return a list of such subnodes.
@@ -423,19 +423,19 @@ class labelsController(object):
             labels = self.get_labels_dict(p)
             if labels.has_key(labelname):
                 result.append ((p.copy(), labelname, labels[labelname]))
-    
+
         return result
     #@nonl
     #@-node:ekr.20050301095332.34:find_positions_with_labelname
     #@+node:ekr.20050301095332.35:clone
     def clone(self, v):
-    
+
         return self
     #@nonl
     #@-node:ekr.20050301095332.35:clone
     #@+node:ekr.20050301095332.36:move_to_child_positions
     def move_to_child_positions(self, clones, currentNode):
-    
+
         for clone in clones:
             clone.moveToNthChildOf(currentNode,0)
     #@nonl
@@ -455,9 +455,9 @@ class labelsController(object):
     #@-node:ekr.20050301095332.38:show_labels
     #@+node:ekr.20050301095332.39:show_labels_for_current_position
     def show_labels_for_current_position(self,event=None):
-            
+
         """Show the labels for the current position."""
-    
+
         labellist = self.get_labellist_for_current_position()
         self.show_label_list_box(
         title = "Show labels for node",
@@ -475,11 +475,11 @@ class labelsController(object):
         """
         title = 'Do you really want to delete ALL labels?'
         message_text = 'Do you really want to delete ALL labels?'
-    
+
         root = self.c.frame.outerFrame
         dialog = Pmw_MessageDialog(root, title = title, message_text = message_text)
         result = dialog.doit()
-    
+
         if result == 'Cancel':
             return
         if result == 'OK':
@@ -524,7 +524,7 @@ class labelsController(object):
         Convert the existing marks to a label.
         """
         title = "show labels"
-    
+
         labellist = self.collect_labels()
         root = self.c.frame.outerFrame
         widget = Pmw_combobox(root, title = title, label_text = 'Existing labels', scrolledlist_items = labellist)
@@ -575,9 +575,9 @@ class labelsController(object):
     #@-node:ekr.20050301095332.46:label_to_marks
     #@+node:ekr.20050301095332.47:menu_add_label
     def menu_add_label(self,event=None):
-    
+
         """Add a (new) label to the current node."""
-        
+
         result, widget, labellist = self.show_labels(title="Mark nodes with label")
         if result == 'OK':
             labelname = widget.dialog.get()
@@ -594,14 +594,14 @@ class labelsController(object):
         """
         title = "Creating subnode"
         label_text = "Existing labels (on this node)"
-        
+
         p = self.c.currentPosition()
         labels = self.get_labels_dict(p)
-        
+
         if labels is None:
             g.es("No labels defined for this node")
             return
-        
+
         labelnames = labels.keys()
         labelnames.sort()
         root = self.c.frame.outerFrame
@@ -611,7 +611,7 @@ class labelsController(object):
             return
         labelname = widget.dialog.get()
         g.es("Create subnode for label %s" % labelname)
-        
+
         self.insert_node_for_label_as_child(p=p,labelname=labelname,labelcontent=labels[labelname])
     #@nonl
     #@-node:ekr.20050301095332.50:label_to_subnode
@@ -620,7 +620,7 @@ class labelsController(object):
         # Find out which labels exist.
         labelname = self.select_label("Select label to expand")
         return self.create_subnodes_for_labelname(labelname)
-    
+
     #@-node:ekr.20050301095332.51:label_to_subnodes
     #@+node:ekr.20050301095332.52:labels_to_subnodes
     def labels_to_subnodes(self,event=None):
@@ -634,7 +634,7 @@ class labelsController(object):
             if labels_dict:
                 for key, value in labels_dict.items():
                     positions.append((p.copy(),key, value))
-    
+
         self.insert_nodes_for_labels_as_children(positions)
     #@nonl
     #@-node:ekr.20050301095332.52:labels_to_subnodes
@@ -651,7 +651,7 @@ class labelsController(object):
         if labelnames is None:
             g.es("No labels defined for this node")
             return
-        
+
         # Now look through children to see which subnodes match a label name.
         # Construct the intersection of the headStrings of the children
         # and the labellist.
@@ -662,13 +662,13 @@ class labelsController(object):
             if headline in labelnames:
                 labelnames_dict[headline] = child
             child = child.next()
-        
+
         labelnames_found = labelnames_dict.keys()
         if not labelnames_found:
             g.es("No suitable subnode found")
             return
         labelnames_found.sort()
-            
+
         # Now let the user select a labelname
         title = "Select subnode to delete"
         label_text = "Subnodes to fold"
@@ -677,22 +677,22 @@ class labelsController(object):
         result = widget.doit()
         if result == 'Cancel':
             return
-            
+
         labelname = widget.dialog.get()
         if labelname in labelnames:
             child = labelnames_dict[labelname]
             labels[labelname] = child.bodyString()
             self.set_labels_dict(v, labels)
-            
+
             # now delete the subnode
             self.c.selectVnode(child)
             self.c.cutOutline()
             self.c.selectVnode(v)
-    
-        
-    
-    
-    
+
+
+
+
+
     #@-node:ekr.20050301095332.54:subnode_to_label
     #@+node:ekr.20050301095332.55:subnodes_to_label
     def subnodes_to_label(self,event=None):
@@ -717,25 +717,25 @@ class labelsController(object):
                 parent_dict = self.get_labels_dict(parent)
                 parent_dict[p.headString()] = p.bodyString()
                 self.set_labels_dict(p, parent_dict)
-                
+
                 # now delete the child
                 self.c.selectVnode(child)
                 self.c.cutOutline()
                 self.c.selectVnode(parent)
-                            
-        
-        
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
     #@-node:ekr.20050301095332.55:subnodes_to_label
     #@+node:ekr.20050301095332.56:subnodes_to_labels
     def subnodes_to_labels(self,event=None):
         """
         Update all labels from subnodes, if those subnodes exist.
-        
+
         Delete all those subnodes.
         """
         labelnames = self.collect_labels()
@@ -755,7 +755,7 @@ class labelsController(object):
                 parent_dict = self.get_labels_dict(parent)
                 parent_dict[p.headString()] = p.bodyString()
                 self.set_labels_dict(parent, parent_dict)
-                
+
                 # now delete the child
                 self.c.selectPosition(p)
                 self.c.cutOutline()
@@ -774,7 +774,7 @@ class labelsController(object):
             result = node.t not in tnodes
             tnodes[node.t] = None
             return result
-    
+
         currentPosition = self.c.currentPosition()
         # 1. Get the name of a label.
         result, widget, labellist = self.show_labels()

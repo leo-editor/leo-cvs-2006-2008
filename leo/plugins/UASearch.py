@@ -47,14 +47,14 @@ import weakref
 #@+others
 #@+node:ekr.20050311090939.6:init
 def init ():
-    
+
     if Tk is None: return # Ok for unit tests: adds menu.
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     if ok:
         leoPlugins.registerHandler(('new','open2'),addPMenu)
         g.plugin_signon( __name__ )
@@ -96,7 +96,7 @@ def addPMenu (tag,keywords):
     #@    << define callbacks >>
     #@+node:ekr.20040915075808:<< define callbacks >>
     def firesearch( event, rs = rs, ef = ef, ev = ev, c = c, l = l ):
-    
+
         stype = rs.getvalue()
         name = ef.getvalue()
         value = ev.getvalue()
@@ -110,7 +110,7 @@ def addPMenu (tag,keywords):
 #@-node:ekr.20040915075530.3:addPMenu
 #@+node:ekr.20040915081837:found
 def found (porv,name):
-    
+
     c = porv.c
     note("found: " + name)
     c.selectVnode(porv)
@@ -119,7 +119,7 @@ def found (porv,name):
 #@-node:ekr.20040915081837:found
 #@+node:ekr.20040915082303:note
 def note (s):
-    
+
     print s
     g.es(s)
 #@nonl

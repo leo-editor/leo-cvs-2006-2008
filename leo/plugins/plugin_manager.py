@@ -104,15 +104,15 @@ __plugin_group__ = "Core"
 #@<< define importLeoGlobals >>
 #@+node:ekr.20050329035844:<< define importLeoGlobals >>
 def importLeoGlobals():
-    
+
     '''
     Try to import leoGlobals from the leo/src directory, assuming that
     the script using this function is in a subdirectory of the leo directory.
     '''
-    
+
     plugins_path = os.path.abspath(
         os.path.join(os.path.dirname(__file__),'..','src'))
-    
+
     if plugins_path in sys.path:
         return None
     else:
@@ -208,15 +208,15 @@ USE_PRIORITY = False # True: show non-functional priority field.
 #@+node:ekr.20060107092833:Module-level Functions
 #@+node:ekr.20050213122944:init
 def init():
-    
+
     global ok
     if not ok: return None
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     # Ok for unit testing: adds menu.
     if ok:
         g.plugin_signon(__name__)
@@ -230,7 +230,7 @@ def init():
 # It should only be defined if the extension has been registered.
 
 def topLevelMenu(c):
-    
+
     """Manage the plugins"""
 
     dlg = ManagerDialog(c,True)
@@ -240,17 +240,17 @@ def topLevelMenu(c):
 #@+node:pap.20041006193459:Error Classes
 class InvalidPlugin(Exception):
     """The plugin is invalid"""
-    
+
 class InvalidCollection(Exception):
     """The plugin collection is invalid"""
-    
+
 class InvalidManager(Exception):
     """The enable manager is invalid"""
 #@-node:pap.20041006193459:Error Classes
 #@+node:pap.20050305144720:inColumns
 def inColumns(data, columnwidths):
     """Return the items of data with the specified column widths
-    
+
     The list of widths should be one less than the list of data, eg
         inColumns((10,20,30), (5,5))
     """
@@ -264,35 +264,35 @@ def inColumns(data, columnwidths):
 #@+node:pap.20041009140132:UI
 #@+node:pap.20041008224318:class PluginView
 class PluginView(Tk.Frame):
-    
+
     """Frame to display a plugin's information"""
-    
+
     #@    @+others
     #@+node:pap.20041008224318.1:PluginView.__init__
     def __init__(self, parent, file_text, *args, **kw):
-        
+
         """Initialize the view"""
-    
+
         Tk.Frame.__init__(self, parent, *args, **kw)
-    
+
         self.file_text = file_text
         self.top = Tk.Frame(self)
         self.top.pack(side="top", fill="both", expand=1)
         self.bottom = Tk.Frame(self)
         self.bottom.pack(side="top", fill="both")
-    
+
         #@    @+others
         #@+node:pap.20041008230728:Name
         self.name = Pmw.EntryField(self.top,
             labelpos = 'w',label_text = 'Name:')
-        
+
         self.name.pack(side="top", fill="x", expand=0)
         #@nonl
         #@-node:pap.20041008230728:Name
         #@+node:pap.20041008230728.2:Version
         self.version = Pmw.EntryField(self.top,
                 labelpos = 'w',label_text = 'Version:')
-        
+
         self.version.pack(side="top", fill="x", expand=0)
         #@-node:pap.20041008230728.2:Version
         #@+node:pap.20041008231028:Status
@@ -300,13 +300,13 @@ class PluginView(Tk.Frame):
                 labelpos = 'w',
                 label_text = 'Status:',
         )
-        
+
         self.status.pack(side="top", fill="x", expand=0)
         #@-node:pap.20041008231028:Status
         #@+node:pap.20050305151106:Group
         self.group = Pmw.EntryField(self.top,
                 labelpos = 'w',label_text = 'Group:')
-        
+
         self.group.pack(side="top", fill="x", expand=0)
         #@-node:pap.20050305151106:Group
         #@+node:pap.20041008230728.1:Filename
@@ -314,7 +314,7 @@ class PluginView(Tk.Frame):
                 labelpos = 'w',
                 label_text = 'Filename:',
         )
-        
+
         self.filename.pack(side="top", fill="x", expand=0)
         #@-node:pap.20041008230728.1:Filename
         #@+node:pap.20041008231930:Has INI
@@ -322,7 +322,7 @@ class PluginView(Tk.Frame):
                 labelpos = 'w',
                 label_text = 'Has INI:',
         )
-        
+
         self.has_ini.pack(side="top", fill="x", expand=0)
         #@nonl
         #@-node:pap.20041008231930:Has INI
@@ -331,7 +331,7 @@ class PluginView(Tk.Frame):
                 labelpos = 'w',
                 label_text = 'Has top level:',
         )
-        
+
         self.has_toplevel.pack(side="top", fill="x", expand=0)
         #@nonl
         #@-node:pap.20041009135426:Has Top level
@@ -341,17 +341,17 @@ class PluginView(Tk.Frame):
                 labelpos = 'w',
                 label_text = 'Priority:',
             )
-            
+
             self.priority.pack(side="top", fill="x", expand=0)
         #@nonl
         #@-node:pap.20041009135426.1:Priority
         #@+node:pap.20041008231028.1:Description & Versions
         self.text_panel = Pmw.NoteBook(self.top)
         self.text_panel.pack(side="top", fill='both', expand=1, padx=5, pady=5)
-        
+
         description_panel = self.text_panel.add('Description')
         version_panel = remote_list_page = self.text_panel.add('Version History')
-        
+
         #@<< Description >>
         #@+node:pap.20050305170921:<< Description >>
         self.description = Pmw.ScrolledText(description_panel,
@@ -373,7 +373,7 @@ class PluginView(Tk.Frame):
         #@nl
         #@<< Version History >>
         #@+node:pap.20050305170921.1:<< Version History >>
-        
+
         self.version_history = Pmw.ScrolledText(version_panel,
                 # borderframe = 1,
                 labelpos = 'n',
@@ -402,7 +402,7 @@ class PluginView(Tk.Frame):
                 hull_width = 150,
                 hull_height = 100,
         )
-        
+
         self.commands.pack(side="left", fill='both', expand=1)
         #@-node:pap.20041008231028.2:Commands
         #@+node:pap.20041008231028.3:Handlers
@@ -414,7 +414,7 @@ class PluginView(Tk.Frame):
                 hull_width = 150,
                 hull_height = 100,
         )
-        
+
         self.handlers.pack(side="left", fill='both', expand=1)
         #@-node:pap.20041008231028.3:Handlers
         #@+node:pap.20041009224739:Requires
@@ -426,11 +426,11 @@ class PluginView(Tk.Frame):
                 hull_width = 150,
                 hull_height = 100,
         )
-        
+
         self.requires.pack(side="left", fill='both', expand=1)
         #@-node:pap.20041009224739:Requires
         #@-others
-        
+
         if USE_PRIORITY:
             Pmw.alignlabels([
                 self.name, self.version, self.status, self.group,
@@ -472,19 +472,19 @@ class PluginView(Tk.Frame):
 #@+node:pap.20041008225226:class PluginList
 class PluginList(Tk.Frame):
     """Frame to display a list of plugins"""
-    
+
     filter_options = []
     title = "List"
     secondtitle = "Groups"
-    
+
     #@    @+others
     #@+node:pap.20041008225226.1:__init__
     def __init__(self, parent, plugin_view, plugins, file_text="Plugin", *args, **kw):
         """Initialize the list"""
         Tk.Frame.__init__(self, parent, *args, **kw)
-        
+
         self.file_text = file_text
-        
+
         self.box = Pmw.ScrolledListBox(self,
                 labelpos='nw',
                 label_text='%s:' % (self.title % self.file_text),
@@ -494,9 +494,9 @@ class PluginList(Tk.Frame):
                 hull_width = 300,
                 hull_height = 200,
         )
-        
+
         self.box.component("listbox").configure(font=("Courier", 8))
-        
+
         self.filter = Pmw.OptionMenu(self,
                 labelpos = 'w',
                 label_text = '%s:' % (self.title % self.file_text),
@@ -504,9 +504,9 @@ class PluginList(Tk.Frame):
                 menubutton_width = 16,
                 command=self.populateList,
         )    
-        
+
         self.filter.pack(side="top")
-    
+
         self.secondfilter = Pmw.OptionMenu(self,
                 labelpos = 'w',
                 label_text = '%s:' % self.secondtitle,
@@ -514,13 +514,13 @@ class PluginList(Tk.Frame):
                 menubutton_width = 16,
                 command=self.populateList,
         )    
-    
+
         Pmw.alignlabels([self.filter, self.secondfilter])
-                
+
         self.secondfilter.pack(side="top")
-    
+
         self.box.pack(side="bottom", fill='both', expand=1)    
-        
+
         self.plugin_view = plugin_view
         self.plugins = plugins
     #@-node:pap.20041008225226.1:__init__
@@ -588,7 +588,7 @@ class PluginList(Tk.Frame):
         return self.local_dict.values()
     #@-node:pap.20050605192322:getAllPlugins
     #@-others
-    
+
 
 
 
@@ -596,19 +596,19 @@ class PluginList(Tk.Frame):
 #@+node:pap.20051102233259:class LoadOrderView
 class LoadOrderView(Tk.Frame):
     """Shows the load order of items"""
-    
+
     #@    @+others
     #@+node:pap.20051102233259.1:__init__
     def __init__(self, parent, file_text="Plugin", collection=None, enabler=None, 
                  plugin_view=None, *args, **kw):
         """Initialise the view"""
         Tk.Frame.__init__(self, parent, *args, **kw)
-    
+
         self.file_text = file_text
         self.collection = collection
         self.enabler = enabler
         self.plugin_view = plugin_view
-        
+
         self.items = Pmw.ScrolledListBox(self,
                 labelpos='nw',
                 label_text='%s:' % self.file_text,
@@ -618,27 +618,27 @@ class LoadOrderView(Tk.Frame):
                 hull_width = 300,
                 hull_height = 200,
         )
-    
+
         self.items.component("listbox").configure(font=("Courier", 8))
         self.items.pack(side="top", fill='both', expand=1)    
-        
+
         self.buttonBox = Pmw.ButtonBox(
             self,
             labelpos = 'w',
             label_text = 'Change Order',
             frame_borderwidth = 2,
             frame_relief = 'groove')
-        
+
         self.buttonBox.add('First', command = self.moveFirst)
         self.buttonBox.add('Up', command = self.moveUp)
         self.buttonBox.add('Down', command = self.moveDown)
         self.buttonBox.add('Last', command = self.moveLast)
         self.buttonBox.add('Save', command = self.save)
-        
+
         self.buttonBox.alignbuttons()
-        
+
         self.buttonBox.pack(side="top", padx=5)    
-    
+
     #@-node:pap.20051102233259.1:__init__
     #@+node:pap.20051103000804:initList
     def initList(self):
@@ -646,7 +646,7 @@ class LoadOrderView(Tk.Frame):
         self.items.setlist([self.collection[name].nicename for name in self.enabler.actives])
         self.local_dict = dict([(self.collection[name].nicename, self.collection[name])
                                     for name in self.collection])
-        
+
     #@nonl
     #@-node:pap.20051103000804:initList
     #@+node:pap.20051102233801:moveFirst
@@ -667,7 +667,7 @@ class LoadOrderView(Tk.Frame):
             self.enabler.actives.moveUp(item.name)
             self.initList()
             self.items.setvalue([item.nicename])        
-        
+
     #@nonl
     #@-node:pap.20051102233937:moveUp
     #@+node:pap.20051102233937.1:moveDown
@@ -678,7 +678,7 @@ class LoadOrderView(Tk.Frame):
             self.enabler.actives.moveDown(item.name)
             self.initList()
             self.items.setvalue([item.nicename])        
-        
+
     #@nonl
     #@-node:pap.20051102233937.1:moveDown
     #@+node:pap.20051102233937.2:moveLast
@@ -712,7 +712,7 @@ class LoadOrderView(Tk.Frame):
             return None
         else:
             return self.local_dict[sels[0]]
-        
+
     #@-node:pap.20051103002808:getSelection
     #@-others
 #@nonl
@@ -720,7 +720,7 @@ class LoadOrderView(Tk.Frame):
 #@+node:pap.20041009013256:class LocalPluginList
 class LocalPluginList(PluginList):
     """A list showing plugins based on the local file system"""
-    
+
     title = "Locally Installed %ss"
     filter_options = ['All', 'On', 'Off']
 #@nonl
@@ -728,7 +728,7 @@ class LocalPluginList(PluginList):
 #@+node:pap.20041009013556:class RemotePluginList
 class RemotePluginList(PluginList):
     """A list showing plugins based on a remote file system"""
-    
+
     title = "%ss on CVS"
     filter_options = ['All', 'Up to date', 'Update available', 'Changed', 'Not installed']
 #@nonl
@@ -736,7 +736,7 @@ class RemotePluginList(PluginList):
 #@+node:pap.20041006215108:class ManagerDialog
 class ManagerDialog:
     """The dialog to show manager functions"""
-    
+
     dialog_caption = "Plugin Manager"
     file_text = "Plugin"
     has_enable_buttons = True 
@@ -746,23 +746,23 @@ class ManagerDialog:
     #@+node:pap.20041006215108.1:ManagerDialog._init__
     def __init__(self,c,show_order=False):
         """Initialise the dialog"""
-        
+
         self.c = c # New in version 0.20 of this plugin.
-        
+
         # This would be wrong: it would inhibit standalone operation!
         # if not c or not c.exists: return
         self.setPaths()
         #@    << create top level window >>
         #@+node:ekr.20041010110321:<< create top level window >> ManagerDialog
         root = g.app.root
-        
+
         if standalone:
             # Use the hidden root.
             self.top = top = root
         else:
             # Create a new toplevel.
             self.top = top = Tk.Toplevel(root)
-        
+
         g.app.gui.attachLeoIcon(top)
         top.title(self.dialog_caption)
         #@nonl
@@ -773,10 +773,10 @@ class ManagerDialog:
         #@+node:ekr.20041010110321.1:<< create frames >>
         self.frame = frame = Tk.Frame(top)
         frame.pack(side="top", fill='both', expand=1, padx=5, pady=5)   
-        
+
         self.upper = Tk.Frame(frame)
         self.upper.pack(side="top", fill='both', expand=1, padx=5, pady=5)
-         
+
         self.lower = Tk.Frame(frame)
         self.lower.pack(side="top", fill='x', expand=0, padx=5)
         #@nonl
@@ -785,7 +785,7 @@ class ManagerDialog:
         #@    << create pluginView >>
         #@+node:pap.20041006223915.1:<< create pluginView >>
         self.plugin_view = PluginView(self.upper, self.file_text)
-        
+
         self.plugin_view.pack(side="right", fill='both', expand=1, padx=5, pady=5)
         #@nonl
         #@-node:pap.20041006223915.1:<< create pluginView >>
@@ -794,19 +794,19 @@ class ManagerDialog:
         #@+node:pap.20041006223915:<< create PluginList >>
         self.notebook = notebook = Pmw.NoteBook(self.upper, raisecommand=self.selectPage)
         notebook.pack(side="left", fill='both', expand=1, padx=5, pady=5)
-        
+
         self.local_list_page = local_list_page = notebook.add('Installed %ss' % self.file_text)
         self.remote_list_page = remote_list_page = notebook.add('CVS %ss' % self.file_text)
         notebook.tab('Installed %ss' % self.file_text).focus_set()
         #notebook.setnaturalsize()
-        
+
         self.plugin_list = LocalPluginList(local_list_page, self.plugin_view, self.local, 
                                            self.file_text)
         self.plugin_list.pack(side="top", fill='both', expand=1)
         self.remote_plugin_list = RemotePluginList(remote_list_page, self.plugin_view, None,
                                                    self.file_text)
         self.remote_plugin_list.pack(side="top", fill='both', expand=1)
-        
+
         self.plugin_list.setSecondFilterList(["All"] + self.local.getGroups())
         #@nonl
         #@-node:pap.20041006223915:<< create PluginList >>
@@ -815,7 +815,7 @@ class ManagerDialog:
             #@        << create order >>
             #@+node:pap.20051102225718:<< create order >>
             self.order_view_page = order_view_page = notebook.add('%s Load Order' % self.file_text)
-            
+
             self.order_view = order_view = LoadOrderView(order_view_page, self.file_text, self.local, self.enable, self.plugin_view)
             order_view.pack(side="top", fill='both', expand=1)
             #@-node:pap.20051102225718:<< create order >>
@@ -827,7 +827,7 @@ class ManagerDialog:
             labelpos = 'nw',
             frame_borderwidth = 2,
             frame_relief = 'groove')
-        
+
         # Add some buttons to the ButtonBox.
         if self.has_enable_buttons:
             self.buttonBox.add('Enable', command = self.enablePlugin)
@@ -835,7 +835,7 @@ class ManagerDialog:
             #self.buttonBox.add('Check for Updates', command = self.checkUpdates)
         if self.has_conflict_buttons:
             self.buttonBox.add('Check Conflicts', command = self.checkConflicts)
-            
+
         self.buttonBox.pack(side="top", padx=5)
         #@nonl
         #@-node:pap.20041006223915.2:<< create local buttons >>
@@ -847,12 +847,12 @@ class ManagerDialog:
             labelpos = 'nw',
             frame_borderwidth = 2,
             frame_relief = 'groove')
-        
+
         # Add some buttons to the ButtonBox.
         self.buttonBox.add(self.install_text, command = self.installPlugin)
         self.buttonBox.add('View', command = self.viewPlugin)
         self.buttonBox.add('Check for Updates', command = self.checkUpdates)
-        
+
         self.buttonBox.pack(side="top", padx=5)
         #@nonl
         #@-node:pap.20041009020000:<< create remote buttons >>
@@ -864,19 +864,19 @@ class ManagerDialog:
                 entry_relief='groove',
                 labelpos = 'w',
                 label_text = 'Status:')
-        
+
         self.messagebar.pack(side="left", fill='x', expand=1, padx=5, pady=1)
-        
-        
+
+
         self.donebutton = Tk.Button(self.lower, text="Close", 
                                     command=lambda : self.top.destroy())
         self.donebutton.pack(side="right", fill="none", expand=0)
-            
-        
+
+
         #@-node:pap.20041006224808:<< create message bar >>
         #@nl
         self.plugin_list.populateList("All")
-        
+
         if not standalone:
             top.grab_set() # Make the dialog a modal dialog.
             top.focus_force() # Get all keystrokes.
@@ -890,7 +890,7 @@ class ManagerDialog:
         """Enable a plugin"""
         plugin = self.plugin_list.getSelectedPlugin()
         if not plugin: return
-    
+
         self.local.enablePlugin(plugin,self.enable)
         self.plugin_list.populateList()
     #@nonl
@@ -906,7 +906,7 @@ class ManagerDialog:
         """Disable a plugin"""
         plugin = self.plugin_list.getSelectedPlugin()
         if not plugin: return
-        
+
         self.local.disablePlugin(plugin,self.enable)
         self.plugin_list.populateList()
     #@nonl
@@ -914,16 +914,16 @@ class ManagerDialog:
     #@+node:pap.20041006221212:initLocalCollection
     def initLocalCollection(self):
         """Initialize the local plugin collection"""
-    
+
         # Get the local plugins information
         self.local = LocalPluginCollection(self.c)
         self.local.initFrom(self.local_path)
-    
+
         # Get the active status of the plugins
         self.enable = EnableManager()
         self.enable.initFrom(self.local_path)
         self.local.setEnabledStateFrom(self.enable)
-        
+
     #@nonl
     #@-node:pap.20041006221212:initLocalCollection
     #@+node:pap.20041006224216:checkUpdates
@@ -965,7 +965,7 @@ class ManagerDialog:
                                           'Errors',
                                           ["%s - %s" % item for item in errors],
                                           500)
-                
+
                 #@-node:pap.20041009163613.1:<< put up a file error dialog >>
                 #@nl
         self.messagebar.resetmessages('busy')        
@@ -977,11 +977,11 @@ class ManagerDialog:
     #@+node:pap.20041009020000.1:installPlugin
     def installPlugin(self):
         """Install the selected plugin"""
-    
+
         # Write the file
         plugin = self.remote_plugin_list.getSelectedPlugin()        
         if not plugin: return
-    
+
         self.messagebar.message("busy", "Writing file")
         plugin.writeTo(self.local_path)
         self.messagebar.message("busy", "Scanning local plugins") 
@@ -1039,26 +1039,26 @@ class ManagerDialog:
 #@+node:pap.20041009233937:class ListReportDialog
 class ListReportDialog:
     """Shows a list of items to report to the user
-    
+
     The list is a list of strings. It is assumed that the
     strings are of the format 'abc - xyz' and this control
     presents a filter list based on the list of distinct 
     values for abc.
-    
+
     """
-    
+
     #@    @+others
     #@+node:pap.20041009233937.1:ListReportDialog.__init__
     def __init__(self, title, name, list_data, width=300):
         """Initialize the dialog"""
-        
+
         #@    << create the top level frames >>
         #@+node:ekr.20041010111700:<< create the top level frames >>
         root = g.app.root
         self.top = top = Tk.Toplevel(root)
         g.app.gui.attachLeoIcon(self.top)
         top.title(title)
-        
+
         self.frame = frame = Tk.Frame(top)
         frame.pack(side="top", fill='both', expand=1, padx=5, pady=5)
         #@nonl
@@ -1078,9 +1078,9 @@ class ListReportDialog:
                 hull_height = 200,
                 items = list_data,
         )
-        
+
         self.box.pack(side="bottom", fill='both', expand=1)    
-        
+
         self.box.component("listbox").configure(font=("Courier", 10))
         #@nonl
         #@-node:pap.20041009234256:<< create the ScrolledListBox >>
@@ -1094,12 +1094,12 @@ class ListReportDialog:
                 menubutton_width = 16,
                 command=self.populateList,
         )    
-        
+
         self.filter.pack(side="top")
         #@nonl
         #@-node:pap.20041009234256.1:<< create the OptionMenu >>
         #@nl
-            
+
         top.grab_set() # Make the dialog a modal dialog.
         top.focus_force() # Get all keystrokes.
         root.wait_window(top)
@@ -1119,17 +1119,17 @@ class ListReportDialog:
     #@+node:pap.20041009235457:populateList
     def populateList(self, filter):
         """Populate the list"""
-    
+
         # Get old selection so that we can restore it    
         current_text = self.box.getcurselection()
         if current_text:
             current_index = self.list_data.index(current_text[0])
-    
+
         listitems = [item for item in self.list_data
             if item.endswith("   %s" % filter) or filter == "All"]
-    
+
         self.box.setlist(listitems)    
-    
+
         if current_text:
             try:
                 self.box.setvalue((listitems[current_index],))
@@ -1144,12 +1144,12 @@ class ListReportDialog:
 #@+node:pap.20051103001707.1:class OrderedDict
 class OrderedDict(list):
     """A dictionary that retains its order
-    
+
     This is implemented as a list of (key, value) pairs
     and so is not suitable for large numbers of items.
-    
+
     """
-    
+
     #@    @+others
     #@+node:pap.20051103002042:__init__
     def __init__(self, items=None):
@@ -1248,13 +1248,13 @@ class OrderedDict(list):
 #@+node:pap.20041006184225.6:class Plugin
 class Plugin:   
     """Represents a single plugin instance"""
-    
+
     # Class properties.
     max_name_width = 30
     max_group_width = 10
-    
+
     read_details_immediately = False
-    
+
     #@    @+others
     #@+node:pap.20041006185727.1:__init__
     def __init__(self):
@@ -1277,18 +1277,18 @@ class Plugin:
         self.versions = 'Unknown'
         self.contents_valid = False
         self.has_details = False
-        
+
     #@nonl
     #@-node:pap.20041006185727.1:__init__
     #@+node:pap.20041006193013:initFrom
     def initFrom(self, location):
         """Initialize the plugin from the specified location"""
-    
+
         # Initial properties
         self.filename = location
         self.name = self.getName(location)
         self.nicename = self.getNiceName(self.name)
-    
+
         # Get the contents of the file
         try:
             text = self.getContents()
@@ -1304,30 +1304,30 @@ class Plugin:
     #@+node:ekr.20041113095851:Must be overridden in subclasses...
     #@+node:pap.20041006212105:getName
     def getName(self, location):
-    
+
         """Determine the plugin name from the location"""
-    
+
         raise NotImplementedError("Must Override")
     #@-node:pap.20041006212105:getName
     #@+node:pap.20041006193239:getContents
     def getContents(self):
-    
+
         """Return the contents of the file"""
-    
+
         raise NotImplementedError("Must override")    
-        
+
     #@nonl
     #@-node:pap.20041006193239:getContents
     #@-node:ekr.20041113095851:Must be overridden in subclasses...
     #@+node:pap.20050317183038:getNiceName
     def getNiceName(self, name):
         """Return a nice version of the plugin name
-        
+
         Historically some plugins had "at_" and "mod_" prefixes to their
         name which makes the name look a little ugly in the lists. There is
         no real reason why the majority of users need to know the underlying
         name so here we create a nice readable version.
-        
+
         """
         lname = name.lower()
         if lname.startswith("at_"):
@@ -1339,28 +1339,28 @@ class Plugin:
     #@+node:pap.20051001230822:getSummary
     def getSummary(self, text):
         """Get a summary of this plugin
-        
+
         This is a quick method to get an overview of whether this 
         really is a plugin and some key information. The longer,
         more time consuming search is performed by the getDetails
         method.
-        
+
         """
         self.is_plugin = not self.hasPattern(text, '__not_a_plugin__\s*=\s*True(?!")')
         self.version = self.getPattern(text, r'__version__\s*=\s*[\'"](.*?)[\'"]', "-")
         self.group = self.getPattern(text, r'__plugin_group__\s*=\s*[\'"](.*?)[\'"]', "-")
         self._plugin_text = text
-        
+
         # Some plugins need to have their details read immediately
         if self.read_details_immediately:
             self.ensureDetails()
-        
+
     #@nonl
     #@-node:pap.20051001230822:getSummary
     #@+node:pap.20041006194759:getDetails
     def getDetails(self):
         """Get the details of the plugin
-        
+
         We look for
             __version__
             hooks
@@ -1400,43 +1400,43 @@ class Plugin:
             self.priority = self.getPattern(text, r'__plugin_priority__\s*=\s*(.*?)$', "-")
         self.has_toplevel = self.hasPattern(text, "def topLevelMenu")
         self.getVersionHistory(text)
-        
+
     #@nonl
     #@-node:pap.20041006194759:getDetails
     #@+node:pap.20041006200000:hasPattern
     def hasPattern(self, text, pattern):
-        
+
         """Return True if the text contains the pattern"""
-    
+
         return self.getPattern(text, pattern) is not None
     #@nonl
     #@-node:pap.20041006200000:hasPattern
     #@+node:pap.20041009230351:hasImport
     def hasImport(self, text, module_name):
-    
+
         """Return True if the text includes an import of the module"""
         if self.hasPattern(text, "import %s" % module_name):
             return True
-    
+
         if self.hasPattern(text, "from %s import" % module_name):
             return True
-    
+
         return False
     #@nonl
     #@-node:pap.20041009230351:hasImport
     #@+node:ekr.20050121183012:getMatch (new)
     def getMatch(self, text, pattern):
-    
+
         """Return a single match for the specified pattern in the text"""
-        
+
         return re.search(pattern,text,re.MULTILINE + re.DOTALL)
     #@nonl
     #@-node:ekr.20050121183012:getMatch (new)
     #@+node:pap.20041006194759.1:getPattern
     def getPattern(self, text, pattern, default=None):
-    
+
         """Return a single match for the specified pattern in the text or the default"""
-    
+
         matches = self.getPatterns(text, pattern)
         if matches:
             return matches[0]
@@ -1446,19 +1446,19 @@ class Plugin:
     #@-node:pap.20041006194759.1:getPattern
     #@+node:pap.20041006194917:getPatterns
     def getPatterns(self, text, pattern):
-    
+
         """Return all matches of the pattern in the text"""
-    
+
         exp = re.compile(pattern, re.MULTILINE + re.DOTALL)
-    
+
         return exp.findall(text)
     #@nonl
     #@-node:pap.20041006194917:getPatterns
     #@+node:pap.20041006220611:asString
     def asString(self, detail=False):
-        
+
         """Return a string representation"""
-    
+
         if not detail:
             if self.version <> "-":
                 body = "%(nicename)s (v%(version)s)" % self.__dict__
@@ -1481,13 +1481,13 @@ class Plugin:
     #@-node:pap.20041006220611:asString
     #@+node:pap.20041009023004:writeTo
     def writeTo(self, location):
-    
+
         """Write this plugin to the file location"""
-    
+
         # Don't write if contents are invalid
         if not self.contents_valid:
             return 
-            
+
         filename = os.path.join(location, "%s.py" % self.name)
         try:
             f = file(filename, "w")
@@ -1506,11 +1506,11 @@ class Plugin:
     #@+node:pap.20051001232117:ensureDetails
     def ensureDetails(self):
         """Ensure that the details have been read for this plugin
-        
+
         The details are read asynchronously but we may need to make
         sure that they are available. This method will cause the
         details to be read now if they haven't already.
-        
+
         """
         if not self.has_details:
             self.getDetails()
@@ -1519,13 +1519,13 @@ class Plugin:
     #@+node:pap.20050305165333:getVersionHistory
     def getVersionHistory(self, text):
         """Try to extract the version history of this plugin
-        
+
         This is all guesswork! We look for a Leo node called "Version history"
         or one called "Change log". If we find it then we assume that the contents
         are the version history.
-        
+
         This only works if the plugin was developed in Leo as a @thin file.
-        
+
         """
         extractor =r'.*\+node\S+?\<\< %s \>\>.*?\#\@\+at(.*)\#\@\-at.*\-node.*?\<\< %s \>\>.*'
         #
@@ -1539,18 +1539,18 @@ class Plugin:
                 version_text = match.groups()[0]
                 self.versions = version_text.replace("#", "")
                 return
-        
+
     #@nonl
     #@-node:pap.20050305165333:getVersionHistory
     #@+node:pap.20041009225149:getRequiredModules
     def getRequiredModules(self, plugin_collection):
         """Determine which modules are also required by this plugin
-        
+
         We check for,
          - importing Tk and PMW
          - other plugins which are imported (using plugin_collection)
          - a __plugin_requires__ definition
-         
+
         """
         requires = []
         #@    << Check UI toolkits >>
@@ -1558,7 +1558,7 @@ class Plugin:
         # Check for UI toolkits
         if self.hasImport(self.text, "Tkinter"):
             requires.append("Tkinter")
-            
+
         if self.hasImport(self.text, "Pmw"):
             requires.append("Pmw")
         #@nonl
@@ -1567,23 +1567,23 @@ class Plugin:
         #@    << Check other plugins >>
         #@+node:pap.20041009230652:<< Check other plugins >>
         # Check for importing other plugin files
-        
+
         imports = self.getPatterns(self.text, "import (\w+)") + \
                   self.getPatterns(self.text, "from (\w+) import")
-                  
+
         for module_name in imports:
             if module_name in plugin_collection and module_name <> self.name:
                 requires.append(module_name)
-                
+
         #@nonl
         #@-node:pap.20041009230652:<< Check other plugins >>
         #@nl
         #@    << Directives >>
         #@+node:pap.20041009230953:<< Directives >>
         # Look for __plugin_requires__ directive
-        
+
         directive_text = self.getPattern(self.text, r'__plugin_requires__\s*=\s*(.*?)$', "[]")
-        
+
         try:
             directive = eval(directive_text)
         except:
@@ -1606,13 +1606,13 @@ class Plugin:
 #@+node:pap.20041006192557:class LocalPlugin(Plugin)
 class LocalPlugin(Plugin):
     """A plugin on the local file system"""
-    
+
     #@    @+others
     #@+node:pap.20041006212131:getName
     def getName(self, location):
-    
+
         """Determine the plugin name from the location"""
-        
+
         # return os.path.split(os.path.splitext(location)[0])[1]
         head,ext = g.os_path_splitext(location)
         path,name = g.os_path_split(head)
@@ -1621,11 +1621,11 @@ class LocalPlugin(Plugin):
     #@-node:pap.20041006212131:getName
     #@+node:pap.20041006193459.1:getContents
     def getContents(self):
-    
+
         """Return the contents of the file"""
-        
+
         self.contents_valid = False
-    
+
         try:
             f = file(self.filename, "r")
         except (IOError, OSError), err:
@@ -1641,12 +1641,12 @@ class LocalPlugin(Plugin):
             s = "Unable to read plugin file '%s': %s" % (self.name, err)
             print s
             raise InvalidPlugin(s)              
-        
+
         self.contents_valid = True
-        
+
         return text
-        
-        
+
+
     #@-node:pap.20041006193459.1:getContents
     #@-others
 #@nonl
@@ -1654,31 +1654,31 @@ class LocalPlugin(Plugin):
 #@+node:pap.20041006203049:class CVSPlugin
 class CVSPlugin(Plugin):
      """A plugin on CVS"""
-     
+
      read_details_immediately = True
-    
+
      #@     @+others
      #@+node:pap.20041006212238:getName
      def getName(self, location):
-     
+
          """Determine the plugin name from the location"""
-     
+
          return re.match("(.*)/(.*?)\.py\?", location).groups()[1]
      #@nonl
      #@-node:pap.20041006212238:getName
      #@+node:pap.20041006213006:getContents
      def getContents(self):
-     
+
          """Return the contents of the file"""
-         
+
          self.contents_valid = False
-     
+
          # Connect to CVS
          try:
              url = urllib.urlopen(self.filename)
          except Exception, err:
              raise InvalidPlugin("Could not get connection to CVS: %s" % err)
-     
+
          # Get the page with file content
          try:
              try:
@@ -1687,17 +1687,17 @@ class CVSPlugin(Plugin):
                  url.close()
          except Exception, err:
              raise InvalidPlugin("Could not read file '%s' from CVS: %s" % (self.filename, err))
-             
+
          self.contents_valid = True
-         
+
          return text        
      #@nonl
      #@-node:pap.20041006213006:getContents
      #@+node:pap.20041009224435:getViewFilename
      def getViewFilename(self):
-         
+
          """Return the url to view the file"""
-     
+
          return self.filename.replace(r"/*checkout*", "") + "&view=markup"
      #@-node:pap.20041009224435:getViewFilename
      #@-others
@@ -1706,10 +1706,10 @@ class CVSPlugin(Plugin):
 class PluginCollection(dict):
 
     """Represents a collection of plugins"""
-    
+
     plugin_class = None
     background_pause = 0.05 # seconds to pause while getting details
-    
+
     #@    @+others
     #@+node:pap.20041006192257:__init__
     def __init__(self):
@@ -1734,30 +1734,30 @@ class PluginCollection(dict):
             # Store anything that looks like a plugin
             if plugin.is_plugin:
                 self[plugin.name] = plugin
-    
+
         # Now we have to go back through and check for dependencies
         # We cannot do this up front because we need to know the names
         # of other plugins to detect the dependencies
         for plugin in self.values():
             plugin.getRequiredModules(self)
-    
+
         # Kick-off a thread to get detailed information on the plugin
         # This can be time consuming so we don't try to do this on
         # the main thread
         handler = threading.Thread(target=self.getPluginDetails)
         handler.start()
-        
+
         return errors
-    
+
     #@-node:pap.20041006191239:initFrom
     #@+node:pap.20051001231439:getPluginDetails
     def getPluginDetails(self):
         """Get detailed information on all the plugins
-        
+
         This can be time consuming and so is normally done on a 
         separate thread. We do a lot of pausing here also
         to ensure that we don't block other things going on.
-        
+
         """
         for plugin in self.values():
             time.sleep(self.background_pause)
@@ -1766,27 +1766,27 @@ class PluginCollection(dict):
     #@-node:pap.20051001231439:getPluginDetails
     #@+node:pap.20041006191829:getAllFiles
     def getAllFiles(self, location):
-        
+
         """Return all the files in the location"""
-    
+
         raise NotImplementedError("Must override")    
     #@-node:pap.20041006191829:getAllFiles
     #@+node:pap.20041006221438:sortedNames
     def sortedNames(self):
-    
+
         """Return a list of the plugin names sorted alphabetically
-        
+
         We use decorate, sort, undecorate to sort by the nice name!
-        
+
         """
-    
+
         names = [(item.nicename, item.name) for item in self.values()]
         names.sort()
         return [name[1] for name in names]
     #@-node:pap.20041006221438:sortedNames
     #@+node:pap.20041008220723:setEnabledStateFrom
     def setEnabledStateFrom(self, enabler):
-    
+
         """Set the enabled state of each plugin using the enabler object"""
         for name in self:
             if name in enabler.actives:
@@ -1810,18 +1810,18 @@ class PluginCollection(dict):
     #@-node:pap.20041008234033:disablePlugin
     #@+node:pap.20041009025708.1:getConflicts
     def getConflicts(self, plugin):
-    
+
         """Find conflicting hook handlers for this plugin"""
-    
+
         conflicts = []
         for this_plugin in self.values():
             # g.trace(plugin.handlers,this_plugin.handlers)
             if this_plugin.name <> plugin.name:
                 for conflict in plugin.handlers.intersection(this_plugin.handlers):
                     conflicts.append((this_plugin.name, conflict))
-    
+
         return conflicts
-            
+
     #@nonl
     #@-node:pap.20041009025708.1:getConflicts
     #@+node:pap.20050305161126:getGroups
@@ -1837,57 +1837,57 @@ class PluginCollection(dict):
 #@+node:pap.20041006190817:class LocalPluginCollection
 class LocalPluginCollection(PluginCollection):
     """Represents a plugin collection based on the local file system"""
-    
+
     plugin_class = LocalPlugin
-    
+
     #@    @+others
     #@+node:ekr.20060107092833.1:ctor
     # New in version 0.20
-    
+
     def __init__ (self,c):
-        
+
         self.c = c
     #@nonl
     #@-node:ekr.20060107092833.1:ctor
     #@+node:pap.20041006191803:getFilesMatching
     def getFilesMatching(self, location):
-    
+
         """Return all the files matching the pattern"""
-    
+
         return [filename for filename in self.getAllFiles(location)
                     if fnmatch.fnmatch(filename, "*.py")]
     #@nonl
     #@-node:pap.20041006191803:getFilesMatching
     #@+node:pap.20041006191803.1:getAllFiles
     def getAllFiles(self, location):
-    
+
         """Return all the files in the location"""
-    
+
         return [os.path.join(location, filename) for filename in os.listdir(location)]
     #@nonl
     #@-node:pap.20041006191803.1:getAllFiles
     #@+node:pap.20051002002852:enablePlugin
     def enablePlugin(self, plugin, enabler):
         """Enable the plugin
-        
+
         This adds the plugin to the list of plugins which will be
         started the next time that Leo runs and also tries to
         dynamically start the plugin. This may fail if the plugin
         needed to do something when Leo was first kicking off.
-        
+
         We only try the dynamic start if we are running inside of
         Leo (ie not standalone) and we were able to import
         the leoPlugins module.
-        
+
         """
-    
+
         super(LocalPluginCollection, self).enablePlugin(plugin, enabler)
-        
+
         if not self.c:
             g.es("Can not enable plugins dynaically when running stand-alone",
                 color="blue")
             return
-        
+
         if leoPlugins:
             try:
                 leoPlugins.loadOnePlugin(plugin.name)
@@ -1895,7 +1895,7 @@ class LocalPluginCollection(PluginCollection):
                 #@+node:pap.20051007193759:<< Hooks to send >>
                 # These are the hooks to send to dynamically enabled plugins 
                 # to persuade them to start
-                
+
                 hook_list = [
                         'start1',
                         'before-create-leo-frame',
@@ -1933,9 +1933,9 @@ class LocalPluginCollection(PluginCollection):
                 #@+node:pap.20051002004135:<< Send hooks >>
                 # In order to simulate the startup process we need
                 # to send a series of hooks to the plugin
-                
+
                 keys = {'c':self.c, 'new_c':self.c}
-                
+
                 for hook in hook_list:
                     bunch = leoPlugins.handlers.get(hook, [])
                     for item in bunch:
@@ -1968,9 +1968,9 @@ class LocalPluginCollection(PluginCollection):
 class CVSPluginCollection(PluginCollection):
 
     """Represents a plugin collection based located in a CVS repository"""
-    
+
     plugin_class = CVSPlugin
-    
+
     #@    @+others
     #@+node:pap.20041006202102:getFilesMatching
     def getFilesMatching(self, location):
@@ -2026,14 +2026,14 @@ class CVSPluginCollection(PluginCollection):
 class EnableManager:
 
     """Manages the enabled/disabled status of plugins"""
-    
+
     #@    @+others
     #@+node:pap.20041006232717.1:initFrom
     def initFrom(self, location):
         """Initialize the manager from a folder"""
         manager_filename = os.path.join(location, "pluginsManager.txt")
         self.location = location
-    
+
         # Get the text of the plugin manager file
         try:
             f = file(manager_filename, "r")
@@ -2055,7 +2055,7 @@ class EnableManager:
     def writeFile(self, location):
         """Initialize the manager from a folder"""
         manager_filename = os.path.join(location, "pluginsManager.txt")
-    
+
         # Get the text of the plugin manager file
         try:
             f = file(manager_filename, "w")
@@ -2076,12 +2076,12 @@ class EnableManager:
     #@+node:pap.20041008200028:parseManagerText
     def parseManagerText(self, text):
         """Parse the text in the manager file"""
-    
+
         # Regular expressions for scanning the file
         find_active = re.compile(r"^\s*?(\w+)\.py", re.MULTILINE)
         find_inactive = re.compile(r"^\s*?#\s*(\w+)\.py", re.MULTILINE)
         find_manager = re.compile(r"^\s*plugin_manager\.py", re.MULTILINE)
-    
+
         if 1: # Put the first match in the starts dict.
             starts = OrderedDict()
             for kind,iter in (
@@ -2096,33 +2096,33 @@ class EnableManager:
                         if not bunch or bunch.start > start:
                           starts[name] = g.Bunch(
                             kind=kind,name=name,start=start,match=match)
-                        
+
             self.actives = OrderedDict(
                 [(bunch.name,bunch.match) for bunch in starts.values() if bunch.kind=='on'])
-                
+
             self.inactives = OrderedDict(
                 [(bunch.name,bunch.match) for bunch in starts.values() if bunch.kind=='off'])
-                
+
             if 0: # debugging.
                 starts2 = [(bunch.start,bunch.name,bunch.kind) for bunch in starts.values()]
                 starts2.sort()
                 g.trace(g.listToString(starts2,tag='starts2 list'))
                 g.trace(g.dictToString(self.actives,tag='Active Plugins'))
-                      
+
         else: # Original code.
             # Get active plugin defintions
             self.actives = dict([(match.groups()[0], match) 
                 for match in find_active.finditer(text)])
-        
+
             # Get inactive plugin definitions
             self.inactives = dict([(match.groups()[0], match) 
                 for match in find_inactive.finditer(text)])
-    
+
         # List of all plugins
         self.all = {}
         self.all.update(self.actives)
         self.all.update(self.inactives)
-    
+
         # Locaction of the plugin_manager.py plugin - this is where
         # we add additional files
         self.manager = find_manager.search(text)
@@ -2142,7 +2142,7 @@ class EnableManager:
             newentry = "%s.py" % name
         else:
             newentry = "#%s.py" % name 
-    
+
         if name in self.all:
             # Plugin exists in the management file
             item = self.all[name]
@@ -2157,24 +2157,24 @@ class EnableManager:
                 self.text[:self.manager.start()],
                 str(newentry),
                 self.text[self.manager.start():])
-    
+
         self.writeFile(self.location)    
     #@nonl
     #@-node:pap.20051104222141:_updateItemState
     #@+node:pap.20051104220845:storeOrder
     def storeOrder(self):
         """Store the load order of plugins
-        
+
         Order is stored by putting a section in the file delimited by
             # Load Order
             plugin1
             plugin2
             plugin3
             # Load Order
-            
+
         We disable all plugins and insert them in the new section.
         We check to see if a load order exists and create it if not. 
-        
+
         """
         #
         # Disable all active plugins
@@ -2197,7 +2197,7 @@ class EnableManager:
         #
         # The active plugins will have been set to enabled by the writeFile
         # operation so we are now good to go again!
-            
+
     #@nonl
     #@-node:pap.20051104220845:storeOrder
     #@-others

@@ -23,7 +23,7 @@ if not g.app.unitTesting: # Not for unit testing.
 
     # Register the handlers...
     leoPlugins.registerHandler(("bodykey1","bodykey2","headkey1","headkey2"), onKey)
-    
+
     __version__ = "1.2"
     g.plugin_signon(__name__)
 #@nonl

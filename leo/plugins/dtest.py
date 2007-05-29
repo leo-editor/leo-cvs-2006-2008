@@ -7,20 +7,20 @@ When the Dtest plugin is enabled, the ``dtest`` command is active.
 Typing:: 
 
     Alt-X dtest
-    
+
 will run doctest on a file consisting of the current node and it's children.
 If text is selected only the selection is tested.
 
 From Wikipedia::
-    
+
     'Doctest' is a module included in the Python programming language's 
     standard library that allows for easy generation of tests based on 
     output from the standard Python interpreter.
-    
+
 http://tinyurl.com/cqh53 - Python.org doctest page    
-    
+
 http://tinyurl.com/pxhlq - Jim Fulton's presentation::
-    
+
     Literate Testing:
     Automated Testing with doctest
 """    
@@ -52,9 +52,9 @@ import leoGlobals as g
 #@+others
 #@+node:ekr.20070119094733.5:init
 def init ():
-    
+
     leoPlugins.registerHandler('after-create-leo-frame', DT)
-    
+
     return True
 #@-node:ekr.20070119094733.5:init
 #@+node:ekr.20070119094733.6:class DT
@@ -63,7 +63,7 @@ class DT(baseLeoPlugin):
     """Sends code to the doctest module and reports the result
     If text is selected, tests only the selection
     """
-    
+
     #@    << docstring >>
     #@+node:ekr.20070119094733.7:<< docstring >>
     """
@@ -84,28 +84,28 @@ class DT(baseLeoPlugin):
     #@    @+others
     #@+node:ekr.20070119094733.8:__init__
     def __init__(self, tag, keywords):
-        
+
         """Init doctest plugin
         """
         baseLeoPlugin.__init__(self, tag, keywords)
         self.setCommand('dt', self.dtest)
-        
+
         self.c = keywords['c']
     #@-node:ekr.20070119094733.8:__init__
     #@+node:ekr.20070119094733.9:dtest
     def dtest(self, event):
         """The handler for dtest
         """
-        
+
         import leoGlobals as g
-    
-        
+
+
         # get a valid temporary filename
         createfile, tempfilename = g.create_temp_file()
         createfile.close()
-        
+
         selected = False
-        
+
         # if text is selected, only test selection
         if self.c.frame.body.hasTextSelection():
             selected = True
@@ -113,11 +113,11 @@ class DT(baseLeoPlugin):
             tempfile = open(tempfilename, 'w')
             tempfile.write(selection)
             tempfile.close()
-        
+
         # if no selection, test this subtree
         else:
             self.c.importCommands.flattenOutline(tempfilename)
-            
+
         tempfile = open(tempfilename)
         text = tempfile.readlines()
         tempfile.close()    
@@ -127,16 +127,16 @@ class DT(baseLeoPlugin):
         tempfile = open(tempfilename, 'w')
         tempfile.write(text)
         tempfile.close()
-        
+
         import copy
-            
+
         # build globals dictionary
         globals = {'c':copy.copy(self.c), 'g':g}
-        
+
         # run doctest on temporary file
         failures, tests = doctest.testfile(tempfilename, module_relative = False, 
                             optionflags = doctest.ELLIPSIS, globs = globals)
-        
+
         #@    <<report summary of results>>
         #@+node:ekr.20070119094733.10:<<report summary of results>>
         if selected:
@@ -151,12 +151,12 @@ class DT(baseLeoPlugin):
             g.es("%s failures in %s tests" % (failures, tests), color="red")
         #@-node:ekr.20070119094733.10:<<report summary of results>>
         #@nl
-        
+
         #clean up temp file
         os.remove(tempfilename)
     #@-node:ekr.20070119094733.9:dtest
     #@-others
-    
+
 #@-node:ekr.20070119094733.6:class DT
 #@-others
 

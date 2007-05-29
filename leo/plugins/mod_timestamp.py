@@ -10,11 +10,11 @@ import leoGlobals as g
 import leoPlugins
 
 import time
-    
+
 #@+others
 #@+node:edream.110203113231.728:timestamp
 def timestamp(tag=None, keywords=None):
-    
+
     cmd = keywords.get('label','save')
 
     if cmd.startswith("save") or cmd.startswith("tangle"):

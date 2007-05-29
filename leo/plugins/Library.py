@@ -136,9 +136,9 @@ def init():
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__ )
-    
+
         ok = g.app.gui.guiName() == "tkinter"
-    
+
         if ok:
             leoPlugins.registerHandler("after-create-leo-frame", onCreate)
             leoPlugins.registerHandler("close-frame", onCloseFrame)
@@ -172,21 +172,21 @@ def onCloseFrame (tag,keywords):
 #@+node:ekr.20050328092641.28:cmd_ methods
 #@+node:ekr.20050328092641.30:cmd_Close_Database
 def cmd_Close_Database(c): 
-    
+
     lib = libraries.get(c)
     lib and lib.destroySelf()
 #@nonl
 #@-node:ekr.20050328092641.30:cmd_Close_Database
 #@+node:ekr.20060108191608:cmd_Show_Dialog
 def cmd_Show_Dialog (c):
-    
+
     lib = libraries.get(c)
     lib and lib.showDialog()
 #@nonl
 #@-node:ekr.20060108191608:cmd_Show_Dialog
 #@+node:ekr.20050328092641.32:cmd_Show_Status
 def cmd_Show_Status(c): 
-    
+
     lib = libraries.get(c)
     lib and lib.showStatus()
 #@nonl
@@ -201,21 +201,21 @@ class Library(object):
 
     all methods are now classmethods 
     the commander that is last retrieved from keywords is the one used.
-    
+
     '''
-    
+
     #@    @+others
     #@+node:ekr.20060108184110:Birth & death
     #@+node:ekr.20050328092641.9:__init__
     def __init__ (self,c):
-    
+
         self.c = c
         self.db = None
         self.lib = c.config.getString('library_lib') or 'default'
         self.path = None
         self.dialog = None
         self.verbose = c.config.getBool('library_verbose')
-        
+
         # Create the db.
         self.startup()
         if self.db is not None:
@@ -226,14 +226,14 @@ class Library(object):
     #@-node:ekr.20060108184110.2:config
     #@+node:ekr.20060108185916:createDialog
     def createDialog (self):
-        
+
         c = self.c
         title = c.shortFileName()
         self.dialog = Pmw.Dialog(buttons=('Close',),title=title)
         butbox = self.dialog.component('buttonbox')
         close = butbox.button(0)
         close.configure(foreground='blue',background='white')
-    
+
         hull = self.dialog.component('hull')
         sh = hull.winfo_screenheight() / 4
         sw = hull.winfo_screenwidth() / 4
@@ -246,7 +246,7 @@ class Library(object):
             word = c.config.getString(setting)
             if word: words.append((s,word),)
         words.sort(lambda x,y: cmp(x[0],y[0]))
-    
+
         self.dropdown = Pmw.ComboBox(frame,
             selectioncommand = self.changeLibs,
             scrolledlist_items = words,
@@ -254,14 +254,14 @@ class Library(object):
         )
         self.dropdown.pack(side='top',fill='both',expand=1,padx=2,pady=2)
         self.dropdown.selectitem(0,setentry=1)
-    
+
         self.addList(frame)
         self.dialog.withdraw()
     #@nonl
     #@-node:ekr.20060108185916:createDialog
     #@+node:ekr.20060108174201:destroySelf
     def destroySelf (self):
-    
+
         if self.dialog:
             self.dialog.destroy()
             self.dialog = None
@@ -270,7 +270,7 @@ class Library(object):
     #@-node:ekr.20060108184110:Birth & death
     #@+node:ekr.20060109122217:self.trace
     def trace(self,*args,**keys):
-        
+
         if self.verbose:
             keys ['color'] = 'blue'
             g.es(*args,**keys)
@@ -279,13 +279,13 @@ class Library(object):
     #@+node:ekr.20050328092641.10:buttons
     #@+node:ekr.20050328092641.11:insert
     def insert (self):
-    
+
         c = self.c
         item = self.lbox.getvalue()
         if not item: return
         item = item [0]
         s = self.retrieve(item)
-    
+
         #preserve the users clippboard
         stext = g.app.gui.getTextFromClipboard()
         g.app.gui.replaceClipboardWith(s)
@@ -295,7 +295,7 @@ class Library(object):
     #@-node:ekr.20050328092641.11:insert
     #@+node:ekr.20050328092641.12:delete
     def delete (self):
-    
+
         c = self.c
         item = self.lbox.getvalue()
         if item:
@@ -306,7 +306,7 @@ class Library(object):
     #@-node:ekr.20050328092641.12:delete
     #@+node:ekr.20050328092641.13:addCurrentNode
     def addCurrentNode (self):
-    
+
         c = self.c ; p = c.currentPosition()
         hs = str(p.headString())
         s = c.fileCommands.putLeoOutline()
@@ -318,7 +318,7 @@ class Library(object):
     #@+node:ekr.20050328092641.15:GUI
     #@+node:ekr.20050328092641.17:addList
     def addList (self,frame):
-    
+
         self.lbox = Pmw.ScrolledListBox(frame)
         lb = self.lbox.component('listbox')
         lb.configure(background='white',foreground='blue')
@@ -345,17 +345,17 @@ class Library(object):
         """whatevr is selected currently a tupple (libN, path)
          user can edit it in and screw it up probably
         """
-    
+
         if not (event and len(event) == 2 and event [0] in validlibs):
             g.es('non usable libN in libN {path}',color='red')
             return
-    
+
         try:
             lib = self.fixdefault(event[0],event[1])
         except Exception:
             g.es('non usable path in libN {path}',color='red')
             return
-    
+
         self.trace('Library: newlib=%s' % lib)
         self.shutdown()
         self.lib = lib
@@ -366,27 +366,27 @@ class Library(object):
     #@nonl
     #@+node:ekr.20050328092641.25:fixdefault
     def fixdefault (self,libN,libname):
-    
+
         if libname == 'default': libname = 'default/library.dbm'
-    
+
         if libname.find('default') != -1:
             pluginspath = g.os_path_join(g.app.loadDir,'../',"plugins")
             libname = g.os_path_normpath(g.os_path_abspath(
                 libname.replace('default',pluginspath,1)))
             # setattr(libconfig,libN,libname)
-    
+
         elif libname.find('~') != -1:
             libname = g.os_path_normpath(g.os_path_abspath(
                 libname.replace('~',g.app.homeDir,1)))
             # setattr(libconfig,libN,libname)
-    
+
         return libname
     #@nonl
     #@-node:ekr.20050328092641.25:fixdefault
     #@-node:ekr.20050328092641.19:changeLibs & helper
     #@+node:ekr.20050328092641.18:setListContents
     def setListContents (self):
-    
+
         items = self.names()
         items.sort()
         self.lbox.setlist(items)
@@ -394,9 +394,9 @@ class Library(object):
     #@-node:ekr.20050328092641.18:setListContents
     #@+node:ekr.20050328092641.16:showDialog
     def showDialog (self):
-    
+
         c = self.c
-    
+
         if c and c.exists and self.db is not None:
             if not self.dialog:
                 self.createDialog()
@@ -405,12 +405,12 @@ class Library(object):
     #@-node:ekr.20050328092641.16:showDialog
     #@+node:ekr.20060108174432:showStatus
     def showStatus (self):
-    
+
         try:
             w = whichdb.whichdb(self.path) 
         except Exception:
             w = None
-    
+
         g.es('whichdb is %s at %s'%(w, self.path))
     #@nonl
     #@-node:ekr.20060108174432:showStatus
@@ -418,7 +418,7 @@ class Library(object):
     #@+node:ekr.20050328092641.20:db
     #@+node:ekr.20050328092641.22:add
     def add (self,name,data):
-    
+
         data = g.toEncodedString(data,"utf-8",reportErrors=True)
         data = zlib.compress(data,9)
         self.db [name] = data
@@ -427,20 +427,20 @@ class Library(object):
     #@-node:ekr.20050328092641.22:add
     #@+node:ekr.20050328092641.24:names
     def names (self):
-    
+
         return self.db.keys()
     #@nonl
     #@-node:ekr.20050328092641.24:names
     #@+node:ekr.20050328092641.21:remove
     def remove (self,name):
-    
+
         del self.db [name]
         self.db.sync()
     #@nonl
     #@-node:ekr.20050328092641.21:remove
     #@+node:ekr.20050328092641.23:retrieve
     def retrieve (self,name):
-    
+
         data = self.db [name]
         data = zlib.decompress(data)
         return g.toUnicode(data,"utf-8",reportErrors=True)
@@ -449,23 +449,23 @@ class Library(object):
     #@+node:ekr.20050328092641.26:shutdown
     def shutdown (self):
         '''Close self.db.'''
-    
+
         db = self.db
-    
+
         if db is None: return
-    
+
         if hasattr(db,'isOpen') and db.isOpen():
             if hasattr(db,'synch'): db.synch()
             if hasattr(db,'close'): db.close()
-    
+
         self.db = None
     #@nonl
     #@-node:ekr.20050328092641.26:shutdown
     #@+node:ekr.20050328092641.27:startup
     def startup (self):
-    
+
         path = self.lib ; global dbs, libraries
-    
+
         try:
             # 'r' and 'w' fail if the database doesn't exist.
             # 'c' creates it only if it doesn't exist.
@@ -483,7 +483,7 @@ class Library(object):
             self.path = path
         except Exception, err:
             g.es('Library: Exception creating database: %s' % (err,))
-    
+
         ok = (self.path and self.db and
             hasattr(self.db,'isOpen') and self.db.isOpen() and hasattr(self.db,'sync'))
         if ok:

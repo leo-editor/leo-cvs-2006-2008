@@ -10,14 +10,14 @@ it works in tandem with them.
 
 To use, place @multipath at the start of a line in the root node or an ancestor
 of the node. The format is (On Unixy systems)::
-    
+
     @multipath /machine/unit/:/machine/robot/:/machine/
-    
+
 New in version 0.6 of this plugin: the separator used above is ';' not ':',
 for example:
-    
+
     @multipath c:\prog\test;c:\prog\unittest
-    
+
 It will places copy of the written file in each of these directories.
 
 There is an additional directive that simplifies common paths, it is called
@@ -120,17 +120,17 @@ def init ():
             #import leoGlobals # Append to the module list, not to the g.copy.
             g.globalDirectiveList.append('multipath')
             g.globalDirectiveList.append('multiprefix')
-            
+
             # Workaround a bug in at.directiveKind4: add entries in leoColor.leoKeywords.
             # This allows the code to work with the new colorizer.
             leoColor.leoKeywords.append('@multipath')
             leoColor.leoKeywords.append('@multiprefix')
-            
+
             # Override all instances of leoAtFile.atFile.
             at = leoAtFile.atFile
             global originalOpenFileForWriting ; originalOpenFileForWriting = at.openFileForWriting
             g.funcToMethod(decoratedOpenFileForWriting,at,name='openFileForWriting')
-            
+
             # leoPlugins.registerHandler('save1',start)
             leoPlugins.registerHandler('save2',stop)
             leoPlugins.registerHandler(('new','start2'),addMenu)
@@ -177,13 +177,13 @@ def decoratedOpenFileForWriting (self,root,fileName,toString):
 
     # Save a pointer to the root for later.
     if root.isDirty(): files [fileName] = root.copy()
-    
+
     # Return whatever the original method returned.
     return val 
 #@-node:mork.20041018204908.3:decoratedOpenFileForWriting
 #@+node:mork.20041018204908.6:stop
 def stop (tag,keywords):
-    
+
     c = keywords.get('c')
     if not c:
         g.trace('can not happen')
@@ -209,7 +209,7 @@ def stop (tag,keywords):
 #@-node:mork.20041018204908.6:stop
 #@+node:mork.20041018204908.5:scanForMultiPath
 def scanForMultiPath (c):
-    
+
     '''Return a dictionary whose keys are fileNames and whose values are
     lists of paths to which the fileName is to be written.
     New in version 0.6 of this plugin: use ';' to separate paths in @multipath statements.'''

@@ -67,7 +67,7 @@ def createPasteAsHeadlinesMenu (tag,keywords):
 #@+node:danr7.20060912105041.6:paste_as_headlines
 def paste_as_headlines(c):
     # g.es("Starting...")
-    
+
     c.beginUpdate()
     try:
         currentPos = c.currentPosition() 

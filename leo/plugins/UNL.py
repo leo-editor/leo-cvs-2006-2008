@@ -32,7 +32,7 @@ refer to a node specified in <path> For example, double clicking the following
 headline will take you to Chapter 8 of Leo's Users Guide::
 
     @url file:c:/prog/leoCvs/leo/doc/leoDocs.leo#Users Guide-->Chapter 8: Customizing Leo
-    
+
 For example, suppose you want to email someone with comments about a Leo file.
 Create a comments.leo file containing @url UNL nodes. That is, headlines are
 @url followed by a UNL. The body text contains your comments about the nodes in
@@ -100,15 +100,15 @@ import urlparse
 #@+others
 #@+node:ekr.20070112173134:init
 def init ():
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-    
+
     if g.app.gui.guiName() in ('tkinter','wxPython'):
         leoPlugins.registerHandler("after-create-leo-frame", createStatusLine)
         leoPlugins.registerHandler("select2", onSelect2)    # show UNL
         leoPlugins.registerHandler("@url1", onUrl1)         # jump to URL or UNL
-                
+
         g.plugin_signon(__name__)
         return True
 #@-node:ekr.20070112173134:init
@@ -116,7 +116,7 @@ def init ():
 def createStatusLine(tag,keywords):
 
     """Create a status line.""" # Might already be done by another plugin. Checking needed?
-    
+
     c = keywords.get("c")
     statusLine = c.frame.createStatusLine()
     statusLine.clear()
@@ -161,12 +161,12 @@ def onUrl1 (tag,keywords):
         except:
             g.es("exception interpreting the url " + url)
             g.es_exception()
-       
+
         if not urlTuple[0]:
             urlProtocol = "file" # assume this protocol by default
         else:
             urlProtocol = urlTuple[0]
-        
+
         if urlProtocol == "file":
             if urlTuple[2].endswith(".leo"):
                 c.frame.top.update_idletasks() # Clear remaining events, so they don't interfere.
@@ -175,7 +175,7 @@ def onUrl1 (tag,keywords):
                     #@                    << go to the node>>
                     #@+node:rogererens.20041125015212.1:<<go to the node>>
                     c2 = frame.c
-                    
+
                     if urlTuple [4]: # we have a UNL!
                         nodeList = urlTuple [4].split("-->")
                         p = g.findTopLevelNode(c2,nodeList[0])
@@ -189,7 +189,7 @@ def onUrl1 (tag,keywords):
                                 # c2.frame.tree.select(scroll=False)
                             finally:
                                 c2.endUpdate()
-                                
+
                     # Disable later call to c.onClick so the focus stays in c2.
                     c.doubleClickFlag = True
                     #@nonl
@@ -216,7 +216,7 @@ def onUrl1 (tag,keywords):
                 #@                <<invoke external browser>>
                 #@+node:ekr.20061023141204:<<invoke external browser>>
                 import webbrowser
-                             
+
                 # Mozilla throws a weird exception, then opens the file!
                 try:
                     webbrowser.open(url)
@@ -229,13 +229,12 @@ def onUrl1 (tag,keywords):
             #@            <<invoke external browser>>
             #@+node:ekr.20061023141204:<<invoke external browser>>
             import webbrowser
-                         
+
             # Mozilla throws a weird exception, then opens the file!
             try:
                 webbrowser.open(url)
             except:
                 pass
-            #@nonl
             #@-node:ekr.20061023141204:<<invoke external browser>>
             #@nl
         return True
@@ -256,7 +255,7 @@ def onSelect2 (tag,keywords):
     # c.currentPosition() is not valid while using the settings panel.
     new_p = keywords.get('new_p')
     if not new_p: return    
-    
+
     c.frame.clearStatusLine()
     myList = [p.headString() for p in new_p.self_and_parents_iter()]
     myList.reverse()

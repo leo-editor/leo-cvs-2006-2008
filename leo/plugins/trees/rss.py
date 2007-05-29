@@ -19,7 +19,7 @@ by their values in the stream, so the formatting is kept too!
 
 Requires feedparser installed:
     http://sourceforge.net/projects/feedparser/
-    
+
 """
 #@-node:ekr.20050329082101.151:<< docstring >>
 #@nl
@@ -47,7 +47,7 @@ __plugin_group__ = "Network"
 
 class RSS(BaseTreeHandler):
     """RSS auto tree handler"""
-        
+
     def initFrom(self, parameter):
         """Initialize the tree"""
         node_body = self.node.bodyString().strip()
@@ -70,7 +70,7 @@ class RSS(BaseTreeHandler):
                 self.children.append(TreeNode(
                         item.get('title', 'No title1'),
                         content))
-        
+
     def replaceAll(self, text, dct):
         """Replace all suitable looking names in text with their dictionary values"""
         for name in dct.keys():

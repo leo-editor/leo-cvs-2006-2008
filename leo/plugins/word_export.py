@@ -56,19 +56,19 @@ import sys
 #@+others
 #@+node:ekr.20050311165238:init
 def init ():
-    
+
     ok = client is not None # Ok for unit test: just uses Plugins menu.
 
     if ok:
         # No hooks, we just use the cmd_Export to trigger an export
         g.plugin_signon(__name__)
-        
+
     return ok
 #@nonl
 #@-node:ekr.20050311165238:init
 #@+node:EKR.20040517075715.15:getConfiguration
 def getConfiguration():
-    
+
     """Called when the user presses the "Apply" button on the Properties form"""
 
     fileName = g.os_path_join(g.app.loadDir,"../","plugins","word_export.ini")
@@ -78,11 +78,11 @@ def getConfiguration():
 #@-node:EKR.20040517075715.15:getConfiguration
 #@+node:ekr.20041109085615:getWordConnection
 def getWordConnection():
-    
+
     """Get a connection to Word"""
 
     g.es("Trying to connect to Word")
-    
+
     try:
         word = win32com.client.gencache.EnsureDispatch("Word.Application")
         word.Visible = 1
@@ -96,9 +96,9 @@ def getWordConnection():
 #@-node:ekr.20041109085615:getWordConnection
 #@+node:EKR.20040517075715.17:doPara
 def doPara(word, text, style=None):
-    
+
     """Write a paragraph to word"""
-    
+
     doc = word.Documents(word.ActiveDocument)
     sel = word.Selection
     if style:

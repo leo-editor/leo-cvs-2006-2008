@@ -22,7 +22,7 @@ selected. If the filename is a path, only the last item is matched.
 Execution of the scripts is similar to the "Execute Script"
 command in Leo. The main difference is that the namespace
 in which the scripts are run contains these elements:
-    
+
 - 'c' and 'g' and 'p': as in the regular execute script command.
 
 - 'filename': the filename from the @file directive.
@@ -100,7 +100,7 @@ file_directives = [
 #@+others
 #@+node:ekr.20060108162524:init
 def init():
-    
+
     ok = not g.app.unitTesting # Dangerous for unit testing.
     if ok:
         leoPlugins.registerHandler("icondclick1", onIconDoubleClick)
@@ -116,7 +116,7 @@ def onIconDoubleClick(tag, keywords):
 
     if not c or not p:
         return
-    
+
     h = p.headString()
     words = h.split()
     directive = words[0]
@@ -164,7 +164,7 @@ def applyFileAction(p, filename, c):
         #@        << redirect output >>
         #@+node:ekr.20040915105758.17:<< redirect output >>
         if c.config.redirect_execute_script_output_to_log_pane:
-        
+
             g.redirectStdout() # Redirect stdout
             g.redirectStderr() # Redirect stderr
         #@nonl
@@ -179,7 +179,7 @@ def applyFileAction(p, filename, c):
             #@            << unredirect output >>
             #@+node:ekr.20040915105758.18:<< unredirect output >>
             if c.config.redirect_execute_script_output_to_log_pane:
-            
+
                 g.restoreStderr()
                 g.restoreStdout()
             #@nonl
@@ -189,7 +189,7 @@ def applyFileAction(p, filename, c):
             #@            << unredirect output >>
             #@+node:ekr.20040915105758.18:<< unredirect output >>
             if c.config.redirect_execute_script_output_to_log_pane:
-            
+
                 g.restoreStderr()
                 g.restoreStdout()
             #@nonl

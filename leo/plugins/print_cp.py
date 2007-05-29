@@ -37,31 +37,31 @@ if 0:
 #@+others
 #@+node:ekr.20060621123339.4:init
 def init ():
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     if ok:
         # leoPlugins.registerHandler('after-create-leo-frame',onCreate)
         leoPlugins.registerHandler(('new','open2'),onCreate)
-    
+
     return ok
 #@nonl
 #@-node:ekr.20060621123339.4:init
 #@+node:ekr.20060621123339.5:onCreate
 def onCreate (tag, keys):
-    
+
     c = keys.get('c')
     if not c: return
-    
+
     thePluginController = pluginController(c)
 #@nonl
 #@-node:ekr.20060621123339.5:onCreate
 #@+node:ekr.20060621123339.6:class pluginController
 class pluginController:
-    
+
     #@    @+others
     #@+node:ekr.20060621123339.7:__init__
     def __init__ (self,c):
@@ -73,7 +73,7 @@ class pluginController:
     #@-node:ekr.20060621123339.7:__init__
     #@+node:ekr.20060621124649:print_cp
     def print_cp (self,event=None):
-        
+
         c = self.c ; p = c.currentPosition()
         g.es_print('c: %s' % (c.fileName()),color='red')
         g.es_print('p: %s' % (p.headString()),color='red')

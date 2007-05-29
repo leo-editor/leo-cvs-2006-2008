@@ -10,7 +10,7 @@ can pass username passwords in the URL, eg
 
 Requires pyCurl:
     http://pycurl.sourceforge.net/
-    
+
 """
 #@-node:ekr.20050329082101.163:<< docstring >>
 #@nl
@@ -38,7 +38,7 @@ __plugin_group__ = "Network"
 
 class Remote(BaseTreeHandler):
     """A handler for remote files"""
-        
+
     def initFrom(self, parameter):
         """Initialize the tree"""
         self.children = []

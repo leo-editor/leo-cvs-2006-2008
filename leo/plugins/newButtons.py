@@ -16,37 +16,37 @@ you create an instance of the template these items can be specified.
 To override items in the template you insert strings with the following
 form::
             $$expr$$
-            
+
 These strings can be anywhere in the headline or body text. The *expr*
 is an expression which will be evaluated in a namespace containing two
 existing names,
 
     name = the name entered into the entry box in the toolbar
     node = the leo Vnode that was selected when the *New* button was pressed
-    
+
 You can use this in many way, eg to create a custom file from a template::
-    
+
     @thin $$name$$.py   <- in the headline text
-    
+
 Or to create a unit test node (using methods of the *name* object)::
-    
+
     @thin test$$name.lower()$$
     < body text >
        class $$name$$:   <- in a child node
-       
+
 The following menu items are available:
-    
+
 MakeTemplateFrom
     Create a template from the current node. You will be asked to enter the
     name for the template.
-    
+
 UpdateTemplateFrom
     Update a specific template from the current node. You will be asked
     to select the template to update.
-    
+
 DeleteTemplate
     Delete a specific template. You will be asked to select the template to delete.
-    
+
 AddRawTemplate
     Adds the contents of a template to the outline but doesn't convert the
     $$name$$ values. This is useful for updating a template using UpdateTemplateFrom
@@ -114,29 +114,29 @@ helpers = {}
 #@+node:ekr.20060107123625:Module-level functions
 #@+node:pap.20051010170720.4:init
 def init ():
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     if ok:
         leoPlugins.registerHandler('after-create-leo-frame',onCreate)
         g.plugin_signon("newButtons")
-            
+
     return ok
 #@nonl
 #@-node:pap.20051010170720.4:init
 #@+node:pap.20051010170720.5:onCreate
 def onCreate (tag, keywords):
-    
+
     """
     Showing how to define a global hook that affects all commanders.
     """
 
     import leoTkinterFrame
     log = leoTkinterFrame.leoTkinterLog
-    
+
     # Ensure that the templates folder is there
     folder = g.os_path_join(g.app.loadDir,"..","plugins", "templates")
     try:
@@ -233,7 +233,7 @@ class FlatOptionMenu(Tk.OptionMenu):
 #@+node:pap.20051010171746.2:class UIHelper
 class UIHelperClass:
     """Helper class to collect all UI functions"""
-    
+
     #@    @+others
     #@+node:pap.20051010173622:__init__
     def __init__(self, c, folder):
@@ -262,7 +262,7 @@ class UIHelperClass:
         self.doit = Tk.Button(self._getSizer(self.pseudobutton, 25, 32),
             text="New", relief="flat", command=self.newItemClicked)
         self.doit.pack(side="left")
-        
+
         if self.templateCollection.templateNames:
             options = [name for name in self.templateCollection.templateNames]
             options.sort()
@@ -305,9 +305,9 @@ class UIHelperClass:
                 template.save(c)
                 self.templateCollection.add(template)
                 self.options.addMenuItem(template.name)
-                        
+
         form = MakeTemplateForm(c,makeit)
-        
+
     #@-node:pap.20051010175537:makeTemplate
     #@+node:pap.20051011155041:updateTemplate
     def updateTemplate(self):
@@ -323,9 +323,9 @@ class UIHelperClass:
                 newtemplate = Template().getTemplateFromNode(p, name=result)
                 newtemplate.save(c)
                 tc.add(newtemplate)
-                         
+
         form = SelectTemplateForm(self,updateit, "Update template")
-        
+
     #@-node:pap.20051011155041:updateTemplate
     #@+node:pap.20051011160416.1:addRawTemplate
     def addRawTemplate(self):
@@ -334,7 +334,7 @@ class UIHelperClass:
         def addraw(result):
             if result is not None:
                 self.addTemplate(result)
-                         
+
         form = SelectTemplateForm(self,addraw, "Add raw template")
     #@nonl
     #@-node:pap.20051011160416.1:addRawTemplate
@@ -351,7 +351,7 @@ class UIHelperClass:
                 folder = g.os_path_abspath(self.folder)
                 os.remove(g.os_path_join(folder, filename))
                 g.es('deleted template %s from %s' % (filename,folder),color='blue')
-                         
+
         form = SelectTemplateForm(self,deleteit, "Delete template")
     #@nonl
     #@-node:pap.20051011155642:deleteTemplate
@@ -367,14 +367,14 @@ class UIHelperClass:
             return parent
     #@-node:pap.20051010172432:_getSizer
     #@-others
-    
-    
+
+
 #@nonl
 #@-node:pap.20051010171746.2:class UIHelper
 #@+node:pap.20051011154233:class HelperForm
 class HelperForm:
     """Base class for all forms"""
-    
+
     #@    @+others
     #@+node:pap.20051011154400:__init__
     def __init__(self, c, callback, title):
@@ -382,14 +382,14 @@ class HelperForm:
         self.c = c
         self.root = root = g.app.root
         self.callback = callback
-        
+
         self.dialog = dialog = Pmw.Dialog(root,
                 buttons = ('OK', 'Cancel'),
                 defaultbutton = 'OK',
                 title = title,
                 command = self.formCommit,
         )
-        
+
     #@-node:pap.20051011154400:__init__
     #@+node:pap.20051011154642:formCommit
     def formCommit(self, name):
@@ -400,7 +400,7 @@ class HelperForm:
             result = None
         self.dialog.destroy() 
         self.callback(result)
-           
+
     #@nonl
     #@-node:pap.20051011154642:formCommit
     #@-others
@@ -409,38 +409,38 @@ class HelperForm:
 #@+node:pap.20051010195044:class MakeTemplateForm
 class MakeTemplateForm(HelperForm):
     """A form to initialize a template"""
-    
+
     #@    @+others
     #@+node:pap.20051010195044.1:__init__
     def __init__(self, c, callback):
         """Initialise the form"""
-        
+
         self.c = c
         HelperForm.__init__(self, c, callback, "Add new template")
-        
+
         parent = self.dialog.interior()
-        
+
         def isvalid(x):
             if len(x) > 1:
                 return 1
             else:
                 return -1
-                
+
         self.name = Pmw.EntryField(parent,
                 labelpos = 'w',
                 label_text = 'Template name:',
                 validate = isvalid,
         )
-        
+
         self.getResult = self.name.getvalue
-        
+
         entries = (self.name, )
-        
+
         for entry in entries:
             entry.pack(fill='x', expand=1, padx=10, pady=5)
-        
+
         Pmw.alignlabels(entries)
-    
+
     #@-node:pap.20051010195044.1:__init__
     #@-others
 #@nonl
@@ -448,36 +448,36 @@ class MakeTemplateForm(HelperForm):
 #@+node:pap.20051011153949.1:class SelectTemplateForm
 class SelectTemplateForm(HelperForm):
     """A form to select a template"""
-    
+
     #@    @+others
     #@+node:pap.20051011154233.1:__init__
     def __init__(self, helper, callback, title):
         """Initialise the form"""
-        
+
         self.helper = helper
         self.c = c = helper.c
         HelperForm.__init__(self, c, callback, title)
-        
+
         # items = [template.name for template in helper.templates] or ["Template?"],
         if helper.templateCollection.templateNames:
             items = [name for name in helper.templateCollection.templateNames]
             items.sort()
         else:
             items = ["Template?"]
-                
+
         self.name = Pmw.OptionMenu(self.dialog.interior(),
                 labelpos = 'w',
                 label_text = 'Template name:',
                 items = items,
                 menubutton_width = 10,
         )
-        
+
         self.getResult = self.name.getvalue
         entries = (self.name, )
-        
+
         for entry in entries:
             entry.pack(fill='x', expand=1, padx=10, pady=5)
-        
+
         Pmw.alignlabels(entries)
     #@nonl
     #@-node:pap.20051011154233.1:__init__
@@ -489,12 +489,12 @@ class SelectTemplateForm(HelperForm):
 #@+node:pap.20051010173800.1:class TemplateCollection
 class TemplateCollection(list):
     """Represents a collection of templates"""
-    
+
     #@    @+others
     #@+node:pap.20051010173800.2:__init__
     def __init__(self, c, folder):
         """Initialize the collection"""
-        
+
         self.c = c
         self.folder = folder
         self.templateNames = []
@@ -513,13 +513,13 @@ class TemplateCollection(list):
     #@-node:pap.20051010173800.2:__init__
     #@+node:ekr.20060107134001:add & remove
     def add (self,template):
-    
+
         name = template.name
         self.templateNames.append(name)
         self.templates [name] = template
-    
+
     def remove (self,template):
-    
+
         name = template.name
         if name in self.templateNames:
             self.templateNames.remove(name)
@@ -538,11 +538,11 @@ class TemplateCollection(list):
 #@+node:pap.20051010174103:class Template
 class Template:
     """Represents a template, with no association with any commander.
-    
+
     Warning: Templates are created by doing an eval of tpl files,
     so changes in the ctor and the file format affect each other.
     """
-    
+
     #@    @+others
     #@+node:pap.20051010180444:__init__
     def __init__(self, headline="", body="", children=None, name=None):
@@ -559,7 +559,7 @@ class Template:
     #@+node:pap.20051010184315:addNodes
     def addNodes (self,c,parent,parameter="",top=False):
         """Add this template to the current"""
-        
+
         c.beginUpdate()
         try:
             # Add this new node
@@ -568,13 +568,13 @@ class Template:
             p = c.currentPosition()
             c.setHeadString(p,self.convert(self.headline,parameter,parent))
             c.setBodyString(p,self.convert(self.body,parameter,parent))
-        
+
             # Move it to the proper place.
             if top and not parent.isExpanded():
                 p.moveAfter(parent)
             else:
                 p.moveToNthChildOf(parent,0)
-            
+
             # Now add the children - go in reverse so we can add them as child 0 (above)
             children = self.children [:]
             children.reverse()
@@ -586,11 +586,11 @@ class Template:
     #@-node:pap.20051010184315:addNodes
     #@+node:ekr.20060107131019:getTemplateFromNode
     def getTemplateFromNode (self,p,name):
-    
+
         self.name = name
         self.headline = p.headString()
         self.body = p.bodyString()
-    
+
         # Find children
         self.children = children = []
         child = p.getFirstChild()
@@ -602,20 +602,20 @@ class Template:
     #@-node:ekr.20060107131019:getTemplateFromNode
     #@+node:pap.20051010182048:save
     def save(self,c):
-        
+
         """Save this template"""
-        
+
         template_path = g.app.config.getString(c,'template_path')
         if template_path:
             filename = g.os_path_join(template_path, "%s.tpl" % self.name)
         else:
             filename = g.os_path_join(
                 g.app.loadDir,"..","plugins", "templates", "%s.tpl" % self.name)
-            
+
         f = file(filename, "w")
-        
+
         g.es('writing template %s to %s' % (self.name,g.os_path_abspath(filename)),color='blue')
-    
+
         try:
             f.write(repr(self))
         finally:
@@ -635,17 +635,17 @@ class Template:
     #@+node:pap.20051010205823:convert
     def convert(self, text, parameter, p):
         """Return the converted text"""
-        
+
         # g.trace('text',text,'param',parameter)
         if parameter is None:
             return text
-            
+
         matcher = re.compile("(.*)\$\$(.+?)\$\$(.*)", re.DOTALL+re.MULTILINE)
         namespace = {
             "name" : parameter,
             "node" : p,
         }
-    
+
         def replacer(match):
             try:
                 result = eval(match.groups()[1], namespace)
@@ -653,13 +653,13 @@ class Template:
                 g.es("Unable to replace '%s': %s" % (match.groups()[1], err), color="red")
                 result = "*ERROR*"
             return "%s%s%s" % (match.groups()[0], result, match.groups()[2])
-    
+
         oldtext = text    
         while True:
             text = matcher.sub(replacer, text)
             if text == oldtext: break
             oldtext = text
-    
+
         return text
     #@nonl
     #@-node:pap.20051010205823:convert

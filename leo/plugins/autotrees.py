@@ -123,7 +123,7 @@ Done:
 #@+node:ekr.20050329082101.120:Error Classes
 class AutoTreeError(Exception):
     """Something went wrong with the tree"""
-    
+
 class BadHandler(AutoTreeError):
     """The handler could not be loaded"""
 #@nonl
@@ -136,7 +136,7 @@ def init():
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-            
+
         ok = g.app.gui.guiName() == "tkinter"
 
         if ok:
@@ -147,16 +147,16 @@ def init():
             g.plugin_signon(__name__)
         else:
             g.es("autotrees requires Tkinter",color='blue')
-              
+
     return ok
 #@nonl
 #@-node:ekr.20050329082101.121:init
 #@+node:ekr.20050329082101.122:onCreate
 def onCreate (tag, keys):
-    
+
     c = keys.get('c')
     if not c: return
-    
+
     global thePluginController
     thePluginController = pluginController(c)
 #@nonl
@@ -173,10 +173,10 @@ def topLevelMenu(c):
 #@+node:ekr.20050329082101.124:class TreeNode
 class TreeNode:
     """Represents a child on the tree"""
-    
+
     headline = "A headline"
     body = "A body"
-    
+
     #@    @+others
     #@+node:ekr.20050329082101.125:__init__
     def __init__(self, headline, body="", children=None):
@@ -194,7 +194,7 @@ class BaseTreeHandler:
 
     # Set this to every event you want to handle
     handles = sets.Set(["icondclick1"])
-    
+
     #@    @+others
     #@+node:ekr.20050329082101.127:__init__
     def __init__(self, node):
@@ -215,15 +215,15 @@ class BaseTreeHandler:
     #@+node:ekr.20050329082101.129:preprocessNode
     def preprocessNode(self):
         """Pre-process the node
-        
+
         Typically this will involve deleting the existing child nodes, and
         this is the default behaviour. However, a concrete handler could
         override this method to provide alternate behaviour.
-        
+
         """
         while self.node.firstChild():
             self.node.firstChild().doDelete(self.node)
-        
+
     #@nonl
     #@-node:ekr.20050329082101.129:preprocessNode
     #@+node:ekr.20050329082101.130:initFrom
@@ -241,14 +241,14 @@ class BaseTreeHandler:
             c.setHeadString(new_node,child.headline)
             c.setBodyString(new_node,child.body)
             self.addChildren(child.children, new_node)
-     
+
     #@nonl
     #@-node:ekr.20050329082101.131:addChildren
     #@-others
 #@-node:ekr.20050329082101.126:class BaseTreeHandler
 #@+node:ekr.20050329082101.132:class pluginController
 class pluginController:
-    
+
     #@    @+others
     #@+node:ekr.20050329082101.133:__init__
     def __init__ (self,c):
@@ -308,7 +308,7 @@ class pluginController:
             #@nl
             # Restore
             sys.path = old_path
-            
+
     #@nonl
     #@-node:ekr.20050329082101.134:loadTreeHandlers
     #@+node:ekr.20050329082101.137:loadHandlersFrom
@@ -329,7 +329,7 @@ class pluginController:
             if is_handler:
                 g.es("... found handler '%s'" % (cls_name,), color="blue")
                 self.handlers[cls_name.lower()] = object
-        
+
     #@-node:ekr.20050329082101.137:loadHandlersFrom
     #@+node:ekr.20050329082101.138:isActive
     def isActive(self, handler):
@@ -399,19 +399,19 @@ class pluginController:
             #@+node:ekr.20050329082101.143:<< class HandlerDialog >>
             class HandlerDialog(self.plugin_manager.ManagerDialog):
                 """A dialog to manager tree handlers"""
-                
+
                 dialog_caption = "AutoTree Handler Manager"
-            
+
                 #@    @+others
                 #@+node:ekr.20060107092231:ctor
                 def __init__ (self,c):
-                    
+
                     self.c = c
                 #@nonl
                 #@-node:ekr.20060107092231:ctor
                 #@+node:ekr.20050329082101.144:setPaths
                 def setPaths(self):
-                
+
                     """Set paths to the plugin locations"""
                     self.local_path = g.os_path_join(g.app.loadDir,"..","plugins","trees")
                     self.remote_path = r"cvs.sourceforge.net/viewcvs.py/leo/leo/plugins/trees"

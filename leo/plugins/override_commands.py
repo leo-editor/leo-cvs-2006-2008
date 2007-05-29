@@ -23,7 +23,7 @@ if not g.app.unitTesting: # Not for unit testing: overrides core methods.
 
     # Register the handlers...
     leoPlugins.registerHandler("command1", onCommand)
-    
+
     __version__ = "1.2"
     g.plugin_signon(__name__)
 #@nonl

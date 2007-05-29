@@ -32,7 +32,7 @@
 #@nl
 
 __version__ = "0.9"
-  
+
 #@<< hoist.py imports >>
 #@+node:ekr.20040908093511.1:<< hoist.py imports >>
 import leoGlobals as g
@@ -56,15 +56,15 @@ SIZER_WIDTH = 55 # was 70
 #@+others
 #@+node:ekr.20070301070027:init
 def init ():
-    
+
     if Tk is None: return False
-    
+
     # OK for unit testing.
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     if ok:
         leoPlugins.registerHandler("after-create-leo-frame",onCreate)
         g.plugin_signon(__name__)
@@ -74,9 +74,9 @@ def init ():
 #@-node:ekr.20070301070027:init
 #@+node:ekr.20050104063423:onCreate
 def onCreate (tag,keys):
-    
+
     c = keys.get('c')
-    
+
     hoist = HoistButtons(c)
     hoist.addWidgets()
     leoPlugins.registerHandler("idle",hoist.onIdle)
@@ -90,7 +90,7 @@ class HoistButtons:
     #@    @+others
     #@+node:ekr.20040331072607.2:__init__
     def __init__(self,c):
-    
+
         self.c = c
         self.hoistOn = {}
         self.hoistOff = {}
@@ -98,9 +98,9 @@ class HoistButtons:
     #@-node:ekr.20040331072607.2:__init__
     #@+node:ekr.20040331072607.3:_getSizer
     def _getSizer(self, parent, height, width):
-    
+
         """Return a sizer object to force a Tk widget to be the right size"""
-    
+
         if USE_FIXED_SIZES: 
             sizer = Tk.Frame(parent, height=height, width=width)
             sizer.pack_propagate(0) # don't shrink 
@@ -112,18 +112,18 @@ class HoistButtons:
     #@-node:ekr.20040331072607.3:_getSizer
     #@+node:ekr.20040331072607.4:addWidgets
     def addWidgets(self):
-    
+
         """Add the widgets to the toolbar."""
-    
+
         c = self.c
         toolbar = c.frame.iconFrame
-        
+
         def hoistOffCallback():
             c.dehoist()
-    
+
         def hoistOnCallback():
             c.hoist()
-    
+
         if USE_SIZER: # original code
             self.hoistOff[c] = b = Tk.Button(
                 self._getSizer(toolbar, SIZER_HEIGHT, SIZER_WIDTH),text="De-Hoist",
@@ -141,36 +141,36 @@ class HoistButtons:
             if 1: # use this to force the buttons to the right.
                 b1.pack(side="right", fill="y", expand=0)
                 b2.pack(side="right", fill="y", expand=0)
-    
+
         self.bgColor = self.hoistOn[c]["background"]
         self.activeBgColor = self.hoistOn[c]["activebackground"]
     #@nonl
     #@-node:ekr.20040331072607.4:addWidgets
     #@+node:ekr.20040331072607.7:onIdle
     def onIdle(self,tag,keywords):
-        
+
         c = keywords.get('c')
         if c != self.c: return
-        
+
         # This should not be necessary, and it is.
         if g.app.killed:
             return
-    
+
         if not hasattr(c,"hoistStack"):
             return
-    
+
         on_widget  = self.hoistOn.get(c)
         off_widget = self.hoistOff.get(c)
-    
+
         if not on_widget or not off_widget:
             return # This can happen during unit tests.
-    
+
         state = g.choose(c.canHoist(),"normal","disabled")
         on_widget.config(state=state)
-        
+
         state = g.choose(c.canDehoist(),"normal","disabled")
         off_widget.config(state=state)
-    
+
         if len(c.hoistStack) > 0:
             on_widget.config(bg=activeHoistColor,
                 activebackground=activeHoistColor,

@@ -5,7 +5,7 @@
 """A handler that documents a module
 
 The parameter in the @auto-doc headline is the module to document.
-    
+
 """
 #@-node:ekr.20050329082101.166:<< docstring >>
 #@nl
@@ -35,7 +35,7 @@ __plugin_group__ = "Coding"
 
 class Doc(BaseTreeHandler):
     """Handler for documentation nodes"""
-        
+
     def initFrom(self, parameter):
         """Initialize the tree"""
         self.children = []
@@ -49,7 +49,7 @@ class Doc(BaseTreeHandler):
             for comp in components[1:]:
                 module = getattr(module, comp)
             self.children.extend(self.getDocsFor(module))
-            
+
     def getDocsFor(self, object):
         """Return a list of child nodes documenting the object"""
         #print object
@@ -72,6 +72,6 @@ class Doc(BaseTreeHandler):
                     )
                 )
         return children
-            
+
 #@-node:ekr.20050329082101.165:@thin trees\doc.py
 #@-leo

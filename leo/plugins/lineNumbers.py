@@ -48,15 +48,15 @@ if not g.app.unitTesting: # Not safe for unit testing.  Changes core class.
     #@    << override write methods >>
     #@+node:ekr.20040419105219.1:<< override write methods >>
     oldOpenNodeSentinel = leoAtFile.atFile.putOpenNodeSentinel
-    
+
     def putLineNumberDirective(self,v,inAtAll=False,inAtOthers=False,middle=False):
-    
+
         oldOpenNodeSentinel(self,v,inAtAll,inAtOthers,middle)
-    
+
         if self.language in ("perl","perlpod"):
             line = 'line 1 "node:%s (%s)"' % (self.nodeSentinelText(v),self.shortFileName)
             self.putSentinel(line)
-            
+
     g.funcToMethod(putLineNumberDirective,	
         leoAtFile.atFile,"putOpenNodeSentinel")
     #@nonl
@@ -65,14 +65,14 @@ if not g.app.unitTesting: # Not safe for unit testing.  Changes core class.
     #@    << override read methods >>
     #@+node:ekr.20040419105219.2:<< override read methods >>
     readNormalLine = leoAtFile.atFile.readNormalLine
-    
+
     def skipLineNumberDirective(self, s, i):
-    
+
         if linere.search(s): 
             return  # Skipt the line.
         else:		
             readNormalLine(self,s,i)
-    
+
     g.funcToMethod(skipLineNumberDirective,
         leoAtFile.atFile,"readNormalLine")
     #@nonl

@@ -99,9 +99,9 @@ class config:
 #@+others
 #@+node:ekr.20060830091349:init
 def init ():
-    
+
     leoPlugins.registerHandler("open2", onFileOpen)
-    
+
     return True
 #@nonl
 #@-node:ekr.20060830091349:init
@@ -113,11 +113,11 @@ def onFileOpen(tag, keywords):
     getConfiguration(c)
 
     if config.http_active and not wasactive: # Ok for unit testing:
-    
+
         s=Server('',config.http_port,RequestHandler)
         asyncore.read = a_read
         leoPlugins.registerHandler("idle", plugin_wrapper)
-        
+
         g.es("http serving enabled on port %s, version %s" % (config.http_port, __version__), color="purple")
 #@-node:bwmulder.20050326191345.1:onFileOpen
 #@+node:bwmulder.20050322132919:rst_related
@@ -231,7 +231,7 @@ class escaped_StringIO(StringIO):
         s = s.replace('&', "&amp;")
         s = s.replace('<', "&lt;")
         s = s.replace('>', "&gt;")
-        
+
         # is there a more elegant way to do this?
         # Replaces blanks with &nbsp; id they are in
         # the beginning of the line.
@@ -255,11 +255,11 @@ class escaped_StringIO(StringIO):
             else:
                 result.append(line)
         s = '\n'.join(result)
-    
+
         s = s.replace('\n', '<br>')
         s = s.replace(chr(9), '&nbsp;&nbsp;&nbsp;&nbsp;')
         StringIO.write(self, s)
-        
+
     #@nonl
     #@-node:EKR.20040517080250.12:write_escaped
     #@-others
@@ -277,14 +277,14 @@ class leo_interface(object):
             the parent.
             The children, if any.
         """
-    
+
         # Collecting the navigational links.
         if node:
             nodename = node.headString()
             threadNext = node.threadNext()
             sibling = node.next()
             parent = node.parent()
-    
+
             children = []
             firstChild = node.firstChild()
             if firstChild:
@@ -292,7 +292,7 @@ class leo_interface(object):
                 while child:
                     children.append(child)
                     child = child.next()
-    
+
             if threadNext is not None:
                 self.create_leo_reference(window, threadNext,  "next", f)
             f.write("<br>")
@@ -331,7 +331,7 @@ class leo_interface(object):
         f.write('<a href="%s">' % href)
         f.write_escaped(text)
         f.write("</a>\n")
-    
+
     #@-node:EKR.20040517080250.22:create_href
     #@+node:bwmulder.20050319134815:create_leo_h_reference
     def create_leo_h_reference(self, window, node):
@@ -351,10 +351,10 @@ class leo_interface(object):
     def format_leo_node(self, window, node):
         """
         Given a node 'node', return the contents of that node as html text.
-        
+
         Include some navigational references too
         """
-    
+
         if node:
             headString = node.headString()
             bodyString = node.bodyString()
@@ -419,7 +419,7 @@ class leo_interface(object):
             identify the leo node which is in that file, and,
             from top to bottom, is the <number1> child of the topmost
             node, the <number2> child of that node, and so on.
-            
+
             Return None if that node can not be identified that way.
         """
         # Identify the window
@@ -428,9 +428,9 @@ class leo_interface(object):
                 break
         else:
             return None, None
-            
+
         node = w.c.rootVnode()
-        
+
         if len(path) >= 2:
             for i in range(int(path[1])):
                 node = node.next()
@@ -454,7 +454,7 @@ class leo_interface(object):
     #@+node:EKR.20040517080250.27:get_leo_windowlist
     def get_leo_windowlist(self):
         """
-     
+
         """
         f = escaped_StringIO()
         write, write_escaped = f.write, f.write_escaped
@@ -485,27 +485,27 @@ class leo_interface(object):
         while parent:
             root = parent
             parent = root.parent()
-        
+
         while root.v._back:
             root.moveToBack()
-        
+
         # 2. Return the window
         window = [w for w in g.app.windowList if w.c.rootVnode().v == root.v][0]
-        
+
         result = self.create_leo_h_reference(window, vnode)
         return result
     #@-node:bwmulder.20050319135316:node_reference
     #@+node:bwmulder.20050322224921:send_head
     def send_head(self):
         """Common code for GET and HEAD commands.
-    
+
          This sends the response code and MIME headers.
-    
+
          Return value is either a file object (which has to be copied
          to the outputfile by the caller unless the command was HEAD,
          and must be closed by the caller under all circumstances), or
          None, in which case the caller has nothing further to do.
-    
+
          """
         try:
             path = self.split_leo_path(self.path)
@@ -537,7 +537,7 @@ class leo_interface(object):
             import traceback
             traceback.print_exc()
             raise
-    
+
     #@-node:bwmulder.20050322224921:send_head
     #@+node:EKR.20040517080250.30:split_leo_path
     def split_leo_path(self, path):
@@ -599,12 +599,12 @@ class RequestHandler(
     #@+node:EKR.20040517080250.15:copyfile
     def copyfile(self, source, outputfile):
         """Copy all data between two file objects.
-    
+
         The SOURCE argument is a file object open for reading
         (or anything with a read() method) and the DESTINATION
         argument is a file object open for writing (or
         anything with a write() method).
-    
+
         The only reason for overriding this would be to change
         the block size or perhaps to replace newlines by CRLF
         -- note however that this the default server uses this
@@ -615,19 +615,19 @@ class RequestHandler(
     #@+node:EKR.20040517080250.16:log_message
     def log_message(self, format, *args):
         """Log an arbitrary message.
-    
+
          This is used by all other logging functions.  Override
          it if you have specific logging wishes.
-    
+
          The first argument, FORMAT, is a format string for the
          message to be logged.  If the format string contains
          any % escapes requiring parameters, they should be
          specified as subsequent arguments (it's just like
          printf!).
-    
+
          The client host and current date/time are prefixed to
          every message.
-    
+
          """
         message = "%s - - [%s] %s\n" % (
             self.address_string(),
@@ -680,7 +680,7 @@ class RequestHandler(
         [ready_to_read,x,y]=select.select([self.connection],[],[],0)
         if ready_to_read:
             self.rfile.read(2)
-    
+
         self.QUERY.update(self.query(query))
         self.handle_data()
     #@-node:EKR.20040517080250.32:do_POST
@@ -713,19 +713,19 @@ class RequestHandler(
     #@+node:EKR.20040517080250.35:handle_request_line
     def handle_request_line(self):
         """Called when the http request line and headers have been received"""
-    
+
         # prepare attributes needed in parse_request()
         self.rfile=cStringIO.StringIO(self.buffer.getvalue())
         self.raw_requestline=self.rfile.readline()
         self.parse_request()
-    
+
         # if there is a Query String, decodes it in a QUERY dictionary
         self.path_without_qs,self.qs=self.path,''
         if self.path.find('?')>=0:
             self.qs=self.path[self.path.find('?')+1:]
             self.path_without_qs=self.path[:self.path.find('?')]
         self.QUERY=self.query(cgi.parse_qs(self.qs,1))
-    
+
         if self.command in ['GET','HEAD']:
             # if method is GET or HEAD, call do_GET or do_HEAD and finish
             method="do_"+self.command
@@ -759,10 +759,10 @@ class Server(asyncore.dispatcher):
         self.handler=handler
         asyncore.dispatcher.__init__ (self)
         self.create_socket (socket.AF_INET, socket.SOCK_STREAM)
-    
+
         self.set_reuse_addr()
         self.bind ((ip, port))
-    
+
         # lower this to 5 if your OS complains
         self.listen (1024)
     #@-node:EKR.20040517080250.38:__init__
@@ -846,7 +846,7 @@ def loop(timeout=5.0, use_poll=0, map=None):
 #@-node:EKR.20040517080250.44:loop
 #@+node:EKR.20040517080250.45:plugin_wrapper
 def plugin_wrapper(tag, keywords):
-    
+
     if g.app.killed: return
 
     first = True

@@ -57,23 +57,23 @@ USE_FIXED_SIZES = sys.platform != "darwin"
 #@+others
 #@+node:ekr.20050311090939.4:init
 def init ():
-    
+
     ok = Tk is not None # OK for unit testing.
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-    
+
         if g.app.gui.guiName() == "tkinter":
             leoPlugins.registerHandler(('new','open2'), onCreate)
             g.plugin_signon(__name__) #"nodenavigator")
-    
+
     return ok
 #@nonl
 #@-node:ekr.20050311090939.4:init
 #@+node:ekr.20040909132810:onCreate
 def onCreate(tag, keywords):
-    
+
     # Not ok for unit testing: can't use unitTestGui.
     if g.app.unitTesting:
         return
@@ -89,13 +89,13 @@ def onCreate(tag, keywords):
 #@-node:ekr.20040909132810:onCreate
 #@+node:ekr.20040108062655.2:class Navigator
 class Navigator:
-    
+
     """A node navigation aid for Leo"""
 
     #@    @+others
     #@+node:ekr.20040801062218:__init__
     def __init__ (self,c):
-        
+
         self.c = c
         self.inited = False
         self.markLists = {}
@@ -108,9 +108,9 @@ class Navigator:
     #@-node:ekr.20040801062218:__init__
     #@+node:ekr.20040108062655.4:_getSizer
     def _getSizer(self, parent, height, width):
-    
+
         """Return a sizer object to force a Tk widget to be the right size"""
-    
+
         if USE_FIXED_SIZES: 
             sizer = Tk.Frame(parent,height=height,width=width) 
             sizer.pack_propagate(0) # don't shrink 
@@ -122,36 +122,36 @@ class Navigator:
     #@-node:ekr.20040108062655.4:_getSizer
     #@+node:ekr.20040108062655.6:addMark
     def addMark(self, tag, keywords):
-    
+
         """Add a mark to the marks list"""
-    
+
         c = keywords.get("c")
         p = keywords.get("p")
         if c != self.c or not p: return
-    
+
         marks = self.markLists.get(c,[])
         if p.v.t in marks: return
-    
+
         menu = self.marksMenus.get(c)
         if menu is None: return
         menu = menu["menu"]
-    
+
         def callback(event=None,self=self,c=c,p=p.copy()):
             self.select(c,p)
-    
+
         name = p.headString().strip()
         menu.add_command(label=name[:40],command=callback)
         marks.append(p.v.t)
-    
+
         # Unlike the recent menu, which gets recreated each time, we remember the marks.
         self.markLists[c] = marks
     #@nonl
     #@-node:ekr.20040108062655.6:addMark
     #@+node:ekr.20040108062655.3:addWidgets
     def addWidgets(self):
-    
+
         """Add the widgets to the navigation bar"""
-    
+
         c = self.c
         # Create the main container.
         self.frame = Tk.Frame(c.frame.iconFrame)
@@ -174,19 +174,19 @@ class Navigator:
     #@-node:ekr.20040108062655.3:addWidgets
     #@+node:ekr.20040730092357:initMarks
     def initMarks(self, tag, keywords):
-    
+
         """Initialize the marks list."""
-    
+
         c = keywords.get("c")
         if c != self.c: return
-    
+
         # Clear old marks menu
         menu = self.marksMenus.get(c)
         if menu is None: return
-    
+
         menu = menu["menu"]
         menu.delete(0,"end")
-    
+
         # Find all marked nodes. We only do this once!
         marks = self.markLists.get(c,[])
         for p in c.all_positions_iter():
@@ -201,20 +201,20 @@ class Navigator:
     #@-node:ekr.20040730092357:initMarks
     #@+node:ekr.20040730093250:clearMark
     def clearMark(self, tag, keywords):
-    
+
         """Remove a mark to the marks list"""
-    
+
         c = keywords.get("c")
         p = keywords.get("p")
         if c != self.c or not p: return
-    
+
         marks = self.markLists.get(c,[])
         if not p.v.t in marks: return
-    
+
         menu = self.marksMenus.get(c)
         if menu is None: return # This should never happen.
         menu = menu["menu"]
-    
+
         name = p.headString().strip()
         try:
             # 9/7/04: The headline may be in the process of being changed.
@@ -223,16 +223,16 @@ class Navigator:
         except Tk.TclError:
             pass
         marks.remove(p.v.t)
-    
+
         # Unlike the recent menu, which gets recreated each time, we remember the marks.
         self.markLists[c] = marks
     #@nonl
     #@-node:ekr.20040730093250:clearMark
     #@+node:ekr.20040730094103:select
     def select(self,c,p):
-    
+
         """Callback that selects position p."""
-    
+
         if c.positionExists(p):
             c.beginUpdate()
             c.frame.tree.expandAllAncestors(p)
@@ -242,19 +242,19 @@ class Navigator:
     #@-node:ekr.20040730094103:select
     #@+node:ekr.20040108091136:updateRecent
     def updateRecent(self,tag,keywords):
-    
+
         """Add all entries to the recent nodes list."""
-    
+
         c = keywords.get("c")
         if c != self.c: return
-    
+
         # Clear old recent menu
         menu = self.recentMenus.get(c)
         if not menu: return
-    
+
         menu = menu["menu"]
         menu.delete(0,"end")
-    
+
         for p in c.visitedList[:25]:
             if c.positionExists(p):
                 def callback(event=None,self=self,c=c,p=p):

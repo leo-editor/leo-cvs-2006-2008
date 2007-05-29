@@ -37,7 +37,7 @@ def copy_time (sourcefilename, targetfilename):
    """
    Set the modification time of the targetfile the same
    as the sourcefilename.
-   
+
    Does not work currently, if we can not read or change
    the modification time.
    """
@@ -54,9 +54,9 @@ def default_marker_from_extension (filename):
     """
     Tries to guess the sentinel leadin
     comment from the filename extension.
-   
+
     This function allows testing independent of Leo
-    
+
     """
     root, ext = os.path.splitext(filename)
     if ext=='.tmp':
@@ -74,7 +74,7 @@ def default_marker_from_extension (filename):
 #@+node:ekr.20060715100156.15:write_if_changed
 def write_if_changed (lines, sourcefilename, targetfilename):
    """
-   
+
    Checks if 'lines' matches the contents of
    'targetfilename'. Refreshes the targetfile with 'lines' if not.
    'sourcefilename' supplies the modification time to be used for
@@ -114,9 +114,9 @@ def write_if_changed (lines, sourcefilename, targetfilename):
 def is_sentinel (line, marker):
    """
    Check if line starts with a Leo marker.
-   
+
    Leo markers are filtered away by this script.
-   
+
    Leo markers start with a comment character, which dependends
    on the language used. That's why the marker is passed in.
    """
@@ -126,17 +126,17 @@ def is_sentinel (line, marker):
 class sourcereader:
     """
     A simple class to read lines sequentially.
-    
+
     The class keeps an internal index, so that each
     call to get returns the next line.
-    
+
     Index returns the internal index, and sync
     advances the index to the the desired line.
-    
+
     The index is the *next* line to be returned.
-    
+
     The line numbering starts from 0.
-    
+
     The code might be expanded inline once the plugin
     is considered stable
     """
@@ -197,7 +197,7 @@ class sourcereader:
 class sourcewriter:
     """
     Convenience class to capture output to a file.
-    
+
     Similar to class sourcereader.
     """
     #@	@+others
@@ -235,7 +235,7 @@ class sourcewriter:
 def copy_file_removing_sentinels (sourcefilename, targetfilename, marker_from_extension):
     """
     Filter out Leo comments.
-    
+
     Writes the lines from sourcefilename without Leo comments
     to targetfilename, if the contents of those lines is different
     from the lines in targetfilename.
@@ -248,20 +248,20 @@ def copy_file_removing_sentinels (sourcefilename, targetfilename, marker_from_ex
 def read_file_separating_out_sentinels (sourcefilename, marker_from_extension):
    """
    Removes sentinels from the lines of 'sourcefilename'.
-   
+
    Returns (regular_lines, sentinel_lines)
    """
-   
+
    return separate_regular_lines_from_sentinel_lines(file(sourcefilename).readlines(), marker_from_extension(sourcefilename))
 #@-node:ekr.20060715100156.33:read_file_separating_out_sentinels
 #@+node:ekr.20060715100156.34:separate_regular_lines_from_sentinel_lines
 def separate_regular_lines_from_sentinel_lines (lines, marker):
    """
-   
+
    Removes sentinels from lines.
-   
+
    Returns (regular_lines, sentinel_lines)
-   
+
    """
    result, sentinel_lines =[],[]
    for line in lines:
@@ -276,13 +276,13 @@ def push_filter_mapping (filelines, marker):
    """
    Given the lines of a file, filter out all
    Leo sentinels, and return a mapping:
-      
+
       stripped file -> original file
-      
+
    Filtering should be the same as
    separate_regular_lines_from_sentinel_lines
    """
-   
+
    mapping =[None]
    for linecount, line in enumerate(filelines):
       if not is_sentinel(line,marker):
@@ -296,12 +296,12 @@ def push_filter_mapping (filelines, marker):
 class sentinel_squasher:
     """
     The heart of the script.
-    
+
     Creates files without sentinels from files with sentinels.
-    
+
     Propagates changes in the files without sentinels back
     to the files with sentinels.
-    
+
     """
     #@	@+others
     #@+node:ekr.20060715100156.37:__init__
@@ -313,7 +313,7 @@ class sentinel_squasher:
     def check_lines_for_equality (self, lines1, lines2, message, lines1_message, lines2_message, es):
         """
         Little helper function to get nice output if something goes wrong.
-       
+
         Checks if lines1 == lines2. If not,
             1. Print the two lists line1 and line2
             2. Put the line1 into the file mod_shadow.tmp1 and lines2 into mod_shadow.tmp2.
@@ -347,20 +347,20 @@ class sentinel_squasher:
     #@+node:ekr.20060715100156.39:create_back_mapping
     def create_back_mapping (self, sourcelines, marker):
        """
-    
+
        'sourcelines' is a list of lines of a file with sentinels.
-    
+
        Creates a new list of lines without sentinels, and keeps a
        mapping which maps each source line in the new list back to its
        original line.
-    
+
        Returns the new list of lines, and the mapping.
-    
+
        For programming convenience, the mapping is extended by an
        extra element at the end.
        """
        mapping, resultlines =[],[]
-    
+
        si, l = 0, len(sourcelines)
        while si < l:
           sline = sourcelines[si]
@@ -368,7 +368,7 @@ class sentinel_squasher:
              resultlines.append(sline)
              mapping.append(si)
           si+=1
-    
+
        # for programing convenience, we create an additional mapping entry.
        # This simplifies the programming of the copy_sentinels function below.
        mapping.append(si)
@@ -378,11 +378,11 @@ class sentinel_squasher:
     def check_the_final_output(self, new_lines_with_sentinels, changed_lines_without_sentinels, sentinel_lines, marker, es):
         """
         Check that we produced a valid output.
-        
+
         Input:
             new_targetlines:   the lines with sentinels which produce changed_lines_without_sentinels.
             sentinels:         new_targetlines should include all the lines from sentinels.
-            
+
         checks:
             1. new_targetlines without sentinels must equal changed_lines_without_sentinels.
             2. the sentinel lines of new_targetlines must match 'sentinels'
@@ -395,7 +395,7 @@ class sentinel_squasher:
             lines1_message = "new lines (without sentinels)",
             lines2_message = "new lines as produced by the read algorithm",
             es = es)
-    
+
         self.check_lines_for_equality(
             lines1 = sentinel_lines,
             lines2 = new_sentinel_lines,
@@ -403,25 +403,25 @@ class sentinel_squasher:
             lines1_message = "sentinel lines of the new file",
             lines2_message = "old sentinels",
             es = es)
-        
+
         # maybe later, we can replace the above two function calls with the two assertions below    
         #  assert new_lines_without_sentinels == changed_lines_without_sentinels, "new_sentinel_lines != changed_lines_without_sentinels"
         # assert new_sentinel_lines == sentinels, "sentinels where changed!"
-    
+
     #@-node:ekr.20060715100156.40:check_the_final_output
     #@+node:ekr.20060715100156.41:propagate_changes_from_file_without_sentinels_to_file_with_sentinels
     def propagate_changes_from_file_without_sentinels_to_file_with_sentinels (self, with_sentinels, without_sentinels, marker_from_extension):
         """
         Propagate the changes from file 'without_sentinels' to file 'with_sentinels'.
-    
+
         This is the most complicated part of the plugin.
         """
         # g.trace(without_sentinels, with_sentinels)
-    
+
         lines_without_sentinels = file(without_sentinels).readlines()
         lines_with_sentinels = file(with_sentinels).readlines()
         marker = marker_from_extension(without_sentinels)
-    
+
         new_lines_with_sentinels = self.propagate_changes_from_lines_without_sentinels_to_lines_with_sentinels(
             lines_without_sentinels,
             lines_with_sentinels, marker)
@@ -449,12 +449,12 @@ class sentinel_squasher:
         """
         Propagate the changes from lines_without_sentinels to lines_with_sentinels,
         assuming that the sentinel lines start with marker (modulo leading blanks).
-        
+
         lines_without_sentinels contain changes which should be integrated into lines_with_sentinels.
         """
         #@    <<print_all_func>>
         #@+node:ekr.20060715100156.44:<< print_all_func>>
-        
+
         def print_all_func(message):
             """
             Print all relevent variables to debug this function
@@ -476,25 +476,25 @@ class sentinel_squasher:
             print "-----------------------------------"
             writer_new_sourcelines.dump('writer_new_sourcelines (new)')
             print "-----------------------------------"
-        
+
         #@-node:ekr.20060715100156.44:<< print_all_func>>
         #@nl
         old_lines_without_sentinels, mapping = self.create_back_mapping(lines_with_sentinels, marker)
-    
+
         #@    << init vars >>
         #@+node:ekr.20060715100156.45:<< init vars >>
         writer_new_sourcelines = sourcewriter()
         # collects the contents of the new file.
-        
+
         reader_new_lines_without_sentinels = sourcereader(new_lines_without_sentinels)
         # reader_new_lines_without_sentinels contains the changed source code.
-        
+
         reader_old_lines_without_sentinels = sourcereader(old_lines_without_sentinels)
         # this is compared to reader_new_lines_without_sentinels to find out the changes.
-        
+
         reader_lines_with_sentinels = sourcereader(lines_with_sentinels)
         # This is the file which is currently produced by Leo, with sentinels.
-        
+
         #@+at 
         #@nonl
         # We compare the 'lines_without_sentinels' with 
@@ -509,18 +509,18 @@ class sentinel_squasher:
         # is going to replace lines_with_sentinels.
         #@-at
         #@@c
-        
+
         # Check that all ranges returned by get_opcodes() are contiguous
         old_i2_old_lines, old_i2_modified_lines = -1,-1
-        
-        
+
+
         tag = i1_old_lines = i2_old_lines = i1_new_lines = i2_new_lines = None
         #@nonl
         #@-node:ekr.20060715100156.45:<< init vars >>
         #@nl
-        
+
         sm = difflib.SequenceMatcher(None, old_lines_without_sentinels, new_lines_without_sentinels)
-    
+
         for tag, i1_old_lines, i2_old_lines, i1_new_lines, i2_new_lines in sm.get_opcodes():
             print_all_func("After a new tag")
             # import pdb; pdb.set_trace()
@@ -536,7 +536,7 @@ class sentinel_squasher:
                 while reader_lines_with_sentinels.index() <= mapping[i2_old_lines-1]:
                    line = reader_lines_with_sentinels.get()
                    writer_new_sourcelines.put(line)
-                
+
                 reader_new_lines_without_sentinels.sync(i2_new_lines)
                 #@-node:ekr.20060715100156.46:<< handle 'equal' op >>
                 #@nl
@@ -561,16 +561,16 @@ class sentinel_squasher:
                 while reader_new_lines_without_sentinels.index()<i2_new_lines:
                    line = reader_new_lines_without_sentinels.get()
                    writer_new_sourcelines.put(line)
-                
+
                 #@-node:ekr.20060715100156.49:<< handle 'insert' op >>
                 #@nl
             else: assert 0
-            
+
         print_all_func("Before final copy")
         self.copy_sentinels(reader_lines_with_sentinels, writer_new_sourcelines, marker, upto = reader_lines_with_sentinels.size())
         print_all_func("At the end")
         result = writer_new_sourcelines.getlines()
-        
+
         #@    << final correctness check>>
         #@+node:ekr.20060715100156.50:<< final correctness check >>
         if 1:
@@ -607,7 +607,7 @@ def propagate_changes_test (c,
         lines_with_sentinels        = before_with_sentinels_lines, 
         marker = marker)
     assert resultlines == after_with_sentinel_lines, "Test failed: changes have not been propagated back properly"
- 
+
 #@-node:ekr.20060715100156.51:propagate_changes_test
 #@-others
 #@nonl

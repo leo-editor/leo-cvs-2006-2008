@@ -52,16 +52,16 @@ __version__ = "1.1"
 #@+others
 #@+node:ekr.20070124112251:init
 def init ():
-    
+
     if g.app.gui is None:
             g.app.createTkGui(__file__)
-    
+
     if g.app.gui.guiName() != "tkinter": return False
 
     # Ok for unit testing: creates menu.
     leoPlugins.registerHandler("create-optional-menus",createExportMenu)
     g.plugin_signon(__name__)
-    
+
     return True
 #@nonl
 #@-node:ekr.20070124112251:init
@@ -78,7 +78,7 @@ def createExportMenu (tag,keywords):
 #@+node:danr7.20060902215215.6:export_html
 def export_html( c ):
     # Show messagebox to ask if headline output or bullet list
-    
+
     if g.app.unitTesting:
         flagHeadings = True
     else:
@@ -94,15 +94,15 @@ def export_html( c ):
     flagIgnoreFiles =  config.get("Main", "flagIgnoreFiles") == "Yes"
     flagJustHeadlines = config.get("Main", "flagJustHeadlines") == "Yes"
     filePath = config.get("Main", "exportPath").strip() # "c:\\"
-    
+
     myFileName = c.frame.shortFileName()    # Get current outline filename
     myFileName = myFileName[:-4]            # Remove .leo suffix
-    
+
     g.es(" Leo -> HTML started...",color="turquoise4")
-    
+
     # Open file for output
     f=open(filePath + myFileName + ".html", 'w')
-    
+
     # Write HTML header information
     f.write("<HTML>")
     f.write("<BODY>")
@@ -115,10 +115,10 @@ def export_html( c ):
                 f.write("<ul>\n")   # If level is greater, open new UL
             else:
                 f.write("</ul>\n"*(myLevel-curLevel))   # If level is less, close ULs to reach current level
-                
+
         myLevel = curLevel
         myHeadline = p.headString()
-       
+
         # Check if node is an @file and ignore if configured to
         if not (myHeadline[:5] == "@file" and flagIgnoreFiles):
             myOutput = myHeadline
@@ -128,7 +128,7 @@ def export_html( c ):
                 f.write("<H" + str(myLevel) + ">" + myOutput + "</H" + str(myLevel) + ">")
             else:
                 f.write("<li><H" + str(myLevel) + ">" + myOutput + "</H" + str(myLevel) + "></li>")
-                
+
 
             # If including outline body text, convert it to HTML usable format
             if not flagJustHeadlines:
@@ -141,18 +141,18 @@ def export_html( c ):
                         f.write("<p>" + myBody)
                     else:
                         f.write("<ul><li>" + myBody + "</li></ul>\n")  
-    
+
     # Write final level closes
     if not flagHeadings:
         f.write("</ul>\n"*(myLevel))
-    
+
     # Write HTML close
     f.write("</BODY></HTML>")  
-    
+
     # Close file
     f.close()
     g.es(" Leo -> HTML completed.",color="turquoise4")
-    
+
 #@nonl
 #@-node:danr7.20060902215215.6:export_html
 #@-others

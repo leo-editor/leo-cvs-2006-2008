@@ -18,7 +18,7 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@+others
 #@+node:edream.110203113231.926:onStart
 def onStart (tag,keywords):
-    
+
     # Replace frame.put with newPut.
     import leoTkinterFrame
     g.funcToMethod(newExecuteScript,leoTkinterFrame.leoTkinterFrame,"OnExecuteScript")
@@ -27,7 +27,7 @@ def onStart (tag,keywords):
 # Execute the selected body text as a Python script and sends the output to the end of the body pane.
 
 def newExecuteScript(self,event=None,v=None):
-    
+
     c = self.c ; body = self.body ; s = None
     if v == None:
         v = c.currentVnode() 
@@ -76,7 +76,6 @@ def newExecuteScript(self,event=None,v=None):
             g.es_exception(full=False)
     else:
         g.es("newExecuteScript: empty script")
-#@nonl
 #@-node:edream.110203113231.927:newExecuteScript
 #@+node:edream.110203113231.928:newPut and newPutNl
 # Same as frame.put except sends output to the end of the body text.
@@ -97,10 +96,10 @@ def newPutNl (self):
 #@+node:edream.110203113231.929:newEs, etc.
 def newEnl():
     print
-    
+
 def newEcnl():
     print
-    
+
 def newEcnls(n):
     while n > 0:
         n -= 1
@@ -129,9 +128,8 @@ if Tk and not g.app.unitTesting: # Not for unit testing: modifies core classes.
     if g.app.gui.guiName() == "tkinter":
 
         leoPlugins.registerHandler("start1", onStart)
-    
+
         __version__ = "1.3" # Contains Tk-specific code.
         g.plugin_signon(__name__)
-#@nonl
 #@-node:edream.110203113231.925:@thin script_io_to_body.py
 #@-leo

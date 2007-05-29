@@ -50,20 +50,20 @@ __version__ = '1.11'
 #@+others
 #@+node:ekr.20050311090939.8:init
 def init():
-    
+
     ok = Tk is not None # Ok for unit testing: creates Open With menu.
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-    
+
         if g.app.gui.guiName() == "tkinter":
             g.app.hasOpenWithMenu = True
             g.enableIdleTimeHook(idleTimeDelay=1000) # Check every second.
             leoPlugins.registerHandler("idle", on_idle)
             leoPlugins.registerHandler(('new','open2'), create_open_with_menu)
             g.plugin_signon(__name__)
-            
+
     return ok
 #@nonl
 #@-node:ekr.20050311090939.8:init
@@ -108,9 +108,9 @@ def on_idle (tag,keywords):
                     body = p.bodyString()
                     body = g.toEncodedString(body,encoding,reportErrors=True)
                     s = g.toEncodedString(s,encoding,reportErrors=True)
-                    
+
                     conflict = body != old_body and body != s
-                    
+
                     # Set update if we should update the outline from the file.
                     if conflict:
                         # See how the user wants to resolve the conflict.
@@ -120,7 +120,7 @@ def on_idle (tag,keywords):
                         update = result.lower() == "yes"
                     else:
                         update = s != body
-                    
+
                     if update:
                         g.es("updated from: " + g.shortFileName(path),color="blue")
                         c.setBodyString(p,s,encoding)
@@ -161,7 +161,7 @@ def create_open_with_menu (tag,keywords):
     aList = c.config.getOpenWith()
     if aList:
         table = doOpenWithSettings(aList)
-        
+
     if not table:
         if subprocess:
             table = doSubprocessTable()
@@ -186,14 +186,14 @@ def doDefaultTable ():
 
     elif 0: # David McNab's table.
         table = ("X&Emacs", "Ctrl+E", ("os.spawnl","/usr/bin/gnuclient", None)),
-        
+
     return table
 #@-node:ekr.20070411165142:doDefaultTable
 #@+node:ekr.20070411165142.1:doOpenWithSettings
 def doOpenWithSettings (aList):
-    
+
     '''Create an open-with table from a list of dictionaries.'''
-    
+
     table = []
     for z in aList:
         command = z.get('command')
@@ -208,11 +208,11 @@ def doOpenWithSettings (aList):
                 print
             entry = name,shortcut,data
             table.append(entry)
-    
+
         except SyntaxError:
             print g.es_exception()
             return None
-            
+
     return table
 #@-node:ekr.20070411165142.1:doOpenWithSettings
 #@+node:ekr.20070411165142.2:doSubprocessTable

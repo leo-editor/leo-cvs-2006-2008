@@ -8,7 +8,7 @@ This defines
     @auto-test = adds some nodes
     @auto-test2 = doesn't do anything
     @auto-test3 = adds nodes but doesn't delete the old ones
-     
+
 """
 
 #@-node:ekr.20050329082101.148:<< docstring >>
@@ -41,7 +41,7 @@ __plugin_group__ = "Test"
 
 class Test(BaseTreeHandler):
     """A test handler"""
-    
+
     def initFrom(self, parameter):
         """Initialize the tree"""
         self.children = [
@@ -53,18 +53,18 @@ class Test(BaseTreeHandler):
                 TreeNode("three-three"),
             ])
         ]
-        
+
 class Test2(BaseTreeHandler):
     """A test2 handler - wont do much!"""
-    
+
 class Test3(Test):
     """A test3 handler - much like Test but the nodes don't get deleted"""
-    
+
     def preprocessNode(self):
         """Override the default deleting of child nodes"""
         pass
-        
-    
+
+
 #@nonl
 #@-node:ekr.20050329082101.147:@thin trees\test.py
 #@-leo

@@ -20,8 +20,8 @@ The plugin will:
     NOT put keywords that are followed by indented blocks (these are taken care of by
     point 2 above). The negated form of the keywords (for example, if the keyword is
     'service', the negated form is 'no service') is also included in the sections.
-    
-    
+
+
 4)  Not display consecutive empty comment lines (lines with only a '!').
 
 All created sections are alphabetically ordered.
@@ -62,17 +62,17 @@ __version__ = "1.5"
 #@+others
 #@+node:ekr.20050311102853.1:init
 def init ():
-    
+
     ok = tkFileDialog is not None
-    
+
     if ok:
         if g.app.gui is None:
             g.app.createTkGui(__file__)
-    
+
         if g.app.gui.guiName() == "tkinter":
             leoPlugins.registerHandler(('new','open2'),create_import_cisco_menu)
             g.plugin_signon(__name__)
-            
+
     return ok
 #@nonl
 #@-node:ekr.20050311102853.1:init
@@ -81,9 +81,9 @@ def create_import_cisco_menu (tag,keywords):
 
     c = keywords.get('c')
     if not c or not c.exists: return
-    
+
     importMenu = c.frame.menu.getMenu('import')
-    
+
     def importCiscoConfigCallback(event=None,c=c):
         importCiscoConfig(c)
 
@@ -106,12 +106,12 @@ def importCiscoConfig(c):
         filetypes=[("All files", "*")]
         )
     if name == "":	return
-    
+
     p = current.insertAsNthChild(0)
     c.beginUpdate()
     c.setHeadString(p,"cisco config: %s" % name)
     c.endUpdate()
-    
+
     try:
         fh = open(name)
         g.es("importing: %s" % name)
@@ -149,7 +149,7 @@ def importCiscoConfig(c):
                     child = p.insertAsNthChild(0)
                     c.setHeadString(child,g.angleBrackets(customLine))
                     children.append(child)
-                
+
                 blocks[customLine].append(linelist[i])
                 #@nonl
                 #@-node:edream.110203113231.674:<< process custom line >>
@@ -173,7 +173,7 @@ def importCiscoConfig(c):
                     child = p.insertAsNthChild(0)
                     c.setHeadString(child,g.angleBrackets(key))
                     children.append(child)
-                
+
                 value = [linelist[i]]
                 # loop through the indented lines
                 i = i+1
@@ -195,7 +195,7 @@ def importCiscoConfig(c):
         i=i+1
     # process last line
     out.append(linelist[i])
-    
+
     #@    << complete outline >>
     #@+node:edream.110203113231.676:<< complete outline >>
     # first print the level-0 text
@@ -208,7 +208,7 @@ def importCiscoConfig(c):
             outClean.append(line)
         prev = line
     c.setBodyString(p,'\n'.join(outClean))
-    
+
     # scan through the created outline and add children
     for child in children:
         # extract the key from the headline. Uhm... :)

@@ -69,16 +69,16 @@ else:
 def init ():
 
     if 1: # Ok for unit testing: creates a new menu.
-    
+
         # Register the handlers...
         leoPlugins.registerHandler("after-create-leo-frame", onCreate)
-    
+
         g.plugin_signon(__name__)
 #@nonl
 #@-node:ekr.20060107110126:init
 #@+node:ekr.20060107110126.1:onCreate
 def onCreate (tag, keywords):
-    
+
     c = keywords.get('c')
     if c:
         controller = pluginController(c)
@@ -87,24 +87,24 @@ def onCreate (tag, keywords):
 #@-node:ekr.20060107110126.1:onCreate
 #@+node:ekr.20060107110126.2:class pluginController
 class pluginController:
-    
+
     #@    @+others
     #@+node:ekr.20060107110126.3:ctor
     def __init__ (self,c):
-        
+
         self.c = c
     #@nonl
     #@-node:ekr.20060107110126.3:ctor
     #@+node:EKR.20040517080049.6:load_menu
     def load_menu (self):
-    
+
         if sys.platform == "win32":
             table = (
                 ("&Open Console Window",None,self.launchCmd),
                 ("Open &Explorer",None,self.launchExplorer))
         else:
             table = (("Open &xterm",None,self.launchxTerm),)
-    
+
         c = self.c
         c.frame.menu.createNewMenu("E&xtensions","top")
         c.frame.menu.createMenuItemsFromTable("Extensions",table,dynamicMenu=True)
@@ -112,17 +112,17 @@ class pluginController:
     #@-node:EKR.20040517080049.6:load_menu
     #@+node:EKR.20040517080049.7:_getpath
     def _getpath (self,p):
-    
+
         c = self.c
         dict = g.scanDirectives(c,p=p)
         d = dict.get("path")
-    
+
         if p.isAnyAtFileNode():
             filename = p.anyAtFileNodeName()
             filename = g.os_path_join(d,filename)
             if filename:
                 d = g.os_path_dirname(filename)
-    
+
         if d is None:
             return ""
         else:
@@ -131,7 +131,7 @@ class pluginController:
     #@-node:EKR.20040517080049.7:_getpath
     #@+node:EKR.20040517080049.8:_getCurrentNodePath
     def _getCurrentNodePath(self):
-    
+
         c = self.c
         p = c.currentPosition()
         d = self._getpath(p)
@@ -140,9 +140,9 @@ class pluginController:
     #@-node:EKR.20040517080049.8:_getCurrentNodePath
     #@+node:EKR.20040517080049.9:launchCmd
     def launchCmd(self,event=None):
-        
+
         global pathToCmd
-    
+
         d = self._getCurrentNodePath()
         myCmd = 'cd ' + d
         os.spawnl(os.P_NOWAIT, pathToCmd, '/k ', myCmd)
@@ -150,16 +150,16 @@ class pluginController:
     #@-node:EKR.20040517080049.9:launchCmd
     #@+node:EKR.20040517080049.10:launchExplorer
     def launchExplorer(self,event=None):
-        
+
         global pathToExplorer
-    
+
         d = self._getCurrentNodePath()
         os.spawnl(os.P_NOWAIT,pathToExplorer, ' ', d)
-    
+
     #@-node:EKR.20040517080049.10:launchExplorer
     #@+node:EKR.20040517080049.11:launchxTerm
     def launchxTerm(self,event=None):
-    
+
         d = self._getCurrentNodePath()
         curdir = os.getcwd()
         os.chdir(d)

@@ -83,7 +83,7 @@ if os.name == "dos" or os.name == "nt":
     Encoding = "mbcs"
 else:
     Encoding = "ascii"
-    
+
 # g.es("@run encoding: "+Encoding,color="blue")
 
 # misc global variables...
@@ -106,7 +106,7 @@ OwnIdleHook = False
 #@+others
 #@+node:ekr.20060108160737:init
 def init ():
-    
+
     if 1: # Ok for unit testing.
         leoPlugins.registerHandler("bodykey2",OnBodyKey)
         leoPlugins.registerHandler("icondclick2",OnIconDoubleClick)
@@ -120,7 +120,7 @@ def init ():
 #@+node:ekr.20060108160737.1:Hooks
 #@+node:ekr.20040910070811.12:OnBodyKey
 def OnBodyKey(tag,keywords):
-    
+
     global RunNode,In
 
     c=keywords.get('c')
@@ -143,9 +143,9 @@ def OnBodyKey(tag,keywords):
 #@-node:ekr.20040910070811.12:OnBodyKey
 #@+node:ekr.20040910070811.13:OnIconDoubleClick
 def OnIconDoubleClick(tag,keywords):
-    
+
     global RunNode,RunList,OwnIdleHook,ExitCode
-    
+
     c=keywords.get('c')
     if not c or not c.exists: return
     p = c.currentPosition()
@@ -158,12 +158,12 @@ def OnIconDoubleClick(tag,keywords):
             #@            << handle double click in @run icon >>
             #@+node:ekr.20040910102554:<< handle double click in @run icon >>
             RunList = []
-            
+
             for p2 in p.self_and_subtree_iter(copy=True):
                 if g.match_word(p2.headString(),0,"@run"):
                     # g.trace(p2)
                     RunList.append(p2)	
-            
+
             ExitCode = None
             OwnIdleHook = True
             g.enableIdleTimeHook(idleTimeDelay=100)
@@ -175,7 +175,7 @@ def OnIconDoubleClick(tag,keywords):
             #@            << handle double click in @in icon >>
             #@+node:ekr.20040910102554.1:<< handle double click in @in icon >>
             b = p.bodyString()
-            
+
             try:
                 In.write(b.encode(Encoding)+"\n")
                 In.flush()
@@ -192,12 +192,12 @@ def OnIdle(tag,keywords):
     global RunNode,RunList
     global ErrThread,OutThread
     global ExitCode,OwnIdleHook
-    
+
     c=keywords.get('c')
     if not c or not c.exists: return
 
     if not OwnIdleHook: return
-        
+
     if RunNode:
         o = UpdateText(OutThread)
         e = UpdateText(ErrThread,"red")
@@ -237,9 +237,9 @@ class readingThread(threading.Thread):
     #@    @+others
     #@+node:ekr.20040910070811.7:run
     def run(self):
-    
+
         global Encoding
-    
+
         s=self.File.readline()
         while s:
             if s != "\n":
@@ -302,18 +302,18 @@ def OpenProcess(p):
 
     global RunNode,WorkDir
     global In,OutThread,ErrThread,ExitCode
-    
+
     command = p.headString()[4:].strip() # Remove @run
     if not command: return
     #@    << set the working directory or return >>
     #@+node:ekr.20040910094754:<< set the working directory or return >>
     args = command.split(' ')
-    
+
     path,fname = os.path.split(args[0])
-    
+
     if g.match(fname,0,'#'):
         return
-    
+
     if path:
         if os.access(path,os.F_OK) == 1:
             WorkDir=os.getcwd()
@@ -327,7 +327,7 @@ def OpenProcess(p):
     #@    << set the command, removing all args following '#' >>
     #@+node:ekr.20040910100935:<< set the command, removing all args following '#' >>
     command = fname
-    
+
     for arg in args[1:]:
         if g.match(arg,0,'#'):
             break

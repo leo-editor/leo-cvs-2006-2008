@@ -42,19 +42,19 @@ import weakref
 #@+others
 #@+node:ekr.20050311090939.7:init
 def init ():
-    
+
     ok = Tk and Pmw # Ok for unit test: adds tabbed pane to log.
     if not ok: return
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
-    
+
     if ok:
         leoPlugins.registerHandler(('new','open2'), addURLPane)
         g.plugin_signon( __name__ )
-        
+
     return ok
 #@nonl
 #@-node:ekr.20050311090939.7:init

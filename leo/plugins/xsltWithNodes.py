@@ -5,7 +5,7 @@
 """Adds XSLT-Node Command submen item to the Outline menu.
 
 This menu contains the following items:
-    
+
 - Set StyleSheet Node:
     - Selects the current node as the xsl stylesheet the plugin will use.
 
@@ -36,7 +36,7 @@ try:
     from Ft.Xml.Xslt.Processor import Processor
 except ImportError:
     Ft = g.cantImport("Ft",__name__)
-    
+
 Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 
 import weakref 
@@ -104,13 +104,13 @@ __version__ = '0.6'
 #@+others
 #@+node:ekr.20050226120104.1:init
 def init():
-    
+
     ok = Ft and Tk
     if not ok: return
-    
+
     if g.app.gui is None:
         g.app.createTkGui(__file__)
-        
+
     ok = g.app.gui.guiName() == "tkinter"
 
     if ok:
@@ -170,7 +170,7 @@ def setStyleNode( c ):
     '''this command sets what the current style node is'''
     position = c.currentPosition()
     stylenodes[ c ] = position
-    
+
 
 #@-node:mork.20041010095202:setStyleNode
 #@+node:mork.20041010095202.1:processDocumentNode
@@ -203,18 +203,18 @@ def processDocumentNode( c ):
         tnode = leoNodes.tnode( result, nhline )
         pos.insertAfter( tnode )
         c.endUpdate()
-        
+
     except Exception, x:
         g.es( 'exception ' + str( x ))
     c.endUpdate()
-        
+
 
 #@-node:mork.20041010095202.1:processDocumentNode
 #@+node:mork.20041025121608:addXSLTNode
 def addXSLTNode (c):
     '''creates a node and inserts some xslt boilerplate'''
     pos = c.currentPosition()
-    
+
     #body = '''<?xml version="1.0"?>'''
     # body = '''<?xml version="1.0"?>
     #<xsl:transform xmlns:xsl="http:///www.w3.org/1999/XSL/Transform" version="1.0">'''
@@ -235,7 +235,7 @@ def addXSLTElement( c , element):
     bodyCtrl.insert( 'insert', element )
     bodyCtrl.event_generate( '<Key>' )
     bodyCtrl.update_idletasks()
-    
+
 #@-node:mork.20041010110121:addXSLTElement
 #@+node:mork.20041025113021:getString
 def getString (c):
@@ -243,7 +243,7 @@ def getString (c):
     at = c.atFileCommands
     pos = c.currentPosition()
     cS = cStringIO.StringIO()
-    
+
     if not hasattr( at, 'new_df' ):
     #if new_at_file: # 4.3 code base.
         at.toStringFlag = True
@@ -278,7 +278,7 @@ def doMinidomTest( c ):
 def cleanString( data ):
     '''This method cleans a string up for the processor.  It currently just removes
        leading and trailing whitespace'''
-    
+
     val = data.strip()
     return val
 
@@ -291,7 +291,7 @@ def jumpToStyleNode( c ):
     c.beginUpdate()
     c.selectPosition( pos )
     c.endUpdate()
-    
+
 
 #@-node:mork.20041010125444:jumpToStyleNode
 #@+node:mork.20041010125444.1:styleNodeSelected
@@ -301,7 +301,7 @@ def styleNodeSelected( c ):
         g.es( "No Style Node selected" ) 
         return False
     return True
-    
+
 
 #@-node:mork.20041010125444.1:styleNodeSelected
 #@+node:mork.20041010100633:addMenu
@@ -325,7 +325,7 @@ def addMenu( tag, keywords ):
         elmen.add_command( label = z, command = lambda c = c, element = xslt[ z ]: addXSLTElement( c, element ) )
     men.add_cascade( menu = xmen, label = "XSLT-Node Commands" )
     xmen.add_command( label = 'Test Node with Minidom', command = lambda c=c: doMinidomTest( c ) )
-    
+
 
 
 #@-node:mork.20041010100633:addMenu
@@ -400,7 +400,7 @@ import Pmw
 #@-others
 </t>
 <t tx="mork.20041015144717.2">def viewTable( c, new = False ):
-    
+
     pos = c.currentPosition()
     dialog = createDialog( pos )
     csvv = CSVVisualizer( c )
@@ -417,7 +417,7 @@ import Pmw
     dialog.configure( command = lambda name, d = dialog, csvv = csvv:
                          fireButton( name, d, csvv ) )
     dialog.activate()
-    
+
 
 </t>
 <t tx="mork.20041015144717.3">haveseen = weakref.WeakKeyDictionary()
@@ -432,9 +432,9 @@ def addMenu( tag, keywords ):
     men.add_cascade( menu = tmen, label = "Table Commands" )
     tmen.add_command( label = "Edit Node With Table", command = lambda c = c: viewTable( c ) )
     tmen.add_command( label = "Create New Table", command = lambda c = c: newTable( c ) )
-    
 
-    
+
+
 
 
 </t>
@@ -443,10 +443,10 @@ def addMenu( tag, keywords ):
     registerHandler( ('start2' , 'open2', "new") , addMenu )
     __version__ = ".125"
     g.plugin_signon( __name__ )  
-    
+
 </t>
 <t tx="mork.20041015152916">def readData( self ):
-    
+
     c = self.c
     pos = c.currentPosition()
     data = pos.bodyString()
@@ -457,7 +457,7 @@ def addMenu( tag, keywords ):
     self.type = sniff.sniff( data ) 
     reader = csv.reader( cS, self.type ) 
     return reader
-    
+
 </t>
 <t tx="mork.20041015154946">def addData( self ):
 
@@ -467,34 +467,34 @@ def addMenu( tag, keywords ):
     for n, d in enumerate( reader ):
         for n1, d2 in enumerate( d ):
             arr.set( "%s,%s" %( n, n1 ), str(d2) )
-    
+
     self.columns = n1 + 1
     self.rows = n + 1
     return self.columns, self.rows
-    
-    
+
+
 </t>
 <t tx="mork.20041015163641">class CSVVisualizer:
-    
+
     arrays = []
-    
+
     #@    @+others
     #@-others
 </t>
 <t tx="mork.20041015163641.1">def __init__( self, c ):
-    
+
     self.c = c
     self.arr = tktab.ArrayVar()
     CSVVisualizer.arrays.append( self.arr )
     self.rows = 0
     self.columns = 0
     self.type = 'excel'
-    
-    
+
+
 
 </t>
 <t tx="mork.20041016141748">def writeData( self, save ):
-    
+
     pos = self.c.currentPosition()
     n2 = self.rows
     n = self.columns
@@ -516,14 +516,14 @@ def addMenu( tag, keywords ):
     else:
         pos.setTnodeText( cS.getvalue() )
     self.c.endUpdate()
-    
-    
+
+
 
 
 
 </t>
 <t tx="mork.20041016151554">def addRow( self , tab ):
-    
+
     self.rows = self.rows + 1
     tab.configure( rows = self.rows )
     rc =  '%s,0' % (self.rows -1 )
@@ -531,29 +531,29 @@ def addMenu( tag, keywords ):
         self.arr.set( '%s,%s' %( self.rows - 1, z ), "" ) 
     tab.activate( rc )
     tab.focus_set()
-    
-    
+
+
 
 </t>
 <t tx="mork.20041016152412">def deleteRow( self, tab ):
-    
+
     i = tab.index( 'active' )
     if i:
         tab.delete_rows( i[ 0 ], 1 )
         self.rows = self.rows - 1
 </t>
 <t tx="mork.20041016180930">def createTable( parent , arr ):
-    
+
     tab = tktab.Table( parent , rows = 0, cols = 0, variable = arr, sparsearray=1,
     background = 'white', foreground = 'blue', selecttype = 'row' )
     tab.tag_configure( 'active', background = '#FFE7C6', foreground = 'blue' )
     tab.tag_configure( 'sel', background = '#FFE7C6', foreground = 'blue', bd =2 )
     tab.pack()
     return tab 
-    
+
 </t>
 <t tx="mork.20041016181326">def createBBox( parent, csvv, tab ):
-    
+
     bbox = Pmw.ButtonBox( parent )
     bconfig = ( ( "Add Row", lambda tab = tab : csvv.addRow( tab ) ),
                 ( "Delete Row", lambda tab = tab: csvv.deleteRow( tab ) ),
@@ -562,7 +562,7 @@ def addMenu( tag, keywords ):
     for z in bconfig:
         bbox.add( z[ 0 ], command = z[ 1 ], background = 'white', foreground = 'blue' )
     bbox.pack()     
-    
+
 
 </t>
 <t tx="mork.20041017102304">def addColumn( self, tab ):
@@ -576,15 +576,15 @@ def addMenu( tag, keywords ):
 
 </t>
 <t tx="mork.20041017102304.1">def deleteColumn( self, tab ):
-    
+
     i = tab.index( 'active' )
     if i:
         tab.delete_cols( i[ 1 ], 1 )
         self.columns = self.columns - 1
-    
+
 </t>
 <t tx="mork.20041017105444">def newTable( c ):
-    
+
     tnd = leoNodes.tnode( "", "New Table" )
     pos = c.currentPosition()
     c.beginUpdate()
@@ -592,20 +592,20 @@ def addMenu( tag, keywords ):
     c.endUpdate()
     c.selectPosition( npos )
     viewTable( c , True )
-    
-    
+
+
 </t>
 <t tx="mork.20041017110545">def createDefaultRecord( self, rows, columns ):
-    
+
     self.rows = rows
     self.columns = columns
     for z in xrange( rows ):
         for z1 in xrange( columns ):
             self.arr.set( '%s,%s' %( z, z1 ), "" )
-    
+
 </t>
 <t tx="mork.20041017111049">def fireButton( name, dialog, csvv ):
-    
+
     if name == "Close":
         dialog.deactivate()
         dialog.destroy()
@@ -613,18 +613,18 @@ def addMenu( tag, keywords ):
         csvv.writeData( False )
     elif name == "Save To Current":
         csvv.writeData( True )
-        
+
 </t>
 <t tx="mork.20041017111248">def createDialog( pos ):
-    
+
     dialog = Pmw.Dialog( title = "Table Editor for " + str( pos.headString()),
                          buttons = [ 'Save To Current', 'Write To New', 'Close' ] )
     dbbox = dialog.component( 'buttonbox' )
     for z in xrange( dbbox.numbuttons() ):
         dbbox.button( z ).configure( background = 'white', foreground = 'blue' )
     return dialog
-    
-    
+
+
 </t>
 </tnodes>
 </leo_file>
@@ -639,7 +639,7 @@ def addMenu( tag, keywords ):
 <xsl:template match='v'>
 
     <ul type='square'>
-    
+
         <xsl:variable name ='t' select ='@t' />
             <h1><xsl:value-of select='vh'/></h1>
                 <xsl:for-each select='ancestor::leo_file/tnodes/t'>
@@ -657,7 +657,7 @@ def addMenu( tag, keywords ):
      </xsl:if> 
      </ul>
       </xsl:template>
- 
+
 
 <xsl:template match ='leo_file'>
     <html><head>

@@ -18,14 +18,14 @@ if not g.app.unitTesting: # Not for unit testing.
     if 0: # Force a shutdown during startup.
         print "quitting during startup"
         g.app.forceShutdown()
-    
+
     if 1: # Force a shutdown at any other time, even "idle" time.
-    
+
         # Exception: do not call g.app.forceShutdown in a "start2" hook.
-    
+
         print __doc__
         leoPlugins.registerHandler("idle",forceLeoToQuit)
-    
+
         __version__ = "1.2"
         g.plugin_signon(__name__)
 #@nonl

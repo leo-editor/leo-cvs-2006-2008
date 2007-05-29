@@ -90,15 +90,15 @@ def init ():
 
     if g.app.unitTesting:
         os.system(_emacs_cmd)
-    
+
     g.plugin_signon(__name__)
-    
+
     return ok
 #@nonl
 #@-node:ekr.20050218023308:init
 #@+node:ekr.20050313071202:open_in_emacs
 def open_in_emacs (tag,keywords,val=None):
-    
+
     c = keywords.get('c')
     p = keywords.get('p')
     if not c or not p: return

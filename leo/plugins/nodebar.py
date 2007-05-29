@@ -105,9 +105,9 @@ __version__ = ".8"
 #@+others
 #@+node:ekr.20050311090939.5:init
 def init():
-    
+
     if not load_ok: return False
-    
+
     # Ok for unit test.
     if g.app.gui is None: 
         g.app.createTkGui(__file__)
@@ -119,7 +119,7 @@ def init():
         configureNodebar()
         leoPlugins.registerHandler(('open2',"new"),addNodeBar )
         g.plugin_signon(__name__)
-            
+
     return ok
 #@nonl
 #@-node:ekr.20050311090939.5:init
@@ -130,68 +130,68 @@ def initImages ():
     #@+node:ekr.20070301091637.1:<< define bitmaps >>
     clone = r'''R0lGODlhEAAQAIABAP8AAP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhaM
     j6nL7Q8jBDRWG8DThjvqSeJIlkgBADs='''
-    
+
     copy = r'''R0lGODlhEAAQAMIEAAAAAI9pLOcxcaCclf///////////////ywAAAAAEAAQAAADLEi63P5vSLiC
     vYHiq6+wXSB8mQKcJ2GNLAssr0fCaOyB0IY/ekn9wKBwSEgAADs='''
-    
+
     cut = r'''R0lGODlhEAAQAKECAAAAAKCclf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
     EAAAAiaUDad7yS8cnDNYi4A0t7vNaCLTXR/ZZSBFrZMLbaIWzhLczCxTAAA7'''
-    
+
     dehoist = r'''R0lGODlhEAAQAKECAAAAACMj3v/9/f/9/SH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
     EAAAAiOUj6lrwOteivLQKi4LXCcOegJIBmIZLminklbLISIzQ9hbAAA7'''
-    
+
     delete = r'''R0lGODlhEAAQAMIEAAAAAB89vKCclbq3sv///////////////yH+FUNyZWF0ZWQgd2l0aCBUaGUg
     R0lNUAAsAAAAABAAEAAAAzJIutwKELoGVp02Xmy5294zDSSlBAupMleAEhoYuahaOq4yCPswvYQe
     LyT0eYpEW8iRAAA7'''
-    
+
     demote = r'''R0lGODlhEAAQAKECACMj3ucxcf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
     EAAAAiiUj2nBrNniW+G4eSmulqssgAgoduYWeZ+kANPkCsBM1/abxLih70gBADs='''
-    
+
     insert = r'''R0lGODlhEAAQAKECAAAAAB89vP///////ywAAAAAEAAQAAACKJRhqSvIDGJ8yjWa5MQ5BX4JwXdo
     3RiYRyeSjRqKmGZRVv3Q4M73VAEAOw=='''
-    
+
     paste = r'''R0lGODlhEAAQAKECAAAAAB89vP///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
     EAAAAiOUH3nLktHYm9HMV92FWfPugQcgjqVBnmm5dsD7gmsbwfEZFQA7'''
-    
+
     promote = r'''R0lGODlhEAAQAKECACMj3ucxcf///////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
     EAAAAiWUj6kX7cvcgy1CUU1ecvJ+YUGIbKSJAAlqqGQLxPI8t29650YBADs='''
-    
+
     pasteclone = r'''R0lGODlhEAAQAKEDACMj3v8AAP/9/f///ywAAAAAEAAQAAACOJSPaTPgoxBzgEVDM4yZbtU91/R8
     ClkJzGqp7MK21rcG9tYedSCb7sDjwRLAGs7HsPF8khjzcigAADs='''
-    
+
     hoist = r'''R0lGODlhEAAQAKECAAAAAENMzf/9/f/9/SwAAAAAEAAQAAACI5SPaRCtypp7S9rw4sVwzwQYW4ZY
     JAWhqYqE7OG+QvzSrI0WADs='''
-    
+
     moveup = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAh6M
     j6nL7QDcgVDWcFfGUW3zfVPHPZHoUeq6Su4LwwUAOw=='''
-    
+
     movedown = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAh+M
     j6nL7Q2inFS+EDFw2XT1eVsSHmGJdChpXesFx00BADs='''
-    
+
     moveleft = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiWM
     jwDIqd3egueFSe2lF2+oGV41fkwoZmNJJlxXvbDJSbKI1l4BADs='''
-    
+
     moveright = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiWM
     A3DLltqaSpFBWt3BFTovWeAyIiUinSNnkaf2Zagpo2x343IBADs='''
-    
+
     nodeup = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhqM
     j6nL7QDcgVBS2u5dWqfeTWA4lqYnpeqqFgA7'''
-    
+
     nodedown = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAhuM
     j6nL7Q2inLTaGW49Wqa+XBD1YE8GnOrKBgUAOw=='''
-    
+
     nodeleft = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiOM
     jwDIqd3Ug0dOam/MC3JdfR0jjuRHBWjKpUbmvlIsm65WAAA7'''
-    
+
     noderight = r'''R0lGODlhEAAQAIABAENMzf///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiGM
     A3DLltrag/FMWi+WuiK9WWD4gdGYdenklUnrwqX8tQUAOw=='''
-    
+
     question = r'''R0lGODlhEAAQAIABAB89vP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAAEAAAAiCM
     DwnHrNrcgzFQGuGrMnGEfdtnjKRJpt2SsuxZqqgaFQA7'''
-    
+
     sortchildren = r'''R0lGODlhEAAQAKECAAAAAB89vP/9/f/9/SwAAAAAEAAQAAACJJSPKcGt2NwzbKpqYcg68oN9ITde
     UQCkKgCeCvutsDXPk/wlBQA7'''
-    
+
     sortsiblings = r'''R0lGODlhEAAQAKECAAAAAB89vP/9/f/9/SH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABAA
     EAAAAiWUFalxbatcS7IiZh3NE2L+fOAGXpknal4JlAIAw2Br0Fksu1YBADs='''
     #@-node:ekr.20070301091637.1:<< define bitmaps >>
@@ -224,7 +224,7 @@ def initImages ():
 def determineFrame( c ):
     '''Returns the area in Leo where the user wants the nodebar.  Default to are 1'''
     cpos = config[ pos ]
-    
+
     if cpos == '2':
         frame = c.frame.split2Pane1
     elif cpos == '3':
@@ -246,12 +246,12 @@ def addNodeBar( tag, keywords ):
     mbox.pack( side = 'bottom' , fill = 'x' )
     for z in frame.children.values():
         mbox.pack_configure( before = z )
-        
+
     def goToChild( c = c ):
         pos = c.currentPosition()
         if pos.hasChildren():
             c.selectPosition( pos.nthChild( 0 ) )
-            
+
     bcommands = ( 
                   ( c.moveOutlineUp, nodeupPI, 'Move Node Up' ),
                   ( c.moveOutlineDown, nodedownPI , 'Move Node Down' ),
@@ -277,20 +277,20 @@ def addNodeBar( tag, keywords ):
                   )
     for i, z in enumerate( bcommands ):
         add( c, mbox ,i, *z )       
-        
+
     #@    << Create the help button >>
     #@+node:mork.20041026100755:<< Create the help button >>
     ques = Tk.Button( mbox, image = questionPI, 
         command = lambda c = c, items = bcommands: view_help(c,items) )    
     ques.grid( column = i + 1, row = 1 ) 
-    
+
     if int( config[ help ] ):
         addBalloon( mbox, ques, "Help" )
-    
+
     def callback(event,c=c ):
         c.frame.clearStatusLine()
         c.frame.putStatusLine("Open Help Dialog")
-    
+
     ques.bind("<Enter>",callback, '+' )
     #@nonl
     #@-node:mork.20041026100755:<< Create the help button >>
@@ -304,11 +304,11 @@ def add( c, frame, column, command, image, text ):
     b.grid( column = column , row = 1)
     if int( config[ help ] ):
         addBalloon( frame, b, text )
-    
+
     def callback(event,c=c,s=text):
         c.frame.clearStatusLine()
         c.frame.putStatusLine(s)
-    
+
     b.bind("<Enter>",callback, '+' )
 #@nonl
 #@-node:mork.20041022172156:add
@@ -318,8 +318,8 @@ def addBalloon( frame, widget, text ):
     '''Help ballon is added to a frame and text is bound to a specific widget'''
     if not balloons.has_key( frame ):
         balloons[ frame ] = Pmw.Balloon( frame )
-    
-    
+
+
     balloon = balloons[ frame ]
     balloon.bind( widget, text )
 #@nonl
@@ -329,16 +329,16 @@ def view_help( c, items ):
     '''Opens the Help dialog up for the user to view'''
     dialog = Pmw.Dialog( c.frame.top, title = 'Button Help' )
     sf = Pmw.ScrolledFrame( dialog.interior() )
-    
+
     sf.pack()
     sfi = sf.interior()
-    
+
     for z in items:
         lw = Pmw.LabeledWidget( sfi , labelpos = 'e', label_text = z[ 2 ] )
         l = Tk.Button( lw.interior() , image = z[ 1 ] )
         lw.pack()
         l.pack()
-        
+
     dialog.activate()
 
 #@-node:mork.20041022175619:view_help

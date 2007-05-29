@@ -32,7 +32,7 @@ def openURL(tag,keywords):
     i,j = g.getLine(s,ins)
     line = s[i:j]
     # g.trace(repr(line))
-    
+
     for match in url_regex.finditer(line):
         if match.start() <= col <= match.end():
             url = match.group()
@@ -48,7 +48,6 @@ def openURL(tag,keywords):
                     g.es("exception opening " + url)
                     g.es_exception()
             return url # force to skip word selection if url found
-#@nonl
 #@-node:vpe.20060305064323.5:openURL()
 #@+node:vpe.20060426062042:colorizeURLs()
 def colorizeURLs(tag,keywords):
