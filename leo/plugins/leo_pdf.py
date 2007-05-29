@@ -1595,8 +1595,6 @@ if docutils:
 
             if not self.inContext('option_list'):
                 self.putTail(b.start)
-
-        #@nonl
         #@-node:option_list
         #@+node:paragraph...
         def visit_paragraph(self, node):

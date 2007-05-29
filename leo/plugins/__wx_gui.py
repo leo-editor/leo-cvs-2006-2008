@@ -5078,8 +5078,6 @@ if wx:
             if ch:
                 self.createAccelData(menu,ch,accel,id,label)
 
-
-        #@nonl
         #@-node:edream.111303103141:add_command
         #@+node:edream.111303121150:add_separator
         def add_separator(self,menu):

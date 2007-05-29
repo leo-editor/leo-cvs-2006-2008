@@ -692,8 +692,6 @@ def ReplaceVars(exp):
 	exp = exp.replace("_SRCEXT_",SRC_EXT)
 
 	return exp
-
-#@nonl
 #@-node:ekr.20060513122450.393:ReplaceVars
 #@+node:ekr.20060513122450.39:TraceBack
 if 0:
@@ -2147,8 +2145,6 @@ class OUTPUTTASK(DBGTASK):
     #@nonl
     #@-node:ekr.20060513122450.352:Receive
     #@-others
-
-#@nonl
 #@-node:ekr.20060513122450.349:OUTPUTTASK
 #@+node:ekr.20060513122450.353:TARGETPIDTASK
 class TARGETPIDTASK(DBGTASK):
@@ -2196,8 +2192,6 @@ class TARGETPIDTASK(DBGTASK):
     #@nonl
     #@-node:ekr.20060513122450.356:Receive
     #@-others
-
-#@nonl
 #@-node:ekr.20060513122450.353:TARGETPIDTASK
 #@+node:ekr.20060513122450.357:BREAKTASK
 class BREAKTASK(DBGTASK):
@@ -2262,8 +2256,6 @@ class BREAKTASK(DBGTASK):
     #@nonl
     #@-node:ekr.20060513122450.360:Receive
     #@-others
-
-#@nonl
 #@-node:ekr.20060513122450.357:BREAKTASK
 #@+node:ekr.20060513122450.361:REGEXPTASK
 class REGEXPTASK(DBGTASK):
@@ -2306,8 +2298,6 @@ class REGEXPTASK(DBGTASK):
     #@nonl
     #@-node:ekr.20060513122450.364:Receive
     #@-others
-
-#@nonl
 #@-node:ekr.20060513122450.361:REGEXPTASK
 #@+node:ekr.20060513122450.365:WATCHTASK
 class WATCHTASK(DBGTASK):
@@ -2402,8 +2392,6 @@ class WATCHTASK(DBGTASK):
 
     #@-node:ekr.20060513122450.370:OnPrompt
     #@-others
-
-#@nonl
 #@-node:ekr.20060513122450.365:WATCHTASK
 #@+node:ekr.20060513122450.371:QUERYGOTASK
 class QUERYGOTASK(DBGTASK):
@@ -2458,12 +2446,8 @@ class QUERYGOTASK(DBGTASK):
                             cc.DbgOut("")
         else:
             cc.DBG_RD.remove(self.Receive)
-
-    #@nonl
     #@-node:ekr.20060513122450.374:Receive
     #@-others
-
-#@nonl
 #@-node:ekr.20060513122450.371:QUERYGOTASK
 #@+node:ekr.20060513122450.375:BREAKIDTASK
 class BREAKIDTASK(DBGTASK):
@@ -2513,12 +2497,8 @@ class BREAKIDTASK(DBGTASK):
 
         else:
             cc.DBG_RD.remove(self.Receive)
-
-    #@nonl
     #@-node:ekr.20060513122450.378:Receive
     #@-others
-
-#@nonl
 #@-node:ekr.20060513122450.375:BREAKIDTASK
 #@-node:ekr.20060513122450.345:Debugger task classes
 #@+node:ekr.20060513122450.43:class ProcessClass
@@ -2821,8 +2801,6 @@ class ConfigClass:
 
                 self.Label = Tk.Label(c,text=text,justify='left',fg=color)
                 self.ID = c.create_window(x,y,anchor=a,window=self.Label)
-
-            #@nonl
             #@-node:ekr.20060513122450.68:__init__
             #@-others
         #@-node:ekr.20060513122450.67:class LABEL
@@ -5028,8 +5006,6 @@ class CppParserClass:
             else:#only declare the func, real destination depend upon DEST group and EXT
                 return self.DeclareFunc(wf)
 
-
-        #@nonl
         #@-node:ekr.20060513122450.223:OnMatch
         #@+node:ekr.20060513122450.224:DeclareFunc
         def DeclareFunc(self,wf):
@@ -5299,8 +5275,6 @@ class CppParserClass:
 
             self.Parser = Parser	
             self.Matcher = re.compile("^//(?P<HEAD>.*)")
-
-        #@nonl
         #@-node:ekr.20060513122450.234:__init__
         #@+node:ekr.20060513122450.235:Match
         def Match(self,head):

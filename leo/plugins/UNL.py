@@ -222,7 +222,6 @@ def onUrl1 (tag,keywords):
                     webbrowser.open(url)
                 except:
                     pass
-                #@nonl
                 #@-node:ekr.20061023141204:<<invoke external browser>>
                 #@nl
         else:
