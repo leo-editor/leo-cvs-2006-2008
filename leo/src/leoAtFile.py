@@ -2679,8 +2679,12 @@ class atFile:
                 at.putOpenNodeSentinel(p)
 
                 s = p.bodyString()
-                if s and len(s) > 0:
-                    s = g.toEncodedString(s,at.encoding,reportErrors=True) # 3/7/03
+
+                if self.write_strips_blank_lines:
+                    s = self.cleanLines(p,s)
+
+                if s:
+                    s = g.toEncodedString(s,at.encoding,reportErrors=True)
                     at.outputStringWithLineEndings(s)
 
                 # Put an @nonl sentinel if s does not end in a newline.
@@ -3045,6 +3049,9 @@ class atFile:
                 #@+node:ekr.20041005105605.156:<< Write p's body >>
                 s = p.bodyString()
 
+                if self.write_strips_blank_lines:
+                    s = self.cleanLines(p,s)
+
                 if s:
                     s = g.toEncodedString(s,at.encoding,reportErrors=True) # 3/7/03
                     at.outputStringWithLineEndings(s)
@@ -3094,7 +3101,7 @@ class atFile:
 
         """ Generate the body enclosed in sentinel lines."""
 
-        at = self ; c = at.c
+        at = self
 
         # New in 4.3 b2: get s from fromString if possible.
         s = g.choose(fromString,fromString,p.bodyString())
@@ -3130,28 +3137,7 @@ class atFile:
         #@-node:ekr.20041005105605.162:<< Make sure all lines end in a newline >>
         #@nl
         if self.write_strips_blank_lines:
-            #@        << strip all trailing whitespace from p's body>>
-            #@+node:ekr.20070528093412:<< strip all trailing whitespace from p's body>>
-            lines = g.splitLines(s)
-            cleanLines = [] ; changed = False
-            for line in lines:
-                if line.strip():
-                    cleanLines.append(line)
-                elif line.endswith('\n'):
-                    cleanLines.append('\n')
-                    if line != '\n': changed = True
-                else:
-                    cleanLines.append('')
-                    if line != '': changed = True
-            s = g.joinLines(cleanLines)
-
-            if changed:
-                p.setTnodeText(s)
-                c.setBodyString(p,s)
-                c.setChanged(True)
-            #@nonl
-            #@-node:ekr.20070528093412:<< strip all trailing whitespace from p's body>>
-            #@nl
+            s = self.cleanLines(p,s)
         i = 0
         while i < len(s):
             next_i = g.skip_line(s,i)
@@ -4358,150 +4344,6 @@ class atFile:
     #@-node:ekr.20041005105605.196:Writing 4.x utils...
     #@-node:ekr.20041005105605.132:Writing...
     #@+node:ekr.20041005105605.219:Uilites... (atFile)
-    #@+node:ekr.20050104131929:file operations...
-    #@+at 
-    #@nonl
-    # The difference, if any, between these methods and the corresponding 
-    # g.utils_x
-    # functions is that these methods may call self.error.
-    #@-at
-    #@+node:ekr.20050104131820:chmod
-    def chmod (self,fileName,mode):
-
-        # Do _not_ call self.error here.
-        return g.utils_chmod(fileName,mode)
-    #@-node:ekr.20050104131820:chmod
-    #@+node:ekr.20050104131929.1:atFile.rename & test
-    #@<< about os.rename >>
-    #@+node:ekr.20050104131929.2:<< about os.rename >>
-    #@+at 
-    #@nonl
-    # Here is the Python 2.4 documentation for rename (same as Python 2.3)
-    # 
-    # Rename the file or directory src to dst.  If dst is a directory, OSError 
-    # will be raised.
-    # 
-    # On Unix, if dst exists and is a file, it will be removed silently if the 
-    # user
-    # has permission. The operation may fail on some Unix flavors if src and 
-    # dst are
-    # on different filesystems. If successful, the renaming will be an atomic
-    # operation (this is a POSIX requirement).
-    # 
-    # On Windows, if dst already exists, OSError will be raised even if it is 
-    # a file;
-    # there may be no way to implement an atomic rename when dst names an 
-    # existing
-    # file.
-    #@-at
-    #@-node:ekr.20050104131929.2:<< about os.rename >>
-    #@nl
-
-    def rename (self,src,dst,mode=None,verbose=True):
-
-        '''remove dst if it exists, then rename src to dst.
-
-        Change the mode of the renamed file if mode is given.
-
-        Return True if all went well.'''
-
-        c = self.c
-        head,tail=g.os_path_split(dst)
-        if head and len(head) > 0:
-            g.makeAllNonExistentDirectories(head,c=c)
-
-        if g.os_path_exists(dst):
-            if not self.remove(dst,verbose=verbose):
-                return False
-
-        try:
-            os.rename(src,dst)
-            if mode != None:
-                self.chmod(dst,mode)
-            return True
-        except Exception:
-            if verbose:
-                self.error("exception renaming: %s to: %s" % (
-                    self.outputFileName,self.targetFileName))
-                g.es_exception()
-            return False
-    #@+node:ekr.20050107085710:test_atFile_rename
-    def test_atFile_rename (self):
-
-        __pychecker__ = '--no-reimport'
-
-        import os
-        at = c.atFileCommands
-
-        exists = g.os_path_exists
-        path = g.os_path_join(g.app.testDir,'xyzzy')
-        path2 = g.os_path_join(g.app.testDir,'xyzzy2')
-
-        # Create both paths.
-        for p in (path,path2):
-            if exists(p):
-                os.remove(p)
-            assert not exists(p)
-            f = file(p,'w')
-            f.write('test %s' % p)
-            f.close()
-            assert exists(p)
-
-        assert at.rename(path,path2,verbose=True)
-        assert exists(path2)
-        f = file(path2)
-        s = f.read()
-        f.close()
-        # print 'Contents of %s: %s' % (path2,s)
-        assert s == 'test %s' % path
-        os.remove(path2)
-        assert not exists(path)
-    #@-node:ekr.20050107085710:test_atFile_rename
-    #@-node:ekr.20050104131929.1:atFile.rename & test
-    #@+node:ekr.20050104132018:remove & test
-    def remove (self,fileName,verbose=True):
-
-        try:
-            os.remove(fileName)
-            return True
-        except:
-            if verbose:
-                self.error("exception removing: %s" % fileName)
-                g.es_exception()
-            return False
-    #@+node:ekr.20050107090156:test_atFile_remove
-    def test_atFile_remove(self):
-
-        __pychecker__ = '--no-reimport'
-        import os
-        at = c.atFileCommands
-        exists = g.os_path_exists
-
-        path = g.os_path_join(g.app.testDir,'xyzzy')
-        if exists(path):
-            os.remove(path)
-
-        assert not exists(path)
-        assert not at.remove(path,verbose=False)
-
-        f = file(path,'w')
-        f.write('test')
-        f.close()
-
-        assert exists(path)
-        assert at.remove(path)
-        assert not exists(path)
-    #@-node:ekr.20050107090156:test_atFile_remove
-    #@-node:ekr.20050104132018:remove & test
-    #@+node:ekr.20050104132026:stat
-    def stat (self,fileName):
-
-        '''Return the access mode of named file, removing any setuid, setgid, and sticky bits.'''
-
-        # Do _not_ call self.error here.
-        return g.utils_stat(fileName)
-    #@-node:ekr.20050104132026:stat
-    #@-node:ekr.20050104131929:file operations...
     #@+node:ekr.20041005105605.220:atFile.error
     def error(self,message):
 
@@ -4539,12 +4381,6 @@ class atFile:
         at.printError(
             "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
     #@-node:ekr.20050206085258:atFile.printError & test
-    #@+node:ekr.20041005105605.221:exception
-    def exception (self,message):
-
-        self.error(message)
-        g.es_exception()
-    #@-node:ekr.20041005105605.221:exception
     #@+node:ekr.20041005105605.222:atFile.scanAllDirectives
     #@+at 
     #@nonl
@@ -4870,6 +4706,183 @@ class atFile:
             at.error("No absolute directory specified anywhere.")
             at.default_directory = ""
     #@-node:ekr.20041005105605.236:atFile.scanDefaultDirectory
+    #@+node:ekr.20070529083836:cleanLines
+    def cleanLines (self,p,s):
+
+        '''Return a copy of s, with all trailing whitespace removed.
+        If a change was made, update p's body text and set c dirty.'''
+
+        c = self.c ; cleanLines = [] ; changed = False
+        lines = g.splitLines(s)
+        for line in lines:
+            if line.strip():
+                cleanLines.append(line)
+            elif line.endswith('\n'):
+                cleanLines.append('\n')
+                if line != '\n': changed = True
+            else:
+                cleanLines.append('')
+                if line != '': changed = True
+        s = g.joinLines(cleanLines)
+
+        if changed:
+            p.setTnodeText(s)
+            c.setBodyString(p,s)
+            c.setChanged(True)
+
+        return s
+    #@nonl
+    #@-node:ekr.20070529083836:cleanLines
+    #@+node:ekr.20041005105605.221:exception
+    def exception (self,message):
+
+        self.error(message)
+        g.es_exception()
+    #@-node:ekr.20041005105605.221:exception
+    #@+node:ekr.20050104131929:file operations...
+    #@+at 
+    #@nonl
+    # The difference, if any, between these methods and the corresponding 
+    # g.utils_x
+    # functions is that these methods may call self.error.
+    #@-at
+    #@+node:ekr.20050104131820:chmod
+    def chmod (self,fileName,mode):
+
+        # Do _not_ call self.error here.
+        return g.utils_chmod(fileName,mode)
+    #@-node:ekr.20050104131820:chmod
+    #@+node:ekr.20050104131929.1:atFile.rename & test
+    #@<< about os.rename >>
+    #@+node:ekr.20050104131929.2:<< about os.rename >>
+    #@+at 
+    #@nonl
+    # Here is the Python 2.4 documentation for rename (same as Python 2.3)
+    # 
+    # Rename the file or directory src to dst.  If dst is a directory, OSError 
+    # will be raised.
+    # 
+    # On Unix, if dst exists and is a file, it will be removed silently if the 
+    # user
+    # has permission. The operation may fail on some Unix flavors if src and 
+    # dst are
+    # on different filesystems. If successful, the renaming will be an atomic
+    # operation (this is a POSIX requirement).
+    # 
+    # On Windows, if dst already exists, OSError will be raised even if it is 
+    # a file;
+    # there may be no way to implement an atomic rename when dst names an 
+    # existing
+    # file.
+    #@-at
+    #@-node:ekr.20050104131929.2:<< about os.rename >>
+    #@nl
+
+    def rename (self,src,dst,mode=None,verbose=True):
+
+        '''remove dst if it exists, then rename src to dst.
+
+        Change the mode of the renamed file if mode is given.
+
+        Return True if all went well.'''
+
+        c = self.c
+        head,tail=g.os_path_split(dst)
+        if head and len(head) > 0:
+            g.makeAllNonExistentDirectories(head,c=c)
+
+        if g.os_path_exists(dst):
+            if not self.remove(dst,verbose=verbose):
+                return False
+
+        try:
+            os.rename(src,dst)
+            if mode != None:
+                self.chmod(dst,mode)
+            return True
+        except Exception:
+            if verbose:
+                self.error("exception renaming: %s to: %s" % (
+                    self.outputFileName,self.targetFileName))
+                g.es_exception()
+            return False
+    #@+node:ekr.20050107085710:test_atFile_rename
+    def test_atFile_rename (self):
+
+        __pychecker__ = '--no-reimport'
+
+        import os
+        at = c.atFileCommands
+
+        exists = g.os_path_exists
+        path = g.os_path_join(g.app.testDir,'xyzzy')
+        path2 = g.os_path_join(g.app.testDir,'xyzzy2')
+
+        # Create both paths.
+        for p in (path,path2):
+            if exists(p):
+                os.remove(p)
+            assert not exists(p)
+            f = file(p,'w')
+            f.write('test %s' % p)
+            f.close()
+            assert exists(p)
+
+        assert at.rename(path,path2,verbose=True)
+        assert exists(path2)
+        f = file(path2)
+        s = f.read()
+        f.close()
+        # print 'Contents of %s: %s' % (path2,s)
+        assert s == 'test %s' % path
+        os.remove(path2)
+        assert not exists(path)
+    #@-node:ekr.20050107085710:test_atFile_rename
+    #@-node:ekr.20050104131929.1:atFile.rename & test
+    #@+node:ekr.20050104132018:remove & test
+    def remove (self,fileName,verbose=True):
+
+        try:
+            os.remove(fileName)
+            return True
+        except:
+            if verbose:
+                self.error("exception removing: %s" % fileName)
+                g.es_exception()
+            return False
+    #@+node:ekr.20050107090156:test_atFile_remove
+    def test_atFile_remove(self):
+
+        __pychecker__ = '--no-reimport'
+        import os
+        at = c.atFileCommands
+        exists = g.os_path_exists
+
+        path = g.os_path_join(g.app.testDir,'xyzzy')
+        if exists(path):
+            os.remove(path)
+
+        assert not exists(path)
+        assert not at.remove(path,verbose=False)
+
+        f = file(path,'w')
+        f.write('test')
+        f.close()
+
+        assert exists(path)
+        assert at.remove(path)
+        assert not exists(path)
+    #@-node:ekr.20050107090156:test_atFile_remove
+    #@-node:ekr.20050104132018:remove & test
+    #@+node:ekr.20050104132026:stat
+    def stat (self,fileName):
+
+        '''Return the access mode of named file, removing any setuid, setgid, and sticky bits.'''
+
+        # Do _not_ call self.error here.
+        return g.utils_stat(fileName)
+    #@-node:ekr.20050104132026:stat
+    #@-node:ekr.20050104131929:file operations...
     #@+node:ekr.20041005105605.242:scanForClonedSibs (reading & writing)
     def scanForClonedSibs (self,v):
 
