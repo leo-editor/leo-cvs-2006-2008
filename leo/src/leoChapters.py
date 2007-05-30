@@ -62,27 +62,6 @@ class chapterController:
             chapter.unselect()
     #@nonl
     #@-node:ekr.20070320091806:Callbacks (chapter)
-    #@+node:ekr.20070511075249:cc.disableChapters
-    def disableChapters(self):
-
-        cc = self ; c = cc.c
-
-        if not cc.enabled:
-            print 'chapters already disabled'
-            return
-
-        c.beginUpdate()
-        try:
-            if cc.chaptersLinked:
-                g.trace('@chapters node already linked.')
-            else:
-                cc.forceMainChapter()
-        finally:
-            c.endUpdate()
-
-        cc.enabled = False
-    #@nonl
-    #@-node:ekr.20070511075249:cc.disableChapters
     #@+node:ekr.20070325104904:cc.finishCreate
     def finishCreate (self):
 
@@ -187,6 +166,23 @@ class chapterController:
         # tt.selectTab unselects the previous chapter and selects the present chapter.
         c.bodyWantsFocusNow()
     #@-node:ekr.20070317085437.31:cc.createChapter
+    #@+node:ekr.20070529163321:cc.hideChapters
+    def hideChapters(self):
+
+        cc = self ; c = cc.c
+
+        if not cc.enabled: return
+
+        if cc.chaptersLinked:
+            c.beginUpdate()
+            try:
+                cc.restoreOldChapter(None)
+                cc.selectChapter('main')
+            finally:
+                c.endUpdate()
+
+
+    #@-node:ekr.20070529163321:cc.hideChapters
     #@+node:ekr.20070317085437.40:cc.removeChapter
     def removeChapter (self,event=None):
 
@@ -216,6 +212,22 @@ class chapterController:
 
         tt.renameChapterHelper(cc,tabName)
     #@-node:ekr.20070317085437.41:cc.renameChapter
+    #@+node:ekr.20070511075249:cc.showChapters
+    def showChapters(self):
+
+        cc = self ; c = cc.c
+
+        if not cc.enabled: return
+
+        if not cc.chaptersLinked:
+            c.beginUpdate()
+            try:
+                cc.selectChapter('main')
+                cc.forceMainChapter()
+            finally:
+                c.endUpdate()
+    #@nonl
+    #@-node:ekr.20070511075249:cc.showChapters
     #@-node:ekr.20070317085437.30:Chapter commands
     #@+node:ekr.20070317085437.49:Node commands
     #@+node:ekr.20070317085437.50:cc.cloneToChapter
@@ -655,6 +667,13 @@ class chapterController:
         else:
             cc.error('cc.selectShapter: no such chapter: %s' % tabName)
     #@-node:ekr.20070317130250:cc.selectChapter
+    #@+node:ekr.20070529171934:cc.completeChapterRename
+    def completeChapterRename (self,theChapter,newName):
+
+        theChapter.rename(newName)
+
+
+    #@-node:ekr.20070529171934:cc.completeChapterRename
     #@+node:ekr.20070325121800:cc.updateChapterName (not used)
     def updateChapterName(self,oldName,newName):
 
@@ -870,9 +889,10 @@ class chapter:
                 if trace: g.trace('*** found in chapter',p)
                 return p
 
-        self.error('***** findPositionInChapter: lost %s in %s' % (
-            v.t.headString,self.name))
-        g.trace(g.callers())
+        if 0:
+            self.error('***** findPositionInChapter: lost %s in %s' % (
+                v.t.headString,self.name))
+            g.trace(g.callers())
 
         if 0: # This could crash.
             cc = self.cc
@@ -896,6 +916,13 @@ class chapter:
         return w
     #@nonl
     #@-node:ekr.20070425175522:chapter.findEditorInChapter
+    #@+node:ekr.20070529171934.1:chapter.rename
+    def rename (self,newName):
+
+        p = self.root
+        s = '@chapter ' + newName
+        p.setHeadString(s)
+    #@-node:ekr.20070529171934.1:chapter.rename
     #@-node:ekr.20070317131205.1:chapter.select & helpers
     #@+node:ekr.20070320091806.1:chapter.unselect
     def unselect (self):
