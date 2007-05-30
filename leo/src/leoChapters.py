@@ -20,6 +20,7 @@ class chapterController:
     '''A per-commander controller that manages chapters and related nodes.'''
 
     #@    @+others
+    #@+node:ekr.20070530075604:Birth
     #@+node:ekr.20070317085437.2: ctor: chapterController
     def __init__ (self,c):
 
@@ -48,20 +49,6 @@ class chapterController:
         self.chaptersLinked = True
             # True if the @chapters node is linked into the outline.
     #@-node:ekr.20070317085437.2: ctor: chapterController
-    #@+node:ekr.20070320091806:Callbacks (chapter)
-    def selectCallback (self,tabName):
-
-        cc = self ; chapter = cc.chaptersDict.get(tabName)
-        if chapter:
-            chapter.select()
-
-    def unselectCallback (self,tabName):
-
-        cc = self ; chapter = cc.chaptersDict.get(tabName)
-        if chapter:
-            chapter.unselect()
-    #@nonl
-    #@-node:ekr.20070320091806:Callbacks (chapter)
     #@+node:ekr.20070325104904:cc.finishCreate
     def finishCreate (self):
 
@@ -119,17 +106,33 @@ class chapterController:
             if h.startswith(tag):
                 tabName = h[len(tag):].strip()
                 if tabName and tabName not in ('main','trash'):
-                    cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                    ### tabName = p.bodyString() or tabName
-                    # g.trace('tabName',tabName)
-                    tt.createTab(tabName,select=False)
-                    tt.makeTabMenu(tabName)
-                    tree = tt.getTree(tabName)
-                    tree.setBindings()
+                    if cc.chaptersDict.get(tabName):
+                        self.error('duplicate chapter name: %s' % tabName)
+                    else:
+                        cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+                        tt.createTab(tabName,select=False)
+                        tt.makeTabMenu(tabName)
+                        tree = tt.getTree(tabName)
+                        tree.setBindings()
 
         cc.selectChapter('main')
     #@nonl
     #@-node:ekr.20070325104904:cc.finishCreate
+    #@-node:ekr.20070530075604:Birth
+    #@+node:ekr.20070320091806:Callbacks (chapter)
+    def selectCallback (self,tabName):
+
+        cc = self ; chapter = cc.chaptersDict.get(tabName)
+        if chapter:
+            chapter.select()
+
+    def unselectCallback (self,tabName):
+
+        cc = self ; chapter = cc.chaptersDict.get(tabName)
+        if chapter:
+            chapter.unselect()
+    #@nonl
+    #@-node:ekr.20070320091806:Callbacks (chapter)
     #@+node:ekr.20070317085437.30:Chapter commands
     #@+node:ekr.20070317085437.31:cc.createChapter
     def createChapter (self,event=None,name=None):
@@ -431,6 +434,8 @@ class chapterController:
 
         cc = self ; c = self.c ; trace = False or self.trace
         if not cc.enabled: return
+
+        if cc.chaptersLinked: return # We have done a show-chapters command.
 
         cc.savedRoot = c.rootPosition()
         cc.savedCurrent = current = c.currentPosition()

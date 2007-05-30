@@ -1815,7 +1815,7 @@ def makeAllNonExistentDirectories (theDir,c=None):
 
     """Attempt to make all non-existent directories"""
 
-    # g.trace(c and c.shortFileName(), c and c.config.create_nonexistent_directories)
+    # g.trace('theDir',theDir,c.config.create_nonexistent_directories)
 
     if c:
         if not c.config.create_nonexistent_directories:

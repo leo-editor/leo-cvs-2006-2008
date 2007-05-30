@@ -283,159 +283,7 @@ Pythonistas have come to expect that::
 will locate and install the most recent version of app and install it.
 #@-node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070515113707:Dist
-#@+node:ekr.20070522052905:Bugs & Incompletions 5
-#@+node:ekr.20070521104213:Get aspell working on Linux
-Make installing aspell easier.
-
------
-
-http://sourceforge.net/forum/message.php?msg_id=4318634
-By: billpage
-
-wspage@suse-linux:~> leo
-reading settings in /usr/local/lib/leo/config/leoSettings.leo
-reading /home/wspage/.leoRecentFiles.txt
-rst3 plugin: SilverCity not loaded
-Traceback (most recent call last):
-
-  File "/home/wspage/leo-4-4-3-alpha-2/src/leoEditCommands.py", line 7903, in
-getAspellWithCtypes
-    self.aspell = aspell = ctypes.CDLL(g.os_path_join(self.aspell_bin_dir,
-"aspell-15.dll"))
-
-  File "/usr/lib/python2.5/ctypes/__init__.py", line 312, in __init__
-    self._handle = _dlopen(self._name, mode)
-
-OSError: /home/wspage/c:\aspell\bin/aspell-15.dll: cannot open shared object
-file: No such file or directory
-
-#@-node:ekr.20070521104213:Get aspell working on Linux
-#@+node:ekr.20070514102229.1:Fix automatic directory creation
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4301021
-By: vransmayr
-
-    I just performed a CVS-Update of Leo to ensure that I have the latest
-version
-of Leo.
-
-When I try to create directories automatically (See also my initial question to
-Leo Help Forum - "Feature or Bug?") I still receive an error. - The traceback
-is:
-
-<Log>
-
-Leo Log Window...
-Leo 4.4.3 alpha 2, build  1.147 , March 17, 2007
-Python 2.4.3, Tk 8.4.7, Pmw 1.2
-Windows 5, 1, 2600, 2, Service Pack 2
-
-redefining close-window in all to extend-to-word in all
-redefining extend-to-word in all to kill-region-save in all
-Can not import aspell from plugin leoEditCommands
-leoID = vr20060903 (in C:\Dokumente und Einstellungen\VR)
-global config dir: C:\CVS-Reps\leo\config
-home dir: C:\Dokumente und Einstellungen\VR
-reading settings in C:\CVS-Reps\leo\config\leoSettings.leo
-reading settings in C:\Dokumente und Einstellungen\VR\leoSettings.leo
-reading settings in C:\Dokumente und Einstellungen\VR\Desktop\Leo-20070507.leo
-reading: C:\Dokumente und Einstellungen\VR\Desktop\Leo-20070507.leo
-can not open: '@file C:\Dokumente und Einstellungen\VR\Desktop\a\test.py'
-can not open: '@file C:\Dokumente und Einstellungen\VR\Desktop\a\b\test.py'
-can not open: '@file C:\Dokumente und Einstellungen\VR\Desktop\a\b\c\test.py'
-errors writing: C:\Dokumente und Einstellungen\VR\Desktop\a\test.py
-path does not exist: C:\Dokumente und Einstellungen\VR\Desktop\a
-errors writing: C:\Dokumente und Einstellungen\VR\Desktop\a\b\test.py
-path does not exist: C:\Dokumente und Einstellungen\VR\Desktop\a\b
-errors writing: C:\Dokumente und Einstellungen\VR\Desktop\a\b\c\test.py
-path does not exist: C:\Dokumente und Einstellungen\VR\Desktop\a\b\c
-Writing erroneous: @thin ./a/test.py
-Writing erroneous: @thin ./a/b/test.py
-Writing erroneous: @thin ./a/b/c/test.py
-saved: Leo-20070507.leo
-
-</Log>
-
-Kind regards,
-
-    Viktor
-#@-node:ekr.20070514102229.1:Fix automatic directory creation
-#@+node:ekr.20070528170642:Fix problem with subprocess
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4320971
-By: rickardlindberg
-
-------
-
-http://sourceforge.net/forum/message.php?msg_id=4325739
-
-
-I created a cmd file like this:
-
-script.cmd:
-@echo off
-echo Hello World
-
-Then I wrote some python code to execute it:
-
-import subprocess
-output = subprocess.Popen(["script.cmd"],
-stdout=subprocess.PIPE).communicate()[0]
-print output
-
-When I saved this script to test.py and ran the file, I got the correct output;
-when I entered the script in the python prompt, I got the correct output; but
-when I pasted the code in a leo node and executed it, I got the error message
-described in my first post.
-
----------
-
-exception executing script
-    TypeError: an integer is required
-    --------------------
-      line 634:                                    GetCurrentProcess(), 0, 1,
-    * line 635:                                    DUPLICATE_SAME_ACCESS)
-      line 636: 
-      line 637: 
-
-If I remove the `stdout=subprocess.PIPE` part, it works fine, but then I cannot
-get the output of the command.
-#@nonl
-#@-node:ekr.20070528170642:Fix problem with subprocess
-#@+node:ekr.20070514100340:Fix problem with update plugin
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=4309448
-By: wgw
-
-I downloaded leoupdate.py from tigris cvs. When I try to run it, I get: 
-
-
-exception executing command
-Traceback (most recent call last):
-  File "/home/bill/download/leo-4-4-3-alpha-2/src/leoCommands.py", line 269,
-in doCommand
-    val = command(event)
-  File "/home/bill/download/leo-4-4-3-alpha-2/plugins/plugins_menu.py", line
-120, in callback
-    p.hastoplevel(c)
-  File "/usr/local/lib/leo/plugins/leoupdate.py", line 112, in topLevelMenu
-    thePluginController.showManagerDialog()
-  File "/usr/local/lib/leo/plugins/leoupdate.py", line 197, in
-showManagerDialog
-    dlg = HandlerDialog()
-TypeError: __init__() takes at least 2 arguments (1 given)
-
-I wouldn't be surprised if it was my installation (the Plugin update does not
-work, for instance), but I thought I would let you know of the problem. I'm
-running under Ubuntu.
-
-Actually, I don't think it would work anyway; the cvs site in the code
-is cvs.sourceforge.net/viewcvs.py/leo/leo/src, which, if I understand correctly,
-is no longer active.
-#@nonl
-#@-node:ekr.20070514100340:Fix problem with update plugin
+#@+node:ekr.20070522052905:Bugs & Incompletions
 #@+node:ekr.20070426080015:Fix crasher in dynamic abbreviations
 #@+node:ekr.20070506094429:Report
 @nocolor
@@ -816,7 +664,33 @@ def getDynamicList (self,w,txt,rlist):
 #@-node:ekr.20050920084036.61:getDynamicList (helper)
 #@-node:ekr.20050920084036.58:dynamic abbreviation...
 #@-node:ekr.20070426080015:Fix crasher in dynamic abbreviations
-#@-node:ekr.20070522052905:Bugs & Incompletions 5
+#@+node:ekr.20070521104213:Get aspell working on Linux
+Make installing aspell easier.
+
+-----
+
+http://sourceforge.net/forum/message.php?msg_id=4318634
+By: billpage
+
+wspage@suse-linux:~> leo
+reading settings in /usr/local/lib/leo/config/leoSettings.leo
+reading /home/wspage/.leoRecentFiles.txt
+rst3 plugin: SilverCity not loaded
+Traceback (most recent call last):
+
+  File "/home/wspage/leo-4-4-3-alpha-2/src/leoEditCommands.py", line 7903, in
+getAspellWithCtypes
+    self.aspell = aspell = ctypes.CDLL(g.os_path_join(self.aspell_bin_dir,
+"aspell-15.dll"))
+
+  File "/usr/lib/python2.5/ctypes/__init__.py", line 312, in __init__
+    self._handle = _dlopen(self._name, mode)
+
+OSError: /home/wspage/c:\aspell\bin/aspell-15.dll: cannot open shared object
+file: No such file or directory
+
+#@-node:ekr.20070521104213:Get aspell working on Linux
+#@-node:ekr.20070522052905:Bugs & Incompletions
 #@-node:ekr.20070515100356:To do: b2
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)

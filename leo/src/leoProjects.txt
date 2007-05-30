@@ -33049,7 +33049,7 @@ def makeAllNonExistentDirectories (theDir,c=None):
 
     """Attempt to make all non-existent directories"""
 
-    # g.trace(c and c.shortFileName(), c and c.config.create_nonexistent_directories)
+    # g.trace('theDir',theDir,c.config.create_nonexistent_directories)
 
     if c:
         if not c.config.create_nonexistent_directories:
@@ -35908,13 +35908,14 @@ def finishCreate (self):
         if h.startswith(tag):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main','trash'):
-                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                ### tabName = p.bodyString() or tabName
-                # g.trace('tabName',tabName)
-                tt.createTab(tabName,select=False)
-                tt.makeTabMenu(tabName)
-                tree = tt.getTree(tabName)
-                tree.setBindings()
+                if cc.chaptersDict.get(tabName):
+                    self.error('duplicate chapter name: %s' % tabName)
+                else:
+                    cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+                    tt.createTab(tabName,select=False)
+                    tt.makeTabMenu(tabName)
+                    tree = tt.getTree(tabName)
+                    tree.setBindings()
 
     cc.selectChapter('main')
 #@nonl
@@ -37261,13 +37262,14 @@ def finishCreate (self):
         if h.startswith(tag):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main','trash'):
-                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                ### tabName = p.bodyString() or tabName
-                # g.trace('tabName',tabName)
-                tt.createTab(tabName,select=False)
-                tt.makeTabMenu(tabName)
-                tree = tt.getTree(tabName)
-                tree.setBindings()
+                if cc.chaptersDict.get(tabName):
+                    self.error('duplicate chapter name: %s' % tabName)
+                else:
+                    cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+                    tt.createTab(tabName,select=False)
+                    tt.makeTabMenu(tabName)
+                    tree = tt.getTree(tabName)
+                    tree.setBindings()
 
     cc.selectChapter('main')
 #@nonl
@@ -37780,13 +37782,14 @@ def finishCreate (self):
         if h.startswith(tag):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main','trash'):
-                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                ### tabName = p.bodyString() or tabName
-                # g.trace('tabName',tabName)
-                tt.createTab(tabName,select=False)
-                tt.makeTabMenu(tabName)
-                tree = tt.getTree(tabName)
-                tree.setBindings()
+                if cc.chaptersDict.get(tabName):
+                    self.error('duplicate chapter name: %s' % tabName)
+                else:
+                    cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+                    tt.createTab(tabName,select=False)
+                    tt.makeTabMenu(tabName)
+                    tree = tt.getTree(tabName)
+                    tree.setBindings()
 
     cc.selectChapter('main')
 #@nonl
@@ -39433,6 +39436,8 @@ def forceMainChapter (self):
     cc = self ; c = self.c ; trace = False or self.trace
     if not cc.enabled: return
 
+    if cc.chaptersLinked: return # We have done a show-chapters command.
+
     cc.savedRoot = c.rootPosition()
     cc.savedCurrent = current = c.currentPosition()
     oldChapter = cc.getSelectedChapter()
@@ -39965,6 +39970,8 @@ def forceMainChapter (self):
     cc = self ; c = self.c ; trace = False or self.trace
     if not cc.enabled: return
 
+    if cc.chaptersLinked: return # We have done a show-chapters command.
+
     cc.savedRoot = c.rootPosition()
     cc.savedCurrent = current = c.currentPosition()
     oldChapter = cc.getSelectedChapter()
@@ -40150,13 +40157,14 @@ def finishCreate (self):
         if h.startswith(tag):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main','trash'):
-                cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                ### tabName = p.bodyString() or tabName
-                # g.trace('tabName',tabName)
-                tt.createTab(tabName,select=False)
-                tt.makeTabMenu(tabName)
-                tree = tt.getTree(tabName)
-                tree.setBindings()
+                if cc.chaptersDict.get(tabName):
+                    self.error('duplicate chapter name: %s' % tabName)
+                else:
+                    cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
+                    tt.createTab(tabName,select=False)
+                    tt.makeTabMenu(tabName)
+                    tree = tt.getTree(tabName)
+                    tree.setBindings()
 
     cc.selectChapter('main')
 #@nonl
@@ -43738,6 +43746,57 @@ def makeAllBindings (self):
     k.checkBindings()
 #@-node:ekr.20061031131434.98:k.makeAllBindings
 #@-node:ekr.20070529104436:Fixed bug: Alt-4 did not work in tree pane in unitTest.leo
+#@+node:ekr.20070528170642:Investigated problem with subprocess (works for me)
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4320971
+By: rickardlindberg
+
+------
+
+http://sourceforge.net/forum/message.php?msg_id=4325739
+
+
+I created a cmd file like this:
+
+script.cmd:
+@echo off
+echo Hello World
+
+Then I wrote some python code to execute it:
+
+import subprocess
+output = subprocess.Popen(["script.cmd"],
+stdout=subprocess.PIPE).communicate()[0]
+print output
+
+When I saved this script to test.py and ran the file, I got the correct output;
+when I entered the script in the python prompt, I got the correct output; but
+when I pasted the code in a leo node and executed it, I got the error message
+described in my first post.
+
+---------
+
+exception executing script
+    TypeError: an integer is required
+    --------------------
+      line 634:                                    GetCurrentProcess(), 0, 1,
+    * line 635:                                    DUPLICATE_SAME_ACCESS)
+      line 636: 
+      line 637: 
+
+If I remove the `stdout=subprocess.PIPE` part, it works fine, but then I cannot
+get the output of the command.
+#@nonl
+#@-node:ekr.20070528170642:Investigated problem with subprocess (works for me)
+#@+node:ekr.20070514100340:Fixed crashers in leoupate plugin
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4309448
+
+Still to do: update urls for tigris.
+#@nonl
+#@-node:ekr.20070514100340:Fixed crashers in leoupate plugin
 #@-node:ekr.20070528141848:Fixed bugs
 #@+node:ekr.20070528141848.1:Features
 #@clone 2
@@ -44866,6 +44925,8 @@ def forceMainChapter (self):
 
     cc = self ; c = self.c ; trace = False or self.trace
     if not cc.enabled: return
+
+    if cc.chaptersLinked: return # We have done a show-chapters command.
 
     cc.savedRoot = c.rootPosition()
     cc.savedCurrent = current = c.currentPosition()
