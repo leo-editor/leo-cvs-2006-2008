@@ -2010,6 +2010,8 @@ class keyHandlerClass:
         The event will go to k.masterKeyHandler as always, so nothing really changes.
         except that k.masterKeyHandler will know the proper stroke.'''
 
+        # g.trace(w)
+
         k = self
         for stroke in k.bindingsDict.keys():
             k.makeMasterGuiBinding(stroke,w=w)
@@ -2019,7 +2021,7 @@ class keyHandlerClass:
 
         k = self ; c = k.c
 
-        # g.trace(c.fileName())
+        # g.trace(c.fileName(),g.callers())
 
         k.bindingsDict = {}
         k.addModeCommands() 
@@ -2900,13 +2902,17 @@ class keyHandlerClass:
                     if stroke: break
             else: stroke = None
 
-        # g.trace('stroke',stroke,commandName)
         if stroke:
+            # g.trace('stroke',stroke,'pane',pane,commandName,g.callers())
             ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
             k.makeMasterGuiBinding(stroke) # Must be a stroke.
             if verbose and ok:
-                 g.es_print('@command: %s = %s' % (
+                g.es_print('@command: %s = %s' % (
                     commandName,k.prettyPrintKey(stroke)),color='blue')
+                if 0:
+                    d = k.masterBindingsDict.get('button',{})
+                    g.print_dict(d)
+            c.frame.tree.setBindings()
         elif verbose:
             g.es_print('@command: %s' % (commandName),color='blue')
 
@@ -2919,7 +2925,6 @@ class keyHandlerClass:
                     if d.get(key) == commandName:
                         c.commandsDict [key] = c.commandsDict.get(commandName)
                         break
-    #@nonl
     #@-node:ekr.20061031131434.131:k.registerCommand
     #@-node:ekr.20061031131434.125:Externally visible helpers
     #@+node:ekr.20061031131434.145:Master event handlers (keyHandler)
