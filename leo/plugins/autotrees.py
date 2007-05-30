@@ -223,8 +223,6 @@ class BaseTreeHandler:
         """
         while self.node.firstChild():
             self.node.firstChild().doDelete(self.node)
-
-    #@nonl
     #@-node:ekr.20050329082101.129:preprocessNode
     #@+node:ekr.20050329082101.130:initFrom
     def initFrom(self, parameter):
@@ -241,8 +239,6 @@ class BaseTreeHandler:
             c.setHeadString(new_node,child.headline)
             c.setBodyString(new_node,child.body)
             self.addChildren(child.children, new_node)
-
-    #@nonl
     #@-node:ekr.20050329082101.131:addChildren
     #@-others
 #@-node:ekr.20050329082101.126:class BaseTreeHandler
@@ -308,8 +304,6 @@ class pluginController:
             #@nl
             # Restore
             sys.path = old_path
-
-    #@nonl
     #@-node:ekr.20050329082101.134:loadTreeHandlers
     #@+node:ekr.20050329082101.137:loadHandlersFrom
     def loadHandlersFrom(self, name):
@@ -414,7 +408,8 @@ class pluginController:
 
                     """Set paths to the plugin locations"""
                     self.local_path = g.os_path_join(g.app.loadDir,"..","plugins","trees")
-                    self.remote_path = r"cvs.sourceforge.net/viewcvs.py/leo/leo/plugins/trees"
+                    # self.remote_path = r"cvs.sourceforge.net/viewcvs.py/leo/leo/plugins/trees"
+                    self.remote_path = r'leo.tigris.org/source/browse/leo/plugins/trees'
                 #@nonl
                 #@-node:ekr.20050329082101.144:setPaths
                 #@-others
