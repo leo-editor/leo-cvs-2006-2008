@@ -907,8 +907,10 @@ class chapterCommandsClass (baseEditCommandsClass):
         if self.c.config.getBool('use_chapters'):
             return {
                'create-chapter': self.createChapter,
+               'hide-chapters':  self.hideChapters,
                'remove-chapter': self.removeChapter,
                'rename-chapter': self.renameChapter,
+               'show-chapters':  self.showChapters,
             }
         else:
             return {}
@@ -916,12 +918,17 @@ class chapterCommandsClass (baseEditCommandsClass):
     def createChapter (self,event=None):
         return self.c.chapterController.createChapter()
 
+    def hideChapters (self,event=None):
+        return self.c.chapterController.hideChapters()
+
     def removeChapter (self,event=None):
         return self.c.chapterController.removeChapter()
 
     def renameChapter (self,event=None):
         return self.c.chapterController.renameChapter()
-    #@nonl
+
+    def showChapters (self,event=None):
+        return self.c.chapterController.showChapters()
     #@-node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
     #@-others
 #@-node:ekr.20070522085324:chapterCommandsClass
