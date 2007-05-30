@@ -2758,7 +2758,7 @@ class atFile:
     #@+node:ekr.20041005105605.143:openFileForWritingHelper
     def openFileForWritingHelper (self,fileName):
 
-        at = self
+        at = self ; c = at.c
 
         try:
             at.shortFileName = g.shortFileName(fileName)
@@ -2766,10 +2766,15 @@ class atFile:
             at.targetFileName = g.os_path_normpath(fileName)
             path = g.os_path_dirname(at.targetFileName)
             if not path or not g.os_path_exists(path):
-                at.writeError("path does not exist: " + path)
-                return
-        except:
-            at.exception("exception creating path:" + path)
+                if path:
+                    path = g.makeAllNonExistentDirectories(path,c=c)
+                if not path or not g.os_path_exists(path):
+                    path = g.os_path_dirname(at.targetFileName)
+                    at.writeError("path does not exist: " + path)
+                    return
+        except Exception:
+            at.exception("exception creating path: %s" % repr(path))
+            g.es_exception()
             return
 
         if g.os_path_exists(at.targetFileName):
