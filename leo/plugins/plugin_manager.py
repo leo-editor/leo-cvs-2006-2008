@@ -9,7 +9,7 @@ A plugin to manage Leo's Plugins:
 - Checks for and updates plugins from the web.
 """
 
-__version__ = "0.24"
+__version__ = "0.25"
 __plugin_name__ = "Plugin Manager"
 __plugin_priority__ = 10000
 __plugin_requires__ = ["plugin_menu"]
@@ -97,6 +97,7 @@ __plugin_group__ = "Core"
 # 0.23 EKR: Changed g.createStandAloneApp to createStandAloneTkApp to make 
 # clear the dependency.
 # 0.24 EKR: Standalone version of the code now works again.
+# 0.25 EKR: Define local_dict in base PluginList class.  This fixes a crasher.
 #@-at
 #@nonl
 #@-node:pap.20041006184225.2:<< version history >>
@@ -483,6 +484,8 @@ class PluginList(Tk.Frame):
         """Initialize the list"""
         Tk.Frame.__init__(self, parent, *args, **kw)
 
+        self.local_dict = {}
+
         self.file_text = file_text
 
         self.box = Pmw.ScrolledListBox(self,
@@ -646,8 +649,6 @@ class LoadOrderView(Tk.Frame):
         self.items.setlist([self.collection[name].nicename for name in self.enabler.actives])
         self.local_dict = dict([(self.collection[name].nicename, self.collection[name])
                                     for name in self.collection])
-
-    #@nonl
     #@-node:pap.20051103000804:initList
     #@+node:pap.20051102233801:moveFirst
     def moveFirst(self):
@@ -667,8 +668,6 @@ class LoadOrderView(Tk.Frame):
             self.enabler.actives.moveUp(item.name)
             self.initList()
             self.items.setvalue([item.nicename])        
-
-    #@nonl
     #@-node:pap.20051102233937:moveUp
     #@+node:pap.20051102233937.1:moveDown
     def moveDown(self):
@@ -678,8 +677,6 @@ class LoadOrderView(Tk.Frame):
             self.enabler.actives.moveDown(item.name)
             self.initList()
             self.items.setvalue([item.nicename])        
-
-    #@nonl
     #@-node:pap.20051102233937.1:moveDown
     #@+node:pap.20051102233937.2:moveLast
     def moveLast(self):
@@ -899,7 +896,10 @@ class ManagerDialog:
     def setPaths(self):
         """Set paths to the plugin locations"""
         self.local_path = g.os_path_join(g.app.loadDir,"..","plugins")
+        # self.remote_path = r"cvs.sourceforge.net/viewcvs.py/leo/leo/plugins"
         self.remote_path = r"cvs.sourceforge.net/viewcvs.py/leo/leo/plugins"
+
+
     #@-node:ekr.20050329080427:setPaths
     #@+node:pap.20041006224206:disablePlugin
     def disablePlugin(self):
@@ -923,8 +923,6 @@ class ManagerDialog:
         self.enable = EnableManager()
         self.enable.initFrom(self.local_path)
         self.local.setEnabledStateFrom(self.enable)
-
-    #@nonl
     #@-node:pap.20041006221212:initLocalCollection
     #@+node:pap.20041006224216:checkUpdates
     def checkUpdates(self):
@@ -1277,8 +1275,6 @@ class Plugin:
         self.versions = 'Unknown'
         self.contents_valid = False
         self.has_details = False
-
-    #@nonl
     #@-node:pap.20041006185727.1:__init__
     #@+node:pap.20041006193013:initFrom
     def initFrom(self, location):
@@ -1315,8 +1311,6 @@ class Plugin:
         """Return the contents of the file"""
 
         raise NotImplementedError("Must override")    
-
-    #@nonl
     #@-node:pap.20041006193239:getContents
     #@-node:ekr.20041113095851:Must be overridden in subclasses...
     #@+node:pap.20050317183038:getNiceName
@@ -1354,8 +1348,6 @@ class Plugin:
         # Some plugins need to have their details read immediately
         if self.read_details_immediately:
             self.ensureDetails()
-
-    #@nonl
     #@-node:pap.20051001230822:getSummary
     #@+node:pap.20041006194759:getDetails
     def getDetails(self):
@@ -1400,8 +1392,6 @@ class Plugin:
             self.priority = self.getPattern(text, r'__plugin_priority__\s*=\s*(.*?)$', "-")
         self.has_toplevel = self.hasPattern(text, "def topLevelMenu")
         self.getVersionHistory(text)
-
-    #@nonl
     #@-node:pap.20041006194759:getDetails
     #@+node:pap.20041006200000:hasPattern
     def hasPattern(self, text, pattern):
@@ -1539,8 +1529,6 @@ class Plugin:
                 version_text = match.groups()[0]
                 self.versions = version_text.replace("#", "")
                 return
-
-    #@nonl
     #@-node:pap.20050305165333:getVersionHistory
     #@+node:pap.20041009225149:getRequiredModules
     def getRequiredModules(self, plugin_collection):
@@ -1574,8 +1562,6 @@ class Plugin:
         for module_name in imports:
             if module_name in plugin_collection and module_name <> self.name:
                 requires.append(module_name)
-
-        #@nonl
         #@-node:pap.20041009230652:<< Check other plugins >>
         #@nl
         #@    << Directives >>
@@ -1821,8 +1807,6 @@ class PluginCollection(dict):
                     conflicts.append((this_plugin.name, conflict))
 
         return conflicts
-
-    #@nonl
     #@-node:pap.20041009025708.1:getConflicts
     #@+node:pap.20050305161126:getGroups
     def getGroups(self):
@@ -2197,8 +2181,6 @@ class EnableManager:
         #
         # The active plugins will have been set to enabled by the writeFile
         # operation so we are now good to go again!
-
-    #@nonl
     #@-node:pap.20051104220845:storeOrder
     #@-others
 #@nonl

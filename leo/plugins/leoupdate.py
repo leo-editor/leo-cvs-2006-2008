@@ -16,7 +16,7 @@ a CVS client.
 #@@language python
 #@@tabwidth -4
 
-__version__ = "0.2"
+__version__ = "0.3"
 __plugin_name__ = "Leo Update"
 __plugin_priority__ = 100
 __plugin_group__ = "Core"
@@ -43,6 +43,10 @@ sets = g.importExtension('sets',pluginName=__name__,verbose=True)
 # 
 # 0.1 Paul Paterson: Initial version.
 # 0.2 EKR: Added c arg to topLevelMenu.
+# 0.2 EKR:
+# - Fixed crasher related to new c arg.
+# - Replaced SourceForge urls with tigris urls, but these do not work.
+# 
 #@-at
 #@-node:pap.20050605183206.3:<< version history >>
 #@nl
@@ -109,7 +113,7 @@ def onCreate (tag, keys):
 def topLevelMenu(c):   
     """Manage the tree handlers"""
     global thePluginController    
-    thePluginController.showManagerDialog()
+    thePluginController.showManagerDialog(c)
 #@nonl
 #@-node:pap.20050605183206.8:topLevelMenu
 #@+node:pap.20050605183206.17:class LeoUpdater
@@ -127,11 +131,9 @@ class LeoUpdater:
         except ImportError, err:
             g.es("LeoUpdate did not load plugin manager: %s" % (err,), color="red")
             self.plugin_manager = None
-
-    #@nonl
     #@-node:pap.20050605183206.18:__init__
     #@+node:pap.20050605183206.27:showManagerDialog
-    def showManagerDialog(self):
+    def showManagerDialog(self,c):
         """Show the tree handler manager dialog"""
         if not self.plugin_manager:
             g.es("Plugin manager could not be loaded", color="red")
@@ -153,7 +155,7 @@ class LeoUpdater:
                     """Initialize the local file collection"""
 
                     # Get the local plugins information
-                    self.local = plugin_manager.LocalPluginCollection()
+                    self.local = plugin_manager.LocalPluginCollection(self.c)
                     self.local.initFrom(self.local_path)
 
                 #@-node:pap.20050605184344:initLocalCollection
@@ -161,7 +163,8 @@ class LeoUpdater:
                 def setPaths(self):
                     """Set paths to the plugin locations"""
                     self.local_path = g.os_path_join(g.app.loadDir,"..","src")
-                    self.remote_path = r"cvs.sourceforge.net/viewcvs.py/leo/leo/src"
+                    # self.remote_path = r"cvs.sourceforge.net/viewcvs.py/leo/leo/src"
+                    self.remote_path = r'leo.tigris.org/source/browse/leo/src'
                     self.file_text = "File"
                     self.has_enable_buttons = False
                     self.has_conflict_buttons = False
@@ -194,7 +197,7 @@ class LeoUpdater:
             #@-node:pap.20050605183206.28:<< class HandlerDialog >>
             #@nl
             plugin_manager = self.plugin_manager
-            dlg = HandlerDialog()    
+            dlg = HandlerDialog(c)    
     #@-node:pap.20050605183206.27:showManagerDialog
     #@-others
 #@nonl
