@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="700" width="937"/>
+	<global_window_position top="10" left="238" height="781" width="941"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -264,7 +264,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20061003173413" a="E"><vh>File options</vh>
+<v t="ekr.20061003173413"><vh>File options</vh>
 <v t="ekr.20041119034357.5"><vh>@bool read_only = False</vh></v>
 <v t="ekr.20061009190510"><vh>@bool write_recent_files_as_needed = True</vh></v>
 <v t="ekr.20041119034357.11"><vh>directory options</vh>
@@ -272,10 +272,10 @@
 <v t="ekr.20041119041304.1"><vh>@string relative_path_base_directory = .</vh></v>
 <v t="ekr.20061210091932"><vh>@bool chdir_to_relative_path = False</vh></v>
 </v>
-<v t="ekr.20041119034357.12" a="E"><vh>derived files options</vh>
+<v t="ekr.20041119034357.12"><vh>derived files options</vh>
 <v t="ekr.20041119041747"><vh>@string output_newline = nl</vh></v>
 <v t="ekr.20041119041747.1"><vh>@string trailing_body_newlines = one</vh></v>
-<v t="ekr.20041119041747.4" a="V"><vh>@bool write_strips_blank_lines = True</vh></v>
+<v t="ekr.20041119041747.4"><vh>@bool write_strips_blank_lines = True</vh></v>
 <v t="ekr.20070419103554"><vh>@bool force_newlines_in_at_nosent_bodies = True</vh></v>
 </v>
 <v t="ekr.20041119034357.7"><vh>.leo file options</vh>
@@ -463,12 +463,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070411101857"><vh>Open With</vh>
-<v t="ekr.20070411101857.1"><vh>@openwith Idle = Alt+Shift+Ctrl+I</vh></v>
-<v t="ekr.20070411101857.2"><vh>@openwith Word = Alt+Shift+Ctrl+W </vh></v>
-<v t="ekr.20070411101857.3"><vh>@openwith Wordpad = Alt+Shift+Ctrl+T</vh></v>
-</v>
-<v t="ekr.20051123100536" annotate="7d71002e"><vh>Plugins</vh>
+<v t="ekr.20051123100536" a="TV" annotate="7d71002e"><vh>Plugins</vh>
 <v t="ekr.20041119034357.13"><vh>@bool use_plugins = True</vh></v>
 <v t="ekr.20070224073109.1"><vh>@enabled-plugins</vh></v>
 <v t="ekr.20060807103220"><vh>datenodes plugin</vh>
@@ -494,6 +489,11 @@
 <v t="ekr.20060109115046.3"><vh>@string library_lib0 = default/library.dbm</vh></v>
 <v t="ekr.20060109121753"><vh>@string library_lib1 = default/libraryS.dbm</vh></v>
 </v>
+<v t="ekr.20070411101857" a="E"><vh>Open With plugin</vh>
+<v t="ekr.20070411101857.1"><vh>@openwith Idle = Alt+Shift+Ctrl+I</vh></v>
+<v t="ekr.20070411101857.2"><vh>@openwith Word = Alt+Shift+Ctrl+W </vh></v>
+<v t="ekr.20070411101857.3"><vh>@openwith Wordpad = Alt+Shift+Ctrl+T</vh></v>
+</v>
 <v t="ekr.20060919171527"><vh>opml plugin</vh>
 <v t="ekr.20060921080239"><vh>@bool opml_read_derived_files = True</vh></v>
 <v t="ekr.20060919171527.1"><vh>@bool opml_use_outline_elements = True</vh></v>
@@ -515,10 +515,6 @@
 <v t="ekr.20060930112030"><vh>@bool scripting-create-script-button-button = True</vh></v>
 <v t="ekr.20060930111325.1"><vh>@int scripting-max-button-size = 18</vh></v>
 </v>
-<v t="ekr.20051123100536.1"><vh>vim plugin</vh>
-<v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
-<v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
-</v>
 <v t="ekr.20060730101451"><vh>shadow plugin</vh>
 <v t="ekr.20060730101451.1"><vh>@bool shadow_active = True</vh></v>
 <v t="ekr.20060730101451.2"><vh>@bool shadow_backups = True</vh></v>
@@ -527,6 +523,10 @@
 <v t="ekr.20060730101451.5"><vh>@string shadow_subdir = LeoShadow</vh></v>
 <v t="ekr.20060730101451.6"><vh>@bool shadow_testing = True</vh></v>
 <v t="ekr.20060730101451.7"><vh>@int shadow_verbose = 3</vh></v>
+</v>
+<v t="ekr.20051123100536.1"><vh>vim plugin</vh>
+<v t="ekr.20051123100536.2"><vh>@string vim_cmd = c:\Program Files\vim\vim63\gvim --servername LEO</vh></v>
+<v t="ekr.20051123100536.3"><vh>@string vim_exe = c:\Program Files\vim\vim63\gvim</vh></v>
 </v>
 <v t="ekr.20060904211808"><vh>zodb plugin</vh>
 <v t="ekr.20060904211808.1"><vh>@string zodb_storage_file = c:\prog\zopeTemp\leo.fs</vh></v>
@@ -1643,7 +1643,7 @@ Ctrl-A, Ctrl-Shift-a, Ctrl-Shift-A
 !, Key-!,Key-exclam,exclam
     
 See "About shortcut specifiers" for a full discussion of what may appear in the tail of a shortcut.</t>
-<t tx="ekr.20051123100536"></t>
+<t tx="ekr.20051123100536">Note: These settings have effect only if the corresponding plugin has been enabled.</t>
 <t tx="ekr.20051123100536.1">For MacOS X (darwin) the following are typical defaults:
 
 vim_cmd = /Applications/gvim.app/Contents/MacOS/gvim --servername LEO
