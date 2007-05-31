@@ -210,7 +210,7 @@ def onCreate(tag, keywords):
 
     c = keywords.get('new_c') or keywords.get('c')
 
-    # g.trace(c)
+    g.trace('(rst3 plugin)',c)
 
     if c:
         global controllers
@@ -390,8 +390,6 @@ class htmlParserClass (linkAnchorParserClass):
         # Last position; we must attach html code to this node.
 
         self.last_marker = None
-
-    #@nonl
     #@-node:ekr.20050805162550.45:__init__
     #@+node:ekr.20050805162550.46:handle_starttag
     def handle_starttag (self,tag,attrs):
@@ -459,8 +457,6 @@ class htmlParserClass (linkAnchorParserClass):
                 #bwm: last_marker is not needed?
 
         self.stack = self.stack[2]
-
-    #@nonl
     #@-node:ekr.20050805162550.47:handle_endtag
     #@+node:ekr.20050805162550.49:feed
     def feed(self, line):
@@ -518,8 +514,6 @@ class anchor_htmlParserClass (linkAnchorParserClass):
                 if not value.startswith(self.node_begin_marker):
                     if bwm_file: print >> bwm_file, "anchor(2):", value, self.p
                     self.anchor_map[value] = (self.current_file, self.p.copy())
-
-    #@nonl
     #@-node:ekr.20050805162550.52:handle_starttag
     #@-others
 #@nonl

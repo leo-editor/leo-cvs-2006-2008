@@ -149,10 +149,11 @@ class parserBaseClass:
         # This setting is handled differently from all other settings,
         # because the last setting must be retrieved before any commander exists.
 
+        # g.trace('len(s)',len(s))
+
         # Set the global config ivars.
         g.app.config.enabledPluginsString = s
         g.app.config.enabledPluginsFileName = c and c.shortFileName() or '<no settings file>'
-    #@nonl
     #@-node:ekr.20070224075914:doEnabledPlugins
     #@+node:ekr.20041120094940.6:doFloat
     def doFloat (self,p,kind,name,val):
@@ -1144,9 +1145,6 @@ class configClass:
     def getEnabledPlugins (self):
 
         """Search all dictionaries for the setting & check it's type"""
-
-        ##c = None
-        ##return self.get(c,'enabled-plugins','string')
 
         return g.app.config.enabledPluginsString
     #@-node:ekr.20070224075914.1:getEnabledPlugins

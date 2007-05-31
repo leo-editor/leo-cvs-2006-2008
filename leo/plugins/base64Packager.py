@@ -14,7 +14,7 @@ the original file and create a section reference to the payload node, which
 contains the data.
 
 The Export base64 command asks for a location to place the file. The plugin
-checks that the structrue of the base64 node is what it expected, basically what
+checks that the structure of the base64 node is what it expected, basically what
 an import operation creates. If Ok, it will write the file to the selected
 directory.
 
