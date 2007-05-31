@@ -2600,12 +2600,10 @@ class leoTree:
         c = self.c ; frame = c.frame
         body = w = frame.bodyCtrl
         old_p = c.currentPosition()
-        if not p or not c.positionExists(p):
-            if 0:
-                g.trace('does not exist',p and p.headString(),'root',c.rootPosition())
-                print 'self and parents...'
-                for p in p.self_and_parents_iter():
-                    print p
+
+        if not p:
+            # Bug fix: 5/31/07: do *not* test c.positionExists(p) here.
+            # We may be in the process of changing roots.
             return None # Not an error.
 
         # g.trace('      ===',id(w),p and p.headString())
