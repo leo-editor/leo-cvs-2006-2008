@@ -1849,7 +1849,10 @@ class leoTkinterTree (leoFrame.leoTree):
                     w.see(spot)
                 else:
                     w.setInsertPoint(0)
-                c.headlineWantsFocus(p)
+                # An important detail.
+                # The *canvas* (not the headline) gets the focus so that
+                # tree bindings take priority over text bindings.
+                c.treeWantsFocus()
                 self.active = False
                 returnVal = 'break'
             #@nonl
