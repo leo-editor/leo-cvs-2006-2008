@@ -130,6 +130,10 @@ def loadHandlers(tag):
 
     """Load all enabled plugins from the plugins directory"""
 
+    def pr (*args,**keys):
+        if not g.app.unitTesting:
+            g.es_print(*args,**keys)
+
     fileName = "pluginsManager.txt"
     plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
     files = glob.glob(g.os_path_join(plugins_path,"*.py"))
@@ -138,7 +142,7 @@ def loadHandlers(tag):
     theConfigFile = g.app.config.enabledPluginsFileName
     # g.trace('len(s)',s and len(s) or 0)
     if s:
-        g.es_print('@enabled-plugins found in %s' % (theConfigFile),color='blue')
+        pr('@enabled-plugins found in %s' % (theConfigFile),color='blue')
         enabled_files = getEnabledFiles(s,plugins_path)
     else:
         for theDir,place in (
@@ -149,7 +153,7 @@ def loadHandlers(tag):
             if g.os_path_exists(manager_path):
                 g.es_print('%s: %s' % (fileName,theDir),color='blue')
                 break
-        else: g.es_print('%s not found. No plugins will be loaded' % fileName)
+        else: pr('%s not found. No plugins will be loaded' % fileName)
         if g.os_path_exists(manager_path):
             #@            << set enabled_files from pluginsManager.txt >>
             #@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
@@ -157,11 +161,11 @@ def loadHandlers(tag):
                 # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
                 theFile = open(manager_path)
                 s = theFile.read()
-                g.es_print('Using settings in pluginsManager.txt')
+                pr('Using settings in pluginsManager.txt')
                 enabled_files = getEnabledFiles(s,plugins_path)
                 theFile.close()
             except IOError:
-                g.es_print("Can not open: " + manager_path)
+                pr("Can not open: %s"  % manager_path)
                 # Don't import leoTest initially.  It causes problems.
                 import leoTest ; leoTest.fail()
                 return
@@ -178,7 +182,7 @@ def loadHandlers(tag):
     # Note: g.plugin_signon adds module names to g.app.loadedPlugins
     if 0:
         if g.app.loadedPlugins:
-            g.es_print("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
+            pr("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
 #@+node:ekr.20070224082131:getEnabledFiles
 def getEnabledFiles (s,plugins_path):
 
