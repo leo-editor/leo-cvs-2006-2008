@@ -138,7 +138,7 @@ def loadHandlers(tag):
     theConfigFile = g.app.config.enabledPluginsFileName
     # g.trace('len(s)',s and len(s) or 0)
     if s:
-        g.es('@enabled-plugins found in %s' % (theConfigFile),color='blue')
+        g.es_print('@enabled-plugins found in %s' % (theConfigFile),color='blue')
         enabled_files = getEnabledFiles(s,plugins_path)
     else:
         for theDir,place in (
@@ -147,21 +147,21 @@ def loadHandlers(tag):
         ):
             manager_path = g.os_path_join(theDir,fileName)
             if g.os_path_exists(manager_path):
-                g.es('%s: %s' % (fileName,theDir),color='blue')
+                g.es_print('%s: %s' % (fileName,theDir),color='blue')
                 break
-        else: g.es('%s not found. No plugins will be loaded' % fileName)
+        else: g.es_print('%s not found. No plugins will be loaded' % fileName)
         if g.os_path_exists(manager_path):
             #@            << set enabled_files from pluginsManager.txt >>
             #@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
             try:
                 # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
                 theFile = open(manager_path)
-                ###lines = theFile.readlines()
                 s = theFile.read()
+                g.es_print('Using settings in pluginsManager.txt')
                 enabled_files = getEnabledFiles(s,plugins_path)
                 theFile.close()
             except IOError:
-                g.es("Can not open: " + manager_path)
+                g.es_print("Can not open: " + manager_path)
                 # Don't import leoTest initially.  It causes problems.
                 import leoTest ; leoTest.fail()
                 return
@@ -175,9 +175,10 @@ def loadHandlers(tag):
             if theFile in files:
                 loadOnePlugin(theFile)
 
-    # Note: g.plugin_signon adds module names to g.app.loadedPlugins 
-    if g.app.loadedPlugins:
-        g.es("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
+    # Note: g.plugin_signon adds module names to g.app.loadedPlugins
+    if 0:
+        if g.app.loadedPlugins:
+            g.es_print("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
 #@+node:ekr.20070224082131:getEnabledFiles
 def getEnabledFiles (s,plugins_path):
 
