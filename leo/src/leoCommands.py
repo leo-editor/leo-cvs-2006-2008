@@ -6482,7 +6482,7 @@ class baseCommands:
             if newRoot:
                 c.setRootPosition(newRoot)
             # This is *not* an error: newRoot can be None when switching chapters.
-            # else: g.trace('******** no new root',g.callers())
+            # else: g.trace('******** no new root')
         else:
             c._currentPosition = None
 

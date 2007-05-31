@@ -310,6 +310,506 @@ OSError: /home/wspage/c:\aspell\bin/aspell-15.dll: cannot open shared object
 file: No such file or directory
 
 #@-node:ekr.20070521104213:Get aspell working on Linux
+#@+node:ekr.20070426080015:Fix crasher in dynamic abbreviations
+#@+node:ekr.20070506094429:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4255709
+
+I have some questions about the usage of dynamic abbreviations in Leo. As an
+Emacs user, I know how they work in Emacs: they expand partially entered words
+using a dictionary of words from the currently open buffers.
+
+- I found a thread in the SF Forums titled "dynamic-abbreviations increases
+its scope", 07-20-2005. The functionality described in this thread seems to
+be the functionality I am familiar with as an Emacs uses. Is this the functionality
+accessed through the commands dabbrev-completion and dabbrev-expands ?
+- What is the difference between dabbrev-completion and dabbrev-expands ? 
+- I often get a TK exception when I use dabbrev-completion "TypeError: reduce()
+of empty sequence with no initial value". What am I doing wrong ?
+
+Can somebody answer these questions for me or point me to documentation that
+describes Leo's support for dynamic abbreviations?
+
+-----------
+http://sourceforge.net/forum/message.php?msg_id=4260706
+
+command completion is shell or readline functionality to automatically finish
+what you've typed so far, thus "completing" the type-in of the command for you.
+
+abbreviation expansion is actually going to put a bunch of characters in your
+buffer where you only had to enter the abbreviation for it.
+
+---------
+http://sourceforge.net/forum/message.php?msg_id=4263851
+
+Already solved a part of it. The exception is raised when the characters entered
+cannot be completed to a previously typed word. In LeoPy.leo, Code-->Core
+classes...-->@thin leoEditCommands.py-->editCommandsClass-->dynamic
+abbreviation...-->dynamicExpansion2, no check is made that the call to
+self.getDynamicList does not retrieve an empty list. I've added this check (locally)
+and at least the exception is not raised anymore. Apparently I am the only one
+using this functionality, otherwise taht person surely would have also encountered
+the problem.
+
+Unfortunately, when looking at the code it seems that only those words are completed
+in the current node :( Is there another mechanism for completion (that also
+considers other, e.g. previously viewed, nodes) or am I overlooking something ?
+#@nonl
+#@-node:ekr.20070506094429:Report
+#@+node:ekr.20050920084036.13:abbrevCommandsClass (test)
+@
+
+type some text, set its abbreviation with Control-x a i g, type the text for abbreviation expansion
+type Control-x a e ( or Alt-x expand-abbrev ) to expand abbreviation
+type Alt-x abbrev-on to turn on automatic abbreviation expansion
+Alt-x abbrev-on to turn it off
+
+an example:
+type:
+frogs
+after typing 's' type Control-x a i g.  This will turn the miniBuffer blue, type in your definition. For example: turtles.
+
+Now in the buffer type:
+frogs
+after typing 's' type Control-x a e.  This will turn the 'frogs' into:
+turtles
+@c
+
+class abbrevCommandsClass (baseEditCommandsClass):
+
+    @others
+#@+node:ekr.20050920084036.14: ctor & finishCreate
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    # Set local ivars.
+    self.abbrevs ={}
+
+def finishCreate(self):
+
+    baseEditCommandsClass.finishCreate(self)
+#@-node:ekr.20050920084036.14: ctor & finishCreate
+#@+node:ekr.20050920084036.15: getPublicCommands & getStateCommands
+def getPublicCommands (self):
+
+    return {
+        'abbrev-mode':                  self.toggleAbbrevMode,
+        'add-global-abbrev':            self.addAbbreviation,
+        # 'expand-abbrev':              self.expandAbbrev, # Not a command.
+        'expand-region-abbrevs':        self.regionalExpandAbbrev,
+        'inverse-add-global-abbrev':    self.addInverseAbbreviation,
+        'kill-all-abbrevs':             self.killAllAbbrevs,
+        'list-abbrevs':                 self.listAbbrevs,
+        'read-abbrev-file':             self.readAbbreviations,
+        'write-abbrev-file':            self.writeAbbreviations,
+    }
+#@-node:ekr.20050920084036.15: getPublicCommands & getStateCommands
+#@+node:ekr.20050920084036.25:addAbbreviation
+def addAbbreviation (self,event):
+
+    '''Add an abbreviation:
+    The selected text is the abbreviation;
+    the minibuffer prompts you for the name of the abbreviation.
+    Also sets abbreviations on.'''
+
+    k = self.k ; state = k.getState('add-abbr')
+
+    if state == 0:
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
+        k.setLabelBlue('Add Abbreviation: ',protect=True)
+        k.getArg(event,'add-abbr',1,self.addAbbreviation)
+    else:
+        w = self.w
+        k.clearState()
+        k.resetLabel()
+        s = w.getAllText()
+        i = w.getInsertPoint()
+        i,j = g.getWord(s,i-1)
+        word = s[i:j]
+        if k.arg.strip():
+            self.abbrevs [k.arg] = word
+            k.abbrevOn = True
+            k.setLabelGrey(
+                "Abbreviations are on.\nAbbreviation: '%s' = '%s'" % (
+                k.arg,word))
+#@-node:ekr.20050920084036.25:addAbbreviation
+#@+node:ekr.20051004080550:addInverseAbbreviation
+def addInverseAbbreviation (self,event):
+
+    '''Add an inverse abbreviation:
+    The selected text is the abbreviation name;
+    the minibuffer prompts you for the value of the abbreviation.'''
+
+    k = self.k ; state = k.getState('add-inverse-abbr')
+
+    if state == 0:
+        w = self.editWidget(event) # Sets self.w
+        if not w: return
+        k.setLabelBlue('Add Inverse Abbreviation: ',protect=True)
+        k.getArg(event,'add-inverse-abbr',1,self.addInverseAbbreviation)
+    else:
+        w = self.w
+        k.clearState()
+        k.resetLabel()
+        s = w.getAllText()
+        i = w.getInsertPoint()
+        i,j = g.getWord(s,i-1)
+        word = s[i:j]
+        if word:
+            self.abbrevs [word] = k.arg
+#@-node:ekr.20051004080550:addInverseAbbreviation
+#@+node:ekr.20050920084036.27:expandAbbrev
+def expandAbbrev (self,event):
+
+    '''Not a command.  Called from k.masterCommand to expand
+    abbreviations in event.widget.'''
+
+    k = self.k ; c = self.c ; ch = event.char.strip()
+    w = self.editWidget(event)
+    if not w: return
+
+    word = w.get('insert -1c wordstart','insert -1c wordend')
+    g.trace('ch',repr(ch),'word',repr(word))
+    if ch:
+        # We must do this: expandAbbrev is called from Alt-x and Control-x,
+        # we get two differnt types of data and w states.
+        word = '%s%s'% (word,ch)
+
+    val = self.abbrevs.get(word)
+    if val is not None:
+        s = w.getAllText()
+        i = w.getInsertPoint()
+        i,j = g.getWord(s,i-1)
+        if i != j: w.delete(i,j)
+        w.insert(i,val)
+        c.frame.body.onBodyChanged(undoType='Typing')
+
+    return val is not None
+#@-node:ekr.20050920084036.27:expandAbbrev
+#@+node:ekr.20050920084036.18:killAllAbbrevs
+def killAllAbbrevs (self,event):
+
+    '''Delete all abbreviations.'''
+
+    self.abbrevs = {}
+#@-node:ekr.20050920084036.18:killAllAbbrevs
+#@+node:ekr.20050920084036.19:listAbbrevs
+def listAbbrevs (self,event):
+
+    '''List all abbreviations.'''
+
+    k = self.k
+
+    if self.abbrevs:
+        for z in self.abbrevs:
+            g.es('%s=%s' % (z,self.abbrevs[z]))
+#@-node:ekr.20050920084036.19:listAbbrevs
+#@+node:ekr.20050920084036.20:readAbbreviations
+def readAbbreviations (self,event):
+
+    '''Read abbreviations from a file.'''
+
+    fileName = g.app.gui.runOpenFileDialog(
+        title = 'Open Abbreviation File',
+        filetypes = [("Text","*.txt"), ("All files","*")],
+        defaultextension = ".txt")
+
+    if not fileName: return
+
+    try:
+        f = open(fileName)
+        for x in f:
+            a, b = x.split('=')
+            b = b [:-1]
+            self.abbrevs [a] = b
+        f.close()
+    except IOError:
+        g.es('Can not open',fileName)
+#@-node:ekr.20050920084036.20:readAbbreviations
+#@+node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
+def regionalExpandAbbrev (self,event):
+
+    '''Exapand abbreviations throughout a region.'''
+
+    k = self.k ; w = self.editWidget(event)
+    if not w or not self._chckSel(event): return
+
+    i1,i2 = w.getSelectionRange()
+    ins = w.getInsertPoint()
+    << define a new generator searchXR >>
+
+    # EKR: the 'result' of calling searchXR is a generator object.
+    k.regx.iter = searchXR(i1,i2,ins,event)
+    k.regx.iter.next() # Call it the first time.
+#@nonl
+#@+node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
+@ This is a generator (it contains a yield).
+To make this work we must define a new generator for each call to regionalExpandAbbrev.
+@c
+def searchXR (i1,i2,ins,event):
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+
+    w.tag_add('sXR',i1,i2)
+    while i1:
+        tr = w.tag_ranges('sXR')
+        if not tr: break
+        i1 = w.search(r'\w',i1,stopindex=tr[1],regexp=True)
+        if i1:
+            word = w.get('%s wordstart' % i1,'%s wordend' % i1)
+            w.tag_delete('found')
+            w.tag_add('found','%s wordstart' % i1,'%s wordend' % i1)
+            w.tag_config('found',background='yellow')
+            if self.abbrevs.has_key(word):
+                k.setLabel('Replace %s with %s? y/n' % (word,self.abbrevs[word]))
+                yield None
+                if k.regXKey == 'y':
+                    ind = w.index('%s wordstart' % i1)
+                    w.delete('%s wordstart' % i1,'%s wordend' % i1)
+                    w.insert(ind,self.abbrevs[word])
+            i1 = '%s wordend' % i1
+    w.setInsertPoint(ins,ins,insert=ins)
+    w.tag_delete('sXR')
+    w.tag_delete('found')
+    k.setLabelGrey('')
+    self.k.regx = g.bunch(iter=None,key=None)
+#@-node:ekr.20050920084036.22:<< define a new generator searchXR >> LATER
+#@-node:ekr.20050920084036.21:regionalExpandAbbrev (TK code)
+#@+node:ekr.20050920084036.23:toggleAbbrevMode
+def toggleAbbrevMode (self,event):
+
+    '''Toggle abbreviation mode.'''
+
+    k = self.k
+    k.abbrevOn = not k.abbrevOn
+    k.keyboardQuit(event)
+    k.setLabel('Abbreviations are ' + g.choose(k.abbrevOn,'On','Off'))
+#@-node:ekr.20050920084036.23:toggleAbbrevMode
+#@+node:ekr.20050920084036.24:writeAbbreviations
+def writeAbbreviations (self,event):
+
+    '''Write abbreviations to a file.'''
+
+    fileName = g.app.gui.runSaveFileDialog(
+        initialfile = None,
+        title='Write Abbreviations',
+        filetypes = [("Text","*.txt"), ("All files","*")],
+        defaultextension = ".txt")
+
+    if not fileName: return
+
+    try:
+        f = open(fileName,'w')
+        for x in self.abbrevs:
+            f.write('%s=%s\n' % (x,self.abbrevs[x]))
+        f.close()
+    except IOError:
+        g.es('Can not create',fileName)
+#@-node:ekr.20050920084036.24:writeAbbreviations
+#@-node:ekr.20050920084036.13:abbrevCommandsClass (test)
+#@+node:ekr.20050920084036.58:dynamic abbreviation...
+#@+node:ekr.20050920084036.59:dynamicExpansion LATER
+def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    if g.app.gui.guiName() not in ('null','tkinter'):
+        return g.es('command not ready yet',color='blue')
+
+    rlist = self.store ['rlist']
+    stext = self.store ['stext']
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    dA = w.tag_ranges('dA')
+    w.tag_delete('dA')
+    def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
+        w.delete(from_,to_)
+        w.insert('insert',txt,'dA')
+
+    if dA:
+        dA1, dA2 = dA
+        dtext = w.get(dA1,dA2)
+        if dtext.startswith(stext) and i2 == dA2:
+            #This seems reasonable, since we cant get a whole word that has the '-' char in it, we do a good guess
+            if rlist:
+                txt = rlist.pop()
+            else:
+                txt = stext
+                w.delete(dA1,dA2)
+                dA2 = dA1 # since the text is going to be reread, we dont want to include the last dynamic abbreviation
+                self.getDynamicList(w,txt,rlist)
+            doDa(txt,dA1,dA2) ; return
+        else: dA = None
+
+    if not dA:
+        self.store ['stext'] = txt
+        self.store ['rlist'] = rlist = []
+        self.getDynamicList(w,txt,rlist)
+        if rlist:
+            txt = rlist.pop()
+            doDa(txt)
+#@-node:ekr.20050920084036.59:dynamicExpansion LATER
+#@+node:ekr.20050920084036.60:dynamicExpansion2 LATER
+def dynamicExpansion2 (self,event):
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
+
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    rlist = []
+    self.getDynamicList(w,txt,rlist)
+    if rlist:
+        dEstring = reduce(g.longestCommonPrefix,rlist)
+        if dEstring:
+            w.delete(i,i2)
+            w.insert(i,dEstring)
+#@-node:ekr.20050920084036.60:dynamicExpansion2 LATER
+#@+node:ekr.20050920084036.61:getDynamicList (helper)
+def getDynamicList (self,w,txt,rlist):
+
+     ttext = w.getAllText()
+     items = self.dynaregex.findall(ttext) #make a big list of what we are considering a 'word'
+     if items:
+         for word in items:
+             if not word.startswith(txt) or word == txt: continue #dont need words that dont match or == the pattern
+             if word not in rlist:
+                 rlist.append(word)
+             else:
+                 rlist.remove(word)
+                 rlist.append(word)
+#@-node:ekr.20050920084036.61:getDynamicList (helper)
+#@-node:ekr.20050920084036.58:dynamic abbreviation...
+#@-node:ekr.20070426080015:Fix crasher in dynamic abbreviations
+#@+node:ekr.20070530140836:Make sure the initial outline isn't marked dirty when started via leo.py
+#@+node:ekr.20070530140836.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4336648
+By: terry_n_brown
+
+Just a nit, but I notice that the default empty file that you get when first
+running Leo is still marked 'changed' (current CVS).  I.e. it asks for confirmation
+on closing, which it didn't need previously.
+#@nonl
+#@-node:ekr.20070530140836.1:Report
+#@-node:ekr.20070530140836:Make sure the initial outline isn't marked dirty when started via leo.py
+#@+node:ekr.20070531075258:Fix problems with @enabled-plugins
+#@+node:ekr.20070224075914:doEnabledPlugins
+def doEnabledPlugins (self,p,kind,name,val):
+
+    __pychecker__ = '--no-argsused' # kind,name,val not used.
+
+    c = self.c
+    s = p.bodyString()
+
+    # This setting is handled differently from all other settings,
+    # because the last setting must be retrieved before any commander exists.
+
+    # g.trace('len(s)',len(s))
+
+    # Set the global config ivars.
+    g.app.config.enabledPluginsString = s
+    g.app.config.enabledPluginsFileName = c and c.shortFileName() or '<no settings file>'
+#@-node:ekr.20070224075914:doEnabledPlugins
+#@+node:ekr.20070224075914.1:getEnabledPlugins
+def getEnabledPlugins (self):
+
+    """Search all dictionaries for the setting & check it's type"""
+
+    return g.app.config.enabledPluginsString
+#@-node:ekr.20070224075914.1:getEnabledPlugins
+#@+node:ekr.20031218072017.3440:loadHandlers & helper
+def loadHandlers(tag):
+
+    """Load all enabled plugins from the plugins directory"""
+
+    fileName = "pluginsManager.txt"
+    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
+    files = glob.glob(g.os_path_join(plugins_path,"*.py"))
+    files = [g.os_path_abspath(theFile) for theFile in files]
+    s = g.app.config.getEnabledPlugins()
+    theConfigFile = g.app.config.enabledPluginsFileName
+    # g.trace('len(s)',s and len(s) or 0)
+    if s:
+        g.es_print('@enabled-plugins found in %s' % (theConfigFile),color='blue')
+        enabled_files = getEnabledFiles(s,plugins_path)
+    else:
+        for theDir,place in (
+            (g.app.homeDir,'HOME'),
+            (plugins_path,'leo/config')
+        ):
+            manager_path = g.os_path_join(theDir,fileName)
+            if g.os_path_exists(manager_path):
+                g.es_print('%s: %s' % (fileName,theDir),color='blue')
+                break
+        else: g.es_print('%s not found. No plugins will be loaded' % fileName)
+        if g.os_path_exists(manager_path):
+            << set enabled_files from pluginsManager.txt >>
+        else:  return
+
+    # Load plugins in the order they appear in the enabled_files list.
+    if files and enabled_files:
+        for theFile in enabled_files:
+            if theFile in files:
+                loadOnePlugin(theFile)
+
+    # Note: g.plugin_signon adds module names to g.app.loadedPlugins
+    if 0:
+        if g.app.loadedPlugins:
+            g.es_print("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
+#@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+try:
+    # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
+    theFile = open(manager_path)
+    s = theFile.read()
+    g.es_print('Using settings in pluginsManager.txt')
+    enabled_files = getEnabledFiles(s,plugins_path)
+    theFile.close()
+except IOError:
+    g.es_print("Can not open: " + manager_path)
+    # Don't import leoTest initially.  It causes problems.
+    import leoTest ; leoTest.fail()
+    return
+#@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+#@+node:ekr.20070224082131:getEnabledFiles
+def getEnabledFiles (s,plugins_path):
+
+    enabled_files = []
+    disabled_files = []
+    for s in g.splitLines(s):
+        s = s.strip()
+        if s:
+            if g.match(s,0,"#"):
+                s = s[1:].strip()
+                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
+                if s and s.find(' ') == -1 and s[-3:] == '.py':
+                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                    if path not in enabled_files and path not in disabled_files:
+                        # print 'disabled',path
+                        disabled_files.append(path)
+            else:
+                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                if path not in enabled_files and path not in disabled_files:
+                    # print 'enabled',path
+                    enabled_files.append(path)
+
+    return enabled_files
+#@nonl
+#@-node:ekr.20070224082131:getEnabledFiles
+#@-node:ekr.20031218072017.3440:loadHandlers & helper
+#@-node:ekr.20070531075258:Fix problems with @enabled-plugins
+#@+node:ekr.20070531083746:shift-arrow keys not bound properly in tree (or headlines?)
+#@-node:ekr.20070531083746:shift-arrow keys not bound properly in tree (or headlines?)
 #@-node:ekr.20070522052905:Bugs & Incompletions
 #@-node:ekr.20070515100356:To do: b2
 #@-node:ekr.20060531161030:To do: 4.4.3

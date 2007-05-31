@@ -210,7 +210,7 @@ def onCreate(tag, keywords):
 
     c = keywords.get('new_c') or keywords.get('c')
 
-    g.trace('(rst3 plugin)',c)
+    # g.trace('(rst3 plugin)',c)
 
     if c:
         global controllers
