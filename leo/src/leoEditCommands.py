@@ -7863,7 +7863,9 @@ class spellTabHandler (leoFind.leoFind):
     def add(self,event=None):
         """Add the selected suggestion to the dictionary."""
 
-        if not currentWord: return
+        if not self.currentWord: return
+
+        # g.trace(self.currentWord)
 
         try:
             f = None
@@ -7961,7 +7963,8 @@ class spellTabHandler (leoFind.leoFind):
 
         try:
             while 1:
-                p, word = self.findNextWord(p) 
+                # g.trace('p',p and p.headString())
+                p, word = self.findNextWord(p)
                 if not p or not word:
                     alts = None
                     break
@@ -8001,30 +8004,33 @@ class spellTabHandler (leoFind.leoFind):
     def findNextWord(self,p):
         """Scan for the next word, leaving the result in the work widget"""
 
-        c = self.c ; w = self.workCtrl ; s = w.getAllText() ; p = p.copy()
+        c = self.c ; p = p.copy()
         while 1:
-            i = w.getInsertPoint()
+            s = self.workCtrl.getAllText()
+            i = self.workCtrl.getInsertPoint()
             while i < len(s) and not g.isWordChar1(s[i]):
                 i += 1
+            # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
             if i < len(s):
                 # A non-empty word has been found.
                 j = i
                 while j < len(s) and g.isWordChar(s[j]):
                     j += 1
                 word = s[i:j]
-                # g.trace(repr(word)) # This trace verifies that all words have been checked.
-                for w2 in (w,c.frame.body.bodyCtrl):
-                    c.widgetWantsFocusNow(w2)
-                    w2.setSelectionRange(i,j,insert=j)
+                # This trace verifies that all words have been checked.
+                # g.trace(repr(word))
+                for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                    c.widgetWantsFocusNow(w)
+                    w.setSelectionRange(i,j,insert=j)
                 return p,word
             else:
                 # End of the body text.
                 p.moveToThreadNext()
                 if not p: break
-                w.delete(0,'end')
-                w.insert(0,p.bodyString())
-                for w2 in (w,c.frame.body.bodyCtrl):
-                    c.widgetWantsFocusNow(w2)
+                self.workCtrl.delete(0,'end')
+                self.workCtrl.insert(0,p.bodyString())
+                for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                    c.widgetWantsFocusNow(w)
                     w.setSelectionRange(0,0,insert=0)
         return None,None
     #@nonl
@@ -8045,7 +8051,7 @@ class spellTabHandler (leoFind.leoFind):
 
         """Ignore the incorrect word for the duration of this spell check session."""
 
-        if not currentWord: return
+        if not self.currentWord: return
 
         if 1: # Somewhat helpful: applies until the tab is destroyed.
             s = 'Spell: ignore %s' % self.currentWord
@@ -8222,6 +8228,8 @@ class AspellClass:
         # «original» «offset» 
         simplifyed to not create the string then make a list from it
         """
+
+        # g.trace('word',word)
 
         if not self.aspell:
             g.trace('aspell not installed')
