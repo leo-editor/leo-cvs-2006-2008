@@ -824,7 +824,7 @@ class tkSpellTab:
         # Set the common background color.
         bg = c.config.getColor('log_pane_Spell_tab_background_color') or 'LightSteelBlue2'
 
-        fontSize = g.choose(sys.platform.startswith('win'),9,12)
+        fontSize = g.choose(sys.platform.startswith('win'),9,14)
 
         #@    << Create the outer frames >>
         #@+node:ekr.20051113090322:<< Create the outer frames >>
@@ -853,7 +853,7 @@ class tkSpellTab:
 
         self.listBox = Tk.Listbox(fpane,height=6,width=10,selectmode="single")
         self.listBox.pack(side='left',expand=1,fill='both')
-        self.listBox.configure(font=('verdana',11,'normal'))
+        self.listBox.configure(font=('verdana',fontSize,'normal'))
 
         listBoxBar = Tk.Scrollbar(fpane,name='listBoxBar')
 
