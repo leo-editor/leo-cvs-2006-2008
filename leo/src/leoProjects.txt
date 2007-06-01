@@ -24546,6 +24546,8 @@ def createFrame (self):
     # Set the common background color.
     bg = c.config.getColor('log_pane_Spell_tab_background_color') or 'LightSteelBlue2'
 
+    fontSize = g.choose(sys.platform.startswith('win'),9,14)
+
     << Create the outer frames >>
     << Create the text and suggestion panes >>
     << Create the spelling buttons >>
@@ -24569,14 +24571,14 @@ f2.pack(side='top',expand=0,fill='x')
 
 self.wordLabel = Tk.Label(f2,text="Suggestions for:")
 self.wordLabel.pack(side='left')
-self.wordLabel.configure(font=('verdana',10,'bold'))
+self.wordLabel.configure(font=('verdana',fontSize,'bold'))
 
 fpane = Tk.Frame(outer,bg=bg,bd=2)
 fpane.pack(side='top',expand=1,fill='both')
 
 self.listBox = Tk.Listbox(fpane,height=6,width=10,selectmode="single")
 self.listBox.pack(side='left',expand=1,fill='both')
-self.listBox.configure(font=('verdana',11,'normal'))
+self.listBox.configure(font=('verdana',fontSize,'normal'))
 
 listBoxBar = Tk.Scrollbar(fpane,name='listBoxBar')
 
@@ -24593,7 +24595,9 @@ buttons3 = Tk.Frame(outer,bd=1,bg=bg)
 for w in (buttons1,buttons2,buttons3):
     w.pack(side='top',expand=0,fill='x')
 
-buttonList = [] ; font = ('verdana',9,'normal') ; width = 12
+buttonList = []
+font = ('verdana',fontSize,'normal')
+width = 12
 for frame, text, command in (
     (buttons1,"Find",self.onFindButton),
     (buttons1,"Add",self.onAddButton),
@@ -30881,6 +30885,7 @@ def new (self,event=None):
         # because it requires a valid value for c.rootPosition().
         if c.config.getBool('use_chapters') and c.chapterController:
             c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -31614,6 +31619,7 @@ def new (self,event=None):
         # because it requires a valid value for c.rootPosition().
         if c.config.getBool('use_chapters') and c.chapterController:
             c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -37521,6 +37527,7 @@ def new (self,event=None):
         # because it requires a valid value for c.rootPosition().
         if c.config.getBool('use_chapters') and c.chapterController:
             c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -38120,6 +38127,7 @@ def new (self,event=None):
         # because it requires a valid value for c.rootPosition().
         if c.config.getBool('use_chapters') and c.chapterController:
             c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
         if c.config.getBool('outline_pane_has_initial_focus'):
             c.treeWantsFocusNow()
         else:
@@ -44218,7 +44226,7 @@ else:
 #@-node:ekr.20040803072955.106:<< activate this window >>
 #@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
 #@-node:ekr.20070531083746:Fixed bug: shift-arrow keys not bound properly when node is clicked
-#@+node:ekr.20070530140836:Made sure the initial outline isn't marked dirty when started via leo.py
+#@+node:ekr.20070530140836:Made sure the new outlines aren't marked dirty
 #@+node:ekr.20070530140836.1:Report
 @nocolor
 
@@ -44264,458 +44272,71 @@ def createFrame (fileName):
     return c,frame
 #@nonl
 #@-node:ekr.20031218072017.1624:createFrame (leo.py)
-#@-node:ekr.20070530140836:Made sure the initial outline isn't marked dirty when started via leo.py
-#@+node:ekr.20070531083142:Fixed lost data when deleting the root
-#@+node:ekr.20070601070812:cc.setRoot
-def setRoot (self,p):
+#@+node:ekr.20031218072017.1623:new
+def new (self,event=None):
 
-    cc = self
-    theChapter = cc.getSelectedChapter()
+    '''Create a new Leo window.'''
 
-    if theChapter and theChapter.name == 'main':
-        # g.trace(p,theChapter)
-        cc.mainRoot = p
-#@-node:ekr.20070601070812:cc.setRoot
-#@+node:ekr.20031218072017.1193:c.deleteOutline
-def deleteOutline (self,event=None,op_name="Delete Node"):
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
 
-    """Deletes the selected outline."""
-
-    c = self ; u = c.undoer ; p = c.currentPosition()
-    if not p: return
-
-    if p.hasVisBack(): newNode = p.visBack()
-    else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
-    if not newNode: return
-
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
     c.beginUpdate()
     try:
-       c.endEditing() # Make sure we capture the headline for Undo.
-       undoData = u.beforeDeleteNode(p)
-       dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-       p.doDelete()
-       c.selectPosition(newNode)
-       c.setChanged(True)
-       u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
     finally:
         c.endUpdate()
-
-    c.validateOutline()
-#@-node:ekr.20031218072017.1193:c.deleteOutline
-#@+node:ekr.20040307104131.3:c.positionExists
-def positionExists(self,p):
-
-    """Return True if a position exists in c's tree"""
-
-    c = self ; p = p.copy()
-
-    # This code must be fast.
-    root = c.rootPosition()
-
-    while p:
-        # g.trace(p.headString(),'parent',p.parent(),'back',p.back())
-        if p.equal(root):
-            return True
-        if p.hasParent():
-            p.moveToParent()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if c.config.getBool('use_chapters') and c.chapterController:
+            c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
         else:
-            p.moveToBack()
-
-    # g.trace('does not exist in root:',root.headString())
-    return False
-#@-node:ekr.20040307104131.3:c.positionExists
-#@+node:ekr.20031218072017.2997:c.selectPosition
-def selectPosition(self,p,updateBeadList=True):
-
-    """Select a new position."""
-
-    c = self
-
-    # g.trace(p.headString(),g.callers())
-
-    c.frame.tree.select(p,updateBeadList)
-
-    # New in Leo 4.4.2.
-    c.setCurrentPosition(p)
-        # Do *not* test whether the position exists!
-        # We may be in the midst of an undo.
-
-selectVnode = selectPosition
-#@-node:ekr.20031218072017.2997:c.selectPosition
-#@+node:ekr.20040803140033.1:c.setCurrentPosition
-def setCurrentPosition (self,p):
-
-    """Set the presently selected position. For internal use only.
-
-    Client code should use c.selectPosition instead."""
-
-    c = self ; cc = c.chapterController
-
-    # g.trace(p.headString(),g.callers())
-
-    if p:
-        # Important: p.equal requires c._currentPosition to be non-None.
-        if c._currentPosition and p.equal(c._currentPosition):
-            pass # We have already made a copy.
-        else: # Must make a copy _now_
-            c._currentPosition = p.copy()
-
-        # New in Leo 4.4.2: always recompute the root position here.
-        # This *guarantees* that c.rootPosition always returns the proper value.
-        newRoot = c.findRootPosition(c._currentPosition)
-        if newRoot:
-            c.setRootPosition(newRoot)
-        # This is *not* an error: newRoot can be None when switching chapters.
-        # else: g.trace('******** no new root')
-    else:
-        c._currentPosition = None
-
-# For compatibiility with old scripts.
-setCurrentVnode = setCurrentPosition
-#@nonl
-#@-node:ekr.20040803140033.1:c.setCurrentPosition
-#@+node:ekr.20040803140033.3:c.setRootPosition
-def setRootPosition(self,p):
-
-    """Set the root positioin."""
-
-    c = self ; cc = c.chapterController
-
-    # g.trace(p and p.headString(),g.callers())
-
-    if p:
-        # Important: p.equal requires c._rootPosition to be non-None.
-        if c._rootPosition and p.equal(c._rootPosition):
-            pass # We have already made a copy.
-        else:
-            # We must make a copy _now_.
-            c._rootPosition = p.copy()
-        if cc:
-            cc.setRoot(p.copy())
-    else:
-        c._rootPosition = None
-#@nonl
-#@-node:ekr.20040803140033.3:c.setRootPosition
-#@+node:ekr.20031218072017.1548:Cut & Paste Outlines
-#@+node:ekr.20031218072017.1549:cutOutline
-def cutOutline (self,event=None):
-
-    '''Delete the selected outline and send it to the clipboard.'''
-
-    c = self
-    if c.canDeleteHeadline():
-        c.copyOutline()
-        c.deleteOutline("Cut Node")
-        c.recolor()
-#@-node:ekr.20031218072017.1549:cutOutline
-#@+node:ekr.20031218072017.1550:copyOutline
-def copyOutline (self,event=None):
-
-    '''Copy the selected outline to the clipboard.'''
-
-    # Copying an outline has no undo consequences.
-    c = self
-    c.endEditing()
-    c.fileCommands.assignFileIndices()
-    s = c.fileCommands.putLeoOutline()
-    g.app.gui.replaceClipboardWith(s)
-#@-node:ekr.20031218072017.1550:copyOutline
-#@+node:ekr.20031218072017.1551:pasteOutline
-# To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
-
-def pasteOutline(self,event=None,reassignIndices=True):
-
-    '''Paste an outline into the present outline from the clipboard.
-    Nodes do *not* retain their original identify.'''
-
-    c = self ; u = c.undoer ; current = c.currentPosition()
-    s = g.app.gui.getTextFromClipboard()
-    pasteAsClone = not reassignIndices
-    undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
-
-    c.endEditing()
-
-    if not s or not c.canPasteOutline(s):
-        return # This should never happen.
-
-    isLeo = g.match(s,0,g.app.prolog_prefix_string)
-    tnodeInfoDict = {}
-    if pasteAsClone:
-        << remember all data for undo/redo Paste As Clone >>
-
-    if isLeo:
-        pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
-    else:
-        pasted = c.importCommands.convertMoreStringToOutlineAfter(s,current)
-    if not pasted: return
-
-    c.beginUpdate()
-    try:
-        copiedBunchList = []
-        if pasteAsClone:
-            << put only needed info in copiedBunchList >>
-        undoData = u.beforeInsertNode(current,
-            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
-        c.endEditing()
-        c.validateOutline()
-        c.selectPosition(pasted)
-        pasted.setDirty()
-        c.setChanged(True)
-        # paste as first child if back is expanded.
-        back = pasted.back()
-        if back and back.isExpanded():
-            pasted.moveToNthChildOf(back,0)
-        c.setRootPosition(c.findRootPosition(pasted)) # New in 4.4.2.
-        u.afterInsertNode(pasted,undoType,undoData)
-    finally:
-        c.endUpdate()
-        c.recolor()
-#@+node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
-@
-
-We don't know yet which nodes will be affected by the paste, so we remember
-everything. This is expensive, but foolproof.
-
-The alternative is to try to remember the 'before' values of tnodes in the
-fileCommands read logic. Several experiments failed, and the code is very ugly.
-In short, it seems wise to do things the foolproof way.
-
-@c
-
-for p in c.allNodes_iter():
-    t = p.v.t
-    if t not in tnodeInfoDict.keys():
-        tnodeInfoDict[t] = g.Bunch(
-            t=t,head=p.headString(),body=p.bodyString())
-#@-node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
-#@+node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
-# Create a dict containing only copied tnodes.
-copiedTnodeDict = {}
-for p in pasted.self_and_subtree_iter():
-    if p.v.t not in copiedTnodeDict:
-        copiedTnodeDict[p.v.t] = p.v.t
-
-# g.trace(copiedTnodeDict.keys())
-
-for t in tnodeInfoDict.keys():
-    bunch = tnodeInfoDict.get(t)
-    if copiedTnodeDict.get(t):
-        copiedBunchList.append(bunch)
-
-# g.trace('copiedBunchList',copiedBunchList)
-#@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
-#@-node:ekr.20031218072017.1551:pasteOutline
-#@+node:EKR.20040610130943:pasteOutlineRetainingClones
-def pasteOutlineRetainingClones (self,event=None):
-
-    '''Paste an outline into the present outline from the clipboard.
-    Nodes *retain* their original identify.'''
-
-    c = self
-
-    return c.pasteOutline(reassignIndices=False)
-#@-node:EKR.20040610130943:pasteOutlineRetainingClones
-#@-node:ekr.20031218072017.1548:Cut & Paste Outlines
-#@+node:ekr.20040803072955.128:leoTree.select & helper
-tree_select_lockout = False
-
-def select (self,p,updateBeadList=True,scroll=True):
-
-    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
-
-    if g.app.killed or self.tree_select_lockout: return None
-
-    try:
-        val = 'break'
-        self.tree_select_lockout = True
-        val = self.treeSelectHelper(p,updateBeadList,scroll)
-    finally:
-        self.tree_select_lockout = False
-
-    return val  # Don't put a return in a finally clause.
-#@+node:ekr.20070423101911:treeSelectHelper
-#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
-
-def treeSelectHelper (self,p,updateBeadList,scroll):
-
-    c = self.c ; frame = c.frame
-    body = w = frame.bodyCtrl
-    old_p = c.currentPosition()
-
-    if not p:
-        # Bug fix: 5/31/07: do *not* test c.positionExists(p) here.
-        # We may be in the process of changing roots.
-        return None # Not an error.
-
-    # g.trace('      ===',id(w),p and p.headString())
-    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
-
-    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
-        if old_p:
-            << unselect the old node >>
-
-    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-
-    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
-        << select the new node >>
-        if p and p != old_p: # Suppress duplicate call.
-            try: # may fail during initialization.
-                # p is NOT c.currentPosition() here!
-                if 0: # Interferes with new colorizer.
-                    self.canvas.update_idletasks()
-                    self.scrollTo(p)
-                if scroll and g.app.gui.guiName() == 'tkinter':
-                    def scrollCallback(self=self,p=p):
-                        self.scrollTo(p)
-                    self.canvas.after(100,scrollCallback)
-            except Exception: pass
-        << update c.beadList or c.beadPointer >>
-        << update c.visitedList >>
-
-    c.setCurrentPosition(p)
-    << set the current node >>
-    c.frame.body.assignPositionToEditor(p) # New in Leo 4.4.1.
-    c.frame.updateStatusLine() # New in Leo 4.4.1.
-
-    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
-
-    return 'break' # Supresses unwanted selection.
-#@+node:ekr.20040803072955.129:<< unselect the old node >>
-# Remember the position of the scrollbar before making any changes.
-if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
-
-yview = body.getYScrollPosition()
-insertSpot = c.frame.body.getInsertPoint()
-
-if old_p != p:
-    self.endEditLabel() # sets editPosition = None
-    self.setUnselectedLabelState(old_p) # 12/17/04
-
-if c.edit_widget(old_p):
-    old_p.v.t.scrollBarSpot = yview
-    old_p.v.t.insertSpot = insertSpot
-#@-node:ekr.20040803072955.129:<< unselect the old node >>
-#@+node:ekr.20040803072955.130:<< select the new node >>
-# Bug fix: we must always set this, even if we never edit the node.
-self.revertHeadline = p.headString()
-frame.setWrap(p)
-
-# Always do this.  Otherwise there can be problems with trailing newlines.
-s = g.toUnicode(p.v.t.bodyString,"utf-8")
-w.setAllText(s)
-
-# We must do a full recoloring: we may be changing context!
-self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
-
-if p.v and p.v.t.scrollBarSpot != None:
-    first,last = p.v.t.scrollBarSpot
-    w.setYScrollPosition(first)
-
-if p.v and p.v.t.insertSpot != None:
-    spot = p.v.t.insertSpot
-    w.setInsertPoint(spot)
-    w.see(spot)
-else:
-    w.setInsertPoint(0)
-
-# g.trace("select:",p.headString())
-#@-node:ekr.20040803072955.130:<< select the new node >>
-#@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
-# c.beadList is the list of nodes for the back and forward commands.
-
-if updateBeadList:
-
-    if c.beadPointer > -1:
-        present_p = c.beadList[c.beadPointer]
-    else:
-        present_p = c.nullPosition()
-
-    if p != present_p:
-        # Replace the tail of c.beadList by p and make p the present node.
-        c.beadPointer += 1
-        c.beadList[c.beadPointer:] = []
-        c.beadList.append(p.copy())
-
-        # New in Leo 4.4: limit this list to 100 items.
-        if 0: # Doesn't work yet.
-            c.beadList = c.beadList [-100:]
-            g.trace('len(c.beadList)',len(c.beadList))
-
-    # g.trace(c.beadPointer,p,present_p)
-#@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
-#@+node:ekr.20040803072955.132:<< update c.visitedList >>
-# The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
-
-# Make p the most recently visited position on the list.
-if p in c.visitedList:
-    c.visitedList.remove(p)
-
-c.visitedList.insert(0,p.copy())
-
-# g.trace('len(c.visitedList)',len(c.visitedList))
-# g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
-#@-node:ekr.20040803072955.132:<< update c.visitedList >>
-#@+node:ekr.20040803072955.133:<< set the current node >>
-self.setSelectedLabelState(p)
-
-frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
-
-if self.use_chapters:
-    cc = c.chapterController
-    theChapter = cc.getSelectedChapter()
-    if theChapter:
-        theChapter.p = p.copy()
-        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
-
-if self.stayInTree:
-    c.treeWantsFocus()
-else:
-    c.bodyWantsFocus()
-#@-node:ekr.20040803072955.133:<< set the current node >>
-#@-node:ekr.20070423101911:treeSelectHelper
-#@-node:ekr.20040803072955.128:leoTree.select & helper
-#@+node:ekr.20040303175026.2:p.doDelete
-@ This is the main delete routine.  It deletes the receiver's entire tree from the screen.  Because of the undo command we never actually delete vnodes or tnodes.
-@c
-
-def doDelete (self):
-
-    """Deletes position p from the outline."""
-
-    p = self
-    p.setDirty() # Mark @file nodes dirty!
-    p.unlink()
-    p.deleteLinksInTree()
-#@-node:ekr.20040303175026.2:p.doDelete
-#@+node:ekr.20070531083142.1:Report
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+#@-node:ekr.20031218072017.1623:new
+#@-node:ekr.20070530140836:Made sure the new outlines aren't marked dirty
+#@+node:ekr.20070601134019.2:Fix crasher in maximizeNewWindows
 @nocolor
+http://sourceforge.net/forum/message.php?msg_id=4340244
+By: vransmayr
 
-http://sourceforge.net/forum/message.php?msg_id=4337221
-By: ktenney
+Traceback (most recent call last):
 
-This is reproducible for me with current cvs;
+  File "C:\CVS-Reps\leo\src\leoGlobals.py", line 2545, in doHook
+    return f(tag,keywords)
 
-- From a Leo file, click File->New
-- paste a node into into the new file
-- delete the default new file node "New Headline",
-  leaving the pasted node
-- click the 'trash' tab
-- click the main tab
+  File "C:\CVS-Reps\leo\src\leoPlugins.py", line 91, in doPlugins
+    return doHandlersForTag(tag,keywords)
 
-the pasted node is gone, the "New Headline" node is visible .
+  File "C:\CVS-Reps\leo\src\leoPlugins.py", line 70, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
 
+  File "C:\CVS-Reps\leo\src\leoPlugins.py", line 49, in callTagHandler
+    result = handler(tag,keywords)
 
-What I did:
+  File "C:\CVS-Reps\leo\plugins\maximizeNewWindows.py", line 29, in
+maximize_window
+    c.frame.top.state("zoomed")
 
-tree.select was doing nothing if c.positionExists(p) was false.
-But this is wrong: we may be in the process of changing roots.
+AttributeError: nullFrame instance has no attribute 'top'
 #@nonl
-#@-node:ekr.20070531083142.1:Report
-#@-node:ekr.20070531083142:Fixed lost data when deleting the root
+#@-node:ekr.20070601134019.2:Fix crasher in maximizeNewWindows
 #@-node:ekr.20070528141848:Fixed bugs
 #@+node:ekr.20070528141848.1:Features
-#@clone 2
 #@+node:ekr.20070528073134:Supported write_strips_blank_lines option
 #@+node:ekr.20041005105605.136:norefWrite
 def norefWrite(self,root,toString=False):
@@ -45895,6 +45516,941 @@ def restoreOldChapter (self, oldChapter):
     if trace: g.printEntireTree(cc.c,'restoreOldChapter:after')
 #@-node:ekr.20070503082757:cc.restoreOldChapter
 #@-node:ekr.20070522082646.1:Completed chapters
+#@+node:ekr.20070521104213:Aspell now works on Linux, but only using Python 2.5
+@nocolor
+
+Made installing aspell easier.
+
+http://sourceforge.net/forum/message.php?msg_id=4318634
+By: billpage
+
+What I did:
+
+- Use ctypes.util.find_library('aspell') to find aspell lib.
+- Return in several places if currentWord is None.
+  This fixes crashers if no suggestions are found.
+
+@color
+#@nonl
+#@+node:ekr.20061018111331:getAspellWithCtypes
+def getAspellWithCtypes (self):
+
+    import ctypes
+    import ctypes.util
+    c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
+    try:
+        if sys.platform.startswith('win'):
+            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+            self.aspell = aspell = ctypes.CDLL(path)
+        else:
+            path = 'aspell'
+            libname = ctypes.util.find_library(path)
+            assert(libname)
+            self.aspell = aspell = ctypes.CDLL(libname)
+    except Exception:
+        if not sys.platform.startswith('win'):
+            g.es_exception()
+        g.es('Can not load %s' % (path),color='blue')
+        self.aspell = None
+        self.check = None
+        self.sc = None
+        return
+
+    << define and configure aspell entry points >>
+
+    # Remember these functions (bound methods).
+    # No other ctypes data is known outside this method.
+    self.check = check
+    self.spell_checker = spell_checker
+    self.string_enumeration_next = string_enumeration_next
+    self.suggest = suggest
+    self.word_list_elements = word_list_elements
+    self.word_list_size = word_list_size
+#@+node:ekr.20061018111933:<< define and configure aspell entry points >>
+# new_aspell_config
+new_aspell_config = aspell.new_aspell_config 
+new_aspell_config.restype = c_int
+
+# aspell_config_replace
+aspell_config_replace = aspell.aspell_config_replace 
+aspell_config_replace.argtypes = [c_int, c_char_p, c_char_p] 
+
+# aspell_config_retrieve
+aspell_config_retrieve = aspell.aspell_config_retrieve 
+aspell_config_retrieve.restype = c_char_p  
+aspell_config_retrieve.argtypes = [c_int, c_char_p] 
+
+# aspell_error_message
+aspell_error_message = aspell.aspell_error_message 
+aspell_error_message.restype = c_char_p  
+
+sc = new_aspell_config()
+if 0:
+    print sc 
+    print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
+    print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+    print aspell_config_retrieve(sc, "lang")
+    print aspell_config_replace(sc, "lang",self.local_language_code)
+    print aspell_config_retrieve(sc, "lang")
+
+possible_err = aspell.new_aspell_speller(sc)
+aspell.delete_aspell_config(c_int(sc))
+
+# Rudimentary error checking, needs more.  
+if aspell.aspell_error_number(possible_err) != 0:
+    print 'err', aspell_error_message(possible_err)
+    spell_checker = None
+else: 
+    spell_checker = aspell.to_aspell_speller(possible_err)
+
+if not spell_checker:
+    raise Exception('aspell checker not enabled')
+
+word_list_size = aspell.aspell_word_list_size
+word_list_size.restype = c_int
+word_list_size.argtypes = [c_int,]
+
+# word_list_elements
+word_list_elements = aspell.aspell_word_list_elements
+word_list_elements.restype = c_int
+word_list_elements.argtypes = [c_int,]
+
+# string_enumeration_next
+string_enumeration_next = aspell.aspell_string_enumeration_next
+string_enumeration_next.restype = c_char_p
+string_enumeration_next.argtypes = [c_int,]
+
+# check
+check = aspell.aspell_speller_check
+check.restype = c_int 
+check.argtypes = [c_int, c_char_p, c_int]
+
+# suggest
+suggest = aspell.aspell_speller_suggest
+suggest.restype = c_int 
+suggest.argtypes = [c_int, c_char_p, c_int]
+#@nonl
+#@-node:ekr.20061018111933:<< define and configure aspell entry points >>
+#@-node:ekr.20061018111331:getAspellWithCtypes
+#@+node:ekr.20051025071455:Spell classes
+@others
+#@+node:ekr.20051025071455.1:class spellCommandsClass
+class spellCommandsClass (baseEditCommandsClass):
+
+    '''Commands to support the Spell Tab.'''
+
+    @others
+#@+node:ekr.20051025080056:ctor
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+
+    self.handler = None
+
+    # All the work happens when we first open the frame.
+#@-node:ekr.20051025080056:ctor
+#@+node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
+def getPublicCommands (self):
+
+    return {
+        'open-spell-tab':           self.openSpellTab,
+        'spell-find':               self.find,
+        'spell-change':             self.change,
+        'spell-change-then-find':   self.changeThenFind,
+        'spell-ignore':             self.ignore,
+        'hide-spell-tab':           self.hide,
+    }
+#@-node:ekr.20051025080420:getPublicCommands (searchCommandsClass)
+#@+node:ekr.20051025080633:openSpellTab
+def openSpellTab (self,event=None):
+
+    '''Open the Spell Checker tab in the log pane.'''
+
+    c = self.c ; log = c.frame.log ; tabName = 'Spell'
+
+    if log.frameDict.get(tabName):
+        log.selectTab(tabName)
+    elif self.handler:
+        if self.handler.loaded:
+            self.handler.bringToFront()
+    else:
+        log.selectTab(tabName)
+        self.handler = spellTabHandler(c,tabName)
+        if not self.handler.loaded:
+            log.deleteTab(tabName,force=True)
+#@+node:ekr.20051025080420.1:commands...
+# Just open the Spell tab if it has never been opened.
+# For minibuffer commands, we must also force the Spell tab to be visible.
+
+def find (self,event=None):
+    '''Simulate pressing the 'Find' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.find()
+    else:
+        self.openSpellTab()
+
+def change(self,event=None):
+    '''Simulate pressing the 'Change' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.change()
+    else:
+        self.openSpellTab()
+
+def changeAll(self,event=None):
+
+    if self.handler:
+        self.openSpellTab()
+        self.handler.changeAll()
+    else:
+        self.openSpellTab()
+
+def changeThenFind (self,event=None):
+    '''Simulate pressing the 'Change, Find' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.changeThenFind()
+    else:
+        self.openSpellTab()
+
+def hide (self,event=None):
+    '''Hide the Spell tab.'''
+    if self.handler:
+        self.c.frame.log.selectTab('Log')
+        self.c.bodyWantsFocus()
+
+def ignore (self,event=None):
+    '''Simulate pressing the 'Ignore' button in the Spell tab.'''
+    if self.handler:
+        self.openSpellTab()
+        self.handler.ignore()
+    else:
+        self.openSpellTab()
+#@-node:ekr.20051025080420.1:commands...
+#@-node:ekr.20051025080633:openSpellTab
+#@-node:ekr.20051025071455.1:class spellCommandsClass
+#@+node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
+class spellTabHandler (leoFind.leoFind):
+
+    """A class to create and manage Leo's Spell Check dialog."""
+
+    @others
+#@+node:ekr.20051025071455.19:Birth & death
+#@+node:ekr.20051025071455.20:spellTabHandler.__init__
+def __init__(self,c,tabName):
+
+    """Ctor for the Leo Spelling dialog."""
+
+    leoFind.leoFind.__init__(self,c) # Call the base ctor.
+
+    self.c = c
+    self.body = c.frame.body
+    self.currentWord = None
+    self.suggestions = []
+    self.messages = [] # List of message to be displayed when hiding the tab.
+    self.outerScrolledFrame = None
+    self.workCtrl = g.app.gui.plainTextWidget(c.frame.top)
+        # A text widget for scanning.
+        # Must have a parent frame even though it is not packed.
+
+    self.loaded = self.init_aspell(c)
+    if self.loaded:
+        self.tab = g.app.gui.createSpellTab(c,self,tabName)
+#@-node:ekr.20051025071455.20:spellTabHandler.__init__
+#@+node:ekr.20051025094004:init_aspell
+def init_aspell (self,c):
+
+    '''Init aspell and related ivars.  Return True if all went well.'''
+
+    self.local_language_code = c.config.getString('spell_local_language_code') or 'en'
+
+    self.dictionaryFileName = dictionaryFileName = (
+        c.config.getString('spell_local_dictionary') or
+        os.path.join(g.app.loadDir,"..","plugins",'spellpyx.txt'))
+
+    if not dictionaryFileName or not g.os_path_exists(dictionaryFileName):
+        g.es_print('Can not open dictionary file: %s' % (
+            dictionaryFileName), color='red')
+        return False
+
+    self.aspell = AspellClass(c,dictionaryFileName,self.local_language_code)
+
+    if self.aspell.aspell:
+        self.dictionary = self.readDictionary(dictionaryFileName)
+    else:
+        self.dictionary = False
+        # g.es_print('Can not open Aspell',color='red')
+
+    return self.aspell.aspell
+#@-node:ekr.20051025094004:init_aspell
+#@+node:ekr.20051025071455.16:readDictionary
+def readDictionary (self,fileName):
+
+    """Read the dictionary of words which we use as a local dictionary
+
+    Although Aspell itself has the functionality to handle this kind of things
+    we duplicate it here so that we can also use it for the "ignore" functionality
+    and so that in future a Python only solution could be developed."""
+
+    d = {}
+
+    try:
+        f = open(fileName,"r")
+    except IOError:
+        g.es("Unable to open local dictionary '%s' - using a blank one instead" % fileName)
+        return d
+
+    try:
+        # Create the dictionary - there are better ways to do this
+        # in later Python's but we stick with this method for compatibility
+        for word in f.readlines():
+            d [word.strip().lower()] = 0
+    finally:
+        f.close()
+
+    return d
+#@-node:ekr.20051025071455.16:readDictionary
+#@-node:ekr.20051025071455.19:Birth & death
+#@+node:ekr.20051025071455.36:Commands
+#@+node:ekr.20051025071455.37:add
+def add(self,event=None):
+    """Add the selected suggestion to the dictionary."""
+
+    if not self.currentWord: return
+
+    # g.trace(self.currentWord)
+
+    try:
+        f = None
+        try:
+            # Rewrite the dictionary in alphabetical order.
+            f = open(self.dictionaryFileName, "r")
+            words = f.readlines()
+            f.close()
+            words = [word.strip() for word in words]
+            words.append(self.currentWord)
+            words.sort()
+            f = open(self.dictionaryFileName, "w")
+            for word in words:
+                f.write("%s\n" % word)
+            f.flush()
+            f.close()
+            if 1:
+                s = 'Spell: added %s' % self.currentWord
+                self.messages.append(s)
+            else: # Too distracting.
+                g.es("Adding ", color= "blue", newline= False) 
+                g.es('%s' % self.currentWord)
+        except IOError:
+            g.es("Can not add %s to dictionary" % self.currentWord, color="red")
+    finally:
+        if f: f.close()
+
+    self.dictionary[self.currentWord.lower()] = 0
+    self.tab.onFindButton()
+#@-node:ekr.20051025071455.37:add
+#@+node:ekr.20051025071455.38:change (spellTab)
+def change(self,event=None):
+    """Make the selected change to the text"""
+
+    __pychecker__ = '--no-override --no-argsused'
+         # event param is not used, required, and different from base class.
+
+    c = self.c ; body = self.body ; w = body.bodyCtrl
+
+    selection = self.tab.getSuggestion()
+    if selection:
+        start,end = oldSel = w.getSelectionRange()
+        if start:
+            if start > end: start,end = end,start
+            w.delete(start,end)
+            w.insert(start,selection)
+            w.setSelectionRange(start,start+len(selection))
+            c.frame.body.onBodyChanged("Change",oldSel=oldSel)
+            c.invalidateFocus()
+            c.bodyWantsFocusNow()
+            return True
+
+    # The focus must never leave the body pane.
+    c.invalidateFocus()
+    c.bodyWantsFocusNow()
+    return False
+#@-node:ekr.20051025071455.38:change (spellTab)
+#@+node:ekr.20051025071455.40:find & helpers
+def find (self,event=None):
+    """Find the next unknown word."""
+
+    c = self.c ; body = c.frame.body ; w = body.bodyCtrl
+
+    # Reload the work pane from the present node.
+    s = w.getAllText().rstrip()
+    self.workCtrl.delete(0,"end")
+    self.workCtrl.insert("end",s)
+
+    # Reset the insertion point of the work widget.
+    ins = w.getInsertPoint()
+    self.workCtrl.setInsertPoint(ins)
+
+    alts, word = self.findNextMisspelledWord()
+    self.currentWord = word # Need to remember this for 'add' and 'ignore'
+
+    if alts:
+        self.tab.fillbox(alts,word)
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+        # Copy the working selection range to the body pane
+        start, end = self.workCtrl.getSelectionRange()
+        w.setSelectionRange(start,end)
+        w.see(start)
+    else:
+        g.es("no more misspellings")
+        self.tab.fillbox([])
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+#@+node:ekr.20051025071455.45:findNextMisspelledWord
+def findNextMisspelledWord(self):
+    """Find the next unknown word."""
+
+    c = self.c ; p = c.currentPosition()
+    aspell = self.aspell ; alts = None ; word = None
+
+    try:
+        while 1:
+            # g.trace('p',p and p.headString())
+            p, word = self.findNextWord(p)
+            if not p or not word:
+                alts = None
+                break
+            << Skip word if ignored or in local dictionary >>
+            alts = aspell.processWord(word)
+            if alts:
+                w = c.frame.body.bodyCtrl
+                i,j = w.getSelectionRange()
+                c.beginUpdate()
+                c.frame.tree.expandAllAncestors(p)
+                c.selectPosition(p)
+                c.endUpdate()
+                w.setSelectionRange(i,j,insert=j)
+                break
+    except:
+        g.es_exception()
+    return alts, word
+#@+node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
+@ We don't bother to call apell if the word is in our dictionary. The dictionary contains both locally 'allowed' words and 'ignored' words. We put the test before aspell rather than after aspell because the cost of checking aspell is higher than the cost of checking our local dictionary. For small local dictionaries this is probably not True and this code could easily be located after the aspell call
+@c
+
+if self.dictionary.has_key(word.lower()):
+    continue
+#@-node:ekr.20051025071455.46:<< Skip word if ignored or in local dictionary >>
+#@-node:ekr.20051025071455.45:findNextMisspelledWord
+#@+node:ekr.20051025071455.47:findNextWord
+def findNextWord(self,p):
+    """Scan for the next word, leaving the result in the work widget"""
+
+    c = self.c ; p = p.copy()
+    while 1:
+        s = self.workCtrl.getAllText()
+        i = self.workCtrl.getInsertPoint()
+        while i < len(s) and not g.isWordChar1(s[i]):
+            i += 1
+        # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
+        if i < len(s):
+            # A non-empty word has been found.
+            j = i
+            while j < len(s) and g.isWordChar(s[j]):
+                j += 1
+            word = s[i:j]
+            # This trace verifies that all words have been checked.
+            # g.trace(repr(word))
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(i,j,insert=j)
+            return p,word
+        else:
+            # End of the body text.
+            p.moveToThreadNext()
+            if not p: break
+            self.workCtrl.delete(0,'end')
+            self.workCtrl.insert(0,p.bodyString())
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(0,0,insert=0)
+    return None,None
+#@nonl
+#@-node:ekr.20051025071455.47:findNextWord
+#@-node:ekr.20051025071455.40:find & helpers
+#@+node:ekr.20051025121408:hide
+def hide (self,event=None):
+
+    self.c.frame.log.selectTab('Log')
+
+    for message in self.messages:
+        g.es(message,color='blue')
+
+    self.messages = []
+#@-node:ekr.20051025121408:hide
+#@+node:ekr.20051025071455.41:ignore
+def ignore(self,event=None):
+
+    """Ignore the incorrect word for the duration of this spell check session."""
+
+    if not self.currentWord: return
+
+    if 1: # Somewhat helpful: applies until the tab is destroyed.
+        s = 'Spell: ignore %s' % self.currentWord
+        self.messages.append(s)
+
+    if 0: # Too distracting
+        g.es("Ignoring ", color= "blue", newline= False)
+        g.es('%s' % self.currentWord)
+
+    self.dictionary[self.currentWord.lower()] = 0
+    self.tab.onFindButton()
+#@-node:ekr.20051025071455.41:ignore
+#@-node:ekr.20051025071455.36:Commands
+#@-node:ekr.20051025071455.18:class spellTabHandler (leoFind.leoFind)
+#@+node:ekr.20051025071455.6:class AspellClass
+class AspellClass:
+
+    """A wrapper class for Aspell spell checker"""
+
+    @others
+#@+node:ekr.20051025071455.7:Birth & death
+#@+node:ekr.20051025071455.8:__init__
+def __init__ (self,c,local_dictionary_file,local_language_code):
+
+    """Ctor for the Aspell class."""
+
+    self.c = c
+
+    self.aspell_dir = g.os_path_abspath(c.config.getString('aspell_dir'))
+    self.aspell_bin_dir = g.os_path_abspath(c.config.getString('aspell_bin_dir'))
+
+    self.local_language_code = local_language_code or 'en'
+    self.local_dictionary_file = g.os_path_abspath(local_dictionary_file)
+    self.local_dictionary = "%s.wl" % os.path.splitext(self.local_dictionary_file) [0]
+
+    # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
+    # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
+
+    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
+    self.use_ctypes = g.CheckVersion(version,'2.5')
+    self.aspell = self.sc = None
+
+    if self.use_ctypes:
+        self.getAspellWithCtypes()
+    else:
+        self.getAspell()
+
+#@-node:ekr.20051025071455.8:__init__
+#@+node:ekr.20061017125710:getAspell
+def getAspell (self):
+
+    try:
+        import aspell
+    except ImportError:
+        # Specify the path to the top-level Aspell directory.
+        theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
+        aspell = g.importFromPath('aspell',theDir,pluginName=__name__,verbose=True)
+
+    self.aspell = aspell
+    self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
+#@-node:ekr.20061017125710:getAspell
+#@+node:ekr.20061018111331:getAspellWithCtypes
+def getAspellWithCtypes (self):
+
+    import ctypes
+    import ctypes.util
+    c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
+
+    try:
+        if sys.platform.startswith('win'):
+            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+            self.aspell = aspell = ctypes.CDLL(path)
+        else:
+            path = 'aspell'
+            libname = ctypes.util.find_library(path)
+            assert(libname)
+            self.aspell = aspell = ctypes.CDLL(libname)
+    except Exception:
+        if not sys.platform.startswith('win'):
+            g.es_exception()
+        g.es('Can not load %s' % (path),color='blue')
+        self.aspell = None
+        self.check = None
+        self.sc = None
+        return
+
+    << define and configure aspell entry points >>
+
+    # Remember these functions (bound methods).
+    # No other ctypes data is known outside this method.
+    self.check = check
+    self.spell_checker = spell_checker
+    self.string_enumeration_next = string_enumeration_next
+    self.suggest = suggest
+    self.word_list_elements = word_list_elements
+    self.word_list_size = word_list_size
+#@+node:ekr.20061018111933:<< define and configure aspell entry points >>
+# new_aspell_config
+new_aspell_config = aspell.new_aspell_config 
+new_aspell_config.restype = c_int
+
+# aspell_config_replace
+aspell_config_replace = aspell.aspell_config_replace 
+aspell_config_replace.argtypes = [c_int, c_char_p, c_char_p] 
+
+# aspell_config_retrieve
+aspell_config_retrieve = aspell.aspell_config_retrieve 
+aspell_config_retrieve.restype = c_char_p  
+aspell_config_retrieve.argtypes = [c_int, c_char_p] 
+
+# aspell_error_message
+aspell_error_message = aspell.aspell_error_message 
+aspell_error_message.restype = c_char_p  
+
+sc = new_aspell_config()
+if 0:
+    print sc 
+    print aspell_config_replace(sc, "prefix", aspell_dir) #1/0 
+    print 'prefix', aspell_dir, `aspell_config_retrieve(sc, "prefix")`
+    print aspell_config_retrieve(sc, "lang")
+    print aspell_config_replace(sc, "lang",self.local_language_code)
+    print aspell_config_retrieve(sc, "lang")
+
+possible_err = aspell.new_aspell_speller(sc)
+aspell.delete_aspell_config(c_int(sc))
+
+# Rudimentary error checking, needs more.  
+if aspell.aspell_error_number(possible_err) != 0:
+    print 'err', aspell_error_message(possible_err)
+    spell_checker = None
+else: 
+    spell_checker = aspell.to_aspell_speller(possible_err)
+
+if not spell_checker:
+    raise Exception('aspell checker not enabled')
+
+word_list_size = aspell.aspell_word_list_size
+word_list_size.restype = c_int
+word_list_size.argtypes = [c_int,]
+
+# word_list_elements
+word_list_elements = aspell.aspell_word_list_elements
+word_list_elements.restype = c_int
+word_list_elements.argtypes = [c_int,]
+
+# string_enumeration_next
+string_enumeration_next = aspell.aspell_string_enumeration_next
+string_enumeration_next.restype = c_char_p
+string_enumeration_next.argtypes = [c_int,]
+
+# check
+check = aspell.aspell_speller_check
+check.restype = c_int 
+check.argtypes = [c_int, c_char_p, c_int]
+
+# suggest
+suggest = aspell.aspell_speller_suggest
+suggest.restype = c_int 
+suggest.argtypes = [c_int, c_char_p, c_int]
+#@nonl
+#@-node:ekr.20061018111933:<< define and configure aspell entry points >>
+#@-node:ekr.20061018111331:getAspellWithCtypes
+#@-node:ekr.20051025071455.7:Birth & death
+#@+node:ekr.20051025071455.10:processWord
+def processWord(self, word):
+    """Pass a word to aspell and return the list of alternatives.
+    OK: 
+    * 
+    Suggestions: 
+    & «original» «count» «offset»: «miss», «miss», ... 
+    None: 
+    # «original» «offset» 
+    simplifyed to not create the string then make a list from it
+    """
+
+    # g.trace('word',word)
+
+    if not self.aspell:
+        g.trace('aspell not installed')
+        return None
+    elif self.use_ctypes:
+        if self.check(self.spell_checker,word,len(word)):
+            return None
+        else:
+            return self.suggestions(word)
+    else:
+        if self.sc.check(word):
+            return None
+        else:
+            return self.sc.suggest(word)
+#@-node:ekr.20051025071455.10:processWord
+#@+node:ekr.20061018101455.4:suggestions
+def suggestions(self,word):
+
+    "return list of words found"
+
+    aList = []
+    sw = self.suggest(self.spell_checker, word, len(word))
+
+    if self.word_list_size(sw):
+        ewords = self.word_list_elements(sw)
+        while 1: 
+            x = self.string_enumeration_next(ewords)
+            if x is None: break
+            aList.append(x)
+    return aList
+#@nonl
+#@-node:ekr.20061018101455.4:suggestions
+#@+node:ekr.20051025071455.11:updateDictionary
+def updateDictionary(self):
+
+    """Update the aspell dictionary from a list of words.
+
+    Return True if the dictionary was updated correctly."""
+
+    try:
+        # Create master list
+        basename = os.path.splitext(self.local_dictionary)[0]
+        cmd = (
+            "%s --lang=%s create master %s.wl < %s.txt" %
+            (self.aspell_bin_dir, self.local_language_code, basename,basename))
+        os.popen(cmd)
+        return True
+
+    except Exception, err:
+        g.es_print("Unable to update local aspell dictionary: %s" % err)
+        return False
+#@-node:ekr.20051025071455.11:updateDictionary
+#@-node:ekr.20051025071455.6:class AspellClass
+#@-node:ekr.20051025071455:Spell classes
+#@-node:ekr.20070521104213:Aspell now works on Linux, but only using Python 2.5
+#@+node:ekr.20070426080015:Improved dynamic abbreviations
+Added globalDynamicAbbrevs setting.
+#@nonl
+#@+node:ekr.20070506094429:Report
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4255709
+
+I have some questions about the usage of dynamic abbreviations in Leo. As an
+Emacs user, I know how they work in Emacs: they expand partially entered words
+using a dictionary of words from the currently open buffers.
+
+- I found a thread in the SF Forums titled "dynamic-abbreviations increases
+its scope", 07-20-2005. The functionality described in this thread seems to
+be the functionality I am familiar with as an Emacs uses. Is this the functionality
+accessed through the commands dabbrev-completion and dabbrev-expands ?
+- What is the difference between dabbrev-completion and dabbrev-expands ? 
+- I often get a TK exception when I use dabbrev-completion "TypeError: reduce()
+of empty sequence with no initial value". What am I doing wrong ?
+
+Can somebody answer these questions for me or point me to documentation that
+describes Leo's support for dynamic abbreviations?
+
+-----------
+http://sourceforge.net/forum/message.php?msg_id=4260706
+
+command completion is shell or readline functionality to automatically finish
+what you've typed so far, thus "completing" the type-in of the command for you.
+
+abbreviation expansion is actually going to put a bunch of characters in your
+buffer where you only had to enter the abbreviation for it.
+
+---------
+http://sourceforge.net/forum/message.php?msg_id=4263851
+
+Already solved a part of it. The exception is raised when the characters entered
+cannot be completed to a previously typed word. In LeoPy.leo, Code-->Core
+classes...-->@thin leoEditCommands.py-->editCommandsClass-->dynamic
+abbreviation...-->dynamicExpansion2, no check is made that the call to
+self.getDynamicList does not retrieve an empty list. I've added this check (locally)
+and at least the exception is not raised anymore. Apparently I am the only one
+using this functionality, otherwise taht person surely would have also encountered
+the problem.
+
+Unfortunately, when looking at the code it seems that only those words are completed
+in the current node :( Is there another mechanism for completion (that also
+considers other, e.g. previously viewed, nodes) or am I overlooking something ?
+#@nonl
+#@-node:ekr.20070506094429:Report
+#@+node:ekr.20070531120438:Emacs docs
+@nocolor
+
+The abbrev facility described above operates automatically as you insert text, but all abbrevs must be defined explicitly.
+
+By contrast, dynamic abbrevs allow the meanings of abbrevs to be determined automatically from the contents of the buffer, but dynamic abbrev expansion happens only when you request it explicitly.
+
+M-/
+    Expand the word in the buffer before point as a dynamic abbrev, by searching in the buffer for words starting with that abbreviation (dabbrev-expand).
+    (EKR: Inserts first found matching work.  Repeated searches finds previous matches)
+
+C-M-/
+    Complete the word before point as a dynamic abbrev (dabbrev-completion).
+    (EKR: inserts commen prefix of all abbreviations found)
+
+ For example, if the buffer contains `does this follow ' and you type f o M-/, the effect is to insert `follow' because that is the last word in the buffer that starts with `fo'. A numeric argument to M-/ says to take the second, third, etc. distinct expansion found looking backward from point. Repeating M-/ searches for an alternative expansion by looking farther back. After scanning all the text before point, it searches the text after point. The variable dabbrev-limit, if non-nil, specifies how far in the buffer to search for an expansion.
+
+After scanning the current buffer, M-/ normally searches other buffers, unless you have set dabbrev-check-all-buffers to nil.
+
+For finer control over which buffers to scan, customize the variable dabbrev-ignored-buffer-regexps. Its value is a list of regular expressions. If a buffer's name matches any of these regular expressions, dynamic abbrev expansion skips that buffer.
+
+A negative argument to M-/, as in C-u - M-/, says to search first for expansions after point, and second for expansions before point. If you repeat the M-/ to look for another expansion, do not specify an argument. This tries all the expansions after point and then the expansions before point.
+
+After you have expanded a dynamic abbrev, you can copy additional words that follow the expansion in its original context. Simply type SPC M-/ for each word you want to copy. The spacing and punctuation between words is copied along with the words.
+
+The command C-M-/ (dabbrev-completion) performs completion of a dynamic abbreviation. Instead of trying the possible expansions one by one, it finds all of them, then inserts the text that they have in common. If they have nothing in common, C-M-/ displays a list of completions, from which you can select a choice in the usual manner. See section E.3 Completion. 
+#@nonl
+#@-node:ekr.20070531120438:Emacs docs
+#@+node:ekr.20050920084036.58:dynamic abbreviation...
+#@+node:ekr.20050920084036.60:dynamicCompletion
+def dynamicCompletion (self,event=None):
+
+    '''Insert the common prefix of all dynamic abbrev's matching the present word.
+    This corresponds to C-M-/ in Emacs.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
+
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    rlist = []
+    self.getDynamicList(w,txt,rlist)
+    if rlist:
+        prefix = reduce(g.longestCommonPrefix,rlist)
+        if prefix:
+            w.delete(i,i2)
+            w.insert(i,prefix)
+        # if prefix and prefix != txt:
+            # w.delete(i,i2)
+            # w.insert(i,prefix)
+        # else:
+            # g.es_print('Completions...')
+            # for z in rlist:
+                # g.es_print(z)
+#@-node:ekr.20050920084036.60:dynamicCompletion
+#@+node:ekr.20050920084036.59:dynamicExpansion
+def dynamicExpansion (self,event=None):
+
+    '''Expand the word in the buffer before point as a dynamic abbrev,
+    by searching in the buffer for words starting with that abbreviation (dabbrev-expand).
+    This corresponds to M-/ in Emacs.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    if g.app.gui.guiName() not in ('null','tkinter'):
+        return g.es('command not ready yet',color='blue')
+
+    if 0:
+        << LeoUser's old code >>
+
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    rlist = []
+    self.getDynamicList(w,txt,rlist)
+    if rlist:
+        prefix = reduce(g.longestCommonPrefix,rlist)
+        if prefix and prefix != txt:
+            w.delete(i,i2)
+            w.insert(i,prefix)
+        else:
+            g.es_print('Completions...')
+            for z in rlist:
+                g.es_print(z)
+#@+node:ekr.20070601081335:<< LeoUser's old code >>
+
+    rlist = self.store ['rlist']
+    stext = self.store ['stext']
+    i = w.index('insert -1c wordstart')
+    j = i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    # dA = w.tag_ranges('dA')
+    # w.tag_delete('dA')
+    dA = self.daRanges
+    self.daRanges = []
+    # g.trace('dA',repr(dA))
+
+    def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
+        w.delete(from_,to_)
+        w.insert('insert',txt) #### ,'dA')
+        i = w.getInsertPoint()
+        data = i,i+len(txt)
+        self.daRanges.append(data)
+
+    if dA:
+        # dA1, dA2 = dA
+        item = dA[0]
+        dA_i,dA_j = item
+        # dtext = w.get(dA1,dA2)
+        dtext = w.get(dA_i,dA_j)
+        if dtext.startswith(stext) and j == dA_j:
+            # This seems reasonable, since we can't get a whole word that has the '-' char in it,
+            # we do a good guess
+            if rlist:
+                txt = rlist.pop()
+            else:
+                txt = stext
+                # w.delete(dA1,dA2)
+                w.delete(dA_i, dA_j)
+                ### dA2 = dA1
+                dA_j = dA_i
+                    # since the text is going to be reread,
+                    # we dont want to include the last dynamic abbreviation
+                self.getDynamicList(w,txt,rlist)
+            # doDa(txt,dA1,dA2)
+            doDa(txt,dA_i,dA_j)
+            return
+        else: dA = None
+
+    if not dA:
+        self.store ['stext'] = txt
+        self.store ['rlist'] = rlist = []
+        self.getDynamicList(w,txt,rlist)
+        if rlist:
+            txt = rlist.pop()
+            doDa(txt)
+#@nonl
+#@-node:ekr.20070601081335:<< LeoUser's old code >>
+#@-node:ekr.20050920084036.59:dynamicExpansion
+#@+node:ekr.20050920084036.61:getDynamicList (helper)
+def getDynamicList (self,w,txt,rlist):
+
+    items = []
+    if self.globalDynamicAbbrevs:
+        for p in self.c.allNodes_iter():
+            s = p.bodyString()
+            if s:
+                items.extend(self.dynaregex.findall(s))
+    else:
+        # Make a big list of what we are considering a 'word'
+        s = w.getAllText()
+        items.append(self.dynaregex.findall(s))
+
+    # g.trace('txt',repr(txt),'len(items)',len(items))
+
+    if items:
+        for word in items:
+             if not word.startswith(txt) or word == txt:
+                 continue
+                # dont need words that dont match or == the pattern
+             if word not in rlist:
+                 rlist.append(word)
+             else:
+                 rlist.remove(word)
+                 rlist.append(word)
+
+    # g.trace('rlist',rlist)
+#@-node:ekr.20050920084036.61:getDynamicList (helper)
+#@-node:ekr.20050920084036.58:dynamic abbreviation...
+#@-node:ekr.20070426080015:Improved dynamic abbreviations
 #@-node:ekr.20070528141848.1:Features
 #@-node:ekr.20070522082346:Leo 4.4.3 b2 projects
 #@+node:ekr.20070126072723:pychecker

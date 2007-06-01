@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="721" width="941"/>
+	<global_window_position top="10" left="238" height="681" width="941"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -82,7 +82,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -450,7 +450,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -545,7 +545,7 @@
 <v t="ekr.20041119034357.35"><vh>@bool run_tangle_done.py = False</vh></v>
 <v t="ekr.20041119034357.36"><vh>@bool run_untangle_done.py = False</vh></v>
 </v>
-<v t="ekr.20051025084017" annotate="7d71002e"><vh>Spell tab</vh>
+<v t="ekr.20051025084017" a="TV" annotate="7d71002e"><vh>Spell tab</vh>
 <v t="ekr.20051025084017.1"><vh>@string aspell_local_language_code = en</vh></v>
 <v t="ekr.20051025084017.2"><vh>@string aspell_local_dictionary = None</vh></v>
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
@@ -615,7 +615,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -626,7 +626,7 @@
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
 <v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
 <v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
-<v t="ekr.20060925060533.4" a="TV"><vh>@shortcuts Text operations</vh></v>
+<v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
 </vnodes>
@@ -1561,16 +1561,32 @@ p.setBodyString(result)</t>
 #ffffec # Same as outline.</t>
 <t tx="ekr.20051025084017">How to install the Aspell spell checker for the Spell tab
 
-1.  Download and install the Aspell package from http://aspell.sourceforge.net/
-    Typically this will create a directory called Aspell/bin
+Linux:
+    
+You must be using Python 2.5 or later.
 
-2.  If you are using Python 2.3 or Python 2.4 you must copy a dll to the Aspell/bin directory.
-    This step is *not* needed if you are using Python 2.5 or later.
-    Leo's extensions folder comes with two dll's: aspell23.pyd and aspell24.pyd, for Python 2.3 and 2.4 respectively.
-    Make a copy of the appropriate dll, **rename it** to be aspell.pyd, and copy the renamed aspell.pyd file to Aspell/bin.
+1. Download and install the aspell package.
 
-3.  Specify the location of the Aspell and Aspell/bin directories using
-    the aspell_dir and aspell_bin_dir settings in LeoSettings.leo.</t>
+2. Leo will find the aspell package automatically using Python's ctypes module.
+   You must specify the locations of the aspell and aspell/bin directories using
+   the aspell_dir and aspell_bin_dir settings in LeoSettings.leo.
+   This allows Leo to find the aspell dictionaries.
+
+Windows:
+
+1. Download and install the Aspell package from http://aspell.sourceforge.net
+   Typically this will create a directory called Aspell/bin
+   
+2a. If you are using Python 2.5 or later that's all you need to do.
+    Leo will find the aspell package automatically using Python's ctypes module.
+
+2b. If you are using Python 2.3 or Python 2.4 you must copy a dll to the Aspell/bin directory.
+   This step is *not* needed if you are using Python 2.5 or later.
+   Leo's extensions folder comes with two dll's: aspell23.pyd and aspell24.pyd, for Python 2.3 and 2.4 respectively.
+   Make a copy of the appropriate dll, **rename it** to be aspell.pyd, and copy the renamed aspell.pyd file to Aspell/bin.
+
+   Specify the location of the Aspell and Aspell/bin directories using
+   the aspell_dir and aspell_bin_dir settings in LeoSettings.leo.</t>
 <t tx="ekr.20051025084017.1"></t>
 <t tx="ekr.20051025084017.2">The full path to the spelling dictionary.</t>
 <t tx="ekr.20051025085144">@color
