@@ -6531,7 +6531,7 @@ class baseCommands:
 
         """Set the root positioin."""
 
-        c = self
+        c = self ; cc = c.chapterController
 
         # g.trace(p and p.headString(),g.callers())
 
@@ -6542,6 +6542,8 @@ class baseCommands:
             else:
                 # We must make a copy _now_.
                 c._rootPosition = p.copy()
+            if cc:
+                cc.setRoot(p.copy())
         else:
             c._rootPosition = None
     #@nonl

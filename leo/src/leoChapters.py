@@ -552,6 +552,13 @@ class chapterController:
     #@-node:ekr.20070503081539:cc.unlinkChaptersNode
     #@-node:ekr.20070511065107:Linking/unlinking trees (chapterController)
     #@+node:ekr.20070317130648:Utils
+    #@+node:ekr.20070529171934:cc.completeChapterRename
+    def completeChapterRename (self,theChapter,newName):
+
+        theChapter.rename(newName)
+
+
+    #@-node:ekr.20070529171934:cc.completeChapterRename
     #@+node:ekr.20070320085610:cc.error
     def error (self,s):
 
@@ -672,13 +679,16 @@ class chapterController:
         else:
             cc.error('cc.selectShapter: no such chapter: %s' % tabName)
     #@-node:ekr.20070317130250:cc.selectChapter
-    #@+node:ekr.20070529171934:cc.completeChapterRename
-    def completeChapterRename (self,theChapter,newName):
+    #@+node:ekr.20070601070812:cc.setRoot
+    def setRoot (self,p):
 
-        theChapter.rename(newName)
+        cc = self
+        theChapter = cc.getSelectedChapter()
 
-
-    #@-node:ekr.20070529171934:cc.completeChapterRename
+        if theChapter and theChapter.name == 'main':
+            # g.trace(p,theChapter)
+            cc.mainRoot = p
+    #@-node:ekr.20070601070812:cc.setRoot
     #@+node:ekr.20070325121800:cc.updateChapterName (not used)
     def updateChapterName(self,oldName,newName):
 
