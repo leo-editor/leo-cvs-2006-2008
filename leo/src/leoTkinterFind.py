@@ -7,6 +7,8 @@
 import leoGlobals as g
 import leoFind
 
+import sys
+
 import leoTkinterDialog
 import Tkinter as Tk
 
@@ -822,6 +824,8 @@ class tkSpellTab:
         # Set the common background color.
         bg = c.config.getColor('log_pane_Spell_tab_background_color') or 'LightSteelBlue2'
 
+        fontSize = g.choose(sys.platform.startswith('win'),9,12)
+
         #@    << Create the outer frames >>
         #@+node:ekr.20051113090322:<< Create the outer frames >>
         self.outerScrolledFrame = Pmw.ScrolledFrame(
@@ -842,7 +846,7 @@ class tkSpellTab:
 
         self.wordLabel = Tk.Label(f2,text="Suggestions for:")
         self.wordLabel.pack(side='left')
-        self.wordLabel.configure(font=('verdana',10,'bold'))
+        self.wordLabel.configure(font=('verdana',fontSize,'bold'))
 
         fpane = Tk.Frame(outer,bg=bg,bd=2)
         fpane.pack(side='top',expand=1,fill='both')
@@ -868,7 +872,9 @@ class tkSpellTab:
         for w in (buttons1,buttons2,buttons3):
             w.pack(side='top',expand=0,fill='x')
 
-        buttonList = [] ; font = ('verdana',9,'normal') ; width = 12
+        buttonList = []
+        font = ('verdana',fontSize,'normal')
+        width = 12
         for frame, text, command in (
             (buttons1,"Find",self.onFindButton),
             (buttons1,"Add",self.onAddButton),
