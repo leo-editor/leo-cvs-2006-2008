@@ -383,13 +383,103 @@ class abbrevCommandsClass (baseEditCommandsClass):
     #@+node:ekr.20050920084036.60:dynamicCompletion
     def dynamicCompletion (self,event=None):
 
-        '''Insert the common prefix of all dynamic abbrev's matching the present word.'''
+        '''Insert the common prefix of all dynamic abbrev's matching the present word.
+        This corresponds to C-M-/ in Emacs.'''
 
         k = self.k
         w = self.editWidget(event)
         if not w: return
         if g.app.gui.guiName() != 'tkinter':
             return g.es('command not ready yet',color='blue')
+
+        i = w.index('insert -1c wordstart')
+        i2 = w.index('insert -1c wordend')
+        txt = w.get(i,i2)
+        rlist = []
+        self.getDynamicList(w,txt,rlist)
+        if rlist:
+            prefix = reduce(g.longestCommonPrefix,rlist)
+            if prefix:
+                w.delete(i,i2)
+                w.insert(i,prefix)
+            # if prefix and prefix != txt:
+                # w.delete(i,i2)
+                # w.insert(i,prefix)
+            # else:
+                # g.es_print('Completions...')
+                # for z in rlist:
+                    # g.es_print(z)
+    #@-node:ekr.20050920084036.60:dynamicCompletion
+    #@+node:ekr.20050920084036.59:dynamicExpansion
+    def dynamicExpansion (self,event=None):
+
+        '''Expand the word in the buffer before point as a dynamic abbrev,
+        by searching in the buffer for words starting with that abbreviation (dabbrev-expand).
+        This corresponds to M-/ in Emacs.'''
+
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+        if g.app.gui.guiName() not in ('null','tkinter'):
+            return g.es('command not ready yet',color='blue')
+
+        if 0:
+            #@        << LeoUser's old code >>
+            #@+node:ekr.20070601081335:<< LeoUser's old code >>
+
+                rlist = self.store ['rlist']
+                stext = self.store ['stext']
+                i = w.index('insert -1c wordstart')
+                j = i2 = w.index('insert -1c wordend')
+                txt = w.get(i,i2)
+                # dA = w.tag_ranges('dA')
+                # w.tag_delete('dA')
+                dA = self.daRanges
+                self.daRanges = []
+                # g.trace('dA',repr(dA))
+
+                def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
+                    w.delete(from_,to_)
+                    w.insert('insert',txt) #### ,'dA')
+                    i = w.getInsertPoint()
+                    data = i,i+len(txt)
+                    self.daRanges.append(data)
+
+                if dA:
+                    # dA1, dA2 = dA
+                    item = dA[0]
+                    dA_i,dA_j = item
+                    # dtext = w.get(dA1,dA2)
+                    dtext = w.get(dA_i,dA_j)
+                    if dtext.startswith(stext) and j == dA_j:
+                        # This seems reasonable, since we can't get a whole word that has the '-' char in it,
+                        # we do a good guess
+                        if rlist:
+                            txt = rlist.pop()
+                        else:
+                            txt = stext
+                            # w.delete(dA1,dA2)
+                            w.delete(dA_i, dA_j)
+                            ### dA2 = dA1
+                            dA_j = dA_i
+                                # since the text is going to be reread,
+                                # we dont want to include the last dynamic abbreviation
+                            self.getDynamicList(w,txt,rlist)
+                        # doDa(txt,dA1,dA2)
+                        doDa(txt,dA_i,dA_j)
+                        return
+                    else: dA = None
+
+                if not dA:
+                    self.store ['stext'] = txt
+                    self.store ['rlist'] = rlist = []
+                    self.getDynamicList(w,txt,rlist)
+                    if rlist:
+                        txt = rlist.pop()
+                        doDa(txt)
+            #@nonl
+            #@-node:ekr.20070601081335:<< LeoUser's old code >>
+            #@nl
 
         i = w.index('insert -1c wordstart')
         i2 = w.index('insert -1c wordend')
@@ -405,67 +495,6 @@ class abbrevCommandsClass (baseEditCommandsClass):
                 g.es_print('Completions...')
                 for z in rlist:
                     g.es_print(z)
-    #@-node:ekr.20050920084036.60:dynamicCompletion
-    #@+node:ekr.20050920084036.59:dynamicExpansion
-    def dynamicExpansion (self,event=None): #, store = {'rlist': [], 'stext': ''} ):
-
-        k = self.k
-        w = self.editWidget(event)
-        if not w: return
-        if g.app.gui.guiName() not in ('null','tkinter'):
-            return g.es('command not ready yet',color='blue')
-
-        rlist = self.store ['rlist']
-        stext = self.store ['stext']
-        i = w.index('insert -1c wordstart')
-        j = i2 = w.index('insert -1c wordend')
-        txt = w.get(i,i2)
-        # dA = w.tag_ranges('dA')
-        # w.tag_delete('dA')
-        dA = self.daRanges
-        self.daRanges = []
-        # g.trace('dA',repr(dA))
-
-        def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
-            w.delete(from_,to_)
-            w.insert('insert',txt) #### ,'dA')
-            i = w.getInsertPoint()
-            data = i,i+len(txt)
-            self.daRanges.append(data)
-
-        if dA:
-            # dA1, dA2 = dA
-            item = dA[0]
-            dA_i,dA_j = item
-            # dtext = w.get(dA1,dA2)
-            dtext = w.get(dA_i,dA_j)
-            if dtext.startswith(stext) and j == dA_j:
-                # This seems reasonable, since we can't get a whole word that has the '-' char in it,
-                # we do a good guess
-                if rlist:
-                    txt = rlist.pop()
-                else:
-                    txt = stext
-                    # w.delete(dA1,dA2)
-                    w.delete(dA_i, dA_j)
-                    ### dA2 = dA1
-                    dA_j = dA_i
-                        # since the text is going to be reread,
-                        # we dont want to include the last dynamic abbreviation
-                    self.getDynamicList(w,txt,rlist)
-                # doDa(txt,dA1,dA2)
-                doDa(txt,dA_i,dA_j)
-                return
-            else: dA = None
-
-        if not dA:
-            self.store ['stext'] = txt
-            self.store ['rlist'] = rlist = []
-            self.getDynamicList(w,txt,rlist)
-            if rlist:
-                txt = rlist.pop()
-                doDa(txt)
-    #@nonl
     #@-node:ekr.20050920084036.59:dynamicExpansion
     #@+node:ekr.20050920084036.61:getDynamicList (helper)
     def getDynamicList (self,w,txt,rlist):
@@ -8079,13 +8108,21 @@ class AspellClass:
     def getAspellWithCtypes (self):
 
         import ctypes
+        import ctypes.util
         c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
 
         try:
-            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
-            self.aspell = aspell = ctypes.CDLL(path)
+            if sys.platform.startswith('win'):
+                path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+                self.aspell = aspell = ctypes.CDLL(path)
+            else:
+                path = 'aspell'
+                libname = ctypes.util.find_library(path)
+                assert(libname)
+                self.aspell = aspell = ctypes.CDLL(libname)
         except Exception:
-            # g.es_exception()
+            if not sys.platform.startswith('win'):
+                g.es_exception()
             g.es('Can not load %s' % (path),color='blue')
             self.aspell = None
             self.check = None
