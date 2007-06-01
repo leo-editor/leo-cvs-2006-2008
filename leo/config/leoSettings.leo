@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="741" width="941"/>
+	<global_window_position top="10" left="238" height="721" width="941"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -82,7 +82,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -172,11 +172,11 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20061029091403"><vh>@bool show_full_tracebacks_in_scripts = False</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
-<v t="ekr.20070531103454" a="V"><vh>@bool globalDynamicAbbrevs = True</vh></v>
+<v t="ekr.20070531103454"><vh>@bool globalDynamicAbbrevs = True</vh></v>
 <v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
 <v t="ekr.20041119041019.2"><vh>@bool save_clears_undo_buffer = False</vh></v>
@@ -450,7 +450,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -491,7 +491,7 @@
 <v t="ekr.20060109115046.3"><vh>@string library_lib0 = default/library.dbm</vh></v>
 <v t="ekr.20060109121753"><vh>@string library_lib1 = default/libraryS.dbm</vh></v>
 </v>
-<v t="ekr.20070411101857" a="E"><vh>Open With plugin</vh>
+<v t="ekr.20070411101857"><vh>Open With plugin</vh>
 <v t="ekr.20070411101857.1"><vh>@openwith Idle = Alt+Shift+Ctrl+I</vh></v>
 <v t="ekr.20070411101857.2"><vh>@openwith Word = Alt+Shift+Ctrl+W </vh></v>
 <v t="ekr.20070411101857.3"><vh>@openwith Wordpad = Alt+Shift+Ctrl+T</vh></v>
@@ -611,11 +611,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -626,7 +626,7 @@
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
 <v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
 <v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
-<v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
+<v t="ekr.20060925060533.4" a="TV"><vh>@shortcuts Text operations</vh></v>
 </v>
 </v>
 </vnodes>
@@ -3690,7 +3690,7 @@ shortcutsDict = {}
 main()
 </t>
 <t tx="ekr.20060112104119">def defineSetNames():
-    
+
     global setNames
 
     if 1:
@@ -3713,19 +3713,21 @@ main()
             'EKR bindings: a mix',
             'EKR bindings: Mode-oriented',
         ]
-    
-    setNames.sort()</t>
+
+    setNames.sort()
+</t>
 <t tx="ekr.20060112104333">def doSet(p,name):
-    
+
     global shortcutsDict
-    
+
     shortcutsDict = {}
 
     for p in p.subtree_iter():
         if p.headString().startswith('@shortcuts'):
-            doShortcuts(p,name)</t>
+            doShortcuts(p,name)
+</t>
 <t tx="ekr.20060112104333.1">def checkSets():
-    
+
     global setNames, optionalCommandPrefixes, optionalCommandNames
 
     # Compute the union of all the command names.
@@ -3737,11 +3739,11 @@ main()
                 allNames[key] = key
         else:
             g.es_print('No setsDict for %s' % (repr(setName)),color='red')
-            
+
     k = c.keyHandler
     keys = allNames.keys()
     keys.sort()
-            
+
     # Warn about missing names.
     for setName in ('No bindings',): # setNames:
         d = setsDict.get(setName)
@@ -3755,7 +3757,7 @@ main()
                     not (key.startswith('press-') and key.endswith('-button'))
                 ):
                     g.es_print('%s is missing %-35s = None' % (setName,repr(key)))
-                    
+
     # Warn about undefined commands.
     for key in keys:
         if not c.commandsDict.get(key):
@@ -3774,12 +3776,13 @@ main()
                     if key == optionalCommand:
                         ok = True
                 if not ok:
-                    g.es_print('Undefined command name: %s' % (key))</t>
+                    g.es_print('Undefined command name: %s' % (key))
+</t>
 <t tx="ekr.20060112104823">def main ():
-    
+
     global setNames
     defineSetNames()
-    
+
     # root = u.findNodeAnywhere('Keyboard shortcuts')
     # for p in root.self_and_subtree_iter():
 
@@ -3793,11 +3796,12 @@ main()
                 seen[h] = True
                 doSet(p,h)
     checkSets()
-    g.es('Check Bindings done')</t>
+    g.es('Check Bindings done')
+</t>
 <t tx="ekr.20060112105523">def doShortcuts(p,setName):
-    
+
     global parser,setsDict,shortcutsDict
-    
+
     d = setsDict.get(setName,{})
     s = p.bodyString()
     lines = g.splitLines(s)
@@ -3824,7 +3828,7 @@ main()
                             aList.append((commandName,pane),)
                     else:
                         shortcutsDict [shortcut] = [(commandName,pane),]
-        
+
                 data = d.get(commandName)
                 if data:
                     shortcut2,pane2 = data
@@ -3834,8 +3838,9 @@ main()
                 else:
                     data = shortcut,pane
                     d[commandName] = data
-                
-    setsDict[setName] = d</t>
+
+    setsDict[setName] = d
+</t>
 <t tx="ekr.20060112110750"></t>
 <t tx="ekr.20060112112006"></t>
 <t tx="ekr.20060114073238">If True, Leo will report to the console which bindings have been created.
@@ -5120,6 +5125,8 @@ beginning-of-line                   ! mini = Home
 beginning-of-line-extend-selection  ! mini = Shift-Home
 beginning-of-line                   ! mini = Ctrl-a
 beginning-of-line-extend-selection  ! mini = Ctrl-Shift-a
+dabbrev-completion                  = Alt-\
+dabbrev-expands                     = Alt-Ctrl-\
 end-of-line                         ! mini = End
 end-of-line-extend-selection        ! mini = Shift-End
 end-of-line                         ! mini = Ctrl-e
@@ -5971,7 +5978,7 @@ copy-text                           = Ctrl-c        # Conflicts with Emacs ctrl-
 cut-text                            = Ctrl-x
 delete-char                         = Delete
 delete-comments                     = Ctrl-parenright
-delete-spaces                       = Alt-backslash
+delete-spaces                       = None
 indent-region                       = Ctrl-]
 insert-newline                      = None # = Return # for MacOs X.
 kill-line                           = Ctrl-k

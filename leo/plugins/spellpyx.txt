@@ -41,6 +41,7 @@ CheckVersion
 Cisco
 ClassType
 Cmds
+CodeType
 CodeWarrior
 ConceptualSort
 ConfigParser
@@ -58,6 +59,7 @@ DTHEIN
 Dalcolmo
 Dehoisting
 Dethe
+DictType
 DnArrow
 DoMultiline
 DocBook
@@ -120,6 +122,7 @@ INI
 IOError
 ImportError
 Init
+InstanceType
 JEdit
 JEdit``'s
 Jaros
@@ -167,6 +170,7 @@ LeoPyRef
 LeoTemp
 LeoUser
 Liechti
+ListType
 Litt
 Locators
 Loewis
@@ -324,6 +328,7 @@ Toplevel
 Traduit
 TreePad
 TrueOrFalse
+TupleType
 TypeError
 UNL
 UNL's
@@ -370,6 +375,7 @@ Zeitlin
 Zhang
 Zope
 Zvi
+__class__
 __init__
 a1
 a2
@@ -1084,6 +1090,7 @@ iconify
 iconrclick
 iconrclick1
 iconrclick2
+idDict
 idleTimeDelay
 idle_arg
 idle_body_key
@@ -1219,6 +1226,7 @@ leo's
 leo1to2
 leoApp
 leoAtFile
+leoBridge
 leoCVS
 leoCallback
 leoColor
@@ -1487,6 +1495,7 @@ nowrap
 nr
 nsi
 nthChild
+nullGui
 nullLog
 nullMenu
 nullPosition
@@ -1496,6 +1505,7 @@ nw
 nz
 occurances
 ok
+oldGui
 oldRoot
 oldSel
 oldText
@@ -1537,6 +1547,7 @@ openDir
 openDirectory
 openFileDialog
 openLeo
+openLeoFile
 openPipes
 openSpellTab
 openType
@@ -1649,6 +1660,7 @@ prev
 prevNonWsChar
 prevSemi
 prevWord
+printDict
 printDoc
 printFlag
 printGc
@@ -2051,6 +2063,7 @@ test2
 testData
 testDir
 testFindCommand
+testGui
 testHonorLeadingWS
 testPlugin
 testRef

@@ -2497,6 +2497,10 @@ def readDictionary (self,fileName):
 def add(self,event=None):
     """Add the selected suggestion to the dictionary."""
 
+    if not self.currentWord: return
+
+    # g.trace(self.currentWord)
+
     try:
         f = None
         try:
@@ -2593,7 +2597,8 @@ def findNextMisspelledWord(self):
 
     try:
         while 1:
-            p, word = self.findNextWord(p) 
+            # g.trace('p',p and p.headString())
+            p, word = self.findNextWord(p)
             if not p or not word:
                 alts = None
                 break
@@ -2623,30 +2628,33 @@ if self.dictionary.has_key(word.lower()):
 def findNextWord(self,p):
     """Scan for the next word, leaving the result in the work widget"""
 
-    c = self.c ; w = self.workCtrl ; s = w.getAllText() ; p = p.copy()
+    c = self.c ; p = p.copy()
     while 1:
-        i = w.getInsertPoint()
+        s = self.workCtrl.getAllText()
+        i = self.workCtrl.getInsertPoint()
         while i < len(s) and not g.isWordChar1(s[i]):
             i += 1
+        # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
         if i < len(s):
             # A non-empty word has been found.
             j = i
             while j < len(s) and g.isWordChar(s[j]):
                 j += 1
             word = s[i:j]
-            # g.trace(repr(word)) # This trace verifies that all words have been checked.
-            for w2 in (w,c.frame.body.bodyCtrl):
-                c.widgetWantsFocusNow(w2)
-                w2.setSelectionRange(i,j,insert=j)
+            # This trace verifies that all words have been checked.
+            # g.trace(repr(word))
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(i,j,insert=j)
             return p,word
         else:
             # End of the body text.
             p.moveToThreadNext()
             if not p: break
-            w.delete(0,'end')
-            w.insert(0,p.bodyString())
-            for w2 in (w,c.frame.body.bodyCtrl):
-                c.widgetWantsFocusNow(w2)
+            self.workCtrl.delete(0,'end')
+            self.workCtrl.insert(0,p.bodyString())
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
                 w.setSelectionRange(0,0,insert=0)
     return None,None
 #@nonl
@@ -2666,6 +2674,8 @@ def hide (self,event=None):
 def ignore(self,event=None):
 
     """Ignore the incorrect word for the duration of this spell check session."""
+
+    if not self.currentWord: return
 
     if 1: # Somewhat helpful: applies until the tab is destroyed.
         s = 'Spell: ignore %s' % self.currentWord
@@ -2731,13 +2741,21 @@ def getAspell (self):
 def getAspellWithCtypes (self):
 
     import ctypes
+    import ctypes.util
     c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
 
     try:
-        path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
-        self.aspell = aspell = ctypes.CDLL(path)
+        if sys.platform.startswith('win'):
+            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+            self.aspell = aspell = ctypes.CDLL(path)
+        else:
+            path = 'aspell'
+            libname = ctypes.util.find_library(path)
+            assert(libname)
+            self.aspell = aspell = ctypes.CDLL(libname)
     except Exception:
-        # g.es_exception()
+        if not sys.platform.startswith('win'):
+            g.es_exception()
         g.es('Can not load %s' % (path),color='blue')
         self.aspell = None
         self.check = None
@@ -2833,7 +2851,10 @@ def processWord(self, word):
     simplifyed to not create the string then make a list from it
     """
 
+    # g.trace('word',word)
+
     if not self.aspell:
+        g.trace('aspell not installed')
         return None
     elif self.use_ctypes:
         if self.check(self.spell_checker,word,len(word)):
@@ -6481,8 +6502,6 @@ def setDataForTable( self, table ):
     elif cr != -1:
         lsm.setLeadSelectionIndex( cr )
 
-
-#@nonl
 #@-node:ekr.20060201152349.6:setDataForTable
 #@+node:ekr.20060201152349.7:pickle and unpickle
 def serializeForLeoFile( self, tag, *args, **kwords ):

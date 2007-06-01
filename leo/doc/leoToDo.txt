@@ -283,33 +283,7 @@ Pythonistas have come to expect that::
 will locate and install the most recent version of app and install it.
 #@-node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070515113707:Dist
-#@+node:ekr.20070522052905:Bugs & Incompletions
-#@+node:ekr.20070521104213:Get aspell working on Linux
-Make installing aspell easier.
-
------
-
-http://sourceforge.net/forum/message.php?msg_id=4318634
-By: billpage
-
-wspage@suse-linux:~> leo
-reading settings in /usr/local/lib/leo/config/leoSettings.leo
-reading /home/wspage/.leoRecentFiles.txt
-rst3 plugin: SilverCity not loaded
-Traceback (most recent call last):
-
-  File "/home/wspage/leo-4-4-3-alpha-2/src/leoEditCommands.py", line 7903, in
-getAspellWithCtypes
-    self.aspell = aspell = ctypes.CDLL(g.os_path_join(self.aspell_bin_dir,
-"aspell-15.dll"))
-
-  File "/usr/lib/python2.5/ctypes/__init__.py", line 312, in __init__
-    self._handle = _dlopen(self._name, mode)
-
-OSError: /home/wspage/c:\aspell\bin/aspell-15.dll: cannot open shared object
-file: No such file or directory
-
-#@-node:ekr.20070521104213:Get aspell working on Linux
+#@+node:ekr.20070522052905:Bugs & Incompletions: 1
 #@+node:ekr.20070531075258:Fix problems with @enabled-plugins
 #@+node:ekr.20070224075914:doEnabledPlugins
 def doEnabledPlugins (self,p,kind,name,val):
@@ -419,20 +393,7 @@ def getEnabledFiles (s,plugins_path):
 #@-node:ekr.20070224082131:getEnabledFiles
 #@-node:ekr.20031218072017.3440:loadHandlers & helper
 #@-node:ekr.20070531075258:Fix problems with @enabled-plugins
-#@+node:ekr.20070530140836:Make sure the initial outline isn't marked dirty when started via leo.py
-#@+node:ekr.20070530140836.1:Report
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4336648
-By: terry_n_brown
-
-Just a nit, but I notice that the default empty file that you get when first
-running Leo is still marked 'changed' (current CVS).  I.e. it asks for confirmation
-on closing, which it didn't need previously.
-#@nonl
-#@-node:ekr.20070530140836.1:Report
-#@-node:ekr.20070530140836:Make sure the initial outline isn't marked dirty when started via leo.py
-#@-node:ekr.20070522052905:Bugs & Incompletions
+#@-node:ekr.20070522052905:Bugs & Incompletions: 1
 #@-node:ekr.20070515100356:To do: b2
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)

@@ -24296,6 +24296,10 @@ def readDictionary (self,fileName):
 def add(self,event=None):
     """Add the selected suggestion to the dictionary."""
 
+    if not self.currentWord: return
+
+    # g.trace(self.currentWord)
+
     try:
         f = None
         try:
@@ -24392,7 +24396,8 @@ def findNextMisspelledWord(self):
 
     try:
         while 1:
-            p, word = self.findNextWord(p) 
+            # g.trace('p',p and p.headString())
+            p, word = self.findNextWord(p)
             if not p or not word:
                 alts = None
                 break
@@ -24422,30 +24427,33 @@ if self.dictionary.has_key(word.lower()):
 def findNextWord(self,p):
     """Scan for the next word, leaving the result in the work widget"""
 
-    c = self.c ; w = self.workCtrl ; s = w.getAllText() ; p = p.copy()
+    c = self.c ; p = p.copy()
     while 1:
-        i = w.getInsertPoint()
+        s = self.workCtrl.getAllText()
+        i = self.workCtrl.getInsertPoint()
         while i < len(s) and not g.isWordChar1(s[i]):
             i += 1
+        # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
         if i < len(s):
             # A non-empty word has been found.
             j = i
             while j < len(s) and g.isWordChar(s[j]):
                 j += 1
             word = s[i:j]
-            # g.trace(repr(word)) # This trace verifies that all words have been checked.
-            for w2 in (w,c.frame.body.bodyCtrl):
-                c.widgetWantsFocusNow(w2)
-                w2.setSelectionRange(i,j,insert=j)
+            # This trace verifies that all words have been checked.
+            # g.trace(repr(word))
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(i,j,insert=j)
             return p,word
         else:
             # End of the body text.
             p.moveToThreadNext()
             if not p: break
-            w.delete(0,'end')
-            w.insert(0,p.bodyString())
-            for w2 in (w,c.frame.body.bodyCtrl):
-                c.widgetWantsFocusNow(w2)
+            self.workCtrl.delete(0,'end')
+            self.workCtrl.insert(0,p.bodyString())
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
                 w.setSelectionRange(0,0,insert=0)
     return None,None
 #@nonl
@@ -24465,6 +24473,8 @@ def hide (self,event=None):
 def ignore(self,event=None):
 
     """Ignore the incorrect word for the duration of this spell check session."""
+
+    if not self.currentWord: return
 
     if 1: # Somewhat helpful: applies until the tab is destroyed.
         s = 'Spell: ignore %s' % self.currentWord
@@ -25838,7 +25848,8 @@ def findNextMisspelledWord(self):
 
     try:
         while 1:
-            p, word = self.findNextWord(p) 
+            # g.trace('p',p and p.headString())
+            p, word = self.findNextWord(p)
             if not p or not word:
                 alts = None
                 break
@@ -25868,30 +25879,33 @@ if self.dictionary.has_key(word.lower()):
 def findNextWord(self,p):
     """Scan for the next word, leaving the result in the work widget"""
 
-    c = self.c ; w = self.workCtrl ; s = w.getAllText() ; p = p.copy()
+    c = self.c ; p = p.copy()
     while 1:
-        i = w.getInsertPoint()
+        s = self.workCtrl.getAllText()
+        i = self.workCtrl.getInsertPoint()
         while i < len(s) and not g.isWordChar1(s[i]):
             i += 1
+        # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
         if i < len(s):
             # A non-empty word has been found.
             j = i
             while j < len(s) and g.isWordChar(s[j]):
                 j += 1
             word = s[i:j]
-            # g.trace(repr(word)) # This trace verifies that all words have been checked.
-            for w2 in (w,c.frame.body.bodyCtrl):
-                c.widgetWantsFocusNow(w2)
-                w2.setSelectionRange(i,j,insert=j)
+            # This trace verifies that all words have been checked.
+            # g.trace(repr(word))
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(i,j,insert=j)
             return p,word
         else:
             # End of the body text.
             p.moveToThreadNext()
             if not p: break
-            w.delete(0,'end')
-            w.insert(0,p.bodyString())
-            for w2 in (w,c.frame.body.bodyCtrl):
-                c.widgetWantsFocusNow(w2)
+            self.workCtrl.delete(0,'end')
+            self.workCtrl.insert(0,p.bodyString())
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
                 w.setSelectionRange(0,0,insert=0)
     return None,None
 #@nonl
@@ -27614,13 +27628,36 @@ def startsDoc (self,s):
 #@-node:ekr.20061031131434.66:class classScannerClass
 #@-node:ekr.20061031131434.4:class autoCompleterClass
 #@+node:ekr.20050920084036.59:dynamicExpansion
-def dynamicExpansion (self,event=None): #, store = {'rlist': [], 'stext': ''} ):
+def dynamicExpansion (self,event=None):
+
+    '''Expand the word in the buffer before point as a dynamic abbrev,
+    by searching in the buffer for words starting with that abbreviation (dabbrev-expand).
+    This corresponds to M-/ in Emacs.'''
 
     k = self.k
     w = self.editWidget(event)
     if not w: return
     if g.app.gui.guiName() not in ('null','tkinter'):
         return g.es('command not ready yet',color='blue')
+
+    if 0:
+        << LeoUser's old code >>
+
+    i = w.index('insert -1c wordstart')
+    i2 = w.index('insert -1c wordend')
+    txt = w.get(i,i2)
+    rlist = []
+    self.getDynamicList(w,txt,rlist)
+    if rlist:
+        prefix = reduce(g.longestCommonPrefix,rlist)
+        if prefix and prefix != txt:
+            w.delete(i,i2)
+            w.insert(i,prefix)
+        else:
+            g.es_print('Completions...')
+            for z in rlist:
+                g.es_print(z)
+#@+node:ekr.20070601081335:<< LeoUser's old code >>
 
     rlist = self.store ['rlist']
     stext = self.store ['stext']
@@ -27673,11 +27710,13 @@ def dynamicExpansion (self,event=None): #, store = {'rlist': [], 'stext': ''} ):
             txt = rlist.pop()
             doDa(txt)
 #@nonl
+#@-node:ekr.20070601081335:<< LeoUser's old code >>
 #@-node:ekr.20050920084036.59:dynamicExpansion
 #@+node:ekr.20050920084036.60:dynamicCompletion
 def dynamicCompletion (self,event=None):
 
-    '''Insert the common prefix of all dynamic abbrev's matching the present word.'''
+    '''Insert the common prefix of all dynamic abbrev's matching the present word.
+    This corresponds to C-M-/ in Emacs.'''
 
     k = self.k
     w = self.editWidget(event)
@@ -27692,13 +27731,16 @@ def dynamicCompletion (self,event=None):
     self.getDynamicList(w,txt,rlist)
     if rlist:
         prefix = reduce(g.longestCommonPrefix,rlist)
-        if prefix and prefix != txt:
+        if prefix:
             w.delete(i,i2)
             w.insert(i,prefix)
-        else:
-            g.es_print('Completions...')
-            for z in rlist:
-                g.es_print(z)
+        # if prefix and prefix != txt:
+            # w.delete(i,i2)
+            # w.insert(i,prefix)
+        # else:
+            # g.es_print('Completions...')
+            # for z in rlist:
+                # g.es_print(z)
 #@-node:ekr.20050920084036.60:dynamicCompletion
 #@+node:ekr.20050920084036.160:executeSubprocess
 def executeSubprocess (self,event,command,input):
@@ -32130,13 +32172,21 @@ def getAspell (self):
 def getAspellWithCtypes (self):
 
     import ctypes
+    import ctypes.util
     c_int, c_char_p = ctypes.c_int, ctypes.c_char_p
 
     try:
-        path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
-        self.aspell = aspell = ctypes.CDLL(path)
+        if sys.platform.startswith('win'):
+            path = g.os_path_join(self.aspell_bin_dir, "aspell-15.dll")
+            self.aspell = aspell = ctypes.CDLL(path)
+        else:
+            path = 'aspell'
+            libname = ctypes.util.find_library(path)
+            assert(libname)
+            self.aspell = aspell = ctypes.CDLL(libname)
     except Exception:
-        # g.es_exception()
+        if not sys.platform.startswith('win'):
+            g.es_exception()
         g.es('Can not load %s' % (path),color='blue')
         self.aspell = None
         self.check = None
@@ -44168,6 +44218,53 @@ else:
 #@-node:ekr.20040803072955.106:<< activate this window >>
 #@-node:ekr.20040803072955.105:OnActivateHeadline (tkTree)
 #@-node:ekr.20070531083746:Fixed bug: shift-arrow keys not bound properly when node is clicked
+#@+node:ekr.20070530140836:Made sure the initial outline isn't marked dirty when started via leo.py
+#@+node:ekr.20070530140836.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4336648
+By: terry_n_brown
+
+Just a nit, but I notice that the default empty file that you get when first
+running Leo is still marked 'changed' (current CVS).  I.e. it asks for confirmation
+on closing, which it didn't need previously.
+#@nonl
+#@-node:ekr.20070530140836.1:Report
+#@+node:ekr.20031218072017.1624:createFrame (leo.py)
+def createFrame (fileName):
+
+    """Create a LeoFrame during Leo's startup process."""
+
+    import leoGlobals as g
+
+    # g.trace('fileName',fileName)
+
+    # Try to create a frame for the file.
+    if fileName:
+        if g.os_path_exists(fileName):
+            ok, frame = g.openWithFileName(fileName,None)
+            if ok:
+                return frame.c,frame
+
+    # Create a _new_ frame & indicate it is the startup window.
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
+    frame.setInitialWindowGeometry()
+    frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
+    frame.startupWindow = True
+    if frame.c.chapterController:
+        frame.c.chapterController.finishCreate()
+        frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
+    # Call the 'new' hook for compatibility with plugins.
+    g.doHook("new",old_c=None,c=c,new_c=c)
+
+    # Report the failure to open the file.
+    if fileName:
+        g.es("File not found: " + fileName)
+
+    return c,frame
+#@nonl
+#@-node:ekr.20031218072017.1624:createFrame (leo.py)
+#@-node:ekr.20070530140836:Made sure the initial outline isn't marked dirty when started via leo.py
 #@+node:ekr.20070531083142:Fixed lost data when deleting the root
 #@+node:ekr.20070601070812:cc.setRoot
 def setRoot (self,p):
