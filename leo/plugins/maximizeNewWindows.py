@@ -5,7 +5,7 @@
 #@@language python
 #@@tabwidth -4
 
-__version__ = "1.0"
+__version__ = "1.1"
 #@<< version history >>
 #@+node:ekr.20040915073259.2:<< version history >>
 #@+at
@@ -15,6 +15,7 @@ __version__ = "1.0"
 # 1.0 EKR:
 #     - Enabled only for windows platform.
 #     - Minor style changes.
+# 1.1 EKR: Make sure c exists in maximize_window.
 #@-at
 #@nonl
 #@-node:ekr.20040915073259.2:<< version history >>
@@ -25,8 +26,9 @@ import leoPlugins
 import sys
 
 def maximize_window(tag, keywords):
-    c = keywords["c"]
-    c.frame.top.state("zoomed")
+    c = keywords.get('c')
+    if c and c.exists:
+        c.frame.top.state("zoomed")
 
 # Works only on Windows platform.
 if not g.app.unitTesting: # Too annoying.
