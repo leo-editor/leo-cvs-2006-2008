@@ -467,6 +467,7 @@ class baseCommands:
             # because it requires a valid value for c.rootPosition().
             if c.config.getBool('use_chapters') and c.chapterController:
                 c.chapterController.finishCreate()
+                frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
             if c.config.getBool('outline_pane_has_initial_focus'):
                 c.treeWantsFocusNow()
             else:
