@@ -7863,6 +7863,8 @@ class spellTabHandler (leoFind.leoFind):
     def add(self,event=None):
         """Add the selected suggestion to the dictionary."""
 
+        if not currentWord: return
+
         try:
             f = None
             try:
@@ -8043,6 +8045,8 @@ class spellTabHandler (leoFind.leoFind):
 
         """Ignore the incorrect word for the duration of this spell check session."""
 
+        if not currentWord: return
+
         if 1: # Somewhat helpful: applies until the tab is destroyed.
             s = 'Spell: ignore %s' % self.currentWord
             self.messages.append(s)
@@ -8220,6 +8224,7 @@ class AspellClass:
         """
 
         if not self.aspell:
+            g.trace('aspell not installed')
             return None
         elif self.use_ctypes:
             if self.check(self.spell_checker,word,len(word)):
