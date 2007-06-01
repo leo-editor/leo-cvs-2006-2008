@@ -343,6 +343,17 @@ class abbrevCommandsClass (baseEditCommandsClass):
         # Set local ivars.
         self.abbrevs ={}
 
+        self.daRanges = []
+
+        self.dynaregex = re.compile(
+            r'[%s%s\-_]+'%(string.ascii_letters,string.digits))
+            # Not a unicode problem.
+            # For dynamic abbreviations
+
+        self.globalDynamicAbbrevs = c.config.getBool('globalDynamicAbbrevs')
+
+        self.store ={'rlist':[], 'stext':''} # For dynamic expansion.
+
     def finishCreate(self):
 
         baseEditCommandsClass.finishCreate(self)
@@ -351,9 +362,15 @@ class abbrevCommandsClass (baseEditCommandsClass):
     def getPublicCommands (self):
 
         return {
+            # 'expand-abbrev':              self.expandAbbrev, # Not a command.
+
+            # Dynamic...
+            'dabbrev-completion':           self.dynamicCompletion,
+            'dabbrev-expands':              self.dynamicExpansion,
+
+            # Static...
             'abbrev-mode':                  self.toggleAbbrevMode,
             'add-global-abbrev':            self.addAbbreviation,
-            # 'expand-abbrev':              self.expandAbbrev, # Not a command.
             'expand-region-abbrevs':        self.regionalExpandAbbrev,
             'inverse-add-global-abbrev':    self.addInverseAbbreviation,
             'kill-all-abbrevs':             self.killAllAbbrevs,
@@ -362,6 +379,125 @@ class abbrevCommandsClass (baseEditCommandsClass):
             'write-abbrev-file':            self.writeAbbreviations,
         }
     #@-node:ekr.20050920084036.15: getPublicCommands & getStateCommands
+    #@+node:ekr.20050920084036.58:dynamic abbreviation...
+    #@+node:ekr.20050920084036.60:dynamicCompletion
+    def dynamicCompletion (self,event=None):
+
+        '''Insert the common prefix of all dynamic abbrev's matching the present word.'''
+
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+        if g.app.gui.guiName() != 'tkinter':
+            return g.es('command not ready yet',color='blue')
+
+        i = w.index('insert -1c wordstart')
+        i2 = w.index('insert -1c wordend')
+        txt = w.get(i,i2)
+        rlist = []
+        self.getDynamicList(w,txt,rlist)
+        if rlist:
+            prefix = reduce(g.longestCommonPrefix,rlist)
+            if prefix and prefix != txt:
+                w.delete(i,i2)
+                w.insert(i,prefix)
+            else:
+                g.es_print('Completions...')
+                for z in rlist:
+                    g.es_print(z)
+    #@-node:ekr.20050920084036.60:dynamicCompletion
+    #@+node:ekr.20050920084036.59:dynamicExpansion
+    def dynamicExpansion (self,event=None): #, store = {'rlist': [], 'stext': ''} ):
+
+        k = self.k
+        w = self.editWidget(event)
+        if not w: return
+        if g.app.gui.guiName() not in ('null','tkinter'):
+            return g.es('command not ready yet',color='blue')
+
+        rlist = self.store ['rlist']
+        stext = self.store ['stext']
+        i = w.index('insert -1c wordstart')
+        j = i2 = w.index('insert -1c wordend')
+        txt = w.get(i,i2)
+        # dA = w.tag_ranges('dA')
+        # w.tag_delete('dA')
+        dA = self.daRanges
+        self.daRanges = []
+        # g.trace('dA',repr(dA))
+
+        def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
+            w.delete(from_,to_)
+            w.insert('insert',txt) #### ,'dA')
+            i = w.getInsertPoint()
+            data = i,i+len(txt)
+            self.daRanges.append(data)
+
+        if dA:
+            # dA1, dA2 = dA
+            item = dA[0]
+            dA_i,dA_j = item
+            # dtext = w.get(dA1,dA2)
+            dtext = w.get(dA_i,dA_j)
+            if dtext.startswith(stext) and j == dA_j:
+                # This seems reasonable, since we can't get a whole word that has the '-' char in it,
+                # we do a good guess
+                if rlist:
+                    txt = rlist.pop()
+                else:
+                    txt = stext
+                    # w.delete(dA1,dA2)
+                    w.delete(dA_i, dA_j)
+                    ### dA2 = dA1
+                    dA_j = dA_i
+                        # since the text is going to be reread,
+                        # we dont want to include the last dynamic abbreviation
+                    self.getDynamicList(w,txt,rlist)
+                # doDa(txt,dA1,dA2)
+                doDa(txt,dA_i,dA_j)
+                return
+            else: dA = None
+
+        if not dA:
+            self.store ['stext'] = txt
+            self.store ['rlist'] = rlist = []
+            self.getDynamicList(w,txt,rlist)
+            if rlist:
+                txt = rlist.pop()
+                doDa(txt)
+    #@nonl
+    #@-node:ekr.20050920084036.59:dynamicExpansion
+    #@+node:ekr.20050920084036.61:getDynamicList (helper)
+    def getDynamicList (self,w,txt,rlist):
+
+        items = []
+        if self.globalDynamicAbbrevs:
+            for p in self.c.allNodes_iter():
+                s = p.bodyString()
+                if s:
+                    items.extend(self.dynaregex.findall(s))
+        else:
+            # Make a big list of what we are considering a 'word'
+            s = w.getAllText()
+            items.append(self.dynaregex.findall(s))
+
+        # g.trace('txt',repr(txt),'len(items)',len(items))
+
+        if items:
+            for word in items:
+                 if not word.startswith(txt) or word == txt:
+                     continue
+                    # dont need words that dont match or == the pattern
+                 if word not in rlist:
+                     rlist.append(word)
+                 else:
+                     rlist.remove(word)
+                     rlist.append(word)
+
+        # g.trace('rlist',rlist)
+    #@-node:ekr.20050920084036.61:getDynamicList (helper)
+    #@-node:ekr.20050920084036.58:dynamic abbreviation...
+    #@+node:ekr.20070531103114:static abbrevs
     #@+node:ekr.20050920084036.25:addAbbreviation
     def addAbbreviation (self,event):
 
@@ -571,6 +707,7 @@ class abbrevCommandsClass (baseEditCommandsClass):
         except IOError:
             g.es('Can not create',fileName)
     #@-node:ekr.20050920084036.24:writeAbbreviations
+    #@-node:ekr.20070531103114:static abbrevs
     #@-others
 #@-node:ekr.20050920084036.13:abbrevCommandsClass (test)
 #@+node:ekr.20050920084036.31:bufferCommandsClass
@@ -1283,16 +1420,12 @@ class editCommandsClass (baseEditCommandsClass):
         baseEditCommandsClass.__init__(self,c) # init the base class.
 
         self.ccolumn = '0'   # For comment column functions.
-        self.dynaregex = re.compile(r'[%s%s\-_]+'%(string.ascii_letters,string.digits))
-            # Not a unicode problem.
-            # For dynamic abbreviations
         self.extendMode = False # True: all cursor move commands extend the selection.
         self.fillPrefix = '' # For fill prefix functions.
         self.fillColumn = 70 # For line centering.
         self.moveSpotNode = None # A tnode.
         self.moveSpot = None # For retaining preferred column when moving up or down.
         self.moveCol = None # For retaining preferred column when moving up or down.
-        self.store ={'rlist':[], 'stext':''} # For dynamic expansion.
         self.sampleWidget = None # Created later.
         self.swapSpots = []
         self._useRegex = False # For replace-string
@@ -1360,8 +1493,6 @@ class editCommandsClass (baseEditCommandsClass):
             'cycle-focus':                          self.cycleFocus,
             'cycle-all-focus':                      self.cycleAllFocus,
             'cycle-editor-focus':                   c.frame.body.cycleEditorFocus,
-            'dabbrev-completion':                   self.dynamicExpansion2,
-            'dabbrev-expands':                      self.dynamicExpansion,
             'delete-char':                          self.deleteNextChar,
             'delete-editor':                        c.frame.body.deleteEditor,
             'delete-indentation':                   self.deleteIndentation,
@@ -1823,85 +1954,6 @@ class editCommandsClass (baseEditCommandsClass):
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.134:indentToCommentColumn (test)
     #@-node:ekr.20050920084036.132:comment column...
-    #@+node:ekr.20050920084036.58:dynamic abbreviation...
-    #@+node:ekr.20050920084036.59:dynamicExpansion LATER
-    def dynamicExpansion (self,event): #, store = {'rlist': [], 'stext': ''} ):
-
-        k = self.k
-        w = self.editWidget(event)
-        if not w: return
-        if g.app.gui.guiName() not in ('null','tkinter'):
-            return g.es('command not ready yet',color='blue')
-
-        rlist = self.store ['rlist']
-        stext = self.store ['stext']
-        i = w.index('insert -1c wordstart')
-        i2 = w.index('insert -1c wordend')
-        txt = w.get(i,i2)
-        dA = w.tag_ranges('dA')
-        w.tag_delete('dA')
-        def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
-            w.delete(from_,to_)
-            w.insert('insert',txt,'dA')
-
-        if dA:
-            dA1, dA2 = dA
-            dtext = w.get(dA1,dA2)
-            if dtext.startswith(stext) and i2 == dA2:
-                #This seems reasonable, since we cant get a whole word that has the '-' char in it, we do a good guess
-                if rlist:
-                    txt = rlist.pop()
-                else:
-                    txt = stext
-                    w.delete(dA1,dA2)
-                    dA2 = dA1 # since the text is going to be reread, we dont want to include the last dynamic abbreviation
-                    self.getDynamicList(w,txt,rlist)
-                doDa(txt,dA1,dA2) ; return
-            else: dA = None
-
-        if not dA:
-            self.store ['stext'] = txt
-            self.store ['rlist'] = rlist = []
-            self.getDynamicList(w,txt,rlist)
-            if rlist:
-                txt = rlist.pop()
-                doDa(txt)
-    #@-node:ekr.20050920084036.59:dynamicExpansion LATER
-    #@+node:ekr.20050920084036.60:dynamicExpansion2 LATER
-    def dynamicExpansion2 (self,event):
-
-        k = self.k
-        w = self.editWidget(event)
-        if not w: return
-        if g.app.gui.guiName() != 'tkinter':
-            return g.es('command not ready yet',color='blue')
-
-        i = w.index('insert -1c wordstart')
-        i2 = w.index('insert -1c wordend')
-        txt = w.get(i,i2)
-        rlist = []
-        self.getDynamicList(w,txt,rlist)
-        if rlist:
-            dEstring = reduce(g.longestCommonPrefix,rlist)
-            if dEstring:
-                w.delete(i,i2)
-                w.insert(i,dEstring)
-    #@-node:ekr.20050920084036.60:dynamicExpansion2 LATER
-    #@+node:ekr.20050920084036.61:getDynamicList (helper)
-    def getDynamicList (self,w,txt,rlist):
-
-         ttext = w.getAllText()
-         items = self.dynaregex.findall(ttext) #make a big list of what we are considering a 'word'
-         if items:
-             for word in items:
-                 if not word.startswith(txt) or word == txt: continue #dont need words that dont match or == the pattern
-                 if word not in rlist:
-                     rlist.append(word)
-                 else:
-                     rlist.remove(word)
-                     rlist.append(word)
-    #@-node:ekr.20050920084036.61:getDynamicList (helper)
-    #@-node:ekr.20050920084036.58:dynamic abbreviation...
     #@+node:ekr.20050920084036.62:esc methods for Python evaluation
     #@+node:ekr.20050920084036.63:watchEscape (Revise)
     def watchEscape (self,event):
