@@ -193,6 +193,7 @@ def createFrame (fileName):
     frame.startupWindow = True
     if frame.c.chapterController:
         frame.c.chapterController.finishCreate()
+        frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
     # Call the 'new' hook for compatibility with plugins.
     g.doHook("new",old_c=None,c=c,new_c=c)
 
