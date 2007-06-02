@@ -6442,6 +6442,8 @@ class baseCommands:
         c = self
         if not c.frame: return
 
+        # if changedFlag: g.trace('***',g.callers())
+
         # Clear all dirty bits _before_ setting the caption.
         # Clear all dirty bits except orphaned @file nodes
         if not changedFlag:
