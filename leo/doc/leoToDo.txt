@@ -162,6 +162,115 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@nonl
 #@-node:ekr.20070414090051:Study
 #@-node:ekr.20070521100324:Marketing/tools
+#@+node:ekr.20070531075258:Fix problems with @enabled-plugins
+#@+node:ekr.20070224075914:doEnabledPlugins
+def doEnabledPlugins (self,p,kind,name,val):
+
+    __pychecker__ = '--no-argsused' # kind,name,val not used.
+
+    c = self.c
+    s = p.bodyString()
+
+    # This setting is handled differently from all other settings,
+    # because the last setting must be retrieved before any commander exists.
+
+    # g.trace('len(s)',len(s))
+
+    # Set the global config ivars.
+    g.app.config.enabledPluginsString = s
+    g.app.config.enabledPluginsFileName = c and c.shortFileName() or '<no settings file>'
+#@-node:ekr.20070224075914:doEnabledPlugins
+#@+node:ekr.20070224075914.1:getEnabledPlugins
+def getEnabledPlugins (self):
+
+    """Search all dictionaries for the setting & check it's type"""
+
+    return g.app.config.enabledPluginsString
+#@-node:ekr.20070224075914.1:getEnabledPlugins
+#@+node:ekr.20031218072017.3440:loadHandlers & helper
+def loadHandlers(tag):
+
+    """Load all enabled plugins from the plugins directory"""
+
+    def pr (*args,**keys):
+        if not g.app.unitTesting:
+            g.es_print(*args,**keys)
+
+    fileName = "pluginsManager.txt"
+    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
+    files = glob.glob(g.os_path_join(plugins_path,"*.py"))
+    files = [g.os_path_abspath(theFile) for theFile in files]
+    s = g.app.config.getEnabledPlugins()
+    theConfigFile = g.app.config.enabledPluginsFileName
+    # g.trace('len(s)',s and len(s) or 0)
+    if s:
+        pr('@enabled-plugins found in %s' % (theConfigFile),color='blue')
+        enabled_files = getEnabledFiles(s,plugins_path)
+    else:
+        for theDir,place in (
+            (g.app.homeDir,'HOME'),
+            (plugins_path,'leo/config')
+        ):
+            manager_path = g.os_path_join(theDir,fileName)
+            if g.os_path_exists(manager_path):
+                g.es_print('%s: %s' % (fileName,theDir),color='blue')
+                break
+        else: pr('%s not found. No plugins will be loaded' % fileName)
+        if g.os_path_exists(manager_path):
+            << set enabled_files from pluginsManager.txt >>
+        else:  return
+
+    # Load plugins in the order they appear in the enabled_files list.
+    if files and enabled_files:
+        for theFile in enabled_files:
+            if theFile in files:
+                loadOnePlugin(theFile)
+
+    # Note: g.plugin_signon adds module names to g.app.loadedPlugins
+    if 0:
+        if g.app.loadedPlugins:
+            pr("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
+#@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+try:
+    # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
+    theFile = open(manager_path)
+    s = theFile.read()
+    pr('Using settings in pluginsManager.txt')
+    enabled_files = getEnabledFiles(s,plugins_path)
+    theFile.close()
+except IOError:
+    pr("Can not open: %s"  % manager_path)
+    # Don't import leoTest initially.  It causes problems.
+    import leoTest ; leoTest.fail()
+    return
+#@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
+#@+node:ekr.20070224082131:getEnabledFiles
+def getEnabledFiles (s,plugins_path):
+
+    enabled_files = []
+    disabled_files = []
+    for s in g.splitLines(s):
+        s = s.strip()
+        if s:
+            if g.match(s,0,"#"):
+                s = s[1:].strip()
+                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
+                if s and s.find(' ') == -1 and s[-3:] == '.py':
+                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                    if path not in enabled_files and path not in disabled_files:
+                        # print 'disabled',path
+                        disabled_files.append(path)
+            else:
+                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
+                if path not in enabled_files and path not in disabled_files:
+                    # print 'enabled',path
+                    enabled_files.append(path)
+
+    return enabled_files
+#@nonl
+#@-node:ekr.20070224082131:getEnabledFiles
+#@-node:ekr.20031218072017.3440:loadHandlers & helper
+#@-node:ekr.20070531075258:Fix problems with @enabled-plugins
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070515100356:To do: b2
 #@+node:ekr.20070325054325:Docs
@@ -283,117 +392,6 @@ Pythonistas have come to expect that::
 will locate and install the most recent version of app and install it.
 #@-node:ekr.20070307082503.1:Create Linux distribution
 #@-node:ekr.20070515113707:Dist
-#@+node:ekr.20070522052905:Bugs & Incompletions: 1
-#@+node:ekr.20070531075258:Fix problems with @enabled-plugins
-#@+node:ekr.20070224075914:doEnabledPlugins
-def doEnabledPlugins (self,p,kind,name,val):
-
-    __pychecker__ = '--no-argsused' # kind,name,val not used.
-
-    c = self.c
-    s = p.bodyString()
-
-    # This setting is handled differently from all other settings,
-    # because the last setting must be retrieved before any commander exists.
-
-    # g.trace('len(s)',len(s))
-
-    # Set the global config ivars.
-    g.app.config.enabledPluginsString = s
-    g.app.config.enabledPluginsFileName = c and c.shortFileName() or '<no settings file>'
-#@-node:ekr.20070224075914:doEnabledPlugins
-#@+node:ekr.20070224075914.1:getEnabledPlugins
-def getEnabledPlugins (self):
-
-    """Search all dictionaries for the setting & check it's type"""
-
-    return g.app.config.enabledPluginsString
-#@-node:ekr.20070224075914.1:getEnabledPlugins
-#@+node:ekr.20031218072017.3440:loadHandlers & helper
-def loadHandlers(tag):
-
-    """Load all enabled plugins from the plugins directory"""
-
-    def pr (*args,**keys):
-        if not g.app.unitTesting:
-            g.es_print(*args,**keys)
-
-    fileName = "pluginsManager.txt"
-    plugins_path = g.os_path_abspath(g.os_path_join(g.app.loadDir,"..","plugins"))
-    files = glob.glob(g.os_path_join(plugins_path,"*.py"))
-    files = [g.os_path_abspath(theFile) for theFile in files]
-    s = g.app.config.getEnabledPlugins()
-    theConfigFile = g.app.config.enabledPluginsFileName
-    # g.trace('len(s)',s and len(s) or 0)
-    if s:
-        pr('@enabled-plugins found in %s' % (theConfigFile),color='blue')
-        enabled_files = getEnabledFiles(s,plugins_path)
-    else:
-        for theDir,place in (
-            (g.app.homeDir,'HOME'),
-            (plugins_path,'leo/config')
-        ):
-            manager_path = g.os_path_join(theDir,fileName)
-            if g.os_path_exists(manager_path):
-                g.es_print('%s: %s' % (fileName,theDir),color='blue')
-                break
-        else: pr('%s not found. No plugins will be loaded' % fileName)
-        if g.os_path_exists(manager_path):
-            << set enabled_files from pluginsManager.txt >>
-        else:  return
-
-    # Load plugins in the order they appear in the enabled_files list.
-    if files and enabled_files:
-        for theFile in enabled_files:
-            if theFile in files:
-                loadOnePlugin(theFile)
-
-    # Note: g.plugin_signon adds module names to g.app.loadedPlugins
-    if 0:
-        if g.app.loadedPlugins:
-            pr("%d plugins loaded" % (len(g.app.loadedPlugins)), color="blue")
-#@+node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
-try:
-    # New in 4.3: The first reference to a plugin in pluginsManager.txt controls.
-    theFile = open(manager_path)
-    s = theFile.read()
-    pr('Using settings in pluginsManager.txt')
-    enabled_files = getEnabledFiles(s,plugins_path)
-    theFile.close()
-except IOError:
-    pr("Can not open: %s"  % manager_path)
-    # Don't import leoTest initially.  It causes problems.
-    import leoTest ; leoTest.fail()
-    return
-#@-node:ekr.20031218072017.3441:<< set enabled_files from pluginsManager.txt >>
-#@+node:ekr.20070224082131:getEnabledFiles
-def getEnabledFiles (s,plugins_path):
-
-    enabled_files = []
-    disabled_files = []
-    for s in g.splitLines(s):
-        s = s.strip()
-        if s:
-            if g.match(s,0,"#"):
-                s = s[1:].strip()
-                # Kludge: ignore comment lines containing a blank or not ending in '.py'.
-                if s and s.find(' ') == -1 and s[-3:] == '.py':
-                    path = g.os_path_abspath(g.os_path_join(plugins_path,s))
-                    if path not in enabled_files and path not in disabled_files:
-                        # print 'disabled',path
-                        disabled_files.append(path)
-            else:
-                path = g.os_path_abspath(g.os_path_join(plugins_path,s))
-                if path not in enabled_files and path not in disabled_files:
-                    # print 'enabled',path
-                    enabled_files.append(path)
-
-    return enabled_files
-#@nonl
-#@-node:ekr.20070224082131:getEnabledFiles
-#@-node:ekr.20031218072017.3440:loadHandlers & helper
-#@-node:ekr.20070531075258:Fix problems with @enabled-plugins
-#@-node:ekr.20070522052905:Bugs & Incompletions: 1
 #@-node:ekr.20070515100356:To do: b2
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
