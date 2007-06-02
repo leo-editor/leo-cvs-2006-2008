@@ -5889,6 +5889,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
     Set the old undo text to the previous revert point.'''
 
     c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
     if not w: return
 
     ch = '\n' # New in 4.4: we only report the final keystroke.
@@ -5904,7 +5905,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
@@ -6957,6 +6958,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
     Set the old undo text to the previous revert point.'''
 
     c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
     if not w: return
 
     ch = '\n' # New in 4.4: we only report the final keystroke.
@@ -6972,7 +6974,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
@@ -17303,6 +17305,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
     Set the old undo text to the previous revert point.'''
 
     c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
     if not w: return
 
     ch = '\n' # New in 4.4: we only report the final keystroke.
@@ -17318,7 +17321,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
@@ -28859,6 +28862,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
     Set the old undo text to the previous revert point.'''
 
     c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
     if not w: return
 
     ch = '\n' # New in 4.4: we only report the final keystroke.
@@ -28874,7 +28878,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
@@ -32349,6 +32353,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
     Set the old undo text to the previous revert point.'''
 
     c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
     if not w: return
 
     ch = '\n' # New in 4.4: we only report the final keystroke.
@@ -32364,7 +32369,7 @@ def onHeadChanged (self,p,undoType='Typing',s=None):
         changed = s != oldRevert
         self.revertHeadline = s
         p.initHeadString(s)
-        # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
         if changed:
             undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
             if not c.changed: c.setChanged(True)
@@ -39577,10 +39582,13 @@ def restoreOldChapter (self, oldChapter):
         oldChapter.unlink()
 
     # Set the current position first.
-    changed = c.changed # Kludge: c.selectPosition can change the dirty bit.
-    c.selectPosition(cc.savedCurrent)
-    if changed != c.changed:
-        c.setChanged(changed)
+    # Suppress onHeadChanged (called from c.selectPosition) so the dirty bit remains unchanged.
+    c.suppressHeadChanged = True
+    try:
+        c.selectPosition(cc.savedCurrent)
+    finally:
+        c.suppressHeadChanged = False
+
     cc.savedCurrent = None
 
     # Set the root position second, so it will be unaffected by c.selectPosition.
@@ -44811,6 +44819,8 @@ But this is wrong: we may be in the process of changing roots.
 #@-node:ekr.20070531083142.1:Report
 #@-node:ekr.20070531083142:Fixed lost data when deleting the root
 #@+node:ekr.20070601144529:Fixed recent bug: the Leo window is *always* dirty
+# Added c.suppressHeadChanged and related logic.U
+#@nonl
 #@+node:ekr.20031218072017.2989:c.setChanged
 def setChanged (self,changedFlag):
 
@@ -44850,10 +44860,13 @@ def restoreOldChapter (self, oldChapter):
         oldChapter.unlink()
 
     # Set the current position first.
-    changed = c.changed # Kludge: c.selectPosition can change the dirty bit.
-    c.selectPosition(cc.savedCurrent)
-    if changed != c.changed:
-        c.setChanged(changed)
+    # Suppress onHeadChanged (called from c.selectPosition) so the dirty bit remains unchanged.
+    c.suppressHeadChanged = True
+    try:
+        c.selectPosition(cc.savedCurrent)
+    finally:
+        c.suppressHeadChanged = False
+
     cc.savedCurrent = None
 
     # Set the root position second, so it will be unaffected by c.selectPosition.
@@ -44862,6 +44875,369 @@ def restoreOldChapter (self, oldChapter):
 
     if trace: g.printEntireTree(cc.c,'restoreOldChapter:after')
 #@-node:ekr.20070503082757:cc.restoreOldChapter
+#@+node:ekr.20040803072955.128:leoTree.select & helper
+tree_select_lockout = False
+
+def select (self,p,updateBeadList=True,scroll=True):
+
+    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+
+    if g.app.killed or self.tree_select_lockout: return None
+
+    try:
+        val = 'break'
+        self.tree_select_lockout = True
+        val = self.treeSelectHelper(p,updateBeadList,scroll)
+    finally:
+        self.tree_select_lockout = False
+
+    return val  # Don't put a return in a finally clause.
+#@+node:ekr.20070423101911:treeSelectHelper
+#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def treeSelectHelper (self,p,updateBeadList,scroll):
+
+    c = self.c ; frame = c.frame
+    body = w = frame.bodyCtrl
+    old_p = c.currentPosition()
+
+    if not p:
+        # Bug fix: 5/31/07: do *not* test c.positionExists(p) here.
+        # We may be in the process of changing roots.
+        return None # Not an error.
+
+    # g.trace('      ===',id(w),p and p.headString())
+    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
+
+    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        if old_p:
+            << unselect the old node >>
+
+    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        << select the new node >>
+        if p and p != old_p: # Suppress duplicate call.
+            try: # may fail during initialization.
+                # p is NOT c.currentPosition() here!
+                if 0: # Interferes with new colorizer.
+                    self.canvas.update_idletasks()
+                    self.scrollTo(p)
+                if scroll and g.app.gui.guiName() == 'tkinter':
+                    def scrollCallback(self=self,p=p):
+                        self.scrollTo(p)
+                    self.canvas.after(100,scrollCallback)
+            except Exception: pass
+        << update c.beadList or c.beadPointer >>
+        << update c.visitedList >>
+
+    c.setCurrentPosition(p)
+    << set the current node >>
+    c.frame.body.assignPositionToEditor(p) # New in Leo 4.4.1.
+    c.frame.updateStatusLine() # New in Leo 4.4.1.
+
+    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    return 'break' # Supresses unwanted selection.
+#@+node:ekr.20040803072955.129:<< unselect the old node >>
+# Remember the position of the scrollbar before making any changes.
+if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
+
+yview = body.getYScrollPosition()
+insertSpot = c.frame.body.getInsertPoint()
+
+if old_p != p:
+    self.endEditLabel() # sets editPosition = None
+    self.setUnselectedLabelState(old_p) # 12/17/04
+
+if c.edit_widget(old_p):
+    old_p.v.t.scrollBarSpot = yview
+    old_p.v.t.insertSpot = insertSpot
+#@-node:ekr.20040803072955.129:<< unselect the old node >>
+#@+node:ekr.20040803072955.130:<< select the new node >>
+# Bug fix: we must always set this, even if we never edit the node.
+self.revertHeadline = p.headString()
+frame.setWrap(p)
+
+# Always do this.  Otherwise there can be problems with trailing newlines.
+s = g.toUnicode(p.v.t.bodyString,"utf-8")
+w.setAllText(s)
+
+# We must do a full recoloring: we may be changing context!
+self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+
+if p.v and p.v.t.scrollBarSpot != None:
+    first,last = p.v.t.scrollBarSpot
+    w.setYScrollPosition(first)
+
+if p.v and p.v.t.insertSpot != None:
+    spot = p.v.t.insertSpot
+    w.setInsertPoint(spot)
+    w.see(spot)
+else:
+    w.setInsertPoint(0)
+
+# g.trace("select:",p.headString())
+#@-node:ekr.20040803072955.130:<< select the new node >>
+#@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+# c.beadList is the list of nodes for the back and forward commands.
+
+if updateBeadList:
+
+    if c.beadPointer > -1:
+        present_p = c.beadList[c.beadPointer]
+    else:
+        present_p = c.nullPosition()
+
+    if p != present_p:
+        # Replace the tail of c.beadList by p and make p the present node.
+        c.beadPointer += 1
+        c.beadList[c.beadPointer:] = []
+        c.beadList.append(p.copy())
+
+        # New in Leo 4.4: limit this list to 100 items.
+        if 0: # Doesn't work yet.
+            c.beadList = c.beadList [-100:]
+            g.trace('len(c.beadList)',len(c.beadList))
+
+    # g.trace(c.beadPointer,p,present_p)
+#@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+#@+node:ekr.20040803072955.132:<< update c.visitedList >>
+# The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
+
+# Make p the most recently visited position on the list.
+if p in c.visitedList:
+    c.visitedList.remove(p)
+
+c.visitedList.insert(0,p.copy())
+
+# g.trace('len(c.visitedList)',len(c.visitedList))
+# g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
+#@-node:ekr.20040803072955.132:<< update c.visitedList >>
+#@+node:ekr.20040803072955.133:<< set the current node >>
+self.setSelectedLabelState(p)
+
+frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.use_chapters:
+    cc = c.chapterController
+    theChapter = cc.getSelectedChapter()
+    if theChapter:
+        theChapter.p = p.copy()
+        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
+
+if self.stayInTree:
+    c.treeWantsFocus()
+else:
+    c.bodyWantsFocus()
+#@-node:ekr.20040803072955.133:<< set the current node >>
+#@-node:ekr.20070423101911:treeSelectHelper
+#@-node:ekr.20040803072955.128:leoTree.select & helper
+#@+node:ekr.20031218072017.2997:c.selectPosition
+def selectPosition(self,p,updateBeadList=True):
+
+    """Select a new position."""
+
+    c = self
+
+    # g.trace(p.headString(),g.callers())
+
+    c.frame.tree.select(p,updateBeadList)
+
+    # New in Leo 4.4.2.
+    c.setCurrentPosition(p)
+        # Do *not* test whether the position exists!
+        # We may be in the midst of an undo.
+
+selectVnode = selectPosition
+#@-node:ekr.20031218072017.2997:c.selectPosition
+#@+node:ekr.20040803140033.1:c.setCurrentPosition
+def setCurrentPosition (self,p):
+
+    """Set the presently selected position. For internal use only.
+
+    Client code should use c.selectPosition instead."""
+
+    c = self ; cc = c.chapterController
+
+    # g.trace(p.headString(),g.callers())
+
+    if p:
+        # Important: p.equal requires c._currentPosition to be non-None.
+        if c._currentPosition and p.equal(c._currentPosition):
+            pass # We have already made a copy.
+        else: # Must make a copy _now_
+            c._currentPosition = p.copy()
+
+        # New in Leo 4.4.2: always recompute the root position here.
+        # This *guarantees* that c.rootPosition always returns the proper value.
+        newRoot = c.findRootPosition(c._currentPosition)
+        if newRoot:
+            c.setRootPosition(newRoot)
+        # This is *not* an error: newRoot can be None when switching chapters.
+        # else: g.trace('******** no new root')
+    else:
+        c._currentPosition = None
+
+# For compatibiility with old scripts.
+setCurrentVnode = setCurrentPosition
+#@nonl
+#@-node:ekr.20040803140033.1:c.setCurrentPosition
+#@+node:ekr.20031218072017.2834:save (commands)
+def save (self,event=None):
+
+    '''Save a Leo outline to a file.'''
+
+    c = self ; trace = False
+    cc = c.config.getBool('use_chapters') and c.chapterController
+
+    oldChapter = cc and cc.forceMainChapter()
+
+    if trace and cc:
+        g.trace('cc',cc)
+        g.printEntireTree(c,'save:before')
+        cc.printChaptersTree('save:before')
+
+    if g.app.disableSave:
+        g.es("Save commands disabled",color="purple")
+        return
+
+    # Make sure we never pass None to the ctor.
+    if not c.mFileName:
+        c.frame.title = ""
+        c.mFileName = ""
+
+    c.beginUpdate()
+    try:
+        if c.mFileName != "":
+            # Calls c.setChanged(False) if no error.
+            c.fileCommands.save(c.mFileName)
+        else:
+            fileName = g.app.gui.runSaveFileDialog(
+                initialfile = c.mFileName,
+                title="Save",
+                filetypes=[("Leo files", "*.leo")],
+                defaultextension=".leo")
+            c.bringToFront()
+
+            if fileName:
+                # Don't change mFileName until the dialog has suceeded.
+                c.mFileName = g.ensure_extension(fileName, ".leo")
+                c.frame.title = c.mFileName
+                c.frame.setTitle(g.computeWindowTitle(c.mFileName))
+                c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
+                c.fileCommands.save(c.mFileName)
+                c.updateRecentFiles(c.mFileName)
+
+        if cc:
+            cc.restoreOldChapter(oldChapter)
+    finally:
+        c.endUpdate()
+
+    if trace and cc:
+        g.printEntireTree(c,'save:after')
+        cc.printChaptersTree('save:after')
+#@nonl
+#@-node:ekr.20031218072017.2834:save (commands)
+#@+node:ekr.20070421092158:cc.forceMainChapter
+def forceMainChapter (self):
+
+    cc = self ; c = self.c ; trace = False or self.trace
+    if not cc.enabled: return
+
+    if cc.chaptersLinked: return # We have done a show-chapters command.
+
+    cc.savedRoot = c.rootPosition()
+    cc.savedCurrent = current = c.currentPosition()
+    oldChapter = cc.getSelectedChapter()
+
+    if trace: g.trace('****',oldChapter and oldChapter.name,'savedRoot',cc.savedRoot)
+
+    if oldChapter:
+        if oldChapter.name == 'main':
+            oldChapter = None # Don't unlink the main chapter in unlinkChaptersNode.
+        else:
+            oldChapter.link()
+            if trace: g.trace('oldChapter',oldChapter.name)
+
+    cc.linkChaptersNode() # sets c.rootPosition()
+
+    # Tricky code:
+    # 1. Set the 'raw' current position without affecting c._rootPosition.
+    #    Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
+    # 2. Use current only if we are in the main chapter; otherwise use cc.main.
+    #    The reason for this hack is that cc.finishCreate always selects the main chapter,
+    #    so cc.finishCreate won't find a vnode that exists only in another chapter.
+    c._currentPosition = g.choose(oldChapter,cc.mainRoot,current)
+
+    if trace: g.printEntireTree(cc.c,'forceMainChapter:after')
+
+    return oldChapter
+#@-node:ekr.20070421092158:cc.forceMainChapter
+#@+node:ekr.20040803072955.91:onHeadChanged
+# Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing',s=None):
+
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+
+    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
+    if not w: return
+
+    ch = '\n' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    if s is None: s = w.getAllText()
+    << truncate s if it has multiple lines >>
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(scroll=False) # New in 4.4.1
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+# Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) > 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i > -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) > limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+#@-node:ekr.20040803072955.91:onHeadChanged
 #@-node:ekr.20070601144529:Fixed recent bug: the Leo window is *always* dirty
 #@-node:ekr.20070528141848:Fixed bugs
 #@+node:ekr.20070528141848.1:Features
@@ -46034,10 +46410,13 @@ def restoreOldChapter (self, oldChapter):
         oldChapter.unlink()
 
     # Set the current position first.
-    changed = c.changed # Kludge: c.selectPosition can change the dirty bit.
-    c.selectPosition(cc.savedCurrent)
-    if changed != c.changed:
-        c.setChanged(changed)
+    # Suppress onHeadChanged (called from c.selectPosition) so the dirty bit remains unchanged.
+    c.suppressHeadChanged = True
+    try:
+        c.selectPosition(cc.savedCurrent)
+    finally:
+        c.suppressHeadChanged = False
+
     cc.savedCurrent = None
 
     # Set the root position second, so it will be unaffected by c.selectPosition.

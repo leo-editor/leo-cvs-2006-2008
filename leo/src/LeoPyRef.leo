@@ -2,13 +2,18 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.587651598677">
-	<global_window_position top="21" left="384" height="907" width="890"/>
+<globals body_outline_ratio="0.510869565217">
+	<global_window_position top="50" left="379" height="828" width="750"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
+<v t="ekr.20070601133912"><vh>@chapters</vh>
+<v t="ekr.20070601134019"><vh>@chapter trash</vh>
+<v t="ekr.20070601134019.1"><vh>trash node 1</vh></v>
+</v>
+</v>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
 <v t="ekr.20060531093331"><vh>@command clones-tab</vh>
 <v t="ekr.20060531093331.1"><vh>class cloneNavigator</vh>
@@ -33,74 +38,59 @@
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"
-marks="ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,ekr.20031218072017.3070,ekr.20051026083544.2,ekr.20051113110851,ekr.20031218072017.2176,ekr.20051009045208,ekr.20050921103736,ekr.20031218072017.3803,ekr.20070202105914,ekr.20060528100747,ekr.20051019134106.1,ekr.20070317073819.1,ekr.20070317082315,ekr.20070317074824,ekr.20031218072017.1975,ekr.20031218072017.998,ekr.20040701065235.2,ekr.20040310062332.4,ekr.20031218072017.3426,ekr.20040310062332.5,ekr.20031218072017.3438,"><vh>@thin leoProjects.txt</vh></v>
+marks="ekr.20050920084036.59,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936"
-marks="ekr.20070324084040.16,ekr.20070324084040.9,ekr.20070324084040.21,ekr.20070324084040.26,ekr.20070324084040.27,ekr.20061028211424.46,ekr.20061028211424.47,ekr.20061028211424.50,ekr.20061028211424.52,ekr.20061028070057.22,ekr.20061028070057.37,ekr.20061028070057.54,ekr.20061028070057.55,"><vh>@thin ../doc/leoToDo.txt</vh></v>
-<v t="ekr.20060207133601"
-marks="ekr.20040701065235.2,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
+<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
-<v t="ekr.20040629121554.1" a="M"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
+<v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
 <v t="ekr.20040629121554.2" a="M" labels="2858060000006c6162656c737100540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571017471022e"><vh>initVersion</vh></v>
 <v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
 </v>
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
 <v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
 <v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
-<v t="ekr.20041005105605.1"
-marks="ekr.20041005105605.52,ekr.20041005105605.198,"><vh>@thin leoAtFile.py</vh></v>
+<v t="ekr.20041005105605.1"><vh>@thin leoAtFile.py</vh></v>
 <v t="ekr.20070227091955.1"><vh>@thin leoBridge.py</vh></v>
-<v t="ekr.20070317085508.1"
-marks="ekr.20070317085437.41,"><vh>@thin leoChapters.py</vh></v>
-<v t="ekr.20031218072017.2794"
-marks="ekr.20031218072017.1607,ekr.20031218072017.1896,ekr.20031218072017.2803,"><vh>@thin leoColor.py</vh></v>
+<v t="ekr.20070317085508.1"><vh>@thin leoChapters.py</vh></v>
+<v t="ekr.20031218072017.2794"><vh>@thin leoColor.py</vh></v>
 <v t="ekr.20031218072017.2810"
-marks="ekr.20040629121554.1,ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
+marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
 <v t="ekr.20050710142719"
-marks="ekr.20050920084036.138,"><vh>@thin leoEditCommands.py</vh></v>
-<v t="ekr.20031218072017.3018"
-marks="ekr.20060919110638.44,ekr.20040701065235.2,"><vh>@thin leoFileCommands.py</vh></v>
-<v t="ekr.20031218072017.3093"
-marks="ekr.20031218072017.3132,ekr.20031218072017.3124,"><vh>@thin leoGlobals.py</vh></v>
-<v t="ekr.20031218072017.3206"
-marks="ekr.20031218072017.2258,ekr.20060626100102,ekr.20060626101103.1,ekr.20060626103415,ekr.20031218072017.2263,ekr.20031218072017.2264,ekr.20031218072017.2266,ekr.20031218072017.2270,ekr.20031218072017.2271,ekr.20031218072017.2272,ekr.20070202105914,"><vh>@thin leoImport.py</vh></v>
-<v t="ekr.20031218072017.3320"
-marks="ekr.20031218072017.3419,ekr.20031218072017.3421,ekr.20031218072017.3426,ekr.20031218072017.3438,ekr.20040303214038,ekr.20040303163330,ekr.20040303175026.2,ekr.20040303175026.3,ekr.20040303175026.5,ekr.20040303175026.10,ekr.20040306060312,ekr.20040303175026.11,ekr.20040310062332.4,ekr.20040310062332.5,"><vh>@thin leoNodes.py</vh></v>
+marks="ekr.20050920084036.59,"><vh>@thin leoEditCommands.py</vh></v>
+<v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
+<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
+<v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
+<v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
 <v t="ekr.20061024060248.1"><vh>@thin leoPymacs.py</vh></v>
-<v t="ekr.20031218072017.3446"
-marks="ekr.20031218072017.3601,"><vh>@thin leoTangle.py</vh></v>
+<v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
 <v t="ekr.20051104075904" annotate="285808000000616e6e6f7461746571007d71017471022e"><vh>@thin leoTest.py</vh></v>
 <v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
 <v t="ekr.20050721093241"><vh>&lt;&lt; about gui classes and gui plugins &gt;&gt;</vh></v>
 <v t="ekr.20031218072017.3630"><vh>@thin leoCompare.py</vh></v>
-<v t="ekr.20060123151617"
-marks="ekr.20031218072017.3070,ekr.20051113110851,ekr.20060526140744,ekr.20060526093531,ekr.20060526140744.1,"><vh>@thin leoFind.py</vh></v>
-<v t="ekr.20031218072017.3655"
-marks="ekr.20060528100747,ekr.20051026083544.2,"><vh>@thin leoFrame.py</vh></v>
+<v t="ekr.20060123151617"><vh>@thin leoFind.py</vh></v>
+<v t="ekr.20031218072017.3655"><vh>@thin leoFrame.py</vh></v>
 <v t="ekr.20031218072017.3719"><vh>@thin leoGui.py</vh></v>
 <v t="ekr.20061031131434"><vh>@thin leoKeys.py</vh></v>
-<v t="ekr.20031218072017.3749"
-marks="ekr.20050921103736,ekr.20031218072017.3803,"><vh>@thin leoMenu.py</vh></v>
+<v t="ekr.20031218072017.3749"><vh>@thin leoMenu.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3821"><vh>Gui Tkinter classes</vh>
 <v t="ekr.20031218072017.3838"><vh>@thin leoTkinterComparePanel.py</vh></v>
 <v t="ekr.20031218072017.3858"><vh>@thin leoTkinterDialog.py</vh></v>
 <v t="ekr.20031218072017.3897"><vh>@thin leoTkinterFind.py</vh></v>
-<v t="ekr.20031218072017.3939"
-marks="ekr.20031218072017.2176,ekr.20051009045208,ekr.20031218072017.998,ekr.20031218072017.1975,ekr.20051019134106.1,ekr.20070317073819.1,ekr.20070317082315,ekr.20070317074824,"><vh>@thin leoTkinterFrame.py</vh></v>
+<v t="ekr.20031218072017.3939"><vh>@thin leoTkinterFrame.py</vh></v>
 <v t="ekr.20031218072017.4047"><vh>@thin leoTkinterGui.py</vh></v>
 <v t="ekr.20031218072017.4099"><vh>@thin leoTkinterKeys.py</vh></v>
-<v t="ekr.20031218072017.4100"
-marks="ekr.20060211144330.1,"><vh>@thin leoTkinterMenu.py</vh></v>
+<v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 </v>
@@ -168,7 +158,7 @@ if 0: # Set to 1 for lint-like testing.
     color = c.config.getColor("log_error_color")
     signon = c.getSignOnLine()
     n1,n2,n3,junk,junk=sys.version_info
-    
+
     if sys.platform.startswith('win'):
         version = 'Windows '
         try:
@@ -176,9 +166,9 @@ if 0: # Set to 1 for lint-like testing.
             version += ', '.join([str(z) for z in v])
         except Exception:
             pass
-            
+
     else: version = sys.platform
-    
+
     g.es("Leo Log Window...",color=color)
     g.es(signon)
     g.es("Python %d.%d.%d, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
@@ -345,5 +335,8 @@ if g.os_path_exists(path):
 else:
     g.es_print('not found: %s' % path)</t>
 <t tx="ekr.20070201082722">c.prettyPrintPythonNode()</t>
+<t tx="ekr.20070601133912"></t>
+<t tx="ekr.20070601134019">trash</t>
+<t tx="ekr.20070601134019.1"></t>
 </tnodes>
 </leo_file>
