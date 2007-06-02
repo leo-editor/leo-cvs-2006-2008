@@ -860,17 +860,12 @@ class chapter:
     def chapterSelectHelper (self,w=None,selectEditor=True):
 
         c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
-        trace = False or self.trace
 
         # The big switcharoo.
         c.frame.canvas = canvas = tt.getCanvas(name)
         c.frame.tree = tt.getTree(name)
 
-        # g.trace(name,g.callers())
-
-        if trace: g.trace(
-            'chapter',self.name,'w',w,
-            'selectEditor',selectEditor,'p',self.p and self.p.headString())
+        # g.trace(name,'self.p',self.p,'w.leo_p',w and w.leo_p)
 
         # First, switch roots.
         if name == 'main':
@@ -889,8 +884,8 @@ class chapter:
             if p != w.leo_p: g.trace('****** can not happen: lost p',root,p)
         else:
             # This must be done *after* switching roots.
-            root = self.p or self.root.firstChild() or self.root
-            self.p = p = self.findPositionInChapter(root.v)
+            target_p = self.p or self.root.firstChild() or self.root
+            self.p = p = self.findPositionInChapter(target_p.v)
             if selectEditor:
                 w = self.findEditorInChapter(p)
                 c.frame.body.selectEditor(w) # Switches text.
@@ -909,12 +904,20 @@ class chapter:
 
         '''Return a valid position p such that p.v == v.'''
 
-        trace = False or self.trace
+        # Do nothing if the present position is in the proper chapter.
+        c = self.c ; p = self.p
+
+        root = g.choose(self.name=='main',self.root,self.root.firstChild())
+        # g.trace('root',root,'p',p)
+        if p and c.positionExists(p,root=root):
+            # g.trace('using existing position',p)
+            return p
+
 
         # This should work regardless of what chapter is selected.
         for p in self.c.allNodes_iter():
             if p.v == v:
-                if trace: g.trace('*** found in chapter',p)
+                # g.trace('*** found in chapter',p)
                 return p
 
         if 0:
@@ -928,8 +931,8 @@ class chapter:
             print '******* top-level nodes *****'
             for p in cc.mainRoot.self_and_siblings_iter():
                 print p.headStirng()
+
         return self.root
-    #@nonl
     #@-node:ekr.20070317131708:chapter.findPositionInChapter
     #@+node:ekr.20070425175522:chapter.findEditorInChapter
     def findEditorInChapter (self,p):
