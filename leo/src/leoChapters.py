@@ -478,7 +478,10 @@ class chapterController:
             oldChapter.unlink()
 
         # Set the current position first.
+        changed = c.changed # Kludge: c.selectPosition can change the dirty bit.
         c.selectPosition(cc.savedCurrent)
+        if changed != c.changed:
+            c.setChanged(changed)
         cc.savedCurrent = None
 
         # Set the root position second, so it will be unaffected by c.selectPosition.
@@ -685,9 +688,16 @@ class chapterController:
         cc = self
         theChapter = cc.getSelectedChapter()
 
-        if theChapter and theChapter.name == 'main':
-            # g.trace(p,theChapter)
+        if not theChapter: return
+
+        # g.trace(theChapter.name,p and p.headString())
+
+        if theChapter.name == 'main':
             cc.mainRoot = p
+        else:
+            if theChapter.unlinkedRoot:
+                theChapter.unlinkedRoot = p.v
+    #@nonl
     #@-node:ekr.20070601070812:cc.setRoot
     #@+node:ekr.20070325121800:cc.updateChapterName (not used)
     def updateChapterName(self,oldName,newName):
