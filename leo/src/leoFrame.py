@@ -2253,6 +2253,7 @@ class leoTree:
         Set the old undo text to the previous revert point.'''
 
         c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+        if c.suppressHeadChanged: return
         if not w: return
 
         ch = '\n' # New in 4.4: we only report the final keystroke.
@@ -2290,7 +2291,7 @@ class leoTree:
             changed = s != oldRevert
             self.revertHeadline = s
             p.initHeadString(s)
-            # g.trace('changed: old',repr(oldRevert),'new',repr(s))
+            # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
             if changed:
                 undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
                 if not c.changed: c.setChanged(True)

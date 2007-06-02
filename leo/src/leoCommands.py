@@ -115,6 +115,9 @@ class baseCommands:
         # Official ivars.
         self.gui = g.app.gui
 
+        # Interlock to prevent setting c.changed when switching chapters.
+        c.suppressHeadChanged = False
+
         # Interlocks to prevent premature closing of a window.
         self.inCommand = False
         self.requestCloseWindow = False

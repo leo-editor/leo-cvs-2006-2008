@@ -478,10 +478,13 @@ class chapterController:
             oldChapter.unlink()
 
         # Set the current position first.
-        changed = c.changed # Kludge: c.selectPosition can change the dirty bit.
-        c.selectPosition(cc.savedCurrent)
-        if changed != c.changed:
-            c.setChanged(changed)
+        # Suppress onHeadChanged (called from c.selectPosition) so the dirty bit remains unchanged.
+        c.suppressHeadChanged = True
+        try:
+            c.selectPosition(cc.savedCurrent)
+        finally:
+            c.suppressHeadChanged = False
+
         cc.savedCurrent = None
 
         # Set the root position second, so it will be unaffected by c.selectPosition.
