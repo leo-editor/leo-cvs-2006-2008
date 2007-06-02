@@ -32849,17 +32849,12 @@ def createTab (self,tabName,select=True):
 def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
-    trace = False or self.trace
 
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tt.getTree(name)
 
-    # g.trace(name,g.callers())
-
-    if trace: g.trace(
-        'chapter',self.name,'w',w,
-        'selectEditor',selectEditor,'p',self.p and self.p.headString())
+    # g.trace(name,'self.p',self.p,'w.leo_p',w and w.leo_p)
 
     # First, switch roots.
     if name == 'main':
@@ -32878,8 +32873,8 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
         if p != w.leo_p: g.trace('****** can not happen: lost p',root,p)
     else:
         # This must be done *after* switching roots.
-        root = self.p or self.root.firstChild() or self.root
-        self.p = p = self.findPositionInChapter(root.v)
+        target_p = self.p or self.root.firstChild() or self.root
+        self.p = p = self.findPositionInChapter(target_p.v)
         if selectEditor:
             w = self.findEditorInChapter(p)
             c.frame.body.selectEditor(w) # Switches text.
@@ -34196,17 +34191,12 @@ def __init__ (self,c,parentFrame,chapterController):
 def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
-    trace = False or self.trace
 
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tt.getTree(name)
 
-    # g.trace(name,g.callers())
-
-    if trace: g.trace(
-        'chapter',self.name,'w',w,
-        'selectEditor',selectEditor,'p',self.p and self.p.headString())
+    # g.trace(name,'self.p',self.p,'w.leo_p',w and w.leo_p)
 
     # First, switch roots.
     if name == 'main':
@@ -34225,8 +34215,8 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
         if p != w.leo_p: g.trace('****** can not happen: lost p',root,p)
     else:
         # This must be done *after* switching roots.
-        root = self.p or self.root.firstChild() or self.root
-        self.p = p = self.findPositionInChapter(root.v)
+        target_p = self.p or self.root.firstChild() or self.root
+        self.p = p = self.findPositionInChapter(target_p.v)
         if selectEditor:
             w = self.findEditorInChapter(p)
             c.frame.body.selectEditor(w) # Switches text.
@@ -39026,12 +39016,20 @@ def findPositionInChapter (self,v):
 
     '''Return a valid position p such that p.v == v.'''
 
-    trace = False or self.trace
+    # Do nothing if the present position is in the proper chapter.
+    c = self.c ; p = self.p
+
+    root = g.choose(self.name=='main',self.root,self.root.firstChild())
+    # g.trace('root',root,'p',p)
+    if p and c.positionExists(p,root=root):
+        # g.trace('using existing position',p)
+        return p
+
 
     # This should work regardless of what chapter is selected.
     for p in self.c.allNodes_iter():
         if p.v == v:
-            if trace: g.trace('*** found in chapter',p)
+            # g.trace('*** found in chapter',p)
             return p
 
     if 0:
@@ -39045,8 +39043,8 @@ def findPositionInChapter (self,v):
         print '******* top-level nodes *****'
         for p in cc.mainRoot.self_and_siblings_iter():
             print p.headStirng()
+
     return self.root
-#@nonl
 #@-node:ekr.20070317131708:chapter.findPositionInChapter
 #@-node:ekr.20070509075654.1:Chapter selection stuff
 #@+node:ekr.20070509081411.2:Creating a new chapter
@@ -39488,17 +39486,12 @@ def printChaptersTree(self,tag=''):
 def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
-    trace = False or self.trace
 
     # The big switcharoo.
     c.frame.canvas = canvas = tt.getCanvas(name)
     c.frame.tree = tt.getTree(name)
 
-    # g.trace(name,g.callers())
-
-    if trace: g.trace(
-        'chapter',self.name,'w',w,
-        'selectEditor',selectEditor,'p',self.p and self.p.headString())
+    # g.trace(name,'self.p',self.p,'w.leo_p',w and w.leo_p)
 
     # First, switch roots.
     if name == 'main':
@@ -39517,8 +39510,8 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
         if p != w.leo_p: g.trace('****** can not happen: lost p',root,p)
     else:
         # This must be done *after* switching roots.
-        root = self.p or self.root.firstChild() or self.root
-        self.p = p = self.findPositionInChapter(root.v)
+        target_p = self.p or self.root.firstChild() or self.root
+        self.p = p = self.findPositionInChapter(target_p.v)
         if selectEditor:
             w = self.findEditorInChapter(p)
             c.frame.body.selectEditor(w) # Switches text.
@@ -39666,12 +39659,20 @@ def findPositionInChapter (self,v):
 
     '''Return a valid position p such that p.v == v.'''
 
-    trace = False or self.trace
+    # Do nothing if the present position is in the proper chapter.
+    c = self.c ; p = self.p
+
+    root = g.choose(self.name=='main',self.root,self.root.firstChild())
+    # g.trace('root',root,'p',p)
+    if p and c.positionExists(p,root=root):
+        # g.trace('using existing position',p)
+        return p
+
 
     # This should work regardless of what chapter is selected.
     for p in self.c.allNodes_iter():
         if p.v == v:
-            if trace: g.trace('*** found in chapter',p)
+            # g.trace('*** found in chapter',p)
             return p
 
     if 0:
@@ -39685,8 +39686,8 @@ def findPositionInChapter (self,v):
         print '******* top-level nodes *****'
         for p in cc.mainRoot.self_and_siblings_iter():
             print p.headStirng()
+
     return self.root
-#@nonl
 #@-node:ekr.20070317131708:chapter.findPositionInChapter
 #@+node:ekr.20070420173354:chapter.link/unlink
 #@+node:ekr.20070509081411:link
@@ -44408,25 +44409,27 @@ def deleteOutline (self,event=None,op_name="Delete Node"):
     c.validateOutline()
 #@-node:ekr.20031218072017.1193:c.deleteOutline
 #@+node:ekr.20040307104131.3:c.positionExists
-def positionExists(self,p):
+def positionExists(self,p,root=None):
 
     """Return True if a position exists in c's tree"""
 
-    c = self ; p = p.copy()
+    c = self ; p = p.copy() ; p2 = p.copy()
 
     # This code must be fast.
-    root = c.rootPosition()
+    if not root:
+        root = c.rootPosition()
 
     while p:
-        # g.trace(p.headString(),'parent',p.parent(),'back',p.back())
+        # g.trace(p.headString())
         if p.equal(root):
+            # g.trace('True')
             return True
         if p.hasParent():
             p.moveToParent()
         else:
             p.moveToBack()
 
-    # g.trace('does not exist in root:',root.headString())
+    # g.trace('False','p',p2,'root',root)
     return False
 #@-node:ekr.20040307104131.3:c.positionExists
 #@+node:ekr.20031218072017.2997:c.selectPosition
@@ -45239,6 +45242,160 @@ s = g.toUnicode(s or '',g.app.tkEncoding)
 #@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
 #@-node:ekr.20040803072955.91:onHeadChanged
 #@-node:ekr.20070601144529:Fixed recent bug: the Leo window is *always* dirty
+#@+node:ekr.20070602095306:Fixed bug that caused the wrong clone to be selected.
+@nocolor
+
+Selecting a node found the first node that matches, rather than the correct position.
+
+Example:
+
+A'
+- B
+A'
+- B
+
+A' are clones.
+
+Select the second B.
+Switch chapters, then back again.
+Now the first B is selected.
+
+@color
+#@nonl
+#@+node:ekr.20040326054052:setPositionsFromStacks (silly)
+def setPositionsFromStacks (self):
+
+    c = self.c
+
+    current = self.convertStackToPosition(self.currentVnodeStack)
+
+    if current:
+        # g.trace('using convertStackToPosition',current)
+        c.setCurrentPosition(current)
+    else:
+        # g.trace(self.currentVnodeStack)
+        c.setCurrentPosition(c.rootPosition())
+
+    # At present this is useless: the drawing code doesn't set the top position properly.
+    if 0:
+        top = self.convertStackToPosition(self.topVnodeStack)
+        if top:
+            c.setTopPosition(top)
+#@nonl
+#@-node:ekr.20040326054052:setPositionsFromStacks (silly)
+#@+node:ekr.20070317130250:cc.selectChapter
+def selectChapter (self,tabName):
+
+    cc = self ; chapter = cc.chaptersDict.get(tabName)
+
+    if chapter:
+        chapter.select()
+    else:
+        cc.error('cc.selectShapter: no such chapter: %s' % tabName)
+#@-node:ekr.20070317130250:cc.selectChapter
+#@+node:ekr.20070423102603.1:chapterSelectHelper
+def chapterSelectHelper (self,w=None,selectEditor=True):
+
+    c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
+
+    # The big switcharoo.
+    c.frame.canvas = canvas = tt.getCanvas(name)
+    c.frame.tree = tt.getTree(name)
+
+    # g.trace(name,'self.p',self.p,'w.leo_p',w and w.leo_p)
+
+    # First, switch roots.
+    if name == 'main':
+        c.setRootPosition(cc.mainRoot)
+    else:
+        self.unlink() # Sets root position.
+
+    cc.selectedChapter = self
+
+    # Next, recompute p and possibly select a new editor.
+    if w:
+        assert w == c.frame.body.bodyCtrl
+        assert w == c.frame.bodyCtrl
+        root = w.leo_p or self.root.firstChild() or self.root
+        self.p = p = self.findPositionInChapter(root.v)
+        if p != w.leo_p: g.trace('****** can not happen: lost p',root,p)
+    else:
+        # This must be done *after* switching roots.
+        target_p = self.p or self.root.firstChild() or self.root
+        self.p = p = self.findPositionInChapter(target_p.v)
+        if selectEditor:
+            w = self.findEditorInChapter(p)
+            c.frame.body.selectEditor(w) # Switches text.
+
+    c.beginUpdate()
+    try:
+        c.hoistStack = self.hoistStack[:]
+        c.selectPosition(p)
+    finally:
+        c.endUpdate()
+        c.bodyWantsFocusNow()
+#@nonl
+#@-node:ekr.20070423102603.1:chapterSelectHelper
+#@+node:ekr.20070317131708:chapter.findPositionInChapter
+def findPositionInChapter (self,v):
+
+    '''Return a valid position p such that p.v == v.'''
+
+    # Do nothing if the present position is in the proper chapter.
+    c = self.c ; p = self.p
+
+    root = g.choose(self.name=='main',self.root,self.root.firstChild())
+    # g.trace('root',root,'p',p)
+    if p and c.positionExists(p,root=root):
+        # g.trace('using existing position',p)
+        return p
+
+
+    # This should work regardless of what chapter is selected.
+    for p in self.c.allNodes_iter():
+        if p.v == v:
+            # g.trace('*** found in chapter',p)
+            return p
+
+    if 0:
+        self.error('***** findPositionInChapter: lost %s in %s' % (
+            v.t.headString,self.name))
+        g.trace(g.callers())
+
+    if 0: # This could crash.
+        cc = self.cc
+        print 'cc.mainRoot',cc.mainRoot
+        print '******* top-level nodes *****'
+        for p in cc.mainRoot.self_and_siblings_iter():
+            print p.headStirng()
+
+    return self.root
+#@-node:ekr.20070317131708:chapter.findPositionInChapter
+#@+node:ekr.20040307104131.3:c.positionExists
+def positionExists(self,p,root=None):
+
+    """Return True if a position exists in c's tree"""
+
+    c = self ; p = p.copy() ; p2 = p.copy()
+
+    # This code must be fast.
+    if not root:
+        root = c.rootPosition()
+
+    while p:
+        # g.trace(p.headString())
+        if p.equal(root):
+            # g.trace('True')
+            return True
+        if p.hasParent():
+            p.moveToParent()
+        else:
+            p.moveToBack()
+
+    # g.trace('False','p',p2,'root',root)
+    return False
+#@-node:ekr.20040307104131.3:c.positionExists
+#@-node:ekr.20070602095306:Fixed bug that caused the wrong clone to be selected.
 #@-node:ekr.20070528141848:Fixed bugs
 #@+node:ekr.20070528141848.1:Features
 #@+node:ekr.20070528073134:Supported write_strips_blank_lines option

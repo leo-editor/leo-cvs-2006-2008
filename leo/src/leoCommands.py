@@ -6334,25 +6334,27 @@ class baseCommands:
         return leoNodes.position(v,[])
     #@-node:ekr.20040311094927:c.nullPosition
     #@+node:ekr.20040307104131.3:c.positionExists
-    def positionExists(self,p):
+    def positionExists(self,p,root=None):
 
         """Return True if a position exists in c's tree"""
 
-        c = self ; p = p.copy()
+        c = self ; p = p.copy() ; p2 = p.copy()
 
         # This code must be fast.
-        root = c.rootPosition()
+        if not root:
+            root = c.rootPosition()
 
         while p:
-            # g.trace(p.headString(),'parent',p.parent(),'back',p.back())
+            # g.trace(p.headString())
             if p.equal(root):
+                # g.trace('True')
                 return True
             if p.hasParent():
                 p.moveToParent()
             else:
                 p.moveToBack()
 
-        # g.trace('does not exist in root:',root.headString())
+        # g.trace('False','p',p2,'root',root)
         return False
     #@-node:ekr.20040307104131.3:c.positionExists
     #@+node:ekr.20040803140033.2:c.rootPosition
