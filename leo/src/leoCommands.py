@@ -796,15 +796,7 @@ class baseCommands:
 
         '''Save a Leo outline to a file.'''
 
-        c = self ; trace = False
-        cc = c.config.getBool('use_chapters') and c.chapterController
-
-        oldChapter = cc and cc.forceMainChapter()
-
-        if trace and cc:
-            g.trace('cc',cc)
-            g.printEntireTree(c,'save:before')
-            cc.printChaptersTree('save:before')
+        c = self ; w = g.app.gui.get_focus(c)
 
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
@@ -836,15 +828,9 @@ class baseCommands:
                     c.frame.openDirectory = g.os_path_dirname(c.mFileName) # Bug fix in 4.4b2.
                     c.fileCommands.save(c.mFileName)
                     c.updateRecentFiles(c.mFileName)
-
-            if cc:
-                cc.restoreOldChapter(oldChapter)
         finally:
             c.endUpdate()
-
-        if trace and cc:
-            g.printEntireTree(c,'save:after')
-            cc.printChaptersTree('save:after')
+            c.widgetWantsFocus(w)
     #@nonl
     #@-node:ekr.20031218072017.2834:save (commands)
     #@+node:ekr.20031218072017.2835:saveAs
@@ -852,8 +838,7 @@ class baseCommands:
 
         '''Save a Leo outline to a file with a new filename.'''
 
-        c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
-        oldChapter = cc and cc.forceMainChapter()
+        c = self ;  w = g.app.gui.get_focus(c)
 
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
@@ -881,11 +866,9 @@ class baseCommands:
                 # Calls c.setChanged(False) if no error.
                 c.fileCommands.saveAs(c.mFileName)
                 c.updateRecentFiles(c.mFileName)
-
-            if cc:
-                cc.restoreOldChapter(oldChapter)
         finally:
             c.endUpdate()
+            c.widgetWantsFocus(w)
     #@-node:ekr.20031218072017.2835:saveAs
     #@+node:ekr.20070413045221:saveAsUnzipped & saveAsZipped
     def saveAsUnzipped (self,event=None):
@@ -915,8 +898,7 @@ class baseCommands:
 
         '''Save a Leo outline to a file, leaving the file associated with the Leo outline unchanged.'''
 
-        c = self ; cc = c.config.getBool('use_chapters') and c.chapterController
-        oldChapter = cc and cc.forceMainChapter()
+        c = self ; w = g.app.gui.get_focus(c)
 
         if g.app.disableSave:
             g.es("Save commands disabled",color="purple")
@@ -941,10 +923,9 @@ class baseCommands:
                 c.fileCommands.saveTo(fileName)
                 c.updateRecentFiles(fileName)
 
-            if cc:
-                cc.restoreOldChapter(oldChapter)
         finally:
             c.endUpdate()
+            c.widgetWantsFocus(w)
     #@-node:ekr.20031218072017.2836:saveTo
     #@+node:ekr.20031218072017.2837:revert
     def revert (self,event=None):
@@ -4711,42 +4692,6 @@ class baseCommands:
 
         c.treeFocusHelper()
     #@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
-    #@+node:ekr.20070410192154:getChaptersTree
-    def getChaptersTree (self):
-
-        '''return the node containing the active top-level @chapters tree.'''
-
-        c = self ; cc = c.chapterController
-
-        if cc and c.config.getBool('use_chapters'):
-            return cc.findChaptersNode()
-        else:
-            return None
-    #@-node:ekr.20070410192154:getChaptersTree
-    #@+node:ekr.20070417112650.1:getChapterTree
-    def getChapterTree (self,p):
-
-        '''return the @chapter node containing p or None.'''
-
-        c = self ; cc = c.chapterController
-
-        if cc and c.config.getBool('use_chapters'):
-            root = cc.findChaptersNode()
-            if root:
-                for p2 in root.children_iter():
-                    if p2.isAncestorOf(p):
-                        return p2
-
-        return None
-    #@-node:ekr.20070417112650.1:getChapterTree
-    #@+node:ekr.20070417112650.2:inChaptersTree
-    def inChaptersTree (self,p):
-
-        '''Return True if p is a descendant of the active @chapters tree.'''
-
-        p2 = self.getChaptersTree()
-        return p2 and (p2.equal(p) or p2.isAncestorOf(p))
-    #@-node:ekr.20070417112650.2:inChaptersTree
     #@-node:ekr.20070417112650:utils
     #@-node:ekr.20031218072017.2913:Goto
     #@+node:ekr.20031218072017.2922:Mark...
@@ -6539,7 +6484,7 @@ class baseCommands:
 
         """Set the root positioin."""
 
-        c = self ; cc = c.chapterController
+        c = self
 
         # g.trace(p and p.headString(),g.callers())
 
@@ -6550,8 +6495,6 @@ class baseCommands:
             else:
                 # We must make a copy _now_.
                 c._rootPosition = p.copy()
-            if cc:
-                cc.setRoot(p.copy())
         else:
             c._rootPosition = None
     #@nonl
