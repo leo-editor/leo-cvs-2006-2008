@@ -1156,7 +1156,7 @@ class leoBody:
         self.bodyCtrl = self.frame.bodyCtrl = old_w
     #@nonl
     #@-node:ekr.20060530204135:recolorWidget
-    #@+node:ekr.20070424084012:switchToChapter
+    #@+node:ekr.20070424084012:switchToChapter (leoBody)
     def switchToChapter (self,w):
 
         '''select w.leo_chapter.'''
@@ -1169,12 +1169,9 @@ class leoBody:
             oldChapter = cc.getSelectedChapter()
             if chapter != oldChapter:
                 # g.trace('===','old',oldChapter.name,'new',name,w.leo_p)
-
-                # This generate the events needed.
-                # Do **nothing** else.
-                cc.tt.selectTab(name)
+                cc.selectChapterByName(name)
                 c.bodyWantsFocusNow()
-    #@-node:ekr.20070424084012:switchToChapter
+    #@-node:ekr.20070424084012:switchToChapter (leoBody)
     #@+node:ekr.20070424092855:updateInjectedIvars
     # Called from addEditor and assignPositionToEditor.
 
@@ -1609,10 +1606,7 @@ class leoFrame:
                 #@-node:ekr.20031218072017.3693:<< Put up a file save dialog to set mFileName >>
                 #@nl
             if c.mFileName:
-                cc = c.config.getBool('use_chapters') and c.chapterController
-                oldChapter = cc and cc.forceMainChapter()
                 ok = c.fileCommands.save(c.mFileName)
-                if cc: cc.restoreOldChapter(oldChapter)
                 return not ok # New in 4.2: Veto if the save did not succeed.
             else:
                 return True # Veto.
@@ -2747,54 +2741,6 @@ class leoTree:
     #@-node:ekr.20031218072017.3718:oops
     #@-others
 #@-node:ekr.20031218072017.3704:class leoTree
-#@+node:ekr.20070317073627:class leoTreeTab
-class leoTreeTab:
-
-    '''A class representing a tabbed outline pane.'''
-
-    #@    @+others
-    #@+node:ekr.20070317073627.1: ctor (leoTreeTab)
-    def __init__ (self,c,chapterController,parentFrame):
-
-        self.c = c
-        self.cc = chapterController
-        self.nb = None # Created in createControl.
-        self.parentFrame = parentFrame
-
-        self.selectedTabBackgroundColor = c.config.getColor(
-            'selected_chapter_tab_background_color') or 'LightSteelBlue2'
-
-        self.selectedTabForegroundColor = c.config.getColor(
-            'selected_chapter_tab_foreground_color') or 'black'
-
-        self.unselectedTabBackgroundColor = c.config.getColor(
-            'unselected_chapter_tab_background_color') or 'lightgrey'
-
-        self.unselectedTabForegroundColor = c.config.getColor(
-            'unselected_chapter_tab_foreground_color') or 'black'
-    #@-node:ekr.20070317073627.1: ctor (leoTreeTab)
-    #@+node:ekr.20070317073755:Must be defined in subclasses
-    def createControl (self):
-        self.oops()
-
-    def createTab (self,tabName,select=True):
-        self.oops()
-
-    def destroyTab (self,tabName):
-        self.oops()
-
-    def selectTab (self,tabName):
-        self.oops()
-    #@nonl
-    #@-node:ekr.20070317073755:Must be defined in subclasses
-    #@+node:ekr.20070317083104:oops
-    def oops(self):
-
-        print "leoTreeTree oops:", g.callers(), "should be overridden in subclass"
-    #@-node:ekr.20070317083104:oops
-    #@-others
-#@nonl
-#@-node:ekr.20070317073627:class leoTreeTab
 #@+node:ekr.20031218072017.2191:class nullBody (leoBody)
 class nullBody (leoBody):
 

@@ -1163,7 +1163,7 @@ class leoTkinterTree (leoFrame.leoTree):
         self.drag_p = None # Disable drags across redraws.
         self.dragging = False
         if trace:
-            g.trace(self.redrawCount,g.callers())
+            g.trace('redrawCount',self.redrawCount,'len(c.hoistStack)',len(c.hoistStack)) # g.callers())
             if 0:
                 delta = g.app.positions - self.prevPositions
                 g.trace("**** gen: %-3d positions: %5d +%4d" % (
