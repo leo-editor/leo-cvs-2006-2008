@@ -10215,7 +10215,9 @@ def finishCreate (self,c):
     f = self ; f.c = c
     # g.trace('tkFrame')
 
-    self.use_chapters = True and c.config.getBool('use_chapters')
+    self.trace_status_line = c.config.getBool('trace_status_line')
+    self.use_chapters      = c.config.getBool('use_chapters')
+    self.use_chapter_tabs  = c.config.getBool('use_chapter_tabs')
 
     # This must be done after creating the commander.
     f.splitVerticalFlag,f.ratio,f.secondary_ratio = f.initialRatios()
@@ -10232,7 +10234,7 @@ def finishCreate (self,c):
     c.signOnWithVersion()
     f.miniBufferWidget = f.createMiniBufferWidget()
     c.bodyWantsFocusNow()
-    self.trace_status_line = c.config.getBool('trace_status_line')
+
     # f.enableTclTraces()
 #@+node:ekr.20051009044751:createOuterFrames
 def createOuterFrames (self):
@@ -10273,6 +10275,9 @@ def createSplitterComponents (self):
     if self.use_chapters:
         c.chapterController = cc = leoChapters.chapterController(c)
 
+    if self.use_chapters and self.use_chapter_tabs:
+        cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+
     f.canvas = f.createCanvas(f.split2Pane1)
     f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
     f.log    = leoTkinterLog(f,f.split2Pane2)
@@ -10286,7 +10291,6 @@ def createSplitterComponents (self):
     f.reconfigurePanes()
     f.body.setFontFromConfig()
     f.body.setColorFromConfig()
-#@nonl
 #@-node:ekr.20051009045208:createSplitterComponents
 #@+node:ekr.20051009045404:createFirstTreeNode
 def createFirstTreeNode (self):
@@ -18145,7 +18149,7 @@ class leoBody:
 def __init__ (self,frame,parentFrame):
 
     self.frame = frame
-    self.c = frame.c
+    self.c = c = frame.c
     self.editorWidgets = {} # keys are pane names, values are text widgets
     self.forceFullRecolorFlag = False
     frame.body = self
@@ -18154,6 +18158,8 @@ def __init__ (self,frame,parentFrame):
     self.bodyCtrl = self.widget = None ### self
     self.numberOfEditors = 1
     self.pb = None # paned body widget.
+
+    self.use_chapters = c.config.getBool('use_chapters')
 
     # Must be overridden in subclasses...
     self.colorizer = None
@@ -18534,7 +18540,7 @@ def createChapterIvar (self,w):
     c = self.c ; cc = c.chapterController
 
     if not hasattr(w,'leo_chapter') or not w.leo_chapter:
-        if cc and c.config.getBool('use_chapters'):
+        if cc and self.use_chapters: ### c.config.getBool('use_chapters'):
             w.leo_chapter = cc.getSelectedChapter()
         else:
             w.leo_chapter = None
@@ -18621,7 +18627,7 @@ def updateInjectedIvars (self,w,p):
 
     c = self.c ; cc = c.chapterController ; 
 
-    if cc and c.config.getBool('use_chapters'):
+    if cc and self.use_chapters: ### c.config.getBool('use_chapters'):
         w.leo_chapter = cc.getSelectedChapter()
     else:
         w.leo_chapter = None
@@ -32435,6 +32441,9 @@ def createSplitterComponents (self):
     if self.use_chapters:
         c.chapterController = cc = leoChapters.chapterController(c)
 
+    if self.use_chapters and self.use_chapter_tabs:
+        cc.tt = leoTkinterTreeTab(c,f.split2Pane1,cc)
+
     f.canvas = f.createCanvas(f.split2Pane1)
     f.tree   = leoTkinterTree.leoTkinterTree(c,f,f.canvas)
     f.log    = leoTkinterLog(f,f.split2Pane2)
@@ -32448,35 +32457,22 @@ def createSplitterComponents (self):
     f.reconfigurePanes()
     f.body.setFontFromConfig()
     f.body.setColorFromConfig()
-#@nonl
 #@-node:ekr.20051009045208:createSplitterComponents
 #@+node:ekr.20070317074824:tt.createTab
 def createTab (self,tabName,select=True):
 
-    tt = self ; c = tt.c ; cc = self.cc ; f = c.frame ; nb = tt.nb
+    tt = self
 
-    parentFrame = nb.add(tabName) # page is a Tk.Frame.
-    self.tabNames.append(tabName)
-
-    b = nb.tab(tabName) # b is a Tk.Button.
-
-    if select:  self.setSelectColor(b)
-    else:       self.setUnselectColor(b)
-
-    canvas = c.frame.createCanvas(parentFrame)
-    tree = leoTkinterTree.leoTkinterTree(c,f,canvas)
-
-    tt.buttonsDict [tabName ] = b
-    tt.canvasDict [tabName] = canvas
-    tt.stringVarDict [tabName] = Tk.StringVar()
-    tt.treeDict [tabName] = tree
+    if tabName not in tt.tabNames:
+        tt.tabNames.append(tabName)
+        tt.chapterMenu.setitems(tt.tabNames)
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070423102603.1:chapterSelectHelper
 def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; name = self.name
 
-    g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
+    # g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
 
     cc.selectedChapter = self
 
@@ -32485,7 +32481,6 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
         assert w == c.frame.body.bodyCtrl
         assert w == c.frame.bodyCtrl
         assert w.leo_p
-        ### root = w.leo_p or self.root.firstChild() or self.root
         self.p = p = self.findPositionInChapter(w.leo_p)
         if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p)
     else:
@@ -32549,15 +32544,12 @@ self.textBindings = w.bindtags()
 #@+node:ekr.20070317074824.3:tt.selectTab
 def selectTab (self,tabName):
 
-    c = self.c
-
-    g.trace(tabName)
+    tt = self
 
     if tabName not in self.tabNames:
-        self.createTab(tabName)
+        tt.createTab(tabName)
 
-    # This will indirectly invoke chapter.select.
-    self.nb.selectpage(tabName)
+    tt.cc.selectChapterByName(tabName)
 #@-node:ekr.20070317074824.3:tt.selectTab
 #@+node:ekr.20031218072017.1975:destroyAllObjects
 def destroyAllObjects (self):
@@ -35371,7 +35363,7 @@ def finishCreate (self):
     tag = '@chapter'
     for p in c.allNodes_iter():
         h = p.headString()
-        if h.startswith(tag):
+        if h.startswith(tag) and not h.startswith('@chapters'):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main',):
                 if cc.chaptersDict.get(tabName):
@@ -35380,7 +35372,6 @@ def finishCreate (self):
                     cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
 
     cc.selectChapterByName('main')
-#@nonl
 #@-node:ekr.20070325104904:cc.finishCreate
 #@+node:ekr.20061031131434.146:masterKeyHandler
 master_key_count = 0
@@ -36685,7 +36676,7 @@ def finishCreate (self):
     tag = '@chapter'
     for p in c.allNodes_iter():
         h = p.headString()
-        if h.startswith(tag):
+        if h.startswith(tag) and not h.startswith('@chapters'):
             tabName = h[len(tag):].strip()
             if tabName and tabName not in ('main',):
                 if cc.chaptersDict.get(tabName):
@@ -36694,7 +36685,6 @@ def finishCreate (self):
                     cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
 
     cc.selectChapterByName('main')
-#@nonl
 #@-node:ekr.20070325104904:cc.finishCreate
 #@+node:ekr.20051024102724:tkTtree.setBindings
 def setBindings (self,):
@@ -41580,7 +41570,7 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; name = self.name
 
-    g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
+    # g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
 
     cc.selectedChapter = self
 
@@ -41589,7 +41579,6 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
         assert w == c.frame.body.bodyCtrl
         assert w == c.frame.bodyCtrl
         assert w.leo_p
-        ### root = w.leo_p or self.root.firstChild() or self.root
         self.p = p = self.findPositionInChapter(w.leo_p)
         if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p)
     else:

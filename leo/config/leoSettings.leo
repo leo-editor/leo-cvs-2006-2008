@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="681" width="941"/>
+	<global_window_position top="10" left="238" height="661" width="941"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -50,7 +50,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
+<v t="ekr.20061011082224" a="E"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = True</vh></v>
@@ -60,6 +60,7 @@
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060122105527.7"><vh>@bool stayInTreeAfterSelect = True</vh></v>
 <v t="ekr.20060215104345"><vh>@bool swap_mac_keys = False</vh></v>
+<v t="ekr.20070604075218" a="TV"><vh>@bool use_chapter_tabs = True</vh></v>
 <v t="ekr.20070318065601"><vh>@bool use_chapters = True</vh></v>
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
@@ -82,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -545,7 +546,7 @@
 <v t="ekr.20041119034357.35"><vh>@bool run_tangle_done.py = False</vh></v>
 <v t="ekr.20041119034357.36"><vh>@bool run_untangle_done.py = False</vh></v>
 </v>
-<v t="ekr.20051025084017" a="TV" annotate="7d71002e"><vh>Spell tab</vh>
+<v t="ekr.20051025084017" annotate="7d71002e"><vh>Spell tab</vh>
 <v t="ekr.20051025084017.1"><vh>@string aspell_local_language_code = en</vh></v>
 <v t="ekr.20051025084017.2"><vh>@string aspell_local_dictionary = None</vh></v>
 <v t="ekr.20051025085144"><vh>@string aspell_dir = c:\aspell</vh></v>
@@ -604,6 +605,7 @@
 <v t="ekr.20041119050749.18"><vh>@bool outline_pane_scrolls_horizontally = True</vh></v>
 <v t="ekr.20061002115414.1"><vh>@float outline_nav_extend_delay = 2.0</vh></v>
 <v t="ekr.20070318065601"><vh>@bool use_chapters = True</vh></v>
+<v t="ekr.20070604075218"><vh>@bool use_chapter_tabs = True</vh></v>
 </v>
 <v t="ekr.20041213105954.2"><vh>Splitter options</vh>
 <v t="ekr.20041119034357.68"><vh>@string split_bar_relief = groove</vh></v>
@@ -6382,8 +6384,8 @@ UNL.py
 #xemacs.py
 #xsltWithNodes.py
 #zodb.py</t>
-<t tx="ekr.20070318065601">True: Chapter tabs are enabled in the outline pane, and chapter commands are functional.
-False: Chapter tabs are disabled, as are chapter commands.</t>
+<t tx="ekr.20070318065601">True:  Chapter commands are functional.
+False: Chapter commands do not exists.</t>
 <t tx="ekr.20070326094544"></t>
 <t tx="ekr.20070326094544.1"></t>
 <t tx="ekr.20070411101857"></t>
@@ -6438,5 +6440,7 @@ tables in the plugin itself.</t>
 False: Leo leaves body text alone when writing @nosent trees.</t>
 <t tx="ekr.20070503080312">True: trace storage allocation in Leo's tree.</t>
 <t tx="ekr.20070531103454"></t>
+<t tx="ekr.20070604075218">True:  Chapter tabs appear in the outline pane.
+False: Chapter tabs do not appear.</t>
 </tnodes>
 </leo_file>
