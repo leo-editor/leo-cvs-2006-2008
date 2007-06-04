@@ -84,35 +84,28 @@ class chapterController:
     #@+node:ekr.20070317085437.31:cc.createChapter
     def createChapter (self,event=None,name=None):
 
+        ### To do: use minibuffer to get the chapter name,
+        ### Then call cc.createChapterByName.
+
+        pass
+    #@nonl
+    #@-node:ekr.20070317085437.31:cc.createChapter
+    #@+node:ekr.20070603190617:c.createChapterByName
+    def createChapterByName (self,name):
+
         cc = self ; c = cc.c
 
-        if name:
-            tabName = name
-        else:
-            # Find an unused name.  This is *not* 1 + the present number of chapters.
-            # The **immutable** chapter name is 'Chapter n'.
-            n  = 1
-            while True:
-                tabName = 'Chapter %d' % n
-                if self.chaptersDict.get(tabName):
-                    n += 1
-                else:
-                    break
+        if not name:
+            return cc.error('No name')
 
-        if name not in ('main',):
-            root = cc.getChapterNode(tabName) # Creates @chapter node and one child.
-            cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=root)
-            ###tt.createTab(tabName)
-            ###tt.makeTabMenu(tabName)
-            ###tree = tt.getTree(tabName)
-            ###tree.setBindings()
-            ###tt.selectTab(tabName)
-            c.redraw_now()
-            ###tt.renameChapterHelper(cc,tabName)
+        theChapter = cc.chaptersDict.get(name)
+        if theChapter:
+            return cc.error('Duplicate chapter name: %s' % name)
 
-        # tt.selectTab unselects the previous chapter and selects the present chapter.
-        c.bodyWantsFocusNow()
-    #@-node:ekr.20070317085437.31:cc.createChapter
+        root = cc.getChapterNode(name) # Creates @chapter node and one child.
+        cc.chaptersDict[name] = chapter(c=c,chapterController=cc,name=name,root=root)
+        cc.selectChapterByName(name)
+    #@-node:ekr.20070603190617:c.createChapterByName
     #@+node:ekr.20070317085437.40:cc.removeChapter
     def removeChapter (self,event=None):
 

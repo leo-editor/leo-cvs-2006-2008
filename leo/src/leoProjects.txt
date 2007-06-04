@@ -34794,34 +34794,11 @@ def renameChapterHelper (self,cc,tabName):
 #@+node:ekr.20070317085437.31:cc.createChapter
 def createChapter (self,event=None,name=None):
 
-    cc = self ; c = cc.c
+    ### To do: use minibuffer to get the chapter name,
+    ### Then call cc.createChapterByName.
 
-    if name:
-        tabName = name
-    else:
-        # Find an unused name.  This is *not* 1 + the present number of chapters.
-        # The **immutable** chapter name is 'Chapter n'.
-        n  = 1
-        while True:
-            tabName = 'Chapter %d' % n
-            if self.chaptersDict.get(tabName):
-                n += 1
-            else:
-                break
-
-    if name not in ('main',):
-        root = cc.getChapterNode(tabName) # Creates @chapter node and one child.
-        cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=root)
-        ###tt.createTab(tabName)
-        ###tt.makeTabMenu(tabName)
-        ###tree = tt.getTree(tabName)
-        ###tree.setBindings()
-        ###tt.selectTab(tabName)
-        c.redraw_now()
-        ###tt.renameChapterHelper(cc,tabName)
-
-    # tt.selectTab unselects the previous chapter and selects the present chapter.
-    c.bodyWantsFocusNow()
+    pass
+#@nonl
 #@-node:ekr.20070317085437.31:cc.createChapter
 #@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
 def createTopLevelMenuItems (self,tmenu):
