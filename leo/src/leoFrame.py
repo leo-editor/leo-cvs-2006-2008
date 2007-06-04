@@ -697,7 +697,7 @@ class leoBody:
     def __init__ (self,frame,parentFrame):
 
         self.frame = frame
-        self.c = frame.c
+        self.c = c = frame.c
         self.editorWidgets = {} # keys are pane names, values are text widgets
         self.forceFullRecolorFlag = False
         frame.body = self
@@ -706,6 +706,8 @@ class leoBody:
         self.bodyCtrl = self.widget = None ### self
         self.numberOfEditors = 1
         self.pb = None # paned body widget.
+
+        self.use_chapters = c.config.getBool('use_chapters')
 
         # Must be overridden in subclasses...
         self.colorizer = None
@@ -1092,7 +1094,7 @@ class leoBody:
         c = self.c ; cc = c.chapterController
 
         if not hasattr(w,'leo_chapter') or not w.leo_chapter:
-            if cc and c.config.getBool('use_chapters'):
+            if cc and self.use_chapters: ### c.config.getBool('use_chapters'):
                 w.leo_chapter = cc.getSelectedChapter()
             else:
                 w.leo_chapter = None
@@ -1179,7 +1181,7 @@ class leoBody:
 
         c = self.c ; cc = c.chapterController ; 
 
-        if cc and c.config.getBool('use_chapters'):
+        if cc and self.use_chapters: ### c.config.getBool('use_chapters'):
             w.leo_chapter = cc.getSelectedChapter()
         else:
             w.leo_chapter = None
@@ -2741,6 +2743,54 @@ class leoTree:
     #@-node:ekr.20031218072017.3718:oops
     #@-others
 #@-node:ekr.20031218072017.3704:class leoTree
+#@+node:ekr.20070317073627:class leoTreeTab
+class leoTreeTab:
+
+    '''A class representing a tabbed outline pane.'''
+
+    #@    @+others
+    #@+node:ekr.20070317073627.1: ctor (leoTreeTab)
+    def __init__ (self,c,chapterController,parentFrame):
+
+        self.c = c
+        self.cc = chapterController
+        self.nb = None # Created in createControl.
+        self.parentFrame = parentFrame
+
+        self.selectedTabBackgroundColor = c.config.getColor(
+            'selected_chapter_tab_background_color') or 'LightSteelBlue2'
+
+        self.selectedTabForegroundColor = c.config.getColor(
+            'selected_chapter_tab_foreground_color') or 'black'
+
+        self.unselectedTabBackgroundColor = c.config.getColor(
+            'unselected_chapter_tab_background_color') or 'lightgrey'
+
+        self.unselectedTabForegroundColor = c.config.getColor(
+            'unselected_chapter_tab_foreground_color') or 'black'
+    #@-node:ekr.20070317073627.1: ctor (leoTreeTab)
+    #@+node:ekr.20070317073755:Must be defined in subclasses
+    def createControl (self):
+        self.oops()
+
+    def createTab (self,tabName,select=True):
+        self.oops()
+
+    def destroyTab (self,tabName):
+        self.oops()
+
+    def selectTab (self,tabName):
+        self.oops()
+    #@nonl
+    #@-node:ekr.20070317073755:Must be defined in subclasses
+    #@+node:ekr.20070317083104:oops
+    def oops(self):
+
+        print "leoTreeTree oops:", g.callers(), "should be overridden in subclass"
+    #@-node:ekr.20070317083104:oops
+    #@-others
+#@nonl
+#@-node:ekr.20070317073627:class leoTreeTab
 #@+node:ekr.20031218072017.2191:class nullBody (leoBody)
 class nullBody (leoBody):
 

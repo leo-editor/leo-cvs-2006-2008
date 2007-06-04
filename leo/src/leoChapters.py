@@ -33,6 +33,10 @@ class chapterController:
         self.chaptersNode = None # Set later
         self.selectedChapter = None
         self.trace = False
+        self.tt = None # May be set in finishCreate.
+        self.use_tabs = c.config.getBool('use_chapter_tabs')
+
+        # g.trace('chapterController','use_tabs',self.use_tabs)
     #@-node:ekr.20070317085437.2: ctor: chapterController
     #@+node:ekr.20070325104904:cc.finishCreate
     def finishCreate (self):
@@ -54,7 +58,7 @@ class chapterController:
         tag = '@chapter'
         for p in c.allNodes_iter():
             h = p.headString()
-            if h.startswith(tag):
+            if h.startswith(tag) and not h.startswith('@chapters'):
                 tabName = h[len(tag):].strip()
                 if tabName and tabName not in ('main',):
                     if cc.chaptersDict.get(tabName):
@@ -63,23 +67,22 @@ class chapterController:
                         cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
 
         cc.selectChapterByName('main')
-    #@nonl
     #@-node:ekr.20070325104904:cc.finishCreate
     #@-node:ekr.20070530075604:Birth
-    #@+node:ekr.20070320091806:Callbacks (chapter)
-    def selectCallback (self,tabName):
+    #@+node:ekr.20070320091806:Callbacks (chapter) NOT USED
+    # def selectCallback (self,tabName):
 
-        cc = self ; chapter = cc.chaptersDict.get(tabName)
-        if chapter:
-            chapter.select()
+        # # cc = self ; chapter = cc.chaptersDict.get(tabName)
+        # # if chapter:
+            # # chapter.select()
 
-    def unselectCallback (self,tabName):
+    # def unselectCallback (self,tabName):
 
-        cc = self ; chapter = cc.chaptersDict.get(tabName)
-        if chapter:
-            chapter.unselect()
+        # cc = self ; chapter = cc.chaptersDict.get(tabName)
+        # if chapter:
+            # chapter.unselect()
     #@nonl
-    #@-node:ekr.20070320091806:Callbacks (chapter)
+    #@-node:ekr.20070320091806:Callbacks (chapter) NOT USED
     #@+node:ekr.20070317085437.30:Chapter commands
     #@+node:ekr.20070317085437.31:cc.createChapter
     def createChapter (self,event=None,name=None):
@@ -492,7 +495,7 @@ class chapter:
     def __init__ (self,c,chapterController,name,root):
 
         self.c = c 
-        self.cc = chapterController
+        self.cc = cc = chapterController
         self.hoistStack = []
         self.name = name
         self.selectLockout = False # True: in chapter.select logic.
@@ -507,6 +510,9 @@ class chapter:
             self.root = root and root.copy() # The immutable @chapter node.
             bunch = g.Bunch(p=self.root.copy(),expanded=True)
             self.hoistStack.append(bunch)
+
+        if cc.tt:
+            cc.tt.createTab(name)
 
         # g.trace('chapter',self.name,'root',root)
     #@-node:ekr.20070317085708.1: ctor: chapter
@@ -543,7 +549,7 @@ class chapter:
 
         c = self.c ; cc = self.cc ; name = self.name
 
-        g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
+        # g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
 
         cc.selectedChapter = self
 
@@ -552,7 +558,6 @@ class chapter:
             assert w == c.frame.body.bodyCtrl
             assert w == c.frame.bodyCtrl
             assert w.leo_p
-            ### root = w.leo_p or self.root.firstChild() or self.root
             self.p = p = self.findPositionInChapter(w.leo_p)
             if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p)
         else:
