@@ -4135,7 +4135,7 @@ def test_failure_with_ascii_encodings():
 if g.app and g.app.unitTesting:
 
     def sendEmail(self):
-        g.trace('self',self,'p',p.headString())
+        pass # g.trace('self',self,'p',p.headString())
 
     class test:
         pass
