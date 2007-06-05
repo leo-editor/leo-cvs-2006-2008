@@ -1172,12 +1172,17 @@ class leoTkinterTree (leoFrame.leoTree):
         self.prevPositions = g.app.positions
         if self.trace_gc: g.printNewObjects(tag='top 1')
 
+        hoistFlag = c.hoistStack
         if c.hoistStack:
             bunch = c.hoistStack[-1] ; p = bunch.p
+            h = p.headString()
+            if len(c.hoistStack) == 1 and h.startswith('@chapter') and p.hasChildren():
+                p = p.firstChild()
+                hoistFlag = False
         else:
             p = c.rootPosition()
 
-        self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=c.hoistStack)
+        self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=hoistFlag)
 
         if self.trace_gc: g.printNewObjects(tag='top 2')
         if self.trace_stats: self.showStats()
