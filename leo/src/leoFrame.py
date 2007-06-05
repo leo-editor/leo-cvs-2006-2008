@@ -2781,6 +2781,9 @@ class leoTreeTab:
 
     def selectTab (self,tabName):
         self.oops()
+
+    def setTabLabel(self,tabName):
+        self.oops()
     #@nonl
     #@-node:ekr.20070317073755:Must be defined in subclasses
     #@+node:ekr.20070317083104:oops
