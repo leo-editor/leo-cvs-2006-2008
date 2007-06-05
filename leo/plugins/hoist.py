@@ -7,14 +7,11 @@
 #@+at
 # 
 # 0.1: Original version by Davide Salomoni.
-# 0.2 EKR:
-#     - Color mod
-# 0.3 DS:
-#     - Works with multiple open files.
-# 0.4 EKR:
-#     - 4.2 coding style, enable or disable buttons, support for unit tests.
-# 0.5 EKR:
-#     - Use constant size for non Windows platforms.
+# 0.2 EKR: Color mod
+# 0.3 DS:  Works with multiple open files.
+# 0.4 EKR: 4.2 coding style, enable or disable buttons, support for unit 
+# tests.
+# 0.5 EKR: Use constant size for non Windows platforms.
 # 0.6: EKR:
 #     - Added USE_SIZER and USE_FIXED_SIZES.
 #       When USE_SIZER is False (recommended), the code creates buttons using 
@@ -22,19 +19,19 @@
 # 0.7 EKR:
 #     - Created a separate class for each commander.
 #     - Simplified the code a bit: no need for independent callbacks.
-# 0.8 EKR:
-#     - Use g.importExtension to import Tkinter as Tk.
-# 0.9 EKR:
-#     - Make sure self.c == keywords.get('c') in all hook handlers.
+# 0.8 EKR: Use g.importExtension to import Tkinter as Tk.
+# 0.9 EKR: Make sure self.c == keywords.get('c') in all hook handlers.
+# 1.0 EKR: Added support for chapters: don't allow a dehoist of an @chapter 
+# node.
 #@-at
 #@nonl
 #@-node:ekr.20040908093511:<< change history >>
 #@nl
 
-__version__ = "0.9"
+__version__ = "1.0"
 
-#@<< hoist.py imports >>
-#@+node:ekr.20040908093511.1:<< hoist.py imports >>
+#@<< imports >>
+#@+node:ekr.20040908093511.1:<< imports >>
 import leoGlobals as g
 import leoPlugins
 
@@ -42,7 +39,7 @@ Tk = g.importExtension('Tkinter')
 
 import sys
 #@nonl
-#@-node:ekr.20040908093511.1:<< hoist.py imports >>
+#@-node:ekr.20040908093511.1:<< imports >>
 #@nl
 
 activeHoistColor = "pink1" # The Tk color to use for the active hoist button.
@@ -116,7 +113,8 @@ class HoistButtons:
         """Add the widgets to the toolbar."""
 
         c = self.c
-        toolbar = c.frame.iconFrame
+        toolbar = c.frame.iconBar
+        if not toolbar: return
 
         def hoistOffCallback():
             c.dehoist()
@@ -125,26 +123,30 @@ class HoistButtons:
             c.hoist()
 
         if USE_SIZER: # original code
-            self.hoistOff[c] = b = Tk.Button(
-                self._getSizer(toolbar, SIZER_HEIGHT, SIZER_WIDTH),text="De-Hoist",
-                command = hoistOffCallback)
-            b.pack(side="right", fill="both", expand=1)
-            self.hoistOn[c] = b = Tk.Button(
+            self.hoistOn[c] = b1 = Tk.Button(
                 self._getSizer(toolbar, SIZER_HEIGHT, SIZER_WIDTH),text="Hoist", 
                 command = hoistOnCallback)
-            b.pack(side="left", fill="both", expand=1)
+            b1.pack(side="left", fill="both", expand=1)
+            self.hoistOff[c] = b2 = Tk.Button(
+                self._getSizer(toolbar, SIZER_HEIGHT, SIZER_WIDTH),text="De-Hoist",
+                command = hoistOffCallback)
+            b2.pack(side="right", fill="both", expand=1)
+
         else: # Use addIconButton for better visual compatibility.
             self.hoistOn[c] = b1 = c.frame.addIconButton(text="Hoist")
             b1.configure(command = hoistOnCallback)
             self.hoistOff[c] = b2 = c.frame.addIconButton(text="De-Hoist")
             b2.configure(command = hoistOffCallback)
-            if 1: # use this to force the buttons to the right.
-                b1.pack(side="right", fill="y", expand=0)
-                b2.pack(side="right", fill="y", expand=0)
+            if g.app.gui.guiName() == 'tkinter' and sys.platform == "win32":
+                for b in (b1,b2):
+                    #s = b.cget('text')
+                    #width = int(len(s) * 0.9)
+                    b.configure(font=('verdana',7,'bold'))
+            b1.pack(side='left', fill="none")
+            b2.pack(side='left', fill="none")
 
-        self.bgColor = self.hoistOn[c]["background"]
-        self.activeBgColor = self.hoistOn[c]["activebackground"]
-    #@nonl
+        self.bgColor = b1.cget("background")
+        self.activeBgColor = b1.cget("activebackground")
     #@-node:ekr.20040331072607.4:addWidgets
     #@+node:ekr.20040331072607.7:onIdle
     def onIdle(self,tag,keywords):
@@ -171,10 +173,11 @@ class HoistButtons:
         state = g.choose(c.canDehoist(),"normal","disabled")
         off_widget.config(state=state)
 
-        if len(c.hoistStack) > 0:
+        n = c.hoistLevel()
+        if n > 0:
             on_widget.config(bg=activeHoistColor,
                 activebackground=activeHoistColor,
-                text="Hoist %s" % len(c.hoistStack))
+                text="Hoist %s" % n)
         else:
             on_widget.config(bg=self.bgColor,
                 activebackground=self.activeBgColor,
