@@ -2896,7 +2896,6 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         leoFrame.leoTreeTab.__init__ (self,c,chapterController,parentFrame)
             # Init the base class.  Sets self.c, self.cc and self.parentFrame.
 
-        ### self.selectLockout = False # True: do not call chapter.select in raiseTab.
         self.tabNames = []
         self.trace = True
 
@@ -2904,11 +2903,6 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         # Important: tabNames never change, even if their button text changes
 
         self.buttonsDict = {} # values are Tk.Button's.
-
-        ###self.canvasDict = {} # values are Tk.Canvas's.
-        ###self.chapterDict = {} # values are chapters.
-        ###self.stringVarDict = {} # values are Tk.StringVars.
-        ###self.treeDict = {} # values are tkTrees.
 
         self.createControl()
     #@-node:ekr.20070317073819.1: ctor (leoTreeTab)
@@ -2922,7 +2916,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         tt.frame.pack(side="left")
 
         # Create the chapter menu.
-        var = Tk.StringVar()
+        self.chapterVar = var = Tk.StringVar()
         var.set('main')
         tt.chapterMenu = menu = Pmw.OptionMenu(tt.frame,
             labelpos = 'w', label_text = 'chapter',
@@ -2932,48 +2926,25 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         )
         menu.pack(side='left',padx=5)
 
-        # Create the commands menu
-        tt.commandsVar = var = Tk.StringVar()
-        var.set('chapter ops')
-        tt.commandsMenu = menu = Pmw.OptionMenu(tt.frame,
-            menubutton_textvariable = var,
-            items = [
-                'New Chapter',
-                'Remove This Chapter',
-                'Rename This Chapter...',
-                'Clone Node To Chapter...',
-                'Copy Node To Chapter...',
-                'Move Node To Chapter...',
-            ],
-            command = tt.doCommand,
-        )
-        menu.pack(side='left',padx=5)
+        if 0: # It's better to use items in the Cmds menu.
+            # Create the commands menu
+            tt.commandsVar = var = Tk.StringVar()
+            var.set('chapter ops')
+            tt.commandsMenu = menu = Pmw.OptionMenu(tt.frame,
+                menubutton_textvariable = var,
+                items = [
+                    'New Chapter',
+                    'Remove This Chapter',
+                    'Rename This Chapter...',
+                    'Clone Node To Chapter...',
+                    'Copy Node To Chapter...',
+                    'Move Node To Chapter...',
+                ],
+                command = tt.doCommand,
+            )
+            menu.pack(side='left',padx=5)
     #@-node:ekr.20070317073819.2:tt.createControl
     #@-node:ekr.20070320090557.1: Birth & death
-    #@+node:ekr.20070317082315:tt.getters (most not used)
-    def getButton (self,tabName):
-        tt = self
-        if tabName in tt.tabNames:
-            return tt.nb.tab(tabName) # A Tk.Button.
-        else:
-            return None
-
-    # def getCanvas (self,tabName):
-        # return self.canvasDict.get(tabName) # A Tk.Canvas
-
-    # def getFrame (self,tabName):
-        # tt = self
-        # if tabName in tt.tabNames:
-            # return tt.nb.page(tabName) # A Tk.Frame
-        # else:
-            # return None
-
-    # def getSelectedTabName (self):
-        # return self.nb.getcurselection() # An immutable tab name.
-
-    # def getTree (self,tabName):
-        # return self.treeDict.get(tabName) # A leoTkinterTree.
-    #@-node:ekr.20070317082315:tt.getters (most not used)
     #@+node:ekr.20070320093038:Tabs...
     #@+node:ekr.20070317074824:tt.createTab
     def createTab (self,tabName,select=True):
@@ -2982,16 +2953,8 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
 
         if tabName not in tt.tabNames:
             tt.tabNames.append(tabName)
-            tt.chapterMenu.setitems(tt.tabNames)
+            tt.setNames()
     #@-node:ekr.20070317074824:tt.createTab
-    #@+node:ekr.20070604095104:tt.doCommand
-    def doCommand (self,commandName):
-
-        g.trace(commandName)
-
-        tt = self
-        tt.commandsVar.set('Chapter ops')
-    #@-node:ekr.20070604095104:tt.doCommand
     #@+node:ekr.20070317074824.1:tt.destroyTab
     def destroyTab (self,tabName):
 
@@ -2999,7 +2962,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
 
         if tabName in tt.tabNames:
             tt.tabNames.remove(tabName)
-            tt.chapterMenu.setitems(self.tabNames)
+            tt.setNames()
     #@-node:ekr.20070317074824.1:tt.destroyTab
     #@+node:ekr.20070317074824.3:tt.selectTab
     def selectTab (self,tabName):
@@ -3011,167 +2974,24 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
 
         tt.cc.selectChapterByName(tabName)
     #@-node:ekr.20070317074824.3:tt.selectTab
-    #@+node:ekr.20070604092749:Not used...
-    if 0:
-        #@    @+others
-        #@+node:ekr.20070317074813:tt.makeTabMenu & helpers
-        def makeTabMenu (self,tabName):
+    #@+node:ekr.20070604192627:tt.setTabLabel
+    def setTabLabel (self,tabName):
 
-            '''Create a tab menu.'''
+        tt = self
+        tt.chapterVar.set(tabName)
+    #@-node:ekr.20070604192627:tt.setTabLabel
+    #@+node:ekr.20070604210618:tt.setNames
+    def setNames (self):
 
-            tt = self ; cc = tt.cc
-            w = self.buttonsDict.get(tabName)
-            if not w: return cc.error('tt.makeTabMenu: no w')
+        '''Recreate the list of items.'''
 
-            tmenu = Tk.Menu(w,tearoff=0)
-            w.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
-            w.tmenu = tmenu
-
-            tt.createTopLevelMenuItems(tmenu)
-        #@nonl
-        #@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-        def createTopLevelMenuItems (self,tmenu):
-
-            cc = self.cc ; menu = tmenu
-
-            for kind,label,command in (
-                ('','New Chapter',cc.createChapter),
-                ('','Remove This Chapter',cc.removeChapter),
-                ('','Rename This Chapter',cc.renameChapter),
-                ('-',None,None),
-                ('...','Clone Node To Chapter...',cc.cloneToChapter),
-                ('...','Copy Node To Chapter...',cc.copyToChapter),
-                ('...','Move Node To Chapter...',cc.moveToChapter),
-            ):
-                if kind == '-':
-                    menu.add_separator()
-                elif kind == '...':
-                    submenu = Tk.Menu(menu,tearoff=0)
-                    menu.add_cascade(menu=submenu,label=label)
-                    def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu):
-                        self.setupChaptersMenu(submenu,command)
-                    submenu.configure(postcommand=chapterMenuCallback)
-                else:
-                    menu.add_command(label=label,command=command)
-        #@nonl
-        #@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-        #@+node:ekr.20070318120043:tt.setupChaptersMenu
-        def setupChaptersMenu (self,menu,command):
-
-            '''Create a submenu containing the list of all chapters.'''
-
-            tt = self ; nb = tt.nb
-
-            menu.delete(0,'end')
-            current = nb.getcurselection()
-
-            for tabName in nb.pagenames():
-                b = nb.tab(tabName) # Get the (possibly renamed) button text.
-                name = b.cget('text')
-                if tabName != current:
-                    # g.trace('name',name,'command',command)
-                    def chaptersMenuCallback(event=None,command=command,toChapter=tabName):
-                        return command(toChapter=toChapter)
-                    menu.add_command(label=name,command=chaptersMenuCallback)
-        #@nonl
-        #@-node:ekr.20070318120043:tt.setupChaptersMenu
-        #@-node:ekr.20070317074813:tt.makeTabMenu & helpers
-        #@+node:ekr.20070317075059.1:tt.raise/lowerTab
-        # def lowerTab (self,tabName):
-
-            # if self.trace: g.trace(tabName)
-            # tt = self ; tab = tt.nb.tab(tabName)
-            # self.setUnselectColor(tab)
-            # tt.cc.unselectCallback(tabName)
-
-        def raiseTab (self,tabName):
-
-            if self.trace: g.trace(tabName)
-            tt = self ; c = self.c ; cc = self.cc
-
-            tab = tt.nb.tab(tabName)
-            self.setSelectColor(tab)
-            ###tt.cc.selectCallback(tabName)
-
-            if self.selectLockout: return
-            chapter = cc.chaptersDict.get(tabName)
-            if chapter:
-                chapter.select()
-
-            # w = c.frame.body and c.frame.body.bodyCtrl
-            # if w:
-                # # This can not be called immediately
-                # def idleCallback(event=None,c=c):
-                    # c.invalidateFocus()
-                    # c.bodyWantsFocusNow()
-
-                # w.after_idle(idleCallback)
-        #@-node:ekr.20070317075059.1:tt.raise/lowerTab
-        #@+node:ekr.20070318125900.1:tt.renameChapterHelper
-        def renameChapterHelper (self,cc,tabName):
-
-            '''Called from cc.renameChapter to prompt for a new name.'''
-
-            tt = self ; c = tt.c
-            tab = tt.getButton(tabName)
-
-            f = Tk.Frame(tab)
-            # Elegant code.  Setting e's textvariable to chapter.sv
-            # immediately updates the chapter labels as e changes.
-            sv = tt.stringVarDict.get(tabName)
-            e = Tk.Entry(f,background='white',textvariable=sv)
-            b = Tk.Button(f,text="Close")
-            f.pack(side='top')
-            e.pack(side='left')
-            b.pack(side='right')
-            def changeCallback (event=None,f=f,sv=sv):
-                newName = sv.get()
-                f.pack_forget()
-                tt.renameTab(newName)
-                # g.trace(tabName,newName)
-                theChapter = cc.getChapter(tabName)
-                # c.setBodyString(theChapter.root,newName)
-                cc.completeChapterRename(theChapter,newName)
-                c.bodyWantsFocusNow()
-            e.bind('<Return>',changeCallback)
-            e.selection_range(0,'end')
-            b.configure(command=changeCallback)
-            c.widgetWantsFocusNow(e)
-        #@nonl
-        #@-node:ekr.20070318125900.1:tt.renameChapterHelper
-        #@+node:ekr.20070318133725:tt.renameTab
-        def renameTab (self,newName):
-
-            '''Change the button text of the presently selected tab.'''
-
-            # Important: the actual tab name *never* changes.
-
-            tt = self ; nb = tt.nb
-            name = nb.getcurselection()
-            b = nb.tab(name)
-            b.configure(text=newName)
-        #@-node:ekr.20070318133725:tt.renameTab
-        #@+node:ekr.20070421095700:setSelect/UnselectColor
-        def setSelectColor (self,b):
-
-            tt = self
-
-            b.configure(
-                background=tt.selectedTabBackgroundColor,
-                foreground=tt.selectedTabForegroundColor)
-
-        def setUnselectColor(self,b):
-
-            tt = self
-
-            b.configure(
-                background=tt.unselectedTabBackgroundColor,
-                foreground=tt.unselectedTabForegroundColor)
-        #@nonl
-        #@-node:ekr.20070421095700:setSelect/UnselectColor
-        #@-others
-    #@nonl
-    #@-node:ekr.20070604092749:Not used...
+        tt = self
+        names = tt.tabNames[:]
+        if 'main' in names: names.remove('main')
+        names.sort()
+        names.insert(0,'main')
+        tt.chapterMenu.setitems(names)
+    #@-node:ekr.20070604210618:tt.setNames
     #@-node:ekr.20070320093038:Tabs...
     #@-others
 #@nonl
