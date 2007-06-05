@@ -27586,77 +27586,43 @@ def dynamicExpansion (self,event=None):
     if g.app.gui.guiName() not in ('null','tkinter'):
         return g.es('command not ready yet',color='blue')
 
-    if 0:
-        << LeoUser's old code >>
-
-    i = w.index('insert -1c wordstart')
-    i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getWord(s,ins)
+    txt = w.get(i,j)
     rlist = []
     self.getDynamicList(w,txt,rlist)
-    if rlist:
-        prefix = reduce(g.longestCommonPrefix,rlist)
-        if prefix and prefix != txt:
-            w.delete(i,i2)
-            w.insert(i,prefix)
-        else:
-            g.es_print('Completions...')
-            for z in rlist:
-                g.es_print(z)
-#@+node:ekr.20070601081335:<< LeoUser's old code >>
+    if not rlist: return
+    prefix = reduce(g.longestCommonPrefix,rlist)
+    if prefix and prefix != txt:
+        w.delete(i,j)
+        w.insert(i,prefix)
+    else:
+        self.dynamicExpandHelper(prefix,rlist,w)
+#@+node:ekr.20070605110441:dynamicExpandHelper
+def dynamicExpandHelper (self,prefix=None,rlist=None,w=None):
 
-    rlist = self.store ['rlist']
-    stext = self.store ['stext']
-    i = w.index('insert -1c wordstart')
-    j = i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
-    # dA = w.tag_ranges('dA')
-    # w.tag_delete('dA')
-    dA = self.daRanges
-    self.daRanges = []
-    # g.trace('dA',repr(dA))
+    k = self.k ; tag = 'dabbrev-expand'
+    state = k.getState(tag)
 
-    def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
-        w.delete(from_,to_)
-        w.insert('insert',txt) #### ,'dA')
-        i = w.getInsertPoint()
-        data = i,i+len(txt)
-        self.daRanges.append(data)
+    if state == 0:
+        self.w = w
+        names = rlist ; event = None
+        prefix2 = 'dabbrev-expand: '
+        k.setLabelBlue(prefix2+prefix,protect=True)
+        k.getArg(event,tag,1,self.dynamicExpandHelper,prefix=prefix2,tabList=names)
+    else:
+        k.clearState()
+        k.resetLabel()
+        if k.arg:
+            w = self.w
+            s = w.getAllText()
+            ins = w.getInsertPoint()
+            i,j = g.getWord(s,ins)
+            w.delete(i,j)
+            w.insert(i,k.arg)
 
-    if dA:
-        # dA1, dA2 = dA
-        item = dA[0]
-        dA_i,dA_j = item
-        # dtext = w.get(dA1,dA2)
-        dtext = w.get(dA_i,dA_j)
-        if dtext.startswith(stext) and j == dA_j:
-            # This seems reasonable, since we can't get a whole word that has the '-' char in it,
-            # we do a good guess
-            if rlist:
-                txt = rlist.pop()
-            else:
-                txt = stext
-                # w.delete(dA1,dA2)
-                w.delete(dA_i, dA_j)
-                ### dA2 = dA1
-                dA_j = dA_i
-                    # since the text is going to be reread,
-                    # we dont want to include the last dynamic abbreviation
-                self.getDynamicList(w,txt,rlist)
-            # doDa(txt,dA1,dA2)
-            doDa(txt,dA_i,dA_j)
-            return
-        else: dA = None
-
-    if not dA:
-        self.store ['stext'] = txt
-        self.store ['rlist'] = rlist = []
-        self.getDynamicList(w,txt,rlist)
-        if rlist:
-            txt = rlist.pop()
-            doDa(txt)
-#@nonl
-#@-node:ekr.20070601081335:<< LeoUser's old code >>
+#@-node:ekr.20070605110441:dynamicExpandHelper
 #@-node:ekr.20050920084036.59:dynamicExpansion
 #@+node:ekr.20050920084036.60:dynamicCompletion
 def dynamicCompletion (self,event=None):
@@ -27670,23 +27636,17 @@ def dynamicCompletion (self,event=None):
     if g.app.gui.guiName() != 'tkinter':
         return g.es('command not ready yet',color='blue')
 
-    i = w.index('insert -1c wordstart')
-    i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getWord(s,ins)
+    txt = w.get(i,j)
     rlist = []
     self.getDynamicList(w,txt,rlist)
     if rlist:
         prefix = reduce(g.longestCommonPrefix,rlist)
         if prefix:
-            w.delete(i,i2)
+            w.delete(i,j)
             w.insert(i,prefix)
-        # if prefix and prefix != txt:
-            # w.delete(i,i2)
-            # w.insert(i,prefix)
-        # else:
-            # g.es_print('Completions...')
-            # for z in rlist:
-                # g.es_print(z)
 #@-node:ekr.20050920084036.60:dynamicCompletion
 #@+node:ekr.20050920084036.160:executeSubprocess
 def executeSubprocess (self,event,command,input):
@@ -43676,23 +43636,17 @@ def dynamicCompletion (self,event=None):
     if g.app.gui.guiName() != 'tkinter':
         return g.es('command not ready yet',color='blue')
 
-    i = w.index('insert -1c wordstart')
-    i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getWord(s,ins)
+    txt = w.get(i,j)
     rlist = []
     self.getDynamicList(w,txt,rlist)
     if rlist:
         prefix = reduce(g.longestCommonPrefix,rlist)
         if prefix:
-            w.delete(i,i2)
+            w.delete(i,j)
             w.insert(i,prefix)
-        # if prefix and prefix != txt:
-            # w.delete(i,i2)
-            # w.insert(i,prefix)
-        # else:
-            # g.es_print('Completions...')
-            # for z in rlist:
-                # g.es_print(z)
 #@-node:ekr.20050920084036.60:dynamicCompletion
 #@+node:ekr.20050920084036.59:dynamicExpansion
 def dynamicExpansion (self,event=None):
@@ -43707,77 +43661,43 @@ def dynamicExpansion (self,event=None):
     if g.app.gui.guiName() not in ('null','tkinter'):
         return g.es('command not ready yet',color='blue')
 
-    if 0:
-        << LeoUser's old code >>
-
-    i = w.index('insert -1c wordstart')
-    i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getWord(s,ins)
+    txt = w.get(i,j)
     rlist = []
     self.getDynamicList(w,txt,rlist)
-    if rlist:
-        prefix = reduce(g.longestCommonPrefix,rlist)
-        if prefix and prefix != txt:
-            w.delete(i,i2)
-            w.insert(i,prefix)
-        else:
-            g.es_print('Completions...')
-            for z in rlist:
-                g.es_print(z)
-#@+node:ekr.20070601081335:<< LeoUser's old code >>
+    if not rlist: return
+    prefix = reduce(g.longestCommonPrefix,rlist)
+    if prefix and prefix != txt:
+        w.delete(i,j)
+        w.insert(i,prefix)
+    else:
+        self.dynamicExpandHelper(prefix,rlist,w)
+#@+node:ekr.20070605110441:dynamicExpandHelper
+def dynamicExpandHelper (self,prefix=None,rlist=None,w=None):
 
-    rlist = self.store ['rlist']
-    stext = self.store ['stext']
-    i = w.index('insert -1c wordstart')
-    j = i2 = w.index('insert -1c wordend')
-    txt = w.get(i,i2)
-    # dA = w.tag_ranges('dA')
-    # w.tag_delete('dA')
-    dA = self.daRanges
-    self.daRanges = []
-    # g.trace('dA',repr(dA))
+    k = self.k ; tag = 'dabbrev-expand'
+    state = k.getState(tag)
 
-    def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
-        w.delete(from_,to_)
-        w.insert('insert',txt) #### ,'dA')
-        i = w.getInsertPoint()
-        data = i,i+len(txt)
-        self.daRanges.append(data)
+    if state == 0:
+        self.w = w
+        names = rlist ; event = None
+        prefix2 = 'dabbrev-expand: '
+        k.setLabelBlue(prefix2+prefix,protect=True)
+        k.getArg(event,tag,1,self.dynamicExpandHelper,prefix=prefix2,tabList=names)
+    else:
+        k.clearState()
+        k.resetLabel()
+        if k.arg:
+            w = self.w
+            s = w.getAllText()
+            ins = w.getInsertPoint()
+            i,j = g.getWord(s,ins)
+            w.delete(i,j)
+            w.insert(i,k.arg)
 
-    if dA:
-        # dA1, dA2 = dA
-        item = dA[0]
-        dA_i,dA_j = item
-        # dtext = w.get(dA1,dA2)
-        dtext = w.get(dA_i,dA_j)
-        if dtext.startswith(stext) and j == dA_j:
-            # This seems reasonable, since we can't get a whole word that has the '-' char in it,
-            # we do a good guess
-            if rlist:
-                txt = rlist.pop()
-            else:
-                txt = stext
-                # w.delete(dA1,dA2)
-                w.delete(dA_i, dA_j)
-                ### dA2 = dA1
-                dA_j = dA_i
-                    # since the text is going to be reread,
-                    # we dont want to include the last dynamic abbreviation
-                self.getDynamicList(w,txt,rlist)
-            # doDa(txt,dA1,dA2)
-            doDa(txt,dA_i,dA_j)
-            return
-        else: dA = None
-
-    if not dA:
-        self.store ['stext'] = txt
-        self.store ['rlist'] = rlist = []
-        self.getDynamicList(w,txt,rlist)
-        if rlist:
-            txt = rlist.pop()
-            doDa(txt)
-#@nonl
-#@-node:ekr.20070601081335:<< LeoUser's old code >>
+#@-node:ekr.20070605110441:dynamicExpandHelper
 #@-node:ekr.20050920084036.59:dynamicExpansion
 #@+node:ekr.20050920084036.61:getDynamicList (helper)
 def getDynamicList (self,w,txt,rlist):
@@ -43810,6 +43730,153 @@ def getDynamicList (self,w,txt,rlist):
 #@-node:ekr.20050920084036.61:getDynamicList (helper)
 #@-node:ekr.20050920084036.58:dynamic abbreviation...
 #@-node:ekr.20070426080015:Improved dynamic abbreviations
+#@+node:ekr.20070605110441.1:Added tab completion for dabbrev-expand
+# Also made all code gui-independent.
+#@nonl
+#@+node:ekr.20061031131434.128:getArg
+def getArg (self,event,
+    returnKind=None,returnState=None,handler=None,
+    prefix=None,tabList=[],completion=True,oneCharacter=False,
+    stroke=None, # New in 4.4.1.
+    useMinibuffer=True # New in 4.4.1
+):
+
+    '''Accumulate an argument until the user hits return (or control-g).
+    Enter the given return state when done.
+    The prefix does not form the arg.  The prefix defaults to the k.getLabel().
+    '''
+
+    k = self ; c = k.c ; gui  = g.app.gui
+    state = k.getState('getArg')
+    keysym = gui.eventKeysym(event)
+    trace = False or c.config.getBool('trace_modes') and not g.app.unitTesting
+    if trace: g.trace(
+        'state',state,'keysym',keysym,'stroke',stroke,'escapes',k.getArgEscapes,
+        'completion', state==0 and completion or state!=0 and k.arg_completion)
+    if state == 0:
+        k.arg = ''
+        << init altX vars >>
+        # Set the states.
+        bodyCtrl = c.frame.body.bodyCtrl
+        c.widgetWantsFocus(bodyCtrl)
+        k.afterGetArgState=returnKind,returnState,handler
+        k.setState('getArg',1,k.getArg)
+        k.afterArgWidget = event and event.widget or c.frame.body.bodyCtrl
+        if useMinibuffer and k.useTextWidget: c.minibufferWantsFocusNow()
+    elif keysym == 'Escape':
+        k.keyboardQuit(event)
+    elif keysym == 'Return' or k.oneCharacterArg or stroke in k.getArgEscapes:
+        if stroke in k.getArgEscapes: k.getArgEscape = stroke
+        if k.oneCharacterArg:
+            k.arg = event.char
+        else:
+            k.arg = k.getLabel(ignorePrompt=True)
+        kind,n,handler = k.afterGetArgState
+        if kind: k.setState(kind,n,handler)
+        c.frame.log.deleteTab('Completion')
+        trace and g.trace('kind',kind,'n',n,'handler',handler and handler.__name__)
+        if handler: handler(event)
+    elif keysym == 'Tab':
+        k.doTabCompletion(k.argTabList,k.arg_completion)
+    elif keysym == 'BackSpace':
+        k.doBackSpace(k.argTabList,k.arg_completion)
+        c.minibufferWantsFocus()
+    else:
+        # Clear the list, any other character besides tab indicates that a new prefix is in effect.
+        k.mb_tabList = []
+        k.updateLabel(event)
+        k.mb_tabListPrefix = k.getLabel()
+    return 'break'
+#@+node:ekr.20061031131434.129:<< init altX vars >>
+k.argTabList = tabList and tabList[:] or []
+k.arg_completion = completion
+# g.trace('completion',completion,'tabList',tabList)
+
+k.mb_prefix = prefix or k.getLabel()
+k.mb_prompt = prefix or ''
+k.mb_tabList = []
+
+# Clear the list: any non-tab indicates that a new prefix is in effect.
+k.mb_tabListPrefix = k.getLabel()
+k.oneCharacterArg = oneCharacter
+#@-node:ekr.20061031131434.129:<< init altX vars >>
+#@-node:ekr.20061031131434.128:getArg
+#@+node:ekr.20050920084036.59:dynamicExpansion
+def dynamicExpansion (self,event=None):
+
+    '''Expand the word in the buffer before point as a dynamic abbrev,
+    by searching in the buffer for words starting with that abbreviation (dabbrev-expand).
+    This corresponds to M-/ in Emacs.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    if g.app.gui.guiName() not in ('null','tkinter'):
+        return g.es('command not ready yet',color='blue')
+
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getWord(s,ins)
+    txt = w.get(i,j)
+    rlist = []
+    self.getDynamicList(w,txt,rlist)
+    if not rlist: return
+    prefix = reduce(g.longestCommonPrefix,rlist)
+    if prefix and prefix != txt:
+        w.delete(i,j)
+        w.insert(i,prefix)
+    else:
+        self.dynamicExpandHelper(prefix,rlist,w)
+#@+node:ekr.20070605110441:dynamicExpandHelper
+def dynamicExpandHelper (self,prefix=None,rlist=None,w=None):
+
+    k = self.k ; tag = 'dabbrev-expand'
+    state = k.getState(tag)
+
+    if state == 0:
+        self.w = w
+        names = rlist ; event = None
+        prefix2 = 'dabbrev-expand: '
+        k.setLabelBlue(prefix2+prefix,protect=True)
+        k.getArg(event,tag,1,self.dynamicExpandHelper,prefix=prefix2,tabList=names)
+    else:
+        k.clearState()
+        k.resetLabel()
+        if k.arg:
+            w = self.w
+            s = w.getAllText()
+            ins = w.getInsertPoint()
+            i,j = g.getWord(s,ins)
+            w.delete(i,j)
+            w.insert(i,k.arg)
+
+#@-node:ekr.20070605110441:dynamicExpandHelper
+#@-node:ekr.20050920084036.59:dynamicExpansion
+#@+node:ekr.20050920084036.60:dynamicCompletion
+def dynamicCompletion (self,event=None):
+
+    '''Insert the common prefix of all dynamic abbrev's matching the present word.
+    This corresponds to C-M-/ in Emacs.'''
+
+    k = self.k
+    w = self.editWidget(event)
+    if not w: return
+    if g.app.gui.guiName() != 'tkinter':
+        return g.es('command not ready yet',color='blue')
+
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getWord(s,ins)
+    txt = w.get(i,j)
+    rlist = []
+    self.getDynamicList(w,txt,rlist)
+    if rlist:
+        prefix = reduce(g.longestCommonPrefix,rlist)
+        if prefix:
+            w.delete(i,j)
+            w.insert(i,prefix)
+#@-node:ekr.20050920084036.60:dynamicCompletion
+#@-node:ekr.20070605110441.1:Added tab completion for dabbrev-expand
 #@-node:ekr.20070528141848.1:Features
 #@-node:ekr.20070522082346:Leo 4.4.3 b2 projects
 #@+node:ekr.20070126072723:pychecker

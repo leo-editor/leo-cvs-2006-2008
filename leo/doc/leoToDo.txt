@@ -272,6 +272,21 @@ def getEnabledFiles (s,plugins_path):
 #@-node:ekr.20031218072017.3440:loadHandlers & helper
 #@-node:ekr.20070531075258:Fix problems with @enabled-plugins
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070605114358:Improve how recent files works??
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4347116
+By: terry_n_brown
+
+This is just a nit I guess, but I move between two machines all the time, and
+Leo keeps changing the paths I open from /home/tbrown/project/project.leo to
+/media/hda8/project/project.leo, so that when I switch to the other machine,
+where /home/tbrown/project/project.leo is actually /media/hdb2/project/project.leo,
+the recent files link is wrong.
+
+If it would be trivial for Leo to not do this, I'd like that feature.  If it's
+a big deal, then not to worry, I can always navigate to the file of course.
+#@-node:ekr.20070605114358:Improve how recent files works??
 #@+node:ekr.20070515100356:To do: b2
 #@+node:ekr.20070325054325:Docs
 #@+node:ekr.20070215093739:Improve Leo's getting started page
