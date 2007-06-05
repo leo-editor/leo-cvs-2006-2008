@@ -342,17 +342,15 @@ class abbrevCommandsClass (baseEditCommandsClass):
 
         # Set local ivars.
         self.abbrevs ={}
-
         self.daRanges = []
-
+        self.event = None
         self.dynaregex = re.compile(
             r'[%s%s\-_]+'%(string.ascii_letters,string.digits))
             # Not a unicode problem.
             # For dynamic abbreviations
-
         self.globalDynamicAbbrevs = c.config.getBool('globalDynamicAbbrevs')
-
         self.store ={'rlist':[], 'stext':''} # For dynamic expansion.
+        self.w = None
 
     def finishCreate(self):
 
@@ -392,23 +390,17 @@ class abbrevCommandsClass (baseEditCommandsClass):
         if g.app.gui.guiName() != 'tkinter':
             return g.es('command not ready yet',color='blue')
 
-        i = w.index('insert -1c wordstart')
-        i2 = w.index('insert -1c wordend')
-        txt = w.get(i,i2)
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        i,j = g.getWord(s,ins)
+        txt = w.get(i,j)
         rlist = []
         self.getDynamicList(w,txt,rlist)
         if rlist:
             prefix = reduce(g.longestCommonPrefix,rlist)
             if prefix:
-                w.delete(i,i2)
+                w.delete(i,j)
                 w.insert(i,prefix)
-            # if prefix and prefix != txt:
-                # w.delete(i,i2)
-                # w.insert(i,prefix)
-            # else:
-                # g.es_print('Completions...')
-                # for z in rlist:
-                    # g.es_print(z)
     #@-node:ekr.20050920084036.60:dynamicCompletion
     #@+node:ekr.20050920084036.59:dynamicExpansion
     def dynamicExpansion (self,event=None):
@@ -423,78 +415,43 @@ class abbrevCommandsClass (baseEditCommandsClass):
         if g.app.gui.guiName() not in ('null','tkinter'):
             return g.es('command not ready yet',color='blue')
 
-        if 0:
-            #@        << LeoUser's old code >>
-            #@+node:ekr.20070601081335:<< LeoUser's old code >>
-
-                rlist = self.store ['rlist']
-                stext = self.store ['stext']
-                i = w.index('insert -1c wordstart')
-                j = i2 = w.index('insert -1c wordend')
-                txt = w.get(i,i2)
-                # dA = w.tag_ranges('dA')
-                # w.tag_delete('dA')
-                dA = self.daRanges
-                self.daRanges = []
-                # g.trace('dA',repr(dA))
-
-                def doDa (txt,from_='insert -1c wordstart',to_='insert -1c wordend'):
-                    w.delete(from_,to_)
-                    w.insert('insert',txt) #### ,'dA')
-                    i = w.getInsertPoint()
-                    data = i,i+len(txt)
-                    self.daRanges.append(data)
-
-                if dA:
-                    # dA1, dA2 = dA
-                    item = dA[0]
-                    dA_i,dA_j = item
-                    # dtext = w.get(dA1,dA2)
-                    dtext = w.get(dA_i,dA_j)
-                    if dtext.startswith(stext) and j == dA_j:
-                        # This seems reasonable, since we can't get a whole word that has the '-' char in it,
-                        # we do a good guess
-                        if rlist:
-                            txt = rlist.pop()
-                        else:
-                            txt = stext
-                            # w.delete(dA1,dA2)
-                            w.delete(dA_i, dA_j)
-                            ### dA2 = dA1
-                            dA_j = dA_i
-                                # since the text is going to be reread,
-                                # we dont want to include the last dynamic abbreviation
-                            self.getDynamicList(w,txt,rlist)
-                        # doDa(txt,dA1,dA2)
-                        doDa(txt,dA_i,dA_j)
-                        return
-                    else: dA = None
-
-                if not dA:
-                    self.store ['stext'] = txt
-                    self.store ['rlist'] = rlist = []
-                    self.getDynamicList(w,txt,rlist)
-                    if rlist:
-                        txt = rlist.pop()
-                        doDa(txt)
-            #@nonl
-            #@-node:ekr.20070601081335:<< LeoUser's old code >>
-            #@nl
-
-        i = w.index('insert -1c wordstart')
-        i2 = w.index('insert -1c wordend')
-        txt = w.get(i,i2)
+        s = w.getAllText()
+        ins = w.getInsertPoint()
+        i,j = g.getWord(s,ins)
+        txt = w.get(i,j)
         rlist = []
         self.getDynamicList(w,txt,rlist)
-        if rlist:
-            prefix = reduce(g.longestCommonPrefix,rlist)
-            if prefix and prefix != txt:
-                w.delete(i,i2)
-                w.insert(i,prefix)
-            else:
-                g.es_print('Completions...')
-                for z in rlist:
-                    g.es_print(z)
+        if not rlist: return
+        prefix = reduce(g.longestCommonPrefix,rlist)
+        if prefix and prefix != txt:
+            w.delete(i,j)
+            w.insert(i,prefix)
+        else:
+            self.dynamicExpandHelper(prefix,rlist,w)
+    #@+node:ekr.20070605110441:dynamicExpandHelper
+    def dynamicExpandHelper (self,prefix=None,rlist=None,w=None):
+
+        k = self.k ; tag = 'dabbrev-expand'
+        state = k.getState(tag)
+
+        if state == 0:
+            self.w = w
+            names = rlist ; event = None
+            prefix2 = 'dabbrev-expand: '
+            k.setLabelBlue(prefix2+prefix,protect=True)
+            k.getArg(event,tag,1,self.dynamicExpandHelper,prefix=prefix2,tabList=names)
+        else:
+            k.clearState()
+            k.resetLabel()
+            if k.arg:
+                w = self.w
+                s = w.getAllText()
+                ins = w.getInsertPoint()
+                i,j = g.getWord(s,ins)
+                w.delete(i,j)
+                w.insert(i,k.arg)
+
+    #@-node:ekr.20070605110441:dynamicExpandHelper
     #@-node:ekr.20050920084036.59:dynamicExpansion
     #@+node:ekr.20050920084036.61:getDynamicList (helper)
     def getDynamicList (self,w,txt,rlist):
