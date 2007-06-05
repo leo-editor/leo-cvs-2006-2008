@@ -3150,6 +3150,228 @@ def inChaptersTree (self,p):
     return p2 and (p2.equal(p) or p2.isAncestorOf(p))
 #@-node:ekr.20070417112650.2:inChaptersTree
 #@-node:ekr.20070603162204:from leoCommands.py
+#@+node:ekr.20070604092749:leoTkTreeTab Not used...
+if 0:
+    @others
+#@nonl
+#@+node:ekr.20070317082315:tt.getters
+# def getButton (self,tabName):
+    # tt = self
+    # if tabName in tt.tabNames:
+        # return tt.nb.tab(tabName) # A Tk.Button.
+    # else:
+        # return None
+
+# def getCanvas (self,tabName):
+    # return self.canvasDict.get(tabName) # A Tk.Canvas
+
+# def getFrame (self,tabName):
+    # tt = self
+    # if tabName in tt.tabNames:
+        # return tt.nb.page(tabName) # A Tk.Frame
+    # else:
+        # return None
+
+# def getSelectedTabName (self):
+    # return self.nb.getcurselection() # An immutable tab name.
+
+# def getTree (self,tabName):
+    # return self.treeDict.get(tabName) # A leoTkinterTree.
+#@-node:ekr.20070317082315:tt.getters
+#@+node:ekr.20070317074813:tt.makeTabMenu & helpers
+def makeTabMenu (self,tabName):
+
+    '''Create a tab menu.'''
+
+    tt = self ; cc = tt.cc
+    w = self.buttonsDict.get(tabName)
+    if not w: return cc.error('tt.makeTabMenu: no w')
+
+    tmenu = Tk.Menu(w,tearoff=0)
+    w.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
+    w.tmenu = tmenu
+
+    tt.createTopLevelMenuItems(tmenu)
+#@nonl
+#@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
+def createTopLevelMenuItems (self,tmenu):
+
+    cc = self.cc ; menu = tmenu
+
+    for kind,label,command in (
+        ('','New Chapter',cc.createChapter),
+        ('','Remove This Chapter',cc.removeChapter),
+        ('','Rename This Chapter',cc.renameChapter),
+        ('-',None,None),
+        ('...','Clone Node To Chapter...',cc.cloneToChapter),
+        ('...','Copy Node To Chapter...',cc.copyToChapter),
+        ('...','Move Node To Chapter...',cc.moveToChapter),
+    ):
+        if kind == '-':
+            menu.add_separator()
+        elif kind == '...':
+            submenu = Tk.Menu(menu,tearoff=0)
+            menu.add_cascade(menu=submenu,label=label)
+            def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu):
+                self.setupChaptersMenu(submenu,command)
+            submenu.configure(postcommand=chapterMenuCallback)
+        else:
+            menu.add_command(label=label,command=command)
+#@nonl
+#@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
+#@+node:ekr.20070318120043:tt.setupChaptersMenu
+def setupChaptersMenu (self,menu,command):
+
+    '''Create a submenu containing the list of all chapters.'''
+
+    tt = self ; nb = tt.nb
+
+    menu.delete(0,'end')
+    current = nb.getcurselection()
+
+    for tabName in nb.pagenames():
+        b = nb.tab(tabName) # Get the (possibly renamed) button text.
+        name = b.cget('text')
+        if tabName != current:
+            # g.trace('name',name,'command',command)
+            def chaptersMenuCallback(event=None,command=command,toChapter=tabName):
+                return command(toChapter=toChapter)
+            menu.add_command(label=name,command=chaptersMenuCallback)
+#@nonl
+#@-node:ekr.20070318120043:tt.setupChaptersMenu
+#@-node:ekr.20070317074813:tt.makeTabMenu & helpers
+#@+node:ekr.20070317075059.1:tt.raise/lowerTab
+def lowerTab (self,tabName):
+
+    if self.trace: g.trace(tabName)
+    tt = self ; tab = tt.nb.tab(tabName)
+    self.setUnselectColor(tab)
+    tt.cc.unselectCallback(tabName)
+
+def raiseTab (self,tabName):
+
+    if self.trace: g.trace(tabName)
+    tt = self ; c = self.c ; cc = self.cc
+
+    tab = tt.nb.tab(tabName)
+    self.setSelectColor(tab)
+
+    if self.selectLockout: return
+    chapter = cc.chaptersDict.get(tabName)
+    if chapter:
+        chapter.select()
+
+    w = c.frame.body and c.frame.body.bodyCtrl
+    if w:
+        # This can not be called immediately
+        def idleCallback(event=None,c=c):
+            c.invalidateFocus()
+            c.bodyWantsFocusNow()
+
+        w.after_idle(idleCallback)
+#@-node:ekr.20070317075059.1:tt.raise/lowerTab
+#@+node:ekr.20070318125900.1:tt.renameChapterHelper
+def renameChapterHelper (self,cc,tabName):
+
+    '''Called from cc.renameChapter to prompt for a new name.'''
+
+    tt = self ; c = tt.c
+    tab = tt.getButton(tabName)
+
+    f = Tk.Frame(tab)
+    # Elegant code.  Setting e's textvariable to chapter.sv
+    # immediately updates the chapter labels as e changes.
+    sv = tt.stringVarDict.get(tabName)
+    e = Tk.Entry(f,background='white',textvariable=sv)
+    b = Tk.Button(f,text="Close")
+    f.pack(side='top')
+    e.pack(side='left')
+    b.pack(side='right')
+    def changeCallback (event=None,f=f,sv=sv):
+        newName = sv.get()
+        f.pack_forget()
+        tt.renameTab(newName)
+        # g.trace(tabName,newName)
+        theChapter = cc.getChapter(tabName)
+        # c.setBodyString(theChapter.root,newName)
+        cc.completeChapterRename(theChapter,newName)
+        c.bodyWantsFocusNow()
+    e.bind('<Return>',changeCallback)
+    e.selection_range(0,'end')
+    b.configure(command=changeCallback)
+    c.widgetWantsFocusNow(e)
+#@nonl
+#@-node:ekr.20070318125900.1:tt.renameChapterHelper
+#@+node:ekr.20070318133725:tt.renameTab
+def renameTab (self,newName):
+
+    '''Change the button text of the presently selected tab.'''
+
+    # Important: the actual tab name *never* changes.
+
+    tt = self ; nb = tt.nb
+    name = nb.getcurselection()
+    b = nb.tab(name)
+    b.configure(text=newName)
+#@-node:ekr.20070318133725:tt.renameTab
+#@+node:ekr.20070421095700:setSelect/UnselectColor
+def setSelectColor (self,b):
+
+    tt = self
+
+    b.configure(
+        background=tt.selectedTabBackgroundColor,
+        foreground=tt.selectedTabForegroundColor)
+
+def setUnselectColor(self,b):
+
+    tt = self
+
+    b.configure(
+        background=tt.unselectedTabBackgroundColor,
+        foreground=tt.unselectedTabForegroundColor)
+#@nonl
+#@-node:ekr.20070421095700:setSelect/UnselectColor
+#@-node:ekr.20070604092749:leoTkTreeTab Not used...
+#@+node:ekr.20070320091806:Callbacks (chapterController) NOT USED
+# def selectCallback (self,tabName):
+
+    # # cc = self ; chapter = cc.chaptersDict.get(tabName)
+    # # if chapter:
+        # # chapter.select()
+
+# def unselectCallback (self,tabName):
+
+    # cc = self ; chapter = cc.chaptersDict.get(tabName)
+    # if chapter:
+        # chapter.unselect()
+#@nonl
+#@-node:ekr.20070320091806:Callbacks (chapterController) NOT USED
+#@+node:ekr.20070325121800:cc.updateChapterName (not used)
+def updateChapterName(self,oldName,newName):
+
+    '''oldName is the immutable name of a chapter.
+    Set the visible name of that chapter to newName.'''
+
+
+    cc = self ; c = cc.c
+
+    p = cc.findChapterNode(oldName)
+
+    g.trace(g.callers())
+
+    if p:
+        c.setBodyString(p,newName)
+    else:
+        cc.error('no such chapter: %s' % oldName)
+#@-node:ekr.20070325121800:cc.updateChapterName (not used)
+#@+node:ekr.20070529171934:cc.completeChapterRename
+def completeChapterRename (self,theChapter,newName):
+
+    theChapter.rename(newName)
+
+
+#@-node:ekr.20070529171934:cc.completeChapterRename
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

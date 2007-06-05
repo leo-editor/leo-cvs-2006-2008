@@ -7573,7 +7573,7 @@ def getArg (self,event,
 
     '''Accumulate an argument until the user hits return (or control-g).
     Enter the given return state when done.
-    The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
+    The prefix does not form the arg.  The prefix defaults to the k.getLabel().
     '''
 
     k = self ; c = k.c ; gui  = g.app.gui
@@ -7620,6 +7620,7 @@ def getArg (self,event,
 #@+node:ekr.20061031131434.129:<< init altX vars >>
 k.argTabList = tabList and tabList[:] or []
 k.arg_completion = completion
+# g.trace('completion',completion,'tabList',tabList)
 
 k.mb_prefix = prefix or k.getLabel()
 k.mb_prompt = prefix or ''
@@ -12129,6 +12130,7 @@ def createCmndsMenuFromTable (self):
         ('&Abbrev...',          self.cmdsMenuAbbrevTable),
         ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
         ('&Buffers...',         self.cmdsMenuBuffersTable),
+        ('Chapters...',         self.cmdsMenuChaptersTable),
         ('&Cursor/Selection...',[]),
         ('&Focus...',           self.cmdsMenuFocusTable),
         ('&Macro...',           self.cmdsMenuMacroTable),
@@ -12526,6 +12528,7 @@ def defineCmdsMenuTables (self):
     self.defineCmdsMenuAbbrevTable()
     self.defineCmdsMenuBodyEditorsTable()
     self.defineCmdsMenuBuffersTable()
+    self.defineCmdsMenuChaptersTable()
     self.defineCmdsMenuCursorTable()
     self.defineCmdsMenuFocusTable()
     self.defineCmdsMenuMacroTable()
@@ -12582,6 +12585,18 @@ def defineCmdsMenuBuffersTable (self):
         '&switch-to-buffer',
     ]
 #@-node:ekr.20060117095212:defineCmdsMenuBufferTable
+#@+node:ekr.20070604205927:defineCmdsMenuChaptersTable
+def defineCmdsMenuChaptersTable (self):
+
+    self.cmdsMenuChaptersTable = [
+        '&clone-node-to-chapter',
+        'c&opy-node-to-chapter',
+        'c&reate-chapter',
+        '&move-node-to-chapter',
+        '&remove-chapter',
+        '&select-chapter',
+    ]
+#@-node:ekr.20070604205927:defineCmdsMenuChaptersTable
 #@+node:ekr.20060924124119:defineCmdsMenuCursorTable
 def defineCmdsMenuCursorTable (self):
 
@@ -26705,7 +26720,7 @@ def doBackSpace (self):
         self.abort()            
 #@nonl
 #@-node:ekr.20061031131434.29:doBackSpace (autocompleter)
-#@+node:ekr.20061031131434.30:doTabCompletion
+#@+node:ekr.20061031131434.30:doTabCompletion (autocompleter)
 def doTabCompletion (self):
 
     '''Handle tab completion when the user hits a tab.'''
@@ -26724,7 +26739,7 @@ def doTabCompletion (self):
         self.computeCompletionList()
 
     c.widgetWantsFocusNow(w)
-#@-node:ekr.20061031131434.30:doTabCompletion
+#@-node:ekr.20061031131434.30:doTabCompletion (autocompleter)
 #@+node:ekr.20061031131434.31:extendSelection
 def extendSelection (self,s):
 
@@ -28719,7 +28734,7 @@ def getArg (self,event,
 
     '''Accumulate an argument until the user hits return (or control-g).
     Enter the given return state when done.
-    The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
+    The prefix does not form the arg.  The prefix defaults to the k.getLabel().
     '''
 
     k = self ; c = k.c ; gui  = g.app.gui
@@ -28766,6 +28781,7 @@ def getArg (self,event,
 #@+node:ekr.20061031131434.129:<< init altX vars >>
 k.argTabList = tabList and tabList[:] or []
 k.arg_completion = completion
+# g.trace('completion',completion,'tabList',tabList)
 
 k.mb_prefix = prefix or k.getLabel()
 k.mb_prompt = prefix or ''
@@ -32322,7 +32338,7 @@ def getArg (self,event,
 
     '''Accumulate an argument until the user hits return (or control-g).
     Enter the given return state when done.
-    The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
+    The prefix does not form the arg.  The prefix defaults to the k.getLabel().
     '''
 
     k = self ; c = k.c ; gui  = g.app.gui
@@ -32369,6 +32385,7 @@ def getArg (self,event,
 #@+node:ekr.20061031131434.129:<< init altX vars >>
 k.argTabList = tabList and tabList[:] or []
 k.arg_completion = completion
+# g.trace('completion',completion,'tabList',tabList)
 
 k.mb_prefix = prefix or k.getLabel()
 k.mb_prompt = prefix or ''
@@ -32465,7 +32482,7 @@ def createTab (self,tabName,select=True):
 
     if tabName not in tt.tabNames:
         tt.tabNames.append(tabName)
-        tt.chapterMenu.setitems(tt.tabNames)
+        tt.setNames()
 #@-node:ekr.20070317074824:tt.createTab
 #@+node:ekr.20070423102603.1:chapterSelectHelper
 def chapterSelectHelper (self,w=None,selectEditor=True):
@@ -34784,12 +34801,24 @@ def renameChapterHelper (self,cc,tabName):
 #@nonl
 #@-node:ekr.20070318125900.1:tt.renameChapterHelper
 #@+node:ekr.20070317085437.31:cc.createChapter
-def createChapter (self,event=None,name=None):
+def createChapter (self,event=None):
 
-    ### To do: use minibuffer to get the chapter name,
-    ### Then call cc.createChapterByName.
+    '''Use the minibuffer to get a chapter name,
+    then create the chapter.'''
 
-    pass
+    cc = self ; k = cc.c.k ; tag = 'create-chapter'
+    state = k.getState(tag)
+
+    if state == 0:
+        names = cc.chaptersDict.keys()
+        k.setLabelBlue('Create chapter: ',protect=True)
+        k.getArg(event,tag,1,self.createChapter,tabList=names)
+    else:
+        k.clearState()
+        k.resetLabel()
+        if k.arg:
+            ok = cc.createChapterByName(k.arg)
+            if ok: g.es('created chapter %s' % (k.arg),color='blue')
 #@nonl
 #@-node:ekr.20070317085437.31:cc.createChapter
 #@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
@@ -42812,28 +42841,38 @@ def test_dummy():
 (done) Eliminate error messages.
 #@nonl
 #@+node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
-# c.chapterController does not exist when getPublicCommands is called,
-# so we must wait until the command is actually called to get c.chapterController.
 
 def getPublicCommands (self):
 
     if self.c.config.getBool('use_chapters'):
         return {
-           'create-chapter': self.createChapter,
-           'remove-chapter': self.removeChapter,
-           'rename-chapter': self.renameChapter,
+            'clone-node-to-chapter':    self.cloneNodeToChapter,
+            'copy-node-to-chapter':     self.copyNodeToChapter,
+            'create-chapter':           self.createChapter,
+            'move-node-to-chapter':     self.moveNodeToChapter,
+            'remove-chapter':           self.removeChapter,
+            'rename-chapter':           self.renameChapter,
+            'select-chapter':           self.selectChapter,
         }
     else:
         return {}
 
+# c.chapterController does not exist when getPublicCommands is called,
+# so we must wait until the command is actually called to get c.chapterController.
+def cloneNodeToChapter (self,event=None):
+    return self.c.chapterController.cloneNodeToChapter(event)
+def copyNodeToChapter (self,event=None):
+    return self.c.chapterController.copyNodeToChapter(event)
 def createChapter (self,event=None):
-    return self.c.chapterController.createChapter()
-
+    return self.c.chapterController.createChapter(event)
+def moveNodeToChapter (self,event=None):
+    return self.c.chapterController.moveNodeToChapter(event)
 def removeChapter (self,event=None):
-    return self.c.chapterController.removeChapter()
-
+    return self.c.chapterController.removeChapter(event)
 def renameChapter (self,event=None):
-    return self.c.chapterController.renameChapter()
+    return self.c.chapterController.renameChapter(event)
+def selectChapter (self,event=None):
+    return self.c.chapterController.selectChapter(event)
 #@-node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
 #@-node:ekr.20070522082646.1:Completed chapters
 #@+node:ekr.20070521104213:Aspell now works on Linux, but only using Python 2.5
