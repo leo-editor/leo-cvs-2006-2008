@@ -629,8 +629,11 @@ class scriptingController:
 
         if g.app.gui.guiName() == 'tkinter':
             if sys.platform == "win32":
-                width = int(len(truncatedText) * 0.9)
-                b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
+                if 0:
+                     b.configure(bg=bg)
+                else:
+                    width = int(len(truncatedText) * 0.9)
+                    b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
 
         # Register the command name if it exists.
         if command:

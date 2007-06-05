@@ -12126,12 +12126,12 @@ def createCmndsMenuFromTable (self):
         self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
 
     for name,table in (
-        # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t
+        # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t,u
         ('&Abbrev...',          self.cmdsMenuAbbrevTable),
         ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
         ('&Buffers...',         self.cmdsMenuBuffersTable),
-        ('Chapters...',         self.cmdsMenuChaptersTable),
-        ('&Cursor/Selection...',[]),
+        ('&Chapters...',         self.cmdsMenuChaptersTable),
+        ('C&ursor/Selection...',[]),
         ('&Focus...',           self.cmdsMenuFocusTable),
         ('&Macro...',           self.cmdsMenuMacroTable),
         ('M&inibuffer',         self.cmdsMenuMinibufferTable),
@@ -14957,7 +14957,6 @@ def expandNode (self,event=None):
     finally:
         c.endUpdate()
         c.treeFocusHelper()
-#@nonl
 #@-node:ekr.20031218072017.2907:expandNode
 #@+node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
 def expandNodeAndGoToFirstChild (self,event=None):
@@ -32449,7 +32448,7 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; name = self.name
 
-    # g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
+    # g.trace(name,'self.p',self.p) # ,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
 
     cc.selectedChapter = self
 
@@ -32458,11 +32457,14 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
         assert w == c.frame.body.bodyCtrl
         assert w == c.frame.bodyCtrl
         assert w.leo_p
+        # g.trace(name,'w.leo_p',w.leo_p,'p',p)
         self.p = p = self.findPositionInChapter(w.leo_p)
         if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p)
     else:
         # This must be done *after* switching roots.
         target_p = self.p or self.root.firstChild() or self.root
+        #g.trace(name,'target_p',target_p)
+        #g.trace(name,'self.p',self.p,'self.root',self.root)
         self.p = p = self.findPositionInChapter(target_p)
         if selectEditor:
             w = self.findEditorInChapter(p)
@@ -41543,13 +41545,14 @@ def setPositionsFromStacks (self):
 #@+node:ekr.20070317130250:cc.selectChapterByName
 def selectChapterByName (self,name):
 
-    cc = self ; chapter = cc.chaptersDict.get(name)
+    cc = self ; c = cc.c ; chapter = cc.chaptersDict.get(name)
 
     if chapter:
         if chapter != cc.selectedChapter:
             if cc.selectedChapter:
                 cc.selectedChapter.unselect()
             chapter.select()
+            c.setCurrentPosition(chapter.p)
             cc.selectedChapter = chapter
     else:
         cc.error('cc.selectShapter: no such chapter: %s' % name)
@@ -41559,7 +41562,7 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 
     c = self.c ; cc = self.cc ; name = self.name
 
-    # g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
+    # g.trace(name,'self.p',self.p) # ,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
 
     cc.selectedChapter = self
 
@@ -41568,11 +41571,14 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
         assert w == c.frame.body.bodyCtrl
         assert w == c.frame.bodyCtrl
         assert w.leo_p
+        # g.trace(name,'w.leo_p',w.leo_p,'p',p)
         self.p = p = self.findPositionInChapter(w.leo_p)
         if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p)
     else:
         # This must be done *after* switching roots.
         target_p = self.p or self.root.firstChild() or self.root
+        #g.trace(name,'target_p',target_p)
+        #g.trace(name,'self.p',self.p,'self.root',self.root)
         self.p = p = self.findPositionInChapter(target_p)
         if selectEditor:
             w = self.findEditorInChapter(p)
@@ -41598,7 +41604,7 @@ def findPositionInChapter (self,p1):
     c = self.c ; name = self.name 
 
     root = g.choose(self.name=='main',c.rootPosition(),self.root)
-    # g.trace('root',root,'p',p)
+    # g.trace('p1',p1)
     if p1 and c.positionExists(p1,root=root):
         # g.trace('using existing position',p)
         return p1
@@ -41619,8 +41625,8 @@ def findPositionInChapter (self,p1):
         self.p = self.root.copy()
 
     if 1:
-        self.error('***** findPositionInChapter: lost %s in %s' % (
-            p1.v.t.headString,self.name))
+        self.error('***** chapter: %s findPositionInChapter: lost %s' % (
+            self.name,p1.v.t.headString))
         g.trace(g.callers())
 
     return self.p.copy()
@@ -42089,7 +42095,7 @@ def cleanLines (self,p,s):
 if g.app and g.app.unitTesting:
 
     def sendEmail(self):
-        g.trace('self',self,'p',p.headString())
+        pass # g.trace('self',self,'p',p.headString())
 
     class test:
         pass
@@ -42801,38 +42807,22 @@ def test_dummy():
 (done) Eliminate error messages.
 #@nonl
 #@+node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
-
 def getPublicCommands (self):
 
-    if self.c.config.getBool('use_chapters'):
+    c = self.c ; cc = c.chapterController
+    if cc:
         return {
-            'clone-node-to-chapter':    self.cloneNodeToChapter,
-            'copy-node-to-chapter':     self.copyNodeToChapter,
-            'create-chapter':           self.createChapter,
-            'move-node-to-chapter':     self.moveNodeToChapter,
-            'remove-chapter':           self.removeChapter,
-            'rename-chapter':           self.renameChapter,
-            'select-chapter':           self.selectChapter,
+            'clone-node-to-chapter':    cc.cloneNodeToChapter,
+            'copy-node-to-chapter':     cc.copyNodeToChapter,
+            'create-chapter':           cc.createChapter,
+            'move-node-to-chapter':     cc.moveNodeToChapter,
+            'remove-chapter':           cc.removeChapter,
+            'rename-chapter':           cc.renameChapter,
+            'select-chapter':           cc.selectChapter,
         }
     else:
         return {}
-
-# c.chapterController does not exist when getPublicCommands is called,
-# so we must wait until the command is actually called to get c.chapterController.
-def cloneNodeToChapter (self,event=None):
-    return self.c.chapterController.cloneNodeToChapter(event)
-def copyNodeToChapter (self,event=None):
-    return self.c.chapterController.copyNodeToChapter(event)
-def createChapter (self,event=None):
-    return self.c.chapterController.createChapter(event)
-def moveNodeToChapter (self,event=None):
-    return self.c.chapterController.moveNodeToChapter(event)
-def removeChapter (self,event=None):
-    return self.c.chapterController.removeChapter(event)
-def renameChapter (self,event=None):
-    return self.c.chapterController.renameChapter(event)
-def selectChapter (self,event=None):
-    return self.c.chapterController.selectChapter(event)
+#@nonl
 #@-node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
 #@-node:ekr.20070522082646.1:Completed chapters
 #@+node:ekr.20070521104213:Aspell now works on Linux, but only using Python 2.5
