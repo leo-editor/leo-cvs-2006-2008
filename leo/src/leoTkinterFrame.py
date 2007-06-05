@@ -1187,7 +1187,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 if sys.platform != 'darwin':
                     width = max(6,len(text))
                     b.configure(width=width)
-                b.pack(side="left", fill="y")
+                b.pack(side="left", fill="none")
                 return b
 
             return None
