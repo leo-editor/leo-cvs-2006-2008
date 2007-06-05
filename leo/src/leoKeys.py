@@ -662,7 +662,7 @@ class autoCompleterClass:
             self.abort()            
     #@nonl
     #@-node:ekr.20061031131434.29:doBackSpace (autocompleter)
-    #@+node:ekr.20061031131434.30:doTabCompletion
+    #@+node:ekr.20061031131434.30:doTabCompletion (autocompleter)
     def doTabCompletion (self):
 
         '''Handle tab completion when the user hits a tab.'''
@@ -681,7 +681,7 @@ class autoCompleterClass:
             self.computeCompletionList()
 
         c.widgetWantsFocusNow(w)
-    #@-node:ekr.20061031131434.30:doTabCompletion
+    #@-node:ekr.20061031131434.30:doTabCompletion (autocompleter)
     #@+node:ekr.20061031131434.31:extendSelection
     def extendSelection (self,s):
 
@@ -2777,7 +2777,7 @@ class keyHandlerClass:
 
         '''Accumulate an argument until the user hits return (or control-g).
         Enter the given return state when done.
-        The prefix is does not form the arg.  The prefix defaults to the k.getLabel().
+        The prefix does not form the arg.  The prefix defaults to the k.getLabel().
         '''
 
         k = self ; c = k.c ; gui  = g.app.gui
@@ -2793,6 +2793,7 @@ class keyHandlerClass:
             #@+node:ekr.20061031131434.129:<< init altX vars >>
             k.argTabList = tabList and tabList[:] or []
             k.arg_completion = completion
+            # g.trace('completion',completion,'tabList',tabList)
 
             k.mb_prefix = prefix or k.getLabel()
             k.mb_prompt = prefix or ''
@@ -3628,7 +3629,7 @@ class keyHandlerClass:
     #@-node:ekr.20061031131434.165:modeHelp
     #@-node:ekr.20061031131434.156:Modes
     #@+node:ekr.20061031131434.167:Shared helpers
-    #@+node:ekr.20061031131434.175:computeCompletionList
+    #@+node:ekr.20061031131434.175:k.computeCompletionList
     # Important: this code must not change mb_tabListPrefix.  Only doBackSpace should do that.
 
     def computeCompletionList (self,defaultTabList,backspace):
@@ -3662,7 +3663,7 @@ class keyHandlerClass:
                 g.es('%*s %*s %s' % (-(min(20,n1)),s1,n2,s2,s3),tabName=tabName)
 
         c.bodyWantsFocus()
-    #@-node:ekr.20061031131434.175:computeCompletionList
+    #@-node:ekr.20061031131434.175:k.computeCompletionList
     #@+node:ekr.20061031131434.176:computeInverseBindingDict
     def computeInverseBindingDict (self):
 
