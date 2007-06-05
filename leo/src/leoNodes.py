@@ -817,6 +817,8 @@ class vnode (baseVnode):
 
         self.statusBits |= self.expandedBit
 
+        # g.trace(self,g.callers())
+
         # g.trace(self.statusBits)
 
     def initExpandedBit (self):
