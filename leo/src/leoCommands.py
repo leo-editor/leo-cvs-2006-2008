@@ -4298,7 +4298,6 @@ class baseCommands:
         finally:
             c.endUpdate()
             c.treeFocusHelper()
-    #@nonl
     #@-node:ekr.20031218072017.2907:expandNode
     #@+node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
     def expandNodeAndGoToFirstChild (self,event=None):
@@ -5966,13 +5965,13 @@ class baseCommands:
     #@+node:ekr.20040303165342:canHoist & canDehoist
     def canDehoist(self):
 
-        return len(self.hoistStack) > 0
+        c = self
+        return c.hoistLevel() > 0
 
     def canHoist(self):
 
-        c = self
-
         # N.B.  This is called at idle time, so minimizing positions is crucial!
+        c = self
         if c.hoistStack:
             bunch = c.hoistStack[-1]
             return bunch.p and not c.isCurrentPosition(bunch.p)
@@ -5980,6 +5979,14 @@ class baseCommands:
             return c.currentPositionHasNext()
         else:
             return True
+
+    def hoistLevel (self):
+
+        c = self ; cc = c.chapterController
+        n = len(c.hoistStack)
+        if n > 0 and cc and cc.inChapter():
+            n -= 1
+        return n
     #@-node:ekr.20040303165342:canHoist & canDehoist
     #@+node:ekr.20031218072017.2970:canMoveOutlineDown
     def canMoveOutlineDown (self):
