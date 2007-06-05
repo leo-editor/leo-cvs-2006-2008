@@ -2384,11 +2384,14 @@ class leoTree:
 
         Return a flag telling whether a redraw is needed.'''
 
-        c = self.c ; redraw_flag = False
+        c = self.c ; cc = c.chapterController ; redraw_flag = False
+        inChapter = cc and cc.inChapter()
 
         c.beginUpdate()
         try:
             for p in p.parents_iter():
+                if inChapter and p.headString().startswith('@chapter'):
+                    break
                 if not p.isExpanded():
                     p.expand()
                     redraw_flag = True
@@ -3052,7 +3055,8 @@ class nullIconBarClass:
                 pass
             def configure (self,*args,**keys):
                 pass
-
+            def pack (self,*args,**keys):
+                pass
 
         b = nullButtonWidget(self.c,command,name,text)
         return b
