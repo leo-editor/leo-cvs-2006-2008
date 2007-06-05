@@ -9,9 +9,7 @@
 import leoGlobals as g
 import leoNodes
 
-# To do: later or never:
-# - Create commands to choose chapters.
-# - Make body editors persistent. Create @body-editor node?
+# To do later or never: Make body editors persistent. Create @body-editor node?
 
 #@+others
 #@+node:ekr.20070317085437:class chapterController
@@ -76,8 +74,6 @@ class chapterController:
         '''Prompt for a chapter name,
         then clone the selected node to the chapter.'''
 
-        g.trace()
-
         cc = self ; k = cc.c.k ; tag = 'clone-node-to-chapter'
         state = k.getState(tag)
 
@@ -113,18 +109,13 @@ class chapterController:
                 parent = cc.getChapterNode(toChapter.name)
                 clone.moveToLastChildOf(parent)
             c.selectPosition(clone)
-            ### Set the 'raw' current position without affecting c._rootPosition.
-            ### Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
-            ### c._currentPosition = clone
             c.setChanged(True)
         finally:
             c.endUpdate(False)
 
+        toChapter.p = clone.copy()
         toChapter.select()
-
-        # toChapter.p = clone.copy()
-        # tt.selectTab(toChapter.name)
-        # fromChapter.p = p.copy()
+        fromChapter.p = p.copy()
     #@-node:ekr.20070604155815.1:cc.cloneToChapterHelper
     #@-node:ekr.20070317085437.50:cc.cloneNodeToChapter & helper
     #@+node:ekr.20070317085437.51:cc.copyNodeToChapter & helper
@@ -132,8 +123,6 @@ class chapterController:
 
         '''Prompt for a chapter name,
         then copy the selected node to the chapter.'''
-
-        g.trace()
 
         cc = self ; k = cc.c.k ; tag = 'copy-node-to-chapter'
         state = k.getState(tag)
@@ -168,15 +157,12 @@ class chapterController:
             p2.unlink()
             p2.moveToLastChildOf(parent)
             c.selectPosition(p2)
-                ### Set the 'raw' current position without affecting c._rootPosition.
-                ### Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
-                ###c._currentPosition = p2
             c.setChanged(True)
         finally:
             c.endUpdate(False)
 
         toChapter.p = p2.copy()
-        ###tt.selectTab(toChapter.name)
+        toChapter(select)
         fromChapter.p = p.copy()
     #@-node:ekr.20070604155815.2:cc.copyNodeToChapterHelper
     #@-node:ekr.20070317085437.51:cc.copyNodeToChapter & helper
@@ -243,18 +229,15 @@ class chapterController:
                     parent = cc.getChapterNode(toChapter.name)
                     p.unlink()
                     p.moveToLastChildOf(parent)
-                ###c.selectPosition(sel)
-                # Set the 'raw' current position without affecting c._rootPosition.
-                # Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
-                c._currentPosition = sel
+                c.selectPosition(sel)
+                c.setChanged(True)
         finally:
             c.endUpdate(False)
 
         if sel:
             toChapter.p = p.copy() # Must be done before tt.selectTab.
-            ### tt.selectTab(toChapter.name)
+            toChapter.select()
             fromChapter.p = sel.copy() # Must be done after tt.selectTab.
-            c.setChanged(True)
         else:
             cc.error('Can not move the last node of a chapter.')
     #@-node:ekr.20070317085437.52:cc.moveNodeToChapterHelper
@@ -352,8 +335,6 @@ class chapterController:
 
         cc = self ; c = cc.c ; root = c.rootPosition()
 
-        # g.trace('root',root)
-
         c.beginUpdate()
         try:
             # Create the node with a postion method
@@ -380,8 +361,6 @@ class chapterController:
 
         cc = self ; c = cc.c ; current = c.currentPosition() or c.rootPosition()
 
-        # g.trace(chapterName,'current',current)
-
         c.beginUpdate()
         try:
             # Create the node with a postion method
@@ -403,9 +382,6 @@ class chapterController:
         set the headString of the new node to s.'''
 
         c = self.c
-
-        # g.trace('parent',parent,'s',s)
-
         p = parent.insertAsLastChild()
         p.initHeadString(s)
         c.setChanged(True)
@@ -512,7 +488,6 @@ class chapterController:
             val = (
                 cc.findChapterNode(chapterName,giveError=False) or
                 cc.createChapterNode(chapterName))
-            # g.trace('chapterName',chapterName,'val',val)
             return val
     #@-node:ekr.20070325115102:cc.getChaperNode
     #@+node:ekr.20070318124004:cc.getChapter
@@ -528,11 +503,6 @@ class chapterController:
         cc = self
 
         return cc.selectedChapter
-
-        # tabName = cc.tt.nb.getcurselection()
-        # theChapter = cc.chaptersDict.get(tabName) or cc.selectedChapter
-        # if self.trace: g.trace(theChapter and theChapter.name or '<no chapter>')
-        # return theChapter
     #@-node:ekr.20070318122708:cc.getSelectedChapter
     #@+node:ekr.20070510064813:cc.printChaptersTree
     def printChaptersTree(self,tag=''):
@@ -588,8 +558,7 @@ class chapter:
 
         if cc.tt:
             cc.tt.createTab(name)
-
-        # g.trace('chapter',self.name,'root',root)
+    #@nonl
     #@-node:ekr.20070317085708.1: ctor: chapter
     #@+node:ekr.20070317085708.2:__str__ and __repr__(chapter)
     def __str__ (self):
