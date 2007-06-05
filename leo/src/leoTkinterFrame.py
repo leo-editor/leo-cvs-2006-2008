@@ -2896,13 +2896,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         leoFrame.leoTreeTab.__init__ (self,c,chapterController,parentFrame)
             # Init the base class.  Sets self.c, self.cc and self.parentFrame.
 
-        self.tabNames = []
-        self.trace = True
-
-        # Keys are tabNames for all these dicts.
-        # Important: tabNames never change, even if their button text changes
-
-        self.buttonsDict = {} # values are Tk.Button's.
+        self.tabNames = [] # The list of tab names.  Changes when tabs are renamed.
 
         self.createControl()
     #@-node:ekr.20070317073819.1: ctor (leoTreeTab)
@@ -2918,6 +2912,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
         # Create the chapter menu.
         self.chapterVar = var = Tk.StringVar()
         var.set('main')
+
         tt.chapterMenu = menu = Pmw.OptionMenu(tt.frame,
             labelpos = 'w', label_text = 'chapter',
             menubutton_textvariable = var,
@@ -2925,24 +2920,7 @@ class leoTkinterTreeTab (leoFrame.leoTreeTab):
             command = tt.selectTab,
         )
         menu.pack(side='left',padx=5)
-
-        if 0: # It's better to use items in the Cmds menu.
-            # Create the commands menu
-            tt.commandsVar = var = Tk.StringVar()
-            var.set('chapter ops')
-            tt.commandsMenu = menu = Pmw.OptionMenu(tt.frame,
-                menubutton_textvariable = var,
-                items = [
-                    'New Chapter',
-                    'Remove This Chapter',
-                    'Rename This Chapter...',
-                    'Clone Node To Chapter...',
-                    'Copy Node To Chapter...',
-                    'Move Node To Chapter...',
-                ],
-                command = tt.doCommand,
-            )
-            menu.pack(side='left',padx=5)
+    #@nonl
     #@-node:ekr.20070317073819.2:tt.createControl
     #@-node:ekr.20070320090557.1: Birth & death
     #@+node:ekr.20070320093038:Tabs...
