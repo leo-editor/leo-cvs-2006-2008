@@ -467,7 +467,7 @@ class chapterController:
 
         cc = self ; c = cc.c ; trace = False or self.trace
 
-        for p in c.rootPosition().self_and_siblings_iter():
+        for p in c.allNodes_iter():
             if p.headString() == '@chapters':
                 cc.chaptersNode = p.copy()
                 return p
