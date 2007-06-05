@@ -162,7 +162,7 @@ class chapterController:
             c.endUpdate(False)
 
         toChapter.p = p2.copy()
-        toChapter(select)
+        toChapter.select()
         fromChapter.p = p.copy()
     #@-node:ekr.20070604155815.2:cc.copyNodeToChapterHelper
     #@-node:ekr.20070317085437.51:cc.copyNodeToChapter & helper
@@ -220,24 +220,28 @@ class chapterController:
 
         c.beginUpdate()
         try:
-            sel = p.visBack() or p.visNext()
-            if sel:
-                if toChapter.name == 'main':
+            if toChapter.name == 'main':
+                sel = (p.threadBack() != fromChapter.root and p.threadBack()) or p.nodeAfterTree()
+                if sel:
                     p.unlink()
                     p.moveAfter(toChapter.p)
-                else:
+                    c.selectPosition(sel)
+                    c.setChanged(True)
+            else:
+                sel = p.threadBack() or p.nodeAfterTree()
+                if sel:
                     parent = cc.getChapterNode(toChapter.name)
                     p.unlink()
                     p.moveToLastChildOf(parent)
-                c.selectPosition(sel)
-                c.setChanged(True)
+                    c.selectPosition(sel)
+                    c.setChanged(True)
         finally:
             c.endUpdate(False)
 
         if sel:
-            toChapter.p = p.copy() # Must be done before tt.selectTab.
+            toChapter.p = p.copy()
             toChapter.select()
-            fromChapter.p = sel.copy() # Must be done after tt.selectTab.
+            fromChapter.p = sel.copy()
         else:
             cc.error('Can not move the last node of a chapter.')
     #@-node:ekr.20070317085437.52:cc.moveNodeToChapterHelper
@@ -245,7 +249,7 @@ class chapterController:
     #@+node:ekr.20070317085437.40:cc.removeChapter
     def removeChapter (self,event=None):
 
-        cc = self ; c = cc.c
+        cc = self ; c = cc.c ; tt = cc.tt
 
         theChapter = cc.selectedChapter
         if not theChapter: return
@@ -256,16 +260,22 @@ class chapterController:
             return cc.error('Can not remove the main chapter')
         else:
             cc.deleteChapterNode(name)
-            if cc.tt:
+            if name in cc.chaptersDict.keys():
+                del cc.chaptersDict[name]
+            # g.trace(cc.chaptersDict.keys())
+            if tt:
                 tt.destroyTab(name)
             cc.selectChapterByName('main')
     #@-node:ekr.20070317085437.40:cc.removeChapter
-    #@+node:ekr.20070317085437.41:cc.renameChapter
-    def renameChapter (self,event=None):
+    #@+node:ekr.20070317085437.41:cc.renameChapter & testHelper
+    # newName is for unitTesting.
+
+    def renameChapter (self,event=None,newName=None):
 
         '''Use the minibuffer to get a new name for the present chapter.'''
 
-        cc = self ; c = cc.c ; k = cc.c.k ; tag = 'rename-chapter'
+        cc = self ; c = cc.c ; k = cc.c.k ; tt = cc.tt
+        tag = 'rename-chapter'
         theChapter = cc.selectedChapter
         if not theChapter: return
         if theChapter.name == 'main':
@@ -273,7 +283,7 @@ class chapterController:
 
         state = k.getState(tag)
 
-        if state == 0:
+        if state == 0 and not newName:
             names = cc.chaptersDict.keys()
             prefix = 'Rename this chapter: '
             k.setLabelBlue(prefix,protect=True)
@@ -281,19 +291,20 @@ class chapterController:
         else:
             k.clearState()
             k.resetLabel()
+            if newName: k.arg = newName
             if k.arg and k.arg != theChapter.name:
                 oldChapterName = theChapter.name
                 del cc.chaptersDict[theChapter.name]
-                cc.chaptersDict[k.arg] = self
+                cc.chaptersDict[k.arg] = theChapter
                 theChapter.name = k.arg
                 root = theChapter.root
                 root.initHeadString('@chapter %s' % k.arg)
-                if cc.tt:
-                    cc.tt.setTabLabel(k.arg)
-                    cc.tt.destroyTab(oldChapterName)
-                    cc.tt.createTab(k.arg)
+                if tt:
+                    tt.setTabLabel(k.arg)
+                    tt.destroyTab(oldChapterName)
+                    tt.createTab(k.arg)
                 c.redraw_now()
-    #@-node:ekr.20070317085437.41:cc.renameChapter
+    #@-node:ekr.20070317085437.41:cc.renameChapter & testHelper
     #@+node:ekr.20070604165126:cc.selectChapter
     def selectChapter (self,event=None):
 
@@ -317,13 +328,14 @@ class chapterController:
     #@+node:ekr.20070317130250:cc.selectChapterByName
     def selectChapterByName (self,name):
 
-        cc = self ; chapter = cc.chaptersDict.get(name)
+        cc = self ; c = cc.c ; chapter = cc.chaptersDict.get(name)
 
         if chapter:
             if chapter != cc.selectedChapter:
                 if cc.selectedChapter:
                     cc.selectedChapter.unselect()
                 chapter.select()
+                c.setCurrentPosition(chapter.p)
                 cc.selectedChapter = chapter
         else:
             cc.error('cc.selectShapter: no such chapter: %s' % name)
@@ -475,6 +487,12 @@ class chapterController:
         # This is *not* an error.
         return None
     #@-node:ekr.20070325094401:cc.findChaptersNode
+    #@+node:ekr.20070605124356:cc.inChapter
+    def inChapter (self):
+
+        cc = self
+        return cc.selectedChapter and cc.selectedChapter.name != 'main'
+    #@-node:ekr.20070605124356:cc.inChapter
     #@+node:ekr.20070325115102:cc.getChaperNode
     def getChapterNode (self,chapterName):
 
@@ -595,7 +613,7 @@ class chapter:
 
         c = self.c ; cc = self.cc ; name = self.name
 
-        # g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
+        # g.trace(name,'self.p',self.p) # ,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
 
         cc.selectedChapter = self
 
@@ -604,11 +622,14 @@ class chapter:
             assert w == c.frame.body.bodyCtrl
             assert w == c.frame.bodyCtrl
             assert w.leo_p
+            # g.trace(name,'w.leo_p',w.leo_p,'p',p)
             self.p = p = self.findPositionInChapter(w.leo_p)
             if p != w.leo_p: g.trace('****** can not happen: lost p',w.leo_p)
         else:
             # This must be done *after* switching roots.
             target_p = self.p or self.root.firstChild() or self.root
+            #g.trace(name,'target_p',target_p)
+            #g.trace(name,'self.p',self.p,'self.root',self.root)
             self.p = p = self.findPositionInChapter(target_p)
             if selectEditor:
                 w = self.findEditorInChapter(p)
@@ -634,7 +655,7 @@ class chapter:
         c = self.c ; name = self.name 
 
         root = g.choose(self.name=='main',c.rootPosition(),self.root)
-        # g.trace('root',root,'p',p)
+        # g.trace('p1',p1)
         if p1 and c.positionExists(p1,root=root):
             # g.trace('using existing position',p)
             return p1
@@ -655,8 +676,8 @@ class chapter:
             self.p = self.root.copy()
 
         if 1:
-            self.error('***** findPositionInChapter: lost %s in %s' % (
-                p1.v.t.headString,self.name))
+            self.error('***** chapter: %s findPositionInChapter: lost %s' % (
+                self.name,p1.v.t.headString))
             g.trace(g.callers())
 
         return self.p.copy()
