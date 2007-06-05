@@ -1065,28 +1065,38 @@ class chapterCommandsClass (baseEditCommandsClass):
         # c.chapterController does not exist yet.
     #@-node:ekr.20070522085340: ctor
     #@+node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
-    # c.chapterController does not exist when getPublicCommands is called,
-    # so we must wait until the command is actually called to get c.chapterController.
 
     def getPublicCommands (self):
 
         if self.c.config.getBool('use_chapters'):
             return {
-               'create-chapter': self.createChapter,
-               'remove-chapter': self.removeChapter,
-               'rename-chapter': self.renameChapter,
+                'clone-node-to-chapter':    self.cloneNodeToChapter,
+                'copy-node-to-chapter':     self.copyNodeToChapter,
+                'create-chapter':           self.createChapter,
+                'move-node-to-chapter':     self.moveNodeToChapter,
+                'remove-chapter':           self.removeChapter,
+                'rename-chapter':           self.renameChapter,
+                'select-chapter':           self.selectChapter,
             }
         else:
             return {}
 
+    # c.chapterController does not exist when getPublicCommands is called,
+    # so we must wait until the command is actually called to get c.chapterController.
+    def cloneNodeToChapter (self,event=None):
+        return self.c.chapterController.cloneNodeToChapter(event)
+    def copyNodeToChapter (self,event=None):
+        return self.c.chapterController.copyNodeToChapter(event)
     def createChapter (self,event=None):
-        return self.c.chapterController.createChapter()
-
+        return self.c.chapterController.createChapter(event)
+    def moveNodeToChapter (self,event=None):
+        return self.c.chapterController.moveNodeToChapter(event)
     def removeChapter (self,event=None):
-        return self.c.chapterController.removeChapter()
-
+        return self.c.chapterController.removeChapter(event)
     def renameChapter (self,event=None):
-        return self.c.chapterController.renameChapter()
+        return self.c.chapterController.renameChapter(event)
+    def selectChapter (self,event=None):
+        return self.c.chapterController.selectChapter(event)
     #@-node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
     #@-others
 #@-node:ekr.20070522085324:chapterCommandsClass

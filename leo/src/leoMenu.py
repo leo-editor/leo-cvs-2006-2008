@@ -412,6 +412,7 @@ class leoMenu:
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
             ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
+            ('Chapters...',         self.cmdsMenuChaptersTable),
             ('&Cursor/Selection...',[]),
             ('&Focus...',           self.cmdsMenuFocusTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
@@ -809,6 +810,7 @@ class leoMenu:
         self.defineCmdsMenuAbbrevTable()
         self.defineCmdsMenuBodyEditorsTable()
         self.defineCmdsMenuBuffersTable()
+        self.defineCmdsMenuChaptersTable()
         self.defineCmdsMenuCursorTable()
         self.defineCmdsMenuFocusTable()
         self.defineCmdsMenuMacroTable()
@@ -865,6 +867,18 @@ class leoMenu:
             '&switch-to-buffer',
         ]
     #@-node:ekr.20060117095212:defineCmdsMenuBufferTable
+    #@+node:ekr.20070604205927:defineCmdsMenuChaptersTable
+    def defineCmdsMenuChaptersTable (self):
+
+        self.cmdsMenuChaptersTable = [
+            '&clone-node-to-chapter',
+            'c&opy-node-to-chapter',
+            'c&reate-chapter',
+            '&move-node-to-chapter',
+            '&remove-chapter',
+            '&select-chapter',
+        ]
+    #@-node:ekr.20070604205927:defineCmdsMenuChaptersTable
     #@+node:ekr.20060924124119:defineCmdsMenuCursorTable
     def defineCmdsMenuCursorTable (self):
 
