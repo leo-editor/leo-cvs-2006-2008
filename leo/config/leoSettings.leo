@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.618490967056">
-	<global_window_position top="10" left="238" height="661" width="941"/>
+	<global_window_position top="52" left="418" height="641" width="941"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -50,7 +50,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20061011082224" a="E"><vh>Candidates for settings in myLeoSettings.leo</vh>
+<v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = True</vh></v>
@@ -60,7 +60,7 @@
 <v t="ekr.20060926160657"><vh>@bool stayInTreeAfterEditHeadline = False</vh></v>
 <v t="ekr.20060122105527.7"><vh>@bool stayInTreeAfterSelect = True</vh></v>
 <v t="ekr.20060215104345"><vh>@bool swap_mac_keys = False</vh></v>
-<v t="ekr.20070604075218" a="TV"><vh>@bool use_chapter_tabs = True</vh></v>
+<v t="ekr.20070604075218"><vh>@bool use_chapter_tabs = True</vh></v>
 <v t="ekr.20070318065601"><vh>@bool use_chapters = True</vh></v>
 <v t="ekr.20061004150211"><vh>@bool use_sax_based_read = False</vh></v>
 <v t="ekr.20060201111002"><vh>@bool use_syntax_coloring = True</vh></v>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -334,7 +334,7 @@
 <v t="ekr.20060804095015"><vh>@string open_flash_brackets = ([{</vh></v>
 <v t="ekr.20060926161207.2" annotate="7d71002e"><vh>@strings  [ignore,insert, overwrite] top_level_unbound_key_action = insert</vh></v>
 </v>
-<v t="ekr.20051007200824" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
+<v t="ekr.20051007200824" a="E" annotate="7d71002e"><vh>Keyboard shortcuts</vh>
 <v t="ekr.20051101160257" annotate="7d71002e"><vh>About keyboard shortcuts</vh>
 <v t="ekr.20051007200824.1" annotate="7d71002e"><vh>About shortcut specifiers</vh></v>
 <v t="ekr.20060116090646"><vh>Reference for function keys</vh></v>
@@ -442,7 +442,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060110141538.1" annotate="7d71002e"><vh>@keys No bindings</vh>
+<v t="ekr.20060110141538.1" a="TV" annotate="7d71002e"><vh>@keys No bindings</vh>
 <v t="ekr.20051218202206" annotate="7d71002e"><vh>@shortcuts No bindings: A-E</vh></v>
 <v t="ekr.20060112093227.1"><vh>@shortcuts No bindings: F-M</vh></v>
 <v t="ekr.20060112093227.2"><vh>@shortcuts No bindings: N-Z</vh></v>
@@ -451,7 +451,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -613,11 +613,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -1740,6 +1740,7 @@ click-headline                      = None
 click-icon-box                      = None
 clone-find-all                      = None
 clone-node                          = None
+clone-node-to-chapter               = None
 close-rectangle                     = None
 close-window                        = None
 collect-garbage                     = None
@@ -1756,10 +1757,12 @@ convert-all-tabs                    = None
 convert-blanks                      = None
 convert-tabs                        = None
 copy-node                           = None
+copy-node-to-chapter                = None
 copy-rectangle-to-register          = None
 copy-text                           = None
 copy-to-register                    = None
 count-region                        = None
+create-chapter                      = None
 cut-node                            = None
 cut-text                            = None
 cycle-all-focus                     = None
@@ -3491,6 +3494,7 @@ mark-subheads                       = None
 match-brackets                      = None
 minimize-all                        = None
 mode-help                           = None
+move-node-to-chapter                = None
 move-outline-down                   = None
 move-outline-left                   = None
 move-outline-right                  = None
@@ -3560,6 +3564,7 @@ read-outline-only                   = None
 redo                                = None
 reformat-paragraph                  = None
 remove-blank-lines                  = None
+remove-chapter                      = None
 remove-directory                    = None
 remove-sentinels                    = None
 remove-space-from-lines             = None
@@ -3591,6 +3596,7 @@ search-backward                     = None
 search-forward                      = None
 search-with-present-options         = None
 select-all                          = None
+select-chapter                      = None
 set-colors                          = None
 set-comment-column                  = None
 set-extend-mode                     = None
@@ -5967,8 +5973,11 @@ goto-next-visible           ! tree = DnArrow
 goto-prev-visible           ! tree = UpArrow
 
 clone-node                  = Ctrl-`
+clone-node-to-chapter       = None
 contract-node               = None
 copy-node                   = Shift-Ctrl-c
+copy-node-to-chapter        = None
+create-chapter              = None
 cut-node                    = Shift-Ctrl-x
 contract-all                = Alt--
 edit-headline               = Ctrl-h
@@ -5983,12 +5992,15 @@ extract-section             = Shift-Ctrl-S  # Shift-Ctrl-E: end-of-line-extend-s
 goto-next-clone             = Alt-N
 insert-node                 = Ctrl-I
 mark                        = Ctrl-M
+move-node-to-chapter        = None
 move-outline-down           = Ctrl-D
 move-outline-left           = Ctrl-L
 move-outline-right          = Ctrl-R
 move-outline-up             = Ctrl-U
 paste-node                  = Shift-Ctrl-V
-promote                     = Ctrl-{      </t>
+promote                     = Ctrl-{
+remove-chapter              = None
+select-chapter              = None</t>
 <t tx="ekr.20060925060533.4">add-comments                        = Ctrl-parenleft
 backward-delete-char                = BackSpace
 backward-kill-word                  = Alt-Delete
