@@ -408,12 +408,12 @@ class leoMenu:
             self.createMenuEntries(cmdsMenu,self.cmdsMenuTopTable)
 
         for name,table in (
-            # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t
+            # &: a,b,c,d,f,g,h,i,m,n,o,p,r,s,t,u
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
             ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
-            ('Chapters...',         self.cmdsMenuChaptersTable),
-            ('&Cursor/Selection...',[]),
+            ('&Chapters...',         self.cmdsMenuChaptersTable),
+            ('C&ursor/Selection...',[]),
             ('&Focus...',           self.cmdsMenuFocusTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
             ('M&inibuffer',         self.cmdsMenuMinibufferTable),
