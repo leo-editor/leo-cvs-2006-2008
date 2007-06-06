@@ -23,12 +23,14 @@
 # 0.9 EKR: Make sure self.c == keywords.get('c') in all hook handlers.
 # 1.0 EKR: Added support for chapters: don't allow a dehoist of an @chapter 
 # node.
+# 1.1 EKR: Use hoist-changed hook rather than idle-time hook to update the 
+# widgets.
 #@-at
 #@nonl
 #@-node:ekr.20040908093511:<< change history >>
 #@nl
 
-__version__ = "1.0"
+__version__ = "1.1"
 
 #@<< imports >>
 #@+node:ekr.20040908093511.1:<< imports >>
@@ -73,11 +75,9 @@ def init ():
 def onCreate (tag,keys):
 
     c = keys.get('c')
-
     hoist = HoistButtons(c)
     hoist.addWidgets()
-    leoPlugins.registerHandler("idle",hoist.onIdle)
-#@nonl
+    leoPlugins.registerHandler("hoist-changed",hoist.onHoistChanged)
 #@-node:ekr.20050104063423:onCreate
 #@+node:ekr.20040331072607.1:class HoistButtons
 class HoistButtons:
@@ -89,8 +89,8 @@ class HoistButtons:
     def __init__(self,c):
 
         self.c = c
-        self.hoistOn = {}
-        self.hoistOff = {}
+        self.hoistButton = None
+        self.deHoistButton = None
     #@nonl
     #@-node:ekr.20040331072607.2:__init__
     #@+node:ekr.20040331072607.3:_getSizer
@@ -108,82 +108,57 @@ class HoistButtons:
     #@nonl
     #@-node:ekr.20040331072607.3:_getSizer
     #@+node:ekr.20040331072607.4:addWidgets
-    def addWidgets(self):
+    def addWidgets (self):
 
         """Add the widgets to the toolbar."""
 
-        c = self.c
-        toolbar = c.frame.iconBar
+        c = self.c ; toolbar = c.frame.iconBar
         if not toolbar: return
 
-        def hoistOffCallback():
-            c.dehoist()
+        buttons = []
+        for text in ('Hoist','De-Hoist'):
+            if USE_SIZER:
+                parent = self._getSizer(toolbar,SIZER_HEIGHT,SIZER_WIDTH)
+                b = Tk.Button(parent,text=text)
+            else:
+                b = c.frame.addIconButton(text=text)
+            buttons.append(b)
 
-        def hoistOnCallback():
-            c.hoist()
+        self.hoistButton,self.dehoistButton = b1,b2 = buttons
 
-        if USE_SIZER: # original code
-            self.hoistOn[c] = b1 = Tk.Button(
-                self._getSizer(toolbar, SIZER_HEIGHT, SIZER_WIDTH),text="Hoist", 
-                command = hoistOnCallback)
-            b1.pack(side="left", fill="both", expand=1)
-            self.hoistOff[c] = b2 = Tk.Button(
-                self._getSizer(toolbar, SIZER_HEIGHT, SIZER_WIDTH),text="De-Hoist",
-                command = hoistOffCallback)
-            b2.pack(side="right", fill="both", expand=1)
+        for b,command in ((b1,c.hoist),(b2,c.dehoist)):
+            b.configure(command=command)
+            b.pack(side='left',fill='none')
+            #if g.app.gui.guiName()=='tkinter' and sys.platform.startswith('win'):
+            #    b.configure(font=('verdana',7,'bold'))
 
-        else: # Use addIconButton for better visual compatibility.
-            self.hoistOn[c] = b1 = c.frame.addIconButton(text="Hoist")
-            b1.configure(command = hoistOnCallback)
-            self.hoistOff[c] = b2 = c.frame.addIconButton(text="De-Hoist")
-            b2.configure(command = hoistOffCallback)
-            if g.app.gui.guiName() == 'tkinter' and sys.platform == "win32":
-                for b in (b1,b2):
-                    #s = b.cget('text')
-                    #width = int(len(s) * 0.9)
-                    b.configure(font=('verdana',7,'bold'))
-            b1.pack(side='left', fill="none")
-            b2.pack(side='left', fill="none")
-
-        self.bgColor = b1.cget("background")
-        self.activeBgColor = b1.cget("activebackground")
+        self.bgColor = b1.cget('background')
+        self.activeBgColor = b1.cget('activebackground')
     #@-node:ekr.20040331072607.4:addWidgets
-    #@+node:ekr.20040331072607.7:onIdle
-    def onIdle(self,tag,keywords):
+    #@+node:ekr.20040331072607.7:onHoistChanged
+    def onHoistChanged(self,tag,keywords):
 
         c = keywords.get('c')
-        if c != self.c: return
+        if g.app.killed or g.app.unitTesting: return
+        if c != self.c or not c.exists or not hasattr(c,"hoistStack"): return
 
-        # This should not be necessary, and it is.
-        if g.app.killed:
-            return
-
-        if not hasattr(c,"hoistStack"):
-            return
-
-        on_widget  = self.hoistOn.get(c)
-        off_widget = self.hoistOff.get(c)
-
-        if not on_widget or not off_widget:
-            return # This can happen during unit tests.
-
-        state = g.choose(c.canHoist(),"normal","disabled")
-        on_widget.config(state=state)
-
-        state = g.choose(c.canDehoist(),"normal","disabled")
-        off_widget.config(state=state)
+        for b,f in (
+            (self.hoistButton,c.canHoist),
+            (self.dehoistButton,c.canDehoist),
+        ):
+            state = g.choose(f(),"normal","disabled")
+            b.config(state=state)
 
         n = c.hoistLevel()
         if n > 0:
-            on_widget.config(bg=activeHoistColor,
+            self.hoistButton.config(bg=activeHoistColor,
                 activebackground=activeHoistColor,
                 text="Hoist %s" % n)
         else:
-            on_widget.config(bg=self.bgColor,
+            self.hoistButton.config(bg=self.bgColor,
                 activebackground=self.activeBgColor,
                 text="Hoist")
-    #@nonl
-    #@-node:ekr.20040331072607.7:onIdle
+    #@-node:ekr.20040331072607.7:onHoistChanged
     #@-others
 #@nonl
 #@-node:ekr.20040331072607.1:class HoistButtons

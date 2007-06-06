@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.4440433213">
-	<global_window_position top="93" left="343" height="831" width="897"/>
+	<global_window_position top="93" left="343" height="811" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,9 +49,9 @@
 <v t="ekr.20060525110217"><vh>@@button rst-&gt;rst</vh></v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
-<v t="ekr.20050831184021.2" a="E"><vh>Table of contents</vh>
-<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20050831184021.2"><vh>Table of contents</vh>
+<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
@@ -1046,7 +1046,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.646"><vh>Borland PC versions...</vh>
@@ -3120,8 +3120,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070513111132" a="ETV"><vh>4.4.3 beta 1</vh>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20070513111132"><vh>4.4.3 beta 1</vh>
 <v t="ekr.20070513111132.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070513111132.2"><vh>Bugs</vh>
 <v t="ekr.20070513111132.3"><vh>Fixed an escape bug in new colorizer</vh></v>
@@ -19200,6 +19200,7 @@ Hook name (tag argument)      Stop?    When called                         Keys 
 'headrclick2'                          after  right click in headline      c,p,v,event
 'headkey1'                     yes     before headline keystrokes          c,p,v,ch (note 13)
 'headkey2'                             after  headline keystrokes          c,p,v,ch (note 13)
+'hoist-changed'                        whenever the hoist stack changes    c
 'hypercclick1'                 yes     before control click in hyperlink   c,p,v,event
 'hypercclick2'                         after  control click in hyperlink   c,p,v,event
 'hyperenter1'                  yes     before entering hyperlink           c,p,v,event

@@ -116,7 +116,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.10'
+__version__ = '1.11'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -187,6 +187,8 @@ __version__ = '1.10'
 # balloons.
 # 1.9 EKR: Warn about nodes with no cleaned text.
 # 1.10 EKR: Strip @key from button text and command name.
+# 1.11 EKR: Removed platform-specific munging of text: this is now done in the 
+# leoFrame classes.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -626,14 +628,6 @@ class scriptingController:
 
         if statusLine:
             self.createBalloon(b,statusLine)
-
-        if g.app.gui.guiName() == 'tkinter':
-            if sys.platform == "win32":
-                if 0:
-                     b.configure(bg=bg)
-                else:
-                    width = int(len(truncatedText) * 0.9)
-                    b.configure(width=width,font=('verdana',7,'bold'),bg=bg)
 
         # Register the command name if it exists.
         if command:
