@@ -18735,6 +18735,9 @@ body.colorizer.interrupt()
 c.frame.scanForTabWidth(p)
 body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
 self.forceFullRecolorFlag = False
+
+if g.app.unitTesting:
+    g.app.unitTestDict['colorized'] = True
 #@-node:ekr.20051026083733.6:<< recolor the body >>
 #@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
 c.beginUpdate()
@@ -28233,6 +28236,9 @@ body.colorizer.interrupt()
 c.frame.scanForTabWidth(p)
 body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
 self.forceFullRecolorFlag = False
+
+if g.app.unitTesting:
+    g.app.unitTestDict['colorized'] = True
 #@-node:ekr.20051026083733.6:<< recolor the body >>
 #@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
 c.beginUpdate()
@@ -35724,6 +35730,9 @@ body.colorizer.interrupt()
 c.frame.scanForTabWidth(p)
 body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
 self.forceFullRecolorFlag = False
+
+if g.app.unitTesting:
+    g.app.unitTestDict['colorized'] = True
 #@-node:ekr.20051026083733.6:<< recolor the body >>
 #@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
 c.beginUpdate()
