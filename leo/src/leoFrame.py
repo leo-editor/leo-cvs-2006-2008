@@ -1225,6 +1225,9 @@ class leoBody:
         c.frame.scanForTabWidth(p)
         body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
         self.forceFullRecolorFlag = False
+
+        if g.app.unitTesting:
+            g.app.unitTestDict['colorized'] = True
         #@-node:ekr.20051026083733.6:<< recolor the body >>
         #@nl
         if not c.changed: c.setChanged(True)
