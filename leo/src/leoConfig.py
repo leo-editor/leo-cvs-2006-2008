@@ -1441,7 +1441,7 @@ class configClass:
         # Changing g.app.gui here is a major hack.
         oldGui = g.app.gui
         g.app.gui = leoGui.nullGui("nullGui")
-        c,frame = g.app.newLeoCommanderAndFrame(path,updateRecentFiles=False)
+        c,frame = g.app.newLeoCommanderAndFrame(path,initEditCommanders=False,updateRecentFiles=False)
         frame.log.enable(False)
         c.setLog()
         g.app.lockLog()

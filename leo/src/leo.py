@@ -187,7 +187,7 @@ def createFrame (fileName):
                 return frame.c,frame
 
     # Create a _new_ frame & indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=False)
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
