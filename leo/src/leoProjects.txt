@@ -3942,7 +3942,7 @@ def redoInsertNode (self):
 
     u = self ; c = u.c
 
-    g.trace('newP',u.newP.v,'back',u.newBack,'parent',u.newParent.v)
+    # g.trace('newP',u.newP.v,'back',u.newBack,'parent',u.newParent.v)
 
     if u.newBack:
         u.newP.linkAfter(u.newBack)
@@ -16939,7 +16939,7 @@ def createFrame (fileName):
                 return frame.c,frame
 
     # Create a _new_ frame & indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=True)
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
@@ -22504,7 +22504,7 @@ def createFrame (fileName):
                 return frame.c,frame
 
     # Create a _new_ frame & indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=True)
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
@@ -34366,7 +34366,7 @@ def createFrame (fileName):
                 return frame.c,frame
 
     # Create a _new_ frame & indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=True)
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
@@ -40682,7 +40682,7 @@ def createFrame (fileName):
                 return frame.c,frame
 
     # Create a _new_ frame & indicate it is the startup window.
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName,initEditCommanders=True)
     frame.setInitialWindowGeometry()
     frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio)
     frame.startupWindow = True
@@ -46485,6 +46485,2384 @@ def validateOutline (self,event=None):
         return True
 #@-node:ekr.20031218072017.1765:c.validateOutline
 #@-node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@+node:ekr.20031218072017.2894:Outline menu...
+#@+node:ekr.20031218072017.2895: Top Level... (Commands)
+#@+node:ekr.20031218072017.1548:Cut & Paste Outlines
+#@+node:ekr.20031218072017.1549:cutOutline
+def cutOutline (self,event=None):
+
+    '''Delete the selected outline and send it to the clipboard.'''
+
+    c = self
+    if c.canDeleteHeadline():
+        c.copyOutline()
+        c.deleteOutline("Cut Node")
+        c.recolor()
+#@-node:ekr.20031218072017.1549:cutOutline
+#@+node:ekr.20031218072017.1550:copyOutline
+def copyOutline (self,event=None):
+
+    '''Copy the selected outline to the clipboard.'''
+
+    # Copying an outline has no undo consequences.
+    c = self
+    c.endEditing()
+    c.fileCommands.assignFileIndices()
+    s = c.fileCommands.putLeoOutline()
+    g.app.gui.replaceClipboardWith(s)
+#@-node:ekr.20031218072017.1550:copyOutline
+#@+node:ekr.20031218072017.1551:pasteOutline
+# To cut and paste between apps, just copy into an empty body first, then copy to Leo's clipboard.
+
+def pasteOutline(self,event=None,reassignIndices=True):
+
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes do *not* retain their original identify.'''
+
+    c = self ; u = c.undoer ; current = c.currentPosition()
+    s = g.app.gui.getTextFromClipboard()
+    pasteAsClone = not reassignIndices
+    undoType = g.choose(reassignIndices,'Paste Node','Paste As Clone')
+
+    c.endEditing()
+
+    if not s or not c.canPasteOutline(s):
+        return # This should never happen.
+
+    isLeo = g.match(s,0,g.app.prolog_prefix_string)
+    tnodeInfoDict = {}
+    if pasteAsClone:
+        << remember all data for undo/redo Paste As Clone >>
+
+    if isLeo:
+        pasted = c.fileCommands.getLeoOutline(s,reassignIndices)
+    else:
+        pasted = c.importCommands.convertMoreStringToOutlineAfter(s,current)
+    if not pasted: return
+
+    c.beginUpdate()
+    try:
+        copiedBunchList = []
+        if pasteAsClone:
+            << put only needed info in copiedBunchList >>
+        undoData = u.beforeInsertNode(current,
+            pasteAsClone=pasteAsClone,copiedBunchList=copiedBunchList)
+        c.endEditing()
+        c.validateOutline()
+        c.selectPosition(pasted)
+        pasted.setDirty()
+        c.setChanged(True)
+        # paste as first child if back is expanded.
+        back = pasted.back()
+        if back and back.isExpanded():
+            pasted.moveToNthChildOf(back,0)
+        c.setRootPosition(c.findRootPosition(pasted)) # New in 4.4.2.
+        u.afterInsertNode(pasted,undoType,undoData)
+    finally:
+        c.endUpdate()
+        c.recolor()
+#@+node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+@
+
+We don't know yet which nodes will be affected by the paste, so we remember
+everything. This is expensive, but foolproof.
+
+The alternative is to try to remember the 'before' values of tnodes in the
+fileCommands read logic. Several experiments failed, and the code is very ugly.
+In short, it seems wise to do things the foolproof way.
+
+@c
+
+for p in c.allNodes_iter():
+    t = p.v.t
+    if t not in tnodeInfoDict.keys():
+        tnodeInfoDict[t] = g.Bunch(
+            t=t,head=p.headString(),body=p.bodyString())
+#@-node:ekr.20050418084539:<< remember all data for undo/redo Paste As Clone >>
+#@+node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+# Create a dict containing only copied tnodes.
+copiedTnodeDict = {}
+for p in pasted.self_and_subtree_iter():
+    if p.v.t not in copiedTnodeDict:
+        copiedTnodeDict[p.v.t] = p.v.t
+
+# g.trace(copiedTnodeDict.keys())
+
+for t in tnodeInfoDict.keys():
+    bunch = tnodeInfoDict.get(t)
+    if copiedTnodeDict.get(t):
+        copiedBunchList.append(bunch)
+
+# g.trace('copiedBunchList',copiedBunchList)
+#@-node:ekr.20050418084539.2:<< put only needed info in copiedBunchList >>
+#@-node:ekr.20031218072017.1551:pasteOutline
+#@+node:EKR.20040610130943:pasteOutlineRetainingClones
+def pasteOutlineRetainingClones (self,event=None):
+
+    '''Paste an outline into the present outline from the clipboard.
+    Nodes *retain* their original identify.'''
+
+    c = self
+
+    return c.pasteOutline(reassignIndices=False)
+#@-node:EKR.20040610130943:pasteOutlineRetainingClones
+#@-node:ekr.20031218072017.1548:Cut & Paste Outlines
+#@+node:ekr.20031218072017.2028:Hoist & dehoist
+def dehoist (self,event=None):
+
+    '''Undo a previous hoist of an outline.'''
+
+    c = self ; p = c.currentPosition()
+    if p and c.canDehoist():
+        bunch = c.hoistStack.pop()
+        c.beginUpdate()
+        try:
+            if bunch.expanded: p.expand()
+            else:              p.contract()
+        finally:
+            c.endUpdate()
+        c.frame.clearStatusLine()
+        if c.hoistStack:
+            bunch = c.hoistStack[-1]
+            c.frame.putStatusLine("Hoist: " + bunch.p.headString())
+        else:
+            c.frame.putStatusLine("No hoist")
+        c.undoer.afterDehoist(p,'DeHoist')
+        g.doHook('hoist-changed',c=c)
+
+def hoist (self,event=None):
+
+    '''Make only the selected outline visible.'''
+
+    c = self ; p = c.currentPosition()
+    if p and c.canHoist():
+        # Remember the expansion state.
+        bunch = g.Bunch(p=p.copy(),expanded=p.isExpanded())
+        c.hoistStack.append(bunch)
+        c.beginUpdate()
+        try:
+            p.expand()
+        finally:
+            c.endUpdate()
+        c.frame.clearStatusLine()
+        c.frame.putStatusLine("Hoist: " + p.headString())
+        c.undoer.afterHoist(p,'Hoist')
+        g.doHook('hoist-changed',c=c)
+#@-node:ekr.20031218072017.2028:Hoist & dehoist
+#@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
+
+    """Return False if root or any of root's descedents is a clone of
+    parent or any of parents ancestors."""
+
+    message = "Illegal move or drag: no clone may contain a clone of itself"
+
+    # g.trace("root",root,"parent",parent)
+    clonedTnodes = {}
+    for ancestor in parent.self_and_parents_iter():
+        if ancestor.isCloned():
+            t = ancestor.v.t
+            clonedTnodes[t] = t
+
+    if not clonedTnodes:
+        return True
+
+    for p in root.self_and_subtree_iter():
+        if p.isCloned() and clonedTnodes.get(p.v.t):
+            if warningFlag:
+                g.alert(message)
+            return False
+    return True
+#@-node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+#@+node:ekr.20031218072017.1193:c.deleteOutline
+def deleteOutline (self,event=None,op_name="Delete Node"):
+
+    """Deletes the selected outline."""
+
+    c = self ; cc = c.chapterController ; u = c.undoer
+    p = c.currentPosition()
+    if not p: return
+
+    if p.hasVisBack(): newNode = p.visBack()
+    else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
+    if not newNode: return
+
+    c.beginUpdate()
+    try:
+       c.endEditing() # Make sure we capture the headline for Undo.
+    finally:
+        c.endUpdate(False)
+
+    if cc: # Special cases for @chapter and @chapters nodes.
+        chapter = '@chapter ' ; chapters = '@chapters ' 
+        h = p.headString()
+        if h.startswith(chapters):
+            if p.hasChildren():
+               return cc.error('Can not delete @chapters node with children.')
+        elif h.startswith(chapter):
+            name = h[len(chapter):].strip()
+            if name:
+                return cc.removeChapterByName(name)
+
+    c.beginUpdate()
+    try:
+        undoData = u.beforeDeleteNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.doDelete()
+        c.selectPosition(newNode)
+        c.setChanged(True)
+        u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+
+    c.validateOutline()
+#@-node:ekr.20031218072017.1193:c.deleteOutline
+#@+node:ekr.20031218072017.1761:c.insertHeadline
+def insertHeadline (self,event=None,op_name="Insert Node"):
+
+    '''Insert a node after the presently selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+
+    if not current: return
+
+    c.beginUpdate()
+    try:
+        undoData = c.undoer.beforeInsertNode(current)
+        # Make sure the new node is visible when hoisting.
+        if (
+            (current.hasChildren() and current.isExpanded()) or
+            (c.hoistStack and current == c.hoistStack[-1].p)
+        ):
+            if c.config.getBool('insert_new_nodes_at_end'):
+                p = current.insertAsLastChild()
+            else:
+                p = current.insertAsNthChild(0)
+        else:
+            p = current.insertAfter()
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterInsertNode(p,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+    c.beginUpdate()
+    try:
+        c.editPosition(p,selectAll=True)
+    finally:
+        c.endUpdate(False)
+
+    return p # for mod_labels plugin.
+#@-node:ekr.20031218072017.1761:c.insertHeadline
+#@+node:ekr.20031218072017.1762:c.clone
+def clone (self,event=None):
+
+    '''Create a clone of the selected outline.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+
+    c.beginUpdate()
+    try: # In update...
+        undoData = c.undoer.beforeCloneNode(p)
+        clone = p.clone()
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        if c.validateOutline():
+            u.afterCloneNode(clone,'Clone Node',undoData,dirtyVnodeList=dirtyVnodeList)
+            c.selectPosition(clone)
+    finally:
+        c.endUpdate()
+
+    return clone # For mod_labels and chapters plugins.
+#@-node:ekr.20031218072017.1762:c.clone
+#@+node:ekr.20031218072017.1765:c.validateOutline
+# Makes sure all nodes are valid.
+
+def validateOutline (self,event=None):
+
+    c = self
+
+    if not g.app.debug:
+        return True
+
+    root = c.rootPosition()
+    parent = c.nullPosition()
+
+    if root:
+        return root.validateOutlineWithParent(parent)
+    else:
+        return True
+#@-node:ekr.20031218072017.1765:c.validateOutline
+#@-node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
+#@+node:ekr.20050415134809:c.sortChildren
+def sortChildren (self,event=None):
+
+    '''Sort the children of a node.'''
+
+    c = self ; u = c.undoer ; undoType = 'Sort Children'
+    p = c.currentPosition()
+    if not p or not p.hasChildren(): return
+
+    c.beginUpdate()
+    try: # In update
+        c.endEditing()
+        u.beforeChangeGroup(p,undoType)
+        c.sortChildrenHelper(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterChangeGroup(p,undoType,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+#@-node:ekr.20050415134809:c.sortChildren
+#@+node:ekr.20040303175026.12:c.sortChildrenHelper
+def sortChildrenHelper (self,p):
+
+    c = self ; u = c.undoer
+
+    # Create a list of tuples sorted on headlines.
+    pairs = [(child.headString().lower(),child.copy()) for child in p.children_iter()]
+    pairs.sort()
+
+    # Move the children.
+    index = 0
+    for headline,child in pairs:
+        undoData = u.beforeMoveNode(child)
+        child.moveToNthChildOf(p,index)
+        u.afterMoveNode(child,'Sort',undoData)
+        index += 1
+#@nonl
+#@-node:ekr.20040303175026.12:c.sortChildrenHelper
+#@+node:ekr.20050415134809.1:c.sortSiblings
+def sortSiblings (self,event=None):
+
+    '''Sort the siblings of a node.'''
+
+    c = self ; u = c.undoer ; undoType = 'Sort Siblings'
+    p = c.currentPosition()
+    if not p: return
+
+    parent = p.parent()
+    if not parent:
+        c.sortTopLevel()
+    else:
+        c.beginUpdate()
+        try: # In update...
+            c.endEditing()
+            u.beforeChangeGroup(p,undoType)
+            c.sortChildrenHelper(parent)
+            dirtyVnodeList = parent.setAllAncestorAtFileNodesDirty()
+            c.setChanged(True)
+            u.afterChangeGroup(p,'Sort Siblings',dirtyVnodeList=dirtyVnodeList)
+        finally:
+            c.endUpdate()
+#@-node:ekr.20050415134809.1:c.sortSiblings
+#@+node:ekr.20031218072017.2896:c.sortTopLevel
+def sortTopLevel (self,event=None):
+
+    '''Sort the top-level nodes of an outline.'''
+
+    c = self ; u = c.undoer ; undoType = 'Sort Siblings'
+    root = c.rootPosition()
+    if not root: return
+
+    # Create a list of tuples sorted by headlines.
+    pairs = [(p.headString().lower(),p.copy())
+        for p in root.self_and_siblings_iter()]
+    pairs.sort()
+
+    c.beginUpdate()
+    try: # In update...
+        dirtyVnodeList = []
+        u.beforeChangeGroup(root,undoType)
+        if 1: # In group...
+            h,p = pairs[0]
+            if p != root:
+                undoData = u.beforeMoveNode(p)
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+                p.moveToRoot(oldRoot=root)
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+                u.afterMoveNode(p,'Sort',undoData)
+            for h,next in pairs[1:]:
+                undoData = u.beforeMoveNode(next)
+                next.moveAfter(p)
+                u.afterMoveNode(next,'Sort',undoData)
+                p = next
+            c.setRootPosition(c.findRootPosition(root)) # New in 4.4.2.
+        u.afterChangeGroup(root,undoType,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2896:c.sortTopLevel
+#@-node:ekr.20031218072017.2895: Top Level... (Commands)
+#@+node:ekr.20040711135959.2:Check Outline submenu...
+#@+node:ekr.20031218072017.2072:c.checkOutline
+def checkOutline (self,event=None,verbose=True,unittest=False,full=True):
+
+    """Report any possible clone errors in the outline.
+
+    Remove any unused tnodeLists."""
+
+    c = self ; count = 1 ; errors = 0
+    isTkinter = g.app.gui and g.app.gui.guiName() == "tkinter"
+
+    if full and not unittest:
+        g.es("all tests enabled: this may take awhile",color="blue")
+
+    p = c.rootPosition()
+    for p in c.allNodes_iter():
+        try:
+            count += 1
+            << remove unused tnodeList >>
+            if full: # Unit tests usually set this false.
+                << do full tests >>
+        except AssertionError,message:
+            errors += 1
+            << give test failed message >>
+    if verbose or not unittest:
+        << print summary message >>
+    return errors
+#@+node:ekr.20040313150633:<< remove unused tnodeList >>
+# Empty tnodeLists are not errors.
+v = p.v
+
+# New in 4.2: tnode list is in tnode.
+if hasattr(v.t,"tnodeList") and len(v.t.tnodeList) > 0 and not v.isAnyAtFileNode():
+    if 0:
+        s = "deleting tnodeList for " + repr(v)
+        print ; g.es_print(s,color="blue")
+    delattr(v.t,"tnodeList")
+    v.t._p_changed = True
+#@-node:ekr.20040313150633:<< remove unused tnodeList >>
+#@+node:ekr.20040323155951:<< do full tests >>
+if not unittest:
+    if count % 100 == 0:
+        g.es('.',newline=False)
+    if count % 2000 == 0:
+        g.enl()
+
+@others
+#@+node:ekr.20040314035615:assert consistency of threadNext & threadBack links
+threadBack = p.threadBack()
+threadNext = p.threadNext()
+
+if threadBack:
+    assert p == threadBack.threadNext(), "p==threadBack.threadNext"
+
+if threadNext:
+    assert p == threadNext.threadBack(), "p==threadNext.threadBack"
+#@-node:ekr.20040314035615:assert consistency of threadNext & threadBack links
+#@+node:ekr.20040314035615.1:assert consistency of next and back links
+back = p.back()
+next = p.next()
+
+if back:
+    assert p == back.next(), "p==back.next"
+
+if next:
+    assert p == next.back(), "p==next.back"
+#@-node:ekr.20040314035615.1:assert consistency of next and back links
+#@+node:ekr.20040314035615.2:assert consistency of parent and child links
+if p.hasParent():
+    n = p.childIndex()
+    assert p == p.parent().moveToNthChild(n), "p==parent.moveToNthChild"
+
+for child in p.children_iter():
+    assert p == child.parent(), "p==child.parent"
+
+if p.hasNext():
+    assert p.next().parent() == p.parent(), "next.parent==parent"
+
+if p.hasBack():
+    assert p.back().parent() == p.parent(), "back.parent==parent"
+#@-node:ekr.20040314035615.2:assert consistency of parent and child links
+#@+node:ekr.20040323155951.1:assert consistency of directParents and parent
+if p.hasParent():
+    t = p.parent().v.t
+    for v in p.directParents():
+        try:
+            assert v.t == t
+        except:
+            print "p",p
+            print "p.directParents",p.directParents()
+            print "v",v
+            print "v.t",v.t
+            print "t = p.parent().v.t",t
+            raise AssertionError,"v.t == t"
+#@-node:ekr.20040323155951.1:assert consistency of directParents and parent
+#@+node:ekr.20040323161837:assert consistency of p.v.t.vnodeList, & v.parents for cloned nodes
+if p.isCloned():
+    parents = p.v.t.vnodeList
+    for child in p.children_iter():
+        vparents = child.directParents()
+        assert len(parents) == len(vparents), "len(parents) == len(vparents)"
+        for parent in parents:
+            assert parent in vparents, "parent in vparents"
+        for parent in vparents:
+            assert parent in parents, "parent in parents"
+#@-node:ekr.20040323161837:assert consistency of p.v.t.vnodeList, & v.parents for cloned nodes
+#@+node:ekr.20040323162707:assert that clones actually share subtrees
+if p.isCloned() and p.hasChildren():
+    childv = p.firstChild().v
+    assert childv == p.v.t._firstChild, "childv == p.v.t._firstChild"
+    assert id(childv) == id(p.v.t._firstChild), "id(childv) == id(p.v.t._firstChild)"
+    for v in p.v.t.vnodeList:
+        assert v.t._firstChild == childv, "v.t._firstChild == childv"
+        assert id(v.t._firstChild) == id(childv), "id(v.t._firstChild) == id(childv)"
+#@-node:ekr.20040323162707:assert that clones actually share subtrees
+#@+node:ekr.20040314043623:assert consistency of vnodeList
+vnodeList = p.v.t.vnodeList
+
+for v in vnodeList:
+
+    try:
+        assert v.t == p.v.t
+    except AssertionError:
+        print "p",p
+        print "v",v
+        print "p.v",p.v
+        print "v.t",v.t
+        print "p.v.t",p.v.t
+        raise AssertionError, "v.t == p.v.t"
+
+    if p.v.isCloned():
+        assert v.isCloned(), "v.isCloned"
+        assert len(vnodeList) > 1, "len(vnodeList) > 1"
+    else:
+        assert not v.isCloned(), "not v.isCloned"
+        assert len(vnodeList) == 1, "len(vnodeList) == 1"
+#@-node:ekr.20040314043623:assert consistency of vnodeList
+#@+node:ekr.20040731053740:assert that p.headString() matches p.edit_text.get
+# Not a great test: it only tests visible nodes.
+# This test may fail if a joined node is being editred.
+
+if isTkinter:
+    t = c.edit_widget(p)
+    if t:
+        s = t.getAllText()
+        assert p.headString().strip() == s.strip(), "May fail if joined node is being edited"
+#@-node:ekr.20040731053740:assert that p.headString() matches p.edit_text.get
+#@-node:ekr.20040323155951:<< do full tests >>
+#@+node:ekr.20040314044652:<< give test failed message >>
+s = "test failed: %s %s" % (message,repr(p))
+print s ; g.es_print(s,color="red")
+#@-node:ekr.20040314044652:<< give test failed message >>
+#@+node:ekr.20040314043900:<<print summary message >>
+if full:
+    print
+    g.enl()
+
+s = "%d nodes checked, %d errors" % (count,errors)
+if errors or verbose:
+    g.es_print(s,color="red")
+elif verbose:
+    g.es(s,color="green")
+#@-node:ekr.20040314043900:<<print summary message >>
+#@-node:ekr.20031218072017.2072:c.checkOutline
+#@+node:ekr.20040723094220:Check Outline commands & allies
+#@+node:ekr.20040723094220.1:checkAllPythonCode
+def checkAllPythonCode(self,event=None,unittest=False,ignoreAtIgnore=True):
+
+    '''Check all nodes in the selected tree for syntax and tab errors.'''
+
+    c = self ; count = 0 ; result = "ok"
+
+    for p in c.all_positions_iter():
+
+        count += 1
+        if not unittest:
+            << print dots >>
+
+        if g.scanForAtLanguage(c,p) == "python":
+            if not g.scanForAtSettings(p) and (not ignoreAtIgnore or not g.scanForAtIgnore(c,p)):
+                try:
+                    c.checkPythonNode(p,unittest)
+                except (SyntaxError,tokenize.TokenError,tabnanny.NannyNag):
+                    result = "error" # Continue to check.
+                except:
+                    import traceback ; traceback.print_exc()
+                    return "surprise" # abort
+                if unittest and result != "ok":
+                    print "Syntax error in %s" % p.cleanHeadString()
+                    return result # End the unit test: it has failed.
+
+    if not unittest:
+        g.es("Check complete",color="blue")
+
+    return result
+#@+node:ekr.20040723094220.2:<< print dots >>
+if count % 100 == 0:
+    g.es('.',newline=False)
+
+if count % 2000 == 0:
+    g.enl()
+#@-node:ekr.20040723094220.2:<< print dots >>
+#@-node:ekr.20040723094220.1:checkAllPythonCode
+#@+node:ekr.20040723094220.3:checkPythonCode
+def checkPythonCode (self,event=None,unittest=False,ignoreAtIgnore=True,suppressErrors=False):
+
+    '''Check the selected tree for syntax and tab errors.'''
+
+    c = self ; count = 0 ; result = "ok"
+
+    if not unittest:
+        g.es("checking Python code   ")
+
+    for p in c.currentPosition().self_and_subtree_iter():
+
+        count += 1
+        if not unittest:
+            << print dots >>
+
+        if g.scanForAtLanguage(c,p) == "python":
+            if not ignoreAtIgnore or not g.scanForAtIgnore(c,p):
+                try:
+                    c.checkPythonNode(p,unittest,suppressErrors)
+                except (parser.ParserError,SyntaxError,tokenize.TokenError,tabnanny.NannyNag):
+                    result = "error" # Continue to check.
+                except:
+                    g.es("surprise in checkPythonNode")
+                    g.es_exception()
+                    return "surprise" # abort
+
+    if not unittest:
+        g.es("Check complete",color="blue")
+
+    # We _can_ return a result for unit tests because we aren't using doCommand.
+    return result
+#@+node:ekr.20040723094220.4:<< print dots >>
+if count % 100 == 0:
+    g.es('.',newline=False)
+
+if count % 2000 == 0:
+    g.enl()
+#@-node:ekr.20040723094220.4:<< print dots >>
+#@-node:ekr.20040723094220.3:checkPythonCode
+#@+node:ekr.20040723094220.5:checkPythonNode
+def checkPythonNode (self,p,unittest=False,suppressErrors=False):
+
+    c = self
+
+    h = p.headString()
+    # We must call getScript so that we can ignore directives and section references.
+    body = g.getScript(c,p.copy())
+    if not body: return
+
+    try:
+        compiler.parse(body + '\n')
+    except (parser.ParserError,SyntaxError):
+        if not suppressErrors:
+            s = "Syntax error in: %s" % h
+            g.es_print(s,color="blue")
+        if unittest: raise
+        else:
+            g.es_exception(full=False,color="black")
+            c.setMarked(p)
+
+    c.tabNannyNode(p,h,body,unittest,suppressErrors)
+#@-node:ekr.20040723094220.5:checkPythonNode
+#@+node:ekr.20040723094220.6:tabNannyNode
+# This code is based on tabnanny.check.
+
+def tabNannyNode (self,p,headline,body,unittest=False,suppressErrors=False):
+
+    """Check indentation using tabnanny."""
+
+    c = self
+
+    try:
+        # readline = g.readLinesGenerator(body).next
+        readline = g.readLinesClass(body).next
+        tabnanny.process_tokens(tokenize.generate_tokens(readline))
+        return
+
+    except parser.ParserError, msg:
+        if not suppressErrors:
+            g.es("ParserError in %s" % headline,color="blue")
+            g.es(str(msg))
+
+    except tokenize.TokenError, msg:
+        if not suppressErrors:
+            g.es("TokenError in %s" % headline,color="blue")
+            g.es(str(msg))
+
+    except tabnanny.NannyNag, nag:
+        if not suppressErrors:
+            badline = nag.get_lineno()
+            line    = nag.get_line()
+            message = nag.get_msg()
+            g.es("Indentation error in %s, line %d" % (headline, badline),color="blue")
+            g.es(message)
+            g.es("offending line:\n%s" % repr(str(line))[1:-1])
+
+    except:
+        g.trace("unexpected exception")
+        g.es_exception()
+
+    if unittest: raise
+    else: c.setMarked(p)
+#@-node:ekr.20040723094220.6:tabNannyNode
+#@-node:ekr.20040723094220:Check Outline commands & allies
+#@+node:ekr.20040412060927:c.dumpOutline
+def dumpOutline (self,event=None):
+
+    """ Dump all nodes in the outline."""
+
+    c = self
+
+    for p in c.allNodes_iter():
+        p.dump()
+#@-node:ekr.20040412060927:c.dumpOutline
+#@+node:ekr.20040711135959.1:Pretty Print commands
+#@+node:ekr.20040712053025:prettyPrintAllPythonCode
+def prettyPrintAllPythonCode (self,event=None,dump=False):
+
+    '''Reformat all Python code in the outline to make it look more beautiful.'''
+
+    c = self ; pp = c.prettyPrinter(c)
+
+    for p in c.all_positions_iter():
+
+        # Unlike scanDirectives, scanForAtLanguage ignores @comment.
+        if g.scanForAtLanguage(c,p) == "python":
+
+            pp.prettyPrintNode(p,dump=dump)
+
+    pp.endUndo()
+
+# For unit test of inverse commands dict.
+def beautifyAllPythonCode (self,event=None,dump=False):
+    return self.prettyPrintAllPythonCode (event,dump)
+#@nonl
+#@-node:ekr.20040712053025:prettyPrintAllPythonCode
+#@+node:ekr.20040712053025.1:prettyPrintPythonCode
+def prettyPrintPythonCode (self,event=None,p=None,dump=False):
+
+    '''Reformat all Python code in the selected tree to make it look more beautiful.'''
+
+    c = self
+
+    if p: root = p.copy()
+    else: root = c.currentPosition();
+
+    pp = c.prettyPrinter(c)
+
+    for p in root.self_and_subtree_iter():
+
+        # Unlike scanDirectives, scanForAtLanguage ignores @comment.
+        if g.scanForAtLanguage(c,p) == "python":
+
+            pp.prettyPrintNode(p,dump=dump)
+
+    pp.endUndo()
+
+# For unit test of inverse commands dict.
+def beautifyPythonCode (self,event=None,dump=False):
+    return self.prettyPrintPythonCode (event,dump)
+
+#@-node:ekr.20040712053025.1:prettyPrintPythonCode
+#@+node:ekr.20050729211526:prettyPrintPythonNode
+def prettyPrintPythonNode (self,p=None,dump=False):
+
+    c = self
+
+    if not p:
+        p = c.currentPosition()
+
+    pp = c.prettyPrinter(c)
+
+    # Unlike scanDirectives, scanForAtLanguage ignores @comment.
+    if g.scanForAtLanguage(c,p) == "python":
+        pp.prettyPrintNode(p,dump=dump)
+
+    pp.endUndo()
+#@-node:ekr.20050729211526:prettyPrintPythonNode
+#@+node:ekr.20040711135244.5:class prettyPrinter
+class prettyPrinter:
+
+    @others
+#@+node:ekr.20040711135244.6:__init__
+def __init__ (self,c):
+
+    self.array = []
+        # List of strings comprising the line being accumulated.
+        # Important: this list never crosses a line.
+    self.bracketLevel = 0
+    self.c = c
+    self.changed = False
+    self.dumping = False
+    self.erow = self.ecol = 0 # The ending row/col of the token.
+    self.lastName = None # The name of the previous token type.
+    self.line = 0 # Same as self.srow
+    self.lineParenLevel = 0
+    self.lines = [] # List of lines.
+    self.name = None
+    self.p = c.currentPosition()
+    self.parenLevel = 0
+    self.prevName = None
+    self.s = None # The string containing the line.
+    self.squareBracketLevel = 0
+    self.srow = self.scol = 0 # The starting row/col of the token.
+    self.startline = True # True: the token starts a line.
+    self.tracing = False
+    << define dispatch dict >>
+#@+node:ekr.20041021100850:<< define dispatch dict >>
+self.dispatchDict = {
+
+    "comment":    self.doMultiLine,
+    "dedent":     self.doDedent,
+    "endmarker":  self.doEndMarker,
+    "errortoken": self.doErrorToken,
+    "indent":     self.doIndent,
+    "name":       self.doName,
+    "newline":    self.doNewline,
+    "nl" :        self.doNewline,
+    "number":     self.doNumber,
+    "op":         self.doOp,
+    "string":     self.doMultiLine,
+}
+#@-node:ekr.20041021100850:<< define dispatch dict >>
+#@-node:ekr.20040711135244.6:__init__
+#@+node:ekr.20040713093048:clear
+def clear (self):
+    self.lines = []
+#@-node:ekr.20040713093048:clear
+#@+node:ekr.20040713064323:dumpLines
+def dumpLines (self,p,lines):
+
+    encoding = g.app.tkEncoding
+
+    print ; print '-'*10, p.cleanHeadString()
+
+    if 0:
+        for line in lines:
+            line2 = g.toEncodedString(line,encoding,reportErrors=True)
+            print line2, # Don't add a trailing newline!
+    else:
+        for i in xrange(len(lines)):
+            line = lines[i]
+            line = g.toEncodedString(line,encoding,reportErrors=True)
+            print "%3d" % i, repr(lines[i])
+#@-node:ekr.20040713064323:dumpLines
+#@+node:ekr.20040711135244.7:dumpToken
+def dumpToken (self,token5tuple):
+
+    t1,t2,t3,t4,t5 = token5tuple
+    srow,scol = t3 ; erow,ecol = t4
+    line = str(t5) # can fail
+    name = token.tok_name[t1].lower()
+    val = str(t2) # can fail
+
+    startLine = self.line != srow
+    if startLine:
+        print "----- line",srow,repr(line)
+    self.line = srow
+
+    print "%10s (%2d,%2d) %-8s" % (name,scol,ecol,repr(val))
+#@-node:ekr.20040711135244.7:dumpToken
+#@+node:ekr.20040713091855:endUndo
+def endUndo (self):
+
+    c = self.c ; u = c.undoer ; undoType = 'Pretty Print'
+    current = c.currentPosition()
+
+    if self.changed:
+        # Tag the end of the command.
+        u.afterChangeGroup(current,undoType,dirtyVnodeList=self.dirtyVnodeList)
+#@-node:ekr.20040713091855:endUndo
+#@+node:ekr.20040711135244.8:get
+def get (self):
+
+    if self.lastName != 'newline' and self.lines:
+        # Strip the trailing whitespace from the last line.
+        self.lines[-1] = self.lines[-1].rstrip()
+
+    return self.lines
+#@-node:ekr.20040711135244.8:get
+#@+node:ekr.20040711135244.4:prettyPrintNode
+def prettyPrintNode(self,p,dump):
+
+    c = self.c
+    h = p.headString()
+    s = p.bodyString()
+    if not s: return
+
+    readlines = g.readLinesGenerator(s).next
+
+    try:
+        self.clear()
+        for token5tuple in tokenize.generate_tokens(readlines):
+            self.putToken(token5tuple)
+        lines = self.get()
+
+    except tokenize.TokenError:
+        g.es("Error pretty-printing %s.  Not changed." % h, color="blue")
+        return
+
+    if dump:
+        self.dumpLines(p,lines)
+    else:
+        self.replaceBody(p,lines)
+#@-node:ekr.20040711135244.4:prettyPrintNode
+#@+node:ekr.20040711135244.9:put
+def put (self,s,strip=True):
+
+    """Put s to self.array, and strip trailing whitespace if strip is True."""
+
+    if self.array and strip:
+        prev = self.array[-1]
+        if len(self.array) == 1:
+            if prev.rstrip():
+                # Stripping trailing whitespace doesn't strip leading whitespace.
+                self.array[-1] = prev.rstrip()
+        else:
+            # The previous entry isn't leading whitespace, so we can strip whitespace.
+            self.array[-1] = prev.rstrip()
+
+    self.array.append(s)
+#@-node:ekr.20040711135244.9:put
+#@+node:ekr.20041021104237:putArray
+def putArray (self):
+
+    """Add the next text by joining all the strings is self.array"""
+
+    self.lines.append(''.join(self.array))
+    self.array = []
+    self.lineParenLevel = 0
+#@-node:ekr.20041021104237:putArray
+#@+node:ekr.20040711135244.10:putNormalToken & allies
+def putNormalToken (self,token5tuple):
+
+    t1,t2,t3,t4,t5 = token5tuple
+    self.name = token.tok_name[t1].lower() # The token type
+    self.val = t2  # the token string
+    self.srow,self.scol = t3 # row & col where the token begins in the source.
+    self.erow,self.ecol = t4 # row & col where the token ends in the source.
+    self.s = t5 # The line containing the token.
+    self.startLine = self.line != self.srow
+    self.line = self.srow
+
+    if self.startLine:
+        self.doStartLine()
+
+    f = self.dispatchDict.get(self.name,self.oops)
+    self.trace()
+    f()
+    self.lastName = self.name
+#@+node:ekr.20041021102938:doEndMarker
+def doEndMarker (self):
+
+    self.putArray()
+#@-node:ekr.20041021102938:doEndMarker
+#@+node:ekr.20041021102340.1:doErrorToken
+def doErrorToken (self):
+
+    self.array.append(self.val)
+
+    # This code is executed for versions of Python earlier than 2.4
+    if self.val == '@':
+        # Preserve whitespace after @.
+        i = g.skip_ws(self.s,self.scol+1)
+        ws = self.s[self.scol+1:i]
+        if ws:
+            self.array.append(ws)
+#@-node:ekr.20041021102340.1:doErrorToken
+#@+node:ekr.20041021102340.2:doIndent & doDedent
+def doDedent (self):
+
+    pass
+
+def doIndent (self):
+
+    self.array.append(self.val)
+#@-node:ekr.20041021102340.2:doIndent & doDedent
+#@+node:ekr.20041021102340:doMultiLine (strings, etc).
+def doMultiLine (self):
+
+    # Ensure a blank before comments not preceded entirely by whitespace.
+
+    if self.val.startswith('#') and self.array:
+        prev = self.array[-1]
+        if prev and prev[-1] != ' ':
+            self.put(' ') 
+
+    # These may span lines, so duplicate the end-of-line logic.
+    lines = g.splitLines(self.val)
+    for line in lines:
+        self.array.append(line)
+        if line and line[-1] == '\n':
+            self.putArray()
+
+    # Add a blank after the string if there is something in the last line.
+    if self.array:
+        line = self.array[-1]
+        if line.strip():
+            self.put(' ')
+
+    # Suppress start-of-line logic.
+    self.line = self.erow
+#@-node:ekr.20041021102340:doMultiLine (strings, etc).
+#@+node:ekr.20041021101911.5:doName
+def doName(self):
+
+    # Ensure whitespace or start-of-line precedes the name.
+    if self.array:
+        last = self.array[-1]
+        ch = last[-1]
+        outer = self.parenLevel == 0 and self.squareBracketLevel == 0
+        chars = '@ \t{([.'
+        if not outer: chars += ',=<>*-+&|/'
+        if ch not in chars:
+            self.array.append(' ')
+
+    self.array.append("%s " % self.val)
+
+    if self.prevName == "def": # A personal idiosyncracy.
+        self.array.append(' ') # Retain the blank before '('.
+
+    self.prevName = self.val
+#@-node:ekr.20041021101911.5:doName
+#@+node:ekr.20041021101911.3:doNewline
+def doNewline (self):
+
+    # Remove trailing whitespace.
+    # This never removes trailing whitespace from multi-line tokens.
+    if self.array:
+        self.array[-1] = self.array[-1].rstrip()
+
+    self.array.append('\n')
+    self.putArray()
+#@-node:ekr.20041021101911.3:doNewline
+#@+node:ekr.20041021101911.6:doNumber
+def doNumber (self):
+
+    self.array.append(self.val)
+#@-node:ekr.20041021101911.6:doNumber
+#@+node:ekr.20040711135244.11:doOp
+def doOp (self):
+
+    val = self.val
+    outer = self.lineParenLevel <= 0 or (self.parenLevel == 0 and self.squareBracketLevel == 0)
+    # New in Python 2.4: '@' is an operator, not an error token.
+    if self.val == '@':
+        self.array.append(self.val)
+        # Preserve whitespace after @.
+        i = g.skip_ws(self.s,self.scol+1)
+        ws = self.s[self.scol+1:i]
+        if ws: self.array.append(ws)
+    elif val == '(':
+        # Nothing added; strip leading blank before function calls but not before Python keywords.
+        strip = self.lastName=='name' and not keyword.iskeyword(self.prevName)
+        self.put('(',strip=strip)
+        self.parenLevel += 1 ; self.lineParenLevel += 1
+    elif val in ('=','==','+=','-=','!=','<=','>=','<','>','<>','*','**','+','&','|','/','//'):
+        # Add leading and trailing blank in outer mode.
+        s = g.choose(outer,' %s ','%s')
+        self.put(s % val)
+    elif val in ('^','~','{','['):
+        # Add leading blank in outer mode.
+        s = g.choose(outer,' %s','%s')
+        self.put(s % val)
+        if val == '[': self.squareBracketLevel += 1
+    elif val in (',',':','}',']',')'):
+        # Add trailing blank in outer mode.
+        s = g.choose(outer,'%s ','%s')
+        self.put(s % val)
+        if val == ']': self.squareBracketLevel -= 1
+        if val == ')':
+            self.parenLevel -= 1 ; self.lineParenLevel -= 1
+    # ----- no difference between outer and inner modes ---
+    elif val in (';','%'):
+        # Add leading and trailing blank.
+        self.put(' %s ' % val)
+    elif val == '>>':
+        # Add leading blank.
+        self.put(' %s' % val)
+    elif val == '<<':
+        # Add trailing blank.
+        self.put('%s ' % val)
+    elif val in ('-'):
+        # Could be binary or unary.  Or could be a hyphen in a section name.
+        # Add preceding blank only for non-id's.
+        if outer:
+            if self.array:
+                prev = self.array[-1].rstrip()
+                if prev and not g.isWordChar(prev[-1]):
+                    self.put(' %s' % val)
+                else: self.put(val)
+            else: self.put(val) # Try to leave whitespace unchanged.
+        else:
+            self.put(val)
+    else:
+        self.put(val)
+#@-node:ekr.20040711135244.11:doOp
+#@+node:ekr.20041021112219:doStartLine
+def doStartLine (self):
+
+    before = self.s[0:self.scol]
+    i = g.skip_ws(before,0)
+    self.ws = self.s[0:i]
+
+    if self.ws:
+        self.array.append(self.ws)
+#@-node:ekr.20041021112219:doStartLine
+#@+node:ekr.20041021101911.1:oops
+def oops(self):
+
+    print "unknown PrettyPrinting code: %s" % (self.name)
+#@-node:ekr.20041021101911.1:oops
+#@+node:ekr.20041021101911.2:trace
+def trace(self):
+
+    if self.tracing:
+
+        g.trace("%10s: %s" % (
+            self.name,
+            repr(g.toEncodedString(self.val,"utf-8"))
+        ))
+#@-node:ekr.20041021101911.2:trace
+#@-node:ekr.20040711135244.10:putNormalToken & allies
+#@+node:ekr.20040711135244.12:putToken
+def putToken (self,token5tuple):
+
+    if self.dumping:
+        self.dumpToken(token5tuple)
+    else:
+        self.putNormalToken(token5tuple)
+#@-node:ekr.20040711135244.12:putToken
+#@+node:ekr.20040713070356:replaceBody
+def replaceBody (self,p,lines):
+
+    c = self.c ; u = c.undoer ; undoType = 'Pretty Print'
+    sel = c.frame.body.getInsertPoint()
+    oldBody = p.bodyString()
+    body = string.join(lines,'')
+
+    if oldBody != body:
+        if not self.changed:
+            # Start the group.
+            u.beforeChangeGroup(p,undoType)
+            self.changed = True
+            self.dirtyVnodeList = []
+        undoData = u.beforeChangeNodeContents(p)
+        c.setBodyString(p,body)
+        dirtyVnodeList2 = p.setDirty()
+        self.dirtyVnodeList.extend(dirtyVnodeList2)
+        u.afterChangeNodeContents(p,undoType,undoData,dirtyVnodeList=self.dirtyVnodeList)
+#@-node:ekr.20040713070356:replaceBody
+#@-node:ekr.20040711135244.5:class prettyPrinter
+#@-node:ekr.20040711135959.1:Pretty Print commands
+#@-node:ekr.20040711135959.2:Check Outline submenu...
+#@+node:ekr.20031218072017.2898:Expand & Contract...
+#@+node:ekr.20031218072017.2899:Commands
+#@+node:ekr.20031218072017.2900:contractAllHeadlines
+def contractAllHeadlines (self,event=None):
+
+    '''Contract all nodes in the outline.'''
+
+    c = self
+
+    c.beginUpdate()
+    try: # update...
+        for p in c.allNodes_iter():
+            p.contract()
+        # Select the topmost ancestor of the presently selected node.
+        p = c.currentPosition()
+        while p and p.hasParent():
+            p.moveToParent()
+        c.selectVnode(p)
+    finally:
+        c.endUpdate()
+
+    c.treeFocusHelper()
+
+    c.expansionLevel = 1 # Reset expansion level.
+#@-node:ekr.20031218072017.2900:contractAllHeadlines
+#@+node:ekr.20031218072017.2901:contractNode
+def contractNode (self,event=None):
+
+    '''Contract the presently selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    # g.trace(p.headString())
+
+    c.beginUpdate()
+    try:
+        p.contract()
+    finally:
+        c.endUpdate()
+
+    c.treeFocusHelper()
+#@-node:ekr.20031218072017.2901:contractNode
+#@+node:ekr.20040930064232:contractNodeOrGoToParent
+def contractNodeOrGoToParent (self,event=None):
+
+    """Simulate the left Arrow Key in folder of Windows Explorer."""
+
+    c = self ; p = c.currentPosition()
+
+    if p.hasChildren() and p.isExpanded():
+        # g.trace('contract',p.headString())
+        c.contractNode()
+    elif p.hasParent():
+        # g.trace('goto parent',p.headString())
+        c.goToParent()
+
+    c.treeFocusHelper()
+#@nonl
+#@-node:ekr.20040930064232:contractNodeOrGoToParent
+#@+node:ekr.20031218072017.2902:contractParent
+def contractParent (self,event=None):
+
+    '''Contract the parent of the presently selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    parent = p.parent()
+    if not parent: return
+
+    c.beginUpdate()
+    try:
+        parent.contract()
+    finally:
+        c.endUpdate(False)
+
+    c.treeSelectHelper(parent)
+#@-node:ekr.20031218072017.2902:contractParent
+#@+node:ekr.20031218072017.2903:expandAllHeadlines
+def expandAllHeadlines (self,event=None):
+
+    '''Expand all headlines.
+    Warning: this can take a long time for large outlines.'''
+
+    c = self ; p = root = c.rootPosition()
+
+    c.beginUpdate()
+    try:
+        while p:
+            c.expandSubtree(p)
+            p.moveToNext()
+        c.selectVnode(root)
+    finally:
+        c.endUpdate()
+        c.treeFocusHelper()
+
+    c.expansionLevel = 0 # Reset expansion level.
+#@-node:ekr.20031218072017.2903:expandAllHeadlines
+#@+node:ekr.20031218072017.2904:expandAllSubheads
+def expandAllSubheads (self,event=None):
+
+    '''Expand all children of the presently selected node.'''
+
+    c = self ; v = c.currentVnode()
+    if not v: return
+
+    child = v.firstChild()
+    c.beginUpdate()
+    try:
+        c.expandSubtree(v)
+        while child:
+            c.expandSubtree(child)
+            child = child.next()
+        c.selectVnode(v)
+    finally:
+        c.endUpdate()
+        c.treeFocusHelper()
+#@-node:ekr.20031218072017.2904:expandAllSubheads
+#@+node:ekr.20031218072017.2905:expandLevel1..9
+def expandLevel1 (self,event=None):
+    '''Expand the outline to level 1'''
+    self.expandToLevel(1)
+
+def expandLevel2 (self,event=None):
+    '''Expand the outline to level 2'''
+    self.expandToLevel(2)
+
+def expandLevel3 (self,event=None):
+    '''Expand the outline to level 3'''
+    self.expandToLevel(3)
+
+def expandLevel4 (self,event=None):
+    '''Expand the outline to level 4'''
+    self.expandToLevel(4)
+
+def expandLevel5 (self,event=None):
+    '''Expand the outline to level 5'''
+    self.expandToLevel(5)
+
+def expandLevel6 (self,event=None):
+    '''Expand the outline to level 6'''
+    self.expandToLevel(6)
+
+def expandLevel7 (self,event=None):
+    '''Expand the outline to level 7'''
+    self.expandToLevel(7)
+
+def expandLevel8 (self,event=None):
+    '''Expand the outline to level 8'''
+    self.expandToLevel(8)
+
+def expandLevel9 (self,event=None):
+    '''Expand the outline to level 9'''
+    self.expandToLevel(9)
+#@-node:ekr.20031218072017.2905:expandLevel1..9
+#@+node:ekr.20031218072017.2906:expandNextLevel
+def expandNextLevel (self,event=None):
+
+    '''Increase the expansion level of the outline and
+    Expand all nodes at that level or lower.'''
+
+    c = self ; v = c.currentVnode()
+
+    # Expansion levels are now local to a particular tree.
+    if c.expansionNode != v:
+        c.expansionLevel = 1
+        c.expansionNode = v
+
+    self.expandToLevel(c.expansionLevel + 1)
+#@-node:ekr.20031218072017.2906:expandNextLevel
+#@+node:ekr.20031218072017.2907:expandNode
+def expandNode (self,event=None):
+
+    '''Expand the presently selected node.'''
+
+    c = self ; v = c.currentVnode()
+
+    c.beginUpdate()
+    try:
+        v.expand()
+    finally:
+        c.endUpdate()
+        c.treeFocusHelper()
+#@-node:ekr.20031218072017.2907:expandNode
+#@+node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
+def expandNodeAndGoToFirstChild (self,event=None):
+
+    """If a node has children, expand it if needed and go to the first child."""
+
+    c = self ; p = c.currentPosition()
+    if not p.hasChildren():
+        c.treeFocusHelper()
+        return
+
+    c.beginUpdate()
+    try:
+        if not p.isExpanded():
+            c.expandNode()
+        c.selectVnode(p.firstChild())
+    finally:
+        c.endUpdate()
+        c.treeFocusHelper()
+
+def expandNodeOrGoToFirstChild (self,event=None):
+
+    """Simulate the Right Arrow Key in folder of Windows Explorer."""
+
+    c = self ; p = c.currentPosition()
+    if p.hasChildren():
+        if not p.isExpanded():
+            c.expandNode()
+        else:
+            c.beginUpdate()
+            try:
+                c.selectVnode(p.firstChild())
+            finally:
+                c.endUpdate()
+    c.treeFocusHelper()
+#@-node:ekr.20040930064232.1:expandNodeAnd/OrGoToFirstChild
+#@+node:ekr.20060928062431:expandOnlyAncestorsOfNode
+def expandOnlyAncestorsOfNode (self,event=None):
+
+    '''Contract all nodes in the outline.'''
+
+    c = self ; level = 1
+
+    c.beginUpdate()
+    try:
+        for p in c.allNodes_iter():
+            p.contract()
+        for p in c.currentPosition().parents_iter():
+            p.expand()
+            level += 1
+    finally:
+        c.endUpdate()
+        c.treeFocusHelper()
+
+    c.expansionLevel = level # Reset expansion level.
+#@-node:ekr.20060928062431:expandOnlyAncestorsOfNode
+#@+node:ekr.20031218072017.2908:expandPrevLevel
+def expandPrevLevel (self,event=None):
+
+    '''Decrease the expansion level of the outline and
+    Expand all nodes at that level or lower.'''
+
+    c = self ; v = c.currentVnode()
+
+    # Expansion levels are now local to a particular tree.
+    if c.expansionNode != v:
+        c.expansionLevel = 1
+        c.expansionNode = v
+
+    self.expandToLevel(max(1,c.expansionLevel - 1))
+#@-node:ekr.20031218072017.2908:expandPrevLevel
+#@-node:ekr.20031218072017.2899:Commands
+#@+node:ekr.20031218072017.2909:Utilities
+#@+node:ekr.20031218072017.2910:contractSubtree
+def contractSubtree (self,p):
+
+    for p in p.subtree_iter():
+        p.contract()
+#@-node:ekr.20031218072017.2910:contractSubtree
+#@+node:ekr.20031218072017.2911:expandSubtree
+def expandSubtree (self,v):
+
+    c = self
+    last = v.lastNode()
+
+    c.beginUpdate()
+    try:
+        while v and v != last:
+            v.expand()
+            v = v.threadNext()
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2911:expandSubtree
+#@+node:ekr.20031218072017.2912:expandToLevel (rewritten in 4.4)
+def expandToLevel (self,level):
+
+    c = self
+    c.beginUpdate()
+    try:
+        current = c.currentPosition()
+        n = current.level()
+        for p in current.self_and_subtree_iter():
+            if p.level() - n + 1 < level:
+                p.expand()
+            else:
+                p.contract()
+        c.expansionLevel = level
+        c.expansionNode = c.currentPosition()
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2912:expandToLevel (rewritten in 4.4)
+#@-node:ekr.20031218072017.2909:Utilities
+#@-node:ekr.20031218072017.2898:Expand & Contract...
+#@+node:ekr.20031218072017.2913:Goto
+#@+node:ekr.20031218072017.1628:goNextVisitedNode
+def goNextVisitedNode (self,event=None):
+
+    '''Select the next visited node.'''
+
+    c = self
+
+    while c.beadPointer + 1 < len(c.beadList):
+        c.beadPointer += 1
+        v = c.beadList[c.beadPointer]
+        if c.positionExists(v):
+            c.treeSelectHelper(v)
+            return
+#@-node:ekr.20031218072017.1628:goNextVisitedNode
+#@+node:ekr.20031218072017.1627:goPrevVisitedNode
+def goPrevVisitedNode (self,event=None):
+
+    '''Select the previously visited node.'''
+
+    c = self
+
+    while c.beadPointer > 0:
+        c.beadPointer -= 1
+        v = c.beadList[c.beadPointer]
+        if c.positionExists(v):
+            c.treeSelectHelper(v)
+            return
+#@-node:ekr.20031218072017.1627:goPrevVisitedNode
+#@+node:ekr.20031218072017.2914:goToFirstNode
+def goToFirstNode (self,event=None):
+
+    '''Select the first node of the entire outline.'''
+
+    c = self ; p = c.rootPosition()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2914:goToFirstNode
+#@+node:ekr.20051012092453:goToFirstSibling
+def goToFirstSibling (self,event=None):
+
+    '''Select the first sibling of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    if p.hasBack():
+        while p.hasBack():
+            p.moveToBack()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20051012092453:goToFirstSibling
+#@+node:ekr.20031218072017.2915:goToLastNode
+def goToLastNode (self,event=None):
+
+    '''Select the last node in the entire tree.'''
+
+    c = self ; p = c.rootPosition()
+    while p and p.hasThreadNext():
+        p.moveToThreadNext()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2915:goToLastNode
+#@+node:ekr.20051012092847.1:goToLastSibling
+def goToLastSibling (self,event=None):
+
+    '''Select the last sibling of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    if p.hasNext():
+        while p.hasNext():
+            p.moveToNext()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20051012092847.1:goToLastSibling
+#@+node:ekr.20050711153537:goToLastVisibleNode
+def goToLastVisibleNode (self,event=None):
+
+    '''Select the last visible node of the entire outline.'''
+
+    c = self ; p = c.rootPosition()
+
+    while p.hasNext():
+        p.moveToNext()
+
+    while p and p.isExpanded():
+        p.moveToLastChild()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20050711153537:goToLastVisibleNode
+#@+node:ekr.20031218072017.2916:goToNextClone
+def goToNextClone (self,event=None):
+
+    '''Select the next node that is a clone of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    if not p.isCloned(): return
+
+    t = p.v.t
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.v.t == t:
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2916:goToNextClone
+#@+node:ekr.20031218072017.2917:goToNextDirtyHeadline
+def goToNextDirtyHeadline (self,event=None):
+
+    '''Select the node that is marked as changed.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.isDirty():
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2917:goToNextDirtyHeadline
+#@+node:ekr.20031218072017.2918:goToNextMarkedHeadline
+def goToNextMarkedHeadline (self,event=None):
+
+    '''Select the next marked node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.isMarked():
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2918:goToNextMarkedHeadline
+#@+node:ekr.20031218072017.2919:goToNextSibling
+def goToNextSibling (self,event=None):
+
+    '''Select the next sibling of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    c.treeSelectHelper(p and p.next())
+#@-node:ekr.20031218072017.2919:goToNextSibling
+#@+node:ekr.20031218072017.2920:goToParent
+def goToParent (self,event=None):
+
+    '''Select the parent of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    c.treeSelectHelper(p and p.parent())
+#@-node:ekr.20031218072017.2920:goToParent
+#@+node:ekr.20031218072017.2921:goToPrevSibling
+def goToPrevSibling (self,event=None):
+
+    '''Select the previous sibling of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    c.treeSelectHelper(p and p.back())
+#@-node:ekr.20031218072017.2921:goToPrevSibling
+#@+node:ekr.20031218072017.2993:selectThreadBack
+def selectThreadBack (self,event=None):
+
+    '''Select the node preceding the selected node in outline order.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadBack()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2993:selectThreadBack
+#@+node:ekr.20031218072017.2994:selectThreadNext
+def selectThreadNext (self,event=None):
+
+    '''Select the node following the selected node in outline order.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadNext()
+
+    c.treeSelectHelper(p)
+#@nonl
+#@-node:ekr.20031218072017.2994:selectThreadNext
+#@+node:ekr.20031218072017.2995:selectVisBack
+# This has an up arrow for a control key.
+
+def selectVisBack (self,event=None):
+
+    '''Select the visible node preceding the presently selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToVisBack()
+
+    if p:
+        redraw = not p.isVisible()
+        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
+    else:
+        redraw = True
+
+    c.treeSelectHelper(p,redraw=redraw)
+#@-node:ekr.20031218072017.2995:selectVisBack
+#@+node:ekr.20031218072017.2996:selectVisNext
+def selectVisNext (self,event=None):
+
+    '''Select the visible node following the presently selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToVisNext()
+
+    if p:
+        redraw = not p.isVisible()
+        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
+    else:
+        redraw = True
+
+    c.treeSelectHelper(p,redraw=redraw)
+#@-node:ekr.20031218072017.2996:selectVisNext
+#@+node:ekr.20070417112650:utils
+#@+node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+def treeFocusHelper (self):
+
+    c = self
+
+    if c.config.getBool('stayInTreeAfterSelect'):
+        c.treeWantsFocusNow()
+    else:
+        c.bodyWantsFocusNow()
+#@-node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+#@+node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+def treeSelectHelper (self,p,redraw=True):
+
+    c = self ; current = c.currentPosition()
+
+    if p:
+        c.beginUpdate()
+        try:
+            c.frame.tree.expandAllAncestors(p)
+            c.selectPosition(p,updateBeadList=False)
+        finally:
+            c.endUpdate(redraw)
+
+    c.treeFocusHelper()
+#@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+#@-node:ekr.20070417112650:utils
+#@-node:ekr.20031218072017.2913:Goto
+#@+node:ekr.20031218072017.2922:Mark...
+#@+node:ekr.20031218072017.2923:markChangedHeadlines
+def markChangedHeadlines (self,event=None):
+
+    '''Mark all nodes that have been changed.'''
+
+    c = self ; u = c.undoer ; undoType = 'Mark Changed'
+    current = c.currentPosition()
+
+    c.beginUpdate()
+    try:
+        u.beforeChangeGroup(current,undoType)
+        for p in c.allNodes_iter():
+            if p.isDirty()and not p.isMarked():
+                bunch = u.beforeMark(p,undoType)
+                c.setMarked(p)
+                c.setChanged(True)
+                u.afterMark(p,undoType,bunch)
+        u.afterChangeGroup(current,undoType)
+        g.es("done",color="blue")
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2923:markChangedHeadlines
+#@+node:ekr.20031218072017.2924:markChangedRoots
+def markChangedRoots (self,event=None):
+
+    '''Mark all changed @root nodes.'''
+
+    c = self ; u = c.undoer ; undoType = 'Mark Changed'
+    current = c.currentPosition()
+
+    c.beginUpdate()
+    try:
+        u.beforeChangeGroup(current,undoType)
+        for p in c.allNodes_iter():
+            if p.isDirty()and not p.isMarked():
+                s = p.bodyString()
+                flag, i = g.is_special(s,0,"@root")
+                if flag:
+                    bunch = u.beforeMark(p,undoType)
+                    c.setMarked(p)
+                    c.setChanged(True)
+                    u.afterMark(p,undoType,bunch)
+        u.afterChangeGroup(current,undoType)
+        g.es("done",color="blue")
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2924:markChangedRoots
+#@+node:ekr.20031218072017.2925:markAllAtFileNodesDirty (not used)
+def markAllAtFileNodesDirty (self,event=None):
+
+    '''Mark all @file nodes as changed.'''
+
+    c = self ; p = c.rootPosition()
+
+    c.beginUpdate()
+    try: # In update...
+        while p:
+            if p.isAtFileNode() and not p.isDirty():
+                p.setDirty()
+                c.setChanged(True)
+                p.moveToNodeAfterTree()
+            else:
+                p.moveToThreadNext()
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2925:markAllAtFileNodesDirty (not used)
+#@+node:ekr.20031218072017.2926:markAtFileNodesDirty (not used)
+def markAtFileNodesDirty (self,event=None):
+
+    '''Mark all @file nodes in the selected tree as changed.'''
+
+    c = self
+    p = c.currentPosition()
+    if not p: return
+
+    after = p.nodeAfterTree()
+    c.beginUpdate()
+    try: # In update...
+        while p and p != after:
+            if p.isAtFileNode() and not p.isDirty():
+                p.setDirty()
+                c.setChanged(True)
+                p.moveToNodeAfterTree()
+            else:
+                p.moveToThreadNext()
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2926:markAtFileNodesDirty (not used)
+#@+node:ekr.20031218072017.2927:markClones
+def markClones (self,event=None):
+
+    '''Mark all clones of the selected node.'''
+
+    c = self ; u = c.undoer ; undoType = 'Mark Clones'
+    current = c.currentPosition()
+    if not current or not current.isCloned():
+        g.es('The current node is not a clone',color='blue')
+        return
+
+    c.beginUpdate()
+    u.beforeChangeGroup(current,undoType)
+    try: # In update...
+        dirtyVnodeList = []
+        for p in c.allNodes_iter():
+            if p.v.t == current.v.t:
+                bunch = u.beforeMark(p,undoType)
+                c.setMarked(p)
+                c.setChanged(True)
+                dirtyVnodeList2 = p.setDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+                u.afterMark(p,undoType,bunch)
+    finally:
+        u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
+        c.endUpdate()
+#@-node:ekr.20031218072017.2927:markClones
+#@+node:ekr.20031218072017.2928:markHeadline
+def markHeadline (self,event=None):
+
+    '''Toggle the mark of the selected node.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+
+    c.beginUpdate()
+    try: # In update...
+        undoType = g.choose(p.isMarked(),'Unmark','Mark')
+        bunch = u.beforeMark(p,undoType)
+        if p.isMarked():
+            c.clearMarked(p)
+        else:
+            c.setMarked(p)
+        dirtyVnodeList = p.setDirty()
+        c.setChanged(True)
+        u.afterMark(p,undoType,bunch,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2928:markHeadline
+#@+node:ekr.20031218072017.2929:markSubheads
+def markSubheads (self,event=None):
+
+    '''Mark all children of the selected node as changed.'''
+
+    c = self ; u = c.undoer ; undoType = 'Mark Subheads'
+    current = c.currentPosition()
+    if not current: return
+
+    c.beginUpdate()
+    u.beforeChangeGroup(current,undoType)
+    try: # In update...
+        dirtyVnodeList = []
+        for p in current.children_iter():
+            if not p.isMarked():
+                bunch = u.beforeMark(p,undoType)
+                c.setMarked(p)
+                dirtyVnodeList2 = p.setDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+                c.setChanged(True)
+                u.afterMark(p,undoType,bunch)
+    finally:
+        u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
+        c.endUpdate()
+#@-node:ekr.20031218072017.2929:markSubheads
+#@+node:ekr.20031218072017.2930:unmarkAll
+def unmarkAll (self,event=None):
+
+    '''Unmark all nodes in the entire outline.'''
+
+    c = self ; u = c.undoer ; undoType = 'Unmark All'
+    current = c.currentPosition()
+    if not current: return
+
+    c.beginUpdate()
+    u.beforeChangeGroup(current,undoType)
+    try: # In update...
+        changed = False
+        for p in c.allNodes_iter():
+            if p.isMarked():
+                bunch = u.beforeMark(p,undoType)
+                c.clearMarked(p)
+                p.v.t.setDirty()
+                u.afterMark(p,undoType,bunch)
+        dirtyVnodeList = [p.v for p in c.allNodes_iter() if p.v.isDirty()]
+        if changed: c.setChanged(True)
+    finally:
+        u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
+        c.endUpdate()
+#@nonl
+#@-node:ekr.20031218072017.2930:unmarkAll
+#@-node:ekr.20031218072017.2922:Mark...
+#@+node:ekr.20031218072017.1766:Move... (Commands)
+#@+node:ekr.20070420092425:cantMoveMessage
+def cantMoveMessage (self):
+
+    c = self ; h = c.rootPosition().headString()
+    g.trace(h)
+    kind = g.choose(h.startswith('@chapter'),'chapter','hoist')
+    g.es("Can't move node out of %s" % (kind),color="blue")
+#@-node:ekr.20070420092425:cantMoveMessage
+#@+node:ekr.20031218072017.1767:demote
+def demote (self,event=None):
+
+    '''Make all following siblings children of the selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    command = 'Demote'
+    if not current or not current.hasNext():
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+        return
+
+    # Make sure all the moves will be valid.
+    for child in current.children_iter():
+        if not c.checkMoveWithParentWithWarning(child,current,True):
+            # c.treeWantsFocusNow()
+            c.treeFocusHelper()
+            return
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        u.beforeChangeGroup(current,command)
+        p = current.copy()
+        while p.hasNext(): # Do not use iterator here.
+            child = p.next()
+            undoData = u.beforeMoveNode(child)
+            child.moveToNthChildOf(p,p.numberOfChildren())
+            u.afterMoveNode(child,command,undoData)
+        p.expand()
+        # Even if p is an @ignore node there is no need to mark the demoted children dirty.
+        dirtyVnodeList = current.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterChangeGroup(current,command,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(current)  # Also sets rootPosition.
+        c.endUpdate()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(current) # Moving can change syntax coloring.
+#@-node:ekr.20031218072017.1767:demote
+#@+node:ekr.20031218072017.1768:moveOutlineDown
+@ Moving down is more tricky than moving up; we can't move p to be a child of itself.  An important optimization:  we don't have to call checkMoveWithParentWithWarning() if the parent of the moved node remains the same.
+@c
+
+def moveOutlineDown (self,event=None):
+
+    '''Move the selected node down.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+
+    if not c.canMoveOutlineDown():
+        if c.hoistStack: self.cantMoveMessage()
+        c.treeFocusHelper()
+        return
+
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    parent = p.parent()
+    next = p.visNext()
+
+    while next and p.isAncestorOf(next):
+        next = next.visNext()
+    if not next:
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+        return
+
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        << Move p down & set moved if successful >>
+        if moved:
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                p.setDirty() # Mark descendent @thin nodes dirty.
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterMoveNode(p,'Move Down',undoData,dirtyVnodeList)
+    finally:
+        c.selectPosition(p) # Also sets rootPosition.
+        c.endUpdate()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@+node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
+if next.hasChildren() and next.isExpanded():
+    # Attempt to move p to the first child of next.
+    moved = c.checkMoveWithParentWithWarning(p,next,True)
+    if moved:
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveToNthChildOf(next,0)
+
+else:
+    # Attempt to move p after next.
+    moved = c.checkMoveWithParentWithWarning(p,next.parent(),True)
+    if moved:
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveAfter(next)
+
+if moved and sparseMove and parent and not parent.isAncestorOf(p):
+    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+    parent.contract()
+#@-node:ekr.20031218072017.1769:<< Move p down & set moved if successful >>
+#@-node:ekr.20031218072017.1768:moveOutlineDown
+#@+node:ekr.20031218072017.1770:moveOutlineLeft
+def moveOutlineLeft (self,event=None):
+
+    '''Move the selected node left if possible.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineLeft():
+        if c.hoistStack: self.cantMoveMessage()
+        c.treeFocusHelper()
+        return
+    if not p.hasParent():
+        c.treeFocusHelper()
+        return
+
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    parent = p.parent()
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveAfter(parent)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            p.setDirty() # Mark descendent @thin nodes dirty.
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,'Move Left',undoData,dirtyVnodeList)
+        if sparseMove: # New in Leo 4.4.2
+            parent.contract()
+    finally:
+        c.selectPosition(p) # Also sets rootPosition.
+        c.endUpdate()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@nonl
+#@-node:ekr.20031218072017.1770:moveOutlineLeft
+#@+node:ekr.20031218072017.1771:moveOutlineRight
+def moveOutlineRight (self,event=None):
+
+    '''Move the selected node right if possible.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineRight(): # 11/4/03: Support for hoist.
+        if c.hoistStack: self.cantMoveMessage()
+        c.treeFocusHelper()
+        return
+
+    back = p.back()
+    if not back:
+        c.treeFocusHelper()
+        return
+
+    if not c.checkMoveWithParentWithWarning(p,back,True):
+        c.treeFocusHelper()
+        return
+
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        n = back.numberOfChildren()
+        p.moveToNthChildOf(back,n)
+        # g.trace(p,p.parent())
+        # Moving an outline right can never bring it outside the range of @ignore.
+        dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+        dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@-node:ekr.20031218072017.1771:moveOutlineRight
+#@+node:ekr.20031218072017.1772:moveOutlineUp
+def moveOutlineUp (self,event=None):
+
+    '''Move the selected node up if possible.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineUp(): # Support for hoist.
+        if c.hoistStack: self.cantMoveMessage()
+        c.treeFocusHelper()
+        return
+    back = p.visBack()
+    if not back: return
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    back2 = back.visBack()
+
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        << Move p up >>
+        if moved:
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
+
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@+node:ekr.20031218072017.1773:<< Move p up >>
+if 0:
+    g.trace("visBack",back)
+    g.trace("visBack2",back2)
+    g.trace("oldParent",oldParent)
+    g.trace("back2.hasChildren",back2.hasChildren())
+    g.trace("back2.isExpanded",back2.isExpanded())
+
+parent = p.parent()
+
+# For this special case we move p after back2.
+specialCase = back2 and p.v in back2.v.t.vnodeList
+
+if specialCase:
+    # The move must be legal.
+    moved = True
+    back2.contract()
+    p.moveAfter(back2)
+elif not back2:
+    # p will be the new root node
+    moved = True
+    p.moveToRoot(oldRoot=c.rootPosition())
+elif back2.hasChildren() and back2.isExpanded():
+    if c.checkMoveWithParentWithWarning(p,back2,True):
+        moved = True
+        p.moveToNthChildOf(back2,0)
+else:
+    if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
+        moved = True
+        p.moveAfter(back2)
+if moved and sparseMove and parent and not parent.isAncestorOf(p):
+    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+    parent.contract()
+#@-node:ekr.20031218072017.1773:<< Move p up >>
+#@-node:ekr.20031218072017.1772:moveOutlineUp
+#@+node:ekr.20031218072017.1774:promote
+def promote (self,event=None):
+
+    '''Make all children of the selected nodes siblings of the selected node.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    command = 'Promote'
+    if not p or not p.hasChildren():
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+        return
+
+    isAtIgnoreNode = p.isAtIgnoreNode()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        u.beforeChangeGroup(p,command)
+        after = p
+        while p.hasChildren(): # Don't use an iterator.
+            child = p.firstChild()
+            undoData = u.beforeMoveNode(child)
+            child.moveAfter(after)
+            after = child
+            u.afterMoveNode(child,command,undoData)
+        c.setChanged(True)
+        if not inAtIgnoreRange and isAtIgnoreNode:
+            # The promoted nodes have just become newly unignored.
+            dirtyVnodeList = p.setDirty() # Mark descendent @thin nodes dirty.
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        u.afterChangeGroup(p,command,dirtyVnodeList=dirtyVnodeList)
+        c.selectPosition(p)
+    finally:
+        c.endUpdate()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@-node:ekr.20031218072017.1774:promote
+#@-node:ekr.20031218072017.1766:Move... (Commands)
+#@-node:ekr.20031218072017.2894:Outline menu...
+#@+node:ekr.20031218072017.2945:Dragging (commands)
+#@+node:ekr.20031218072017.2353:c.dragAfter
+def dragAfter(self,p,after):
+
+    c = self ; u = self.undoer ; undoType = 'Drag'
+    current = c.currentPosition()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    if not c.checkMoveWithParentWithWarning(p,after.parent(),True): return
+
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(current)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveAfter(after)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+    c.updateSyntaxColorer(p) # Dragging can change syntax coloring.
+#@-node:ekr.20031218072017.2353:c.dragAfter
+#@+node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
+def dragCloneToNthChildOf (self,p,parent,n):
+
+    c = self ; u = c.undoer ; undoType = 'Clone Drag'
+    current = c.currentPosition()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+
+    c.beginUpdate()
+    try: # In update...
+        # g.trace("p,parent,n:",p.headString(),parent.headString(),n)
+        clone = p.clone() # Creates clone & dependents, does not set undo.
+        if not c.checkMoveWithParentWithWarning(clone,parent,True):
+            clone.doDelete() # Destroys clone and makes p the current node.
+            c.selectPosition(p) # Also sets root position.
+            c.endUpdate(False) # Nothing has changed.
+            return
+        c.endEditing()
+        undoData = u.beforeInsertNode(current)
+        dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+        clone.moveToNthChildOf(parent,n)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        else: # No need to mark descendents dirty.
+           dirtyVnodeList2 =  p.setAllAncestorAtFileNodesDirty()
+           dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(clone) # Also sets root position.
+        c.endUpdate()
+    c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+#@-node:ekr.20031218072017.2946:c.dragCloneToNthChildOf
+#@+node:ekr.20031218072017.2947:c.dragToNthChildOf
+def dragToNthChildOf(self,p,parent,n):
+
+    c = self ; u = c.undoer ; undoType = 'Drag'
+    current = c.currentPosition()
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    if not c.checkMoveWithParentWithWarning(p,parent,True): return
+
+    c.beginUpdate()
+    try: # In update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(current)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        p.moveToNthChildOf(parent,n)
+        if inAtIgnoreRange and not p.inAtIgnoreRange():
+            # The moved nodes have just become newly unignored.
+            dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        else: # No need to mark descendents dirty.
+            dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+        c.setChanged(True)
+        u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+    c.updateSyntaxColorer(p) # Dragging can change syntax coloring.
+#@-node:ekr.20031218072017.2947:c.dragToNthChildOf
+#@+node:ekr.20031218072017.2948:c.dragCloneAfter
+def dragCloneAfter (self,p,after):
+
+    c = self ; u = c.undoer ; undoType = 'Clone Drag'
+    current = c.currentPosition()
+
+    c.beginUpdate()
+    try: # In update...
+        clone = p.clone() # Creates clone.  Does not set undo.
+        if c.checkMoveWithParentWithWarning(clone,after.parent(),True):
+            inAtIgnoreRange = clone.inAtIgnoreRange()
+            c.endEditing()
+            undoData = u.beforeInsertNode(current)
+            dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+            clone.moveAfter(after)
+            if inAtIgnoreRange and not clone.inAtIgnoreRange():
+                # The moved node have just become newly unignored.
+                dirtyVnodeList2 = clone.setDirty() # Mark descendent @thin nodes dirty.
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = clone.setAllAncestorAtFileNodesDirty()
+                dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterInsertNode(clone,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
+            p = clone
+        else:
+            # g.trace("invalid clone drag")
+            clone.doDelete()
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+    c.updateSyntaxColorer(clone) # Dragging can change syntax coloring.
+#@nonl
+#@-node:ekr.20031218072017.2948:c.dragCloneAfter
+#@-node:ekr.20031218072017.2945:Dragging (commands)
 #@-node:ekr.20070606081341.1:Make chapter ops undoable
 #@-node:ekr.20070606131320:Finishing chapters
 #@-node:ekr.20070522082346:Leo 4.4.3 b2 projects
