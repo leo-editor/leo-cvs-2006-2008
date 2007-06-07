@@ -34836,7 +34836,7 @@ def createChapter (self,event=None,verbose=True):
         k.clearState()
         k.resetLabel()
         if k.arg:
-            ok = cc.createChapterByName(k.arg)
+            cc.createChapterByName(k.arg)
 #@nonl
 #@-node:ekr.20070317085437.31:cc.createChapter
 #@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
@@ -41858,6 +41858,222 @@ def saveTo (self,event=None):
         c.widgetWantsFocus(w)
 #@-node:ekr.20031218072017.2836:saveTo
 #@-node:ekr.20070603155916.1:Don't change focus in the save command
+#@+node:ekr.20070606184202:downcase-region and upcase-region didn't color body text.
+#@+node:ekr.20050920084036.111:up/downCaseRegion & helper
+def downCaseRegion (self,event):
+    '''Convert all characters in the selected text to lower case.'''
+    self.caseHelper(event,'low','downcase-region')
+
+def upCaseRegion (self,event):
+    '''Convert all characters in the selected text to UPPER CASE.'''
+    self.caseHelper(event,'up','upcase-region')
+
+def caseHelper (self,event,way,undoType):
+
+    w = self.editWidget(event)
+    if not w or not w.hasSelection(): return
+
+    self.beginCommand(undoType=undoType)
+
+    s = w.getAllText()
+    i,j = w.getSelectionRange()
+    ins = w.getInsertPoint()
+    sel = g.choose(way=='low',s[i:j].lower(),s[i:j].upper())
+    s2 = s[:i] + sel + s[j:]
+    # g.trace('sel',repr(sel),'s2',repr(s2))
+    changed = s2 != s
+    if changed:
+        w.setAllText(s2)
+        w.setSelectionRange(i,j,insert=ins)
+
+    self.endCommand(changed=changed,setLabel=True)
+#@-node:ekr.20050920084036.111:up/downCaseRegion & helper
+#@+node:ekr.20051214132256:begin/endCommand (baseEditCommands)
+#@+node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
+def beginCommand (self,undoType='Typing'):
+
+    '''Do the common processing at the start of each command.'''
+
+    return self.beginCommandHelper(ch='',undoType=undoType,w=self.w)
+
+def beginCommandWithEvent (self,event,undoType='Typing'):
+
+    '''Do the common processing at the start of each command.'''
+
+    return self.beginCommandHelper(ch=event.char,undoType=undoType,w=event.widget)
+#@+node:ekr.20051215102349:beingCommandHelper
+# New in Leo 4.4b4: calling beginCommand is valid for all widgets,
+# but does nothing unless we are in the body pane.
+
+def beginCommandHelper (self,ch,undoType,w):
+
+    c = self.c ; p = c.currentPosition()
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        oldSel =  w.getSelectionRange()
+        oldText = p.bodyString()
+        self.undoData = g.Bunch(
+            ch=ch,name=name,oldSel=oldSel,oldText=oldText,w=w,undoType=undoType)
+    else:
+        self.undoData = None
+
+    return w
+#@-node:ekr.20051215102349:beingCommandHelper
+#@-node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
+#@+node:ekr.20051214133130.1:endCommand
+# New in Leo 4.4b4: calling endCommand is valid for all widgets,
+# but handles undo only if we are in body pane.
+
+def endCommand(self,label=None,changed=True,setLabel=True):
+
+    '''Do the common processing at the end of each command.'''
+
+    c = self.c ; b = self.undoData ; k = self.k
+
+    # g.trace('changed',changed)
+
+    if b and b.name.startswith('body') and changed:
+        c.frame.body.onBodyChanged(undoType=b.undoType,
+            oldSel=b.oldSel,oldText=b.oldText,oldYview=None)
+
+    self.undoData = None # Bug fix: 1/6/06 (after a5 released).
+
+    k.clearState()
+
+    # Warning: basic editing commands **must not** set the label.
+    if setLabel:
+        if label:
+            k.setLabelGrey(label)
+        else:
+            k.resetLabel()
+#@-node:ekr.20051214133130.1:endCommand
+#@-node:ekr.20051214132256:begin/endCommand (baseEditCommands)
+#@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
+# This is the only key handler for the body pane.
+def onBodyChanged (self,undoType,oldSel=None,oldText=None,oldYview=None):
+
+    '''Update Leo after the body has been changed.'''
+
+    body = self ; c = self.c
+    bodyCtrl = w = body.bodyCtrl
+    p = c.currentPosition()
+    insert = w.getInsertPoint()
+    ch = g.choose(insert==0,'',w.get(insert-1))
+    ch = g.toUnicode(ch,g.app.tkEncoding)
+    newText = w.getAllText() # Note: getAllText converts to unicode.
+    # g.trace('newText',repr(newText),g.callers())
+    newSel = w.getSelectionRange()
+    if not oldText:
+        oldText = p.bodyString() ; changed = True
+    else:
+        changed = oldText != newText
+    # g.trace(repr(ch),'changed:',changed,'newText:',repr(newText))
+    if not changed: return
+    c.undoer.setUndoTypingParams(p,undoType,
+        oldText=oldText,newText=newText,oldSel=oldSel,newSel=newSel,oldYview=oldYview)
+    p.v.setTnodeText(newText)
+    p.v.t.insertSpot = body.getInsertPoint()
+    << recolor the body >>
+    if not c.changed: c.setChanged(True)
+    self.updateEditors()
+    << redraw the screen if necessary >>
+#@+node:ekr.20051026083733.6:<< recolor the body >>
+body.colorizer.interrupt()
+c.frame.scanForTabWidth(p)
+body.recolor_now(p,incremental=not self.forceFullRecolorFlag)
+self.forceFullRecolorFlag = False
+
+if g.app.unitTesting:
+    g.app.unitTestDict['colorized'] = True
+#@-node:ekr.20051026083733.6:<< recolor the body >>
+#@+node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+c.beginUpdate()
+try:
+    redraw_flag = False
+    # Update dirty bits.
+    # p.setDirty() sets all cloned and @file dirty bits.
+    if not p.isDirty() and p.setDirty():
+        redraw_flag = True
+
+    # Update icons. p.v.iconVal may not exist during unit tests.
+    val = p.computeIcon()
+    # g.trace('new val:',val,'old val:',hasattr(p.v,'iconVal') and p.v.iconVal or '<None>')
+    if not hasattr(p.v,"iconVal") or val != p.v.iconVal:
+        p.v.iconVal = val
+        redraw_flag = True
+finally:
+    c.endUpdate(redraw_flag)
+#@-node:ekr.20051026083733.7:<< redraw the screen if necessary >>
+#@-node:ekr.20031218072017.1329:onBodyChanged (leoBody)
+#@+node:ekr.20050920084036.57:capitalization & case
+#@+node:ekr.20051015114221:capitalizeWord & up/downCaseWord
+def capitalizeWord (self,event):
+    '''Capitalize the word at the cursor.'''
+    self.capitalizeHelper(event,'cap','capitalize-word')
+
+def downCaseWord (self,event):
+    '''Convert all characters of the word at the cursor to lower case.'''
+    self.capitalizeHelper(event,'low','downcase-word')
+
+def upCaseWord (self,event):
+    '''Convert all characters of the word at the cursor to UPPER CASE.'''
+    self.capitalizeHelper(event,'up','upcase-word')
+#@-node:ekr.20051015114221:capitalizeWord & up/downCaseWord
+#@+node:ekr.20050920084036.145:changePreviousWord (not used)
+def changePreviousWord (self,event):
+
+    k = self.k ; stroke = k.stroke
+    w = self.editWidget(event)
+    if not w: return
+
+    i = w.getInsertPoint()
+    self.beginCommand(undoType='change-previous-word')
+    self.moveWordHelper(event,extend=False,forward=False)
+
+    if stroke == '<Alt-c>':
+        self.capitalizeWord(event)
+    elif stroke == '<Alt-u>':
+         self.upCaseWord(event)
+    elif stroke == '<Alt-l>':
+        self.downCaseWord(event)
+
+    w.setInsertPoint(i)
+
+    self.endCommand(changed=True,setLabel=True)
+#@-node:ekr.20050920084036.145:changePreviousWord (not used)
+#@+node:ekr.20051015114221.1:capitalizeHelper
+def capitalizeHelper (self,event,which,undoType):
+
+    w = self.editWidget(event)
+    if not w: return
+
+    s = w.getAllText()
+    ins = w.getInsertPoint()
+    i,j = g.getWord(s,ins)
+    word = s[i:j]
+    # g.trace('word',repr(word))
+    if not word.strip(): return
+
+    self.beginCommand(undoType=undoType)
+
+    if   which == 'cap':  word2 = word.capitalize()
+    elif which == 'low':  word2 = word.lower()
+    elif which == 'up':   word2 = word.upper()
+    else: g.trace('can not happen: which = %s' %s (which))
+
+    changed = word != word2
+    # g.trace('changed',changed,'word2',repr(word2))
+
+    if changed:
+        w.delete(i,j)
+        w.insert(i,word2)
+        w.setSelectionRange(ins,ins,insert=ins)
+
+    self.endCommand(changed=changed,setLabel=True)
+#@-node:ekr.20051015114221.1:capitalizeHelper
+#@-node:ekr.20050920084036.57:capitalization & case
+#@-node:ekr.20070606184202:downcase-region and upcase-region didn't color body text.
 #@-node:ekr.20070528141848:Fixed bugs
 #@+node:ekr.20070528141848.1:Features
 #@+node:ekr.20070528073134:Supported write_strips_blank_lines option
@@ -42895,6 +43111,7 @@ def getPublicCommands (self):
             'clone-node-to-chapter':    cc.cloneNodeToChapter,
             'copy-node-to-chapter':     cc.copyNodeToChapter,
             'create-chapter':           cc.createChapter,
+            'create-chapter-from-node': cc.createChapterFromNode,
             'move-node-to-chapter':     cc.moveNodeToChapter,
             'remove-chapter':           cc.removeChapter,
             'rename-chapter':           cc.renameChapter,
@@ -44587,7 +44804,7 @@ def createChapter (self,event=None,verbose=True):
         k.clearState()
         k.resetLabel()
         if k.arg:
-            ok = cc.createChapterByName(k.arg)
+            cc.createChapterByName(k.arg)
 #@nonl
 #@-node:ekr.20070317085437.31:cc.createChapter
 #@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
@@ -45130,6 +45347,7 @@ def getPublicCommands (self):
             'clone-node-to-chapter':    cc.cloneNodeToChapter,
             'copy-node-to-chapter':     cc.copyNodeToChapter,
             'create-chapter':           cc.createChapter,
+            'create-chapter-from-node': cc.createChapterFromNode,
             'move-node-to-chapter':     cc.moveNodeToChapter,
             'remove-chapter':           cc.removeChapter,
             'rename-chapter':           cc.renameChapter,
@@ -45465,6 +45683,7 @@ def getPublicCommands (self):
             'clone-node-to-chapter':    cc.cloneNodeToChapter,
             'copy-node-to-chapter':     cc.copyNodeToChapter,
             'create-chapter':           cc.createChapter,
+            'create-chapter-from-node': cc.createChapterFromNode,
             'move-node-to-chapter':     cc.moveNodeToChapter,
             'remove-chapter':           cc.removeChapter,
             'rename-chapter':           cc.renameChapter,
@@ -46062,7 +46281,7 @@ def afterCreateChapter (self,bunch,p):
     u.pushBead(bunch)
 #@-node:ekr.20070606075125:afterCreateChapter
 #@+node:ekr.20070603190617:cc.createChapterByName
-def createChapterByName (self,name):
+def createChapterByName (self,name,p=None):
 
     cc = self ; c = cc.c ; u = c.undoer
 
@@ -46075,7 +46294,7 @@ def createChapterByName (self,name):
         return cc.error('Duplicate chapter name: %s' % name)
 
     bunch = u.beforeCreateChapter(c.currentPosition(),oldChapter.name,name)
-    root = cc.getChapterNode(name) # Creates @chapter node and one child.
+    root = cc.getChapterNode(name,p=p) # Creates @chapter node and one child.
     cc.chaptersDict[name] = chapter(c=c,chapterController=cc,name=name,root=root)
     cc.selectChapterByName(name)
     u.afterCreateChapter(bunch,c.currentPosition())
