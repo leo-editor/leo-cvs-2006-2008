@@ -183,11 +183,35 @@ class chapterController:
             k.clearState()
             k.resetLabel()
             if k.arg:
-                ok = cc.createChapterByName(k.arg)
+                cc.createChapterByName(k.arg)
     #@nonl
     #@-node:ekr.20070317085437.31:cc.createChapter
+    #@+node:ekr.20070607092909:cc.createChapterFromNode
+    def createChapterFromNode (self,event=None):
+
+        '''Use the minibuffer to get a chapter name,
+        then create the chapter.'''
+
+        cc = self ; c = cc.c ; k = c.k ; tag = 'create-chapter-from-node'
+        state = k.getState(tag)
+
+        p = c.currentPosition()
+        if p.headString().startswith('@chapter'):
+            cc.error('Can not create a new chapter from from an @chapter or @chapters node.')
+            return
+
+        if state == 0:
+            names = cc.chaptersDict.keys()
+            k.setLabelBlue('Create chapter from node: ',protect=True)
+            k.getArg(event,tag,1,self.createChapterFromNode,tabList=names)
+        else:
+            k.clearState()
+            k.resetLabel()
+            if k.arg:
+                cc.createChapterByName(k.arg,p=c.currentPosition())
+    #@-node:ekr.20070607092909:cc.createChapterFromNode
     #@+node:ekr.20070603190617:cc.createChapterByName
-    def createChapterByName (self,name):
+    def createChapterByName (self,name,p=None):
 
         cc = self ; c = cc.c ; u = c.undoer
 
@@ -200,7 +224,7 @@ class chapterController:
             return cc.error('Duplicate chapter name: %s' % name)
 
         bunch = u.beforeCreateChapter(c.currentPosition(),oldChapter.name,name)
-        root = cc.getChapterNode(name) # Creates @chapter node and one child.
+        root = cc.getChapterNode(name,p=p) # Creates @chapter node and one child.
         cc.chaptersDict[name] = chapter(c=c,chapterController=cc,name=name,root=root)
         cc.selectChapterByName(name)
         u.afterCreateChapter(bunch,c.currentPosition())
@@ -391,15 +415,16 @@ class chapterController:
                 self.error('***** t.fileIndex already exists')
             else:
                 t.setFileIndex(g.app.nodeIndices.getNewIndex())
+            c.setChanged(True)
         finally:
             c.endUpdate(False)
     #@nonl
     #@-node:ekr.20070325101652:cc.createChaptersNode
     #@+node:ekr.20070325063303.2:cc.createChapterNode
-    def createChapterNode (self,chapterName):
+    def createChapterNode (self,chapterName,p=None):
 
-        '''Create an @chapter node for the named chapter,
-        creating an @chapters node if necessary.'''
+        '''Create an @chapter node for the named chapter.
+        Use p for the first child, or create a first child if p is None.'''
 
         cc = self ; c = cc.c
         current = c.currentPosition() or c.rootPosition()
@@ -408,15 +433,20 @@ class chapterController:
         try:
             # Create the node with a postion method
             # so we don't involve the undo logic.
-            p = current.insertAsLastChild()
-            p.initHeadString('@chapter ' + chapterName)
-            c.setBodyString(p,chapterName)
-            p.moveToFirstChildOf(cc.chaptersNode)
-            cc.createChild(p,'%s node 1' % chapterName)
+            root = current.insertAsLastChild()
+            root.initHeadString('@chapter ' + chapterName)
+            root.moveToFirstChildOf(cc.chaptersNode)
+            if p:
+                # Clone p and move it to the first child of the root.
+                clone = p.clone()
+                clone.moveToFirstChildOf(root)
+            else:
+                cc.createChild(root,'%s node 1' % chapterName)
+            c.setChanged(True)
         finally:
             c.endUpdate(False)
 
-        return p
+        return root
     #@-node:ekr.20070325063303.2:cc.createChapterNode
     #@+node:ekr.20070509081915.1:cc.createChild
     def createChild (self,parent,s):
@@ -447,6 +477,7 @@ class chapterController:
                 c.setCurrentPosition(chapter.root)
                 chapter.root.doDelete()
                 # The chapter selection logic will select a new node.
+                c.setChanged(True)
             finally:
                 c.endUpdate(False)
     #@nonl
@@ -508,7 +539,7 @@ class chapterController:
         return cc.selectedChapter and cc.selectedChapter.name != 'main'
     #@-node:ekr.20070605124356:cc.inChapter
     #@+node:ekr.20070325115102:cc.getChaperNode
-    def getChapterNode (self,chapterName):
+    def getChapterNode (self,chapterName,p=None):
 
         '''Return the position of the @chapter node with the given name.'''
 
@@ -519,7 +550,7 @@ class chapterController:
         else:
             val = (
                 cc.findChapterNode(chapterName,giveError=False) or
-                cc.createChapterNode(chapterName))
+                cc.createChapterNode(chapterName,p=p))
             return val
     #@-node:ekr.20070325115102:cc.getChaperNode
     #@+node:ekr.20070318124004:cc.getChapter
