@@ -536,7 +536,7 @@ class LeoApp:
             print 'writeWaitingLog: still no log!'
     #@-node:ekr.20031218072017.2619:app.writeWaitingLog
     #@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-    def newLeoCommanderAndFrame(self,fileName,updateRecentFiles=True):
+    def newLeoCommanderAndFrame(self,fileName,initEditCommanders=True,updateRecentFiles=True):
 
         """Create a commander and its view frame for the Leo main window."""
 
@@ -570,7 +570,7 @@ class LeoApp:
             g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
 
         frame.finishCreate(c)
-        c.finishCreate()
+        c.finishCreate(initEditCommanders)
 
         # Finish initing the subcommanders.
         c.undoer.clearUndoState() # Menus must exist at this point.
