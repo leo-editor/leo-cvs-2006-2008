@@ -66,7 +66,7 @@ class baseEditCommandsClass:
         pass
     #@nonl
     #@-node:ekr.20050920084036.2: ctor, finishCreate, init (baseEditCommandsClass)
-    #@+node:ekr.20051214132256:begin/endCommand
+    #@+node:ekr.20051214132256:begin/endCommand (baseEditCommands)
     #@+node:ekr.20051214133130:beginCommand  & beginCommandWithEvent
     def beginCommand (self,undoType='Typing'):
 
@@ -109,6 +109,8 @@ class baseEditCommandsClass:
 
         c = self.c ; b = self.undoData ; k = self.k
 
+        # g.trace('changed',changed)
+
         if b and b.name.startswith('body') and changed:
             c.frame.body.onBodyChanged(undoType=b.undoType,
                 oldSel=b.oldSel,oldText=b.oldText,oldYview=None)
@@ -124,7 +126,7 @@ class baseEditCommandsClass:
             else:
                 k.resetLabel()
     #@-node:ekr.20051214133130.1:endCommand
-    #@-node:ekr.20051214132256:begin/endCommand
+    #@-node:ekr.20051214132256:begin/endCommand (baseEditCommands)
     #@+node:ekr.20061007105001:editWidget
     def editWidget (self,event):
 
@@ -1025,6 +1027,9 @@ class chapterCommandsClass (baseEditCommandsClass):
     def getPublicCommands (self):
 
         c = self.c ; cc = c.chapterController
+
+        # g.trace('cc',cc,g.callers())
+
         if cc:
             return {
                 'clone-node-to-chapter':    cc.cloneNodeToChapter,
@@ -1037,7 +1042,6 @@ class chapterCommandsClass (baseEditCommandsClass):
             }
         else:
             return {}
-    #@nonl
     #@-node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
     #@-others
 #@-node:ekr.20070522085324:chapterCommandsClass
@@ -1628,30 +1632,36 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.145:changePreviousWord (not used)
-    #@+node:ekr.20051015114221.1:capitalizeHelper (passed)
+    #@+node:ekr.20051015114221.1:capitalizeHelper
     def capitalizeHelper (self,event,which,undoType):
 
         w = self.editWidget(event)
         if not w: return
 
         s = w.getAllText()
-        i1 = w.getInsertPoint()
-        i,j = g.getWord(s,i1)
+        ins = w.getInsertPoint()
+        i,j = g.getWord(s,ins)
         word = s[i:j]
+        # g.trace('word',repr(word))
         if not word.strip(): return
 
         self.beginCommand(undoType=undoType)
 
-        if which == 'cap':  word = word.capitalize()
-        if which == 'low':  word = word.lower()
-        if which == 'up':   word = word.upper()
+        if   which == 'cap':  word2 = word.capitalize()
+        elif which == 'low':  word2 = word.lower()
+        elif which == 'up':   word2 = word.upper()
+        else: g.trace('can not happen: which = %s' %s (which))
 
-        w.delete(i,j)
-        w.insert(i,word)
-        w.setInsertPoint(i1)
+        changed = word != word2
+        # g.trace('changed',changed,'word2',repr(word2))
 
-        self.endCommand(changed=True,setLabel=True)
-    #@-node:ekr.20051015114221.1:capitalizeHelper (passed)
+        if changed:
+            w.delete(i,j)
+            w.insert(i,word2)
+            w.setSelectionRange(ins,ins,insert=ins)
+
+        self.endCommand(changed=changed,setLabel=True)
+    #@-node:ekr.20051015114221.1:capitalizeHelper
     #@-node:ekr.20050920084036.57:capitalization & case
     #@+node:ekr.20051022142249:clicks and focus (editCommandsClass)
     #@+node:ekr.20060211100905:activate-x-menu & activateMenu (editCommandsClass)
@@ -3969,18 +3979,16 @@ class editCommandsClass (baseEditCommandsClass):
 
         s = w.getAllText()
         i,j = w.getSelectionRange()
+        ins = w.getInsertPoint()
         sel = g.choose(way=='low',s[i:j].lower(),s[i:j].upper())
-        # g.trace(repr(sel))
-        s = s[:i] + sel + s[j:]
-        w.setAllText(s)
-        w.setSelectionRange(i,j)
+        s2 = s[:i] + sel + s[j:]
+        # g.trace('sel',repr(sel),'s2',repr(s2))
+        changed = s2 != s
+        if changed:
+            w.setAllText(s2)
+            w.setSelectionRange(i,j,insert=ins)
 
-        # w.deleteTextSelection()
-        # s = g.choose(way=='low',s.lower(),s.upper())
-        # w.insert(i,s)
-        # w.setSelectionRange(i,j)
-
-        self.endCommand(changed=True,setLabel=True)
+        self.endCommand(changed=changed,setLabel=True)
     #@-node:ekr.20050920084036.111:up/downCaseRegion & helper
     #@-others
     #@-node:ekr.20050920084036.105:region...
