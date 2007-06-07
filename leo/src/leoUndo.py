@@ -618,6 +618,22 @@ class baseUndoer:
 
         u.pushBead(bunch)
     #@-node:ekr.20050411193627.5:afterCloneNode
+    #@+node:ekr.20070606075125:afterCreateChapter
+    def afterCreateChapter (self,bunch,p):
+
+        u = self
+        if u.redoing or u.undoing: return
+
+        bunch.kind = 'create-chapter'
+        bunch.undoType = 'Create Chapter'
+        bunch.newP = p.copy()
+
+        # Set helpers
+        bunch.undoHelper = u.undoInsertChapter
+        bunch.redoHelper = u.redoInsertChapter
+
+        u.pushBead(bunch)
+    #@-node:ekr.20070606075125:afterCreateChapter
     #@+node:ekr.20050411193627.6:afterDehoist
     def afterDehoist (self,p,command):
 
@@ -832,6 +848,18 @@ class baseUndoer:
 
         return bunch
     #@-node:ekr.20050412080354:beforeCloneNode
+    #@+node:ekr.20070606082729:beforeCreateChapter
+    def beforeCreateChapter (self,p,oldChapterName,newChapterName):
+
+        u = self
+
+        bunch = u.createCommonBunch(p)
+
+        bunch.oldChapterName = oldChapterName
+        bunch.newChapterName = newChapterName
+
+        return bunch
+    #@-node:ekr.20070606082729:beforeCreateChapter
     #@+node:ekr.20050411193627.3:beforeDeleteNode
     def beforeDeleteNode (self,p):
 
@@ -1329,12 +1357,21 @@ class baseUndoer:
         c.deleteOutline()
         c.selectPosition(u.newP)
     #@-node:EKR.20040526072519.2:redoDeleteNode
+    #@+node:ekr.20070606081341:redoInsertChapter
+    def redoInsertChapter (self):
+
+        u = self ; c = u.c ; cc = c.chapterController
+
+        # g.trace(u.newChapterName,u.oldChapterName,u.p)
+
+        cc.createChapterByName(u.newChapterName)
+    #@-node:ekr.20070606081341:redoInsertChapter
     #@+node:ekr.20050412084532:redoInsertNode
     def redoInsertNode (self):
 
         u = self ; c = u.c
 
-        # g.trace('p',u.newP.v,'parent',u.newParent.v)
+        g.trace('newP',u.newP.v,'back',u.newBack,'parent',u.newParent.v)
 
         if u.newBack:
             u.newP.linkAfter(u.newBack)
@@ -1663,6 +1700,15 @@ class baseUndoer:
         c.selectPosition(u.p)
         c.hoist()
     #@-node:ekr.20050412083244:undoHoistNode & undoDehoistNode
+    #@+node:ekr.20070606074705:undoInsertChapter
+    def undoInsertChapter (self):
+
+        u = self ; c = u.c ; cc = c.chapterController
+
+        cc.removeChapterByName(u.newChapterName)
+        cc.selectChapterByName(u.oldChapterName)
+
+    #@-node:ekr.20070606074705:undoInsertChapter
     #@+node:ekr.20050412085112:undoInsertNode
     def undoInsertNode (self):
 
