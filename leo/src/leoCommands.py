@@ -193,7 +193,7 @@ class baseCommands:
             return 0
     #@-node:ekr.20041130173135:c.hash
     #@+node:ekr.20050920093543:c.finishCreate & helper
-    def finishCreate (self):  # New in 4.4.
+    def finishCreate (self,initEditCommanders=True):  # New in 4.4.
 
         '''Finish creating the commander after frame.finishCreate.
 
@@ -208,7 +208,7 @@ class baseCommands:
             useGlobalKillbuffer=True,
             useGlobalRegisters=True)
 
-        if g.app.config and g.app.config.inited:
+        if initEditCommanders: ### g.app.config and g.app.config.inited:
             # A 'real' .leo file.
             c.commandsDict = leoEditCommands.finishCreateEditCommanders(c)
             k.finishCreate()
@@ -223,7 +223,6 @@ class baseCommands:
             c.frame.menu.createMenuBar(c.frame)
 
         c.bodyWantsFocusNow()
-    #@nonl
     #@+node:ekr.20051007143620:printCommandsDict
     def printCommandsDict (self):
 
@@ -3099,6 +3098,7 @@ class baseCommands:
             else:
                 c.frame.putStatusLine("No hoist")
             c.undoer.afterDehoist(p,'DeHoist')
+            g.doHook('hoist-changed',c=c)
 
     def hoist (self,event=None):
 
@@ -3117,6 +3117,7 @@ class baseCommands:
             c.frame.clearStatusLine()
             c.frame.putStatusLine("Hoist: " + p.headString())
             c.undoer.afterHoist(p,'Hoist')
+            g.doHook('hoist-changed',c=c)
     #@-node:ekr.20031218072017.2028:Hoist & dehoist
     #@+node:ekr.20031218072017.1759:Insert, Delete & Clone (Commands)
     #@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
@@ -3149,7 +3150,8 @@ class baseCommands:
 
         """Deletes the selected outline."""
 
-        c = self ; u = c.undoer ; p = c.currentPosition()
+        c = self ; cc = c.chapterController ; u = c.undoer
+        p = c.currentPosition()
         if not p: return
 
         if p.hasVisBack(): newNode = p.visBack()
@@ -3159,12 +3161,28 @@ class baseCommands:
         c.beginUpdate()
         try:
            c.endEditing() # Make sure we capture the headline for Undo.
-           undoData = u.beforeDeleteNode(p)
-           dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
-           p.doDelete()
-           c.selectPosition(newNode)
-           c.setChanged(True)
-           u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
+        finally:
+            c.endUpdate(False)
+
+        if cc: # Special cases for @chapter and @chapters nodes.
+            chapter = '@chapter ' ; chapters = '@chapters ' 
+            h = p.headString()
+            if h.startswith(chapters):
+                if p.hasChildren():
+                   return cc.error('Can not delete @chapters node with children.')
+            elif h.startswith(chapter):
+                name = h[len(chapter):].strip()
+                if name:
+                    return cc.removeChapterByName(name)
+
+        c.beginUpdate()
+        try:
+            undoData = u.beforeDeleteNode(p)
+            dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+            p.doDelete()
+            c.selectPosition(newNode)
+            c.setChanged(True)
+            u.afterDeleteNode(newNode,op_name,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
             c.endUpdate()
 
