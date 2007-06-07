@@ -238,7 +238,8 @@ class autoCompleterClass:
                 else:
                     obj = module
             if not obj:
-                g.trace('bad object',obj)
+                if key not in ('cc',):
+                    g.trace('bad object',obj)
                 continue
             for z in idList:
                 self.objectDict[z]=obj
