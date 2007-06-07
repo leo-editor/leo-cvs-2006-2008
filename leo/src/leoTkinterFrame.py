@@ -432,7 +432,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def finishCreate (self,c):
 
         f = self ; f.c = c
-        # g.trace('tkFrame')
+        # g.trace('tkFrame','c',c,g.callers())
 
         self.trace_status_line = c.config.getBool('trace_status_line')
         self.use_chapters      = c.config.getBool('use_chapters')
@@ -491,7 +491,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
         f.createLeoSplitters(f.outerFrame)
 
         # Create the canvas, tree, log and body.
-        if self.use_chapters:
+        if f.use_chapters:
             c.chapterController = cc = leoChapters.chapterController(c)
 
         if self.use_chapters and self.use_chapter_tabs:
@@ -1184,9 +1184,15 @@ class leoTkinterFrame (leoFrame.leoFrame):
                 #@nl
             elif text:
                 b = Tk.Button(f,text=text,relief="groove",bd=2,command=command)
-                if sys.platform != 'darwin':
+                # if sys.platform != 'darwin':
+                    # width = max(6,len(text))
+                    # b.configure(width=width)
+                if sys.platform.startswith('win'):
                     width = max(6,len(text))
-                    b.configure(width=width)
+                    # width = int(len(text) * 0.95)
+                    # width = max(6,width)
+                    b.configure(width=width,font=('verdana',7,'bold'))
+                    if bg: b.configure(bg=bg)
                 b.pack(side="left", fill="none")
                 return b
 
