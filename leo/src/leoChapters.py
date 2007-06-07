@@ -91,7 +91,7 @@ class chapterController:
     #@+node:ekr.20070604155815.1:cc.cloneToChapterHelper
     def cloneNodeToChapterHelper (self,toChapterName):
 
-        cc = self ; c = cc.c
+        cc = self ; c = cc.c ;  u = c.undoer ; undoType = 'Clone Node To Chapter'
         p = c.currentPosition() ; h = p.headString()
         fromChapter = cc.getSelectedChapter()
         toChapter = cc.getChapter(toChapterName)
@@ -101,15 +101,25 @@ class chapterController:
 
         c.beginUpdate()
         try:
+            # Open the group undo.
+            groupUndoData = c.undoer.beforeChangeGroup(p,undoType)
+            # Do the clone.  c.clone handles the inner undo.
             clone = c.clone()
+            # Do the move.
+            undoData2 = u.beforeMoveNode(clone)
             clone.unlink()
             if toChapter.name == 'main':
                 clone.moveAfter(toChapter.p)
             else:
                 parent = cc.getChapterNode(toChapter.name)
                 clone.moveToLastChildOf(parent)
+            u.afterMoveNode(clone,'Move Node',undoData2,dirtyVnodeList=[])
             c.selectPosition(clone)
             c.setChanged(True)
+            # Close the group undo.
+            # Only the ancestors of the moved node get set dirty.
+            dirtyVnodeList = clone.setAllAncestorAtFileNodesDirty()
+            c.undoer.afterChangeGroup(clone,undoType,reportFlag=False,dirtyVnodeList=dirtyVnodeList)
         finally:
             c.endUpdate(False)
 
@@ -141,7 +151,7 @@ class chapterController:
     #@+node:ekr.20070604155815.2:cc.copyNodeToChapterHelper
     def copyNodeToChapterHelper (self,toChapterName):
 
-        cc = self ; c = cc.c
+        cc = self ; c = cc.c ; u = c.undoer ; undoType = 'Copy Node To Chapter'
         p = c.currentPosition() ; h = p.headString()
         fromChapter = cc.getSelectedChapter()
         toChapter = cc.getChapter(toChapterName)
@@ -151,12 +161,16 @@ class chapterController:
 
         c.beginUpdate()
         try:
+            # For undo, we treat the copy like a pasted (inserted) node.
+            # Use parent as the node to select for undo.
             parent = cc.getChapterNode(toChapter.name)
+            undoData = u.beforeInsertNode(parent,pasteAsClone=False,copiedBunchList=[])
             s = c.fileCommands.putLeoOutline()
             p2 = c.fileCommands.getLeoOutline(s)
             p2.unlink()
             p2.moveToLastChildOf(parent)
             c.selectPosition(p2)
+            u.afterInsertNode(p2,undoType,undoData)
             c.setChanged(True)
         finally:
             c.endUpdate(False)
@@ -255,7 +269,8 @@ class chapterController:
     #@+node:ekr.20070317085437.52:cc.moveNodeToChapterHelper
     def moveNodeToChapterHelper (self,toChapterName):
 
-        cc = self ; c = cc.c ; p = c.currentPosition()
+        cc = self ; c = cc.c ; u = c.undoer ; undoType = 'Move Node To Chapter'
+        p = c.currentPosition()
         fromChapter = cc.getSelectedChapter()
         toChapter = cc.getChapter(toChapterName)
 
@@ -267,21 +282,33 @@ class chapterController:
         try:
             if toChapter.name == 'main':
                 sel = (p.threadBack() != fromChapter.root and p.threadBack()) or p.nodeAfterTree()
-                if sel:
-                    p.unlink()
-                    p.moveAfter(toChapter.p)
-                    c.selectPosition(sel)
-                    c.setChanged(True)
             else:
                 sel = p.threadBack() or p.nodeAfterTree()
-                if sel:
-                    parent = cc.getChapterNode(toChapter.name)
+            if sel:
+                # Get 'before' undo data.
+                inAtIgnoreRange = p.inAtIgnoreRange()
+                undoData = u.beforeMoveNode(p)
+                dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+                # Do the move.
+                if toChapter.name == 'main':
                     p.unlink()
-                    p.moveToLastChildOf(parent)
-                    c.selectPosition(sel)
-                    c.setChanged(True)
+                    p.moveAfter(toChapter.p)
+                else:
+                    p.unlink()
+                    p.moveToLastChildOf(toChapter.root)
+                c.selectPosition(sel)
+                c.setChanged(True)
+                # Do the 'after' undo operation.
+                if inAtIgnoreRange and not p.inAtIgnoreRange():
+                    # The moved nodes have just become newly unignored.
+                    dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+                    dirtyVnodeList.extend(dirtyVnodeList2)
+                else: # No need to mark descendents dirty.
+                    dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+                    dirtyVnodeList.extend(dirtyVnodeList2)
+                u.afterMoveNode(p,undoType,undoData,dirtyVnodeList=dirtyVnodeList)
         finally:
-            c.endUpdate(False)
+            c.endUpdate(False) # toChapter.select will do the drawing.
 
         if sel:
             toChapter.p = p.copy()
