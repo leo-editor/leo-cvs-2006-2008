@@ -34,7 +34,7 @@ class chapterController:
         self.tt = None # May be set in finishCreate.
         self.use_tabs = c.config.getBool('use_chapter_tabs')
 
-        # g.trace('chapterController','use_tabs',self.use_tabs)
+        # g.trace('chapterController',g.callers())
     #@-node:ekr.20070317085437.2: ctor: chapterController
     #@+node:ekr.20070325104904:cc.finishCreate
     def finishCreate (self):
@@ -167,7 +167,7 @@ class chapterController:
     #@-node:ekr.20070604155815.2:cc.copyNodeToChapterHelper
     #@-node:ekr.20070317085437.51:cc.copyNodeToChapter & helper
     #@+node:ekr.20070317085437.31:cc.createChapter
-    def createChapter (self,event=None):
+    def createChapter (self,event=None,verbose=True):
 
         '''Use the minibuffer to get a chapter name,
         then create the chapter.'''
@@ -184,9 +184,30 @@ class chapterController:
             k.resetLabel()
             if k.arg:
                 ok = cc.createChapterByName(k.arg)
-                if ok: g.es('created chapter %s' % (k.arg),color='blue')
     #@nonl
     #@-node:ekr.20070317085437.31:cc.createChapter
+    #@+node:ekr.20070603190617:cc.createChapterByName
+    def createChapterByName (self,name):
+
+        cc = self ; c = cc.c ; u = c.undoer
+
+        if not name:
+            return cc.error('No name')
+
+        oldChapter = cc.getSelectedChapter()
+        theChapter = cc.chaptersDict.get(name)
+        if theChapter:
+            return cc.error('Duplicate chapter name: %s' % name)
+
+        bunch = u.beforeCreateChapter(c.currentPosition(),oldChapter.name,name)
+        root = cc.getChapterNode(name) # Creates @chapter node and one child.
+        cc.chaptersDict[name] = chapter(c=c,chapterController=cc,name=name,root=root)
+        cc.selectChapterByName(name)
+        u.afterCreateChapter(bunch,c.currentPosition())
+
+        # g.es('created chapter %s' % (name),color='blue')
+        return True
+    #@-node:ekr.20070603190617:cc.createChapterByName
     #@+node:ekr.20070604155815.3:cc.moveNodeToChapter & helper
     def moveNodeToChapter (self,event=None):
 
@@ -249,7 +270,7 @@ class chapterController:
     #@+node:ekr.20070317085437.40:cc.removeChapter
     def removeChapter (self,event=None):
 
-        cc = self ; c = cc.c ; tt = cc.tt
+        cc = self ; c = cc.c
 
         theChapter = cc.selectedChapter
         if not theChapter: return
@@ -259,14 +280,23 @@ class chapterController:
         if name == 'main':
             return cc.error('Can not remove the main chapter')
         else:
+            cc.removeChapterByName(name)
+    #@-node:ekr.20070317085437.40:cc.removeChapter
+    #@+node:ekr.20070606075434:cc.removeChapterByName
+    def removeChapterByName (self,name):
+
+        cc = self ; c = cc.c ; tt = cc.tt
+
+        c.beginUpdate()
+        try:
             cc.deleteChapterNode(name)
             if name in cc.chaptersDict.keys():
                 del cc.chaptersDict[name]
-            # g.trace(cc.chaptersDict.keys())
-            if tt:
-                tt.destroyTab(name)
+            if tt:tt.destroyTab(name)
             cc.selectChapterByName('main')
-    #@-node:ekr.20070317085437.40:cc.removeChapter
+        finally:
+            c.endUpdate()
+    #@-node:ekr.20070606075434:cc.removeChapterByName
     #@+node:ekr.20070317085437.41:cc.renameChapter & testHelper
     # newName is for unitTesting.
 
@@ -371,7 +401,8 @@ class chapterController:
         '''Create an @chapter node for the named chapter,
         creating an @chapters node if necessary.'''
 
-        cc = self ; c = cc.c ; current = c.currentPosition() or c.rootPosition()
+        cc = self ; c = cc.c
+        current = c.currentPosition() or c.rootPosition()
 
         c.beginUpdate()
         try:
@@ -422,23 +453,6 @@ class chapterController:
     #@-node:ekr.20070325063303.4:cc.deleteChapterNode
     #@-node:ekr.20070511081405:Creating/deleting nodes (chapterController)
     #@+node:ekr.20070317130648:Utils
-    #@+node:ekr.20070603190617:cc.createChapterByName
-    def createChapterByName (self,name):
-
-        cc = self ; c = cc.c
-
-        if not name:
-            return cc.error('No name')
-
-        theChapter = cc.chaptersDict.get(name)
-        if theChapter:
-            return cc.error('Duplicate chapter name: %s' % name)
-
-        root = cc.getChapterNode(name) # Creates @chapter node and one child.
-        cc.chaptersDict[name] = chapter(c=c,chapterController=cc,name=name,root=root)
-        cc.selectChapterByName(name)
-        return True
-    #@-node:ekr.20070603190617:cc.createChapterByName
     #@+node:ekr.20070320085610:cc.error
     def error (self,s):
 
@@ -643,6 +657,7 @@ class chapter:
             c.selectPosition(p)
         finally:
             c.endUpdate()
+            g.doHook('hoist-changed',c=c)
             c.bodyWantsFocusNow()
     #@nonl
     #@-node:ekr.20070423102603.1:chapterSelectHelper
