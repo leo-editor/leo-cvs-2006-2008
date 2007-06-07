@@ -412,7 +412,7 @@ class leoMenu:
             ('&Abbrev...',          self.cmdsMenuAbbrevTable),
             ('Body E&ditors',       self.cmdsMenuBodyEditorsTable),
             ('&Buffers...',         self.cmdsMenuBuffersTable),
-            ('&Chapters...',         self.cmdsMenuChaptersTable),
+            ('&Chapters...',        self.cmdsMenuChaptersTable),
             ('C&ursor/Selection...',[]),
             ('&Focus...',           self.cmdsMenuFocusTable),
             ('&Macro...',           self.cmdsMenuMacroTable),
@@ -427,6 +427,8 @@ class leoMenu:
             ('&Text Commands',      self.cmdsMenuTextTable),
             ('Toggle Setti&ngs',    self.cmdsMenuToggleTable),
         ):
+            if table == self.cmdsMenuChaptersTable and not self.c.chapterController:
+                continue
             menu = self.createNewMenu(name,'&Cmds')
             self.createMenuEntries(menu,table)
 
@@ -1208,6 +1210,8 @@ class leoMenu:
         '''Create a menu entry from the table.
         New in 4.4: this method shows the shortcut in the menu,
         but this method **never** binds any shortcuts.'''
+
+        # g.trace('c',self.c)
 
         c = self.c ; f = c.frame ; k = c.k
         if g.app.unitTesting: return
