@@ -4146,7 +4146,7 @@ if g.app and g.app.unitTesting:
 def test_unit_testing_with_embedded_class():
 
     def sendEmail(self):
-        g.trace('self2',self)
+        pass # g.trace('self2',self)
 
     class test:
         pass
