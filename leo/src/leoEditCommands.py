@@ -1035,6 +1035,7 @@ class chapterCommandsClass (baseEditCommandsClass):
                 'clone-node-to-chapter':    cc.cloneNodeToChapter,
                 'copy-node-to-chapter':     cc.copyNodeToChapter,
                 'create-chapter':           cc.createChapter,
+                'create-chapter-from-node': cc.createChapterFromNode,
                 'move-node-to-chapter':     cc.moveNodeToChapter,
                 'remove-chapter':           cc.removeChapter,
                 'rename-chapter':           cc.renameChapter,
