@@ -4906,7 +4906,6 @@ class baseCommands:
     def cantMoveMessage (self):
 
         c = self ; h = c.rootPosition().headString()
-        g.trace(h)
         kind = g.choose(h.startswith('@chapter'),'chapter','hoist')
         g.es("Can't move node out of %s" % (kind),color="blue")
     #@-node:ekr.20070420092425:cantMoveMessage
@@ -5997,7 +5996,8 @@ class baseCommands:
             return c.currentPositionHasNext()
         else:
             return True
-
+    #@-node:ekr.20040303165342:canHoist & canDehoist
+    #@+node:ekr.20070608165544:hoistLevel
     def hoistLevel (self):
 
         c = self ; cc = c.chapterController
@@ -6005,19 +6005,25 @@ class baseCommands:
         if n > 0 and cc and cc.inChapter():
             n -= 1
         return n
-    #@-node:ekr.20040303165342:canHoist & canDehoist
+    #@nonl
+    #@-node:ekr.20070608165544:hoistLevel
     #@+node:ekr.20031218072017.2970:canMoveOutlineDown
     def canMoveOutlineDown (self):
 
         c = self ; current = c.currentPosition()
 
+        if c.hoistStack:
+            bunch = c.hoistStack[-1]
+            limit = bunch.p
+        else:
+            limit = None
+
         p = current.visNext()
         while p and current.isAncestorOf(p):
             p.moveToVisNext()
 
-        if c.hoistStack:
-            bunch = c.hoistStack[-1]
-            return p and p != bunch.p and bunch.p.isAncestorOf(p)
+        if limit:
+            return p and p != limit and limit.isAncestorOf(p)
         else:
             return p
     #@-node:ekr.20031218072017.2970:canMoveOutlineDown
@@ -6058,7 +6064,7 @@ class baseCommands:
 
         if c.hoistStack:
             bunch = c.hoistStack[-1]
-            return bunch.p != p and bunch.p.isAncestorOf(pback)
+            return pback != bunch.p
         else:
             return True
     #@-node:ekr.20031218072017.2973:canMoveOutlineUp
