@@ -625,7 +625,6 @@ class baseUndoer:
         if u.redoing or u.undoing: return
 
         bunch.kind = 'create-chapter'
-        bunch.undoType = 'Create Chapter'
         bunch.newP = p.copy()
 
         # Set helpers
@@ -849,7 +848,7 @@ class baseUndoer:
         return bunch
     #@-node:ekr.20050412080354:beforeCloneNode
     #@+node:ekr.20070606082729:beforeCreateChapter
-    def beforeCreateChapter (self,p,oldChapterName,newChapterName):
+    def beforeCreateChapter (self,p,oldChapterName,newChapterName,undoType):
 
         u = self
 
@@ -857,6 +856,7 @@ class baseUndoer:
 
         bunch.oldChapterName = oldChapterName
         bunch.newChapterName = newChapterName
+        bunch.undoType = undoType
 
         return bunch
     #@-node:ekr.20070606082729:beforeCreateChapter
@@ -1362,9 +1362,9 @@ class baseUndoer:
 
         u = self ; c = u.c ; cc = c.chapterController
 
-        # g.trace(u.newChapterName,u.oldChapterName,u.p)
+        # g.trace(u.newChapterName,u.oldChapterName,u.p,'inPlace',u.inPlace)
 
-        cc.createChapterByName(u.newChapterName)
+        cc.createChapterByName(u.newChapterName,p=u.p,undoType=u.undoType)
     #@-node:ekr.20070606081341:redoInsertChapter
     #@+node:ekr.20050412084532:redoInsertNode
     def redoInsertNode (self):
@@ -1705,9 +1705,16 @@ class baseUndoer:
 
         u = self ; c = u.c ; cc = c.chapterController
 
-        cc.removeChapterByName(u.newChapterName)
-        cc.selectChapterByName(u.oldChapterName)
+        # g.trace(u.newChapterName,'inPlace',u.inPlace)
 
+        if u.undoType != 'Create Chapter From Node':
+            newChapter = cc.getChapter(u.newChapterName)
+            root = newChapter.root
+            p = root.firstChild()
+            p.moveAfter(root)
+
+        cc.removeChapterByName(u.newChapterName)
+        cc.selectChapterByName('main')
     #@-node:ekr.20070606074705:undoInsertChapter
     #@+node:ekr.20050412085112:undoInsertNode
     def undoInsertNode (self):
