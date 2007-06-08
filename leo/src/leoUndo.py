@@ -856,6 +856,7 @@ class baseUndoer:
 
         bunch.oldChapterName = oldChapterName
         bunch.newChapterName = newChapterName
+        bunch.savedRoot = None
         bunch.undoType = undoType
 
         return bunch
@@ -1362,9 +1363,21 @@ class baseUndoer:
 
         u = self ; c = u.c ; cc = c.chapterController
 
-        # g.trace(u.newChapterName,u.oldChapterName,u.p,'inPlace',u.inPlace)
+        # g.trace(u.newChapterName,u.oldChapterName,u.p)
 
-        cc.createChapterByName(u.newChapterName,p=u.p,undoType=u.undoType)
+        cc.createChapterByName(u.newChapterName,p=u.savedRoot,undoType=u.undoType)
+        theChapter = cc.getChapter(u.newChapterName)
+
+        if u.undoType == 'Convert Node To Chapter':
+            pass
+        elif u.undoType in ('Create Chapter From Node','Create Chapter'):
+            root = theChapter.root
+            firstChild = root.firstChild()
+            firstChild.unlink()
+            firstChild = u.savedRoot.firstChild()
+            firstChild.linkAsNthChild(root,0)
+        else:
+            return g.trace('Can not happen: bad undoType: %s' % u.undoType)
     #@-node:ekr.20070606081341:redoInsertChapter
     #@+node:ekr.20050412084532:redoInsertNode
     def redoInsertNode (self):
@@ -1705,13 +1718,16 @@ class baseUndoer:
 
         u = self ; c = u.c ; cc = c.chapterController
 
-        # g.trace(u.newChapterName,'inPlace',u.inPlace)
+        newChapter = cc.getChapter(u.newChapterName)
 
-        if u.undoType != 'Create Chapter From Node':
-            newChapter = cc.getChapter(u.newChapterName)
-            root = newChapter.root
+        bunch = u.beads[u.bead]
+        bunch.savedRoot = root = newChapter.root
+
+        if u.undoType == 'Convert Node To Chapter':
             p = root.firstChild()
             p.moveAfter(root)
+        else:
+            pass # deleting the chapter will delete the node.
 
         cc.removeChapterByName(u.newChapterName)
         cc.selectChapterByName('main')
