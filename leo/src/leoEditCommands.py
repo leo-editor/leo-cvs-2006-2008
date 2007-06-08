@@ -1033,6 +1033,7 @@ class chapterCommandsClass (baseEditCommandsClass):
         if cc:
             return {
                 'clone-node-to-chapter':    cc.cloneNodeToChapter,
+                'convert-node-to-chapter':  cc.convertNodeToChapter,
                 'copy-node-to-chapter':     cc.copyNodeToChapter,
                 'create-chapter':           cc.createChapter,
                 'create-chapter-from-node': cc.createChapterFromNode,
