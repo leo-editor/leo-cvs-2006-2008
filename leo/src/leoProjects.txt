@@ -211,7 +211,7 @@ def showSuccess(self,pos,newpos):
     c = self.c ; p = self.p
     sparseFind = c.config.getBool('collapse_nodes_during_finds')
     c.frame.bringToFront() # Needed on the Mac
-    redraw = not p.isVisible()
+    redraw = not p.isVisible(c)
     c.beginUpdate()
     try:
         if sparseFind:
@@ -1609,7 +1609,7 @@ def showSuccess(self,pos,newpos):
     c = self.c ; p = self.p
     sparseFind = c.config.getBool('collapse_nodes_during_finds')
     c.frame.bringToFront() # Needed on the Mac
-    redraw = not p.isVisible()
+    redraw = not p.isVisible(c)
     c.beginUpdate()
     try:
         if sparseFind:
@@ -9935,7 +9935,7 @@ def showSuccess(self,pos,newpos):
     c = self.c ; p = self.p
     sparseFind = c.config.getBool('collapse_nodes_during_finds')
     c.frame.bringToFront() # Needed on the Mac
-    redraw = not p.isVisible()
+    redraw = not p.isVisible(c)
     c.beginUpdate()
     try:
         if sparseFind:
@@ -14639,21 +14639,27 @@ def goToLastSibling (self,event=None):
 
     c.treeSelectHelper(p)
 #@-node:ekr.20051012092847.1:goToLastSibling
-#@+node:ekr.20050711153537:goToLastVisibleNode
+#@+node:ekr.20050711153537:c.goToLastVisibleNode
 def goToLastVisibleNode (self,event=None):
 
     '''Select the last visible node of the entire outline.'''
 
-    c = self ; p = c.rootPosition()
+    c = self
 
-    while p.hasNext():
-        p.moveToNext()
+    # p = c.rootPosition()
 
-    while p and p.isExpanded():
-        p.moveToLastChild()
+    # while p.hasNext():
+        # p.moveToNext()
+
+    # while p and p.isExpanded():
+        # p.moveToLastChild()
+
+    p = c.lastVisible()
+    if p:
+        c.selectPosition(p)
 
     c.treeSelectHelper(p)
-#@-node:ekr.20050711153537:goToLastVisibleNode
+#@-node:ekr.20050711153537:c.goToLastVisibleNode
 #@+node:ekr.20031218072017.2916:goToNextClone
 def goToNextClone (self,event=None):
 
@@ -14789,11 +14795,12 @@ def selectVisBack (self,event=None):
 
     c = self ; p = c.currentPosition()
     if not p: return
+    if not c.canSelectVisBack(): return
 
-    p.moveToVisBack()
+    p.moveToVisBack(c)
 
     if p:
-        redraw = not p.isVisible()
+        redraw = not p.isVisible(c)
         if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
     else:
         redraw = True
@@ -14807,11 +14814,12 @@ def selectVisNext (self,event=None):
 
     c = self ; p = c.currentPosition()
     if not p: return
+    if not c.canSelectVisNext(): return
 
-    p.moveToVisNext()
+    p.moveToVisNext(c)
 
     if p:
-        redraw = not p.isVisible()
+        redraw = not p.isVisible(c)
         if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
     else:
         redraw = True
@@ -14846,7 +14854,7 @@ def treeSelectHelper (self,p,redraw=True):
 #@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
 #@-node:ekr.20070417112650:utils
 #@-node:ekr.20031218072017.2913:Goto
-#@+node:ekr.20031218072017.2899:Commands
+#@+node:ekr.20031218072017.2899:Commands (outline menu)
 #@+node:ekr.20031218072017.2900:contractAllHeadlines
 def contractAllHeadlines (self,event=None):
 
@@ -14897,7 +14905,7 @@ def contractNodeOrGoToParent (self,event=None):
     if p.hasChildren() and p.isExpanded():
         # g.trace('contract',p.headString())
         c.contractNode()
-    elif p.hasParent():
+    elif p.hasParent() and p.parent().isVisible(c):
         # g.trace('goto parent',p.headString())
         c.goToParent()
 
@@ -15098,7 +15106,7 @@ def expandPrevLevel (self,event=None):
 
     self.expandToLevel(max(1,c.expansionLevel - 1))
 #@-node:ekr.20031218072017.2908:expandPrevLevel
-#@-node:ekr.20031218072017.2899:Commands
+#@-node:ekr.20031218072017.2899:Commands (outline menu)
 #@+node:ekr.20031218072017.1766:Move... (Commands)
 #@+node:ekr.20070420092425:cantMoveMessage
 def cantMoveMessage (self):
@@ -15166,10 +15174,10 @@ def moveOutlineDown (self,event=None):
 
     inAtIgnoreRange = p.inAtIgnoreRange()
     parent = p.parent()
-    next = p.visNext()
+    next = p.visNext(c)
 
     while next and p.isAncestorOf(next):
-        next = next.visNext()
+        next = next.visNext(c)
     if not next:
         # c.treeWantsFocusNow()
         c.treeFocusHelper()
@@ -15310,10 +15318,10 @@ def moveOutlineUp (self,event=None):
         if c.hoistStack: self.cantMoveMessage()
         c.treeFocusHelper()
         return
-    back = p.visBack()
+    back = p.visBack(c)
     if not back: return
     inAtIgnoreRange = p.inAtIgnoreRange()
-    back2 = back.visBack()
+    back2 = back.visBack(c)
 
     sparseMove = c.config.getBool('sparse_move_outline_left')
     c.beginUpdate()
@@ -15534,21 +15542,27 @@ def goToLastSibling (self,event=None):
 
     c.treeSelectHelper(p)
 #@-node:ekr.20051012092847.1:goToLastSibling
-#@+node:ekr.20050711153537:goToLastVisibleNode
+#@+node:ekr.20050711153537:c.goToLastVisibleNode
 def goToLastVisibleNode (self,event=None):
 
     '''Select the last visible node of the entire outline.'''
 
-    c = self ; p = c.rootPosition()
+    c = self
 
-    while p.hasNext():
-        p.moveToNext()
+    # p = c.rootPosition()
 
-    while p and p.isExpanded():
-        p.moveToLastChild()
+    # while p.hasNext():
+        # p.moveToNext()
+
+    # while p and p.isExpanded():
+        # p.moveToLastChild()
+
+    p = c.lastVisible()
+    if p:
+        c.selectPosition(p)
 
     c.treeSelectHelper(p)
-#@-node:ekr.20050711153537:goToLastVisibleNode
+#@-node:ekr.20050711153537:c.goToLastVisibleNode
 #@+node:ekr.20031218072017.2916:goToNextClone
 def goToNextClone (self,event=None):
 
@@ -15684,11 +15698,12 @@ def selectVisBack (self,event=None):
 
     c = self ; p = c.currentPosition()
     if not p: return
+    if not c.canSelectVisBack(): return
 
-    p.moveToVisBack()
+    p.moveToVisBack(c)
 
     if p:
-        redraw = not p.isVisible()
+        redraw = not p.isVisible(c)
         if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
     else:
         redraw = True
@@ -15702,11 +15717,12 @@ def selectVisNext (self,event=None):
 
     c = self ; p = c.currentPosition()
     if not p: return
+    if not c.canSelectVisNext(): return
 
-    p.moveToVisNext()
+    p.moveToVisNext(c)
 
     if p:
-        redraw = not p.isVisible()
+        redraw = not p.isVisible(c)
         if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
     else:
         redraw = True
@@ -16371,10 +16387,10 @@ def moveOutlineUp (self,event=None):
         if c.hoistStack: self.cantMoveMessage()
         c.treeFocusHelper()
         return
-    back = p.visBack()
+    back = p.visBack(c)
     if not back: return
     inAtIgnoreRange = p.inAtIgnoreRange()
-    back2 = back.visBack()
+    back2 = back.visBack(c)
 
     sparseMove = c.config.getBool('sparse_move_outline_left')
     c.beginUpdate()
@@ -40812,7 +40828,7 @@ def deleteOutline (self,event=None,op_name="Delete Node"):
     p = c.currentPosition()
     if not p: return
 
-    if p.hasVisBack(): newNode = p.visBack()
+    if p.hasVisBack(c): newNode = p.visBack(c)
     else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
     if not newNode: return
 
@@ -42097,43 +42113,6 @@ def capitalizeHelper (self,event,which,undoType):
 #@-node:ekr.20051015114221.1:capitalizeHelper
 #@-node:ekr.20050920084036.57:capitalization & case
 #@-node:ekr.20070606184202:downcase-region and upcase-region didn't color body text.
-#@+node:ekr.20070608171808:Fixed bug involving moving up/down out of hoists
-#@+node:ekr.20031218072017.2970:canMoveOutlineDown
-def canMoveOutlineDown (self):
-
-    c = self ; current = c.currentPosition()
-
-    if c.hoistStack:
-        bunch = c.hoistStack[-1]
-        limit = bunch.p
-    else:
-        limit = None
-
-    p = current.visNext()
-    while p and current.isAncestorOf(p):
-        p.moveToVisNext()
-
-    if limit:
-        return p and p != limit and limit.isAncestorOf(p)
-    else:
-        return p
-#@-node:ekr.20031218072017.2970:canMoveOutlineDown
-#@+node:ekr.20031218072017.2973:canMoveOutlineUp
-def canMoveOutlineUp (self):
-
-    c = self ; p = c.currentPosition()
-    if not p: return False
-
-    pback = p.visBack()
-    if not pback: return False
-
-    if c.hoistStack:
-        bunch = c.hoistStack[-1]
-        return pback != bunch.p
-    else:
-        return True
-#@-node:ekr.20031218072017.2973:canMoveOutlineUp
-#@-node:ekr.20070608171808:Fixed bug involving moving up/down out of hoists
 #@-node:ekr.20070528141848:Fixed bugs
 #@+node:ekr.20070528141848.1:Features
 #@+node:ekr.20070528073134:Supported write_strips_blank_lines option

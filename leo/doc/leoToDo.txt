@@ -2467,7 +2467,7 @@ def moveToThreadNext (self):
 #@nonl
 #@-node:ekr.20061028070057.22:p.moveToThreadNext (little change)
 #@+node:ekr.20061028070057.23:p.moveToVisBack (no change)
-def moveToVisBack (self):
+def moveToVisBack (self,c):
 
     """Move a position to the position of the previous visible node."""
 
@@ -2475,7 +2475,7 @@ def moveToVisBack (self):
 
     if p:
         p.moveToThreadBack()
-        while p and not p.isVisible():
+        while p and not p.isVisible(c):
             p.moveToThreadBack()
 
     assert(not p or p.isVisible())
@@ -2617,8 +2617,8 @@ def getNthChild    (self,n): return self.copy().moveToNthChild(n)
 def getParent        (self): return self.copy().moveToParent()
 def getThreadBack    (self): return self.copy().moveToThreadBack()
 def getThreadNext    (self): return self.copy().moveToThreadNext()
-def getVisBack       (self): return self.copy().moveToVisBack()
-def getVisNext       (self): return self.copy().moveToVisNext()
+def getVisBack (self,c): return self.copy().moveToVisBack(c)
+def getVisNext (self,c): return self.copy().moveToVisNext(c)
 
 # These are efficient enough now that iterators are the normal way to traverse the tree!
 
