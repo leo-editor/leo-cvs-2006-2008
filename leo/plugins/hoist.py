@@ -129,8 +129,6 @@ class HoistButtons:
         for b,command in ((b1,c.hoist),(b2,c.dehoist)):
             b.configure(command=command)
             b.pack(side='left',fill='none')
-            #if g.app.gui.guiName()=='tkinter' and sys.platform.startswith('win'):
-            #    b.configure(font=('verdana',7,'bold'))
 
         self.bgColor = b1.cget('background')
         self.activeBgColor = b1.cget('activebackground')

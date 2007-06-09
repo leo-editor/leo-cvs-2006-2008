@@ -5946,8 +5946,6 @@ def __init__ (self,sudoku,j):
     # Set later...
     self.cells = []
     self.col = None
-
-#@nonl
 #@-node:ctor
 #@+node:__repr__ & __str__
 def __repr__ (self):
@@ -9133,8 +9131,6 @@ def putSelectionInHeadline (c,p,prefix,sel):
 
     c.setHeadString(p,s)
 
-
-#@nonl
 #@-node:putSelectionInHeadline
 #@-node:@command do-before
 #@+node:@command do-after
@@ -9205,8 +9201,6 @@ def putSelectionInHeadline (c,p,prefix,sel):
 
     c.setHeadString(p,s)
 
-
-#@nonl
 #@-node:putSelectionInHeadline
 #@-node:@command do-after
 #@+node:@test kill-line
@@ -14735,8 +14729,6 @@ if 1:
                     print hasattr(mode,s),modeName,s
         else: bad += 1
     print 'good: %d, bad: %d, skipped: %d' % (good,bad,skipped)
-
-#@nonl
 #@-node:import from modes
 #@+node:errors
 @nocolor
@@ -15599,8 +15591,6 @@ def printRule (self,rule):
             if d:  print 'attrs:',d,
             if d2: print 'contents:',d2,
             print
-
-#@nonl
 #@-node:printRule
 #@+node:printRuleset
 def printRuleset (self,ruleset,tag):
@@ -20000,8 +19990,6 @@ try:
 finally:
     print 'closing ZODB'
     db.close()
-
-#@nonl
 #@-node:Zope test
 #@-node:Prototypes
 #@+node:Reports
@@ -21157,8 +21145,6 @@ a
 c  
 
 last
-
-#@nonl
 #@-node:Test
 #@-node:stripBlankLines
 #@+node:add tab before each =
