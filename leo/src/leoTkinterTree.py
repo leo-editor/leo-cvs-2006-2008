@@ -1270,6 +1270,8 @@ class leoTkinterTree (leoFrame.leoTree):
     #@+node:ekr.20040803072955.68:numberOfVisibleNodes
     def numberOfVisibleNodes(self):
 
+        c = self.c
+
         n = 0 ; p = self.c.rootPosition()
         while p:
             n += 1
