@@ -3154,7 +3154,7 @@ class baseCommands:
         p = c.currentPosition()
         if not p: return
 
-        if p.hasVisBack(): newNode = p.visBack()
+        if p.hasVisBack(c): newNode = p.visBack(c)
         else: newNode = p.next() # _not_ p.visNext(): we are at the top level.
         if not newNode: return
 
@@ -4135,7 +4135,7 @@ class baseCommands:
     #@-node:ekr.20040711135959.1:Pretty Print commands
     #@-node:ekr.20040711135959.2:Check Outline submenu...
     #@+node:ekr.20031218072017.2898:Expand & Contract...
-    #@+node:ekr.20031218072017.2899:Commands
+    #@+node:ekr.20031218072017.2899:Commands (outline menu)
     #@+node:ekr.20031218072017.2900:contractAllHeadlines
     def contractAllHeadlines (self,event=None):
 
@@ -4186,7 +4186,7 @@ class baseCommands:
         if p.hasChildren() and p.isExpanded():
             # g.trace('contract',p.headString())
             c.contractNode()
-        elif p.hasParent():
+        elif p.hasParent() and p.parent().isVisible(c):
             # g.trace('goto parent',p.headString())
             c.goToParent()
 
@@ -4387,7 +4387,7 @@ class baseCommands:
 
         self.expandToLevel(max(1,c.expansionLevel - 1))
     #@-node:ekr.20031218072017.2908:expandPrevLevel
-    #@-node:ekr.20031218072017.2899:Commands
+    #@-node:ekr.20031218072017.2899:Commands (outline menu)
     #@+node:ekr.20031218072017.2909:Utilities
     #@+node:ekr.20031218072017.2910:contractSubtree
     def contractSubtree (self,p):
@@ -4504,21 +4504,27 @@ class baseCommands:
 
         c.treeSelectHelper(p)
     #@-node:ekr.20051012092847.1:goToLastSibling
-    #@+node:ekr.20050711153537:goToLastVisibleNode
+    #@+node:ekr.20050711153537:c.goToLastVisibleNode
     def goToLastVisibleNode (self,event=None):
 
         '''Select the last visible node of the entire outline.'''
 
-        c = self ; p = c.rootPosition()
+        c = self
 
-        while p.hasNext():
-            p.moveToNext()
+        # p = c.rootPosition()
 
-        while p and p.isExpanded():
-            p.moveToLastChild()
+        # while p.hasNext():
+            # p.moveToNext()
+
+        # while p and p.isExpanded():
+            # p.moveToLastChild()
+
+        p = c.lastVisible()
+        if p:
+            c.selectPosition(p)
 
         c.treeSelectHelper(p)
-    #@-node:ekr.20050711153537:goToLastVisibleNode
+    #@-node:ekr.20050711153537:c.goToLastVisibleNode
     #@+node:ekr.20031218072017.2916:goToNextClone
     def goToNextClone (self,event=None):
 
@@ -4654,11 +4660,12 @@ class baseCommands:
 
         c = self ; p = c.currentPosition()
         if not p: return
+        if not c.canSelectVisBack(): return
 
-        p.moveToVisBack()
+        p.moveToVisBack(c)
 
         if p:
-            redraw = not p.isVisible()
+            redraw = not p.isVisible(c)
             if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
         else:
             redraw = True
@@ -4672,11 +4679,12 @@ class baseCommands:
 
         c = self ; p = c.currentPosition()
         if not p: return
+        if not c.canSelectVisNext(): return
 
-        p.moveToVisNext()
+        p.moveToVisNext(c)
 
         if p:
-            redraw = not p.isVisible()
+            redraw = not p.isVisible(c)
             if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
         else:
             redraw = True
@@ -4974,10 +4982,10 @@ class baseCommands:
 
         inAtIgnoreRange = p.inAtIgnoreRange()
         parent = p.parent()
-        next = p.visNext()
+        next = p.visNext(c)
 
         while next and p.isAncestorOf(next):
-            next = next.visNext()
+            next = next.visNext(c)
         if not next:
             # c.treeWantsFocusNow()
             c.treeFocusHelper()
@@ -5119,10 +5127,10 @@ class baseCommands:
             if c.hoistStack: self.cantMoveMessage()
             c.treeFocusHelper()
             return
-        back = p.visBack()
+        back = p.visBack(c)
         if not back: return
         inAtIgnoreRange = p.inAtIgnoreRange()
-        back2 = back.visBack()
+        back2 = back.visBack(c)
 
         sparseMove = c.config.getBool('sparse_move_outline_left')
         c.beginUpdate()
@@ -6012,20 +6020,7 @@ class baseCommands:
 
         c = self ; current = c.currentPosition()
 
-        if c.hoistStack:
-            bunch = c.hoistStack[-1]
-            limit = bunch.p
-        else:
-            limit = None
-
-        p = current.visNext()
-        while p and current.isAncestorOf(p):
-            p.moveToVisNext()
-
-        if limit:
-            return p and p != limit and limit.isAncestorOf(p)
-        else:
-            return p
+        return current and current.visNext(c)
     #@-node:ekr.20031218072017.2970:canMoveOutlineDown
     #@+node:ekr.20031218072017.2971:canMoveOutlineLeft
     def canMoveOutlineLeft (self):
@@ -6056,17 +6051,10 @@ class baseCommands:
     #@+node:ekr.20031218072017.2973:canMoveOutlineUp
     def canMoveOutlineUp (self):
 
-        c = self ; p = c.currentPosition()
-        if not p: return False
+        c = self ; current = c.currentPosition()
 
-        pback = p.visBack()
-        if not pback: return False
-
-        if c.hoistStack:
-            bunch = c.hoistStack[-1]
-            return pback != bunch.p
-        else:
-            return True
+        return current and current.visBack(c) and (
+            current.visBack(c).visBack(c) or not c.hoistStack)
     #@-node:ekr.20031218072017.2973:canMoveOutlineUp
     #@+node:ekr.20031218072017.2974:canPasteOutline
     def canPasteOutline (self,s=None):
@@ -6099,8 +6087,6 @@ class baseCommands:
         return (c.frame and c.mFileName and c.isChanged())
     #@-node:ekr.20031218072017.2976:canRevert
     #@+node:ekr.20031218072017.2977:canSelect....
-    # 7/29/02: The shortcuts for these commands are now unique.
-
     def canSelectThreadBack (self):
         c = self ; p = c.currentPosition()
         return p.hasThreadBack()
@@ -6111,11 +6097,11 @@ class baseCommands:
 
     def canSelectVisBack (self):
         c = self ; p = c.currentPosition()
-        return p.hasVisBack()
+        return p.visBack(c)
 
     def canSelectVisNext (self):
         c = self ; p = c.currentPosition()
-        return p.hasVisNext()
+        return p.visNext(c)
     #@-node:ekr.20031218072017.2977:canSelect....
     #@+node:ekr.20031218072017.2978:canShiftBodyLeft/Right
     def canShiftBodyLeft (self):
@@ -6288,21 +6274,34 @@ class baseCommands:
     #@+node:ekr.20031218072017.4146:c.lastVisible
     def lastVisible(self):
 
-        """Move to the last visible node of the entire tree."""
+        """Move to the last visible node of the present chapter or hoist."""
 
-        c = self ; p = c.rootPosition()
-
-        # Move to the last top-level node.
-        while p.hasNext():
-            p.moveToNext()
-        assert(p.isVisible())
-
-        # Move to the last visible child.
-        while p.hasChildren() and p.isExpanded():
-            p.moveToLastChild()
-
+        c = self
+        p = c.currentPosition()
+        while 1:
+            next = p.visNext(c)
+            # g.trace('next',next)
+            if next and next.isVisible(c):
+                p = next
+            else: break
         return p
     #@-node:ekr.20031218072017.4146:c.lastVisible
+    #@+node:ekr.20070609122713:c.visLimit
+    def visLimit (self):
+
+        '''Return the topmost visible node.
+        This is affected by chapters and hoists.'''
+
+        c = self ; cc = c.chapterController
+
+        if c.hoistStack:
+            bunch = c.hoistStack[-1]
+            p = bunch.p
+            limitIsVisible = not cc or not p.headString().startswith('@chapter')
+            return p,limitIsVisible
+        else:
+            return None,None
+    #@-node:ekr.20070609122713:c.visLimit
     #@+node:ekr.20040311094927:c.nullPosition
     def nullPosition (self):
 
@@ -6670,7 +6669,7 @@ class baseCommands:
                 if allFlag:
                     p.moveToThreadNext()
                 else:
-                    p.moveToVisNext()
+                    p.moveToVisNext(c)
                 if not p:
                     p = c.rootPosition()
                 if p == p1: # Never try to match the same position.

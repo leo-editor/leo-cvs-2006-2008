@@ -1396,8 +1396,10 @@ class basePosition (object):
     def getParent        (self): return self.copy().moveToParent()
     def getThreadBack    (self): return self.copy().moveToThreadBack()
     def getThreadNext    (self): return self.copy().moveToThreadNext()
-    def getVisBack       (self): return self.copy().moveToVisBack()
-    def getVisNext       (self): return self.copy().moveToVisNext()
+
+    # New in Leo 4.4.3 b2: add c args.
+    def getVisBack (self,c): return self.copy().moveToVisBack(c)
+    def getVisNext (self,c): return self.copy().moveToVisNext(c)
 
     # These are efficient enough now that iterators are the normal way to traverse the tree!
 
@@ -1414,6 +1416,11 @@ class basePosition (object):
     threadNext    = getThreadNext
     visBack       = getVisBack
     visNext       = getVisNext
+
+    # New in Leo 4.4.3:
+    hasVisBack = visBack
+    hasVisNext = visNext
+    #@nonl
     #@-node:ekr.20031218072017.915:p.getX & vnode compatibility traversal routines
     #@+node:ekr.20040227212621:p.hasX
     def hasBack(self):
@@ -1429,8 +1436,6 @@ class basePosition (object):
 
     def hasThreadBack(self):
         return self.hasParent() or self.hasBack() # Much cheaper than computing the actual value.
-
-    hasVisBack = hasThreadBack
     #@+node:ekr.20040227224946:hasThreadNext (the only complex hasX method)
     def hasThreadNext(self):
 
@@ -1447,8 +1452,6 @@ class basePosition (object):
                     return True
                 v,n = p.vParentWithStack(v,p.stack,n)
             return False
-
-    hasVisNext = hasThreadNext
     #@-node:ekr.20040227224946:hasThreadNext (the only complex hasX method)
     #@-node:ekr.20040227212621:p.hasX
     #@+node:ekr.20060920203352:p.findRootPosition (New in 4.4.2)
@@ -1496,19 +1499,33 @@ class basePosition (object):
         return not p.hasParent() and not p.hasBack()
     #@-node:ekr.20040307104131.2:p.isRoot
     #@+node:ekr.20040117162509.16:p.isVisible
-    def isVisible (self):
+    def isVisible (self,c):
 
         """Return True if all of a position's parents are expanded."""
 
         # v.isVisible no longer exists.
-        p = self
+        p = self ; cc = c.chapterController ; trace = False
+        limit,limitIsVisible = c.visLimit()
+        limit_v = limit and limit.v or None
+        if p.v == limit_v:
+            if trace: g.trace('*** at limit','limitIsVisible',limitIsVisible,p.v.headString())
+            return limitIsVisible
 
         # Avoid calling p.copy() or copying the stack.
         v = p.v ; n = len(p.stack)-1
 
         v,n = p.vParentWithStack(v,p.stack,n)
         while v:
+            if v == limit_v:  # We are at a descendant of limit.
+                if trace: g.trace('*** descendant of limit',
+                    'limitIsVisible',limitIsVisible,
+                    'limit.isExpanded()',limit.isExpanded(),'v',v)
+                if limitIsVisible:
+                    return limit.isExpanded()
+                else: # Ignore the expansion state of @chapter nodes.
+                    return True
             if not v.isExpanded():
+                if trace: g.trace('*** non-limit parent is not expanded',v)
                 return False
             v,n = p.vParentWithStack(v,p.stack,n)
 
@@ -2424,34 +2441,63 @@ class basePosition (object):
 
         return p
     #@-node:ekr.20031218072017.939:p.moveToThreadNext
-    #@+node:ekr.20031218072017.940:p.moveToVisBack
-    def moveToVisBack (self):
+    #@+node:ekr.20031218072017.940:p.moveToVisBack (excellent trick 2)
+    def moveToVisBack (self,c):
 
         """Move a position to the position of the previous visible node."""
 
         p = self
+        limit,limitIsVisible = c.visLimit()
 
-        if p:
+        p.moveToThreadBack()
+        while p and not p.isVisible(c):
+            # g.trace('*p',p.headString())
+            if limit and limit == p:
+                return g.choose(limitIsVisible,p,None)
+            elif limit and limit == p.next(): # An excellent trick.
+                return None
             p.moveToThreadBack()
-            while p and not p.isVisible():
-                p.moveToThreadBack()
 
-        assert(not p or p.isVisible())
-        return p
-    #@-node:ekr.20031218072017.940:p.moveToVisBack
-    #@+node:ekr.20031218072017.941:p.moveToVisNext
-    def moveToVisNext (self):
+        if limit and limit == p:
+            return g.choose(limitIsVisible,p,None)
+        elif limit and limit == p.next(): # An excellent trick.
+            return None
+        elif p and p.isVisible(c):
+            # g.trace('returns p',p)
+            return p
+        else:
+            return None
+    #@nonl
+    #@-node:ekr.20031218072017.940:p.moveToVisBack (excellent trick 2)
+    #@+node:ekr.20031218072017.941:p.moveToVisNext (excellent trick)
+    def moveToVisNext (self,c):
 
         """Move a position to the position of the next visible node."""
 
         p = self
 
+        limit,limitIsVisible = c.visLimit()
+
         p.moveToThreadNext()
-        while p and not p.isVisible():
+        while p and not p.isVisible(c):
+            if limit and limit == p:
+                return g.choose(limitIsVisible,p,None)
+            elif limit and limit == p.back(): # An excellent trick.
+                return None
+            # g.trace('*p',p.headString())
             p.moveToThreadNext()
 
-        return p
-    #@-node:ekr.20031218072017.941:p.moveToVisNext
+        # g.trace('at return','p',p,'limit',limit)
+        if limit and limit == p:
+            return g.choose(limitIsVisible,p,None)
+        elif limit and limit == p.back(): # An excellent trick.
+            return None
+        elif p and p.isVisible(c):
+            return p
+        else:
+            return None
+    #@nonl
+    #@-node:ekr.20031218072017.941:p.moveToVisNext (excellent trick)
     #@-node:ekr.20031218072017.928:p.moveToX
     #@+node:ekr.20040228094013.1:p.utils...
     #@+node:ekr.20040228060340:p.vParentWithStack

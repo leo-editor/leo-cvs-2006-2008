@@ -1271,7 +1271,7 @@ class leoFind:
         c = self.c ; p = self.p
         sparseFind = c.config.getBool('collapse_nodes_during_finds')
         c.frame.bringToFront() # Needed on the Mac
-        redraw = not p.isVisible()
+        redraw = not p.isVisible(c)
         c.beginUpdate()
         try:
             if sparseFind:

@@ -1273,7 +1273,7 @@ class leoTkinterTree (leoFrame.leoTree):
         n = 0 ; p = self.c.rootPosition()
         while p:
             n += 1
-            p.moveToVisNext()
+            p.moveToVisNext(c)
         return n
     #@-node:ekr.20040803072955.68:numberOfVisibleNodes
     #@+node:ekr.20040803072955.65:scrollTo
@@ -1328,7 +1328,7 @@ class leoTkinterTree (leoFrame.leoTree):
                     # g.trace("frac0 %1.2f %3d %3d %3d" % (frac0,h1,htot,wtot))
             else:
                 last = c.lastVisible()
-                nextToLast = last.visBack()
+                nextToLast = last.visBack(c)
                 h2 = self.yoffset(last)
                 #@            << compute approximate line height >>
                 #@+node:ekr.20040803072955.66:<< compute approximate line height >>

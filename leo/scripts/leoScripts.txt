@@ -46,7 +46,7 @@ if 0: # This is usually a very bad idea.
     while v:
         v.t.fileIndex = None
         v = v.threadNext()
-        
+
     g.es("all timestamps cleared")
 #@nonl
 #@-node:Clear all timestamps
@@ -92,7 +92,7 @@ class cloneNavigator:
        all the parents of all the clones of the current node.  Selecting
        a displayed parent headline moves the current node to the
        corresponding clone in the outline.
-       
+
        The idea is to be able to quickly see the context of all the clones
        of the current node and to be able to easily navigate from one clone
        instance to the next.
@@ -111,7 +111,7 @@ def __init__ (self,c):
         f = log.tabFrame
         for w in f.winfo_children():
             w.destroy()
-    
+
     # Create and pack empty label and listbox
     self.title = Tk.Label(f)
     self.title.pack(anchor="nw")
@@ -131,14 +131,14 @@ def getAllClones(self,p):
 def displayClones(self,c):
     '''Displays the parent headline for all the clones of the current position'''
     cp = c.currentPosition()
-    
+
     # "Title" is the headline of the current node
     self.title.configure(text=cp.headString())
-    
+
     # Initialize listbox and clone list
     clones = self.getAllClones(cp)
     self.lb.delete(0,self.lb.size()-1)
-    
+
     <<Fill listbox with clone parent headlines>>    
     <<Goto selected position when listbox selection changes>>
 #@+node:<<Fill listbox with clone parent headlines>>
@@ -149,7 +149,7 @@ for p in clones:
     else:
         text = "<root>"
     self.lb.insert(self.lb.size(),text)
-    
+
     # Initial listbox selection corresponds to current position
     if p.v == cp.v:
         self.lb.selection_set(self.lb.size()-1)
@@ -199,7 +199,7 @@ for p in c.allNodes_iter():
             if not flagJustHeadlines:
                 myBody = p.bodyString().encode( "utf-8" )
                 f.write("<P>" + myBody)
- 
+
 # Write closing HTML info
 f.write("</BODY>")  
 f.write("</HTML>")
@@ -352,7 +352,7 @@ else:
 
     nameList.sort() ; g.enl()
     for name in nameList: g.es("'%s'," % name)
-    
+
     s = "%d functions in leoGlobals.py" % len(nameList)
     g.es_print(s)
 
@@ -365,7 +365,7 @@ if 0:
 #@nonl
 #@+node:findFunctionsInTree
 def findFunctionsInTree(p):
-    
+
     nameList = []
     for p in p.self_and_subtree_iter():
         names = findDefs(p.bodyString())
@@ -378,7 +378,7 @@ def findFunctionsInTree(p):
 #@-node:findFunctionsInTree
 #@+node:findDefs
 def findDefs(body):
-    
+
     lines = body.split('\n')
     names = []
     for s in lines:
@@ -398,9 +398,9 @@ def findDefs(body):
 #@-node:findDefs
 #@+node:prependNamesInTree
 def prependNamesInTree(p,nameList,prefix,replace=False):
-    
+
     c = p.c
-    
+
     assert(len(prefix) > 0)
     ch1 = string.letters + '_'
     ch2 = string.letters + string.digits + '_'
@@ -664,7 +664,7 @@ if 0: # Script to change OnXxx to xxx in all headlines
             print h
             v.setHeadString(h)
         v = v.threadNext()
-        
+
 # Script to change OnXXX to xxx in all body text.
 if 0:
     v = c.currentVnode()
@@ -685,7 +685,7 @@ if 0:
 import fnmatch, os
 
 def findDosFile(pattern, dirname):
-    
+
     """Check for crlf in files"""
 
     files = os.listdir(dirname)
@@ -742,7 +742,7 @@ def headfind():
                     finally:
                         c.endUpdate()
                     return
-					
+
         g.es("no headline matches '%s'" % (s),color="blue")
     else:
         g.es("no selected text & clipboard empty",color="blue")
@@ -949,14 +949,14 @@ print "done"
 #@-node:Old outer code
 #@+node:class tok
 class tok:
-    
+
     """ A class representing an elisp or python token"""
-    
+
     @others
 #@nonl
 #@+node:tok.__init__
 def __init__ (self,kind,val="",parseTree=None):
-    
+
     self.kind = kind
     self.val = val
     self.parseTree = parseTree
@@ -964,38 +964,38 @@ def __init__ (self,kind,val="",parseTree=None):
 #@-node:tok.__init__
 #@+node:tok.isParseTok
 def isParseTok (self):
-    
+
     tok = self
-    
+
     return type(tok.parseTree) == type([])
 #@nonl
 #@-node:tok.isParseTok
 #@+node:tok.copy
 def copy (self,token):
-    
+
     return tok(self.kind,self.val)
 #@nonl
 #@-node:tok.copy
 #@+node:tok.match
 def match (self,tok2):
-    
+
     tok1 = self
-    
+
     val = (
         tok2 is not None and
         tok1.kind == tok2.kind and
         (not tok1.val or not tok2.val or (tok1.val == tok2.val)))
-        
+
     if 0:
         if tok1.kind==tok2.kind:
             g.trace(val,tok1.kind,repr(tok1.val),tok2.kind)
-        
+
     return val
 #@nonl
 #@-node:tok.match
 #@+node:tok.dump
 def dump (self,verbose=2):
-    
+
     tok = self
 
     if verbose == 2:
@@ -1006,27 +1006,27 @@ def dump (self,verbose=2):
 #@-node:tok.dump
 #@+node:tok.toString & allies
 def toString (self,verbose=2):
-    
+
     tok = self
-    
+
     if verbose < 2: return
     val = tok.val or ""
     val = g.toEncodedString(val,g.app.tkEncoding)
-    
+
     if tok.isParseTok():
         parseTree = parseTreeToString(tok.parseTree)
         if tok.val == "TREE":
             return "%s"% (parseTree)
         else:
             return "%s: %s"% (tok.val,parseTree)
-    
+
     elif verbose == 2:
         if len(tok.kind) == 1:    return tok.kind
         elif tok.kind=="form-feed": return "\nform-feed\n"
         elif tok.kind=="comment":   return "<comment>\n"
         elif tok.kind=="string":    return "<string>"
         else:                       return val
-    
+
     elif verbose == 3:
         if tok.kind == '\n':      return "%9s:" % "newline"
         elif tok.kind=="form-feed": return "%9s:" % "form-feed"
@@ -1037,12 +1037,12 @@ def toString (self,verbose=2):
 #@nonl
 #@+node:tok.wsToString
 def wsToString (self,ws):
-    
+
     allBlanks = True
     for ch in ws:
         if ch != ' ':
             allBlanks = False
-            
+
     if allBlanks:
        return "<' '*%d>" % len(ws)
     else:
@@ -1056,7 +1056,7 @@ def wsToString (self,ws):
                 result.append("feed")
             else:
                 result.append("<%s>" % repr(ch)) # should never happen.
-        
+
         result.append(">")
         return ''.join(result)
 #@nonl
@@ -1066,17 +1066,17 @@ def wsToString (self,ws):
 #@+node:Utility functions
 #@+node:isList & isToken
 def isList (object):
-    
+
     return type(object) == type([])
 
 def isToken (object):
-    
+
     return isinstance(object,tok)
 #@nonl
 #@-node:isList & isToken
 #@+node:printHeading
 def printHeading (s,char='-',len=20):
-    
+
     banner = char * len
 
     print
@@ -1111,52 +1111,52 @@ def parseTreeToString (parseTree,level=0,verbose=2):
 
     else:
         result.append("unknown type in parseTreeToString")
-        
+
     return ''.join(result)
 #@nonl
 #@-node:parseTreeToString
 #@-node:Utility functions
 #@+node:class lineClass
 class lineClass:
-    
+
     """Represents a code line being accumulated."""
-    
+
     @others
 #@nonl
 #@+node:line.__init__
 def __init__ (self,indent):
-        
+
         self.parts = []
         self.indent = indent
 #@nonl
 #@-node:line.__init__
 #@+node:line.add
 def add (self,s):
-    
+
     self.parts.append(s)
 #@nonl
 #@-node:line.add
 #@+node:line.toString
 def toString (self):
-    
+
     line = self
-    
+
     theList = [str(part) + ' ' for part in self.parts]
-    
+
     return ' ' * 2 * self.indent + ''.join(theList)
 #@nonl
 #@-node:line.toString
 #@-node:class lineClass
 #@+node:class elisp2pyClass
 class elisp2pyClass:
-    
+
     """A class to convert elisp programs into Python syntax."""
-    
+
     @others
 #@nonl
 #@+node:e.__init__
 def __init__ (self,c,p,*args,**keys):
-    
+
     self.c = c
     self.p = p
     self.tabwidth = 4
@@ -1164,10 +1164,10 @@ def __init__ (self,c,p,*args,**keys):
     << define elisp constants >>
     << define elisp statements >>
     << define elisp functions >>
-    
+
     self.allStatements = list(self.statements)
     self.allStatements.extend(self.functions)
-    
+
     << define code gen dispatch table >>
 #@nonl
 #@+node:<< define elisp constants >>
@@ -1222,28 +1222,28 @@ self.code_gen_dispatch_dict = {
 #@+node:Utils
 #@+node:deleteTokens
 def deleteTokens (self,tokens,delToken):
-            
+
     return [tok for tok in tokens if not tok.match(delToken)]
 #@nonl
 #@-node:deleteTokens
 #@+node:dump
 def dump (self,tokens,verbose=2,heading=""):
-    
+
     e = self ; p = e.p ; v2 = verbose >= 2
-    
+
     if verbose == 0:
         return
-    
+
     if heading: printHeading(heading,char='=',len=60)
     else:       printHeading(p.headString())
-    
+
     if verbose == 1:
         vals = [tok.val for tok in tokens]
         s = ''.join(vals)
         s = g.toEncodedString(s,g.app.tkEncoding)
         print s
     elif verbose in (2,3):
-       
+
         if verbose == 2:
             for tok in tokens:
                 print tok.toString(verbose=verbose),
@@ -1254,11 +1254,11 @@ def dump (self,tokens,verbose=2,heading=""):
 #@-node:dump
 #@+node:error & warning
 def warning (self,message):
-    
+
     print "Error:", message
 
 def warning (self,message):
-    
+
     print "Warning:", message
 #@-node:error & warning
 #@+node:findMatchingBracket
@@ -1266,7 +1266,7 @@ def findMatchingBracket(self,tokens,i):
 
     tok1 = tokens[i] ; i += 1
     assert tok1.kind in "({["
-   
+
     if   tok1.kind == '(': delim = ')'
     elif tok1.kind == '{': delim = '}'
     else:                  delim = ']'
@@ -1288,14 +1288,14 @@ def findMatchingBracket(self,tokens,i):
 #@-node:findMatchingBracket
 #@+node:findTokens
 def findTokens(self,tokens,i,findTokens):
-    
+
     """Search for a match with findTokens.
     Return i,i+len(findTokens) if found, or None,None otherwise."""
 
     e = self
-    
+
     while i < len(tokens):
-        
+
         if e.matchTokens(tokens,i,findTokens):
             return i,i+len(findTokens)
         else:
@@ -1306,37 +1306,37 @@ def findTokens(self,tokens,i,findTokens):
 #@-node:findTokens
 #@+node:isMatchingBracket
 def isMatchingBracket(self,tokens,i,j):
-    
+
     toki = tokens[i]
     tokj = tokens[j]
 
     f1 = "({[".find(toki.kind)
     f2 = ")}]".find(tokj.kind)
-    
+
     # g.trace(f1,f2,repr(toki.kind),repr(tokj.kind))
-    
+
     return f1 == f2 and f1 != -1
 #@nonl
 #@-node:isMatchingBracket
 #@+node:isStatement
 def isStatement (self,tokens,i):
-    
+
     """Returns the statement or function f if (f is at tokens[i]."""
-    
+
     e = self
-    
+
     for s in e.allStatements:
         toks = [tok('('),tok('id',s)]
         if e.matchTokens(tokens,i,toks):
             return s
 
     return False
-      
-    
+
+
 #@-node:isStatement
 #@+node:matchTokens
 def matchTokens (self,tokens,i,findTokens):
-    
+
     """Return True if tokens match findTokens at position i."""
 
     j = 0
@@ -1351,7 +1351,7 @@ def matchTokens (self,tokens,i,findTokens):
 #@-node:matchTokens
 #@+node:replaceAll (not used yet)
 def replaceAll (self,tokens,findKind,changeTok):
-    
+
     self = e
 
     result = []
@@ -1364,7 +1364,7 @@ def replaceAll (self,tokens,findKind,changeTok):
 #@-node:replaceAll (not used yet)
 #@+node:tokenize & allies
 def tokenize (self,s):
-    
+
     e = self
     name1 = string.letters + '_'
     result = []
@@ -1412,7 +1412,7 @@ def tokenize (self,s):
         else:
             result.append(tok("misc",ch))
             i += 1
-            
+
     return result
 #@nonl
 #@+node:skipString
@@ -1438,7 +1438,7 @@ def skipString(self,s,i):
 #@-node:Utils
 #@+node:convert (main line)
 def convert (self):
-    
+
     e = self ; p = e.p
 
     e.tokens = e.tokenize(p.bodyString())
@@ -1458,9 +1458,9 @@ def convert (self):
 #@+node:Parser & allies
 #@+node:parse
 def parse (self,tokens,topLevel=True):
-    
+
     """A recursive-descent parser for elisp."""
-    
+
     e = self
     i = 0
     while i < len(tokens):
@@ -1481,7 +1481,7 @@ def parse (self,tokens,topLevel=True):
         tokens[i:j+1] = [token]
         # We are replacing everything by a _single_ token.
         i = i + 1 
-            
+
     return tokens
 #@nonl
 #@+node:<< give error message about mismatched parens >>
@@ -1494,9 +1494,9 @@ else:
 #@-node:parse
 #@+node:block
 def block (self,tokens):
-    
+
     """Parse a block of tokens."""
-    
+
     e = self
 
     i = 0 ; result = []
@@ -1523,35 +1523,35 @@ def block (self,tokens):
 #@+node:Code gen
 #@+node:dumpCodeList
 def dumpCodeList (self,codeList,heading=""):
-    
+
     printHeading(heading,char='=',len=60)
-    
+
     for line in codeList:
-        
+
         print line.toString()
 #@nonl
 #@-node:dumpCodeList
 #@+node:newCodeLine
 def newCodeLine (self):
-    
+
     e = self
-    
+
     if e.codeLine:
         e.codeList.append(e.codeLine)
-        
+
     e.codeLine = line = lineClass(e.indent) # Create a new line object.
-    
+
     return line
 #@nonl
 #@-node:newCodeLine
 #@+node:removeBlankLines
 def removeBlankLines (self,tokens):
-    
+
     e = self
-    
+
     i = 0
     while i < len(tokens):
-        
+
         if tokens[i].kind == '\n':
             j = i ; i += 1
             while i < len(tokens) and tokens[i].kind == "ws":
@@ -1561,7 +1561,7 @@ def removeBlankLines (self,tokens):
                 i = j
             else: i += 1
         else: i += 1
-            
+
     return tokens
 #@nonl
 #@-node:removeBlankLines
@@ -1569,11 +1569,11 @@ def removeBlankLines (self,tokens):
 #@+node:gen_xxx
 #@+node:gen
 def gen(self,object):
-    
+
     """The top-level code generator.
-    
+
     May be called recursively to generate inner parts of the tree."""
-    
+
     e = self
 
     if isToken(object):
@@ -1582,17 +1582,17 @@ def gen(self,object):
             e.gen(t.parseTree)
         else:
             e.gen_token(t,outerList=None)
-        
+
     elif isList(object):
         e.gen_list(object)
-            
+
     else:
         print "unknown object in parse tree:", repr(object)
 #@nonl
 #@-node:gen
 #@+node:gen_computed_function
 def gen_computed_function (self,args):
-    
+
     e = self
 
     g.trace()
@@ -1603,62 +1603,62 @@ def gen_computed_function (self,args):
 #@-node:gen_computed_function
 #@+node:gen_cond
 def gen_cond (self,t,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
 #@-node:gen_cond
 #@+node:gen_defconst
 def gen_defconst(self,t,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
 #@-node:gen_defconst
 #@+node:gen_defsubst
 def gen_defsubst(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
 #@-node:gen_defsubst
 #@+node:gen_defun
 def gen_defun(self,args):
-    
+
     e = self
-    
+
     g.trace()
-    
+
     if len(args) == 1:
         print "def %s ():" % parseTreeToString(args[0])
-        
+
     elif len(args) >= 2:
-        
+
         print "def %s (%s):" % (
             parseTreeToString(args[0]),
             parseTreeToString(args[1]).strip())
-            
+
     e.indent += 1
 
     for arg in args[2:]:
         e.gen(arg)
-        
+
     e.indent -= 1
 #@nonl
 #@-node:gen_defun
 #@+node:gen_defvar
 def gen_defvar(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
 #@-node:gen_defvar
 #@+node:gen_expression
 def gen_expression(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
-    
+
     if isList(args):
         for arg in args:
             e.gen_expression(arg)
@@ -1667,7 +1667,7 @@ def gen_expression(self,args):
 #@-node:gen_expression
 #@+node:gen_function
 def gen_function (self,name,args):
-    
+
     e = self
     g.trace(len(args),name)
     for arg in args:
@@ -1676,20 +1676,20 @@ def gen_function (self,name,args):
 #@-node:gen_function
 #@+node:gen_if
 def gen_if(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
 #@-node:gen_if
 #@+node:gen_let, gen_let_star
 def gen_let(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
 
 def gen_let_star(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
@@ -1697,13 +1697,13 @@ def gen_let_star(self,args):
 #@-node:gen_let, gen_let_star
 #@+node:gen_list
 def gen_list (self,theList):
-    
+
     e = self
-    
+
     assert(isList(theList))
     if not theList:
         return
-        
+
     item1 = theList[0]
 
     if isToken(item1):
@@ -1722,25 +1722,25 @@ def gen_list (self,theList):
         # The first item is a list.
         for arg in theList:
             e.gen(arg)
-                
+
     else: g.trace("unknown item",item1)
 #@nonl
 #@-node:gen_list
 #@+node:gen_prog, gen_prog1, gen_progn
 def gen_prog(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
-    
+
 def gen_prog1(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
-    
+
 def gen_progn(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
@@ -1748,13 +1748,13 @@ def gen_progn(self,args):
 #@-node:gen_prog, gen_prog1, gen_progn
 #@+node:gen_set & gen_setq
 def gen_set(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
-    
+
 def gen_setq(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
@@ -1762,15 +1762,15 @@ def gen_setq(self,args):
 #@-node:gen_set & gen_setq
 #@+node:gen_statement
 def gen_statement (self,t,args):
-    
+
     e = self
-    
+
     expr_names = (
         "and","or","not",
         "eq","ne","equal","gt","ge","lt","le",)
-    
+
     assert(t.kind=='id')
-    
+
     name = t.val # The name of the statement.
     f = e.code_gen_dispatch_dict.get(name)
 
@@ -1787,39 +1787,39 @@ def gen_statement (self,t,args):
 #@-node:gen_statement
 #@+node:gen_token
 def gen_token (self,t,outerList=None):
-    
+
     e = self
-    
+
     g.trace(t.kind,t.val)
-    
+
     if 0: # Not yet.
 
         if t.kind == 'id' and t.val in e.allStatements:
-            
+
             g.trace(t.toString())
-            
+
             line = e.newCodeLine()
             line.add(t.val)
-            
+
             # Only TREE tokens have parse trees.
             # We are _inside_ a parse tree.
 #@nonl
 #@-node:gen_token
 #@+node:gen_unless, gen_when, gen_while
 def gen_unless(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
-    
+
 def gen_when(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
-    
+
 def gen_while(self,args):
-    
+
     e = self
     g.trace(parseTreeToString(args))
     e.gen_list(args)
@@ -1991,14 +1991,14 @@ to
 classList = [
     "vnode", "tnode", "Commands",
     "wxString", "wxTreeCtrl", "wxTextCtrl", "wxSplitterWindow" ]
-    
+
 typeList = ["char", "void", "short", "long", "int", "double", "float"]
 
 @ Please change ivarsDict so it represents the instance variables (ivars) used by your program's classes.
 
 ivarsDict is a dictionary used to translate ivar i of class c to self.i.  It also translates this->i to self.i.
 @c
-    
+
 ivarsDict = {
     "atFile": [ "mCommands", "mErrors", "mStructureErrors",
         "mTargetFileName", "mOutputFileName", "mOutputStream",
@@ -2008,7 +2008,7 @@ ivarsDict = {
 
     "tnode": ["mBodyString", "mBodyRTF", "mJoinHead", "mStatusBits", "mFileIndex",
         "mSelectionStart", "mSelectionLength", "mCloneIndex"],
-        
+
     "LeoFrame": ["mNextFrame", "mPrevFrame", "mCommands"],
 
     "Commands": [
@@ -2160,7 +2160,7 @@ def convertCStringToPython(s, leoFlag):
     # print "convertCStringToPython:start\n", s
     firstPart = True
     codeList = stringToList(s)
-    
+
     if not leoFlag:
         convertCodeList(codeList, firstPart, dontDoLeoTranslations)
         return listToString(codeList)
@@ -2185,7 +2185,7 @@ def convertCStringToPython(s, leoFlag):
             i = j
             for item in doc:
                 outputList.append(item)
-    
+
     result = listToString(outputList)
     global printFlag
     if printFlag: print "-----:\n", result
@@ -2255,7 +2255,7 @@ def convertDocList(docList):
 #@-node:convertDocList
 #@+node:skipDocPart
 def skipDocPart(list, i):
-    
+
     # print "skipDocPart", i
     while i < len(list):
         if matchWord(list, i, "@code") or matchWord(list, i, "@c"):
@@ -2268,7 +2268,7 @@ def skipDocPart(list, i):
 #@-node:skipDocPart
 #@+node:skipCodePart
 def skipCodePart(codeList, i):
-    
+
     # print "skipCodePart", i
     if matchWord(codeList, i, "@doc") or matchWord(codeList, i, "@"):
         return i
@@ -2367,7 +2367,7 @@ def convertLeadingBlanks(list):
 def findInList(list, i, findStringOrList):
 
     findList = stringToList(findStringOrList)
-    
+
     while i < len(list):
         if match(list, i, findList): return i
         else: i += 1
@@ -2378,7 +2378,7 @@ def findInList(list, i, findStringOrList):
 def findInCode(codeList, i, findStringOrList):
 
     findList = stringToList(findStringOrList)
-    
+
     while i < len(codeList):
         if isStringOrComment(codeList,i):
             i = skipStringOrComment(codeList,i)
@@ -2547,7 +2547,7 @@ def massageFunctionHead(head):
             else:
                 for item in prevWord:result.append(item)
         else: i += 1
-        
+
     finalResult = list("def ")
     for item in result: finalResult.append(item)
     # print "new head:", listToString(finalResult)
@@ -2707,7 +2707,7 @@ def handleKeyword(codeList,i):
 #@+node:isWs and isWOrNl
 def isWs(c):
     return c == ' ' or c == '\t'
-    
+
 def isWsOrNl(c):
     return c == ' ' or c == '\t' or c == '\n'
 #@nonl
@@ -3036,11 +3036,11 @@ def skipPastLine(codeList, i):
 def skipPastWord(list, i):
 
     assert(list[i] in string.letters or list[i]=='~')
-    
+
     # Kludge: this helps recognize dtors.
     if list[i]=='~':
         i += 1
-    
+
     while i < len(list) and (
         list[i] in string.letters or
         list[i] in string.digits or
@@ -3084,7 +3084,7 @@ def skipWs(list, i):
             i += 1
         else: break
     return i
-    
+
 def skipWsAndNl(list, i):
 
     while i < len(list):
@@ -3109,7 +3109,7 @@ def skip_block_comment (s,i):
 
     assert(g.match(s,i,"/*"))
     j = i ; i += 2 ; n = len(s)
-    
+
     k = string.find(s,"*/",i)
     if k == -1:
         g.scanError("Run on block comment: " + s[j:i])
@@ -3124,7 +3124,7 @@ def skip_block_comment (s,i):
 def skip_braces(s,i):
 
     """Skips from the opening to the matching brace.
-    
+
     If no matching is found i is set to len(s)"""
 
     # start = g.get_line(s,i)
@@ -3152,7 +3152,7 @@ def skip_braces(s,i):
 def skip_parens(s,i):
 
     """Skips from the opening ( to the matching ).
-    
+
     If no matching is found i is set to len(s)"""
 
     level = 0 ; n = len(s)
@@ -3204,7 +3204,7 @@ def skip_pascal_begin_end(s,i):
 # Scans past a pascal comment delimited by (* and *).
 
 def skip_pascal_block_comment(s,i):
-    
+
     j = i
     assert(g.match(s,i,"(*"))
     i = string.find(s,"*)",i)
@@ -3244,10 +3244,10 @@ def skip_python_string(s,i):
 #@-node:skip_python_string
 #@+node:skip_string : called by tangle
 def skip_string(s,i):
-    
+
     j = i ; delim = s[i] ; i += 1
     assert(delim == '"' or delim == '\'')
-    
+
     n = len(s)
     while i < n and s[i] != delim:
         if s[i] == '\\' : i += 2
@@ -3348,7 +3348,7 @@ def is_special(s,i,directive):
 def is_ws(c):
 
     return c == '\t' or c == ' '
-    
+
 def is_ws_or_nl(s,i):
 
     return g.is_nl(s,i) or (i < len(s) and g.is_ws(s[i]))
@@ -3441,7 +3441,7 @@ def skip_line (s,i):
     i = string.find(s,'\n',i)
     if i == -1: return len(s)
     else: return i + 1
-        
+
 def skip_to_end_of_line (s,i):
 
     i = string.find(s,'\n',i)
@@ -3451,7 +3451,7 @@ def skip_to_end_of_line (s,i):
 #@-node:skip_line, skip_to_end_of_line
 #@+node:skip_long
 def skip_long(s,i):
-    
+
     """Scan s[i:] for a valid int.
     Return (i, val) or (i, None) if s[i] does not point at a number.
     """
@@ -3476,7 +3476,7 @@ def skip_long(s,i):
 #@-node:skip_long
 #@+node:skip_matching_delims
 def skip_matching_delims(s,i,delim1,delim2):
-    
+
     assert(g.match(s,i,delim1))
 
     i += len(delim1)
@@ -3521,7 +3521,7 @@ def skip_pascal_braces(s,i):
 #@-node:skip_pascal_braces
 #@+node:skip_to_char
 def skip_to_char(s,i,ch):
-    
+
     j = string.find(s,ch,i)
     if j == -1:
         return len(s),s[i:]
@@ -3535,7 +3535,7 @@ def skip_ws(s,i):
     while i < n and g.is_ws(s[i]):
         i += 1
     return i
-    
+
 def skip_ws_and_nl(s,i):
 
     n = len(s)
@@ -3547,25 +3547,25 @@ def skip_ws_and_nl(s,i):
 #@-node:Scanners: no error messages
 #@+node:splitLines & joinLines
 def splitLines (s):
-    
+
     """Split s into lines, preserving the number of lines and the ending of the last line."""
-    
+
     if s:
         return s.splitlines(True) # This is a Python string function!
     else:
         return []
 
 def joinLines (aList):
-    
+
     return ''.join(aList)
 #@nonl
 #@-node:splitLines & joinLines
 #@-node:g.scanning...
 #@+node:createIndentedBlock NOT USED
 def createIndentedBlock (self,tokens,level):
-    
+
     e = self ; p = e.p ; level1 = level
-    
+
     i = 0
     while i < len(tokens):
         t = tokens[i]
@@ -4871,7 +4871,7 @@ run(c)
 #@nonl
 #@+node:run
 def run (c):
-    
+
     import leoTest
     u = leoTest.testUtils() 
     input  = u.findNodeAnywhere(c,'-elisp2py-input-')
@@ -4890,20 +4890,20 @@ def run (c):
 #@-node:run
 #@+node:class e2py
 class e2py:
-    
+
     '''A text-based (not token-based) approach to parsing.'''
-    
+
     @others
 #@nonl
 #@+node:ctor
 def __init__ (self,dumping=False):
-    
+
     self.dumping = dumping
 #@nonl
 #@-node:ctor
 #@+node:doBlock
 def doBlock (self,s,strip=True):
-    
+
     '''Handle an outer block or a formerly parenthesized block.'''
 
     i = 0 ; result = []
@@ -4927,7 +4927,7 @@ def doBlock (self,s,strip=True):
                 if block_result:
                     result.extend(block_result)
             i += n
-    
+
     result = self.removeBlankLines(result)
     self.dump(result)
     return result
@@ -4935,7 +4935,7 @@ def doBlock (self,s,strip=True):
 #@-node:doBlock
 #@+node:doParenBlock
 def doParenBlock (self,s):
-    
+
     ''' - Strip outer parens.
         - Call doBlock recursively for all inner parens.
         - Add one level of indentation to each line.'''
@@ -4956,7 +4956,7 @@ def doParenBlock (self,s):
         s = s[i:].lstrip()
         result = self.doDoubleParen(s)
     else: result = self.doBlock(s)
-        
+
     self.dump(result)
     return result
 #@nonl
@@ -4974,7 +4974,7 @@ def doDef(self,s,id):
                 result.extend(self.indent(self.doBlock(s)))
                 self.dump(result)
                 return result
-                
+
     # Fall through if error.
     result = [id]
     result.extend(self.indent(self.doBlock(s)))
@@ -4994,13 +4994,13 @@ def doDoubleParen (self,s):
         result.extend(self.doBlock(s3))
     else:
         result = self.doBlock(s)
-        
+
     self.dump(result)
     return result
 #@-node:doDoubleParen
 #@+node:doId
 def doId(self,s,id):
-    
+
     # g.trace(id)
     if 1:
         result = ['(%s:' % id]
@@ -5009,16 +5009,16 @@ def doId(self,s,id):
     else:
         result = [id]
         result.extend(self.doBlock(s))
-    
+
     self.dump(result)
     return result
 #@nonl
 #@-node:doId
 #@+node:doIf
 def doIf(self,s):
-    
+
     # g.trace()
-    
+
     if 1:
         result = ['if:']
         result.extend(self.indent(self.doBlock(s)))
@@ -5027,28 +5027,28 @@ def doIf(self,s):
     else: # not yet.  Don't suck everything into the 'if' statement!
         block = self.doBlock(s)
         result = ['if (%s):' % ' '.join(block)]
-    
+
     self.dump(result)
     return result
 #@nonl
 #@-node:doIf
 #@+node:doLet
 def doLet(self,s):
-    
+
     # g.trace()
-    
+
     result = ['let:']
     result.extend(self.indent(self.doBlock(s)))
     result.extend([':let'])
-    
+
     self.dump(result)
     return result
 #@-node:doLet
 #@+node:doOuterBlock
 def doOuterBlock (self,s):
-    
+
     '''Handle outermost code.  Return a string, not a list.'''
-    
+
     s = self.stripLws(s)
     result = self.doBlock(s)
     result = self.removeBlankLines(result)
@@ -5057,19 +5057,19 @@ def doOuterBlock (self,s):
 #@-node:doOuterBlock
 #@+node:doProg
 def doProg(self,s,id):
-    
+
     # g.trace(id)
-    
+
     result = [id]
     result.extend(self.indent(self.doBlock(s)))
-    
+
     self.dump(result)
     return result
 #@nonl
 #@-node:doProg
 #@+node:dump
 def dump(self,lines):
-    
+
     if self.dumping:
         print '%s returns...' % g.callerName(2)
         lines = [str(line) for line in lines]
@@ -5117,24 +5117,24 @@ def getToken (self,s,i=0):
             val = ch,i,i,ch
     else:
         val = None,i,i,None
-        
+
     # g.trace(repr(s[i]),val)
     return val
 #@nonl
 #@-node:getToken
 #@+node:indent
 def indent (self,lines,strip=True):
-    
+
     '''Add a tab to each element of a list.'''
-    
+
     return ['    ' + line for line in lines if not strip or line.strip()]
 #@nonl
 #@-node:indent
 #@+node:matchingBracket
 def matchingBracket (self,ch):
-    
+
     assert ch in "({["
-    
+
     if   ch == '(': return ')'
     elif ch == '{': return '}'
     else:           return ']'
@@ -5142,7 +5142,7 @@ def matchingBracket (self,ch):
 #@-node:matchingBracket
 #@+node:skip_id
 def skip_id(self,s,i=0):
-    
+
     j = g.skip_id(s,i,chars='-')
     id = s[i:j]
     return j,id
@@ -5169,13 +5169,13 @@ def skipString(self,s,i):
 #@-node:skipString
 #@+node:removeBlankLines
 def removeBlankLines (self,lines):
-    
+
     return [line for line in lines if line.strip()]
 #@nonl
 #@-node:removeBlankLines
 #@+node:stripLws
 def stripLws(self,s):
-    
+
     lines = g.splitLines(s)
     result = [line.lstrip() for line in lines]
     return ''.join(result)
@@ -5299,7 +5299,7 @@ data = ( # 8/3: solvable.
     'x215x8xxx',
     '6xxxx38xx',
     'xxxx1xx6x')
-    
+
 data = ( # 1 stars
     'x4xxxx179',
     'xx2xx8x54',
@@ -5310,7 +5310,7 @@ data = ( # 1 stars
     '3xx4xx7xx',
     '57x1xx2xx',
     '928xxxx6x')
-    
+
 data = (
     '6xx75x1xx',
     '8xxxx34xx',
@@ -5321,7 +5321,7 @@ data = (
     '31xx89x4x',
     'xx65xxxx1',
     'xx5x42xx3') # solvable.
-    
+
 data = (
     'xxxxx6xx5',
     'xx41xx8xx',
@@ -5354,7 +5354,7 @@ data = (
     'x3xxxxxxx',
     '8x2xx319x',
     '94x87xxxx') # 9/9/05 3 stars
-        
+
 data = (
     '8xxxxxxxx',
     'x915x36xx',
@@ -5403,7 +5403,7 @@ data = ( # 8/6 2 stars
     '9xxxx4xx1',
     'xxx3xx49x',
     '41xxxx2x8')
-        
+
 data = (
     '9xx7x3xx6',
     'x87xx2xxx',
@@ -5414,7 +5414,7 @@ data = (
     'x6xxxxx31',
     'xxx4xx97x',
     '4xx2x1xx8') # 8/30 2 stars
-        
+
 data = (
     '8xx3xxx7x',
     'xx57xxxxx',
@@ -5474,7 +5474,7 @@ data = (
     'x931xx65x',
     'x5x862x73',
     '8xx5xx4xx') # 1 star
-        
+
 data = ( # 8/10 1 star
     'x6xxx5x19',
     'x9x34xxxx',
@@ -5489,14 +5489,14 @@ data = ( # 8/10 1 star
 #@-node:<< 1-star puzzles >>
 #@+node:class sudokuClass
 class sudokuClass:
-    
+
     '''A class to solve the sudoku puzzle.'''
-    
+
     @others
 #@nonl
 #@+node: ctor (main) & helpers
 def __init__ (self,data):
-    
+
     # g.trace('main')
     self.cells = []
     self.cols = []
@@ -5521,7 +5521,7 @@ def __init__ (self,data):
 #@nonl
 #@+node:initFromData
 def initFromData (self):
-    
+
     i = 0
     for row in self.data:
         thisRow = []
@@ -5547,7 +5547,7 @@ def finishInit (self):
         self.squareGroups.append(self.squareGroupClass(self,i))
         self.rowGroups.append(self.colGroupClass(self,i))
         self.colGroups.append(self.rowGroupClass(self,i))
-    
+
     for z in self.squareGroups:
         z.finishCreate()
     for z in self.rowGroups:
@@ -5564,12 +5564,12 @@ def finishInit (self):
 #@-node:finishInit
 #@+node:checkData
 def checkData (self):
-    
+
     rows = len(self.data)
-    
+
     if rows != 9:
         return self.error('wrong number of rows: %d' % rows)
-        
+
     for row in self.data:
         cols = len(row)
         if cols != 9:
@@ -5578,7 +5578,7 @@ def checkData (self):
 #@-node:checkData
 #@+node:check & helper
 def check (self):
-    
+
     for groups in (self.colGroups,self.rowGroups,self.squareGroups):
         for group in groups:
             if not self.checkGroup(group):
@@ -5604,18 +5604,18 @@ def checkGroup (self,group):
 #@+node:printing & dumping
 #@+node:dump
 def dump (self):
-    
+
     if 0:
         print ; print 'groups...'
         for group in self.groups:
             print 'group %d, rowsNumbers: %s colNumbers: %s' % (
                 group.groupNumber,group.rowNumbers,group.colNumbers)
-            
+
     if 0:
         print ; print 'row groups...'
         for group in self.rowGroups:
             print '%d %s' % (group.rowNumber, group.rowcol)
-            
+
     if 0:
         print ; print 'related groups...'
         for group in self.groups:     
@@ -5625,7 +5625,7 @@ def dump (self):
 #@-node:dump
 #@+node:printData
 def printData (self,tag='initial data'):
-    
+
     print ; print tag ; print
 
     i = 0
@@ -5645,10 +5645,10 @@ def printData (self,tag='initial data'):
 #@-node:printData
 #@+node:printCells
 def printCells (self,tag=''):
-    
+
     print
     if tag: print tag ; print
-    
+
     i = 0
     for cell in self.cells:
         if len(cell.values) == 9:
@@ -5664,27 +5664,27 @@ def printCells (self,tag=''):
 #@+node:Utils
 #@+node:groupNumber
 def groupNumber (self,row,col):
-    
+
     return (3 * (row // 3)) + (col // 3)
 #@nonl
 #@-node:groupNumber
 #@+node:error
 def error (self,s):
-    
+
     print 'oops',s
     self.errors += 1
 #@nonl
 #@-node:error
 #@+node:trace
 def trace (self,s):
-    
+
     if self.tracing:
         print s
 #@nonl
 #@-node:trace
 #@+node:isFinished
 def isFinished (self):
-    
+
     for cell in self.cells:
         n = len(cell.values)
         assert(n > 0) # We should have check for self.valid previously.
@@ -5697,7 +5697,7 @@ def isFinished (self):
 #@+node:Guesses
 #@+node:findBestGroup
 def findBestGroup (self,excludedGroupNumbers):
-    
+
     bestGroup = None
     bestKnown = 0
     for group in self.squareGroups:
@@ -5728,7 +5728,7 @@ def findBestGroup (self,excludedGroupNumbers):
 #@-node:findBestGroup
 #@+node:findGuesses
 def findGuesses (self):
-    
+
     guesses = []
     group = self.findBestGroup(self.excludedGroupNumbers)
     self.excludedGroupNumbers.append(group.groupNumber)
@@ -5752,7 +5752,7 @@ def findGuesses (self):
             guess.append(bunch)
         if self.isValidGuess(guess):
             guesses.append(guess)
-    
+
     if not guesses:
         g.trace('No valid guess for group %d' % group.groupNumber)
         self.valid = False
@@ -5769,9 +5769,9 @@ def findGuesses (self):
 #@-node:findGuesses
 #@+node:isValidGuess
 def isValidGuess (self,guess):
-    
+
     return True ##
-    
+
     for bunch in guess:
         if not bunch.cell.valIsPossible(bunch.val):
             return False
@@ -5782,7 +5782,7 @@ def isValidGuess (self,guess):
 #@-node:Guesses
 #@+node:solve (main)
 def solve (self):
-    
+
     n = 0 ; self.valid = True
     while not self.errors and self.valid:
         n += 1
@@ -5865,16 +5865,16 @@ return False
 #@nonl
 #@+node:class squareGroupClass
 class squareGroupClass:
-    
+
     @others
 #@nonl
 #@+node: ctor
 def __init__ (self,sudoku,n):
-    
+
     # g.trace('square',n)
     self.groupNumber = n
     self.main = sudoku
-    
+
     # Set later...
     self.cells = []
     self.colNumbers = []
@@ -5884,19 +5884,19 @@ def __init__ (self,sudoku,n):
 #@-node: ctor
 #@+node:__repr__ & __str__
 def __repr__ (self):
-    
+
     return '<square group %d>' % self.groupNumber
-    
+
 __str__ = __repr__
 #@nonl
 #@-node:__repr__ & __str__
 #@+node:finishCreate
 def finishCreate (self):
-    
+
     main = self.main
 
     self.cells = [cell for cell in main.cells if cell.groupNumber == self.groupNumber]
-    
+
     for cell in self.cells:
         cell.squareGroup = self
 
@@ -5905,7 +5905,7 @@ def finishCreate (self):
         if cell.i not in self.rowNumbers:
             self.rowNumbers.append(cell.i)
     self.rowNumbers.sort()
-            
+
     self.colNumbers = []
     for cell in self.cells:
         if cell.j not in self.colNumbers:
@@ -5915,7 +5915,7 @@ def finishCreate (self):
 #@-node:finishCreate
 #@+node:computeRelatedGroups
 def computeRelatedGroups (self):
-    
+
     self.relatedGroups = []
     for group in self.main.squareGroups:
         if group is not self:
@@ -5933,37 +5933,37 @@ def computeRelatedGroups (self):
 #@-node:class squareGroupClass
 #@+node:class colGroupClass
 class colGroupClass:
-    
+
     @others
 #@nonl
 #@+node:ctor
 def __init__ (self,sudoku,j):
-    
+
     # g.trace('col',j)
     self.j = j
     self.main = sudoku
-    
+
     # Set later...
     self.cells = []
     self.col = None
-   
+
 #@nonl
 #@-node:ctor
 #@+node:__repr__ & __str__
 def __repr__ (self):
-    
+
     return '<col group %d>' % self.j
-    
+
 __str__ = __repr__
 #@nonl
 #@-node:__repr__ & __str__
 #@+node:finishCreate
 def finishCreate(self):
-    
+
     j = self.j ; main = self.main
 
     self.col = self.main.cols[j]
-    
+
     self.cells = [cell for cell in main.cells if cell.j == j]
 
     for cell in self.cells:
@@ -5973,16 +5973,16 @@ def finishCreate(self):
 #@-node:class colGroupClass
 #@+node:class rowGroupClass
 class rowGroupClass:
-    
+
     @others
 #@nonl
 #@+node:ctor
 def __init__ (self,sudoku,i):
-    
+
     # g.trace('row',i)
     self.i = i
     self.main = sudoku
-    
+
     # Set later...
     self.cells = []
     self.row = None
@@ -5990,9 +5990,9 @@ def __init__ (self,sudoku,i):
 #@-node:ctor
 #@+node:__repr__ & __str__
 def __repr__ (self):
-    
+
     return '<row group %d>' % self.i
-    
+
 __str__ = __repr__
 #@nonl
 #@-node:__repr__ & __str__
@@ -6013,15 +6013,15 @@ def finishCreate(self):
 #@-node:group classes
 #@+node:class cellClass
 class cellClass:
-    
+
     '''A class representing what is known about a particular cell.'''
-    
+
     @others
 #@nonl
 #@+node: birth
 #@+node: ctor (cell)
 def __init__ (self,sudoku,val,i,j):
-    
+
     # g.trace('cell',i,j,val)
     self.i = i
     self.j = j
@@ -6039,15 +6039,15 @@ def __init__ (self,sudoku,val,i,j):
 #@-node: ctor (cell)
 #@+node:__repr__ & __str__
 def __repr__ (self):
-    
+
     return 'cell[%d,%d]' % (self.i, self.j)
-    
+
 __str__ = __repr__
 #@nonl
 #@-node:__repr__ & __str__
 #@+node:finishCreate
 def finishCreate(self):
-    
+
     # g.trace(self)
     assert(self.colGroup)
     assert(self.rowGroup)
@@ -6060,28 +6060,28 @@ def finishCreate(self):
 #@-node: birth
 #@+node:error & trace
 def error (self,s):
-    
+
     self.main.error(s)
-    
+
 def trace (self,s):
-    
+
     self.main.trace(s)
 #@nonl
 #@-node:error & trace
 #@+node:reduce
 def reduce (self):
-    
+
     '''Reduce the possible values in self.values: remove an item from
     self.values if any cell in this cell's groups contains only that value.
 
     Increments self.main.progress or set self.main.valid = False to indicate status.
     '''
-    
+
     if not self.main.valid: return
     n = len(self.values)
     if n == 0: self.main.valid = False
     if n < 2:  return
-        
+
     for group in (
         self.colGroup,
         self.rowGroup,
@@ -6108,22 +6108,22 @@ def reduce (self):
 # This is about the most sophisticated deduction that a human could make.
 
 def removeConflicts (self):
-    
+
     '''Remove a possible value if assigning to this value would make it
     impossible to satisfy a related group.
-    
+
     Increments self.main.progress or set self.main.valid = False to indicate status. '''
-    
+
     if not self.main.valid: return
     n = len(self.values)
     if n == 0: self.main.valid = False
     if n < 2:  return
-    
+
     i,j = self.i,self.j
-    
+
     colGroups = [group for group in self.colGroups if group != self.squareGroup]
     rowGroups = [group for group in self.rowGroups if group != self.squareGroup]
-    
+
     # Check for row conflicts.
     for val in self.values:
         for group in rowGroups:
@@ -6161,10 +6161,10 @@ def removeConflicts (self):
 #@-node:removeConflicts
 #@+node:setValue
 def setValue (self,val):
-    
+
     '''We have discovered the proper value for this cell.
     Set self.values=[val] and remove val from self.values from all *other* cells of this groups.'''
-    
+
     values = self.values
     if self.main.tracing:
         g.trace(self,val,values)
@@ -6172,7 +6172,7 @@ def setValue (self,val):
     values.remove(val)
     self.main.progress += 1
     self.values = [str(val)]
-    
+
     for group in (
         self.colGroup,
         self.rowGroup,
@@ -6189,17 +6189,17 @@ def setValue (self,val):
 #@-node:setValue
 #@+node:unique
 def unique (self):
-    
+
     '''Set self.values to [val] if val appears in only one place in any of this cells groups.
-    
+
     Increments self.main.progress or set self.main.valid = False to indicate status.
     '''
-    
+
     if not self.main.valid: return
     n = len(self.values)
     if n == 0: self.main.valid = False
     if n < 2:  return
-        
+
     for group in (
         self.colGroup,
         self.rowGroup,
@@ -6230,7 +6230,7 @@ def valIsPossible (self,val):
                 if self.main.tracing:
                     g.trace('invalid guess: %s in row %d: %s' % (val,self.i,self.rowGroup.cells))
                 return False
-            
+
     for cell in self.colGroup.cells:
         if cell is not self:
             if len(cell.values) == 1 and cell.values[0] == val:
@@ -6274,7 +6274,7 @@ def test():
     global printFlag ; printFlag = True
     for s in testData:
         convertCStringToPython(s, doLeoTranslations)
-        
+
 def go():
     test()
 
@@ -6398,14 +6398,14 @@ to
 classList = [
     "vnode", "tnode", "Commands",
     "wxString", "wxTreeCtrl", "wxTextCtrl", "wxSplitterWindow" ]
-    
+
 typeList = ["char", "void", "short", "long", "int", "double", "float"]
 
 @ Please change ivarsDict so it represents the instance variables (ivars) used by your program's classes.
 
 ivarsDict is a dictionary used to translate ivar i of class c to self.i.  It also translates this->i to self.i.
 @c
-    
+
 ivarsDict = {
     "atFile": [ "mCommands", "mErrors", "mStructureErrors",
         "mTargetFileName", "mOutputFileName", "mOutputStream",
@@ -6415,7 +6415,7 @@ ivarsDict = {
 
     "tnode": ["mBodyString", "mBodyRTF", "mJoinHead", "mStatusBits", "mFileIndex",
         "mSelectionStart", "mSelectionLength", "mCloneIndex"],
-        
+
     "LeoFrame": ["mNextFrame", "mPrevFrame", "mCommands"],
 
     "Commands": [
@@ -6564,7 +6564,7 @@ def convertStringLeo1to2 (s):
             i = j
             for item in doc:
                 outputList.append(item)
-    
+
     result = listToString(outputList)
     global printFlag
     if printFlag: print "-----:\n", result
@@ -6635,7 +6635,7 @@ def convertCStringToPython(s, leoFlag):
     # print "convertCStringToPython:start\n", s
     firstPart = True
     codeList = stringToList(s)
-    
+
     if not leoFlag:
         convertCodeList(codeList, firstPart, dontDoLeoTranslations)
         return listToString(codeList)
@@ -6660,7 +6660,7 @@ def convertCStringToPython(s, leoFlag):
             i = j
             for item in doc:
                 outputList.append(item)
-    
+
     result = listToString(outputList)
     global printFlag
     if printFlag: print "-----:\n", result
@@ -6730,7 +6730,7 @@ def convertDocList(docList):
 #@-node:convertDocList
 #@+node:skipDocPart
 def skipDocPart(list, i):
-    
+
     # print "skipDocPart", i
     while i < len(list):
         if matchWord(list, i, "@code") or matchWord(list, i, "@c"):
@@ -6743,7 +6743,7 @@ def skipDocPart(list, i):
 #@-node:skipDocPart
 #@+node:skipCodePart
 def skipCodePart(codeList, i):
-    
+
     # print "skipCodePart", i
     if matchWord(codeList, i, "@doc") or matchWord(codeList, i, "@"):
         return i
@@ -6940,7 +6940,7 @@ def massageFunctionHead(head):
             else:
                 for item in prevWord:result.append(item)
         else: i += 1
-        
+
     finalResult = list("def ")
     for item in result: finalResult.append(item)
     # print "new head:", listToString(finalResult)
@@ -7101,7 +7101,7 @@ def handleKeyword(codeList,i):
 #@+node:isWs and isWOrNl
 def isWs(c):
     return c == ' ' or c == '\t'
-    
+
 def isWsOrNl(c):
     return c == ' ' or c == '\t' or c == '\n'
 #@nonl
@@ -7130,7 +7130,7 @@ def isStringOrComment(list, i):
 def findInCode(codeList, i, findStringOrList):
 
     findList = stringToList(findStringOrList)
-    
+
     while i < len(codeList):
         if isStringOrComment(codeList,i):
             i = skipStringOrComment(codeList,i)
@@ -7144,7 +7144,7 @@ def findInCode(codeList, i, findStringOrList):
 def findInList(list, i, findStringOrList):
 
     findList = stringToList(findStringOrList)
-    
+
     while i < len(list):
         if match(list, i, findList): return i
         else: i += 1
@@ -7514,11 +7514,11 @@ def skipPastLine(codeList, i):
 def skipPastWord(list, i):
 
     assert(list[i] in string.letters or list[i]=='~')
-    
+
     # Kludge: this helps recognize dtors.
     if list[i]=='~':
         i += 1
-    
+
     while i < len(list) and (
         list[i] in string.letters or
         list[i] in string.digits or
@@ -7585,7 +7585,7 @@ def skipWs(list, i):
             i += 1
         else: break
     return i
-    
+
 def skipWsAndNl(list, i):
 
     while i < len(list):
@@ -7640,7 +7640,7 @@ print 'done.  checked %d files' % (n)
 #@nonl
 #@+node:check
 def check(name,lines):
-    
+
     n = 0
     for line in lines:
         n += 1
@@ -7665,7 +7665,7 @@ g.es_print('='*40)
 g.es_print('%s %s' % ('-'*20,'must have a c arg'))
 for p in c.allNodes_iter():
     findFunctionCalls(add_c_arg,p,showEmptyArgs=True)
-    
+
 g.es_print('%s %s' % ('-'*20,'these methods should not exist'))
 for p in c.allNodes_iter():
     findFunctionCalls(removed,p,showEmptyArgs=True)
@@ -7673,11 +7673,11 @@ for p in c.allNodes_iter():
 g.es_print('%s %s' % ('-'*20,'p methods should have no c arg'))
 for p in c.allNodes_iter():
     findFunctionCalls(p_methods,p)
-    
+
 g.es_print('%s %s' % ('-'*20,'v methods should have no c arg'))
 for p in c.allNodes_iter():
     findFunctionCalls(v_methods,p)
-    
+
 g.es_print('%s %s' % ('-'*20,'c methods should start with a position arg'))
 for p in c.allNodes_iter():
     findFunctionCalls(c_methods,p)
@@ -7715,7 +7715,7 @@ removed = (
 add_c_arg = ( # Must have a c arg.
     'g.findReference',
 )
-    
+
 p_methods = (  # Should not have c arg.
     'p.clone',
     'p.doDelete',
@@ -7756,9 +7756,9 @@ function_call_re = re.compile(r'([a-zA-Z_][a-zA-Z_0-9.]*)\s*(\(.*\))')
 #@-node:<< define regex patterns >>
 #@+node:findFunctionCalls
 def findFunctionCalls (names,p,showEmptyArgs=False):
-    
+
     '''Find all call to function f in node p.
-    
+
     Return a list of tuples (s0, s1, s0) where:
 
     - s0 is entire match.
@@ -7882,7 +7882,7 @@ lines = s.split('\n')
 for i in xrange(len(lines)):
     if lines[i].strip() == "#@setup":
         break
-        
+
 if i < len(lines):
     # Split at the #@setup line and delete the #@setup line
     s1 = '\n'.join(lines[:i])
@@ -7893,7 +7893,7 @@ else:
     # There is no setup.
     s1 = None
     s2 = s
-    
+
 if not s1: s1 = 'pass'
 if not s2: s2 = 'pass'
 #@nonl
@@ -7911,7 +7911,7 @@ traceDrawing = True
 
 # This trace catches leaks of positions.
 g.app.tracePositions = tracePositions
-    
+
 # This trace shows overall position statistics.
 c.frame.tree.trace = traceDrawing
 c.frame.tree.verbose = True
@@ -8002,7 +8002,7 @@ if hopts['noNAME']:   del _colors[token.NAME]
 def stripSentinels(s):
 
     '''Strip sentinal lines from s.'''
-    
+
     lines = s.splitlines()
     result = [] ; verbatim = False
     tag1 = '#@+node:'
@@ -8035,7 +8035,7 @@ def stripSentinels(s):
 #@-node:stripSentinels
 #@+node:sanitize
 def sanitize(s):
-    
+
     """Leo's sanitize_filename is too aggressive and too lax."""
 
     if not s: return
@@ -8068,7 +8068,7 @@ def __init__(self,lang,raw,title):
         d = g.scanDirectives(c, p) 
         cmtdelim = d.get('delims',['#'])
         cmtdelim = cmtdelim[0] or cmtdelim[1]
-    
+
     self.fnd = re.compile(r"%s@\s*@+."%(cmtdelim,) )
 
     if hopts['stripsentinals']: 
@@ -8229,7 +8229,7 @@ if lang in [ # Leo may not have all of these yet
     fo = file(tmpfile, 'w')
     fo.writelines(pars.raw + "\n")
     fo.close()
-    
+
     cmd = g.os_path_join(pypath, 'Scripts', 'source2html.py')
 
     # Send the output to stdout
@@ -8274,7 +8274,7 @@ def showHtml(html):
     f.write(html)
     f.close()
     webbrowser.open(fileName)
-    
+
 # Display the selected node in the browser.
 showHtml('<pre>%s</pre>' % c.currentPosition().bodyString())
 
@@ -8339,7 +8339,7 @@ def font2span(colorizedusingFONT):
     myRE=re.compile(r'<font color="#BC8F8F">');aa=myRE.sub('<span class="LeoSen">',aa)
     myRE=re.compile(r'<font color="#FFFAFA">');aa=myRE.sub('<span class="bg">',aa)
     myRE=re.compile(r'</font>')               ;aa=myRE.sub('</span>',aa)
-    
+
     basefontSize="12pt"
     basefontFamily="Lucida,Courier New"
     myRE=re.compile(r'<font face="Lucida,Courier New">');
@@ -8380,14 +8380,14 @@ import java.lang as lang
 
 def exit(event):
     lang.System.exit(0)
-    
+
 def onButtonPressed(event):
     field.text=quotes[event.source.text]
-    
+
 def createButton(name):
     return swing.JButton(name,preferredSize=(100,20),
         actionPerformed=onButtonPressed)
-        
+
 names = [ 'Groucho','Chico','Harpo']
 quotes = {'Groucho':'Say the secret word','Chico':'Viaduct?','Harpo':'Honk!'}
 
@@ -8419,7 +8419,7 @@ for key in keys:
         not key.startswith('open-with-')
     ):
         missing.append((key,f.__name__),)
-        
+
 missing.sort()
 print '-' * 20
 for data in missing:
@@ -8429,7 +8429,7 @@ for data in missing:
 #@-node:Print missing docstrings
 #@+node:Recursive import script
 # An example of running this script:
-    
+
 import os
 
 @others
@@ -8448,7 +8448,7 @@ finally:
 g.es("done",color="blue")
 #@+node:importFiles
 def importFiles (dir,type=None,kind="@file",recursive=False):
-    
+
     v = c.currentVnode()
 
     # Check the params.
@@ -8459,7 +8459,7 @@ def importFiles (dir,type=None,kind="@file",recursive=False):
     if not g.os_path_exists(dir):
         g.es("directory does not exist: " + dir)
         return
-    
+
     c.beginUpdate()
     try:
         root = createLastChildOf(v,"imported files")
@@ -8476,7 +8476,7 @@ def importFiles (dir,type=None,kind="@file",recursive=False):
 def importDir (dir,types,kind,recursive,root):
 
     g.es("dir: " + dir,color="blue")
-    
+
     try:
         files = os.listdir(dir)
         files2 = [] ; dirs =[]
@@ -8503,7 +8503,7 @@ def importDir (dir,types,kind,recursive,root):
 #@-node:importDir
 #@+node:createLastChildOf
 def createLastChildOf (v,headline):
-    
+
     child = v.insertAsLastChild()
     child.initHeadString(headline)
     return child
@@ -8515,11 +8515,11 @@ def createLastChildOf (v,headline):
 This script parses a file containing Restructured text and creates node suitable for the rst3 plugin.
 
 To run, do the following:
-    
+
 1. Create a call to the function ReSt2Leo below.
    The argument to ReST2Leo should be the url (including a local file)
    of a file containing restructure text.
-   
+
 2. Run this node using the Execute Script command or the Run Script button.
 
 The script will create a sibling of this node for each call to ReST2Leo in this node.
@@ -8570,16 +8570,16 @@ class ParseReST:
 #@nonl
 #@+node:__init__
 def __init__(self, input):
-    
+
     """Initialize document level variables
     """
     if type(input) == type('string'):
         self.lines = input.split("\n")
     else:            
         self.lines = input
-        
+
     self.index = 0 
-        
+
     # for each section gather title, contents and underline character
     # over-under titles are indicated by 
     # 2 character strings for underline_character
@@ -8617,11 +8617,11 @@ def isTransition(self):
     """self.index is pointing to a character line
     if there are blank lines on either side, this is a transition
     """
-    
+
     current = self.lines[self.index]
     prev = self.lines[self.index - 1]
     next = self.lines[self.index + 1]
-    
+
     return len(prev) == 0 and len(next) == 0
 #@nonl
 #@-node:isTransition
@@ -8631,7 +8631,7 @@ def isUnderline(self):
     if we are preceded by a blank line, then a line
     not longer than this, we have an underline
     """
-    
+
     current = self.lines[self.index].strip()
     prev = self.lines[self.index - 1].strip()
     prevprev = self.lines[self.index - 2].strip()
@@ -8649,7 +8649,7 @@ def isUnderOverline(self):
     followed by a character line like this,
     we have an UnderOverline
     """
-    
+
     current = self.lines[self.index].strip()
     next = self.lines[self.index + 1].strip()
     #the last line may be a character line
@@ -8672,11 +8672,11 @@ def isSectionHead(self):
     current = self.lines[self.index]
     prev = self.lines[self.index - 1]
     next = self.lines[self.index + 1]
-   
+
     # a transition has a blank line before and after
     if  self.isTransition():
         return False
-        
+
     # underline section heading    
     if self.isUnderline():
         # previous to discovering the underline, we appended
@@ -8689,7 +8689,7 @@ def isSectionHead(self):
         # step index past this line
         self.index += 1
         return True
-        
+
     # over-under section heading
     if self.isUnderOverline():
         self.closeCurrentSection()
@@ -8699,7 +8699,7 @@ def isSectionHead(self):
         # step index past overline, section title, and underline
         self.index += 3
         return True
-        
+
         raise Exception ("Error in foundSectionHead()")
 #@nonl
 #@-node:isSectionHead
@@ -8719,28 +8719,28 @@ def insertTitle(self, uc, isSubTitle = False):
     This works the same for title and subtitle, since
     merging title deletes section[1], making the subtitle
     section[1]
-    
+
     The 'isSubTitle' parameter differentiates between title and subtitle
     """    
     title = self.sections[1]['title']
-    
+
     if not isSubTitle:
         self.sections[0]['title'] = title
-    
+
     # extend the charline and pad the title
     charline = (len(title) * uc[0]) + (4 * uc[0])
     title = '  ' + title
-    
+
     self.sections[0]['contents'].append('')
     self.sections[0]['contents'].append(charline)
     self.sections[0]['contents'].append(title)
     self.sections[0]['contents'].append(charline)
     self.sections[0]['contents'].append('')
-    
+
     # append each line, not the list of lines
     for line in self.sections[1]['contents']:
         self.sections[0]['contents'].append(line)
-        
+
     del self.sections[1]
 #@nonl
 #@-node:insertTitle
@@ -8748,14 +8748,14 @@ def insertTitle(self, uc, isSubTitle = False):
 def fixupSections(self):
     """Make corrections to the list of sections
     to reflect the syntax for 'Title' and 'Subtitle'
-    
+
     If the first section heading is a unique over/under
     it is a title, and should stay in the root section.
-    
+
     If the second section heading is a unique over/under
     it is a subtitle and should remain in the root section.
     """
-    
+
     def isUnique(uc, start):
         index = start
         while index < len(self.sections):
@@ -8763,7 +8763,7 @@ def fixupSections(self):
                 return False
             index += 1
         return True                
-    
+
     # self.sections[0] is root, a special case
     underline_first = self.sections[1]['underline_character'] 
     if len(underline_first) > 1:
@@ -8786,7 +8786,7 @@ def contents2String(self):
     self.sections[index]['contents'] to a string
     suitable for sticking into a Leo body
     """
-    
+
     for section in self.sections:
         section['contents'] = '\n'.join(section['contents'])
 #@nonl
@@ -8800,7 +8800,7 @@ def processLines(self):
         -underline_character
     """
     line_count = len(self.lines)
-    
+
     while self.index < line_count:
         if self.isCharacterLine() and self.isSectionHead():
             # isCharacterLine() and isSectionHead() do all the housekeeping
@@ -8831,18 +8831,18 @@ def __init__(self, nodes):
     underline_character, title, contents 
     """
     self.nodes = nodes
-    
+
     # self.levels is a dictionary, the keys
     # are underline_character and the value is the
     # last Leo node created at that level
     self.levels = {}
-    
+
     # self.underline_characters is a list of the underline characters
     # in the order of levels. The first is always 'root'
     self.underline_characters = ['root',]
-    
-    
-        
+
+
+
 
 #@-node:__init__
 #@+node:processNodes
@@ -8850,23 +8850,23 @@ def processNodes(self):
     """Step through the list of nodes created by
     parseReST creating the appropriate Leo nodes
     """
-    
+
     # Create root node as a sibling of current node
     root = p.insertAfter()
     self.levels['root'] = root
-    
+
     rootstring = self.nodes[0]['contents']
     roottitle = self.nodes[0]['title']
     root.setBodyString(rootstring)
     root.setHeadString(roottitle)
-    
+
     # step through the rest of the nodes
     index = 1
     while index < len(self.nodes):
         uc = self.nodes[index]['underline_character']
         title = self.nodes[index]['title']
         contents = self.nodes[index]['contents']
-        
+
         # this level exists, insert the node
         if self.levels.has_key(uc):
             # get parent of this node
@@ -8889,7 +8889,7 @@ def processNodes(self):
             self.levels[uc]  = current
             current.setHeadString(title)
             current.setBodyString(contents)
-            
+
         index += 1
 #@nonl
 #@-node:processNodes
@@ -8898,7 +8898,7 @@ def processNodes(self):
 def ReST2Leo(input):
     """ A wrapper for ParseReST and BuildLeo
     """
-    
+
     if type(input) == type(""):
         if input.startswith("http"):
             from urllib import urlopen
@@ -8913,7 +8913,7 @@ def ReST2Leo(input):
             except IOError:
                 print 'Unable to open file %s' % input
                 return
-                
+
     parsed = ParseReST(data)
     sections = parsed.processLines()
     nodes = BuildLeo(sections)
@@ -9088,7 +9088,7 @@ else:
 #@nonl
 #@+node:getSel
 def getSel(c):
-    
+
     w = c.frame.body.bodyCtrl
     sel = g.app.gui.getSelectionRange(w)
     if not sel:
@@ -9099,11 +9099,11 @@ def getSel(c):
 #@-node:getSel
 #@+node:findNodes
 def findNodes(p):
-    
+
     '''Find the top, work, before and after nodes.
     p should be in tree whose root is a @test node containing
     'work', 'before' and 'after' children.'''
-    
+
     for p in p.self_and_parents_iter():
         if p.headString().startswith('@test '):
             break
@@ -9123,17 +9123,17 @@ def findNodes(p):
 #@-node:findNodes
 #@+node:putSelectionInHeadline
 def putSelectionInHeadline (c,p,prefix,sel):
-    
+
     # g.trace(p.headString(),repr(sel))
-    
+
     if not sel:
         sel = ('1.0','1.0')
 
     s = '%s sel=%s,%s' % (prefix,sel[0],sel[1])
 
     c.setHeadString(p,s)
-    
-    
+
+
 #@nonl
 #@-node:putSelectionInHeadline
 #@-node:@command do-before
@@ -9160,7 +9160,7 @@ else:
 #@nonl
 #@+node:getSel
 def getSel(c):
-    
+
     w = c.frame.body.bodyCtrl
     sel = g.app.gui.getSelectionRange(w)
     if not sel:
@@ -9171,11 +9171,11 @@ def getSel(c):
 #@-node:getSel
 #@+node:findNodes
 def findNodes(p):
-    
+
     '''Find the top, work, before and after nodes.
     p should be in tree whose root is a @test node containing
     'work', 'before' and 'after' children.'''
-    
+
     for p in p.self_and_parents_iter():
         if p.headString().startswith('@test '):
             break
@@ -9195,17 +9195,17 @@ def findNodes(p):
 #@-node:findNodes
 #@+node:putSelectionInHeadline
 def putSelectionInHeadline (c,p,prefix,sel):
-    
+
     # g.trace(p.headString(),repr(sel))
-    
+
     if not sel:
         sel = ('1.0','1.0')
 
     s = '%s sel=%s,%s' % (prefix,sel[0],sel[1])
 
     c.setHeadString(p,s)
-    
-    
+
+
 #@nonl
 #@-node:putSelectionInHeadline
 #@-node:@command do-after
@@ -9249,7 +9249,7 @@ finally:
 #@nonl
 #@+node:pass1
 def pass1(root):
-    
+
     '''Remove trailing newlines from all nodes.'''
 
     count = 0 ; seen = {}
@@ -9264,16 +9264,16 @@ def pass1(root):
                 seen [p.v.t] = True
                 p.v.t.setDirty() # Just set the bit: do **not** redraw!
                 count += 1
-                
+
     g.es_print("pass 1: %d nodes converted" % count)
 #@-node:pass1
 #@+node:pass2
 def pass2():
-    
+
     '''Quickly mark all changed @file nodes dirty.'''
-    
+
     count = 0
-    
+
     # Important: we must look at **all** nodes because of clones.
     for p in c.allNodes_iter():
         if p.isAnyAtFileNode():
@@ -9283,7 +9283,7 @@ def pass2():
                     root.setDirty()
                     count += 1
                     break
-                    
+
     g.es_print("pass 2: %d @file/@thin nodes set dirty" % count)
 #@-node:pass2
 #@-node:Set trailing ws script
@@ -9561,7 +9561,7 @@ latex_keywords = [
     "\\Xi", "\\xi",
     #Z
     "\\zeta" ]
-    
+
 # A test at the very end.  This is jolly.
 
 latex_keywords = [
@@ -9685,7 +9685,7 @@ latex_keywords = [
     "\\Xi", "\\xi",
     #Z
     "\\zeta" ]
-    
+
 # A test at the very end.  This is jolly.
 
 latex_keywords = [
@@ -9809,7 +9809,7 @@ latex_keywords = [
     "\\Xi", "\\xi",
     #Z
     "\\zeta" ]
-    
+
 # A test at the very end.  This is jolly.
 #@nonl
 #@-node:latex keywords
@@ -13489,12 +13489,12 @@ highlighting to support embedded PHP:
        <BEGIN>&lt;?php</BEGIN>
        <END>?&gt;</END>
    </SPAN>
-   
+
    <SPAN TYPE="MARKUP" DELEGATE="php::PHP">
        <BEGIN>&lt;?</BEGIN>
        <END>?&gt;</END>
    </SPAN>
-   
+
    <SPAN TYPE="MARKUP" DELEGATE="php::PHP">
        <BEGIN>&lt;%=</BEGIN>
        <END>%&gt;</END>
@@ -14022,12 +14022,12 @@ highlighting to support embedded PHP:
        <BEGIN>&lt;?php</BEGIN>
        <END>?&gt;</END>
    </SPAN>
-   
+
    <SPAN TYPE="MARKUP" DELEGATE="php::PHP">
        <BEGIN>&lt;?</BEGIN>
        <END>?&gt;</END>
    </SPAN>
-   
+
    <SPAN TYPE="MARKUP" DELEGATE="php::PHP">
        <BEGIN>&lt;%=</BEGIN>
        <END>%&gt;</END>
@@ -14272,7 +14272,7 @@ When set to “true”, multiple-line expressions delimited by parentheses are a
     retVal.x = (int)(horizontalOffset
         + Chunk.offsetToX(info.chunks,
                           offset));
- 
+
 With this setting disabled, the text would look like so::
 
     retVal.x = (int)(horizontalOffset
@@ -14735,7 +14735,7 @@ if 1:
                     print hasattr(mode,s),modeName,s
         else: bad += 1
     print 'good: %d, bad: %d, skipped: %d' % (good,bad,skipped)
-    
+
 #@nonl
 #@-node:import from modes
 #@+node:errors
@@ -14865,7 +14865,7 @@ else: # translate two representative files.
 #@+node:top-level
 #@+node:convert
 def convert (c,inputFileName,outputFileName):
-    
+
     junk, fn = g.os_path_split(inputFileName)
     language, junk = g.os_path_splitext(fn)
     g.trace(language)
@@ -14890,13 +14890,13 @@ def parse_jEdit_file(inputFileName,language):
 
     if not inputFileName:
         return None
-    
+
     if not inputFileName.endswith('.xml'):
         inputFileName = fileinputFileNameame + '.xml'
 
     path = g.os_path_join(g.app.loadDir,'../','modes',inputFileName)
     path = g.os_path_normpath(path)
-    
+
     try: f = open(path)
     except IOError:
         g.trace('can not open %s'%path)
@@ -14922,27 +14922,27 @@ def parse_jEdit_file(inputFileName,language):
 #@-node:parse_jEdit_file
 #@+node:munge
 def munge(s):
-    
+
     '''Munge a mode name so that it is a valid python id.'''
-    
+
     valid = string.ascii_letters + string.digits + '_'
-    
+
     return ''.join([g.choose(ch in valid,ch.lower(),'_') for ch in s])
 #@nonl
 #@-node:munge
 #@-node:top-level
 #@+node:class modeClass
 class modeClass:
-    
+
     '''A class representing one jEdit language-description mode.
-    
+
     Use getters to access the attributes, properties and rules of this mode.'''
-    
+
     @others
 #@nonl
 #@+node: mode.__init__
 def __init__ (self,contentHandler,fileName):
-    
+
     # g.trace('mode',fileName)
 
     self.contentHandler = contentHandler
@@ -14960,7 +14960,7 @@ def __init__ (self,contentHandler,fileName):
     self.numberOfErrors = 0
     self.numberOfPropertyAttributes = 0
     self.numberOfRuleAttributes = 0
-    
+
     # List of boolean attributes.
     self.boolAttrs = [
         'at_line_start','at_whitespace_end','at_word_start',
@@ -14996,9 +14996,9 @@ def __init__ (self,contentHandler,fileName):
 #@-node: mode.__init__
 #@+node: mode.__str__ & __repr__
 def __str__ (self):
-    
+
     return '<modeClass for %s>' % self.fileName
-    
+
 __repr__ = __str__
 #@nonl
 #@-node: mode.__str__ & __repr__
@@ -15007,7 +15007,7 @@ __repr__ = __str__
 #@nonl
 #@+node:fullDelegate
 def fullDelegate (self,delegate):
-    
+
     if delegate:
         delegate = delegate.lower()
         i = delegate.find('::')
@@ -15021,22 +15021,22 @@ def fullDelegate (self,delegate):
 #@-node:fullDelegate
 #@+node:escapeString & quoteString
 def escapeString (self,s):
-    
+
     '''Return string s enclosed in double quotes.'''
-    
+
     if type(s) == type([]): s = ''.join(s)
-    
+
     # Order is important: escape backspaces first.
     return '"%s"' % s.replace('\\','\\\\').replace('"','\\"').replace('\t','\\t')
-    
+
 quoteString = escapeString
 #@nonl
 #@-node:escapeString & quoteString
 #@+node:put, putTripleString
 def put (self,s):
-    
+
     self.outputFile.write(s)
-    
+
 def putTripleString(self,s):
 
     self.put(g.adjustTripleString(s,self.tab_width))
@@ -15044,7 +15044,7 @@ def putTripleString(self,s):
 #@-node:put, putTripleString
 #@+node:putAttributes
 def putAttributes (self):
-    
+
     dd = {}
     data = (
         ('default','null'),
@@ -15067,11 +15067,11 @@ def putAttributes (self):
                 else: val = g.choose(val,val,'')
             # if val: g.trace(key,repr(val))
             d [key] = val
-            
+
 
         self.putDict('%s_attributes_dict' % (prefix),d)
         dd [ prefix ] = '%s_attributes_dict' % (prefix)
-        
+
     self.put('# Dictionary of attributes dictionaries for %s mode.\n' % (self.modeName))
     self.putDict('attributesDictDict',dd,escape=False)
 #@nonl
@@ -15085,7 +15085,7 @@ def putDict (self,name,theDict,escape=True):
     s = ''.join(['\t%s: %s,\n' % (esc(key),esc2(theDict.get(key))) for key in keys])
     if s: s = '\n' + s
     self.put('%s = {%s}\n\n' % (name,s))
-    
+
 def putDictOfLists (self,name,theDict,strings=False):
 
     esc = self.escapeString
@@ -15128,16 +15128,16 @@ def putImportDict (self):
 #@-node:putImportDict
 #@+node:putKeywordsData
 def putKeywordsData (self):
-    
+
     dd = {}
 
     for ruleset in self.rulesets:
-       
+
         prefix = '%s_%s' % (self.modeName,ruleset.name)
-        
+
         ignore_case = ruleset.attributes.get('ignore_case',False)
         # g.trace(ignore_case)
-    
+
         self.put('# Keywords dict for %s ruleset.\n' % (prefix))
 
         for rule in ruleset.rules:
@@ -15162,14 +15162,14 @@ def putKeywordsData (self):
 
         self.putDict('%s_keywords_dict' % (prefix),d)
         dd [ prefix ] = '%s_keywords_dict' % (prefix)
-        
+
     self.put('# Dictionary of keywords dictionaries for %s mode.\n' % (self.modeName))
     self.putDict('keywordsDictDict',dd,escape=False)
 #@nonl
 #@-node:putKeywordsData
 #@+node:putList
 def putList (self,name,theList,escape=True,lineCount=0):
-    
+
     def comma(i):
         return ',' # return g.choose(i==len(theList)-1,'',',')
     def nl(i):
@@ -15190,9 +15190,9 @@ def putList (self,name,theList,escape=True,lineCount=0):
 #@-node:putList
 #@+node:putModeProperties
 def putModeProperties (self,language):
-    
+
     d = {}
-    
+
     self.put('# Properties for %s mode.\n' % (language))
 
     for prop in self.modeProperties:
@@ -15205,7 +15205,7 @@ def putModeProperties (self,language):
 #@-node:putModeProperties
 #@+node:putRule & rule creators
 def putRule (self, rule):
-    
+
     '''Call the rule creator for the given rule.'''
 
     d = {
@@ -15221,17 +15221,17 @@ def putRule (self, rule):
         'span_regexp':      self.putSpanRegexp,
         'terminate':        self.putTerminate,
     }
-    
+
     # Call the rule creator.
     f = d.get(rule.name,self.putBadRule)
     val = f (rule)
     self.handlerCount += 1
-        
+
     return val
 #@nonl
 #@+node:putBadRule
 def putBadRule (self,rule):
-    
+
     self.put('\n\n# *****no output creator for %s*****' % rule.name)
 #@nonl
 #@-node:putBadRule
@@ -15263,7 +15263,7 @@ def %s_rule%d(colorer, s, i):
 #@-node:putEolSpan
 #@+node:putEolSpanRegexp
 def putEolSpanRegexp (self,rule):
-    
+
     quote = self.quoteString
     seq = rule.getSeq(rule.name)
 
@@ -15292,7 +15292,7 @@ def %s_rule%d(colorer, s, i):
 # Do nothing here: putImportDict creates x.importDict.
 
 def putImport (self,rule):
-    
+
     # Decrement the count to indicate that this method did not generate a rule.
     self.handlerCount -= 1
     return ''
@@ -15313,7 +15313,7 @@ def %s_rule%d(colorer, s, i):
 #@-node:putKeywords
 #@+node:putMarkFollowing
 def putMarkFollowing (self,rule):
-    
+
     quote = self.quoteString
     seq = rule.getSeq(rule.name)
 
@@ -15337,10 +15337,10 @@ def %s_rule%d(colorer, s, i):
 #@-node:putMarkFollowing
 #@+node:putMarkPrevious
 def putMarkPrevious (self,rule):
-    
+
     quote = self.quoteString
     seq = rule.getSeq(rule.name)
-    
+
     s = '''\n\
 def %s_rule%d(colorer, s, i):
     return colorer.match_mark_previous(s, i, kind=%s, pattern=%s,
@@ -15385,7 +15385,7 @@ def %s_rule%d(colorer, s, i):
 #@-node:putSeq
 #@+node:putSeqRegexp
 def putSeqRegexp (self,rule):
-    
+
     quote = self.quoteString
     seq = rule.getSeq(rule.name)
 
@@ -15410,7 +15410,7 @@ def %s_rule%d(colorer, s, i):
 #@-node:putSeqRegexp
 #@+node:putSpan
 def putSpan (self,rule):
-    
+
     quote = self.quoteString
     begin,end = rule.getSpan()
 
@@ -15433,14 +15433,14 @@ def %s_rule%d(colorer, s, i):
         rule.getBoolAttrib('no_line_break'),
         rule.getBoolAttrib('no_word_break'),
     )
-    
+
     self.putTripleString(s)
     return begin[0]
 #@nonl
 #@-node:putSpan
 #@+node:putSpanRegexp
 def putSpanRegexp (self,rule):
-    
+
     quote = self.quoteString
     begin,end = rule.getSpan()
 
@@ -15464,16 +15464,16 @@ def %s_rule%d(colorer, s, i):
         rule.getBoolAttrib('no_line_break'),
         rule.getBoolAttrib('no_word_break'),
     )
-    
+
     self.putTripleString(s)
     return begin[0]
 #@nonl
 #@-node:putSpanRegexp
 #@+node:putTerminate
 def putTerminate (self,rule):
-    
+
     quote = self.quoteString
-    
+
     n = rule.getIntAttrib('at_char')
     if n == None: return
 
@@ -15491,7 +15491,7 @@ def %s_rule%d(colorer, s, i):
 #@-node:putRule & rule creators
 #@+node:putRules
 def putRules (self):
-    
+
     '''Create all rule matchers, a rules dict for each ruleset and x.rulesDictDict.'''
 
     d = {} ; d2Count = 0
@@ -15526,7 +15526,7 @@ def putRules (self):
 #@-node:putRules
 #@+node:write
 def write (self,theFile,language):
-    
+
     # Compute all the letters that can occur in a keyword.
     self.keywordChars = [ch for ch in string.letters + string.digits + '@']
     for ruleset in self.rulesets:
@@ -15538,7 +15538,7 @@ def write (self,theFile,language):
                         self.keywordChars.append(ch)
     self.keywordChars = ''.join(self.keywordChars)
     # g.trace('keywordChars',repr(self.keywordChars))
-    
+
     self.outputFile = theFile
     self.put('# Leo colorizer control file for %s mode.\n' % language)
     self.put('# This file is in the public domain.\n\n')
@@ -15553,23 +15553,23 @@ def write (self,theFile,language):
 #@+node: Printing...
 #@+node:printModeAttributes, printRulesetAttributes & printAttributesHelper
 def printModeAttributes (self):
-    
+
     self.printAttributesHelper('mode attributes',self.attributes)
-    
+
 def printRulesetAttributes (self,ruleset,tag=None):
 
     if not tag: tag = 'main ruleset'
-    
+
     self.printAttributesHelper(tag,ruleset.attributes)
-    
+
 def printAttributesHelper (self,kind,attrs):
-    
+
     print '%-15s' % (kind),'attrs:',attrs
 #@nonl
 #@-node:printModeAttributes, printRulesetAttributes & printAttributesHelper
 #@+node:printProperty
 def printProperty (self,theProperty):
-    
+
     # A property is a bunch.
     d = theProperty.attributes
     if d:
@@ -15578,7 +15578,7 @@ def printProperty (self,theProperty):
 #@-node:printProperty
 #@+node:printRule
 def printRule (self,rule):
-    
+
     # A rule is a g.Bunch.
     if rule.name == 'keywords':
         print '%-15s' % ('rule:keywords'),
@@ -15599,12 +15599,12 @@ def printRule (self,rule):
             if d:  print 'attrs:',d,
             if d2: print 'contents:',d2,
             print
-           
+
 #@nonl
 #@-node:printRule
 #@+node:printRuleset
 def printRuleset (self,ruleset,tag):
-    
+
     self.printRulesetAttributes(ruleset,tag)
 
     for rule in self.rulesets[0].rules:
@@ -15623,7 +15623,7 @@ def printSummary (self,printStats=True):
         print 'rule attributes',self.numberOfRuleAttributes
 
     self.printModeAttributes()
-    
+
     for bunch in self.modeProperties:
         self.printProperty(bunch)
 
@@ -15633,9 +15633,9 @@ def printSummary (self,printStats=True):
 #@-node: Printing...
 #@+node:doAttribute
 def doAttribute (self,name,val):
-    
+
     name = str(name.lower())
-    
+
     if name in self.boolAttrs:
         val = g.choose(val.lower()=='true',True,False)
     else:
@@ -15659,12 +15659,12 @@ def doAttribute (self,name,val):
 #@-node:doAttribute
 #@+node:doContent
 def doContent (self,elementName,content):
-    
+
     if not content:
         return
-    
+
     name = str(elementName.lower())
-    
+
     if self.inRule('keywords'):
         # g.trace('in keywords',name,content)
         d = self.rule.keywordsDict
@@ -15681,7 +15681,7 @@ def doContent (self,elementName,content):
 def endElement (self,elementName):
 
     name = elementName.lower()
-    
+
     if name == 'props':
         self.inProps = True
     if name == 'rules':
@@ -15710,7 +15710,7 @@ def endElement (self,elementName):
 #@-node:endElement
 #@+node:error
 def error (self,message):
-    
+
     self.numberOfErrors += 1
 
     self.contentHandler.error(message)
@@ -15719,14 +15719,14 @@ def error (self,message):
 #@+node:getters
 def getAttributes (self):
     return self.attributes
-    
+
 def getAttributesForRuleset (self,ruleset):
     bunch = ruleset
     return bunch.attributes
-    
+
 def getFileName (self):
     return self.fileName
-    
+
 def getKeywords (self,n,ruleset):
     bunch = ruleset
     keywords = bunch.keywords
@@ -15741,14 +15741,14 @@ def getLanguage (self):
 
 def getPropertiesForMode (self):
     return self.props
-    
+
 def getPropertiesForRuleset (self,name=''):
     bunch = self.getRuleset(name)
     if bunch:
         return bunch.properties
     else:
         return []
-    
+
 def getRuleset(self,name=''):
     if not name:
         return self.rulesets[0] # Return the main ruleset.
@@ -15759,7 +15759,7 @@ def getRuleset(self,name=''):
 
 def getRulesets(self):
     return self.rulesets
-    
+
 def getRulesForRuleset (self,name=''):
     bunch = self.getRuleset(name)
     if bunch:
@@ -15778,7 +15778,7 @@ def inRule (self,elementName):
 def startElement (self,elementName):
 
     name = elementName.lower()
-    
+
     if name == 'props':
         self.inProps = True
     if name == 'rules':
@@ -15804,24 +15804,24 @@ def startElement (self,elementName):
 #@-node:class modeClass
 #@+node:class rulesetClass
 class rulesetClass:
-    
+
     @others
 #@nonl
 #@+node:ctor & __str__
 def __init__ (self,attributes,keywords,properties,rules):
-        
+
     self.name=munge(attributes.get('set','main'))
     self.attributes=attributes.copy() # A dict.
     self.properties=properties[:] # A list.
     self.keywords=keywords # A bunch.
     self.rules=rules[:] # A list.
-    
+
     # g.trace('ruleset',self.name or 'main')
-        
+
     self.defaultColor = self.attributes.get('default')
-    
+
 def __str__ (self):
-    
+
     return '<ruleset %s>' % self.name
 
 __repr__ = __str__
@@ -15830,24 +15830,24 @@ __repr__ = __str__
 #@-node:class rulesetClass
 #@+node:class ruleClass
 class ruleClass:
-    
+
     '''A class to represent one xml rule.'''
-    
+
     @others
 #@nonl
 #@+node:ctor & __str__
 def __init__ (self,name):
-    
+
     self.attributes = {}
     self.contents = {}
     self.keywordsDict = {}
     self.name = name
 
 def __str__ (self):
-    
+
     return '<rule %s\nattr: %s\ncontents: %s>' % (
         self.name,g.dictToString(self.attributes),g.dictToString(self.contents))
-    
+
 __repr__ = __str__
 #@nonl
 #@-node:ctor & __str__
@@ -15856,7 +15856,7 @@ def getBoolAttrib(self,name):
     d = self.attributes
     val = d.get(name)
     return g.choose(val,'True','False')
-    
+
 def getIntAttrib(self,name):
     d = self.attributes
     val = d.get(name)
@@ -15873,7 +15873,7 @@ def getSpan (self):
     begin = d.get('begin','')
     end   = d.get('end','')
     return begin,end
-    
+
 def getStrAttrib(self,name):
     d = self.attributes
     val = d.get(name,'')
@@ -15888,9 +15888,9 @@ def getSeq(self,kind):
 #@-node:class ruleClass
 #@+node:class contentHandler (xml.sax.saxutils.XMLGenerator)
 class contentHandler (xml.sax.saxutils.XMLGenerator):
-    
+
     '''A sax content handler class that handles jEdit language-description files.
-    
+
     Creates mode that can be retrieved using the getMode method.'''
 
     @others
@@ -15904,18 +15904,18 @@ def __init__ (self,c,inputFileName,language):
 
     # Init the base class.
     xml.sax.saxutils.XMLGenerator.__init__(self)
-    
+
     # Non-mode statistics.
     self.numberOfAttributes = 0
     self.numberOfElements = 0
-    
+
     # Options...
     self.ignoreWs = True # True: don't print contents with only ws.
     self.newLineAfterStartElement = [
         'keywords','mode','props','property','rules','span','eol_span',
         # 'seq',
     ]
-    
+
     # Printing options
     if opt_print_elements:
         self.printAllElements = True
@@ -15933,7 +15933,7 @@ def __init__ (self,c,inputFileName,language):
             #'span',
             #'seq',
         ]
-        
+
         if self.printAllElements:
             self.suppressContent = []
         else:
@@ -15943,7 +15943,7 @@ def __init__ (self,c,inputFileName,language):
         self.printCharacters = False
         self.printAttributes = False
         self.printElements = []
-  
+
     # Semantics: most of these should be mode ivars.
     self.elementStack = []
     self.mode = None # The present mode, or None if outside all modes.
@@ -15953,13 +15953,13 @@ def __init__ (self,c,inputFileName,language):
 #@+node:helpers
 #@+node:attrsToList
 def attrsToList (self,attrs):
-    
+
     '''Convert the attributes to a list of g.Bunches.
-    
+
     attrs: an Attributes item passed to startElement.
-    
+
     sep: the separator charater between attributes.'''
-    
+
     return [
         g.Bunch(name=name,val=attrs.getValue(name))
         for name in attrs.getNames()
@@ -15968,11 +15968,11 @@ def attrsToList (self,attrs):
 #@-node:attrsToList
 #@+node:attrsToString
 def attrsToString (self,attrs,sep='\n'):
-    
+
     '''Convert the attributes to a string.
-    
+
     attrs: an Attributes item passed to startElement.
-    
+
     sep: the separator charater between attributes.'''
 
     result = [
@@ -15991,7 +15991,7 @@ def clean(self,s):
 #@-node:clean
 #@+node:error
 def error (self, message):
-    
+
     print
     print
     print 'XML error: %s' % (message)
@@ -16014,7 +16014,7 @@ def printStartElement(self,name,attrs):
 #@-node:printStartElement
 #@+node:printSummary
 def printSummary (self):
-    
+
     print 'Summary...'
     print '-' * 10, 'non- mode statistics'
     print 'modes',len(self.modes)
@@ -16050,26 +16050,26 @@ def endDocument(self):
 #@-node:endDocument
 #@+node:startDocument
 def startDocument(self):
-    
+
     pass
 #@nonl
 #@-node:startDocument
 #@-node: Do nothing...
 #@+node:characters
 def characters(self,content):
-    
+
     # content = content.replace('\r','').strip()
     content = content.replace('\r','')
     if content.strip(): content = content.strip()
     content = self.clean(content)
 
     elementName = self.elementStack and self.elementStack[-1].lower() or '<no element name>'
-    
+
     if self.printAllElements:
         print content,
     elif self.printCharacters and content and elementName not in self.suppressContent:
         print 'content:',elementName,repr(content)
-            
+
     if self.mode:
         self.mode.doContent(elementName,content)
     else:
@@ -16087,12 +16087,12 @@ def endElement(self,name):
 #@-node:endElement
 #@+node:startElement
 def startElement(self,name,attrs):
-    
+
     if self.mode:
         self.mode.numberOfElements += 1
     else:
         self.numberOfElements += 1
-        
+
     self.elementStack.append(name)
     self.doStartElement(name,attrs)
 #@nonl
@@ -16100,12 +16100,12 @@ def startElement(self,name,attrs):
 #@-node:sax over-rides
 #@+node:doStartElement
 def doStartElement (self,elementName,attrs):
-    
+
     if self.printAllElements or elementName.lower() in self.printElements:
         self.printStartElement(elementName,attrs)
 
     elementName = elementName.lower()
-    
+
     if elementName == 'mode':
         if self.mode:
             self.error('Multiple modes')
@@ -16125,10 +16125,10 @@ def doStartElement (self,elementName,attrs):
 #@-node:doStartElement
 #@+node:doEndElement
 def doEndElement (self,elementName):
-    
+
     if self.printAllElements or elementName.lower() in self.printElements:
         print '</' + self.clean(elementName).strip() + '>'
-        
+
     if elementName.lower() == 'mode':
         if opt_print_summary: self.mode.printSummary()
     elif self.mode:
@@ -16141,7 +16141,7 @@ def doEndElement (self,elementName):
 #@-node:doEndElement
 #@+node:getMode
 def getMode (self):
-    
+
     return self.mode
 #@nonl
 #@-node:getMode
@@ -16382,7 +16382,7 @@ dest = r'c:\OutlookBackup'
 if not g.os_path_exists(dest):
     g.es_print('***** Creating %s' % dest)
     os.mkdir(dest)
-    
+
 for inputName in files:
     base = g.os_path_basename(inputName)
     outputName = g.os_path_join(dest,base)
@@ -16410,9 +16410,9 @@ To restore or import Outlook Express data:
 • Import the news account file 
 
 Step 1: Copy Mail Files to a Backup Folder (Make a backup copy of your Outlook Express e-mail message files):
-    
+
 (EKR: get the file name)
-    
+
 1. On the Tools menu, click Options. 
 2. On the Maintenance tab, click Store Folder. 
 3. Select the folder location, and then press CTRL+C to copy the location.
@@ -16453,7 +16453,7 @@ To export your Outlook Express address book: 1. On the File menu, click Export, 
 8. Click OK and then click Close. 
 
 Step 3: Make a backup copy of your Outlook Express mail account:
-    
+
 1. On the Tools menu, click Accounts. 
 2. On the Mail tab, click the mail account that you want to export, and then click Export. 
 3. In the Save In box, locate the Mail Backup folder on your desktop, and then click Save. 
@@ -16461,7 +16461,7 @@ Step 3: Make a backup copy of your Outlook Express mail account:
 5. Click Close. 
 
 Step 4: Make a backup copy of your Outlook Express news accounts:
-    
+
 1. On the Tools menu, click Accounts. 
 2. On the News tab, click the news account that you want to export, and then click Export. 
 3. In the Save In box, use locate the Mail Backup folder on your desktop, and then click Save. 
@@ -16546,7 +16546,7 @@ Similarly, you can get attribute values with corresponding getters.
 #@-node:General note about attributes
 #@+node:Cluster(Graph)
 class Cluster(Graph) 
- 
+
 Methods:
 
 __init__(self, graph_name='subG', suppress_disconnected=False, **attrs)
@@ -16566,12 +16566,12 @@ attributes = ['pencolor', 'bgcolor', 'labeljust', 'labelloc', 'URL', 'fontcolor'
 #@+node:Common
 class Common 
     Common information to several classes.
- 
+
 Should not be directly used, several classes are derived from this one.
-  
+
 char_range(self, a, b)
 Generate a list containing a range of characters.
- 
+
 is_ID(self, s)
 Checks whether a string is an dot language ID.
 
@@ -16581,15 +16581,15 @@ chars_ID = None
 parent_graph = None 
 
 
- 
+
 #@-node:Common
 #@+node:Dot(Graph)
 class Dot(Graph) 
     A container for handling a dot language file.
- 
+
 This class implements methods to write and process a dot language file.
 
-  
+
 Methods defined here:
 
 __init__(self, **args)
@@ -16603,17 +16603,17 @@ progs = None
 #@+node:create and create_xxx
 create(self, prog='dot', format='ps')
 Creates and returns a Postscript representation of the graph.
- 
+
 create will write the graph to a temporary dot file and process
 it with the program given by 'prog' (which defaults to 'twopi'),
 reading the Postscript output and returning it as a string is the
 operation is successful.
 On failure None is returned.
- 
+
 There's also the preferred possibility of using:
- 
+
         create_'format'(prog='program')
-        
+
 which are automatically defined for all the supported formats.
 
 [create_ps(), create_gif(), create_dia(), ...]
@@ -16622,7 +16622,7 @@ which are automatically defined for all the supported formats.
 #@+node:write and write_xxx
 write(self, path, prog='dot', format='raw')
 Writes a graph to a file.
- 
+
 Given a filename 'path' it will open/create and truncate
 such file and write on it a representation of the graph
 defined by the dot object and in the format specified by
@@ -16635,11 +16635,11 @@ The output can be processed by any of graphviz tools, defined
 in 'prog', which defaults to 'dot'
 
 Returns True or False according to the success of the write operation.
- 
+
 There's also the preferred possibility of using:
- 
+
         write_'format'(path, prog='program')
-        
+
 which are automatically defined for all the supported formats.
 [write_ps(), write_gif(), write_dia(), ...]
 #@nonl
@@ -16648,24 +16648,24 @@ which are automatically defined for all the supported formats.
 #@+node:Edge
 class Edge(__builtin__.object, Common) 
     A graph edge.
- 
+
 This class represents a graph's edge with all its attributes.
- 
+
 edge(src, dst, attribute=value, ...)
- 
+
 src: source node's name
 dst: destination node's name
- 
+
 
 --------------------------------------------------------------------------------
 Methods defined here:
 
 __eq__(self, edge)
 Compare two edges.
- 
+
 If the parent graph is directed, arcs linking
 node A to B are considered equal and A->B != B->A
- 
+
 If the parent graph is undirected, any edge
 connecting two nodes is equal to any other
 edge connecting the same nodes, A->B == B->A
@@ -16682,7 +16682,7 @@ parse_node_ref(self, node_str)
 
 set(self, name, value)
 Set an attribute value by name.
- 
+
 Given an attribute 'name' it will set its value to 'value'.
 There's always the possibility of using the methods:
         set_'name'(value)
@@ -16703,7 +16703,7 @@ attributes = ['style', 'target', 'pos', 'layer', 'tooltip', 'color', 'showboxes'
 #@+node:Error
 class Error(exceptions.Exception) 
     General error handling class.
-  
+
 Methods defined here:
 
 __init__(self, value)
@@ -16713,10 +16713,10 @@ __str__(self)
 #@+node:Graph(Common)
 class Graph(__builtin__.object, Common) 
     Class representing a graph in Graphviz's dot language.
- 
+
 This class implements the methods to work on a representation
 of a graph in Graphviz's dot language.
- 
+
 
 Data and other attributes:
 
@@ -16731,7 +16731,7 @@ attributes = ['Damping', 'bb', 'center', 'clusterrank', 'compound', 'concentrate
 #@+node:Graph.__init__
 __init__(self, graph_name='G', type='digraph', strict=False, suppress_disconnected=False, simplify=False, **attrs)
 
- 
+
 graph_name: the graph's name
 
 type: 'graph' or 'digraph'
@@ -16741,15 +16741,15 @@ suppress_disconnected:
 
 simplify:
     if True it will avoid displaying equal edges, i.e. only one edge between two nodes. removing the duplicated ones.
-        
+
 All the attributes defined in the Graphviz dot language should be supported.
- 
+
 Attributes can be set through the dynamically generated methods:
- 
+
 set_[attribute name], i.e. set_size, set_fontname
- 
+
 or using the instance's attributes:
- 
+
  Graph.[attribute name], i.e. graph_instance.label, graph_instance.fontname
 #@nonl
 #@-node:Graph.__init__
@@ -16789,7 +16789,7 @@ Get the graph's name.
 get_node(self, name)
 Given a node's name the corresponding Node instance will be returned.
 Returns a list, a single Node or None.
- 
+
 get_node_list(self)
 Returns the list of Node instances composing the graph.
 
@@ -16817,7 +16817,7 @@ Get the graph's type, 'graph' or 'digraph'.
 #@+node:setters...
 set(self, name, value)
 Set an attribute value by name.
- 
+
 set_'name'(value) are defined for all the existing attributes.
 
 set_graph_parent(self, parent)
@@ -16837,7 +16837,7 @@ This option is only valid for top level graphs.
 
 set_suppress_disconnected(val)
 Suppress disconnected nodes in the output graph.
- 
+
 set_type(self, graph_type)
 Set the graph's type, 'graph' or 'digraph'.
 
@@ -16851,9 +16851,9 @@ Returns a string representation of the graph in dot language.
 #@+node:Node(Common)
 class Node(__builtin__.object, Common) 
     A graph node.
- 
+
 This class represents a graph's node with all its attributes.
- 
+
 
 Data and attributes:
 
@@ -16867,11 +16867,11 @@ attributes = ['showboxes', 'URL', 'fontcolor', 'fontsize', 'label', 'fontname', 
 #@nonl
 #@+node:Node.__init__
 node(name, attribute=value, ...)
- 
+
 name: node's name
- 
+
 All the attributes defined in the Graphviz dot language should be supported.
-  
+
 __init__(self, name, **attrs)
 #@-node:Node.__init__
 #@+node:get_name
@@ -16882,7 +16882,7 @@ Get the node's name.
 #@+node:set, set_x and set_name
 set(self, name, value)
 Set an attribute value by name.
- 
+
 Given an attribute 'name' it will set its value to 'value'.
 
 set_'name'(value) is defined for all the existing attributes.
@@ -16920,7 +16920,7 @@ attributes = ['Damping', 'bb', 'center', 'clusterrank', 'compound', 'concentrate
 find_graphviz()
 
 Locate Graphviz's executables in the system.
- 
+
 Attempts  to locate  graphviz's  executables in a Unix system.
 It will look for 'dot', 'twopi' and 'neato' in all the directories
 specified in the PATH environment variable.
@@ -16932,7 +16932,7 @@ and their paths as values.
 graph_from_adjacency_matrix(matrix, node_prefix='', directed=False)
 
 Creates a basic graph out of an adjacency matrix.
- 
+
 The matrix has to be a list of rows of values
 representing an adjacency matrix.
 The values can be anything: bool, int, float, as long
@@ -16943,11 +16943,11 @@ as they can evaluate to True or False.
 graph_from_edges(edge_list, node_prefix='', directed=False)
 
 Creates a basic graph out of an edge list.
- 
+
 The edge list has to be a list of tuples representing the nodes connected by the edge.
 
 The values can be anything: bool, int, float, str.
- 
+
 If the graph is undirected by default, it is only
 calculated from one of the symmetric halves of the matrix.
 #@-node:graph_from_edges
@@ -16955,7 +16955,7 @@ calculated from one of the symmetric halves of the matrix.
 graph_from_incidence_matrix(matrix, node_prefix='', directed=False)
 
 Creates a basic graph out of an incidence matrix.
- 
+
 The matrix has to be a list of rows of values
 representing an incidence matrix.
 The values can be anything: bool, int, float, as long
@@ -16994,14 +16994,14 @@ def addLeoNodesToGraph(p,graph,top=False):
     # Create p's vnode.
     thisNode = pydot.Node(name=vnodeRepr(p.v),label=vnodeLabel(p.v))
     graph.add_node(thisNode)
-    
+
     if p.hasChildren():
         child = p.firstChild()
         childNode = addLeoNodesToGraph(child,graph)
         graph.add_node(childNode)
         edge2 = pydot.Edge(tnodeRepr(p.v.t),vnodeRepr(child.v))
         graph.add_edge(edge2)
-        
+
         while child.hasNext():
             next = child.next()
             edge = pydot.Edge(vnodeRepr(child.v),vnodeRepr(next.v),dir="both")
@@ -17009,12 +17009,12 @@ def addLeoNodesToGraph(p,graph,top=False):
             graph.add_node(nextNode)
             graph.add_edge(edge)
             child = next
-            
+
     tnode = pydot.Node(name=tnodeRepr(p.v.t),shape="box",label=tnodeLabel(p.v.t))
     edge1 = pydot.Edge(vnodeRepr(p.v),tnodeRepr(p.v.t),arrowhead="none")
     graph.add_edge(edge1)
     graph.add_node(tnode)
-    
+
     if 0: # Confusing.
         if not top and p.v._parent:
             edge = pydot.Edge(vnodeRepr(p.v),vnodeRepr(p.v._parent),
@@ -17032,16 +17032,16 @@ def addLeoNodesToGraph(p,graph,top=False):
 #@-node:addLeoNodesToGraph
 #@+node:tnode/vnodeLabel
 def tnodeLabel(t):
-    
+
     return "t %d [%d]" % (id(t),len(t.vnodeList))
-    
+
 def vnodeLabel(v):
-    
+
     return "v %d %s" % (id(v),v.t.headString)
 #@-node:tnode/vnodeLabel
 #@+node:tnode/vnodeRepr
 def dotId(s):
-    
+
     """Convert s to a C id"""
 
     s2 = [ch for ch in s if ch in (string.letters + string.digits + '_')]
@@ -17050,9 +17050,9 @@ def dotId(s):
 def tnodeRepr(t):
 
     return "t_%d" % id(t)
-    
+
 def vnodeRepr(v):
-    
+
     return "v_%d_%s" % (id(v),dotId(v.headString()))
 #@nonl
 #@-node:tnode/vnodeRepr
@@ -17073,7 +17073,7 @@ def vnodeRepr(v):
 @
 
 To run the script:
-    
+
 1. Make the 'Exec File' node a script button.
 
 2. Select either the @test node or the @thin node.
@@ -17157,9 +17157,9 @@ import unittest
 #@-node:<< imports >>
 #@+node:getAtFileName
 def getAtFileName():
-    
+
     '''Return the full path from any kind of @file node and applicable @path directives.'''
-    
+
     # should return cwd, cd to files path
     # script should return cwd after run
 
@@ -17224,16 +17224,16 @@ import sys
 
 fhp = None
 fhp_entry = None
-    
+
 if 1:
     addMenu("none",None)
 else:
     hooks = choose(sys.platform == 'win32',
         ('open2',"new"),
         ('start2','open2',"new"))
-        
+
     print "hi"
-        
+
     registerHandler(hooks,addMenu)
 
     __version__ = ".1"
@@ -17267,7 +17267,7 @@ approach to tree walking.
 #@-node:description
 #@+node:filter
 def filter(c,e):
-    
+
     pat = re.compile(e.get())
 
     c.beginUpdate()
@@ -17293,12 +17293,12 @@ def filter(c,e):
 def OLDfilter(c,e):
 
     v = c.rootVnode()
-    
+
     nodes = []
     while v:
         nodes.append(v)
         v = v.next()
-    
+
     regex = re.compile(e.get())
     c.beginUpdate()
     try: # update...
@@ -17351,7 +17351,7 @@ def filterHoist(c):
 
     global fhp
     global e
-    
+
     if fhp is None:
 
         fhp = Tkinter.Toplevel()
@@ -17362,7 +17362,7 @@ def filterHoist(c):
 
         def closeCallback(fhp=fhp):
             fhp.withdraw()
-            
+
         def filterCallback(c=c,entry=e):
             filter(c,entry)
 
@@ -17377,14 +17377,14 @@ def filterHoist(c):
 #@-node:filterHoist
 #@+node:addMenu
 def addMenu(tag,keywords):
-    
+
     c = top()
-    
+
     trace()
-    
+
     def callback(c=c):
         filterHoist(c)
-    
+
     table = ("FilterHoist",None,callback),
 
     c.frame.menu.createMenuItemsFromTable("Outline",table)
@@ -17404,7 +17404,7 @@ import types
 #@nonl
 #@+node:go
 def go():
-    
+
     dir = "c:/prog/leoCVS/leo/"
     modules = getModules(dir)
     stats = [0] * 256
@@ -17416,7 +17416,7 @@ def go():
         modules.remove("setup")
     except: pass
     # print modules
-    
+
     for m in modules:
         try:
             print "module:", m
@@ -17426,7 +17426,7 @@ def go():
         except:
             import traceback ; traceback.print_exc()
             print "----- no matching class in", m
-            
+
     g.print_stats(stats)
 #@nonl
 #@-node:go
@@ -17441,17 +17441,17 @@ def getFiles (dir):
         root,ext = g.os_path_splitext(tail)
         if ext==".py":
             files.append(g.os_path_join(dir,f))
-            
+
     return files
 #@nonl
 #@-node:getFiles
 #@+node:getModules
 def getModules (dir):
-    
+
     """Return the list of Python files in dir."""
-    
+
     files = []
-    
+
     try:
         allFiles = os.listdir(dir)
         for f in allFiles:
@@ -17460,7 +17460,7 @@ def getModules (dir):
             if ext==".py":
                 files.append(fn)
     except: pass
-            
+
     return files
 #@nonl
 #@-node:getModules
@@ -17689,10 +17689,10 @@ while y < h:
     y += line_h
 #@+node:getImage
 def getImage(name,canvas):
-    
+
     icon = images.get(name)
     if icon: return icon
-        
+
     try:
         fullname = g.os_path_join(g.app.loadDir,"..","Icons",name)
         fullname = g.os_path_normpath(fullname)
@@ -17766,16 +17766,16 @@ shell()
 #@-node:<< use IPShellEmbed >>
 #@+node:class dummyCache
 class dummyCache:
-    
+
     @others
 #@nonl
 #@+node:ctor
 def __init__ (self,user_ns):
-    
+
     self.last_prompt = None
     self.prompt_count = 0
     self.user_ns = user_ns
-    
+
     if 1:
         self.prompt1 = dummyPrompt('name=prompt1')
         self.prompt2 = dummyPrompt('name=prompt2')
@@ -17786,24 +17786,24 @@ def __init__ (self,user_ns):
         self.ps2_str = '... '   ### self._set_prompt_str(ps2,'   .\\D.: ','... ')
         self.ps_out_str = ','   ### self._set_prompt_str(ps_out,'Out[\\#]: ','')
         pad_left=True
-            
+
         self.prompt1 = IPython.Prompts.Prompt1(self,
             sep=input_sep,prompt=self.ps1_str,pad_left=pad_left)
         self.prompt2 = IPython.Prompts.Prompt2(self,
             prompt=self.ps2_str,pad_left=pad_left)
         self.prompt_out = IPython.Prompts.PromptOut(self,
             sep='',prompt=self.ps_out_str,pad_left=pad_left)
-        
+
     self.last_prompt = self.prompt1 # Total kludge.
 #@nonl
 #@-node:ctor
 #@+node:All others
 def __len__ (self):
     return 0
-    
+
 def insert(self,n,line):
     pass
-    
+
 def pop(self):
     return ''
 #@nonl
@@ -17818,7 +17818,7 @@ class dummyPrompt (IPython.Prompts.BasePrompt):
 #@nonl
 #@+node:__init__
 def __init__(self,cache=None,sep=None,prompt=None,pad_left=False,name='prompt'):
-    
+
     self.name = name
 #@nonl
 #@-node:__init__
@@ -17828,7 +17828,7 @@ def set_p_str(self):
 
     This must be called every time the color settings change, because the
     prompt_specials global may have changed."""
-    
+
     return ###
 
     import os,time  # needed in locals for prompt string handling
@@ -17837,7 +17837,7 @@ def set_p_str(self):
                         ('${self.sep}${self.col_p}',
                          multiple_replace(prompt_specials, self.p_template),
                          '${self.col_norm}'),self.cache.user_ns,loc)
-    
+
     self.p_str_nocolor = ItplNS(multiple_replace(prompt_specials_nocolor,
                                                  self.p_template),
                                 self.cache.user_ns,loc)
@@ -17857,7 +17857,7 @@ def __str__(self):
     This for is useful for continuation and output prompts, since it is
     left-padded to match lengths with the primary one (if the
     self.pad_left attribute is set)."""
-    
+
     return self.name ###
 
     out_str = str_safe(self.p_str)
@@ -17885,7 +17885,7 @@ def cwd_filt(self,depth):
 
     $HOME is always replaced with '~'.
     If depth==0, the full path is returned."""
-    
+
     cwd = os.getcwd().replace(HOME,"~")
     out = os.sep.join(cwd.split(os.sep)[-depth:])
     if out:
@@ -17918,18 +17918,18 @@ def auto_rewrite(self,*args,**keys):
 #@-node:class dummyPrompt
 #@+node:class LeoShell
 class LeoShell (IPython.iplib.InteractiveShell):
-    
+
     @others
-    
+
     # Set the default prefilter() function (this can be user-overridden)
     prefilter = _prefilter
 #@nonl
 #@+node:ctor
 def __init__ (self,name):
-        
+
     self.shell = self
     self.name = name
-    
+
     << directory stuff >>
     << set sensible command line defaults for self.rc >>
     << define regexp's >>
@@ -17937,7 +17937,7 @@ def __init__ (self,name):
     << define namespaces >>
     << create alias table >>
     << define inpsector >>
-    
+
     self.inputcache = dummyCache(self.user_ns)
     self.outputcache = dummyCache(self.user_ns)
     self.CACHELENGTH = 0
@@ -18090,13 +18090,13 @@ self.inspector = IPython.OInspect.Inspector(ins_colors,code_colors,'NoColor')
 #@-node:ctor
 #@+node:usage
 def usage(self):
-    
+
     return 'A usage message'
 #@nonl
 #@-node:usage
 #@+node:log
 def log(self,line,continuation=None):
-    
+
     # Called by the logger (not sure how).
     if 0:
         g.trace(line)
@@ -18104,7 +18104,7 @@ def log(self,line,continuation=None):
 #@-node:log
 #@+node:system
 def system(self,s):
-    
+
     g.trace(s)
     pass
 #@nonl
@@ -18112,7 +18112,7 @@ def system(self,s):
 #@+node:_prefilter
 def _prefilter(self, line, continue_prompt):
     """Calls different preprocessors, depending on the form of line."""
-    
+
     << about this function >>
 
     # save the line away in case we crash, so the post-mortem handler can record it
@@ -18130,7 +18130,7 @@ def _prefilter(self, line, continue_prompt):
     # Get the structure of the input
     pre,iFun,theRest = self.split_user_input(line)
     #print 'pre <%s> iFun <%s> rest <%s>' % (pre,iFun,theRest)  # dbg
-    
+
     << First check for explicit escapes in the last/first character >>
     << Next, check if we can automatically execute this thing >>
     << Let's try to find if the input line is a magic fn >>
@@ -18169,7 +18169,7 @@ return self.handle_normal('',continue_prompt)
 handler = None
 if line[-1] == self.ESC_HELP:
     handler = self.esc_handlers.get(line[-1])  # the ? can be at the end
-    
+
 if handler is None:
     # look at the first character of iFun, NOT of line, so we skip
     # leading whitespace in multiline input
@@ -18248,7 +18248,7 @@ else:
 #@+node:_prefilter
 def _prefilter(self, line, continue_prompt):
     """Calls different preprocessors, depending on the form of line."""
-    
+
     << about this function >>
 
     #if line.startswith('%crash'): raise RuntimeError,'Crash now!'  # dbg
@@ -18266,7 +18266,7 @@ def _prefilter(self, line, continue_prompt):
     # Get the structure of the input
     pre,iFun,theRest = self.split_user_input(line)
     #print 'pre <%s> iFun <%s> rest <%s>' % (pre,iFun,theRest)  # dbg
-    
+
     << First check for explicit escapes in the last/first character >>
     << Next, check if we can automatically execute this thing >>
     << Let's try to find if the input line is a magic fn >>
@@ -18291,7 +18291,7 @@ def _prefilter(self, line, continue_prompt):
 handler = None
 if line[-1] == self.ESC_HELP:
     handler = self.esc_handlers.get(line[-1])  # the ? can be at the end
-    
+
 if handler is None:
     # look at the first character of iFun, NOT of line, so we skip
     # leading whitespace in multiline input
@@ -18363,7 +18363,7 @@ else:
 #@+node:handle_normal ( no longer used)
 def handle_normal(self,line,continue_prompt=None,pre=None,iFun=None,theRest=None):
     """Handle normal input lines. Use as a template for handlers."""
-    
+
     g.trace(line)
 
     if 0:
@@ -18415,7 +18415,7 @@ def handle_shell_escape(self, line, continue_prompt=None,pre=None,iFun=None,theR
 #@-node:handle_shell_escape (needs work)
 #@+node:handle_magic (done)
 def handle_magic(self, line, continue_prompt=None,pre=None,iFun=None,theRest=None):
-    
+
     """Execute magic functions.
 
     Also log them with a prepended # so the log is clean Python."""
@@ -18427,7 +18427,7 @@ def handle_magic(self, line, continue_prompt=None,pre=None,iFun=None,theRest=Non
 def handle_auto(self, line, continue_prompt=None,pre=None,iFun=None,theRest=None):
 
     """Hande lines which can be auto-executed, quoting if requested."""
-    
+
     # This should only be active for single-line input!
     if continue_prompt:
         return line
@@ -18513,9 +18513,9 @@ def split_user_input(self,line):
 #@-node:split_user_input
 #@+node:update_cache
 def update_cache(self, line):
-    
+
     """puts line into cache"""
-    
+
     pass
 #@nonl
 #@-node:update_cache
@@ -18525,7 +18525,7 @@ def update_cache(self, line):
 def ipmagic(s):
     g.trace()
     return IPython.iplib.ipmagic(s)
-    
+
 def ipalias(s):
     g.trace()
     return IPython.iplib.ipalias(s)
@@ -18640,7 +18640,7 @@ def pyRowColToTkIndex (s,n1,n2):
     This must be as fast as possible and must not allocate any memory.
     """
     assert(n1 >= 0)
-    
+
     if 0: # Let Tk complain about bad indices.
         if n1 > s.count('\n'):
             return "end"
@@ -18663,7 +18663,7 @@ def pyRowColToTkIndex (s,n1,n2):
                 return "bad" # n2 out of range.
             else:
                 return "%d.%d" % (line+1,n2)
-    
+
 # Test script.
 s = p.firstChild().bodyString()
 print '-' * 20
@@ -18673,7 +18673,7 @@ for n1 in xrange(len(lines)):
     for n2 in xrange(len(line)):
         ch = line[n2]
         print "%3d.%-3d %-4s" % (n1,n2,repr(str(ch))),pyRowColToTkIndex(s,n1,n2)
-        
+
 n1,n2 = len(lines),0
 print "%3d.%-3d %4s" % (n1,n2,' '),pyRowColToTkIndex(s,n1,n2)
 #@nonl
@@ -18691,9 +18691,9 @@ test_g_convertPythonIndexToRowCol()
 #@nonl
 #@+node:g.convertPythonIndexToRowCol  & tests
 def convertPythonIndexToRowCol (s,i):
-    
+
     '''Convert index i into string s into zero-based row/col indices.'''
-    
+
     if not s or i == 0:
         return 0,0
     else:
@@ -18709,7 +18709,7 @@ def convertPythonIndexToRowCol (s,i):
 #@nonl
 #@+node:bruteForceConvertPythonIndexToRowCol
 def bruteForceConvertPythonIndexToRowCol (s,i):
-        
+
     lines = g.splitLines(s)
     row,total = 0,0
     for line in lines:
@@ -18724,9 +18724,9 @@ def bruteForceConvertPythonIndexToRowCol (s,i):
 #@-node:bruteForceConvertPythonIndexToRowCol
 #@+node:test_g_convertPythonIndexToRowCol
 def test_g_convertPythonIndexToRowCol ():
-    
+
     s = '\nabc\n\npdq\nxy'
-    
+
     for i in xrange(len(s)+1): # Test one-too-large case.
         try: ch = s[i]
         except IndexError: ch = '**'
@@ -18746,16 +18746,16 @@ test_g_convertRowColToPythonIndex()
 #@nonl
 #@+node:g.convertRowColToPythonIndex & test
 def convertRowColToPythonIndex (s,row,col):
-    
+
     lines = g.splitLines(s)
 
     if row > len(lines) or col > len(lines[row]):
         raise IndexError
-    
+
     prev = 0
     for line in lines[:row]:
         prev += len(line)
-        
+
     return prev + col
 #@nonl
 #@+node:test_g_convertRowColToPythonIndex
@@ -18829,7 +18829,7 @@ else:
 #@nonl
 #@+node:class pythonParser
 class pythonParser:
-    
+
     @others
 #@nonl
 #@+node:To be deleted
@@ -18843,9 +18843,9 @@ def clear (self):
 #@-node:clear
 #@+node:endUndo
 def endUndo (self):
-    
+
     c = self.c
-    
+
     if self.changed:
 
         # Tag the end of the command.
@@ -18854,15 +18854,15 @@ def endUndo (self):
 #@-node:endUndo
 #@+node:get
 def get (self):
-    
+
     return self.lines
 #@nonl
 #@-node:get
 #@+node:put
 def put (self,s,strip=True):
-    
+
     """Put s to self.array, and strip trailing whitespace if strip is True."""
-    
+
     if self.array and strip:
         prev = self.array[-1]
         if len(self.array) == 1:
@@ -18878,30 +18878,30 @@ def put (self,s,strip=True):
 #@-node:put
 #@+node:putArray
 def putArray (self):
-    
+
     """Add the next line by joining all the strings is self.array"""
-    
+
     self.lines.append(''.join(self.array))
     self.array = []
 #@nonl
 #@-node:putArray
 #@+node:replaceBody
 def replaceBody (self,p,lines):
-    
+
     c = self.c
-    
+
     sel = c.frame.body.getInsertionPoint()
     oldBody = p.bodyString()
     body = string.join(lines,'')
-    
+
     c.setBodyString(p,body)
-    
+
     if not self.changed:
 
         # Tag the start of the command.
         c.undoer.setUndoParams("Pretty Print",self.p) 
         self.changed = True
-    
+
     self.c.undoer.setUndoParams("Change",p,
         oldText=oldBody,newText=body,oldSel=sel, newSel=sel)
 #@nonl
@@ -18913,7 +18913,7 @@ def prettyPrintNode(self,p,dump):
     h = p.headString()
     s = p.bodyString()
     if not s: return
-    
+
     readlines = g.readLinesGenerator(s).next
 
     try:
@@ -18934,7 +18934,7 @@ def prettyPrintNode(self,p,dump):
 #@-node:prettyPrintNode
 #@+node:putToken
 def putToken (self,token5tuple):
-    
+
     if self.dumping:
         self.dumpToken(token5tuple)
     else:
@@ -18945,9 +18945,9 @@ def putToken (self,token5tuple):
 def dumpLines (self,p,lines):
 
     encoding = g.app.tkEncoding
-    
+
     print ; print '-'*10, p.headString()
-    
+
     if 0:
         for line in lines:
             line2 = g.toEncodedString(line,encoding,reportErrors=True)
@@ -18962,14 +18962,14 @@ def dumpLines (self,p,lines):
 #@-node:To be deleted
 #@+node:__init__
 def __init__ (self,c,p,dumping=False):
-    
+
     self.c = c
     self.p = p
-    
+
     # Debugging ivars...
     self.dumping = dumping
     self.tracing = False
-    
+
     # State ivars...
     self.bracketLevel = 0
     self.erow = self.ecol = 0 # The ending row/col of the token.
@@ -18980,7 +18980,7 @@ def __init__ (self,c,p,dumping=False):
     self.srow = self.scol = 0 # The starting row/col of the token.
     self.startline = True # True: the token starts a line.
     self.val = None
-    
+
     if 0: # old ivars
         self.array = [] # List of strings comprising the line being accumulated.
         self.changed = False
@@ -18992,7 +18992,7 @@ def __init__ (self,c,p,dumping=False):
 #@nonl
 #@+node:<< define dispatch dict >>
 self.dispatchDict = {
-    
+
     "comment":    self.doMultiLine,
     "dedent":     self.doDedent,
     "endmarker":  self.doEndMarker,
@@ -19015,7 +19015,7 @@ def parseNode(self,p):
     h = p.headString()
     s = p.bodyString()
     if not s: return
-    
+
     readlines = g.readLinesGenerator(s).next
 
     try:
@@ -19051,13 +19051,13 @@ def dumpToken (self,token5tuple):
 #@-node:dumpToken
 #@+node:oops
 def oops(self):
-    
+
     print "unknown tokenize code: %s" % (self.name)
 #@nonl
 #@-node:oops
 #@+node:trace
 def trace(self):
-    
+
     if self.tracing:
 
         g.trace("%10s: %s" % (
@@ -19077,27 +19077,27 @@ def doToken (self,token5tuple):
     self.s = t5 # The line containing the token.
     self.startLine = self.line != self.srow
     self.line = self.srow
-    
+
     try: t2 = str(t2)
     except: pass
     try: t5 = str(t5)
     except: pass
-    
+
     if 1: # Dump...
         if self.startLine: print 'Line %s' % self.line
         # print '%3d %20s %10s %10s %s' % (t1,repr(t2),t3,t4,repr(t5))
         print '%20s %s' % (repr(str(self.s[self.scol:self.ecol])),repr(t5))
-        
-    
+
+
     if self.startLine:
         self.doStartLine()
-    
+
     f = self.dispatchDict.get(self.name,self.oops)
     f()
 #@nonl
 #@+node:handleAtPart
 def handleAtPart (self):
-    
+
     s = self.s
 
     #self.srow,self.scol = t3 # row & col where the token begins in the source.
@@ -19105,17 +19105,17 @@ def handleAtPart (self):
 #@-node:handleAtPart
 #@+node:doEndMarker
 def doEndMarker (self):
-    
+
     # End of text marker.
     pass
 #@nonl
 #@-node:doEndMarker
 #@+node:doErrorToken
 def doErrorToken (self):
-    
+
     if 0:
         self.array.append(self.val)
-    
+
         if self.val == '@':
             # Preserve whitespace after @.
             i = g.skip_ws(self.s,self.scol+1)
@@ -19126,19 +19126,19 @@ def doErrorToken (self):
 #@-node:doErrorToken
 #@+node:doIndent & doDedent
 def doDedent (self):
-    
+
     pass
-    
+
 def doIndent (self):
-    
+
     if 0:
         self.array.append(self.val)
 #@-node:doIndent & doDedent
 #@+node:doMultiLine
 def doMultiLine (self):
-    
+
     '''Handle a multiline token: i.e., a string or comment.'''
-    
+
     if 0:
         # These may span lines, so duplicate the end-of-line logic.
         lines = g.splitLines(self.val)
@@ -19146,7 +19146,7 @@ def doMultiLine (self):
             self.array.append(line)
             if line and line[-1] == '\n':
                 self.putArray()
-                
+
         # Suppress start-of-line logic.
         self.line = self.erow
 #@nonl
@@ -19163,7 +19163,7 @@ def doName(self):
 #@-node:doName
 #@+node:doNewline
 def doNewline (self):
-    
+
     if 0:
         self.array.append('\n')
         self.putArray()
@@ -19177,10 +19177,10 @@ def doNumber (self):
 #@-node:doNumber
 #@+node:doOp
 def doOp (self):
-    
+
     # New in Python 2.4: '@' is an op token.
     val = self.val
-    
+
     if 0:
         if val == '(':
             self.parenLevel += 1
@@ -19206,9 +19206,9 @@ def doStartLine (self):
     before = self.s[0:self.scol]
     i = g.skip_ws(before,0)
     self.ws = self.s[0:i]
-    
+
     # g.trace(repr(before),repr(self.ws))
-         
+
     if 0:
         if self.ws:
             self.array.append(self.ws)
@@ -19218,7 +19218,7 @@ def doStartLine (self):
 #@-node:class pythonParser
 #@+node:class dumper (pythonParser)
 class dumper (pythonParser):
-    
+
     @others
 #@nonl
 #@+node:__init__
@@ -19318,7 +19318,7 @@ def eggs():
         - old:  fileName.1.nnn
         - conflict: fileName
         - new: created by script
-    
+
 - How can Leo know that a conflict exists???
     - Look for '<' * 7 and '>' * 7.  What if these exist in an unconflicted file?
     - No.  Look for fileName.1.nnn files.
@@ -19398,7 +19398,7 @@ This works just fine with the current version of Tkinter, but it may not work wi
 
     def __init__(self, master, **kw):
         apply(Canvas.__init__, (self, master), kw)
-        
+
 @nocolor
 The apply function takes a function (an unbound method, in this case), a tuple with arguments (which must include self since we're calling an unbound method), and optionally, a dictionary which provides the keyword arguments.
 
@@ -20000,7 +20000,7 @@ try:
 finally:
     print 'closing ZODB'
     db.close()
-    
+
 #@nonl
 #@-node:Zope test
 #@-node:Prototypes
@@ -20014,7 +20014,7 @@ for p in c.allNodes_iter():
         p.v.t.setVisited()
         nodes += 1
         lines += len(g.splitLines(p.bodyString()))
-    
+
 pages = ((nodes * 10) + lines) / 50
 s = "%d nodes,  %d lines, %d pages" % (nodes,lines,pages)
 print s ; g.es(s)
@@ -20027,7 +20027,7 @@ tnodes = {} ; count = 0
 for p in p.self_and_subtree_iter():
     tnodes[p.v.t]=p.v.t
     count += 1
-    
+
 s = "%4s: %d vnodes, %d distinct" % ("Code",count,len(tnodes.keys()))
 g.es_print(s)
 
@@ -20035,7 +20035,7 @@ tnodes = {} ; count = 0
 for p in c.allNodes_iter():
     tnodes[p.v.t]=p.v.t
     count += 1
-        
+
 s = "%4s: %d vnodes, %d distinct" % ("All",count,len(tnodes.keys()))
 g.es_print(s)
 #@nonl
@@ -20043,25 +20043,15 @@ g.es_print(s)
 #@+node:Count total, visible nodes
 total,visible = 0,0
 
-if 0: # old way:
-    v = c.rootVnode()
-    while v:
-        total += 1
-        v = v.threadNext()
-    
-    v = c.rootVnode()
-    while v:
-        visible += 1
-        v = v.visNext()
-else:
-    for p in c.allNodes_iter():
-        total += 1
-    
-    p = c.rootPosition()
-    while p:
-        visible += 1
-        p.moveToVisNext()
-    
+
+for p in c.allNodes_iter():
+    total += 1
+
+p = c.rootPosition()
+while p:
+    visible += 1
+    p.moveToVisNext(c)
+
 print "total,visible",total,visible
 #@nonl
 #@-node:Count total, visible nodes
@@ -20120,12 +20110,12 @@ try:
     f = open(path,"rb")
     s = f.read()
     f.close()
-    
+
     cr = 0 ; nl = 0
     for ch in s:
         if ch == '\r': cr += 1
         if ch == '\n': nl += 1
-        
+
     m = "cr %d, nl %d %s" % (cr,nl,path)
     print m ; g.es(m)
 
@@ -20141,7 +20131,7 @@ font = config.getFontFromParams(
         "body_text_font_family", "body_text_font_size",
         "body_text_font_slant",  "body_text_font_weight",
         tag = "body")
-        
+
 print font
 print body
 
@@ -20166,7 +20156,7 @@ if 0:
     font = tkFont.Font(font=fn)
     name,size,slant,weight = getFontSettings(font)
     g.es("log:" + name + "," + `size` + "," + slant + "," + weight)
-    
+
     # Tree pane.
     font = c.frame.tree.getFont()
     name,size,slant,weight = getFontSettings(font)
@@ -20443,7 +20433,7 @@ def replaceDocPart(m,body):
             return None # This disables any replacement.
     else:
         return blanks + defLine + '\n\n\t"""' + doc.strip() + '"""\n' + rest
-        
+
 d = g.app.searchDict ; c = d.get("c") ; v = d.get("v") ; m = d.get("m")
 if c and v and m:
     body = c.frame.body
@@ -20515,7 +20505,7 @@ import leo, string, re
 def changeAll ( commander, findPat, changePat, bodyFlag = 1 ):
     """
     changeAll	make changes in an entire Leo outline.
-    
+
     commander	Commands object for a Leo outline window.
     findPat		the search string.
     changePat	the replacement string.
@@ -20533,13 +20523,13 @@ def changeAll ( commander, findPat, changePat, bodyFlag = 1 ):
 def changeNext ( v, pos, findPat, changePat, bodyFlag = 1 ):
     """
     changeNext:	use string.find() to change text in a Leo outline.
-    
+
     v	 		the vnode to start the search.
     pos			the position within the body text of v to start the search.
     findPat		the search string.
     changePat	the replacement string.
     bodyFlag	True: change body text.  False: change headline text.
-    
+
     returns a tuple (v,pos) showing where the change occured.
     returns (None,0) if no further match in the outline was found.
 
@@ -20569,13 +20559,13 @@ def changeNext ( v, pos, findPat, changePat, bodyFlag = 1 ):
 def changePrev ( v, pos, findPat, changePat, bodyFlag = 1 ):
     """
     changePrev:	use string.rfind() to change text in a Leo outline.
-    
+
     v	 		the vnode to start the search.
     pos			the position within the body text of v to start the search.
     findPat		the search string.
     changePat	the replacement string.
     bodyFlag	True: change body text.  False: change headline text.
-    
+
     returns a tuple (v,pos) showing where the change occured.
     returns (None,0) if no further match in the outline was found.
 
@@ -20604,11 +20594,11 @@ def changePrev ( v, pos, findPat, changePat, bodyFlag = 1 ):
 def findAll(c,pattern,bodyFlag=1):
     """
     findAll		search an entire Leo outline for a pattern.
-    
+
     c        commander for a Leo outline window.
     pattern		the search string.
     bodyFlag	True: search body text. False: search headline text.
-    
+
     returns a list of tuples (v,pos) showing where matches occured.
     returns [] if no match were found.
     """
@@ -20627,12 +20617,12 @@ def findAll(c,pattern,bodyFlag=1):
 def findNext ( v, pos, pattern, bodyFlag = 1 ):
     """
     findNext:	use string.find() to find a pattern in a Leo outline.
-    
+
     v	 		the vnode to start the search.
     pos			the position within the body text of v to start the search.
     pattern		the search string.
     bodyFlag	True: search body text.  False: search headline text.
-    
+
     returns a tuple (v,pos) showing where the match occured.
     returns (None,0) if no further match in the outline was found.
 
@@ -20656,12 +20646,12 @@ def findNext ( v, pos, pattern, bodyFlag = 1 ):
 def findPrev ( v, pos, pattern, bodyFlag = 1 ):
     """
     findPrev:	use string.rfind() to find a pattern in a Leo outline.
-    
+
     v	 		the vnode to start the search.
     pos			the position within the body text of v to start the search.
     pattern		the search string
     bodyFlag	True: search body text.  False: search headline text.
-    
+
     returns a tuple (v,pos) showing where the match occured.
     returns (None,0) if no further match in the outline was found.
 
@@ -20685,7 +20675,7 @@ def findPrev ( v, pos, pattern, bodyFlag = 1 ):
 def reChangeAll ( commander, findPat, changePat, bodyFlag, reFlags = None ):
     """
     reChangeAll: make changes in an entire Leo outline using re module.
-    
+
     commander	Commands object for a Leo outline window.
     findPat		the search string.
     changePat	the replacement string.
@@ -20705,14 +20695,14 @@ def reChangeAll ( commander, findPat, changePat, bodyFlag, reFlags = None ):
 def reChangeNext ( v, pos, findPat, changePat, bodyFlag, reFlags = None ):
     """
     reChangeNext: use re.search() to change text in a Leo outline.
-    
+
     v	 		the vnode to start the search.
     pos			the position within the body text of v to start the search.
     findPat		the search string.
     changePat	the replacement string.
     bodyFlag	True: change body text.  False: change headline text.
     reFlags		flags argument to re.search().
-    
+
     returns a tuple (v,pos) showing where the change occured.
     returns (None,0) if no further match in the outline was found.
 
@@ -20742,14 +20732,14 @@ def reChangeNext ( v, pos, findPat, changePat, bodyFlag, reFlags = None ):
 def reChangePrev ( v, pos, findPat, changePat, bodyFlag, reFlags = None ):
     """
     reChangePrev: use re.search() to change text in a Leo outline.
-    
+
     v	 		the vnode to start the search.
     pos			the position within the body text of v to start the search.
     findPat		the search string.
     changePat	the replacement string.
     bodyFlag	True: change body text.  False: change headline text.
     reFlags		flags argument to re.search().
-    
+
     returns a tuple (v,pos) showing where the change occured.
     returns (None,0) if no further match in the outline was found.
 
@@ -20778,7 +20768,7 @@ def reChangePrev ( v, pos, findPat, changePat, bodyFlag, reFlags = None ):
 def reFindAll(c,findPat,bodyFlag,reFlags=None):
     """
     reFindAll	search an entire Leo outline using re module.
-    
+
     c	     commander for a Leo outline window.
     pattern		the search string.
     bodyFlag	True: search body text.  False: search headline text.
@@ -20802,13 +20792,13 @@ def reFindAll(c,findPat,bodyFlag,reFlags=None):
 def reFindNext ( v, pos, pattern, bodyFlag, reFlags = None ):
     """
     reFindNext:	use re.search() to find pattern in a Leo outline.
-    
+
     v	 		the vnode to start the search.
     pos			the position within the body text of v to start the search.
     pattern		the search string
     bodyFlag	True: search body text.  False: search headline text.
     reFlags		the flags argument to re.search()
-    
+
     returns a tuple (v,mo,pos) showing where the match occured.
     returns (None,None,0) if no further match in the outline was found.
     mo is a "match object"
@@ -20842,13 +20832,13 @@ def reFindPrev ( v, pos, pattern, bodyFlag, reFlags = None ):
     pattern		the search string
     bodyFlag	True: search body text.  False: search headline text.
     reFlags		the flags argument to re.search()
-    
+
     returns a tuple (v,mo,pos) showing where the match occured.
     returns (None,None,0) if no further match in the outline was found.
-    
+
     Note 1: Searches vnodes in reverse (v.threadBack) direction.
     Searches text of vnodes in _forward_ direction.
-    
+
     Note 2: if (v,pos) is a tuple returned previously from reFindPrev,
     reFindPrev(v,pos-len(pattern),pattern) finds the next match.
     """
@@ -20882,7 +20872,7 @@ def lineAtPos ( s, pos ):
         return ""
     if pos > len(s):
         pos = len(s)-1
-        
+
     while pos > 0:
         if s[pos] == '\n':
             pos = pos + 1
@@ -20899,7 +20889,7 @@ def lineAtPos ( s, pos ):
 def printFindList( findList, bodyFlag = 1 ):
     """
     printFindList:	Print matching lines from the list.
-    
+
     findList:		a list of (v,pos) tuples returned from findAll().
     Only the line containing the match is printed.
     Lines are printed once for each match found on the line.
@@ -20948,7 +20938,7 @@ def __hash__ (self):  # p.__hash__
         return vhash(p.v) + ':' + ':'.join(vids)
     else:
         return vhash(p.v)
-        
+
 for p in c.currentPosition().self_and_subtree_iter():
 
     hash = __hash__(p)
@@ -20970,7 +20960,7 @@ def compressed(a,b):
     if a==b:
         return 1
     return(a,b,c)
-        
+
 def loose ( a , b ) :
     if a  ==  b:
         return 1
@@ -20984,7 +20974,7 @@ def compressed(a,b):
     if a==b:
         return 1
     return(a,b,c)
-        
+
 def loose ( a , b ) :
     if a  ==  b:
         return 1
@@ -20994,16 +20984,16 @@ def loose ( a , b ) :
 #@+node:Scripts for checking clones
 if 0:
     checkForMismatchedJoinedNodes()
-    
+
     print g.createTopologyList(c=c,root=c.currentVnode().parent(),useHeadlines=False)
-    
+
     checkTopologiesOfLinkedNodes()
-    
+
     checkForPossiblyBrokenLinks()
 #@nonl
 #@+node:checkForMismatchedJoinedNodes
 def checkForMismatchedJoinedNodes (c=c):
-    
+
     """Checks outline for possible broken join lists"""
 
     d = {} # Keys are tnodes, values are headlines.
@@ -21024,9 +21014,9 @@ def checkForMismatchedJoinedNodes (c=c):
 #@-node:checkForMismatchedJoinedNodes
 #@+node:checkForPossiblyBrokenLinks
 def checkForPossiblyBrokenLinks (c=c):
-    
+
     """Checks outline for possible broken join lists"""
-    
+
     d = {} # Keys are headlines, values are (tnodes,parent) tuples
     v = c.rootVnode()
     while v:
@@ -21163,11 +21153,11 @@ print "%d nodes changed (%d total)" % (n,total)
 @ignore
 a
   b
-  
+
 c  
-  
+
 last
-  
+
 #@nonl
 #@-node:Test
 #@-node:stripBlankLines

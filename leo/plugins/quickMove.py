@@ -21,7 +21,7 @@ first child of the target node.
 #@-node:tbrown.20070117104409.1:<< docstring >>
 #@nl
 
-__version__ = '0.4'
+__version__ = '0.5'
 #@<< version history >>
 #@+node:tbrown.20070117104409.6:<< version history >>
 #@+at
@@ -34,6 +34,7 @@ __version__ = '0.4'
 # - Clearer command names.
 # 0.3 EKR: Various small mods suggested by Terry.
 # 0.4 EKR: Added checkMove method.
+# 0.5 EKR: Added c arg to p.visNext & p.visBack.
 #@-at
 #@nonl
 #@-node:tbrown.20070117104409.6:<< version history >>
@@ -154,7 +155,7 @@ class quickMoveButton:
         try:
             bunch = c.undoer.beforeMoveNode(p)
             p2.expand()
-            nxt = p.hasVisNext() and p.visNext() or p.visBack()
+            nxt = p.visNext(c) or p.visBack(c)
             if self.first:  p.moveToFirstChildOf(p2)
             else:           p.moveToLastChildOf(p2)
             c.selectPosition(nxt)
