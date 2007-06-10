@@ -2,17 +2,15 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.444165621079">
-	<global_window_position top="40" left="159" height="717" width="1061"/>
+<globals body_outline_ratio="0.571639586411">
+	<global_window_position top="40" left="356" height="814" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20070325123540"><vh>@chapters</vh>
-<v t="ekr.20070325123540.1"><vh>@chapter trash</vh></v>
-</v>
-<v t="ekr.20050315084904"><vh>Startup</vh>
+<v t="ekr.20050315084904" a="TV"><vh>Startup</vh>
+<v t="ekr.20070325123540" a="E"><vh>@chapters</vh></v>
 <v t="ekr.20050315084904.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20050315084904.2"><vh>@recentfiles </vh></v>
 </v>
@@ -31,6 +29,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
+<v t="ekr.20070610174300"><vh>ANN: Leo 4.4.3 beta 2</vh></v>
 <v t="ekr.20070518070012"><vh>ANN: Leo 4.4.3 beta 1</vh></v>
 <v t="ekr.20070317054921"><vh>ANN: Leo 4.4.3 alpha 2</vh></v>
 <v t="ekr.20070126084440"><vh>ANN: Leo 4.4.3 alpha 1</vh></v>
@@ -120,7 +119,7 @@
 <v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
-<v t="EKR.20040519080201.1" a="TV"><vh>Distribution checklist</vh></v>
+<v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent C:\Documents and Settings\HP_Administrator\My Documents\Edward\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
@@ -200,7 +199,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -705,9 +704,9 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.3 beta 1                                May 18, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.3 beta 2                                June 10, 2006
 
-Leo 4.4.3 beta 1 is available at:
+Leo 4.4.3 beta 2 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
@@ -724,7 +723,9 @@ The highlights of Leo 4.4.3:
 - Better support for the winpdb debugger.
 - Added support for @enabled-plugins nodes in settings files.
 - Added support for @open-with nodes in settings files.
+- Added support for @bool write_strips_blank_lines setting.
 - The__wx_gui plugin is now functional.
+- Leo can use aspell on Linux when using Python 2.5 or later.
 - Many minor improvements, new settings, commands and bug fixes.
 
 Links:
@@ -5212,7 +5213,6 @@ Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20070325123540"></t>
-<t tx="ekr.20070325123540.1">trash</t>
 <t tx="ekr.20070425092712">Leo--especially with its feature of user-controllable outlining and
 overview __has for the last 4-5 years had the greatest positive effect
 on my overall programming quality of life than anything else out there
@@ -5239,6 +5239,37 @@ The highlights of Leo 4.4.3:
 - Added support for @enabled-plugins nodes in settings files.
 - Added support for @open-with nodes in settings files.
 - The__wx_gui plugin is now functional.
+- Many minor improvements, new settings, commands and bug fixes.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070610174300">Leo 4.4.3 beta 2                                June 10, 2006
+
+Leo 4.4.3 beta 2 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.3:
+----------------------------
+- Added support for chapters in Leo's core.
+  Chapters are disabled by default.  To enable, set @bool use_chapters = True.
+- Added support for zipped .leo files.
+- Added a leoBridge module that allows full access to all of Leo's capabilities
+  from programs running outside of Leo.
+- Removed all gui-dependent code from Leo's core.
+- Better support for the winpdb debugger.
+- Added support for @enabled-plugins nodes in settings files.
+- Added support for @open-with nodes in settings files.
+- Added support for @bool write_strips_blank_lines setting.
+- The__wx_gui plugin is now functional.
+- Leo can use aspell on Linux when using Python 2.5 or later.
 - Many minor improvements, new settings, commands and bug fixes.
 
 Links:

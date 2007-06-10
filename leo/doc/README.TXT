@@ -1,6 +1,6 @@
-Leo 4.4.3 beta 1                                May 18, 2006
+Leo 4.4.3 beta 2                                June 10, 2006
 
-Leo 4.4.3 beta 1 is available at:
+Leo 4.4.3 beta 2 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
@@ -17,7 +17,9 @@ The highlights of Leo 4.4.3:
 - Better support for the winpdb debugger.
 - Added support for @enabled-plugins nodes in settings files.
 - Added support for @open-with nodes in settings files.
+- Added support for @bool write_strips_blank_lines setting.
 - The__wx_gui plugin is now functional.
+- Leo can use aspell on Linux when using Python 2.5 or later.
 - Many minor improvements, new settings, commands and bug fixes.
 
 Links:

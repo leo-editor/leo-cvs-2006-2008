@@ -45599,6 +45599,30 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 #@-node:ekr.20070423102603.1:chapterSelectHelper
 #@-node:ekr.20070606071617:Created hoist/de-hoist hooks for hoist plugin
 #@-node:ekr.20070528141848.1:Features
+#@+node:ekr.20070202080824:Enabled more plugins by default
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4134565
+
+The following are now enabled by default:
+
+# Plugin_manager.py needs plugins_menu.py
+plugins_menu.py
+plugin_manager.py
+open_with.py
+mod_scripting.py
+rst3.py
+UNL.py
+
+# Enabled by default in Leo 4.4.3. (order is important)
+nav_buttons.py
+hoist.py
+image.py
+leo_to_html.py
+
+I left out cleo because it has been reported not to be fully functional with Leo 4.4.3.
+#@nonl
+#@-node:ekr.20070202080824:Enabled more plugins by default
 #@+node:ekr.20070606131320:Finished chapters
 #@+node:ekr.20070509074834:Rewrote chapters code
 #@+node:ekr.20070606131320.1:What I did
