@@ -1163,7 +1163,7 @@ class leoTkinterTree (leoFrame.leoTree):
         self.drag_p = None # Disable drags across redraws.
         self.dragging = False
         if trace:
-            g.trace('redrawCount',self.redrawCount,'len(c.hoistStack)',len(c.hoistStack)) # g.callers())
+            g.trace('redrawCount',self.redrawCount,g.callers()) # 'len(c.hoistStack)',len(c.hoistStack))
             if 0:
                 delta = g.app.positions - self.prevPositions
                 g.trace("**** gen: %-3d positions: %5d +%4d" % (
@@ -1612,7 +1612,8 @@ class leoTkinterTree (leoFrame.leoTree):
                 if not self.look_for_control_drag_on_mouse_down:
                     self.controlDrag = c.frame.controlKeyIsDown
 
-            if vdrag and vdrag.v.t != p.v.t: # Disallow drag to joined node.
+            redrawFlag = vdrag and vdrag.v.t != p.v.t
+            if redrawFlag: # Disallow drag to joined node.
                 #@            << drag p to vdrag >>
                 #@+node:ekr.20041111114148:<< drag p to vdrag >>
                 # g.trace("*** end drag   ***",theId,x,y,p.headString(),vdrag.headString())
@@ -1638,7 +1639,7 @@ class leoTkinterTree (leoFrame.leoTree):
             self.drag_p = None
         finally:
             # Must set self.drag_p = None first.
-            c.endUpdate()
+            c.endUpdate(redrawFlag)
             c.recolor_now() # Dragging can affect coloring.
     #@-node:ekr.20041111115908:endDrag
     #@+node:ekr.20041111114944:startDrag
