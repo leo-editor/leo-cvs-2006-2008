@@ -288,8 +288,6 @@ If it would be trivial for Leo to not do this, I'd like that feature.  If it's
 a big deal, then not to worry, I can always navigate to the file of course.
 #@-node:ekr.20070605114358:Improve how recent files works??
 #@+node:ekr.20070515100356:To do: b2
-#@+node:ekr.20070610111735:Run pychecker
-#@-node:ekr.20070610111735:Run pychecker
 #@+node:ekr.20070325054325:Docs
 #@+node:ekr.20070215093739:Improve Leo's getting started page
 @nocolor
@@ -461,6 +459,48 @@ will locate and install the most recent version of app and install it.
 #@-node:ekr.20070515100356:To do: b2
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070610133513:Post: review of @auto discussions
+@nocolor
+
+I have just started the process of 'priming the pump' for work on @auto.
+
+Here are the key factors that drive the design:
+
+0. [Terminology] Alice uses Leo and doesn't mind having sentinels in derived files. Bob doesn't use Leo, and *does not want sentinels* (at least until Bob gets turned on to Leo), and Mike is Alice's and Bob's manager.  Mike probably doesn't care about sentinels, but would side with Bob if Bob objected to using sentinels.
+
+1. [No sentinels] There was a *lot* of discussion about this.  The initial implementation of @auto will use *absolutely no* sentinels. This might be relaxed later, but the *essential* idea is that @auto is a feature primarily for newbies who DO NOT WANT sentinels in their files.  As Kent has clearly pointed out, within @auto trees, Alice can live without clones, section references and @others, etc.
+
+2. Perfect import] I designed an algorithm that guarantees that files imported with @auto can be rewritten from the @auto tree with *no* changes to the original file.  This is the 'round-tripping' requirement.
+
+See: Huge aha: design of the parser (perfect import)
+http://sourceforge.net/forum/message.php?msg_id=4224283
+
+3. [Resolve cvs conflicts] Leo can let the user resolve cvs conflicts.
+
+See: Huge aha: resolving conflicts
+http://sourceforge.net/forum/message.php?msg_id=4224589
+
+The following are references to extended discussions in Leo's forums:
+
+1. From the Open Forum, March, 2007:
+
+auto: a new vision
+http://sourceforge.net/forum/forum.php?thread_id=1700873&forum_id=10226
+
+Huge aha: parsing replaces sentinels
+http://sourceforge.net/forum/forum.php?thread_id=1699679&forum_id=10226
+
+@auto nodes
+http://sourceforge.net/forum/forum.php?thread_id=1699599&forum_id=10226
+
+2. The original motivation was in the 'Discurssion of wxPython issues' thread in
+the Developers Forum in March 2007:
+http://sourceforge.net/forum/forum.php?thread_id=1695549&forum_id=10228
+
+And especially:
+http://sourceforge.net/forum/message.php?msg_id=4217121
+#@nonl
+#@-node:ekr.20070610133513:Post: review of @auto discussions
 #@+node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
 #@-node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
 #@+node:ekr.20061006165447:Let import commands decide what kind of import to do
@@ -1280,7 +1320,7 @@ def putIndent(self,n):
             self.oblanks(n)
 #@-node:ekr.20041005105605.210:putIndent
 #@-node:ekr.20040721094203:Make sure Leo uses "verbatim" whitespace
-#@+node:EKR.20040603092958.1:Add new options for handling newlines in body text
+#@+node:EKR.20040603092958.1:(done) Add new options for handling newlines in body text
 @nocolor
 
 - "asis":
@@ -1289,7 +1329,7 @@ def putIndent(self,n):
 
 Special case code is required so empty nodes stay empty with "one" option.
 #@nonl
-#@-node:EKR.20040603092958.1:Add new options for handling newlines in body text
+#@-node:EKR.20040603092958.1:(done) Add new options for handling newlines in body text
 #@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070105135713:To do: 4.5 (new positions)

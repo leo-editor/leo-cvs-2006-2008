@@ -10309,35 +10309,32 @@ def createFirstTreeNode (self):
 def enableTclTraces (self):
 
     c = self.c
-
-    # pychecker complains that trace/untracewidget are not used.
-
-    def tracewidget(event):
-        g.trace('enabling widget trace')
-        Pmw.tracetk(event.widget, 1)
-
-    def untracewidget(event):
-        g.trace('disabling widget trace')
-        Pmw.tracetk(event.widget,0)
-
-    def focusIn (event):
-        print("Focus in  %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-
-    def focusOut (event):
-        print("Focus out %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-
     # Put this in unit tests before the assert:
     # c.frame.bar1.unbind_all("<FocusIn>")
     # c.frame.bar1.unbind_all("<FocusOut>")
 
     # Any widget would do:
     w = c.frame.bar1
-    if 1:
+    if True:
+        def focusIn (event):
+            print("Focus in  %s (%s)" % (
+                event.widget,event.widget.winfo_class()))
+
+        def focusOut (event):
+            print("Focus out %s (%s)" % (
+                event.widget,event.widget.winfo_class()))
+
         w.bind_all("<FocusIn>", focusIn)
         w.bind_all("<FocusOut>", focusOut)
     else:
+        def tracewidget(event):
+            g.trace('enabling widget trace')
+            Pmw.tracetk(event.widget, 1)
+
+        def untracewidget(event):
+            g.trace('disabling widget trace')
+            Pmw.tracetk(event.widget,0)
+
         w.bind_all("<Control-1>", tracewidget)
         w.bind_all("<Control-Shift-1>", untracewidget)
 #@-node:ekr.20051121092320:f.enableTclTraces
@@ -26319,13 +26316,9 @@ def defineObjectDict (self):
                     self.appendToKnownObjects(getattr(module,className))
             else:
                 obj = module
-        if not obj:
-            if key not in ('cc',):
-                g.trace('bad object',obj)
-            continue
         for z in idList:
-            self.objectDict[z]=obj
-            # g.trace(obj)
+            if obj:
+                self.objectDict[z]=obj
 #@-node:ekr.20061031131434.7:defineObjectDict
 #@-node:ekr.20061031131434.5: ctor (autocompleter)
 #@+node:ekr.20061031131434.8:Top level
@@ -40798,7 +40791,7 @@ def positionExists(self,p,root=None):
 
     """Return True if a position exists in c's tree"""
 
-    c = self ; p = p.copy() ; p2 = p.copy()
+    c = self ; p = p.copy()
 
     # This code must be fast.
     if not root:
@@ -40814,7 +40807,6 @@ def positionExists(self,p,root=None):
         else:
             p.moveToBack()
 
-    # g.trace('False','p',p2,'root',root)
     return False
 #@-node:ekr.20040307104131.3:c.positionExists
 #@+node:ekr.20031218072017.2997:c.selectPosition
@@ -41683,7 +41675,7 @@ def positionExists(self,p,root=None):
 
     """Return True if a position exists in c's tree"""
 
-    c = self ; p = p.copy() ; p2 = p.copy()
+    c = self ; p = p.copy()
 
     # This code must be fast.
     if not root:
@@ -41699,7 +41691,6 @@ def positionExists(self,p,root=None):
         else:
             p.moveToBack()
 
-    # g.trace('False','p',p2,'root',root)
     return False
 #@-node:ekr.20040307104131.3:c.positionExists
 #@-node:ekr.20070602095306:Fixed bug that caused the wrong clone to be selected.
@@ -44114,8 +44105,8 @@ def test_round_trip_toUnicode_toEncodedString ():
     import sys
 
     if sys.platform.startswith('win'):
-        data = ('炰','mbcs'),
-        table.append
+        data = '炰','mbcs'
+        table.append(data)
 
     for s,encoding in table:
         if g.isValidEncoding(encoding):
@@ -45541,35 +45532,32 @@ def createFirstTreeNode (self):
 def enableTclTraces (self):
 
     c = self.c
-
-    # pychecker complains that trace/untracewidget are not used.
-
-    def tracewidget(event):
-        g.trace('enabling widget trace')
-        Pmw.tracetk(event.widget, 1)
-
-    def untracewidget(event):
-        g.trace('disabling widget trace')
-        Pmw.tracetk(event.widget,0)
-
-    def focusIn (event):
-        print("Focus in  %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-
-    def focusOut (event):
-        print("Focus out %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-
     # Put this in unit tests before the assert:
     # c.frame.bar1.unbind_all("<FocusIn>")
     # c.frame.bar1.unbind_all("<FocusOut>")
 
     # Any widget would do:
     w = c.frame.bar1
-    if 1:
+    if True:
+        def focusIn (event):
+            print("Focus in  %s (%s)" % (
+                event.widget,event.widget.winfo_class()))
+
+        def focusOut (event):
+            print("Focus out %s (%s)" % (
+                event.widget,event.widget.winfo_class()))
+
         w.bind_all("<FocusIn>", focusIn)
         w.bind_all("<FocusOut>", focusOut)
     else:
+        def tracewidget(event):
+            g.trace('enabling widget trace')
+            Pmw.tracetk(event.widget, 1)
+
+        def untracewidget(event):
+            g.trace('disabling widget trace')
+            Pmw.tracetk(event.widget,0)
+
         w.bind_all("<Control-1>", tracewidget)
         w.bind_all("<Control-Shift-1>", untracewidget)
 #@-node:ekr.20051121092320:f.enableTclTraces
@@ -47255,35 +47243,32 @@ def createFirstTreeNode (self):
 def enableTclTraces (self):
 
     c = self.c
-
-    # pychecker complains that trace/untracewidget are not used.
-
-    def tracewidget(event):
-        g.trace('enabling widget trace')
-        Pmw.tracetk(event.widget, 1)
-
-    def untracewidget(event):
-        g.trace('disabling widget trace')
-        Pmw.tracetk(event.widget,0)
-
-    def focusIn (event):
-        print("Focus in  %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-
-    def focusOut (event):
-        print("Focus out %s (%s)" % (
-            event.widget,event.widget.winfo_class()))
-
     # Put this in unit tests before the assert:
     # c.frame.bar1.unbind_all("<FocusIn>")
     # c.frame.bar1.unbind_all("<FocusOut>")
 
     # Any widget would do:
     w = c.frame.bar1
-    if 1:
+    if True:
+        def focusIn (event):
+            print("Focus in  %s (%s)" % (
+                event.widget,event.widget.winfo_class()))
+
+        def focusOut (event):
+            print("Focus out %s (%s)" % (
+                event.widget,event.widget.winfo_class()))
+
         w.bind_all("<FocusIn>", focusIn)
         w.bind_all("<FocusOut>", focusOut)
     else:
+        def tracewidget(event):
+            g.trace('enabling widget trace')
+            Pmw.tracetk(event.widget, 1)
+
+        def untracewidget(event):
+            g.trace('disabling widget trace')
+            Pmw.tracetk(event.widget,0)
+
         w.bind_all("<Control-1>", tracewidget)
         w.bind_all("<Control-Shift-1>", untracewidget)
 #@-node:ekr.20051121092320:f.enableTclTraces
@@ -49905,7 +49890,7 @@ def cloneNodeToChapterHelper (self,toChapterName):
     c.beginUpdate()
     try:
         # Open the group undo.
-        groupUndoData = c.undoer.beforeChangeGroup(p,undoType)
+        c.undoer.beforeChangeGroup(p,undoType)
         # Do the clone.  c.clone handles the inner undo.
         clone = c.clone()
         # Do the move.
@@ -50035,7 +50020,7 @@ def createChapter (self,event=None):
 #@+node:ekr.20070603190617:cc.createChapterByName
 def createChapterByName (self,name,p,undoType):
 
-    cc = self ; c = cc.c ; u = c.undoer
+    cc = self ; c = cc.c
 
     if not name:
         return cc.error('No name')
@@ -50301,6 +50286,8 @@ leoFind.py:1355: No module attribute (__init__) found # wrong
 leoImport.py:1319: Global variable (c) not defined in module scope # test_ function
 
 leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p) # wrong.
+
+leoTkinterGui.py:563: Local variable (tkIcon) not used # Wrong.
 #@-node:ekr.20070316175323:Invalid warnings
 #@+node:ekr.20070507083524:Report 5-7-07
 # fixed: leoGlobals.py:2213: Variable (no_gc_message) used before being set
@@ -50322,6 +50309,15 @@ leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p) # wrong.
 # fixed: leoTkinterFrame.py:3120: Local variable (nb) not used
 # fixed: leoTkinterFrame.py:3122: Local variable (frame) not used
 #@-node:ekr.20070507083524:Report 5-7-07
+#@+node:ekr.20070610141643:Report 6-10-07
+# (fixed) leoGlobals.py:4102: Local variable (data) not used
+# (fixed) leoKeys.py:241: Variable (key) used before being set
+# (fixed) leoChapters.py:105: Local variable (groupUndoData) not used
+# (fixed) leoChapters.py:648: No global (c) found
+# (fixed) leoTkinterFrame.py:534: Local variable (tracewidget) not used
+# (fixed) leoTkinterFrame.py:538: Local variable (untracewidget) not used
+
+#@-node:ekr.20070610141643:Report 6-10-07
 #@-node:ekr.20070126072723:pychecker
 #@-all
 #@nonl
