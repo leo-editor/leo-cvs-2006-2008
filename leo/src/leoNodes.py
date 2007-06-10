@@ -2441,7 +2441,7 @@ class basePosition (object):
 
         return p
     #@-node:ekr.20031218072017.939:p.moveToThreadNext
-    #@+node:ekr.20031218072017.940:p.moveToVisBack (excellent trick 2)
+    #@+node:ekr.20031218072017.940:p.moveToVisBack
     def moveToVisBack (self,c):
 
         """Move a position to the position of the previous visible node."""
@@ -2449,14 +2449,18 @@ class basePosition (object):
         p = self
         limit,limitIsVisible = c.visLimit()
 
-        p.moveToThreadBack()
-        while p and not p.isVisible(c):
-            # g.trace('*p',p.headString())
-            if limit and limit == p:
-                return g.choose(limitIsVisible,p,None)
-            elif limit and limit == p.next(): # An excellent trick.
-                return None
+        # Short-circuit if possible.
+        if p.hasBack() and not p.back().isExpanded():
+            p.moveToBack()
+        else:
             p.moveToThreadBack()
+            while p and not p.isVisible(c):
+                # g.trace('*p',p.headString())
+                if limit and limit == p:
+                    return g.choose(limitIsVisible,p,None)
+                elif limit and limit == p.next(): # An excellent trick.
+                    return None
+                p.moveToThreadBack()
 
         if limit and limit == p:
             return g.choose(limitIsVisible,p,None)
@@ -2467,9 +2471,8 @@ class basePosition (object):
             return p
         else:
             return None
-    #@nonl
-    #@-node:ekr.20031218072017.940:p.moveToVisBack (excellent trick 2)
-    #@+node:ekr.20031218072017.941:p.moveToVisNext (excellent trick)
+    #@-node:ekr.20031218072017.940:p.moveToVisBack
+    #@+node:ekr.20031218072017.941:p.moveToVisNext
     def moveToVisNext (self,c):
 
         """Move a position to the position of the next visible node."""
@@ -2478,14 +2481,18 @@ class basePosition (object):
 
         limit,limitIsVisible = c.visLimit()
 
-        p.moveToThreadNext()
-        while p and not p.isVisible(c):
-            if limit and limit == p:
-                return g.choose(limitIsVisible,p,None)
-            elif limit and limit == p.back(): # An excellent trick.
-                return None
-            # g.trace('*p',p.headString())
+        # Short-circuit if possible.
+        if p.hasNext() and not p.isExpanded():
+            p.moveToNext()
+        else:
             p.moveToThreadNext()
+            while p and not p.isVisible(c):
+                if limit and limit == p:
+                    return g.choose(limitIsVisible,p,None)
+                elif limit and limit == p.back(): # An excellent trick.
+                    return None
+                # g.trace('*p',p.headString())
+                p.moveToThreadNext()
 
         # g.trace('at return','p',p,'limit',limit)
         if limit and limit == p:
@@ -2496,8 +2503,7 @@ class basePosition (object):
             return p
         else:
             return None
-    #@nonl
-    #@-node:ekr.20031218072017.941:p.moveToVisNext (excellent trick)
+    #@-node:ekr.20031218072017.941:p.moveToVisNext
     #@-node:ekr.20031218072017.928:p.moveToX
     #@+node:ekr.20040228094013.1:p.utils...
     #@+node:ekr.20040228060340:p.vParentWithStack
