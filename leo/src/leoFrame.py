@@ -2298,12 +2298,15 @@ class leoTree:
                 u.afterChangeNodeContents(p,undoType,undoData,
                     dirtyVnodeList=dirtyVnodeList)
         finally:
-            c.endUpdate(scroll=False) # New in 4.4.1
+            c.endUpdate(flag=changed,scroll=False)
+                # scroll=False in 4.4.1; flag = changed in 4.4.3.
             if changed:
                 if self.stayInTree:
                     c.treeWantsFocus()
                 else:
                     c.bodyWantsFocus()
+            else:
+                c.frame.tree.setSelectedLabelState(p)
 
         g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
     #@-node:ekr.20040803072955.91:onHeadChanged
