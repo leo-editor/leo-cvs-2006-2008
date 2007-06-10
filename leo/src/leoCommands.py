@@ -6313,7 +6313,7 @@ class baseCommands:
 
         """Return True if a position exists in c's tree"""
 
-        c = self ; p = p.copy() ; p2 = p.copy()
+        c = self ; p = p.copy()
 
         # This code must be fast.
         if not root:
@@ -6329,7 +6329,6 @@ class baseCommands:
             else:
                 p.moveToBack()
 
-        # g.trace('False','p',p2,'root',root)
         return False
     #@-node:ekr.20040307104131.3:c.positionExists
     #@+node:ekr.20040803140033.2:c.rootPosition

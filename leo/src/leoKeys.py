@@ -237,13 +237,9 @@ class autoCompleterClass:
                         self.appendToKnownObjects(getattr(module,className))
                 else:
                     obj = module
-            if not obj:
-                if key not in ('cc',):
-                    g.trace('bad object',obj)
-                continue
             for z in idList:
-                self.objectDict[z]=obj
-                # g.trace(obj)
+                if obj:
+                    self.objectDict[z]=obj
     #@-node:ekr.20061031131434.7:defineObjectDict
     #@-node:ekr.20061031131434.5: ctor (autocompleter)
     #@+node:ekr.20061031131434.8:Top level

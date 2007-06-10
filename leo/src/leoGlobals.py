@@ -4099,8 +4099,8 @@ def test_round_trip_toUnicode_toEncodedString ():
     import sys
 
     if sys.platform.startswith('win'):
-        data = ('炰','mbcs'),
-        table.append
+        data = '炰','mbcs'
+        table.append(data)
 
     for s,encoding in table:
         if g.isValidEncoding(encoding):

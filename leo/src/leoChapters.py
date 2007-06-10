@@ -7,7 +7,6 @@
 #@@pagewidth 80
 
 import leoGlobals as g
-import leoNodes
 
 # To do later or never: Make body editors persistent. Create @body-editor node?
 
@@ -102,7 +101,7 @@ class chapterController:
         c.beginUpdate()
         try:
             # Open the group undo.
-            groupUndoData = c.undoer.beforeChangeGroup(p,undoType)
+            c.undoer.beforeChangeGroup(p,undoType)
             # Do the clone.  c.clone handles the inner undo.
             clone = c.clone()
             # Do the move.
@@ -232,7 +231,7 @@ class chapterController:
     #@+node:ekr.20070603190617:cc.createChapterByName
     def createChapterByName (self,name,p,undoType):
 
-        cc = self ; c = cc.c ; u = c.undoer
+        cc = self ; c = cc.c
 
         if not name:
             return cc.error('No name')
@@ -595,7 +594,7 @@ class chapterController:
 
         '''Return the position of the @chapters node.'''
 
-        cc = self ; c = cc.c ; trace = False or self.trace
+        cc = self ; c = cc.c
 
         for p in c.allNodes_iter():
             if p.headString() == '@chapters':
@@ -643,7 +642,7 @@ class chapterController:
     #@+node:ekr.20070510064813:cc.printChaptersTree
     def printChaptersTree(self,tag=''):
 
-        cc = self ; root = cc.chaptersNode
+        cc = self ; c = cc.c ; root = cc.chaptersNode
 
         for p in c.rootPosition().self_and_siblings_iter():
             for p2 in p.self_and_subtree_iter():

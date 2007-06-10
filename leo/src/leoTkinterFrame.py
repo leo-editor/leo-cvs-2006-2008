@@ -528,35 +528,32 @@ class leoTkinterFrame (leoFrame.leoFrame):
     def enableTclTraces (self):
 
         c = self.c
-
-        # pychecker complains that trace/untracewidget are not used.
-
-        def tracewidget(event):
-            g.trace('enabling widget trace')
-            Pmw.tracetk(event.widget, 1)
-
-        def untracewidget(event):
-            g.trace('disabling widget trace')
-            Pmw.tracetk(event.widget,0)
-
-        def focusIn (event):
-            print("Focus in  %s (%s)" % (
-                event.widget,event.widget.winfo_class()))
-
-        def focusOut (event):
-            print("Focus out %s (%s)" % (
-                event.widget,event.widget.winfo_class()))
-
         # Put this in unit tests before the assert:
         # c.frame.bar1.unbind_all("<FocusIn>")
         # c.frame.bar1.unbind_all("<FocusOut>")
 
         # Any widget would do:
         w = c.frame.bar1
-        if 1:
+        if True:
+            def focusIn (event):
+                print("Focus in  %s (%s)" % (
+                    event.widget,event.widget.winfo_class()))
+
+            def focusOut (event):
+                print("Focus out %s (%s)" % (
+                    event.widget,event.widget.winfo_class()))
+
             w.bind_all("<FocusIn>", focusIn)
             w.bind_all("<FocusOut>", focusOut)
         else:
+            def tracewidget(event):
+                g.trace('enabling widget trace')
+                Pmw.tracetk(event.widget, 1)
+
+            def untracewidget(event):
+                g.trace('disabling widget trace')
+                Pmw.tracetk(event.widget,0)
+
             w.bind_all("<Control-1>", tracewidget)
             w.bind_all("<Control-Shift-1>", untracewidget)
     #@-node:ekr.20051121092320:f.enableTclTraces
