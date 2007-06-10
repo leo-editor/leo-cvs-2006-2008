@@ -54,7 +54,7 @@ def init ():
 
     ok = g.app.gui.guiName() == "tkinter"
 
-    print 'image.init'
+    # print 'image.init'
 
     if ok:
         leoPlugins.registerHandler("select2", onSelect)
