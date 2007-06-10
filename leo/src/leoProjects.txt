@@ -43076,7 +43076,7 @@ def moveToThreadNext (self):
 
     return p
 #@-node:ekr.20031218072017.939:p.moveToThreadNext
-#@+node:ekr.20031218072017.940:p.moveToVisBack (excellent trick 2)
+#@+node:ekr.20031218072017.940:p.moveToVisBack
 def moveToVisBack (self,c):
 
     """Move a position to the position of the previous visible node."""
@@ -43084,14 +43084,18 @@ def moveToVisBack (self,c):
     p = self
     limit,limitIsVisible = c.visLimit()
 
-    p.moveToThreadBack()
-    while p and not p.isVisible(c):
-        # g.trace('*p',p.headString())
-        if limit and limit == p:
-            return g.choose(limitIsVisible,p,None)
-        elif limit and limit == p.next(): # An excellent trick.
-            return None
+    # Short-circuit if possible.
+    if p.hasBack() and not p.back().isExpanded():
+        p.moveToBack()
+    else:
         p.moveToThreadBack()
+        while p and not p.isVisible(c):
+            # g.trace('*p',p.headString())
+            if limit and limit == p:
+                return g.choose(limitIsVisible,p,None)
+            elif limit and limit == p.next(): # An excellent trick.
+                return None
+            p.moveToThreadBack()
 
     if limit and limit == p:
         return g.choose(limitIsVisible,p,None)
@@ -43102,9 +43106,8 @@ def moveToVisBack (self,c):
         return p
     else:
         return None
-#@nonl
-#@-node:ekr.20031218072017.940:p.moveToVisBack (excellent trick 2)
-#@+node:ekr.20031218072017.941:p.moveToVisNext (excellent trick)
+#@-node:ekr.20031218072017.940:p.moveToVisBack
+#@+node:ekr.20031218072017.941:p.moveToVisNext
 def moveToVisNext (self,c):
 
     """Move a position to the position of the next visible node."""
@@ -43113,14 +43116,18 @@ def moveToVisNext (self,c):
 
     limit,limitIsVisible = c.visLimit()
 
-    p.moveToThreadNext()
-    while p and not p.isVisible(c):
-        if limit and limit == p:
-            return g.choose(limitIsVisible,p,None)
-        elif limit and limit == p.back(): # An excellent trick.
-            return None
-        # g.trace('*p',p.headString())
+    # Short-circuit if possible.
+    if p.hasNext() and not p.isExpanded():
+        p.moveToNext()
+    else:
         p.moveToThreadNext()
+        while p and not p.isVisible(c):
+            if limit and limit == p:
+                return g.choose(limitIsVisible,p,None)
+            elif limit and limit == p.back(): # An excellent trick.
+                return None
+            # g.trace('*p',p.headString())
+            p.moveToThreadNext()
 
     # g.trace('at return','p',p,'limit',limit)
     if limit and limit == p:
@@ -43131,8 +43138,7 @@ def moveToVisNext (self,c):
         return p
     else:
         return None
-#@nonl
-#@-node:ekr.20031218072017.941:p.moveToVisNext (excellent trick)
+#@-node:ekr.20031218072017.941:p.moveToVisNext
 #@+node:ekr.20031218072017.2995:selectVisBack
 # This has an up arrow for a control key.
 
@@ -43174,6 +43180,251 @@ def selectVisNext (self,event=None):
     c.treeSelectHelper(p,redraw=redraw)
 #@-node:ekr.20031218072017.2996:selectVisNext
 #@-node:ekr.20070608171808:Fixed bug involving moving up/down out of hoists
+#@+node:ekr.20070610152747:Improved speed of visNext/Back
+@
+Also, tree.endDrag and tree.onHeadChanged now redraw the screen only if the drag
+actually happened or the headline actually changed.
+#@+node:ekr.20040803072955.52:drawTopTree
+def drawTopTree (self):
+
+    """Draws the top-level tree, taking into account the hoist state."""
+
+    c = self.c ; canvas = self.canvas
+    trace = False or self.trace or self.trace_redraw
+
+    self.redrawing = True
+
+    # Recycle all widgets and clear all widget lists.
+    self.recycleWidgets()
+    # Clear all ids so invisible id's don't confuse eventToPosition & findPositionWithIconId
+    self.ids = {}
+    self.iconIds = {}
+    self.generation += 1
+    self.redrawCount += 1
+    self.drag_p = None # Disable drags across redraws.
+    self.dragging = False
+    if trace:
+        g.trace('redrawCount',self.redrawCount,g.callers()) # 'len(c.hoistStack)',len(c.hoistStack))
+        if 0:
+            delta = g.app.positions - self.prevPositions
+            g.trace("**** gen: %-3d positions: %5d +%4d" % (
+                self.generation,g.app.positions,delta),g.callers())
+
+    self.prevPositions = g.app.positions
+    if self.trace_gc: g.printNewObjects(tag='top 1')
+
+    hoistFlag = c.hoistStack
+    if c.hoistStack:
+        bunch = c.hoistStack[-1] ; p = bunch.p
+        h = p.headString()
+        if len(c.hoistStack) == 1 and h.startswith('@chapter') and p.hasChildren():
+            p = p.firstChild()
+            hoistFlag = False
+    else:
+        p = c.rootPosition()
+
+    self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=hoistFlag)
+
+    if self.trace_gc: g.printNewObjects(tag='top 2')
+    if self.trace_stats: self.showStats()
+
+    canvas.lower("lines")  # Lowest.
+    canvas.lift("textBox") # Not the Tk.Text widget: it should be low.
+    canvas.lift("userIcon")
+    canvas.lift("plusBox")
+    canvas.lift("clickBox")
+    canvas.lift("clickExpandBox")
+    canvas.lift("iconBox") # Higest.
+
+    self.redrawing = False
+#@-node:ekr.20040803072955.52:drawTopTree
+#@+node:ekr.20041111115908:endDrag
+def endDrag (self,event):
+
+    """The official helper of the onEndDrag event handler."""
+
+    c = self.c ; p = self.drag_p
+    c.setLog()
+    canvas = self.canvas
+    if not event: return
+
+    c.beginUpdate()
+    try:
+        << set vdrag, childFlag >>
+        if self.allow_clone_drags:
+            if not self.look_for_control_drag_on_mouse_down:
+                self.controlDrag = c.frame.controlKeyIsDown
+
+        redrawFlag = vdrag and vdrag.v.t != p.v.t
+        if redrawFlag: # Disallow drag to joined node.
+            << drag p to vdrag >>
+        elif self.trace and self.verbose:
+            g.trace("Cancel drag")
+
+        # Reset the old cursor by brute force.
+        self.canvas['cursor'] = "arrow"
+        self.dragging = False
+        self.drag_p = None
+    finally:
+        # Must set self.drag_p = None first.
+        c.endUpdate(redrawFlag)
+        c.recolor_now() # Dragging can affect coloring.
+#@+node:ekr.20040803072955.104:<< set vdrag, childFlag >>
+x,y = event.x,event.y
+canvas_x = canvas.canvasx(x)
+canvas_y = canvas.canvasy(y)
+
+theId = self.canvas.find_closest(canvas_x,canvas_y)
+# theId = self.canvas.find_overlapping(canvas_x,canvas_y,canvas_x,canvas_y)
+
+vdrag = self.findPositionWithIconId(theId)
+childFlag = vdrag and vdrag.hasChildren() and vdrag.isExpanded()
+#@-node:ekr.20040803072955.104:<< set vdrag, childFlag >>
+#@+node:ekr.20041111114148:<< drag p to vdrag >>
+# g.trace("*** end drag   ***",theId,x,y,p.headString(),vdrag.headString())
+
+if self.controlDrag: # Clone p and move the clone.
+    if childFlag:
+        c.dragCloneToNthChildOf(p,vdrag,0)
+    else:
+        c.dragCloneAfter(p,vdrag)
+else: # Just drag p.
+    if childFlag:
+        c.dragToNthChildOf(p,vdrag,0)
+    else:
+        c.dragAfter(p,vdrag)
+#@-node:ekr.20041111114148:<< drag p to vdrag >>
+#@-node:ekr.20041111115908:endDrag
+#@+node:ekr.20040803072955.91:onHeadChanged
+# Tricky code: do not change without careful thought and testing.
+
+def onHeadChanged (self,p,undoType='Typing',s=None):
+
+    '''Officially change a headline.
+    Set the old undo text to the previous revert point.'''
+
+    c = self.c ; u = c.undoer ; w = c.edit_widget(p)
+    if c.suppressHeadChanged: return
+    if not w: return
+
+    ch = '\n' # New in 4.4: we only report the final keystroke.
+    if g.doHook("headkey1",c=c,p=p,v=p,ch=ch):
+        return # The hook claims to have handled the event.
+
+    if s is None: s = w.getAllText()
+    << truncate s if it has multiple lines >>
+    c.beginUpdate()
+    try:
+        # Make the change official, but undo to the *old* revert point.
+        oldRevert = self.revertHeadline
+        changed = s != oldRevert
+        self.revertHeadline = s
+        p.initHeadString(s)
+        # g.trace('changed',changed,'old',repr(oldRevert),'new',repr(s))
+        if changed:
+            undoData = u.beforeChangeNodeContents(p,oldHead=oldRevert)
+            if not c.changed: c.setChanged(True)
+            dirtyVnodeList = p.setDirty()
+            u.afterChangeNodeContents(p,undoType,undoData,
+                dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.endUpdate(flag=changed,scroll=False)
+            # scroll=False in 4.4.1; flag = changed in 4.4.3.
+        if changed:
+            if self.stayInTree:
+                c.treeWantsFocus()
+            else:
+                c.bodyWantsFocus()
+        else:
+            c.frame.tree.setSelectedLabelState(p)
+
+    g.doHook("headkey2",c=c,p=p,v=p,ch=ch)
+#@+node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+# Remove one or two trailing newlines before warning of truncation.
+for i in (0,1):
+    if s and s[-1] == '\n':
+        if len(s) > 1: s = s[:-1]
+        else: s = ''
+
+# Warn if there are multiple lines.
+i = s.find('\n')
+if i > -1:
+    # g.trace(i,len(s),repr(s))
+    g.es("Truncating headline to one line",color="blue")
+    s = s[:i]
+
+limit = 1000
+if len(s) > limit:
+    g.es("Truncating headline to %d characters" % (limit),color="blue")
+    s = s[:limit]
+
+s = g.toUnicode(s or '',g.app.tkEncoding)
+#@-node:ekr.20040803072955.94:<< truncate s if it has multiple lines >>
+#@-node:ekr.20040803072955.91:onHeadChanged
+#@+node:ekr.20031218072017.940:p.moveToVisBack
+def moveToVisBack (self,c):
+
+    """Move a position to the position of the previous visible node."""
+
+    p = self
+    limit,limitIsVisible = c.visLimit()
+
+    # Short-circuit if possible.
+    if p.hasBack() and not p.back().isExpanded():
+        p.moveToBack()
+    else:
+        p.moveToThreadBack()
+        while p and not p.isVisible(c):
+            # g.trace('*p',p.headString())
+            if limit and limit == p:
+                return g.choose(limitIsVisible,p,None)
+            elif limit and limit == p.next(): # An excellent trick.
+                return None
+            p.moveToThreadBack()
+
+    if limit and limit == p:
+        return g.choose(limitIsVisible,p,None)
+    elif limit and limit == p.next(): # An excellent trick.
+        return None
+    elif p and p.isVisible(c):
+        # g.trace('returns p',p)
+        return p
+    else:
+        return None
+#@-node:ekr.20031218072017.940:p.moveToVisBack
+#@+node:ekr.20031218072017.941:p.moveToVisNext
+def moveToVisNext (self,c):
+
+    """Move a position to the position of the next visible node."""
+
+    p = self
+
+    limit,limitIsVisible = c.visLimit()
+
+    # Short-circuit if possible.
+    if p.hasNext() and not p.isExpanded():
+        p.moveToNext()
+    else:
+        p.moveToThreadNext()
+        while p and not p.isVisible(c):
+            if limit and limit == p:
+                return g.choose(limitIsVisible,p,None)
+            elif limit and limit == p.back(): # An excellent trick.
+                return None
+            # g.trace('*p',p.headString())
+            p.moveToThreadNext()
+
+    # g.trace('at return','p',p,'limit',limit)
+    if limit and limit == p:
+        return g.choose(limitIsVisible,p,None)
+    elif limit and limit == p.back(): # An excellent trick.
+        return None
+    elif p and p.isVisible(c):
+        return p
+    else:
+        return None
+#@-node:ekr.20031218072017.941:p.moveToVisNext
+#@-node:ekr.20070610152747:Improved speed of visNext/Back
 #@-node:ekr.20070528141848:Fixed bugs
 #@+node:ekr.20070528141848.1:Features
 #@+node:ekr.20070528073134:Supported write_strips_blank_lines option

@@ -290,6 +290,58 @@ a big deal, then not to worry, I can always navigate to the file of course.
 #@+node:ekr.20070515100356:To do: b2
 #@+node:ekr.20070610152249:Fix Linux unit tests
 #@-node:ekr.20070610152249:Fix Linux unit tests
+#@+node:ekr.20070202080824:Enable more plugins by default
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4134565
+
+I have been talking more and more people lately into giving Leo a try. These
+are end-users, not programmer-type people. One of the problems I find is that
+many features users expect as standard are plug-ins that are disabled at
+startup.
+
+From my experience, some of the plug-ins that people seem to want right away
+are Cleo, Image, Maximize windows, Export to HTML, and Navibuttons.
+
+Also, everyone seems to ask for spell checking, which I know is a separate install
+(I haven't tried putting it in). Perhaps even that could be included?
+
+I think it is a lot easier for power users to turn off things they don't like
+than less sophisticated users to turn them on. However, I realize that each
+additional plug-in means a longer load time and large memory footprint.
+
+-------------------
+
+From: Rich
+
+These are the plugins that I use often:
+Add directives & color markup
+Cleo 3
+Chapters 2 (unless Chapters works with newer releases, I will stick with Leo 4.4 final)
+Group Operations
+Nav_buttons
+Open_with
+RClick
+Universal Scrolling
+
+These are the plugins that I do not use too often:
+New Buttons
+UNL
+
+The following are plugins I would like to use:
+Edit Attributes
+Conceptual Sort
+Labels
+
+"Labels" has a nice assortment of commands; however the labels are (1) not saved
+between sessions, and (2) cannot be seen by "Edit Attributes."
+I'd be more inclined to use "Edit Attributes" and "C-Sort" IF there was some
+way to SEE the attributes (this goes for "Labels," as well).
+
+
+---- Enable Aspell automatically if possible.
+
+#@-node:ekr.20070202080824:Enable more plugins by default
 #@+node:ekr.20070325054325:Docs
 #@+node:ekr.20070215093739:Improve Leo's getting started page
 @nocolor
@@ -388,58 +440,6 @@ You can type multiple <alt-ctrl-keys> to toggle multiple checkboxes.
 #@-node:ekr.20070610094932:How to make a Leo command undoable
 #@-node:ekr.20070325054325:Docs
 #@+node:ekr.20070515113707:Dist
-#@+node:ekr.20070202080824:Enable more plugins by default
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4134565
-
-I have been talking more and more people lately into giving Leo a try. These
-are end-users, not programmer-type people. One of the problems I find is that
-many features users expect as standard are plug-ins that are disabled at
-startup.
-
-From my experience, some of the plug-ins that people seem to want right away
-are Cleo, Image, Maximize windows, Export to HTML, and Navibuttons.
-
-Also, everyone seems to ask for spell checking, which I know is a separate install
-(I haven't tried putting it in). Perhaps even that could be included?
-
-I think it is a lot easier for power users to turn off things they don't like
-than less sophisticated users to turn them on. However, I realize that each
-additional plug-in means a longer load time and large memory footprint.
-
--------------------
-
-From: Rich
-
-These are the plugins that I use often:
-Add directives & color markup
-Cleo 3
-Chapters 2 (unless Chapters works with newer releases, I will stick with Leo 4.4 final)
-Group Operations
-Nav_buttons
-Open_with
-RClick
-Universal Scrolling
-
-These are the plugins that I do not use too often:
-New Buttons
-UNL
-
-The following are plugins I would like to use:
-Edit Attributes
-Conceptual Sort
-Labels
-
-"Labels" has a nice assortment of commands; however the labels are (1) not saved
-between sessions, and (2) cannot be seen by "Edit Attributes."
-I'd be more inclined to use "Edit Attributes" and "C-Sort" IF there was some
-way to SEE the attributes (this goes for "Labels," as well).
-
-
----- Enable Aspell automatically if possible.
-
-#@-node:ekr.20070202080824:Enable more plugins by default
 #@+node:ekr.20070307082503.1:Create Linux distribution
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4319356
