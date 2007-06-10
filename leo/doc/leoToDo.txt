@@ -288,6 +288,8 @@ If it would be trivial for Leo to not do this, I'd like that feature.  If it's
 a big deal, then not to worry, I can always navigate to the file of course.
 #@-node:ekr.20070605114358:Improve how recent files works??
 #@+node:ekr.20070515100356:To do: b2
+#@+node:ekr.20070610111735:Run pychecker
+#@-node:ekr.20070610111735:Run pychecker
 #@+node:ekr.20070325054325:Docs
 #@+node:ekr.20070215093739:Improve Leo's getting started page
 @nocolor
@@ -382,6 +384,8 @@ You can type the <alt-ctrl> keys anytime after <ctrl-f> (or <shift-ctrl-r>) and 
 You can type multiple <alt-ctrl-keys> to toggle multiple checkboxes.
 #@nonl
 #@-node:ekr.20070606165218:Improve documentation for search/replace
+#@+node:ekr.20070610094932:How to make a Leo command undoable
+#@-node:ekr.20070610094932:How to make a Leo command undoable
 #@-node:ekr.20070325054325:Docs
 #@+node:ekr.20070515113707:Dist
 #@+node:ekr.20070202080824:Enable more plugins by default
