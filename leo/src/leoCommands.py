@@ -3140,7 +3140,9 @@ class baseCommands:
 
         for p in root.self_and_subtree_iter():
             if p.isCloned() and clonedTnodes.get(p.v.t):
-                if warningFlag:
+                if g.app.unitTesting:
+                    g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+                elif warningFlag:
                     g.alert(message)
                 return False
         return True
@@ -4926,16 +4928,15 @@ class baseCommands:
         current = c.currentPosition()
         command = 'Demote'
         if not current or not current.hasNext():
-            # c.treeWantsFocusNow()
-            c.treeFocusHelper()
-            return
+            c.treeFocusHelper() ; return
 
         # Make sure all the moves will be valid.
-        for child in current.children_iter():
-            if not c.checkMoveWithParentWithWarning(child,current,True):
-                # c.treeWantsFocusNow()
-                c.treeFocusHelper()
-                return
+        next = current.next()
+        while next:
+            if not c.checkMoveWithParentWithWarning(next,current,True):
+                c.treeFocusHelper() ; return
+            next.moveToNext()
+
         c.beginUpdate()
         try: # update...
             c.endEditing()
