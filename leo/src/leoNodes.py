@@ -2446,63 +2446,77 @@ class basePosition (object):
 
         """Move a position to the position of the previous visible node."""
 
-        p = self
-        limit,limitIsVisible = c.visLimit()
+        p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
 
-        # Short-circuit if possible.
-        if p.hasBack() and not p.back().isExpanded():
-            p.moveToBack()
-        else:
-            p.moveToThreadBack()
-            while p and not p.isVisible(c):
-                # g.trace('*p',p.headString())
-                if limit and limit == p:
-                    return g.choose(limitIsVisible,p,None)
-                elif limit and limit == p.next(): # An excellent trick.
-                    return None
+        def checkLimit (p):
+            '''Return done, return-val'''
+            if limit:
+                if limit == p:
+                    if trace: g.trace('at limit',p)
+                    return True,g.choose(limitIsVisible and p.isVisible(c),p,None)
+                elif limit.isAncestorOf(p):
+                    return False,None
+                else:
+                    if trace: g.trace('outside limit tree')
+                    return True,None
+            else:
+                return False,None
+
+        while p:
+            # Short-circuit if possible.
+            back = p.back()
+            if back and (not back.hasChildren() or not back.isExpanded()):
+                p.moveToBack()
+            else:
                 p.moveToThreadBack()
-
-        if limit and limit == p:
-            return g.choose(limitIsVisible,p,None)
-        elif limit and limit == p.next(): # An excellent trick.
-            return None
-        elif p and p.isVisible(c):
-            # g.trace('returns p',p)
-            return p
+            if p:
+                if trace: g.trace('*p',p.headString())
+                done,val = checkLimit(p)
+                if done: return val
+                if p.isVisible(c):
+                    return p
         else:
-            return None
+            # assert not p.
+            return p
+    #@nonl
     #@-node:ekr.20031218072017.940:p.moveToVisBack
     #@+node:ekr.20031218072017.941:p.moveToVisNext
     def moveToVisNext (self,c):
 
         """Move a position to the position of the next visible node."""
 
-        p = self
+        p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
 
-        limit,limitIsVisible = c.visLimit()
+        def checkLimit (p):
+            '''Return done, return-val'''
+            if limit:
+                # Unlike moveToVisBack, being at the limit does not terminate.
+                if limit == p:
+                    return False, None
+                elif limit.isAncestorOf(p):
+                    return False,None
+                else:
+                    if trace: g.trace('outside limit tree')
+                    return True,None
+            else:
+                return False,None
 
-        # Short-circuit if possible.
-        if p.hasNext() and not p.isExpanded():
-            p.moveToNext()
-        else:
-            p.moveToThreadNext()
-            while p and not p.isVisible(c):
-                if limit and limit == p:
-                    return g.choose(limitIsVisible,p,None)
-                elif limit and limit == p.back(): # An excellent trick.
-                    return None
-                # g.trace('*p',p.headString())
+        while p:
+            # Short-circuit if possible.
+            if p.hasNext() and (not p.hasChildren() or not p.isExpanded()):
+                p.moveToNext()
+            else:
                 p.moveToThreadNext()
-
-        # g.trace('at return','p',p,'limit',limit)
-        if limit and limit == p:
-            return g.choose(limitIsVisible,p,None)
-        elif limit and limit == p.back(): # An excellent trick.
-            return None
-        elif p and p.isVisible(c):
-            return p
+            if p:
+                if trace: g.trace('*p',p.headString())
+                done,val = checkLimit(p)
+                if done: return val
+                if p.isVisible(c):
+                    return p.copy()
         else:
-            return None
+            # assert not p.
+            return p
+    #@nonl
     #@-node:ekr.20031218072017.941:p.moveToVisNext
     #@-node:ekr.20031218072017.928:p.moveToX
     #@+node:ekr.20040228094013.1:p.utils...
