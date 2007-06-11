@@ -15115,7 +15115,7 @@ def moveOutlineDown (self,event=None):
     while next and p.isAncestorOf(next):
         next = next.visNext(c)
     if not next:
-        # c.treeWantsFocusNow()
+        if c.hoistStack: self.cantMoveMessage()
         c.treeFocusHelper()
         return
 
@@ -15300,9 +15300,22 @@ if specialCase:
     back2.contract()
     p.moveAfter(back2)
 elif not back2:
-    # p will be the new root node
-    moved = True
-    p.moveToRoot(oldRoot=c.rootPosition())
+    if c.hoistStack: # hoist or chapter.
+        limit,limitIsVisible = c.visLimit()
+        assert limit
+        if limitIsVisible:
+            # canMoveOutlineUp should have caught this.
+            moved = False
+            g.trace('can not happen. In hoist')
+        else:
+            # g.trace('chapter first child')
+            moved = True
+            p.moveToFirstChildOf(limit)
+    else:
+        # p will be the new root node
+        # g.trace('move to root')
+        p.moveToRoot(oldRoot=c.rootPosition())
+        moved = True
 elif back2.hasChildren() and back2.isExpanded():
     if c.checkMoveWithParentWithWarning(p,back2,True):
         moved = True
@@ -16369,9 +16382,22 @@ if specialCase:
     back2.contract()
     p.moveAfter(back2)
 elif not back2:
-    # p will be the new root node
-    moved = True
-    p.moveToRoot(oldRoot=c.rootPosition())
+    if c.hoistStack: # hoist or chapter.
+        limit,limitIsVisible = c.visLimit()
+        assert limit
+        if limitIsVisible:
+            # canMoveOutlineUp should have caught this.
+            moved = False
+            g.trace('can not happen. In hoist')
+        else:
+            # g.trace('chapter first child')
+            moved = True
+            p.moveToFirstChildOf(limit)
+    else:
+        # p will be the new root node
+        # g.trace('move to root')
+        p.moveToRoot(oldRoot=c.rootPosition())
+        moved = True
 elif back2.hasChildren() and back2.isExpanded():
     if c.checkMoveWithParentWithWarning(p,back2,True):
         moved = True
@@ -42129,8 +42155,20 @@ def canMoveOutlineUp (self):
 
     c = self ; current = c.currentPosition()
 
-    return current and current.visBack(c) and (
-        current.visBack(c).visBack(c) or not c.hoistStack)
+    visBack = current and current.visBack(c)
+
+    if not visBack:
+        return False
+    elif visBack.visBack(c):
+        return True
+    elif c.hoistStack:
+        limit,limitIsVisible = c.visLimit()
+        if limitIsVisible: # A hoist
+            return current != limit
+        else: # A chapter.
+            return current != limit.firstChild()
+    else:
+        return current != c.rootPosition()
 #@-node:ekr.20031218072017.2973:canMoveOutlineUp
 #@+node:ekr.20031218072017.2977:canSelect....
 def canSelectThreadBack (self):
@@ -42764,7 +42802,7 @@ def moveOutlineDown (self,event=None):
     while next and p.isAncestorOf(next):
         next = next.visNext(c)
     if not next:
-        # c.treeWantsFocusNow()
+        if c.hoistStack: self.cantMoveMessage()
         c.treeFocusHelper()
         return
 
@@ -42949,9 +42987,22 @@ if specialCase:
     back2.contract()
     p.moveAfter(back2)
 elif not back2:
-    # p will be the new root node
-    moved = True
-    p.moveToRoot(oldRoot=c.rootPosition())
+    if c.hoistStack: # hoist or chapter.
+        limit,limitIsVisible = c.visLimit()
+        assert limit
+        if limitIsVisible:
+            # canMoveOutlineUp should have caught this.
+            moved = False
+            g.trace('can not happen. In hoist')
+        else:
+            # g.trace('chapter first child')
+            moved = True
+            p.moveToFirstChildOf(limit)
+    else:
+        # p will be the new root node
+        # g.trace('move to root')
+        p.moveToRoot(oldRoot=c.rootPosition())
+        moved = True
 elif back2.hasChildren() and back2.isExpanded():
     if c.checkMoveWithParentWithWarning(p,back2,True):
         moved = True
@@ -43081,63 +43132,77 @@ def moveToVisBack (self,c):
 
     """Move a position to the position of the previous visible node."""
 
-    p = self
-    limit,limitIsVisible = c.visLimit()
+    p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
 
-    # Short-circuit if possible.
-    if p.hasBack() and not p.back().isExpanded():
-        p.moveToBack()
-    else:
-        p.moveToThreadBack()
-        while p and not p.isVisible(c):
-            # g.trace('*p',p.headString())
-            if limit and limit == p:
-                return g.choose(limitIsVisible,p,None)
-            elif limit and limit == p.next(): # An excellent trick.
-                return None
+    def checkLimit (p):
+        '''Return done, return-val'''
+        if limit:
+            if limit == p:
+                if trace: g.trace('at limit',p)
+                return True,g.choose(limitIsVisible and p.isVisible(c),p,None)
+            elif limit.isAncestorOf(p):
+                return False,None
+            else:
+                if trace: g.trace('outside limit tree')
+                return True,None
+        else:
+            return False,None
+
+    while p:
+        # Short-circuit if possible.
+        back = p.back()
+        if back and (not back.hasChildren() or not back.isExpanded()):
+            p.moveToBack()
+        else:
             p.moveToThreadBack()
-
-    if limit and limit == p:
-        return g.choose(limitIsVisible,p,None)
-    elif limit and limit == p.next(): # An excellent trick.
-        return None
-    elif p and p.isVisible(c):
-        # g.trace('returns p',p)
-        return p
+        if p:
+            if trace: g.trace('*p',p.headString())
+            done,val = checkLimit(p)
+            if done: return val
+            if p.isVisible(c):
+                return p
     else:
-        return None
+        # assert not p.
+        return p
+#@nonl
 #@-node:ekr.20031218072017.940:p.moveToVisBack
 #@+node:ekr.20031218072017.941:p.moveToVisNext
 def moveToVisNext (self,c):
 
     """Move a position to the position of the next visible node."""
 
-    p = self
+    p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
 
-    limit,limitIsVisible = c.visLimit()
+    def checkLimit (p):
+        '''Return done, return-val'''
+        if limit:
+            # Unlike moveToVisBack, being at the limit does not terminate.
+            if limit == p:
+                return False, None
+            elif limit.isAncestorOf(p):
+                return False,None
+            else:
+                if trace: g.trace('outside limit tree')
+                return True,None
+        else:
+            return False,None
 
-    # Short-circuit if possible.
-    if p.hasNext() and not p.isExpanded():
-        p.moveToNext()
-    else:
-        p.moveToThreadNext()
-        while p and not p.isVisible(c):
-            if limit and limit == p:
-                return g.choose(limitIsVisible,p,None)
-            elif limit and limit == p.back(): # An excellent trick.
-                return None
-            # g.trace('*p',p.headString())
+    while p:
+        # Short-circuit if possible.
+        if p.hasNext() and (not p.hasChildren() or not p.isExpanded()):
+            p.moveToNext()
+        else:
             p.moveToThreadNext()
-
-    # g.trace('at return','p',p,'limit',limit)
-    if limit and limit == p:
-        return g.choose(limitIsVisible,p,None)
-    elif limit and limit == p.back(): # An excellent trick.
-        return None
-    elif p and p.isVisible(c):
-        return p
+        if p:
+            if trace: g.trace('*p',p.headString())
+            done,val = checkLimit(p)
+            if done: return val
+            if p.isVisible(c):
+                return p.copy()
     else:
-        return None
+        # assert not p.
+        return p
+#@nonl
 #@-node:ekr.20031218072017.941:p.moveToVisNext
 #@+node:ekr.20031218072017.2995:selectVisBack
 # This has an up arrow for a control key.
@@ -43366,63 +43431,77 @@ def moveToVisBack (self,c):
 
     """Move a position to the position of the previous visible node."""
 
-    p = self
-    limit,limitIsVisible = c.visLimit()
+    p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
 
-    # Short-circuit if possible.
-    if p.hasBack() and not p.back().isExpanded():
-        p.moveToBack()
-    else:
-        p.moveToThreadBack()
-        while p and not p.isVisible(c):
-            # g.trace('*p',p.headString())
-            if limit and limit == p:
-                return g.choose(limitIsVisible,p,None)
-            elif limit and limit == p.next(): # An excellent trick.
-                return None
+    def checkLimit (p):
+        '''Return done, return-val'''
+        if limit:
+            if limit == p:
+                if trace: g.trace('at limit',p)
+                return True,g.choose(limitIsVisible and p.isVisible(c),p,None)
+            elif limit.isAncestorOf(p):
+                return False,None
+            else:
+                if trace: g.trace('outside limit tree')
+                return True,None
+        else:
+            return False,None
+
+    while p:
+        # Short-circuit if possible.
+        back = p.back()
+        if back and (not back.hasChildren() or not back.isExpanded()):
+            p.moveToBack()
+        else:
             p.moveToThreadBack()
-
-    if limit and limit == p:
-        return g.choose(limitIsVisible,p,None)
-    elif limit and limit == p.next(): # An excellent trick.
-        return None
-    elif p and p.isVisible(c):
-        # g.trace('returns p',p)
-        return p
+        if p:
+            if trace: g.trace('*p',p.headString())
+            done,val = checkLimit(p)
+            if done: return val
+            if p.isVisible(c):
+                return p
     else:
-        return None
+        # assert not p.
+        return p
+#@nonl
 #@-node:ekr.20031218072017.940:p.moveToVisBack
 #@+node:ekr.20031218072017.941:p.moveToVisNext
 def moveToVisNext (self,c):
 
     """Move a position to the position of the next visible node."""
 
-    p = self
+    p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
 
-    limit,limitIsVisible = c.visLimit()
+    def checkLimit (p):
+        '''Return done, return-val'''
+        if limit:
+            # Unlike moveToVisBack, being at the limit does not terminate.
+            if limit == p:
+                return False, None
+            elif limit.isAncestorOf(p):
+                return False,None
+            else:
+                if trace: g.trace('outside limit tree')
+                return True,None
+        else:
+            return False,None
 
-    # Short-circuit if possible.
-    if p.hasNext() and not p.isExpanded():
-        p.moveToNext()
-    else:
-        p.moveToThreadNext()
-        while p and not p.isVisible(c):
-            if limit and limit == p:
-                return g.choose(limitIsVisible,p,None)
-            elif limit and limit == p.back(): # An excellent trick.
-                return None
-            # g.trace('*p',p.headString())
+    while p:
+        # Short-circuit if possible.
+        if p.hasNext() and (not p.hasChildren() or not p.isExpanded()):
+            p.moveToNext()
+        else:
             p.moveToThreadNext()
-
-    # g.trace('at return','p',p,'limit',limit)
-    if limit and limit == p:
-        return g.choose(limitIsVisible,p,None)
-    elif limit and limit == p.back(): # An excellent trick.
-        return None
-    elif p and p.isVisible(c):
-        return p
+        if p:
+            if trace: g.trace('*p',p.headString())
+            done,val = checkLimit(p)
+            if done: return val
+            if p.isVisible(c):
+                return p.copy()
     else:
-        return None
+        # assert not p.
+        return p
+#@nonl
 #@-node:ekr.20031218072017.941:p.moveToVisNext
 #@-node:ekr.20070610152747:Improved speed of visNext/Back
 #@-node:ekr.20070528141848:Fixed bugs
@@ -49782,7 +49861,7 @@ def moveOutlineDown (self,event=None):
     while next and p.isAncestorOf(next):
         next = next.visNext(c)
     if not next:
-        # c.treeWantsFocusNow()
+        if c.hoistStack: self.cantMoveMessage()
         c.treeFocusHelper()
         return
 
@@ -49967,9 +50046,22 @@ if specialCase:
     back2.contract()
     p.moveAfter(back2)
 elif not back2:
-    # p will be the new root node
-    moved = True
-    p.moveToRoot(oldRoot=c.rootPosition())
+    if c.hoistStack: # hoist or chapter.
+        limit,limitIsVisible = c.visLimit()
+        assert limit
+        if limitIsVisible:
+            # canMoveOutlineUp should have caught this.
+            moved = False
+            g.trace('can not happen. In hoist')
+        else:
+            # g.trace('chapter first child')
+            moved = True
+            p.moveToFirstChildOf(limit)
+    else:
+        # p will be the new root node
+        # g.trace('move to root')
+        p.moveToRoot(oldRoot=c.rootPosition())
+        moved = True
 elif back2.hasChildren() and back2.isExpanded():
     if c.checkMoveWithParentWithWarning(p,back2,True):
         moved = True
