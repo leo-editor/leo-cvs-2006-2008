@@ -2,18 +2,13 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.510869565217">
-	<global_window_position top="50" left="379" height="828" width="750"/>
+<globals body_outline_ratio="0.456865127582">
+	<global_window_position top="52" left="337" height="823" width="822"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20070601133912"><vh>@chapters</vh>
-<v t="ekr.20070601134019"><vh>@chapter trash</vh>
-<v t="ekr.20070601134019.1"><vh>trash node 1</vh></v>
-</v>
-</v>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
 <v t="ekr.20060531093331"><vh>@command clones-tab</vh>
 <v t="ekr.20060531093331.1"><vh>class cloneNavigator</vh>
@@ -30,6 +25,11 @@
 <v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
 <v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
 </v>
+<v t="ekr.20070603183100"><vh>@settings</vh>
+<v t="ekr.20070603183100.1"><vh>@bool use_chapters = True</vh></v>
+<v t="ekr.20070605104326"><vh>@bool use_chapter_tabs = True</vh></v>
+</v>
+<v t="ekr.20070605104410"><vh>@chapters</vh></v>
 </v>
 <v t="EKR.20040430162943"><vh>Notes</vh>
 <v t="ekr.20060217111834"><vh>@url http://docs.python.org/lib/re-syntax.html</vh></v>
@@ -37,8 +37,7 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933"
-marks="ekr.20050920084036.59,"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
@@ -46,7 +45,7 @@ marks="ekr.20050920084036.59,"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
+<v t="ekr.20031218072017.2582" a="E"><vh> version &amp; signon stuff</vh>
 <v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
 <v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
 <v t="ekr.20040629121554.2" a="M" labels="2858060000006c6162656c737100540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571017471022e"><vh>initVersion</vh></v>
@@ -62,8 +61,7 @@ marks="ekr.20050920084036.59,"><vh>@thin leoProjects.txt</vh></v>
 <v t="ekr.20031218072017.2810"
 marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
-<v t="ekr.20050710142719"
-marks="ekr.20050920084036.59,"><vh>@thin leoEditCommands.py</vh></v>
+<v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 <v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
 <v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
 <v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
@@ -146,7 +144,7 @@ if 0: # Set to 1 for lint-like testing.
 </t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.3 beta 1, build %s, May 18, 2007" % c.getBuildNumber()
+    return "Leo 4.4.3 beta 2, build %s, June 11, 2007" % c.getBuildNumber()
 </t>
 <t tx="ekr.20040629121554.2">def initVersion (self):
     c = self
@@ -335,8 +333,10 @@ if g.os_path_exists(path):
 else:
     g.es_print('not found: %s' % path)</t>
 <t tx="ekr.20070201082722">c.prettyPrintPythonNode()</t>
-<t tx="ekr.20070601133912"></t>
-<t tx="ekr.20070601134019">trash</t>
-<t tx="ekr.20070601134019.1"></t>
+<t tx="ekr.20070603183100"></t>
+<t tx="ekr.20070603183100.1"></t>
+<t tx="ekr.20070605104326">True:  Chapter tabs appear in the outline pane.
+False: Chapter tabs do not appear.</t>
+<t tx="ekr.20070605104410"></t>
 </tnodes>
 </leo_file>
