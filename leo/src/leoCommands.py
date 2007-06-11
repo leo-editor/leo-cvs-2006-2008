@@ -4987,7 +4987,7 @@ class baseCommands:
         while next and p.isAncestorOf(next):
             next = next.visNext(c)
         if not next:
-            # c.treeWantsFocusNow()
+            if c.hoistStack: self.cantMoveMessage()
             c.treeFocusHelper()
             return
 
@@ -5158,9 +5158,22 @@ class baseCommands:
                 back2.contract()
                 p.moveAfter(back2)
             elif not back2:
-                # p will be the new root node
-                moved = True
-                p.moveToRoot(oldRoot=c.rootPosition())
+                if c.hoistStack: # hoist or chapter.
+                    limit,limitIsVisible = c.visLimit()
+                    assert limit
+                    if limitIsVisible:
+                        # canMoveOutlineUp should have caught this.
+                        moved = False
+                        g.trace('can not happen. In hoist')
+                    else:
+                        # g.trace('chapter first child')
+                        moved = True
+                        p.moveToFirstChildOf(limit)
+                else:
+                    # p will be the new root node
+                    # g.trace('move to root')
+                    p.moveToRoot(oldRoot=c.rootPosition())
+                    moved = True
             elif back2.hasChildren() and back2.isExpanded():
                 if c.checkMoveWithParentWithWarning(p,back2,True):
                     moved = True
@@ -6053,8 +6066,20 @@ class baseCommands:
 
         c = self ; current = c.currentPosition()
 
-        return current and current.visBack(c) and (
-            current.visBack(c).visBack(c) or not c.hoistStack)
+        visBack = current and current.visBack(c)
+
+        if not visBack:
+            return False
+        elif visBack.visBack(c):
+            return True
+        elif c.hoistStack:
+            limit,limitIsVisible = c.visLimit()
+            if limitIsVisible: # A hoist
+                return current != limit
+            else: # A chapter.
+                return current != limit.firstChild()
+        else:
+            return current != c.rootPosition()
     #@-node:ekr.20031218072017.2973:canMoveOutlineUp
     #@+node:ekr.20031218072017.2974:canPasteOutline
     def canPasteOutline (self,s=None):
