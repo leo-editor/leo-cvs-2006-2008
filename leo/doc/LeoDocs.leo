@@ -2,15 +2,15 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.566371681416">
-	<global_window_position top="94" left="363" height="751" width="897"/>
+<globals body_outline_ratio="0.436388508892">
+	<global_window_position top="94" left="363" height="711" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
 <v t="ekr.20070610174018"><vh>Startup</vh>
-<v t="ekr.20070325123558" a="E"><vh>@chapters</vh></v>
+<v t="ekr.20070325123558"><vh>@chapters</vh></v>
 <v t="ekr.20050404094627"><vh>Buttons</vh>
 <v t="ekr.20041226081019"><vh>@button Spell</vh></v>
 <v t="ekr.20050812090111"><vh>@button rst3</vh></v>
@@ -3120,7 +3120,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="edream.110203163054.63" a="ET"><vh>Latest version</vh>
 <v t="ekr.20070513111132"><vh>4.4.3 beta 1</vh>
 <v t="ekr.20070513111132.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070513111132.2"><vh>Bugs</vh>
@@ -3210,7 +3210,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070610063456" a="TV"><vh>4.4.3 beta 2</vh>
+<v t="ekr.20070610063456" a="V"><vh>4.4.3 beta 2</vh>
 <v t="ekr.20070610063456.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070610063456.2"><vh>Bugs</vh>
 <v t="ekr.20070610063456.3"><vh>Fixed an escape bug in new colorizer</vh></v>
@@ -3310,6 +3310,7 @@
 <v t="ekr.20070610063538.175"><vh>Fix crasher in maximizeNewWindows</vh></v>
 <v t="ekr.20070610063538.209"><vh>Don't change focus in the save command</vh></v>
 <v t="ekr.20070610063538.212"><vh>downcase-region and upcase-region didn't color body text.</vh></v>
+<v t="ekr.20070611161859"><vh>Fixed *major* demote bug</vh></v>
 </v>
 <v t="ekr.20070610063538.280"><vh>Features</vh>
 <v t="ekr.20070610063538.281"><vh>Supported write_strips_blank_lines option</vh></v>
@@ -11503,11 +11504,7 @@ does not save recent files information in leoSettings.leo files.
 - Changing the @rencentfiles node doesn't mark the Leo file as dirty, so if you
 don't save the .leo file the recent files information will not be updated.
 
-3. "Page nodes" have headlines of the form @page &lt;description&gt;
-
-Such nodes have the effect of gathering all descendant settings nodes into a single settings page.
-
-4.  All other nodes are "Organizer" nodes.  Such nodes have no effect on the settings shown in the dialog.  You may use them as you please to organize settings.
+3.  All other nodes are "Organizer" nodes.  Such nodes have no effect on the settings shown in the dialog.  You may use them as you please to organize settings.
 
 Notes:
 
@@ -13581,8 +13578,7 @@ For example, the root of the file that generated this documentation contains::
 \2. By setting options in @settings trees.  To do this, you must prefix the option name shown in this documentation with the prefix 'rst3\_'.  For example::
 
     @settings
-        @page rst3 options
-            @bool rst3_write_intermediate_file = True
+        @bool rst3_write_intermediate_file = True
 </t>
 <t tx="ekr.20050813102008.10">This plugin defines a code-block rST directive.  The primary purpose of this directive is to show formatted source code.
 
@@ -14272,8 +14268,7 @@ For example, the root of the file that generated this documentation contains::
 \2. By setting options in @settings trees.  To do this, you must prefix the option name shown in this documentation with the prefix 'rst3\_'.  For example::
 
     @settings
-        @page rst3 options
-            @bool rst3_write_intermediate_file = True
+        @bool rst3_write_intermediate_file = True
 </t>
 <t tx="ekr.20050818163826.10">This plugin defines a code-block rST directive.  The primary purpose of this directive is to show formatted source code.
 
@@ -20626,7 +20621,6 @@ You can use the browser's refresh button to update the top-level view in the bro
 To enable this plugin put this into your file::
 
     @settings
-        @page http plugin
         @bool http_active = True
         @int  port = 8080
         @string rst_http_attributename = 'rst_http_attribute'</t>
@@ -21642,7 +21636,7 @@ give examples of modifying each pane.</t>
 
 contains Leo key bindings.
 
-- The settings in @page Spell tab replace the settings in spellpyx.ini.
+- The spelling settings in leoSettings.leo replace the settings in spellpyx.ini.
 
 - You can specify the background of tabs using the following pattern::
 
@@ -21689,7 +21683,7 @@ so Leo uses a Tk.Label rather than a Tk.Text widget.
 This will cause less confusion than always having the minibuffer enabled.</t>
 <t tx="ekr.20051109112826.265">http://sourceforge.net/forum/message.php?msg_id=3415021
 
-The code now uses the settings in @page Spell tab in leoSettings.leo.</t>
+The code now uses the settings in leoSettings.leo.</t>
 <t tx="ekr.20051109112826.310">@nocolor
 http://sourceforge.net/forum/message.php?msg_id=3414639
 
@@ -27861,7 +27855,7 @@ New in Leo 4.4 beta 2:
 
 New in Leo 4.4 alpha 2:
 
-- The settings in @page Spell tab replace the settings in spellpyx.ini.
+- The spelling settings replace the settings in spellpyx.ini.
 - New settings::
 
     @color log_pane_Find_tab_background_color
@@ -31820,7 +31814,7 @@ The highlights of Leo 4.4.3:
 
 - Clear status line in repeat-complex-command.
 </t>
-<t tx="ekr.20070610063456">Leo 4.4.3 beta 2                                June 10, 2006
+<t tx="ekr.20070610063456">Leo 4.4.3 beta 2                                June 12, 2006
 
 Leo 4.4.3 beta 2 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
@@ -32368,5 +32362,6 @@ leo_to_html.py
 
 I left out cleo because it has been reported not to be fully functional with Leo 4.4.3.</t>
 <t tx="ekr.20070610174018"></t>
+<t tx="ekr.20070611161859">http://sourceforge.net/forum/message.php?msg_id=4356197</t>
 </tnodes>
 </leo_file>

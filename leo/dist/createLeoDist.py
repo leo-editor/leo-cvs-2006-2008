@@ -26,7 +26,7 @@ distutils.core.setup (
     #@    << setup info for createLeoDist.py >>
     #@+node:EKR.20040519082027.28:<< setup info for createLeoDist.py >>
     name="leo",
-    version="4-4-3-beta-1", # No spaces here!
+    version="4-4-3-beta-2", # No spaces here!
     author="Edward K. Ream",
     author_email="edreamleo@charter.net",
     url="http://webpages.charter.net/edreamleo/front.html",
@@ -38,13 +38,13 @@ distutils.core.setup (
     """Leo is a powerful programming and scripting environment, outliner, literate
     programming tool, data organizer and project manager. Cloned nodes make possible
     multiple views of a project within a single Leo outline.
-    
+
     Leo is written in 100% pure Python and works on any platform that supports
     Python 2.2.1 or above and the Tk Tk 8.4 or above.
-    
+
     Download Python from http://python.org/
     Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
-    
+
     Leo features a multi-window outlining editor with powerful outline commands,
     support for the noweb markup language, syntax colorizing for many common
     languages, unlimited Undo/Redo, an integrated Python shell(IDLE) window,

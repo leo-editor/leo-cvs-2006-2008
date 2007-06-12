@@ -43502,6 +43502,301 @@ def moveToVisNext (self,c):
 #@nonl
 #@-node:ekr.20031218072017.941:p.moveToVisNext
 #@-node:ekr.20070610152747:Improved speed of visNext/Back
+#@+node:ekr.20070611063108:Fixed moveToVisBack/Next bugs
+#@+node:ekr.20040117162509.16:p.isVisible
+def isVisible (self,c):
+
+    """Return True if all of a position's parents are expanded."""
+
+    # v.isVisible no longer exists.
+    p = self ; cc = c.chapterController ; trace = False
+    limit,limitIsVisible = c.visLimit()
+    limit_v = limit and limit.v or None
+    if p.v == limit_v:
+        if trace: g.trace('*** at limit','limitIsVisible',limitIsVisible,p.v.headString())
+        return limitIsVisible
+
+    # Avoid calling p.copy() or copying the stack.
+    v = p.v ; n = len(p.stack)-1
+
+    v,n = p.vParentWithStack(v,p.stack,n)
+    while v:
+        if v == limit_v:  # We are at a descendant of limit.
+            if trace: g.trace('*** descendant of limit',
+                'limitIsVisible',limitIsVisible,
+                'limit.isExpanded()',limit.isExpanded(),'v',v)
+            if limitIsVisible:
+                return limit.isExpanded()
+            else: # Ignore the expansion state of @chapter nodes.
+                return True
+        if not v.isExpanded():
+            if trace: g.trace('*** non-limit parent is not expanded',v)
+            return False
+        v,n = p.vParentWithStack(v,p.stack,n)
+
+    return True
+#@-node:ekr.20040117162509.16:p.isVisible
+#@+node:ekr.20031218072017.940:p.moveToVisBack
+def moveToVisBack (self,c):
+
+    """Move a position to the position of the previous visible node."""
+
+    p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
+
+    def checkLimit (p):
+        '''Return done, return-val'''
+        if limit:
+            if limit == p:
+                if trace: g.trace('at limit',p)
+                return True,g.choose(limitIsVisible and p.isVisible(c),p,None)
+            elif limit.isAncestorOf(p):
+                return False,None
+            else:
+                if trace: g.trace('outside limit tree')
+                return True,None
+        else:
+            return False,None
+
+    while p:
+        # Short-circuit if possible.
+        back = p.back()
+        if back and (not back.hasChildren() or not back.isExpanded()):
+            p.moveToBack()
+        else:
+            p.moveToThreadBack()
+        if p:
+            if trace: g.trace('*p',p.headString())
+            done,val = checkLimit(p)
+            if done: return val
+            if p.isVisible(c):
+                return p
+    else:
+        # assert not p.
+        return p
+#@nonl
+#@-node:ekr.20031218072017.940:p.moveToVisBack
+#@+node:ekr.20031218072017.941:p.moveToVisNext
+def moveToVisNext (self,c):
+
+    """Move a position to the position of the next visible node."""
+
+    p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
+
+    def checkLimit (p):
+        '''Return done, return-val'''
+        if limit:
+            # Unlike moveToVisBack, being at the limit does not terminate.
+            if limit == p:
+                return False, None
+            elif limit.isAncestorOf(p):
+                return False,None
+            else:
+                if trace: g.trace('outside limit tree')
+                return True,None
+        else:
+            return False,None
+
+    while p:
+        # Short-circuit if possible.
+        if p.hasNext() and (not p.hasChildren() or not p.isExpanded()):
+            p.moveToNext()
+        else:
+            p.moveToThreadNext()
+        if p:
+            if trace: g.trace('*p',p.headString())
+            done,val = checkLimit(p)
+            if done: return val
+            if p.isVisible(c):
+                return p.copy()
+    else:
+        # assert not p.
+        return p
+#@nonl
+#@-node:ekr.20031218072017.941:p.moveToVisNext
+#@+node:ekr.20031218072017.1772:moveOutlineUp
+def moveOutlineUp (self,event=None):
+
+    '''Move the selected node up if possible.'''
+
+    c = self ; u = c.undoer ; p = c.currentPosition()
+    if not p: return
+    if not c.canMoveOutlineUp(): # Support for hoist.
+        if c.hoistStack: self.cantMoveMessage()
+        c.treeFocusHelper()
+        return
+    back = p.visBack(c)
+    if not back: return
+    inAtIgnoreRange = p.inAtIgnoreRange()
+    back2 = back.visBack(c)
+
+    sparseMove = c.config.getBool('sparse_move_outline_left')
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        undoData = u.beforeMoveNode(p)
+        dirtyVnodeList = p.setAllAncestorAtFileNodesDirty()
+        << Move p up >>
+        if moved:
+            if inAtIgnoreRange and not p.inAtIgnoreRange():
+                # The moved nodes have just become newly unignored.
+                dirtyVnodeList2 = p.setDirty() # Mark descendent @thin nodes dirty.
+            else: # No need to mark descendents dirty.
+                dirtyVnodeList2 = p.setAllAncestorAtFileNodesDirty()
+            dirtyVnodeList.extend(dirtyVnodeList2)
+            c.setChanged(True)
+            u.afterMoveNode(p,'Move Right',undoData,dirtyVnodeList)
+
+    finally:
+        c.selectPosition(p) # Also sets root position.
+        c.endUpdate()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(p) # Moving can change syntax coloring.
+#@+node:ekr.20031218072017.1773:<< Move p up >>
+if 0:
+    g.trace("visBack",back)
+    g.trace("visBack2",back2)
+    g.trace("oldParent",oldParent)
+    g.trace("back2.hasChildren",back2.hasChildren())
+    g.trace("back2.isExpanded",back2.isExpanded())
+
+parent = p.parent()
+
+# For this special case we move p after back2.
+specialCase = back2 and p.v in back2.v.t.vnodeList
+
+if specialCase:
+    # The move must be legal.
+    moved = True
+    back2.contract()
+    p.moveAfter(back2)
+elif not back2:
+    if c.hoistStack: # hoist or chapter.
+        limit,limitIsVisible = c.visLimit()
+        assert limit
+        if limitIsVisible:
+            # canMoveOutlineUp should have caught this.
+            moved = False
+            g.trace('can not happen. In hoist')
+        else:
+            # g.trace('chapter first child')
+            moved = True
+            p.moveToFirstChildOf(limit)
+    else:
+        # p will be the new root node
+        # g.trace('move to root')
+        p.moveToRoot(oldRoot=c.rootPosition())
+        moved = True
+elif back2.hasChildren() and back2.isExpanded():
+    if c.checkMoveWithParentWithWarning(p,back2,True):
+        moved = True
+        p.moveToNthChildOf(back2,0)
+else:
+    if c.checkMoveWithParentWithWarning(p,back2.parent(),True):
+        moved = True
+        p.moveAfter(back2)
+if moved and sparseMove and parent and not parent.isAncestorOf(p):
+    # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
+    parent.contract()
+#@-node:ekr.20031218072017.1773:<< Move p up >>
+#@-node:ekr.20031218072017.1772:moveOutlineUp
+#@+node:ekr.20031218072017.2973:canMoveOutlineUp
+def canMoveOutlineUp (self):
+
+    c = self ; current = c.currentPosition()
+
+    visBack = current and current.visBack(c)
+
+    if not visBack:
+        return False
+    elif visBack.visBack(c):
+        return True
+    elif c.hoistStack:
+        limit,limitIsVisible = c.visLimit()
+        if limitIsVisible: # A hoist
+            return current != limit
+        else: # A chapter.
+            return current != limit.firstChild()
+    else:
+        return current != c.rootPosition()
+#@-node:ekr.20031218072017.2973:canMoveOutlineUp
+#@-node:ekr.20070611063108:Fixed moveToVisBack/Next bugs
+#@+node:ekr.20070611104950:Fixed *major* demote bug
+http://sourceforge.net/forum/message.php?msg_id=4356197
+#@nonl
+#@+node:ekr.20031218072017.2961:canDemote
+def canDemote (self):
+
+    c = self
+    return c.currentPosition().hasNext()
+#@-node:ekr.20031218072017.2961:canDemote
+#@+node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+def checkMoveWithParentWithWarning (self,root,parent,warningFlag):
+
+    """Return False if root or any of root's descedents is a clone of
+    parent or any of parents ancestors."""
+
+    message = "Illegal move or drag: no clone may contain a clone of itself"
+
+    # g.trace("root",root,"parent",parent)
+    clonedTnodes = {}
+    for ancestor in parent.self_and_parents_iter():
+        if ancestor.isCloned():
+            t = ancestor.v.t
+            clonedTnodes[t] = t
+
+    if not clonedTnodes:
+        return True
+
+    for p in root.self_and_subtree_iter():
+        if p.isCloned() and clonedTnodes.get(p.v.t):
+            if g.app.unitTesting:
+                g.app.unitTestDict['checkMoveWithParentWithWarning']=True
+            elif warningFlag:
+                g.alert(message)
+            return False
+    return True
+#@-node:ekr.20031218072017.1760:c.checkMoveWithParentWithWarning
+#@+node:ekr.20031218072017.1767:demote
+def demote (self,event=None):
+
+    '''Make all following siblings children of the selected node.'''
+
+    c = self ; u = c.undoer
+    current = c.currentPosition()
+    command = 'Demote'
+    if not current or not current.hasNext():
+        c.treeFocusHelper() ; return
+
+    # Make sure all the moves will be valid.
+    next = current.next()
+    while next:
+        if not c.checkMoveWithParentWithWarning(next,current,True):
+            c.treeFocusHelper() ; return
+        next.moveToNext()
+
+    c.beginUpdate()
+    try: # update...
+        c.endEditing()
+        u.beforeChangeGroup(current,command)
+        p = current.copy()
+        while p.hasNext(): # Do not use iterator here.
+            child = p.next()
+            undoData = u.beforeMoveNode(child)
+            child.moveToNthChildOf(p,p.numberOfChildren())
+            u.afterMoveNode(child,command,undoData)
+        p.expand()
+        # Even if p is an @ignore node there is no need to mark the demoted children dirty.
+        dirtyVnodeList = current.setAllAncestorAtFileNodesDirty()
+        c.setChanged(True)
+        u.afterChangeGroup(current,command,dirtyVnodeList=dirtyVnodeList)
+    finally:
+        c.selectPosition(current)  # Also sets rootPosition.
+        c.endUpdate()
+        # c.treeWantsFocusNow()
+        c.treeFocusHelper()
+    c.updateSyntaxColorer(current) # Moving can change syntax coloring.
+#@-node:ekr.20031218072017.1767:demote
+#@-node:ekr.20070611104950:Fixed *major* demote bug
 #@-node:ekr.20070528141848:Fixed bugs
 #@+node:ekr.20070528141848.1:Features
 #@+node:ekr.20070528073134:Supported write_strips_blank_lines option

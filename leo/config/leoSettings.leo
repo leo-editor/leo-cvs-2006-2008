@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.532060027285">
-	<global_window_position top="107" left="186" height="713" width="941"/>
+	<global_window_position top="107" left="186" height="693" width="941"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -12,7 +12,7 @@
 <v t="ekr.20070326094544"><vh>@chapters</vh>
 <v t="ekr.20070326094544.1"><vh>@chapter trash</vh></v>
 </v>
-<v t="ekr.20041119035137" a="V" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" a="TV" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
 <v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
@@ -33,7 +33,6 @@
 <v t="ekr.20041119110141"><vh>\@ifplatform platform-name</vh></v>
 <v t="ekr.20041119035704.2"><vh>\@ignore comment</vh></v>
 <v t="ekr.20070411172718"><vh>\@openwith name = shortcut</vh></v>
-<v t="ekr.20041119035931.1"><vh>\@page comment</vh></v>
 <v t="ekr.20041119105509"><vh>\@set name = value</vh></v>
 <v t="ekr.20041120155431.1"><vh>\@shortcuts</vh></v>
 <v t="ekr.20041119035704.3"><vh>\@type type-name: base-type = [list of valid values]</vh></v>
@@ -50,7 +49,7 @@
 <v t="ekr.20060112104823"><vh>main</vh></v>
 </v>
 </v>
-<v t="ekr.20061011082224" a="T"><vh>Candidates for settings in myLeoSettings.leo</vh>
+<v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
 <v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = True</vh></v>
@@ -920,9 +919,6 @@ present the user with a listbox containing only the valid options.</t>
 like an @ignore node. If the expression is empty thebody text should contain a
 script that will be evaluated (in an empty context).
 </t>
-<t tx="ekr.20041119035931.1">Acts like an organizer node for the settings parser.
-
-Tells the dialog creator to place all descendent nodes in a single page.  The page will be scrollable to accommodate arbitrarily many entries. </t>
 <t tx="ekr.20041119041019">False: Print sends its output to stdout (console) when doing Execute Script command.
 True:  Print redirected to Leo's log pane when doing Execute Script command.
 </t>

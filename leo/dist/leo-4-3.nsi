@@ -18,7 +18,7 @@
 ;@+node:ekr.20050118092706.1:<< defines >>
 ;@<< 4.3 nsi installer version >>
 ;@+node:ekr.20050118124408:<< 4.3 nsi installer version >>
-!define PRODUCT_VERSION "4.4.3-beta-1"
+!define PRODUCT_VERSION "4.4.3-beta-2"
 ;@nonl
 ;@-node:ekr.20050118124408:<< 4.3 nsi installer version >>
 ;@nl
@@ -73,7 +73,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-3-beta-1.exe"
+OutFile "LeoSetup-4-4-3-beta-2.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -106,7 +106,7 @@ Function .onInit
     ;@    << .onInit documentation >>
     ;@+node:ekr.20050118092706.7:<< .onInit documentation >>
       # I sure hope there is a better way to do this, but other techniques don't seem to work.
-    
+
       # Supposedly the Python installer creates the following registry entry
       # HKEY_LOCAL_MACHINE\Software\Python\PythonCore\CurrentVersion
       # and then we can read find the Python folder location via
@@ -114,11 +114,11 @@ Function .onInit
       # Alas, at the time of this writing, the Python installer is NOT writing the first entry.
       # There is no way to know what the current versionno is.
       # Hence, the following hack.
-    
+
       # Get pythonw.exe path from registry... except it isn't there, nor is it an environment variable... thanks guys!
       # We'll have to get it in a roundabout way
       ReadRegStr $9 HKEY_LOCAL_MACHINE "SOFTWARE\Classes\Python.NoConFile\shell\open\command" ""
-    
+
       # the NSIS installer for Python 2.3 leaves the registry entry in the following format:
       # C:\Python23\pythonw.exe[SP]"%1%"[SP]%*
       # the MSI installer for python.org's Python 2.4 release leaves the registry entry in the following format:
@@ -132,18 +132,18 @@ Function .onInit
     # Try for the format used by the NSIS installer
     # cut 8 characters from back of the open command
     StrCpy $8 $9 -8
-    
-    
+
+
     IfFileExists $8 ok tryagain
-    
+
     tryagain:
     # ok, that  didn't work, but since the Python installer doesn't seem to be consistent, we'll try again
     # cut 3 characters from back of the open command
     StrCpy $8 $9 -3
-    
+
     # that didn't work. check for the registry entry left by MSI Python 2.4 installers
     # from www.python.org and www.activestate.com
-    
+
     IfFileExists $8 ok tryMSIformat
     ;@nonl
     ;@-node:ekr.20050118092706.8:<< Try for format used by the NSIS installer >>
@@ -156,13 +156,13 @@ Function .onInit
     # is the first character a "
     StrCpy $8 $9 1
     StrCmp $8 '"' foundQuote tryMSIformatCurrentUser
-    
+
     foundQuote:
     # OK. Strip off the " at the start as well as the 9 characters at the end
     StrCpy $8 $9 -9 1
-    
+
     # MessageBox MB_OK "3: Searching for Pythonw.exe -- is it '$8' ? "
-    
+
     IfFileExists $8 ok tryMSIformatCurrentUser
     ;@nonl
     ;@-node:ekr.20050118092706.10:<< Try for format used for Python available to all users >>
@@ -171,21 +171,21 @@ Function .onInit
     ;@+node:ekr.20050118092706.11:<< Try for format used for Python available to current users >>
     tryMSIformatCurrentUser:
     ReadRegStr $9 HKEY_CURRENT_USER "SOFTWARE\Classes\Python.NoConFile\shell\open\command" ""
-    
+
     # repeating the logic of tryMSIformat:
     # is the first character a "
     StrCpy $8 $9 1
     StrCmp $8 '"' foundQuoteCurrentUser oops
-    
+
     # Patch: 10/6/06: Complain if Python not found.
     StrCmp $8 '"' foundQuoteCurrentUser 0
     StrCpy $StrNoUsablePythonFound "${STRING_PYTHON_NOT_FOUND}"
     Goto oops
-    
+
     foundQuoteCurrentUser:
     # OK. Strip off the " at the start as well as the 9 characters at the end
     StrCpy $8 $9 -9 1
-    
+
     !ifdef INSTALL_IF_PYTHON_FOR_CURRENT_USER
       StrCpy $StrNoUsablePythonFound "${STRING_PYTHON_NOT_FOUND}"
       IfFileExists $8 ok oops
@@ -241,11 +241,11 @@ Section "Leo" SEC01
   ;@  << install dist files >>
   ;@+node:ekr.20050118104149.4:<< install dist files >>
   File "createLeoDist.py"
-  
+
   File "leoDist.leo"
-  
+
   File "leo-4-3.nsi"
-  
+
   File ".pycheckrc"
   ;@nonl
   ;@-node:ekr.20050118104149.4:<< install dist files >>
@@ -257,31 +257,31 @@ Section "Leo" SEC01
   File "..\doc\LeoDocs.leo"
   File "..\doc\LeoPostings.leo"
   File "..\doc\LeoSlideShows.leo"
-  
+
   File "..\doc\leoNotes.txt"
   File "..\doc\leoToDo.txt"
   File "..\doc\leoToDoLater.txt"
-  
+
   File "..\doc\Readme.txt"
   File "..\doc\Pkg-info.txt"
   File "..\doc\Install.txt"
   File "..\doc\License.txt"
-  
+
   File "..\doc\LeoTechReport.pdf"
-  
+
   File "..\doc\default.css"
   File "..\doc\leo_rst.css"
   File "..\doc\silver_city.css"
-  
+
   SetOutPath "$INSTDIR\doc\LeoN"
-  
+
   File "..\doc\LeoN\sun98achieving.pdf"
   File "..\doc\LeoN\sun97generic.pdf"
   File "..\doc\LeoN\sun98operational.pdf"
   File "..\doc\LeoN\sun98reversible.pdf"
-  
+
   SetOutPath "$INSTDIR\doc\html"
-  
+
   File "..\doc\html\*.*"
   ;@-node:ekr.20050118104901.1:<< install doc files >>
   ;@nl
@@ -290,34 +290,34 @@ Section "Leo" SEC01
   ;@+node:ekr.20050118122404:<< install extensions files >>
   File "..\extensions\aspell23.pyd"
   File "..\extensions\aspell24.pyd"
-  
+
   File "..\extensions\__init__.py"
   File "..\extensions\optparse.py"
   File "..\extensions\path.py"
   File "..\extensions\sets.py"
   File "..\extensions\subprocess.py"
-  
+
   SetOutPath "$INSTDIR\extensions\Pmw"
   File "..\extensions\Pmw\__init__.py"
-  
+
   SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2"
   File "..\extensions\Pmw\Pmw_1_2\__init__.py"
-  
+
   SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\bin"
   File "..\extensions\Pmw\Pmw_1_2\bin\*.*"
-  
+
   SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib"
   File "..\extensions\Pmw\Pmw_1_2\contrib\*.*"
-  
+
   SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\demos"
   File "..\extensions\Pmw\Pmw_1_2\demos\*.*"
-  
+
   SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\doc"
   File "..\extensions\Pmw\Pmw_1_2\doc\*.*"
-  
+
   SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\lib"
   File "..\extensions\Pmw\Pmw_1_2\lib\*.*"
-  
+
   SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\tests"
   File "..\extensions\Pmw\Pmw_1_2\tests\*.*"
   ;@nonl
@@ -341,16 +341,16 @@ Section "Leo" SEC01
   ;@  << install plugins >>
   ;@+node:ekr.20050118104901.7:<< install plugins >>
   File "..\plugins\leoPlugins.leo"
-  
+
   File "..\plugins\*.ini"
   File "..\plugins\*.txt"
-  
+
   File "..\plugins\*.py"
-  
+
   SetOutPath "$INSTDIR\plugins\trees"
-  
+
   File "..\plugins\trees\*.py"
-  
+
   File "..\plugins\trees\pluginsManager.txt"
   ;@nonl
   ;@-node:ekr.20050118104901.7:<< install plugins >>
@@ -372,7 +372,7 @@ Section "Leo" SEC01
   File "..\src\leoProjects.txt"
   File "..\src\LeoPy.leo"
   File "..\src\oldLeoProjects.leo"
-  
+
   File "..\src\__init__.py"
   File "..\src\leo*.py"
   ;@-node:ekr.20050118104901.10:<< install src files >>
@@ -528,16 +528,16 @@ Section Uninstall
   ; From v1.0 Installer.
   ReadRegStr $1 HKCR ".leo" ""
   StrCmp $1 "LeoFile" 0 NoOwn ; only do this if we own it.
-  
+
   ReadRegStr $1 HKCR ".leo" "backup_val"
   StrCmp $1 "" 0 RestoreBackup ; if backup == "" then delete the whole key
     DeleteRegKey HKCR ".leo"
   Goto NoOwn
-  
+
   RestoreBackup:
     WriteRegStr HKCR ".leo" "" $1
     DeleteRegValue HKCR ".leo" "backup_val"
-    
+
   NoOwn:
   MessageBox MB_YESNO|MB_ICONQUESTION \
   		 "Delete all files in Leo Program folder?" \
@@ -555,11 +555,11 @@ Section Uninstall
   ;@  << uninstall dist files >>
   ;@+node:ekr.20050118104149.5:<< uninstall dist files >>
   Delete "$INSTDIR\dist\createLeoDist.p*"
-  
+
   Delete "$INSTDIR\dist\leoDist.leo"
-  
+
   Delete "$INSTDIR\dist\leo-4-3.nsi"
-  
+
   Delete "$INSTDIR\dist\.pycheckrc"
   ;@nonl
   ;@-node:ekr.20050118104149.5:<< uninstall dist files >>
@@ -570,27 +570,27 @@ Section Uninstall
   Delete "$INSTDIR\doc\leoDiary.leo"
   Delete "$INSTDIR\doc\LeoPostings.leo"
   Delete "$INSTDIR\doc\LeoSlideShows.leo"
-  
+
   Delete "$INSTDIR\doc\leoNotes.txt"
   Delete "$INSTDIR\doc\leoToDo.txt"
   Delete "$INSTDIR\doc\leoToDoLater.txt"
-  
+
   Delete "$INSTDIR\doc\License.txt"
   Delete "$INSTDIR\doc\Install.txt"
   Delete "$INSTDIR\doc\Pkg-info.txt"
   Delete "$INSTDIR\doc\Readme.txt"
-  
+
   Delete "$INSTDIR\doc\LeoTechReport.pdf"
-  
+
   Delete "$INSTDIR\doc\silver_city.css"
   Delete "$INSTDIR\doc\leo_rst.css"
   Delete "$INSTDIR\doc\default.css"
-  
+
   Delete "$INSTDIR\doc\LeoN\sun98achieving.pdf"
   Delete "$INSTDIR\doc\LeoN\sun97generic.pdf"
   Delete "$INSTDIR\doc\LeoN\sun98operational.pdf"
   Delete "$INSTDIR\doc\LeoN\sun98reversible.pdf"
-  
+
   Delete "$INSTDIR\doc\html\*.*"
   ;@nonl
   ;@-node:ekr.20050118104901.2:<< uninstall doc files >>
@@ -599,18 +599,18 @@ Section Uninstall
   ;@+node:ekr.20050118122740.1:<< uninstall extensions files >>
   Delete "$INSTDIR\extensions\aspell23.pyd"
   Delete "$INSTDIR\extensions\aspell24.pyd"
-  
+
   Delete "$INSTDIR\extensions\__init__.p*"
-  
+
   Delete "$INSTDIR\extensions\optparse.py"
   Delete "$INSTDIR\extensions\path.p*"
   Delete "$INSTDIR\extensions\sets.p*"
   Delete "$INSTDIR\extensions\subprocess.p*"
-  
+
   Delete "$INSTDIR\extensions\Pmw\__init__.p*"
-  
+
   Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\__init__.p*"
-  
+
   Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\bin\*.*"
   Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib\*.*"
   Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\demos\*.*"
@@ -635,14 +635,14 @@ Section Uninstall
   ;@  << uninstall plugins >>
   ;@+node:ekr.20050118104901.8:<< uninstall plugins >>
   Delete "$INSTDIR\plugins\leoPlugins.leo"
-  
+
   Delete "$INSTDIR\plugins\*.txt"
   Delete "$INSTDIR\plugins\*.ini"
-  
+
   Delete "$INSTDIR\plugins\*.p*"
-  
+
   Delete "$INSTDIR\plugins\trees\*.p*"
-  
+
   Delete "$INSTDIR\plugins\trees\pluginsManager.txt"
   ;@nonl
   ;@-node:ekr.20050118104901.8:<< uninstall plugins >>
@@ -662,9 +662,9 @@ Section Uninstall
   Delete "$INSTDIR\src\leoProjects.txt"
   Delete "$INSTDIR\src\LeoPy.leo"
   Delete "$INSTDIR\src\oldLeoProjects.leo"
-  
+
   Delete "$INSTDIR\src\__init__.p*"
-  
+
   Delete "$INSTDIR\src\leo*.p*"
   ;@nonl
   ;@-node:ekr.20050118104901.11:<< uninstall src files >>
@@ -688,15 +688,15 @@ Section Uninstall
   ;@+node:ekr.20050118103447.1:<< uninstall top-level files >>
   ; Gets created automatically by installer.
   Delete "$INSTDIR\uninst.exe"
-  
+
   ; Should match installed files.
   Delete "$INSTDIR\__init__.py"
   Delete "$INSTDIR\install"
   Delete "$INSTDIR\manifest.in"
   Delete "$INSTDIR\MANIFEST"
   Delete "$INSTDIR\uninstall"
-  
-  
+
+
   ;@-node:ekr.20050118103447.1:<< uninstall top-level files >>
   ;@nl
   ;@  << delete folders >>
@@ -707,7 +707,7 @@ Section Uninstall
   RmDir "$INSTDIR\doc\html"
   RmDir "$INSTDIR\doc\LeoN"
   RMDir "$INSTDIR\doc"
-  
+
   RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\bin"
   RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\contrib"
   RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2\demos"
@@ -717,19 +717,19 @@ Section Uninstall
   RMDir "$INSTDIR\extensions\Pmw\Pmw_1_2"
   RMDir "$INSTDIR\extensions\Pmw"
   RMDir "$INSTDIR\extensions"
-  
+
   RMDir "$INSTDIR\icons"
   RMDir "$INSTDIR\modes"
-  
+
   RMDir "$INSTDIR\plugins\trees"
   RMDir "$INSTDIR\plugins"
-  
+
   RMDir "$INSTDIR\scripts"
   RMDir "$INSTDIR\src"
-  
+
   RMDir "$INSTDIR\test\unittest"
   RMDir "$INSTDIR\test"
-  
+
   ; Delete top-level folder.
   RMDir "$INSTDIR"
   ;@nonl
