@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.571639586411">
-	<global_window_position top="40" left="356" height="814" width="864"/>
+	<global_window_position top="52" left="190" height="754" width="864"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -17,7 +17,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="T"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070425092712"><vh>April 2007</vh></v>
@@ -119,7 +119,7 @@
 <v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
-<v t="EKR.20040519080201.1" a="TV"><vh>Distribution checklist</vh></v>
+<v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent C:\Documents and Settings\HP_Administrator\My Documents\Edward\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
@@ -219,7 +219,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050118113631" a="E"><vh>Main distribution script</vh>
+<v t="ekr.20050118113631" a="EV"><vh>Main distribution script</vh>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="EKR.20040519090846.10"><vh>@asis ../manifest.in</vh></v>
 <v t="ekr.20050117032444"><vh>@button Create Leo-4.x.zip</vh>
@@ -238,6 +238,10 @@
 # Run pychecker by enabling code in leo.py
 # Run all unit tests.
 @nocolor
+Clean up .leo files
+    - leoPlugins.leo: Removed top-level clones.
+    - leoPy.leo: Remove top-level clones.
+    - LeoDocs.leo: select the read-me node.
 Documentation
 	- Update readme.txt
 	- Update LeoDocs.leo
@@ -270,6 +274,7 @@ Uploads
 	- Upload sbook.chm if it has been changed.
 Announcements
     - Update version number on Leo's wikipedia site: http://en.wikipedia.org/wiki/Leo_(editor)
+        - Edit with the 'Edit this page' *tab* (not a link)
     - Update version number on web site.
 	- Announce to Leo's Open Forum.
     - Announce to SourceForge itself. USE ANNOUNCEMENT FORMAT, not readme format.
@@ -3054,22 +3059,23 @@ should run on any Leo installation.
 
 According to the distutils docs, the way to create a source distribution is by
 running:
-    
+
     'python createLeoDist.py sdist &lt;args&gt;'
 
 where the file createLeoDist.py contains the following:
-    
+
     modules = []
     distutils.core.setup (
         &lt;&lt; setup info for createLeoDist.py &gt;&gt;
     )
-    
+
 N.B. createLeoDist.py _must_ be run from the leo folder! This file is
 distributed in the dist folder, so this script makes a temporary copy of
 createLeoDist.py to the leo folder.
-    
+
 The section called &lt; &lt; setup info for createLeoDist.py &gt; &gt; contains further
-information. Make sure to update this information before running this script.</t>
+information. Make sure to update this information before running this script.
+</t>
 <t tx="ekr.20050118082301"># import leoGlobals as g
 
 import os
@@ -3080,11 +3086,11 @@ New in 4.3 a1.
 
 - This script should run on all Leo installations; the script computes the locations
   of all files as 'offsets' from g.app.loadDir.
-  
+
 - This script temporarily copies .pycheckrc from the the leo/.. folder to the leo folder.
 
 This allows us to distribute .pycheckrc somewhere, even if it isn't in correct place.
-  
+
 - This script temporarily copies createLeoDist.py from the dist folder to the leo folder.
 </t>
 <t tx="ekr.20050118092706.4">; settings taken from Version 1.0 of NSIS Script for Leo
