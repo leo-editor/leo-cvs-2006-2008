@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.532060027285">
-	<global_window_position top="107" left="186" height="693" width="941"/>
+	<global_window_position top="107" left="186" height="948" width="1280"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -12,7 +12,7 @@
 <v t="ekr.20070326094544"><vh>@chapters</vh>
 <v t="ekr.20070326094544.1"><vh>@chapter trash</vh></v>
 </v>
-<v t="ekr.20041119035137" a="TV" str_leo_pos="3,10"><vh>About this file</vh>
+<v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
 <v t="ekr.20041119035704"><vh> Basic setting nodes: @type-name setting-name = value</vh>
 <v t="ekr.20041119042929"><vh>@bool</vh></v>
@@ -450,7 +450,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -458,6 +458,7 @@
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
+<v t="ekr.20070613133747"><vh>@shortcuts Menu commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
 <v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
 <v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
@@ -612,11 +613,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -624,6 +625,7 @@
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
+<v t="ekr.20070613133747" a="TV"><vh>@shortcuts Menu commands</vh></v>
 <v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
 <v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
 <v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
@@ -5089,8 +5091,8 @@ sort-siblings           = s
 <t tx="ekr.20060603215208.19"># Quick finds
 backward-find-character                     = Alt-Q
 backward-find-character-extend-selection    = Alt-Shift-Q
-find-character                              = Alt-P
-find-character-extend-selection             = Alt-Shift-P
+find-character                              = None ### = Alt-P
+find-character-extend-selection             = None ### = Alt-Shift-P
 
 # To start finds and changes...
 search-again                        = None  # similar to search-with-present-options.
@@ -5153,8 +5155,8 @@ end-of-line                         ! mini = Ctrl-e
 end-of-line-extend-selection        ! mini = Ctrl-Shift-e
 forward-char                        ! mini = RtArrow
 forward-char-extend-selection       ! mini = Shift-RtArrow
-forward-word                        ! mini = Alt-f          # Usually opens file menu.
-forward-word-extend-selection       ! mini = Alt-Shift-f
+forward-word                        = None ### ! mini = Alt-f          # Usually opens file menu.
+forward-word-extend-selection       = None ### ! mini = Alt-Shift-f
 # forward-word                        ! mini = Ctrl-RtArrow
 # forward-word-extend-selection       ! mini = Ctrl-Shift-RtArrow
 kill-line                           ! mini = Ctrl-K
@@ -5209,7 +5211,7 @@ aquamarine1</t>
 <t tx="ekr.20060608191518.2"># Keyboard-quit sets the input state to the *default* input state
 # Specified by @strings top_level_unbound_key_action.
 
-enter-quick-command-mode            = Alt-C
+enter-quick-command-mode = None ### = Alt-C
 </t>
 <t tx="ekr.20060616172614"></t>
 <t tx="ekr.20060620085654">vertical:   pack body-pane editors vertically.
@@ -5937,14 +5939,14 @@ end-of-line                         ! text = Ctrl-e
 exchange-point-mark                 = Alt-M     # Should be Ctrl-X Ctrl-X.
 end-of-line-extend-selection        ! text = Ctrl-Shift-e
 extend-to-line                      = Alt-L
-extend-to-word                      = Alt-W
+extend-to-word                      = None ### = Alt-W
 extend-to-word                      = Ctrl-W
 forward-paragraph                   ! text = Alt-braceright
 forward-paragraph-extend-selection  ! text = Alt-Shift-braceright
-forward-sentence                    ! text = Alt-e
-forward-sentence-extend-selection   ! text = Alt-Shift-e
-forward-word                        ! text = Alt-f
-forward-word-extend-selection       ! text = Alt-Shift-f
+forward-sentence                    = None ### ! text = Alt-e
+forward-sentence-extend-selection   = None ### ! text = Alt-Shift-e
+forward-word                        = None ### ! text = Alt-f
+forward-word-extend-selection       = None ### ! text = Alt-Shift-f
 goto-global-line                    = Alt-g
 # match-brackets                    = Ctrl-K    # kill-line
 move-past-close                     = Alt-parenright # Same as Alt-shift-parenright
@@ -6456,5 +6458,12 @@ False: Leo leaves body text alone when writing @nosent trees.</t>
 <t tx="ekr.20070531103454"></t>
 <t tx="ekr.20070604075218">True:  Chapter tabs appear in the outline pane.
 False: Chapter tabs do not appear.</t>
+<t tx="ekr.20070613133747">menu-command-key = Alt-C
+menu-command-key = Alt-E
+menu-command-key = Alt-F
+menu-command-key = Alt-H
+menu-command-key = Alt-P
+menu-command-key = Alt-O
+menu-command-key = Alt-W</t>
 </tnodes>
 </leo_file>
