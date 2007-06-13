@@ -1140,6 +1140,7 @@ isCloned
 isDirty
 isExpanded
 isFor
+isLargeItem
 isList
 isMarked
 isParseTok
@@ -1506,6 +1507,7 @@ nz
 occurances
 ok
 oldGui
+oldObj
 oldRoot
 oldSel
 oldText

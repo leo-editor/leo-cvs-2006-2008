@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.552109181141">
-	<global_window_position top="125" left="364" height="715" width="876"/>
+	<global_window_position top="0" left="0" height="711" width="1270"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -44,7 +44,7 @@
 <v t="ekr.20050819055746"><vh>@@button Save</vh></v>
 </v>
 </v>
-<v t="edream.110203113231.618" a="TV"><vh>Plugins</vh>
+<v t="edream.110203113231.618" a="E"><vh>Plugins</vh>
 <v t="EKR.20040517090508"><vh>  Enable plugins by changing pluginsManager.txt or using plugin_manager plugin</vh>
 <v t="edream.120603093808"><vh>@thin pluginsManager.txt</vh></v>
 </v>
@@ -173,36 +173,36 @@
 </v>
 <v t="ekr.20060514125256"><vh>Recent</vh>
 <v t="ekr.20060513122450.295"><vh>Selected Node Funcs</vh>
-<v t="ekr.20060513122450.296"><vh>sGatherInfo NOT CALLED</vh>
-<v t="ekr.20060513122450.297"><vh>Head</vh></v>
+<v t="ekr.20060513122450.296" a="M"><vh>sGatherInfo NOT CALLED</vh>
+<v t="ekr.20060513122450.297" a="M"><vh>Head</vh></v>
 <v t="ekr.20060513122450.298"><vh>Dicts</vh></v>
-<v t="ekr.20060513122450.299"><vh>File Creation</vh></v>
+<v t="ekr.20060513122450.299" a="M"><vh>File Creation</vh></v>
 <v t="ekr.20060513122450.300"><vh>Compilation</vh></v>
 <v t="ekr.20060513122450.301"><vh>Execution</vh></v>
-<v t="ekr.20060513122450.302"><vh>Debugging</vh></v>
+<v t="ekr.20060513122450.302" a="M"><vh>Debugging</vh></v>
 </v>
-<v t="ekr.20060513122450.303"><vh>sExtractHeadInfo</vh></v>
+<v t="ekr.20060513122450.303" a="M"><vh>sExtractHeadInfo</vh></v>
 <v t="ekr.20060513122450.304"><vh>sGetBrowseInfo</vh></v>
-<v t="ekr.20060513122450.305"><vh>sGetWriteInfo</vh></v>
-<v t="ekr.20060513122450.306"><vh>sGetCompileInfo</vh></v>
-<v t="ekr.20060513122450.307"><vh>sGetDebugInfo</vh></v>
-<v t="ekr.20060513122450.308"><vh>sGetExecInfo</vh></v>
-<v t="ekr.20060513122450.309"><vh>sGoToError</vh></v>
-<v t="ekr.20060513122450.310"><vh>sGo</vh></v>
-<v t="ekr.20060513122450.311"><vh>sSet</vh></v>
-<v t="ekr.20060513122450.312"><vh>sGet</vh></v>
-<v t="ekr.20060513122450.313"><vh>sIsDict</vh></v>
-<v t="ekr.20060513122450.314"><vh>sGetDict</vh></v>
-<v t="ekr.20060513122450.315"><vh>sInitDict</vh></v>
-<v t="ekr.20060513122450.316"><vh>sSelect</vh></v>
-<v t="ekr.20060513122450.317"><vh>sSync</vh></v>
-<v t="ekr.20060513122450.318"><vh>sShow</vh></v>
-<v t="ekr.20060513122450.319"><vh>sHide</vh></v>
-<v t="ekr.20060513122450.320"><vh>sSetText</vh></v>
-<v t="ekr.20060513122450.321"><vh>sAddText</vh></v>
+<v t="ekr.20060513122450.305" a="M"><vh>sGetWriteInfo</vh></v>
+<v t="ekr.20060513122450.306" a="M"><vh>sGetCompileInfo</vh></v>
+<v t="ekr.20060513122450.307" a="M"><vh>sGetDebugInfo</vh></v>
+<v t="ekr.20060513122450.308" a="M"><vh>sGetExecInfo</vh></v>
+<v t="ekr.20060513122450.309" a="M"><vh>sGoToError</vh></v>
+<v t="ekr.20060513122450.310" a="M"><vh>sGo</vh></v>
+<v t="ekr.20060513122450.311" a="M"><vh>sSet</vh></v>
+<v t="ekr.20060513122450.312" a="M"><vh>sGet</vh></v>
+<v t="ekr.20060513122450.313" a="M"><vh>sIsDict</vh></v>
+<v t="ekr.20060513122450.314" a="M"><vh>sGetDict</vh></v>
+<v t="ekr.20060513122450.315" a="M"><vh>sInitDict</vh></v>
+<v t="ekr.20060513122450.316" a="M"><vh>sSelect</vh></v>
+<v t="ekr.20060513122450.317" a="M"><vh>sSync</vh></v>
+<v t="ekr.20060513122450.318" a="M"><vh>sShow</vh></v>
+<v t="ekr.20060513122450.319" a="M"><vh>sHide</vh></v>
+<v t="ekr.20060513122450.320" a="M"><vh>sSetText</vh></v>
+<v t="ekr.20060513122450.321" a="M"><vh>sAddText</vh></v>
 </v>
 <v t="ekr.20060513122450.53"><vh>class ConfigClass</vh>
-<v t="ekr.20060513122450.82"><vh>  __init__</vh></v>
+<v t="ekr.20060513122450.82" a="M"><vh>  __init__</vh></v>
 <v t="ekr.20060513122450.54"><vh>  class PageClass</vh>
 <v t="ekr.20060513122450.55"><vh>class CHECK</vh>
 <v t="ekr.20060513122450.56"><vh>__init__</vh></v>
@@ -210,32 +210,32 @@
 <v t="ekr.20060513122450.58"><vh>Set</vh></v>
 </v>
 <v t="ekr.20060513122450.59"><vh>class ENTRY</vh>
-<v t="ekr.20060513122450.60"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.60" a="M"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.61"><vh>Get</vh></v>
 <v t="ekr.20060513122450.62"><vh>Set</vh></v>
 </v>
 <v t="ekr.20060513122450.63"><vh>class TEXT</vh>
-<v t="ekr.20060513122450.64"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.64" a="M"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.65"><vh>Get</vh></v>
 <v t="ekr.20060513122450.66"><vh>Set</vh></v>
 </v>
 <v t="ekr.20060513122450.67"><vh>class LABEL</vh>
-<v t="ekr.20060513122450.68"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.68" a="M"><vh>__init__</vh></v>
 </v>
 <v t="ekr.20060513122450.69"><vh>class HELP</vh>
-<v t="ekr.20060513122450.70"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.70" a="M"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.71"><vh>Help</vh></v>
 </v>
-<v t="ekr.20060513122450.72"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.72" a="M"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.73"><vh>AddObject</vh></v>
 <v t="ekr.20060513122450.74"><vh>BBox</vh></v>
 <v t="ekr.20060513122450.75"><vh>AddSep</vh></v>
 <v t="ekr.20060513122450.76"><vh>CreateObjects</vh></v>
-<v t="ekr.20060513122450.77"><vh>SaveObjects</vh></v>
-<v t="ekr.20060513122450.78"><vh>LoadObjects</vh></v>
+<v t="ekr.20060513122450.77" a="M"><vh>SaveObjects</vh></v>
+<v t="ekr.20060513122450.78" a="M"><vh>LoadObjects</vh></v>
 <v t="ekr.20060513122450.79"><vh>ClearObjects</vh></v>
-<v t="ekr.20060513122450.80"><vh>Hide</vh></v>
-<v t="ekr.20060513122450.81"><vh>Show</vh></v>
+<v t="ekr.20060513122450.80" a="M"><vh>Hide</vh></v>
+<v t="ekr.20060513122450.81" a="M"><vh>Show</vh></v>
 </v>
 <v t="ekr.20060513122450.126"><vh> class CodePageClass</vh>
 <v t="ekr.20060513122450.127"><vh>__init__</vh></v>
@@ -244,9 +244,9 @@
 </v>
 </v>
 <v t="ekr.20060513122450.99"><vh> class CplPageClass</vh>
-<v t="ekr.20060513122450.100"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.100" a="M"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.101"><vh>Browse</vh></v>
-<v t="ekr.20060513122450.102"><vh>AddPath</vh></v>
+<v t="ekr.20060513122450.102" a="M"><vh>AddPath</vh></v>
 <v t="ekr.20060513122450.103"><vh>CreateObjects</vh>
 <v t="ekr.20060513122450.104"><vh>Executable</vh></v>
 <v t="ekr.20060513122450.105"><vh>Arguments</vh></v>
@@ -256,13 +256,13 @@
 </v>
 </v>
 <v t="ekr.20060513122450.109"><vh> class DbgPageClass</vh>
-<v t="ekr.20060513122450.110"><vh>__init__</vh></v>
-<v t="ekr.20060513122450.111"><vh>Browse</vh></v>
+<v t="ekr.20060513122450.110" a="M"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.111" a="M"><vh>Browse</vh></v>
 <v t="ekr.20060513122450.112"><vh>CreateObjects</vh>
-<v t="ekr.20060513122450.113"><vh>Executable</vh></v>
+<v t="ekr.20060513122450.113" a="M"><vh>Executable</vh></v>
 <v t="ekr.20060513122450.114"><vh>Arguments</vh></v>
 <v t="ekr.20060513122450.115"><vh>Piping</vh></v>
-<v t="ekr.20060513122450.116"><vh>Symbols</vh></v>
+<v t="ekr.20060513122450.116" a="M"><vh>Symbols</vh></v>
 <v t="ekr.20060513122450.117"><vh>Startup Task</vh></v>
 <v t="ekr.20060513122450.118"><vh>Target PID</vh></v>
 <v t="ekr.20060513122450.119"><vh>Break info</vh></v>
@@ -270,33 +270,34 @@
 </v>
 </v>
 <v t="ekr.20060513122450.121"><vh> class ExePageClass</vh>
-<v t="ekr.20060513122450.122"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.122" a="M"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.123"><vh>CreateObjects</vh>
 <v t="ekr.20060513122450.124"><vh>Args</vh></v>
 <v t="ekr.20060513122450.125"><vh>Dll Caller</vh></v>
 </v>
 </v>
 <v t="ekr.20060513122450.94"><vh> class OptPageClass</vh>
-<v t="ekr.20060513122450.95"><vh>__init__</vh></v>
+<v t="ekr.20060513122450.95" a="M"><vh>__init__</vh></v>
 <v t="ekr.20060513122450.96"><vh>CreateObjects</vh>
 <v t="ekr.20060513122450.97"><vh>Actions Switches</vh></v>
 <v t="ekr.20060513122450.98"><vh>Import</vh></v>
 </v>
 </v>
-<v t="ekr.20060513122450.93"><vh>AddPages</vh></v>
+<v t="ekr.20060513122450.93" a="M"><vh>AddPages</vh></v>
 <v t="ekr.20060513122450.92"><vh>Apply</vh></v>
 <v t="ekr.20060513122450.87"><vh>ClearConfig</vh></v>
 <v t="ekr.20060513122450.84"><vh>GetButton</vh></v>
-<v t="ekr.20060513122450.83"><vh>GetPage</vh></v>
-<v t="ekr.20060513122450.85"><vh>Hide</vh></v>
-<v t="ekr.20060513122450.90"><vh>LoadFromFile</vh></v>
-<v t="ekr.20060513122450.88"><vh>LoadFromNode</vh></v>
-<v t="ekr.20060513122450.91"><vh>SaveToFile</vh></v>
-<v t="ekr.20060513122450.89"><vh>SaveToNode</vh></v>
-<v t="ekr.20060513122450.86"><vh>Show</vh></v>
+<v t="ekr.20060513122450.83" a="M"><vh>GetPage</vh></v>
+<v t="ekr.20060513122450.85" a="M"><vh>Hide</vh></v>
+<v t="ekr.20060513122450.90" a="M"><vh>LoadFromFile</vh></v>
+<v t="ekr.20060513122450.88" a="M"><vh>LoadFromNode</vh></v>
+<v t="ekr.20060513122450.91" a="M"><vh>SaveToFile</vh></v>
+<v t="ekr.20060513122450.89" a="M"><vh>SaveToNode</vh></v>
+<v t="ekr.20060513122450.86" a="M"><vh>Show</vh></v>
 </v>
 </v>
-<v t="ekr.20060513122450"><vh>@thin xcc_nodes.py</vh></v>
+<v t="ekr.20060513122450"
+marks="ekr.20060513122450.296,ekr.20060513122450.297,ekr.20060513122450.299,ekr.20060513122450.302,ekr.20060513122450.303,ekr.20060513122450.305,ekr.20060513122450.306,ekr.20060513122450.307,ekr.20060513122450.308,ekr.20060513122450.309,ekr.20060513122450.310,ekr.20060513122450.311,ekr.20060513122450.312,ekr.20060513122450.313,ekr.20060513122450.314,ekr.20060513122450.315,ekr.20060513122450.316,ekr.20060513122450.317,ekr.20060513122450.318,ekr.20060513122450.319,ekr.20060513122450.320,ekr.20060513122450.321,ekr.20060513122450.82,ekr.20060513122450.60,ekr.20060513122450.64,ekr.20060513122450.68,ekr.20060513122450.70,ekr.20060513122450.72,ekr.20060513122450.77,ekr.20060513122450.78,ekr.20060513122450.80,ekr.20060513122450.81,ekr.20060513122450.100,ekr.20060513122450.102,ekr.20060513122450.110,ekr.20060513122450.111,ekr.20060513122450.113,ekr.20060513122450.116,ekr.20060513122450.122,ekr.20060513122450.95,ekr.20060513122450.93,ekr.20060513122450.83,ekr.20060513122450.85,ekr.20060513122450.90,ekr.20060513122450.88,ekr.20060513122450.91,ekr.20060513122450.89,ekr.20060513122450.86,"><vh>@thin xcc_nodes.py</vh></v>
 </v>
 </v>
 <v t="ekr.20060703162826"><vh>Dialogs</vh>
@@ -338,67 +339,67 @@
 <v t="ekr.20070215164948"><vh>@thin ironPythonGui.py</vh></v>
 <v t="edream.110203113231.233"><vh>wxGui plugin (Use at your own risk)</vh>
 <v t="ekr.20070123084929"><vh>Projects</vh>
-<v t="edream.110203113231.557"><vh>leoLog.createInitialTabs</vh></v>
+<v t="edream.110203113231.557" a="M"><vh>leoLog.createInitialTabs</vh></v>
 <v t="ekr.20070214103201"><vh>Colors</vh>
-<v t="ekr.20070215095042"><vh>name2color</vh></v>
-<v t="edream.110203113231.347"><vh>OnInit  (wxLeoApp)</vh></v>
-<v t="ekr.20061118142055"><vh>wxTree.createControl</vh></v>
-<v t="edream.110203113231.557"><vh>leoLog.createInitialTabs</vh></v>
-<v t="ekr.20061211122107.2"><vh>createTab</vh></v>
-<v t="ekr.20070205140140.1"><vh>stcWidget.__init__</vh></v>
+<v t="ekr.20070215095042" a="M"><vh>name2color</vh></v>
+<v t="edream.110203113231.347" a="M"><vh>OnInit  (wxLeoApp)</vh></v>
+<v t="ekr.20061118142055" a="M"><vh>wxTree.createControl</vh></v>
+<v t="edream.110203113231.557" a="M"><vh>leoLog.createInitialTabs</vh></v>
+<v t="ekr.20061211122107.2" a="M"><vh>createTab</vh></v>
+<v t="ekr.20070205140140.1" a="M"><vh>stcWidget.__init__</vh></v>
 </v>
 <v t="ekr.20061116085729"><vh>gui events</vh>
 <v t="ekr.20070309085704"><vh>event_generate</vh></v>
-<v t="ekr.20061116093228"><vh>class leoKeyEvent (wxGui)</vh></v>
+<v t="ekr.20061116093228" a="M"><vh>class leoKeyEvent (wxGui)</vh></v>
 <v t="ekr.20061117204829"><vh>wxKeyDict</vh></v>
-<v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
-<v t="ekr.20070310064845"><vh>keysymHelper &amp; helpers</vh>
-<v t="ekr.20070313052040"><vh>getMods</vh></v>
-<v t="ekr.20070313055627"><vh>shift</vh></v>
-<v t="ekr.20070313055627.1"><vh>unshift</vh></v>
+<v t="ekr.20061117155233" a="M"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
+<v t="ekr.20070310064845" a="M"><vh>keysymHelper &amp; helpers</vh>
+<v t="ekr.20070313052040" a="M"><vh>getMods</vh></v>
+<v t="ekr.20070313055627" a="M"><vh>shift</vh></v>
+<v t="ekr.20070313055627.1" a="M"><vh>unshift</vh></v>
 </v>
 </v>
 <v t="ekr.20061117155233.1"><vh>eventWidget</vh></v>
-<v t="ekr.20061117155233.2"><vh>eventXY</vh></v>
+<v t="ekr.20061117155233.2" a="M"><vh>eventXY</vh></v>
 </v>
 <v t="ekr.20070130165618"><vh>Editing headlines</vh>
 <v t="edream.110203113231.285"><vh>Editing labels</vh>
-<v t="edream.110203113231.286"><vh>onTreeBeginLabelEdit</vh></v>
-<v t="edream.110203113231.287"><vh>onTreeEndLabelEdit</vh></v>
+<v t="edream.110203113231.286" a="M"><vh>onTreeBeginLabelEdit</vh></v>
+<v t="edream.110203113231.287" a="M"><vh>onTreeEndLabelEdit</vh></v>
 </v>
-<v t="ekr.20050719121701.3"><vh>editLabel</vh></v>
-<v t="ekr.20070125091308"><vh>setEditWidget</vh></v>
-<v t="ekr.20061211072604"><vh>tree.edit_widget</vh></v>
+<v t="ekr.20050719121701.3" a="M"><vh>editLabel</vh></v>
+<v t="ekr.20070125091308" a="M"><vh>setEditWidget</vh></v>
+<v t="ekr.20061211072604" a="M"><vh>tree.edit_widget</vh></v>
 </v>
 <v t="ekr.20070306155205"><vh>Found: assignIcon</vh>
-<v t="ekr.20070222091654"><vh>insert_node</vh></v>
-<v t="ekr.20070221130134"><vh>update_node</vh></v>
-<v t="edream.110203113231.299"><vh>redraw_node</vh></v>
-<v t="ekr.20061211052926"><vh>assignIcon</vh></v>
+<v t="ekr.20070222091654" a="M"><vh>insert_node</vh></v>
+<v t="ekr.20070221130134" a="M"><vh>update_node</vh></v>
+<v t="edream.110203113231.299" a="M"><vh>redraw_node</vh></v>
+<v t="ekr.20061211052926" a="M"><vh>assignIcon</vh></v>
 </v>
 <v t="ekr.20070312081330"><vh>Initing headline widgets</vh>
-<v t="ekr.20070125074101"><vh>headlineWidget class (baseTextWidget)</vh>
-<v t="ekr.20070125074101.2"><vh>Birth &amp; special methods</vh></v>
+<v t="ekr.20070125074101" a="M"><vh>headlineWidget class (baseTextWidget)</vh>
+<v t="ekr.20070125074101.2" a="M"><vh>Birth &amp; special methods</vh></v>
 <v t="ekr.20070209111155"><vh>wx widget bindings</vh></v>
 </v>
 <v t="edream.110203113231.298" a="M"><vh>redraw &amp; redraw_now &amp; helpers</vh>
-<v t="ekr.20070221122411"><vh>cleverRedraw &amp; helpers</vh>
+<v t="ekr.20070221122411" a="M"><vh>cleverRedraw &amp; helpers</vh>
 <v t="ekr.20070222092336"><vh>insertTreeAfter</vh></v>
-<v t="ekr.20070222091654"><vh>insert_node</vh></v>
-<v t="ekr.20070221130134"><vh>update_node</vh></v>
-<v t="ekr.20070221122544.2"><vh>update_siblings</vh></v>
-<v t="ekr.20070222083341"><vh>expandAndSelect</vh></v>
-<v t="ekr.20070312095016"><vh>redraw_subtree</vh></v>
+<v t="ekr.20070222091654" a="M"><vh>insert_node</vh></v>
+<v t="ekr.20070221130134" a="M"><vh>update_node</vh></v>
+<v t="ekr.20070221122544.2" a="M"><vh>update_siblings</vh></v>
+<v t="ekr.20070222083341" a="M"><vh>expandAndSelect</vh></v>
+<v t="ekr.20070312095016" a="M"><vh>redraw_subtree</vh></v>
 </v>
-<v t="edream.110203113231.299"><vh>redraw_node</vh></v>
+<v t="edream.110203113231.299" a="M"><vh>redraw_node</vh></v>
 <v t="ekr.20070308110121" a="M"><vh>partialRedraw &amp; helpers</vh>
 <v t="ekr.20070310083955" a="M"><vh>redraw_partial_subtree</vh></v>
 </v>
 </v>
 <v t="ekr.20050719121701"><vh>Selection (leoTree)</vh>
-<v t="ekr.20050719121701.3"><vh>editLabel</vh></v>
-<v t="ekr.20070125091308"><vh>setEditWidget</vh></v>
-<v t="ekr.20070312083143"><vh>get/setIdDict</vh></v>
+<v t="ekr.20050719121701.3" a="M"><vh>editLabel</vh></v>
+<v t="ekr.20070125091308" a="M"><vh>setEditWidget</vh></v>
+<v t="ekr.20070312083143" a="M"><vh>get/setIdDict</vh></v>
 </v>
 </v>
 <v t="ekr.20061117203128"><vh>keysymHelper &amp; helpers(no longer used)</vh>
@@ -408,29 +409,29 @@
 </v>
 <v t="ekr.20070312144825"><vh>Recent</vh>
 <v t="ekr.20061118123730.1" a="M"><vh>onChar (leoTree)</vh></v>
-<v t="ekr.20070219134728"><vh>baseTextWidget.onChar</vh></v>
+<v t="ekr.20070219134728" a="M"><vh>baseTextWidget.onChar</vh></v>
 <v t="ekr.20070311064633"><vh>&lt;&lt; bug list &amp; to-do &gt;&gt;</vh></v>
 <v t="ekr.20061116085729"><vh>gui events</vh>
 <v t="ekr.20070309085704"><vh>event_generate</vh></v>
-<v t="ekr.20061116093228"><vh>class leoKeyEvent (wxGui)</vh></v>
+<v t="ekr.20061116093228" a="M"><vh>class leoKeyEvent (wxGui)</vh></v>
 <v t="ekr.20061117204829"><vh>wxKeyDict</vh></v>
-<v t="ekr.20061117155233"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
-<v t="ekr.20070310064845"><vh>keysymHelper &amp; helpers</vh>
-<v t="ekr.20070313052040"><vh>getMods</vh></v>
-<v t="ekr.20070313055627"><vh>shift</vh></v>
-<v t="ekr.20070313055627.1"><vh>unshift</vh></v>
+<v t="ekr.20061117155233" a="M"><vh>eventChar &amp; eventKeysym &amp; helper</vh>
+<v t="ekr.20070310064845" a="M"><vh>keysymHelper &amp; helpers</vh>
+<v t="ekr.20070313052040" a="M"><vh>getMods</vh></v>
+<v t="ekr.20070313055627" a="M"><vh>shift</vh></v>
+<v t="ekr.20070313055627.1" a="M"><vh>unshift</vh></v>
 </v>
 </v>
 <v t="ekr.20061117155233.1"><vh>eventWidget</vh></v>
-<v t="ekr.20061117155233.2"><vh>eventXY</vh></v>
+<v t="ekr.20061117155233.2" a="M"><vh>eventXY</vh></v>
 </v>
-<v t="ekr.20070310064845"><vh>keysymHelper &amp; helpers</vh>
-<v t="ekr.20070313052040"><vh>getMods</vh></v>
-<v t="ekr.20070313055627"><vh>shift</vh></v>
-<v t="ekr.20070313055627.1"><vh>unshift</vh></v>
+<v t="ekr.20070310064845" a="M"><vh>keysymHelper &amp; helpers</vh>
+<v t="ekr.20070313052040" a="M"><vh>getMods</vh></v>
+<v t="ekr.20070313055627" a="M"><vh>shift</vh></v>
+<v t="ekr.20070313055627.1" a="M"><vh>unshift</vh></v>
 </v>
-<v t="ekr.20061116091006"><vh>isTextWidget</vh></v>
-<v t="edream.111303103141"><vh>add_command</vh></v>
+<v t="ekr.20061116091006" a="M"><vh>isTextWidget</vh></v>
+<v t="edream.111303103141" a="M"><vh>add_command</vh></v>
 </v>
 <v t="ekr.20070310093259"><vh>Unused</vh>
 <v t="ekr.20070308181029"><vh>OLDredraw_partial_subtree</vh></v>
@@ -440,7 +441,7 @@
 <v t="ekr.20070313052040.1"><vh>defaultKeysymHelper (not used)</vh></v>
 </v>
 <v t="edream.110203113231.302"
-marks="ekr.20070209095222,ekr.20070210080936,edream.110203113231.298,ekr.20070308110121,ekr.20070310083955,ekr.20061127075102,ekr.20061118123730.1,ekr.20061127081233,edream.110203113231.280,edream.110203113231.281,edream.110203113231.283,"><vh>@thin __wx_gui.py</vh></v>
+marks="ekr.20070215095042,ekr.20070219134728,ekr.20070125074101,ekr.20070125074101.2,ekr.20070209095222,ekr.20070205140140.1,ekr.20070210080936,ekr.20061116093228,ekr.20061117155233,ekr.20070310064845,ekr.20070313052040,ekr.20070313055627,ekr.20070313055627.1,ekr.20061117155233.2,ekr.20061116091006,edream.110203113231.347,edream.110203113231.557,ekr.20061211122107.2,edream.111303103141,ekr.20061118142055,edream.110203113231.298,ekr.20070221122411,ekr.20070222091654,ekr.20070221130134,ekr.20070221122544.2,ekr.20070222083341,ekr.20070312095016,edream.110203113231.299,ekr.20070308110121,ekr.20070310083955,ekr.20061211052926,ekr.20061211072604,ekr.20061127075102,ekr.20061118123730.1,ekr.20061127081233,edream.110203113231.280,edream.110203113231.281,edream.110203113231.283,edream.110203113231.286,edream.110203113231.287,ekr.20050719121701.3,ekr.20070125091308,ekr.20070312083143,"><vh>@thin __wx_gui.py</vh></v>
 </v>
 </v>
 <v t="ekr.20040722135402"><vh>Icon and status areas</vh>
@@ -468,7 +469,7 @@ marks="ekr.20070209095222,ekr.20070210080936,edream.110203113231.298,ekr.2007030
 </v>
 <v t="EKR.20040517080555"><vh>Menus &amp; translations</vh>
 <v t="ekr.20041019072632"><vh>Chinese:  Must use @file due to problems with cvs</vh>
-<v t="ekr.20040828105233" tnodeList="ekr.20040828105233,ekr.20040828105233.1,ekr.20040828105233.2,ekr.20040828105233.3,ekr.20040828105233.4,ekr.20040828105233.5,ekr.20040828105233.6,ekr.20040828105233.7"><vh>@file chinese_menu.py</vh>
+<v t="ekr.20040828105233" a="M" tnodeList="ekr.20040828105233,ekr.20040828105233.1,ekr.20040828105233.2,ekr.20040828105233.3,ekr.20040828105233.4,ekr.20040828105233.5,ekr.20040828105233.6,ekr.20040828105233.7"><vh>@file chinese_menu.py</vh>
 <v t="ekr.20040828105233.1"><vh>onMenu</vh>
 <v t="ekr.20040828105233.2"><vh>file menu</vh></v>
 <v t="ekr.20040828105233.3"><vh>edit menu</vh></v>
@@ -664,7 +665,7 @@ marks="ekr.20070209095222,ekr.20070210080936,edream.110203113231.298,ekr.2007030
 </v>
 <v t="ekr.20041001210557"><vh>Scripting</vh>
 <v t="ekr.20060328125248" a="E"
-expanded="ekr.20061014075212,"><vh>@thin mod_scripting.py</vh></v>
+expanded="ekr.20060328125248.6,ekr.20060328125248.8,"><vh>@thin mod_scripting.py</vh></v>
 </v>
 <v t="ekr.20050111122605"><vh>Servers</vh>
 <v t="EKR.20040517080250.1"><vh>@thin mod_http.py</vh></v>
@@ -761,7 +762,7 @@ expanded="ekr.20061014075212,"><vh>@thin mod_scripting.py</vh></v>
 <v t="ekr.20050817132814"><vh>rst3</vh>
 <v t="ekr.20050817120850.1" tnodeList="ekr.20050817120850.1,ekr.20050817122915,ekr.20050822123348,ekr.20050817124859,ekr.20050817165745,ekr.20050822172321,ekr.20050817124859.1,ekr.20050817165745.1,ekr.20050818033610,ekr.20050818095347,ekr.20050819055746.1,ekr.20050820112549,ekr.20050822065754,ekr.20050822125824,ekr.20050822172321.1,ekr.20050825101903,ekr.20050818103031,ekr.20050817115636.2,ekr.20050825101321,ekr.20050818103441,ekr.20070305092828,ekr.20050817115636.4,ekr.20050817115636.5,ekr.20050817115636.6,ekr.20050820092312,ekr.20050817115636.8,ekr.20050817115636.9,ekr.20050817115636.7,ekr.20050820100547,ekr.20050820101355,ekr.20050820103029,ekr.20050820101522,ekr.20050820101355.1,ekr.20050820094818,ekr.20050820092312.1,ekr.20050817120850.10,ekr.20050817120850.11,ekr.20050818094118.2,ekr.20050818090152,ekr.20050818090152.1,ekr.20050817120850.98,ekr.20050817120850.99,ekr.20050817120850.94,ekr.20050817120850.95,ekr.20050817120850.96,ekr.20050817120850.108,ekr.20050817142135.1,ekr.20050817120850.143,ekr.20050817120850.144,ekr.20050817120850.141,ekr.20050817135706.1,ekr.20050817120850.157,ekr.20050817120850.158,ekr.20050818105023,ekr.20050817120850.15,ekr.20050817120850.12,ekr.20050817120850.14,ekr.20050818081715,ekr.20050819072001,ekr.20050819072001.1,ekr.20050817120850.13,ekr.20050818083045,ekr.20050821153838,ekr.20050818022030,ekr.20050818084920,ekr.20050818130249,ekr.20050818090907,ekr.20050817120850.32,ekr.20050817120850.34,ekr.20050817120850.39,ekr.20050817120850.42,ekr.20050817120850.44,ekr.20050817120850.46,ekr.20050817120850.48,ekr.20050817120850.62,ekr.20050817120850.64,ekr.20050817120850.74,ekr.20050817120850.78,ekr.20050817120850.86,ekr.20050817120850.92,ekr.20050817120850.162,ekr.20050817120850.102,ekr.20050817120850.106,ekr.20050817120850.110,ekr.20050817120850.122,ekr.20050817120850.124,ekr.20050817120850.126,ekr.20050817120850.130,ekr.20050817120850.132,ekr.20050817120850.138,ekr.20050817120850.28,ekr.20050817120850.147,ekr.20050817120850.18,ekr.20050817120850.20,ekr.20050817120850.40,ekr.20050817120850.54,ekr.20050817120850.82,ekr.20050817120850.100,ekr.20050817120850.105,ekr.20050817120850.120,ekr.20050817120850.36,ekr.20050817120850.58,ekr.20050817120850.60,ekr.20050817120850.66,ekr.20050817120850.24,ekr.20050817120850.22,ekr.20050817120850.50,ekr.20050817120850.52,ekr.20050817120850.56,ekr.20050818094118.1,ekr.20050817120850.68,ekr.20050817120850.134,ekr.20050817120850.145,ekr.20050817120850.151,ekr.20050817120850.26,ekr.20050817120850.76,ekr.20050817120850.80,ekr.20050817120850.88,ekr.20050817120850.112,ekr.20050817120850.128,ekr.20050817142135,ekr.20050817120850.153,ekr.20050817120850.155,ekr.20050817120850.30,ekr.20050817135706,ekr.20050817120850.160,ekr.20050818094954,ekr.20050818105023.1,ekr.20050817120850.84,ekr.20050817120850.90,ekr.20050818094954.1,ekr.20050817120850.165,ekr.20050817120850.116,ekr.20050817120850.70,ekr.20050817120850.72,ekr.20050817120850.164,ekr.20050817120850.114,ekr.20050817120850.118,ekr.20050817120850.149,ekr.20050817120850.159,ekr.20050817120850.140"><vh>@file leo_pdf.py</vh>
 <v t="ekr.20050817122915"><vh>&lt;&lt; docstring &gt;&gt;</vh></v>
-<v t="ekr.20050817115636.2"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
+<v t="ekr.20050817115636.2" a="M"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
 <v t="ekr.20050822123348"><vh>&lt;&lt; about this code &gt;&gt;</vh></v>
 <v t="ekr.20050817124859"><vh>&lt;&lt; copyright &gt;&gt;</vh></v>
 <v t="ekr.20050817165745"><vh>&lt;&lt; version history &gt;&gt;</vh>
@@ -779,67 +780,67 @@ expanded="ekr.20061014075212,"><vh>@thin mod_scripting.py</vh></v>
 <v t="ekr.20050825101903"><vh>0.4</vh></v>
 </v>
 <v t="ekr.20050818103031"><vh>&lt;&lt; to do &gt;&gt;</vh></v>
-<v t="ekr.20050825101321"><vh>init</vh></v>
-<v t="ekr.20050818103441"><vh>class Bunch (object)</vh></v>
+<v t="ekr.20050825101321" a="M"><vh>init</vh></v>
+<v t="ekr.20050818103441" a="M"><vh>class Bunch (object)</vh></v>
 <v t="ekr.20070305092828"><vh>&lt;&lt; define subclasses of docutils classes &gt;&gt;</vh>
-<v t="ekr.20050817115636.4"><vh>class Writer (docutils.writers.Writer)</vh>
-<v t="ekr.20050817115636.5"><vh>&lt;&lt; class Writer declarations &gt;&gt;</vh></v>
+<v t="ekr.20050817115636.4" a="M"><vh>class Writer (docutils.writers.Writer)</vh>
+<v t="ekr.20050817115636.5" a="M"><vh>&lt;&lt; class Writer declarations &gt;&gt;</vh></v>
 <v t="ekr.20050817115636.6"><vh>__init__ (Writer)</vh></v>
-<v t="ekr.20050820092312"><vh>createParagraphsFromIntermediateFile</vh></v>
+<v t="ekr.20050820092312" a="M"><vh>createParagraphsFromIntermediateFile</vh></v>
 <v t="ekr.20050817115636.8"><vh>createPDF_usingPlatypus</vh></v>
 <v t="ekr.20050817115636.9"><vh>lower</vh></v>
-<v t="ekr.20050817115636.7"><vh>translate</vh></v>
+<v t="ekr.20050817115636.7" a="M"><vh>translate</vh></v>
 </v>
 <v t="ekr.20050820100547"><vh>class dummyPDFTranslator (docutils.nodes.NodeVisitor)</vh>
-<v t="ekr.20050820101355"><vh>   __init__ (dummyPDFTranslator)</vh></v>
+<v t="ekr.20050820101355" a="M"><vh>   __init__ (dummyPDFTranslator)</vh></v>
 <v t="ekr.20050820103029"><vh>as_what</vh></v>
-<v t="ekr.20050820101522"><vh>encode</vh></v>
-<v t="ekr.20050820101355.1"><vh>visit/depart_document</vh></v>
-<v t="ekr.20050820094818"><vh>buildFromIntermediateFile</vh></v>
-<v t="ekr.20050820092312.1"><vh>putParaFromIntermediateFile</vh></v>
+<v t="ekr.20050820101522" a="M"><vh>encode</vh></v>
+<v t="ekr.20050820101355.1" a="M"><vh>visit/depart_document</vh></v>
+<v t="ekr.20050820094818" a="M"><vh>buildFromIntermediateFile</vh></v>
+<v t="ekr.20050820092312.1" a="M"><vh>putParaFromIntermediateFile</vh></v>
 </v>
 <v t="ekr.20050817120850.10"><vh>class PDFTranslator (docutils.nodes.NodeVisitor)</vh>
-<v t="ekr.20050817120850.11"><vh>   __init__ (PDFTranslator)</vh></v>
+<v t="ekr.20050817120850.11" a="M"><vh>   __init__ (PDFTranslator)</vh></v>
 <v t="ekr.20050818094118.2"><vh>Complex</vh>
 <v t="ekr.20050818090152"><vh>footnotes</vh>
 <v t="ekr.20050818090152.1"><vh>footnote_reference</vh>
-<v t="ekr.20050817120850.98"><vh>visit_footnote_reference</vh></v>
-<v t="ekr.20050817120850.99"><vh>depart_footnote_reference</vh></v>
+<v t="ekr.20050817120850.98" a="M"><vh>visit_footnote_reference</vh></v>
+<v t="ekr.20050817120850.99" a="M"><vh>depart_footnote_reference</vh></v>
 </v>
-<v t="ekr.20050817120850.94"><vh>footnote &amp; helpers</vh>
-<v t="ekr.20050817120850.95"><vh>footnote_backrefs</vh></v>
+<v t="ekr.20050817120850.94" a="M"><vh>footnote &amp; helpers</vh>
+<v t="ekr.20050817120850.95" a="M"><vh>footnote_backrefs</vh></v>
 <v t="ekr.20050817120850.96"><vh>footnote_backrefs_depart</vh></v>
 </v>
-<v t="ekr.20050817120850.108"><vh>label</vh></v>
+<v t="ekr.20050817120850.108" a="M"><vh>label</vh></v>
 </v>
 <v t="ekr.20050817142135.1"><vh>reference...</vh>
 <v t="ekr.20050817120850.143"><vh>visit_reference</vh></v>
-<v t="ekr.20050817120850.144"><vh>depart_reference</vh></v>
+<v t="ekr.20050817120850.144" a="M"><vh>depart_reference</vh></v>
 </v>
 <v t="ekr.20050817120850.141"><vh>target</vh></v>
 <v t="ekr.20050817135706.1"><vh>title</vh>
-<v t="ekr.20050817120850.157"><vh>visit_title</vh></v>
-<v t="ekr.20050817120850.158"><vh>depart_title</vh></v>
+<v t="ekr.20050817120850.157" a="M"><vh>visit_title</vh></v>
+<v t="ekr.20050817120850.158" a="M"><vh>depart_title</vh></v>
 </v>
 </v>
 <v t="ekr.20050818105023"><vh>Helpers</vh>
-<v t="ekr.20050817120850.15"><vh> starttag</vh></v>
+<v t="ekr.20050817120850.15" a="M"><vh> starttag</vh></v>
 <v t="ekr.20050817120850.12"><vh>as_what</vh></v>
-<v t="ekr.20050817120850.14"><vh>createParagraph</vh></v>
-<v t="ekr.20050818081715"><vh>dumpContext</vh></v>
-<v t="ekr.20050819072001"><vh>dumpNode</vh>
+<v t="ekr.20050817120850.14" a="M"><vh>createParagraph</vh></v>
+<v t="ekr.20050818081715" a="M"><vh>dumpContext</vh></v>
+<v t="ekr.20050819072001" a="M"><vh>dumpNode</vh>
 <v t="ekr.20050819072001.1"><vh>&lt;&lt; define keys to be printed &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20050817120850.13"><vh>encode</vh></v>
-<v t="ekr.20050818083045"><vh>inContext</vh></v>
-<v t="ekr.20050821153838"><vh>pdfMunge</vh></v>
-<v t="ekr.20050818022030"><vh>push, pop, peek</vh></v>
-<v t="ekr.20050818084920"><vh>putHead &amp; putTail</vh></v>
+<v t="ekr.20050818083045" a="M"><vh>inContext</vh></v>
+<v t="ekr.20050821153838" a="M"><vh>pdfMunge</vh></v>
+<v t="ekr.20050818022030" a="M"><vh>push, pop, peek</vh></v>
+<v t="ekr.20050818084920" a="M"><vh>putHead &amp; putTail</vh></v>
 </v>
 <v t="ekr.20050818130249"><vh>Simple...</vh>
 <v t="ekr.20050818090907"><vh> do nothings...</vh>
 <v t="ekr.20050817120850.32"><vh>authors</vh></v>
-<v t="ekr.20050817120850.34"><vh>block_quote</vh></v>
+<v t="ekr.20050817120850.34" a="M"><vh>block_quote</vh></v>
 <v t="ekr.20050817120850.39"><vh>caption</vh></v>
 <v t="ekr.20050817120850.42"><vh>citation</vh></v>
 <v t="ekr.20050817120850.44"><vh>citation_reference</vh></v>
@@ -847,7 +848,7 @@ expanded="ekr.20061014075212,"><vh>@thin mod_scripting.py</vh></v>
 <v t="ekr.20050817120850.48"><vh>colspec</vh></v>
 <v t="ekr.20050817120850.62"><vh>definition_list_item</vh></v>
 <v t="ekr.20050817120850.64"><vh>description</vh></v>
-<v t="ekr.20050817120850.74"><vh>document</vh></v>
+<v t="ekr.20050817120850.74" a="M"><vh>document</vh></v>
 <v t="ekr.20050817120850.78"><vh>entry</vh></v>
 <v t="ekr.20050817120850.86"><vh>field_argument</vh></v>
 <v t="ekr.20050817120850.92"><vh>field_body</vh></v>
@@ -867,57 +868,57 @@ expanded="ekr.20061014075212,"><vh>@thin mod_scripting.py</vh></v>
 <v t="ekr.20050817120850.18"><vh>admonitions...</vh>
 <v t="ekr.20050817120850.20"><vh>attention</vh></v>
 <v t="ekr.20050817120850.40"><vh>caution</vh></v>
-<v t="ekr.20050817120850.54"><vh>danger</vh></v>
+<v t="ekr.20050817120850.54" a="M"><vh>danger</vh></v>
 <v t="ekr.20050817120850.82"><vh>error</vh></v>
 <v t="ekr.20050817120850.100"><vh>hint</vh></v>
 <v t="ekr.20050817120850.105"><vh>important</vh></v>
-<v t="ekr.20050817120850.120"><vh>note</vh></v>
+<v t="ekr.20050817120850.120" a="M"><vh>note</vh></v>
 </v>
-<v t="ekr.20050817120850.36"><vh>bullet_list</vh></v>
-<v t="ekr.20050817120850.58"><vh>definition</vh></v>
-<v t="ekr.20050817120850.60"><vh>definition_list</vh></v>
+<v t="ekr.20050817120850.36" a="M"><vh>bullet_list</vh></v>
+<v t="ekr.20050817120850.58" a="M"><vh>definition</vh></v>
+<v t="ekr.20050817120850.60" a="M"><vh>definition_list</vh></v>
 <v t="ekr.20050817120850.66"><vh>docinfos...</vh>
 <v t="ekr.20050817120850.24"><vh>address</vh></v>
 <v t="ekr.20050817120850.22"><vh>author</vh></v>
-<v t="ekr.20050817120850.50"><vh>contact</vh></v>
-<v t="ekr.20050817120850.52"><vh>copyright</vh></v>
-<v t="ekr.20050817120850.56"><vh>date</vh></v>
-<v t="ekr.20050818094118.1"><vh>docinfo</vh></v>
-<v t="ekr.20050817120850.68"><vh>docinfo_item</vh></v>
-<v t="ekr.20050817120850.134"><vh>organization</vh></v>
+<v t="ekr.20050817120850.50" a="M"><vh>contact</vh></v>
+<v t="ekr.20050817120850.52" a="M"><vh>copyright</vh></v>
+<v t="ekr.20050817120850.56" a="M"><vh>date</vh></v>
+<v t="ekr.20050818094118.1" a="M"><vh>docinfo</vh></v>
+<v t="ekr.20050817120850.68" a="M"><vh>docinfo_item</vh></v>
+<v t="ekr.20050817120850.134" a="M"><vh>organization</vh></v>
 <v t="ekr.20050817120850.145"><vh>revision</vh></v>
-<v t="ekr.20050817120850.151"><vh>status</vh></v>
+<v t="ekr.20050817120850.151" a="M"><vh>status</vh></v>
 <v t="ekr.20050817120850.26"><vh>version</vh></v>
 </v>
-<v t="ekr.20050817120850.76"><vh>emphasis</vh></v>
-<v t="ekr.20050817120850.80"><vh>enumerated_list</vh></v>
-<v t="ekr.20050817120850.88"><vh>field_list</vh></v>
-<v t="ekr.20050817120850.112"><vh>list_item</vh></v>
-<v t="ekr.20050817120850.128"><vh>option_list</vh></v>
-<v t="ekr.20050817142135"><vh>paragraph...</vh></v>
-<v t="ekr.20050817120850.153"><vh>strong</vh></v>
-<v t="ekr.20050817120850.155"><vh>subtitle</vh></v>
+<v t="ekr.20050817120850.76" a="M"><vh>emphasis</vh></v>
+<v t="ekr.20050817120850.80" a="M"><vh>enumerated_list</vh></v>
+<v t="ekr.20050817120850.88" a="M"><vh>field_list</vh></v>
+<v t="ekr.20050817120850.112" a="M"><vh>list_item</vh></v>
+<v t="ekr.20050817120850.128" a="M"><vh>option_list</vh></v>
+<v t="ekr.20050817142135" a="M"><vh>paragraph...</vh></v>
+<v t="ekr.20050817120850.153" a="M"><vh>strong</vh></v>
+<v t="ekr.20050817120850.155" a="M"><vh>subtitle</vh></v>
 <v t="ekr.20050817120850.30"><vh>term</vh></v>
 <v t="ekr.20050817135706"><vh>Text...</vh></v>
 <v t="ekr.20050817120850.160"><vh>topic</vh></v>
 </v>
 <v t="ekr.20050818094954"><vh>Unusual...</vh>
 <v t="ekr.20050818105023.1"><vh> Does not set context</vh>
-<v t="ekr.20050817120850.84"><vh>field</vh></v>
+<v t="ekr.20050817120850.84" a="M"><vh>field</vh></v>
 <v t="ekr.20050817120850.90"><vh>field_name</vh></v>
 </v>
 <v t="ekr.20050818094954.1"><vh> Raises SkipNode</vh>
 <v t="ekr.20050817120850.165"><vh>comment</vh></v>
-<v t="ekr.20050817120850.116"><vh> literal_blocks...</vh>
-<v t="ekr.20050817120850.70"><vh>doctest_block</vh></v>
+<v t="ekr.20050817120850.116" a="M"><vh> literal_blocks...</vh>
+<v t="ekr.20050817120850.70" a="M"><vh>doctest_block</vh></v>
 <v t="ekr.20050817120850.72"><vh>line_block</vh></v>
 </v>
 </v>
-<v t="ekr.20050817120850.164"><vh>invisible_visit</vh></v>
-<v t="ekr.20050817120850.114"><vh>literal (only changes context)</vh></v>
-<v t="ekr.20050817120850.118"><vh>meta (appends to self.head)</vh></v>
-<v t="ekr.20050817120850.149"><vh>section</vh></v>
-<v t="ekr.20050817120850.159"><vh>unimplemented_visit</vh></v>
+<v t="ekr.20050817120850.164" a="M"><vh>invisible_visit</vh></v>
+<v t="ekr.20050817120850.114" a="M"><vh>literal (only changes context)</vh></v>
+<v t="ekr.20050817120850.118" a="M"><vh>meta (appends to self.head)</vh></v>
+<v t="ekr.20050817120850.149" a="M"><vh>section</vh></v>
+<v t="ekr.20050817120850.159" a="M"><vh>unimplemented_visit</vh></v>
 <v t="ekr.20050817120850.140"><vh>visit_raw</vh></v>
 </v>
 </v>
@@ -936,7 +937,7 @@ expanded="ekr.20061014075212,"><vh>@thin mod_scripting.py</vh></v>
 </v>
 <v t="rogererens.20041013082304"><vh>@thin UNL.py</vh></v>
 </v>
-<v t="ekr.20040915073259"><vh>Windows</vh>
+<v t="ekr.20040915073259" a="E"><vh>Windows</vh>
 <v t="ekr.20050227071948" annotate="5404010000376437313030323835353038373037323639366637323639373437393731303132383633363136653665366637343631373436353061353436623530363936333662366336353536363137323061373130323666373130333464306632373632353530343665366636343635373130353238363830323666373130363535303734363635363137343735373236353731303736323535303236323637373130383238363830323666373130393535303037313061363235353039363137323633363836353734373937303635373130623238363830323666373130633638306136323535303236363637373130643238363830323666373130653638306136323735326571002e"><vh> cleo</vh>
 <v t="ekr.20050227072121"><vh>Notes</vh>
 <v t="ekr.20050227071948.1" annotate="7d71002e"><vh>TODO</vh>
@@ -982,7 +983,7 @@ expanded="ekr.20061014075212,"><vh>@thin mod_scripting.py</vh></v>
 </v>
 <v t="pap.20041020001240"><vh>@thin footprints.py</vh></v>
 <v t="mork.20041018162155.1"><vh>@thin EditAttributes.py</vh></v>
-<v t="ekr.20040915073259.1"><vh>@thin maximizeNewWindows.py</vh></v>
+<v t="ekr.20040915073259.1" a="E"><vh>@thin maximizeNewWindows.py</vh></v>
 <v t="mork.20041022155742.1"><vh>@thin nodebar.py</vh></v>
 <v t="edream.110203113231.924"><vh>@thin redirect_to_log.py</vh></v>
 <v t="ekr.20040915075530"><vh>@thin UASearch.py</vh></v>
@@ -1374,11 +1375,11 @@ File names may be indented as desired.
 <t tx="edream.110203113231.286"># Editing is allowed only if this routine exists.
 
 def onTreeBeginLabelEdit(self,event):
-    
+
     if g.app.killed or self.c.frame.killed: return
-    
+
     p = self.c.currentPosition()
-    
+
     # Used by the base classes onHeadChanged method.
     self.revertHeadline = p.headString()
 </t>
@@ -1393,7 +1394,7 @@ def onTreeEndLabelEdit(self,event):
     s = event.GetLabel()
     p = self.treeCtrl.GetItemData(id).GetData()
     h = p.headString()
-    
+
     # g.trace('old:',h,'new:',s)
 
     # Don't clear the headline by default.
@@ -1427,7 +1428,7 @@ def redraw (self):
 def redraw_now(self,scroll=True):
     self.redraw()</t>
 <t tx="edream.110203113231.299">def redraw_node(self,parent_id,p):
-    
+
     tree = self.treeCtrl
     data = wx.TreeItemData(p.copy())
     image = self.assignIcon(p)
@@ -1440,7 +1441,7 @@ def redraw_now(self,scroll=True):
         data=data)
 
     ### tree.SetItemFont(id,self.defaultFont)
-    
+
     self.setEditWidget(p,node_id)
     assert (p == tree.GetItemData(node_id).GetData())
     return node_id
@@ -1470,7 +1471,7 @@ def redraw_now(self,scroll=True):
 <t tx="edream.110203113231.347">def OnInit(self):
 
     self.SetAppName("Leo")
-    
+
     # Add some pre-defined default colors.
     self.leo_colors = ('leo blue','leo pink','leo yellow')
     wx.TheColourDatabase.AddColour('leo blue',  wx.Color(240,248,255)) # alice blue
@@ -1479,24 +1480,24 @@ def redraw_now(self,scroll=True):
 
     return True</t>
 <t tx="edream.110203113231.557">def createInitialTabs (self):
-    
+
     c = self.c ;  nb = self.nb
 
     # Create the Log tab.
     self.logCtrl = self.selectTab('Log')
-    
+
     # Create the Find tab.
     win = self.createTab('Find',createText=False)
     color = name2color('leo blue')
     win.SetBackgroundColour(color)
     self.findTabHandler = g.app.gui.createFindTab(c,parentFrame=win)
-    
+
     # Create the Spell tab.
     win = self.createTab('Spell',createText=False)
     color = name2color('leo pink')
     win.SetBackgroundColour(color)
     self.spellTabHandler = g.app.gui.createSpellTab(c,parentFrame=win)
-    
+
     # Make sure the Log is selected.
     self.selectTab('Log')
 </t>
@@ -1616,14 +1617,14 @@ Version 1.4, November 4, 2003.
 Put import tkinter in a try/except block.
 Made changes for 4.1 g.app.gui architecture. (More work needed).</t>
 <t tx="edream.111303103141">def add_command (self,menu,**keys):
-    
+
     if not menu:
         return g.trace('Can not happen.  No menu')
-    
+
     callback = keys.get('command')
     accel = keys.get('accelerator')
     ch,label = self.createAccelLabel(keys)
-    
+
     def wxMenuCallback (event,callback=callback):
         # g.trace('event',event)
         return callback() # All args were bound when the callback was created.
@@ -1636,7 +1637,7 @@ Made changes for 4.1 g.app.gui architecture. (More work needed).</t>
     if ch:
         self.createAccelData(menu,ch,accel,id,label)
 
-    </t>
+</t>
 <t tx="ekr.20040331071919"></t>
 <t tx="ekr.20040331071919.1">@language plain
 @ascfile "doc/mod_asc_dev.asc"
@@ -5034,7 +5035,7 @@ These plugins contain example code only.</t>
 Translate a few menu items into Simplified Chinese
 本插件将部分Leo菜单翻译成简体中文
    By Zhang Le &lt;ejoy@xinhuanet.com&gt;
-   
+
 """
 
 # Chinese translation completed by Zhang Le, May 2004
@@ -5058,7 +5059,7 @@ if not g.app.unitTesting: # Unpleasant for unit testing.
 
     # Register the handlers...
     leoPlugins.registerHandler("menu1", onMenu)
-    
+
     __version__ = "1.1" # Set version for the plugin handler.
     g.plugin_signon(__name__)</t>
 <t tx="ekr.20040828105233.1">def onMenu (tag,keywords):
@@ -6903,21 +6904,21 @@ Todo
 </t>
 <t tx="ekr.20050719121701"></t>
 <t tx="ekr.20050719121701.3">def editLabel (self,p,selectAll=False):
-    
+
     '''The edit-label command.'''
-    
+
     if g.app.killed or self.c.frame.killed: return
-    
+
     c = self.c
-    
+
     tree_id = self.getIdDict(p)
     # g.trace('editPosition',self.editPosition(),'id',id(tree_id))
-    
+
     expandFlag = self.expandAllAncestors(p)
     idFlag = not tree_id or not tree_id.IsOk()
     switchFlag = p != self.editPosition()
     # g.trace('expand',expandFlag,'id',idFlag,'switch',switchFlag)
-    
+
     # Eliminating switchFlag gets rid of most flashes.
     redrawFlag = expandFlag or idFlag
 
@@ -6930,7 +6931,7 @@ Todo
     self.setEditPosition(p) # That is, self._editPosition = p
     tree_id = self.getIdDict(p)
     if not tree_id: return # Not an error.
-    
+
     self.treeCtrl.EditLabel(tree_id)
     w = c.edit_widget(p)
     if p and w:
@@ -6951,17 +6952,17 @@ sys.path.append(r'c:\reportlab_1_20')
 if 1: # This dependency could easily be removed.
     # Used only for tracing and error reporting.
     import leoGlobals as g
-    
+
 try:
     # from reportlab.lib.enums import *
     # from reportlab.platypus import *
-    
+
     # Formatting imports...
     import docutils
     import reportlab.platypus
     import reportlab.platypus.para
     import stylesheet # To do: get this a better way.
-    
+
     # General imports...
     import StringIO
     import time
@@ -6971,7 +6972,7 @@ except ImportError:
 
 </t>
 <t tx="ekr.20050817115636.4">class Writer (docutils.writers.Writer):
-	
+
 	&lt;&lt; class Writer declarations &gt;&gt;
 
 	@others</t>
@@ -6988,7 +6989,7 @@ settings_spec = (
         'must be specified.',
         ['--stylesheet'],
         {'metavar': '&lt;URL&gt;', 'overrides': 'stylesheet_path'}),
-         
+
     (   'Specify a stylesheet file, relative to the current working '
         'directory.  The path is adjusted relative to the output HTML '
         'file.  Overrides --stylesheet.',
@@ -7011,9 +7012,9 @@ output = None
 
     # self.translator_class = PDFTranslator</t>
 <t tx="ekr.20050817115636.7">def translate(self):
-    
+
     '''Do final translation of self.document into self.output.'''
-    
+
     if 1: # Production code.
         visitor = PDFTranslator(self,self.document)
     else: # Use intermediate file, and dummy pdf translator.
@@ -7030,12 +7031,12 @@ output = None
     # Create a list of paragraphs using Platypus.
     self.document.walkabout(visitor)
     story = visitor.as_what()
-    
+
     if 0: # Not useful: story is a list of reportlab.platypus.para.Para objects.
         # Use the trace in createParagraph instead.
         g.trace('story','*'*40)
         print story        
-    
+
     # Generate self.output.  Gets sent to reportlab.
     self.output = self.createPDF_usingPlatypus(story)
     # Solve the newline problem by brute force.
@@ -7118,14 +7119,14 @@ if docutils:
     self.styleSheet = stylesheet.getStyleSheet()
     docutils.nodes.NodeVisitor.__init__(self, doctree) # Init the base class.
     self.language = docutils.languages.get_language(doctree.settings.language_code)
-    
+
     self.in_docinfo = False
     self.head = [] # Set only by meta() method.  
     self.body = [] # The body text being accumulated.
     self.foot = []
     self.sectionlevel = 0
     self.context = []
-    
+
     self.story = []
     self.bulletText = '\267'
         # maybe move this into stylesheet.
@@ -7160,7 +7161,7 @@ if docutils:
 
     if not style.strip(): ### EKR
         style = 'Normal'
-        
+
     if 0:
         s = text.split('&gt;')
         s = '&gt;\n'.join(s)
@@ -7172,7 +7173,7 @@ if docutils:
         print
 
     style = self.styleSheet [style]
-    
+
     try:
         self.story.append(
             reportlab.platypus.para.Paragraph (
@@ -7187,7 +7188,7 @@ if docutils:
 <t tx="ekr.20050817120850.15"># The suffix is always '\n' except for a cant-happen situation.
 
 def starttag (self,node,tagname,suffix='\n',caller='',**attributes):
-    
+
     # g.trace(repr(attributes))
     atts = {}
     for (name,value) in attributes.items():
@@ -7199,7 +7200,7 @@ def starttag (self,node,tagname,suffix='\n',caller='',**attributes):
     for att in ('id',): # node attribute overrides
         if node.has_key(att):
             atts [att] = node [att]
-    
+
     attlist = atts.items() ; attlist.sort()
     parts = [tagname]
     # Convert the attributes in attlist to a single string.
@@ -7275,22 +7276,22 @@ def depart_authors(self, node):
 </t>
 <t tx="ekr.20050817120850.34">def visit_block_quote(self, node):
     pass
-    
+
 def depart_block_quote(self, node):
     pass</t>
 <t tx="ekr.20050817120850.36">def visit_bullet_list(self, node):
-    
+
     self.push(kind='ul',start=len(self.body))
 
     # At present self.bulletText is a constant.
     self.body.append('&lt;ul bulletText="%s"&gt;' % self.bulletText)
 
 def depart_bullet_list(self, node):
-    
+
     b = self.pop('ul')
 
     self.body.append('&lt;/ul&gt;')
-    
+
     if not self.inContext('ul'):
         self.putTail(b.start)</t>
 <t tx="ekr.20050817120850.39">def visit_caption(self, node):
@@ -7330,7 +7331,7 @@ def depart_colspec(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.50">def visit_contact(self, node):
-    
+
     self.visit_docinfo_item(node, 'contact')
 
 def depart_contact(self, node):
@@ -7338,7 +7339,7 @@ def depart_contact(self, node):
     self.depart_docinfo_item()
 </t>
 <t tx="ekr.20050817120850.52">def visit_copyright(self, node):
-    
+
     self.visit_docinfo_item(node, 'copyright')
 
 def depart_copyright(self, node):
@@ -7346,7 +7347,7 @@ def depart_copyright(self, node):
     self.depart_docinfo_item()
 </t>
 <t tx="ekr.20050817120850.54">def visit_danger(self, node):
-    
+
     self.visit_admonition(node, 'danger')
 
 def depart_danger(self, node):
@@ -7354,16 +7355,16 @@ def depart_danger(self, node):
     self.depart_admonition()
 </t>
 <t tx="ekr.20050817120850.56">def visit_date(self, node):
-    
+
     self.visit_docinfo_item(node, 'date')
 
 def depart_date(self, node):
-    
+
     self.depart_docinfo_item()
 
 </t>
 <t tx="ekr.20050817120850.58">def visit_definition(self, node):
-    
+
     self.push(kind='dd')
 
     self.body.append('&lt;/dt&gt;')
@@ -7371,17 +7372,17 @@ def depart_date(self, node):
         self.starttag(node,'dd',caller='visit_destination'))
 
 def depart_definition(self, node):
-    
+
     self.pop('dd')
     self.body.append('&lt;/dd&gt;')</t>
 <t tx="ekr.20050817120850.60">def visit_definition_list(self, node):
-    
+
     self.push(kind='dl',start=len(self.body))
-    
+
     self.body.append(self.starttag(node, 'dl'))
 
 def depart_definition_list(self, node):
-    
+
     b = self.pop('dl')
 
     self.body.append('&lt;/dl&gt;')
@@ -7402,21 +7403,21 @@ def depart_description(self, node):
 </t>
 <t tx="ekr.20050817120850.66"></t>
 <t tx="ekr.20050817120850.68">def visit_docinfo_item(self, node, name):
-    
+
     self.body.append(
         '&lt;para style="DocInfo"&gt;&lt;b&gt;%s: &lt;/b&gt;' % (
             self.language.labels[name]))
 
 def depart_docinfo_item(self):
-    
+
     self.body.append('&lt;/para&gt;')
 </t>
 <t tx="ekr.20050817120850.70">def visit_doctest_block(self, node):
-    
+
     self.visit_literal_block(node)
 
 def depart_doctest_block(self, node):
-    
+
     self.depart_literal_block(node)
 
 </t>
@@ -7428,17 +7429,17 @@ def depart_line_block(self, node):
 </t>
 <t tx="ekr.20050817120850.74">def visit_document(self, node):
     pass
-    
+
 def depart_document(self, node):
     pass</t>
 <t tx="ekr.20050817120850.76">def visit_emphasis(self, node):
-    
+
     self.push(kind='i')
-    
+
     self.body.append('&lt;i&gt;')
 
 def depart_emphasis(self, node):
-    
+
     self.pop('i')
 
     self.body.append('&lt;/i&gt;')
@@ -7450,13 +7451,13 @@ def depart_entry(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.80">def visit_enumerated_list(self, node):
-    
+
     self.push(kind='ol',start=len(self.body))
 
     self.body.append('&lt;ol&gt;')
 
 def depart_enumerated_list(self, node):
-    
+
     b = self.pop('ol')
 
     self.body.append('&lt;/ol&gt;')
@@ -7469,7 +7470,7 @@ def depart_enumerated_list(self, node):
 def depart_error(self, node):
     self.depart_admonition()</t>
 <t tx="ekr.20050817120850.84">def visit_field(self, node):
-    
+
     self.body.append('&lt;para&gt;')
 
 def depart_field(self, node):
@@ -7483,15 +7484,15 @@ def depart_field_argument(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.88">def visit_field_list(self, node):
-    
+
     self.push(kind='&lt;para&gt;',start=len(self.body))
 
 def depart_field_list(self, node):
-    
+
     b = self.pop('&lt;para&gt;')
-    
+
     self.body.append('&lt;/para&gt;')
-    
+
     self.putTail(b.start)</t>
 <t tx="ekr.20050817120850.90">def visit_field_name(self, node):
 
@@ -7507,13 +7508,13 @@ def depart_field_body(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.94">def visit_footnote(self, node):
-    
+
     self.push(kind='footnotes',context=[])
 
     self.footnote_backrefs(node)
 
 def depart_footnote(self, node):
-    
+
     self.pop('footnotes')
 
     self.footnote_backrefs_depart(node)
@@ -7525,11 +7526,11 @@ Warning: this does not work for auto-numbered footnotes.
 @c
 
 def footnote_backrefs (self,node):
-    
+
     '''Create b.link and b.setLink for visit/depart_label.'''
-    
+
     # self.dumpNode(node,tag='backrefs-node')
-    
+
     b = self.peek('footnotes')
     a = node.attributes ; backrefs = a.get('backrefs',[]) # EKR.
 
@@ -7556,9 +7557,9 @@ def footnote_backrefs (self,node):
 @c
 
 def visit_footnote_reference (self,node):
-    
+
     '''Generate code for a footnote reference.'''
-    
+
     # self.dumpNode(node,tag='footnote-ref-node')
 
     markup = [] # The terminating markup to be supplied by depart_footnote_reference.
@@ -7567,7 +7568,7 @@ def visit_footnote_reference (self,node):
         self.body.append(
             self.starttag(node,'setLink','',destination=a['ids']))
         markup.append('&lt;/setLink&gt;')
-    
+
     if   node.hasattr('refid'):   href = a ['refid']
     elif node.hasattr('refname'): href = self.document.nameids [a ['refname']]
     else:                         href = ''
@@ -7589,9 +7590,9 @@ def visit_footnote_reference (self,node):
     markup.reverse()
     self.push(kind='footnote-ref',markup=markup)</t>
 <t tx="ekr.20050817120850.99">def depart_footnote_reference(self, node):
-    
+
     b = self.pop('footnote-ref')
-    
+
     for z in b.markup:
         self.body.append(z)</t>
 <t tx="ekr.20050817120850.100">def visit_hint(self, node):
@@ -7619,7 +7620,7 @@ def depart_interpreted(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.108">def visit_label(self, node):
-    
+
     b = self.inContext('footnotes')
     if b:
         self.body.append(b.setLink)
@@ -7630,7 +7631,7 @@ def depart_interpreted(self, node):
         self.body.append('[')
 
 def depart_label(self, node):
-    
+
     b = self.inContext('footnotes')
     if b:
         self.body.append(']')
@@ -7646,26 +7647,26 @@ def depart_legend(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.112">def visit_list_item(self, node):
-    
+
     self.push(kind='li')
-    
+
     self.body.append('&lt;li&gt;')
 
 def depart_list_item(self, node):
-    
+
     self.pop('li')
 
     self.body.append('&lt;/li&gt;')
 </t>
 <t tx="ekr.20050817120850.114">def visit_literal(self, node):
-    
+
     self.push(kind='literal')
-    
+
 def depart_literal(self, node):
-    
+
     self.pop('literal')</t>
 <t tx="ekr.20050817120850.116">def visit_literal_block(self, node):
-    
+
     self.story.append(
         reportlab.platypus.Preformatted(
             node.astext(),self.styleSheet['Code']))
@@ -7675,7 +7676,7 @@ def depart_literal(self, node):
 def depart_literal_block(self, node):
     pass</t>
 <t tx="ekr.20050817120850.118">def visit_meta(self, node):
-    
+
     g.trace(**node.attributes)
 
     self.head.append(
@@ -7685,7 +7686,7 @@ def depart_meta(self, node):
 
     pass</t>
 <t tx="ekr.20050817120850.120">def visit_note(self, node):
-    
+
     self.visit_admonition(node, 'note')
 
 def depart_note(self, node):
@@ -7711,16 +7712,16 @@ def depart_option_group(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.128">def visit_option_list(self, node):
-    
+
     self.push(kind='option-list',start=len(self.body))
 
 def depart_option_list(self, node):
-    
+
     b = self.pop('option-list')
 
     if not self.inContext('option_list'):
         self.putTail(b.start)
-        </t>
+</t>
 <t tx="ekr.20050817120850.130">def visit_option_list_item(self, node):
     pass
 
@@ -7734,7 +7735,7 @@ def depart_option_string(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.134">def visit_organization(self, node):
-    
+
     self.visit_docinfo_item(node, 'organization')
 
 def depart_organization(self, node):
@@ -7800,7 +7801,7 @@ def depart_target (self,node):
     self.push(kind='a',markup=markup)
 </t>
 <t tx="ekr.20050817120850.144">def depart_reference(self, node):
-    
+
     b = self.pop('a')
 
     for s in b.markup:
@@ -7820,7 +7821,7 @@ def depart_row(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.149">def visit_section(self, node):
-    
+
     self.sectionlevel += 1
 
 def depart_section(self, node):
@@ -7828,7 +7829,7 @@ def depart_section(self, node):
     self.sectionlevel -= 1
 </t>
 <t tx="ekr.20050817120850.151">def visit_status(self, node):
-    
+
     self.visit_docinfo_item(node, 'status')
 
 def depart_status(self, node):
@@ -7836,24 +7837,24 @@ def depart_status(self, node):
     self.depart_docinfo_item()
 </t>
 <t tx="ekr.20050817120850.153">def visit_strong(self, node):
-    
+
     self.push(kind='b')
 
     self.body.append('&lt;b&gt;')
 
 def depart_strong(self, node):
-    
+
     self.pop('b')
 
     self.body.append('&lt;/b&gt;')
 
 </t>
 <t tx="ekr.20050817120850.155">def visit_subtitle(self, node):
-    
+
     self.push(kind='subtitle',start=len(self.body))
 
 def depart_subtitle(self, node):
-    
+
     b = self.pop('subtitle')
 
     self.putTail(b.start,b.style)
@@ -7864,7 +7865,7 @@ def depart_subtitle(self, node):
     start = len(self.body) ; markup = []
     isTopic = isinstance(node.parent,docutils.nodes.topic)
     isTitle = self.sectionlevel == 0
-    
+
     # Set the style.
     if isTopic:   style = 'topic-title'
     elif isTitle: style = 'title'
@@ -7893,10 +7894,10 @@ def depart_subtitle(self, node):
 
     for z in b.markup:
         self.body.append(z)
-        
+
     self.putTail(b.start,style=b.style)</t>
 <t tx="ekr.20050817120850.159">def unimplemented_visit(self, node):
-    
+
     raise NotImplementedError(
         'visiting unimplemented node type: %s' % node.__class__.__name__)
 </t>
@@ -7921,7 +7922,7 @@ def depart_generated(self, node):
     pass
 </t>
 <t tx="ekr.20050817120850.164">def invisible_visit(self, node):
-    
+
     """Invisible nodes should be ignored."""
     pass</t>
 <t tx="ekr.20050817120850.165">def visit_comment(self, node):
@@ -7994,13 +7995,13 @@ def depart_Text (self,node):
     self.pop('#text')</t>
 <t tx="ekr.20050817135706.1"></t>
 <t tx="ekr.20050817142135">def visit_paragraph(self, node):
-    
+
     self.push(kind='p',start=len(self.body))
-    
+
 def depart_paragraph(self, node):
-    
+
     b = self.pop('p')
-    
+
     if not self.context and self.body:
         self.putTail(b.start)</t>
 <t tx="ekr.20050817142135.1"></t>
@@ -8022,20 +8023,20 @@ To do:
     This won't work when g.Bunches are on the context stack,
     so we shall need a method that searches the bunches on the stack.</t>
 <t tx="ekr.20050818022030">def push (self,**keys):
-    
+
     self.context.append(Bunch(**keys))
-    
+
 def pop (self,kind):
-    
+
     bunch = self.context.pop()
     assert bunch.kind == kind,\
         'wrong bunch kind popped.  Expected: %s Got: %s' % (
             kind, bunch.kind)
 
     return bunch
-    
+
 def peek (self,kind):
-    
+
     bunch = self.context[-1]
     assert bunch.kind == kind,\
         'peek at wrong bunch.  Expected: %s Got: %s' % (
@@ -8049,18 +8050,18 @@ def peek (self,kind):
 - Reorganized node handlers so that it is clear what the important methods are.
 - Almost all the grunt work is done.</t>
 <t tx="ekr.20050818081715">def dumpContext (self):
-    
+
     print ; print '-' * 40
     print 'Dump of context'
-        
+
     i = 0
     for bunch in self.context:
         print '%2d %s' % (i,bunch)
         i += 1</t>
 <t tx="ekr.20050818083045">def inContext (self,kind):
-    
+
     '''Return the most recent bunch having the indicated kind, or None.'''
-    
+
     i = len(self.context) - 1
 
     while i &gt;= 0:
@@ -8068,10 +8069,10 @@ def peek (self,kind):
         if bunch.kind == kind:
             return bunch
         i -= 1
-        
+
     return None</t>
 <t tx="ekr.20050818084920">def putHead (self,start,style='Normal',bulletText=None):
-    
+
     self.createParagraph(self.body[:start],
         style=style,bulletText=bulletText)
 
@@ -8079,7 +8080,7 @@ def peek (self,kind):
 
 
 def putTail (self,start,style='Normal',bulletText=None):
-    
+
     self.createParagraph(self.body[start:],
         style=style,bulletText=bulletText)
 
@@ -8089,12 +8090,12 @@ def putTail (self,start,style='Normal',bulletText=None):
 <t tx="ekr.20050818090152.1"></t>
 <t tx="ekr.20050818090907"></t>
 <t tx="ekr.20050818094118.1">def visit_docinfo(self, node):
-    
+
     self.push(kind='docinfo',start=len(self.body))
     self.in_docinfo = True
 
 def depart_docinfo(self, node):
-    
+
     b = self.pop('docinfo')
     self.putHead(b.start)
     self.in_docinfo = False</t>
@@ -8137,23 +8138,23 @@ You can read/write the named attributes you just created, add others, del some o
 @c
 
 class Bunch (object):
-    
+
     """A class that represents a colection of things.
-    
+
     Especially useful for representing a collection of related variables."""
-    
+
     def __init__(self,**keywords):
         self.__dict__.update (keywords)
-        
+
     def __repr__(self):
         return self.toString()
 
     def ivars(self):
         return self.__dict__.keys()
-        
+
     def keys(self):
         return self.__dict__.keys()
-        
+
     def toString(self):
         tag = self.__dict__.get('tag')
         entries = ["%s: %s" % (key,str(self.__dict__.get(key)))
@@ -8167,14 +8168,14 @@ class Bunch (object):
     def __setitem__ (self,key,value):
         '''Support aBunch[key] = val'''
         return operator.setitem(self.__dict__,key,value)
-        
+
     def __getitem__ (self,key):
         '''Support aBunch[key]'''
         return operator.getitem(self.__dict__,key)
-        
+
     def get (self,key,theDefault=None):
         return self.__dict__.get(key,theDefault)
-        
+
 bunch = Bunch</t>
 <t tx="ekr.20050818105023"></t>
 <t tx="ekr.20050818105023.1"></t>
@@ -8186,23 +8187,23 @@ bunch = Bunch</t>
 
 - Added support for this dummy class to Writer.translate.</t>
 <t tx="ekr.20050819072001">def dumpNode (self,node,tag=''):
-    
+
     &lt;&lt; define keys to be printed &gt;&gt;
-    
+
     d = node.__dict__
-    
+
     nkeys = d.keys() ; nkeys.sort()
-    
+
     print ; print '-' * 30
     print 'dump of node %s\n' % (g.choose(tag,'(%s)' % tag,''))
-    
+
     print 'class',node.__class__
-    
+
     for nkey in nkeys:
         if nkey in keys:
             val = d.get(nkey)
             print nkey,':',g.toString(val,verbose=False,indent='\t')
-            
+
     print ; print 'done', '-' * 25</t>
 <t tx="ekr.20050819072001.1">keys = (
     #'anonymous_refs'
@@ -8242,11 +8243,11 @@ bunch = Bunch</t>
     #'transformer',
 )</t>
 <t tx="ekr.20050820092312">def createParagraphsFromIntermediateFile (self,s,story,visitor):
-    
+
     if 0: # Not needed now that putParaFromIntermediateFile is in the visitor.
         self.styleSheet = visitor.styleSheet
         self.encode = visitor.encode
-    
+
     out = StringIO.StringIO()
 
     doc = reportlab.platypus.SimpleDocTemplate(out,
@@ -8260,9 +8261,9 @@ bunch = Bunch</t>
 
     bulletText = None
     text = '\n'.join(lines)
-    
+
     # g.trace(style,repr(text))
-    
+
     style = self.styleSheet [style]
 
     self.story.append(
@@ -8271,9 +8272,9 @@ bunch = Bunch</t>
             bulletText = bulletText,
             context = self.styleSheet))</t>
 <t tx="ekr.20050820094818">def buildFromIntermediateFile (self):
-    
+
     'Synthesize calls to reportlab.platypus.para.Paragraph from an intermediate file.'
-    
+
     lines = g.splitLines(self.contents)
     para = [] # The lines of the next paragraph.
 
@@ -8298,7 +8299,7 @@ bunch = Bunch</t>
     self.writer = writer
     self.contents = contents
     self.story = []
-    
+
     # Some of these may be needed, even though they are not referenced directly.
     self.settings = settings = doctree.settings
     self.styleSheet = stylesheet.getStyleSheet()
@@ -8307,16 +8308,16 @@ bunch = Bunch</t>
 <t tx="ekr.20050820101355.1">def visit_document(self, node):
 
     self.buildFromIntermediateFile()
-    
+
     raise docutils.nodes.SkipNode
-    
+
 def depart_document(self, node):
-    
+
     pass</t>
 <t tx="ekr.20050820101522">def encode(self, text):
 
     """Encode special characters in `text` &amp; return."""
-    
+
     if type(text) is types.UnicodeType:
         text = text.replace(u'\u2020', u' ')
         text = text.replace(u'\xa0', u' ')
@@ -8335,16 +8336,16 @@ def depart_document(self, node):
 
 </t>
 <t tx="ekr.20050821153838">def pdfMunge (self,s):
-    
+
     '''Duplicate the munging done (somewhere in docutils) of section names.
-    
+
     This allows us to use the nameids attribute in the document element.'''
-    
+
     s = s.lower.replace('\t',' ')
 
     while s != s.replace('  ',' '):
         s = s.replace('  ',' ')
-    
+
     return s.replace(' ','-')</t>
 <t tx="ekr.20050822065754">@
 
@@ -8428,13 +8429,13 @@ Edward K. Ream:  Aug 22, 2005.</t>
 <t tx="ekr.20050822172321"></t>
 <t tx="ekr.20050822172321.1">@ Minor improvements to documentation.</t>
 <t tx="ekr.20050825101321">def init ():
-    
+
     '''This file may be distributed in Leo's plugin folder, but this file is NOT
     a Leo plugin!
-    
+
     The init method returns None to tell Leo's plugin manager and unit tests to
     skip this file.'''
-    
+
     return None</t>
 <t tx="ekr.20050825101903">@
 
@@ -8469,16 +8470,16 @@ Edward K. Ream:  Aug 22, 2005.</t>
 </t>
 <t tx="ekr.20060513122450.60">def __init__(self,c,n,w=175,h=22,e=1,a='nw',x=0,y=0,re=False,vs=False):
     self.Name = n
-    
+
     if re != False: fg = RegExpFgColor
     else: fg = "black"
-        
+
     if vs != False: bg = VarSupBgColor
     else: bg = "white"
-    
+
     self.MasterFrame = mf = Tk.Frame(c,relief='groove',height=h,width=w)
     self.ID = c.create_window(x,y,anchor=a,window=mf,height=h,width=w)	
-    
+
     self.Entry = Tk.Entry(mf,width=1,bg=bg)
     self.Entry.pack(side="right",fill="x",expand=e)
     l = Tk.Label(mf,text=n+":",fg=fg).pack(side="right")
@@ -8494,22 +8495,22 @@ Edward K. Ream:  Aug 22, 2005.</t>
     @others
 </t>
 <t tx="ekr.20060513122450.64">def __init__(self,c,n,w=350,h=80,a='nw',x=0,y=0,re=False,vs=False):#text are 3 column wide
-    
+
     self.Name = n
-    
+
     if re != False: fg = RegExpFgColor
     else: fg = "black"
-        
+
     if vs != False: bg = VarSupBgColor
     else: bg = "white"
-    
+
     self.MasterFrame = mf = Tk.Frame(c,relief='groove')
     self.ID = c.create_window(x,y+1,anchor=a,window=mf,width=w,height=h)
-    
+
     lf = Tk.Frame(mf,relief='flat')
     lf.pack(side="top",fill="x",expand=1)			
     Tk.Label(lf,text=n+":",fg=fg).pack(side="left")
-    
+
     self.Text = Tk.Text(mf,bg=bg)
     self.Text.pack(side="top",fill="x",expand=1)
 </t>
@@ -8530,17 +8531,17 @@ Edward K. Ream:  Aug 22, 2005.</t>
     @others
 </t>
 <t tx="ekr.20060513122450.68">def __init__(self,c,text,w=175,h=22,e=1,a='nw',x=0,y=0,color="#%02x%02x%02x" % (150,150,150)):
-    
+
     self.MasterFrame = mf = Tk.Frame(c,relief='groove',height=h,width=w)
     self.ID = c.create_window(x,y,anchor=a,window=mf,height=h,width=w)	
-    
+
     self.Label = Tk.Label(c,text=text,justify='left',fg=color)
     self.ID = c.create_window(x,y,anchor=a,window=self.Label)
-    </t>
+</t>
 <t tx="ekr.20060513122450.69">class HELP(Tk.Button):
     @others</t>
 <t tx="ekr.20060513122450.70">def __init__(self,c,buttontext="Help",boxtitle="Help",msg="!",x=5,y=0):
-    
+
     self.Title = boxtitle
     self.Message = msg
     Tk.Button.__init__(self,c,text=buttontext,command=self.Help)
@@ -8548,7 +8549,7 @@ Edward K. Ream:  Aug 22, 2005.</t>
 <t tx="ekr.20060513122450.71">def Help(self):
     tkMessageBox.showinfo(self.Title,self.Message)</t>
 <t tx="ekr.20060513122450.72">def __init__(self,cc,name):
-    
+
     self.cc = cc
     self.name = name
     self.Objects = []
@@ -8577,12 +8578,12 @@ Edward K. Ream:  Aug 22, 2005.</t>
     pass
 </t>
 <t tx="ekr.20060513122450.77">def SaveObjects(self,pd=None):
-    
+
     cc = self.cc
 
     if pd == None:
         pd = cc.sGet(self.name,init={})
-    
+
     for o in self.Objects:
         pd[o.Name] = o.Get()
 </t>
@@ -8591,9 +8592,9 @@ Edward K. Ream:  Aug 22, 2005.</t>
     cc = self.cc
     if pd == None:
         pd = cc.sGet(self.name,{})
-        
+
     g.trace(self.name,pd)
-    
+
     for o in self.Objects:
         if o.Name not in pd:				
             pd[o.Name] = o.Get()
@@ -8603,34 +8604,34 @@ Edward K. Ream:  Aug 22, 2005.</t>
     for o in self.Objects:
         o.Set(value)</t>
 <t tx="ekr.20060513122450.80">def Hide(self):
-    
+
     cc = self.cc
     self.pack_forget()
-    
+
     b = cc.Config.GetButton(self.name)
     b.config(relief='groove',fg="black")
-    
+
     cc.LeoYBodyBar.config(command=cc.LeoBodyText.yview)
     cc.LeoBodyText.config(yscrollcommand=cc.LeoYBodyBar.set)</t>
 <t tx="ekr.20060513122450.81">def Show(self):
-    
+
     cc = self.cc
-    
+
     if cc.Config.ActivePage:
         cc.Config.ActivePage.Hide()
-        
+
     cc.Config.ActivePage = self
     b = cc.Config.GetButton(self.name)
     b.config(relief='sunken',fg="blue")	
-    
+
     self.config(scrollregion=self.bbox('all'))
     self.config(yscrollcommand=cc.LeoYBodyBar.set)
-    
+
     cc.LeoYBodyBar.config(command=self.yview)
     cc.LeoYBodyBar.pack(side="right",fill="y")
     self.pack(expand=1,fill="both")</t>
 <t tx="ekr.20060513122450.82">def __init__(self,cc):
-    
+
     self.cc = cc
     self.Pages = []
     self.Buttons = []
@@ -8639,11 +8640,11 @@ Edward K. Ream:  Aug 22, 2005.</t>
     #switch frame
     self.SwitchFrame = Tk.Frame(
         cc.LeoFrame.split1Pane2,relief='groove',bd=2,height=40,width=100)
-    
+
     #title
     self.Title = Tk.Entry(self.SwitchFrame,justify='center')
     self.Title.pack(side="top",fill="x",expand=1)	
-    
+
     self.AddPages()	
     #add pages switches
     for page in self.Pages:
@@ -8653,7 +8654,7 @@ Edward K. Ream:  Aug 22, 2005.</t>
             b.pack(side="left")
             if not self.ActivePage:
                 self.ActivePage = page
-        
+
     if 0: #Cancel button
         # Not needed.
         b = Tk.Button(self.SwitchFrame,text="Cancel",command=lambda: self.Hide(False))
@@ -8662,15 +8663,15 @@ Edward K. Ream:  Aug 22, 2005.</t>
     #Load button
     b = Tk.Button(self.SwitchFrame,text="Load...",command=self.LoadFromFile)
     b.pack(side="right")
-    
+
     #Save button
     b = Tk.Button(self.SwitchFrame,text="Save...",command=self.SaveToFile)
     b.pack(side="right")	
-    
+
     self.BreakTags = {}
     self.visible = False</t>
 <t tx="ekr.20060513122450.83">def GetPage(self,name):
-    
+
     for p in self.Pages:
         if p and p.name == name:
             return p</t>
@@ -8680,9 +8681,9 @@ Edward K. Ream:  Aug 22, 2005.</t>
         if b and b["text"] == name:
             return b</t>
 <t tx="ekr.20060513122450.85">def Hide(self,save=True):
-    
+
     cc = self.cc
-    
+
     if self.visible == True:
         self.ActivePage.Hide()	
         self.SwitchFrame.pack_forget()
@@ -8692,14 +8693,14 @@ Edward K. Ream:  Aug 22, 2005.</t>
         if cc.CHILD_NODE:
             cc.BreakBar.Show()
         cc.LeoBodyText.pack(expand=1, fill="both")
-        
+
         if save == True:
             self.SaveToNode()
         cc.ToolBar.ConfigButton.config(command=self.Show,relief='raised')
         cc.ToolBar.DisplayFrame.pack(side="top",fill="x",expand=1)
         self.visible = False</t>
 <t tx="ekr.20060513122450.86">def Show(self):
-    
+
     cc = self.cc
     if cc.Watcher.visible:
         cc.Watcher.Hide()			
@@ -8709,7 +8710,7 @@ Edward K. Ream:  Aug 22, 2005.</t>
     cc.LeoBodyText.pack_forget()
     cc.LeoXBodyBar.pack_forget()
     cc.LeoYBodyBar.pack_forget()
-    
+
     self.SwitchFrame.pack(side="top", fill="x")
     self.LoadFromNode()
     self.ActivePage.Show()
@@ -8728,33 +8729,33 @@ Edward K. Ream:  Aug 22, 2005.</t>
     cc = self.cc
     self.Title.delete(0,'end')
     self.Title.insert('end',cc.sGet("Title"))
-        
+
     for p in self.Pages:
         if p:
             p.LoadObjects()</t>
 <t tx="ekr.20060513122450.89">def SaveToNode(self):
-    
+
     cc = self.cc
-    
+
     cc.sSet("Title",self.Title.get())
-    
+
     for p in self.Pages:
         p and p.SaveObjects()</t>
 <t tx="ekr.20060513122450.90">def LoadFromFile(self):
     try:
         ft = ('XCC Config files', '.xcc'),
         s = tkFileDialog.askopenfilename(filetypes=ft,title="Open xcc connfiguration file...")
-    
+
         if s == "":
             Error("xcc: ","Load action canceled by user!")
             return
-        
+
         #read file and compose code
         f = file(s,"r")
         td = None
         code = "td ="+f.readline()
         f.close()
-        
+
         # load in temp dict
         try:
             exec code
@@ -8762,21 +8763,21 @@ Edward K. Ream:  Aug 22, 2005.</t>
             TraceBack()
             Error("xcc: ","File content is invalid!")
             return
-        
+
         #	load each pages
         for p in self.Pages:
             if p.name in td:
                 p.LoadObjects(td[p.name])
-                
+
         #set title to file name
         name,ext = os.path.splitext(s)
         path,name = os.path.split(name)		
         self.Title.delete(0,'end')
         self.Title.insert('end',name)		
-        
+
         #save to node to ensure integrity
         self.SaveToNode()
-        
+
     except Exception:
         TraceBack()
 
@@ -8786,39 +8787,39 @@ Edward K. Ream:  Aug 22, 2005.</t>
 </t>
 <t tx="ekr.20060513122450.91">def SaveToFile(self):
     try:
-        
-    
+
+
         ft = ('XCC Config files', '.xcc'),
         s = tkFileDialog.asksaveasfilename(
         filetypes=ft,
         title="Save xcc connfiguration file...",
         initialfile = self.Title.get()
         )
-        
+
         if s == "":
             Error("xcc: ","Save action canceled by user!")
             return		
-        
+
         name,ext = os.path.splitext(s)
-                
+
         td = {}
-        
+
         # save each pages
         for p in self.Pages:
             td[p.name] = {}
             p.SaveObjects(td[p.name])	
-        
+
         #write the dict to file
         f = file(name+".xcc","w+")
         Message("xcc: ","Writing config in "+name+".xcc")
         f.write(str(td))
         f.close()
-        
+
         # reset title to file name
         path,name = os.path.split(name)		
         self.Title.delete(0,'end')
         self.Title.insert('end',name)
-        
+
         # save to node
         self.SaveToNode()
     except Exception:
@@ -8836,7 +8837,7 @@ Edward K. Ream:  Aug 22, 2005.</t>
     self.Hide()
 </t>
 <t tx="ekr.20060513122450.93">def AddPages(self):
-    
+
     cc = self.cc
     self.Pages.append(self.OptPageClass(cc))
     self.Pages.append(self.CplPageClass(cc))
@@ -8848,7 +8849,7 @@ Edward K. Ream:  Aug 22, 2005.</t>
     @others
 </t>
 <t tx="ekr.20060513122450.95">def __init__(self,cc):
-    
+
     self.cc = cc
     ConfigClass.PageClass.__init__(self,cc,"Options")
 </t>
@@ -8895,7 +8896,7 @@ self.AddObject(self.CHECK(master,"Filter output",x=5,y=self.H))</t>
     @others
 </t>
 <t tx="ekr.20060513122450.100">def __init__(self,cc):
-    
+
     self.cc = cc
     ConfigClass.PageClass.__init__(self,cc,"Compiler")</t>
 <t tx="ekr.20060513122450.101">def Browse(self):
@@ -8921,14 +8922,14 @@ self.AddObject(self.CHECK(master,"Filter output",x=5,y=self.H))</t>
             if o.Name == name:
                 opaths = o.Get().splitlines()
                 npaths = []
-                
+
                 for p in opaths:
                     p = p.strip()
                     if p != "":
                         npaths.append(p)
-                        
+
                 npaths.append(d)
-                
+
                 o.Set(string.join(npaths,"\n"))</t>
 <t tx="ekr.20060513122450.103">def CreateObjects(self,master): #must overide
 
@@ -9024,7 +9025,7 @@ self.AddObject(e)</t>
     @others
 </t>
 <t tx="ekr.20060513122450.110">def __init__(self,cc):
-    
+
     self.cc = cc
     ConfigClass.PageClass.__init__(self,cc,"Debugger")
 </t>
@@ -9037,7 +9038,7 @@ self.AddObject(e)</t>
 
     ft = ('Executables', '.exe;.bin'),
     s = tkFileDialog.askopenfilename(filetypes=ft,title="Locate Debugger...")
-    
+
     if s == None:
         return Error("xcc: ","Action canceled by user!")
     elif s == "":
@@ -9051,7 +9052,7 @@ self.AddObject(e)</t>
 y=10
 text_w = 350
 text_h = 80
-    
+
 # compiler entry
 self.AddObject(self.ENTRY(master,"Debugger",x=5,y=5,w=350,h=20))
 b = Tk.Button(master,text=" ...",command=self.Browse)
@@ -9069,14 +9070,14 @@ self.HELP(master,boxtitle="Prompt pattern and Pipe eol info",msg=DbgPipingHelp,x
 self.AddObject(e1)
 self.AddObject(e2)</t>
 <t tx="ekr.20060513122450.116">ww =19
-    
+
 self.AddSep()
-    
+
 lf = Tk.Frame(master,relief='flat',bd=2)
 master.create_window(5,self.H+2,width=text_w,height=20,anchor='nw',window=lf)
 Tk.Label(lf,text="Debugger commands symbols:").pack(side="left")
 self.H += 22
-    
+
 # ------------------
 e1 = self.ENTRY(master,"Go",x=5,y=self.H)
 e2 = self.ENTRY(master,"Step in",x=180,y=self.H)
@@ -9088,13 +9089,13 @@ e1 = self.ENTRY(master,"Continue",x=5,y=self.H)
 e2 = self.ENTRY(master,"Step over",x=180,y=self.H)
 self.AddObject(e1)
 self.AddObject(e2)
-    
+
 # ------------------
 e1 = self.ENTRY(master,"Stop",x=5,y=self.H)
 e2 = self.ENTRY(master,"Step out",x=180,y=self.H)
 self.AddObject(e1)
 self.AddObject(e2)
-    
+
 # ------------------
 e1 = self.ENTRY(master,"Evaluate",x=5,y=self.H)
 self.AddObject(e1)</t>
@@ -9149,7 +9150,7 @@ self.AddObject(t2)</t>
     @others
 </t>
 <t tx="ekr.20060513122450.122">def __init__(self,cc):
-    
+
     self.cc = cc
     ConfigClass.PageClass.__init__(self,cc,"Executable")
 </t>
@@ -9198,16 +9199,16 @@ self.AddSep()
 self.AddObject(self.TEXT(master,"File footer",x=5,y=self.H,w=350,h=80))</t>
 <t tx="ekr.20060513122450.295"></t>
 <t tx="ekr.20060513122450.296">def sGatherInfo(self):
-    
+
     cc = self
-    
+
     g.trace(cc.SELECTED_NODE)
 
     if cc.SELECTED_NODE:
         cc.sExtractHeadInfo()
 
         @others
-    
+
         cc.VERBOSE = cc.OPTS.get("Xcc verbose")
         cc.FILTER_OUTPUT = cc.OPTS.get("Filter output")
         return True
@@ -9218,7 +9219,7 @@ cc.EXT = cc.sGet("EXT")
 cc.REL_PATH = cc.sGet("REL_PATH")
 cc.ABS_PATH = cc.sGet("ABS_PATH")
 cc.CWD = os.getcwd()
-    
+
 if not cc.NAME:
     return Error("xcc: ","Node have no name!")
 </t>
@@ -9232,14 +9233,14 @@ if cc.CREATE_FILES:
 
     if cc.REL_PATH and os.access(cc.REL_PATH,os.F_OK) != 1:
         os.makedirs(cc.REL_PATH)
-        
+
     if cc.EXT == "h": cc.SRC_EXT = cc.EXT
-    
+
     if cc.EXT == "exe": cc.SRC_EXT = "cpp"
-    
+
     if cc.EXT == "cpp" or cc.EXT == "c":
         cc.SRC_EXT = cc.EXT
-            
+
     if cc.EXT == "dll": cc.SRC_EXT = "cpp"</t>
 <t tx="ekr.20060513122450.300">cc.COMPILE = cc.OPTS.get("Compile")
 
@@ -9254,12 +9255,12 @@ if cc.DEBUG:
     cc.DEBUGGER = cc.DBG.get("Debugger")
     if not cc.DEBUGGER:
         return Error("xcc: ","Debugger is undefined!")
-        
+
     if cc.OPTS.get("Seek breapoints") and not cc.DBG.get("Breaks start index"):
         Warning("xcc: ","Breaks start index is undefined, using 0")
         cc.DBG["Breaks start index"] = "0"</t>
 <t tx="ekr.20060513122450.303">def sExtractHeadInfo (self):
-    
+
     cc = self
 
     w = cc.SELECTED_NODE.headString() [5:]
@@ -9298,15 +9299,15 @@ if cc.DEBUG:
 
     cc.PTS = cc.sGet("Options",{})</t>
 <t tx="ekr.20060513122450.305">def sGetWriteInfo(self):
-    
+
     cc = self
-    
+
     if cc.NAME == "":
         return Error("xcc: ","Node have no name!")
-    
+
     if cc.REL_PATH != "" and os.access(cc.REL_PATH,os.F_OK) != 1:
         os.makedirs(cc.REL_PATH)
-    
+
     cc.COD = cc.sGet("Code")	
     #FILE_HDR = COD["File header"]
     #FILE_FTR = COD["File footer"]
@@ -9324,23 +9325,23 @@ if cc.DEBUG:
     if not cc.FUNC_END: cc.FUNC_END = "}\n"
     return True</t>
 <t tx="ekr.20060513122450.306">def sGetCompileInfo(self):
-    
+
     cc = self
     cc.CPL = cc.sGet("Compiler")
-    
+
     g.trace(cc.CPL)
 
     if not cc.CPL.get("Compiler"):
         return Error("xcc: ","No compiler defined!")
-        
+
     cc.VERBOSE = cc.OPTS.get("Xcc verbose")
     return True
 
 </t>
 <t tx="ekr.20060513122450.307">def sGetDebugInfo(self):
-    
+
     cc = self
-   
+
     cc.DBG = cc.sGet("Debugger")
     if cc.DBG["Debugger"]:
         cc.VERBOSE = cc.OPTS.get("Xcc verbose")
@@ -9348,15 +9349,15 @@ if cc.DEBUG:
     else:
         return Error("xcc: ","No debugger defined!")</t>
 <t tx="ekr.20060513122450.308">def sGetExecInfo():
-    
+
     cc = self
 
     cc.EXE = cc.sGet("Executable")		
     return True</t>
 <t tx="ekr.20060513122450.309">def sGoToError(self,e=None):
-    
+
     cc = self
-    
+
     mask = [" ",":","(",")"]
     if e == None:
         row,col = cc.LeoBodyText.index("insert").split(".")
@@ -9365,7 +9366,7 @@ if cc.DEBUG:
         lines = cc.SELECTED_NODE.bodyString().splitlines()
         e = lines[row-1]
         e=e.replace("/","\\")
-        
+
     edexp = cc.CPL.get("Error detection")
     m = re.search(edexp,e,re.IGNORECASE)
     if m != None:
@@ -9376,23 +9377,23 @@ if cc.DEBUG:
             edef = m.group("DEF")
             path,name = os.path.split(CPL["Compiler"])
             Error(name+" : ","Error: "+id+" in "+file+" line "+line+" : "+edef)
-    
+
         except Exception:
             Warning("xcc: ","Unable to process error detection!")
             return
-        
+
         name,ext = os.path.splitext(file)
         if name == cc.NAME:
             SeekErrorClass(cc,int(line),ext.replace(".",""),color=ErrorColor)</t>
 <t tx="ekr.20060513122450.310">def sGo(self):	#this is where the selected node also become the active node
 
     cc = self
-  
+
     if not cc.NAME:
         return Error("xcc: ","Node has no name!")
 
     cc.sSetText("@language c++\n")
-    
+
     if not cc.CreateFiles() or not cc.Compile():
         return False
     if cc.OPTS.get("Execute") == "True" and cc.OPTS.get("Debug") == "False":
@@ -9403,28 +9404,28 @@ if cc.DEBUG:
             return False
     return True</t>
 <t tx="ekr.20060513122450.311">def sSet (self,name,value):
-    
+
     cc = self
 
     cc.SELECTED_DICT [name] = value
 </t>
 <t tx="ekr.20060513122450.312">def sGet(self,name,init=""):
-    
+
     cc = self
-    
+
     if name not in cc.SELECTED_DICT:
         cc.sSet(name,init)
 
     return cc.SELECTED_DICT[name]</t>
 <t tx="ekr.20060513122450.313">def sIsDict(self):
-    
+
     cc = self
 
     if not cc.SELECTED_NODE:
         return False
-    
+
     v = cc.SELECTED_NODE.v	
-    
+
     return hasattr(v,"unknownAttributes") and "xcc_cfg" in v.unknownAttributes</t>
 <t tx="ekr.20060513122450.314">def sGetDict(self): # Get xcc parent dict alias "xcc_cfg" in ua
 
@@ -9432,21 +9433,21 @@ if cc.DEBUG:
 
     if not cc.SELECTED_NODE:
         return None
-    
+
     v = cc.SELECTED_NODE.v
 
     if not hasattr(v,"unknownAttributes"):
         v.unknownAttributes = {}
-    
+
     if "xcc_cfg" in v.unknownAttributes:
         return v.unknownAttributes["xcc_cfg"]
     else:
         v.unknownAttributes["xcc_cfg"] = d = {}
         return d</t>
 <t tx="ekr.20060513122450.315">def sInitDict(self):
-    
+
     cc = self
-    
+
     Warning("xcc: ","Writing blank configuration!")
     cc.sSetText("@language c++")
     cc.Config.ClearConfig()
@@ -9457,7 +9458,7 @@ if cc.DEBUG:
 
 </t>
 <t tx="ekr.20060513122450.316">def sSelect(self,node=None):
-    
+
     cc = self ; c = cc.c
 
     if node:
@@ -9467,13 +9468,13 @@ if cc.DEBUG:
                 cc.SELECTED_NODE = node		
         else:
             cc.SELECTED_NODE = node
-        
+
         cc.SELECTED_DICT = cc.sGetDict()
-        
+
         if cc.SELECTED_NODE != cc.ACTIVE_NODE and cc.SELECTED_NODE.isMarked():
             cc.SELECTED_NODE.clearMarked()
             c.redraw()
-        
+
         cc.sGetBrowseInfo()
         cc.sShow()
     elif cc.SELECTED_NODE:
@@ -9482,53 +9483,53 @@ if cc.DEBUG:
         cc.SELECTED_NODE = None
         cc.SELECTED_DICT = cc.sGetDict()</t>
 <t tx="ekr.20060513122450.317">def sSync(self):
-    
+
     cc = self
-    
+
     cc.SELECTED_DICT = cc.sGetDict()
     if cc.SELECTED_DICT:
         cc.sExtractHeadInfo()
-    
+
     cc.CHILD_DICT = cc.cGetDict()</t>
 <t tx="ekr.20060513122450.318">def sShow(self):
-    
+
     cc = self
     cc.LeoBodyText.pack_forget()
     cc.LeoYBodyBar.pack_forget()
-    
+
     cc.ToolBar.Show()
     cc.LeoXBodyBar.pack(side="bottom",fill="x")
     cc.LeoYBodyBar.pack(side="right",fill="y")
     cc.LeoBodyText.pack(fill="both",expand=1)
     cc.LeoBodyText["wrap"] = 'none'
-    
+
     cc.ToolBar.Spacer["state"] = 'normal'
     cc.ToolBar.Spacer.delete('1.0','end')
     cc.ToolBar.Spacer.insert("insert","."+cc.EXT)
     cc.ToolBar.Spacer["state"] = 'disabled'
-    
+
     cc.ToolBar.Display["state"] = 'normal'
     cc.ToolBar.Display.delete('1.0','end')
     cc.ToolBar.Display["state"] = 'disabled'
 
     cc.Watcher.Sync()</t>
 <t tx="ekr.20060513122450.319">def sHide(self):
-    
+
     cc = self
 
     cc.LeoXBodyBar.pack_forget()
     cc.ToolBar.Hide()
     cc.LeoBodyText["wrap"]=cc.LeoWrap</t>
 <t tx="ekr.20060513122450.320">def sSetText(self,text=""):
-    
+
     cc = self
-    
+
     cc.setBodyText(SELECTED_NODE,text)
 </t>
 <t tx="ekr.20060513122450.321">def sAddText(self,text):
-    
+
     cc = self
-    
+
     cc.setBodyText(SELECTED_NODE,cc.SELECTED_NODE.bodyString()+text)
 
     if not cc.CHILD_NODE:
@@ -10942,16 +10943,16 @@ if not ok:
 <t tx="ekr.20061023142737.1"></t>
 <t tx="ekr.20061116085729"></t>
 <t tx="ekr.20061116091006">def isTextWidget (self,w):
-    
+
     return w and hasattr(w,'__class__') and issubclass(w.__class__,baseTextWidget)
-            
+
     # or
         # stc and issubclass(w.__class__,stc.StyledTextCtrl) or
         # richtext and issubclass(w.__class__.richtext.RichTextCtrl)))</t>
 <t tx="ekr.20061116093228">class leoKeyEvent:
-    
+
     '''A gui-independent wrapper for gui events.'''
-    
+
     def __init__ (self,event,c):
         gui = g.app.gui
         self.c              = c
@@ -10961,7 +10962,7 @@ if not ok:
         self.widget         = gui.eventWidget(event)
         self.x,self.y       = gui.eventXY(event)
         self.w = self.widget
-        
+
     def __repr__ (self):
         return 'leoKeyEvent char: %s keysym: %s widget: %s' % (
             repr(self.char),self.keysym,self.widget)
@@ -10976,7 +10977,7 @@ if not ok:
         return self.keysymHelper(event,kind='char')
 
 def eventKeysym (self,event):
-    
+
     if hasattr(event,'keysym'):
         return event.keysym # A leoKeyEvent: we have already computed the result.
     else:
@@ -11018,7 +11019,7 @@ def eventKeysym (self,event):
         return None
 </t>
 <t tx="ekr.20061117155233.2">def eventXY (self,event,c=None):
-    
+
     if hasattr(event,'x') and hasattr(event,'y'):
         return event.x,event.y
     if hasattr(event,'GetX') and hasattr(event,'GetY'):
@@ -11277,7 +11278,7 @@ if sys.platform.startswith('win'):
         standardTreeKeys.append(key)
 
 def onChar (self,event):
-    
+
     if g.app.killed or self.c.frame.killed: return
 
     c = self.c
@@ -11294,7 +11295,7 @@ def onChar (self,event):
         # keyEvent.Skip(False) # Try to kill the default key handling.
 </t>
 <t tx="ekr.20061118142055">def createControl (self,parentFrame):
-    
+
     style = (
         wx.TR_SINGLE | # Only a single row may be selected.
         wx.TR_HAS_BUTTONS | # Draw +- buttons.
@@ -11302,7 +11303,7 @@ def onChar (self,event):
         wx.TR_HIDE_ROOT |
         wx.TR_LINES_AT_ROOT |
         wx.TR_HAS_VARIABLE_ROW_HEIGHT )
-    
+
     w = wx.TreeCtrl(parentFrame,
         id = self.tree_id,
         pos = wx.DefaultPosition,
@@ -11310,7 +11311,7 @@ def onChar (self,event):
         style = style,
         validator = wx.DefaultValidator,
         name = "tree")
-        
+
     if self.use_paint:
         wx.EVT_PAINT(w,self.onPaint)
         wx.EVT_ERASE_BACKGROUND(w,self.onEraseBackground)
@@ -11322,36 +11323,36 @@ def onChar (self,event):
         style  = wx.FONTSTYLE_NORMAL,
         weight = wx.FONTWEIGHT_NORMAL,
     )
-    
+
     self.imageList = self.createImageList()
     w.AssignImageList(self.imageList)
 
     return w
 </t>
 <t tx="ekr.20061211052926">def assignIcon (self,p):
-    
+
     val = p.v.computeIcon()
     assert(0 &lt;= val &lt;= 15)
     p.v.iconVal = val
     return val
 </t>
 <t tx="ekr.20061211072604">def edit_widget (self,p):
-    
+
     '''Return a widget (compatible with leoTextWidget) used for editing the headline.'''
-    
+
     w = self.editWidgetDict.get(p.v)
-    
+
     return w
 </t>
 <t tx="ekr.20061211122107.2">def createTab (self,tabName,createText=True,wrap='none'): # wxLog.
 
     nb = self.nb
     # g.trace(tabName)
-    
+
     if createText:
         win = logFrame = wx.Panel(nb)
         nb.AddPage(win,tabName)
-    
+
         w = plainTextWidget(self.c,win,
             name='text tab:%s' % tabName)
 
@@ -11365,7 +11366,7 @@ def onChar (self,event):
         self.textDict [tabName] = w
         self.frameDict [tabName] = win
 
-        
+
         # c.k doesn't exist when the log pane is created.
         # if tabName != 'Log':
             # # k.makeAllBindings will call setTabBindings('Log')
@@ -11381,16 +11382,16 @@ def onChar (self,event):
 <t tx="ekr.20070116074730"></t>
 <t tx="ekr.20070123084929"></t>
 <t tx="ekr.20070125074101">class headlineWidget (baseTextWidget):
-    
+
     '''A class to make a wxWidgets headline look like a plainTextWidget.'''
-    
+
     @others
 </t>
 <t tx="ekr.20070125074101.2">def __init__ (self,c,treeCtrl,id):
 
     self.c = c
     self.tree = treeCtrl
-    
+
     # Init the base class.
     baseTextWidget.__init__(self,c,
         baseClassName='headlineWidget',
@@ -11406,7 +11407,7 @@ def init (self,id):
 # so creating a new headlineWidget each time is correct.
 
 def setEditWidget (self,p,tree_id):
-    
+
     if g.app.killed or self.c.frame.killed: return
 
     self.setIdDict(p,tree_id)
@@ -11421,24 +11422,24 @@ def setEditWidget (self,p,tree_id):
     self.baseClassName = 'stcTextWidget'
 
     self.widget = w = stc.StyledTextCtrl(parent,*args,**keys)
-    
+
     # Inject the leo_wrapper_class ivar.
     self.widget.leo_wrapper_object = self
-    
+
     w.CmdKeyClearAll() # Essential so backspace is handled properly.
 
     # w.Bind(wx.EVT_KEY_DOWN, self.onChar)
     wx.EVT_KEY_DOWN(w,self.onChar)
     w.Bind(stc.EVT_STC_MARGINCLICK, self.onMarginClick)
-    
+
     if 0: # Disable undo so the widget doesn't gobble undo.
         w.SetUndoCollection(False)
         w.EmptyUndoBuffer()
-    
+
     # Init the base class.
     name = keys.get('name') or '&lt;unknown stcWidget&gt;'
     baseTextWidget.__init__(self,c,baseClassName='stcWidget',name=name,widget=w)
-    
+
     self.initStc()
 </t>
 <t tx="ekr.20070209111155">def _appendText(self,s):
@@ -11498,7 +11499,7 @@ def _setSelectionRange(self,i,j):
 </t>
 <t tx="ekr.20070214103201"></t>
 <t tx="ekr.20070215095042">def name2color (name,default='white'):
-    
+
     # A hack: these names are *not* part of the color list!
     if name in wx.GetApp().leo_colors:
         return name
@@ -11515,7 +11516,7 @@ def _setSelectionRange(self,i,j):
 # They don't work reliably and don't support auto-repeat.
 
 def onChar (self, event):
-    
+
     c = self.c
     keycode = event.GetKeyCode()
     event.leoWidget = self
@@ -11526,9 +11527,9 @@ def onChar (self, event):
 <t tx="ekr.20070221122411">initial_draw = True
 
 def cleverRedraw (self):
-    
+
     # g.trace('initial_redraw',self.initial_draw)
-    
+
     if self.initial_draw:
         self.initial_draw = False
         self.partialRedraw()
@@ -11549,7 +11550,7 @@ def cleverRedraw (self):
         p.moveToNext()
 </t>
 <t tx="ekr.20070221122544.2">def update_siblings(self,parent_id,node_id,p):
-    
+
     tree = self.treeCtrl ; trace = False
     first_id,first_p = node_id,p.copy()
     # Warning: we will visit each position only once even if the tree changes.
@@ -11609,7 +11610,7 @@ def cleverRedraw (self):
         node_id = next_id
 </t>
 <t tx="ekr.20070221130134">def update_node(self,node_id,p):
-    
+
     tree = self.treeCtrl
 
     # data = wx.TreeItemData(p.copy())
@@ -11638,7 +11639,7 @@ def cleverRedraw (self):
 <t tx="ekr.20070222083341"># This should be called after drawing so the +- box is drawn properly.
 
 def expandAndSelect (self,node_id,p,force=False):
-    
+
     c = self.c ; tree = self.treeCtrl
 
     # The calls to tree.Expand and tree.Collapse *will* generate events,
@@ -11646,7 +11647,7 @@ def expandAndSelect (self,node_id,p,force=False):
 
     if p.isExpanded():  tree.Expand(node_id)
     else:               tree.Collapse(node_id)
-        
+
     # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
     if force:
         g.trace('force selection',p.headString())
@@ -11657,7 +11658,7 @@ def expandAndSelect (self,node_id,p,force=False):
         tree.SelectItem(node_id) # Generates call to onTreeChanged.
 </t>
 <t tx="ekr.20070222091654">def insert_node(self,parent_id,prev_id,p):
-    
+
     tree = self.treeCtrl
     data = wx.TreeItemData(p.copy())
     image = self.assignIcon(p)
@@ -11671,10 +11672,10 @@ def expandAndSelect (self,node_id,p,force=False):
         data=data)
 
     ### tree.SetItemFont(id,self.defaultFont)
-    
+
     self.setEditWidget(p,node_id)
     assert (p == tree.GetItemData(node_id).GetData())
-    
+
     self.expandAndSelect(node_id,p)
 
     return node_id
@@ -11720,7 +11721,7 @@ complication.</t>
 <t tx="ekr.20070305092828">@others</t>
 <t tx="ekr.20070306155205"></t>
 <t tx="ekr.20070308110121">partialRedrawCount = 0
-        
+
 def partialRedraw (self):
 
     c = self.c ; p = c.rootPosition()
@@ -11728,7 +11729,7 @@ def partialRedraw (self):
 
     tree.DeleteAllItems()
     self.root_id = root_id = tree.AddRoot('Root Node')
-    
+
     # g.trace('-' * 10,self.partialRedrawCount) ; self.partialRedrawCount += 1
 
     while p:
@@ -11782,7 +11783,7 @@ def keysymHelper(self,event,kind):
     special = alt or cmd or ctrl or meta
     if special and kind == 'char':
         return '' # The char for all special keys.
-        
+
     ucode = event.GetUnicodeKey()
     uchar = unichr(ucode)
     keyname = g.app.gui.wxKeyDict.get(keycode)
@@ -11812,7 +11813,7 @@ def keysymHelper(self,event,kind):
                 keyname = chr(keycode)
             else:
                 keyname = "unknown (%s)" % keycode
-                    
+
     # Return Key- (not Key+) to match the corresponding Tk hack.
     if alt and keyname.isdigit(): keyname = 'Key-' + keyname
 
@@ -11825,18 +11826,18 @@ def keysymHelper(self,event,kind):
         g.choose(shift and (special or len(keyname)&gt;1),'Shift+','') +
         keyname or ''
     )
-   
+
     if 0:
         g.trace('shift',shift,
             'keycode',repr(keycode),'ucode',ucode,
             'uchar',repr(uchar),'keyname',repr(keyname),'val',repr(val))
     return val</t>
 <t tx="ekr.20070310083955">def redraw_partial_subtree(self,parent_id,p,level,trace=False):
-        
+
     c = self.c ; tree = self.treeCtrl
     node_id = self.redraw_node(parent_id,p)
     # g.trace('createChildren',createChildren,'p',p.headString())
-    
+
     forceFull =  not sys.platform.startswith('win') # A terrible hack.
 
     if level &gt; 0:
@@ -11893,7 +11894,7 @@ Later:
 - Support user-colorizer in the stc.</t>
 <t tx="ekr.20070312081330"></t>
 <t tx="ekr.20070312083143">def getIdDict (self,p):
-    
+
     '''Return the unique wx.Tree id for position p.'''
     aList = self.idDict.get(p.v,[])
     for p2,tree_id in aList:
@@ -11904,9 +11905,9 @@ Later:
         return None
 
 def setIdDict (self,p,tree_id):
-    
+
     '''Associate the wx.Tree id with a position p.'''
-    
+
     # Keys are vnodes, values are lists of position/tree_id pairs.
     aList = self.idDict.get(p.v,[])
     data = p.copy(),tree_id
@@ -11914,10 +11915,10 @@ def setIdDict (self,p,tree_id):
     self.idDict[p.v] = aList
 </t>
 <t tx="ekr.20070312095016">def redraw_subtree(self,parent_id,p,trace=False):
-        
+
     tree = self.treeCtrl
     node_id = self.redraw_node(parent_id,p)
-    
+
     # Draw the entire tree, regardless of expansion state.
     child_p = p.firstChild()
     while child_p:
@@ -11930,13 +11931,13 @@ def setIdDict (self,p,tree_id):
         tree.Expand(node_id)
     else:
         tree.Collapse(node_id)
-        
+
     # Do this *after* drawing the children so as to ensure the +- box is drawn properly.
     if p == self.c.currentPosition():
         tree.SelectItem(node_id) # Generates call to onTreeChanged.</t>
 <t tx="ekr.20070312144825"></t>
 <t tx="ekr.20070313052040">def getMods (self,event):
-    
+
     mods = event.GetModifiers()
 
     alt = event.AltDown()     or mods == wx.MOD_ALT
@@ -11944,7 +11945,7 @@ def setIdDict (self,p,tree_id):
     ctrl = event.ControlDown()or mods == wx.MOD_CONTROL
     meta = event.MetaDown()   or mods == wx.MOD_META
     shift = event.ShiftDown() or mods == wx.MOD_SHIFT
-    
+
     return alt,cmd,ctrl,meta,shift
 </t>
 <t tx="ekr.20070313052040.1">def defaultKeysymHelper (self,event,kind):
@@ -12003,9 +12004,9 @@ def setIdDict (self,p,tree_id):
 <t tx="ekr.20070313055627"># A helper for 'the terrible hack' in keysymHelper.
 
 def shift (self,keycode,uchar):
-    
+
     # g.trace(repr(keycode),repr(uchar))
-    
+
     if keycode &gt;= 256:
         return uchar
     elif chr(keycode).isalpha():
@@ -12025,9 +12026,9 @@ def shift (self,keycode,uchar):
 <t tx="ekr.20070313055627.1"># A helper for 'the terrible hack' in keysymHelper.
 
 def unshift (self,keycode,uchar):
-    
+
     # g.trace(repr(keycode),repr(uchar))
-    
+
     if keycode &gt;= 256:
         return uchar
     elif chr(keycode).isalpha():

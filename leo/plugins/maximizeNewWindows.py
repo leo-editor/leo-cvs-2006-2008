@@ -55,11 +55,14 @@ def maximize_window(tag, keywords):
             top.state("zoomed")
         else:
             # Put the top-left corner on the screen.
-            x,y = 20,20
-            w = top.winfo_screenwidth()-x
-            h = top.winfo_screenheight()-y
+            x,y = 0,0
+            w = top.winfo_screenwidth()-8
+            h = top.winfo_screenheight()- 46
             geom = "%dx%d%+d%+d" % (w,h,x,y)
-            top.geometry(geom)
+            def maximize_window_callback(event=None,geom=geom,top=top):
+                g.trace('w,h,x,y',w,h,x,y,'c',c.shortFileName())
+                top.geometry(geom)
+            c.frame.top.after_idle(maximize_window_callback)
 #@nonl
 #@-node:ekr.20070602072200.2:maximize_window
 #@-others
