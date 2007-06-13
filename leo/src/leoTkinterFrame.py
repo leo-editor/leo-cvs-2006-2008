@@ -1189,7 +1189,7 @@ class leoTkinterFrame (leoFrame.leoFrame):
                     # width = int(len(text) * 0.95)
                     # width = max(6,width)
                     b.configure(width=width,font=('verdana',7,'bold'))
-                    if bg: b.configure(bg=bg)
+                if bg: b.configure(bg=bg)
                 b.pack(side="left", fill="none")
                 return b
 
