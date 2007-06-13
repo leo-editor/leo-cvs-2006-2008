@@ -5,7 +5,7 @@
 #@@language python
 #@@tabwidth -4
 
-__version__ = "1.2"
+__version__ = "1.3"
 #@<< version history >>
 #@+node:ekr.20040915073259.2:<< version history >>
 #@+at
@@ -20,6 +20,7 @@ __version__ = "1.2"
 #     - The proper guard is:
 #         if c and c.exists and c.frame and not c.frame.isNullFrame:
 #     - Added init function.
+# 1.3 EKR: Now works on Linux.
 #@-at
 #@nonl
 #@-node:ekr.20040915073259.2:<< version history >>
@@ -38,8 +39,7 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@+others
 #@+node:ekr.20070602072200.1:init
 def init():
-    # Works only on Windows platform.
-    ok = Tk and not g.app.unitTesting and sys.platform == "win32"
+    ok = Tk and not g.app.unitTesting
     if ok:
         leoPlugins.registerHandler("after-create-leo-frame", maximize_window)
         g.plugin_signon(__name__)
@@ -50,7 +50,17 @@ def maximize_window(tag, keywords):
 
     c = keywords.get('c')
     if c and c.exists and c.frame and not c.frame.isNullFrame:
-        c.frame.top.state("zoomed")
+        top = c.frame.top
+        if sys.platform.startswith('win'):
+            top.state("zoomed")
+        else:
+            # Put the top-left corner on the screen.
+            x,y = 20,20
+            w = top.winfo_screenwidth()-x
+            h = top.winfo_screenheight()-y
+            geom = "%dx%d%+d%+d" % (w,h,x,y)
+            top.geometry(geom)
+#@nonl
 #@-node:ekr.20070602072200.2:maximize_window
 #@-others
 #@-node:ekr.20040915073259.1:@thin maximizeNewWindows.py
