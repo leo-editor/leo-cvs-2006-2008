@@ -2257,7 +2257,10 @@ class keyHandlerClass:
             if expanded: return 'break'
 
         if func: # Func is an argument.
-            if commandName.startswith('specialCallback'):
+            if commandName == 'menu-command-key':
+                g.trace('menu-command-key')
+                return 'continue'
+            elif commandName.startswith('specialCallback'):
                 # The callback function will call c.doCommand
                 if trace: g.trace('calling specialCallback for',commandName)
                 val = func(event)
@@ -2502,6 +2505,12 @@ class keyHandlerClass:
         else:
             k.showMinibuffer(event)
     #@-node:ekr.20061031131434.116:k.show/hide/toggleMinibuffer
+    #@+node:ekr.20070613133500:k.menuCommandKey
+    def menuCommandKey (self,event=None):
+
+        # This method must exist, but it never gets called.
+        pass 
+    #@-node:ekr.20070613133500:k.menuCommandKey
     #@+node:ekr.20061031131434.117:negativeArgument (redo?)
     def negativeArgument (self,event):
 

@@ -1888,15 +1888,17 @@ class leoTkinterFrame (leoFrame.leoFrame):
         w = top.winfo_screenwidth()
         h = top.winfo_screenheight()
 
-        if sys.platform == 'darwin':
+        if sys.platform.startswith('win'):
+            top.state('zoomed')
+        elif sys.platform == 'darwin':
             # Must leave room to get at very small resizing area.
             geom = "%dx%d%+d%+d" % (w-20,h-55,10,25)
+            top.geometry(geom)
         else:
             # Fill almost the entire screen.
             # Works on Windows. YMMV for other platforms.
             geom = "%dx%d%+d%+d" % (w-8,h-46,0,0)
-
-        top.geometry(geom)
+            top.geometry(geom)
     #@-node:EKR.20040422130619:resizeToScreen
     #@-node:ekr.20031218072017.3984:Window Menu...
     #@+node:ekr.20031218072017.3991:Help Menu...

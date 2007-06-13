@@ -253,8 +253,9 @@ def finishCreateEditCommanders (c):
                 keys = d2.keys()
                 keys.sort()
                 print '----- %s' % name
-                for key in keys: print
+                for key in keys: print key
 
+    # g.trace('d.get(menu-command-key)',d.get('menu-command-key'))
     return d
 #@-node:ekr.20050922104731:finishCreateEditCommanders (leoEditCommands module)
 #@+node:ekr.20050924100713.1:initAllEditCommanders
@@ -5092,6 +5093,7 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
             'exit-named-mode':          k.exitNamedMode,
             'full-command':             k.fullCommand, # For menu.
             'hide-mini-buffer':         k.hideMinibuffer,
+            'menu-command-key':         k.menuCommandKey,
             'mode-help':                k.modeHelp,
             'negative-argument':        k.negativeArgument,
             'number-command':           k.numberCommand,
@@ -8045,14 +8047,19 @@ class AspellClass:
         # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
         version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
-        self.use_ctypes = g.CheckVersion(version,'2.5')
+        ### self.use_ctypes = g.CheckVersion(version,'2.5')
+        try:
+            import ctypes
+            import ctypes.util
+            self.use_ctypes = True
+        except ImportError:
+            self.use_ctypes = False
         self.aspell = self.sc = None
 
         if self.use_ctypes:
             self.getAspellWithCtypes()
         else:
             self.getAspell()
-
     #@-node:ekr.20051025071455.8:__init__
     #@+node:ekr.20061017125710:getAspell
     def getAspell (self):
@@ -8062,7 +8069,7 @@ class AspellClass:
         except ImportError:
             # Specify the path to the top-level Aspell directory.
             theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
-            aspell = g.importFromPath('aspell',theDir,pluginName=__name__,verbose=True)
+            aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=True)
 
         self.aspell = aspell
         self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
