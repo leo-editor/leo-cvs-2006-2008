@@ -41,7 +41,8 @@ Tk = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 def init():
     ok = Tk and not g.app.unitTesting
     if ok:
-        leoPlugins.registerHandler("after-create-leo-frame", maximize_window)
+        # leoPlugins.registerHandler("after-create-leo-frame", maximize_window)
+        leoPlugins.registerHandler(('new','open2'), maximize_window)
         g.plugin_signon(__name__)
     return ok
 #@-node:ekr.20070602072200.1:init
@@ -53,24 +54,6 @@ def maximize_window(tag, keywords):
         def maximize_window_callback(event=None,c=c):
              c.frame.resizeToScreen()
         c.frame.top.after_idle(maximize_window_callback)
-
-        # top = c.frame.top
-        # if sys.platform.startswith('win'):
-            # top.state("zoomed")
-        # else:
-            # def maximize_window_callback(event=None,c=c):
-                # c.k.simulateCommand('resize-to-screen')
-            # top.after_idle(maximize_window_callback)
-        # else:
-            # # Put the top-left corner on the screen.
-            # x,y = 0,0
-            # w = top.winfo_screenwidth()-8
-            # h = top.winfo_screenheight()- 46
-            # geom = "%dx%d%+d%+d" % (w,h,x,y)
-            # def maximize_window_callback(event=None,geom=geom,top=top):
-                # # g.trace('w,h,x,y',w,h,x,y,'c',c.shortFileName())
-                # top.geometry(geom)
-            # c.frame.top.after_idle(maximize_window_callback)
 #@-node:ekr.20070602072200.2:maximize_window
 #@-others
 #@-node:ekr.20040915073259.1:@thin maximizeNewWindows.py
