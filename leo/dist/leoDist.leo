@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.571639586411">
-	<global_window_position top="52" left="190" height="754" width="864"/>
+	<global_window_position top="0" left="0" height="621" width="1030"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -17,7 +17,7 @@
 <v t="ekr.20050315084922"><vh>@button Spell</vh></v>
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 </v>
-<v t="EKR.20040519091259" a="T"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070425092712"><vh>April 2007</vh></v>
@@ -219,8 +219,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20050118113631" a="EV"><vh>Main distribution script</vh>
-<v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
+<v t="ekr.20050118113631" a="E"><vh>Main distribution script</vh>
+<v t="EKR.20040519082027.28" a="TV"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="EKR.20040519090846.10"><vh>@asis ../manifest.in</vh></v>
 <v t="ekr.20050117032444"><vh>@button Create Leo-4.x.zip</vh>
 <v t="ekr.20050118080857"><vh>&lt;&lt; about this script &gt;&gt;</vh></v>
@@ -523,9 +523,8 @@ description = "Leo: Literate Editor with Outlines",
 license="Python", # licence [sic] changed to license in Python 2.3
 platforms=["Windows, Linux, Macintosh"],
 long_description =
-"""Leo is a powerful programming and scripting environment, outliner, literate
-programming tool, data organizer and project manager. Cloned nodes make possible
-multiple views of a project within a single Leo outline.
+"""Leo is an IDE, an outliner, a scripting and unit testing framework based on Python,
+a literate programming tool, a data organizer and a project manager.
 
 Leo is written in 100% pure Python and works on any platform that supports
 Python 2.2.1 or above and the Tk Tk 8.4 or above.

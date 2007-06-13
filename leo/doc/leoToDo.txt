@@ -163,6 +163,8 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20070414090051:Study
 #@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070613093554:Install winpdb
+#@-node:ekr.20070613093554:Install winpdb
 #@+node:ekr.20070325054325:Docs (3 hours)
 #@+node:ekr.20070215093739:Improve Leo's getting started page
 @nocolor
@@ -260,6 +262,17 @@ You can type multiple <alt-ctrl-keys> to toggle multiple checkboxes.
 #@+node:ekr.20070610094932:How to make a Leo command undoable
 #@-node:ekr.20070610094932:How to make a Leo command undoable
 #@-node:ekr.20070325054325:Docs (3 hours)
+#@+node:ekr.20070613070131:Fix or remove install/uninstall scripts
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4359597
+By: shrogers
+
+Uninstall failed (hung) on Fedora Core 6 and CentOS 4.3 Linux.  I had to manually
+remove  /usr/local/lib/leo  before I could successfully run install.
+
+# Steve
+#@-node:ekr.20070613070131:Fix or remove install/uninstall scripts
 #@+node:ekr.20070307082503.1:Create Linux distribution
 @nocolor
 http://sourceforge.net/forum/message.php?msg_id=4319356
@@ -277,8 +290,15 @@ Pythonistas have come to expect that::
 
 will locate and install the most recent version of app and install it.
 #@-node:ekr.20070307082503.1:Create Linux distribution
+#@+node:ekr.20070613093554.1:Get aspell working on Linux with ctypes & Python 2.4
+#@-node:ekr.20070613093554.1:Get aspell working on Linux with ctypes & Python 2.4
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070613103409:Improve marks/recent buttons
+- Arrow keys must move up/down.
+- Should be commands to show the marks/recent dialogs.
+#@nonl
+#@-node:ekr.20070613103409:Improve marks/recent buttons
 #@+node:ekr.20070605114358:Improve how recent files works??
 @nocolor
 
@@ -388,8 +408,9 @@ that suppresses *all* pychecker errors and warnings for a specified range of
 code. If necessary, it would be worthwhile to modify pychecker itself...
 #@nonl
 #@-node:ekr.20070611173545:Improve unit testing!
+#@+node:ekr.20070324084040:@auto
 #@+node:ekr.20070610133513:Design and notes
-#@+node:ekr.20070611173545.1:Post: review
+#@+node:ekr.20070611173545.1:Review
 @nocolor
 
 I have just started the process of 'priming the pump' for work on @auto.
@@ -400,7 +421,7 @@ Here are the key factors that drive the design:
 
 1. [No sentinels] There was a *lot* of discussion about this.  The initial implementation of @auto will use *absolutely no* sentinels. This might be relaxed later, but the *essential* idea is that @auto is a feature primarily for newbies who DO NOT WANT sentinels in their files.  As Kent has clearly pointed out, within @auto trees, Alice can live without clones, section references and @others, etc.
 
-2. Perfect import] I designed an algorithm that guarantees that files imported with @auto can be rewritten from the @auto tree with *no* changes to the original file.  This is the 'round-tripping' requirement.
+2. [Perfect import] I designed an algorithm that guarantees that files imported with @auto can be rewritten from the @auto tree with *no* changes to the original file.  This is the 'round-tripping' requirement.
 
 See: Huge aha: design of the parser (perfect import)
 http://sourceforge.net/forum/message.php?msg_id=4224283
@@ -430,7 +451,7 @@ http://sourceforge.net/forum/forum.php?thread_id=1695549&forum_id=10228
 And especially:
 http://sourceforge.net/forum/message.php?msg_id=4217121
 #@nonl
-#@-node:ekr.20070611173545.1:Post: review
+#@-node:ekr.20070611173545.1:Review
 #@+node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
 #@-node:ekr.20070512162750:@url http://simpleparse.sourceforge.net/
 #@+node:ekr.20061006165447:Let import commands decide what kind of import to do
@@ -935,7 +956,6 @@ Special case code is required so empty nodes stay empty with "one" option.
 #@-node:EKR.20040603092958.1:(done) Add new options for handling newlines in body text
 #@-node:ekr.20040919182750.1:Better handling of whitespace (cvs fiendly)
 #@-node:ekr.20070610133513:Design and notes
-#@+node:ekr.20070324084040:Prototype of @auto
 #@+node:ekr.20070324084040.1:NEWscanPythonText
 def NEWscanPythonText (self,s,parent):
 
@@ -947,6 +967,7 @@ def NEWscanPythonText (self,s,parent):
         # Check that whitespace passes TabNanny.
         # Check that whitespace is compatible with @tabwidth.
         # Check for underindented lines.
+    scanner.insertLeoDirectives()
     scanner.generateNodes()
         # Generate a single node if there are errors,
         # otherwise generate the imported tree.
@@ -975,6 +996,22 @@ def __init__ (self,importer,s,parent):
     self.root = parent
     self.start = 0
 #@-node:ekr.20070324084040.14:ctor (pythonScanner)
+#@+node:ekr.20070612133404:Pass 1: parse and helpers
+def parse (self):
+
+    '''
+    Pass 1: parse the input lines into pieces that will become nodes.
+    '''
+
+    # Pieces will be objects containing at least: 
+    # a) a range of lines in the original file and 
+    # b) the level of the node in the to-be-created outline. 
+
+    # A hand-written parser will suffice at first.
+    # Later, a more general parser might be considered.
+
+    g.trace()
+#@nonl
 #@+node:ekr.20070324084040.15:scanPythonText
 # See the comments for scanCText for what the text looks like.
 
@@ -1260,8 +1297,87 @@ else:
     i = g.skip_line(s,j) # Still not quite 100% correct.
 #@-node:ekr.20070324084040.29:<< skip the entire signature >>
 #@-node:ekr.20070324084040.28:skipPythonDef
+#@-node:ekr.20070612133404:Pass 1: parse and helpers
+#@+node:ekr.20070612133404.1:Pass 2: checkWhitespace
+def checkWhitespace(self)
+
+    '''Pass 2: check and normalize the leading whitespace of each piece. 
+
+    - The original sources may fail Python's tabNanny checks.  
+
+    - Leading whitespace in the original sources may be inconsistent with the
+    @tabwidth setting in effect in the @auto tree.
+
+    - The original sources may contain underindented comment. 
+
+    If an indentation problem is found, issue a warning and set an indentError
+    flag that will cause the read code to generate an @ignore directive in the
+    root node.
+
+    Otherwise, normalize the indentation of all pieces so that it is indeed
+    consistent with the indentation specified by the present @tabwidth setting.
+    Normalizing underindented comments means shifting the comments right.
+    '''
+
+    # Check that whitespace passes TabNanny.
+    # Check that whitespace is compatible with @tabwidth.
+    # Check for underindented lines.
+    g.trace()
+#@-node:ekr.20070612133404.1:Pass 2: checkWhitespace
+#@+node:ekr.20070612135312:Pass 3: insertLeoDirectives
+def insertLeoDirectives (self):
+
+    '''
+    Pass 3: Insert Leo directives.
+    '''
+
+    # Insert an @language python and @tabwidth directives in the piece representing the root node.
+    # Insert an @ignore directive is the ignoreFlag is set.
+    # Insert the @others directive in pieces representing classes. 
+
+    g.trace()
+#@nonl
+#@-node:ekr.20070612135312:Pass 3: insertLeoDirectives
+#@+node:ekr.20070612133404.2:Pass 4: generateNodes
+def generateNodes (self)
+
+    '''Pass 4: Create the @auto tree. 
+
+    This pass creates all the descendants of the root @auto node, initializes
+    the headline and body text of all nodes. '''
+
+    # Generate a single node if there are errors,
+    # otherwise generate the imported tree.
+
+    g.trace()
+#@nonl
+#@-node:ekr.20070612133404.2:Pass 4: generateNodes
+#@+node:ekr.20070612133404.3:Pass 5: checkImport
+def checkImport (self):
+
+    '''Pass 5: Perfect import checks. 
+
+    When writing the @auto tree, Leo may change the original file by: 
+    - changing leading whitespace and setting the indentError flag. 
+    - adding various sentinels. 
+
+    All non-sentinel lines in the output should be strictly
+    preserved unless the indentError flag has been set. In particular, the
+    number of non-sentinel lines must exactly match the number of lines in the
+    original file.
+
+    This pass will do a 'trial write'. It will check the output of the trial
+    write to ensure that all non-sentinel lines have in fact been strictly
+    preserved. (If the indentError flag has been set the check will verify that
+    everything after leading whitespace has been preserved). If this check fails
+    Leo will issue a serious error message and will insert an @ignore directive
+    in the @auto tree.
+    '''
+
+    g.trace()
+#@-node:ekr.20070612133404.3:Pass 5: checkImport
 #@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
-#@-node:ekr.20070324084040:Prototype of @auto
+#@-node:ekr.20070324084040:@auto
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070105135713:To do: 4.5 (new positions)
 #@+node:ekr.20061028070132:New positions
@@ -3685,6 +3801,85 @@ def defineHelpMenuTables (self):
 #@+node:ekr.20060822174843:Most important projects
 # Most of these projects will take a week or more.
 #@nonl
+#@+node:ekr.20060609070148:Fix hung windows
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung windows
+#@+node:ekr.20060116173818:Fix vampire nodes
+@nocolor
+
+Vampire nodes from cvs
+
+I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
+
+The discovery of this 'big bug' came about as the result of the following Aha:
+
+**@thin files that contain @all directives should be a cvs binary (-kb) files.**
+
+The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
+
+Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
+
+Ok, back to the 'big bug'.  Here is how I got bitten:
+
+- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
+
+- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
+
+- I did a update in sandbox 2.
+
+As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
+
+M src/LeoPyRef.leo
+...
+cvs update: nonmergeable file needs merge
+cvs update: revision 1.448 from repository is now in src/leoProjects.txt
+cvs update: file from working directory is now in .#leoProjects.txt.1.447
+
+To summarize the update:
+
+- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
+
+- As expected, leoProjects.txt contains the version from sandbox **1**.
+
+So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
+
+How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
+
+Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
+
+- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
+
+- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
+
+So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
+
+The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
+
+The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
+
+Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
+
+Edward
+#@-node:ekr.20060116173818:Fix vampire nodes
 #@+node:ekr.20070220082124:Make sure Leo can generate Latex
 #@-node:ekr.20070220082124:Make sure Leo can generate Latex
 #@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes

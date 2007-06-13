@@ -1,137 +1,6 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20060207133601:@thin ../doc/leoToDoLater.txt
 #@+all
-#@+node:ekr.20060528155800:Big, not so important
-#@+node:ekr.20060609070148:Fix hung (zombie) windows)
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3768494
-By: ktenney
-
-I'm using current CVS, W2k
-
-1 open a Leo file (I'm using a batch file / console)
-
-2 click Edit->Open   <-- Having this dialog open is the problem.
-
-3 return focus to the Leo window
-
-4 click Help->Open leoDocs.leo
-
-Zombie!
-#@-node:ekr.20060609070148:Fix hung (zombie) windows)
-#@+node:ekr.20060116173818:Fix vampire nodes (maybe)
-@nocolor
-
-Vampire nodes from cvs
-
-I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
-
-The discovery of this 'big bug' came about as the result of the following Aha:
-
-**@thin files that contain @all directives should be a cvs binary (-kb) files.**
-
-The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
-
-Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
-
-Ok, back to the 'big bug'.  Here is how I got bitten:
-
-- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
-
-- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
-
-- I did a update in sandbox 2.
-
-As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
-
-M src/LeoPyRef.leo
-...
-cvs update: nonmergeable file needs merge
-cvs update: revision 1.448 from repository is now in src/leoProjects.txt
-cvs update: file from working directory is now in .#leoProjects.txt.1.447
-
-To summarize the update:
-
-- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
-
-- As expected, leoProjects.txt contains the version from sandbox **1**.
-
-So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
-
-How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
-
-Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
-
-- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
-
-- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
-
-So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
-
-The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
-
-The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
-
-A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
-
-B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
-
-Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
-
-Edward
-#@-node:ekr.20060116173818:Fix vampire nodes (maybe)
-#@+node:ekr.20060329102951:@ref (maybe)
-@nocolor
-#@nonl
-#@+node:ekr.20060329102951.1:My summary post
-http://sourceforge.net/forum/message.php?msg_id=3598136
-
-> It appears that @ref nodes introduce a flexibility that can not be simulated (at all?) with clones.  
-
-Now that something like @ref appears necessary, it is so much easier to see how @ref is useful :-) 
-
-1. @ref is an explicit link (arc) that creates the links of a general graph structure explictily. 
-
-The simplest cycle is: 
-
-- root 
-..- a 
-.... - @ref b 
-..- b 
-.... - @ref a 
-
-This is not possible with clones! No more mumbling about being able to represent such links in uA's! 
-
-2. @ref allows users to compose documents from 'atomic' pieces of text properly. That is, adding a 'virtual' child to a piece of text does not add it to all other uses of that text in (possibly unrelated) documents. This vastly increases the flexibility of rst3 plugin. 
-
-I suspect other essential uses of @ref will appear. I am sure we can declare the 'post-leo LP tool' project a great success already :-) 
-
-Edward 
-#@-node:ekr.20060329102951.1:My summary post
-#@+node:ekr.20060329102951.2:Reply
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3650005
-By: itsme213
-
-Imho ...
-
-There will not be any "arbitrary graph" from @ref. Instead there is a forest
-of trees, and across trees, some nodes are same_as some other nodes (caused
-by @ref). same_as is transitive. Quite likely the roots of all trees are same_as.
-There may need to be some rules to ensure things make structural sense. Children
-of a node are just that -- children of that node.
-
-There will be a totally separate Merge node whose children will be the union
-of the children of all the nodes it merges. A Merge node is, itself, the ordinary child of some
-node.
-
-Tree traversals will be tree traversals.
-
-Hope that did not muddy the waters even more ... 
-#@-node:ekr.20060329102951.2:Reply
-#@-node:ekr.20060329102951:@ref (maybe)
-#@-node:ekr.20060528155800:Big, not so important
 #@+node:ekr.20060824110846:Colorizing
 #@+node:ekr.20060813121814:Add colorizer files for cweb, forth,  rapidq
 #@+node:ekr.20060824103837:Notes
@@ -2715,14 +2584,19 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
     # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
     version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
-    self.use_ctypes = g.CheckVersion(version,'2.5')
+    ### self.use_ctypes = g.CheckVersion(version,'2.5')
+    try:
+        import ctypes
+        import ctypes.util
+        self.use_ctypes = True
+    except ImportError:
+        self.use_ctypes = False
     self.aspell = self.sc = None
 
     if self.use_ctypes:
         self.getAspellWithCtypes()
     else:
         self.getAspell()
-
 #@-node:ekr.20051025071455.8:__init__
 #@+node:ekr.20061017125710:getAspell
 def getAspell (self):
@@ -2732,7 +2606,7 @@ def getAspell (self):
     except ImportError:
         # Specify the path to the top-level Aspell directory.
         theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
-        aspell = g.importFromPath('aspell',theDir,pluginName=__name__,verbose=True)
+        aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=True)
 
     self.aspell = aspell
     self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
@@ -4666,6 +4540,58 @@ def next(self):
 #@-node:ekr.20040812170616:Pyrex versions of key classes
 #@-node:ekr.20041228084143:Maybe never
 #@+node:ekr.20040123102724:Can't or won't
+#@+node:ekr.20060329102951:@ref
+@nocolor
+
+The graph world is a better solution.
+#@nonl
+#@+node:ekr.20060329102951.1:My summary post
+http://sourceforge.net/forum/message.php?msg_id=3598136
+
+> It appears that @ref nodes introduce a flexibility that can not be simulated (at all?) with clones.  
+
+Now that something like @ref appears necessary, it is so much easier to see how @ref is useful :-) 
+
+1. @ref is an explicit link (arc) that creates the links of a general graph structure explictily. 
+
+The simplest cycle is: 
+
+- root 
+..- a 
+.... - @ref b 
+..- b 
+.... - @ref a 
+
+This is not possible with clones! No more mumbling about being able to represent such links in uA's! 
+
+2. @ref allows users to compose documents from 'atomic' pieces of text properly. That is, adding a 'virtual' child to a piece of text does not add it to all other uses of that text in (possibly unrelated) documents. This vastly increases the flexibility of rst3 plugin. 
+
+I suspect other essential uses of @ref will appear. I am sure we can declare the 'post-leo LP tool' project a great success already :-) 
+
+Edward 
+#@-node:ekr.20060329102951.1:My summary post
+#@+node:ekr.20060329102951.2:Reply
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3650005
+By: itsme213
+
+Imho ...
+
+There will not be any "arbitrary graph" from @ref. Instead there is a forest
+of trees, and across trees, some nodes are same_as some other nodes (caused
+by @ref). same_as is transitive. Quite likely the roots of all trees are same_as.
+There may need to be some rules to ensure things make structural sense. Children
+of a node are just that -- children of that node.
+
+There will be a totally separate Merge node whose children will be the union
+of the children of all the nodes it merges. A Merge node is, itself, the ordinary child of some
+node.
+
+Tree traversals will be tree traversals.
+
+Hope that did not muddy the waters even more ... 
+#@-node:ekr.20060329102951.2:Reply
+#@-node:ekr.20060329102951:@ref
 #@+node:ekr.20040220110030:Change cursor when caps lock is down
 @nocolor
 

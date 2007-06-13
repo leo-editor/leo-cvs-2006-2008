@@ -35,9 +35,8 @@ distutils.core.setup (
     license="Python", # licence [sic] changed to license in Python 2.3
     platforms=["Windows, Linux, Macintosh"],
     long_description =
-    """Leo is a powerful programming and scripting environment, outliner, literate
-    programming tool, data organizer and project manager. Cloned nodes make possible
-    multiple views of a project within a single Leo outline.
+    """Leo is an IDE, an outliner, a scripting and unit testing framework based on Python,
+    a literate programming tool, a data organizer and a project manager.
 
     Leo is written in 100% pure Python and works on any platform that supports
     Python 2.2.1 or above and the Tk Tk 8.4 or above.
