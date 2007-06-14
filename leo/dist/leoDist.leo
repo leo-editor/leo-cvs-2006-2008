@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.450431034483">
-	<global_window_position top="0" left="495" height="928" width="774"/>
+	<global_window_position top="10" left="495" height="928" width="774"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -209,7 +209,7 @@
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
-<v t="EKR.20040519090846.10" a="V"><vh>@@@asis ../xxx-manifest.in (no longer used: uses cvs instead)</vh></v>
+<v t="EKR.20040519090846.10"><vh>@@@asis ../xxx-manifest.in (no longer used: uses cvs instead)</vh></v>
 <v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="EKR.20040519100230"><vh>In leo directory</vh>
 <v t="EKR.20040519082027.32"><vh>Linux install/uninstall scripts</vh>
@@ -235,7 +235,7 @@
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20070614105133.2"><vh>@button create-leo-egg</vh></v>
+<v t="ekr.20070614105133.2" a="TV"><vh>@button create-leo-egg</vh></v>
 </v>
 </v>
 </vnodes>
@@ -5299,12 +5299,13 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20070614105133.1"></t>
 <t tx="ekr.20070614105133.2">import os,sys
 
-# ??? delete leo\build??
+folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
+os.chdir(folder)
 
-dstFile = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','setup.py'))
+# dstFile = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','setup.py'))
 
-command = '%s %s bdist_egg' % (sys.executable,dstFile)
-
+command = '%s %s bdist_egg' % (sys.executable,'setup.py')
+print command
 os.system(command)
 </t>
 <t tx="ekr.20070614105133.3"># setup.py to execute a Leo egg
