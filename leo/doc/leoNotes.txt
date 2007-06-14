@@ -53,6 +53,36 @@ for s in d:
 
 #@-node:ekr.20050123160215.1:Put all files in alpha order in ExamDiff
 #@-node:ekr.20050123161408:ExamDiff files & scripts
+#@+node:ekr.20070614094933:EasyInstall installation notes--XP
+C:\prog>c:\python25\python ez_setup.py
+Downloading http://cheeseshop.python.org/packages/2.5/s/setuptools/setuptools-0.6c6-py2.5.egg
+Processing setuptools-0.6c6-py2.5.egg
+Copying setuptools-0.6c6-py2.5.egg to c:\python25\lib\site-packages
+Adding setuptools 0.6c6 to easy-install.pth file
+Installing easy_install-script.py script to c:\python25\Scripts
+Installing easy_install.exe script to c:\python25\Scripts
+Installing easy_install-2.5-script.py script to c:\python25\Scripts
+Installing easy_install-2.5.exe script to c:\python25\Scripts
+
+Installed c:\python25\lib\site-packages\setuptools-0.6c6-py2.5.egg
+Processing dependencies for setuptools==0.6c6
+Finished processing dependencies for setuptools==0.6c6
+
+C:\prog>c:\python24\python ez_setup.py
+Downloading http://cheeseshop.python.org/packages/2.4/s/setuptools/setuptools-0.6c6-py2.4.egg
+Processing setuptools-0.6c6-py2.4.egg
+creating c:\python24\lib\site-packages\setuptools-0.6c6-py2.4.egg
+Extracting setuptools-0.6c6-py2.4.egg to c:\python24\lib\site-packages
+Adding setuptools 0.6c6 to easy-install.pth file
+Installing easy_install-script.py script to c:\python24\Scripts
+Installing easy_install.exe script to c:\python24\Scripts
+Installing easy_install-2.4-script.py script to c:\python24\Scripts
+Installing easy_install-2.4.exe script to c:\python24\Scripts
+
+Installed c:\python24\lib\site-packages\setuptools-0.6c6-py2.4.egg
+Processing dependencies for setuptools==0.6c6
+#@nonl
+#@-node:ekr.20070614094933:EasyInstall installation notes--XP
 #@+node:ekr.20070515083528:Focus notes
 @nocolor
 

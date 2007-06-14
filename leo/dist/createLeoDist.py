@@ -20,13 +20,18 @@
 #@-at
 #@@c
 
-import distutils.core
+use_setuptools = False
 
-distutils.core.setup (
+if use_setuptools:
+    from setuptools import setup, find_packages
+else:
+    from distutils.core import setup
+
+setup (
     #@    << setup info for createLeoDist.py >>
     #@+node:EKR.20040519082027.28:<< setup info for createLeoDist.py >>
     name="leo",
-    version="4-4-3-beta-2", # No spaces here!
+    version="4-4-3-rc1", # No spaces here!
     author="Edward K. Ream",
     author_email="edreamleo@charter.net",
     url="http://webpages.charter.net/edreamleo/front.html",
@@ -43,12 +48,6 @@ distutils.core.setup (
 
     Download Python from http://python.org/
     Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
-
-    Leo features a multi-window outlining editor with powerful outline commands,
-    support for the noweb markup language, syntax colorizing for many common
-    languages, unlimited Undo/Redo, an integrated Python shell(IDLE) window,
-    and many user options including user-definable colors and fonts and user-
-    definable shortcuts for all menu commands.
      """
     #@nonl
     #@-node:EKR.20040519082027.28:<< setup info for createLeoDist.py >>
