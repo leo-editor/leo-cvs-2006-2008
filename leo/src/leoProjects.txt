@@ -7391,6 +7391,8 @@ def masterKeyHandler (self,event,stroke=None):
 
     '''This is the handler for almost all key bindings.'''
 
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
+
     << define vars >>
     if keysym in special_keys: return None
 
@@ -11287,9 +11289,9 @@ def masterCommand (self,event,func,stroke,commandName=None):
         if expanded: return 'break'
 
     if func: # Func is an argument.
-        if commandName == 'menu-command-key':
-            g.trace('menu-command-key')
-            return 'continue'
+        if commandName == 'propagate-key-event':
+            # Do *nothing* with the event.
+            return k.propagateKeyEvent(event)
         elif commandName.startswith('specialCallback'):
             # The callback function will call c.doCommand
             if trace: g.trace('calling specialCallback for',commandName)
@@ -11726,6 +11728,8 @@ master_key_count = 0
 def masterKeyHandler (self,event,stroke=None):
 
     '''This is the handler for almost all key bindings.'''
+
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
 
     << define vars >>
     if keysym in special_keys: return None
@@ -14251,6 +14255,8 @@ master_key_count = 0
 def masterKeyHandler (self,event,stroke=None):
 
     '''This is the handler for almost all key bindings.'''
+
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
 
     << define vars >>
     if keysym in special_keys: return None
@@ -28518,9 +28524,9 @@ def masterCommand (self,event,func,stroke,commandName=None):
         if expanded: return 'break'
 
     if func: # Func is an argument.
-        if commandName == 'menu-command-key':
-            g.trace('menu-command-key')
-            return 'continue'
+        if commandName == 'propagate-key-event':
+            # Do *nothing* with the event.
+            return k.propagateKeyEvent(event)
         elif commandName.startswith('specialCallback'):
             # The callback function will call c.doCommand
             if trace: g.trace('calling specialCallback for',commandName)
@@ -29469,6 +29475,8 @@ master_key_count = 0
 def masterKeyHandler (self,event,stroke=None):
 
     '''This is the handler for almost all key bindings.'''
+
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
 
     << define vars >>
     if keysym in special_keys: return None
@@ -31867,9 +31875,9 @@ def masterCommand (self,event,func,stroke,commandName=None):
         if expanded: return 'break'
 
     if func: # Func is an argument.
-        if commandName == 'menu-command-key':
-            g.trace('menu-command-key')
-            return 'continue'
+        if commandName == 'propagate-key-event':
+            # Do *nothing* with the event.
+            return k.propagateKeyEvent(event)
         elif commandName.startswith('specialCallback'):
             # The callback function will call c.doCommand
             if trace: g.trace('calling specialCallback for',commandName)
@@ -35446,6 +35454,8 @@ def masterKeyHandler (self,event,stroke=None):
 
     '''This is the handler for almost all key bindings.'''
 
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
+
     << define vars >>
     if keysym in special_keys: return None
 
@@ -35944,9 +35954,9 @@ def masterCommand (self,event,func,stroke,commandName=None):
         if expanded: return 'break'
 
     if func: # Func is an argument.
-        if commandName == 'menu-command-key':
-            g.trace('menu-command-key')
-            return 'continue'
+        if commandName == 'propagate-key-event':
+            # Do *nothing* with the event.
+            return k.propagateKeyEvent(event)
         elif commandName.startswith('specialCallback'):
             # The callback function will call c.doCommand
             if trace: g.trace('calling specialCallback for',commandName)
@@ -36054,6 +36064,8 @@ master_key_count = 0
 def masterKeyHandler (self,event,stroke=None):
 
     '''This is the handler for almost all key bindings.'''
+
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
 
     << define vars >>
     if keysym in special_keys: return None
@@ -39953,6 +39965,8 @@ def masterKeyHandler (self,event,stroke=None):
 
     '''This is the handler for almost all key bindings.'''
 
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
+
     << define vars >>
     if keysym in special_keys: return None
 
@@ -40445,6 +40459,8 @@ master_key_count = 0
 def masterKeyHandler (self,event,stroke=None):
 
     '''This is the handler for almost all key bindings.'''
+
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
 
     << define vars >>
     if keysym in special_keys: return None
@@ -51120,6 +51136,373 @@ suggest.argtypes = [c_int, c_char_p, c_int]
 #@-node:ekr.20070612102752:Allow aspell on Linux provided that ctypes exists
 #@+node:ekr.20070613102413:Fixed a bug that disabled icon button colors on Linux
 #@-node:ekr.20070613102413:Fixed a bug that disabled icon button colors on Linux
+#@+node:ekr.20070613134110:Made alt menu keys work
+# Created menu-command-key command that just returns 'continue'.
+#@nonl
+#@+node:ekr.20061031131434.146:masterKeyHandler
+master_key_count = 0
+
+def masterKeyHandler (self,event,stroke=None):
+
+    '''This is the handler for almost all key bindings.'''
+
+    # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
+
+    << define vars >>
+    if keysym in special_keys: return None
+
+    trace = (False or self.trace_masterKeyHandler) and not g.app.unitTesting
+    traceGC = (False or self.trace_masterKeyHandlerGC) and not g.app.unitTesting
+    if traceGC: g.printNewObjects('masterKey 1')
+    if trace:
+        g.trace('stroke:',repr(stroke),'keysym:',repr(event.keysym),'ch:',repr(event.char),
+            'state.kind:',k.state.kind,'\n',g.callers())
+        # if (self.master_key_count % 100) == 0: g.printGcSummary()
+
+    # Handle keyboard-quit first.
+    if k.abortAllModesKey and stroke == k.abortAllModesKey:
+        # g.trace('special case')
+        return k.masterCommand(event,k.keyboardQuit,stroke,'keyboard-quit')
+
+    if k.inState():
+        # This will return unless k.autoCompleterStateHandler
+        # (called from k.callStateFunction) returns 'do-standard-keys'
+        << handle mode bindings >>
+
+    if traceGC: g.printNewObjects('masterKey 2')
+
+    << handle per-pane bindings >>
+    << handle keys without bindings >>
+#@+node:ekr.20061031131434.147:<< define vars >>
+k = self ; c = k.c ; gui = g.app.gui
+
+if event: event = gui.leoKeyEvent(event,c)
+
+w = event.widget
+char = event.char
+keysym = event.keysym
+if stroke and not keysym:
+    event.keysym = keysym = stroke
+
+w_name = c.widget_name(w)
+state = k.state.kind
+
+special_keys = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+    'Win_L','Win_R',
+)
+
+self.master_key_count += 1
+#@nonl
+#@-node:ekr.20061031131434.147:<< define vars >>
+#@+node:ekr.20061031131434.149:<< handle mode bindings >>
+# First, honor minibuffer bindings for all except user modes.
+if state in ('getArg','getFileName','full-command','auto-complete'):
+    if k.handleMiniBindings(event,state,stroke):
+        return 'break'
+
+# Second, honor general modes.
+if state == 'getArg':
+    return k.getArg(event,stroke=stroke)
+elif state == 'getFileName':
+    return k.getFileName(event)
+elif state in ('full-command','auto-complete'):
+    # Do the default state action.
+    if trace: g.trace('calling state function')
+    val = k.callStateFunction(event) # Calls end-command.
+    if val != 'do-standard-keys': return 'break'
+
+# Third, pass keys to user modes.
+else:
+    d =  k.masterBindingsDict.get(state)
+    if d:
+        b = d.get(stroke)
+        if b:
+            if trace: g.trace('calling generalModeHandler')
+            k.generalModeHandler (event,
+                commandName=b.commandName,func=b.func,
+                modeName=state,nextMode=b.nextMode)
+            return 'break'
+        else:
+            ok = k.handleMiniBindings(event,state,stroke)
+            if ok:
+                return 'break'
+            elif stroke and len(stroke) == 1:
+                # if trace: g.trace('calling modeHelp')
+                k.modeHelp(event)
+                return 'break'
+            else:
+                # End the mode and fall through to the pane bindings!
+                k.endMode(event)
+    else:
+        # New in 4.4b4.
+        handler = k.getStateHandler()
+        if handler:
+            handler(event)
+        else:
+            g.trace('No state handler for %s' % state)
+        return 'break'
+#@-node:ekr.20061031131434.149:<< handle mode bindings >>
+#@+node:ekr.20061031131434.150:<< handle per-pane bindings >>
+keyStatesTuple = ('command','insert','overwrite')
+isPlain =  k.isPlainKey(stroke)
+
+# g.trace('w_name',w_name,'w',w,'isTextWidget(w)',g.app.gui.isTextWidget(w))
+# g.trace('button',k.masterBindingsDict.get('button'))
+
+for key,name in (
+    # Order here is similar to bindtags order.
+    ('command',None),
+    ('insert',None),
+    ('overwrite',None),
+    ('button',None),
+    ('body','body'),
+    ('text','head'), # Important: text bindings in head before tree bindings.
+    ('tree','head'),
+    ('tree','canvas'),
+    ('log', 'log'),
+    ('text','log'),
+    ('text',None), ('all',None),
+):
+    if (
+        key in keyStatesTuple and isPlain and k.unboundKeyAction == key or
+        name and w_name.startswith(name) or
+        key in ('text','all') and g.app.gui.isTextWidget(w) or
+        key in ('button','all')
+    ):
+        d = k.masterBindingsDict.get(key,{})
+        # g.trace('key',key,'name',name,'stroke',stroke,'stroke in d.keys',stroke in d.keys())
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace('%s found %s = %s' % (key,repr(b.stroke),b.commandName))
+                if traceGC: g.printNewObjects('masterKey 3')
+                return k.masterCommand(event,b.func,b.stroke,b.commandName)
+#@-node:ekr.20061031131434.150:<< handle per-pane bindings >>
+#@+node:ekr.20061031131434.151:<< handle keys without bindings >>
+if traceGC: g.printNewObjects('masterKey 5')
+
+modesTuple = ('insert','overwrite')
+
+if stroke and k.isPlainKey(stroke) and k.unboundKeyAction in modesTuple:
+    # insert/overwrite normal character.  <Return> is *not* a normal character.
+    if trace: g.trace('plain key in insert mode',repr(stroke))
+    if traceGC: g.printNewObjects('masterKey 4')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+
+elif k.ignore_unbound_non_ascii_keys and len(char) > 1:
+    # (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1)):
+    if trace: g.trace('ignoring unbound non-ascii key')
+    return 'break'
+
+elif keysym.find('Escape') != -1:
+    # Never insert escape characters.
+    return 'break'
+
+else:
+    if trace: g.trace(repr(stroke),'no func')
+    if traceGC: g.printNewObjects('masterKey 6')
+    return k.masterCommand(event,func=None,stroke=stroke,commandName=None)
+#@-node:ekr.20061031131434.151:<< handle keys without bindings >>
+#@+node:ekr.20061031131434.152:handleMiniBindings
+def handleMiniBindings (self,event,state,stroke):
+
+    k = self ; c = k.c
+    trace = False or self.trace_masterKeyHandler and not g.app.unitTesting
+
+    if not state.startswith('auto-'):
+        d = k.masterBindingsDict.get('mini')
+        if d:
+            b = d.get(stroke)
+            if b:
+                if trace: g.trace(repr(stroke),'mini binding',b.commandName)
+                # Pass this on for macro recording.
+                k.masterCommand(event,b.func,stroke,b.commandName)
+                if not k.silentMode:
+                    c.minibufferWantsFocus()
+                return True
+
+    return False
+#@-node:ekr.20061031131434.152:handleMiniBindings
+#@-node:ekr.20061031131434.146:masterKeyHandler
+#@+node:ekr.20061031131434.105:masterCommand & helpers
+def masterCommand (self,event,func,stroke,commandName=None):
+
+    '''This is the central dispatching method.
+    All commands and keystrokes pass through here.'''
+
+    k = self ; c = k.c ; gui = g.app.gui
+    trace = False or k.traceMasterCommand
+    traceGC = False
+    if traceGC: g.printNewObjects('masterCom 1')
+
+    c.setLog()
+    c.startRedrawCount = c.frame.tree.redrawCount
+    k.stroke = stroke # Set this global for general use.
+    keysym = gui.eventKeysym(event)
+    ch = gui.eventChar(event)
+    w = gui.eventWidget(event)
+    state = event and hasattr(event,'state') and event.state or 0
+    k.func = func
+    k.funcReturn = None # For unit testing.
+    commandName = commandName or func and func.__name__ or '<no function>'
+    << define specialKeysyms >>
+    special = keysym in specialKeysyms
+    interesting = func is not None
+    inserted = not special
+
+    if trace: #  and interesting:
+        g.trace(
+            # 'stroke: ',stroke,'state:','%x' % state,'ch:',repr(ch),'keysym:',repr(keysym),
+            'w:',w and c.widget_name(w),'func:',func and func.__name__
+        )
+
+    if inserted:
+        # g.trace(stroke,keysym)
+        << add character to history >>
+
+    # We *must not* interfere with the global state in the macro class.
+    if c.macroCommands.recordingMacro:
+        done = c.macroCommands.startKbdMacro(event)
+        if done: return 'break'
+
+    # g.trace(stroke,k.abortAllModesKey)
+
+    if k.abortAllModesKey and stroke == k.abortAllModesKey: # 'Control-g'
+        k.keyboardQuit(event)
+        k.endCommand(event,commandName)
+        return 'break'
+
+    if special: # Don't pass these on.
+        return 'break' 
+
+    if 0: # *** This is now handled by k.masterKeyHandler.
+        if k.inState():
+            val = k.callStateFunction(event) # Calls end-command.
+            if val != 'do-func': return 'break'
+            g.trace('Executing key outside of mode')
+
+    if k.regx.iter:
+        try:
+            k.regXKey = keysym
+            k.regx.iter.next() # EKR: next() may throw StopIteration.
+        except StopIteration:
+            pass
+        return 'break'
+
+    if k.abbrevOn:
+        expanded = c.abbrevCommands.expandAbbrev(event)
+        if expanded: return 'break'
+
+    if func: # Func is an argument.
+        if commandName == 'propagate-key-event':
+            # Do *nothing* with the event.
+            return k.propagateKeyEvent(event)
+        elif commandName.startswith('specialCallback'):
+            # The callback function will call c.doCommand
+            if trace: g.trace('calling specialCallback for',commandName)
+            val = func(event)
+            # k.simulateCommand uses k.funcReturn.
+            k.funcReturn = k.funcReturn or val # For unit tests.
+        else:
+            # Call c.doCommand directly
+            if trace: g.trace('calling command directly',commandName)
+            c.doCommand(func,commandName,event=event)
+        if c.exists:
+            k.endCommand(event,commandName)
+            c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 2')
+        return 'break'
+    elif k.inState():
+        return 'break' #Ignore unbound keys in a state.
+    else:
+        if traceGC: g.printNewObjects('masterCom 3')
+        val = k.handleDefaultChar(event,stroke)
+        if c.exists:
+            c.frame.updateStatusLine()
+        if traceGC: g.printNewObjects('masterCom 4')
+        return val
+#@nonl
+#@+node:ekr.20061031131434.106:<< define specialKeysyms >>
+specialKeysyms = (
+    'Alt_L','Alt_R',
+    'Caps_Lock','Control_L','Control_R',
+    'Num_Lock',
+    'Shift_L','Shift_R',
+)
+#@nonl
+#@-node:ekr.20061031131434.106:<< define specialKeysyms >>
+#@+node:ekr.20061031131434.107:<< add character to history >>
+if stroke or len(ch) > 0:
+    if len(keyHandlerClass.lossage) > 99:
+        keyHandlerClass.lossage.pop()
+
+    # This looks like a memory leak, but isn't.
+    keyHandlerClass.lossage.insert(0,(ch,stroke),)
+#@-node:ekr.20061031131434.107:<< add character to history >>
+#@+node:ekr.20061031131434.108:callStateFunction
+def callStateFunction (self,event):
+
+    k = self ; val = None
+
+    # g.trace(k.state.kind)
+
+    if k.state.kind:
+        if k.state.handler:
+            val = k.state.handler(event)
+            if val != 'continue':
+                k.endCommand(event,k.commandName)
+        else:
+            g.es_print('no state function for %s' % (k.state.kind),color='red')
+
+    return val
+#@-node:ekr.20061031131434.108:callStateFunction
+#@+node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+def callKeystrokeFunction (self,event):
+
+    '''Handle a quick keystroke function.
+    Return the function or None.'''
+
+    k = self
+    numberOfArgs, func = k.keystrokeFunctionDict [k.stroke]
+
+    if func:
+        func(event)
+        commandName = k.inverseCommandsDict.get(func) # Get the emacs command name.
+        k.endCommand(event,commandName)
+
+    return func
+#@-node:ekr.20061031131434.109:callKeystrokeFunction (not used)
+#@+node:ekr.20061031131434.110:handleDefaultChar
+def handleDefaultChar(self,event,stroke):
+
+    k = self ; c = k.c
+    w = event and event.widget
+    name = c.widget_name(w)
+
+    if name.startswith('body'):
+        action = k.unboundKeyAction
+        if action in ('insert','overwrite'):
+            c.editCommands.selfInsertCommand(event,action=action)
+        else: pass # Ignore the key.
+        return 'break'
+    elif name.startswith('head'):
+        c.frame.tree.onHeadlineKey(event)
+        return 'break'
+    elif name.startswith('canvas'):
+        if not stroke: # Not exactly right, but it seems to be good enough.
+            c.onCanvasKey(event) # New in Leo 4.4.2
+        return 'break'
+    else:
+        # Let tkinter handle the event.
+        # ch = event and event.char ; g.trace('to tk:',name,repr(ch))
+        return None
+#@-node:ekr.20061031131434.110:handleDefaultChar
+#@-node:ekr.20061031131434.105:masterCommand & helpers
+#@-node:ekr.20070613134110:Made alt menu keys work
 #@-node:ekr.20070612132051:Leo 4.4.3 final projects
 #@+node:ekr.20070126072723:pychecker
 #@+node:ekr.20070316175323:Invalid warnings

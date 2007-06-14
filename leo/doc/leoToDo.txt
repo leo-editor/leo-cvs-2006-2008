@@ -408,6 +408,27 @@ that suppresses *all* pychecker errors and warnings for a specified range of
 code. If necessary, it would be worthwhile to modify pychecker itself...
 #@nonl
 #@-node:ekr.20070611173545:Improve unit testing!
+#@+node:ekr.20070613181147:(maybe) Improve key handling
+# The idea is to use a single <Key binding> and
+# use w.event_generate(key) to create a table
+# that associates Tk key numbers with bindings:
+
+    if event.char:
+        if 0:
+            import Tkinter as Tk
+            w = Tk.Text()
+            def foo (event):
+                g.trace(event)
+            w.bind('<Key>',foo)
+            for prefix in ('Alt-Key-','Shift-Key-'):
+                key = '<%s%s>' % (prefix,event.char.strip())
+                g.trace(key)
+                w.event_generate('a')
+        if 0:
+            for z in ('char','keysym','keycode','keysym_num','state',):
+                a = getattr(event,z)
+                print z,repr(a)
+#@-node:ekr.20070613181147:(maybe) Improve key handling
 #@+node:ekr.20070324084040:@auto
 #@+node:ekr.20070610133513:Design and notes
 #@+node:ekr.20070611173545.1:Review

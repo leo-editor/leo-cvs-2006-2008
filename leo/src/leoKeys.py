@@ -2257,9 +2257,9 @@ class keyHandlerClass:
             if expanded: return 'break'
 
         if func: # Func is an argument.
-            if commandName == 'menu-command-key':
-                g.trace('menu-command-key')
-                return 'continue'
+            if commandName == 'propagate-key-event':
+                # Do *nothing* with the event.
+                return k.propagateKeyEvent(event)
             elif commandName.startswith('specialCallback'):
                 # The callback function will call c.doCommand
                 if trace: g.trace('calling specialCallback for',commandName)
@@ -2511,6 +2511,12 @@ class keyHandlerClass:
         # This method must exist, but it never gets called.
         pass 
     #@-node:ekr.20070613133500:k.menuCommandKey
+    #@+node:ekr.20070613190936:k.propagateKeyEvent
+    def propagateKeyEvent (self,event):
+
+        self.oops() # Should be overridden.
+    #@nonl
+    #@-node:ekr.20070613190936:k.propagateKeyEvent
     #@+node:ekr.20061031131434.117:negativeArgument (redo?)
     def negativeArgument (self,event):
 
@@ -2941,6 +2947,8 @@ class keyHandlerClass:
     def masterKeyHandler (self,event,stroke=None):
 
         '''This is the handler for almost all key bindings.'''
+
+        # g.trace('event.keysym_num',event.keysym_num,event,dir(event))
 
         #@    << define vars >>
         #@+node:ekr.20061031131434.147:<< define vars >>

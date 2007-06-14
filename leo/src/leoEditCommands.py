@@ -255,7 +255,6 @@ def finishCreateEditCommanders (c):
                 print '----- %s' % name
                 for key in keys: print key
 
-    # g.trace('d.get(menu-command-key)',d.get('menu-command-key'))
     return d
 #@-node:ekr.20050922104731:finishCreateEditCommanders (leoEditCommands module)
 #@+node:ekr.20050924100713.1:initAllEditCommanders
@@ -5093,7 +5092,6 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
             'exit-named-mode':          k.exitNamedMode,
             'full-command':             k.fullCommand, # For menu.
             'hide-mini-buffer':         k.hideMinibuffer,
-            'menu-command-key':         k.menuCommandKey,
             'mode-help':                k.modeHelp,
             'negative-argument':        k.negativeArgument,
             'number-command':           k.numberCommand,
@@ -5109,6 +5107,7 @@ class keyHandlerCommandsClass (baseEditCommandsClass):
             'number-command-9':         k.numberCommand9,
             'print-bindings':           k.printBindings,
             'print-commands':           k.printCommands,
+            'propagate-key-event':      k.propagateKeyEvent,
             'repeat-complex-command':   k.repeatComplexCommand,
             # 'scan-for-autocompleter':   k.autoCompleter.scan,
             'set-command-state':        k.setCommandState,

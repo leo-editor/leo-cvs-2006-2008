@@ -30,6 +30,11 @@ class tkinterKeyHandlerClass (leoKeys.keyHandlerClass):
         else:
             self.svar = None
     #@-node:ekr.20061031170011.1:createTkIvars
+    #@+node:ekr.20070613190239:tkKeys.propagateKeyEvent
+    def propagateKeyEvent (self,event):
+        return 'continue'
+    #@nonl
+    #@-node:ekr.20070613190239:tkKeys.propagateKeyEvent
     #@-others
 #@nonl
 #@-node:ekr.20031218072017.4099:@thin leoTkinterKeys.py
