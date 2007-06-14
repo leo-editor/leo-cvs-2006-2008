@@ -14837,19 +14837,16 @@ both elements has the same effect as setting them on the SPAN element.
 # theDir = r'c:\prog\tigris-cvs\leo\modes'
 theDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','modes'))
 fixed = ['antlr','applescript','apacheconf','bibtex','cil','pl1','shell','shellscript','ssharp','text']
-errors = ['cil',] # End keyword not matched by start.
+errors = [] # 'cil',] # End keyword not matched by start.
 errors = [r'%s\%s.xml' % (theDir,s) for s in errors]
 # for s in errors: print s
 if 0: # A a list of files.
     files = [r'%s\%s.xml' % (theDir,s) for s in ('python',)]
 elif 1: # translate all files.
-    # files = glob.glob(r'c:\prog\tigris-cvs\leo\modes\*.xml')
     files = glob.glob(g.os_path_abspath(g.os_path_join(theDir,'*.xml')))
-elif 0: # error files
-    # files = [r'%s\%s.xml' % (theDir,s) for s in ('props',)]
-    files = [g.os_path_abspath(g.os_path_join(theDir,s)) for s in ('props',)]
+elif 1: # error files
+    files = [g.os_path_abspath(g.os_path_join(theDir,s)) for s in errors]
 else: # translate two representative files.
-    # files = [r'%s\%s.xml' % (theDir,s) for s in ('python','php')]
     files = [g.os_path_abspath(g.os_path_join(theDir,s)) for s in ('python','php')]
 # for s in files: print s
 #@nonl
@@ -14884,7 +14881,7 @@ def parse_jEdit_file(inputFileName,language):
         return None
 
     if not inputFileName.endswith('.xml'):
-        inputFileName = fileinputFileNameame + '.xml'
+        inputFileName = inputFileName + '.xml'
 
     path = g.os_path_join(g.app.loadDir,'../','modes',inputFileName)
     path = g.os_path_normpath(path)
@@ -15936,6 +15933,7 @@ def __init__ (self,c,inputFileName,language):
 
     # Semantics: most of these should be mode ivars.
     self.elementStack = []
+    self.errors = 0
     self.mode = None # The present mode, or None if outside all modes.
     self.modes = [] # All modes defined here or by imports.
 #@nonl
@@ -15986,7 +15984,8 @@ def error (self, message):
     print
     print 'XML error: %s' % (message)
     print
-#@nonl
+
+    self.errors += 1
 #@-node:error
 #@+node:printStartElement
 def printStartElement(self,name,attrs):
@@ -16132,7 +16131,10 @@ def doEndElement (self,elementName):
 #@+node:getMode
 def getMode (self):
 
-    return self.mode
+    if self.errors:
+        return None
+    else:
+        return self.mode
 #@nonl
 #@-node:getMode
 #@-node:class contentHandler (xml.sax.saxutils.XMLGenerator)
