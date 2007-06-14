@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.450431034483">
-	<global_window_position top="10" left="495" height="928" width="774"/>
+	<global_window_position top="11" left="408" height="928" width="774"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -145,7 +145,6 @@
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
 <v t="ekr.20050118095021"><vh>Leo 4.x installer  (update for each release)</vh>
-<v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
 <v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
@@ -198,8 +197,8 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files (update for each release)</vh>
-<v t="EKR.20040519090846.2" a="E"><vh>@asis ../doc/INSTALL.TXT</vh>
+<v t="EKR.20040519090846" a="TV"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
 <v t="EKR.20040519090846.5"><vh>Windows installation</vh></v>
@@ -209,34 +208,17 @@
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
-<v t="EKR.20040519090846.10"><vh>@@@asis ../xxx-manifest.in (no longer used: uses cvs instead)</vh></v>
-<v t="EKR.20040519082027.28"><vh>&lt;&lt; setup info for createLeoDist.py &gt;&gt;</vh></v>
-<v t="EKR.20040519100230"><vh>In leo directory</vh>
 <v t="EKR.20040519082027.32"><vh>Linux install/uninstall scripts</vh>
 <v t="EKR.20040519082027.33"><vh>@file-thin ../install</vh></v>
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-</v>
-<v t="ekr.20050118113631" a="E"><vh>Main distribution script</vh>
-<v t="ekr.20070614105133"><vh>Creating leo.zip</vh>
-<v t="EKR.20040519082027.23"><vh>@thin createLeoDist.py</vh></v>
-<v t="ekr.20050117032444"><vh>@button Create Leo-4.x.zip</vh>
-<v t="ekr.20050118080857"><vh>&lt;&lt; about this script &gt;&gt;</vh></v>
-<v t="ekr.20050118083936.1"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
-<v t="ekr.20050118082301"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
-<v t="ekr.20050117032444.1"><vh>&lt;&lt; define files &amp; directories &gt;&gt;</vh></v>
-<v t="ekr.20050117032444.2"><vh>&lt;&lt; copy createLeoDist.py to top directory &gt;&gt;</vh></v>
-<v t="ekr.20050117032703"><vh>&lt;&lt; run createLeoDist from the top directory &gt;&gt;</vh></v>
-<v t="ekr.20050117032444.3"><vh>&lt;&lt; remove temp createLeoDist.py &gt;&gt;</vh></v>
-</v>
-</v>
-<v t="ekr.20070614105133.1" a="E"><vh>Creating a leo egg</vh>
+<v t="ekr.20070614170445" a="E"><vh>Scripts  (update for each release)</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20070614105133.2" a="TV"><vh>@button create-leo-egg</vh></v>
-</v>
+<v t="ekr.20070614105133.2"><vh>@button create-leo-egg</vh></v>
+<v t="ekr.20070614165755"><vh>@button create-leo-zip</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -519,25 +501,6 @@ else:
 
 # dict: suppress warnings where keys can be regular expressions
 suppressionRegexs = {}</t>
-<t tx="EKR.20040519082027.28">name="leo",
-version="4-4-3-rc1", # No spaces here!
-author="Edward K. Ream",
-author_email="edreamleo@charter.net",
-url="http://webpages.charter.net/edreamleo/front.html",
-py_modules=[], # The manifest specifies everything.
-description = "Leo: Literate Editor with Outlines",
-license="Python", # licence [sic] changed to license in Python 2.3
-platforms=["Windows, Linux, Macintosh"],
-long_description =
-"""Leo is an IDE, an outliner, a scripting and unit testing framework based on Python,
-a literate programming tool, a data organizer and a project manager.
-
-Leo is written in 100% pure Python and works on any platform that supports
-Python 2.2.1 or above and the Tk Tk 8.4 or above.
-
-Download Python from http://python.org/
-Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
- """</t>
 <t tx="EKR.20040519082027.32">@color
 @lineending nl
 @language shell</t>
@@ -736,126 +699,6 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="EKR.20040519090846.10"># The manifest template: specifies all files to be included in the distribution.
-
-# Note: these are glob patterns.
-# There seems to be a bug in distutils: ../ doesn't get handled properly.
-# manifest.in must be in the current directory.
-
-include __init__.py
-include manifest.in
-include MANIFEST
-include install
-include uninstall
-include setup.py
-exclude createLeoDist.py
-
-include config/leoSettings.leo
-
-# 1. createLeoDist.py is distributed in dist directory.
-#    The distribution script temporarily copies createLeoDist.py to the leo directory.
-# 2. Distribute leoDist.leo, not leoDistRef.leo.
-# 3. .pycheckrc is distributed in dist directory.
-#    Move it to the home directory if you want to use it.
-
-include dist/createLeoDist.py
-include dist/leo-4-3.nsi
-include dist/leoDist.leo
-include dist/.pycheckrc
-
-include doc/LeoDiary.leo
-include doc/LeoDocs.leo
-include doc/leoNotes.txt
-include doc/LeoPostings.leo
-include doc/LeoSlideShows.leo
-include doc/leoToDo.txt
-include doc/leoToDoLater.txt
-
-include doc/README.TXT
-include doc/INSTALL.TXT
-include doc/PKG-INFO.TXT
-include doc/LICENSE.TXT
-
-include doc/default.css
-include doc/leo_rst.css
-include doc/silver_city.css
-
-include doc/LeoN/sun98achieving.pdf
-include doc/LeoN/sun97generic.pdf
-include doc/LeoN/sun98operational.pdf
-include doc/LeoN/sun98reversible.pdf
-
-include doc/html/*.*
-
-include extensions/aspell23.pyd
-include extensions/aspell24.pyd
-include extensions/optparse.py
-include extensions/path.py
-include extensions/sets.py
-include extensions/subprocess.py
-
-include extensions/__init__.py
-
-include extensions/Pmw/__init__.py
-include extensions/Pmw/Pmw_1_2/__init__.py
-include extensions/Pmw/Pmw_1_2/bin/*.*
-include extensions/Pmw/Pmw_1_2/contrib/*.*
-include extensions/Pmw/Pmw_1_2/demos/*.*
-include extensions/Pmw/Pmw_1_2/doc/*.*
-include extensions/Pmw/Pmw_1_2/lib/*.*
-include extensions/Pmw/Pmw_1_2/tests/*.*
-
-# Something weird here.
-include extensions/Pmw/Pmw_1_2/lib/Pmw.def
-
-# These will typically generate sdist warnings.
-###exclude extensions/Pmw/Pmw_1_2/bin/*.pyc
-###exclude extensions/Pmw/Pmw_1_2/contrib/*.pyc
-###exclude extensions/Pmw/Pmw_1_2/demos/*.pyc
-###exclude extensions/Pmw/Pmw_1_2/doc/*.pyc
-###exclude extensions/Pmw/Pmw_1_2/lib/*.pyc
-###exclude extensions/Pmw/Pmw_1_2/tests/*.pyc
-
-# These will typically generate sdist warnings.
-###exclude extensions/Pmw/Pmw_1_2/bin/*.pyo
-###exclude extensions/Pmw/Pmw_1_2/contrib/*.pyo
-###exclude extensions/Pmw/Pmw_1_2/demos/*.pyo
-###exclude extensions/Pmw/Pmw_1_2/doc/*.pyo
-###exclude extensions/Pmw/Pmw_1_2/lib/*.pyo
-###exclude extensions/Pmw/Pmw_1_2/tests/*.pyo
-
-include Icons/*.bmp
-include Icons/*.gif
-include Icons/*.ico
-
-include modes/*.xml
-
-include plugins/leoPlugins.leo
-include plugins/*.ini
-include plugins/*.txt
-include plugins/*.py
-
-include plugins/trees/*.py
-include plugins/trees/pluginsManager.txt
-
-include scripts/openLeoScript.sh
-include scripts/scripts.leo
-include scripts/leoScripts.txt
-include scripts/*.py
-
-include src/__init__.py
-include src/buttons.txt
-include src/LeoPy.leo
-include src/leo*.py
-include src/leoProjects.txt
-include src/oldLeoProjects.leo
-
-include test/__init__.py
-include test/test.leo
-include test/unitTest.leo
-
-include test/unittest/batchTest.py
-include test/unittest/errorTest.py</t>
 <t tx="EKR.20040519091259">@pagewidth 70
 @killcolor</t>
 <t tx="EKR.20040519091259.1">4.2-final   setup: 1828 zip: 1508
@@ -2141,7 +1984,6 @@ Wiki:     http://leo.hd1.org/
 
 Edward K. Ream
 </t>
-<t tx="EKR.20040519100230"></t>
 <t tx="ekr.20040629173419.1"># NOTE: This file is created (and distributed) in the leo/dist directory.
 # NOTE: You must copy this file to your $HOME directory for pychecker to use it!
 
@@ -2996,116 +2838,6 @@ Leo: http://webpages.charter.net/edreamleo/front.html
 <t tx="ekr.20050116150710.90"></t>
 <t tx="ekr.20050116151024">@nocolor</t>
 <t tx="ekr.20050117031116"></t>
-<t tx="ekr.20050117032444"># Main distribution script.  Creates leo-nn.zip using createLeoDist.py
-
-&lt;&lt; about this script &gt;&gt;
-&lt;&lt; version history &gt;&gt;
-
-@language python
-@tabwidth -4
-
-# REMINDER:  Update &lt; &lt; setup info for createLeoDist.py &gt; &gt;
-# REMINDER: Remove 'chinese' directory from test/unittest.
-
-print ; print '-' * 60
-&lt;&lt; imports &gt;&gt;
-&lt;&lt; define files &amp; directories &gt;&gt;
-
-use_setuptools = False
-
-print 'topDir',topDir
-
-os.chdir(topDir) # Change to the top directory.
-&lt;&lt; copy createLeoDist.py to top directory &gt;&gt;
-&lt;&lt; run createLeoDist from the top directory &gt;&gt;
-&lt;&lt; remove temp createLeoDist.py &gt;&gt;
-print 'script complete'</t>
-<t tx="ekr.20050117032444.1"># The top level leo directory.
-topDir  = g.os_path_abspath(g.os_path_join(g.app.loadDir,".."))
-
-# The MANIFEST file in the leo directory.
-if 0:
-    # It doesn't work to delete the MANIFEST file.
-    # Use --force-manifest option instead.
-    manifestFile = g.os_path_abspath(g.os_path_join(topDir,'MANIFEST'))
-
-# We will copy createLeoDist.py from leo/dist to leo.
-srcFile = g.os_path_abspath(g.os_path_join(topDir,'dist','createLeoDist.py'))
-dstFile = g.os_path_abspath(g.os_path_join(topDir,'createLeoDist.py'))
-
-# We will copy .pycheckrc from leo/.. to leo.
-pycheckerFile     = g.os_path_abspath(g.os_path_join(topDir,'..','.pycheckrc'))
-destPycheckerFile = g.os_path_abspath(g.os_path_join(topDir,'.pycheckrc'))</t>
-<t tx="ekr.20050117032444.2"># createLeoDist.py is distributed the dist directory,
-# but createLeoDist.py must be run from the leo directory!
-
-# Copy dist/createLeoDist.py to leo directory.
-print 'copying %s to %s' % (srcFile,topDir)
-
-if g.os_path_exists(dstFile):
-    os.remove(dstFile)
-
-src = file(srcFile,'r')
-s = src.read()
-src.close()
-dst = file(dstFile,'w')
-dst.write(s)
-dst.close()</t>
-<t tx="ekr.20050117032444.3"># Remove the temp copy of createLeoDist.py
-print 'removing %s' % dstFile
-os.remove(dstFile)</t>
-<t tx="ekr.20050117032703"># Run 'python createLeoDist.py sdist &lt;args&gt;' to create the leo-nn.zip.
-
-if use_setuptools:
-    # command = '%s %s sdist --formats=zip' % (sys.executable,dstFile)
-    command = '%s %s bdist_egg' % (sys.executable,dstFile)
-else:
-    command = '%s %s sdist --force-manifest --formats=zip' % (sys.executable,dstFile)
-
-print command
-os.system(command)
-</t>
-<t tx="ekr.20050118080857">@
-
-This is the script that I use to create 'official' distributions of Leo. It
-should run on any Leo installation.
-
-According to the distutils docs, the way to create a source distribution is by
-running:
-
-    'python createLeoDist.py sdist &lt;args&gt;'
-
-where the file createLeoDist.py contains the following:
-
-    modules = []
-    distutils.core.setup (
-        &lt;&lt; setup info for createLeoDist.py &gt;&gt;
-    )
-
-N.B. createLeoDist.py _must_ be run from the leo folder! This file is
-distributed in the dist folder, so this script makes a temporary copy of
-createLeoDist.py to the leo folder.
-
-The section called &lt; &lt; setup info for createLeoDist.py &gt; &gt; contains further
-information. Make sure to update this information before running this script.
-</t>
-<t tx="ekr.20050118082301"># import leoGlobals as g
-
-import os
-import sys</t>
-<t tx="ekr.20050118083936.1">@
-
-New in 4.3 a1.
-
-- This script should run on all Leo installations; the script computes the locations
-  of all files as 'offsets' from g.app.loadDir.
-
-- This script temporarily copies .pycheckrc from the the leo/.. folder to the leo folder.
-
-This allows us to distribute .pycheckrc somewhere, even if it isn't in correct place.
-
-- This script temporarily copies createLeoDist.py from the dist folder to the leo folder.
-</t>
 <t tx="ekr.20050118092706.4">; settings taken from Version 1.0 of NSIS Script for Leo
 Caption "Leo Installer"
 AutoCloseWindow false 
@@ -3278,7 +3010,6 @@ File "..\scripts\openLeoScript.sh"</t>
 Delete "$INSTDIR\scripts\leoScripts.txt"
 Delete "$INSTDIR\scripts\*.p*"
 Delete "$INSTDIR\scripts\openLeoScript.sh"</t>
-<t tx="ekr.20050118113631"></t>
 <t tx="ekr.20050118122404">File "..\extensions\aspell23.pyd"
 File "..\extensions\aspell24.pyd"
 
@@ -5295,14 +5026,10 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20070614105133"></t>
-<t tx="ekr.20070614105133.1"></t>
 <t tx="ekr.20070614105133.2">import os,sys
 
 folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
 os.chdir(folder)
-
-# dstFile = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','setup.py'))
 
 command = '%s %s bdist_egg' % (sys.executable,'setup.py')
 print command
@@ -5348,5 +5075,15 @@ Python 2.2.1 or above and the Tk Tk 8.4 or above.
 Download Python from http://python.org/
 Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
  """</t>
+<t tx="ekr.20070614165755">import os,sys
+
+folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
+os.chdir(folder)
+
+command = '%s %s sdist' % (sys.executable,'setup.py')
+print command
+os.system(command)
+</t>
+<t tx="ekr.20070614170445"></t>
 </tnodes>
 </leo_file>
