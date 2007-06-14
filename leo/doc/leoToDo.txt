@@ -261,6 +261,20 @@ You can type multiple <alt-ctrl-keys> to toggle multiple checkboxes.
 #@-node:ekr.20070606165218:Improve documentation for search/replace
 #@+node:ekr.20070610094932:How to make a Leo command undoable
 #@-node:ekr.20070610094932:How to make a Leo command undoable
+#@+node:ekr.20070614070915:Improve docs re windows installer IMPROTANT
+@nocolor
+
+The proximate cause of the small dialog box is a sometimes-undefined variable in the installer script.  The bigger problem is that the script is trying to determine whether Python is installed by looking at the registry in various kludgy ways.
+
+> In the file INSTALL.TXT, in the section Installation under Windows, I think it would be useful to add a line saying that the environment variable PYTHONPATH has to be defined, otherwise leo.py is not found by Python.
+
+Yes, this would be helpful.  The installer shouldn't need PYTHONPATH, but alas, sometimes it does.
+
+Also, the installer's error messages should mention setting PYTHONPATH.
+
+Edward
+#@nonl
+#@-node:ekr.20070614070915:Improve docs re windows installer IMPROTANT
 #@-node:ekr.20070325054325:Docs (3 hours)
 #@+node:ekr.20070613070131:Fix or remove install/uninstall scripts
 @nocolor
@@ -290,145 +304,8 @@ Pythonistas have come to expect that::
 
 will locate and install the most recent version of app and install it.
 #@-node:ekr.20070307082503.1:Create Linux distribution
-#@+node:ekr.20070613093554.1:Get aspell working on Linux with ctypes & Python 2.4
-#@-node:ekr.20070613093554.1:Get aspell working on Linux with ctypes & Python 2.4
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
-#@+node:ekr.20070613103409:Improve marks/recent buttons
-- Arrow keys must move up/down.
-- Should be commands to show the marks/recent dialogs.
-#@nonl
-#@-node:ekr.20070613103409:Improve marks/recent buttons
-#@+node:ekr.20070605114358:Improve how recent files works??
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4347116
-By: terry_n_brown
-
-This is just a nit I guess, but I move between two machines all the time, and
-Leo keeps changing the paths I open from /home/tbrown/project/project.leo to
-/media/hda8/project/project.leo, so that when I switch to the other machine,
-where /home/tbrown/project/project.leo is actually /media/hdb2/project/project.leo,
-the recent files link is wrong.
-
-If it would be trivial for Leo to not do this, I'd like that feature.  If it's
-a big deal, then not to worry, I can always navigate to the file of course.
-#@-node:ekr.20070605114358:Improve how recent files works??
-#@+node:ekr.20070611173545:Improve unit testing!
-@nocolor
-
-A better unit test framework
-
-The recent major bug re demoting a clone illustrates the importance of unit
-tests. Such a major reversion/error should never have remained undetected for so
-long.
-
-My present opinion is that code can hardly have been said to be written, let
-alone tested, without unit tests. However, I am hardly a poster boy for rigorous
-unit testing during development. This must change.
-
-The present unit testing scheme puts most tests in unitTest.leo, augmented with
-functions or methods of the form 'test_' scattered throughout leoPy.leo. There
-are several drawbacks to this scheme:
-
-1. Most tests are far from the code they are meant to test. Imo, it is
-absolutely essential that unit tests be developed in tandem with the code they
-test. Otherwise, it is far too easy to procrastinate.
-
-The recent reorganization of the undo code for the chapters commands shows how
-useful proximity is. Putting all related code together saves a lot of work, and
-significantly clarifies the code.
-
-2. Defining 'test_' methods and functions is too clumsy, for several reasons.
-
-- Pychecker gives erroneous warnings about undefined or unused variables. Alas,
-t looks like there is no way to turn off such incorrect warnings. Even if there
-were a way, it would be tedious to keep pychecker to keep quiet, but such
-'tedium' would be acceptable given the importance of suppressing bogus warnings.
-
-- There is no convenient way to execute the test_methods. Ideally, the
-run-unit-tests command/script would generate the actual test code and then run
-them in an 'updated' copy of Leo (a version of Leo that uses the very latest
-source code.) This leads to...
-
-- We need a way to execute code (test_ methods or maybe even raw code) in a tree
-as a unit test in the current environment (the latest saved .py files) rather
-than the environment that existed when Leo was first loaded.
-
-- We need a way to intermix complex unit tests (possibly defined by a tree
-containing @others, etc.) with Leo's actual source code. Ideally, tests would be
-contained in @test or @suite nodes, just as in unitTest.leo.
-
-These ideas seem to imply something like the following scheme:
-
-1. Most (all?) unit tests will be contained in leoPy.leo. Unit tests will, as
-usual, be marked with @test or @suite in the headline. It would be more than
-nice to find a way to allow automatic definition of c, g and p in @test code (as
-at present) *without* having pychecker warn about these variables not being
-defined.
-
-2. @test or @suite nodes must not be executed when Python imports a file
-containing these nodes. The easy way to prevent this is to make @test or @suite
-nodes children of a node with the following body text:
-
-if 0:
-    @others
-
-The headline text of such nodes could be anything; 'Tests' would be natural.
-
-Hmm, I suppose one way to suppress pychecker errors and also make it unnecessary
-to 'protect' @test nodes with 'if 0' would be to put the body of @test nodes in
-@doc parts. That way the test code becomes a comment. But that is too cute. I
-don't want to give up syntax coloring for test code!
-
-A related idea would be to add an @test directive that has effect in the body
-pane. This would cause Leo to output the body text as a comment, while retaining
-syntax coloring. This is a little better, but it is too complex to be considered
-elegant.
-
-My first best hope is that pychecker itself will suppress warnings for code in
-the range of an 'if 0'. If so, great. If not, maybe I can make pychecker work
-that way...
-
-3. The run-unit-tests-from-sources command will search the present .leo file
-(open outline) looking for @test and @suite nodes. When found, the command will
-execute these nodes much as is done in unitTest.leo, but the code is run in an
-external process with the latest code for Leo. Presumably the output of the unit
-tests can be piped to Leo's log window or outline pane.
-
-Important: it would be possible to run the body of an @test node using the
-execute script command, but the script would run in the environment that existed
-when leo.py started, *not* in the present environment in which one or many of
-Leo's source files have been altered. Thus, the execute script command has
-little usefulness for unit testing in this scheme.
-
-4. Pychecker may actually be the biggest problem. Invalid pychecker errors
-rapidly reduce its usefulness. I have looked in vain for a pychecker options
-that suppresses *all* pychecker errors and warnings for a specified range of
-code. If necessary, it would be worthwhile to modify pychecker itself...
-#@nonl
-#@-node:ekr.20070611173545:Improve unit testing!
-#@+node:ekr.20070613181147:(maybe) Improve key handling
-# The idea is to use a single <Key binding> and
-# use w.event_generate(key) to create a table
-# that associates Tk key numbers with bindings:
-
-    if event.char:
-        if 0:
-            import Tkinter as Tk
-            w = Tk.Text()
-            def foo (event):
-                g.trace(event)
-            w.bind('<Key>',foo)
-            for prefix in ('Alt-Key-','Shift-Key-'):
-                key = '<%s%s>' % (prefix,event.char.strip())
-                g.trace(key)
-                w.event_generate('a')
-        if 0:
-            for z in ('char','keysym','keycode','keysym_num','state',):
-                a = getattr(event,z)
-                print z,repr(a)
-#@-node:ekr.20070613181147:(maybe) Improve key handling
 #@+node:ekr.20070324084040:@auto
 #@+node:ekr.20070610133513:Design and notes
 #@+node:ekr.20070611173545.1:Review
@@ -1399,6 +1276,148 @@ def checkImport (self):
 #@-node:ekr.20070612133404.3:Pass 5: checkImport
 #@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
 #@-node:ekr.20070324084040:@auto
+#@+node:ekr.20070613193516:Improvements
+#@+node:ekr.20070613103409:Improve marks/recent buttons
+- Arrow keys must move up/down.
+- Should be commands to show the marks/recent dialogs.
+#@nonl
+#@-node:ekr.20070613103409:Improve marks/recent buttons
+#@+node:ekr.20070605114358:Improve how recent files works??
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4347116
+By: terry_n_brown
+
+This is just a nit I guess, but I move between two machines all the time, and
+Leo keeps changing the paths I open from /home/tbrown/project/project.leo to
+/media/hda8/project/project.leo, so that when I switch to the other machine,
+where /home/tbrown/project/project.leo is actually /media/hdb2/project/project.leo,
+the recent files link is wrong.
+
+If it would be trivial for Leo to not do this, I'd like that feature.  If it's
+a big deal, then not to worry, I can always navigate to the file of course.
+#@-node:ekr.20070605114358:Improve how recent files works??
+#@+node:ekr.20070611173545:Improve unit testing!
+@nocolor
+
+A better unit test framework
+
+The recent major bug re demoting a clone illustrates the importance of unit
+tests. Such a major reversion/error should never have remained undetected for so
+long.
+
+My present opinion is that code can hardly have been said to be written, let
+alone tested, without unit tests. However, I am hardly a poster boy for rigorous
+unit testing during development. This must change.
+
+The present unit testing scheme puts most tests in unitTest.leo, augmented with
+functions or methods of the form 'test_' scattered throughout leoPy.leo. There
+are several drawbacks to this scheme:
+
+1. Most tests are far from the code they are meant to test. Imo, it is
+absolutely essential that unit tests be developed in tandem with the code they
+test. Otherwise, it is far too easy to procrastinate.
+
+The recent reorganization of the undo code for the chapters commands shows how
+useful proximity is. Putting all related code together saves a lot of work, and
+significantly clarifies the code.
+
+2. Defining 'test_' methods and functions is too clumsy, for several reasons.
+
+- Pychecker gives erroneous warnings about undefined or unused variables. Alas,
+t looks like there is no way to turn off such incorrect warnings. Even if there
+were a way, it would be tedious to keep pychecker to keep quiet, but such
+'tedium' would be acceptable given the importance of suppressing bogus warnings.
+
+- There is no convenient way to execute the test_methods. Ideally, the
+run-unit-tests command/script would generate the actual test code and then run
+them in an 'updated' copy of Leo (a version of Leo that uses the very latest
+source code.) This leads to...
+
+- We need a way to execute code (test_ methods or maybe even raw code) in a tree
+as a unit test in the current environment (the latest saved .py files) rather
+than the environment that existed when Leo was first loaded.
+
+- We need a way to intermix complex unit tests (possibly defined by a tree
+containing @others, etc.) with Leo's actual source code. Ideally, tests would be
+contained in @test or @suite nodes, just as in unitTest.leo.
+
+These ideas seem to imply something like the following scheme:
+
+1. Most (all?) unit tests will be contained in leoPy.leo. Unit tests will, as
+usual, be marked with @test or @suite in the headline. It would be more than
+nice to find a way to allow automatic definition of c, g and p in @test code (as
+at present) *without* having pychecker warn about these variables not being
+defined.
+
+2. @test or @suite nodes must not be executed when Python imports a file
+containing these nodes. The easy way to prevent this is to make @test or @suite
+nodes children of a node with the following body text:
+
+if 0:
+    @others
+
+The headline text of such nodes could be anything; 'Tests' would be natural.
+
+Hmm, I suppose one way to suppress pychecker errors and also make it unnecessary
+to 'protect' @test nodes with 'if 0' would be to put the body of @test nodes in
+@doc parts. That way the test code becomes a comment. But that is too cute. I
+don't want to give up syntax coloring for test code!
+
+A related idea would be to add an @test directive that has effect in the body
+pane. This would cause Leo to output the body text as a comment, while retaining
+syntax coloring. This is a little better, but it is too complex to be considered
+elegant.
+
+My first best hope is that pychecker itself will suppress warnings for code in
+the range of an 'if 0'. If so, great. If not, maybe I can make pychecker work
+that way...
+
+3. The run-unit-tests-from-sources command will search the present .leo file
+(open outline) looking for @test and @suite nodes. When found, the command will
+execute these nodes much as is done in unitTest.leo, but the code is run in an
+external process with the latest code for Leo. Presumably the output of the unit
+tests can be piped to Leo's log window or outline pane.
+
+Important: it would be possible to run the body of an @test node using the
+execute script command, but the script would run in the environment that existed
+when leo.py started, *not* in the present environment in which one or many of
+Leo's source files have been altered. Thus, the execute script command has
+little usefulness for unit testing in this scheme.
+
+4. Pychecker may actually be the biggest problem. Invalid pychecker errors
+rapidly reduce its usefulness. I have looked in vain for a pychecker options
+that suppresses *all* pychecker errors and warnings for a specified range of
+code. If necessary, it would be worthwhile to modify pychecker itself...
+#@nonl
+#@-node:ekr.20070611173545:Improve unit testing!
+#@+node:ekr.20070613181147:(maybe) Improve key handling
+# The idea is to use a single <Key binding> and
+# use w.event_generate(key) to create a table
+# that associates Tk key numbers with bindings:
+
+    if event.char:
+        if 0:
+            import Tkinter as Tk
+            w = Tk.Text()
+            def foo (event):
+                g.trace(event)
+            w.bind('<Key>',foo)
+            for prefix in ('Alt-Key-','Shift-Key-'):
+                key = '<%s%s>' % (prefix,event.char.strip())
+                g.trace(key)
+                w.event_generate('a')
+        if 0:
+            for z in ('char','keysym','keycode','keysym_num','state',):
+                a = getattr(event,z)
+                print z,repr(a)
+#@-node:ekr.20070613181147:(maybe) Improve key handling
+#@+node:ekr.20070613123724:Use alt-shift-arrow keys to resize panes (!)
+Alt-shift-up/down (make body pane bigger,smaller)
+Alt-shift-left/right (make log pane bigger,smaller)
+#@nonl
+#@-node:ekr.20070613123724:Use alt-shift-arrow keys to resize panes (!)
+#@-node:ekr.20070613193516:Improvements
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070105135713:To do: 4.5 (new positions)
 #@+node:ekr.20061028070132:New positions

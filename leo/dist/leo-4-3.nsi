@@ -103,6 +103,8 @@ var StrNoUsablePythonFound
 ; code taken from the "Leo" Section of Leo Installer Version 1.0
 ;
 Function .onInit
+    # Create default error message
+    StrCpy $StrNoUsablePythonFound "${STRING_PYTHON_NOT_FOUND}"
     ;@    << .onInit documentation >>
     ;@+node:ekr.20050118092706.7:<< .onInit documentation >>
       # I sure hope there is a better way to do this, but other techniques don't seem to work.
@@ -133,7 +135,6 @@ Function .onInit
     # cut 8 characters from back of the open command
     StrCpy $8 $9 -8
 
-
     IfFileExists $8 ok tryagain
 
     tryagain:
@@ -150,6 +151,7 @@ Function .onInit
     ;@nl
     ;@    << Try for format used by the MSI installer of Python 2.4-release >>
     ;@+node:ekr.20050118092706.9:<< Try for format used by the MSI installer of Python 2.4-release >>
+
     ;@<< Try for format used for Python available to all users >>
     ;@+node:ekr.20050118092706.10:<< Try for format used for Python available to all users >>
     tryMSIformat:
