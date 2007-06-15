@@ -5528,6 +5528,7 @@ class leoCommandsClass (baseEditCommandsClass):
             'go-back':                      c.goPrevVisitedNode,
             'go-forward':                   c.goNextVisitedNode,
             'goto-first-node':              c.goToFirstNode,
+            'goto-first-visible-node':      c.goToFirstVisibleNode,
             'goto-first-sibling':           c.goToFirstSibling,
             'goto-last-node':               c.goToLastNode,
             'goto-last-sibling':            c.goToLastSibling,
