@@ -6,7 +6,7 @@
 #@@tabwidth -4
 
 __plugin_name__ = "Node Navigator"
-__version__ = "0.13"
+__version__ = "0.14"
 
 #@<< version history >>
 #@+node:ekr.20040908093511.2:<< version history >>
@@ -35,6 +35,7 @@ __version__ = "0.13"
 # 0.11 EKR: Disabled setting __name__ so that an entry is created for 
 # nodenavigator in the Plugins menu.
 # 0.13 EKR: set __plugin_name__ rather than __name__.
+# 0.14 EKR: use c.nodeHistory.visitedPositions rather than c.visitedList.
 #@-at
 #@nonl
 #@-node:ekr.20040908093511.2:<< version history >>
@@ -255,7 +256,7 @@ class Navigator:
         menu = menu["menu"]
         menu.delete(0,"end")
 
-        for p in c.visitedList[:25]:
+        for p in c.nodeHistory.visitedPositions()[:25]:
             if c.positionExists(p):
                 def callback(event=None,self=self,c=c,p=p):
                     self.select(c,p)

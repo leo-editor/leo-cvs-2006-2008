@@ -36,7 +36,6 @@ __version__ = "1.6"
 #     - The code is _much_ simpler than before.
 #     - Added marksInitiallyVisible and recentInitiallyVisible config 
 # constants.
-# 
 # 1.4 EKR: 2 bug fixes
 #     - Allways fill the box when clicking on the 'Recent' button.
 #     - Use keywords.get('c') NOT self.c in hook handlers.  They may not be 
@@ -45,13 +44,9 @@ __version__ = "1.6"
 # be
 #           fixed because there is no way to associate commanders with hook 
 # handlers.
-# 
 # 1.5 EKR: Fixed crasher in tkinterListBoxDialog.go().
 #     updateMarks must set positionList ivar in the base class.
-# 1.6 EKR: Use c.beadPointer > 0 rather than c.beadPointer > 1 to enable the 
-# back button.
-#             This change make the plugin work better with recent changes to 
-# Leo's core.
+# 1.6 EKR: Use c.nodeHistory methods instead of raw ivars of the commander.
 #@-at
 #@-node:ekr.20050219114353.1:<< version history >>
 #@nl
@@ -324,8 +319,8 @@ class recentSectionsDialog (tkinterListBoxDialog):
 
         c = self.c
 
-        self.c.visitedList = []
         self.positionList = []
+        self.nodeHistory.clear()
         self.fillbox()
     #@nonl
     #@-node:edream.110203113231.783:clearAll
@@ -355,8 +350,7 @@ class recentSectionsDialog (tkinterListBoxDialog):
             n = items[0]
             p = self.position[n]
             del self.positionList[n]
-            if p in c.visitedList:
-                c.visitedList.remove(p)
+            c.nodeHistory.remove(p)
             self.fillbox()
     #@nonl
     #@-node:edream.110203113231.785:deleteEntry
@@ -383,13 +377,12 @@ class recentSectionsDialog (tkinterListBoxDialog):
         self.box.delete(0,"end")
         c = self.c ; i = 0
         self.positionList = [] ; tnodeList = []
-        for p in c.visitedList:
+        for p in c.nodeHistory.visitedPositions():
             if c.positionExists(p) and p.v.t not in tnodeList:
                 self.box.insert(i,p.headString().strip())
                 tnodeList.append(p.v.t)
                 self.positionList.append(p.copy())
                 i += 1
-    #@nonl
     #@-node:edream.110203113231.787:fillbox
     #@+node:ekr.20050508104217:testxxx.py
     import unittest
@@ -425,11 +418,11 @@ class recentSectionsDialog (tkinterListBoxDialog):
             (
                 self.lt_nav_button,self.lt_nav_iconFrame_button,
                 self.lt_nav_enabled_image,self.lt_nav_disabled_image,
-                c.beadPointer > 0),
+                c.nodeHistory.canGoToPrevVisited()),
             (
                 self.rt_nav_button,self.rt_nav_iconFrame_button,
                 self.rt_nav_enabled_image,self.rt_nav_disabled_image,
-                c.beadPointer + 1 < len(c.beadList)),
+                c.nodeHistory.canGoToNextVisited()),
         ):
             # Disabled state makes the icon look bad.
             image = g.choose(cond,enabled_image,disabled_image)
