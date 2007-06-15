@@ -183,8 +183,8 @@ class leoMenu:
             #@        << enable go to submenu >>
             #@+node:ekr.20040131171020.3:<< enable go to submenu >>
             menu = frame.menu.getMenu("Go To...")
-            enable(menu,"Go To Prev Visited",c.beadPointer > 1)
-            enable(menu,"Go To Next Visited",c.beadPointer + 1 < len(c.beadList))
+            enable(menu,"Go To Prev Visited",c.nodeHistory.canGoToPrevVisited())
+            enable(menu,"Go To Next Visited",c.nodeHistory.canGoToNextVisited())
             enable(menu,"Go To Prev Visible",c.canSelectVisBack())
             enable(menu,"Go To Next Visible",c.canSelectVisNext())
             if 0: # These are too slow.
@@ -801,7 +801,7 @@ class leoMenu:
             '-',
             ('Go To Last Node','goto-last-node'),
             ('Go To Last Siblin&g','goto-last-sibling'),
-            ('Go To &Last Visible','goto-last-visible'),
+            ('Go To &Last Visible','goto-last-visible-node'),
         ]
     #@-node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
     #@-node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
