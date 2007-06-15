@@ -79,9 +79,11 @@ class baseCommands:
         # g.trace(c) # Do this after setting c.mFileName.
         c.initIvars()
 
+        self.contractVisitedNodes = c.config.getBool('contractVisitedNodes')
         self.useTextMinibuffer = c.config.getBool('useTextMinibuffer')
         self.showMinibuffer = c.config.getBool('useMinibuffer')
         self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
+
 
         # initialize the sub-commanders.
         # c.finishCreate creates the sub-commanders for edit commands.
@@ -4439,12 +4441,12 @@ class baseCommands:
 
         c = self
 
-        while c.beadPointer + 1 < len(c.beadList):
+        if c.beadPointer + 1 < len(c.beadList):
             c.beadPointer += 1
-            v = c.beadList[c.beadPointer]
-            if c.positionExists(v):
-                c.treeSelectHelper(v)
-                return
+            p = c.beadList[c.beadPointer]
+            if c.contractVisitedNodes:
+                p.contract()
+            c.treeSelectHelper(p)
     #@-node:ekr.20031218072017.1628:goNextVisitedNode
     #@+node:ekr.20031218072017.1627:goPrevVisitedNode
     def goPrevVisitedNode (self,event=None):
@@ -4453,12 +4455,12 @@ class baseCommands:
 
         c = self
 
-        while c.beadPointer > 0:
+        if c.beadPointer > 0:
             c.beadPointer -= 1
-            v = c.beadList[c.beadPointer]
-            if c.positionExists(v):
-                c.treeSelectHelper(v)
-                return
+            p = c.beadList[c.beadPointer]
+            if c.contractVisitedNodes:
+                p.contract()
+            c.treeSelectHelper(p)
     #@-node:ekr.20031218072017.1627:goPrevVisitedNode
     #@+node:ekr.20031218072017.2914:goToFirstNode
     def goToFirstNode (self,event=None):
@@ -4482,6 +4484,19 @@ class baseCommands:
 
         c.treeSelectHelper(p)
     #@-node:ekr.20051012092453:goToFirstSibling
+    #@+node:ekr.20070615070925:goToFirstVisibleNode
+    def goToFirstVisibleNode (self,event=None):
+
+        '''Select the first visible node of the selected chapter or hoist.'''
+
+        c = self
+
+        p = c.firstVisible()
+        if p:
+            c.selectPosition(p)
+
+        c.treeSelectHelper(p)
+    #@-node:ekr.20070615070925:goToFirstVisibleNode
     #@+node:ekr.20031218072017.2915:goToLastNode
     def goToLastNode (self,event=None):
 
@@ -4509,17 +4524,9 @@ class baseCommands:
     #@+node:ekr.20050711153537:c.goToLastVisibleNode
     def goToLastVisibleNode (self,event=None):
 
-        '''Select the last visible node of the entire outline.'''
+        '''Select the last visible node of selected chapter or hoist.'''
 
         c = self
-
-        # p = c.rootPosition()
-
-        # while p.hasNext():
-            # p.moveToNext()
-
-        # while p and p.isExpanded():
-            # p.moveToLastChild()
 
         p = c.lastVisible()
         if p:
@@ -6242,6 +6249,20 @@ class baseCommands:
         return p
     #@nonl
     #@-node:ekr.20060906134053:c.findRootPosition New in 4.4.2
+    #@+node:ekr.20070615070925.1:c.firstVisible
+    def firstVisible(self):
+
+        """Move to the first visible node of the present chapter or hoist."""
+
+        c = self ; p = c.currentPosition()
+
+        while 1:
+            back = p.visBack(c)
+            if back and back.isVisible(c):
+                p = back
+            else: break
+        return p
+    #@-node:ekr.20070615070925.1:c.firstVisible
     #@+node:ekr.20040803112200:c.is...Position
     #@+node:ekr.20040803155551:c.currentPositionIsRootPosition
     def currentPositionIsRootPosition (self):
@@ -6302,8 +6323,8 @@ class baseCommands:
 
         """Move to the last visible node of the present chapter or hoist."""
 
-        c = self
-        p = c.currentPosition()
+        c = self ; p = c.currentPosition()
+
         while 1:
             next = p.visNext(c)
             # g.trace('next',next)
@@ -6645,7 +6666,10 @@ class baseCommands:
 
         """Select a new position."""
 
-        c = self
+        c = self ; cc = c.chapterController
+
+        if cc:
+            cc.selectChapterForPosition(p)
 
         # g.trace(p.headString(),g.callers())
 
