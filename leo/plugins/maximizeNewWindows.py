@@ -51,9 +51,8 @@ def maximize_window(tag, keywords):
 
     c = keywords.get('c')
     if c and c.exists and c.frame and not c.frame.isNullFrame:
-        def maximize_window_callback(event=None,c=c):
-             c.frame.resizeToScreen()
-        c.frame.top.after_idle(maximize_window_callback)
+        c.frame.resizeToScreen()
+#@nonl
 #@-node:ekr.20070602072200.2:maximize_window
 #@-others
 #@-node:ekr.20040915073259.1:@thin maximizeNewWindows.py
