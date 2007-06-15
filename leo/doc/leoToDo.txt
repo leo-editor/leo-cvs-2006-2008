@@ -290,6 +290,17 @@ Edward
 #@nonl
 #@-node:ekr.20070614070915:Improve docs re windows installer IMPROTANT
 #@-node:ekr.20070325054325:Docs (3 hours)
+#@+node:ekr.20070613070131:Remove Linux install/uninstall scripts
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4359597
+By: shrogers
+
+Uninstall failed (hung) on Fedora Core 6 and CentOS 4.3 Linux.  I had to manually
+remove  /usr/local/lib/leo  before I could successfully run install.
+
+# Steve
+#@-node:ekr.20070613070131:Remove Linux install/uninstall scripts
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070324084040:@auto
