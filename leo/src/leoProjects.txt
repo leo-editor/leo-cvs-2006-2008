@@ -52442,6 +52442,8 @@ def treeSelectHelper (self,p,redraw=True):
 #@+node:ekr.20070615103622:New features & settings
 #@+node:ekr.20070615103622.1:Added @bool contractVisitedNodes setting
 #@-node:ekr.20070615103622.1:Added @bool contractVisitedNodes setting
+#@+node:ekr.20070615105011:Added goto-first-visible-node command
+#@-node:ekr.20070615105011:Added goto-first-visible-node command
 #@-node:ekr.20070615103622:New features & settings
 #@-node:ekr.20070612132051:Leo 4.4.3 rc1 projects
 #@+node:ekr.20070126072723:pychecker
