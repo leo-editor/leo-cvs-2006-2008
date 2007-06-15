@@ -608,7 +608,9 @@ class chapterController:
     def inChapter (self):
 
         cc = self
-        return cc.selectedChapter and cc.selectedChapter.name != 'main'
+
+        theChapter = cc.getSelectedChapter()
+        return theChapter and theChapter.name != 'main'
     #@-node:ekr.20070605124356:cc.inChapter
     #@+node:ekr.20070325115102:cc.getChaperNode
     def getChapterNode (self,chapterName,p=None):
@@ -661,6 +663,35 @@ class chapterController:
                 print '.'*p.level(),p.v
     #@nonl
     #@-node:ekr.20070510064813:cc.printChaptersTree
+    #@+node:ekr.20070615075643:cc.selectChapterForPosition
+    def selectChapterForPosition (self,p):
+
+        '''
+        Select a chapter containing position p.
+        Do nothing if p if p does not exist or is in the presently selected chapter.
+        '''
+        cc = self ; c = cc.c
+
+        if not p or not c.positionExists(p):
+            return
+
+        theChapter = cc.getSelectedChapter()
+        if not theChapter: return
+
+        # g.trace('selected:',theChapter.name)
+        firstName = theChapter.name
+        if firstName != 'main':
+            if theChapter.positionIsInChapter(p): return
+
+        for name in cc.chaptersDict.keys():
+            if name not in (firstName,'main'):
+                theChapter = cc.chaptersDict.get(name)
+                if theChapter.positionIsInChapter(p):
+                    cc.selectChapterByName(name)
+                    return
+        else:
+            cc.selectChapterByName('main')
+    #@-node:ekr.20070615075643:cc.selectChapterForPosition
     #@-node:ekr.20070317130648:Utils
     #@+node:ekr.20070610100031:Undo
     #@+node:ekr.20070606075125:afterCreateChapter
@@ -888,7 +919,7 @@ class chapter:
     #@nonl
     #@-node:ekr.20070423102603.1:chapterSelectHelper
     #@+node:ekr.20070317131708:chapter.findPositionInChapter
-    def findPositionInChapter (self,p1):
+    def findPositionInChapter (self,p1,strict=False):
 
         '''Return a valid position p such that p.v == v.'''
 
@@ -907,14 +938,21 @@ class chapter:
                     # g.trace('*** found in main chapter',p)
                     self.p = p.copy()
                     return self.p
-            self.p = c.rootPosition()
+            if strict:
+                return None
+            else:
+                self.p = c.rootPosition()
         else:
             for p in self.root.self_and_subtree_iter():
+                # g.trace('testing',p,p1)
                 if p.v == p1.v:
                     # g.trace('*** found in chapter',p)
                     self.p = p.copy()
                     return self.p
-            self.p = self.root.copy()
+            if strict:
+                return None
+            else:
+                self.p = self.root.copy()
 
         if 0:
             self.error('***** chapter: %s findPositionInChapter: lost %s' % (
@@ -936,6 +974,15 @@ class chapter:
         return w
     #@nonl
     #@-node:ekr.20070425175522:chapter.findEditorInChapter
+    #@+node:ekr.20070615065222:chapter.positionIsInChapter
+    def positionIsInChapter (self,p):
+
+        p2 = self.findPositionInChapter (p,strict=True)
+
+        # g.trace(self.name,'returns',p2)
+        return p2
+    #@nonl
+    #@-node:ekr.20070615065222:chapter.positionIsInChapter
     #@+node:ekr.20070529171934.1:chapter.rename (not used)
     def rename (self,newName):
 
