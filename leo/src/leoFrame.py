@@ -2678,47 +2678,7 @@ class leoTree:
                             self.scrollTo(p)
                         self.canvas.after(100,scrollCallback)
                 except Exception: pass
-            #@        << update c.beadList or c.beadPointer >>
-            #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
-            # c.beadList is the list of nodes for the back and forward commands.
-            # The back and forward commands do not update this list.
-
-            if updateBeadList:
-
-                # Don't change the list if p is already in it.
-                update = True
-                for p2 in c.beadList:
-                    if p2 == p:
-                        update = False
-                    if not c.positionExists(p2,root=c.rootPosition()):
-                        c.beadList.remove(p2)
-                        update = True ; break
-
-                # Add the node to the end, and set the bead pointer to the end.
-                if update:
-                    c.beadList.append(p.copy())
-                    c.beadPointer = len(c.beadList)-1
-                    #g.trace('updating bead list',p.headString())
-                    #print [p.headString() for p in c.beadList]
-            #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
-            #@nl
-            #@        << update c.visitedList >>
-            #@+node:ekr.20040803072955.132:<< update c.visitedList >>
-            # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
-
-            # Make p the most recently visited position on the list.
-
-            for p2 in c.visitedList:
-                if p2 == p:
-                    c.visitedList.remove(p2)
-
-            c.visitedList.insert(0,p.copy())
-
-            # g.trace('len(c.visitedList)',len(c.visitedList))
-            # g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
-            #@-node:ekr.20040803072955.132:<< update c.visitedList >>
-            #@nl
-
+            c.nodeHistory.update(p,updateBeadList) # Remember this position.
         c.setCurrentPosition(p)
         #@    << set the current node >>
         #@+node:ekr.20040803072955.133:<< set the current node >>
