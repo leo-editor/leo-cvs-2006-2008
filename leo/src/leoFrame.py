@@ -2391,14 +2391,16 @@ class leoTree:
         Return a flag telling whether a redraw is needed.'''
 
         c = self.c ; cc = c.chapterController ; redraw_flag = False
-        inChapter = cc and cc.inChapter()
+        # inChapter = cc and cc.inChapter()
 
         c.beginUpdate()
         try:
             for p in p.parents_iter():
-                if inChapter and p.headString().startswith('@chapter'):
+                # g.trace('testing',p)
+                if cc and p.headString().startswith('@chapter'):
                     break
                 if not p.isExpanded():
+                    # g.trace('inChapter',inChapter,'p',p,g.callers())
                     p.expand()
                     redraw_flag = True
         finally:
@@ -2679,26 +2681,25 @@ class leoTree:
             #@        << update c.beadList or c.beadPointer >>
             #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
             # c.beadList is the list of nodes for the back and forward commands.
+            # The back and forward commands do not update this list.
 
             if updateBeadList:
 
-                if c.beadPointer > -1:
-                    present_p = c.beadList[c.beadPointer]
-                else:
-                    present_p = c.nullPosition()
+                # Don't change the list if p is already in it.
+                update = True
+                for p2 in c.beadList:
+                    if p2 == p:
+                        update = False
+                    if not c.positionExists(p2,root=c.rootPosition()):
+                        c.beadList.remove(p2)
+                        update = True ; break
 
-                if p != present_p:
-                    # Replace the tail of c.beadList by p and make p the present node.
-                    c.beadPointer += 1
-                    c.beadList[c.beadPointer:] = []
+                # Add the node to the end, and set the bead pointer to the end.
+                if update:
                     c.beadList.append(p.copy())
-
-                    # New in Leo 4.4: limit this list to 100 items.
-                    if 0: # Doesn't work yet.
-                        c.beadList = c.beadList [-100:]
-                        g.trace('len(c.beadList)',len(c.beadList))
-
-                # g.trace(c.beadPointer,p,present_p)
+                    c.beadPointer = len(c.beadList)-1
+                    #g.trace('updating bead list',p.headString())
+                    #print [p.headString() for p in c.beadList]
             #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
             #@nl
             #@        << update c.visitedList >>
@@ -2706,8 +2707,10 @@ class leoTree:
             # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
 
             # Make p the most recently visited position on the list.
-            if p in c.visitedList:
-                c.visitedList.remove(p)
+
+            for p2 in c.visitedList:
+                if p2 == p:
+                    c.visitedList.remove(p2)
 
             c.visitedList.insert(0,p.copy())
 
