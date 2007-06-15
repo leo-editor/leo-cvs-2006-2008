@@ -52439,6 +52439,10 @@ def treeSelectHelper (self,p,redraw=True):
 #@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
 #@-node:ekr.20070615074842:Improved goto-next/prev-node commands
 #@-node:ekr.20070615103418:Fixed bugs
+#@+node:ekr.20070615103622:New features & settings
+#@+node:ekr.20070615103622.1:Added @bool contractVisitedNodes setting
+#@-node:ekr.20070615103622.1:Added @bool contractVisitedNodes setting
+#@-node:ekr.20070615103622:New features & settings
 #@-node:ekr.20070612132051:Leo 4.4.3 rc1 projects
 #@+node:ekr.20070126072723:pychecker
 #@+node:ekr.20070316175323:Invalid warnings
