@@ -183,8 +183,8 @@ class leoMenu:
             #@        << enable go to submenu >>
             #@+node:ekr.20040131171020.3:<< enable go to submenu >>
             menu = frame.menu.getMenu("Go To...")
-            enable(menu,"Go Prev Visited",c.beadPointer > 1)
-            enable(menu,"Go Next Visited",c.beadPointer + 1 < len(c.beadList))
+            enable(menu,"Go To Prev Visited",c.beadPointer > 1)
+            enable(menu,"Go To Next Visited",c.beadPointer + 1 < len(c.beadList))
             enable(menu,"Go To Prev Visible",c.canSelectVisBack())
             enable(menu,"Go To Next Visible",c.canSelectVisNext())
             if 0: # These are too slow.
@@ -779,27 +779,29 @@ class leoMenu:
     def defineOutlineMenuGoToMenuTable (self):
 
         self.outlineMenuGoToMenuTable = [
-            # &: a,c,d,e,g,i,l,m,n,o,p,r,s,t,v,x
-            ('Go Prev Visite&d','go-back'),
-            ('Go Next Visited','go-forward'),
-            ('Go To P&rev Node','goto-prev-node'),
-            ('Go To N&ext Node','goto-next-node'),
+            # &: a,b,c,d,e,f,g,h,i,l,m,n,o,p,r,s,t,v,
+            ('Go To &First Node','goto-first-node'),
+            ('Go To First V&isible','goto-first-visible-node'),
+            ('Go To First Si&bling','goto-first-sibling'),
             '-',
-            ('Go To Next &Marked','goto-next-marked'),
-            ('Go To Next &Changed','goto-next-changed'),
+            ('Go To Next C&hanged','goto-next-changed'),
             ('Go To Next &Clone','goto-next-clone'),
+            ('Go To Next &Marked','goto-next-marked'),
+            ('Go To Next N&ode','goto-next-node'),
+            ('Go To Next &Sibling','goto-next-sibling'),
+            ('Go To Next Visibl&e','goto-next-visible'),
+            ('Go To Next Visite&d','go-forward'),
             '-',
-            ('&Go To First Node','goto-first-node'),
-            ('G&o To Prev Visible','goto-prev-visible'),
-            ('Go To Ne&xt Visible','goto-next-visible'),
-            ('Go To L&ast Node','goto-last-node'),
-            ('Go To Last &Visible','goto-last-visible'),
+            ('Go To P&arent','goto-parent'),
             '-',
-            ('Go To &Parent','goto-parent'),
-            ('Go To First &Sibling','goto-first-sibling'),
-            ('Go To Last S&ibling','goto-last-sibling'),
-            ('Go To Prev Sibli&ng','goto-prev-sibling'),
-            ('Go To Next Siblin&g','goto-next-sibling'),
+            ('Go To &Prev Node','goto-prev-node'),
+            ('Go To P&rev Sibling','goto-prev-sibling'),
+            ('Go To Pre&v Visible','goto-prev-visible'),
+            ('Go To Prev Visi&ted','go-back'),
+            '-',
+            ('Go To Last Node','goto-last-node'),
+            ('Go To Last Siblin&g','goto-last-sibling'),
+            ('Go To &Last Visible','goto-last-visible'),
         ]
     #@-node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
     #@-node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
