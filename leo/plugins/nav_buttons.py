@@ -20,7 +20,7 @@ import os
 #@nonl
 #@-node:ekr.20050219114353:<< imports >>
 #@nl
-__version__ = "1.5"
+__version__ = "1.6"
 #@<< version history >>
 #@+node:ekr.20050219114353.1:<< version history >>
 #@@killcolor
@@ -48,6 +48,10 @@ __version__ = "1.5"
 # 
 # 1.5 EKR: Fixed crasher in tkinterListBoxDialog.go().
 #     updateMarks must set positionList ivar in the base class.
+# 1.6 EKR: Use c.beadPointer > 0 rather than c.beadPointer > 1 to enable the 
+# back button.
+#             This change make the plugin work better with recent changes to 
+# Leo's core.
 #@-at
 #@-node:ekr.20050219114353.1:<< version history >>
 #@nl
@@ -421,7 +425,7 @@ class recentSectionsDialog (tkinterListBoxDialog):
             (
                 self.lt_nav_button,self.lt_nav_iconFrame_button,
                 self.lt_nav_enabled_image,self.lt_nav_disabled_image,
-                c.beadPointer > 1),
+                c.beadPointer > 0),
             (
                 self.rt_nav_button,self.rt_nav_iconFrame_button,
                 self.rt_nav_enabled_image,self.rt_nav_disabled_image,
