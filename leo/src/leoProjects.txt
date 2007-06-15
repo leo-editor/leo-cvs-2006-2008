@@ -4428,7 +4428,10 @@ def selectPosition(self,p,updateBeadList=True):
 
     """Select a new position."""
 
-    c = self
+    c = self ; cc = c.chapterController
+
+    if cc:
+        cc.selectChapterForPosition(p)
 
     # g.trace(p.headString(),g.callers())
 
@@ -4548,33 +4551,34 @@ else:
 #@-node:ekr.20040803072955.130:<< select the new node >>
 #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 # c.beadList is the list of nodes for the back and forward commands.
+# The back and forward commands do not update this list.
 
 if updateBeadList:
 
-    if c.beadPointer > -1:
-        present_p = c.beadList[c.beadPointer]
-    else:
-        present_p = c.nullPosition()
+    # Don't change the list if p is already in it.
+    update = True
+    for p2 in c.beadList:
+        if p2 == p:
+            update = False
+        if not c.positionExists(p2,root=c.rootPosition()):
+            c.beadList.remove(p2)
+            update = True ; break
 
-    if p != present_p:
-        # Replace the tail of c.beadList by p and make p the present node.
-        c.beadPointer += 1
-        c.beadList[c.beadPointer:] = []
+    # Add the node to the end, and set the bead pointer to the end.
+    if update:
         c.beadList.append(p.copy())
-
-        # New in Leo 4.4: limit this list to 100 items.
-        if 0: # Doesn't work yet.
-            c.beadList = c.beadList [-100:]
-            g.trace('len(c.beadList)',len(c.beadList))
-
-    # g.trace(c.beadPointer,p,present_p)
+        c.beadPointer = len(c.beadList)-1
+        #g.trace('updating bead list',p.headString())
+        #print [p.headString() for p in c.beadList]
 #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 #@+node:ekr.20040803072955.132:<< update c.visitedList >>
 # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
 
 # Make p the most recently visited position on the list.
-if p in c.visitedList:
-    c.visitedList.remove(p)
+
+for p2 in c.visitedList:
+    if p2 == p:
+        c.visitedList.remove(p2)
 
 c.visitedList.insert(0,p.copy())
 
@@ -12509,27 +12513,29 @@ def defineOutlineMenuMarkMenuTable (self):
 def defineOutlineMenuGoToMenuTable (self):
 
     self.outlineMenuGoToMenuTable = [
-        # &: a,c,d,e,g,i,l,m,n,o,p,r,s,t,v,x
-        ('Go Prev Visite&d','go-back'),
-        ('Go Next Visited','go-forward'),
-        ('Go To P&rev Node','goto-prev-node'),
-        ('Go To N&ext Node','goto-next-node'),
+        # &: a,b,c,d,e,f,g,h,i,l,m,n,o,p,r,s,t,v,
+        ('Go To &First Node','goto-first-node'),
+        ('Go To First V&isible','goto-first-visible-node'),
+        ('Go To First Si&bling','goto-first-sibling'),
         '-',
-        ('Go To Next &Marked','goto-next-marked'),
-        ('Go To Next &Changed','goto-next-changed'),
+        ('Go To Next C&hanged','goto-next-changed'),
         ('Go To Next &Clone','goto-next-clone'),
+        ('Go To Next &Marked','goto-next-marked'),
+        ('Go To Next N&ode','goto-next-node'),
+        ('Go To Next &Sibling','goto-next-sibling'),
+        ('Go To Next Visibl&e','goto-next-visible'),
+        ('Go To Next Visite&d','go-forward'),
         '-',
-        ('&Go To First Node','goto-first-node'),
-        ('G&o To Prev Visible','goto-prev-visible'),
-        ('Go To Ne&xt Visible','goto-next-visible'),
-        ('Go To L&ast Node','goto-last-node'),
-        ('Go To Last &Visible','goto-last-visible'),
+        ('Go To P&arent','goto-parent'),
         '-',
-        ('Go To &Parent','goto-parent'),
-        ('Go To First &Sibling','goto-first-sibling'),
-        ('Go To Last S&ibling','goto-last-sibling'),
-        ('Go To Prev Sibli&ng','goto-prev-sibling'),
-        ('Go To Next Siblin&g','goto-next-sibling'),
+        ('Go To &Prev Node','goto-prev-node'),
+        ('Go To P&rev Sibling','goto-prev-sibling'),
+        ('Go To Pre&v Visible','goto-prev-visible'),
+        ('Go To Prev Visi&ted','go-back'),
+        '-',
+        ('Go To Last Node','goto-last-node'),
+        ('Go To Last Siblin&g','goto-last-sibling'),
+        ('Go To &Last Visible','goto-last-visible'),
     ]
 #@-node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
 #@-node:ekr.20031218072017.3767:defineOutlineMenuTables & helpers
@@ -14518,12 +14524,12 @@ def goNextVisitedNode (self,event=None):
 
     c = self
 
-    while c.beadPointer + 1 < len(c.beadList):
+    if c.beadPointer + 1 < len(c.beadList):
         c.beadPointer += 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
 #@-node:ekr.20031218072017.1628:goNextVisitedNode
 #@+node:ekr.20031218072017.1627:goPrevVisitedNode
 def goPrevVisitedNode (self,event=None):
@@ -14532,12 +14538,12 @@ def goPrevVisitedNode (self,event=None):
 
     c = self
 
-    while c.beadPointer > 0:
+    if c.beadPointer > 0:
         c.beadPointer -= 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
 #@-node:ekr.20031218072017.1627:goPrevVisitedNode
 #@+node:ekr.20031218072017.2914:goToFirstNode
 def goToFirstNode (self,event=None):
@@ -14561,6 +14567,19 @@ def goToFirstSibling (self,event=None):
 
     c.treeSelectHelper(p)
 #@-node:ekr.20051012092453:goToFirstSibling
+#@+node:ekr.20070615070925:goToFirstVisibleNode
+def goToFirstVisibleNode (self,event=None):
+
+    '''Select the first visible node of the selected chapter or hoist.'''
+
+    c = self
+
+    p = c.firstVisible()
+    if p:
+        c.selectPosition(p)
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20070615070925:goToFirstVisibleNode
 #@+node:ekr.20031218072017.2915:goToLastNode
 def goToLastNode (self,event=None):
 
@@ -14588,17 +14607,9 @@ def goToLastSibling (self,event=None):
 #@+node:ekr.20050711153537:c.goToLastVisibleNode
 def goToLastVisibleNode (self,event=None):
 
-    '''Select the last visible node of the entire outline.'''
+    '''Select the last visible node of selected chapter or hoist.'''
 
     c = self
-
-    # p = c.rootPosition()
-
-    # while p.hasNext():
-        # p.moveToNext()
-
-    # while p and p.isExpanded():
-        # p.moveToLastChild()
 
     p = c.lastVisible()
     if p:
@@ -15433,12 +15444,12 @@ def goNextVisitedNode (self,event=None):
 
     c = self
 
-    while c.beadPointer + 1 < len(c.beadList):
+    if c.beadPointer + 1 < len(c.beadList):
         c.beadPointer += 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
 #@-node:ekr.20031218072017.1628:goNextVisitedNode
 #@+node:ekr.20031218072017.1627:goPrevVisitedNode
 def goPrevVisitedNode (self,event=None):
@@ -15447,12 +15458,12 @@ def goPrevVisitedNode (self,event=None):
 
     c = self
 
-    while c.beadPointer > 0:
+    if c.beadPointer > 0:
         c.beadPointer -= 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
 #@-node:ekr.20031218072017.1627:goPrevVisitedNode
 #@+node:ekr.20031218072017.2914:goToFirstNode
 def goToFirstNode (self,event=None):
@@ -15476,6 +15487,19 @@ def goToFirstSibling (self,event=None):
 
     c.treeSelectHelper(p)
 #@-node:ekr.20051012092453:goToFirstSibling
+#@+node:ekr.20070615070925:goToFirstVisibleNode
+def goToFirstVisibleNode (self,event=None):
+
+    '''Select the first visible node of the selected chapter or hoist.'''
+
+    c = self
+
+    p = c.firstVisible()
+    if p:
+        c.selectPosition(p)
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20070615070925:goToFirstVisibleNode
 #@+node:ekr.20031218072017.2915:goToLastNode
 def goToLastNode (self,event=None):
 
@@ -15503,17 +15527,9 @@ def goToLastSibling (self,event=None):
 #@+node:ekr.20050711153537:c.goToLastVisibleNode
 def goToLastVisibleNode (self,event=None):
 
-    '''Select the last visible node of the entire outline.'''
+    '''Select the last visible node of selected chapter or hoist.'''
 
     c = self
-
-    # p = c.rootPosition()
-
-    # while p.hasNext():
-        # p.moveToNext()
-
-    # while p and p.isExpanded():
-        # p.moveToLastChild()
 
     p = c.lastVisible()
     if p:
@@ -29401,33 +29417,34 @@ else:
 #@-node:ekr.20040803072955.130:<< select the new node >>
 #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 # c.beadList is the list of nodes for the back and forward commands.
+# The back and forward commands do not update this list.
 
 if updateBeadList:
 
-    if c.beadPointer > -1:
-        present_p = c.beadList[c.beadPointer]
-    else:
-        present_p = c.nullPosition()
+    # Don't change the list if p is already in it.
+    update = True
+    for p2 in c.beadList:
+        if p2 == p:
+            update = False
+        if not c.positionExists(p2,root=c.rootPosition()):
+            c.beadList.remove(p2)
+            update = True ; break
 
-    if p != present_p:
-        # Replace the tail of c.beadList by p and make p the present node.
-        c.beadPointer += 1
-        c.beadList[c.beadPointer:] = []
+    # Add the node to the end, and set the bead pointer to the end.
+    if update:
         c.beadList.append(p.copy())
-
-        # New in Leo 4.4: limit this list to 100 items.
-        if 0: # Doesn't work yet.
-            c.beadList = c.beadList [-100:]
-            g.trace('len(c.beadList)',len(c.beadList))
-
-    # g.trace(c.beadPointer,p,present_p)
+        c.beadPointer = len(c.beadList)-1
+        #g.trace('updating bead list',p.headString())
+        #print [p.headString() for p in c.beadList]
 #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 #@+node:ekr.20040803072955.132:<< update c.visitedList >>
 # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
 
 # Make p the most recently visited position on the list.
-if p in c.visitedList:
-    c.visitedList.remove(p)
+
+for p2 in c.visitedList:
+    if p2 == p:
+        c.visitedList.remove(p2)
 
 c.visitedList.insert(0,p.copy())
 
@@ -31754,33 +31771,34 @@ else:
 #@-node:ekr.20040803072955.130:<< select the new node >>
 #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 # c.beadList is the list of nodes for the back and forward commands.
+# The back and forward commands do not update this list.
 
 if updateBeadList:
 
-    if c.beadPointer > -1:
-        present_p = c.beadList[c.beadPointer]
-    else:
-        present_p = c.nullPosition()
+    # Don't change the list if p is already in it.
+    update = True
+    for p2 in c.beadList:
+        if p2 == p:
+            update = False
+        if not c.positionExists(p2,root=c.rootPosition()):
+            c.beadList.remove(p2)
+            update = True ; break
 
-    if p != present_p:
-        # Replace the tail of c.beadList by p and make p the present node.
-        c.beadPointer += 1
-        c.beadList[c.beadPointer:] = []
+    # Add the node to the end, and set the bead pointer to the end.
+    if update:
         c.beadList.append(p.copy())
-
-        # New in Leo 4.4: limit this list to 100 items.
-        if 0: # Doesn't work yet.
-            c.beadList = c.beadList [-100:]
-            g.trace('len(c.beadList)',len(c.beadList))
-
-    # g.trace(c.beadPointer,p,present_p)
+        c.beadPointer = len(c.beadList)-1
+        #g.trace('updating bead list',p.headString())
+        #print [p.headString() for p in c.beadList]
 #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 #@+node:ekr.20040803072955.132:<< update c.visitedList >>
 # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
 
 # Make p the most recently visited position on the list.
-if p in c.visitedList:
-    c.visitedList.remove(p)
+
+for p2 in c.visitedList:
+    if p2 == p:
+        c.visitedList.remove(p2)
 
 c.visitedList.insert(0,p.copy())
 
@@ -40890,7 +40908,10 @@ def selectPosition(self,p,updateBeadList=True):
 
     """Select a new position."""
 
-    c = self
+    c = self ; cc = c.chapterController
+
+    if cc:
+        cc.selectChapterForPosition(p)
 
     # g.trace(p.headString(),g.callers())
 
@@ -41182,33 +41203,34 @@ else:
 #@-node:ekr.20040803072955.130:<< select the new node >>
 #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 # c.beadList is the list of nodes for the back and forward commands.
+# The back and forward commands do not update this list.
 
 if updateBeadList:
 
-    if c.beadPointer > -1:
-        present_p = c.beadList[c.beadPointer]
-    else:
-        present_p = c.nullPosition()
+    # Don't change the list if p is already in it.
+    update = True
+    for p2 in c.beadList:
+        if p2 == p:
+            update = False
+        if not c.positionExists(p2,root=c.rootPosition()):
+            c.beadList.remove(p2)
+            update = True ; break
 
-    if p != present_p:
-        # Replace the tail of c.beadList by p and make p the present node.
-        c.beadPointer += 1
-        c.beadList[c.beadPointer:] = []
+    # Add the node to the end, and set the bead pointer to the end.
+    if update:
         c.beadList.append(p.copy())
-
-        # New in Leo 4.4: limit this list to 100 items.
-        if 0: # Doesn't work yet.
-            c.beadList = c.beadList [-100:]
-            g.trace('len(c.beadList)',len(c.beadList))
-
-    # g.trace(c.beadPointer,p,present_p)
+        c.beadPointer = len(c.beadList)-1
+        #g.trace('updating bead list',p.headString())
+        #print [p.headString() for p in c.beadList]
 #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 #@+node:ekr.20040803072955.132:<< update c.visitedList >>
 # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
 
 # Make p the most recently visited position on the list.
-if p in c.visitedList:
-    c.visitedList.remove(p)
+
+for p2 in c.visitedList:
+    if p2 == p:
+        c.visitedList.remove(p2)
 
 c.visitedList.insert(0,p.copy())
 
@@ -41407,33 +41429,34 @@ else:
 #@-node:ekr.20040803072955.130:<< select the new node >>
 #@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 # c.beadList is the list of nodes for the back and forward commands.
+# The back and forward commands do not update this list.
 
 if updateBeadList:
 
-    if c.beadPointer > -1:
-        present_p = c.beadList[c.beadPointer]
-    else:
-        present_p = c.nullPosition()
+    # Don't change the list if p is already in it.
+    update = True
+    for p2 in c.beadList:
+        if p2 == p:
+            update = False
+        if not c.positionExists(p2,root=c.rootPosition()):
+            c.beadList.remove(p2)
+            update = True ; break
 
-    if p != present_p:
-        # Replace the tail of c.beadList by p and make p the present node.
-        c.beadPointer += 1
-        c.beadList[c.beadPointer:] = []
+    # Add the node to the end, and set the bead pointer to the end.
+    if update:
         c.beadList.append(p.copy())
-
-        # New in Leo 4.4: limit this list to 100 items.
-        if 0: # Doesn't work yet.
-            c.beadList = c.beadList [-100:]
-            g.trace('len(c.beadList)',len(c.beadList))
-
-    # g.trace(c.beadPointer,p,present_p)
+        c.beadPointer = len(c.beadList)-1
+        #g.trace('updating bead list',p.headString())
+        #print [p.headString() for p in c.beadList]
 #@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
 #@+node:ekr.20040803072955.132:<< update c.visitedList >>
 # The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
 
 # Make p the most recently visited position on the list.
-if p in c.visitedList:
-    c.visitedList.remove(p)
+
+for p2 in c.visitedList:
+    if p2 == p:
+        c.visitedList.remove(p2)
 
 c.visitedList.insert(0,p.copy())
 
@@ -41464,7 +41487,10 @@ def selectPosition(self,p,updateBeadList=True):
 
     """Select a new position."""
 
-    c = self
+    c = self ; cc = c.chapterController
+
+    if cc:
+        cc.selectChapterForPosition(p)
 
     # g.trace(p.headString(),g.callers())
 
@@ -41714,7 +41740,7 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 #@nonl
 #@-node:ekr.20070423102603.1:chapterSelectHelper
 #@+node:ekr.20070317131708:chapter.findPositionInChapter
-def findPositionInChapter (self,p1):
+def findPositionInChapter (self,p1,strict=False):
 
     '''Return a valid position p such that p.v == v.'''
 
@@ -41733,14 +41759,21 @@ def findPositionInChapter (self,p1):
                 # g.trace('*** found in main chapter',p)
                 self.p = p.copy()
                 return self.p
-        self.p = c.rootPosition()
+        if strict:
+            return None
+        else:
+            self.p = c.rootPosition()
     else:
         for p in self.root.self_and_subtree_iter():
+            # g.trace('testing',p,p1)
             if p.v == p1.v:
                 # g.trace('*** found in chapter',p)
                 self.p = p.copy()
                 return self.p
-        self.p = self.root.copy()
+        if strict:
+            return None
+        else:
+            self.p = self.root.copy()
 
     if 0:
         self.error('***** chapter: %s findPositionInChapter: lost %s' % (
@@ -42127,17 +42160,9 @@ outside of the hosted subtree.
 #@+node:ekr.20050711153537:c.goToLastVisibleNode
 def goToLastVisibleNode (self,event=None):
 
-    '''Select the last visible node of the entire outline.'''
+    '''Select the last visible node of selected chapter or hoist.'''
 
     c = self
-
-    # p = c.rootPosition()
-
-    # while p.hasNext():
-        # p.moveToNext()
-
-    # while p and p.isExpanded():
-        # p.moveToLastChild()
 
     p = c.lastVisible()
     if p:
@@ -42150,8 +42175,8 @@ def lastVisible(self):
 
     """Move to the last visible node of the present chapter or hoist."""
 
-    c = self
-    p = c.currentPosition()
+    c = self ; p = c.currentPosition()
+
     while 1:
         next = p.visNext(c)
         # g.trace('next',next)
@@ -42481,12 +42506,12 @@ def goNextVisitedNode (self,event=None):
 
     c = self
 
-    while c.beadPointer + 1 < len(c.beadList):
+    if c.beadPointer + 1 < len(c.beadList):
         c.beadPointer += 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
 #@-node:ekr.20031218072017.1628:goNextVisitedNode
 #@+node:ekr.20031218072017.1627:goPrevVisitedNode
 def goPrevVisitedNode (self,event=None):
@@ -42495,12 +42520,12 @@ def goPrevVisitedNode (self,event=None):
 
     c = self
 
-    while c.beadPointer > 0:
+    if c.beadPointer > 0:
         c.beadPointer -= 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
 #@-node:ekr.20031218072017.1627:goPrevVisitedNode
 #@+node:ekr.20031218072017.2914:goToFirstNode
 def goToFirstNode (self,event=None):
@@ -42524,6 +42549,19 @@ def goToFirstSibling (self,event=None):
 
     c.treeSelectHelper(p)
 #@-node:ekr.20051012092453:goToFirstSibling
+#@+node:ekr.20070615070925:goToFirstVisibleNode
+def goToFirstVisibleNode (self,event=None):
+
+    '''Select the first visible node of the selected chapter or hoist.'''
+
+    c = self
+
+    p = c.firstVisible()
+    if p:
+        c.selectPosition(p)
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20070615070925:goToFirstVisibleNode
 #@+node:ekr.20031218072017.2915:goToLastNode
 def goToLastNode (self,event=None):
 
@@ -42551,17 +42589,9 @@ def goToLastSibling (self,event=None):
 #@+node:ekr.20050711153537:c.goToLastVisibleNode
 def goToLastVisibleNode (self,event=None):
 
-    '''Select the last visible node of the entire outline.'''
+    '''Select the last visible node of selected chapter or hoist.'''
 
     c = self
-
-    # p = c.rootPosition()
-
-    # while p.hasNext():
-        # p.moveToNext()
-
-    # while p and p.isExpanded():
-        # p.moveToLastChild()
 
     p = c.lastVisible()
     if p:
@@ -46554,14 +46584,16 @@ def expandAllAncestors (self,p):
     Return a flag telling whether a redraw is needed.'''
 
     c = self.c ; cc = c.chapterController ; redraw_flag = False
-    inChapter = cc and cc.inChapter()
+    # inChapter = cc and cc.inChapter()
 
     c.beginUpdate()
     try:
         for p in p.parents_iter():
-            if inChapter and p.headString().startswith('@chapter'):
+            # g.trace('testing',p)
+            if cc and p.headString().startswith('@chapter'):
                 break
             if not p.isExpanded():
+                # g.trace('inChapter',inChapter,'p',p,g.callers())
                 p.expand()
                 redraw_flag = True
     finally:
@@ -46840,7 +46872,7 @@ def setRootPosition(self,p):
 #@-node:ekr.20070603174534:currentPosition & rootPosition stuff
 #@+node:ekr.20070509075654.1:Selection stuff
 #@+node:ekr.20070317131708:chapter.findPositionInChapter
-def findPositionInChapter (self,p1):
+def findPositionInChapter (self,p1,strict=False):
 
     '''Return a valid position p such that p.v == v.'''
 
@@ -46859,14 +46891,21 @@ def findPositionInChapter (self,p1):
                 # g.trace('*** found in main chapter',p)
                 self.p = p.copy()
                 return self.p
-        self.p = c.rootPosition()
+        if strict:
+            return None
+        else:
+            self.p = c.rootPosition()
     else:
         for p in self.root.self_and_subtree_iter():
+            # g.trace('testing',p,p1)
             if p.v == p1.v:
                 # g.trace('*** found in chapter',p)
                 self.p = p.copy()
                 return self.p
-        self.p = self.root.copy()
+        if strict:
+            return None
+        else:
+            self.p = self.root.copy()
 
     if 0:
         self.error('***** chapter: %s findPositionInChapter: lost %s' % (
@@ -46896,7 +46935,10 @@ def selectPosition(self,p,updateBeadList=True):
 
     """Select a new position."""
 
-    c = self
+    c = self ; cc = c.chapterController
+
+    if cc:
+        cc.selectChapterForPosition(p)
 
     # g.trace(p.headString(),g.callers())
 
@@ -46963,7 +47005,7 @@ def chapterSelectHelper (self,w=None,selectEditor=True):
 #@nonl
 #@-node:ekr.20070423102603.1:chapterSelectHelper
 #@+node:ekr.20070317131708:chapter.findPositionInChapter
-def findPositionInChapter (self,p1):
+def findPositionInChapter (self,p1,strict=False):
 
     '''Return a valid position p such that p.v == v.'''
 
@@ -46982,14 +47024,21 @@ def findPositionInChapter (self,p1):
                 # g.trace('*** found in main chapter',p)
                 self.p = p.copy()
                 return self.p
-        self.p = c.rootPosition()
+        if strict:
+            return None
+        else:
+            self.p = c.rootPosition()
     else:
         for p in self.root.self_and_subtree_iter():
+            # g.trace('testing',p,p1)
             if p.v == p1.v:
                 # g.trace('*** found in chapter',p)
                 self.p = p.copy()
                 return self.p
-        self.p = self.root.copy()
+        if strict:
+            return None
+        else:
+            self.p = self.root.copy()
 
     if 0:
         self.error('***** chapter: %s findPositionInChapter: lost %s' % (
@@ -47011,6 +47060,15 @@ def findEditorInChapter (self,p):
     return w
 #@nonl
 #@-node:ekr.20070425175522:chapter.findEditorInChapter
+#@+node:ekr.20070615065222:chapter.positionIsInChapter
+def positionIsInChapter (self,p):
+
+    p2 = self.findPositionInChapter (p,strict=True)
+
+    # g.trace(self.name,'returns',p2)
+    return p2
+#@nonl
+#@-node:ekr.20070615065222:chapter.positionIsInChapter
 #@+node:ekr.20070529171934.1:chapter.rename (not used)
 def rename (self,newName):
 
@@ -49655,12 +49713,12 @@ def goNextVisitedNode (self,event=None):
 
     c = self
 
-    while c.beadPointer + 1 < len(c.beadList):
+    if c.beadPointer + 1 < len(c.beadList):
         c.beadPointer += 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
 #@-node:ekr.20031218072017.1628:goNextVisitedNode
 #@+node:ekr.20031218072017.1627:goPrevVisitedNode
 def goPrevVisitedNode (self,event=None):
@@ -49669,12 +49727,12 @@ def goPrevVisitedNode (self,event=None):
 
     c = self
 
-    while c.beadPointer > 0:
+    if c.beadPointer > 0:
         c.beadPointer -= 1
-        v = c.beadList[c.beadPointer]
-        if c.positionExists(v):
-            c.treeSelectHelper(v)
-            return
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
 #@-node:ekr.20031218072017.1627:goPrevVisitedNode
 #@+node:ekr.20031218072017.2914:goToFirstNode
 def goToFirstNode (self,event=None):
@@ -49698,6 +49756,19 @@ def goToFirstSibling (self,event=None):
 
     c.treeSelectHelper(p)
 #@-node:ekr.20051012092453:goToFirstSibling
+#@+node:ekr.20070615070925:goToFirstVisibleNode
+def goToFirstVisibleNode (self,event=None):
+
+    '''Select the first visible node of the selected chapter or hoist.'''
+
+    c = self
+
+    p = c.firstVisible()
+    if p:
+        c.selectPosition(p)
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20070615070925:goToFirstVisibleNode
 #@+node:ekr.20031218072017.2915:goToLastNode
 def goToLastNode (self,event=None):
 
@@ -49725,17 +49796,9 @@ def goToLastSibling (self,event=None):
 #@+node:ekr.20050711153537:c.goToLastVisibleNode
 def goToLastVisibleNode (self,event=None):
 
-    '''Select the last visible node of the entire outline.'''
+    '''Select the last visible node of selected chapter or hoist.'''
 
     c = self
-
-    # p = c.rootPosition()
-
-    # while p.hasNext():
-        # p.moveToNext()
-
-    # while p and p.isExpanded():
-        # p.moveToLastChild()
 
     p = c.lastVisible()
     if p:
@@ -50983,7 +51046,8 @@ def selectChapterByName (self,name):
 #@-node:ekr.20070606081341.1:Made chapter ops undoable
 #@-node:ekr.20070606131320:Finished chapters
 #@-node:ekr.20070522082346:Leo 4.4.3 b2 projects
-#@+node:ekr.20070612132051:Leo 4.4.3 final projects
+#@+node:ekr.20070612132051:Leo 4.4.3 rc1 projects
+#@+node:ekr.20070615103418:Fixed bugs
 #@+node:ekr.20070612102752:Allow aspell on Linux provided that ctypes exists
 # ctypes comes standard with Python 2.5, but can be installed for Python 2.4.
 #@+node:ekr.20051025071455.7:Birth & death
@@ -51504,7 +51568,878 @@ def handleDefaultChar(self,event,stroke):
 #@-node:ekr.20061031131434.110:handleDefaultChar
 #@-node:ekr.20061031131434.105:masterCommand & helpers
 #@-node:ekr.20070613134110:Made alt menu keys work
-#@-node:ekr.20070612132051:Leo 4.4.3 final projects
+#@+node:ekr.20070614121639:Switch chapters if new position isn't in current chapter
+@
+
+This should fix the nodenavigator plugin.
+
+Added goto-first-visible command.
+#@nonl
+#@+node:ekr.20070615064838.1:Report
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4362825
+By: rcy3cornelledu
+
+The "Home" key selects first node in main outline, regardless of which chapter
+is currently displayed.
+#@nonl
+#@-node:ekr.20070615064838.1:Report
+#@+node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+def treeSelectHelper (self,p,redraw=True):
+
+    c = self ; current = c.currentPosition()
+
+    if p:
+        c.beginUpdate()
+        try:
+            c.frame.tree.expandAllAncestors(p)
+            c.selectPosition(p,updateBeadList=False)
+        finally:
+            c.endUpdate(redraw)
+
+    c.treeFocusHelper()
+#@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+#@+node:ekr.20070423102603:selectEditorHelper
+def selectEditorHelper (self,w):
+
+    c = self.c ; cc = c.chapterController ; d = self.editorWidgets
+
+    if not w.leo_p:
+        g.trace('no w.leo_p') 
+        return 'break'
+
+    if 0:
+        g.trace('==1',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    self.inactivateActiveEditor(w)
+
+    # The actual switch.
+    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    w.leo_active = True
+
+    self.switchToChapter(w)
+    self.selectLabel(w)
+
+    if not self.ensurePositionExists(w):
+        g.trace('***** no position editor!')
+        return 'break'
+
+    if 0:
+        g.trace('==2',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    c.frame.tree.expandAllAncestors(w.leo_p)
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.recolor_now()
+    << restore the selection, insertion point and the scrollbar >>
+    c.bodyWantsFocusNow()
+    return 'break'
+#@nonl
+#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
+
+if w.leo_insertSpot:
+    w.setInsertPoint(w.leo_insertSpot)
+else:
+    w.setInsertPoint(0)
+
+if w.leo_scrollBarSpot is not None:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+else:
+    w.seeInsertPoint()
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        w.setSelectionRange(start,end)
+    except Exception:
+        pass
+#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20070423102603:selectEditorHelper
+#@+node:ekr.20040803072955.128:leoTree.select & helper
+tree_select_lockout = False
+
+def select (self,p,updateBeadList=True,scroll=True):
+
+    '''Select a node.  Never redraws outline, but may change coloring of individual headlines.'''
+
+    if g.app.killed or self.tree_select_lockout: return None
+
+    try:
+        val = 'break'
+        self.tree_select_lockout = True
+        val = self.treeSelectHelper(p,updateBeadList,scroll)
+    finally:
+        self.tree_select_lockout = False
+
+    return val  # Don't put a return in a finally clause.
+#@+node:ekr.20070423101911:treeSelectHelper
+#  Do **not** try to "optimize" this by returning if p==tree.currentPosition.
+
+def treeSelectHelper (self,p,updateBeadList,scroll):
+
+    c = self.c ; frame = c.frame
+    body = w = frame.bodyCtrl
+    old_p = c.currentPosition()
+
+    if not p:
+        # Bug fix: 5/31/07: do *not* test c.positionExists(p) here.
+        # We may be in the process of changing roots.
+        return None # Not an error.
+
+    # g.trace('      ===',id(w),p and p.headString())
+    if self.trace_select and not g.app.unitTesting: g.trace('tree',g.callers())
+
+    if not g.doHook("unselect1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        if old_p:
+            << unselect the old node >>
+
+    g.doHook("unselect2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    if not g.doHook("select1",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p):
+        << select the new node >>
+        if p and p != old_p: # Suppress duplicate call.
+            try: # may fail during initialization.
+                # p is NOT c.currentPosition() here!
+                if 0: # Interferes with new colorizer.
+                    self.canvas.update_idletasks()
+                    self.scrollTo(p)
+                if scroll and g.app.gui.guiName() == 'tkinter':
+                    def scrollCallback(self=self,p=p):
+                        self.scrollTo(p)
+                    self.canvas.after(100,scrollCallback)
+            except Exception: pass
+        << update c.beadList or c.beadPointer >>
+        << update c.visitedList >>
+
+    c.setCurrentPosition(p)
+    << set the current node >>
+    c.frame.body.assignPositionToEditor(p) # New in Leo 4.4.1.
+    c.frame.updateStatusLine() # New in Leo 4.4.1.
+
+    g.doHook("select2",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+    g.doHook("select3",c=c,new_p=p,old_p=old_p,new_v=p,old_v=old_p)
+
+    return 'break' # Supresses unwanted selection.
+#@+node:ekr.20040803072955.129:<< unselect the old node >>
+# Remember the position of the scrollbar before making any changes.
+if not body: g.trace('no body!','c.frame',c.frame,'old_p',old_p)
+
+yview = body.getYScrollPosition()
+insertSpot = c.frame.body.getInsertPoint()
+
+if old_p != p:
+    self.endEditLabel() # sets editPosition = None
+    self.setUnselectedLabelState(old_p) # 12/17/04
+
+if c.edit_widget(old_p):
+    old_p.v.t.scrollBarSpot = yview
+    old_p.v.t.insertSpot = insertSpot
+#@-node:ekr.20040803072955.129:<< unselect the old node >>
+#@+node:ekr.20040803072955.130:<< select the new node >>
+# Bug fix: we must always set this, even if we never edit the node.
+self.revertHeadline = p.headString()
+frame.setWrap(p)
+
+# Always do this.  Otherwise there can be problems with trailing newlines.
+s = g.toUnicode(p.v.t.bodyString,"utf-8")
+w.setAllText(s)
+
+# We must do a full recoloring: we may be changing context!
+self.frame.body.recolor_now(p) # recolor now uses p.copy(), so this is safe.
+
+if p.v and p.v.t.scrollBarSpot != None:
+    first,last = p.v.t.scrollBarSpot
+    w.setYScrollPosition(first)
+
+if p.v and p.v.t.insertSpot != None:
+    spot = p.v.t.insertSpot
+    w.setInsertPoint(spot)
+    w.see(spot)
+else:
+    w.setInsertPoint(0)
+
+# g.trace("select:",p.headString())
+#@-node:ekr.20040803072955.130:<< select the new node >>
+#@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+# c.beadList is the list of nodes for the back and forward commands.
+# The back and forward commands do not update this list.
+
+if updateBeadList:
+
+    # Don't change the list if p is already in it.
+    update = True
+    for p2 in c.beadList:
+        if p2 == p:
+            update = False
+        if not c.positionExists(p2,root=c.rootPosition()):
+            c.beadList.remove(p2)
+            update = True ; break
+
+    # Add the node to the end, and set the bead pointer to the end.
+    if update:
+        c.beadList.append(p.copy())
+        c.beadPointer = len(c.beadList)-1
+        #g.trace('updating bead list',p.headString())
+        #print [p.headString() for p in c.beadList]
+#@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+#@+node:ekr.20040803072955.132:<< update c.visitedList >>
+# The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
+
+# Make p the most recently visited position on the list.
+
+for p2 in c.visitedList:
+    if p2 == p:
+        c.visitedList.remove(p2)
+
+c.visitedList.insert(0,p.copy())
+
+# g.trace('len(c.visitedList)',len(c.visitedList))
+# g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
+#@-node:ekr.20040803072955.132:<< update c.visitedList >>
+#@+node:ekr.20040803072955.133:<< set the current node >>
+self.setSelectedLabelState(p)
+
+frame.scanForTabWidth(p) #GS I believe this should also get into the select1 hook
+
+if self.use_chapters:
+    cc = c.chapterController
+    theChapter = cc.getSelectedChapter()
+    if theChapter:
+        theChapter.p = p.copy()
+        # g.trace('tkTree',theChapter.name,'v',id(p.v),p.headString())
+
+if self.stayInTree:
+    c.treeWantsFocus()
+else:
+    c.bodyWantsFocus()
+#@-node:ekr.20040803072955.133:<< set the current node >>
+#@-node:ekr.20070423101911:treeSelectHelper
+#@-node:ekr.20040803072955.128:leoTree.select & helper
+#@clone 2
+#@+node:ekr.20070615065222:chapter.positionIsInChapter
+def positionIsInChapter (self,p):
+
+    p2 = self.findPositionInChapter (p,strict=True)
+
+    # g.trace(self.name,'returns',p2)
+    return p2
+#@nonl
+#@-node:ekr.20070615065222:chapter.positionIsInChapter
+#@+node:ekr.20031218072017.2913:Goto
+#@+node:ekr.20031218072017.1628:goNextVisitedNode
+def goNextVisitedNode (self,event=None):
+
+    '''Select the next visited node.'''
+
+    c = self
+
+    if c.beadPointer + 1 < len(c.beadList):
+        c.beadPointer += 1
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.1628:goNextVisitedNode
+#@+node:ekr.20031218072017.1627:goPrevVisitedNode
+def goPrevVisitedNode (self,event=None):
+
+    '''Select the previously visited node.'''
+
+    c = self
+
+    if c.beadPointer > 0:
+        c.beadPointer -= 1
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.1627:goPrevVisitedNode
+#@+node:ekr.20031218072017.2914:goToFirstNode
+def goToFirstNode (self,event=None):
+
+    '''Select the first node of the entire outline.'''
+
+    c = self ; p = c.rootPosition()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2914:goToFirstNode
+#@+node:ekr.20051012092453:goToFirstSibling
+def goToFirstSibling (self,event=None):
+
+    '''Select the first sibling of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    if p.hasBack():
+        while p.hasBack():
+            p.moveToBack()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20051012092453:goToFirstSibling
+#@+node:ekr.20070615070925:goToFirstVisibleNode
+def goToFirstVisibleNode (self,event=None):
+
+    '''Select the first visible node of the selected chapter or hoist.'''
+
+    c = self
+
+    p = c.firstVisible()
+    if p:
+        c.selectPosition(p)
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20070615070925:goToFirstVisibleNode
+#@+node:ekr.20031218072017.2915:goToLastNode
+def goToLastNode (self,event=None):
+
+    '''Select the last node in the entire tree.'''
+
+    c = self ; p = c.rootPosition()
+    while p and p.hasThreadNext():
+        p.moveToThreadNext()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2915:goToLastNode
+#@+node:ekr.20051012092847.1:goToLastSibling
+def goToLastSibling (self,event=None):
+
+    '''Select the last sibling of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    if p.hasNext():
+        while p.hasNext():
+            p.moveToNext()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20051012092847.1:goToLastSibling
+#@+node:ekr.20050711153537:c.goToLastVisibleNode
+def goToLastVisibleNode (self,event=None):
+
+    '''Select the last visible node of selected chapter or hoist.'''
+
+    c = self
+
+    p = c.lastVisible()
+    if p:
+        c.selectPosition(p)
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20050711153537:c.goToLastVisibleNode
+#@+node:ekr.20031218072017.2916:goToNextClone
+def goToNextClone (self,event=None):
+
+    '''Select the next node that is a clone of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    if not p.isCloned(): return
+
+    t = p.v.t
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.v.t == t:
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2916:goToNextClone
+#@+node:ekr.20031218072017.2917:goToNextDirtyHeadline
+def goToNextDirtyHeadline (self,event=None):
+
+    '''Select the node that is marked as changed.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.isDirty():
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2917:goToNextDirtyHeadline
+#@+node:ekr.20031218072017.2918:goToNextMarkedHeadline
+def goToNextMarkedHeadline (self,event=None):
+
+    '''Select the next marked node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadNext()
+    wrapped = False
+    while 1:
+        if p and p.isMarked():
+            break
+        elif p:
+            p.moveToThreadNext()
+        elif wrapped:
+            break
+        else:
+            wrapped = True
+            p = c.rootPosition()
+
+    if not p: g.es("done",color="blue")
+    c.treeSelectHelper(p) # Sets focus.
+#@-node:ekr.20031218072017.2918:goToNextMarkedHeadline
+#@+node:ekr.20031218072017.2919:goToNextSibling
+def goToNextSibling (self,event=None):
+
+    '''Select the next sibling of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    c.treeSelectHelper(p and p.next())
+#@-node:ekr.20031218072017.2919:goToNextSibling
+#@+node:ekr.20031218072017.2920:goToParent
+def goToParent (self,event=None):
+
+    '''Select the parent of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    c.treeSelectHelper(p and p.parent())
+#@-node:ekr.20031218072017.2920:goToParent
+#@+node:ekr.20031218072017.2921:goToPrevSibling
+def goToPrevSibling (self,event=None):
+
+    '''Select the previous sibling of the selected node.'''
+
+    c = self ; p = c.currentPosition()
+
+    c.treeSelectHelper(p and p.back())
+#@-node:ekr.20031218072017.2921:goToPrevSibling
+#@+node:ekr.20031218072017.2993:selectThreadBack
+def selectThreadBack (self,event=None):
+
+    '''Select the node preceding the selected node in outline order.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadBack()
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.2993:selectThreadBack
+#@+node:ekr.20031218072017.2994:selectThreadNext
+def selectThreadNext (self,event=None):
+
+    '''Select the node following the selected node in outline order.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+
+    p.moveToThreadNext()
+
+    c.treeSelectHelper(p)
+#@nonl
+#@-node:ekr.20031218072017.2994:selectThreadNext
+#@+node:ekr.20031218072017.2995:selectVisBack
+# This has an up arrow for a control key.
+
+def selectVisBack (self,event=None):
+
+    '''Select the visible node preceding the presently selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    if not c.canSelectVisBack(): return
+
+    p.moveToVisBack(c)
+
+    if p:
+        redraw = not p.isVisible(c)
+        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
+    else:
+        redraw = True
+
+    c.treeSelectHelper(p,redraw=redraw)
+#@-node:ekr.20031218072017.2995:selectVisBack
+#@+node:ekr.20031218072017.2996:selectVisNext
+def selectVisNext (self,event=None):
+
+    '''Select the visible node following the presently selected node.'''
+
+    c = self ; p = c.currentPosition()
+    if not p: return
+    if not c.canSelectVisNext(): return
+
+    p.moveToVisNext(c)
+
+    if p:
+        redraw = not p.isVisible(c)
+        if not redraw: c.frame.tree.setSelectedLabelState(c.currentPosition())
+    else:
+        redraw = True
+
+    c.treeSelectHelper(p,redraw=redraw)
+#@-node:ekr.20031218072017.2996:selectVisNext
+#@+node:ekr.20070417112650:utils
+#@+node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+def treeFocusHelper (self):
+
+    c = self
+
+    if c.config.getBool('stayInTreeAfterSelect'):
+        c.treeWantsFocusNow()
+    else:
+        c.bodyWantsFocusNow()
+#@-node:ekr.20070226121510: treeFocusHelper (new in Leo 4.4.3)
+#@+node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+def treeSelectHelper (self,p,redraw=True):
+
+    c = self ; current = c.currentPosition()
+
+    if p:
+        c.beginUpdate()
+        try:
+            c.frame.tree.expandAllAncestors(p)
+            c.selectPosition(p,updateBeadList=False)
+        finally:
+            c.endUpdate(redraw)
+
+    c.treeFocusHelper()
+#@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+#@-node:ekr.20070417112650:utils
+#@-node:ekr.20031218072017.2913:Goto
+#@+node:ekr.20031218072017.4146:c.lastVisible
+def lastVisible(self):
+
+    """Move to the last visible node of the present chapter or hoist."""
+
+    c = self ; p = c.currentPosition()
+
+    while 1:
+        next = p.visNext(c)
+        # g.trace('next',next)
+        if next and next.isVisible(c):
+            p = next
+        else: break
+    return p
+#@-node:ekr.20031218072017.4146:c.lastVisible
+#@+node:ekr.20070615070925.1:c.firstVisible
+def firstVisible(self):
+
+    """Move to the first visible node of the present chapter or hoist."""
+
+    c = self ; p = c.currentPosition()
+
+    while 1:
+        back = p.visBack(c)
+        if back and back.isVisible(c):
+            p = back
+        else: break
+    return p
+#@-node:ekr.20070615070925.1:c.firstVisible
+#@+node:ekr.20031218072017.941:p.moveToVisNext
+def moveToVisNext (self,c):
+
+    """Move a position to the position of the next visible node."""
+
+    p = self ; limit,limitIsVisible = c.visLimit() ; trace = False
+
+    def checkLimit (p):
+        '''Return done, return-val'''
+        if limit:
+            # Unlike moveToVisBack, being at the limit does not terminate.
+            if limit == p:
+                return False, None
+            elif limit.isAncestorOf(p):
+                return False,None
+            else:
+                if trace: g.trace('outside limit tree')
+                return True,None
+        else:
+            return False,None
+
+    while p:
+        # Short-circuit if possible.
+        if p.hasNext() and (not p.hasChildren() or not p.isExpanded()):
+            p.moveToNext()
+        else:
+            p.moveToThreadNext()
+        if p:
+            if trace: g.trace('*p',p.headString())
+            done,val = checkLimit(p)
+            if done: return val
+            if p.isVisible(c):
+                return p.copy()
+    else:
+        # assert not p.
+        return p
+#@nonl
+#@-node:ekr.20031218072017.941:p.moveToVisNext
+#@+node:ekr.20070615070925:goToFirstVisibleNode
+def goToFirstVisibleNode (self,event=None):
+
+    '''Select the first visible node of the selected chapter or hoist.'''
+
+    c = self
+
+    p = c.firstVisible()
+    if p:
+        c.selectPosition(p)
+
+    c.treeSelectHelper(p)
+#@-node:ekr.20070615070925:goToFirstVisibleNode
+#@+node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
+def defineOutlineMenuGoToMenuTable (self):
+
+    self.outlineMenuGoToMenuTable = [
+        # &: a,b,c,d,e,f,g,h,i,l,m,n,o,p,r,s,t,v,
+        ('Go To &First Node','goto-first-node'),
+        ('Go To First V&isible','goto-first-visible-node'),
+        ('Go To First Si&bling','goto-first-sibling'),
+        '-',
+        ('Go To Next C&hanged','goto-next-changed'),
+        ('Go To Next &Clone','goto-next-clone'),
+        ('Go To Next &Marked','goto-next-marked'),
+        ('Go To Next N&ode','goto-next-node'),
+        ('Go To Next &Sibling','goto-next-sibling'),
+        ('Go To Next Visibl&e','goto-next-visible'),
+        ('Go To Next Visite&d','go-forward'),
+        '-',
+        ('Go To P&arent','goto-parent'),
+        '-',
+        ('Go To &Prev Node','goto-prev-node'),
+        ('Go To P&rev Sibling','goto-prev-sibling'),
+        ('Go To Pre&v Visible','goto-prev-visible'),
+        ('Go To Prev Visi&ted','go-back'),
+        '-',
+        ('Go To Last Node','goto-last-node'),
+        ('Go To Last Siblin&g','goto-last-sibling'),
+        ('Go To &Last Visible','goto-last-visible'),
+    ]
+#@-node:ekr.20031218072017.3772:defineOutlineMenuGoToMenuTable
+#@+node:ekr.20070615075643:cc.selectChapterForPosition
+def selectChapterForPosition (self,p):
+
+    '''
+    Select a chapter containing position p.
+    Do nothing if p if p does not exist or is in the presently selected chapter.
+    '''
+    cc = self ; c = cc.c
+
+    if not p or not c.positionExists(p):
+        return
+
+    theChapter = cc.getSelectedChapter()
+    if not theChapter: return
+
+    # g.trace('selected:',theChapter.name)
+    firstName = theChapter.name
+    if firstName != 'main':
+        if theChapter.positionIsInChapter(p): return
+
+    for name in cc.chaptersDict.keys():
+        if name not in (firstName,'main'):
+            theChapter = cc.chaptersDict.get(name)
+            if theChapter.positionIsInChapter(p):
+                cc.selectChapterByName(name)
+                return
+    else:
+        cc.selectChapterByName('main')
+#@-node:ekr.20070615075643:cc.selectChapterForPosition
+#@+node:ekr.20070317131708:chapter.findPositionInChapter
+def findPositionInChapter (self,p1,strict=False):
+
+    '''Return a valid position p such that p.v == v.'''
+
+    # Do nothing if the present position is in the proper chapter.
+    c = self.c ; name = self.name 
+
+    root = g.choose(self.name=='main',c.rootPosition(),self.root)
+    # g.trace('p1',p1)
+    if p1 and c.positionExists(p1,root=root):
+        # g.trace('using existing position',p)
+        return p1
+
+    if name == 'main':
+        for p in self.c.allNodes_iter():
+            if p.v == p1.v:
+                # g.trace('*** found in main chapter',p)
+                self.p = p.copy()
+                return self.p
+        if strict:
+            return None
+        else:
+            self.p = c.rootPosition()
+    else:
+        for p in self.root.self_and_subtree_iter():
+            # g.trace('testing',p,p1)
+            if p.v == p1.v:
+                # g.trace('*** found in chapter',p)
+                self.p = p.copy()
+                return self.p
+        if strict:
+            return None
+        else:
+            self.p = self.root.copy()
+
+    if 0:
+        self.error('***** chapter: %s findPositionInChapter: lost %s' % (
+            self.name,p1.v.t.headString))
+        g.trace(g.callers())
+
+    return self.p.copy()
+#@-node:ekr.20070317131708:chapter.findPositionInChapter
+#@+node:ekr.20031218072017.2997:c.selectPosition
+def selectPosition(self,p,updateBeadList=True):
+
+    """Select a new position."""
+
+    c = self ; cc = c.chapterController
+
+    if cc:
+        cc.selectChapterForPosition(p)
+
+    # g.trace(p.headString(),g.callers())
+
+    c.frame.tree.select(p,updateBeadList)
+
+    # New in Leo 4.4.2.
+    c.setCurrentPosition(p)
+        # Do *not* test whether the position exists!
+        # We may be in the midst of an undo.
+
+selectVnode = selectPosition
+#@-node:ekr.20031218072017.2997:c.selectPosition
+#@+node:ekr.20040803072955.143:tree.expandAllAncestors
+def expandAllAncestors (self,p):
+
+    '''Expand all ancestors without redrawing.
+
+    Return a flag telling whether a redraw is needed.'''
+
+    c = self.c ; cc = c.chapterController ; redraw_flag = False
+    # inChapter = cc and cc.inChapter()
+
+    c.beginUpdate()
+    try:
+        for p in p.parents_iter():
+            # g.trace('testing',p)
+            if cc and p.headString().startswith('@chapter'):
+                break
+            if not p.isExpanded():
+                # g.trace('inChapter',inChapter,'p',p,g.callers())
+                p.expand()
+                redraw_flag = True
+    finally:
+        c.endUpdate(False)
+
+    return redraw_flag
+#@-node:ekr.20040803072955.143:tree.expandAllAncestors
+#@-node:ekr.20070614121639:Switch chapters if new position isn't in current chapter
+#@+node:ekr.20070615074842:Improved goto-next/prev-node commands
+@
+Selecting a node now never truncates the beadList.
+#@nonl
+#@+node:ekr.20031218072017.1627:goPrevVisitedNode
+def goPrevVisitedNode (self,event=None):
+
+    '''Select the previously visited node.'''
+
+    c = self
+
+    if c.beadPointer > 0:
+        c.beadPointer -= 1
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.1627:goPrevVisitedNode
+#@+node:ekr.20031218072017.1628:goNextVisitedNode
+def goNextVisitedNode (self,event=None):
+
+    '''Select the next visited node.'''
+
+    c = self
+
+    if c.beadPointer + 1 < len(c.beadList):
+        c.beadPointer += 1
+        p = c.beadList[c.beadPointer]
+        if c.contractVisitedNodes:
+            p.contract()
+        c.treeSelectHelper(p)
+#@-node:ekr.20031218072017.1628:goNextVisitedNode
+#@+node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+# c.beadList is the list of nodes for the back and forward commands.
+# The back and forward commands do not update this list.
+
+if updateBeadList:
+
+    # Don't change the list if p is already in it.
+    update = True
+    for p2 in c.beadList:
+        if p2 == p:
+            update = False
+        if not c.positionExists(p2,root=c.rootPosition()):
+            c.beadList.remove(p2)
+            update = True ; break
+
+    # Add the node to the end, and set the bead pointer to the end.
+    if update:
+        c.beadList.append(p.copy())
+        c.beadPointer = len(c.beadList)-1
+        #g.trace('updating bead list',p.headString())
+        #print [p.headString() for p in c.beadList]
+#@-node:ekr.20040803072955.131:<< update c.beadList or c.beadPointer >>
+#@+node:ekr.20040803072955.132:<< update c.visitedList >>
+# The test 'p in c.visitedList' calls p.__cmp__, so this code *is* valid.
+
+# Make p the most recently visited position on the list.
+
+for p2 in c.visitedList:
+    if p2 == p:
+        c.visitedList.remove(p2)
+
+c.visitedList.insert(0,p.copy())
+
+# g.trace('len(c.visitedList)',len(c.visitedList))
+# g.trace([z.headString()[:10] for z in c.visitedList]) # don't assign to p!
+#@-node:ekr.20040803072955.132:<< update c.visitedList >>
+#@+node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+def treeSelectHelper (self,p,redraw=True):
+
+    c = self ; current = c.currentPosition()
+
+    if p:
+        c.beginUpdate()
+        try:
+            c.frame.tree.expandAllAncestors(p)
+            c.selectPosition(p,updateBeadList=False)
+        finally:
+            c.endUpdate(redraw)
+
+    c.treeFocusHelper()
+#@-node:ekr.20070226113916: treeSelectHelper (new in Leo 4.4.3)
+#@-node:ekr.20070615074842:Improved goto-next/prev-node commands
+#@-node:ekr.20070615103418:Fixed bugs
+#@-node:ekr.20070612132051:Leo 4.4.3 rc1 projects
 #@+node:ekr.20070126072723:pychecker
 #@+node:ekr.20070316175323:Invalid warnings
 leoGlobals.py:127: No module attribute (leo_config_directory) found # wrong
