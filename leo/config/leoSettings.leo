@@ -51,6 +51,7 @@
 </v>
 <v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
+<v t="ekr.20070615094204"><vh>@bool contractVisitedNodes = True</vh></v>
 <v t="ekr.20041119041304"><vh>@bool create_nonexistent_directories = False</vh></v>
 <v t="ekr.20060212101234"><vh>@bool gc_before_redraw = True</vh></v>
 <v t="ekr.20060215102141"><vh>@bool ignore_unbound_non_ascii_keys = False</vh></v>
@@ -82,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -172,10 +173,11 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20061029091403"><vh>@bool show_full_tracebacks_in_scripts = False</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
+<v t="ekr.20070615094204" a="TV"><vh>@bool contractVisitedNodes = True</vh></v>
 <v t="ekr.20070531103454"><vh>@bool globalDynamicAbbrevs = True</vh></v>
 <v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
@@ -6466,5 +6468,6 @@ propagate-key-event = Alt-H
 propagate-key-event = Alt-P
 propagate-key-event = Alt-O
 propagate-key-event = Alt-W</t>
+<t tx="ekr.20070615094204">True: goto-next-node and goto-prev-node commands contract the selected node.</t>
 </tnodes>
 </leo_file>
