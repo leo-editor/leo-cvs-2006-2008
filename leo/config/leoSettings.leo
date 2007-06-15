@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.532060027285">
-	<global_window_position top="10" left="10" height="948" width="1280"/>
+	<global_window_position top="17" left="238" height="928" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" a="E" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -173,11 +173,11 @@
 </v>
 <v t="ekr.20041119034357.67"><vh>@color split_bar_color = LightSteelBlue2</vh></v>
 </v>
-<v t="ekr.20041119034357.10" a="E" annotate="7d71002e"><vh>Command options</vh>
+<v t="ekr.20041119034357.10" annotate="7d71002e"><vh>Command options</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at_root_bodies_start_in_doc_mode = True</vh></v>
 <v t="ekr.20061029091403"><vh>@bool show_full_tracebacks_in_scripts = False</vh></v>
 <v t="ekr.20051027175030"><vh>@bool autocomplete-brackets = False</vh></v>
-<v t="ekr.20070615094204" a="TV"><vh>@bool contractVisitedNodes = True</vh></v>
+<v t="ekr.20070615094204"><vh>@bool contractVisitedNodes = True</vh></v>
 <v t="ekr.20070531103454"><vh>@bool globalDynamicAbbrevs = True</vh></v>
 <v t="ekr.20061012122620"><vh>@bool insert_new_nodes_at_end = False</vh></v>
 <v t="ekr.20041119041019"><vh>@bool redirect_execute_script_output_to_log_pane = False</vh></v>
@@ -452,7 +452,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -615,14 +615,14 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
-<v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
+<v t="ekr.20061018061727.1" a="TV"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
 <v t="ekr.20060925060533.1"><vh>@shortcuts Cursor Moves using plain keys</vh></v>
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
@@ -2462,15 +2462,12 @@ full-command                        = Alt-x
 go-back                             = None
 go-forward                          = None
 goto-char                           = None
-goto-first-node                     ! text = Alt-Home
-goto-first-node                     ! tree = Alt-Home
-goto-first-node                     ! tree = Home
+goto-first-node                     = None
 goto-first-sibling                  = None
+goto-first-visible-node             = Alt-Home
 goto-last-node                      = None
 goto-last-sibling                   = None
-goto-last-visible                   ! text = Alt-End
-goto-last-visible                   ! tree = Alt-End
-goto-last-visible                   ! tree = End
+goto-last-visible-node              = Alt-End
 goto-line                           = None  # Leo's goto-line-number is better.
 goto-line-number                    = Alt-g 
 goto-next-changed                   = None
@@ -2583,11 +2580,12 @@ full-command                            = Alt-x                 # No conflict.
 go-back                                 = None
 go-forward                              = None
 goto-char                               = None
-goto-first-node                         ! tree = Alt-Home       # Was: Alt-Shift-G
+goto-first-node                         = None       # Was: Alt-Shift-G
 goto-first-sibling                      ! tree = Alt-Shift-Home
+goto-first-visible-node                 ! tree = Alt-Home
 goto-last-node                          ! tree = None           # Was: Alt-Shift-H
 goto-last-sibling                       ! tree = Alt-Shift-End
-goto-last-visible                       ! tree = Alt-End
+goto-last-visible-node                  ! tree = Alt-End
 goto-line                               = None              # Usually Alt-g, but Leo's goto-line-number is better.
 goto-line-number                        = Alt-g             # The Leo equivalent.
 goto-next-changed                       = None              # Removed Alt-D: not useful enough.
@@ -2859,7 +2857,7 @@ goto-first-node                     = Alt-Shift-G
 goto-first-sibling                  = None
 goto-last-node                      = Alt-Shift-H
 goto-last-sibling                   = None
-goto-last-visible                   = None
+goto-last-visible-node              = None
 goto-line                           = Alt-g
 goto-line                           = None         # Emacs version is less powerful than Leo version
 goto-line-number                    = Alt-G
@@ -3128,9 +3126,10 @@ go-forward                              = None
 goto-char                               = None
 goto-first-node                         = Alt-Shift-G
 goto-first-sibling                      = None
+goto-first-visible-node                 = None
 goto-last-node                          = Alt-Shift-H
 goto-last-sibling                       = None
-goto-last-visible                       = None
+goto-last-visible-node                  = None
 goto-line                               = None
 goto-line-number                        = Alt-G
 goto-next-changed                       = Alt-D
@@ -3406,11 +3405,12 @@ go-back                             = None
 go-forward                          = None
 goto-char                           = None
 goto-first-node                     = None
+goto-first-visible-node             = None
 goto-first-sibling                  = None
 goto-global-line                    = None
 goto-last-node                      = None
 goto-last-sibling                   = None
-goto-last-visible                   = None
+goto-last-visible-node              = None
 goto-line                           = None # Leo's goto-line-number is better.
 goto-line-number                    = None # Leo's legacy Go To Line number command.  goto-global-line is preferred.
 goto-next-changed                   = None
@@ -4374,9 +4374,9 @@ goto-first-node                     ! text = Alt-Home
 goto-first-node                     ! tree = Alt-Home
 goto-first-node                     ! tree = Home
 goto-global-line                    = Alt-g # New minibuffer interface.
-goto-last-visible                   ! text = Alt-End
-goto-last-visible                   ! tree = Alt-End
-goto-last-visible                   ! tree = End
+goto-last-visible-node              ! text = Alt-End
+goto-last-visible-node              ! tree = Alt-End
+goto-last-visible-node              ! tree = End
 goto-line-number                    = None # Leo's legacy Go To Line Number command: uses dialog.
 goto-next-clone                     = Alt-N
 goto-next-visible                   ! text = Alt-DnArrow
@@ -4465,10 +4465,10 @@ insert-node             = Ctrl-i
 edit-headline           = h
 insert-node             = i
 
-goto-first-node         -&gt; same = Home
-goto-last-visible       -&gt; same = End
-goto-first-node         -&gt; same = a
-goto-last-visible       -&gt; same = z
+goto-first-visible-node -&gt; same = Home
+goto-last-visible-node  -&gt; same = End
+goto-first-visible-node -&gt; same = a
+goto-last-visible-node  -&gt; same = z
 
 contract-or-go-left     -&gt; same = l
 expand-and-go-right     -&gt; same = r
@@ -4616,10 +4616,10 @@ paste-node              -&gt; same = Ctrl-Shift-p
 undo                    -&gt; same = Ctrl-z
 redo                    -&gt; same = Ctrl-Shift-z
 
-goto-first-node         -&gt; same = Home
-goto-first-node         -&gt; same = Alt-Home
-goto-last-visible       -&gt; same = End
-goto-last-visible       -&gt; same = Alt-End
+goto-first-visible-node -&gt; same = Home
+goto-first-visible-node -&gt; same = Alt-Home
+goto-last-visible-node  -&gt; same = End
+goto-last-visible-node  -&gt; same = Alt-End
 
 contract-or-go-left     -&gt; same = Alt-LtArrow
 expand-and-go-right     -&gt; same = Alt-RtArrow
@@ -4909,9 +4909,10 @@ go-forward
 goto-char
 goto-first-node
 goto-first-sibling
+goto-first-visible-node
 goto-last-node
 goto-last-sibling
-goto-last-visible
+goto-last-visible-node
 goto-next-node
 goto-next-sibling
 goto-next-visible
@@ -5594,8 +5595,8 @@ keyboard-quit               = Ctrl-g # not needed, but a good reminder
 keyboard-quit               = Return
 enter-outline-mode          = o
 
-goto-first-node             -&gt; same = Home
-goto-last-visible           -&gt; same = End
+goto-first-node-node        -&gt; same = Home
+goto-last-visible-node      -&gt; same = End
 
 move-outline-down           -&gt; same = d
 move-outline-left           -&gt; same = l
@@ -5854,9 +5855,9 @@ goto-first-node                     ! text = Alt-Home
 goto-first-node                     ! tree = Alt-Home
 goto-first-node                     ! tree = Home
 goto-global-line                    = Alt-g # New minibuffer interface.
-goto-last-visible                   ! text = Alt-End
-goto-last-visible                   ! tree = Alt-End
-goto-last-visible                   ! tree = End
+goto-last-visible-node              ! text = Alt-End
+goto-last-visible-node              ! tree = Alt-End
+goto-last-visible-node              ! tree = End
 goto-line-number                    = None # Leo's legacy Go To Line Number command: uses dialog.
 goto-next-clone                     = Alt-N
 goto-next-visible                   ! text = Alt-DnArrow
@@ -6147,8 +6148,8 @@ end-of-line                 = End
 # expand-and-go-right       ! tree = RtArrow
 # goto-next-visible         ! tree = DnArrow
 # goto-prev-visible         ! tree = UpArrow
-# goto-first-node           ! tree = Home
-# goto-last-visible         ! tree = End
+# goto-first-visible-node   ! tree = Home
+# goto-last-visible-node    ! tree = End
 
 # Shift-special keys **always** refer to the body text.
 back-char-extend-selection      = Shift-LtArrow
@@ -6186,8 +6187,8 @@ expand-and-go-right         = Alt-RtArrow
 goto-next-visible           = Alt-DnArrow
 goto-prev-visible           = Alt-UpArrow
 
-goto-first-node             = Alt-Home
-goto-last-visible           = Alt-End
+goto-first-visible-node     = Alt-Home
+goto-last-visible-node      = Alt-End
 
 move-outline-down           = Alt-Shift-DnArrow
 move-outline-left           = Alt-Shift-LtArrow
@@ -6233,8 +6234,8 @@ beginning-of-line                   ! text = Home
 beginning-of-line-extend-selection  ! text = Shift-Home
 end-of-line                         ! text = End
 end-of-line-extend-selection        ! text = Shift-End
-goto-first-node                     ! tree = Home
-goto-last-visible                   ! tree = End
+goto-first-visible-node             ! tree = Home
+goto-last-visible-node              ! tree = End
 scroll-down                         ! text = PageDn 
 scroll-down-extend-selection        ! text = Shift-PageDn
 scroll-outline-down-page            ! tree = PageDn
@@ -6245,8 +6246,9 @@ scroll-up-extend-selection          ! text = Shift-PageUp
 # Alt arrow/home/end/page keys always refer to the tree.
 contract-or-go-left         = Alt-LtArrow
 expand-and-go-right         = Alt-RtArrow
-goto-first-node             = Alt-Home
-goto-last-visible           = Alt-End
+goto-first-node             = None
+goto-first-visible-node     = Alt-Home
+goto-last-visible-node      = Alt-End
 goto-next-visible           = Alt-DnArrow
 goto-prev-visible           = Alt-UpArrow
 move-outline-down           = Alt-Shift-DnArrow
