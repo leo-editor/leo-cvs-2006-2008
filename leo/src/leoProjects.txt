@@ -51550,6 +51550,16 @@ enable(menu,"Go To Next Sibling",hasNext)
 Alt-home is now bound to goto-first-visible rather than goto-first.
 #@nonl
 #@-node:ekr.20070615104700:Changed binding of Alt-Home
+#@+node:ekr.20070307082503.1:leoDist.leo now creates a python egg
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4319356
+
+Pythonistas have come to expect that::
+
+ $ easy_install <app>
+
+will locate and install the most recent version of app and install it.
+#@-node:ekr.20070307082503.1:leoDist.leo now creates a python egg
 #@-node:ekr.20070615103622:New features & settings
 #@-node:ekr.20070612132051:Leo 4.4.3 rc1 projects
 #@+node:ekr.20070126072723:pychecker

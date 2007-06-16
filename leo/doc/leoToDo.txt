@@ -163,23 +163,11 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20070414090051:Study
 #@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070614093419.1:Keys: test shift keys
-#@-node:ekr.20070614093419.1:Keys: test shift keys
-#@+node:ekr.20070615063616:Distribution
-#@+node:ekr.20070307082503.1:(done) Create python egg
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4319356
-
-Pythonistas have come to expect that::
-
- $ easy_install <app>
-
-will locate and install the most recent version of app and install it.
-#@-node:ekr.20070307082503.1:(done) Create python egg
 #@+node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20070615063616.1:Create Debian package
-#@-node:ekr.20070615063616:Distribution
-#@+node:ekr.20070325054325:Docs (3 hours)
+#@+node:ekr.20070325054325:Docs
+#@+node:ekr.20070616081116:Document chapter commands and chapter api
+#@-node:ekr.20070616081116:Document chapter commands and chapter api
 #@+node:ekr.20070215093739:Improve Leo's getting started page
 @nocolor
 
@@ -289,18 +277,7 @@ Also, the installer's error messages should mention setting PYTHONPATH.
 Edward
 #@nonl
 #@-node:ekr.20070614070915:Improve docs re windows installer IMPROTANT
-#@-node:ekr.20070325054325:Docs (3 hours)
-#@+node:ekr.20070613070131:Remove Linux install/uninstall scripts
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4359597
-By: shrogers
-
-Uninstall failed (hung) on Fedora Core 6 and CentOS 4.3 Linux.  I had to manually
-remove  /usr/local/lib/leo  before I could successfully run install.
-
-# Steve
-#@-node:ekr.20070613070131:Remove Linux install/uninstall scripts
+#@-node:ekr.20070325054325:Docs
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070324084040:@auto
