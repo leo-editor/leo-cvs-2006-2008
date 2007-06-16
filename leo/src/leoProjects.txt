@@ -51560,6 +51560,14 @@ Pythonistas have come to expect that::
 
 will locate and install the most recent version of app and install it.
 #@-node:ekr.20070307082503.1:leoDist.leo now creates a python egg
+#@+node:ekr.20070613070131:Removed Linux install/uninstall scripts
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=4359597
+
+These are no longer needed now that the user can use the Debian package manager or easy_install.
+#@nonl
+#@-node:ekr.20070613070131:Removed Linux install/uninstall scripts
 #@-node:ekr.20070615103622:New features & settings
 #@-node:ekr.20070612132051:Leo 4.4.3 rc1 projects
 #@+node:ekr.20070126072723:pychecker
