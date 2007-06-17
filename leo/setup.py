@@ -26,7 +26,7 @@ setuptools.setup (
     # py_modules=[], # The manifest specifies everything.
     packages = setuptools.find_packages(),
     include_package_data = True, # Required, e.g. for Pmw.def
-    zip_safe=True, # Never run Leo from a zip file.
+    zip_safe=False, # Never run Leo from a zip file.
     install_requires=['python>=2.2.1',],
 
     description = 'Leo: Literate Editor with Outlines',
