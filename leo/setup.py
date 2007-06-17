@@ -17,7 +17,7 @@ Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
 
 setuptools.setup (
     name='leo',
-    version='4-4-3-rc1', # No spaces here!
+    version='4-4-3-rc1-try-1', # No spaces here!
 
     author='Edward K. Ream',
     author_email='edreamleo@charter.net',
@@ -26,10 +26,12 @@ setuptools.setup (
     # py_modules=[], # The manifest specifies everything.
     packages = setuptools.find_packages(),
     include_package_data = True, # Required, e.g. for Pmw.def
+    zip_safe=True, # Never run Leo from a zip file.
+    install_requires=['python>=2.2.1',],
 
     description = 'Leo: Literate Editor with Outlines',
     license='Python', # licence [sic] changed to license in Python 2.3
-    platforms=['Windows, Linux, Macintosh'],
+    platforms=['all'],
     long_description = long_description,
     keywords = 'outline, outlinter, ide, editor, literate programming',
 )

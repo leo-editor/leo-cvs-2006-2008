@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.450431034483">
-	<global_window_position top="11" left="408" height="928" width="774"/>
+	<global_window_position top="0" left="0" height="711" width="1270"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -197,7 +197,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="TV"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -214,7 +214,7 @@
 </v>
 </v>
 <v t="ekr.20070614170445" a="E"><vh>Scripts  (update for each release)</vh>
-<v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334"><vh>@nosent ../setup.py</vh>
+<v t="ekr.20070614105133.3" a="TV" tnodeList="ekr.20070614105133.3,ekr.20070614110334"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20070614105133.2"><vh>@button create-leo-egg</vh></v>
@@ -5045,7 +5045,7 @@ import setuptools
 
 setuptools.setup (
     name='leo',
-    version='4-4-3-rc1', # No spaces here!
+    version='4-4-3-rc1-try-1', # No spaces here!
 
     author='Edward K. Ream',
     author_email='edreamleo@charter.net',
@@ -5054,10 +5054,12 @@ setuptools.setup (
     # py_modules=[], # The manifest specifies everything.
     packages = setuptools.find_packages(),
     include_package_data = True, # Required, e.g. for Pmw.def
+    zip_safe=True, # Never run Leo from a zip file.
+    install_requires=['python&gt;=2.2.1',],
 
     description = 'Leo: Literate Editor with Outlines',
     license='Python', # licence [sic] changed to license in Python 2.3
-    platforms=['Windows, Linux, Macintosh'],
+    platforms=['all'],
     long_description = long_description,
     keywords = 'outline, outlinter, ide, editor, literate programming',
 )
