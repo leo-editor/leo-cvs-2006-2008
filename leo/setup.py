@@ -17,11 +17,15 @@ Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
 
 setuptools.setup (
     name='leo',
-    version='4-4-3-rc1-try-1', # No spaces here!
+    version='4.4.3preview3', # No spaces here!
+        # pre-release tags: 4.4.3b1 or 4.4.3rc1 or 4.4.3preview1
+        # Do not use post-release-tags: 4.4.3-whatever.
+        # final release: 4.4.3final or just 4.4.3.
 
     author='Edward K. Ream',
     author_email='edreamleo@charter.net',
     url='http://webpages.charter.net/edreamleo/front.html',
+    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106',
 
     # py_modules=[], # The manifest specifies everything.
     packages = setuptools.find_packages(),
