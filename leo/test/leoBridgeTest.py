@@ -4,6 +4,7 @@
 
 import leoBridge
 import leoTest
+# Do not define g here.  Use the g returned by the bridge.
 
 #@+others
 #@+node:ekr.20070227172826:main & helpers
