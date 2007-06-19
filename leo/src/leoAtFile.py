@@ -4730,7 +4730,7 @@ class atFile:
                 if line != '': changed = True
         s = g.joinLines(cleanLines)
 
-        if changed:
+        if changed and not g.app.unitTesting:
             p.setTnodeText(s)
             c.setBodyString(p,s)
             c.setChanged(True)
