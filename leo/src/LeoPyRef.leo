@@ -2,14 +2,27 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.456865127582">
-	<global_window_position top="52" left="337" height="823" width="822"/>
+<globals body_outline_ratio="0.305019305019">
+	<global_window_position top="127" left="378" height="777" width="835"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
+<v t="ekr.20070619130151"><vh>Buttons</vh>
+<v t="ekr.20070201082722"><vh>@button Beautify</vh></v>
+<v t="ekr.20070619125153"><vh>@button dynamic-tests</vh>
+<v t="ekr.20070619130434"><vh>searchOutline</vh></v>
+<v t="ekr.20070619125153.1"><vh>createOutline</vh></v>
+<v t="ekr.20070619125153.2"><vh>createFileFromOutline</vh></v>
+<v t="ekr.20070619125153.3"><vh>runDynamicTests</vh></v>
+</v>
+<v t="ekr.20060910141935"><vh>ZODB plugin buttons</vh>
+<v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
+<v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
+</v>
+</v>
 <v t="ekr.20060531093331"><vh>@command clones-tab</vh>
 <v t="ekr.20060531093331.1"><vh>class cloneNavigator</vh>
 <v t="ekr.20060531093331.2"><vh>init</vh></v>
@@ -19,11 +32,6 @@
 <v t="ekr.20060531093331.6"><vh>&lt;&lt;Goto selected position when listbox selection changes&gt;&gt;</vh></v>
 </v>
 </v>
-</v>
-<v t="ekr.20070201082722"><vh>@button Beautify</vh></v>
-<v t="ekr.20060910141935"><vh>ZODB plugin buttons</vh>
-<v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
-<v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
 </v>
 <v t="ekr.20070603183100"><vh>@settings</vh>
 <v t="ekr.20070603183100.1"><vh>@bool use_chapters = True</vh></v>
@@ -39,18 +47,9 @@
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="EKR.20040519090151.2"><vh>To do</vh>
-<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
-<v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
-</v>
-<v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
+<v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
-<v t="ekr.20031218072017.2582"><vh> version &amp; signon stuff</vh>
-<v t="ekr.20040629121554"><vh>getBuildNumber</vh></v>
 <v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
-<v t="ekr.20040629121554.2" a="M" labels="2858060000006c6162656c737100540801000032383634373033303061353332373632363536363666373236353230363336383631366536373635336132373061373033313061353636343635363632303639366536393734353636353732373336393666366532303238373336353663363632393361356337353330333033303631323032303230323036333230336432303733363536633636356337353330333033303631323032303230323036333265373636353732323033643230323232343532363537363639373336393666366533613230333132653332333233353230323432323230323332303433353635333230373537303634363137343635373332303734363836393733326530613730333230613733326571017471022e"><vh>initVersion</vh></v>
-<v t="ekr.20040629121554.3"><vh>c.signOnWithVersion</vh></v>
-</v>
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
 <v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
 <v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
@@ -92,6 +91,10 @@ marks="ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 </v>
+<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
+<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
+</v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040430162943"></t>
@@ -115,7 +118,6 @@ t:  a tnode or a text widget.
 u:  an undoer
 v:  a vnode
 z:  a local temp.</t>
-<t tx="ekr.20031218072017.2582"></t>
 <t tx="ekr.20031218072017.2604"></t>
 <t tx="ekr.20031218072017.2606">@color
 
@@ -138,39 +140,10 @@ if 0: # Set to 1 for lint-like testing.
 <t tx="ekr.20031218072017.3625">&lt;&lt; about gui classes and gui plugins &gt;&gt;
 </t>
 <t tx="ekr.20031218072017.3821"></t>
-<t tx="ekr.20040629121554">def getBuildNumber(self):
-    c = self
-    return c.ver[10:-1] # Strip off "(dollar)Revision" and the trailing "$"
-</t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.3 beta 2, build %s, June 12, 2007" % c.getBuildNumber()
-</t>
-<t tx="ekr.20040629121554.2">def initVersion (self):
-    c = self
-    c.ver = "$Revision$" # CVS updates this.
-</t>
-<t tx="ekr.20040629121554.3">def signOnWithVersion (self):
+    return "Leo 4.4.3 release candidate 1, build %s, June 19, 2007" % c.getBuildNumber()
 
-    c = self
-    color = c.config.getColor("log_error_color")
-    signon = c.getSignOnLine()
-    n1,n2,n3,junk,junk=sys.version_info
-
-    if sys.platform.startswith('win'):
-        version = 'Windows '
-        try:
-            v = os.sys.getwindowsversion()
-            version += ', '.join([str(z) for z in v])
-        except Exception:
-            pass
-
-    else: version = sys.platform
-
-    g.es("Leo Log Window...",color=color)
-    g.es(signon)
-    g.es("Python %d.%d.%d, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
-    g.enl()
 </t>
 <t tx="ekr.20050721093241">@nocolor
 
@@ -338,5 +311,79 @@ else:
 <t tx="ekr.20070605104326">True:  Chapter tabs appear in the outline pane.
 False: Chapter tabs do not appear.</t>
 <t tx="ekr.20070605104410"></t>
+<t tx="ekr.20070619125153">'''
+This script runs all @test nodes as follows:
+
+- Copies all @suite and @tests nodes to dynamicUnitTests.leo.
+- Runs dynamicUnitTests.leo in a separate process.
+
+This ensures that all unit tests will be run with the latest Leo sources.
+'''
+
+import os,sys
+
+@others
+
+path = g.os_path_abspath(g.os_path_join(
+    g.app.loadDir,'..','test','dynamicUnitTest.leo'))
+
+print '-'*20
+found = searchOutline(p.copy())
+if found:
+    c2 = c.new()
+    found = createOutline(c,c2,p.copy())
+    createFileFromOutline(c2,path)
+    runDynamicTests(path)
+else:
+    g.es_print('no @test or @suite nodes in selected outline')
+</t>
+<t tx="ekr.20070619125153.1">def createOutline(c,c2,p):
+
+    '''Create a unit test ouline containing all @test and @suite nodes in p's outline.'''
+
+    c2root = c2.rootPosition()
+    c2.beginUpdate()
+    try:
+        for p in p.self_and_subtree_iter():
+            h = p.headString()
+            if h.startswith('@test') or h.startswith('@suite'):
+                c.selectPosition(p)
+                c.copyOutline()
+                c2.pasteOutline()
+                p2 = c2.currentPosition()
+                p2.unlink()
+                p2.moveToLastChildOf(c2root)
+                found = True
+        # Weird: this must come last.
+        c2root.setHeadString('All unit tests')
+    finally:
+        c2.endUpdate(True) # Weird: the redraw is required.
+</t>
+<t tx="ekr.20070619125153.2">def createFileFromOutline(c2,path):
+
+    c2.selectPosition(c2.rootPosition())
+    c2.mFileName = path
+    c2.fileCommands.save(path)
+    c2.close()
+</t>
+<t tx="ekr.20070619125153.3">def runDynamicTests(path):
+
+    runDynamicTests = g.os_path_abspath(g.os_path_join(
+        g.app.loadDir,'..','test','leoDynamicTest.py'))
+
+    args = [sys.executable, runDynamicTests ]
+
+    # Use a pristine environment.
+    os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
+</t>
+<t tx="ekr.20070619130151"></t>
+<t tx="ekr.20070619130434">def searchOutline(p):
+
+    for p in p.self_and_subtree_iter():
+        h = p.headString()
+        if h.startswith('@test') or h.startswith('@suite'):
+            return True
+    else:
+        return False</t>
 </tnodes>
 </leo_file>
