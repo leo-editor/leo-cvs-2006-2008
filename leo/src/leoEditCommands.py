@@ -2764,7 +2764,6 @@ class editCommandsClass (baseEditCommandsClass):
 
         g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
         return 'break'
-    #@nonl
     #@+node:ekr.20051026171121:insertNewlineHelper
     def insertNewlineHelper (self,w,oldSel,undoType):
 

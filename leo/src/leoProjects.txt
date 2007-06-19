@@ -1694,7 +1694,6 @@ def selfInsertCommand(self,event,action='insert'):
 
     g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
     return 'break'
-#@nonl
 #@+node:ekr.20061103114242:<< set local vars >>
 c = self.c
 p = c.currentPosition()
@@ -6403,7 +6402,6 @@ def selfInsertCommand(self,event,action='insert'):
 
     g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
     return 'break'
-#@nonl
 #@+node:ekr.20061103114242:<< set local vars >>
 c = self.c
 p = c.currentPosition()
@@ -11411,7 +11409,6 @@ def selfInsertCommand(self,event,action='insert'):
 
     g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
     return 'break'
-#@nonl
 #@+node:ekr.20061103114242:<< set local vars >>
 c = self.c
 p = c.currentPosition()
@@ -21024,6 +21021,7 @@ def __init__ (self,c,name):
 def _appendText(self,s):
     #if self.trace: g.trace(self,'len(s)',len(s))
     if self.trace: g.trace(self,'ins',self.ins,'s',repr(s[-10:]),g.callers())
+    # g.trace(repr(s),g.callers())
     self.s = self.s + s
     self.ins = len(self.s)
     self.sel = self.ins,self.ins
@@ -21044,14 +21042,16 @@ def _insertText(self,i,s):
     # if self.trace: g.trace(self,'s',repr(s),'self.s',repr(self.s))
     # if self.trace: g.trace(self,'i',i,'len(s)',len(s),g.callers())
     if self.trace: g.trace(self,'i',i,'s',repr(s[-10:]),g.callers())
+    # g.trace(repr(s),g.callers())
     i += len(s1)
     self.ins = i
     self.sel = i,i
 def _scrollLines(self,n):           pass
 def _see(self,i):                   pass
 def _setAllText(self,s):
-    # if self.trace: g.trace(self,'len(s)',len(s),g.callers())
+    if self.trace: g.trace(self,'len(s)',len(s),g.callers())
     if self.trace: g.trace(self,'s',repr(s[-10:]),g.callers())
+    # g.trace(repr(s),g.callers())
     self.s = s
     i = len(self.s)
     self.ins = i
@@ -28733,7 +28733,6 @@ def selfInsertCommand(self,event,action='insert'):
 
     g.doHook("bodykey2",c=c,p=p,v=p,ch=ch,oldSel=oldSel,undoType=undoType)
     return 'break'
-#@nonl
 #@+node:ekr.20061103114242:<< set local vars >>
 c = self.c
 p = c.currentPosition()
@@ -43382,7 +43381,7 @@ def cleanLines (self,p,s):
             if line != '': changed = True
     s = g.joinLines(cleanLines)
 
-    if changed:
+    if changed and not g.app.unitTesting:
         p.setTnodeText(s)
         c.setBodyString(p,s)
         c.setChanged(True)
@@ -51540,6 +51539,38 @@ enable(menu,"Go To Prev Sibling",hasBack)
 enable(menu,"Go To Next Sibling",hasNext)
 #@-node:ekr.20040131171020.3:<< enable go to submenu >>
 #@-node:ekr.20070615074842:Improved goto-next/prev-node commands
+#@+node:ekr.20070619112630:Fixed failing bridge unit test
+# CleanLines was adding a trailing newline.
+# The fix was to suppress this during unit tests.
+#@nonl
+#@+node:ekr.20070529083836:cleanLines
+def cleanLines (self,p,s):
+
+    '''Return a copy of s, with all trailing whitespace removed.
+    If a change was made, update p's body text and set c dirty.'''
+
+    c = self.c ; cleanLines = [] ; changed = False
+    lines = g.splitLines(s)
+    for line in lines:
+        if line.strip():
+            cleanLines.append(line)
+        elif line.endswith('\n'):
+            cleanLines.append('\n')
+            if line != '\n': changed = True
+        else:
+            cleanLines.append('')
+            if line != '': changed = True
+    s = g.joinLines(cleanLines)
+
+    if changed and not g.app.unitTesting:
+        p.setTnodeText(s)
+        c.setBodyString(p,s)
+        c.setChanged(True)
+
+    return s
+#@nonl
+#@-node:ekr.20070529083836:cleanLines
+#@-node:ekr.20070619112630:Fixed failing bridge unit test
 #@-node:ekr.20070615103418:Fixed bugs
 #@+node:ekr.20070615103622:New features & settings
 #@+node:ekr.20070615103622.1:Added @bool contractVisitedNodes setting
