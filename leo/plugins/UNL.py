@@ -142,7 +142,7 @@ def onUrl1 (tag,keywords):
 #   file://home/me/todolist.html
 #@-at
 #@@c
-    g.trace(url)
+    # g.trace(url)
 
     try:
         try:
