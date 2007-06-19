@@ -620,6 +620,7 @@ class stringTextWidget (baseTextWidget):
     def _appendText(self,s):
         #if self.trace: g.trace(self,'len(s)',len(s))
         if self.trace: g.trace(self,'ins',self.ins,'s',repr(s[-10:]),g.callers())
+        # g.trace(repr(s),g.callers())
         self.s = self.s + s
         self.ins = len(self.s)
         self.sel = self.ins,self.ins
@@ -640,14 +641,16 @@ class stringTextWidget (baseTextWidget):
         # if self.trace: g.trace(self,'s',repr(s),'self.s',repr(self.s))
         # if self.trace: g.trace(self,'i',i,'len(s)',len(s),g.callers())
         if self.trace: g.trace(self,'i',i,'s',repr(s[-10:]),g.callers())
+        # g.trace(repr(s),g.callers())
         i += len(s1)
         self.ins = i
         self.sel = i,i
     def _scrollLines(self,n):           pass
     def _see(self,i):                   pass
     def _setAllText(self,s):
-        # if self.trace: g.trace(self,'len(s)',len(s),g.callers())
+        if self.trace: g.trace(self,'len(s)',len(s),g.callers())
         if self.trace: g.trace(self,'s',repr(s[-10:]),g.callers())
+        # g.trace(repr(s),g.callers())
         self.s = s
         i = len(self.s)
         self.ins = i
