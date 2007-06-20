@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.450431034483">
-	<global_window_position top="18" left="10" height="711" width="1270"/>
+	<global_window_position top="18" left="10" height="853" width="1270"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -217,8 +217,9 @@
 <v t="ekr.20070614105133.3" a="TV" tnodeList="ekr.20070614105133.3,ekr.20070614110334"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20070614105133.2"><vh>@button create-leo-egg</vh></v>
 <v t="ekr.20070614165755"><vh>@button create-leo-zip</vh></v>
+<v t="ekr.20070620084858"><vh>@button register</vh></v>
+<v t="ekr.20070620084858.1"><vh>@button upload</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -5026,20 +5027,9 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20070614105133.2">import os,sys
+<t tx="ekr.20070614105133.3">print '='*30,'setup.py','='*30
 
-folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
-os.chdir(folder)
-
-command = '%s setup.py bdist_egg' % (sys.executable)
-print command
-os.system(command)
-</t>
-<t tx="ekr.20070614105133.3"># setup.py to execute a Leo egg
-
-print '='*30,'setup.py','='*30
-
-# Boilerplate to automatically download 
+# Boilerplate to automatically download setuptools if it not installed.
 import ez_setup
 ez_setup.use_setuptools()
 
@@ -5049,15 +5039,15 @@ import setuptools
 
 setuptools.setup (
     name='leo',
-    version='4.4.3preview9', # No spaces!  ***Must match download_url***
+    version='4.4.3b3', # No spaces!
         # pre-release tags: 4.4.3b1 or 4.4.3rc1 or 4.4.3preview1
         # Do not use post-release-tags: 4.4.3-whatever.
         # final release: 4.4.3final or just 4.4.3.
-
     author='Edward K. Ream',
     author_email='edreamleo@charter.net',
     url='http://webpages.charter.net/edreamleo/front.html',
-    download_url='http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
+    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458'
+        #'http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
         #'http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106',
 
     # py_modules=[], # The manifest specifies everything.
@@ -5066,7 +5056,6 @@ setuptools.setup (
     exclude_package_data = { '': ['*.pyc','*.pyo']},
     zip_safe=False, # Never run Leo from a zip file.
     install_requires=[], #'python&gt;=2.2.1',],
-
     description = 'Leo: Literate Editor with Outlines',
     license='Python', # licence [sic] changed to license in Python 2.3
     platforms=['all',],
@@ -5075,7 +5064,6 @@ setuptools.setup (
 )
 
 print ; print '='*30,'setup.py complete','='*30 ; print
-
 </t>
 <t tx="ekr.20070614110334">long_description = \
 """Leo is an IDE, an outliner, a scripting and unit testing framework based on Python,
@@ -5087,7 +5075,12 @@ Python 2.2.1 or above and the Tk Tk 8.4 or above.
 Download Python from http://python.org/
 Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
  """</t>
-<t tx="ekr.20070614165755">import os,sys
+<t tx="ekr.20070614165755">@ Important: The bdist_egg command is for 'binary' distributions.
+  Phillip J. Eby says source distributions (.zip files) are fine for
+  pure Python programs like Leo.
+@c
+
+import os,sys
 
 folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
 os.chdir(folder)
@@ -5097,5 +5090,23 @@ print command
 os.system(command)
 </t>
 <t tx="ekr.20070614170445"></t>
+<t tx="ekr.20070620084858">import os,sys
+
+folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
+os.chdir(folder)
+
+command = '%s setup.py register' % (sys.executable)
+print command
+os.system(command)
+</t>
+<t tx="ekr.20070620084858.1">import os,sys
+
+folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
+os.chdir(folder)
+
+command = '%s setup.py upload --show-response' % (sys.executable)
+print command
+os.system(command)
+</t>
 </tnodes>
 </leo_file>

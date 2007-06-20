@@ -1,8 +1,6 @@
-# setup.py to execute a Leo egg
-
 print '='*30,'setup.py','='*30
 
-# Boilerplate to automatically download 
+# Boilerplate to automatically download setuptools if it not installed.
 import ez_setup
 ez_setup.use_setuptools()
 
@@ -21,15 +19,15 @@ Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
 
 setuptools.setup (
     name='leo',
-    version='4.4.3preview9', # No spaces!  ***Must match download_url***
+    version='4.4.3b3', # No spaces!
         # pre-release tags: 4.4.3b1 or 4.4.3rc1 or 4.4.3preview1
         # Do not use post-release-tags: 4.4.3-whatever.
         # final release: 4.4.3final or just 4.4.3.
-
     author='Edward K. Ream',
     author_email='edreamleo@charter.net',
     url='http://webpages.charter.net/edreamleo/front.html',
-    download_url='http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
+    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458'
+        #'http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
         #'http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106',
 
     # py_modules=[], # The manifest specifies everything.
@@ -38,7 +36,6 @@ setuptools.setup (
     exclude_package_data = { '': ['*.pyc','*.pyo']},
     zip_safe=False, # Never run Leo from a zip file.
     install_requires=[], #'python>=2.2.1',],
-
     description = 'Leo: Literate Editor with Outlines',
     license='Python', # licence [sic] changed to license in Python 2.3
     platforms=['all',],
@@ -47,4 +44,3 @@ setuptools.setup (
 )
 
 print ; print '='*30,'setup.py complete','='*30 ; print
-
