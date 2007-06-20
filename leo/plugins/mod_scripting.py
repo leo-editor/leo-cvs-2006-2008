@@ -116,7 +116,7 @@ import sys
 #@-node:ekr.20060328125248.2:<< imports >>
 #@nl
 
-__version__ = '1.11'
+__version__ = '1.12'
 #@<< version history >>
 #@+node:ekr.20060328125248.3:<< version history >>
 #@+at
@@ -189,6 +189,8 @@ __version__ = '1.11'
 # 1.10 EKR: Strip @key from button text and command name.
 # 1.11 EKR: Removed platform-specific munging of text: this is now done in the 
 # leoFrame classes.
+# 1.12 EKR: Replaced g.app.gui by self.gui when testing whether to create a 
+# Pmw.Balloon.
 #@-at
 #@nonl
 #@-node:ekr.20060328125248.3:<< version history >>
@@ -233,6 +235,7 @@ class scriptingController:
     def __init__ (self,c,iconBar=None):
 
         self.c = c
+        self.gui = c.frame.gui
         getBool = c.config.getBool
         self.scanned = False
         kind = c.config.getString('debugger_kind') or 'idle'
@@ -638,7 +641,7 @@ class scriptingController:
         def deleteButtonCallback(event=None,self=self,b=b):
             self.deleteButton(b)
 
-        if g.app.gui.guiName() == 'tkinter':
+        if self.gui.guiName() == 'tkinter':
             # Bind right-clicks to deleteButton.
             b.bind('<3>',deleteButtonCallback)
 
@@ -656,7 +659,7 @@ class scriptingController:
 
         'Create a balloon for a widget.'
 
-        if g.app.gui.guiName() == 'tkinter':
+        if self.gui.guiName() == 'tkinter':
             balloon = Pmw.Balloon(w,initwait=100)
             if w and balloon:
                 balloon.bind(w,label)

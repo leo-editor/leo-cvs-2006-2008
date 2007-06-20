@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.450431034483">
-	<global_window_position top="0" left="0" height="711" width="1270"/>
+	<global_window_position top="18" left="10" height="711" width="1270"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -5031,7 +5031,7 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
 os.chdir(folder)
 
-command = '%s %s bdist_egg' % (sys.executable,'setup.py')
+command = '%s setup.py bdist_egg' % (sys.executable)
 print command
 os.system(command)
 </t>
@@ -5039,13 +5039,17 @@ os.system(command)
 
 print '='*30,'setup.py','='*30
 
+# Boilerplate to automatically download 
+import ez_setup
+ez_setup.use_setuptools()
+
 import setuptools
 
 &lt;&lt; define long_description &gt;&gt;
 
 setuptools.setup (
     name='leo',
-    version='4.4.3preview3', # No spaces here!
+    version='4.4.3preview9', # No spaces!  ***Must match download_url***
         # pre-release tags: 4.4.3b1 or 4.4.3rc1 or 4.4.3preview1
         # Do not use post-release-tags: 4.4.3-whatever.
         # final release: 4.4.3final or just 4.4.3.
@@ -5053,19 +5057,21 @@ setuptools.setup (
     author='Edward K. Ream',
     author_email='edreamleo@charter.net',
     url='http://webpages.charter.net/edreamleo/front.html',
-    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106',
+    download_url='http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
+        #'http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106',
 
     # py_modules=[], # The manifest specifies everything.
     packages = setuptools.find_packages(),
     include_package_data = True, # Required, e.g. for Pmw.def
+    exclude_package_data = { '': ['*.pyc','*.pyo']},
     zip_safe=False, # Never run Leo from a zip file.
-    install_requires=['python&gt;=2.2.1',],
+    install_requires=[], #'python&gt;=2.2.1',],
 
     description = 'Leo: Literate Editor with Outlines',
     license='Python', # licence [sic] changed to license in Python 2.3
-    platforms=['all'],
+    platforms=['all',],
     long_description = long_description,
-    keywords = 'outline, outlinter, ide, editor, literate programming',
+    keywords = 'outline, outliner, ide, editor, literate programming',
 )
 
 print ; print '='*30,'setup.py complete','='*30 ; print
@@ -5086,7 +5092,7 @@ Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
 folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
 os.chdir(folder)
 
-command = '%s %s sdist' % (sys.executable,'setup.py')
+command = '%s setup.py sdist' % (sys.executable)
 print command
 os.system(command)
 </t>

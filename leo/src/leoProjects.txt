@@ -16190,7 +16190,7 @@ def openSettingsFile (self,path):
     # Changing g.app.gui here is a major hack.
     oldGui = g.app.gui
     g.app.gui = leoGui.nullGui("nullGui")
-    c,frame = g.app.newLeoCommanderAndFrame(path,initEditCommanders=False,updateRecentFiles=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=path,initEditCommanders=False,updateRecentFiles=False)
     frame.log.enable(False)
     c.setLog()
     g.app.lockLog()
@@ -20764,7 +20764,6 @@ def __init__ (self,frame=None,parentFrame=None):
 
     self.isNull = True
     self.logCtrl = self.createControl(parentFrame)
-#@nonl
 #@-node:ekr.20041012083237:nullLog.__init__
 #@+node:ekr.20041012083237.1:createControl
 def createControl (self,parentFrame):
@@ -20776,7 +20775,11 @@ def createTextWidget (self,parentFrame=None):
 
     self.logNumber += 1
 
-    log = g.app.gui.plainTextWidget(
+    c = self.c
+
+    gui = c and c.frame and c.frame.gui or g.app.gui
+
+    log = gui.plainTextWidget( ### was g.app.gui.
         c = self.c,
         name="log-%d" % self.logNumber,
     )
@@ -20823,20 +20826,22 @@ class nullStatusLineClass:
 
     @others
 #@nonl
-#@+node:ekr.20070302171509.2: ctor
+#@+node:ekr.20070302171509.2: nullStatusLineClass.ctor
 def __init__ (self,c,parentFrame):
 
     self.c = c
     self.enabled = False
     self.parentFrame = parentFrame
 
-    self.textWidget = w = g.app.gui.plainTextWidget(c,name='status-line')
+    gui = c and c.frame and c.frame.gui or g.app.gui
+
+    self.textWidget = w = gui.plainTextWidget(c,name='status-line')
 
     # Set the official ivars.
     c.frame.statusFrame = None
     c.frame.statusLabel = None
     c.frame.statusText  = self.textWidget
-#@-node:ekr.20070302171509.2: ctor
+#@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
 #@+node:ekr.20070302171917:methods
 def disable (self,background=None):
     self.enabled = False
@@ -21959,7 +21964,7 @@ def openSettingsFile (self,path):
     # Changing g.app.gui here is a major hack.
     oldGui = g.app.gui
     g.app.gui = leoGui.nullGui("nullGui")
-    c,frame = g.app.newLeoCommanderAndFrame(path,initEditCommanders=False,updateRecentFiles=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=path,initEditCommanders=False,updateRecentFiles=False)
     frame.log.enable(False)
     c.setLog()
     g.app.lockLog()
@@ -22350,7 +22355,7 @@ def doEnabledPlugins (self,p,kind,name,val):
 #@-node:ekr.20070224075914:doEnabledPlugins
 #@+node:ekr.20031218072017.2052:g.openWithFileName
 def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
 
     """Create a Leo Frame for the indicated fileName if the file exists."""
 
@@ -22381,7 +22386,7 @@ def openWithFileName(fileName,old_c,
     # Open the file in binary mode to allow 0x1a in bodies & headlines.
     theFile,isZipped = g.openLeoOrZipFile(fileName)
     if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
     c.isZipped = isZipped
     frame.log.enable(enableLog)
     g.app.writeWaitingLog() # New in 4.3: write queued log first.
@@ -30374,7 +30379,7 @@ if len(theDir) > 0:
 #@-node:ekr.20031218072017.2297:open (leoFileCommands)
 #@+node:ekr.20031218072017.2052:g.openWithFileName
 def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
 
     """Create a Leo Frame for the indicated fileName if the file exists."""
 
@@ -30405,7 +30410,7 @@ def openWithFileName(fileName,old_c,
     # Open the file in binary mode to allow 0x1a in bodies & headlines.
     theFile,isZipped = g.openLeoOrZipFile(fileName)
     if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
     c.isZipped = isZipped
     frame.log.enable(enableLog)
     g.app.writeWaitingLog() # New in 4.3: write queued log first.
@@ -30449,7 +30454,7 @@ def openSettingsFile (self,path):
     # Changing g.app.gui here is a major hack.
     oldGui = g.app.gui
     g.app.gui = leoGui.nullGui("nullGui")
-    c,frame = g.app.newLeoCommanderAndFrame(path,initEditCommanders=False,updateRecentFiles=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=path,initEditCommanders=False,updateRecentFiles=False)
     frame.log.enable(False)
     c.setLog()
     g.app.lockLog()
@@ -30479,11 +30484,11 @@ def openLeoOrZipFile (fileName):
 #@-node:ekr.20070412082527:g.openLeoOrZipFile
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
-def new (self,event=None):
+def new (self,event=None,gui=None):
 
     '''Create a new Leo window.'''
 
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
 
     # Needed for plugins.
     g.doHook("new",old_c=self,c=c,new_c=c)
@@ -31194,11 +31199,11 @@ def writeZipFile (self,s):
 # Found via unit test.  Happens regardless of chapters.
 #@nonl
 #@+node:ekr.20031218072017.1623:new
-def new (self,event=None):
+def new (self,event=None,gui=None):
 
     '''Create a new Leo window.'''
 
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
 
     # Needed for plugins.
     g.doHook("new",old_c=self,c=c,new_c=c)
@@ -32363,7 +32368,7 @@ def openSettingsFile (self,path):
     # Changing g.app.gui here is a major hack.
     oldGui = g.app.gui
     g.app.gui = leoGui.nullGui("nullGui")
-    c,frame = g.app.newLeoCommanderAndFrame(path,initEditCommanders=False,updateRecentFiles=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=path,initEditCommanders=False,updateRecentFiles=False)
     frame.log.enable(False)
     c.setLog()
     g.app.lockLog()
@@ -34022,7 +34027,7 @@ def createFrame (fileName):
 #@-node:ekr.20031218072017.1624:createFrame (leo.py)
 #@+node:ekr.20031218072017.2052:g.openWithFileName
 def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
 
     """Create a Leo Frame for the indicated fileName if the file exists."""
 
@@ -34053,7 +34058,7 @@ def openWithFileName(fileName,old_c,
     # Open the file in binary mode to allow 0x1a in bodies & headlines.
     theFile,isZipped = g.openLeoOrZipFile(fileName)
     if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
     c.isZipped = isZipped
     frame.log.enable(enableLog)
     g.app.writeWaitingLog() # New in 4.3: write queued log first.
@@ -40349,11 +40354,11 @@ def createFrame (fileName):
 #@nonl
 #@-node:ekr.20031218072017.1624:createFrame (leo.py)
 #@+node:ekr.20031218072017.1623:new
-def new (self,event=None):
+def new (self,event=None,gui=None):
 
     '''Create a new Leo window.'''
 
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
 
     # Needed for plugins.
     g.doHook("new",old_c=self,c=c,new_c=c)
@@ -43415,6 +43420,14 @@ def test_unit_testing_with_embedded_class():
     X = test()
     sendEmail(X)
 #@-node:ekr.20070524083726:test_unit_testing_with_embedded_class
+#@+node:ekr.20070619173330:g.getTestVars
+def getTestVars ():
+
+    d = g.app.unitTestDict
+    c = d.get('c')
+    p = d.get('p')
+    return c,p and p.copy()
+#@-node:ekr.20070619173330:g.getTestVars
 #@-node:ekr.20070524083513:Unit testing (leoGlobals.py)
 #@+node:ekr.20070524083842:@@button at-test-nodes
 # Run all @test and @suite nodes in this .leo file.
@@ -43764,8 +43777,10 @@ class aClass2:
 s = g.adjustTripleString(s,self.tab_width)
 #@-node:ekr.20060626100102.2:<< define s >>
 #@-node:ekr.20060626100102.1:test_scanPythonClass
-#@+node:ekr.20050211111552:test_parseLeoSentinel
-def test_parseLeoSentinel (self):
+#@+node:ekr.20050211111552:@test parseLeoSentinel
+if g.app and g.app.unitTesting:
+
+    c,p = g.getTestVars()
 
     s1 = '#@+leo-ver=4-thin-encoding=utf-8,.'  # 4.2 format.
     s2 = '#@+leo-ver=4-thin-encoding=utf-8.' # pre-4.2 format.
@@ -43780,7 +43795,7 @@ def test_parseLeoSentinel (self):
         assert isThinDerivedFile, 'not thin'
         assert end == '', 'invalid end: %s' % repr(end)
         assert at.encoding == 'utf-8', 'bad encoding: %s' % repr(at.encoding)
-#@-node:ekr.20050211111552:test_parseLeoSentinel
+#@-node:ekr.20050211111552:@test parseLeoSentinel
 #@+node:ekr.20050608103755:test_directiveKind4
 def test_directiveKind4 (self):
 
@@ -45354,11 +45369,11 @@ def printCommandsDict (self):
 #@-node:ekr.20051007143620:printCommandsDict
 #@-node:ekr.20050920093543:c.finishCreate & helper
 #@+node:ekr.20031218072017.1623:new
-def new (self,event=None):
+def new (self,event=None,gui=None):
 
     '''Create a new Leo window.'''
 
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
 
     # Needed for plugins.
     g.doHook("new",old_c=self,c=c,new_c=c)
@@ -45551,7 +45566,7 @@ def finishCreate (self):
 #@-node:ekr.20070325104904:cc.finishCreate
 #@+node:ekr.20031218072017.2052:g.openWithFileName
 def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
 
     """Create a Leo Frame for the indicated fileName if the file exists."""
 
@@ -45582,7 +45597,7 @@ def openWithFileName(fileName,old_c,
     # Open the file in binary mode to allow 0x1a in bodies & headlines.
     theFile,isZipped = g.openLeoOrZipFile(fileName)
     if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
     c.isZipped = isZipped
     frame.log.enable(enableLog)
     g.app.writeWaitingLog() # New in 4.3: write queued log first.
@@ -46754,7 +46769,7 @@ def getPublicCommands (self):
 #@-node:ekr.20070522085429: getPublicCommands (chapterCommandsClass)
 #@-node:ekr.20070522085324:chapterCommandsClass
 #@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-def newLeoCommanderAndFrame(self,fileName,initEditCommanders=True,updateRecentFiles=True):
+def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
 
     """Create a commander and its view frame for the Leo main window."""
 
@@ -46763,10 +46778,11 @@ def newLeoCommanderAndFrame(self,fileName,initEditCommanders=True,updateRecentFi
     import leoCommands
 
     if not fileName: fileName = ""
+    if not gui: gui = g.app.gui
     << compute the window title >>
 
     # Create an unfinished frame to pass to the commanders.
-    frame = app.gui.createLeoFrame(title)
+    frame = gui.createLeoFrame(title)
 
     # Create the commander and its subcommanders.
     c = leoCommands.Commands(frame,fileName)
@@ -47044,7 +47060,7 @@ def createHelpMenuFromTable (self):
 #@-node:ekr.20031218072017.3785:createMenusFromTables & helpers
 #@+node:ekr.20031218072017.2052:g.openWithFileName
 def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
 
     """Create a Leo Frame for the indicated fileName if the file exists."""
 
@@ -47075,7 +47091,7 @@ def openWithFileName(fileName,old_c,
     # Open the file in binary mode to allow 0x1a in bodies & headlines.
     theFile,isZipped = g.openLeoOrZipFile(fileName)
     if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
     c.isZipped = isZipped
     frame.log.enable(enableLog)
     g.app.writeWaitingLog() # New in 4.3: write queued log first.
@@ -47119,7 +47135,7 @@ def openSettingsFile (self,path):
     # Changing g.app.gui here is a major hack.
     oldGui = g.app.gui
     g.app.gui = leoGui.nullGui("nullGui")
-    c,frame = g.app.newLeoCommanderAndFrame(path,initEditCommanders=False,updateRecentFiles=False)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=path,initEditCommanders=False,updateRecentFiles=False)
     frame.log.enable(False)
     c.setLog()
     g.app.lockLog()

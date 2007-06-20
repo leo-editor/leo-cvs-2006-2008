@@ -162,6 +162,8 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@nonl
 #@-node:ekr.20070414090051:Study
 #@-node:ekr.20070521100324:Marketing/tools
+#@+node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20070615063616.1:Create Debian package
 #@+node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325054325:Docs
 #@+node:ekr.20070616081116:Document chapter commands and chapter api
@@ -211,6 +213,20 @@ This section is way too confusing:
 
 Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to install Leo on Windows
 #@nonl
+#@+node:ekr.20070614070915:Improve docs re windows installer
+@nocolor
+
+The proximate cause of the small dialog box is a sometimes-undefined variable in the installer script.  The bigger problem is that the script is trying to determine whether Python is installed by looking at the registry in various kludgy ways.
+
+> In the file INSTALL.TXT, in the section Installation under Windows, I think it would be useful to add a line saying that the environment variable PYTHONPATH has to be defined, otherwise leo.py is not found by Python.
+
+Yes, this would be helpful.  The installer shouldn't need PYTHONPATH, but alas, sometimes it does.
+
+Also, the installer's error messages should mention setting PYTHONPATH.
+
+Edward
+#@nonl
+#@-node:ekr.20070614070915:Improve docs re windows installer
 #@-node:ekr.20070218143918:Improve Windows installation instructions
 #@+node:ekr.20070603222100:Mention that the -i option is not valid for pythonw.exe
 @nocolor
@@ -261,23 +277,7 @@ You can type multiple <alt-ctrl-keys> to toggle multiple checkboxes.
 #@-node:ekr.20070606165218:Improve documentation for search/replace
 #@+node:ekr.20070610094932:How to make a Leo command undoable
 #@-node:ekr.20070610094932:How to make a Leo command undoable
-#@+node:ekr.20070614070915:Improve docs re windows installer IMPROTANT
-@nocolor
-
-The proximate cause of the small dialog box is a sometimes-undefined variable in the installer script.  The bigger problem is that the script is trying to determine whether Python is installed by looking at the registry in various kludgy ways.
-
-> In the file INSTALL.TXT, in the section Installation under Windows, I think it would be useful to add a line saying that the environment variable PYTHONPATH has to be defined, otherwise leo.py is not found by Python.
-
-Yes, this would be helpful.  The installer shouldn't need PYTHONPATH, but alas, sometimes it does.
-
-Also, the installer's error messages should mention setting PYTHONPATH.
-
-Edward
-#@nonl
-#@-node:ekr.20070614070915:Improve docs re windows installer IMPROTANT
 #@-node:ekr.20070325054325:Docs
-#@+node:ekr.20070615063616.1:Create Debian package
-#@-node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070324084040:@auto
@@ -1250,6 +1250,315 @@ def checkImport (self):
 #@-node:ekr.20070612133404.3:Pass 5: checkImport
 #@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
 #@-node:ekr.20070324084040:@auto
+#@+node:ekr.20070619161413:Finish support for hidden windows
+@
+
+*** Important ***
+
+The new code is just barely enough to open a window with a nullGui for @button dynamic-tests.
+**However**, it is just the start of what would be required to open a window and execute most operations on it.
+In particular, throughout leoEditCommands.py we should substitute c.frame.gui (or self.gui) for g.app.gui.
+But it's way too late in the Leo 4.4.3 release cycle to do that.
+#@nonl
+#@+node:ekr.20031218072017.3679:  leoFrame.__init__
+def __init__ (self,gui):
+
+    self.c = None # Must be created by subclasses.
+    self.title = None # Must be created by subclasses.
+    self.gui = gui
+
+    # Objects attached to this frame.
+    self.colorPanel = None 
+    self.comparePanel = None
+    self.findPanel = None
+    self.fontPanel = None
+    self.iconBar = None
+    self.isNullFrame = False
+    self.keys = None
+    self.menu = None
+    self.miniBufferWidget = None # New in 4.4.
+    self.prefsPanel = None
+    self.statusLine = None
+    self.useMiniBufferWidget = False # New in 4.4
+
+    # Gui-independent data
+    self.componentsDict = {} # Keys are names, values are componentClass instances.
+    self.es_newlines = 0 # newline count for this log stream
+    self.openDirectory = ""
+    self.requestRecolorFlag = False
+    self.saved=False # True if ever saved
+    self.splitVerticalFlag,self.ratio, self.secondary_ratio = True,0.5,0.5 # Set by initialRatios later.
+    self.startupWindow=False # True if initially opened window
+    self.stylesheet = None # The contents of <?xml-stylesheet...?> line.
+    self.tab_width = 0 # The tab width in effect in this pane.
+
+#@+node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
+mustBeDefinedOnlyInBaseClass = (
+
+    'initialRatios',
+    'longFileName',
+    'oops',
+    'promptForSave',
+    'scanForTabWidth',
+    'shortFileName',
+
+    # Headline editing.
+    'abortEditLabelCommand',
+    'endEditLabelCommand',
+    'insertHeadlineTime',
+
+    # Cut/Copy/Paste.
+    'OnPaste',
+    'OnPasteFromMenu',
+    'copyText',
+    'cutText',
+    'pasteText',
+
+    # Icon bar convenience methods.    
+    'addIconButton',
+    'clearIconBar',
+    'createIconBar',
+    'getIconBar',
+    'getIconBarObject',
+    'hideIconBar',
+
+    # Status line convenience methods.
+    'createStatusLine',
+    'clearStatusLine',
+    'disableStatusLine',
+    'enableStatusLine',
+    'getStatusLine',
+    'getStatusObject',
+    'putStatusLine',
+    'setFocusStatusLine',
+    'statusLineIsEnabled',
+    'updateStatusLine',
+)
+#@nonl
+#@-node:ekr.20061109120726:leoFrame.mustBeDefinedOnlyInBaseClass
+#@+node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
+mustBeDefinedInSubclasses = (
+    #Gui-dependent commands.
+    'cascade',
+    'contractBodyPane',
+    'contractLogPane',
+    'contractOutlinePane',
+    'contractPane',
+    'equalSizedPanes',
+    'expandLogPane',
+    'expandPane',
+    'fullyExpandBodyPane',
+    'fullyExpandLogPane',
+    'fullyExpandOutlinePane',
+    'fullyExpandPane',
+    'hideBodyPane',
+    'hideLogPane',
+    'hideLogWindow',
+    'hideOutlinePane',
+    'hidePane',
+    'leoHelp',
+    'minimizeAll',
+    'resizeToScreen',
+    'toggleActivePane',
+    'toggleSplitDirection',
+    # Windowutilities...
+    'bringToFront',
+    'deiconify',
+    'get_window_info',
+    'lift',
+    'update',
+    # Config...
+    'resizePanesToRatio',
+    'setInitialWindowGeometry',
+    'setTopGeometry',
+)
+#@nonl
+#@-node:ekr.20061109120704:leoFrame.mustBeDefinedInSubclasses
+#@-node:ekr.20031218072017.3679:  leoFrame.__init__
+#@+node:ekr.20031218072017.2052:g.openWithFileName
+def openWithFileName(fileName,old_c,
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
+
+    """Create a Leo Frame for the indicated fileName if the file exists."""
+
+    if not fileName or len(fileName) == 0:
+        return False, None
+
+    def munge(name):
+        return g.os_path_normpath(name or '').lower()
+
+    # Create a full, normalized, Unicode path name, preserving case.
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+
+    # Open the file in binary mode to allow 0x1a in bodies & headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
+    try:
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.finishCreate()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame
+#@nonl
+#@-node:ekr.20031218072017.2052:g.openWithFileName
+#@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
+def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
+
+    """Create a commander and its view frame for the Leo main window."""
+
+    app = self
+
+    import leoCommands
+
+    if not fileName: fileName = ""
+    if not gui: gui = g.app.gui
+    << compute the window title >>
+
+    # Create an unfinished frame to pass to the commanders.
+    frame = gui.createLeoFrame(title)
+
+    # Create the commander and its subcommanders.
+    c = leoCommands.Commands(frame,fileName)
+
+    if not app.initing:
+        g.doHook("before-create-leo-frame",c=c) # Was 'onCreate': too confusing.
+
+    frame.finishCreate(c)
+    c.finishCreate(initEditCommanders)
+
+    # Finish initing the subcommanders.
+    c.undoer.clearUndoState() # Menus must exist at this point.
+
+    if updateRecentFiles:
+        c.updateRecentFiles(fileName)
+
+    if not g.app.initing:
+        g.doHook("after-create-leo-frame",c=c)
+
+    return c,frame
+#@+node:ekr.20031218072017.2189:<< compute the window title >>
+# Set the window title and fileName
+if fileName:
+    title = g.computeWindowTitle(fileName)
+else:
+    s = "untitled"
+    n = g.app.numberOfWindows
+    if n > 0:
+        s += str(n)
+    title = g.computeWindowTitle(s)
+    g.app.numberOfWindows = n+1
+#@-node:ekr.20031218072017.2189:<< compute the window title >>
+#@-node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
+#@+node:ekr.20031218072017.1623:new
+def new (self,event=None,gui=None):
+
+    '''Create a new Leo window.'''
+
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
+
+    # Needed for plugins.
+    g.doHook("new",old_c=self,c=c,new_c=c)
+    # Use the config params to set the size and location of the window.
+    c.beginUpdate()
+    try:
+        frame.setInitialWindowGeometry()
+        frame.deiconify()
+        frame.lift()
+        frame.resizePanesToRatio(frame.ratio,frame.secondary_ratio) # Resize the _new_ frame.
+        t = leoNodes.tnode()
+        v = leoNodes.vnode(t)
+        p = leoNodes.position(v,[])
+        v.initHeadString("NewHeadline")
+        v.moveToRoot(oldRoot=None)
+        c.setRootVnode(v) # New in Leo 4.4.2.
+        c.editPosition(p)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if c.config.getBool('use_chapters') and c.chapterController:
+            c.chapterController.finishCreate()
+            frame.c.setChanged(False) # Clear the changed flag set when creating the @chapters node.
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return c # For unit test.
+#@-node:ekr.20031218072017.1623:new
+#@+node:ekr.20070302095121:createTextWidget
+def createTextWidget (self,parentFrame=None):
+
+    self.logNumber += 1
+
+    c = self.c
+
+    gui = c and c.frame and c.frame.gui or g.app.gui
+
+    log = gui.plainTextWidget( ### was g.app.gui.
+        c = self.c,
+        name="log-%d" % self.logNumber,
+    )
+
+    return log
+#@-node:ekr.20070302095121:createTextWidget
+#@+node:ekr.20070302171509.2: nullStatusLineClass.ctor
+def __init__ (self,c,parentFrame):
+
+    self.c = c
+    self.enabled = False
+    self.parentFrame = parentFrame
+
+    gui = c and c.frame and c.frame.gui or g.app.gui
+
+    self.textWidget = w = gui.plainTextWidget(c,name='status-line')
+
+    # Set the official ivars.
+    c.frame.statusFrame = None
+    c.frame.statusLabel = None
+    c.frame.statusText  = self.textWidget
+#@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
+#@-node:ekr.20070619161413:Finish support for hidden windows
 #@+node:ekr.20070613193516:Improvements
 #@+node:ekr.20070613103409:Improve marks/recent buttons
 - Arrow keys must move up/down.
@@ -1271,100 +1580,6 @@ the recent files link is wrong.
 If it would be trivial for Leo to not do this, I'd like that feature.  If it's
 a big deal, then not to worry, I can always navigate to the file of course.
 #@-node:ekr.20070605114358:Improve how recent files works??
-#@+node:ekr.20070611173545:Improve unit testing!
-@nocolor
-
-A better unit test framework
-
-The recent major bug re demoting a clone illustrates the importance of unit
-tests. Such a major reversion/error should never have remained undetected for so
-long.
-
-My present opinion is that code can hardly have been said to be written, let
-alone tested, without unit tests. However, I am hardly a poster boy for rigorous
-unit testing during development. This must change.
-
-The present unit testing scheme puts most tests in unitTest.leo, augmented with
-functions or methods of the form 'test_' scattered throughout leoPy.leo. There
-are several drawbacks to this scheme:
-
-1. Most tests are far from the code they are meant to test. Imo, it is
-absolutely essential that unit tests be developed in tandem with the code they
-test. Otherwise, it is far too easy to procrastinate.
-
-The recent reorganization of the undo code for the chapters commands shows how
-useful proximity is. Putting all related code together saves a lot of work, and
-significantly clarifies the code.
-
-2. Defining 'test_' methods and functions is too clumsy, for several reasons.
-
-- Pychecker gives erroneous warnings about undefined or unused variables. Alas,
-t looks like there is no way to turn off such incorrect warnings. Even if there
-were a way, it would be tedious to keep pychecker to keep quiet, but such
-'tedium' would be acceptable given the importance of suppressing bogus warnings.
-
-- There is no convenient way to execute the test_methods. Ideally, the
-run-unit-tests command/script would generate the actual test code and then run
-them in an 'updated' copy of Leo (a version of Leo that uses the very latest
-source code.) This leads to...
-
-- We need a way to execute code (test_ methods or maybe even raw code) in a tree
-as a unit test in the current environment (the latest saved .py files) rather
-than the environment that existed when Leo was first loaded.
-
-- We need a way to intermix complex unit tests (possibly defined by a tree
-containing @others, etc.) with Leo's actual source code. Ideally, tests would be
-contained in @test or @suite nodes, just as in unitTest.leo.
-
-These ideas seem to imply something like the following scheme:
-
-1. Most (all?) unit tests will be contained in leoPy.leo. Unit tests will, as
-usual, be marked with @test or @suite in the headline. It would be more than
-nice to find a way to allow automatic definition of c, g and p in @test code (as
-at present) *without* having pychecker warn about these variables not being
-defined.
-
-2. @test or @suite nodes must not be executed when Python imports a file
-containing these nodes. The easy way to prevent this is to make @test or @suite
-nodes children of a node with the following body text:
-
-if 0:
-    @others
-
-The headline text of such nodes could be anything; 'Tests' would be natural.
-
-Hmm, I suppose one way to suppress pychecker errors and also make it unnecessary
-to 'protect' @test nodes with 'if 0' would be to put the body of @test nodes in
-@doc parts. That way the test code becomes a comment. But that is too cute. I
-don't want to give up syntax coloring for test code!
-
-A related idea would be to add an @test directive that has effect in the body
-pane. This would cause Leo to output the body text as a comment, while retaining
-syntax coloring. This is a little better, but it is too complex to be considered
-elegant.
-
-My first best hope is that pychecker itself will suppress warnings for code in
-the range of an 'if 0'. If so, great. If not, maybe I can make pychecker work
-that way...
-
-3. The run-unit-tests-from-sources command will search the present .leo file
-(open outline) looking for @test and @suite nodes. When found, the command will
-execute these nodes much as is done in unitTest.leo, but the code is run in an
-external process with the latest code for Leo. Presumably the output of the unit
-tests can be piped to Leo's log window or outline pane.
-
-Important: it would be possible to run the body of an @test node using the
-execute script command, but the script would run in the environment that existed
-when leo.py started, *not* in the present environment in which one or many of
-Leo's source files have been altered. Thus, the execute script command has
-little usefulness for unit testing in this scheme.
-
-4. Pychecker may actually be the biggest problem. Invalid pychecker errors
-rapidly reduce its usefulness. I have looked in vain for a pychecker options
-that suppresses *all* pychecker errors and warnings for a specified range of
-code. If necessary, it would be worthwhile to modify pychecker itself...
-#@nonl
-#@-node:ekr.20070611173545:Improve unit testing!
 #@+node:ekr.20070613181147:(maybe) Improve key handling
 # The idea is to use a single <Key binding> and
 # use w.event_generate(key) to create a table
@@ -3240,11 +3455,11 @@ add-new-icon-row command?
 #@+node:ekr.20061002093442:Add opml support to new,open, save commands
 #@+node:ekr.20031218072017.2820:top level (file menu)
 #@+node:ekr.20031218072017.1623:new
-def new (self,event=None):
+def new (self,event=None,gui=None):
 
     '''Create a new Leo window.'''
 
-    c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+    c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
 
     # Needed for plugins.
     g.doHook("new",old_c=self,c=c,new_c=c)
