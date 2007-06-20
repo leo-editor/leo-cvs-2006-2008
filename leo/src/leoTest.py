@@ -67,6 +67,9 @@ def doTests(c,all,verbosity=1):
     try:
         g.app.unitTesting = True
         g.app.unitTestDict["fail"] = False
+        g.app.unitTestDict['c'] = c
+        g.app.unitTestDict['g'] = g
+        g.app.unitTestDict['p'] = p and p.copy()
         if all: theIter = c.all_positions_iter()
         else:   theIter = p.self_and_subtree_iter()
 
@@ -135,6 +138,9 @@ class generalTestCase(unittest.TestCase):
         script = g.getScript(c,p).strip()
         self.assert_(script)
 
+        # New in Leo 4.4.3: always define the entries in g.app.unitTestDict.
+        g.app.unitTestDict = {'c':c,'g':g,'p':p and p.copy()}
+
         if define_g:
             d = {'c':c,'g':g,'p':p}
         else:
@@ -146,7 +152,6 @@ class generalTestCase(unittest.TestCase):
             pdb.run(script+'\n',d)
         else:
             exec script + '\n' in d
-    #@nonl
     #@-node:ekr.20051104075904.10:runTest
     #@+node:ekr.20051104075904.11:shortDescription
     def shortDescription (self):
@@ -220,7 +225,7 @@ def runTimerOnNode (c,p,count):
     s = p.bodyString().rstrip() + '\n'
 
     # A kludge so we the statement below can get c and p.
-    g.app.unitTestDict = {'c':c,'p':p}
+    g.app.unitTestDict = {'c':c,'p':p and p.copy()}
 
     # This looks like the best we can do.
     setup = 'import leoGlobals as g; c = g.app.unitTestDict.get("c"); p = g.app.unitTestDict.get("p")'
@@ -1161,11 +1166,11 @@ class importExportTestCase(unittest.TestCase):
     #@+node:ekr.20051104075904.82:importExport
     def importExport (self):
 
-        c = self.c ; v = self.v
+        c = self.c ; p = self.v ###
 
-        g.app.unitTestDict = {}
+        g.app.unitTestDict = {'c':c,'g':g,'p':p and p.copy()}
 
-        commandName = v.headString()
+        commandName = p.headString()
         command = getattr(c,commandName) # Will fail if command does not exist.
         command(event=None)
 
