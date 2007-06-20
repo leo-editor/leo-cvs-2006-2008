@@ -50285,7 +50285,7 @@ def selectChapterByName (self,name):
 #@-node:ekr.20070606081341.1:Made chapter ops undoable
 #@-node:ekr.20070606131320:Finished chapters
 #@-node:ekr.20070522082346:Leo 4.4.3 b2 projects
-#@+node:ekr.20070612132051:Leo 4.4.3 rc1 projects
+#@+node:ekr.20070612132051:Leo 4.4.3 b3 projects
 #@+node:ekr.20070615103418:Fixed bugs
 #@+node:ekr.20070612102752:Allow aspell on Linux provided that ctypes exists
 # ctypes comes standard with Python 2.5, but can be installed for Python 2.4.
@@ -51632,8 +51632,48 @@ Allowing @test nodes in leoPy.leo is important: unit tests can be placed near
 the code they are intended to test.
 #@nonl
 #@-node:ekr.20070611173545:Added @button dynamic-tests.
+#@+node:ekr.20070619172548:created g.getTestVars
+#@+node:ekr.20070619173330:g.getTestVars
+def getTestVars ():
+
+    d = g.app.unitTestDict
+    c = d.get('c')
+    p = d.get('p')
+    return c,p and p.copy()
+#@-node:ekr.20070619173330:g.getTestVars
+#@+node:ekr.20050211111552:@test parseLeoSentinel
+if g.app and g.app.unitTesting:
+
+    c,p = g.getTestVars()
+
+    s1 = '#@+leo-ver=4-thin-encoding=utf-8,.'  # 4.2 format.
+    s2 = '#@+leo-ver=4-thin-encoding=utf-8.' # pre-4.2 format.
+
+    at=c.atFileCommands # Self is a dummy argument.
+
+    for s in (s1,s2):
+        valid,new_df,start,end,isThinDerivedFile = at.parseLeoSentinel(s)
+        # g.trace('start',start,'end',repr(end),'len(s)',len(s))
+        assert valid, 'not valid'
+        assert new_df, 'not new_df'
+        assert isThinDerivedFile, 'not thin'
+        assert end == '', 'invalid end: %s' % repr(end)
+        assert at.encoding == 'utf-8', 'bad encoding: %s' % repr(at.encoding)
+#@-node:ekr.20050211111552:@test parseLeoSentinel
+#@+node:ekr.20070524075713:@test test-proto
+if g.app and g.app.unitTesting:
+
+    def sendEmail(self):
+        pass # g.trace('self',self,'p',p.headString())
+
+    class test:
+        pass
+
+    sendEmail(test())
+#@-node:ekr.20070524075713:@test test-proto
+#@-node:ekr.20070619172548:created g.getTestVars
 #@-node:ekr.20070615103622:New features & settings
-#@-node:ekr.20070612132051:Leo 4.4.3 rc1 projects
+#@-node:ekr.20070612132051:Leo 4.4.3 b3 projects
 #@+node:ekr.20070126072723:pychecker
 #@+node:ekr.20070316175323:Invalid warnings
 leoGlobals.py:127: No module attribute (leo_config_directory) found # wrong

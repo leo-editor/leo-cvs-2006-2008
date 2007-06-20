@@ -1250,6 +1250,7 @@ def checkImport (self):
 #@-node:ekr.20070612133404.3:Pass 5: checkImport
 #@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
 #@-node:ekr.20070324084040:@auto
+#@+node:ekr.20070613193516:Improvements
 #@+node:ekr.20070619161413:Finish support for hidden windows
 @
 
@@ -1559,7 +1560,10 @@ def __init__ (self,c,parentFrame):
     c.frame.statusText  = self.textWidget
 #@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
 #@-node:ekr.20070619161413:Finish support for hidden windows
-#@+node:ekr.20070613193516:Improvements
+#@+node:ekr.20070619174213:To do: run all unit tests in unitTests.leo
+# Running all unit tests in leoPy.leo from unitTest.leo would be way too slow.
+#@nonl
+#@-node:ekr.20070619174213:To do: run all unit tests in unitTests.leo
 #@+node:ekr.20070613103409:Improve marks/recent buttons
 - Arrow keys must move up/down.
 - Should be commands to show the marks/recent dialogs.
