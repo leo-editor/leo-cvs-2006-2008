@@ -439,11 +439,11 @@ class baseCommands:
     #@+node:ekr.20031218072017.2819:File Menu
     #@+node:ekr.20031218072017.2820:top level (file menu)
     #@+node:ekr.20031218072017.1623:new
-    def new (self,event=None):
+    def new (self,event=None,gui=None):
 
         '''Create a new Leo window.'''
 
-        c,frame = g.app.newLeoCommanderAndFrame(fileName=None)
+        c,frame = g.app.newLeoCommanderAndFrame(fileName=None,gui=gui)
 
         # Needed for plugins.
         g.doHook("new",old_c=self,c=c,new_c=c)
@@ -1056,7 +1056,7 @@ class baseCommands:
 
         try:
             theFile = open(fileName,'r')
-            c,frame = g.app.newLeoCommanderAndFrame(fileName)
+            c,frame = g.app.newLeoCommanderAndFrame(fileName=fileName)
             frame.deiconify()
             frame.lift()
             g.app.root.update() # Force a screen redraw immediately.

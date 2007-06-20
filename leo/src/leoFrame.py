@@ -3073,7 +3073,6 @@ class nullLog (leoLog):
 
         self.isNull = True
         self.logCtrl = self.createControl(parentFrame)
-    #@nonl
     #@-node:ekr.20041012083237:nullLog.__init__
     #@+node:ekr.20041012083237.1:createControl
     def createControl (self,parentFrame):
@@ -3085,7 +3084,11 @@ class nullLog (leoLog):
 
         self.logNumber += 1
 
-        log = g.app.gui.plainTextWidget(
+        c = self.c
+
+        gui = c and c.frame and c.frame.gui or g.app.gui
+
+        log = gui.plainTextWidget( ### was g.app.gui.
             c = self.c,
             name="log-%d" % self.logNumber,
         )
@@ -3132,20 +3135,22 @@ class nullStatusLineClass:
     '''A do-nothing status line.'''
 
     #@    @+others
-    #@+node:ekr.20070302171509.2: ctor
+    #@+node:ekr.20070302171509.2: nullStatusLineClass.ctor
     def __init__ (self,c,parentFrame):
 
         self.c = c
         self.enabled = False
         self.parentFrame = parentFrame
 
-        self.textWidget = w = g.app.gui.plainTextWidget(c,name='status-line')
+        gui = c and c.frame and c.frame.gui or g.app.gui
+
+        self.textWidget = w = gui.plainTextWidget(c,name='status-line')
 
         # Set the official ivars.
         c.frame.statusFrame = None
         c.frame.statusLabel = None
         c.frame.statusText  = self.textWidget
-    #@-node:ekr.20070302171509.2: ctor
+    #@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
     #@+node:ekr.20070302171917:methods
     def disable (self,background=None):
         self.enabled = False
