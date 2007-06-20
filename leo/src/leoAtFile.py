@@ -2491,8 +2491,10 @@ class atFile:
         #@-node:ekr.20041005105605.126:<< set the closing comment delim >>
         #@nl
         return valid,new_df,start,end,isThinDerivedFile
-    #@+node:ekr.20050211111552:test_parseLeoSentinel
-    def test_parseLeoSentinel (self):
+    #@+node:ekr.20050211111552:@test parseLeoSentinel
+    if g.app and g.app.unitTesting:
+
+        c,p = g.getTestVars()
 
         s1 = '#@+leo-ver=4-thin-encoding=utf-8,.'  # 4.2 format.
         s2 = '#@+leo-ver=4-thin-encoding=utf-8.' # pre-4.2 format.
@@ -2507,7 +2509,7 @@ class atFile:
             assert isThinDerivedFile, 'not thin'
             assert end == '', 'invalid end: %s' % repr(end)
             assert at.encoding == 'utf-8', 'bad encoding: %s' % repr(at.encoding)
-    #@-node:ekr.20050211111552:test_parseLeoSentinel
+    #@-node:ekr.20050211111552:@test parseLeoSentinel
     #@-node:ekr.20041005105605.120:parseLeoSentinel
     #@+node:ekr.20041005105605.127:readError
     def readError(self,message):
