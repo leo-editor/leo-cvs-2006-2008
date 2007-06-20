@@ -1851,7 +1851,7 @@ def makeAllNonExistentDirectories (theDir,c=None):
 #@-node:ekr.20031218072017.3119:g.makeAllNonExistentDirectories
 #@+node:ekr.20031218072017.2052:g.openWithFileName
 def openWithFileName(fileName,old_c,
-    enableLog=True,readAtFileNodesFlag=True):
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
 
     """Create a Leo Frame for the indicated fileName if the file exists."""
 
@@ -1882,7 +1882,7 @@ def openWithFileName(fileName,old_c,
     # Open the file in binary mode to allow 0x1a in bodies & headlines.
     theFile,isZipped = g.openLeoOrZipFile(fileName)
     if not theFile: return False, None
-    c,frame = app.newLeoCommanderAndFrame(fileName)
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
     c.isZipped = isZipped
     frame.log.enable(enableLog)
     g.app.writeWaitingLog() # New in 4.3: write queued log first.
@@ -4154,6 +4154,14 @@ def test_unit_testing_with_embedded_class():
     X = test()
     sendEmail(X)
 #@-node:ekr.20070524083726:test_unit_testing_with_embedded_class
+#@+node:ekr.20070619173330:g.getTestVars
+def getTestVars ():
+
+    d = g.app.unitTestDict
+    c = d.get('c')
+    p = d.get('p')
+    return c,p and p.copy()
+#@-node:ekr.20070619173330:g.getTestVars
 #@-node:ekr.20070524083513:Unit testing (leoGlobals.py)
 #@+node:EKR.20040612114220:Utility classes, functions & objects...
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
