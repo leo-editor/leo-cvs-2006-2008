@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.450431034483">
-	<global_window_position top="18" left="10" height="853" width="1270"/>
+	<global_window_position top="29" left="385" height="853" width="849"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -5046,7 +5046,7 @@ setuptools.setup (
     author='Edward K. Ream',
     author_email='edreamleo@charter.net',
     url='http://webpages.charter.net/edreamleo/front.html',
-    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458'
+    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458',
         #'http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
         #'http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106',
 

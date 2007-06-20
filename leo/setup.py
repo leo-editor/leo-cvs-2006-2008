@@ -26,7 +26,7 @@ setuptools.setup (
     author='Edward K. Ream',
     author_email='edreamleo@charter.net',
     url='http://webpages.charter.net/edreamleo/front.html',
-    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458'
+    download_url='http://sourceforge.net/project/showfiles.php?group_id=3458',
         #'http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
         #'http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106',
 
