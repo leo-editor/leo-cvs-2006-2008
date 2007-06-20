@@ -536,7 +536,7 @@ class LeoApp:
             print 'writeWaitingLog: still no log!'
     #@-node:ekr.20031218072017.2619:app.writeWaitingLog
     #@+node:ekr.20031218072017.2188:app.newLeoCommanderAndFrame
-    def newLeoCommanderAndFrame(self,fileName,initEditCommanders=True,updateRecentFiles=True):
+    def newLeoCommanderAndFrame(self,fileName=None,gui=None,initEditCommanders=True,updateRecentFiles=True):
 
         """Create a commander and its view frame for the Leo main window."""
 
@@ -545,6 +545,7 @@ class LeoApp:
         import leoCommands
 
         if not fileName: fileName = ""
+        if not gui: gui = g.app.gui
         #@    << compute the window title >>
         #@+node:ekr.20031218072017.2189:<< compute the window title >>
         # Set the window title and fileName
@@ -561,7 +562,7 @@ class LeoApp:
         #@nl
 
         # Create an unfinished frame to pass to the commanders.
-        frame = app.gui.createLeoFrame(title)
+        frame = gui.createLeoFrame(title)
 
         # Create the commander and its subcommanders.
         c = leoCommands.Commands(frame,fileName)
