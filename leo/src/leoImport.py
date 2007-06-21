@@ -1252,13 +1252,15 @@ class baseLeoImportCommands:
 
         return i
     #@-node:ekr.20060626083237.1:skipPythonDef
-    #@+node:ekr.20060626083237.2:test_skipPythonDef
-    def test_skipPythonDef (self):
+    #@+node:ekr.20060626083237.2:@test skipPythonDef
+    if g.unitTesting:
 
-        global c # Get syntax warning if this is not first.
-        if self: c = self.c             # Run from @test node: c not global
-        else: self = c.importCommands   # Run from @suite: c *is* global
+        c,p = g.getTestVars()
+        self = c.importCommands
 
+        # global c # Get syntax warning if this is not first.
+        # if self: c = self.c             # Run from @test node: c not global
+        # else: self = c.importCommands   # Run from @suite: c *is* global
         d = g.scanDirectives(c)
         self.tab_width = d.get("tabwidth")
         verbose = False
@@ -1289,15 +1291,16 @@ class baseLeoImportCommands:
         result = s[start:i].strip()
         if verbose: g.trace(result)
         assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
-    #@-node:ekr.20060626083237.2:test_skipPythonDef
-    #@+node:ekr.20060627063313:test_skipPythonDef2
-    def test_skipPythonDef2 (self):
+    #@-node:ekr.20060626083237.2:@test skipPythonDef
+    #@+node:ekr.20060627063313:@test skipPythonDef (long lines)
+    if g.unitTesting:
 
-        '''Tests of long signature lines.'''
+        c,p = g.getTestVars()
+        self = c.importCommands
 
-        global c # Get syntax warning if this is not first.
-        if self: c = self.c             # Run from @test node: c not global
-        else: self = c.importCommands   # Run from @suite: c *is* global
+        # global c # Get syntax warning if this is not first.
+        # if self: c = self.c             # Run from @test node: c not global
+        # else: self = c.importCommands   # Run from @suite: c *is* global
 
         d = g.scanDirectives(c)
         self.tab_width = d.get("tabwidth")
@@ -1327,15 +1330,16 @@ class baseLeoImportCommands:
         result = s[start:i].strip()
         if verbose: g.trace(result)
         assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
-    #@-node:ekr.20060627063313:test_skipPythonDef2
-    #@+node:ekr.20060626100102.1:test_scanPythonClass
-    def test_scanPythonClass (self):
+    #@-node:ekr.20060627063313:@test skipPythonDef (long lines)
+    #@+node:ekr.20060626100102.1:@test scanPythonClass
+    if g.unitTesting:
 
-        # pychecker complains about c.
+        c,p = g.getTestVars()
+        self = c.importCommands
 
-        global c # Get syntax warning if this is not first.
-        if self: c = self.c             # Run from @test node: c not global
-        else: self = c.importCommands   # Run from @suite: c *is* global
+        # global c # Get syntax warning if this is not first.
+        # if self: c = self.c             # Run from @test node: c not global
+        # else: self = c.importCommands   # Run from @suite: c *is* global
 
         d = g.scanDirectives(c)
         self.tab_width = d.get("tabwidth")
@@ -1368,7 +1372,7 @@ class baseLeoImportCommands:
         result = s[start:i].strip()
         if verbose: g.trace(result)
         assert result.startswith('class aClass2') and result.endswith("'twit'"),'result:\n%s' % result
-    #@-node:ekr.20060626100102.1:test_scanPythonClass
+    #@-node:ekr.20060626100102.1:@test scanPythonClass
     #@-node:ekr.20031218072017.2256:Python scanners & tests
     #@+node:ekr.20031218072017.3250:scanCText
     # Creates a child of parent for each C function definition seen.

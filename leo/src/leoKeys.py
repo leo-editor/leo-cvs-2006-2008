@@ -3964,14 +3964,13 @@ class keyHandlerClass:
 
             # g.trace(isPlain,repr(shortcut))
             return isPlain
-    #@+node:ekr.20061031131434.183:test_isPlainKey
-    def test_isPlainKey (self):
-
-        # pychecker complains about c not being used.
+    #@+node:ekr.20061031131434.183:@test isPlainKey
+    if g.unitTesting:
 
         import string
 
-        k = c.k # self is a dummy argument
+        c,p = g.getTestVars()
+        k = c.k
 
         for ch in (string.printable):
             if ch == '\n': continue # A special case.
@@ -3992,7 +3991,7 @@ class keyHandlerClass:
 
         for ch in special:
             assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-    #@-node:ekr.20061031131434.183:test_isPlainKey
+    #@-node:ekr.20061031131434.183:@test isPlainKey
     #@-node:ekr.20061031131434.182:isPlainKey & test
     #@+node:ekr.20061031131434.184:shortcutFromSetting (uses k.guiBindNamesDict)
     def shortcutFromSetting (self,setting):
