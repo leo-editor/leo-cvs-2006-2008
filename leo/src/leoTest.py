@@ -65,7 +65,7 @@ def doTests(c,all,verbosity=1):
 
     p = c.currentPosition() ; p1 = p.copy()
     try:
-        g.app.unitTesting = True
+        g.unitTesting = g.app.unitTesting = True
         g.app.unitTestDict["fail"] = False
         g.app.unitTestDict['c'] = c
         g.app.unitTestDict['g'] = g
@@ -89,7 +89,7 @@ def doTests(c,all,verbosity=1):
     finally:
         c.setChanged(changed) # Restore changed state.
         c.selectPosition(p1)
-        g.app.unitTesting = False
+        g.unitTesting = g.app.unitTesting = False
 #@+node:ekr.20051104075904.5:class generalTestCase
 class generalTestCase(unittest.TestCase):
 
@@ -1628,19 +1628,6 @@ def safeImportModule (fileName):
         return None
 #@-node:ekr.20051104075904.103:safeImportModule
 #@-node:ekr.20051104075904.98:Docutils stuff
-#@+node:ekr.20051104075904.104:Test of doTestRoutinesInModule
-#@+node:ekr.20051104075904.105:test_dummy
-def test_dummy():
-    import leoGlobals as g
-    g.trace()
-    # raise SyntaxError
-
-# class dummyTestClass: # NOT a TestCase.
-    # def test_one (self):
-        # import leoGlobals as g
-        # g.trace(self)
-#@-node:ekr.20051104075904.105:test_dummy
-#@-node:ekr.20051104075904.104:Test of doTestRoutinesInModule
 #@-others
 #@-node:ekr.20051104075904:@thin leoTest.py
 #@-leo
