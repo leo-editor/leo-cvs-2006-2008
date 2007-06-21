@@ -2978,7 +2978,9 @@ class nullFrame (leoFrame):
     #@+node:ekr.20041130065921:Window...
     def bringToFront (self):    pass
     def deiconify (self):       pass
-    def get_window_info(self):  return 0,0,0,0
+    def get_window_info(self):
+        # Set w,h,x,y to a reasonable size and position.
+        return 600,500,20,20
     def lift (self):            pass
     def setWrap (self,flag):    pass
     def update (self):          pass
