@@ -72,6 +72,7 @@ globalDirectiveList = [
 #@nl
 
 app = None # The singleton app object.
+unitTesting = False # A synonym for app.unitTesting.
 
 #@+others
 #@+node:ekr.20050328133058:g.createStandAloneTkApp
@@ -911,10 +912,11 @@ def pdb ():
     import pdb # Required: we have just defined pdb as a function!
 
     pdb.set_trace()
-#@+node:ekr.20050221092824:test_g_pdb
-def test_g_pdb():
+#@+node:ekr.20050221092824:@test g.pdb
+if g.unitTesting:
 
     import sys
+    c,p = g.getTestVars()
 
     # Not a good unit test; it probably will never fail.
     def aFunction(): pass
@@ -940,7 +942,7 @@ def test_g_pdb():
     except Exception:
         restore()
         raise
-#@-node:ekr.20050221092824:test_g_pdb
+#@-node:ekr.20050221092824:@test g.pdb
 #@-node:ekr.20041105091148:g.pdb & test
 #@+node:ekr.20031218072017.3108:Dumps
 #@+node:ekr.20031218072017.3109:dump
@@ -1029,30 +1031,32 @@ def es_exception (full=True,c=None,color="red"):
         pdb.set_trace()
 
     return fileName,n
-#@+node:ekr.20050220030850:test_g_es_exception
-def test_g_es_exception():
+#@+node:ekr.20050220030850:@test g.es_exception
+if g.unitTesting:
+
+    c,p = g.getTestVars()
 
     if c.config.redirect_execute_script_output_to_log_pane:
-        return # Test doesn't work when redirection is on.
-
-    try:
-        import sys
-        # Catch the output of g.es_exception.
-        # We catch the AssertionError, so nothing gets written to stderr.
-        sys.stdout = fo = g.fileLikeObject()
-        try: # Create an exception to catch.
-            assert False, 'Assert False in test_g_es_exception'
-        except AssertionError:
-            g.es_exception(color='suppress')
-            result = fo.get()
-            s1 = 'Traceback (most recent call last):'
-            s2 = 'AssertionError: Assert False in test_g_es_exception'
-            assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
-            assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
-    finally:
-        # Not needed unless we execute this script as selected text.
-        sys.stdout = sys.__stdout__
-#@-node:ekr.20050220030850:test_g_es_exception
+        pass # Test doesn't work when redirection is on.
+    else:
+        try:
+            import sys
+            # Catch the output of g.es_exception.
+            # We catch the AssertionError, so nothing gets written to stderr.
+            sys.stdout = fo = g.fileLikeObject()
+            try: # Create an exception to catch.
+                assert False, 'Assert False in test_g_es_exception'
+            except AssertionError:
+                g.es_exception(color='suppress')
+                result = fo.get()
+                s1 = 'Traceback (most recent call last):'
+                s2 = 'AssertionError: Assert False in test_g_es_exception'
+                assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
+                assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
+        finally:
+            # Not needed unless we execute this script as selected text.
+            sys.stdout = sys.__stdout__
+#@-node:ekr.20050220030850:@test g.es_exception
 #@-node:ekr.20031218072017.3112:es_exception & test
 #@+node:ekr.20061015090538:es_exception_type
 def es_exception_type (c=None,color="red"):
@@ -1715,17 +1719,19 @@ def create_temp_file (textMode=False):
         theFile,theFileName = None,''
 
     return theFile,theFileName
-#@+node:ekr.20050216052031:test_g_create_temp_file
-def test_g_create_temp_file():
+#@+node:ekr.20050216052031:@test g.create_temp_file
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
     import types
+
+    c,p = g.getTestVars()
 
     theFile,theFileName = g.create_temp_file()
 
     assert type(theFile) == types.FileType, 'not file type'
     assert type(theFileName) in (types.StringType, types.UnicodeType), 'not string type'
-#@-node:ekr.20050216052031:test_g_create_temp_file
+#@-node:ekr.20050216052031:@test g.create_temp_file
 #@-node:ekr.20031218072017.3117:g.create_temp_file & test
 #@+node:ekr.20031218072017.3118:g.ensure_extension
 def ensure_extension (name, ext):
@@ -2031,12 +2037,13 @@ def utils_remove (fileName,verbose=True):
             g.es("exception removing:" + fileName)
             g.es_exception()
         return False
-#@+node:ekr.20050107084901:test_g_utils_remove
-def test_g_utils_remove():
+#@+node:ekr.20050107084901:@test g.utils_remove
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
-
     import os
+
+    c,p = g.getTestVars()
     exists = g.os_path_exists
 
     path = g.os_path_join(g.app.testDir,'xyzzy')
@@ -2053,7 +2060,7 @@ def test_g_utils_remove():
     assert exists(path)
     assert g.utils_remove(path,verbose=True)
     assert not exists(path)
-#@-node:ekr.20050107084901:test_g_utils_remove
+#@-node:ekr.20050107084901:@test g.utils_remove
 #@-node:ekr.20050104123726.3:g.utils_remove & test
 #@+node:ekr.20031218072017.1263:g.utils_rename & test
 #@<< about os.rename >>
@@ -2116,12 +2123,13 @@ def utils_rename (c,src,dst,mode=None,verbose=True):
             g.es_exception(full=False)
         return False
 #@+node:ekr.20050107085710.1:test_g_utils_rename
-def test_g_utils_rename():
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
-
     import os
     exists = g.os_path_exists
+
+    c,p = g.getTestVars()
 
     path = g.os_path_join(g.app.testDir,'xyzzy')
     if exists(path):
@@ -2657,20 +2665,23 @@ def es_print(s,*args,**keys):
 
     if g.app.gui and not g.app.gui.isNullGui:
         g.es(s,*args,**keys)
-
-def test_g_es_print():
+#@+node:ekr.20070621092938:@test g.es_print
+if g.unitTesting:
 
     g.es_print('\ntest of es_print: Ă',color='red')
+#@-node:ekr.20070621092938:@test g.es_print
 #@-node:ekr.20050707064040:es_print & test
 #@+node:ekr.20050707065530:es_trace & test
 def es_trace(s,*args,**keys):
 
     g.trace(g.toEncodedString(s,'ascii'))
     g.es(s,*args,**keys)
-
-def test_g_es_trace():
+#@nonl
+#@+node:ekr.20070621092938.1:@test g.es_trace
+if g.unitTesting:
 
     g.es_trace('\ntest of es_trace: Ă',color='red')
+#@-node:ekr.20070621092938.1:@test g.es_trace
 #@-node:ekr.20050707065530:es_trace & test
 #@+node:ekr.20060810095921:et, et_* and _ (underscore)
 __pychecker__ = 'no-reuseattr'
@@ -4010,8 +4021,8 @@ def reportBadChars (s,encoding):
                 unicode(s,encoding,'replace'),
                 encoding.encode('ascii','replace')),
             color='red')
-#@+node:ekr.20050825092149:test_g_reportBadChars
-def test_g_reportBadChars ():
+#@+node:ekr.20050825092149:@test g.reportBadChars
+if g.unitTesting:
 
     for s,encoding in (
         ('aĂbĂ',  'ascii'),
@@ -4026,7 +4037,7 @@ def test_g_reportBadChars ():
     ):
 
         g.reportBadChars(s,encoding)
-#@-node:ekr.20050825092149:test_g_reportBadChars
+#@-node:ekr.20050825092149:@test g.reportBadChars
 #@-node:ekr.20031218072017.1501:reportBadChars
 #@+node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
 #@+node:ekr.20050208093800:toEncodedString
@@ -4085,8 +4096,8 @@ def toUnicodeWithErrorCode (s,encoding):
 
     return s,ok
 #@-node:ekr.20050208095723:toUnicodeWithErrorCode
-#@+node:ekr.20050208104358:test_round_trip_toUnicode_toEncodedString
-def test_round_trip_toUnicode_toEncodedString ():
+#@+node:ekr.20050208104358:@test round trip toUnicode toEncodedString
+if g.unitTesting:
 
     table = [
         ('a',    'utf-8'),
@@ -4113,10 +4124,10 @@ def test_round_trip_toUnicode_toEncodedString ():
             s2 = g.toUnicode(s,encoding)
             s3 = g.toEncodedString(s2,encoding)
             assert s3 == s, 'Round-trip two failed for %s' %s
-
-#@-node:ekr.20050208104358:test_round_trip_toUnicode_toEncodedString
-#@+node:ekr.20050208112123:test_failure_with_ascii_encodings
-def test_failure_with_ascii_encodings():
+#@nonl
+#@-node:ekr.20050208104358:@test round trip toUnicode toEncodedString
+#@+node:ekr.20050208112123:@test failure with ascii encodings
+if g.unitTesting:
 
     encoding = 'ascii'
 
@@ -4127,7 +4138,7 @@ def test_failure_with_ascii_encodings():
     s = u'炰'
     s3,ok = g.toEncodedStringWithErrorCode(s,encoding)
     assert not ok, 'toEncodedStringWithErrorCode returns True for %s with ascii encoding' % s
-#@-node:ekr.20050208112123:test_failure_with_ascii_encodings
+#@-node:ekr.20050208112123:@test failure with ascii encodings
 #@-node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
 #@-node:ekr.20031218072017.1498:Unicode utils...
 #@+node:ekr.20070524083513:Unit testing (leoGlobals.py)
@@ -4142,8 +4153,8 @@ if g.app and g.app.unitTesting:
 
     sendEmail(test())
 #@-node:ekr.20070524075713:@test test-proto
-#@+node:ekr.20070524083726:test_unit_testing_with_embedded_class
-def test_unit_testing_with_embedded_class():
+#@+node:ekr.20070524083726:@test unit testing with embedded class
+if g.unitTesting:
 
     def sendEmail(self):
         pass # g.trace('self2',self)
@@ -4153,7 +4164,7 @@ def test_unit_testing_with_embedded_class():
 
     X = test()
     sendEmail(X)
-#@-node:ekr.20070524083726:test_unit_testing_with_embedded_class
+#@-node:ekr.20070524083726:@test unit testing with embedded class
 #@+node:ekr.20070619173330:g.getTestVars
 def getTestVars ():
 
@@ -4289,14 +4300,14 @@ def CheckVersionToInt (s):
             return 0
 #@nonl
 #@-node:ekr.20070120123930:CheckVersionToInt
-#@+node:ekr.20070120125007:test_CheckVersionToInt
-def test_CheckVersionToInt (*args):
+#@+node:ekr.20070120125007:@test CheckVersionToInt
+if g.unitTesting:
 
     assert g.CheckVersionToInt('12') == 12,'fail 1'
     assert g.CheckVersionToInt('2a5') == 2, 'fail 2'
     assert g.CheckVersionToInt('b2') == 0, 'fail 3'
 #@nonl
-#@-node:ekr.20070120125007:test_CheckVersionToInt
+#@-node:ekr.20070120125007:@test CheckVersionToInt
 #@-node:ekr.20060921100435:CheckVersion (EKR) & helper
 #@+node:ekr.20060921100435.1:oldCheckVersion (Dave Hein)
 #@+at
@@ -5152,14 +5163,13 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
 
     # g.trace(type(script),repr(script))
     return script
-#@+node:ekr.20050211100535:test_g_getScript_strips_crlf
-def test_g_getScript_strips_crlf():
+#@+node:ekr.20050211100535:@test g.getScript strips crlf
+if g.unitTesting:
 
-    # __pychecker__ = '--limit=0' # Suppress warnings about c & p.
-
+    c,p = g.getTestVars()
     script = g.getScript(c,p) # This will get the text of this node.
     assert script.find('\r\n') == -1, repr(script)
-#@-node:ekr.20050211100535:test_g_getScript_strips_crlf
+#@-node:ekr.20050211100535:@test g.getScript strips crlf
 #@-node:EKR.20040614071102.1:g.getScript & tests
 #@+node:ekr.20050920084036.4:g.longestCommonPrefix & g.itemsMatchingPrefixInList
 def longestCommonPrefix (s1,s2):
@@ -5672,10 +5682,10 @@ def removeExtraLws (s,tab_width):
             print repr(line)
 
     return result
-#@+node:ekr.20050211120837:test_g_removeExtraLws
-def test_g_removeExtraLws():
+#@+node:ekr.20050211120837:@test g.removeExtraLws
+if g.unitTesting:
 
-    # pychecker complains about c and p.
+    c,p = g.getTestVars()
 
     for s,expected in (
         (' a\n b\n c', 'a\nb\nc'),
@@ -5684,7 +5694,7 @@ def test_g_removeExtraLws():
         result = g.removeExtraLws(s,c.tab_width)
         assert result == expected, '\ns: %s\nexpected: %s\nresult:   %s' % (
             repr(s),repr(expected),repr(result))
-#@-node:ekr.20050211120837:test_g_removeExtraLws
+#@-node:ekr.20050211120837:@test g.removeExtraLws
 #@-node:ekr.20050211120242.2:g.removeExtraLws & tests
 #@+node:ekr.20031218072017.3203:removeTrailingWs
 # Warning: string.rstrip also removes newlines!
