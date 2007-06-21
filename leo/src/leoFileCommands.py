@@ -2390,11 +2390,10 @@ class baseFileCommands:
             g.es("exception deleting backup file:" + fileName)
             g.es_exception(full=False)
             return False
-    #@+node:ekr.20050404212949:test_fc_deleteFileWithMessage
-    def test_fc_deleteFileWithMessage(self):
+    #@+node:ekr.20050404212949:@test fc.deleteFileWithMessage
+    if g.unitTesting:
 
-        # pychecker complains about c.
-
+        c,p = g.getTestVars()
         fc=c.fileCommands # Self is a dummy argument.
         fc.deleteFileWithMessage('xyzzy','test')
 
@@ -2403,7 +2402,7 @@ class baseFileCommands:
         g.es("read only",color="red")
         g.es("exception deleting %s file: %s" % (fileName,kind))
         g.es("exception deleting backup file:" + fileName)
-    #@-node:ekr.20050404212949:test_fc_deleteFileWithMessage
+    #@-node:ekr.20050404212949:@test fc.deleteFileWithMessage
     #@-node:ekr.20050404190914.2:deleteFileWithMessage
     #@+node:ekr.20031218072017.1470:put
     def put (self,s):
@@ -2979,7 +2978,7 @@ class baseFileCommands:
 
         self.outputFile = g.fileLikeObject()
         self.usingClipboard = True
-        self.assignFileIndices() # 6/11/03: Must do this for 3.x code.
+        self.assignFileIndices() # Must do this for 3.x code.
         self.putProlog()
         self.putClipboardHeader()
         self.putVnodes()

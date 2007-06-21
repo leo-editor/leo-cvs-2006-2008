@@ -2492,7 +2492,7 @@ class atFile:
         #@nl
         return valid,new_df,start,end,isThinDerivedFile
     #@+node:ekr.20050211111552:@test parseLeoSentinel
-    if g.app and g.app.unitTesting:
+    if g.unitTesting:
 
         c,p = g.getTestVars()
 
@@ -3928,11 +3928,10 @@ class atFile:
                 return at.miscDirective
 
         return at.noDirective
-    #@+node:ekr.20050608103755:test_directiveKind4
-    def test_directiveKind4 (self):
+    #@+node:ekr.20050608103755:@test directiveKind4
+    if g.unitTesting:
 
-        # pychecker complains about c not being used.
-
+        c,p = g.getTestVars()
         at=c.atFileCommands # Self is a dummy argument.
         import leoColor
         table = [
@@ -3959,7 +3958,7 @@ class atFile:
             result = at.directiveKind4(s,i)
             assert result == expected, '%d %s result: %s expected: %s' % (
                 i,repr(s),at.sentinelName(result),at.sentinelName(expected))
-    #@-node:ekr.20050608103755:test_directiveKind4
+    #@-node:ekr.20050608103755:@test directiveKind4
     #@-node:ekr.20041005105605.198:directiveKind4 & test
     #@+node:ekr.20041005105605.199:hasSectionName
     def findSectionName(self,s,i):
@@ -4380,13 +4379,15 @@ class atFile:
                 print message
             except UnicodeError:
                 print g.toEncodedString(message,'ascii')
+    #@+node:ekr.20070621091727:@test printError
+    if g.unitTesting:
 
-    def test_atFile_printError(self):
-
+        c,p = g.getTestVars()
         at = c.atFileCommands
         at.errors = 0
         at.printError(
             "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
+    #@-node:ekr.20070621091727:@test printError
     #@-node:ekr.20050206085258:atFile.printError & test
     #@+node:ekr.20041005105605.222:atFile.scanAllDirectives
     #@+at 
@@ -4813,12 +4814,13 @@ class atFile:
                     self.outputFileName,self.targetFileName))
                 g.es_exception()
             return False
-    #@+node:ekr.20050107085710:test_atFile_rename
-    def test_atFile_rename (self):
+    #@+node:ekr.20050107085710:@tesst atFile_rename
+    if g.unitTesting:
 
         __pychecker__ = '--no-reimport'
 
         import os
+        c,p = g.getTestVars()
         at = c.atFileCommands
 
         exists = g.os_path_exists
@@ -4844,7 +4846,7 @@ class atFile:
         assert s == 'test %s' % path
         os.remove(path2)
         assert not exists(path)
-    #@-node:ekr.20050107085710:test_atFile_rename
+    #@-node:ekr.20050107085710:@tesst atFile_rename
     #@-node:ekr.20050104131929.1:atFile.rename & test
     #@+node:ekr.20050104132018:remove & test
     def remove (self,fileName,verbose=True):
@@ -4857,11 +4859,12 @@ class atFile:
                 self.error("exception removing: %s" % fileName)
                 g.es_exception()
             return False
-    #@+node:ekr.20050107090156:test_atFile_remove
-    def test_atFile_remove(self):
+    #@+node:ekr.20050107090156:@test atFile_remove
+    if g.unitTesting:
 
         __pychecker__ = '--no-reimport'
         import os
+        c,p = g.getTestVars()
         at = c.atFileCommands
         exists = g.os_path_exists
 
@@ -4879,7 +4882,7 @@ class atFile:
         assert exists(path)
         assert at.remove(path)
         assert not exists(path)
-    #@-node:ekr.20050107090156:test_atFile_remove
+    #@-node:ekr.20050107090156:@test atFile_remove
     #@-node:ekr.20050104132018:remove & test
     #@+node:ekr.20050104132026:stat
     def stat (self,fileName):

@@ -4689,11 +4689,12 @@ class helpCommandsClass (baseEditCommandsClass):
 
         if not g.app.unitTesting:
             g.es_print(s)
-    #@+node:ekr.20060205165654:test_helpForMinibuffer
-    def test_helpForMinibuffer(self):
+    #@+node:ekr.20060205165654:@test helpForMinibuffer
+    if g.unitTesting:
 
+        c,p = g.getTestVars()
         c.helpCommands.helpForMinibuffer()
-    #@-node:ekr.20060205165654:test_helpForMinibuffer
+    #@-node:ekr.20060205165654:@test helpForMinibuffer
     #@-node:ekr.20051014170754:helpForMinibuffer
     #@+node:ekr.20060417203717:helpForCommand
     def helpForCommand (self,event):
@@ -4807,8 +4808,9 @@ class helpCommandsClass (baseEditCommandsClass):
             s = g.adjustTripleString(s,c.tab_width)
             g.es_print(s)
     #@+node:ekr.20060226132000:test_aproposAutocompletion
-    def test_aproposAutocompletion (self):
+    if g.unitTesting:
 
+        c,p = g.getTestVars()
         c.helpCommands.aproposAutocompletion()
     #@-node:ekr.20060226132000:test_aproposAutocompletion
     #@-node:ekr.20060226131603.1:aproposAutocompletion
@@ -4875,11 +4877,13 @@ class helpCommandsClass (baseEditCommandsClass):
 
         if not g.app.unitTesting:
             g.es_print(s)
-    #@+node:ekr.20060205170435:test_apropos_bindings
-    def test_apropos_bindings (self):
+    #@+node:ekr.20060205170435:@test apropos_bindings
+    if g.unitTesting:
+
+        c,p = g.getTestVars()
 
         c.helpCommands.aproposBindings()
-    #@-node:ekr.20060205170435:test_apropos_bindings
+    #@-node:ekr.20060205170435:@test apropos_bindings
     #@-node:ekr.20060205170335:aproposBindings
     #@+node:ekr.20070501092655:aproposDebuggingCommands
     def aproposDebuggingCommands (self,event=None):
@@ -5027,13 +5031,13 @@ class helpCommandsClass (baseEditCommandsClass):
 
         if not g.app.unitTesting:
             g.es_print(s)
-    #@+node:ekr.20060205170552:test_apropos_find_commands
-    def test_apropos_find_commands (self):
+    #@+node:ekr.20060205170552:@test apropos_find_commands
+    if g.unitTesting:
 
-        # pychecker complains about c.
+        c,p = g.getTestVars()
 
         c.helpCommands.aproposFindCommands()
-    #@-node:ekr.20060205170552:test_apropos_find_commands
+    #@-node:ekr.20060205170552:@test apropos_find_commands
     #@-node:ekr.20060205170335.1:aproposFindCommands
     #@+node:ekr.20060602154458:pythonHelp
     def pythonHelp (self,event=None):
