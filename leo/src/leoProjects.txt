@@ -1075,14 +1075,14 @@ def CheckVersionToInt (s):
             return 0
 #@nonl
 #@-node:ekr.20070120123930:CheckVersionToInt
-#@+node:ekr.20070120125007:test_CheckVersionToInt
-def test_CheckVersionToInt (*args):
+#@+node:ekr.20070120125007:@test CheckVersionToInt
+if g.unitTesting:
 
     assert g.CheckVersionToInt('12') == 12,'fail 1'
     assert g.CheckVersionToInt('2a5') == 2, 'fail 2'
     assert g.CheckVersionToInt('b2') == 0, 'fail 3'
 #@nonl
-#@-node:ekr.20070120125007:test_CheckVersionToInt
+#@-node:ekr.20070120125007:@test CheckVersionToInt
 #@-node:ekr.20060921100435:CheckVersion (EKR) & helper
 #@-node:ekr.20070120073419:Fixed bug in CheckVersion
 #@+node:ekr.20061128083024:Fixed bugs arising from new reorg
@@ -10692,14 +10692,13 @@ def getScript (c,p,useSelectedText=True,forcePythonSentinels=True,useSentinels=T
 
     # g.trace(type(script),repr(script))
     return script
-#@+node:ekr.20050211100535:test_g_getScript_strips_crlf
-def test_g_getScript_strips_crlf():
+#@+node:ekr.20050211100535:@test g.getScript strips crlf
+if g.unitTesting:
 
-    # __pychecker__ = '--limit=0' # Suppress warnings about c & p.
-
+    c,p = g.getTestVars()
     script = g.getScript(c,p) # This will get the text of this node.
     assert script.find('\r\n') == -1, repr(script)
-#@-node:ekr.20050211100535:test_g_getScript_strips_crlf
+#@-node:ekr.20050211100535:@test g.getScript strips crlf
 #@-node:EKR.20040614071102.1:g.getScript & tests
 #@+node:ekr.20060624085200:g.handleScriptException
 def handleScriptException (c,p,script,script1):
@@ -10973,14 +10972,13 @@ def isPlainKey (self,shortcut):
 
         # g.trace(isPlain,repr(shortcut))
         return isPlain
-#@+node:ekr.20061031131434.183:test_isPlainKey
-def test_isPlainKey (self):
-
-    # pychecker complains about c not being used.
+#@+node:ekr.20061031131434.183:@test isPlainKey
+if g.unitTesting:
 
     import string
 
-    k = c.k # self is a dummy argument
+    c,p = g.getTestVars()
+    k = c.k
 
     for ch in (string.printable):
         if ch == '\n': continue # A special case.
@@ -11001,7 +10999,7 @@ def test_isPlainKey (self):
 
     for ch in special:
         assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-#@-node:ekr.20061031131434.183:test_isPlainKey
+#@-node:ekr.20061031131434.183:@test isPlainKey
 #@-node:ekr.20061031131434.182:isPlainKey & test
 #@+node:ekr.20061031131434.184:shortcutFromSetting (uses k.guiBindNamesDict)
 def shortcutFromSetting (self,setting):
@@ -20586,7 +20584,9 @@ def leoHelp (self,event=None): pass
 #@+node:ekr.20041130065921:Window...
 def bringToFront (self):    pass
 def deiconify (self):       pass
-def get_window_info(self):  return 0,0,0,0
+def get_window_info(self):
+    # Set w,h,x,y to a reasonable size and position.
+    return 600,500,20,20
 def lift (self):            pass
 def setWrap (self,flag):    pass
 def update (self):          pass
@@ -32508,12 +32508,13 @@ On Windows, if dst already exists, OSError will be raised even if it is a file;
 there may be no way to implement an atomic rename when dst names an existing
 file.
 #@-node:ekr.20050104131929.2:<< about os.rename >>
-#@+node:ekr.20050107085710:test_atFile_rename
-def test_atFile_rename (self):
+#@+node:ekr.20050107085710:@tesst atFile_rename
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
 
     import os
+    c,p = g.getTestVars()
     at = c.atFileCommands
 
     exists = g.os_path_exists
@@ -32539,7 +32540,7 @@ def test_atFile_rename (self):
     assert s == 'test %s' % path
     os.remove(path2)
     assert not exists(path)
-#@-node:ekr.20050107085710:test_atFile_rename
+#@-node:ekr.20050107085710:@tesst atFile_rename
 #@-node:ekr.20050104131929.1:atFile.rename & test
 #@+node:ekr.20041005105605.222:atFile.scanAllDirectives
 @ Once a directive is seen, no other related directives in nodes further up the tree have any effect.  For example, if an @color directive is seen in node p, no @color or @nocolor directives are examined in any ancestor of p.
@@ -32894,12 +32895,13 @@ there may be no way to implement an atomic rename when dst names an existing
 file.
 #@-node:ekr.20050104123726.1:<< about os.rename >>
 #@+node:ekr.20050107085710.1:test_g_utils_rename
-def test_g_utils_rename():
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
-
     import os
     exists = g.os_path_exists
+
+    c,p = g.getTestVars()
 
     path = g.os_path_join(g.app.testDir,'xyzzy')
     if exists(path):
@@ -33396,12 +33398,13 @@ there may be no way to implement an atomic rename when dst names an existing
 file.
 #@-node:ekr.20050104123726.1:<< about os.rename >>
 #@+node:ekr.20050107085710.1:test_g_utils_rename
-def test_g_utils_rename():
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
-
     import os
     exists = g.os_path_exists
+
+    c,p = g.getTestVars()
 
     path = g.os_path_join(g.app.testDir,'xyzzy')
     if exists(path):
@@ -37740,13 +37743,15 @@ else:
     i = g.skip_line(s,j) # Still not quite 100% correct.
 #@-node:ekr.20060627062652:<< skip the entire signature >>
 #@-node:ekr.20060626083237.1:skipPythonDef
-#@+node:ekr.20060626083237.2:test_skipPythonDef
-def test_skipPythonDef (self):
+#@+node:ekr.20060626083237.2:@test skipPythonDef
+if g.unitTesting:
 
-    global c # Get syntax warning if this is not first.
-    if self: c = self.c             # Run from @test node: c not global
-    else: self = c.importCommands   # Run from @suite: c *is* global
+    c,p = g.getTestVars()
+    self = c.importCommands
 
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
     d = g.scanDirectives(c)
     self.tab_width = d.get("tabwidth")
     verbose = False
@@ -37776,15 +37781,16 @@ def test2():
 
 s = g.adjustTripleString(s,self.tab_width)
 #@-node:ekr.20060626083725:<< define s >>
-#@-node:ekr.20060626083237.2:test_skipPythonDef
-#@+node:ekr.20060627063313:test_skipPythonDef2
-def test_skipPythonDef2 (self):
+#@-node:ekr.20060626083237.2:@test skipPythonDef
+#@+node:ekr.20060627063313:@test skipPythonDef (long lines)
+if g.unitTesting:
 
-    '''Tests of long signature lines.'''
+    c,p = g.getTestVars()
+    self = c.importCommands
 
-    global c # Get syntax warning if this is not first.
-    if self: c = self.c             # Run from @test node: c not global
-    else: self = c.importCommands   # Run from @suite: c *is* global
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
 
     d = g.scanDirectives(c)
     self.tab_width = d.get("tabwidth")
@@ -37813,15 +37819,16 @@ a=3):
 
 s = g.adjustTripleString(s,self.tab_width)
 #@-node:ekr.20060627063313.1:<< define s >>
-#@-node:ekr.20060627063313:test_skipPythonDef2
-#@+node:ekr.20060626100102.1:test_scanPythonClass
-def test_scanPythonClass (self):
+#@-node:ekr.20060627063313:@test skipPythonDef (long lines)
+#@+node:ekr.20060626100102.1:@test scanPythonClass
+if g.unitTesting:
 
-    # pychecker complains about c.
+    c,p = g.getTestVars()
+    self = c.importCommands
 
-    global c # Get syntax warning if this is not first.
-    if self: c = self.c             # Run from @test node: c not global
-    else: self = c.importCommands   # Run from @suite: c *is* global
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
 
     d = g.scanDirectives(c)
     self.tab_width = d.get("tabwidth")
@@ -37853,7 +37860,7 @@ class aClass2:
 
 s = g.adjustTripleString(s,self.tab_width)
 #@-node:ekr.20060626100102.2:<< define s >>
-#@-node:ekr.20060626100102.1:test_scanPythonClass
+#@-node:ekr.20060626100102.1:@test scanPythonClass
 #@-node:ekr.20031218072017.2256:Python scanners & tests
 #@+node:ekr.20031218072017.3250:scanCText
 # Creates a child of parent for each C function definition seen.
@@ -43408,8 +43415,8 @@ if g.app and g.app.unitTesting:
 
     sendEmail(test())
 #@-node:ekr.20070524075713:@test test-proto
-#@+node:ekr.20070524083726:test_unit_testing_with_embedded_class
-def test_unit_testing_with_embedded_class():
+#@+node:ekr.20070524083726:@test unit testing with embedded class
+if g.unitTesting:
 
     def sendEmail(self):
         pass # g.trace('self2',self)
@@ -43419,7 +43426,7 @@ def test_unit_testing_with_embedded_class():
 
     X = test()
     sendEmail(X)
-#@-node:ekr.20070524083726:test_unit_testing_with_embedded_class
+#@-node:ekr.20070524083726:@test unit testing with embedded class
 #@+node:ekr.20070619173330:g.getTestVars
 def getTestVars ():
 
@@ -43563,30 +43570,28 @@ def removeLeadingWs (self,code):
 #@-node:ekr.20070524085401.18:removeLeadingWs
 #@-node:ekr.20070524085253:@@button run-test-nodes
 #@+node:ekr.20070524094546:Found: def test_
-#@+node:ekr.20070120125007:test_CheckVersionToInt
-def test_CheckVersionToInt (*args):
+#@+node:ekr.20070120125007:@test CheckVersionToInt
+if g.unitTesting:
 
     assert g.CheckVersionToInt('12') == 12,'fail 1'
     assert g.CheckVersionToInt('2a5') == 2, 'fail 2'
     assert g.CheckVersionToInt('b2') == 0, 'fail 3'
 #@nonl
-#@-node:ekr.20070120125007:test_CheckVersionToInt
-#@+node:ekr.20050211100535:test_g_getScript_strips_crlf
-def test_g_getScript_strips_crlf():
+#@-node:ekr.20070120125007:@test CheckVersionToInt
+#@+node:ekr.20050211100535:@test g.getScript strips crlf
+if g.unitTesting:
 
-    # __pychecker__ = '--limit=0' # Suppress warnings about c & p.
-
+    c,p = g.getTestVars()
     script = g.getScript(c,p) # This will get the text of this node.
     assert script.find('\r\n') == -1, repr(script)
-#@-node:ekr.20050211100535:test_g_getScript_strips_crlf
-#@+node:ekr.20061031131434.183:test_isPlainKey
-def test_isPlainKey (self):
-
-    # pychecker complains about c not being used.
+#@-node:ekr.20050211100535:@test g.getScript strips crlf
+#@+node:ekr.20061031131434.183:@test isPlainKey
+if g.unitTesting:
 
     import string
 
-    k = c.k # self is a dummy argument
+    c,p = g.getTestVars()
+    k = c.k
 
     for ch in (string.printable):
         if ch == '\n': continue # A special case.
@@ -43607,13 +43612,14 @@ def test_isPlainKey (self):
 
     for ch in special:
         assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-#@-node:ekr.20061031131434.183:test_isPlainKey
-#@+node:ekr.20050107085710:test_atFile_rename
-def test_atFile_rename (self):
+#@-node:ekr.20061031131434.183:@test isPlainKey
+#@+node:ekr.20050107085710:@tesst atFile_rename
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
 
     import os
+    c,p = g.getTestVars()
     at = c.atFileCommands
 
     exists = g.os_path_exists
@@ -43639,14 +43645,15 @@ def test_atFile_rename (self):
     assert s == 'test %s' % path
     os.remove(path2)
     assert not exists(path)
-#@-node:ekr.20050107085710:test_atFile_rename
+#@-node:ekr.20050107085710:@tesst atFile_rename
 #@+node:ekr.20050107085710.1:test_g_utils_rename
-def test_g_utils_rename():
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
-
     import os
     exists = g.os_path_exists
+
+    c,p = g.getTestVars()
 
     path = g.os_path_join(g.app.testDir,'xyzzy')
     if exists(path):
@@ -43663,13 +43670,15 @@ def test_g_utils_rename():
     assert g.utils_remove(path,verbose=True)
     assert not exists(path)
 #@-node:ekr.20050107085710.1:test_g_utils_rename
-#@+node:ekr.20060626083237.2:test_skipPythonDef
-def test_skipPythonDef (self):
+#@+node:ekr.20060626083237.2:@test skipPythonDef
+if g.unitTesting:
 
-    global c # Get syntax warning if this is not first.
-    if self: c = self.c             # Run from @test node: c not global
-    else: self = c.importCommands   # Run from @suite: c *is* global
+    c,p = g.getTestVars()
+    self = c.importCommands
 
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
     d = g.scanDirectives(c)
     self.tab_width = d.get("tabwidth")
     verbose = False
@@ -43699,15 +43708,16 @@ def test2():
 
 s = g.adjustTripleString(s,self.tab_width)
 #@-node:ekr.20060626083725:<< define s >>
-#@-node:ekr.20060626083237.2:test_skipPythonDef
-#@+node:ekr.20060627063313:test_skipPythonDef2
-def test_skipPythonDef2 (self):
+#@-node:ekr.20060626083237.2:@test skipPythonDef
+#@+node:ekr.20060627063313:@test skipPythonDef (long lines)
+if g.unitTesting:
 
-    '''Tests of long signature lines.'''
+    c,p = g.getTestVars()
+    self = c.importCommands
 
-    global c # Get syntax warning if this is not first.
-    if self: c = self.c             # Run from @test node: c not global
-    else: self = c.importCommands   # Run from @suite: c *is* global
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
 
     d = g.scanDirectives(c)
     self.tab_width = d.get("tabwidth")
@@ -43736,15 +43746,16 @@ a=3):
 
 s = g.adjustTripleString(s,self.tab_width)
 #@-node:ekr.20060627063313.1:<< define s >>
-#@-node:ekr.20060627063313:test_skipPythonDef2
-#@+node:ekr.20060626100102.1:test_scanPythonClass
-def test_scanPythonClass (self):
+#@-node:ekr.20060627063313:@test skipPythonDef (long lines)
+#@+node:ekr.20060626100102.1:@test scanPythonClass
+if g.unitTesting:
 
-    # pychecker complains about c.
+    c,p = g.getTestVars()
+    self = c.importCommands
 
-    global c # Get syntax warning if this is not first.
-    if self: c = self.c             # Run from @test node: c not global
-    else: self = c.importCommands   # Run from @suite: c *is* global
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
 
     d = g.scanDirectives(c)
     self.tab_width = d.get("tabwidth")
@@ -43776,9 +43787,9 @@ class aClass2:
 
 s = g.adjustTripleString(s,self.tab_width)
 #@-node:ekr.20060626100102.2:<< define s >>
-#@-node:ekr.20060626100102.1:test_scanPythonClass
+#@-node:ekr.20060626100102.1:@test scanPythonClass
 #@+node:ekr.20050211111552:@test parseLeoSentinel
-if g.app and g.app.unitTesting:
+if g.unitTesting:
 
     c,p = g.getTestVars()
 
@@ -43796,11 +43807,10 @@ if g.app and g.app.unitTesting:
         assert end == '', 'invalid end: %s' % repr(end)
         assert at.encoding == 'utf-8', 'bad encoding: %s' % repr(at.encoding)
 #@-node:ekr.20050211111552:@test parseLeoSentinel
-#@+node:ekr.20050608103755:test_directiveKind4
-def test_directiveKind4 (self):
+#@+node:ekr.20050608103755:@test directiveKind4
+if g.unitTesting:
 
-    # pychecker complains about c not being used.
-
+    c,p = g.getTestVars()
     at=c.atFileCommands # Self is a dummy argument.
     import leoColor
     table = [
@@ -43827,12 +43837,13 @@ def test_directiveKind4 (self):
         result = at.directiveKind4(s,i)
         assert result == expected, '%d %s result: %s expected: %s' % (
             i,repr(s),at.sentinelName(result),at.sentinelName(expected))
-#@-node:ekr.20050608103755:test_directiveKind4
-#@+node:ekr.20050107090156:test_atFile_remove
-def test_atFile_remove(self):
+#@-node:ekr.20050608103755:@test directiveKind4
+#@+node:ekr.20050107090156:@test atFile_remove
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
     import os
+    c,p = g.getTestVars()
     at = c.atFileCommands
     exists = g.os_path_exists
 
@@ -43850,7 +43861,7 @@ def test_atFile_remove(self):
     assert exists(path)
     assert at.remove(path)
     assert not exists(path)
-#@-node:ekr.20050107090156:test_atFile_remove
+#@-node:ekr.20050107090156:@test atFile_remove
 #@+node:ekr.20050206085258:atFile.printError & test
 def printError (self,message):
 
@@ -43863,41 +43874,46 @@ def printError (self,message):
             print message
         except UnicodeError:
             print g.toEncodedString(message,'ascii')
+#@+node:ekr.20070621091727:@test printError
+if g.unitTesting:
 
-def test_atFile_printError(self):
-
+    c,p = g.getTestVars()
     at = c.atFileCommands
     at.errors = 0
     at.printError(
         "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
+#@-node:ekr.20070621091727:@test printError
 #@-node:ekr.20050206085258:atFile.printError & test
-#@+node:ekr.20060205165654:test_helpForMinibuffer
-def test_helpForMinibuffer(self):
+#@+node:ekr.20060205165654:@test helpForMinibuffer
+if g.unitTesting:
 
+    c,p = g.getTestVars()
     c.helpCommands.helpForMinibuffer()
-#@-node:ekr.20060205165654:test_helpForMinibuffer
+#@-node:ekr.20060205165654:@test helpForMinibuffer
 #@+node:ekr.20060226132000:test_aproposAutocompletion
-def test_aproposAutocompletion (self):
+if g.unitTesting:
 
+    c,p = g.getTestVars()
     c.helpCommands.aproposAutocompletion()
 #@-node:ekr.20060226132000:test_aproposAutocompletion
-#@+node:ekr.20060205170435:test_apropos_bindings
-def test_apropos_bindings (self):
+#@+node:ekr.20060205170435:@test apropos_bindings
+if g.unitTesting:
+
+    c,p = g.getTestVars()
 
     c.helpCommands.aproposBindings()
-#@-node:ekr.20060205170435:test_apropos_bindings
-#@+node:ekr.20060205170552:test_apropos_find_commands
-def test_apropos_find_commands (self):
+#@-node:ekr.20060205170435:@test apropos_bindings
+#@+node:ekr.20060205170552:@test apropos_find_commands
+if g.unitTesting:
 
-    # pychecker complains about c.
+    c,p = g.getTestVars()
 
     c.helpCommands.aproposFindCommands()
-#@-node:ekr.20060205170552:test_apropos_find_commands
-#@+node:ekr.20050404212949:test_fc_deleteFileWithMessage
-def test_fc_deleteFileWithMessage(self):
+#@-node:ekr.20060205170552:@test apropos_find_commands
+#@+node:ekr.20050404212949:@test fc.deleteFileWithMessage
+if g.unitTesting:
 
-    # pychecker complains about c.
-
+    c,p = g.getTestVars()
     fc=c.fileCommands # Self is a dummy argument.
     fc.deleteFileWithMessage('xyzzy','test')
 
@@ -43906,11 +43922,12 @@ if 0: # one-time test of es statements.
     g.es("read only",color="red")
     g.es("exception deleting %s file: %s" % (fileName,kind))
     g.es("exception deleting backup file:" + fileName)
-#@-node:ekr.20050404212949:test_fc_deleteFileWithMessage
-#@+node:ekr.20050221092824:test_g_pdb
-def test_g_pdb():
+#@-node:ekr.20050404212949:@test fc.deleteFileWithMessage
+#@+node:ekr.20050221092824:@test g.pdb
+if g.unitTesting:
 
     import sys
+    c,p = g.getTestVars()
 
     # Not a good unit test; it probably will never fail.
     def aFunction(): pass
@@ -43936,48 +43953,53 @@ def test_g_pdb():
     except Exception:
         restore()
         raise
-#@-node:ekr.20050221092824:test_g_pdb
-#@+node:ekr.20050220030850:test_g_es_exception
-def test_g_es_exception():
+#@-node:ekr.20050221092824:@test g.pdb
+#@+node:ekr.20050220030850:@test g.es_exception
+if g.unitTesting:
+
+    c,p = g.getTestVars()
 
     if c.config.redirect_execute_script_output_to_log_pane:
-        return # Test doesn't work when redirection is on.
-
-    try:
-        import sys
-        # Catch the output of g.es_exception.
-        # We catch the AssertionError, so nothing gets written to stderr.
-        sys.stdout = fo = g.fileLikeObject()
-        try: # Create an exception to catch.
-            assert False, 'Assert False in test_g_es_exception'
-        except AssertionError:
-            g.es_exception(color='suppress')
-            result = fo.get()
-            s1 = 'Traceback (most recent call last):'
-            s2 = 'AssertionError: Assert False in test_g_es_exception'
-            assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
-            assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
-    finally:
-        # Not needed unless we execute this script as selected text.
-        sys.stdout = sys.__stdout__
-#@-node:ekr.20050220030850:test_g_es_exception
-#@+node:ekr.20050216052031:test_g_create_temp_file
-def test_g_create_temp_file():
+        pass # Test doesn't work when redirection is on.
+    else:
+        try:
+            import sys
+            # Catch the output of g.es_exception.
+            # We catch the AssertionError, so nothing gets written to stderr.
+            sys.stdout = fo = g.fileLikeObject()
+            try: # Create an exception to catch.
+                assert False, 'Assert False in test_g_es_exception'
+            except AssertionError:
+                g.es_exception(color='suppress')
+                result = fo.get()
+                s1 = 'Traceback (most recent call last):'
+                s2 = 'AssertionError: Assert False in test_g_es_exception'
+                assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
+                assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
+        finally:
+            # Not needed unless we execute this script as selected text.
+            sys.stdout = sys.__stdout__
+#@-node:ekr.20050220030850:@test g.es_exception
+#@+node:ekr.20050216052031:@test g.create_temp_file
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
     import types
+
+    c,p = g.getTestVars()
 
     theFile,theFileName = g.create_temp_file()
 
     assert type(theFile) == types.FileType, 'not file type'
     assert type(theFileName) in (types.StringType, types.UnicodeType), 'not string type'
-#@-node:ekr.20050216052031:test_g_create_temp_file
-#@+node:ekr.20050107084901:test_g_utils_remove
-def test_g_utils_remove():
+#@-node:ekr.20050216052031:@test g.create_temp_file
+#@+node:ekr.20050107084901:@test g.utils_remove
+if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
-
     import os
+
+    c,p = g.getTestVars()
     exists = g.os_path_exists
 
     path = g.os_path_join(g.app.testDir,'xyzzy')
@@ -43994,7 +44016,7 @@ def test_g_utils_remove():
     assert exists(path)
     assert g.utils_remove(path,verbose=True)
     assert not exists(path)
-#@-node:ekr.20050107084901:test_g_utils_remove
+#@-node:ekr.20050107084901:@test g.utils_remove
 #@+node:ekr.20050707064040:es_print & test
 def es_print(s,*args,**keys):
 
@@ -44002,23 +44024,26 @@ def es_print(s,*args,**keys):
 
     if g.app.gui and not g.app.gui.isNullGui:
         g.es(s,*args,**keys)
-
-def test_g_es_print():
+#@+node:ekr.20070621092938:@test g.es_print
+if g.unitTesting:
 
     g.es_print('\ntest of es_print: Ă',color='red')
+#@-node:ekr.20070621092938:@test g.es_print
 #@-node:ekr.20050707064040:es_print & test
 #@+node:ekr.20050707065530:es_trace & test
 def es_trace(s,*args,**keys):
 
     g.trace(g.toEncodedString(s,'ascii'))
     g.es(s,*args,**keys)
-
-def test_g_es_trace():
+#@nonl
+#@+node:ekr.20070621092938.1:@test g.es_trace
+if g.unitTesting:
 
     g.es_trace('\ntest of es_trace: Ă',color='red')
+#@-node:ekr.20070621092938.1:@test g.es_trace
 #@-node:ekr.20050707065530:es_trace & test
-#@+node:ekr.20050825092149:test_g_reportBadChars
-def test_g_reportBadChars ():
+#@+node:ekr.20050825092149:@test g.reportBadChars
+if g.unitTesting:
 
     for s,encoding in (
         ('aĂbĂ',  'ascii'),
@@ -44033,9 +44058,9 @@ def test_g_reportBadChars ():
     ):
 
         g.reportBadChars(s,encoding)
-#@-node:ekr.20050825092149:test_g_reportBadChars
-#@+node:ekr.20050208104358:test_round_trip_toUnicode_toEncodedString
-def test_round_trip_toUnicode_toEncodedString ():
+#@-node:ekr.20050825092149:@test g.reportBadChars
+#@+node:ekr.20050208104358:@test round trip toUnicode toEncodedString
+if g.unitTesting:
 
     table = [
         ('a',    'utf-8'),
@@ -44062,10 +44087,10 @@ def test_round_trip_toUnicode_toEncodedString ():
             s2 = g.toUnicode(s,encoding)
             s3 = g.toEncodedString(s2,encoding)
             assert s3 == s, 'Round-trip two failed for %s' %s
-
-#@-node:ekr.20050208104358:test_round_trip_toUnicode_toEncodedString
-#@+node:ekr.20050208112123:test_failure_with_ascii_encodings
-def test_failure_with_ascii_encodings():
+#@nonl
+#@-node:ekr.20050208104358:@test round trip toUnicode toEncodedString
+#@+node:ekr.20050208112123:@test failure with ascii encodings
+if g.unitTesting:
 
     encoding = 'ascii'
 
@@ -44076,9 +44101,9 @@ def test_failure_with_ascii_encodings():
     s = u'炰'
     s3,ok = g.toEncodedStringWithErrorCode(s,encoding)
     assert not ok, 'toEncodedStringWithErrorCode returns True for %s with ascii encoding' % s
-#@-node:ekr.20050208112123:test_failure_with_ascii_encodings
-#@+node:ekr.20070524083726:test_unit_testing_with_embedded_class
-def test_unit_testing_with_embedded_class():
+#@-node:ekr.20050208112123:@test failure with ascii encodings
+#@+node:ekr.20070524083726:@test unit testing with embedded class
+if g.unitTesting:
 
     def sendEmail(self):
         pass # g.trace('self2',self)
@@ -44088,11 +44113,11 @@ def test_unit_testing_with_embedded_class():
 
     X = test()
     sendEmail(X)
-#@-node:ekr.20070524083726:test_unit_testing_with_embedded_class
-#@+node:ekr.20050211120837:test_g_removeExtraLws
-def test_g_removeExtraLws():
+#@-node:ekr.20070524083726:@test unit testing with embedded class
+#@+node:ekr.20050211120837:@test g.removeExtraLws
+if g.unitTesting:
 
-    # pychecker complains about c and p.
+    c,p = g.getTestVars()
 
     for s,expected in (
         (' a\n b\n c', 'a\nb\nc'),
@@ -44101,7 +44126,7 @@ def test_g_removeExtraLws():
         result = g.removeExtraLws(s,c.tab_width)
         assert result == expected, '\ns: %s\nexpected: %s\nresult:   %s' % (
             repr(s),repr(expected),repr(result))
-#@-node:ekr.20050211120837:test_g_removeExtraLws
+#@-node:ekr.20050211120837:@test g.removeExtraLws
 #@+node:ekr.20051104075904.105:test_dummy
 def test_dummy():
     import leoGlobals as g
@@ -51642,7 +51667,7 @@ def getTestVars ():
     return c,p and p.copy()
 #@-node:ekr.20070619173330:g.getTestVars
 #@+node:ekr.20050211111552:@test parseLeoSentinel
-if g.app and g.app.unitTesting:
+if g.unitTesting:
 
     c,p = g.getTestVars()
 
@@ -51672,6 +51697,15 @@ if g.app and g.app.unitTesting:
     sendEmail(test())
 #@-node:ekr.20070524075713:@test test-proto
 #@-node:ekr.20070619172548:created g.getTestVars
+#@+node:ekr.20070620084325:Clean up unit tests in this file
+@nocolor
+
+What I did:
+
+- use g.getTestVars()
+- Replaced test_ functions with @test.
+- Removed the code in unitTest.leo that looks for test_functions.
+#@-node:ekr.20070620084325:Clean up unit tests in this file
 #@-node:ekr.20070615103622:New features & settings
 #@-node:ekr.20070612132051:Leo 4.4.3 b3 projects
 #@+node:ekr.20070126072723:pychecker
