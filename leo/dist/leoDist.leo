@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.450431034483">
-	<global_window_position top="29" left="385" height="853" width="849"/>
+	<global_window_position top="29" left="385" height="833" width="849"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -144,11 +144,11 @@
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
 <v t="ekr.20051205102401"><vh>Note: do search replace to update version numbers</vh></v>
-<v t="ekr.20050118095021"><vh>Leo 4.x installer  (update for each release)</vh>
+<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer  (update for each release)</vh>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings &gt;&gt;</vh></v>
 <v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
-<v t="ekr.20050118104149"><vh>config files</vh>
+<v t="ekr.20050118104149" a="E"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
 <v t="ekr.20050118104149.2"><vh>&lt;&lt; uninstall config files &gt;&gt;</vh></v>
 </v>
@@ -197,7 +197,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files (update for each release)</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files (update for each release)</vh>
 <v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
@@ -208,18 +208,19 @@
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
+<v t="ekr.20070622074708" a="T"><vh>@asis../manifest.in</vh></v>
 <v t="EKR.20040519082027.32"><vh>Linux install/uninstall scripts</vh>
 <v t="EKR.20040519082027.33"><vh>@file-thin ../install</vh></v>
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
 <v t="ekr.20070614170445" a="E"><vh>Scripts  (update for each release)</vh>
-<v t="ekr.20070614105133.3" a="TV" tnodeList="ekr.20070614105133.3,ekr.20070614110334"><vh>@nosent ../setup.py</vh>
+<v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20070614165755"><vh>@button create-leo-zip</vh></v>
+<v t="ekr.20070614165755" a="V"><vh>@button create-leo-zip</vh></v>
 <v t="ekr.20070620084858"><vh>@button register</vh></v>
-<v t="ekr.20070620084858.1"><vh>@button upload</vh></v>
+<v t="ekr.20070620084858.1"><vh>@@button upload</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -5030,8 +5031,8 @@ Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20070614105133.3">print '='*30,'setup.py','='*30
 
 # Boilerplate to automatically download setuptools if it not installed.
-import ez_setup
-ez_setup.use_setuptools()
+#import ez_setup
+#ez_setup.use_setuptools()
 
 import setuptools
 
@@ -5047,11 +5048,8 @@ setuptools.setup (
     author_email='edreamleo@charter.net',
     url='http://webpages.charter.net/edreamleo/front.html',
     download_url='http://sourceforge.net/project/showfiles.php?group_id=3458',
-        #'http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
-        #'http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106',
-
-    # py_modules=[], # The manifest specifies everything.
-    packages = setuptools.find_packages(),
+    py_modules=[], # The manifest specifies everything.
+    # packages = setuptools.find_packages(),
     include_package_data = True, # Required, e.g. for Pmw.def
     exclude_package_data = { '': ['*.pyc','*.pyo']},
     zip_safe=False, # Never run Leo from a zip file.
@@ -5076,8 +5074,7 @@ Download Python from http://python.org/
 Download tcl/Tk from http://tcl.activestate.com/software/tcltk/
  """</t>
 <t tx="ekr.20070614165755">@ Important: The bdist_egg command is for 'binary' distributions.
-  Phillip J. Eby says source distributions (.zip files) are fine for
-  pure Python programs like Leo.
+  Source distributions (.zip files) are fine for pure Python programs like Leo.
 @c
 
 import os,sys
@@ -5104,9 +5101,123 @@ os.system(command)
 folder = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..'))
 os.chdir(folder)
 
-command = '%s setup.py upload --show-response' % (sys.executable)
+command = '%s setup.py sdist upload --show-response' % (sys.executable)
 print command
 os.system(command)
 </t>
+<t tx="ekr.20070622074708"># The manifest template: specifies all files to be included in the distribution.
+
+# Note: these are glob patterns.
+# There seems to be a bug in distutils: ../ doesn't get handled properly.
+# manifest.in must be in the current directory.
+
+include __init__.py
+include manifest.in
+include MANIFEST
+include install
+include uninstall
+exclude createLeoDist.py
+
+include config/leoSettings.leo
+
+# 1. createLeoDist.py is distributed in dist directory.
+#    The distribution script temporarily copies createLeoDist.py to the leo directory.
+# 2. Distribute leoDist.leo, not leoDistRef.leo.
+# 3. .pycheckrc is distributed in dist directory.
+#    Move it to the home directory if you want to use it.
+
+include dist/createLeoDist.py
+include dist/leo-4-3.nsi
+include dist/leoDist.leo
+include dist/.pycheckrc
+
+include doc/LeoDiary.leo
+include doc/LeoDocs.leo
+include doc/leoNotes.txt
+include doc/LeoPostings.leo
+include doc/LeoSlideShows.leo
+include doc/leoToDo.txt
+include doc/leoToDoLater.txt
+
+include doc/README.TXT
+include doc/INSTALL.TXT
+include doc/PKG-INFO.TXT
+include doc/LICENSE.TXT
+
+include doc/default.css
+include doc/leo_rst.css
+include doc/silver_city.css
+
+include doc/LeoN/sun98achieving.pdf
+include doc/LeoN/sun97generic.pdf
+include doc/LeoN/sun98operational.pdf
+include doc/LeoN/sun98reversible.pdf
+
+include doc/html/*.*
+
+include extensions/aspell23.pyd
+include extensions/aspell24.pyd
+include extensions/optparse.py
+include extensions/path.py
+include extensions/sets.py
+include extensions/subprocess.py
+
+include extensions/__init__.py
+
+include extensions/Pmw/__init__.py
+include extensions/Pmw/Pmw_1_2/__init__.py
+include extensions/Pmw/Pmw_1_2/bin/*.*
+include extensions/Pmw/Pmw_1_2/contrib/*.*
+include extensions/Pmw/Pmw_1_2/demos/*.*
+include extensions/Pmw/Pmw_1_2/doc/*.*
+include extensions/Pmw/Pmw_1_2/lib/*.*
+include extensions/Pmw/Pmw_1_2/tests/*.*
+
+# These will typically generate sdist warnings.
+exclude extensions/Pmw/Pmw_1_2/bin/*.pyc
+exclude extensions/Pmw/Pmw_1_2/contrib/*.pyc
+exclude extensions/Pmw/Pmw_1_2/demos/*.pyc
+exclude extensions/Pmw/Pmw_1_2/doc/*.pyc
+exclude extensions/Pmw/Pmw_1_2/lib/*.pyc
+exclude extensions/Pmw/Pmw_1_2/tests/*.pyc
+
+# These will typically generate sdist warnings.
+exclude extensions/Pmw/Pmw_1_2/bin/*.pyo
+exclude extensions/Pmw/Pmw_1_2/contrib/*.pyo
+exclude extensions/Pmw/Pmw_1_2/demos/*.pyo
+exclude extensions/Pmw/Pmw_1_2/doc/*.pyo
+exclude extensions/Pmw/Pmw_1_2/lib/*.pyo
+exclude extensions/Pmw/Pmw_1_2/tests/*.pyo
+
+include Icons/*.*
+
+include modes/*.xml
+
+include plugins/leoPlugins.leo
+include plugins/*.ini
+include plugins/*.txt
+include plugins/*.py
+
+include plugins/trees/*.py
+include plugins/trees/pluginsManager.txt
+
+include scripts/openLeoScript.sh
+include scripts/scripts.leo
+include scripts/leoScripts.txt
+include scripts/*.py
+
+include src/__init__.py
+include src/buttons.txt
+include src/LeoPy.leo
+include src/leo*.py
+include src/leoProjects.txt
+include src/oldLeoProjects.leo
+
+include test/__init__.py
+include test/test.leo
+include test/unitTest.leo
+
+include test/unittest/batchTest.py
+include test/unittest/errorTest.py</t>
 </tnodes>
 </leo_file>

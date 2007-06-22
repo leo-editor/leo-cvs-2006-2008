@@ -1,8 +1,8 @@
 print '='*30,'setup.py','='*30
 
 # Boilerplate to automatically download setuptools if it not installed.
-import ez_setup
-ez_setup.use_setuptools()
+#import ez_setup
+#ez_setup.use_setuptools()
 
 import setuptools
 
@@ -27,11 +27,8 @@ setuptools.setup (
     author_email='edreamleo@charter.net',
     url='http://webpages.charter.net/edreamleo/front.html',
     download_url='http://sourceforge.net/project/showfiles.php?group_id=3458',
-        #'http://downloads.sourceforge.net/leo/leo-4.4.3preview9.egg',
-        #'http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106',
-
-    # py_modules=[], # The manifest specifies everything.
-    packages = setuptools.find_packages(),
+    py_modules=[], # The manifest specifies everything.
+    # packages = setuptools.find_packages(),
     include_package_data = True, # Required, e.g. for Pmw.def
     exclude_package_data = { '': ['*.pyc','*.pyo']},
     zip_safe=False, # Never run Leo from a zip file.
