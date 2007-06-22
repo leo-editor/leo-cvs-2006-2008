@@ -48,7 +48,7 @@ include extensions/path.py
 include extensions/sets.py
 include extensions/subprocess.py
 
-include extensions/__init__.py
+# include extensions/__init__.py
 
 include extensions/Pmw/__init__.py
 include extensions/Pmw/Pmw_1_2/__init__.py
@@ -93,14 +93,14 @@ include scripts/scripts.leo
 include scripts/leoScripts.txt
 include scripts/*.py
 
-include src/__init__.py
+# include src/__init__.py
 include src/buttons.txt
 include src/LeoPy.leo
 include src/leo*.py
 include src/leoProjects.txt
 include src/oldLeoProjects.leo
 
-include test/__init__.py
+# include test/__init__.py
 include test/test.leo
 include test/unitTest.leo
 

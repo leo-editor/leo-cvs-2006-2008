@@ -18,7 +18,7 @@
 <v t="ekr.20051015172713"><vh>@button Save</vh></v>
 <v t="ekr.20070614165755"><vh>@button create-leo-zip</vh></v>
 </v>
-<v t="ekr.20070622084133" a="TV"><vh>Unused</vh>
+<v t="ekr.20070622084133"><vh>Unused</vh>
 <v t="ekr.20070622075820"><vh>@@button Create Leo-4.x.zip</vh>
 <v t="ekr.20070622075820.1"><vh>&lt;&lt; about this script &gt;&gt;</vh></v>
 <v t="ekr.20070622075820.2"><vh>&lt;&lt; version history &gt;&gt;</vh></v>
@@ -46,14 +46,15 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
+<v t="ekr.20070622091049"><vh>ANN: Leo 4.4.3 beta 3</vh></v>
 <v t="ekr.20070610174300"><vh>ANN: Leo 4.4.3 beta 2</vh></v>
 <v t="ekr.20070518070012"><vh>ANN: Leo 4.4.3 beta 1</vh></v>
 <v t="ekr.20070317054921"><vh>ANN: Leo 4.4.3 alpha 2</vh></v>
 <v t="ekr.20070126084440"><vh>ANN: Leo 4.4.3 alpha 1</vh></v>
-<v t="ekr.20061029080932.1"><vh>ANN: Leo 4.4.2.1 final</vh></v>
-<v t="ekr.20061026100827"><vh>ANN: Leo 4.4.2 final</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20061026100827.1"><vh>4.4.2</vh>
+<v t="ekr.20061029080932.1"><vh>ANN: Leo 4.4.2.1 final</vh></v>
+<v t="ekr.20061026100827"><vh>ANN: Leo 4.4.2 final</vh></v>
 <v t="ekr.20061021071838"><vh>ANN: Leo 4.4.2 beta 3</vh></v>
 <v t="ekr.20061008193307"><vh>ANN: Leo 4.4.2 beta 2</vh></v>
 </v>
@@ -194,7 +195,7 @@
 <v t="ekr.20050118104901.13"><vh>&lt;&lt; install scripts &gt;&gt;</vh></v>
 <v t="ekr.20050118104901.14"><vh>&lt;&lt; uninstall scripts &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050118104901.9" a="E"><vh>src files</vh>
+<v t="ekr.20050118104901.9"><vh>src files</vh>
 <v t="ekr.20050118104901.10"><vh>&lt;&lt; install src files &gt;&gt;</vh></v>
 <v t="ekr.20050118104901.11"><vh>&lt;&lt; uninstall src files &gt;&gt;</vh></v>
 </v>
@@ -211,7 +212,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="TV"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -224,15 +225,15 @@
 <v t="EKR.20040519090846.7"><vh>Shell &amp; batch scripts</vh></v>
 </v>
 <v t="EKR.20040519090846.1"><vh>@asis ../doc/LICENSE.TXT</vh></v>
-<v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
-<v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="ekr.20070622074708"><vh>@asis../manifest.in</vh></v>
 <v t="EKR.20040519082027.32"><vh>Linux install/uninstall scripts</vh>
 <v t="EKR.20040519082027.33"><vh>@file-thin ../install</vh></v>
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401" a="E"><vh>Update these version numbers for each release</vh>
+<v t="ekr.20051205102401"><vh>Update these for each release</vh>
+<v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
+<v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
 <v t="ekr.20050118124408"><vh>&lt;&lt; 4.3 nsi installer version &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -666,7 +667,7 @@ c:\python22\python &lt;leopath&gt;leo.py %1
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.3-rc1
+Version: 4.4.3-beta-3
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -685,10 +686,12 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.3 beta 2                                June 10, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.3 beta 3                                June 22, 2006
 
-Leo 4.4.3 beta 2 is available at:
+Leo 4.4.3 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+This release fixes all known bugs and adds several important new features.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -707,6 +710,7 @@ The highlights of Leo 4.4.3:
 - Added support for @bool write_strips_blank_lines setting.
 - The__wx_gui plugin is now functional.
 - Leo can use aspell on Linux when using Python 2.5 or later.
+- @test nodes can now be run from any .leo file.
 - Many minor improvements, new settings, commands and bug fixes.
 
 Links:
@@ -2903,16 +2907,12 @@ Delete "$INSTDIR\uninstall"
 <t tx="ekr.20050118104149.2">Delete "$INSTDIR\config\leoSettings.leo"
 Delete "$INSTDIR\config\.leoID.txt"</t>
 <t tx="ekr.20050118104149.3"></t>
-<t tx="ekr.20050118104149.4">File "createLeoDist.py"
-
-File "leoDist.leo"
+<t tx="ekr.20050118104149.4">File "leoDist.leo"
 
 File "leo-4-3.nsi"
 
 # File ".pycheckrc"</t>
-<t tx="ekr.20050118104149.5">Delete "$INSTDIR\dist\createLeoDist.p*"
-
-Delete "$INSTDIR\dist\leoDist.leo"
+<t tx="ekr.20050118104149.5">Delete "$INSTDIR\dist\leoDist.leo"
 
 Delete "$INSTDIR\dist\leo-4-3.nsi"
 
@@ -3007,7 +3007,7 @@ File "..\src\leoProjects.txt"
 File "..\src\LeoPy.leo"
 File "..\src\oldLeoProjects.leo"
 
-File "..\src\__init__.py"
+; File "..\src\__init__.py"
 File "..\src\leo*.py"
 </t>
 <t tx="ekr.20050118104901.11">Delete "$INSTDIR\src\buttons.txt"
@@ -3015,7 +3015,7 @@ Delete "$INSTDIR\src\leoProjects.txt"
 Delete "$INSTDIR\src\LeoPy.leo"
 Delete "$INSTDIR\src\oldLeoProjects.leo"
 
-Delete "$INSTDIR\src\__init__.p*"
+; Delete "$INSTDIR\src\__init__.p*"
 
 Delete "$INSTDIR\src\leo*.p*"</t>
 <t tx="ekr.20050118104901.12"></t>
@@ -3030,7 +3030,7 @@ Delete "$INSTDIR\scripts\openLeoScript.sh"</t>
 <t tx="ekr.20050118122404">File "..\extensions\aspell23.pyd"
 File "..\extensions\aspell24.pyd"
 
-File "..\extensions\__init__.py"
+; File "..\extensions\__init__.py"
 File "..\extensions\optparse.py"
 File "..\extensions\path.py"
 File "..\extensions\sets.py"
@@ -3059,7 +3059,7 @@ File "..\extensions\Pmw\Pmw_1_2\lib\*.*"
 
 SetOutPath "$INSTDIR\extensions\Pmw\Pmw_1_2\tests"
 File "..\extensions\Pmw\Pmw_1_2\tests\*.*"</t>
-<t tx="ekr.20050118122404.1">File "..\test\__init__.py"
+<t tx="ekr.20050118122404.1">; File "..\test\__init__.py"
 File "..\test\test.leo"
 File "..\test\unitTest.leo"
 File "..\test\leoBridgeTest.py"
@@ -3087,7 +3087,7 @@ Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\doc\*.*"
 Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\lib\*.*"
 Delete "$INSTDIR\extensions\Pmw\Pmw_1_2\tests\*.*"</t>
 <t tx="ekr.20050118122740.2"></t>
-<t tx="ekr.20050118122740.3">Delete "$INSTDIR\test\__init__.py"
+<t tx="ekr.20050118122740.3">; Delete "$INSTDIR\test\__init__.py"
 Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 Delete "$INSTDIR\test\leoBridgeTest.py"
@@ -4068,7 +4068,8 @@ Coming in later releases of Leo 4.4:
 - More support for mouseless Leo. There will be commands to manipulate all aspects of Leo using commands, so your fingers will never have to leave the keyboard.
 
 - Support for Vim and other 'plain-key' input modes.</t>
-<t tx="ekr.20051205102401"></t>
+<t tx="ekr.20051205102401">@nocolor
+</t>
 <t tx="ekr.20051208095832">File "..\modes\*.xml"
 File "..\modes\*.py"</t>
 <t tx="ekr.20051208100413"></t>
@@ -5072,8 +5073,6 @@ setup (
     long_description = long_description,
     # keywords = 'outline, outliner, ide, editor, literate programming',
 )
-
-# print ; print '='*30,'setup.py complete','='*30 ; print
 </t>
 <t tx="ekr.20070614110334">long_description = \
 """Leo is an IDE, an outliner, a scripting and unit testing framework based on Python,
@@ -5168,7 +5167,7 @@ include extensions/path.py
 include extensions/sets.py
 include extensions/subprocess.py
 
-include extensions/__init__.py
+# include extensions/__init__.py
 
 include extensions/Pmw/__init__.py
 include extensions/Pmw/Pmw_1_2/__init__.py
@@ -5213,14 +5212,14 @@ include scripts/scripts.leo
 include scripts/leoScripts.txt
 include scripts/*.py
 
-include src/__init__.py
+# include src/__init__.py
 include src/buttons.txt
 include src/LeoPy.leo
 include src/leo*.py
 include src/leoProjects.txt
 include src/oldLeoProjects.leo
 
-include test/__init__.py
+# include test/__init__.py
 include test/test.leo
 include test/unitTest.leo
 
@@ -5368,5 +5367,39 @@ print ; print '='*30,'setup.py complete','='*30 ; print
 <t tx="ekr.20070622081640"># These can't be used at present.</t>
 <t tx="ekr.20070622084133"></t>
 <t tx="ekr.20070622084634">version='4.4.3-beta-3' # No spaces and no trailing comma.</t>
+<t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 22, 2006
+
+Leo 4.4.3 beta 3 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+This release fixes all known bugs and adds several important new features.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.3:
+----------------------------
+- Added support for chapters in Leo's core.
+  Chapters are disabled by default.  To enable, set @bool use_chapters = True.
+- Added support for zipped .leo files.
+- Added a leoBridge module that allows full access to all of Leo's capabilities
+  from programs running outside of Leo.
+- Removed all gui-dependent code from Leo's core.
+- Better support for the winpdb debugger.
+- Added support for @enabled-plugins nodes in settings files.
+- Added support for @open-with nodes in settings files.
+- Added support for @bool write_strips_blank_lines setting.
+- The__wx_gui plugin is now functional.
+- Leo can use aspell on Linux when using Python 2.5 or later.
+- @test nodes can now be run from any .leo file.
+- Many minor improvements, new settings, commands and bug fixes.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>

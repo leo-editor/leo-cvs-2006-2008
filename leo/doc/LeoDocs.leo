@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.436388508892">
-	<global_window_position top="94" left="363" height="711" width="897"/>
+	<global_window_position top="94" left="363" height="691" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -3120,7 +3120,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="ET"><vh>Latest version</vh>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
 <v t="ekr.20070513111132"><vh>4.4.3 beta 1</vh>
 <v t="ekr.20070513111132.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070513111132.2"><vh>Bugs</vh>
@@ -3210,7 +3210,7 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070610063456" a="V"><vh>4.4.3 beta 2</vh>
+<v t="ekr.20070610063456"><vh>4.4.3 beta 2</vh>
 <v t="ekr.20070610063456.1"><vh>New in alpha 1</vh>
 <v t="ekr.20070610063456.2"><vh>Bugs</vh>
 <v t="ekr.20070610063456.3"><vh>Fixed an escape bug in new colorizer</vh></v>
@@ -3320,6 +3320,24 @@
 <v t="ekr.20070610063538.377"><vh>Created the hoist-changed hook</vh></v>
 <v t="ekr.20070610173300"><vh>Enabled more plugins by default</vh></v>
 </v>
+</v>
+</v>
+<v t="ekr.20070622090350" a="V"><vh>4.4.3 beta 3</vh>
+<v t="ekr.20070622090350.1"><vh>Fixed bugs</vh>
+<v t="ekr.20070622090350.2" a="E"><vh>Allow aspell on Linux provided that ctypes exists</vh></v>
+<v t="ekr.20070622090350.8"><vh>Fixed a bug that disabled icon button colors on Linux</vh></v>
+<v t="ekr.20070622090350.9" a="E"><vh>Made alt menu keys work</vh></v>
+<v t="ekr.20070622090350.22" a="E"><vh>Switch chapters if new position isn't in current chapter</vh></v>
+<v t="ekr.20070622090350.42" a="E"><vh>Improved goto-next/prev-node commands</vh></v>
+<v t="ekr.20070622090350.57" a="E"><vh>Fixed failing bridge unit test</vh></v>
+</v>
+<v t="ekr.20070622090350.59"><vh>New features &amp; settings</vh>
+<v t="ekr.20070622090350.60"><vh>Added @bool contractVisitedNodes setting</vh></v>
+<v t="ekr.20070622090350.61"><vh>Added goto-first-visible-node command</vh></v>
+<v t="ekr.20070622090350.62"><vh>Changed binding of Alt-Home</vh></v>
+<v t="ekr.20070622090350.65"><vh>Added @button dynamic-tests.</vh></v>
+<v t="ekr.20070622090350.66" a="E"><vh>created g.unitTesting and g.getTestVars</vh></v>
+<v t="ekr.20070622090350.70"><vh>Clean up unit tests in leoPy.leo</vh></v>
 </v>
 </v>
 </v>
@@ -32363,5 +32381,76 @@ leo_to_html.py
 I left out cleo because it has been reported not to be fully functional with Leo 4.4.3.</t>
 <t tx="ekr.20070610174018"></t>
 <t tx="ekr.20070611161859">http://sourceforge.net/forum/message.php?msg_id=4356197</t>
+<t tx="ekr.20070622090350">Leo 4.4.3 beta 3                                June 22, 2006
+
+Leo 4.4.3 beta 3 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+This release fixes all known bugs and adds several important new features.
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.3:
+----------------------------
+- Added support for chapters in Leo's core.
+  Chapters are disabled by default.  To enable, set @bool use_chapters = True.
+- Added support for zipped .leo files.
+- Added a leoBridge module that allows full access to all of Leo's capabilities
+  from programs running outside of Leo.
+- Removed all gui-dependent code from Leo's core.
+- Better support for the winpdb debugger.
+- Added support for @enabled-plugins nodes in settings files.
+- Added support for @open-with nodes in settings files.
+- Added support for @bool write_strips_blank_lines setting.
+- The__wx_gui plugin is now functional.
+- Leo can use aspell on Linux when using Python 2.5 or later.
+- @test nodes can now be run from any .leo file.
+- Many minor improvements, new settings, commands and bug fixes.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070622090350.1"></t>
+<t tx="ekr.20070622090350.2"># ctypes comes standard with Python 2.5, but can be installed for Python 2.4.
+</t>
+<t tx="ekr.20070622090350.8"></t>
+<t tx="ekr.20070622090350.9"># Created menu-command-key command that just returns 'continue'.</t>
+<t tx="ekr.20070622090350.22">http://sourceforge.net/forum/message.php?msg_id=4362825
+</t>
+<t tx="ekr.20070622090350.42">Selecting a node now never truncates the beadList.</t>
+<t tx="ekr.20070622090350.57">CleanLines was adding a trailing newline.
+The fix was to suppress this during unit tests.</t>
+<t tx="ekr.20070622090350.59"></t>
+<t tx="ekr.20070622090350.60"></t>
+<t tx="ekr.20070622090350.61"></t>
+<t tx="ekr.20070622090350.62">Alt-home is now bound to goto-first-visible rather than goto-first.</t>
+<t tx="ekr.20070622090350.65">This script runs all @test nodes as follows:
+
+- Copies all @suite and @tests nodes to dynamicUnitTests.leo.
+
+- Runs leoDynamicTest.py in a separate process. In turn, leoDynamicTest.py
+  use the leoBridge module to run dynamicUnitTests.leo.
+  (test.leo contains the source code for leoDynamicTest.py.)
+
+Thus, all unit tests will be run with the latest Leo sources.
+
+Allowing @test nodes in leoPy.leo is important: unit tests can be placed near
+the code they are intended to test.</t>
+<t tx="ekr.20070622090350.66">The test 'if g.unitTesting:' is a shorter replacement for the test 'if g.app and g.app.unitTesting:'.
+
+Using g.getTestVars eliminates pychecker warnings about undefined c and p variables.</t>
+<t tx="ekr.20070622090350.70">@nocolor
+
+What I did:
+
+- use g.getTestVars()
+- Replaced test_ functions with @test.
+- Removed the code in unitTest.leo that looks for test_functions.
+</t>
 </tnodes>
 </leo_file>

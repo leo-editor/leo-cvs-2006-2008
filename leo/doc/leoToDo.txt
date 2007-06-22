@@ -163,8 +163,6 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20070414090051:Study
 #@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20060531161030:To do: 4.4.3
-#@+node:ekr.20070615063616.1:Create Debian package
-#@-node:ekr.20070615063616.1:Create Debian package
 #@+node:ekr.20070622072948:Fix php coloring problems
 @nocolor
 
@@ -1303,6 +1301,8 @@ def checkImport (self):
 #@-node:ekr.20070612133404.3:Pass 5: checkImport
 #@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
 #@-node:ekr.20070324084040:@auto
+#@+node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20070615063616.1:Create Debian package
 #@+node:ekr.20070620101529:Create better vim bindings
 #@-node:ekr.20070620101529:Create better vim bindings
 #@+node:ekr.20070613193516:Improvements

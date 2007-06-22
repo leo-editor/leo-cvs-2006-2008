@@ -31,5 +31,3 @@ setup (
     long_description = long_description,
     # keywords = 'outline, outliner, ide, editor, literate programming',
 )
-
-# print ; print '='*30,'setup.py complete','='*30 ; print

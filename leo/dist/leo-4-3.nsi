@@ -243,8 +243,6 @@ Section "Leo" SEC01
   SetOutPath "$INSTDIR\dist"
   ;@  << install dist files >>
   ;@+node:ekr.20050118104149.4:<< install dist files >>
-  File "createLeoDist.py"
-
   File "leoDist.leo"
 
   File "leo-4-3.nsi"
@@ -294,7 +292,7 @@ Section "Leo" SEC01
   File "..\extensions\aspell23.pyd"
   File "..\extensions\aspell24.pyd"
 
-  File "..\extensions\__init__.py"
+  ; File "..\extensions\__init__.py"
   File "..\extensions\optparse.py"
   File "..\extensions\path.py"
   File "..\extensions\sets.py"
@@ -377,14 +375,14 @@ Section "Leo" SEC01
   File "..\src\LeoPy.leo"
   File "..\src\oldLeoProjects.leo"
 
-  File "..\src\__init__.py"
+  ; File "..\src\__init__.py"
   File "..\src\leo*.py"
   ;@-node:ekr.20050118104901.10:<< install src files >>
   ;@nl
   SetOutPath "$INSTDIR\test"
   ;@  << install test files >>
   ;@+node:ekr.20050118122404.1:<< install test files >>
-  File "..\test\__init__.py"
+  ; File "..\test\__init__.py"
   File "..\test\test.leo"
   File "..\test\unitTest.leo"
   File "..\test\leoBridgeTest.py"
@@ -559,8 +557,6 @@ Section Uninstall
   ;@nl
   ;@  << uninstall dist files >>
   ;@+node:ekr.20050118104149.5:<< uninstall dist files >>
-  Delete "$INSTDIR\dist\createLeoDist.p*"
-
   Delete "$INSTDIR\dist\leoDist.leo"
 
   Delete "$INSTDIR\dist\leo-4-3.nsi"
@@ -669,7 +665,7 @@ Section Uninstall
   Delete "$INSTDIR\src\LeoPy.leo"
   Delete "$INSTDIR\src\oldLeoProjects.leo"
 
-  Delete "$INSTDIR\src\__init__.p*"
+  ; Delete "$INSTDIR\src\__init__.p*"
 
   Delete "$INSTDIR\src\leo*.p*"
   ;@nonl
@@ -677,7 +673,7 @@ Section Uninstall
   ;@nl
   ;@  << uninstall test files >>
   ;@+node:ekr.20050118122740.3:<< uninstall test files >>
-  Delete "$INSTDIR\test\__init__.py"
+  ; Delete "$INSTDIR\test\__init__.py"
   Delete "$INSTDIR\test\test.leo"
   Delete "$INSTDIR\test\unitTest.leo"
   Delete "$INSTDIR\test\leoBridgeTest.py"
