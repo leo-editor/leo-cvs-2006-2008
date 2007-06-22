@@ -10,7 +10,6 @@ Icons\LeoDoc.ico
 Icons\LeoWin.gif
 Icons\Leoapp.GIF
 Icons\Thumbs.db
-Icons\__init__.py
 Icons\box00.GIF
 Icons\box00.bmp
 Icons\box01.GIF
@@ -134,7 +133,6 @@ doc\html\tigris\index.html
 doc\html\tigris\CVS\Entries.Extra
 doc\html\tigris\CVS\Entries.Extra.Old
 doc\html\tigris\CVS\Entries.Old
-extensions\__init__.py
 extensions\aspell23.pyd
 extensions\aspell24.pyd
 extensions\optparse.py
@@ -532,7 +530,6 @@ plugins\UASearch.py
 plugins\UNL.py
 plugins\URLloader.py
 plugins\UniversalScrolling.py
-plugins\__init__.py
 plugins\__ipython.py
 plugins\__jEdit_colorizer__.py
 plugins\__outlineExperiments.py
@@ -665,7 +662,6 @@ plugins\trees\remote.py
 plugins\trees\rss.py
 plugins\trees\test.py
 scripts\LinixInstall.py
-scripts\__init__.py
 scripts\c2py.py
 scripts\convert_to_shadow.py
 scripts\disStats.py
@@ -676,7 +672,6 @@ scripts\scripts.leo
 scripts\tangle_done.py
 scripts\untangle_done.py
 src\LeoPy.leo
-src\__init__.py
 src\buttons.txt
 src\leo.py
 src\leoApp.py
@@ -719,7 +714,6 @@ src\leo_RemoteDebugger.py
 src\leo_Shell.py
 src\leo_run.py
 src\oldLeoProjects.leo
-test\__init__.py
 test\test.leo
 test\unitTest.leo
 test\unittest\batchTest.py

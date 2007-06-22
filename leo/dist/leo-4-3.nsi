@@ -18,7 +18,7 @@
 ;@+node:ekr.20050118092706.1:<< defines >>
 ;@<< 4.3 nsi installer version >>
 ;@+node:ekr.20050118124408:<< 4.3 nsi installer version >>
-!define PRODUCT_VERSION "4.4.3-rc1"
+!define PRODUCT_VERSION "4.4.3-beta-3"
 ;@nonl
 ;@-node:ekr.20050118124408:<< 4.3 nsi installer version >>
 ;@nl
@@ -59,8 +59,8 @@ SetCompressor bzip2
 ;@nonl
 ;@-node:ekr.20050118092706.1:<< defines >>
 ;@nl
-;@<< Settings >>
-;@+node:ekr.20050118092706.4:<< Settings >>
+;@<< Settings for leo-4.3.nsi >>
+;@+node:ekr.20050118092706.4:<< Settings for leo-4.3.nsi >>
 ; settings taken from Version 1.0 of NSIS Script for Leo
 Caption "Leo Installer"
 AutoCloseWindow false 
@@ -73,7 +73,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-3-rc1.exe"
+OutFile "LeoSetup-4-4-3-beta-3.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -85,7 +85,7 @@ LicenseData "..\doc\License.txt"
 ShowInstDetails show
 ShowUnInstDetails show
 ;@nonl
-;@-node:ekr.20050118092706.4:<< Settings >>
+;@-node:ekr.20050118092706.4:<< Settings for leo-4.3.nsi >>
 ;@nl
 ;@<< Variables >>
 ;@+node:ekr.20050118092706.5:<< Variables >>
@@ -228,6 +228,7 @@ Section "Leo" SEC01
   File "..\install"
   File "..\manifest.in"
   File "..\MANIFEST"
+  File "..\setup.py"
   File "..\uninstall"
   ;@nonl
   ;@-node:ekr.20050118103207.1:<< install top-level files >>
@@ -248,7 +249,7 @@ Section "Leo" SEC01
 
   File "leo-4-3.nsi"
 
-  File ".pycheckrc"
+  # File ".pycheckrc"
   ;@nonl
   ;@-node:ekr.20050118104149.4:<< install dist files >>
   ;@nl
@@ -336,6 +337,7 @@ Section "Leo" SEC01
   ;@  << install modes >>
   ;@+node:ekr.20051208095832:<< install modes >>
   File "..\modes\*.xml"
+  File "..\modes\*.py"
   ;@nonl
   ;@-node:ekr.20051208095832:<< install modes >>
   ;@nl
@@ -386,6 +388,7 @@ Section "Leo" SEC01
   File "..\test\test.leo"
   File "..\test\unitTest.leo"
   File "..\test\leoBridgeTest.py"
+  File "..\test\leoDynamicTest.py"
   ;@-node:ekr.20050118122404.1:<< install test files >>
   ;@nl
   SetOutPath "$INSTDIR\test\unittest"
@@ -562,7 +565,7 @@ Section Uninstall
 
   Delete "$INSTDIR\dist\leo-4-3.nsi"
 
-  Delete "$INSTDIR\dist\.pycheckrc"
+  # Delete "$INSTDIR\dist\.pycheckrc"
   ;@nonl
   ;@-node:ekr.20050118104149.5:<< uninstall dist files >>
   ;@nl
@@ -631,6 +634,7 @@ Section Uninstall
   ;@  << uninstall modes >>
   ;@+node:ekr.20051208100413.1:<< uninstall modes >>
   Delete "$INSTDIR\modes\*.xml"
+  Delete "$INSTDIR\modes\*.p*"
   ;@nonl
   ;@-node:ekr.20051208100413.1:<< uninstall modes >>
   ;@nl
@@ -677,6 +681,7 @@ Section Uninstall
   Delete "$INSTDIR\test\test.leo"
   Delete "$INSTDIR\test\unitTest.leo"
   Delete "$INSTDIR\test\leoBridgeTest.py"
+  Delete "$INSTDIR\test\leoDynamicTest.py"
   ;@nonl
   ;@-node:ekr.20050118122740.3:<< uninstall test files >>
   ;@nl
@@ -696,9 +701,8 @@ Section Uninstall
   Delete "$INSTDIR\install"
   Delete "$INSTDIR\manifest.in"
   Delete "$INSTDIR\MANIFEST"
+  Delete "$INSTDIR\setup.py"
   Delete "$INSTDIR\uninstall"
-
-
   ;@-node:ekr.20050118103447.1:<< uninstall top-level files >>
   ;@nl
   ;@  << delete folders >>

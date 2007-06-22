@@ -78,6 +78,7 @@ exclude extensions/Pmw/Pmw_1_2/tests/*.pyo
 include Icons/*.*
 
 include modes/*.xml
+include modes/*.py
 
 include plugins/leoPlugins.leo
 include plugins/*.ini
