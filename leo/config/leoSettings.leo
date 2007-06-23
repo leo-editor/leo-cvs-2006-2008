@@ -2,15 +2,26 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.532060027285">
-	<global_window_position top="17" left="238" height="908" width="861"/>
+<globals body_outline_ratio="0.599056603774">
+	<global_window_position top="17" left="238" height="848" width="861"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
 <find_panel_settings/>
 <vnodes>
-<v t="ekr.20070326094544"><vh>@chapters</vh>
-<v t="ekr.20070326094544.1"><vh>@chapter trash</vh></v>
+<v t="ekr.20070622214401"><vh>Startup</vh>
+<v t="ekr.20070326094544"><vh>@chapters</vh></v>
+<v t="ekr.20060112110750"><vh>Buttons</vh>
+<v t="ekr.20051010093913" annotate="7d71002e"><vh>@@button Save</vh></v>
+<v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
+<v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
+<v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
+<v t="ekr.20060112104333"><vh>doSet</vh></v>
+<v t="ekr.20060112105523"><vh>doShortcuts</vh></v>
+<v t="ekr.20060112104333.1"><vh>checkSets</vh></v>
+<v t="ekr.20060112104823"><vh>main</vh></v>
+</v>
+</v>
 </v>
 <v t="ekr.20041119035137" str_leo_pos="3,10"><vh>About this file</vh>
 <v t="ekr.20041122163623"><vh>Note about canonicalized names</vh></v>
@@ -37,17 +48,6 @@
 <v t="ekr.20041120155431.1"><vh>\@shortcuts</vh></v>
 <v t="ekr.20041119035704.3"><vh>\@type type-name: base-type = [list of valid values]</vh></v>
 <v t="ekr.20041120155431.2"><vh>\@type type-name: script: script-name</vh></v>
-</v>
-<v t="ekr.20060112110750"><vh>Buttons</vh>
-<v t="ekr.20051010093913" annotate="7d71002e"><vh>@@button Save</vh></v>
-<v t="ekr.20051011123608" annotate="7d71002e"><vh>@@button align to col</vh></v>
-<v t="ekr.20060112103537.17"><vh>@button Check Bindings</vh>
-<v t="ekr.20060112104119"><vh>defineSetNames</vh></v>
-<v t="ekr.20060112104333"><vh>doSet</vh></v>
-<v t="ekr.20060112105523"><vh>doShortcuts</vh></v>
-<v t="ekr.20060112104333.1"><vh>checkSets</vh></v>
-<v t="ekr.20060112104823"><vh>main</vh></v>
-</v>
 </v>
 <v t="ekr.20061011082224"><vh>Candidates for settings in myLeoSettings.leo</vh>
 <v t="ekr.20060930085532"><vh>@bool collapse_nodes_during_finds = True</vh></v>
@@ -83,7 +83,7 @@
 <v t="ekr.20041119050105.11"><vh>@bool wrap = False</vh></v>
 </v>
 </v>
-<v t="ekr.20041119034357.1" annotate="7d71002e"><vh>@settings</vh>
+<v t="ekr.20041119034357.1" a="TV" annotate="7d71002e"><vh>@settings</vh>
 <v t="ekr.20041213105007.1" annotate="7d71002e"><vh>Colors</vh>
 <v t="ekr.20041213105007.3"><vh>Log pane colors</vh>
 <v t="ekr.20041119052015"><vh>@color log_error_color = red</vh></v>
@@ -452,7 +452,7 @@
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -615,11 +615,11 @@
 </v>
 </v>
 </v>
-<v t="ekr.20060603215208" a="E"><vh>@keys EKR bindings: Emacs keys + modes</vh>
+<v t="ekr.20060603215208"><vh>@keys EKR bindings: Emacs keys + modes</vh>
 <v t="ekr.20060603215208.4"><vh>Modes</vh>
 <v t="ekr.20060603215208.16"><vh>@mode quick-command (Alt-C)</vh></v>
 </v>
-<v t="ekr.20060603215208.17" a="E"><vh>Shortcuts</vh>
+<v t="ekr.20060603215208.17"><vh>Shortcuts</vh>
 <v t="ekr.20060608191518.2"><vh>@shortcuts top-level keys (like emacs: uses Alt-c as gateway to modes)</vh></v>
 <v t="ekr.20061018061727"><vh>@@shortcuts Cursor moves using special keys: DWIM</vh></v>
 <v t="ekr.20061018061727.1"><vh>@shortcuts Cursor moves using special keys: the old way</vh></v>
@@ -627,8 +627,8 @@
 <v t="ekr.20060925060533.2"><vh>@shortcuts Gui operations</vh></v>
 <v t="ekr.20060925061845"><vh>@shortcuts File commands</vh></v>
 <v t="ekr.20060603215208.19"><vh>@shortcuts Find commands</vh></v>
-<v t="ekr.20070613133747" a="MV"><vh>@shortcuts Menu commands</vh></v>
-<v t="ekr.20060603215208.20" a="T"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
+<v t="ekr.20070613133747" a="M"><vh>@shortcuts Menu commands</vh></v>
+<v t="ekr.20060603215208.20"><vh>@shortcuts Minibuffer commands/bindings</vh></v>
 <v t="ekr.20060925061845.1"><vh>@shortcuts Other commands</vh></v>
 <v t="ekr.20060925060533.3"><vh>@shortcuts Outline operations</vh></v>
 <v t="ekr.20060925060533.4"><vh>@shortcuts Text operations</vh></v>
@@ -5275,10 +5275,10 @@ php_keyword1_font_slant = roman
 php_keyword1_font_weight = normal
     # normal, bold</t>
 <t tx="ekr.20060829085840"># php_keyword_font_family = None
-php_keyword_font_size = 16
+php_keyword_font_size = None
 php_keyword_font_slant = roman
     # roman, italic
-php_keyword_font_weight = bold
+php_keyword_font_weight = none
     # normal, bold</t>
 <t tx="ekr.20060904211808"></t>
 <t tx="ekr.20060904211808.1">The path to the zodb storage.</t>
@@ -6316,6 +6316,7 @@ desired.</t>
 # Plugin_manager.py needs plugins_menu.py
 plugins_menu.py
 plugin_manager.py
+cleo.py
 open_with.py
 mod_scripting.py
 rst3.py
@@ -6408,7 +6409,6 @@ leo_to_html.py
 <t tx="ekr.20070318065601">True:  Chapter commands are functional.
 False: Chapter commands do not exists.</t>
 <t tx="ekr.20070326094544"></t>
-<t tx="ekr.20070326094544.1"></t>
 <t tx="ekr.20070411101857"></t>
 <t tx="ekr.20070411101857.1">'subprocess.Popen',['pythonw','C:/Python24/Lib/idlelib/idle.pyw'],'.py'
 </t>
@@ -6484,5 +6484,6 @@ propagate-key-event = Alt-W
 # forward-word                        ! mini = Alt-f
 # forward-word-extend-selection       ! mini = Alt-Shift-f</t>
 <t tx="ekr.20070615094204">True: goto-next-node and goto-prev-node commands contract the selected node.</t>
+<t tx="ekr.20070622214401"></t>
 </tnodes>
 </leo_file>
