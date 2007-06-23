@@ -40,7 +40,7 @@ import sys
 #@nonl
 #@-node:tbrown.20060903121429.2:<< imports >>
 #@nl
-__version__ = "0.19"
+__version__ = "0.20"
 #@<< version history >>
 #@+node:tbrown.20060903121429.3:<< version history >>
 #@@killcolor
@@ -106,6 +106,7 @@ __version__ = "0.19"
 # - added @project nodes for automatic display updates
 # - added Show time to show times on nodes
 # - added Find next todo
+# 0.20 EKR: applied patch by mstarzyk.
 #@-at
 #@-node:tbrown.20060903121429.3:<< version history >>
 #@nl
@@ -458,8 +459,6 @@ class cleoController:
                 return True
 
         return False
-
-    #@nonl
     #@-node:tbrown.20060903204409.2:dropEmpty
     #@-node:tbrown.20060903121429.19:attributes...
     #@+node:tbrown.20060903121429.23:safe_del
@@ -501,7 +500,7 @@ class cleoController:
     #@+node:tbrown.20060903121429.26:custom_colours
     # use return values to set the colours so no need to muck around when loading up files.
 
-    def custom_colours(self,v):
+    def custom_colours(self,v,node_is_selected):
 
         ''' Returns the vnodes custom colours if it has them '''
 
@@ -517,14 +516,14 @@ class cleoController:
 
         for f in ["@file", "@thin", "@nosen", "@asis", "@root"]:
             if h.find(f, 0, 5) == 0:
-                if h == MeSelf:
+                if node_is_selected: # h == MeSelf:
                     bg = self.node_colours['Sel. File']
                 else:
                     bg = self.node_colours['file']
 
         # set bg of @ignore type of nodes
         if h.find("@ignore") == 0:
-            if h == MeSelf:
+            if node_is_selected: # h == MeSelf:
                 bg = self.node_colours['Sel. Comments']
             else:
                 bg = self.node_colours['Comments']
@@ -811,7 +810,7 @@ class cleoController:
         else:
             w = c.edit_widget(p)
 
-        fg, bg = self.custom_colours(p.v)
+        fg, bg = self.custom_colours(p.v,node_is_selected=False)
 
         fg = fg or c.config.getColor("headline_text_unselected_foreground_color") or 'black'
         bg = bg or c.config.getColor("headline_text_unselected_background_color") or 'white'
@@ -832,7 +831,7 @@ class cleoController:
         else:
             w = c.edit_widget(p)
 
-        fg, bg = self.custom_colours(p.v)
+        fg, bg = self.custom_colours(p.v,node_is_selected=True)
 
         fg = fg or c.config.getColor("headline_text_selected_foreground_color") or 'black'
         bg = bg or c.config.getColor("headline_text_selected_background_color") or 'grey80'
@@ -1295,8 +1294,6 @@ class cleoController:
         if stage == 0: g.es("None found")
 
         return False
-
-    #@nonl
     #@-node:tbrown.20060919160306:find_todo
     #@-others
 #@nonl
