@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.405440414508">
-	<global_window_position top="94" left="363" height="772" width="897"/>
+	<global_window_position top="94" left="363" height="752" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -126,6 +126,7 @@
 <v t="ekr.20060917130130"><vh>I get weird results when defining unicode strings in scripts.  What is going on?</vh></v>
 <v t="ekr.20061021164213"><vh>I can not enter non-ascii characters.  What can I do?</vh></v>
 <v t="ekr.20061021164213.1"><vh>Leo doesn't recognize commands with the caps-lock key down</vh></v>
+<v t="edream.110203163054.61"><vh>I don't see the Leo icon in Leo windows</vh></v>
 </v>
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -153,10 +154,10 @@
 <v t="ekr.20050830080545"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
+<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
+<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
-<v t="edream.110203163054.49"><vh>System requirements</vh></v>
+<v t="edream.110203163054.49" a="TV"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
 <v t="ekr.20070622141457"><vh>Installing Leo on Windows</vh>
 <v t="edream.110203163054.60"><vh>How to associate Leo with .leo files on Windows</vh></v>
@@ -165,7 +166,6 @@
 <v t="ekr.20050225070247"><vh>How to use Platypus to create a Mac launcher for Leo</vh></v>
 <v t="ekr.20050225070247.1"><vh>How to create MacOS X .pkg files</vh></v>
 </v>
-<v t="edream.110203163054.61"><vh>Putting the Leo icon in Leo windows</vh></v>
 <v t="ekr.20050901174937"><vh>Running Leo</vh></v>
 <v t="ekr.20060105145125"><vh>How to install the Aspell spell checker</vh></v>
 <v t="ekr.20050906105335"><vh>@rst-no-head end stuff</vh></v>
@@ -867,24 +867,6 @@
 <v t="ekr.20051203084850.16"><vh>@rst-no-head end-of-page stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20060409104528"><vh>Tigir index.html</vh>
-<v t="ekr.20060409104957"><vh>@ignore</vh>
-<v t="ekr.20060409104957.1"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20060409104957.2"><vh>System requirements</vh></v>
-<v t="ekr.20060409104957.3"><vh>How to install Leo on Linux</vh></v>
-<v t="ekr.20060409104957.4"><vh>How to install Leo on Windows</vh></v>
-<v t="ekr.20060409104957.5"><vh>How to install Leo on MacOS</vh></v>
-<v t="ekr.20060409104957.6"><vh>How to use Platypus to create a Mac launcher for Leo</vh></v>
-<v t="ekr.20060409104957.7"><vh>How to create MacOS X .pkg files</vh></v>
-<v t="ekr.20060409104957.8"><vh>How to associate Leo with .leo files on Windows</vh></v>
-<v t="ekr.20060409104957.9"><vh>Putting the Leo icon in Leo windows</vh></v>
-<v t="ekr.20060409104957.10"><vh>Running Leo</vh></v>
-<v t="ekr.20060409104957.11"><vh>How to install the Aspell spell checker</vh></v>
-<v t="ekr.20060409104957.12"><vh>@rst-no-head end stuff</vh></v>
-</v>
-<v t="ekr.20060409104957.13"><vh>@rst html\tigris\index.html</vh></v>
-<v t="ekr.20060409104957.14"><vh>NewHeadline</vh></v>
-</v>
 <v t="ekr.20050916184158"><vh>Leo Tech report</vh>
 <v t="ekr.20050916184158.1"><vh>@rst html\techReport.html</vh>
 <v t="ekr.20050916184158.2"><vh>Leo’s window, outlines &amp; clones</vh></v>
@@ -1099,7 +1081,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="ETV"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.646"><vh>Borland PC versions...</vh>
@@ -1556,7 +1538,6 @@
 <v t="edream.110203163054.347"><vh>Translating menus into other languages</vh></v>
 <v t="edream.121403162622"><vh>Support for unit testing</vh></v>
 </v>
-<v t="edream.110203163054.61"><vh>Putting the Leo icon in Leo windows</vh></v>
 <v t="edream.110203163054.348"><vh>Extending the format of .leo files</vh></v>
 <v t="edream.120703073611"><vh>Attaching temporary attributes to vnodes and tnodes</vh></v>
 <v t="edream.120703073611.1"><vh>Recommended conventions for plugins</vh></v>
@@ -1584,7 +1565,6 @@
 <v t="edream.110203163054.343"><vh>createOpenWithMenuFromTable</vh></v>
 </v>
 <v t="edream.110203163054.357"><vh>Optional Emacs-style auto-indent</vh></v>
-<v t="edream.110203163054.61"><vh>Putting the Leo icon in Leo windows</vh></v>
 <v t="edream.110203163054.358"><vh>Reformat Paragraph command</vh></v>
 </v>
 <v t="edream.110203163054.359"><vh>Appendix 1 to Chapter 4: Using @rawfile, @silentfile and @nosentinlefile trees</vh></v>
@@ -5449,8 +5429,7 @@ please ask for help on Leo's help forum:
 .. contents::</t>
 <t tx="edream.110203163054.49">Leo will work on any platform that supports Python 2.2.1 or later and Tk 8.4 or later.
 
--   Download the latest version of Leo from:
-    http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+-   Download the latest version of Leo from `Leo's download page`_.
 
 -   Download Python from: http://python.org/
 
@@ -5464,7 +5443,7 @@ please ask for help on Leo's help forum:
 -   Leo uses `Pmw`_ (Python Mega Widgets). Leo's extensions folder contains a copy
     of Pmw for use if needed. Leo first tries to import Pmw normally. If that
     fails, Leo will use the version of Pmw in the extensions folder.</t>
-<t tx="edream.110203163054.50">Download the latest version of Leo (a .zip file) from: http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+<t tx="edream.110203163054.50">Download the latest version of Leo (a .zip file) from `Leo's download page`_.
    
 Unzip the downloaded .zip file into a folder in your home directory.
 The folder will be called something like leo-4-4-3-final.
@@ -5474,13 +5453,13 @@ You now have two choices:
 1. You can run Leo from your home directory.
 Just add  ~/leo-4-4-3-final to your path.
 
-2. You can install leo into \usr\local\lib and \usr\local\bin by running Leo's install script as follows::
+2. You can install leo into /usr/local/lib and /usr/local/bin by running Leo's install script as follows::
     
     cd ~/leo-4-4-3-final
     chmod u+x install
     sudo ./install
     
-The install script will instruct you to add \usr\loca\bin to your path.
+The install script will instruct you to add /usr/local/bin to your path.
 
 Now you are ready to `run Leo`_.
 </t>
@@ -5510,8 +5489,7 @@ Any call to pythonw -i will cause pythonw.exe to exit immediately.
 The first  line opens Leo files with no console window.
 The second line opens Leo files with a console window and leaves the window open after Leo exits.
 You should now be able to double click on a leo file in explorer with Leo.</t>
-<t tx="edream.110203163054.61">Leo will draw a Leo icon in all Leo windows without PIL or tkIcon.
-For versions of Leo before 4.0 and for versions of Python before 2.3,
+<t tx="edream.110203163054.61">For versions of Leo before 4.0 and for versions of Python before 2.3,
 Leo will draw a Leo icon in Leo windows only if you have installed Fredrik Lundh's PIL and tkIcon packages.
 
 -   Download PIL from http://www.pythonware.com/downloads/index.htm#pil
@@ -18696,9 +18674,10 @@ This chapter will be of use primarily to those wanting to change Leo's code.
 |back| |leo| |next|</t>
 <t tx="ekr.20050901110110">.. Links used in this document...
 
-.. _`Pmw`:          http://pmw.sourceforge.net/
-.. _run:            `Running Leo`_
-.. _`run Leo`:      `Running Leo`_
+.. _`Pmw`:                  http://pmw.sourceforge.net/
+.. _run:                    `Running Leo`_
+.. _`run Leo`:              `Running Leo`_
+.. _`Leo's download page`:  http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 .. _`associated .leo files with Leo`:   `How to associate Leo with .leo files on Windows`_
 
@@ -18778,7 +18757,7 @@ Here are some tips that may make running Leo easier:
     This opens the file specified by the first argument (%1).
 
 The first time you start Leo, a dialog will ask you for a unique identifier. If
-you are use cvs, use your cvs login name. Otherwise your initials will do. Leo
+you are using cvs, use your cvs login name. Otherwise your initials will do. Leo
 stores this identifier in the file ``.leoID.txt``. Leo attempts to create
 ``leoID.txt`` in your home directory, then in Leo's config directory, and
 finally in Leo's src directory. You can change this identifier at any time by
@@ -23602,284 +23581,6 @@ as described at `How to install Leo on Windows`_.
 However you are installing Leo,
 be sure to `run Leo from a console window`_
 because as a last resort Leo prints error messages to the console.</t>
-<t tx="ekr.20060409104528"></t>
-<t tx="ekr.20060409104957"></t>
-<t tx="ekr.20060409104957.1">.. Links used in this document...
-
-.. _`Pmw`:      http://pmw.sourceforge.net/
-.. _run:        `Running Leo`_
-.. _`run Leo`:  `Running Leo`_
-
-.. _`associated .leo files with Leo`:           `How to associate Leo with .leo files on Windows`_
-
-.. WARNING: image targets may not have upper case letters!
-
-.. |back| image:: arrow_lt.gif
-    :target: FAQ.html
-
-.. |leo|   image:: leo.gif
-    :target: front.html
-
-.. |next| image:: arrow_rt.gif
-    :target: intro.html
-</t>
-<t tx="ekr.20060409104957.2">Leo will work on any platform that supports Python 2.2.1 or later and Tk 8.4 or later.
-
--   Download the latest version of Leo from:
-    http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
-
--   Download Python from: http://python.org/
-
--   Most installations of Python have Tk pre-installed.
-    If your doesn't, you may download it from: http://tcl.activestate.com/software/tcltk/
-
--   Leo uses `Pmw`_ (Python Mega Widgets). Leo's extensions folder contains a copy
-    of Pmw for use if needed. Leo first tries to import Pmw normally. If that
-    fails, Leo will use the version of Pmw in the extensions folder.
-
-See `How to install Leo on MacOS`_ for installation instructions
-for MacOs X. Leo will not run on MacOs 9.</t>
-<t tx="ekr.20060409104957.3">**Warning**: When building Tcl on Linux, do **not** specify::
-
-    "--enable-threads"
-
-Only use Tcl with the default "threads not enabled" case.
-
-Leo is distributed as a single compressed folder. Simply uncompress this folder,
-then `run Leo`_.</t>
-<t tx="ekr.20060409104957.4">Leo is distributed either as an executable installer (.exe) file or as a .zip file.
-**Note**: the present version of the installer does not work properly with Python 2.4.
-You can install Leo from the .zip file as follows:
-
--   Unzip the .zip file and place the leo folder somewhere, say under the Python directory.
-
--   Copy your existing Leo shortcut then modify the original so that it points to
-    pythonw.exe (in the python24 dir) and has the location of Leo within quotes.
-
--   Set the working directory wherever you want the leo files to reside, say ``\leo\usr``.
-
-Now you are ready to `run Leo`_.</t>
-<t tx="ekr.20060409104957.5">By Randall Voth:
-Leo works reliably only on MacOS X 10.3 (Panther) and above.
-To run Leo on Macintosh OS X 10:
-
-1.  Download and install ``MacPython 2.3 for Panther addons``.
-    Python is already included in OS X 10.3 so only the addons are necessary at
-    http://www.cwi.nl/~jack/macpython.html
-
-2.  Download and install TclTkAqua from http://tcltkaqua.sourceforge.net/
-
-3.  Run the PackageManager found in ``/Applications/MacPython-2.3`` and  
-    install ``_tkinter-2.3-binary`` by clicking on the package in the list  
-    and clicking the [Install:] button with ``Install dependencies`` checked.
-
-4.  Download Leo (platform independent source.zip) from http://leo.sourceforge.net/
-
-5.  Unzip the contents into a directory by double-clicking the downloaded file.
-    Typically you would put the Leo folder into the ``Applications`` directory.
-
-6.  Control-click on ``/path_to_unzipped_dir/leo/src/leo.py`` and open with ``PythonLauncher``.
-
-7.  It is a good idea to set ``PythonLauncher`` as the default program to  
-    open python scripts by clicking on ``leo.py``, choosing Get Info from the  
-    Finder's File menu, and selecting "PythonLauncher" as the default  
-    program to ``Open With:``
-    By clicking the ``Change All...`` button, all python scripts will be  
-    opened with ``PythonLauncher``.
-    
-8.  Download ``Pmw`` from http://pmw.sourceforge.net/
-    ``Pmw`` must be installed in order to use the Settings panel.
-    Drag the downloaded gzip file into
-    ``/System/Library/Frameworks/Python.framework/Versions/2.3/lib/python2.3/site-packages``
-    Double click on it to unzip and untar the file into a folder to make it available to Python</t>
-<t tx="ekr.20060409104957.6">This documents how I used Platypus 3.0 to create MacLeo, the MacOS X launcher
-for Leo. You don't need Platypus to _use_ MacLeo, but you do need Platypus to
-*create* MacLeo. You may download Platypus 3.0 from http://sveinbjorn.vefsyn.is/platypus
-Platypus creates something called an "application bundle," essentially a wrapper
-for the shell script called openLeoScript.sh.
-
-At present this script contains just::
-
-    #!/bin/sh
-    # $2 only works if .leo is one of the extensions.
-    /usr/bin/pythonw ~/leo/src/leo.py $2
-
-In detail, here is how I created MacLeo:
-
-1.  Open Platypus.
-
-2.  Set the Platypus settings::
-
-	- Name: MacLeo
-	- Script type: shell
-	- Icon: Python Icon
-		- Using the standard Leo outline doesn't work, but one could be created…
-	- Script Path: /Users/edream/dist/Platypus 3.0/openLeoScript.sh
-	- Is droppable checkbox (checked)
-		- Edit Types:  .leo only, not *, not folders.
-		- N.B.  There MUST be a period in front of .leo!  Otherwise $2 will be empty in the script.
-	- Output: None (progress bar and text window appear to be essentially useless)
-
-3.  Hit the create button to create MacLeo.</t>
-<t tx="ekr.20060409104957.7">This tells how I created ``leo-4-3-a3.pkg`` using ``PackageMaker``.
-
-``PackageMaker`` is included in the ``Xtools`` disk that comes with MacOS X. Installing
-``PackageMaker`` was easy, but I don't remember the details.
-
-1.  Make sure ``~/dist/make-leo-dist`` contains a folder called ``leo-(version)``.
-    The ``~/dist/make-leo-dist/leo-(version)`` folder should contain a *folder* called just ``leo``.
-    This is the folder that should have the files to be distributed.
-    I got this folder by downloading ``leo-4-3-a3.zip``, the official a3 distribution.
-
-2.  Open ``PackageMaker`` by double-clicking the file ``~/dist/LeoPackage.pmsp``
-    I originally created this .pmsp file in ``PackageMaker``.
-    It will be included in the next official release.  I'll also add it to cvs.
-    ``LeoPackage.pmsp`` contains most of the information needed to create the .pkg file,
-    but even without the .pmsp file using ``PackageMaker`` is pretty self-explanatory
-
-3.  Update the description in the ``PackageMaker`` dialog.
-    This should be similar to the readme file.
-
-4. Browse to ``~/dist/make-leo-dist/leo-(version)`` in the ``Files`` tab in the ``PackageMaker`` dialog.
-
-5.  Choose ``Make Package`` from the ``PackageMaker File`` menu.
-    If necessary, set the file name to ``Leo.pkg``.  This will create ``Leo.pkg``.
-
-6.  Quit ``PackageMaker``.  Choose 'yes' when prompted to save ``LeoPackage.pmsp``.</t>
-<t tx="ekr.20060409104957.8">Leo will open .leo files automatically provided that you associate leo.py with .leo files.
-Here is how to open Leo when double-clicking a .leo file on Windows 2K or XP:
-
-
--   In Windows 2K or XP, go to ``Start-&gt;Settings-&gt;Control panel``, open the ``Folder Options`` tab.
--   Select the ``file types`` tab. Press the ``New`` button.
--   Enter ``Leo`` into the ``Create New File Extension`` field. Press OK.
--   With ``Leo`` still highlighted in the ``Registered File Types`` list box, press the ``Advanced`` button.
--   Change the default file type field to something like ``Leo Literate Outline``.
--   Press the ``Icon`` button and browse to the ``LeoDoc`` icon in Leo's ``Icons`` folder.
--   Click OK. This gets the icons right and registers the description of the .leo file.
-
-You now have to tell windows what to do to open the file properly:
-
--   Press the new button to open the ``New Action`` window.
--   In the ``Action`` field type ``Open``, then type **one** of the following lines::
-
-    [python install dir]\pythonw.exe   [leo install dir]\leo.py %1
-    [python install dir]\python.exe -i [leo install dir]\leo.py %1
-
-The first  line opens Leo files with no console window.
-The second line opens Leo files with a console window and leaves the window open after Leo exits.
-You should now be able to double click on a leo file in explorer with Leo.</t>
-<t tx="ekr.20060409104957.9">Leo will draw a Leo icon in all Leo windows without PIL or tkIcon.
-For versions of Leo before 4.0 and for versions of Python before 2.3,
-Leo will draw a Leo icon in Leo windows only if you have installed Fredrik Lundh's PIL and tkIcon packages.
-
--   Download PIL from http://www.pythonware.com/downloads/index.htm#pil
-
--   Download tkIcon from http://www.effbot.org/downloads/#tkIcon</t>
-<t tx="ekr.20060409104957.10">You can run Leo from a Python interpreter as follows::
-
-	import leo
-	leo.run() # runs Leo, opening a new outline.
-	leo.go() # runs Leo after reloading all modules.
-	leo.leoOpen(fileName) # runs Leo, reloads all modules, and opens fileName.
-
-Here are some tips that may make running Leo easier:
-
-**Linux**
-    The following shell script will allow you to open foo.leo files by typing leo foo::
-    
-        #!/bin/sh 
-        python &lt;leopath&gt;/leo.py $1
-    
-    where &lt;leopath&gt; is replaced with the path to the leo directory. 
-
-**Windows**
-    If you have `associated .leo files with Leo`_ you may run Leo by double-clicking any .leo file.
-    You can also use a batch file.
-    Put the following .bat file in c:\\Windows::
-
-        cd c:\prog\LeoCVS\leo
-        c:\python22\python c:\prog\LeoCVS\leo\leo.py %1
-    
-    This opens the file specified by the first argument (%1).
-
-The first time you start Leo, a dialog will ask you for a unique identifier. If
-you are use cvs, use your cvs login name. Otherwise your initials will do. Leo
-stores this identifier in the file ``.leoID.txt``. Leo attempts to create
-``leoID.txt`` in your home directory, then in Leo's config directory, and
-finally in Leo's src directory. You can change this identifier at any time by
-editing ``.leoID.txt``.</t>
-<t tx="ekr.20060409104957.11">You must install the Aspell package if you want to use Leo's Spell tab.
-
-1.  Download and install the Aspell package from http://aspell.sourceforge.net/
-
-Typically this will create a directory called Aspell/bin
-
-2.  Leo's extensions folder comes with two dll's: aspell23.pyd and aspell24.pyd, for Python 2.3 and 2.4 respectively.  Make a copy of the appropriate dll, and **rename it** to be aspell.pyd.
-
-3. Copy aspell.pyd to aspell\bin.
-
-4. Specify the aspell_dir and aspell_bin_dir settings in leoSettings.leo.</t>
-<t tx="ekr.20060409104957.12">-------------
-
-|back| |leo| |next|</t>
-<t tx="ekr.20060409104957.13">@ @rst-options
-code_mode=False
-generate_rst=True
-http_server_support = False
-show_organizer_nodes=True
-show_headlines=True
-show_leo_directives=True
-stylesheet_path=..\doc
-write_intermediate_file = False
-verbose=True
-@c
-
-.. _`Leo's home page`:   http://webpages.charter.net/edreamleo/front.html
-
-##########################################
-Welcome to Leo at tigris.org
-##########################################
-
-`Leo's home page`_ describes Leo, and contains links to Leo's online manual and many other resources.
-Leo is presently in transition from SourceForge to tigris.</t>
-<t tx="ekr.20060409104957.14">This is the initial web content for your project. Please customize this to fit your project. You don't need to answer all these questions or follow this exact format, but we do like to see this kind of information before we approve projects for public viewing. 
-
-Until your project is approved, only you can view it and work on it. 
-
-This index.html will be used if and only if you have the "Use Project Home Page" option checked on the "Administer Project" page (click the "Admin" tab). 
-
-To edit this file, check out your project via CVS and edit www/index.html. 
-You can 'cvs add' and commit other files under the project's "www" directory and they will published to your project web site. 
-Also, consider starting a thread in the "dev" mailing list to get these discussion started. A good one is an "introduction" thread where people post messages about themselves and their interest in the project. 
-You can add a "Highlights:" line to the top of all web pages by adding a file www/project_highlights.html
-
-Mission
-What is the goal of this project? 
-
-What is the scope of this project? 
-
-For example:
-
-Develop just enough functionality to scratch a particular itch 
-Build a tool just like XYZ, but less broken 
-Build the best XYZ-tool ever! 
-What are high-level features you are sure to build? 
-
-What would you write on a billboard about your project? Users might only look for a few seconds. 
-Use the issue tracker to track features and enhancement requests. It is not just for bugs, pre-populate it with feature descriptions so that potential contributors know what you would like them to work on. 
-What are the high-level assumptions or ground rules for the project? 
-
-For example: 
-
-we will use programming language X on operating system Y for now. 
-We will, or will not, consider certain functional areas like internationalization, high security, concurrency, etc. The list of functional areas will depend on what you are trying to do. 
-Try to keep this part short. 
-Related resources
-Link to other stuff that you know about. It will help you research requirements and provide a useful resource to potential contributors. 
-Why reinvent the wheel? What is better about this wheel? Is there any existing project that you can partner with or reuse? 
-Where would you go to try to find potential contributors? 
-</t>
 <t tx="ekr.20060414071350.1"></t>
 <t tx="ekr.20060414071350.8">@nocolor
 http://sourceforge.net/forum/message.php?msg_id=3671350
@@ -30993,8 +30694,7 @@ Using g.getTestVars eliminates pychecker warnings about undefined c and p variab
 
 To install Leo using the executable installer:
     
-    1. Download the latest version of Leo's installer from:    
-       http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+    1. Download the latest version of Leo's installer from `Leo's download page`_.
        The installer will be called something like LeoSetup-4-4-3.exe.
        
     2. Run the installer.
@@ -31002,8 +30702,7 @@ To install Leo using the executable installer:
 
 To install Leo from the .zip file:
     
-    1. Download the latest version of Leo (a .zip file) from:    
-       http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+    1. Download the latest version of Leo (a .zip file) from `Leo's download page`_.  
 
     2. Unzip the .zip file and place the unpacked leo folder in 
        the 'Program Files' folder or any convenient location.
