@@ -1559,6 +1559,170 @@ Works a treat!
 Paul
 #@-node:ekr.20050317153447:jy-Leo install instructions by Paul Paterson
 #@-node:ekr.20050316092232:How to install jyLeo
+#@+node:ekr.20070623150151:How to make Leo commands undoable
+The chapter commands provide a good example.  In this file, see the node:
+
+Code-->Core classes...-->@thin leoChapters.py-->class chapterController-->Undo
+
+The general plan is this:
+
+1. The command handler calls a **beforeCommand** method before changing the outline.
+
+The beforeCommand method creates a g.Bunch that contains all the information needed to
+restore the outline to its previous state. Typically, the beforeCommand method
+will call c.undoer.createCommonBunch(p), where p is, as usual,
+c.currentPosition().
+
+2. After changing the outline the command handler calls an **afterCommand** method.
+
+This method should take as one argument the g.Bunch returned by the
+beforeCommand method. In the discussion below, denote this bunch by b. The
+afterCommand method adds any information required to redo the operation after
+the operation has been undone.
+
+The afterCommand method also sets b.undoHelper and b.redoHelper to two method
+that actually perform the undo and redo operations. (Actually, the beforeCommand
+method could also set these two entries).
+
+When the afterCommand method has 'filled in' all the entries of b, the
+afterCommand method must call u.pushBead(b). This pushes all the undo
+operation on a stack managed by the Leo's undoer, i.e., c.commands.undoer.
+
+3. The undoer calls the undoHelper and redoHelper methods to perform the actual undo and redo operations.
+
+The undoer handles most of the housekeeping chores related to undo and redo.  All the undoHelper and redoHelper methods have to do is actually alter Leo's outline.
+
+**Note**: the undoer creates an ivar (instance variable) of the *undoer* class for every entry in the bunch b passed as an argument to u.pushBead(b).  For example, suppose u = c.commands.under and that b has ivars 'a','b' and 'c'.  Then, on entry to the undoHelper and the redoHelper the u.a, u.b and u.c ivars will be defined.  This makes it unnecessary for the undoHelper or the redoHelper to 'unpack' b explicitly.
+
+Writing correct undo and redo helpers is usually a bit tricky.  The code is often subtly different from the original code that implements a command.  That just can't be helped.
+
+
+
+
+#@+node:ekr.20070610100031:Undo
+#@+node:ekr.20070606075125:afterCreateChapter
+def afterCreateChapter (self,bunch,p):
+
+    cc = self ; u = cc.c.undoer
+    if u.redoing or u.undoing: return
+
+    bunch.kind = 'create-chapter'
+    bunch.newP = p.copy()
+
+    # Set helpers
+    bunch.undoHelper = cc.undoInsertChapter
+    bunch.redoHelper = cc.redoInsertChapter
+
+    u.pushBead(bunch)
+#@-node:ekr.20070606075125:afterCreateChapter
+#@+node:ekr.20070610091608:afterRemoveChapter
+def afterRemoveChapter (self,bunch,p):
+
+    cc = self ; u = cc.c.undoer
+    if u.redoing or u.undoing: return
+
+    bunch.kind = 'remove-chapter'
+    bunch.newP = p.copy()
+
+    # Set helpers
+    bunch.undoHelper = cc.undoRemoveChapter
+    bunch.redoHelper = cc.redoRemoveChapter
+
+    u.pushBead(bunch)
+#@-node:ekr.20070610091608:afterRemoveChapter
+#@+node:ekr.20070606082729:beforeCreateChapter
+def beforeCreateChapter (self,p,oldChapterName,newChapterName,undoType):
+
+    cc = self ; u = cc.c.undoer
+
+    bunch = u.createCommonBunch(p)
+
+    bunch.oldChapterName = oldChapterName
+    bunch.newChapterName = newChapterName
+    bunch.savedRoot = None
+    bunch.undoType = undoType
+
+    return bunch
+#@-node:ekr.20070606082729:beforeCreateChapter
+#@+node:ekr.20070610091608.1:beforeRemoveChapter
+def beforeRemoveChapter (self,p,newChapterName,savedRoot):
+
+    cc = self ; u = cc.c.undoer
+
+    bunch = u.createCommonBunch(p)
+
+    bunch.newChapterName = newChapterName
+    bunch.savedRoot = savedRoot
+    bunch.undoType = 'Remove Chapter'
+
+    return bunch
+#@-node:ekr.20070610091608.1:beforeRemoveChapter
+#@+node:ekr.20070606081341:redoInsertChapter
+def redoInsertChapter (self):
+
+    cc = self ; c = cc.c ; u = c.undoer
+
+    # g.trace(u.newChapterName,u.oldChapterName,u.p)
+
+    cc.createChapterByName(u.newChapterName,p=u.savedRoot,undoType=u.undoType)
+    theChapter = cc.getChapter(u.newChapterName)
+
+    if u.undoType == 'Convert Node To Chapter':
+        pass
+    elif u.undoType in ('Create Chapter From Node','Create Chapter'):
+        root = theChapter.root
+        firstChild = root.firstChild()
+        firstChild.unlink()
+        firstChild = u.savedRoot.firstChild()
+        firstChild.linkAsNthChild(root,0)
+    else:
+        return g.trace('Can not happen: bad undoType: %s' % u.undoType)
+#@-node:ekr.20070606081341:redoInsertChapter
+#@+node:ekr.20070610100555:redoRemoveChapter
+def redoRemoveChapter (self):
+
+    cc = self ; u = cc.c.undoer
+
+    cc.removeChapterByName(u.newChapterName)
+    cc.selectChapterByName('main')
+#@nonl
+#@-node:ekr.20070610100555:redoRemoveChapter
+#@+node:ekr.20070606074705:undoInsertChapter
+def undoInsertChapter (self):
+
+    cc = self ; c = cc.c ; u = c.undoer
+
+    newChapter = cc.getChapter(u.newChapterName)
+
+    bunch = u.beads[u.bead]
+    bunch.savedRoot = root = newChapter.root
+
+    if u.undoType == 'Convert Node To Chapter':
+        p = root.firstChild()
+        p.moveAfter(root)
+    else:
+        pass # deleting the chapter will delete the node.
+
+    cc.removeChapterByName(u.newChapterName)
+    cc.selectChapterByName('main')
+#@-node:ekr.20070606074705:undoInsertChapter
+#@+node:ekr.20070610100555.1:undoRemoveChapter
+def undoRemoveChapter (self):
+
+    cc = self ; c = cc.c ; u = c.undoer
+
+    # u.savedRoot is the entire @chapter tree.
+    # Link it as the last child of the @chapters node.
+    parent = cc.findChaptersNode()
+    u.savedRoot.linkAsNthChild(parent,parent.numberOfChildren())
+
+    # Now recreate the chapter.
+    name = u.newChapterName
+    cc.chaptersDict[name] = chapter(c=c,chapterController=cc,name=name,root=u.savedRoot)
+    cc.selectChapterByName(name)
+#@-node:ekr.20070610100555.1:undoRemoveChapter
+#@-node:ekr.20070610100031:Undo
+#@-node:ekr.20070623150151:How to make Leo commands undoable
 #@+node:ekr.20031218072017.386:How to remove cursed newlines: use binary mode
 teknico ( Nicola Larosa ) 
  RE: Removing '\r' characters?   

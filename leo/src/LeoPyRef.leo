@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.521235521236">
-	<global_window_position top="127" left="378" height="757" width="835"/>
+<globals body_outline_ratio="0.466314398943">
+	<global_window_position top="33" left="350" height="832" width="835"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -45,7 +45,7 @@
 <v t="ekr.20031218072017.329"><vh>@thin ../doc/leoNotes.txt</vh></v>
 </v>
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
-<v t="EKR.20040429143933" a="E"><vh>@thin leoProjects.txt</vh></v>
+<v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
@@ -142,7 +142,7 @@ if 0: # Set to 1 for lint-like testing.
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.3 beta 3, build %s, June 22, 2007" % c.getBuildNumber()
+    return "Leo 4.4.3 beta 3, build %s, June 23, 2007" % c.getBuildNumber()
 
 </t>
 <t tx="ekr.20050721093241">@nocolor

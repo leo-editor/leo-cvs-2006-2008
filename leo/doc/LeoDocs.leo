@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.405440414508">
-	<global_window_position top="94" left="363" height="752" width="897"/>
+<globals body_outline_ratio="0.575136612022">
+	<global_window_position top="94" left="363" height="732" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -72,6 +72,11 @@
 <v t="ekr.20050831195331.1"><vh>FAQ</vh>
 <v t="ekr.20050830115714"><vh>@rst html\FAQ.html</vh>
 <v t="ekr.20050830120007"><vh>@rst-no-head Links</vh></v>
+<v t="ekr.20070623145346"><vh>Installing Leo</vh>
+<v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
+<v t="ekr.20050830115714.75"><vh>Leo is hanging on my Linux box.  What should I do?</vh></v>
+<v t="ekr.20070623145346.1"><vh>Running Python setup.py install from the leo directory doesn't work.  Why not?</vh></v>
+</v>
 <v t="ekr.20050830115714.1"><vh>Learning to use Leo</vh>
 <v t="ekr.20050830115714.2"><vh>What's the best way to learn to use Leo?</vh></v>
 <v t="ekr.20050830115714.4"><vh>Why should I use clones?</vh></v>
@@ -110,23 +115,24 @@
 <v t="ekr.20060822111759"><vh>How can I reuse @button nodes in multiple files?</vh></v>
 </v>
 <v t="ekr.20050830115714.76"><vh>Trouble shooting</vh>
-<v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
 <v t="ekr.20060210070421"><vh>@rst-ignore I can't run Leo from a cvs sandbox.  What's going on?</vh></v>
-<v t="ekr.20060323105214"><vh>Leo's Recent Files menu doesn't work from a cvs shandbox.  What's going on?</vh></v>
-<v t="ekr.20050830115714.77"><vh>How can I use Python's pdb debugger with Leo?</vh></v>
-<v t="ekr.20050906090012"><vh>How can I run Leo from a console window?</vh></v>
-<v t="ekr.20050830115714.9"><vh>Some characters in derived files look funny. What can I do?</vh></v>
-<v t="ekr.20050830115714.10"><vh>Some characters are garbled when importing files. What can I do?</vh></v>
-<v t="ekr.20050830115714.17"><vh>I can't write Imported files.  What's going on?</vh></v>
 <v t="ekr.20050908113904"><vh>Can I scroll the outline pane with the mouse wheel?</vh></v>
-<v t="ekr.20050830115714.75"><vh>Leo is hanging on my Linux box.  What should I do?</vh></v>
 <v t="ekr.20050830115714.114"><vh>Control-Shift backspace doesn't work.  What should I do?</vh></v>
 <v t="ekr.20050830115714.115"><vh>Error messages from the rst3 plugin aren't helpful. What can I do?</vh></v>
-<v t="ekr.20050830115714.117"><vh>The new Python decorator syntax causes problems.  What can I do?</vh></v>
-<v t="ekr.20060917130130"><vh>I get weird results when defining unicode strings in scripts.  What is going on?</vh></v>
+<v t="ekr.20050906090012"><vh>How can I run Leo from a console window?</vh></v>
+<v t="ekr.20050830115714.77"><vh>How can I use Python's pdb debugger with Leo?</vh></v>
 <v t="ekr.20061021164213"><vh>I can not enter non-ascii characters.  What can I do?</vh></v>
-<v t="ekr.20061021164213.1"><vh>Leo doesn't recognize commands with the caps-lock key down</vh></v>
+<v t="ekr.20050830115714.17"><vh>I can't write Imported files.  What's going on?</vh></v>
 <v t="edream.110203163054.61"><vh>I don't see the Leo icon in Leo windows</vh></v>
+<v t="ekr.20060917130130"><vh>I get weird results when defining unicode strings in scripts.  What is going on?</vh></v>
+<v t="ekr.20061021164213.1"><vh>Leo doesn't recognize commands with the caps-lock key down</vh></v>
+<v t="ekr.20050830115714.75"><vh>Leo is hanging on my Linux box.  What should I do?</vh></v>
+<v t="ekr.20060323105214"><vh>Leo's Recent Files menu doesn't work from a cvs shandbox.  What's going on?</vh></v>
+<v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
+<v t="ekr.20050830115714.10"><vh>Some characters are garbled when importing files. What can I do?</vh></v>
+<v t="ekr.20050830115714.9"><vh>Some characters in derived files look funny. What can I do?</vh></v>
+<v t="ekr.20050830115714.117"><vh>The new Python decorator syntax causes problems.  What can I do?</vh></v>
+<v t="ekr.20070623145346.1"><vh>Running Python setup.py install from the leo directory doesn't work.  Why not?</vh></v>
 </v>
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
@@ -154,10 +160,10 @@
 <v t="ekr.20050830080545"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831195331.2" a="E"><vh>Chapter 1: Installing Leo</vh>
-<v t="edream.110203163054.48" a="E"><vh>@rst html\install.html</vh>
+<v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
+<v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
-<v t="edream.110203163054.49" a="TV"><vh>System requirements</vh></v>
+<v t="edream.110203163054.49"><vh>System requirements</vh></v>
 <v t="edream.110203163054.50"><vh>How to install Leo on Linux</vh></v>
 <v t="ekr.20070622141457"><vh>Installing Leo on Windows</vh>
 <v t="edream.110203163054.60"><vh>How to associate Leo with .leo files on Windows</vh></v>
@@ -220,6 +226,7 @@
 <v t="EKR.20040524104904.45"><vh>Opening URL's automatically</vh></v>
 <v t="EKR.20040524104904.47"><vh>Resizing panes</vh></v>
 <v t="EKR.20040524104904.48"><vh>Undoing operations</vh></v>
+<v t="ekr.20070623145346.2"><vh>Using chapters</vh></v>
 <v t="ekr.20050901102400"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -1032,6 +1039,7 @@
 </v>
 </v>
 </v>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
@@ -1081,7 +1089,6 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.646"><vh>Borland PC versions...</vh>
@@ -3155,8 +3162,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20070622090350"><vh>4.4.3 beta 3</vh>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20070622090350" a="TV"><vh>4.4.3 beta 3</vh>
 <v t="ekr.20070622090350.1"><vh>Fixed bugs</vh>
 <v t="ekr.20070622090350.2"><vh>Allow aspell on Linux provided that ctypes exists</vh></v>
 <v t="ekr.20070622090350.8"><vh>Fixed a bug that disabled icon button colors on Linux</vh></v>
@@ -30627,12 +30634,12 @@ leo_to_html.py
 I left out cleo because it has been reported not to be fully functional with Leo 4.4.3.</t>
 <t tx="ekr.20070610174018"></t>
 <t tx="ekr.20070611161859">http://sourceforge.net/forum/message.php?msg_id=4356197</t>
-<t tx="ekr.20070622090350">Leo 4.4.3 beta 3                                June 22, 2006
+<t tx="ekr.20070622090350">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
-This release fixes all known bugs and adds several important new features.
+This release fixes all known bugs and adds several new features.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -30910,5 +30917,31 @@ You can also type multiple `&lt;alt-ctrl-keys&gt;` to toggle multiple checkboxes
 - Allow @mode outside of leoSettings.leo.
 - Added warnings about the @bool expanded_click_area setting.
 </t>
+<t tx="ekr.20070623145346"></t>
+<t tx="ekr.20070623145346.1">Leo's setup.py script is intended only to create source distributions. It can't
+be used to install Leo because Leo is not a Python package.</t>
+<t tx="ekr.20070623145346.2">Chapters are regions of a Leo outline whose root is an @chapter node. @chapter
+nodes may appear anywhere in an outline, but the create-chapter command (see
+below) creates @chapter nodes as children of the first @chapters node in the outline.
+
+Selecting a chapter shows only then nodes in the selected chapter; in this
+respect, chapters are like hoists. The main chapter represents the entire
+outline and can not be deleted by name. When chapters are in effect, Leo
+creates a hidden @chapters node containing one @chapter node for every chapter
+except the 'main' chapter.
+
+Associated settings:
+  
+- The @bool use_chapters setting determines whether chapters are enabled.
+- The @bool use_chapter_tabs setting determines whether the chapters
+  pop-up menu appears in the icon area. Choosing a chapter name from this list selects a chapter.
+
+When chapters are enabled, the Cmds:Chapters menu shows all available chapter commands:
+  
+- The create-chapter command creates an @chapter node and with a single node.
+- The delete-chapter command deletes the presently selected chapter.
+- The select-chapter command makes only the nodes of the selected chapter visible.
+- The move-node-to-chapter, clone-node-to-chapter and copy-node-to-chapter commands
+  add a node (and its descendants) to another chapter.</t>
 </tnodes>
 </leo_file>

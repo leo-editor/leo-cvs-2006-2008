@@ -1,9 +1,9 @@
-Leo 4.4.3 beta 3                                June 22, 2006
+Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
-This release fixes all known bugs and adds several important new features.
+This release fixes all known bugs and adds several new features.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html

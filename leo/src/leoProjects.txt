@@ -31725,8 +31725,6 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
     # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
     # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
-    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
-    ### self.use_ctypes = g.CheckVersion(version,'2.5')
     try:
         import ctypes
         import ctypes.util
@@ -32894,7 +32892,7 @@ On Windows, if dst already exists, OSError will be raised even if it is a file;
 there may be no way to implement an atomic rename when dst names an existing
 file.
 #@-node:ekr.20050104123726.1:<< about os.rename >>
-#@+node:ekr.20050107085710.1:test_g_utils_rename
+#@+node:ekr.20050107085710.1:@test g.utils_rename
 if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
@@ -32917,7 +32915,7 @@ if g.unitTesting:
     assert exists(path)
     assert g.utils_remove(path,verbose=True)
     assert not exists(path)
-#@-node:ekr.20050107085710.1:test_g_utils_rename
+#@-node:ekr.20050107085710.1:@test g.utils_rename
 #@-node:ekr.20031218072017.1263:g.utils_rename & test
 #@+node:ekr.20031218072017.1360:tangle.scanAllDirectives
 @ Once a directive is seen, related directives in ancesors have no effect.  For example, if an @color directive is seen in node x, no @color or @nocolor directives are examined in any ancestor of x.
@@ -33397,7 +33395,7 @@ On Windows, if dst already exists, OSError will be raised even if it is a file;
 there may be no way to implement an atomic rename when dst names an existing
 file.
 #@-node:ekr.20050104123726.1:<< about os.rename >>
-#@+node:ekr.20050107085710.1:test_g_utils_rename
+#@+node:ekr.20050107085710.1:@test g.utils_rename
 if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
@@ -33420,7 +33418,7 @@ if g.unitTesting:
     assert exists(path)
     assert g.utils_remove(path,verbose=True)
     assert not exists(path)
-#@-node:ekr.20050107085710.1:test_g_utils_rename
+#@-node:ekr.20050107085710.1:@test g.utils_rename
 #@-node:ekr.20031218072017.1263:g.utils_rename & test
 #@-node:ekr.20070504083945:Found: utils_rename
 #@-node:ekr.20070504081851:initing g.app.ivars
@@ -43403,39 +43401,6 @@ def cleanLines (self,p,s):
 #@-node:ekr.20070529083836:cleanLines
 #@-node:ekr.20070528073134:Supported write_strips_blank_lines option
 #@+node:ekr.20070528141848.2:Improved uinit testing
-#@+node:ekr.20070524083513:Unit testing (leoGlobals.py)
-#@+node:ekr.20070524075713:@test test-proto
-if g.app and g.app.unitTesting:
-
-    def sendEmail(self):
-        pass # g.trace('self',self,'p',p.headString())
-
-    class test:
-        pass
-
-    sendEmail(test())
-#@-node:ekr.20070524075713:@test test-proto
-#@+node:ekr.20070524083726:@test unit testing with embedded class
-if g.unitTesting:
-
-    def sendEmail(self):
-        pass # g.trace('self2',self)
-
-    class test:
-        pass
-
-    X = test()
-    sendEmail(X)
-#@-node:ekr.20070524083726:@test unit testing with embedded class
-#@+node:ekr.20070619173330:g.getTestVars
-def getTestVars ():
-
-    d = g.app.unitTestDict
-    c = d.get('c')
-    p = d.get('p')
-    return c,p and p.copy()
-#@-node:ekr.20070619173330:g.getTestVars
-#@-node:ekr.20070524083513:Unit testing (leoGlobals.py)
 #@+node:ekr.20070524083842:@@button at-test-nodes
 # Run all @test and @suite nodes in this .leo file.
 
@@ -43569,576 +43534,6 @@ def removeLeadingWs (self,code):
 #@nonl
 #@-node:ekr.20070524085401.18:removeLeadingWs
 #@-node:ekr.20070524085253:@@button run-test-nodes
-#@+node:ekr.20070524094546:Found: def test_
-#@+node:ekr.20070120125007:@test CheckVersionToInt
-if g.unitTesting:
-
-    assert g.CheckVersionToInt('12') == 12,'fail 1'
-    assert g.CheckVersionToInt('2a5') == 2, 'fail 2'
-    assert g.CheckVersionToInt('b2') == 0, 'fail 3'
-#@nonl
-#@-node:ekr.20070120125007:@test CheckVersionToInt
-#@+node:ekr.20050211100535:@test g.getScript strips crlf
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    script = g.getScript(c,p) # This will get the text of this node.
-    assert script.find('\r\n') == -1, repr(script)
-#@-node:ekr.20050211100535:@test g.getScript strips crlf
-#@+node:ekr.20061031131434.183:@test isPlainKey
-if g.unitTesting:
-
-    import string
-
-    c,p = g.getTestVars()
-    k = c.k
-
-    for ch in (string.printable):
-        if ch == '\n': continue # A special case.
-        assert k.isPlainKey(ch), 'wrong: not plain: %s' % (ch)
-
-    special = (
-        'Return', # A special case.
-        'Begin','Break','Caps_Lock','Clear','Down','End','Escape',
-        'F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12',
-        'KP_Add', 'KP_Decimal', 'KP_Divide', 'KP_Enter', 'KP_Equal',
-        'KP_Multiply, KP_Separator,KP_Space, KP_Subtract, KP_Tab',
-        'KP_F1','KP_F2','KP_F3','KP_F4',
-        'KP_0','KP_1','KP_2','KP_3','KP_4','KP_5','KP_6','KP_7','KP_8','KP_9',
-        'Home','Left','Linefeed','Next','Num_Lock',
-        'PageDn','PageUp','Pause','Prior','Right','Up',
-        'Sys_Req',
-    )
-
-    for ch in special:
-        assert not k.isPlainKey(ch), 'wrong: is plain: %s' % (ch)
-#@-node:ekr.20061031131434.183:@test isPlainKey
-#@+node:ekr.20050107085710:@tesst atFile_rename
-if g.unitTesting:
-
-    __pychecker__ = '--no-reimport'
-
-    import os
-    c,p = g.getTestVars()
-    at = c.atFileCommands
-
-    exists = g.os_path_exists
-    path = g.os_path_join(g.app.testDir,'xyzzy')
-    path2 = g.os_path_join(g.app.testDir,'xyzzy2')
-
-    # Create both paths.
-    for p in (path,path2):
-        if exists(p):
-            os.remove(p)
-        assert not exists(p)
-        f = file(p,'w')
-        f.write('test %s' % p)
-        f.close()
-        assert exists(p)
-
-    assert at.rename(path,path2,verbose=True)
-    assert exists(path2)
-    f = file(path2)
-    s = f.read()
-    f.close()
-    # print 'Contents of %s: %s' % (path2,s)
-    assert s == 'test %s' % path
-    os.remove(path2)
-    assert not exists(path)
-#@-node:ekr.20050107085710:@tesst atFile_rename
-#@+node:ekr.20050107085710.1:test_g_utils_rename
-if g.unitTesting:
-
-    __pychecker__ = '--no-reimport'
-    import os
-    exists = g.os_path_exists
-
-    c,p = g.getTestVars()
-
-    path = g.os_path_join(g.app.testDir,'xyzzy')
-    if exists(path):
-        os.remove(path)
-
-    assert not exists(path)
-    assert not g.utils_remove(path,verbose=False)
-
-    f = file(path,'w')
-    f.write('test')
-    f.close()
-
-    assert exists(path)
-    assert g.utils_remove(path,verbose=True)
-    assert not exists(path)
-#@-node:ekr.20050107085710.1:test_g_utils_rename
-#@+node:ekr.20060626083237.2:@test skipPythonDef
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
-#@+node:ekr.20060626083725:<< define s >>
-s = '''\
-def test1():
-    aList = (a,
-b,c)
-# underindented comment.
-    return 1
-
-def test2():
-# underindented comment.
-    pass
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20060626083725:<< define s >>
-#@-node:ekr.20060626083237.2:@test skipPythonDef
-#@+node:ekr.20060627063313:@test skipPythonDef (long lines)
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
-#@+node:ekr.20060627063313.1:<< define s >>
-s = '''\
-def test1(
-        a=2):
-    return 1
-
-def test2(
-a=3):
-    return 2
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20060627063313.1:<< define s >>
-#@-node:ekr.20060627063313:@test skipPythonDef (long lines)
-#@+node:ekr.20060626100102.1:@test scanPythonClass
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('class aClass') and result.endswith("'eggs'"),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('class aClass2') and result.endswith("'twit'"),'result:\n%s' % result
-#@+node:ekr.20060626100102.2:<< define s >>
-s = '''\
-class aClass:
-    def spam():
-        return 'spam'
-# underindented comment line
-    def eggs():
-        return 'eggs'
-
-class aClass2:
-    def twit():
-        return 'twit'
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20060626100102.2:<< define s >>
-#@-node:ekr.20060626100102.1:@test scanPythonClass
-#@+node:ekr.20050211111552:@test parseLeoSentinel
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-
-    s1 = '#@+leo-ver=4-thin-encoding=utf-8,.'  # 4.2 format.
-    s2 = '#@+leo-ver=4-thin-encoding=utf-8.' # pre-4.2 format.
-
-    at=c.atFileCommands # Self is a dummy argument.
-
-    for s in (s1,s2):
-        valid,new_df,start,end,isThinDerivedFile = at.parseLeoSentinel(s)
-        # g.trace('start',start,'end',repr(end),'len(s)',len(s))
-        assert valid, 'not valid'
-        assert new_df, 'not new_df'
-        assert isThinDerivedFile, 'not thin'
-        assert end == '', 'invalid end: %s' % repr(end)
-        assert at.encoding == 'utf-8', 'bad encoding: %s' % repr(at.encoding)
-#@-node:ekr.20050211111552:@test parseLeoSentinel
-#@+node:ekr.20050608103755:@test directiveKind4
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    at=c.atFileCommands # Self is a dummy argument.
-    import leoColor
-    table = [
-        ('@=',0,at.noDirective),
-        ('@',0,at.atDirective),
-        ('@ ',0,at.atDirective),
-        ('@\t',0,at.atDirective),
-        ('@\n',0,at.atDirective),
-        ('@all',0,at.allDirective),
-        ('    @all',4,at.allDirective),
-        ("@c",0,at.cDirective),
-        ("@code",0,at.codeDirective),
-        ("@doc",0,at.docDirective),
-        ("@end_raw",0,at.endRawDirective),
-        ('@others',0,at.othersDirective),
-        ('    @others',4,at.othersDirective),
-        ("@raw",0,at.rawDirective),
-    ]
-    for name in leoColor.leoKeywords:
-        if name not in ('@','@all','@c','@code','@doc','@end_raw','@others','@raw',):
-            table.append((name,0,at.miscDirective),)
-
-    for s,i,expected in table:
-        result = at.directiveKind4(s,i)
-        assert result == expected, '%d %s result: %s expected: %s' % (
-            i,repr(s),at.sentinelName(result),at.sentinelName(expected))
-#@-node:ekr.20050608103755:@test directiveKind4
-#@+node:ekr.20050107090156:@test atFile_remove
-if g.unitTesting:
-
-    __pychecker__ = '--no-reimport'
-    import os
-    c,p = g.getTestVars()
-    at = c.atFileCommands
-    exists = g.os_path_exists
-
-    path = g.os_path_join(g.app.testDir,'xyzzy')
-    if exists(path):
-        os.remove(path)
-
-    assert not exists(path)
-    assert not at.remove(path,verbose=False)
-
-    f = file(path,'w')
-    f.write('test')
-    f.close()
-
-    assert exists(path)
-    assert at.remove(path)
-    assert not exists(path)
-#@-node:ekr.20050107090156:@test atFile_remove
-#@+node:ekr.20050206085258:atFile.printError & test
-def printError (self,message):
-
-    '''Print an error message that may contain non-ascii characters.'''
-
-    if self.errors == 0:
-        g.es_error(message)
-    else:
-        try:
-            print message
-        except UnicodeError:
-            print g.toEncodedString(message,'ascii')
-#@+node:ekr.20070621091727:@test printError
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    at = c.atFileCommands
-    at.errors = 0
-    at.printError(
-        "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
-#@-node:ekr.20070621091727:@test printError
-#@-node:ekr.20050206085258:atFile.printError & test
-#@+node:ekr.20060205165654:@test helpForMinibuffer
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    c.helpCommands.helpForMinibuffer()
-#@-node:ekr.20060205165654:@test helpForMinibuffer
-#@+node:ekr.20060226132000:test_aproposAutocompletion
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    c.helpCommands.aproposAutocompletion()
-#@-node:ekr.20060226132000:test_aproposAutocompletion
-#@+node:ekr.20060205170435:@test apropos_bindings
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-
-    c.helpCommands.aproposBindings()
-#@-node:ekr.20060205170435:@test apropos_bindings
-#@+node:ekr.20060205170552:@test apropos_find_commands
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-
-    c.helpCommands.aproposFindCommands()
-#@-node:ekr.20060205170552:@test apropos_find_commands
-#@+node:ekr.20050404212949:@test fc.deleteFileWithMessage
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    fc=c.fileCommands # Self is a dummy argument.
-    fc.deleteFileWithMessage('xyzzy','test')
-
-if 0: # one-time test of es statements.
-    fileName = 'fileName' ; kind = 'kind'
-    g.es("read only",color="red")
-    g.es("exception deleting %s file: %s" % (fileName,kind))
-    g.es("exception deleting backup file:" + fileName)
-#@-node:ekr.20050404212949:@test fc.deleteFileWithMessage
-#@+node:ekr.20050221092824:@test g.pdb
-if g.unitTesting:
-
-    import sys
-    c,p = g.getTestVars()
-
-    # Not a good unit test; it probably will never fail.
-    def aFunction(): pass
-    assert type(g.pdb)==type(aFunction), 'wrong type for g.pdb: %s' % type(g.pdb)
-
-    class myStdout:
-        def write(self,s):
-            pass # g.es('From pdb:',s)
-
-    class myStdin:
-        def readline (self):
-            return 'c' # Return 'c' (continue) for all requests for input.
-
-    def restore():
-        sys.stdout,sys.stdin = sys.__stdout__,sys.__stdin__
-
-    try:
-        sys.stdin = myStdin() # Essential
-        sys.stdout=myStdout() # Optional
-        g.pdb()
-        restore()
-        # assert False,'test of reraising'
-    except Exception:
-        restore()
-        raise
-#@-node:ekr.20050221092824:@test g.pdb
-#@+node:ekr.20050220030850:@test g.es_exception
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-
-    if c.config.redirect_execute_script_output_to_log_pane:
-        pass # Test doesn't work when redirection is on.
-    else:
-        try:
-            import sys
-            # Catch the output of g.es_exception.
-            # We catch the AssertionError, so nothing gets written to stderr.
-            sys.stdout = fo = g.fileLikeObject()
-            try: # Create an exception to catch.
-                assert False, 'Assert False in test_g_es_exception'
-            except AssertionError:
-                g.es_exception(color='suppress')
-                result = fo.get()
-                s1 = 'Traceback (most recent call last):'
-                s2 = 'AssertionError: Assert False in test_g_es_exception'
-                assert result.find(s1) > -1, 'No traceback line: %s' % repr(result)
-                assert result.find(s2) > -1, 'No AssertionError line: %s' % repr(result)
-        finally:
-            # Not needed unless we execute this script as selected text.
-            sys.stdout = sys.__stdout__
-#@-node:ekr.20050220030850:@test g.es_exception
-#@+node:ekr.20050216052031:@test g.create_temp_file
-if g.unitTesting:
-
-    __pychecker__ = '--no-reimport'
-    import types
-
-    c,p = g.getTestVars()
-
-    theFile,theFileName = g.create_temp_file()
-
-    assert type(theFile) == types.FileType, 'not file type'
-    assert type(theFileName) in (types.StringType, types.UnicodeType), 'not string type'
-#@-node:ekr.20050216052031:@test g.create_temp_file
-#@+node:ekr.20050107084901:@test g.utils_remove
-if g.unitTesting:
-
-    __pychecker__ = '--no-reimport'
-    import os
-
-    c,p = g.getTestVars()
-    exists = g.os_path_exists
-
-    path = g.os_path_join(g.app.testDir,'xyzzy')
-    if exists(path):
-        os.remove(path)
-
-    assert not exists(path)
-    assert not g.utils_remove(path,verbose=False)
-
-    f = file(path,'w')
-    f.write('test')
-    f.close()
-
-    assert exists(path)
-    assert g.utils_remove(path,verbose=True)
-    assert not exists(path)
-#@-node:ekr.20050107084901:@test g.utils_remove
-#@+node:ekr.20050707064040:es_print & test
-def es_print(s,*args,**keys):
-
-    print g.toEncodedString(s,'ascii')
-
-    if g.app.gui and not g.app.gui.isNullGui:
-        g.es(s,*args,**keys)
-#@+node:ekr.20070621092938:@test g.es_print
-if g.unitTesting:
-
-    g.es_print('\ntest of es_print: Ă',color='red')
-#@-node:ekr.20070621092938:@test g.es_print
-#@-node:ekr.20050707064040:es_print & test
-#@+node:ekr.20050707065530:es_trace & test
-def es_trace(s,*args,**keys):
-
-    g.trace(g.toEncodedString(s,'ascii'))
-    g.es(s,*args,**keys)
-#@nonl
-#@+node:ekr.20070621092938.1:@test g.es_trace
-if g.unitTesting:
-
-    g.es_trace('\ntest of es_trace: Ă',color='red')
-#@-node:ekr.20070621092938.1:@test g.es_trace
-#@-node:ekr.20050707065530:es_trace & test
-#@+node:ekr.20050825092149:@test g.reportBadChars
-if g.unitTesting:
-
-    for s,encoding in (
-        ('aĂbĂ',  'ascii'),
-        (u'aĂbĂ', 'ascii'),
-        ('炰',    'ascii'),
-        (u'炰',   'ascii'),
-
-        ('aĂbĂ',  'utf-8'),
-        (u'aĂbĂ', 'utf-8'),
-        ('炰',    'utf-8'),
-        (u'炰',   'utf-8'),
-    ):
-
-        g.reportBadChars(s,encoding)
-#@-node:ekr.20050825092149:@test g.reportBadChars
-#@+node:ekr.20050208104358:@test round trip toUnicode toEncodedString
-if g.unitTesting:
-
-    table = [
-        ('a',    'utf-8'),
-        ('a',    'ascii'),
-        ('äöü',  'utf-8'),
-        ('äöü',  'mbcs'),
-        ('炰',   'utf-8'),
-    ]
-
-    import sys
-
-    if sys.platform.startswith('win'):
-        data = '炰','mbcs'
-        table.append(data)
-
-    for s,encoding in table:
-        if g.isValidEncoding(encoding):
-            s2,ok = g.toUnicodeWithErrorCode(s,encoding)
-            assert ok, 'toUnicodeWithErrorCode fails for %s' %s
-            s3,ok = g.toEncodedStringWithErrorCode(s2,encoding)
-            assert ok, 'toEncodedStringWithErrorCode fails for %s' % s2
-            assert s3 == s, 'Round-trip one failed for %s' %s
-
-            s2 = g.toUnicode(s,encoding)
-            s3 = g.toEncodedString(s2,encoding)
-            assert s3 == s, 'Round-trip two failed for %s' %s
-#@nonl
-#@-node:ekr.20050208104358:@test round trip toUnicode toEncodedString
-#@+node:ekr.20050208112123:@test failure with ascii encodings
-if g.unitTesting:
-
-    encoding = 'ascii'
-
-    s = '炰'
-    s2,ok = g.toUnicodeWithErrorCode(s,encoding)
-    assert not ok, 'toUnicodeWithErrorCode returns True for %s with ascii encoding' % s
-
-    s = u'炰'
-    s3,ok = g.toEncodedStringWithErrorCode(s,encoding)
-    assert not ok, 'toEncodedStringWithErrorCode returns True for %s with ascii encoding' % s
-#@-node:ekr.20050208112123:@test failure with ascii encodings
-#@+node:ekr.20070524083726:@test unit testing with embedded class
-if g.unitTesting:
-
-    def sendEmail(self):
-        pass # g.trace('self2',self)
-
-    class test:
-        pass
-
-    X = test()
-    sendEmail(X)
-#@-node:ekr.20070524083726:@test unit testing with embedded class
-#@+node:ekr.20050211120837:@test g.removeExtraLws
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-
-    for s,expected in (
-        (' a\n b\n c', 'a\nb\nc'),
-        (' \n  A\n    B\n  C\n', '\nA\n  B\nC\n'),
-    ):
-        result = g.removeExtraLws(s,c.tab_width)
-        assert result == expected, '\ns: %s\nexpected: %s\nresult:   %s' % (
-            repr(s),repr(expected),repr(result))
-#@-node:ekr.20050211120837:@test g.removeExtraLws
-#@+node:ekr.20051104075904.105:test_dummy
-def test_dummy():
-    import leoGlobals as g
-    g.trace()
-    # raise SyntaxError
-
-# class dummyTestClass: # NOT a TestCase.
-    # def test_one (self):
-        # import leoGlobals as g
-        # g.trace(self)
-#@-node:ekr.20051104075904.105:test_dummy
-#@-node:ekr.20070524094546:Found: def test_
 #@-node:ekr.20070528141848.2:Improved uinit testing
 #@+node:ekr.20070522082646.1:Completed chapters
 (done) create-chapter
@@ -44689,8 +44084,6 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
     # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
     # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
-    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
-    ### self.use_ctypes = g.CheckVersion(version,'2.5')
     try:
         import ctypes
         import ctypes.util
@@ -50332,8 +49725,6 @@ def __init__ (self,c,local_dictionary_file,local_language_code):
     # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
     # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
-    version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
-    ### self.use_ctypes = g.CheckVersion(version,'2.5')
     try:
         import ctypes
         import ctypes.util
@@ -51656,6 +51047,522 @@ diff -r1.9 cleo.py
 ---
 >         fg, bg = self.custom_colours(p.v, node_is_selected=True)
 #@-node:ekr.20070622073036:Applied patch for cleo coloring problem
+#@+node:ekr.20070622072948:Fixed php coloring problems
+#@+node:ekr.20070623072759:Report
+@nocolor
+
+The coloring for PHP has 2 major issues that
+
+ 1 - it wont trigger on multiple line comments: /* */
+
+ 2 - Enlarged Keywords sometimes bug on key up end key down movement of cursor
+in the body, it sucks visualy too,.
+
+
+What I did:
+
+- Added /* and */ to php delims.  This solves 1.
+
+- @settings-->Colors-->Syntax colors & options-->Options for jEdit colorer-->Langauge-specific colors-->php-->@font php keyword fonts (old colorizer)
+
+The new settings:
+
+php_keyword_font_size = None
+php_keyword_font_slant = roman
+    # roman, italic
+php_keyword_font_weight = normal
+    # normal, bold
+#@-node:ekr.20070623072759:Report
+#@+node:ekr.20031218072017.1607:<< define dispatch dicts >>
+self.state_dict = {
+    "blockComment" : self.continueBlockComment,
+    "doubleString" : self.continueDoubleString, # 1/25/03
+    "nocolor"      : self.continueNocolor,
+    "normal"       : self.doNormalState,
+    "singleString" : self.continueSingleString,  # 1/25/03
+    "string3s"     : self.continueSinglePythonString,
+    "string3d"     : self.continueDoublePythonString,
+    "doc"          : self.continueDocPart,
+    "unknown"      : self.doNormalState, # 8/25/05
+}
+
+# Eventually all entries in these dicts will be entered dynamically
+# under the control of the XML description of the present language.
+
+if 0: # not ready yet.
+
+    self.dict1 = { # 1-character patterns.
+        '"' : self.doString,
+        "'" : self.doString,
+        '@' : self.doPossibleLeoKeyword,
+        ' ' : self.doBlank,
+        '\t': self.doTab }
+
+    self.dict2 = {} # 2-character patterns
+
+    # Searching this list might be very slow!
+    mutli_list = [] # Multiple character patterns.
+
+    # Enter single-character patterns...
+    if self.has_pp_directives:
+        dict1 ["#"] = self.doPPDirective
+
+    for ch in string.ascii_letters:
+        dict1 [ch] = self.doPossibleKeyword
+    dict1 ['_'] = self.doPossibleKeyword
+
+    if self.language == "latex":
+        dict1 ['\\'] = self.doPossibleKeyword
+
+    if self.language == "php":
+        dict1 ['<'] = self.doSpecialPHPKeyword
+        dict1 ['?'] = self.doSpecialPHPKeyword
+
+    # Enter potentially multi-character patterns.  (or should this be just 2-character patterns)
+    if self.language == "cweb":
+        dict2 ["@("] = self.doPossibleSectionRefOrDef
+    else:
+        dict2 ["<<"] = self.doPossibleSectionRefOrDef
+
+    if self.single_comment_start:
+        n = len(self.single_comment_start)
+        if n == 1:
+            dict1 [self.single_comment_start] = self.doSingleCommentLine
+        elif n == 2:
+            dict2 [self.single_comment_start] = self.doSingleCommentLine
+        else:
+            mutli_list.append((self.single_comment_start,self.doSingleCommentLine),)
+
+    if self.block_comment_start:
+        n = len(self.block_comment_start)
+        if n == 1:
+            dict1 [self.block_comment_start] = self.doBlockComment
+        elif n == 2:
+            ddict2 [self.block_comment_start] = self.doBlockComment
+        else:
+            mutli_list.append((self.block_comment_start,self.doBlockComment),)
+#@-node:ekr.20031218072017.1607:<< define dispatch dicts >>
+#@+node:ekr.20031218072017.368:<< define global data structures >> app
+# Internally, lower case is used for all language names.
+self.language_delims_dict = {
+    "ada" : "--",
+    "actionscript" : "// /* */", #jason 2003-07-03
+    "c" : "// /* */", # C, C++ or objective C.
+    "csharp" : "// /* */", # C#
+    "cpp" : "// /* */",# C++.
+    "css" : "/* */", # 4/1/04
+    "cweb" : "@q@ @>", # Use the "cweb hack"
+    "elisp" : ";",
+    "forth" : "\\_ _(_ _)", # Use the "REM hack"
+    "fortran" : "C",
+    "fortran90" : "!",
+    "html" : "<!-- -->",
+    "java" : "// /* */",
+    "latex" : "%",
+    "lua" : "--",  # ddm 13/02/06
+    "pascal" : "// { }",
+    "perl" : "#",
+    "perlpod" : "# __=pod__ __=cut__", # 9/25/02: The perlpod hack.
+    "php" : "// /* */", # 6/23/07: was "//",
+    "plain" : "#", # We must pick something.
+    "plsql" : "-- /* */", # SQL scripts qt02537 2005-05-27
+    "python" : "#",
+    "rapidq" : "'", # fil 2004-march-11
+    "rebol" : ";",  # jason 2003-07-03
+    "shell" : "#",  # shell scripts
+    "tcltk" : "#",
+    "unknown" : "#" } # Set when @comment is seen.
+
+self.language_extension_dict = {
+    "ada" : "ads",
+    "actionscript" : "as", #jason 2003-07-03
+    "c" : "c",
+    "cpp" : "cpp",
+    "css" : "css", # 4/1/04
+    "cweb" : "w",
+    "elisp" : "el",
+    "forth" : "forth",
+    "fortran" : "f",
+    "fortran90" : "f",
+    "html" : "html",
+    "java" : "java",
+    "latex" : "tex", # 1/8/04
+    "lua" : "lua",  # ddm 13/02/06
+    "noweb" : "nw",
+    "pascal" : "p",
+    # "perl" : "perl",
+    # "perlpod" : "perl",
+    "perl" : "pl",      # 11/7/05
+    "perlpod" : "pod",  # 11/7/05
+    "php" : "php",
+    "plain" : "txt",
+    "python" : "py",
+    "plsql" : "sql", # qt02537 2005-05-27
+    "rapidq" : "bas", # fil 2004-march-11
+    "rebol" : "r",    # jason 2003-07-03
+    "shell" : "sh",   # DS 4/1/04
+    "tex" : "tex",
+    "tcltk" : "tcl",
+    "unknown" : "txt" } # Set when @comment is seen.
+
+self.extension_dict = {
+    "ads"   : "ada",
+    "adb"   : "ada",
+    "as"    : "actionscript",
+    "bas"   : "rapidq",
+    "c"     : "c",
+    "cpp"   : "cpp",
+    "css"   : "css",
+    "el"    : "elisp",
+    "forth" : "forth",
+    "f"     : "fortran90", # or fortran ?
+    "html"  : "html",
+    "java"  : "java",
+    "lua" : "lua",  # ddm 13/02/06
+    "noweb" : "nw",
+    "p"     : "pascal",
+    # "perl"  : "perl",
+    "pl"    : "perl",   # 11/7/05
+    "pod"   : "perlpod", # 11/7/05
+    "php"   : "php",
+    "py"    : "python",
+    "sql"   : "plsql", # qt02537 2005-05-27
+    "r"     : "rebol",
+    "sh"    : "shell",
+    "tex"   : "tex",
+    "txt"   : "plain",
+    "tcl"   : "tcltk",
+    "w"     : "cweb" }
+#@-node:ekr.20031218072017.368:<< define global data structures >> app
+#@+node:ekr.20031218072017.1901:<< handle general keyword >>
+if self.language == "rapidq":
+    j = self.skip_id(s,i+1,chars="$")
+elif self.language == "rebol":
+    j = self.skip_id(s,i+1,chars="-~!?")
+elif self.language in ("elisp","css"):
+    j = self.skip_id(s,i+1,chars="-")
+else:
+    j = self.skip_id(s,i)
+
+word = s[i:j]
+if not self.case_sensitiveLanguage:
+    word = word.lower()
+
+if word in self.keywords:
+    self.tag("keyword",i,j)
+elif self.language == "php":
+    if word in self.php_paren_keywords and g.match(s,j,"()"):
+        self.tag("keyword",i,j+2)
+        j += 2
+#@-node:ekr.20031218072017.1901:<< handle general keyword >>
+#@+node:ekr.20031218072017.1910:<< handle special php keywords >>
+if g.match(s.lower(),i,"<?php"):
+    self.tag("keyword",i,i+5)
+    i += 5
+elif g.match(s,i,"?>"):
+    self.tag("keyword",i,i+2)
+    i += 2
+else:
+    i += 1
+#@-node:ekr.20031218072017.1910:<< handle special php keywords >>
+#@+node:ekr.20031218072017.1896:doNormalState
+def doNormalState (self,s,i):
+
+    __pychecker__ = 'maxlines=500'
+
+    ch = s[i] ; state = "normal"
+    assert(type(ch)==type(u""))
+
+    if ch in string.ascii_letters or ch == '_' or (
+        (ch == '\\' and self.language=="latex") or
+        (ch in '/&<>' and self.language=="html") or
+        (ch == '$' and self.language=="rapidq") or
+        (self.language == 'forth' and ch in "`~!@#$%^&*()_+-={}|[];':\",./<>?")
+    ):
+        << handle possible keyword >>
+    elif g.match(s,i,self.lb):
+        i = self.doNowebSecRef(s,i)
+    elif ch == '@':
+        << handle at keyword >>
+    elif g.match(s,i,self.single_comment_start):
+        << handle single-line comment >>
+    elif g.match(s,i,self.block_comment_start):
+        << start block comment >>
+    elif ch == '%' and self.language=="cweb":
+        << handle latex line >>
+    elif self.language=="latex":
+        << handle latex normal character >>
+    # ---- From here on self.language != "latex" -----
+    elif ch in self.string_delims:
+        << handle string >>
+    elif ch == '#' and self.has_pp_directives:
+        << handle C preprocessor line >>
+    elif self.language == "php" and (g.match(s,i,"<") or g.match(s,i,"?")):
+        # g.trace("%3d" % i,php_re.match(s,i),s)
+        << handle special php keywords >>
+    elif ch == ' ':
+        << handle blank >>
+    elif ch == '\t':
+        << handle tab >>
+    else:
+        << handle normal character >>
+
+    if 0: # This can fail harmlessly when using wxPython plugin.  Don't know exactly why.
+        g.trace(self.progress,i,state)
+        assert(self.progress < i)
+    return i,state
+#@+node:ekr.20031218072017.1897:Valid regardless of latex mode
+#@+node:ekr.20031218072017.1898:<< handle possible  keyword >>
+if self.language == "latex":
+    << handle possible latex keyword >>
+elif self.language == "html":
+    << handle possible html keyword >>
+elif self.language == "forth":
+    << handle possible forth keyword >>
+else:
+    << handle general keyword >>
+i = j
+#@+node:ekr.20031218072017.1899:<< handle possible latex keyword >>
+if g.match(s,i,"\\"):
+    if i + 1 < len(s) and s[i+1] in self.latex_special_keyword_characters:
+        j = i + 2 # A special 2-character LaTex keyword.
+    else:
+        j = self.skip_id(s,i+1)
+    word = s[i:j]
+    if word in self.latex_keywords:
+        self.tag("latexKeyword",i,j)
+    else:
+        self.tag("latexBackground",i,j)
+else:
+    self.tag("latexBackground",i,i+1)
+    j = i + 1 # skip the character.
+#@-node:ekr.20031218072017.1899:<< handle possible latex keyword >>
+#@+node:ekr.20031218072017.1900:<< handle possible html keyword >>
+if g.match(s,i,"<!---") or g.match(s,i,"<!--"):
+    if g.match(s,i,"<!---"): k = 5
+    else: k = 4
+    self.tag("comment",i,i+k)
+    j = i + k ; state = "blockComment"
+elif g.match(s,i,"<"):
+    if g.match(s,i,"</"): k = 2
+    else: k = 1
+    j = self.skip_id(s,i+k)
+    self.tag("keyword",i,j)
+elif g.match(s,i,"&"):
+    j = self.skip_id(s,i+1,';')
+    self.tag("keyword",i,j)
+elif g.match(s,i,"/>"):
+    j = i + 2
+    self.tag("keyword",i,j)
+elif g.match(s,i,">"):
+    j = i + 1
+    self.tag("keyword",i,j)
+else:
+    j = i + 1
+#@-node:ekr.20031218072017.1900:<< handle possible html keyword >>
+#@+node:ekr.20041107093219.3:<< handle possible forth keyword >>
+j = self.skip_id(s,i+1,chars="`~!@#$%^&*()-_=+[]{};:'\\\",./<>?")
+word = s[i:j]
+
+#print "word=%s" % repr(word)
+
+if not self.case_sensitiveLanguage:
+    word = word.lower()
+
+if self.nextForthWordIsNew:
+    #print "trying to bold the defined word '%s'" % word
+    self.tag("bold", i, j)
+    self.nextForthWordIsNew = False
+else:
+    if word in self.forth_definingwords:
+        self.nextForthWordIsNew = True
+
+    if word in self.forth_boldwords:
+        self.tag("bold", i, j)
+    elif word in self.forth_bolditalicwords:
+        self.tag("bolditalic", i, j)
+    elif word in self.forth_italicwords:
+        self.tag("italic", i, j)
+    elif word in self.forth_stringwords:
+        self.tag("keyword", i, j-1)
+        i = j - 1
+        j, state = self.skip_string(s,j-1)
+        self.tag("string",i,j)
+        word = ''
+    elif word in self.keywords:
+        self.tag("keyword",i,j)
+#@-node:ekr.20041107093219.3:<< handle possible forth keyword >>
+#@+node:ekr.20031218072017.1901:<< handle general keyword >>
+if self.language == "rapidq":
+    j = self.skip_id(s,i+1,chars="$")
+elif self.language == "rebol":
+    j = self.skip_id(s,i+1,chars="-~!?")
+elif self.language in ("elisp","css"):
+    j = self.skip_id(s,i+1,chars="-")
+else:
+    j = self.skip_id(s,i)
+
+word = s[i:j]
+if not self.case_sensitiveLanguage:
+    word = word.lower()
+
+if word in self.keywords:
+    self.tag("keyword",i,j)
+elif self.language == "php":
+    if word in self.php_paren_keywords and g.match(s,j,"()"):
+        self.tag("keyword",i,j+2)
+        j += 2
+#@-node:ekr.20031218072017.1901:<< handle general keyword >>
+#@-node:ekr.20031218072017.1898:<< handle possible  keyword >>
+#@+node:ekr.20031218072017.1902:<< handle at keyword >>
+if self.language == "cweb":
+    if g.match(s,i,"@(") or g.match(s,i,"@<"):
+        << handle cweb ref or def >>
+    else:
+        word = self.getCwebWord(s,i)
+        if word:
+            << Handle cweb control word >>
+        else:
+            i,state = self.doAtKeyword(s,i)
+else:
+    i,state = self.doAtKeyword(s,i)
+#@+node:ekr.20031218072017.1904:<< handle cweb ref or def >>
+self.tag("nameBrackets",i,i+2)
+
+# See if the line contains the right name bracket.
+j = s.find("@>=",i+2)
+k = g.choose(j==-1,2,3)
+if j == -1:
+    j = s.find("@>",i+2)
+
+if j == -1:
+    i += 2
+else:
+    self.tag("cwebName",i+2,j)
+    self.tag("nameBrackets",j,j+k)
+    i = j + k
+#@-node:ekr.20031218072017.1904:<< handle cweb ref or def >>
+#@+node:ekr.20031218072017.1903:<< Handle cweb control word >>
+# Color and skip the word.
+assert(self.language=="cweb")
+
+j = i + len(word)
+self.tag("keyword",i,j)
+i = j
+
+if word in ("@ ","@\t","@\n","@*","@**"):
+    state = "doc"
+elif word in ("@<","@(","@c","@d","@f","@p"):
+    state = "normal"
+elif word in ("@^","@.","@:","@="): # Ended by "@>"
+    j = s.find("@>",i)
+    if j > -1:
+        self.tag("cwebName",i,j)
+        self.tag("nameBrackets",j,j+2)
+        i = j + 2
+#@-node:ekr.20031218072017.1903:<< Handle cweb control word >>
+#@-node:ekr.20031218072017.1902:<< handle at keyword >>
+#@+node:ekr.20031218072017.1617:<< handle single-line comment >>
+# print "single-line comment i,s:",i,s
+
+if self.language == "cweb" and self.latex_cweb_comments:
+    j = i + len(self.single_comment_start)
+    self.tag("comment",i,j)
+    self.doLatexLine(s,j,len(s))
+    i = len(s)
+elif self.language == "shell" and (i>0 and s[i-1]=='$'):
+    i += 1 # '$#' in shell should not start a comment (DS 040113)
+else:
+    j = len(s)
+    if not g.doHook("color-optional-markup",
+        colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag="comment"):
+        self.tag("comment",i,j)
+    i = j
+#@-node:ekr.20031218072017.1617:<< handle single-line comment >>
+#@+node:ekr.20031218072017.1619:<< start block comment >>
+k = len(self.block_comment_start)
+
+if not g.doHook("color-optional-markup",
+    colorer=self,p=self.p,v=self.p,s=s,i=i,j=i+k,colortag="comment"):
+    self.tag("comment",i,i+k)
+
+i += k ; state = "blockComment"
+#@-node:ekr.20031218072017.1619:<< start block comment >>
+#@+node:ekr.20031218072017.1905:<< handle latex line >>
+self.tag("keyword",i,i+1)
+i += 1 # Skip the %
+self.doLatexLine(s,i,len(s))
+i = len(s)
+#@-node:ekr.20031218072017.1905:<< handle latex line >>
+#@-node:ekr.20031218072017.1897:Valid regardless of latex mode
+#@+node:ekr.20031218072017.1906:Vaid only in latex mode
+#@+node:ekr.20031218072017.1907:<< handle latex normal character >>
+if self.language=="cweb":
+    self.tag("latexModeBackground",i,i+1)
+else:
+    self.tag("latexBackground",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1907:<< handle latex normal character >>
+#@-node:ekr.20031218072017.1906:Vaid only in latex mode
+#@+node:ekr.20031218072017.1908:Valid when not in latex_mode
+#@+node:ekr.20031218072017.1612:<< handle string >>
+# g.trace(self.language)
+
+if self.language == "python":
+
+    delim = s[i:i+3]
+    j, state = self.skip_python_string(s,i)
+    if delim == '"""':
+        # Only handle wiki items in """ strings.
+        if not g.doHook("color-optional-markup",
+            colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag="string"):
+            self.tag("string",i,j)
+    else:
+        self.tag("string",i,j)
+    i = j
+
+else:
+    j, state = self.skip_string(s,i)
+    self.tag("string",i,j)
+    i = j
+#@-node:ekr.20031218072017.1612:<< handle string >>
+#@+node:ekr.20031218072017.1909:<< handle C preprocessor line >>
+# 10/17/02: recognize comments in preprocessor lines.
+j = i
+while i < len(s):
+    if g.match(s,i,self.single_comment_start) or g.match(s,i,self.block_comment_start):
+        break
+    else: i += 1
+
+self.tag("pp",j,i)
+#@-node:ekr.20031218072017.1909:<< handle C preprocessor line >>
+#@+node:ekr.20031218072017.1910:<< handle special php keywords >>
+if g.match(s.lower(),i,"<?php"):
+    self.tag("keyword",i,i+5)
+    i += 5
+elif g.match(s,i,"?>"):
+    self.tag("keyword",i,i+2)
+    i += 2
+else:
+    i += 1
+#@-node:ekr.20031218072017.1910:<< handle special php keywords >>
+#@+node:ekr.20031218072017.1911:<< handle blank >>
+if self.showInvisibles:
+    self.tag("blank",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1911:<< handle blank >>
+#@+node:ekr.20031218072017.1912:<< handle tab >>
+if self.showInvisibles:
+    self.tag("tab",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1912:<< handle tab >>
+#@+node:ekr.20031218072017.1913:<< handle normal character >>
+# self.tag("normal",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1913:<< handle normal character >>
+#@-node:ekr.20031218072017.1908:Valid when not in latex_mode
+#@-node:ekr.20031218072017.1896:doNormalState
+#@-node:ekr.20070622072948:Fixed php coloring problems
 #@-node:ekr.20070615103418:Fixed bugs
 #@+node:ekr.20070615103622:New features & settings
 #@+node:ekr.20070615103622.1:Added @bool contractVisitedNodes setting
@@ -51702,44 +51609,6 @@ the code they are intended to test.
 #@nonl
 #@-node:ekr.20070611173545:Added @button dynamic-tests.
 #@+node:ekr.20070619172548:created g.getTestVars
-#@+node:ekr.20070619173330:g.getTestVars
-def getTestVars ():
-
-    d = g.app.unitTestDict
-    c = d.get('c')
-    p = d.get('p')
-    return c,p and p.copy()
-#@-node:ekr.20070619173330:g.getTestVars
-#@+node:ekr.20050211111552:@test parseLeoSentinel
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-
-    s1 = '#@+leo-ver=4-thin-encoding=utf-8,.'  # 4.2 format.
-    s2 = '#@+leo-ver=4-thin-encoding=utf-8.' # pre-4.2 format.
-
-    at=c.atFileCommands # Self is a dummy argument.
-
-    for s in (s1,s2):
-        valid,new_df,start,end,isThinDerivedFile = at.parseLeoSentinel(s)
-        # g.trace('start',start,'end',repr(end),'len(s)',len(s))
-        assert valid, 'not valid'
-        assert new_df, 'not new_df'
-        assert isThinDerivedFile, 'not thin'
-        assert end == '', 'invalid end: %s' % repr(end)
-        assert at.encoding == 'utf-8', 'bad encoding: %s' % repr(at.encoding)
-#@-node:ekr.20050211111552:@test parseLeoSentinel
-#@+node:ekr.20070524075713:@test test-proto
-if g.app and g.app.unitTesting:
-
-    def sendEmail(self):
-        pass # g.trace('self',self,'p',p.headString())
-
-    class test:
-        pass
-
-    sendEmail(test())
-#@-node:ekr.20070524075713:@test test-proto
 #@-node:ekr.20070619172548:created g.getTestVars
 #@+node:ekr.20070620084325:Clean up unit tests in this file
 @nocolor
@@ -51750,6 +51619,172 @@ What I did:
 - Replaced test_ functions with @test.
 - Removed the code in unitTest.leo that looks for test_functions.
 #@-node:ekr.20070620084325:Clean up unit tests in this file
+#@+node:ekr.20070623152106:Added a section in this file called How to make Leo commands undoable
+#@+node:ekr.20070623150151:How to make Leo commands undoable
+The chapter commands provide a good example.  In this file, see the node:
+
+Code-->Core classes...-->@thin leoChapters.py-->class chapterController-->Undo
+
+The general plan is this:
+
+1. The command handler calls a **beforeCommand** method before changing the outline.
+
+The beforeCommand method creates a g.Bunch that contains all the information needed to
+restore the outline to its previous state. Typically, the beforeCommand method
+will call c.undoer.createCommonBunch(p), where p is, as usual,
+c.currentPosition().
+
+2. After changing the outline the command handler calls an **afterCommand** method.
+
+This method should take as one argument the g.Bunch returned by the
+beforeCommand method. In the discussion below, denote this bunch by b. The
+afterCommand method adds any information required to redo the operation after
+the operation has been undone.
+
+The afterCommand method also sets b.undoHelper and b.redoHelper to two method
+that actually perform the undo and redo operations. (Actually, the beforeCommand
+method could also set these two entries).
+
+When the afterCommand method has 'filled in' all the entries of b, the
+afterCommand method must call u.pushBead(b). This pushes all the undo
+operation on a stack managed by the Leo's undoer, i.e., c.commands.undoer.
+
+3. The undoer calls the undoHelper and redoHelper methods to perform the actual undo and redo operations.
+
+The undoer handles most of the housekeeping chores related to undo and redo.  All the undoHelper and redoHelper methods have to do is actually alter Leo's outline.
+
+**Note**: the undoer creates an ivar (instance variable) of the *undoer* class for every entry in the bunch b passed as an argument to u.pushBead(b).  For example, suppose u = c.commands.under and that b has ivars 'a','b' and 'c'.  Then, on entry to the undoHelper and the redoHelper the u.a, u.b and u.c ivars will be defined.  This makes it unnecessary for the undoHelper or the redoHelper to 'unpack' b explicitly.
+
+Writing correct undo and redo helpers is usually a bit tricky.  The code is often subtly different from the original code that implements a command.  That just can't be helped.
+
+
+
+
+#@+node:ekr.20070610100031:Undo
+#@+node:ekr.20070606075125:afterCreateChapter
+def afterCreateChapter (self,bunch,p):
+
+    cc = self ; u = cc.c.undoer
+    if u.redoing or u.undoing: return
+
+    bunch.kind = 'create-chapter'
+    bunch.newP = p.copy()
+
+    # Set helpers
+    bunch.undoHelper = cc.undoInsertChapter
+    bunch.redoHelper = cc.redoInsertChapter
+
+    u.pushBead(bunch)
+#@-node:ekr.20070606075125:afterCreateChapter
+#@+node:ekr.20070610091608:afterRemoveChapter
+def afterRemoveChapter (self,bunch,p):
+
+    cc = self ; u = cc.c.undoer
+    if u.redoing or u.undoing: return
+
+    bunch.kind = 'remove-chapter'
+    bunch.newP = p.copy()
+
+    # Set helpers
+    bunch.undoHelper = cc.undoRemoveChapter
+    bunch.redoHelper = cc.redoRemoveChapter
+
+    u.pushBead(bunch)
+#@-node:ekr.20070610091608:afterRemoveChapter
+#@+node:ekr.20070606082729:beforeCreateChapter
+def beforeCreateChapter (self,p,oldChapterName,newChapterName,undoType):
+
+    cc = self ; u = cc.c.undoer
+
+    bunch = u.createCommonBunch(p)
+
+    bunch.oldChapterName = oldChapterName
+    bunch.newChapterName = newChapterName
+    bunch.savedRoot = None
+    bunch.undoType = undoType
+
+    return bunch
+#@-node:ekr.20070606082729:beforeCreateChapter
+#@+node:ekr.20070610091608.1:beforeRemoveChapter
+def beforeRemoveChapter (self,p,newChapterName,savedRoot):
+
+    cc = self ; u = cc.c.undoer
+
+    bunch = u.createCommonBunch(p)
+
+    bunch.newChapterName = newChapterName
+    bunch.savedRoot = savedRoot
+    bunch.undoType = 'Remove Chapter'
+
+    return bunch
+#@-node:ekr.20070610091608.1:beforeRemoveChapter
+#@+node:ekr.20070606081341:redoInsertChapter
+def redoInsertChapter (self):
+
+    cc = self ; c = cc.c ; u = c.undoer
+
+    # g.trace(u.newChapterName,u.oldChapterName,u.p)
+
+    cc.createChapterByName(u.newChapterName,p=u.savedRoot,undoType=u.undoType)
+    theChapter = cc.getChapter(u.newChapterName)
+
+    if u.undoType == 'Convert Node To Chapter':
+        pass
+    elif u.undoType in ('Create Chapter From Node','Create Chapter'):
+        root = theChapter.root
+        firstChild = root.firstChild()
+        firstChild.unlink()
+        firstChild = u.savedRoot.firstChild()
+        firstChild.linkAsNthChild(root,0)
+    else:
+        return g.trace('Can not happen: bad undoType: %s' % u.undoType)
+#@-node:ekr.20070606081341:redoInsertChapter
+#@+node:ekr.20070610100555:redoRemoveChapter
+def redoRemoveChapter (self):
+
+    cc = self ; u = cc.c.undoer
+
+    cc.removeChapterByName(u.newChapterName)
+    cc.selectChapterByName('main')
+#@nonl
+#@-node:ekr.20070610100555:redoRemoveChapter
+#@+node:ekr.20070606074705:undoInsertChapter
+def undoInsertChapter (self):
+
+    cc = self ; c = cc.c ; u = c.undoer
+
+    newChapter = cc.getChapter(u.newChapterName)
+
+    bunch = u.beads[u.bead]
+    bunch.savedRoot = root = newChapter.root
+
+    if u.undoType == 'Convert Node To Chapter':
+        p = root.firstChild()
+        p.moveAfter(root)
+    else:
+        pass # deleting the chapter will delete the node.
+
+    cc.removeChapterByName(u.newChapterName)
+    cc.selectChapterByName('main')
+#@-node:ekr.20070606074705:undoInsertChapter
+#@+node:ekr.20070610100555.1:undoRemoveChapter
+def undoRemoveChapter (self):
+
+    cc = self ; c = cc.c ; u = c.undoer
+
+    # u.savedRoot is the entire @chapter tree.
+    # Link it as the last child of the @chapters node.
+    parent = cc.findChaptersNode()
+    u.savedRoot.linkAsNthChild(parent,parent.numberOfChildren())
+
+    # Now recreate the chapter.
+    name = u.newChapterName
+    cc.chaptersDict[name] = chapter(c=c,chapterController=cc,name=name,root=u.savedRoot)
+    cc.selectChapterByName(name)
+#@-node:ekr.20070610100555.1:undoRemoveChapter
+#@-node:ekr.20070610100031:Undo
+#@-node:ekr.20070623150151:How to make Leo commands undoable
+#@-node:ekr.20070623152106:Added a section in this file called How to make Leo commands undoable
 #@-node:ekr.20070615103622:New features & settings
 #@-node:ekr.20070612132051:Leo 4.4.3 b3 projects
 #@+node:ekr.20070126072723:pychecker
@@ -51758,25 +51793,12 @@ leoGlobals.py:127: No module attribute (leo_config_directory) found # wrong
 leoGlobals.py:3884: Statement appears to have no effect # wrong
 leoGlobals.py:3884: No module attribute (CODESET) found # wrong
 leoGlobals.py:4448: No module attribute (mtime) found # wrong
-leoGlobals.py:5068: No global (p) found # test_ function
-leoGlobals.py:5592: No global (c) found # test_ function
-
-leoAtFile.py:3907: No global (c) found # test_ function
 
 leoKeys.py:2438: No module attribute (initAllEditCommanders) found
-leoKeys.py:3925: No global (c) found
 
-leoChapters.py:47: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
-leoChapters.py:55: Invalid arguments to (unselect), got 0, expected 1 # wrong
-leoChapters.py:535: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
-
-leoEditCommands.py:4879: No global (c) found # test_ function
-
-leoFileCommands.py:2315: No global (c) found # test_ function
+leoChapters.py:463: Invalid arguments to (select), got 0, expected between 1 and 3 # wrong
 
 leoFind.py:1355: No module attribute (__init__) found # wrong
-
-leoImport.py:1319: Global variable (c) not defined in module scope # test_ function
 
 leoTkinterFrame.py:1767: Object (body) has no attribute (leo_p) # wrong.
 

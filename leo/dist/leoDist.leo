@@ -212,7 +212,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -220,7 +220,7 @@
 <v t="EKR.20040519090846.2" a="E"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
-<v t="EKR.20040519090846.5" a="TV"><vh>Windows installation</vh></v>
+<v t="EKR.20040519090846.5"><vh>Windows installation</vh></v>
 <v t="EKR.20040519090846.6"><vh>MacOS installation</vh></v>
 <v t="EKR.20040519090846.7"><vh>Shell &amp; batch scripts</vh></v>
 </v>
@@ -231,7 +231,7 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401" a="TV"><vh>Update these for each release</vh>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
@@ -705,12 +705,12 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.3 beta 3                                June 22, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
-This release fixes all known bugs and adds several important new features.
+This release fixes all known bugs and adds several new features.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -5386,12 +5386,12 @@ print ; print '='*30,'setup.py complete','='*30 ; print
 <t tx="ekr.20070622081640"># These can't be used at present.</t>
 <t tx="ekr.20070622084133"></t>
 <t tx="ekr.20070622084634">version='4.4.3-beta-3' # No spaces and no trailing comma.</t>
-<t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 22, 2006
+<t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
-This release fixes all known bugs and adds several important new features.
+This release fixes all known bugs and adds several new features.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
