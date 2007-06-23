@@ -8050,8 +8050,6 @@ class AspellClass:
         # g.trace('code',self.local_language_code,'dict',self.local_dictionary_file)
         # g.trace('dir',self.aspell_dir,'bin_dir',self.aspell_bin_dir)
 
-        version = '.'.join([str(sys.version_info[i]) for i in (0,1)])
-        ### self.use_ctypes = g.CheckVersion(version,'2.5')
         try:
             import ctypes
             import ctypes.util

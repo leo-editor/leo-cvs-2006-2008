@@ -2122,7 +2122,7 @@ def utils_rename (c,src,dst,mode=None,verbose=True):
             g.es('Exception renaming %s to %s' % (src,dst),color='red')
             g.es_exception(full=False)
         return False
-#@+node:ekr.20050107085710.1:test_g_utils_rename
+#@+node:ekr.20050107085710.1:@test g.utils_rename
 if g.unitTesting:
 
     __pychecker__ = '--no-reimport'
@@ -2145,7 +2145,7 @@ if g.unitTesting:
     assert exists(path)
     assert g.utils_remove(path,verbose=True)
     assert not exists(path)
-#@-node:ekr.20050107085710.1:test_g_utils_rename
+#@-node:ekr.20050107085710.1:@test g.utils_rename
 #@-node:ekr.20031218072017.1263:g.utils_rename & test
 #@+node:ekr.20050104124903:g.utils_chmod
 def utils_chmod (fileName,mode,verbose=True):
@@ -4142,17 +4142,6 @@ if g.unitTesting:
 #@-node:ekr.20031218072017.1502:toUnicode & toEncodedString (and tests)
 #@-node:ekr.20031218072017.1498:Unicode utils...
 #@+node:ekr.20070524083513:Unit testing (leoGlobals.py)
-#@+node:ekr.20070524075713:@test test-proto
-if g.app and g.app.unitTesting:
-
-    def sendEmail(self):
-        pass # g.trace('self',self,'p',p.headString())
-
-    class test:
-        pass
-
-    sendEmail(test())
-#@-node:ekr.20070524075713:@test test-proto
 #@+node:ekr.20070524083726:@test unit testing with embedded class
 if g.unitTesting:
 
