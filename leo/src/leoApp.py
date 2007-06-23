@@ -118,7 +118,7 @@ class LeoApp:
             "pascal" : "// { }",
             "perl" : "#",
             "perlpod" : "# __=pod__ __=cut__", # 9/25/02: The perlpod hack.
-            "php" : "//",
+            "php" : "// /* */", # 6/23/07: was "//",
             "plain" : "#", # We must pick something.
             "plsql" : "-- /* */", # SQL scripts qt02537 2005-05-27
             "python" : "#",
