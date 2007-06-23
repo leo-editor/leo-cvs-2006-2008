@@ -163,172 +163,525 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20070414090051:Study
 #@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20060531161030:To do: 4.4.3
+#@+node:ekr.20070610094932:How to make a Leo command undoable
+#@-node:ekr.20070610094932:How to make a Leo command undoable
 #@+node:ekr.20070622072948:Fix php coloring problems
+#@+node:ekr.20070623072759:Report
 @nocolor
 
 The coloring for PHP has 2 major issues that
 
- 1 - it wont trigger on multiple line comments: /* */ 
+ 1 - it wont trigger on multiple line comments: /* */
+
  2 - Enlarged Keywords sometimes bug on key up end key down movement of cursor
 in the body, it sucks visualy too,.
+
+
+What I did:
+
+- Added /* and */ to php delims.  This solves 1.
+
+- @settings-->Colors-->Syntax colors & options-->Options for jEdit colorer-->Langauge-specific colors-->php-->@font php keyword fonts (old colorizer)
+
+The new settings:
+
+php_keyword_font_size = None
+php_keyword_font_slant = roman
+    # roman, italic
+php_keyword_font_weight = normal
+    # normal, bold
+#@nonl
+#@-node:ekr.20070623072759:Report
+#@+node:ekr.20031218072017.1607:<< define dispatch dicts >>
+self.state_dict = {
+    "blockComment" : self.continueBlockComment,
+    "doubleString" : self.continueDoubleString, # 1/25/03
+    "nocolor"      : self.continueNocolor,
+    "normal"       : self.doNormalState,
+    "singleString" : self.continueSingleString,  # 1/25/03
+    "string3s"     : self.continueSinglePythonString,
+    "string3d"     : self.continueDoublePythonString,
+    "doc"          : self.continueDocPart,
+    "unknown"      : self.doNormalState, # 8/25/05
+}
+
+# Eventually all entries in these dicts will be entered dynamically
+# under the control of the XML description of the present language.
+
+if 0: # not ready yet.
+
+    self.dict1 = { # 1-character patterns.
+        '"' : self.doString,
+        "'" : self.doString,
+        '@' : self.doPossibleLeoKeyword,
+        ' ' : self.doBlank,
+        '\t': self.doTab }
+
+    self.dict2 = {} # 2-character patterns
+
+    # Searching this list might be very slow!
+    mutli_list = [] # Multiple character patterns.
+
+    # Enter single-character patterns...
+    if self.has_pp_directives:
+        dict1 ["#"] = self.doPPDirective
+
+    for ch in string.ascii_letters:
+        dict1 [ch] = self.doPossibleKeyword
+    dict1 ['_'] = self.doPossibleKeyword
+
+    if self.language == "latex":
+        dict1 ['\\'] = self.doPossibleKeyword
+
+    if self.language == "php":
+        dict1 ['<'] = self.doSpecialPHPKeyword
+        dict1 ['?'] = self.doSpecialPHPKeyword
+
+    # Enter potentially multi-character patterns.  (or should this be just 2-character patterns)
+    if self.language == "cweb":
+        dict2 ["@("] = self.doPossibleSectionRefOrDef
+    else:
+        dict2 ["<<"] = self.doPossibleSectionRefOrDef
+
+    if self.single_comment_start:
+        n = len(self.single_comment_start)
+        if n == 1:
+            dict1 [self.single_comment_start] = self.doSingleCommentLine
+        elif n == 2:
+            dict2 [self.single_comment_start] = self.doSingleCommentLine
+        else:
+            mutli_list.append((self.single_comment_start,self.doSingleCommentLine),)
+
+    if self.block_comment_start:
+        n = len(self.block_comment_start)
+        if n == 1:
+            dict1 [self.block_comment_start] = self.doBlockComment
+        elif n == 2:
+            ddict2 [self.block_comment_start] = self.doBlockComment
+        else:
+            mutli_list.append((self.block_comment_start,self.doBlockComment),)
+#@-node:ekr.20031218072017.1607:<< define dispatch dicts >>
+#@+node:ekr.20031218072017.368:<< define global data structures >> app
+# Internally, lower case is used for all language names.
+self.language_delims_dict = {
+    "ada" : "--",
+    "actionscript" : "// /* */", #jason 2003-07-03
+    "c" : "// /* */", # C, C++ or objective C.
+    "csharp" : "// /* */", # C#
+    "cpp" : "// /* */",# C++.
+    "css" : "/* */", # 4/1/04
+    "cweb" : "@q@ @>", # Use the "cweb hack"
+    "elisp" : ";",
+    "forth" : "\\_ _(_ _)", # Use the "REM hack"
+    "fortran" : "C",
+    "fortran90" : "!",
+    "html" : "<!-- -->",
+    "java" : "// /* */",
+    "latex" : "%",
+    "lua" : "--",  # ddm 13/02/06
+    "pascal" : "// { }",
+    "perl" : "#",
+    "perlpod" : "# __=pod__ __=cut__", # 9/25/02: The perlpod hack.
+    "php" : "// /* */", # 6/23/07: was "//",
+    "plain" : "#", # We must pick something.
+    "plsql" : "-- /* */", # SQL scripts qt02537 2005-05-27
+    "python" : "#",
+    "rapidq" : "'", # fil 2004-march-11
+    "rebol" : ";",  # jason 2003-07-03
+    "shell" : "#",  # shell scripts
+    "tcltk" : "#",
+    "unknown" : "#" } # Set when @comment is seen.
+
+self.language_extension_dict = {
+    "ada" : "ads",
+    "actionscript" : "as", #jason 2003-07-03
+    "c" : "c",
+    "cpp" : "cpp",
+    "css" : "css", # 4/1/04
+    "cweb" : "w",
+    "elisp" : "el",
+    "forth" : "forth",
+    "fortran" : "f",
+    "fortran90" : "f",
+    "html" : "html",
+    "java" : "java",
+    "latex" : "tex", # 1/8/04
+    "lua" : "lua",  # ddm 13/02/06
+    "noweb" : "nw",
+    "pascal" : "p",
+    # "perl" : "perl",
+    # "perlpod" : "perl",
+    "perl" : "pl",      # 11/7/05
+    "perlpod" : "pod",  # 11/7/05
+    "php" : "php",
+    "plain" : "txt",
+    "python" : "py",
+    "plsql" : "sql", # qt02537 2005-05-27
+    "rapidq" : "bas", # fil 2004-march-11
+    "rebol" : "r",    # jason 2003-07-03
+    "shell" : "sh",   # DS 4/1/04
+    "tex" : "tex",
+    "tcltk" : "tcl",
+    "unknown" : "txt" } # Set when @comment is seen.
+
+self.extension_dict = {
+    "ads"   : "ada",
+    "adb"   : "ada",
+    "as"    : "actionscript",
+    "bas"   : "rapidq",
+    "c"     : "c",
+    "cpp"   : "cpp",
+    "css"   : "css",
+    "el"    : "elisp",
+    "forth" : "forth",
+    "f"     : "fortran90", # or fortran ?
+    "html"  : "html",
+    "java"  : "java",
+    "lua" : "lua",  # ddm 13/02/06
+    "noweb" : "nw",
+    "p"     : "pascal",
+    # "perl"  : "perl",
+    "pl"    : "perl",   # 11/7/05
+    "pod"   : "perlpod", # 11/7/05
+    "php"   : "php",
+    "py"    : "python",
+    "sql"   : "plsql", # qt02537 2005-05-27
+    "r"     : "rebol",
+    "sh"    : "shell",
+    "tex"   : "tex",
+    "txt"   : "plain",
+    "tcl"   : "tcltk",
+    "w"     : "cweb" }
+#@-node:ekr.20031218072017.368:<< define global data structures >> app
+#@+node:ekr.20031218072017.1901:<< handle general keyword >>
+if self.language == "rapidq":
+    j = self.skip_id(s,i+1,chars="$")
+elif self.language == "rebol":
+    j = self.skip_id(s,i+1,chars="-~!?")
+elif self.language in ("elisp","css"):
+    j = self.skip_id(s,i+1,chars="-")
+else:
+    j = self.skip_id(s,i)
+
+word = s[i:j]
+if not self.case_sensitiveLanguage:
+    word = word.lower()
+
+if word in self.keywords:
+    self.tag("keyword",i,j)
+elif self.language == "php":
+    if word in self.php_paren_keywords and g.match(s,j,"()"):
+        self.tag("keyword",i,j+2)
+        j += 2
+#@-node:ekr.20031218072017.1901:<< handle general keyword >>
+#@+node:ekr.20031218072017.1910:<< handle special php keywords >>
+if g.match(s.lower(),i,"<?php"):
+    self.tag("keyword",i,i+5)
+    i += 5
+elif g.match(s,i,"?>"):
+    self.tag("keyword",i,i+2)
+    i += 2
+else:
+    i += 1
+#@-node:ekr.20031218072017.1910:<< handle special php keywords >>
+#@+node:ekr.20031218072017.1896:doNormalState
+def doNormalState (self,s,i):
+
+    __pychecker__ = 'maxlines=500'
+
+    ch = s[i] ; state = "normal"
+    assert(type(ch)==type(u""))
+
+    if ch in string.ascii_letters or ch == '_' or (
+        (ch == '\\' and self.language=="latex") or
+        (ch in '/&<>' and self.language=="html") or
+        (ch == '$' and self.language=="rapidq") or
+        (self.language == 'forth' and ch in "`~!@#$%^&*()_+-={}|[];':\",./<>?")
+    ):
+        << handle possible keyword >>
+    elif g.match(s,i,self.lb):
+        i = self.doNowebSecRef(s,i)
+    elif ch == '@':
+        << handle at keyword >>
+    elif g.match(s,i,self.single_comment_start):
+        << handle single-line comment >>
+    elif g.match(s,i,self.block_comment_start):
+        << start block comment >>
+    elif ch == '%' and self.language=="cweb":
+        << handle latex line >>
+    elif self.language=="latex":
+        << handle latex normal character >>
+    # ---- From here on self.language != "latex" -----
+    elif ch in self.string_delims:
+        << handle string >>
+    elif ch == '#' and self.has_pp_directives:
+        << handle C preprocessor line >>
+    elif self.language == "php" and (g.match(s,i,"<") or g.match(s,i,"?")):
+        # g.trace("%3d" % i,php_re.match(s,i),s)
+        << handle special php keywords >>
+    elif ch == ' ':
+        << handle blank >>
+    elif ch == '\t':
+        << handle tab >>
+    else:
+        << handle normal character >>
+
+    if 0: # This can fail harmlessly when using wxPython plugin.  Don't know exactly why.
+        g.trace(self.progress,i,state)
+        assert(self.progress < i)
+    return i,state
+#@+node:ekr.20031218072017.1897:Valid regardless of latex mode
+#@+node:ekr.20031218072017.1898:<< handle possible  keyword >>
+if self.language == "latex":
+    << handle possible latex keyword >>
+elif self.language == "html":
+    << handle possible html keyword >>
+elif self.language == "forth":
+    << handle possible forth keyword >>
+else:
+    << handle general keyword >>
+i = j
+#@+node:ekr.20031218072017.1899:<< handle possible latex keyword >>
+if g.match(s,i,"\\"):
+    if i + 1 < len(s) and s[i+1] in self.latex_special_keyword_characters:
+        j = i + 2 # A special 2-character LaTex keyword.
+    else:
+        j = self.skip_id(s,i+1)
+    word = s[i:j]
+    if word in self.latex_keywords:
+        self.tag("latexKeyword",i,j)
+    else:
+        self.tag("latexBackground",i,j)
+else:
+    self.tag("latexBackground",i,i+1)
+    j = i + 1 # skip the character.
+#@-node:ekr.20031218072017.1899:<< handle possible latex keyword >>
+#@+node:ekr.20031218072017.1900:<< handle possible html keyword >>
+if g.match(s,i,"<!---") or g.match(s,i,"<!--"):
+    if g.match(s,i,"<!---"): k = 5
+    else: k = 4
+    self.tag("comment",i,i+k)
+    j = i + k ; state = "blockComment"
+elif g.match(s,i,"<"):
+    if g.match(s,i,"</"): k = 2
+    else: k = 1
+    j = self.skip_id(s,i+k)
+    self.tag("keyword",i,j)
+elif g.match(s,i,"&"):
+    j = self.skip_id(s,i+1,';')
+    self.tag("keyword",i,j)
+elif g.match(s,i,"/>"):
+    j = i + 2
+    self.tag("keyword",i,j)
+elif g.match(s,i,">"):
+    j = i + 1
+    self.tag("keyword",i,j)
+else:
+    j = i + 1
+#@-node:ekr.20031218072017.1900:<< handle possible html keyword >>
+#@+node:ekr.20041107093219.3:<< handle possible forth keyword >>
+j = self.skip_id(s,i+1,chars="`~!@#$%^&*()-_=+[]{};:'\\\",./<>?")
+word = s[i:j]
+
+#print "word=%s" % repr(word)
+
+if not self.case_sensitiveLanguage:
+    word = word.lower()
+
+if self.nextForthWordIsNew:
+    #print "trying to bold the defined word '%s'" % word
+    self.tag("bold", i, j)
+    self.nextForthWordIsNew = False
+else:
+    if word in self.forth_definingwords:
+        self.nextForthWordIsNew = True
+
+    if word in self.forth_boldwords:
+        self.tag("bold", i, j)
+    elif word in self.forth_bolditalicwords:
+        self.tag("bolditalic", i, j)
+    elif word in self.forth_italicwords:
+        self.tag("italic", i, j)
+    elif word in self.forth_stringwords:
+        self.tag("keyword", i, j-1)
+        i = j - 1
+        j, state = self.skip_string(s,j-1)
+        self.tag("string",i,j)
+        word = ''
+    elif word in self.keywords:
+        self.tag("keyword",i,j)
+#@-node:ekr.20041107093219.3:<< handle possible forth keyword >>
+#@+node:ekr.20031218072017.1901:<< handle general keyword >>
+if self.language == "rapidq":
+    j = self.skip_id(s,i+1,chars="$")
+elif self.language == "rebol":
+    j = self.skip_id(s,i+1,chars="-~!?")
+elif self.language in ("elisp","css"):
+    j = self.skip_id(s,i+1,chars="-")
+else:
+    j = self.skip_id(s,i)
+
+word = s[i:j]
+if not self.case_sensitiveLanguage:
+    word = word.lower()
+
+if word in self.keywords:
+    self.tag("keyword",i,j)
+elif self.language == "php":
+    if word in self.php_paren_keywords and g.match(s,j,"()"):
+        self.tag("keyword",i,j+2)
+        j += 2
+#@-node:ekr.20031218072017.1901:<< handle general keyword >>
+#@-node:ekr.20031218072017.1898:<< handle possible  keyword >>
+#@+node:ekr.20031218072017.1902:<< handle at keyword >>
+if self.language == "cweb":
+    if g.match(s,i,"@(") or g.match(s,i,"@<"):
+        << handle cweb ref or def >>
+    else:
+        word = self.getCwebWord(s,i)
+        if word:
+            << Handle cweb control word >>
+        else:
+            i,state = self.doAtKeyword(s,i)
+else:
+    i,state = self.doAtKeyword(s,i)
+#@+node:ekr.20031218072017.1904:<< handle cweb ref or def >>
+self.tag("nameBrackets",i,i+2)
+
+# See if the line contains the right name bracket.
+j = s.find("@>=",i+2)
+k = g.choose(j==-1,2,3)
+if j == -1:
+    j = s.find("@>",i+2)
+
+if j == -1:
+    i += 2
+else:
+    self.tag("cwebName",i+2,j)
+    self.tag("nameBrackets",j,j+k)
+    i = j + k
+#@-node:ekr.20031218072017.1904:<< handle cweb ref or def >>
+#@+node:ekr.20031218072017.1903:<< Handle cweb control word >>
+# Color and skip the word.
+assert(self.language=="cweb")
+
+j = i + len(word)
+self.tag("keyword",i,j)
+i = j
+
+if word in ("@ ","@\t","@\n","@*","@**"):
+    state = "doc"
+elif word in ("@<","@(","@c","@d","@f","@p"):
+    state = "normal"
+elif word in ("@^","@.","@:","@="): # Ended by "@>"
+    j = s.find("@>",i)
+    if j > -1:
+        self.tag("cwebName",i,j)
+        self.tag("nameBrackets",j,j+2)
+        i = j + 2
+#@-node:ekr.20031218072017.1903:<< Handle cweb control word >>
+#@-node:ekr.20031218072017.1902:<< handle at keyword >>
+#@+node:ekr.20031218072017.1617:<< handle single-line comment >>
+# print "single-line comment i,s:",i,s
+
+if self.language == "cweb" and self.latex_cweb_comments:
+    j = i + len(self.single_comment_start)
+    self.tag("comment",i,j)
+    self.doLatexLine(s,j,len(s))
+    i = len(s)
+elif self.language == "shell" and (i>0 and s[i-1]=='$'):
+    i += 1 # '$#' in shell should not start a comment (DS 040113)
+else:
+    j = len(s)
+    if not g.doHook("color-optional-markup",
+        colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag="comment"):
+        self.tag("comment",i,j)
+    i = j
+#@-node:ekr.20031218072017.1617:<< handle single-line comment >>
+#@+node:ekr.20031218072017.1619:<< start block comment >>
+k = len(self.block_comment_start)
+
+if not g.doHook("color-optional-markup",
+    colorer=self,p=self.p,v=self.p,s=s,i=i,j=i+k,colortag="comment"):
+    self.tag("comment",i,i+k)
+
+i += k ; state = "blockComment"
+#@-node:ekr.20031218072017.1619:<< start block comment >>
+#@+node:ekr.20031218072017.1905:<< handle latex line >>
+self.tag("keyword",i,i+1)
+i += 1 # Skip the %
+self.doLatexLine(s,i,len(s))
+i = len(s)
+#@-node:ekr.20031218072017.1905:<< handle latex line >>
+#@-node:ekr.20031218072017.1897:Valid regardless of latex mode
+#@+node:ekr.20031218072017.1906:Vaid only in latex mode
+#@+node:ekr.20031218072017.1907:<< handle latex normal character >>
+if self.language=="cweb":
+    self.tag("latexModeBackground",i,i+1)
+else:
+    self.tag("latexBackground",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1907:<< handle latex normal character >>
+#@-node:ekr.20031218072017.1906:Vaid only in latex mode
+#@+node:ekr.20031218072017.1908:Valid when not in latex_mode
+#@+node:ekr.20031218072017.1612:<< handle string >>
+# g.trace(self.language)
+
+if self.language == "python":
+
+    delim = s[i:i+3]
+    j, state = self.skip_python_string(s,i)
+    if delim == '"""':
+        # Only handle wiki items in """ strings.
+        if not g.doHook("color-optional-markup",
+            colorer=self,p=self.p,v=self.p,s=s,i=i,j=j,colortag="string"):
+            self.tag("string",i,j)
+    else:
+        self.tag("string",i,j)
+    i = j
+
+else:
+    j, state = self.skip_string(s,i)
+    self.tag("string",i,j)
+    i = j
+#@-node:ekr.20031218072017.1612:<< handle string >>
+#@+node:ekr.20031218072017.1909:<< handle C preprocessor line >>
+# 10/17/02: recognize comments in preprocessor lines.
+j = i
+while i < len(s):
+    if g.match(s,i,self.single_comment_start) or g.match(s,i,self.block_comment_start):
+        break
+    else: i += 1
+
+self.tag("pp",j,i)
+#@-node:ekr.20031218072017.1909:<< handle C preprocessor line >>
+#@+node:ekr.20031218072017.1910:<< handle special php keywords >>
+if g.match(s.lower(),i,"<?php"):
+    self.tag("keyword",i,i+5)
+    i += 5
+elif g.match(s,i,"?>"):
+    self.tag("keyword",i,i+2)
+    i += 2
+else:
+    i += 1
+#@-node:ekr.20031218072017.1910:<< handle special php keywords >>
+#@+node:ekr.20031218072017.1911:<< handle blank >>
+if self.showInvisibles:
+    self.tag("blank",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1911:<< handle blank >>
+#@+node:ekr.20031218072017.1912:<< handle tab >>
+if self.showInvisibles:
+    self.tag("tab",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1912:<< handle tab >>
+#@+node:ekr.20031218072017.1913:<< handle normal character >>
+# self.tag("normal",i,i+1)
+i += 1
+#@-node:ekr.20031218072017.1913:<< handle normal character >>
+#@-node:ekr.20031218072017.1908:Valid when not in latex_mode
+#@-node:ekr.20031218072017.1896:doNormalState
 #@-node:ekr.20070622072948:Fix php coloring problems
-#@+node:ekr.20070622073036:Fix cleo coloring problem
-@nocolor
-
-By: mstarzyk
-
-There is a problem with coloring of @file (@thin, and others) nodes. 
-After you navigate in the tree out of the node, then the node you just
-left does not get the proper (unselected) color - until you close and 
-reopen the parent node.
-
-This is a problem when you have several @thin nodes and switch 
-between them, because it is difficult in the tree which node is the 
-current - they are all dark green. 
-Please see below for a patch that fixes this problem. 
-
-Cheers, 
-Maciek
-
-Index: plugins/cleo.py
-===================================================================
-RCS file: /cvs/leo/plugins/cleo.py,v
-retrieving revision 1.9
-diff -r1.9 cleo.py
-504c504
-<     def custom_colours(self,v):
----
->     def custom_colours(self, v, node_is_selected):
-520c520
-<                 if h == MeSelf:
----
->                 if node_is_selected:
-527c527
-<             if h == MeSelf:
----
->             if node_is_selected:
-814c814
-<         fg, bg = self.custom_colours(p.v)
----
->         fg, bg = self.custom_colours(p.v, node_is_selected=False)
-835c835
-<         fg, bg = self.custom_colours(p.v)
----
->         fg, bg = self.custom_colours(p.v, node_is_selected=True)
-#@-node:ekr.20070622073036:Fix cleo coloring problem
-#@+node:ekr.20070325054325:Docs
-#@+node:ekr.20070616081116:Document chapter commands and chapter api
-#@-node:ekr.20070616081116:Document chapter commands and chapter api
-#@+node:ekr.20070215093739:Improve Leo's getting started page
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=4159734
-By: rogererens
-
-Here are some issues with respect to installing Leo on Windows:
-
-I think you should divide the "How to install Leo on Windows" into separate
-sections: one section that describes the use of the installer and another one
-that describes the use of the .zip-file. In the near future probably Vista deserves
-its own section, too.
-
-The notes warn about Python 2.4 and spaces in paths. The installer appears to
-work properly with Python 2.5 though, and installing into a path that contains
-spaces works fine too, AFAIK. Or are there any usability test cases to check
-this?
-
-Also, I would advice the person that is installing Leo to create an environment
-variable (either a user variable or a system variable) called HOME with the
-value "%USERPROFILE%\My Documents" when %HOME% does not yet exist (check in
-a cmd-window by typing "echo %HOME%" without the quotes).
-Then, after installing, a user should have the shortcut icon on his/her desktop;
-change this by right-clicking and choosing properties to change the directory
-where the application starts from the default "C:\Program Files\Leo\test\unittest"
-into %HOME%.
-I'm not sure if this could all be done automatically by the NSIS installer.
-
-Finally, there's the issue that I installed Leo in the default Program Files
-folder, while having the Administrator's role. After which I copied and adapted
-the Leo shortcut to the desktop of a user with limited rights.
-Unfortunately, when logged on as such a limited user, no plugins can be
-enabled/disabled because of the restrictions on writing in program
-files\leo\plugin.
-(Even if the limited user _could_ write in that folder, it would be problematic:
-his set of enabled plugins would overwrite the set of enabled plugins for the
-administrator or another user).
-
-Hope this helps to improve the installation experience for novices...
-#@-node:ekr.20070215093739:Improve Leo's getting started page
-#@+node:ekr.20070218143918:Improve Windows installation instructions
-This section is way too confusing:
-
-Users Guide-->Chapter 1: Installing Leo-->@rst html\install.html-->How to install Leo on Windows
-#@nonl
-#@+node:ekr.20070614070915:Improve docs re windows installer
-@nocolor
-
-The proximate cause of the small dialog box is a sometimes-undefined variable in the installer script.  The bigger problem is that the script is trying to determine whether Python is installed by looking at the registry in various kludgy ways.
-
-> In the file INSTALL.TXT, in the section Installation under Windows, I think it would be useful to add a line saying that the environment variable PYTHONPATH has to be defined, otherwise leo.py is not found by Python.
-
-Yes, this would be helpful.  The installer shouldn't need PYTHONPATH, but alas, sometimes it does.
-
-Also, the installer's error messages should mention setting PYTHONPATH.
-
-Edward
-#@nonl
-#@-node:ekr.20070614070915:Improve docs re windows installer
-#@-node:ekr.20070218143918:Improve Windows installation instructions
-#@+node:ekr.20070603222100:Mention that the -i option is not valid for pythonw.exe
-@nocolor
-
-I wanted to give Leo a try and was faced with some obstacles that I want you to know, so you can remove them if you got the time for it.
-
-1. I read on the Homepage that Leo is "100% pure Python" but it didn't tell me, that I actually needed to have Python installed. The regular Windows user will download the Leo-Installer and then realize that Leo won't install.
-
-2. First time using the generated link in the startmenu, Leo asks me for an ID. Okay, I write "Richard" press enter and then ... nothing else happens. I saw the link automaticly using my "pythonw.exe" so I gave it a try and erased the "w" and with "python.exe" Leo started.
-
-It would be cooler to not have the Dos-Box open while using Leo but I don't know how hard it would be to program Leo that way.
-
-I will start using Leo I don't know exactly for what, maybe as a "Getting-Things-Done" tool and eventually mail you some things I my notice, if you want to hear them. For now, I'm a little bit overwhelmed by the number of commands and I will need some extra time to understand them, because there is no german version available.
-
-Richard Kolodziej <Richard.Kolodziej@web.de>
-
-#@-node:ekr.20070603222100:Mention that the -i option is not valid for pythonw.exe
-#@+node:ekr.20070606165218:Improve documentation for search/replace
-@nocolor
-
-> I'm finding it less than intuitive to do a simple  
-'replace all occurrences of 'xxxxx' with 'yyyyy' 
-
-An excellent question. This isn't properly documented. There is a very important trick: 
-
-<Ctrl-shift-r>find-pattern<return>replace-text<return> 
-
-But I usually forget to type <ctrl-shift-r> and instead type <ctrl-f> 
-
-No problem. I put in a hack so the following works: 
-
-<Ctrl-f>find-pattern<Ctrl-shift-r>replace-text<return> 
-
-
-After typing <ctrl-f> or <shift-ctrl-r> you can use <alt-ctrl> keys to set or clear find options. Example: 
-
-<ctrl-f><alt-ctrl-w><find-pattern><return> 
-
-<ctrl-f>shows the find dialog 
-
-<alt-ctrl-w> toggles the Whole Word checkbox 
-
-<return> starts the search for <find-pattern> 
-
-You can type the <alt-ctrl> keys anytime after <ctrl-f> (or <shift-ctrl-r>) and before <return>. 
-You can type multiple <alt-ctrl-keys> to toggle multiple checkboxes.
-#@nonl
-#@-node:ekr.20070606165218:Improve documentation for search/replace
-#@+node:ekr.20070610094932:How to make a Leo command undoable
-#@-node:ekr.20070610094932:How to make a Leo command undoable
-#@-node:ekr.20070325054325:Docs
 #@-node:ekr.20060531161030:To do: 4.4.3
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070324084040:@auto

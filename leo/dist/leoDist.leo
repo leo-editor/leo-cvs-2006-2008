@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.450431034483">
-	<global_window_position top="29" left="385" height="813" width="849"/>
+	<global_window_position top="165" left="400" height="793" width="849"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -137,7 +137,7 @@
 <v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
 <v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
-<v t="EKR.20040519080201.1" a="TV"><vh>Distribution checklist</vh></v>
+<v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
 <v t="EKR.20040519080201.2" tnodeList="EKR.20040519080201.2"><vh>@file-nosent C:\Documents and Settings\HP_Administrator\My Documents\Edward\.pycheckrc</vh></v>
 <v t="ekr.20050430095952"><vh>Pychecker statements</vh></v>
@@ -212,15 +212,15 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
 </v>
-<v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
+<v t="EKR.20040519090846.2" a="E"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
-<v t="EKR.20040519090846.5"><vh>Windows installation</vh></v>
+<v t="EKR.20040519090846.5" a="TV"><vh>Windows installation</vh></v>
 <v t="EKR.20040519090846.6"><vh>MacOS installation</vh></v>
 <v t="EKR.20040519090846.7"><vh>Shell &amp; batch scripts</vh></v>
 </v>
@@ -558,31 +558,54 @@ Only use Tcl with the default "threads not enabled" case.</t>
 Installing the leo.py on Linux
 ------------------------------
 
-You can install Leo using the install script provided.  Remember to 'chmod +x' before running this script.
+Download the latest version of Leo (a .zip file) from: http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
-Leo is distributed as a single compressed (.zip) folder.  Simply uncompress this folder, put the folder in a convenient place and run leo.py.  You can run leo.py by double-clicking leo.py.  You can also run leo.py from a Python interpreter as follows:
+Unzip the downloaded .zip file into a folder in your home directory.
+The folder will be called something like leo-4-4-3-final.
 
-	import leo
-	leo.run() # runs leo.py, opening a new outline.
-	leo.go() # runs leo.py after reloading all modules.
-	leo.leoOpen(fileName) # runs leo.py, reloads all modules, and opens fileName.
+You now have two choices:
 
-You may specify options using the configuration file called leoSettings.leo.</t>
+1. You can run Leo from your home directory.
+Just add  ~/leo-4-4-3-final to your path.
+
+2. You can install leo into \usr\local\lib and \usr\local\bin by running Leo's install script as follows::
+
+    cd ~/leo-4-4-3-final
+    chmod u+x install
+    sudo ./install
+
+The install script will instruct you to add \usr\loca\bin to your path.
+</t>
 <t tx="EKR.20040519090846.5">
 Installing the leo.py on Windows
 --------------------------------
 
-Important: You can install leo.py on Windows using the single-click installer called leosetup.exe.
+Leo is distributed either as an executable installer (.exe) file or as a .zip file.
 
-Leo is distributed as a single compressed (.zip) folder.  Uncompress this folder, put the folder in a convenient place and run leo.py.  You can run leo.py by double-clicking leo.py.  You can also run leo.py from a Python interpreter as follows:
+To install Leo using the executable installer:
 
-	import leo
-	leo.run() # runs leo.py, opening a new outline.
-	leo.go() # runs leo.py after reloading all modules.
-	leo.leoOpen(fileName) # runs leo.py, reloads all modules, and opens fileName.
+    1. Download the latest version of Leo's installer from:    
+       http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+       The installer will be called something like LeoSetup-4-4-3.exe.
 
-You may specify options using the configuration file called leoSettings.leo.
-</t>
+    2. Run the installer.
+       By default, the install will install Leo in your 'Program Files' directory.
+
+To install Leo from the .zip file:
+
+    1. Download the latest version of Leo (a .zip file) from:    
+       http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+    2. Unzip the .zip file and place the unpacked leo folder in 
+       the 'Program Files' folder or any convenient location.
+
+After you have installed Leo, you should add the location of your leo/src folder to your python path.
+One way to do this is adding something like the following to python/Lib/sitecustomize.py:
+
+    import sys
+    sys.path.append(r'&lt;path-to-leo&gt;leo\src')
+
+Another way is to append &lt;path-to-leo&gt; to the Windows PYTHONPATH environment variable.</t>
 <t tx="EKR.20040519090846.6">
 Installing leo.py on MacOs
 --------------------------
@@ -638,7 +661,7 @@ opened with PythonLauncher.
 Pmw must be installed in order to use the Settings panel.
 
 Drag the downloaded gzip file into
- 
+
 /System/Library/Frameworks/Python.framework/Versions/2.3/lib/python2.3/site-packages
 
 Double click on it to unzip and untar the file into a folder to make it

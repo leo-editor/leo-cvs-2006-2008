@@ -11,30 +11,53 @@ Only use Tcl with the default "threads not enabled" case.
 Installing the leo.py on Linux
 ------------------------------
 
-You can install Leo using the install script provided.  Remember to 'chmod +x' before running this script.
+Download the latest version of Leo (a .zip file) from: http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
 
-Leo is distributed as a single compressed (.zip) folder.  Simply uncompress this folder, put the folder in a convenient place and run leo.py.  You can run leo.py by double-clicking leo.py.  You can also run leo.py from a Python interpreter as follows:
+Unzip the downloaded .zip file into a folder in your home directory.
+The folder will be called something like leo-4-4-3-final.
 
-	import leo
-	leo.run() # runs leo.py, opening a new outline.
-	leo.go() # runs leo.py after reloading all modules.
-	leo.leoOpen(fileName) # runs leo.py, reloads all modules, and opens fileName.
+You now have two choices:
 
-You may specify options using the configuration file called leoSettings.leo.
+1. You can run Leo from your home directory.
+Just add  ~/leo-4-4-3-final to your path.
+
+2. You can install leo into \usr\local\lib and \usr\local\bin by running Leo's install script as follows::
+
+    cd ~/leo-4-4-3-final
+    chmod u+x install
+    sudo ./install
+
+The install script will instruct you to add \usr\loca\bin to your path.
+
 Installing the leo.py on Windows
 --------------------------------
 
-Important: You can install leo.py on Windows using the single-click installer called leosetup.exe.
+Leo is distributed either as an executable installer (.exe) file or as a .zip file.
 
-Leo is distributed as a single compressed (.zip) folder.  Uncompress this folder, put the folder in a convenient place and run leo.py.  You can run leo.py by double-clicking leo.py.  You can also run leo.py from a Python interpreter as follows:
+To install Leo using the executable installer:
 
-	import leo
-	leo.run() # runs leo.py, opening a new outline.
-	leo.go() # runs leo.py after reloading all modules.
-	leo.leoOpen(fileName) # runs leo.py, reloads all modules, and opens fileName.
+    1. Download the latest version of Leo's installer from:    
+       http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
+       The installer will be called something like LeoSetup-4-4-3.exe.
 
-You may specify options using the configuration file called leoSettings.leo.
+    2. Run the installer.
+       By default, the install will install Leo in your 'Program Files' directory.
 
+To install Leo from the .zip file:
+
+    1. Download the latest version of Leo (a .zip file) from:    
+       http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
+
+    2. Unzip the .zip file and place the unpacked leo folder in 
+       the 'Program Files' folder or any convenient location.
+
+After you have installed Leo, you should add the location of your leo/src folder to your python path.
+One way to do this is adding something like the following to python/Lib/sitecustomize.py:
+
+    import sys
+    sys.path.append(r'<path-to-leo>leo\src')
+
+Another way is to append <path-to-leo> to the Windows PYTHONPATH environment variable.
 Installing leo.py on MacOs
 --------------------------
 
@@ -89,7 +112,7 @@ opened with PythonLauncher.
 Pmw must be installed in order to use the Settings panel.
 
 Drag the downloaded gzip file into
- 
+
 /System/Library/Frameworks/Python.framework/Versions/2.3/lib/python2.3/site-packages
 
 Double click on it to unzip and untar the file into a folder to make it
