@@ -308,6 +308,7 @@ TestCase
 TestSuite
 TextTestRunner
 Textpad
+The__wx_gui
 ThoughtManager
 Tiago
 Timo
@@ -2004,6 +2005,7 @@ strip_dirs
 strippedLines
 struct
 structs
+stuffit
 stylesheet
 stylesheet_name
 stylesheets
@@ -2215,6 +2217,8 @@ useCmdMenu
 useDoubleClick
 useMinibuffer
 useVerticalBar
+use_chapter_tabs
+use_chapters
 use_gnx
 use_header_flag
 use_hyperlinks
@@ -2340,6 +2344,7 @@ yyyymmddhhmmss
 z1
 zZ
 zgrep
+zipfile
 zn
 zodb
 zzz

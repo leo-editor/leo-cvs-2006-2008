@@ -51612,6 +51612,50 @@ def cleanLines (self,p,s):
 #@nonl
 #@-node:ekr.20070529083836:cleanLines
 #@-node:ekr.20070619112630:Fixed failing bridge unit test
+#@+node:ekr.20070622073036:Applied patch for cleo coloring problem
+@nocolor
+
+By: mstarzyk
+
+There is a problem with coloring of @file (@thin, and others) nodes. 
+After you navigate in the tree out of the node, then the node you just
+left does not get the proper (unselected) color - until you close and 
+reopen the parent node.
+
+This is a problem when you have several @thin nodes and switch 
+between them, because it is difficult in the tree which node is the 
+current - they are all dark green. 
+Please see below for a patch that fixes this problem. 
+
+Cheers, 
+Maciek
+
+Index: plugins/cleo.py
+===================================================================
+RCS file: /cvs/leo/plugins/cleo.py,v
+retrieving revision 1.9
+diff -r1.9 cleo.py
+504c504
+<     def custom_colours(self,v):
+---
+>     def custom_colours(self, v, node_is_selected):
+520c520
+<                 if h == MeSelf:
+---
+>                 if node_is_selected:
+527c527
+<             if h == MeSelf:
+---
+>             if node_is_selected:
+814c814
+<         fg, bg = self.custom_colours(p.v)
+---
+>         fg, bg = self.custom_colours(p.v, node_is_selected=False)
+835c835
+<         fg, bg = self.custom_colours(p.v)
+---
+>         fg, bg = self.custom_colours(p.v, node_is_selected=True)
+#@-node:ekr.20070622073036:Applied patch for cleo coloring problem
 #@-node:ekr.20070615103418:Fixed bugs
 #@+node:ekr.20070615103622:New features & settings
 #@+node:ekr.20070615103622.1:Added @bool contractVisitedNodes setting
