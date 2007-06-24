@@ -40,7 +40,7 @@ import sys
 #@nonl
 #@-node:tbrown.20060903121429.2:<< imports >>
 #@nl
-__version__ = "0.20"
+__version__ = "0.21"
 #@<< version history >>
 #@+node:tbrown.20060903121429.3:<< version history >>
 #@@killcolor
@@ -107,6 +107,8 @@ __version__ = "0.20"
 # - added Show time to show times on nodes
 # - added Find next todo
 # 0.20 EKR: applied patch by mstarzyk.
+# 0.21 EKR: protect access to c.frame.tree.canvas.  It may not exist during 
+# dynamic unit tests.
 #@-at
 #@-node:tbrown.20060903121429.3:<< version history >>
 #@nl
@@ -265,7 +267,10 @@ class cleoController:
             if self.c.config.getColor('cleo_color_prog_'+i):
                 self.__dict__[i] = self.c.config.getColor('cleo_color_prog_'+i)
 
-        self.background_colour = c.frame.tree.canvas.cget('background')
+        if c.frame and c.frame.tree and c.frame.tree.canvas:
+            self.background_colour = c.frame.tree.canvas.cget('background')
+        else:
+            self.background_color = 'black'
         #@nonl
         #@-node:tbrown.20060903121429.16:<< define colors >>
         #@nl
