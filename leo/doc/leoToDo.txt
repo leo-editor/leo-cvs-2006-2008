@@ -169,6 +169,8 @@ S5: http://meyerweb.com/eric/tools/s5/
 - Move all unit tests into leoPy.leo.
 - Remove unitTest.leo.
 - Change leoBridge.py so it runs all tests in leoPy.leo.
+- Create run-all-tests-dynamically command,
+  or change the existing command so it runs tests in a separate copy of Leo.
 #@nonl
 #@-node:ekr.20070623144204:1. Complete changeover of unit tests
 #@+node:ekr.20070324084040:2. @auto

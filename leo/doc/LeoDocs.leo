@@ -748,8 +748,8 @@
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
-<v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
-<v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
+<v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
+<v t="ekr.20070513113931.1" a="E"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
 <v t="ekr.20070513115832.1"><vh>New commands</vh></v>
 <v t="ekr.20070513115832.3"><vh>New settings</vh></v>
@@ -1039,11 +1039,11 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="TV"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
-<v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
-<v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
+<v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
+<v t="ekr.20070513113931.1" a="E"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
 <v t="ekr.20070513115832.1"><vh>New commands</vh></v>
 <v t="ekr.20070513115832.3"><vh>New settings</vh></v>
@@ -3163,7 +3163,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070622090350" a="TV"><vh>4.4.3 beta 3</vh>
+<v t="ekr.20070622090350" a="E"><vh>4.4.3 beta 3</vh>
 <v t="ekr.20070622090350.1"><vh>Fixed bugs</vh>
 <v t="ekr.20070622090350.2"><vh>Allow aspell on Linux provided that ctypes exists</vh></v>
 <v t="ekr.20070622090350.8"><vh>Fixed a bug that disabled icon button colors on Linux</vh></v>
@@ -5458,7 +5458,7 @@ The folder will be called something like leo-4-4-3-final.
 You now have two choices:
     
 1. You can run Leo from your home directory.
-Just add  ~/leo-4-4-3-final to your path.
+   Just add  ~/leo-4-4-3-final to your path.
 
 2. You can install leo into /usr/local/lib and /usr/local/bin by running Leo's install script as follows::
     
@@ -30420,7 +30420,8 @@ The highlights of Leo 4.4.3:
     save-file-as-zipped
     select-chapter
 </t>
-<t tx="ekr.20070513115832.2">- Added support for chapters to Leo's core
+<t tx="ekr.20070513115832.2">- @test and @suite nodes may now be embedded in derived files.
+- Added support for chapters to Leo's core
 
   Chapters are regions of a Leo outline whose root is an @chapter node. @chapter
   nodes may appear anywhere in an outline, but the create-chapter command (see
@@ -30647,7 +30648,6 @@ http://webpages.charter.net/edreamleo/intro.html
 The highlights of Leo 4.4.3:
 ----------------------------
 - Added support for chapters in Leo's core.
-  Chapters are disabled by default.  To enable, set @bool use_chapters = True.
 - Added support for zipped .leo files.
 - Added a leoBridge module that allows full access to all of Leo's capabilities
   from programs running outside of Leo.
