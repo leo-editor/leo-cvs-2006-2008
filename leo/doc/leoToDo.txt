@@ -163,6 +163,12 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20070414090051:Study
 #@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070625083310:Bugs
+#@+node:ekr.20070625083310.1:F2 does not always work
+#@-node:ekr.20070625083310.1:F2 does not always work
+#@+node:ekr.20070625083218:Del does not work in headlines
+#@-node:ekr.20070625083218:Del does not work in headlines
+#@-node:ekr.20070625083310:Bugs
 #@+node:ekr.20070623144204:1. Complete changeover of unit tests
 @nocolor
 
@@ -1509,6 +1515,8 @@ Alt-shift-up/down (make body pane bigger,smaller)
 Alt-shift-left/right (make log pane bigger,smaller)
 #@nonl
 #@-node:ekr.20070613123724:Use alt-shift-arrow keys to resize panes (!)
+#@+node:ekr.20070624135822:Templates for common code fragments
+#@-node:ekr.20070624135822:Templates for common code fragments
 #@-node:ekr.20070613193516:Improvements
 #@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070105135713:To do: 4.5 (new positions)
