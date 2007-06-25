@@ -1153,6 +1153,32 @@ def checkImport (self):
 #@-node:ekr.20070623144302:3. vim-like bindings
 #@+node:ekr.20070615063616.1:Create Debian package
 #@-node:ekr.20070615063616.1:Create Debian package
+#@+node:ekr.20070625091423:Add translation services
+@nocolor
+
+*Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
+Untranslated items should include file names, directories, gnx's, leo_id's etc.
+
+**Don't bother to do clone-find-all: there are 666 many matches!**
+
+Regardless of the chosen scheme:
+
+- g.translate will do the actual translation.
+
+- Some simple string, like tr, will be an abbreviation for g.translate.
+  The typical import will be::
+
+    import leoGlobals as g ; tr = g.translate
+
+The easiest scheme seems to be:
+
+- g.es and g.es_print translate all arguments.
+- g.esx and g.es_printx do no translation.
+
+g.esx and g.es_printx allow a mix on translated and untranslated arguments::
+
+    g.esx(tr('abc'),fileName)
+#@-node:ekr.20070625091423:Add translation services
 #@+node:ekr.20070613193516:Improvements
 #@+node:ekr.20070620101630:Can console output go into Leo?
 #@-node:ekr.20070620101630:Can console output go into Leo?
