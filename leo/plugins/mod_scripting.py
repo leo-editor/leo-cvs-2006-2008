@@ -302,7 +302,7 @@ class scriptingController:
             command = self.runScriptCommand,
             shortcut=None,
             statusLine='Run script in selected node',
-            bg='#%02x,%02x,%02x' % (255,228,225), #'MistyRose1')
+            bg='MistyRose1',
         )
     #@+node:ekr.20060328125248.21:runScriptCommand
     def runScriptCommand (self,event=None):
