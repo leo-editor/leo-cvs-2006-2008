@@ -1412,7 +1412,8 @@ class baseUndoer:
         for v in dirtyVnodeList:
             v.t.setDirty()
 
-        g.es("redo %d instances" % count)
+        if not g.unitTesting:
+            g.es("redo %d instances" % count)
 
         c.selectPosition(p)
         newSel and c.frame.body.setSelectionRange(newSel)
@@ -1642,7 +1643,8 @@ class baseUndoer:
         for v in dirtyVnodeList:
             v.t.clearDirty()
 
-        g.es("undo %d instances" % count)
+        if not g.unitTesting:
+            g.es("undo %d instances" % count)
 
         c.selectPosition(p)
         oldSel and c.frame.body.setSelectionRange(oldSel)

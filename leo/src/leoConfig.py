@@ -1536,8 +1536,8 @@ class configClass:
         fileName = g.os_path_join(path,'.leoRecentFiles.txt')
         ok = g.os_path_exists(fileName)
         if ok:
-
-            print ('reading %s' % fileName)
+            if not g.unitTesting:
+                print ('reading %s' % fileName)
             lines = file(fileName).readlines()
             if lines and self.munge(lines[0])=='readonly':
                 lines = lines[1:]

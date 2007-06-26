@@ -421,7 +421,8 @@ class atFile:
         if at.errors: return False
         at.openFileForReading(fileName,fromString=fromString)
         if not at.inputFile: return False
-        g.es("reading: " + root.headString())
+        if not g.unitTesting:
+            g.es("reading: " + root.headString())
         root.clearVisitedInTree()
         at.scanAllDirectives(root,importing=at.importing,reading=True)
         at.readOpenFile(root,at.inputFile,fileName)

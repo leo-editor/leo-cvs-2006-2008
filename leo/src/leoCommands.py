@@ -303,7 +303,7 @@ class baseCommands:
     #@+node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     def getSignOnLine (self):
         c = self
-        return "Leo 4.4.3 beta final, build %s, June 26, 2007" % c.getBuildNumber()
+        return "Leo 4.4.3 final, build %s, June 26, 2007" % c.getBuildNumber()
     #@-node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     #@+node:ekr.20040629121554.2:initVersion
     def initVersion (self):
@@ -328,10 +328,11 @@ class baseCommands:
 
         else: version = sys.platform
 
-        g.es("Leo Log Window...",color=color)
-        g.es(signon)
-        g.es("Python %d.%d.%d, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
-        g.enl()
+        if not g.unitTesting:
+            g.es("Leo Log Window...",color=color)
+            g.es(signon)
+            g.es("Python %d.%d.%d, %s\n%s" % (n1,n2,n3,g.app.gui.getFullVersion(c),version))
+            g.enl()
     #@-node:ekr.20040629121554.3:c.signOnWithVersion
     #@-node:ekr.20031218072017.2582: version & signon stuff
     #@+node:ekr.20040312090934:c.iterators
@@ -2066,7 +2067,8 @@ class baseCommands:
                         p.setTnodeText(result)
                         u.afterChangeNodeContents(p,undoType,innerUndoData)
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
-            g.es("blanks converted to tabs in %d nodes" % count) # Must come before c.endUpdate().
+            if not g.unitTesting:
+                g.es("blanks converted to tabs in %d nodes" % count) # Must come before c.endUpdate().
         finally:
             c.endUpdate(count > 0)
     #@-node:ekr.20031218072017.1704:convertAllBlanks
@@ -2112,7 +2114,8 @@ class baseCommands:
                         p.setTnodeText(result)
                         u.afterChangeNodeContents(p,undoType,undoData)
             u.afterChangeGroup(current,undoType,dirtyVnodeList=dirtyVnodeList)
-            g.es("tabs converted to blanks in %d nodes" % count)
+            if not g.unitTesting:
+                g.es("tabs converted to blanks in %d nodes" % count)
         finally:
             c.endUpdate(count > 0)
     #@-node:ekr.20031218072017.1705:convertAllTabs
@@ -2222,7 +2225,8 @@ class baseCommands:
             headline = lines[0].strip()
             del lines[0]
         if not lines:
-            g.es("Nothing follows section name",color="blue")
+            if not g.unitTesting:
+                g.es("Nothing follows section name",color="blue")
             return
 
         # Remove leading whitespace from all body lines.
@@ -5314,17 +5318,21 @@ class baseCommands:
 
         # Look in configDir first.
         fileName = g.os_path_join(configDir,name)
+        ok = g.os_path_exists(fileName)
+        if ok:
+            ok, frame = g.openWithFileName(fileName,c)
+            if ok: return
 
         # Look in homeDir second.
-        ok, frame = g.openWithFileName(fileName,c)
-        if not ok:
-            if configDir == loadDir:
-                g.es("%s not found in %s" % (name,configDir))
-            else:
-                fileName = g.os_path_join(homeDir,name)
+        if configDir == loadDir:
+            g.es("%s not found in %s" % (name,configDir))
+        else:
+            fileName = g.os_path_join(homeDir,name)
+            ok = g.os_path_exists(fileName)
+            if ok:
                 ok, frame = g.openWithFileName(fileName,c)
-                if not ok:
-                    g.es("%s not found in %s or %s" % (name,configDir,homeDir))
+            if not ok:
+                g.es("%s not found in %s or %s" % (name,configDir,homeDir))
     #@-node:ekr.20031218072017.2943:openLeoSettings and openMyLeoSettings
     #@+node:ekr.20061018094539:openLeoScripts
     def openLeoScripts (self,event=None):

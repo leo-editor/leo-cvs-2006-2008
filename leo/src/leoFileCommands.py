@@ -400,7 +400,7 @@ if sys.platform != 'cli':
             # Causes window to appear.
             # g.trace('ratio',c.frame.ratio,c.frame.secondary_ratio)
             c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
-            if not self.silent:
+            if not self.silent and not g.unitTesting:
                 g.es("reading: " + self.fileName)
         #@nonl
         #@-node:ekr.20060919112118:startVnodes
@@ -1287,7 +1287,7 @@ class baseFileCommands:
 
         # Causes window to appear.
         c.frame.resizePanesToRatio(c.frame.ratio,c.frame.secondary_ratio)
-        if not silent:
+        if not silent and not g.unitTesting:
             g.es("reading: " + fileName)
 
         self.getVnodes()
