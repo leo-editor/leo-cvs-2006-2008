@@ -147,39 +147,19 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@nonl
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
-#@+node:ekr.20061130084909:Improve What's special whitepaper
-@nocolor
-
-- Answer the question: how can Leo help me with programming?
-#@nonl
-#@-node:ekr.20061130084909:Improve What's special whitepaper
-#@+node:ekr.20070414090051:Study
-@nocolor
-
-- launchpad http://launchpad.net 
-
-- bazaar (bzr)
-#@nonl
-#@-node:ekr.20070414090051:Study
 #@-node:ekr.20070521100324:Marketing/tools
-#@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070325052041:To do: 4.4.4
 #@+node:ekr.20070625083310:Bugs
+#@+node:ekr.20070626114930:Make dynamic-tests work with tkinter gui??
+#@-node:ekr.20070626114930:Make dynamic-tests work with tkinter gui??
+#@+node:ekr.20070626114930.1:Running Leo in batch mode should be in starting Leo chapter, as well as scripting chapter
+#@-node:ekr.20070626114930.1:Running Leo in batch mode should be in starting Leo chapter, as well as scripting chapter
 #@+node:ekr.20070625083310.1:F2 does not always work
 #@-node:ekr.20070625083310.1:F2 does not always work
 #@+node:ekr.20070625083218:Del does not work in headlines
 #@-node:ekr.20070625083218:Del does not work in headlines
 #@-node:ekr.20070625083310:Bugs
-#@+node:ekr.20070623144204:1. Complete changeover of unit tests
-@nocolor
-
-- Move all unit tests into leoPy.leo.
-- Remove unitTest.leo.
-- Change leoBridge.py so it runs all tests in leoPy.leo.
-- Create run-all-tests-dynamically command,
-  or change the existing command so it runs tests in a separate copy of Leo.
-#@nonl
-#@-node:ekr.20070623144204:1. Complete changeover of unit tests
-#@+node:ekr.20070324084040:2. @auto
+#@+node:ekr.20070324084040:@auto
 #@+node:ekr.20070610133513:Design and notes
 #@+node:ekr.20070611173545.1:Review
 @nocolor
@@ -1148,12 +1128,8 @@ def checkImport (self):
     g.trace()
 #@-node:ekr.20070612133404.3:Pass 5: checkImport
 #@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
-#@-node:ekr.20070324084040:2. @auto
-#@+node:ekr.20070623144302:3. vim-like bindings
-#@-node:ekr.20070623144302:3. vim-like bindings
-#@+node:ekr.20070615063616.1:Create Debian package
-#@-node:ekr.20070615063616.1:Create Debian package
-#@+node:ekr.20070625091423:Add translation services
+#@-node:ekr.20070324084040:@auto
+#@+node:ekr.20070625091423:Add translation services (wait until Friday at least)
 @nocolor
 
 *Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
@@ -1178,10 +1154,22 @@ The easiest scheme seems to be:
 g.esx and g.es_printx allow a mix on translated and untranslated arguments::
 
     g.esx(tr('abc'),fileName)
-#@-node:ekr.20070625091423:Add translation services
+#@-node:ekr.20070625091423:Add translation services (wait until Friday at least)
+#@+node:ekr.20061130084909:Improve What's special whitepaper
+@nocolor
+
+- Answer the question: how can Leo help me with programming?
+#@nonl
+#@-node:ekr.20061130084909:Improve What's special whitepaper
 #@+node:ekr.20070613193516:Improvements
-#@+node:ekr.20070620101630:Can console output go into Leo?
-#@-node:ekr.20070620101630:Can console output go into Leo?
+# some of these can wait till much later.
+#@nonl
+#@+node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20070615063616.1:Create Debian package
+#@+node:ekr.20070626092228:@menu nodes for leoSettings.leo
+#@-node:ekr.20070626092228:@menu nodes for leoSettings.leo
+#@+node:ekr.20070623144302:vim-like bindings
+#@-node:ekr.20070623144302:vim-like bindings
 #@+node:ekr.20070619161413:Finish support for hidden windows
 @
 
@@ -1491,10 +1479,7 @@ def __init__ (self,c,parentFrame):
     c.frame.statusText  = self.textWidget
 #@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
 #@-node:ekr.20070619161413:Finish support for hidden windows
-#@+node:ekr.20070619174213:To do: run all unit tests in unitTests.leo
-# Running all unit tests in leoPy.leo from unitTest.leo would be way too slow.
-#@nonl
-#@-node:ekr.20070619174213:To do: run all unit tests in unitTests.leo
+#@+node:ekr.20070626092228.1:minor
 #@+node:ekr.20070613103409:Improve marks/recent buttons
 - Arrow keys must move up/down.
 - Should be commands to show the marks/recent dialogs.
@@ -1536,15 +1521,11 @@ a big deal, then not to worry, I can always navigate to the file of course.
                 a = getattr(event,z)
                 print z,repr(a)
 #@-node:ekr.20070613181147:(maybe) Improve key handling
-#@+node:ekr.20070613123724:Use alt-shift-arrow keys to resize panes (!)
-Alt-shift-up/down (make body pane bigger,smaller)
-Alt-shift-left/right (make log pane bigger,smaller)
-#@nonl
-#@-node:ekr.20070613123724:Use alt-shift-arrow keys to resize panes (!)
 #@+node:ekr.20070624135822:Templates for common code fragments
 #@-node:ekr.20070624135822:Templates for common code fragments
+#@-node:ekr.20070626092228.1:minor
 #@-node:ekr.20070613193516:Improvements
-#@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@-node:ekr.20070325052041:To do: 4.4.4
 #@+node:ekr.20070105135713:To do: 4.5 (new positions)
 #@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.

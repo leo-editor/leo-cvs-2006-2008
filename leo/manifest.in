@@ -104,6 +104,7 @@ include src/oldLeoProjects.leo
 include test/test.leo
 include test/unitTest.leo
 
+include test/unittest/at-file-thin-test2.txt
 include test/unittest/batchTest.py
 include test/unittest/leoDynamicTest.py
 include test/unittest/errorTest.py
