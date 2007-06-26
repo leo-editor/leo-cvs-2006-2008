@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.575136612022">
-	<global_window_position top="94" left="363" height="732" width="897"/>
+	<global_window_position top="94" left="363" height="712" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -1039,7 +1039,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="TV"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
@@ -3160,10 +3160,7 @@
 <v t="ekr.20070610173300"><vh>Enabled more plugins by default</vh></v>
 </v>
 </v>
-</v>
-</v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070622090350" a="E"><vh>4.4.3 beta 3</vh>
+<v t="ekr.20070622090350"><vh>4.4.3 beta 3</vh>
 <v t="ekr.20070622090350.1"><vh>Fixed bugs</vh>
 <v t="ekr.20070622090350.2"><vh>Allow aspell on Linux provided that ctypes exists</vh></v>
 <v t="ekr.20070622090350.8"><vh>Fixed a bug that disabled icon button colors on Linux</vh></v>
@@ -3180,6 +3177,10 @@
 <v t="ekr.20070622090350.9"><vh>Made alt menu keys work</vh></v>
 </v>
 </v>
+</v>
+</v>
+<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
+<v t="ekr.20070626082732" a="EV"><vh>4.4.3 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -30943,5 +30944,36 @@ When chapters are enabled, the Cmds:Chapters menu shows all available chapter co
 - The select-chapter command makes only the nodes of the selected chapter visible.
 - The move-node-to-chapter, clone-node-to-chapter and copy-node-to-chapter commands
   add a node (and its descendants) to another chapter.</t>
+<t tx="ekr.20070626082732">Leo 4.4.3 final                                  June 26, 2006
+
+Leo 4.4.3 final is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.3:
+----------------------------
+- Added support for chapters in Leo's core.
+- Added support for zipped .leo files.
+- Added a leoBridge module that allows full access to all of Leo's capabilities
+  from programs running outside of Leo.
+- Removed all gui-dependent code from Leo's core.
+- Better support for the winpdb debugger.
+- Added support for @enabled-plugins nodes in settings files.
+- Added support for @open-with nodes in settings files.
+- Added support for @bool write_strips_blank_lines setting.
+- The__wx_gui plugin is now functional.
+- Leo can use aspell on Linux when using Python 2.5 or later.
+- @test nodes can now be run from any .leo file.
+- Many minor improvements, new settings, commands and bug fixes.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 </tnodes>
 </leo_file>

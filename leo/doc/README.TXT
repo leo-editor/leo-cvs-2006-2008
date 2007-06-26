@@ -1,9 +1,7 @@
-Leo 4.4.3 beta 3                                June 23, 2006
+Leo 4.4.3 final                                  June 26, 2006
 
-Leo 4.4.3 beta 3 is available at:
+Leo 4.4.3 final is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&package_id=29106
-
-This release fixes all known bugs and adds several new features.
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
@@ -11,7 +9,6 @@ http://webpages.charter.net/edreamleo/intro.html
 The highlights of Leo 4.4.3:
 ----------------------------
 - Added support for chapters in Leo's core.
-  Chapters are disabled by default.  To enable, set @bool use_chapters = True.
 - Added support for zipped .leo files.
 - Added a leoBridge module that allows full access to all of Leo's capabilities
   from programs running outside of Leo.
