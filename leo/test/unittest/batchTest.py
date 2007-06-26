@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:ekr.20040327114250:@thin ../test/unittest/batchTest.py
+#@+node:ekr.20070626094543.778:@thin ../test/unittest/batchTest.py
 # A file to be executed in batch mode as part of unit testing.
 
 #@@language python
@@ -21,5 +21,5 @@ finally:
     if f:
         f.close()
 #@nonl
-#@-node:ekr.20040327114250:@thin ../test/unittest/batchTest.py
+#@-node:ekr.20070626094543.778:@thin ../test/unittest/batchTest.py
 #@-leo
