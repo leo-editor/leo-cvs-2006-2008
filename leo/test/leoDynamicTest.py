@@ -1,5 +1,5 @@
 #@+leo-ver=4-thin
-#@+node:ekr.20070619122533:@thin leoDynamicTest.py
+#@+node:ekr.20070626153912:@thin leoDynamicTest.py
 '''A program to run dynamic unit tests with the leoBridge module.'''
 
 import leoBridge
@@ -7,7 +7,7 @@ import leoTest
 # Do not define g here.  Use the g returned by the bridge.
 
 #@+others
-#@+node:ekr.20070619122533.1:main & helpers
+#@+node:ekr.20070626153912.1:main & helpers
 def main ():
 
     tag = 'leoDynamicTests.leo'
@@ -23,7 +23,7 @@ def main ():
         runUnitTests(c,g)
 
     print tag,'done'
-#@+node:ekr.20070619122533.2:runUnitTests
+#@+node:ekr.20070626153912.2:runUnitTests
 def runUnitTests (c,g):
 
     p = c.rootPosition()
@@ -31,11 +31,11 @@ def runUnitTests (c,g):
     c.selectPosition(p)
     c.debugCommands.runUnitTests()
 #@nonl
-#@-node:ekr.20070619122533.2:runUnitTests
-#@-node:ekr.20070619122533.1:main & helpers
+#@-node:ekr.20070626153912.2:runUnitTests
+#@-node:ekr.20070626153912.1:main & helpers
 #@-others
 
 if __name__ == '__main__':
     main()
-#@-node:ekr.20070619122533:@thin leoDynamicTest.py
+#@-node:ekr.20070626153912:@thin leoDynamicTest.py
 #@-leo

@@ -150,10 +150,35 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20070325052041:To do: 4.4.4
 #@+node:ekr.20070625083310:Bugs
-#@+node:ekr.20070626114930:Make dynamic-tests work with tkinter gui??
-#@-node:ekr.20070626114930:Make dynamic-tests work with tkinter gui??
-#@+node:ekr.20070626114930.1:Running Leo in batch mode should be in starting Leo chapter, as well as scripting chapter
-#@-node:ekr.20070626114930.1:Running Leo in batch mode should be in starting Leo chapter, as well as scripting chapter
+#@+node:ekr.20070626153304:Fix spell-check bug
+# Misspelled words not selected properly on Linux.
+#@nonl
+#@-node:ekr.20070626153304:Fix spell-check bug
+#@+node:ekr.20070626151926:Finish transition to unit tests
+@nocolor
+
+Somehow running unit tests cleared all body text in leoPy.leo (!!)
+
+I lost all new data not contained in a derived file (!!!)
+- Could running unit tests from here have been the culprit?  Maybe.
+
+To do:
+
+** Some nodes needed by unit tests are not copied by dynamic-tests script:
+    - Example 1: Test headline abc
+    - Example 2: Import tests and Export tests trees are not copied.
+
+- --runCommand "leo-command-name" runs the command at idle-time after loading the file.
+  This allows us to run the run-all-unit-tests command in a tkinter gui.
+
+- ?? Why does running dynamic commands with a nullGui fail??
+
+- run-unit-tests and run-all-unit-tests commands should *always* create a separate .leo file.
+  It appears that running unit tests is more dangerous than I thought.
+
+- Add support for @testcase
+#@nonl
+#@-node:ekr.20070626151926:Finish transition to unit tests
 #@+node:ekr.20070625083310.1:F2 does not always work
 #@-node:ekr.20070625083310.1:F2 does not always work
 #@+node:ekr.20070625083218:Del does not work in headlines
@@ -1155,6 +1180,10 @@ g.esx and g.es_printx allow a mix on translated and untranslated arguments::
 
     g.esx(tr('abc'),fileName)
 #@-node:ekr.20070625091423:Add translation services (wait until Friday at least)
+#@+node:ekr.20070626114930.1:Improve docs for batch mode
+Running Leo in batch mode should be in starting Leo chapter, as well as scripting chapter.
+#@nonl
+#@-node:ekr.20070626114930.1:Improve docs for batch mode
 #@+node:ekr.20061130084909:Improve What's special whitepaper
 @nocolor
 
