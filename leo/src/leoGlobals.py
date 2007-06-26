@@ -2605,7 +2605,7 @@ def choose(cond, a, b): # warning: evaluates all arguments
     if cond: return a
     else: return b
 #@-node:ekr.20031218072017.3147:choose
-#@+node:ekr.20031218072017.1474:es, enl, ecnl
+#@+node:ekr.20031218072017.1474:enl, ecnl & ecnls
 def ecnl(tabName='Log'):
     g.ecnls(1,tabName)
 
@@ -2620,9 +2620,11 @@ def enl(tabName='Log'):
     if log and not log.isNull:
         log.newlines += 1
         log.putnl(tabName)
-
+#@-node:ekr.20031218072017.1474:enl, ecnl & ecnls
+#@+node:ekr.20070626132332:es
 def es(s,*args,**keys):
     # print 'es','app.log',repr(app.log),'log.isNull',not app.log or app.log.isNull,repr(s)
+    log = app.log
     if app.killed:
         return
     newline = keys.get("newline",True)
@@ -2639,8 +2641,12 @@ def es(s,*args,**keys):
     if app.batchMode:
         if app.log:
             app.log.put(s)
+    elif g.unitTesting:
+        if log and not log.isNull:
+            s = g.toEncodedString(s,'ascii')
+            if newline: print s
+            else: print s,
     else:
-        log = app.log
         if log and log.isNull:
             pass
         elif log:
@@ -2657,13 +2663,13 @@ def es(s,*args,**keys):
         else:
             app.logWaiting.append((s,color),)
             # print s,
-#@-node:ekr.20031218072017.1474:es, enl, ecnl
+#@-node:ekr.20070626132332:es
 #@+node:ekr.20050707064040:es_print & test
 def es_print(s,*args,**keys):
 
     print g.toEncodedString(s,'ascii')
 
-    if g.app.gui and not g.app.gui.isNullGui:
+    if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
 #@+node:ekr.20070621092938:@test g.es_print
 if g.unitTesting:
