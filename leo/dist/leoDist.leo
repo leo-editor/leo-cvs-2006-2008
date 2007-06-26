@@ -34,7 +34,7 @@
 <v t="ekr.20070620084858.1"><vh>@@button upload</vh></v>
 </v>
 </v>
-<v t="EKR.20040519091259" a="T"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070425092712"><vh>April 2007</vh></v>
@@ -162,8 +162,8 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
-<v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
+<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118103207" a="E"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
 <v t="ekr.20050118104149.2"><vh>&lt;&lt; uninstall config files &gt;&gt;</vh></v>
@@ -200,11 +200,11 @@
 <v t="ekr.20050118104901.10"><vh>&lt;&lt; install src files &gt;&gt;</vh></v>
 <v t="ekr.20050118104901.11"><vh>&lt;&lt; uninstall src files &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050118122740.2"><vh>test files</vh>
+<v t="ekr.20050118122740.2" a="E"><vh>test files</vh>
 <v t="ekr.20050118122404.1"><vh>&lt;&lt; install test files &gt;&gt;</vh></v>
 <v t="ekr.20050830052109"><vh>&lt;&lt; install unittest files &gt;&gt;</vh></v>
 <v t="ekr.20050118122740.3"><vh>&lt;&lt; uninstall test files &gt;&gt;</vh></v>
-<v t="ekr.20050830052109.1"><vh>&lt;&lt; uninstall unittest files &gt;&gt;</vh></v>
+<v t="ekr.20050830052109.1" a="TV"><vh>&lt;&lt; uninstall unittest files &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20050118103447"><vh>top-level</vh>
 <v t="ekr.20050118103207.1"><vh>&lt;&lt; install top-level files &gt;&gt;</vh></v>
@@ -213,12 +213,12 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
 </v>
-<v t="EKR.20040519090846.2" a="E"><vh>@asis ../doc/INSTALL.TXT</vh>
+<v t="EKR.20040519090846.2"><vh>@asis ../doc/INSTALL.TXT</vh>
 <v t="EKR.20040519090846.3"><vh>System requirements</vh></v>
 <v t="EKR.20040519090846.4"><vh>Linux installation</vh></v>
 <v t="EKR.20040519090846.5"><vh>Windows installation</vh></v>
@@ -232,7 +232,7 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401" a="V"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401"><vh>Update these for each release</vh>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
@@ -3081,6 +3081,7 @@ File "..\test\test.leo"
 File "..\test\unitTest.leo"
 File "..\test\leoBridgeTest.py"
 File "..\test\leoDynamicTest.py"
+
 </t>
 <t tx="ekr.20050118122740"></t>
 <t tx="ekr.20050118122740.1">Delete "$INSTDIR\extensions\aspell23.pyd"
@@ -3781,9 +3782,11 @@ CVS:      http://sourceforge.net/cvs/?group_id=3458
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
 <t tx="ekr.20050830052109">File "..\test\unittest\batchTest.py"
 File "..\test\unittest\errorTest.py"
+File "..\test\unittest\at-file-thin-test2.txt"
 </t>
 <t tx="ekr.20050830052109.1">Delete "$INSTDIR\test\unittest\batchTest.py"
 Delete "$INSTDIR\test\unittest\errorTest.py"
+Delete "$INSTDIR\test\unittest\at-file-thin-test2.txt"
 </t>
 <t tx="ekr.20050905095110">Leo 4.3.2 beta 1  is now available at:
 
@@ -5240,6 +5243,7 @@ include src/oldLeoProjects.leo
 include test/test.leo
 include test/unitTest.leo
 
+include test/unittest/at-file-thin-test2.txt
 include test/unittest/batchTest.py
 include test/unittest/leoDynamicTest.py
 include test/unittest/errorTest.py</t>

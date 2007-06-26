@@ -387,6 +387,7 @@ Section "Leo" SEC01
   File "..\test\unitTest.leo"
   File "..\test\leoBridgeTest.py"
   File "..\test\leoDynamicTest.py"
+
   ;@-node:ekr.20050118122404.1:<< install test files >>
   ;@nl
   SetOutPath "$INSTDIR\test\unittest"
@@ -394,6 +395,7 @@ Section "Leo" SEC01
   ;@+node:ekr.20050830052109:<< install unittest files >>
   File "..\test\unittest\batchTest.py"
   File "..\test\unittest\errorTest.py"
+  File "..\test\unittest\at-file-thin-test2.txt"
   ;@-node:ekr.20050830052109:<< install unittest files >>
   ;@nl
 
@@ -685,6 +687,7 @@ Section Uninstall
   ;@+node:ekr.20050830052109.1:<< uninstall unittest files >>
   Delete "$INSTDIR\test\unittest\batchTest.py"
   Delete "$INSTDIR\test\unittest\errorTest.py"
+  Delete "$INSTDIR\test\unittest\at-file-thin-test2.txt"
   ;@-node:ekr.20050830052109.1:<< uninstall unittest files >>
   ;@nl
   ;@  << uninstall top-level files >>
