@@ -159,6 +159,15 @@ S5: http://meyerweb.com/eric/tools/s5/
 
 - (done) Put most unit tests in @thin unitTests.txt (with @all).
 
+- Suppress reading messages when run from dynamic.leo.
+
+- Move most commands tests into Code tree.
+
+- Modify run-unit-test command so it runs dynamically.
+    - Eliminate unit test buttons.
+    - Create standard binding.
+    - How to run gui tests from unitTest.leo?
+
 Later
 
 - Support @testcase" How are the test cases actually created?
@@ -169,6 +178,8 @@ Later
 - reduce or eliminate leoTest.py
     - It may be less necessary now that dynamic tests run fully updated code.
     - OTOH, it may be the easiest way to share code.
+
+@color
 #@nonl
 #@+node:ekr.20031218072017.1501:reportBadChars
 def reportBadChars (s,encoding):
@@ -183,18 +194,18 @@ def reportBadChars (s,encoding):
             s2 = "%d errors converting %s to %s" % (
                 errors, s.encode(encoding,'replace'),
                 encoding.encode('ascii','replace'))
-            #if not g.unitTesting:
-            g.es(s2,color='red')
+            if not g.unitTesting:
+                g.es(s2,color='red')
     elif type(s) == type(""):
         for ch in s:
             try: unicode(ch,encoding,"strict")
             except: errors += 1
         if errors:
-            g.es("%d errors converting %s (%s encoding) to unicode" % (
-                errors,
-                unicode(s,encoding,'replace'),
-                encoding.encode('ascii','replace')),
-            color='red')
+            s2 = "%d errors converting %s (%s encoding) to unicode" % (
+                errors, unicode(s,encoding,'replace'),
+                encoding.encode('ascii','replace'))
+            if not g.unitTesting:
+                g.es(s2,color='red')
 #@+node:ekr.20050825092149:@test g.reportBadChars
 if g.unitTesting:
 
@@ -213,6 +224,230 @@ if g.unitTesting:
         g.reportBadChars(s,encoding)
 #@-node:ekr.20050825092149:@test g.reportBadChars
 #@-node:ekr.20031218072017.1501:reportBadChars
+#@+node:ekr.20031218072017.3212:importFilesCommand
+def importFilesCommand (self,files=None,treeType=None,
+    perfectImport=True,testing=False,verbose=False):
+        # Not a command.  It must *not* have an event arg.
+
+    c = self.c
+    if c == None: return
+    v = current = c.currentVnode()
+    if current == None: return
+    if len(files) < 1: return
+    self.tab_width = self.getTabWidth() # New in 4.3.
+    self.treeType = treeType
+    c.beginUpdate()
+    try: # range of update...
+        if len(files) == 2:
+            << Create a parent for two files having a common prefix >>
+        for fileName in files:
+            g.setGlobalOpenDir(fileName)
+            v = self.createOutline(fileName,current)
+            if v: # createOutline may fail.
+                perfectImport = False ###
+                testing = True; verbose = True
+                if perfectImport and treeType == "@file": # Can't correct @root trees.
+                    self.perfectImport(fileName,v,testing=testing,verbose=verbose,verify=False)
+                else:
+                    if not g.unitTesting:
+                        g.es("imported " + fileName,color="blue")
+                v.contract()
+                v.setDirty()
+                c.setChanged(True)
+        c.validateOutline()
+        current.expand()
+    finally:
+        c.endUpdate()
+    c.selectVnode(current)
+#@+node:ekr.20031218072017.3213:<< Create a parent for two files having a common prefix >>
+@ The two filenames have a common prefix everything before the last period is the same.  For example, x.h and x.cpp.
+@c
+
+name0 = files[0]
+name1 = files[1]
+prefix0, junk = g.os_path_splitext(name0)
+prefix1, junk = g.os_path_splitext(name1)
+if len(prefix0) > 0 and prefix0 == prefix1:
+    current = current.insertAsLastChild()
+    junk, nameExt = g.os_path_split(prefix1)
+    name,ext = g.os_path_splitext(prefix1)
+    current.initHeadString(name)
+#@-node:ekr.20031218072017.3213:<< Create a parent for two files having a common prefix >>
+#@-node:ekr.20031218072017.3212:importFilesCommand
+#@+node:ekr.20031218072017.2923:markChangedHeadlines
+def markChangedHeadlines (self,event=None):
+
+    '''Mark all nodes that have been changed.'''
+
+    c = self ; u = c.undoer ; undoType = 'Mark Changed'
+    current = c.currentPosition()
+
+    c.beginUpdate()
+    try:
+        u.beforeChangeGroup(current,undoType)
+        for p in c.allNodes_iter():
+            if p.isDirty()and not p.isMarked():
+                bunch = u.beforeMark(p,undoType)
+                c.setMarked(p)
+                c.setChanged(True)
+                u.afterMark(p,undoType,bunch)
+        u.afterChangeGroup(current,undoType)
+        if not g.unitTesting:
+            g.es("done",color="blue")
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2923:markChangedHeadlines
+#@+node:ekr.20031218072017.2924:markChangedRoots
+def markChangedRoots (self,event=None):
+
+    '''Mark all changed @root nodes.'''
+
+    c = self ; u = c.undoer ; undoType = 'Mark Changed'
+    current = c.currentPosition()
+
+    c.beginUpdate()
+    try:
+        u.beforeChangeGroup(current,undoType)
+        for p in c.allNodes_iter():
+            if p.isDirty()and not p.isMarked():
+                s = p.bodyString()
+                flag, i = g.is_special(s,0,"@root")
+                if flag:
+                    bunch = u.beforeMark(p,undoType)
+                    c.setMarked(p)
+                    c.setChanged(True)
+                    u.afterMark(p,undoType,bunch)
+        u.afterChangeGroup(current,undoType)
+        if not g.unitTesting:
+            g.es("done",color="blue")
+    finally:
+        c.endUpdate()
+#@-node:ekr.20031218072017.2924:markChangedRoots
+#@+node:ekr.20050206085258:atFile.printError & test
+def printError (self,message):
+
+    '''Print an error message that may contain non-ascii characters.'''
+
+    if self.errors == 0:
+        g.es_error(message)
+    else:
+        try:
+            print message
+        except UnicodeError:
+            print g.toEncodedString(message,'ascii')
+#@+node:ekr.20070621091727:@@test printError
+# We typically don't enable this test.
+
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    at = c.atFileCommands
+    at.errors = 0
+    at.printError(
+        "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
+#@-node:ekr.20070621091727:@@test printError
+#@-node:ekr.20050206085258:atFile.printError & test
+#@+node:ekr.20070412082527:g.openLeoOrZipFile
+def openLeoOrZipFile (fileName):
+
+    try:
+        isZipped = zipfile.is_zipfile(fileName)
+        if isZipped:
+            theFile = zipfile.ZipFile(fileName,'r')
+            # g.trace('opened zip file',theFile)
+        else:
+            theFile = file(fileName,'rb')
+        return theFile,isZipped
+    except IOError:
+        # Do not use string + here: it will fail for non-ascii strings!
+        if not g.unitTesting:
+            g.es("can not open: %s" % (fileName),color="blue")
+        return None,False
+#@nonl
+#@-node:ekr.20070412082527:g.openLeoOrZipFile
+#@+node:ekr.20041005105605.177:putRefAt
+def putRefAt (self,s,i,n1,n2,p,delta):
+
+    """Put a reference at s[n1:n2+2] from p."""
+
+    at = self ; c = at.c ; name = s[n1:n2+2]
+
+    ref = g.findReference(c,name,p)
+    if not ref:
+        if not g.unitTesting:
+            at.writeError(
+                "undefined section: %s\n\treferenced from: %s" %
+                    ( name,p.headString()))
+        return None
+
+    # Expand the ref.
+    if not delta:
+        junk,delta = g.skip_leading_ws_with_indent(s,i,at.tab_width)
+
+    at.putLeadInSentinel(s,i,n1,delta)
+
+    inBetween = []
+    if at.thinFile: # @+-middle used only in thin files.
+        parent = ref.parent()
+        while parent != p:
+            inBetween.append(parent)
+            parent = parent.parent()
+
+    at.indent += delta
+
+    if at.leadingWs:
+        at.putSentinel("@" + at.leadingWs + name)
+    else:
+        at.putSentinel("@" + name)
+
+    if inBetween:
+        # Bug fix: reverse the +middle sentinels, not the -middle sentinels.
+        inBetween.reverse()
+        for p2 in inBetween:
+            at.putOpenNodeSentinel(p2,middle=True)
+
+    at.putOpenNodeSentinel(ref)
+    at.putBody(ref)
+    at.putCloseNodeSentinel(ref)
+
+    if inBetween:
+        inBetween.reverse()
+        for p2 in inBetween:
+            at.putCloseNodeSentinel(p2,middle=True)
+
+    at.indent -= delta
+
+    return delta
+#@-node:ekr.20041005105605.177:putRefAt
+#@+node:ekr.20050404190914.2:deleteFileWithMessage
+def deleteFileWithMessage(self,fileName,kind):
+
+    __pychecker__ = '--no-argsused' # kind unused: retained for debugging.
+
+    try:
+        os.remove(fileName)
+
+    except Exception:
+        if self.read_only:
+            g.es("read only",color="red")
+        if not g.unitTesting:
+            g.es("exception deleting backup file:" + fileName)
+            g.es_exception(full=False)
+        return False
+#@+node:ekr.20050404212949:@test fc.deleteFileWithMessage
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    fc=c.fileCommands # Self is a dummy argument.
+    fc.deleteFileWithMessage('xyzzy','test')
+
+if 0: # one-time test of es statements.
+    fileName = 'fileName' ; kind = 'kind'
+    g.es("read only",color="red")
+    g.es("exception deleting %s file: %s" % (fileName,kind))
+    g.es("exception deleting backup file:" + fileName)
+#@-node:ekr.20050404212949:@test fc.deleteFileWithMessage
+#@-node:ekr.20050404190914.2:deleteFileWithMessage
 #@-node:ekr.20070626151926:Finish transition to unit tests
 #@+node:ekr.20070625083310:Bugs
 #@+node:ekr.20070627091302:test.leo gives a warning from restoreDescendantAttributes
