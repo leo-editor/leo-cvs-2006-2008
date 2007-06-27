@@ -3447,9 +3447,10 @@ class atFile:
 
         ref = g.findReference(c,name,p)
         if not ref:
-            at.writeError(
-                "undefined section: %s\n\treferenced from: %s" %
-                    ( name,p.headString()))
+            if not g.unitTesting:
+                at.writeError(
+                    "undefined section: %s\n\treferenced from: %s" %
+                        ( name,p.headString()))
             return None
 
         # Expand the ref.
@@ -4380,7 +4381,9 @@ class atFile:
                 print message
             except UnicodeError:
                 print g.toEncodedString(message,'ascii')
-    #@+node:ekr.20070621091727:@test printError
+    #@+node:ekr.20070621091727:@@test printError
+    # We typically don't enable this test.
+
     if g.unitTesting:
 
         c,p = g.getTestVars()
@@ -4388,7 +4391,7 @@ class atFile:
         at.errors = 0
         at.printError(
             "test of printError: Ᾱ(U+1FB9: Greek Capital Letter Alpha With Macron)")
-    #@-node:ekr.20070621091727:@test printError
+    #@-node:ekr.20070621091727:@@test printError
     #@-node:ekr.20050206085258:atFile.printError & test
     #@+node:ekr.20041005105605.222:atFile.scanAllDirectives
     #@+at 
@@ -4815,7 +4818,7 @@ class atFile:
                     self.outputFileName,self.targetFileName))
                 g.es_exception()
             return False
-    #@+node:ekr.20050107085710:@tesst atFile_rename
+    #@+node:ekr.20050107085710:@test atFile_rename
     if g.unitTesting:
 
         __pychecker__ = '--no-reimport'
@@ -4847,7 +4850,7 @@ class atFile:
         assert s == 'test %s' % path
         os.remove(path2)
         assert not exists(path)
-    #@-node:ekr.20050107085710:@tesst atFile_rename
+    #@-node:ekr.20050107085710:@test atFile_rename
     #@-node:ekr.20050104131929.1:atFile.rename & test
     #@+node:ekr.20050104132018:remove & test
     def remove (self,fileName,verbose=True):

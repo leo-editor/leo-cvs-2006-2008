@@ -1935,7 +1935,8 @@ def openLeoOrZipFile (fileName):
         return theFile,isZipped
     except IOError:
         # Do not use string + here: it will fail for non-ascii strings!
-        g.es("can not open: %s" % (fileName),color="blue")
+        if not g.unitTesting:
+            g.es("can not open: %s" % (fileName),color="blue")
         return None,False
 #@nonl
 #@-node:ekr.20070412082527:g.openLeoOrZipFile
@@ -2672,7 +2673,9 @@ def es_print(s,*args,**keys):
     if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
 #@+node:ekr.20070621092938:@test g.es_print
-if g.unitTesting:
+# Not usually enabled.
+
+if False and g.unitTesting:
 
     g.es_print('\ntest of es_print: Ă',color='red')
 #@-node:ekr.20070621092938:@test g.es_print
@@ -2684,7 +2687,9 @@ def es_trace(s,*args,**keys):
     g.es(s,*args,**keys)
 #@nonl
 #@+node:ekr.20070621092938.1:@test g.es_trace
-if g.unitTesting:
+# Not usually enabled.
+
+if False and g.unitTesting:
 
     g.es_trace('\ntest of es_trace: Ă',color='red')
 #@-node:ekr.20070621092938.1:@test g.es_trace
@@ -4016,18 +4021,18 @@ def reportBadChars (s,encoding):
             s2 = "%d errors converting %s to %s" % (
                 errors, s.encode(encoding,'replace'),
                 encoding.encode('ascii','replace'))
-            #if not g.unitTesting:
-            g.es(s2,color='red')
+            if not g.unitTesting:
+                g.es(s2,color='red')
     elif type(s) == type(""):
         for ch in s:
             try: unicode(ch,encoding,"strict")
             except: errors += 1
         if errors:
-            g.es("%d errors converting %s (%s encoding) to unicode" % (
-                errors,
-                unicode(s,encoding,'replace'),
-                encoding.encode('ascii','replace')),
-            color='red')
+            s2 = "%d errors converting %s (%s encoding) to unicode" % (
+                errors, unicode(s,encoding,'replace'),
+                encoding.encode('ascii','replace'))
+            if not g.unitTesting:
+                g.es(s2,color='red')
 #@+node:ekr.20050825092149:@test g.reportBadChars
 if g.unitTesting:
 

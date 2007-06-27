@@ -2387,8 +2387,9 @@ class baseFileCommands:
         except Exception:
             if self.read_only:
                 g.es("read only",color="red")
-            g.es("exception deleting backup file:" + fileName)
-            g.es_exception(full=False)
+            if not g.unitTesting:
+                g.es("exception deleting backup file:" + fileName)
+                g.es_exception(full=False)
             return False
     #@+node:ekr.20050404212949:@test fc.deleteFileWithMessage
     if g.unitTesting:

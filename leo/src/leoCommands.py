@@ -4452,7 +4452,8 @@ class baseCommands:
                     c.setChanged(True)
                     u.afterMark(p,undoType,bunch)
             u.afterChangeGroup(current,undoType)
-            g.es("done",color="blue")
+            if not g.unitTesting:
+                g.es("done",color="blue")
         finally:
             c.endUpdate()
     #@-node:ekr.20031218072017.2923:markChangedHeadlines
@@ -4477,7 +4478,8 @@ class baseCommands:
                         c.setChanged(True)
                         u.afterMark(p,undoType,bunch)
             u.afterChangeGroup(current,undoType)
-            g.es("done",color="blue")
+            if not g.unitTesting:
+                g.es("done",color="blue")
         finally:
             c.endUpdate()
     #@-node:ekr.20031218072017.2924:markChangedRoots
