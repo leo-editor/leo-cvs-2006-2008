@@ -1214,18 +1214,21 @@ class debugCommandsClass (baseEditCommandsClass):
         k = self
 
         return {
-            'collect-garbage':      self.collectGarbage,
-            'debug':                self.debug,
-            'disable-gc-trace':     self.disableGcTrace,
-            'dump-all-objects':     self.dumpAllObjects,
-            'dump-new-objects':     self.dumpNewObjects,
-            'enable-gc-trace':      self.enableGcTrace,
-            'free-tree-widgets':    self.freeTreeWidgets,
-            'print-focus':          self.printFocus,
-            'print-stats':          self.printStats,
-            'print-gc-summary':     self.printGcSummary,
-            'run-unit-tests':       self.runUnitTests,
-            'verbose-dump-objects': self.verboseDumpObjects,
+            'collect-garbage':              self.collectGarbage,
+            'debug':                        self.debug,
+            'disable-gc-trace':             self.disableGcTrace,
+            'dump-all-objects':             self.dumpAllObjects,
+            'dump-new-objects':             self.dumpNewObjects,
+            'enable-gc-trace':              self.enableGcTrace,
+            'free-tree-widgets':            self.freeTreeWidgets,
+            'print-focus':                  self.printFocus,
+            'print-stats':                  self.printStats,
+            'print-gc-summary':             self.printGcSummary,
+            'run-all-unit-tests':           self.runAllUnitTests, # The new way...
+            'run-unit-tests':               self.runUnitTests,
+            'run-all-unit-tests-locally':   self.runAllUnitTestsLocally, # The old way...
+            'run-unit-tests-locally':       self.runUnitTestsLocally,
+            'verbose-dump-objects':         self.verboseDumpObjects,
         }
     #@-node:ekr.20060127163325: getPublicCommands
     #@+node:ekr.20060205050659:collectGarbage
@@ -1375,15 +1378,27 @@ class debugCommandsClass (baseEditCommandsClass):
         c.frame.tree.showStats()
         self.dumpAllObjects()
     #@-node:ekr.20060202133313:printStats
-    #@+node:ekr.20060328121145:runUnitTest
-    def runUnitTests (self,event=None):
-
+    #@+node:ekr.20060328121145:runUnitTest commands
+    def runAllUnitTestsLocally (self,event=None):
         '''Run all unit tests contained in the presently selected outline.'''
-
         c = self.c
+        leoTest.doTests(c,all=True)
 
+    def runUnitTestsLocally (self,event=None):
+        '''Run all unit tests contained in the presently selected outline.'''
+        c = self.c
         leoTest.doTests(c,all=False)
-    #@-node:ekr.20060328121145:runUnitTest
+
+    def runAllUnitTests (self,event=None):
+        '''Run all unit tests contained in the entire outline.'''
+        c = self.c
+        leoTest.runTestsExternally(c,all=True)
+
+    def runUnitTests(self,event=None):
+        '''Run all unit tests contained in the presently selected outline.'''
+        c = self.c
+        leoTest.runTestsExternally(c,all=False)
+    #@-node:ekr.20060328121145:runUnitTest commands
     #@-others
 #@-node:ekr.20060127162818.1:debugCommandsClass
 #@+node:ekr.20050920084036.53:editCommandsClass

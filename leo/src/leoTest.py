@@ -609,7 +609,7 @@ def fail ():
 
     g.app.unitTestDict["fail"] = g.callers()
 #@-node:ekr.20051104075904.41: fail
-#@+node:ekr.20051104075904.42:leoTest.runLeoTest
+#@+node:ekr.20051104075904.42:runLeoTest
 def runLeoTest(c,path,verbose=False,full=False):
 
     frame = None ; ok = False ; old_gui = g.app.gui
@@ -629,7 +629,135 @@ def runLeoTest(c,path,verbose=False,full=False):
             g.app.closeLeoWindow(frame.c.frame)
         c.frame.update()
 #@nonl
-#@-node:ekr.20051104075904.42:leoTest.runLeoTest
+#@-node:ekr.20051104075904.42:runLeoTest
+#@+node:ekr.20070627135407:runTestsExternally & helper class
+def runTestsExternally (c,all):
+
+    #@    @+others
+    #@+node:ekr.20070627140344:class runTestHelperClass
+    class runTestHelperClass:
+
+        '''A helper class to run tests externally.'''
+
+        #@    @+others
+        #@+node:ekr.20070627140344.1: ctor: runTestHelperClass
+        def __init__(self,c,all):
+
+            self.c = c
+            self.all = all
+
+            self.fileName = 'dynamicUnitTest.leo'
+
+            self.tags = ('@test','@suite','@testcase','test-case','@unittests','@unit-tests')
+        #@-node:ekr.20070627140344.1: ctor: runTestHelperClass
+        #@+node:ekr.20070627135336.10:createFileFromOutline
+        def createFileFromOutline (self,c2):
+
+            '''Write c's outline to test/dynamicUnitTest.leo.'''
+
+            path = g.os_path_abspath(
+                g.os_path_join(g.app.loadDir,'..','test', self.fileName))
+
+            c2.selectPosition(c2.rootPosition())
+            c2.mFileName = path
+            c2.fileCommands.save(path)
+            c2.close()
+        #@-node:ekr.20070627135336.10:createFileFromOutline
+        #@+node:ekr.20070627135336.9:createOutline
+        def createOutline (self,c2):
+
+            '''Create a unit test ouline containing all @test and @suite nodes in p's outline.'''
+
+            c = self.c
+            c2root = c2.rootPosition()
+            c2root.initHeadString('All unit tests')
+            c2.suppressHeadChanged = True # Suppress all onHeadChanged logic.
+            c2.beginUpdate()
+            if self.all:
+                p = c.rootPosition() ; limit_p = None
+            else:
+                p = c.currentPosition() ; limit_p = p.nodeAfterTree()
+            try:
+                c2root.expand()
+                while p and p != limit_p:
+                    h = p.headString()
+                    for s in self.tags:
+                        if h.startswith(s):
+                            # print h
+                            p2 = p.copyTreeAfter()
+                            p2.unlink()
+                            p2.moveToLastChildOf(c2root)
+                            p.moveToNodeAfterTree()
+                            break
+                    else:
+                        p.moveToThreadNext()
+            finally:
+                c2.endUpdate(False)
+        #@-node:ekr.20070627135336.9:createOutline
+        #@+node:ekr.20070627140344.2:runTests
+        def runTests (self):
+
+            '''
+            Create dynamicUnitTest.leo, then run all tests from dynamicUnitTest.leo in a separate process.
+            '''
+
+            print 'creating: %s' % (self.fileName)
+            c = self.c ; p = c.currentPosition()
+            found = self.searchOutline(p.copy())
+            if found:
+                gui = leoGui.nullGui("nullGui")
+                c2 = c.new(gui=gui)
+                found = self.createOutline(c2)
+                self.createFileFromOutline(c2)
+                self.runLeoDynamicTest()
+                c.selectPosition(p.copy())
+            else:
+                g.es_print('no @test or @suite nodes in selected outline')
+        #@-node:ekr.20070627140344.2:runTests
+        #@+node:ekr.20070627135336.11:runLeoDynamicTest
+        def runLeoDynamicTest (self):
+
+            '''Run test/leoDynamicTest.py in a pristine environment.'''
+
+            path = g.os_path_abspath(g.os_path_join(
+                g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
+
+            args = [sys.executable, path, '--silent']
+
+            os.spawnve(os.P_NOWAIT,sys.executable,args,os.environ)
+        #@-node:ekr.20070627135336.11:runLeoDynamicTest
+        #@+node:ekr.20070627135336.8:searchOutline
+        def searchOutline (self,p):
+
+            c = self.c ; p = c.currentPosition()
+            iter = g.choose(self.all,c.allNodes_iter,p.self_and_subtree_iter)
+
+            for p in iter():
+                h = p.headString()
+                for s in self.tags:
+                    if h.startswith(s):
+                        return True
+
+            # Probably not too useful.
+            # if not all:
+                # p = p1.copy()
+                # # Look up the tree.
+                # for p in p.parents_iter():
+                    # h = p.headString()
+                # for s in self.tags:
+                    # if h.startswith(s):
+                        # return True
+
+            return False
+        #@-node:ekr.20070627135336.8:searchOutline
+        #@-others
+    #@-node:ekr.20070627140344:class runTestHelperClass
+    #@-others
+
+    runner = runTestHelperClass(c,all)
+    runner.runTests()
+#@nonl
+#@-node:ekr.20070627135407:runTestsExternally & helper class
 #@+node:ekr.20051104075904.43:Specific to particular unit tests...
 #@+node:ekr.20051104075904.44:at-File test code (leoTest.py)
 def runAtFileTest(c,p):
