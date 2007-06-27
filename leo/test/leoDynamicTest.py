@@ -22,14 +22,14 @@ def main ():
         # g.es('%s %s' % (tag,c.shortFileName()))
         runUnitTests(c,g)
 
-    print tag,'done'
+    # print tag,'done'
 #@+node:ekr.20070626153912.2:runUnitTests
 def runUnitTests (c,g):
 
     p = c.rootPosition()
-    # g.es_print('running dynamic unit tests...')
+    #g.es_print('running dynamic unit tests...')
     c.selectPosition(p)
-    c.debugCommands.runUnitTests()
+    c.debugCommands.runAllUnitTestsLocally()
 #@nonl
 #@-node:ekr.20070626153912.2:runUnitTests
 #@-node:ekr.20070626153912.1:main & helpers

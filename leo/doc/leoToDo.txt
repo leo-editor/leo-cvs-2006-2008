@@ -152,37 +152,31 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@+node:ekr.20070626151926:Finish transition to unit tests
 @nocolor
 
-- (done) Do @unit-tests: the entire tree is copied to the dynamic.leo file
-    Some nodes needed by unit tests are not copied by dynamic-tests script:
-    - Example 1: Test headline abc
-    - Example 2: Import tests and Export tests trees are not copied.
-
-- (done) Put most unit tests in @thin unitTests.txt (with @all).
-
-- (done) --silent suppresses most startup messages.
+To do:
 
 - Move most commands tests into Code tree.
-
-- Eliminate code in leoTest.leo?
-
-- Modify run-unit-test command so it runs dynamically.
-    - Eliminate unit test buttons.
-    - Create standard binding.
-    - How to run gui tests from unitTest.leo?
-
-Later
 
 - Support @testcase" How are the test cases actually created?
 
 - --runCommand "leo-command-name" runs the command at idle-time after loading the file.
   This allows us to run the run-all-unit-tests command in a tkinter gui.
 
-- reduce or eliminate leoTest.py
-    - It may be less necessary now that dynamic tests run fully updated code.
-    - OTOH, it may be the easiest way to share code.
+What I did:
+
+- Do @unit-tests: the entire tree is copied to the dynamic.leo file
+    Some nodes needed by unit tests are not copied by dynamic-tests script:
+    - Example 1: Test headline abc
+    - Example 2: Import tests and Export tests trees are not copied.
+- Put most unit tests in @thin unitTests.txt (with @all).
+- -silent suppresses most startup messages.
+- Modified run-unit-test command so it runs dynamically.
+    - The new commands are run-unit-tests, run-all-unit-tests,
+      run-unit-tests-locally and run-all-unit-tests-locally.
+- Created unit test buttons with Alt-4 and Alt-5 bindings.
 
 @color
 #@nonl
+#@+node:ekr.20070627135251:Suppressed messages during testing...
 #@+node:ekr.20050206085258:atFile.printError & test
 def printError (self,message):
 
@@ -577,6 +571,208 @@ def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
                     c.commandsDict [key] = c.commandsDict.get(commandName)
                     break
 #@-node:ekr.20061031131434.131:k.registerCommand
+#@-node:ekr.20070627135251:Suppressed messages during testing...
+#@+node:ekr.20060127162818.1:debugCommandsClass
+class debugCommandsClass (baseEditCommandsClass):
+
+    @others
+#@+node:ekr.20060127162921: ctor
+def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+#@-node:ekr.20060127162921: ctor
+#@+node:ekr.20060127163325: getPublicCommands
+def getPublicCommands (self):
+
+    k = self
+
+    return {
+        'collect-garbage':              self.collectGarbage,
+        'debug':                        self.debug,
+        'disable-gc-trace':             self.disableGcTrace,
+        'dump-all-objects':             self.dumpAllObjects,
+        'dump-new-objects':             self.dumpNewObjects,
+        'enable-gc-trace':              self.enableGcTrace,
+        'free-tree-widgets':            self.freeTreeWidgets,
+        'print-focus':                  self.printFocus,
+        'print-stats':                  self.printStats,
+        'print-gc-summary':             self.printGcSummary,
+        'run-all-unit-tests':           self.runAllUnitTests, # The new way...
+        'run-unit-tests':               self.runUnitTests,
+        'run-all-unit-tests-locally':   self.runAllUnitTestsLocally, # The old way...
+        'run-unit-tests-locally':       self.runUnitTestsLocally,
+        'verbose-dump-objects':         self.verboseDumpObjects,
+    }
+#@-node:ekr.20060127163325: getPublicCommands
+#@+node:ekr.20060205050659:collectGarbage
+def collectGarbage (self,event=None):
+
+    """Run Python's Gargabe Collector."""
+
+    g.collectGarbage()
+#@-node:ekr.20060205050659:collectGarbage
+#@+node:ekr.20060519003651:debug & helper
+def debug (self,event=None):
+
+    '''Start an external debugger in another process to debug the presently selected text.'''
+
+    c = self.c ; p = c.currentPosition()
+    python = sys.executable
+    # pythonDir = g.os_path_dirname(python)
+    script = p.bodyString()
+    winpdb = self.findDebugger()
+    if not winpdb: return
+
+    # Create a temp file from the presently selected node.
+    filename = c.writeScriptFile(script)
+    if not filename: return
+
+    # Invoke the debugger, retaining the present environment.
+    args = [sys.executable, winpdb, '-t', filename]
+    os.chdir(g.app.loadDir)
+    try:
+        import subprocess
+        cmdline = '%s %s -t %s' % (python,winpdb,filename)
+        subprocess.Popen(cmdline)
+    except ImportError:
+        os.chdir(g.app.loadDir)
+        os.spawnv(os.P_NOWAIT, python, args)
+#@+node:ekr.20060521140213:findDebugger
+def findDebugger (self):
+
+    '''Find the debugger using settings.'''
+
+    c = self.c
+    pythonDir = g.os_path_dirname(sys.executable)
+
+    debuggers = (
+        c.config.getString('debugger_path'),
+        g.os_path_join(pythonDir,'Lib','site-packages','winpdb.py'), # winpdb 1.1.2 or newer
+        g.os_path_join(pythonDir,'scripts','_winpdb.py'), # oder version.
+    )
+
+    for debugger in debuggers:
+        if debugger:
+            debugger = g.os_path_abspath(debugger)
+            if g.os_path_exists(debugger):
+                return debugger
+            else:
+                g.es('Debugger does not exist: %s' % (debugger),color='blue')
+    else:
+        g.es('No debugger found.')
+        return None
+#@-node:ekr.20060521140213:findDebugger
+#@-node:ekr.20060519003651:debug & helper
+#@+node:ekr.20060202160523:dumpAll/New/VerboseObjects
+def dumpAllObjects (self,event=None):
+
+    '''Print a summary of all existing Python objects.'''
+
+    old = g.app.trace_gc
+    g.app.trace_gc = True
+    g.printGcAll()
+    g.app.trace_gc = old
+
+def dumpNewObjects (self,event=None):
+
+    '''Print a summary of all Python objects created
+    since the last time Python's Garbage collector was run.'''
+
+    old = g.app.trace_gc
+    g.app.trace_gc = True
+    g.printGcObjects()
+    g.app.trace_gc = old
+
+def verboseDumpObjects (self,event=None):
+
+    '''Print a more verbose listing of all existing Python objects.'''
+
+    old = g.app.trace_gc
+    g.app.trace_gc = True
+    g.printGcVerbose()
+    g.app.trace_gc = old
+#@-node:ekr.20060202160523:dumpAll/New/VerboseObjects
+#@+node:ekr.20060127163325.1:enable/disableGcTrace
+def disableGcTrace (self,event=None):
+
+    '''Enable tracing of Python's Garbage Collector.'''
+
+    g.app.trace_gc = False
+
+
+def enableGcTrace (self,event=None):
+
+    '''Disable tracing of Python's Garbage Collector.'''
+
+    g.app.trace_gc = True
+    g.enable_gc_debug()
+
+    if g.app.trace_gc_verbose:
+        g.es('enabled verbose gc stats',color='blue')
+    else:
+        g.es('enabled brief gc stats',color='blue')
+#@-node:ekr.20060127163325.1:enable/disableGcTrace
+#@+node:ekr.20060202154734:freeTreeWidgets
+def freeTreeWidgets (self,event=None):
+
+    '''Free all widgets used in Leo's outline pane.'''
+
+    c = self.c
+
+    c.frame.tree.destroyWidgets()
+    c.redraw_now()
+#@-node:ekr.20060202154734:freeTreeWidgets
+#@+node:ekr.20060210100432:printFocus
+# Doesn't work if the focus isn't in a pane with bindings!
+
+def printFocus (self,event=None):
+
+    '''Print information about the requested focus (for debugging).'''
+
+    c = self.c
+
+    g.es_print('      hasFocusWidget: %s' % c.widget_name(c.hasFocusWidget))
+    g.es_print('requestedFocusWidget: %s' % c.widget_name(c.requestedFocusWidget))
+    g.es_print('           get_focus: %s' % c.widget_name(c.get_focus()))
+#@-node:ekr.20060210100432:printFocus
+#@+node:ekr.20060205043324.3:printGcSummary
+def printGcSummary (self,event=None):
+
+    '''Print a brief summary of all Python objects.'''
+
+    g.printGcSummary()
+#@-node:ekr.20060205043324.3:printGcSummary
+#@+node:ekr.20060202133313:printStats
+def printStats (self,event=None):
+
+    '''Print statistics about the objects that Leo is using.'''
+
+    c = self.c
+    c.frame.tree.showStats()
+    self.dumpAllObjects()
+#@-node:ekr.20060202133313:printStats
+#@+node:ekr.20060328121145:runUnitTest commands
+def runAllUnitTestsLocally (self,event=None):
+    '''Run all unit tests contained in the presently selected outline.'''
+    c = self.c
+    leoTest.doTests(c,all=True)
+
+def runUnitTestsLocally (self,event=None):
+    '''Run all unit tests contained in the presently selected outline.'''
+    c = self.c
+    leoTest.doTests(c,all=False)
+
+def runAllUnitTests (self,event=None):
+    '''Run all unit tests contained in the entire outline.'''
+    c = self.c
+    leoTest.runTestsExternally(c,all=True)
+
+def runUnitTests(self,event=None):
+    '''Run all unit tests contained in the presently selected outline.'''
+    c = self.c
+    leoTest.runTestsExternally(c,all=False)
+#@-node:ekr.20060328121145:runUnitTest commands
+#@-node:ekr.20060127162818.1:debugCommandsClass
 #@-node:ekr.20070626151926:Finish transition to unit tests
 #@+node:ekr.20070627132946:Create Chapter 20: Leo and unit testsing
 #@-node:ekr.20070627132946:Create Chapter 20: Leo and unit testsing
