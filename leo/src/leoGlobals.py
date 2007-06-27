@@ -4013,10 +4013,11 @@ def reportBadChars (s,encoding):
             except UnicodeEncodeError:
                 errors += 1
         if errors:
-            g.es("%d errors converting %s to %s" % (
+            s2 = "%d errors converting %s to %s" % (
                 errors, s.encode(encoding,'replace'),
-                encoding.encode('ascii','replace')),
-            color='red')
+                encoding.encode('ascii','replace'))
+            #if not g.unitTesting:
+            g.es(s2,color='red')
     elif type(s) == type(""):
         for ch in s:
             try: unicode(ch,encoding,"strict")
