@@ -11,7 +11,7 @@ import leoPlugins
 import re
 import os
 
-g.es("---mod_leo2asc 0.4-------")
+# g.es("---mod_leo2asc 0.4-------")
 # <<The Code -- Declarations and Utilities>> (2 of 5)
 # <<Simulate Python constants>>
 class   _AssignUniqueConstantValue:
@@ -70,10 +70,9 @@ class _ConfigOptions:
                     g.es(vnode.headString())
                     g.es("  No such config option: %s" % name)
 
-    def GetCurrentOptions(self, vnode):
+    def GetCurrentOptions(self,c,vnode):
         self.current.clear()
         self.current = self.default.copy()
-        c = g.top()
         v = c.rootVnode()
         self.__GetNodeOptions(v)             # root node
         self.__GetNodeOptions(vnode)         # current node
@@ -114,10 +113,9 @@ def SectionUnderline(h,level,v):
     str = Conf.current["headingUnderlines"][level]  #'
     return str*max(len(h),1)
 # <<The Code -- Declarations and Utilities>> (4 of 5)
-def GetAscFilename(vnode):
+def GetAscFilename(c,vnode):
     'Checks a node for a filename directive.'
     # f is the Leo outline
-    c = g.top()
     ascFileName = None
     bodyString = vnode.bodyString()
     lines = bodyString.splitlines()
@@ -347,8 +345,8 @@ def WriteNode(v,startinglevel, ascFile):
         return CV.NODE_IGNORE                        # flag ignore tree to caller
 # -- end -- << Write a node >>
 # << Key Functions >> (1 of 4)
-def WriteTreeOfCurrentNode():
-    c = g.top() ; f = c.frame
+def WriteTreeOfCurrentNode(c):
+    f = c.frame
     vnode = c.currentVnode() # get the current vnode.
     while vnode:
         ascFileN = GetAscFilename(vnode)
@@ -362,8 +360,8 @@ def WriteTreeOfCurrentNode():
     else:
         WriteTreeAsAsc(vnode, ascFileN)
 # << Key Functions >> (2 of 4)
-def WriteAll():
-    c = g.top() ; f = c.frame
+def WriteAll(c):
+    f = c.frame
     v = c.rootVnode()
     while v:
         ascFileN = GetAscFilename(v)
@@ -373,14 +371,14 @@ def WriteAll():
         else:
             v = v.threadNext()
 # << Key Functions >> (3 of 4)
-def WriteAllRoots():
+def WriteAllRoots(c):
     "Writes @root directive and/or @ascfile directive to log pane."
 
     patternAscDirectiveFile = re.compile(r'^@ascfile')
     patternRoot = re.compile(r'^@root')
 
     g.es('Looking for @root or @ascfile.')
-    c = g.top() ; f = c.frame
+    f = c.frame
     vnode = c.rootVnode()
     while vnode:
         bodyString = vnode.bodyString()
@@ -416,7 +414,7 @@ def CreateAscMenu(tag,keywords):
         ("Log all root and ascfile to log pane","Alt+Shift+L",WriteAllRoots),
     )
 
-    c.frame.menu.createMenuEntries(exportMenu, newEntries)
+    c.frame.menu.createMenuEntries(exportMenu, newEntries,dynamicMenu=True)
 
 if 1:
     def init():
