@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.533251231527">
-	<global_window_position top="41" left="437" height="812" width="835"/>
+<globals body_outline_ratio="0.532019704433">
+	<global_window_position top="49" left="334" height="812" width="835"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -11,7 +11,19 @@
 <vnodes>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
 <v t="ekr.20070619130151"><vh>Buttons</vh>
+<v t="ekr.20070621111545"><vh>@button all-dynamic-tests</vh>
+<v t="ekr.20070621111545.1"><vh>searchOutline</vh></v>
+<v t="ekr.20070621111545.2"><vh>createOutline</vh></v>
+<v t="ekr.20070621111545.3"><vh>createFileFromOutline</vh></v>
+<v t="ekr.20070621111545.4"><vh>runDynamicTests</vh></v>
+</v>
 <v t="ekr.20070201082722"><vh>@button Beautify</vh></v>
+<v t="ekr.20070627090724"><vh>@button dynamic-tests</vh>
+<v t="ekr.20070627090724.1"><vh>searchOutline</vh></v>
+<v t="ekr.20070627090724.2"><vh>createOutline</vh></v>
+<v t="ekr.20070627090724.3"><vh>createFileFromOutline</vh></v>
+<v t="ekr.20070627090724.4"><vh>runDynamicTests</vh></v>
+</v>
 <v t="ekr.20060910141935"><vh>ZODB plugin buttons</vh>
 <v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
 <v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
@@ -41,10 +53,9 @@
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="ekr.20070627083814" a="TV"><vh>Unit tests</vh>
+<v t="ekr.20070627083814"><vh>Unit tests</vh>
 <v t="ekr.20070627083814.1"
-marks="ekr.20070627082044.91,"
-expanded="ekr.20070627082044.31,ekr.20070627082044.32,ekr.20070627082044.73,ekr.20070627082044.77,"><vh>@thin unitTests.txt</vh></v>
+marks="ekr.20070627082044.91,ekr.20070627082044.918,"><vh>@thin unitTests.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
@@ -90,59 +101,16 @@ marks="ekr.20040629121554.1,ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
 </v>
-<v t="EKR.20040519090151.2"><vh>To do</vh>
+<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
 <v t="ekr.20040117181936"
 marks="ekr.20070626151926,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
-</v>
-<v t="ekr.20070627080936"><vh>Posting</vh></v>
-<v t="ekr.20070621111545"><vh>@button all-dynamic-tests</vh>
-<v t="ekr.20070621111545.1"><vh>searchOutline</vh></v>
-<v t="ekr.20070621111545.2"><vh>createOutline</vh></v>
-<v t="ekr.20070621111545.3"><vh>createFileFromOutline</vh></v>
-<v t="ekr.20070621111545.4"><vh>runDynamicTests</vh></v>
-</v>
-<v t="ekr.20070627090724"><vh>@button dynamic-tests</vh>
-<v t="ekr.20070627090724.1"><vh>searchOutline</vh></v>
-<v t="ekr.20070627090724.2"><vh>createOutline</vh></v>
-<v t="ekr.20070627090724.3"><vh>createFileFromOutline</vh></v>
-<v t="ekr.20070627090724.4"><vh>runDynamicTests</vh></v>
-</v>
-<v t="ekr.20070626151926" a="M"><vh>Finish transition to unit tests</vh>
-<v t="ekr.20031218072017.1501"><vh>reportBadChars</vh>
-<v t="ekr.20050825092149"><vh>@test g.reportBadChars</vh></v>
-</v>
 </v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040430162943"></t>
 <t tx="EKR.20040519090151.2"></t>
 <t tx="EKR.20040519090151.3"></t>
-<t tx="ekr.20031218072017.1501">def reportBadChars (s,encoding):
-
-    errors = 0
-    if type(s) == type(u""):
-        for ch in s:
-            try: ch.encode(encoding,"strict")
-            except UnicodeEncodeError:
-                errors += 1
-        if errors:
-            s2 = "%d errors converting %s to %s" % (
-                errors, s.encode(encoding,'replace'),
-                encoding.encode('ascii','replace'))
-            #if not g.unitTesting:
-            g.es(s2,color='red')
-    elif type(s) == type(""):
-        for ch in s:
-            try: unicode(ch,encoding,"strict")
-            except: errors += 1
-        if errors:
-            g.es("%d errors converting %s (%s encoding) to unicode" % (
-                errors,
-                unicode(s,encoding,'replace'),
-                encoding.encode('ascii','replace')),
-            color='red')
-</t>
 <t tx="ekr.20031218072017.2406">@tabwidt -4
 @pagewidth 80
 
@@ -227,22 +195,6 @@ Two (recently written) functions in leoGlobals.py support conversions from Pytho
 - g.convertRowColToPythonIndex does the reverse.
 
 Important:  the first Tkinter index is '1.0', not '0.0', but the row returned by g.convertPythonIndexToRowCol is zero based, so the code that actually creates Tkinter indices from row/col must add 1 to the row.  Similar remarks apply when going in the reverse direction.
-</t>
-<t tx="ekr.20050825092149">if g.unitTesting:
-
-    for s,encoding in (
-        ('aĂbĂ',  'ascii'),
-        (u'aĂbĂ', 'ascii'),
-        ('炰',    'ascii'),
-        (u'炰',   'ascii'),
-
-        ('aĂbĂ',  'utf-8'),
-        (u'aĂbĂ', 'utf-8'),
-        ('炰',    'utf-8'),
-        (u'炰',   'utf-8'),
-    ):
-
-        g.reportBadChars(s,encoding)
 </t>
 <t tx="ekr.20051031040240"></t>
 <t tx="ekr.20060217111834">.  any char
@@ -457,31 +409,6 @@ else:
     # Use a pristine environment.
     os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
 </t>
-<t tx="ekr.20070626151926">@nocolor
-
-- (done) Do @unit-tests: the entire tree is copied to the dynamic.leo file
-    Some nodes needed by unit tests are not copied by dynamic-tests script:
-    - Example 1: Test headline abc
-    - Example 2: Import tests and Export tests trees are not copied.
-    
-- (done) Put most unit tests in @thin unitTests.txt (with @all).
-
-Later
-
-- Support @testcase" How are the test cases actually created?
-
-- --runCommand "leo-command-name" runs the command at idle-time after loading the file.
-  This allows us to run the run-all-unit-tests command in a tkinter gui.
-
-- reduce or eliminate leoTest.py
-    - It may be less necessary now that dynamic tests run fully updated code.
-    - OTOH, it may be the easiest way to share code.</t>
-<t tx="ekr.20070627080936">@nocolor
-
-run-unit-tests and run-all-unit-tests commands should *always* create a separate .leo file.
-
-It appears that running unit tests is more dangerous than I thought. Somehow
-running unit tests cleared all tnodes in leoPy.leo!</t>
 <t tx="ekr.20070627083814"></t>
 <t tx="ekr.20070627090724">'''
 This script runs all @test nodes as follows:
