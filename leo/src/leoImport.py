@@ -205,7 +205,8 @@ class baseLeoImportCommands:
                     if perfectImport and treeType == "@file": # Can't correct @root trees.
                         self.perfectImport(fileName,v,testing=testing,verbose=verbose,verify=False)
                     else:
-                        g.es("imported " + fileName,color="blue")
+                        if not g.unitTesting:
+                            g.es("imported " + fileName,color="blue")
                     v.contract()
                     v.setDirty()
                     c.setChanged(True)
@@ -2914,7 +2915,8 @@ class baseLeoImportCommands:
                 s = g.toEncodedString(s,self.encoding,reportErrors=True)
                 theFile.write(s)
                 theFile.close()
-                g.es("created: " + newFileName)
+                if not g.unitTesting:
+                    g.es("created: " + newFileName)
             except:
                 g.es("exception creating: " + newFileName)
                 g.es_exception()
