@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.532019704433">
-	<global_window_position top="49" left="334" height="812" width="835"/>
+<globals body_outline_ratio="0.516009852217">
+	<global_window_position top="54" left="345" height="812" width="835"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -11,19 +11,9 @@
 <vnodes>
 <v t="ekr.20051031040240" str_leo_pos="9"><vh>Startup</vh>
 <v t="ekr.20070619130151"><vh>Buttons</vh>
-<v t="ekr.20070621111545"><vh>@button all-dynamic-tests</vh>
-<v t="ekr.20070621111545.1"><vh>searchOutline</vh></v>
-<v t="ekr.20070621111545.2"><vh>createOutline</vh></v>
-<v t="ekr.20070621111545.3"><vh>createFileFromOutline</vh></v>
-<v t="ekr.20070621111545.4"><vh>runDynamicTests</vh></v>
-</v>
 <v t="ekr.20070201082722"><vh>@button Beautify</vh></v>
-<v t="ekr.20070627090724"><vh>@button dynamic-tests</vh>
-<v t="ekr.20070627090724.1"><vh>searchOutline</vh></v>
-<v t="ekr.20070627090724.2"><vh>createOutline</vh></v>
-<v t="ekr.20070627090724.3"><vh>createFileFromOutline</vh></v>
-<v t="ekr.20070627090724.4"><vh>runDynamicTests</vh></v>
-</v>
+<v t="ekr.20070627144218"><vh>@button unit-tests @key=Alt+4</vh></v>
+<v t="ekr.20070627144218.1"><vh>@button all-unit-tests @key=Alt+5</vh></v>
 <v t="ekr.20060910141935"><vh>ZODB plugin buttons</vh>
 <v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
 <v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
@@ -54,12 +44,11 @@
 <v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
 <v t="ekr.20070627083814"><vh>Unit tests</vh>
-<v t="ekr.20070627083814.1"
-marks="ekr.20070627082044.91,ekr.20070627082044.918,"><vh>@thin unitTests.txt</vh></v>
+<v t="ekr.20070627083814.1"><vh>@thin unitTests.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
-<v t="ekr.20040629121554.1" a="M"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
+<v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
 <v t="ekr.20031218072017.2605"><vh>@thin leo.py </vh></v>
 <v t="ekr.20031218072017.2608"><vh>@thin leoApp.py</vh></v>
@@ -67,8 +56,7 @@ marks="ekr.20070627082044.91,ekr.20070627082044.918,"><vh>@thin unitTests.txt</v
 <v t="ekr.20070227091955.1"><vh>@thin leoBridge.py</vh></v>
 <v t="ekr.20070317085508.1"><vh>@thin leoChapters.py</vh></v>
 <v t="ekr.20031218072017.2794"><vh>@thin leoColor.py</vh></v>
-<v t="ekr.20031218072017.2810"
-marks="ekr.20040629121554.1,ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh></v>
+<v t="ekr.20031218072017.2810"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
 <v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
 <v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
@@ -78,7 +66,8 @@ marks="ekr.20040629121554.1,ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
 <v t="ekr.20061024060248.1"><vh>@thin leoPymacs.py</vh></v>
 <v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
-<v t="ekr.20051104075904" annotate="285808000000616e6e6f7461746571007d71017471022e"><vh>@thin leoTest.py</vh></v>
+<v t="ekr.20051104075904" annotate="285808000000616e6e6f7461746571007d71017471022e"
+marks="ekr.20070627135407,"><vh>@thin leoTest.py</vh></v>
 <v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
@@ -102,8 +91,7 @@ marks="ekr.20040629121554.1,ekr.20040629121554.2,"><vh>@thin leoCommands.py</vh>
 </v>
 </v>
 <v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
-<v t="ekr.20040117181936"
-marks="ekr.20070626151926,"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 </vnodes>
@@ -322,180 +310,16 @@ else:
 False: Chapter tabs do not appear.</t>
 <t tx="ekr.20070605104410"></t>
 <t tx="ekr.20070619130151"></t>
-<t tx="ekr.20070621111545">'''
-This script runs all @test nodes as follows:
-
-- Copies all @suite and @tests nodes to dynamicUnitTests.leo.
-- Runs dynamicUnitTests.leo in a separate process.
-
-This ensures that all unit tests will be run with the latest Leo sources.
-'''
-
-import os,sys
-import leoGui
-
-@others
-
-all = True
-tags = ('@test','@suite','@testcase','test-case','@unittests','@unit-tests')
-path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','dynamicUnitTest.leo'))
-
-print '-'*20
-found = searchOutline(p.copy(),all)
-if found:
-    gui = leoGui.nullGui("nullGui")
-    c2 = c.new(gui=gui)
-    found = createOutline(c,c2,p.copy(),all)
-    createFileFromOutline(c2,path)
-    runDynamicTests(path)
-    c.selectPosition(p.copy())
-else:
-    g.es_print('no @test or @suite nodes in selected outline')
-</t>
-<t tx="ekr.20070621111545.1">def searchOutline(p,all):
-
-    iter = g.choose(all,c.allNodes_iter,p.self_and_subtree_iter)
-
-    for p in iter():
-        h = p.headString()
-        for s in tags:
-            if h.startswith(s):
-                return True
-    else:
-        return False
-</t>
-<t tx="ekr.20070621111545.2">def createOutline(c,c2,p,all):
-
-    '''Create a unit test ouline containing all @test and @suite nodes in p's outline.'''
-
-    c2root = c2.rootPosition()
-    c2root.initHeadString('All unit tests')
-    c2.suppressHeadChanged = True # Suppress all onHeadChanged logic.
-    c2.beginUpdate()
-    tags = ('@test','@suite','@testcase','test-case','@unittests','@unit-tests')
-    if all: p = c.rootPosition()
-    limit_p = g.choose(all,None,p.nodeAfterTree())
-    try:
-        c2root.expand()
-        while p and p != limit_p:
-            h = p.headString()
-            for s in tags:
-                if h.startswith(s):
-                    # print h
-                    p2 = p.copyTreeAfter()
-                    p2.unlink()
-                    p2.moveToLastChildOf(c2root)
-                    p.moveToNodeAfterTree()
-                    break
-            else:
-                p.moveToThreadNext()
-    finally:
-        c2.endUpdate(False)
-</t>
-<t tx="ekr.20070621111545.3">def createFileFromOutline(c2,path):
-
-    c2.selectPosition(c2.rootPosition())
-    c2.mFileName = path
-    c2.fileCommands.save(path)
-    c2.close()
-</t>
-<t tx="ekr.20070621111545.4">def runDynamicTests(path):
-
-    runDynamicTests = g.os_path_abspath(g.os_path_join(
-        g.app.loadDir,'..','test','leoDynamicTest.py'))
-
-    args = [sys.executable, runDynamicTests ]
-
-    # Use a pristine environment.
-    os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
-</t>
 <t tx="ekr.20070627083814"></t>
-<t tx="ekr.20070627090724">'''
-This script runs all @test nodes as follows:
+<t tx="ekr.20070627144218">import leoTest
 
-- Copies all @suite and @tests nodes to dynamicUnitTests.leo.
-- Runs dynamicUnitTests.leo in a separate process.
+g.es('Running unit tests',color='blue')
+leoTest.runTestsExternally (c,all=False)
+c.selectPosition(p,updateBeadList=False)</t>
+<t tx="ekr.20070627144218.1">import leoTest
 
-This ensures that all unit tests will be run with the latest Leo sources.
-'''
-
-import os,sys
-import leoGui
-
-@others
-
-all = False
-tags = ('@test','@suite','@testcase','test-case','@unittests','@unit-tests')
-path = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test','dynamicUnitTest.leo'))
-print '-'*20
-found = searchOutline(p.copy(),all)
-if found:
-    gui = leoGui.nullGui("nullGui")
-    c2 = c.new(gui=gui)
-    found = createOutline(c,c2,p.copy(),all)
-    createFileFromOutline(c2,path)
-    runDynamicTests(path)
-    c.selectPosition(p.copy())
-else:
-    g.es_print('no @test or @suite nodes in selected outline')
-</t>
-<t tx="ekr.20070627090724.1">def searchOutline(p,all):
-
-    iter = g.choose(all,c.allNodes_iter,p.self_and_subtree_iter)
-
-    for p in iter():
-        h = p.headString()
-        for s in tags:
-            if h.startswith(s):
-                return True
-    else:
-        return False
-</t>
-<t tx="ekr.20070627090724.2">def createOutline(c,c2,p,all):
-
-    '''Create a unit test ouline containing all @test and @suite nodes in p's outline.'''
-
-    c2root = c2.rootPosition()
-    c2root.initHeadString('All unit tests')
-    c2.suppressHeadChanged = True # Suppress all onHeadChanged logic.
-    c2.beginUpdate()
-    tags = ('@test','@suite','@testcase','test-case','@unittests','@unit-tests')
-    if all:
-        p = c.rootPosition()
-    limit_p = g.choose(all,None,p.nodeAfterTree())
-    try:
-        c2root.expand()
-        while p and p != limit_p:
-            h = p.headString()
-            for s in tags:
-                if h.startswith(s):
-                    # print h
-                    p2 = p.copyTreeAfter()
-                    p2.unlink()
-                    p2.moveToLastChildOf(c2root)
-                    p.moveToNodeAfterTree()
-                    break
-            else:
-                p.moveToThreadNext()
-    finally:
-        c2.endUpdate(False)
-</t>
-<t tx="ekr.20070627090724.3">def createFileFromOutline(c2,path):
-
-    c2.selectPosition(c2.rootPosition())
-    c2.mFileName = path
-    c2.fileCommands.save(path)
-    c2.close()
-</t>
-<t tx="ekr.20070627090724.4">def runDynamicTests(path):
-
-    runDynamicTests = g.os_path_abspath(g.os_path_join(
-        g.app.loadDir,'..','test','leoDynamicTest.py'))
-
-    args = [sys.executable, runDynamicTests ]
-
-    # Use a pristine environment.
-    os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
-</t>
+g.es('Running all unit tests',color='blue')
+leoTest.runTestsExternally (c,all=True)
+c.selectPosition(p,updateBeadList=False)</t>
 </tnodes>
 </leo_file>
