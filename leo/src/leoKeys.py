@@ -2919,14 +2919,14 @@ class keyHandlerClass:
             # g.trace('stroke',stroke,'pane',pane,commandName,g.callers())
             ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
             k.makeMasterGuiBinding(stroke) # Must be a stroke.
-            if verbose and ok:
+            if verbose and ok and not '--silent' in sys.argv:
                 g.es_print('@command: %s = %s' % (
                     commandName,k.prettyPrintKey(stroke)),color='blue')
                 if 0:
                     d = k.masterBindingsDict.get('button',{})
                     g.print_dict(d)
             c.frame.tree.setBindings()
-        elif verbose:
+        elif verbose and not '--silent' in sys.argv:
             g.es_print('@command: %s' % (commandName),color='blue')
 
         # Fixup any previous abbreviation to press-x-button commands.

@@ -20,6 +20,7 @@ After startup:
 
 import leoGlobals as g
 import glob
+import sys
 
 handlers = {}
 loadedModules = {} # Keys are module names, values are modules.
@@ -142,7 +143,8 @@ def loadHandlers(tag):
     theConfigFile = g.app.config.enabledPluginsFileName
     # g.trace('len(s)',s and len(s) or 0)
     if s:
-        pr('@enabled-plugins found in %s' % (theConfigFile),color='blue')
+        if '--silent' not in sys.argv:
+            pr('@enabled-plugins found in %s' % (theConfigFile),color='blue')
         enabled_files = getEnabledFiles(s,plugins_path)
     else:
         for theDir,place in (
