@@ -3014,7 +3014,7 @@ class atFile:
         if writtenFiles > 0:
             g.es("finished")
         else:
-            g.es("no missing @file node in the selected tree")
+            g.es("no @file node in the selected tree")
 
         return changedFiles # So caller knows whether to do an auto-save.
     #@-node:ekr.20041005105605.151:writeMissing
