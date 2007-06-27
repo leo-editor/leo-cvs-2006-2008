@@ -27,7 +27,7 @@ def main ():
 def runUnitTests (c,g):
 
     p = c.rootPosition()
-    g.es_print('running dynamic unit tests...')
+    # g.es_print('running dynamic unit tests...')
     c.selectPosition(p)
     c.debugCommands.runUnitTests()
 #@nonl

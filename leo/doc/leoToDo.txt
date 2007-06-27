@@ -159,9 +159,11 @@ S5: http://meyerweb.com/eric/tools/s5/
 
 - (done) Put most unit tests in @thin unitTests.txt (with @all).
 
-- Suppress reading messages when run from dynamic.leo.
+- (done) --silent suppresses most startup messages.
 
 - Move most commands tests into Code tree.
+
+- Eliminate code in leoTest.leo?
 
 - Modify run-unit-test command so it runs dynamically.
     - Eliminate unit test buttons.
@@ -517,7 +519,71 @@ if g.unitTesting:
         g.reportBadChars(s,encoding)
 #@-node:ekr.20050825092149:@test g.reportBadChars
 #@-node:ekr.20031218072017.1501:reportBadChars
+#@+node:ekr.20061031131434.131:k.registerCommand
+def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
+
+    '''Make the function available as a minibuffer command,
+    and optionally attempt to bind a shortcut.
+
+    You can wrap any method in a callback function, so the
+    restriction to functions is not significant.'''
+
+    k = self ; c = k.c
+    f = c.commandsDict.get(commandName)
+    verbose = (False or verbose) and not g.app.unitTesting
+    if f and f.__name__ != 'dummyCallback' and verbose:
+        g.es_print('Redefining %s' % (commandName), color='red')
+
+    c.commandsDict [commandName] = func
+    k.inverseCommandsDict [func.__name__] = commandName
+    # g.trace('leoCommands %24s = %s' % (func.__name__,commandName))
+
+    if shortcut:
+        stroke = k.shortcutFromSetting(shortcut)
+    elif commandName.lower() == 'shortcut': # Causes problems.
+        stroke = None
+    else:
+        # Try to get a shortcut from leoSettings.leo.
+        junk,bunchList = c.config.getShortcut(commandName)
+        for bunch in bunchList:
+            accel2 = bunch.val ; pane2 = bunch.pane
+            if accel2 and not pane2.endswith('-mode'):
+                shortcut2 = accel2
+                stroke = k.shortcutFromSetting(shortcut2)
+                if stroke: break
+        else: stroke = None
+
+    if stroke:
+        # g.trace('stroke',stroke,'pane',pane,commandName,g.callers())
+        ok = k.bindKey (pane,stroke,func,commandName) # Must be a stroke.
+        k.makeMasterGuiBinding(stroke) # Must be a stroke.
+        if verbose and ok and not '--silent' in sys.argv:
+            g.es_print('@command: %s = %s' % (
+                commandName,k.prettyPrintKey(stroke)),color='blue')
+            if 0:
+                d = k.masterBindingsDict.get('button',{})
+                g.print_dict(d)
+        c.frame.tree.setBindings()
+    elif verbose and not '--silent' in sys.argv:
+        g.es_print('@command: %s' % (commandName),color='blue')
+
+    # Fixup any previous abbreviation to press-x-button commands.
+    if commandName.startswith('press-') and commandName.endswith('-button'):
+        d = c.config.getAbbrevDict()
+            # Keys are full command names, values are abbreviations.
+        if commandName in d.values():
+            for key in d.keys():
+                if d.get(key) == commandName:
+                    c.commandsDict [key] = c.commandsDict.get(commandName)
+                    break
+#@-node:ekr.20061031131434.131:k.registerCommand
 #@-node:ekr.20070626151926:Finish transition to unit tests
+#@+node:ekr.20070627132946:Create Chapter 20: Leo and unit testsing
+#@-node:ekr.20070627132946:Create Chapter 20: Leo and unit testsing
+#@+node:ekr.20070627110422:create leoStartup.py
+# This will have common startup code.
+#@nonl
+#@-node:ekr.20070627110422:create leoStartup.py
 #@+node:ekr.20070625083310:Bugs
 #@+node:ekr.20070627091302:test.leo gives a warning from restoreDescendantAttributes
 # May have arisen from @@@thin leoImports.
