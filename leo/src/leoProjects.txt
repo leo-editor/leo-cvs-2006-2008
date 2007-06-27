@@ -188,6 +188,21 @@ def es(s,*args,**keys):
 #@-node:ekr.20070626150414.1:g.es and g.es_print print only to console during unit tests
 #@+node:ekr.20070626150545:Suppressed status messages during unit testing
 #@-node:ekr.20070626150545:Suppressed status messages during unit testing
+#@+node:ekr.20070627171855:Run unit tests in a separate process
+@nocolor
+
+For full details, see: http://sourceforge.net/forum/forum.php?thread_id=1765685&forum_id=10226
+
+What I did:
+
+- Added support for @unit-tests: the entire tree is copied to the dynamic.leo file
+- Put most unit tests in @thin unitTests.txt (with @all).
+- Added support for -silent command-line option.  It suppresses most startup messages.
+- Modified run-unit-test command so it runs dynamically.
+    - The new commands are run-unit-tests, run-all-unit-tests,
+      run-unit-tests-locally and run-all-unit-tests-locally.
+- Created unit test buttons with Alt-4 and Alt-5 bindings.
+#@-node:ekr.20070627171855:Run unit tests in a separate process
 #@-node:ekr.20070626150414:Features
 #@-node:ekr.20070626112754.1:Leo 4.4.3 beta 1 projects
 #@-all

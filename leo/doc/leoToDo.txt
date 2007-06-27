@@ -149,34 +149,17 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
 #@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20070325052041:To do: 4.4.4
-#@+node:ekr.20070626151926:Finish transition to unit tests
+#@+node:ekr.20070626151926:Finish unt testing changes
 @nocolor
-
-To do:
 
 - Move most commands tests into Code tree.
 
-- Support @testcase" How are the test cases actually created?
+    ** Project them with `if g.unitTesting:`
 
-- --runCommand "leo-command-name" runs the command at idle-time after loading the file.
-  This allows us to run the run-all-unit-tests command in a tkinter gui.
+- Support @testcase
 
-What I did:
-
-- Do @unit-tests: the entire tree is copied to the dynamic.leo file
-    Some nodes needed by unit tests are not copied by dynamic-tests script:
-    - Example 1: Test headline abc
-    - Example 2: Import tests and Export tests trees are not copied.
-- Put most unit tests in @thin unitTests.txt (with @all).
-- -silent suppresses most startup messages.
-- Modified run-unit-test command so it runs dynamically.
-    - The new commands are run-unit-tests, run-all-unit-tests,
-      run-unit-tests-locally and run-all-unit-tests-locally.
-- Created unit test buttons with Alt-4 and Alt-5 bindings.
-
-@color
-#@nonl
-#@-node:ekr.20070626151926:Finish transition to unit tests
+    - How are the test cases actually created?
+#@-node:ekr.20070626151926:Finish unt testing changes
 #@+node:ekr.20070627132946:Create Chapter 20: Leo and unit testsing
 #@-node:ekr.20070627132946:Create Chapter 20: Leo and unit testsing
 #@+node:ekr.20070627110422:create leoStartup.py
@@ -1204,6 +1187,10 @@ Running Leo in batch mode should be in starting Leo chapter, as well as scriptin
 #@+node:ekr.20070613193516:Improvements
 # some of these can wait till much later.
 #@nonl
+#@+node:ekr.20070627151457:--runCommand option
+@ --runCommand "leo-command-name" runs the command at idle-time after loading the file.
+#@nonl
+#@-node:ekr.20070627151457:--runCommand option
 #@+node:ekr.20070627095000:Create a way to make common buttons
 #@-node:ekr.20070627095000:Create a way to make common buttons
 #@+node:ekr.20070615063616.1:Create Debian package
