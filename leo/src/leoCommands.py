@@ -2279,7 +2279,8 @@ class baseCommands:
         #@-node:ekr.20031218072017.1709:<< Set headline for extractSection >>
         #@nl
         if not lines:
-            g.es("Nothing follows section name",color="blue")
+            if not g.unitTesting:
+                g.es("Nothing follows section name",color="blue")
             return
 
         # Remove leading whitespace from all body lines.
