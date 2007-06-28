@@ -59,6 +59,10 @@ def isSuiteNode (p):
 def isTestNode (p):
     h = p.headString().lower()
     return g.match_word(h,0,"@test")
+
+# def isTestCaseNode (p):
+    # h = p.headString().lower()
+    # return g.match_word(h,0,"@testcase") or g.match_word(h,0,"@test-case")
 #@-node:ekr.20051104075904.3:isSuiteNode and isTestNode
 #@+node:ekr.20051104075904.4:doTests...
 def doTests(c,all,verbosity=1):
@@ -77,12 +81,15 @@ def doTests(c,all,verbosity=1):
         changed = c.isChanged()
         suite = unittest.makeSuite(unittest.TestCase)
         for p in theIter:
-            if isTestNode(p):
+            if isTestNode(p): # @test
                 test = makeTestCase(c,p)
                 if test: suite.addTest(test)
-            elif isSuiteNode(p):
+            elif isSuiteNode(p): # @suite
                 test = makeTestSuite(c,p)
                 if test: suite.addTest(test)
+            # elif isTestCaseNode(p): # @testcase or @test-case
+                # test = makeTestClass(c,p)
+                # if test: suite.addTest(test)
 
         # Verbosity: 1: print just dots.
         unittest.TextTestRunner(verbosity=verbosity).run(suite)
@@ -648,7 +655,7 @@ def runTestsExternally (c,all):
 
             self.fileName = 'dynamicUnitTest.leo'
 
-            self.tags = ('@test','@suite','@testcase','test-case','@unittests','@unit-tests')
+            self.tags = ('@test','@suite','@unittests','@unit-tests') # '@testcase','test-case'
         #@-node:ekr.20070627140344.1: ctor: runTestHelperClass
         #@+node:ekr.20070627135336.10:createFileFromOutline
         def createFileFromOutline (self,c2):
@@ -701,15 +708,28 @@ def runTestsExternally (c,all):
             Create dynamicUnitTest.leo, then run all tests from dynamicUnitTest.leo in a separate process.
             '''
 
+            trace = False
+            if trace: import time
             print 'creating: %s' % (self.fileName)
             c = self.c ; p = c.currentPosition()
+            if trace: t1 = time.time()
             found = self.searchOutline(p.copy())
+            if trace:
+                 t2 = time.time() ; print 'find:  %0.2f' % (t2-t1)
             if found:
                 gui = leoGui.nullGui("nullGui")
                 c2 = c.new(gui=gui)
+                if trace:
+                    t3 = time.time() ; print 'gui:   %0.2f' % (t3-t2)
                 found = self.createOutline(c2)
+                if trace:
+                    t4 = time.time() ; print 'copy:  %0.2f' % (t4-t3)
                 self.createFileFromOutline(c2)
+                if trace:
+                    t5 = time.time() ; print 'write: %0.2f' % (t5-t4)
                 self.runLeoDynamicTest()
+                if trace:
+                    t6 = time.time() ; print 'run:   %0.2f' % (t6-t5)
                 c.selectPosition(p.copy())
             else:
                 g.es_print('no @test or @suite nodes in selected outline')
@@ -732,21 +752,22 @@ def runTestsExternally (c,all):
             c = self.c ; p = c.currentPosition()
             iter = g.choose(self.all,c.allNodes_iter,p.self_and_subtree_iter)
 
+            # First, look down the tree.
             for p in iter():
                 h = p.headString()
                 for s in self.tags:
                     if h.startswith(s):
                         return True
 
-            # Probably not too useful.
-            # if not all:
-                # p = p1.copy()
-                # # Look up the tree.
-                # for p in p.parents_iter():
-                    # h = p.headString()
-                # for s in self.tags:
-                    # if h.startswith(s):
-                        # return True
+            # Next, look up the tree if.
+            if not self.all:   
+                for p in c.currentPosition().parents_iter():
+                    h = p.headString()
+                    for s in self.tags:
+                        if h.startswith(s):
+                            c.selectPosition(p)
+                            #c.redraw()
+                            return True
 
             return False
         #@-node:ekr.20070627135336.8:searchOutline
