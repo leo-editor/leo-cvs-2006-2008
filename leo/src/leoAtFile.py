@@ -4286,6 +4286,124 @@ class atFile:
                 g.es('%-10s %s' % ('created:',self.targetFileName))
                 self.fileChangedFlag = True
             return False
+    #@+node:ekr.20070627082044.80:@test atFile.replaceTargetFileIfDifferent (different)
+    if g.unitTesting:
+
+        __pychecker__ = '--no-reimport'
+        import os
+        at = c.atFileCommands
+        exists = g.os_path_exists
+
+        at.outputFileName = g.os_path_join(g.app.testDir,'xyzzy1')
+        at.targetFileName = g.os_path_join(g.app.testDir,'xyzzy2')
+
+        # Create both paths (different contents)
+        for p in (at.outputFileName,at.targetFileName):
+            if exists(p):
+                os.remove(p)
+            assert not exists(p)
+            f = file(p,'w')
+            s = 'test %s' % p
+            # print repr(p),repr(s)
+            f.write(s)
+            f.close()
+            assert exists(p) # , '%s does not exist' % repr(p)
+
+        at.toString = False # Set by execute script stuff.
+        at.shortFileName = at.targetFileName
+        assert at.replaceTargetFileIfDifferent(), 'replaceTargetFileIfDifferent returns False'
+        if 0:
+            print '%s exists %s' % (at.outputFileName,exists(at.outputFileName))
+            print '%s exists %s' % (at.targetFileName,exists(at.targetFileName))
+        assert not exists(at.outputFileName), 'oops, output file exists'
+        assert exists(at.targetFileName), 'oops, target file does not exist'
+        f = file(at.targetFileName)
+        s = f.read()
+        f.close()
+        # print 'Contents of %s: %s' % (at.targetFileName,s)
+        assert s == 'test %s' % at.outputFileName, 'unexpected contents of target file'
+        os.remove(at.targetFileName)
+    #@-node:ekr.20070627082044.80:@test atFile.replaceTargetFileIfDifferent (different)
+    #@+node:ekr.20070627082044.81:@test atFile.replaceTargetFileIfDifferent (identical)
+    if g.unitTesting:
+
+        __pychecker__ = '--no-reimport'
+        import os
+
+        at = c.atFileCommands
+        exists = g.os_path_exists
+
+        at.outputFileName = g.os_path_join(g.app.testDir,'xyzzy1')
+        at.targetFileName = g.os_path_join(g.app.testDir,'xyzzy2')
+
+        # Create both paths (identical contents)
+        for p in (at.outputFileName,at.targetFileName):
+            if exists(p):
+                os.remove(p)
+            assert not exists(p)
+            f = file(p,'w')
+            s = 'test %s' % at.outputFileName
+            # print repr(p),repr(s)
+            f.write(s)
+            f.close()
+            assert exists(p)
+
+        at.toString = False # Set by execute script stuff.
+        at.shortFileName = at.targetFileName
+        assert not at.replaceTargetFileIfDifferent(), 'replaceTargetFileIfDifferent returns True'
+        if 0:
+            print '%s exists %s' % (at.outputFileName,exists(at.outputFileName))
+            print '%s exists %s' % (at.targetFileName,exists(at.targetFileName))
+        assert not exists(at.outputFileName), 'oops, output file exists'
+        assert exists(at.targetFileName), 'oops, target file does not exist'
+        f = file(at.targetFileName)
+        s = f.read()
+        f.close()
+        # print 'Contents of %s: %s' % (at.targetFileName,s)
+        assert s == 'test %s' % at.outputFileName, 'unexpected contents of target file'
+        os.remove(at.targetFileName)
+    #@-node:ekr.20070627082044.81:@test atFile.replaceTargetFileIfDifferent (identical)
+    #@+node:ekr.20070627082044.82:@test atFile.replaceTargetFileIfDifferent (no target file)
+    if g.unitTesting:
+
+        __pychecker__ = '--no-reimport'
+        import os
+
+        at = c.atFileCommands
+        exists = g.os_path_exists
+
+        at.outputFileName = g.os_path_join(g.app.testDir,'xyzzy1')
+        at.targetFileName = g.os_path_join(g.app.testDir,'xyzzy2')
+
+        # Remove both files, then create only the output file
+        for p in (at.outputFileName,at.targetFileName):
+            if exists(p):
+                os.remove(p)
+
+        for p in (at.outputFileName,):
+            assert not exists(p)
+            f = file(p,'w')
+            s = 'test %s' % at.outputFileName
+            # print repr(p),repr(s)
+            f.write(s)
+            f.close()
+            assert exists(p)
+
+        at.toString = False # Set by execute script stuff.
+        at.shortFileName = at.targetFileName
+        assert not at.replaceTargetFileIfDifferent(), 'replaceTargetFileIfDifferent returns True'
+        if 0:
+            print '%s exists %s' % (at.outputFileName,exists(at.outputFileName))
+            print '%s exists %s' % (at.targetFileName,exists(at.targetFileName))
+        assert not exists(at.outputFileName), 'oops, output file exists'
+        assert exists(at.targetFileName), 'oops, target file does not exist'
+        f = file(at.targetFileName)
+        s = f.read()
+        f.close()
+        # print 'Contents of %s: %s' % (at.targetFileName,s)
+        assert s == 'test %s' % at.outputFileName, 'unexpected contents of target file'
+        os.remove(at.targetFileName)
+    #@-node:ekr.20070627082044.82:@test atFile.replaceTargetFileIfDifferent (no target file)
     #@-node:ekr.20041005105605.212:replaceTargetFileIfDifferent
     #@+node:ekr.20041005105605.216:warnAboutOrpanAndIgnoredNodes
     def warnAboutOrphandAndIgnoredNodes (self):
@@ -4822,7 +4940,6 @@ class atFile:
     if g.unitTesting:
 
         __pychecker__ = '--no-reimport'
-
         import os
         c,p = g.getTestVars()
         at = c.atFileCommands

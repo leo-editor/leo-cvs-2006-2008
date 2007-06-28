@@ -1650,7 +1650,7 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.endCommand(changed=True,setLabel=True)
     #@-node:ekr.20050920084036.145:changePreviousWord (not used)
-    #@+node:ekr.20051015114221.1:capitalizeHelper
+    #@+node:ekr.20051015114221.1:capitalizeHelper & test
     def capitalizeHelper (self,event,which,undoType):
 
         w = self.editWidget(event)
@@ -1679,7 +1679,27 @@ class editCommandsClass (baseEditCommandsClass):
             w.setSelectionRange(ins,ins,insert=ins)
 
         self.endCommand(changed=changed,setLabel=True)
-    #@-node:ekr.20051015114221.1:capitalizeHelper
+    #@+node:ekr.20070627082044.268:@test c.editCommands.capitalizeHelper
+    # TARGETWORD
+
+    if g.unitTesting:
+
+        c.beginUpdate()
+        try:
+            w = c.frame.body.bodyCtrl
+
+            for (which,result) in (('cap','Targetword'),('low','targetword'),('up','TARGETWORD')):
+                w.setInsertPoint(5)
+                c.editCommands.capitalizeHelper(event=None,which=which,undoType=None)
+                s = w.getAllText()
+                word = s[2:12]
+                assert word == result, 'Expected %s, got: %s' % (result,repr(word))
+                i = w.getInsertPoint()
+                assert i == 5, 'Expected 5, got: %d' % i
+        finally:
+            c.endUpdate(False)
+    #@-node:ekr.20070627082044.268:@test c.editCommands.capitalizeHelper
+    #@-node:ekr.20051015114221.1:capitalizeHelper & test
     #@-node:ekr.20050920084036.57:capitalization & case
     #@+node:ekr.20051022142249:clicks and focus (editCommandsClass)
     #@+node:ekr.20060211100905:activate-x-menu & activateMenu (editCommandsClass)
@@ -2205,7 +2225,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@-node:ekr.20060417194232.1:findCharacterHelper
     #@-node:ekr.20060925151926:backward/findCharacter & helper
-    #@+node:ekr.20060417194232.2:findWord (passed)
+    #@+node:ekr.20060417194232.2:findWord & test
     def findWord (self,event):
 
         '''Put the cursor at the next word (on a line) that starts with a character.'''
@@ -2232,7 +2252,25 @@ class editCommandsClass (baseEditCommandsClass):
                         i += 1
             k.resetLabel()
             k.clearState()
-    #@-node:ekr.20060417194232.2:findWord (passed)
+    #@+node:ekr.20070627082044.270:@test findWord
+    # targetWord
+
+    if g.unitTesting:
+        c.beginUpdate()
+        try:
+            k = c.k ; w = c.frame.body.bodyCtrl
+            w.setInsertPoint(0)
+            k.arg = 'targetWord'
+            k.setState('find-word-on-line',1)
+            f = c.editCommands.findWord(event=None)
+            i,j = w.getSelectionRange()
+            s = w.getAllText()
+            word = s[i:j]
+            assert word == 'targetWord', 'got: %s' % word
+        finally:
+            c.endUpdate(False)
+    #@-node:ekr.20070627082044.270:@test findWord
+    #@-node:ekr.20060417194232.2:findWord & test
     #@-node:ekr.20060417194232:find (quick)
     #@+node:ekr.20050920084036.72:goto...
     #@+node:ekr.20050929115226:gotoCharacter
@@ -2709,7 +2747,7 @@ class editCommandsClass (baseEditCommandsClass):
             oldSel = None ; undoType = 'remove-blank-lines'
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20050920084036.141:removeBlankLines
-    #@+node:ekr.20051125080855:selfInsertCommand & helpers
+    #@+node:ekr.20051125080855:selfInsertCommand, helpers & tests
     def selfInsertCommand(self,event,action='insert'):
 
         '''Insert a character in the body pane.
@@ -2948,7 +2986,55 @@ class editCommandsClass (baseEditCommandsClass):
         w.setSelectionRange(ins,ins,insert=ins)
     #@nonl
     #@-node:ekr.20051026092433:updateTab
-    #@-node:ekr.20051125080855:selfInsertCommand & helpers
+    #@+node:ekr.20070627082044.274:@test selfInsertCommand-1
+    if g.unitTesting:
+        c.beginUpdate()
+        try:
+            ec = c.editCommands ; w = c.frame.body.bodyCtrl
+            s = w.getAllText()
+
+            # This strings tests unicode, paren matching, and auto-indentation.
+            u = u'(a\u00c9\u03a9B\u3045\u4e7cz):\n' # '(aÉΩBぅ乼cz):\n'
+            u = u'(pdq):\n'
+            w.setInsertPoint(len(s))
+            for char in u:
+                event = g.Bunch(widget=w,char=char,keysym=None)
+                ec.selfInsertCommand(event)
+            result = w.getAllText()
+            #g.trace('result',repr(result))
+            assert result.endswith('    '),'result:%s' % repr(result) # Test of autocompleter.
+        finally:
+            w.setAllText(s)
+            p.v.t.bodyString = s
+            # g.trace(repr(s))
+            c.recolor()
+            c.endUpdate(False)
+
+    # end:
+    #@-node:ekr.20070627082044.274:@test selfInsertCommand-1
+    #@+node:ekr.20070627082044.275:@test selfInsertCommand-2 (replacing tabs)
+    if g.unitTesting:
+        c.beginUpdate()
+        try:
+            ec = c.editCommands ; w = c.frame.body.bodyCtrl
+            s = w.getAllText()
+            w.setSelectionRange(len(s)-9,len(s)-6)
+            event = g.Bunch(widget=w,char='\t',keysym=None)
+            ec.selfInsertCommand(event)
+            result = w.getAllText()
+            # g.trace('result',repr(result))
+            assert result.endswith('\n    abcdef'),'last line:%s' % repr(result.split('\n')[-1])
+        finally:
+            w.setAllText(s)
+            p.v.t.bodyString = s
+            # g.trace(repr(s))
+            c.recolor()
+            c.endUpdate(False)
+
+    ###abcdef
+    #@nonl
+    #@-node:ekr.20070627082044.275:@test selfInsertCommand-2 (replacing tabs)
+    #@-node:ekr.20051125080855:selfInsertCommand, helpers & tests
     #@-node:ekr.20050920084036.85:insert & delete...
     #@+node:ekr.20050920084036.79:info...
     #@+node:ekr.20050920084036.80:howMany
@@ -3113,7 +3199,7 @@ class editCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.88:line...
     #@+node:ekr.20050929114218:move cursor... (leoEditCommands)
     #@+node:ekr.20051218170358: helpers
-    #@+node:ekr.20060113130510:extendHelper
+    #@+node:ekr.20060113130510:extendHelper & test
     def extendHelper (self,w,extend,spot,upOrDown=False):
         '''Handle the details of extending the selection.
         This method is called for all cursor moves.
@@ -3162,8 +3248,28 @@ class editCommandsClass (baseEditCommandsClass):
         w.seeInsertPoint()
         c.frame.updateStatusLine()
     #@nonl
-    #@-node:ekr.20060113130510:extendHelper
-    #@+node:ekr.20060113105246.1:moveUpOrDownHelper
+    #@+node:ekr.20070627082044.269:@test extendHelper
+    if g.unitTesting:
+        c.beginUpdate()
+        try:
+            ec = c.editCommands ; w = c.frame.body.bodyCtrl
+
+            for i,j,python in (
+                # ('1.0','4.5',False),
+                (5,50,True),
+            ):
+                extend = True
+                ec.moveSpot = None # It's hard to init this properly.
+                ec.extendHelper(w,extend,j)
+                i2,j2 = w.getSelectionRange()
+                # print i2,j2
+                #assert 0==i2, 'Expected i=%s, got %s' % (repr(i),repr(i2))
+                #assert j==j2, 'Expected j=%s, got %s' % (repr(j),repr(j2))
+        finally:
+            c.endUpdate(False)
+    #@-node:ekr.20070627082044.269:@test extendHelper
+    #@-node:ekr.20060113130510:extendHelper & test
+    #@+node:ekr.20060113105246.1:moveUpOrDownHelper & test
     def moveUpOrDownHelper (self,event,direction,extend):
 
         c = self.c ; w = self.editWidget(event)
@@ -3188,8 +3294,30 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.extendHelper(w,extend,spot,upOrDown=True)
     #@nonl
-    #@-node:ekr.20060113105246.1:moveUpOrDownHelper
-    #@+node:ekr.20051218122116:moveToHelper
+    #@+node:ekr.20070627082044.272:@test moveUpOrDownHelper
+    if g.unitTesting:
+
+        c.beginUpdate()
+        try:
+
+            ec = c.editCommands ; w = c.frame.body.bodyCtrl
+
+            for i,result,direction in (('5.8','4.8','up'),('5.8','6.8','down')):
+                event = None ; extend = False; ec.moveSpot = None
+                w.setInsertPoint(i)
+                ec.moveUpOrDownHelper (event,direction,extend)
+                i2,j2 = w.getSelectionRange()
+                if 1:
+                    break
+                else:
+                    assert i==i2, 'Expected %s, got %s' % (repr(i),repr(i2))
+                    assert j==j2, 'Expected %s, got %s' % (repr(j),repr(j2))
+                    w.setSelectionRange(0,0,insert=None)
+        finally:
+            c.endUpdate(False)
+    #@-node:ekr.20070627082044.272:@test moveUpOrDownHelper
+    #@-node:ekr.20060113105246.1:moveUpOrDownHelper & test
+    #@+node:ekr.20051218122116:moveToHelper & test
     def moveToHelper (self,event,spot,extend):
 
         '''Common helper method for commands the move the cursor
@@ -3208,7 +3336,28 @@ class editCommandsClass (baseEditCommandsClass):
 
         self.extendHelper(w,extend,spot,upOrDown=False)
     #@nonl
-    #@-node:ekr.20051218122116:moveToHelper
+    #@+node:ekr.20070627082044.271:@test moveToHelper
+    if g.unitTesting:
+
+        c.beginUpdate()
+        try:
+            ec = c.editCommands ; w = c.frame.body.bodyCtrl
+
+            for i,j,python in (
+                #('1.0','4.5',False),
+                (5,50,True),
+            ):
+                event = None ; extend = True ; ec.moveSpot = None
+                w.setInsertPoint(i)
+                ec.moveToHelper (event,j,extend)
+                i2,j2 = w.getSelectionRange()
+                assert i==i2, 'Expected %s, got %s' % (repr(i),repr(i2))
+                assert j==j2, 'Expected %s, got %s' % (repr(j),repr(j2))
+                w.setSelectionRange(0,0,insert=None)
+        finally:
+            c.endUpdate(False)
+    #@-node:ekr.20070627082044.271:@test moveToHelper
+    #@-node:ekr.20051218122116:moveToHelper & test
     #@+node:ekr.20051218171457:movePastCloseHelper
     def movePastCloseHelper (self,event,extend):
 
@@ -3380,7 +3529,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveToHelper(event,i,extend)
     #@nonl
     #@-node:ekr.20051218133207:backwardParagraphHelper
-    #@+node:ekr.20060209095101:setMoveCol
+    #@+node:ekr.20060209095101:setMoveCol & test
     def setMoveCol (self,w,spot):
 
         '''Set the column to which an up or down arrow will attempt to move.'''
@@ -3395,7 +3544,22 @@ class editCommandsClass (baseEditCommandsClass):
         self.moveCol = col
         self.moveSpotNode = p.v.t
     #@nonl
-    #@-node:ekr.20060209095101:setMoveCol
+    #@+node:ekr.20070627082044.276:@test setMoveCol
+    if g.unitTesting:
+
+        c.beginUpdate()
+        try:
+            w = c.frame.body.bodyCtrl
+            ec = c.editCommands
+
+            for spot,result in (('1.0',0),(5,5)):
+                ec.setMoveCol(w,spot)
+                assert ec.moveSpot == result
+                assert ec.moveCol == result
+        finally:
+            c.endUpdate(False)
+    #@-node:ekr.20070627082044.276:@test setMoveCol
+    #@-node:ekr.20060209095101:setMoveCol & test
     #@-node:ekr.20051218170358: helpers
     #@+node:ekr.20050920084036.148:buffers
     def beginningOfBuffer (self,event):
@@ -4026,7 +4190,7 @@ class editCommandsClass (baseEditCommandsClass):
     def scrollUpExtendSelection (self,event):
         '''Extend the text selection by scrolling the body text up one page.'''
         self.scrollHelper(event,'up',extend=True)
-    #@+node:ekr.20060113082917:scrollHelper
+    #@+node:ekr.20060113082917:scrollHelper & test
     def scrollHelper (self,event,direction,extend):
 
         k = self.k ; c = k.c ; gui = g.app.gui
@@ -4052,7 +4216,21 @@ class editCommandsClass (baseEditCommandsClass):
                 self.scrollOutlineDownPage()
             else:
                 self.scrollOutlineUpPage()
-    #@-node:ekr.20060113082917:scrollHelper
+    #@+node:ekr.20070627082044.273:@test scrollHelper
+    if g.unitTesting:
+
+        c.beginUpdate()
+        try:
+            ec = c.editCommands
+
+            for direction,extend in (('up',False),('down',False),('up',True),('down',True),):
+                event = g.Bunch(widget=c.frame.body.bodyCtrl)
+                ec.scrollHelper(event,direction,extend)
+
+        finally:
+            c.endUpdate(False)
+    #@-node:ekr.20070627082044.273:@test scrollHelper
+    #@-node:ekr.20060113082917:scrollHelper & test
     #@+node:ekr.20050920084036.147:measure
     def measure (self,w):
 
@@ -7650,6 +7828,83 @@ class searchCommandsClass (baseEditCommandsClass):
     #@-node:ekr.20050920084036.261:incremental search...
     #@-others
 #@-node:ekr.20050920084036.257:class searchCommandsClass
+#@+node:ekr.20070627082044.633:Unit tests
+#@+node:ekr.20070627082044.634:@test Find keeps focus in body & shows selected text
+if g.unitTesting:
+    import leoEditCommands
+    s = 'foo' ; bodyCtrl = c.frame.body.bodyCtrl
+
+    c.searchCommands.openFindTab()
+    h = c.searchCommands.findTabHandler
+    w = h.find_ctrl
+    w.setAllText(s)
+    c.bodyWantsFocus()
+    bodyCtrl.setInsertPoint(0)
+    c.searchCommands.findTabFindNext()
+    w = c.get_focus()
+    wName = g.app.gui.widget_name(w)
+
+    # in wxPython w != bodyCtrl (it's a proxy)
+    assert wName.startswith('body'), 'focus: %s = %s, expected %s = %s' % (
+        w,wName,bodyCtrl,g.app.gui.widget_name(bodyCtrl))
+#@nonl
+#@-node:ekr.20070627082044.634:@test Find keeps focus in body & shows selected text
+#@+node:ekr.20070627082044.635:@test minbuffer find commands
+if g.unitTesting:
+    table = (
+        're-search-forward',
+        're-search-backward',
+        'search-forward',
+        'search-backward',
+        'word-search-forward',
+        'word-search-backward',
+    )
+
+    for command in table:
+        # This is not a full test.  We must use keyboardQuit here!
+        c.k.simulateCommand(command)
+        c.k.keyboardQuit(None)
+#@nonl
+#@-node:ekr.20070627082044.635:@test minbuffer find commands
+#@+node:ekr.20070627082044.636:@test set find mode commands
+if g.unitTesting:
+    table = (
+        'set-find-everywhere',
+        'set-find-node-only',
+        'set-find-suboutline-only',
+    )
+
+    # show-find-tab-options     = Ctrl-o
+    # show-find-options         = o
+
+    for command in table:
+        c.k.simulateCommand(command)
+#@-node:ekr.20070627082044.636:@test set find mode commands
+#@+node:ekr.20070627082044.637:@test show-find-options
+if g.unitTesting:
+    c.k.simulateCommand('show-find-options')
+#@nonl
+#@-node:ekr.20070627082044.637:@test show-find-options
+#@+node:ekr.20070627082044.638:@test togle find options commands
+if g.unitTesting:
+    table = (
+        # 'toggle-find-clone-find-all-option',
+        'toggle-find-ignore-case-option',
+        'toggle-find-in-body-option',
+        'toggle-find-in-headline-option',
+        'toggle-find-mark-changes-option',
+        'toggle-find-mark-finds-option',
+        'toggle-find-regex-option',
+        'toggle-find-reverse-option',
+        'toggle-find-word-option',
+        'toggle-find-wrap-around-option',
+    )
+
+    for command in table:
+        c.k.simulateCommand(command)
+        c.k.simulateCommand(command)
+#@-node:ekr.20070627082044.638:@test togle find options commands
+#@-node:ekr.20070627082044.633:Unit tests
 #@-node:ekr.20051023094009:Search classes
 #@+node:ekr.20051025071455:Spell classes
 #@+others
