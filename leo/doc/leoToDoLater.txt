@@ -3484,7 +3484,7 @@ def scrollUp (self,event):
 def scrollUpExtendSelection (self,event):
     '''Extend the text selection by scrolling the body text up one page.'''
     self.scrollHelper(event,'up',extend=True)
-#@+node:ekr.20060113082917:scrollHelper
+#@+node:ekr.20060113082917:scrollHelper & test
 def scrollHelper (self,event,direction,extend):
 
     k = self.k ; c = k.c ; gui = g.app.gui
@@ -3510,7 +3510,21 @@ def scrollHelper (self,event,direction,extend):
             self.scrollOutlineDownPage()
         else:
             self.scrollOutlineUpPage()
-#@-node:ekr.20060113082917:scrollHelper
+#@+node:ekr.20070627082044.273:@test scrollHelper
+if g.unitTesting:
+
+    c.beginUpdate()
+    try:
+        ec = c.editCommands
+
+        for direction,extend in (('up',False),('down',False),('up',True),('down',True),):
+            event = g.Bunch(widget=c.frame.body.bodyCtrl)
+            ec.scrollHelper(event,direction,extend)
+
+    finally:
+        c.endUpdate(False)
+#@-node:ekr.20070627082044.273:@test scrollHelper
+#@-node:ekr.20060113082917:scrollHelper & test
 #@+node:ekr.20050920084036.147:measure
 def measure (self,w):
 

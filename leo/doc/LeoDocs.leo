@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.575136612022">
-	<global_window_position top="94" left="363" height="712" width="897"/>
+<globals body_outline_ratio="0.448871181939">
+	<global_window_position top="94" left="363" height="753" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -379,7 +379,6 @@
 <v t="ekr.20040403173920.28" rst_http_attribute="5d71002855463c6120636c6173733d22746172676574222069643d22687474702d6e6f64652d6d61726b65722d343922206e616d653d22687474702d6e6f64652d6d61726b65722d3439223e710155043c2f613e71025d71032855223c64697620636c6173733d2273656374696f6e222069643d2267657474657273223e710455063c2f6469763e71055d71062855443c64697620636c6173733d2273656374696f6e222069643d2273756d6d6172792d6f662d7468652d766e6f64652d616e642d706f736974696f6e2d636c6173736573223e710755063c2f6469763e71085d710928553f3c64697620636c6173733d22646f63756d656e74222069643d22636861707465722d372d736372697074696e672d6c656f2d776974682d707974686f6e223e710a55063c2f6469763e710b5d710c2855063c626f64793e710d55073c2f626f64793e710e5d710f2855433c68746d6c20786d6c6e733d22687474703a2f2f7777772e77332e6f72672f313939392f7868746d6c2220786d6c3a6c616e673d22656e22206c616e673d22656e223e711055073c2f68746d6c3e71114e656565656555073c2f6469763e0a711255233c64697620636c6173733d2273656374696f6e222069643d2273657474657273223e0a711355483c68323e3c6120636c6173733d22746f632d6261636b7265662220687265663d22236964323522206e616d653d2273657474657273223e536574746572733c2f613e3c2f68323e0a7114652e"><vh>Setters</vh></v>
 </v>
 <v t="ekr.20050903161843"><vh>Creating script buttons</vh></v>
-<v t="ekr.20050907101918"><vh>@test and @suite nodes</vh></v>
 <v t="ekr.20050901102400.3"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -716,10 +715,27 @@
 </v>
 </v>
 <v t="ekr.20070317033759"><vh>Chapter 19: Embedding Leo with the leoBridge module</vh>
-<v t="ekr.20070317033759.1"><vh>@rst html\leoBridge.html</vh>
+<v t="ekr.20070317033759.1" a="E"><vh>@rst html\leoBridge.html</vh>
 <v t="ekr.20070317033759.2"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20070317033759.3"><vh>@rst-no-head body</vh></v>
 <v t="ekr.20070317033759.6"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
+<v t="ekr.20070628083442" a="E"><vh>Chapter 20: Unit testing with Leo</vh>
+<v t="ekr.20070628083442.1" a="E"><vh>@rst html\unitTesting.html</vh>
+<v t="ekr.20070628083442.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20070628084351" a="TV"><vh>Overview</vh></v>
+<v t="ekr.20070628094515"><vh>Using @test nodes</vh></v>
+<v t="ekr.20070628094515.1"><vh>Using @suite nodes</vh></v>
+<v t="ekr.20070628094515.2" a="E"><vh>How the unit test commands work</vh>
+<v t="ekr.20070628094515.3"><vh>Creating leoDynamicUnitTests.leo</vh></v>
+<v t="ekr.20050907101918"><vh>@test nodes</vh></v>
+<v t="ekr.20070628090657"><vh>@suite nodes</vh></v>
+<v t="ekr.20070628090657.1"><vh>How the unit test commands work</vh></v>
+</v>
+<v t="ekr.20070628092833"><vh>g.unitTesting and g.app.scriptDict['suite']</vh></v>
+<v t="ekr.20070628090657.2"><vh>Unit test buttons</vh></v>
+<v t="ekr.20070628083442.4"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
 <v t="EKR.20040524104904.274"><vh>Appendices</vh>
@@ -1039,7 +1055,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931" a="E"><vh>@rst html\new-4-4-3.html</vh>
@@ -3179,8 +3195,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070626082732" a="EV"><vh>4.4.3 final</vh></v>
+<v t="edream.110203163054.63"><vh>Latest version</vh>
+<v t="ekr.20070626082732" a="E"><vh>4.4.3 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -17672,7 +17688,7 @@ Appendices
 .. WARNING: image targets may not have upper case letters!
 
 .. |back| image:: arrow_lt.gif
-	:target: leoBridge.html
+	:target: unitTesting.html
 
 .. |next| image:: arrow_rt.gif
 	:target: glossary.html
@@ -19467,18 +19483,34 @@ For example::
         g.es('format_headlines',format_headlines)
 
 ``c.config.set`` does not change the ``@settings`` tree; it simply changes the values returned by the getters.</t>
-<t tx="ekr.20050907101918">``@test`` and ``@suite`` nodes are a major advance in unit testing. Such nodes
-have headlines that start with ``@test`` or ``@suite``. The file ``test.leo``
-contains many examples of ``@test`` and ``@suite`` nodes. ``@test`` and
-``@suite`` nodes are a direct outgrowth of script buttons. The ``unit test``
-script button in ``test.leo`` scans the selected outline, creating one unit test
-for each ``test`` node and zero or more unit tests for each ``@suite`` node. The
-``unit test`` script then runs all the selected unit tests.
+<t tx="ekr.20050907101918">As mentioned earlier, Leo's unit tests commands search the outline looking for @test nodes or @suite nodes.
+This section describes what happens when a unit test command @test node is found.
+The next section describes what happens when an @suite node is found.
 
-``@test`` nodes
-    ``@test`` nodes create a single unit test from the script in its body
-    **without having to create a subclass of unittest.TestCase**.
-    For example, here is a complete unit test.  The headline is::
+When a unit test command finds an @test node it does the following:
+    
+1.  The unit test command **preprocess** the body text of the @test node by
+    it expands section references and handles @others and other directives.
+    In other words, Leo's unit tests commands preprocess the body text
+    of @test nodes just like Leo's execute-script command does.
+    
+1.  The unit test command creates an instance of unittest.TestCase.
+    Actually, the command creates an instance of leoTest.generalTestCase,
+    a subclass of unittest.Testcase.  The command creates the test case by calling::
+        
+        generalTestCase(c,p)
+
+
+that is, nodes whose headlines start with ``@test`` or ``@suite``.  For example::
+
+
+@test nodes create a single unit test from the script in its body
+**without having to create an explicit subclass of unittest.TestCase**.
+
+Suppose we are executing one of Leo's unit tests commands.
+The only difference between the 
+
+For example, here is a complete unit test.  The headline is::
 
         @test p.t == p.v.t
 
@@ -19503,52 +19535,8 @@ for each ``test`` node and zero or more unit tests for each ``@suite`` node. The
     scripts may not use the ``@others`` directive if descendant nodes hold
     data.
     
-``@suite`` nodes
-    ``@suite`` are an easy way to run legacy unit tests. The ``Unit Test``
-    button assumes that the body text of an ``@suite`` node is a script that
-    creates a test suite and leaves the result in ``g.app.scriptDict['suite']``.
-    ``test.leo`` several examples of ``@suite nodes``.
-    Here is an ``@suite`` node that executes all doctests in Leo's sources.
-    The headline is::
 
-        @suite run all doctests
-
-    The body text is::
-
-        import unittest
-        import leoTest
-        import sys
-        
-        # DocTestSuite exists in Python 2.3 and above.
-        if g.CheckVersion(sys.version, "2.3"):
-            path = g.os_path_join(g.app.loadDir,"..","src")
-            modules = leoTest.importAllModulesInPath(path)
-            suite = leoTest.createUnitTestsFromDoctests(modules)                     
-            if suite:
-                g.app.scriptDict['suite'] = suite
-        else:
-            # Create an empty suite to suppress a warning.
-            g.app.scriptDict['suite'] = unittest.TestSuite()
-            print "Can't create unit tests from doctests"
-            print "doctest.DocTestSuite requires Python 2.3 or above."
-
-    The real work of creating the test suites is done by
-    ``leoTest.createUnitTestsFromDoctests``.
-    **Important**: if the suite was created successfully, the script must pass the suite
-    to script in the ``unit test`` script button by as follows::
-
-            g.app.scriptDict['suite'] = suite
-
-``@button unit test``
-    The script in the ``Unit Test`` script button in ``test.leo`` is just::
-
-        import leoTest
-        leoTest.doTests(all=False)
-
-    ``test.leo`` defines the ``leoTest`` module. The ``doTests`` function is the
-    code that supports ``@test`` and ``@suite`` nodes. **Important**: you could
-    customize how ``@test`` and ``@suite`` nodes work by using your own script
-    in the ``@button unit test`` node.</t>
+</t>
 <t tx="ekr.20050908113904">This is a known bug in Tk that prevents this on Windows. The obvious Tk code
 causes a hard crash in the Python dll: it's the only time Leo has taken such a
 hard crash. The ``UniversalScrolling`` plugin is an attempt at a workaround.
@@ -30043,7 +30031,7 @@ Using the leoBridge module, host programs can get access to:
     :target: front.html
 
 .. |next| image:: arrow_rt.gif
-    :target: appendices.html
+    :target: unitTesting.html
 </t>
 <t tx="ekr.20070317033759.3">Host programs use the leoBridge module as follows::
 
@@ -30975,5 +30963,153 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070628083442"></t>
+<t tx="ekr.20070628083442.1">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+.. June, 2007
+
+|back| |leo| |next|
+
+############################################################
+Chapter 20: Unit testing with Leo
+############################################################
+
+This chapter describes how you can execute Python unit test from within Leo outlines.  Leo's unit test commands,
+run-unit-tests and run-all-unit-tests search for ``@test`` and ``@suite`` nodes and run the unit tests created by such nodes.  This chapter describes:
+    
+- How to use @test and @suite nodes, with several examples.
+- Precisely how the run-unit-test and run-all-unit-test commands work.
+- How to run unit testing commands from script buttons.</t>
+<t tx="ekr.20070628083442.2">.. Links
+
+.. WARNING: image targets may not have upper case letters!
+
+.. |back| image:: arrow_lt.gif
+    :target: leoBridge.html
+
+.. |leo|  image:: leo.gif
+    :target: front.html
+
+.. |next| image:: arrow_rt.gif
+    :target: appendices.html
+</t>
+<t tx="ekr.20070628083442.4">-----------------------
+
+|back| |leo| |next|</t>
+<t tx="ekr.20070628084351">Leo has two main unit test commands: run-unit-tests and run-all-unit-tests.
+The *only* difference between these two commands is how many unit tests get run:
+The run-unit-tests command runs all unit tests in the presently selected part of the Leo outline;
+the run-all-unit-tests command runs all unit tests in the entire Leo outline.
+In the discussion below, the term **unit test command** will mean either
+the run-unit-test command or the run-all-unit-tests command.
+
+The run-unit-tests commands search all or part of the outline looking for **@test nodes** or **@suite nodes**,
+that is, nodes whose headlines start with ``@test`` or ``@suite``.  For example::
+    
+    @test Pretty Print command
+    @suite run all plugin test routines
+    
+As you can imagine, @test nodes create individual unit tests,
+while @suite nodes create test suites containing one or more unit tests.
+
+The entire headline of an @test becomes the 'short description' of the unit test created by the @test node.  Thus, the short description of the unit test created by the @test node shown above is '@test Pretty Print command'.
+
+The headline text @suite nodes is ignored (except to mark the node as an @suite node).
+As shown in the example above, you would typically describe the tests following the @suite.
+
+Leo executes the unit tests created by @test and @suite nodes in a completely separate .leo file, dynamicUnitTest.leo, running in a completely separate process.  Thus, running unit tests is a multi-step process:
+    
+1. Create dynamicUnitTest.leo in the leo/test directory by
+   coping all @test, @suite and @unit-tests trees in the present outline to dynamicUnitTest.leo.
+2. Run dynamicUnitTest.leo in a separate process using a null gui.
+3. Run all the unit tests in dynamicUnitTest.leo using the leoTest.doTests function.
+
+The following sections describe:
+    
+1. How to use @test and @suite nodes and
+2. The full details of how the unit test commands work.
+
+**Note**: the file leoPy.leo contains hundreds of @test nodes and a few @suite nodes.
+As you can see, using @test nodes is very easy and using @suite nodes isn't much harder.</t>
+<t tx="ekr.20070628090657">``@suite`` nodes
+    ``@suite`` are an easy way to run legacy unit tests. The ``Unit Test``
+    button assumes that the body text of an ``@suite`` node is a script that
+    creates a test suite and leaves the result in ``g.app.scriptDict['suite']``.
+    ``test.leo`` several examples of ``@suite nodes``.
+    Here is an ``@suite`` node that executes all doctests in Leo's sources.
+    The headline is::
+
+        @suite run all doctests
+
+    The body text is::
+
+        import unittest
+        import leoTest
+        import sys
+        
+        # DocTestSuite exists in Python 2.3 and above.
+        if g.CheckVersion(sys.version, "2.3"):
+            path = g.os_path_join(g.app.loadDir,"..","src")
+            modules = leoTest.importAllModulesInPath(path)
+            suite = leoTest.createUnitTestsFromDoctests(modules)                     
+            if suite:
+                g.app.scriptDict['suite'] = suite
+        else:
+            # Create an empty suite to suppress a warning.
+            g.app.scriptDict['suite'] = unittest.TestSuite()
+            print "Can't create unit tests from doctests"
+            print "doctest.DocTestSuite requires Python 2.3 or above."
+
+    The real work of creating the test suites is done by
+    ``leoTest.createUnitTestsFromDoctests``.
+    **Important**: if the suite was created successfully, the script must pass the suite
+    to script in the ``unit test`` script button by as follows::
+
+            g.app.scriptDict['suite'] = suite
+</t>
+<t tx="ekr.20070628090657.1">The ``unit test``
+script button in ``test.leo`` scans the selected outline, creating one unit test
+for each ``test`` node and zero or more unit tests for each ``@suite`` node. The
+``unit test`` script then runs all the selected unit tests.
+
+</t>
+<t tx="ekr.20070628090657.2">test.leo and leoPy.leo contain two unit testing buttons::
+    
+    @button unit-tests @key=Alt+4
+    @button all-unit-tests @key=Alt+5
+
+The script in the unit-tests button is::
+
+    import leoTest
+    leoTest.runTestsExternally (c,all=False)
+    
+The script in the all-unit-tests button is::
+
+    import leoTest
+    leoTest.runTestsExternally (c,all=True)
+
+As you can see, each button writes a message, and calls runTestsExternally.
+The only difference in these scripts is the 'all' argument.
+
+These buttons create bindings for the 'unit-tests' and 'all-unit-tests' commands.
+Alternatively, you can dispense with these buttons and instead use the
+run-unit-tests and run-all-unit-tests commands directly.
+As always, you can create bindings for these commands in leoSettings.leo or myLeoSettings.leo.
+</t>
+<t tx="ekr.20070628092833"></t>
+<t tx="ekr.20070628094515"></t>
+<t tx="ekr.20070628094515.1"></t>
+<t tx="ekr.20070628094515.2"></t>
+<t tx="ekr.20070628094515.3"></t>
 </tnodes>
 </leo_file>

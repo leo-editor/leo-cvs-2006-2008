@@ -710,6 +710,7 @@ def runTestsExternally (c,all):
 
             trace = False
             if trace: import time
+            g.es('Running %sunit tests' % (g.choose(self.all,'all ','')),color='blue')
             print 'creating: %s' % (self.fileName)
             c = self.c ; p = c.currentPosition()
             if trace: t1 = time.time()
@@ -759,7 +760,7 @@ def runTestsExternally (c,all):
                     if h.startswith(s):
                         return True
 
-            # Next, look up the tree if.
+            # Next, look up the tree.
             if not self.all:   
                 for p in c.currentPosition().parents_iter():
                     h = p.headString()
