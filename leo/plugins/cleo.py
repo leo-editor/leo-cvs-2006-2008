@@ -40,7 +40,7 @@ import sys
 #@nonl
 #@-node:tbrown.20060903121429.2:<< imports >>
 #@nl
-__version__ = "0.22"
+__version__ = "0.23"
 #@<< version history >>
 #@+node:tbrown.20060903121429.3:<< version history >>
 #@@killcolor
@@ -110,6 +110,7 @@ __version__ = "0.22"
 # 0.21 EKR: protect access to c.frame.tree.canvas.  It may not exist during 
 # dynamic unit tests.
 # 0.22 EKR: fixed crasher in custom_colours.
+# 0.23 EKR: added 'c' arg to p.isVisible (v.isVisible no longer exists).
 #@-at
 #@nonl
 #@-node:tbrown.20060903121429.3:<< version history >>
@@ -692,7 +693,8 @@ class cleoController:
     #@+node:tbrown.20060903121429.39:draw_box
     def draw_box (self,v,color,canvas):
 
-        if v.isVisible():
+        c = self.c
+        if v.isVisible(c):
             x, y = v.iconx, v.icony
             self.marks.append(
                 canvas.create_rectangle(x,y,x+10,y+10,fill=color)
@@ -767,7 +769,8 @@ class cleoController:
 
         '''Draw the symbol for data.'''
 
-        if v.isVisible():
+        c = self.c
+        if v.isVisible(c):
 
             x, y = v.iconx, v.icony ; bottom = y+13
 
@@ -787,7 +790,8 @@ class cleoController:
 
         '''Draw the symbol for interfaces.'''
 
-        if v.isVisible():
+        c = self.c
+        if v.isVisible(c):
 
             x, y = v.iconx, v.icony ; topl = y 
 
