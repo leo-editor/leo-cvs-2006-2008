@@ -915,6 +915,7 @@ def pdb ():
 #@+node:ekr.20050221092824:@test g.pdb
 if g.unitTesting:
 
+    __pychecker__ = '--no-reimport'
     import sys
     c,p = g.getTestVars()
 
@@ -2673,11 +2674,9 @@ def es_print(s,*args,**keys):
     if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
 #@+node:ekr.20070621092938:@test g.es_print
-# Not usually enabled.
-
-if False and g.unitTesting:
-
-    g.es_print('\ntest of es_print: Ă',color='red')
+if g.unitTesting:
+    if 0: # Not usually enabled.
+        g.es_print('\ntest of es_print: Ă',color='red')
 #@-node:ekr.20070621092938:@test g.es_print
 #@-node:ekr.20050707064040:es_print & test
 #@+node:ekr.20050707065530:es_trace & test
@@ -2687,11 +2686,9 @@ def es_trace(s,*args,**keys):
     g.es(s,*args,**keys)
 #@nonl
 #@+node:ekr.20070621092938.1:@test g.es_trace
-# Not usually enabled.
-
-if False and g.unitTesting:
-
-    g.es_trace('\ntest of es_trace: Ă',color='red')
+if g.unitTesting:
+    if 0: # Not usually enabled.
+        g.es_trace('\ntest of es_trace: Ă',color='red')
 #@-node:ekr.20070621092938.1:@test g.es_trace
 #@-node:ekr.20050707065530:es_trace & test
 #@+node:ekr.20060810095921:et, et_* and _ (underscore)
@@ -3562,7 +3559,7 @@ def skip_id(s,i,chars=None):
     return i
 #@nonl
 #@-node:ekr.20040705195048:skip_id
-#@+node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line
+#@+node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line & tests
 #@+at 
 #@nonl
 # These methods skip to the next newline, regardless of whether the newline 
@@ -3594,7 +3591,53 @@ def skip_to_start_of_line (s,i):
     i = s.rfind('\n',0,i) # Don't find s[i], so it doesn't matter if s[i] is a newline.
     if i == -1: return 0
     else:       return i + 1
-#@-node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line
+#@+node:ekr.20070627082044.836:@test g.skip_line
+if g.unitTesting:
+    s = 'a\n\nc'
+    for i,result in (
+        (-1,2), # One too few.
+        (0,2),(1,2),
+        (2,3),
+        (3,4),
+        (4,4), # One too many.
+    ):
+        j = g.skip_line(s,i)
+        assert j == result, 'i: %d, expected %d, got %d' % (i,result,j)
+#@nonl
+#@-node:ekr.20070627082044.836:@test g.skip_line
+#@+node:ekr.20070627082044.837:@test g.skip_to_end_of_line
+if g.unitTesting:
+    s = 'a\n\nc'
+    for i,result in (
+        (-1,1), # One too few.
+        (0,1),(1,1),
+        (2,2),
+        (3,4),
+        (4,4), # One too many.
+    ):
+        j = g.skip_to_end_of_line(s,i)
+        assert j == result, 'i: %d, expected %d, got %d' % (i,result,j)
+#@nonl
+#@-node:ekr.20070627082044.837:@test g.skip_to_end_of_line
+#@+node:ekr.20070627082044.838:@test g.skip_to_start_of_line
+if g.unitTesting:
+    s1 = 'a\n\nc'
+    table1 = (
+        (-1,0), # One too few.
+        (0,0),(1,0),
+        (2,2),
+        (3,3),
+        (4,4), # One too many.
+    )
+    s2 = 'a\n'
+    table2 = ((1,0),(2,2)) # A special case at end.
+
+    for s,table in ((s1,table1),(s2,table2)):
+        for i,result in table:
+            j = g.skip_to_start_of_line(s,i)
+            assert j == result, 'i: %d, expected %d, got %d' % (i,result,j)
+#@-node:ekr.20070627082044.838:@test g.skip_to_start_of_line
+#@-node:ekr.20031218072017.3187:skip_line, skip_to_start/end_of_line & tests
 #@+node:ekr.20031218072017.3188:skip_long
 def skip_long(s,i):
 
@@ -4119,6 +4162,7 @@ if g.unitTesting:
         ('炰',   'utf-8'),
     ]
 
+    __pychecker__ = '--no-reimport'
     import sys
 
     if sys.platform.startswith('win'):
@@ -4177,7 +4221,7 @@ def getTestVars ():
 #@-node:ekr.20070524083513:Unit testing (leoGlobals.py)
 #@+node:EKR.20040612114220:Utility classes, functions & objects...
 #@+node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
-#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol
+#@+node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
 def convertPythonIndexToRowCol (s,i):
 
     '''Convert index i into string s into zero-based row/col indices.'''
@@ -4195,8 +4239,46 @@ def convertPythonIndexToRowCol (s,i):
         prevNL = s.rfind('\n',0,i) # Don't include i
         # g.trace('prevNL',prevNL,'i',i,g.callers())
         return row,i-prevNL-1
-#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol
-#@+node:ekr.20050315071727:g.convertRowColToPythonIndex
+#@+node:ekr.20070627082044.835:@test g.convertPythonIndexToRowCol
+if g.unitTesting:
+    s1 = 'abc\n\np\nxy'
+    table1 = (
+        (-1,(0,0)), # One too small.
+        (0,(0,0)),
+        (1,(0,1)),
+        (2,(0,2)),
+        (3,(0,3)), # The newline ends a row.
+        (4,(1,0)),
+        (5,(2,0)),
+        (6,(2,1)),
+        (7,(3,0)),
+        (8,(3,1)),
+        (9,(3,2)), # One too many.
+        (10,(3,2)), # Two too many.
+    )
+    s2 = 'abc\n\np\nxy\n'
+    table2 = (
+        (9,(3,2)),
+        (10,(4,0)), # One too many.
+        (11,(4,0)), # Two too many.
+    )
+    s3 = 'ab' # Test special case.  This was the cause of off-by-one problems.
+    table3 = (
+        (-1,(0,0)), # One too small.
+        (0,(0,0)),
+        (1,(0,1)),
+        (2,(0,2)), # One too many.
+        (3,(0,3)), # Two too many.
+    )
+
+    for s,table in ((s1,table1),(s2,table2)):
+        for i,result in table:
+            row,col = g.convertPythonIndexToRowCol(s,i)
+            assert row == result[0], 'i: %d, expected row %d, got %d' % (i,result[0],row)
+            assert col == result[1], 'i: %d, expected col %d, got %d' % (i,result[1],col)
+#@-node:ekr.20070627082044.835:@test g.convertPythonIndexToRowCol
+#@-node:ekr.20050314140957:g.convertPythonIndexToRowCol & test
+#@+node:ekr.20050315071727:g.convertRowColToPythonIndex & test
 def convertRowColToPythonIndex (s,row,col):
 
     '''Convert zero-based row/col indices into a python index into string s.'''
@@ -4215,7 +4297,35 @@ def convertRowColToPythonIndex (s,row,col):
         prev += len(line)
 
     return prev + col
-#@-node:ekr.20050315071727:g.convertRowColToPythonIndex
+#@+node:ekr.20070627082044.833:@test g.convertRowColToPythonIndex
+if g.unitTesting:
+    s1 = 'abc\n\np\nxy'
+    s2 = 'abc\n\np\nxy\n'
+    table1 = (
+        (0,(-1,0)), # One too small.
+        (0,(0,0)),
+        (1,(0,1)),
+        (2,(0,2)),
+        (3,(0,3)), # The newline ends a row.
+        (4,(1,0)),
+        (5,(2,0)),
+        (6,(2,1)),
+        (7,(3,0)),
+        (8,(3,1)),
+        (9,(3,2)), # One too large.
+    )
+    table2 = (
+        (9,(3,2)),
+        (10,(4,0)), # One two many.
+    )
+    for s,table in ((s1,table1),(s2,table2)):
+        for i,data in table:
+            row,col = data
+            result = g.convertRowColToPythonIndex(s,row,col)
+            assert i == result, 'row: %d, col: %d, expected: %d, got: %s' % (row,col,i,result)
+#@nonl
+#@-node:ekr.20070627082044.833:@test g.convertRowColToPythonIndex
+#@-node:ekr.20050315071727:g.convertRowColToPythonIndex & test
 #@-node:ekr.20050315073003: Index utilities... (leoGlobals) (passed)
 #@+node:ekr.20031218072017.3140: List utilities...
 #@+node:ekr.20031218072017.3141:appendToList
@@ -4259,7 +4369,7 @@ def angleBrackets(s):
 virtual_event_name = angleBrackets
 #@-node:ekr.20031218072017.3106:angleBrackets & virtual_event_name
 #@+node:ekr.20031218072017.3097:CheckVersion
-#@+node:ekr.20060921100435:CheckVersion (EKR) & helper
+#@+node:ekr.20060921100435:CheckVersion, helper & tests
 # Simplified version by EKR: stringCompare not used.
 
 def CheckVersion (s1,s2,condition=">=",stringCompare=None,delimiter='.',trace=False):
@@ -4309,7 +4419,22 @@ if g.unitTesting:
     assert g.CheckVersionToInt('b2') == 0, 'fail 3'
 #@nonl
 #@-node:ekr.20070120125007:@test CheckVersionToInt
-#@-node:ekr.20060921100435:CheckVersion (EKR) & helper
+#@+node:ekr.20070627082044.844:@test g.checkVersion
+if g.unitTesting:
+    # for condition in ('<','<=','>','>='):
+    for v1,condition,v2 in (
+        ('8.4.12','>','8.4.3'),
+        ('1','==','1.0'),
+        ('2','>','1'),
+        ('1.2','>','1'),
+        ('2','>','1.2.3'),
+        ('1.2.3','<','2'),
+        ('1','<','1.1'),
+    ):
+        assert g.CheckVersion(v1,v2,condition=condition,trace=False)
+#@nonl
+#@-node:ekr.20070627082044.844:@test g.checkVersion
+#@-node:ekr.20060921100435:CheckVersion, helper & tests
 #@+node:ekr.20060921100435.1:oldCheckVersion (Dave Hein)
 #@+at
 # g.CheckVersion() is a generic version checker.  Assumes a
@@ -5246,7 +5371,7 @@ def stripBrackets (s):
         s = s[:-1]
     return s
 #@-node:ekr.20060410112600:g.stripBrackets
-#@+node:ekr.20061031102333.2:g.getWord & getLine (both passed)
+#@+node:ekr.20061031102333.2:g.getWord & getLine & tests
 def getWord (s,i):
 
     '''Return i,j such that s[i:j] is the word surrounding s[i].'''
@@ -5281,7 +5406,28 @@ def getLine (s,i):
     # g.trace('i,j,k',i,j,k,repr(s[j:k]))
     return j,k
 #@nonl
-#@-node:ekr.20061031102333.2:g.getWord & getLine (both passed)
+#@+node:ekr.20070627082044.839:@test g.getLine
+if g.unitTesting:
+    s = 'a\ncd\n\ne'
+    for i,result in (
+        (-1,(0,2)), # One too few.
+        (0,(0,2)),(1,(0,2)),
+        (2,(2,5)),(3,(2,5)),(4,(2,5)),
+        (5,(5,6)),
+        (6,(6,7)),
+        (7,(6,7)), # One too many.
+    ):
+        j,k = g.getLine(s,i)
+        assert (j,k) == result, 'i: %d, expected %d,%d, got %d,%d' % (i,result[0],result[1],j,k)
+#@nonl
+#@-node:ekr.20070627082044.839:@test g.getLine
+#@+node:ekr.20070627082044.834:@test g.getWord
+if g.unitTesting:
+    s = 'abc xy_z5 pdq'
+    i,j = g.getWord(s,5)
+    assert s[i:j] == 'xy_z5','got %s' % s[i:j]
+#@-node:ekr.20070627082044.834:@test g.getWord
+#@-node:ekr.20061031102333.2:g.getWord & getLine & tests
 #@+node:ekr.20041219095213:import wrappers
 #@+at 
 #@nonl
@@ -5291,7 +5437,7 @@ def getLine (s,i):
 # The solutions is easy: simply return sys.modules.get(moduleName) if 
 # moduleName is in sys.modules!
 #@-at
-#@+node:ekr.20040917061619:g.cantImport
+#@+node:ekr.20040917061619:g.cantImport & test
 def cantImport (moduleName,pluginName=None,verbose=True):
 
     """Print a "Can't Import" message and return None."""
@@ -5305,7 +5451,12 @@ def cantImport (moduleName,pluginName=None,verbose=True):
         g.es_print(s,color="blue")
 
     return None
-#@-node:ekr.20040917061619:g.cantImport
+#@+node:ekr.20070627082044.850:@test g.cantImport returns None
+if g.unitTesting:
+    assert(g.cantImport("xyzzy","during unit testing") is None)
+#@nonl
+#@-node:ekr.20070627082044.850:@test g.cantImport returns None
+#@-node:ekr.20040917061619:g.cantImport & test
 #@+node:ekr.20041219095213.1:g.importModule
 def importModule (moduleName,pluginName=None,verbose=False):
 

@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
 #@+leo-ver=4-thin
 #@+node:ekr.20031218072017.2810:@thin leoCommands.py
+#@@first
+    # Needed because of unicode characters in tests.
+
 #@@language python
 #@@tabwidth -4
 #@@pagewidth 80
@@ -418,6 +422,53 @@ class baseCommands:
                 marks[p.v] = p.v
                 yield p.v
     #@-node:EKR.20040529091232.4:c.all_unique_vnodes_iter
+    #@+node:ekr.20070627082044.866:@test c iters
+    if g.unitTesting:
+        #@    << coverage tests >>
+        #@+node:ekr.20070627082044.867:<< coverage tests >>
+        v1 = [p.v for p in c.all_positions_iter()]
+        v2 = [v for v in c.all_vnodes_iter()]
+        for v in v2: assert(v in v1)
+        for v in v1: assert(v in v2)
+
+        t1 = [p.v.t for p in c.all_positions_iter()]
+        t2 = [t for t in c.all_tnodes_iter()]
+        for t in t2: assert(t in t1)
+        for t in t1: assert(t in t2)
+
+        # print "coverage tests pass"
+        #@nonl
+        #@-node:ekr.20070627082044.867:<< coverage tests >>
+        #@nl
+        #@    << duplicate tests >>
+        #@+node:ekr.20070627082044.868:<< duplicate tests >>
+        nodes = []
+        for v in c.all_unique_vnodes_iter():
+            assert v not in nodes
+            nodes.append(v)
+
+        nodes = []
+        for t in c.all_unique_tnodes_iter():
+            assert t not in nodes
+            nodes.append(t)
+
+        # print "duplicate tests pass"
+        #@nonl
+        #@-node:ekr.20070627082044.868:<< duplicate tests >>
+        #@nl
+
+        if 0:
+            print "vnodes",len([v for v in c.all_vnodes_iter()]),len([v for v in c.all_unique_vnodes_iter()])
+            print "tnodes",len([t for t in c.all_tnodes_iter()]),len([t for t in c.all_unique_tnodes_iter()])
+
+        if 0: # all nodes
+            for v in c.all_vnodes_iter(): print v
+            for t in c.all_tnodes_iter(): print t
+
+        if 0: # unique nodes
+            for v in c.all_unique_vnodes_iter(): print v
+            for t in c.all_unique_tnodes_iter(): print t
+    #@-node:ekr.20070627082044.866:@test c iters
     #@-node:ekr.20040312090934:c.iterators
     #@+node:ekr.20051106040126:c.executeMinibufferCommand
     def executeMinibufferCommand (self,commandName):
@@ -1508,6 +1559,15 @@ class baseCommands:
         return path
     #@nonl
     #@-node:ekr.20070115135502:writeScriptFile
+    #@+node:ekr.20070627082044.855:@test pre-definition of g in scripts
+    if g.unitTesting:
+        # print g.listToString(dir())
+
+        for ivar in ('c','g','p'):
+            assert ivar in dir()
+
+        assert hasattr(g.app,'tkEncoding')
+    #@-node:ekr.20070627082044.855:@test pre-definition of g in scripts
     #@-node:ekr.20031218072017.2140:c.executeScript & helpers
     #@+node:ekr.20031218072017.2864:goToLineNumber & allies
     def goToLineNumber (self,event=None,root=None,lines=None,n=None,scriptFind=False):
@@ -2576,7 +2636,7 @@ class baseCommands:
             result = ''.join(result)
             c.updateBodyPane(head,result,tail,undoType,oldSel,oldYview)
     #@-node:ekr.20031218072017.1830:indentBody (test)
-    #@+node:ekr.20031218072017.1831:insertBodyTime, helpers and test
+    #@+node:ekr.20031218072017.1831:insertBodyTime, helpers and tests
     def insertBodyTime (self,event=None):
 
         '''Insert a time/date stamp at the cursor.'''
@@ -2595,7 +2655,7 @@ class baseCommands:
         w.insert(i,s)
 
         c.frame.body.onBodyChanged(undoType,oldSel=oldSel)
-    #@+node:ekr.20031218072017.1832:getTime & test
+    #@+node:ekr.20031218072017.1832:getTime
     def getTime (self,body=True):
 
         c = self
@@ -2625,7 +2685,12 @@ class baseCommands:
             g.es_exception() # Probably a bad format string in leoSettings.leo.
             s = time.strftime(default_format,time.gmtime())
         return s
-    #@-node:ekr.20031218072017.1832:getTime & test
+    #@-node:ekr.20031218072017.1832:getTime
+    #@+node:ekr.20070627082044.843:@test c.getTime
+    if g.unitTesting:
+        assert type(c.getTime()) == type('')
+    #@nonl
+    #@-node:ekr.20070627082044.843:@test c.getTime
     #@+node:ekr.20070627082044.278:@test c.insertBodyTime
     if g.unitTesting:
         w = c.frame.body.bodyCtrl
@@ -2642,7 +2707,7 @@ class baseCommands:
             c.endUpdate(False)
     # end:
     #@-node:ekr.20070627082044.278:@test c.insertBodyTime
-    #@-node:ekr.20031218072017.1831:insertBodyTime, helpers and test
+    #@-node:ekr.20031218072017.1831:insertBodyTime, helpers and tests
     #@+node:ekr.20050312114529:insert/removeComments
     #@+node:ekr.20050312114529.1:addComments (test)
     def addComments (self,event=None):
@@ -3417,7 +3482,7 @@ class baseCommands:
     #@-node:ekr.20031218072017.2896:c.sortTopLevel
     #@-node:ekr.20031218072017.2895: Top Level... (Commands)
     #@+node:ekr.20040711135959.2:Check Outline submenu...
-    #@+node:ekr.20031218072017.2072:c.checkOutline
+    #@+node:ekr.20031218072017.2072:c.checkOutline & test
     def checkOutline (self,event=None,verbose=True,unittest=False,full=True):
 
         """Report any possible clone errors in the outline.
@@ -3584,7 +3649,13 @@ class baseCommands:
             #@-node:ekr.20040314043900:<<print summary message >>
             #@nl
         return errors
-    #@-node:ekr.20031218072017.2072:c.checkOutline
+    #@+node:ekr.20070627082044.815:@test CheckOutline
+    if g.unitTesting:
+        errors = c.checkOutline(verbose=False,unittest=True,full=True) # Run full check.
+
+        assert errors == 0, "Check Outline reported %d errors" % errors
+    #@-node:ekr.20070627082044.815:@test CheckOutline
+    #@-node:ekr.20031218072017.2072:c.checkOutline & test
     #@+node:ekr.20040723094220:Check Outline commands & allies
     #@+node:ekr.20040723094220.1:checkAllPythonCode
     def checkAllPythonCode(self,event=None,unittest=False,ignoreAtIgnore=True):
@@ -3741,7 +3812,7 @@ class baseCommands:
         for p in c.allNodes_iter():
             p.dump()
     #@-node:ekr.20040412060927:c.dumpOutline
-    #@+node:ekr.20040711135959.1:Pretty Print commands
+    #@+node:ekr.20040711135959.1:Pretty Print commands & tests
     #@+node:ekr.20040712053025:prettyPrintAllPythonCode
     def prettyPrintAllPythonCode (self,event=None,dump=False):
 
@@ -4181,7 +4252,149 @@ class baseCommands:
         #@-node:ekr.20040713070356:replaceBody
         #@-others
     #@-node:ekr.20040711135244.5:class prettyPrinter
-    #@-node:ekr.20040711135959.1:Pretty Print commands
+    #@+node:ekr.20070627082044.816:@test pretty printing a docstring
+    if g.unitTesting:
+        test1 = p.firstChild()
+        test2 = p.firstChild().next()
+
+        c.prettyPrintPythonCode(p=test2,dump=False)
+
+        assert(test2.bodyString()==test1.bodyString())
+    #@+node:ekr.20070627082044.817:Original
+    """
+    line 1
+    line 2
+    line 3
+    """
+    #@nonl
+    #@-node:ekr.20070627082044.817:Original
+    #@+node:ekr.20070627082044.818:Test
+    """
+    line 1
+    line 2
+    line 3
+    """
+    #@nonl
+    #@-node:ekr.20070627082044.818:Test
+    #@-node:ekr.20070627082044.816:@test pretty printing a docstring
+    #@+node:ekr.20070627082044.819:@test Pretty Print command
+    if g.unitTesting:
+        # @language python 
+
+        __pychecker__ = '--no-reimport'
+        import leoTest
+
+        u = leoTest.testUtils(c)
+        dump = False 
+        all = False 
+
+        if all:
+            c.prettyPrintAllPythonCode(dump=dump)
+        else:
+            # Warning: at present the before and after text is unprotected:
+            # Running Pretty Print on these nodes will negate the value of the test.
+            temp = u.findNodeInTree(p,"tempNode")
+            c.setBodyString(temp,"")
+            before = u.findNodeInTree(p,"before")
+            after = u.findNodeInTree(p,"after")
+            temp.scriptSetBodyString(before.bodyString())
+            c.prettyPrintPythonCode(p=temp,dump=dump)
+            assert temp.bodyString() == after.bodyString(),"Pretty Print Test failed"
+    #@+node:ekr.20070627082044.820:tempNode
+    #@+at 
+    #@nonl
+    # This is a test of stuff.in doc parts.
+    # 
+    #          I wonder what will happen.
+    #@-at
+    #@@c
+
+    def spam (self):
+
+        """ This is a ' triple'   quoted string:
+            It should remain untouched."""
+
+        if a == 3:
+            print "Ä á Û"
+
+        ''' Another ' triple'   quoted string:
+            It should remain untouched.'''
+
+        "yet another\
+        multi-line string"
+
+    class eggs:
+
+        """ A typical doc string """
+
+        #@    @+others
+        #@-others
+    #@nonl
+    #@-node:ekr.20070627082044.820:tempNode
+    #@+node:ekr.20070627082044.821:before
+    #@+at 
+    #@nonl
+    # This is    a test of stuff.in doc parts.
+    # 
+    #          I wonder           what will happen.
+    #@-at
+    #@@c
+
+    def        spam (self         )  :   
+
+        """ This is a ' triple'   quoted string:
+            It should remain untouched."""
+
+        if a==3:
+            print "Ä á Û"
+
+        ''' Another ' triple'   quoted string:
+            It should remain untouched.'''
+
+        "yet another\
+        multi-line string"
+
+    class eggs:
+
+        """ A typical doc string """
+
+        #@    @+others
+        #@-others
+    #@nonl
+    #@-node:ekr.20070627082044.821:before
+    #@+node:ekr.20070627082044.822:after
+    #@+at 
+    #@nonl
+    # This is a test of stuff.in doc parts.
+    # 
+    #          I wonder what will happen.
+    #@-at
+    #@@c
+
+    def spam (self):
+
+        """ This is a ' triple'   quoted string:
+            It should remain untouched."""
+
+        if a == 3:
+            print "Ä á Û"
+
+        ''' Another ' triple'   quoted string:
+            It should remain untouched.'''
+
+        "yet another\
+        multi-line string"
+
+    class eggs:
+
+        """ A typical doc string """
+
+        #@    @+others
+        #@-others
+    #@nonl
+    #@-node:ekr.20070627082044.822:after
+    #@-node:ekr.20070627082044.819:@test Pretty Print command
+    #@-node:ekr.20040711135959.1:Pretty Print commands & tests
     #@-node:ekr.20040711135959.2:Check Outline submenu...
     #@+node:ekr.20031218072017.2898:Expand & Contract...
     #@+node:ekr.20031218072017.2899:Commands (outline menu)

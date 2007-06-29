@@ -2393,16 +2393,15 @@ class baseFileCommands:
             return False
     #@+node:ekr.20050404212949:@test fc.deleteFileWithMessage
     if g.unitTesting:
-
         c,p = g.getTestVars()
         fc=c.fileCommands # Self is a dummy argument.
         fc.deleteFileWithMessage('xyzzy','test')
 
-    if 0: # one-time test of es statements.
-        fileName = 'fileName' ; kind = 'kind'
-        g.es("read only",color="red")
-        g.es("exception deleting %s file: %s" % (fileName,kind))
-        g.es("exception deleting backup file:" + fileName)
+        if 0: # one-time test of es statements.
+            fileName = 'fileName' ; kind = 'kind'
+            g.es("read only",color="red")
+            g.es("exception deleting %s file: %s" % (fileName,kind))
+            g.es("exception deleting backup file:" + fileName)
     #@-node:ekr.20050404212949:@test fc.deleteFileWithMessage
     #@-node:ekr.20050404190914.2:deleteFileWithMessage
     #@+node:ekr.20031218072017.1470:put

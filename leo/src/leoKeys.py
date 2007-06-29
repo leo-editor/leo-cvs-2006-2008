@@ -2881,7 +2881,7 @@ class keyHandlerClass:
         c.endEditing()
         c.bodyWantsFocus()
     #@-node:ekr.20061031131434.130:keyboardQuit
-    #@+node:ekr.20061031131434.131:k.registerCommand
+    #@+node:ekr.20061031131434.131:k.registerCommand & test
     def registerCommand (self,commandName,shortcut,func,pane='all',verbose=False):
 
         '''Make the function available as a minibuffer command,
@@ -2938,7 +2938,30 @@ class keyHandlerClass:
                     if d.get(key) == commandName:
                         c.commandsDict [key] = c.commandsDict.get(commandName)
                         break
-    #@-node:ekr.20061031131434.131:k.registerCommand
+    #@+node:ekr.20070627082044.831:@test k.registerCommand
+    if g.unitTesting:
+        __pychecker__ = '--no-reimport'
+        import leoTest
+        u = leoTest.testUtils(c)
+        k = c.k ; p = c.currentPosition() ; w = c.edit_widget(p)
+        commandName = 'test-registerCommand'
+
+        def callback (event=None,c=c): # Must have an event param to pass later unit test.
+            g.app.unitTestDict[commandName] = True
+
+        # Test 1
+        g.app.unitTestDict[commandName] = False
+        k.registerCommand(commandName,'Alt-Ctrl-Shift-z',callback,pane='all',verbose=True)
+        k.simulateCommand(commandName)
+        assert g.app.unitTestDict.get(commandName)
+
+        if 0: # Test 2
+            g.app.unitTestDict[commandName] = False
+            k.manufactureKeyPressForCommandName(w,commandName)
+            assert g.app.unitTestDict.get(commandName)
+    #@nonl
+    #@-node:ekr.20070627082044.831:@test k.registerCommand
+    #@-node:ekr.20061031131434.131:k.registerCommand & test
     #@-node:ekr.20061031131434.125:Externally visible helpers
     #@+node:ekr.20061031131434.145:Master event handlers (keyHandler)
     #@+node:ekr.20061031131434.146:masterKeyHandler
@@ -3967,6 +3990,7 @@ class keyHandlerClass:
     #@+node:ekr.20061031131434.183:@test isPlainKey
     if g.unitTesting:
 
+        __pychecker__ = '--no-reimport'
         import string
 
         c,p = g.getTestVars()
@@ -4403,6 +4427,138 @@ class keyHandlerClass:
     #@-node:ekr.20061031131434.200:universalDispatcher & helpers
     #@-others
 #@-node:ekr.20061031131434.74:class keyHandlerClass
+#@+node:ekr.20070627082044.827:Unit tests
+#@+node:ekr.20070627082044.828:@@@test strokeFromEvent (no longer used)
+if g.unitTesting:
+    alt = 0x20000 ; ctrl  = 4 ; shift = 1 ; key = 0
+    table = (
+        (key, 'a','a','a'),
+        (shift,'A','A','A'),
+        (alt,'','a','Alt+a'),
+        (alt+shift,'','A','Alt+A'),
+        (shift,'A','A','A',),
+        (key,'','Right','Right'),
+        (shift,'','Right','Shift+Right'),
+        (ctrl,'','Right','Ctrl+Right'),
+        (ctrl+shift,'','Right','Ctrl+Shift+Right'),
+    )
+    for state, ch, keysym, result in table:
+        val = c.k.strokeFromEvent(g.Bunch(state=state,char=ch,keysym=keysym))
+        assert val==result,'Expected %s, Got %s' % (result,val)
+#@nonl
+#@-node:ekr.20070627082044.828:@@@test strokeFromEvent (no longer used)
+#@+node:ekr.20070627082044.829:@test k.inverseCommandsDict is inverse of c.commandsDict
+if g.unitTesting:
+    # c.commandsDict: keys are emacs command names, values are functions f.
+    # k.inverseCommandsDict: keys are f.__name__, values are emacs command names.
+    d1 = c.commandsDict ; d2 = c.k.inverseCommandsDict
+    if 0:
+        vals = d2.values() ; vals.sort()
+        vals = [z for z in vals if z.startswith('contract')]
+        print 'inverseCommandsDict.values()',vals
+
+    keys1 = d1.keys() ; keys1.sort()
+    vals1 = d1.values()
+    vals1 = [f.__name__ for f in vals1]
+    vals1.sort()
+    keys2 = d2.keys() ; keys2.sort()
+    vals2 = d2.values(); vals2.sort()
+    if 0:
+        print keys1 ; print ; print
+        print vals2 ; print ; print
+        print keys2 ; print ; print
+        print vals1
+
+    # g.trace(g.dictToString(c.k.abbreviationsDict))
+    abbrevDict = c.config.getAbbrevDict()
+
+    # Find @button and @command nodes in this file.
+    buttonKeys = []
+    for p in c.allNodes_iter():
+        h = p.headString().strip().lower()
+        for kind in ('@button','@command'):
+            if h.startswith(kind):
+                key = h[len(kind):].strip()
+                i = key.find('@key')
+                if i > -1: key = key[:i].strip()
+                key = key.replace(' ','-')
+                # g.trace(key)
+                if key not in buttonKeys:
+                    buttonKeys.append(key)
+
+    for key in keys1:
+        if key not in vals2:
+            if (
+                key.startswith('enter-') and key.endswith('-mode') or
+                key.startswith('press-') and key.endswith('-button') or
+                key.startswith('delete-') and key.endswith('-button')
+            ):
+                vals2.append(key)
+            elif key in buttonKeys: ### ('save','unit-test',):
+                # List of buttons defined in this file.
+                vals2.append(key)
+            elif key.startswith('open-with-'):
+                vals2.append(key)
+            elif key in abbrevDict.keys():
+                pass # g.trace('abbrev',key)
+            else:
+                assert False, '%s not in inverseCommandsDict.values()' % key
+
+    vals2.sort()
+    for val in vals2:
+        if val not in keys1:
+            assert False, '%s not in commandsDict.keys()' % (val)
+#@nonl
+#@-node:ekr.20070627082044.829:@test k.inverseCommandsDict is inverse of c.commandsDict
+#@+node:ekr.20070627082044.830:@test strokeFromSetting
+if g.unitTesting:
+    # print 'settingsNameDict',c.k.settingsNameDict
+    table = (
+        ('a','a'),
+        ('A','a'),
+        ('Alt-a','Alt+a'),
+        ('Alt-A','Alt+a'),
+        ('Alt-Shift-a','Alt+A'),
+        ('Alt-=','Alt+equal'),
+        ('Alt-+','Alt+plus'),
+        ('Alt-Shift++','Alt+plus'), # Ignore the shift.
+        ('Alt--','Alt+minus'),
+        ('Shift-a','A'),
+        ('Shift-A','A'),
+        ('RtArrow','Right'),
+        ('Shift-RtArrow','Shift+Right'),
+        ('Ctrl-RtArrow','Ctrl+Right'),
+        ('Control-Right','Ctrl+Right'),
+        ('PageUp','Prior'), ('Prior','Prior'),('Shift-PageUp','Shift+Prior'),
+        ('PageDn','Next'),('Next','Next'),('Shift-Next','Shift+Next'),
+    )
+    for setting, result in table:
+        val = c.k.strokeFromSetting(setting)
+        assert val==result,'Expected %s, Got %s' % (result,val)
+#@nonl
+#@-node:ekr.20070627082044.830:@test strokeFromSetting
+#@+node:ekr.20070627082044.851:@test k.autoCompleterClass.calltip
+if g.unitTesting:
+    c.beginUpdate()
+    try:
+        k = c.k ; ac = k.autoCompleter
+        w = c.frame.body.bodyCtrl
+        ac.widget = w
+        s = w.getAllText()
+        import string
+        # Just test that this doesn't crash.
+        for obj in (None,g,string,c,p):
+            w.setInsertPoint('end')
+            c.k.autoCompleter.calltip(obj=g)
+    finally:
+        w.setAllText(s)
+        p.v.t.bodyString = s
+        c.recolor()
+        c.endUpdate(False)
+    # end:
+#@nonl
+#@-node:ekr.20070627082044.851:@test k.autoCompleterClass.calltip
+#@-node:ekr.20070627082044.827:Unit tests
 #@-others
 #@-node:ekr.20061031131434:@thin leoKeys.py
 #@-leo

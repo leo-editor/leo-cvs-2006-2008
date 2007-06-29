@@ -1196,6 +1196,29 @@ class leoBody:
         # g.trace('   ===', id(w),w.leo_chapter and w.leo_chapter.name,p.headString())
     #@-node:ekr.20070424092855:updateInjectedIvars
     #@-node:ekr.20070424053629.1:utils
+    #@+node:ekr.20070627082044.931:unit tests
+    # Crashes on wx
+    #@+node:ekr.20070627082044.932:@test Add & Delete editor
+    if g.unitTesting:
+        body = c.frame.body
+        body.addEditor()
+        body.deleteEditor()
+    #@nonl
+    #@-node:ekr.20070627082044.932:@test Add & Delete editor
+    #@+node:ekr.20070627082044.933:@test Add editor, Delete leftmost editor
+    if g.unitTesting:
+        frame = c.frame ; body = frame.body
+        body.addEditor()
+
+        # Select the leftmost editor.
+        w = body.editorWidgets.get('1')
+        body.selectEditor(w)
+        body.bodyCtrl = frame.bodyCtrl = w
+
+        # Delete the selected editor.
+        body.deleteEditor()
+    #@-node:ekr.20070627082044.933:@test Add editor, Delete leftmost editor
+    #@-node:ekr.20070627082044.931:unit tests
     #@-node:ekr.20060528100747:Editors (leoBody)
     #@+node:ekr.20031218072017.1329:onBodyChanged (leoBody)
     # This is the only key handler for the body pane.
@@ -1274,6 +1297,19 @@ class leoBody:
             self.selectEditor(w)
         else:
             g.trace('can not happen')
+    #@+node:ekr.20070627082044.857:@test onClick
+    if g.unitTesting:
+        c.beginUpdate()
+        try:
+            w = c.frame.body.bodyCtrl
+            y = 10
+            for x in xrange(0,100,10):
+                event = g.Bunch(c=c,x=x,y=y,widget=w)
+                c.frame.body.onClick(event)
+        finally:
+            c.endUpdate(False)
+    #@nonl
+    #@-node:ekr.20070627082044.857:@test onClick
     #@-node:ekr.20061109095450.8:onClick
     #@+node:ekr.20031218072017.3658:oops
     def oops (self):
@@ -1281,7 +1317,7 @@ class leoBody:
         g.trace("leoBody oops:", g.callers(), "should be overridden in subclass")
     #@-node:ekr.20031218072017.3658:oops
     #@+node:ekr.20031218072017.4018:Text (leoBody)
-    #@+node:ekr.20031218072017.4030:getInsertLines
+    #@+node:ekr.20031218072017.4030:getInsertLines & test
     def getInsertLines (self):
 
         """Return before,after where:
@@ -1305,7 +1341,27 @@ class leoBody:
         after  = g.toUnicode(after ,g.app.tkEncoding)
 
         return before,ins,after
-    #@-node:ekr.20031218072017.4030:getInsertLines
+    #@+node:ekr.20070627082044.920:@test leoBody.getInsertLines
+    # line 1
+    # line 2
+    # line 3
+    if g.unitTesting:
+        c.beginUpdate()
+        try:
+            w = c.frame.body.bodyCtrl
+            index = 11 # in the second line.
+            w.setInsertPoint(index)
+            before,ins,after = c.frame.body.getInsertLines()
+            assert before == '# line 1\n','Got %s' % repr(before)
+            assert ins    == '# line 2\n','Got %s' % repr(ins)
+            assert after.startswith('# line 3\n')
+            assert after.endswith('# end.')
+        finally:
+            c.endUpdate(False)
+    # end.
+    #@nonl
+    #@-node:ekr.20070627082044.920:@test leoBody.getInsertLines
+    #@-node:ekr.20031218072017.4030:getInsertLines & test
     #@+node:ekr.20031218072017.4031:getSelectionAreas
     def getSelectionAreas (self):
 
@@ -1331,6 +1387,26 @@ class leoBody:
         after  = g.toUnicode(after ,g.app.tkEncoding)
         return before,sel,after
     #@nonl
+    #@+node:ekr.20070627082044.921:@test leoBody.getSelectionAreas & test
+    # line 1
+    # line 2
+    # line 3
+    if g.unitTesting:
+        c.beginUpdate()
+        try:
+            w = c.frame.body.bodyCtrl
+            s = w.getAllText()
+            start,end = 11,15
+            w.setSelectionRange(start,end)
+            before,ins,after = c.frame.body.getSelectionAreas()
+            assert before == s[0:start],'Got %s' % repr(before)
+            assert ins    == s[start:end],'Got %s' % repr(ins)
+            assert after == s[end:]
+        finally:
+            c.endUpdate(False)
+    # end.
+    #@nonl
+    #@-node:ekr.20070627082044.921:@test leoBody.getSelectionAreas & test
     #@-node:ekr.20031218072017.4031:getSelectionAreas
     #@+node:ekr.20031218072017.2377:getSelectionLines
     def getSelectionLines (self):
@@ -1747,7 +1823,7 @@ class leoFrame:
 
     OnCutFromMenu = cutText
     #@-node:ekr.20070130115927.6:leoFrame.cutText
-    #@+node:ekr.20070130115927.7:leoFrame.pasteText
+    #@+node:ekr.20070130115927.7:leoFrame.pasteText & test
     def pasteText (self,event=None,middleButton=False):
 
         '''Paste the clipboard into a widget.
@@ -1803,7 +1879,29 @@ class leoFrame:
         return 'break' # Essential
 
     OnPasteFromMenu = pasteText
-    #@-node:ekr.20070130115927.7:leoFrame.pasteText
+    #@+node:ekr.20070627082044.842:@test pasteText
+    # target
+    if g.unitTesting:
+        c.beginUpdate()
+        try:
+            w = c.frame.body.bodyCtrl
+            s = w.getAllText()
+            w.setInsertPoint(len(s))
+            c.k.previousSelection = 2,8
+            event = g.Bunch(widget=w)
+            c.frame.pasteText(event=event,middleButton=True)
+            s2 = w.getAllText()
+            assert len(s2) == len(s) + len('target')
+        finally:
+            w.setAllText(s)
+            p.v.t.bodyString = s
+            # g.trace(repr(s))
+            c.recolor()
+            c.endUpdate(False)
+    # end
+    #@nonl
+    #@-node:ekr.20070627082044.842:@test pasteText
+    #@-node:ekr.20070130115927.7:leoFrame.pasteText & test
     #@+node:ekr.20061016071937:OnPaste (To support middle-button paste)
     def OnPaste (self,event=None):
 

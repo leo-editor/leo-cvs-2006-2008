@@ -1681,9 +1681,7 @@ class editCommandsClass (baseEditCommandsClass):
         self.endCommand(changed=changed,setLabel=True)
     #@+node:ekr.20070627082044.268:@test c.editCommands.capitalizeHelper
     # TARGETWORD
-
     if g.unitTesting:
-
         c.beginUpdate()
         try:
             w = c.frame.body.bodyCtrl
@@ -2254,7 +2252,6 @@ class editCommandsClass (baseEditCommandsClass):
             k.clearState()
     #@+node:ekr.20070627082044.270:@test findWord
     # targetWord
-
     if g.unitTesting:
         c.beginUpdate()
         try:
@@ -3030,7 +3027,6 @@ class editCommandsClass (baseEditCommandsClass):
             # g.trace(repr(s))
             c.recolor()
             c.endUpdate(False)
-
     ###abcdef
     #@nonl
     #@-node:ekr.20070627082044.275:@test selfInsertCommand-2 (replacing tabs)
@@ -3296,7 +3292,6 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@+node:ekr.20070627082044.272:@test moveUpOrDownHelper
     if g.unitTesting:
-
         c.beginUpdate()
         try:
 
@@ -3338,7 +3333,6 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@+node:ekr.20070627082044.271:@test moveToHelper
     if g.unitTesting:
-
         c.beginUpdate()
         try:
             ec = c.editCommands ; w = c.frame.body.bodyCtrl
@@ -3546,7 +3540,6 @@ class editCommandsClass (baseEditCommandsClass):
     #@nonl
     #@+node:ekr.20070627082044.276:@test setMoveCol
     if g.unitTesting:
-
         c.beginUpdate()
         try:
             w = c.frame.body.bodyCtrl
@@ -4218,7 +4211,6 @@ class editCommandsClass (baseEditCommandsClass):
                 self.scrollOutlineUpPage()
     #@+node:ekr.20070627082044.273:@test scrollHelper
     if g.unitTesting:
-
         c.beginUpdate()
         try:
             ec = c.editCommands
@@ -4884,7 +4876,6 @@ class helpCommandsClass (baseEditCommandsClass):
             g.es_print(s)
     #@+node:ekr.20060205165654:@test helpForMinibuffer
     if g.unitTesting:
-
         c,p = g.getTestVars()
         c.helpCommands.helpForMinibuffer()
     #@-node:ekr.20060205165654:@test helpForMinibuffer
@@ -5072,9 +5063,7 @@ class helpCommandsClass (baseEditCommandsClass):
             g.es_print(s)
     #@+node:ekr.20060205170435:@test apropos_bindings
     if g.unitTesting:
-
         c,p = g.getTestVars()
-
         c.helpCommands.aproposBindings()
     #@-node:ekr.20060205170435:@test apropos_bindings
     #@-node:ekr.20060205170335:aproposBindings
@@ -5226,9 +5215,7 @@ class helpCommandsClass (baseEditCommandsClass):
             g.es_print(s)
     #@+node:ekr.20060205170552:@test apropos_find_commands
     if g.unitTesting:
-
         c,p = g.getTestVars()
-
         c.helpCommands.aproposFindCommands()
     #@-node:ekr.20060205170552:@test apropos_find_commands
     #@-node:ekr.20060205170335.1:aproposFindCommands
@@ -7831,6 +7818,7 @@ class searchCommandsClass (baseEditCommandsClass):
 #@+node:ekr.20070627082044.633:Unit tests
 #@+node:ekr.20070627082044.634:@test Find keeps focus in body & shows selected text
 if g.unitTesting:
+    __pychecker__ = '--no-reimport'
     import leoEditCommands
     s = 'foo' ; bodyCtrl = c.frame.body.bodyCtrl
 
