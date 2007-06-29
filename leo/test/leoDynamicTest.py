@@ -2,6 +2,12 @@
 #@+node:ekr.20070626153912:@thin leoDynamicTest.py
 '''A program to run dynamic unit tests with the leoBridge module.'''
 
+# Make sure the current directory is on sys.path.
+import os,sys
+cwd = os.getcwd()
+if cwd not in sys.path:
+    sys.path.append(cwd)
+
 import leoBridge
 import leoTest
 # Do not define g here.  Use the g returned by the bridge.
