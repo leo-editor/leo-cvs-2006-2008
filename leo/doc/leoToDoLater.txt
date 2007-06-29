@@ -2445,13 +2445,15 @@ def find (self,event=None):
     self.currentWord = word # Need to remember this for 'add' and 'ignore'
 
     if alts:
+        # Save the selection range.
+        ins = w.getInsertPoint()
+        i,j = w.getSelectionRange()
         self.tab.fillbox(alts,word)
         c.invalidateFocus()
         c.bodyWantsFocusNow()
-        # Copy the working selection range to the body pane
-        start, end = self.workCtrl.getSelectionRange()
-        w.setSelectionRange(start,end)
-        w.see(start)
+        # Restore the selection range.
+        w.setSelectionRange(i,j,insert=ins)
+        w.see(ins)
     else:
         g.es("no more misspellings")
         self.tab.fillbox([])
@@ -2477,10 +2479,12 @@ def findNextMisspelledWord(self):
                 w = c.frame.body.bodyCtrl
                 i,j = w.getSelectionRange()
                 c.beginUpdate()
-                c.frame.tree.expandAllAncestors(p)
-                c.selectPosition(p)
-                c.endUpdate()
-                w.setSelectionRange(i,j,insert=j)
+                try:
+                    c.frame.tree.expandAllAncestors(p)
+                    c.selectPosition(p)
+                finally:
+                    c.endUpdate()
+                    w.setSelectionRange(i,j,insert=j)
                 break
     except:
         g.es_exception()
@@ -2604,7 +2608,7 @@ def getAspell (self):
     except ImportError:
         # Specify the path to the top-level Aspell directory.
         theDir = g.choose(sys.platform=='darwin',self.aspell_dir,self.aspell_bin_dir)
-        aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=True)
+        aspell = g.importFromPath('aspell',theDir,pluginName=None,verbose=False)
 
     self.aspell = aspell
     self.sc = aspell and aspell.spell_checker(prefix=self.aspell_dir,lang=self.local_language_code)
@@ -2628,7 +2632,8 @@ def getAspellWithCtypes (self):
     except Exception:
         if not sys.platform.startswith('win'):
             g.es_exception()
-        g.es('Can not load %s' % (path),color='blue')
+        # g.es('Can not load %s' % (path),color='blue')
+        print 'Can not load %s' % (path)
         self.aspell = None
         self.check = None
         self.sc = None
@@ -2773,7 +2778,8 @@ def updateDictionary(self):
         return True
 
     except Exception, err:
-        g.es_print("Unable to update local aspell dictionary: %s" % err)
+        # g.es_print("Unable to update local aspell dictionary: %s" % err)
+        print "Unable to update local aspell dictionary: %s" % e(err)
         return False
 #@-node:ekr.20051025071455.11:updateDictionary
 #@-node:ekr.20051025071455.6:class AspellClass

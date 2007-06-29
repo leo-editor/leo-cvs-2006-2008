@@ -152,11 +152,6 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@+node:ekr.20070627211454:To do first
 #@+node:ekr.20070629104915:Finish Chapter 20
 #@-node:ekr.20070629104915:Finish Chapter 20
-#@+node:ekr.20070625083310:Bugs
-#@+node:ekr.20070626153304:Fix spell-check bug
-# Misspelled words not selected properly on Linux.
-#@nonl
-#@-node:ekr.20070626153304:Fix spell-check bug
 #@+node:ekr.20070628102649.1:Fix group operations crasher
 @nocolor
 https://sourceforge.net/forum/message.php?msg_id=4385699
@@ -251,7 +246,6 @@ class exampleTestCase(unittest.TestCase):
 #@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
 #@-node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
 #@-node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
-#@-node:ekr.20070625083310:Bugs
 #@-node:ekr.20070627211454:To do first
 #@+node:ekr.20070324084040:@auto
 @ Aha: the perfect import code *can* correct whitespace (tab, underindented lines) problems that exists in the original files.  When such errors are found, Leo will issue the message:
