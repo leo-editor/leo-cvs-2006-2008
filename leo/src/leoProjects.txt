@@ -896,6 +896,38 @@ def findNextWord(self,p):
 #@-node:ekr.20051025071455.47:findNextWord
 #@-node:ekr.20051025071455.40:find & helpers
 #@-node:ekr.20070626153304:Fixed spell-check bug
+#@+node:ekr.20070628102649.1:Fixed several crashers in the group operations plugin
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4385699
+By: rich_ries
+
+From: Rich
+
+Trying the Group Operations gave the following error message:
+
+Traceback (most recent call last):
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoGlobals.py",
+line 2553, in doHook
+    return f(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 91, in doPlugins
+    return doHandlersForTag(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 70, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 49, in callTagHandler
+    result = handler(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\plugins\groupOperations.py",
+line 235, in drawImages
+    if lassoer.moveNode and lassoer.moveNode.isVisible():
+TypeError: isVisible() takes exactly 2 arguments (1 given)
+
+=====================================================================
+
+--Rich
+
+#@-node:ekr.20070628102649.1:Fixed several crashers in the group operations plugin
 #@-node:ekr.20070626112849:Bugs
 #@+node:ekr.20070626150414:Features
 #@+node:ekr.20070626150414.1:g.es and g.es_print print only to console during unit tests
