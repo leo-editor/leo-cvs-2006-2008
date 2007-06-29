@@ -8159,15 +8159,13 @@ class spellTabHandler (leoFind.leoFind):
         self.currentWord = word # Need to remember this for 'add' and 'ignore'
 
         if alts:
+            # Save the selection range.
             ins = w.getInsertPoint()
             i,j = w.getSelectionRange()
             self.tab.fillbox(alts,word)
             c.invalidateFocus()
             c.bodyWantsFocusNow()
-            # Copy the working selection range to the body pane
-            ###start, end = self.workCtrl.getSelectionRange()
-            ###w.setSelectionRange(start,end)
-            ###w.see(start)
+            # Restore the selection range.
             w.setSelectionRange(i,j,insert=ins)
             w.see(ins)
         else:
