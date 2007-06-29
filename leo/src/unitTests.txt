@@ -8233,14 +8233,9 @@ c.setMarked(child)
 child.expand()
 s = fc.putDescendentAttributes (p)
 
-if 1:
-    assert s.startswith('\nmarks="ekr.'),'bad start'
-    assert -1 != s.find(',"\nexpanded="ekr.'),'bad middle'
-    assert s.endswith(',"')
-else:
-    # This doesn't work when copied.
-    expected = '\nmarks="ekr.20061001114341.1,"\nexpanded="ekr.20061001114341.1,"'
-    assert s == expected, 'expected: %s, got: %s' % (repr(expected),repr(s))
+assert s.startswith('\nmarks="'),'bad start'
+assert -1 != s.find(',"\nexpanded="'),'bad middle'
+assert s.endswith(',"')
 #@+node:ekr.20070627082044.91:child
 #@+node:ekr.20070627082044.92:grandChild
 #@-node:ekr.20070627082044.92:grandChild
@@ -8256,23 +8251,11 @@ grandChild.v.t.unknownAttributes = {'unit_test_grandchild':'wxyz'}
 
 try:
     s = fc.putDescendentUnknownAttributes (p)
-    if 1:
-        assert s.startswith(' descendentTnodeUnknownAttributes="'),'bad start'
-        assert s.endswith('"'), 'bad end'
-    else: # This doesn't work when copied.
-
-        expected = ' descendentTnodeUnknownAttributes="\
-7d7100285514656b722e32303036313030313039313634372e3\
-171017d71025514756e69745f746573745f6772616e64636869\
-6c64710355047778797a7104735512656b722e3230303631303\
-03130393136343771057d7106550f756e69745f746573745f63\
-68696c647107550461626364710873752e"'
-
-        assert s == expected, 'expected: %s, got: %s' % (repr(expected),repr(s))
+    assert s.startswith(' descendentTnodeUnknownAttributes="'),'bad start'
+    assert s.endswith('"'), 'bad end'
 finally:
     del child.v.t.unknownAttributes
     del grandChild.v.t.unknownAttributes
-#@nonl
 #@+node:ekr.20070627082044.94:child
 #@+node:ekr.20070627082044.95:grandChild
 #@-node:ekr.20070627082044.95:grandChild
