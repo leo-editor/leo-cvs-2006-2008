@@ -745,7 +745,7 @@ def runTestsExternally (c,all):
 
             args = [sys.executable, path, '--silent']
 
-            srcDir = g.os_path_abspath(g.os_path_join(g.app.load,'..','src'))
+            srcDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','src'))
             os.chdir(srcDir)
 
             os.spawnve(os.P_NOWAIT,sys.executable,args,os.environ)
