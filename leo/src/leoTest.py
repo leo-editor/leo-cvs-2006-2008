@@ -745,6 +745,9 @@ def runTestsExternally (c,all):
 
             args = [sys.executable, path, '--silent']
 
+            srcDir = g.os_path_abspath(g.os_path_join(g.app.load,'..','src'))
+            os.chdir(srcDir)
+
             os.spawnve(os.P_NOWAIT,sys.executable,args,os.environ)
         #@-node:ekr.20070627135336.11:runLeoDynamicTest
         #@+node:ekr.20070627135336.8:searchOutline
