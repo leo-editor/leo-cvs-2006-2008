@@ -42,7 +42,7 @@ Tkinter = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 
 lassoers = {}
 
-__version__ = ".7"
+__version__ = ".8"
 #@<<version history>>
 #@+node:mork.20041021120027:<<version history>>
 #@@killcolor
@@ -70,6 +70,9 @@ __version__ = ".7"
 # .6 EKR: Fixed a crasher introduced by 'the big reorg'.
 # .7 EKR: Defined images in initImages so there is no problem if the gui is 
 # not Tk.
+# .8 EKR: Added 'c' arg to p.isVisible.
+# - Removed references to aPosition.c.  Positions no longer have 'c' 
+# attributes.
 #@-at
 #@nonl
 #@-node:mork.20041021120027:<<version history>>
@@ -229,10 +232,10 @@ def drawImages (tag,keywords):
     for l, col in mc:
         for z in l:
             if c.positionExists(z):
-                drawArrowImages(z,col,canvas)
+                drawArrowImages(c,z,col,canvas)
 
     canvas.delete('movenode')
-    if lassoer.moveNode and lassoer.moveNode.isVisible():
+    if lassoer.moveNode and lassoer.moveNode.isVisible(c):
         mN = lassoer.moveNode.v
         x = mN.iconx
         y = mN.icony
@@ -243,9 +246,9 @@ def drawImages (tag,keywords):
 
 #@-node:mork.20041018131258.34:drawImages
 #@+node:mork.20041018131258.35:drawArrowImages
-def drawArrowImages (p,image,canvas):
+def drawArrowImages (c,p,image,canvas):
 
-    if p.isVisible():
+    if p.isVisible(c):
         x = p.v.iconx
         y = p.v.icony
         canvas.create_image(x-5,y+7,image=image,tag='lnodes')
@@ -491,7 +494,7 @@ class Lassoer(object):
         for z in self.mvForM:
             if z.isRoot():
                 continue
-            if z.c != mN.c:
+            if False: ### z.c != mN.c:
                 z.c.selectPosition(z)
                 s = z.c.fileCommands.putLeoOutline()
                 p = mN.c.fileCommands.getLeoOutline(s,False)
