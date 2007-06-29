@@ -135,11 +135,9 @@ def es_print(s,*args,**keys):
     if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
         g.es(s,*args,**keys)
 #@+node:ekr.20070621092938:@test g.es_print
-# Not usually enabled.
-
-if False and g.unitTesting:
-
-    g.es_print('\ntest of es_print: Ă',color='red')
+if g.unitTesting:
+    if 0: # Not usually enabled.
+        g.es_print('\ntest of es_print: Ă',color='red')
 #@-node:ekr.20070621092938:@test g.es_print
 #@-node:ekr.20050707064040:es_print & test
 #@+node:ekr.20070626132332:es

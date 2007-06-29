@@ -3512,7 +3512,6 @@ def scrollHelper (self,event,direction,extend):
             self.scrollOutlineUpPage()
 #@+node:ekr.20070627082044.273:@test scrollHelper
 if g.unitTesting:
-
     c.beginUpdate()
     try:
         ec = c.editCommands

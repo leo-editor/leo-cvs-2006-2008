@@ -422,6 +422,12 @@ TypeError: isVisible() takes exactly 2 arguments (1 given)
 
 #@-node:ekr.20070628102649.1:Fix group operations crasher
 #@-node:ekr.20070625083310:Bugs
+#@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
+val = c.config.getBool('collapse_nodes_during_finds')
+c.config.set(p,'collapse_nodes_during_finds',not val)
+g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
+#@nonl
+#@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
 #@-node:ekr.20070627211454:To do first
 #@+node:ekr.20070324084040:@auto
 #@+node:ekr.20070610133513:Design and notes
