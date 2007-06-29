@@ -1000,7 +1000,7 @@ class controllerClass:
         cc = self ; c = cc.c ; w = cc.LeoBodyText
 
         c.beginUpdate()
-        if not node.isVisible():
+        if not node.isVisible(c):
             for p in node.parents_iter():
                 p.expand()
         c.selectPosition(node)

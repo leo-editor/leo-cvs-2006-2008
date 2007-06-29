@@ -337,7 +337,7 @@ def drawImages (tag,keywords):
     canvas = c.frame.canvas 
     canvas.delete('template')
     for z in templates:
-        if c.positionExists(z)and z.isVisible():
+        if c.positionExists(z)and z.isVisible(c):
             x = z.v.iconx 
             y = z.v.icony 
             canvas.create_image(x-30,y+7,image=templatePI,tag='template')
