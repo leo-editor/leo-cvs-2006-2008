@@ -148,38 +148,47 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20060829103523:Render Leo slideshows
 #@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
 #@-node:ekr.20070521100324:Marketing/tools
-#@+node:ekr.20070325052041:To do: 4.4.4
+#@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070627211454:To do first
-#@+node:ekr.20070627211053:Move most unit tests into derived files
-# Protect them with `if g.unitTesting:`
-#@nonl
-#@-node:ekr.20070627211053:Move most unit tests into derived files
+#@+node:ekr.20070629104915:Finish Chapter 20
+#@-node:ekr.20070629104915:Finish Chapter 20
 #@+node:ekr.20070625083310:Bugs
-#@+node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
-#@+node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
-if g.unitTesting:
-
-    @others # Define the test case
-
-    g.app.scriptDict['suite'] = exampleTestCase(c)
-#@+node:ekr.20070627204038.2:class exampleTestCase
-import unittest
-
-class exampleTestCase(unittest.TestCase):
-
-    '''A test case to print a message at the end of plugin tests.'''
-
-    def __init__ (self,c):
-        unittest.TestCase.__init__(self)
-        self.c = c
-
-    def runTest(self):
-        assert self.c
-        print 'exampleTestCase'
+#@+node:ekr.20070626153304:Fix spell-check bug
+# Misspelled words not selected properly on Linux.
 #@nonl
-#@-node:ekr.20070627204038.2:class exampleTestCase
-#@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
-#@-node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
+#@-node:ekr.20070626153304:Fix spell-check bug
+#@+node:ekr.20070628102649.1:Fix group operations crasher
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4385699
+By: rich_ries
+
+From: Rich
+
+Trying the Group Operations gave the following error message:
+
+Traceback (most recent call last):
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoGlobals.py",
+line 2553, in doHook
+    return f(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 91, in doPlugins
+    return doHandlersForTag(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 70, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 49, in callTagHandler
+    result = handler(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\plugins\groupOperations.py",
+line 235, in drawImages
+    if lassoer.moveNode and lassoer.moveNode.isVisible():
+TypeError: isVisible() takes exactly 2 arguments (1 given)
+
+=====================================================================
+
+--Rich
+
+#@-node:ekr.20070628102649.1:Fix group operations crasher
 #@+node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
 @
 
@@ -216,214 +225,45 @@ def cleanLines (self,p,s):
     return s
 #@nonl
 #@-node:ekr.20070529083836:cleanLines
+#@+node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
+#@+node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
+if g.unitTesting:
+
+    @others # Define the test case
+
+    g.app.scriptDict['suite'] = exampleTestCase(c)
+#@+node:ekr.20070627204038.2:class exampleTestCase
+import unittest
+
+class exampleTestCase(unittest.TestCase):
+
+    '''A test case to print a message at the end of plugin tests.'''
+
+    def __init__ (self,c):
+        unittest.TestCase.__init__(self)
+        self.c = c
+
+    def runTest(self):
+        assert self.c
+        print 'exampleTestCase'
+#@nonl
+#@-node:ekr.20070627204038.2:class exampleTestCase
+#@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
+#@-node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
 #@-node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
-#@+node:ekr.20070627091302:test.leo gives a warning from restoreDescendantAttributes
-# May have arisen from @@@thin leoImports.
-#@nonl
-#@-node:ekr.20070627091302:test.leo gives a warning from restoreDescendantAttributes
-#@+node:ekr.20070626153304:Fix spell-check bug
-# Misspelled words not selected properly on Linux.
-#@nonl
-#@-node:ekr.20070626153304:Fix spell-check bug
-#@+node:ekr.20070628104735:Send can not import aspell message only to the log
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4382336
-By: rich_ries
-
->> Offhand, I don't have a great solution to this.
->> Anyone have an idea?
-
-The rst3 plugin sends its error message solely to the console; can not
-the spell-check do the same?
-#@-node:ekr.20070628104735:Send can not import aspell message only to the log
-#@+node:ekr.20070625083218:Del does not work in headlines
-#@-node:ekr.20070625083218:Del does not work in headlines
-#@+node:ekr.20070628102649:Fix cleo craher
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4385604
-By: rich_ries
-
-From: Rich
-
-Coupla problems:
-
-(1) I pressed Alt+9 (just fooling around -- err, experimenting!) and got the
-following error window:
-
-====================================================================
-Error: 1
-AttributeError Exception in Tk callback
-  Function: <function masterBindKeyCallback at 0x01461F30> (type: <type
-'function'>)
-  Args: (<Tkinter.Event instance at 0x00F85260>,)
-  Event type: KeyPress (type num: 2)
-Traceback (innermost last):
-  File "C:\Language\Python\lib\site-packages\Pmw\Pmw_1_2\lib\PmwBase.py", line
-1747, in __call__
-    return apply(self.func, args)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoKeys.py", line
-2150, in masterBindKeyCallback
-    return k.masterKeyHandler(event,stroke=stroke)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoKeys.py", line
-3086, in masterKeyHandler
-    return k.masterCommand(event,b.func,b.stroke,b.commandName)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoKeys.py", line
-2272, in masterCommand
-    c.doCommand(func,commandName,event=event)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
-line 283, in doCommand
-    c.redraw_now()
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
-line 5720, in redraw_now
-    c.frame.tree.redraw_now()
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 822, in redraw_now
-    self.redrawHelper(scroll=scroll)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 838, in redrawHelper
-    self.drawTopTree()
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1185, in drawTopTree
-    self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=hoistFlag)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1213, in drawTree
-    h,indent = self.drawNode(const_p,x,y)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 976, in drawNode
-    return self.force_draw_node(p,x,y)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1004, in force_draw_node
-    h2 = self.drawText(p,x,y)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1031, in drawText
-    self.configureTextState(p)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1890, in configureTextState
-    self.setUnselectedLabelState(p) # unselected
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 2349, in setUnselectedLabelState
-    self.setUnselectedHeadlineColors(p)
-  File "C:\Software Engineering\Literate Programming\Leo\plugins\cleo.py", line
-818, in setUnselectedHeadlineColors
-    fg, bg = self.custom_colours(p.v,node_is_selected=False)
-  File "C:\Software Engineering\Literate Programming\Leo\plugins\cleo.py", line
-520, in custom_colours
-    MeSelf = self.c.currentPosition().headString()
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoNodes.py", line
-1330, in headString
-    return self.v.headString()
-AttributeError: 'NoneType' object has no attribute 'headString'
-
-================================================
-  Event contents:
-    char: 9
-    delta: 57
-    height: ??
-    keycode: 57
-    keysym: 9
-    keysym_num: 57
-    num: ??
-    serial: 1993
-    state: 131072
-    time: 91071250
-    type: 2
-    widget: .21028576.21057624.21057784.21057824.21057944.21058024.canvas
-    width: ??
-    x: 318
-    x_root: 352
-    y: 87
-    y_root: 191
---------------------------------------------------------------------
-and the following in the Log Pane:
-
-exception executing command
-Traceback (most recent call last):
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
-line 270, in doCommand
-    val = command(event)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
-line 4228, in expandAllHeadlines
-    c.endUpdate()
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
-line 5597, in endUpdate
-    c.frame.tree.endUpdate(flag,scroll=scroll)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 777, in endUpdate
-    self.redraw_now(scroll=scroll)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 822, in redraw_now
-    self.redrawHelper(scroll=scroll)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 838, in redrawHelper
-    self.drawTopTree()
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1185, in drawTopTree
-    self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=hoistFlag)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1213, in drawTree
-    h,indent = self.drawNode(const_p,x,y)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 976, in drawNode
-    return self.force_draw_node(p,x,y)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1004, in force_draw_node
-    h2 = self.drawText(p,x,y)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1031, in drawText
-    self.configureTextState(p)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 1890, in configureTextState
-    self.setUnselectedLabelState(p) # unselected
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
-line 2349, in setUnselectedLabelState
-    self.setUnselectedHeadlineColors(p)
-  File "C:\Software Engineering\Literate Programming\Leo\plugins\cleo.py", line
-818, in setUnselectedHeadlineColors
-    fg, bg = self.custom_colours(p.v,node_is_selected=False)
-====================================================================
-
-(2) Looking through the key bindings, I saw
-"@shortcuts Gui operations focus-to-body = Alt-D"
-but when I tried it, it actually moves to a headline that starts with "D"
-
-
---Rich
-#@-node:ekr.20070628102649:Fix cleo craher
-#@+node:ekr.20070628102649.1:Fix group operations crasher
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4385699
-By: rich_ries
-
-From: Rich
-
-Trying the Group Operations gave the following error message:
-
-Traceback (most recent call last):
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoGlobals.py",
-line 2553, in doHook
-    return f(tag,keywords)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
-line 91, in doPlugins
-    return doHandlersForTag(tag,keywords)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
-line 70, in doHandlersForTag
-    val = callTagHandler(bunch,tag,keywords)
-  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
-line 49, in callTagHandler
-    result = handler(tag,keywords)
-  File "C:\Software Engineering\Literate Programming\Leo\plugins\groupOperations.py",
-line 235, in drawImages
-    if lassoer.moveNode and lassoer.moveNode.isVisible():
-TypeError: isVisible() takes exactly 2 arguments (1 given)
-
-=====================================================================
-
---Rich
-
-#@-node:ekr.20070628102649.1:Fix group operations crasher
 #@-node:ekr.20070625083310:Bugs
 #@-node:ekr.20070627211454:To do first
 #@+node:ekr.20070324084040:@auto
+@ Aha: the perfect import code *can* correct whitespace (tab, underindented lines) problems that exists in the original files.  When such errors are found, Leo will issue the message:
+
+    'whitepace error: remove the @ignore statement to correct these problems.'
+
+This is the best possible solution:
+
+- It alerts the user that there are problems with the original file.
+- It does *not* change them unless the user takes specific action.
+- It *does* correct the problems if desired.
+
 #@+node:ekr.20070610133513:Design and notes
 #@+node:ekr.20070611173545.1:Review
 @nocolor
@@ -1818,7 +1658,7 @@ g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during
 #@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
 #@-node:ekr.20070626092228.1:minor
 #@-node:ekr.20070613193516:Improvements
-#@-node:ekr.20070325052041:To do: 4.4.4
+#@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070105135713:To do: 4.5 (new positions)
 #@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.
