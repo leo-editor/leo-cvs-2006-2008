@@ -40,7 +40,7 @@ import sys
 #@nonl
 #@-node:tbrown.20060903121429.2:<< imports >>
 #@nl
-__version__ = "0.21"
+__version__ = "0.22"
 #@<< version history >>
 #@+node:tbrown.20060903121429.3:<< version history >>
 #@@killcolor
@@ -109,7 +109,9 @@ __version__ = "0.21"
 # 0.20 EKR: applied patch by mstarzyk.
 # 0.21 EKR: protect access to c.frame.tree.canvas.  It may not exist during 
 # dynamic unit tests.
+# 0.22 EKR: fixed crasher in custom_colours.
 #@-at
+#@nonl
 #@-node:tbrown.20060903121429.3:<< version history >>
 #@nl
 
@@ -515,20 +517,18 @@ class cleoController:
         #@    << auto headline colours >>
         #@+node:tbrown.20060903121429.27:<< auto headline colours >>
         # set bg of @file type of nodes
-        h = v.headString()
-
-        MeSelf = self.c.currentPosition().headString()
+        h = v and v.headString() or ''
 
         for f in ["@file", "@thin", "@nosen", "@asis", "@root"]:
             if h.find(f, 0, 5) == 0:
-                if node_is_selected: # h == MeSelf:
+                if node_is_selected:
                     bg = self.node_colours['Sel. File']
                 else:
                     bg = self.node_colours['file']
 
         # set bg of @ignore type of nodes
         if h.find("@ignore") == 0:
-            if node_is_selected: # h == MeSelf:
+            if node_is_selected:
                 bg = self.node_colours['Sel. Comments']
             else:
                 bg = self.node_colours['Comments']
