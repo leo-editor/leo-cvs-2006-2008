@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.516009852217">
-	<global_window_position top="54" left="345" height="812" width="835"/>
+<globals body_outline_ratio="0.626262626263">
+	<global_window_position top="54" left="345" height="876" width="835"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -14,9 +14,12 @@
 <v t="ekr.20070201082722"><vh>@button Beautify</vh></v>
 <v t="ekr.20070627144218"><vh>@button unit-tests @key=Alt+4</vh></v>
 <v t="ekr.20070627144218.1"><vh>@button all-unit-tests @key=Alt+5</vh></v>
+<v t="ekr.20070629073827"><vh>Disabled buttons</vh>
 <v t="ekr.20060910141935"><vh>ZODB plugin buttons</vh>
 <v t="ekr.20060910141935.1"><vh>@@button zodb-read</vh></v>
 <v t="ekr.20060910141935.2"><vh>@@button zodb-write</vh></v>
+</v>
+<v t="ekr.20070628175250"><vh>@@button Add if g.unitTesting @key=f6</vh></v>
 </v>
 </v>
 <v t="ekr.20060531093331"><vh>@command clones-tab</vh>
@@ -43,8 +46,11 @@
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="ekr.20070627083814"><vh>Unit tests</vh>
-<v t="ekr.20070627083814.1"><vh>@thin unitTests.txt</vh></v>
+<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
+<v t="ekr.20040117181936"
+marks="ekr.20070627204038.1,"><vh>@thin ../doc/leoToDo.txt</vh></v>
+<v t="ekr.20060207133601"
+marks="ekr.20070627082044.273,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 <v t="ekr.20031218072017.2406"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
@@ -58,7 +64,8 @@
 <v t="ekr.20031218072017.2794"><vh>@thin leoColor.py</vh></v>
 <v t="ekr.20031218072017.2810"><vh>@thin leoCommands.py</vh></v>
 <v t="ekr.20041117062700"><vh>@thin leoConfig.py</vh></v>
-<v t="ekr.20050710142719"><vh>@thin leoEditCommands.py</vh></v>
+<v t="ekr.20050710142719"
+marks="ekr.20070627082044.273,"><vh>@thin leoEditCommands.py</vh></v>
 <v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
 <v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
 <v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
@@ -66,8 +73,7 @@
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
 <v t="ekr.20061024060248.1"><vh>@thin leoPymacs.py</vh></v>
 <v t="ekr.20031218072017.3446"><vh>@thin leoTangle.py</vh></v>
-<v t="ekr.20051104075904" annotate="285808000000616e6e6f7461746571007d71017471022e"
-marks="ekr.20070627135407,"><vh>@thin leoTest.py</vh></v>
+<v t="ekr.20051104075904" annotate="285808000000616e6e6f7461746571007d71017471022e"><vh>@thin leoTest.py</vh></v>
 <v t="ekr.20031218072017.3603"><vh>@thin leoUndo.py</vh></v>
 </v>
 <v t="ekr.20031218072017.3625"><vh>Gui Base classes</vh>
@@ -89,10 +95,9 @@ marks="ekr.20070627135407,"><vh>@thin leoTest.py</vh></v>
 <v t="ekr.20031218072017.4100"><vh>@thin leoTkinterMenu.py</vh></v>
 <v t="ekr.20040803072955"><vh>@thin leoTkinterTree.py</vh></v>
 </v>
+<v t="ekr.20070627083814"><vh>Unit tests</vh>
+<v t="ekr.20070627083814.1"><vh>@thin unitTests.txt</vh></v>
 </v>
-<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
-<v t="ekr.20040117181936"><vh>@thin ../doc/leoToDo.txt</vh></v>
-<v t="ekr.20060207133601"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
 </vnodes>
 <tnodes>
@@ -312,14 +317,25 @@ False: Chapter tabs do not appear.</t>
 <t tx="ekr.20070619130151"></t>
 <t tx="ekr.20070627083814"></t>
 <t tx="ekr.20070627144218">import leoTest
-
-g.es('Running unit tests',color='blue')
 leoTest.runTestsExternally (c,all=False)
-c.selectPosition(p,updateBeadList=False)</t>
+# c.selectPosition(p,updateBeadList=False)</t>
 <t tx="ekr.20070627144218.1">import leoTest
 
-g.es('Running all unit tests',color='blue')
 leoTest.runTestsExternally (c,all=True)
-c.selectPosition(p,updateBeadList=False)</t>
+# c.selectPosition(p,updateBeadList=False)</t>
+<t tx="ekr.20070628175250">@color
+
+u = c.undoer
+b = u.beforeChangeNodeContents(p)
+s = p.bodyString()
+
+result = [' '*4 + line for line in g.splitLines(s)]
+result.insert(0,'if g.unitTesting:\n')
+s = ''.join(result)
+c.setBodyString(p,s)
+
+u.afterChangeNodeContents(p,'add-if-g-unitTesting',b)
+</t>
+<t tx="ekr.20070629073827"></t>
 </tnodes>
 </leo_file>

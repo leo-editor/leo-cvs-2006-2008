@@ -150,6 +150,11 @@ S5: http://meyerweb.com/eric/tools/s5/
 #@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20070325052041:To do: 4.4.4
 #@+node:ekr.20070627211454:To do first
+#@+node:ekr.20070627211053:Move most unit tests into derived files
+# Protect them with `if g.unitTesting:`
+#@nonl
+#@-node:ekr.20070627211053:Move most unit tests into derived files
+#@+node:ekr.20070625083310:Bugs
 #@+node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
 #@+node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
 if g.unitTesting:
@@ -175,11 +180,6 @@ class exampleTestCase(unittest.TestCase):
 #@-node:ekr.20070627204038.2:class exampleTestCase
 #@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
 #@-node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
-#@+node:ekr.20070627211053:Move most unit tests into derived files
-# Protect them with `if g.unitTesting:`
-#@nonl
-#@-node:ekr.20070627211053:Move most unit tests into derived files
-#@+node:ekr.20070625083310:Bugs
 #@+node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
 @
 
@@ -422,12 +422,6 @@ TypeError: isVisible() takes exactly 2 arguments (1 given)
 
 #@-node:ekr.20070628102649.1:Fix group operations crasher
 #@-node:ekr.20070625083310:Bugs
-#@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
-val = c.config.getBool('collapse_nodes_during_finds')
-c.config.set(p,'collapse_nodes_during_finds',not val)
-g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
-#@nonl
-#@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
 #@-node:ekr.20070627211454:To do first
 #@+node:ekr.20070324084040:@auto
 #@+node:ekr.20070610133513:Design and notes
@@ -1764,6 +1758,9 @@ def __init__ (self,c,parentFrame):
     c.frame.statusText  = self.textWidget
 #@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
 #@-node:ekr.20070619161413:Finish support for hidden windows
+#@+node:ekr.20070629081309:Support common buttons
+# Any @button or @command nodes defined in myLeoSettings.leo should appear in all .leo files.
+#@-node:ekr.20070629081309:Support common buttons
 #@-node:ekr.20070627211416.2:Important
 #@+node:ekr.20070626092228.1:minor
 #@+node:ekr.20070627110422:create leoStartup.py
@@ -1813,6 +1810,12 @@ a big deal, then not to worry, I can always navigate to the file of course.
 #@-node:ekr.20070613181147:(maybe) Improve key handling
 #@+node:ekr.20070624135822:Templates for common code fragments
 #@-node:ekr.20070624135822:Templates for common code fragments
+#@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
+val = c.config.getBool('collapse_nodes_during_finds')
+c.config.set(p,'collapse_nodes_during_finds',not val)
+g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during_finds'))
+#@nonl
+#@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
 #@-node:ekr.20070626092228.1:minor
 #@-node:ekr.20070613193516:Improvements
 #@-node:ekr.20070325052041:To do: 4.4.4
