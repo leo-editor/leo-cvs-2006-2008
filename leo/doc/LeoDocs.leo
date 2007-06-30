@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="94" left="363" height="733" width="897"/>
+	<global_window_position top="10" left="344" height="904" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -725,17 +725,11 @@
 <v t="ekr.20070628083442"><vh>Chapter 20: Unit testing with Leo</vh>
 <v t="ekr.20070628083442.1"><vh>@rst html\unitTesting.html</vh>
 <v t="ekr.20070628083442.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20070628084351"><vh>Overview</vh></v>
-<v t="ekr.20070628094515"><vh>Using @test nodes</vh></v>
+<v t="ekr.20070628084351"><vh>Using @test nodes</vh></v>
 <v t="ekr.20070628094515.1"><vh>Using @suite nodes</vh></v>
-<v t="ekr.20070628094515.2"><vh>How the unit test commands work</vh>
-<v t="ekr.20070628094515.3"><vh>Creating leoDynamicUnitTests.leo</vh></v>
-<v t="ekr.20050907101918"><vh>@test nodes</vh></v>
-<v t="ekr.20070628090657"><vh>@suite nodes</vh></v>
-<v t="ekr.20070628090657.1"><vh>How the unit test commands work</vh></v>
-</v>
-<v t="ekr.20070628092833"><vh>g.unitTesting and g.app.scriptDict['suite']</vh></v>
+<v t="ekr.20070630083055"><vh>Using @unit-test nodes</vh></v>
 <v t="ekr.20070628090657.2"><vh>Unit test buttons</vh></v>
+<v t="ekr.20070628094515.2"><vh>How the unit test commands work</vh></v>
 <v t="ekr.20070628083442.4"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
@@ -1056,8 +1050,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
-<v t="ekr.20060620094033" a="TV"><vh>What's New...</vh>
+<v t="edream.110203163054.46" a="TV"><vh>Release Notes</vh>
+<v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
@@ -10879,7 +10873,9 @@ Leo's Users Guide
 
 `Chapter 18: Leo and Emacs`_
 
-`Chapter 19\: Embedding Leo with the leoBridge Module`_
+`Chapter 19: Embedding Leo with the leoBridge Module`_
+
+`Chapter 20: Unit testing with Leo`_
 
 Appendices_
 
@@ -15343,6 +15339,7 @@ Just use ``@thin`` to create your `derived files`_.</t>
 .. _`Chapter 17\: Using ZODB with Leo`:             zodb.html
 .. _`Chapter 18\: Leo and Emacs`:                   emacs.html
 .. _`Chapter 19\: Embedding Leo with the leoBridge Module`: leoBridge.html
+.. _`Chapter 20\: Unit testing with Leo`:           unitTesting.html
 .. _`Appendices`:                                   appendices.html
 .. _`Glossary`:                                     glossary.html
 .. _`What's new in Leo 4.4.3`:                      new-4-4-3.html
@@ -19484,60 +19481,6 @@ For example::
         g.es('format_headlines',format_headlines)
 
 ``c.config.set`` does not change the ``@settings`` tree; it simply changes the values returned by the getters.</t>
-<t tx="ekr.20050907101918">As mentioned earlier, Leo's unit tests commands search the outline looking for @test nodes or @suite nodes.
-This section describes what happens when a unit test command @test node is found.
-The next section describes what happens when an @suite node is found.
-
-When a unit test command finds an @test node it does the following:
-    
-1.  The unit test command **preprocess** the body text of the @test node by
-    it expands section references and handles @others and other directives.
-    In other words, Leo's unit tests commands preprocess the body text
-    of @test nodes just like Leo's execute-script command does.
-    
-1.  The unit test command creates an instance of unittest.TestCase.
-    Actually, the command creates an instance of leoTest.generalTestCase,
-    a subclass of unittest.Testcase.  The command creates the test case by calling::
-        
-        generalTestCase(c,p)
-
-
-that is, nodes whose headlines start with ``@test`` or ``@suite``.  For example::
-
-
-@test nodes create a single unit test from the script in its body
-**without having to create an explicit subclass of unittest.TestCase**.
-
-Suppose we are executing one of Leo's unit tests commands.
-The only difference between the 
-
-For example, here is a complete unit test.  The headline is::
-
-        @test p.t == p.v.t
-
-    The body text is::
-
-        # NOTE: p.__getattr__ must be enabled for this test to work.
-        root = c.rootPosition()
-        for p in root.allNodes_iter():
-            assert(p.t == p.v.t)
-
-    **That's all!** The headline marks the node as containing a unit test.
-    The body text contains the meat of the test.  No cruft at all!
-
-    **Notes**: The unit tests created from ``@test`` nodes define ``setUp`` and
-    ``tearDown`` methods. These methods ensure that the script being executed is
-    the presently selected node. The scripts in ``@test`` nodes can not override
-    the ``setUp`` and ``tearDown`` methods. In practice, this is not a problem
-    because the scripts in ``@test`` nodes are typically very simple. Such
-    scripts can use try/finally if they need to clean up after themselves.
-    Scripts in ``@test`` nodes often assume that descendant nodes hold test
-    data. Scripts in ``@test`` nodes can generally define and use sections, but
-    scripts may not use the ``@others`` directive if descendant nodes hold
-    data.
-    
-
-</t>
 <t tx="ekr.20050908113904">This is a known bug in Tk that prevents this on Windows. The obvious Tk code
 causes a hard crash in the Python dll: it's the only time Leo has taken such a
 hard crash. The ``UniversalScrolling`` plugin is an attempt at a workaround.
@@ -30964,7 +30907,8 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
-<t tx="ekr.20070628083442"></t>
+<t tx="ekr.20070628083442">@nocolor
+@tabwidth -4</t>
 <t tx="ekr.20070628083442.1">@ @rst-options
 code_mode=False
 generate_rst=True
@@ -30985,12 +30929,22 @@ verbose=True
 Chapter 20: Unit testing with Leo
 ############################################################
 
-This chapter describes how you can execute Python unit test from within Leo outlines.  Leo's unit test commands,
-run-unit-tests and run-all-unit-tests search for ``@test`` and ``@suite`` nodes and run the unit tests created by such nodes.  This chapter describes:
-    
-- How to use @test and @suite nodes, with several examples.
-- Precisely how the run-unit-test and run-all-unit-test commands work.
-- How to run unit testing commands from script buttons.</t>
+This chapter describes how you can execute Python unit test from within Leo outlines.  
+
+Leo's **unit test commands**, run-unit-tests and run-all-unit-tests, run the unit
+tests created @test and @suite nodes. The run-unit-tests command runs all unit
+tests in the presently selected part of the Leo outline; the run-all-unit-tests
+command runs all unit tests in the entire Leo outline.
+
+**You must be running Leo from a console to see the output the unit tests**. Leo's
+unit test commands run all the unit tests using the standard unittest text test
+runner, and the output of the unit tests appears in the console.
+
+Leo's unit test commands run all tests in a separate process, so unit tests can
+never have any side effects. Running unit tests never changes the outline from
+which the tests were run.
+
+leoPy.leo, Leo's main source-code file, contains many examples of using @test and @suite nodes.</t>
 <t tx="ekr.20070628083442.2">.. Links
 
 .. WARNING: image targets may not have upper case letters!
@@ -31007,82 +30961,54 @@ run-unit-tests and run-all-unit-tests search for ``@test`` and ``@suite`` nodes 
 <t tx="ekr.20070628083442.4">-----------------------
 
 |back| |leo| |next|</t>
-<t tx="ekr.20070628084351">Leo has two main unit test commands: run-unit-tests and run-all-unit-tests.
-The *only* difference between these two commands is how many unit tests get run:
-The run-unit-tests command runs all unit tests in the presently selected part of the Leo outline;
-the run-all-unit-tests command runs all unit tests in the entire Leo outline.
-In the discussion below, the term **unit test command** will mean either
-the run-unit-test command or the run-all-unit-tests command.
-
-The run-unit-tests commands search all or part of the outline looking for **@test nodes** or **@suite nodes**,
-that is, nodes whose headlines start with ``@test`` or ``@suite``.  For example::
+<t tx="ekr.20070628084351">**@test nodes** are nodes whose headlines start with @test. The unit test
+commands convert the body text of @test nodes into a unit test automatically.
+That is, Leo's unit test commands automatically create a unittest.TestCase
+instances which run the body text of the @test node. For example, let us
+consider one of Leo's actual unit tests. The headline is::
     
-    @test Pretty Print command
-    @suite run all plugin test routines
+    @test consistency of back/next links
     
-As you can imagine, @test nodes create individual unit tests,
-while @suite nodes create test suites containing one or more unit tests.
+The body text is::
 
-The entire headline of an @test becomes the 'short description' of the unit test created by the @test node.  Thus, the short description of the unit test created by the @test node shown above is '@test Pretty Print command'.
-
-The headline text @suite nodes is ignored (except to mark the node as an @suite node).
-As shown in the example above, you would typically describe the tests following the @suite.
-
-Leo executes the unit tests created by @test and @suite nodes in a completely separate .leo file, dynamicUnitTest.leo, running in a completely separate process.  Thus, running unit tests is a multi-step process:
+    if g.unitTesting:
+        for p in c.allNodes_iter():
+            back = p.back()
+            next = p.next()
+            if back: assert(back.getNext() == p)
+            if next: assert(next.getBack() == p)
+            
+Notice that the first line of the body text is a **guard line**::
     
-1. Create dynamicUnitTest.leo in the leo/test directory by
-   coping all @test, @suite and @unit-tests trees in the present outline to dynamicUnitTest.leo.
-2. Run dynamicUnitTest.leo in a separate process using a null gui.
-3. Run all the unit tests in dynamicUnitTest.leo using the leoTest.doTests function.
-
-The following sections describe:
-    
-1. How to use @test and @suite nodes and
-2. The full details of how the unit test commands work.
-
-**Note**: the file leoPy.leo contains hundreds of @test nodes and a few @suite nodes.
-As you can see, using @test nodes is very easy and using @suite nodes isn't much harder.</t>
-<t tx="ekr.20070628090657">``@suite`` nodes
-    ``@suite`` are an easy way to run legacy unit tests. The ``Unit Test``
-    button assumes that the body text of an ``@suite`` node is a script that
-    creates a test suite and leaves the result in ``g.app.scriptDict['suite']``.
-    ``test.leo`` several examples of ``@suite nodes``.
-    Here is an ``@suite`` node that executes all doctests in Leo's sources.
-    The headline is::
-
-        @suite run all doctests
-
-    The body text is::
-
-        import unittest
-        import leoTest
-        import sys
+    if g.unitTesting:
         
-        # DocTestSuite exists in Python 2.3 and above.
-        if g.CheckVersion(sys.version, "2.3"):
-            path = g.os_path_join(g.app.loadDir,"..","src")
-            modules = leoTest.importAllModulesInPath(path)
-            suite = leoTest.createUnitTestsFromDoctests(modules)                     
-            if suite:
-                g.app.scriptDict['suite'] = suite
-        else:
-            # Create an empty suite to suppress a warning.
-            g.app.scriptDict['suite'] = unittest.TestSuite()
-            print "Can't create unit tests from doctests"
-            print "doctest.DocTestSuite requires Python 2.3 or above."
+This guard line is needed because this particular @test node is contained in the
+file leoNodes.py. @test nodes that appear outside of Python source files do not
+need guard lines. The guard line prevents the unit testing code from being
+executed when Python imports the leoNodes module; the g.unitTesting variable is
+True only while running unit tests.
+            
+When either of Leo's unit test commands finds this @test node the command will
+run a unit test equivalent to the following::
+    
+    import leoGlobals as g
 
-    The real work of creating the test suites is done by
-    ``leoTest.createUnitTestsFromDoctests``.
-    **Important**: if the suite was created successfully, the script must pass the suite
-    to script in the ``unit test`` script button by as follows::
-
-            g.app.scriptDict['suite'] = suite
-</t>
-<t tx="ekr.20070628090657.1">The ``unit test``
-script button in ``test.leo`` scans the selected outline, creating one unit test
-for each ``test`` node and zero or more unit tests for each ``@suite`` node. The
-``unit test`` script then runs all the selected unit tests.
-
+    class aTestCase (unittest.TestCase):
+        def shortDescription():
+            return '@test consistency of back/next links'
+        def runTest():
+            c,p = g.getTestVars()
+            for p in c.allNodes_iter():
+                back = p.back()
+                next = p.next()
+                if back: assert(back.getNext() == p)
+                if next: assert(next.getBack() == p)
+                
+As you can see, using @test nodes saves a lot of typing:
+    
+- You don't have to define a subclass of unittest.TestCase.
+- Within your unit test, the c, g and p variables are predefined, just like in Leo scripts.
+- The entire headline of the @test node becomes the short description of the unit test.
 </t>
 <t tx="ekr.20070628090657.2">test.leo and leoPy.leo contain two unit testing buttons::
     
@@ -31107,11 +31033,59 @@ Alternatively, you can dispense with these buttons and instead use the
 run-unit-tests and run-all-unit-tests commands directly.
 As always, you can create bindings for these commands in leoSettings.leo or myLeoSettings.leo.
 </t>
-<t tx="ekr.20070628092833"></t>
-<t tx="ekr.20070628094515"></t>
-<t tx="ekr.20070628094515.1"></t>
-<t tx="ekr.20070628094515.2"></t>
-<t tx="ekr.20070628094515.3"></t>
+<t tx="ekr.20070628094515.1">**@suite nodes** are nodes whose headlines start with @suite. @suite nodes allow
+you to create and run custom subclasses of unittest.TestCase.
+
+Leo's test commands assume that the body of an suite node is a script that
+creates a suite of tests and places that suite in g.app.scriptDict['suite'].
+Something like this::
+
+    if g.unitTesting:
+        __pychecker__ = '--no-reimport' # Prevents pychecker complaint.
+        import unittest
+        suite = unittest.makeSuite(unittest.TestCase)
+        &lt;&lt; add one or more tests (instances of unittest.TestCase) to suite &gt;&gt;
+        g.app.scriptDict['suite'] = suite
+        
+**Note**: as in @test nodes, the guard line, 'if unitTesting:', is needed only if the
+@suite node appears in a Python source file.
+
+Leo's test commands first execute the script and then run suite in
+g.app.scriptDict.get('suite') using the standard unittest text runner.
+
+You can organize the script in an @suite nodes just as usual using @others,
+section references, etc. For example::
+    
+    if g.unitTesting:
+        __pychecker__ = '--no-reimport'
+        import unittest
+        # children define test1,test2..., subclasses of unittest.TestCase.
+        @others 
+        suite = unittest.makeSuite(unittest.TestCase)
+        for test in (test1,test2,test3,test4):
+            suite.addTest(test)
+        g.app.scriptDict['suite'] = suite
+</t>
+<t tx="ekr.20070628094515.2">Leo's unit tests commands do the following:
+    
+1. Copy all @test, @suite and @unit-test nodes (including their descendants) to the
+   file test/dynamicUnitTest.leo.
+   
+2. Run test/leoDynamicTest.py in a separate process.
+
+   - leoDynamicTest.py opens dynamicUnitTest.leo with the leoBridge module.
+     Thus, all unit tests get run with the nullGui in effect.
+        
+   - After opening dynamicUnitTest.leo, leoDynamicTest.py runs all unit tests
+     by executing the leoTest.doTests function.
+    
+   - The leoTests.doTests function searches for @test and @suite nodes and
+     processes them generally as described above. The details are a bit
+     different from as described, but they usually don't matter. If you *really*
+     care, see the source code for leoTests.doTests.
+        
+That's all.
+</t>
 <t tx="ekr.20070629130418">On startup, Leo looks for two arguments of the form::
 
     --script scriptFile
@@ -31136,5 +31110,9 @@ headlines in that file::
     for p in newFrame.c.allNodes_iter():
         g.es(g.toEncodedString(p.headString(),"utf-8"))
 </t>
+<t tx="ekr.20070630083055">Sometimes the code in an @test or @suite node requires other nodes. The
+@unit-test node groups nodes so that all nodes are available when running unit
+tests. That is, all nodes in an @unit-test are copied to
+test/DynamicUnitTest.leo. (See `How the unit test commands work`_ for full details.)</t>
 </tnodes>
 </leo_file>
