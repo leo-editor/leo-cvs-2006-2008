@@ -521,6 +521,120 @@ if g.unitTesting:
 #@-node:ekr.20070627082044.861:inner @test: Test consistency between parents iter and v.parents
 #@-node:ekr.20070629065730:Contain clones
 #@+node:ekr.20070629065730.1:Contain non-python code
+#@+node:ekr.20070630070931:leoNodes
+#@+node:ekr.20070630070045.6:@test p.iters and v.iters
+import leoNodes
+
+current = c.currentPosition()
+child = current.firstChild()
+
+allList = [p.v for p in c.all_positions_iter()]
+vList1 = [v for v in current.vnodes_iter()]
+vList2 = [v for v in current.unique_vnodes_iter()]
+
+if 0:
+    for v in vList1: print v
+    for v in vList2: print v
+
+if 0:
+    print len(allList),len(vList1),len(vList2)
+
+if 0: # v.iters no longer exist.
+    << tests of consistency of p and v iters >>
+<< tests that node iterators return no duplicate nodes >>
+<< print nodes returned by iterators >>
+#@nonl
+#@+node:ekr.20070630070045.7:child1
+#@clone 2
+#@+node:ekr.20070630070045.8:a
+#@+node:ekr.20070630070045.9:b
+#@-node:ekr.20070630070045.9:b
+#@-node:ekr.20070630070045.8:a
+#@+node:ekr.20070630070045.10:c
+#@-node:ekr.20070630070045.10:c
+#@+node:ekr.20070630070045.11:d
+#@+node:ekr.20070630070045.12:e
+#@-node:ekr.20070630070045.12:e
+#@-node:ekr.20070630070045.11:d
+#@-node:ekr.20070630070045.7:child1
+#@+node:ekr.20070630070045.13:child2
+#@-node:ekr.20070630070045.13:child2
+#@+node:ekr.20070630070045.14:<< tests of consistency of p and v iters >>
+try:
+    tag = "test1"
+    list1 = [v for v in current.vnodes_iter()]
+    list2 = [v for v in current.v.self_and_subtree_iter()]
+    assert(list1==list2)
+
+    tag = "test2"
+    list1 = [p.v for p in c.all_positions_iter()]
+    list2 = [v   for v in c.all_vnodes_iter()]
+    assert(list1==list2)
+
+    # print "consistency tests pass"
+
+except AssertionError:
+    print tag
+    print "list1"
+    for v in list1: print v
+    print "list2"
+    for v in list2: print v
+    raise
+#@-node:ekr.20070630070045.14:<< tests of consistency of p and v iters >>
+#@+node:ekr.20070630070045.15:<< tests that node iterators return no duplicate nodes >>
+nodes = []
+for v in current.unique_vnodes_iter():
+    assert v not in nodes
+    nodes.append(v)
+
+nodes = []
+for t in current.unique_tnodes_iter():
+    assert t not in nodes
+    nodes.append(t)
+
+# print "duplicate tests pass"
+#@-node:ekr.20070630070045.15:<< tests that node iterators return no duplicate nodes >>
+#@+node:ekr.20070630070045.16:<< print nodes returned by iterators >>
+if 0:
+    for v in current.vnodes_iter(): print v
+    for v in current.unique_vnodes_iter(): print v
+
+if 0: # subtree of root node:
+    root = c.rootPosition()
+    for v in root.vnodes_iter(): print v
+    for t in root.tnodes_iter(): print t
+
+if 0: # child1's tree.  child2 should not be included.
+    for v in child.vnodes_iter(): print v
+    for t in child.tnodes_iter(): print t
+#@nonl
+#@-node:ekr.20070630070045.16:<< print nodes returned by iterators >>
+#@-node:ekr.20070630070045.6:@test p.iters and v.iters
+#@+node:ekr.20070630070045.4:@test p.setBodyStringOrPane
+# Tests that c.setBodyString works immediately.
+h = p.headString()
+
+try:
+    child = p.firstChild()
+    before = child.bodyString()
+    after = "after"
+    c.setBodyString(child,"after")
+    c.selectPosition(child)
+    t = c.frame.body.bodyCtrl
+    s = t.get("1.0","end")
+    assert s.rstrip() == after.rstrip(), \
+        "c.setBodyString failed: %s, %s" % (repr(s),repr(after))
+finally:
+    c.setBodyString(child,before)
+    c.selectPosition(p)
+#@nonl
+#@+node:ekr.20070630070045.5:child
+after
+#@nonl
+#@-node:ekr.20070630070045.5:child
+#@-node:ekr.20070630070045.4:@test p.setBodyStringOrPane
+#@-node:ekr.20070630070931:leoNodes
+#@+node:ekr.20070630070931.1:commands
 #@+node:ekr.20070627082044.684:@suite Edit body tests
 # Create unit tests in g.app.scriptDict["suite"]
 
@@ -4420,6 +4534,529 @@ print ; print 'End of unit tests for typing'
 #@nonl
 #@-node:ekr.20070627082044.181:@test zz restore the screen
 #@-node:ekr.20070627082044.144:@unit-tests typing...
+#@+node:ekr.20070627082044.733:Reformat Paragraph tests
+@ Rewritten by EKR.  April 17, 2005.
+
+Each data node must have three children:
+
+- a "before" node
+- an "after" node
+- a "tempNode" node
+
+A parent to before and after nodes will contain pagewidth and language formatting directives.
+#@+node:ekr.20070627082044.734:@test noTrailingNewline (pass)
+# Wrap a long line, no trailing newline.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,2,24)
+#@nonl
+#@+node:ekr.20070627082044.735:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+
+#@+node:ekr.20070627082044.736:tempNode
+#@-node:ekr.20070627082044.736:tempNode
+#@+node:ekr.20070627082044.737:before
+This line is over forty characters long, at least it seems to be.
+#@nonl
+#@-node:ekr.20070627082044.737:before
+#@+node:ekr.20070627082044.738:after
+This line is over forty characters long,
+at least it seems to be.
+#@nonl
+#@-node:ekr.20070627082044.738:after
+#@-node:ekr.20070627082044.735:data
+#@-node:ekr.20070627082044.734:@test noTrailingNewline (pass)
+#@+node:ekr.20070627082044.739:@test trailingNewline (pass)
+# Wrap a long line, with trailing newline.
+
+import leoTest
+
+# Wrap a long line, no trailing newline.
+leoTest.singleParagraphTest(c,p,3,0)
+#@nonl
+#@+node:ekr.20070627082044.740:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.741:tempNode
+#@-node:ekr.20070627082044.741:tempNode
+#@+node:ekr.20070627082044.742:before
+This line is over forty characters long, at least it seems to be.
+#@-node:ekr.20070627082044.742:before
+#@+node:ekr.20070627082044.743:after
+This line is over forty characters long,
+at least it seems to be.
+#@-node:ekr.20070627082044.743:after
+#@-node:ekr.20070627082044.740:data
+#@-node:ekr.20070627082044.739:@test trailingNewline (pass)
+#@+node:ekr.20070627082044.744:@test mixedLineLengths
+# Wrap a long line and some short ones.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,4,10)
+#@nonl
+#@+node:ekr.20070627082044.745:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.746:tempNode
+#@-node:ekr.20070627082044.746:tempNode
+#@+node:ekr.20070627082044.747:before
+This line is over forty characters long, at least it seems to be.
+This is shorter, 
+but should be part of the same
+paragraph.
+#@nonl
+#@-node:ekr.20070627082044.747:before
+#@+node:ekr.20070627082044.748:after
+This line is over forty characters long,
+at least it seems to be. This is
+shorter, but should be part of the same
+paragraph.
+#@nonl
+#@-node:ekr.20070627082044.748:after
+#@-node:ekr.20070627082044.745:data
+#@-node:ekr.20070627082044.744:@test mixedLineLengths
+#@+node:ekr.20070627082044.749:@test mixedLinesWithLeadingWS
+# Wrap a paragraph with interior lines that have leading white space.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,4,12)
+#@nonl
+#@+node:ekr.20070627082044.750:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.751:tempNode
+#@-node:ekr.20070627082044.751:tempNode
+#@+node:ekr.20070627082044.752:before
+This line is over forty characters long, at least it seems to be.
+  This indented line should be merged into the same
+paragraph.
+#@nonl
+#@-node:ekr.20070627082044.752:before
+#@+node:ekr.20070627082044.753:after
+This line is over forty characters long,
+  at least it seems to be. This indented
+  line should be merged into the same
+  paragraph.
+#@nonl
+#@-node:ekr.20070627082044.753:after
+#@-node:ekr.20070627082044.750:data
+#@-node:ekr.20070627082044.749:@test mixedLinesWithLeadingWS
+#@+node:ekr.20070627082044.754:@test noChangeRequired
+# No wrapping required, so don't change a thing.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,1,28)
+#@+node:ekr.20070627082044.755:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.756:tempNode
+#@-node:ekr.20070627082044.756:tempNode
+#@+node:ekr.20070627082044.757:before
+This line is under 40 chars.
+#@nonl
+#@-node:ekr.20070627082044.757:before
+#@+node:ekr.20070627082044.758:after
+This line is under 40 chars.
+#@nonl
+#@-node:ekr.20070627082044.758:after
+#@-node:ekr.20070627082044.755:data
+#@-node:ekr.20070627082044.754:@test noChangeRequired
+#@+node:ekr.20070627082044.759:@test honorLeadingWS
+# Honor the first line's leading whitespace.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,5,16)
+#@+node:ekr.20070627082044.760:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.761:tempNode
+#@-node:ekr.20070627082044.761:tempNode
+#@+node:ekr.20070627082044.762:before
+   This line is over forty characters long, at least it seems to be.
+   This is shorter, 
+but should be part of the same
+paragraph.  And this is indented 3 characters.
+#@nonl
+#@-node:ekr.20070627082044.762:before
+#@+node:ekr.20070627082044.763:after
+   This line is over forty characters
+   long, at least it seems to be. This
+   is shorter, but should be part of the
+   same paragraph. And this is indented
+   3 characters.
+#@nonl
+#@-node:ekr.20070627082044.763:after
+#@-node:ekr.20070627082044.760:data
+#@-node:ekr.20070627082044.759:@test honorLeadingWS
+#@+node:ekr.20070627082044.764:@test honorLeadingWSVar1
+# Honor the first and second line's leading whitespace.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,5,16)
+#@+node:ekr.20070627082044.765:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.766:tempNode
+#@-node:ekr.20070627082044.766:tempNode
+#@+node:ekr.20070627082044.767:before
+   This line is over forty characters long, at least it seems to be.
+   This is shorter, 
+     but should be part of the same
+     paragraph.  And this is indented 3 characters.
+#@nonl
+#@-node:ekr.20070627082044.767:before
+#@+node:ekr.20070627082044.768:after
+   This line is over forty characters
+   long, at least it seems to be. This
+   is shorter, but should be part of the
+   same paragraph. And this is indented
+   3 characters.
+#@nonl
+#@-node:ekr.20070627082044.768:after
+#@-node:ekr.20070627082044.765:data
+#@-node:ekr.20070627082044.764:@test honorLeadingWSVar1
+#@+node:ekr.20070627082044.769:@test simpleHangingIndent
+# Single paragraph, hanging indentation.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,5,8)
+#@+node:ekr.20070627082044.770:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.771:tempNode
+#@-node:ekr.20070627082044.771:tempNode
+#@+node:ekr.20070627082044.772:before
+Honor this line that has a hanging indentation, please.  Hanging
+  indentation is valuable for lists of all kinds.  But it is tricky to get right.
+#@nonl
+#@-node:ekr.20070627082044.772:before
+#@+node:ekr.20070627082044.773:after
+Honor this line that has a hanging
+  indentation, please. Hanging
+  indentation is valuable for lists of
+  all kinds. But it is tricky to get
+  right.
+#@nonl
+#@-node:ekr.20070627082044.773:after
+#@-node:ekr.20070627082044.770:data
+#@-node:ekr.20070627082044.769:@test simpleHangingIndent
+#@+node:ekr.20070627082044.774:@test testSimpleHangingIndentVar1
+# Single paragraph, hanging indentation with other indentation beyond line 2.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,5,8)
+#@nonl
+#@+node:ekr.20070627082044.775:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.776:tempNode
+#@-node:ekr.20070627082044.776:tempNode
+#@+node:ekr.20070627082044.777:before
+Honor this line that has
+  a hanging indentation, please.  Hanging
+    indentation is valuable for lists of all kinds.  But it is tricky to get right.
+#@nonl
+#@-node:ekr.20070627082044.777:before
+#@+node:ekr.20070627082044.778:after
+Honor this line that has a hanging
+  indentation, please. Hanging
+  indentation is valuable for lists of
+  all kinds. But it is tricky to get
+  right.
+#@nonl
+#@-node:ekr.20070627082044.778:after
+#@-node:ekr.20070627082044.775:data
+#@-node:ekr.20070627082044.774:@test testSimpleHangingIndentVar1
+#@+node:ekr.20070627082044.779:@test simpleHangingIndentVar2
+# Single paragraph, hanging indentation, short lines, extraneous indentation, and last line uses a tab for whitespace.
+
+import leoTest
+
+leoTest.singleParagraphTest(c,p,5,8)
+#@nonl
+#@+node:ekr.20070627082044.780:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.781:tempNode
+#@-node:ekr.20070627082044.781:tempNode
+#@+node:ekr.20070627082044.782:before
+Honor this line that 
+  has a hanging indentation, 
+  please.  Hanging
+   indentation is valuable
+    for lists of all kinds.  But 
+    it is tricky to get right.
+#@nonl
+#@-node:ekr.20070627082044.782:before
+#@+node:ekr.20070627082044.783:after
+Honor this line that has a hanging
+  indentation, please. Hanging
+  indentation is valuable for lists of
+  all kinds. But it is tricky to get
+  right.
+#@nonl
+#@-node:ekr.20070627082044.783:after
+#@-node:ekr.20070627082044.780:data
+#@-node:ekr.20070627082044.779:@test simpleHangingIndentVar2
+#@+node:ekr.20070627082044.784:@test multiParagraphTest
+# Multiple long lined paragraphs.  Cursor should move to next paragraph after formatting a paragraph.
+
+import leoTest
+
+leoTest.multiParagraphTest(c,p)
+#@nonl
+#@+node:ekr.20070627082044.785:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+#@nonl
+#@+node:ekr.20070627082044.786:tempNode
+#@-node:ekr.20070627082044.786:tempNode
+#@+node:ekr.20070627082044.787:before
+Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly weather impacts every American. Communities can now rely on the National Weather Service’s StormReady program to help them guard against the ravages of Mother Nature.
+
+Some 90% of all presidentially declared disasters are weather related, leading to around 500 deaths per year and nearly $14 billion in damage. StormReady, a program started in 1999 in Tulsa, OK, helps arm America's communities with the communication and safety skills needed to save lives and property– before and during the event. StormReady helps community leaders and emergency managers strengthen local safety programs.
+
+StormReady communities are better prepared to save lives from the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but StormReady can help communities save lives. Does StormReady make a difference?
+#@nonl
+#@-node:ekr.20070627082044.787:before
+#@+node:ekr.20070627082044.788:after
+Americans live in the most severe
+weather-prone country on Earth. Each
+year, Americans cope with an average of
+10,000 thunderstorms, 2,500 floods,
+1,000 tornadoes, as well as an average
+of 6 deadly hurricanes. Potentially
+deadly weather impacts every American.
+Communities can now rely on the National
+Weather Service’s StormReady program to
+help them guard against the ravages of
+Mother Nature.
+
+Some 90% of all presidentially declared
+disasters are weather related, leading
+to around 500 deaths per year and nearly
+$14 billion in damage. StormReady, a
+program started in 1999 in Tulsa, OK,
+helps arm America's communities with the
+communication and safety skills needed
+to save lives and property– before and
+during the event. StormReady helps
+community leaders and emergency managers
+strengthen local safety programs.
+
+StormReady communities are better
+prepared to save lives from the
+onslaught of severe weather through
+better planning, education, and
+awareness. No community is storm proof,
+but StormReady can help communities save
+lives. Does StormReady make a
+difference?
+#@nonl
+#@-node:ekr.20070627082044.788:after
+#@-node:ekr.20070627082044.785:data
+#@-node:ekr.20070627082044.784:@test multiParagraphTest
+#@+node:ekr.20070627082044.789:@test multiParagraphWithListTest
+# A regular paragraph, plus a numbered list of several items, plus a final regular paragraph.
+# Cursor should move to next paragraph after formatting a paragraph.
+
+import leoTest
+
+leoTest.multiParagraphWithListTest(c,p)
+#@nonl
+#@+node:ekr.20070627082044.790:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+
+# DTHEIN 2004.01.11: Added test case data
+
+#@+node:ekr.20070627082044.791:tempNode
+#@-node:ekr.20070627082044.791:tempNode
+#@+node:ekr.20070627082044.792:before
+This paragraph leads of this test.  It is the "lead"
+paragraph.
+
+  1. This is item 
+     number 1.  It is the first item in the list.
+
+  2. This is item 
+     number 2.  It is the second item in the list.
+
+  3. This is item 
+     number 3.  It is the third item in the list.
+
+This paragraph ends the test.  It is the "final"
+paragraph.
+#@nonl
+#@-node:ekr.20070627082044.792:before
+#@+node:ekr.20070627082044.793:after
+This paragraph leads of this test. It is
+the "lead" paragraph.
+
+  1. This is item number 1. It is the
+     first item in the list.
+
+  2. This is item number 2. It is the
+     second item in the list.
+
+  3. This is item number 3. It is the
+     third item in the list.
+
+This paragraph ends the test. It is the
+"final" paragraph.
+#@nonl
+#@-node:ekr.20070627082044.793:after
+#@-node:ekr.20070627082044.790:data
+#@-node:ekr.20070627082044.789:@test multiParagraphWithListTest
+#@+node:ekr.20070627082044.794:@test leadingWSOnEmptyLinesTest
+@
+Ran into a problem with the wrapping eating blank lines that delimit paragraphs
+if those blank lines have any leading whitespace. This test is to make sure that
+still works.
+
+If you "show invisibles" you'll see the leading whitespace in the blank lines --
+which is different from the "testMultiParagraphWithList" test.
+@c
+
+import leoTest
+
+leoTest.leadingWSOnEmptyLinesTest(c,p)
+#@nonl
+#@+node:ekr.20070627082044.795:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+
+#@+node:ekr.20070627082044.796:tempNode
+#@-node:ekr.20070627082044.796:tempNode
+#@+node:ekr.20070627082044.797:before
+This paragraph leads of this test.  It is the "lead"
+paragraph.
+
+  1. This is item 
+     number 1.  It is the first item in the list.
+
+  2. This is item 
+     number 2.  It is the second item in the list.
+
+  3. This is item 
+     number 3.  It is the third item in the list.
+
+This paragraph ends the test.  It is the "final"
+paragraph.
+#@nonl
+#@-node:ekr.20070627082044.797:before
+#@+node:ekr.20070627082044.798:after
+This paragraph leads of this test. It is
+the "lead" paragraph.
+
+  1. This is item number 1. It is the
+     first item in the list.
+
+  2. This is item number 2. It is the
+     second item in the list.
+
+  3. This is item number 3. It is the
+     third item in the list.
+
+This paragraph ends the test. It is the
+"final" paragraph.
+#@nonl
+#@-node:ekr.20070627082044.798:after
+#@-node:ekr.20070627082044.795:data
+#@-node:ekr.20070627082044.794:@test leadingWSOnEmptyLinesTest
+#@+node:ekr.20070627082044.799:@test directiveBreaksParagraphTest
+import leoTest
+
+leoTest.directiveBreaksParagraphTest(c,p)
+#@nonl
+#@+node:ekr.20070627082044.800:data
+@language plain
+@pagewidth 40
+@tabwidth 8
+
+# DTHEIN 2004.01.11: Added test case data
+
+Test to make sure that reformatting treats directives as a new paragraph and doesn't wrap directive lines.
+#@+node:ekr.20070627082044.801:tempNode
+#@-node:ekr.20070627082044.801:tempNode
+#@+node:ekr.20070627082044.802:before
+Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly weather impacts every American. Communities can now rely on the National Weather Service’s StormReady program to help them guard against the ravages of Mother Nature.
+@unknownDirective
+Some 90% of all presidentially declared disasters are weather related, leading to around 500 deaths per year and nearly $14 billion in damage. StormReady, a program started in 1999 in Tulsa, OK, helps arm America's communities with the communication and safety skills needed to save lives and property– before and during the event. StormReady helps community leaders and emergency managers strengthen local safety programs.
+@unknownDirective
+StormReady communities are better prepared to save lives from the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but StormReady can help communities save lives. Does StormReady make a difference?
+#@nonl
+#@-node:ekr.20070627082044.802:before
+#@+node:ekr.20070627082044.803:after
+Americans live in the most severe
+weather-prone country on Earth. Each
+year, Americans cope with an average of
+10,000 thunderstorms, 2,500 floods,
+1,000 tornadoes, as well as an average
+of 6 deadly hurricanes. Potentially
+deadly weather impacts every American.
+Communities can now rely on the National
+Weather Service’s StormReady program to
+help them guard against the ravages of
+Mother Nature.
+@unknownDirective
+Some 90% of all presidentially declared
+disasters are weather related, leading
+to around 500 deaths per year and nearly
+$14 billion in damage. StormReady, a
+program started in 1999 in Tulsa, OK,
+helps arm America's communities with the
+communication and safety skills needed
+to save lives and property– before and
+during the event. StormReady helps
+community leaders and emergency managers
+strengthen local safety programs.
+@unknownDirective
+StormReady communities are better
+prepared to save lives from the
+onslaught of severe weather through
+better planning, education, and
+awareness. No community is storm proof,
+but StormReady can help communities save
+lives. Does StormReady make a
+difference?
+#@nonl
+#@-node:ekr.20070627082044.803:after
+#@-node:ekr.20070627082044.800:data
+#@-node:ekr.20070627082044.799:@test directiveBreaksParagraphTest
+#@-node:ekr.20070627082044.733:Reformat Paragraph tests
+#@-node:ekr.20070630070931.1:commands
 #@+node:ekr.20070627082044.191:Colorizer
 #@+node:ekr.20070627082044.195:@test @comment after @language plain
 if g.unitTesting:
@@ -6719,528 +7356,6 @@ IF
 #@-node:ekr.20070627082044.256:vbscript
 #@-node:ekr.20070627082044.255:@test vbscript
 #@-node:ekr.20070627082044.191:Colorizer
-#@+node:ekr.20070627082044.733:Reformat Paragraph tests
-@ Rewritten by EKR.  April 17, 2005.
-
-Each data node must have three children:
-
-- a "before" node
-- an "after" node
-- a "tempNode" node
-
-A parent to before and after nodes will contain pagewidth and language formatting directives.
-#@+node:ekr.20070627082044.734:@test noTrailingNewline (pass)
-# Wrap a long line, no trailing newline.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,2,24)
-#@nonl
-#@+node:ekr.20070627082044.735:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-
-#@+node:ekr.20070627082044.736:tempNode
-#@-node:ekr.20070627082044.736:tempNode
-#@+node:ekr.20070627082044.737:before
-This line is over forty characters long, at least it seems to be.
-#@nonl
-#@-node:ekr.20070627082044.737:before
-#@+node:ekr.20070627082044.738:after
-This line is over forty characters long,
-at least it seems to be.
-#@nonl
-#@-node:ekr.20070627082044.738:after
-#@-node:ekr.20070627082044.735:data
-#@-node:ekr.20070627082044.734:@test noTrailingNewline (pass)
-#@+node:ekr.20070627082044.739:@test trailingNewline (pass)
-# Wrap a long line, with trailing newline.
-
-import leoTest
-
-# Wrap a long line, no trailing newline.
-leoTest.singleParagraphTest(c,p,3,0)
-#@nonl
-#@+node:ekr.20070627082044.740:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.741:tempNode
-#@-node:ekr.20070627082044.741:tempNode
-#@+node:ekr.20070627082044.742:before
-This line is over forty characters long, at least it seems to be.
-#@-node:ekr.20070627082044.742:before
-#@+node:ekr.20070627082044.743:after
-This line is over forty characters long,
-at least it seems to be.
-#@-node:ekr.20070627082044.743:after
-#@-node:ekr.20070627082044.740:data
-#@-node:ekr.20070627082044.739:@test trailingNewline (pass)
-#@+node:ekr.20070627082044.744:@test mixedLineLengths
-# Wrap a long line and some short ones.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,4,10)
-#@nonl
-#@+node:ekr.20070627082044.745:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.746:tempNode
-#@-node:ekr.20070627082044.746:tempNode
-#@+node:ekr.20070627082044.747:before
-This line is over forty characters long, at least it seems to be.
-This is shorter, 
-but should be part of the same
-paragraph.
-#@nonl
-#@-node:ekr.20070627082044.747:before
-#@+node:ekr.20070627082044.748:after
-This line is over forty characters long,
-at least it seems to be. This is
-shorter, but should be part of the same
-paragraph.
-#@nonl
-#@-node:ekr.20070627082044.748:after
-#@-node:ekr.20070627082044.745:data
-#@-node:ekr.20070627082044.744:@test mixedLineLengths
-#@+node:ekr.20070627082044.749:@test mixedLinesWithLeadingWS
-# Wrap a paragraph with interior lines that have leading white space.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,4,12)
-#@nonl
-#@+node:ekr.20070627082044.750:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.751:tempNode
-#@-node:ekr.20070627082044.751:tempNode
-#@+node:ekr.20070627082044.752:before
-This line is over forty characters long, at least it seems to be.
-  This indented line should be merged into the same
-paragraph.
-#@nonl
-#@-node:ekr.20070627082044.752:before
-#@+node:ekr.20070627082044.753:after
-This line is over forty characters long,
-  at least it seems to be. This indented
-  line should be merged into the same
-  paragraph.
-#@nonl
-#@-node:ekr.20070627082044.753:after
-#@-node:ekr.20070627082044.750:data
-#@-node:ekr.20070627082044.749:@test mixedLinesWithLeadingWS
-#@+node:ekr.20070627082044.754:@test noChangeRequired
-# No wrapping required, so don't change a thing.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,1,28)
-#@+node:ekr.20070627082044.755:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.756:tempNode
-#@-node:ekr.20070627082044.756:tempNode
-#@+node:ekr.20070627082044.757:before
-This line is under 40 chars.
-#@nonl
-#@-node:ekr.20070627082044.757:before
-#@+node:ekr.20070627082044.758:after
-This line is under 40 chars.
-#@nonl
-#@-node:ekr.20070627082044.758:after
-#@-node:ekr.20070627082044.755:data
-#@-node:ekr.20070627082044.754:@test noChangeRequired
-#@+node:ekr.20070627082044.759:@test honorLeadingWS
-# Honor the first line's leading whitespace.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,5,16)
-#@+node:ekr.20070627082044.760:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.761:tempNode
-#@-node:ekr.20070627082044.761:tempNode
-#@+node:ekr.20070627082044.762:before
-   This line is over forty characters long, at least it seems to be.
-   This is shorter, 
-but should be part of the same
-paragraph.  And this is indented 3 characters.
-#@nonl
-#@-node:ekr.20070627082044.762:before
-#@+node:ekr.20070627082044.763:after
-   This line is over forty characters
-   long, at least it seems to be. This
-   is shorter, but should be part of the
-   same paragraph. And this is indented
-   3 characters.
-#@nonl
-#@-node:ekr.20070627082044.763:after
-#@-node:ekr.20070627082044.760:data
-#@-node:ekr.20070627082044.759:@test honorLeadingWS
-#@+node:ekr.20070627082044.764:@test honorLeadingWSVar1
-# Honor the first and second line's leading whitespace.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,5,16)
-#@+node:ekr.20070627082044.765:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.766:tempNode
-#@-node:ekr.20070627082044.766:tempNode
-#@+node:ekr.20070627082044.767:before
-   This line is over forty characters long, at least it seems to be.
-   This is shorter, 
-     but should be part of the same
-     paragraph.  And this is indented 3 characters.
-#@nonl
-#@-node:ekr.20070627082044.767:before
-#@+node:ekr.20070627082044.768:after
-   This line is over forty characters
-   long, at least it seems to be. This
-   is shorter, but should be part of the
-   same paragraph. And this is indented
-   3 characters.
-#@nonl
-#@-node:ekr.20070627082044.768:after
-#@-node:ekr.20070627082044.765:data
-#@-node:ekr.20070627082044.764:@test honorLeadingWSVar1
-#@+node:ekr.20070627082044.769:@test simpleHangingIndent
-# Single paragraph, hanging indentation.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,5,8)
-#@+node:ekr.20070627082044.770:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.771:tempNode
-#@-node:ekr.20070627082044.771:tempNode
-#@+node:ekr.20070627082044.772:before
-Honor this line that has a hanging indentation, please.  Hanging
-  indentation is valuable for lists of all kinds.  But it is tricky to get right.
-#@nonl
-#@-node:ekr.20070627082044.772:before
-#@+node:ekr.20070627082044.773:after
-Honor this line that has a hanging
-  indentation, please. Hanging
-  indentation is valuable for lists of
-  all kinds. But it is tricky to get
-  right.
-#@nonl
-#@-node:ekr.20070627082044.773:after
-#@-node:ekr.20070627082044.770:data
-#@-node:ekr.20070627082044.769:@test simpleHangingIndent
-#@+node:ekr.20070627082044.774:@test testSimpleHangingIndentVar1
-# Single paragraph, hanging indentation with other indentation beyond line 2.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,5,8)
-#@nonl
-#@+node:ekr.20070627082044.775:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.776:tempNode
-#@-node:ekr.20070627082044.776:tempNode
-#@+node:ekr.20070627082044.777:before
-Honor this line that has
-  a hanging indentation, please.  Hanging
-    indentation is valuable for lists of all kinds.  But it is tricky to get right.
-#@nonl
-#@-node:ekr.20070627082044.777:before
-#@+node:ekr.20070627082044.778:after
-Honor this line that has a hanging
-  indentation, please. Hanging
-  indentation is valuable for lists of
-  all kinds. But it is tricky to get
-  right.
-#@nonl
-#@-node:ekr.20070627082044.778:after
-#@-node:ekr.20070627082044.775:data
-#@-node:ekr.20070627082044.774:@test testSimpleHangingIndentVar1
-#@+node:ekr.20070627082044.779:@test simpleHangingIndentVar2
-# Single paragraph, hanging indentation, short lines, extraneous indentation, and last line uses a tab for whitespace.
-
-import leoTest
-
-leoTest.singleParagraphTest(c,p,5,8)
-#@nonl
-#@+node:ekr.20070627082044.780:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.781:tempNode
-#@-node:ekr.20070627082044.781:tempNode
-#@+node:ekr.20070627082044.782:before
-Honor this line that 
-  has a hanging indentation, 
-  please.  Hanging
-   indentation is valuable
-    for lists of all kinds.  But 
-    it is tricky to get right.
-#@nonl
-#@-node:ekr.20070627082044.782:before
-#@+node:ekr.20070627082044.783:after
-Honor this line that has a hanging
-  indentation, please. Hanging
-  indentation is valuable for lists of
-  all kinds. But it is tricky to get
-  right.
-#@nonl
-#@-node:ekr.20070627082044.783:after
-#@-node:ekr.20070627082044.780:data
-#@-node:ekr.20070627082044.779:@test simpleHangingIndentVar2
-#@+node:ekr.20070627082044.784:@test multiParagraphTest
-# Multiple long lined paragraphs.  Cursor should move to next paragraph after formatting a paragraph.
-
-import leoTest
-
-leoTest.multiParagraphTest(c,p)
-#@nonl
-#@+node:ekr.20070627082044.785:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-#@nonl
-#@+node:ekr.20070627082044.786:tempNode
-#@-node:ekr.20070627082044.786:tempNode
-#@+node:ekr.20070627082044.787:before
-Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly weather impacts every American. Communities can now rely on the National Weather Service’s StormReady program to help them guard against the ravages of Mother Nature.
-
-Some 90% of all presidentially declared disasters are weather related, leading to around 500 deaths per year and nearly $14 billion in damage. StormReady, a program started in 1999 in Tulsa, OK, helps arm America's communities with the communication and safety skills needed to save lives and property– before and during the event. StormReady helps community leaders and emergency managers strengthen local safety programs.
-
-StormReady communities are better prepared to save lives from the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but StormReady can help communities save lives. Does StormReady make a difference?
-#@nonl
-#@-node:ekr.20070627082044.787:before
-#@+node:ekr.20070627082044.788:after
-Americans live in the most severe
-weather-prone country on Earth. Each
-year, Americans cope with an average of
-10,000 thunderstorms, 2,500 floods,
-1,000 tornadoes, as well as an average
-of 6 deadly hurricanes. Potentially
-deadly weather impacts every American.
-Communities can now rely on the National
-Weather Service’s StormReady program to
-help them guard against the ravages of
-Mother Nature.
-
-Some 90% of all presidentially declared
-disasters are weather related, leading
-to around 500 deaths per year and nearly
-$14 billion in damage. StormReady, a
-program started in 1999 in Tulsa, OK,
-helps arm America's communities with the
-communication and safety skills needed
-to save lives and property– before and
-during the event. StormReady helps
-community leaders and emergency managers
-strengthen local safety programs.
-
-StormReady communities are better
-prepared to save lives from the
-onslaught of severe weather through
-better planning, education, and
-awareness. No community is storm proof,
-but StormReady can help communities save
-lives. Does StormReady make a
-difference?
-#@nonl
-#@-node:ekr.20070627082044.788:after
-#@-node:ekr.20070627082044.785:data
-#@-node:ekr.20070627082044.784:@test multiParagraphTest
-#@+node:ekr.20070627082044.789:@test multiParagraphWithListTest
-# A regular paragraph, plus a numbered list of several items, plus a final regular paragraph.
-# Cursor should move to next paragraph after formatting a paragraph.
-
-import leoTest
-
-leoTest.multiParagraphWithListTest(c,p)
-#@nonl
-#@+node:ekr.20070627082044.790:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-
-# DTHEIN 2004.01.11: Added test case data
-
-#@+node:ekr.20070627082044.791:tempNode
-#@-node:ekr.20070627082044.791:tempNode
-#@+node:ekr.20070627082044.792:before
-This paragraph leads of this test.  It is the "lead"
-paragraph.
-
-  1. This is item 
-     number 1.  It is the first item in the list.
-
-  2. This is item 
-     number 2.  It is the second item in the list.
-
-  3. This is item 
-     number 3.  It is the third item in the list.
-
-This paragraph ends the test.  It is the "final"
-paragraph.
-#@nonl
-#@-node:ekr.20070627082044.792:before
-#@+node:ekr.20070627082044.793:after
-This paragraph leads of this test. It is
-the "lead" paragraph.
-
-  1. This is item number 1. It is the
-     first item in the list.
-
-  2. This is item number 2. It is the
-     second item in the list.
-
-  3. This is item number 3. It is the
-     third item in the list.
-
-This paragraph ends the test. It is the
-"final" paragraph.
-#@nonl
-#@-node:ekr.20070627082044.793:after
-#@-node:ekr.20070627082044.790:data
-#@-node:ekr.20070627082044.789:@test multiParagraphWithListTest
-#@+node:ekr.20070627082044.794:@test leadingWSOnEmptyLinesTest
-@
-Ran into a problem with the wrapping eating blank lines that delimit paragraphs
-if those blank lines have any leading whitespace. This test is to make sure that
-still works.
-
-If you "show invisibles" you'll see the leading whitespace in the blank lines --
-which is different from the "testMultiParagraphWithList" test.
-@c
-
-import leoTest
-
-leoTest.leadingWSOnEmptyLinesTest(c,p)
-#@nonl
-#@+node:ekr.20070627082044.795:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-
-#@+node:ekr.20070627082044.796:tempNode
-#@-node:ekr.20070627082044.796:tempNode
-#@+node:ekr.20070627082044.797:before
-This paragraph leads of this test.  It is the "lead"
-paragraph.
-
-  1. This is item 
-     number 1.  It is the first item in the list.
-
-  2. This is item 
-     number 2.  It is the second item in the list.
-
-  3. This is item 
-     number 3.  It is the third item in the list.
-
-This paragraph ends the test.  It is the "final"
-paragraph.
-#@nonl
-#@-node:ekr.20070627082044.797:before
-#@+node:ekr.20070627082044.798:after
-This paragraph leads of this test. It is
-the "lead" paragraph.
-
-  1. This is item number 1. It is the
-     first item in the list.
-
-  2. This is item number 2. It is the
-     second item in the list.
-
-  3. This is item number 3. It is the
-     third item in the list.
-
-This paragraph ends the test. It is the
-"final" paragraph.
-#@nonl
-#@-node:ekr.20070627082044.798:after
-#@-node:ekr.20070627082044.795:data
-#@-node:ekr.20070627082044.794:@test leadingWSOnEmptyLinesTest
-#@+node:ekr.20070627082044.799:@test directiveBreaksParagraphTest
-import leoTest
-
-leoTest.directiveBreaksParagraphTest(c,p)
-#@nonl
-#@+node:ekr.20070627082044.800:data
-@language plain
-@pagewidth 40
-@tabwidth 8
-
-# DTHEIN 2004.01.11: Added test case data
-
-Test to make sure that reformatting treats directives as a new paragraph and doesn't wrap directive lines.
-#@+node:ekr.20070627082044.801:tempNode
-#@-node:ekr.20070627082044.801:tempNode
-#@+node:ekr.20070627082044.802:before
-Americans live in the most severe weather-prone country on Earth. Each year, Americans cope with an average of 10,000 thunderstorms, 2,500 floods, 1,000 tornadoes, as well as an average of 6 deadly hurricanes. Potentially deadly weather impacts every American. Communities can now rely on the National Weather Service’s StormReady program to help them guard against the ravages of Mother Nature.
-@unknownDirective
-Some 90% of all presidentially declared disasters are weather related, leading to around 500 deaths per year and nearly $14 billion in damage. StormReady, a program started in 1999 in Tulsa, OK, helps arm America's communities with the communication and safety skills needed to save lives and property– before and during the event. StormReady helps community leaders and emergency managers strengthen local safety programs.
-@unknownDirective
-StormReady communities are better prepared to save lives from the onslaught of severe weather through better planning, education, and awareness. No community is storm proof, but StormReady can help communities save lives. Does StormReady make a difference?
-#@nonl
-#@-node:ekr.20070627082044.802:before
-#@+node:ekr.20070627082044.803:after
-Americans live in the most severe
-weather-prone country on Earth. Each
-year, Americans cope with an average of
-10,000 thunderstorms, 2,500 floods,
-1,000 tornadoes, as well as an average
-of 6 deadly hurricanes. Potentially
-deadly weather impacts every American.
-Communities can now rely on the National
-Weather Service’s StormReady program to
-help them guard against the ravages of
-Mother Nature.
-@unknownDirective
-Some 90% of all presidentially declared
-disasters are weather related, leading
-to around 500 deaths per year and nearly
-$14 billion in damage. StormReady, a
-program started in 1999 in Tulsa, OK,
-helps arm America's communities with the
-communication and safety skills needed
-to save lives and property– before and
-during the event. StormReady helps
-community leaders and emergency managers
-strengthen local safety programs.
-@unknownDirective
-StormReady communities are better
-prepared to save lives from the
-onslaught of severe weather through
-better planning, education, and
-awareness. No community is storm proof,
-but StormReady can help communities save
-lives. Does StormReady make a
-difference?
-#@nonl
-#@-node:ekr.20070627082044.803:after
-#@-node:ekr.20070627082044.800:data
-#@-node:ekr.20070627082044.799:@test directiveBreaksParagraphTest
-#@-node:ekr.20070627082044.733:Reformat Paragraph tests
 #@-node:ekr.20070629065730.1:Contain non-python code
 #@-node:ekr.20070628110656:@unit-tests Can not be in derived files
 #@+node:ekr.20070628121120:@unit-tests General tests: no associated derived file
