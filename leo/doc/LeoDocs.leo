@@ -49,18 +49,18 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
-<v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
+<v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
 <v t="ekr.20040414163815"><vh>Table of Contents</vh></v>
 <v t="ekr.20050812134441.3"><vh>@rst-no-head end</vh></v>
 </v>
 </v>
 <v t="ekr.20050831184021.3"><vh>Front matter</vh>
-<v t="ekr.20040414172212"><vh>@rst html\frontMatter.html</vh>
+<v t="ekr.20040414172212" a="E"><vh>@rst html\frontMatter.html</vh>
 <v t="ekr.20050812134441"><vh>@rst-no-head Links</vh></v>
-<v t="ekr.20040414172218.2"><vh>Preface</vh></v>
+<v t="ekr.20040414172218.2"><vh>@rst-ignore Old Preface</vh></v>
 <v t="ekr.20040414172218.4"><vh>Acknowledgements</vh>
 <v t="ekr.20040416080538"><vh>@rst-no-head special mentions</vh></v>
 </v>
@@ -69,8 +69,38 @@
 <v t="ekr.20050812125502"><vh>@rst-no-head End stuff</vh></v>
 </v>
 </v>
+<v t="ekr.20070701101808"><vh>Preface</vh>
+<v t="ekr.20070701101809" a="E"><vh>@rst html\preface.html</vh>
+<v t="ekr.20070701101809.1"><vh>@rst-no-head Links</vh></v>
+<v t="ekr.20070701090840"><vh>@rst-no-head preface</vh></v>
+<v t="ekr.20070701101809.7"><vh>@rst-no-head End stuff</vh></v>
+</v>
+</v>
+<v t="ekr.20050831184021.4"><vh>What people are saying about Leo</vh>
+<v t="ekr.20050830074716" a="E"><vh>@rst html\testimonials.html</vh>
+<v t="ekr.20050830075229"><vh>@rst-no-head Links</vh></v>
+<v t="ekr.20050830074815.1"><vh>Leo is revolutionary</vh></v>
+<v t="ekr.20050830074815.2"><vh>Leo is a showcase Python/Tkinter application</vh></v>
+<v t="ekr.20050830074815.3"><vh>Leo is fun, even addicting</vh></v>
+<v t="ekr.20050830074815.4"><vh>Leo is a flexible, powerful IDE</vh></v>
+<v t="ekr.20050830074815.5"><vh>Leo is a superb outliner</vh></v>
+<v t="ekr.20050830074815.6"><vh>Leo is an excellent PIM</vh></v>
+<v t="ekr.20050830074815.7"><vh>Leo extends, completes and simplifies literate programming</vh></v>
+<v t="ekr.20050830074815.8"><vh>Leo is a superb documentation tool</vh></v>
+<v t="ekr.20050830074815.9"><vh>Leo simplifies the understanding of complex systems</vh></v>
+<v t="ekr.20050830074815.10"><vh>Leo is stable, well designed and well supported</vh></v>
+<v t="ekr.20050830074815.11"><vh>Longer quotes...</vh>
+<v t="ekr.20050830074815.12"><vh> Speed Ream's slashdot article</vh></v>
+<v t="ekr.20050830074815.13"><vh>Joe Orr</vh></v>
+<v t="ekr.20050830074815.14"><vh>Dan Winkler</vh></v>
+<v t="ekr.20050830074815.15"><vh>Dan Winkler 2</vh></v>
+<v t="ekr.20050830074815.16"><vh>Dan Winkler 3</vh></v>
+</v>
+<v t="ekr.20050830080545"><vh>@rst-no-head end stuff</vh></v>
+</v>
+</v>
 <v t="ekr.20050831195331.1"><vh>FAQ</vh>
-<v t="ekr.20050830115714"><vh>@rst html\FAQ.html</vh>
+<v t="ekr.20050830115714" a="E"><vh>@rst html\FAQ.html</vh>
 <v t="ekr.20050830120007"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20070623145346"><vh>Installing Leo</vh>
 <v t="ekr.20060329101442"><vh>Nothing (or almost nothing) happens when I start Leo.  What should I do?</vh></v>
@@ -137,29 +167,6 @@
 <v t="ekr.20050906105946"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20050831184021.4"><vh>What people are saying about Leo</vh>
-<v t="ekr.20050830074716"><vh>@rst html\testimonials.html</vh>
-<v t="ekr.20050830075229"><vh>@rst-no-head Links</vh></v>
-<v t="ekr.20050830074815.1"><vh>Leo is revolutionary</vh></v>
-<v t="ekr.20050830074815.2"><vh>Leo is a showcase Python/Tkinter application</vh></v>
-<v t="ekr.20050830074815.3"><vh>Leo is fun, even addicting</vh></v>
-<v t="ekr.20050830074815.4"><vh>Leo is a flexible, powerful IDE</vh></v>
-<v t="ekr.20050830074815.5"><vh>Leo is a superb outliner</vh></v>
-<v t="ekr.20050830074815.6"><vh>Leo is an excellent PIM</vh></v>
-<v t="ekr.20050830074815.7"><vh>Leo extends, completes and simplifies literate programming</vh></v>
-<v t="ekr.20050830074815.8"><vh>Leo is a superb documentation tool</vh></v>
-<v t="ekr.20050830074815.9"><vh>Leo simplifies the understanding of complex systems</vh></v>
-<v t="ekr.20050830074815.10"><vh>Leo is stable, well designed and well supported</vh></v>
-<v t="ekr.20050830074815.11"><vh>Longer quotes...</vh>
-<v t="ekr.20050830074815.12"><vh> Speed Ream's slashdot article</vh></v>
-<v t="ekr.20050830074815.13"><vh>Joe Orr</vh></v>
-<v t="ekr.20050830074815.14"><vh>Dan Winkler</vh></v>
-<v t="ekr.20050830074815.15"><vh>Dan Winkler 2</vh></v>
-<v t="ekr.20050830074815.16"><vh>Dan Winkler 3</vh></v>
-</v>
-<v t="ekr.20050830080545"><vh>@rst-no-head end stuff</vh></v>
-</v>
-</v>
 <v t="ekr.20050831195331.2"><vh>Chapter 1: Installing Leo</vh>
 <v t="edream.110203163054.48"><vh>@rst html\install.html</vh>
 <v t="ekr.20050901110110"><vh>@rst-no-head links</vh></v>
@@ -179,7 +186,7 @@
 </v>
 </v>
 <v t="ekr.20050831195331.3"><vh>Chapter 2: A Tutorial Introduction to Leo</vh>
-<v t="ekr.20050816073412"><vh>@rst html\intro.html</vh>
+<v t="ekr.20050816073412" a="E"><vh>@rst html\intro.html</vh>
 <v t="ekr.20050816073814"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050816073412.1"><vh>Introduction</vh>
 <v t="ekr.20050822173420"><vh>Leo's main window</vh></v>
@@ -448,7 +455,7 @@
 </v>
 </v>
 <v t="ekr.20050901084134"><vh>Chapter 11: White papers</vh>
-<v t="ekr.20050901092232"><vh>@rst html\whitepapers.html</vh>
+<v t="ekr.20050901092232" a="E"><vh>@rst html\whitepapers.html</vh>
 <v t="ekr.20050901092232.1"><vh>@rst-no-head links</vh></v>
 <v t="EKR.20040524104904.259"><vh>Tk is the future of Leo</vh></v>
 <v t="EKR.20040524104904.260"><vh>Why I like Python</vh>
@@ -458,7 +465,7 @@
 <v t="ekr.20050901092232.5"><vh>Speed</vh></v>
 <v t="ekr.20050901092232.6"><vh>Conclusions</vh></v>
 </v>
-<v t="ekr.20060218085144"><vh>Why Leo is special</vh>
+<v t="ekr.20060218085144"><vh>@rst-ignore Why Leo is special</vh>
 <v t="ekr.20060218085144.1"><vh>1. You can execute Python scripts directly from anywhere in a Leo outline</vh></v>
 <v t="ekr.20060218085144.2"><vh>2. Leo's outlines are the perfect tool for organizing scripts</vh></v>
 <v t="ekr.20060218085144.3"><vh>3. Scripts can access the structure of Leo's outlines</vh></v>
@@ -619,7 +626,7 @@
 </v>
 </v>
 <v t="ekr.20050831184021.1"><vh>Chapter 14: Using the rst3 plugin</vh>
-<v t="ekr.20050818163826"><vh>@rst html\rstplugin3.html</vh>
+<v t="ekr.20050818163826" a="E"><vh>@rst html\rstplugin3.html</vh>
 <v t="ekr.20050818163826.1"><vh>@rst-no-head links</vh></v>
 <v t="ekr.20050818163826.2"><vh>Overview</vh></v>
 <v t="ekr.20050818163826.3"><vh>Comparison with previous rst plugins</vh></v>
@@ -1050,7 +1057,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="TV"><vh>Release Notes</vh>
+<v t="edream.110203163054.46"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
@@ -10833,6 +10840,8 @@ Leo's Users Guide
 </t>
 <t tx="ekr.20040414163815">`Front Matter`_
 
+`Preface`_
+
 `What people are saying about Leo`_
 
 `FAQ`_
@@ -13129,7 +13138,7 @@ Removes @ignore, @nocolor, @wrap directives.
 	:target: leo_TOC.html
 
 .. |next| image:: arrow_rt.gif
-    :target: testimonials.html</t>
+    :target: preface.html</t>
 <t tx="ekr.20050812134441.1">.. Links used in this document.
 
 .. _front:      front.html
@@ -15318,6 +15327,7 @@ is the kind of sentinel lines that Leo writes:
 This is a highly complex subject: you should ignore these details at first.
 Just use ``@thin`` to create your `derived files`_.</t>
 <t tx="ekr.20050828112159">.. _`Front Matter`:                                 frontMatter.html
+.. _`Preface`:                                      preface.html
 .. _`What people are saying about Leo`:             testimonials.html
 .. _`FAQ`:                                          FAQ.html
 .. _`Chapter 1\: Installing Leo`:                   install.html
@@ -16952,10 +16962,10 @@ the same Leo node for LaTeX to process.
 .. WARNING: image targets may not have upper case letters!
 
 .. |leo|  image:: leo.gif
-	:target: front.html
+	:target: preface.html
 
 .. |prev| image:: arrow_lt.gif
-	:target: frontMatter.html
+	:target: preface.html
 
 .. |next| image:: arrow_rt.gif
     :target: FAQ.html</t>
@@ -31114,5 +31124,154 @@ headlines in that file::
 @unit-test node groups nodes so that all nodes are available when running unit
 tests. That is, all nodes in an @unit-test are copied to
 test/DynamicUnitTest.leo. (See `How the unit test commands work`_ for full details.)</t>
+<t tx="ekr.20070701090840">Leo is not your ordinary text editor, class browser, project manager or database manager,
+though it resembles these programs in some respects.
+Understanding what Leo is does take some work:
+many people have reported an 'Aha!' experience when they first understand what Leo is all about.
+
+Leo is built on simple foundations:
+    
+- Leo is an outliner. All Leo data resides in an `outline`_. Outlines can
+  contain text, computer programs, web sites, pictures, or any other kind of
+  data. Leo can show such information, including pictures and movies, directly
+  in the outline.
+  
+- Using `cloned nodes`_, you can put the same inforamtion (outline node) in
+  mutliple places. You don't have to decide, once and for all, where the 'right'
+  place to put data: you can 'file' information in as many places as you like.
+  But Leo is more than just the ultimate filing cabinet. Using clones, an
+  outline can, in effect, show multiple views of the data *in that outline*.
+  Again, you do not have to decide, once and for all, which is the 'right' view.
+  You can have as many views as you like. For example, suppose you have an
+  outline that contains all of your slides (or links to them.) Using clones, any
+  of your slides could appear in as many slideshows as you like.
+
+These features allow you to organize personal information such as web links or
+pictures. Other features make Leo a powerful programming and web development
+environment:
+    
+- Unlike most file and class browsers, Leo has a memory. Leo allows you complete
+  freedom to organizer and reorganize your outline as you like. Leo remembers
+  the organization and expansion state of your outline when you save it, and
+  restores the outline and expansion state when you reload the outline.
+    
+- Leo is a virtual file system and data manager. Leo can generate files base on
+  data contained in outline. Such `derived files`_ can contain anything that the
+  outline contains: text computer programs, pictures, etc.
+  
+- You can use outlines to organize your programs, data and scripts. Using a
+  markup language based on noweb_, you can easily tell Leo how to assemble
+  programs and scripts from text in a portion of an outline.
+  
+- Leo's import commands convert already-existing programs into Leo pre-organized
+  outlines, much like class browsers do. Unlink class browsers, you are then
+  free to reorganize the outline so that it is easy to understand. This is a
+  great way to study other people's programs.
+  
+- The structure of Leo outlines is directly accessible to Python scripts.
+  Scripts can directly access all nodes (headlines and body text) of an outline.
+  There is no need to 'parse' data into constituent parts. Furthermore scripts
+  can easily insert, delete and move nodes. For example, unit tests can create
+  nodes the represent the expected result of a unit test.
+
+- Any Leo script can easily be applied to a selected part of the outline. This
+  is an incredibly powerful and flexible feature. For example, it is very easy
+  to create 'text editing' scripts that automate tedious, repetitive programming
+  tasks.
+  
+- It is easy to write `plugins`_ to alter any aspect of Leo's operation. Dozens
+  of plugins already exist.
+  
+- Nodes naturally represent both data (body text) and its description or
+  meta-data (headline). By convention, many plugins and commands look for
+  headlines of the form @x. Examples include @test and @suite for unit tests,
+  @url for web links, @slideshow and @slide for groups of slides, @auto for
+  automatically imported files, @folder for nodes created automatically from a
+  folder on the computer's file system, and many others.
+  Two kinds of meta-data deserve special mention. Unit tests can easily define
+  their own meta-data, such as 'before' and 'after'. These data describe the
+  initial conditions of the unit tests and the expected result.
+  The @rst plugin uses various kinds of @rst nodes to organize
+  `reStructuredText`_ and to control how that text is orgnaized. For full
+  details, see `Chapter 14: Using the Rst3 Plugin`_.
+  
+- Leo coexists well with other editors such as Emacs and Vim. Leo has
+  several plugins that allow you easily to switch between Emacs (or Vim) and
+  Leo. Moreover, Leo allows you complete flexibility to use the key bindings you
+  like.
+  
+Several people have asked me, "How can Leo help me with programming?".
+Here is a short answer that summarizes the discussion so far:
+    
+- Leo's outlines allow you to see the organization of complex programs more
+  clearly than with any other tool.
+  
+- Leo's allows you to organize programs and scripts more flexibly than with any
+  other tool. In particular, noweb is a perfect match for outlines.
+  
+- Leo scripts are much more powerful than in other scripting environments
+  because Leo scripts have easy access to headlines and data without having to
+  parse data. **Outline structure is real data**: scripts can easily access the
+  parents and descendants of any node. The practical benefits are almost
+  endless.
+
+- You can do things with Leo that are not possible with Emacs or Vim. In fact,
+  you can do things with Leo that are not even *conceivable or expressible* with
+  Emacs or Vim.
+
+One last word. Leo has a strong and active community of users on `SourceForge`_.
+Working with this community has been a constant source of joy and inspiration.
+Suggestions and plugins from users continue to drive Leo in excellent new
+directions. Who knows what the next plugin will bring? -- Edward K. Ream</t>
+<t tx="ekr.20070701101808"></t>
+<t tx="ekr.20070701101809">@ @rst-options
+code_mode=False
+generate_rst=True
+http_server_support = False
+show_organizer_nodes=True
+show_headlines=True
+show_leo_directives=True
+stylesheet_path=..\doc
+write_intermediate_file = False
+verbose=True
+@c
+
+|prev| |leo| |next|
+
+############
+Preface
+############
+
+
+</t>
+<t tx="ekr.20070701101809.1">.. links...
+
+.. _`SourceForge`:      http://sourceforge.net/projects/leo/
+.. _`noweb`:            http://www.eecs.harvard.edu/~nr/noweb/
+.. _reStructuredText:   http://docutils.sourceforge.net/rst.html
+
+.. _outline:            intro.html#introduction
+.. _plugins:            intro.html#plugins-settings
+.. _scripting:          intro.html#scripting-leo
+.. _users:              http://sourceforge.net/projects/leo/
+
+.. _`cloned nodes`:     intro.html#clones-views
+.. _`derived files`:     intro.html#derived-files
+
+.. _`Chapter 14\: Using the Rst3 Plugin`:           rstplugin3.html
+
+.. WARNING: image targets may not have upper case letters!     
+
+.. |leo|  image:: leo.gif
+	:target: front.html
+
+.. |prev| image:: arrow_lt.gif
+	:target: leo_TOC.html
+
+.. |next| image:: arrow_rt.gif
+    :target: testimonials.html</t>
+<t tx="ekr.20070701101809.7">----------------
+
+|prev| |leo| |next|</t>
 </tnodes>
 </leo_file>
