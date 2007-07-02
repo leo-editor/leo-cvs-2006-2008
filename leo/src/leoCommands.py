@@ -5789,30 +5789,6 @@ class baseCommands:
         if not ok:
             g.es('not found: %s' % fileName)
     #@-node:ekr.20061018094539:openLeoScripts
-    #@+node:ekr.20061209131102.1:openTest
-    def openTest (self, event=None):
-
-        if 1: # Open in a new process.
-            cmd = 'c:\Windows\System32\cmd.exe' # Hangs if used.
-            python = sys.executable
-            leo = g.os_path_abspath(g.os_path_join(g.app.loadDir,'leo.py'))
-            test = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','test'))
-
-            os.system('%s %s %s %s' % (cmd, python,leo,test))
-            # args = [python, leo, test]
-
-            # if 1: # Use present environment.
-                # os.spawnv(os.P_NOWAIT, sys.executable, args)
-            # else: # Use a pristine environment.
-                # os.spawnve(os.P_NOWAIT, sys.executable, args, os.environ)
-        else:
-            c = self
-            fileName = g.os_path_join(g.app.loadDir,'..','test','test.leo')
-
-            ok, frame = g.openWithFileName(fileName,c)
-            if not ok:
-                g.es('not found: %s' % fileName)
-    #@-node:ekr.20061209131102.1:openTest
     #@+node:ekr.20031218072017.2940:leoDocumentation
     def leoDocumentation (self,event=None):
 
