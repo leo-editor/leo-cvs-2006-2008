@@ -27,7 +27,9 @@ body {
   padding-top: 0.6cm ;
   margin-left:0.5cm ;
   margin-right:0.5cm ;
-  margin-bottom:0.5cm }
+  margin-bottom:0.5cm;
+  width: 450 px
+}
 
 /* dd appears to be the text of the definitions  padding-top: 0.1cm */
 dd {
