@@ -1172,7 +1172,6 @@ class leoMenu:
             ('Open Leo&Settings.leo',   'open-leoSettings-leo'),
             ('Open &myLeoSettings.leo', 'open-myLeoSettings-leo'),
             ('Open scr&ipts.leo',       'open-scripts-leo'),
-            # ('Open t&est.leo',          'open-test-leo'),
             '-',
             '*he&lp-for-minibuffer',
             '*help-for-&command',
