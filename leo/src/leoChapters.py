@@ -679,9 +679,10 @@ class chapterController:
         if not theChapter: return
 
         # g.trace('selected:',theChapter.name)
+        # First, try the presently selected chapter.
         firstName = theChapter.name
-        if firstName != 'main':
-            if theChapter.positionIsInChapter(p): return
+        if firstName == 'main' or theChapter.positionIsInChapter(p):
+            return # Bug fix: 7/2/07. All position are in the main chapter.
 
         for name in cc.chaptersDict.keys():
             if name not in (firstName,'main'):
