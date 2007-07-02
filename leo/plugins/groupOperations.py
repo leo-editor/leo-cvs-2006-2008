@@ -40,9 +40,9 @@ Tkinter = g.importExtension('Tkinter',pluginName=__name__,verbose=True)
 #@-node:mork.20041018131258.2:<< imports >>
 #@nl
 
-lassoers = {}
+lassoers = {} # Keys are commanders. Values are instances of class Lassoer.
 
-__version__ = ".8"
+__version__ = ".9"
 #@<<version history>>
 #@+node:mork.20041021120027:<<version history>>
 #@@killcolor
@@ -73,6 +73,11 @@ __version__ = ".8"
 # .8 EKR: Added 'c' arg to p.isVisible.
 # - Removed references to aPosition.c.  Positions no longer have 'c' 
 # attributes.
+# .9 EKR:
+# - Made inter-outline moves & copies work again.
+# - Also, warn that inter-outline clones transfer have no effect.  An 
+# oversight.
+# - Note: none of these operations are presently undoable.
 #@-at
 #@nonl
 #@-node:mork.20041021120027:<<version history>>
@@ -311,7 +316,7 @@ class Lassoer(object):
 
     #@	@+others
     #@+node:mork.20041018131258.7:__init__
-    def __init__( self , c ):
+    def __init__ (self,c):
 
         self.nodes = []
         self.c = c
@@ -323,16 +328,16 @@ class Lassoer(object):
         self.moveNode = None
         self.canvases = sets.Set()
 
-        for commandName,func in (
-            ('group-operations-clear-marked',       self.clear),
-            ('group-operations-mark-for-move',      self.addForMove),
-            ('group-operations-mark-for-copy',      self.addForCopy),
-            ('group-operations-mark-for-clone',     self.addForClone),
-            ('group-operations-mark-target',        self.markTarget),
-            ('group-operations-operate-on-marked',  self.operateOnMarked),
-            ('group-operations-transfer',           self.transfer),
+        for commandName, func in (
+            ('group-operations-clear-marked',self.clear),
+            ('group-operations-mark-for-move',self.addForMove),
+            ('group-operations-mark-for-copy',self.addForCopy),
+            ('group-operations-mark-for-clone',self.addForClone),
+            ('group-operations-mark-target',self.markTarget),
+            ('group-operations-operate-on-marked',self.operateOnMarked),
+            ('group-operations-transfer',self.transfer),
         ):
-            k.registerCommand (commandName,None,func,pane='all',verbose=False)
+            k.registerCommand(commandName,None,func,pane='all',verbose=False)
     #@nonl
     #@-node:mork.20041018131258.7:__init__
     #@+node:mork.20041018131258.6:__lcmp__
@@ -373,7 +378,8 @@ class Lassoer(object):
     def addForCopy (self,event=None):
 
         c = self.c ; p = c.currentPosition()
-        aList = self.mvForCopy ; justRmv = p in aList
+        aList = self.mvForCopy
+        justRmv = p in aList
 
         self.remove(p)
         if not justRmv:
@@ -450,21 +456,22 @@ class Lassoer(object):
         if not lassoer.validMove():
             g.es('Transfer not valid',color='blue')
             return
-        cpos = self.c.currentPosition()
-        self.c.beginUpdate()
+
         lassoer.c.beginUpdate()
-        mN = lassoer.moveNode
-        for z in self.mvForCopy:
-            self.copyTo(mN)
-        for z in self.mvForM:
-            self.moveTo(mN)
-        self.clear()
-        self.c.endUpdate()
-        lassoer.c.endUpdate()
-        c.selectPosition(cpos)
-        self.c.redraw()
-        lassoer.c.redraw()
-    #@nonl
+        c.beginUpdate()
+        try:
+            mN = lassoer.moveNode
+            for z in self.mvForCopy:
+                self.copyTo(mN)
+            for z in self.mvForM:
+                self.moveTo(mN,mvC=lassoer.c)
+            if self.mvForClone:
+                g.es('Ignoring clone transer',color='blue')
+            self.clear()
+        finally:
+            c.endUpdate()
+            lassoer.c.endUpdate() # Do this last so we select the target outline.
+
     #@-node:mork.20041019125724.3:transfer
     #@-node:ekr.20060325094821:Commands
     #@+node:ekr.20060325103727:Utils
@@ -488,18 +495,24 @@ class Lassoer(object):
             mN = clo
     #@-node:mork.20041019125724.1:cloneTo
     #@+node:mork.20041019125724.2:moveTo
-    def moveTo (self,mN=None):
+    def moveTo (self,mN=None,mvC=None):
 
+        c = self.c # The source of the move.
         if not mN: mN = self.moveNode
+        if not mvC: mvC = c # The target of the move.
         for z in self.mvForM:
             if z.isRoot():
                 continue
-            if False: ### z.c != mN.c:
-                z.c.selectPosition(z)
-                s = z.c.fileCommands.putLeoOutline()
-                p = mN.c.fileCommands.getLeoOutline(s,False)
-                p.moveAfter(mN)
-                z.doDelete()
+            if c != mvC:
+                c.selectPosition(z)
+                s = c.fileCommands.putLeoOutline()
+                p = mvC.fileCommands.getLeoOutline(s,reassignIndices=True)
+                if p:
+                    p.moveAfter(mN)
+                    c.selectPosition(z)
+                    c.deleteOutline()
+                    c.setChanged(True)
+                    mvC.setChanged(True)
             else:
                 z.moveAfter(mN)
                 mN = z
