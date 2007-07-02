@@ -5959,6 +5959,30 @@ def init_zodb (pathToZodbStorage,verbose=True):
 #@nonl
 #@-node:ekr.20060913090832.1:g.init_zodb
 #@-node:ekr.20060913091602:ZODB support
+#@+node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
+if g.unitTesting:
+
+    #@    @+others
+    #@+node:ekr.20070627204038.2:class exampleTestCase
+    import unittest
+
+    class exampleTestCase(unittest.TestCase):
+
+        '''A test case to print a message at the end of plugin tests.'''
+
+        def __init__ (self,c):
+            unittest.TestCase.__init__(self)
+            self.c = c
+
+        def runTest(self):
+            assert self.c
+            print 'exampleTestCase'
+    #@nonl
+    #@-node:ekr.20070627204038.2:class exampleTestCase
+    #@-others
+
+    g.app.scriptDict['suite'] = exampleTestCase(c)
+#@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
 #@-others
 #@-node:ekr.20031218072017.3093:@thin leoGlobals.py
 #@-leo
