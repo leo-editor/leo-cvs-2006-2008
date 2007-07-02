@@ -691,7 +691,6 @@ class baseFileCommands:
             self.usingClipboard = False
             self.tnodesDict = {}
         return v
-    #@nonl
     #@-node:ekr.20060826052453.1:getLeoOutlineHelper
     #@+node:ekr.20031218072017.3022:getClipboardHeader
     def getClipboardHeader (self):

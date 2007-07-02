@@ -1891,7 +1891,6 @@ def getLeoOutlineHelper (self,s,reassignIndices,checking):
         self.usingClipboard = False
         self.tnodesDict = {}
     return v
-#@nonl
 #@+node:EKR.20040610134756:<< recreate tnodesDict >>
 nodeIndices = g.app.nodeIndices
 
