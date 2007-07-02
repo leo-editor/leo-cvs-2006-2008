@@ -19,7 +19,7 @@
 #@@tabwidth -4
 
 #@+all
-#@+node:ekr.20070626112754.1:Leo 4.4.3 beta 1 projects
+#@+node:ekr.20070626112754.1:Leo 4.4.3.1 projects
 #@+node:ekr.20070626112849:Bugs
 #@+node:ekr.20070626111306:Fixed improper can not open myLeoSettings message
 # can not open: C:\prog\tigris-cvs\leo\config\myLeoSettings.leo
@@ -928,6 +928,40 @@ TypeError: isVisible() takes exactly 2 arguments (1 given)
 --Rich
 
 #@-node:ekr.20070628102649.1:Fixed several crashers in the group operations plugin
+#@+node:ekr.20070701163238:Fixed chapters bug
+# Moving into a chapters node from the main chapter does an automatic hoist.
+#@nonl
+#@+node:ekr.20070615075643:cc.selectChapterForPosition
+def selectChapterForPosition (self,p):
+
+    '''
+    Select a chapter containing position p.
+    Do nothing if p if p does not exist or is in the presently selected chapter.
+    '''
+    cc = self ; c = cc.c
+
+    if not p or not c.positionExists(p):
+        return
+
+    theChapter = cc.getSelectedChapter()
+    if not theChapter: return
+
+    # g.trace('selected:',theChapter.name)
+    # First, try the presently selected chapter.
+    firstName = theChapter.name
+    if firstName == 'main' or theChapter.positionIsInChapter(p):
+        return # Bug fix: 7/2/07. All position are in the main chapter.
+
+    for name in cc.chaptersDict.keys():
+        if name not in (firstName,'main'):
+            theChapter = cc.chaptersDict.get(name)
+            if theChapter.positionIsInChapter(p):
+                cc.selectChapterByName(name)
+                return
+    else:
+        cc.selectChapterByName('main')
+#@-node:ekr.20070615075643:cc.selectChapterForPosition
+#@-node:ekr.20070701163238:Fixed chapters bug
 #@-node:ekr.20070626112849:Bugs
 #@+node:ekr.20070626150414:Features
 #@+node:ekr.20070626150414.1:g.es and g.es_print print only to console during unit tests
@@ -1518,7 +1552,7 @@ The rst3 plugin sends its error message solely to the console; can not
 the spell-check do the same?
 #@-node:ekr.20070628104735:Send can not import aspell message only to the log
 #@-node:ekr.20070626150414:Features
-#@-node:ekr.20070626112754.1:Leo 4.4.3 beta 1 projects
+#@-node:ekr.20070626112754.1:Leo 4.4.3.1 projects
 #@-all
 #@nonl
 #@-node:EKR.20040429143933:@thin leoProjects.txt

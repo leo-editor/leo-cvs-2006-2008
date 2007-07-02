@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="344" height="904" width="897"/>
+	<global_window_position top="10" left="344" height="884" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="TV"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124" a="E"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -69,7 +69,7 @@
 <v t="ekr.20050812125502"><vh>@rst-no-head End stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070701101808"><vh>Preface</vh>
+<v t="ekr.20070701101808" a="E"><vh>Preface</vh>
 <v t="ekr.20070701101809" a="E"><vh>@rst html\preface.html</vh>
 <v t="ekr.20070701101809.1"><vh>@rst-no-head Links</vh></v>
 <v t="ekr.20070701090840"><vh>@rst-no-head preface</vh></v>
@@ -1057,7 +1057,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
@@ -3197,8 +3197,8 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.63"><vh>Latest version</vh>
-<v t="ekr.20070626082732"><vh>4.4.3 final</vh></v>
+<v t="edream.110203163054.63" a="ET"><vh>Latest version</vh>
+<v t="ekr.20070626082732" a="V"><vh>4.4.3 final</vh></v>
 </v>
 </v>
 </vnodes>
@@ -31147,8 +31147,8 @@ Leo is built on simple foundations:
   of your slides could appear in as many slideshows as you like.
 
 These features allow you to organize personal information such as web links or
-pictures. Other features make Leo a powerful programming and web development
-environment:
+pictures. Other features make Leo a powerful environment for programming and web
+development:
     
 - Unlike most file and class browsers, Leo has a memory. Leo allows you complete
   freedom to organizer and reorganize your outline as you like. Leo remembers
