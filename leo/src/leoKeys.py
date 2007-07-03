@@ -4430,6 +4430,8 @@ class keyHandlerClass:
 #@+node:ekr.20070627082044.827:Unit tests
 #@+node:ekr.20070627082044.828:@@@test strokeFromEvent (no longer used)
 if g.unitTesting:
+
+    c,p = g.getTestVars()
     alt = 0x20000 ; ctrl  = 4 ; shift = 1 ; key = 0
     table = (
         (key, 'a','a','a'),

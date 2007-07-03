@@ -1734,6 +1734,8 @@ class settingsTreeParser (parserBaseClass):
 #@+node:ekr.20070627082044.906:Unit tests
 #@+node:ekr.20070627082044.907:@test local settings (c.page_width)
 if g.unitTesting:
+
+    c,p = g.getTestVars()
     # g.es(c.page_width)
 
     assert c.page_width == 80
