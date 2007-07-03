@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="344" height="884" width="897"/>
+	<global_window_position top="10" left="344" height="864" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647"><vh>Users Guide</vh>
+<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -729,12 +729,12 @@
 <v t="ekr.20070317033759.6"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070628083442"><vh>Chapter 20: Unit testing with Leo</vh>
-<v t="ekr.20070628083442.1"><vh>@rst html\unitTesting.html</vh>
+<v t="ekr.20070628083442" a="E"><vh>Chapter 20: Unit testing with Leo</vh>
+<v t="ekr.20070628083442.1" a="E"><vh>@rst html\unitTesting.html</vh>
 <v t="ekr.20070628083442.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20070628084351"><vh>Using @test nodes</vh></v>
-<v t="ekr.20070628094515.1"><vh>Using @suite nodes</vh></v>
+<v t="ekr.20070628084351" a="TV"><vh>Using @test nodes</vh></v>
 <v t="ekr.20070630083055"><vh>Using @unit-test nodes</vh></v>
+<v t="ekr.20070628094515.1"><vh>Using @suite nodes</vh></v>
 <v t="ekr.20070628090657.2"><vh>Unit test buttons</vh></v>
 <v t="ekr.20070628094515.2"><vh>How the unit test commands work</vh></v>
 <v t="ekr.20070628083442.4"><vh>@rst-no-head end stuff</vh></v>
@@ -1107,7 +1107,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.117" a="T"><vh>Previous versions...</vh>
+<v t="edream.110203163054.117"><vh>Previous versions...</vh>
 <v t="ekr.20060206111717"><vh>Ancient...</vh>
 <v t="edream.110203163054.646"><vh>Borland PC versions...</vh>
 <v t="edream.110203163054.647"><vh>Borland 2.7 Major bug fix: please upgrade</vh></v>
@@ -3199,7 +3199,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070702162421" a="V"><vh>4.4.3.1</vh></v>
+<v t="ekr.20070702162421"><vh>4.4.3.1</vh></v>
 </v>
 </v>
 </vnodes>
@@ -30983,21 +30983,12 @@ consider one of Leo's actual unit tests. The headline is::
 The body text is::
 
     if g.unitTesting:
+        c,p = g.getTestVars() # Optional: prevents pychecker warnings.
         for p in c.allNodes_iter():
             back = p.back()
             next = p.next()
             if back: assert(back.getNext() == p)
             if next: assert(next.getBack() == p)
-            
-Notice that the first line of the body text is a **guard line**::
-    
-    if g.unitTesting:
-        
-This guard line is needed because this particular @test node is contained in the
-file leoNodes.py. @test nodes that appear outside of Python source files do not
-need guard lines. The guard line prevents the unit testing code from being
-executed when Python imports the leoNodes module; the g.unitTesting variable is
-True only while running unit tests.
             
 When either of Leo's unit test commands finds this @test node the command will
 run a unit test equivalent to the following::
@@ -31020,6 +31011,23 @@ As you can see, using @test nodes saves a lot of typing:
 - You don't have to define a subclass of unittest.TestCase.
 - Within your unit test, the c, g and p variables are predefined, just like in Leo scripts.
 - The entire headline of the @test node becomes the short description of the unit test.
+
+**Important note**: notice that the first line of the body text is a **guard line**::
+    
+    if g.unitTesting:
+        
+This guard line is needed because this particular @test node is contained in the
+file leoNodes.py. @test nodes that appear outside of Python source files do not
+need guard lines. The guard line prevents the unit testing code from being
+executed when Python imports the leoNodes module; the g.unitTesting variable is
+True only while running unit tests.
+
+Note: Leo predefines the c, g, and p variables in @test and @suite nodes,
+just like in other scripts.  Thus, the line::
+    
+    c,p = g.getTestVars()
+    
+is not needed.  However, it prevents pychecker warnings that c and p are undefined.
 </t>
 <t tx="ekr.20070628090657.2">test.leo and leoPy.leo contain two unit testing buttons::
     
@@ -31054,6 +31062,7 @@ Something like this::
     if g.unitTesting:
         __pychecker__ = '--no-reimport' # Prevents pychecker complaint.
         import unittest
+        c,p = g.getTestVars() # Optional.
         suite = unittest.makeSuite(unittest.TestCase)
         &lt;&lt; add one or more tests (instances of unittest.TestCase) to suite &gt;&gt;
         g.app.scriptDict['suite'] = suite
@@ -31070,6 +31079,7 @@ section references, etc. For example::
     if g.unitTesting:
         __pychecker__ = '--no-reimport'
         import unittest
+        c,p = g.getTestVars() # Optional.
         # children define test1,test2..., subclasses of unittest.TestCase.
         @others 
         suite = unittest.makeSuite(unittest.TestCase)
