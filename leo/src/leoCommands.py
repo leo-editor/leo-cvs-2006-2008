@@ -307,7 +307,7 @@ class baseCommands:
     #@+node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     def getSignOnLine (self):
         c = self
-        return "Leo 4.4.3.1 final, build %s, July 2, 2007" % c.getBuildNumber()
+        return "Leo 4.4.3.1, build %s, July 3, 2007" % c.getBuildNumber()
     #@-node:ekr.20040629121554.1:getSignOnLine (Contains hard-coded version info)
     #@+node:ekr.20040629121554.2:initVersion
     def initVersion (self):
@@ -4277,123 +4277,6 @@ class baseCommands:
     #@nonl
     #@-node:ekr.20070627082044.818:Test
     #@-node:ekr.20070627082044.816:@test pretty printing a docstring
-    #@+node:ekr.20070627082044.819:@test Pretty Print command
-    if g.unitTesting:
-        # @language python 
-
-        __pychecker__ = '--no-reimport'
-        import leoTest
-
-        u = leoTest.testUtils(c)
-        dump = False 
-        all = False 
-
-        if all:
-            c.prettyPrintAllPythonCode(dump=dump)
-        else:
-            # Warning: at present the before and after text is unprotected:
-            # Running Pretty Print on these nodes will negate the value of the test.
-            temp = u.findNodeInTree(p,"tempNode")
-            c.setBodyString(temp,"")
-            before = u.findNodeInTree(p,"before")
-            after = u.findNodeInTree(p,"after")
-            temp.scriptSetBodyString(before.bodyString())
-            c.prettyPrintPythonCode(p=temp,dump=dump)
-            assert temp.bodyString() == after.bodyString(),"Pretty Print Test failed"
-    #@+node:ekr.20070627082044.820:tempNode
-    #@+at 
-    #@nonl
-    # This is a test of stuff.in doc parts.
-    # 
-    #          I wonder what will happen.
-    #@-at
-    #@@c
-
-    def spam (self):
-
-        """ This is a ' triple'   quoted string:
-            It should remain untouched."""
-
-        if a == 3:
-            print "Ä á Û"
-
-        ''' Another ' triple'   quoted string:
-            It should remain untouched.'''
-
-        "yet another\
-        multi-line string"
-
-    class eggs:
-
-        """ A typical doc string """
-
-        #@    @+others
-        #@-others
-    #@nonl
-    #@-node:ekr.20070627082044.820:tempNode
-    #@+node:ekr.20070627082044.821:before
-    #@+at 
-    #@nonl
-    # This is    a test of stuff.in doc parts.
-    # 
-    #          I wonder           what will happen.
-    #@-at
-    #@@c
-
-    def        spam (self         )  :   
-
-        """ This is a ' triple'   quoted string:
-            It should remain untouched."""
-
-        if a==3:
-            print "Ä á Û"
-
-        ''' Another ' triple'   quoted string:
-            It should remain untouched.'''
-
-        "yet another\
-        multi-line string"
-
-    class eggs:
-
-        """ A typical doc string """
-
-        #@    @+others
-        #@-others
-    #@nonl
-    #@-node:ekr.20070627082044.821:before
-    #@+node:ekr.20070627082044.822:after
-    #@+at 
-    #@nonl
-    # This is a test of stuff.in doc parts.
-    # 
-    #          I wonder what will happen.
-    #@-at
-    #@@c
-
-    def spam (self):
-
-        """ This is a ' triple'   quoted string:
-            It should remain untouched."""
-
-        if a == 3:
-            print "Ä á Û"
-
-        ''' Another ' triple'   quoted string:
-            It should remain untouched.'''
-
-        "yet another\
-        multi-line string"
-
-    class eggs:
-
-        """ A typical doc string """
-
-        #@    @+others
-        #@-others
-    #@nonl
-    #@-node:ekr.20070627082044.822:after
-    #@-node:ekr.20070627082044.819:@test Pretty Print command
     #@-node:ekr.20040711135959.1:Pretty Print commands & tests
     #@-node:ekr.20040711135959.2:Check Outline submenu...
     #@+node:ekr.20031218072017.2898:Expand & Contract...
