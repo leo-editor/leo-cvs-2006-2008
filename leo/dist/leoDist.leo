@@ -34,7 +34,7 @@
 <v t="ekr.20070620084858.1"><vh>@@button upload</vh></v>
 </v>
 </v>
-<v t="EKR.20040519091259"><vh>Annoucnements (don't split into lines)</vh>
+<v t="EKR.20040519091259" a="E"><vh>Annoucnements</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070425092712"><vh>April 2007</vh></v>
@@ -46,13 +46,16 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
+<v t="ekr.20070703100935" a="TV"><vh>ANN: Leo 4.4.3.1</vh></v>
+<v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
+<v t="ekr.20070703100935.1"><vh>4.4.3</vh>
 <v t="ekr.20070626083110"><vh>ANN: Leo 4.4.3 final</vh></v>
 <v t="ekr.20070622091049"><vh>ANN: Leo 4.4.3 beta 3</vh></v>
 <v t="ekr.20070610174300"><vh>ANN: Leo 4.4.3 beta 2</vh></v>
 <v t="ekr.20070518070012"><vh>ANN: Leo 4.4.3 beta 1</vh></v>
 <v t="ekr.20070317054921"><vh>ANN: Leo 4.4.3 alpha 2</vh></v>
 <v t="ekr.20070126084440"><vh>ANN: Leo 4.4.3 alpha 1</vh></v>
-<v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
+</v>
 <v t="ekr.20061026100827.1"><vh>4.4.2</vh>
 <v t="ekr.20061029080932.1"><vh>ANN: Leo 4.4.2.1 final</vh></v>
 <v t="ekr.20061026100827"><vh>ANN: Leo 4.4.2 final</vh></v>
@@ -133,10 +136,7 @@
 </v>
 </v>
 <v t="ekr.20050116151024"><vh>To do (someday)</vh>
-<v t="ekr.20050117031116"><vh>Make sure nsi scripts are in synch with manifest</vh></v>
 <v t="ekr.20050116150710.90"><vh>Handle installation with Python 2.4 installed for Current User only</vh></v>
-<v t="ekr.20050118125236"><vh>Write a script to make sure .nsi and main install scripts create the same files</vh></v>
-<v t="ekr.20050119191034"><vh>Create manifest.in from manifest-nn.in</vh></v>
 </v>
 <v t="EKR.20040519080201.1"><vh>Distribution checklist</vh></v>
 <v t="ekr.20040629175400"><vh>Pychecker stuff</vh>
@@ -232,7 +232,7 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401" a="TV"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401"><vh>Update these for each release</vh>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
@@ -2864,7 +2864,6 @@ Leo: http://webpages.charter.net/edreamleo/front.html
 </t>
 <t tx="ekr.20050116150710.90"></t>
 <t tx="ekr.20050116151024">@nocolor</t>
-<t tx="ekr.20050117031116"></t>
 <t tx="ekr.20050118092706.4">; settings taken from Version 1.0 of NSIS Script for Leo
 Caption "Leo Installer"
 AutoCloseWindow false 
@@ -3100,8 +3099,6 @@ Delete "$INSTDIR\test\unitTest.leo"
 Delete "$INSTDIR\test\leoBridgeTest.py"
 Delete "$INSTDIR\test\leoDynamicTest.py"</t>
 <t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.3.1"</t>
-<t tx="ekr.20050118125236"></t>
-<t tx="ekr.20050119191034"></t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
 
 Leo 4.3 is the culmination of more than four months of work. In spite
@@ -5442,5 +5439,26 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070703100935">Leo 4.4.3.1                                 July 3, 2006
+
+Leo 4.4.3.1 is available at:
+http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
+
+Leo is a text editor, data organizer, project manager and much more. See:
+http://webpages.charter.net/edreamleo/intro.html
+
+The highlights of Leo 4.4.3.1:
+----------------------------
+- Fixed a few minor bugs reported since Leo 4.4.3 was released.
+- Added better support for unit testing in Leo.
+
+Links:
+------
+Leo:      http://webpages.charter.net/edreamleo/front.html
+Home:     http://sourceforge.net/projects/leo/
+Download: http://sourceforge.net/project/showfiles.php?group_id=3458
+CVS:      http://leo.tigris.org/source/browse/leo/
+Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070703100935.1"></t>
 </tnodes>
 </leo_file>
