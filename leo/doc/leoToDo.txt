@@ -1,153 +1,6 @@
 #@+leo-ver=4-thin
 #@+node:ekr.20040117181936:@thin ../doc/leoToDo.txt
 #@+all
-#@+node:ekr.20070521100324:Marketing/tools
-#@+node:ekr.20070521100324.1:Using Leo as a notebook
-@nocolor
-https://sourceforge.net/forum/message.php?msg_id=4314394
-By: duanekaufman
-
-I am starting a kinda 'stream-of-thought' document, one in which I can put down
-a paragraph of thought (perhaps in a pretty fashion, using ReST markup), develop
-some code, to do some calculations, run the code and display the results...rinse,
-repeat.
-
-The document, in pseudo-form, would look like:
-
-<Development of thought #1>
-<Code to calculate something>
-<Results from code execution>
-<Discussion of results>
-
-Each of the above would probably be a node, and I have already put together
-things that look like the above, all except for the <results> part. I can run
-the code, but how can I get the output automatically in my node? I can cut-and-paste
-from the underlying command window (I run under Linux and Windows XP), but I
-would like o automate it as much as possible.
-
-Does anyone have any ideas on how to accomodate this workflow?
-
------- Reply
-
-A most interesting and important question--with such a capability one could make Leo into a full-fledged engineering notebook, e.g., as envisaged by the IPython Notebook project: 
-
-http://projects.scipy.org/ipython/ipython/wiki/NbshellManual 
-
-I can think of several possible approaches: 
-
-1. Create a custom version of the execute script command that would put script output in a particular node. Perhaps the headline of the node could be an argument to the enhanced command. 
-
-2. Have your script write to some 'standard place', and create a command to put that script in the presently selected node. Something like insert-script-output. 
-
-3. Create a script button that executes the script in the presently selected node and puts the result in the node *following* the selected node. You can then either move the node by hand, or use another script button to move the node to a 'standard place', say the last child of the <<results>> node. 
-
-As I write this I think the script-button approach is likely to be the simplest, most flexible and most powerful. I'll look into this myself soon... 
-
-Edward
-
-
-#@-node:ekr.20070521100324.1:Using Leo as a notebook
-#@+node:ekr.20070521105645:Improve api docs with epidoc?
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=4319363
-By: ktenney
-
-I think there is room for improvement in documenting Leo's
-API, making it easier to write these kind of scripts.
-I'm not sure of the best way to do that.
-
-Epydoc seems to be the most active project in this realm.
-http://epydoc.sourceforge.net/epydoc.html
-#@-node:ekr.20070521105645:Improve api docs with epidoc?
-#@+node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3615177
-By: ktenney
-
-High on my ToLearn list is vnc2swf
-http://www.unixuser.org/~euske/vnc2swf/
-
-
-http://sourceforge.net/forum/message.php?msg_id=3615278
-By: James
-
-A lot of people are now using Wink for demonstrations
-(http://www.debugmode.com/wink/), it's is free and seems to work well.
-
-Check out http://murl.se/11332
-At the bottom they talk about tools and techniques.
-http://showmedo.com seems like it would be a good
-place to host vids also.
-
-I've listened/watched a fair number of things like this;
-my recomendation is to get a good microphone and
-pre-amp to record your voice, and prepare the audio
-track carefully. It is so aggravating when
-it's hard to discern the words being spoken.
-
-Thanks,
-Kent
-#@nonl
-#@+node:ekr.20060531134434:Tutorials
-http://sourceforge.net/forum/message.php?msg_id=3758271
-
-From: Rich
-
-Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
-and it has a very good tutorial -- leads the beginner by the hand through much
-of the language. Also the help file has working code snippets
-to cut-n-paste-n-play-with. I'd like to see something like:
-
-[Buttons]
-...[What are Buttons good for?]
-...[How do I make my own buttons?]
-......[Some commands you can use with buttons]
-......[Where to find button commands]
-#@nonl
-#@-node:ekr.20060531134434:Tutorials
-#@+node:ekr.20060531134434.1:Screencasts
-@nocolor
-http://sourceforge.net/forum/message.php?msg_id=3758303
-By: ktenney
-
-My sense is that documentation/screencasts has the
-greatest potential for expanding Leo's mindshare.
-
-I really like those produced by the good folks
-at Dabo;
-http://leafe.com/screencasts/
-http://leafe.com/screencasts/populategrid.html
-
-The TurboGears people have taken this to the extreme;
-http://www.turbogears.org/ultimate.html
-
-Leo is different enough that it warrants a 
-demonstration of it's advantages.
-#@nonl
-#@-node:ekr.20060531134434.1:Screencasts
-#@+node:ekr.20060829103523:Render Leo slideshows
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3889246
-By: terry_n_brown
-
-Three packages that might be candidates for "rendering" slides authored in Leo:
-
-MagicPoint: http://member.wide.ad.jp/wg/mgp/
-
-  uses a text file format that leo could produce
-
-Slidy: http://www.w3.org/Talks/Tools/Slidy/
-
-  uses XHTML / canned Java script
-
-S5: http://meyerweb.com/eric/tools/s5/
-
-  Similar to Slidy I think, haven't looked at it
-#@nonl
-#@-node:ekr.20060829103523:Render Leo slideshows
-#@-node:ekr.20060306194040:asap: Video and more screen shots on Leo's web site
-#@-node:ekr.20070521100324:Marketing/tools
 #@+node:ekr.20070325052041:To do: 4.4.4 (@auto)
 #@+node:ekr.20070324084040:@auto
 @ Aha: the perfect import code *can* correct whitespace (tab, underindented lines) problems that exists in the original files.  When such errors are found, Leo will issue the message:
@@ -1139,10 +992,102 @@ def checkImport (self):
 #@-node:ekr.20070612133404.3:Pass 5: checkImport
 #@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
 #@-node:ekr.20070324084040:@auto
-#@+node:ekr.20070613193516:Possible Improvements
-# some of these can wait till much later.
+#@+node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@+node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
+# Leo 4.4.5 will complete several projects that are long overdue.
+
+#@+node:ekr.20070703111455.1:Most important
+#@+node:ekr.20060306194040:**ASAP** Video and more screen shots on Leo's web site
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3615177
+By: ktenney
+
+High on my ToLearn list is vnc2swf
+http://www.unixuser.org/~euske/vnc2swf/
+
+
+http://sourceforge.net/forum/message.php?msg_id=3615278
+By: James
+
+A lot of people are now using Wink for demonstrations
+(http://www.debugmode.com/wink/), it's is free and seems to work well.
+
+Check out http://murl.se/11332
+At the bottom they talk about tools and techniques.
+http://showmedo.com seems like it would be a good
+place to host vids also.
+
+I've listened/watched a fair number of things like this;
+my recomendation is to get a good microphone and
+pre-amp to record your voice, and prepare the audio
+track carefully. It is so aggravating when
+it's hard to discern the words being spoken.
+
+Thanks,
+Kent
 #@nonl
-#@+node:ekr.20070625091423:Add translation services (wait until Friday at least)
+#@+node:ekr.20060531134434:Tutorials
+http://sourceforge.net/forum/message.php?msg_id=3758271
+
+From: Rich
+
+Tutorials would be great. I use Liberty BASIC, (http://libertybasic.conforums.com)
+and it has a very good tutorial -- leads the beginner by the hand through much
+of the language. Also the help file has working code snippets
+to cut-n-paste-n-play-with. I'd like to see something like:
+
+[Buttons]
+...[What are Buttons good for?]
+...[How do I make my own buttons?]
+......[Some commands you can use with buttons]
+......[Where to find button commands]
+#@nonl
+#@-node:ekr.20060531134434:Tutorials
+#@+node:ekr.20060531134434.1:Screencasts
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=3758303
+By: ktenney
+
+My sense is that documentation/screencasts has the
+greatest potential for expanding Leo's mindshare.
+
+I really like those produced by the good folks
+at Dabo;
+http://leafe.com/screencasts/
+http://leafe.com/screencasts/populategrid.html
+
+The TurboGears people have taken this to the extreme;
+http://www.turbogears.org/ultimate.html
+
+Leo is different enough that it warrants a 
+demonstration of it's advantages.
+#@nonl
+#@-node:ekr.20060531134434.1:Screencasts
+#@+node:ekr.20060829103523:Render Leo slideshows
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3889246
+By: terry_n_brown
+
+Three packages that might be candidates for "rendering" slides authored in Leo:
+
+MagicPoint: http://member.wide.ad.jp/wg/mgp/
+
+  uses a text file format that leo could produce
+
+Slidy: http://www.w3.org/Talks/Tools/Slidy/
+
+  uses XHTML / canned Java script
+
+S5: http://meyerweb.com/eric/tools/s5/
+
+  Similar to Slidy I think, haven't looked at it
+#@nonl
+#@-node:ekr.20060829103523:Render Leo slideshows
+#@-node:ekr.20060306194040:**ASAP** Video and more screen shots on Leo's web site
+#@+node:ekr.20070625091423:Add translation services
 @nocolor
 
 *Many* calls to g.es and g.es_print have a mix of translated and untranslated items.
@@ -1167,8 +1112,86 @@ The easiest scheme seems to be:
 g.esx and g.es_printx allow a mix on translated and untranslated arguments::
 
     g.esx(tr('abc'),fileName)
-#@-node:ekr.20070625091423:Add translation services (wait until Friday at least)
+#@-node:ekr.20070625091423:Add translation services
+#@+node:ekr.20070626092228:@menu nodes for leoSettings.leo
+#@-node:ekr.20070626092228:@menu nodes for leoSettings.leo
+#@+node:ekr.20070623144302:vim-like bindings
+#@-node:ekr.20070623144302:vim-like bindings
+#@+node:ekr.20070307082503:Make Leo an IPython notebook
+#@+node:ekr.20060603090445.7:Ipython stuff
+#@+node:ekr.20060603085719.1:Use IPython autocompleter?
+#@-node:ekr.20060603085719.1:Use IPython autocompleter?
+#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
+#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
+#@+node:ekr.20060603090445.9:Script button that saves environment between runs
+This would allow IPython-like operation.
+#@nonl
+#@-node:ekr.20060603090445.9:Script button that saves environment between runs
+#@-node:ekr.20060603090445.7:Ipython stuff
+#@+node:ekr.20070521100324.1:Using Leo as a notebook
+@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4314394
+By: duanekaufman
+
+I am starting a kinda 'stream-of-thought' document, one in which I can put down
+a paragraph of thought (perhaps in a pretty fashion, using ReST markup), develop
+some code, to do some calculations, run the code and display the results...rinse,
+repeat.
+
+The document, in pseudo-form, would look like:
+
+<Development of thought #1>
+<Code to calculate something>
+<Results from code execution>
+<Discussion of results>
+
+Each of the above would probably be a node, and I have already put together
+things that look like the above, all except for the <results> part. I can run
+the code, but how can I get the output automatically in my node? I can cut-and-paste
+from the underlying command window (I run under Linux and Windows XP), but I
+would like o automate it as much as possible.
+
+Does anyone have any ideas on how to accomodate this workflow?
+
+------ Reply
+
+A most interesting and important question--with such a capability one could make Leo into a full-fledged engineering notebook, e.g., as envisaged by the IPython Notebook project: 
+
+http://projects.scipy.org/ipython/ipython/wiki/NbshellManual 
+
+I can think of several possible approaches: 
+
+1. Create a custom version of the execute script command that would put script output in a particular node. Perhaps the headline of the node could be an argument to the enhanced command. 
+
+2. Have your script write to some 'standard place', and create a command to put that script in the presently selected node. Something like insert-script-output. 
+
+3. Create a script button that executes the script in the presently selected node and puts the result in the node *following* the selected node. You can then either move the node by hand, or use another script button to move the node to a 'standard place', say the last child of the <<results>> node. 
+
+As I write this I think the script-button approach is likely to be the simplest, most flexible and most powerful. I'll look into this myself soon... 
+
+Edward
+#@nonl
+#@-node:ekr.20070521100324.1:Using Leo as a notebook
+#@-node:ekr.20070307082503:Make Leo an IPython notebook
+#@+node:ekr.20070629081309:Support common buttons
+# Any @button or @command nodes defined in myLeoSettings.leo should appear in all .leo files.
+#@-node:ekr.20070629081309:Support common buttons
+#@-node:ekr.20070703111455.1:Most important
 #@+node:ekr.20070630143345:Easy and useful
+#@+node:ekr.20070521105645:Improve api docs with epidoc?
+@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4319363
+By: ktenney
+
+I think there is room for improvement in documenting Leo's
+API, making it easier to write these kind of scripts.
+I'm not sure of the best way to do that.
+
+Epydoc seems to be the most active project in this realm.
+http://epydoc.sourceforge.net/epydoc.html
+#@-node:ekr.20070521105645:Improve api docs with epidoc?
 #@+node:ekr.20060914090030:add sort-lines-ignoring-case commad
 #@-node:ekr.20060914090030:add sort-lines-ignoring-case commad
 #@+node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
@@ -1179,12 +1202,185 @@ g.es_print('collapse_nodes_during_finds',c.config.getBool('collapse_nodes_during
 #@-node:ekr.20070629070639:Add command: toggle-collapse_nodes_during_finds
 #@+node:ekr.20061116054917.6:Remove blanks in calltips
 #@-node:ekr.20061116054917.6:Remove blanks in calltips
-#@-node:ekr.20070630143345:Easy and useful
-#@+node:ekr.20060822174843:Most important projects
-# Most of these projects will take a week or more.
+#@+node:ekr.20070627151457:--runCommand option
+@ --runCommand "leo-command-name" runs the command at idle-time after loading the file.
 #@nonl
-#@+node:ekr.20070615063616.1:Create Debian package
-#@-node:ekr.20070615063616.1:Create Debian package
+#@-node:ekr.20070627151457:--runCommand option
+#@-node:ekr.20070630143345:Easy and useful
+#@+node:ekr.20070703111455.2:Bugs
+#@+node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
+@
+
+One clone is in a derived file: it's trailing whitespace gets deleted.
+
+@bool write_strips_blank_lines = True
+
+@string trailing_body_newlines = one
+
+At present, I can not duplicate the problem.  I'll fix it when I can.
+#@nonl
+#@+node:ekr.20070529083836:cleanLines
+def cleanLines (self,p,s):
+
+    '''Return a copy of s, with all trailing whitespace removed.
+    If a change was made, update p's body text and set c dirty.'''
+
+    c = self.c ; cleanLines = [] ; changed = False
+    lines = g.splitLines(s)
+    for line in lines:
+        if line.strip():
+            cleanLines.append(line)
+        elif line.endswith('\n'):
+            cleanLines.append('\n')
+            if line != '\n': changed = True
+        else:
+            cleanLines.append('')
+            if line != '': changed = True
+    s = g.joinLines(cleanLines)
+
+    if changed and not g.app.unitTesting:
+        p.setTnodeText(s)
+        c.setBodyString(p,s)
+        c.setChanged(True)
+
+    return s
+#@nonl
+#@-node:ekr.20070529083836:cleanLines
+#@+node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
+#@+node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
+if g.unitTesting:
+
+    @others
+
+    g.app.scriptDict['suite'] = exampleTestCase(c)
+#@+node:ekr.20070627204038.2:class exampleTestCase
+import unittest
+
+class exampleTestCase(unittest.TestCase):
+
+    '''A test case to print a message at the end of plugin tests.'''
+
+    def __init__ (self,c):
+        unittest.TestCase.__init__(self)
+        self.c = c
+
+    def runTest(self):
+        assert self.c
+        print 'exampleTestCase'
+#@nonl
+#@-node:ekr.20070627204038.2:class exampleTestCase
+#@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
+#@-node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
+#@-node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
+#@+node:ekr.20060609070148:Fix hung windows
+@nocolor
+
+https://sourceforge.net/forum/message.php?msg_id=3768494
+By: ktenney
+
+I'm using current CVS, W2k
+
+1 open a Leo file (I'm using a batch file / console)
+
+2 click Edit->Open   <-- Having this dialog open is the problem.
+
+3 return focus to the Leo window
+
+4 click Help->Open leoDocs.leo
+
+Zombie!
+#@-node:ekr.20060609070148:Fix hung windows
+#@+node:ekr.20060116173818:Fix vampire nodes
+@nocolor
+
+Vampire nodes from cvs
+
+I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
+
+The discovery of this 'big bug' came about as the result of the following Aha:
+
+**@thin files that contain @all directives should be a cvs binary (-kb) files.**
+
+The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
+
+Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
+
+Ok, back to the 'big bug'.  Here is how I got bitten:
+
+- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
+
+- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
+
+- I did a update in sandbox 2.
+
+As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
+
+M src/LeoPyRef.leo
+...
+cvs update: nonmergeable file needs merge
+cvs update: revision 1.448 from repository is now in src/leoProjects.txt
+cvs update: file from working directory is now in .#leoProjects.txt.1.447
+
+To summarize the update:
+
+- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
+
+- As expected, leoProjects.txt contains the version from sandbox **1**.
+
+So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
+
+How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
+
+Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
+
+- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
+
+- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
+
+So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
+
+The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
+
+The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
+
+A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
+
+B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
+
+Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
+
+Edward
+#@-node:ekr.20060116173818:Fix vampire nodes
+#@-node:ekr.20070703111455.2:Bugs
+#@+node:ekr.20070703111455.3:Other
+# some of these can wait till much later.
+#@nonl
+#@+node:ekr.20070220082124:Make sure Leo can generate Latex
+#@-node:ekr.20070220082124:Make sure Leo can generate Latex
+#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
+#@+node:ekr.20070626092228.1:minor
+#@+node:ekr.20060530085844:Improve autocompletion
+#@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
+@nocolor
+
+Disabled these binding:
+
+auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
+show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
+
+The problem is that autocompletion depends on state: self.leadinWord,
+prevObjects, etc. Thus, it's not presently possible to start the proces
+anywhere. Similar remarks apply to calltips, which relies on autocompleter
+state.
+
+This is a complex problem, and not very serious now that there is an easy way of
+toggling autocompleter and calltips on and off.
+
+@color
+#@nonl
+#@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
+#@-node:ekr.20060530085844:Improve autocompletion
 #@+node:ekr.20070619161413:Finish support for hidden windows
 @
 
@@ -1494,263 +1690,6 @@ def __init__ (self,c,parentFrame):
     c.frame.statusText  = self.textWidget
 #@-node:ekr.20070302171509.2: nullStatusLineClass.ctor
 #@-node:ekr.20070619161413:Finish support for hidden windows
-#@+node:ekr.20070623144302:vim-like bindings
-#@-node:ekr.20070623144302:vim-like bindings
-#@+node:ekr.20070626092228:@menu nodes for leoSettings.leo
-#@-node:ekr.20070626092228:@menu nodes for leoSettings.leo
-#@+node:ekr.20070629081309:Support common buttons
-# Any @button or @command nodes defined in myLeoSettings.leo should appear in all .leo files.
-#@-node:ekr.20070629081309:Support common buttons
-#@+node:ekr.20060609070148:Fix hung windows
-@nocolor
-
-https://sourceforge.net/forum/message.php?msg_id=3768494
-By: ktenney
-
-I'm using current CVS, W2k
-
-1 open a Leo file (I'm using a batch file / console)
-
-2 click Edit->Open   <-- Having this dialog open is the problem.
-
-3 return focus to the Leo window
-
-4 click Help->Open leoDocs.leo
-
-Zombie!
-#@-node:ekr.20060609070148:Fix hung windows
-#@+node:ekr.20070627151457:--runCommand option
-@ --runCommand "leo-command-name" runs the command at idle-time after loading the file.
-#@nonl
-#@-node:ekr.20070627151457:--runCommand option
-#@+node:ekr.20060116173818:Fix vampire nodes
-@nocolor
-
-Vampire nodes from cvs
-
-I've just discovered a major problem with cvs updates.  It is a subtle consequence of how Leo writes outlines and reads derived files.  This is a big bug in Leo, not cvs.  The effect of the bug is that nodes can appear in derived files that were never written to them!
-
-The discovery of this 'big bug' came about as the result of the following Aha:
-
-**@thin files that contain @all directives should be a cvs binary (-kb) files.**
-
-The reason is straightforward:  cvs doesn't know enough to merge such files.  Maybe all @thin derived files should be -kb files, but Leo's users will never agree to that!
-
-Anyway, leoProjects.txt is now a binary file as far as cvs is concerned.  Other .txt files, like leoScripts.txt, should also be binary files.  As we shall see, the fact that leoProjects.txt is now a -kb file means that we can not possibly blame the cvs merge algorithm for what is about to happen.
-
-Ok, back to the 'big bug'.  Here is how I got bitten:
-
-- I changed leoProjects.txt in two sandboxes 1 and 2.  In sandbox 1 I added a node called 'changed in the main line'.  In sandbox 2 I added a node called 'changed2'.
-
-- I changed LeoPyRef.leo in sandbox 2, but *not* in sandbox 1.
-
-- I did a update in sandbox 2.
-
-As expected (now that leoProjects.txt is a binary file) I got the following from cvs:
-
-M src/LeoPyRef.leo
-...
-cvs update: nonmergeable file needs merge
-cvs update: revision 1.448 from repository is now in src/leoProjects.txt
-cvs update: file from working directory is now in .#leoProjects.txt.1.447
-
-To summarize the update:
-
-- LeoPyRef.leo has been marked as modified (M), but it has **not** been changed by cvs.
-
-- As expected, leoProjects.txt contains the version from sandbox **1**.
-
-So far, so good.  But when I opened LeoPyRef.leo I got a huge surprise: the outline contains **both** the node 'changed in main-line' and the node 'changed2'.  Whoa Nellie!
-
-How did this happen?  Well, obviously the 'changed in main-line' node came from the cvs update.  I expected that.  The 'changed2' line must have come from the local copy of LeoPyRef.leo.
-
-Once I knew what to look for it wasn't too hard to discover what had happened.  The 'changed2' is a descendent of a cloned node called '4.4 projects'.
-
-- One clone of '4.4 projects' node is a descendent of the @thin leoProjects.txt node.
-
-- Another clone of the '4.4 project' is in the LeoPyRef.leo file but outside of any @thin node.
-
-So the 'resurrection' of the 'changed2' node happened while Leo was reading leoProjects.txt into LeoPyRef.leo.  The '4.4 projects' node **already existed in the outline** before Leo read leoProjects.txt, and the present atFile read logic only **adds** nodes, it never deletes nodes.  Thus, the 'changed2' node 'survived' the atFile read logic.  The 'changed2' node became a 'vampire' node that couldn't be killed.
-
-The problem is far from benign.  Because of clones, the vampire node became an orphan node in **another** file, namely leoKeys.py.  I tried two or three times to remove the vampire/orphan node before realizing what had happened.
-
-The fix (there is *always* a fix) will require some care.  The present atFile.read logic is robust because it *doesn't* delete nodes.  It is essential that the read logic remain robust.  I suspect the solutions will be as follows:
-
-A. The atFile.read code can not delete the subtree of @thin nodes initially, because it doesn't know whether there will be read errors later.  If there are read errors absolutely nothing must change.  This ensures that read errors never destroy information.
-
-B. A new post-pass will look for vampire nodes: nodes that were not actually read from the derived file.  I think (but haven't proven) that all descendents of vampire nodes are also vampire nodes.  If that is so the post-pass will simply delete vampire nodes without worrying about whether they have descendents.
-
-Warning: the new scheme will mean that cvs update can destroy information that previously existed in the outline.  I believe this is correct: we assume that derived files are the 'truly meaningful' files.  Hey, if we are wrong we can always get the old info from cvs :-)
-
-Edward
-#@-node:ekr.20060116173818:Fix vampire nodes
-#@+node:ekr.20070220082124:Make sure Leo can generate Latex
-#@-node:ekr.20070220082124:Make sure Leo can generate Latex
-#@+node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@-node:ekr.20070226075816.1:Update plugin manager to handle @enabled-plugins nodes
-#@+node:ekr.20070307082503:Make Leo an IPython notebook
-#@+node:ekr.20060603090445.7:Ipython stuff
-#@+node:ekr.20060603085719.1:Use IPython autocompleter?
-#@-node:ekr.20060603085719.1:Use IPython autocompleter?
-#@+node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@-node:ekr.20060603090445.8:Add newline history (like Iptyon history?)
-#@+node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@-node:ekr.20060601150940.1:Investigate Ipython support in Scripting plugin
-#@+node:ekr.20060603090445.9:Script button that saves environment between runs
-This would allow IPython-like operation.
-#@nonl
-#@-node:ekr.20060603090445.9:Script button that saves environment between runs
-#@-node:ekr.20060603090445.7:Ipython stuff
-#@-node:ekr.20070307082503:Make Leo an IPython notebook
-#@+node:ekr.20060629154112:Merge Leo & jyLeo
-@nocolor
-
-http://sourceforge.net/forum/message.php?msg_id=3799470
-By: leouser
-
-I guess its hard to say what pieces must merge and what can stay different.
-Id like it if the blasted nodes were the same.  I guess there is progress again
-on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
-the nodes will be the same code, at least it will be possible.
-
-At the top of my head the big differences outside of the position changes are:
-1. Some modifications to the read/write code so that Chapters can work and also
-Serialized positions.
-2. Commander has some things different, it looks to the Chapters instance to
-determine what is the curentPosition, top Position etc... instead of keeping
-track of it itself.
-3. GUI layers are very different.  Interesting tidbit here: the work I did to
-get the JTree to use positions to determine if a node is expanded or not looks
-like it has provided the outline for enhancing the JTree for Java itself to
-be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
-lead to user controled tree expansion models".
-
-There is a tremendous amount that is the same. Im sure you could make an interesting
-evening out of comparing the codebases to see where things change.
-
-
-#@+node:ekr.20070307082814:Create g.startupController class
-#@-node:ekr.20070307082814:Create g.startupController class
-#@-node:ekr.20060629154112:Merge Leo & jyLeo
-#@+node:ekr.20060202231708.1:@menu nodes in leoSettings.leo
-@nocolor
-
-We could allow users to define Leo menus.
-To do this, we must use minibuffer names for all menu entries
-
-@color
-#@nonl
-#@-node:ekr.20060202231708.1:@menu nodes in leoSettings.leo
-#@+node:ekr.20061207073104:Convert bottlenecks to pyrex code
-# To do:  actually generate Leo's bottlenecks.
-#@nonl
-#@+node:ekr.20061207073104.1:gcc build docs
-@nocolor
-
-To build your module using GCC is a three step process on Unix. (I have know
-idea how many steps it is on Windows™.)
-
-Start by running the Pyrex compiler over your code as follows, where
-mymodule.pyx is the name of the Pyrex module you are writing. python2.2 pyrexc
-mymodule.pyx Next, compile the resulting C file into a .o file. The call to gcc
-looks like this:
-
-gcc -c -fPIC -I/usr/include/python2.2/ mymodule.c
-The arguments to gcc are explained below.
-
--c 
-Produces a .o file instead of an executable. 
--fPIC 
-Produces position independent code, so we can dynamically link against it later. 
--I/usr/include/python2.2/ 
-is the location of the Python 2.2 include file. The location of your Python include file may differ from /usr/include/python2.2/. 
-mymodule.c 
-is the name of the C file produced by Pyrex. 
-Finally, link the .o into a .so: gcc -shared mymodule.o -lxosd -o mymodule.so
--shared 
-produces a shared-object file, instead of an executable. 
-mymodule.o 
-is the name of the module you wish to compile. 
--lxosd 
-links against a C-library, with the name of the library given as the argument. 
--o mymodule.so 
-causes gcc to put the output into a file called mymodule.so 
-The C library that you are wrapping will probably differ from mymodule. 
-#@-node:ekr.20061207073104.1:gcc build docs
-#@+node:ekr.20061207073104.2:pyrexc command-line options
-@nocolor
-
-The pyrexc command supports the following options:
-
-  Short Long              Argument    Description
-  -----------------------------------------------------------------------------
-  -v    --version                     Display version number of pyrex compiler
-  -l    --create-listing              Write error messages to a .lis file
-  -I    --include-dir     <directory> Search for include files in named 
-                                       directory (may be repeated)
-  -o    --output-file     <filename>  Specify name of generated C file (only
-                                       one source file allowed if this is used)
-
-Anything else is taken as the name of a Pyrex source file and compiled
-to a C source file. Multiple Pyrex source files can be specified
-(unless -o is used), in which case each source file is treated as the
-source of a distinct extension module and compiled separately to
-produce its own C file.
-#@-node:ekr.20061207073104.2:pyrexc command-line options
-#@+node:ekr.20061207073104.3:@file myModule.pyx
-def spam(int i, char *s):
-    if 1:
-        print i,s
-#@nonl
-#@-node:ekr.20061207073104.3:@file myModule.pyx
-#@+node:ekr.20061207073104.4:Make myModule.c
-# Use pyrexc to create myModule.c from myModule.pyx.
-import os,sys
-python = sys.executable
-theFile = r'C:\prog\tigris-cvs\leo\test\myModule.pyx'
-pyrexc = r'c:\prog\Pyrex-0.9.4.1\pyrexc.py'
-os.system(r'%s %s %s' % (python,pyrexc,theFile))
-
-if 0: # Build myModule library using distutils.
-    from distutils.core import setup, Extension
-
-    # Make the extension module ("mymodule") link against xosd
-    xosdExtn = Extension("mymodule", ["mymodule.c"], libraries=["xosd"])
-
-    # Compile the extension module
-    setup(name="mymodule", ext_modules=[xosdExtn])
-
-@ Save the above code in a file called setup.py and run the following code
-to build and install your module.
-
-    python setup.py build
-    python setup.py install
-#@nonl
-#@-node:ekr.20061207073104.4:Make myModule.c
-#@-node:ekr.20061207073104:Convert bottlenecks to pyrex code
-#@+node:ekr.20060530085844:Improve autocompletion
-#@+node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
-@nocolor
-
-Disabled these binding:
-
-auto-complete-force         = None # This command needs work before it is useful. Ctrl-period
-show-calltips-force         = None # This command needs work before it is useful. Alt-parenleft
-
-The problem is that autocompletion depends on state: self.leadinWord,
-prevObjects, etc. Thus, it's not presently possible to start the proces
-anywhere. Similar remarks apply to calltips, which relies on autocompleter
-state.
-
-This is a complex problem, and not very serious now that there is an easy way of
-toggling autocompleter and calltips on and off.
-
-@color
-#@nonl
-#@-node:ekr.20060927173836.1:Make calltips and autocompleter 'stateless'
-#@-node:ekr.20060530085844:Improve autocompletion
-#@-node:ekr.20060822174843:Most important projects
-#@+node:ekr.20070626092228.1:minor
 #@+node:ekr.20070627110422:create leoStartup.py
 # This will have common startup code.
 #@nonl
@@ -2331,72 +2270,97 @@ add-new-icon-row command?
 #@nonl
 #@-node:ekr.20061127170002.1:Allow multiple lines on the button bar
 #@-node:ekr.20070626092228.1:minor
-#@-node:ekr.20070613193516:Possible Improvements
-#@+node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
-@
-
-One clone is in a derived file: it's trailing whitespace gets deleted.
-
-@bool write_strips_blank_lines = True
-
-@string trailing_body_newlines = one
-
-At present, I can not duplicate the problem.  I'll fix it when I can.
+#@+node:ekr.20070613193516:Maybe
+#@+node:ekr.20061207073104:Convert bottlenecks to pyrex code
+# To do:  actually generate Leo's bottlenecks.
 #@nonl
-#@+node:ekr.20070529083836:cleanLines
-def cleanLines (self,p,s):
+#@+node:ekr.20061207073104.1:gcc build docs
+@nocolor
 
-    '''Return a copy of s, with all trailing whitespace removed.
-    If a change was made, update p's body text and set c dirty.'''
+To build your module using GCC is a three step process on Unix. (I have know
+idea how many steps it is on Windows™.)
 
-    c = self.c ; cleanLines = [] ; changed = False
-    lines = g.splitLines(s)
-    for line in lines:
-        if line.strip():
-            cleanLines.append(line)
-        elif line.endswith('\n'):
-            cleanLines.append('\n')
-            if line != '\n': changed = True
-        else:
-            cleanLines.append('')
-            if line != '': changed = True
-    s = g.joinLines(cleanLines)
+Start by running the Pyrex compiler over your code as follows, where
+mymodule.pyx is the name of the Pyrex module you are writing. python2.2 pyrexc
+mymodule.pyx Next, compile the resulting C file into a .o file. The call to gcc
+looks like this:
 
-    if changed and not g.app.unitTesting:
-        p.setTnodeText(s)
-        c.setBodyString(p,s)
-        c.setChanged(True)
+gcc -c -fPIC -I/usr/include/python2.2/ mymodule.c
+The arguments to gcc are explained below.
 
-    return s
+-c 
+Produces a .o file instead of an executable. 
+-fPIC 
+Produces position independent code, so we can dynamically link against it later. 
+-I/usr/include/python2.2/ 
+is the location of the Python 2.2 include file. The location of your Python include file may differ from /usr/include/python2.2/. 
+mymodule.c 
+is the name of the C file produced by Pyrex. 
+Finally, link the .o into a .so: gcc -shared mymodule.o -lxosd -o mymodule.so
+-shared 
+produces a shared-object file, instead of an executable. 
+mymodule.o 
+is the name of the module you wish to compile. 
+-lxosd 
+links against a C-library, with the name of the library given as the argument. 
+-o mymodule.so 
+causes gcc to put the output into a file called mymodule.so 
+The C library that you are wrapping will probably differ from mymodule. 
+#@-node:ekr.20061207073104.1:gcc build docs
+#@+node:ekr.20061207073104.2:pyrexc command-line options
+@nocolor
+
+The pyrexc command supports the following options:
+
+  Short Long              Argument    Description
+  -----------------------------------------------------------------------------
+  -v    --version                     Display version number of pyrex compiler
+  -l    --create-listing              Write error messages to a .lis file
+  -I    --include-dir     <directory> Search for include files in named 
+                                       directory (may be repeated)
+  -o    --output-file     <filename>  Specify name of generated C file (only
+                                       one source file allowed if this is used)
+
+Anything else is taken as the name of a Pyrex source file and compiled
+to a C source file. Multiple Pyrex source files can be specified
+(unless -o is used), in which case each source file is treated as the
+source of a distinct extension module and compiled separately to
+produce its own C file.
+#@-node:ekr.20061207073104.2:pyrexc command-line options
+#@+node:ekr.20061207073104.3:@file myModule.pyx
+def spam(int i, char *s):
+    if 1:
+        print i,s
 #@nonl
-#@-node:ekr.20070529083836:cleanLines
-#@+node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
-#@+node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
-if g.unitTesting:
+#@-node:ekr.20061207073104.3:@file myModule.pyx
+#@+node:ekr.20061207073104.4:Make myModule.c
+# Use pyrexc to create myModule.c from myModule.pyx.
+import os,sys
+python = sys.executable
+theFile = r'C:\prog\tigris-cvs\leo\test\myModule.pyx'
+pyrexc = r'c:\prog\Pyrex-0.9.4.1\pyrexc.py'
+os.system(r'%s %s %s' % (python,pyrexc,theFile))
 
-    @others
+if 0: # Build myModule library using distutils.
+    from distutils.core import setup, Extension
 
-    g.app.scriptDict['suite'] = exampleTestCase(c)
-#@+node:ekr.20070627204038.2:class exampleTestCase
-import unittest
+    # Make the extension module ("mymodule") link against xosd
+    xosdExtn = Extension("mymodule", ["mymodule.c"], libraries=["xosd"])
 
-class exampleTestCase(unittest.TestCase):
+    # Compile the extension module
+    setup(name="mymodule", ext_modules=[xosdExtn])
 
-    '''A test case to print a message at the end of plugin tests.'''
+@ Save the above code in a file called setup.py and run the following code
+to build and install your module.
 
-    def __init__ (self,c):
-        unittest.TestCase.__init__(self)
-        self.c = c
-
-    def runTest(self):
-        assert self.c
-        print 'exampleTestCase'
+    python setup.py build
+    python setup.py install
 #@nonl
-#@-node:ekr.20070627204038.2:class exampleTestCase
-#@-node:ekr.20070627204038.1:@@suite example of using plain unittest.TestCase
-#@-node:ekr.20070627211053.1:(done, but keep the clone) Post: @testcase not needed
-#@-node:ekr.20070627211815:Fix problems with 'permanent updates' in clones
-#@-node:ekr.20070325052041:To do: 4.4.4 (@auto)
+#@-node:ekr.20061207073104.4:Make myModule.c
+#@-node:ekr.20061207073104:Convert bottlenecks to pyrex code
+#@-node:ekr.20070613193516:Maybe
+#@-node:ekr.20070703111455.3:Other
+#@-node:ekr.20070703111455:To do: 4.4.5 (@menu, vim bindings, translation, etc)
 #@+node:ekr.20070105135713:To do: 4.5 (new positions)
 #@+node:ekr.20061028070132:New positions
 # None of this code is part of Leo's core yet: it is all highly experimental.
@@ -4209,6 +4173,38 @@ def unlink (self):
 #@-node:ekr.20061028211424.1:position class
 #@-node:ekr.20061028070132:New positions
 #@-node:ekr.20070105135713:To do: 4.5 (new positions)
+#@+node:ekr.20070703111913:To do: 4.6: (Swing gui)
+#@+node:ekr.20060629154112:Merge Leo & jyLeo
+@nocolor
+
+http://sourceforge.net/forum/message.php?msg_id=3799470
+By: leouser
+
+I guess its hard to say what pieces must merge and what can stay different.
+Id like it if the blasted nodes were the same.  I guess there is progress again
+on a jython 2.2 being complete and work starting on 2.3.  So there is hope that
+the nodes will be the same code, at least it will be possible.
+
+At the top of my head the big differences outside of the position changes are:
+1. Some modifications to the read/write code so that Chapters can work and also
+Serialized positions.
+2. Commander has some things different, it looks to the Chapters instance to
+determine what is the curentPosition, top Position etc... instead of keeping
+track of it itself.
+3. GUI layers are very different.  Interesting tidbit here: the work I did to
+get the JTree to use positions to determine if a node is expanded or not looks
+like it has provided the outline for enhancing the JTree for Java itself to
+be able to do this.  We will have to see, but maybe in Java 7 you can say: "Positions
+lead to user controled tree expansion models".
+
+There is a tremendous amount that is the same. Im sure you could make an interesting
+evening out of comparing the codebases to see where things change.
+
+
+#@+node:ekr.20070307082814:Create g.startupController class
+#@-node:ekr.20070307082814:Create g.startupController class
+#@-node:ekr.20060629154112:Merge Leo & jyLeo
+#@-node:ekr.20070703111913:To do: 4.6: (Swing gui)
 #@-all
 #@nonl
 #@-node:ekr.20040117181936:@thin ../doc/leoToDo.txt
