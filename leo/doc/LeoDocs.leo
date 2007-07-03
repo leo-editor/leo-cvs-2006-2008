@@ -49,7 +49,7 @@
 </v>
 </v>
 <v t="ekr.20050831195449"><vh>Read me first</vh></v>
-<v t="ekr.20040414161647" a="E"><vh>Users Guide</vh>
+<v t="ekr.20040414161647"><vh>Users Guide</vh>
 <v t="ekr.20050831184021.2"><vh>Table of contents</vh>
 <v t="ekr.20040414162124"><vh>@rst html\leo_TOC.html</vh>
 <v t="ekr.20050828112159"><vh>@rst-no-head All links (TOC)</vh></v>
@@ -729,10 +729,10 @@
 <v t="ekr.20070317033759.6"><vh>@rst-no-head end stuff</vh></v>
 </v>
 </v>
-<v t="ekr.20070628083442" a="E"><vh>Chapter 20: Unit testing with Leo</vh>
-<v t="ekr.20070628083442.1" a="E"><vh>@rst html\unitTesting.html</vh>
+<v t="ekr.20070628083442"><vh>Chapter 20: Unit testing with Leo</vh>
+<v t="ekr.20070628083442.1"><vh>@rst html\unitTesting.html</vh>
 <v t="ekr.20070628083442.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20070628084351" a="TV"><vh>Using @test nodes</vh></v>
+<v t="ekr.20070628084351"><vh>Using @test nodes</vh></v>
 <v t="ekr.20070630083055"><vh>Using @unit-test nodes</vh></v>
 <v t="ekr.20070628094515.1"><vh>Using @suite nodes</vh></v>
 <v t="ekr.20070628090657.2"><vh>Unit test buttons</vh></v>
@@ -765,7 +765,7 @@
 </v>
 </v>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -1057,9 +1057,9 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="ET"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
-<v t="ekr.20070513113903"><vh>What's New in Leo 4.4.3</vh>
+<v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
 <v t="ekr.20070513113931.1"><vh>@rst-no-head links</vh>
 <v t="ekr.20070513115832.2"><vh>Important new features</vh></v>
@@ -3199,7 +3199,30 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070702162421"><vh>4.4.3.1</vh></v>
+<v t="ekr.20070702162421" a="V"><vh>4.4.3.1</vh>
+<v t="ekr.20070703095207.1"><vh>Bugs</vh>
+<v t="ekr.20070703095207.2"><vh>Fixed improper can not open myLeoSettings message</vh></v>
+<v t="ekr.20070703095207.5"><vh>Fixed import problem in leoDynamicTest.py</vh></v>
+<v t="ekr.20070703095207.34"><vh>Fixed cleo crasher</vh></v>
+<v t="ekr.20070703095207.35"><vh>Fixed spell-check bug</vh></v>
+<v t="ekr.20070703095207.40"><vh>Fixed several crashers in the group operations plugin</vh></v>
+<v t="ekr.20070703095207.41"><vh>Fixed chapters bug</vh></v>
+<v t="ekr.20070703095207.43"><vh>Fixed problems in groupOperations plugin</vh></v>
+<v t="ekr.20070703095207.50"><vh>Fixed pychecker complaints</vh></v>
+<v t="ekr.20070703095207.51"><vh>Fixed editor bug: deleting an editor did not always select the proper body pane</vh></v>
+</v>
+<v t="ekr.20070703095207.55"><vh>Features</vh>
+<v t="ekr.20070703095207.56"><vh>g.es and g.es_print print only to console during unit tests</vh>
+<v t="ekr.20070703095207.57"><vh>es_print &amp; test</vh>
+<v t="ekr.20070703095207.58"><vh>@test g.es_print</vh></v>
+</v>
+<v t="ekr.20070703095207.59"><vh>es</vh></v>
+</v>
+<v t="ekr.20070703095207.61"><vh>Run unit tests in a separate process</vh></v>
+<v t="ekr.20070703095207.72"><vh>Move most unit tests into derived files</vh></v>
+<v t="ekr.20070703095207.73"><vh>Send can not import aspell message only to the log</vh></v>
+</v>
+</v>
 </v>
 </v>
 </vnodes>
@@ -31304,5 +31327,100 @@ Home:     http://sourceforge.net/projects/leo/
 Download: http://sourceforge.net/project/showfiles.php?group_id=3458
 CVS:      http://leo.tigris.org/source/browse/leo/
 Quotes:   http://webpages.charter.net/edreamleo/testimonials.html</t>
+<t tx="ekr.20070703095207.1"></t>
+<t tx="ekr.20070703095207.2"></t>
+<t tx="ekr.20070703095207.5">It's a bit tricky to ensure that leo/src is in sys.path
+The code now changes the working directory to leo/src,
+and leoDynamicTest.py adds os.getcwd() to sys.path if it is not there.
+
+</t>
+<t tx="ekr.20070703095207.34">https://sourceforge.net/forum/message.php?msg_id=4385604
+</t>
+<t tx="ekr.20070703095207.35">Misspelled words were not selected properly on Linux.</t>
+<t tx="ekr.20070703095207.40">http://sourceforge.net/forum/message.php?msg_id=4385699
+</t>
+<t tx="ekr.20070703095207.41">Moving into a chapters node from the main chapter did an automatic hoist.</t>
+<t tx="ekr.20070703095207.43">- Made inter-outline moves &amp; copies work again.
+- Also, warn that inter-outline clones transfer have no effect.
+- Note: none of these operations are presently undoable.
+
+In short, this code is no worse than it has ever been.</t>
+<t tx="ekr.20070703095207.50"># Added calls to c,p = g.getTestVars()
+
+(fixed) leoNodes.py:2801: No global (p) found
+(fixed) leoNodes.py:2804: No global (c) found
+
+(fixed) leoConfig.py:1739: No global (c) found
+
+(fixed) leoKeys.py:4446: No global (c) found
+
+(fixed) leoEditCommands.py:7823: No global (c) found
+(fixed) leoEditCommands.py:8508: No global (e) found
+</t>
+<t tx="ekr.20070703095207.51"></t>
+<t tx="ekr.20070703095207.55"></t>
+<t tx="ekr.20070703095207.56"></t>
+<t tx="ekr.20070703095207.57">def es_print(s,*args,**keys):
+
+    print g.toEncodedString(s,'ascii')
+
+    if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
+        g.es(s,*args,**keys)
+</t>
+<t tx="ekr.20070703095207.58">if g.unitTesting:
+    if 0: # Not usually enabled.
+        g.es_print('\ntest of es_print: Ă',color='red')
+</t>
+<t tx="ekr.20070703095207.59">def es(s,*args,**keys):
+    # print 'es','app.log',repr(app.log),'log.isNull',not app.log or app.log.isNull,repr(s)
+    log = app.log
+    if app.killed:
+        return
+    newline = keys.get("newline",True)
+    color = keys.get('color')
+    tabName = keys.get('tabName','Log')
+        # Default goes to log pane *Not* the presently active pane.
+    if color == 'suppress': return # New in 4.3.
+    if type(s) != type("") and type(s) != type(u""): # 1/20/03
+        s = repr(s)
+    for arg in args:
+        if type(arg) != type("") and type(arg) != type(u""): # 1/20/03
+            arg = repr(arg)
+        s = s + ", " + arg
+    if app.batchMode:
+        if app.log:
+            app.log.put(s)
+    elif g.unitTesting:
+        if log and not log.isNull:
+            s = g.toEncodedString(s,'ascii')
+            if newline: print s
+            else: print s,
+    else:
+        if log and log.isNull:
+            pass
+        elif log:
+            # print 'g.es',s
+            log.put(s,color=color,tabName=tabName)
+            for ch in s:
+                if ch == '\n': log.newlines += 1
+                else: log.newlines = 0
+            if newline:
+                g.ecnl(tabName=tabName) # only valid here
+        elif newline:
+            app.logWaiting.append((s+'\n',color),)
+            # print s
+        else:
+            app.logWaiting.append((s,color),)
+            # print s,
+</t>
+<t tx="ekr.20070703095207.61">For full details, see Chapter 20: Unit testing with Leo.
+</t>
+<t tx="ekr.20070703095207.72">It is essential to rotect them with::
+
+     if g.unitTesting:
+
+A new unit test ensures that this is so.</t>
+<t tx="ekr.20070703095207.73">http://sourceforge.net/forum/message.php?msg_id=4382336
+</t>
 </tnodes>
 </leo_file>

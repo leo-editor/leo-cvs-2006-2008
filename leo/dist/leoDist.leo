@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_stylesheet?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.450431034483">
-	<global_window_position top="165" left="400" height="793" width="849"/>
+<globals body_outline_ratio="0.624838292367">
+	<global_window_position top="16" left="349" height="927" width="849"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -162,8 +162,8 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer</vh>
-<v t="ekr.20050118103207" a="E"><vh>Keeping installer/uninstallers in synch</vh>
+<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
 <v t="ekr.20050118104149.2"><vh>&lt;&lt; uninstall config files &gt;&gt;</vh></v>
@@ -200,11 +200,11 @@
 <v t="ekr.20050118104901.10"><vh>&lt;&lt; install src files &gt;&gt;</vh></v>
 <v t="ekr.20050118104901.11"><vh>&lt;&lt; uninstall src files &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050118122740.2" a="E"><vh>test files</vh>
+<v t="ekr.20050118122740.2"><vh>test files</vh>
 <v t="ekr.20050118122404.1"><vh>&lt;&lt; install test files &gt;&gt;</vh></v>
 <v t="ekr.20050830052109"><vh>&lt;&lt; install unittest files &gt;&gt;</vh></v>
 <v t="ekr.20050118122740.3"><vh>&lt;&lt; uninstall test files &gt;&gt;</vh></v>
-<v t="ekr.20050830052109.1" a="TV"><vh>&lt;&lt; uninstall unittest files &gt;&gt;</vh></v>
+<v t="ekr.20050830052109.1"><vh>&lt;&lt; uninstall unittest files &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20050118103447"><vh>top-level</vh>
 <v t="ekr.20050118103207.1"><vh>&lt;&lt; install top-level files &gt;&gt;</vh></v>
@@ -213,7 +213,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -232,7 +232,7 @@
 <v t="EKR.20040519082027.34"><vh>@file-thin ../uninstall</vh></v>
 </v>
 </v>
-<v t="ekr.20051205102401"><vh>Update these for each release</vh>
+<v t="ekr.20051205102401" a="TV"><vh>Update these for each release</vh>
 <v t="EKR.20040519090846.9"><vh>@asis ../doc/README.TXT</vh></v>
 <v t="EKR.20040519090846.8"><vh>@asis ../doc/PKG-INFO.TXT</vh></v>
 <v t="ekr.20050118092706.4"><vh>&lt;&lt; Settings for leo-4.3.nsi &gt;&gt;</vh></v>
@@ -687,7 +687,7 @@ c:\python22\python &lt;leopath&gt;leo.py %1
 </t>
 <t tx="EKR.20040519090846.8">Metadata-Version: 1.0
 Name: leo
-Version: 4.4.3-final
+Version: 4.4.3.1
 Summary: Leo: Literate Editor with Outlines
 Home-page: http://webpages.charter.net/edreamleo/front.html
 Author: Edward K. Ream
@@ -706,29 +706,18 @@ Description: Leo is an outline-oriented editor written in 100% pure Python.
 		Download tkIcon from http://www.effbot.org/downloads/#tkIcon
 Platform: Windows, Linux, Macintosh
 </t>
-<t tx="EKR.20040519090846.9">Leo 4.4.3 final                                  June 26, 2006
+<t tx="EKR.20040519090846.9">Leo 4.4.3.1                                 July 3, 2006
 
-Leo 4.4.3 final is available at:
+Leo 4.4.3.1 is available at:
 http://sourceforge.net/project/showfiles.php?group_id=3458&amp;package_id=29106
 
 Leo is a text editor, data organizer, project manager and much more. See:
 http://webpages.charter.net/edreamleo/intro.html
 
-The highlights of Leo 4.4.3:
+The highlights of Leo 4.4.3.1:
 ----------------------------
-- Added support for chapters in Leo's core.
-- Added support for zipped .leo files.
-- Added a leoBridge module that allows full access to all of Leo's capabilities
-  from programs running outside of Leo.
-- Removed all gui-dependent code from Leo's core.
-- Better support for the winpdb debugger.
-- Added support for @enabled-plugins nodes in settings files.
-- Added support for @open-with nodes in settings files.
-- Added support for @bool write_strips_blank_lines setting.
-- The__wx_gui plugin is now functional.
-- Leo can use aspell on Linux when using Python 2.5 or later.
-- @test nodes can now be run from any .leo file.
-- Many minor improvements, new settings, commands and bug fixes.
+- Fixed a few minor bugs reported since Leo 4.4.3 was released.
+- Added better support for unit testing in Leo.
 
 Links:
 ------
@@ -2888,7 +2877,7 @@ WindowIcon off
 
 ; settings from HM NIS Edit Wizard
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "LeoSetup-4-4-3-final.exe"
+OutFile "LeoSetup-4-4-3-1.exe"
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 InstallDir "$PROGRAMFILES\Leo"
 Icon "..\Icons\leo_inst.ico"
@@ -3110,7 +3099,7 @@ Delete "$INSTDIR\test\test.leo"
 Delete "$INSTDIR\test\unitTest.leo"
 Delete "$INSTDIR\test\leoBridgeTest.py"
 Delete "$INSTDIR\test\leoDynamicTest.py"</t>
-<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.3-final"</t>
+<t tx="ekr.20050118124408">!define PRODUCT_VERSION "4.4.3.1"</t>
 <t tx="ekr.20050118125236"></t>
 <t tx="ekr.20050119191034"></t>
 <t tx="ekr.20050124083006">Leo 4.3 alpha 1 is now available at http://sourceforge.net/projects/leo/
@@ -5387,7 +5376,7 @@ print ; print '='*30,'setup.py complete','='*30 ; print
 </t>
 <t tx="ekr.20070622081640"># These can't be used at present.</t>
 <t tx="ekr.20070622084133"></t>
-<t tx="ekr.20070622084634">version='4.4.3-final' # No spaces and no trailing comma.</t>
+<t tx="ekr.20070622084634">version='4.4.3.1' # No spaces and no trailing comma.</t>
 <t tx="ekr.20070622091049">Leo 4.4.3 beta 3                                June 23, 2006
 
 Leo 4.4.3 beta 3 is available at:
