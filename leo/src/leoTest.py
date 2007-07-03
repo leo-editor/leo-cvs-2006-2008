@@ -654,8 +654,8 @@ def runTestsExternally (c,all):
             self.all = all
 
             self.fileName = 'dynamicUnitTest.leo'
-
-            self.tags = ('@test','@suite','@unittests','@unit-tests') # '@testcase','test-case'
+            self.root = None # The root of the tree to copy when self.all is False.
+            self.tags = ('@test','@suite','@unittests','@unit-tests')
         #@-node:ekr.20070627140344.1: ctor: runTestHelperClass
         #@+node:ekr.20070627135336.10:createFileFromOutline
         def createFileFromOutline (self,c2):
@@ -675,29 +675,44 @@ def runTestsExternally (c,all):
 
             '''Create a unit test ouline containing all @test and @suite nodes in p's outline.'''
 
-            c = self.c
+            c = self.c ; markTag = '@mark-for-unit-tests'
             c2root = c2.rootPosition()
             c2root.initHeadString('All unit tests')
             c2.suppressHeadChanged = True # Suppress all onHeadChanged logic.
             c2.beginUpdate()
+            seen = []
+
             if self.all:
-                p = c.rootPosition() ; limit_p = None
+                # A single pass looks for all tags everywhere.
+                allTags = list(self.tags) ; allTags.extend(markTag)
+                p1,limit1,tags1 = c.rootPosition(),None,allTags
+                p2,limit2,tags2 = None,None,None
             else:
-                p = c.currentPosition() ; limit_p = p.nodeAfterTree()
+                # The first pass looks everywhere for only for @mark-for-unit-tests,
+                p1,limit1,tags1 = c.rootPosition(),None,(markTag,)
+                # The second pass looks in the selected tree for everything except @mark-for-unit-tests.
+                # There is no second pass if the selected node is @mark-for-
+                p = c.currentPosition()
+                if p.headString().startswith(markTag):
+                    p2,limit2,tags2 = None,None,None
+                else:
+                    p2,limit2,tags2 = p,p.nodeAfterTree(),self.tags
             try:
                 c2root.expand()
-                while p and p != limit_p:
-                    h = p.headString()
-                    for s in self.tags:
-                        if h.startswith(s):
-                            # print h
-                            p2 = p.copyTreeAfter()
-                            p2.unlink()
-                            p2.moveToLastChildOf(c2root)
-                            p.moveToNodeAfterTree()
-                            break
-                    else:
-                        p.moveToThreadNext()
+                for p,limit_p,tags in ((p1,limit1,tags1),(p2,limit2,tags2)):
+                    while p and p != limit_p:
+                        h = p.headString()
+                        for s in tags:
+                            if h.startswith(s) and not p.v.t in seen:
+                                seen.append(p.v.t)
+                                # print h
+                                p2 = p.copyTreeAfter()
+                                p2.unlink()
+                                p2.moveToLastChildOf(c2root)
+                                p.moveToNodeAfterTree()
+                                break
+                        else:
+                            p.moveToThreadNext()
             finally:
                 c2.endUpdate(False)
         #@-node:ekr.20070627135336.9:createOutline
@@ -761,6 +776,7 @@ def runTestsExternally (c,all):
                 h = p.headString()
                 for s in self.tags:
                     if h.startswith(s):
+                        self.root = p.copy()
                         return True
 
             # Next, look up the tree.
@@ -770,8 +786,13 @@ def runTestsExternally (c,all):
                     for s in self.tags:
                         if h.startswith(s):
                             c.selectPosition(p)
-                            #c.redraw()
+                            self.root = p.copy()
                             return True
+
+            # Finally, look for all @mark-for-unit-test nodes.
+            for p in c.allNodes_iter():
+                if p.headString().startswith('@mark-for-unit-tests'):
+                    return True
 
             return False
         #@-node:ekr.20070627135336.8:searchOutline
