@@ -7820,6 +7820,8 @@ class searchCommandsClass (baseEditCommandsClass):
 if g.unitTesting:
     __pychecker__ = '--no-reimport'
     import leoEditCommands
+
+    c,p = g.getTestVars()
     s = 'foo' ; bodyCtrl = c.frame.body.bodyCtrl
 
     c.searchCommands.openFindTab()
@@ -8505,7 +8507,7 @@ class AspellClass:
 
         except Exception, err:
             # g.es_print("Unable to update local aspell dictionary: %s" % err)
-            print "Unable to update local aspell dictionary: %s" % e(err)
+            print "Unable to update local aspell dictionary: %s" % (err)
             return False
     #@-node:ekr.20051025071455.11:updateDictionary
     #@-others
