@@ -1088,6 +1088,111 @@ def getClipboardHeader (self):
 #@-node:ekr.20031218072017.3022:getClipboardHeader
 #@-node:ekr.20031218072017.1559:getLeoOutlineFromClipboard & helpers
 #@-node:ekr.20070629173757.1:Fixed problems in groupOperations plugin
+#@+node:ekr.20070703080430:Fixed pychecker complaints
+# Added calls to c,p = g.getTestVars()
+
+(fixed) leoNodes.py:2801: No global (p) found
+(fixed) leoNodes.py:2804: No global (c) found
+
+(fixed) leoConfig.py:1739: No global (c) found
+
+(fixed) leoKeys.py:4446: No global (c) found
+
+(fixed) leoEditCommands.py:7823: No global (c) found
+(fixed) leoEditCommands.py:8508: No global (e) found
+#@-node:ekr.20070703080430:Fixed pychecker complaints
+#@+node:ekr.20070703081854:Fixed bug: deleting an editor does select the proper body pane
+#@+node:ekr.20061017083312:selectEditor & helpers
+selectEditorLockout = False
+
+def selectEditor(self,w):
+
+    '''Select editor w and node w.leo_p.'''
+
+    #  Called by body.onClick and whenever w must be selected.
+
+    if self.selectEditorLockout:
+        return
+
+    if w and self.bodyCtrl == w:
+        # Bug fix: 7-3-2007.
+        c = self.c
+        if w.leo_p and w.leo_p != c.currentPosition():
+            c.selectPosition(w.leo_p)
+            c.bodyWantsFocusNow()
+        return
+
+    try:
+        val = None
+        self.selectEditorLockout = True
+        val = self.selectEditorHelper(w)
+    finally:
+        self.selectEditorLockout = False
+
+    return val # Don't put a return in a finally clause.
+#@+node:ekr.20070423102603:selectEditorHelper
+def selectEditorHelper (self,w):
+
+    c = self.c ; cc = c.chapterController ; d = self.editorWidgets
+
+    if not w.leo_p:
+        g.trace('no w.leo_p') 
+        return 'break'
+
+    if 0:
+        g.trace('==1',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    self.inactivateActiveEditor(w)
+
+    # The actual switch.
+    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    w.leo_active = True
+
+    self.switchToChapter(w)
+    self.selectLabel(w)
+
+    if not self.ensurePositionExists(w):
+        g.trace('***** no position editor!')
+        return 'break'
+
+    if 0:
+        g.trace('==2',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    c.frame.tree.expandAllAncestors(w.leo_p)
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.recolor_now()
+    << restore the selection, insertion point and the scrollbar >>
+    c.bodyWantsFocusNow()
+    return 'break'
+#@nonl
+#@+node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+# g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
+
+if w.leo_insertSpot:
+    w.setInsertPoint(w.leo_insertSpot)
+else:
+    w.setInsertPoint(0)
+
+if w.leo_scrollBarSpot is not None:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+else:
+    w.seeInsertPoint()
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        w.setSelectionRange(start,end)
+    except Exception:
+        pass
+#@-node:ekr.20061017083312.1:<< restore the selection, insertion point and the scrollbar >>
+#@-node:ekr.20070423102603:selectEditorHelper
+#@-node:ekr.20061017083312:selectEditor & helpers
+#@-node:ekr.20070703081854:Fixed bug: deleting an editor does select the proper body pane
 #@-node:ekr.20070626112849:Bugs
 #@+node:ekr.20070626150414:Features
 #@+node:ekr.20070626150414.1:g.es and g.es_print print only to console during unit tests

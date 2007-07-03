@@ -7357,6 +7357,113 @@ IF
 #@-node:ekr.20070627082044.255:@test vbscript
 #@-node:ekr.20070627082044.191:Colorizer
 #@-node:ekr.20070629065730.1:Contain non-python code
+#@+node:ekr.20070703081205:Contain trees that would be inconvenient in a derived file
+#@+node:ekr.20070627082044.819:@test Pretty Print command
+if g.unitTesting:
+    # @language python 
+
+    __pychecker__ = '--no-reimport'
+    import leoTest
+
+    u = leoTest.testUtils(c)
+    dump = False 
+    all = False 
+
+    if all:
+        c.prettyPrintAllPythonCode(dump=dump)
+    else:
+        # Warning: at present the before and after text is unprotected:
+        # Running Pretty Print on these nodes will negate the value of the test.
+        temp = u.findNodeInTree(p,"tempNode")
+        c.setBodyString(temp,"")
+        before = u.findNodeInTree(p,"before")
+        after = u.findNodeInTree(p,"after")
+        temp.scriptSetBodyString(before.bodyString())
+        c.prettyPrintPythonCode(p=temp,dump=dump)
+        assert temp.bodyString() == after.bodyString(),"Pretty Print Test failed"
+#@+node:ekr.20070627082044.820:tempNode
+@ This is a test of stuff.in doc parts.
+
+         I wonder what will happen.
+@c
+
+def spam (self):
+
+    """ This is a ' triple'   quoted string:
+        It should remain untouched."""
+
+    if a == 3:
+        print "Ä á Û"
+
+    ''' Another ' triple'   quoted string:
+        It should remain untouched.'''
+
+    "yet another\
+    multi-line string"
+
+class eggs:
+
+    """ A typical doc string """
+
+    @others
+#@nonl
+#@-node:ekr.20070627082044.820:tempNode
+#@+node:ekr.20070627082044.821:before
+@ This is    a test of stuff.in doc parts.
+
+         I wonder           what will happen.
+@c
+
+def        spam (self         )  :   
+
+    """ This is a ' triple'   quoted string:
+        It should remain untouched."""
+
+    if a==3:
+        print "Ä á Û"
+
+    ''' Another ' triple'   quoted string:
+        It should remain untouched.'''
+
+    "yet another\
+    multi-line string"
+
+class eggs:
+
+    """ A typical doc string """
+
+    @others
+#@nonl
+#@-node:ekr.20070627082044.821:before
+#@+node:ekr.20070627082044.822:after
+@ This is a test of stuff.in doc parts.
+
+         I wonder what will happen.
+@c
+
+def spam (self):
+
+    """ This is a ' triple'   quoted string:
+        It should remain untouched."""
+
+    if a == 3:
+        print "Ä á Û"
+
+    ''' Another ' triple'   quoted string:
+        It should remain untouched.'''
+
+    "yet another\
+    multi-line string"
+
+class eggs:
+
+    """ A typical doc string """
+
+    @others
+#@nonl
+#@-node:ekr.20070627082044.822:after
+#@-node:ekr.20070627082044.819:@test Pretty Print command
+#@-node:ekr.20070703081205:Contain trees that would be inconvenient in a derived file
 #@-node:ekr.20070628110656:@unit-tests Can not be in derived files
 #@+node:ekr.20070628121120:@unit-tests General tests: no associated derived file
 #@+node:ekr.20070627082044.32:Longer tests (opens windows)

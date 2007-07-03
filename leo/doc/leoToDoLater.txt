@@ -2778,7 +2778,7 @@ def updateDictionary(self):
 
     except Exception, err:
         # g.es_print("Unable to update local aspell dictionary: %s" % err)
-        print "Unable to update local aspell dictionary: %s" % e(err)
+        print "Unable to update local aspell dictionary: %s" % (err)
         return False
 #@-node:ekr.20051025071455.11:updateDictionary
 #@-node:ekr.20051025071455.6:class AspellClass

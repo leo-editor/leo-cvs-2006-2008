@@ -2,8 +2,8 @@
 <?xml-stylesheet ekr_test?>
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
-<globals body_outline_ratio="0.626262626263">
-	<global_window_position top="54" left="345" height="876" width="835"/>
+<globals body_outline_ratio="0.5">
+	<global_window_position top="-5" left="521" height="914" width="699"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -46,13 +46,13 @@
 <v t="EKR.20040519090151.3"><vh>Projects</vh>
 <v t="EKR.20040429143933"><vh>@thin leoProjects.txt</vh></v>
 </v>
-<v t="EKR.20040519090151.2" a="TV"><vh>To do</vh>
+<v t="EKR.20040519090151.2"><vh>To do</vh>
 <v t="ekr.20040117181936"
-marks="ekr.20070627204038.1,"><vh>@thin ../doc/leoToDo.txt</vh></v>
+marks="ekr.20070324084040,ekr.20070627204038.1,"><vh>@thin ../doc/leoToDo.txt</vh></v>
 <v t="ekr.20060207133601"
 marks="ekr.20070627082044.273,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
+<v t="ekr.20031218072017.2406" a="TV"><vh>Code</vh>
 <v t="ekr.20031218072017.2606"><vh>&lt;&lt; Import pychecker &gt;&gt;</vh></v>
 <v t="ekr.20040629121554.1"><vh>getSignOnLine (Contains hard-coded version info)</vh></v>
 <v t="ekr.20031218072017.2604"><vh>Core classes...</vh>
@@ -67,7 +67,8 @@ marks="ekr.20070627082044.273,"><vh>@thin ../doc/leoToDoLater.txt</vh></v>
 <v t="ekr.20050710142719"
 marks="ekr.20070627082044.273,"><vh>@thin leoEditCommands.py</vh></v>
 <v t="ekr.20031218072017.3018"><vh>@thin leoFileCommands.py</vh></v>
-<v t="ekr.20031218072017.3093"><vh>@thin leoGlobals.py</vh></v>
+<v t="ekr.20031218072017.3093"
+marks="ekr.20070627204038.1,"><vh>@thin leoGlobals.py</vh></v>
 <v t="ekr.20031218072017.3206"><vh>@thin leoImport.py</vh></v>
 <v t="ekr.20031218072017.3320"><vh>@thin leoNodes.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@thin leoPlugins.py</vh></v>
@@ -146,7 +147,7 @@ if 0: # Set to 1 for lint-like testing.
 <t tx="ekr.20031218072017.3821"></t>
 <t tx="ekr.20040629121554.1">def getSignOnLine (self):
     c = self
-    return "Leo 4.4.3 final, build %s, June 26, 2007" % c.getBuildNumber()
+    return "Leo 4.4.3.1 final, build %s, July 2, 2007" % c.getBuildNumber()
 </t>
 <t tx="ekr.20050721093241">@nocolor
 
@@ -317,12 +318,10 @@ False: Chapter tabs do not appear.</t>
 <t tx="ekr.20070619130151"></t>
 <t tx="ekr.20070627083814"></t>
 <t tx="ekr.20070627144218">import leoTest
-leoTest.runTestsExternally (c,all=False)
-# c.selectPosition(p,updateBeadList=False)</t>
+leoTest.runTestsExternally (c,all=False)</t>
 <t tx="ekr.20070627144218.1">import leoTest
-
 leoTest.runTestsExternally (c,all=True)
-# c.selectPosition(p,updateBeadList=False)</t>
+</t>
 <t tx="ekr.20070628175250">@color
 
 u = c.undoer
