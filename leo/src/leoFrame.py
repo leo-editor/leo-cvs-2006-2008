@@ -974,7 +974,16 @@ class leoBody:
 
         #  Called by body.onClick and whenever w must be selected.
 
-        if self.selectEditorLockout or w and self.bodyCtrl == w: return
+        if self.selectEditorLockout:
+            return
+
+        if w and self.bodyCtrl == w:
+            # Bug fix: 7-3-2007.
+            c = self.c
+            if w.leo_p and w.leo_p != c.currentPosition():
+                c.selectPosition(w.leo_p)
+                c.bodyWantsFocusNow()
+            return
 
         try:
             val = None
@@ -984,7 +993,6 @@ class leoBody:
             self.selectEditorLockout = False
 
         return val # Don't put a return in a finally clause.
-
     #@+node:ekr.20070423102603:selectEditorHelper
     def selectEditorHelper (self,w):
 
@@ -1201,8 +1209,10 @@ class leoBody:
     #@+node:ekr.20070627082044.932:@test Add & Delete editor
     if g.unitTesting:
         body = c.frame.body
+        p2 = p.copy()
         body.addEditor()
         body.deleteEditor()
+        assert c.currentPosition() == p2
     #@nonl
     #@-node:ekr.20070627082044.932:@test Add & Delete editor
     #@+node:ekr.20070627082044.933:@test Add editor, Delete leftmost editor
