@@ -117,12 +117,14 @@ doc\html\new-4-4-3.html
 doc\html\new-4-4.html
 doc\html\outlines.html
 doc\html\plugins.html
+doc\html\preface.html
 doc\html\rstplugin3.html
 doc\html\scripting.html
 doc\html\silver_city.css
 doc\html\techReport.html
 doc\html\testimonials.html
 doc\html\theory.html
+doc\html\unitTesting.html
 doc\html\whitepapers.html
 doc\html\writingPlugins.html
 doc\html\zodb.html
@@ -849,7 +851,9 @@ src\leo_RemoteDebugger.py
 src\leo_Shell.py
 src\leo_run.py
 src\oldLeoProjects.leo
+src\unitTests.txt
 test\test.leo
 test\unitTest.leo
+test\unittest\at-file-thin-test2.txt
 test\unittest\batchTest.py
 test\unittest\errorTest.py

@@ -374,6 +374,7 @@ Section "Leo" SEC01
   File "..\src\leoProjects.txt"
   File "..\src\LeoPy.leo"
   File "..\src\oldLeoProjects.leo"
+  File "..\src\unitTests.txt"
 
   ; File "..\src\__init__.py"
   File "..\src\leo*.py"
@@ -666,6 +667,7 @@ Section Uninstall
   Delete "$INSTDIR\src\leoProjects.txt"
   Delete "$INSTDIR\src\LeoPy.leo"
   Delete "$INSTDIR\src\oldLeoProjects.leo"
+  Delete "$INSTDIR\src\unitTests.txt"
 
   ; Delete "$INSTDIR\src\__init__.p*"
 

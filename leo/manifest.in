@@ -99,6 +99,7 @@ include src/LeoPy.leo
 include src/leo*.py
 include src/leoProjects.txt
 include src/oldLeoProjects.leo
+include src/unitTests.txt
 
 # include test/__init__.py
 include test/test.leo

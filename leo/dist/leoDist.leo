@@ -34,7 +34,7 @@
 <v t="ekr.20070620084858.1"><vh>@@button upload</vh></v>
 </v>
 </v>
-<v t="EKR.20040519091259" a="E"><vh>Annoucnements</vh>
+<v t="EKR.20040519091259"><vh>Annoucnements</vh>
 <v t="EKR.20040519091259.1"><vh>Download statistics</vh></v>
 <v t="EKR.20040519091259.2"><vh>Quotes of the month</vh>
 <v t="ekr.20070425092712"><vh>April 2007</vh></v>
@@ -46,7 +46,7 @@
 <v t="EKR.20040519091259.3"><vh>November 2003</vh></v>
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
-<v t="ekr.20070703100935" a="TV"><vh>ANN: Leo 4.4.3.1</vh></v>
+<v t="ekr.20070703100935"><vh>ANN: Leo 4.4.3.1</vh></v>
 <v t="EKR.20040519091259.30"><vh>Previous announcements</vh>
 <v t="ekr.20070703100935.1"><vh>4.4.3</vh>
 <v t="ekr.20070626083110"><vh>ANN: Leo 4.4.3 final</vh></v>
@@ -162,8 +162,8 @@
 <v t="ekr.20040701160830.1"><vh>names for use in suppressions</vh></v>
 <v t="ekr.20040629180414"><vh>pycheckrc (reference)</vh></v>
 </v>
-<v t="ekr.20050118095021"><vh>Leo 4.x installer</vh>
-<v t="ekr.20050118103207"><vh>Keeping installer/uninstallers in synch</vh>
+<v t="ekr.20050118095021" a="E"><vh>Leo 4.x installer</vh>
+<v t="ekr.20050118103207" a="E"><vh>Keeping installer/uninstallers in synch</vh>
 <v t="ekr.20050118104149"><vh>config files</vh>
 <v t="ekr.20050118104149.1"><vh>&lt;&lt; install config files &gt;&gt;</vh></v>
 <v t="ekr.20050118104149.2"><vh>&lt;&lt; uninstall config files &gt;&gt;</vh></v>
@@ -196,9 +196,9 @@
 <v t="ekr.20050118104901.13"><vh>&lt;&lt; install scripts &gt;&gt;</vh></v>
 <v t="ekr.20050118104901.14"><vh>&lt;&lt; uninstall scripts &gt;&gt;</vh></v>
 </v>
-<v t="ekr.20050118104901.9"><vh>src files</vh>
+<v t="ekr.20050118104901.9" a="E"><vh>src files</vh>
 <v t="ekr.20050118104901.10"><vh>&lt;&lt; install src files &gt;&gt;</vh></v>
-<v t="ekr.20050118104901.11"><vh>&lt;&lt; uninstall src files &gt;&gt;</vh></v>
+<v t="ekr.20050118104901.11" a="TV"><vh>&lt;&lt; uninstall src files &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20050118122740.2"><vh>test files</vh>
 <v t="ekr.20050118122404.1"><vh>&lt;&lt; install test files &gt;&gt;</vh></v>
@@ -213,7 +213,7 @@
 </v>
 <v t="ekr.20050118092706"><vh>@thin leo-4-3.nsi</vh></v>
 </v>
-<v t="EKR.20040519090846"><vh>Distribution files</vh>
+<v t="EKR.20040519090846" a="E"><vh>Distribution files</vh>
 <v t="ekr.20070614105133.3" tnodeList="ekr.20070614105133.3,ekr.20070614110334,ekr.20070622084634"><vh>@nosent ../setup.py</vh>
 <v t="ekr.20070614110334"><vh>&lt;&lt; define long_description &gt;&gt;</vh></v>
 <v t="ekr.20070622084634"><vh>&lt;&lt; define version number in setup.py &gt;&gt;</vh></v>
@@ -3011,6 +3011,7 @@ Delete "$INSTDIR\plugins\trees\pluginsManager.txt"</t>
 File "..\src\leoProjects.txt"
 File "..\src\LeoPy.leo"
 File "..\src\oldLeoProjects.leo"
+File "..\src\unitTests.txt"
 
 ; File "..\src\__init__.py"
 File "..\src\leo*.py"
@@ -3019,6 +3020,7 @@ File "..\src\leo*.py"
 Delete "$INSTDIR\src\leoProjects.txt"
 Delete "$INSTDIR\src\LeoPy.leo"
 Delete "$INSTDIR\src\oldLeoProjects.leo"
+Delete "$INSTDIR\src\unitTests.txt"
 
 ; Delete "$INSTDIR\src\__init__.p*"
 
@@ -5224,6 +5226,7 @@ include src/LeoPy.leo
 include src/leo*.py
 include src/leoProjects.txt
 include src/oldLeoProjects.leo
+include src/unitTests.txt
 
 # include test/__init__.py
 include test/test.leo
