@@ -2317,1255 +2317,1269 @@ Brian Theado
 @language python
 @color
 #@nonl
-#@+node:ekr.20070603155916.2:OLD leoChapters.py
-'''Classes that manage chapters in Leo's core.'''
+#@+node:ekr.20070703172330:Import & @auto code
+#@+node:ekr.20070703170646:Preliminary @auto code
+#@+node:ekr.20070703122141.2:scan
+def scan (self,s,parent):
 
-@language python
-@tabwidth -4
-@pagewidth 80
+    scanner = self.pythonScanner(self,s,parent)
 
-import leoGlobals as g
-import leoNodes
-
-# To do: later or never:
-# - Create commands to choose chapters.
-# - Make body editors persistent. Create @body-editor node?
-
-@others
+    scanner.parse()
+        # Discover the node boundaries.
+    scanner.checkWhitespace()
+        # Check that whitespace passes TabNanny.
+        # Check that whitespace is compatible with @tabwidth.
+        # Check for underindented lines.
+    scanner.insertLeoDirectives()
+    scanner.generateNodes()
+        # Generate a single node if there are errors,
+        # otherwise generate the imported tree.
+    scanner.checkImport()
+        # Do trial write, verify that it would produce the original file.
+        # Insert an @ignore directive in the root if there are errors.
 #@nonl
-#@+node:ekr.20070603155916.3:class chapterController
-class chapterController:
-
-    '''A per-commander controller that manages chapters and related nodes.'''
+#@-node:ekr.20070703122141.2:scan
+#@+node:ekr.20070324084040.13:class pythonScanner (not ready yet)
+class pythonScanner:
 
     @others
+
+#@+node:ekr.20070324084040.14:ctor (pythonScanner)
+def __init__ (self,importer,s,parent):
+
+    baseScannerClass.__init__(self,importer)
+        # Init the base class.
+        # Copies ivars from importer class to scanner class.
+
+    # Other ivars.
+    self.preamble_seen = False
+    self.s = s
+    self.className = None
+    self.methodsSeen = False
+    self.root = parent
+    self.start = 0
+#@-node:ekr.20070324084040.14:ctor (pythonScanner)
+#@+node:ekr.20070612133404:Pass 1: parse and helpers
+def parse (self):
+
+    '''
+    Pass 1: parse the input lines into pieces that will become nodes.
+    '''
+
+    # Pieces will be objects containing at least: 
+    # a) a range of lines in the original file and 
+    # b) the level of the node in the to-be-created outline. 
+
+    # A hand-written parser will suffice at first.
+    # Later, a more general parser might be considered.
+
+    g.trace()
 #@nonl
-#@+node:ekr.20070603155916.4:Birth
-#@+node:ekr.20070603155916.5: ctor: chapterController
-def __init__ (self,c):
+#@+node:ekr.20070324084040.15:scanPythonText
+# See the comments for scanCText for what the text looks like.
 
-    self.c = c
+def scanPythonText (self,s,parent):
 
-    self.chaptersDict = {}
-        # Keys are tabNames, values are chapters.
-        # Important: tabNames never change, even if their button text changes.
-    self.chaptersNode = None # Set later
-    self.enabled = True # False: do not link or unlink any tree.
-    self.mainRoot = None
-        # c.rootPosition() when the main chapter is active.
-        # It must be updated whenever we choose another chapter.
-    self.selectedChapter = None
-    self.tabNames = []
-    self.trace = False
-    self.tt = None # Set in finishCreate.
+    """Creates a child of parent for each Python function definition seen."""
 
-    # Save/restore vars used *only* by a cooperating pair of methods.
-    # For forceMainChapter/restoreOldChapter...
-    self.savedCurrent = None
-        # c.currentPosition() when forceMainChapter is called.
-    self.savedRoot = None
-        # c.rootPosition() when forceMainChapter is called.
-    # For link/unlinkChaptersNode...
-    self.chaptersLinked = True
-        # True if the @chapters node is linked into the outline.
-#@-node:ekr.20070603155916.5: ctor: chapterController
-#@+node:ekr.20070603155916.6:cc.finishCreate
-def finishCreate (self):
+    c = self.c
+    decls_seen = False ; start = i = 0
+    self.methodsSeen = False
+    while i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n' or ch == '\r': i = g.skip_nl(s,i)
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'': i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            << handle possible Python function or class >>
+        else: i += 1
+        assert(progress < i)
+    if not decls_seen: # 2/17/03
+        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language python\n")
+    << Append a reference to the methods of this file >>
+    << Append any unused python text to the parent's body text >>
+#@+node:ekr.20070324084040.16:<< Append a reference to the methods of this file >>
+if self.treeType == "@root" and self.methodsSeen:
+    c.appendStringToBody(parent,
+        g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
+#@-node:ekr.20070324084040.16:<< Append a reference to the methods of this file >>
+#@+node:ekr.20070324084040.9:<< handle possible Python function or class >> (NOT USED)
+if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
+    isDef = g.match_c_word(s,i,"def")
+    if not decls_seen:
+        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language python\n")
+        i = start = self.scanPythonDecls(s,start,parent,-1,indent_parent_ref_flag=False)
+        decls_seen = True
+        if self.treeType == "@file":
+            c.appendStringToBody(parent,"@others\n")
+    if isDef:
+        i = start = self.scanPythonDef(s,i,start,parent)
+    else:
+        i = start = self.scanPythonClass(s,i,start,parent)
+else:
+    i = g.skip_c_id(s,i)
+#@-node:ekr.20070324084040.9:<< handle possible Python function or class >> (NOT USED)
+#@+node:ekr.20070324084040.17:<< Append any unused python text to the parent's body text >>
+# Do nothing if only whitespace is left.
+i = start ; i = g.skip_ws_and_nl(s,i)
+if i < len(s):
+    c.appendStringToBody(parent,s[start:])
+#@-node:ekr.20070324084040.17:<< Append any unused python text to the parent's body text >>
+#@-node:ekr.20070324084040.15:scanPythonText
+#@+node:ekr.20070324084040.18:doPythonClass & helpers
+def doPythonClass (self,i,parent):
 
-    '''Find or make the @chapters and @chapter trash nodes.'''
+    c = self.c ; s = self.s
 
-    # This must be called late in the init process:
-    # at present, called by g.openWithFileName and c.new.
+    if not self.preamble_seen:
+        self.doPreamble(i)
 
-    cc = self ; c = cc.c ; k = c.k ; tt = cc.tt ; trace = False or self.trace
+    class_indent = self.getLeadingIndent(s,i)
+    i,className,headline = self.getClassHeadline(i)
+    if self.className:
+        oldClassName = self.className
+        self.className = className
+        i = g.skip_line(s,i) # Skip the class line.
+        i,prefix,body = self.createClassNodeText(s,i,start)
+        class_vnode = self.createHeadline(parent,prefix + body,headline)
+        start,i = self.scanPythonClass(i,class_indent,class_vnode)
+        s2 = s[start:i]
+        if s2: c.appendStringToBody(class_vnode,s2)
+        self.className = oldClassName
 
-    # g.trace(g.callers())
-
-    current = c.currentPosition()
-    cc.mainRoot = c.rootPosition()
-    if trace: g.trace('chapterController: currentPosition',current,'rootPosition',cc.mainRoot)
-
-    # Create the @chapters node if needed, and set cc.chaptersNode.
-    if not cc.chaptersNode and not cc.findChaptersNode():
-        cc.createChaptersNode()
-
-    if cc.mainRoot == cc.chaptersNode and cc.mainRoot.hasNext():
-        cc.mainRoot = cc.mainRoot.next()
-        c.setRootPosition(cc.mainRoot)
-        c.setCurrentPosition(current)
-
-    if trace:g.trace('chapterController: mainRoot',cc.mainRoot)
-
-    # The chapters node is always unlinked, except when saving .leo files.
-    cc.unlinkChaptersNode()
-
-    if not cc.findChapterNode('trash',giveError=False):
-        cc.createChapterNode('trash')
-
-    # Create the two default chapters.
-    for tabName in ('trash','main'):
-        p = cc.getChapterNode(tabName)
-        cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-        if tabName == 'main':
-            # The main tab, tree and canvas were created earlier.
-            c.frame.tree = tree = tt.getTree(tabName)
-            c.frame.canvas = tt.getCanvas(tabName)
-        else:
-            tt.createTab(tabName,select=False)
-            tree = tt.getTree(tabName)
-
-        # This is required even in the 'main' chapter so that
-        # bindings set by k.registerCommand are updated.
-        tree.setBindings()
-        tt.makeTabMenu(tabName)
-
-    # Create a chapter for each @chapter node.
-    tag = '@chapter'
-    for p in cc.chaptersNode.children_iter():
-        h = p.headString()
-        if h.startswith(tag):
-            tabName = h[len(tag):].strip()
-            if tabName and tabName not in ('main','trash'):
-                if cc.chaptersDict.get(tabName):
-                    self.error('duplicate chapter name: %s' % tabName)
-                else:
-                    cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=p)
-                    tt.createTab(tabName,select=False)
-                    tt.makeTabMenu(tabName)
-                    tree = tt.getTree(tabName)
-                    tree.setBindings()
-
-    cc.selectChapter('main')
+    return i
 #@nonl
-#@-node:ekr.20070603155916.6:cc.finishCreate
-#@-node:ekr.20070603155916.4:Birth
-#@+node:ekr.20070603155916.7:Callbacks (chapter)
-def selectCallback (self,tabName):
+#@+node:ekr.20070324084040.19:getClassHeadline
+# Skip to the class name.
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # skip "class"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    class_name = s[j:i]
+    headline = "class " + class_name
+else:
+    headline = ''
+    class_name = ''
+#@-node:ekr.20070324084040.19:getClassHeadline
+#@+node:ekr.20070324084040.20:createParentText
+def createParentText (self,class_vnode,class_name):
 
-    cc = self ; chapter = cc.chaptersDict.get(tabName)
-    if chapter:
-        chapter.select()
-
-def unselectCallback (self,tabName):
-
-    cc = self ; chapter = cc.chaptersDict.get(tabName)
-    if chapter:
-        chapter.unselect()
-#@nonl
-#@-node:ekr.20070603155916.7:Callbacks (chapter)
-#@+node:ekr.20070603155916.8:Chapter commands
-#@+node:ekr.20070603155916.9:cc.createChapter
-def createChapter (self,event=None,name=None):
-
-    cc = self ; c = cc.c ; tt = cc.tt
-
-    if name:
-        tabName = name
-    else:
-        # Find an unused name.  This is *not* 1 + the present number of chapters.
-        # The **immutable** chapter name is 'Chapter n'.
-        n  = 1
-        while True:
-            tabName = 'Chapter %d' % n
-            if self.chaptersDict.get(tabName):
-                n += 1
-            else:
-                break
-
-    if name in ('trash','main',):
-        tt.selectTab(tabName)
-        tt.makeTabMenu(tabName)
-    else:
-        root = cc.getChapterNode(tabName) # Creates @chapter node and one child.
-        cc.chaptersDict[tabName] = chapter(c=c,chapterController=cc,name=tabName,root=root)
-        tt.createTab(tabName)
-        tt.makeTabMenu(tabName)
-        tree = tt.getTree(tabName)
-        tree.setBindings()
-        tt.selectTab(tabName)
-        c.redraw_now()
-        tt.renameChapterHelper(cc,tabName)
-
-    # tt.selectTab unselects the previous chapter and selects the present chapter.
-    c.bodyWantsFocusNow()
-#@-node:ekr.20070603155916.9:cc.createChapter
-#@+node:ekr.20070603155916.10:cc.hideChapters
-def hideChapters(self):
-
-    cc = self ; c = cc.c
-
-    if not cc.enabled: return
-
-    if cc.chaptersLinked:
-        c.beginUpdate()
-        try:
-            cc.restoreOldChapter(None)
-            cc.selectChapter('main')
-        finally:
-            c.endUpdate()
-
-
-#@-node:ekr.20070603155916.10:cc.hideChapters
-#@+node:ekr.20070603155916.11:cc.removeChapter
-def removeChapter (self,event=None):
-
-    cc = self ; c = cc.c ; tt = cc.tt
-    name = tt.getSelectedTabName()
-
-    if name == 'trash':
-        return cc.error('Can not remove the trash')
-    elif name == 'main':
-        return cc.error('Can not remove the main chapter')
-    else:
-        cc.deleteChapterNode(name)
-        tt.destroyTab(name)
-#@-node:ekr.20070603155916.11:cc.removeChapter
-#@+node:ekr.20070603155916.12:cc.renameChapter
-def renameChapter (self,event=None):
-
-    '''Handle the rename chapter command.'''
-
-    cc = self ; tt = cc.tt
-    tabName = tt.getSelectedTabName()
-
-    if tabName == 'trash':
-        return cc.error('Can not rename the trash')
-    if tabName == 'main':
-        return cc.error('Can not rename the main chapter')
-
-    tt.renameChapterHelper(cc,tabName)
-#@-node:ekr.20070603155916.12:cc.renameChapter
-#@+node:ekr.20070603155916.13:cc.showChapters
-def showChapters(self):
-
-    cc = self ; c = cc.c
-
-    if not cc.enabled: return
-
-    theChapter = cc.getSelectedChapter()
-    if theChapter and theChapter.name == 'main':
-        if not cc.chaptersLinked:
-            c.beginUpdate()
-            try:
-                cc.selectChapter('main')
-                cc.forceMainChapter()
-            finally:
-                c.endUpdate()
-    else:
-        self.error('Must be in main chapter to show @chapters node')
-#@-node:ekr.20070603155916.13:cc.showChapters
-#@-node:ekr.20070603155916.8:Chapter commands
-#@+node:ekr.20070603155916.14:Node commands
-#@+node:ekr.20070603155916.15:cc.cloneToChapter
-def cloneToChapter (self,event=None,toChapter=None):
-
-    cc = self ; c = cc.c ; tt = cc.tt
-    p = c.currentPosition() ; h = p.headString()
-    fromChapter = cc.getSelectedChapter()
-    toChapter = cc.getChapter(toChapter)
-    if fromChapter.name == 'main' and h.startswith('@chapter'):
-        return cc.error('can not clone @chapter node')
-    # g.trace('from',fromChapter.name,'to',toChapter)
-
-    c.beginUpdate()
-    try:
-        clone = c.clone()
-        clone.unlink()
-        if toChapter.name == 'main':
-            clone.moveAfter(toChapter.p)
-        else:
-            parent = cc.getChapterNode(toChapter.name)
-            clone.moveToLastChildOf(parent)
-        ###c.selectPosition(clone)
-        # Set the 'raw' current position without affecting c._rootPosition.
-        # Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
-        c._currentPosition = clone
-        c.setChanged(True)
-    finally:
-        c.endUpdate(False)
-
-    toChapter.p = clone.copy()
-    tt.selectTab(toChapter.name)
-    fromChapter.p = p.copy()
-#@-node:ekr.20070603155916.15:cc.cloneToChapter
-#@+node:ekr.20070603155916.16:cc.copyToChapter
-def copyToChapter (self,event=None,toChapter=None):
-
-    cc = self ; c = cc.c ; tt = cc.tt
-    p = c.currentPosition() ; h = p.headString()
-    fromChapter = cc.getSelectedChapter()
-    toChapter = cc.getChapter(toChapter)
-    if fromChapter.name == 'main' and h.startswith('@chapter'):
-        return cc.error('can not copy @chapter node')
-    # g.trace('from',fromChapter.name,'to',toChapter.name)
-
-    c.beginUpdate()
-    try:
-        parent = cc.getChapterNode(toChapter.name)
-        s = c.fileCommands.putLeoOutline()
-        p2 = c.fileCommands.getLeoOutline(s)
-        p2.unlink()
-        p2.moveToLastChildOf(parent)
-        ###c.selectPosition(p2)
-        # Set the 'raw' current position without affecting c._rootPosition.
-        # Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
-        c._currentPosition = p2
-        c.setChanged(True)
-    finally:
-        c.endUpdate(False)
-
-    toChapter.p = p2.copy()
-    tt.selectTab(toChapter.name)
-    fromChapter.p = p.copy()
-#@-node:ekr.20070603155916.16:cc.copyToChapter
-#@+node:ekr.20070603155916.17:cc.emptyTrash
-def emptyTrash (self):
-
-    cc = self ; c = cc.c
-    trashChapter = cc.getChapter('trash')
-    selChapter = cc.getSelectedChapter()
-    flag=selChapter.name=='trash'
-
-    c.beginUpdate()
-    try:
-        root = cc.findChapterNode('trash')
-        while root.hasChildren():
-            root.firstChild().doDelete()
-        trashChapter.p = cc.createChild(root,'trash')
-        if flag:
-            c.selectPosition(trashChapter.p)
-    finally:
-        c.endUpdate(flag=flag)
-#@nonl
-#@-node:ekr.20070603155916.17:cc.emptyTrash
-#@+node:ekr.20070603155916.18:cc.moveToChapter
-def moveToChapter (self,event=None,toChapter=None):
-
-    cc = self ; c = cc.c ; tt = cc.tt ; p = c.currentPosition()
-    fromChapter = cc.getSelectedChapter()
-    toChapter = cc.getChapter(toChapter)
-
-    if 1: # Defensive code: should never happen.
-        if fromChapter.name == 'main' and p.headString().startswith('@chapter'):
-            return cc.error('can not move @chapter node')
-
-    c.beginUpdate()
-    try:
-        sel = p.visBack() or p.visNext()
-        if sel:
-            if toChapter.name == 'main':
-                p.unlink()
-                p.moveAfter(toChapter.p)
-            else:
-                parent = cc.getChapterNode(toChapter.name)
-                p.unlink()
-                p.moveToLastChildOf(parent)
-            ###c.selectPosition(sel)
-            # Set the 'raw' current position without affecting c._rootPosition.
-            # Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
-            c._currentPosition = sel
-    finally:
-        c.endUpdate(False)
-
-    if sel:
-        toChapter.p = p.copy() # Must be done before tt.selectTab.
-        tt.selectTab(toChapter.name)
-        fromChapter.p = sel.copy() # Must be done after tt.selectTab.
-        c.setChanged(True)
-    else:
-        cc.error('Can not move the last node of a chapter.')
-#@-node:ekr.20070603155916.18:cc.moveToChapter
-#@-node:ekr.20070603155916.14:Node commands
-#@+node:ekr.20070603155916.19:Creating/deleting nodes (chapterController)
-#@+node:ekr.20070603155916.20:cc.createChaptersNode
-def createChaptersNode (self):
-
-    cc = self ; c = cc.c ; root = c.rootPosition()
-
-    # g.trace('root',root)
-
-    c.beginUpdate()
-    try:
-        # Create the node with a postion method
-        # so we don't involve the undo logic.
-        p = root.insertAsLastChild()
-        p.initHeadString('@chapters')
-        p.moveToRoot(oldRoot=root)
-        c.setRootPosition(p)
-        cc.chaptersNode = p.copy()
-        t = p.v.t
-        if t.fileIndex:
-            self.error('***** t.fileIndex already exists')
-        else:
-            t.setFileIndex(g.app.nodeIndices.getNewIndex())
-    finally:
-        c.endUpdate(False)
-#@nonl
-#@-node:ekr.20070603155916.20:cc.createChaptersNode
-#@+node:ekr.20070603155916.21:cc.createChapterNode
-def createChapterNode (self,chapterName):
-
-    '''Create an @chapter node for the named chapter,
-    creating an @chapters node if necessary.'''
-
-    cc = self ; c = cc.c ; current = c.currentPosition() or c.rootPosition()
-
-    # g.trace(chapterName,'current',current)
-
-    c.beginUpdate()
-    try:
-        # Create the node with a postion method
-        # so we don't involve the undo logic.
-        p = current.insertAsLastChild()
-        p.initHeadString('@chapter ' + chapterName)
-        c.setBodyString(p,chapterName)
-        p.moveToFirstChildOf(cc.chaptersNode)
-        cc.createChild(p,'%s node 1' % chapterName)
-    finally:
-        c.endUpdate(False)
-
-    return p
-#@-node:ekr.20070603155916.21:cc.createChapterNode
-#@+node:ekr.20070603155916.22:cc.createChild
-def createChild (self,parent,s):
-
-    '''Create a child node of parent without changing the undo stack.
-    set the headString of the new node to s.'''
+    '''Insert the proper body text in the class_vnode.'''
 
     c = self.c
 
-    # g.trace('parent',parent,'s',s)
+    # This must be done after the declaration reference is generated.
+    if self.treeType == "@file":
+        c.appendStringToBody(class_vnode,"\t@others\n")
+    else:
+        ref = g.angleBrackets(' class %s methods ' % (class_name))
+        c.appendStringToBody(class_vnode,"\t" + ref + "\n\n")
+#@-node:ekr.20070324084040.20:createParentText
+#@+node:ekr.20070324084040.21:createClassNodeText
+def createClassNodeText (self,s,i,start):
 
-    p = parent.insertAsLastChild()
-    p.initHeadString(s)
-    c.setChanged(True)
+    # Create the section name using the old value of self.methodName.
+    if  self.treeType == "@file":
+        prefix = ""
+    else:
+        prefix = g.angleBrackets(" " + self.methodName + " methods ") + "=\n\n"
+        self.methodsSeen = True
 
-    return p
-#@-node:ekr.20070603155916.22:cc.createChild
-#@+node:ekr.20070603155916.23:cc.deleteChapterNode
-def deleteChapterNode (self,chapterName):
+    # i points just after the class line.
 
-    '''Delete the @chapter with the given name.'''
+    # Add a docstring to the class node.
+    docStringSeen = False
+    j = g.skip_ws_and_nl(s,i)
+    if g.match(s,j,'"""') or g.match(s,j,"'''"):
+        j = g.skip_python_string(s,j)
+        if j != len(s): # No scanning error.
+            i = j ; docStringSeen = True
 
-    cc = self ; c = cc.c
+    body = s[start:i]
+    body = self.undentBody(body)
+    if docStringSeen: body = body + '\n'
 
-    chapter = cc.chaptersDict.get(chapterName)
+    return i,prefix,body
+#@-node:ekr.20070324084040.21:createClassNodeText
+#@-node:ekr.20070324084040.18:doPythonClass & helpers
+#@+node:ekr.20070324084040.22:doPythonDef
+def doPythonDef (self,i,parent):
 
-    if chapter:
-        c.beginUpdate()
-        try:
-            # Do not involve undo logic.
-            c.setCurrentPosition(chapter.root)
-            chapter.root.doDelete()
-            # The chapter selection logic will select a new node.
-        finally:
-            c.endUpdate(False)
+    if not self.preamble_seen:
+        self.doPreamble(i)
+
+    i = self.scanPythonDef(i,parent)
+
+    return i
 #@nonl
-#@-node:ekr.20070603155916.23:cc.deleteChapterNode
-#@-node:ekr.20070603155916.19:Creating/deleting nodes (chapterController)
-#@+node:ekr.20070603155916.24:Linking/unlinking trees (chapterController)
-#@+node:ekr.20070603155916.25:cc.forceMainChapter
-def forceMainChapter (self):
+#@-node:ekr.20070324084040.22:doPythonDef
+#@+node:ekr.20070324084040.23:doPreamble
+def doPreamble (self,i):
 
-    cc = self ; c = self.c ; trace = False or self.trace
-    if not cc.enabled: return
+    self.preamble_seen = True
 
-    if cc.chaptersLinked: return # We have done a show-chapters command.
+    if i > 0:
+        # Append the preamble to the root's body text.
+        c.appendStringToBody(self.root,s[:i])
 
-    cc.savedRoot = c.rootPosition()
-    cc.savedCurrent = current = c.currentPosition()
-    oldChapter = cc.getSelectedChapter()
+    if self.treeType == '@file':
+        c.appendStringToBody(self.root,'@others\n')
+#@-node:ekr.20070324084040.23:doPreamble
+#@+node:ekr.20070324084040.24:scanPythonClass
+def scanPythonClassHelper(self,s,i,class_indent,class_name,class_vnode):
 
-    if trace: g.trace('****',oldChapter and oldChapter.name,'savedRoot',cc.savedRoot)
+    indent =  self.getLeadingIndent(s,i)
+    start = i = g.skip_blank_lines(s,i)
+    parent_vnode = None
+    while i < len(s):
+        progress = i
+        # New in Leo 4.4.1: ignore comment lines, whatever their indentation.
+        if indent <= class_indent:
+            j = g.skip_ws(s,i)
+            if g.match(s,j,'#'):
+                i = g.skip_to_end_of_line(s,j)
+            else: break
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            j = g.skip_nl(s,i)
+            if not backslashNewline:
+                indent = self.getLeadingIndent(s,j)
+                if indent > class_indent: i = j
+                else: break
+            else: i = j
+        elif g.match_c_word(s,i,"def"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonDef(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif g.match_c_word(s,i,"class"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonClass(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif s[i] == '#': i = g.skip_to_end_of_line(s,i)
+        elif s[i] == '"' or s[i] == '\'': i = g.skip_python_string(s,i)
+        else: i += 1
+        assert(progress < i)
+    return start,i
+#@-node:ekr.20070324084040.24:scanPythonClass
+#@+node:ekr.20070324084040.25:scanPythonDef & helpers
+def scanPythonDef (self,s,i,start,parent):
 
-    if oldChapter:
-        if oldChapter.name == 'main':
-            oldChapter = None # Don't unlink the main chapter in unlinkChaptersNode.
-        else:
-            oldChapter.link()
-            if trace: g.trace('oldChapter',oldChapter.name)
+    """Creates a node of parent for the def."""
 
-    cc.linkChaptersNode() # sets c.rootPosition()
+    # g.trace(g.get_line(s,i))
+    << set headline or return i >>
+    i = self.skipPythonDef(s,i,start)
+    # Create the def node.
+    savedMethodName = self.methodName
+    self.methodName = headline
+    << Create def node >>
+    self.methodName = savedMethodName
+    return i
+#@+node:ekr.20070324084040.26:createDefNode
+# Create the prefix line for @root trees.
+if self.treeType == "@file":
+    prefix = ""
+else:
+    prefix = g.angleBrackets(" " + savedMethodName + " methods ") + "=\n\n"
+    self.methodsSeen = True
 
-    # Tricky code:
-    # 1. Set the 'raw' current position without affecting c._rootPosition.
-    #    Do *not* call c.selectPosition: it calls tree.select, which causes lots of problems.
-    # 2. Use current only if we are in the main chapter; otherwise use cc.main.
-    #    The reason for this hack is that cc.finishCreate always selects the main chapter,
-    #    so cc.finishCreate won't find a vnode that exists only in another chapter.
-    c._currentPosition = g.choose(oldChapter,cc.mainRoot,current)
+# Create body.
+start = g.skip_blank_lines(s,start)
+body = s[start:i]
+body = self.undentBody(body)
 
-    if trace: g.printEntireTree(cc.c,'forceMainChapter:after')
+# Create the node.
+self.createHeadline(parent,prefix + body,headline)
+#@-node:ekr.20070324084040.26:createDefNode
+#@+node:ekr.20070324084040.27:getDefHeadline
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # Skip the "def"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    headline = s[j:i]
+    # g.trace("headline:" + headline)
+else: return i
+#@-node:ekr.20070324084040.27:getDefHeadline
+#@-node:ekr.20070324084040.25:scanPythonDef & helpers
+#@+node:ekr.20070324084040.28:skipPythonDef
+def skipPythonDef (self,s,i,start):
 
-    return oldChapter
-#@-node:ekr.20070603155916.25:cc.forceMainChapter
-#@+node:ekr.20070603155916.26:cc.restoreOldChapter
-def restoreOldChapter (self, oldChapter):
+    # g.trace(g.get_line(s,i))
 
-    cc = self ; c = self.c ; trace = False or self.trace
-    if not cc.enabled: return
+    # Set defIndent to the indentation of the def line.
+    defIndent = self.getLeadingIndent(s,start)
+    parenCount = 0
+    << skip the entire signature >>
+    indent = self.getLeadingIndent(s,i)
+    while i < len(s): # and indent > defIndent
+        progress = i
+        ch = s[i]
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            if not backslashNewline:
+                # New in Leo 4.4.1: don't set indent for comment lines.
+                j = g.skip_ws(s,i)
+                if not g.match(s,j,'#'):
+                    indent = self.getLeadingIndent(s,i)
+                    if indent <= defIndent and parenCount == 0:
+                        break
+        elif ch == '#':
+            i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif ch in '[{(':
+            i += 1 ; parenCount += 1
+            # g.trace('ch',ch,parenCount)
+        elif ch in ']})':
+            i += 1 ; parenCount -= 1
+            # g.trace('ch',ch,parenCount)
+        else: i += 1
+        assert(progress < i)
 
-    if trace: g.trace(oldChapter,'savedRoot',cc.savedRoot)
+    return i
+#@+node:ekr.20070324084040.29:<< skip the entire signature >>
+# Now that we count parens, we must be careful to skip the entire signature.
 
-    cc.unlinkChaptersNode()
+j = s.find('(',i)
+if j != -1:
+    j = g.skip_matching_python_parens(s,j)
 
-    if oldChapter:
-        oldChapter.unlink()
+if j == -1 or not g.match(s,j+1,':'):
+    g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
+    return i
+else:
+    i = g.skip_line(s,j) # Still not quite 100% correct.
+#@-node:ekr.20070324084040.29:<< skip the entire signature >>
+#@-node:ekr.20070324084040.28:skipPythonDef
+#@-node:ekr.20070612133404:Pass 1: parse and helpers
+#@+node:ekr.20070612133404.1:Pass 2: checkWhitespace
+def checkWhitespace(self)
 
-    # Set the current position first.
-    # Suppress onHeadChanged (called from c.selectPosition) so the dirty bit remains unchanged.
-    c.suppressHeadChanged = True
-    try:
-        c.selectPosition(cc.savedCurrent)
-    finally:
-        c.suppressHeadChanged = False
+    '''Pass 2: check and normalize the leading whitespace of each piece. 
 
-    cc.savedCurrent = None
+    - The original sources may fail Python's tabNanny checks.  
 
-    # Set the root position second, so it will be unaffected by c.selectPosition.
-    c.setRootPosition(cc.savedRoot)
-    cc.savedRoot = None
+    - Leading whitespace in the original sources may be inconsistent with the
+    @tabwidth setting in effect in the @auto tree.
 
-    if trace: g.printEntireTree(cc.c,'restoreOldChapter:after')
-#@-node:ekr.20070603155916.26:cc.restoreOldChapter
-#@+node:ekr.20070603155916.27:cc.linkChaptersNode
-def linkChaptersNode (self):
+    - The original sources may contain underindented comment. 
 
-    '''Called only from forceMainChapter to link in the @chapters node.
-    The caller is responsible for saving state.'''
+    If an indentation problem is found, issue a warning and set an indentError
+    flag that will cause the read code to generate an @ignore directive in the
+    root node.
 
-    cc = self ; c = cc.c ; trace = False or self.trace
+    Otherwise, normalize the indentation of all pieces so that it is indeed
+    consistent with the indentation specified by the present @tabwidth setting.
+    Normalizing underindented comments means shifting the comments right.
+    '''
 
-    if not cc.enabled:
-        return
-    elif not cc.chaptersNode:
-        self.error('***** no @chapters node')
-    elif not cc.mainRoot:
-        self.error('***** no cc.mainRoot')
-    elif cc.chaptersLinked:
-        g.trace('***** can not happen: @chapters already linked')
-    else:
-        if trace: g.printEntireTree(c,'linkChaptersNode:before')
+    # Check that whitespace passes TabNanny.
+    # Check that whitespace is compatible with @tabwidth.
+    # Check for underindented lines.
+    g.trace()
+#@-node:ekr.20070612133404.1:Pass 2: checkWhitespace
+#@+node:ekr.20070612135312:Pass 3: insertLeoDirectives
+def insertLeoDirectives (self):
 
-        cc.chaptersLinked = True
-        v = cc.chaptersNode.v
-        v.linkAsRoot(oldRoot=cc.mainRoot.v)
-        p = leoNodes.position(v,[])
-        c.setRootPosition(p)
+    '''
+    Pass 3: Insert Leo directives.
+    '''
 
-        if trace: g.printEntireTree(c,'linkChaptersNode:after')
+    # Insert an @language python and @tabwidth directives in the piece representing the root node.
+    # Insert an @ignore directive is the ignoreFlag is set.
+    # Insert the @others directive in pieces representing classes. 
 
-#@-node:ekr.20070603155916.27:cc.linkChaptersNode
-#@+node:ekr.20070603155916.28:cc.unlinkChaptersNode
-def unlinkChaptersNode (self):
-
-    '''unlink the @chapters node from the headline.'''
-
-    cc = self ; c = cc.c ; trace = False or self.trace
-
-    if not cc.enabled:
-        return
-    elif not cc.chaptersNode:
-        g.trace('***** can not happen: no @chapters node')
-    elif not cc.chaptersLinked:
-        g.trace('***** can not happen: @chapters already unlinked')
-    else:
-        if trace: cc.printChaptersTree('unlinkChaptersNode:before')
-        p = cc.chaptersNode
-        if cc.mainRoot == p:
-            # Do *not* use visNext here: it might be in the @chapters tree.
-            newRoot = p.visBack() or p.next()
-            if trace:
-                g.trace('*** c.rootPosition',c.rootPosition())
-                g.trace('*** setting mainRoot',newRoot)
-            cc.mainRoot = newRoot
-            c.setCurrentPosition(cc.mainRoot)
-            c.setRootPosition(cc.mainRoot)
-
-        # Do not call p.unlink here: it removes p.v from p.v.t._vnodeList
-        p.v.unlink()
-        cc.chaptersLinked = False
-
-        if trace:
-            cc.printChaptersTree('unlinkChaptersNode:after')
-            g.printEntireTree(c,'unlinkChaptersNode:after')
+    g.trace()
 #@nonl
-#@-node:ekr.20070603155916.28:cc.unlinkChaptersNode
-#@-node:ekr.20070603155916.24:Linking/unlinking trees (chapterController)
-#@+node:ekr.20070603155916.29:Utils
-#@+node:ekr.20070603155916.30:cc.completeChapterRename
-def completeChapterRename (self,theChapter,newName):
+#@-node:ekr.20070612135312:Pass 3: insertLeoDirectives
+#@+node:ekr.20070612133404.2:Pass 4: generateNodes
+def generateNodes (self)
 
-    theChapter.rename(newName)
+    '''Pass 4: Create the @auto tree. 
 
+    This pass creates all the descendants of the root @auto node, initializes
+    the headline and body text of all nodes. '''
 
-#@-node:ekr.20070603155916.30:cc.completeChapterRename
-#@+node:ekr.20070603155916.31:cc.error
-def error (self,s):
+    # Generate a single node if there are errors,
+    # otherwise generate the imported tree.
 
-    g.es_print(s,color='red')
-#@-node:ekr.20070603155916.31:cc.error
-#@+node:ekr.20070603155916.32:cc.findChapterNode
-def findChapterNode (self,chapterName,giveError=True):
-
-    '''Return the position of the @chapter node with the given name.'''
-
-    cc = self
-
-    if not cc.chaptersNode:
-        return # An error has already been given.
-
-    s = '@chapter ' + chapterName
-    for p in cc.chaptersNode.children_iter():
-        h = p.headString()
-        if h == s:
-            return p
-        # elif h.startswith('@chapter '):
-            # body = p.bodyString()
-            # if body:
-                # lines = g.splitLines(body)
-                # line = lines[0].strip()
-                # if line == chapterName:
-                    # return p
-
-    if giveError:
-        cc.error('*** findChapterNode: no @chapter node for: %s' % (chapterName))
-
-    return None
-#@-node:ekr.20070603155916.32:cc.findChapterNode
-#@+node:ekr.20070603155916.33:cc.findChaptersNode
-def findChaptersNode (self):
-
-    '''Return the position of the @chapters node.'''
-
-    cc = self ; c = cc.c ; trace = False or self.trace
-
-    for p in cc.mainRoot.self_and_siblings_iter():
-        if p.headString() == '@chapters':
-            cc.chaptersNode = p.copy()
-            return p
-
-    if trace: # This is *not* an error.
-        g.trace('*** no @chapters node','cc.mainRoot',cc.mainRoot)
-
-    return None
-#@-node:ekr.20070603155916.33:cc.findChaptersNode
-#@+node:ekr.20070603155916.34:cc.getChaperNode
-def getChapterNode (self,chapterName):
-
-    '''Return the position of the @chapter node with the given name.'''
-
-    cc = self ; c = cc.c
-
-    if chapterName == 'main':
-        if not cc.mainRoot:
-            if self.trace: g.trace('*** setting mainRoot',c.rootPosition())
-            cc.mainRoot = c.rootPosition()
-        # g.trace('mainRoot',cc.mainRoot,'c.rootPosition',c.rootPosition())
-        return cc.mainRoot
-    else:
-        val = (
-            cc.findChapterNode(chapterName,giveError=False) or
-            cc.createChapterNode(chapterName))
-        # g.trace('chapterName',chapterName,'val',val)
-        return val
-#@-node:ekr.20070603155916.34:cc.getChaperNode
-#@+node:ekr.20070603155916.35:cc.getChapter
-def getChapter(self,name):
-
-    cc = self
-
-    return cc.chaptersDict.get(name)
-#@-node:ekr.20070603155916.35:cc.getChapter
-#@+node:ekr.20070603155916.36:cc.getSelectedChapter
-def getSelectedChapter (self):
-
-    cc = self
-
-    tabName = cc.tt.nb.getcurselection()
-    theChapter = cc.chaptersDict.get(tabName) or cc.selectedChapter
-    if self.trace: g.trace(theChapter and theChapter.name or '<no chapter>')
-    return theChapter
-#@-node:ekr.20070603155916.36:cc.getSelectedChapter
-#@+node:ekr.20070603155916.37:cc.printChaptersTree
-def printChaptersTree(self,tag=''):
-
-    cc = self ; root = cc.chaptersNode
-
-    for p in cc.mainRoot.self_and_siblings_iter():
-        for p2 in p.self_and_subtree_iter():
-            if p2 == root:
-                inTree = True ; break
-    else:
-        inTree = False
-
-    g.trace('-'*40)
-    g.trace(tag,'cc.mainRoot',cc.mainRoot)
-
-    full = True
-
-    if root and full:
-        print '@chapters tree...','(in main tree: %s)' % inTree
-        for p in root.self_and_subtree_iter():
-            print '.'*p.level(),p.v
+    g.trace()
 #@nonl
-#@-node:ekr.20070603155916.37:cc.printChaptersTree
-#@+node:ekr.20070603155916.38:cc.selectChapter
-def selectChapter (self,tabName):
-
-    cc = self ; chapter = cc.chaptersDict.get(tabName)
-
-    if chapter:
-        chapter.select()
-    else:
-        cc.error('cc.selectShapter: no such chapter: %s' % tabName)
-#@-node:ekr.20070603155916.38:cc.selectChapter
-#@+node:ekr.20070603155916.39:cc.setRoot
-def setRoot (self,p):
-
-    cc = self
-    theChapter = cc.getSelectedChapter()
-
-    if not theChapter: return
-
-    # g.trace(theChapter.name,p and p.headString())
-
-    if theChapter.name == 'main':
-        cc.mainRoot = p
-    else:
-        if theChapter.unlinkedRoot:
-            theChapter.unlinkedRoot = p.v
-#@nonl
-#@-node:ekr.20070603155916.39:cc.setRoot
-#@+node:ekr.20070603155916.40:cc.updateChapterName (not used)
-def updateChapterName(self,oldName,newName):
-
-    '''oldName is the immutable name of a chapter.
-    Set the visible name of that chapter to newName.'''
-
-
-    cc = self ; c = cc.c
-
-    p = cc.findChapterNode(oldName)
-
-    g.trace(g.callers())
-
-    if p:
-        c.setBodyString(p,newName)
-    else:
-        cc.error('no such chapter: %s' % oldName)
-#@-node:ekr.20070603155916.40:cc.updateChapterName (not used)
-#@-node:ekr.20070603155916.29:Utils
-#@-node:ekr.20070603155916.3:class chapterController
-#@+node:ekr.20070603155916.41:class chapter
-class chapter:
-
-    '''A class representing the non-gui data of a single chapter.'''
-
-    @others
-#@nonl
-#@+node:ekr.20070603155916.42: ctor: chapter
-def __init__ (self,c,chapterController,name,root):
-
-    self.c = c 
-    self.cc = chapterController
-    self.hoistStack = []
-    self.name = name # The immutable chapter name.  Not necessarily the same as the chapter's tabName.
-    self.p = None # The current position...
-    self.root = root and root.copy() # The immutable @chapter node (not used for the main chapter).
-    self.selectLockout = False # True: in chapter.select logic.
-    self.trace = False
-    self.unlinkedRoot = None # data for link()
-
-    # Init self.p only for the main chapter.
-    if self.name == 'main':
-        self.p = c.currentPosition() or c.rootPosition()
-
-    # g.trace('chapter',self.name,'root',root,'firstChild',root.firstChild())
-#@nonl
-#@-node:ekr.20070603155916.42: ctor: chapter
-#@+node:ekr.20070603155916.43:__str__ and __repr__(chapter)
-def __str__ (self):
-
-    return '<chapter id: %s name: %s p: %s>' % (
-        id(self),
-        self.name,
-        self.p and self.p.headString() or '<no p>')
-
-__repr__ = __str__
-#@-node:ekr.20070603155916.43:__str__ and __repr__(chapter)
-#@+node:ekr.20070603155916.44:chapter.error
-def error (self,s):
-
-    self.cc.error(s)
-#@nonl
-#@-node:ekr.20070603155916.44:chapter.error
-#@+node:ekr.20070603155916.45:chapter.link/unlink
-#@+node:ekr.20070603155916.46:link
-def link (self):
-
-    '''Link the chapter's root.firstChild node back into the full outline.'''
-
-    c = self.c ; cc = self.cc ; trace = False or self.trace
-    if not cc.enabled: return
-
-    # g.trace('chapter',self.name)
-
-    if trace: g.printEntireTree(self.c,'link:before')
-    if trace: cc.printChaptersTree('link:before')
-
-    if self.name == 'main':
-        self.error('!!! linking main chapter!')
-    elif not self.root:
-        self.error('!!! link: no root:',self)
-    elif not self.unlinkedRoot:
-        self.error('!!! link: no unlinkedRoot')
-    else:
-        # Like the demote logic.
-        v = self.unlinkedRoot
-        n = 0
-        while v: # Do not use iterator here.
-            # g.trace('linking',v)
-            next = v._next
-            v.unlink()
-            v.linkAsNthChild(self.root.v,n)
-            n += 1
-            v = next
-        self.unlinkedRoot = None
-        if trace: cc.printChaptersTree('link:after')
-#@-node:ekr.20070603155916.46:link
-#@+node:ekr.20070603155916.47:unlink
-def unlink (self):
-
-    '''Unlink the root node (the chapter's @chapter node) from the full outine.
-    set unlinkData for later use by self.link.'''
-
-    cc = self.cc ; c = cc.c ; trace = False or self.trace
-    if not cc.enabled: return
-
-    # g.trace('chapter',self.name,g.callers())
-
-    if trace: g.printEntireTree(self.c,'link:before')
-    if trace: cc.printChaptersTree('link:before')
-
-    if self.name == 'main':
-        self.error('!!! unlinking main chapter!')
-    elif not self.root:
-        self.error('!!! unlink: no @chapter node:',self)
-    elif self.unlinkedRoot:
-        self.error('!!! unlink: chapter already unlinked: unlinkedRoot: %s' % (self.unlinkedRoot))
-    elif not self.root.firstChild():
-        self.error('!!! unlink: no root.firstChild')
-    else:
-        # Like the promote logic.
-        v = self.root.firstChild().v
-        next = v._next
-        v.unlink()
-        v.linkAsRoot(oldRoot=None)
-        p = leoNodes.position(v,[])
-        c.setRootPosition(p)
-        if not self.p: self.p = p.copy() # Init self.p the first time we open the chapter.
-        self.unlinkedRoot = v
-        last = v
-        while next: # Don't use an iterator.
-            v = next
-            next = v._next
-            v.unlink()
-            v.linkAfter(last)
-            last = v
-
-        if trace: cc.printChaptersTree('link:after')
-        if trace: g.printEntireTree(c,'link:after')
-#@-node:ekr.20070603155916.47:unlink
-#@-node:ekr.20070603155916.45:chapter.link/unlink
-#@+node:ekr.20070603155916.48:chapter.select & helpers
-def select (self,w=None,selectEditor=True):
-
-    '''Restore chapter information and redraw the tree when a chapter is selected.'''
-
-    if self.selectLockout: return
-
-    try:
-        self.selectLockout = True
-        self.chapterSelectHelper(w,selectEditor)
-    finally:
-        self.selectLockout = False
-#@+node:ekr.20070603155916.49:chapterSelectHelper
-def chapterSelectHelper (self,w=None,selectEditor=True):
-
-    c = self.c ; cc = self.cc ; tt = cc.tt ; name = self.name
-
-    # The big switcharoo.
-    c.frame.canvas = canvas = tt.getCanvas(name)
-    c.frame.tree = tt.getTree(name)
-
-    g.trace(name,'self.p',self.p,'self.root',self.root) # 'w.leo_p',w and w.leo_p)
-
-    # First, switch roots.
-    if name == 'main':
-        c.setRootPosition(cc.mainRoot)
-    else:
-        self.unlink() # Sets root position.
-
-    cc.selectedChapter = self
-
-    # Next, recompute p and possibly select a new editor.
-    if w:
-        assert w == c.frame.body.bodyCtrl
-        assert w == c.frame.bodyCtrl
-        root = w.leo_p or self.root.firstChild() or self.root
-        self.p = p = self.findPositionInChapter(root.v)
-        if p != w.leo_p: g.trace('****** can not happen: lost p',root,p)
-    else:
-        # This must be done *after* switching roots.
-        target_p = self.p or self.root.firstChild() or self.root
-        self.p = p = self.findPositionInChapter(target_p.v)
-        if selectEditor:
-            w = self.findEditorInChapter(p)
-            c.frame.body.selectEditor(w) # Switches text.
-
-    c.beginUpdate()
-    try:
-        c.hoistStack = self.hoistStack[:]
-        c.selectPosition(p)
-    finally:
-        c.endUpdate()
-        c.bodyWantsFocusNow()
-#@nonl
-#@-node:ekr.20070603155916.49:chapterSelectHelper
-#@+node:ekr.20070603155916.50:chapter.findPositionInChapter
-def findPositionInChapter (self,v):
-
-    '''Return a valid position p such that p.v == v.'''
-
-    # Do nothing if the present position is in the proper chapter.
-    c = self.c ; p = self.p
-
-    root = g.choose(self.name=='main',self.root,self.root.firstChild())
-    # g.trace('root',root,'p',p)
-    if p and c.positionExists(p,root=root):
-        # g.trace('using existing position',p)
-        return p
-
-
-    # This should work regardless of what chapter is selected.
-    for p in self.c.allNodes_iter():
-        if p.v == v:
-            # g.trace('*** found in chapter',p)
-            return p
-
-    if 0:
-        self.error('***** findPositionInChapter: lost %s in %s' % (
-            v.t.headString,self.name))
-        g.trace(g.callers())
-
-    if 0: # This could crash.
-        cc = self.cc
-        print 'cc.mainRoot',cc.mainRoot
-        print '******* top-level nodes *****'
-        for p in cc.mainRoot.self_and_siblings_iter():
-            print p.headStirng()
-
-    return self.root
-#@-node:ekr.20070603155916.50:chapter.findPositionInChapter
-#@+node:ekr.20070603155916.51:chapter.findEditorInChapter
-def findEditorInChapter (self,p):
-
-    '''return w, an editor displaying position p.'''
-
-    chapter = self ; c = self.c
-
-    w = c.frame.body.findEditorForChapter(chapter,p)
-    w.leo_chapter = chapter
-    w.leo_p = p and p.copy()
-    return w
-#@nonl
-#@-node:ekr.20070603155916.51:chapter.findEditorInChapter
-#@+node:ekr.20070603155916.52:chapter.rename
-def rename (self,newName):
-
-    p = self.root
-    s = '@chapter ' + newName
-    p.setHeadString(s)
-#@-node:ekr.20070603155916.52:chapter.rename
-#@-node:ekr.20070603155916.48:chapter.select & helpers
-#@+node:ekr.20070603155916.53:chapter.unselect
-def unselect (self):
-
-    '''Remember chapter info when a chapter is about to be unselected.'''
-
-    c = self.c ; cc = self.cc
-    self.hoistStack = c.hoistStack[:]
-    self.p = c.currentPosition()
-    if self.trace: g.trace('chapter',self.name,'p',self.p.headString())
-
-    # Restore the entire outline and
-    # link the chapter's @chapter node into the entire outline.
-    if self.name != 'main':
-        self.link()
-#@-node:ekr.20070603155916.53:chapter.unselect
-#@-node:ekr.20070603155916.41:class chapter
-#@-node:ekr.20070603155916.2:OLD leoChapters.py
-#@+node:ekr.20070603162204:from leoCommands.py
-#@+node:ekr.20070410192154:getChaptersTree
-def getChaptersTree (self):
-
-    '''return the node containing the active top-level @chapters tree.'''
-
-    c = self ; cc = c.chapterController
-
-    if cc and c.config.getBool('use_chapters'):
-        return cc.findChaptersNode()
-    else:
-        return None
-#@-node:ekr.20070410192154:getChaptersTree
-#@+node:ekr.20070417112650.1:getChapterTree
-def getChapterTree (self,p):
-
-    '''return the @chapter node containing p or None.'''
-
-    c = self ; cc = c.chapterController
-
-    if cc and c.config.getBool('use_chapters'):
-        root = cc.findChaptersNode()
-        if root:
-            for p2 in root.children_iter():
-                if p2.isAncestorOf(p):
-                    return p2
-
-    return None
-#@-node:ekr.20070417112650.1:getChapterTree
-#@+node:ekr.20070417112650.2:inChaptersTree
-def inChaptersTree (self,p):
-
-    '''Return True if p is a descendant of the active @chapters tree.'''
-
-    p2 = self.getChaptersTree()
-    return p2 and (p2.equal(p) or p2.isAncestorOf(p))
-#@-node:ekr.20070417112650.2:inChaptersTree
-#@-node:ekr.20070603162204:from leoCommands.py
-#@+node:ekr.20070604092749:leoTkTreeTab Not used...
+#@-node:ekr.20070612133404.2:Pass 4: generateNodes
+#@+node:ekr.20070612133404.3:Pass 5: checkImport
+def checkImport (self):
+
+    '''Pass 5: Perfect import checks. 
+
+    When writing the @auto tree, Leo may change the original file by: 
+    - changing leading whitespace and setting the indentError flag. 
+    - adding various sentinels. 
+
+    All non-sentinel lines in the output should be strictly
+    preserved unless the indentError flag has been set. In particular, the
+    number of non-sentinel lines must exactly match the number of lines in the
+    original file.
+
+    This pass will do a 'trial write'. It will check the output of the trial
+    write to ensure that all non-sentinel lines have in fact been strictly
+    preserved. (If the indentError flag has been set the check will verify that
+    everything after leading whitespace has been preserved). If this check fails
+    Leo will issue a serious error message and will insert an @ignore directive
+    in the @auto tree.
+    '''
+
+    g.trace()
+#@-node:ekr.20070612133404.3:Pass 5: checkImport
+#@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
+#@-node:ekr.20070703170646:Preliminary @auto code
+#@+node:ekr.20031218072017.2256:OLD scanners & tests
 if 0:
     @others
-#@nonl
-#@+node:ekr.20070317082315:tt.getters
-# def getButton (self,tabName):
-    # tt = self
-    # if tabName in tt.tabNames:
-        # return tt.nb.tab(tabName) # A Tk.Button.
-    # else:
-        # return None
+#@+node:ekr.20070703123618.1:Tests
+#@+node:ekr.20060626083237.2:@test skipPythonDef
+if g.unitTesting:
 
-# def getCanvas (self,tabName):
-    # return self.canvasDict.get(tabName) # A Tk.Canvas
+    c,p = g.getTestVars()
+    self = c.importCommands
 
-# def getFrame (self,tabName):
-    # tt = self
-    # if tabName in tt.tabNames:
-        # return tt.nb.page(tabName) # A Tk.Frame
-    # else:
-        # return None
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
+#@+node:ekr.20060626083725:<< define s >>
+s = '''\
+def test1():
+    aList = (a,
+b,c)
+# underindented comment.
+    return 1
 
-# def getSelectedTabName (self):
-    # return self.nb.getcurselection() # An immutable tab name.
+def test2():
+# underindented comment.
+    pass
+'''
 
-# def getTree (self,tabName):
-    # return self.treeDict.get(tabName) # A leoTkinterTree.
-#@-node:ekr.20070317082315:tt.getters
-#@+node:ekr.20070317074813:tt.makeTabMenu & helpers
-def makeTabMenu (self,tabName):
+s = g.adjustTripleString(s,self.tab_width)
+#@-node:ekr.20060626083725:<< define s >>
+#@-node:ekr.20060626083237.2:@test skipPythonDef
+#@+node:ekr.20060627063313:@test skipPythonDef (long lines)
+if g.unitTesting:
 
-    '''Create a tab menu.'''
+    c,p = g.getTestVars()
+    self = c.importCommands
 
-    tt = self ; cc = tt.cc
-    w = self.buttonsDict.get(tabName)
-    if not w: return cc.error('tt.makeTabMenu: no w')
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
 
-    tmenu = Tk.Menu(w,tearoff=0)
-    w.bind('<Button-3>',lambda event: tmenu.post(event.x_root,event.y_root))
-    w.tmenu = tmenu
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
+#@+node:ekr.20060627063313.1:<< define s >>
+s = '''\
+def test1(
+        a=2):
+    return 1
 
-    tt.createTopLevelMenuItems(tmenu)
-#@nonl
-#@+node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-def createTopLevelMenuItems (self,tmenu):
+def test2(
+a=3):
+    return 2
+'''
 
-    cc = self.cc ; menu = tmenu
+s = g.adjustTripleString(s,self.tab_width)
+#@-node:ekr.20060627063313.1:<< define s >>
+#@-node:ekr.20060627063313:@test skipPythonDef (long lines)
+#@+node:ekr.20060626100102.1:@test scanPythonClass
+if g.unitTesting:
 
-    for kind,label,command in (
-        ('','New Chapter',cc.createChapter),
-        ('','Remove This Chapter',cc.removeChapter),
-        ('','Rename This Chapter',cc.renameChapter),
-        ('-',None,None),
-        ('...','Clone Node To Chapter...',cc.cloneToChapter),
-        ('...','Copy Node To Chapter...',cc.copyToChapter),
-        ('...','Move Node To Chapter...',cc.moveToChapter),
-    ):
-        if kind == '-':
-            menu.add_separator()
-        elif kind == '...':
-            submenu = Tk.Menu(menu,tearoff=0)
-            menu.add_cascade(menu=submenu,label=label)
-            def chapterMenuCallback(event=None,cc=cc,command=command,submenu=submenu):
-                self.setupChaptersMenu(submenu,command)
-            submenu.configure(postcommand=chapterMenuCallback)
-        else:
-            menu.add_command(label=label,command=command)
-#@nonl
-#@-node:ekr.20070317074813.1:tt.createTopLevelMenuItems
-#@+node:ekr.20070318120043:tt.setupChaptersMenu
-def setupChaptersMenu (self,menu,command):
+    c,p = g.getTestVars()
+    self = c.importCommands
 
-    '''Create a submenu containing the list of all chapters.'''
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
 
-    tt = self ; nb = tt.nb
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('class aClass') and result.endswith("'eggs'"),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('class aClass2') and result.endswith("'twit'"),'result:\n%s' % result
+#@+node:ekr.20060626100102.2:<< define s >>
+s = '''\
+class aClass:
+    def spam():
+        return 'spam'
+# underindented comment line
+    def eggs():
+        return 'eggs'
 
-    menu.delete(0,'end')
-    current = nb.getcurselection()
+class aClass2:
+    def twit():
+        return 'twit'
+'''
 
-    for tabName in nb.pagenames():
-        b = nb.tab(tabName) # Get the (possibly renamed) button text.
-        name = b.cget('text')
-        if tabName != current:
-            # g.trace('name',name,'command',command)
-            def chaptersMenuCallback(event=None,command=command,toChapter=tabName):
-                return command(toChapter=toChapter)
-            menu.add_command(label=name,command=chaptersMenuCallback)
-#@nonl
-#@-node:ekr.20070318120043:tt.setupChaptersMenu
-#@-node:ekr.20070317074813:tt.makeTabMenu & helpers
-#@+node:ekr.20070317075059.1:tt.raise/lowerTab
-def lowerTab (self,tabName):
+s = g.adjustTripleString(s,self.tab_width)
+#@-node:ekr.20060626100102.2:<< define s >>
+#@-node:ekr.20060626100102.1:@test scanPythonClass
+#@-node:ekr.20070703123618.1:Tests
+#@+node:ekr.20070703123334:Python
+#@+node:ekr.20031218072017.2257:scanPythonClass & helpers
+def scanPythonClass (self,s,i,start,parent):
 
-    if self.trace: g.trace(tabName)
-    tt = self ; tab = tt.nb.tab(tabName)
-    self.setUnselectColor(tab)
-    tt.cc.unselectCallback(tabName)
+    """Creates a child node c of parent for the class, and children of c for each def in the class."""
 
-def raiseTab (self,tabName):
+    # g.trace(g.get_line(s,i))
+    c = self.c
+    class_indent = self.getLeadingIndent(s,i)
+    << set class_name and headline >>
+    if not class_name: return i
+    i = g.skip_line(s,i) # Skip the class line.
+    i,prefix,body = self.createClassNodeText(s,i,start)
+    class_vnode = self.createHeadline(parent,prefix + body,headline)
+    savedMethodName = self.methodName
+    self.methodName = headline
+    # Create a node for leading declarations of the class.
+    i = self.scanPythonDecls(s,i,class_vnode,class_indent,indent_parent_ref_flag=True)
+    start,i = self.scanPythonClassHelper(s,i,class_indent,class_name,class_vnode)
+    s2 = s[start:i]
+    if s2: c.appendStringToBody(class_vnode,s2)
+    self.methodName = savedMethodName
+    return i
+#@+node:ekr.20031218072017.2258:<< set class_name and headline >>
+# Skip to the class name.
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # skip "class"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    class_name = s[j:i]
+    headline = "class " + class_name
+else:
+    headline = ''
+    class_name = ''
+#@-node:ekr.20031218072017.2258:<< set class_name and headline >>
+#@+node:ekr.20060626100102:scanPythonClassHelper
+def scanPythonClassHelper(self,s,i,class_indent,class_name,class_vnode):
 
-    if self.trace: g.trace(tabName)
-    tt = self ; c = self.c ; cc = self.cc
+    indent =  self.getLeadingIndent(s,i)
+    start = i = g.skip_blank_lines(s,i)
+    parent_vnode = None
+    while i < len(s):
+        progress = i
+        # New in Leo 4.4.1: ignore comment lines, whatever their indentation.
+        if indent <= class_indent:
+            j = g.skip_ws(s,i)
+            if g.match(s,j,'#'):
+                i = g.skip_to_end_of_line(s,j)
+            else: break
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            j = g.skip_nl(s,i)
+            if not backslashNewline:
+                indent = self.getLeadingIndent(s,j)
+                if indent > class_indent: i = j
+                else: break
+            else: i = j
+        elif g.match_c_word(s,i,"def"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonDef(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif g.match_c_word(s,i,"class"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonClass(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif s[i] == '#': i = g.skip_to_end_of_line(s,i)
+        elif s[i] == '"' or s[i] == '\'': i = g.skip_python_string(s,i)
+        else: i += 1
+        assert(progress < i)
+    return start,i
+#@-node:ekr.20060626100102:scanPythonClassHelper
+#@+node:ekr.20060626101103.1:createParentText
+def createParentText (self,class_vnode,class_name):
 
-    tab = tt.nb.tab(tabName)
-    self.setSelectColor(tab)
+    '''Insert the proper body text in the class_vnode.'''
 
-    if self.selectLockout: return
-    chapter = cc.chaptersDict.get(tabName)
-    if chapter:
-        chapter.select()
+    c = self.c
 
-    w = c.frame.body and c.frame.body.bodyCtrl
-    if w:
-        # This can not be called immediately
-        def idleCallback(event=None,c=c):
-            c.invalidateFocus()
-            c.bodyWantsFocusNow()
-
-        w.after_idle(idleCallback)
-#@-node:ekr.20070317075059.1:tt.raise/lowerTab
-#@+node:ekr.20070318125900.1:tt.renameChapterHelper
-def renameChapterHelper (self,cc,tabName):
-
-    '''Called from cc.renameChapter to prompt for a new name.'''
-
-    tt = self ; c = tt.c
-    tab = tt.getButton(tabName)
-
-    f = Tk.Frame(tab)
-    # Elegant code.  Setting e's textvariable to chapter.sv
-    # immediately updates the chapter labels as e changes.
-    sv = tt.stringVarDict.get(tabName)
-    e = Tk.Entry(f,background='white',textvariable=sv)
-    b = Tk.Button(f,text="Close")
-    f.pack(side='top')
-    e.pack(side='left')
-    b.pack(side='right')
-    def changeCallback (event=None,f=f,sv=sv):
-        newName = sv.get()
-        f.pack_forget()
-        tt.renameTab(newName)
-        # g.trace(tabName,newName)
-        theChapter = cc.getChapter(tabName)
-        # c.setBodyString(theChapter.root,newName)
-        cc.completeChapterRename(theChapter,newName)
-        c.bodyWantsFocusNow()
-    e.bind('<Return>',changeCallback)
-    e.selection_range(0,'end')
-    b.configure(command=changeCallback)
-    c.widgetWantsFocusNow(e)
-#@nonl
-#@-node:ekr.20070318125900.1:tt.renameChapterHelper
-#@+node:ekr.20070318133725:tt.renameTab
-def renameTab (self,newName):
-
-    '''Change the button text of the presently selected tab.'''
-
-    # Important: the actual tab name *never* changes.
-
-    tt = self ; nb = tt.nb
-    name = nb.getcurselection()
-    b = nb.tab(name)
-    b.configure(text=newName)
-#@-node:ekr.20070318133725:tt.renameTab
-#@+node:ekr.20070421095700:setSelect/UnselectColor
-def setSelectColor (self,b):
-
-    tt = self
-
-    b.configure(
-        background=tt.selectedTabBackgroundColor,
-        foreground=tt.selectedTabForegroundColor)
-
-def setUnselectColor(self,b):
-
-    tt = self
-
-    b.configure(
-        background=tt.unselectedTabBackgroundColor,
-        foreground=tt.unselectedTabForegroundColor)
-#@nonl
-#@-node:ekr.20070421095700:setSelect/UnselectColor
-#@-node:ekr.20070604092749:leoTkTreeTab Not used...
-#@+node:ekr.20070320091806:Callbacks (chapterController) NOT USED
-# def selectCallback (self,tabName):
-
-    # # cc = self ; chapter = cc.chaptersDict.get(tabName)
-    # # if chapter:
-        # # chapter.select()
-
-# def unselectCallback (self,tabName):
-
-    # cc = self ; chapter = cc.chaptersDict.get(tabName)
-    # if chapter:
-        # chapter.unselect()
-#@nonl
-#@-node:ekr.20070320091806:Callbacks (chapterController) NOT USED
-#@+node:ekr.20070325121800:cc.updateChapterName (not used)
-def updateChapterName(self,oldName,newName):
-
-    '''oldName is the immutable name of a chapter.
-    Set the visible name of that chapter to newName.'''
-
-
-    cc = self ; c = cc.c
-
-    p = cc.findChapterNode(oldName)
-
-    g.trace(g.callers())
-
-    if p:
-        c.setBodyString(p,newName)
+    # This must be done after the declaration reference is generated.
+    if self.treeType == "@file":
+        c.appendStringToBody(class_vnode,"\t@others\n")
     else:
-        cc.error('no such chapter: %s' % oldName)
-#@-node:ekr.20070325121800:cc.updateChapterName (not used)
-#@+node:ekr.20070529171934:cc.completeChapterRename
-def completeChapterRename (self,theChapter,newName):
+        ref = g.angleBrackets(' class %s methods ' % (class_name))
+        c.appendStringToBody(class_vnode,"\t" + ref + "\n\n")
+#@-node:ekr.20060626101103.1:createParentText
+#@+node:ekr.20060626103415:createClassNodeText
+def createClassNodeText (self,s,i,start):
 
-    theChapter.rename(newName)
+    # Create the section name using the old value of self.methodName.
+    if  self.treeType == "@file":
+        prefix = ""
+    else:
+        prefix = g.angleBrackets(" " + self.methodName + " methods ") + "=\n\n"
+        self.methodsSeen = True
 
+    # i points just after the class line.
 
-#@-node:ekr.20070529171934:cc.completeChapterRename
+    # Add a docstring to the class node.
+    docStringSeen = False
+    j = g.skip_ws_and_nl(s,i)
+    if g.match(s,j,'"""') or g.match(s,j,"'''"):
+        j = g.skip_python_string(s,j)
+        if j != len(s): # No scanning error.
+            i = j ; docStringSeen = True
+
+    body = s[start:i]
+    body = self.undentBody(body)
+    if docStringSeen: body = body + '\n'
+
+    return i,prefix,body
+#@-node:ekr.20060626103415:createClassNodeText
+#@-node:ekr.20031218072017.2257:scanPythonClass & helpers
+#@+node:ekr.20031218072017.2263:scanPythonDef
+def scanPythonDef (self,s,i,start,parent):
+
+    """Creates a node of parent for the def."""
+
+    # g.trace(g.get_line(s,i))
+    << set headline or return i >>
+    i = self.skipPythonDef(s,i,start)
+    # Create the def node.
+    savedMethodName = self.methodName
+    self.methodName = headline
+    << Create def node >>
+    self.methodName = savedMethodName
+    return i
+#@+node:ekr.20031218072017.2264:<< set headline or return i >>
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # Skip the "def"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    headline = s[j:i]
+    # g.trace("headline:" + headline)
+else: return i
+#@-node:ekr.20031218072017.2264:<< set headline or return i >>
+#@+node:ekr.20031218072017.2266:<< Create def node >>
+# Create the prefix line for @root trees.
+if self.treeType == "@file":
+    prefix = ""
+else:
+    prefix = g.angleBrackets(" " + savedMethodName + " methods ") + "=\n\n"
+    self.methodsSeen = True
+
+# Create body.
+start = g.skip_blank_lines(s,start)
+body = s[start:i]
+body = self.undentBody(body)
+
+# Create the node.
+self.createHeadline(parent,prefix + body,headline)
+#@-node:ekr.20031218072017.2266:<< Create def node >>
+#@-node:ekr.20031218072017.2263:scanPythonDef
+#@+node:ekr.20031218072017.2267:scanPythonDecls
+def scanPythonDecls (self,s,i,parent,indent,indent_parent_ref_flag=True):
+
+    c = self.c
+    done = False ; start = i
+    while not done and i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n':
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            # 2/14/03: break on lesser indention.
+            j = g.skip_ws(s,i)
+            if not g.is_nl(s,j) and not g.match(s,j,"#") and not backslashNewline:
+                lineIndent = self.getLeadingIndent(s,i)
+                if lineIndent <= indent:
+                    break
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            << break on def or class >>
+        else: i += 1
+        assert(progress < i)
+    j = g.skip_blank_lines(s,start)
+    if g.is_nl(s,j): j = g.skip_nl(s,j)
+    if j < i:
+        << Create a child node for declarations >>
+    return i
+#@+node:ekr.20031218072017.2268:<< break on def or class >>
+if g.match_c_word(s,i,"def") or g.match_c_word(s,i,"class"):
+    i = g.find_line_start(s,i)
+    done = True
+    break
+else:
+    i = g.skip_c_id(s,i)
+#@-node:ekr.20031218072017.2268:<< break on def or class >>
+#@+node:ekr.20031218072017.2269:<< Create a child node for declarations >>
+headline = ref = g.angleBrackets(" " + self.methodName + " declarations ")
+leading_tab = g.choose(indent_parent_ref_flag,"\t","")
+
+# Append the reference to the parent's body.
+c.appendStringToBody(parent,leading_tab + ref + "\n") # 7/6/02
+
+# Create the node for the decls.
+body = self.undentBody(s[j:i])
+if self.treeType == "@root":
+    body = "@code\n\n" + body
+self.createHeadline(parent,body,headline)
+#@-node:ekr.20031218072017.2269:<< Create a child node for declarations >>
+#@-node:ekr.20031218072017.2267:scanPythonDecls
+#@+node:ekr.20031218072017.2270:scanPythonText
+# See the comments for scanCText for what the text looks like.
+
+def scanPythonText (self,s,parent):
+
+    """Creates a child of parent for each Python function definition seen."""
+
+    c = self.c
+    decls_seen = False ; start = i = 0
+    self.methodsSeen = False
+    while i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n' or ch == '\r': i = g.skip_nl(s,i)
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'': i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            << handle possible Python function or class >>
+        else: i += 1
+        assert(progress < i)
+    if not decls_seen: # 2/17/03
+        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language python\n")
+    << Append a reference to the methods of this file >>
+    << Append any unused python text to the parent's body text >>
+#@+node:ekr.20031218072017.2271:<< handle possible Python function or class >>
+if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
+    isDef = g.match_c_word(s,i,"def")
+    if not decls_seen:
+        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language python\n")
+        i = start = self.scanPythonDecls(s,start,parent,-1,indent_parent_ref_flag=False)
+        decls_seen = True
+        if self.treeType == "@file":
+            c.appendStringToBody(parent,"@others\n")
+    if isDef:
+        i = start = self.scanPythonDef(s,i,start,parent)
+    else:
+        i = start = self.scanPythonClass(s,i,start,parent)
+else:
+    i = g.skip_c_id(s,i)
+#@-node:ekr.20031218072017.2271:<< handle possible Python function or class >>
+#@+node:ekr.20031218072017.2272:<< Append a reference to the methods of this file >>
+if self.treeType == "@root" and self.methodsSeen:
+    c.appendStringToBody(parent,
+        g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
+#@-node:ekr.20031218072017.2272:<< Append a reference to the methods of this file >>
+#@+node:ekr.20031218072017.2273:<< Append any unused python text to the parent's body text >>
+# Do nothing if only whitespace is left.
+i = start ; i = g.skip_ws_and_nl(s,i)
+if i < len(s):
+    c.appendStringToBody(parent,s[start:])
+#@-node:ekr.20031218072017.2273:<< Append any unused python text to the parent's body text >>
+#@-node:ekr.20031218072017.2270:scanPythonText
+#@+node:ekr.20060626083237.1:skipPythonDef
+def skipPythonDef (self,s,i,start):
+
+    # g.trace(g.get_line(s,i))
+
+    # Set defIndent to the indentation of the def line.
+    defIndent = self.getLeadingIndent(s,start)
+    parenCount = 0
+    << skip the entire signature >>
+    indent = self.getLeadingIndent(s,i)
+    while i < len(s): # and indent > defIndent
+        progress = i
+        ch = s[i]
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            if not backslashNewline:
+                # New in Leo 4.4.1: don't set indent for comment lines.
+                j = g.skip_ws(s,i)
+                if not g.match(s,j,'#'):
+                    indent = self.getLeadingIndent(s,i)
+                    if indent <= defIndent and parenCount == 0:
+                        break
+        elif ch == '#':
+            i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif ch in '[{(':
+            i += 1 ; parenCount += 1
+            # g.trace('ch',ch,parenCount)
+        elif ch in ']})':
+            i += 1 ; parenCount -= 1
+            # g.trace('ch',ch,parenCount)
+        else: i += 1
+        assert(progress < i)
+
+    return i
+#@+node:ekr.20060627062652:<< skip the entire signature >>
+# Now that we count parens, we must be careful to skip the entire signature.
+
+j = s.find('(',i)
+if j != -1:
+    j = g.skip_matching_python_parens(s,j)
+
+if j == -1 or not g.match(s,j+1,':'):
+    g.es_print('Warning: improper signature: %s' % g.get_line(s,i))
+    return i
+else:
+    i = g.skip_line(s,j) # Still not quite 100% correct.
+#@-node:ekr.20060627062652:<< skip the entire signature >>
+#@-node:ekr.20060626083237.1:skipPythonDef
+#@-node:ekr.20070703123334:Python
+#@+node:ekr.20070703123334.1:C
+#@+node:ekr.20031218072017.3250:scanCText
+# Creates a child of parent for each C function definition seen.
+
+def scanCText (self,s,parent):
+
+    scanner = self.cScanner(self)
+    scanner.scan(s,parent)
+#@-node:ekr.20031218072017.3250:scanCText
+#@+node:ekr.20070202105339.1:class cScanner
+@
+The C scanner uses an internal class as an organizational aid. This is far
+superior, imo, to using a single huge scanCText function organized with noweb
+section references. Indeed, the helper class creates a separate namespace for
+use by the various helper functions.
+
+At present only the C scanner uses this organization, and the utilities of the
+cScanner class are identical to the utilites of the leoImportCommands class.
+This duplication would go away if all the scanners derived from a baseScanner
+class, but that is not likely any time soon, if ever.
+@c
+
+class cScanner:
+    @others
+#@nonl
+#@+node:ekr.20070202105914:cScanner.ctor
+def __init__ (self,importer):
+
+    # Copy ivars.
+    self.c = importer.c
+    self.encoding = importer.encoding
+    self.methodKind = g.choose(importer.fileType==".c","functions","methods")
+    self.methodName = importer.methodName
+    self.rootLine = importer.rootLine
+    self.treeType = importer.treeType
+
+    # Other ivars.
+    self.function_start = 0
+    self.name = None
+    self.scan_start = 0
+#@-node:ekr.20070202105914:cScanner.ctor
+#@+node:ekr.20070202105914.1:scan & helpers
+def scan (self,s,parent,init=True):
+
+    c = self.c
+    if init:
+        c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language c\n")
+    else:
+        saveData = self.name,self.function_start,self.scan_start
+
+    self.name,self.function_start,self.scan_start = '',0,0
+    i = 0
+    while i < len(s):
+        progress = i
+        ch = s[i]
+        # if i == 0 or ch == '\n': g.trace('line',repr(g.get_line(s,i)))
+        # g.trace('ch',repr(ch))
+        if ch == '/':         i = self.skipComments(s,i)
+        elif ch in ('"',"'"): i = g.skip_string(s,i)
+        elif ch == '(':     i = self.doOuterParen(s,i,parent) # Possible function/method definition.
+        elif ch == ';':     i = self.doSemicolon(s,i) # Signals a possible start of a function.
+        elif g.is_c_id(ch): i = self.doId(s,i,parent) # Possible class/namespace definition.
+        else: i += 1
+        assert i > progress
+    self.appendUnusedText(s,i,parent)
+    if init:
+        if parent.hasChildren(): c.appendStringToBody(parent,'@others')
+    else:
+        self.name,self.function_start,self.scan_start = saveData
+#@nonl
+#@+node:ekr.20070202111549:appendUnusedText
+def appendUnusedText (self,s,i,parent):
+
+    c = self.c
+
+    i = g.skip_ws_and_nl(s,self.scan_start)
+    if i < len(s):
+        s2 = s[self.scan_start:]
+        # g.trace(repr(s2))
+        c.appendStringToBody(parent,s2)
+#@-node:ekr.20070202111549:appendUnusedText
+#@+node:ekr.20031218072017.3257:doId
+def doId (self,s,i,parent):
+
+    j = i ; i = g.skip_c_id(s,i)
+    name = s[j:i]
+    if name in ('class','namespace'):
+        i = self.doInner(s,j,parent,name)
+    else:
+        self.name = name
+        while g.match(s,i,'::'):
+            self.name = self.name + '::'
+            i = g.skip_ws_and_nl(s,i+2)
+            if g.match(s,i,'~'):
+                i += 1
+                self.name = self.name + '~'
+            i = g.skip_ws_and_nl(s,i)
+            j = i ; i = g.skip_c_id(s,i)
+            name2 = s[j:i]
+            self.name = self.name + name2
+    return i
+#@-node:ekr.20031218072017.3257:doId
+#@+node:ekr.20070203153208:doInner
+def doInner (self,s,i,parent,kind):
+
+    '''Handle a namespace or class definition.'''
+
+    c = self.c
+    start = i
+    i += len(kind)
+    j = g.skip_ws_and_nl(s,i)
+    i = g.skip_c_id(s,j)
+    name = s[j:i].strip()
+    if not name: return i
+    i = g.skip_ws_and_nl(s,i)
+    bracket = i
+    if not g.match(s,i,'{'): return i
+    i = g.skip_braces(s,i)
+    if g.match(s,i,'}'):
+        end = i
+        i = g.skip_ws_and_nl(s,i+1)
+        if g.match(s,i,';'): i += 1
+        # Append previous text.
+        prev = s[self.scan_start:start]
+        c.appendStringToBody(parent,prev)
+        self.scan_start = self.function_start = i
+        preamble = s[start:bracket+1]
+        # Create children.
+        p = self.createHeadline(parent,headline='%s %s' % (kind,name),body=preamble)
+        body = s[bracket+1:end]
+        self.scan(body,p.copy(),init=False)
+        # Finish the text.
+        if p.hasChildren(): c.appendStringToBody(p,'\n\t@others')
+        c.appendStringToBody(p,s[end:i])    
+    else:
+        g.trace('missing "}" following %s' % kind)
+    return i
+#@-node:ekr.20070203153208:doInner
+#@+node:ekr.20031218072017.3262:doOuterParen
+def doOuterParen (self,s,i,parent):
+
+    '''Handle '(' at the top level.
+    This begins a function/method if and only if the character after the matching ')' is '{'.'''
+
+    # Skip the param list.  It may not be properly matched if there are #if's involved.
+    c = self.c
+    i = g.skip_parens(s,i)
+    if not g.match(s,i,')'): return i
+    i = g.skip_ws_and_nl(s,i+1)
+    if g.match(s,i,';'):
+        return self.doSemicolon(s,i)
+    elif g.match(s,i,'='):
+        # An initializer ends a declaration.
+        i = g.skip_ws_and_nl(s,i+1)
+        if g.match(s,i,'{'):
+            i = g.skip_braces(s,i)
+        self.function_start = i
+        return i
+    elif g.match(s,i,'{'):
+        i = g.skip_braces(s,i)
+        if g.match(s,i,'}'):
+            i += 1
+            # g.trace('function %s' % self.name)
+            c.appendStringToBody(parent,s[self.scan_start:self.function_start])
+            body = s[self.function_start:i]
+            p = self.createHeadline(parent,headline=self.name,body=body)
+        else:
+            g.trace('no matching "}" in function/method definition')
+        self.scan_start = self.function_start = i
+        return i
+    else:
+        return i
+#@-node:ekr.20031218072017.3262:doOuterParen
+#@+node:ekr.20031218072017.3263:doSemicolon
+def doSemicolon (self,s,i):
+
+    self.function_start = i+1 # The semicolon ends the declaration.
+    return i+1
+#@-node:ekr.20031218072017.3263:doSemicolon
+#@+node:ekr.20031218072017.3260:skipComments
+def skipComments (self,s,i):
+
+    if g.match(s,i,"//"):
+        i = g.skip_line(s,i)
+    elif g.match(s,i,"/*"):
+        i = g.skip_block_comment(s,i)
+    else:
+        i += 1
+
+    return i
+#@-node:ekr.20031218072017.3260:skipComments
+#@-node:ekr.20070202105914.1:scan & helpers
+#@+node:ekr.20070203074709:Utilities (should be in base class)
+#@+node:ekr.20070203074709.1:createHeadline
+def createHeadline (self,parent,body,headline):
+
+    # g.trace("parent,headline:",parent,headline)
+    # Create the vnode.
+    p = parent.insertAsLastChild()
+    p.initHeadString(headline,self.encoding)
+    # Set the body.
+    if body:
+        self.c.setBodyString(p,body,self.encoding)
+    return p
+#@-node:ekr.20070203074709.1:createHeadline
+#@+node:ekr.20070203074709.2:error
+def error (self,s): g.es(s)
+#@-node:ekr.20070203074709.2:error
+#@+node:ekr.20070203074709.3:getLeadingIndent
+def getLeadingIndent (self,s,i):
+
+    """Return the leading whitespace of a line, ignoring blank and comment lines."""
+
+    i = g.find_line_start(s,i)
+    while i < len(s):
+        # g.trace(g.get_line(s,i))
+        j = g.skip_ws(s,i) # Bug fix: 2/14/03
+        if g.is_nl(s,j) or g.match(s,j,"#"): # Bug fix: 2/14/03
+            i = g.skip_line(s,i) # ignore blank lines and comment lines.
+        else:
+            i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+            # g.trace("returns:",width)
+            return width
+    # g.trace("returns:0")
+    return 0
+#@-node:ekr.20070203074709.3:getLeadingIndent
+#@+node:ekr.20070203074709.4:isDocStart and isModuleStart
+# The start of a document part or module in a noweb or cweb file.
+# Exporters may have to test for @doc as well.
+
+def isDocStart (self,s,i):
+
+    if not g.match(s,i,"@"):
+        return False
+
+    j = g.skip_ws(s,i+1)
+    if g.match(s,j,"%defs"):
+        return False
+    elif self.webType == "cweb" and g.match(s,i,"@*"):
+        return True
+    else:
+        return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
+
+def isModuleStart (self,s,i):
+
+    if self.isDocStart(s,i):
+        return True
+    else:
+        return self.webType == "cweb" and (
+            g.match(s,i,"@c") or g.match(s,i,"@p") or
+            g.match(s,i,"@d") or g.match(s,i,"@f"))
+#@-node:ekr.20070203074709.4:isDocStart and isModuleStart
+#@+node:ekr.20070203074709.6:massageComment
+def massageComment (self,s):
+
+    """Returns s with all runs of whitespace and newlines converted to a single blank.
+
+    Also removes leading and trailing whitespace."""
+
+    s = s.strip()
+    s = s.replace("\n"," ")
+    s = s.replace("\r"," ")
+    s = s.replace("\t"," ")
+    s = s.replace("  "," ")
+    s = s.strip()
+    return s
+#@-node:ekr.20070203074709.6:massageComment
+#@+node:ekr.20070203074709.10:setEncoding
+def setEncoding (self):
+
+    # scanDirectives checks the encoding: may return None.
+    theDict = g.scanDirectives(self.c)
+    encoding = theDict.get("encoding")
+    if encoding and g.isValidEncoding(encoding):
+        self.encoding = encoding
+    else:
+        self.encoding = g.app.tkEncoding # 2/25/03
+
+    # print self.encoding
+#@-node:ekr.20070203074709.10:setEncoding
+#@+node:ekr.20070203074709.11:skipLeadingComments
+def skipLeadingComments (self,s):
+
+    """Skips all leading comments in s, returning the remaining body text and the massaged comment text.
+
+    Returns (body, comment)"""
+
+    # g.trace(g.get_line(s,0))
+    s_original = s
+    s = s.lstrip()
+    i = 0 ; comment = ""
+    if self.fileType in [".c", ".cpp"]: # 11/2/02: don't mess with java comments.
+        << scan for C-style comments >>
+    elif self.fileType == ".lua":
+        << scan for Lua comments >>
+    elif self.fileType == ".pas":
+        << scan for Pascal comments >>
+    elif self.fileType == ".py":
+        << scan for Python comments >>
+    comment = string.strip(comment)
+    if len(comment) == 0:
+        return s_original, "" # Bug fix: 11/2/02: don't skip leading whitespace!
+    elif self.treeType == "@file":
+        return s[i:], "@ " + comment
+    else:
+        return s[i:], "@ " + comment + "\n"
+#@+node:ekr.20070203074709.12:<< scan for C-style comments >>
+while i < len(s):
+    if g.match(s,i,"//"): # Handle a C++ comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    elif g.match(s,i,"/*"): # Handle a block C comment.
+        j = i + 2 ; i = g.skip_block_comment (s,i)
+        k = g.choose(g.match(s,i-2,"*/"),i-2,i)
+        if self.fileType == ".java":
+            # 8/2/02: a hack: add leading whitespace then remove it.
+            comment = self.undentBody(comment)
+            comment2 = ' ' * 2 + s[j:k]
+            comment2 = self.undentBody(comment2)
+            comment = comment + comment2 + "\n"
+        else:
+            comment = comment + self.massageComment(s[j:k]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break
+#@-node:ekr.20070203074709.12:<< scan for C-style comments >>
+#@+node:ekr.20070203074709.13:<< scan for Lua comments >>
+while i < len(s):
+    if g.match(s,i,"--"): # Handle a Lua line comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break
+#@-node:ekr.20070203074709.13:<< scan for Lua comments >>
+#@+node:ekr.20070203074709.14:<< scan for Pascal comments >>
+while i < len(s):
+    if g.match(s,i,"//"): # Handle a Pascal line comment.
+        while g.match(s,i,'/'):
+            i += 1
+        j = i ; i = g.skip_line(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    elif g.match(s,i,'(*'):
+        j = i + 1 ; i = g.skip_pascal_block_comment(s,i)
+        comment = comment + self.massageComment(s[j:i]) + "\n"
+        # 8/2/02: Preserve leading whitespace for undentBody
+        i = g.skip_ws(s,i)
+        i = g.skip_blank_lines(s,i)
+    else: break
+#@-node:ekr.20070203074709.14:<< scan for Pascal comments >>
+#@+node:ekr.20070203074709.15:<< scan for Python comments >>
+while i < len(s) and g.match(s,i,'#'):
+    j = i + 1 ; i = g.skip_line(s,i)
+    comment = self.undentBody(comment)
+    comment = comment + self.massageComment(s[j:i]) + "\n"
+    # 8/2/02: Preserve leading whitespace for undentBody
+    i = g.skip_ws(s,i)
+    i = g.skip_blank_lines(s,i)
+#@-node:ekr.20070203074709.15:<< scan for Python comments >>
+#@-node:ekr.20070203074709.11:skipLeadingComments
+#@+node:ekr.20070203074709.16:undentBody
+# We look at the first line to determine how much leading whitespace to delete.
+
+def undentBody (self,s):
+
+    """Removes extra leading indentation from all lines."""
+
+    # g.trace(s)
+    i = 0 ; result = ""
+    # Copy an @code line as is.
+    if g.match(s,i,"@code"):
+        j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+        result += s[j:i]
+    # Calculate the amount to be removed from each line.
+    undent = self.getLeadingIndent(s,i)
+    if undent == 0: return s
+    while i < len(s):
+        j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+        line = s[j:i]
+        # g.trace(line)
+        line = g.removeLeadingWhitespace(line,undent,self.tab_width)
+        result += line
+    return result
+#@-node:ekr.20070203074709.16:undentBody
+#@-node:ekr.20070203074709:Utilities (should be in base class)
+#@-node:ekr.20070202105339.1:class cScanner
+#@-node:ekr.20070703123334.1:C
+#@-node:ekr.20031218072017.2256:OLD scanners & tests
+#@-node:ekr.20070703172330:Import & @auto code
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl

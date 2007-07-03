@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.5">
-	<global_window_position top="120" left="340" height="710" width="909"/>
+	<global_window_position top="120" left="340" height="690" width="909"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -27,7 +27,7 @@
 <v t="ekr.20070105153901.13"><vh>Abbreviation Macros</vh></v>
 </v>
 </v>
-<v t="ekr.20061029091830" a="V"><vh>Leo 4.4.2 projects</vh>
+<v t="ekr.20061029091830"><vh>Leo 4.4.2 projects</vh>
 <v t="ekr.20061029091751.1"><vh>Leo 4.4.2.1 final projects</vh>
 <v t="ekr.20061029091751.2"><vh>Fixed bug reading recent files</vh>
 <v t="ekr.20061029091751.3"><vh>appendToRecentFiles (g.app.config)</vh></v>
@@ -3978,11 +3978,136 @@
 </v>
 </v>
 </v>
-<v t="ekr.20070626112754.1866"><vh>pychecker</vh>
+<v t="ekr.20070703172620"><vh>Leo 4.4.3.1 projects</vh>
+<v t="ekr.20070703172620.1" a="E"><vh>Bugs</vh>
+<v t="ekr.20070703172620.2"><vh>Fixed improper can not open myLeoSettings message</vh>
+<v t="ekr.20070703172620.3"><vh>openLeoSettings and openMyLeoSettings</vh></v>
+<v t="ekr.20070703172620.4"><vh>g.openWithFileName</vh></v>
+</v>
+<v t="ekr.20070703172620.5"><vh>Fixed import problem in leoDynamicTest.py</vh>
+<v t="ekr.20070703172620.6"><vh>debugCommandsClass</vh>
+<v t="ekr.20070703172620.7"><vh> ctor</vh></v>
+<v t="ekr.20070703172620.8"><vh> getPublicCommands</vh></v>
+<v t="ekr.20070703172620.9"><vh>collectGarbage</vh></v>
+<v t="ekr.20070703172620.10"><vh>debug &amp; helper</vh>
+<v t="ekr.20070703172620.11"><vh>findDebugger</vh></v>
+</v>
+<v t="ekr.20070703172620.12"><vh>dumpAll/New/VerboseObjects</vh></v>
+<v t="ekr.20070703172620.13"><vh>enable/disableGcTrace</vh></v>
+<v t="ekr.20070703172620.14"><vh>freeTreeWidgets</vh></v>
+<v t="ekr.20070703172620.15"><vh>printFocus</vh></v>
+<v t="ekr.20070703172620.16"><vh>printGcSummary</vh></v>
+<v t="ekr.20070703172620.17"><vh>printStats</vh></v>
+<v t="ekr.20070703172620.18"><vh>runUnitTest commands</vh></v>
+</v>
+<v t="ekr.20070703172620.19"><vh>Compute directories... (leoGlobals)</vh>
+<v t="ekr.20070703172620.20"><vh>computeGlobalConfigDir</vh></v>
+<v t="ekr.20070703172620.21"><vh>computeHomeDir</vh></v>
+<v t="ekr.20070703172620.22"><vh>computeLeoDir</vh></v>
+<v t="ekr.20070703172620.23"><vh>computeLoadDir</vh></v>
+<v t="ekr.20070703172620.24"><vh>computeStandardDirectories</vh></v>
+<v t="ekr.20070703172620.25"><vh>startupEncoding</vh></v>
+</v>
+<v t="ekr.20070703172620.26"><vh>runTestsExternally &amp; helper class</vh>
+<v t="ekr.20070703172620.27"><vh>class runTestHelperClass</vh>
+<v t="ekr.20070703172620.28"><vh> ctor: runTestHelperClass</vh></v>
+<v t="ekr.20070703172620.29"><vh>createFileFromOutline</vh></v>
+<v t="ekr.20070703172620.30"><vh>createOutline</vh></v>
+<v t="ekr.20070703172620.31"><vh>runTests</vh></v>
+<v t="ekr.20070703172620.32"><vh>runLeoDynamicTest</vh></v>
+<v t="ekr.20070703172620.33"><vh>searchOutline</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20070703172620.34"><vh>Fixed cleo crasher</vh></v>
+<v t="ekr.20070703172620.35"><vh>Fixed spell-check bug</vh>
+<v t="ekr.20070703172620.36"><vh>find &amp; helpers</vh>
+<v t="ekr.20070703172620.37"><vh>findNextMisspelledWord</vh>
+<v t="ekr.20070703172620.38"><vh>&lt;&lt; Skip word if ignored or in local dictionary &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20070703172620.39"><vh>findNextWord</vh></v>
+</v>
+</v>
+<v t="ekr.20070703172620.40"><vh>Fixed several crashers in the group operations plugin</vh></v>
+<v t="ekr.20070703172620.41"><vh>Fixed chapters bug</vh>
+<v t="ekr.20070703172620.42"><vh>cc.selectChapterForPosition</vh></v>
+</v>
+<v t="ekr.20070703172620.43"><vh>Fixed problems in groupOperations plugin</vh>
+<v t="ekr.20070703172620.44"><vh>getLeoOutlineFromClipboard &amp; helpers</vh>
+<v t="ekr.20070703172620.45"><vh>finishPaste</vh>
+<v t="ekr.20070703172620.46"><vh>&lt;&lt; reassign tnode indices &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20070703172620.47"><vh>getLeoOutlineHelper</vh>
+<v t="ekr.20070703172620.48"><vh>&lt;&lt; recreate tnodesDict &gt;&gt;</vh></v>
+</v>
+<v t="ekr.20070703172620.49"><vh>getClipboardHeader</vh></v>
+</v>
+</v>
+<v t="ekr.20070703172620.50"><vh>Fixed pychecker complaints</vh></v>
+<v t="ekr.20070703172620.51"><vh>Fixed bug: deleting an editor does select the proper body pane</vh>
+<v t="ekr.20070703172620.52"><vh>selectEditor &amp; helpers</vh>
+<v t="ekr.20070703172620.53"><vh>selectEditorHelper</vh>
+<v t="ekr.20070703172620.54"><vh>&lt;&lt; restore the selection, insertion point and the scrollbar &gt;&gt;</vh></v>
+</v>
+</v>
+</v>
+</v>
+<v t="ekr.20070703172620.55"><vh>Features</vh>
+<v t="ekr.20070703172620.56"><vh>g.es and g.es_print print only to console during unit tests</vh>
+<v t="ekr.20070703172620.57"><vh>es_print &amp; test</vh>
+<v t="ekr.20070703172620.58"><vh>@test g.es_print</vh></v>
+</v>
+<v t="ekr.20070703172620.59"><vh>es</vh></v>
+</v>
+<v t="ekr.20070703172620.60"><vh>Suppressed status messages during unit testing</vh></v>
+<v t="ekr.20070703172620.61"><vh>Run unit tests in a separate process</vh>
+<v t="ekr.20070703172620.6"><vh>debugCommandsClass</vh>
+<v t="ekr.20070703172620.7"><vh> ctor</vh></v>
+<v t="ekr.20070703172620.8"><vh> getPublicCommands</vh></v>
+<v t="ekr.20070703172620.9"><vh>collectGarbage</vh></v>
+<v t="ekr.20070703172620.10"><vh>debug &amp; helper</vh>
+<v t="ekr.20070703172620.11"><vh>findDebugger</vh></v>
+</v>
+<v t="ekr.20070703172620.12"><vh>dumpAll/New/VerboseObjects</vh></v>
+<v t="ekr.20070703172620.13"><vh>enable/disableGcTrace</vh></v>
+<v t="ekr.20070703172620.14"><vh>freeTreeWidgets</vh></v>
+<v t="ekr.20070703172620.15"><vh>printFocus</vh></v>
+<v t="ekr.20070703172620.16"><vh>printGcSummary</vh></v>
+<v t="ekr.20070703172620.17"><vh>printStats</vh></v>
+<v t="ekr.20070703172620.18"><vh>runUnitTest commands</vh></v>
+</v>
+<v t="ekr.20070703172620.62"><vh>doTests...</vh>
+<v t="ekr.20070703172620.63"><vh>class generalTestCase</vh>
+<v t="ekr.20070703172620.64"><vh>__init__</vh></v>
+<v t="ekr.20070703172620.65"><vh> fail</vh></v>
+<v t="ekr.20070703172620.66"><vh>setUp</vh></v>
+<v t="ekr.20070703172620.67"><vh>tearDown</vh></v>
+<v t="ekr.20070703172620.68"><vh>runTest</vh></v>
+<v t="ekr.20070703172620.69"><vh>shortDescription</vh></v>
+</v>
+<v t="ekr.20070703172620.70"><vh>makeTestSuite</vh></v>
+<v t="ekr.20070703172620.71"><vh>makeTestCase</vh></v>
+</v>
+<v t="ekr.20070703172620.26"><vh>runTestsExternally &amp; helper class</vh>
+<v t="ekr.20070703172620.27"><vh>class runTestHelperClass</vh>
+<v t="ekr.20070703172620.28"><vh> ctor: runTestHelperClass</vh></v>
+<v t="ekr.20070703172620.29"><vh>createFileFromOutline</vh></v>
+<v t="ekr.20070703172620.30"><vh>createOutline</vh></v>
+<v t="ekr.20070703172620.31"><vh>runTests</vh></v>
+<v t="ekr.20070703172620.32"><vh>runLeoDynamicTest</vh></v>
+<v t="ekr.20070703172620.33"><vh>searchOutline</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20070703172620.72"><vh>Move most unit tests into derived files</vh></v>
+<v t="ekr.20070703172620.73"><vh>Send can not import aspell message only to the log</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20070626112754.1866" a="TV"><vh>pychecker</vh>
 <v t="ekr.20070626112754.1867"><vh>Invalid warnings</vh></v>
 <v t="ekr.20070626112754.1868"><vh>Report 5-7-07</vh></v>
 <v t="ekr.20070626112754.1869"><vh>Report 6-10-07</vh></v>
-</v>
 </v>
 </vnodes>
 <tnodes>
@@ -44473,6 +44598,1332 @@ leoTkinterGui.py:563: Local variable (tkIcon) not used # Wrong.
 # (fixed) leoTkinterFrame.py:534: Local variable (tracewidget) not used
 # (fixed) leoTkinterFrame.py:538: Local variable (untracewidget) not used
 
+</t>
+<t tx="ekr.20070703172620"></t>
+<t tx="ekr.20070703172620.1"></t>
+<t tx="ekr.20070703172620.2"># can not open: C:\prog\tigris-cvs\leo\config\myLeoSettings.leo
+</t>
+<t tx="ekr.20070703172620.3">def openLeoSettings (self,event=None):
+    '''Open leoSettings.leo in a new Leo window.'''
+    self.openSettingsHelper('leoSettings.leo')
+
+def openMyLeoSettings (self,event=None):
+    '''Open myLeoSettings.leo in a new Leo window.'''
+    self.openSettingsHelper('myLeoSettings.leo')
+
+def openSettingsHelper(self,name):
+    c = self
+    homeDir = g.app.homeDir
+    loadDir = g.app.loadDir
+    configDir = g.app.globalConfigDir
+
+    # Look in configDir first.
+    fileName = g.os_path_join(configDir,name)
+    ok = g.os_path_exists(fileName)
+    if ok:
+        ok, frame = g.openWithFileName(fileName,c)
+        if ok: return
+
+    # Look in homeDir second.
+    if configDir == loadDir:
+        g.es("%s not found in %s" % (name,configDir))
+    else:
+        fileName = g.os_path_join(homeDir,name)
+        ok = g.os_path_exists(fileName)
+        if ok:
+            ok, frame = g.openWithFileName(fileName,c)
+        if not ok:
+            g.es("%s not found in %s or %s" % (name,configDir,homeDir))
+</t>
+<t tx="ekr.20070703172620.4">def openWithFileName(fileName,old_c,
+    enableLog=True,gui=None,readAtFileNodesFlag=True):
+
+    """Create a Leo Frame for the indicated fileName if the file exists."""
+
+    if not fileName or len(fileName) == 0:
+        return False, None
+
+    def munge(name):
+        return g.os_path_normpath(name or '').lower()
+
+    # Create a full, normalized, Unicode path name, preserving case.
+    fileName = g.os_path_normpath(g.os_path_abspath(fileName))
+
+    # If the file is already open just bring its window to the front.
+    theList = app.windowList
+    for frame in theList:
+        if munge(fileName) == munge(frame.c.mFileName):
+            frame.bringToFront()
+            frame.c.setLog()
+            return True, frame
+    if old_c:
+        # New in 4.4: We must read the file *twice*.
+        # The first time sets settings for the later call to c.finishCreate.
+        # g.trace('***** prereading',fileName)
+        c2 = g.app.config.openSettingsFile(fileName)
+        if c2: g.app.config.updateSettings(c2,localFlag=True)
+        g.doHook('open0')
+
+    # Open the file in binary mode to allow 0x1a in bodies &amp; headlines.
+    theFile,isZipped = g.openLeoOrZipFile(fileName)
+    if not theFile: return False, None
+    c,frame = app.newLeoCommanderAndFrame(fileName=fileName,gui=gui)
+    c.isZipped = isZipped
+    frame.log.enable(enableLog)
+    g.app.writeWaitingLog() # New in 4.3: write queued log first.
+    c.beginUpdate()
+    try:
+        if not g.doHook("open1",old_c=old_c,c=c,new_c=c,fileName=fileName):
+            c.setLog()
+            app.lockLog()
+            frame.c.fileCommands.open(
+                theFile,fileName,
+                readAtFileNodesFlag=readAtFileNodesFlag) # closes file.
+            app.unlockLog()
+            for frame in g.app.windowList:
+                # The recent files list has been updated by menu.updateRecentFiles.
+                frame.c.config.setRecentFiles(g.app.config.recentFiles)
+        # Bug fix in 4.4.
+        frame.openDirectory = g.os_path_abspath(g.os_path_dirname(fileName))
+        g.doHook("open2",old_c=old_c,c=c,new_c=frame.c,fileName=fileName)
+    finally:
+        c.endUpdate()
+        # chapterController.finishCreate must be called after the first real redraw
+        # because it requires a valid value for c.rootPosition().
+        if frame.c.chapterController:
+            frame.c.chapterController.finishCreate()
+        k = c.k
+        k and k.setInputState(k.unboundKeyAction)
+        if c.config.getBool('outline_pane_has_initial_focus'):
+            c.treeWantsFocusNow()
+        else:
+            c.bodyWantsFocusNow()
+    return True, frame</t>
+<t tx="ekr.20070703172620.5">@
+
+It's a bit tricky to ensure that leo/src is in sys.path
+The code now changes the working directory to leo/src,
+and leoDynamicTest.py adds os.getcwd() to sys.path if it is not there.
+This is a dubious plan.
+
+# import os,sys
+# print 'cwd', os.getcwd()
+# for s in sys.path: print s
+</t>
+<t tx="ekr.20070703172620.6">class debugCommandsClass (baseEditCommandsClass):
+
+    @others
+</t>
+<t tx="ekr.20070703172620.7">def __init__ (self,c):
+
+    baseEditCommandsClass.__init__(self,c) # init the base class.
+</t>
+<t tx="ekr.20070703172620.8">def getPublicCommands (self):
+
+    k = self
+
+    return {
+        'collect-garbage':              self.collectGarbage,
+        'debug':                        self.debug,
+        'disable-gc-trace':             self.disableGcTrace,
+        'dump-all-objects':             self.dumpAllObjects,
+        'dump-new-objects':             self.dumpNewObjects,
+        'enable-gc-trace':              self.enableGcTrace,
+        'free-tree-widgets':            self.freeTreeWidgets,
+        'print-focus':                  self.printFocus,
+        'print-stats':                  self.printStats,
+        'print-gc-summary':             self.printGcSummary,
+        'run-all-unit-tests':           self.runAllUnitTests, # The new way...
+        'run-unit-tests':               self.runUnitTests,
+        'run-all-unit-tests-locally':   self.runAllUnitTestsLocally, # The old way...
+        'run-unit-tests-locally':       self.runUnitTestsLocally,
+        'verbose-dump-objects':         self.verboseDumpObjects,
+    }
+</t>
+<t tx="ekr.20070703172620.9">def collectGarbage (self,event=None):
+
+    """Run Python's Gargabe Collector."""
+
+    g.collectGarbage()
+</t>
+<t tx="ekr.20070703172620.10">def debug (self,event=None):
+
+    '''Start an external debugger in another process to debug the presently selected text.'''
+
+    c = self.c ; p = c.currentPosition()
+    python = sys.executable
+    # pythonDir = g.os_path_dirname(python)
+    script = p.bodyString()
+    winpdb = self.findDebugger()
+    if not winpdb: return
+
+    # Create a temp file from the presently selected node.
+    filename = c.writeScriptFile(script)
+    if not filename: return
+
+    # Invoke the debugger, retaining the present environment.
+    args = [sys.executable, winpdb, '-t', filename]
+    os.chdir(g.app.loadDir)
+    try:
+        import subprocess
+        cmdline = '%s %s -t %s' % (python,winpdb,filename)
+        subprocess.Popen(cmdline)
+    except ImportError:
+        os.chdir(g.app.loadDir)
+        os.spawnv(os.P_NOWAIT, python, args)
+</t>
+<t tx="ekr.20070703172620.11">def findDebugger (self):
+
+    '''Find the debugger using settings.'''
+
+    c = self.c
+    pythonDir = g.os_path_dirname(sys.executable)
+
+    debuggers = (
+        c.config.getString('debugger_path'),
+        g.os_path_join(pythonDir,'Lib','site-packages','winpdb.py'), # winpdb 1.1.2 or newer
+        g.os_path_join(pythonDir,'scripts','_winpdb.py'), # oder version.
+    )
+
+    for debugger in debuggers:
+        if debugger:
+            debugger = g.os_path_abspath(debugger)
+            if g.os_path_exists(debugger):
+                return debugger
+            else:
+                g.es('Debugger does not exist: %s' % (debugger),color='blue')
+    else:
+        g.es('No debugger found.')
+        return None
+</t>
+<t tx="ekr.20070703172620.12">def dumpAllObjects (self,event=None):
+
+    '''Print a summary of all existing Python objects.'''
+
+    old = g.app.trace_gc
+    g.app.trace_gc = True
+    g.printGcAll()
+    g.app.trace_gc = old
+
+def dumpNewObjects (self,event=None):
+
+    '''Print a summary of all Python objects created
+    since the last time Python's Garbage collector was run.'''
+
+    old = g.app.trace_gc
+    g.app.trace_gc = True
+    g.printGcObjects()
+    g.app.trace_gc = old
+
+def verboseDumpObjects (self,event=None):
+
+    '''Print a more verbose listing of all existing Python objects.'''
+
+    old = g.app.trace_gc
+    g.app.trace_gc = True
+    g.printGcVerbose()
+    g.app.trace_gc = old
+</t>
+<t tx="ekr.20070703172620.13">def disableGcTrace (self,event=None):
+
+    '''Enable tracing of Python's Garbage Collector.'''
+
+    g.app.trace_gc = False
+
+
+def enableGcTrace (self,event=None):
+
+    '''Disable tracing of Python's Garbage Collector.'''
+
+    g.app.trace_gc = True
+    g.enable_gc_debug()
+
+    if g.app.trace_gc_verbose:
+        g.es('enabled verbose gc stats',color='blue')
+    else:
+        g.es('enabled brief gc stats',color='blue')
+</t>
+<t tx="ekr.20070703172620.14">def freeTreeWidgets (self,event=None):
+
+    '''Free all widgets used in Leo's outline pane.'''
+
+    c = self.c
+
+    c.frame.tree.destroyWidgets()
+    c.redraw_now()
+</t>
+<t tx="ekr.20070703172620.15"># Doesn't work if the focus isn't in a pane with bindings!
+
+def printFocus (self,event=None):
+
+    '''Print information about the requested focus (for debugging).'''
+
+    c = self.c
+
+    g.es_print('      hasFocusWidget: %s' % c.widget_name(c.hasFocusWidget))
+    g.es_print('requestedFocusWidget: %s' % c.widget_name(c.requestedFocusWidget))
+    g.es_print('           get_focus: %s' % c.widget_name(c.get_focus()))
+</t>
+<t tx="ekr.20070703172620.16">def printGcSummary (self,event=None):
+
+    '''Print a brief summary of all Python objects.'''
+
+    g.printGcSummary()
+</t>
+<t tx="ekr.20070703172620.17">def printStats (self,event=None):
+
+    '''Print statistics about the objects that Leo is using.'''
+
+    c = self.c
+    c.frame.tree.showStats()
+    self.dumpAllObjects()
+</t>
+<t tx="ekr.20070703172620.18">def runAllUnitTestsLocally (self,event=None):
+    '''Run all unit tests contained in the presently selected outline.'''
+    c = self.c
+    leoTest.doTests(c,all=True)
+
+def runUnitTestsLocally (self,event=None):
+    '''Run all unit tests contained in the presently selected outline.'''
+    c = self.c
+    leoTest.doTests(c,all=False)
+
+def runAllUnitTests (self,event=None):
+    '''Run all unit tests contained in the entire outline.'''
+    c = self.c
+    leoTest.runTestsExternally(c,all=True)
+
+def runUnitTests(self,event=None):
+    '''Run all unit tests contained in the presently selected outline.'''
+    c = self.c
+    leoTest.runTestsExternally(c,all=False)
+</t>
+<t tx="ekr.20070703172620.19"></t>
+<t tx="ekr.20070703172620.20">def computeGlobalConfigDir():
+
+    # Suppresses warning about sys.leo_config_directory
+    #__pychecker__ = '--limit = 0'
+    #__pychecker__ = '--no-classattr --no-objattrs'
+
+    import leoGlobals as g
+
+    encoding = g.startupEncoding()
+
+    try:
+        theDir = sys.leo_config_directory
+    except AttributeError:
+        theDir = g.os_path_join(g.app.loadDir,"..","config")
+
+    if theDir:
+        theDir = g.os_path_abspath(theDir)
+
+    if (
+        not theDir or
+        not g.os_path_exists(theDir,encoding) or
+        not g.os_path_isdir(theDir,encoding)
+    ):
+        theDir = None
+
+    return theDir
+</t>
+<t tx="ekr.20070703172620.21">def computeHomeDir():
+
+    """Returns the user's home directory."""
+
+    import leoGlobals as g
+
+    encoding = g.startupEncoding()
+    # dotDir = g.os_path_abspath('./',encoding)
+    home = os.getenv('HOME',default=None)
+
+    if home and len(home) &gt; 1 and home[0]=='%' and home[-1]=='%':
+        # Get the indirect reference to the true home.
+        home = os.getenv(home[1:-1],default=None)
+
+    if home:
+        # N.B. This returns the _working_ directory if home is None!
+        # This was the source of the 4.3 .leoID.txt problems.
+        home = g.os_path_abspath(home,encoding)
+        if (
+            not g.os_path_exists(home,encoding) or
+            not g.os_path_isdir(home,encoding)
+        ):
+            home = None
+
+    # g.trace(home)
+    return home
+</t>
+<t tx="ekr.20070703172620.22">def computeLeoDir ():
+
+    loadDir = g.app.loadDir
+
+    g.app.leoDir = theDir = g.os_path_dirname(loadDir)
+
+    if theDir not in sys.path:
+        sys.path.append(theDir)
+
+    if 0: # This is required so we can do import leo (as a package)
+        theParentDir = g.os_path_dirname(theDir)
+        if theParentDir not in sys.path:
+            sys.path.append(theParentDir)
+</t>
+<t tx="ekr.20070703172620.23">def computeLoadDir():
+
+    """Returns the directory containing leo.py."""
+
+    import leoGlobals as g
+    import sys
+
+    try:
+        # Fix a hangnail: on Windows the drive letter returned by
+        # __file__ is randomly upper or lower case!
+        # The made for an ugly recent files list.
+        path = g.__file__ # was leo.__file__
+        if sys.platform=='win32':
+            if len(path) &gt; 2 and path[1]==':':
+                # Convert the drive name to upper case.
+                path = path[0].upper() + path[1:]
+        encoding = g.startupEncoding()
+        path = g.os_path_abspath(path,encoding)
+        if path:
+            loadDir = g.os_path_dirname(path,encoding)
+        else: loadDir = None
+
+        if (
+            not loadDir or
+            not g.os_path_exists(loadDir,encoding) or
+            not g.os_path_isdir(loadDir,encoding)
+        ):
+            loadDir = os.getcwd()
+            print "Using emergency loadDir:",repr(loadDir)
+        loadDir = g.os_path_abspath(loadDir,encoding)
+        # g.es("load dir: %s" % (loadDir),color="blue")
+        return loadDir
+    except:
+        print "Exception getting load directory"
+        raise
+        #import traceback ; traceback.print_exc()
+        #return None
+</t>
+<t tx="ekr.20070703172620.24">def computeStandardDirectories():
+
+    '''Set g.app.loadDir, g.app.homeDir and g.app.globalConfigDir.'''
+
+    if 0:
+        import sys
+        for s in sys.path: g.trace(s)
+
+    g.app.loadDir = g.computeLoadDir()
+        # Depends on g.app.tkEncoding: uses utf-8 for now.
+
+    g.app.leoDir = g.computeLeoDir()
+
+    g.app.homeDir = g.computeHomeDir()
+
+    g.app.extensionsDir = g.os_path_abspath(
+        g.os_path_join(g.app.loadDir,'..','extensions'))
+
+    g.app.globalConfigDir = g.computeGlobalConfigDir()
+
+    g.app.testDir = g.os_path_abspath(
+        g.os_path_join(g.app.loadDir,'..','test'))
+
+    g.app.user_xresources_path = g.os_path_join(g.app.homeDir,'.leo_xresources')
+</t>
+<t tx="ekr.20070703172620.25">def startupEncoding ():
+
+    import leoGlobals as g
+    import sys
+
+    if sys.platform=="win32": # "mbcs" exists only on Windows.
+        encoding = "mbcs"
+    elif sys.platform=="dawwin":
+        encoding = "utf-8"
+    else:
+        encoding = g.app.tkEncoding
+
+    return encoding
+</t>
+<t tx="ekr.20070703172620.26">def runTestsExternally (c,all):
+
+    @others
+
+    runner = runTestHelperClass(c,all)
+    runner.runTests()</t>
+<t tx="ekr.20070703172620.27">class runTestHelperClass:
+
+    '''A helper class to run tests externally.'''
+
+    @others
+</t>
+<t tx="ekr.20070703172620.28">def __init__(self,c,all):
+
+    self.c = c
+    self.all = all
+
+    self.fileName = 'dynamicUnitTest.leo'
+    self.root = None # The root of the tree to copy when self.all is False.
+    self.tags = ('@test','@suite','@unittests','@unit-tests')
+</t>
+<t tx="ekr.20070703172620.29">def createFileFromOutline (self,c2):
+
+    '''Write c's outline to test/dynamicUnitTest.leo.'''
+
+    path = g.os_path_abspath(
+        g.os_path_join(g.app.loadDir,'..','test', self.fileName))
+
+    c2.selectPosition(c2.rootPosition())
+    c2.mFileName = path
+    c2.fileCommands.save(path)
+    c2.close()
+</t>
+<t tx="ekr.20070703172620.30">def createOutline (self,c2):
+
+    '''Create a unit test ouline containing all @test and @suite nodes in p's outline.'''
+
+    c = self.c
+    c2root = c2.rootPosition()
+    c2root.initHeadString('All unit tests')
+    c2.suppressHeadChanged = True # Suppress all onHeadChanged logic.
+    c2.beginUpdate()
+    if self.all:
+        p = c.rootPosition() ; limit_p = None
+    else:
+        p = self.root ; p = c.currentPosition()
+        limit_p = p.nodeAfterTree()
+    try:
+        c2root.expand()
+        while p and p != limit_p:
+            h = p.headString()
+            for s in self.tags:
+                if h.startswith(s):
+                    # print h
+                    p2 = p.copyTreeAfter()
+                    p2.unlink()
+                    p2.moveToLastChildOf(c2root)
+                    p.moveToNodeAfterTree()
+                    break
+            else:
+                p.moveToThreadNext()
+    finally:
+        c2.endUpdate(False)
+</t>
+<t tx="ekr.20070703172620.31">def runTests (self):
+
+    '''
+    Create dynamicUnitTest.leo, then run all tests from dynamicUnitTest.leo in a separate process.
+    '''
+
+    trace = False
+    if trace: import time
+    g.es('Running %sunit tests' % (g.choose(self.all,'all ','')),color='blue')
+    print 'creating: %s' % (self.fileName)
+    c = self.c ; p = c.currentPosition()
+    if trace: t1 = time.time()
+    found = self.searchOutline(p.copy())
+    if trace:
+         t2 = time.time() ; print 'find:  %0.2f' % (t2-t1)
+    if found:
+        gui = leoGui.nullGui("nullGui")
+        c2 = c.new(gui=gui)
+        if trace:
+            t3 = time.time() ; print 'gui:   %0.2f' % (t3-t2)
+        found = self.createOutline(c2)
+        if trace:
+            t4 = time.time() ; print 'copy:  %0.2f' % (t4-t3)
+        self.createFileFromOutline(c2)
+        if trace:
+            t5 = time.time() ; print 'write: %0.2f' % (t5-t4)
+        self.runLeoDynamicTest()
+        if trace:
+            t6 = time.time() ; print 'run:   %0.2f' % (t6-t5)
+        c.selectPosition(p.copy())
+    else:
+        g.es_print('no @test or @suite nodes in selected outline')
+</t>
+<t tx="ekr.20070703172620.32">def runLeoDynamicTest (self):
+
+    '''Run test/leoDynamicTest.py in a pristine environment.'''
+
+    path = g.os_path_abspath(g.os_path_join(
+        g.app.loadDir, '..', 'test', 'leoDynamicTest.py'))
+
+    args = [sys.executable, path, '--silent']
+
+    srcDir = g.os_path_abspath(g.os_path_join(g.app.loadDir,'..','src'))
+    os.chdir(srcDir)
+
+    os.spawnve(os.P_NOWAIT,sys.executable,args,os.environ)
+</t>
+<t tx="ekr.20070703172620.33">def searchOutline (self,p):
+
+    c = self.c ; p = c.currentPosition()
+    iter = g.choose(self.all,c.allNodes_iter,p.self_and_subtree_iter)
+
+    # First, look down the tree.
+    for p in iter():
+        h = p.headString()
+        for s in self.tags:
+            if h.startswith(s):
+                self.root = p.copy()
+                return True
+
+    # Next, look up the tree.
+    if not self.all:   
+        for p in c.currentPosition().parents_iter():
+            h = p.headString()
+            for s in self.tags:
+                if h.startswith(s):
+                    c.selectPosition(p)
+                    self.root = p.copy()
+                    return True
+
+    return False
+</t>
+<t tx="ekr.20070703172620.34">@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4385604
+By: rich_ries
+
+From: Rich
+
+Coupla problems:
+
+(1) I pressed Alt+9 (just fooling around -- err, experimenting!) and got the
+following error window:
+
+====================================================================
+Error: 1
+AttributeError Exception in Tk callback
+  Function: &lt;function masterBindKeyCallback at 0x01461F30&gt; (type: &lt;type
+'function'&gt;)
+  Args: (&lt;Tkinter.Event instance at 0x00F85260&gt;,)
+  Event type: KeyPress (type num: 2)
+Traceback (innermost last):
+  File "C:\Language\Python\lib\site-packages\Pmw\Pmw_1_2\lib\PmwBase.py", line
+1747, in __call__
+    return apply(self.func, args)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoKeys.py", line
+2150, in masterBindKeyCallback
+    return k.masterKeyHandler(event,stroke=stroke)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoKeys.py", line
+3086, in masterKeyHandler
+    return k.masterCommand(event,b.func,b.stroke,b.commandName)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoKeys.py", line
+2272, in masterCommand
+    c.doCommand(func,commandName,event=event)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
+line 283, in doCommand
+    c.redraw_now()
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
+line 5720, in redraw_now
+    c.frame.tree.redraw_now()
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 822, in redraw_now
+    self.redrawHelper(scroll=scroll)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 838, in redrawHelper
+    self.drawTopTree()
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1185, in drawTopTree
+    self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=hoistFlag)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1213, in drawTree
+    h,indent = self.drawNode(const_p,x,y)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 976, in drawNode
+    return self.force_draw_node(p,x,y)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1004, in force_draw_node
+    h2 = self.drawText(p,x,y)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1031, in drawText
+    self.configureTextState(p)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1890, in configureTextState
+    self.setUnselectedLabelState(p) # unselected
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 2349, in setUnselectedLabelState
+    self.setUnselectedHeadlineColors(p)
+  File "C:\Software Engineering\Literate Programming\Leo\plugins\cleo.py", line
+818, in setUnselectedHeadlineColors
+    fg, bg = self.custom_colours(p.v,node_is_selected=False)
+  File "C:\Software Engineering\Literate Programming\Leo\plugins\cleo.py", line
+520, in custom_colours
+    MeSelf = self.c.currentPosition().headString()
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoNodes.py", line
+1330, in headString
+    return self.v.headString()
+AttributeError: 'NoneType' object has no attribute 'headString'
+
+================================================
+  Event contents:
+    char: 9
+    delta: 57
+    height: ??
+    keycode: 57
+    keysym: 9
+    keysym_num: 57
+    num: ??
+    serial: 1993
+    state: 131072
+    time: 91071250
+    type: 2
+    widget: .21028576.21057624.21057784.21057824.21057944.21058024.canvas
+    width: ??
+    x: 318
+    x_root: 352
+    y: 87
+    y_root: 191
+--------------------------------------------------------------------
+and the following in the Log Pane:
+
+exception executing command
+Traceback (most recent call last):
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
+line 270, in doCommand
+    val = command(event)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
+line 4228, in expandAllHeadlines
+    c.endUpdate()
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoCommands.py",
+line 5597, in endUpdate
+    c.frame.tree.endUpdate(flag,scroll=scroll)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 777, in endUpdate
+    self.redraw_now(scroll=scroll)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 822, in redraw_now
+    self.redrawHelper(scroll=scroll)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 838, in redrawHelper
+    self.drawTopTree()
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1185, in drawTopTree
+    self.drawTree(p,self.root_left,self.root_top,0,0,hoistFlag=hoistFlag)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1213, in drawTree
+    h,indent = self.drawNode(const_p,x,y)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 976, in drawNode
+    return self.force_draw_node(p,x,y)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1004, in force_draw_node
+    h2 = self.drawText(p,x,y)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1031, in drawText
+    self.configureTextState(p)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 1890, in configureTextState
+    self.setUnselectedLabelState(p) # unselected
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoTkinterTree.py",
+line 2349, in setUnselectedLabelState
+    self.setUnselectedHeadlineColors(p)
+  File "C:\Software Engineering\Literate Programming\Leo\plugins\cleo.py", line
+818, in setUnselectedHeadlineColors
+    fg, bg = self.custom_colours(p.v,node_is_selected=False)
+====================================================================
+
+(2) Looking through the key bindings, I saw
+"@shortcuts Gui operations focus-to-body = Alt-D"
+but when I tried it, it actually moves to a headline that starts with "D"
+
+
+--Rich
+</t>
+<t tx="ekr.20070703172620.35"># Misspelled words not selected properly on Linux.</t>
+<t tx="ekr.20070703172620.36">def find (self,event=None):
+    """Find the next unknown word."""
+
+    c = self.c ; body = c.frame.body ; w = body.bodyCtrl
+
+    # Reload the work pane from the present node.
+    s = w.getAllText().rstrip()
+    self.workCtrl.delete(0,"end")
+    self.workCtrl.insert("end",s)
+
+    # Reset the insertion point of the work widget.
+    ins = w.getInsertPoint()
+    self.workCtrl.setInsertPoint(ins)
+
+    alts, word = self.findNextMisspelledWord()
+    self.currentWord = word # Need to remember this for 'add' and 'ignore'
+
+    if alts:
+        # Save the selection range.
+        ins = w.getInsertPoint()
+        i,j = w.getSelectionRange()
+        self.tab.fillbox(alts,word)
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+        # Restore the selection range.
+        w.setSelectionRange(i,j,insert=ins)
+        w.see(ins)
+    else:
+        g.es("no more misspellings")
+        self.tab.fillbox([])
+        c.invalidateFocus()
+        c.bodyWantsFocusNow()
+</t>
+<t tx="ekr.20070703172620.37">def findNextMisspelledWord(self):
+    """Find the next unknown word."""
+
+    c = self.c ; p = c.currentPosition()
+    aspell = self.aspell ; alts = None ; word = None
+
+    try:
+        while 1:
+            # g.trace('p',p and p.headString())
+            p, word = self.findNextWord(p)
+            if not p or not word:
+                alts = None
+                break
+            &lt;&lt; Skip word if ignored or in local dictionary &gt;&gt;
+            alts = aspell.processWord(word)
+            if alts:
+                w = c.frame.body.bodyCtrl
+                i,j = w.getSelectionRange()
+                c.beginUpdate()
+                try:
+                    c.frame.tree.expandAllAncestors(p)
+                    c.selectPosition(p)
+                finally:
+                    c.endUpdate()
+                    w.setSelectionRange(i,j,insert=j)
+                break
+    except:
+        g.es_exception()
+    return alts, word
+</t>
+<t tx="ekr.20070703172620.38">@ We don't bother to call apell if the word is in our dictionary. The dictionary contains both locally 'allowed' words and 'ignored' words. We put the test before aspell rather than after aspell because the cost of checking aspell is higher than the cost of checking our local dictionary. For small local dictionaries this is probably not True and this code could easily be located after the aspell call
+@c
+
+if self.dictionary.has_key(word.lower()):
+    continue
+</t>
+<t tx="ekr.20070703172620.39">def findNextWord(self,p):
+    """Scan for the next word, leaving the result in the work widget"""
+
+    c = self.c ; p = p.copy()
+    while 1:
+        s = self.workCtrl.getAllText()
+        i = self.workCtrl.getInsertPoint()
+        while i &lt; len(s) and not g.isWordChar1(s[i]):
+            i += 1
+        # g.trace('p',p and p.headString(),'i',i,'len(s)',len(s))
+        if i &lt; len(s):
+            # A non-empty word has been found.
+            j = i
+            while j &lt; len(s) and g.isWordChar(s[j]):
+                j += 1
+            word = s[i:j]
+            # This trace verifies that all words have been checked.
+            # g.trace(repr(word))
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(i,j,insert=j)
+            return p,word
+        else:
+            # End of the body text.
+            p.moveToThreadNext()
+            if not p: break
+            self.workCtrl.delete(0,'end')
+            self.workCtrl.insert(0,p.bodyString())
+            for w in (self.workCtrl,c.frame.body.bodyCtrl):
+                c.widgetWantsFocusNow(w)
+                w.setSelectionRange(0,0,insert=0)
+    return None,None</t>
+<t tx="ekr.20070703172620.40">@nocolor
+https://sourceforge.net/forum/message.php?msg_id=4385699
+By: rich_ries
+
+From: Rich
+
+Trying the Group Operations gave the following error message:
+
+Traceback (most recent call last):
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoGlobals.py",
+line 2553, in doHook
+    return f(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 91, in doPlugins
+    return doHandlersForTag(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 70, in doHandlersForTag
+    val = callTagHandler(bunch,tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\src\leoPlugins.py",
+line 49, in callTagHandler
+    result = handler(tag,keywords)
+  File "C:\Software Engineering\Literate Programming\Leo\plugins\groupOperations.py",
+line 235, in drawImages
+    if lassoer.moveNode and lassoer.moveNode.isVisible():
+TypeError: isVisible() takes exactly 2 arguments (1 given)
+
+=====================================================================
+
+--Rich
+
+</t>
+<t tx="ekr.20070703172620.41"># Moving into a chapters node from the main chapter does an automatic hoist.</t>
+<t tx="ekr.20070703172620.42">def selectChapterForPosition (self,p):
+
+    '''
+    Select a chapter containing position p.
+    Do nothing if p if p does not exist or is in the presently selected chapter.
+    '''
+    cc = self ; c = cc.c
+
+    if not p or not c.positionExists(p):
+        return
+
+    theChapter = cc.getSelectedChapter()
+    if not theChapter: return
+
+    # g.trace('selected:',theChapter.name)
+    # First, try the presently selected chapter.
+    firstName = theChapter.name
+    if firstName == 'main' or theChapter.positionIsInChapter(p):
+        return # Bug fix: 7/2/07. All position are in the main chapter.
+
+    for name in cc.chaptersDict.keys():
+        if name not in (firstName,'main'):
+            theChapter = cc.chaptersDict.get(name)
+            if theChapter.positionIsInChapter(p):
+                cc.selectChapterByName(name)
+                return
+    else:
+        cc.selectChapterByName('main')
+</t>
+<t tx="ekr.20070703172620.43">@nocolor
+
+- Made inter-outline moves &amp; copies work again.
+- Also, warn that inter-outline clones transfer have no effect.  An oversight in the original code?
+- Note: none of these operations are presently undoable.
+
+In short, this code is no worse than it has ever been, but I cannot recommend either this code or its functionality as a model of good practice.
+</t>
+<t tx="ekr.20070703172620.44">def getLeoOutlineFromClipboard (self,s,reassignIndices=True):
+
+    '''Read a Leo outline from string s in clipboard format.'''
+
+    try:
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=True)
+        v = self.getLeoOutlineHelper(s,reassignIndices,checking=False)
+    except invalidPaste:
+        v = None
+        g.es("Invalid Paste As Clone",color="blue")
+    except BadLeoFile:
+        v = None
+        g.es("The clipboard is not valid ",color="blue")
+
+    return v
+
+getLeoOutline = getLeoOutlineFromClipboard # for compatibility</t>
+<t tx="ekr.20070703172620.45">def finishPaste(self,reassignIndices=True):
+
+    """Finish pasting an outline from the clipboard.
+
+    Retain clone links if reassignIndices is False."""
+
+    c = self.c
+    current = c.currentPosition()
+    if reassignIndices:
+        &lt;&lt; reassign tnode indices &gt;&gt;
+    c.selectPosition(current)
+    return current
+</t>
+<t tx="ekr.20070703172620.46">@ putLeoOutline calls assignFileIndices (when copying nodes) so that vnode can be associated with tnodes.
+However, we must _reassign_ the indices here so that no "False clones" are created.
+@c
+
+nodeIndices = g.app.nodeIndices
+
+current.clearVisitedInTree()
+
+for p in current.self_and_subtree_iter():
+    t = p.v.t
+    if not t.isVisited():
+        t.setVisited()
+        # New in Leo 4.4.2 b2: use gnx's.  maxTnodeIndex is no longer used.
+        t.fileIndex = nodeIndices.getNewIndex()
+        # g.trace(t.fileIndex)</t>
+<t tx="ekr.20070703172620.47">def getLeoOutlineHelper (self,s,reassignIndices,checking):
+
+    self.checking = checking
+    self.usingClipboard = True
+    self.fileBuffer = s ; self.fileIndex = 0
+    self.descendentUnknownAttributesDictList = []
+    v = None
+
+    self.tnodesDict = {}
+    if not reassignIndices:
+        &lt;&lt; recreate tnodesDict &gt;&gt;
+    try:
+        self.getXmlVersionTag()
+        self.getXmlStylesheetTag()
+        self.getTag("&lt;leo_file&gt;")
+        self.getClipboardHeader()
+        self.getDummyElements()
+        self.getVnodes(reassignIndices)
+        self.getTnodes()
+        self.getTag("&lt;/leo_file&gt;")
+        if not checking:
+            v = self.finishPaste(reassignIndices)
+    finally:
+        self.fileBuffer = None ; self.fileIndex = 0
+        self.usingClipboard = False
+        self.tnodesDict = {}
+    return v
+</t>
+<t tx="ekr.20070703172620.48">nodeIndices = g.app.nodeIndices
+
+self.tnodesDict = {}
+
+for t in self.c.all_unique_tnodes_iter():
+    tref = t.fileIndex
+    if nodeIndices.isGnx(tref):
+        tref = nodeIndices.toString(tref)
+    self.tnodesDict[tref] = t
+
+if 0:
+    print '-'*40
+    for key in self.tnodesDict.keys():
+        print key,self.tnodesDict[key]
+</t>
+<t tx="ekr.20070703172620.49">def getClipboardHeader (self):
+
+    if self.getOpenTag("&lt;leo_header"):
+        return # &lt;leo_header&gt; or &lt;leo_header/&gt; has been seen.
+
+    while 1:
+        if self.matchTag("file_format="):
+            self.getDquote() ; self.getLong() ; self.getDquote()
+        elif self.matchTag("tnodes="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("max_tnode_index="):
+            self.getDquote() ; self.getLong() ; self.getDquote() # no longer used
+        elif self.matchTag("&gt;&lt;/leo_header&gt;"): # new in 4.2: allow this form.
+            break
+        else:
+            self.getTag("/&gt;")
+            break</t>
+<t tx="ekr.20070703172620.50"># Added calls to c,p = g.getTestVars()
+
+(fixed) leoNodes.py:2801: No global (p) found
+(fixed) leoNodes.py:2804: No global (c) found
+
+(fixed) leoConfig.py:1739: No global (c) found
+
+(fixed) leoKeys.py:4446: No global (c) found
+
+(fixed) leoEditCommands.py:7823: No global (c) found
+(fixed) leoEditCommands.py:8508: No global (e) found
+</t>
+<t tx="ekr.20070703172620.51"></t>
+<t tx="ekr.20070703172620.52">selectEditorLockout = False
+
+def selectEditor(self,w):
+
+    '''Select editor w and node w.leo_p.'''
+
+    #  Called by body.onClick and whenever w must be selected.
+
+    if self.selectEditorLockout:
+        return
+
+    if w and self.bodyCtrl == w:
+        # Bug fix: 7-3-2007.
+        c = self.c
+        if w.leo_p and w.leo_p != c.currentPosition():
+            c.selectPosition(w.leo_p)
+            c.bodyWantsFocusNow()
+        return
+
+    try:
+        val = None
+        self.selectEditorLockout = True
+        val = self.selectEditorHelper(w)
+    finally:
+        self.selectEditorLockout = False
+
+    return val # Don't put a return in a finally clause.
+</t>
+<t tx="ekr.20070703172620.53">def selectEditorHelper (self,w):
+
+    c = self.c ; cc = c.chapterController ; d = self.editorWidgets
+
+    if not w.leo_p:
+        g.trace('no w.leo_p') 
+        return 'break'
+
+    if 0:
+        g.trace('==1',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    self.inactivateActiveEditor(w)
+
+    # The actual switch.
+    self.frame.bodyCtrl = self.bodyCtrl = w # Must change both ivars!
+    w.leo_active = True
+
+    self.switchToChapter(w)
+    self.selectLabel(w)
+
+    if not self.ensurePositionExists(w):
+        g.trace('***** no position editor!')
+        return 'break'
+
+    if 0:
+        g.trace('==2',id(w),
+            hasattr(w,'leo_chapter') and w.leo_chapter and w.leo_chapter.name,
+            hasattr(w,'leo_p') and w.leo_p and w.leo_p.headString())
+
+    c.frame.tree.expandAllAncestors(w.leo_p)
+    c.selectPosition(w.leo_p,updateBeadList=True) # Calls assignPositionToEditor.
+    c.recolor_now()
+    &lt;&lt; restore the selection, insertion point and the scrollbar &gt;&gt;
+    c.bodyWantsFocusNow()
+    return 'break'</t>
+<t tx="ekr.20070703172620.54"># g.trace('active:',id(w),'scroll',w.leo_scrollBarSpot,'ins',w.leo_insertSpot)
+
+if w.leo_insertSpot:
+    w.setInsertPoint(w.leo_insertSpot)
+else:
+    w.setInsertPoint(0)
+
+if w.leo_scrollBarSpot is not None:
+    first,last = w.leo_scrollBarSpot
+    w.yview('moveto',first)
+else:
+    w.seeInsertPoint()
+
+if w.leo_selection:
+    try:
+        start,end = w.leo_selection
+        w.setSelectionRange(start,end)
+    except Exception:
+        pass
+</t>
+<t tx="ekr.20070703172620.55"></t>
+<t tx="ekr.20070703172620.56"></t>
+<t tx="ekr.20070703172620.57">def es_print(s,*args,**keys):
+
+    print g.toEncodedString(s,'ascii')
+
+    if g.app.gui and not g.app.gui.isNullGui and not g.unitTesting:
+        g.es(s,*args,**keys)
+</t>
+<t tx="ekr.20070703172620.58">if g.unitTesting:
+    if 0: # Not usually enabled.
+        g.es_print('\ntest of es_print: Ă',color='red')
+</t>
+<t tx="ekr.20070703172620.59">def es(s,*args,**keys):
+    # print 'es','app.log',repr(app.log),'log.isNull',not app.log or app.log.isNull,repr(s)
+    log = app.log
+    if app.killed:
+        return
+    newline = keys.get("newline",True)
+    color = keys.get('color')
+    tabName = keys.get('tabName','Log')
+        # Default goes to log pane *Not* the presently active pane.
+    if color == 'suppress': return # New in 4.3.
+    if type(s) != type("") and type(s) != type(u""): # 1/20/03
+        s = repr(s)
+    for arg in args:
+        if type(arg) != type("") and type(arg) != type(u""): # 1/20/03
+            arg = repr(arg)
+        s = s + ", " + arg
+    if app.batchMode:
+        if app.log:
+            app.log.put(s)
+    elif g.unitTesting:
+        if log and not log.isNull:
+            s = g.toEncodedString(s,'ascii')
+            if newline: print s
+            else: print s,
+    else:
+        if log and log.isNull:
+            pass
+        elif log:
+            # print 'g.es',s
+            log.put(s,color=color,tabName=tabName)
+            for ch in s:
+                if ch == '\n': log.newlines += 1
+                else: log.newlines = 0
+            if newline:
+                g.ecnl(tabName=tabName) # only valid here
+        elif newline:
+            app.logWaiting.append((s+'\n',color),)
+            # print s
+        else:
+            app.logWaiting.append((s,color),)
+            # print s,
+</t>
+<t tx="ekr.20070703172620.60"></t>
+<t tx="ekr.20070703172620.61">@nocolor
+
+For full details, see: http://sourceforge.net/forum/forum.php?thread_id=1765685&amp;forum_id=10226
+
+What I did:
+
+- Added support for @unit-tests: the entire tree is copied to the dynamic.leo file
+- Put most unit tests in @thin unitTests.txt (with @all).
+- Added support for -silent command-line option.  It suppresses most startup messages.
+- Modified run-unit-test command so it runs dynamically.
+    - The new commands are run-unit-tests, run-all-unit-tests,
+      run-unit-tests-locally and run-all-unit-tests-locally.
+- Created unit test buttons with Alt-4 and Alt-5 bindings.
+- Tell how long it took to create .leo file.
+- @testcase not needed: @suite is good enough
+
+@color</t>
+<t tx="ekr.20070703172620.62">def doTests(c,all,verbosity=1):
+
+    p = c.currentPosition() ; p1 = p.copy()
+    try:
+        g.unitTesting = g.app.unitTesting = True
+        g.app.unitTestDict["fail"] = False
+        g.app.unitTestDict['c'] = c
+        g.app.unitTestDict['g'] = g
+        g.app.unitTestDict['p'] = p and p.copy()
+        if all: theIter = c.all_positions_iter()
+        else:   theIter = p.self_and_subtree_iter()
+
+        # c.undoer.clearUndoState() # New in 4.3.1.
+        changed = c.isChanged()
+        suite = unittest.makeSuite(unittest.TestCase)
+        for p in theIter:
+            if isTestNode(p): # @test
+                test = makeTestCase(c,p)
+                if test: suite.addTest(test)
+            elif isSuiteNode(p): # @suite
+                test = makeTestSuite(c,p)
+                if test: suite.addTest(test)
+            # elif isTestCaseNode(p): # @testcase or @test-case
+                # test = makeTestClass(c,p)
+                # if test: suite.addTest(test)
+
+        # Verbosity: 1: print just dots.
+        unittest.TextTestRunner(verbosity=verbosity).run(suite)
+    finally:
+        c.setChanged(changed) # Restore changed state.
+        c.selectPosition(p1)
+        g.unitTesting = g.app.unitTesting = False
+</t>
+<t tx="ekr.20070703172620.63">class generalTestCase(unittest.TestCase):
+
+    """Create a unit test from a snippet of code."""
+
+    @others
+</t>
+<t tx="ekr.20070703172620.64">def __init__ (self,c,p):
+
+     # Init the base class.
+    unittest.TestCase.__init__(self)
+
+    self.c = c
+    self.p = p.copy()
+</t>
+<t tx="ekr.20070703172620.65">def fail (self,msg=None):
+
+    """Mark a unit test as having failed."""
+
+    __pychecker__ = '--no-argsused'
+        #  msg needed so signature matches base class.
+
+    import leoGlobals as g
+
+    g.app.unitTestDict["fail"] = g.callers()
+</t>
+<t tx="ekr.20070703172620.66">def setUp (self):
+
+    c = self.c ; p = self.p
+
+    c.selectPosition(p)
+</t>
+<t tx="ekr.20070703172620.67">def tearDown (self):
+
+    pass
+
+    # To do: restore the outline.
+</t>
+<t tx="ekr.20070703172620.68">def runTest (self,define_g = True):
+
+    c = self.c ; p = self.p.copy()
+    script = g.getScript(c,p).strip()
+    self.assert_(script)
+
+    # New in Leo 4.4.3: always define the entries in g.app.unitTestDict.
+    g.app.unitTestDict = {'c':c,'g':g,'p':p and p.copy()}
+
+    if define_g:
+        d = {'c':c,'g':g,'p':p}
+    else:
+        d = {}
+
+    # Execute the script. Let unit test handle any errors!
+    if 0: # debug
+        import pdb
+        pdb.run(script+'\n',d)
+    else:
+        exec script + '\n' in d
+</t>
+<t tx="ekr.20070703172620.69">def shortDescription (self):
+
+    return self.p.headString() + '\n'
+</t>
+<t tx="ekr.20070703172620.70">@ This code executes the script in an @suite node.  This code assumes:
+- The script creates a one or more unit tests.
+- The script puts the result in g.app.scriptDict["suite"]
+@c
+
+def makeTestSuite (c,p):
+
+    """Create a suite of test cases by executing the script in an @suite node."""
+
+    p = p.copy()
+
+    h = p.headString()
+    script = g.getScript(c,p).strip()
+    if not script:
+        print "no script in %s" % h
+        return None
+
+    try:
+        exec script + '\n' in {'c':c,'g':g,'p':p}
+        suite = g.app.scriptDict.get("suite")
+        if not suite:
+            print "%s script did not set g.app.scriptDict" % h
+        return suite
+    except:
+        g.trace('Exception creating test cases for %s' % p.headString())
+        g.es_exception()
+        return None
+</t>
+<t tx="ekr.20070703172620.71">def makeTestCase (c,p):
+
+    p = p.copy()
+
+    if p.bodyString().strip():
+        return generalTestCase(c,p)
+    else:
+        return None
+</t>
+<t tx="ekr.20070703172620.72">@
+It is essential to rotect them with::
+
+     if g.unitTesting:
+
+A new unit test ensures that this is so.</t>
+<t tx="ekr.20070703172620.73">@nocolor
+http://sourceforge.net/forum/message.php?msg_id=4382336
+By: rich_ries
+
+&gt;&gt; Offhand, I don't have a great solution to this.
+&gt;&gt; Anyone have an idea?
+
+The rst3 plugin sends its error message solely to the console; can not
+the spell-check do the same?
 </t>
 </tnodes>
 </leo_file>
