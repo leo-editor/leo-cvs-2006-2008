@@ -3,7 +3,7 @@
 <leo_file>
 <leo_header file_format="2" tnodes="0" max_tnode_index="0" clone_windows="0"/>
 <globals body_outline_ratio="0.448871181939">
-	<global_window_position top="10" left="344" height="864" width="897"/>
+	<global_window_position top="10" left="344" height="844" width="897"/>
 	<global_log_window_position top="0" left="0" height="0" width="0"/>
 </globals>
 <preferences/>
@@ -730,11 +730,13 @@
 </v>
 </v>
 <v t="ekr.20070628083442"><vh>Chapter 20: Unit testing with Leo</vh>
-<v t="ekr.20070628083442.1"><vh>@rst html\unitTesting.html</vh>
+<v t="ekr.20070628083442.1" a="E"><vh>@rst html\unitTesting.html</vh>
 <v t="ekr.20070628083442.2"><vh>@rst-no-head links</vh></v>
+<v t="ekr.20070704074747"><vh>Overview</vh></v>
 <v t="ekr.20070628084351"><vh>Using @test nodes</vh></v>
-<v t="ekr.20070630083055"><vh>Using @unit-test nodes</vh></v>
 <v t="ekr.20070628094515.1"><vh>Using @suite nodes</vh></v>
+<v t="ekr.20070704074439"><vh>How unit tests commands find tests</vh></v>
+<v t="ekr.20070630083055"><vh>Including other nodes in unit tests</vh></v>
 <v t="ekr.20070628090657.2"><vh>Unit test buttons</vh></v>
 <v t="ekr.20070628094515.2"><vh>How the unit test commands work</vh></v>
 <v t="ekr.20070628083442.4"><vh>@rst-no-head end stuff</vh></v>
@@ -1057,7 +1059,7 @@
 </v>
 </v>
 </v>
-<v t="edream.110203163054.46" a="ET"><vh>Release Notes</vh>
+<v t="edream.110203163054.46" a="E"><vh>Release Notes</vh>
 <v t="ekr.20060620094033"><vh>What's New...</vh>
 <v t="ekr.20070513113903" a="E"><vh>What's New in Leo 4.4.3</vh>
 <v t="ekr.20070513113931"><vh>@rst html\new-4-4-3.html</vh>
@@ -3199,7 +3201,7 @@
 </v>
 </v>
 <v t="edream.110203163054.63" a="E"><vh>Latest version</vh>
-<v t="ekr.20070702162421" a="V"><vh>4.4.3.1</vh>
+<v t="ekr.20070702162421" a="TV"><vh>4.4.3.1</vh>
 <v t="ekr.20070703095207.1"><vh>Bugs</vh>
 <v t="ekr.20070703095207.2"><vh>Fixed improper can not open myLeoSettings message</vh></v>
 <v t="ekr.20070703095207.5"><vh>Fixed import problem in leoDynamicTest.py</vh></v>
@@ -30963,22 +30965,10 @@ verbose=True
 Chapter 20: Unit testing with Leo
 ############################################################
 
-This chapter describes how you can execute Python unit test from within Leo outlines.  
+This chapter describes how you can execute Python unit test from within Leo outlines.
 
-Leo's **unit test commands**, run-unit-tests and run-all-unit-tests, run the unit
-tests created @test and @suite nodes. The run-unit-tests command runs all unit
-tests in the presently selected part of the Leo outline; the run-all-unit-tests
-command runs all unit tests in the entire Leo outline.
-
-**You must be running Leo from a console to see the output the unit tests**. Leo's
-unit test commands run all the unit tests using the standard unittest text test
-runner, and the output of the unit tests appears in the console.
-
-Leo's unit test commands run all tests in a separate process, so unit tests can
-never have any side effects. Running unit tests never changes the outline from
-which the tests were run.
-
-leoPy.leo, Leo's main source-code file, contains many examples of using @test and @suite nodes.</t>
+.. contents::
+    </t>
 <t tx="ekr.20070628083442.2">.. Links
 
 .. WARNING: image targets may not have upper case letters!
@@ -31422,5 +31412,40 @@ In short, this code is no worse than it has ever been.</t>
 A new unit test ensures that this is so.</t>
 <t tx="ekr.20070703095207.73">http://sourceforge.net/forum/message.php?msg_id=4382336
 </t>
+<t tx="ekr.20070704074439">As described later, Leo's unit tests commands copy various nodes to
+test/dynamicUnitTest.leo, and then run these unit tests in a separate process.
+
+The run-all-unit-tests command copies all @test, @suite nodes @unit-tests trees
+and their descendants to test/dynamicUnitTest.leo.
+
+The run-unit-tests command searchs for copies nodes to test/dynamicUnitTest.leo
+as follows:
+    
+1. The run-unit-test command copies all @test and @suite nodes in all
+   @mark-for-unit-tests trees.
+
+2. The run-unit-test command copies all @test and @suite nodes in the presently
+   selected tree. If the presently selected tree contains no such tree, it looks
+   up the tree looking for @test, @suite and @unit-test nodes. If such a node is
+   found, the run-unit-test command copies all @test and @suite nodes in the
+   nodes tree.
+   
+In practice, these rules usually run the intended unit tests, namely all tests
+in @mark-for-unit-tests trees and all unit tests 'near' the presently selected
+node.</t>
+<t tx="ekr.20070704074747">Leo's **unit test commands**, run-unit-tests and run-all-unit-tests, run the unit
+tests created @test and @suite nodes. The run-unit-tests command runs all unit
+tests in the presently selected part of the Leo outline; the run-all-unit-tests
+command runs all unit tests in the entire Leo outline.
+
+**You must be running Leo from a console to see the output the unit tests**. Leo's
+unit test commands run all the unit tests using the standard unittest text test
+runner, and the output of the unit tests appears in the console.
+
+Leo's unit test commands run all tests in a separate process, so unit tests can
+never have any side effects. Running unit tests never changes the outline from
+which the tests were run.
+
+leoPy.leo, Leo's main source-code file, contains many examples of using @test and @suite nodes.</t>
 </tnodes>
 </leo_file>
