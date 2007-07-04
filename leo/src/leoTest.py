@@ -776,7 +776,7 @@ def runTestsExternally (c,all):
                 h = p.headString()
                 for s in self.tags:
                     if h.startswith(s):
-                        self.root = p.copy()
+                        self.root = currentPosition()
                         return True
 
             # Next, look up the tree.
@@ -791,7 +791,7 @@ def runTestsExternally (c,all):
 
             # Finally, look for all @mark-for-unit-test nodes.
             for p in c.allNodes_iter():
-                if p.headString().startswith('@mark-for-unit-tests'):
+                if p.headString().startswith('@mark-for-unit-test'):
                     return True
 
             return False
