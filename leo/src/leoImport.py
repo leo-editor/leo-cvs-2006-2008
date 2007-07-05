@@ -2462,7 +2462,7 @@ class baseLeoImportCommands:
     #@-node:ekr.20070703124805:C scanner
     #@+node:ekr.20070703123334.2:Python scanner & helpers
     #@+node:ekr.20070705091716:pythonUnitTest
-    def pythonUnitTest (self,p,s,fileName,atAuto=False):
+    def pythonUnitTest (self,p,s,fileName,atAuto=False,strict=False):
 
         '''
         Run a unit test of the Python parser,
@@ -2485,7 +2485,7 @@ class baseLeoImportCommands:
             assert child
             h = g.choose(atAuto,'@auto ' + fileName,fileName)
             child.initHeadString(h)
-            ic.scanPythonText (s=s,parent=child.copy(),atAuto=atAuto)
+            ic.scanPythonText (s=s,parent=child.copy(),atAuto=atAuto,strict=strict)
         finally:
             c.endUpdate()
         if 0:
@@ -2496,9 +2496,9 @@ class baseLeoImportCommands:
         return child
     #@-node:ekr.20070705091716:pythonUnitTest
     #@+node:ekr.20070703122141.99:scanPythonText
-    def scanPythonText (self,s,parent,atAuto=False):
+    def scanPythonText (self,s,parent,atAuto=False,strict=False):
 
-        scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
+        scanner = self.pythonScanner(importCommands=self,atAuto=atAuto,strict=strict)
 
         # Step 1: generate the nodes,
         # including all directive and section references.
@@ -2517,13 +2517,15 @@ class baseLeoImportCommands:
 
         #@    @+others
         #@+node:ekr.20070703122141.101: __init__
-        def __init__ (self,importCommands,atAuto):
+        def __init__ (self,importCommands,atAuto,strict):
 
             importCommands.baseScannerClass.__init__(self,importCommands,language='python')
 
             self.c = importCommands.c
             self.atAuto = atAuto
             self.importCommands = importCommands
+            self.root = None # The top-level node of the generated tree.
+            self.strict = strict # True: all lines must match exactly.
 
         #@-node:ekr.20070703122141.101: __init__
         #@+node:ekr.20070703122141.102:check & helpers
@@ -2607,15 +2609,43 @@ class baseLeoImportCommands:
         #@+node:ekr.20070703122141.104:checkTrialWrite
         def checkTrialWrite (self):
 
-            '''Return True if a trial write produces the original file.
-
-            For @auto, verify that no node contains any Leo directives or section references.
+            '''
+            Return True if a trial write produces the original file.
             '''
 
-            ok = True
+            # Probably not: For @auto, verify that no node contains any Leo directives or section references.
+
+            c = self.c ; at = c.atFileCommands
+
+            g.trace(self.root)
+            at.write(self.root,nosentinels=True,thinFile=False,scriptWrite=False,toString=True)
+            s1 = self.file_s
+            s2 = at.stringOutput
+            ok = s1 == s2
+            if ok:
+                pass
+                g.trace('***success***')
+            else:
+                lines1 = g.splitLines(s1)
+                lines2 = g.splitLines(s2)
+                if not self.strict: # ignore blank lines.
+                    lines1 = [z for z in lines1 if z.strip()]
+                    lines2 = [z for z in lines2 if z.strip()]
+                g.trace('***mismatch','len(s1)',len(s1),'len(s2)',len(s2))
+                n = min(len(s1),len(s2))
+                for i in xrange(n):
+                    if lines1[i] != lines2[i]:
+                        print 'first match at line %d' % (i)
+                        print 'original line: ', repr(lines1[i])
+                        print 'generated line:', repr(lines2[i])
+                        break
+                else:
+                    print 'different number of lines'
+                if 0:
+                    print
+                    for i in xrange(len(lines2)):
+                        print '%3d: %s' % (i,repr(lines2[i]))
             return ok
-
-
         #@-node:ekr.20070703122141.104:checkTrialWrite
         #@-node:ekr.20070703122141.102:check & helpers
         #@+node:ekr.20070703122141.105:createClassNodeText
@@ -2637,13 +2667,35 @@ class baseLeoImportCommands:
                 j = g.skip_python_string(s,j)
                 if j != len(s): # No scanning error.
                     i = j ; docStringSeen = True
-
+                    ### Get the trailing newline, so we can add an @others after it.
+                    i = g.skip_line(s,j)
             body = s[start:i]
             body = self.undentBody(body)
-            if docStringSeen: body = body + '\n'
+            ### if docStringSeen: body = body + '\n'
 
             return i,prefix,body
         #@-node:ekr.20070703122141.105:createClassNodeText
+        #@+node:ekr.20070705144309:createDeclsNode
+        def createDeclsNode (self,s,parent,indent_parent_ref_flag):
+
+            if self.atAuto:
+                # Create the node for the decls.
+                headline = self.methodName + ' declarations'
+                body = self.undentBody(s)
+                self.createHeadline(parent,body,headline)
+            else:
+                headline = ref = g.angleBrackets(" " + self.methodName + " declarations ")
+                leading_tab = g.choose(indent_parent_ref_flag,self.tab_ws,"")
+
+                # Append the reference to the parent's body.
+                c.appendStringToBody(parent,leading_tab + ref + "\n") # 7/6/02
+
+                # Create the node for the decls.
+                body = self.undentBody(s)
+                if self.treeType == "@root":
+                    body = "@code\n\n" + body
+                self.createHeadline(parent,body,headline)
+        #@-node:ekr.20070705144309:createDeclsNode
         #@+node:ekr.20070703122141.106:createParentText
         def createParentText (self,class_vnode,class_name):
 
@@ -2678,11 +2730,17 @@ class baseLeoImportCommands:
 
         def scan (self,s,parent):
 
-            """Creates a child of parent for each Python function definition seen."""
+            """Create a child of parent for each Python function definition seen."""
 
             c = self.c
-            decls_seen = False ; start = i = 0
+            self.file_s = s
+            self.root = parent.copy()
             self.methodsSeen = False
+            g.trace('treeType',self.treeType)
+            start = i = self.scanPythonDecls(s,0,parent,-1,indent_parent_ref_flag=False)
+            decls_seen = i > 0
+            if decls_seen:
+                self.putRootText(parent)
             while i < len(s):
                 progress = i
                 # g.trace(g.get_line(s,i))
@@ -2691,49 +2749,35 @@ class baseLeoImportCommands:
                 elif ch == '#': i = g.skip_to_end_of_line(s,i)
                 elif ch == '"' or ch == '\'': i = g.skip_python_string(s,i)
                 elif g.is_c_id(ch):
-                    #@            << handle possible Python function or class >>
-                    #@+node:ekr.20070703122141.110:<< handle possible Python function or class >>
-                    if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
-                        isDef = g.match_c_word(s,i,"def")
-                        if not decls_seen:
-                            self.putRootText(parent)
-                            i = start = self.scanPythonDecls(s,start,parent,-1,indent_parent_ref_flag=False)
-                            decls_seen = True
-                            if self.treeType == "@file":
-                                c.appendStringToBody(parent,"@others\n")
-                        if isDef:
-                            i = start = self.scanPythonDef(s,i,start,parent)
-                        else:
-                            i = start = self.scanPythonClass(s,i,start,parent)
+                    if g.match_c_word(s,i,"def"):
+                        i = start = self.scanPythonDef(s,i,start,parent)
+                    elif g.match_word(s,i,"class"):
+                        i = start = self.scanPythonClass(s,i,start,parent)
                     else:
                         i = g.skip_c_id(s,i)
-                    #@-node:ekr.20070703122141.110:<< handle possible Python function or class >>
-                    #@nl
                 else: i += 1
                 assert(progress < i)
             if not decls_seen:
                 self.putRootText(parent)
             #@    << Append a reference to the methods of this file >>
             #@+node:ekr.20070703122141.109:<< Append a reference to the methods of this file >>
+            if self.treeType == "@file":
+                c.appendStringToBody(parent,"@others\n")
+
             if self.treeType == "@root" and self.methodsSeen:
                 c.appendStringToBody(parent,
                     g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
             #@-node:ekr.20070703122141.109:<< Append a reference to the methods of this file >>
             #@nl
-            #@    << Append any unused python text to the parent's body text >>
-            #@+node:ekr.20070703122141.108:<< Append any unused python text to the parent's body text >>
-            # Do nothing if only whitespace is left.
-            i = start ; i = g.skip_ws_and_nl(s,i)
-            if i < len(s):
+            if start < len(s):
                 c.appendStringToBody(parent,s[start:])
-            #@-node:ekr.20070703122141.108:<< Append any unused python text to the parent's body text >>
-            #@nl
         #@-node:ekr.20070703122141.107:scan
         #@+node:ekr.20070703122141.111:scanPythonClass & helper
         def scanPythonClass (self,s,i,start,parent):
 
             """Creates a child node c of parent for the class, and children of c for each def in the class."""
 
+            # g.trace('start',start,'i',i)
             # g.trace(g.get_line(s,i))
             c = self.c
             class_indent = self.getLeadingIndent(s,i)
@@ -2760,16 +2804,16 @@ class baseLeoImportCommands:
             self.methodName = headline
             # Create a node for leading declarations of the class.
             i = self.scanPythonDecls(s,i,class_vnode,class_indent,indent_parent_ref_flag=True)
-            start,i = self.scanPythonClassHelper(s,i,class_indent,class_name,class_vnode)
-            s2 = s[start:i]
-            if s2: c.appendStringToBody(class_vnode,s2)
+            i = self.scanPythonClassHelper(s,i,class_indent,class_name,class_vnode)
             self.methodName = savedMethodName
             return i
         #@+node:ekr.20070703122141.113:scanPythonClassHelper
         def scanPythonClassHelper(self,s,i,class_indent,class_name,class_vnode):
 
+            c = self.c
             indent =  self.getLeadingIndent(s,i)
-            start = i = g.skip_blank_lines(s,i)
+            ###start = i = g.skip_blank_lines(s,i)
+            start = i
             parent_vnode = None
             while i < len(s):
                 progress = i
@@ -2803,14 +2847,18 @@ class baseLeoImportCommands:
                 elif s[i] == '"' or s[i] == '\'': i = g.skip_python_string(s,i)
                 else: i += 1
                 assert(progress < i)
-            return start,i
+
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                ## c.appendStringToBody(class_vnode,self.tab_ws + '@others')
+            ###return start,i
+            return i
         #@-node:ekr.20070703122141.113:scanPythonClassHelper
         #@-node:ekr.20070703122141.111:scanPythonClass & helper
         #@+node:ekr.20070703122141.116:scanPythonDecls
         def scanPythonDecls (self,s,i,parent,indent,indent_parent_ref_flag=True):
 
-            c = self.c
-            done = False ; start = i
+            c = self.c ; done = False ; start = i
             while not done and i < len(s):
                 progress = i
                 # g.trace(g.get_line(s,i))
@@ -2818,7 +2866,7 @@ class baseLeoImportCommands:
                 if ch == '\n':
                     backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
                     i = g.skip_nl(s,i)
-                    # 2/14/03: break on lesser indention.
+                    # break on lesser indention.
                     j = g.skip_ws(s,i)
                     if not g.is_nl(s,j) and not g.match(s,j,"#") and not backslashNewline:
                         lineIndent = self.getLeadingIndent(s,i)
@@ -2840,31 +2888,12 @@ class baseLeoImportCommands:
                     #@nl
                 else: i += 1
                 assert(progress < i)
-            j = g.skip_blank_lines(s,start)
-            if g.is_nl(s,j): j = g.skip_nl(s,j)
-            if j < i:
-                #@        << Create a child node for declarations >>
-                #@+node:ekr.20070703122141.118:<< Create a child node for declarations >>
-                if self.atAuto:
-                    # Create the node for the decls.
-                    headline = self.methodName + ' declarations'
-                    body = self.undentBody(s[j:i])
-                    self.createHeadline(parent,body,headline)
-                else:
-                    headline = ref = g.angleBrackets(" " + self.methodName + " declarations ")
-                    leading_tab = g.choose(indent_parent_ref_flag,self.tab_ws,"")
-
-                    # Append the reference to the parent's body.
-                    c.appendStringToBody(parent,leading_tab + ref + "\n") # 7/6/02
-
-                    # Create the node for the decls.
-                    body = self.undentBody(s[j:i])
-                    if self.treeType == "@root":
-                        body = "@code\n\n" + body
-                    self.createHeadline(parent,body,headline)
-                #@-node:ekr.20070703122141.118:<< Create a child node for declarations >>
-                #@nl
-            return i
+            decls = s[start:i]
+            if decls.strip():
+                self.createDeclsNode(decls,parent,indent_parent_ref_flag)
+                return i
+            else:
+                return start
         #@-node:ekr.20070703122141.116:scanPythonDecls
         #@+node:ekr.20070703122141.119:scanPythonDef
         def scanPythonDef (self,s,i,start,parent):
@@ -2884,7 +2913,7 @@ class baseLeoImportCommands:
             else: return i
             #@-node:ekr.20070703122141.120:<< set headline or return i >>
             #@nl
-            i = self.skipPythonDef(s,i,start)
+            i = self.skipPythonDef(s,i) ###,start)
             # Create the def node.
             savedMethodName = self.methodName
             self.methodName = headline
@@ -2898,7 +2927,7 @@ class baseLeoImportCommands:
                 self.methodsSeen = True
 
             # Create body.
-            start = g.skip_blank_lines(s,start)
+            ### start = g.skip_blank_lines(s,start)
             body = s[start:i]
             body = self.undentBody(body)
 
@@ -2910,12 +2939,12 @@ class baseLeoImportCommands:
             return i
         #@-node:ekr.20070703122141.119:scanPythonDef
         #@+node:ekr.20070703122141.124:skipPythonDef
-        def skipPythonDef (self,s,i,start):
+        def skipPythonDef (self,s,i): ### ,start):
 
             # g.trace(g.get_line(s,i))
 
             # Set defIndent to the indentation of the def line.
-            defIndent = self.getLeadingIndent(s,start)
+            defIndent = self.getLeadingIndent(s,i) ### was start)
             parenCount = 0
             #@    << skip the entire signature >>
             #@+node:ekr.20070703122141.125:<< skip the entire signature >>
@@ -3139,8 +3168,8 @@ class baseLeoImportCommands:
     # This code converts a vnode to noweb text as follows:
     # 
     # Convert @doc to @
-    # Convert @root or @code to << name >>=, assuming the headline contains << 
-    # name >>
+    # Convert @root or @code to < < name > >=, assuming the headline contains 
+    # < < name > >
     # Ignore other directives
     # Format doc parts so they fit in pagewidth columns.
     # Output code parts as is.
