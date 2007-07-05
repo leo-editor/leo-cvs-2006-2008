@@ -2741,129 +2741,9 @@ def checkImport (self):
 #@-node:ekr.20070612133404.3:Pass 5: checkImport
 #@-node:ekr.20070324084040.13:class pythonScanner (not ready yet)
 #@-node:ekr.20070703170646:Preliminary @auto code
-#@+node:ekr.20031218072017.2256:OLD scanners & tests
+#@+node:ekr.20031218072017.2256:OLD scanners
 if 0:
     @others
-#@+node:ekr.20070703123618.1:Tests
-#@+node:ekr.20060626083237.2:@test skipPythonDef
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
-#@+node:ekr.20060626083725:<< define s >>
-s = '''\
-def test1():
-    aList = (a,
-b,c)
-# underindented comment.
-    return 1
-
-def test2():
-# underindented comment.
-    pass
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20060626083725:<< define s >>
-#@-node:ekr.20060626083237.2:@test skipPythonDef
-#@+node:ekr.20060627063313:@test skipPythonDef (long lines)
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
-#@+node:ekr.20060627063313.1:<< define s >>
-s = '''\
-def test1(
-        a=2):
-    return 1
-
-def test2(
-a=3):
-    return 2
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20060627063313.1:<< define s >>
-#@-node:ekr.20060627063313:@test skipPythonDef (long lines)
-#@+node:ekr.20060626100102.1:@test scanPythonClass
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('class aClass') and result.endswith("'eggs'"),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('class aClass2') and result.endswith("'twit'"),'result:\n%s' % result
-#@+node:ekr.20060626100102.2:<< define s >>
-s = '''\
-class aClass:
-    def spam():
-        return 'spam'
-# underindented comment line
-    def eggs():
-        return 'eggs'
-
-class aClass2:
-    def twit():
-        return 'twit'
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20060626100102.2:<< define s >>
-#@-node:ekr.20060626100102.1:@test scanPythonClass
-#@-node:ekr.20070703123618.1:Tests
 #@+node:ekr.20070703123334:Python
 #@+node:ekr.20031218072017.2257:scanPythonClass & helpers
 def scanPythonClass (self,s,i,start,parent):
@@ -3578,7 +3458,7 @@ def undentBody (self,s):
 #@-node:ekr.20070203074709:Utilities (should be in base class)
 #@-node:ekr.20070202105339.1:class cScanner
 #@-node:ekr.20070703123334.1:C
-#@-node:ekr.20031218072017.2256:OLD scanners & tests
+#@-node:ekr.20031218072017.2256:OLD scanners
 #@-node:ekr.20070703172330:Import & @auto code
 #@-node:ekr.20031218072017.434:Unused code
 #@-all

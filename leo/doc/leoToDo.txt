@@ -6,7 +6,9 @@
 #@+node:ekr.20070703172130.1:Aha: perfect import *can* correct whitespace
 @nocolor
 
-Aha: the perfect import code *can* correct whitespace (tab, underindented lines) problems that exists in the original files.  When such errors are found, Leo will issue the message:
+Aha: the perfect import code *can* correct whitespace (tab, underindented lines)
+problems that exists in the original files. When such errors are found, Leo will
+issue the message:
 
     'whitepace error: remove the @ignore statement to correct these problems.'
 
@@ -188,7 +190,6 @@ def __init__ (self,c):
     self.encoding = g.app.tkEncoding # 2/25/03: was "utf-8"
     self._forcedGnxPositionList = []
 #@-node:ekr.20031218072017.3207:import.__init__
-#@+node:ekr.20070703123334.2:Python scanner
 #@+node:ekr.20070703122141.65:class baseScannerClass
 class baseScannerClass:
 
@@ -207,16 +208,98 @@ def __init__ (self,importCommands,language):
     self.encoding = ic.encoding
     self.fileName = ic.fileName
     self.fileType = ic.fileType
+    # self._forcedGnxPositionList = []
     self.methodName = ic.methodName
+    self.output_newline = ic.output_newline
     self.rootLine = ic.rootLine
     self.tab_width = ic.getTabWidth()
     self.treeType = ic.treeType
+    # self.web_st = []
+    self.webType = ic.webType
 
     # Compute language ivars.
     self.language = language
     delim1,delim2,delim3 = g.set_delims_from_language(language)
     self.comment_delim = delim1
 #@-node:ekr.20070703122141.66:baseScannerClass.__init__
+#@+node:ekr.20070703122141.77:createHeadline
+def createHeadline (self,parent,body,headline):
+
+    # g.trace("parent,headline:",parent,headline)
+
+    # Create the vnode.
+    p = parent.insertAsLastChild()
+    p.initHeadString(headline,self.encoding)
+
+    # Set the body.
+    if body:
+        self.c.setBodyString(p,body,self.encoding)
+    return p
+#@-node:ekr.20070703122141.77:createHeadline
+#@+node:ekr.20070703122141.78:error
+def error (self,s):
+    g.es(s)
+#@-node:ekr.20070703122141.78:error
+#@+node:ekr.20070703122141.79:getLeadingIndent
+def getLeadingIndent (self,s,i):
+
+    """Return the leading whitespace of a line, ignoring blank and comment lines."""
+
+    width = 0 ; i = g.find_line_start(s,i)
+    while i < len(s):
+        # g.trace(g.get_line(s,i))
+        j = g.skip_ws(s,i) # Bug fix: 2/14/03
+        if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
+            i = g.skip_line(s,i) # ignore blank lines and comment lines.
+        else:
+            i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+
+            break
+
+    # g.trace("returns:",width)
+    return width
+#@-node:ekr.20070703122141.79:getLeadingIndent
+#@+node:ekr.20070703122141.80:isDocStart and isModuleStart
+# The start of a document part or module in a noweb or cweb file.
+# Exporters may have to test for @doc as well.
+
+def isDocStart (self,s,i):
+
+    if not g.match(s,i,"@"):
+        return False
+
+    j = g.skip_ws(s,i+1)
+    if g.match(s,j,"%defs"):
+        return False
+    elif self.webType == "cweb" and g.match(s,i,"@*"):
+        return True
+    else:
+        return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
+
+def isModuleStart (self,s,i):
+
+    if self.isDocStart(s,i):
+        return True
+    else:
+        return self.webType == "cweb" and (
+            g.match(s,i,"@c") or g.match(s,i,"@p") or
+            g.match(s,i,"@d") or g.match(s,i,"@f"))
+#@-node:ekr.20070703122141.80:isDocStart and isModuleStart
+#@+node:ekr.20070703122141.81:massageComment
+def massageComment (self,s):
+
+    """Returns s with all runs of whitespace and newlines converted to a single blank.
+
+    Also removes leading and trailing whitespace."""
+
+    s = s.strip()
+    s = s.replace("\n"," ")
+    s = s.replace("\r"," ")
+    s = s.replace("\t"," ")
+    s = s.replace("  "," ")
+    s = s.strip()
+    return s
+#@-node:ekr.20070703122141.81:massageComment
 #@+node:ekr.20070703122141.67:perfectImport
 def perfectImport (self,fileName,p,testing=False,verbose=False,convertBlankLines=True,verify=True):
 
@@ -394,85 +477,6 @@ else:
 #@-node:ekr.20070703122141.75:<< dump the files >>
 #@-node:ekr.20070703122141.74:<< verify that writing the tree would produce the original file >>
 #@-node:ekr.20070703122141.67:perfectImport
-#@+node:ekr.20070703122141.76:utils
-#@+node:ekr.20070703122141.77:createHeadline
-def createHeadline (self,parent,body,headline):
-
-    # g.trace("parent,headline:",parent,headline)
-
-    # Create the vnode.
-    p = parent.insertAsLastChild()
-    p.initHeadString(headline,self.encoding)
-
-    # Set the body.
-    if body:
-        self.c.setBodyString(p,body,self.encoding)
-    return p
-#@-node:ekr.20070703122141.77:createHeadline
-#@+node:ekr.20070703122141.78:error
-def error (self,s):
-    g.es(s)
-#@-node:ekr.20070703122141.78:error
-#@+node:ekr.20070703122141.79:getLeadingIndent
-def getLeadingIndent (self,s,i):
-
-    """Return the leading whitespace of a line, ignoring blank and comment lines."""
-
-    width = 0 ; i = g.find_line_start(s,i)
-    while i < len(s):
-        # g.trace(g.get_line(s,i))
-        j = g.skip_ws(s,i) # Bug fix: 2/14/03
-        if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
-            i = g.skip_line(s,i) # ignore blank lines and comment lines.
-        else:
-            i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
-
-            break
-
-    # g.trace("returns:",width)
-    return width
-#@-node:ekr.20070703122141.79:getLeadingIndent
-#@+node:ekr.20070703122141.80:isDocStart and isModuleStart
-# The start of a document part or module in a noweb or cweb file.
-# Exporters may have to test for @doc as well.
-
-def isDocStart (self,s,i):
-
-    if not g.match(s,i,"@"):
-        return False
-
-    j = g.skip_ws(s,i+1)
-    if g.match(s,j,"%defs"):
-        return False
-    elif self.webType == "cweb" and g.match(s,i,"@*"):
-        return True
-    else:
-        return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
-
-def isModuleStart (self,s,i):
-
-    if self.isDocStart(s,i):
-        return True
-    else:
-        return self.webType == "cweb" and (
-            g.match(s,i,"@c") or g.match(s,i,"@p") or
-            g.match(s,i,"@d") or g.match(s,i,"@f"))
-#@-node:ekr.20070703122141.80:isDocStart and isModuleStart
-#@+node:ekr.20070703122141.81:massageComment
-def massageComment (self,s):
-
-    """Returns s with all runs of whitespace and newlines converted to a single blank.
-
-    Also removes leading and trailing whitespace."""
-
-    s = s.strip()
-    s = s.replace("\n"," ")
-    s = s.replace("\r"," ")
-    s = s.replace("\t"," ")
-    s = s.replace("  "," ")
-    s = s.strip()
-    return s
-#@-node:ekr.20070703122141.81:massageComment
 #@+node:ekr.20070703122141.82:setEncoding
 def setEncoding (self):
 
@@ -602,8 +606,185 @@ def undentBody (self,s):
         result += line
     return result
 #@-node:ekr.20070703122141.88:undentBody
-#@-node:ekr.20070703122141.76:utils
 #@-node:ekr.20070703122141.65:class baseScannerClass
+#@+node:ekr.20070703123618.2:Python tests
+#@+node:ekr.20070703181153:@mark-for-unit-tests Ready
+#@+node:ekr.20070703122141.128:@test scanPythonText
+if g.unitTesting:
+
+    ic = c.importCommands
+    c,p = g.getTestVars()
+
+    if 1:
+        fileName = g.os_path_abspath(g.os_path_join(g.app.loadDir,'leoTest.py'))
+        # print '@test scanPythonText: path',path
+        f = file(fileName)
+        s = f.read()
+        f.close()
+    else:
+        s = '''\
+def spam():
+    pass
+'''
+
+    # Duplicate processing in ic command
+    junk,ic.fileName = g.os_path_split(fileName)
+    ic.methodName,ic.fileType = g.os_path_splitext(ic.fileName)
+    ic.setEncoding()
+
+    ic.scanPythonText (s=s,parent=p.copy(),atAuto=True)
+
+    if 1:
+        nodes = [z for z in p.subtree_iter()]
+        print 'Generated tree has %d nodes' % len(nodes)
+    else:
+        g.trace('***** generated tree...')
+        for z in p.subtree_iter():
+            print '.'*z.level(),z.headString()
+#@-node:ekr.20070703122141.128:@test scanPythonText
+#@-node:ekr.20070703181153:@mark-for-unit-tests Ready
+#@+node:ekr.20070703181153.1:Not ready
+#@+node:ekr.20070703123618.3:@@test skipPythonDef
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    self = c.importCommands
+    scanner = pythonScanner(self,atAuto)
+
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
+#@+node:ekr.20070703123618.4:<< define s >>
+s = '''\
+def test1():
+    aList = (a,
+b,c)
+# underindented comment.
+    return 1
+
+def test2():
+# underindented comment.
+    pass
+'''
+
+s = g.adjustTripleString(s,self.tab_width)
+#@-node:ekr.20070703123618.4:<< define s >>
+#@-node:ekr.20070703123618.3:@@test skipPythonDef
+#@+node:ekr.20070703123618.5:@@test skipPythonDef (long lines)
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    self = c.importCommands
+    scanner = pythonScanner(self,atAuto)
+
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
+
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
+#@+node:ekr.20070703123618.6:<< define s >>
+s = '''\
+def test1(
+        a=2):
+    return 1
+
+def test2(
+a=3):
+    return 2
+'''
+
+s = g.adjustTripleString(s,self.tab_width)
+#@-node:ekr.20070703123618.6:<< define s >>
+#@-node:ekr.20070703123618.5:@@test skipPythonDef (long lines)
+#@+node:ekr.20070703123618.7:@@test scanPythonClass
+if g.unitTesting:
+
+    c,p = g.getTestVars()
+    self = c.importCommands
+    scanner = pythonScanner(self,atAuto)
+
+    # global c # Get syntax warning if this is not first.
+    # if self: c = self.c             # Run from @test node: c not global
+    # else: self = c.importCommands   # Run from @suite: c *is* global
+
+    d = g.scanDirectives(c)
+    self.tab_width = d.get("tabwidth")
+    verbose = False
+    << define s >>
+    start = 0
+    i = self.skipPythonDef(s,i=0,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('class aClass') and result.endswith("'eggs'"),'result:\n%s' % result
+    start = i
+    i = self.skipPythonDef(s,i=i,start=start)
+    result = s[start:i].strip()
+    if verbose: g.trace(result)
+    assert result.startswith('class aClass2') and result.endswith("'twit'"),'result:\n%s' % result
+#@+node:ekr.20070703123618.8:<< define s >>
+s = '''\
+class aClass:
+    def spam():
+        return 'spam'
+# underindented comment line
+    def eggs():
+        return 'eggs'
+
+class aClass2:
+    def twit():
+        return 'twit'
+'''
+
+s = g.adjustTripleString(s,self.tab_width)
+#@-node:ekr.20070703123618.8:<< define s >>
+#@-node:ekr.20070703123618.7:@@test scanPythonClass
+#@-node:ekr.20070703181153.1:Not ready
+#@-node:ekr.20070703123618.2:Python tests
+#@+node:ekr.20070703123334.2:Python scanner
+#@+node:ekr.20070703122141.99:scanPythonText
+def scanPythonText (self,s,parent,atAuto=False):
+
+    scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
+
+    # Step 1: generate the nodes,
+    # including all directive and section references.
+    scanner.scan(s,parent)
+
+    # Step 2: check the generated nodes.
+    # Return True if the result is equivalent to the original file.
+    ok = scanner.check()
+
+    # Step 3: insert an @ignore directive if there are any problems.
+    if not ok:
+        scanner.insertIgnoreDirectives()
+#@-node:ekr.20070703122141.99:scanPythonText
 #@+node:ekr.20070703122141.100:class pythonScanner
 class pythonScanner (baseScannerClass):
 
@@ -715,7 +896,7 @@ def createParentText (self,class_vnode,class_name):
         ref = g.angleBrackets(' class %s methods ' % (class_name))
         c.appendStringToBody(class_vnode,"\t" + ref + "\n\n")
 #@-node:ekr.20070703122141.106:createParentText
-#@+node:ekr.20070703122141.107:scan & helpers
+#@+node:ekr.20070703122141.107:scan
 # See the comments for scanCText for what the text looks like.
 
 def scan (self,s,parent):
@@ -767,7 +948,7 @@ if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
 else:
     i = g.skip_c_id(s,i)
 #@-node:ekr.20070703122141.110:<< handle possible Python function or class >>
-#@-node:ekr.20070703122141.107:scan & helpers
+#@-node:ekr.20070703122141.107:scan
 #@+node:ekr.20070703122141.111:scanPythonClass & helper
 def scanPythonClass (self,s,i,start,parent):
 
@@ -989,180 +1170,7 @@ else:
 #@-node:ekr.20070703122141.125:<< skip the entire signature >>
 #@-node:ekr.20070703122141.124:skipPythonDef
 #@-node:ekr.20070703122141.100:class pythonScanner
-#@+node:ekr.20070703122141.99:scanPythonText
-def scanPythonText (self,s,parent,atAuto=False):
-
-    scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
-
-    # Step 1: generate the nodes,
-    # including all directive and section references.
-    scanner.scan(s,parent)
-
-    # Step 2: check the generated nodes.
-    # Return True if the result is equivalent to the original file.
-    ok = scanner.check()
-
-    # Step 3: insert an @ignore directive if there are any problems.
-    if not ok:
-        scanner.insertIgnoreDirectives()
-#@-node:ekr.20070703122141.99:scanPythonText
 #@-node:ekr.20070703123334.2:Python scanner
-#@+node:ekr.20070703123618.2:Python tests
-#@+node:ekr.20070703181153:@mark-for-unit-tests Ready
-#@+node:ekr.20070703122141.128:@test scanPythonText
-if g.unitTesting:
-
-    ic = c.importCommands
-    c,p = g.getTestVars()
-
-    if 1:
-        fileName = g.os_path_abspath(g.os_path_join(g.app.loadDir,'leoTest.py'))
-        # print '@test scanPythonText: path',path
-        f = file(fileName)
-        s = f.read()
-        f.close()
-    else:
-        s = '''\
-def spam():
-    pass
-'''
-
-    # Duplicate processing in ic command
-    junk,ic.fileName = g.os_path_split(fileName)
-    ic.methodName,ic.fileType = g.os_path_splitext(ic.fileName)
-    ic.setEncoding()
-
-    ic.scanPythonText (s=s,parent=p.copy())
-
-    g.trace('***** generated tree...')
-    for z in p.subtree_iter():
-        print '.'*z.level(),z.headString()
-#@-node:ekr.20070703122141.128:@test scanPythonText
-#@-node:ekr.20070703181153:@mark-for-unit-tests Ready
-#@+node:ekr.20070703181153.1:Not ready
-#@+node:ekr.20070703123618.3:@@test skipPythonDef
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-    scanner = pythonScanner(self,atAuto)
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test2') and result.endswith('pass'),'result:\n%s' % result
-#@+node:ekr.20070703123618.4:<< define s >>
-s = '''\
-def test1():
-    aList = (a,
-b,c)
-# underindented comment.
-    return 1
-
-def test2():
-# underindented comment.
-    pass
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20070703123618.4:<< define s >>
-#@-node:ekr.20070703123618.3:@@test skipPythonDef
-#@+node:ekr.20070703123618.5:@@test skipPythonDef (long lines)
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-    scanner = pythonScanner(self,atAuto)
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test1') and result.endswith('return 1'),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('def test2') and result.endswith('return 2'),'result:\n%s' % result
-#@+node:ekr.20070703123618.6:<< define s >>
-s = '''\
-def test1(
-        a=2):
-    return 1
-
-def test2(
-a=3):
-    return 2
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20070703123618.6:<< define s >>
-#@-node:ekr.20070703123618.5:@@test skipPythonDef (long lines)
-#@+node:ekr.20070703123618.7:@@test scanPythonClass
-if g.unitTesting:
-
-    c,p = g.getTestVars()
-    self = c.importCommands
-    scanner = pythonScanner(self,atAuto)
-
-    # global c # Get syntax warning if this is not first.
-    # if self: c = self.c             # Run from @test node: c not global
-    # else: self = c.importCommands   # Run from @suite: c *is* global
-
-    d = g.scanDirectives(c)
-    self.tab_width = d.get("tabwidth")
-    verbose = False
-    << define s >>
-    start = 0
-    i = self.skipPythonDef(s,i=0,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('class aClass') and result.endswith("'eggs'"),'result:\n%s' % result
-    start = i
-    i = self.skipPythonDef(s,i=i,start=start)
-    result = s[start:i].strip()
-    if verbose: g.trace(result)
-    assert result.startswith('class aClass2') and result.endswith("'twit'"),'result:\n%s' % result
-#@+node:ekr.20070703123618.8:<< define s >>
-s = '''\
-class aClass:
-    def spam():
-        return 'spam'
-# underindented comment line
-    def eggs():
-        return 'eggs'
-
-class aClass2:
-    def twit():
-        return 'twit'
-'''
-
-s = g.adjustTripleString(s,self.tab_width)
-#@-node:ekr.20070703123618.8:<< define s >>
-#@-node:ekr.20070703123618.7:@@test scanPythonClass
-#@-node:ekr.20070703181153.1:Not ready
-#@-node:ekr.20070703123618.2:Python tests
 #@-node:ekr.20070324084040:(Rewrite import code to support @auto)
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 #@+node:ekr.20060601073503:Postings
