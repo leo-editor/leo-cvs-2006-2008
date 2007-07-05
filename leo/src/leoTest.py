@@ -776,7 +776,7 @@ def runTestsExternally (c,all):
                 h = p.headString()
                 for s in self.tags:
                     if h.startswith(s):
-                        self.root = currentPosition()
+                        self.root = c.currentPosition()
                         return True
 
             # Next, look up the tree.
