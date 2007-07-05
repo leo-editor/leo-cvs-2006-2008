@@ -930,6 +930,456 @@ class baseLeoImportCommands:
             #@nl
     #@-node:EKR.20040506075328.2:perfectImport
     #@+node:ekr.20031218072017.3241:Scanners for createOutline
+    #@+node:ekr.20070703122141.65:class baseScannerClass
+    class baseScannerClass:
+
+        '''
+        The base class for all import scanner classes.
+        This class contains common utility methods.
+        '''
+
+        #@    @+others
+        #@+node:ekr.20070703122141.66:baseScannerClass.__init__
+        def __init__ (self,importCommands,language):
+
+            # Copy ivars from the importCommands class.
+            self.importCommands = ic = importCommands
+            self.c = ic.c
+            self.encoding = ic.encoding
+            self.fileName = ic.fileName
+            self.fileType = ic.fileType
+            # self._forcedGnxPositionList = []
+            self.methodName = ic.methodName
+            self.output_newline = ic.output_newline
+            self.rootLine = ic.rootLine
+            self.tab_width = ic.getTabWidth()
+            self.treeType = ic.treeType
+            # self.web_st = []
+            self.webType = ic.webType
+
+            # Compute language ivars.
+            self.language = language
+            delim1,delim2,delim3 = g.set_delims_from_language(language)
+            self.comment_delim = delim1
+        #@-node:ekr.20070703122141.66:baseScannerClass.__init__
+        #@+node:ekr.20070703122141.77:createHeadline
+        def createHeadline (self,parent,body,headline):
+
+            # g.trace("parent,headline:",parent,headline)
+
+            # Create the vnode.
+            p = parent.insertAsLastChild()
+            p.initHeadString(headline,self.encoding)
+
+            # Set the body.
+            if body:
+                self.c.setBodyString(p,body,self.encoding)
+            return p
+        #@-node:ekr.20070703122141.77:createHeadline
+        #@+node:ekr.20070703122141.78:error
+        def error (self,s):
+            g.es(s)
+        #@-node:ekr.20070703122141.78:error
+        #@+node:ekr.20070703122141.79:getLeadingIndent
+        def getLeadingIndent (self,s,i):
+
+            """Return the leading whitespace of a line, ignoring blank and comment lines."""
+
+            width = 0 ; i = g.find_line_start(s,i)
+            while i < len(s):
+                # g.trace(g.get_line(s,i))
+                j = g.skip_ws(s,i) # Bug fix: 2/14/03
+                if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
+                    i = g.skip_line(s,i) # ignore blank lines and comment lines.
+                else:
+                    i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+
+                    break
+
+            # g.trace("returns:",width)
+            return width
+        #@-node:ekr.20070703122141.79:getLeadingIndent
+        #@+node:ekr.20070703122141.80:isDocStart and isModuleStart
+        # The start of a document part or module in a noweb or cweb file.
+        # Exporters may have to test for @doc as well.
+
+        def isDocStart (self,s,i):
+
+            if not g.match(s,i,"@"):
+                return False
+
+            j = g.skip_ws(s,i+1)
+            if g.match(s,j,"%defs"):
+                return False
+            elif self.webType == "cweb" and g.match(s,i,"@*"):
+                return True
+            else:
+                return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
+
+        def isModuleStart (self,s,i):
+
+            if self.isDocStart(s,i):
+                return True
+            else:
+                return self.webType == "cweb" and (
+                    g.match(s,i,"@c") or g.match(s,i,"@p") or
+                    g.match(s,i,"@d") or g.match(s,i,"@f"))
+        #@-node:ekr.20070703122141.80:isDocStart and isModuleStart
+        #@+node:ekr.20070703122141.81:massageComment
+        def massageComment (self,s):
+
+            """Returns s with all runs of whitespace and newlines converted to a single blank.
+
+            Also removes leading and trailing whitespace."""
+
+            s = s.strip()
+            s = s.replace("\n"," ")
+            s = s.replace("\r"," ")
+            s = s.replace("\t"," ")
+            s = s.replace("  "," ")
+            s = s.strip()
+            return s
+        #@-node:ekr.20070703122141.81:massageComment
+        #@+node:ekr.20070703122141.67:perfectImport
+        def perfectImport (self,fileName,p,testing=False,verbose=False,convertBlankLines=True,verify=True):
+
+            __pychecker__ = 'maxlines=500'
+
+            #@    << about this algorithm >>
+            #@+node:ekr.20070703122141.68:<< about this algorithm >>
+            #@@nocolor
+            #@+at
+            # 
+            # This algorithm corrects the result of an Import To @file command 
+            # so that it is guaranteed that the result of writing the imported 
+            # file will be identical to the original file except for any 
+            # sentinels that have been inserted.
+            # 
+            # On entry, p points to the newly imported outline.
+            # 
+            # We correct the outline by applying Bernhard Mulder's algorithm.
+            # 
+            # 1.  We use the atFile.write code to write the newly imported 
+            # outline to a string s.  This string contains represents a thin 
+            # derived file, so it can be used to recreate then entire outline 
+            # structure without any other information.
+            # 
+            # Splitting s into lines creates the fat_lines argument to mu 
+            # methods.
+            # 
+            # 2. We make corrections to fat_lines using Mulder's algorithm.  
+            # The corrected fat_lines represents the corrected outline.  To do 
+            # this, we set the arguments as follows:
+            # 
+            # - i_lines: fat_lines stripped of sentinels
+            # - j_lines to the lines of the original imported file.
+            # 
+            # The algorithm updates fat_lines using diffs between i_lines and 
+            # j_lines.
+            # 
+            # 3. Mulder's algorithm doesn't specify which nodes have been 
+            # changed.  In fact, it Mulder's algorithm doesn't really 
+            # understand nodes at all.  Therefore, if we want to mark changed 
+            # nodes we do so by comparing the original version of the imported 
+            # outline with the corrected version of the outline.
+            #@-at
+            #@-node:ekr.20070703122141.68:<< about this algorithm >>
+            #@nl
+            c = self.c
+            root = p.copy()
+            at = c.atFileCommands
+            if testing:
+                #@        << clear all dirty bits >>
+                #@+node:ekr.20070703122141.69:<< clear all dirty bits >>
+                for p2 in p.self_and_subtree_iter():
+                    p2.clearDirty()
+                #@-node:ekr.20070703122141.69:<< clear all dirty bits >>
+                #@nl
+            #@    << Assign file indices >>
+            #@+node:ekr.20070703122141.70:<< Assign file indices  >>
+            nodeIndices = g.app.nodeIndices
+
+            nodeIndices.setTimestamp()
+
+            for p2 in root.self_and_subtree_iter():
+                try: # Will fail for None or any pre 4.1 file index.
+                    theId,time,n = p2.v.t.fileIndex
+                except TypeError:
+                    p2.v.t.fileIndex = nodeIndices.getNewIndex()
+            #@-node:ekr.20070703122141.70:<< Assign file indices  >>
+            #@nl
+            #@    << Write root's tree to to string s >>
+            #@+node:ekr.20070703122141.71:<< Write root's tree to to string s >>
+            at.write(root,thinFile=True,toString=True)
+            s = at.stringOutput
+            if not s: return
+            #@-node:ekr.20070703122141.71:<< Write root's tree to to string s >>
+            #@nl
+
+            # Set up the data for the algorithm.
+            mu = g.mulderUpdateAlgorithm(testing=testing,verbose=verbose)
+            delims = g.comment_delims_from_extension(fileName)
+            fat_lines = g.splitLines(s) # Keep the line endings.
+            i_lines,mapping = mu.create_mapping(fat_lines,delims)
+            j_lines = file(fileName).readlines()
+
+            # Correct write_lines using the algorihm.
+            if i_lines != j_lines:
+                if verbose:
+                    g.es("Running Perfect Import",color="blue")
+                write_lines = mu.propagateDiffsToSentinelsLines(i_lines,j_lines,fat_lines,mapping)
+                if 1: # For testing.
+                    #@            << put the corrected fat lines in a new node >>
+                    #@+node:ekr.20070703122141.72:<< put the corrected fat lines in a new node >>
+                    write_lines_node = root.insertAfter()
+                    write_lines_node.initHeadString("write_lines")
+                    s = ''.join(write_lines)
+                    write_lines_node.scriptSetBodyString(s,encoding=g.app.tkEncoding)
+                    #@-node:ekr.20070703122141.72:<< put the corrected fat lines in a new node >>
+                    #@nl
+                #@        << correct root's tree using write_lines >>
+                #@+node:ekr.20070703122141.73:<< correct root's tree using write_lines >>
+                #@+at 
+                #@nonl
+                # Notes:
+                # 1. This code must overwrite the newly-imported tree because 
+                # the gnx's in
+                # write_lines refer to those nodes.
+                # 
+                # 2. The code in readEndNode now reports when nodes change 
+                # during importing. This
+                # code also marks changed nodes.
+                #@-at
+                #@@c
+
+                try:
+                    at.correctedLines = 0
+                    at.targetFileName = "<perfectImport string-file>"
+                    at.inputFile = fo = g.fileLikeObject()
+                    at.file = fo # Strange, that this is needed.  Should be cleaned up.
+                    for line in write_lines:
+                        fo.write(line)
+                    firstLines,junk,junk = c.atFileCommands.scanHeader(fo,at.targetFileName)
+                    # To do: pass params to readEndNode.
+                    at.readOpenFile(root,fo,firstLines,perfectImportRoot=root)
+                    n = at.correctedLines
+                    if verbose:
+                        g.es("%d marked node%s corrected" % (n,g.choose(n==1,'','s')),color="blue")
+                except:
+                    g.es("Exception in Perfect Import",color="red")
+                    g.es_exception()
+                    s = None
+                #@-node:ekr.20070703122141.73:<< correct root's tree using write_lines >>
+                #@nl
+            if verify:
+                #@        << verify that writing the tree would produce the original file >>
+                #@+node:ekr.20070703122141.74:<< verify that writing the tree would produce the original file >>
+                try:
+                    # Read the original file into before_lines.
+                    before = file(fileName)
+                    before_lines = before.readlines()
+                    before.close()
+
+                    # Write the tree into after_lines.
+                    at.write(root,thinFile=True,toString=True)
+                    after_lines1 = g.splitLines(at.stringOutput)
+
+                    # Strip sentinels from after_lines and compare.
+                    after_lines = mu.removeSentinelsFromLines(after_lines1,delims)
+
+                    # A major kludge: Leo can not represent unindented blank lines in indented nodes!
+                    # We ignore the problem here by stripping whitespace from blank lines.
+                    # We shall need output options to handle such lines.
+                    if convertBlankLines:
+                        mu.stripWhitespaceFromBlankLines(before_lines)
+                        mu.stripWhitespaceFromBlankLines(after_lines)
+                    if before_lines == after_lines:
+                        if verbose:
+                            g.es("Perfect Import verified",color="blue")
+                    else:
+                        leoTest.fail()
+                        if verbose:
+                            g.es("Perfect Import failed verification test!",color="red")
+                            #@            << dump the files >>
+                            #@+node:ekr.20070703122141.75:<< dump the files >>
+                            print len(before_lines),len(after_lines)
+
+                            if len(before_lines)==len(after_lines):
+                                for i in xrange(len(before_lines)):
+                                    extra = 3
+                                    if before_lines[i] != after_lines[i]:
+                                        j = max(0,i-extra)
+                                        print '-' * 20
+                                        while j < i + extra + 1:
+                                            leader = g.choose(i == j,"* ","  ")
+                                            print "%s%3d" % (leader,j), repr(before_lines[j])
+                                            print "%s%3d" % (leader,j), repr(after_lines[j])
+                                            j += 1
+                            else:
+                                for i in xrange(min(len(before_lines),len(after_lines))):
+                                    if before_lines[i] != after_lines[i]:
+                                        extra = 5
+                                        print "first mismatch at line %d" % i
+                                        print "printing %d lines after mismatch" % extra
+                                        print "before..."
+                                        for j in xrange(i+1+extra):
+                                            print "%3d" % j, repr(before_lines[j])
+                                        print
+                                        print "after..."
+                                        for k in xrange(1+extra):
+                                            print "%3d" % (i+k), repr(after_lines[i+k])
+                                        print
+                                        print "with sentinels"
+                                        j = 0 ; k = 0
+                                        while k < i + 1 + extra:
+                                            print "%3d" % k,repr(after_lines1[j])
+                                            if not g.is_sentinel(after_lines1[j],delims):
+                                                k += 1
+                                            j += 1
+                                        break
+                            #@-node:ekr.20070703122141.75:<< dump the files >>
+                            #@nl
+                except IOError:
+                    g.es("Can not reopen %s!" % fileName,color="red")
+                    leoTest.fail()
+                #@-node:ekr.20070703122141.74:<< verify that writing the tree would produce the original file >>
+                #@nl
+        #@-node:ekr.20070703122141.67:perfectImport
+        #@+node:ekr.20070703122141.82:setEncoding
+        def setEncoding (self):
+
+            # scanDirectives checks the encoding: may return None.
+            theDict = g.scanDirectives(self.c)
+            encoding = theDict.get("encoding")
+            if encoding and g.isValidEncoding(encoding):
+                self.encoding = encoding
+            else:
+                self.encoding = g.app.tkEncoding # 2/25/03
+
+            # print self.encoding
+        #@-node:ekr.20070703122141.82:setEncoding
+        #@+node:ekr.20070703122141.83:skipLeadingComments
+        def skipLeadingComments (self,s):
+
+            """Skips all leading comments in s, returning the remaining body text and the massaged comment text.
+
+            Returns (body, comment)"""
+
+            # g.trace(g.get_line(s,0))
+            s_original = s
+            s = s.lstrip()
+            i = 0 ; comment = ""
+            if self.fileType in [".c", ".cpp"]: # 11/2/02: don't mess with java comments.
+                #@        << scan for C-style comments >>
+                #@+node:ekr.20070703122141.84:<< scan for C-style comments >>
+                while i < len(s):
+                    if g.match(s,i,"//"): # Handle a C++ comment.
+                        while g.match(s,i,'/'):
+                            i += 1
+                        j = i ; i = g.skip_line(s,i)
+                        comment = comment + self.massageComment(s[j:i]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    elif g.match(s,i,"/*"): # Handle a block C comment.
+                        j = i + 2 ; i = g.skip_block_comment (s,i)
+                        k = g.choose(g.match(s,i-2,"*/"),i-2,i)
+                        if self.fileType == ".java":
+                            # 8/2/02: a hack: add leading whitespace then remove it.
+                            comment = self.undentBody(comment)
+                            comment2 = ' ' * 2 + s[j:k]
+                            comment2 = self.undentBody(comment2)
+                            comment = comment + comment2 + "\n"
+                        else:
+                            comment = comment + self.massageComment(s[j:k]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    else: break
+                #@-node:ekr.20070703122141.84:<< scan for C-style comments >>
+                #@nl
+            elif self.fileType == ".lua":
+                #@        << scan for Lua comments >>
+                #@+node:ekr.20070703122141.85:<< scan for Lua comments >>
+                while i < len(s):
+                    if g.match(s,i,"--"): # Handle a Lua line comment.
+                        while g.match(s,i,'/'):
+                            i += 1
+                        j = i ; i = g.skip_line(s,i)
+                        comment = comment + self.massageComment(s[j:i]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    else: break
+                #@-node:ekr.20070703122141.85:<< scan for Lua comments >>
+                #@nl
+            elif self.fileType == ".pas":
+                #@        << scan for Pascal comments >>
+                #@+node:ekr.20070703122141.86:<< scan for Pascal comments >>
+                while i < len(s):
+                    if g.match(s,i,"//"): # Handle a Pascal line comment.
+                        while g.match(s,i,'/'):
+                            i += 1
+                        j = i ; i = g.skip_line(s,i)
+                        comment = comment + self.massageComment(s[j:i]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    elif g.match(s,i,'(*'):
+                        j = i + 1 ; i = g.skip_pascal_block_comment(s,i)
+                        comment = comment + self.massageComment(s[j:i]) + "\n"
+                        # 8/2/02: Preserve leading whitespace for undentBody
+                        i = g.skip_ws(s,i)
+                        i = g.skip_blank_lines(s,i)
+                    else: break
+                #@-node:ekr.20070703122141.86:<< scan for Pascal comments >>
+                #@nl
+            elif self.fileType == ".py":
+                #@        << scan for Python comments >>
+                #@+node:ekr.20070703122141.87:<< scan for Python comments >>
+                while i < len(s) and g.match(s,i,'#'):
+                    j = i + 1 ; i = g.skip_line(s,i)
+                    comment = self.undentBody(comment)
+                    comment = comment + self.massageComment(s[j:i]) + "\n"
+                    # 8/2/02: Preserve leading whitespace for undentBody
+                    i = g.skip_ws(s,i)
+                    i = g.skip_blank_lines(s,i)
+                #@-node:ekr.20070703122141.87:<< scan for Python comments >>
+                #@nl
+            comment = string.strip(comment)
+            if len(comment) == 0:
+                return s_original, "" # Bug fix: 11/2/02: don't skip leading whitespace!
+            elif self.treeType == "@file":
+                return s[i:], "@ " + comment
+            else:
+                return s[i:], "@ " + comment + "\n"
+        #@-node:ekr.20070703122141.83:skipLeadingComments
+        #@+node:ekr.20070703122141.88:undentBody
+        # We look at the first line to determine how much leading whitespace to delete.
+
+        def undentBody (self,s):
+
+            """Removes extra leading indentation from all lines."""
+
+            # g.trace(s)
+            i = 0 ; result = ""
+            # Copy an @code line as is.
+            if g.match(s,i,"@code"):
+                j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+                result += s[j:i]
+            # Calculate the amount to be removed from each line.
+            undent = self.getLeadingIndent(s,i)
+            if undent == 0: return s
+            while i < len(s):
+                j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
+                line = s[j:i]
+                # g.trace(line)
+                line = g.removeLeadingWhitespace(line,undent,self.tab_width)
+                result += line
+            return result
+        #@-node:ekr.20070703122141.88:undentBody
+        #@-others
+    #@-node:ekr.20070703122141.65:class baseScannerClass
     #@+node:ekr.20070703123618.2:Python tests
     #@+node:ekr.20070703181153:@mark-for-unit-tests Ready
     #@+node:ekr.20070703122141.128:@test scanPythonText
@@ -955,11 +1405,15 @@ class baseLeoImportCommands:
         ic.methodName,ic.fileType = g.os_path_splitext(ic.fileName)
         ic.setEncoding()
 
-        ic.scanPythonText (s=s,parent=p.copy())
+        ic.scanPythonText (s=s,parent=p.copy(),atAuto=True)
 
-        g.trace('***** generated tree...')
-        for z in p.subtree_iter():
-            print '.'*z.level(),z.headString()
+        if 1:
+            nodes = [z for z in p.subtree_iter()]
+            print 'Generated tree has %d nodes' % len(nodes)
+        else:
+            g.trace('***** generated tree...')
+            for z in p.subtree_iter():
+                print '.'*z.level(),z.headString()
     #@-node:ekr.20070703122141.128:@test scanPythonText
     #@-node:ekr.20070703181153:@mark-for-unit-tests Ready
     #@+node:ekr.20070703181153.1:Not ready
@@ -1998,454 +2452,23 @@ class baseLeoImportCommands:
     #@nonl
     #@-node:ekr.20070703124805:C scanner
     #@+node:ekr.20070703123334.2:Python scanner
-    #@+node:ekr.20070703122141.65:class baseScannerClass
-    class baseScannerClass:
+    #@+node:ekr.20070703122141.99:scanPythonText
+    def scanPythonText (self,s,parent,atAuto=False):
 
-        '''
-        The base class for all import scanner classes.
-        This class contains common utility methods.
-        '''
+        scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
 
-        #@    @+others
-        #@+node:ekr.20070703122141.66:baseScannerClass.__init__
-        def __init__ (self,importCommands,language):
+        # Step 1: generate the nodes,
+        # including all directive and section references.
+        scanner.scan(s,parent)
 
-            # Copy ivars from the importCommands class.
-            self.importCommands = ic = importCommands
-            self.c = ic.c
-            self.encoding = ic.encoding
-            self.fileName = ic.fileName
-            self.fileType = ic.fileType
-            self.methodName = ic.methodName
-            self.rootLine = ic.rootLine
-            self.tab_width = ic.getTabWidth()
-            self.treeType = ic.treeType
+        # Step 2: check the generated nodes.
+        # Return True if the result is equivalent to the original file.
+        ok = scanner.check()
 
-            # Compute language ivars.
-            self.language = language
-            delim1,delim2,delim3 = g.set_delims_from_language(language)
-            self.comment_delim = delim1
-        #@-node:ekr.20070703122141.66:baseScannerClass.__init__
-        #@+node:ekr.20070703122141.67:perfectImport
-        def perfectImport (self,fileName,p,testing=False,verbose=False,convertBlankLines=True,verify=True):
-
-            __pychecker__ = 'maxlines=500'
-
-            #@    << about this algorithm >>
-            #@+node:ekr.20070703122141.68:<< about this algorithm >>
-            #@@nocolor
-            #@+at
-            # 
-            # This algorithm corrects the result of an Import To @file command 
-            # so that it is guaranteed that the result of writing the imported 
-            # file will be identical to the original file except for any 
-            # sentinels that have been inserted.
-            # 
-            # On entry, p points to the newly imported outline.
-            # 
-            # We correct the outline by applying Bernhard Mulder's algorithm.
-            # 
-            # 1.  We use the atFile.write code to write the newly imported 
-            # outline to a string s.  This string contains represents a thin 
-            # derived file, so it can be used to recreate then entire outline 
-            # structure without any other information.
-            # 
-            # Splitting s into lines creates the fat_lines argument to mu 
-            # methods.
-            # 
-            # 2. We make corrections to fat_lines using Mulder's algorithm.  
-            # The corrected fat_lines represents the corrected outline.  To do 
-            # this, we set the arguments as follows:
-            # 
-            # - i_lines: fat_lines stripped of sentinels
-            # - j_lines to the lines of the original imported file.
-            # 
-            # The algorithm updates fat_lines using diffs between i_lines and 
-            # j_lines.
-            # 
-            # 3. Mulder's algorithm doesn't specify which nodes have been 
-            # changed.  In fact, it Mulder's algorithm doesn't really 
-            # understand nodes at all.  Therefore, if we want to mark changed 
-            # nodes we do so by comparing the original version of the imported 
-            # outline with the corrected version of the outline.
-            #@-at
-            #@-node:ekr.20070703122141.68:<< about this algorithm >>
-            #@nl
-            c = self.c
-            root = p.copy()
-            at = c.atFileCommands
-            if testing:
-                #@        << clear all dirty bits >>
-                #@+node:ekr.20070703122141.69:<< clear all dirty bits >>
-                for p2 in p.self_and_subtree_iter():
-                    p2.clearDirty()
-                #@-node:ekr.20070703122141.69:<< clear all dirty bits >>
-                #@nl
-            #@    << Assign file indices >>
-            #@+node:ekr.20070703122141.70:<< Assign file indices  >>
-            nodeIndices = g.app.nodeIndices
-
-            nodeIndices.setTimestamp()
-
-            for p2 in root.self_and_subtree_iter():
-                try: # Will fail for None or any pre 4.1 file index.
-                    theId,time,n = p2.v.t.fileIndex
-                except TypeError:
-                    p2.v.t.fileIndex = nodeIndices.getNewIndex()
-            #@-node:ekr.20070703122141.70:<< Assign file indices  >>
-            #@nl
-            #@    << Write root's tree to to string s >>
-            #@+node:ekr.20070703122141.71:<< Write root's tree to to string s >>
-            at.write(root,thinFile=True,toString=True)
-            s = at.stringOutput
-            if not s: return
-            #@-node:ekr.20070703122141.71:<< Write root's tree to to string s >>
-            #@nl
-
-            # Set up the data for the algorithm.
-            mu = g.mulderUpdateAlgorithm(testing=testing,verbose=verbose)
-            delims = g.comment_delims_from_extension(fileName)
-            fat_lines = g.splitLines(s) # Keep the line endings.
-            i_lines,mapping = mu.create_mapping(fat_lines,delims)
-            j_lines = file(fileName).readlines()
-
-            # Correct write_lines using the algorihm.
-            if i_lines != j_lines:
-                if verbose:
-                    g.es("Running Perfect Import",color="blue")
-                write_lines = mu.propagateDiffsToSentinelsLines(i_lines,j_lines,fat_lines,mapping)
-                if 1: # For testing.
-                    #@            << put the corrected fat lines in a new node >>
-                    #@+node:ekr.20070703122141.72:<< put the corrected fat lines in a new node >>
-                    write_lines_node = root.insertAfter()
-                    write_lines_node.initHeadString("write_lines")
-                    s = ''.join(write_lines)
-                    write_lines_node.scriptSetBodyString(s,encoding=g.app.tkEncoding)
-                    #@-node:ekr.20070703122141.72:<< put the corrected fat lines in a new node >>
-                    #@nl
-                #@        << correct root's tree using write_lines >>
-                #@+node:ekr.20070703122141.73:<< correct root's tree using write_lines >>
-                #@+at 
-                #@nonl
-                # Notes:
-                # 1. This code must overwrite the newly-imported tree because 
-                # the gnx's in
-                # write_lines refer to those nodes.
-                # 
-                # 2. The code in readEndNode now reports when nodes change 
-                # during importing. This
-                # code also marks changed nodes.
-                #@-at
-                #@@c
-
-                try:
-                    at.correctedLines = 0
-                    at.targetFileName = "<perfectImport string-file>"
-                    at.inputFile = fo = g.fileLikeObject()
-                    at.file = fo # Strange, that this is needed.  Should be cleaned up.
-                    for line in write_lines:
-                        fo.write(line)
-                    firstLines,junk,junk = c.atFileCommands.scanHeader(fo,at.targetFileName)
-                    # To do: pass params to readEndNode.
-                    at.readOpenFile(root,fo,firstLines,perfectImportRoot=root)
-                    n = at.correctedLines
-                    if verbose:
-                        g.es("%d marked node%s corrected" % (n,g.choose(n==1,'','s')),color="blue")
-                except:
-                    g.es("Exception in Perfect Import",color="red")
-                    g.es_exception()
-                    s = None
-                #@-node:ekr.20070703122141.73:<< correct root's tree using write_lines >>
-                #@nl
-            if verify:
-                #@        << verify that writing the tree would produce the original file >>
-                #@+node:ekr.20070703122141.74:<< verify that writing the tree would produce the original file >>
-                try:
-                    # Read the original file into before_lines.
-                    before = file(fileName)
-                    before_lines = before.readlines()
-                    before.close()
-
-                    # Write the tree into after_lines.
-                    at.write(root,thinFile=True,toString=True)
-                    after_lines1 = g.splitLines(at.stringOutput)
-
-                    # Strip sentinels from after_lines and compare.
-                    after_lines = mu.removeSentinelsFromLines(after_lines1,delims)
-
-                    # A major kludge: Leo can not represent unindented blank lines in indented nodes!
-                    # We ignore the problem here by stripping whitespace from blank lines.
-                    # We shall need output options to handle such lines.
-                    if convertBlankLines:
-                        mu.stripWhitespaceFromBlankLines(before_lines)
-                        mu.stripWhitespaceFromBlankLines(after_lines)
-                    if before_lines == after_lines:
-                        if verbose:
-                            g.es("Perfect Import verified",color="blue")
-                    else:
-                        leoTest.fail()
-                        if verbose:
-                            g.es("Perfect Import failed verification test!",color="red")
-                            #@            << dump the files >>
-                            #@+node:ekr.20070703122141.75:<< dump the files >>
-                            print len(before_lines),len(after_lines)
-
-                            if len(before_lines)==len(after_lines):
-                                for i in xrange(len(before_lines)):
-                                    extra = 3
-                                    if before_lines[i] != after_lines[i]:
-                                        j = max(0,i-extra)
-                                        print '-' * 20
-                                        while j < i + extra + 1:
-                                            leader = g.choose(i == j,"* ","  ")
-                                            print "%s%3d" % (leader,j), repr(before_lines[j])
-                                            print "%s%3d" % (leader,j), repr(after_lines[j])
-                                            j += 1
-                            else:
-                                for i in xrange(min(len(before_lines),len(after_lines))):
-                                    if before_lines[i] != after_lines[i]:
-                                        extra = 5
-                                        print "first mismatch at line %d" % i
-                                        print "printing %d lines after mismatch" % extra
-                                        print "before..."
-                                        for j in xrange(i+1+extra):
-                                            print "%3d" % j, repr(before_lines[j])
-                                        print
-                                        print "after..."
-                                        for k in xrange(1+extra):
-                                            print "%3d" % (i+k), repr(after_lines[i+k])
-                                        print
-                                        print "with sentinels"
-                                        j = 0 ; k = 0
-                                        while k < i + 1 + extra:
-                                            print "%3d" % k,repr(after_lines1[j])
-                                            if not g.is_sentinel(after_lines1[j],delims):
-                                                k += 1
-                                            j += 1
-                                        break
-                            #@-node:ekr.20070703122141.75:<< dump the files >>
-                            #@nl
-                except IOError:
-                    g.es("Can not reopen %s!" % fileName,color="red")
-                    leoTest.fail()
-                #@-node:ekr.20070703122141.74:<< verify that writing the tree would produce the original file >>
-                #@nl
-        #@-node:ekr.20070703122141.67:perfectImport
-        #@+node:ekr.20070703122141.76:utils
-        #@+node:ekr.20070703122141.77:createHeadline
-        def createHeadline (self,parent,body,headline):
-
-            # g.trace("parent,headline:",parent,headline)
-
-            # Create the vnode.
-            p = parent.insertAsLastChild()
-            p.initHeadString(headline,self.encoding)
-
-            # Set the body.
-            if body:
-                self.c.setBodyString(p,body,self.encoding)
-            return p
-        #@-node:ekr.20070703122141.77:createHeadline
-        #@+node:ekr.20070703122141.78:error
-        def error (self,s):
-            g.es(s)
-        #@-node:ekr.20070703122141.78:error
-        #@+node:ekr.20070703122141.79:getLeadingIndent
-        def getLeadingIndent (self,s,i):
-
-            """Return the leading whitespace of a line, ignoring blank and comment lines."""
-
-            width = 0 ; i = g.find_line_start(s,i)
-            while i < len(s):
-                # g.trace(g.get_line(s,i))
-                j = g.skip_ws(s,i) # Bug fix: 2/14/03
-                if g.is_nl(s,j) or g.match(s,j,self.comment_delim):
-                    i = g.skip_line(s,i) # ignore blank lines and comment lines.
-                else:
-                    i, width = g.skip_leading_ws_with_indent(s,i,self.tab_width)
-
-                    break
-
-            # g.trace("returns:",width)
-            return width
-        #@-node:ekr.20070703122141.79:getLeadingIndent
-        #@+node:ekr.20070703122141.80:isDocStart and isModuleStart
-        # The start of a document part or module in a noweb or cweb file.
-        # Exporters may have to test for @doc as well.
-
-        def isDocStart (self,s,i):
-
-            if not g.match(s,i,"@"):
-                return False
-
-            j = g.skip_ws(s,i+1)
-            if g.match(s,j,"%defs"):
-                return False
-            elif self.webType == "cweb" and g.match(s,i,"@*"):
-                return True
-            else:
-                return g.match(s,i,"@ ") or g.match(s,i,"@\t") or g.match(s,i,"@\n")
-
-        def isModuleStart (self,s,i):
-
-            if self.isDocStart(s,i):
-                return True
-            else:
-                return self.webType == "cweb" and (
-                    g.match(s,i,"@c") or g.match(s,i,"@p") or
-                    g.match(s,i,"@d") or g.match(s,i,"@f"))
-        #@-node:ekr.20070703122141.80:isDocStart and isModuleStart
-        #@+node:ekr.20070703122141.81:massageComment
-        def massageComment (self,s):
-
-            """Returns s with all runs of whitespace and newlines converted to a single blank.
-
-            Also removes leading and trailing whitespace."""
-
-            s = s.strip()
-            s = s.replace("\n"," ")
-            s = s.replace("\r"," ")
-            s = s.replace("\t"," ")
-            s = s.replace("  "," ")
-            s = s.strip()
-            return s
-        #@-node:ekr.20070703122141.81:massageComment
-        #@+node:ekr.20070703122141.82:setEncoding
-        def setEncoding (self):
-
-            # scanDirectives checks the encoding: may return None.
-            theDict = g.scanDirectives(self.c)
-            encoding = theDict.get("encoding")
-            if encoding and g.isValidEncoding(encoding):
-                self.encoding = encoding
-            else:
-                self.encoding = g.app.tkEncoding # 2/25/03
-
-            # print self.encoding
-        #@-node:ekr.20070703122141.82:setEncoding
-        #@+node:ekr.20070703122141.83:skipLeadingComments
-        def skipLeadingComments (self,s):
-
-            """Skips all leading comments in s, returning the remaining body text and the massaged comment text.
-
-            Returns (body, comment)"""
-
-            # g.trace(g.get_line(s,0))
-            s_original = s
-            s = s.lstrip()
-            i = 0 ; comment = ""
-            if self.fileType in [".c", ".cpp"]: # 11/2/02: don't mess with java comments.
-                #@        << scan for C-style comments >>
-                #@+node:ekr.20070703122141.84:<< scan for C-style comments >>
-                while i < len(s):
-                    if g.match(s,i,"//"): # Handle a C++ comment.
-                        while g.match(s,i,'/'):
-                            i += 1
-                        j = i ; i = g.skip_line(s,i)
-                        comment = comment + self.massageComment(s[j:i]) + "\n"
-                        # 8/2/02: Preserve leading whitespace for undentBody
-                        i = g.skip_ws(s,i)
-                        i = g.skip_blank_lines(s,i)
-                    elif g.match(s,i,"/*"): # Handle a block C comment.
-                        j = i + 2 ; i = g.skip_block_comment (s,i)
-                        k = g.choose(g.match(s,i-2,"*/"),i-2,i)
-                        if self.fileType == ".java":
-                            # 8/2/02: a hack: add leading whitespace then remove it.
-                            comment = self.undentBody(comment)
-                            comment2 = ' ' * 2 + s[j:k]
-                            comment2 = self.undentBody(comment2)
-                            comment = comment + comment2 + "\n"
-                        else:
-                            comment = comment + self.massageComment(s[j:k]) + "\n"
-                        # 8/2/02: Preserve leading whitespace for undentBody
-                        i = g.skip_ws(s,i)
-                        i = g.skip_blank_lines(s,i)
-                    else: break
-                #@-node:ekr.20070703122141.84:<< scan for C-style comments >>
-                #@nl
-            elif self.fileType == ".lua":
-                #@        << scan for Lua comments >>
-                #@+node:ekr.20070703122141.85:<< scan for Lua comments >>
-                while i < len(s):
-                    if g.match(s,i,"--"): # Handle a Lua line comment.
-                        while g.match(s,i,'/'):
-                            i += 1
-                        j = i ; i = g.skip_line(s,i)
-                        comment = comment + self.massageComment(s[j:i]) + "\n"
-                        # 8/2/02: Preserve leading whitespace for undentBody
-                        i = g.skip_ws(s,i)
-                        i = g.skip_blank_lines(s,i)
-                    else: break
-                #@-node:ekr.20070703122141.85:<< scan for Lua comments >>
-                #@nl
-            elif self.fileType == ".pas":
-                #@        << scan for Pascal comments >>
-                #@+node:ekr.20070703122141.86:<< scan for Pascal comments >>
-                while i < len(s):
-                    if g.match(s,i,"//"): # Handle a Pascal line comment.
-                        while g.match(s,i,'/'):
-                            i += 1
-                        j = i ; i = g.skip_line(s,i)
-                        comment = comment + self.massageComment(s[j:i]) + "\n"
-                        # 8/2/02: Preserve leading whitespace for undentBody
-                        i = g.skip_ws(s,i)
-                        i = g.skip_blank_lines(s,i)
-                    elif g.match(s,i,'(*'):
-                        j = i + 1 ; i = g.skip_pascal_block_comment(s,i)
-                        comment = comment + self.massageComment(s[j:i]) + "\n"
-                        # 8/2/02: Preserve leading whitespace for undentBody
-                        i = g.skip_ws(s,i)
-                        i = g.skip_blank_lines(s,i)
-                    else: break
-                #@-node:ekr.20070703122141.86:<< scan for Pascal comments >>
-                #@nl
-            elif self.fileType == ".py":
-                #@        << scan for Python comments >>
-                #@+node:ekr.20070703122141.87:<< scan for Python comments >>
-                while i < len(s) and g.match(s,i,'#'):
-                    j = i + 1 ; i = g.skip_line(s,i)
-                    comment = self.undentBody(comment)
-                    comment = comment + self.massageComment(s[j:i]) + "\n"
-                    # 8/2/02: Preserve leading whitespace for undentBody
-                    i = g.skip_ws(s,i)
-                    i = g.skip_blank_lines(s,i)
-                #@-node:ekr.20070703122141.87:<< scan for Python comments >>
-                #@nl
-            comment = string.strip(comment)
-            if len(comment) == 0:
-                return s_original, "" # Bug fix: 11/2/02: don't skip leading whitespace!
-            elif self.treeType == "@file":
-                return s[i:], "@ " + comment
-            else:
-                return s[i:], "@ " + comment + "\n"
-        #@-node:ekr.20070703122141.83:skipLeadingComments
-        #@+node:ekr.20070703122141.88:undentBody
-        # We look at the first line to determine how much leading whitespace to delete.
-
-        def undentBody (self,s):
-
-            """Removes extra leading indentation from all lines."""
-
-            # g.trace(s)
-            i = 0 ; result = ""
-            # Copy an @code line as is.
-            if g.match(s,i,"@code"):
-                j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
-                result += s[j:i]
-            # Calculate the amount to be removed from each line.
-            undent = self.getLeadingIndent(s,i)
-            if undent == 0: return s
-            while i < len(s):
-                j = i ; i = g.skip_line(s,i) # don't use get_line: it is only for dumping.
-                line = s[j:i]
-                # g.trace(line)
-                line = g.removeLeadingWhitespace(line,undent,self.tab_width)
-                result += line
-            return result
-        #@-node:ekr.20070703122141.88:undentBody
-        #@-node:ekr.20070703122141.76:utils
-        #@-others
-    #@-node:ekr.20070703122141.65:class baseScannerClass
+        # Step 3: insert an @ignore directive if there are any problems.
+        if not ok:
+            scanner.insertIgnoreDirectives()
+    #@-node:ekr.20070703122141.99:scanPythonText
     #@+node:ekr.20070703122141.100:class pythonScanner
     class pythonScanner (baseScannerClass):
 
@@ -2557,7 +2580,7 @@ class baseLeoImportCommands:
                 ref = g.angleBrackets(' class %s methods ' % (class_name))
                 c.appendStringToBody(class_vnode,"\t" + ref + "\n\n")
         #@-node:ekr.20070703122141.106:createParentText
-        #@+node:ekr.20070703122141.107:scan & helpers
+        #@+node:ekr.20070703122141.107:scan
         # See the comments for scanCText for what the text looks like.
 
         def scan (self,s,parent):
@@ -2612,7 +2635,7 @@ class baseLeoImportCommands:
                 c.appendStringToBody(parent,s[start:])
             #@-node:ekr.20070703122141.108:<< Append any unused python text to the parent's body text >>
             #@nl
-        #@-node:ekr.20070703122141.107:scan & helpers
+        #@-node:ekr.20070703122141.107:scan
         #@+node:ekr.20070703122141.111:scanPythonClass & helper
         def scanPythonClass (self,s,i,start,parent):
 
@@ -2841,23 +2864,6 @@ class baseLeoImportCommands:
         #@-node:ekr.20070703122141.124:skipPythonDef
         #@-others
     #@-node:ekr.20070703122141.100:class pythonScanner
-    #@+node:ekr.20070703122141.99:scanPythonText
-    def scanPythonText (self,s,parent,atAuto=False):
-
-        scanner = self.pythonScanner(importCommands=self,atAuto=atAuto)
-
-        # Step 1: generate the nodes,
-        # including all directive and section references.
-        scanner.scan(s,parent)
-
-        # Step 2: check the generated nodes.
-        # Return True if the result is equivalent to the original file.
-        ok = scanner.check()
-
-        # Step 3: insert an @ignore directive if there are any problems.
-        if not ok:
-            scanner.insertIgnoreDirectives()
-    #@-node:ekr.20070703122141.99:scanPythonText
     #@-node:ekr.20070703123334.2:Python scanner
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@-node:ekr.20031218072017.3209:Import

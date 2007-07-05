@@ -653,6 +653,7 @@ def runTestsExternally (c,all):
             self.c = c
             self.all = all
 
+            self.copyRoot = None # The root of copied tree.
             self.fileName = 'dynamicUnitTest.leo'
             self.root = None # The root of the tree to copy when self.all is False.
             self.tags = ('@test','@suite','@unittests','@unit-tests')
@@ -670,52 +671,94 @@ def runTestsExternally (c,all):
             c2.fileCommands.save(path)
             c2.close()
         #@-node:ekr.20070627135336.10:createFileFromOutline
-        #@+node:ekr.20070627135336.9:createOutline
+        #@+node:ekr.20070627135336.9:createOutline & helpers
         def createOutline (self,c2):
 
             '''Create a unit test ouline containing all @test and @suite nodes in p's outline.'''
 
             c = self.c ; markTag = '@mark-for-unit-tests'
-            c2root = c2.rootPosition()
-            c2root.initHeadString('All unit tests')
+            self.copyRoot = c2.rootPosition()
+            self.copyRoot.initHeadString('All unit tests')
             c2.suppressHeadChanged = True # Suppress all onHeadChanged logic.
-            c2.beginUpdate()
-            seen = []
-
+            self.seen = []
+            #@    << set p1/2,limit1/2,lookForMark1/2,lookForNodes1/2 >>
+            #@+node:ekr.20070705065154:<< set p1/2,limit1/2,lookForMark1/2,lookForNodes1/2 >>
             if self.all:
                 # A single pass looks for all tags everywhere.
-                allTags = list(self.tags) ; allTags.extend(markTag)
-                p1,limit1,tags1 = c.rootPosition(),None,allTags
-                p2,limit2,tags2 = None,None,None
+                p1,limit1,lookForMark1,lookForNodes1 = c.rootPosition(),None,True,True
+                p2,limit2,lookForMark2,lookForNodes2 = None,None,False,False
             else:
                 # The first pass looks everywhere for only for @mark-for-unit-tests,
-                p1,limit1,tags1 = c.rootPosition(),None,(markTag,)
+                p1,limit1,lookForMark1,lookForNodes1 = c.rootPosition(),None,True,False
                 # The second pass looks in the selected tree for everything except @mark-for-unit-tests.
-                # There is no second pass if the selected node is @mark-for-
+                # There is no second pass if the present node is an @mark-for-unit-test node.
                 p = c.currentPosition()
                 if p.headString().startswith(markTag):
-                    p2,limit2,tags2 = None,None,None
+                    p2,limit2,lookForMark2,lookForNodes2 = None,None,False,False
                 else:
-                    p2,limit2,tags2 = p,p.nodeAfterTree(),self.tags
+                    p2,limit2,lookForMark2,lookForNodes2 = p,p.nodeAfterTree(),False,True
+            #@nonl
+            #@-node:ekr.20070705065154:<< set p1/2,limit1/2,lookForMark1/2,lookForNodes1/2 >>
+            #@nl
+            c2.beginUpdate()
             try:
-                c2root.expand()
-                for p,limit_p,tags in ((p1,limit1,tags1),(p2,limit2,tags2)):
-                    while p and p != limit_p:
+                self.copyRoot.expand()
+                for p,limit,lookForMark,lookForNodes in (
+                    (p1,limit1,lookForMark1,lookForNodes1),
+                    (p2,limit2,lookForMark2,lookForNodes2),
+                ):
+                    while p and p != limit:
                         h = p.headString()
-                        for s in tags:
-                            if h.startswith(s) and not p.v.t in seen:
-                                seen.append(p.v.t)
-                                # print h
-                                p2 = p.copyTreeAfter()
-                                p2.unlink()
-                                p2.moveToLastChildOf(c2root)
-                                p.moveToNodeAfterTree()
-                                break
+                        if p.v.t in self.seen:
+                            p.moveToNodeAfterTree()
+                        elif lookForMark and h.startswith(markTag):
+                            self.addMarkTree(p)
+                            p.moveToNodeAfterTree()
+                        elif lookForNodes and self.isUnitTestNode(p):
+                            self.addNode(p)
+                            p.moveToNodeAfterTree()
                         else:
                             p.moveToThreadNext()
             finally:
                 c2.endUpdate(False)
-        #@-node:ekr.20070627135336.9:createOutline
+        #@nonl
+        #@+node:ekr.20070705080413:addMarkTree
+        def addMarkTree (self,p):
+
+            # g.trace(len(self.seen),p.headString())
+
+            self.seen.append(p.v.t)
+
+            for p in p.subtree_iter():
+                if self.isUnitTestNode(p) and not p.v.t in self.seen:
+                    self.addNode(p)
+        #@-node:ekr.20070705080413:addMarkTree
+        #@+node:ekr.20070705065154.1:addNode
+        def addNode(self,p):
+
+            '''
+            Add an @test, @suite or an @unit-test tree as the last child of self.copyRoot.
+            '''
+
+            # g.trace(len(self.seen),p.headString())
+
+            p2 = p.copyTreeAfter()
+            p2.unlink()
+            p2.moveToLastChildOf(self.copyRoot)
+
+            self.seen.append(p.v.t)
+        #@-node:ekr.20070705065154.1:addNode
+        #@+node:ekr.20070705075604.3:isUnitTestNode
+        def isUnitTestNode (self,p):
+
+            h = p.headString()
+            for tag in self.tags:
+                if h.startswith(tag):
+                    return True
+            else:
+                return False
+        #@-node:ekr.20070705075604.3:isUnitTestNode
+        #@-node:ekr.20070627135336.9:createOutline & helpers
         #@+node:ekr.20070627140344.2:runTests
         def runTests (self):
 
