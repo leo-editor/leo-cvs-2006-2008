@@ -2826,7 +2826,7 @@ class atFile:
         try:
             at.writeOpenFile(root,nosentinels=nosentinels,toString=toString)
             if toString:
-                at.closeWriteFile()
+                at.closeWriteFile() # sets self.stringOutput
                 # Major bug: failure to clear this wipes out headlines!
                 # Minor bug: sometimes this causes slight problems...
                 at.root.v.t.tnodeList = []
