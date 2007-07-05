@@ -7,8 +7,11 @@
 import leoGlobals as g
 import leoTest # Support for unit tests.
 
+import parser
 import re
 import string
+import tabnanny
+import tokenize
 
 class baseLeoImportCommands:
     """The base class for Leo's import commands."""
@@ -961,6 +964,12 @@ class baseLeoImportCommands:
             self.language = language
             delim1,delim2,delim3 = g.set_delims_from_language(language)
             self.comment_delim = delim1
+
+            # Create the ws equivalent to one tab.
+            if self.tab_width < 0:
+                self.tab_ws = ' '*abs(self.tab_width)
+            else:
+                self.tab_ws = '\t'
         #@-node:ekr.20070703122141.66:baseScannerClass.__init__
         #@+node:ekr.20070703122141.77:createHeadline
         def createHeadline (self,parent,body,headline):
@@ -1381,7 +1390,7 @@ class baseLeoImportCommands:
         #@-others
     #@-node:ekr.20070703122141.65:class baseScannerClass
     #@+node:ekr.20070703123618.2:Python tests
-    #@+node:ekr.20070703181153:@mark-for-unit-tests Ready
+    #@+node:ekr.20070703181153:@mark-for-unit-tests @auto tests
     #@+node:ekr.20070703122141.128:@test scanPythonText
     if g.unitTesting:
 
@@ -1415,7 +1424,7 @@ class baseLeoImportCommands:
             for z in p.subtree_iter():
                 print '.'*z.level(),z.headString()
     #@-node:ekr.20070703122141.128:@test scanPythonText
-    #@-node:ekr.20070703181153:@mark-for-unit-tests Ready
+    #@-node:ekr.20070703181153:@mark-for-unit-tests @auto tests
     #@+node:ekr.20070703181153.1:Not ready
     #@+node:ekr.20070703123618.3:@@test skipPythonDef
     if g.unitTesting:
@@ -2451,7 +2460,41 @@ class baseLeoImportCommands:
         #@-others
     #@nonl
     #@-node:ekr.20070703124805:C scanner
-    #@+node:ekr.20070703123334.2:Python scanner
+    #@+node:ekr.20070703123334.2:Python scanner & helpers
+    #@+node:ekr.20070705091716:pythonUnitTest
+    def pythonUnitTest (self,p,s,fileName,atAuto=False):
+
+        '''
+        Run a unit test of the Python parser,
+        i.e., create a tree from string s at location p.
+        The caller is responsible for asserting properties of the tree.
+        '''
+
+        # Duplicate processing in ic command
+        ic = self ; c = ic.c
+        if fileName.startswith('@test'):
+            fileName = fileName[5:].strip()
+        junk,ic.fileName = g.os_path_split(fileName)
+        ic.methodName,ic.fileType = g.os_path_splitext(ic.fileName)
+        ic.setEncoding()
+
+        c.beginUpdate()
+        try:
+            # Create a child
+            child = p.insertAsLastChild()
+            assert child
+            h = g.choose(atAuto,'@auto ' + fileName,fileName)
+            child.initHeadString(h)
+            ic.scanPythonText (s=s,parent=child.copy(),atAuto=atAuto)
+        finally:
+            c.endUpdate()
+        if 0:
+            g.trace('***** generated tree...')
+            for z in p.subtree_iter():
+                print '.'*z.level(),z.headString()
+
+        return child
+    #@-node:ekr.20070705091716:pythonUnitTest
     #@+node:ekr.20070703122141.99:scanPythonText
     def scanPythonText (self,s,parent,atAuto=False):
 
@@ -2463,11 +2506,11 @@ class baseLeoImportCommands:
 
         # Step 2: check the generated nodes.
         # Return True if the result is equivalent to the original file.
-        ok = scanner.check()
+        ok = scanner.check(parent)
 
         # Step 3: insert an @ignore directive if there are any problems.
         if not ok:
-            scanner.insertIgnoreDirectives()
+            scanner.insertIgnoreDirectives(parent)
     #@-node:ekr.20070703122141.99:scanPythonText
     #@+node:ekr.20070703122141.100:class pythonScanner
     class pythonScanner (baseScannerClass):
@@ -2484,7 +2527,7 @@ class baseLeoImportCommands:
 
         #@-node:ekr.20070703122141.101: __init__
         #@+node:ekr.20070703122141.102:check & helpers
-        def check (self):
+        def check (self,parent):
 
             '''
             The heart of @auto and the perfect import algorithm:
@@ -2496,33 +2539,68 @@ class baseLeoImportCommands:
             Return True if the nodes are equivalent to the original file.
             '''
 
-            return self.checkWhitespace() and self.checkTrialWrite()
+            return self.checkWhitespace(parent) and self.checkTrialWrite()
+        #@+node:ekr.20070705085126:checkTab
+        # Similar to c.tabNannyNode
+
+        def checkTab (self,p):
+
+            """Check indentation using tabnanny."""
+
+            h = p.headString() ; body = p.bodyString()
+
+            try:
+                readline = g.readLinesClass(body).next
+                tabnanny.process_tokens(tokenize.generate_tokens(readline))
+                return True
+
+            except parser.ParserError, msg:
+                g.es_print("ParserError in %s" % h,color="blue")
+                g.es_print(str(msg))
+
+            except tokenize.TokenError, msg:
+                g.es_print("TokenError in %s" % h,color="blue")
+                g.es_print(str(msg))
+
+            except tabnanny.NannyNag, nag:
+                badline = nag.get_lineno()
+                line    = nag.get_line()
+                message = nag.get_msg()
+                g.es_print("Indentation error in %s, line %d" % (h, badline),color="blue")
+                g.es_print(message)
+                g.es_print("offending line:\n%s" % repr(str(line))[1:-1])
+
+            except:
+                g.trace("unexpected exception")
+                g.es_exception()
+
+            return False
+        #@-node:ekr.20070705085126:checkTab
         #@+node:ekr.20070703122141.103:checkWhitespace
-        def checkWhitespace(self):
+        def checkWhitespace(self,parent):
 
             '''Check and normalize the leading whitespace of all nodes.
 
             - The original sources may fail Python's tabNanny checks.  
 
             - Leading whitespace in the original sources may be inconsistent with the
-            @tabwidth setting in effect in the @auto tree.
+              @tabwidth setting in effect in the @auto tree.
 
-            - The original sources may contain underindented comment. 
+            - The original sources may contain underindented comments. 
 
-            If an indentation problem is found, issue a warning and set an indentError
-            flag that will cause the read code to generate an @ignore directive in the
-            root node.
-
+            If an indentation problem is found, issue a warning and return False.
             Otherwise, normalize the indentation of all pieces so that it is indeed
             consistent with the indentation specified by the present @tabwidth setting.
             Normalizing underindented comments means shifting the comments right.
             '''
 
-            ok = True
             # Check that whitespace passes TabNanny.
             # Check that whitespace is compatible with @tabwidth.
             # Check for underindented lines.
-            g.trace()
+            g.trace(self.tab_width)
+            ok = True
+            for p in parent.self_and_subtree_iter():
+                ok = ok and self.checkTab(p)
             return ok
         #@nonl
         #@-node:ekr.20070703122141.103:checkWhitespace
@@ -2575,11 +2653,26 @@ class baseLeoImportCommands:
 
             # This must be done after the declaration reference is generated.
             if self.treeType == "@file":
-                c.appendStringToBody(class_vnode,"\t@others\n")
+                c.appendStringToBody(class_vnode,'%s@others\n' % self.tab_ws)
             else:
                 ref = g.angleBrackets(' class %s methods ' % (class_name))
-                c.appendStringToBody(class_vnode,"\t" + ref + "\n\n")
+                c.appendStringToBody(class_vnode,self.tab_ws + ref + "\n\n")
         #@-node:ekr.20070703122141.106:createParentText
+        #@+node:ekr.20070705085335:insertIgnoreDirectives
+        def insertIgnoreDirectives (self,parent):
+
+            g.trace(parent)
+        #@-node:ekr.20070705085335:insertIgnoreDirectives
+        #@+node:ekr.20070705094630:putRootText
+        def putRootText (self,p):
+
+            c = self.c
+
+            if self.atAuto:
+                c.appendStringToBody(p,self.rootLine + '@language python\n')
+            else:
+                c.appendStringToBody(p,'@ignore\n' + self.rootLine + '@language python\n')
+        #@-node:ekr.20070705094630:putRootText
         #@+node:ekr.20070703122141.107:scan
         # See the comments for scanCText for what the text looks like.
 
@@ -2603,7 +2696,7 @@ class baseLeoImportCommands:
                     if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
                         isDef = g.match_c_word(s,i,"def")
                         if not decls_seen:
-                            c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language python\n")
+                            self.putRootText(parent)
                             i = start = self.scanPythonDecls(s,start,parent,-1,indent_parent_ref_flag=False)
                             decls_seen = True
                             if self.treeType == "@file":
@@ -2618,8 +2711,8 @@ class baseLeoImportCommands:
                     #@nl
                 else: i += 1
                 assert(progress < i)
-            if not decls_seen: # 2/17/03
-                c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language python\n")
+            if not decls_seen:
+                self.putRootText(parent)
             #@    << Append a reference to the methods of this file >>
             #@+node:ekr.20070703122141.109:<< Append a reference to the methods of this file >>
             if self.treeType == "@root" and self.methodsSeen:
@@ -2752,17 +2845,23 @@ class baseLeoImportCommands:
             if j < i:
                 #@        << Create a child node for declarations >>
                 #@+node:ekr.20070703122141.118:<< Create a child node for declarations >>
-                headline = ref = g.angleBrackets(" " + self.methodName + " declarations ")
-                leading_tab = g.choose(indent_parent_ref_flag,"\t","")
+                if self.atAuto:
+                    # Create the node for the decls.
+                    headline = self.methodName + ' declarations'
+                    body = self.undentBody(s[j:i])
+                    self.createHeadline(parent,body,headline)
+                else:
+                    headline = ref = g.angleBrackets(" " + self.methodName + " declarations ")
+                    leading_tab = g.choose(indent_parent_ref_flag,self.tab_ws,"")
 
-                # Append the reference to the parent's body.
-                c.appendStringToBody(parent,leading_tab + ref + "\n") # 7/6/02
+                    # Append the reference to the parent's body.
+                    c.appendStringToBody(parent,leading_tab + ref + "\n") # 7/6/02
 
-                # Create the node for the decls.
-                body = self.undentBody(s[j:i])
-                if self.treeType == "@root":
-                    body = "@code\n\n" + body
-                self.createHeadline(parent,body,headline)
+                    # Create the node for the decls.
+                    body = self.undentBody(s[j:i])
+                    if self.treeType == "@root":
+                        body = "@code\n\n" + body
+                    self.createHeadline(parent,body,headline)
                 #@-node:ekr.20070703122141.118:<< Create a child node for declarations >>
                 #@nl
             return i
@@ -2864,7 +2963,7 @@ class baseLeoImportCommands:
         #@-node:ekr.20070703122141.124:skipPythonDef
         #@-others
     #@-node:ekr.20070703122141.100:class pythonScanner
-    #@-node:ekr.20070703123334.2:Python scanner
+    #@-node:ekr.20070703123334.2:Python scanner & helpers
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@-node:ekr.20031218072017.3209:Import
     #@+node:ekr.20031218072017.3289:Export
