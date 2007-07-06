@@ -2521,19 +2521,20 @@ class baseLeoImportCommands:
 
             importCommands.baseScannerClass.__init__(self,importCommands,language='python')
 
-            self.c = importCommands.c
+            # Remember the arguments.
             self.atAuto = atAuto
+            self.c = importCommands.c
             self.importCommands = importCommands
-            self.root = None # The top-level node of the generated tree.
             self.strict = strict # True: all lines must match exactly.
+
+            self.root = None # The top-level node of the generated tree.
 
         #@-node:ekr.20070703122141.101: __init__
         #@+node:ekr.20070703122141.102:check & helpers
         def check (self,parent):
 
             '''
-            The heart of @auto and the perfect import algorithm:
-            make sure the generated nodes are equivalent to the original file.
+            Make sure the generated nodes are equivalent to the original file.
 
             1. Regularize and check leading whitespace.
             2. Check that a trial write produces the original file.
@@ -2617,7 +2618,6 @@ class baseLeoImportCommands:
 
             c = self.c ; at = c.atFileCommands
 
-            g.trace(self.root)
             at.write(self.root,nosentinels=True,thinFile=False,scriptWrite=False,toString=True)
             s1 = self.file_s
             s2 = at.stringOutput
@@ -2648,9 +2648,11 @@ class baseLeoImportCommands:
             return ok
         #@-node:ekr.20070703122141.104:checkTrialWrite
         #@-node:ekr.20070703122141.102:check & helpers
+        #@+node:ekr.20070706084535:Semantics
         #@+node:ekr.20070703122141.105:createClassNodeText
         def createClassNodeText (self,s,i,start):
 
+            # Sementics.
             # Create the section name using the old value of self.methodName.
             if  self.treeType == "@file":
                 prefix = ""
@@ -2660,18 +2662,20 @@ class baseLeoImportCommands:
 
             # i points just after the class line.
 
-            # Add a docstring to the class node.
+            # Parsing.
+            # Add a docstring to the class node, but only if
+            # nothing but whitespace appears between the end of the docstring and a newline.
             docStringSeen = False
             j = g.skip_ws_and_nl(s,i)
             if g.match(s,j,'"""') or g.match(s,j,"'''"):
                 j = g.skip_python_string(s,j)
-                if j != len(s): # No scanning error.
-                    i = j ; docStringSeen = True
-                    ### Get the trailing newline, so we can add an @others after it.
-                    i = g.skip_line(s,j)
+                if j < len(s): # No scanning error.
+                    j = g.skip_ws(s,j)
+                    if g.match(s,j,'\n'):
+                        # A newline directly follows the docstring.
+                        i = j + 1 ; docStringSeen = True
             body = s[start:i]
             body = self.undentBody(body)
-            ### if docStringSeen: body = body + '\n'
 
             return i,prefix,body
         #@-node:ekr.20070703122141.105:createClassNodeText
@@ -2725,6 +2729,8 @@ class baseLeoImportCommands:
             else:
                 c.appendStringToBody(p,'@ignore\n' + self.rootLine + '@language python\n')
         #@-node:ekr.20070705094630:putRootText
+        #@-node:ekr.20070706084535:Semantics
+        #@+node:ekr.20070706084535.1:Parsing
         #@+node:ekr.20070703122141.107:scan
         # See the comments for scanCText for what the text looks like.
 
@@ -2736,7 +2742,6 @@ class baseLeoImportCommands:
             self.file_s = s
             self.root = parent.copy()
             self.methodsSeen = False
-            g.trace('treeType',self.treeType)
             start = i = self.scanPythonDecls(s,0,parent,-1,indent_parent_ref_flag=False)
             decls_seen = i > 0
             if decls_seen:
@@ -2777,8 +2782,7 @@ class baseLeoImportCommands:
 
             """Creates a child node c of parent for the class, and children of c for each def in the class."""
 
-            # g.trace('start',start,'i',i)
-            # g.trace(g.get_line(s,i))
+            # g.trace('start',start,'i',i,g.get_line(s,i))
             c = self.c
             class_indent = self.getLeadingIndent(s,i)
             #@    << set class_name and headline >>
@@ -2939,7 +2943,7 @@ class baseLeoImportCommands:
             return i
         #@-node:ekr.20070703122141.119:scanPythonDef
         #@+node:ekr.20070703122141.124:skipPythonDef
-        def skipPythonDef (self,s,i): ### ,start):
+        def skipPythonDef (self,s,i):
 
             # g.trace(g.get_line(s,i))
 
@@ -2969,7 +2973,7 @@ class baseLeoImportCommands:
                     backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
                     i = g.skip_nl(s,i)
                     if not backslashNewline:
-                        # New in Leo 4.4.1: don't set indent for comment lines.
+                        # Don't set indent for comment lines.
                         j = g.skip_ws(s,i)
                         if not g.match(s,j,'#'):
                             indent = self.getLeadingIndent(s,i)
@@ -2990,6 +2994,7 @@ class baseLeoImportCommands:
 
             return i
         #@-node:ekr.20070703122141.124:skipPythonDef
+        #@-node:ekr.20070706084535.1:Parsing
         #@-others
     #@-node:ekr.20070703122141.100:class pythonScanner
     #@-node:ekr.20070703123334.2:Python scanner & helpers
