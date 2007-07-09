@@ -3360,13 +3360,14 @@ def skip_pp_part(s,i):
     return i,delta
 #@-node:ekr.20031218072017.3169:skip_pp_part
 #@+node:ekr.20031218072017.3170:skip_python_string
-def skip_python_string(s,i):
+def skip_python_string(s,i,verbose=True):
 
     if g.match(s,i,"'''") or g.match(s,i,'"""'):
         j = i ; delim = s[i]*3 ; i += 3
         k = string.find(s,delim,i)
         if k > -1: return k+3
-        g.scanError("Run on triple quoted string: " + s[j:i])
+        if verbose:
+            g.scanError("Run on triple quoted string: " + s[j:i])
         return len(s)
     else:
         return g.skip_string(s,i)
