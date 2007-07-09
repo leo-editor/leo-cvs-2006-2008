@@ -290,7 +290,9 @@ class atFile:
         thinFile=False,
         scriptWrite=False,
         toString=False,
-        forcePythonSentinels=None):
+        forcePythonSentinels=None,
+        write_strips_blank_lines=None,
+    ):
 
         self.initCommonIvars()
         #@    << init ivars for writing >>
@@ -310,7 +312,6 @@ class atFile:
         self.shortFileName = "" # short version of file name used for messages.
         self.thinFile = False
         self.force_newlines_in_at_nosent_bodies = self.c.config.getBool('force_newlines_in_at_nosent_bodies')
-        self.write_strips_blank_lines = self.c.config.getBool('write_strips_blank_lines')
 
         if toString:
             self.outputFile = g.fileLikeObject()
@@ -322,6 +323,11 @@ class atFile:
             self.targetFileName = self.outputFileName = u""
         #@-node:ekr.20041005105605.16:<< init ivars for writing >>>
         #@nl
+
+        if write_strips_blank_lines is None:
+            self.write_strips_blank_lines = self.c.config.getBool('write_strips_blank_lines')
+        else:
+            self.write_strips_blank_lines = write_strips_blank_lines
 
         if forcePythonSentinels is None:
             forcePythonSentinels = scriptWrite
@@ -2799,7 +2805,7 @@ class atFile:
     #@+node:ekr.20041005105605.144:write
     # This is the entry point to the write code.  root should be an @file vnode.
 
-    def write(self,root,nosentinels=False,thinFile=False,scriptWrite=False,toString=False):
+    def write(self,root,nosentinels=False,thinFile=False,scriptWrite=False,toString=False,write_strips_blank_lines=None):
 
         """Write a 4.x derived file."""
 
@@ -2819,7 +2825,8 @@ class atFile:
         #@nl
         at.initWriteIvars(root,at.targetFileName,
             nosentinels=nosentinels,thinFile=thinFile,
-            scriptWrite=scriptWrite,toString=toString)
+            scriptWrite=scriptWrite,toString=toString,
+            write_strips_blank_lines=write_strips_blank_lines)
         if not at.openFileForWriting(root,at.targetFileName,toString):
             return
 
@@ -3405,8 +3412,8 @@ class atFile:
             else:
                 g.trace("Can't happen: completely empty line")
         else:
-            # 1/29/04: Don't put leading indent if the line is empty!
-            if line and not at.raw:
+            # Don't put leading indent if the line is empty!
+            if line.strip() and not at.raw:  ### 7/9/2007: changed line to line.strip()
                 at.putIndent(at.indent)
 
             if line[-1:]=="\n":
