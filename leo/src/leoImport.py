@@ -976,11 +976,17 @@ class baseLeoImportCommands:
             else:
                 self.tab_ws = '\t'
 
+            # For communication between scan and startsClass/Function...
+            self.end = None
+                # If not none, what scanClass/Function would return.
+                # This allows startsClass/Function to do all the work.
+            self.sigEnd = None
+
             # May be overridden in subclasses.
             self.lineCommentDelim = None
             self.blockCommentDelim1 = None
             self.blockCommentDelim2 = None
-            self.signatureDelim = '{'
+
         #@-node:ekr.20070703122141.66:baseScannerClass.__init__
         #@+node:ekr.20070707072749:run
         def run (self,s,parent):
@@ -1099,9 +1105,9 @@ class baseLeoImportCommands:
             s2 = at.stringOutput
             ok = s1 == s2
             if ok:
-                pass
-                g.trace('***success***')
+                g.es_print('@auto ***success***')
             else:
+                g.es_print('@auto ***failure***')
                 lines1 = g.splitLines(s1)
                 lines2 = g.splitLines(s2)
                 if not self.strict: # ignore blank lines.
@@ -1326,23 +1332,6 @@ class baseLeoImportCommands:
 
             return i
         #@-node:ekr.20070707150022:extendSignature
-        #@+node:ekr.20070707172732:getClass/FunctionID
-        def getClassID (self,s,i):
-
-            '''
-            Return the class id if s[i:] starts a class definition.
-            '''
-
-            return self.startsClass(s,i)
-
-        def getFunctionID (self,s,i):
-
-            '''
-            Return the function id if s[i:] starts a function definition.
-            '''
-
-            return self.startsFunction(s,i)
-        #@-node:ekr.20070707172732:getClass/FunctionID
         #@+node:ekr.20070707073859:skipBlock
         def skipBlock(self,s,i,delim1='{',delim2='}'):
 
@@ -1390,6 +1379,19 @@ class baseLeoImportCommands:
             else:
                 return k + len(self.blockCommentDelim2)
         #@-node:ekr.20070707074541:skipBlockComment
+        #@+node:edreamleo.20070710105410:skipClass/Function/Signature
+        # startsClass and startsFunction must do all the work anyway,
+        # so they set the ending points and we just return it.
+
+        def skipClass (self,s,i):
+            return self.end
+
+        def skipFunction (self,s,i):
+            return self.end
+
+        def skipSignature (self,s,i):
+            return self.sigEnd
+        #@-node:edreamleo.20070710105410:skipClass/Function/Signature
         #@+node:ekr.20070707094858.1:skipId
         def skipId (self,s,i):
 
@@ -1413,12 +1415,6 @@ class baseLeoImportCommands:
         #@-node:ekr.20070707172732.1:startsString
         #@-node:ekr.20070707075646.1:May be defined in subclasses
         #@+node:ekr.20070707073627.3:Must be defined in subclasses
-        def getClassId (self,s,i):
-            self.oops()
-
-        def getFunctionId (self,s,i):
-            self.oops()
-
         def putClass (self,s,i,end,start,parent):
             self.oops()
 
@@ -1510,11 +1506,14 @@ class baseLeoImportCommands:
             # g.trace('start',start,'i',i,g.get_line(s,i))
             c = self.c
             classStart = g.find_line_start(s,i)
-            class_name = self.getClassID(s,i)
-            headline = "class " + class_name
-
             prefix = self.createClassNodePrefix()
+
             i = self.skipSignature(s,i)
+            if not self.sigID:
+                g.trace('Can not happen: no sigID')
+                sigID = 'Unknown class name'
+            class_name = self.sigID # May be set in skipSignature.
+            headline = "class " + class_name
             body = s[start:i]
             body = self.undentBody(body)
             j = i ; i = self.extendSignature(s,i)
@@ -1615,7 +1614,11 @@ class baseLeoImportCommands:
             Create a node of parent for a function defintion.
             '''
 
-            headline = self.getFunctionID(s,i)
+            if self.sigID:
+                headline = self.sigID
+            else:
+                g.trace('Can not happen: no sigID')
+                headline = 'unknown function'
             body = s[start:end]
             self.createFunctionNode(headline,body,parent)
         #@-node:ekr.20070707082432:putFunction
@@ -1947,239 +1950,6 @@ class baseLeoImportCommands:
 
         self.c.setBodyString(parent,"@ignore\n" + "@language forth\n" + self.rootLine + s)
     #@-node:ekr.20041107094641:scanForthText
-    #@+node:ekr.20031218072017.3270:scanJavaText
-    # Creates a child of parent for each Java function definition seen.
-
-    def scanJavaText (self,s,parent,outerFlag): # True if at outer level.
-
-        __pychecker__ = 'maxlines=500'
-
-        #@    << define scanJavaText vars >>
-        #@+node:ekr.20031218072017.3271:<< define scanJavaText vars >>
-        c = self.c
-        method_seen = False
-        class_seen = False # True: class keyword seen at outer level.
-        interface_seen = False # True: interface keyword seen at outer level.
-        lparen = None  # not None if '(' seen at outer level.
-        scan_start = 0
-        name = None
-        function_start = 0 # g.choose(outerFlag, None, 0)
-        i = 0
-        #@-node:ekr.20031218072017.3271:<< define scanJavaText vars >>
-        #@nl
-        # if not outerFlag: g.trace("inner:",s)
-        while i < len(s):
-            # g.trace(g.get_line(s,i))
-            ch = s[i]
-            # These cases skip tokens.
-            if ch == '/':
-                #@            << handle possible Java comments >>
-                #@+node:ekr.20031218072017.3277:<< handle possible Java comments >>
-                if g.match(s,i,"//"):
-                    i = g.skip_line(s,i)
-                elif g.match(s,i,"/*"):
-                    i = g.skip_block_comment(s,i)
-                else:
-                    i += 1
-                #@-node:ekr.20031218072017.3277:<< handle possible Java comments >>
-                #@nl
-            elif ch == '"' or ch == '\'': i = g.skip_string(s,i)
-            # These cases help determine where functions start.
-            elif ch == '=':
-                #@            << handle equal sign in Java >>
-                #@+node:ekr.20031218072017.3278:<< handle equal sign in Java >>
-                #@+at 
-                #@nonl
-                # We can not be seeing a function definition when we find an 
-                # equal sign at the top level. Equal signs inside parentheses 
-                # are handled by the open paren logic.
-                #@-at
-                #@@c
-
-                i += 1 # skip the '='
-                function_start = 0 # 3/23/03: (bug fix: was None) We can't be in a function.
-                lparen = None   # We have not seen an argument list yet.
-                if g.match(s,i,'='):
-                    i = g.skip_braces(s,i)
-                #@-node:ekr.20031218072017.3278:<< handle equal sign in Java >>
-                #@nl
-            elif ch == '(':
-                #@            << handle open paren in Java >>
-                #@+node:ekr.20031218072017.3279:<< handle open paren in Java >>
-                lparen = i
-                # This will skip any equal signs inside the paren.
-                i = g.skip_parens(s,i)
-                if g.match(s,i,')'):
-                    i += 1
-                    i = g.skip_ws_and_nl(s,i)
-                    if g.match(s,i,';'):
-                        lparen = None # not a function definition.
-                else: lparen = None
-                #@-node:ekr.20031218072017.3279:<< handle open paren in Java >>
-                #@nl
-            elif ch == ';':
-                #@            << handle semicolon in Java >>
-                #@+node:ekr.20031218072017.3280:<< handle semicolon in Java >>
-                #@+at 
-                #@nonl
-                # A semicolon signals the end of a declaration, thereby 
-                # potentially starting the _next_ function defintion.   
-                # Declarations end a function definition unless we have 
-                # already seen a parenthesis, in which case we are seeing an 
-                # old-style function definition.
-                #@-at
-                #@@c
-
-                i += 1 # skip the semicolon.
-                if lparen == None:
-                    function_start = i + 1 # The semicolon ends the declaration.
-                #@-node:ekr.20031218072017.3280:<< handle semicolon in Java >>
-                #@nl
-                class_seen = False
-            # These cases can create child nodes.
-            elif ch == '{':
-                #@            << handle open curly bracket in Java >>
-                #@+node:ekr.20031218072017.3272:<< handle open curly bracket in Java >>
-                brace_ip1 = i
-                i = g.skip_braces(s,i) # Skip all inner blocks.
-                brace_ip2 = i
-
-                if not g.match (s,i,'}'):
-                    g.es("unmatched '{'")
-                elif not name:
-                    i += 1
-                elif (outerFlag and (class_seen or interface_seen)) or (not outerFlag and lparen):
-                    # g.trace("starting:",name)
-                    # g.trace("outerFlag:",outerFlag)
-                    # g.trace("lparen:",lparen)
-                    # g.trace("class_seen:",class_seen)
-                    # g.trace("scan_start:",g.get_line_after(s,scan_start))
-                    # g.trace("func_start:",g.get_line_after(s,function_start))
-                    # g.trace("s:",g.get_line(s,i))
-
-                    # Point i _after_ the last character of the method.
-                    i += 1
-                    if g.is_nl(s,i):
-                        i = g.skip_nl(s,i)
-                    function_end = i
-                    headline = name
-                    if outerFlag:
-                        leader = "" ; decl_leader = ""
-                        if class_seen:
-                            headline = "class " + headline
-                            methodKind = "classes"
-                        else:
-                            headline = "interface " + headline
-                            methodKind = "interfaces"
-                    else:
-                        leader = "\t" # Indent only inner references.
-                        decl_leader = "\n"  # Declaration leader for inner references.
-                        methodKind = "methods"
-                    if method_seen:
-                        # Include everything after the last fucntion.
-                        function_start = scan_start
-                    else:
-                        #@        << create a Java declaration node >>
-                        #@+node:ekr.20031218072017.3273:<< create a Java declaration node >>
-                        save_ip = i
-                        i = scan_start
-                        while i < function_start and g.is_ws_or_nl(s,i):
-                            i += 1
-
-                        if outerFlag:
-                            c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language java\n")
-
-                        if i < function_start:
-                            decl_headline = g.angleBrackets(" " + self.methodName + " declarations ")
-
-                            # Append the headline to the parent's body.
-                            c.appendStringToBody(parent,decl_leader + leader + decl_headline + "\n")
-                            scan_start = g.find_line_start(s,scan_start) # Backtrack so we remove leading whitespace.
-                            decls = s[scan_start:function_start]
-                            decls = self.undentBody(decls)
-                            body = g.choose(self.treeType == "@file",decls,"@code\n\n" + decls)
-                            self.createHeadline(parent,body,decl_headline)
-
-                        i = save_ip
-                        scan_start = i
-                        #@-node:ekr.20031218072017.3273:<< create a Java declaration node >>
-                        #@nl
-                        #@        << append Java method reference to parent node >>
-                        #@+node:ekr.20031218072017.3274:<< append Java method reference to parent node >>
-                        if self.treeType == "@file":
-                            if outerFlag:
-                                c.appendStringToBody(parent,"\n@others\n")
-                            else:
-                                c.appendStringToBody(parent,"\n\t@others\n")
-                        else:
-                            kind = g.choose(outerFlag,"classes","methods")
-                            ref_name = g.angleBrackets(" " + self.methodName + " " + kind + " ")
-                            c.appendStringToBody(parent,leader + ref_name + "\n")
-                        #@-node:ekr.20031218072017.3274:<< append Java method reference to parent node >>
-                        #@nl
-                    if outerFlag: # Create a class.
-                        # Backtrack so we remove leading whitespace.
-                        function_start = g.find_line_start(s,function_start)
-                        body = s[function_start:brace_ip1+1]
-                        body = self.massageBody(body,methodKind)
-                        v = self.createHeadline(parent,body,headline)
-                        #@        << recursively scan the text >>
-                        #@+node:ekr.20031218072017.3275:<< recursively scan the text >>
-                        # These mark the points in the present function.
-                        # g.trace("recursive scan:",g.get_line(s,brace_ip1+ 1))
-                        oldMethodName = self.methodName
-                        self.methodName = headline
-                        self.scanJavaText(s[brace_ip1+1:brace_ip2], # Don't include either brace.
-                            v,False) # inner level
-                        self.methodName = oldMethodName
-                        #@-node:ekr.20031218072017.3275:<< recursively scan the text >>
-                        #@nl
-                        # Append the brace to the parent.
-                        c.appendStringToBody(v,"}")
-                        i = brace_ip2 + 1 # Start after the closing brace.
-                    else: # Create a method.
-                        # Backtrack so we remove leading whitespace.
-                        function_start = g.find_line_start(s,function_start)
-                        body = s[function_start:function_end]
-                        body = self.massageBody(body,methodKind)
-                        self.createHeadline(parent,body,headline)
-                        i = function_end
-                    method_seen = True
-                    scan_start = function_start = i # Set the start of the _next_ function.
-                    lparen = None ; class_seen = False
-                else: i += 1
-                #@-node:ekr.20031218072017.3272:<< handle open curly bracket in Java >>
-                #@nl
-            elif g.is_c_id(s[i]):
-                #@            << skip and remember the Java id >>
-                #@+node:ekr.20031218072017.3276:<< skip and remember the Java id >>
-                if g.match_c_word(s,i,"class") or g.match_c_word(s,i,"interface"):
-                    if g.match_c_word(s,i,"class"):
-                        class_seen = True
-                    else:
-                        interface_seen = True
-                    i = g.skip_c_id(s,i) # Skip the class or interface keyword.
-                    i = g.skip_ws_and_nl(s,i)
-                    if i < len(s) and g.is_c_id(s[i]):
-                        # Remember the class or interface name.
-                        j = i ; i = g.skip_c_id(s,i) ; name = s[j:i]
-                else:
-                    j = i ; i = g.skip_c_id(s,i)
-                    if not lparen and not class_seen:
-                        name = s[j:i] # Remember the name.
-                #@-node:ekr.20031218072017.3276:<< skip and remember the Java id >>
-                #@nl
-            else: i += 1
-        #@    << Append any unused text to the parent's body text >>
-        #@+node:ekr.20031218072017.3264:<< append any unused text to the parent's body text >>
-        # Used by the Java and Pascal scanners.
-
-        i = g.skip_ws_and_nl(s,scan_start)
-        if i < len(s):
-            c.appendStringToBody(parent,s[scan_start:])
-        #@-node:ekr.20031218072017.3264:<< append any unused text to the parent's body text >>
-        #@nl
-    #@-node:ekr.20031218072017.3270:scanJavaText
     #@+node:ekr.20060328112327:scanLuaText
     def scanLuaText (self,s,parent):
 
@@ -2550,197 +2320,6 @@ class baseLeoImportCommands:
         c.appendStringToBody(parent,s[endOfCode:])
     #@-node:ekr.20031218072017.3242:scanPHPText (Dave Hein)
     #@-node:ekr.20070703123618:Unchanged scanners
-    #@+node:ekr.20070703124805:C scanner
-    if 0:
-        #@    @+others
-        #@+node:ekr.20070703122141.89:scanCText & helper class
-        # Creates a child of parent for each C function definition seen.
-
-        def scanCText (self,s,parent):
-
-            #@    @+others
-            #@-others
-
-            scanner = cScanner(self)
-            scanner.scan(s,parent)
-        #@-node:ekr.20070703122141.89:scanCText & helper class
-        #@+node:ekr.20070703122141.90:class cScanner
-        class cScanner (baseScannerClass):
-
-            #@    @+others
-            #@+node:ekr.20070703122141.91:cScanner.ctor
-            def __init__ (self,importer):
-
-                # Copy ivars.
-                self.c = importer.c
-                self.encoding = importer.encoding
-                self.methodKind = g.choose(importer.fileType==".c","functions","methods")
-                self.methodName = importer.methodName
-                self.rootLine = importer.rootLine
-                self.treeType = importer.treeType
-
-                # Other ivars.
-                self.function_start = 0
-                self.name = None
-                self.scan_start = 0
-            #@-node:ekr.20070703122141.91:cScanner.ctor
-            #@+node:ekr.20070703122141.92:scan & helpers
-            def scan (self,s,parent,init=True):
-
-                c = self.c
-                if init:
-                    c.appendStringToBody(parent,"@ignore\n" + self.rootLine + "@language c\n")
-                else:
-                    saveData = self.name,self.function_start,self.scan_start
-
-                self.name,self.function_start,self.scan_start = '',0,0
-                i = 0
-                while i < len(s):
-                    progress = i
-                    ch = s[i]
-                    # if i == 0 or ch == '\n': g.trace('line',repr(g.get_line(s,i)))
-                    # g.trace('ch',repr(ch))
-                    if ch == '/':         i = self.skipComments(s,i)
-                    elif ch in ('"',"'"): i = g.skip_string(s,i)
-                    elif ch == '(':     i = self.doOuterParen(s,i,parent) # Possible function/method definition.
-                    elif ch == ';':     i = self.doSemicolon(s,i) # Signals a possible start of a function.
-                    elif g.is_c_id(ch): i = self.doId(s,i,parent) # Possible class/namespace definition.
-                    else: i += 1
-                    assert i > progress
-                self.appendUnusedText(s,i,parent)
-                if init:
-                    if parent.hasChildren(): c.appendStringToBody(parent,'@others')
-                else:
-                    self.name,self.function_start,self.scan_start = saveData
-            #@nonl
-            #@+node:ekr.20070703122141.93:appendUnusedText
-            def appendUnusedText (self,s,i,parent):
-
-                c = self.c
-
-                i = g.skip_ws_and_nl(s,self.scan_start)
-                if i < len(s):
-                    s2 = s[self.scan_start:]
-                    # g.trace(repr(s2))
-                    c.appendStringToBody(parent,s2)
-            #@-node:ekr.20070703122141.93:appendUnusedText
-            #@+node:ekr.20070703122141.94:doId
-            def doId (self,s,i,parent):
-
-                j = i ; i = g.skip_c_id(s,i)
-                name = s[j:i]
-                if name in ('class','namespace'):
-                    i = self.doInner(s,j,parent,name)
-                else:
-                    self.name = name
-                    while g.match(s,i,'::'):
-                        self.name = self.name + '::'
-                        i = g.skip_ws_and_nl(s,i+2)
-                        if g.match(s,i,'~'):
-                            i += 1
-                            self.name = self.name + '~'
-                        i = g.skip_ws_and_nl(s,i)
-                        j = i ; i = g.skip_c_id(s,i)
-                        name2 = s[j:i]
-                        self.name = self.name + name2
-                return i
-            #@-node:ekr.20070703122141.94:doId
-            #@+node:ekr.20070703122141.95:doInner
-            def doInner (self,s,i,parent,kind):
-
-                '''Handle a namespace or class definition.'''
-
-                c = self.c
-                start = i
-                i += len(kind)
-                j = g.skip_ws_and_nl(s,i)
-                i = g.skip_c_id(s,j)
-                name = s[j:i].strip()
-                if not name: return i
-                i = g.skip_ws_and_nl(s,i)
-                bracket = i
-                if not g.match(s,i,'{'): return i
-                i = g.skip_braces(s,i)
-                if g.match(s,i,'}'):
-                    end = i
-                    i = g.skip_ws_and_nl(s,i+1)
-                    if g.match(s,i,';'): i += 1
-                    # Append previous text.
-                    prev = s[self.scan_start:start]
-                    c.appendStringToBody(parent,prev)
-                    self.scan_start = self.function_start = i
-                    preamble = s[start:bracket+1]
-                    # Create children.
-                    p = self.createHeadline(parent,headline='%s %s' % (kind,name),body=preamble)
-                    body = s[bracket+1:end]
-                    self.scan(body,p.copy(),init=False)
-                    # Finish the text.
-                    if p.hasChildren(): c.appendStringToBody(p,'\n\t@others')
-                    c.appendStringToBody(p,s[end:i])    
-                else:
-                    g.trace('missing "}" following %s' % kind)
-                return i
-            #@-node:ekr.20070703122141.95:doInner
-            #@+node:ekr.20070703122141.96:doOuterParen
-            def doOuterParen (self,s,i,parent):
-
-                '''Handle '(' at the top level.
-                This begins a function/method if and only if the character after the matching ')' is '{'.'''
-
-                # Skip the param list.  It may not be properly matched if there are #if's involved.
-                c = self.c
-                i = g.skip_parens(s,i)
-                if not g.match(s,i,')'): return i
-                i = g.skip_ws_and_nl(s,i+1)
-                if g.match(s,i,';'):
-                    return self.doSemicolon(s,i)
-                elif g.match(s,i,'='):
-                    # An initializer ends a declaration.
-                    i = g.skip_ws_and_nl(s,i+1)
-                    if g.match(s,i,'{'):
-                        i = g.skip_braces(s,i)
-                    self.function_start = i
-                    return i
-                elif g.match(s,i,'{'):
-                    i = g.skip_braces(s,i)
-                    if g.match(s,i,'}'):
-                        i += 1
-                        # g.trace('function %s' % self.name)
-                        c.appendStringToBody(parent,s[self.scan_start:self.function_start])
-                        body = s[self.function_start:i]
-                        p = self.createHeadline(parent,headline=self.name,body=body)
-                    else:
-                        g.trace('no matching "}" in function/method definition')
-                    self.scan_start = self.function_start = i
-                    return i
-                else:
-                    return i
-            #@-node:ekr.20070703122141.96:doOuterParen
-            #@+node:ekr.20070703122141.97:doSemicolon
-            def doSemicolon (self,s,i):
-
-                self.function_start = i+1 # The semicolon ends the declaration.
-                return i+1
-            #@-node:ekr.20070703122141.97:doSemicolon
-            #@+node:ekr.20070703122141.98:skipComments
-            def skipComments (self,s,i):
-
-                if g.match(s,i,"//"):
-                    i = g.skip_line(s,i)
-                elif g.match(s,i,"/*"):
-                    i = g.skip_block_comment(s,i)
-                else:
-                    i += 1
-
-                return i
-            #@-node:ekr.20070703122141.98:skipComments
-            #@-node:ekr.20070703122141.92:scan & helpers
-            #@-others
-        #@nonl
-        #@-node:ekr.20070703122141.90:class cScanner
-        #@-others
-    #@nonl
-    #@-node:ekr.20070703124805:C scanner
     #@+node:ekr.20070703123334.2:Python scanner & helpers
     #@+node:ekr.20070705091716:pythonUnitTest
     def pythonUnitTest (self,p,s,fileName,atAuto=False,strict=False):
@@ -2779,7 +2358,11 @@ class baseLeoImportCommands:
     #@+node:ekr.20070703122141.99:scanPythonText
     def scanPythonText (self,s,parent,atAuto=False,strict=False):
 
-        scanner = self.pythonScanner(importCommands=self,atAuto=atAuto,strict=strict)
+        scanner = self.pythonScanner(
+            importCommands=self,
+            atAuto=atAuto,
+            strict=strict)
+
         scanner.run(s,parent)
     #@-node:ekr.20070703122141.99:scanPythonText
     #@+node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
@@ -2799,9 +2382,15 @@ class baseLeoImportCommands:
             self.blockCommentDelim1 = None
             self.blockCommentDelim2 = None
             self.lineCommentDelim = '#'
-            self.signatureDelim = ':'
+
         #@-node:ekr.20070703122141.101: __init__
         #@+node:ekr.20070707073723:Overrides
+        #@+at 
+        #@nonl
+        # skipClass/Function/Signature are usually defined in the base class,
+        # but for Python it is convenient to override them all.
+        #@-at
+        #@nonl
         #@+node:ekr.20070707113839:extendSignature
         def extendSignature(self,s,i):
 
@@ -2910,7 +2499,7 @@ class baseLeoImportCommands:
                 i = self.skipBlock(s,i,delim1='(',delim2=')')
                 i = g.skip_ws_and_nl(s,i)
 
-            if g.match(s,i,self.signatureDelim):
+            if g.match(s,i,':'):
                 return g.skip_line(s,i+1)
             else:
                 self.error(message)
@@ -2933,20 +2522,190 @@ class baseLeoImportCommands:
 
         def startsHelper(self,s,i,tag):
 
-            '''Return the id following the tag, or the empty string.'''
-
             if g.match_word(s,i,tag):
                 i += len(tag)
                 i = g.skip_ws_and_nl(s,i)
                 j = g.skip_c_id(s,i)
-                return s[i:j]
+                self.sigID = s[i:j]
+                return True
             else:
-                return ''
+                return False
         #@-node:ekr.20070707080005:startsClass/Function
         #@-node:ekr.20070707073723:Overrides
         #@-others
     #@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
     #@-node:ekr.20070703123334.2:Python scanner & helpers
+    #@+node:edreamleo.20070710110114:Java scanner & helpers
+    #@+node:edreamleo.20070710110114.2:scanJavaText
+    def scanJavaText (self,s,parent,atAuto=False,strict=False):
+
+        scanner = self.javaScanner(
+            importCommands=self,
+            atAuto=atAuto,
+            strict=strict)
+
+        scanner.run(s,parent)
+    #@-node:edreamleo.20070710110114.2:scanJavaText
+    #@+node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
+    class javaScanner (baseScannerClass):
+
+        #@    @+others
+        #@+node:edreamleo.20070710085115.1: __init__
+        def __init__ (self,importCommands,atAuto,strict):
+
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,
+                language='python',
+                strict=strict,
+            )
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '/*'
+            self.blockCommentDelim2 = '*/'
+            self.lineCommentDelim = '//'
+
+        #@-node:edreamleo.20070710085115.1: __init__
+        #@+node:edreamleo.20070710085115.2:Overrides
+        # skipClass/Function/Signature are defined in the base class.
+        #@nonl
+        #@+node:edreamleo.20070710085115.8:startsClass/Function & skipSignature
+        def startsClass (self,s,i):
+            '''Return True if s[i:] starts a class definition.
+            Sets self.end, self.sigEnd and self.sigID.'''
+            return self.startsHelper(s,i,classFlag=True)
+
+        def startsFunction (self,s,i):
+            '''Return True if s[i:] starts a function.
+            Sets self.end, self.sigEnd and self.sigID.'''
+            return self.startsHelper(s,i,classFlag=False)
+
+        def startsHelper(self,s,i,classFlag):
+            '''Return index of end of signature if sig is True,
+            otherwise return True if s[i:] starts a class or function.'''
+
+            self.end = self.sigEnd = self.sigID = None
+            if not g.is_c_id(s[i]): return False
+            word1 = g.skip_c_id(s,i)
+            if classFlag is not None:
+                classStart = word1 in ('class','interface')
+                if classFlag != classStart: return False
+
+            # Skip one or more id's.
+            while i < len(s) and g.is_c_id(s[i]):
+                j = g.skip_c_id(s,i)
+                word = s[i:j]
+                i = g.skip_ws_and_nl(s,j)
+
+            # Skip the argument list.
+            if not g.match(s,i,'('): return False
+            i = g.skip_parens(s,i)
+            if not g.match(s,i,')') : return False
+
+            # Skip the block.
+            i = g.skip_ws_and_nl(s,i+1)
+            if g.match(s,i,'{'):
+                sigEnd = g.skip_ws_and_nl(s,i+1)
+                i = g.skip_braces(s,i)
+                ok = g.match(s,i,'}')
+                if ok:
+                    i = g.skip_ws_and_nl(s,i+1)
+                    self.end = i
+                    self.sigEnd = sigEnd
+                    self.sigID = word
+                return ok
+            else:
+                return False
+
+        #@-node:edreamleo.20070710085115.8:startsClass/Function & skipSignature
+        #@-node:edreamleo.20070710085115.2:Overrides
+        #@-others
+    #@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
+    #@-node:edreamleo.20070710110114:Java scanner & helpers
+    #@+node:edreamleo.20070710110114.1:C scanner & helpers
+    #@+node:edreamleo.20070710110153:scanCText
+    def scanCText (self,s,parent,atAuto=False,strict=False):
+
+        scanner = self.cScanner(
+            importCommands=self,
+            atAuto=atAuto,
+            strict=strict)
+
+        scanner.run(s,parent)
+    #@-node:edreamleo.20070710110153:scanCText
+    #@+node:edreamleo.20070710093042:class cScanner (baseScannerClass)
+    class javaScanner (baseScannerClass):
+
+        #@    @+others
+        #@+node:edreamleo.20070710093042.1: __init__
+        def __init__ (self,importCommands,atAuto,strict):
+
+            importCommands.baseScannerClass.__init__(self,importCommands,
+                atAuto=atAuto,
+                language='python',
+                strict=strict,
+            )
+
+            # Set the parser delims.
+            self.blockCommentDelim1 = '/*'
+            self.blockCommentDelim2 = '*/'
+            self.lineCommentDelim = '//'
+
+        #@-node:edreamleo.20070710093042.1: __init__
+        #@+node:edreamleo.20070710093042.2:Overrides
+        # skipClass/Function/Signature are defined in the base class.
+        #@nonl
+        #@+node:edreamleo.20070710093042.6:startsClass/Function & skipSignature
+        def startsClass (self,s,i):
+            '''Return True if s[i:] starts a class definition.
+            Sets self.end, self.sigEnd and self.sigID.'''
+            return self.startsHelper(s,i,classFlag=True)
+
+        def startsFunction (self,s,i):
+            '''Return True if s[i:] starts a function.
+            Sets self.end, self.sigEnd and self.sigID.'''
+            return self.startsHelper(s,i,classFlag=False)
+
+        def startsHelper(self,s,i,classFlag):
+            '''Return index of end of signature if sig is True,
+            otherwise return True if s[i:] starts a class or function.'''
+
+            self.end = self.sigEnd = self.sigID = None
+            # Skip one or more id's.
+            words = []
+            if not g.is_c_id(s[i]): return False
+            while i < len(s) and g.is_c_id(s[i]):
+                j = g.skip_c_id(s,i)
+                word = s[i:j]
+                words.append(word)
+                i = g.skip_ws_and_nl(s,j)
+
+            classStart = 'class' in words
+            if classFlag != classStart: return False
+
+            # Skip one or more lists: casts can cause multiple parens.
+            if not g.match(s,i,'('): return False
+            while g.match(s,i,'('):
+                i = g.skip_parens(s,i)
+                if not g.match(s,i,')') : return False
+                i = g.skip_ws_and_nl(s,i+1)
+
+            if g.match(s,i,'{'):
+                sigEnd = g.skip_ws_and_nl(s,i+1)
+                i = g.skip_braces(s,i)
+                ok = g.match(s,i,'}')
+                if ok:
+                    i = g.skip_ws_and_nl(s,i+1)
+                    self.end = i
+                    self.sigEnd = sigEnd
+                    self.sigID = word
+                return ok
+            else:
+                return False
+        #@-node:edreamleo.20070710093042.6:startsClass/Function & skipSignature
+        #@-node:edreamleo.20070710093042.2:Overrides
+        #@-others
+    #@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
+    #@-node:edreamleo.20070710110114.1:C scanner & helpers
     #@-node:ekr.20031218072017.3241:Scanners for createOutline
     #@-node:ekr.20031218072017.3209:Import
     #@+node:ekr.20031218072017.3289:Export
