@@ -1086,11 +1086,7 @@ class baseLeoImportCommands:
         #@+node:ekr.20070703122141.104:checkTrialWrite
         def checkTrialWrite (self):
 
-            '''
-            Return True if a trial write produces the original file.
-            '''
-
-            # Probably not: For @auto, verify that no node contains any Leo directives or section references.
+            '''Return True if a trial write produces the original file.'''
 
             c = self.c ; at = c.atFileCommands
 
@@ -2834,7 +2830,7 @@ class baseLeoImportCommands:
 
         def skipFunction (self,s,i):
             return self.skipHelper(s,i)
-        #@+node:ekr.20070707111805:skipHelper
+        #@+node:ekr.20070707111805:skipHelper (pythonScanner)
         def skipHelper (self,s,i):
 
             # g.trace(g.get_line(s,i))
@@ -2842,8 +2838,8 @@ class baseLeoImportCommands:
             startIndent = self.getLeadingIndent(s,i)
             i = self.skipSignature(s,i)
             i = g.skip_ws_and_nl(s,i)
-            indent = self.getLeadingIndent(s,i)
             parenCount = 0
+            underIndentedStart = None
             while i < len(s):
                 progress = i
                 ch = s[i]
@@ -2851,12 +2847,20 @@ class baseLeoImportCommands:
                     backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
                     i = g.skip_nl(s,i)
                     if not backslashNewline:
-                        # Don't set indent for comment lines.
-                        j = g.skip_ws(s,i)
-                        if not g.match(s,j,'#'):
-                            indent = self.getLeadingIndent(s,i)
-                            if indent <= startIndent and parenCount == 0:
-                                break
+                        j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                        underIndented = indent <= startIndent and parenCount == 0
+                        if underIndented:
+                            if g.match(s,j,'#') or g.match(s,j,'\n'):
+                                # Dont stop immediately for underindented comment or blank lines.
+                                # Extend the range of underindented lines.
+                                if underIndentedStart is None:
+                                    underIndentedStart = i
+                                i = j
+                            else:
+                                # The actual end of the function.
+                                return g.choose(underIndentedStart is None,i,underIndentedStart)
+                        else:
+                            underIndentedStart = None
                 elif ch == '#':
                     i = g.skip_to_end_of_line(s,i)
                 elif ch == '"' or ch == '\'':
@@ -2871,7 +2875,7 @@ class baseLeoImportCommands:
                 assert(progress < i)
 
             return i
-        #@-node:ekr.20070707111805:skipHelper
+        #@-node:ekr.20070707111805:skipHelper (pythonScanner)
         #@-node:ekr.20070707082226:skipClass/Function & helper
         #@+node:ekr.20070707115247:skipSignature
         def skipSignature (self,s,i):

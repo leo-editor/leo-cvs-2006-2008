@@ -3460,6 +3460,306 @@ def undentBody (self,s):
 #@-node:ekr.20070703123334.1:C
 #@-node:ekr.20031218072017.2256:OLD scanners
 #@-node:ekr.20070703172330:Import & @auto code
+#@+node:ekr.20070705142543.1:Not used
+#@+node:ekr.20070703122141.110:<< handle possible Python function or class >>
+if g.match_c_word(s,i,"def") or g.match_word(s,i,"class"):
+    isDef = g.match_c_word(s,i,"def")
+    if not decls_seen:
+        self.putRootText(parent)
+        assert start == 0
+        if i > start:
+            self.scanPythonDecls(s,start,i,parent,-1,indent_parent_ref_flag=False)
+        start = i
+        decls_seen = True
+        if self.treeType == "@file":
+            c.appendStringToBody(parent,"@others\n")
+    if isDef:
+        i = start = self.scanPythonDef(s,i,start,parent)
+    else:
+        i = start = self.scanPythonClass(s,i,start,parent)
+else:
+    i = g.skip_c_id(s,i)
+#@-node:ekr.20070703122141.110:<< handle possible Python function or class >>
+#@+node:ekr.20070703122141.118:<< Create a child node for declarations >>
+if self.atAuto:
+    # Create the node for the decls.
+    headline = self.methodName + ' declarations'
+    body = self.undentBody(s[j:i])
+    self.createHeadline(parent,body,headline)
+else:
+    headline = ref = g.angleBrackets(" " + self.methodName + " declarations ")
+    leading_tab = g.choose(indent_parent_ref_flag,self.tab_ws,"")
+
+    # Append the reference to the parent's body.
+    c.appendStringToBody(parent,leading_tab + ref + "\n") # 7/6/02
+
+    # Create the node for the decls.
+    body = self.undentBody(s[j:i])
+    if self.treeType == "@root":
+        body = "@code\n\n" + body
+    self.createHeadline(parent,body,headline)
+#@-node:ekr.20070703122141.118:<< Create a child node for declarations >>
+#@+node:ekr.20070707073044.2:Python scanners
+#@+node:ekr.20070703122141.111:scanPythonClass & helper
+def scanPythonClass (self,s,i,start,parent):
+
+    """Creates a child node c of parent for the class, and children of c for each def in the class."""
+
+    # g.trace('start',start,'i',i,g.get_line(s,i))
+    c = self.c
+    class_indent = self.getLeadingIndent(s,i)
+    << set class_name and headline >>
+    if not class_name: return i
+    i = g.skip_line(s,i) # Skip the class line.
+    i,prefix,body = self.createClassNodeText(s,i,start)
+    class_vnode = self.createHeadline(parent,prefix + body,headline)
+    savedMethodName = self.methodName
+    self.methodName = headline
+    # Create a node for leading declarations of the class.
+    i = self.scanPythonDecls(s,i,class_vnode,class_indent,indent_parent_ref_flag=True)
+    i = self.scanPythonClassHelper(s,i,class_indent,class_name,class_vnode)
+    self.methodName = savedMethodName
+    return i
+#@+node:ekr.20070703122141.112:<< set class_name and headline >>
+# Skip to the class name.
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # skip "class"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    class_name = s[j:i]
+    headline = "class " + class_name
+else:
+    headline = ''
+    class_name = ''
+#@-node:ekr.20070703122141.112:<< set class_name and headline >>
+#@+node:ekr.20070703122141.113:scanPythonClassHelper
+def scanPythonClassHelper(self,s,i,class_indent,class_name,class_vnode):
+
+    c = self.c
+    indent =  self.getLeadingIndent(s,i)
+    ###start = i = g.skip_blank_lines(s,i)
+    start = i
+    parent_vnode = None
+    while i < len(s):
+        progress = i
+        # New in Leo 4.4.1: ignore comment lines, whatever their indentation.
+        if indent <= class_indent:
+            j = g.skip_ws(s,i)
+            if g.match(s,j,'#'):
+                i = g.skip_to_end_of_line(s,j)
+            else: break
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            j = g.skip_nl(s,i)
+            if not backslashNewline:
+                indent = self.getLeadingIndent(s,j)
+                if indent > class_indent: i = j
+                else: break
+            else: i = j
+        elif g.match_c_word(s,i,"def"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonDef(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif g.match_c_word(s,i,"class"):
+            if not parent_vnode:
+                self.createParentText(class_vnode,class_name)
+                parent_vnode = class_vnode
+            i = start = self.scanPythonClass(s,i,start,parent_vnode)
+            indent = self.getLeadingIndent(s,i)
+        elif s[i] == '#': i = g.skip_to_end_of_line(s,i)
+        elif s[i] == '"' or s[i] == '\'': i = g.skip_python_string(s,i)
+        else: i += 1
+        assert(progress < i)
+
+    if not parent_vnode:
+        self.createParentText(class_vnode,class_name)
+        ## c.appendStringToBody(class_vnode,self.tab_ws + '@others')
+    ###return start,i
+    return i
+#@-node:ekr.20070703122141.113:scanPythonClassHelper
+#@-node:ekr.20070703122141.111:scanPythonClass & helper
+#@+node:ekr.20070703122141.116:scanPythonDecls
+def scanPythonDecls (self,s,i,parent,indent,indent_parent_ref_flag=True):
+
+    c = self.c ; done = False ; start = i
+    while not done and i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n':
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            # break on lesser indention.
+            j = g.skip_ws(s,i)
+            if not g.is_nl(s,j) and not g.match(s,j,"#") and not backslashNewline:
+                lineIndent = self.getLeadingIndent(s,i)
+                if lineIndent <= indent:
+                    break
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            << break on def or class >>
+        else: i += 1
+        assert(progress < i)
+    decls = s[start:i]
+    if decls.strip():
+        self.createDeclsNode(parent,decls,indent_parent_ref_flag)
+        return i
+    else:
+        return start
+#@+node:ekr.20070703122141.117:<< break on def or class >>
+if g.match_c_word(s,i,"def") or g.match_c_word(s,i,"class"):
+    i = g.find_line_start(s,i)
+    done = True
+    break
+else:
+    i = g.skip_c_id(s,i)
+#@-node:ekr.20070703122141.117:<< break on def or class >>
+#@-node:ekr.20070703122141.116:scanPythonDecls
+#@+node:ekr.20070703122141.119:scanPythonDef
+def scanPythonDef (self,s,i,start,parent):
+
+    """Creates a node of parent for the def."""
+
+    # g.trace(g.get_line(s,i))
+    << set headline or return i >>
+    i = self.skipPythonDef(s,i) ###,start)
+    # Create the def node.
+    savedMethodName = self.methodName
+    self.methodName = headline
+    << Create def node >>
+    self.methodName = savedMethodName
+    return i
+#@+node:ekr.20070703122141.120:<< set headline or return i >>
+i = g.skip_ws(s,i)
+i = g.skip_c_id(s,i) # Skip the "def"
+i = g.skip_ws_and_nl(s,i)
+if i < len(s) and g.is_c_id(s[i]):
+    j = i ; i = g.skip_c_id(s,i)
+    headline = s[j:i]
+    # g.trace("headline:" + headline)
+else: return i
+#@-node:ekr.20070703122141.120:<< set headline or return i >>
+#@+node:ekr.20070703122141.121:<< Create def node >>
+# Create the prefix line for @root trees.
+if self.treeType == "@file":
+    prefix = ""
+else:
+    prefix = g.angleBrackets(" " + savedMethodName + " methods ") + "=\n\n"
+    self.methodsSeen = True
+
+# Create body.
+### start = g.skip_blank_lines(s,start)
+body = s[start:i]
+body = self.undentBody(body)
+
+# Create the node.
+self.createHeadline(parent,prefix + body,headline)
+#@-node:ekr.20070703122141.121:<< Create def node >>
+#@-node:ekr.20070703122141.119:scanPythonDef
+#@+node:ekr.20070703122141.107:scan OLD
+# See the comments for scanCText for what the text looks like.
+
+def scan (self,s,parent):
+
+    """Create a child of parent for each Python function definition seen."""
+
+    c = self.c
+    self.file_s = s
+    self.root = parent.copy()
+    self.methodsSeen = False
+    start = i = self.scanPythonDecls(s,0,parent,-1,indent_parent_ref_flag=False)
+    decls_seen = i > 0
+    if decls_seen:
+        self.putRootText(parent)
+    while i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n' or ch == '\r': i = g.skip_nl(s,i)
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'': i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            if g.match_c_word(s,i,"def"):
+                i = start = self.scanPythonDef(s,i,start,parent)
+            elif g.match_word(s,i,"class"):
+                i = start = self.scanPythonClass(s,i,start,parent)
+            else:
+                i = g.skip_c_id(s,i)
+        else: i += 1
+        assert(progress < i)
+    if not decls_seen:
+        self.putRootText(parent)
+    << Append a reference to the methods of this file >>
+    if start < len(s):
+        c.appendStringToBody(parent,s[start:])
+#@+node:ekr.20070703122141.109:<< Append a reference to the methods of this file >>
+if self.treeType == "@file":
+    c.appendStringToBody(parent,"@others\n")
+
+if self.treeType == "@root" and self.methodsSeen:
+    c.appendStringToBody(parent,
+        g.angleBrackets(" " + self.methodName + " methods ") + "\n\n")
+#@-node:ekr.20070703122141.109:<< Append a reference to the methods of this file >>
+#@-node:ekr.20070703122141.107:scan OLD
+#@+node:ekr.20070707091607:putLeadingDecls (was scanPythonDecls)
+def putLeadingDecls (self,s,i,j,parent,indent=0):
+
+    c = self.c ; done = False ; start = i
+    while not done and i < len(s):
+        progress = i
+        # g.trace(g.get_line(s,i))
+        ch = s[i]
+        if ch == '\n':
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            # break on lesser indention.
+            j = g.skip_ws(s,i)
+            if not g.is_nl(s,j) and not g.match(s,j,"#") and not backslashNewline:
+                lineIndent = self.getLeadingIndent(s,i)
+                if lineIndent <= indent:
+                    break
+        elif ch == '#': i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif g.is_c_id(ch):
+            << break on def or class >>
+        else: i += 1
+        assert(progress < i)
+    decls = s[start:i]
+    if decls.strip():
+        self.createDeclsNode(decls,parent,indent_parent_ref_flag=True)
+        return i
+    else:
+        return start
+#@+node:ekr.20070707091607.1:<< break on def or class >>
+if g.match_c_word(s,i,"def") or g.match_c_word(s,i,"class"):
+    i = g.find_line_start(s,i)
+    done = True
+    break
+else:
+    i = g.skip_c_id(s,i)
+#@-node:ekr.20070707091607.1:<< break on def or class >>
+#@-node:ekr.20070707091607:putLeadingDecls (was scanPythonDecls)
+#@-node:ekr.20070707073044.2:Python scanners
+#@+node:ekr.20070707082226.1:<< skip the entire signature >>
+# Now that we count parens, we must be careful to skip the entire signature.
+
+j = s.find('(',i)
+if j != -1:
+    j = g.skip_matching_python_parens(s,j)
+
+if j == -1 or not g.match(s,j+1,':'):
+    self.error('Warning: improper signature: %s' % g.get_line(s,i))
+    return i
+else:
+    i = g.skip_line(s,j) # Still not quite 100% correct.
+#@-node:ekr.20070707082226.1:<< skip the entire signature >>
+#@-node:ekr.20070705142543.1:Not used
 #@-node:ekr.20031218072017.434:Unused code
 #@-all
 #@nonl
