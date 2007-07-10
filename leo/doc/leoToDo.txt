@@ -1407,6 +1407,8 @@ def extendSignature(self,s,i,start):
 
     return i
 #@-node:ekr.20070707150022:extendSignature
+#@+node:ekr.20070707172732:getClass/FunctionID
+#@-node:ekr.20070707172732:getClass/FunctionID
 #@+node:ekr.20070707073859:skipBlock
 def skipBlock(self,s,i,delim1='{',delim2='}'):
 
@@ -1454,20 +1456,6 @@ def skipBlockComment (self,s,i):
     else:
         return k + len(self.blockCommentDelim2)
 #@-node:ekr.20070707074541:skipBlockComment
-#@+node:edreamleo.20070710105410:skipClass/Function/Signature
-# startsClass and startsFunction must do all the work anyway,
-# so they set the ending points and we just return it.
-
-def skipClass (self,s,i):
-    return self.end
-
-def skipFunction (self,s,i):
-    return self.end
-
-def skipSignature (self,s,i):
-    return self.sigEnd
-#@nonl
-#@-node:edreamleo.20070710105410:skipClass/Function/Signature
 #@+node:ekr.20070707094858.1:skipId
 def skipId (self,s,i):
 
@@ -1489,6 +1477,19 @@ def startsString(self,s,i):
 
     return g.match(s,i,'"') or g.match(s,i,"'")
 #@-node:ekr.20070707172732.1:startsString
+#@+node:edreamleo.20070710105410:skipClass/Function/Signature
+# startsClass and startsFunction must do all the work anyway,
+# so they set the ending points and we just return it.
+
+def skipClass (self,s,i):
+    return self.end
+
+def skipFunction (self,s,i):
+    return self.end
+
+def skipSignature (self,s,i):
+    return self.sigEnd
+#@-node:edreamleo.20070710105410:skipClass/Function/Signature
 #@-node:ekr.20070707075646.1:May be defined in subclasses
 #@+node:ekr.20070707073627.3:Must be defined in subclasses
 def putClass (self,s,i,end,start,parent):
@@ -1748,6 +1749,171 @@ def indentBody (self,s,lws=None):
 #@-node:ekr.20070709094002:indentBody
 #@-node:ekr.20070706084535:Semantics (must be defined in base class)
 #@-node:ekr.20070703122141.65:class baseScannerClass
+#@+node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
+class pythonScanner (baseScannerClass):
+
+    @others
+#@+node:ekr.20070703122141.101: __init__
+def __init__ (self,importCommands,atAuto,strict):
+
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,
+        language='python',
+        strict=strict,
+    )
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = None
+    self.blockCommentDelim2 = None
+    self.lineCommentDelim = '#'
+
+#@-node:ekr.20070703122141.101: __init__
+#@+node:ekr.20070707073723:Overrides
+@ skipClass/Function/Signature are usually defined in the base class,
+but for Python it is convenient to override them all.
+#@nonl
+#@+node:ekr.20070707113839:extendSignature
+def extendSignature(self,s,i):
+
+    '''
+    Extend the text to added to the class node following the signature.
+
+    The text *must* end with a newline.
+    '''
+
+    # Add a docstring to the class node,
+    # And everything on the line following it
+    j = g.skip_ws_and_nl(s,i)
+    if g.match(s,j,'"""') or g.match(s,j,"'''"):
+        j = g.skip_python_string(s,j)
+        if j < len(s): # No scanning error.
+            # Return the docstring only if nothing but whitespace follows.
+            j = g.skip_ws(s,j)
+            if g.is_nl(s,j):
+                return j + 1
+
+    return i
+#@-node:ekr.20070707113839:extendSignature
+#@+node:ekr.20070707082226:skipClass/Function & helper
+def skipClass (self,s,i):
+    return self.skipHelper(s,i)
+
+def skipFunction (self,s,i):
+    return self.skipHelper(s,i)
+#@+node:ekr.20070707111805:skipHelper (pythonScanner)
+def skipHelper (self,s,i):
+
+    # g.trace(g.get_line(s,i))
+
+    startIndent = self.getLeadingIndent(s,i)
+    i = self.skipSignature(s,i)
+    i = g.skip_ws_and_nl(s,i)
+    parenCount = 0
+    underIndentedStart = None
+    while i < len(s):
+        progress = i
+        ch = s[i]
+        if g.is_nl(s,i):
+            backslashNewline = i > 0 and g.match(s,i-1,"\\\n")
+            i = g.skip_nl(s,i)
+            if not backslashNewline:
+                j, indent = g.skip_leading_ws_with_indent(s,i,self.tab_width)
+                underIndented = indent <= startIndent and parenCount == 0
+                if underIndented:
+                    if g.match(s,j,'#') or g.match(s,j,'\n'):
+                        # Dont stop immediately for underindented comment or blank lines.
+                        # Extend the range of underindented lines.
+                        if underIndentedStart is None:
+                            underIndentedStart = i
+                        i = j
+                    else:
+                        # The actual end of the function.
+                        return g.choose(underIndentedStart is None,i,underIndentedStart)
+                else:
+                    underIndentedStart = None
+        elif ch == '#':
+            i = g.skip_to_end_of_line(s,i)
+        elif ch == '"' or ch == '\'':
+            i = g.skip_python_string(s,i)
+        elif ch in '[{(':
+            i += 1 ; parenCount += 1
+            # g.trace('ch',ch,parenCount)
+        elif ch in ']})':
+            i += 1 ; parenCount -= 1
+            # g.trace('ch',ch,parenCount)
+        else: i += 1
+        assert(progress < i)
+
+    return i
+#@-node:ekr.20070707111805:skipHelper (pythonScanner)
+#@-node:ekr.20070707082226:skipClass/Function & helper
+#@+node:ekr.20070707115247:skipSignature
+def skipSignature (self,s,i):
+
+    '''Skip the signature line of a class or function.
+    The text must end with a newline.'''
+
+    start = i
+    message = 'Warning: improper signature: %s' % g.get_line(s,start)
+
+    # g.trace(g.getLine(s,i))
+
+    # Skip the def or class.
+    for tag in ('def','class'):
+        if g.match_word(s,i,tag):
+            i += len(tag)
+            break
+    else:
+        self.error(message)
+        return start
+
+    # Skip the class or function name.
+    i = g.skip_ws_and_nl(s,i)
+    j = g.skip_c_id(s,i)
+    if j == i:
+        self.error(message)
+        return start
+
+    # Skip the optional argument or base-class list.
+    i = g.skip_ws_and_nl(s,j)
+    if g.match(s,i,'('):
+        i = self.skipBlock(s,i,delim1='(',delim2=')')
+        i = g.skip_ws_and_nl(s,i)
+
+    if g.match(s,i,':'):
+        return g.skip_line(s,i+1)
+    else:
+        self.error(message)
+        return start
+#@-node:ekr.20070707115247:skipSignature
+#@+node:ekr.20070707073627.4:skipString
+def skipString (self,s,i):
+
+    # Returns len(s) on unterminated string.
+    return g.skip_python_string(s,i,verbose=False)
+#@-node:ekr.20070707073627.4:skipString
+#@+node:ekr.20070707080005:startsClass/Function
+def startsClass (self,s,i):
+    '''Return the class id if s[i:] starts a class definition.'''
+    return self.startsHelper(s,i,'class')
+
+def startsFunction (self,s,i):
+    '''Return the function id if s[i:] starts a function definition.'''
+    return self.startsHelper(s,i,'def')
+
+def startsHelper(self,s,i,tag):
+
+    if g.match_word(s,i,tag):
+        i += len(tag)
+        i = g.skip_ws_and_nl(s,i)
+        j = g.skip_c_id(s,i)
+        self.sigID = s[i:j]
+        return True
+    else:
+        return False
+#@-node:ekr.20070707080005:startsClass/Function
+#@-node:ekr.20070707073723:Overrides
+#@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
 #@-node:ekr.20070324084040:(Rewrite import code to support @auto)
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 #@+node:ekr.20060601073503:Postings
@@ -2004,11 +2170,11 @@ The vnode would then be marked with a "conflict" flag that would prevent the use
 
 What I have in mind is something similar to the CVS conflict file, where a conflict between two versions is marked 
 
-<<<<<<< 
+< < < < < < < 
 blah blah blah? 
 ======= 
 blah blah blah! 
->>>>>>> 
+> > > > > > > 
 
 Except that we would output this file in Leo XML format. The reason for XML format would be to avoid problems of how to generically delimit the different sections (different versions of the cloned node). Here leo's XML tags can unambiguously delimit the sections. 
 
