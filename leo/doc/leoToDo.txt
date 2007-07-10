@@ -1407,8 +1407,6 @@ def extendSignature(self,s,i,start):
 
     return i
 #@-node:ekr.20070707150022:extendSignature
-#@+node:ekr.20070707172732:getClass/FunctionID
-#@-node:ekr.20070707172732:getClass/FunctionID
 #@+node:ekr.20070707073859:skipBlock
 def skipBlock(self,s,i,delim1='{',delim2='}'):
 
@@ -1456,6 +1454,19 @@ def skipBlockComment (self,s,i):
     else:
         return k + len(self.blockCommentDelim2)
 #@-node:ekr.20070707074541:skipBlockComment
+#@+node:edreamleo.20070710105410:skipClass/Function/Signature
+# startsClass and startsFunction must do all the work anyway,
+# so they set the ending points and we just return it.
+
+def skipClass (self,s,i):
+    return self.end
+
+def skipFunction (self,s,i):
+    return self.end
+
+def skipSignature (self,s,i):
+    return self.sigEnd
+#@-node:edreamleo.20070710105410:skipClass/Function/Signature
 #@+node:ekr.20070707094858.1:skipId
 def skipId (self,s,i):
 
@@ -1477,19 +1488,8 @@ def startsString(self,s,i):
 
     return g.match(s,i,'"') or g.match(s,i,"'")
 #@-node:ekr.20070707172732.1:startsString
-#@+node:edreamleo.20070710105410:skipClass/Function/Signature
-# startsClass and startsFunction must do all the work anyway,
-# so they set the ending points and we just return it.
-
-def skipClass (self,s,i):
-    return self.end
-
-def skipFunction (self,s,i):
-    return self.end
-
-def skipSignature (self,s,i):
-    return self.sigEnd
-#@-node:edreamleo.20070710105410:skipClass/Function/Signature
+#@+node:ekr.20070707172732:getClass/FunctionID
+#@-node:ekr.20070707172732:getClass/FunctionID
 #@-node:ekr.20070707075646.1:May be defined in subclasses
 #@+node:ekr.20070707073627.3:Must be defined in subclasses
 def putClass (self,s,i,end,start,parent):
@@ -1914,6 +1914,151 @@ def startsHelper(self,s,i,tag):
 #@-node:ekr.20070707080005:startsClass/Function
 #@-node:ekr.20070707073723:Overrides
 #@-node:ekr.20070703122141.100:class pythonScanner (baseScannerClass)
+#@+node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
+class javaScanner (baseScannerClass):
+
+    @others
+#@+node:edreamleo.20070710085115.1: __init__
+def __init__ (self,importCommands,atAuto,strict):
+
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,
+        language='python',
+        strict=strict,
+    )
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.lineCommentDelim = '//'
+
+#@-node:edreamleo.20070710085115.1: __init__
+#@+node:edreamleo.20070710085115.2:Overrides
+# skipClass/Function/Signature are defined in the base class.
+#@nonl
+#@+node:edreamleo.20070710085115.8:startsClass/Function & skipSignature
+def startsClass (self,s,i):
+    '''Return True if s[i:] starts a class definition.
+    Sets self.end, self.sigEnd and self.sigID.'''
+    return self.startsHelper(s,i,classFlag=True)
+
+def startsFunction (self,s,i):
+    '''Return True if s[i:] starts a function.
+    Sets self.end, self.sigEnd and self.sigID.'''
+    return self.startsHelper(s,i,classFlag=False)
+
+def startsHelper(self,s,i,classFlag):
+    '''Return index of end of signature if sig is True,
+    otherwise return True if s[i:] starts a class or function.'''
+
+    self.end = self.sigEnd = self.sigID = None
+    if not g.is_c_id(s[i]): return False
+    word1 = g.skip_c_id(s,i)
+    if classFlag is not None:
+        classStart = word1 in ('class','interface')
+        if classFlag != classStart: return False
+
+    # Skip one or more id's.
+    while i < len(s) and g.is_c_id(s[i]):
+        j = g.skip_c_id(s,i)
+        word = s[i:j]
+        i = g.skip_ws_and_nl(s,j)
+
+    # Skip the argument list.
+    if not g.match(s,i,'('): return False
+    i = g.skip_parens(s,i)
+    if not g.match(s,i,')') : return False
+
+    # Skip the block.
+    i = g.skip_ws_and_nl(s,i+1)
+    if g.match(s,i,'{'):
+        sigEnd = g.skip_ws_and_nl(s,i+1)
+        i = g.skip_braces(s,i)
+        ok = g.match(s,i,'}')
+        if ok:
+            i = g.skip_ws_and_nl(s,i+1)
+            self.end = i
+            self.sigEnd = sigEnd
+            self.sigID = word
+        return ok
+    else:
+        return False
+
+#@-node:edreamleo.20070710085115.8:startsClass/Function & skipSignature
+#@-node:edreamleo.20070710085115.2:Overrides
+#@-node:edreamleo.20070710085115:class javaScanner (baseScannerClass)
+#@+node:edreamleo.20070710093042:class cScanner (baseScannerClass)
+class javaScanner (baseScannerClass):
+
+    @others
+#@+node:edreamleo.20070710093042.1: __init__
+def __init__ (self,importCommands,atAuto,strict):
+
+    importCommands.baseScannerClass.__init__(self,importCommands,
+        atAuto=atAuto,
+        language='python',
+        strict=strict,
+    )
+
+    # Set the parser delims.
+    self.blockCommentDelim1 = '/*'
+    self.blockCommentDelim2 = '*/'
+    self.lineCommentDelim = '//'
+
+#@-node:edreamleo.20070710093042.1: __init__
+#@+node:edreamleo.20070710093042.2:Overrides
+# skipClass/Function/Signature are defined in the base class.
+#@nonl
+#@+node:edreamleo.20070710093042.6:startsClass/Function & skipSignature
+def startsClass (self,s,i):
+    '''Return True if s[i:] starts a class definition.
+    Sets self.end, self.sigEnd and self.sigID.'''
+    return self.startsHelper(s,i,classFlag=True)
+
+def startsFunction (self,s,i):
+    '''Return True if s[i:] starts a function.
+    Sets self.end, self.sigEnd and self.sigID.'''
+    return self.startsHelper(s,i,classFlag=False)
+
+def startsHelper(self,s,i,classFlag):
+    '''Return index of end of signature if sig is True,
+    otherwise return True if s[i:] starts a class or function.'''
+
+    self.end = self.sigEnd = self.sigID = None
+    # Skip one or more id's.
+    words = []
+    if not g.is_c_id(s[i]): return False
+    while i < len(s) and g.is_c_id(s[i]):
+        j = g.skip_c_id(s,i)
+        word = s[i:j]
+        words.append(word)
+        i = g.skip_ws_and_nl(s,j)
+
+    classStart = 'class' in words
+    if classFlag != classStart: return False
+
+    # Skip one or more lists: casts can cause multiple parens.
+    if not g.match(s,i,'('): return False
+    while g.match(s,i,'('):
+        i = g.skip_parens(s,i)
+        if not g.match(s,i,')') : return False
+        i = g.skip_ws_and_nl(s,i+1)
+
+    if g.match(s,i,'{'):
+        sigEnd = g.skip_ws_and_nl(s,i+1)
+        i = g.skip_braces(s,i)
+        ok = g.match(s,i,'}')
+        if ok:
+            i = g.skip_ws_and_nl(s,i+1)
+            self.end = i
+            self.sigEnd = sigEnd
+            self.sigID = word
+        return ok
+    else:
+        return False
+#@-node:edreamleo.20070710093042.6:startsClass/Function & skipSignature
+#@-node:edreamleo.20070710093042.2:Overrides
+#@-node:edreamleo.20070710093042:class cScanner (baseScannerClass)
 #@-node:ekr.20070324084040:(Rewrite import code to support @auto)
 #@+node:ekr.20051202094427:Resolve cvs conflicts
 #@+node:ekr.20060601073503:Postings

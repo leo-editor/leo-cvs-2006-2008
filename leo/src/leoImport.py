@@ -1332,8 +1332,6 @@ class baseLeoImportCommands:
 
             return i
         #@-node:ekr.20070707150022:extendSignature
-        #@+node:ekr.20070707172732:getClass/FunctionID
-        #@-node:ekr.20070707172732:getClass/FunctionID
         #@+node:ekr.20070707073859:skipBlock
         def skipBlock(self,s,i,delim1='{',delim2='}'):
 
@@ -1381,6 +1379,19 @@ class baseLeoImportCommands:
             else:
                 return k + len(self.blockCommentDelim2)
         #@-node:ekr.20070707074541:skipBlockComment
+        #@+node:edreamleo.20070710105410:skipClass/Function/Signature
+        # startsClass and startsFunction must do all the work anyway,
+        # so they set the ending points and we just return it.
+
+        def skipClass (self,s,i):
+            return self.end
+
+        def skipFunction (self,s,i):
+            return self.end
+
+        def skipSignature (self,s,i):
+            return self.sigEnd
+        #@-node:edreamleo.20070710105410:skipClass/Function/Signature
         #@+node:ekr.20070707094858.1:skipId
         def skipId (self,s,i):
 
@@ -1402,19 +1413,8 @@ class baseLeoImportCommands:
 
             return g.match(s,i,'"') or g.match(s,i,"'")
         #@-node:ekr.20070707172732.1:startsString
-        #@+node:edreamleo.20070710105410:skipClass/Function/Signature
-        # startsClass and startsFunction must do all the work anyway,
-        # so they set the ending points and we just return it.
-
-        def skipClass (self,s,i):
-            return self.end
-
-        def skipFunction (self,s,i):
-            return self.end
-
-        def skipSignature (self,s,i):
-            return self.sigEnd
-        #@-node:edreamleo.20070710105410:skipClass/Function/Signature
+        #@+node:ekr.20070707172732:getClass/FunctionID
+        #@-node:ekr.20070707172732:getClass/FunctionID
         #@-node:ekr.20070707075646.1:May be defined in subclasses
         #@+node:ekr.20070707073627.3:Must be defined in subclasses
         def putClass (self,s,i,end,start,parent):
